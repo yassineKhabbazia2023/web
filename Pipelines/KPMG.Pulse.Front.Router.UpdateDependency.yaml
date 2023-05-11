@@ -15,7 +15,7 @@ stages:
       - job: Dependabot
         displayName: 'Run Dependabot'
         pool:
-          vmImage: ' windows-latest'
+          vmImage: 'windows-latest'
         steps:
           - task: dependabot@1
             displayName: 'Run Dependabot'
