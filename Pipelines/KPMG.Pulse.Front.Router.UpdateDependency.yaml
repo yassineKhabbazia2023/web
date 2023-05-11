@@ -1,0 +1,25 @@
+schedules:
+  - cron: "0 12 * * 0"
+    displayName: Weekly Dependency Updates
+    branches:
+      include:
+      - develop
+    always: true
+    
+trigger: none
+
+stages:
+  - stage: CheckDependencies
+    displayName: 'Check Dependencies'
+    jobs:
+      - job: Dependabot
+        displayName: 'Run Dependabot'
+        pool:
+          vmImage: ' windows-latest'
+        steps:
+          - task: dependabot@1
+            displayName: 'Run Dependabot'
+            inputs:
+              packageManager: 'npm'
+              targetBranch: 'develop'
+              openPullRequestsLimit: 10
