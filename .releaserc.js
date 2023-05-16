@@ -1,10 +1,24 @@
 module.exports = {
   branches: [
     'develop',
-    'release/*' // release branches
+    'release/*', // release branches
+    { 'name': 'beta', 'channel': 'beta', 'prerelease': true }
   ],
   plugins: [
-    '@semantic-release/commit-analyzer',
+    [
+      '@semantic-release/commit-analyzer',
+      {
+        'releaseRules': [
+          {
+            'scope': "no-release",
+            'release': false
+          }
+        ],
+        'parserOpts': {
+          'noteKeywords': ['BREAKING CHANGE', 'BREAKING CHANGES']
+        }
+      }
+    ],
     '@semantic-release/release-notes-generator',
     [
       '@semantic-release/changelog',
@@ -19,6 +33,6 @@ module.exports = {
         message: 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
     ],
-     "semantic-release-ado"
+     'semantic-release-ado'
   ]
 }
