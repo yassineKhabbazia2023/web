@@ -1,0 +1,18 @@
+{
+  "name": "kpmg.pulse.front.router",
+  "version": "1.0.0",
+  "description": "Ce MFE permettra de gérer toutes les routes sans utiliser le router de Single SPA.\r Tous les composants (pages) appelés dans les routes devront etre importés via un import dynamique a des fins d optimisation.\r Ce MFE permettra aussi la création et gestion de layouts afin de ne pas dupliquer les éléments communs a toutes les pages comme par exemple le header & la navbar.",
+  "develop": ".releaserc.js",
+  "scripts": {
+    "semantic-release": "semantic-release"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+     "@semantic-release/changelog": "^x.x.x",
+     "@semantic-release/git": "^x.x.x",
+     "conventional-changelog-conventionalcommits": "^x.x.x",
+     "semantic-release-ado": "^1.4.0"
+  }
+}     
