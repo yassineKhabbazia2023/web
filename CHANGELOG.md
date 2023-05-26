@@ -1,3 +1,10 @@
+# [1.1.0](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Router/compare/v1.0.0...v1.1.0) (2023-05-26)
+
+
+### Features
+
+* **semantic:** Test version - Updated package.json ([8297eee](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Router/commit/8297eeebd2fa211df0f4503ea520beaedc21bf14))
+
 # 1.0.0 (2023-05-16)
 
 
