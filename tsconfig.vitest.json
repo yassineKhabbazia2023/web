@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.app.json",
+  "exclude": [],
+  "compilerOptions": {
+    "composite": true,
+    "lib": [],
+    "moduleResolution": "node",
+    "types": ["node", "element-plus/global"]
+  }
+}

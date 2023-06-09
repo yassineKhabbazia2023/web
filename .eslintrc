@@ -1,0 +1,3 @@
+{
+    "extends": ["@kpmg/eslint-config-pulse"]
+}
