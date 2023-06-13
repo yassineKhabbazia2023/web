@@ -1,5 +1,3 @@
 {
-    "extends": [
-        "@kpmg/eslint-config-pulse"
-    ]
+  "extends": ["@kpmg/eslint-config-pulse"]
 }

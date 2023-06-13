@@ -11,7 +11,7 @@ export default defineConfig(mergeConfig(viteBaseConfig, {
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/main.ts'),
-      formats: ['es', 'cjs'],
+      formats: ['es'],
       fileName: () => 'common.js'
     },
     rollupOptions: {
