@@ -11,3 +11,8 @@ $--colors: (
 
 @use 'element-plus/theme-chalk/src/base.scss' as *;
 @use 'element-plus/theme-chalk/src/button.scss' as *;
+@use 'element-plus/theme-chalk/src/container.scss' as *;
+@use 'element-plus/theme-chalk/src/main.scss' as *;
+@use 'element-plus/theme-chalk/src/header.scss' as *;
+@use 'element-plus/theme-chalk/src/aside.scss' as *;
+@use 'element-plus/theme-chalk/src/footer.scss' as *;
