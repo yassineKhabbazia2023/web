@@ -1,5 +1,5 @@
-import path from 'path'
 import { defineConfig, mergeConfig } from 'vite'
+import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import typescript from '@rollup/plugin-typescript'

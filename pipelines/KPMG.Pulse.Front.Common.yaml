@@ -1,0 +1,23 @@
+trigger:
+  - develop
+  - release/*
+
+pool:
+  vmImage: 'windows-latest'
+
+resources:
+  repositories:
+  - repository: Pulse
+    name: 'Constellation/ConstellationDevOps'
+    type: git
+    ref: 'refs/heads/develop'
+  - repository: CICD
+    name: 'Plateforme Technologique/CICD'
+    type: git
+    ref: 'refs/heads/Release/v5.3'
+
+
+extends:
+  template: pipelines/templates/platform.front.package.yaml@Pulse
+  parameters:
+    packageName: Common

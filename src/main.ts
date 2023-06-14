@@ -8,8 +8,8 @@ import i18n from './i18n'
 import store from './stores'
 import { type RouteRecordRaw } from 'vue-router'
 
-// This is an empty component in order to load Common as an registered application in Single SPA for
-// serving commonStore, commontApi, widgets, routes, etc.
+// This is an empty component in order to load Common as an registered application in Single SPA
+// for serving commonStore, commontApi, widgets, routes, etc.
 const RenderLess = () => ''
 
 const vueLifecycles = singleSpaVue({
