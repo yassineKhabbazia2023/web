@@ -5,6 +5,8 @@ import { ElButton, ElContainer, ElMain, ElHeader, ElAside, ElFooter } from 'elem
 
 export { ElButton, ElContainer, ElMain, ElHeader, ElAside, ElFooter }
 
+// eslint-disable-next-line
+// @ts-ignore
 export function install(app: any, { i18n }: any) {
   app.component("ElButton", ElButton)
   app.component("ElContainer", ElContainer)
