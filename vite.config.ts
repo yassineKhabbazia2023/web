@@ -7,7 +7,6 @@ import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    manifest: true,
     minify: true,
     reportCompressedSize: true,
     lib: {
@@ -18,6 +17,12 @@ export default defineConfig({
     rollupOptions: {
       input: 'src/main.ts',
       preserveEntrySignatures: 'strict',
+      external: ['vue'],
+      output: {
+        globals: {
+          vue: 'Vue'
+        }
+      },
       plugins: [
         typescriptPaths({
           preserveExtensions: true
@@ -32,9 +37,11 @@ export default defineConfig({
   },
   plugins: [vue({
     reactivityTransform: true
-  })
-  ],
+  })],
   server: {
     port: 8084
+  },
+  resolve: {
+    dedupe: ['vue']
   }
 })
