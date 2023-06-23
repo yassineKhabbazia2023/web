@@ -1,0 +1,22 @@
+import { createApp, h } from 'vue'
+// eslint-disable-next-line
+// @ts-ignore
+import singleSpaVue from 'single-spa-vue'
+import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
+import styleGuide from '@kpmg/styleguide'
+import router from './plugins/router'
+import App from './App.vue'
+
+const vueLifecycles = singleSpaVue({
+  createApp,
+  appOptions: {
+    render: () => h(App)
+  },
+  handleInstance(app) {
+    app.use(router).use(i18n).use(pinia).use(styleGuide, { i18n })
+  }
+})
+
+export const bootstrap = vueLifecycles.bootstrap
+export const mount = vueLifecycles.mount
+export const unmount = vueLifecycles.unmount
