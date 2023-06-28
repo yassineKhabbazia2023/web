@@ -1,8 +1,7 @@
-import { resolve } from 'path'
 import { defaultColors, defineConfig } from 'histoire'
 import { HstVue } from '@histoire/plugin-vue'
 
-const logo = resolve(__dirname, './src/assets/images/logo.svg')
+const logo = './src/assets/images/logo.svg'
 
 export default defineConfig({
   setupFile: './src/histoire.setup.ts',
