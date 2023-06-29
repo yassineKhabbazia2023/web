@@ -51,31 +51,30 @@ extends:
           value: DEV-MyPulseV2
         - name: storageAccount
           value: stpltpulsedevew001
-      - ${{ if or(eq(parameters.path, ' '), eq(parameters.path, 'beta')) }}:
-        - name: Pre_REC
-          displayName: Recette
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          variables:
-          - name: azureSC
-            value: REC-MyPulseV2
-          - name: storageAccount
-            value: dumb
-        - name: PREPROD
-          displayName: Preproduction
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          variables:
-          - name: azureSC
-            value: PPR-MyPulseV2
-          - name: storageAccount
-            value: dumb
-        - name: PROD
-          displayName: Production
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          variables:
-          - name: azureSC
-            value: PRD-MyPulseV2
-          - name: storageAccount
-            value: dumb
+      - name: Pre_REC
+        displayName: Recette
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: REC-MyPulseV2
+        - name: storageAccount
+          value: dumb
+      - name: PREPROD
+        displayName: Preproduction
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: PPR-MyPulseV2
+        - name: storageAccount
+          value: dumb
+      - name: PROD
+        displayName: Production
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: PRD-MyPulseV2
+        - name: storageAccount
+          value: dumb
       steps:
       - type: az-blob
         name: Deploy_Mfe_Styleguide
