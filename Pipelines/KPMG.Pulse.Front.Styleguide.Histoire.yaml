@@ -14,7 +14,7 @@ resources:
 
 
 extends:
-  template: pipelines/templates/platform.front.package.yaml@Pulse
+  template: PipelineTemplate.yaml@CICD
   parameters:
     versioning:
       mode: legacy
