@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/* eslint-disable */
 import sizeOptions from '../../constants/sizeOptions'
 import { isAttribute } from '../../utils'
 import { logEvent } from 'histoire/client'

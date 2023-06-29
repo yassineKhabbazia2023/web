@@ -1,19 +1,14 @@
 import './assets/scss/element/index.scss'
 // eslint-disable-next-line
 // @ts-ignore
-import { ElButton, ElContainer, ElMain, ElHeader, ElAside, ElFooter } from 'element-plus'
+import { ElButton } from 'element-plus'
 
-export { ElButton, ElContainer, ElMain, ElHeader, ElAside, ElFooter }
+export { ElButton }
 
 // eslint-disable-next-line
 // @ts-ignore
-export function install(app: any, { i18n }: any) {
-  app.component("ElButton", ElButton)
-  app.component("ElContainer", ElContainer)
-  app.component("ElMain", ElMain)
-  app.component("ElHeader", ElHeader)
-  app.component("ElAside", ElAside)
-  app.component("ElFooter", ElFooter)
+export function install(app: any) {
+  app.component('ElButton', ElButton)
 }
 
 const plugin = {
