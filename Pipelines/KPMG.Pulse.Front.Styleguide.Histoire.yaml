@@ -34,12 +34,11 @@ extends:
         cmd: story:build
         test:
           resultPath: $(Build.SourcesDirectory)/test-report.xml
-        ${{ if eq(parameters.path, ' ') }}:
-          publishFeed:
-            feedName: Constellation/PlateformePulse
-            packageName: front-mfe-StyleGuide
-            description: |
-              MFE StyleGuide v$(GitVersion.number)
+        publishFeed:
+          feedName: Constellation/PlateformePulse
+          packageName: front-mfe-StyleGuide
+          description: |
+            MFE StyleGuide v$(GitVersion.number)
     deploy:
       parallel: true
       environments:
