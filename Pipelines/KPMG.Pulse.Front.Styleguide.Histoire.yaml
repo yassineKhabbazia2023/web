@@ -1,0 +1,87 @@
+trigger:
+  - develop
+  - release/*
+
+pool:
+  vmImage: 'windows-latest'
+
+resources:
+  repositories:
+  - repository: CICD
+    name: 'Plateforme Technologique/CICD'
+    type: git
+    ref: 'refs/heads/Release/v5.3'
+
+
+extends:
+  template: pipelines/templates/platform.front.package.yaml@Pulse
+  parameters:
+    versioning:
+      mode: legacy
+      major: 1
+    build:
+      sonarQube:
+        projectKey: MyPulseV2_FrontV2_MFE_StyleGuide
+        projectName: "(MyPulseV2)[FrontV2] MFE StyleGuide"
+      steps:
+      - type: npm
+        name: Mfe_StyleGuide
+        src: $(Build.SourcesDirectory)
+        useCi: true
+        preBuildCmd:
+        - license
+        - lint
+        cmd: story:build
+        test:
+          resultPath: $(Build.SourcesDirectory)/test-report.xml
+        ${{ if eq(parameters.path, ' ') }}:
+          publishFeed:
+            feedName: Constellation/PlateformePulse
+            packageName: front-mfe-StyleGuide
+            description: |
+              MFE StyleGuide v$(GitVersion.number)
+    deploy:
+      parallel: true
+      environments:
+      - name: DEV
+        displayName: Developpement
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: DEV-MyPulseV2
+        - name: storageAccount
+          value: stpltpulsedevew001
+      - ${{ if or(eq(parameters.path, ' '), eq(parameters.path, 'beta')) }}:
+        - name: Pre_REC
+          displayName: Recette
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          variables:
+          - name: azureSC
+            value: REC-MyPulseV2
+          - name: storageAccount
+            value: dumb
+        - name: PREPROD
+          displayName: Preproduction
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          variables:
+          - name: azureSC
+            value: PPR-MyPulseV2
+          - name: storageAccount
+            value: dumb
+        - name: PROD
+          displayName: Production
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          variables:
+          - name: azureSC
+            value: PRD-MyPulseV2
+          - name: storageAccount
+            value: dumb
+      steps:
+      - type: az-blob
+        name: Deploy_Mfe_Styleguide
+        artifact: Mfe_Styleguide
+        azureServiceConnection: $(azureSC)
+        storageAccount: $(storageAccount)
+        container: "$web"
+        targetPath: histoire
+        storageDeployment: overwrite
