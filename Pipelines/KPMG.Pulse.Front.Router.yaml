@@ -10,7 +10,7 @@ resources:
     - repository: Pulse
       name: 'Constellation/ConstellationDevOps'
       type: git
-      ref: 'refs/heads/fix/mfe'
+      ref: 'refs/tags/v1.3'
     - repository: CICD
       name: 'Plateforme Technologique/CICD'
       type: git
@@ -19,4 +19,4 @@ resources:
 extends:
   template: pipelines/templates/platform.front.mfe.yaml@Pulse
   parameters:
-    mfe: front-mfe-router
+    mfe: router
