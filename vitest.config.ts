@@ -14,7 +14,11 @@ export default mergeConfig(
       root: fileURLToPath(new URL('./', import.meta.url)),
       deps: {
         inline: ['element-plus']
-      }
+      },
+      coverage: {
+        provider: 'istanbul', // or 'v8'
+        reporter: ['text', 'cobertura', 'lcov']
+      },
     }
   })
 )
