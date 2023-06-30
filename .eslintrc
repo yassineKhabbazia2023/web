@@ -1,3 +1,6 @@
 {
-    "extends": ["@kpmg/eslint-config-pulse"]
+  "extends": ["@kpmg/eslint-config-pulse"],
+  "env": {
+    "jest": true
+  }
 }

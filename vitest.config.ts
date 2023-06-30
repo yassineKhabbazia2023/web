@@ -18,7 +18,7 @@ export default mergeConfig(
       coverage: {
         provider: 'istanbul', // or 'v8'
         reporter: ['text', 'cobertura', 'lcov']
-      },
+      }
     }
   })
 )
