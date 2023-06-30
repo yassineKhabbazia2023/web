@@ -5,6 +5,7 @@ import { logEvent } from 'histoire/client'
 import { Search } from '@element-plus/icons-vue'
 import { typeOptions } from '../../constants/typeOptions'
 import { reactive, computed, shallowRef } from 'vue'
+import PButton from './PButton.vue'
 
 // Basic-Button
 const basicButtonData = reactive({
@@ -21,7 +22,7 @@ const basicButtonData = reactive({
 })
 
 const basicSource = computed(() => {
-  return `<el-button${isAttribute(
+  return `<PButton${isAttribute(
     basicButtonData.type !== '',
     `type="${basicButtonData.type}"`
   )}${isAttribute(
@@ -46,7 +47,7 @@ const basicSource = computed(() => {
   @click="console.log('Button is clicked')"
 >
   ${basicButtonData.text}
-</el-button>`
+</PButton>`
 })
 
 // Icon Button
@@ -65,9 +66,9 @@ const iconButtonData = reactive({
 const iconSource = computed(() => {
   return `<script setup lang="ts">
 import { ${iconButtonData.icon.name} } from '@element-plus/icons-vue'
-<\/script>
+<&#47;script>
 
-<el-button
+<PButton
   :icon="${iconButtonData.icon.name}"${isAttribute(
     iconButtonData.type !== '',
     `type="${iconButtonData.type}"`
@@ -89,7 +90,7 @@ import { ${iconButtonData.icon.name} } from '@element-plus/icons-vue'
   )}
   @click="console.log('Button is clicked')"
 >${isAttribute(Boolean(iconButtonData.text), iconButtonData.text)}
-</el-button>
+</PButton>
 `
 })
 
@@ -102,7 +103,7 @@ const colorButtonData = reactive({
 })
 
 const ColorSource = computed(() => {
-  return `<el-button${isAttribute(
+  return `<PButton${isAttribute(
     true,
     `color="${colorButtonData.color}"`
   )}${isAttribute(
@@ -115,7 +116,7 @@ const ColorSource = computed(() => {
   @click="console.log('Button is clicked')"
 >
   ${colorButtonData.text}
-</el-button>`
+</PButton>`
 })
 
 // Button Group
@@ -135,16 +136,19 @@ const buttonGroupSource = computed(() => {
     `size="${buttonGroupData.size}"`
   )}
 >
-  <el-button>Previous Page</el-button>
-  <el-button>Next Page</el-button>
+  <PButton>Previous Page</PButton>
+  <PButton>Next Page</PButton>
 </el-button-group>`
 })
+
+const previousText = 'Previous Page'
+const nextText = 'Next Page'
 </script>
 
 <template>
   <Story title="Basic/Button" icon="teenyicons:button-outline">
     <Variant title="Basic Usage" :source="basicSource">
-      <el-button
+      <PButton
         :type="basicButtonData.type"
         :size="basicButtonData.size"
         :plain="basicButtonData.plain"
@@ -154,7 +158,7 @@ const buttonGroupSource = computed(() => {
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
         {{ basicButtonData.text }}
-      </el-button>
+      </PButton>
       <template #controls>
         <HstText v-model="basicButtonData.text" title="Text" />
         <HstCheckbox v-model="basicButtonData.plain" title="Plain" />
@@ -178,7 +182,7 @@ const buttonGroupSource = computed(() => {
       title="Icon Button"
       :source="iconSource"
       icon="line-md:iconify2">
-      <el-button
+      <PButton
         :icon="iconButtonData.icon"
         :type="iconButtonData.type"
         :size="iconButtonData.size"
@@ -191,7 +195,7 @@ const buttonGroupSource = computed(() => {
         <template v-if="iconButtonData.text" #default>
           {{ iconButtonData.text }}
         </template>
-      </el-button>
+      </PButton>
       <template #controls>
         <HstText v-model="iconButtonData.text" title="Text" />
         <HstCheckbox v-model="iconButtonData.plain" title="Plain" />
@@ -216,14 +220,14 @@ const buttonGroupSource = computed(() => {
       icon="ic:outline-color-lens"
       :source="ColorSource"
     >
-      <el-button
+      <PButton
         :plain="colorButtonData.plain"
         :disabled="colorButtonData.disabled"
         :color="colorButtonData.color"
         @click="logEvent('click', $event)"
       >
         {{ colorButtonData.text }}
-      </el-button>
+      </PButton>
       <template #controls>
         <HstText v-model="colorButtonData.text" title="Text" />
         <HstColor v-model="colorButtonData.color" title="Color" />
@@ -241,12 +245,12 @@ const buttonGroupSource = computed(() => {
         :size="buttonGroupData.size"
         :type="buttonGroupData.type"
       >
-        <el-button>
-          Previous Page
-        </el-button>
-        <el-button>
-          Next Page
-        </el-button>
+        <PButton>
+          {{ previousText }}
+        </PButton>
+        <PButton>
+          {{  nextText }}
+        </PButton>
       </el-button-group>
       <template #controls>
         <HstRadio

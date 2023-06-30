@@ -1,0 +1,9 @@
+// css3 var in packages/theme-chalk/src/form.scss
+$form: () !default;
+$form: map.merge(
+  (
+    'label-font-size': getCssVar('font-size-base'),
+    'inline-content-width': 220px,
+  ),
+  $form
+);

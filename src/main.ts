@@ -1,23 +1,22 @@
-import './assets/scss/element/index.scss'
-// eslint-disable-next-line
-// @ts-ignore
-import { ElButton, ElContainer, ElMain, ElHeader, ElAside, ElFooter } from 'element-plus'
+// base UI library
+import 'element-plus/dist/index.css'
+import ElementPlus from 'element-plus'
 
-export { ElButton, ElContainer, ElMain, ElHeader, ElAside, ElFooter }
+// locales
+import fr from 'element-plus/es/locale/lang/fr'
+import en from 'element-plus/es/locale/lang/en'
 
-// eslint-disable-next-line
-// @ts-ignore
+import './assets/scss/index.scss'
+
+import PButton from './atoms/PButton'
+
 export function install(app: any, { i18n }: any) {
-  app.component("ElButton", ElButton)
-  app.component("ElContainer", ElContainer)
-  app.component("ElMain", ElMain)
-  app.component("ElHeader", ElHeader)
-  app.component("ElAside", ElAside)
-  app.component("ElFooter", ElFooter)
+  app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
+  app.component('PButton', PButton)
 }
 
 const plugin = {
-  version: '1.0.0-alpha.7',
+  version: '1.0.0-alpha.9',
   install
 }
 

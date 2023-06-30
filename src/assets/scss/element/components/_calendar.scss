@@ -1,0 +1,15 @@
+// css3 var in packages/theme-chalk/src/calendar.scss
+$calendar: () !default;
+$calendar: map.merge(
+  (
+    'border':
+      var(
+        #{getCssVarName('table-border')},
+        1px solid #{getCssVar('border-color-lighter')}
+      ),
+    'header-border-bottom': getCssVar('calendar-border'),
+    'selected-bg-color': getCssVar('color', 'primary', 'light-9'),
+    'cell-width': 85px,
+  ),
+  $calendar
+);

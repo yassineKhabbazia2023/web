@@ -22,6 +22,22 @@ export const typeOptions = [
   {
     label: 'info',
     value: 'info'
+  },
+  {
+    label: 'primary-persian',
+    value: 'primary-persian'
+  },
+  {
+    label: 'secondary-fushia',
+    value: 'secondary-fushia'
+  },
+  {
+    label: 'secondary-amethyste',
+    value: 'secondary-amethyste'
+  },
+  {
+    label: 'secondary-cyan',
+    value: 'secondary-cyan'
   }
 ] as const
 

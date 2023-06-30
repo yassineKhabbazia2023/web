@@ -1,0 +1,8 @@
+$border-color-hover: getCssVar('text-color', 'disabled') !default;
+
+$border-radius: (
+  'base': 8px,
+  'small': 4px,
+  'round': 20px,
+  'circle': 100%,
+);

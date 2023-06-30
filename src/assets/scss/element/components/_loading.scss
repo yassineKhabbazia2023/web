@@ -1,0 +1,9 @@
+// css3 var in packages/theme-chalk/src/loading.scss
+$loading: () !default;
+$loading: map.merge(
+  (
+    'spinner-size': 42px,
+    'fullscreen-spinner-size': 50px,
+  ),
+  $loading
+);

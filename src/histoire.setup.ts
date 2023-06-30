@@ -1,7 +1,7 @@
 import './assets/scss/histoire.scss'
 
 import ElementPlus from 'element-plus'
-import './assets/scss/element/index.scss'
+import './assets/scss/index.scss'
 
 import { defineSetupVue3 } from '@histoire/plugin-vue'
 

@@ -1,0 +1,10 @@
+// css3 var in packages/theme-chalk/src/timeline-item.scss
+$timeline: () !default;
+$timeline: map.merge(
+  (
+    'node-size-normal': 12px,
+    'node-size-large': 14px,
+    'node-color': getCssVar('border-color-light'),
+  ),
+  $timeline
+);

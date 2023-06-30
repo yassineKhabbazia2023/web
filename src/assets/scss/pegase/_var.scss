@@ -1,0 +1,20 @@
+@use './colors.scss' as pulse-colors;
+@use './button.scss';
+@use './text.scss' as pulse-text;
+@use 'element-plus/theme-chalk/src/mixins/_var.scss' as *;
+
+:root {
+  @each $type, $value in (pulse-colors.$colors) {
+    @each $variant, $hexCode in $value {
+      @include pulse-colors.set-css-color-rgb-pulse($type, $variant);
+    }
+  }
+
+  @each $type, $value in (pulse-colors.$colors) {
+    @each $variant, $hexCode in $value {
+      @include pulse-colors.set-css-color-type-pulse($type, $variant);
+    }
+  }
+
+  @include set-component-css-var('text-color', pulse-text.$text-color);
+}

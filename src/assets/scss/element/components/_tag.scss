@@ -1,0 +1,40 @@
+// css3 var in packages/theme-chalk/src/tag.scss
+$tag: () !default;
+$tag: map.merge(
+  (
+    'font-size': 12px,
+    'border-radius': 4px,
+    'border-radius-rounded': 50%,
+  ),
+  $tag
+);
+
+$tag-height: () !default;
+$tag-height: map.merge(
+  (
+    'large': 32px,
+    'default': 24px,
+    'small': 20px,
+  ),
+  $tag-height
+);
+
+$tag-padding: () !default;
+$tag-padding: map.merge(
+  (
+    'large': 12px,
+    'default': 10px,
+    'small': 8px,
+  ),
+  $tag-padding
+);
+
+$tag-icon-size: () !default;
+$tag-icon-size: map.merge(
+  (
+    'large': 16px,
+    'default': 14px,
+    'small': 12px,
+  ),
+  $tag-icon-size
+);

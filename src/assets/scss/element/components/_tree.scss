@@ -1,0 +1,10 @@
+// css3 var in packages/theme-chalk/src/tree.scss
+$tree: () !default;
+$tree: map.merge(
+  (
+    'node-hover-bg-color': getCssVar('fill-color', 'light'),
+    'text-color': getCssVar('text-color-regular'),
+    'expand-icon-color': getCssVar('text-color-placeholder'),
+  ),
+  $tree
+);
