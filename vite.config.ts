@@ -37,7 +37,7 @@ export default defineConfig({
           preserveExtensions: true
         }),
         typescript({
-          sourceMap: false,
+          sourceMap: false
         })
       ]
     }
