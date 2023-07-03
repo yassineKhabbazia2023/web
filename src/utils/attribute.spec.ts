@@ -1,4 +1,5 @@
-import { isAttribute } from '../../src/utils/attribute'
+import { isAttribute } from './attribute'
+import { describe, it, expect } from 'vitest'
 
 describe('styleguide attribute', () => {
   const expectedAttributes = [

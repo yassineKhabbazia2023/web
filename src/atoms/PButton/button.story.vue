@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/* eslint-disable */
+/* eslint-disable-next-line */
 import sizeOptions from '../../constants/sizeOptions'
 import { isAttribute } from '../../utils'
 import { logEvent } from 'histoire/client'
