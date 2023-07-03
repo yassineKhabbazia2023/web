@@ -1,0 +1,26 @@
+// css3 var in packages/theme-chalk/src/notification.scss
+$notification: () !default;
+$notification: map.merge(
+  (
+    'width': 330px,
+    'padding': 14px 26px 14px 13px,
+    'radius': 8px,
+    'shadow': getCssVar('box-shadow-light'),
+    'border-color': getCssVar('border-color-lighter'),
+    'icon-size': 24px,
+    'close-font-size':
+      var(
+        #{getCssVarName('message-close-size')},
+        map.get($message, 'close-size')
+      ),
+    'group-margin-left': 13px,
+    'group-margin-right': 8px,
+    'content-font-size': getCssVar('font-size-base'),
+    'content-color': getCssVar('text-color-regular'),
+    'title-font-size': 16px,
+    'title-color': getCssVar('text-color-primary'),
+    'close-color': getCssVar('text-color-secondary'),
+    'close-hover-color': getCssVar('text-color-regular'),
+  ),
+  $notification
+);

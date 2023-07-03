@@ -6,6 +6,15 @@ import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': `${path.resolve(__dirname, 'src')}/`,
+      '@components': `${path.resolve(__dirname, 'src/components')}/`,
+      '@constants': `${path.resolve(__dirname, 'src/constants')}/`,
+      '@utils': `${path.resolve(__dirname, 'src/utils')}/`
+    },
+    dedupe: ['vue']
+  },
   build: {
     minify: true,
     reportCompressedSize: true,
@@ -33,13 +42,13 @@ export default defineConfig({
       ]
     }
   },
+  output: {
+    assetFileNames: 'styleguide.pegase.[name][extname]'
+  },
   plugins: [vue({
     reactivityTransform: true
   })],
   server: {
     port: 8084
-  },
-  resolve: {
-    dedupe: ['vue']
   }
 })

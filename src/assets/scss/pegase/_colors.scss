@@ -1,0 +1,96 @@
+@use 'sass:map';
+@use 'sass:list';
+@use 'element-plus/theme-chalk/src/mixins/_var.scss' as *;
+@use './common-vars' as *;
+
+$colors: (
+  'base': (
+    'blue-kpmg': #00338D,
+    'persian': $primary-color,
+    'persian-light': #F0F3FF,
+    'white': #FFFFFF,
+  ),
+  'secondary': (
+    'fushia': #BE4BC8,
+    'fushia-txt': #7D2781,
+    'fushia-bg': #F9EBFC,
+    'amethyste': #8241FF,
+    'amethyste-txt': #5F18BF,
+    'amethyste-bg': #EDE8FF,
+    'cyan': #50AFFF,
+    'cyan-txt': #194DB4,
+    'cyan-bg': #DAEEFF,
+  ),
+  'neutral': (
+    'gray-50': #F5F5F5,
+    'gray-100': #DBDBDB,
+    'gray-200': #A4A4A4,
+    'gray-500': #666666,
+    'gray-700': #434343,
+    'gray-900': #171717,
+  ),
+  'functionnal': (
+    'red': #FF0000,
+    'red-txt': #B10303,
+    'red-bg': #FFDDDD,
+    'orange': #FFA500,
+    'orange-txt': #BB5502,
+    'orange-bg': #FFFCEA,
+    'yellow': #FFD600,
+    'yellow-txt': #D19D00,
+    'yellow-bg': #FFFD86,
+    'green': #00B800,
+    'green-txt': #0A710B,
+    'green-bg': #D8FFD7,
+    'teal': #00CFDE,
+    'teal-txt': #126778,
+    'teal-bg': #CEFFFF,
+  ),
+);
+
+$typePulse: ();
+@each $type, $content in $colors {
+  @each $variant, $hexCode in $content {
+    $name: #{$type}-#{$variant};
+    $typePulse: append($typePulse, $name);
+  }
+}
+
+@mixin set-css-color-rgb-pulse($type, $variant) {
+  $color: map.get($colors, $type, $variant);
+  @if $color != null {
+    @if $variant  == base {
+      @include set-css-var-value(
+      ('color', $type, 'rgb'),
+      #{red($color),
+        green($color),
+        blue($color)}
+    );
+    }
+    @else {
+      @include set-css-var-value(
+        ('color', $type, $variant, 'rgb'),
+        #{red($color),
+          green($color),
+          blue($color)}
+      );
+    }
+  }
+}
+
+@mixin set-css-color-type-pulse($type, $variant) {
+  $color: map.get($colors, $type, $variant);
+  @if $color != null {
+    @if $variant  == base {
+      @include set-css-var-value(
+      ('color', $type),
+      $color
+    );
+    }
+    @else {
+      @include set-css-var-value(
+        ('color', $type, $variant),
+        $color);
+    }
+  }
+}

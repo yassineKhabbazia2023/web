@@ -1,5 +1,8 @@
 {
   "extends": ["@kpmg/eslint-config-pulse"],
+  "rules": {
+    "@intlify/vue-i18n/no-raw-text": "off"
+  },
   "env": {
     "jest": true
   }

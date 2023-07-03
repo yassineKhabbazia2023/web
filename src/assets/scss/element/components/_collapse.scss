@@ -1,0 +1,15 @@
+// css3 var in packages/theme-chalk/src/collapse.scss
+$collapse: () !default;
+$collapse: map.merge(
+  (
+    'border-color': getCssVar('border-color-lighter'),
+    'header-height': 48px,
+    'header-bg-color': getCssVar('fill-color', 'blank'),
+    'header-text-color': getCssVar('text-color-primary'),
+    'header-font-size': 13px,
+    'content-bg-color': getCssVar('fill-color', 'blank'),
+    'content-font-size': 13px,
+    'content-text-color': getCssVar('text-color-primary'),
+  ),
+  $collapse
+);

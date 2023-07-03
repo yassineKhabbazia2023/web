@@ -30,13 +30,14 @@
     "release": "npx semantic-release"
   },
   "dependencies": {
+    "@vueuse/core": "^10.2.0",
     "element-plus": "^2.3.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@histoire/plugin-vue": "^0.16.1",
-    "@kpmg/eslint-config-pulse": "^1.51.47",
+    "@kpmg/eslint-config-pulse": "^1.53.3",
     "@rollup/plugin-typescript": "^11.1.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",

@@ -1,0 +1,9 @@
+// css3 var in packages/theme-chalk/src/switch.scss
+$switch: () !default;
+$switch: map.merge(
+  (
+    'on-color': getCssVar('color-primary'),
+    'off-color': getCssVar('border-color'),
+  ),
+  $switch
+);

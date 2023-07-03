@@ -1,0 +1,7 @@
+$main: () !default;
+$main: map.merge(
+  (
+    'padding': 20px,
+  ),
+  $main
+);
