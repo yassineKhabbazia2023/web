@@ -1,6 +1,6 @@
 {
-    "extends": ["@kpmg/eslint-config-pulse"], 
-    "rules": {
-        "@intlify/vue-i18n/no-raw-text": "off"
-    }
+  "extends": ["@kpmg/eslint-config-pulse"],
+  "rules": {
+    "@intlify/vue-i18n/no-raw-text": "off"
+  }
 }

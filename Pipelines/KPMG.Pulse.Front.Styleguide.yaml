@@ -1,0 +1,25 @@
+# This YAML configuration installs Node.js, installs project dependencies, builds the project, and then executes the semantic-release command.
+
+trigger:
+  - develop
+  - release/*
+
+pool:
+  vmImage: 'windows-latest'
+
+resources:
+  repositories:
+  - repository: Pulse
+    name: 'Constellation/ConstellationDevOps'
+    type: git
+    ref: 'refs/tags/v1.3'
+  - repository: CICD
+    name: 'Plateforme Technologique/CICD'
+    type: git
+    ref: 'refs/heads/Release/v5.3'
+
+
+extends:
+  template: pipelines/templates/platform.front.package.yaml@Pulse
+  parameters:
+    packageName: Styleguide
