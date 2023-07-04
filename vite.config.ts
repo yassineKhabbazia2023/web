@@ -37,9 +37,7 @@ export default defineConfig({
           preserveExtensions: true
         }),
         typescript({
-          sourceMap: false,
-          declaration: true,
-          outDir: 'dist'
+          sourceMap: false
         })
       ]
     }

@@ -6,6 +6,7 @@ const logo = './src/assets/images/logo.svg'
 export default defineConfig({
   setupFile: './src/histoire.setup.ts',
   plugins: [HstVue()],
+  outDir: './dist',
   theme: {
     colors: {
       gray: {
