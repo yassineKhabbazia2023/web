@@ -7,7 +7,7 @@ Before you try to install anything, make sure your root .npmrc file (not the one
 Otherwise, check [this](https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm).
 
 Then make sure you're using the same node version as the one specified in the "engine" section of the package.json.\
-To make things easier, you can use [NVM](https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm) to manages multiple node versions.
+To make things easier, you can use [NVM](https://github.com/coreybutler/nvm-windows) to manages multiple node versions.
 
 Then, you just have to do
 ```bash
