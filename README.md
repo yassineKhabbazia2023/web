@@ -1,15 +1,32 @@
 # Introduction 
-L'objectif est d'avoir un style commun cross MFE, via la création de ce package npm pour le styleguide V2 (Pégase)
+This Styleguide (Pégase) is meant to handle all the styles and nearly all the components of our apps (MFEs).\
+It is then distributed as a NPM package. 
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Before you try to install anything, make sure your root .npmrc file (not the one in this repository) is configured as we're using a private NPM repository.\
+Otherwise, check [this](https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm).
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+Then make sure you're using the same node version as the one specified in the "engine" section of the package.json.\
+To make things easier, you can use [NVM](https://github.com/coreybutler/nvm-windows) to manage multiple node versions.
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Then, you just have to do
+```bash
+  npm i
+```
+
+Then start the project
+```bash
+  npm run dev
+```
+
+If you tried to install the dependencies before configuring your NPM authentication you might get a 401 error.\
+If that's the case just try to delete your package.lock file and the redo
+```bash
+  npm i
+```
+
+# Tests
+To run all the unit tests, you just have to run
+```bash
+  npm test
+```
