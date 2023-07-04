@@ -52,10 +52,10 @@ export default ({ mode }) =>
         }
       },
       server: {
-        port: 8082
+        port: 8081
       },
       preview: {
-        port: 8082
+        port: 8081
       }
     })
   )

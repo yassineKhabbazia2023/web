@@ -1,6 +1,4 @@
 import { createApp, h } from 'vue'
-// eslint-disable-next-line
-// @ts-ignore
 import singleSpaVue from 'single-spa-vue'
 import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
 import styleGuide from '@kpmg/styleguide'

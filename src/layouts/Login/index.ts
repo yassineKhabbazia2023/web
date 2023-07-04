@@ -1,1 +1,1 @@
-export { default } from './LoginLayout.vue'
+export { default } from './Login.vue'
