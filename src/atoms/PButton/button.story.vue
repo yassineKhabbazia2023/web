@@ -40,7 +40,7 @@ const basicSource = computed(() => {
     'circle'
   )}${isAttribute(
     basicButtonData.loading,
-     'loading'
+    'loading'
   )}${isAttribute(
     basicButtonData.disabled,
     'disabled'
@@ -84,7 +84,7 @@ import { ${iconButtonData.icon.name} } from '@element-plus/icons-vue'
     'circle'
   )}${isAttribute(
     iconButtonData.loading,
-     'loading'
+    'loading'
   )}${isAttribute(
     iconButtonData.disabled,
     'disabled'
@@ -167,16 +167,31 @@ const nextText = 'Next Page'
         <HstCheckbox v-model="basicButtonData.disabled" title="Disabled" />
         <HstCheckbox v-model="basicButtonData.loading" title="Loading" />
 
-        <HstRadio
-          v-model="basicButtonData.type"
-          title="Type"
-          :options="basicButtonData.typeOptions"
-        />
-        <HstRadio
-          v-model="basicButtonData.size"
-          title="Size"
-          :options="basicButtonData.sizeOptions"
-        />
+      <HstRadio
+v-model="basicButtonData.type"
+title="Type"
+:options="basicButtonData.typeOptions" />
+      <HstRadio
+v-model="basicButtonData.size"
+title="Size"
+:options="basicButtonData.sizeOptions" />
+    </template>
+  </Variant>
+  <Variant
+title="Icon Button"
+:source="iconSource"
+icon="line-md:iconify2">
+    <el-button
+:icon="iconButtonData.icon"
+:type="iconButtonData.type"
+:size="iconButtonData.size"
+      :plain="iconButtonData.plain"
+:circle="iconButtonData.circle"
+:disabled="iconButtonData.disabled"
+      :loading="iconButtonData.loading"
+@click="logEvent('click', { log: 'Button is clicked' })">
+      <template v-if="iconButtonData.text" #default>
+        {{ iconButtonData.text }}
       </template>
     </Variant>
     <Variant
