@@ -175,23 +175,6 @@ title="Type"
 v-model="basicButtonData.size"
 title="Size"
 :options="basicButtonData.sizeOptions" />
-    </template>
-  </Variant>
-  <Variant
-title="Icon Button"
-:source="iconSource"
-icon="line-md:iconify2">
-    <el-button
-:icon="iconButtonData.icon"
-:type="iconButtonData.type"
-:size="iconButtonData.size"
-      :plain="iconButtonData.plain"
-:circle="iconButtonData.circle"
-:disabled="iconButtonData.disabled"
-      :loading="iconButtonData.loading"
-@click="logEvent('click', { log: 'Button is clicked' })">
-      <template v-if="iconButtonData.text" #default>
-        {{ iconButtonData.text }}
       </template>
     </Variant>
     <Variant

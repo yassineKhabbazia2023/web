@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.2.0",
-    "element-plus": "^2.3.5"
+    "element-plus": "^2.3.5",
+    "lint-staged": "^13.2.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
@@ -60,7 +61,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
+      "pre-commit": "npx lint-staged",
       "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS && if [ $? -eq 1 ]; then git log -1 --pretty=format:'%B' | grep -qE '^.{0,100}$' || exit 0; else exit 0; fi"
     }
   }
