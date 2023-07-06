@@ -12,7 +12,7 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/tags/v1.3'
+    ref: 'refs/heads/develop'
   - repository: CICD
     name: 'Plateforme Technologique/CICD'
     type: git
