@@ -1,54 +1,3 @@
-<script lang="ts" setup>
-import { getCssVarName, getCssVarValue } from '@utils'
-
-const backgroundTypes = ['page', '', 'overlay']
-const backgroundColors = backgroundTypes.map((type) => {
-  return {
-    name: type
-      ? `${type[0].toUpperCase() + type.slice(1)} Background`
-      : 'Base Background',
-    var: getCssVarValue(getCssVarName('bg-color', type))
-  }
-})
-
-const borderTypes = ['darker', 'dark', '', 'light', 'lighter', 'extra-light']
-const borderColors = borderTypes.map((type) => {
-  return {
-    name: type
-      ? `${type[0].toUpperCase() + type.slice(1)} Border`
-      : 'Base Border',
-    var: getCssVarValue(getCssVarName('border-color', type))
-  }
-})
-
-const fillTypes = [
-  'darker',
-  'dark',
-  '',
-  'light',
-  'lighter',
-  'extra-light',
-  'blank'
-]
-const fillColors = fillTypes.map((type) => {
-  return {
-    name: type ? `${type[0].toUpperCase() + type.slice(1)} Fill` : 'Base Fill',
-    var: getCssVarValue(getCssVarName('fill-color', type))
-  }
-})
-
-const textTypes = ['primary', 'regular', 'secondary', 'placeholder', 'disabled']
-const textColors = textTypes.map((type) => {
-  return {
-    name: `${type[0].toUpperCase() + type.slice(1)} Text`,
-    var: getCssVarValue(getCssVarName('text-color', type))
-  }
-})
-
-const black = '#000000'
-const white = '#FFFFFF'
-</script>
-
 <template>
   <el-row :gutter="12">
     <el-col :span="6" :xs="{ span: 12 }">
@@ -164,3 +113,54 @@ const white = '#FFFFFF'
     </el-col>
   </el-row>
 </template>
+
+<script lang="ts" setup>
+import { getCssVarName, getCssVarValue } from '@utils'
+
+const backgroundTypes = ['page', '', 'overlay']
+const backgroundColors = backgroundTypes.map((type) => {
+  return {
+    name: type
+      ? `${type[0].toUpperCase() + type.slice(1)} Background`
+      : 'Base Background',
+    var: getCssVarValue(getCssVarName('bg-color', type))
+  }
+})
+
+const borderTypes = ['darker', 'dark', '', 'light', 'lighter', 'extra-light']
+const borderColors = borderTypes.map((type) => {
+  return {
+    name: type
+      ? `${type[0].toUpperCase() + type.slice(1)} Border`
+      : 'Base Border',
+    var: getCssVarValue(getCssVarName('border-color', type))
+  }
+})
+
+const fillTypes = [
+  'darker',
+  'dark',
+  '',
+  'light',
+  'lighter',
+  'extra-light',
+  'blank'
+]
+const fillColors = fillTypes.map((type) => {
+  return {
+    name: type ? `${type[0].toUpperCase() + type.slice(1)} Fill` : 'Base Fill',
+    var: getCssVarValue(getCssVarName('fill-color', type))
+  }
+})
+
+const textTypes = ['primary', 'regular', 'secondary', 'placeholder', 'disabled']
+const textColors = textTypes.map((type) => {
+  return {
+    name: `${type[0].toUpperCase() + type.slice(1)} Text`,
+    var: getCssVarValue(getCssVarName('text-color', type))
+  }
+})
+
+const black = '#000000'
+const white = '#FFFFFF'
+</script>

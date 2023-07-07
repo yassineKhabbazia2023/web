@@ -4,5 +4,6 @@ import { ElButton } from 'element-plus'
 
 <template>
   <el-button v-bind="$attrs">
+    <slot />
   </el-button>
 </template>

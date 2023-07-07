@@ -1,4 +1,4 @@
-## Layout 
+## Spacing 
 <div class="container">
     <p><strong>L'espacement apporte du rythme et de la fluidité à l'interface.</strong>
 Nos tokens d'espacement sont basés sur la règle de 4, avec 16px comme unité de base.

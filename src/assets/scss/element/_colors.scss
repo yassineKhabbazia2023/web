@@ -5,19 +5,19 @@ $colors: (
     'base': $primary-color,
   ),
   'success': (
-    'base': #00B800,
+    'base': $green,
   ),
   'warning': (
-    'base': #FFA500,
+    'base': $orange,
   ),
   'danger': (
-    'base': #FF0000,
+    'base': $red,
   ),
   'error': (
-    'base': #FF0000,
+    'base': $red,
   ),
   'info': (
-    'base': #00CFDE,
+    'base': $teal,
   ),
 );
 

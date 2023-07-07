@@ -1,7 +1,15 @@
-$main: () !default;
-$main: map.merge(
-  (
-    'padding': 20px,
-  ),
-  $main
+:root {
+  --main-padding: 16px;
+
+  @include res(lg) {
+    --main-padding: 24px;
+  }
+
+  @include res(lg) {
+    --main-padding: 32px;
+  }
+}
+
+$main: (
+  'padding': var(--main-padding),
 );
