@@ -1,8 +1,10 @@
-// Pay attention to the difference between 'popper' and 'popover'
-$popper: () !default;
-$popper: map.merge(
-  (
-    'border-radius': var(#{getCssVarName('popover-border-radius')}, 4px),
-  ),
-  $popper
-);
+.el-popper {
+  &.is-dark {
+    border: 1px solid var(--el-color-neutral-gray-700);
+    background: var(--el-color-neutral-gray-500);
+
+    .el-popper__arrow::before {
+      background: var(--el-color-neutral-gray-500);
+    }
+  }
+}

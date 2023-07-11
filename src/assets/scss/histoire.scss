@@ -59,7 +59,22 @@ html  {
 #app [data-test-id="search-modal"] [data-test-id="search-item"] a.active {
   color: #fff;
 }
-
+  
+  #app .container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%;
+  }
+  #app .responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
 
 ::-webkit-scrollbar {
   width: 4px;
