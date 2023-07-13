@@ -15,7 +15,14 @@ export default ({ mode }) =>
       plugins: [
         eslint(),
         visualizer(),
-        vue(),
+        vue({
+          template: {
+            compilerOptions: {
+              isCustomElement: (tag) =>
+                ['el-main', 'el-container', 'el-aside', 'el-header'].includes(tag)
+            }
+          }
+        }),
         VueI18nPlugin({
           include: [path.resolve(__dirname, './src/**/locales/**')]
         }),
