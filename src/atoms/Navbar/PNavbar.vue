@@ -46,7 +46,6 @@
     activeTextColor="var(--el-color-white)"
     :textColor="backgroundColor.includes('white') ? 'black' : 'white'"
     class="el-menu-horizontal-demo hidden-md-and-up"
-    :router="userRouter"
   >
     <el-menu-item
       v-for="(item, index) in entities"
@@ -61,7 +60,7 @@
     </el-menu-item>
     <el-menu-item
       class="icon-collapse"
-      :route="'/entity'"
+      @click="handleClickPortefeuille"
     >
       <el-icon><icon-menu /></el-icon>
     </el-menu-item>
