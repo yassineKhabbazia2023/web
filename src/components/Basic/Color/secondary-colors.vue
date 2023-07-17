@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getColorValue, useCopyColor } from '@utils'
+import { getColorValue, useCopyColor } from '../../../utils'
 
 const colorsType = ['success', 'warning', 'danger', 'info']
 

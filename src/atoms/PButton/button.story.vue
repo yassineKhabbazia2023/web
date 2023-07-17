@@ -3,9 +3,8 @@
 import sizeOptions from '../../constants/sizeOptions'
 import { isAttribute } from '../../utils'
 import { logEvent } from 'histoire/client'
-import { Search } from '@element-plus/icons-vue'
 import { typeOptions } from '../../constants/typeOptions'
-import { reactive, computed, shallowRef } from 'vue'
+import { reactive, computed } from 'vue'
 import PButton from './PButton.vue'
 
 // Basic-Button
@@ -53,7 +52,6 @@ const basicSource = computed(() => {
 
 // Icon Button
 const iconButtonData = reactive({
-  icon: shallowRef(Search),
   text: '',
   type: '',
   typeOptions,
@@ -66,11 +64,10 @@ const iconButtonData = reactive({
 })
 const iconSource = computed(() => {
   return `<script setup lang="ts">
-import { ${iconButtonData.icon.name} } from '@element-plus/icons-vue'
-<&#47;script>
+<script>
 
 <PButton
-  :icon="${iconButtonData.icon.name}"${isAttribute(
+  ${isAttribute(
     iconButtonData.type !== '',
     `type="${iconButtonData.type}"`
   )}${isAttribute(
@@ -90,7 +87,11 @@ import { ${iconButtonData.icon.name} } from '@element-plus/icons-vue'
     'disabled'
   )}
   @click="console.log('Button is clicked')"
->${isAttribute(Boolean(iconButtonData.text), iconButtonData.text)}
+>
+<PIcon>
+  <PIAdd/>
+</PIcon>
+${isAttribute(Boolean(iconButtonData.text), iconButtonData.text)}
 </PButton>
 `
 })
@@ -182,7 +183,6 @@ title="Size"
       :source="iconSource"
       icon="line-md:iconify2">
       <PButton
-        :icon="iconButtonData.icon"
         :type="iconButtonData.type"
         :size="iconButtonData.size"
         :plain="iconButtonData.plain"
@@ -191,6 +191,7 @@ title="Size"
         :loading="iconButtonData.loading"
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
+        <PIcon><PISearch /></PIcon>
         <template v-if="iconButtonData.text" #default>
           {{ iconButtonData.text }}
         </template>

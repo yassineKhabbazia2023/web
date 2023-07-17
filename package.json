@@ -1,7 +1,9 @@
 {
   "name": "@kpmg/styleguide",
   "version": "1.0.0-alpha.9",
-  "main": "dist/styleguide.pegase.es.min.js",
+  "main": "dist/lib/styleguide.pegase.umd.min.js",
+  "module": "dist/lib/styleguide.pegase.es.min.js",
+  "types": "./dist/types/src/main.d.ts",
   "license": "ISC",
   "files": [
     "dist",
@@ -15,8 +17,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "prepare": "husky install",
+    "build": "npm run build:vite && npm run build:types",
+    "build:types": "vue-tsc --declaration --emitDeclarationOnly",
+    "build:vite": "vite build",
+    "prepare": "husky install && npm run generate",
+    "predev": "npm run generate",
+    "prebuild": "npm run generate",
+    "prestory:dev": "npm run generate",
+    "prestory:build": "npm run generate",
     "preview": "vite preview",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
@@ -27,7 +35,9 @@
     "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Custom: https://mypulse.zeroheight.com/; UNKNOWN\" --production --excludePrivatePackages --unknown ",
     "format": "prettier --write src/",
     "push": "npm publish",
-    "release": "npx semantic-release"
+    "release": "npx semantic-release",
+    "generate": "npm run generate:icons",
+    "generate:icons": "node ./scripts/pulse-icon-gen.js ./src/assets/icons ./src/atoms/PIcon/components"
   },
   "dependencies": {
     "@vueuse/core": "^10.2.0",
@@ -54,10 +64,13 @@
     "sass": "^1.62.1",
     "semantic-release": "^21.0.2",
     "semantic-release-ado": "^1.4.0",
+    "unplugin-auto-import": "^0.16.6",
     "unplugin-element-plus": "^0.7.1",
+    "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",
     "vitest": "^0.32.2",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vue-tsc": "^1.8.4"
   },
   "husky": {
     "hooks": {
