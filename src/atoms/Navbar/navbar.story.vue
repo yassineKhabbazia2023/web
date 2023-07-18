@@ -9,6 +9,7 @@
           class="aside"
           :entities="basicNavData.entities"
           :backgroundColor="basicNavData.backgroundColor"
+          :handleClickEntity="handleClickEntity"
         />
         <router-view />
         <template #controls>
@@ -48,4 +49,8 @@ const navbarSource = computed(() => {
     `backgroundColor="${basicNavData.backgroundColor}"`
   )} class="aside" :entities="entities" />`
 })
+
+const handleClickEntity = (idAccount: string) => {
+  console.log('current entity', idAccount)
+}
 </script>

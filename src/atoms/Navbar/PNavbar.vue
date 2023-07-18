@@ -86,15 +86,12 @@ const router = useRouter()
 
 defineProps({
   entities: Object as PropType<EntityProps[]>,
-  backgroundColor: { type: String, default: 'var(--el-color-neutral-gray-700)' }
+  backgroundColor: { type: String, default: 'var(--el-color-neutral-gray-700)' },
+  handleClickEntity: { type: Function, required: true }
 })
 
 const collapseMenu = () => {
   isCollapse.value = !isCollapse.value
-}
-
-const handleClickEntity = (idAccount: string) => {
-  console.log('current entity', idAccount)
 }
 
 const handleClickPortefeuille = () => {
