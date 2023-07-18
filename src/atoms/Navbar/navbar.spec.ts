@@ -14,13 +14,13 @@ describe('display navbar', () => {
     { name: 'Jean Levage', idAccount: 'idAccount 2' }
   ]
 
-  let wrapper: VueWrapper<any> = createWrapper({ entities })
+  const wrapper: VueWrapper<any> = createWrapper({ entities })
 
   it('should display vertical navbar with entities list', () => {
     const elMenu = wrapper.find('.el-menu-vertical-demo')
     const elMenuItems = elMenu.findAll('el-menu-item')
-    expect(elMenu.exists()).toBe(true)
-    expect(elMenuItems.length).toBe(4)
+    expect(elMenu.exists()).toBeTruthy()
+    expect(elMenuItems).toHaveLength(4)
     expect(elMenuItems[2].find('span').html()).contains('Restaurant Johnny s pizza')
     expect(elMenuItems[3].find('span').html()).contains('Jean Levage')
   })

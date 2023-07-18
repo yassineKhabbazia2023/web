@@ -74,7 +74,7 @@ import {
   Menu as IconMenu,
   DArrowRight, DArrowLeft
 } from '@element-plus/icons-vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 interface EntityProps {
   idAccount: string

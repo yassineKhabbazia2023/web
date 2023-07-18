@@ -4,7 +4,7 @@ import { ComponentOptionsMixin } from 'vue'
 const wrapperFactory = (
   vueComponent: ComponentOptionsMixin,
   options?: MountingOptions<any>
-//eslint-disable-next-line
+// eslint-disable-next-line
 //@ts-ignore
 ): VueWrapper<any> => shallowMount(vueComponent, options)
 
