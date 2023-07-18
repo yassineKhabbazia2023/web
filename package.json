@@ -48,6 +48,7 @@
     "@vitest/coverage-istanbul": "^0.32.2",
     "@vitest/ui": "^0.32.2",
     "@vue/tsconfig": "^0.4.0",
+    "@vue/test-utils": "^2.4.0",
     "histoire": "^0.16.1",
     "husky": "^8.0.3",
     "license-checker": "^25.0.1",

@@ -86,9 +86,7 @@ const router = useRouter()
 
 defineProps({
   entities: Object as PropType<EntityProps[]>,
-  backgroundColor: { type: String, default: 'var(--el-color-neutral-gray-700)' },
-  routeActive: { type: String, default: '' },
-  userRouter: { type: Boolean, default: true }
+  backgroundColor: { type: String, default: 'var(--el-color-neutral-gray-700)' }
 })
 
 const collapseMenu = () => {

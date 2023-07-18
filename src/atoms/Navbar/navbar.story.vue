@@ -9,7 +9,6 @@
           class="aside"
           :entities="basicNavData.entities"
           :backgroundColor="basicNavData.backgroundColor"
-          :routeActive="routeActive"
         />
         <router-view />
         <template #controls>
@@ -32,7 +31,6 @@ import { reactive, computed } from 'vue'
 import PNavbar from './PNavbar.vue'
 import { isAttribute } from '../../utils'
 import themeOptions from '../../constants/themeOptions'
-import { useRoute } from 'vue-router'
 
 const entities = [
   { name: 'Restaurant Johnny s pizza', idAccount: 'idAccount' },
@@ -50,7 +48,4 @@ const navbarSource = computed(() => {
     `backgroundColor="${basicNavData.backgroundColor}"`
   )} class="aside" :entities="entities" />`
 })
-
-const route = useRoute()
-const routeActive = route.path
 </script>
