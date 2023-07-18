@@ -19,9 +19,9 @@ onBeforeMount(() => {
     :title="item.name"
     v-for="(item, index) in iconsData"
     :key="index">
-      <PIcon color="#16a085" size="20px">
+      <PIcon color="#5546FF" size="20px">
         <component :is="item.component" />
-      </Picon>
+      </PIcon>
     </Variant>
   </Story>
 </template>

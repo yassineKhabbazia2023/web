@@ -1,6 +1,43 @@
-<div>
+<template>
+  <Story title="Atoms/Tooltip" icon="teenyicons:outline-circle">
+    <Variant title="Custum tooltip">
+      <PTooltip
+         :content="tooltipBasicData.content"
+         :placement="tooltipBasicData.placement"
+         :disabled="tooltipBasicData.disabled"
+         >
+         <PButton>
+          Hover button
+         </PButton>
+        </PTooltip>
+      <template #controls>
+        <hstText v-model="tooltipBasicData.content" title="content"/>
+        <hstSelect
+            v-model="tooltipBasicData.placement"
+            title="placement"
+            :options="placementOptions"/>
+         <hstCheckbox v-model="tooltipBasicData.disabled" title="disabled"/>
+      </template>
+    </Variant>
+  </Story>
+</template>
+
+<script setup lang="ts">
+import PTooltip from '../PTooltip'
+import { reactive } from 'vue'
+import placementOptions from '@/constants/placementOptions'
+import PButton from '../PButton'
+const tooltipBasicData = reactive({
+  placement: placementOptions[0].value,
+  content: 'this is a tooltip',
+  disabled: false
+})
+</script>
+
+<!-- eslint-disable max-len -->
+<docs lang="md">
 Tooltip is used to display prompt information for mouse hover.
-we use attribute content to set the display content when hover. 
+we use attribute content to set the display content when hover.
 The attribute placement determines the position of the tooltip.
 
 ## Attributes
@@ -30,5 +67,11 @@ The attribute placement determines the position of the tooltip.
 | virtual-triggering        | Indicates whether virtual triggering is enabled                                                                                                         | boolean                      | —                                                                                                         | false                                                                      |
 | virtual-ref               | Indicates the reference element to which the tooltip is attached                                                                                        | HTMLElement                  | —                                                                                                         | —                                                                          |
 | trigger-keys              | When you click the mouse to focus on the trigger element, you can define a set of keyboard codes to control the display of tooltip through the keyboard | Array                        | —                                                                                                         | `['Enter','Space']`                                                        |
-  <iframe src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?type=design&node-id=984-5556&mode=design&t=WnggowsMqWDcnDrS-0;https://element-plus.org/en-US/component/tooltip.html"></iframe>
-</div>
+
+<iframe
+  src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants
+  ?type=design&node-id=984-5556&mode=design&t=WnggowsMqWDcnDrS-0;
+  https://element-plus.org/en-US/component/tooltip.html">
+</iframe>
+</docs>
+<!-- eslint-enable max-len -->

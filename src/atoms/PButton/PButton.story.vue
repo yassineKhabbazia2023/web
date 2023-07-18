@@ -6,6 +6,8 @@ import { logEvent } from 'histoire/client'
 import { typeOptions } from '../../constants/typeOptions'
 import { reactive, computed } from 'vue'
 import PButton from './PButton.vue'
+/* eslint-disable-next-line */
+import '@/assets/scss/histoire.scss'
 
 // Basic-Button
 const basicButtonData = reactive({
@@ -267,3 +269,12 @@ title="Size"
     </Variant>
   </Story>
 </template>
+<docs lang="md">
+  <div class="container">
+    <iframe
+      class="responsive-iframe"
+      src="https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=
+      https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809">
+    </iframe>
+  </div>
+</docs>

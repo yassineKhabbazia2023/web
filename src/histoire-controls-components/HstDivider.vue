@@ -1,7 +1,7 @@
 <script lang="ts">
 export default {
   name: 'HstColor',
-  inheritAttrs: false,
+  inheritAttrs: false
 }
 </script>
 

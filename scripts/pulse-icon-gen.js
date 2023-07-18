@@ -46,11 +46,7 @@ async function generateComponent(iconPath, outputPath) {
 
     const componentCode = `
 <template>
-  <svg ${viewBox[0]}>
-    <g>
-      ${pathData[0]}
-    </g>
-  </svg>
+ ${pathData.input}
 </template>
 <script lang="ts">
 import type { DefineComponent } from 'vue'
@@ -69,7 +65,7 @@ export default ({
 async function generateIcons(iconsFolderPath, outputFolderPath) {
   try {
     try {
-      const cb = function (error) { if (error) console.log(error) }
+      const cb = function(error) { if (error) console.log(error) }
       await fs.promises.rm(outputFolderPath, { recursive: true }, cb)
     } catch {
       console.log('no components folder to clean.')

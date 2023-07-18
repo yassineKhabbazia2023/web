@@ -22,7 +22,7 @@ const colorModel = computed({
   get: () => props.modelValue,
   set: (value) => {
     emit('update:modelValue', value)
-  },
+  }
 })
 
 const predefineColors = ref([
