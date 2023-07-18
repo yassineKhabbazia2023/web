@@ -1,17 +1,37 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ],
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "include": ["env.d.ts", "./src/**/*"],
+  "exclude": ["src/**/__tests__/*", "./src/**/*.story.vue", "./src/histoire.setup.ts"],
   "compilerOptions": {
-    "types": ["vitest/globals"]
+    "noImplicitAny": true,
+    "target": "ESNext",
+    "declaration": true,
+    "outDir": "./dist/types",
+    "declarationDir": "./dist/types",
+    "lib": ["esnext", "DOM", "DOM.Iterable"],
+    "types": [
+      "vitest/globals",
+      "vite/client",
+      "node",
+      "element-plus/global",
+      "@histoire/plugin-vue/components",
+      "@vueuse/core"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "composite": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }

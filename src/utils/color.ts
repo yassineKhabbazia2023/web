@@ -23,7 +23,7 @@ export function getCssVarValue(name: string) {
           name
         )
       }, 100)
-    }
+    }, () => { }
   )
   return val
 }
@@ -36,19 +36,20 @@ export function getColorValue(type: string) {
 }
 
 // copy color
-
 export function useCopyColor() {
   const source = ref('')
+  const color = ref('')
   const { copy, isSupported } = useClipboard({ source })
 
   const copyColor = async (colorType: string) => {
     const colorValue = getColorValue(colorType)
-    source.value = colorValue
+    color.value = colorValue
+    source.value = `--el-color-${colorType}`
     if (!isSupported) { ElMessage.error('Copy failed') }
 
     try {
       await copy()
-      ElMessage.success(`--el-color-${colorType}: ${source.value}`)
+      ElMessage.success(`--el-color-${colorType}: ${color.value}`)
     } catch (e: any) {
       ElMessage.error(e.message)
     }

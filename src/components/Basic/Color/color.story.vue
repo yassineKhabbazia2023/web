@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import MainColor from './main-color.vue'
-import SecondaryColors from './secondary-colors.vue'
-import NeutralColor from './neutral-color.vue'
-</script>
-
 <template>
   <Story
     title="Basic/Color"
@@ -26,10 +20,31 @@ import NeutralColor from './neutral-color.vue'
         The main color of Element Plus is bright and friendly blue.
       </p>
       <MainColor />
-      <h2>Secondary Color</h2>
+      <h2>Secondary Colors Pegase</h2>
       <p>
-        Besides the main color, you need to use different scene colors in different scenarios
-        (for example, dangerous color indicates dangerous operation)
+        There are the secondary colors for Pegase.
+        From Figma : Extraites du dégradé KPMG Pulse, les couleurs vives
+        vous permettront d’apporter des touches de couleurs à vos contenus.
+        Ces touches de couleurs vives fonctionnent en duo,
+        par exemple : un picto fuschia et un cercle de soutien avec un fond en fuschia-bg
+        et un label fuschia-txt.
+        <br>
+        Nous les utiliserons principalement pour les infographies ou pictogrammes.
+      </p>
+      <SecondaryColorsPegase />
+      <h2>Functionnal Colors Pegase</h2>
+      <p>
+        Cette palette de variantes de couleurs est conçue pour toujours
+        rendre nos interfaces accessibles et compréhensibles.
+        Elles sont utilisées pour donner des indications ou des feedbacks aux utilisateurs.
+        <br>
+        Nous les utiliserons principalement pour les notifications, informations ou pictogrammes.
+      </p>
+      <FunctionnalColorsPegase />
+      <h2>Secondary Colors Element Plus</h2>
+      <p>
+        Used for basical elements of Element Plus.
+        Better to use the Technical Colors when its for custom content or override Element Plus.
       </p>
       <SecondaryColors />
       <h2>
@@ -44,6 +59,14 @@ import NeutralColor from './neutral-color.vue'
   </Story>
 </template>
 
+<script setup lang="ts">
+import MainColor from './main-color.vue'
+import SecondaryColors from './secondary-colors.vue'
+import NeutralColor from './neutral-color.vue'
+import SecondaryColorsPegase from './secondary-colors-pegase.vue'
+import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
+</script>
+
 <style lang="scss">
 .demo-color-box {
   position: relative;
@@ -54,6 +77,44 @@ import NeutralColor from './neutral-color.vue'
   box-sizing: border-box;
   color: var(--el-color-white);
   font-size: 14px;
+
+  &--pegase.demo-color-box {
+    height: auto;
+    padding: 0;
+
+    .bg-color-sub {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      height: 120px;
+      overflow: hidden;
+      border-radius: var(--el-border-radius-base);
+
+      &--functionnal.bg-color-sub {
+        height: 200px;
+
+        .bg-secondary-sub-item {
+          height: calc(100% / 5);
+        }
+      }
+
+      .bg-secondary-sub-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(100% / 3);
+        font-size: 12px;
+
+        &:first-child {
+          border-radius: 0;
+        }
+
+        &:nth-child(3n) {
+          color: black;
+        }
+      }
+    }
+  }
 
   .bg-color-sub {
     width: 100%;
@@ -89,3 +150,10 @@ import NeutralColor from './neutral-color.vue'
   color: var(--el-text-color-primary);
 }
 </style>
+<docs lang="md">
+## Colors
+<div class="container">
+  Au click sur une case de couleur, sera copié la variable css de la couleur, à utiliser dans vos
+  composants.
+</div>
+</docs>

@@ -8,6 +8,7 @@
 @use 'border';
 @use 'colors';
 @use 'box-shadow';
+@use './components/buttons';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -17,6 +18,10 @@
   $text-font-size: typography.$text-font-size,
   $border-radius: border.$border-radius,
   $box-shadow: box-shadow.$box-shadow,
+  $button-font-size: buttons.$button-font-size,
+  $button-padding-vertical: buttons.$button-padding-vertical,
+  $button-padding-horizontal: buttons.$button-padding-horizontal,
+  $button-border-radius: buttons.$button-border-radius,
 );
 
 // @use Call after forward, files who need files from element plus
@@ -37,4 +42,7 @@
 @use 'element-plus/theme-chalk/src/message.scss' as *;
 @use 'element-plus/theme-chalk/src/menu.scss' as *;
 @use 'element-plus/theme-chalk/src/divider.scss' as *;
-@use 'element-plus/theme-chalk/src/display.scss' as *;
+@use 'element-plus/theme-chalk/src/display.scss' as *;@use 'element-plus/theme-chalk/src/tooltip.scss' as *;
+@use 'element-plus/theme-chalk/src/popper.scss' as *;
+
+@use './components/popper';

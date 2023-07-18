@@ -1,5 +1,4 @@
 // base UI library
-import 'element-plus/dist/index.css'
 import ElementPlus from 'element-plus'
 
 // locales
@@ -9,15 +8,20 @@ import en from 'element-plus/es/locale/lang/en'
 import './assets/scss/index.scss'
 
 import PButton from './atoms/PButton'
+import PIcon from './atoms/PIcon'
+import PTooltip from './atoms/PTooltip'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
   app.component('PButton', PButton)
+  app.component('PTooltip', PTooltip)
+  app.component('PIcon', PIcon)
 }
 
 const plugin = {
-  version: '1.0.0-alpha.9',
   install
 }
 
 export default plugin
+
+export * from './atoms/PIcon/components'
