@@ -1,6 +1,7 @@
 import commonStore from '../stores'
 import axios, { type AxiosInstance } from 'axios'
 import { storeToRefs } from 'pinia'
+import * as envVars from 'env-vars'
 
 const varApiPrefix = 'VITE_API_'
 
@@ -25,7 +26,7 @@ const responseInterceptorError = (err: any) => {
 }
 
 export default () => {
-  return Object.keys(process.env).reduce(
+  return Object.keys(envVars).reduce(
     (apis: apiInstances, k) => {
       if (k.startsWith(varApiPrefix)) {
         const service = keyToService(k)

@@ -36,6 +36,7 @@ export default defineConfig(mergeConfig(viteBaseConfig, {
     viteExternalsPlugin({
       vue: 'Vue',
       pinia: 'Pinia',
+      'env-vars': 'EnvVars',
       'vue-i18n': 'VueI18n',
       'single-spa-vue': 'SingleSpaVue'
     })],
