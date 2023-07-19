@@ -30,6 +30,7 @@
     </div>
   </Story>
 </template>
+<!-- eslint-disable max-len -->
 <docs lang="md">
   ## Navbar Attributes
   
@@ -45,6 +46,7 @@
   | `title`   | Customize components title |
 
   <iframe src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?type=design&node-id=443-811&mode=design&t=2jOd4krjDx7sZuz6-0"></iframe>
+
 </docs>
 <script lang="ts" setup>
 import { reactive, computed } from 'vue'

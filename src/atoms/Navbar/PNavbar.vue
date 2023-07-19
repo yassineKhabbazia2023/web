@@ -3,13 +3,13 @@
     backgroundColor="var(--el-color-neutral-gray-700)"
     hoverBackgroundColor="var(--el-color-secondary-cyan-bg)"
     textColor="white"
-    class="el-menu-vertical-demo hidden-sm-and-down"
+    class="el-menu-vertical hidden-sm-and-down"
     :collapse="isCollapse"
   >
     <el-menu-item
       class="title"
     >
-      <span><slot name="title" /></span>
+      <span class="menu-name"><slot name="title" /></span>
       <PIcon
         @click="collapseMenu"
         class="icon-collapse"
@@ -27,7 +27,7 @@
       <PIcon>
         <component :is="createIcon(item.icon)" />
       </PIcon>
-      <span>{{ item.name }}</span>
+      <span class="menu-name">{{ item.name }}</span>
     </el-menu-item>
     <div class="divider">
       <el-divider />
@@ -38,10 +38,10 @@
       @click="handleClickEntity(item.idAccount)"
       :index="`${index + 2}`"
     >
-      <PIcon class="icon-entity" :style="`background-color: ${item.color};`">
+      <PIcon class="icon-entity" :style="`background-color: ${item.color}`">
         <component :is="createIcon(item.icon)" />
       </PIcon>
-      <span class="font-bold">{{ item.name }}</span>
+      <span class="font-bold menu-name">{{ item.name }}</span>
     </el-menu-item>
   </el-menu>
   <el-menu
@@ -49,7 +49,7 @@
     backgroundColor="var(--el-color-neutral-gray-700)"
     activeTextColor="var(--el-color-white)"
     textColor="white"
-    class="el-menu-horizontal-demo hidden-md-and-up"
+    class="el-menu-horizontal hidden-md-and-up"
   >
     <el-menu-item
       v-for="(item, index) in entities"
@@ -60,7 +60,7 @@
       <PIcon class="icon-entity" :style="`background-color: ${item.color};`">
         <component :is="createIcon(item.icon)" />
       </PIcon>
-      <span class="font-bold">{{ item.name }}</span>
+      <span class="font-bold menu-name">{{ item.name }}</span>
     </el-menu-item>
     <el-menu-item
       :class="`icon-collapse icon-horizontale-index-${index}`"
@@ -111,7 +111,7 @@ const createIcon = (name: string) => {
 </script>
 
 <style scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+.el-menu-vertical:not(.el-menu--collapse) {
   .title span {
     margin-left: 4px;
     font-size: 16px;
@@ -136,9 +136,9 @@ const createIcon = (name: string) => {
   width: 60%;
 }
 
-.el-menu-horizontal-demo {
+.el-menu-horizontal {
   .icon-collapse {
-      padding: 13px;
+    padding: 13px;
   }
 }
 
@@ -146,7 +146,7 @@ const createIcon = (name: string) => {
   margin-left: auto;
 }
 
-span {
+.menu-name {
   font-size: 12px;
 }
 
