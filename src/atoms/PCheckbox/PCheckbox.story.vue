@@ -25,9 +25,7 @@ const checkBoxControl = reactive({
 <!-- eslint-disable max-len -->
 <docs lang="md">
   <div>
-  Tooltip is used to display prompt information for mouse hover.
-  we use attribute content to set the display content when hover.
-  The attribute placement determines the position of the tooltip.
+    Checkbox can be used alone to switch between two states.
 
 ## Attributes
 

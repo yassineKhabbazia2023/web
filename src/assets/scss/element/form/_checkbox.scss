@@ -9,7 +9,8 @@ $checkbox :
   'disabled-checked-icon-color': getCssVar('color-white'),
   'input-border-color-hover': getCssVar('color','base-persian'),
   'checked-text-color': getCssVar('text-color','primary'),
-  'font-size': 12px
+  'font-size': 12px,
+  'border-radius': 2px
 );
 
 //custom css el-checkbox
