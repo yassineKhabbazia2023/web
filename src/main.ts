@@ -9,11 +9,13 @@ import './assets/scss/index.scss'
 
 import PButton from './atoms/PButton'
 import PTooltip from './atoms/PTooltip'
+import PLineChart from './atoms/PLineChart'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
   app.component('PButton', PButton)
   app.component('PTooltip', PTooltip)
+  app.component('PLineChart', PLineChart)
 }
 
 const plugin = {
