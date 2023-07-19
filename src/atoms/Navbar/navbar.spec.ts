@@ -39,7 +39,7 @@ describe('display navbar', () => {
 
   it('should display vertical navbar with entities list', () => {
     const wrapper: VueWrapper<any> = createWrapper({ entities })
-    const elMenu = wrapper.find('.el-menu-vertical-demo')
+    const elMenu = wrapper.find('.el-menu-vertical')
     const elMenuItems = elMenu.findAll('el-menu-item:not(.title)')
 
     expect(elMenu.exists()).toBeTruthy()
