@@ -20,7 +20,7 @@
     </el-menu-item>
     <el-menu-item
       v-for="(item, index) in menuList"
-      :index="index"
+      :index="`${index}`"
       @click="item.handleClick"
       :key="index"
     >
@@ -36,7 +36,7 @@
       v-for="(item, index) in entities"
       :key="item.idAccount"
       @click="handleClickEntity(item.idAccount)"
-      :index="index + 2"
+      :index="`${index + 2}`"
     >
       <PIcon class="icon-entity" :style="`background-color: ${item.color};`">
         <component :is="createIcon(item.icon)" />
@@ -55,7 +55,7 @@
       v-for="(item, index) in entities"
       @click="handleClickEntity(item.idAccount)"
       :key="item.idAccount"
-      :index="index"
+      :index="`${index}`"
     >
       <PIcon class="icon-entity" :style="`background-color: ${item.color};`">
         <component :is="createIcon(item.icon)" />
@@ -65,7 +65,7 @@
     <el-menu-item
       :class="`icon-collapse icon-horizontale-index-${index}`"
       v-for="(item, index) in menuList"
-      :index="index + 2"
+      :index="`${index + 2}`"
       @click="item.handleClick"
       :key="index"
     >

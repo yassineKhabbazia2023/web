@@ -1,5 +1,5 @@
-import { MountingOptions, shallowMount, VueWrapper } from '@vue/test-utils'
-import { ComponentOptionsMixin } from 'vue'
+import { type MountingOptions, shallowMount, VueWrapper } from '@vue/test-utils'
+import { type ComponentOptionsMixin } from 'vue'
 
 const wrapperFactory = (
   vueComponent: ComponentOptionsMixin,
