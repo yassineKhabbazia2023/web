@@ -23,7 +23,7 @@ export function getCssVarValue(name: string) {
           name
         )
       }, 100)
-    }
+    }, () => { }
   )
   return val
 }

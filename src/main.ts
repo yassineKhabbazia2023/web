@@ -8,19 +8,24 @@ import en from 'element-plus/es/locale/lang/en'
 import './assets/scss/index.scss'
 
 import PButton from './atoms/PButton'
+import PIcon from './atoms/PIcon'
 import PTooltip from './atoms/PTooltip'
+import PCheckbox from './atoms/PCheckbox'
 import PLineChart from './atoms/PLineChart'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
   app.component('PButton', PButton)
   app.component('PTooltip', PTooltip)
+  app.component('PIcon', PIcon)
+  app.component('PCheckbox', PCheckbox)
   app.component('PLineChart', PLineChart)
 }
 
 const plugin = {
-  version: '1.0.0-alpha.9',
   install
 }
 
 export default plugin
+
+export * from './atoms/PIcon/components'

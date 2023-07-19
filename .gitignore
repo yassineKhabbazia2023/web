@@ -26,3 +26,8 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+src/atoms/PIcon/components
+
+auto-imports.d.ts
+components.d.ts

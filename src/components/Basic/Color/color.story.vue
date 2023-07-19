@@ -26,7 +26,7 @@
         From Figma : Extraites du dégradé KPMG Pulse, les couleurs vives
         vous permettront d’apporter des touches de couleurs à vos contenus.
         Ces touches de couleurs vives fonctionnent en duo,
-        par exemple : un picto fuschia et un cercle de soutien avec un fond en fuschia-bg 
+        par exemple : un picto fuschia et un cercle de soutien avec un fond en fuschia-bg
         et un label fuschia-txt.
         <br>
         Nous les utiliserons principalement pour les infographies ou pictogrammes.
@@ -150,3 +150,10 @@ import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
   color: var(--el-text-color-primary);
 }
 </style>
+<docs lang="md">
+## Colors
+<div class="container">
+  Au click sur une case de couleur, sera copié la variable css de la couleur, à utiliser dans vos
+  composants.
+</div>
+</docs>
