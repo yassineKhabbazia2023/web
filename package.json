@@ -42,7 +42,9 @@
   "dependencies": {
     "@vueuse/core": "^10.2.0",
     "element-plus": "^2.3.5",
-    "lint-staged": "^13.2.3",
+    "lint-staged": "^13.2.3"
+  },
+  "peerDependencies": {
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
