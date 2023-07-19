@@ -32,9 +32,11 @@
   "dependencies": {
     "@vue/test-utils": "^2.4.0",
     "@vueuse/core": "^10.2.0",
+    "chart.js": "^4.3.0",
     "element-plus": "^2.3.5",
     "lint-staged": "^13.2.3",
     "vitest-canvas-mock": "^0.3.2",
+    "vitest-mock-extended": "^1.1.4",
     "vue-chart-3": "^3.1.8"
   },
   "devDependencies": {

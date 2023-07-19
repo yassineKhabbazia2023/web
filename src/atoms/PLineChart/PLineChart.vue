@@ -5,9 +5,11 @@
 </template>
   
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue"
-import { LineChart, useLineChart } from "vue-chart-3"
-import { ChartData, ChartOptions } from "chart.js"
+import { computed, defineComponent, ref } from "vue";
+import { LineChart, useLineChart } from "vue-chart-3";
+import { Chart, ChartData, ChartOptions, registerables } from "chart.js";
+
+Chart.register(...registerables);
 
 const chartBackgroundColor = [
   {
@@ -18,12 +20,12 @@ const chartBackgroundColor = [
     borderColor: "#be4bc8",
     backgroundColor: ["190,75,200", "190,75,200"],
   },
-]
+];
 
 function getRandomInt(min: number, max: number): number {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export default defineComponent({
@@ -42,21 +44,21 @@ export default defineComponent({
       default: () => [],
     },
     toolTipBackgroundColor: {
-      type: String,
-    },
+        type: String,
+    }
   },
   setup(props) {
-    const dataValues = ref(props.dataValues || [])
-    const dataLabels = ref(props.dataLabels || [])
+    const dataValues = ref(props.dataValues || []);
+    const dataLabels = ref(props.dataLabels || []);
+    const toggleLegend = ref(true);
 
     function createGradient(color: string[]): CanvasGradient | string {
-      const canvas = document.createElement("canvas")
-      debugger
-      const ctx = canvas.getContext("2d")
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
       if (ctx) {
-        const gradient = ctx.createLinearGradient(0, 0, 2, 200)
-        gradient.addColorStop(0, `rgba(${color[0]}, 0.18)`)
-        gradient.addColorStop(1, `rgba(${color[1]}, 0)`)
+        const gradient = ctx.createLinearGradient(0, 0, 2, 200);
+        gradient.addColorStop(0, `rgba(${color[0]}, 0.18)`);
+        gradient.addColorStop(1, `rgba(${color[1]}, 0)`);
         return gradient;
       }
       return color[0];
@@ -79,14 +81,14 @@ export default defineComponent({
     const chartData = computed<ChartData<"line">>(() => ({
       labels: dataLabels.value,
       datasets: [...datasets],
-    }))
+    }));
 
     const options = computed<ChartOptions<"line">>(() => ({
       scales: {
         y: {
           beginAtZero: true,
           type: "linear",
-          position: "left",
+          position: toggleLegend.value ? "left" : "right",
           grid: {
             borderDash: [2, 4], // Set the border dash pattern for the grid lines
             color: "rgba(0, 0, 0, 0.4)", // Set the color of the grid lines
@@ -116,12 +118,13 @@ export default defineComponent({
           backgroundColor: props.toolTipBackgroundColor,
           callbacks: {
             title: (context) => {
-              const currentYear = new Date().getFullYear().toString()
-              return `${context[0].label} ${currentYear}`
+              const currentYear = new Date().getFullYear().toString();
+              return `${context[0].label} ${currentYear}`;
             },
             label: () => "",
             footer: (context) => {
-              return `${context[0].raw} $`
+              const currentYear = new Date().getFullYear().toString();
+              return `${context[0].raw} $`;
             },
           },
         },
@@ -136,16 +139,16 @@ export default defineComponent({
     const { lineChartProps, lineChartRef } = useLineChart({
       chartData,
       options,
-    })
+    });
 
     return {
       chartData,
       options,
       lineChartRef,
       lineChartProps,
-    }
+    };
   },
-})
+});
 </script>
   
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import PLineChart from './PLineChart.vue'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import 'vitest-canvas-mock'
 
 describe('PLineChart', () => {
