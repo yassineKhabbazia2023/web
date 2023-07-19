@@ -9,7 +9,7 @@
 @use 'colors';
 @use 'box-shadow';
 @use './components/buttons';
-
+@use './form/checkbox';
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: colors.$colors,
@@ -22,6 +22,7 @@
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
   $button-border-radius: buttons.$button-border-radius,
+  $checkbox : checkbox.$checkbox
 );
 
 // @use Call after forward, files who need files from element plus
@@ -42,6 +43,6 @@
 @use 'element-plus/theme-chalk/src/message.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
+@use 'element-plus/theme-chalk/src/checkbox.scss' as *;
 
 @use './components/popper';
-
