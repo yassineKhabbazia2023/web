@@ -12,6 +12,12 @@ const router = createRouter({
   routes
 })
 
+const handleClickPortefeuille = () => {
+  router.push('/entity')
+}
+
+const handleClickEntity = () => {}
+
 const createWrapper = (props: any = {}) =>
   wrapperFactory(PNavbar, {
     global: {
@@ -22,23 +28,28 @@ const createWrapper = (props: any = {}) =>
 
 describe('display navbar', () => {
   const entities = [
-    { name: 'Restaurant Johnny s pizza', idAccount: 'idAccount' },
-    { name: 'Jean Levage', idAccount: 'idAccount 2' }
+    { name: 'Restaurant Johnny s pizza', idAccount: 'idAccount', icon: 'PICupHot' },
+    { name: 'Jean Levage', idAccount: 'idAccount 2', icon: 'PIShop' }
   ]
 
-  const wrapper: VueWrapper<any> = createWrapper({ entities })
+  const menuList = [
+    { name: 'Voir mes entités', icon: 'PIGrid', handleClick: handleClickPortefeuille },
+    { name: 'Voir la vue client', icon: 'PIPersonVideo3', handleClick: handleClickPortefeuille }
+  ]
 
   it('should display vertical navbar with entities list', () => {
+    const wrapper: VueWrapper<any> = createWrapper({ entities })
     const elMenu = wrapper.find('.el-menu-vertical-demo')
-    const elMenuItems = elMenu.findAll('el-menu-item')
+    const elMenuItems = elMenu.findAll('el-menu-item:not(.title)')
 
     expect(elMenu.exists()).toBeTruthy()
-    expect(elMenuItems).toHaveLength(4)
-    expect(elMenuItems[2].find('span').html()).contains('Restaurant Johnny s pizza')
-    expect(elMenuItems[3].find('span').html()).contains('Jean Levage')
+    expect(elMenuItems).toHaveLength(2)
+    expect(elMenuItems[0].find('span').html()).contains(entities[0].name)
+    expect(elMenuItems[1].find('span').html()).contains(entities[1].name)
   })
 
   it('should navigate to /entity', async () => {
+    const wrapper: VueWrapper<any> = createWrapper({ entities, menuList, handleClickEntity })
     const documentItem = wrapper.findAll('el-menu-item')[1]
     documentItem.trigger('click')
     await flushPromises()

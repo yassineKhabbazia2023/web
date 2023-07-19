@@ -11,7 +11,7 @@ export const setupVue3 = defineSetupVue3(({ app }) => {
     createRouter({
       history: createMemoryHistory(),
       routes: [
-        { path: '/dashboard', component: { render: () => '<div>Tableau de bord</div>' } },
+        { path: '/dashboard', component: { render: () => '<div>Dashboard</div>' } },
         { path: '/document', component: { render: () => '<div>Document</div>' } },
         { path: '/entity', component: { render: () => '<div>Entity</div>' } }
       ]
