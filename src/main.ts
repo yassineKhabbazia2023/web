@@ -11,6 +11,7 @@ import PButton from './atoms/PButton'
 import PIcon from './atoms/PIcon'
 import PTooltip from './atoms/PTooltip'
 import PCheckbox from './atoms/PCheckbox'
+import PNavbar from './atoms/PNavbar'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
@@ -18,6 +19,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PTooltip', PTooltip)
   app.component('PIcon', PIcon)
   app.component('PCheckbox', PCheckbox)
+  app.component('PNavbar', PNavbar)
 }
 
 const plugin = {

@@ -77,3 +77,4 @@ const handleClickEntity = (idAccount: string) => {
   <iframe src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?type=design&node-id=443-811&mode=design&t=2jOd4krjDx7sZuz6-0"></iframe>
 
 </docs>
+<!-- eslint-enable max-len -->
