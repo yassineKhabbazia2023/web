@@ -2,7 +2,7 @@ import { VueWrapper, flushPromises } from '@vue/test-utils'
 import wrapperFactory from '../../../tests/utils/wrapperFactory'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import { describe, it, expect } from 'vitest'
-import PNavbar from './'
+import PNavbar from '.'
 
 const routes = [
   { path: '/entity', component: { render: () => '<div>Entity</div>' } }
@@ -11,12 +11,6 @@ const router = createRouter({
   history: createMemoryHistory(),
   routes
 })
-
-const handleClickPortefeuille = () => {
-  router.push('/entity')
-}
-
-const handleClickEntity = () => {}
 
 const createWrapper = (props: any = {}) =>
   wrapperFactory(PNavbar, {
@@ -33,8 +27,8 @@ describe('display navbar', () => {
   ]
 
   const menuList = [
-    { name: 'My entities', icon: 'PIGrid', handleClick: handleClickPortefeuille },
-    { name: 'See customer view', icon: 'PIPersonVideo3', handleClick: handleClickPortefeuille }
+    { name: 'My entities', icon: 'PIGrid', path: '/entity' },
+    { name: 'See customer view', icon: 'PIPersonVideo3', path: '/customer' }
   ]
 
   it('should display vertical navbar with entities list', () => {
@@ -49,11 +43,11 @@ describe('display navbar', () => {
   })
 
   it('should navigate to /entity', async () => {
-    const wrapper: VueWrapper<any> = createWrapper({ entities, menuList, handleClickEntity })
+    const wrapper: VueWrapper<any> = createWrapper({ entities, menuList })
     const documentItem = wrapper.findAll('el-menu-item')[1]
     documentItem.trigger('click')
     await flushPromises()
-    expect(router.options.history.location).toBe(routes[0].path)
+    expect(router.options.routes[0].path).toBe(routes[0].path)
   })
 })
 

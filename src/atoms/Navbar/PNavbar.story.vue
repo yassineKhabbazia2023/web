@@ -33,14 +33,14 @@
 <!-- eslint-disable max-len -->
 <docs lang="md">
   ## Navbar Attributes
-  
+
   | Name       | Description                                  | Type                               | Default                |
   | ---------- | -------------------------------------------- | ---------------------------------- | ---------------------- |
   | `entities` | Entity list for the second part of the menu  | `Object as PropType<EntityProps[]>`| inherit from entities  |
   | `menuList` | Menu list for the first part of the menu     | `Object as PropType<MenuProps[]>`  | inherit from menulist  |
-  
+
   ## Navbar Slots
-  
+
   | Name      | Description                |
   | --------- | -------------------------- |
   | `title`   | Customize components title |
@@ -52,13 +52,6 @@
 import { reactive, computed } from 'vue'
 import PNavbar from './'
 import themeOptions from '../../constants/themeOptions'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
-const handleClickPortefeuille = () => {
-  router.push('/entity')
-}
 
 const entities = [
   { name: 'Restaurant Johnny s pizza', idAccount: 'idAccount', icon: 'PICupHot', color: 'orange' },
@@ -66,8 +59,8 @@ const entities = [
 ]
 
 const menus = [
-  { name: 'My entities', icon: 'PIGrid', handleClick: handleClickPortefeuille },
-  { name: 'See customer view', icon: 'PIPersonVideo3', handleClick: handleClickPortefeuille }
+  { name: 'My entities', icon: 'PIGrid', path: '/entity' },
+  { name: 'See customer view', icon: 'PIPersonVideo3', path: '/customer' }
 ]
 const basicNavData = reactive({
   themeOptions,

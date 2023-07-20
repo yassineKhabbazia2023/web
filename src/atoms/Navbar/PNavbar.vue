@@ -5,6 +5,7 @@
     textColor="white"
     class="el-menu-vertical hidden-sm-and-down"
     :collapse="isCollapse"
+    router
   >
     <el-menu-item
       class="title"
@@ -20,8 +21,7 @@
     </el-menu-item>
     <el-menu-item
       v-for="(item, index) in menuList"
-      :index="`${index}`"
-      @click="item.handleClick"
+      :index="item.path"
       :key="index"
     >
       <PIcon>
@@ -50,6 +50,7 @@
     activeTextColor="var(--el-color-white)"
     textColor="white"
     class="el-menu-horizontal hidden-md-and-up"
+    router
   >
     <el-menu-item
       v-for="(item, index) in entities"
@@ -65,8 +66,7 @@
     <el-menu-item
       :class="`icon-collapse icon-horizontale-index-${index}`"
       v-for="(item, index) in menuList"
-      :index="`${index + 2}`"
-      @click="item.handleClick"
+      :index="item.path"
       :key="index"
     >
       <PIcon>
@@ -88,7 +88,7 @@ interface EntityProps {
 
 interface MenuProps {
   name: string
-  handleClick: Function
+  path: string
   icon: string
 }
 
