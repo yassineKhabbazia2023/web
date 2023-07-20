@@ -12,7 +12,7 @@
           :menuList="menus"
         >
           <template #title >
-            Mes entités
+            Entities
           </template>
         </PNavbar>
         <router-view />
@@ -66,8 +66,8 @@ const entities = [
 ]
 
 const menus = [
-  { name: 'Voir mes entités', icon: 'PIGrid', handleClick: handleClickPortefeuille },
-  { name: 'Voir la vue client', icon: 'PIPersonVideo3', handleClick: handleClickPortefeuille }
+  { name: 'My entities', icon: 'PIGrid', handleClick: handleClickPortefeuille },
+  { name: 'See customer view', icon: 'PIPersonVideo3', handleClick: handleClickPortefeuille }
 ]
 const basicNavData = reactive({
   themeOptions,

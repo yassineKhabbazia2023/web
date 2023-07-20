@@ -33,8 +33,8 @@ describe('display navbar', () => {
   ]
 
   const menuList = [
-    { name: 'Voir mes entités', icon: 'PIGrid', handleClick: handleClickPortefeuille },
-    { name: 'Voir la vue client', icon: 'PIPersonVideo3', handleClick: handleClickPortefeuille }
+    { name: 'My entities', icon: 'PIGrid', handleClick: handleClickPortefeuille },
+    { name: 'See customer view', icon: 'PIPersonVideo3', handleClick: handleClickPortefeuille }
   ]
 
   it('should display vertical navbar with entities list', () => {
