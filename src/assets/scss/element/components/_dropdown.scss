@@ -4,3 +4,9 @@ $dropdown: (
   'menuItem-hover-color': getCssVar('color-primary'),
   'menu-index': 10,
 );
+
+.p-toolbox {
+  .el-popper__arrow {
+    display: none;
+  }
+}

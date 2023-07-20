@@ -8,10 +8,11 @@
 @use 'border';
 @use 'colors';
 @use 'box-shadow';
-@use './form/checkbox';
 @use './components/buttons';
-@use './components/menu';
 @use './components/popper';
+@use './components/dropdown';
+@use './form/checkbox';
+@use './components/menu';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
