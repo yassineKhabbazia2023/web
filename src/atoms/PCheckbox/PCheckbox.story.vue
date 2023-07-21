@@ -1,5 +1,5 @@
 <template>
-  <Story title="Atoms/Checkbox" icon="teenyicons:outline-circle">
+  <Story title="Atoms/Checkbox" icon="radix-icons:checkbox">
     <Variant title="Checkbox">
       <PCheckbox
       :disabled="checkBoxControl.disabled">

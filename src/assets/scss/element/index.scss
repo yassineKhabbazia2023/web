@@ -8,7 +8,10 @@
 @use 'border';
 @use 'colors';
 @use 'box-shadow';
+@use 'common';
 @use './components/buttons';
+@use './form/input';
+@use './form/datepicker';
 @use './components/avatar';
 @use './components/menu';
 @use './components/popper';
@@ -18,15 +21,23 @@
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: colors.$colors,
+  $text-color: colors.$text-color,
   $font-family: typography.$font-family,
   $font-size: typography.$font-size,
   $text-font-size: typography.$text-font-size,
+  $common-component-size: common.$common-component-size,
+  $disabled: common.$disabled,
   $border-radius: border.$border-radius,
+  $border-color-hover: colors.$border-color-hover,
+  $border-color: colors.$border-color,
   $box-shadow: box-shadow.$box-shadow,
   $button-font-size: buttons.$button-font-size,
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
   $button-border-radius: buttons.$button-border-radius,
+  $input: input.$input,
+  $input-padding-horizontal: input.$input-padding-horizontal,
+  $datepicker: datepicker.$datepicker,
   $avatar-size: avatar.$avatar-size,
   $checkbox : checkbox.$checkbox,
   $menu: menu.$menu
@@ -54,4 +65,6 @@
 @use 'element-plus/theme-chalk/src/display.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
+@use 'element-plus/theme-chalk/src/input.scss' as *;
+@use 'element-plus/theme-chalk/src/date-picker.scss' as *;
 @use 'element-plus/theme-chalk/src/checkbox.scss' as *;

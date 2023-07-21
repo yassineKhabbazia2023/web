@@ -1,68 +1,30 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
 // css3 var in packages/theme-chalk/src/input.scss
-$input: () !default;
-$input: map.merge(
-  (
-    'text-color': getCssVar('text-color-regular'),
-    'border': getCssVar('border'),
-    'hover-border': getCssVar('border-color-hover'),
-    'focus-border': getCssVar('color-primary'),
-    'transparent-border': 0 0 0 1px transparent inset,
-    'border-color': getCssVar('border-color'),
-    'border-radius': getCssVar('border-radius-base'),
-    'bg-color': getCssVar('fill-color', 'blank'),
-    'icon-color': getCssVar('text-color-placeholder'),
-    'placeholder-color': getCssVar('text-color-placeholder'),
-    'hover-border-color': getCssVar('border-color-hover'),
-    'clear-hover-color': getCssVar('text-color-secondary'),
-    'focus-border-color': getCssVar('color-primary'),
-    'width': 100%,
-  ),
-  $input
+$input: (
+  'border-radius': getCssVar('border-radius-small'),
+  'icon-color': getCssVar('color', 'neutral-gray-200'),
+  'clear-hover-color': getCssVar('color-primary'),
 );
 
-$input-disabled: () !default;
-$input-disabled: map.merge(
-  (
-    'fill': getCssVar('disabled-bg-color'),
-    'border': getCssVar('disabled-border-color'),
-    'text-color': getCssVar('disabled-text-color'),
-    'placeholder-color': getCssVar('text-color-placeholder'),
-  ),
-  $input-disabled
+$input-padding-horizontal: (
+  'large': 16px,
+  'default': 14px,
+  'small': 8px,
 );
 
-$input-font-size: () !default;
-$input-font-size: map.merge(
-  (
-    'large': 14px,
-    'default': 14px,
-    'small': 12px,
-  ),
-  $input-font-size
-);
+div.el-textarea {
+  --el-input-border-radius: var(--el-border-radius-base);
 
-$input-height: () !default;
-$input-height: map.merge($common-component-size, $input-height);
+  .el-textarea__inner {
+    padding: 10px 16px;
 
-$input-line-height: () !default;
-$input-line-height: map.merge($common-component-size, $input-line-height);
-
-$input-number-width: () !default;
-$input-number-width: map.merge(
-  (
-    'large': 180px,
-    'default': 150px,
-    'small': 120px,
-  ),
-  $input-number-width
-);
-
-$input-padding-horizontal: () !default;
-$input-padding-horizontal: map.merge(
-  (
-    'large': 16px,
-    'default': 12px,
-    'small': 8px,
-  ),
-  $input-padding-horizontal
-);
+    &::-webkit-resizer {
+      padding: 6px;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgNiA2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNSAxTDEgNSIgc3Ryb2tlPSIjQTRBNEE0Ii8+CjxwYXRoIGQ9Ik01IDNMMyA1IiBzdHJva2U9IiNBNEE0QTQiLz4KPC9zdmc+Cg==);
+      background-size: 8px 8px;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+  }
+}

@@ -2,7 +2,7 @@
 <template>
   <Story
     title="Atoms/BottomMenu"
-    icon="teenyicons:outline-circle"
+    icon="icon-park-outline:bottom-bar"
   >
     <router-view />
     <br><br>

@@ -115,7 +115,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getCssVarName, getCssVarValue } from '../../../utils'
+import { getCssVarName, getCssVarValue } from '@/utils'
 
 const backgroundTypes = ['page', '', 'overlay']
 const backgroundColors = backgroundTypes.map((type) => {

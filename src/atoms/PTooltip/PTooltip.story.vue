@@ -1,6 +1,5 @@
 <template>
-  <!-- eslint-disable max-len -->
-  <Story title="Atoms/Tooltip" icon="radix-icons:chat-bubble">
+  <Story title="Atoms/Tooltip" icon="tabler:tooltip">
     <Variant title="Custum tooltip">
       <PTooltip
         :content="tooltipBasicData.content"
@@ -61,10 +60,10 @@
 </docs>
 <!-- eslint-enable max-len -->
 <script setup lang="ts">
-import PTooltip from '../PTooltip'
+import PTooltip from './'
 import { reactive } from 'vue'
 import placementOptions from '@/constants/placementOptions'
-import PButton from '../PButton'
+import PButton from '@/atoms/PButton'
 const tooltipBasicData = reactive({
   placement: placementOptions[0].value,
   content: 'this is a tooltip',

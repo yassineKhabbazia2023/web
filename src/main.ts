@@ -7,6 +7,8 @@ import en from 'element-plus/es/locale/lang/en'
 
 import './assets/scss/index.scss'
 
+import PInput from '@/atoms/PInput'
+import PDatePicker from '@/atoms/PDatePicker'
 import PButton from '@/atoms/PButton'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
@@ -23,6 +25,8 @@ export function install(app: any, { i18n }: any) {
   app.component('PAvatar', PAvatar)
   app.component('PTooltip', PTooltip)
   app.component('PIcon', PIcon)
+  app.component('PInput', PInput)
+  app.component('PDatePicker', PDatePicker)
   app.component('PToolboxItem', PToolboxItem)
   app.component('PToolbox', PToolbox)
   app.component('PCheckbox', PCheckbox)
