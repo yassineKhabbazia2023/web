@@ -1,9 +1,14 @@
 name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
-- master
-- develop
-- release/*
+  branches:
+    include:
+    - main
+    - develop
+    - release/*
+  paths:
+    include:
+    - src/assets/images
 
 pool:
   vmImage: windows-latest
