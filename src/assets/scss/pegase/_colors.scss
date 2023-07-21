@@ -2,6 +2,7 @@
 @use 'sass:list';
 @use 'element-plus/theme-chalk/src/mixins/_var.scss' as *;
 @use './common-vars' as *;
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $colors: (
   'base': (
@@ -59,6 +60,10 @@ $colors: (
     'teal-bg': #CEFFFF,
   ),
 );
+
+:root {
+  --persian-gradient: linear-gradient(90deg, var(--el-color-secondary-amethyste) 0%, var(--el-color-primary) 100%);
+}
 
 $typePulse: ();
 @each $type, $content in $colors {

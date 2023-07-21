@@ -9,10 +9,11 @@
 @use 'colors';
 @use 'box-shadow';
 @use './components/buttons';
-@use './components/popper';
-@use './components/dropdown';
-@use './form/checkbox';
+@use './components/avatar';
 @use './components/menu';
+@use './components/popper';
+@use './form/checkbox';
+@use './components/dropdown';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -26,6 +27,7 @@
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
   $button-border-radius: buttons.$button-border-radius,
+  $avatar-size: avatar.$avatar-size,
   $checkbox : checkbox.$checkbox,
   $menu: menu.$menu
 );
@@ -46,10 +48,10 @@
 @use 'element-plus/theme-chalk/src/footer.scss' as *;
 @use 'element-plus/theme-chalk/src/text.scss' as *;
 @use 'element-plus/theme-chalk/src/message.scss' as *;
+@use 'element-plus/theme-chalk/src/avatar.scss' as *;
 @use 'element-plus/theme-chalk/src/menu.scss' as *;
 @use 'element-plus/theme-chalk/src/divider.scss' as *;
 @use 'element-plus/theme-chalk/src/display.scss' as *;
-@use 'element-plus/theme-chalk/src/popper.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
 @use 'element-plus/theme-chalk/src/checkbox.scss' as *;

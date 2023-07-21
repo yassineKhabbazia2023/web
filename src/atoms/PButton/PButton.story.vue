@@ -5,7 +5,7 @@ import { isAttribute } from '../../utils'
 import { logEvent } from 'histoire/client'
 import { typeOptions } from '../../constants/typeOptions'
 import { reactive, computed } from 'vue'
-import PButton from '@/atoms/PButton'
+import PButton from './'
 /* eslint-disable-next-line */
 import '@/assets/scss/histoire.scss'
 
@@ -150,7 +150,7 @@ const nextText = 'Next Page'
 </script>
 
 <template>
-  <Story title="Basic/Button" icon="teenyicons:button-outline">
+  <Story title="Atoms/Button" icon="teenyicons:button-outline">
     <Variant title="Basic Usage" :source="basicSource">
       <PButton
         :type="basicButtonData.type"
