@@ -1,5 +1,5 @@
 <template>
-  <Story title="Basic/Navbar">
+  <Story title="Atoms/Navbar">
     <div class="container">
       <Variant
         title="Basic Usage"
@@ -9,7 +9,7 @@
           class="aside"
           :entities="basicNavData.entities"
           :handleClickEntity="handleClickEntity"
-          :menuList="menus"
+          :menuList="basicNavData.menus"
         >
           <template #title >
             Entities
