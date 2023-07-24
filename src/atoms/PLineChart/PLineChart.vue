@@ -137,6 +137,6 @@ defineExpose({ chartData })
 
 <style lang="scss" scoped>
 .line-chart-container {
-  width: 750px;
+  width: 100%;
 }
 </style>
