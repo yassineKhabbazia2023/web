@@ -30,6 +30,7 @@ extends:
       sonarQube:
         projectKey: KPMGPulse_Front_StyleGuide
         projectName: "(KPMG Pulse)[Front] Styleguide (Pégase)"
+        qualityGateName: "[Pulse] Default"
       steps:
       - type: files
         name: Assets
