@@ -37,6 +37,7 @@ $colors: (
   'neutral': (
     'gray-50': #F5F5F5,
     'gray-100': #DBDBDB,
+    'gray-200': #A4A4A4,
     'gray-300': #A4A4A4,
     'gray-500': #666666,
     'gray-700': #434343,
@@ -63,6 +64,7 @@ $colors: (
 
 :root {
   --persian-gradient: linear-gradient(90deg, var(--el-color-secondary-amethyste) 0%, var(--el-color-primary) 100%);
+  --pulse-gradient: linear-gradient(90deg, var(--el-color-secondary-fushia) 0%, var(--el-color-secondary-amethyste) 31.25%, var(--el-color-persian-500) 65.63%, var(--el-color-secondary-cyan) 100%);
 }
 
 $typePulse: ();

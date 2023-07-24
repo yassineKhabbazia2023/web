@@ -49,4 +49,4 @@ const checkBoxControl = reactive({
 
   </div>
 </docs>
-<!-- eslint-enable max-len -->.
+<!-- eslint-enable max-len -->

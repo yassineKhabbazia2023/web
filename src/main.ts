@@ -8,22 +8,24 @@ import en from 'element-plus/es/locale/lang/en'
 import './assets/scss/index.scss'
 
 import PLineChart from './atoms/PLineChart'
+import PButton from '@/atoms/PButton'
+import PTable from '@/atoms/PTable'
 import PInput from '@/atoms/PInput'
 import PDatePicker from '@/atoms/PDatePicker'
-import PButton from '@/atoms/PButton'
+import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
 import PTooltip from '@/atoms/PTooltip'
-import PTable from '@/atoms/PTable'
-import PAvatar from '@/atoms/PAvatar'
 import PToolboxItem from '@/atoms/PToolboxItem'
 import PToolbox from '@/molecules/PToolbox'
 import PCheckbox from '@/atoms/PCheckbox'
 import PNavbar from '@/atoms/PNavbar'
 import PBottomMenu from '@/atoms/PBottomMenu'
 import PPastille from '@/atoms/PPastille'
+import toastPlugin from '@/molecules/PToaster'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
+  app.use(toastPlugin)
   app.component('PButton', PButton)
   app.component('PAvatar', PAvatar)
   app.component('PTooltip', PTooltip)

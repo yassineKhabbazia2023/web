@@ -5,8 +5,12 @@ import './assets/scss/index.scss'
 
 import { defineSetupVue3 } from '@histoire/plugin-vue'
 
+import toastPlugin from '@/molecules/PToaster'
+
 export const setupVue3 = defineSetupVue3(({ app }) => {
   app.use(ElementPlus)
+  app.use(toastPlugin)
+
   app.use(
     createRouter({
       history: createMemoryHistory(),
