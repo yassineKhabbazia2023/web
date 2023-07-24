@@ -1,22 +1,86 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
 // css3 var in packages/theme-chalk/src/avatar.scss
-$avatar: () !default;
-$avatar: map.merge(
-  (
-    'text-color': getCssVar('color-white'),
-    'bg-color': getCssVar('text-color', 'disabled'),
-    'text-size': 14px,
-    'icon-size': 18px,
-    'border-radius': getCssVar('border-radius-base'),
-  ),
-  $avatar
+$avatar: (
+  'text-color': getCssVar('color-white'),
+  'bg-color': getCssVar('text-color', 'disabled'),
+  'text-size': 14px,
+  'icon-size': 18px,
+  'border-radius': getCssVar('border-radius-base'),
 );
 
-$avatar-size: () !default;
-$avatar-size: map.merge(
-  (
-    'large': 56px,
-    'default': 40px,
-    'small': 24px,
-  ),
-  $avatar-size
+$avatar-size: (
+  'xlarge': 56px,
+  'large': 50px,
+  'default': 40px,
+  'small': 32px,
+  'xsmall': 24px,
 );
+
+.el-avatar {
+  $self: &;
+  font-weight: 600;
+  
+  .el-icon svg,
+  .el-icon {
+    width: var(--el-avatar-icon-size);
+    height: var(--el-avatar-icon-size);
+  }
+
+  &#{$self}--xlarge {
+    --el-avatar-size: var(--el-avatar-size-xlarge);
+    --el-avatar-text-size: 20px;
+    line-height: 14px;
+    --el-avatar-icon-size: 28px;
+  }
+  &#{$self}--large {
+    --el-avatar-text-size: 16px;
+    line-height: 14px;
+    --el-avatar-icon-size: 22px;
+  }
+  &#{$self}--small {
+    --el-avatar-text-size: 12px;
+    line-height: 14px;
+    --el-avatar-icon-size: 16px;
+  }
+  &#{$self}--xsmall {
+    --el-avatar-size: var(--el-avatar-size-xsmall);
+    --el-avatar-text-size: 10px;
+    line-height: 14px;
+    --el-avatar-icon-size: 12px;
+  }
+
+  &[color="persian-gradient"] {
+    background: var(--persian-gradient);
+    color: getCssVar('color-white');
+  }
+  &[color="orange"] {
+    background: var(--el-color-functionnal-orange-bg);
+    color: var(--el-color-functionnal-orange-txt);
+  }
+
+  &[color="persian"] {
+    background: var(--el-color-persian-50);
+    color: var(--el-color-persian-700);
+  }
+
+  &[color="teal"] {
+    background: var(--el-color-functionnal-teal-bg);
+    color: var(--el-color-functionnal-teal-txt);
+  }
+
+  &[color="green"] {
+    background: var(--el-color-functionnal-green-bg);
+    color: var(--el-color-functionnal-green-txt);
+  }
+
+  &[color="fushia"] {
+    background: var(--el-color-secondary-fushia-bg);
+    color: var(--el-color-secondary-fushia-txt);
+  }
+
+  &[color="gray"] {
+    background: var(--el-color-neutral-gray-50);
+    color: var(--el-color-neutral-gray-500);
+  }
+}

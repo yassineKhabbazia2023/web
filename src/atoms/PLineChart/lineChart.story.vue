@@ -1,5 +1,5 @@
 <template>
-  <Story title="Atoms/Chart" icon="teenyicons:outline-circle">
+  <Story title="Atoms/Chart" icon="carbon:chart-line">
     <Variant title="Custom line chart">
       <PLineChart
         :dataLabels="dataLabels"

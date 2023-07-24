@@ -3,7 +3,7 @@ import { ElButton } from 'element-plus'
 </script>
 
 <template>
-  <el-button v-bind="$attrs">
+  <el-button>
     <slot />
   </el-button>
 </template>

@@ -5,10 +5,10 @@ $text-color: () !default;
 $text-color: map.merge(
   (
     'primary': #303133,
-    'regular': #606266,
+    'regular': getCssVar('color', 'neutral-gray-900'),
     'secondary': #909399,
-    'placeholder': #a8abb2,
-    'disabled': #c0c4cc,
+    'placeholder': getCssVar('color', 'neutral-gray-300'),
+    'disabled': getCssVar('color', 'neutral-gray-500'),
     'primary-persian': #5546FF,
     'secondary-cyan': #194DB4,
   ),

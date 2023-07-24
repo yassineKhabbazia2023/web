@@ -8,21 +8,46 @@
 @use 'border';
 @use 'colors';
 @use 'box-shadow';
+@use 'common';
 @use './components/buttons';
-@use './form/checkbox';
+@use './components/table';
+@use './form/checkbox'; 
+@use './form/input';
+@use './form/datepicker';
+@use './components/avatar';
+@use './components/menu';
+@use './components/popper';
+@use './components/dropdown';
+@use './components/tag';
+
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
   $colors: colors.$colors,
+  $text-color: colors.$text-color,
+  $fill-color: colors.$fill-color,
   $font-family: typography.$font-family,
   $font-size: typography.$font-size,
   $text-font-size: typography.$text-font-size,
+  $common-component-size: common.$common-component-size,
+  $disabled: common.$disabled,
   $border-radius: border.$border-radius,
+  $border-color-hover: colors.$border-color-hover,
+  $border-color: colors.$border-color,
   $box-shadow: box-shadow.$box-shadow,
   $button-font-size: buttons.$button-font-size,
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
   $button-border-radius: buttons.$button-border-radius,
-  $checkbox : checkbox.$checkbox
+  $input: input.$input,
+  $input-padding-horizontal: input.$input-padding-horizontal,
+  $datepicker: datepicker.$datepicker,
+  $avatar-size: avatar.$avatar-size,
+  $checkbox : checkbox.$checkbox,
+  $table : table.$table,
+  $table-font-size : table.$table-font-size,
+  $table-padding : table.$table-padding,
+  $table-cell-padding: table.$table-cell-padding,
+  $menu: menu.$menu
 );
 
 // @use Call after forward, files who need files from element plus
@@ -41,8 +66,14 @@
 @use 'element-plus/theme-chalk/src/footer.scss' as *;
 @use 'element-plus/theme-chalk/src/text.scss' as *;
 @use 'element-plus/theme-chalk/src/message.scss' as *;
+@use 'element-plus/theme-chalk/src/avatar.scss' as *;
+@use 'element-plus/theme-chalk/src/menu.scss' as *;
+@use 'element-plus/theme-chalk/src/divider.scss' as *;
+@use 'element-plus/theme-chalk/src/display.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
+@use 'element-plus/theme-chalk/src/input.scss' as *;
+@use 'element-plus/theme-chalk/src/date-picker.scss' as *;
 @use 'element-plus/theme-chalk/src/checkbox.scss' as *;
-
-@use './components/popper';
+@use 'element-plus/theme-chalk/src/table.scss' as *;
+@use 'element-plus/theme-chalk/src/tag.scss' as *;

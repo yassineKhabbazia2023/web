@@ -21,8 +21,9 @@ extends:
       major: 1
     build:
       sonarQube:
-        projectKey: MyPulseV2_FrontV2_MFE_StyleGuide
-        projectName: "(MyPulseV2)[FrontV2] MFE StyleGuide"
+        projectKey: KPMGPulse_Front_StyleGuide
+        projectName: "(KPMG Pulse)[Front] MFE StyleGuide (Pégase)"
+        qualityGateName: "[Pulse] Default"
       steps:
       - type: npm
         name: Mfe_StyleGuide

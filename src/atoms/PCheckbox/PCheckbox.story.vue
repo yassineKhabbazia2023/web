@@ -1,7 +1,7 @@
 <template>
-  <Story title="Atoms/Checkbox" icon="teenyicons:outline-circle">
+  <Story title="Atoms/Checkbox" icon="radix-icons:checkbox">
     <Variant title="Checkbox">
-      <PCheckbox 
+      <PCheckbox
       :disabled="checkBoxControl.disabled">
         {{ checkBoxControl.contentSlot }}
       </PCheckbox>
@@ -18,7 +18,7 @@ import PCheckbox from '.'
 import { reactive } from 'vue'
 const checkBoxControl = reactive({
   disabled: false,
-  contentSlot: 'Checkbox label',
+  contentSlot: 'Checkbox label'
 })
 </script>
 
@@ -44,7 +44,7 @@ const checkBoxControl = reactive({
   | validate-event        | whether to trigger form validation                          | boolean                            | true    |
   | tabindex              | input tabindex                                              | string / number                    | —       |
   | id                    | input id                                                    | string                             | —       |
-  
+
   <iframe src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?type=design&node-id=296-518&mode=design&t=xDfPHUwiAJQULwGQ-0"></iframe>
 
   </div>

@@ -2,5 +2,21 @@
   "extends": ["@kpmg/eslint-config-pulse"],
   "rules": {
     "@intlify/vue-i18n/no-raw-text": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.story.vue"
+      ],
+      "rules": {
+        "max-len": "off",
+        "vue/max-len": [
+          "error",
+          {
+            "code": 300
+          }
+        ]
+      }
+    }
+  ]
 }
