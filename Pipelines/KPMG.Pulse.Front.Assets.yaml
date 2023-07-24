@@ -1,0 +1,80 @@
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+    - release/*
+  paths:
+    include:
+    - src/assets/images
+
+pool:
+  vmImage: windows-latest
+
+resources:
+  repositories:
+  - repository: CICD
+    name: 'Plateforme Technologique/CICD'
+    type: git
+    ref: 'refs/heads/Release/v6.0'
+
+extends:
+  template: PipelineTemplate.yaml@CICD
+  parameters:
+    versioning:
+      mode: legacy
+      major: 1
+    build:
+      sonarQube:
+        projectKey: KPMGPulse_Front_StyleGuide
+        projectName: "(KPMG Pulse)[Front] Styleguide (Pégase)"
+        qualityGateName: "[Pulse] Default"
+      steps:
+      - type: files
+        name: Assets
+        path: src/assets/images
+    deploy:
+      environments:
+      - name: DEV
+        displayName: Developpement
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: DEV-MyPulseV2
+        - name: storageAccount
+          value: sastdportalfront
+      - name: REC
+        displayName: Recette
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: REC-MyPulseV2
+        - name: storageAccount
+          value: frappfrontrec
+      - name: PREPROD
+        displayName: Preproduction
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: PPR-MyPulseV2
+        - name: storageAccount
+          value: frappfrontppr
+      - name: PROD
+        displayName: Production
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        variables:
+        - name: azureSC
+          value: PRD-MyPulseV2
+        - name: storageAccount
+          value: frappfrontprod
+      steps:
+      - type: az-blob
+        name: Deploy_Assets
+        artifact: Assets
+        azureServiceConnection: $(azureSC)
+        storageAccount: $(storageAccount)
+        container: "assets"
+        targetPath: ''
+        storageDeployment: overwrite
