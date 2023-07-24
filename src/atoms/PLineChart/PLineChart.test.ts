@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils'
-import PLineChart from './PLineChart.vue'
-import { describe, it, expect, vi } from 'vitest'
+import PLineChart from './'
+import { describe, it, expect } from 'vitest'
 import 'vitest-canvas-mock'
 
 describe('PLineChart', () => {
-  it('renders the chart with correct props', async () => {
+  it('renders the chart with correct props', () => {
     const chartTitle = 'Sample Chart'
     const dataLabels = ['Label 1', 'Label 2']
     const dataValues = [

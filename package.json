@@ -40,13 +40,10 @@
     "generate:icons": "node ./scripts/pulse-icon-gen.js ./src/assets/icons ./src/atoms/PIcon/components"
   },
   "dependencies": {
-    "@vue/test-utils": "^2.4.0",
     "@vueuse/core": "^10.2.0",
-    "chart.js": "^4.3.0",
+    "chart.js": "^3.9.1",
     "element-plus": "^2.3.5",
     "lint-staged": "^13.2.3",
-    "vitest-canvas-mock": "^0.3.2",
-    "vitest-mock-extended": "^1.1.4",
     "vue-chart-3": "^3.1.8"
   },
   "devDependencies": {
@@ -61,6 +58,7 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-istanbul": "^0.32.2",
     "@vitest/ui": "^0.32.2",
+    "@vue/test-utils": "^2.4.1",
     "@vue/tsconfig": "^0.4.0",
     "histoire": "^0.16.1",
     "husky": "^8.0.3",
@@ -74,6 +72,8 @@
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",
     "vitest": "^0.32.2",
+    "vitest-canvas-mock": "^0.3.2",
+    "vitest-mock-extended": "^1.1.4",
     "vue": "^3.3.4",
     "vue-tsc": "^1.8.4"
   },

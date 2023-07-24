@@ -15,8 +15,8 @@
 </template>
   
 <script setup lang="ts">
-import PLineChart from "./PLineChart.vue"
-import { reactive, ref } from "vue"
+import PLineChart from './'
+import { reactive, ref } from 'vue'
 const dataLabels = ref([
   "Jan",
   "Feb",
@@ -31,10 +31,10 @@ const dataLabels = ref([
   "Nov",
 ])
 const dataValues = ref([{
-  label: "Chiffre d’affaire N-1",
+  label: "Sales N-1",
   dataValues: [30, 40, 60, 70, 50, 60, 70, 30, 60, 70, 45],
 }, {
-  label: "Chiffre d’affaire N",
+  label: "Sales N",
   dataValues: [20, 40, 60, 70, 50, 10, 70, 30, 60, 70, 45],
 }])
 const toolTipBackgroundColor = ref("#434343")
