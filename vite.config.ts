@@ -4,6 +4,7 @@ import { UserConfigExport, defineConfig, mergeConfig } from 'vite'
 import { defaultColors } from 'histoire'
 import { HstVue } from '@histoire/plugin-vue'
 import vue from '@vitejs/plugin-vue'
+import eslint from 'vite-plugin-eslint'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -47,7 +48,8 @@ const basicConfig = {
         'src/molecules',
         'src/organisms'
       ]
-    })
+    }),
+    eslint()
   ]
 }
 

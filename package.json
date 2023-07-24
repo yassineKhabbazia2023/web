@@ -55,7 +55,7 @@
     "@semantic-release/git": "^10.0.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-istanbul": "^0.32.2",
-    "@vitest/ui": "^0.32.2",
+    "@vitest/ui": "^0.33.0",
     "@vue/test-utils": "^2.4.0",
     "@vue/tsconfig": "^0.4.0",
     "histoire": "^0.16.1",
@@ -63,17 +63,18 @@
     "license-checker": "^25.0.1",
     "lint-staged": "^13.2.3",
     "rollup-plugin-typescript-paths": "^1.4.0",
-    "sass": "^1.62.1",
+    "sass": "^1.64.1",
     "semantic-release": "^21.0.2",
     "semantic-release-ado": "^1.4.0",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-element-plus": "^0.7.1",
     "unplugin-vue-components": "^0.25.1",
-    "vite": "^4.3.9",
+    "vite": "^4.4.6",
+    "vite-plugin-eslint": "^1.8.1",
     "vitest": "^0.32.2",
     "vue": "^3.3.4",
-    "vue-tsc": "^1.8.4",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue-tsc": "^1.8.6"
   },
   "lint-staged": {
     "*.{js, ts, vue, json}": "npm run lint"
