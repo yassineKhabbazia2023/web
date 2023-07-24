@@ -28,8 +28,8 @@ extends:
       major: 1
     build:
       sonarQube:
-        projectKey: MyPulseV2_FrontV2_StyleGuide
-        projectName: "(MyPulseV2)[FrontV2] Styleguide"
+        projectKey: KPMGPulse_Front_StyleGuide
+        projectName: "(KPMG Pulse)[Front] Styleguide (Pégase)"
       steps:
       - type: files
         name: Assets
