@@ -1,5 +1,6 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 @use '../pegase/common-vars' as *;
+@use 'sass:map';
 
 $colors: (
   'primary': (
