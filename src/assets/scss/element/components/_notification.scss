@@ -1,26 +1,51 @@
-// css3 var in packages/theme-chalk/src/notification.scss
-$notification: () !default;
-$notification: map.merge(
-  (
-    'width': 330px,
-    'padding': 14px 26px 14px 13px,
-    'radius': 8px,
-    'shadow': getCssVar('box-shadow-light'),
-    'border-color': getCssVar('border-color-lighter'),
-    'icon-size': 24px,
-    'close-font-size':
-      var(
-        #{getCssVarName('message-close-size')},
-        map.get($message, 'close-size')
-      ),
-    'group-margin-left': 13px,
-    'group-margin-right': 8px,
-    'content-font-size': getCssVar('font-size-base'),
-    'content-color': getCssVar('text-color-regular'),
-    'title-font-size': 16px,
-    'title-color': getCssVar('text-color-primary'),
-    'close-color': getCssVar('text-color-secondary'),
-    'close-hover-color': getCssVar('text-color-regular'),
-  ),
-  $notification
+@use "../../pegase/common-vars" as *;
+@use "element-plus/theme-chalk/src/mixins/function" as *;
+
+
+$notification: (
+  'width': fit-content,
+  'padding': 16px,
+  'radius': 8px,
+  'icon-size': 32px,
+  'group-margin-left': 0px,
+  'group-margin-right': 0px,
+  'content-font-size': 14px,
+  'content-color': var(--el-color-white)
 );
+
+.el-notification {
+  background: var(--el-color-neutral-gray-900) !important;
+  align-items: center;
+  max-width: 500px;
+  gap: 8px;
+
+  &__icon,
+  &__content {
+    font-weight: 400;
+    line-height: 16px;
+    text-align: unset;
+  }
+
+  &__group {
+    margin: unset;
+    width: calc(100% - 8px);
+  }
+}
+
+.el-notification .el-notification__icon {
+  font-size: 14px !important;
+  border-radius: 100%;
+  color: var(--el-color-white);
+}
+
+.el-notification.success .el-notification__icon {
+  background: var(--el-color-functionnal-green);
+}
+
+.el-notification.error .el-notification__icon {
+  background: var(--el-color-functionnal-red);
+}
+
+.el-notification.loading .el-notification__icon {
+  background: var(--pulse-gradient);
+}

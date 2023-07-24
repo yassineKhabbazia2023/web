@@ -20,9 +20,11 @@ import PCheckbox from '@/atoms/PCheckbox'
 import PNavbar from '@/atoms/PNavbar'
 import PBottomMenu from '@/atoms/PBottomMenu'
 import PPastille from '@/atoms/PPastille'
+import toastPlugin from '@/molecules/PToaster'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
+  app.use(toastPlugin)
   app.component('PButton', PButton)
   app.component('PAvatar', PAvatar)
   app.component('PTooltip', PTooltip)

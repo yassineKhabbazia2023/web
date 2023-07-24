@@ -14,6 +14,7 @@
 @use './form/checkbox'; 
 @use './form/input';
 @use './form/datepicker';
+@use './components/notification';
 @use './components/avatar';
 @use './components/menu';
 @use './components/popper';
@@ -41,6 +42,7 @@
   $input: input.$input,
   $input-padding-horizontal: input.$input-padding-horizontal,
   $datepicker: datepicker.$datepicker,
+  $notification: notification.$notification,
   $avatar-size: avatar.$avatar-size,
   $checkbox : checkbox.$checkbox,
   $table : table.$table,
@@ -77,3 +79,4 @@
 @use 'element-plus/theme-chalk/src/checkbox.scss' as *;
 @use 'element-plus/theme-chalk/src/table.scss' as *;
 @use 'element-plus/theme-chalk/src/tag.scss' as *;
+@use 'element-plus/theme-chalk/src/notification.scss' as *;
