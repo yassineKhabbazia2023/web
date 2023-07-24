@@ -17,6 +17,7 @@
 @use './components/popper';
 @use './form/checkbox';
 @use './components/dropdown';
+@use './components/tag';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -68,3 +69,4 @@
 @use 'element-plus/theme-chalk/src/input.scss' as *;
 @use 'element-plus/theme-chalk/src/date-picker.scss' as *;
 @use 'element-plus/theme-chalk/src/checkbox.scss' as *;
+@use 'element-plus/theme-chalk/src/tag.scss' as *;

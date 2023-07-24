@@ -1,6 +1,6 @@
 // css3 var in packages/theme-chalk/src/tag.scss
 $tag: () !default;
-$tag: map.merge(
+$tag: (
   (
     'font-size': 12px,
     'border-radius': 4px,
@@ -10,7 +10,7 @@ $tag: map.merge(
 );
 
 $tag-height: () !default;
-$tag-height: map.merge(
+$tag-height: (
   (
     'large': 32px,
     'default': 24px,
@@ -20,7 +20,7 @@ $tag-height: map.merge(
 );
 
 $tag-padding: () !default;
-$tag-padding: map.merge(
+$tag-padding: (
   (
     'large': 12px,
     'default': 10px,
@@ -30,7 +30,7 @@ $tag-padding: map.merge(
 );
 
 $tag-icon-size: () !default;
-$tag-icon-size: map.merge(
+$tag-icon-size: (
   (
     'large': 16px,
     'default': 14px,
@@ -38,3 +38,21 @@ $tag-icon-size: map.merge(
   ),
   $tag-icon-size
 );
+
+.el-tag.p-pastille {
+  background: var(--el-color-persian-50);
+  color: var(--el-color-persian-500);
+  border: var(--el-color-persian-50);
+  font-weight: 600;
+  padding: 4px;
+  min-width: 24px;
+
+  &--disabled {
+    background: var(--el-color-neutral-gray-100);
+    color: var(--el-color-neutral-gray-500);
+  }
+  &--warning {
+    background: var(--el-color-functionnal-red);
+    color: var(--el-color-base-white);
+  }
+}

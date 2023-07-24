@@ -18,6 +18,7 @@ import PToolbox from '@/molecules/PToolbox'
 import PCheckbox from '@/atoms/PCheckbox'
 import PNavbar from '@/atoms/PNavbar'
 import PBottomMenu from '@/atoms/PBottomMenu'
+import PPastille from '@/atoms/PPastille'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
@@ -32,6 +33,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PCheckbox', PCheckbox)
   app.component('PNavbar', PNavbar)
   app.component('PBottomMenu', PBottomMenu)
+  app.component('PPastille', PPastille)
 }
 
 const plugin = {

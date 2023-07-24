@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ElDropdown, ElDropdownMenu } from 'element-plus'
 import PToolboxItem from '@/atoms/PToolboxItem'
-import { iconResolver } from '@/utils/iconResolver'
+import { iconsResolver } from '@/utils/iconResolver'
 
 type ToolboxLine = {
   iconName: string;
@@ -42,5 +42,5 @@ interface PToolboxProps {
 const props = defineProps<PToolboxProps>()
 defineEmits(['p-toolbox-item-clicked'])
 
-const resolvedIcons = iconResolver(props.elements, 'iconName')
+const resolvedIcons = iconsResolver(props.elements, 'iconName')
 </script>
