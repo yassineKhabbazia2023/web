@@ -10,9 +10,10 @@ import './assets/scss/index.scss'
 import PInput from '@/atoms/PInput'
 import PDatePicker from '@/atoms/PDatePicker'
 import PButton from '@/atoms/PButton'
-import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
 import PTooltip from '@/atoms/PTooltip'
+import PTable from '@/atoms/PTable'
+import PAvatar from '@/atoms/PAvatar'
 import PToolboxItem from '@/atoms/PToolboxItem'
 import PToolbox from '@/molecules/PToolbox'
 import PCheckbox from '@/atoms/PCheckbox'
@@ -31,6 +32,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PToolboxItem', PToolboxItem)
   app.component('PToolbox', PToolbox)
   app.component('PCheckbox', PCheckbox)
+  app.component('PTable', PTable)
   app.component('PNavbar', PNavbar)
   app.component('PBottomMenu', PBottomMenu)
   app.component('PPastille', PPastille)
@@ -42,4 +44,4 @@ const plugin = {
 
 export default plugin
 
-export * from './atoms/PIcon/components'
+export * from '@/atoms/PIcon/components'

@@ -1,50 +1,78 @@
-// css3 var in packages/theme-chalk/src/table.scss
-$table: () !default;
-$table: map.merge(
-  (
-    'border-color': getCssVar('border-color-lighter'),
-    'border': 1px solid getCssVar('table-border-color'),
-    'text-color': getCssVar('text-color-regular'),
-    'header-text-color': getCssVar('text-color-secondary'),
-    'row-hover-bg-color': getCssVar('fill-color', 'light'),
-    'current-row-bg-color': getCssVar('color-primary-light-9'),
-    'header-bg-color': getCssVar('bg-color'),
-    'fixed-box-shadow': getCssVar('box-shadow', 'light'),
-    'bg-color': getCssVar('fill-color', 'blank'),
-    'tr-bg-color': getCssVar('fill-color', 'blank'),
-    'expanded-cell-bg-color': getCssVar('fill-color', 'blank'),
-    'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 15%),
-    'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 15%),
-  ),
-  $table
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$table: (
+  'border-color': getCssVar('border-color-lighter'),
+  'border': 1px solid getCssVar('table-border-color'),
+  'text-color': getCssVar('fill-color', 'darker'),
+  'header-text-color': getCssVar('fill-color', ''),
+  'row-hover-bg-color': getCssVar('fill-color', 'light'),
+  'current-row-bg-color': getCssVar('color-primary-light-9'),
+  'header-bg-color': getCssVar('bg-color'),
+  'fixed-box-shadow': getCssVar('box-shadow', 'light'),
+  'bg-color': getCssVar('fill-color', 'blank'),
+  'tr-bg-color': getCssVar('fill-color', 'blank'),
+  'expanded-cell-bg-color': getCssVar('fill-color', 'blank'),
+  'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 15%),
+  'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 15%),
 );
 
-$table-font-size: () !default;
-$table-font-size: map.merge(
-  (
-    'large': getCssVar('font-size', 'base'),
-    'default': 14px,
-    'small': 12px,
-  ),
-  $table-font-size
+$table-font-size: (
+  'large': getCssVar('font-size', 'base'),
+  'default': 14px,
+  'small': 12px,
 );
 
-$table-padding: () !default;
-$table-padding: map.merge(
-  (
-    'large': 12px 0,
-    'default': 8px 0,
-    'small': 4px 0,
-  ),
-  $table-padding
+$table-padding: (
+  'large': 12px 0,
+  'default': 8px 0,
+  'small': 4px 0,
 );
 
-$table-cell-padding: () !default;
-$table-cell-padding: map.merge(
-  (
-    'large': 0 16px,
-    'default': 0 12px,
-    'small': 0 8px,
-  ),
-  $table-cell-padding
+$table-cell-padding: (
+  'large': 0 16px,
+  'default': 12px,
+  'small': 0 8px,
 );
+
+  
+/**
+* Change the styles in tables.
+*/
+
+tbody tr td .cell {
+  font-weight: 400;
+  font-family: var(--el-font-family)
+}
+.el-table thead tr th {
+  font-weight: 400;
+}
+.el-table thead tr th .sort-caret.ascending {
+  top: -5px;
+}
+.el-table thead tr th .sort-caret.descending {
+  bottom: -3px;
+}
+.el-table .sort-caret {
+  border: solid 4.5px transparent;
+}
+
+.el-table {
+  .el-checkbox__inner {
+    width: 24px;
+    height: 24px;
+  }
+
+  .el-checkbox__input .el-checkbox__inner:hover {
+    border: 2px solid var(--el-color-primary)
+  }
+
+  .el-checkbox__input .el-checkbox__inner {
+    border: 2px solid #dcdfe6
+  }
+
+  .el-checkbox__input .el-checkbox__inner::after {
+    top: 2px;
+    left: 9px;
+    height: 12px;
+  }
+}

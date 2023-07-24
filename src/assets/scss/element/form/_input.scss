@@ -3,7 +3,7 @@
 // css3 var in packages/theme-chalk/src/input.scss
 $input: (
   'border-radius': getCssVar('border-radius-small'),
-  'icon-color': getCssVar('color', 'neutral-gray-200'),
+  'icon-color': getCssVar('color', 'neutral-gray-300'),
   'clear-hover-color': getCssVar('color-primary'),
 );
 

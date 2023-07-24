@@ -41,19 +41,15 @@ $border-color: (
 
 $border-color-hover: getCssVar('color', 'persian-700');
 
-// $fill-color: () !default;
-// $fill-color: map.merge(
-//   (
-//     '': #f0f2f5,
-//     'light': #f5f7fa,
-//     'lighter': #fafafa,
-//     'extra-light': #fafcff,
-//     'dark': #ebedf0,
-//     'darker': #e6e8eb,
-//     'blank': #ffffff,
-//   ),
-//   $fill-color
-// );
+$fill-color: (
+  '': var(--el-color-neutral-gray-300),
+  'light': var(--el-color-neutral-gray-100),
+  'lighter': var(--el-color-neutral-gray-50),
+  'extra-light': var(--el-color-neutral-gray-50),
+  'dark': var(--el-color-neutral-gray-500),
+  'darker': var(--el-color-neutral-gray-900),
+  'blank': var(--el-color-base-white),
+);
 
 // // Background
 // $bg-color: () !default;
