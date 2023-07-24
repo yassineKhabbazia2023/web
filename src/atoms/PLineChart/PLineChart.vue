@@ -131,6 +131,8 @@ const { lineChartProps } = useLineChart({
   chartData,
   options
 })
+
+defineExpose({ chartData })
 </script>
 
 <style lang="scss" scoped>
