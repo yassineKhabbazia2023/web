@@ -11,7 +11,7 @@
 @use 'common';
 @use './components/buttons';
 @use './components/table';
-@use './form/checkbox'; 
+@use './form/checkbox';
 @use './form/input';
 @use './form/datepicker';
 @use './components/notification';
@@ -54,6 +54,7 @@
   $menu: menu.$menu
 );
 
+
 // @use Call after forward, files who need files from element plus
 @use '../pegase/radius';
 
@@ -82,3 +83,8 @@
 @use 'element-plus/theme-chalk/src/table.scss' as *;
 @use 'element-plus/theme-chalk/src/tag.scss' as *;
 @use 'element-plus/theme-chalk/src/notification.scss' as *;
+@use 'element-plus/theme-chalk/src/select.scss' as *;
+@use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
+@use 'element-plus/theme-chalk/src/option.scss' as *;
+@use 'element-plus/theme-chalk/src/option-group.scss' as *;
+@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;

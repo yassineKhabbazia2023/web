@@ -22,6 +22,7 @@ import PBottomMenu from '@/atoms/PBottomMenu'
 import PPastille from '@/atoms/PPastille'
 import PTag from '@/atoms/PTag'
 import toastPlugin from '@/molecules/PToaster'
+import PDropdown from '@/atoms/PDropdown'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
@@ -40,6 +41,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PBottomMenu', PBottomMenu)
   app.component('PPastille', PPastille)
   app.component('PTag', PTag)
+  app.component('PDropdown', PDropdown)
 }
 
 const plugin = {
