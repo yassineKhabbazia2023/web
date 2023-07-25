@@ -1,8 +1,8 @@
 <template>
   <el-carousel>
     <PCarouselItem
-      v-for="item in items"
-      :key="item"
+      v-for="(item, index) in items"
+      :key="index"
       :text="item.text"
       :imageType="item.imageType"
       :imageName="item.imageName"
