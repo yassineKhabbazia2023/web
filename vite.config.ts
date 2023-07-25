@@ -20,7 +20,8 @@ const basicConfig = {
       '@': `${path.resolve(__dirname, 'src')}/`,
       '@components': `${path.resolve(__dirname, 'src/components')}/`,
       '@constants': `${path.resolve(__dirname, 'src/constants')}/`,
-      '@utils': `${path.resolve(__dirname, 'src/utils')}/`
+      '@utils': `${path.resolve(__dirname, 'src/utils')}/`,
+      '@tests': `${path.resolve(__dirname, 'tests')}/`
     }
   },
   plugins: [
@@ -28,17 +29,10 @@ const basicConfig = {
       reactivityTransform: true
     }),
     AutoImport({
-      imports: [
-        'vue',
-        'vue/macros',
-        '@vueuse/core'
-      ],
+      imports: ['vue', 'vue/macros', '@vueuse/core'],
       dts: true,
       vueTemplate: true,
-      dirs: [
-        './src/atoms/PIcon',
-        './src/utils'
-      ]
+      dirs: ['./src/atoms/PIcon', './src/utils']
     }),
     Components({
       dirs: [
@@ -64,9 +58,7 @@ if (process.env.HISTOIRE) {
 
   basicConfig.histoire = {
     setupFile: './src/histoire.setup.ts',
-    plugins: [
-      HstVue()
-    ],
+    plugins: [HstVue()],
     outDir: './dist',
     theme: {
       colors: {

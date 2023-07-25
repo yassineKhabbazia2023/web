@@ -1,16 +1,76 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
 // css3 var in packages/theme-chalk/src/carousel.scss
-$carousel: () !default;
-$carousel: map.merge(
-  (
-    'arrow-font-size': 12px,
+$carousel: 
+  ('arrow-font-size': 12px,
     'arrow-size': 36px,
-    'arrow-background': rgba(31, 45, 61, 0.11),
-    'arrow-hover-background': rgba(31, 45, 61, 0.23),
-    'indicator-width': 30px,
+    'arrow-background': getCssVar('color-white'),
+    'arrow-hover-background': getCssVar('color-white'),
+    'indicator-width': 6px,
     'indicator-height': 2px,
     'indicator-padding-horizontal': 4px,
-    'indicator-padding-vertical': 12px,
+    'indicator-padding-vertical': 58px,
     'indicator-out-color': getCssVar('border-color-hover'),
-  ),
-  $carousel
 );
+
+//custom css override
+.el-carousel {
+  &__arrow {
+    border: 1px solid getCssVar('color', 'persian-200');
+    color: getCssVar('color', 'persian-200');
+
+    &:active,
+    &:hover,
+    &:focus {
+      border: 1px solid getCssVar('color', 'base-persian');
+      color: getCssVar('color', 'base-persian');
+    }
+  }
+
+  &__indicator {
+    &--horizontal {
+      &.is-active {
+        .el-carousel__button {
+          width: 20px;
+          height: 6px;
+          border-radius: 50px;
+          background: getCssVar('color', 'white');
+        }
+      }
+    }
+
+    >.el-carousel__button {
+      border-radius: 50%;
+      border: solid;
+      color: var(--el-color-neutral-gray-100);
+    }
+  }
+}
+
+//custom css for carousel-item
+
+.el-carousel__item {
+  background: var(--persian-light-gradient);
+  min-height: 600px;
+  >.top {
+    border-radius: 10px;
+    border: 1px solid getCssVar('color', 'white');
+    opacity: 0.5;
+    margin: 0 auto;
+    width: 50%;
+    margin-top: 48px;
+    margin-bottom: 48px;
+
+    .text {
+      color: getCssVar('color', 'white');
+      text-align: center;
+      margin: 12px;
+    }
+  }
+
+  >.bottom {
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+  }
+}

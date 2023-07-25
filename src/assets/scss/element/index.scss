@@ -20,6 +20,8 @@
 @use './components/popper';
 @use './components/dropdown';
 @use './components/tag';
+@use './components/carousel';
+@use './components/image';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -51,6 +53,7 @@
   $table-padding : table.$table-padding,
   $table-cell-padding: table.$table-cell-padding,
   $avatar-size: avatar.$avatar-size,
+  $carousel : carousel.$carousel,
   $menu: menu.$menu
 );
 
@@ -87,4 +90,6 @@
 @use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
 @use 'element-plus/theme-chalk/src/option.scss' as *;
 @use 'element-plus/theme-chalk/src/option-group.scss' as *;
-@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
+@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;@use 'element-plus/theme-chalk/src/carousel.scss' as *;
+@use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
+@use 'element-plus/theme-chalk/src/image.scss' as *;
