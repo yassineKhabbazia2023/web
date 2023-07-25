@@ -27,9 +27,9 @@
 import { getColorValue, useCopyColor } from '@/utils'
 
 const colorsType = [
-  'secondary-fushia',
-  'secondary-fushia-txt',
-  'secondary-fushia-bg',
+  'secondary-fuschia',
+  'secondary-fuschia-txt',
+  'secondary-fuschia-bg',
   'secondary-amethyste',
   'secondary-amethyste-txt',
   'secondary-amethyste-bg',

@@ -20,6 +20,7 @@ import PCheckbox from '@/atoms/PCheckbox'
 import PNavbar from '@/atoms/PNavbar'
 import PBottomMenu from '@/atoms/PBottomMenu'
 import PPastille from '@/atoms/PPastille'
+import PTag from '@/atoms/PTag'
 import toastPlugin from '@/molecules/PToaster'
 
 export function install(app: any, { i18n }: any) {
@@ -38,6 +39,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PNavbar', PNavbar)
   app.component('PBottomMenu', PBottomMenu)
   app.component('PPastille', PPastille)
+  app.component('PTag', PTag)
 }
 
 const plugin = {
