@@ -3,6 +3,7 @@ import PLineChart from '.'
 import { describe, it, expect } from 'vitest'
 import 'vitest-canvas-mock'
 import { getRandomInt, createGradient } from '@/utils'
+import { type ChartOptions } from 'chart.js'
 
 describe('pLineChart', () => {
   it('renders the chart with correct props', () => {
@@ -14,7 +15,7 @@ describe('pLineChart', () => {
     ]
     const toolTipBackgroundColor = '#FF0000'
 
-    const options = {
+    const options: ChartOptions<'line'> = {
       scales: {
         y: {
           beginAtZero: true,
