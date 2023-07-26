@@ -4,7 +4,7 @@ import PTable from './'
 import { ElTable } from 'element-plus'
 import { describe, it, expect } from 'vitest'
 
-describe('PTable', () => {
+describe('pTable', () => {
   // Define a sample data for testing
   const testData = [
     { id: 1, name: 'John Doe', age: 30 },
@@ -27,11 +27,11 @@ describe('PTable', () => {
     // Check if the table renders correctly
     const tableElement = wrapper.findComponent({ name: 'ElTable' })
 
-    expect(tableElement.exists()).toBe(true)
+    expect(tableElement.exists()).toBeTruthy()
 
     // Check if the data is rendered correctly in the table
     const rows = wrapper.findAll('tbody > tr')
-    expect(rows.length).toBe(testData.length)
+    expect(rows).toHaveLength(testData.length)
   })
 
   it('applies the stripe class when stripe prop is true', () => {

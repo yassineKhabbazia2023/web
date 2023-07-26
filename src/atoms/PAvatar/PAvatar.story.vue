@@ -59,7 +59,7 @@
         <PAvatar
           :shape="currentShape"
           :size="currentSize"
-          color="fushia">
+          color="fuschia">
           <PIcon>
             <PIScissors />
           </PIcon>
@@ -187,8 +187,8 @@ const avatarColorList: { label: string; value: 'color' }[] = [
     value: 'green'
   },
   {
-    label: 'fushia',
-    value: 'fushia'
+    label: 'fuschia',
+    value: 'fuschia'
   },
   {
     label: 'gray',
@@ -211,7 +211,6 @@ const currentColor = ref<['color']>('persian-gradient')
 }
 </style>
 
-<!-- eslint-disable max-len -->
 <docs lang="md">
   ## Basic usage
 

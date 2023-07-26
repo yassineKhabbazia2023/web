@@ -31,3 +31,4 @@ src/atoms/PIcon/components
 
 auto-imports.d.ts
 components.d.ts
+.env.local

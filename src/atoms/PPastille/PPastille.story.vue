@@ -31,7 +31,7 @@
     <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809"></iframe>
   </div>
 
-  This component is a simple circle than can take characters / numbers content or an icon. 
+  This component is a simple circle than can take characters / numbers content or an icon.
 </docs>
 
 <script setup lang="ts">

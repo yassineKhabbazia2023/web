@@ -1,6 +1,6 @@
-import './assets/scss/histoire.scss'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import ElementPlus from 'element-plus'
+import './assets/scss/histoire.scss'
 import './assets/scss/index.scss'
 
 import { defineSetupVue3 } from '@histoire/plugin-vue'

@@ -2,7 +2,7 @@
   <Story
   title="Atoms/PCellText"
   icon="fluent:button-16-regular"
-  :layout="{ type: 'grid', width: '300px' }">>
+  :layout="{ type: 'grid', width: '300px' }">
     <Variant title="PCellText" :source="source">
       <PCellText
          :content="pCellTextBasicData.content"
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import PCellText from './PCellText.vue'
+import PCellText from './'
 import { reactive } from 'vue'
 import { PIPerson } from '../PIcon/components'
 

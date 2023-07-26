@@ -21,7 +21,11 @@ import PCheckbox from '@/atoms/PCheckbox'
 import PNavbar from '@/atoms/PNavbar'
 import PBottomMenu from '@/atoms/PBottomMenu'
 import PPastille from '@/atoms/PPastille'
+import PTag from '@/atoms/PTag'
 import toastPlugin from '@/molecules/PToaster'
+import PDropdown from '@/atoms/PDropdown'
+import PCarousel from '@/molecules/PCarousel'
+import PCarouselItem from '@/atoms/PCarouselItem'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
@@ -40,6 +44,10 @@ export function install(app: any, { i18n }: any) {
   app.component('PNavbar', PNavbar)
   app.component('PBottomMenu', PBottomMenu)
   app.component('PPastille', PPastille)
+  app.component('PTag', PTag)
+  app.component('PDropdown', PDropdown)
+  app.component('PCarouselItem', PCarouselItem)
+  app.component('PCarousel', PCarousel)
 }
 
 const plugin = {

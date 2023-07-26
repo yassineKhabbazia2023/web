@@ -1,7 +1,11 @@
 {
   "extends": "@vue/tsconfig/tsconfig.json",
   "include": ["env.d.ts", "./src/**/*", "tests/**/*"],
-  "exclude": ["src/**/__tests__/*", "./src/**/*.story.vue", "./src/histoire.setup.ts"],
+  "exclude": [
+    "src/**/__tests__/*",
+    "./src/**/*.story.vue",
+    "./src/histoire.setup.ts"
+  ],
   "compilerOptions": {
     "noImplicitAny": true,
     "target": "ESNext",
@@ -15,7 +19,8 @@
       "node",
       "element-plus/global",
       "@histoire/plugin-vue/components",
-      "@vueuse/core"],
+      "@vueuse/core"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -31,7 +36,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@tests/*": ["./tests/*"]
     }
   }
 }

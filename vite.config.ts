@@ -4,6 +4,7 @@ import { UserConfigExport, defineConfig, mergeConfig } from 'vite'
 import { defaultColors } from 'histoire'
 import { HstVue } from '@histoire/plugin-vue'
 import vue from '@vitejs/plugin-vue'
+import eslint from 'vite-plugin-eslint'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -20,7 +21,8 @@ const basicConfig = {
       '@atoms': `${path.resolve(__dirname, 'src/atoms')}/`,
       '@components': `${path.resolve(__dirname, 'src/components')}/`,
       '@constants': `${path.resolve(__dirname, 'src/constants')}/`,
-      '@utils': `${path.resolve(__dirname, 'src/utils')}/`
+      '@utils': `${path.resolve(__dirname, 'src/utils')}/`,
+      '@tests': `${path.resolve(__dirname, 'tests')}/`
     }
   },
   plugins: [
@@ -28,17 +30,10 @@ const basicConfig = {
       reactivityTransform: true
     }),
     AutoImport({
-      imports: [
-        'vue',
-        'vue/macros',
-        '@vueuse/core'
-      ],
+      imports: ['vue', 'vue/macros', '@vueuse/core'],
       dts: true,
       vueTemplate: true,
-      dirs: [
-        './src/atoms/PIcon',
-        './src/utils'
-      ]
+      dirs: ['./src/atoms/PIcon', './src/utils']
     }),
     Components({
       dirs: [
@@ -48,7 +43,8 @@ const basicConfig = {
         'src/molecules',
         'src/organisms'
       ]
-    })
+    }),
+    eslint()
   ]
 }
 
@@ -63,9 +59,7 @@ if (process.env.HISTOIRE) {
 
   basicConfig.histoire = {
     setupFile: './src/histoire.setup.ts',
-    plugins: [
-      HstVue()
-    ],
+    plugins: [HstVue()],
     outDir: './dist',
     theme: {
       colors: {

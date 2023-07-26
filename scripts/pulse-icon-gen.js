@@ -45,13 +45,15 @@ async function generateComponent(iconPath, outputPath) {
     const componentName = `PI${capitalizeFirstLetter(iconName)}`
 
     const componentCode = `
+<!-- eslint-disable vue/max-attributes-per-line -->
 <template>
  ${pathData.input}
 </template>
+<!-- eslint-disable vue/max-attributes-per-line -->
 <script lang="ts">
 import type { DefineComponent } from 'vue'
 export default ({
-  name: "${componentName}",
+  name: '${componentName}'
 }) as DefineComponent
 </script>
 `
@@ -86,13 +88,17 @@ async function generateIcons(iconsFolderPath, outputFolderPath) {
 }
 
 async function generateEntry(icons, outputFolderPath) {
-  const code = icons
+  let code = icons
     .map((iconPath) => {
       const iconName = path.basename(iconPath, '.svg')
       const componentName = `PI${capitalizeFirstLetter(iconName)}`
       return `export { default as ${componentName} } from './${componentName}.vue'`
     })
     .join('\n')
+
+  // Add blank line at the end for eslint
+  code = code + `
+`
   await fs.promises.writeFile(path.resolve(outputFolderPath, 'index.ts'), code, 'utf-8')
 
   const generatedArray = []
@@ -104,7 +110,7 @@ async function generateEntry(icons, outputFolderPath) {
 
   const constantsFilePath = path.join(outputFolderPath, 'constants.ts')
   const constantsCode = `export const pulseGeneratedIcons = [
-${generatedArray.map((item) => `'${item}'`).join(',\n  ')}
+  ${generatedArray.map((item) => `'${item}'`).join(',\n  ')}
 ]
 `
   await fs.promises.writeFile(constantsFilePath, constantsCode)
