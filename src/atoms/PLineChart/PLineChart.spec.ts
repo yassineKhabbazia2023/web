@@ -6,7 +6,7 @@ import { computed } from 'vue'
 import {
   type ChartOptions
 } from 'chart.js'
-import { getRandomInt, createGradient } from "@/utils"
+import { getRandomInt, createGradient } from '@/utils'
 
 describe('pLineChart', () => {
   it('renders the chart with correct props', () => {
@@ -72,13 +72,13 @@ describe('pLineChart', () => {
 
     const chartBackgroundColorRight = [
       {
-        borderColor: "#5546FF",
-        backgroundColor: ["85,70,255", "85,70,255"],
+        borderColor: '#5546FF',
+        backgroundColor: ['85,70,255', '85,70,255']
       },
       {
-        borderColor: "#be4bc8",
-        backgroundColor: ["190,75,200", "190,75,200"],
-      },
+        borderColor: '#be4bc8',
+        backgroundColor: ['190,75,200', '190,75,200']
+      }
     ]
 
     const datasetsRight = dataValues.map((dataValue: any) => {
@@ -92,7 +92,7 @@ describe('pLineChart', () => {
         backgroundColor: createGradient(chartColor.backgroundColor),
         borderColor: chartColor.borderColor,
         borderWidth: 1,
-        label: dataValue.label,
+        label: dataValue.label
       }
       return dataset
     })
