@@ -8,10 +8,7 @@
   "main": "src/main.ts",
   "files": [
     "dist",
-    "src",
-    "README.md",
-    "vite.config.ts",
-    "vitest.config.ts"
+    "README.md"
   ],
   "scripts": {
     "build": "vite build",
