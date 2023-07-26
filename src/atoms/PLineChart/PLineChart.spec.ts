@@ -2,10 +2,6 @@ import { shallowMount } from '@vue/test-utils'
 import PLineChart from '.'
 import { describe, it, expect } from 'vitest'
 import 'vitest-canvas-mock'
-import { computed } from 'vue'
-import {
-  type ChartOptions
-} from 'chart.js'
 import { getRandomInt, createGradient } from '@/utils'
 
 describe('pLineChart', () => {
@@ -18,7 +14,7 @@ describe('pLineChart', () => {
     ]
     const toolTipBackgroundColor = '#FF0000'
 
-    const options = computed<ChartOptions<'line'>>(() => ({
+    const options = {
       scales: {
         y: {
           beginAtZero: true,
@@ -68,7 +64,7 @@ describe('pLineChart', () => {
           radius: 0
         }
       }
-    }))
+    }
 
     const chartBackgroundColorRight = [
       {
