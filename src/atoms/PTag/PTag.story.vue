@@ -1,6 +1,6 @@
 <template>
   <Story
-    title="Atoms/Tag"
+    title="2. Atoms/Tag"
     :layout="{
       type: 'grid',
       width: 400,
@@ -242,7 +242,9 @@ Tag provide three different themes: dark、light and plain
 
 Using effect to change, default is light
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D294%253A561%26mode%3Ddev" allowfullscreen></iframe>
+<div class="responsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D294%253A561%26mode%3Ddev" allowfullscreen></iframe>
+</div>
 
 ## Checkable tag
 

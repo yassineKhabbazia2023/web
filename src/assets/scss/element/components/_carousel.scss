@@ -2,12 +2,13 @@
 
 // css3 var in packages/theme-chalk/src/carousel.scss
 $carousel: 
-  ('arrow-font-size': 12px,
+  (
+    'arrow-font-size': 12px,
     'arrow-size': 36px,
     'arrow-background': getCssVar('color-white'),
     'arrow-hover-background': getCssVar('color-white'),
     'indicator-width': 6px,
-    'indicator-height': 2px,
+    'indicator-height': 6px,
     'indicator-padding-horizontal': 4px,
     'indicator-padding-vertical': 58px,
     'indicator-out-color': getCssVar('border-color-hover'),
@@ -32,7 +33,6 @@ $carousel:
       &.is-active {
         .el-carousel__button {
           width: 20px;
-          height: 6px;
           border-radius: 50px;
           background: getCssVar('color', 'white');
         }
@@ -41,7 +41,6 @@ $carousel:
 
     >.el-carousel__button {
       border-radius: 50%;
-      border: solid;
       color: var(--el-color-neutral-gray-100);
     }
   }
@@ -52,19 +51,22 @@ $carousel:
 .el-carousel__item {
   background: var(--persian-light-gradient);
   min-height: 600px;
+
   >.top {
     border-radius: 10px;
-    border: 1px solid getCssVar('color', 'white');
-    opacity: 0.5;
-    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    margin: 48px auto;
     width: 50%;
-    margin-top: 48px;
-    margin-bottom: 48px;
+
+    @media screen and (min-width: 768px) {
+      width: 280px;
+    }
 
     .text {
+      padding: 16px 12px;
+      font-size: 16px;
       color: getCssVar('color', 'white');
       text-align: center;
-      margin: 12px;
     }
   }
 

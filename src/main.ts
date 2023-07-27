@@ -4,6 +4,7 @@ import ElementPlus from 'element-plus'
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
 import en from 'element-plus/es/locale/lang/en'
+import dayjs from 'dayjs'
 
 import './assets/scss/index.scss'
 
@@ -17,14 +18,16 @@ import PTooltip from '@/atoms/PTooltip'
 import PToolboxItem from '@/atoms/PToolboxItem'
 import PToolbox from '@/molecules/PToolbox'
 import PCheckbox from '@/atoms/PCheckbox'
-import PNavbar from '@/atoms/PNavbar'
-import PBottomMenu from '@/atoms/PBottomMenu'
+import PNavbar from '@/molecules/PNavbar'
+import PBottomMenu from '@/molecules/PBottomMenu'
 import PPastille from '@/atoms/PPastille'
 import PTag from '@/atoms/PTag'
 import toastPlugin from '@/molecules/PToaster'
 import PDropdown from '@/atoms/PDropdown'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
+
+dayjs.Ls.en.weekStart = 1
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })

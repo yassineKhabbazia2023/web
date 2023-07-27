@@ -1,5 +1,5 @@
 <template>
-  <Story title="Atoms/Tooltip" icon="tabler:tooltip">
+  <Story title="2. Atoms/Tooltip" icon="tabler:tooltip">
     <Variant title="Custum tooltip">
       <PTooltip
         :content="tooltipBasicData.content"
@@ -20,7 +20,19 @@
     </Variant>
   </Story>
 </template>
-<!-- eslint-disable max-len -->
+
+<script setup lang="ts">
+import PTooltip from './'
+import { reactive } from 'vue'
+import placementOptions from '@/constants/placementOptions'
+import PButton from '@/atoms/PButton'
+const tooltipBasicData = reactive({
+  placement: placementOptions[0].value,
+  content: 'this is a tooltip',
+  disabled: false
+})
+</script>
+
 <docs lang="md">
   <div>
   Tooltip is used to display prompt information for mouse hover.
@@ -57,16 +69,8 @@
     <iframe src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?type=design&node-id=984-5556&mode=design&t=WnggowsMqWDcnDrS-0;https://element-plus.org/en-US/component/tooltip.html"></iframe>
 
   </div>
+
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D984%253A5059%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
 </docs>
-<!-- eslint-enable max-len -->
-<script setup lang="ts">
-import PTooltip from './'
-import { reactive } from 'vue'
-import placementOptions from '@/constants/placementOptions'
-import PButton from '@/atoms/PButton'
-const tooltipBasicData = reactive({
-  placement: placementOptions[0].value,
-  content: 'this is a tooltip',
-  disabled: false
-})
-</script>

@@ -1,5 +1,11 @@
 <template>
-  <Story title="Atoms/Navbar">
+  <Story
+    title="3. Molecules/Navbar"
+    icon="gala:menu-left"
+    :layout="{
+      type: 'single',
+      iframe: false,
+    }">
     <div class="container">
       <Variant
         title="Basic Usage"
@@ -30,10 +36,11 @@
     </div>
   </Story>
 </template>
+
 <script lang="ts" setup>
 import { reactive, computed } from 'vue'
 import PNavbar from './'
-import themeOptions from '../../constants/themeOptions'
+import themeOptions from '@/constants/themeOptions'
 
 const entities = [
   { name: 'Restaurant Johnny s pizza', idAccount: 'idAccount', icon: 'PICupHot', color: 'orange' },
@@ -59,7 +66,6 @@ const handleClickEntity = (idAccount: string) => {
 }
 </script>
 
-<!-- eslint-disable max-len -->
 <docs lang="md">
   ## Navbar Attributes
 
@@ -74,7 +80,7 @@ const handleClickEntity = (idAccount: string) => {
   | --------- | -------------------------- |
   | `title`   | Customize components title |
 
-  <iframe src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?type=design&node-id=443-811&mode=design&t=2jOd4krjDx7sZuz6-0"></iframe>
-
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D443%253A811%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
 </docs>
-<!-- eslint-enable max-len -->

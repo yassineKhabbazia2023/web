@@ -1,5 +1,5 @@
 <template>
-  <Story title="Atoms/Avatar" icon="clarity:avatar-line">
+  <Story title="2. Atoms/Avatar" icon="clarity:avatar-line">
     <Variant title="Basic usage">
       <div class="demo-type">
         <PAvatar
@@ -220,10 +220,9 @@ const currentColor = ref<['color']>('persian-gradient')
 
   It supports images, Icons, or characters.
 
-  <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450"
-  src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D241%253A826%26mode%3Ddev"
-  allowfullscreen></iframe>
-
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D241%253A826%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
   ## Fallback
 
   fallback when image load error.

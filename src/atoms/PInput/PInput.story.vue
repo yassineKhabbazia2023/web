@@ -1,5 +1,5 @@
 <template>
-  <Story title="Atoms/Input" icon="iconoir:input-field">
+  <Story title="2. Atoms/Input" icon="iconoir:input-field">
     <Variant title="Basic Usage">
       <PInput
         :type="basicInputData.type"
@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import PInput from './PInput.vue'
+import PInput from '.'
 import { reactive } from 'vue'
 
 const basicInputData = reactive({
@@ -70,11 +70,6 @@ const PasswordInputData = reactive({
   inputValue: 'Hello i am your password'
 })
 </script>
-<style>
-.histoire-story-variant-grid-item {
-  height: 100px;
-}
-</style>
 
 <docs lang="md">
   ## Input
@@ -83,5 +78,7 @@ const PasswordInputData = reactive({
   show-password : Make a toggle-able password Input with the show-password attribute.
   attribute type="textarea" to change input into native textarea.
   attribute type="password" to change input into password input.
-  <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev" allowfullscreen></iframe>
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
 </docs>

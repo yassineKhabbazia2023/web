@@ -1,7 +1,6 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
-$checkbox : 
-(
+$checkbox: (
   'disabled-border-color': getCssVar('color','persian-200'),
   'disabled-input-fill': getCssVar('color','persian-50'),
   'disabled-checked-input-fill': getCssVar('color','persian-200'),
@@ -9,7 +8,7 @@ $checkbox :
   'disabled-checked-icon-color': getCssVar('color-white'),
   'input-border-color-hover': getCssVar('color','base-persian'),
   'checked-text-color': getCssVar('text-color','primary'),
-  'font-size': 12px,
+  'font-size': 14px,
   'border-radius': 2px
 );
 

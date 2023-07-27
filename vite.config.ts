@@ -37,7 +37,7 @@ const basicConfig = {
     Components({
       dirs: [
         'src/atoms',
-        'src/components',
+        'src/guidelines',
         'src/histoire-controls-components',
         'src/molecules',
         'src/organisms'

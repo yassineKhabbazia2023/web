@@ -3,7 +3,7 @@
     backgroundColor="var(--el-color-neutral-gray-700)"
     hoverBackgroundColor="var(--el-color-secondary-cyan-bg)"
     textColor="white"
-    class="el-menu-vertical hidden-sm-and-down"
+    class="el-menu--navbar hidden-sm-and-down"
     :collapse="isCollapse"
     router
   >
@@ -107,76 +107,4 @@ const collapseMenu = () => {
 const createIcon = (name: string) => {
   return defineAsyncComponent(() => import(`../PIcon/components/${name}.vue`))
 }
-
 </script>
-
-<style scoped>
-.el-menu-vertical:not(.el-menu--collapse) {
-  .title span {
-    margin-left: 4px;
-    font-size: 16px;
-  }
-
-  .title .icon-collapse {
-    margin-left: auto;
-    background-color: var(--el-color-neutral-gray-700);
-  }
-
-  .divider {
-    width: 97%;
-  }
-}
-
-.el-menu--collapse .el-menu-item {
-  padding: 15px;
-}
-
-.divider {
-  margin: auto;
-  width: 60%;
-}
-
-.el-menu-horizontal {
-  .icon-collapse {
-    padding: 13px;
-  }
-}
-
-.icon-horizontale-index-0 {
-  margin-left: auto;
-}
-
-.menu-name {
-  font-size: 12px;
-}
-
-.title .icon-collapse {
-  background-color: var(--el-color-neutral-gray-700);
-}
-
-.el-divider--horizontal {
-  margin: 10px 0;
-}
-
-.is-active {
-  background-color: var(--el-color-neutral-gray-900);
-  color: var(--el-color-white);
-  .icon-entity {
-    border: solid 3px rgb(85,70,255);
-  }
-}
-
-.el-icon {
-  background-color: var(--el-color-neutral-gray-500);
-  border-radius: 50%;
-  width: 30px !important;
-  height: 30px;
-  padding: 8px;
-}
-
-.icon-entity {
-  border: solid 3px var(--el-color-neutral-gray-500);
-  padding: 5px;
-}
-
-</style>

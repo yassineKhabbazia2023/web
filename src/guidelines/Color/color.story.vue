@@ -1,6 +1,6 @@
 <template>
   <Story
-    title="Basic/Color"
+    title="1. Basic/Color"
     :layout="{
       type: 'single',
       iframe: true,
@@ -155,5 +155,8 @@ import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
 <div class="container">
   Au click sur une case de couleur, sera copié la variable css de la couleur, à utiliser dans vos
   composants.
+</div>
+<div class="reponsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D525%253A416%26mode%3Ddev" allowfullscreen></iframe>
 </div>
 </docs>

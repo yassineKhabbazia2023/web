@@ -1,9 +1,5 @@
 export const typeOptions = [
   {
-    label: 'default',
-    value: ''
-  },
-  {
     label: 'primary',
     value: 'primary'
   },

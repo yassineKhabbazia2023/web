@@ -1,13 +1,6 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const headerHeight = ref(52)
-const asideWidth = ref(236)
-</script>
-
 <template>
   <Story
-title="Basic/Container"
+    title="1. Basic/Container"
     icon="ph:layout-thin"
     :layout="{
       type: 'single'
@@ -34,6 +27,13 @@ title="Basic/Container"
     </Variant>
   </Story>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const headerHeight = ref(52)
+const asideWidth = ref(236)
+</script>
 
 <style scoped>
   .el-header {
@@ -114,5 +114,7 @@ title="Basic/Container"
 | ---- | ------------------------- |
 | —    | customize default content |
 
+<div class="reponsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D87%253A2427%26mode%3Ddev" allowfullscreen></iframe>
+</div>
 </docs>
-<!-- eslint-enable max-len -->

@@ -1,5 +1,5 @@
 <template>
-  <Story title="Molecules/PToaster" icon="radix-icons:margin">
+  <Story title="3. Molecules/Toaster" icon="system-uicons:message">
     <Variant title="Success notification">
       <PButton plain @click="openSuccess">
         Success
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import PButton from '@/atoms/PButton'
-import { PICheck, PIExclamationTriangle } from '@/atoms/PIcon/components'
+import { PICheck, PIExclamationTriangle, PILoader } from '@/atoms/PIcon/components'
 
 const toastPlugin = inject('toast')
 
@@ -39,7 +39,7 @@ const openSuccess = () => {
 const openLoading = () => {
   toastPlugin({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: PICheck,
+    icon: PILoader,
     showClose: false,
     customClass: 'loading'
   })
@@ -74,4 +74,8 @@ const openError = () => {
 | offset                   | offset from the top edge of the screen.                             | number               |
 | appendTo                 | set the root element for the notification, default to document.body | string \|HTMLElement |
 | zIndex                   | initial zIndex                                                      | number               |
+
+<div class="responsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1074%253A5511%26mode%3Ddev" allowfullscreen></iframe>
+</div>
 </docs>

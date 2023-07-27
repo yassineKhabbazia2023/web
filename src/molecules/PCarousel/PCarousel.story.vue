@@ -1,20 +1,18 @@
 <template>
   <Story
-    title="Molecules/Carousel"
-    icon="teenyicons:outline-circle"
+    title="3. Molecules/Carousel"
+    icon="bxs:carousel"
     :layout="{
-        type: 'grid',
-        width: 500,
-      }"
+      type: 'single',
+      iframe: 'false'
+    }"
   >
-    <Variant title="Custum tooltip">
+    <Variant title="Carousel">
       <PCarousel
         :items="carouselBasicData"
         arrow="never"
         style="width:500px;height: 600px;">
       </PCarousel>
-      <template #controls>
-      </template>
     </Variant>
   </Story>
 </template>
@@ -42,13 +40,14 @@ const carouselBasicData = ref([
 </script>
 
 <docs lang="md">
-  ## PCarousel
+  ## Carousel
   This component is used for carousel.
 
   | Name       | Description                                  | Type                               | Default                |
   | ---------- | -------------------------------------------- | ---------------------------------- | ---------------------- |
   | `items` |  PCarouselItem lists  | `Array<PCarouselItem>`| inherit from entities  |
 
-<iframe src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?type=design&node-id=900%3A4684&t=ZWvzVcdigl9JChV4-1"></iframe>
-
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1065%253A5221%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
 </docs>

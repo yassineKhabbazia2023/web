@@ -1,39 +1,40 @@
 <template>
-  <Story title="Atoms/Pastille" icon="teenyicons:circle-outline">
+  <Story title="2. Atoms/Pastille" icon="teenyicons:circle-outline">
     <Variant title="Basic usage">
-      <p-pastille>1</p-pastille>
+      <PPastille>1</PPastille>
     </Variant>
 
     <Variant title="Basic usage longer">
-      <p-pastille>12345</p-pastille>
+      <PPastille>12345</PPastille>
     </Variant>
 
     <Variant title="With icon">
-      <p-pastille iconName="PITrash" />
+      <PPastille iconName="PITrash" />
     </Variant>
 
     <Variant title="Warning usage">
-      <p-pastille kind="warning">
+      <PPastille kind="warning">
       1
-      </p-pastille>
+      </PPastille>
     </Variant>
 
     <Variant title="Disabled usage">
-      <p-pastille disabled>
+      <PPastille disabled>
         1
-      </p-pastille>
+      </PPastille>
     </Variant>
   </Story>
 </template>
 
-<docs lang="md">
-  <div class="container">
-    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809"></iframe>
-  </div>
-
-  This component is a simple circle than can take characters / numbers content or an icon.
-</docs>
-
 <script setup lang="ts">
 import PPastille from './'
 </script>
+
+<docs lang="md">
+  ## Pastille
+  This component is a simple circle than can take characters / numbers content or an icon.
+
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1316%253A9267%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
+</docs>
