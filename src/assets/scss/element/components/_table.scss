@@ -57,6 +57,16 @@ tbody tr td .cell {
 }
 
 .el-table {
+
+  td {
+    height: 40px!important;
+    padding: 0!important;
+  }
+
+  .cell {
+    white-space: nowrap!important;
+  }
+
   .el-checkbox__inner {
     width: 24px;
     height: 24px;

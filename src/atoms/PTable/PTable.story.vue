@@ -7,7 +7,8 @@
       <PTable :data="tableInputs.data" :stripe="tableInputs.striped">
         <el-table-column
         type="selection"
-        v-if="tableInputs.selectable" />
+        v-if="tableInputs.selectable"
+        align="center" />
         <el-table-column
           v-for="column in tableInputs.tableColumn"
           :key="column.prop"
@@ -15,6 +16,7 @@
           :label="column.label"
           :width="column.width"
           :sortable="tableInputs.sortable"
+          align="center"
         />
       </PTable>
       <template #controls>
