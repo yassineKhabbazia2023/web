@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 
 import './assets/scss/index.scss'
 
+import PLineChart from './atoms/PLineChart'
 import PButton from '@/atoms/PButton'
 import PTable from '@/atoms/PTable'
 import PInput from '@/atoms/PInput'
@@ -41,6 +42,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PToolboxItem', PToolboxItem)
   app.component('PToolbox', PToolbox)
   app.component('PCheckbox', PCheckbox)
+  app.component('PLineChart', PLineChart)
   app.component('PTable', PTable)
   app.component('PNavbar', PNavbar)
   app.component('PBottomMenu', PBottomMenu)
