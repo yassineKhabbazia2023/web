@@ -34,7 +34,7 @@ $table-cell-padding: (
   'small': 0 8px,
 );
 
-  
+
 /**
 * Change the styles in tables.
 */
@@ -43,15 +43,19 @@ tbody tr td .cell {
   font-weight: 400;
   font-family: var(--el-font-family)
 }
+
 .el-table thead tr th {
   font-weight: 400;
 }
+
 .el-table thead tr th .sort-caret.ascending {
   top: -5px;
 }
+
 .el-table thead tr th .sort-caret.descending {
   bottom: -3px;
 }
+
 .el-table .sort-caret {
   border: solid 4.5px transparent;
 }
@@ -59,30 +63,15 @@ tbody tr td .cell {
 .el-table {
 
   td {
-    height: 40px!important;
-    padding: 0!important;
+    height: 40px !important;
+    padding: 0 !important;
   }
 
   .cell {
-    white-space: nowrap!important;
+    white-space: nowrap !important;
   }
 
-  .el-checkbox__inner {
-    width: 24px;
-    height: 24px;
-  }
-
-  .el-checkbox__input .el-checkbox__inner:hover {
-    border: 2px solid var(--el-color-primary)
-  }
-
-  .el-checkbox__input .el-checkbox__inner {
-    border: 2px solid #dcdfe6
-  }
-
-  .el-checkbox__input .el-checkbox__inner::after {
-    top: 2px;
-    left: 9px;
-    height: 12px;
+  .el-checkbox {
+    padding: 5px 15px 5px 7px;
   }
 }
