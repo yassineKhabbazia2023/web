@@ -25,6 +25,7 @@ import toastPlugin from '@/molecules/PToaster'
 import PDropdown from '@/atoms/PDropdown'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
+import PDialog from '@/atoms/PDialog'
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
@@ -46,6 +47,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PDropdown', PDropdown)
   app.component('PCarouselItem', PCarouselItem)
   app.component('PCarousel', PCarousel)
+  app.component('PDialog', PDialog)
 }
 
 const plugin = {
