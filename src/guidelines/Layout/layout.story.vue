@@ -1,22 +1,6 @@
-<script setup lang="ts">
-import { justifyOptions } from './constants'
-import { reactive } from 'vue'
-
-// Basic Usage
-const basicData = reactive({
-  span: 6,
-  gutter: 0,
-  offset: 0,
-  justify: 'start',
-  align: 'top',
-  push: 0,
-  pull: 0
-})
-</script>
-
 <template>
   <Story
-    title="Basic/Layout"
+    title="1. Basic/Layout"
     icon="lucide:layout-dashboard"
     :layout="{
       type: 'single'
@@ -27,7 +11,7 @@ const basicData = reactive({
         Valeurs d’espacement
       </p>
 
-      <table>
+      <table class="table-layout">
         <thead>
           <th>Size (px)</th>
           <th>Size (rem)</th>
@@ -101,7 +85,7 @@ const basicData = reactive({
         En créant des groupes des principaux appareils utilisés,
         nous pouvons facilement définir des breakpoints.
       </p>
-      <table>
+      <table class="table-layout">
         <thead>
           <th>Nom du breakpoint</th>
           <th>Device</th>
@@ -154,7 +138,10 @@ const basicData = reactive({
         </tbody>
       </table>
 
-      <el-row :gutter="basicData.gutter" :justify="basicData.justify">
+      <el-row
+        :gutter="basicData.gutter"
+        :justify="basicData.justify"
+        class="row-layout">
         <el-col
 v-for="item in 4"
           :key="item"
@@ -167,91 +154,109 @@ v-for="item in 4"
       </el-row>
       <template #controls>
         <HstSlider
-v-model="basicData.gutter"
-title="Gutter"
-:min="0"
-:max="60" />
+          v-model="basicData.gutter"
+          title="Gutter"
+          :min="0"
+          :max="60" />
         <HstSlider
-v-model="basicData.span"
-title="Span"
-:min="0"
-:max="24" />
+          v-model="basicData.span"
+          title="Span"
+          :min="0"
+          :max="24" />
         <HstSlider
-v-model="basicData.offset"
-title="Offset"
-:min="0"
-:max="24" />
+          v-model="basicData.offset"
+          title="Offset"
+          :min="0"
+          :max="24" />
         <HstSlider
-v-model="basicData.push"
-title="Push"
-:min="0"
-:max="24" />
+          v-model="basicData.push"
+          title="Push"
+          :min="0"
+          :max="24" />
         <HstSlider
-v-model="basicData.pull"
-title="Pull"
-:min="0"
-:max="24" />
+          v-model="basicData.pull"
+          title="Pull"
+          :min="0"
+          :max="24" />
         <HstRadio
-v-model="basicData.justify"
-title="Justify"
-:options="justifyOptions" />
+          v-model="basicData.justify"
+          title="Justify"
+          :options="justifyOptions" />
       </template>
     </Variant>
   </Story>
 </template>
 
+<script setup lang="ts">
+import { justifyOptions } from './constants'
+import { reactive } from 'vue'
+
+// Basic Usage
+const basicData = reactive({
+  span: 6,
+  gutter: 0,
+  offset: 0,
+  justify: 'start',
+  align: 'top',
+  push: 0,
+  pull: 0
+})
+</script>
+
 <style lang="scss">
-table {
+table.table-layout {
   width: 100%;
   border: 0;
   border-collapse: collapse;
-}
 
-thead {
-  background: #F5F5F5;
-  color: #666666;
-  border-bottom: 1px solid #DBDBDB;
-}
-
-th {
-  padding: 11px 16px;
-  text-align: left;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-
-  &:first-child {
-    border-top-left-radius: 8px;
+  thead {
+    background: #F5F5F5;
+    color: #666666;
+    border-bottom: 1px solid #DBDBDB;
   }
 
-  &:last-child {
-    border-top-right-radius: 8px;
+  th {
+    padding: 11px 16px;
+    text-align: left;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+
+    &:first-child {
+      border-top-left-radius: 8px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 8px;
+    }
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #DBDBDB;
+    color: #171717;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
   }
 }
 
-td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #DBDBDB;
-  color: #171717;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 120%;
-}
+.row-layout {
+  .el-col {
+    margin-bottom: 10px;
+  }
 
-.el-col {
-  margin-bottom: 10px;
-}
+  .grid-item {
+    min-height: 36px;
+  }
 
-.grid-item {
-  min-height: 36px;
-}
+  .grid-item-light {
+    background: #d3dce6;
+  }
 
-.grid-item-light {
-  background: #d3dce6;
-}
-
-.grid-item-dark {
-  background: #e5e9f2;
+  .grid-item-dark {
+    background: #e5e9f2;
+  }
 }
 </style>
 <docs lang="md">
@@ -270,5 +275,8 @@ Ces unités de base nous aideront à maintenir la cohérence de la conception et
 améliorer la communication entre les designers et les développeurs. Nous avons choisi
 une unité 8 car la plupart des tailles d'écran sont divisibles par 4 et 4 lui-même est
 également un nombre facilement divisible.</p>
+</div>
+<div class="reponsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D87%253A2427%26mode%3Ddev" allowfullscreen></iframe>
 </div>
 </docs>

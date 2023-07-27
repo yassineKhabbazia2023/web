@@ -1,9 +1,6 @@
-<script setup lang="ts">
-</script>
-
 <template>
   <Story
-    title="Basic/Typographie"
+    title="1. Basic/Typographie"
     icon="teenyicons:text-solid"
     :layout="{
       type: 'single',
@@ -111,11 +108,13 @@ Text right
     </Variant>
   </Story>
 </template>
+
+<script setup lang="ts">
+</script>
+
 <docs lang="md">
 ## Text
-  <div class="container">
-    <iframe class="responsive-iframe" src="https://www.figma.com/file/
-    CmAQkyvJgicN6PHwf61DBZ/%F0%9F%A6%84-Guidelines?type=design
-    &node-id=7-419&t=TM4euOaCfpu9qi5K-0"></iframe>
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D659%253A521%26mode%3Ddev" allowfullscreen></iframe>
   </div>
 </docs>

@@ -1,5 +1,5 @@
 <template>
-  <Story title="Atoms/ToolboxItem" icon="radix-icons:divider-horizontal">
+  <Story title="2. Atoms/ToolboxItem" icon="radix-icons:divider-horizontal">
     <Variant title="Default">
       <PToolboxItem
         :value="defaultState.value"
@@ -27,10 +27,9 @@
         :disabled="WithoutIconState.disabled"
       >
         <template #icon>
-x
-</template>
+          x
+        </template>
       </PToolboxItem>
-
       <template #controls>
         <HstText v-model="WithoutIconState.value" title="value" />
         <HstCheckbox v-model="WithoutIconState.disabled" title="disabled" />
@@ -38,18 +37,6 @@ x
     </Variant>
   </Story>
 </template>
-
-<!-- eslint-disable max-len -->
-<docs lang="md">
-  <div>
-    PToolboxItem is used to construct each line of the PToolbox element.
-    It can contains an icon or not.
-    <iframe
-    class="responsive-iframe"
-    src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?node-id=1341%3A7359&mode=dev"></iframe>
-  </div>
-</docs>
-<!-- eslint-enable max-len -->
 
 <script setup lang="ts">
 import { reactive } from 'vue'
@@ -68,3 +55,13 @@ const WithoutIconState = reactive({
   disabled: false
 })
 </script>
+<docs lang="md">
+  <div>
+    PToolboxItem is used to construct each line of the PToolbox element.
+    It can contains an icon or not.
+  </div>
+
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1277%253A6366%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
+</docs>

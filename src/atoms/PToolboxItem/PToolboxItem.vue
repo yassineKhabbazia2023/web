@@ -1,9 +1,9 @@
 <template>
-  <div :class="['toolbox-item', { 'with-icon': hasIcon, disabled: disabled }]">
-    <div class="toolbox-item__icon" v-if="hasIcon">
+  <div :class="['p-toolbox-item', { 'with-icon': hasIcon, disabled: disabled }]">
+    <div class="p-toolbox-item__icon" v-if="hasIcon">
       <slot name="icon" />
     </div>
-    <p class="toolbox-item__text">
+    <p class="p-toolbox-item__text">
       {{ value }}
     </p>
   </div>
@@ -23,14 +23,13 @@ withDefaults(defineProps<PToolboxItemProps>(), {
 </script>
 
 <style lang="scss">
-.toolbox-item {
+.p-toolbox-item {
   display: flex;
   align-items: center;
   padding: 8px 16px;
-
   font-size: 1.4rem;
   line-height: 120%;
-  color: var(--pulse-color-neutral-gray-900, #171717);
+  color: var(--el-color-neutral-gray-900);
   user-select: none;
 
   cursor: pointer;

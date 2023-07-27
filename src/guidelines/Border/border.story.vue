@@ -1,37 +1,6 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const radiusGroup = ref([
-  {
-    name: 'No Radius',
-    type: ''
-  },
-  {
-    name: 'Small Radius',
-    type: 'small'
-  },
-  {
-    name: 'Large Radius',
-    type: 'base'
-  },
-  {
-    name: 'Round Radius',
-    type: 'round'
-  }
-])
-
-function getValue(type: string) {
-  const getCssVarValue = (prefix: string, type: string) =>
-    getComputedStyle(document.documentElement).getPropertyValue(
-      `--el-${prefix}-${type}`
-    )
-  return getCssVarValue('border-radius', type)
-}
-</script>
-
 <template>
   <Story
-    title="Basic/Border"
+    title="1. Basic/Border"
     icon="teenyicons:border-radius-solid"
     source=" "
     :layout="{
@@ -43,85 +12,66 @@ function getValue(type: string) {
       <el-row class="demo-radius">
         <el-col :span="12">
           <div class="title">
-Radius 4px
-</div>
+            Radius 4px
+          </div>
           <code class="code-value">.radius--1</code>
-          <div
-            class="radius radius--1"
-          />
+          <div class="radius radius--1" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius 8px
-</div>
+            Radius 8px
+          </div>
           <code class="code-value">.radius--2</code>
-          <div
-            class="radius radius--2"
-          />
+          <div class="radius radius--2" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius 12px
-</div>
+            Radius 12px
+          </div>
           <code class="code-value">.radius--3</code>
-          <div
-            class="radius radius--3"
-          />
+          <div class="radius radius--3" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius 16px
-</div>
+            Radius 16px
+          </div>
           <code class="code-value">.radius--4</code>
-          <div
-            class="radius radius--4"
-          />
+          <div class="radius radius--4" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius 20px
-</div>
+            Radius 20px
+          </div>
           <code class="code-value">.radius--5</code>
-          <div
-            class="radius radius--5"
-          />
+          <div class="radius radius--5" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius 24px
-</div>
+            Radius 24px
+          </div>
           <code class="code-value">.radius--6</code>
-          <div
-            class="radius radius--6"
-          />
+          <div class="radius radius--6" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius 32px
-</div>
+            Radius 32px
+          </div>
           <code class="code-value">.radius--7</code>
-          <div
-            class="radius radius--7"
-          />
+          <div class="radius radius--7" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius 48px
-</div>
+            Radius 48px
+          </div>
           <code class="code-value">.radius--8</code>
-          <div
-            class="radius radius--8"
-          />
+          <div class="radius radius--8" />
         </el-col>
         <el-col :span="12">
           <div class="title">
-Radius circle
-</div>
+            Radius circle
+          </div>
           <code class="code-value">.radius--circle</code>
-          <div
-            class="radius radius--circle"
-            style="width: 100px;"
-          />
+          <div class="radius radius--circle" style="width: 100px;" />
         </el-col>
       </el-row>
     </Variant>
@@ -189,6 +139,37 @@ Radius circle
   </Story>
 </template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const radiusGroup = ref([
+  {
+    name: 'No Radius',
+    type: ''
+  },
+  {
+    name: 'Small Radius',
+    type: 'small'
+  },
+  {
+    name: 'Large Radius',
+    type: 'base'
+  },
+  {
+    name: 'Round Radius',
+    type: 'round'
+  }
+])
+
+function getValue(type: string) {
+  const getCssVarValue = (prefix: string, type: string) =>
+    getComputedStyle(document.documentElement).getPropertyValue(
+      `--el-${prefix}-${type}`
+    )
+  return getCssVarValue('border-radius', type)
+}
+</script>
+
 <style scoped>
 .demo-border .text {
   width: 15%;
@@ -231,15 +212,14 @@ Radius circle
   color: black;
 }
 </style>
+
 <docs lang="md">
-## Border
-<div class="container">
-<p><strong>Notre système de rayon suit une règle de multiple de 4.</strong>
-<br>
-L'échelle crée un équilibre visuel qui facilite la compréhension de l'interface. Les borders
-permettent de garder une identité cohérente, durable et globale.</p>
-<iframe class="responsive-iframe"
-  src="https://www.figma.com/file/CmAQkyvJgicN6PHwf61DBZ/%F0%9F%A6%84-Guidelines?type=design&
-  node-id=7-419&t=TM4euOaCfpu9qi5K-0"></iframe>
-</div>
+  ## Border
+  <p><strong>Notre système de rayon suit une règle de multiple de 4.</strong>
+  <br>
+  L'échelle crée un équilibre visuel qui facilite la compréhension de l'interface. Les borders
+  permettent de garder une identité cohérente, durable et globale.</p>
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D108%253A1524%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
 </docs>

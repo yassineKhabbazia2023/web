@@ -1,7 +1,6 @@
-
 <template>
   <Story
-    title="Atoms/BottomMenu"
+    title="3. Molecules/BottomMenu"
     icon="icon-park-outline:bottom-bar"
   >
     <router-view />
@@ -50,5 +49,7 @@ It should have almost the same content as the top/main menu.
 | defaultActive             | The default active item                           | `String`                     | a route path                                       |                   |
 
 # Figma
-[Link](https://www.figma.com/file/LRcMfRHINntp4qUgf3JChQ/%F0%9F%93%82-COLLAB-V2-%2F-BAF-%2F-Sprint-00?type=design&node-id=4-1180&mode=design&t=g1x2nMpqtES3cG9f-0)
+<div class="responsive-figma-container">
+  <iframe class="responsive-figma" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D423%253A1405%26mode%3Ddev" allowfullscreen></iframe>
+</div>
 </docs>

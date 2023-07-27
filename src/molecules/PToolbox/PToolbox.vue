@@ -1,6 +1,6 @@
 <template>
   <el-dropdown
-    popperClass="p-toolbox"
+    popperClass="p-toolbox shadow--3"
     placement="bottom-start"
   >
     <slot />

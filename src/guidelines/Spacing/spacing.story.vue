@@ -1,9 +1,6 @@
-<script setup lang="ts">
-</script>
-
 <template>
   <Story
-    title="Basic/Spacing"
+    title="1. Basic/Spacing"
     icon="radix-icons:margin"
     :layout="{
       type: 'single'
@@ -14,7 +11,7 @@
         Types d’espacement
       </p>
 
-      <table>
+      <table class="table-spacing">
         <thead>
           <th>Type de l’espacement + (token)</th>
           <th>Résultat</th>
@@ -67,7 +64,7 @@
         Valeurs d’espacement
       </p>
 
-      <table>
+      <table class="table-spacing">
         <thead>
           <th>Nom de l’espacement (token)</th>
           <th>Size (rem)</th>
@@ -130,58 +127,45 @@
   </Story>
 </template>
 
+<script setup lang="ts">
+</script>
+
 <style lang="scss">
-table {
+.table-spacing {
   width: 100%;
   border: 0;
   border-collapse: collapse;
-}
 
-thead {
-  background: #F5F5F5;
-  color: #666666;
-  border-bottom: 1px solid #DBDBDB;
-}
-
-th {
-  padding: 11px 16px;
-  text-align: left;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-
-  &:first-child {
-    border-top-left-radius: 8px;
+  thead {
+    background: #F5F5F5;
+    color: #666666;
+    border-bottom: 1px solid #DBDBDB;
   }
 
-  &:last-child {
-    border-top-right-radius: 8px;
+  th {
+    padding: 11px 16px;
+    text-align: left;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+
+    &:first-child {
+      border-top-left-radius: 8px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 8px;
+    }
   }
-}
 
-td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #DBDBDB;
-  color: #171717;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 120%;
-}
-
-.el-col {
-  margin-bottom: 10px;
-}
-
-.grid-item {
-  min-height: 36px;
-}
-
-.grid-item-light {
-  background: #d3dce6;
-}
-
-.grid-item-dark {
-  background: #e5e9f2;
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #DBDBDB;
+    color: #171717;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 120%;
+  }
 }
 </style>
 <docs lang="md">
@@ -201,4 +185,7 @@ td {
   choisi une unité 8 car la plupart des tailles d'écran sont divisibles par 4 et 4
   lui-même est également un nombre facilement divisible.</p>
   </div>
+  <div class="reponsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D87%253A2427%26mode%3Ddev" allowfullscreen></iframe>
+</div>
 </docs>

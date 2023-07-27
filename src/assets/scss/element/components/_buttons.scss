@@ -26,13 +26,47 @@ $button-padding-horizontal: (
 
 // Custom css el-button
 .el-button {
-  &.el-button {
+  $self: &;
+
+  &#{$self} {
     &--small {
+      --el-button-size: 32px;
       height: 32px;
+
+      #{$self}__icon {
+        &--left {
+          margin-right: 8px;
+        }
+        &--right {
+          margin-left: 8px;
+        }
+      }
+
+      .el-icon {
+        width: 16px;
+      }
+    }
+    &--default.is-circle {
+      width: 44px;
+
+      .el-icon {
+        width: 20px;
+      }
+    }
+
+    &--default {
+      #{$self}__icon {
+        &--left {
+          margin-right: 12px;
+        }
+        &--right {
+          margin-left: 12px;
+        }
+      }
     }
   }
   // Button default Pegase
-  &.el-button--primary {
+  &#{$self}--primary {
     &:hover {
       background: var(--el-color-persian-700);
       border-color: var(--el-color-persian-700);
@@ -49,7 +83,7 @@ $button-padding-horizontal: (
     }
   }
   // Button secondary Pegase
-  &.el-button--primary.is-plain {
+  &#{$self}--primary.is-plain {
     border-color: var(--el-color-primary);
     color: var(--el-color-primary);
     background: $color-white;
@@ -73,7 +107,7 @@ $button-padding-horizontal: (
     }
   }
   // Button white Pegase
-  &.el-button--white {
+  &#{$self}--white {
     border-color: $color-white;
     background: $color-white;
     color: var(--el-color-primary);

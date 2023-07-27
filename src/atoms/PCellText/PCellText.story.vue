@@ -1,6 +1,6 @@
 <template>
   <Story
-  title="Atoms/PCellText"
+  title="2. Atoms/CellText"
   icon="fluent:button-16-regular"
   :layout="{ type: 'grid', width: '300px' }">
     <Variant title="PCellText" :source="source">
@@ -63,9 +63,7 @@ import { PIPerson } from '@kpmg/styleguide'
 </script>
 
 <docs lang="md">
-<iframe
-  src="https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=
-  https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants
-  ?type=design&node-id=605-2162&mode=design&t=s4LIgE2MBLqGC6Ju-0">
-</iframe>
+<div class="responsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D605%253A2161%26mode%3Ddev" allowfullscreen></iframe>
+</div>
 </docs>

@@ -14,38 +14,50 @@ $notification: (
 );
 
 .el-notification {
+  $self: &;
+
   background: var(--el-color-neutral-gray-900) !important;
   align-items: center;
   max-width: 500px;
   gap: 8px;
 
-  &__icon,
+  &.success {
+    #{$self}__icon {
+      background: var(--el-color-functionnal-green);
+    }
+  }
+  &.error {
+    #{$self}__icon {
+      background: var(--el-color-functionnal-red);
+    }
+  }
+  &.warning {
+    #{$self}__icon {
+      background: var(--el-color-functionnal-orange);
+    }
+  }
+  &.loading {
+    #{$self}__icon {
+      background: var(--pulse-gradient);
+    }
+  }
+
   &__content {
     font-weight: 400;
     line-height: 16px;
     text-align: unset;
   }
 
+  #{$self}__icon.el-icon {
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-radius: 100%;
+    font-size: 14px;
+    color: var(--el-color-white);
+  }
+
   &__group {
     margin: unset;
     width: calc(100% - 8px);
   }
-}
-
-.el-notification .el-notification__icon {
-  font-size: 14px !important;
-  border-radius: 100%;
-  color: var(--el-color-white);
-}
-
-.el-notification.success .el-notification__icon {
-  background: var(--el-color-functionnal-green);
-}
-
-.el-notification.error .el-notification__icon {
-  background: var(--el-color-functionnal-red);
-}
-
-.el-notification.loading .el-notification__icon {
-  background: var(--pulse-gradient);
 }

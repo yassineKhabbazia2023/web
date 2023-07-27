@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { ElMenuItem, ElMenu } from 'element-plus'
-import PBottomMenu from './'
+import PBottomMenu from '.'
 
 const routes = [
   {

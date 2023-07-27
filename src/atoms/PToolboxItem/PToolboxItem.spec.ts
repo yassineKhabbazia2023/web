@@ -26,7 +26,7 @@ describe('pToolboxItem', () => {
         value: 'Hello',
         hasIcon: true
       })
-      expect(wrapper.find('.toolbox-item__icon').exists()).toBeTruthy()
+      expect(wrapper.find('.p-toolbox-item__icon').exists()).toBeTruthy()
     })
 
     it('should  not show icon zone when hasIcon is false', () => {
@@ -34,7 +34,7 @@ describe('pToolboxItem', () => {
         value: 'Hello',
         hasIcon: false
       })
-      expect(wrapper.find('.toolbox-item__icon').exists()).toBeFalsy()
+      expect(wrapper.find('.p-toolbox-item__icon').exists()).toBeFalsy()
     })
 
     it.each([

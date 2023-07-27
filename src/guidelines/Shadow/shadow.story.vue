@@ -1,33 +1,6 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const shadowGroup = ref([
-  {
-    name: 'Basic Shadow',
-    type: ''
-  },
-  {
-    name: 'Light Shadow',
-    type: 'light'
-  },
-  {
-    name: 'Lighter Shadow',
-    type: 'lighter'
-  },
-  {
-    name: 'Dark Shadow',
-    type: 'dark'
-  }
-])
-
-function getCssVarName(type: string) {
-  return `--el-box-shadow${type ? '-' : ''}${type}`
-}
-</script>
-
 <template>
   <Story
-    title="Basic/Shadow"
+    title="1. Basic/Shadow"
     icon="radix-icons:shadow-inner"
     source=" "
     :layout="{
@@ -90,6 +63,33 @@ function getCssVarName(type: string) {
   </Story>
 </template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const shadowGroup = ref([
+  {
+    name: 'Basic Shadow',
+    type: ''
+  },
+  {
+    name: 'Light Shadow',
+    type: 'light'
+  },
+  {
+    name: 'Lighter Shadow',
+    type: 'lighter'
+  },
+  {
+    name: 'Dark Shadow',
+    type: 'dark'
+  }
+])
+
+function getCssVarName(type: string) {
+  return `--el-box-shadow${type ? '-' : ''}${type}`
+}
+</script>
+
 <style scoped>
 .shadow-box {
   box-sizing: border-box;
@@ -134,8 +134,8 @@ function getCssVarName(type: string) {
     l'interaction au survol et sur les composants statiques. La densité des ombres se multiplie
     à chaque itération. Chaque poids double à mesure que vous augmentez. Nous essayons de ne pas
     utiliser les ombres trop souvent car cela peut rapidement devenir trop puissant.</p>
-  <iframe class="responsive-iframe" src="https://www.figma.com/file
-  /CmAQkyvJgicN6PHwf61DBZ/%F0%9F%A6%84-Guidelines?
-  type=design&node-id=7-419&t=TM4euOaCfpu9qi5K-0"></iframe>
+</div>
+<div class="reponsive-iframe-container">
+  <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D68%253A180%26mode%3Ddev" allowfullscreen></iframe>
 </div>
 </docs>

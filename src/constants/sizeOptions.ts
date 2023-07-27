@@ -1,9 +1,5 @@
 const sizeOptions = [
   {
-    label: 'large',
-    value: 'large'
-  },
-  {
     label: 'default',
     value: 'default'
   },
