@@ -27,6 +27,8 @@ import toastPlugin from '@/molecules/PToaster'
 import PDropdown from '@/atoms/PDropdown'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
+import PHeader from '@/molecules/PHeader'
+import PHeaderTabs from '@/atoms/PHeaderTabs'
 
 dayjs.Ls.en.weekStart = 1
 
@@ -51,6 +53,8 @@ export function install(app: any, { i18n }: any) {
   app.component('PDropdown', PDropdown)
   app.component('PCarouselItem', PCarouselItem)
   app.component('PCarousel', PCarousel)
+  app.component('PHeader', PHeader)
+  app.component('PHeaderTabs', PHeaderTabs)
 }
 
 const plugin = {
