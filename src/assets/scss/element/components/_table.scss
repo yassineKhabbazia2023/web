@@ -61,15 +61,15 @@ tbody tr td .cell {
   border: solid 4.5px transparent;
 }
 
-.el-table {
+.el-table table {
 
-  td {
-    height: 40px !important;
-    padding: 0 !important;
-  }
-
-  .cell {
-    white-space: nowrap !important;
+  .el-table__cell {
+    height: 40px;
+    padding: 0;
+    
+    .cell {
+      white-space: nowrap;
+    }
   }
 
   .el-checkbox {
