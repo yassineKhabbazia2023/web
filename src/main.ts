@@ -25,6 +25,7 @@ import PPastille from '@/atoms/PPastille'
 import PTag from '@/atoms/PTag'
 import toastPlugin from '@/molecules/PToaster'
 import PDropdown from '@/atoms/PDropdown'
+import PActionBar from '@/atoms/PActionBar'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
 import PHeader from '@/molecules/PHeader'
@@ -51,6 +52,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PPastille', PPastille)
   app.component('PTag', PTag)
   app.component('PDropdown', PDropdown)
+  app.component('PActionBar', PActionBar)
   app.component('PCarouselItem', PCarouselItem)
   app.component('PCarousel', PCarousel)
   app.component('PHeader', PHeader)
