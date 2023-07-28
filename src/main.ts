@@ -28,6 +28,7 @@ import PDropdown from '@/atoms/PDropdown'
 import PActionBar from '@/molecules/PActionBar'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
+import PCellEntity from '@/atoms/PCellEntity'
 import PHeader from '@/molecules/PHeader'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
 
@@ -55,6 +56,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PActionBar', PActionBar)
   app.component('PCarouselItem', PCarouselItem)
   app.component('PCarousel', PCarousel)
+  app.component('PCellEntity', PCellEntity)
   app.component('PHeader', PHeader)
   app.component('PHeaderTabs', PHeaderTabs)
 }
