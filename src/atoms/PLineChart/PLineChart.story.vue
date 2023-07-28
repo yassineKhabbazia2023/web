@@ -1,5 +1,5 @@
 <template>
-  <Story title="Atoms/Chart" icon="carbon:chart-line">
+  <Story title="2. Atoms/Chart" icon="carbon:chart-line">
     <Variant title="Custom line chart legend position (left)">
       <PLineChart
         :dataLabels="dataLabels"

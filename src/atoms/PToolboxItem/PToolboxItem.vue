@@ -50,11 +50,11 @@ withDefaults(defineProps<PToolboxItemProps>(), {
   }
 
   &.disabled {
-    color: var(--el-color-neutral-gray-200);
+    color: var(--el-color-neutral-gray-300);
     cursor: not-allowed;
 
     &__icon {
-      fill: var(--el-color-neutral-gray-200);
+      fill: var(--el-color-neutral-gray-300);
     }
   }
 

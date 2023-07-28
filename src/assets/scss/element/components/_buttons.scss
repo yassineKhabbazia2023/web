@@ -46,7 +46,7 @@ $button-padding-horizontal: (
         width: 16px;
       }
     }
-    &--default.is-circle {
+    &#{$self}--icon {
       width: 44px;
 
       .el-icon {

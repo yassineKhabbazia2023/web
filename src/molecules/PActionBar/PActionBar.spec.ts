@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import wrapperFactory from 'tests/utils/wrapperFactory'
-import PActionBar from '@/atoms/PActionBar'
+import PActionBar from '@/molecules/PActionBar'
 
 type Buttons = {
   buttonName: string,

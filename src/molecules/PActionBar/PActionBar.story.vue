@@ -1,15 +1,16 @@
 <template>
   <Story
-title="Atoms/PActionBar"
-icon="radix-icons:margin"
-:layout="{ type: 'single', iframe: true }">
+    title="3. Molecules/PActionBar"
+    icon="mdi:call-to-action"
+    :layout="{ type: 'single', iframe: true }">
     <Variant title="Basic usage simple">
       <PActionBar :rightSideButtons="rightSideIcons" :leftSideButtons="leftSideIcons" />
     </Variant>
   </Story>
 </template>
+
 <script lang="ts" setup>
-import PActionBar from '@/atoms/PActionBar'
+import PActionBar from '.'
 import { ref } from 'vue'
 
 const leftSideIcons = ref([{
@@ -168,7 +169,7 @@ disabled: false
 
 > **Important Note:** The right-side buttons will transform into icon buttons only when the window size is under 1024.
 
-<div class="responsive-iframe-container">
+  <div class="responsive-iframe-container">
     <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1875%253A11653%26mode%3Ddesign%26t%3DILcI86fQIuF3Yy79-1" allowfullscreen></iframe>
   </div>
 </docs>

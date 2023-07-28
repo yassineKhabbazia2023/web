@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
     }
 
     &-btn.no-gap{
-      width: 30px;
+      width: 32px;
       height: 32px;
       padding: 9px 8px;
     }
