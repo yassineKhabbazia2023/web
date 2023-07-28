@@ -22,7 +22,8 @@ const leftSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 },
 {
   buttonName: 'Filtrer',
@@ -33,10 +34,12 @@ const leftSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 },
 {
   buttonName: '',
+  class: 'el-button--icon',
   buttonType: 'white',
   buttonIcon: 'PISearch',
   buttonActionName: 'buttonActionName',
@@ -44,7 +47,8 @@ const leftSideIcons = ref([{
   round: false,
   circle: true,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 }
 ])
 
@@ -57,7 +61,8 @@ const rightSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 },
 {
   buttonName: 'Envoi immédiat',
@@ -68,7 +73,8 @@ const rightSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 },
 {
   buttonName: 'Filtrer',
@@ -79,7 +85,8 @@ const rightSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 },
 {
   buttonName: 'Télécharger',
@@ -90,7 +97,8 @@ const rightSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 },
 {
   buttonName: 'Supprimer',
@@ -101,7 +109,8 @@ const rightSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 },
 {
   buttonName: 'Consulter',
@@ -112,7 +121,8 @@ const rightSideIcons = ref([{
   round: false,
   circle: false,
   loading: false,
-  disabled: false
+  disabled: false,
+  size: 'small'
 }
 ])
 

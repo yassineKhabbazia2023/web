@@ -10,10 +10,10 @@
         :loading="item.loading"
         :disabled="item.disabled"
         :size="item.size"
-        :class="['p-action-bar__left-btn', item.buttonName === '' ? 'no-gap' : '']"
+        :class="['p-action-bar__left-btn', item.buttonName === '' ? 'el-button--icon' : '']"
         @click="$emit(item.buttonActionName)">
 
-        <PIcon>
+        <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsLeft[index]"></component>
         </PIcon>
         <p>
@@ -27,16 +27,16 @@
         :key="index"
         :type="item.buttonType"
         :plain="item.plain"
-        :circle="isWindowUnder1200"
+        :circle="isWindowUnderDesktop"
         :loading="item.loading"
         :disabled="item.disabled"
         :size="item.size"
-        :class="['p-action-bar__right-btn', isWindowUnder1200 ? 'no-gap' : '']"
+        class="p-action-bar__right-btn"
         @click="$emit(item.buttonActionName)">
-        <PIcon>
+        <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsRight[index]"></component>
         </PIcon>
-        <p class="hidden-md-and-down">
+        <p class="hidden-sm-and-down">
           {{ item.buttonName }}
         </p>
       </PButton>
@@ -79,10 +79,10 @@ const truncatedLeftSideButtons = props.leftSideButtons.length > 3
 const resolvedIconsRight = iconsResolver(props.rightSideButtons, 'buttonIcon')
 const resolvedIconsLeft = iconsResolver(props.leftSideButtons, 'buttonIcon')
 
-const isWindowUnder1200 = ref(window.innerWidth < 1200)
+const isWindowUnderDesktop = ref(window.innerWidth < 992)
 
 const handleResize = () => {
-  isWindowUnder1200.value = window.innerWidth < 1200
+  isWindowUnderDesktop.value = window.innerWidth < 992
 }
 
 onMounted(() => {
@@ -97,29 +97,16 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 .p-action-bar {
-  display: grid;
-  grid-template-columns: auto auto;
-  width: fit-content;
-  gap: 135px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 
-  &__left,
-  &__right {
-    &-btn {
-      padding: 9px 8px;
-    }
-
-    &-btn.no-gap{
-      width: 32px;
-      height: 32px;
-      padding: 9px 8px;
-    }
-
-    .el-button > span {
-      gap: 10px;
-    }
-
-    .no-gap > span {
-      gap: 0;
+  &__right-btn {
+    @media screen and (max-width: 992px) {
+      &.el-button.el-button--small .el-button__icon--left {
+        margin: 0;
+      }
     }
   }
 }

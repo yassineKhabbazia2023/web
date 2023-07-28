@@ -26,7 +26,7 @@ const defaultButtons = [
     buttonType: 'white',
     buttonIcon: 'PISearch',
     buttonActionName: 'buttonActionName',
-    size: 'default',
+    size: 'small',
     plain: false,
     round: false,
     circle: true,
@@ -73,7 +73,7 @@ describe('pActionBar', () => {
         })
         const button = wrapper.find('.p-action-bar__left').findAll('p-button-stub')[0]
 
-        expect(button.classes().includes('no-gap')).toBeTruthy()
+        expect(button.classes().includes('el-button--icon')).toBeTruthy()
 
       })
 
@@ -104,21 +104,6 @@ describe('pActionBar', () => {
         })
         const rightZoneBtns = wrapper.find('.p-action-bar__right')
         expect(rightZoneBtns.findAll('p-button-stub')).toHaveLength(5)
-      })
-
-      // eslint-disable-next-line max-len
-      it('should not have a gap between the button icon and text when the window size is under 1024px', async () => {
-
-        global.innerWidth = 800
-
-        const wrapper = createWrapper({
-          leftSideButtons: defaultProps.leftSideButtons,
-          rightSideButtons: defaultButtons
-        })
-
-        await wrapper.vm.$nextTick()
-        const rightZoneBtns = wrapper.find('.p-action-bar__right')
-        expect(rightZoneBtns.findAll('p-button-stub')[0].classes().includes('no-gap')).toBeTruthy()
       })
     })
   })

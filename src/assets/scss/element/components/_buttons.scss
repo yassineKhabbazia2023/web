@@ -49,6 +49,15 @@ $button-padding-horizontal: (
     &#{$self}--icon {
       width: 44px;
 
+      #{$self}__icon--left,
+      #{$self}__icon--right {
+        margin: 0;
+      }
+
+      &#{$self}--small {
+        width: 32px;
+      }
+
       .el-icon {
         width: 20px;
       }
