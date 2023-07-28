@@ -14,14 +14,14 @@ const domainToBaseUrl = (domain: string | undefined) => {
   else return domain
 }
 
-const requestInterceptor = (config: any) => {
+export const requestInterceptor = (config: any) => {
   const { user } = storeToRefs(commonStore())
   if (user.value && user.value.token) config.headers.Authorization = `Bearer ${user.value.token}`
   return config
 }
 
-const responseInterceptorSuccess = (res: any) => res
-const responseInterceptorError = (err: any) => {
+export const responseInterceptorSuccess = (res: any) => res
+export const responseInterceptorError = (err: any) => {
   return Promise.reject(err)
 }
 
