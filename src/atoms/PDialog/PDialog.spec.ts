@@ -1,5 +1,4 @@
 import { VueWrapper, mount } from '@vue/test-utils'
-// import wrapperFactory from '../../../tests/utils/wrapperFactory'
 import { describe, it, expect } from 'vitest'
 import PDialog from '.'
 import { ElDialog } from 'element-plus'
