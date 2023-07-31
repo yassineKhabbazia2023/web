@@ -9,5 +9,5 @@ export const iconsResolver = (
 
 export const iconResolver = (iconName: string) =>
   defineAsyncComponent(
-    () => import(`@/atoms/PIcon/components/${iconName}.vue`)
+    () => import(`../atoms/PIcon/components/${iconName}.vue`)
   )

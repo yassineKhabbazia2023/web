@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 
 import './assets/scss/index.scss'
 
-import PLineChart from './atoms/PLineChart'
+import PLineChart from '@/atoms/PLineChart'
 import PButton from '@/atoms/PButton'
 import PTable from '@/atoms/PTable'
 import PInput from '@/atoms/PInput'
@@ -25,8 +25,15 @@ import PPastille from '@/atoms/PPastille'
 import PTag from '@/atoms/PTag'
 import toastPlugin from '@/molecules/PToaster'
 import PDropdown from '@/atoms/PDropdown'
+import PActionBar from '@/molecules/PActionBar'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
+import PCellEntity from '@/atoms/PCellEntity'
+import PCellText from '@/atoms/PCellText'
+import PHeader from '@/molecules/PHeader'
+import PHeaderTabs from '@/atoms/PHeaderTabs'
+import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
+import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
 
 dayjs.Ls.en.weekStart = 1
 
@@ -49,8 +56,15 @@ export function install(app: any, { i18n }: any) {
   app.component('PPastille', PPastille)
   app.component('PTag', PTag)
   app.component('PDropdown', PDropdown)
+  app.component('PActionBar', PActionBar)
   app.component('PCarouselItem', PCarouselItem)
   app.component('PCarousel', PCarousel)
+  app.component('PCellEntity', PCellEntity)
+  app.component('PCellText', PCellText)
+  app.component('PHeader', PHeader)
+  app.component('PHeaderTabs', PHeaderTabs)
+  app.component('PFileLineNavigationItem', PFileLineNavigationItem)
+  app.component('PFileANdFolderLineCheck', PFileAndFolderLineCheck)
 }
 
 const plugin = {

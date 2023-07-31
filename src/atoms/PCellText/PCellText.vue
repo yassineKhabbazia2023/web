@@ -1,15 +1,15 @@
 <template>
   <div
     :type="type"
-    :class="{ 'p-cell-text': true, 'padding--4': true, disabled, selected }"
+    :class="{ 'p-cell__text': true, 'padding--4': true, disabled, selected }"
     :disabled="disabled"
     :selected="selected">
-    <div class="cell-icon" v-if="icon !== undefined">
+    <div class="p-cell__icon" v-if="icon !== undefined">
       <PIcon :size="16">
         <component :is="icon" />
       </PIcon>
     </div>
-    <div :class="{ 'cell-content': true, 'cell-content-bold': bold, 'text-left': true }">
+    <div :class="{ 'p-cell__content': true, 'p-cell__content--bold': bold }">
       {{ content }}
     </div>
   </div>
@@ -34,49 +34,68 @@ withDefaults(defineProps<PCellTextProps>(), {
 })
 </script>
 <style lang="scss" scoped>
-.p-cell-text {
+.p-cell__text {
   display: flex;
-  max-height: 40px;
+  align-items: center;
+  height: 40px;
   gap: 8px;
+
+  &[type="primary"]:not([disabled='true'], [selected='true']) {
+    background-color: var(--el-fill-color-blank);
+  }
+
+  &[type="primary"]:hover {
+    background-color: var(--el-color-persian-100);
+  }
+
+  &[type="secondary"]:not([disabled='true'], [selected='true']) {
+    background-color: var(--el-fill-color-light);
+  }
+
+  &[type="secondary"]:hover {
+    background-color: var(--el-color-persian-200);
+  }
+
+  &[type="drag"]:not([disabled='true'], [selected='true']) {
+    background-color: var(--el-color-primary);
+    color:  var(--el-fill-color-blank);
+  }
+
+  &[disabled='true'] {
+    background-color: var(--el-fill-color-extra-light);
+    color: var(--el-fill-color);
+  }
+
+  &[selected='true'] {
+    background-color: var(--el-color-persian-200);
+    color:  var(--el-text-color-primary);
+  }
+
+  &[disabled='true']:hover {
+    background-color: var(--el-color-persian-100);
+    color: var(--el-fill-color);
+  }
+
+  &[selected='true']:hover {
+    background-color: var(--el-color-persian-300);
+    color:  var(--el-text-color-primary);
+  }
 }
 
-.p-cell-text[type="primary"]:not([disabled='true'], [selected='true']) {
-  background-color: var(--el-fill-color-blank);
+.p-cell__icon {
+  width: 16px;
+  height: 16px;
 }
 
-.p-cell-text[type="secondary"]:not([disabled='true'], [selected='true']) {
-  background-color: var(--el-fill-color-light);
-}
-
-.p-cell-text[type="drag"]:not([disabled='true'], [selected='true']) {
-  background-color: var(--el-color-primary);
-  color:  var(--el-fill-color-blank);
-}
-
-.p-cell-text[disabled='true'] {
-  background-color: var(--el-fill-color-extra-light);
-  color: var(--el-fill-color);
-}
-
-.p-cell-text[selected='true'] {
-  background-color: var(--el-color-persian-200);
-  color:  var(--el-text-color-primary);
-}
-
-.cell-icon {
-  top: 2px;
-}
-
-.cell-content {
+.p-cell__content {
   font-weight: normal;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   max-width: 300px;
 
-  &-bold {
-    font-weight: bold;
+  &--bold {
+    font-weight: 700;
   }
-
 }
 </style>

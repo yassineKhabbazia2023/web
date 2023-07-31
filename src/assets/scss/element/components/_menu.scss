@@ -136,3 +136,35 @@ $menu:
     }
   }
 }
+
+.el-menu--header {
+  height: 52px;
+  display: flex;
+  border-bottom: solid 2px var(--el-menu-border-color);
+  .menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+  }
+  .el-menu-item {
+    padding-right: 10px;
+  }
+  .logo {
+    margin-left: 8px;
+    margin-right: 8px;
+
+    & > img {
+      height: 25px;
+    }
+  }
+  .header-right {
+    margin-right: 16px;
+  }
+  .flex-grow {
+    flex-grow: 1;
+  }
+  .el-sub-menu {
+    width: 60px;
+  }
+}

@@ -10,42 +10,46 @@ $notification: (
   'group-margin-left': 0px,
   'group-margin-right': 0px,
   'content-font-size': 14px,
-  'content-color': var(--el-color-white)
+  'content-color': var(--el-color-white),
+  'close-color': var(--el-color-black),
+  'close-hover-color': var(--el-color-black)
 );
 
 .el-notification {
   $self: &;
 
-  background: var(--el-color-neutral-gray-900) !important;
+  &[role="alert"] {
+    background-color: var(--el-color-neutral-gray-900);
+  }
+
   align-items: center;
   max-width: 500px;
   gap: 8px;
+  max-height: 83px;
+
 
   &.success {
     #{$self}__icon {
       background: var(--el-color-functionnal-green);
     }
   }
+
   &.error {
     #{$self}__icon {
       background: var(--el-color-functionnal-red);
     }
   }
+
   &.warning {
     #{$self}__icon {
       background: var(--el-color-functionnal-orange);
     }
   }
+
   &.loading {
     #{$self}__icon {
       background: var(--pulse-gradient);
     }
-  }
-
-  &__content {
-    font-weight: 400;
-    line-height: 16px;
-    text-align: unset;
   }
 
   #{$self}__icon.el-icon {
@@ -56,8 +60,25 @@ $notification: (
     color: var(--el-color-white);
   }
 
-  &__group {
+  #{$self}__group {
+    display: grid;
+    grid-template-columns: 0 auto auto;
+    justify-content: center;
+    align-items: center;
+    column-gap: 16px;
     margin: unset;
     width: calc(100% - 8px);
+
+    #{$self}__content {
+      font-weight: 400;
+      text-align: unset;
+      line-height: unset;
+    }
+
+    #{$self}__closeBtn {
+      position: unset;
+      border-radius: 100%;
+      background-color: var(--el-color-neutral-gray-500);
+    }
   }
 }

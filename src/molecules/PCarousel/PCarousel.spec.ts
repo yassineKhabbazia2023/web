@@ -8,7 +8,7 @@ const createWrapper = (props: any = {}) =>
     props
   })
 
-describe('PCarousel', () => {
+describe('pCarousel', () => {
   // Define a sample data for testing
   const items = [
     {

@@ -39,6 +39,7 @@
       :source="iconSource"
       icon="line-md:iconify2">
       <PButton
+        class="el-button--icon"
         :type="iconButtonData.type"
         :size="iconButtonData.size"
         :plain="iconButtonData.plain"
@@ -173,6 +174,7 @@ const iconSource = computed(() => {
 <script>
 
 <PButton
+  class="el-button--icon"
   ${isAttribute(
     iconButtonData.type !== '',
     `type="${iconButtonData.type}"`
