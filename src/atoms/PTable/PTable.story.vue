@@ -1,13 +1,14 @@
 <template>
   <Story
-    title="Atoms/PTable"
+    title="2. Atoms/Table"
     icon="teenyicons:table-outline"
     :layout="{ type: 'grid', width: '80%' }">
     <Variant title="PTable">
       <PTable :data="tableInputs.data" :stripe="tableInputs.striped">
         <el-table-column
         type="selection"
-        v-if="tableInputs.selectable" />
+        v-if="tableInputs.selectable"
+        align="center" />
         <el-table-column
           v-for="column in tableInputs.tableColumn"
           :key="column.prop"
@@ -15,6 +16,7 @@
           :label="column.label"
           :width="column.width"
           :sortable="tableInputs.sortable"
+          align="center"
         />
       </PTable>
       <template #controls>
@@ -74,3 +76,9 @@ const tableInputs = reactive({
   selectable: true
 })
 </script>
+
+<docs lang="md">
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D605%253A2161%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
+</docs>

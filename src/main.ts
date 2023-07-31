@@ -4,9 +4,11 @@ import ElementPlus from 'element-plus'
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
 import en from 'element-plus/es/locale/lang/en'
+import dayjs from 'dayjs'
 
 import './assets/scss/index.scss'
 
+import PLineChart from './atoms/PLineChart'
 import PButton from '@/atoms/PButton'
 import PTable from '@/atoms/PTable'
 import PInput from '@/atoms/PInput'
@@ -17,15 +19,21 @@ import PTooltip from '@/atoms/PTooltip'
 import PToolboxItem from '@/atoms/PToolboxItem'
 import PToolbox from '@/molecules/PToolbox'
 import PCheckbox from '@/atoms/PCheckbox'
-import PNavbar from '@/atoms/PNavbar'
-import PBottomMenu from '@/atoms/PBottomMenu'
+import PNavbar from '@/molecules/PNavbar'
+import PBottomMenu from '@/molecules/PBottomMenu'
 import PPastille from '@/atoms/PPastille'
 import PTag from '@/atoms/PTag'
 import toastPlugin from '@/molecules/PToaster'
 import PDropdown from '@/atoms/PDropdown'
+import PActionBar from '@/atoms/PActionBar'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
 import PDialog from '@/atoms/PDialog'
+import PCellEntity from '@/atoms/PCellEntity'
+import PHeader from '@/molecules/PHeader'
+import PHeaderTabs from '@/atoms/PHeaderTabs'
+
+dayjs.Ls.en.weekStart = 1
 
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
@@ -39,15 +47,20 @@ export function install(app: any, { i18n }: any) {
   app.component('PToolboxItem', PToolboxItem)
   app.component('PToolbox', PToolbox)
   app.component('PCheckbox', PCheckbox)
+  app.component('PLineChart', PLineChart)
   app.component('PTable', PTable)
   app.component('PNavbar', PNavbar)
   app.component('PBottomMenu', PBottomMenu)
   app.component('PPastille', PPastille)
   app.component('PTag', PTag)
   app.component('PDropdown', PDropdown)
+  app.component('PActionBar', PActionBar)
   app.component('PCarouselItem', PCarouselItem)
   app.component('PCarousel', PCarousel)
   app.component('PDialog', PDialog)
+  app.component('PCellEntity', PCellEntity)
+  app.component('PHeader', PHeader)
+  app.component('PHeaderTabs', PHeaderTabs)
 }
 
 const plugin = {

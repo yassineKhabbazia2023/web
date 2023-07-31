@@ -1,15 +1,16 @@
 <template>
   <Story
-    title="Atoms/DatePicker"
+    title="2. Atoms/DatePicker"
     icon="carbon:calendar"
-    :layout="{ type: 'grid', width: 480 }"
+    :layout="{ type: 'grid', width: 480, iframe: false }"
   >
     <Variant title="Basic Usage">
       <PDatePicker
         v-model="date"
         type="date"
+        valueFormat="DD/MM/YYYY"
+        format="DD/MM/YYYY"
         placeholder="Pick a day"
-        valueFormat="YYYY-MM-DD"
         :disabledDate="disabledDate"
         @blur="logEvent('blur', $event)"
         @focus="logEvent('focus', $event)"
@@ -23,12 +24,12 @@
         <span class="demonstration">Picker with quick options</span>
         <PDatePicker
           v-model="date"
-type="date"
-placeholder="Pick a day"
-:disabledDate="disabledDate"
+          type="date"
+          placeholder="Pick a day"
+          :disabledDate="disabledDate"
           :shortcuts="shortcuts"
-format="YYYY/MM/DD"
-valueFormat="YYYY-MM-DD"
+          valueFormat="DD/MM/YYYY"
+          format="DD/MM/YYYY"
         />
       </div>
 
@@ -43,33 +44,35 @@ valueFormat="YYYY-MM-DD"
           <div class="block">
             <span class="demonstration">Week</span>
             <PDatePicker
-v-model="date"
-type="week"
-format="[Week] ww"
-placeholder="Pick a week" />
+              v-model="date"
+              type="week"
+              format="[Semaine] ww"
+              placeholder="Pick a week" />
           </div>
           <div class="block">
             <span class="demonstration">Month</span>
             <PDatePicker
-v-model="date2"
-type="month"
-placeholder="Pick a month" />
+              v-model="date2"
+              type="month"
+              placeholder="Pick a month"
+              format="MM/YYYY" />
           </div>
         </div>
         <div class="container">
           <div class="block">
             <span class="demonstration">Year</span>
             <PDatePicker
-v-model="date3"
-type="year"
-placeholder="Pick a year" />
+              v-model="date3"
+              type="year"
+              placeholder="Pick a year" />
           </div>
           <div class="block">
             <span class="demonstration">Dates</span>
             <PDatePicker
-v-model="date4"
-type="dates"
-placeholder="Pick one or more dates" />
+              v-model="date4"
+              type="dates"
+              format="DD/MM/YYYY"
+              placeholder="Pick one or more dates" />
           </div>
         </div>
       </div>
@@ -85,6 +88,7 @@ placeholder="Pick one or more dates" />
             rangeSeparator="To"
             startPlaceholder="Start date"
             endPlaceholder="End date"
+            format="DD/MM/YYYY"
             @calendar-change="calendarChange"
           />
         </div>
@@ -99,6 +103,7 @@ placeholder="Pick one or more dates" />
             endPlaceholder="End date"
             :shortcuts="shortcutsDataRange"
             @calendar-change="calendarChange"
+            format="DD/MM/YYYY"
           />
         </div>
       </div>
@@ -114,6 +119,7 @@ placeholder="Pick one or more dates" />
             rangeSeparator="To"
             startPlaceholder="Start month"
             endPlaceholder="End month"
+            format="MM/YYYY"
           />
         </div>
         <div class="block">
@@ -236,13 +242,6 @@ function visibleChange(val: boolean) {
 </script>
 
 <style>
-.demo-date-picker {
-  display: flex;
-  width: 100%;
-  padding: 0;
-  flex-wrap: wrap;
-}
-
 .demo-date-picker .block {
   padding: 30px 0;
   text-align: center;
@@ -312,8 +311,10 @@ function visibleChange(val: boolean) {
 
 Use Date Picker for date input.
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450"
-src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D291%253A990%26mode%3Ddev" allowfullscreen></iframe>
+<div class="reponsive-iframe-container">
+  <iframe class="responsive-iframe"
+  src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D291%253A990%26mode%3Ddev" allowfullscreen></iframe>
+</div>
 
 ## Basic Usage
 

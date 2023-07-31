@@ -18,6 +18,7 @@ const basicConfig = {
   resolve: {
     alias: {
       '@': `${path.resolve(__dirname, 'src')}/`,
+      '@atoms': `${path.resolve(__dirname, 'src/atoms')}/`,
       '@components': `${path.resolve(__dirname, 'src/components')}/`,
       '@constants': `${path.resolve(__dirname, 'src/constants')}/`,
       '@utils': `${path.resolve(__dirname, 'src/utils')}/`,
@@ -37,7 +38,7 @@ const basicConfig = {
     Components({
       dirs: [
         'src/atoms',
-        'src/components',
+        'src/guidelines',
         'src/histoire-controls-components',
         'src/molecules',
         'src/organisms'
