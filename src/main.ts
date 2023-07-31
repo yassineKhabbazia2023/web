@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 
 import './assets/scss/index.scss'
 
-import PLineChart from './atoms/PLineChart'
+import PLineChart from '@/atoms/PLineChart'
 import PButton from '@/atoms/PButton'
 import PTable from '@/atoms/PTable'
 import PInput from '@/atoms/PInput'
@@ -33,6 +33,7 @@ import PCellText from '@/atoms/PCellText'
 import PHeader from '@/molecules/PHeader'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
 import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
+import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
 
 dayjs.Ls.en.weekStart = 1
 
@@ -63,6 +64,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PHeader', PHeader)
   app.component('PHeaderTabs', PHeaderTabs)
   app.component('PFileLineNavigationItem', PFileLineNavigationItem)
+  app.component('PFileANdFolderLineCheck', PFileAndFolderLineCheck)
 }
 
 const plugin = {
