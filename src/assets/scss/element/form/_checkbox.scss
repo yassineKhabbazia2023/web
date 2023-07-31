@@ -8,7 +8,8 @@ $checkbox: (
   'disabled-checked-icon-color': getCssVar('color-white'),
   'input-border-color-hover': getCssVar('color','base-persian'),
   'checked-text-color': getCssVar('text-color','primary'),
-  'font-size': 14px,
+  'font-size': 1.4rem,
+  'font-weight': 400,
   'border-radius': 2px
 );
 
