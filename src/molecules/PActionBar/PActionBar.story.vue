@@ -39,7 +39,6 @@ const leftSideIcons = ref([{
 },
 {
   buttonName: '',
-  class: 'el-button--icon',
   buttonType: 'white',
   buttonIcon: 'PISearch',
   buttonActionName: 'buttonActionName',
