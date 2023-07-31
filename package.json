@@ -9,8 +9,8 @@
     "node": ">= 18.16.0",
     "npm": ">= 9.5.1"
   },
-  "main": "dist/lib/common.umd.min.js",
-  "module": "dist/lib/common.es.min.js",
+  "main": "dist/lib/common.umd.js",
+  "module": "dist/lib/common.es.js",
   "types": "dist/types/src/main.d.ts",
   "files": [
     "dist",
