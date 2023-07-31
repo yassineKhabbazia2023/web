@@ -17,6 +17,12 @@
         Loading
       </PButton>
     </Variant>
+
+    <Variant title="Notification with close button">
+      <PButton plain @click="openWithClose">
+        Open with close button
+      </PButton>
+    </Variant>
   </Story>
 </template>
 
@@ -51,6 +57,16 @@ const openError = () => {
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: false
+  })
+}
+
+const openWithClose = () => {
+  toastPlugin({
+    message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    icon: PICheck,
+    showClose: true,
+    customClass: 'success',
+    duration: 0
   })
 }
 </script>
