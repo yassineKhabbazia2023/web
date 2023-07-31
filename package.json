@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
+    "pinia": "^2.1.4",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.2"
@@ -67,7 +68,6 @@
     "husky": "^8.0.3",
     "license-checker": "^25.0.1",
     "lint-staged": "^13.2.3",
-    "pinia": "^2.1.4",
     "rollup-plugin-typescript-paths": "^1.4.0",
     "semantic-release": "21.0.2",
     "semantic-release-ado": "^1.4.0",

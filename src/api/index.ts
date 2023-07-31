@@ -30,7 +30,7 @@ export default () => {
     (apis: apiInstances, k) => {
       if (k.startsWith(varApiPrefix)) {
         const service = keyToService(k)
-        const baseURL = domainToBaseUrl(process.env[k])
+        const baseURL = domainToBaseUrl(envVars[k])
         const instance = axios.create({
           baseURL,
           headers: { 'Content-type': 'application/json' }
