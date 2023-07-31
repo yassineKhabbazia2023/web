@@ -168,7 +168,7 @@ const optionsRight = computed<ChartOptions<'line'>>(() => ({
     y: {
       beginAtZero: true,
       type: 'linear',
-      position: ChartBasicData.yposition,
+      position: ChartBasicDataRight.yposition,
       grid: {
         borderDash: [2, 4], // Set the border dash pattern for the grid lines
         color: '#DBDBDB', // Set the color of the grid lines
@@ -197,7 +197,7 @@ const optionsRight = computed<ChartOptions<'line'>>(() => ({
     },
     title: {
       display: true,
-      text: ChartBasicData.chartTitle
+      text: ChartBasicDataRight.chartTitle
     },
     tooltip: {
       padding: 10,
