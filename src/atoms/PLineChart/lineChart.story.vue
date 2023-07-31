@@ -59,7 +59,7 @@ const dataValues = ref([
     dataValues: [20, 40, 60, 70, 50, 10, 70, 30, 60, 70, 45]
   }
 ])
-const toolTipBackgroundColor = ref('#434343')
+const toolTipBackgroundColor = ref('#666666')
 const ChartBasicData = reactive<any>({
   chartTitle: 'Line chart title',
   yposition: 'left'
@@ -72,7 +72,7 @@ const options = computed<ChartOptions<'line'>>(() => ({
       position: ChartBasicData.yposition,
       grid: {
         borderDash: [2, 4], // Set the border dash pattern for the grid lines
-        color: 'rgba(0, 0, 0, 0.4)', // Set the color of the grid lines
+        color: '#DBDBDB', // Set the color of the grid lines
         drawBorder: false, // Disable drawing the border of the chart area
         drawTicks: false // Disable drawing the ticks along the grid lines
       }
@@ -88,7 +88,12 @@ const options = computed<ChartOptions<'line'>>(() => ({
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        boxWidth: 10
+        boxWidth: 10,
+        color: 'var(--el-color-neutral-gray-700)',
+        font: {
+          size: 12,
+          weight: '600'
+        }
       }
     },
     title: {
@@ -96,6 +101,10 @@ const options = computed<ChartOptions<'line'>>(() => ({
       text: ChartBasicData.chartTitle
     },
     tooltip: {
+      padding: 10,
+      boxWidth: 80,
+      boxHeight: 50,
+      titleSpacing: 6,
       backgroundColor: toolTipBackgroundColor.value,
       callbacks: {
         title: (context) => {
@@ -159,10 +168,10 @@ const optionsRight = computed<ChartOptions<'line'>>(() => ({
     y: {
       beginAtZero: true,
       type: 'linear',
-      position: ChartBasicDataRight.yposition,
+      position: ChartBasicData.yposition,
       grid: {
         borderDash: [2, 4], // Set the border dash pattern for the grid lines
-        color: 'rgba(0, 0, 0, 0.4)', // Set the color of the grid lines
+        color: '#DBDBDB', // Set the color of the grid lines
         drawBorder: false, // Disable drawing the border of the chart area
         drawTicks: false // Disable drawing the ticks along the grid lines
       }
@@ -178,14 +187,21 @@ const optionsRight = computed<ChartOptions<'line'>>(() => ({
       position: 'bottom',
       labels: {
         usePointStyle: true,
-        boxWidth: 10
+        boxWidth: 10,
+        color: 'var(--el-color-neutral-gray-700)',
+        font: {
+          size: 12,
+          weight: '600'
+        }
       }
     },
     title: {
       display: true,
-      text: ChartBasicDataRight.chartTitle
+      text: ChartBasicData.chartTitle
     },
     tooltip: {
+      padding: 10,
+      titleSpacing: 6,
       backgroundColor: toolTipBackgroundColor.value,
       callbacks: {
         title: (context) => {
