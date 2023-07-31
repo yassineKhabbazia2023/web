@@ -63,7 +63,7 @@ describe('pActionBar', () => {
         const leftZoneBtns = wrapper.find('.p-action-bar__left')
         expect(leftZoneBtns.findAll('p-button-stub')).toHaveLength(3)
       })
-      it('should remove the 10px gap if the button contain only an icon', () => {
+      it('should add the calss "el-button--icon" when the button dose not contain a value', () => {
 
         const buttons = [{ ...defaultButtons, buttonName: '' }] as unknown as Buttons[]
 
