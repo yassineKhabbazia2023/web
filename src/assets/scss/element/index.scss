@@ -22,6 +22,7 @@
 @use './components/tag';
 @use './components/carousel';
 @use './components/image';
+@use './form/select';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -54,7 +55,12 @@
   $table-cell-padding: table.$table-cell-padding,
   $avatar-size: avatar.$avatar-size,
   $carousel : carousel.$carousel,
-  $menu: menu.$menu
+  $menu: menu.$menu,
+  $select: select.$select,
+  $select-option: select.$select-option,
+  $select-group: select.$select-group,
+  $select-dropdown: select.$select-dropdown,
+  $select-tags-prefix-padding: select.$select-tags-prefix-padding
 );
 
 

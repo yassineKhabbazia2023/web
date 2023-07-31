@@ -1,48 +1,146 @@
 <template>
   <Story title="2. Atoms/Dropdown" icon="radix-icons:margin">
-    <Variant title="Basic usage simple">
-      <PDropdown
-        v-model="valueSimple"
-        placeholder="Select"
-        size="large">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value" />
-      </PDropdown>
+    <Variant title="Basic usage simple" :initState="() => initState">
+      <template #default="{ state }">
+        <PDropdown
+          v-model="valueSimple"
+          placeholder="Select"
+          :disabled="state.disabled">
+          <el-option
+            v-for="item in selectOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled" />
+        </PDropdown>
+      </template>
+      <template #controls="{ state }">
+        <HstText v-model="state.placeholder" title="Placeholder" />
+        <HstCheckbox
+          v-model="state.disabled"
+          title="Disabled"
+        />
+        <HstCheckbox
+          v-model="state.clearable"
+          title="Clearable"
+        />
+      </template>
+    </Variant>
+    <Variant title="multiple select" :initState="() => initState">
+      <template #default="{ state }">
+        <PDropdown
+          v-model="state.value"
+          multiple
+          :collapseTags="state.collapseTags"
+          :collapseTagsTooltip="state.collapseTagsTooltip"
+          :disabled="state.disabled"
+          :filterable="state.filterable"
+        >
+          <el-option
+            v-for="item in selectOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled"
+          />
+        </PDropdown>
+      </template>
+      <template #controls="{ state }">
+        <HstCheckbox
+          v-model="state.disabled"
+          title="Disabled"
+        />
+        <HstCheckbox
+          v-model="state.collapseTags"
+          title="CollapseTags"
+        />
+        <HstCheckbox
+          v-model="state.collapseTagsTooltip"
+          title="TagsTooltip"
+        />
+      </template>
+    </Variant>
+    <Variant title="Option filtering" :initState="() => initState">
+      <template #default="{ state }">
+        <PDropdown
+          v-model="state.value"
+          :filterable="state.filterable"
+          :allowCreate="state.allowCreate"
+          :disabled="state.disabled"
+        >
+          <el-option
+            v-for="item in selectOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </PDropdown>
+      </template>
+      <template #controls="{ state }">
+        <HstCheckbox
+          v-model="state.filterable"
+          title="Filterable"
+        />
+        <HstCheckbox
+          v-model="state.disabled"
+          title="Disabled"
+        />
+        <HstCheckbox
+          v-model="state.allowCreate"
+          title="AllowCreate"
+        />
+      </template>
+    </Variant>
+    <Variant
+      title="Grouping"
+      :initState="() => initState"
+      :source="templateSourceGroup">
+      <template #default="{ state }">
+        <PDropdown v-model="state.value" placeholder="Select">
+          <el-option-group
+            v-for="group in groupOptions"
+            :key="group.label"
+            :label="group.label"
+          >
+            <el-option
+              v-for="item in group.options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-option-group>
+        </PDropdown>
+      </template>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import PDropdown from '.'
-import { ref } from 'vue'
+import { groupOptions, selectOptions, templateSourceGroup } from '@/constants/dropdownOptions'
+import { ref, reactive } from 'vue'
 
 const valueSimple = ref('')
 
-const options = [
-  {
-    value: 'Option1',
-    label: 'Option1'
-  },
-  {
-    value: 'Option2',
-    label: 'Option2'
-  },
-  {
-    value: 'Option3',
-    label: 'Option3'
-  },
-  {
-    value: 'Option4',
-    label: 'Option4'
-  },
-  {
-    value: 'Option5',
-    label: 'Option5'
-  }
-]
+const initState = reactive({
+  value: '' as string | string[],
+  size: '',
+  disabled: false,
+  clearable: false,
+  filterable: true,
+  allowCreate: false,
+  multiple: false,
+  multipleLimit: 0,
+  placeholder: 'Select',
+  defaultFirstOption: false,
+  popperClass: '',
+  reserveKeyword: false,
+  valueKey: '',
+  collapseTags: false,
+  collapseTagsTooltip: false,
+  popperAppendToBody: true,
+  automaticDropdown: true
+})
 </script>
 
 <docs lang="md">

@@ -44,7 +44,7 @@ $border-color-hover: getCssVar('color', 'persian-700');
 
 $fill-color: (
   '': var(--el-color-neutral-gray-300),
-  'light': var(--el-color-neutral-gray-100),
+  'light': getCssVar('color', 'persian-50'),
   'lighter': var(--el-color-neutral-gray-50),
   'extra-light': var(--el-color-neutral-gray-50),
   'dark': var(--el-color-neutral-gray-500),
