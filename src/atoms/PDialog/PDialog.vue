@@ -2,7 +2,6 @@
   <ElDialog
     v-model="visible"
     @close="handleClose"
-    v-bind="$attrs"
   >
     <slot></slot>
   </ElDialog>

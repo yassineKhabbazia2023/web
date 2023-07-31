@@ -38,7 +38,10 @@ describe('display dialog', () => {
     const wrapper: VueWrapper<any> = createWrapper({ visible: true })
 
     // Simulate the close event
-    await wrapper.vm.handleClose()
+    wrapper.findComponent({ name: 'ElDialog' }).vm.$emit('close')
+
+    // Wait for Vue to update the DOM
+    await wrapper.vm.$nextTick()
 
     // Ensure the event is emitted with the correct value
     expect(wrapper.emitted('update:visible')).toBeTruthy()
