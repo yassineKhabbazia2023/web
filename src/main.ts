@@ -32,6 +32,7 @@ import PCellEntity from '@/atoms/PCellEntity'
 import PCellText from '@/atoms/PCellText'
 import PHeader from '@/molecules/PHeader'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
+import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
 
 dayjs.Ls.en.weekStart = 1
 
@@ -61,6 +62,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PCellText', PCellText)
   app.component('PHeader', PHeader)
   app.component('PHeaderTabs', PHeaderTabs)
+  app.component('PFileLineNavigationItem', PFileLineNavigationItem)
 }
 
 const plugin = {
