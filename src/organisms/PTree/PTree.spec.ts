@@ -70,7 +70,7 @@ describe('pTree', () => {
 
       const customTreeNodes = wrapper.findAll('.p-custom-tree-node')
       const expectedNodesLength = treeData.length
-      expect(customTreeNodes.length).toHaveLength(expectedNodesLength)
+      expect(customTreeNodes).toHaveLength(expectedNodesLength)
     })
   })
 
