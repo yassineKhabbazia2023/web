@@ -118,29 +118,31 @@
 <script setup lang="ts">
 import PDropdown from '.'
 import { groupOptions, selectOptions, templateSourceGroup } from '@/constants/dropdownOptions'
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 
 const valueSimple = ref('')
 
-const initState = reactive({
-  value: '' as string | string[],
-  size: '',
-  disabled: false,
-  clearable: false,
-  filterable: true,
-  allowCreate: false,
-  multiple: false,
-  multipleLimit: 0,
-  placeholder: 'Select',
-  defaultFirstOption: false,
-  popperClass: '',
-  reserveKeyword: false,
-  valueKey: '',
-  collapseTags: false,
-  collapseTagsTooltip: false,
-  popperAppendToBody: true,
-  automaticDropdown: true
-})
+const initState = () => {
+  return {
+    value: '' as string | string[],
+    size: '',
+    disabled: false,
+    clearable: false,
+    filterable: true,
+    allowCreate: false,
+    multiple: false,
+    multipleLimit: 0,
+    placeholder: 'Select',
+    defaultFirstOption: false,
+    popperClass: '',
+    reserveKeyword: false,
+    valueKey: '',
+    collapseTags: false,
+    collapseTagsTooltip: false,
+    popperAppendToBody: true,
+    automaticDropdown: true
+  }
+}
 </script>
 
 <docs lang="md">

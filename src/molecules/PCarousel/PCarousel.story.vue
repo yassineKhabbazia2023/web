@@ -4,7 +4,7 @@
     icon="bxs:carousel"
     :layout="{
       type: 'single',
-      iframe: 'false'
+      iframe: false
     }"
   >
     <Variant title="Carousel">

@@ -30,8 +30,9 @@
 import { inject } from 'vue'
 import PButton from '@/atoms/PButton'
 import { PICheck, PIExclamationTriangle, PILoader } from '@/atoms/PIcon/components'
+import { ElNotification } from 'element-plus'
 
-const toastPlugin = inject('toast')
+const toastPlugin = inject('toast') as typeof ElNotification
 
 const openSuccess = () => {
   toastPlugin({

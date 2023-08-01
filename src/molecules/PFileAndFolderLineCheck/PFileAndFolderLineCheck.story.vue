@@ -55,6 +55,8 @@
 import { ref } from 'vue'
 import PFileAndFolderLineCheck from './'
 
+type stateOptions = 'default' | 'success' | 'error' | 'loading' | undefined
+
 const firstVarientCheckboxVModel = ref(false)
 const secondVarientCheckboxVModel = ref(false)
 const thirdVarientCheckboxVModel = ref(false)
@@ -62,22 +64,22 @@ const fourthVarientCheckboxVModel = ref(false)
 const PFileAndFolderLineCheckBasicData = ref([
   {
     fileName: 'A PDF File.pdf',
-    state: 'default'
+    state: 'default' as stateOptions
   },
   {
     fileName: 'A success state.pdf',
-    state: 'success',
+    state: 'success' as stateOptions,
     additionalText: 'Comptabilité > Dépôt > Achats'
   },
   {
     fileName: 'An error state.pdf',
-    state: 'error',
+    state: 'error' as stateOptions,
     additionalText: 'Unallowed file extension'
   },
   {
     fileName: 'Another type of file.txt',
     disabled: 'false',
-    state: 'loading'
+    state: 'loading' as stateOptions
   }
 ])
 </script>

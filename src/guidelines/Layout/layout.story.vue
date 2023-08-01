@@ -143,7 +143,7 @@
         :justify="basicData.justify"
         class="row-layout">
         <el-col
-v-for="item in 4"
+          v-for="item in 4"
           :key="item"
           :span="basicData.span"
           :offset="basicData.offset"
@@ -188,15 +188,16 @@ v-for="item in 4"
 </template>
 
 <script setup lang="ts">
+import type { RowProps } from 'element-plus'
 import { justifyOptions } from './constants'
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
 // Basic Usage
-const basicData = reactive({
+const basicData = ref({
   span: 6,
   gutter: 0,
   offset: 0,
-  justify: 'start',
+  justify: 'start' as RowProps['justify'],
   align: 'top',
   push: 0,
   pull: 0

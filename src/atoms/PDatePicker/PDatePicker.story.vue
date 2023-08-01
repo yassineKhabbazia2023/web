@@ -2,7 +2,7 @@
   <Story
     title="2. Atoms/DatePicker"
     icon="carbon:calendar"
-    :layout="{ type: 'grid', width: 480, iframe: false }"
+    :layout="{ type: 'grid', width: 480 }"
   >
     <Variant title="Basic Usage">
       <PDatePicker

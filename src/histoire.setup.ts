@@ -10,21 +10,18 @@ import dayjs from 'dayjs'
 import { defineSetupVue3 } from '@histoire/plugin-vue'
 
 import toastPlugin from '@/molecules/PToaster'
+import { menu } from '@/constants/routesSamples'
 
 dayjs.Ls.en.weekStart = 1
+
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes: [{ path: '/', name: 'home', component: { render: () => null } }]
+})
+menu.forEach(route => router.addRoute(route))
 
 export const setupVue3 = defineSetupVue3(({ app }) => {
   app.use(ElementPlus, { locale: fr })
   app.use(toastPlugin)
-
-  app.use(
-    createRouter({
-      history: createMemoryHistory(),
-      routes: [
-        { path: '/dashboard', component: { render: () => '<div>Dashboard</div>' } },
-        { path: '/document', component: { render: () => '<div>Document</div>' } },
-        { path: '/entity', component: { render: () => '<div>Entity</div>' } }
-      ]
-    })
-  )
+  app.use(router)
 })

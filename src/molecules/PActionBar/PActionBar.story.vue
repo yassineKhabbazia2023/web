@@ -1,6 +1,6 @@
 <template>
   <Story
-    title="3. Molecules/PActionBar"
+    title="3. Molecules/ActionBar"
     icon="mdi:call-to-action"
     :layout="{ type: 'single', iframe: true }">
     <Variant title="Basic usage simple">

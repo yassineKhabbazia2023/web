@@ -93,7 +93,6 @@
         shape="square"
         :size="100"
         :fit="currentFit"
-        *
         src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" />
       <template #controls>
         <HstRadio
@@ -107,11 +106,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { AvatarProps } from 'element-plus'
+import type { PAvatarProps } from './'
 import PAvatar from './'
 
 const url = ref('https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
-const avatarShapeList: { label: string; value: AvatarProps['shape'] }[] = [
+const avatarShapeList: { label: string; value: PAvatarProps['shape'] }[] = [
   {
     label: 'circle',
     value: 'circle'
@@ -121,7 +120,7 @@ const avatarShapeList: { label: string; value: AvatarProps['shape'] }[] = [
     value: 'square'
   }
 ]
-const avatarSizeList: { label: string; value: AvatarProps['size'] }[] = [
+const avatarSizeList: { label: string; value: PAvatarProps['size'] }[] = [
   {
     label: 'xlarge',
     value: 'xlarge'
@@ -143,7 +142,7 @@ const avatarSizeList: { label: string; value: AvatarProps['size'] }[] = [
     value: 'xsmall'
   }
 ]
-const fitList: { label: string; value: AvatarProps['fit'] }[] = [
+const fitList: { label: string; value: PAvatarProps['fit'] }[] = [
   {
     label: 'fill',
     value: 'fill'
@@ -165,7 +164,7 @@ const fitList: { label: string; value: AvatarProps['fit'] }[] = [
     value: 'scale-down'
   }
 ]
-const avatarColorList: { label: string; value: 'color' }[] = [
+const avatarColorList: { label: string; value: PAvatarProps['color'] }[] = [
   {
     label: 'persian-gradient',
     value: 'persian-gradient'
@@ -195,10 +194,10 @@ const avatarColorList: { label: string; value: 'color' }[] = [
     value: 'gray'
   }
 ]
-const currentShape = ref<AvatarProps['shape']>('circle')
-const currentSize = ref<AvatarProps['size']>('default')
-const currentFit = ref<AvatarProps['fit']>('cover')
-const currentColor = ref<['color']>('persian-gradient')
+const currentShape = ref<PAvatarProps['shape']>('circle')
+const currentSize = ref<string | undefined>('default')
+const currentFit = ref<PAvatarProps['fit']>('cover')
+const currentColor = ref<PAvatarProps['color']>('persian-gradient')
 </script>
 
 <style lang="scss">
