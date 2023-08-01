@@ -1,5 +1,5 @@
 <template>
-  <Story title="3. Molecules/Tree" icon="carbon:tree">
+  <Story title="4. Organisms/Tree" icon="carbon:tree">
     <Variant title="Basic usage">
       <PTree
         :data="dataSource"
