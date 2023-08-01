@@ -1,7 +1,7 @@
 <template>
   <div
     :type="type"
-    :class="{ 'p-cell__entity': true, 'padding--4': true, selected }"
+    :class="{ 'p-cell__entity': true, selected }"
     :selected="selected"
   >
     <div class="p-cell__entity-avatar">
@@ -46,6 +46,7 @@ withDefaults(defineProps<PCellTextProps>(), {
   max-height: 40px;
   gap: 8px;
   color: var(--el-fill-color-regular);
+  padding: 0 12px;
 }
 
 .p-cell__entity[type="primary"]:not([selected="true"]) {

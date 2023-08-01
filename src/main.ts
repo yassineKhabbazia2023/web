@@ -35,6 +35,7 @@ import PHeader from '@/molecules/PHeader'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
 import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
 import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
+import PCellDoubleText from '@/atoms/PCellDoubleText'
 
 dayjs.Ls.en.weekStart = 1
 
@@ -67,6 +68,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PHeaderTabs', PHeaderTabs)
   app.component('PFileLineNavigationItem', PFileLineNavigationItem)
   app.component('PFileANdFolderLineCheck', PFileAndFolderLineCheck)
+  app.component('PCellDoubleText', PCellDoubleText)
 }
 
 const plugin = {
