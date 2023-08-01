@@ -236,7 +236,8 @@ const nextText = 'Next Page'
     <li>Default / primary</li>
     <li>Secondary / Primary Plain</li>
     <li>White / white</li>
-    <li>Tertiary / Tertiary</li>
+    <li>Tertiary / Default</li>
+    <li>Generic / Generic</li>
   </ul>
   <strong>Classes to add to your icon :</strong>
   <ul>
