@@ -63,7 +63,6 @@ describe('pTree', () => {
     it('renders component without custom nodes', () => {
       const wrapper = createWrapper
       expect(wrapper.exists()).toBeTruthy()
-      console.log(wrapper.html(), 'AAAA')
     })
 
     it('renders component with custom nodes when hasCustomNodes is true', () => {

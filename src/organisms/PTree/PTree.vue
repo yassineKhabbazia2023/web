@@ -27,7 +27,6 @@ const emit = defineEmits(['p-tree-node-clicked'])
 
 const handleNodeClicked = (node: any) => {
   emit('p-tree-node-clicked', node)
-  console.log(node)
 }
 
 </script>
