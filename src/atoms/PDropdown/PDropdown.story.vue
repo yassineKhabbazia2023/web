@@ -1,6 +1,6 @@
 <template>
   <Story title="2. Atoms/Dropdown" icon="radix-icons:margin">
-    <Variant title="Basic usage simple" :initState="() => initState">
+    <Variant title="Basic usage simple" :initState="initState">
       <template #default="{ state }">
         <PDropdown
           v-model="valueSimple"
@@ -26,7 +26,7 @@
         />
       </template>
     </Variant>
-    <Variant title="multiple select" :initState="() => initState">
+    <Variant title="multiple select" :initState="initState">
       <template #default="{ state }">
         <PDropdown
           v-model="state.value"
@@ -60,7 +60,7 @@
         />
       </template>
     </Variant>
-    <Variant title="Option filtering" :initState="() => initState">
+    <Variant title="Option filtering" :initState="initState">
       <template #default="{ state }">
         <PDropdown
           v-model="state.value"
@@ -93,7 +93,7 @@
     </Variant>
     <Variant
       title="Grouping"
-      :initState="() => initState"
+      :initState="initState"
       :source="templateSourceGroup">
       <template #default="{ state }">
         <PDropdown v-model="state.value" placeholder="Select">

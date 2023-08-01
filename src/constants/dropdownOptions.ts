@@ -61,7 +61,7 @@ export const groupOptions = [
 
 export const templateSourceGroup = `
 <template>
-  <el-select v-model="value" placeholder="Select">
+  <PDropdown v-model="value" placeholder="Select">
     <el-option-group
       v-for="group in options"
       :key="group.label"
@@ -74,7 +74,7 @@ export const templateSourceGroup = `
         :value="item.value"
       />
     </el-option-group>
-  </el-select>
+  </PDropdown>
 </template>
 
 <script lang="ts" setup>
