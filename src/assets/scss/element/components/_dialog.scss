@@ -1,16 +1,21 @@
 // css3 var in packages/theme-chalk/src/dialog.scss
+
+// Define the default values for the $dialog variable as an empty map
 $dialog: () !default;
+
+// Merge the default values with the provided values using map.merge
 $dialog: map.merge(
   (
     'width': 50%,
     'margin-top': 15vh,
     'bg-color': getCssVar('bg-color'),
-    'box-shadow': getCssVar('box-shadow'),
+    'box-shadow': getCssVar('box-shadow-dark'),
     'title-font-size': getCssVar('font-size-large'),
     'content-font-size': 14px,
     'font-line-height': getCssVar('font-line-height-primary'),
     'padding-primary': 20px,
-    'border-radius': getCssVar('border-radius-small'),
+    'border-radius': getCssVar('dialog', 'border-radius-round'),
+    'background-color': var(--pulse-color-neutral-blanc, #FFF)
   ),
   $dialog
 );

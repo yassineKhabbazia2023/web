@@ -1,5 +1,5 @@
 <template>
-  <Story title="2. Atoms/PDialog" icon="">
+  <Story title="2. Atoms/Dialog" icon="">
     <Variant title="Dialog">
       <PButton @click="showDialog">
         Open Dialog
@@ -14,14 +14,14 @@
         :beforeClose="closeDialog"
       >
         <!-- Dialog content goes here -->
-        <p class="dialog-text">
+        <p class="p-dialog-text">
           This is a message
         </p>
         <template #footer>
-          <span class="dialog-footer">
+          <div class="p-dialog-footer">
             <PButton
               type="secondary"
-              size="default"
+              size="small"
               :plain="false"
               :round="false"
               :disabled="false"
@@ -30,7 +30,7 @@
             >
               Fermer
             </PButton>
-          </span>
+          </div>
         </template>
       </PDialog>
     </Variant>
@@ -49,14 +49,14 @@
         :beforeClose="closeSecondDialog"
       >
         <!-- Dialog content goes here -->
-        <p class="dialog-text">
+        <p class="p-dialog-text">
           Suppression définitive du fichier. Continuer ?
         </p>
         <template #footer>
-          <span class="dialog-footer">
+          <div class="p-dialog-footer">
             <PButton
               type="secondary"
-              size="default"
+              size="small"
               :plain="false"
               :round="false"
               :disabled="false"
@@ -67,7 +67,7 @@
             </PButton>
             <PButton
               type="primary"
-              size="default"
+              size="small"
               :plain="false"
               :round="false"
               :disabled="false"
@@ -76,7 +76,63 @@
             >
               Continuer
             </PButton>
-          </span>
+          </div>
+        </template>
+      </PDialog>
+    </Variant>
+
+    <Variant title="Dialog input">
+      <PButton @click="showThirdDialog">
+        Open Dialog
+      </PButton>
+
+      <PDialog
+        v-model="pThirdDialogControl.dialogVisible"
+        :title="pThirdDialogControl.dialogTitle"
+        :width="pThirdDialogControl.dialogWidth"
+        :modal="pThirdDialogControl.dialogModal"
+        :center="pThirdDialogControl.dialogCenter"
+        :beforeClose="closeThirdDialog"
+      >
+        <!-- Dialog content goes here -->
+        <p class="p-dialog-text">
+          Veuillez saisir le nom de votre fichier
+        </p>
+        <div class="p-dialog-input">
+          <PInput
+            type="text"
+            :disabled="false"
+            placeholder="Nom du fichier"
+          />
+          <p class="p-dialog-input-extension">
+            .jpg
+          </p>
+        </div>
+        <template #footer>
+          <div class="p-dialog-footer">
+            <PButton
+              type="secondary"
+              size="small"
+              :plain="false"
+              :round="false"
+              :disabled="false"
+              :loading="false"
+              @click="closeThirdDialog"
+            >
+              Annuler
+            </PButton>
+            <PButton
+              type="primary"
+              size="small"
+              :plain="false"
+              :round="false"
+              :disabled="false"
+              :loading="false"
+              @click="closeThirdDialog"
+            >
+              Continuer
+            </PButton>
+          </div>
         </template>
       </PDialog>
     </Variant>
@@ -86,6 +142,7 @@
 <script setup lang="ts">
 import PDialog from '.'
 import PButton from '@/atoms/PButton'
+import PInput from '@/atoms/PInput'
 import { reactive } from 'vue'
 
 const showDialog = () => {
@@ -129,16 +186,48 @@ const pSecondDialogControl = reactive({
   dialogCloseOnPressEscape: true,
   dialogCustomClass: 'my-dialog-class'
 })
+
+const showThirdDialog = () => {
+  pThirdDialogControl.dialogVisible = true
+}
+
+const closeThirdDialog = () => {
+  pThirdDialogControl.dialogVisible = false
+}
+
+const pThirdDialogControl = reactive({
+  dialogVisible: false,
+  dialogTitle: 'Saisie rapide',
+  dialogWidth: '40%',
+  dialogModal: true,
+  dialogAppendToBody: true,
+  dialogCenter: true,
+  dialogLockScroll: false,
+  dialogShowClose: true,
+  dialogCloseOnClickModal: true,
+  dialogCloseOnPressEscape: true,
+  dialogCustomClass: 'my-dialog-class'
+})
 </script>
 
 <style lang="scss" scoped>
-.dialog-text {
+.p-dialog-text {
   color: #000;
   font-size: 14px;
   font-weight: 400;
   line-height: 120%;
+  padding-bottom: 16px;
 }
-.dialog-footer {
+.p-dialog-input {
+  display: flex;
+  align-items: center;
+
+  &-extension{
+    color: var(--pulse-color-neutral-gray-900, #171717);
+    padding-left: 8px;
+  }
+}
+.p-dialog-footer {
   display: flex;
   justify-content: end;
 }
