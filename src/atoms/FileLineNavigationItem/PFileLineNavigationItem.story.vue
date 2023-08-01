@@ -3,8 +3,7 @@
     <Variant title="Default">
       <PFileLineNavigationItem
         :folderName="firstProps.folderName"
-        :selected="firstProps.selected"
-        :disabled="firstProps.disabled"
+        :class="{ selected: firstProps.selected, disabled: firstProps.disabled }"
         :folderId="firstProps.folderId"
       />
       <template #controls>
