@@ -15,7 +15,7 @@
       >
         <!-- Dialog content goes here -->
         <p class="p-dialog-text">
-          This is a message
+          {{ pDialogControl.dialogContent }}
         </p>
         <template #footer>
           <div class="p-dialog-footer">
@@ -33,6 +33,10 @@
           </div>
         </template>
       </PDialog>
+      <template #controls>
+        <HstText v-model="pDialogControl.dialogTitle" title="title" />
+        <HstText v-model="pDialogControl.dialogContent" title="content" />
+      </template>
     </Variant>
 
     <Variant title="Dialog warning">
@@ -163,7 +167,8 @@ const pDialogControl = reactive({
   dialogShowClose: true,
   dialogCloseOnClickModal: true,
   dialogCloseOnPressEscape: true,
-  dialogCustomClass: 'my-dialog-class'
+  dialogCustomClass: 'my-dialog-class',
+  dialogContent: 'This is a message'
 })
 
 const showSecondDialog = () => {
