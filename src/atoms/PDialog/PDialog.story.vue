@@ -231,7 +231,7 @@ const pThirdDialogControl = reactive({
   display: flex;
   align-items: center;
 
-  &-extension{
+  &-extension {
     color: var(--pulse-color-neutral-gray-900, #171717);
     padding-left: 8px;
   }
@@ -241,3 +241,12 @@ const pThirdDialogControl = reactive({
   justify-content: end;
 }
 </style>
+
+<docs lang="md">
+## PDialog
+Dialog pops up a dialog box, and it's quite customizable.
+
+<div class="responsive-iframe-container">
+<iframe class="responsive-iframe" src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?node-id=2000%3A9478&mode=dev" allowfullscreen></iframe>
+</div>
+</docs>
