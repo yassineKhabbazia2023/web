@@ -101,8 +101,9 @@ extends:
         storageAccount: $(storageAccount)
         container: "assets"
         storageDeployment: overwrite
-        purgeCdn:
-          resourceGroup: $(cdn_resourceGroup)
-          profileName: $(cdn_profile)
-          endpointName: $(cdn_endpoint)
-          waitForCommand: true
+        # Will be fixed on 4th of august in the CICD as conf engine. New PR to come to uncomment these lines on friday !
+        # purgeCdn:
+        #   resourceGroup: $(cdn_resourceGroup)
+        #   profileName: $(cdn_profile)
+        #   endpointName: $(cdn_endpoint)
+        #   waitForCommand: true
