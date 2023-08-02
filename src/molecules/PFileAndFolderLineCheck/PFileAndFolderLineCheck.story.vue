@@ -3,7 +3,7 @@
     title="3. Molecules/File and Folder Line Check"
     icon="radix-icons:id-card"
   >
-    <Variant title="Custum tooltip">
+    <Variant title="Default line check">
       <PFileAndFolderLineCheck
         v-model="firstVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[0].fileName"
@@ -12,7 +12,7 @@
       </PFileAndFolderLineCheck>
     </Variant>
 
-    <Variant title="Success tooltip">
+    <Variant title="Success line check">
       <PFileAndFolderLineCheck
         v-model="secondVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[1].fileName"
@@ -22,7 +22,7 @@
       </PFileAndFolderLineCheck>
     </Variant>
 
-    <Variant title="Error tooltip">
+    <Variant title="Error line check">
       <PFileAndFolderLineCheck
         v-model="thirdVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[2].fileName"
@@ -32,7 +32,7 @@
       </PFileAndFolderLineCheck>
     </Variant>
 
-    <Variant title="Loading tooltip">
+    <Variant title="Loading line check">
       <PFileAndFolderLineCheck
         v-model="fourthVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[3].fileName"
