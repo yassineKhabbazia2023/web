@@ -2,6 +2,23 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 // css3 var in packages/theme-chalk/src/button.scss
+$button: (
+  'border-color': getCssVar('color', 'neutral-gray-100'),
+  'text-color': getCssVar('color', 'neutral-gray-500'),
+  'disabled-text-color': getCssVar('color', 'neutral-gray-100'),
+  'disabled-border-color': getCssVar('color', 'neutral-gray-100'),
+  'divide-border-color': rgba($color-white, 0.5),
+  'hover-text-color': getCssVar('color', 'neutral-gray-500'),
+  'hover-bg-color': getCssVar('fill-color', 'blank'),
+  'hover-border-color': getCssVar('color', 'neutral-gray-300'),
+  'active-text-color': getCssVar('color', 'neutral-gray-500'),
+  'active-border-color':getCssVar('color', 'neutral-gray-500'),
+  'active-bg-color': getCssVar('fill-color', 'blank'),
+  'outline-color': getCssVar('color-primary', 'light-5'),
+  'hover-link-text-color': getCssVar('color-info'),
+  'active-color': getCssVar('text-color', 'primary'),
+);
+
 $button-font-size: (
   'large': getCssVar('font-size', 'base'),
   'default': getCssVar('font-size', 'base'),
@@ -29,6 +46,10 @@ $button-padding-horizontal: (
   $self: &;
 
   &#{$self} {
+    .el-icon {
+      font-size: 16px;
+    }
+
     &--small {
       --el-button-size: 32px;
       height: 32px;
@@ -43,7 +64,7 @@ $button-padding-horizontal: (
       }
 
       .el-icon {
-        width: 16px;
+        font-size: 14px;
       }
     }
     &#{$self}--icon {
@@ -56,10 +77,6 @@ $button-padding-horizontal: (
 
       &#{$self}--small {
         width: 32px;
-      }
-
-      .el-icon {
-        width: 20px;
       }
     }
 
@@ -83,6 +100,7 @@ $button-padding-horizontal: (
     &:focus {
       background: var(--el-color-persian-800);
       border-color: var(--el-color-persian-800);
+      color: $color-white;
     }
     &.is-disabled,
     &.is-disabled:hover,
@@ -137,6 +155,27 @@ $button-padding-horizontal: (
       border-color: $color-white;
       background: $color-white;
       color: var(--el-color-persian-200);
+    }
+  }
+  // Button default Pegase
+  &#{$self}--generic {
+    border-color: transparent;
+    color: getCssVar('color', 'neutral-gray-900');
+
+    &:hover {
+      border-color: transparent;
+      color: getCssVar('color', 'neutral-gray-900');
+    }
+    &:focus {
+      border-color: transparent;
+      color: getCssVar('color', 'neutral-gray-900');
+    }
+    &.is-disabled,
+    &.is-disabled:hover,
+    &.is-disabled:focus {
+      background: getCssVar('fill-color', 'blank');
+      border-color: transparent;
+      color: getCssVar('color', 'neutral-gray-300');
     }
   }
 }

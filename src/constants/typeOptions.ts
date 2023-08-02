@@ -2,12 +2,20 @@ import type { EpPropMergeType } from 'element-plus/es/utils'
 
 export const typeOptions = [
   {
+    label: 'default',
+    value: ''
+  },
+  {
     label: 'primary',
     value: 'primary'
   },
   {
     label: 'white',
     value: 'white'
+  },
+  {
+    label: 'generic',
+    value: 'generic'
   },
   {
     label: 'success',
