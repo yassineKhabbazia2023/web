@@ -95,7 +95,7 @@
         :beforeClose="closeThirdDialog"
       >
         <!-- Dialog content goes here -->
-        <p class="p-dialog-text">
+        <p class="p-dialog-text-fichier">
           Veuillez saisir le nom de votre fichier
         </p>
         <div class="p-dialog-input">
@@ -103,6 +103,7 @@
             type="text"
             :disabled="false"
             placeholder="Nom du fichier"
+            v-model="pThirdDialogControl.dialogInput"
           />
           <p class="p-dialog-input-extension">
             .jpg
@@ -193,6 +194,7 @@ const showThirdDialog = () => {
 
 const closeThirdDialog = () => {
   pThirdDialogControl.dialogVisible = false
+  pThirdDialogControl.dialogInput = ''
 }
 
 const pThirdDialogControl = reactive({
@@ -206,12 +208,19 @@ const pThirdDialogControl = reactive({
   dialogShowClose: true,
   dialogCloseOnClickModal: true,
   dialogCloseOnPressEscape: true,
-  dialogCustomClass: 'my-dialog-class'
+  dialogCustomClass: 'my-dialog-class',
+  dialogInput: ''
 })
 </script>
 
 <style lang="scss" scoped>
 .p-dialog-text {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 120%;
+}
+.p-dialog-text-fichier {
   color: #000;
   font-size: 14px;
   font-weight: 400;

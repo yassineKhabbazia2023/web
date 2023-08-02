@@ -45,6 +45,10 @@ defineExpose({ handleClose })
     display: flex;
     color: var(--el-text-color-regular);
   }
+
+  .el-dialog__body {
+    padding: 24px 16px;
+  }
 }
 </style>
 
