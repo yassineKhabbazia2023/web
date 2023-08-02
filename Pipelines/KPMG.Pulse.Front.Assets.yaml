@@ -45,6 +45,12 @@ extends:
           value: DEV-MyPulseV2
         - name: storageAccount
           value: sastdportalfront
+        - name: cdn_resourcegroup
+          value: rg-mypulse-v2-dev
+        - name: cdn_profile
+          value: myplusems
+        - name: cdn_endpoint
+          value: cdn-d2-pulse
       - name: REC
         displayName: Recette
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -53,6 +59,12 @@ extends:
           value: REC-MyPulseV2
         - name: storageAccount
           value: frappfrontrec
+        - name: cdn_resourcegroup
+          value: frapprecmypulse0001
+        - name: cdn_profile
+          value: mypulsev2rec
+        - name: cdn_endpoint
+          value: cdn-rec-pulse
       - name: PREPROD
         displayName: Preproduction
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -61,6 +73,12 @@ extends:
           value: PPR-MyPulseV2
         - name: storageAccount
           value: frappfrontppr
+        - name: cdn_resourcegroup
+          value: frapppprmypulse0001
+        - name: cdn_profile
+          value: mypulsebeta
+        - name: cdn_endpoint
+          value: cdn-ppr-pulse
       - name: PROD
         displayName: Production
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -69,6 +87,12 @@ extends:
           value: PRD-MyPulseV2
         - name: storageAccount
           value: frappfrontprod
+        - name: cdn_resourcegroup
+          value: frappprdmypulse0001
+        - name: cdn_profile
+          value: mypulse
+        - name: cdn_endpoint
+          value: cdn-prd-pulse
       steps:
       - type: az-blob
         name: Deploy_Assets
@@ -76,5 +100,10 @@ extends:
         azureServiceConnection: $(azureSC)
         storageAccount: $(storageAccount)
         container: "assets"
-        targetPath: ''
         storageDeployment: overwrite
+        # Will be fixed on 4th of august in the CICD as conf engine. New PR to come to uncomment these lines on friday !
+        # purgeCdn:
+        #   resourceGroup: $(cdn_resourceGroup)
+        #   profileName: $(cdn_profile)
+        #   endpointName: $(cdn_endpoint)
+        #   waitForCommand: true
