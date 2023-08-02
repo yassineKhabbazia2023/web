@@ -1,15 +1,15 @@
 <template>
   <div
     :type="type"
-    :class="{ 'p-cell__text': true, 'padding--4': true, disabled, selected }"
+    :class="{ 'p-cell-text': true, 'padding--4': true, disabled, selected }"
     :disabled="disabled"
     :selected="selected">
-    <div class="p-cell__icon" v-if="icon !== undefined">
+    <div class="p-cell-text__icon" v-if="icon !== undefined">
       <PIcon :size="16">
         <component :is="icon" />
       </PIcon>
     </div>
-    <div :class="{ 'p-cell__content': true, 'p-cell__content--bold': bold }">
+    <div :class="{ 'p-cell-text__content': true, 'p-cell-text__content--bold': bold }">
       {{ content }}
     </div>
   </div>
@@ -34,7 +34,7 @@ withDefaults(defineProps<PCellTextProps>(), {
 })
 </script>
 <style lang="scss" scoped>
-.p-cell__text {
+.p-cell-text {
   display: flex;
   align-items: center;
   height: 40px;
@@ -80,22 +80,21 @@ withDefaults(defineProps<PCellTextProps>(), {
     background-color: var(--el-color-persian-300);
     color:  var(--el-text-color-primary);
   }
-}
 
-.p-cell__icon {
-  width: 16px;
-  height: 16px;
-}
+  &__icon {
+    width: 16px;
+    height: 16px;
+  }
 
-.p-cell__content {
-  font-weight: normal;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 300px;
+  &__content {
+    font-weight: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 
-  &--bold {
-    font-weight: 700;
+    &--bold {
+      font-weight: 700;
+    }
   }
 }
 </style>
