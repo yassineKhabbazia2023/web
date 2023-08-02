@@ -100,7 +100,6 @@ extends:
         azureServiceConnection: $(azureSC)
         storageAccount: $(storageAccount)
         container: "assets"
-        targetPath: ''
         storageDeployment: overwrite
         purgeCdn:
           resourceGroup: $(cdn_resourceGroup)
