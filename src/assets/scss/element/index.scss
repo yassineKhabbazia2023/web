@@ -23,6 +23,7 @@
 @use './components/carousel';
 @use './components/image';
 @use './form/select';
+@use './components/tree';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -60,7 +61,8 @@
   $select-option: select.$select-option,
   $select-group: select.$select-group,
   $select-dropdown: select.$select-dropdown,
-  $select-tags-prefix-padding: select.$select-tags-prefix-padding
+  $select-tags-prefix-padding: select.$select-tags-prefix-padding,
+  $tree: tree.$tree
 );
 
 
@@ -102,3 +104,4 @@
 @use 'element-plus/theme-chalk/src/carousel.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
+@use 'element-plus/theme-chalk/src/tree.scss' as *;

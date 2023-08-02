@@ -45,11 +45,11 @@ async function generateComponent(iconPath, outputPath) {
     const componentName = `PI${capitalizeFirstLetter(iconName)}`
 
     const componentCode = `
-<!-- eslint-disable vue/max-attributes-per-line -->
+<!-- eslint-disable vue/max-attributes-per-line max-len -->
 <template>
  ${pathData.input}
 </template>
-<!-- eslint-disable vue/max-attributes-per-line -->
+<!-- eslint-disable vue/max-attributes-per-line max-len -->
 <script lang="ts">
 import type { DefineComponent } from 'vue'
 export default ({
