@@ -7,20 +7,27 @@
       iframe: false,
     }">
     <Variant>
-      <ul class="demo-icon-list">
-        <li
-          class="icon-item"
-          :title="item.name"
-          v-for="(item, index) in iconsData"
-          :key="index">
-          <span class="demo-svg-icon">
-            <PIcon color="#5546FF" size="20px">
-              <component :is="item.component" />
-            </PIcon>
-            <span class="icon-name">{{ item.name }}</span>
-          </span>
-        </li>
-      </ul>
+    <div
+      v-for="(group, indexGroup) in iconsData"
+      :key="indexGroup">
+        <h1>{{  group.category }}</h1>
+        <ul
+          class="demo-icon-list"
+        >
+          <li
+            class="icon-item"
+            :title="item.name"
+            v-for="(item, index) in group.icons"
+            :key="index">
+            <span class="demo-svg-icon" @click="copyClipboard(item)">
+              <PIcon color="#5546FF" size="20px">
+                <component :is="item.component" />
+              </PIcon>
+              <span class="icon-name">{{ item.name }}</span>
+            </span>
+          </li>
+        </ul>
+      </div>
     </Variant>
   </Story>
 </template>
@@ -28,16 +35,46 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, defineAsyncComponent } from 'vue'
 import { pulseGeneratedIcons } from './components/constants'
+import { manageClick } from '@/utils/mouse'
+import { useCopyClipboard } from '@/utils/clipboard'
 
 const iconsData = ref([] as any[])
 onBeforeMount(() => {
   iconsData.value = pulseGeneratedIcons.map((component) => {
     return {
-      name: `${component}`,
-      component: defineAsyncComponent(() => import(`./components/${component}.vue`))
+      name: `${component.name}`,
+      category: component.category,
+      component: defineAsyncComponent(() => import(`./components/${component.name}.vue`))
     }
-  })
+  }).reduce((groups, item) => {
+    let group = groups.find((g: any) => g.category === item.category)
+
+    if (!group) {
+      group = {
+        category: item.category,
+        icons: []
+      }
+      groups.push(group)
+    }
+    group.icons.push(item)
+    return groups
+  }, [] as any)
 })
+
+const copyClipboard = (icon: any) => {
+
+  const onSingleClick = () => {
+    useCopyClipboard(icon.name)
+  }
+  const onDoubleClick = () => {
+    useCopyClipboard(`  <PIcon color="#5546FF" size="20px">
+    <${icon.name} />
+  </PIcon>`)
+  }
+
+  manageClick(onSingleClick, onDoubleClick)
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -45,14 +82,14 @@ onBeforeMount(() => {
   overflow: hidden;
   list-style: none;
   padding: 0!important;
-  border-top: 1px solid var(--el-border-color);
-  border-left: 1px solid var(--el-border-color);
   border-radius: 4px;
   display: grid;
   grid-template-columns: repeat(4,1fr);
 
     .icon-item {
     text-align: center;
+    border: 1px solid var(--el-border-color);
+    margin: 8px;
     color: var(--el-text-color-regular);
     height: 90px;
     font-size: 13px;
@@ -77,6 +114,13 @@ onBeforeMount(() => {
 </style>
 
 <docs lang="md">
+## Icônes
+<div class="container">
+  Au clic sur une case d'icône, sera copié le nom de l'icône, à utiliser dans vos
+  composants.
+  Au double clic, sera copié la composition 'PIcon' et l'icône cliqué
+</div>
+
 ## Icon Attributes
 
 | Name    | Description                | Type                           | Default                |
