@@ -24,6 +24,7 @@
 @use './components/image';
 @use './form/select';
 @use './components/tree';
+@use './components/breadcrumb';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -106,3 +107,4 @@
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
+@use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
