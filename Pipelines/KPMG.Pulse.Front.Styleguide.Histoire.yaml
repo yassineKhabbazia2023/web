@@ -10,7 +10,7 @@ resources:
   - repository: CICD
     name: 'Plateforme Technologique/CICD'
     type: git
-    ref: 'refs/heads/Release/v5.3'
+    ref: 'refs/heads/hotfix/clearcdn-path'
 
 
 extends:
@@ -113,3 +113,4 @@ extends:
           profileName: $(cdn_profile)
           endpointName: $(cdn_endpoint)
           waitForCommand: true
+          path: '/'
