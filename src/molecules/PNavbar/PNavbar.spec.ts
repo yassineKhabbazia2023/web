@@ -34,12 +34,12 @@ describe('display navbar', () => {
   it('should display vertical navbar with entities list', () => {
     const wrapper: VueWrapper<any> = createWrapper({ entities })
     const elMenu = wrapper.find('.el-menu--navbar')
-    const elMenuItems = elMenu.findAll('el-menu-item:not(.title)')
+    const elMenuItems = elMenu.findAll('el-menu-item:not(.el-menu-item--title)')
 
     expect(elMenu.exists()).toBeTruthy()
     expect(elMenuItems).toHaveLength(2)
-    expect(elMenuItems[0].find('span').html()).contains(entities[0].name)
-    expect(elMenuItems[1].find('span').html()).contains(entities[1].name)
+    expect(elMenuItems[0].html()).contains(entities[0].name)
+    expect(elMenuItems[1].html()).contains(entities[1].name)
   })
 
   it('should navigate to /entity', async () => {

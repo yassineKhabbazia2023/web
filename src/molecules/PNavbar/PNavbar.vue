@@ -1,35 +1,34 @@
 <template>
   <el-menu
-    backgroundColor="var(--el-color-neutral-gray-700)"
-    hoverBackgroundColor="var(--el-color-secondary-cyan-bg)"
     textColor="white"
-    class="el-menu--navbar hidden-sm-and-down"
-    :collapse="isCollapse"
+    class="el-menu--navbar shadow--3 p-navbar"
+    :collapse="isWindowUnderDesktop ? false : isCollapse"
+    :mode="isWindowUnderDesktop ? 'horizontal' : 'vertical'"
+    :defaultActive="activeIndex"
+    :ellipsis="!isWindowUnderDesktop"
     router
   >
-    <el-menu-item
-      class="title"
-    >
-      <span class="menu-name"><slot name="title" /></span>
+    <el-menu-item class="el-menu-item--title hidden-sm-and-down">
+      <span class="p-menu-name-title"><slot name="title" /></span>
       <PIcon
         @click="collapseMenu"
-        class="icon-collapse"
+        class="p-icon-collapse"
       >
         <PIArrowBarRight v-show="isCollapse" />
         <PIArrowBarLeft v-show="!isCollapse" />
       </PIcon>
     </el-menu-item>
     <el-menu-item
-      v-for="(item, index) in menuList"
+      v-for="item in menuList"
       :index="item.path"
-      :key="index"
+      :key="item.path"
     >
-      <PIcon>
-        <component :is="createIcon(item.icon)" />
+      <PIcon class="p-navbar__icon">
+        <component :is="iconResolver(item.icon)" />
       </PIcon>
-      <span class="menu-name">{{ item.name }}</span>
+      <span class="p-menu-name p-menu-name--list hidden-sm-and-down">{{ item.name }}</span>
     </el-menu-item>
-    <div class="divider">
+    <div class="divider hidden-sm-and-down">
       <el-divider />
     </div>
     <el-menu-item
@@ -37,47 +36,29 @@
       :key="item.idAccount"
       @click="handleClickEntity(item.idAccount)"
       :index="`${index + 2}`"
+      class="p-menu-item-entity"
     >
-      <PIcon class="icon-entity" :style="`background-color: ${item.color}`">
-        <component :is="createIcon(item.icon)" />
-      </PIcon>
-      <span class="font-bold menu-name">{{ item.name }}</span>
-    </el-menu-item>
-  </el-menu>
-  <el-menu
-    mode="horizontal"
-    backgroundColor="var(--el-color-neutral-gray-700)"
-    activeTextColor="var(--el-color-white)"
-    textColor="white"
-    class="el-menu-horizontal hidden-md-and-up"
-    router
-  >
-    <el-menu-item
-      v-for="(item, index) in entities"
-      @click="handleClickEntity(item.idAccount)"
-      :key="item.idAccount"
-      :index="`${index}`"
-    >
-      <PIcon class="icon-entity" :style="`background-color: ${item.color};`">
-        <component :is="createIcon(item.icon)" />
-      </PIcon>
-      <span class="font-bold menu-name">{{ item.name }}</span>
-    </el-menu-item>
-    <el-menu-item
-      :class="`icon-collapse icon-horizontale-index-${index}`"
-      v-for="(item, index) in menuList"
-      :index="item.path"
-      :key="index"
-    >
-      <PIcon>
-        <component :is="createIcon(item.icon)" />
-      </PIcon>
+      <span class="p-navbar__avatar-container">
+        <PAvatar
+          :shape="currentShape"
+          :size="currentSize"
+          :color="item.color"
+        >
+          <PIcon>
+            <component :is="iconResolver(item.icon)" />
+          </PIcon>
+        </PAvatar>
+      </span>
+      <span class="p-menu-name">{{ item.name }}</span>
     </el-menu-item>
   </el-menu>
 </template>
 
 <script lang="ts" setup>
-import { type PropType, ref, defineAsyncComponent } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
+import PAvatar from '@/atoms/PAvatar'
+import PIcon from '@/atoms/PIcon'
+import { iconResolver } from '@/utils/iconResolver'
 
 interface EntityProps {
   idAccount: string
@@ -92,19 +73,40 @@ interface MenuProps {
   icon: string
 }
 
+interface NavbarProps {
+  entities: EntityProps[]
+  menuList: MenuProps[]
+  handleClickEntity: Function
+}
+
 const isCollapse = ref(true)
 
-defineProps({
-  entities: Object as PropType<EntityProps[]>,
-  menuList: Object as PropType<MenuProps[]>,
-  handleClickEntity: { type: Function, required: true }
+const currentShape = ref('circle')
+const currentSize = ref('xsmall')
+const activeIndex = ref('2')
+
+withDefaults(defineProps<NavbarProps>(), {
+  entities: () => [],
+  menuList: () => [],
+  handleClickEntity: () => {}
 })
 
 const collapseMenu = () => {
   isCollapse.value = !isCollapse.value
 }
 
-const createIcon = (name: string) => {
-  return defineAsyncComponent(() => import(`../PIcon/components/${name}.vue`))
+const isWindowUnderDesktop = ref(window.innerWidth < 992)
+
+const handleResize = () => {
+  isWindowUnderDesktop.value = window.innerWidth < 992
 }
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
 </script>

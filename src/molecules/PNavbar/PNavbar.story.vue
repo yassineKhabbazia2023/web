@@ -40,7 +40,6 @@
 <script lang="ts" setup>
 import { reactive, computed } from 'vue'
 import PNavbar from './'
-import themeOptions from '@/constants/themeOptions'
 
 const entities = [
   { name: 'Restaurant Johnny s pizza', idAccount: 'idAccount', icon: 'PICupHot', color: 'orange' },
@@ -52,7 +51,6 @@ const menus = [
   { name: 'See customer view', icon: 'PIPersonVideo3', path: '/customer' }
 ]
 const basicNavData = reactive({
-  themeOptions,
   entities,
   menus
 })
@@ -62,7 +60,7 @@ const navbarSource = computed(() => {
 })
 
 const handleClickEntity = (idAccount: string) => {
-  console.log('current entity', idAccount)
+  console.log('handleClickEntity', idAccount)
 }
 </script>
 
