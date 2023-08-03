@@ -3,7 +3,7 @@
     v-model="visible"
     @close="handleClose"
     :lockScroll="false"
-    class="p-dialog"
+    class="p-dialog radius--4"
   >
     <slot></slot>
     <template #footer>

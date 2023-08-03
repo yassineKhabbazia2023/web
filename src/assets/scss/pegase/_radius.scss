@@ -16,7 +16,7 @@ $borders: (
 $_ in $borders {
   .radius {
     &--#{$token} {
-      border-radius: map.get($borders, $token);
+      border-radius: map.get($borders, $token) !important;
     }
   }
 }
