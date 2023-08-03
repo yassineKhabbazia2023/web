@@ -10,7 +10,7 @@
         :size="iconSize"
         :color="iconColor">
         <PIcon>
-          <PIPulse />
+          <component :is="icon" />
         </PIcon>
       </PAvatar>
     </div>
@@ -21,8 +21,11 @@
 </template>
 
 <script setup lang="ts">
+import { type Component } from 'vue'
+
 interface PCellTextProps {
   content: string
+  icon?: Component | string
   type: 'primary' | 'secondary'
   iconShape: string
   iconColor: string
@@ -32,6 +35,7 @@ interface PCellTextProps {
 
 withDefaults(defineProps<PCellTextProps>(), {
   type: 'primary',
+  icon: '',
   iconShape: 'circle',
   iconColor: 'persian-gradient',
   iconSize: 'xsmall',
@@ -49,7 +53,7 @@ withDefaults(defineProps<PCellTextProps>(), {
   padding: 0 12px;
 
   &[type="primary"]:not([selected="true"]) {
-    background-color: var(--el-fill-color-blank);
+    background-color: transparent;
 
     &:hover {
       background-color: var(--el-color-persian-100);
