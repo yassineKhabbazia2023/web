@@ -8,7 +8,7 @@ function fetchIcons(folderPath) {
   return new Promise((resolve, reject) => {
     const icons = []
 
-    function traverseDirectory(currentPath) {
+    function traverseDirectory(currentPath, directoryName) {
       fs.readdir(currentPath, { withFileTypes: true }, (err, files) => {
         if (err) {
           reject(err)
@@ -18,9 +18,12 @@ function fetchIcons(folderPath) {
         files.forEach((file) => {
           const filePath = path.join(currentPath, file.name)
           if (file.isFile() && path.extname(file.name) === '.svg') {
-            icons.push(filePath)
+            icons.push({
+              name: filePath,
+              category: capitalizeFirstLetter(directoryName)
+            })
           } else if (file.isDirectory()) {
-            traverseDirectory(path.join(currentPath, file.name))
+            traverseDirectory(path.join(currentPath, file.name), file.name)
           }
         })
 
@@ -34,7 +37,7 @@ function fetchIcons(folderPath) {
   })
 }
 
-async function generateComponent(iconPath, outputPath) {
+async function generateComponent({ name: iconPath }, outputPath) {
   const iconName = path.basename(iconPath, '.svg')
   const svgCode = await fs.promises.readFile(iconPath, 'utf-8')
 
@@ -89,7 +92,7 @@ async function generateIcons(iconsFolderPath, outputFolderPath) {
 
 async function generateEntry(icons, outputFolderPath) {
   let code = icons
-    .map((iconPath) => {
+    .map(({ name: iconPath }) => {
       const iconName = path.basename(iconPath, '.svg')
       const componentName = `PI${capitalizeFirstLetter(iconName)}`
       return `export { default as ${componentName} } from './${componentName}.vue'`
@@ -102,15 +105,23 @@ async function generateEntry(icons, outputFolderPath) {
   await fs.promises.writeFile(path.resolve(outputFolderPath, 'index.ts'), code, 'utf-8')
 
   const generatedArray = []
-  icons.forEach((iconPath) => {
-    const iconName = path.basename(iconPath, '.svg')
+  icons.forEach((icon) => {
+    const iconName = path.basename(icon.name, '.svg')
     const componentName = `PI${capitalizeFirstLetter(iconName)}`
-    generatedArray.push(componentName)
+    generatedArray.push(
+      {
+        ...icon,
+        componentName
+      })
   })
 
   const constantsFilePath = path.join(outputFolderPath, 'constants.ts')
   const constantsCode = `export const pulseGeneratedIcons = [
-  ${generatedArray.map((item) => `'${item}'`).join(',\n  ')}
+  ${generatedArray.map((item) =>
+    `{
+    name: '${item.componentName}',
+    category: '${item.category}'
+  }`).join(',\n  ')}
 ]
 `
   await fs.promises.writeFile(constantsFilePath, constantsCode)

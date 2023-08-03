@@ -41,7 +41,6 @@ extends:
           description: |
             MFE StyleGuide v$(GitVersion.number)
     deploy:
-      parallel: true
       environments:
       - name: DEV
         displayName: Developpement

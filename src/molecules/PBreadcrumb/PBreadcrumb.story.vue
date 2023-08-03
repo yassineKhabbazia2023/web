@@ -6,6 +6,12 @@
     <Variant title="ellipsed breadcrumb ">
       <PBreadcrumb :elements="generateBreadCrumbItems(8)" />
     </Variant>
+    <Variant title="breadcrumb size small">
+      <PBreadcrumb :elements="generateBreadCrumbItems(8)" size="S" />
+    </Variant>
+    <Variant title="breadcrumb size medium">
+      <PBreadcrumb :elements="generateBreadCrumbItems(8)" size="M" />
+    </Variant>
   </Story>
 </template>
 
@@ -24,10 +30,20 @@ const generateBreadCrumbItems = (numberOfItems: number) => {
 
 <docs lang="md">
 ## PBreadscrumb
+# Component Types
 
-This component is used for breadcrumbs.
+| Type            | Properties                 |
+| --------------- | -------------------------- |
+| BreadcrumbItems | `{ id: number, text: string }` |
+
+## Component Props
+
+| Prop    | Type                     | Values |
+| ------- | ------------------------ | ------ |
+| element | `Array<BreadcrumbItems>` |        |
+| size    | string                   | S, M   |
 
   <div class="responsive-iframe-container">
-    <iframe class="responsive-iframe" src="<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1537%253A6527%26mode%3Ddev" allowfullscreen></iframe>" allowfullscreen></iframe>
+    <iframe class="responsive-iframe"  src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1537%253A6527%26mode%3Ddev" allowfullscreen></iframe>
   </div>
 </docs>

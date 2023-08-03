@@ -1,5 +1,5 @@
 <template>
-  <el-breadcrumb :separatorIcon="ArrowRight">
+  <el-breadcrumb :separatorIcon="ArrowRight" :class="breadCrumpSize()">
     <el-breadcrumb-item
       v-for="item in items"
       :key="item.id"
@@ -63,5 +63,17 @@ const getFullPathBreadcrumItem = (id: number) => {
     .slice(0, index + 1)
     .map((item) => item.text)
     .join(' > ')
+}
+
+const breadCrumpSize = () => {
+  switch (props.size) {
+    case 'S':
+      return 'small'
+    case 'M':
+      return 'medium'
+
+    default:
+      return ''
+  }
 }
 </script>

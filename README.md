@@ -1,12 +1,16 @@
 # Introduction 
-This Styleguide (Pégase) is meant to handle all the styles and nearly all the components of our apps (MFEs).\
+This Styleguide (Pégase) is meant to handle all the styles and nearly all the components of our apps (MFEs).<br/>
 It is then distributed as a NPM package. 
 
 # Getting Started
-Before you try to install anything, make sure your root .npmrc file (not the one in this repository) is configured as we're using a private NPM repository.\
-Otherwise, check [this](https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm).
 
-Then make sure you're using the same node version as the one specified in the "engine" section of the package.json.\
+## Private NPM authentication
+To set up the configuration, define a global **.npmrc** file instead of using one in this repository.<br/>
+If you're using windows, you should create an empty file called **.npmrc** in *C:\Users\yourUsername*.<br/>
+Next check [this](https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm) and go to the "Other" section.<br/>
+From there, **proceed directly to step 1** and follow all the specified instructions.
+## Node version
+Make sure you're using the same node version as the one specified in the "engine" section of the package.json.<br/>
 To make things easier, you can use [NVM](https://github.com/coreybutler/nvm-windows) to manage multiple node versions.
 
 Then, you just have to do
