@@ -20,6 +20,21 @@ $switch: (
     background-color: var(--el-color-base-white);
   }
 
+  &.is-disabled {
+    &:hover {
+      --el-switch-off-color: var(--el-color-persian-300);
+    }
+
+    &:focus {
+      --el-switch-off-color: var(--el-color-persian-400);
+    }
+
+    &:hover>.el-switch__core>.el-switch__action,
+    &:focus>.el-switch__core>.el-switch__action {
+      background-color: var(--el-color-base-white);
+    }
+  }
+
   &:not(.is-disabled) {
     &:hover {
       --el-switch-on-color: var(--el-color-persian-700);
