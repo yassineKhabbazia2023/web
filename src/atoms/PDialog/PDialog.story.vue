@@ -14,11 +14,11 @@
         :beforeClose="closeDialog"
       >
         <!-- Dialog content goes here -->
-        <p class="p-dialog-text">
+        <p class="p-dialog__text">
           {{ pDialogControl.dialogContent }}
         </p>
         <template #footer>
-          <div class="p-dialog-footer">
+          <div class="p-dialog__footer">
             <PButton
               type="secondary"
               size="small"
@@ -53,11 +53,11 @@
         :beforeClose="closeSecondDialog"
       >
         <!-- Dialog content goes here -->
-        <p class="p-dialog-text">
+        <p class="p-dialog__text">
           Suppression définitive du fichier. Continuer ?
         </p>
         <template #footer>
-          <div class="p-dialog-footer">
+          <div class="p-dialog__footer">
             <PButton
               type="secondary"
               size="small"
@@ -99,22 +99,22 @@
         :beforeClose="closeThirdDialog"
       >
         <!-- Dialog content goes here -->
-        <p class="p-dialog-text-fichier">
+        <p class="p-dialog__text-file">
           Veuillez saisir le nom de votre fichier
         </p>
-        <div class="p-dialog-input">
+        <div class="p-dialog__input">
           <PInput
             type="text"
             :disabled="false"
             placeholder="Nom du fichier"
             v-model="pThirdDialogControl.dialogInput"
           />
-          <p class="p-dialog-input-extension">
+          <p class="p-dialog__input-extension">
             .jpg
           </p>
         </div>
         <template #footer>
-          <div class="p-dialog-footer">
+          <div class="p-dialog__footer">
             <PButton
               type="secondary"
               size="small"
@@ -219,31 +219,36 @@ const pThirdDialogControl = reactive({
 </script>
 
 <style lang="scss" scoped>
-.p-dialog-text {
-  color: #000;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 120%;
-}
-.p-dialog-text-fichier {
-  color: #000;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 120%;
-  padding-bottom: 16px;
-}
-.p-dialog-input {
-  display: flex;
-  align-items: center;
+.p-dialog {
+  &__text {
+    color: var(--el-color-neutral-gray-900);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 120%;
 
-  &-extension {
-    color: var(--pulse-color-neutral-gray-900, #171717);
-    padding-left: 8px;
+    &-file {
+      color: var(--el-color-neutral-gray-900);
+      font-size: 1.4rem;
+      font-weight: 400;
+      line-height: 120%;
+      padding-bottom: 16px;
+    }
   }
-}
-.p-dialog-footer {
-  display: flex;
-  justify-content: end;
+
+  &__input {
+    display: flex;
+    align-items: center;
+
+    &-extension {
+      color: var(--el-color-neutral-gray-900);
+      padding-left: 8px;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: end;
+  }
 }
 </style>
 
