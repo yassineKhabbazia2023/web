@@ -10,7 +10,7 @@ resources:
   - repository: CICD
     name: 'Plateforme Technologique/CICD'
     type: git
-    ref: 'refs/heads/hotfix/clearcdn-path'
+    ref: 'refs/heads/Release/v6.0'
 
 
 extends:
