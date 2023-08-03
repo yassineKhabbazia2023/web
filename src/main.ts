@@ -33,6 +33,7 @@ import PCellEntity from '@/atoms/PCellEntity'
 import PCellText from '@/atoms/PCellText'
 import PHeader from '@/molecules/PHeader'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
+import PSwitch from '@/atoms/PSwitch'
 import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
 import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
 
@@ -65,6 +66,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PCellText', PCellText)
   app.component('PHeader', PHeader)
   app.component('PHeaderTabs', PHeaderTabs)
+  app.component('PSwitch', PSwitch)
   app.component('PFileLineNavigationItem', PFileLineNavigationItem)
   app.component('PFileANdFolderLineCheck', PFileAndFolderLineCheck)
 }
