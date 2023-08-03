@@ -22,6 +22,7 @@
 @use './components/tag';
 @use './components/carousel';
 @use './components/image';
+@use './components/dialog';
 @use './form/select';
 @use './components/tree';
 @use './components/breadcrumb';
@@ -64,7 +65,8 @@
   $select-group: select.$select-group,
   $select-dropdown: select.$select-dropdown,
   $select-tags-prefix-padding: select.$select-tags-prefix-padding,
-  $tree: tree.$tree
+  $tree: tree.$tree,
+  $dialog: dialog.$dialog
 );
 
 

@@ -2,8 +2,13 @@
   <ElDialog
     v-model="visible"
     @close="handleClose"
+    :lockScroll="false"
+    class="p-dialog radius--4"
   >
     <slot></slot>
+    <template #footer>
+      <slot name="footer"></slot>
+    </template>
   </ElDialog>
 </template>
 
@@ -22,3 +27,4 @@ const handleClose = () => {
 
 defineExpose({ handleClose })
 </script>
+
