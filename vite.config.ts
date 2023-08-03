@@ -9,6 +9,7 @@ import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 // https://vitejs.dev/config/
 let configConsilated
@@ -28,6 +29,9 @@ const basicConfig = {
   plugins: [
     vue({
       reactivityTransform: true
+    }),
+    VueI18nPlugin({
+      include: [path.resolve(__dirname, './src/**/locales/**')]
     }),
     AutoImport({
       imports: ['vue', 'vue/macros', '@vueuse/core'],

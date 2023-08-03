@@ -1,7 +1,7 @@
 <template>
   <el-menu
     mode="horizontal"
-    class="header-tabs hidden-xs-only"
+    class="p-header-tabs hidden-xs-only"
     :ellipsis=false
     router
   >
@@ -27,7 +27,7 @@
         <PIcon>
           <component :is="createIcon('PIThreeDots')" />
         </PIcon>
-        Plus
+        <span>{{ t('more') }}</span>
       </template>
       <el-menu-item
         v-for="item in menu.slice(4)"
@@ -46,9 +46,23 @@
     </el-sub-menu>
   </el-menu>
 </template>
+
+<i18n lang="yaml">
+  en-US:
+    more: 'More'
+  fr-FR:
+    more: 'Plus'
+</i18n>
+
 <script setup lang="ts">
 import PIcon from '@/atoms/PIcon'
 import { defineAsyncComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local'
+})
 
 interface IMenu {
   icon: string
