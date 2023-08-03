@@ -6,7 +6,7 @@ import { ElDialog } from 'element-plus'
 const createWrapper = (props: any = {}, slots: any = {}) =>
   mount(PDialog, {
     props,
-    slots: slots,
+    slots,
     global: {
       stubs: {
         ElDialog
@@ -17,7 +17,7 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
 describe('display dialog', () => {
   it('renders the dialog component', () => {
     const wrapper: VueWrapper<any> = createWrapper({ visible: true })
-    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.exists()).toBeTruthy()
   })
 
   it('renders slot content', () => {

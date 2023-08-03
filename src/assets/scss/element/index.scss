@@ -23,6 +23,10 @@
 @use './components/tag';
 @use './components/carousel';
 @use './components/image';
+@use './components/dialog';
+@use './form/select';
+@use './components/tree';
+@use './components/breadcrumb';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -39,6 +43,7 @@
   $border-color: colors.$border-color,
   $box-shadow: box-shadow.$box-shadow,
   $menu: menu.$menu,
+  $button: buttons.$button,
   $button-font-size: buttons.$button-font-size,
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
@@ -52,11 +57,18 @@
   $tag-height: tag.$tag-height,
   $tag-padding: tag.$tag-padding,
   $table: table.$table,
-  $table-font-size : table.$table-font-size,
-  $table-padding : table.$table-padding,
+  $table-font-size: table.$table-font-size,
+  $table-padding: table.$table-padding,
   $table-cell-padding: table.$table-cell-padding,
   $avatar-size: avatar.$avatar-size,
-  $carousel : carousel.$carousel
+  $carousel: carousel.$carousel,
+  $select: select.$select,
+  $select-option: select.$select-option,
+  $select-group: select.$select-group,
+  $select-dropdown: select.$select-dropdown,
+  $select-tags-prefix-padding: select.$select-tags-prefix-padding,
+  $tree: tree.$tree,
+  $dialog: dialog.$dialog
 );
 
 
@@ -82,10 +94,7 @@
 @use 'element-plus/theme-chalk/src/menu.scss' as *;
 @use 'element-plus/theme-chalk/src/avatar.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
-
-
 @use 'element-plus/theme-chalk/src/divider.scss' as *;
-
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
 @use 'element-plus/theme-chalk/src/input.scss' as *;
@@ -98,6 +107,9 @@
 @use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
 @use 'element-plus/theme-chalk/src/option.scss' as *;
 @use 'element-plus/theme-chalk/src/option-group.scss' as *;
-@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;@use 'element-plus/theme-chalk/src/carousel.scss' as *;
+@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
+@use 'element-plus/theme-chalk/src/carousel.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
+@use 'element-plus/theme-chalk/src/tree.scss' as *;
+@use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;

@@ -3,7 +3,6 @@
   "include": ["env.d.ts", "./src/**/*", "tests/**/*"],
   "exclude": [
     "src/**/__tests__/*",
-    "./src/**/*.story.vue",
     "./src/histoire.setup.ts"
   ],
   "compilerOptions": {

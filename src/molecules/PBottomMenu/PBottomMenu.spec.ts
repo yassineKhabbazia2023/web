@@ -1,43 +1,15 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createMemoryHistory } from 'vue-router'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { ElMenuItem, ElMenu } from 'element-plus'
 import PBottomMenu from '.'
-
-const routes = [
-  {
-    path: '/',
-    name: 'dashboard',
-    component: {
-      template: '<p class="pageTitle">Dashboard</p>'
-    }
-  },
-  {
-    path: '/document',
-    name: 'document',
-    component: {
-      template: '<p class="pageTitle">Document</p>'
-    }
-  }
-]
-
-const ITEMS = [
-  {
-    icon: 'PIDashboard',
-    text: 'Dashboard',
-    path: '/'
-  },
-  {
-    icon: 'PIFiles',
-    text: 'Document',
-    path: '/document'
-  }
-]
+import { menu } from '@/constants/routesSamples'
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes
+  history: createMemoryHistory(),
+  routes: [{ path: '/', name: 'home', component: { render: () => null } }]
 })
+menu.forEach(route => router.addRoute(route))
 
 let wrapper: VueWrapper<any>
 
@@ -52,35 +24,42 @@ describe('pBottomMenu', () => {
         }
       },
       props: {
-        items: ITEMS
+        items: menu.map((m) => {
+          return {
+            path: m.path,
+            name: m.name,
+            component: m.component,
+            icon: m.meta.icon
+          }
+        })
       }
     })
   })
 
   it('it has 2 items in the menu', async () => {
-    router.push({ name: 'dashboard' })
+    router.push({ name: 'Dashboard' })
     await flushPromises()
 
     const items = wrapper.findAll('.el-menu > .el-menu-item')
-    expect(items).toHaveLength(ITEMS.length)
+    expect(items).toHaveLength(menu.length)
 
-    expect(items[0].text()).toContain(ITEMS[0].text)
-    expect(items[1].text()).toContain(ITEMS[1].text)
+    expect(items[0].text()).toContain(menu[0].name)
+    expect(items[1].text()).toContain(menu[1].name)
   })
 
   it('can navigate', async () => {
     const getCurrentLocation = () => router.options.history.location
 
-    router.push({ name: 'dashboard' })
+    router.push({ name: 'Dashboard' })
     await flushPromises()
 
-    expect(getCurrentLocation()).toBe(ITEMS[0].path)
+    expect(getCurrentLocation()).toBe(menu[0].path)
 
     const documentItem = wrapper.findAllComponents(ElMenuItem)[1]
     documentItem.trigger('click')
     await flushPromises()
 
-    expect(getCurrentLocation()).toBe(ITEMS[1].path)
+    expect(getCurrentLocation()).toBe(menu[1].path)
     expect(documentItem.attributes('class')).toContain('is-active')
   })
 })

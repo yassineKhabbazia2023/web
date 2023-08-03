@@ -3,7 +3,7 @@
     title="3. Molecules/File and Folder Line Check"
     icon="radix-icons:id-card"
   >
-    <Variant title="Custum tooltip">
+    <Variant title="Default line check">
       <PFileAndFolderLineCheck
         v-model="firstVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[0].fileName"
@@ -12,7 +12,7 @@
       </PFileAndFolderLineCheck>
     </Variant>
 
-    <Variant title="Success tooltip">
+    <Variant title="Success line check">
       <PFileAndFolderLineCheck
         v-model="secondVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[1].fileName"
@@ -22,7 +22,7 @@
       </PFileAndFolderLineCheck>
     </Variant>
 
-    <Variant title="Error tooltip">
+    <Variant title="Error line check">
       <PFileAndFolderLineCheck
         v-model="thirdVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[2].fileName"
@@ -32,7 +32,7 @@
       </PFileAndFolderLineCheck>
     </Variant>
 
-    <Variant title="Loading tooltip">
+    <Variant title="Loading line check">
       <PFileAndFolderLineCheck
         v-model="fourthVarientCheckboxVModel"
         :fileName="PFileAndFolderLineCheckBasicData[3].fileName"
@@ -55,6 +55,8 @@
 import { ref } from 'vue'
 import PFileAndFolderLineCheck from './'
 
+type stateOptions = 'default' | 'success' | 'error' | 'loading' | undefined
+
 const firstVarientCheckboxVModel = ref(false)
 const secondVarientCheckboxVModel = ref(false)
 const thirdVarientCheckboxVModel = ref(false)
@@ -62,22 +64,22 @@ const fourthVarientCheckboxVModel = ref(false)
 const PFileAndFolderLineCheckBasicData = ref([
   {
     fileName: 'A PDF File.pdf',
-    state: 'default'
+    state: 'default' as stateOptions
   },
   {
     fileName: 'A success state.pdf',
-    state: 'success',
+    state: 'success' as stateOptions,
     additionalText: 'Comptabilité > Dépôt > Achats'
   },
   {
     fileName: 'An error state.pdf',
-    state: 'error',
+    state: 'error' as stateOptions,
     additionalText: 'Unallowed file extension'
   },
   {
     fileName: 'Another type of file.txt',
     disabled: 'false',
-    state: 'loading'
+    state: 'loading' as stateOptions
   }
 ])
 </script>

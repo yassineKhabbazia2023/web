@@ -79,5 +79,9 @@ const handleDoubleClickFileNavigation = (folderId: number) => {
     opacity: 0.6;
     color: var(--el-color-neutral-gray-300);
   }
+
+  &:last-child {
+    padding-right: 0px;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <Story
-    title="2. Atoms/PCellEntity"
+    title="2. Atoms/CellEntity"
     icon="fluent:button-16-regular"
     :layout="{ type: 'grid', width: '300px' }"
     >>

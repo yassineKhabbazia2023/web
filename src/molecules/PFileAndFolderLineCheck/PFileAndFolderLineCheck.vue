@@ -80,7 +80,7 @@ const isSelectedRef = computed({
     return props.modelValue
   },
   set(value) {
-    emit('update:modelValue', value)
+    emit('update:modelValue', !value)
   }
 })
 
@@ -122,6 +122,10 @@ const fileIconComponent = computed(() => {
     margin-right: 12px;
   }
 
+  &__checkbox.el-checkbox {
+    height: auto;
+  }
+
   &__icon {
     &--success {
       color: var(--el-color-functionnal-green);
@@ -144,6 +148,7 @@ const fileIconComponent = computed(() => {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
+      height: 17px;
     }
 
     &__additional-text {

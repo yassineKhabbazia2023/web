@@ -1,6 +1,6 @@
 <template>
   <Story title="2. Atoms/Button" icon="teenyicons:button-outline">
-    <Variant title="Basic Usage" :source="basicSource">
+    <Variant title="Basic Usage">
       <PButton
         :type="basicButtonData.type"
         :size="basicButtonData.size"
@@ -27,7 +27,7 @@
         <HstRadio
           v-model="basicButtonData.type"
           title="Type"
-          :options="basicButtonData.typeOptions" />
+          :options="typeOptions" />
         <HstRadio
           v-model="basicButtonData.size"
           title="Size"
@@ -36,7 +36,6 @@
     </Variant>
     <Variant
       title="Icon Button"
-      :source="iconSource"
       icon="line-md:iconify2">
       <PButton
         class="el-button--icon"
@@ -58,7 +57,7 @@
         <HstRadio
           v-model="iconButtonData.type"
           title="Type"
-          :options="iconButtonData.typeOptions"
+          :options="typeOptions"
         />
         <HstRadio
           v-model="iconButtonData.size"
@@ -70,7 +69,6 @@
     <Variant
       title="Button Group"
       icon="clarity:blocks-group-line"
-      :source="buttonGroupSource"
     >
       <el-button-group
         :size="buttonGroupData.size"
@@ -87,7 +85,7 @@
         <HstRadio
           v-model="buttonGroupData.type"
           title="Type"
-          :options="buttonGroupData.typeOptions"
+          :options="groupOptions"
         />
         <HstRadio
           v-model="buttonGroupData.size"
@@ -100,22 +98,29 @@
 </template>
 
 <script setup lang="ts">
-import sizeOptions from '@/constants/sizeOptions'
-import { isAttribute } from '@/utils'
+import { type SizeOptions } from '@/constants/sizeOptions'
 import { logEvent } from 'histoire/client'
-import { typeOptions } from '@/constants/typeOptions'
-import { reactive, computed } from 'vue'
+import { ref } from 'vue'
+import { type TypeOptions, type GroupTypeOptions, typeOptions, groupOptions } from '@/constants/typeOptions'
 import PButton from './'
-/* eslint-disable-next-line */
-import '@/assets/scss/histoire.scss'
+
+const radioSizeOptions: { label: string; value:string }[] = [
+  {
+    label: 'default',
+    value: 'default'
+  },
+  {
+    label: 'small',
+    value: 'small'
+  }
+]
 
 // Basic-Button
-const basicButtonData = reactive({
+const basicButtonData = ref({
   text: 'Button',
-  type: 'primary',
-  typeOptions,
-  size: 'default',
-  sizeOptions,
+  type: 'primary' as TypeOptions,
+  size: 'default' as SizeOptions,
+  sizeOptions: radioSizeOptions,
   plain: false,
   round: false,
   circle: false,
@@ -123,104 +128,22 @@ const basicButtonData = reactive({
   disabled: false
 })
 
-const basicSource = computed(() => {
-  return `<PButton${isAttribute(
-    basicButtonData.type !== '',
-    `type="${basicButtonData.type}"`
-  )}${isAttribute(
-    basicButtonData.size !== 'default',
-    `size="${basicButtonData.size}"`
-  )}${isAttribute(
-    basicButtonData.plain,
-    'plain'
-  )}${isAttribute(
-    basicButtonData.round,
-    'round'
-  )}${isAttribute(
-    basicButtonData.circle,
-    'circle'
-  )}${isAttribute(
-    basicButtonData.loading,
-    'loading'
-  )}${isAttribute(
-    basicButtonData.disabled,
-    'disabled'
-  )}
-  @click="console.log('Button is clicked')"
->
-  <PIcon class="el-button__icon--left">
-    <PICalendarEvent />
-  </PIcon>
-  ${basicButtonData.text}
-  <PIcon class="el-button__icon--right">
-    <PIArrowRight />
-  </PIcon>
-</PButton>`
-})
-
 // Icon Button
-const iconButtonData = reactive({
-  type: '',
-  typeOptions,
-  size: 'default',
-  sizeOptions,
+const iconButtonData = ref({
+  type: 'primary' as TypeOptions,
+  size: 'default' as SizeOptions,
+  sizeOptions: radioSizeOptions,
   circle: true,
   plain: false,
   loading: false,
   disabled: false
 })
-const iconSource = computed(() => {
-  return `<script setup lang="ts">
-<script>
-
-<PButton
-  class="el-button--icon"
-  ${isAttribute(
-    iconButtonData.type !== '',
-    `type="${iconButtonData.type}"`
-  )}${isAttribute(
-    iconButtonData.size !== 'default',
-    `size="${iconButtonData.size}"`
-  )}${isAttribute(
-    iconButtonData.plain,
-    'plain'
-  )}${isAttribute(
-    iconButtonData.circle,
-    'circle'
-  )}${isAttribute(
-    iconButtonData.loading,
-    'loading'
-  )}${isAttribute(
-    iconButtonData.disabled,
-    'disabled'
-  )}
-  @click="console.log('Button is clicked')"
->
-  <PIcon><PISearch /></PIcon>
-</PButton>
-`
-})
 
 // Button Group
-const buttonGroupData = reactive({
-  type: '',
-  typeOptions,
-  size: 'default',
-  sizeOptions
-})
-
-const buttonGroupSource = computed(() => {
-  return `<el-button-group${isAttribute(
-    buttonGroupData.type !== '',
-    `type="${buttonGroupData.type}"`
-  )}${isAttribute(
-    buttonGroupData.size !== 'default',
-    `size="${buttonGroupData.size}"`
-  )}
->
-  <PButton>Previous Page</PButton>
-  <PButton>Next Page</PButton>
-</el-button-group>`
+const buttonGroupData = ref({
+  type: 'text' as GroupTypeOptions,
+  size: 'default' as SizeOptions,
+  sizeOptions: radioSizeOptions
 })
 
 const previousText = 'Previous Page'
@@ -236,7 +159,8 @@ const nextText = 'Next Page'
     <li>Default / primary</li>
     <li>Secondary / Primary Plain</li>
     <li>White / white</li>
-    <li>Tertiary / Tertiary</li>
+    <li>Tertiary / Default</li>
+    <li>Generic / Generic</li>
   </ul>
   <strong>Classes to add to your icon :</strong>
   <ul>

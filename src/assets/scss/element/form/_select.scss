@@ -1,60 +1,63 @@
-$select: () !default;
-$select: map.merge(
-  (
-    'border-color-hover': getCssVar('border-color-hover'),
-    'disabled-border': getCssVar('disabled-border-color'),
-    'font-size': getCssVar('font-size-base'),
-    'close-hover-color': getCssVar('text-color-secondary'),
-    'input-color': getCssVar('text-color-placeholder'),
-    'multiple-input-color': getCssVar('text-color-regular'),
-    'input-focus-border-color': getCssVar('color-primary'),
-    'input-font-size': 14px,
-  ),
-  $select
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$select: (
+  'close-hover-color': getCssVar('color-primary'),
+  'multiple-input-color': getCssVar('text-color-regular'),
+  'input-focus-border-color': getCssVar('color-primary'),
+  'input-font-size': getCssVar('font-size-base'),
 );
 
-$select-option: () !default;
-$select-option: map.merge(
-  (
-    'text-color': getCssVar('text-color-regular'),
-    'disabled-color': getCssVar('text-color-placeholder'),
-    'height': 34px,
-    'hover-background': getCssVar('fill-color', 'light'),
-    'selected-text-color': getCssVar('color-primary'),
-  ),
-  $select-option
+$select-option: (
+  'text-color': getCssVar('text-color-regular'),
+  'disabled-color': getCssVar('text-color-placeholder'),
+  'height': 32px,
+  'hover-background': getCssVar('fill-color', 'light'),
+  'selected-text-color': getCssVar('color-primary'),
 );
 
-$select-group: () !default;
-$select-group: map.merge(
-  (
-    'text-color': getCssVar('color-info'),
-    'height': 30px,
-    'font-size': 12px,
-  ),
-  $select-group
+$select-group: (
+  'text-color': getCssVar('text-color-placeholder'),
+  'height': 30px,
+  'font-size': 12px,
 );
 
-$select-dropdown: () !default;
-$select-dropdown: map.merge(
-  (
-    'bg-color': getCssVar('bg-color', 'overlay'),
-    'shadow': getCssVar('box-shadow-light'),
-    'empty-color': getCssVar('text-color-secondary'),
-    'max-height': 274px,
-    'padding': 6px 0,
-    'empty-padding': 10px 0,
-    'border': 1px solid getCssVar('border-color-light'),
-  ),
-  $select-dropdown
+$select-dropdown: (
+  'empty-color': getCssVar('text-color-regular'),
+  'max-height': 274px,
+  'padding': 12px 0,
+  'empty-padding': 10px 0,
+  'border': 1px solid getCssVar('border-color-light'),
 );
 
-$select-tags-prefix-padding: () !default;
-$select-tags-prefix-padding: map.merge(
-  (
-    'large': 8px,
-    'default': 6px,
-    'small': 4px,
-  ),
-  $select-tags-prefix-padding
+$select-tags-prefix-padding: (
+  'large': 8px,
+  'default': 8px,
+  'small': 4px,
 );
+
+.el-select {
+  .el-input {
+    .el-select__caret.el-icon {
+      &.is-reverse {
+        color: getCssVar('color-primary');
+      }
+    }
+  }
+}
+
+.el-popper .el-select-dropdown {
+   .el-select-dropdown__item {
+    padding-left: 16px;
+    padding-right: 28px;
+
+    &.selected {
+      &:after {
+        right: 16px;
+      }
+    }
+
+    &.is-disabled.selected {
+      color: getCssVar('text-color-placeholder');
+    }
+  }
+}

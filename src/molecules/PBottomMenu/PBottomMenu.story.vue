@@ -7,7 +7,7 @@
     <br><br>
     <PBottomMenu
       :defaultActive="routeActive"
-      :items="ITEMS"
+      :items="menuItems"
       :hideOnDesktop="false"
     />
   </Story>
@@ -16,21 +16,17 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import PBottomMenu from './'
+import { menu } from '@/constants/routesSamples'
+
+const menuItems = menu.map((m) => {
+  return {
+    ...m,
+    icon: m.meta.icon
+  }
+})
 
 const route = useRoute()
 const routeActive = route.path
-const ITEMS = [
-  {
-    icon: 'PIFiles',
-    text: 'Dashboard',
-    path: '/dashboard'
-  },
-  {
-    icon: 'PIFiles',
-    text: 'Document',
-    path: '/document'
-  }
-]
 </script>
 
 <docs lang="md">

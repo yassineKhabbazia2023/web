@@ -1,0 +1,29 @@
+.el-breadcrumb {
+  &.medium {
+    font-size: 1.6rem;
+  }
+  &__inner {
+    max-width: 90px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &[role='link'] a,
+    &[role='link'] a:hover {
+      color: var(--el-color-neutral-gray-500);
+      line-height: 120%;
+      font-weight: 400;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  &__item:last-child &__inner {
+    &[role='link'] a,
+    &[role='link'] a:hover {
+      color: var(--neutral-grey-900);
+      font-weight: 600;
+    }
+  }
+}

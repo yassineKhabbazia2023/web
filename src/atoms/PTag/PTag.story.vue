@@ -69,6 +69,7 @@
         v-model="inputValue"
         style="margin-left:10px;width:120px;"
         size="small"
+        type="primary"
         @keyup.enter="handleInputConfirm"
         @blur="handleInputConfirm" />
       <PButton
@@ -110,7 +111,7 @@
 
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import type { TagProps } from 'element-plus'
+import type { PTagProps } from './PTag'
 import { logEvent } from 'histoire/client'
 import PInput from '@/atoms/PInput'
 
@@ -118,7 +119,7 @@ const currentType = ref('success')
 const closable = ref(true)
 const rounded = ref(true)
 const disableTransitions = ref(true)
-const tagTypeList: { label: string; value: TagProps['type'] }[] = [
+const tagTypeList: { label: string; value: PTagProps['type'] }[] = [
   {
     label: 'default',
     value: ''
@@ -168,8 +169,8 @@ const tagTypeList: { label: string; value: TagProps['type'] }[] = [
     value: 'gray-300'
   }
 ]
-const currentSize = ref<TagProps['size']>('default')
-const tagSizeList: { label: string; value: TagProps['size'] }[] = [
+const currentSize = ref<PTagProps['size']>('default')
+const tagSizeList: { label: string; value: PTagProps['size'] }[] = [
   {
     label: 'large',
     value: 'large'
@@ -183,7 +184,7 @@ const tagSizeList: { label: string; value: TagProps['size'] }[] = [
     value: 'small'
   }
 ]
-const ThemeList: { label: string; value: TagProps['effect'] }[] = [
+const ThemeList: { label: string; value: PTagProps['effect'] }[] = [
   {
     label: 'Dark',
     value: 'dark'
@@ -198,7 +199,7 @@ const ThemeList: { label: string; value: TagProps['effect'] }[] = [
   }
 ]
 const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
-const currentTheme = ref<TagProps['effect']>('light')
+const currentTheme = ref<PTagProps['effect']>('light')
 const inputValue = ref('')
 const inputVisible = ref(false)
 const InputRef = ref<InstanceType<typeof PInput>>()
@@ -208,7 +209,7 @@ function handleClose(tag: string) {
 function showInput() {
   inputVisible.value = true
   nextTick(() => {
-    InputRef.value!.input!.focus()
+    InputRef.value?.$emit('focus')
   })
 }
 

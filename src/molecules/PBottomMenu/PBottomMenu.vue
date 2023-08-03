@@ -13,19 +13,20 @@
         <PIcon size="16px">
           <component :is="createIcon(item.icon)" />
         </PIcon>
-        <p>{{ item.text }}</p>
+        <p>{{ item.name }}</p>
       </div>
     </el-menu-item>
   </el-menu>
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, type Component } from 'vue'
 
 interface Item {
   icon: string
-  text: string
+  name: string
   path: string
+  component: Component
 }
 
 interface Props {
@@ -39,9 +40,9 @@ const props = withDefaults(defineProps<Props>(), {
   useRouter: true
 })
 
-const itemsMapped = props.items.map(({ icon, text, path }) => ({
+const itemsMapped = props.items.map(({ name, path, icon }) => ({
+  name,
   icon,
-  text,
   index: path
 }))
 
