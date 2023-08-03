@@ -25,6 +25,7 @@
 @use './components/dialog';
 @use './form/select';
 @use './components/tree';
+@use './components/drawer';
 @use './components/breadcrumb';
 
 // Override Element-Plus variables
@@ -66,6 +67,7 @@
   $select-dropdown: select.$select-dropdown,
   $select-tags-prefix-padding: select.$select-tags-prefix-padding,
   $tree: tree.$tree,
+  $drawer: drawer.$drawer,
   $dialog: dialog.$dialog
 );
 
@@ -108,5 +110,6 @@
 @use 'element-plus/theme-chalk/src/carousel.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
+@use 'element-plus/theme-chalk/src/drawer.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
 @use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
