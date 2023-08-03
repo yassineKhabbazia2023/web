@@ -1,5 +1,7 @@
 .el-breadcrumb {
-  &__item:last-child &__inner,
+  &.medium {
+    font-size: 1.6rem;
+  }
   &__inner {
     max-width: 90px;
     white-space: nowrap;
@@ -8,7 +10,6 @@
     &[role='link'] a,
     &[role='link'] a:hover {
       color: var(--el-color-neutral-gray-500);
-      font-size: 1.4rem;
       line-height: 120%;
       font-weight: 400;
       cursor: pointer;
@@ -16,12 +17,13 @@
       &:hover {
         text-decoration: underline;
       }
-
-      &:active,
-      &:focus {
-        color: var(--neutral-grey-900);
-        font-weight: 600;
-      }
+    }
+  }
+  &__item:last-child &__inner {
+    &[role='link'] a,
+    &[role='link'] a:hover {
+      color: var(--neutral-grey-900);
+      font-weight: 600;
     }
   }
 }
