@@ -3,12 +3,13 @@
     title="2. Atoms/CellEntity"
     icon="fluent:button-16-regular"
     :layout="{ type: 'grid', width: '300px' }"
-    >>
+    >
     <Variant title="Basic Usage" :source="source">
       <PCellEntity
         :content="pCellTextBasicData.content"
         :type="pCellTextBasicData.type"
         :selected="pCellTextBasicData.selected"
+        :icon="PIPulse"
       >
       </PCellEntity>
       <template #controls>
@@ -27,6 +28,7 @@
 <script setup lang="ts">
 import PCellEntity from '.'
 import { reactive } from 'vue'
+import { PIPulse } from '../PIcon/components'
 
 const type = 'primary' as 'primary' | 'secondary'
 

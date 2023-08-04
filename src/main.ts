@@ -1,5 +1,5 @@
 // base UI library
-import ElementPlus from 'element-plus'
+import ElementPlus, { ElRow, ElCol, ElSwitch } from 'element-plus'
 
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
@@ -33,7 +33,7 @@ import PCellEntity from '@/atoms/PCellEntity'
 import PCellText from '@/atoms/PCellText'
 import PHeader from '@/molecules/PHeader'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
-import PSwitch from '@/atoms/PSwitch'
+import PDrawer from '@/molecules/PDrawer'
 import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
 import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
 import PCellDoubleText from '@/atoms/PCellDoubleText'
@@ -45,6 +45,8 @@ dayjs.Ls.en.weekStart = 1
 export function install(app: any, { i18n }: any) {
   app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
   app.use(toastPlugin)
+  app.component('PCol', ElCol)
+  app.component('PRow', ElRow)
   app.component('PButton', PButton)
   app.component('PAvatar', PAvatar)
   app.component('PTooltip', PTooltip)
@@ -69,7 +71,8 @@ export function install(app: any, { i18n }: any) {
   app.component('PCellText', PCellText)
   app.component('PHeader', PHeader)
   app.component('PHeaderTabs', PHeaderTabs)
-  app.component('PSwitch', PSwitch)
+  app.component('PSwitch', ElSwitch)
+  app.component('PDrawer', PDrawer)
   app.component('PFileLineNavigationItem', PFileLineNavigationItem)
   app.component('PFileANdFolderLineCheck', PFileAndFolderLineCheck)
   app.component('PCellDoubleText', PCellDoubleText)

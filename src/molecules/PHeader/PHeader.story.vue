@@ -1,7 +1,7 @@
 <template>
   <Story
     title="3. Molecules/Header"
-    :layout="{ type: 'grid', width: '100%' }"
+    :layout="{ type: 'single', iframe: false }"
   >
     <PHeader
       :ellipsis="false"
@@ -10,9 +10,9 @@
       router
     >
       <template #logo>
-        <router-link to="/">
+        <router-link to="/" class="el-menu--header__link">
           <PImage
-            class="logo"
+            class="el-menu--header__logo"
             type="logos"
             name="iconpulse-color"
             fit="fill"
@@ -39,6 +39,7 @@
     <router-view />
   </Story>
 </template>
+
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'

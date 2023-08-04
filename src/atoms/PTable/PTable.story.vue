@@ -3,7 +3,7 @@
     title="2. Atoms/Table"
     icon="teenyicons:table-outline"
     :layout="{ type: 'grid', width: '80%' }">
-    <Variant title="PTable">
+    <Variant title="PTable basic">
       <PTable :data="tableInputs.data" :stripe="tableInputs.striped">
         <el-table-column
         type="selection"
@@ -23,12 +23,97 @@
         <HstCheckbox v-model="tableInputs.selectable" title="Selectable" />
       </template>
     </Variant>
+    <Variant title="PTable advanced">
+      <PTable :data="tableInputsWithCells.data" :stripe="tableInputsWithCells.striped">
+        <el-table-column
+          type="selection"
+          v-if="tableInputsWithCells.selectable"/>
+        <el-table-column
+          label="Text"
+          width="180"
+          :sortable="tableInputsWithCells.sortable"
+          >
+          <template #default="scope">
+            <PCellText
+              :content="scope.row.text.content"
+              :icon="iconResolver(scope.row.text.icon)"
+              :bold="false"
+              type="primary"
+              :disabled="false"
+              :selected="false"
+            >
+           </PCellText>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Entity"
+          width="220"
+          :sortable="tableInputsWithCells.sortable"
+          >
+          <template #default="scope">
+            <PCellEntity
+              :content="scope.row.entity.name"
+              :icon="iconResolver(scope.row.entity.icon)"
+              type="primary"
+              :selected="false"
+            >
+            </PCellEntity>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Double Text"
+          width="180"
+          :sortable="tableInputsWithCells.sortable"
+          >
+          <template #default="scope">
+            <PCellDoubleText
+              :icon="iconResolver(scope.row.doubleText.icon)"
+              :profile="scope.row.doubleText.profile"
+              :title="scope.row.doubleText.title"
+              :content="scope.row.doubleText.content"
+              type="primary"
+              :disabled="false"
+              :selected="false"
+            >
+            </PCellDoubleText>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Tag"
+          width="180"
+          :sortable="tableInputsWithCells.sortable"
+          >
+          <template #default="scope">
+            <PTag
+              type="success"
+              size="default"
+              effect="light"
+            >
+              <PIcon class="el-tag__icon--left">
+                <PIFolder />
+              </PIcon>
+              {{ scope.row.tag.status }}
+              <PIcon class="el-tag__icon--right">
+                <PIStars />
+              </PIcon>
+            </PTag>
+          </template>
+        </el-table-column>
+      </PTable>
+      <template #controls>
+        <HstCheckbox v-model="tableInputsWithCells.striped" title="Striped" />
+        <HstCheckbox v-model="tableInputsWithCells.sortable" title="Sortable" />
+        <HstCheckbox v-model="tableInputsWithCells.selectable" title="Selectable" />
+      </template>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
 import PTable from './'
+import { iconResolver } from '@/utils/iconResolver'
+import { PIFolder, PIStars } from '../PIcon/components'
 
 const tableInputs = reactive({
   data: [
@@ -67,6 +152,121 @@ const tableInputs = reactive({
     {
       prop: 'address',
       label: 'Address'
+    }
+  ],
+  striped: true,
+  sortable: true,
+  selectable: true
+})
+
+const tableInputsWithCells = reactive({
+  data: [
+    {
+      text: {
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        icon: 'PICupHot'
+      },
+      entity: {
+        icon: 'PIBuilding',
+        name: 'Lorem Ipsum Factory'
+      },
+      doubleText: {
+        icon: 'PICupHot',
+        profile: 'JL',
+        title: 'Lorem ipsum',
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+      },
+      tag: {
+        status: 'Validated'
+      },
+      switch: {
+        text: 'Are you ok ?'
+      }
+    },
+    {
+      text: {
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        icon: 'PICupHot'
+      },
+      entity: {
+        icon: 'PIPulse',
+        name: 'Olympia Stadium'
+      },
+      doubleText: {
+        icon: 'PICupHot',
+        profile: 'JL',
+        title: 'Lorem ipsum',
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+      },
+      tag: {
+        status: 'Validated'
+      },
+      switch: {
+        text: 'Are you ok ?'
+      }
+    },
+    {
+      text: {
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        icon: 'PICupHot'
+      },
+      entity: {
+        icon: 'PICupStraw',
+        name: 'Baquery'
+      },
+      doubleText: {
+        icon: 'PICupHot',
+        profile: 'JL',
+        title: 'Lorem ipsum',
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+      },
+      tag: {
+        status: 'Validated'
+      },
+      switch: {
+        text: 'Are you ok ?'
+      }
+    },
+    {
+      text: {
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        icon: 'PICupHot'
+      },
+      entity: {
+        icon: 'PIShop',
+        name: 'Lorem Ipsum Factory'
+      },
+      doubleText: {
+        icon: 'PICupHot',
+        profile: 'JL',
+        title: 'Restaurant Alfredo\'s House',
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+      },
+      tag: {
+        status: 'Validated'
+      },
+      switch: {
+        text: 'Are you ok ?'
+      }
+    },
+    {
+      text: {
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        icon: 'PICupHot'
+      },
+      entity: {
+        icon: 'PIBuilding',
+        name: 'Neverland Swiming Pool'
+      },
+      doubleText: {
+        icon: 'PICupHot',
+        profile: 'JL',
+        title: 'Lorem ipsum',
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+      },
+      tag: {
+        status: 'Validated'
+      }
     }
   ],
   striped: true,

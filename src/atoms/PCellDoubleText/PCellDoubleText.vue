@@ -66,7 +66,7 @@ withDefaults(defineProps<pCellDoubleTextProps>(), {
   padding: 0 12px;
 
   &[type="primary"]:not([disabled='true'], [selected='true']) {
-    background-color: var(--el-fill-color-blank);
+    background-color: transparent;
 
     &:hover {
       background-color: var(--el-color-persian-100);

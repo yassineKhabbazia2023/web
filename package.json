@@ -32,7 +32,7 @@
     "test": "npx vitest run",
     "test:ci": "vitest run --coverage",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
-    "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Custom: https://mypulse.zeroheight.com/; UNKNOWN\" --production --excludePrivatePackages --unknown ",
+    "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; Custom: https://mypulse.zeroheight.com/; UNKNOWN\" --production --excludePrivatePackages --unknown ",
     "format": "prettier --write src/",
     "push": "npm publish",
     "release": "npx semantic-release",
@@ -40,11 +40,13 @@
     "generate:icons": "node ./scripts/pulse-icon-gen.js ./src/assets/icons ./src/atoms/PIcon/components"
   },
   "dependencies": {
+    "@intlify/unplugin-vue-i18n": "^0.12.2",
     "@vue/test-utils": "^2.4.0",
     "@vueuse/core": "^10.2.0",
     "chart.js": "^3.9.1",
     "element-plus": "^2.3.5",
-    "vue-chart-3": "^3.1.8"
+    "vue-chart-3": "^3.1.8",
+    "vue-i18n": "^9.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
