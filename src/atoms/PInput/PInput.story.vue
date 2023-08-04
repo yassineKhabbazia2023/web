@@ -47,7 +47,6 @@
 </template>
 
 <script setup lang="ts">
-import PInput from '.'
 import { reactive } from 'vue'
 
 const basicInputData = reactive({

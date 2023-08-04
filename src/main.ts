@@ -1,5 +1,5 @@
 // base UI library
-import ElementPlus, { ElRow, ElCol } from 'element-plus'
+import ElementPlus, { ElInput, ElRow, ElCol } from 'element-plus'
 
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
@@ -11,7 +11,6 @@ import './assets/scss/index.scss'
 import PLineChart from '@/atoms/PLineChart'
 import PButton from '@/atoms/PButton'
 import PTable from '@/atoms/PTable'
-import PInput from '@/atoms/PInput'
 import PDatePicker from '@/atoms/PDatePicker'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
@@ -51,7 +50,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PAvatar', PAvatar)
   app.component('PTooltip', PTooltip)
   app.component('PIcon', PIcon)
-  app.component('PInput', PInput)
+  app.component('PInput', ElInput)
   app.component('PDatePicker', PDatePicker)
   app.component('PToolboxItem', PToolboxItem)
   app.component('PToolbox', PToolbox)
