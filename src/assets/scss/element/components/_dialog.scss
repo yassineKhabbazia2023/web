@@ -13,6 +13,10 @@ $dialog: (
   'background': var(--el-color-base-white)
 );
 
+.el-dialog--center > .el-dialog__body {
+  padding: 16px;
+}
+
 .p-dialog {
   .el-dialog__headerbtn .el-dialog__close {
     color: var(--el-text-color-regular);
@@ -24,6 +28,6 @@ $dialog: (
   }
 
   .el-dialog__body {
-    padding: 24px 16px;
+    padding: 16px;
   }
 }
