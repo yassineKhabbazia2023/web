@@ -1,24 +1,12 @@
 <template>
   <Story title="2. Atoms/Switch" icon="teenyicons:circle-outline">
-    <Variant title="'ON' Default">
+    <Variant title="'ON' Default/Hover/Focus/Press">
       <ElSwitch v-model="on"/>
     </Variant>
-    <Variant title="'ON' Hover">
-      <ElSwitch v-model="on"/>
-    </Variant>
-    <Variant title="'ON' Focus/Press">
-      <ElSwitch v-model="on"/>
-    </Variant>
-    <Variant title="'OFF' Disabled">
+    <Variant title="'ON' Disabled">
       <ElSwitch v-model="on" disabled/>
     </Variant>
-    <Variant title="'OFF' Default">
-      <ElSwitch v-model="off"/>
-    </Variant>
-    <Variant title="'OFF' Hover">
-      <ElSwitch v-model="off"/>
-    </Variant>
-    <Variant title="'OFF' Focus/Press">
+    <Variant title="'OFF' Default/Hover/Focus/Press">
       <ElSwitch v-model="off"/>
     </Variant>
     <Variant title="'OFF' Disabled">
