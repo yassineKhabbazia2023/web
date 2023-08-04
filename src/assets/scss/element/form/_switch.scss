@@ -8,13 +8,13 @@ $switch: (
 
 .el-switch {
 
-  &.is-disabled>.el-switch__core .el-switch__action {
+  &.is-disabled > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--el-color-persian-200);
     --el-switch-off-color: var(--el-color-neutral-gray-100);
     background-color: var(--el-color-neutral-gray-700);
   }
 
-  &.is-checked>.el-switch__core .el-switch__action {
+  &.is-checked > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--el-color-persian-200);
     --el-switch-off-color: var(--el-color-neutral-gray-100);
     background-color: var(--el-color-base-white);
@@ -29,8 +29,8 @@ $switch: (
       --el-switch-off-color: var(--el-color-persian-400);
     }
 
-    &:hover>.el-switch__core>.el-switch__action,
-    &:focus>.el-switch__core>.el-switch__action {
+    &:hover > .el-switch__core > .el-switch__action,
+    &:focus > .el-switch__core > .el-switch__action {
       background-color: var(--el-color-base-white);
     }
   }
