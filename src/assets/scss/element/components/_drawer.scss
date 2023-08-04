@@ -14,14 +14,19 @@ $drawer: (
   &__header {
     display: flex;
     justify-content: space-between;
+    min-width: 0;
     color: var(--el-color-neutral-gray-900);
     > div {
       display: flex;
       justify-content: start;
+      min-width: 0;
     }
   }
   &__title {
     align-self: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   &__step-back-button {
     margin-right: 12px;

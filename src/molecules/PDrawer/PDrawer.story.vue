@@ -22,6 +22,7 @@
           :direction="pDrawerControl.direction"
         />
         <template #controls>
+          <HstText v-model="pDrawerControl.title" title="Title" />
           <HstRadio
             v-model="pDrawerControl.size"
             title="Size"

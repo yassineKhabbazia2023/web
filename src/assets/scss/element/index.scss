@@ -68,7 +68,8 @@
   $select-tags-prefix-padding: select.$select-tags-prefix-padding,
   $tree: tree.$tree,
   $drawer: drawer.$drawer,
-  $dialog: dialog.$dialog
+  $dialog: dialog.$dialog,
+  $overlay-color: colors.$overlay-color
 );
 
 
@@ -113,3 +114,4 @@
 @use 'element-plus/theme-chalk/src/drawer.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
 @use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
+@use 'element-plus/theme-chalk/src/overlay.scss' as *;

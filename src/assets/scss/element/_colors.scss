@@ -52,6 +52,10 @@ $fill-color: (
   'blank': var(--el-color-base-white),
 );
 
+$overlay-color: (
+  'lighter': rgba(9, 9, 9, 0.5)
+)
+
 // // Background
 // $bg-color: () !default;
 // $bg-color: map.merge(
