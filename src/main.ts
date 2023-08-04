@@ -1,5 +1,5 @@
 // base UI library
-import ElementPlus, { ElInput, ElRow, ElCol } from 'element-plus'
+import ElementPlus, { ElInput, ElRow, ElCol, ElSwitch } from 'element-plus'
 
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
@@ -70,6 +70,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PCellText', PCellText)
   app.component('PHeader', PHeader)
   app.component('PHeaderTabs', PHeaderTabs)
+  app.component('PSwitch', ElSwitch)
   app.component('PDrawer', PDrawer)
   app.component('PFileLineNavigationItem', PFileLineNavigationItem)
   app.component('PFileANdFolderLineCheck', PFileAndFolderLineCheck)
