@@ -1,23 +1,22 @@
 <template>
   <Story title="2. Atoms/Switch" icon="teenyicons:circle-outline">
     <Variant title="'ON' Default/Hover/Focus/Press">
-      <ElSwitch v-model="on"/>
+      <PSwitch v-model="on"/>
     </Variant>
     <Variant title="'ON' Disabled">
-      <ElSwitch v-model="alwaysOn" disabled/>
+      <PSwitch v-model="alwaysOn" disabled/>
     </Variant>
     <Variant title="'OFF' Default/Hover/Focus/Press">
-      <ElSwitch v-model="off"/>
+      <PSwitch v-model="off"/>
     </Variant>
     <Variant title="'OFF' Disabled">
-      <ElSwitch v-model="alwaysOff" disabled/>
+      <PSwitch v-model="alwaysOff" disabled/>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElSwitch } from 'element-plus'
 
 const on = ref(true)
 const off = ref(false)
