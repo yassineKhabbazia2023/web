@@ -290,6 +290,12 @@ $menu: (
       &.is-active {
         font-weight: 600;
       }
+      &.menu-item:not(.is-disabled) {
+        &:hover,
+        &:focus {
+          background: getCssVar('color-white');
+        }
+      }
     }
     &__logo {
       height: 24px;
