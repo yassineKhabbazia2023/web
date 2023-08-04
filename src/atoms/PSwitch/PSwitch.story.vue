@@ -4,13 +4,13 @@
       <ElSwitch v-model="on"/>
     </Variant>
     <Variant title="'ON' Disabled">
-      <ElSwitch v-model="on" disabled/>
+      <ElSwitch v-model="alwaysOn" disabled/>
     </Variant>
     <Variant title="'OFF' Default/Hover/Focus/Press">
       <ElSwitch v-model="off"/>
     </Variant>
     <Variant title="'OFF' Disabled">
-      <ElSwitch v-model="off" disabled/>
+      <ElSwitch v-model="alwaysOff" disabled/>
     </Variant>
   </Story>
 </template>
@@ -21,6 +21,8 @@ import { ElSwitch } from 'element-plus'
 
 const on = ref(true)
 const off = ref(false)
+const alwaysOn = ref(true)
+const alwaysOff = ref(false)
 </script>
 
 <docs lang="md">
