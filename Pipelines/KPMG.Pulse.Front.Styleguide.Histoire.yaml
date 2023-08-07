@@ -10,7 +10,7 @@ resources:
   - repository: CICD
     name: 'Plateforme Technologique/CICD'
     type: git
-    ref: 'refs/heads/Release/v5.3'
+    ref: 'refs/heads/Release/v6.0'
 
 
 extends:
@@ -41,7 +41,6 @@ extends:
           description: |
             MFE StyleGuide v$(GitVersion.number)
     deploy:
-      parallel: true
       environments:
       - name: DEV
         displayName: Developpement
@@ -113,3 +112,4 @@ extends:
           profileName: $(cdn_profile)
           endpointName: $(cdn_endpoint)
           waitForCommand: true
+          path: '/'
