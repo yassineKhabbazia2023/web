@@ -14,8 +14,14 @@ $dialog: (
 );
 
 .p-dialog {
-  .el-dialog__headerbtn .el-dialog__close {
-    color: var(--el-text-color-regular);
+  .el-dialog__header {
+    padding: 24px 16px 0px 16px;
+  }
+
+  .el-dialog__headerbtn {
+    .el-dialog__close {
+      color: var(--el-text-color-regular);
+    }
   }
 
   .el-dialog__title {
@@ -24,6 +30,10 @@ $dialog: (
   }
 
   .el-dialog__body {
-    padding: 16px;
+    padding: 19px 16px 16px 16px;
+  }
+
+  .el-dialog__footer {
+    padding: 0px 16px 24px 16px;
   }
 }
