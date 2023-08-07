@@ -113,7 +113,7 @@
 import { nextTick, ref } from 'vue'
 import type { PTagProps } from './PTag'
 import { logEvent } from 'histoire/client'
-import PInput from '@/atoms/PInput'
+import { ElInput } from 'element-plus'
 
 const currentType = ref('success')
 const closable = ref(true)
@@ -202,14 +202,14 @@ const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
 const currentTheme = ref<PTagProps['effect']>('light')
 const inputValue = ref('')
 const inputVisible = ref(false)
-const InputRef = ref<InstanceType<typeof PInput>>()
+const InputRef = ref<InstanceType<typeof ElInput>>()
 function handleClose(tag: string) {
   dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
 }
 function showInput() {
   inputVisible.value = true
   nextTick(() => {
-    InputRef.value?.$emit('focus')
+    InputRef.value?.focus()
   })
 }
 

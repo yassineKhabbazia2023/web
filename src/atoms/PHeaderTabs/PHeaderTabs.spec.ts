@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { flushPromises, VueWrapper } from '@vue/test-utils'
 import PHeaderTabs from '.'
 import wrapperFactory from '@tests/utils/wrapperFactory'
+import { createI18n } from 'vue-i18n'
 
 const routes = [
   {
@@ -39,10 +40,16 @@ const router = createRouter({
   routes
 })
 
+const i18n = createI18n({
+  inheritLocale: true,
+  useScope: 'local',
+  legacy: false
+})
+
 const createWrapper = (props: any = {}) =>
   wrapperFactory(PHeaderTabs, {
     global: {
-      plugins: [router]
+      plugins: [router, i18n]
     },
     props
   })

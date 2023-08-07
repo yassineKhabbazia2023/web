@@ -14,6 +14,7 @@
 @use './form/checkbox';
 @use './form/input';
 @use './form/datepicker';
+@use './form/switch';
 @use './components/notification';
 @use './components/avatar';
 @use './components/popper';
@@ -22,8 +23,10 @@
 @use './components/tag';
 @use './components/carousel';
 @use './components/image';
+@use './components/dialog';
 @use './form/select';
 @use './components/tree';
+@use './components/drawer';
 @use './components/breadcrumb';
 
 // Override Element-Plus variables
@@ -49,6 +52,7 @@
   $input: input.$input,
   $input-padding-horizontal: input.$input-padding-horizontal,
   $datepicker: datepicker.$datepicker,
+  $switch: switch.$switch,
   $notification: notification.$notification,
   $checkbox : checkbox.$checkbox,
   $tag-height: tag.$tag-height,
@@ -64,7 +68,10 @@
   $select-group: select.$select-group,
   $select-dropdown: select.$select-dropdown,
   $select-tags-prefix-padding: select.$select-tags-prefix-padding,
-  $tree: tree.$tree
+  $tree: tree.$tree,
+  $drawer: drawer.$drawer,
+  $dialog: dialog.$dialog,
+  $overlay-color: colors.$overlay-color
 );
 
 
@@ -75,6 +82,7 @@
 // @use scss Element-Plus
 @use 'element-plus/theme-chalk/src/base.scss' as *;
 @use 'element-plus/theme-chalk/src/dialog.scss' as *;
+@use 'element-plus/theme-chalk/src/switch.scss' as *;
 @use 'element-plus/theme-chalk/src/row.scss' as *;
 @use 'element-plus/theme-chalk/src/col.scss' as *;
 @use 'element-plus/theme-chalk/src/button.scss' as *;
@@ -106,5 +114,7 @@
 @use 'element-plus/theme-chalk/src/carousel.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
+@use 'element-plus/theme-chalk/src/drawer.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
 @use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
+@use 'element-plus/theme-chalk/src/overlay.scss' as *;

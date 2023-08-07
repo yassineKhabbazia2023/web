@@ -34,3 +34,23 @@ To run all the unit tests, you just have to run
 ```bash
   npm test
 ```
+
+# Icons
+A script located at `scripts/pulse-icon-gen.js` permits the generation of the icons components.
+This script is launched in each npm scripts:
+- predev
+- prebuild
+- prestory:dev
+- prestory:build
+Its job is to scan the folder `src/assets/icons` and extracts the svg, grouped by categories, in order to generate Vue components for each icons in the folder `src/atoms/PIcon/components`. It also generates an `index.ts` file in this repository for typings and finally a `constants.ts` for list of icons grouped by categories in order to be used in the story of histoire.
+
+### Icons story
+In Histoire, the story allows to simply search (grouped by categories) and copies the component in you clipboard.
+Simply one click on the icon in Histoire Icon Story copies the name of the Icon in your clipboard (ex. `PIClipboardData` )
+A double click copies the component PIcon and the related icon in the correct format to use:
+```ts
+  <PIcon color="#5546FF" size="20px">
+    <PIClipboardData />
+  </PIcon>
+```
+Just don't forget to change the props color and size accordingly.

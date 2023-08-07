@@ -41,7 +41,7 @@ withDefaults(defineProps<PCellTextProps>(), {
   gap: 8px;
 
   &[type="primary"]:not([disabled='true'], [selected='true']) {
-    background-color: var(--el-fill-color-blank);
+    background-color: transparent;
   }
 
   &[type="primary"]:hover {

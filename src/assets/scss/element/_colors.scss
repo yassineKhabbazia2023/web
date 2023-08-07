@@ -33,7 +33,7 @@ $text-color: (
 
 $border-color: (
   '': getCssVar('color', 'neutral-gray-100'),
-  'light': #e4e7ed,
+  'light': getCssVar('color', 'neutral-gray-50'),
   'lighter': getCssVar('color', 'neutral-gray-100'),
   'extra-light': #f2f6fc,
   'dark': #d4d7de,
@@ -51,6 +51,10 @@ $fill-color: (
   'darker': var(--el-color-neutral-gray-900),
   'blank': var(--el-color-base-white),
 );
+
+$overlay-color: (
+  'lighter': rgba(9, 9, 9, 0.5)
+)
 
 // // Background
 // $bg-color: () !default;
