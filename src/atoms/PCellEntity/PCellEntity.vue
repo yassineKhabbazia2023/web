@@ -47,25 +47,17 @@ withDefaults(defineProps<PCellTextProps>(), {
 .p-cell-entity {
   display: flex;
   align-items: center;
-  height: 40px;
+  min-height: 40px;
   gap: 8px;
   color: var(--el-fill-color-regular);
   padding: 0 12px;
 
   &[type="primary"]:not([selected="true"]) {
     background-color: transparent;
-
-    &:hover {
-      background-color: var(--el-color-persian-100);
-    }
   }
 
   &[type="secondary"]:not([selected="true"]) {
     background-color: var(--el-fill-color-lighter);
-
-    &:hover {
-      background-color: var(--el-color-persian-100);
-    }
   }
 
   &[selected="true"] {

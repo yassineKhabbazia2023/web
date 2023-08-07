@@ -67,18 +67,10 @@ withDefaults(defineProps<pCellDoubleTextProps>(), {
 
   &[type="primary"]:not([disabled='true'], [selected='true']) {
     background-color: transparent;
-
-    &:hover {
-      background-color: var(--el-color-persian-100);
-    }
   }
 
   &[type="secondary"]:not([disabled='true'], [selected='true']) {
     background-color: var(--el-color-neutral-gray-50);
-
-    &:hover {
-      background-color: var(--el-color-persian-100);
-    }
   }
 
   &[disabled='true'] {

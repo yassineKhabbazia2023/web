@@ -37,23 +37,15 @@ withDefaults(defineProps<PCellTextProps>(), {
 .p-cell-text {
   display: flex;
   align-items: center;
-  height: 40px;
+  min-height: 40px;
   gap: 8px;
 
   &[type="primary"]:not([disabled='true'], [selected='true']) {
     background-color: transparent;
   }
 
-  &[type="primary"]:hover {
-    background-color: var(--el-color-persian-100);
-  }
-
   &[type="secondary"]:not([disabled='true'], [selected='true']) {
     background-color: var(--el-fill-color-light);
-  }
-
-  &[type="secondary"]:hover {
-    background-color: var(--el-color-persian-200);
   }
 
   &[type="drag"]:not([disabled='true'], [selected='true']) {
@@ -68,16 +60,6 @@ withDefaults(defineProps<PCellTextProps>(), {
 
   &[selected='true'] {
     background-color: var(--el-color-persian-200);
-    color:  var(--el-text-color-primary);
-  }
-
-  &[disabled='true']:hover {
-    background-color: var(--el-color-persian-100);
-    color: var(--el-fill-color);
-  }
-
-  &[selected='true']:hover {
-    background-color: var(--el-color-persian-300);
     color:  var(--el-text-color-primary);
   }
 

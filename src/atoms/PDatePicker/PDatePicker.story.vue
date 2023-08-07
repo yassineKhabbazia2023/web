@@ -241,7 +241,7 @@ function visibleChange(val: boolean) {
 }
 </script>
 
-<style>
+<style scoped>
 .demo-date-picker .block {
   padding: 30px 0;
   text-align: center;

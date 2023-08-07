@@ -46,7 +46,7 @@ tbody tr td .cell {
 
 .el-table thead tr th {
   font-weight: 400;
-  height: 40px;
+  min-height: 40px;
 }
 
 .el-table tbody tr td.el-table__cell {
@@ -81,7 +81,7 @@ tbody tr td .cell {
     }
 
     .el-table__cell {
-      height: 40px;
+      min-height: 40px;
       padding: 0;
       
       .cell {
