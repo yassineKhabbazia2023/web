@@ -15,14 +15,13 @@ $dialog: (
 
 .p-dialog {
   .el-dialog__header {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 24px;
-    padding-bottom: 0px;
+    padding: 24px 16px 0px 16px;
   }
 
-  .el-dialog__headerbtn .el-dialog__close {
-    color: var(--el-text-color-regular);
+  .el-dialog__headerbtn {
+    .el-dialog__close {
+      color: var(--el-text-color-regular);
+    }
   }
 
   .el-dialog__title {
@@ -35,9 +34,6 @@ $dialog: (
   }
 
   .el-dialog__footer {
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 0px;
-    padding-bottom: 24px;
+    padding: 0px 16px 16px 24px;
   }
 }
