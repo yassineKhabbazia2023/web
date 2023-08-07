@@ -75,11 +75,21 @@ const options = computed<ChartOptions<'line'>>(() => ({
         color: '#DBDBDB', // Set the color of the grid lines
         drawBorder: false, // Disable drawing the border of the chart area
         drawTicks: false // Disable drawing the ticks along the grid lines
+      },
+      ticks: {
+        font: {
+          family: 'Open Sans' // Set the font family for the x-axis labels
+        }
       }
     },
     x: {
       grid: {
         display: false // Disable drawing the vertical grid lines
+      },
+      ticks: {
+        font: {
+          family: 'Open Sans' // Set the font family for the x-axis labels
+        }
       }
     }
   },
@@ -92,15 +102,25 @@ const options = computed<ChartOptions<'line'>>(() => ({
         color: 'var(--el-color-neutral-gray-700)',
         font: {
           size: 12,
-          weight: '600'
+          weight: '600',
+          family: 'Open Sans'
         }
       }
     },
     title: {
       display: true,
-      text: ChartBasicData.chartTitle
+      text: ChartBasicData.chartTitle,
+      font: {
+        family: 'Open Sans'
+      }
     },
     tooltip: {
+      titleFont: {
+        family: 'Open Sans'
+      },
+      bodyFont: {
+        family: 'Open Sans'
+      },
       padding: 10,
       boxWidth: 80,
       boxHeight: 50,
@@ -191,15 +211,25 @@ const optionsRight = computed<ChartOptions<'line'>>(() => ({
         color: 'var(--el-color-neutral-gray-700)',
         font: {
           size: 12,
-          weight: '600'
+          weight: '600',
+          family: 'Open Sans'
         }
       }
     },
     title: {
       display: true,
-      text: ChartBasicDataRight.chartTitle
+      text: ChartBasicDataRight.chartTitle,
+      font: {
+        family: 'Open Sans' // Set the font family for the x-axis labels
+      }
     },
     tooltip: {
+      titleFont: {
+        family: 'Open Sans'
+      },
+      bodyFont: {
+        family: 'Open Sans'
+      },
       padding: 10,
       titleSpacing: 6,
       backgroundColor: toolTipBackgroundColor.value,
