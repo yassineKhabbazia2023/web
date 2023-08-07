@@ -47,8 +47,7 @@ const entities = [
 ]
 
 const menus = [
-  { name: 'My entities', icon: 'PIGrid', path: '/entity' },
-  { name: 'See customer view', icon: 'PIPersonVideo3', path: '/customer' }
+  { name: 'My entities', icon: 'PIGrid', path: '/entity' }
 ]
 const basicNavData = reactive({
   entities,
