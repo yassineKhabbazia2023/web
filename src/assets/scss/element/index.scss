@@ -4,30 +4,32 @@
 @use '../pegase/spacing';
 
 // @use Element-Plus variables override with Pegase
-@use 'typography';
 @use 'border';
-@use 'colors';
 @use 'box-shadow';
 @use 'common';
-@use './components/buttons';
-@use './components/table';
-@use './form/checkbox';
-@use './form/input';
-@use './form/datepicker';
-@use './form/switch';
-@use './components/notification';
+@use 'colors';
+@use 'typography';
+
 @use './components/avatar';
-@use './components/popper';
-@use './components/menu';
-@use './components/dropdown';
-@use './components/tag';
-@use './components/carousel';
-@use './components/image';
-@use './components/dialog';
-@use './form/select';
-@use './components/tree';
-@use './components/drawer';
 @use './components/breadcrumb';
+@use './components/buttons';
+@use './components/carousel';
+@use './components/dialog';
+@use './components/drawer';
+@use './components/dropdown';
+@use './components/image';
+@use './components/menu';
+@use './components/notification';
+@use './components/popper';
+@use './components/table';
+@use './components/tag';
+@use './components/tree';
+
+@use './form/checkbox';
+@use './form/datepicker';
+@use './form/input';
+@use './form/select';
+@use './form/switch';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -80,41 +82,42 @@
 
 
 // @use scss Element-Plus
-@use 'element-plus/theme-chalk/src/base.scss' as *;
-@use 'element-plus/theme-chalk/src/dialog.scss' as *;
-@use 'element-plus/theme-chalk/src/switch.scss' as *;
-@use 'element-plus/theme-chalk/src/row.scss' as *;
-@use 'element-plus/theme-chalk/src/col.scss' as *;
-@use 'element-plus/theme-chalk/src/button.scss' as *;
-@use 'element-plus/theme-chalk/src/container.scss' as *;
-@use 'element-plus/theme-chalk/src/main.scss' as *;
-@use 'element-plus/theme-chalk/src/header.scss' as *;
 @use 'element-plus/theme-chalk/src/aside.scss' as *;
-@use 'element-plus/theme-chalk/src/footer.scss' as *;
-@use 'element-plus/theme-chalk/src/text.scss' as *;
-@use 'element-plus/theme-chalk/src/message.scss' as *;
-@use 'element-plus/theme-chalk/src/display.scss' as *;
-@use 'element-plus/theme-chalk/src/menu.scss' as *;
+@use 'element-plus/theme-chalk/src/alert.scss' as *;
 @use 'element-plus/theme-chalk/src/avatar.scss' as *;
-@use 'element-plus/theme-chalk/src/image.scss' as *;
-@use 'element-plus/theme-chalk/src/divider.scss' as *;
-@use 'element-plus/theme-chalk/src/tooltip.scss' as *;
-@use 'element-plus/theme-chalk/src/popper.scss' as *;
-@use 'element-plus/theme-chalk/src/input.scss' as *;
-@use 'element-plus/theme-chalk/src/date-picker.scss' as *;
-@use 'element-plus/theme-chalk/src/checkbox.scss' as *;
-@use 'element-plus/theme-chalk/src/table.scss' as *;
-@use 'element-plus/theme-chalk/src/tag.scss' as *;
-@use 'element-plus/theme-chalk/src/notification.scss' as *;
-@use 'element-plus/theme-chalk/src/select.scss' as *;
-@use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
-@use 'element-plus/theme-chalk/src/option.scss' as *;
-@use 'element-plus/theme-chalk/src/option-group.scss' as *;
-@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
+@use 'element-plus/theme-chalk/src/base.scss' as *;
+@use 'element-plus/theme-chalk/src/button.scss' as *;
+@use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel.scss' as *;
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
-@use 'element-plus/theme-chalk/src/image.scss' as *;
+@use 'element-plus/theme-chalk/src/checkbox.scss' as *;
+@use 'element-plus/theme-chalk/src/col.scss' as *;
+@use 'element-plus/theme-chalk/src/container.scss' as *;
+@use 'element-plus/theme-chalk/src/date-picker.scss' as *;
+@use 'element-plus/theme-chalk/src/dialog.scss' as *;
+@use 'element-plus/theme-chalk/src/display.scss' as *;
+@use 'element-plus/theme-chalk/src/divider.scss' as *;
 @use 'element-plus/theme-chalk/src/drawer.scss' as *;
-@use 'element-plus/theme-chalk/src/tree.scss' as *;
-@use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
+@use 'element-plus/theme-chalk/src/footer.scss' as *;
+@use 'element-plus/theme-chalk/src/header.scss' as *;
+@use 'element-plus/theme-chalk/src/image.scss' as *;
+@use 'element-plus/theme-chalk/src/input.scss' as *;
+@use 'element-plus/theme-chalk/src/main.scss' as *;
+@use 'element-plus/theme-chalk/src/message.scss' as *;
+@use 'element-plus/theme-chalk/src/menu.scss' as *;
+@use 'element-plus/theme-chalk/src/notification.scss' as *;
+@use 'element-plus/theme-chalk/src/option.scss' as *;
+@use 'element-plus/theme-chalk/src/option-group.scss' as *;
 @use 'element-plus/theme-chalk/src/overlay.scss' as *;
+@use 'element-plus/theme-chalk/src/popper.scss' as *;
+@use 'element-plus/theme-chalk/src/row.scss' as *;
+@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
+@use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
+@use 'element-plus/theme-chalk/src/select.scss' as *;
+@use 'element-plus/theme-chalk/src/switch.scss' as *;
+@use 'element-plus/theme-chalk/src/table.scss' as *;
+@use 'element-plus/theme-chalk/src/tag.scss' as *;
+@use 'element-plus/theme-chalk/src/text.scss' as *;
+@use 'element-plus/theme-chalk/src/tooltip.scss' as *;
+@use 'element-plus/theme-chalk/src/tree.scss' as *;
+

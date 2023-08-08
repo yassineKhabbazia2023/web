@@ -38,6 +38,7 @@ import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
 import PCellDoubleText from '@/atoms/PCellDoubleText'
 import PBreadcrumb from '@/molecules/PBreadcrumb'
 import PImage from '@/atoms/PImage'
+import PAlert from '@/atoms/PAlert'
 
 dayjs.Ls.en.weekStart = 1
 
@@ -77,6 +78,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PCellDoubleText', PCellDoubleText)
   app.component('PBreadcrumb', PBreadcrumb)
   app.component('PImage', PImage)
+  app.component('PAlert', PAlert)
 }
 
 const plugin = {
