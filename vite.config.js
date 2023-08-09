@@ -10,29 +10,31 @@ import { viteExternalsPlugin } from 'vite-plugin-externals'
 import viteBaseConfig from '@kpmg/config-pulse/vite.config.base'
 
 export default ({ mode }) =>
-  defineConfig(mergeConfig(
-    viteBaseConfig,
-    {
+  defineConfig(
+    mergeConfig(viteBaseConfig, {
       plugins: [
         eslint(),
         visualizer(),
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => ['el-button'].includes(tag)
+              isCustomElement: (tag) => tag.startsWith('el-')
             }
           }
         }),
         VueI18nPlugin({
           include: [path.resolve(__dirname, './src/**/locales/**')]
         }),
-        viteExternalsPlugin({
-          vue: 'Vue',
-          'vue-i18n': 'VueI18n',
-          pinia: 'Pinia',
-          '@kpmg/common': 'Common',
-          '@kpmg/styleguide': 'StyleGuide'
-        }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
+        viteExternalsPlugin(
+          {
+            vue: 'Vue',
+            'vue-i18n': 'VueI18n',
+            pinia: 'Pinia',
+            '@kpmg/common': 'Common',
+            '@kpmg/styleguide': 'StyleGuide'
+          },
+          { disableInServe: mode === 'test' }
+        ), // true for Vitest & dev without Single Spa
         cssInjectedByJsPlugin()
       ],
       resolve: {
@@ -44,7 +46,7 @@ export default ({ mode }) =>
         lib: {
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: () => 'boilerplate.js'
+          fileName: () => 'ged.js'
         },
         rollupOptions: {
           input: 'src/main.ts',
@@ -60,5 +62,5 @@ export default ({ mode }) =>
       preview: {
         port: 8083
       }
-    }
-  ))
+    })
+  )
