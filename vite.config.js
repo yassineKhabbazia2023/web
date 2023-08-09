@@ -18,8 +18,7 @@ export default ({ mode }) =>
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) =>
-                ['el-main', 'el-container', 'el-aside', 'el-header'].includes(tag)
+              isCustomElement: (tag) => tag.startsWith('el-')
             }
           }
         }),
