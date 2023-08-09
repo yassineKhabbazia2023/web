@@ -1,5 +1,12 @@
 // base UI library
-import ElementPlus, { ElInput, ElRow, ElCol, ElSwitch } from 'element-plus'
+import ElementPlus, {
+  ElInput,
+  ElRow,
+  ElCol,
+  ElSwitch,
+  ElOptionGroup,
+  ElOption
+} from 'element-plus'
 
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
@@ -38,6 +45,7 @@ import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
 import PCellDoubleText from '@/atoms/PCellDoubleText'
 import PBreadcrumb from '@/molecules/PBreadcrumb'
 import PImage from '@/atoms/PImage'
+import PPagination from '@/atoms/PPagination'
 import PAlert from '@/atoms/PAlert'
 
 dayjs.Ls.en.weekStart = 1
@@ -78,6 +86,9 @@ export function install(app: any, { i18n }: any) {
   app.component('PCellDoubleText', PCellDoubleText)
   app.component('PBreadcrumb', PBreadcrumb)
   app.component('PImage', PImage)
+  app.component('PPagination', PPagination)
+  app.component('POptionGroup', ElOptionGroup)
+  app.component('POption', ElOption)
   app.component('PAlert', PAlert)
 }
 

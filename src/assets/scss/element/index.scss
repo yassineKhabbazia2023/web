@@ -30,6 +30,7 @@
 @use './form/input';
 @use './form/select';
 @use './form/switch';
+@use './components/pagination';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -56,7 +57,7 @@
   $datepicker: datepicker.$datepicker,
   $switch: switch.$switch,
   $notification: notification.$notification,
-  $checkbox : checkbox.$checkbox,
+  $checkbox: checkbox.$checkbox,
   $tag-height: tag.$tag-height,
   $tag-padding: tag.$tag-padding,
   $table: table.$table,
@@ -73,13 +74,12 @@
   $tree: tree.$tree,
   $drawer: drawer.$drawer,
   $dialog: dialog.$dialog,
-  $overlay-color: colors.$overlay-color
+  $overlay-color: colors.$overlay-color,
+  $pagination: pagination.$pagination
 );
-
 
 // @use Call after forward, files who need files from element plus
 @use '../pegase/radius';
-
 
 // @use scss Element-Plus
 @use 'element-plus/theme-chalk/src/aside.scss' as *;
@@ -121,3 +121,4 @@
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
 
+@use 'element-plus/theme-chalk/src/pagination.scss' as *;
