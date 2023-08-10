@@ -8,7 +8,7 @@
             :key="pageRange"
             :value="pageRange"
           >
-            {{ pageRangeSelectorContent }}
+            {{ getPageRangeSelectorContent(pageRange) }}
           </POption>
         </POptionGroup>
       </PDropdown>
@@ -21,8 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-
-import { ref, watch, computed } from 'vue'
+import { ref, watch } from 'vue'
 import { ElPagination } from 'element-plus'
 import PDropdown from '@/atoms/PDropdown'
 
@@ -39,9 +38,10 @@ const emit = defineEmits(['on-page-range-changed'])
 
 const selectedRange = ref(props.pagesRanges[0] ?? '')
 
-const pageRangeSelectorContent = computed(
-  () => selectedRange.value + ' ' + props.pageRangeSelectorSuffix
-)
+const getPageRangeSelectorContent = (pageRange: number) => {
+  return pageRange + ' ' + props.pageRangeSelectorSuffix
+}
+
 watch(selectedRange, () => {
   emit('on-page-range-changed', selectedRange)
 })

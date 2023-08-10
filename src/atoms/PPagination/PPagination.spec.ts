@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import wrapperFactory from 'tests/utils/wrapperFactory'
+import { mount } from '@vue/test-utils'
+// import wrapperFactory from 'tests/utils/wrapperFactory'
 import PPagination from './'
 import PDropdown from '@/atoms/PDropdown'
 import { ElSelect, ElPagination } from 'element-plus'
@@ -19,15 +20,8 @@ const defaultProps: PaginationProps = {
 }
 
 const createWrapper = (props = defaultProps) =>
-  wrapperFactory(PPagination, {
-    props,
-    global: {
-      stubs: {
-        PDropdown,
-        ElSelect,
-        ElPagination
-      }
-    }
+  mount(PPagination, {
+    props
   })
 
 describe('pPagination', () => {
@@ -56,12 +50,7 @@ describe('pPagination', () => {
       expect(select.props('placement')).toBe('top')
       expect(select.props('modelValue')).toBe(100)
     })
-    it('should combine suffix and value in side page range selector content', () => {
-      const wrapper = createWrapper()
-      const expectedValue =
-        defaultProps.pagesRanges[0] + ' ' + defaultProps.pageRangeSelectorSuffix
-      expect(wrapper.vm.pageRangeSelectorContent).toStrictEqual(expectedValue)
-    })
+
     it('should have a fixed layout', () => {
       const wrapper = createWrapper()
       const pagination = wrapper
@@ -80,7 +69,7 @@ describe('pPagination', () => {
       expect(dropdown.emitted('update:modelValue')).toHaveLength(1)
     })
     it('should emit on-page-range-changed on page range selector change', async () => {
-      const wrapper = createWrapper()
+      const wrapper = createWrapper() as any
       wrapper.vm.selectedRange = 300
       await wrapper.vm.$nextTick()
       expect(wrapper.emitted('on-page-range-changed')).toHaveLength(1)
