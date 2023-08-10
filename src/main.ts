@@ -23,16 +23,8 @@ export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 
 routes.value.push({
-  path: '/',
-  name: 'home',
-  component: () => import('@/pages/home')
+  path: '/ged',
+  name: 'ged',
+  component: () => import('@/pages/Ged')
 } as RouteRecordRaw)
 
-routes.value.push({
-  path: '/login',
-  name: 'login',
-  component: () => import('@/pages/login'),
-  meta: {
-    layout: 'Login'
-  }
-} as RouteRecordRaw)

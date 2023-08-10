@@ -1,13 +1,8 @@
 <template>
-  <h3>{{ t('title') }}</h3>
+  <div>
+    <p>{{ t('ged') }}</p>
+  </div>
 </template>
-
-<i18n lang="yaml">
-  en-US:
-    title: 'This is the login page'
-  fr-FR:
-    title: 'Ceci est la page login'
-</i18n>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
@@ -17,3 +12,10 @@ const { t } = useI18n({
   useScope: 'local'
 })
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    ged: "It's ged time ! 🥳"
+  fr-FR:
+    ged: "It's ged time ! 🥳"
+</i18n>

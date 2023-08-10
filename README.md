@@ -27,3 +27,12 @@ im.textContent = JSON.stringify({
 Lauch the command `tools/New-Mfe.ps1` (see commmand documentation, available with `Get-Help tools/New-Mfe.ps1` for details).
 
 Note: you must be able to create repositories and pipelines in the Constellation project using the provided PAT.
+
+# Add routes
+
+Routes are located in ``main.ts`` file.<br/>
+Our MFE routes are injected inside the ``routes`` object coming from the ``common`` dependency.<br/>
+So if needed, you simply have to push the needed routes to the ``routes`` object
+You can see that the component related to the requested page is loaded thanks to a function.
+This means that we're lazily loading the related component.<br/>
+If you want to know more about this, [read this section about lazy route loading](https://router.vuejs.org/guide/advanced/lazy-loading.html).
