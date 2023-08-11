@@ -1,17 +1,11 @@
 <template>
   <div>
-    <div>
-      <a href="https://vitejs.dev" target="_blank">{{ t('vite') }}</a>
-      <span>{{ t('+') }}</span>
-      <a href="https://vuejs.org/" target="_blank">{{ t('vue') }}</a>
-    </div>
-    <HelloWorld />
+    {{ t('mandate') }}
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import HelloWorld from './components/helloWorld'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -21,17 +15,10 @@ const { t } = useI18n({
 
 <i18n lang="yaml">
   en-US:
-    vite: 'Vite'
-    vue: 'Vue'
-    +: '+'
+    mandate: 'Mandate'
   fr-FR:
-    vite: 'Vite'
-    vue: 'Vue'
-    +: '+'
+    mandate: 'Mandat'
 </i18n>
 
 <style lang="scss" scoped>
-span {
-  margin: 0 0.5rem;
-}
 </style>

@@ -44,7 +44,7 @@ export default ({ mode }) =>
         lib: {
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: () => 'boilerplate.js'
+          fileName: () => 'mandate.js'
         },
         rollupOptions: {
           input: 'src/main.ts',
@@ -55,10 +55,10 @@ export default ({ mode }) =>
         }
       },
       server: {
-        port: 8083
+        port: 8084
       },
       preview: {
-        port: 8083
+        port: 8084
       }
     }
   ))
