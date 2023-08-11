@@ -12,11 +12,11 @@ let previousLayout: string = ''
 watch(
   () => route.name,
   () => {
-    const layout = route.meta?.layout ? route.meta.layout : 'Home'
+    const layout = route.meta?.layout || 'Home'
     if (previousLayout !== layout) {
       getLayout.value = markRaw(
         defineAsyncComponent(
-          () => import(/* @vite-ignore */ `@/layouts/${layout}/index.ts`)
+          () => import(`@/layouts/${layout}/index.ts`)
         )
       )
       previousLayout = layout.toString()

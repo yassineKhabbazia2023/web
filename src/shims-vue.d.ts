@@ -5,3 +5,4 @@ declare module '*.vue' {
 }
 
 declare module '@kpmg/styleguide'
+declare module 'env-vars'

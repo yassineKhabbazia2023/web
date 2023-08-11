@@ -8,6 +8,10 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import viteBaseConfig from '@kpmg/config-pulse/vite.config.base'
+import { name } from './package.json'
+
+const [PORT] = process.argv.slice(3)
+const APP_NAME = name.split('/')[1]
 
 export default ({ mode }) =>
   defineConfig(
@@ -47,7 +51,7 @@ export default ({ mode }) =>
         lib: {
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: () => 'router.js'
+          fileName: () => `${APP_NAME}.js`
         },
         rollupOptions: {
           input: 'src/main.ts',
@@ -58,10 +62,11 @@ export default ({ mode }) =>
         }
       },
       server: {
-        port: 8081
+        port: PORT,
+        origin: `http://localhost:${PORT}`
       },
       preview: {
-        port: 8081
+        port: PORT
       }
     })
   )

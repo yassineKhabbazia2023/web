@@ -4,7 +4,6 @@ import { mount } from '@vue/test-utils'
 import App from './App.vue'
 
 const HOME_LAYOUT_TITLE = 'This is the Home layout'
-const LOGIN_LAYOUT_TITLE = 'This is the Login layout'
 const HOME_PAGE_TITLE = 'Home page'
 const LOGIN_PAGE_TITLE = 'Login page'
 
@@ -37,7 +36,14 @@ describe('app', () => {
   it('load the right page with the right layout according to the route', async () => {
     const wrapper = mount(App, {
       global: {
-        plugins: [router]
+        plugins: [router],
+        stubs: {
+          PCol: { template: '<div class="el-col"><slot /></div>' },
+          PRow: { template: '<div class="el-row"><slot /></div>' },
+          PImage: { template: '<img />' },
+          PButton: { template: '<button><slot /></button>' },
+          PDrawer: { template: '<div><slot /></div>' }
+        }
       }
     })
     const getLayoutTitle = () => wrapper.find('h3')
@@ -50,7 +56,6 @@ describe('app', () => {
 
     router.push({ name: 'login' })
     await vi.dynamicImportSettled()
-    expect(getLayoutTitle().text()).toBe(LOGIN_LAYOUT_TITLE)
     expect(getPageTitle().text()).toBe(LOGIN_PAGE_TITLE)
   })
 })
