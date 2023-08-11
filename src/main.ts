@@ -101,4 +101,4 @@ const plugin = {
 
 export default plugin
 
-export * from '@/atoms/PIcon/components'
+export * from './atoms/PIcon/components'
