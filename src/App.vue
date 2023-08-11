@@ -3,23 +3,24 @@
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  defineAsyncComponent,
-  ref,
-  markRaw,
-  watch
-} from 'vue'
+import { defineAsyncComponent, ref, markRaw, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const getLayout = ref()
-
-watch(() => route.name, () => {
-  const layout = computed(() => route.meta?.layout || 'Home')
-
-  getLayout.value = markRaw(defineAsyncComponent(() =>
-    import(/* @vite-ignore */`@/layouts/${layout.value}/index.ts`)
-  ))
-})
+let previousLayout: string = ''
+watch(
+  () => route.name,
+  () => {
+    const layout = route.meta?.layout ? route.meta.layout : 'Home'
+    if (previousLayout !== layout) {
+      getLayout.value = markRaw(
+        defineAsyncComponent(
+          () => import(/* @vite-ignore */ `@/layouts/${layout}/index.ts`)
+        )
+      )
+      previousLayout = layout.toString()
+    }
+  }
+)
 </script>
