@@ -12,7 +12,6 @@
       :round="false"
       :disabled="false"
       :loading="false"
-      @click="() => {}"
     >
       <PIcon class="el-button__icon--left">
         <PIAdd />

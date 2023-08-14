@@ -30,9 +30,6 @@ describe('Header.vue', () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
 
     await wrapper.find('.header__create-mandate-button').trigger('click')
-
-    // Assuming you emit an event upon button click in the actual component
-    // expect(wrapper.emitted()).toHaveProperty('your-event-name')
   })
 })
 
