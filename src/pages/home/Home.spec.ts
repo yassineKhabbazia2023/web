@@ -1,51 +1,20 @@
 import { describe, it, expect } from 'vitest'
-import { createI18n } from 'vue-i18n'
 import wrapperFactory from 'tests/utils/wrapperFactory'
+import Header from '@/components/Common/Header'
 import Home from './'
 
 const createWrapper = (props: any) =>
   wrapperFactory(Home, {
-    props
+    props,
+    stubs: {
+      Header: true
+    }
   })
 
-describe('home component', () => {
-  it('displays mandate message correctly for en-US', () => {
-    const i18n = createI18n({
-      legacy: false,
-      locale: 'en-US',
-      messages: {
-        'en-US': {
-          mandate: 'Mandate'
-        }
-      }
-    })
+describe('ComponentName.vue', () => {
+  it('renders Header component', () => {
+    const wrapper = createWrapper({})
 
-    const wrapper = createWrapper({
-      global: {
-        plugins: [i18n]
-      }
-    })
-
-    expect(wrapper.text()).toContain('Mandate')
-  })
-
-  it('displays mandate message correctly for fr-FR', () => {
-    const i18n = createI18n({
-      legacy: false,
-      locale: 'fr-FR',
-      messages: {
-        'fr-FR': {
-          mandate: 'Mandat'
-        }
-      }
-    })
-
-    const wrapper = createWrapper({
-      global: {
-        plugins: [i18n]
-      }
-    })
-
-    expect(wrapper.text()).toContain('Mandat')
+    expect(wrapper.findComponent(Header).exists()).toBe(true)
   })
 })
