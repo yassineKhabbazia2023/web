@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "GED MFE",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8083",
     "build": "vue-tsc && vite build",
     "lint": "npx eslint .",
     "prepare": "husky install",
