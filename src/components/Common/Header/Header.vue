@@ -48,7 +48,7 @@ const { t } = useI18n({
   padding: 24px;
 
   &__title {
-    color: var(--pulse-color-neutral-gray-900, #171717);
+    color: var(--el-color-neutral-gray-900);
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
