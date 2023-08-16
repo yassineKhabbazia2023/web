@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "The mfe Entities allows the collaborators and customers to switch from an entitie to another in KPMG Pulse.",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8084",
     "build": "vue-tsc && vite build",
     "lint": "npx eslint .",
     "prepare": "husky install",
