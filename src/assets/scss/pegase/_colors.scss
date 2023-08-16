@@ -68,6 +68,7 @@ $colors: (
 }
 
 $typePulse: ();
+
 @each $type, $content in $colors {
   @each $variant, $hexCode in $content {
     $name: #{$type}-#{$variant};
@@ -77,6 +78,7 @@ $typePulse: ();
 
 @mixin set-css-color-rgb-pulse($type, $variant) {
   $color: map.get($colors, $type, $variant);
+
   @if $color != null {
     @if $variant  == base {
       @include set-css-var-value(
@@ -85,8 +87,7 @@ $typePulse: ();
         green($color),
         blue($color)}
     );
-    }
-    @else {
+    } @else {
       @include set-css-var-value(
         ('color', $type, $variant, 'rgb'),
         #{red($color),
@@ -99,14 +100,14 @@ $typePulse: ();
 
 @mixin set-css-color-type-pulse($type, $variant) {
   $color: map.get($colors, $type, $variant);
+
   @if $color != null {
     @if $variant  == base {
       @include set-css-var-value(
       ('color', $type),
       $color
     );
-    }
-    @else {
+    } @else {
       @include set-css-var-value(
         ('color', $type, $variant),
         $color);

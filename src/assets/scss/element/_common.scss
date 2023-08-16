@@ -7,14 +7,14 @@ $disabled: (
   'border-color': getCssVar('color', 'neutral-gray-100'),
 );
 
-$common-component-size:( 
+$common-component-size: ( 
   'large': 40px,
   'default': 44px,
   'small': 22px,
 );
 
 // overlay
-$overlay-color:(
+$overlay-color: (
   '': rgba(0, 0, 0, 0.8),
   'light': rgba(0, 0, 0, 0.7),
   'lighter': rgba(0, 0, 0, 0.5),

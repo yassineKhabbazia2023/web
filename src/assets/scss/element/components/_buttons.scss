@@ -52,12 +52,14 @@ $button-padding-horizontal: (
 
     &--small {
       --el-button-size: 32px;
+
       height: 32px;
 
       #{$self}__icon {
         &--left {
           margin-right: 8px;
         }
+
         &--right {
           margin-left: 8px;
         }
@@ -85,6 +87,7 @@ $button-padding-horizontal: (
         &--left {
           margin-right: 12px;
         }
+
         &--right {
           margin-left: 12px;
         }
@@ -97,11 +100,13 @@ $button-padding-horizontal: (
       background: var(--el-color-persian-700);
       border-color: var(--el-color-persian-700);
     }
+
     &:focus {
       background: var(--el-color-persian-800);
       border-color: var(--el-color-persian-800);
       color: $color-white;
     }
+
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -120,11 +125,13 @@ $button-padding-horizontal: (
       border-color: var(--el-color-persian-700);
       color: var(--el-color-persian-700);
     }
+
     &:focus {
       background: $color-white;
       border-color: var(--el-color-persian-800);
       color: var(--el-color-persian-800);
     }
+
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -144,11 +151,13 @@ $button-padding-horizontal: (
       border-color: var(--el-color-persian-50);
       color: var(--el-color-persian-700);
     }
+
     &:focus {
       background: var(--el-color-persian-100);
       border-color: var(--el-color-persian-100);
       color: var(--el-color-persian-800);
     }
+
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -166,10 +175,12 @@ $button-padding-horizontal: (
       border-color: transparent;
       color: getCssVar('color', 'neutral-gray-900');
     }
+
     &:focus {
       border-color: transparent;
       color: getCssVar('color', 'neutral-gray-900');
     }
+
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {

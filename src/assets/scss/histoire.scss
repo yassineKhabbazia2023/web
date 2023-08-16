@@ -12,18 +12,21 @@ body {
     font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas,
       'Courier New', monospace;
   }
+
   .container {
     position: relative;
     overflow: hidden;
     width: 100%;
     // padding-top: 56.25%;
   }
+
   .responsive-iframe-container {
     position: relative;
     overflow: hidden;
     width: 100%;
     padding-top: 75%;
   }
+
   .responsive-iframe {
     position: absolute;
     top: 0;

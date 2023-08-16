@@ -151,7 +151,9 @@ $tag-padding: (
     }
     &#{$self}--info {
       --el-tag-bg-color: var(--el-color-neutral-gray-100);
+
       background-color: var(--el-color-neutral-gray-100);
+
       --el-tag-border-color: var(--el-color-neutral-gray-100);
       --el-tag-hover-color: var(--el-color-neutral-gray-900);
       --el-tag-text-color: var(--el-color-neutral-gray-900);
@@ -254,6 +256,7 @@ $tag-padding: (
     background: var(--el-color-neutral-gray-100);
     color: var(--el-color-neutral-gray-500);
   }
+
   &--warning {
     background: var(--el-color-functionnal-red);
     color: var(--el-color-base-white);

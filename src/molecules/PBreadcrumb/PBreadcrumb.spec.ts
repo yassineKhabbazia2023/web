@@ -59,7 +59,7 @@ describe('pBreadcrumb', () => {
       })
 
       const sampleItem = wrapper.find('p-tooltip-stub[disabled="true"]')
-      expect(sampleItem.attributes('disabled')).toStrictEqual('true')
+      expect(sampleItem.attributes('disabled')).toBe('true')
     })
   })
   describe('events', () => {

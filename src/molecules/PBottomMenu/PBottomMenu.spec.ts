@@ -36,7 +36,7 @@ describe('pBottomMenu', () => {
     })
   })
 
-  it('it has 2 items in the menu', async () => {
+  it('has 2 items in the menu', async () => {
     router.push({ name: 'Dashboard' })
     await flushPromises()
 

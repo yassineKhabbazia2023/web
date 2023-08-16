@@ -1,8 +1,7 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 // css3 var in packages/theme-chalk/src/carousel.scss
-$carousel: 
-  (
+$carousel: (
     'arrow-font-size': 12px,
     'arrow-size': 36px,
     'arrow-background': getCssVar('color-white'),
@@ -58,7 +57,7 @@ $carousel:
     margin: 48px auto;
     width: 50%;
 
-    @media screen and (min-width: 768px) {
+    @media screen and (width >= 768px) {
       width: 280px;
     }
 

@@ -59,7 +59,7 @@ describe('fileLineNavigationItem', () => {
       })
       expect(
         wrapper.find('.file-line-navigation-item__name').text()
-      ).toStrictEqual('name of a random folder')
+      ).toBe('name of a random folder')
     })
   })
 })

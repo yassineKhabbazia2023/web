@@ -15,7 +15,7 @@ $dialog: (
 
 .p-dialog {
   .el-dialog__header {
-    padding: 24px 16px 0px 16px;
+    padding: 24px 16px 0;
   }
 
   .el-dialog__headerbtn {
@@ -30,10 +30,10 @@ $dialog: (
   }
 
   .el-dialog__body {
-    padding: 19px 16px 16px 16px;
+    padding: 19px 16px 16px;
   }
 
   .el-dialog__footer {
-    padding: 0px 16px 24px 16px;
+    padding: 0 16px 24px;
   }
 }

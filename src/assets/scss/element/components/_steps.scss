@@ -10,7 +10,7 @@ div.el-step {
       .el-step__title {
         padding-right: 0;
 
-        &:after {
+        &::after {
           display: none;
         }
       }
@@ -25,6 +25,7 @@ div.el-step {
       &__description {
         display: none;
       }
+
       &__icon {
         margin-right: 12px;
 
@@ -40,7 +41,7 @@ div.el-step {
       }
 
       &__title {
-        &:after {
+        &::after {
           content: '';
           display: block;
           flex: 1 0;
@@ -78,6 +79,7 @@ div.el-step {
         }
       }
     }
+
     &__icon {
       margin-right: 12px;
 

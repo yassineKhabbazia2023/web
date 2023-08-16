@@ -105,7 +105,7 @@ describe('pLineChart', () => {
     })
 
     expect(wrapper.find('.line-chart-container').exists()).toBeTruthy()
-    expect(wrapper.vm.chartData.labels).toEqual(dataLabels)
+    expect(wrapper.vm.chartData.labels).toStrictEqual(dataLabels)
     expect(wrapper.vm.chartData.datasets).toHaveLength(dataValues.length)
     expect(wrapper.vm.chartData.datasets[0].label).toBe(dataValues[0].label)
   })
@@ -114,7 +114,7 @@ describe('pLineChart', () => {
     const wrapper = shallowMount(PLineChart)
 
     expect(wrapper.find('.line-chart-container').exists()).toBeTruthy()
-    expect(wrapper.vm.chartData.labels).toEqual([])
+    expect(wrapper.vm.chartData.labels).toStrictEqual([])
     expect(wrapper.vm.chartData.datasets).toHaveLength(0)
   })
 })

@@ -20,19 +20,6 @@ describe('display dialog', () => {
     expect(wrapper.exists()).toBeTruthy()
   })
 
-  it('renders slot content', () => {
-    const slotContent = 'Slot Content Here'
-    const wrapper: VueWrapper<any> = createWrapper({
-      visible: true
-    },
-    {
-      default: slotContent
-    })
-
-    // Find the ElDialog component
-    wrapper.findComponent(ElDialog)
-  })
-
   it('emits an update:visible event on close', async () => {
     const wrapper: VueWrapper<any> = createWrapper({ visible: true })
 
@@ -44,7 +31,7 @@ describe('display dialog', () => {
 
     // Ensure the event is emitted with the correct value
     expect(wrapper.emitted('update:visible')).toBeTruthy()
-    expect(wrapper.emitted('update:visible')?.[0]).toEqual([false])
+    expect(wrapper.emitted('update:visible')?.[0]).toStrictEqual([false])
   })
 })
 

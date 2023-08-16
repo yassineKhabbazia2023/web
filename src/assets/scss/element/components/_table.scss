@@ -12,8 +12,8 @@ $table: (
   'bg-color': getCssVar('fill-color', 'blank'),
   'tr-bg-color': getCssVar('fill-color', 'blank'),
   'expanded-cell-bg-color': getCssVar('fill-color', 'blank'),
-  'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 15%),
-  'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 15%),
+  'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 0.15),
+  'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 0.15),
 );
 
 $table-font-size: (

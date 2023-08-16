@@ -37,7 +37,9 @@
     "push": "npm publish",
     "release": "npx semantic-release",
     "generate": "npm run generate:icons",
-    "generate:icons": "node ./scripts/pulse-icon-gen.js ./src/assets/icons ./src/atoms/PIcon/components"
+    "generate:icons": "node ./scripts/pulse-icon-gen.js ./src/assets/icons ./src/atoms/PIcon/components",
+    "lint:style": "stylelint src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss",
+    "lint:style-fix": "stylelint --fix src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss"
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^0.12.2",
@@ -52,7 +54,7 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@histoire/plugin-vue": "^0.16.1",
-    "@kpmg/eslint-config-pulse": "^1.53.3",
+    "@kpmg/eslint-config-pulse": "^1.57.12",
     "@rollup/plugin-typescript": "^11.1.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",

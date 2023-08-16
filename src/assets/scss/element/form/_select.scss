@@ -51,7 +51,7 @@ $select-tags-prefix-padding: (
     padding-right: 28px;
 
     &.selected {
-      &:after {
+      &::after {
         right: 16px;
       }
     }

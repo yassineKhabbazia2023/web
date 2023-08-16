@@ -25,11 +25,11 @@ $menu: (
     &.el-menu--horizontal {
       border-bottom: inherit;
       box-shadow:
-        0px -12px 15px 0px rgba(112, 144, 176, 0.04),
-        0px -8px 8px 0px rgba(112, 144, 176, 0.05),
-        0px -4px 4px 0px rgba(112, 144, 176, 0.08),
-        0px -2px 2px 0px rgba(112, 144, 176, 0.05),
-        0px -1px 2px 0px rgba(112, 144, 176, 0.1);
+        0 -12px 15px 0 rgba(112, 144, 176, 0.04),
+        0 -8px 8px 0 rgba(112, 144, 176, 0.05),
+        0 -4px 4px 0 rgba(112, 144, 176, 0.08),
+        0 -2px 2px 0 rgba(112, 144, 176, 0.05),
+        0 -1px 2px 0 rgba(112, 144, 176, 0.1);
       overflow-x: hidden;
   
       & > .el-menu-item {
@@ -49,7 +49,7 @@ $menu: (
           }
         }
   
-        [class^=el-icon] {
+        [class^="el-icon"] {
           margin-right: 0;
         }
   
@@ -69,7 +69,7 @@ $menu: (
     background-color: var(--el-color-neutral-gray-700);
     color: var(--el-colorbh-white);
 
-    @media screen and (max-width: 992px) {
+    @media screen and (width <= 992px) {
       flex-direction: row-reverse;
     }
     
@@ -171,7 +171,7 @@ $menu: (
           text-overflow: ellipsis;
           overflow: hidden;
 
-          @media screen and (min-width: 768px) and (max-width: 991px) {
+          @media screen and (width >= 768px) and (width <= 991px) {
             max-width: 500px;
           }
         }
@@ -236,7 +236,7 @@ $menu: (
       border-radius: 50%;
       background: getCssVar('color', 'neutral-gray-500');
 
-      &:before {
+      &::before {
         content: '';
         position: absolute;
         top: 50%;
@@ -255,7 +255,7 @@ $menu: (
         z-index: 1;
       }
 
-      [class^=el-icon] {
+      [class^="el-icon"] {
         margin-right: 0;
       }
     }
@@ -283,13 +283,16 @@ $menu: (
         margin-right: 32px;
       }
     }
+
     .el-menu-item {
       & + .el-menu-item {
         margin-left: 24px;
       }
+
       &.is-active {
         font-weight: 600;
       }
+
       &.menu-item:not(.is-disabled) {
         &:hover,
         &:focus {
@@ -297,18 +300,21 @@ $menu: (
         }
       }
     }
+
     &__logo {
       height: 24px;
     }
+
     .p-header-tabs {
       border: none;
 
-      [class^=el-icon] {
+      [class^="el-icon"] {
         margin-right: 8px;
         flex-grow: 1;
         flex-shrink: 1;
       }
     }
+
     .p-header-right {
       margin-right: 16px;
       margin-right: 0;
@@ -324,11 +330,14 @@ $menu: (
         } 
       }
     }
+
     .flex-grow {
       flex-grow: 1;
     }
+
     .el-sub-menu {
       margin-left: 24px;
+
       &[aria-expanded="true"] {
         .el-sub-menu__title {
           color: getCssVar('color-primary');
@@ -348,7 +357,7 @@ $menu: (
         font-weight: 600;
       }
 
-      [class^=el-icon] {
+      [class^="el-icon"] {
         margin-right: 8px;
       }
     }

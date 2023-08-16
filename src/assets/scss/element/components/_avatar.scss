@@ -19,6 +19,7 @@ $avatar-size: (
 
 .el-avatar {
   $self: &;
+
   font-weight: 600;
   
   .el-icon svg,
@@ -30,23 +31,31 @@ $avatar-size: (
   &#{$self}--xlarge {
     --el-avatar-size: var(--el-avatar-size-xlarge);
     --el-avatar-text-size: 20px;
+
     line-height: 14px;
+
     --el-avatar-icon-size: 28px;
   }
   &#{$self}--large {
     --el-avatar-text-size: 16px;
+
     line-height: 14px;
+
     --el-avatar-icon-size: 22px;
   }
   &#{$self}--small {
     --el-avatar-text-size: 12px;
+
     line-height: 14px;
+
     --el-avatar-icon-size: 16px;
   }
   &#{$self}--xsmall {
     --el-avatar-size: var(--el-avatar-size-xsmall);
     --el-avatar-text-size: 10px;
+
     line-height: 14px;
+
     --el-avatar-icon-size: 12px;
   }
 
@@ -54,6 +63,7 @@ $avatar-size: (
     background: var(--persian-gradient);
     color: getCssVar('color-white');
   }
+
   &[color="orange"] {
     background: var(--el-color-functionnal-orange-bg);
     color: var(--el-color-functionnal-orange-txt);

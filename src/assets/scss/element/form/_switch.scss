@@ -7,20 +7,21 @@ $switch: (
 );
 
 .el-switch {
-
   &.is-disabled > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--el-color-persian-200);
     --el-switch-off-color: var(--el-color-neutral-gray-100);
+
     background-color: var(--el-color-neutral-gray-300);
   }
 
   &.is-checked > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--el-color-persian-200);
     --el-switch-off-color: var(--el-color-neutral-gray-100);
+
     background-color: var(--el-color-base-white);
   }
 
-  &:not(.is-checked):not(.is-disabled) {
+  &:not(.is-checked, .is-disabled) {
     &:hover {
       --el-switch-off-color: var(--el-color-persian-300);
     }
