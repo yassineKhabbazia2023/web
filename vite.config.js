@@ -19,7 +19,7 @@ export default ({ mode }) =>
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => ['el-button'].includes(tag)
+              isCustomElement: (tag) => tag.startsWith('el-')
             }
           }
         }),
@@ -44,7 +44,7 @@ export default ({ mode }) =>
         lib: {
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: () => 'boilerplate.js'
+          fileName: () => 'entities.js'
         },
         rollupOptions: {
           input: 'src/main.ts',

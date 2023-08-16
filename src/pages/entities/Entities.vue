@@ -5,13 +5,13 @@
       <span>{{ t('+') }}</span>
       <a href="https://vuejs.org/" target="_blank">{{ t('vue') }}</a>
     </div>
-    <HelloWorld />
+    <TableEntities />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import HelloWorld from './components/helloWorld'
+import TableEntities from './components/table-entities'
 
 const { t } = useI18n({
   inheritLocale: true,

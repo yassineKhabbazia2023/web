@@ -1,5 +1,5 @@
 {
-  "name": "@kpmg/Entities",
+  "name": "@kpmg/entities",
   "version": "1.0.0",
   "description": "The mfe Entities allows the collaborators and customers to switch from an entitie to another in KPMG Pulse.",
   "scripts": {
@@ -33,10 +33,10 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@intlify/unplugin-vue-i18n": "^0.11.0",
-    "@kpmg/common": "^1.0.0-alpha.6",
-    "@kpmg/config-pulse": "^1.54.4",
-    "@kpmg/eslint-config-pulse": "^1.54.7",
-    "@kpmg/styleguide": "^1.56.42",
+    "@kpmg/common": "^1.56.14",
+    "@kpmg/config-pulse": "^1.56.2",
+    "@kpmg/eslint-config-pulse": "^1.55.8",
+    "@kpmg/styleguide": "^1.57.38",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-istanbul": "^0.30.1",

@@ -1,11 +1,5 @@
 # Introduction
-The goal of this repository is to serve as boilerplate / base for all others MFE.
-By doing this, all the repositories will have the same base & arbo.
-
-[DAT](https://kpmgfr.visualstudio.com/Constellation/_wiki/wikis/Constellation.wiki/16910/Boilerplate)
-
-# TODO
-- clean warnings in browser's devtools console
+The goal of this repository is to serve a mfe in Single Spa for switching between entities on KPMG Pulse.
 
 # Setup
 This repository uses two npm packages (eslint config & vite config) that are on the kpmg repository, so updating the .npmrc user is mandatory if it s not already done, (link)[https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm]
@@ -18,12 +12,8 @@ This repository uses two npm packages (eslint config & vite config) that are on 
 // ...
 im.textContent = JSON.stringify({
   imports: {
-    '@kpmg/aMfeAlreadySet': 'http://localhost:8082/src/main.ts',
-    '@kpmg/myNewMfe'      : 'http://localhost:8083/src/main.ts', // here we increment the port compare to the last one on the previous line (aMfeAlreadySet = 8082, so myNewMfe = 8083)
+    (...)
+    '@kpmg/entities'      : 'http://localhost:8084/src/main.ts'
   }
 })
 ```
-
-Lauch the command `tools/New-Mfe.ps1` (see commmand documentation, available with `Get-Help tools/New-Mfe.ps1` for details).
-
-Note: you must be able to create repositories and pipelines in the Constellation project using the provided PAT.

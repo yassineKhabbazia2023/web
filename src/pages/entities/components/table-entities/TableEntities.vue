@@ -1,12 +1,14 @@
 <template>
-  <h3>{{ t('title') }}</h3>
+  <div>
+    <h1>{{ t('title') }}</h1>
+  </div>
 </template>
 
 <i18n lang="yaml">
   en-US:
-    title: 'This is the login page'
+    title: 'This is the entities page'
   fr-FR:
-    title: 'Ceci est la page login'
+    title: 'Ceci est la page des entités'
 </i18n>
 
 <script setup lang="ts">
