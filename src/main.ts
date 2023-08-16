@@ -1,14 +1,15 @@
 // base UI library
 import ElementPlus, {
-  ElInput,
   ElCol,
-  ElOptionGroup,
+  ElInput,
   ElOption,
+  ElOptionGroup,
   ElRow,
   ElSelect,
-  ElSwitch,
   ElStep,
-  ElSteps
+  ElSteps,
+  ElSwitch,
+  ElTableColumn
 } from 'element-plus'
 
 // locales
@@ -92,6 +93,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PRow', ElRow)
   app.component('PSwitch', ElSwitch)
   app.component('PTable', PTable)
+  app.component('PTableColumn', ElTableColumn)
   app.component('PTag', PTag)
   app.component('PToolbox', PToolbox)
   app.component('PToolboxItem', PToolboxItem)

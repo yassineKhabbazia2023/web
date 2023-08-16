@@ -5,10 +5,10 @@
     :layout="{ type: 'grid', width: '80%' }">
     <Variant title="PTable basic">
       <PTable :data="tableInputs.data" :stripe="tableInputs.striped">
-        <el-table-column
+        <PTableColumn
         type="selection"
         v-if="tableInputs.selectable"/>
-        <el-table-column
+        <PTableColumn
           v-for="column in tableInputs.tableColumn"
           :key="column.prop"
           :prop="column.prop"
@@ -25,10 +25,10 @@
     </Variant>
     <Variant title="PTable advanced">
       <PTable :data="tableInputsWithCells.data" :stripe="tableInputsWithCells.striped">
-        <el-table-column
+        <PTableColumn
           type="selection"
           v-if="tableInputsWithCells.selectable"/>
-        <el-table-column
+        <PTableColumn
           label="Text"
           width="180"
           :sortable="tableInputsWithCells.sortable"
@@ -44,8 +44,8 @@
             >
            </PCellText>
           </template>
-        </el-table-column>
-        <el-table-column
+        </PTableColumn>
+        <PTableColumn
           label="Entity"
           width="220"
           :sortable="tableInputsWithCells.sortable"
@@ -59,8 +59,8 @@
             >
             </PCellEntity>
           </template>
-        </el-table-column>
-        <el-table-column
+        </PTableColumn>
+        <PTableColumn
           label="Double Text"
           width="180"
           :sortable="tableInputsWithCells.sortable"
@@ -77,8 +77,8 @@
             >
             </PCellDoubleText>
           </template>
-        </el-table-column>
-        <el-table-column
+        </PTableColumn>
+        <PTableColumn
           label="Tag"
           width="180"
           :sortable="tableInputsWithCells.sortable"
@@ -98,7 +98,7 @@
               </PIcon>
             </PTag>
           </template>
-        </el-table-column>
+        </PTableColumn>
       </PTable>
       <template #controls>
         <HstCheckbox v-model="tableInputsWithCells.striped" title="Striped" />

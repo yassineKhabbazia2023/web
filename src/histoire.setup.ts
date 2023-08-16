@@ -1,11 +1,13 @@
 import { createRouter, createMemoryHistory } from 'vue-router'
-import ElementPlus, {
+import ElementPlus,
+{
   ElInput,
-  ElSwitch,
-  ElOptionGroup,
   ElOption,
+  ElOptionGroup,
   ElStep,
-  ElSteps
+  ElSteps,
+  ElSwitch,
+  ElTableColumn
 } from 'element-plus'
 import './assets/scss/histoire.scss'
 import './assets/scss/index.scss'
@@ -35,6 +37,7 @@ export const setupVue3 = defineSetupVue3(({ app }) => {
   app.component('PInput', ElInput)
   app.component('POptionGroup', ElOptionGroup)
   app.component('POption', ElOption)
+  app.component('PTableColumn', ElTableColumn)
   app.component('PSwitch', ElSwitch)
   app.component('PStepItem', ElStep)
   app.component('PSteps', ElSteps)
