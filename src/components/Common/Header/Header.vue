@@ -1,23 +1,32 @@
 <template>
-  <div class="header">
-    <div class="header__title">
-      {{ t('bank-mandates') }}
+  <div>
+    <div class="header">
+      <div class="header__title">
+        {{ t('bank-mandates') }}
+      </div>
+      <PButton
+        class="header__create-mandate-button"
+        type="primary"
+        size="default"
+        :plain="false"
+        :round="false"
+        :disabled="false"
+        :loading="false"
+        @click="drawerHandler"
+      >
+        <PIcon class="el-button__icon--left">
+          <PIAdd />
+        </PIcon>
+        {{ t('new-mandate') }}
+      </PButton>
     </div>
-
-    <PButton
-      class="header__create-mandate-button"
-      type="primary"
-      size="default"
-      :plain="false"
-      :round="false"
-      :disabled="false"
-      :loading="false"
-    >
-      <PIcon class="el-button__icon--left">
-        <PIAdd />
-      </PIcon>
-      {{ t('new-mandate') }}
-    </PButton>
+    <PDrawer
+      v-model="openDrawer"
+      :title="`${t('new-collection')}`"
+      :showPreviousStep="false"
+      size="50%"
+      direction="rtl"
+    />
   </div>
 </template>
 
@@ -25,17 +34,28 @@
     en-US:
         bank-mandates: 'Bank mandates'
         new-mandate: 'New mandate'
+        new-collection: 'New collection'
     fr-FR:
         bank-mandates: 'Mandats bancaires'
         new-mandate: 'Nouveau mandat'
+        new-collection: 'Nouvelle collecte'
 </i18n>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
+})
+
+const openDrawer = ref(false)
+const drawerHandler = () => {
+  openDrawer.value = true
+}
+defineExpose({
+  openDrawer
 })
 </script>
 

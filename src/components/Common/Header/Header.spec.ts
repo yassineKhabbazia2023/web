@@ -29,7 +29,9 @@ describe('Header.vue', () => {
   it('emits click event when button is clicked', async () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
 
+    expect(wrapper.vm.openDrawer).toBe(false)
     await wrapper.find('.header__create-mandate-button').trigger('click')
+    expect(wrapper.vm.openDrawer).toBe(true)
   })
 })
 
