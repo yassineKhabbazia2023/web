@@ -20,7 +20,9 @@
 @use './components/image';
 @use './components/menu';
 @use './components/notification';
+@use './components/pagination';
 @use './components/popper';
+@use './components/steps';
 @use './components/table';
 @use './components/tag';
 @use './components/tree';
@@ -30,7 +32,6 @@
 @use './form/input';
 @use './form/select';
 @use './form/switch';
-@use './components/pagination';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -102,6 +103,7 @@
 @use 'element-plus/theme-chalk/src/header.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
 @use 'element-plus/theme-chalk/src/input.scss' as *;
+@use 'element-plus/theme-chalk/src/input-number.scss' as *;
 @use 'element-plus/theme-chalk/src/main.scss' as *;
 @use 'element-plus/theme-chalk/src/message.scss' as *;
 @use 'element-plus/theme-chalk/src/menu.scss' as *;
@@ -109,16 +111,17 @@
 @use 'element-plus/theme-chalk/src/option.scss' as *;
 @use 'element-plus/theme-chalk/src/option-group.scss' as *;
 @use 'element-plus/theme-chalk/src/overlay.scss' as *;
+@use 'element-plus/theme-chalk/src/pagination.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
 @use 'element-plus/theme-chalk/src/row.scss' as *;
 @use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
 @use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
 @use 'element-plus/theme-chalk/src/select.scss' as *;
+@use 'element-plus/theme-chalk/src/step.scss' as *;
+@use 'element-plus/theme-chalk/src/steps.scss' as *;
 @use 'element-plus/theme-chalk/src/switch.scss' as *;
 @use 'element-plus/theme-chalk/src/table.scss' as *;
 @use 'element-plus/theme-chalk/src/tag.scss' as *;
 @use 'element-plus/theme-chalk/src/text.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
-
-@use 'element-plus/theme-chalk/src/pagination.scss' as *;
