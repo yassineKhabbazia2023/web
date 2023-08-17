@@ -20,12 +20,8 @@
         {{ t('new-mandate') }}
       </PButton>
     </div>
-    <PDrawer
+    <CreateMandateDrawer
       v-model="openDrawer"
-      :title="`${t('new-collection')}`"
-      :showPreviousStep="false"
-      size="50%"
-      direction="rtl"
     />
   </div>
 </template>
@@ -34,14 +30,13 @@
     en-US:
         bank-mandates: 'Bank mandates'
         new-mandate: 'New mandate'
-        new-collection: 'New collection'
     fr-FR:
         bank-mandates: 'Mandats bancaires'
         new-mandate: 'Nouveau mandat'
-        new-collection: 'Nouvelle collecte'
 </i18n>
 
 <script setup lang="ts">
+import CreateMandateDrawer from '@/components/CreateMandate/CreateMandateDrawer'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
