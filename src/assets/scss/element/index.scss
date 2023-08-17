@@ -27,6 +27,7 @@
 @use './components/tree';
 @use './form/checkbox';
 @use './form/datepicker';
+@use './form/form';
 @use './form/input';
 @use './form/select';
 @use './form/switch';
@@ -98,6 +99,7 @@
 @use 'element-plus/theme-chalk/src/divider.scss' as *;
 @use 'element-plus/theme-chalk/src/drawer.scss' as *;
 @use 'element-plus/theme-chalk/src/footer.scss' as *;
+@use 'element-plus/theme-chalk/src/form.scss' as *;
 @use 'element-plus/theme-chalk/src/header.scss' as *;
 @use 'element-plus/theme-chalk/src/image.scss' as *;
 @use 'element-plus/theme-chalk/src/input.scss' as *;

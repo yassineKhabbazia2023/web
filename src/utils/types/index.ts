@@ -1,3 +1,5 @@
+import type { FormInstance, FormRules } from 'element-plus'
+
 export interface VueComponent {
   template?: string
   name: string
@@ -11,3 +13,6 @@ export interface VueComponent {
 export interface StubbedComponents {
   [key: string]: VueComponent
 }
+
+export type PFormInstance = FormInstance
+export type PFormRules = FormRules

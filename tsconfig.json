@@ -36,6 +36,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@atoms/*": ["./src/atoms/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@utils/*": ["./src/utils/*"],
       "@tests/*": ["./tests/*"]
     }
   }

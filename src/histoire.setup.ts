@@ -1,6 +1,8 @@
 import { createRouter, createMemoryHistory } from 'vue-router'
 import ElementPlus,
 {
+  ElForm,
+  ElFormItem,
   ElInput,
   ElOption,
   ElOptionGroup,
@@ -34,6 +36,8 @@ export const setupVue3 = defineSetupVue3(({ app }) => {
   app.use(toastPlugin)
   app.use(i18n)
   app.use(router)
+  app.component('PForm', ElForm)
+  app.component('PFormItem', ElFormItem)
   app.component('PInput', ElInput)
   app.component('POptionGroup', ElOptionGroup)
   app.component('POption', ElOption)

@@ -1,6 +1,8 @@
 // base UI library
 import ElementPlus, {
   ElCol,
+  ElForm,
+  ElFormItem,
   ElInput,
   ElOption,
   ElOptionGroup,
@@ -77,6 +79,8 @@ export function install(app: any, { i18n }: any) {
   app.component('PDropdown', ElSelect)
   app.component('PFileAndFolderLineCheck', PFileAndFolderLineCheck)
   app.component('PFileLineNavigationItem', PFileLineNavigationItem)
+  app.component('PForm', ElForm)
+  app.component('PFormItem', ElFormItem)
   app.component('PHeader', PHeader)
   app.component('PHeaderTabs', PHeaderTabs)
   app.component('PIcon', PIcon)
