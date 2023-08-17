@@ -1,15 +1,15 @@
 // Import necessary modules
 import { mount } from '@vue/test-utils'
-import PCellDoubleText from './'
+import PDoubleText from './'
 import { PIFiletypePdf } from '../PIcon/components'
 import { describe, it, expect } from 'vitest'
 
 const content = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
-describe('tests for p-cell-double-text', () => {
+describe('tests for p-double-text', () => {
 
-  it('renders the cell with content', () => {
-    const wrapper = mount(PCellDoubleText, {
+  it('renders with content', () => {
+    const wrapper = mount(PDoubleText, {
       props: {
         icon: PIFiletypePdf,
         profile: 'FL',
@@ -22,17 +22,17 @@ describe('tests for p-cell-double-text', () => {
     })
 
     // Check if the cell renders correctly
-    const pCellDoubleTextElement = wrapper.findComponent({ name: 'PCellDoubleText' })
+    const PDoubleTextElement = wrapper.findComponent({ name: 'PDoubleText' })
 
-    expect(pCellDoubleTextElement.exists()).toBeTruthy()
+    expect(PDoubleTextElement.exists()).toBeTruthy()
 
     // Check if the content is rendered correctly in the cell
     const text = wrapper.text()
     expect(text.indexOf(content)).toBeGreaterThan(-1)
   })
 
-  it('renders the cell with an icon', () => {
-    const wrapper = mount(PCellDoubleText, {
+  it('renders with an icon', () => {
+    const wrapper = mount(PDoubleText, {
       props: {
         icon: PIFiletypePdf,
         profile: 'FL',

@@ -29,9 +29,9 @@ import PBottomMenu from '@/molecules/PBottomMenu'
 import PBreadcrumb from '@/molecules/PBreadcrumb'
 import PCarousel from '@/molecules/PCarousel'
 import PCarouselItem from '@/atoms/PCarouselItem'
-import PCellDoubleText from '@/atoms/PCellDoubleText'
-import PCellEntity from '@/atoms/PCellEntity'
-import PCellText from '@/atoms/PCellText'
+import PDoubleText from '@/atoms/PDoubleText'
+import PEntity from '@/atoms/PEntity'
+import PText from '@/atoms/PText'
 import PCheckbox from '@/atoms/PCheckbox'
 import PDatePicker from '@/atoms/PDatePicker'
 import PDialog from '@/atoms/PDialog'
@@ -68,9 +68,9 @@ export function install(app: any, { i18n }: any) {
   app.component('PBreadcrumb', PBreadcrumb)
   app.component('PCarousel', PCarousel)
   app.component('PCarouselItem', PCarouselItem)
-  app.component('PCellDoubleText', PCellDoubleText)
-  app.component('PCellEntity', PCellEntity)
-  app.component('PCellText', PCellText)
+  app.component('PDoubleText', PDoubleText)
+  app.component('PEntity', PEntity)
+  app.component('PText', PText)
   app.component('PCheckbox', PCheckbox)
   app.component('PCol', ElCol)
   app.component('PDatePicker', PDatePicker)

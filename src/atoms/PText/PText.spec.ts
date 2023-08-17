@@ -1,15 +1,15 @@
 // Import necessary modules
 import { mount } from '@vue/test-utils'
-import PCellText from './'
+import PText from './'
 import { PIPerson } from '../PIcon/components'
 import { describe, it, expect } from 'vitest'
 
 const content = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
-describe('tests for p-cell-text', () => {
+describe('tests for p-text', () => {
 
-  it('renders the cell with content', () => {
-    const wrapper = mount(PCellText, {
+  it('renders the content', () => {
+    const wrapper = mount(PText, {
       props: {
         content,
         type: 'primary',
@@ -19,17 +19,17 @@ describe('tests for p-cell-text', () => {
     })
 
     // Check if the cell renders correctly
-    const pCellTextElement = wrapper.findComponent({ name: 'PCellText' })
+    const PTextElement = wrapper.findComponent({ name: 'PText' })
 
-    expect(pCellTextElement.exists()).toBeTruthy()
+    expect(PTextElement.exists()).toBeTruthy()
 
     // Check if the content is rendered correctly in the cell
     const text = wrapper.text()
     expect(text.indexOf(content)).toBeGreaterThan(-1)
   })
 
-  it('renders the cell with an icon', () => {
-    const wrapper = mount(PCellText, {
+  it('renders with an icon', () => {
+    const wrapper = mount(PText, {
       props: {
         icon: PIPerson,
         content,

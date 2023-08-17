@@ -34,7 +34,7 @@
           :sortable="tableInputsWithCells.sortable"
           >
           <template #default="scope">
-            <PCellText
+            <PText
               :content="scope.row.text.content"
               :icon="iconResolver(scope.row.text.icon)"
               :bold="false"
@@ -42,7 +42,7 @@
               :disabled="false"
               :selected="false"
             >
-           </PCellText>
+           </PText>
           </template>
         </PTableColumn>
         <PTableColumn
@@ -51,13 +51,13 @@
           :sortable="tableInputsWithCells.sortable"
           >
           <template #default="scope">
-            <PCellEntity
+            <PEntity
               :content="scope.row.entity.name"
               :icon="iconResolver(scope.row.entity.icon)"
               type="primary"
               :selected="false"
             >
-            </PCellEntity>
+            </PEntity>
           </template>
         </PTableColumn>
         <PTableColumn
@@ -66,7 +66,7 @@
           :sortable="tableInputsWithCells.sortable"
           >
           <template #default="scope">
-            <PCellDoubleText
+            <PDoubleText
               :icon="iconResolver(scope.row.doubleText.icon)"
               :profile="scope.row.doubleText.profile"
               :title="scope.row.doubleText.title"
@@ -75,7 +75,7 @@
               :disabled="false"
               :selected="false"
             >
-            </PCellDoubleText>
+            </PDoubleText>
           </template>
         </PTableColumn>
         <PTableColumn

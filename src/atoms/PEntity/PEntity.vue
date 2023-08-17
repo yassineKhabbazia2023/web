@@ -1,10 +1,10 @@
 <template>
   <div
     :type="type"
-    :class="{ 'p-cell-entity': true, selected }"
+    :class="['p-entity', { selected }]"
     :selected="selected"
   >
-    <div class="p-cell-entity__avatar">
+    <div class="p-entity__avatar">
       <PAvatar
         :shape="iconShape"
         :size="iconSize"
@@ -14,7 +14,7 @@
         </PIcon>
       </PAvatar>
     </div>
-    <div :class="{ 'p-cell-entity__content': true, 'text-left': true }">
+    <div :class="['p-entity__content', 'text-left', { 'p-entity__content--bold': bold }]">
       {{ content }}
     </div>
   </div>
@@ -23,28 +23,30 @@
 <script setup lang="ts">
 import { type Component } from 'vue'
 
-interface PCellTextProps {
+interface PTextProps {
   content: string
   icon?: Component | string
   type: 'primary' | 'secondary'
   iconShape: string
   iconColor: string
   iconSize: string
+  bold?: boolean
   selected: boolean
 }
 
-withDefaults(defineProps<PCellTextProps>(), {
+withDefaults(defineProps<PTextProps>(), {
   type: 'primary',
   icon: '',
   iconShape: 'circle',
   iconColor: 'persian-gradient',
   iconSize: 'xsmall',
+  bold: false,
   selected: false
 })
 </script>
 
 <style lang="scss" scoped>
-.p-cell-entity {
+.p-entity {
   display: flex;
   align-items: center;
   min-height: 40px;
@@ -73,10 +75,13 @@ withDefaults(defineProps<PCellTextProps>(), {
     overflow: hidden;
     white-space: nowrap;
     max-width: 300px;
-    font-family: Open Sans;
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 0em;
+
+    &--bold {
+      font-weight: 700;
+    }
   }
 }
 </style>

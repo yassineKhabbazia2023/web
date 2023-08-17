@@ -1,10 +1,10 @@
 <template>
     <div
       :type="type"
-      :class="{ 'p-cell-double-text': true, disabled, selected }"
+      :class="{ 'p-double-text': true, disabled, selected }"
       :disabled="disabled"
       :selected="selected">
-      <div class="p-cell-double-text__icon" v-if="icon !== undefined">
+      <div class="p-double-text__icon" v-if="icon">
         <PIcon :size="16">
           <component :is="icon" />
         </PIcon>
@@ -15,16 +15,16 @@
           {{ profile }}
         </PAvatar>
       </div>
-      <div class="p-cell-double-text__content">
+      <div :class="{ 'p-double-text__content': true, 'p-double-text--bold': bold }">
         <div
-          :class="{ 'p-cell-double-text__content-title': true, disabled, selected}"
+          :class="{ 'p-double-text__content-title': true, disabled, selected}"
           :disabled="disabled"
           :selected="selected"
         >
           {{ title }}
         </div>
         <div
-          :class="{ 'p-cell-double-text__content-description': true, disabled, selected }"
+          :class="{ 'p-double-text__content-description': true, disabled, selected }"
           :disabled="disabled"
           :selected="selected"
         >
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { type Component } from 'vue'
 
-interface pCellDoubleTextProps {
+interface PDoubleTextProps {
   icon?: Component | string
   profile: string
   title: string
@@ -48,17 +48,19 @@ interface pCellDoubleTextProps {
   type: 'primary' | 'secondary'
   selected: boolean
   disabled: boolean
+  bold?: boolean
 }
 
-withDefaults(defineProps<pCellDoubleTextProps>(), {
+withDefaults(defineProps<PDoubleTextProps>(), {
   icon: undefined,
   iconShape: 'circle',
   iconColor: 'persian-gradient',
+  bold: false,
   iconSize: 'small'
 })
 </script>
 <style lang="scss" scoped>
-.p-cell-double-text {
+.p-double-text {
   display: flex;
   align-items: center;
   height: 65px;
@@ -81,7 +83,7 @@ withDefaults(defineProps<pCellDoubleTextProps>(), {
 
   &[selected='true'] {
     background-color: var(--el-color-persian-200);
-    color:  var(--el-text-color-primary);
+    color: var(--el-text-color-primary);
   }
 
   &__icon {
@@ -101,30 +103,34 @@ withDefaults(defineProps<pCellDoubleTextProps>(), {
     max-width: 300px;
 
     &-title {
-        font-size: 14px;
-        line-height: 16.8px;
-        color: var(--el-color-neutral-gray-900);
+      font-size: 14px;
+      line-height: 16.8px;
+      color: var(--el-color-neutral-gray-900);
 
-        &[disabled='true']{
-            color: var(--el-color-neutral-gray-300);
-        }
-        &[selected='true']{
-            background-color: var(--el-color-persian-200);
-        }
+      &[disabled='true']{
+          color: var(--el-color-neutral-gray-300);
+      }
+      &[selected='true']{
+          background-color: var(--el-color-persian-200);
+      }
     }
 
     &-description {
-        margin-top: 10px;
-        font-size: 12px;
-        line-height: 14.4px;
-        color: var(--el-color-neutral-gray-500);
+      margin-top: 10px;
+      font-size: 12px;
+      line-height: 14.4px;
+      color: var(--el-color-neutral-gray-500);
 
-        &[disabled='true']{
-            color: var(--el-color-neutral-gray-300);
-        }
-        &[selected='true']{
-            background-color: var(--el-color-persian-200);
-        }
+      &[disabled='true']{
+          color: var(--el-color-neutral-gray-300);
+      }
+      &[selected='true']{
+          background-color: var(--el-color-persian-200);
+      }
+    }
+
+    &--bold {
+      font-weight: 700;
     }
   }
 }

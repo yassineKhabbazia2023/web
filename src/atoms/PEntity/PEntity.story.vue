@@ -1,38 +1,38 @@
 <template>
   <Story
-    title="2. Atoms/CellEntity"
+    title="2. Atoms/Entity"
     icon="fluent:button-16-regular"
     :layout="{ type: 'grid', width: '300px' }"
     >
     <Variant title="Basic Usage" :source="source">
-      <PCellEntity
-        :content="pCellTextBasicData.content"
-        :type="pCellTextBasicData.type"
-        :selected="pCellTextBasicData.selected"
+      <PEntity
+        :content="PTextBasicData.content"
+        :type="PTextBasicData.type"
+        :selected="PTextBasicData.selected"
         :icon="PIPulse"
       >
-      </PCellEntity>
+      </PEntity>
       <template #controls>
         <hstSelect
-          v-model="pCellTextBasicData.type"
+          v-model="PTextBasicData.type"
           title="Type"
           :options="typeOptions"
         />
-        <HstText v-model="pCellTextBasicData.content" title="Content" />
-        <HstCheckbox v-model="pCellTextBasicData.selected" title="Selected" />
+        <HstText v-model="PTextBasicData.content" title="Content" />
+        <HstCheckbox v-model="PTextBasicData.selected" title="Selected" />
       </template>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
-import PCellEntity from '.'
+import PEntity from '.'
 import { reactive } from 'vue'
 import { PIPulse } from '../PIcon/components'
 
 const type = 'primary' as 'primary' | 'secondary'
 
-const pCellTextBasicData = reactive({
+const PTextBasicData = reactive({
   content: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
   type,
   selected: false
@@ -41,9 +41,9 @@ const pCellTextBasicData = reactive({
 const typeOptions = ['primary', 'secondary']
 
 const source = `
-import { PCellEntity } from '@kpmg/styleguide'
+import { PEntity } from '@kpmg/styleguide'
   
-<PCellEntity
+<PEntity
   :content="'Lorem ipsum dolor sit amet, consectetur adpiscipiline'"
   :type="'primary'"
   :selected:= "false"

@@ -1,41 +1,41 @@
 <template>
   <Story
-  title="2. Atoms/CellText"
+  title="2. Atoms/Text"
   icon="fluent:button-16-regular"
   :layout="{ type: 'grid', width: '300px' }">
-    <Variant title="PCellText" :source="source">
-      <PCellText
-         :content="pCellTextBasicData.content"
+    <Variant title="PText" :source="source">
+      <PText
+         :content="PTextBasicData.content"
          :icon="PIPerson"
-         :bold="pCellTextBasicData.bold"
-         :type="pCellTextBasicData.type"
-         :disabled="pCellTextBasicData.disabled"
-         :selected="pCellTextBasicData.selected"
+         :bold="PTextBasicData.bold"
+         :type="PTextBasicData.type"
+         :disabled="PTextBasicData.disabled"
+         :selected="PTextBasicData.selected"
          >
-        </PCellText>
+        </PText>
       <template #controls>
         <hstSelect
-          v-model="pCellTextBasicData.type"
+          v-model="PTextBasicData.type"
           title="Type"
           :options="typeOptions"
         />
-        <HstText v-model="pCellTextBasicData.content" title="Content"/>
-        <HstCheckbox v-model="pCellTextBasicData.bold" title="Bold"/>
-        <HstCheckbox v-model="pCellTextBasicData.disabled" title="Disabled"/>
-        <HstCheckbox v-model="pCellTextBasicData.selected" title="Selected"/>
+        <HstText v-model="PTextBasicData.content" title="Content"/>
+        <HstCheckbox v-model="PTextBasicData.bold" title="Bold"/>
+        <HstCheckbox v-model="PTextBasicData.disabled" title="Disabled"/>
+        <HstCheckbox v-model="PTextBasicData.selected" title="Selected"/>
       </template>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
-import PCellText from './'
+import PText from './'
 import { reactive } from 'vue'
 import { PIPerson } from '../PIcon/components'
 
 const type = 'primary' as 'primary' | 'secondary' | 'drag'
 
-const pCellTextBasicData = reactive({
+const PTextBasicData = reactive({
   content: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
   icon: PIPerson,
   type,

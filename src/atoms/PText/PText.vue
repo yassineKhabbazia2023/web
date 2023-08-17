@@ -1,15 +1,15 @@
 <template>
   <div
     :type="type"
-    :class="{ 'p-cell-text': true, 'padding--4': true, disabled, selected }"
+    :class="['p-text', 'padding--4', { disabled, selected }]"
     :disabled="disabled"
     :selected="selected">
-    <div class="p-cell-text__icon" v-if="icon !== undefined">
+    <div class="p-text__icon" v-if="icon">
       <PIcon :size="16">
         <component :is="icon" />
       </PIcon>
     </div>
-    <div :class="{ 'p-cell-text__content': true, 'p-cell-text__content--bold': bold }">
+    <div :class="['p-text__content', { 'p-text__content--bold': bold }]">
       {{ content }}
     </div>
   </div>
@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { type Component } from 'vue'
 
-interface PCellTextProps {
+interface PTextProps {
   icon?: Component | string
   content: string
   bold?: boolean
@@ -27,14 +27,14 @@ interface PCellTextProps {
   disabled: boolean
 }
 
-withDefaults(defineProps<PCellTextProps>(), {
+withDefaults(defineProps<PTextProps>(), {
   icon: undefined,
   bold: false,
   background: false
 })
 </script>
 <style lang="scss" scoped>
-.p-cell-text {
+.p-text {
   display: flex;
   align-items: center;
   min-height: 40px;
