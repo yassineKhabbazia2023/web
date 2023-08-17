@@ -10,12 +10,7 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/develop'
-  - repository: CICD
-    name: 'Plateforme Technologique/CICD'
-    type: git
-    ref: 'refs/heads/Release/v5.3'
-
+    ref: 'refs/heads/Release/v1.0'
 
 extends:
   template: pipelines/templates/platform.front.package.yaml@Pulse
