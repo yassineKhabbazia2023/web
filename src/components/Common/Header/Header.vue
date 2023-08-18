@@ -28,10 +28,10 @@
 
 <i18n lang="yaml">
     en-US:
-        bank-mandates: 'Bank mandates'
+        bank-mandates: 'Banking flows'
         new-mandate: 'New mandate'
     fr-FR:
-        bank-mandates: 'Mandats bancaires'
+        bank-mandates: 'Flux bancaires'
         new-mandate: 'Nouveau mandat'
 </i18n>
 

@@ -22,7 +22,7 @@ describe('Header.vue', () => {
   it('renders translations correctly', () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
 
-    expect(wrapper.find('.header__title').text()).toBe('Bank mandates')
+    expect(wrapper.find('.header__title').text()).toBe('Banking flows')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
