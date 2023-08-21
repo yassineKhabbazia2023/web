@@ -1,41 +1,56 @@
 <template>
-  <div class="header">
-    <div class="header__title">
-      {{ t('bank-mandates') }}
+  <div>
+    <div class="header">
+      <div class="header__title">
+        {{ t('bank-mandates') }}
+      </div>
+      <PButton
+        class="header__create-mandate-button"
+        type="primary"
+        size="default"
+        :plain="false"
+        :round="false"
+        :disabled="false"
+        :loading="false"
+        @click="drawerHandler"
+      >
+        <PIcon class="el-button__icon--left">
+          <PIAdd />
+        </PIcon>
+        {{ t('new-mandate') }}
+      </PButton>
     </div>
-
-    <PButton
-      class="header__create-mandate-button"
-      type="primary"
-      size="default"
-      :plain="false"
-      :round="false"
-      :disabled="false"
-      :loading="false"
-    >
-      <PIcon class="el-button__icon--left">
-        <PIAdd />
-      </PIcon>
-      {{ t('new-mandate') }}
-    </PButton>
+    <CreateMandateDrawer
+      v-model="openDrawer"
+    />
   </div>
 </template>
 
 <i18n lang="yaml">
     en-US:
-        bank-mandates: 'Bank mandates'
+        bank-mandates: 'Banking flows'
         new-mandate: 'New mandate'
     fr-FR:
-        bank-mandates: 'Mandats bancaires'
+        bank-mandates: 'Flux bancaires'
         new-mandate: 'Nouveau mandat'
 </i18n>
 
 <script setup lang="ts">
+import CreateMandateDrawer from '@/components/CreateMandate/CreateMandateDrawer'
 import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
+})
+
+const openDrawer = ref(false)
+const drawerHandler = () => {
+  openDrawer.value = true
+}
+defineExpose({
+  openDrawer
 })
 </script>
 

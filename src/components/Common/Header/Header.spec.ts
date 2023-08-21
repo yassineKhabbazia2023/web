@@ -22,14 +22,16 @@ describe('Header.vue', () => {
   it('renders translations correctly', () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
 
-    expect(wrapper.find('.header__title').text()).toBe('Bank mandates')
+    expect(wrapper.find('.header__title').text()).toBe('Banking flows')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
   it('emits click event when button is clicked', async () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
 
+    expect(wrapper.vm.openDrawer).toBe(false)
     await wrapper.find('.header__create-mandate-button').trigger('click')
+    expect(wrapper.vm.openDrawer).toBe(true)
   })
 })
 
