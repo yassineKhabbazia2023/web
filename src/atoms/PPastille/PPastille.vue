@@ -4,6 +4,8 @@
     :class="{
       'p-pastille--default': kind === 'default',
       'p-pastille--warning': kind === 'warning',
+      'p-pastille--persian': kind === 'persian',
+      'p-pastille--small': size === 'small',
       'p-pastille--disabled': disabled,
     }"
     round
@@ -21,13 +23,15 @@ import { iconResolver } from '@/utils/iconResolver'
 import PIcon from '@/atoms/PIcon'
 
 interface PPastilleProps {
-  kind?: 'default' | 'warning';
+  kind?: 'default' | 'warning' | 'persian';
+  size?: 'default' | 'small';
   disabled?: boolean;
   iconName?: string;
 }
 
 const props = withDefaults(defineProps<PPastilleProps>(), {
   kind: 'default',
+  size: 'default',
   disabled: false,
   iconName: ''
 })

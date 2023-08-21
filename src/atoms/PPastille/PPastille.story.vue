@@ -23,6 +23,18 @@
         1
       </PPastille>
     </Variant>
+
+    <Variant title="Persian usage">
+      <PPastille kind="persian">
+        1
+      </PPastille>
+    </Variant>
+
+    <Variant title="Small usage">
+      <PPastille size="small">
+        1
+      </PPastille>
+    </Variant>
   </Story>
 </template>
 

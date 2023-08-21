@@ -11,7 +11,9 @@ import ElementPlus, {
   ElStep,
   ElSteps,
   ElSwitch,
-  ElTableColumn
+  ElTableColumn,
+  ElTabPane,
+  ElTabs
 } from 'element-plus'
 
 // locales
@@ -98,6 +100,8 @@ export function install(app: any, { i18n }: any) {
   app.component('PSwitch', ElSwitch)
   app.component('PTable', PTable)
   app.component('PTableColumn', ElTableColumn)
+  app.component('PTabPane', ElTabPane)
+  app.component('PTabs', ElTabs)
   app.component('PTag', PTag)
   app.component('PToolbox', PToolbox)
   app.component('PToolboxItem', PToolboxItem)

@@ -23,6 +23,7 @@
 @use './components/popper';
 @use './components/steps';
 @use './components/table';
+@use './components/tabs';
 @use './components/tag';
 @use './components/tree';
 @use './form/checkbox';
@@ -128,6 +129,7 @@
 @use 'element-plus/theme-chalk/src/steps.scss' as *;
 @use 'element-plus/theme-chalk/src/switch.scss' as *;
 @use 'element-plus/theme-chalk/src/table.scss' as *;
+@use 'element-plus/theme-chalk/src/tabs.scss' as *;
 @use 'element-plus/theme-chalk/src/tag.scss' as *;
 @use 'element-plus/theme-chalk/src/text.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;

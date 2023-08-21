@@ -1,4 +1,66 @@
-// css3 var in packages/theme-chalk/src/tabs.scss
-$tabs: (
-  'header-height': 40px,
-);
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+.el-tabs {
+  $self: &;
+
+  &:not(#{$self}--card) {
+    > #{$self}__header {
+      --el-tabs-header-height: 45px;
+      
+      #{$self}__nav-wrap {
+        &::after {
+         background: getCssVar('color', 'neutral-gray-100'); 
+        }
+      } 
+
+      #{$self}__active-bar {
+        padding: 0 16px;
+        box-sizing: content-box;
+        margin-left: -16px;
+      }
+
+      #{$self}__item {
+        padding: 0 16px;
+        font-weight: 400;
+
+        &.is-active {
+          font-weight: 600;
+        }
+
+        &:nth-child(2) {
+          padding-left: 16px;
+        }
+      }
+    }
+  }
+
+  &#{$self}--card {
+    > #{$self}__header {
+      border-color: getCssVar('color', 'neutral-gray-100');
+
+      #{$self}__nav {
+        border-radius: 8px 8px 0 0;
+        border-color: getCssVar('color', 'neutral-gray-100');
+      }
+
+      #{$self}__item {
+        padding: 0 16px;
+        margin-bottom: -1px;
+        border-color: getCssVar('color', 'neutral-gray-100');
+        font-weight: 400;
+
+        &.is-active {
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  #{$self}__item:not(.is-active) {
+    .p-pastille.p-pastille--persian {
+      background: getCssVar('color', 'neutral-gray-50');
+      border: getCssVar('color', 'neutral-gray-50');
+      color: getCssVar('color', 'neutral-gray-500');
+    }
+  }
+}

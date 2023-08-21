@@ -9,6 +9,8 @@ import ElementPlus,
   ElStep,
   ElSteps,
   ElSwitch,
+  ElTabPane,
+  ElTabs,
   ElTableColumn
 } from 'element-plus'
 import './assets/scss/histoire.scss'
@@ -41,8 +43,10 @@ export const setupVue3 = defineSetupVue3(({ app }) => {
   app.component('PInput', ElInput)
   app.component('POptionGroup', ElOptionGroup)
   app.component('POption', ElOption)
-  app.component('PTableColumn', ElTableColumn)
-  app.component('PSwitch', ElSwitch)
   app.component('PStepItem', ElStep)
   app.component('PSteps', ElSteps)
+  app.component('PSwitch', ElSwitch)
+  app.component('PTableColumn', ElTableColumn)
+  app.component('PTabPane', ElTabPane)
+  app.component('PTabs', ElTabs)
 })

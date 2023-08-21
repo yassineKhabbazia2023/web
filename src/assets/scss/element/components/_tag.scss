@@ -254,11 +254,27 @@ $tag-padding: (
 
   &--disabled {
     background: var(--el-color-neutral-gray-100);
+    border: var(--el-color-neutral-gray-100);
     color: var(--el-color-neutral-gray-500);
   }
 
   &--warning {
     background: var(--el-color-functionnal-red);
+    border: var(--el-color-functionnal-red);
     color: var(--el-color-base-white);
+  }
+
+  &--persian {
+    background: var(--el-color-persian-500);
+    border: var(--el-color-persian-500);
+    color: var(--el-color-base-white);
+  }
+
+  &--small {
+    min-width: 17px;
+    height: 17px;
+    padding: 2px 4px;
+    font-size: 11px;
+    font-weight: 600;
   }
 }
