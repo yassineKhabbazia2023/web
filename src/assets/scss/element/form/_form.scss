@@ -1,3 +1,28 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+// css3 var in packages/theme-chalk/src/form.scss
+$form: (
+  'label-font-size': 1.2rem,
+);
+
+$form-item-label-top-line-height: (
+  'large': 120%,
+  'default': 120%,
+  'small': 120%,
+);
+
+$form-item-label-top-margin-bottom: (
+  'large': 8px,
+  'default': 8px,
+  'small': 8px,
+);
+
+$form-item-error-padding-top: (
+  'large': 8px,
+  'default': 8px,
+  'small': 8px,
+);
+
 .el-form-item {
   &.is-error.is-required {
     margin-bottom: 36px;
@@ -5,10 +30,13 @@
   &.is-success.is-required .el-input__wrapper {
     box-shadow: 0 0 0 1px var(--el-color-success) inset;
   }
+
+  .el-form-item__label {
+    font-weight: 600;
+  }
 }
 
 .el-form-item__content .el-form-item__error {
-  padding-top: 8px;
   display: flex;
 
   &::before {

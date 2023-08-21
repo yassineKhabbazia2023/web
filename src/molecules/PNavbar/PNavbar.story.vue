@@ -39,6 +39,7 @@
 
 <script lang="ts" setup>
 import { reactive, computed } from 'vue'
+import { logEvent } from 'histoire/client'
 import PNavbar from './'
 
 const entities = [
@@ -59,7 +60,7 @@ const navbarSource = computed(() => {
 })
 
 const handleClickEntity = (idAccount: string) => {
-  console.log('handleClickEntity', idAccount)
+  logEvent('handleClickEntity', idAccount)
 }
 </script>
 

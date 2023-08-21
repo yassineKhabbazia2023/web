@@ -39,6 +39,8 @@
 import PTree from './'
 import PButton from '@/atoms/PButton'
 import PToolbox from '@/molecules/PToolbox'
+import { logEvent } from 'histoire/client'
+
 const toolboxItems = [
   {
     iconName: 'PITrash',
@@ -68,7 +70,7 @@ interface Tree {
 }
 
 const handlePTreeNodeClicked = (node: any) => {
-  console.log(node)
+  logEvent('click', node)
 }
 const dataKeys = {
   label: 'label',

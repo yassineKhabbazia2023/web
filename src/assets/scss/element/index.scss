@@ -75,7 +75,14 @@
   $drawer: drawer.$drawer,
   $dialog: dialog.$dialog,
   $overlay-color: colors.$overlay-color,
-  $pagination: pagination.$pagination
+  $pagination: pagination.$pagination,
+  $form: form.$form
+);
+
+@forward 'element-plus/theme-chalk/src/form.scss' with (
+  $form-item-error-padding-top: form.$form-item-error-padding-top,
+  $form-item-label-top-line-height: form.$form-item-label-top-line-height,
+  $form-item-label-top-margin-bottom: form.$form-item-label-top-margin-bottom
 );
 
 // @use Call after forward, files who need files from element plus
