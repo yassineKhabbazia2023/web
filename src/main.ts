@@ -39,6 +39,7 @@ import PDatePicker from '@/atoms/PDatePicker'
 import PDialog from '@/atoms/PDialog'
 import PDrawer from '@/molecules/PDrawer'
 import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
+import PFileCard from '@/molecules/PFileCard'
 import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
 import PHeader from '@/molecules/PHeader'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
@@ -80,6 +81,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PDrawer', PDrawer)
   app.component('PDropdown', ElSelect)
   app.component('PFileAndFolderLineCheck', PFileAndFolderLineCheck)
+  app.component('PFileCard', PFileCard)
   app.component('PFileLineNavigationItem', PFileLineNavigationItem)
   app.component('PForm', ElForm)
   app.component('PFormItem', ElFormItem)
