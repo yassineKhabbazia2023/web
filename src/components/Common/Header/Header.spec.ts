@@ -1,7 +1,12 @@
 import { mount } from '@vue/test-utils'
 import Header from '.'
 import { createI18n } from 'vue-i18n'
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, vi } from 'vitest'
+
+vi.mock('@kpmg/styleguide', () => {
+  const PIAdd = vi.fn()
+  return { PIAdd }
+})
 
 const i18n = createI18n({
   legacy: false,
@@ -18,7 +23,7 @@ const i18n = createI18n({
   }
 })
 
-describe('Header.vue', () => {
+describe('header.vue', () => {
   it('renders translations correctly', () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
 
@@ -29,9 +34,9 @@ describe('Header.vue', () => {
   it('emits click event when button is clicked', async () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
 
-    expect(wrapper.vm.openDrawer).toBe(false)
+    expect(wrapper.vm.openDrawer).toBeFalsy()
     await wrapper.find('.header__create-mandate-button').trigger('click')
-    expect(wrapper.vm.openDrawer).toBe(true)
+    expect(wrapper.vm.openDrawer).toBeTruthy()
   })
 })
 

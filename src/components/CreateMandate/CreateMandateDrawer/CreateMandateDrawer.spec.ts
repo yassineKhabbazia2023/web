@@ -3,6 +3,11 @@ import CreateMandateDrawer from '.'
 import { createI18n } from 'vue-i18n'
 import { expect, describe, it, vi } from 'vitest'
 
+vi.mock('@kpmg/styleguide', () => {
+  const PIArrowRight = vi.fn()
+  return { PIArrowRight }
+})
+
 const i18n = createI18n({
   legacy: false,
   locale: 'en-US',
@@ -25,11 +30,11 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
     }
   })
 
-describe('CreateMandateDrawer.vue', () => {
+describe('createMandateDrawer.vue', () => {
   it('renders the component when modelValue is true', async () => {
     const wrapper = createWrapper({ modelValue: true })
     await vi.dynamicImportSettled()
-    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.exists()).toBeTruthy()
   })
 
   it('reflects changes in drawerModel when modelValue prop is updated', async () => {
@@ -38,9 +43,9 @@ describe('CreateMandateDrawer.vue', () => {
     // Use a helper function to get the drawerModel value
     const getDrawerModel = () => wrapper.props('modelValue')
 
-    expect(getDrawerModel()).toBe(false)
+    expect(getDrawerModel()).toBeFalsy()
     await wrapper.setProps({ modelValue: true })
-    expect(getDrawerModel()).toBe(true)
+    expect(getDrawerModel()).toBeTruthy()
   })
 
   it('emits update:modelValue event when drawerModel value changes', async () => {
@@ -52,6 +57,6 @@ describe('CreateMandateDrawer.vue', () => {
     await wrapper.vm.$nextTick()
 
     expect(wrapper.emitted()['update:modelValue']).toBeTruthy()
-    expect(wrapper.emitted()['update:modelValue'][0]).toEqual([true])
+    expect(wrapper.emitted()['update:modelValue'][0]).toStrictEqual([true])
   })
 })

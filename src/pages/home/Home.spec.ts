@@ -1,7 +1,12 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import wrapperFactory from 'tests/utils/wrapperFactory'
 import Header from '@/components/Common/Header'
 import Home from './'
+
+vi.mock('@kpmg/styleguide', () => {
+  const PIAdd = vi.fn()
+  return { PIAdd }
+})
 
 const createWrapper = (props: any) =>
   wrapperFactory(Home, {
@@ -11,10 +16,10 @@ const createWrapper = (props: any) =>
     }
   })
 
-describe('ComponentName.vue', () => {
+describe('componentName.vue', () => {
   it('renders Header component', () => {
     const wrapper = createWrapper({})
 
-    expect(wrapper.findComponent(Header).exists()).toBe(true)
+    expect(wrapper.findComponent(Header).exists()).toBeTruthy()
   })
 })

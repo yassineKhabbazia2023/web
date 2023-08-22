@@ -39,6 +39,7 @@
 import CreateMandateDrawer from '@/components/CreateMandate/CreateMandateDrawer'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
+import { PIAdd } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
