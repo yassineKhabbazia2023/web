@@ -55,6 +55,7 @@ import PToolbox from '@/molecules/PToolbox'
 import PToolboxItem from '@/atoms/PToolboxItem'
 import PTooltip from '@/atoms/PTooltip'
 import PTree from '@/organisms/PTree'
+import PPopover from '@/molecules/PPopover'
 
 import toastPlugin from '@/molecules/PToaster'
 
@@ -109,6 +110,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PToolboxItem', PToolboxItem)
   app.component('PTooltip', PTooltip)
   app.component('PTree', PTree)
+  app.component('PPopover', PPopover)
 }
 
 const plugin = {
