@@ -38,13 +38,8 @@
 import PPopover from './'
 import { reactive } from 'vue'
 import placementOptions from '@/constants/placementOptions'
+import triggerOptions from '@/constants/triggerOptions'
 import PButton from '@/atoms/PButton'
-
-const triggerOptions = [
-  'hover',
-  'focus',
-  'click'
-]
 
 const popoverBasicData = reactive({
   placement: placementOptions[0].value,
