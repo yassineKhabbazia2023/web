@@ -27,9 +27,6 @@ $form-item-error-padding-top: (
   &.is-error.is-required {
     margin-bottom: 36px;
   }
-  &.is-success.is-required .el-input__wrapper {
-    box-shadow: 0 0 0 1px var(--el-color-success) inset;
-  }
 
   .el-form-item__label {
     font-weight: 600;
