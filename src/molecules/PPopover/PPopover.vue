@@ -16,12 +16,13 @@
 
 <script setup lang="ts">
 import type { PlacementOptions } from '@/constants/placementOptions'
+import type { TriggerOptionsType } from '@/constants/triggerOptions'
 import { ElPopover } from 'element-plus'
 interface PPopoverProps {
   placement?: PlacementOptions
   disabled?: boolean,
   showArrow?: boolean,
-  trigger: string,
+  trigger: TriggerOptionsType,
   title: string
 }
 
