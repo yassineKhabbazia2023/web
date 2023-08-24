@@ -1,7 +1,7 @@
 $popover: (
   'font-size': 12px,
   'title-font-size': getCssVar('font-size-base'),
-  'title-text-color': getCssVar('text-color-primary'),
+  'title-text-color': getCssVar('color-neutral-gray-900'),
 );
 
 .el-popover {
