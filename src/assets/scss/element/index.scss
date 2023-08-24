@@ -21,6 +21,7 @@
 @use './components/notification';
 @use './components/pagination';
 @use './components/popper';
+@use './components/popover';
 @use './components/steps';
 @use './components/table';
 @use './components/tabs';
@@ -120,6 +121,7 @@
 @use 'element-plus/theme-chalk/src/option-group.scss' as *;
 @use 'element-plus/theme-chalk/src/overlay.scss' as *;
 @use 'element-plus/theme-chalk/src/pagination.scss' as *;
+@use 'element-plus/theme-chalk/src/popover.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
 @use 'element-plus/theme-chalk/src/row.scss' as *;
 @use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
@@ -134,4 +136,3 @@
 @use 'element-plus/theme-chalk/src/text.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
-@use 'element-plus/theme-chalk/src/popover.scss' as *;

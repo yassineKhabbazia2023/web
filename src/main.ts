@@ -97,6 +97,7 @@ export function install(app: any, { i18n }: any) {
   app.component('POption', ElOption)
   app.component('PPagination', PPagination)
   app.component('PPastille', PPastille)
+  app.component('PPopover', PPopover)
   app.component('PStepItem', ElStep)
   app.component('PSteps', ElSteps)
   app.component('PRow', ElRow)
@@ -110,7 +111,6 @@ export function install(app: any, { i18n }: any) {
   app.component('PToolboxItem', PToolboxItem)
   app.component('PTooltip', PTooltip)
   app.component('PTree', PTree)
-  app.component('PPopover', PPopover)
 }
 
 const plugin = {

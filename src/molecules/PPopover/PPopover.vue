@@ -1,5 +1,6 @@
 <template>
   <el-popover
+    popperClass="el-popper-popover"
     :placement="placement"
     :disabled="disabled"
     :showArrow="showArrow"
@@ -20,9 +21,9 @@ import type { TriggerOptionsType } from '@/constants/triggerOptions'
 import { ElPopover } from 'element-plus'
 interface PPopoverProps {
   placement?: PlacementOptions
-  disabled?: boolean,
-  showArrow?: boolean,
-  trigger: TriggerOptionsType,
+  disabled?: boolean
+  showArrow?: boolean
+  trigger: TriggerOptionsType
   title: string
 }
 
