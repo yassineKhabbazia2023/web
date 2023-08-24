@@ -25,6 +25,7 @@ export const unmount = vueLifecycles.unmount
 routes.value.push({
   path: '/ged',
   name: 'ged',
-  component: () => import('@/pages/Ged')
+  // eslint-disable-next-line import/extensions
+  component: () => import('@/App.vue')
 } as RouteRecordRaw)
 
