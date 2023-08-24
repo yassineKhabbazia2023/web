@@ -17,13 +17,13 @@
 
   &[data-popper-placement^=bottom] {
     #{$self}__arrow::before {
-      box-shadow: var(--el-color-black) -1px -1px 3px -2px;
+      box-shadow: var(--el-color-black) -1px -1px 2px -2px;
     }
   }
 
   &[data-popper-placement^=right] {
     #{$self}__arrow::before {
-      box-shadow: var(--el-color-black) -2px 2px 3px -3px;
+      box-shadow: var(--el-color-black) -2px 2px 2px -3px;
     }
   }
 

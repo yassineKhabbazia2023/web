@@ -78,7 +78,8 @@
   $dialog: dialog.$dialog,
   $overlay-color: colors.$overlay-color,
   $pagination: pagination.$pagination,
-  $form: form.$form
+  $form: form.$form,
+  $popover: popover.$popover
 );
 
 @forward 'element-plus/theme-chalk/src/form.scss' with (

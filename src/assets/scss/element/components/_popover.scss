@@ -1,17 +1,20 @@
+$popover: (
+  'font-size': 12px,
+  'title-font-size': getCssVar('font-size-base'),
+  'title-text-color': getCssVar('text-color-primary'),
+);
+
 .el-popover {
   &.el-popper-popover {
     text-align: unset !important;
-    box-shadow: var(--el-overlay-color) 0px 0px 10px -4px !important;
+    box-shadow: getCssVar('shadow--4') !important;
 
     .el-popover__title {
       font-weight: 600;
-      font-size: var(--el-font-size-base);
-      color: var(--el-menu-text-color);
     }
 
     .el-popover__content {
       color: var(--el-color-neutral-gray-500);
-      font-size: var(--el-font-size-small);
     }
   }
 }
