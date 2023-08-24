@@ -8,7 +8,9 @@
     :title="title"
     :width="212"
   >
-    <slot name="content" />
+    <div class="el-popover__content">
+      <slot name="content" />
+    </div>
     <template #reference>
       <slot />
     </template>
