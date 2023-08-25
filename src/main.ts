@@ -49,6 +49,7 @@ import PLineChart from '@/atoms/PLineChart'
 import PNavbar from '@/molecules/PNavbar'
 import PPagination from '@/atoms/PPagination'
 import PPastille from '@/atoms/PPastille'
+import PPopover from '@/molecules/PPopover'
 import PTable from '@/atoms/PTable'
 import PTag from '@/atoms/PTag'
 import PToolbox from '@/molecules/PToolbox'
@@ -96,6 +97,7 @@ export function install(app: any, { i18n }: any) {
   app.component('POption', ElOption)
   app.component('PPagination', PPagination)
   app.component('PPastille', PPastille)
+  app.component('PPopover', PPopover)
   app.component('PStepItem', ElStep)
   app.component('PSteps', ElSteps)
   app.component('PRow', ElRow)

@@ -1,15 +1,22 @@
-// css3 var in packages/theme-chalk/src/popover.scss
-$popover: () !default;
-$popover: map.merge(
-  (
-    'bg-color': getCssVar('bg-color', 'overlay'),
-    'font-size': getCssVar('font-size-base'),
-    'border-color': getCssVar('border-color-lighter'),
-    'padding': 12px,
-    'padding-large': 18px 20px,
-    'title-font-size': 16px,
-    'title-text-color': getCssVar('text-color-primary'),
-    'border-radius': 4px,
-  ),
-  $popover
+$popover: (
+  'font-size': 12px,
+  'title-font-size': getCssVar('font-size-base'),
+  'title-text-color': getCssVar('color-neutral-gray-900'),
 );
+
+.el-popover {
+  &.el-popper-popover {
+    &.p-popover--shadow {
+      box-shadow: var(--el-box-shadow-dark);
+      text-align: unset;
+    }
+
+    .el-popover__title {
+      font-weight: 600;
+    }
+
+    .el-popover__content {
+      color: var(--el-color-neutral-gray-500);
+    }
+  }
+}

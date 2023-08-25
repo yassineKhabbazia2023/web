@@ -21,6 +21,7 @@
 @use './components/notification';
 @use './components/pagination';
 @use './components/popper';
+@use './components/popover';
 @use './components/steps';
 @use './components/table';
 @use './components/tabs';
@@ -77,7 +78,8 @@
   $dialog: dialog.$dialog,
   $overlay-color: colors.$overlay-color,
   $pagination: pagination.$pagination,
-  $form: form.$form
+  $form: form.$form,
+  $popover: popover.$popover
 );
 
 @forward 'element-plus/theme-chalk/src/form.scss' with (
@@ -120,6 +122,7 @@
 @use 'element-plus/theme-chalk/src/option-group.scss' as *;
 @use 'element-plus/theme-chalk/src/overlay.scss' as *;
 @use 'element-plus/theme-chalk/src/pagination.scss' as *;
+@use 'element-plus/theme-chalk/src/popover.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
 @use 'element-plus/theme-chalk/src/row.scss' as *;
 @use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
