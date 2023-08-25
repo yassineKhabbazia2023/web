@@ -40,3 +40,74 @@ $drawer: (
     margin-left: 12px;
   }
 }
+
+.p-document-viewer {
+  .el-drawer__header,
+  .el-drawer__body {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__header,
+  &__header-right, 
+  &__header-left,
+  &__title,
+  &__icon-document { 
+    display: flex;
+    align-items: center;
+  }
+
+  &__header {
+    justify-content: space-between;
+    padding: 4px 16px;
+  }
+
+  &__header-left {
+    justify-content: flex-start;
+  }
+
+  &__header-right {
+    justify-content: flex-end;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    color: getCssVar('color', 'neutral-gray-900');
+  }
+
+  &__icon-document {
+    justify-content: center;
+
+    .el-icon {
+      font-size: 1.6rem;
+      color: getCssVar('color', 'neutral-gray-900');
+    }
+  }
+
+  &__pagination-item {
+    padding: 0 4px;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: getCssVar('color', 'neutral-gray-900');
+  }
+
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: stretch;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__content-right {
+    width: calc(100% - 357px);
+  }
+
+  &__content-left {
+    width: 357px;
+    height: 100%;
+  }
+}

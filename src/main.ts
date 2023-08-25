@@ -38,6 +38,7 @@ import PText from '@/atoms/PText'
 import PCheckbox from '@/atoms/PCheckbox'
 import PDatePicker from '@/atoms/PDatePicker'
 import PDialog from '@/atoms/PDialog'
+import PDocumentViewer from '@/organisms/PDocumentViewer'
 import PDrawer from '@/molecules/PDrawer'
 import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
 import PFileCard from '@/molecules/PFileCard'
@@ -80,6 +81,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PCol', ElCol)
   app.component('PDatePicker', PDatePicker)
   app.component('PDialog', PDialog)
+  app.component('PDocumentViewer', PDocumentViewer)
   app.component('PDrawer', PDrawer)
   app.component('PDropdown', ElSelect)
   app.component('PFileAndFolderLineCheck', PFileAndFolderLineCheck)
