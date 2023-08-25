@@ -1,5 +1,6 @@
 <template>
   <el-tree
+    ref="treeElement"
     class="p-tree"
     :data="data"
     :props="dataKeys"
