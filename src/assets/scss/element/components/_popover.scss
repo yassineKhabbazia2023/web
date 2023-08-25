@@ -6,8 +6,10 @@ $popover: (
 
 .el-popover {
   &.el-popper-popover {
-    text-align: unset !important;
-    box-shadow: getCssVar('shadow--4') !important;
+    &.p-popover--shadow {
+      box-shadow: var(--el-box-shadow-dark);
+      text-align: unset;
+    }
 
     .el-popover__title {
       font-weight: 600;

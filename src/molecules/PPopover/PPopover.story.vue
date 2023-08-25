@@ -9,6 +9,7 @@
         :disabled="popoverBasicData.disabled"
         :showArrow="popoverBasicData.showArrow"
         :trigger="popoverBasicData.triggerOptions"
+        :title="popoverBasicData.title"
       >
         <template #content>
           {{ popoverBasicData.content }}
@@ -16,6 +17,7 @@
         <PButton>Button</PButton>
       </PPopover>
       <template #controls>
+        <hstText v-model="popoverBasicData.title" title="Title" />
         <hstText v-model="popoverBasicData.content" title="content" />
         <hstSelect
           v-model="popoverBasicData.placement"
@@ -46,7 +48,8 @@ const popoverBasicData = reactive({
   content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
   disabled: false,
   showArrow: true,
-  triggerOptions: triggerOptions[0]
+  triggerOptions: triggerOptions[0],
+  title: 'Title'
 })
 </script>
 

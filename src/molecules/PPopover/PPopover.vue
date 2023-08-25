@@ -1,6 +1,6 @@
 <template>
   <el-popover
-    popperClass="el-popper-popover"
+    popperClass="el-popper-popover p-popover--shadow"
     :placement="placement"
     :disabled="disabled"
     :showArrow="showArrow"
@@ -31,7 +31,6 @@ interface PPopoverProps {
 
 withDefaults(defineProps<PPopoverProps>(), {
   placement: 'top',
-  disabled: false,
-  title: 'Title'
+  disabled: false
 })
 </script>
