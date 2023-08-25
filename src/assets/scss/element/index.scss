@@ -31,6 +31,7 @@
 @use './form/datepicker';
 @use './form/form';
 @use './form/input';
+@use './form/radio';
 @use './form/select';
 @use './form/switch';
 
@@ -79,6 +80,11 @@
   $overlay-color: colors.$overlay-color,
   $pagination: pagination.$pagination,
   $form: form.$form,
+  $radio: radio.$radio,
+  $radio-disabled: radio.$radio-disabled,
+  $radio-checked: radio.$radio-checked,
+  $radio-bordered-input-width: radio.$radio-bordered-input-width,
+  $radio-bordered-input-height: radio.$radio-bordered-input-height,
   $popover: popover.$popover
 );
 
@@ -124,6 +130,7 @@
 @use 'element-plus/theme-chalk/src/pagination.scss' as *;
 @use 'element-plus/theme-chalk/src/popover.scss' as *;
 @use 'element-plus/theme-chalk/src/popper.scss' as *;
+@use 'element-plus/theme-chalk/src/radio.scss' as *;
 @use 'element-plus/theme-chalk/src/row.scss' as *;
 @use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
 @use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;

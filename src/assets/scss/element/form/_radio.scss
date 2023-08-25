@@ -1,74 +1,82 @@
-/// fontSize||Font|1
-$radio: () !default;
-$radio: map.merge(
-  (
-    'font-size': getCssVar('font-size-base'),
-    'text-color': getCssVar('text-color-regular'),
-    'font-weight': getCssVar('font-weight-primary'),
-    'input-height': 14px,
-    'input-width': 14px,
-    'input-border-radius': getCssVar('border-radius-circle'),
-    'input-bg-color': getCssVar('fill-color', 'blank'),
-    'input-border': getCssVar('border'),
-    'input-border-color': getCssVar('border-color'),
-    'input-border-color-hover': getCssVar('color-primary'),
-  ),
-  $radio
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$radio: (
+  'font-size': getCssVar('font-size-small'),
+  'font-weight': 400,
+  'input-height': 14px,
+  'input-width': 14px,
+  'input-border-color': getCssVar('color', 'neutral-gray-100'),
 );
 
-$radio-height: () !default;
-$radio-height: map.merge($common-component-size, $radio-height);
-
-$radio-button: () !default;
-$radio-button: map.merge(
-  (
-    'checked-bg-color': getCssVar('color-primary'),
-    'checked-text-color': getCssVar('color-white'),
-    'checked-border-color': getCssVar('color-primary'),
-    'disabled-checked-fill': getCssVar('border-color-extra-light'),
-  ),
-  $radio-button
+$radio-disabled: (
+  'input-border-color': getCssVar('color', 'persian-200'),
+  'input-fill': getCssVar('fill', 'blank'),
+  'icon-color': getCssVar('fill', 'blank'),
+  'checked-input-border-color': getCssVar('color', 'persian-200'),
+  'checked-input-fill': getCssVar('fill', 'blank'),
+  'checked-icon-color': getCssVar('fill', 'blank'),
 );
 
-$radio-disabled: () !default;
-$radio-disabled: map.merge(
-  (
-    'input-border-color': getCssVar('disabled-border-color'),
-    'input-fill': getCssVar('disabled-bg-color'),
-    'icon-color': getCssVar('disabled-bg-color'),
-    'checked-input-border-color': getCssVar('disabled-border-color'),
-    'checked-input-fill': getCssVar('disabled-bg-color'),
-    'checked-icon-color': getCssVar('text-color-placeholder'),
-  ),
-  $radio-disabled
+$radio-checked: (
+  'text-color': getCssVar('text-color-regular'),
+  'input-border-color': getCssVar('color-primary'),
+  'icon-color': getCssVar('fill', 'blank'),
 );
 
-$radio-checked: () !default;
-$radio-checked: map.merge(
-  (
-    'text-color': getCssVar('color-primary'),
-    'input-border-color': getCssVar('color-primary'),
-    'icon-color': getCssVar('color-primary'),
-  ),
-  $radio-checked
+$radio-bordered-input-height: (
+  'large': 14px,
+  'default': 14px,
+  'small': 12px,
 );
 
-$radio-bordered-input-height: () !default;
-$radio-bordered-input-height: map.merge(
-  (
-    'large': 14px,
-    'default': 12px,
-    'small': 12px,
-  ),
-  $radio-bordered-input-height
+$radio-bordered-input-width: (
+  'large': 14px,
+  'default': 14px,
+  'small': 12px,
 );
 
-$radio-bordered-input-width: () !default;
-$radio-bordered-input-width: map.merge(
-  (
-    'large': 14px,
-    'default': 12px,
-    'small': 12px,
-  ),
-  $radio-bordered-input-width
-);
+.el-radio {
+  $self: &;
+
+  &:hover,
+  &:focus {
+    #{$self}__inner {
+      border-color: var(--el-radio-input-border-color-hover);
+    }
+  }
+
+  #{$self}__input {
+    &.is-checked {
+      #{$self}__inner:after {
+        transform: scale(1);
+      }
+
+      &.is-disabled {
+        #{$self}__inner:after {
+          background: getCssVar('color', 'persian-200');
+        }
+      }
+    }
+
+    &.is-disabled {
+      + span#{$self}__label {
+        color: getCssVar('color', 'neutral-gray-500');
+      }
+    }
+
+    #{$self}__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      &:after {
+        position: initial;
+        display: block;
+        width: 6px;
+        height: 6px;
+        background: getCssVar('color-primary');
+        transform: scale(0);
+      }
+    }
+  }
+}

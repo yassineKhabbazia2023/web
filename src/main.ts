@@ -6,6 +6,7 @@ import ElementPlus, {
   ElInput,
   ElOption,
   ElOptionGroup,
+  ElRadio,
   ElRow,
   ElScrollbar,
   ElSelect,
@@ -101,6 +102,7 @@ export function install(app: any, { i18n }: any) {
   app.component('PPagination', PPagination)
   app.component('PPastille', PPastille)
   app.component('PPopover', PPopover)
+  app.component('PRadio', ElRadio)
   app.component('PScrollbar', ElScrollbar)
   app.component('PStepItem', ElStep)
   app.component('PSteps', ElSteps)
