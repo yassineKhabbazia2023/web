@@ -14,7 +14,7 @@ const vueLifecycles = singleSpaVue({
     render: () => h(RenderLess)
   },
   handleInstance(app) {
-    app.use(i18n).use(pinia).use(styleGuide, { i18n })
+    app.use(i18n).use(pinia.value).use(styleGuide)
   }
 })
 
