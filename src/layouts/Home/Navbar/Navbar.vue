@@ -16,10 +16,16 @@
     title: 'Navbar'
     goToHome: 'Go to home'
     goToLogin: 'Go to login'
+    goToEntities: 'Go to entities'
+    goToGed: 'Go to ged'
+    goToMandate: 'Go to mandate'
   fr-FR:
     title: 'Navbar'
     goToHome: "Aller à l'accueil"
     goToLogin: 'Aller à la page de login'
+    goToEntities: 'Aller à la page de entities'
+    goToGed: 'Aller à la page de ged'
+    goToMandate: 'Aller à la page de mandate'
 </i18n>
 
 <script setup lang="ts">
@@ -38,6 +44,18 @@ const MENU = [
   {
     title: t('goToLogin'),
     name: 'login'
+  },
+  {
+    title: t('goToEntities'),
+    name: 'entities'
+  },
+  {
+    title: t('goToGed'),
+    name: 'ged'
+  },
+  {
+    title: t('goToMandate'),
+    name: 'mandats'
   }
 ]
 </script>

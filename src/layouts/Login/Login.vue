@@ -99,6 +99,7 @@ import { commonApi } from '@kpmg/common'
 import { LINKS } from './contants'
 import { Link } from './types'
 import { ref } from 'vue'
+import { PButton, PCol, PDrawer, PImage, PRow } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

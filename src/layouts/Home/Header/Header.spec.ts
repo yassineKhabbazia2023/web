@@ -7,6 +7,6 @@ describe('header', () => {
     const wrapper = mount(Header)
     const header = wrapper.find('header')
 
-    expect(header.exists())
+    expect(header.exists()).toBeTruthy()
   })
 })

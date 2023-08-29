@@ -4,5 +4,4 @@ declare module '*.vue' {
   export default component
 }
 
-declare module '@kpmg/styleguide'
 declare module 'env-vars'
