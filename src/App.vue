@@ -1,5 +1,4 @@
 <template>
-  {{ aa }}
   <Suspense>
     <PConfigProvider>
       <component :is="getLayout" />
@@ -29,6 +28,4 @@ watch(
     }
   }
 )
-
-const aa = 'aaaAAAA'
 </script>
