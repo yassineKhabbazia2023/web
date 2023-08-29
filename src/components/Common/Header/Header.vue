@@ -20,7 +20,7 @@
         {{ t('new-mandate') }}
       </PButton>
     </div>
-    <CreateMandateDrawer
+    <Drawer
       v-model="openDrawer"
     />
   </div>
@@ -36,7 +36,7 @@
 </i18n>
 
 <script setup lang="ts">
-import CreateMandateDrawer from '@/components/CreateMandate/CreateMandateDrawer'
+import Drawer from '@/components/CreateMandate/Drawer'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { PIAdd } from '@kpmg/styleguide'
