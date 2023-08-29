@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { flushPromises, mount } from '@vue/test-utils'
-import Pulse from './Pulse.vue'
+import App from './App.vue'
 
 const HOME_LAYOUT_TITLE = 'This is the Home layout'
 const HOME_PAGE_TITLE = 'Home page'
@@ -55,7 +55,7 @@ const router = createRouter({
 
 describe('app', () => {
   it('load the right page with the right layout according to the route', async () => {
-    const wrapper = mount(Pulse, {
+    const wrapper = mount(App, {
       global: {
         plugins: [router]
       }
@@ -72,12 +72,14 @@ describe('app', () => {
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
     expect(getLayoutTitle().text()).toBe(HOME_LAYOUT_TITLE)
     expect(getPageTitle().text()).toBe(HOME_PAGE_TITLE)
 
     router.push({ name: 'login' })
     await wrapper.vm.$nextTick()
     await flushPromises()
+    await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
