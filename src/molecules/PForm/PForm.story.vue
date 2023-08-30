@@ -10,6 +10,7 @@
       requireAsteriskPosition="right"
       labelPosition="top"
       @submit.prevent="handleSubmit"
+      @validate="validateHandler"
     >
       <PFormItem
         label="Password"
@@ -44,6 +45,7 @@
       <PButton
         type="primary"
         @click="handleSubmit(formRef)"
+        :disabled="!isFormValid"
       >
         Submit
       </PButton>
@@ -56,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, reactive, ref } from 'vue'
+import { computed, inject, reactive, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 // the following types are exported in the styleguide as PFormInstance & PFormRules
 import type { FormInstance, FormRules } from 'element-plus'
@@ -71,6 +73,20 @@ const formValues = reactive({
   checkPass: '',
   age: ''
 })
+
+const formValidity: any = reactive({
+  pass: false,
+  checkPass: false,
+  age: false
+})
+
+const isFormValid = computed(() =>
+  formValidity.pass && formValidity.checkPass && formValidity.age
+)
+
+const validateHandler = (propName: string, isValid: boolean) => {
+  formValidity[propName] = isValid
+}
 
 const validateAge = (rule: any, value: any, callback: any) => {
   if (!value) {
