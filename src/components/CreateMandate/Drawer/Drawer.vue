@@ -16,7 +16,7 @@
         <PStepItem :title="t('infos')" />
         <PStepItem :title="t('banking-data')" />
       </PSteps>
-    <h5>{{t(stepLabel)}}</h5>
+    <!-- <h5>{{t(stepLabel)}}</h5> -->
     <Form
       :step="currentStep"
       @next-step-event-form="nextStepAvailability=true"
@@ -64,11 +64,11 @@ import { PIArrowRight } from '@kpmg/styleguide'
 import Form from '@/components/CreateMandate/Form'
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
-const titleMap = {
-  1: 'entity',
-  2: 'signatory',
-  3: 'bank-details'
-}
+// const titleMap = {
+//   1: 'entity',
+//   2: 'signatory',
+//   3: 'bank-details'
+// }
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -90,11 +90,14 @@ const drawerModel = computed({
   }
 })
 
-const stepLabel = computed(() => {
-  return titleMap[currentStep.value]
-})
+// const stepLabel = computed(() => {
+//   return titleMap[currentStep.value]
+// })
 
 const goToNextStep = () => {
+  if (currentStep.value === 1) {
+    return currentStep.value++
+  }
   nextStepAvailability.value = false
   currentStep.value++
 }
