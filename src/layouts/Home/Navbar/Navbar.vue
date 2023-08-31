@@ -1,28 +1,25 @@
 <template>
-  <nav>
-    <div>
-      <h2>{{ t('title') }}</h2>
-    </div>
-    <div v-for="item in MENU" :key="item.name">
-      <router-link :to="{ name: item.name }">
-        {{ item.title }}
-      </router-link>
-    </div>
-  </nav>
+  <PNavbar
+    class="aside"
+    :entities="entitiesFormated"
+    :handleClickEntity="handleClickEntity"
+    :menuList="menus"
+  >
+    <template #title >
+      {{ t('title') }}
+    </template>
+  </PNavbar>
 </template>
 
 <i18n lang="yaml">
   en-US:
-    title: 'Navbar'
-    goToHome: 'Go to home'
-    goToLogin: 'Go to login'
+    title: 'Entities'
   fr-FR:
-    title: 'Navbar'
-    goToHome: "Aller à l'accueil"
-    goToLogin: 'Aller à la page de login'
+    title: 'Mes entités'
 </i18n>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n({
@@ -30,14 +27,35 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const MENU = [
+// TODO: replace with entity list from back
+const entities = [
   {
-    title: t('goToHome'),
-    name: 'home'
+    name: 'Restaurant Johnny s pizza - Courbevoie',
+    idAccount: 'idAccount',
+    icon: 'PICupHot',
+    color: 'orange'
   },
   {
-    title: t('goToLogin'),
-    name: 'login'
+    name: 'Jean Levage',
+    idAccount: 'idAccount 2',
+    icon: 'PIShop',
+    color: 'green'
   }
 ]
+
+const menus = [
+  { name: 'Voir mes entités', icon: 'PIGrid', path: '/entity' }
+]
+
+const handleClickEntity = (idAccount: string) => {
+  console.log('idAccount', idAccount)
+  // TODO switch entity here
+}
+
+const entitiesFormated = computed(() => {
+  entities.forEach((entity) => {
+    entity.name = entity.name.length > 29 ? entity.name.substring(0, 29).concat('...') : entity.name
+  })
+  return entities
+})
 </script>
