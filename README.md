@@ -16,5 +16,9 @@ TODO: Guide users through getting your code up and running on their own system. 
 TODO: Describe and show how to build your code and run the tests. 
 
 # Contribute
-
+## NOTES ABOUT vi.dynamicImportSettled()
+If you use Styleguide components in your component, don't stub it in your unit test and invoke:
+await flushPromises once
+await vi.dynamicImportSettled() 6x or more
+https://github.com/vitest-dev/vitest/issues/1328#issuecomment-1534452603
 
