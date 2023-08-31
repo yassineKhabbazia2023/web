@@ -28,3 +28,11 @@ div.el-textarea {
     }
   }
 }
+
+.el-input {
+  &__inner {
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+}

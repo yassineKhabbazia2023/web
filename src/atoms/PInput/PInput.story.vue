@@ -43,11 +43,25 @@
         <HstText v-model="PasswordInputData.inputValue" title="Password put value" />
       </template>
     </Variant>
+    <Variant title="Search">
+      <PInput
+        v-model="SearchInputData.inputValue"
+        :type="SearchInputData.type"
+        :placeholder="SearchInputData.placeholder"
+        :prefixIcon="SearchInputData.prefixIcon"
+        :clearable="SearchInputData.clearable"
+      >
+      </PInput>
+      <template #controls>
+        <HstText v-model="SearchInputData.placeholder" title="placeholder" />
+      </template>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue'
+import { PISearch } from '@/atoms/PIcon/components'
 
 const basicInputData = reactive({
   type: 'text',
@@ -67,6 +81,13 @@ const PasswordInputData = reactive({
   placeholder: 'Please input password',
   showpassword: true,
   inputValue: 'Hello i am your password'
+})
+const SearchInputData = reactive({
+  type: 'search',
+  placeholder: 'Search',
+  clearable: true,
+  prefixIcon: PISearch,
+  inputValue: ''
 })
 </script>
 
