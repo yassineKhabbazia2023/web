@@ -64,6 +64,7 @@ import { computed } from 'vue'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import { type PDrawerProps } from './PDrawer'
+import { ElDrawer } from 'element-plus'
 
 const emit = defineEmits(['drawer-previous-button-click', 'update:modelValue'])
 
