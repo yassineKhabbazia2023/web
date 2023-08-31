@@ -66,6 +66,9 @@ describe('login', () => {
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
     expect(isDrawerOpen()).toBe('false')
 
     await copyrightsLink.trigger('click')
