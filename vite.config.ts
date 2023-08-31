@@ -15,6 +15,9 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 let configConsilated
 const basicConfig = {
   histoire: {},
+  define: {
+    'process.env': process.env
+  },
   rollupOptions: {},
   resolve: {
     alias: {
@@ -114,7 +117,7 @@ if (process.env.HISTOIRE) {
       lib: {
         name: '@kpmg/styleguide',
         entry: path.resolve(__dirname, 'src/main.ts'),
-        formats: ['es', 'umd'],
+        formats: ['es', 'system', 'cjs'],
         fileName: (format) => `lib/styleguide.pegase.${format}.min.js`
       },
       rollupOptions: {

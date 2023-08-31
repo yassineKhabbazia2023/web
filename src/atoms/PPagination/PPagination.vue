@@ -25,7 +25,7 @@ import { ref, watch } from 'vue'
 import { ElPagination } from 'element-plus'
 import PDropdown from '@/atoms/PDropdown'
 
-interface PaginationProps {
+export interface PaginationProps {
   showTotalPageCounter: boolean
   pagesRanges: Array<number>
   pageRangeSelectorGroupLabel: string

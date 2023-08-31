@@ -22,14 +22,14 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, type Component } from 'vue'
 
-interface Item {
+export interface Item {
   icon: string
   name: string
   path: string
   component: Component
 }
 
-interface Props {
+export interface Props {
   hideOnDesktop?: boolean
   useRouter?: boolean
   items: Item[]

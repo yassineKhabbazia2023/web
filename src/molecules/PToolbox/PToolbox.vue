@@ -35,7 +35,7 @@ type ToolboxLine = {
   actionName: string;
 };
 
-interface PToolboxProps {
+export interface PToolboxProps {
   elements: Array<ToolboxLine>;
 }
 

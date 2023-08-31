@@ -63,7 +63,7 @@ const toolboxItems = [
     actionName: 'transmit'
   }
 ]
-interface Tree {
+export interface Tree {
   label: string
   children?: Tree[]
   customData?: string

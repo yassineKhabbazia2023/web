@@ -132,7 +132,7 @@ const rightSideIcons = ref([{
 
 You can add buttons to the left or right side of the action bar layout by passing an array of `Buttons` objects to the `rightSideButtons` or `leftSideButtons` props. The `Buttons` type is defined as follows:
 ```javascript
-interface Buttons {
+export interface Buttons {
 buttonName: string;
 buttonType: string;
 buttonIcon: string;

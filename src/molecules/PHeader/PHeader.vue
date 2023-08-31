@@ -12,13 +12,13 @@
 </template>
 
 <script setup lang="ts">
-interface IMenu {
+export interface IMenu {
   icon: string
   text: string
   path: string
 }
 
-interface PHeaderProps {
+export interface PHeaderProps {
   menu: IMenu[]
 }
 

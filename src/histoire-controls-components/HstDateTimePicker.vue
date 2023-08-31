@@ -8,7 +8,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-interface Props {
+export interface Props {
   title: string
   modelValue: string
   type: 'date' | 'time' | 'datetime'

@@ -49,7 +49,7 @@ import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import { iconsResolver } from '@/utils/iconResolver'
 
-interface Buttons {
+export interface Buttons {
   buttonName: string,
   buttonType: string,
   buttonIcon: string,
@@ -62,7 +62,7 @@ interface Buttons {
   disabled: Boolean
 }
 
-interface PActionBarProps {
+export interface PActionBarProps {
   rightSideButtons: Buttons[];
   leftSideButtons: Buttons[];
 }

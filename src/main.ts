@@ -1,128 +1,152 @@
-// base UI library
-import ElementPlus, {
-  ElCol,
-  ElForm,
-  ElFormItem,
-  ElInput,
-  ElOption,
-  ElOptionGroup,
-  ElRadio,
-  ElRow,
-  ElScrollbar,
-  ElSelect,
-  ElStep,
-  ElSteps,
-  ElSwitch,
-  ElTableColumn,
-  ElTabPane,
-  ElTabs
+import { defineAsyncComponent } from 'vue'
+
+import {
+  // Inner Depencies for Layout, DatePicker
+  ElContainer,
+  ElAside,
+  ElHeader,
+  ElMain,
+  ElFooter,
+  ElTimePicker,
+  ElPopper,
+  ElPopperArrow,
+  ElPopperContent
 } from 'element-plus'
 
 // locales
-import fr from 'element-plus/es/locale/lang/fr'
-import en from 'element-plus/es/locale/lang/en'
+import frLocale from 'element-plus/es/locale/lang/fr'
+import enLocale from 'element-plus/es/locale/lang/en'
 import dayjs from 'dayjs'
 
 import './assets/scss/index.scss'
-
-import PActionBar from '@/molecules/PActionBar'
-import PAlert from '@/atoms/PAlert'
-import PAvatar from '@/atoms/PAvatar'
-import PButton from '@/atoms/PButton'
-import PBottomMenu from '@/molecules/PBottomMenu'
-import PBreadcrumb from '@/molecules/PBreadcrumb'
-import PCarousel from '@/molecules/PCarousel'
-import PCarouselItem from '@/atoms/PCarouselItem'
-import PDoubleText from '@/atoms/PDoubleText'
-import PEntity from '@/atoms/PEntity'
-import PText from '@/atoms/PText'
-import PCheckbox from '@/atoms/PCheckbox'
-import PDatePicker from '@/atoms/PDatePicker'
-import PDialog from '@/atoms/PDialog'
-import PDocumentViewer from '@/organisms/PDocumentViewer'
-import PDrawer from '@/molecules/PDrawer'
-import PFileAndFolderLineCheck from '@/molecules/PFileAndFolderLineCheck'
-import PFileCard from '@/molecules/PFileCard'
-import PFileLineNavigationItem from '@/atoms/FileLineNavigationItem'
-import PHeader from '@/molecules/PHeader'
-import PHeaderTabs from '@/atoms/PHeaderTabs'
-import PIcon from '@/atoms/PIcon'
-import PImage from '@/atoms/PImage'
-import PLineChart from '@/atoms/PLineChart'
-import PNavbar from '@/molecules/PNavbar'
-import PPagination from '@/atoms/PPagination'
-import PPastille from '@/atoms/PPastille'
-import PPopover from '@/molecules/PPopover'
-import PTable from '@/atoms/PTable'
-import PTag from '@/atoms/PTag'
-import PToolbox from '@/molecules/PToolbox'
-import PToolboxItem from '@/atoms/PToolboxItem'
-import PTooltip from '@/atoms/PTooltip'
-import PTree from '@/organisms/PTree'
 
 import toastPlugin from '@/molecules/PToaster'
 
 dayjs.Ls.en.weekStart = 1
 
-export function install(app: any, { i18n }: any) {
-  app.use(ElementPlus, { locale: i18n.global.locale === 'fr' ? fr : en })
+export const fr = frLocale
+export const en = enLocale
+
+export function install(app: any) {
   app.use(toastPlugin)
-  app.component('PActionBar', PActionBar)
-  app.component('PAlert', PAlert)
-  app.component('PAvatar', PAvatar)
-  app.component('PBottomMenu', PBottomMenu)
-  app.component('PButton', PButton)
-  app.component('PBreadcrumb', PBreadcrumb)
-  app.component('PCarousel', PCarousel)
-  app.component('PCarouselItem', PCarouselItem)
-  app.component('PDoubleText', PDoubleText)
-  app.component('PEntity', PEntity)
-  app.component('PText', PText)
-  app.component('PCheckbox', PCheckbox)
-  app.component('PCol', ElCol)
-  app.component('PDatePicker', PDatePicker)
-  app.component('PDialog', PDialog)
-  app.component('PDocumentViewer', PDocumentViewer)
-  app.component('PDrawer', PDrawer)
-  app.component('PDropdown', ElSelect)
-  app.component('PFileAndFolderLineCheck', PFileAndFolderLineCheck)
-  app.component('PFileCard', PFileCard)
-  app.component('PFileLineNavigationItem', PFileLineNavigationItem)
-  app.component('PForm', ElForm)
-  app.component('PFormItem', ElFormItem)
-  app.component('PHeader', PHeader)
-  app.component('PHeaderTabs', PHeaderTabs)
-  app.component('PIcon', PIcon)
-  app.component('PImage', PImage)
-  app.component('PInput', ElInput)
-  app.component('PLineChart', PLineChart)
-  app.component('PNavbar', PNavbar)
-  app.component('POptionGroup', ElOptionGroup)
-  app.component('POption', ElOption)
-  app.component('PPagination', PPagination)
-  app.component('PPastille', PPastille)
-  app.component('PPopover', PPopover)
-  app.component('PRadio', ElRadio)
-  app.component('PScrollbar', ElScrollbar)
-  app.component('PStepItem', ElStep)
-  app.component('PSteps', ElSteps)
-  app.component('PRow', ElRow)
-  app.component('PSwitch', ElSwitch)
-  app.component('PTable', PTable)
-  app.component('PTableColumn', ElTableColumn)
-  app.component('PTabPane', ElTabPane)
-  app.component('PTabs', ElTabs)
-  app.component('PTag', PTag)
-  app.component('PToolbox', PToolbox)
-  app.component('PToolboxItem', PToolboxItem)
-  app.component('PTooltip', PTooltip)
-  app.component('PTree', PTree)
 }
 
-const plugin = {
-  install
-}
-
-export default plugin
-
+// @ts-ignore
 export * from './atoms/PIcon/components'
+
+export const PContainer = ElContainer
+export const PAside = ElAside
+export const PCHeader = ElHeader
+export const PMain = ElMain
+export const PFooter = ElFooter
+export const PTimePicker = ElTimePicker
+export const PPopper = ElPopper
+export const PPopperArrow = ElPopperArrow
+export const PPopperContent = ElPopperContent
+
+// base UI library asynchrones
+export const PCol =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElCol }) => ElCol)
+  )
+export const PTableColumn =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElTableColumn }) => ElTableColumn)
+  )
+export const PConfigProvider =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElConfigProvider }) => ElConfigProvider)
+  )
+export const PForm =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElForm }) => ElForm)
+  )
+export const PFormItem =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElFormItem }) => ElFormItem)
+  )
+export const PInput =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElInput }) => ElInput)
+  )
+export const POption =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElOption }) => ElOption)
+  )
+export const POptionGroup =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElOptionGroup }) => ElOptionGroup)
+  )
+export const PRadio =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElRadio }) => ElRadio)
+  )
+export const PRow =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElRow }) => ElRow)
+  )
+export const PDropdown =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElSelect }) => ElSelect)
+  ) as any
+export const PScrollbar =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElScrollbar }) => ElScrollbar)
+  )
+export const PStepItem =
+defineAsyncComponent(
+  () => import('element-plus').then(({ ElStep }) => ElStep)
+)
+export const PSteps =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElSteps }) => ElSteps)
+  )
+export const PSwitch =
+defineAsyncComponent(
+  () => import('element-plus').then(({ ElSwitch }) => ElSwitch)
+)
+export const PTabPane =
+defineAsyncComponent(
+  () => import('element-plus').then(({ ElTabPane }) => ElTabPane)
+)
+export const PTabs =
+defineAsyncComponent(
+  () => import('element-plus').then(({ ElTabs }) => ElTabs)
+)
+
+export const PActionBar = defineAsyncComponent(() => import('@/molecules/PActionBar'))
+export const PAlert = defineAsyncComponent(() => import('@/atoms/PAlert'))
+export const PAvatar = defineAsyncComponent(() => import('@/atoms/PAvatar'))
+export const PButton = defineAsyncComponent(() => import('@/atoms/PButton'))
+export const PBottomMenu = defineAsyncComponent(() => import('@/molecules/PBottomMenu'))
+export const PBreadcrumb = defineAsyncComponent(() => import('@/molecules/PBreadcrumb'))
+export const PCarousel = defineAsyncComponent(() => import('@/molecules/PCarousel'))
+export const PCarouselItem = defineAsyncComponent(() => import('@/atoms/PCarouselItem'))
+export const PCheckbox = defineAsyncComponent(() => import('@/atoms/PCheckbox'))
+export const PDatePicker = defineAsyncComponent(() => import('@/atoms/PDatePicker'))
+export const PDocumentViewer = defineAsyncComponent(() => import('@/organisms/PDocumentViewer'))
+export const PFileCard = defineAsyncComponent(() => import('@/molecules/PFileCard'))
+export const PDoubleText = defineAsyncComponent(() => import('@/atoms/PDoubleText'))
+export const PDialog = defineAsyncComponent(() => import('@/atoms/PDialog'))
+export const PDrawer = defineAsyncComponent(() => import('@/molecules/PDrawer'))
+export const PEntity = defineAsyncComponent(() => import('@/atoms/PEntity'))
+export const PFileAndFolderLineCheck =
+defineAsyncComponent(() => import('@/molecules/PFileAndFolderLineCheck'))
+export const PFileLineNavigationItem =
+defineAsyncComponent(() => import('@/atoms/FileLineNavigationItem'))
+export const PHeader = defineAsyncComponent(() => import('@/molecules/PHeader'))
+export const PHeaderTabs = defineAsyncComponent(() => import('@/atoms/PHeaderTabs'))
+export const PIcon = defineAsyncComponent(() => import('@/atoms/PIcon'))
+export const PImage = defineAsyncComponent(() => import('@/atoms/PImage'))
+export const PLineChart = defineAsyncComponent(() => import('@/atoms/PLineChart'))
+export const PNavbar = defineAsyncComponent(() => import('@/molecules/PNavbar'))
+export const PPagination = defineAsyncComponent(() => import('@/atoms/PPagination'))
+export const PPopover = defineAsyncComponent(() => import('@/molecules/PPopover'))
+export const PPastille = defineAsyncComponent(() => import('@/atoms/PPastille'))
+export const PTable = defineAsyncComponent(() => import('@/atoms/PTable'))
+export const PTag = defineAsyncComponent(() => import('@/atoms/PTag'))
+export const PToolbox = defineAsyncComponent(() => import('@/molecules/PToolbox'))
+export const PToolboxItem = defineAsyncComponent(() => import('@/atoms/PToolboxItem'))
+export const PTooltip = defineAsyncComponent(() => import('@/atoms/PTooltip'))
+export const PText = defineAsyncComponent(() => import('@/atoms/PText'))
+export const PTree = defineAsyncComponent(() => import('@/organisms/PTree'))

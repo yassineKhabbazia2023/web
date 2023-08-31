@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import type { PlacementOptions } from '@/constants/placementOptions'
 import { ElTooltip } from 'element-plus'
-interface PTooltipProps {
+export interface PTooltipProps {
   placement?: PlacementOptions
   content: string,
   disabled?: boolean

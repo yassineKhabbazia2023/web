@@ -22,7 +22,7 @@ import { ElTag } from 'element-plus'
 import { iconResolver } from '@/utils/iconResolver'
 import PIcon from '@/atoms/PIcon'
 
-interface PPastilleProps {
+export interface PPastilleProps {
   kind?: 'default' | 'warning' | 'persian';
   size?: 'default' | 'small';
   disabled?: boolean;

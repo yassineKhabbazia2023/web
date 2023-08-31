@@ -60,20 +60,20 @@ import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
 import { iconResolver } from '@/utils/iconResolver'
 
-interface EntityProps {
+export interface EntityProps {
   idAccount: string
   name: string
   icon: string
   color: string
 }
 
-interface MenuProps {
+export interface MenuProps {
   name: string
   path: string
   icon: string
 }
 
-interface NavbarProps {
+export interface NavbarProps {
   entities: EntityProps[]
   menuList: MenuProps[]
   handleClickEntity: Function

@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { type Component } from 'vue'
 
-interface PTextProps {
+export interface PTextProps {
   icon?: Component | string
   content: string
   bold?: boolean

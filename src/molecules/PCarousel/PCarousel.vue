@@ -13,13 +13,13 @@
 <script setup lang="ts">
 import PCarouselItem from '@/atoms/PCarouselItem'
 
-interface PCarouselItemProps {
+export interface PCarouselItemProps {
   text: string,
   imageType: string,
   imageName: string
 }
 
-interface PCarouselProp {
+export interface PCarouselProp {
   items: Array<PCarouselItemProps>
 }
 defineProps<PCarouselProp>()

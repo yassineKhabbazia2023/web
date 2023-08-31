@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-interface PToolboxItemProps {
+export interface PToolboxItemProps {
   value: string | number;
   hasIcon?: boolean;
   disabled?: boolean;

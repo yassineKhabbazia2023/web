@@ -123,7 +123,7 @@ const rules = reactive<FormRules<typeof formValues>>({
   age: [{ validator: validateAge, trigger: 'blur' }]
 })
 
-interface openToastArgs {
+export interface openToastArgs {
   message: string;
   icon: any;
   customClass: string;

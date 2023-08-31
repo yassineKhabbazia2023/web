@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { type Component } from 'vue'
 
-interface PTextProps {
+export interface PTextProps {
   content: string
   icon?: Component | string
   type: 'primary' | 'secondary'

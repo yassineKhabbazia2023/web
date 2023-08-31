@@ -1,8 +1,17 @@
 {
   "name": "@kpmg/styleguide",
   "version": "1.0.0-alpha.9",
-  "main": "dist/lib/styleguide.pegase.umd.min.js",
+  "main": "dist/lib/styleguide.pegase.system.min.js",
   "module": "dist/lib/styleguide.pegase.es.min.js",
+  "exports": {
+    ".": {
+      "import": "./dist/lib/styleguide.pegase.es.min.js",
+      "require": "./dist/lib/styleguide.pegase.cjs.min.js",
+      "types": "./dist/types/src/main.d.ts"
+    },
+    "./main": "./dist/lib/styleguide.pegase.es.min.js",
+    "./dist/style": "./dist/style.css"
+  },
   "types": "./dist/types/src/main.d.ts",
   "license": "ISC",
   "files": [
@@ -23,7 +32,7 @@
     "prepare": "husky install && npm run generate",
     "predev": "npm run generate",
     "prebuild": "npm run generate",
-    "prestory:dev": "npm run generate",
+    "prestory:dev": "npm run generate",   
     "prestory:build": "npm run generate",
     "preview": "vite preview",
     "story:dev": "histoire dev",
@@ -53,7 +62,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
-    "@histoire/plugin-vue": "^0.16.1",
+    "@histoire/plugin-vue": "^0.17.1",
     "@kpmg/eslint-config-pulse": "^1.57.18",
     "@rollup/plugin-typescript": "^11.1.2",
     "@semantic-release/changelog": "^6.0.3",
@@ -64,7 +73,7 @@
     "@vitest/ui": "^0.33.0",
     "@vue/test-utils": "^2.4.0",
     "@vue/tsconfig": "^0.4.0",
-    "histoire": "^0.16.1",
+    "histoire": "^0.17.0",
     "husky": "^8.0.3",
     "license-checker": "^25.0.1",
     "lint-staged": "^13.2.3",
