@@ -31,7 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const menu = [
@@ -41,12 +40,11 @@ const menu = [
 const route = useRoute()
 const routeActive = route.path
 
-const toolboxBasicData = ref([
+const toolboxBasicData = [
   {
     iconName: 'PIPower',
     value: 'Logout',
     actionName: 'logout'
-
   }
-])
+]
 </script>
