@@ -20,6 +20,7 @@
       </PSteps>
     <h5 class="drawer__title">
       {{t(stepLabel)}} <PTooltip
+          v-if="currentStep===1"
           :content="t('tooltip')"
           placement="top"
           >

@@ -27,7 +27,7 @@
           </PInput>
         </PFormItem>
         <div>
-          <el-row :gutter="8">
+          <el-row :gutter="16">
             <el-col :span="12">
               <PFormItem inline :label="t('company-name')">
                 <PInput v-model="createMandateForm.companyName" disabled>
@@ -110,6 +110,9 @@ const createMandateForm = reactive({
 const emit = defineEmits(['next-step-event-form', 'loading-event-form'])
 
 defineProps<FormProps>()
+defineExpose({
+  validateIBS
+})
 
 const rules = reactive<any>({
   ibs: [
