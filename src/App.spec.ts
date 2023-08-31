@@ -73,6 +73,7 @@ describe('app', () => {
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
     expect(getLayoutTitle().text()).toBe(HOME_LAYOUT_TITLE)
     expect(getPageTitle().text()).toBe(HOME_PAGE_TITLE)
 
