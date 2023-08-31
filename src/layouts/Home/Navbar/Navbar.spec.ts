@@ -2,18 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import Navbar from '.'
 import { createRouter, createWebHistory } from 'vue-router'
-
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    redirect: ''
-  }
-]
+import { menu } from '../../../routes'
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes: menu
 })
 
 const createWrapper = () => mount(Navbar, {

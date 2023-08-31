@@ -1,9 +1,8 @@
 <template>
   <PNavbar
     class="aside"
-    :entities="entitiesFormated"
-    :handleClickEntity="handleClickEntity"
-    :menuList="menus"
+    :entities="entities"
+    :menuList="menu"
   >
     <template #title >
       {{ t('title') }}
@@ -15,12 +14,12 @@
   en-US:
     title: 'Entities'
   fr-FR:
-    title: 'Mes entités'
+    title: 'Portefeuille'
 </i18n>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { menu } from '../../../routes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -42,20 +41,4 @@ const entities = [
     color: 'green'
   }
 ]
-
-const menus = [
-  { name: 'Voir mes entités', icon: 'PIGrid', path: '/entity' }
-]
-
-const handleClickEntity = (idAccount: string) => {
-  console.log('idAccount', idAccount)
-  // TODO switch entity here
-}
-
-const entitiesFormated = computed(() => {
-  entities.forEach((entity) => {
-    entity.name = entity.name.length > 29 ? entity.name.substring(0, 29).concat('...') : entity.name
-  })
-  return entities
-})
 </script>
