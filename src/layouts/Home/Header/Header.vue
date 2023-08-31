@@ -24,9 +24,7 @@
           shape="circle"
           size="small"
           color="persian-gradient"
-        >
-          {{ initial }}
-        </PAvatar>
+        />
       </PToolbox>
     </template>
   </PHeader>
@@ -42,8 +40,6 @@ const menu = [
 
 const route = useRoute()
 const routeActive = route.path
-
-const initial = 'AB'
 
 const toolboxBasicData = ref([
   {

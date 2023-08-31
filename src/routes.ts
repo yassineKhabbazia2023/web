@@ -2,7 +2,7 @@ export const menu = [
   {
     name: 'My entities',
     icon: 'PIGrid',
-    path: '/entity',
+    path: '/',
     component: {
       template: '<div>My entities</div>'
     }

@@ -27,8 +27,8 @@ const createWrapper = () => mount(Navbar, {
 describe('navbar', () => {
   it('should display navbar section', () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    const header = wrapper.find('.aside')
+    const aside = wrapper.find('.aside')
 
-    expect(header.exists()).toBeTruthy()
+    expect(aside.exists()).toBeTruthy()
   })
 })
