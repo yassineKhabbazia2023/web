@@ -5,7 +5,8 @@ import { expect, describe, it, vi } from 'vitest'
 
 vi.mock('@kpmg/styleguide', () => {
   const PIAdd = vi.fn()
-  return { PIAdd }
+  const PIQuestionCircle = vi.fn()
+  return { PIAdd, PIQuestionCircle }
 })
 
 const i18n = createI18n({

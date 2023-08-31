@@ -1,4 +1,3 @@
-<!-- eslint-disable max-len -->
 <template>
   <div>
     <PForm
@@ -10,23 +9,29 @@
       class="create-mandate-form"
     >
       <div v-if="step === 1">
-        <PFormItem prop="ibs">
-          <template #label>
-            <label class="create-mandate-form__ibs-label">{{
-              t('ibs-number')
-            }}</label>
-            <PTooltip :content="t('tooltip')" placement="top">
-              <PIcon> <PIQuestionCircle /> </PIcon>
-            </PTooltip>
-          </template>
-          <PInput v-model="createMandateForm.ibs" type="number" />
+        <PFormItem
+          prop="ibs"
+          :label="t('ibs-number')"
+          validateStatus="primary"
+          required>
+          <PInput v-model="createMandateForm.ibs" type="number">
+            <template #suffix>
+              <PIcon
+                v-if="isIBSValid"
+                class="el-button__icon--right"
+                color="#5546FF"
+              >
+                <PICheck />
+              </PIcon>
+            </template>
+          </PInput>
         </PFormItem>
         <div>
           <el-row :gutter="8">
             <el-col :span="12">
               <PFormItem inline :label="t('company-name')">
                 <PInput
-                  v-model="createMandateForm.companyName"
+                  v-model="createMandateForm.name"
                   disabled>
                 </PInput>
               </PFormItem>
@@ -37,7 +42,7 @@
                 :label="t('siret-number')"
                 disabled>
                 <PInput
-                  v-model="createMandateForm.siret"
+                  v-model="createMandateForm.siretNumber"
                   state="default"
                   disabled
                 >
@@ -48,9 +53,6 @@
         </div>
       </div>
       <div v-if="step === 2">
-        <h5 class="create-mandate-form__section-title">
-          {{t('signatory')}}
-        </h5>
         <PFormItem prop="title">
           <template #label>
             <label class="create-mandate-form__title-label">{{
@@ -166,8 +168,6 @@
     ibs-number: 'IBS Number'
     company-name: 'Company name'
     siret-number: 'SIRET'
-    tooltip: 'The IBS number entered must be part of your portfolio and have an active commitment.'
-    signatory: 'Signatory'
     title: 'Civility'
     mister: 'Mister'
     madam: 'Madam'
@@ -178,16 +178,16 @@
     headquarters: 'Headquarters'
     address: 'Address'
     complement: 'Address complement'
-    zipCode: 'Postal Code'
+    zipCode: 'ZipCode'
     city: 'City'
     country: 'Country'
+    form:
+      error:
+        requiredField: 'Required field'
   fr-FR:
     ibs-number: 'Numéro IBS'
     company-name: 'Raison sociale'
     siret-number: 'N° SIRET'
-    tooltip: "Le numéro d’IBS saisi doit faire parti de votre
-      portefeuille et avoir un engagement actif."
-    signatory: 'Signataire'
     title: 'Civilité'
     mister: 'Monsieur'
     madam: 'Madame'
@@ -201,14 +201,17 @@
     zipCode: 'Code postal'
     city: 'Ville'
     country: 'Pays'
+    form:
+      error:
+        requiredField: 'Champ obligatoire'
 </i18n>
 
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed } from 'vue'
 import { createMandate } from '@/services/mandate'
-import { PIQuestionCircle } from '@kpmg/styleguide'
-import { FormModel, Rules } from './FormModels'
+import { FormModel, Rule } from './FormModels'
+import { PICheck } from '@kpmg/styleguide'
 
 interface FormProps {
   step: number
@@ -222,8 +225,8 @@ const { t } = useI18n({
 const createMandateFormRef = ref<any>()
 const createMandateForm = reactive<FormModel>({
   ibs: '',
-  siret: '',
-  companyName: '',
+  siretNumber: '',
+  name: '',
   title: '',
   firstName: '',
   lastName: '',
@@ -234,6 +237,10 @@ const createMandateForm = reactive<FormModel>({
   city: '',
   country: ''
 })
+
+const props = defineProps<FormProps>()
+
+const isIBSValid = ref(false)
 
 const areFieldsFilled = computed(() => {
   const fieldsToCheck = [
@@ -249,99 +256,24 @@ const areFieldsFilled = computed(() => {
   return fieldsToCheck.every(field => createMandateForm[field].trim() !== '')
 })
 
-const checkAndEmitEvents = () => {
-  if (areFieldsFilled.value) {
-    emit('next-step-event-form')
+const validateIBS = async (_: Rule, value: any, callback: any) => {
+  emit('loading-event-form')
+  isIBSValid.value = false
+  createMandateForm.siret = ''
+  createMandateForm.companyName = ''
+  if (value.toString().length === 10) {
+    await getDataByIbsNumber(value)
   } else {
-    emit('loading-event-form')
+    callback()
   }
 }
 
-watch(() => props.step, checkAndEmitEvents)
-watch(areFieldsFilled, checkAndEmitEvents)
-
-const handleIbsChange = async (newIbsValue: string) => {
-  if (newIbsValue.toString().length === 10) {
-    try {
-      emit('loading-event-form')
-      await mandate(newIbsValue)
-    } catch (error) {
-      console.error('Error in handleIbsChange:', error)
-    }
-  }
-}
-
-watch(() => createMandateForm.ibs, handleIbsChange)
-
-const emit = defineEmits(['next-step-event-form', 'loading-event-form'])
-
-const props = defineProps<FormProps>()
-
-const rules = reactive<Rules>({
-  ibs: [
-    {
-      required: true,
-      message: 'test value',
-      trigger: 'change'
-    }
-  ],
-  title: [
-    {
-      required: true,
-      message: 'Choix obligatoire',
-      trigger: 'change'
-    }
-  ],
-  firstName: [
-    {
-      required: true,
-      message: 'Champs obligatoire',
-      trigger: 'blur'
-    }
-  ],
-  lastName: [
-    {
-      required: true,
-      message: 'Champs obligatoire',
-      trigger: 'blur'
-    }
-  ],
-  address: [
-    {
-      required: true,
-      message: 'Champs obligatoire',
-      trigger: 'blur'
-    }
-  ],
-  zipCode: [
-    {
-      required: true,
-      message: 'Champs obligatoire',
-      trigger: 'blur'
-    }
-  ],
-  city: [
-    {
-      required: true,
-      message: 'Champs obligatoire',
-      trigger: 'blur'
-    }
-  ],
-  country: [
-    {
-      required: true,
-      message: 'Champs obligatoire',
-      trigger: 'blur'
-    }
-  ]
-})
-
-const mandate = async (ibsNumber: string) => {
+const getDataByIbsNumber = async (ibsNumber: string) => {
   try {
     const {
       data: {
-        raisonSociale: companyName,
-        siret,
+        name,
+        siretNumber,
         signatory: {
           title,
           firstName,
@@ -357,29 +289,108 @@ const mandate = async (ibsNumber: string) => {
         }
       }
     } = await createMandate(ibsNumber)
-
-    Object.assign(createMandateForm, {
-      siret,
-      companyName,
-      title,
-      firstName,
-      lastName,
-      email,
-      address,
-      addressComplement,
-      zipCode,
-      city,
-      country
-    })
-
-    emit('next-step-event-form')
-  } catch (error) {
-    console.error('Error creating mandate:', error)
+    isIBSValid.value = false
+    if (createMandateForm.ibs.toString().length === 10) {
+      Object.assign(createMandateForm, {
+        siretNumber,
+        name,
+        title,
+        firstName,
+        lastName,
+        email,
+        address,
+        addressComplement,
+        zipCode,
+        city,
+        country
+      })
+      isIBSValid.value = true
+      emit('next-step-event-form')
+    }
+  } catch (_) {
   }
 }
-</script>
 
-<style lang="scss" scoped>
+const checkAndEmitEvents = () => {
+  if (areFieldsFilled.value) {
+    emit('next-step-event-form')
+  } else {
+    emit('loading-event-form')
+  }
+}
+
+watch(() => props.step, checkAndEmitEvents)
+watch(areFieldsFilled, checkAndEmitEvents)
+
+const emit = defineEmits(['next-step-event-form', 'loading-event-form'])
+
+const rules = reactive<any>({
+  ibs: [
+    {
+      required: true,
+      message: t('form.error.requiredField'),
+      trigger: 'change'
+    },
+    {
+      validator: validateIBS, trigger: 'change'
+    }
+  ],
+  title: [
+    {
+      required: true,
+      message: 'Choix obligatoire',
+      trigger: 'change'
+    }
+  ],
+  firstName: [
+    {
+      required: true,
+      message: t('form.error.requiredField'),
+      trigger: 'blur'
+    }
+  ],
+  lastName: [
+    {
+      required: true,
+      message: t('form.error.requiredField'),
+      trigger: 'blur'
+    }
+  ],
+  address: [
+    {
+      required: true,
+      message: t('form.error.requiredField'),
+      trigger: 'blur'
+    }
+  ],
+  zipCode: [
+    {
+      required: true,
+      message: t('form.error.requiredField'),
+      trigger: 'blur'
+    }
+  ],
+  city: [
+    {
+      required: true,
+      message: t('form.error.requiredField'),
+      trigger: 'blur'
+    }
+  ],
+  country: [
+    {
+      required: true,
+      message: t('form.error.requiredField'),
+      trigger: 'blur'
+    }
+  ]
+})
+
+defineExpose({
+  createMandateForm
+})
+</script>
+<style lang="scss">
 .create-mandate-form {
   &__ibs {
     display: flex;
@@ -395,6 +406,12 @@ const mandate = async (ibsNumber: string) => {
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
+  }
+
+  .el-input__inner::-webkit-inner-spin-button,
+  .el-input__inner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
 </style>

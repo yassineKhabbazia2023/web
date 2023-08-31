@@ -1,8 +1,8 @@
 export interface FormModel {
     [key: string]: string;
     ibs: string;
-    siret: string;
-    companyName: string;
+    siretNumber: string;
+    name: string;
     title: string;
     firstName: string;
     lastName: string;
