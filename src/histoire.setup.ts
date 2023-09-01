@@ -6,6 +6,7 @@ import ElementPlus,
   ElInput,
   ElOption,
   ElOptionGroup,
+  ElRadio,
   ElStep,
   ElSteps,
   ElSwitch,
@@ -43,6 +44,7 @@ export const setupVue3 = defineSetupVue3(({ app }) => {
   app.component('PInput', ElInput)
   app.component('POptionGroup', ElOptionGroup)
   app.component('POption', ElOption)
+  app.component('PRadio', ElRadio)
   app.component('PStepItem', ElStep)
   app.component('PSteps', ElSteps)
   app.component('PSwitch', ElSwitch)

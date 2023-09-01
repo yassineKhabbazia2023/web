@@ -1,4 +1,4 @@
-export interface FileLineNavigationItemTypes {
+export interface PFileLineNavigationItemTypes {
   selected?: boolean;
   disabled?: boolean;
   folderName?: string;

@@ -1,6 +1,6 @@
 <template>
   <button
-    class="file-line-navigation-item"
+    class="p-file-line-navigation-item"
     :class="{ selected: isSelected, disabled: props.disabled }"
     @click="handleClickFileNavigation(folderId)"
     @dblclick="handleDoubleClickFileNavigation(folderId)"
@@ -8,7 +8,7 @@
       <PIcon size="16">
         <PIFolder />
       </PIcon>
-      <span class="file-line-navigation-item__name">{{ folderName }}</span>
+      <span class="p-file-line-navigation-item__name">{{ folderName }}</span>
       <PIcon size="16">
         <PIChevronRight />
       </PIcon>
@@ -18,9 +18,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PIcon from '../PIcon'
-import type { FileLineNavigationItemTypes } from './FileLineNavigationItemTypes'
+import type { PFileLineNavigationItemTypes } from './PFileLineNavigationItemTypes'
 
-const props = withDefaults(defineProps<FileLineNavigationItemTypes>(), {
+const props = withDefaults(defineProps<PFileLineNavigationItemTypes>(), {
   selected: false,
   disabled: false,
   folderName: 'Name of folder'
@@ -44,7 +44,7 @@ const handleDoubleClickFileNavigation = (folderId: number) => {
 </script>
 
 <style lang="scss" scoped>
-.file-line-navigation-item {
+.p-file-line-navigation-item {
   display: flex;
   align-items: center;
   padding: 8px 16px;

@@ -28,10 +28,10 @@ const firstProps = reactive({
 </script>
 
 <docs lang="md">
-<div class="responsive-iframe-container">
-<iframe class="responsive-iframe"
-  src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?
-  type=design&node-id=1344-6365&mode=design&t=hVRdmAH5RN6AN2wY-0;">
-</iframe>
-</div>
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe"
+      src="https://www.figma.com/file/hycpUsOrc1fFD7xcYY0ryN/%F0%9F%A6%84-Librairie-de-composants?
+      type=design&node-id=1344-6365&mode=design&t=hVRdmAH5RN6AN2wY-0;">
+    </iframe>
+  </div>
 </docs>

@@ -1,18 +1,18 @@
 <template>
   <Story title="2. Atoms/Radio" icon="material-symbols:radio-button-checked-outline">
     <Variant title="Basic Usage">
-      <el-radio
+      <PRadio
         v-model="radio"
         label="1"
         :disabled="isDisabled">
         Option 1
-      </el-radio>
-      <el-radio
+      </PRadio>
+      <PRadio
         v-model="radio"
         label="2"
         :disabled="isDisabled">
         Option 2
-      </el-radio>
+      </PRadio>
       <template #controls>
         <HstCheckbox v-model="isDisabled" title="Disabled" />
       </template>
