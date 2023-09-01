@@ -1,12 +1,42 @@
 import { describe, expect, it } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { VueWrapper, mount } from '@vue/test-utils'
 import Header from './'
+import { createRouter, createWebHistory } from 'vue-router'
+import { menu } from '../../../routes'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: menu
+})
+
+const createWrapper = () => mount(Header, {
+  global: {
+    stubs: {
+      PHeader: {
+        template: `<div class="el-menu--header">
+          <slot name="logo" />
+          <slot name="menu" />
+          <slot name="header-right" />
+        </div>`
+      },
+      PHeaderTabs: { template: '<div class="el-menu"><slot /></div>' },
+      PImage: { template: '<div class="menu-item--logo"><slot /></div>' },
+      PAvatar: { template: '<div class="el-avatar"><slot /></div>' },
+      PToolbox: { template: '<div><slot /></div>' }
+    },
+    plugins: [router]
+  }
+})
 
 describe('header', () => {
   it('should display header section', () => {
-    const wrapper = mount(Header)
-    const header = wrapper.find('header')
+    const wrapper: VueWrapper<any> = createWrapper()
+    const header = wrapper.find('.el-menu--header')
+    const logo = wrapper.find('.menu-item--logo')
+    const avatar = wrapper.find('.el-avatar')
 
-    expect(header.exists())
+    expect(header.exists()).toBeTruthy()
+    expect(logo.exists()).toBeTruthy()
+    expect(avatar.exists()).toBeTruthy()
   })
 })

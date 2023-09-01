@@ -1,17 +1,17 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside width="200px" class="add-border">
-        <Navbar />
-      </el-aside>
-      <el-container>
-        <el-header class="add-border">
-          <Header />
-        </el-header>
-        <el-main class="add-border">
+      <el-header height="52">
+        <Header />
+      </el-header>
+      <el-container class="aside-main-container">
+        <el-aside class="aside-container">
+          <Navbar class="navbar-aside-container" />
+        </el-aside>
+        <el-container class="main-container">
           <h3>{{ t('title') }}</h3>
           <router-view />
-        </el-main>
+        </el-container>
       </el-container>
     </el-container>
   </div>
@@ -34,9 +34,27 @@ const { t } = useI18n({
   useScope: 'local'
 })
 </script>
-
 <style scoped>
-.add-border {
-  border: 1px dashed blueviolet;
+.aside-main-container {
+  height: 100vh;
+  display: flex;
+}
+
+.navbar-aside-container:not(.el-menu--collapse) {
+  width: 240px;
+  @media only screen and (max-width: 991px)  {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 991px)  {
+  .aside-main-container {
+    display: contents;
+  }
+}
+
+.main-container {
+  padding: 15px;
+  width: 100%;
 }
 </style>

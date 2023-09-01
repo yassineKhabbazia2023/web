@@ -1,43 +1,44 @@
 <template>
-  <nav>
-    <div>
-      <h2>{{ t('title') }}</h2>
-    </div>
-    <div v-for="item in MENU" :key="item.name">
-      <router-link :to="{ name: item.name }">
-        {{ item.title }}
-      </router-link>
-    </div>
-  </nav>
+  <PNavbar
+    class="aside"
+    :entities="entities"
+    :menuList="menu"
+  >
+    <template #title >
+      {{ t('title') }}
+    </template>
+  </PNavbar>
 </template>
 
 <i18n lang="yaml">
   en-US:
-    title: 'Navbar'
-    goToHome: 'Go to home'
-    goToLogin: 'Go to login'
+    title: 'Entities'
   fr-FR:
-    title: 'Navbar'
-    goToHome: "Aller à l'accueil"
-    goToLogin: 'Aller à la page de login'
+    title: 'Portefeuille'
 </i18n>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { menu } from '../../../routes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-const MENU = [
+// TODO: replace with entity list from back
+const entities = [
   {
-    title: t('goToHome'),
-    name: 'home'
+    name: 'Restaurant Johnny s pizza - Courbevoie',
+    idAccount: 'idAccount',
+    icon: 'PICupHot',
+    color: 'orange'
   },
   {
-    title: t('goToLogin'),
-    name: 'login'
+    name: 'Jean Levage',
+    idAccount: 'idAccount 2',
+    icon: 'PIShop',
+    color: 'green'
   }
 ]
 </script>
