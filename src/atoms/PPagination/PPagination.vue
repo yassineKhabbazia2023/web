@@ -23,7 +23,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import { ElPagination } from 'element-plus'
-import PDropdown from '@/atoms/PDropdown'
 
 export interface PaginationProps {
   showTotalPageCounter: boolean

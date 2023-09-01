@@ -116,7 +116,6 @@
 </template>
 
 <script setup lang="ts">
-import PDropdown from '.'
 import { groupOptions, selectOptions, templateSourceGroup } from '@/constants/dropdownOptions'
 import { ref } from 'vue'
 

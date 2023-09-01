@@ -45,18 +45,22 @@ export const PPopperArrow = ElPopperArrow
 export const PPopperContent = ElPopperContent
 
 // base UI library asynchrones
+export const PAutocomplete =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElAutocomplete }) => ElAutocomplete)
+  ) as any
 export const PCol =
   defineAsyncComponent(
     () => import('element-plus').then(({ ElCol }) => ElCol)
-  )
-export const PTableColumn =
-  defineAsyncComponent(
-    () => import('element-plus').then(({ ElTableColumn }) => ElTableColumn)
   )
 export const PConfigProvider =
   defineAsyncComponent(
     () => import('element-plus').then(({ ElConfigProvider }) => ElConfigProvider)
   )
+export const PDropdown =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElSelect }) => ElSelect)
+  ) as any
 export const PForm =
   defineAsyncComponent(
     () => import('element-plus').then(({ ElForm }) => ElForm)
@@ -85,10 +89,6 @@ export const PRow =
   defineAsyncComponent(
     () => import('element-plus').then(({ ElRow }) => ElRow)
   )
-export const PDropdown =
-  defineAsyncComponent(
-    () => import('element-plus').then(({ ElSelect }) => ElSelect)
-  ) as any
 export const PScrollbar =
   defineAsyncComponent(
     () => import('element-plus').then(({ ElScrollbar }) => ElScrollbar)
@@ -105,6 +105,10 @@ export const PSwitch =
 defineAsyncComponent(
   () => import('element-plus').then(({ ElSwitch }) => ElSwitch)
 )
+export const PTableColumn =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElTableColumn }) => ElTableColumn)
+  )
 export const PTabPane =
 defineAsyncComponent(
   () => import('element-plus').then(({ ElTabPane }) => ElTabPane)

@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 // import wrapperFactory from 'tests/utils/wrapperFactory'
 import PPagination from './'
-import PDropdown from '@/atoms/PDropdown'
 import { ElSelect, ElPagination } from 'element-plus'
 
 type PaginationProps = {
@@ -21,7 +20,12 @@ const defaultProps: PaginationProps = {
 
 const createWrapper = (props = defaultProps) =>
   mount(PPagination, {
-    props
+    props,
+    global: {
+      stubs: {
+        PDropdown: ElSelect
+      }
+    }
   })
 
 describe('pPagination', () => {
@@ -45,8 +49,7 @@ describe('pPagination', () => {
     })
     it('should set page range selector postion to "top"', () => {
       const wrapper = createWrapper()
-      const dropdown = wrapper.findComponent(PDropdown)
-      const select = dropdown.findComponent(ElSelect)
+      const select = wrapper.findComponent(ElSelect)
       expect(select.props('placement')).toBe('top')
       expect(select.props('modelValue')).toBe(100)
     })
@@ -63,7 +66,7 @@ describe('pPagination', () => {
   describe('events', () => {
     it('should emit update:modelValue event', async () => {
       const wrapper = createWrapper()
-      const dropdown = wrapper.findComponent(PDropdown).findComponent(ElSelect)
+      const dropdown = wrapper.findComponent(ElSelect)
       dropdown.setValue(300)
       await dropdown.trigger('change')
       expect(dropdown.emitted('update:modelValue')).toHaveLength(1)
