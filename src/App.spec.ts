@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import App from './App.vue'
 
 const HOME_LAYOUT_TITLE = 'This is the Home layout'
@@ -53,15 +53,15 @@ const router = createRouter({
   routes
 })
 
+const createWrapper = () => mount(App, {
+  global: {
+    plugins: [router]
+  }
+})
+
 describe('app', () => {
   it('load the right page with the right layout according to the route', async () => {
-    const wrapper = mount(App, {
-      global: {
-        plugins: [router]
-      }
-    })
-    const getLayoutTitle = () => wrapper.find('h3')
-    const getPageTitle = () => wrapper.find('.pageTitle')
+    const wrapper: VueWrapper<any> = createWrapper()
 
     router.push({ name: 'home' })
     await wrapper.vm.$nextTick()
@@ -74,8 +74,17 @@ describe('app', () => {
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    const getLayoutTitle = () => wrapper.find('h3')
+    const getHomePageTitle = () => wrapper.find('p')
+    const elHeader = wrapper.find('pheader')
+    const elAside = wrapper.find('aside')
+    const getPageTitle = () => wrapper.find('.pageTitle')
+
     expect(getLayoutTitle().text()).toBe(HOME_LAYOUT_TITLE)
-    expect(getPageTitle().text()).toBe(HOME_PAGE_TITLE)
+    expect(getHomePageTitle().text()).toBe(HOME_PAGE_TITLE)
+    expect(elHeader.exists()).toBeTruthy()
+    expect(elAside.exists()).toBeTruthy()
 
     router.push({ name: 'login' })
     await wrapper.vm.$nextTick()

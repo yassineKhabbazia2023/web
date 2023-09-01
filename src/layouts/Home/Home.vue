@@ -1,14 +1,14 @@
 <template>
   <div class="common-layout">
-      <PContainer>
-        <PAside width="200px" class="add-border">
-          <Navbar />
+      <PContainer class="aside-main-container">
+        <PAside class="aside-container">
+          <Navbar class="navbar-aside-container" />
         </PAside>
         <PContainer>
           <PCHeader class="add-border">
             <Header />
           </PCHeader>
-          <PMain class="add-border">
+          <PMain class="main-container">
           <h3>{{ t('title') }}</h3>
           <router-view />
           </PMain>
@@ -35,9 +35,27 @@ const { t } = useI18n({
   useScope: 'local'
 })
 </script>
-
 <style scoped>
-.add-border {
-  border: 1px dashed blueviolet;
+.aside-main-container {
+  height: 100vh;
+  display: flex;
+}
+
+.navbar-aside-container:not(.el-menu--collapse) {
+  width: 240px;
+  @media only screen and (max-width: 991px)  {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 991px)  {
+  .aside-main-container {
+    display: contents;
+  }
+}
+
+.main-container {
+  padding: 15px;
+  width: 100%;
 }
 </style>
