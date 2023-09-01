@@ -1,8 +1,11 @@
 import { RouteRecordRaw } from 'vue-router'
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
-import './style.scss'
-import { commoni18n as i18n, commonPinia as pinia, routes } from '@kpmg/common'
+import {
+  commoni18n as i18n,
+  commonPinia as pinia,
+  routes
+} from '@kpmg/common'
 
 import styleGuide from '@kpmg/styleguide'
 
@@ -21,12 +24,6 @@ const vueLifecycles = singleSpaVue({
 export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
-
-routes.value.push({
-  path: '/',
-  name: 'home',
-  component: () => import('@/pages/home')
-} as RouteRecordRaw)
 
 routes.value.push({
   path: '/login',

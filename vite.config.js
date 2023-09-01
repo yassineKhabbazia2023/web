@@ -33,6 +33,7 @@ export default ({ mode }) =>
         viteExternalsPlugin({
           vue: 'Vue',
           'vue-i18n': 'VueI18n',
+          'vue-router': 'VueRouter',
           pinia: 'Pinia',
           '@kpmg/common': 'Common',
           '@kpmg/styleguide': 'StyleGuide'
