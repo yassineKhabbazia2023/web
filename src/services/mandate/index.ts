@@ -3,7 +3,7 @@
 
 export const createMandate = async ({
   ibsNumber
-}: any): Promise<any> =>
+}: { ibsNumber: string }): Promise<any> =>
   Promise.resolve({
     data: {
       id: '140edf1b-0a59-4f70-abbc-052462faa010',

@@ -59,10 +59,10 @@
               t('title')
             }}</label>
           </template>
-          <PRadio v-model="createMandateForm.title" :label="t('mister')">
+          <PRadio v-model="createMandateForm.title" label="M">
             {{ t('mister') }}
           </PRadio>
-          <PRadio v-model="createMandateForm.title" :label="t('madam')">
+          <PRadio v-model="createMandateForm.title" label="Mme">
             {{ t('madam') }}
           </PRadio>
         </PFormItem>
@@ -169,8 +169,8 @@
     company-name: 'Company name'
     siret-number: 'SIRET'
     title: 'Civility'
-    mister: 'Mister'
-    madam: 'Madam'
+    # mister: 'Mister'
+    # madam: 'Madam'
     lastName: 'Last name'
     firstName: 'First name'
     email: 'Email'
@@ -189,8 +189,8 @@
     company-name: 'Raison sociale'
     siret-number: 'N° SIRET'
     title: 'Civilité'
-    mister: 'Monsieur'
-    madam: 'Madame'
+    # mister: 'Monsieur'
+    # madam: 'Madame'
     lastName: 'Prénom'
     firstName: 'Nom'
     email: 'Adresse mail'
@@ -256,7 +256,7 @@ const areFieldsFilled = computed(() => {
   return fieldsToCheck.every(field => createMandateForm[field].trim() !== '')
 })
 
-const validateIBS = async (_: Rule, value: number, callback: any) => {
+const validateIBS = async (_: Rule, value: string, callback: any) => {
   emit('loading-event-form')
   isIBSValid.value = false
   createMandateForm.siret = ''
@@ -268,7 +268,7 @@ const validateIBS = async (_: Rule, value: number, callback: any) => {
   }
 }
 
-const getDataByIbsNumber = async (ibsNumber: number) => {
+const getDataByIbsNumber = async (ibsNumber: string) => {
   try {
     const {
       data: {
@@ -288,7 +288,7 @@ const getDataByIbsNumber = async (ibsNumber: number) => {
           }
         }
       }
-    } = await createMandate(ibsNumber)
+    } = await createMandate({ ibsNumber })
     isIBSValid.value = false
     if (createMandateForm.ibs.toString().length === 10) {
       Object.assign(createMandateForm, {
