@@ -4,9 +4,9 @@
       <p v-if="user && user.firstName">
         {{ t('welcomeMsg', { firstName: user.firstName, lastName: user.lastName }) }}
       </p>
-      <el-button type="primary" @click="count++">
+      <PButton type="primary" @click="count++">
         {{ t('count', { count }) }}
-      </el-button>
+      </PButton>
       <p>{{ t('edit', { component: 'components/helloWorld'}) }}</p>
     </div>
 
@@ -57,6 +57,7 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { commonStore } from '@kpmg/common'
 import { storeToRefs } from 'pinia'
+import { PButton } from '@kpmg/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
