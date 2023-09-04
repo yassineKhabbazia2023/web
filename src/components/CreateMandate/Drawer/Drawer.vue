@@ -83,7 +83,7 @@ import { PIArrowRight, PIQuestionCircle } from '@kpmg/styleguide'
 import Form from '@/components/CreateMandate/Form'
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
-const titleMap = {
+const titleMap: any = {
   1: 'entity',
   2: 'signatory',
   3: 'bank-details'

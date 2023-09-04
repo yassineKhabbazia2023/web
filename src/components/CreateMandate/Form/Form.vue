@@ -27,7 +27,7 @@
           </PInput>
         </PFormItem>
         <div>
-          <el-row :gutter="8">
+          <el-row :gutter="16">
             <el-col :span="12">
               <PFormItem inline :label="t('company-name')">
                 <PInput
@@ -387,7 +387,8 @@ const rules = reactive<any>({
 })
 
 defineExpose({
-  createMandateForm
+  createMandateForm,
+  validateIBS
 })
 </script>
 <style lang="scss">
