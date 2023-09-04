@@ -78,7 +78,7 @@ describe('form.vue', () => {
 
   it('validateIBS when ibs length is equal to 10', async () => {
     const wrapper = createWrapper({ step: 1 })
-    wrapper.vm.createMandateForm.ibs = 1999072764
+    wrapper.vm.createMandateForm.ibs = '1999072764'
     wrapper.vm.validateIBS({
       required: true,
       message: '',
