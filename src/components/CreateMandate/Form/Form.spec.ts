@@ -28,13 +28,6 @@ vi.mock('@/services/mandate', () => {
   return { createMandate }
 })
 
-vi.mock('@kpmg/styleguide', () => {
-  const PForm = vi.fn()
-  const PIcon = vi.fn()
-  const PInput = vi.fn()
-  return { PForm, PIcon, PInput }
-})
-
 const i18n = createI18n({
   legacy: false,
   locale: 'en-US',
@@ -83,26 +76,31 @@ describe('form.vue', () => {
     expect(wrapper.exists()).toBeTruthy()
   })
 
-  /* it('reflects changes in drawerModel when modelValue prop is updated', async () => {
+  it('validateIBS when ibs length is equal to 10', async () => {
     const wrapper = createWrapper({ step: 1 })
-
-    // Use a helper function to get the drawerModel value
-    const getDrawerModel = () => wrapper.props('modelValue')
-
-    expect(getDrawerModel()).toBeFalsy()
-    await wrapper.setProps({ modelValue: true })
-    expect(getDrawerModel()).toBeTruthy()
+    wrapper.vm.createMandateForm.ibs = 1999072764
+    wrapper.vm.validateIBS({
+      required: true,
+      message: '',
+      trigger: 'change'
+    }, 1999072764, () => true)
+    expect(wrapper.exists()).toBeTruthy()
   })
 
-  it('emits update:modelValue event when drawerModel value changes', async () => {
-    const wrapper = createWrapper({
-      step: 1
-    })
+  it('validateIBS when ibs length is not equal to 10', async () => {
+    const wrapper = createWrapper({ step: 1 })
+    wrapper.vm.validateIBS({
+      required: true,
+      message: '',
+      trigger: 'change'
+    }, 199907276, () => true)
+    expect(wrapper.exists()).toBeTruthy()
+  })
 
-    wrapper.vm.drawerModel = true
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.emitted()['update:modelValue']).toBeTruthy()
-    expect(wrapper.emitted()['update:modelValue'][0]).toStrictEqual([true])
-  }) */
+  it('checkAndEmitEvents when fields are not filled', async () => {
+    const wrapper = createWrapper({ step: 2 })
+    wrapper.vm.createMandateForm.firstName = ''
+    wrapper.vm.checkAndEmitEvents()
+    expect(wrapper.emitted()['loading-event-form']).toBeTruthy()
+  })
 })

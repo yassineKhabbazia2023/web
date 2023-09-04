@@ -122,7 +122,10 @@ const goToNextStep = () => {
 }
 
 defineExpose({
-  drawerModel
+  drawerModel,
+  goToNextStep,
+  currentStep,
+  nextStepAvailability
 })
 </script>
 <style lang="scss">
@@ -137,6 +140,7 @@ defineExpose({
     line-height: 120%;
     padding: 4px 0px;
     margin-bottom: 16px;
+    text-transform: capitalize;
   }
   &__stepper {
     margin-top: -18px;

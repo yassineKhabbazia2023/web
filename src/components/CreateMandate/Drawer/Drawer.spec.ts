@@ -3,12 +3,6 @@ import CreateMandateDrawer from '.'
 import { createI18n } from 'vue-i18n'
 import { expect, describe, it, vi } from 'vitest'
 
-vi.mock('@kpmg/styleguide', () => {
-  const PIArrowRight = vi.fn()
-  const PIQuestionCircle = vi.fn()
-  return { PIArrowRight, PIQuestionCircle }
-})
-
 const i18n = createI18n({
   legacy: false,
   locale: 'en-US',
@@ -59,5 +53,15 @@ describe('createMandateDrawer.vue', () => {
 
     expect(wrapper.emitted()['update:modelValue']).toBeTruthy()
     expect(wrapper.emitted()['update:modelValue'][0]).toStrictEqual([true])
+  })
+
+  it('goToNextStep when currentStep is equal to 1 and after when currentStep is equal to 2', () => {
+    const wrapper = createWrapper({ modelValue: true })
+    wrapper.vm.goToNextStep()
+    expect(wrapper.vm.currentStep).toBe(2)
+    expect(wrapper.vm.nextStepAvailability).toBe(false)
+    wrapper.vm.goToNextStep()
+    expect(wrapper.vm.currentStep).toBe(3)
+    expect(wrapper.vm.nextStepAvailability).toBe(false)
   })
 })

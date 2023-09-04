@@ -256,7 +256,7 @@ const areFieldsFilled = computed(() => {
   return fieldsToCheck.every(field => createMandateForm[field].trim() !== '')
 })
 
-const validateIBS = async (_: Rule, value: any, callback: any) => {
+const validateIBS = async (_: Rule, value: number, callback: any) => {
   emit('loading-event-form')
   isIBSValid.value = false
   createMandateForm.siret = ''
@@ -268,7 +268,7 @@ const validateIBS = async (_: Rule, value: any, callback: any) => {
   }
 }
 
-const getDataByIbsNumber = async (ibsNumber: string) => {
+const getDataByIbsNumber = async (ibsNumber: number) => {
   try {
     const {
       data: {
@@ -388,7 +388,8 @@ const rules = reactive<any>({
 
 defineExpose({
   createMandateForm,
-  validateIBS
+  validateIBS,
+  checkAndEmitEvents
 })
 </script>
 <style lang="scss">
@@ -416,4 +417,3 @@ defineExpose({
   }
 }
 </style>
-
