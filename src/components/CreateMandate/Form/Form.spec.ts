@@ -48,16 +48,13 @@ const createWrapper = (props: any = {}) =>
   })
 
 describe('form.vue', () => {
-  it('renders the component when modelValue is true', () => {
+  it('renders the component when step value is 1', async () => {
     const wrapper = createWrapper({ step: 1 })
-    const input = wrapper.find('pinput[type=number]')
-    // eslint-disable-next-line no-console
-    console.log('Input spec ', input.text())
-    // await input.setValue('1234567890')
-    // eslint-disable-next-line no-console
-    console.log('Form spec ', wrapper.html())
-    /* expect(wrapper.emitted()).toHaveProperty('loading-event-form')
-    expect(wrapper.emitted()).toHaveProperty('next-step-event-form') */
+    expect(wrapper.exists()).toBeTruthy()
+  })
+
+  it('renders the component when step value is 2', async () => {
+    const wrapper = createWrapper({ step: 2 })
     expect(wrapper.exists()).toBeTruthy()
   })
 
