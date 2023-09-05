@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import { ElImage } from 'element-plus'
 import { imageResolver } from '@/utils/imageResolver'
 
 export interface PImageCustomProps {

@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { ElCarousel } from 'element-plus'
 import PCarouselItem from '@/atoms/PCarouselItem'
 
 export interface PCarouselItemProps {
