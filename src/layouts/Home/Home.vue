@@ -1,19 +1,19 @@
 <template>
   <div class="common-layout">
-    <el-container>
-      <el-header height="52">
-        <Header />
-      </el-header>
-      <el-container class="aside-main-container">
-        <el-aside class="aside-container">
+      <PContainer class="aside-main-container">
+        <PAside class="aside-container">
           <Navbar class="navbar-aside-container" />
-        </el-aside>
-        <el-container class="main-container">
+        </PAside>
+        <PContainer>
+          <PCHeader class="add-border">
+            <Header />
+          </PCHeader>
+          <PMain class="main-container">
           <h3>{{ t('title') }}</h3>
           <router-view />
-        </el-container>
-      </el-container>
-    </el-container>
+          </PMain>
+        </PContainer>
+      </PContainer>
   </div>
 </template>
 
@@ -28,6 +28,7 @@
 import { useI18n } from 'vue-i18n'
 import Header from './Header'
 import Navbar from './Navbar'
+import { PMain, PCHeader, PAside, PContainer } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

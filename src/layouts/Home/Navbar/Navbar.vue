@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { menu } from '../../../routes'
+import { PNavbar } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

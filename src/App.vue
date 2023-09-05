@@ -1,8 +1,13 @@
 <template>
-  <component :is="getLayout" />
+  <Suspense>
+    <PConfigProvider>
+      <component :is="getLayout" />
+    </PConfigProvider>
+  </Suspense>
 </template>
 
 <script setup lang="ts">
+import { PConfigProvider } from '@kpmg/styleguide'
 import { defineAsyncComponent, ref, markRaw, watch } from 'vue'
 import { useRoute } from 'vue-router'
 

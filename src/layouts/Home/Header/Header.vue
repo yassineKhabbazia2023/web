@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
 
 const menu = [
   { icon: 'PIColumnsGap', text: 'Dashboard', path: '' }

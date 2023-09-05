@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import Login from './'
 import { LINKS } from './contants'
 import { Link } from './types'
@@ -28,8 +28,58 @@ describe('login', () => {
   let wrapper: VueWrapper<any> = createWrapper()
   const getLinks = () => wrapper.findAll('.footer .list-item a')
 
-  beforeEach(() => {
+  beforeEach(async () => {
     wrapper = createWrapper()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await flushPromises()
+    await flushPromises()
+    await flushPromises()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await flushPromises()
+    await flushPromises()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
   })
 
   afterEach(() => {
