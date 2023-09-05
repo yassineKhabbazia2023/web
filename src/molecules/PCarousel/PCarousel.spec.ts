@@ -1,11 +1,18 @@
 import wrapperFactory from '@tests/utils/wrapperFactory'
 import PCarousel from '.'
+import { ElCarousel, ElCarouselItem } from 'element-plus'
 import { describe, it, expect } from 'vitest'
 import { VueWrapper } from '@vue/test-utils'
 
 const createWrapper = (props: any = {}) =>
   wrapperFactory(PCarousel, {
-    props
+    props,
+    global: {
+      stubs: {
+        ElCarousel,
+        ElCarouselItem
+      }
+    }
   })
 
 describe('pCarousel', () => {
@@ -25,7 +32,7 @@ describe('pCarousel', () => {
 
   it('should display the carousel component', () => {
     const wrapper: VueWrapper<any> = createWrapper({ items })
-    const carouselElement = wrapper.find('el-carousel')
+    const carouselElement = wrapper.find('.el-carousel')
     const carouselItem = wrapper.findAll('p-carousel-item-stub')
     expect(carouselElement.exists()).toBeTruthy()
     expect(carouselItem).toHaveLength(2)
