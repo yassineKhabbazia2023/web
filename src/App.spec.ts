@@ -51,7 +51,8 @@ const createWrapper = () => mount(App, {
       PHeaderTabs: { template: '<div class="el-menu"><slot /></div>' },
       PAvatar: { template: '<div class="el-avatar"><slot /></div>' },
       PToolbox: { template: '<div><slot /></div>' },
-      PNavbar: { template: '<div><slot /></div>' }
+      PNavbar: { template: '<div><slot /></div>' },
+      PBottomMenu: { template: '<div class="el-menu--bottom"><slot /></div>' }
     }
   }
 })
@@ -67,12 +68,14 @@ describe('app', () => {
     const getHomePageTitle = () => wrapper.find('p')
     const elHeader = wrapper.find('el-header')
     const elAside = wrapper.find('el-aside')
+    const bottomMenu = wrapper.find('.el-menu--bottom')
     const getPageTitle = () => wrapper.find('.pageTitle')
 
     expect(getLayoutTitle().text()).toBe(HOME_LAYOUT_TITLE)
     expect(getHomePageTitle().text()).toBe(HOME_PAGE_TITLE)
     expect(elHeader.exists()).toBeTruthy()
     expect(elAside.exists()).toBeTruthy()
+    expect(bottomMenu.exists()).toBeTruthy()
 
     router.push({ name: 'login' })
     await vi.dynamicImportSettled()
