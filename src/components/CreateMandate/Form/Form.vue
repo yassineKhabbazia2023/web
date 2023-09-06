@@ -27,16 +27,16 @@
           </PInput>
         </PFormItem>
         <div>
-          <el-row :gutter="16">
-            <el-col :span="12">
+          <PRow :gutter="16">
+            <PCol :span="12">
               <PFormItem inline :label="t('company-name')">
                 <PInput
                   v-model="createMandateForm.name"
                   disabled>
                 </PInput>
               </PFormItem>
-            </el-col>
-            <el-col :span="12">
+            </PCol>
+            <PCol :span="12">
               <PFormItem
                 inline
                 :label="t('siret-number')"
@@ -48,8 +48,8 @@
                 >
                 </PInput>
               </PFormItem>
-            </el-col>
-          </el-row>
+            </PCol>
+          </PRow>
         </div>
       </div>
       <div v-if="step === 2">
@@ -67,8 +67,8 @@
           </PRadio>
         </PFormItem>
         <div>
-          <el-row :gutter="8">
-            <el-col :span="12">
+          <PRow :gutter="8">
+            <PCol :span="12">
               <PFormItem
                 prop="lastName"
                 inline
@@ -79,8 +79,8 @@
                   state="default">
                 </PInput>
               </PFormItem>
-            </el-col>
-            <el-col :span="12">
+            </PCol>
+            <PCol :span="12">
               <PFormItem
                 prop="firstName"
                 inline
@@ -88,8 +88,8 @@
                 <PInput v-model="createMandateForm.firstName">
                 </PInput>
               </PFormItem>
-            </el-col>
-          </el-row>
+            </PCol>
+          </PRow>
         </div>
         <PFormItem
           inline
@@ -124,8 +124,8 @@
           </PInput>
         </PFormItem>
         <div>
-          <el-row :gutter="8">
-            <el-col :span="8">
+          <PRow :gutter="8">
+            <PCol :span="8">
               <PFormItem
                 prop="zipCode"
                 inline
@@ -136,8 +136,8 @@
                   state="default">
                 </PInput>
               </PFormItem>
-            </el-col>
-            <el-col :span="16">
+            </PCol>
+            <PCol :span="16">
               <PFormItem
                 prop="city"
                 inline
@@ -145,8 +145,8 @@
                 <PInput v-model="createMandateForm.city">
                 </PInput>
               </PFormItem>
-            </el-col>
-          </el-row>
+            </PCol>
+          </PRow>
         </div>
         <PFormItem
           prop="country"
@@ -211,7 +211,16 @@ import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed } from 'vue'
 import { createMandate } from '@/services/mandate'
 import { FormModel, Rule } from './FormModels'
-import { PICheck } from '@kpmg/styleguide'
+import {
+  PICheck,
+  PForm,
+  PFormItem,
+  PInput,
+  PIcon,
+  PRadio,
+  PCol,
+  PRow
+} from '@kpmg/styleguide'
 
 interface FormProps {
   step: number

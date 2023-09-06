@@ -79,7 +79,16 @@
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
-import { PIArrowRight, PIQuestionCircle } from '@kpmg/styleguide'
+import {
+  PIArrowRight,
+  PIQuestionCircle,
+  PDrawer,
+  PSteps,
+  PStepItem,
+  PTooltip,
+  PIcon,
+  PButton
+} from '@kpmg/styleguide'
 import Form from '@/components/CreateMandate/Form'
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
