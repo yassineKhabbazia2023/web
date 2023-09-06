@@ -38,9 +38,6 @@ import { useRoute } from 'vue-router'
 import Header from './Header'
 import Navbar from './Navbar'
 
-const route = useRoute()
-const routeActive = route.path
-
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
@@ -55,6 +52,9 @@ const menuBottomMenu = menu.map(({ text, path, icon }) => ({
   icon,
   path
 }))
+
+const route = useRoute()
+const routeActive = route.path
 </script>
 <style scoped>
 .aside-main-container {
