@@ -1,25 +1,27 @@
 <template>
   <div class="common-layout">
-    <el-container>
-      <el-header height="52">
-        <Header :menu="menu"/>
-      </el-header>
-      <el-container class="aside-main-container">
-        <el-aside class="aside-container">
+    <PContainer>
+      <PCHeader height="52">
+        <Header
+          :menu="menu"
+        />
+      </PCHeader>
+      <PContainer class="aside-main-container">
+        <PAside class="aside-container">
           <Navbar class="navbar-aside-container" />
-        </el-aside>
-        <el-container class="main-container">
+        </PAside>
+        <PContainer class="main-container">
           <h3>{{ t('title') }}</h3>
           <router-view />
-        </el-container>
-        <el-container class="home-bottom-menu">
+        </PContainer>
+        <PContainer class="home-bottom-menu">
           <PBottomMenu
             :defaultActive="routeActive"
             :items="menuBottomMenu"
           />
-        </el-container>
-      </el-container>
-    </el-container>
+        </PContainer>
+      </PContainer>
+    </PContainer>
   </div>
 </template>
 

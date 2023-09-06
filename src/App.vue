@@ -1,5 +1,9 @@
 <template>
-  <component :is="getLayout" />
+  <Suspense>
+    <PConfigProvider>
+      <component :is="getLayout" />
+    </PConfigProvider>
+  </Suspense>
 </template>
 
 <script setup lang="ts">
