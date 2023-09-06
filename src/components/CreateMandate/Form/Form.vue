@@ -12,7 +12,7 @@
         <PFormItem
           prop="ibs"
           :label="t('ibs-number')"
-          validateStatus="primary"
+          validateStatus=""
           required>
           <PInput v-model="createMandateForm.ibs" type="number">
             <template #suffix>
