@@ -30,7 +30,7 @@ const waitForAsyncOperations = async () => {
 }
 
 describe('header.vue', () => {
-  let i18n
+  let i18n: any
 
   beforeEach(() => {
     i18n = setupI18n()

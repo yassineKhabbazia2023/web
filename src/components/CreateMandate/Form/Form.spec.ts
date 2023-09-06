@@ -93,7 +93,7 @@ describe('form.vue', () => {
       required: true,
       message: '',
       trigger: 'change'
-    }, 199907276, () => true)
+    }, '199907276', () => true)
     expect(wrapper.exists()).toBeTruthy()
   })
 
