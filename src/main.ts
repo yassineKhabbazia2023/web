@@ -6,7 +6,7 @@ import store from './stores'
 import { type RouteRecordRaw } from 'vue-router'
 
 export const commonApi = api
-export const commoni18n = i18n
+export const commoni18n = shallowRef(i18n)
 export const commonStore = store
 export const commonPinia = createPinia()
 export const widgets = shallowRef([] as Component[] | DefineComponent[])

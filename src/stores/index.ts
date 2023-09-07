@@ -7,7 +7,13 @@ type UserInfo = {
   occupation: string
   email: string
   token: string,
-  id: string
+  id: string,
+  activeEntity: {
+    idAccount: string,
+    name: string,
+    icon: string,
+    color: string
+  }[]
 }
 
 const isTokenExpired = (token: string) => {

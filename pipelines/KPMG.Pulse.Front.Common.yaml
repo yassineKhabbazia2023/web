@@ -1,3 +1,5 @@
+# This YAML configuration installs Node.js, installs project dependencies, builds the project, and then executes the semantic-release command.
+
 trigger:
   - develop
   - release/*
@@ -10,7 +12,7 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/Release/v1.0'
+    ref: 'refs/heads/bugfix/v6.0persistent'
 
 extends:
   template: pipelines/templates/platform.front.package.yaml@Pulse
