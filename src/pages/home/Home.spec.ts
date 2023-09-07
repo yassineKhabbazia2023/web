@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
-import wrapperFactory from 'tests/utils/wrapperFactory'
+import wrapperFactory from '../../../tests/utils/wrapperFactory'
 import Header from '@/components/Common/Header'
-import Home from './'
+import Home from '@/pages/home'
 
 vi.mock('@kpmg/styleguide', () => {
   const PIAdd = vi.fn()

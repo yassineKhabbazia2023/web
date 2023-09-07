@@ -23,9 +23,9 @@ const setupI18n = () => {
 
 const waitForAsyncOperations = async () => {
   await flushPromises()
-  for (let i = 0; i < 25; i++) {
-    await vi.dynamicImportSettled()
-  }
+  // for (let i = 0; i < 25; i++) {
+  await vi.dynamicImportSettled()
+  // }
   await nextTick()
 }
 

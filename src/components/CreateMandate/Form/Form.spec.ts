@@ -1,7 +1,5 @@
-import { mount, flushPromises } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { mount } from '@vue/test-utils'
 import CreateMandateForm from '.'
-import { createI18n } from 'vue-i18n'
 import { expect, describe, it, vi } from 'vitest'
 
 vi.mock('@/services/mandate', () => {
@@ -29,49 +27,13 @@ vi.mock('@/services/mandate', () => {
   return { createMandate }
 })
 
-const i18n = createI18n({
-  legacy: false,
-  locale: 'en-US',
-  messages: {
-    'en-US': {
-      'ibs-number': 'IBS Number',
-      'company-name': 'Company name',
-      'siret-number': 'SIRET',
-      tooltip: 'The IBS number entered must be part of your portfolio and have an active.',
-      form: {
-        error: {
-          requiredField: 'Required field'
-        }
-      }
-    },
-    'fr-FR': {
-      'ibs-number': 'Numéro IBS',
-      'company-name': 'Raison sociale',
-      'siret-number': 'N° SIRET',
-      tooltip: 'Le numéro d’IBS saisi doit faire parti de votre portefeuille.',
-      form: {
-        error: {
-          requiredField: 'Champ obligatoire'
-        }
-      }
-    }
-  }
-})
-
 const createWrapper = (props: any = {}) =>
   mount(CreateMandateForm, {
-    props,
-    global: {
-      plugins: [i18n]
-    }
+    props
   })
 
 const waitForAsyncOperations = async () => {
-  await flushPromises()
-  for (let i = 0; i < 100; i++) {
-    await vi.dynamicImportSettled()
-  }
-  await nextTick()
+  await vi.dynamicImportSettled()
 }
 
 describe('form.vue', () => {

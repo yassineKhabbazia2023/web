@@ -501,6 +501,7 @@ const rules = reactive<any>({
   ],
   institutionCode: [
     {
+      required: true,
       validator: (_: any, value: any, callback: any) => {
         if (value.length !== 5) {
           callback(new Error(t('form.error.input_5_chars')))
@@ -515,6 +516,7 @@ const rules = reactive<any>({
   ],
   branchCode: [
     {
+      required: true,
       validator: (_: any, value: any, callback: any) => {
         if (value.length !== 5) {
           callback(new Error(t('form.error.input_5_chars')))
@@ -529,6 +531,7 @@ const rules = reactive<any>({
   ],
   accountNumber: [
     {
+      required: true,
       validator: (_: any, value: any, callback: any) => {
         if (value.length !== 11) {
           callback(new Error(t('form.error.input_11_chars')))
@@ -543,6 +546,7 @@ const rules = reactive<any>({
   ],
   key: [
     {
+      required: true,
       validator: (_: any, value: any, callback: any) => {
         if (value.length !== 2) {
           callback(new Error(t('form.error.input_2_chars')))
