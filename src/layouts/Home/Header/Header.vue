@@ -35,6 +35,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
 
 interface Item {
   icon: string

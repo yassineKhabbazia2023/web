@@ -37,6 +37,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import Header from './Header'
 import Navbar from './Navbar'
+import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
