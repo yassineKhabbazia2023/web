@@ -95,7 +95,7 @@ const nextStepAvailability = ref(false)
 const titleMap: any = {
   1: 'entity',
   2: 'signatory',
-  3: 'bank-details'
+  3: 'bank details'
 }
 
 const { t } = useI18n({
