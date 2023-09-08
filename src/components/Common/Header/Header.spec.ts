@@ -1,26 +1,22 @@
-import { mount } from '@vue/test-utils'
+import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Header from '.'
 import { expect, describe, it, vi } from 'vitest'
 
-const waitForAsyncOperations = async () => {
-  await vi.dynamicImportSettled()
-}
+const createWrapper = () =>
+  wrapperFactory(Header)
 
 describe('header.vue', () => {
-
+  const wrapper = createWrapper()
   it('renders translations correctly', async () => {
-    const wrapper = mount(Header)
-    await waitForAsyncOperations()
+    await vi.dynamicImportSettled()
     expect(wrapper.find('.header__title').text()).toBe('Banking flows')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
   it('emits click event when button is clicked', async () => {
-    const wrapper = mount(Header)
-    await waitForAsyncOperations()
+    await vi.dynamicImportSettled()
     expect(wrapper.vm.openDrawer).toBeFalsy()
     await wrapper.find('.header__create-mandate-button').trigger('click')
-    console.log('READ THIS !! :', wrapper.html())
     expect(wrapper.vm.openDrawer).toBeTruthy()
   })
 })

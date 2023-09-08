@@ -14,7 +14,11 @@
           :label="t('ibs-number')"
           validateStatus=""
           required>
-          <PInput v-model="createMandateForm.ibs" type="number">
+          <PInput
+            v-model="createMandateForm.ibs"
+            type="number"
+            data-testid="ibs-number-test"
+          >
             <template #suffix>
               <PIcon
                 v-if="isIBSValid"

@@ -1,29 +1,9 @@
-import { mount } from '@vue/test-utils'
+import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import CreateMandateDrawer from '.'
-import { createI18n } from 'vue-i18n'
 import { expect, describe, it, vi } from 'vitest'
 
-const i18n = createI18n({
-  legacy: false,
-  locale: 'en-US',
-  messages: {
-    'en-US': {
-      'new-collection': 'New collection'
-    },
-    'fr-FR': {
-      'new-collection': 'Nouvelle collecte'
-    }
-  }
-})
-
 const createWrapper = (props: any = {}, slots: any = {}) =>
-  mount(CreateMandateDrawer, {
-    props,
-    slots,
-    global: {
-      plugins: [i18n]
-    }
-  })
+  wrapperFactory(CreateMandateDrawer, { props, slots })
 
 describe('createMandateDrawer.vue', () => {
   it('renders the component when modelValue is true', async () => {
@@ -34,10 +14,8 @@ describe('createMandateDrawer.vue', () => {
 
   it('reflects changes in drawerModel when modelValue prop is updated', async () => {
     const wrapper = createWrapper({ modelValue: false })
-
-    // Use a helper function to get the drawerModel value
+    await vi.dynamicImportSettled()
     const getDrawerModel = () => wrapper.props('modelValue')
-
     expect(getDrawerModel()).toBeFalsy()
     await wrapper.setProps({ modelValue: true })
     expect(getDrawerModel()).toBeTruthy()
@@ -47,21 +25,20 @@ describe('createMandateDrawer.vue', () => {
     const wrapper = createWrapper({
       modelValue: false
     })
-
+    await vi.dynamicImportSettled()
     wrapper.vm.drawerModel = true
-    await wrapper.vm.$nextTick()
-
     expect(wrapper.emitted()['update:modelValue']).toBeTruthy()
     expect(wrapper.emitted()['update:modelValue'][0]).toStrictEqual([true])
   })
 
-  it('goToNextStep when currentStep is equal to 1 and after when currentStep is equal to 2', () => {
+  it('goToNextStep when currentStep go from 1 to 2', async () => {
     const wrapper = createWrapper({ modelValue: true })
+    await vi.dynamicImportSettled()
     wrapper.vm.goToNextStep()
     expect(wrapper.vm.currentStep).toBe(2)
-    expect(wrapper.vm.nextStepAvailability).toBe(false)
+    expect(wrapper.vm.nextStepAvailability).toBeFalsy()
     wrapper.vm.goToNextStep()
     expect(wrapper.vm.currentStep).toBe(3)
-    expect(wrapper.vm.nextStepAvailability).toBe(false)
+    expect(wrapper.vm.nextStepAvailability).toBeFalsy()
   })
 })

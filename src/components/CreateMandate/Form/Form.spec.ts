@@ -1,7 +1,7 @@
-import { mount } from '@vue/test-utils'
 import CreateMandateForm from '.'
-import { createI18n } from 'vue-i18n'
+import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
+import { createMandate } from '@/services/mandate'
 
 vi.mock('@/services/mandate', () => {
   const createMandate = vi.fn(() => ({
@@ -28,7 +28,7 @@ vi.mock('@/services/mandate', () => {
   return { createMandate }
 })
 
-const i18n = createI18n({
+/* const i18n = createI18n({
   legacy: false,
   locale: 'en-US',
   messages: {
@@ -55,20 +55,27 @@ const i18n = createI18n({
       }
     }
   }
-})
+}) */
 
 const createWrapper = (props: any = {}) =>
-  mount(CreateMandateForm, {
-    props,
-    global: {
-      plugins: [i18n]
-    }
-  })
+  wrapperFactory(CreateMandateForm, { props })
 
 describe('form.vue', () => {
   it('renders the component when step value is 1', async () => {
     const wrapper = createWrapper({ step: 1 })
+    await vi.dynamicImportSettled()
     expect(wrapper.exists()).toBeTruthy()
+  })
+
+  it('emits the loading event form', async () => {
+    const wrapper = createWrapper({ step: 1 })
+    await vi.dynamicImportSettled()
+    const input = wrapper.find('input[data-testid = "ibs-number-test"]')
+    await input.setValue('1234567891')
+    expect(input.element.value).toBe('1234567891')
+    const emittedLoadingEvent: any = wrapper.emitted('loading-event-form')
+    expect(emittedLoadingEvent).toBeTruthy()
+    expect(createMandate).toHaveBeenCalled()
   })
 
   it('renders the component when step value is 2', async () => {
