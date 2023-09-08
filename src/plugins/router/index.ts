@@ -7,14 +7,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: { template: '<h1>Home Page</h1>' }
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: { template: '<h1>Login Page</h1>' },
-    meta: {
-      layout: 'Login'
-    }
   }
 ]
 

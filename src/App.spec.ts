@@ -51,7 +51,8 @@ const createWrapper = () => mount(App, {
       PHeaderTabs: { template: '<div class="el-menu"><slot /></div>' },
       PAvatar: { template: '<div class="el-avatar"><slot /></div>' },
       PToolbox: { template: '<div><slot /></div>' },
-      PNavbar: { template: '<div><slot /></div>' }
+      PNavbar: { template: '<div><slot /></div>' },
+      PAside: { template: '<div class="el-aside"><slot /></div>' }
     }
   }
 })
