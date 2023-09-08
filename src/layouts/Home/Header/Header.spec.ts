@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import Header from './'
 import { createRouter, createWebHistory } from 'vue-router'
 import { menu } from '../../../routes'
@@ -29,8 +29,58 @@ const createWrapper = () => mount(Header, {
 })
 
 describe('header', () => {
-  it('should display header section', () => {
+  it('should display header section', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await flushPromises()
+    await flushPromises()
+    await flushPromises()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick()
+    await flushPromises()
+    await flushPromises()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
+    await vi.dynamicImportSettled()
     const header = wrapper.find('.el-menu--header')
     const logo = wrapper.find('.menu-item--logo')
     const avatar = wrapper.find('.el-avatar')
