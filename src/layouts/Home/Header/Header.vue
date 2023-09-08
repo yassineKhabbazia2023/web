@@ -1,7 +1,7 @@
 <template>
   <PHeader
     :ellipsis="false"
-    :menu="menu"
+    :menu="props.menu"
     :defaultActive="routeActive"
     router
   >
@@ -16,7 +16,10 @@
       </router-link>
     </template>
     <template #menu>
-      <PHeaderTabs :menu="menu" />
+      <PHeaderTabs
+        :menu="props.menu"
+        class="home-header-tabs"
+      />
     </template>
     <template #header-right>
       <PToolbox :elements="toolboxBasicData">
@@ -34,9 +37,19 @@
 import { useRoute } from 'vue-router'
 import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
 
-const menu = [
-  { icon: 'PIColumnsGap', text: 'Dashboard', path: '' }
-]
+interface Item {
+  icon: string
+  text: string
+  path: string
+}
+
+interface Props {
+  menu: Item[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  menu: () => []
+})
 
 const route = useRoute()
 const routeActive = route.path
@@ -49,3 +62,10 @@ const toolboxBasicData = [
   }
 ]
 </script>
+<style scoped>
+@media only screen and (max-width: 991px)  {
+  .home-header-tabs {
+    display: none;
+  }
+}
+</style>

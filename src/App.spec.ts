@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import App from './App.vue'
 
-const HOME_LAYOUT_TITLE = 'This is the Home layout'
 const HOME_PAGE_TITLE = 'Home page'
 const LOGIN_PAGE_TITLE = 'Login page'
 
@@ -52,7 +51,11 @@ const createWrapper = () => mount(App, {
       PAvatar: { template: '<div class="el-avatar"><slot /></div>' },
       PToolbox: { template: '<div><slot /></div>' },
       PNavbar: { template: '<div><slot /></div>' },
-      PAside: { template: '<div class="el-aside"><slot /></div>' }
+      PBottomMenu: { template: '<div class="el-menu--bottom"><slot /></div>' },
+      PConfigProvider: { template: '<div><slot /></div>' },
+      PContainer: { template: '<div class="el-container"><slot /></div>' },
+      PAside: { template: '<div class="el-aside"><slot /></div>' },
+      PCHeader: { template: '<div class="el-header"><slot /></div>' }
     }
   }
 })
@@ -112,16 +115,16 @@ describe('app', () => {
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
-    const getLayoutTitle = () => wrapper.find('h3')
     const getHomePageTitle = () => wrapper.find('p')
     const elHeader = wrapper.find('.el-header')
     const elAside = wrapper.find('.el-aside')
+    const bottomMenu = wrapper.find('.el-menu--bottom')
     const getPageTitle = () => wrapper.find('.pageTitle')
 
-    expect(getLayoutTitle().text()).toBe(HOME_LAYOUT_TITLE)
     expect(getHomePageTitle().text()).toBe(HOME_PAGE_TITLE)
     expect(elHeader.exists()).toBeTruthy()
     expect(elAside.exists()).toBeTruthy()
+    expect(bottomMenu.exists()).toBeTruthy()
 
     router.push({ name: 'login' })
     await wrapper.vm.$nextTick()
