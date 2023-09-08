@@ -1,9 +1,9 @@
 <template>
   <div class="common-layout">
     <PContainer>
-      <PCHeader height="52">
+      <PCHeader class="header-container" height="52">
         <Header
-          :menu="menu"
+          :menu="menuHeader"
         />
       </PCHeader>
       <PContainer class="aside-main-container">
@@ -44,12 +44,19 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const menu = [
-  { icon: 'PIColumnsGap', text: 'Dashboard', path: '' }
+const menuBottomMenu = [
+  {
+    icon: 'PIColumnsGap',
+    name: 'Dashboard',
+    path: '',
+    component: {
+      render: () => 'Dashboard'
+    }
+  }
 ]
 
-const menuBottomMenu = menu.map(({ text, path, icon }) => ({
-  name: text,
+const menuHeader = menuBottomMenu.map(({ name, path, icon }) => ({
+  text: name,
   icon,
   path
 }))
@@ -64,6 +71,14 @@ const routeActive = route.path
 
 .home-bottom-menu {
   display: none;
+}
+
+.aside-container {
+  width: inherit;
+}
+
+.header-container {
+  padding: 0;
 }
 
 .navbar-aside-container:not(.el-menu--collapse) {
