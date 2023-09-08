@@ -14,7 +14,7 @@ const vueLifecycles = singleSpaVue({
     render: () => h(RenderLess)
   },
   handleInstance(app) {
-    app.use(i18n).use(pinia.value).use(styleGuide)
+    app.use(i18n).use(pinia).use(styleGuide, { i18n })
   }
 })
 
@@ -36,3 +36,30 @@ routes.value.push({
     layout: 'Login'
   }
 } as RouteRecordRaw)
+
+routes.value.push({
+  path: '/expireToken',
+  name: 'expireToken',
+  component: () => import('@/pages/expireToken'),
+  meta: {
+    layout: 'Login'
+  }
+} as RouteRecordRaw)
+
+routes.value.push({
+  path: '/createPassword',
+  name: 'createPassword',
+  component: () => import('@/pages/createPassword'),
+  meta: {
+    layout: 'Login'
+  }
+} as RouteRecordRaw)
+
+routes.value.push({
+  path: '/resendEmailSuccess',
+  name: 'resendEmailSuccess',
+  component: () => import('@/pages/resendEmailSuccess'),
+  meta: {
+    layout: 'Login'
+  }
+})
