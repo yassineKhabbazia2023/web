@@ -1,7 +1,6 @@
 import { RouteRecordRaw } from 'vue-router'
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
-import './style.scss'
 import { commoni18n as i18n, commonPinia as pinia, routes } from '@kpmg/common'
 
 import styleGuide from '@kpmg/styleguide'
@@ -14,18 +13,20 @@ const vueLifecycles = singleSpaVue({
     render: () => h(RenderLess)
   },
   handleInstance(app) {
-    app.use(i18n).use(pinia.value).use(styleGuide)
+    app.use(i18n.value).use(pinia).use(styleGuide)
   }
 })
 
 export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
-
 routes.value.push({
-  path: '/',
-  name: 'home',
-  component: () => import('@/pages/home')
+  path: '/collab',
+  name: 'loginCollab',
+  component: () => import('@/pages/loginCollab'),
+  meta: {
+    layout: 'LoginCollab'
+  }
 } as RouteRecordRaw)
 
 routes.value.push({

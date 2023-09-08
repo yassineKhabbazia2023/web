@@ -14,9 +14,8 @@ const [PORT] = process.argv.slice(3)
 const APP_NAME = name.split('/')[1]
 
 export default ({ mode }) =>
-  defineConfig(mergeConfig(
-    viteBaseConfig,
-    {
+  defineConfig(
+    mergeConfig(viteBaseConfig, {
       plugins: [
         eslint(),
         visualizer(),
@@ -30,13 +29,18 @@ export default ({ mode }) =>
         VueI18nPlugin({
           include: [path.resolve(__dirname, './src/**/locales/**')]
         }),
-        viteExternalsPlugin({
-          vue: 'Vue',
-          'vue-i18n': 'VueI18n',
-          pinia: 'Pinia',
-          '@kpmg/common': 'Common',
-          '@kpmg/styleguide': 'StyleGuide'
-        }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
+        viteExternalsPlugin(
+          {
+            vue: 'Vue',
+            'vue-i18n': 'VueI18n',
+            'vue-router': 'VueRouter',
+            pinia: 'Pinia',
+            '@kpmg/common': 'Common',
+            '@kpmg/styleguide': 'StyleGuide',
+            'env-vars': 'EnvVars'
+          },
+          { disableInServe: mode === 'test' }
+        ), // true for Vitest & dev without Single Spa
         cssInjectedByJsPlugin()
       ],
       resolve: {
@@ -65,5 +69,5 @@ export default ({ mode }) =>
       preview: {
         port: PORT
       }
-    }
-  ))
+    })
+  )
