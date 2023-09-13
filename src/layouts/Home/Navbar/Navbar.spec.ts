@@ -1,12 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import Navbar from '.'
-import { createRouter, createWebHistory } from 'vue-router'
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { menu } from '../../../routes'
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: menu
+  routes: []
+})
+
+menu.forEach(route => {
+  router.addRoute((route as unknown) as RouteRecordRaw)
 })
 
 const createWrapper = () => mount(Navbar, {
