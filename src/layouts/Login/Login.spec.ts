@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import { mount, VueWrapper } from '@vue/test-utils'
 import Login from './'
 import { LINKS } from './contants'
 import { Link } from './types'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const CGU_URL = 'https://custom-CGU.com'
 
@@ -18,11 +19,7 @@ vi.mock('@kpmg/common', async () => ({
   })
 }))
 
-const createWrapper = () => mount(Login, {
-  global: {
-    stubs: ['PImage', 'router-view', 'PDrawer', 'PButton', 'PCol', 'PRow']
-  }
-})
+const createWrapper = () => mount(Login)
 
 describe('login', () => {
   let wrapper: VueWrapper<any> = createWrapper()
@@ -30,56 +27,7 @@ describe('login', () => {
 
   beforeEach(async () => {
     wrapper = createWrapper()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
+    await waitForAsyncImports(20)
   })
 
   afterEach(() => {
@@ -107,11 +55,11 @@ describe('login', () => {
 
   it('can read the copyrights', async () => {
     const copyrightsLink = wrapper.find('.support + p .link')
-    const isDrawerOpen = () => wrapper.find('p-drawer-stub').attributes('modelvalue')
+    const isDrawerOpen = () => wrapper.find('.p-drawer.open')
 
-    expect(isDrawerOpen()).toBe('false')
+    expect(isDrawerOpen().exists()).toBeFalsy()
 
     await copyrightsLink.trigger('click')
-    expect(isDrawerOpen()).toBe('true')
+    expect(isDrawerOpen().exists()).toBeTruthy()
   })
 })

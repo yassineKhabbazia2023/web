@@ -1,7 +1,11 @@
+import { createTestingPinia } from '@pinia/testing'
+import { defineStore, createPinia, setActivePinia } from 'pinia'
 import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
+import { VueWrapper, mount } from '@vue/test-utils'
+import { commonPinia as pinia } from '@kpmg/common'
 import App from './App.vue'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const HOME_PAGE_TITLE = 'Home page'
 const LOGIN_PAGE_TITLE = 'Login page'
@@ -31,9 +35,25 @@ const router = createRouter({
   routes
 })
 
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    state: () => ({
+      user: {
+        activeEntity: {
+          name: 'Entity Name',
+          idAccount: 'AccountNumber',
+          icon: 'PICupHot',
+          color: 'orange'
+        }
+      }
+    })
+  }),
+  commonPinia: () => createPinia()
+}))
+
 const createWrapper = () => mount(App, {
   global: {
-    plugins: [router],
+    plugins: [router, createTestingPinia()],
     stubs: {
       PCol: { template: '<div class="el-col"><slot /></div>' },
       PRow: { template: '<div class="el-row"><slot /></div>' },
@@ -61,60 +81,12 @@ const createWrapper = () => mount(App, {
 })
 
 describe('app', () => {
+  setActivePinia(pinia)
   it('load the right page with the right layout according to the route', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
 
     router.push({ name: 'home' })
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
+    await waitForAsyncImports(200)
     const getHomePageTitle = () => wrapper.find('p')
     const elHeader = wrapper.find('.el-header')
     const elAside = wrapper.find('.el-aside')
@@ -127,56 +99,7 @@ describe('app', () => {
     expect(bottomMenu.exists()).toBeTruthy()
 
     router.push({ name: 'login' })
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
+    await waitForAsyncImports(200)
     expect(getPageTitle().text()).toBe(LOGIN_PAGE_TITLE)
   })
 })

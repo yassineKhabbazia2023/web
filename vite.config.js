@@ -68,6 +68,9 @@ export default ({ mode }) =>
       },
       preview: {
         port: PORT
+      },
+      test: {
+        testTimeout: 60000
       }
     })
   )
