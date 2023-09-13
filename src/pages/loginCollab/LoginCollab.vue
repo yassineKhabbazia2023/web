@@ -18,12 +18,18 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PButton } from '@kpmg/styleguide'
+import { msalInstance } from '@/services/msal'
+import { useInitAuth } from '@/composable/useInitUserAuth'
 
+const { initAuth } = useInitAuth()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
-const handleLoginCollab = () => console.log('test')
+const handleLoginCollab = async () => {
+  msalInstance.loginRedirect()
+}
+await initAuth()
 </script>
 
 <style lang="scss">

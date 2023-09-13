@@ -21,19 +21,10 @@ export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 routes.value.push({
-  path: '/collab',
-  name: 'loginCollab',
+  path: '/login',
+  name: 'login',
   component: () => import('@/pages/loginCollab'),
   meta: {
     layout: 'LoginCollab'
-  }
-} as RouteRecordRaw)
-
-routes.value.push({
-  path: '/login',
-  name: 'login',
-  component: () => import('@/pages/login'),
-  meta: {
-    layout: 'Login'
   }
 } as RouteRecordRaw)

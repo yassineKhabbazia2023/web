@@ -33,8 +33,8 @@ export default ({ mode }) =>
           {
             vue: 'Vue',
             'vue-i18n': 'VueI18n',
-            'vue-router': 'VueRouter',
             pinia: 'Pinia',
+            'vue-router': 'VueRouter',
             '@kpmg/common': 'Common',
             '@kpmg/styleguide': 'StyleGuide',
             'env-vars': 'EnvVars'
