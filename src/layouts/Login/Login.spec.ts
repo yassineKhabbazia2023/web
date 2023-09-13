@@ -18,11 +18,7 @@ vi.mock('@kpmg/common', async () => ({
   })
 }))
 
-const createWrapper = () => mount(Login, {
-  global: {
-    stubs: ['PImage', 'router-view', 'PDrawer', 'PButton', 'PCol', 'PRow']
-  }
-})
+const createWrapper = () => mount(Login, {})
 
 describe('login', () => {
   let wrapper: VueWrapper<any> = createWrapper()
@@ -30,55 +26,7 @@ describe('login', () => {
 
   beforeEach(async () => {
     wrapper = createWrapper()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
     await flushPromises()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
   })
 
@@ -114,7 +62,8 @@ describe('login', () => {
     await vi.dynamicImportSettled()
     await vi.dynamicImportSettled()
     const copyrightsLink = wrapper.find('.support + p .link')
-    const isDrawerOpen = () => wrapper.find('p-drawer-stub').attributes('modelvalue')
+    const isDrawerOpen = () =>
+      wrapper.find('p-drawer-stub').attributes('modelvalue')
     expect(isDrawerOpen()).toBe('false')
 
     await copyrightsLink.trigger('click')
