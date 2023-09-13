@@ -56,11 +56,6 @@ describe('login', () => {
   it('can read the copyrights', async () => {
     await flushPromises()
     await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
     const copyrightsLink = wrapper.find('.support + p .link')
     const isDrawerOpen = () => wrapper.find('.p-drawer.open')
 
