@@ -14,11 +14,11 @@
           >
           <template #default="scope">
             <PEntity
-              :content="scope.row.AccountName"
+              :content="scope.row.name"
               :icon="PIBuilding"
               type="primary"
               :selected="false"
-              :bold="scope.row.AccountNumber === ibsSelected"
+              :bold="scope.row.accountNumber === ibsSelected"
             >
             </PEntity>
           </template>
@@ -30,9 +30,9 @@
           >
           <template #default="scope">
             <PText
-              :content="scope.row.AccountNumber"
+              :content="scope.row.accountNumber"
               :icon="PIPeople"
-              :bold="scope.row.AccountNumber === ibsSelected"
+              :bold="scope.row.accountNumber === ibsSelected"
               type="primary"
               :disabled="false"
               :selected="false"
@@ -45,12 +45,17 @@
           :sortable="false"
           >
           <template #default="scope">
-            <span v-if="scope.row.AccountNumber === ibsSelected">
-              <PIcon color="#5546FF" size="20px">
-                <PICheck />
+            <span v-if="scope.row.accountNumber === ibsSelected">
+              <PIcon
+                color="#5546FF"
+                size="20px">
+                <PICheck data-test= "icon-check"/>
               </PIcon>
             </span>
-            <span @click="ibsSelected = scope.row.AccountNumber" v-else>
+            <span
+              class="pTable-select-entity"
+              @click="selectEntity(scope.row.accountNumber)"
+              v-else>
               <PIcon color="#5546FF" size="20px">
                 <PIArrowRepeat />
               </PIcon>
@@ -86,7 +91,7 @@ import {
   PText
 } from '@kpmg/styleguide'
 import { computed, onMounted, ref } from 'vue'
-import useTableEntitiesStore from '@/stores/table-entities-store'
+import { useEntityStore } from '@/stores/entity-store'
 import { commonStore } from '@kpmg/common'
 import { storeToRefs } from 'pinia'
 
@@ -113,26 +118,43 @@ const accountString = computed(() => {
   return t('account')
 })
 
-// eslint-disable-next-line
-const token = 'Put a fresh token here !'
-
 const userStore = commonStore()
-
-userStore.$patch({
-  user: {
-    lastName: 'Msaoubi',
-    firstName: 'Kamel',
-    token
-  }
-})
 
 const ibsSelected = ref('')
 
-const tableStore = useTableEntitiesStore()
-const { getEntities } = tableStore
-const { entities } = storeToRefs(tableStore)
+const entityStore = useEntityStore()
+const { getEntities } = entityStore
+const { entities } = storeToRefs(entityStore)
+
+function selectEntity(accountNumber:string) {
+  ibsSelected.value = accountNumber
+  const entity = entities.value.find((el:any) => el.accountNumber === accountNumber)
+  const newActiveEntity = [{
+    name: entity.name,
+    idAccount: entity.accountNumber,
+    icon: 'PICupHot',
+    color: 'orange'
+  }]
+
+  userStore.$patch({
+    user: {
+      activeEntity: newActiveEntity
+    }
+  })
+
+  localStorage.setItem('defaultEntity', JSON.stringify(newActiveEntity))
+}
+
+function setDefaultEntity() {
+  const defaultEntity = localStorage.getItem('defaultEntity')
+  if (defaultEntity !== null) {
+    ibsSelected.value = (JSON.parse(defaultEntity))[0].idAccount
+  }
+}
 
 onMounted(async () => {
   await getEntities()
+  setDefaultEntity()
 })
 </script>
+
