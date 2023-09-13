@@ -30,10 +30,9 @@ export const getToken = async () => {
       .then((response: any) => {
         const token = response.accessToken
         sessionStorage.setItem('token', token)
-        console.log('tokenset', token)
         store().$patch({
           user: {
-            token: token
+            token
           }
         })
       })

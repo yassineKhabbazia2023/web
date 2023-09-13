@@ -28,3 +28,30 @@ routes.value.push({
     layout: 'LoginCollab'
   }
 } as RouteRecordRaw)
+
+routes.value.push({
+  path: '/expireToken',
+  name: 'expireToken',
+  component: () => import('@/pages/expireToken'),
+  meta: {
+    layout: 'Login'
+  }
+} as RouteRecordRaw)
+
+routes.value.push({
+  path: '/createPassword',
+  name: 'createPassword',
+  component: () => import('@/pages/createPassword'),
+  meta: {
+    layout: 'Login'
+  }
+} as RouteRecordRaw)
+
+routes.value.push({
+  path: '/resendEmailSuccess',
+  name: 'resendEmailSuccess',
+  component: () => import('@/pages/resendEmailSuccess'),
+  meta: {
+    layout: 'Login'
+  }
+})

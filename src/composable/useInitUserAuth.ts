@@ -19,10 +19,10 @@ export const useInitAuth = () => {
       store().$patch({
         user: {
           token,
-          id: id,
-          firstName: firstName,
-          lastName: lastName,
-          email: email
+          id,
+          firstName,
+          lastName,
+          email
         }
       })
       router.push('/')

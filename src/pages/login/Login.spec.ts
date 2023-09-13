@@ -1,19 +1,7 @@
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi
-} from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 import Login from './'
-import ElementPlus, {
-  ElForm as PForm,
-  ElFormItem as PFormItem,
-  ElInput as PInput,
-  ElButton as PButton
-} from 'element-plus'
 
 const USER_ID = 'customUserId'
 const WEB_TOKEN = 'customToken'
@@ -50,25 +38,16 @@ vi.mock('@kpmg/common', async () => ({
 let wrapper: VueWrapper<any>
 
 const createWrapper = () =>
-  mount(Login, {
-    global: {
-      plugins: [ElementPlus],
-      components: {
-        PForm,
-        PFormItem,
-        PInput,
-        PButton
-      }
-    }
-  })
+  mount(Login)
 
 const getForm = () => wrapper.find('form')
 const getInputEmail = () => wrapper.findAll('input')[0]
 const getInputPassword = () => wrapper.findAll('input')[1]
 
 describe('login', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     wrapper = createWrapper()
+    await waitForAsyncImports(30)
   })
 
   afterEach(() => {
