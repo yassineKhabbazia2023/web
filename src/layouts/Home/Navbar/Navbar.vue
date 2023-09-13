@@ -1,13 +1,15 @@
 <template>
-  <PNavbar
-    class="aside"
-    :entities="entities"
-    :menuList="menu"
-  >
-    <template #title >
-      {{ t('title') }}
-    </template>
-  </PNavbar>
+  <div>
+    <PNavbar
+      class="aside"
+      :entities="defaultEntity"
+      :menuList="menu"
+    >
+      <template #title>
+        {{ t('title') }}
+      </template>
+    </PNavbar>
+  </div>
 </template>
 
 <i18n lang="yaml">
@@ -18,28 +20,17 @@
 </i18n>
 
 <script setup lang="ts">
+import useNavbarStore from '@/stores/navbar-store'
 import { useI18n } from 'vue-i18n'
 import { menu } from '../../../routes'
 import { PNavbar } from '@kpmg/styleguide'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-// TODO: replace with entity list from back
-const entities = [
-  {
-    name: 'Restaurant Johnny s pizza - Courbevoie',
-    idAccount: 'idAccount',
-    icon: 'PICupHot',
-    color: 'orange'
-  },
-  {
-    name: 'Jean Levage',
-    idAccount: 'idAccount 2',
-    icon: 'PIShop',
-    color: 'green'
-  }
-]
+const navbarStore = useNavbarStore()
+const { defaultEntity } = storeToRefs(navbarStore)
 </script>

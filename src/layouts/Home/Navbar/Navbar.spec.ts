@@ -1,30 +1,28 @@
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
+import { defineStore, setActivePinia } from 'pinia'
 import Navbar from '.'
-import { createRouter, createWebHistory } from 'vue-router'
-import { menu } from '../../../routes'
+import helpers from '../../../tests/utils/helpers'
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: menu
-})
+const { router, pinia, mockUser } = helpers()
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    state: () => (mockUser)
+  }),
+  commonPinia: () => pinia
+}))
 
 const createWrapper = () => mount(Navbar, {
   shallow: true,
   global: {
-    stubs: {
-      PNavbar: {
-        template: `<div class="el-menu">
-          <slot name="title" />
-          <slot />
-        </div>`
-      }
-    },
     plugins: [router]
   }
 })
 
 describe('navbar', () => {
+  beforeEach(() => {
+    setActivePinia(pinia)
+  })
   it('should display navbar section', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const aside = wrapper.find('.aside')

@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { PConfigProvider } from '@kpmg/styleguide'
 import { defineAsyncComponent, ref, markRaw, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { PConfigProvider } from '@kpmg/styleguide'
 
 const route = useRoute()
 const getLayout = ref()

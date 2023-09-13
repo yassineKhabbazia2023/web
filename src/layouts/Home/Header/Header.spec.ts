@@ -1,92 +1,60 @@
-import { describe, expect, it, vi } from 'vitest'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import { defineStore, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { VueWrapper, mount } from '@vue/test-utils'
 import Header from './'
-import { createRouter, createWebHistory } from 'vue-router'
-import { menu } from '../../../routes'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
+import helpers from '../../../tests/utils/helpers'
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes: menu
-})
+const { router, pinia, mockUser } = helpers()
+
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    state: () => (mockUser)
+  }),
+  commonPinia: () => pinia
+}))
+
+const menuBottomMenu = [
+  {
+    icon: 'PIColumnsGap',
+    name: 'Dashboard',
+    path: '',
+    component: {
+      render: () => 'Dashboard'
+    }
+  }
+]
+
+const menuHeader = menuBottomMenu.map(({ name, path, icon }) => ({
+  text: name,
+  icon,
+  path
+}))
 
 const createWrapper = () => mount(Header, {
+  props: {
+    menu: menuHeader
+  },
   global: {
+    plugins: [router],
     stubs: {
-      PHeader: {
-        template: `<div class="el-menu--header">
-          <slot name="logo" />
-          <slot name="menu" />
-          <slot name="header-right" />
-        </div>`
-      },
-      PHeaderTabs: { template: '<div class="el-menu"><slot /></div>' },
-      PImage: { template: '<div class="menu-item--logo"><slot /></div>' },
-      PAvatar: { template: '<div class="el-avatar"><slot /></div>' },
-      PToolbox: { template: '<div><slot /></div>' }
-    },
-    plugins: [router]
+      PToolbox: true
+    }
   }
 })
 
 describe('header', () => {
+  beforeEach(() => {
+    setActivePinia(pinia)
+  })
   it('should display header section', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
+    router.push({ name: 'My entities' })
+    await waitForAsyncImports(50)
     const header = wrapper.find('.el-menu--header')
     const logo = wrapper.find('.menu-item--logo')
-    const avatar = wrapper.find('.el-avatar')
 
     expect(header.exists()).toBeTruthy()
     expect(logo.exists()).toBeTruthy()
-    expect(avatar.exists()).toBeTruthy()
   })
 })

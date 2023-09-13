@@ -168,13 +168,15 @@ const handleCloseDrawer = () => {
   padding: 24px 16px;
 
   .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     @media (min-width: 992px) {
       padding: 48px 48px 0;
     }
 
     .pulse-logo-content {
       @media (min-width: 992px) {
-        margin-bottom: 38px;
         max-width: 236px;
       }
       margin-bottom: 24px;
