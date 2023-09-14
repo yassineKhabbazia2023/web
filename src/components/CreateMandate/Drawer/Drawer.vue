@@ -37,12 +37,28 @@
     <template #footer>
       <div>
         <PButton
+          v-if="currentStep == 2 || currentStep == 3"
+          type="default"
+          size="default"
+          :plain="false"
+          :round="false"
+          :loading="false"
+          data-testid="next-step-test"
+          @click="goToPreviousStep()"
+        >
+        <PIcon class="el-button__icon--left">
+          <PIArrowLeft />
+        </PIcon>
+          {{ t('previous') }}
+        </PButton>
+        <PButton
           type="primary"
           size="default"
           :plain="false"
           :round="false"
           :disabled="!nextStepAvailability"
           :loading="false"
+          data-testid="next-step-test"
           @click="goToNextStep()"
         >
           {{ t('next') }}
@@ -59,6 +75,7 @@
     en-US:
         new-collection: 'New collection'
         next: 'Next'
+        previous: 'Previous'
         entity: 'Entity'
         # signatory: 'Signatory'
         infos: 'Infos'
@@ -68,6 +85,7 @@
     fr-FR:
         new-collection: 'Nouvelle collecte'
         next: 'Suivant'
+        previous: 'Précédent'
         entity: 'Entité'
         # signatory: 'Signataire'
         infos: 'Infos'
@@ -80,6 +98,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 import {
+  PIArrowLeft,
   PIArrowRight,
   PIQuestionCircle,
   PDrawer,
@@ -128,6 +147,10 @@ const goToNextStep = () => {
   }
   nextStepAvailability.value = false
   currentStep.value++
+}
+
+const goToPreviousStep = () => {
+  currentStep.value--
 }
 
 defineExpose({

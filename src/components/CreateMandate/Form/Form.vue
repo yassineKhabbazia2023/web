@@ -89,7 +89,8 @@
                 prop="firstName"
                 inline
                 :label="t('firstName')">
-                <PInput v-model="createMandateForm.firstName">
+                <PInput v-model="createMandateForm.firstName"
+                  data-testid="firstName-test">
                 </PInput>
               </PFormItem>
             </PCol>

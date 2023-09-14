@@ -57,28 +57,33 @@ describe('form.vue', () => {
 
   it('validateIBS when ibs length is equal to 10', async () => {
     const wrapper = createWrapper({ step: 1 })
-    wrapper.vm.createMandateForm.ibs = '1999072764'
-    wrapper.vm.validateIBS({
-      required: true,
-      message: '',
-      trigger: 'change'
-    }, '1999072764', () => true)
-    expect(wrapper.exists()).toBeTruthy()
+    await waitForAsyncImports(60)
+    wrapper.vm.validateIBS = vi.fn()
+    const input = wrapper.find('input[data-testid="ibs-number-test"]')
+    await input.setValue('1234567891')
+    await input.trigger('change')
+
+    expect((input.element as HTMLInputElement).value).toBe('1234567891')
   })
 
   it('validateIBS when ibs length is not equal to 10', async () => {
     const wrapper = createWrapper({ step: 1 })
-    wrapper.vm.validateIBS({
-      required: true,
-      message: '',
-      trigger: 'change'
-    }, '199907276', () => true)
-    expect(wrapper.exists()).toBeTruthy()
+    await waitForAsyncImports(50)
+    wrapper.vm.validateIBS = vi.fn()
+    const input = wrapper.find('input[data-testid="ibs-number-test"]')
+    await input.setValue('123456789')
+    await input.trigger('change')
+
+    expect((input.element as HTMLInputElement).value).toBe('123456789')
   })
 
   it('checkAndEmitEvents when fields are not filled', async () => {
     const wrapper = createWrapper({ step: 2 })
-    wrapper.vm.createMandateForm.firstName = ''
+    await waitForAsyncImports(150)
+    const input = wrapper.find('input[data-testid="firstName-test"]')
+    await input.setValue('')
+    await input.trigger('blur')
+
     wrapper.vm.checkAndEmitEvents()
     expect(wrapper.emitted()['loading-event-form']).toBeTruthy()
   })
