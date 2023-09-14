@@ -12,6 +12,8 @@ const vueLifecycles = singleSpaVue({
   },
   handleInstance(app) {
     app.use(router).use(i18n.value).use(pinia).use(styleGuide)
+
+    i18n.value.global.locale.value = 'fr-FR'
   }
 })
 

@@ -16,3 +16,4 @@ extends:
   template: pipelines/templates/platform.front.mfe.yaml@Pulse
   parameters:
     mfe: router
+    sonarExclusions: src/main.ts

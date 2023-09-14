@@ -67,8 +67,11 @@ const routeActive = route.path
   padding: 0;
 }
 
+.aside-container .navbar-aside-container {
+  height: 100vh;
+}
+
 .navbar-aside-container:not(.el-menu--collapse) {
-  width: 240px;
   @media only screen and (max-width: 991px)  {
     width: 100%;
   }
@@ -77,7 +80,6 @@ const routeActive = route.path
 @media only screen and (max-width: 991px)  {
   .aside-main-container {
     display: block;
-    height: 100vh;
   }
 
   .home-bottom-menu {

@@ -1,7 +1,14 @@
 import { createPinia } from 'pinia'
 
 import { createRouter, createWebHistory } from 'vue-router'
-import { menu } from '../../routes'
+
+const menu = [
+  {
+    name: 'My entities',
+    icon: 'PIGrid',
+    path: '/entities'
+  }
+]
 
 const helpers = () => {
   const router = createRouter({
