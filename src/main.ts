@@ -21,6 +21,14 @@ export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 routes.value.push({
+  path: '/login-client',
+  name: 'loginClient',
+  component: () => import('@/pages/login'),
+  meta: {
+    layout: 'Login'
+  }
+} as RouteRecordRaw)
+routes.value.push({
   path: '/login',
   name: 'login',
   component: () => import('@/pages/loginCollab'),
