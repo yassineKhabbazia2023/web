@@ -2,7 +2,6 @@ import CreateMandateForm from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
 import { createMandate } from '@/services/mandate'
-import { flushPromises } from '@vue/test-utils'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 vi.mock('@/services/mandate', () => {
@@ -36,14 +35,13 @@ const createWrapper = (props: any = {}) =>
 describe('form.vue', () => {
   it('renders the component when step value is 1', async () => {
     const wrapper = createWrapper({ step: 1 })
-    await flushPromises()
-    await vi.dynamicImportSettled()
+    await waitForAsyncImports(10)
     expect(wrapper.exists()).toBeTruthy()
   })
 
   it('emits the loading event form', async () => {
     const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(10)
+    await waitForAsyncImports(30)
     const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('1234567891')
     expect(input.element.value).toBe('1234567891')
