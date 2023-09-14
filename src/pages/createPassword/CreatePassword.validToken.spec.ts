@@ -2,6 +2,7 @@ import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import CreatePassword from './CreatePassword.vue'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const routes = [
   {
@@ -33,12 +34,18 @@ router.push({
   }
 })
 
+const patchMock = vi.fn()
+const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     onboarding: {
       get: () => ({
         data: true
-      })
+      }),
+      patch: patchMock
+    },
+    auth: {
+      post: postMock
     }
   })
 }))
@@ -55,63 +62,11 @@ describe('page creation password', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
-  const waitRender = async (wrapper: VueWrapper<any>) => {
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-  }
   it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
-      await waitRender(wrapper)
+      await waitForAsyncImports(30)
       vi.advanceTimersByTime(1000)
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(3)
@@ -120,7 +75,7 @@ describe('page creation password', () => {
   )
   it('should show success when user enter password and valid cgu', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitRender(wrapper)
+    await waitForAsyncImports(30)
     await flushPromises()
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('password')
@@ -131,7 +86,7 @@ describe('page creation password', () => {
   })
   it('should show error when user enter password and confirm password differently', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitRender(wrapper)
+    await waitForAsyncImports(30)
     await flushPromises()
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
@@ -139,5 +94,25 @@ describe('page creation password', () => {
     await flushPromises()
     expect(wrapper.findAll('.is-error')).toHaveLength(1)
     expect(wrapper.find('button').classes()).toContain('is-disabled')
+  })
+  it('should call back end when click on button', async () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+    await waitForAsyncImports(30)
+    wrapper.findAll('.el-input__inner')[0].setValue('password')
+    wrapper.findAll('.el-input__inner')[1].setValue('password')
+    wrapper.find('.el-checkbox__original').setValue('true')
+    await flushPromises()
+    wrapper.find('button').trigger('click')
+    await flushPromises()
+    const patchLink = '/Activation/AcceptTerms?email=' + 'email'
+    const postLink = '/api/createPassword'
+    const data = {
+      email: 'email',
+      password: 'password'
+    }
+    expect(patchMock).toHaveBeenCalledTimes(1)
+    expect(patchMock).toHaveBeenCalledWith(patchLink)
+    expect(postMock).toHaveBeenCalledTimes(1)
+    expect(postMock).toHaveBeenCalledWith(postLink, data)
   })
 })

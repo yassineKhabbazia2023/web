@@ -11,7 +11,15 @@ const routes = [
     component: {
       template: '<p class="page-title">ExpireToken</p>'
     }
-  }]
+  },
+  {
+    path: '/resendEmailSuccess',
+    name: 'resendEmailSuccess',
+    component: {
+      template: '<p class="page-title">Resend email</p>'
+    }
+  }
+]
 const router = createRouter({
   history: createWebHistory(),
   routes

@@ -259,6 +259,7 @@ onMounted(() => {
     height: 81px;
     align-items: start;
     background-color: var(--el-color-neutral-gray-50);
+    border-radius: 6px;
     padding: 14px 12px 16px 12px;
     font-weight: 400;
     font-size: 14px;
