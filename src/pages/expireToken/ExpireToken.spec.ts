@@ -19,7 +19,7 @@ router.push({
   path: '/expireToken',
   query: {
     accountId: 'accountIdSample',
-    contactId: 'contactIdSample'
+    email: 'toto@example.com'
   }
 })
 const createWrapper = () => {
@@ -97,7 +97,9 @@ describe('page expirte token', () => {
     await vi.dynamicImportSettled()
     wrapper.find('.btn-link').trigger('click')
     expect(postMock).toHaveBeenCalledTimes(1)
-    expect(postMock).toHaveBeenCalledWith('/Activation/Invite?accountId=accountIdSample&contactId=contactIdSample')
+    expect(postMock).toHaveBeenCalledWith(
+      '/Activation/Invite?accountId=accountIdSample&email=toto@example.com'
+    )
     await flushPromises()
     expect(spyRouter).toHaveBeenCalledTimes(1)
     expect(spyRouter).toHaveBeenCalledWith({ path: '/resendEmailSuccess' })
