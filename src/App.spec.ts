@@ -27,6 +27,27 @@ const routes = [
     meta: {
       layout: 'Login'
     }
+  },
+  {
+    path: '/entities',
+    name: 'entities',
+    component: {
+      template: `<p class="pageTitle">${HOME_PAGE_TITLE}</p>`
+    }
+  },
+  {
+    path: '/mandate',
+    name: 'mandats',
+    component: {
+      template: `<p class="pageTitle">${HOME_PAGE_TITLE}</p>`
+    }
+  },
+  {
+    path: '/ged',
+    name: 'ged',
+    component: {
+      template: `<p class="pageTitle">${HOME_PAGE_TITLE}</p>`
+    }
   }
 ]
 

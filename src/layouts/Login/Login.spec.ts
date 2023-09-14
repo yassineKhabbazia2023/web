@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import { mount, VueWrapper, flushPromises } from '@vue/test-utils'
 import Login from './'
 import { LINKS } from './contants'
 import { Link } from './types'
@@ -54,6 +54,8 @@ describe('login', () => {
   )
 
   it('can read the copyrights', async () => {
+    await flushPromises()
+    await vi.dynamicImportSettled()
     const copyrightsLink = wrapper.find('.support + p .link')
     const isDrawerOpen = () => wrapper.find('.p-drawer.open')
 

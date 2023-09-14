@@ -27,7 +27,9 @@
           shape="circle"
           size="small"
           color="persian-gradient"
-        />
+        >
+        {{ initial }}
+      </PAvatar>
       </PToolbox>
     </template>
   </PHeader>
@@ -35,7 +37,10 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import { ref, computed } from 'vue'
+
 import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
+import { commonStore as store } from '@kpmg/common'
 
 interface Item {
   icon: string
@@ -53,7 +58,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const route = useRoute()
 const routeActive = route.path
-
+const firstName = ref(store().user?.firstName)
+const lastName = ref(store().user?.lastName)
 const toolboxBasicData = [
   {
     iconName: 'PIPower',
@@ -61,6 +67,10 @@ const toolboxBasicData = [
     actionName: 'logout'
   }
 ]
+
+const initial = computed(() => {
+  return '' + firstName.value?.charAt(0) + lastName.value?.charAt(0)
+})
 </script>
 <style scoped>
 @media only screen and (max-width: 991px)  {

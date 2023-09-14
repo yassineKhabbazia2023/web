@@ -95,40 +95,21 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { commonApi } from '@kpmg/common'
 import { LINKS } from './contants'
-import { Link } from './types'
-import { ref } from 'vue'
 import { PButton, PCol, PDrawer, PImage, PRow } from '@kpmg/styleguide'
+import { useFooterLink } from '@/composables/useFooterLink'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
+const {
+  handleFooterLinkClick,
+  handleCopyrightLink,
+  isCopyrightDrawerOpened,
+  handleCloseDrawer
+} = useFooterLink()
 
-const getUrlTerm = async (lang: string = 'fr'): Promise<any> => {
-  const urlTerms = `/GetUrlOfTheCurrentActiveTerms(TermCultureInfoType='${lang}')`
-  try {
-    const { data: { value } } = await commonApi().portal.get(urlTerms)
-    return value
-  } catch {}
-}
-
-const handleFooterLinkClick = async ({ translationKey, href }: Link) => {
-  let CGUHref: string = ''
-  if (translationKey === 'CGU') {
-    CGUHref = await getUrlTerm()
-  }
-  window.open(CGUHref || href, '_blank')
-}
-
-const isCopyrightDrawerOpened = ref(false)
-const handleCopyrightLink = () => {
-  isCopyrightDrawerOpened.value = true
-}
-const handleCloseDrawer = () => {
-  isCopyrightDrawerOpened.value = false
-}
 </script>
 
 <style lang="scss" scoped>
