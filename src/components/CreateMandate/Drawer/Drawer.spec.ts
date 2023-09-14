@@ -1,7 +1,17 @@
 import { mount } from '@vue/test-utils'
 import CreateMandateDrawer from '.'
 import { createI18n } from 'vue-i18n'
-import { expect, describe, it, vi } from 'vitest'
+import { expect, describe, it } from 'vitest'
+import {
+  dynamicUntilFoundComponent
+} from '@kpmg/common/src/testing-helpers'
+import {
+  PDrawer,
+  PSteps,
+  PStepItem,
+  PTooltip,
+  PButton
+} from '@kpmg/styleguide'
 
 const i18n = createI18n({
   legacy: false,
@@ -28,7 +38,11 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
 describe('createMandateDrawer.vue', () => {
   it('renders the component when modelValue is true', async () => {
     const wrapper = createWrapper({ modelValue: true })
-    await vi.dynamicImportSettled()
+    await dynamicUntilFoundComponent(wrapper, PDrawer)
+    await dynamicUntilFoundComponent(wrapper, PSteps)
+    await dynamicUntilFoundComponent(wrapper, PStepItem)
+    await dynamicUntilFoundComponent(wrapper, PTooltip)
+    await dynamicUntilFoundComponent(wrapper, PButton)
     expect(wrapper.exists()).toBeTruthy()
   })
 

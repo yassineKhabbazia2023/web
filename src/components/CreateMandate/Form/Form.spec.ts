@@ -1,6 +1,11 @@
 import { mount } from '@vue/test-utils'
 import CreateMandateForm from '.'
 import { expect, describe, it, vi } from 'vitest'
+import {
+  waitForAsyncImports,
+  dynamicUntilFoundComponent
+} from '@kpmg/common/src/testing-helpers'
+import { PForm, PFormItem, PInput, PCol, PRow } from '@kpmg/styleguide'
 
 vi.mock('@/services/mandate', () => {
   const createMandate = vi.fn(() => ({
@@ -31,10 +36,6 @@ const createWrapper = (props: any = {}) =>
   mount(CreateMandateForm, {
     props
   })
-
-const waitForAsyncOperations = async () => {
-  await vi.dynamicImportSettled()
-}
 
 describe('form.vue', () => {
   it('renders the component when step value is 1', async () => {
@@ -73,7 +74,7 @@ describe('form.vue', () => {
     const wrapper = createWrapper({ step: 1 })
     Object.assign(wrapper.vm.createMandateForm, step1TestCase.initial)
 
-    await waitForAsyncOperations()
+    await waitForAsyncImports(100)
 
     const ibsInputElement = wrapper
       .find('[data-testid="ibs-input-test"]')
@@ -180,7 +181,11 @@ describe('form.vue', () => {
     const wrapper = createWrapper({ step: 3 })
     Object.assign(wrapper.vm.createMandateForm, step3TestCase.initial)
 
-    await waitForAsyncOperations()
+    await dynamicUntilFoundComponent(wrapper, PForm)
+    await dynamicUntilFoundComponent(wrapper, PFormItem)
+    await dynamicUntilFoundComponent(wrapper, PInput)
+    await dynamicUntilFoundComponent(wrapper, PCol)
+    await dynamicUntilFoundComponent(wrapper, PRow)
 
     const institutionCodeInputElement = wrapper
       .find('[data-testid="institutionCode-input-test"]')

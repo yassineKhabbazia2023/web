@@ -1,8 +1,11 @@
-import { mount, flushPromises } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { mount } from '@vue/test-utils'
 import Header from '.'
 import { createI18n } from 'vue-i18n'
-import { expect, describe, it, vi, beforeEach } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
+import {
+  dynamicUntilFoundComponent
+} from '@kpmg/common/src/testing-helpers'
+import { PButton, PIcon, PIAdd } from '@kpmg/styleguide'
 
 const setupI18n = () => {
   return createI18n({
@@ -21,14 +24,6 @@ const setupI18n = () => {
   })
 }
 
-const waitForAsyncOperations = async () => {
-  await flushPromises()
-  // for (let i = 0; i < 25; i++) {
-  await vi.dynamicImportSettled()
-  // }
-  await nextTick()
-}
-
 describe('header.vue', () => {
   let i18n: any
 
@@ -38,14 +33,18 @@ describe('header.vue', () => {
 
   it('renders translations correctly', async () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
-    await waitForAsyncOperations()
+    await dynamicUntilFoundComponent(wrapper, PIAdd)
+    await dynamicUntilFoundComponent(wrapper, PIcon)
+    await dynamicUntilFoundComponent(wrapper, PButton)
     expect(wrapper.find('.header__title').text()).toBe('Banking flows')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
   it('emits click event when button is clicked', async () => {
     const wrapper = mount(Header, { global: { plugins: [i18n] } })
-    await waitForAsyncOperations()
+    await dynamicUntilFoundComponent(wrapper, PIAdd)
+    await dynamicUntilFoundComponent(wrapper, PIcon)
+    await dynamicUntilFoundComponent(wrapper, PButton)
     expect(wrapper.vm.openDrawer).toBeFalsy()
     await wrapper.find('.header__create-mandate-button').trigger('click')
     expect(wrapper.vm.openDrawer).toBeTruthy()
