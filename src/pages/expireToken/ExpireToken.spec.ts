@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import ExpireToken from './ExpireToken.vue'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const routes = [
   {
@@ -25,11 +26,7 @@ router.push({
 const createWrapper = () => {
   return mount(ExpireToken, {
     global: {
-      plugins: [router],
-      stubs: {
-        PImage: { template: '<img />' },
-        PButton: { template: '<button><slot /></button>' }
-      }
+      plugins: [router]
     }
   })
 }
@@ -45,61 +42,11 @@ describe('page expirte token', () => {
   it('should call endpoint when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyRouter = vi.spyOn(wrapper.vm.router, 'push')
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
-    await flushPromises()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
-    await vi.dynamicImportSettled()
+    const link = '/Activation/Invite?accountId=accountIdSample&email=toto@example.com'
+    await waitForAsyncImports(30)
     wrapper.find('.btn-link').trigger('click')
     expect(postMock).toHaveBeenCalledTimes(1)
-    expect(postMock).toHaveBeenCalledWith(
-      '/Activation/Invite?accountId=accountIdSample&email=toto@example.com'
-    )
+    expect(postMock).toHaveBeenCalledWith(link)
     await flushPromises()
     expect(spyRouter).toHaveBeenCalledTimes(1)
     expect(spyRouter).toHaveBeenCalledWith({ path: '/resendEmailSuccess' })
