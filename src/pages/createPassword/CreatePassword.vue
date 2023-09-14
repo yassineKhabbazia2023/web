@@ -149,12 +149,12 @@ const formValue = reactive({
 })
 
 watch(formValue, async () => {
-  await formRef.value.validate((valid) => {
+  await formRef.value?.validate((valid) => {
     isValidForm.value = valid
   })
 })
 
-const validatePassword = (rule: any, value: any, callback: any) => {
+const validatePassword = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error(t('alertPasswordRequired')))
   } else {
@@ -162,7 +162,7 @@ const validatePassword = (rule: any, value: any, callback: any) => {
   }
 }
 
-const validateCheckPass = (rule: any, value: any, callback: any) => {
+const validateCheckPass = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error(t('alertConfirmPass')))
   } else if (value !== formValue.password) {
@@ -172,7 +172,7 @@ const validateCheckPass = (rule: any, value: any, callback: any) => {
   }
 }
 
-const validateTerm = (rule: any, value: any, callback: any) => {
+const validateTerm = (_rule: any, value: any, callback: any) => {
   if (!value) {
     callback(new Error(t('alertCgu')))
   } else {
@@ -198,15 +198,20 @@ const submitForm = (formEl: FormInstance | undefined) => {
       const urlUpdatePassword = '/api/createPassword'
       try {
         await commonApi().onboarding.patch(urlAcceptTerms)
-        const { data: { webToken: token } } = await commonApi().auth.post(urlUpdatePassword, data)
+        const {
+          data: {
+            userId: id,
+            webToken: token
+          }
+        } = await commonApi().auth.post(urlUpdatePassword, data)
         sessionStorage.setItem('token', token)
         store().$patch({
           user: {
-            email,
+            id,
             token
           }
         })
-        router.push('/home')
+        router.push({ name: '/home' })
       } catch {}
     } else {
       return false
