@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { reactive, computed, ref, toRaw } from 'vue'
-import { type FormRules, FormInstance } from 'element-plus'
+import type { FormInstance, FormRules, FormItemProp } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { commonApi } from '@kpmg/common'
 import { PImage, PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
@@ -108,8 +108,10 @@ const isFormValid = computed(() =>
   formValidity.email
 )
 
-const validateHandler = (propName: string, isValid: boolean) => {
-  formValidity[propName] = isValid
+const validateHandler = (propName: FormItemProp, isValid: boolean) => {
+  if (typeof propName === 'string') {
+    formValidity[propName] = isValid
+  }
 }
 
 const rules = reactive<FormRules<typeof formValues>>({
