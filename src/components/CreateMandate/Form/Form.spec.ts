@@ -2,6 +2,8 @@ import CreateMandateForm from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
 import { createMandate } from '@/services/mandate'
+import { flushPromises } from '@vue/test-utils'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 vi.mock('@/services/mandate', () => {
   const createMandate = vi.fn(() => ({
@@ -28,49 +30,21 @@ vi.mock('@/services/mandate', () => {
   return { createMandate }
 })
 
-/* const i18n = createI18n({
-  legacy: false,
-  locale: 'en-US',
-  messages: {
-    'en-US': {
-      'ibs-number': 'IBS Number',
-      'company-name': 'Company name',
-      'siret-number': 'SIRET',
-      tooltip: 'The IBS number entered must be part of your portfolio and have an active.',
-      form: {
-        error: {
-          requiredField: 'Required field'
-        }
-      }
-    },
-    'fr-FR': {
-      'ibs-number': 'Numéro IBS',
-      'company-name': 'Raison sociale',
-      'siret-number': 'N° SIRET',
-      tooltip: 'Le numéro d’IBS saisi doit faire parti de votre portefeuille.',
-      form: {
-        error: {
-          requiredField: 'Champ obligatoire'
-        }
-      }
-    }
-  }
-}) */
-
 const createWrapper = (props: any = {}) =>
   wrapperFactory(CreateMandateForm, { props })
 
 describe('form.vue', () => {
   it('renders the component when step value is 1', async () => {
     const wrapper = createWrapper({ step: 1 })
+    await flushPromises()
     await vi.dynamicImportSettled()
     expect(wrapper.exists()).toBeTruthy()
   })
 
   it('emits the loading event form', async () => {
     const wrapper = createWrapper({ step: 1 })
-    await vi.dynamicImportSettled()
-    const input = wrapper.find('input[data-testid = "ibs-number-test"]')
+    await waitForAsyncImports(10)
+    const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('1234567891')
     expect(input.element.value).toBe('1234567891')
     const emittedLoadingEvent: any = wrapper.emitted('loading-event-form')

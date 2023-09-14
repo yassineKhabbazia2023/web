@@ -39,7 +39,7 @@
 import Drawer from '@/components/CreateMandate/Drawer'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import { PIAdd, PButton, PIcon } from '@kpmg/styleguide'
+import { PButton, PIcon, PIAdd } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
