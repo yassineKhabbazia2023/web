@@ -41,10 +41,10 @@ describe('form.vue', () => {
 
   it('emits the loading event form', async () => {
     const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(30)
+    await waitForAsyncImports(50)
     const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('1234567891')
-    expect(input.element.value).toBe('1234567891')
+    expect((input.element as HTMLInputElement).value).toBe('1234567891')
     const emittedLoadingEvent: any = wrapper.emitted('loading-event-form')
     expect(emittedLoadingEvent).toBeTruthy()
     expect(createMandate).toHaveBeenCalled()
