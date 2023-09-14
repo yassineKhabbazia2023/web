@@ -70,7 +70,7 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref, toRaw } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
+import type { FormInstance, FormRules, FormItemProp } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { commonApi, commonStore as store } from '@kpmg/common'
 import { useRouter } from 'vue-router'
@@ -100,8 +100,10 @@ const isFormValid = computed(() =>
 
 const hasCustomError = ref(false)
 
-const validateHandler = (propName: string, isValid: boolean) => {
-  formValidity[propName] = isValid
+const validateHandler = (propName: FormItemProp, isValid: boolean) => {
+  if (typeof propName === 'string') {
+    formValidity[propName] = isValid
+  }
 }
 
 const rules = reactive<FormRules<typeof formValues>>({

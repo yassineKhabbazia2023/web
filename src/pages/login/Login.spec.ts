@@ -20,7 +20,8 @@ const mockAuthPost = vi.fn((_url, { _email, password }) => {
     : Promise.resolve({
       data: {
         userId: USER_ID,
-        webToken: WEB_TOKEN
+        webToken: WEB_TOKEN,
+        email: _email
       }
     })
 })
@@ -47,7 +48,7 @@ const getInputPassword = () => wrapper.findAll('input')[1]
 describe('login', () => {
   beforeEach(async () => {
     wrapper = createWrapper()
-    await waitForAsyncImports(30)
+    await waitForAsyncImports(40)
   })
 
   afterEach(() => {
