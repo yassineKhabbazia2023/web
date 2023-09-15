@@ -1,8 +1,8 @@
 <template>
   <div class="page-content">
     <PImage
-      type="badges"
-      name="lock"
+      type="paupulse"
+      name="mini-mot-de-passe"
       class="badge-lock hidden-md-and-up"
     />
     <p class="forgot-password-title">
@@ -179,7 +179,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   }
 
   .badge-lock {
-    max-width: 105px;
+    max-width: 200px;
     margin: 12px auto;
     display: block;
   }

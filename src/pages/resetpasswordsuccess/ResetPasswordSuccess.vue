@@ -1,9 +1,14 @@
 <template>
   <div class="page-content">
     <PImage
+      type="paupulse"
+      name="mini-email"
+      class="badge-mini-email hidden-md-and-up"
+    />
+    <PImage
       type="badges"
       name="email"
-      class="badge-email"
+      class="badge-email hidden-sm-and-down"
     />
     <p class="forgot-password-title">
       {{ t('verifyMailTitle') }}
@@ -12,7 +17,7 @@
     <PButton
       type="white"
       @click="router.push({ name: 'login' })"
-      class="back-to-login-button hidden-md-and-down"
+      class="back-to-login-button hidden-sm-and-down"
     >
       {{ t('backToLogin') }}
     </PButton>
@@ -84,6 +89,12 @@ const resetPasswordMsg = t('verifyMsg').replace('...', `<strong>${email}</strong
 
   .btn-link {
     width: 100%;
+  }
+
+  .badge-mini-email {
+    display: block;
+    max-width: 200px;
+    margin:auto;
   }
 
   .badge-email {
