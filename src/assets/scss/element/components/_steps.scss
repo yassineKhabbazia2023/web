@@ -54,6 +54,21 @@ div.el-step {
     }
   }
 
+  &.is-vertical {
+    .el-step__line {
+      top: calc(50% + 12px);
+      left: 50%;
+      width: 1px;
+      height: calc(100% - 48px);
+      background: getCssVar('color', 'neutral-gray-300');
+      transform: translate(-50%, -50%);
+      
+      .el-step__line-inner {
+        display: none;
+      }
+    }
+  }
+
   .el-step {
     &__head {
       &.is-process {
