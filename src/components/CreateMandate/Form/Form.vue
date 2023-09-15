@@ -15,9 +15,10 @@
           validateStatus=""
           required>
           <PInput
-            data-testid="ibs-input-test"
             v-model="createMandateForm.ibs"
-            type="number">
+            type="number"
+            data-testid="ibs-number-test"
+          >
             <template #suffix>
               <PIcon
                 v-if="isIBSValid"
@@ -90,7 +91,8 @@
                 prop="firstName"
                 inline
                 :label="t('firstName')">
-                <PInput v-model="createMandateForm.firstName">
+                <PInput v-model="createMandateForm.firstName"
+                  data-testid="firstName-test">
                 </PInput>
               </PFormItem>
             </PCol>
