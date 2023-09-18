@@ -13,7 +13,11 @@
     <p class="forgot-password-title">
       {{ t('verifyMailTitle') }}
     </p>
-    <p class="reset-password-msg" v-html="resetPasswordMsg"></p>
+    <p class="reset-password-msg">
+      {{ t('sendEmailDescription') }}
+      <strong>{{ email }}</strong>
+      {{ t('associatedAccount') }}
+    </p>
     <PButton
       type="white"
       @click="router.push({ name: 'login' })"
@@ -23,18 +27,22 @@
     </PButton>
   </div>
 </template>
+
 <!-- eslint-disable max-len -->
 <i18n lang="yaml">
   en-US:
     backToLogin: 'Back to login'
     verifyMailTitle: 'Check your email address.'
-    verifyMsg: 'We will send an email to ... if it is associated with your account to reset your password.'
+    sendEmailDescription: 'We will send an email to '
+    associatedAccount: ' if it is associated with your account to reset your password.'
   fr-FR:
     backToLogin: 'Revenir à la connexion'
     verifyMailTitle: 'Vérifiez votre adresse mail.'
-    verifyMsg: 'Nous enverrons un mail à ... s''il est associé à votre compte pour réinitialiser votre mot de passe.'
+    sendEmailDescription: 'Nous enverrons un mail à '
+    associatedAccount: ' s''il est associé à votre compte pour réinitialiser votre mot de passe.'
 </i18n>
 <!-- eslint-enable max-len -->
+
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
@@ -49,7 +57,6 @@ const router = useRouter()
 const route = useRoute()
 
 const email = route.query.email
-const resetPasswordMsg = t('verifyMsg').replace('...', `<strong>${email}</strong>`)
 </script>
 
 <style lang="scss" scoped>
@@ -72,7 +79,7 @@ const resetPasswordMsg = t('verifyMsg').replace('...', `<strong>${email}</strong
     text-align: center;
     font-weight: 600;
     font-size: 16px;
-    line-height: 19.2px;
+    line-height: 19px;
     margin: 15px 0;
     @media (max-width: 992px) {
       text-align: left;
@@ -106,10 +113,6 @@ const resetPasswordMsg = t('verifyMsg').replace('...', `<strong>${email}</strong
   .reset-submit-button,
   .back-to-login-button {
     width: 100%;
-  }
-
-  span {
-    font-weight: 600;
   }
 }
 </style>

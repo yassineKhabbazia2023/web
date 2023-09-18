@@ -2,7 +2,7 @@
   <div class="page-content">
     <PImage
       type="paupulse"
-      name="mini-mot-de-passe"
+      name="mini-password"
       class="badge-lock hidden-md-and-up"
     />
     <p class="forgot-password-title">
@@ -166,7 +166,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   .forgot-password-title {
     font-weight: 600;
     font-size: 16px;
-    line-height: 19.2px;
+    line-height: 19px;
     margin: 15px 0;
   }
 
