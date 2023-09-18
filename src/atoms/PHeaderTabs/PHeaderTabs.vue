@@ -1,11 +1,11 @@
 <template>
-  <el-menu
+  <ElMenu
     mode="horizontal"
     class="p-header-tabs hidden-xs-only"
     :ellipsis=false
     router
   >
-    <el-menu-item
+    <ElMenuItem
       v-for="item in menu.slice(0, 4)"
       class="menu-item"
       :index="item.path"
@@ -18,8 +18,8 @@
       <template #title>
         {{ item.text }}
       </template>
-    </el-menu-item>
-    <el-sub-menu
+    </ElMenuItem>
+    <ElSubMenu
       index="2"
       v-if="menu.length > 4"
     >
@@ -29,7 +29,7 @@
         </PIcon>
         <span>{{ t('more') }}</span>
       </template>
-      <el-menu-item
+      <ElMenuItem
         v-for="item in menu.slice(4)"
         class="menu-item"
         :index="item.path"
@@ -42,9 +42,9 @@
         <template #title>
           {{ item.text }}
         </template>
-      </el-menu-item>
-    </el-sub-menu>
-  </el-menu>
+      </ElMenuItem>
+    </ElSubMenu>
+  </ElMenu>
 </template>
 
 <i18n lang="yaml">
@@ -58,7 +58,7 @@
 import PIcon from '@/atoms/PIcon'
 import { defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
+import { ElMenuItem, ElMenu, ElSubMenu } from 'element-plus'
 
 const { t } = useI18n({
   inheritLocale: true,
