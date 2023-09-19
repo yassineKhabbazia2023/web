@@ -1,42 +1,23 @@
-import { mount } from '@vue/test-utils'
+import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Header from '.'
-import { createI18n } from 'vue-i18n'
-import { expect, describe, it, vi } from 'vitest'
+import { expect, describe, it } from 'vitest'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
-vi.mock('@kpmg/styleguide', () => {
-  const PIAdd = vi.fn()
-  return { PIAdd }
-})
-
-const i18n = createI18n({
-  legacy: false,
-  locale: 'en-US',
-  messages: {
-    'en-US': {
-      'bank-mandates': 'Bank mandates',
-      'new-mandate': 'New mandate'
-    },
-    'fr-FR': {
-      'bank-mandates': 'Mandats bancaires',
-      'new-mandate': 'Nouveau mandat'
-    }
-  }
-})
+const createWrapper = () =>
+  wrapperFactory(Header)
 
 describe('header.vue', () => {
-  it('renders translations correctly', () => {
-    const wrapper = mount(Header, { global: { plugins: [i18n] } })
-
+  const wrapper = createWrapper()
+  it('renders translations correctly', async () => {
+    await waitForAsyncImports(10)
     expect(wrapper.find('.header__title').text()).toBe('Banking flows')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
   it('emits click event when button is clicked', async () => {
-    const wrapper = mount(Header, { global: { plugins: [i18n] } })
-
+    await waitForAsyncImports(10)
     expect(wrapper.vm.openDrawer).toBeFalsy()
     await wrapper.find('.header__create-mandate-button').trigger('click')
     expect(wrapper.vm.openDrawer).toBeTruthy()
   })
 })
-

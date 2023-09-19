@@ -1,12 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
-import wrapperFactory from 'tests/utils/wrapperFactory'
+import wrapperFactory from '../../../tests/utils/wrapperFactory'
 import Header from '@/components/Common/Header'
-import Home from './'
-
-vi.mock('@kpmg/styleguide', () => {
-  const PIAdd = vi.fn()
-  return { PIAdd }
-})
+import Home from '@/pages/home'
 
 const createWrapper = (props: any) =>
   wrapperFactory(Home, {
@@ -17,9 +12,9 @@ const createWrapper = (props: any) =>
   })
 
 describe('componentName.vue', () => {
-  it('renders Header component', () => {
+  it('renders Header component', async () => {
     const wrapper = createWrapper({})
-
+    await vi.dynamicImportSettled()
     expect(wrapper.findComponent(Header).exists()).toBeTruthy()
   })
 })
