@@ -89,7 +89,7 @@
     cguLink: 'general terms and conditions of use '
     cguMessagePartTwo: 'of KPMG Pulse.'
     alertConfirmPass: 'Please confirm the password'
-    alertPasswordNotMatch: 'Passwords don''t match!'
+    alertPasswordNotMatch: "Passwords don't match!"
     alertCgu: 'Please accept the general terms and conditions of use'
     alertPasswordRequired: 'Please enter the password'
     btnSubmit: 'Activate my account'
@@ -101,14 +101,14 @@
     labelConfirmPassword: 'Confirmer votre mot de passe'
     placeholderPassword: 'Saisir votre mot de passe'
     placeholderConfirmPassword: 'Confirmer votre mot de passe'
-    validCgu: 'Validez les conditions générales d''utilisation.'
+    validCgu: "Validez les conditions générales d'utilisation."
     cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté '
-    cguLink: 'conditions générales d''utilisation '
+    cguLink: "conditions générales d'utilisation "
     cguMessagePartTwo: 'de KPMG Pulse.'
     alertConfirmPass: 'Veuillez confirmer votre mot de passe'
     alertPasswordNotMatch: 'Mot de passe ne correspondent pas!'
-    alertCgu: 'Veuillez accepter les conditions générales d''utilisation'
-    alertPasswordRequired: 'Veuillez renter votre mot de passe'
+    alertCgu: "Veuillez accepter les conditions générales d'utilisation"
+    alertPasswordRequired: 'Veuillez rentrer votre mot de passe'
     btnSubmit: 'Activer mon compte'
 </i18n>
 
