@@ -121,6 +121,7 @@ defineAsyncComponent(
 export const PActionBar = defineAsyncComponent(() => import('@/molecules/PActionBar'))
 export const PAlert = defineAsyncComponent(() => import('@/atoms/PAlert'))
 export const PAvatar = defineAsyncComponent(() => import('@/atoms/PAvatar'))
+export const PBankCard = defineAsyncComponent(() => import('@/atoms/PBankCard'))
 export const PButton = defineAsyncComponent(() => import('@/atoms/PButton'))
 export const PBottomMenu = defineAsyncComponent(() => import('@/molecules/PBottomMenu'))
 export const PBreadcrumb = defineAsyncComponent(() => import('@/molecules/PBreadcrumb'))
