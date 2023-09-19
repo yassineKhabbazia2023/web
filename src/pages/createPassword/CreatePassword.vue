@@ -139,7 +139,7 @@ const { t } = useI18n({
 const route = useRoute()
 const router = useRouter()
 const email = route.query.email
-const accountId = route.query.accountid
+const accountId = route.query.accountId
 const formRef = ref<FormInstance>()
 const isValidForm = ref(false)
 const formValue = reactive({
@@ -251,7 +251,7 @@ onMounted(() => {
   .txt-create-account {
     font-size: 21px;
     font-weight: 600;
-    line-height: 25.2px;
+    line-height: 25px;
     .purple-text {
       color: var(--el-color-persian-500);
     }

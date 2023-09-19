@@ -2,7 +2,6 @@ import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import CreatePassword from './'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const routes = [
   {
@@ -29,7 +28,7 @@ router.push({
   path: '/createPassword',
   query: {
     email: 'email',
-    accountid: 'accountId',
+    accountId: 'accountId',
     pwrt: 'token'
   }
 })
@@ -66,7 +65,7 @@ describe('page creation password', () => {
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
-      await waitForAsyncImports(30)
+      await vi.dynamicImportSettled()
       vi.advanceTimersByTime(1000)
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(3)
@@ -75,7 +74,7 @@ describe('page creation password', () => {
   )
   it('should show success when user enter password and valid cgu', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(30)
+    await vi.dynamicImportSettled()
     await flushPromises()
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('password')
@@ -86,7 +85,7 @@ describe('page creation password', () => {
   })
   it('should show error when user enter password and confirm password differently', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(30)
+    await vi.dynamicImportSettled()
     await flushPromises()
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
@@ -97,7 +96,7 @@ describe('page creation password', () => {
   })
   it('should call back end when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(30)
+    await vi.dynamicImportSettled()
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('password')
     wrapper.find('.el-checkbox__original').setValue('true')
