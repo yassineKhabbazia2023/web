@@ -24,7 +24,7 @@ $table-font-size: (
 
 $table-padding: (
   'large': 12px 0,
-  'default': 8px 0,
+  'default': 12px 0,
   'small': 4px 0,
 );
 
@@ -73,7 +73,8 @@ tbody tr td .cell {
 .el-table {
   table {
     tr.el-table__row {
-      &.p-table__row--selected, &.p-table__selected-row.el-table__row--striped {
+      &.p-table__row--selected, 
+      &.p-table__selected-row.el-table__row--striped {
         td.el-table__cell {
           background-color: var(--el-color-persian-200);
         }
@@ -90,7 +91,13 @@ tbody tr td .cell {
     }
 
     .el-checkbox {
-      padding: 5px 15px 5px 7px;
+      padding: 13px 12px;
+      margin-left: -12px;
+      margin-right: -12px;
     }
+  }
+  .el-table__header-wrapper .el-table-column--selection > .cell,
+  .el-table__body-wrapper .el-table-column--selection > .cell {
+    height: unset;
   }
 }

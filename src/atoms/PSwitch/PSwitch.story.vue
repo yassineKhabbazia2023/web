@@ -25,7 +25,7 @@ const alwaysOff = ref(false)
 </script>
 
 <docs lang="md">
-  ## Pastille
+  ## Switch
   This component is a simple switch.
 
   <div class="responsive-iframe-container">

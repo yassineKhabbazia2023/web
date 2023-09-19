@@ -24,7 +24,9 @@
       </template>
     </Variant>
     <Variant title="PTable advanced">
-      <PTable :data="tableInputsWithCells.data" :stripe="tableInputsWithCells.striped">
+      <PTable :data="tableInputsWithCells.data"
+      :stripe="tableInputsWithCells.striped"
+      fit="true">
         <PTableColumn
           type="selection"
           v-if="tableInputsWithCells.selectable"/>
@@ -80,7 +82,6 @@
         </PTableColumn>
         <PTableColumn
           label="Tag"
-          width="180"
           :sortable="tableInputsWithCells.sortable"
           >
           <template #default="scope">
@@ -99,6 +100,14 @@
             </PTag>
           </template>
         </PTableColumn>
+        <PTableColumn
+          label="Switch"
+          align="center"
+        >
+          <template #default="scope">
+            <PSwitch v-model="scope.row.switch.status" :disabled="scope.row.switch.disabled" />
+          </template>
+        </PTableColumn>
       </PTable>
       <template #controls>
         <HstCheckbox v-model="tableInputsWithCells.striped" title="Striped" />
@@ -110,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import PTable from './'
 import { iconResolver } from '@/utils/iconResolver'
 import { PIFolder, PIStars } from '../PIcon/components'
@@ -180,7 +189,8 @@ const tableInputsWithCells = reactive({
         status: 'Validated'
       },
       switch: {
-        text: 'Are you ok ?'
+        status: ref(true),
+        disabled: false
       }
     },
     {
@@ -202,7 +212,8 @@ const tableInputsWithCells = reactive({
         status: 'Validated'
       },
       switch: {
-        text: 'Are you ok ?'
+        status: ref(false),
+        disabled: false
       }
     },
     {
@@ -224,7 +235,8 @@ const tableInputsWithCells = reactive({
         status: 'Validated'
       },
       switch: {
-        text: 'Are you ok ?'
+        status: ref(true),
+        disabled: false
       }
     },
     {
@@ -246,7 +258,8 @@ const tableInputsWithCells = reactive({
         status: 'Validated'
       },
       switch: {
-        text: 'Are you ok ?'
+        status: ref(true),
+        disabled: true
       }
     },
     {
@@ -266,6 +279,10 @@ const tableInputsWithCells = reactive({
       },
       tag: {
         status: 'Validated'
+      },
+      switch: {
+        status: ref(false),
+        disabled: true
       }
     }
   ],
