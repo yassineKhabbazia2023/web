@@ -28,7 +28,7 @@ const mockAuthPost = vi.fn((_url, { email }) => {
     ? Promise.reject(new Error('Email required'))
     : Promise.resolve()
 })
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     auth: {
       post: mockAuthPost
