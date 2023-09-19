@@ -1,7 +1,7 @@
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import CreatePassword from './CreatePassword.vue'
+import CreatePassword from './'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const routes = [
@@ -36,7 +36,7 @@ router.push({
 
 const patchMock = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
       get: () => ({

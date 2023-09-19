@@ -17,24 +17,24 @@
       ref="formRef"
       :model="formValue">
       <PFormItem
-        :label="t('lblPassword')"
+        :label="t('labelPassword')"
         prop="password"
         required>
         <PInput
           v-model="formValue.password"
-          :placeholder="t('phdPassword')"
+          :placeholder="t('placeholderPassword')"
           type="password"
           showPassword
         />
       </PFormItem>
       <PFormItem
-        :label="t('lblConfirmPassword')"
+        :label="t('labelConfirmPassword')"
         prop="confirmPassword"
         required
       >
         <PInput
           v-model="formValue.confirmPassword"
-          :placeholder="t('phdConfirmPassword')"
+          :placeholder="t('placeholderConfirmPassword')"
           type="password"
           showPassword
         />
@@ -50,14 +50,14 @@
           class="cgu-checkbox"
           ref="checkbox"
         >
-          {{ t('cguMsg') }}
+          {{ t('cguMessagePartOne') }}
           <a
-            href="https://www.google.com"
+            href=""
             target="_blank"
             class="cgu-link">
             {{ t('cguLink') }}
           </a>
-          {{ t('cguMsg2') }}
+          {{ t('cguMessagePartTwo') }}
         </PCheckbox>
       </PFormItem>
       <PFormItem>
@@ -80,14 +80,14 @@
     createAccount: 'Create your account '
     1step: 'in 1 step.'
     defPassword: 'Please enter and confirm your new password'
-    lblPassword: 'Your new password'
-    lblConfirmPassword: 'Confirm your new password'
-    phdPassword: 'Enter your new password'
-    phdConfirmPassword: 'Confirm your new password'
+    labelPassword: 'Your new password'
+    labelConfirmPassword: 'Confirm your new password'
+    placeholderPassword: 'Enter your new password'
+    placeholderConfirmPassword: 'Confirm your new password'
     validCgu: 'Please valid the General Terms and Conditions of use'
-    cguMsg: 'By checking this box, I confirm that I have read and accepted the '
+    cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the '
     cguLink: 'general terms and conditions of use '
-    cguMsg2: 'of KPMG Pulse.'
+    cguMessagePartTwo: 'of KPMG Pulse.'
     alertConfirmPass: 'Please confirm the password'
     alertPasswordNotMatch: 'Passwords don''t match!'
     alertCgu: 'Please accept the general terms and conditions of use'
@@ -97,14 +97,14 @@
     createAccount: 'Créez votre compte'
     1step: 'en une étape.'
     defPassword: 'Veuillez définir votre mot de passe et le confirmer.'
-    lblPassword: 'Définissez votre mot de passe'
-    lblConfirmPassword: 'Confirmer votre mot de passe'
-    phdPassword: 'Saisir votre mot de passe'
-    phdConfirmPassword: 'Confirmer votre mot de passe'
+    labelPassword: 'Définissez votre mot de passe'
+    labelConfirmPassword: 'Confirmer votre mot de passe'
+    placeholderPassword: 'Saisir votre mot de passe'
+    placeholderConfirmPassword: 'Confirmer votre mot de passe'
     validCgu: 'Validez les conditions générales d''utilisation.'
-    cguMsg: 'En cochant cette case, je confirme avoir lu et accepté '
+    cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté '
     cguLink: 'conditions générales d''utilisation '
-    cguMsg2: 'de KPMG Pulse.'
+    cguMessagePartTwo: 'de KPMG Pulse.'
     alertConfirmPass: 'Veuillez confirmer votre mot de passe'
     alertPasswordNotMatch: 'Mot de passe ne correspondent pas!'
     alertCgu: 'Veuillez accepter les conditions générales d''utilisation'
@@ -155,7 +155,7 @@ watch(formValue, async () => {
 })
 
 const validatePassword = (_rule: any, value: any, callback: any) => {
-  if (value === '') {
+  if (!value) {
     callback(new Error(t('alertPasswordRequired')))
   } else {
     callback()
@@ -163,7 +163,7 @@ const validatePassword = (_rule: any, value: any, callback: any) => {
 }
 
 const validateCheckPass = (_rule: any, value: any, callback: any) => {
-  if (value === '') {
+  if (!value) {
     callback(new Error(t('alertConfirmPass')))
   } else if (value !== formValue.password) {
     callback(new Error(t('alertPasswordNotMatch')))
@@ -268,7 +268,7 @@ onMounted(() => {
     padding: 14px 12px 16px 12px;
     font-weight: 400;
     font-size: 14px;
-    line-height: 16.8px;
+    line-height: 16px;
 
     .cgu-link {
       font-weight: 700;
