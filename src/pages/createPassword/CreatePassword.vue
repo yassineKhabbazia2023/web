@@ -15,7 +15,8 @@
       hideRequiredAsterisk
       :rules="rules"
       ref="formRef"
-      :model="formValue">
+      :model="formValue"
+    >
       <PFormItem
         :label="t('labelPassword')"
         prop="password"
