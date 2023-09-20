@@ -30,7 +30,6 @@
             </template>
           </PInput>
         </PFormItem>
-        <div>
           <PRow :gutter="16">
             <PCol :span="12">
               <PFormItem inline :label="t('company-name')">
@@ -56,7 +55,6 @@
               </PFormItem>
             </PCol>
           </PRow>
-        </div>
       </div>
       <div v-if="step === 2">
         <PFormItem prop="title">
@@ -72,7 +70,6 @@
             {{ t('madam') }}
           </PRadio>
         </PFormItem>
-        <div>
           <PRow :gutter="8">
             <PCol :span="12">
               <PFormItem
@@ -97,7 +94,6 @@
               </PFormItem>
             </PCol>
           </PRow>
-        </div>
         <PFormItem
           inline
           disabled>
@@ -136,7 +132,6 @@
             state="default">
           </PInput>
         </PFormItem>
-        <div>
           <PRow :gutter="8">
             <PCol :span="8">
               <PFormItem
@@ -160,7 +155,6 @@
               </PFormItem>
             </PCol>
           </PRow>
-        </div>
         <PFormItem
           prop="country"
           inline
@@ -291,7 +285,7 @@
     optional: ' (facultatif)'
     headquarters: 'Siège social'
     address: 'Adresse postale'
-    complement: 'Complément d''addresse'
+    complement: "Complément d'adresse"
     zipCode: 'Code postal'
     city: 'Ville'
     country: 'Pays'
@@ -581,7 +575,7 @@ defineExpose({
   }
 
   &__section-title {
-    margin: 24px 0px 16px 0px;
+    margin: 32px 0px 16px 0px;
     color: var(--el-color-neutral-gray-900);
     font-size: 16px;
     font-style: normal;

@@ -33,7 +33,7 @@
         placement="top"
         v-if="currentStep === 1"
         >
-        <PIcon class="drawer__tooltip">
+        <PIcon class="drawer__tooltip" color="#A4A4A4">
           <PIQuestionCircle />
         </PIcon>
       </PTooltip>
@@ -188,7 +188,6 @@ defineExpose({
     text-transform: capitalize;
   }
   &__stepper {
-    margin-top: -18px;
     margin-bottom: 24px;
   }
   &__tooltip {
