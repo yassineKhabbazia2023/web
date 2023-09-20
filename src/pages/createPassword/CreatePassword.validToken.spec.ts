@@ -29,7 +29,7 @@ router.push({
   query: {
     email: 'email',
     accountId: 'accountId',
-    pwrt: 'token'
+    token: 'token'
   }
 })
 

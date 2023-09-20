@@ -20,7 +20,8 @@
       <PFormItem
         :label="t('labelPassword')"
         prop="password"
-        required>
+        required
+        >
         <PInput
           v-model="formValue.password"
           :placeholder="t('placeholderPassword')"
@@ -45,7 +46,8 @@
       </p>
       <PFormItem
         prop="terms"
-        required>
+        required
+        >
         <PCheckbox
           v-model="formValue.terms"
           class="cgu-checkbox"
@@ -230,7 +232,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 }
 
 const isValidToken = async (): Promise<any> => {
-  const token = route.query.pwrt
+  const token = route.query.token
   const urlValidToken = `/Activation/IsInvitationTokenValid?invitationToken=${token}`
   try {
     const { data: value } = await commonApi().onboarding.get(urlValidToken)
