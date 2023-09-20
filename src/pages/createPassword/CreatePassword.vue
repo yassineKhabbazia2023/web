@@ -119,10 +119,9 @@ import type { FormRules, FormInstance } from 'element-plus'
 import { commonApi, commonStore as store } from '@kpmg/common'
 import {
   onBeforeMount,
-  onMounted,
   reactive,
   ref,
-  watch
+  computed
 } from 'vue'
 import {
   PForm,
@@ -141,38 +140,48 @@ const router = useRouter()
 const email = route.query.email
 const accountId = route.query.accountId
 const formRef = ref<FormInstance>()
-const isValidForm = ref(false)
+const formValidity = reactive({
+  password: false,
+  confirmPassword: false,
+  terms: false
+})
 const formValue = reactive({
   password: '',
   confirmPassword: '',
   terms: false
 })
 
-watch(formValue, async () => {
-  await formRef.value?.validate((valid) => {
-    isValidForm.value = valid
-  })
+const isValidForm = computed(() => {
+  return formValidity.password && formValidity.confirmPassword && formValidity.terms
 })
 
 const validatePassword = (_rule: any, value: any, callback: any) => {
   if (!value) {
+    formValidity.password = false
     callback(new Error(t('alertPasswordRequired')))
   } else {
+    if (!formRef.value) return
+    formRef.value?.validateField('confirmPassword', () => null)
     callback()
   }
+  formValidity.password = true
 }
 
 const validateCheckPass = (_rule: any, value: any, callback: any) => {
   if (!value) {
+    formValidity.confirmPassword = false
     callback(new Error(t('alertConfirmPass')))
-  } else if (value !== formValue.password) {
+  } else if (!!formValue.password && value !== formValue.password) {
+    formValidity.confirmPassword = false
     callback(new Error(t('alertPasswordNotMatch')))
   } else {
+    formValidity.confirmPassword = true
     callback()
   }
 }
 
 const validateTerm = (_rule: any, value: any, callback: any) => {
+  formValidity.terms = !!value
   if (!value) {
     callback(new Error(t('alertCgu')))
   } else {
@@ -181,8 +190,8 @@ const validateTerm = (_rule: any, value: any, callback: any) => {
 }
 
 const rules = reactive<FormRules<typeof formValue>>({
-  password: [{ trigger: 'blur', validator: validatePassword }],
-  confirmPassword: [{ trigger: 'blur', validator: validateCheckPass }],
+  password: [{ trigger: ['change', 'blur'], validator: validatePassword }],
+  confirmPassword: [{ trigger: ['change', 'blur'], validator: validateCheckPass }],
   terms: [{ trigger: 'change', validator: validateTerm }]
 })
 
@@ -211,7 +220,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             token
           }
         })
-        router.push({ name: '/home' })
+        router.push({ name: 'home' })
       } catch {}
     } else {
       return false
@@ -233,14 +242,6 @@ onBeforeMount(async () => {
   if (!isValid) {
     router.push({ path: '/expireToken', query: { email, accountId } })
   }
-})
-
-onMounted(() => {
-  setTimeout(async () => {
-    if (formRef.value) {
-      await formRef.value.validate((valid) => { return valid })
-    }
-  }, 1000)
 })
 </script>
 

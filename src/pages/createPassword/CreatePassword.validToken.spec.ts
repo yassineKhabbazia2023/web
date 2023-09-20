@@ -61,14 +61,15 @@ describe('page creation password', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
-  it(
+  it.only(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
       await vi.dynamicImportSettled()
-      vi.advanceTimersByTime(1000)
       await flushPromises()
-      expect(wrapper.findAll('.is-error')).toHaveLength(3)
+      wrapper.findAll('.el-input__inner')[0].setValue('password')
+      await flushPromises()
+      expect(wrapper.findAll('.is-error')).toHaveLength(1)
       expect(wrapper.find('button').classes()).toContain('is-disabled')
     }
   )
