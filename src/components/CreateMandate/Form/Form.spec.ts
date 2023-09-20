@@ -96,7 +96,7 @@ describe('form.vue', () => {
     await siretNumberInputElement
       .setValue(step1TestCase.updated.siretNumber)
 
-    await waitForAsyncImports(150)
+    await waitForAsyncImports(120)
     await dynamicUntilFoundComponent(wrapper, PForm)
     await dynamicUntilFoundComponent(wrapper, PFormItem)
     await dynamicUntilFoundComponent(wrapper, PInput)
