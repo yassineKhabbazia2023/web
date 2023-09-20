@@ -11,6 +11,12 @@ $drawer: (
     margin: 0;
     padding: 24px;
   }
+  .el-drawer__body {
+    padding: 0 24px;
+  }
+  .el-drawer__footer {
+    padding: 24px;
+  }
 
   &__header {
     display: flex;
