@@ -25,7 +25,7 @@ const router = createRouter({
   routes
 })
 router.push({
-  path: '/createPassword',
+  name: 'createPassword',
   query: {
     email: 'email',
     accountId: 'accountId',
@@ -69,7 +69,7 @@ describe('page creation password', () => {
     await flushPromises()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
-      path: '/expireToken',
+      name: 'expireToken',
       query: { accountId: 'accountId', email: 'email' }
     })
   })

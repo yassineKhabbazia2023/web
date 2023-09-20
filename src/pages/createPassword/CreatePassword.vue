@@ -243,7 +243,7 @@ const isValidToken = async (): Promise<any> => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ path: '/expireToken', query: { email, accountId } })
+    router.push({ name: 'expireToken', query: { email, accountId } })
   }
 })
 </script>
