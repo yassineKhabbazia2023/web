@@ -2,19 +2,21 @@
 
 // css3 var in packages/theme-chalk/src/carousel.scss
 $carousel: (
-    'arrow-font-size': 12px,
-    'arrow-size': 36px,
-    'arrow-background': getCssVar('color-white'),
-    'arrow-hover-background': getCssVar('color-white'),
-    'indicator-width': 6px,
-    'indicator-height': 6px,
-    'indicator-padding-horizontal': 4px,
-    'indicator-padding-vertical': 58px,
-    'indicator-out-color': getCssVar('border-color-hover'),
+  'arrow-font-size': 12px,
+  'arrow-size': 36px,
+  'arrow-background': getCssVar('color-white'),
+  'arrow-hover-background': getCssVar('color-white'),
+  'indicator-width': 6px,
+  'indicator-height': 6px,
+  'indicator-padding-horizontal': 4px,
+  'indicator-padding-vertical': 58px,
+  'indicator-out-color': getCssVar('border-color-hover'),
 );
 
 //custom css override
 .el-carousel {
+  background: var(--persian-light-gradient);
+
   &__arrow {
     border: 1px solid getCssVar('color', 'persian-200');
     color: getCssVar('color', 'persian-200');
@@ -38,7 +40,7 @@ $carousel: (
       }
     }
 
-    >.el-carousel__button {
+    > .el-carousel__button {
       border-radius: 50%;
       color: var(--el-color-neutral-gray-100);
     }
@@ -48,10 +50,9 @@ $carousel: (
 //custom css for carousel-item
 
 .el-carousel__item {
-  background: var(--persian-light-gradient);
   min-height: 600px;
 
-  >.top {
+  > .top {
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.5);
     margin: 48px auto;
@@ -69,7 +70,7 @@ $carousel: (
     }
   }
 
-  >.bottom {
+  > .bottom {
     align-items: center;
     width: 70%;
     margin: 0 auto;
