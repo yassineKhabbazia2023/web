@@ -49,7 +49,7 @@ describe('login', () => {
       await link.trigger('click')
 
       expect(window.open).toHaveBeenCalledTimes(1)
-      expect(window.open).toBeCalledWith(href || CGU_URL, '_blank')
+      expect(window.open).toHaveBeenCalledWith(href || CGU_URL, '_blank')
     }
   )
 

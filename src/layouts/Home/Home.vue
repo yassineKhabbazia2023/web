@@ -2,9 +2,7 @@
   <div class="common-layout">
     <PContainer>
       <PCHeader class="header-container" height="52">
-        <Header
-          :menu="menuHeader"
-        />
+        <Header :menu="menuHeader" />
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
@@ -97,7 +95,7 @@ const routeActive = route.path
   position: relative;
   width: 100%;
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
   @media only screen and (max-width: 991px)  {
     width: auto;
   }

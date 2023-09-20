@@ -23,11 +23,13 @@
           :md="12"
           class="illustration-wrapper"
         >
-        <PCarousel
-          :items="carouselData"
-          arrow="never"
-          height="auto">
-        </PCarousel>
+          <PCarousel
+            :items="carouselData"
+            :interval="3300"
+            arrow="never"
+            height="600px"
+            class="carousel"
+          />
         </PCol>
       </PRow>
     </main>
@@ -95,7 +97,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { LINKS } from '../Login/contants'
-import { ref } from 'vue'
 import { PButton, PCol, PDrawer, PCarousel, PRow, PImage } from '@kpmg/styleguide'
 import { useFooterLink } from '@/composables/useFooterLink'
 
@@ -110,7 +111,8 @@ const {
   isCopyrightDrawerOpened,
   handleCloseDrawer
 } = useFooterLink()
-const carouselData = ref([
+
+const carouselData = [
   {
     text: t('carouselItem1'),
     imageName: 'digitalisation',
@@ -126,8 +128,7 @@ const carouselData = ref([
     imageType: 'paupulse',
     imageName: 'document-partage'
   }
-])
-
+]
 </script>
 
 <style lang="scss" scoped>
@@ -138,7 +139,7 @@ const carouselData = ref([
 .wrapper {
   @media (min-width: 992px) {
     background: var(--el-color-base-persian-light)
-      url('./images/icon-pulse-bg.svg') no-repeat right;
+      url('../Login/images/icon-pulse-bg.svg') no-repeat right;
     padding-top: 10vh;
   }
   @media (min-height: 1028px) {
@@ -182,14 +183,7 @@ const carouselData = ref([
   }
 
   .illustration-wrapper {
-    background: linear-gradient(
-      90deg,
-      var(--el-color-primary) 0%,
-      var(--el-color-secondary-amethyste) 100%
-    );
     text-align: left;
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
 
     .illustration {
       position: relative;
@@ -197,6 +191,11 @@ const carouselData = ref([
       left: -4%;
       transform: translateY(-50%);
     }
+  }
+
+  .carousel {
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
   }
 }
 
