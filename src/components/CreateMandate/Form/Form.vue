@@ -604,9 +604,5 @@ defineExpose({
     -webkit-appearance: none;
     margin: 0;
   }
-
-  .is-error {
-    margin-bottom: 36px;
-  }
 }
 </style>

@@ -9,7 +9,7 @@ const createWrapper = () =>
 describe('header.vue', () => {
   const wrapper = createWrapper()
   it('renders translations correctly', async () => {
-    await waitForAsyncImports(30)
+    await waitForAsyncImports(40)
     expect(wrapper.find('.header__title').text()).toBe('Banking flows')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })

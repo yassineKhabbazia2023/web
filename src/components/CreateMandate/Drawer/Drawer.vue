@@ -19,13 +19,13 @@
         <PStepItem :title="t('banking-data')" />
       </PSteps>
     <h5 class="drawer__title">
-      <div v-if="currentStep == 1">
+      <div v-if="currentStep === 1">
         {{ t('entity') }}
       </div>
-      <div v-if="currentStep == 2">
+      <div v-if="currentStep === 2">
         {{ t('signatory') }}
       </div>
-      <div v-if="currentStep == 3">
+      <div v-if="currentStep === 3">
         {{ t('bank-identity-statement') }}
       </div>
       <PTooltip
@@ -45,7 +45,7 @@
     <template #footer>
       <div>
         <PButton
-          v-if="currentStep == 2 || currentStep == 3"
+          v-if="currentStep === 2 || currentStep === 3"
           type="default"
           size="default"
           :plain="false"
@@ -60,7 +60,7 @@
           {{ t('previous') }}
         </PButton>
         <PButton
-          v-if="currentStep == 3"
+          v-if="currentStep === 3"
           type="primary"
           size="default"
           :plain="false"
@@ -71,7 +71,7 @@
           {{ t('validate') }}
         </PButton>
         <PButton
-          v-if="currentStep == 1 || currentStep == 2"
+          v-if="currentStep < 3"
           type="primary"
           size="default"
           :plain="false"
@@ -111,7 +111,7 @@
         entity: 'Entité'
         signatory: 'Signataire'
         infos: 'Infos'
-        bank-identity-statement: 'Relevé d’identité bancaire'
+        bank-identity-statement: "Relevé d’identité bancaire"
         tooltip: "Le numéro d’IBS saisi doit faire parti de
           votre portefeuille et avoir un engagement actif."
 </i18n>
