@@ -16,11 +16,11 @@ export const createMandate = async ({
         firstName: 'maroo',
         lastName: 'elleuch',
         address: {
-          street: 'street',
-          complements: 'complement',
-          zipCode: 'zipcode',
-          city: 'city',
-          country: 'contry'
+          street: '5 rue de liège',
+          complements: 'apt 15',
+          zipCode: '75008',
+          city: 'Paris',
+          country: 'France'
         }
       }
     }

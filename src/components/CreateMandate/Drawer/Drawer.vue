@@ -19,7 +19,15 @@
         <PStepItem :title="t('banking-data')" />
       </PSteps>
     <h5 class="drawer__title">
-      {{t(stepLabel)}}
+      <div v-if="currentStep === 1">
+        {{ t('entity') }}
+      </div>
+      <div v-if="currentStep === 2">
+        {{ t('signatory') }}
+      </div>
+      <div v-if="currentStep === 3">
+        {{ t('bank-identity-statement') }}
+      </div>
       <PTooltip
         :content="t('tooltip')"
         placement="top"
@@ -37,7 +45,7 @@
     <template #footer>
       <div>
         <PButton
-          v-if="currentStep == 2 || currentStep == 3"
+          v-if="currentStep === 2 || currentStep === 3"
           type="default"
           size="default"
           :plain="false"
@@ -52,6 +60,18 @@
           {{ t('previous') }}
         </PButton>
         <PButton
+          v-if="currentStep === 3"
+          type="primary"
+          size="default"
+          :plain="false"
+          :round="false"
+          :loading="false"
+          data-testid="validate-step-test"
+        >
+          {{ t('validate') }}
+        </PButton>
+        <PButton
+          v-if="currentStep < 3"
           type="primary"
           size="default"
           :plain="false"
@@ -61,7 +81,7 @@
           data-testid="next-step-test"
           @click="goToNextStep()"
         >
-          {{ t('next') }}
+          {{ t('next')}}
           <PIcon class="el-button__icon--right">
             <PIArrowRight />
           </PIcon>
@@ -76,20 +96,22 @@
         new-collection: 'New collection'
         next: 'Next'
         previous: 'Previous'
+        validate: 'Validate'
         entity: 'Entity'
-        # signatory: 'Signatory'
+        signatory: 'Signatory'
         infos: 'Infos'
-        banking-data: 'Banking data'
+        bank-identity-statement: 'Bank Identity Statement'
         tooltip: 'The IBS number entered must be part of your
           portfolio and have an active commitment.'
     fr-FR:
         new-collection: 'Nouvelle collecte'
         next: 'Suivant'
         previous: 'Précédent'
+        validate: 'Valider'
         entity: 'Entité'
-        # signatory: 'Signataire'
+        signatory: 'Signataire'
         infos: 'Infos'
-        banking-data: 'Données bancaires'
+        bank-identity-statement: "Relevé d’identité bancaire"
         tooltip: "Le numéro d’IBS saisi doit faire parti de
           votre portefeuille et avoir un engagement actif."
 </i18n>
@@ -111,18 +133,13 @@ import {
 import Form from '@/components/CreateMandate/Form'
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
-const titleMap: any = {
-  1: 'entity',
-  2: 'signatory',
-  3: 'bank-details'
-}
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-const emit = defineEmits(['drawer-previous-button-click', 'update:modelValue'])
+const emit = defineEmits(['update:modelValue'])
 
 const props = defineProps({
   modelValue: Boolean
@@ -135,10 +152,6 @@ const drawerModel = computed({
   set(value) {
     emit('update:modelValue', value)
   }
-})
-
-const stepLabel = computed(() => {
-  return titleMap[currentStep.value]
 })
 
 const goToNextStep = () => {

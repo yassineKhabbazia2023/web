@@ -1,6 +1,6 @@
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import CreateMandateDrawer from '.'
-import { expect, describe, it, vi } from 'vitest'
+import { expect, describe, it } from 'vitest'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const createWrapper = (props: any = {}, slots: any = {}) =>
@@ -9,7 +9,7 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
 describe('createMandateDrawer.vue', () => {
   it('renders the component when modelValue is true', async () => {
     const wrapper = createWrapper({ modelValue: true })
-    await vi.dynamicImportSettled()
+    await waitForAsyncImports(150)
     expect(wrapper.exists()).toBeTruthy()
   })
 

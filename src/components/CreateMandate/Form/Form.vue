@@ -34,6 +34,7 @@
             <PCol :span="12">
               <PFormItem inline :label="t('company-name')">
                 <PInput
+                  data-testid="name-input-test"
                   v-model="createMandateForm.name"
                   disabled>
                 </PInput>
@@ -45,6 +46,7 @@
                 :label="t('siret-number')"
                 disabled>
                 <PInput
+                  data-testid="siretNumber-input-test"
                   v-model="createMandateForm.siretNumber"
                   state="default"
                   disabled
@@ -94,8 +96,11 @@
           </PRow>
         <PFormItem
           inline
-          :label="`${t('email')} (${t('optional')})`"
           disabled>
+          <template #label>
+            <span class="create-mandate-form_optional-title">{{t('email')}} </span>
+            <span class="create-mandate-form_optional">{{t('optional')}}</span>
+          </template>
           <PInput
             v-model="createMandateForm.email"
             state="default">
@@ -117,8 +122,11 @@
         <PFormItem
           prop="addressComplement"
           inline
-          :label="`${t('complement')} (${t('optional')})`"
           disabled>
+          <template #label>
+            <span class="create-mandate-form_optional-title">{{t('complement')}} </span>
+            <span class="create-mandate-form_optional">{{t('optional')}}</span>
+          </template>
           <PInput
             v-model="createMandateForm.addressComplement"
             state="default">
@@ -158,6 +166,76 @@
           </PInput>
         </PFormItem>
       </div>
+      <div v-if="step === 3">
+        <PRow :gutter="8">
+          <PCol :span="12">
+            <PFormItem
+              prop="institutionCode"
+              inline
+              :label="`${t('institutionCode')}`"
+              disabled>
+              <PInput
+                data-testid="institutionCode-input-test"
+                v-model="createMandateForm.institutionCode"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+          <PCol :span="12">
+            <PFormItem
+              prop="branchCode"
+              inline
+              :label="`${t('branchCode')}`"
+              disabled>
+              <PInput
+                data-testid="branchCode-input-test"
+                v-model="createMandateForm.branchCode"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+        </PRow>
+        <PRow :gutter="8">
+          <PCol :span="18">
+            <PFormItem
+              prop="accountNumber"
+              inline
+              :label="`${t('accountNumber')}`"
+              disabled>
+              <PInput
+                data-testid="accountNumber-input-test"
+                v-model="createMandateForm.accountNumber"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+          <PCol :span="6">
+            <PFormItem
+              prop="key"
+              inline
+              :label="`${t('key')}`"
+              disabled>
+              <PInput
+                data-testid="key-input-test"
+                v-model="createMandateForm.key"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+        </PRow>
+        <PFormItem
+          prop="bank"
+          inline
+          :label="`${t('bank')}`"
+          disabled>
+          <PInput
+            data-testid="bank-input-test"
+            v-model="createMandateForm.bank"
+            state="default"
+            disabled>
+          </PInput>
+        </PFormItem>
+      </div>
     </PForm>
   </div>
 </template>
@@ -173,16 +251,27 @@
     lastName: 'Last name'
     firstName: 'First name'
     email: 'Email'
-    optional: 'optional'
+    optional: ' (optional)'
     headquarters: 'Headquarters'
     address: 'Address'
     complement: 'Address complement'
     zipCode: 'ZipCode'
     city: 'City'
     country: 'Country'
+    institutionCode: 'Institution Code'
+    branchCode: 'Branch Code'
+    accountNumber: 'Account Number'
+    key: 'Key'
+    bank: 'Bank'
     form:
       error:
         requiredField: 'Required field'
+        mandatoryChoice: 'Mandatory choice'
+        input_5_chars: 'Input must have exactly 5 characters'
+        input_11_chars: 'Input must have exactly 11 characters'
+        input_2_chars: 'Input must have exactly 2 characters'
+        only_numbers: 'Input must contain only numbers'
+        alphanumeric_only: 'Input must contain only numbers and letters'
   fr-FR:
     ibs-number: 'Numéro IBS'
     company-name: 'Raison sociale'
@@ -193,16 +282,27 @@
     lastName: 'Prénom'
     firstName: 'Nom'
     email: 'Adresse mail'
-    optional: 'facultatif'
+    optional: ' (facultatif)'
     headquarters: 'Siège social'
     address: 'Adresse postale'
     complement: "Complément d'adresse"
     zipCode: 'Code postal'
     city: 'Ville'
     country: 'Pays'
+    institutionCode: 'Code établissement'
+    branchCode: 'Code guichet'
+    accountNumber: 'Numéro de compte'
+    key: 'Clé'
+    bank: 'Banque'
     form:
       error:
         requiredField: 'Champ obligatoire'
+        mandatoryChoice: 'Mandatory choice'
+        input_5_chars: 'L''entrée doit avoir exactement 5 caractères'
+        input_11_chars: 'L''entrée doit avoir exactement 11 caractères'
+        input_2_chars: 'L''entrée doit avoir exactement 2 caractères'
+        only_numbers: 'L''entrée doit contenir uniquement des chiffres'
+        alphanumeric_only: 'L''entrée doit contenir uniquement des chiffres et des lettres'
 </i18n>
 
 <script setup lang='ts'>
@@ -243,7 +343,12 @@ const createMandateForm = reactive<FormModel>({
   addressComplement: '',
   zipCode: '',
   city: '',
-  country: ''
+  country: '',
+  institutionCode: '',
+  branchCode: '',
+  accountNumber: '',
+  key: '',
+  bank: ''
 })
 
 const props = defineProps<FormProps>()
@@ -252,7 +357,7 @@ const isIBSValid = ref(false)
 
 const areFieldsFilled = computed(() => {
   const fieldsToCheck = [
-    // 'title',
+    'title',
     'firstName',
     'lastName',
     'address',
@@ -346,7 +451,7 @@ const rules = reactive<any>({
   title: [
     {
       required: true,
-      message: 'Choix obligatoire',
+      message: t('form.error.mandatoryChoice'),
       trigger: 'change'
     }
   ],
@@ -391,6 +496,66 @@ const rules = reactive<any>({
       message: t('form.error.requiredField'),
       trigger: 'blur'
     }
+  ],
+  institutionCode: [
+    {
+      required: true,
+      validator: (_: any, value: any, callback: any) => {
+        if (value.length !== 5) {
+          callback(new Error(t('form.error.input_5_chars')))
+        } else if (!/^\d+$/.test(value)) {
+          callback(new Error(t('form.error.only_numbers')))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur'
+    }
+  ],
+  branchCode: [
+    {
+      required: true,
+      validator: (_: any, value: any, callback: any) => {
+        if (value.length !== 5) {
+          callback(new Error(t('form.error.input_5_chars')))
+        } else if (!/^\d+$/.test(value)) {
+          callback(new Error(t('form.error.only_numbers')))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur'
+    }
+  ],
+  accountNumber: [
+    {
+      required: true,
+      validator: (_: any, value: any, callback: any) => {
+        if (value.length !== 11) {
+          callback(new Error(t('form.error.input_11_chars')))
+        } else if (!/^[a-zA-Z0-9]+$/.test(value)) {
+          callback(new Error(t('form.error.alphanumeric_only')))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur'
+    }
+  ],
+  key: [
+    {
+      required: true,
+      validator: (_: any, value: any, callback: any) => {
+        if (value.length !== 2) {
+          callback(new Error(t('form.error.input_2_chars')))
+        } else if (!/^\d+$/.test(value)) {
+          callback(new Error(t('form.error.only_numbers')))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur'
+    }
   ]
 })
 
@@ -416,6 +581,22 @@ defineExpose({
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
+  }
+
+  &_title-optional {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--el-color-neutral-gray-900);
+  }
+
+  &_optional {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%;
+    color: var(--el-color-neutral-gray-500);
   }
 
   .el-input__inner::-webkit-inner-spin-button,
