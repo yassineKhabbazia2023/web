@@ -25,6 +25,7 @@ const router = createRouter({
   routes
 })
 router.push({
+  path: '/createPassword',
   name: 'createPassword',
   query: {
     email: 'email',

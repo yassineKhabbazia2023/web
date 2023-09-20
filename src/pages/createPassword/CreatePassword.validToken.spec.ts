@@ -104,7 +104,7 @@ describe('page creation password', () => {
     await flushPromises()
     wrapper.find('button').trigger('click')
     await flushPromises()
-    const patchLink = '/Activation/AcceptTerms?email=' + 'email'
+    const patchLink = '/Activation/AcceptTerms?email=email'
     const postLink = '/api/createPassword'
     const data = {
       email: 'email',
