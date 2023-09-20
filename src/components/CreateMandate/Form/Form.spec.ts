@@ -74,11 +74,17 @@ describe('form.vue', () => {
     Object.assign(wrapper.vm.createMandateForm, step1TestCase.initial)
 
     await waitForAsyncImports(150)
+    await dynamicUntilFoundComponent(wrapper, PForm)
+    await dynamicUntilFoundComponent(wrapper, PFormItem)
+    await dynamicUntilFoundComponent(wrapper, PInput)
+    await dynamicUntilFoundComponent(wrapper, PCol)
+    await dynamicUntilFoundComponent(wrapper, PRow)
 
     // const ibsInputElement = wrapper
     //   .find('[data-testid="ibs-input-test"]')
     // await ibsInputElement
     //   .setValue(step1TestCase.updated.ibs)
+    // await ibsInputElement.trigger('change')
 
     const nameInputElement = wrapper
       .find('[data-testid="name-input-test"]')
@@ -89,6 +95,13 @@ describe('form.vue', () => {
       .find('[data-testid="siretNumber-input-test"]')
     await siretNumberInputElement
       .setValue(step1TestCase.updated.siretNumber)
+
+    await waitForAsyncImports(150)
+    await dynamicUntilFoundComponent(wrapper, PForm)
+    await dynamicUntilFoundComponent(wrapper, PFormItem)
+    await dynamicUntilFoundComponent(wrapper, PInput)
+    await dynamicUntilFoundComponent(wrapper, PCol)
+    await dynamicUntilFoundComponent(wrapper, PRow)
 
     // expect(wrapper.vm.createMandateForm.ibs)
     //   .toStrictEqual(step1TestCase.updated.ibs)

@@ -100,8 +100,11 @@
         </div>
         <PFormItem
           inline
-          :label="`${t('email')} (${t('optional')})`"
           disabled>
+          <template #label>
+            <span class="create-mandate-form_optional-title">{{t('email')}} </span>
+            <span class="create-mandate-form_optional">{{t('optional')}}</span>
+          </template>
           <PInput
             v-model="createMandateForm.email"
             state="default">
@@ -123,8 +126,11 @@
         <PFormItem
           prop="addressComplement"
           inline
-          :label="`${t('complement')} (${t('optional')})`"
           disabled>
+          <template #label>
+            <span class="create-mandate-form_optional-title">{{t('complement')}} </span>
+            <span class="create-mandate-form_optional">{{t('optional')}}</span>
+          </template>
           <PInput
             v-model="createMandateForm.addressComplement"
             state="default">
@@ -167,66 +173,62 @@
         </PFormItem>
       </div>
       <div v-if="step === 3">
-        <div>
-          <PRow :gutter="8">
-            <PCol :span="12">
-              <PFormItem
-                prop="institutionCode"
-                inline
-                :label="`${t('institutionCode')}`"
-                disabled>
-                <PInput
-                  data-testid="institutionCode-input-test"
-                  v-model="createMandateForm.institutionCode"
-                  state="default">
-                </PInput>
-              </PFormItem>
-            </PCol>
-            <PCol :span="12">
-              <PFormItem
-                prop="branchCode"
-                inline
-                :label="`${t('branchCode')}`"
-                disabled>
-                <PInput
-                  data-testid="branchCode-input-test"
-                  v-model="createMandateForm.branchCode"
-                  state="default">
-                </PInput>
-              </PFormItem>
-            </PCol>
-          </PRow>
-        </div>
-        <div>
-          <PRow :gutter="8">
-            <PCol :span="18">
-              <PFormItem
-                prop="accountNumber"
-                inline
-                :label="`${t('accountNumber')}`"
-                disabled>
-                <PInput
-                  data-testid="accountNumber-input-test"
-                  v-model="createMandateForm.accountNumber"
-                  state="default">
-                </PInput>
-              </PFormItem>
-            </PCol>
-            <PCol :span="6">
-              <PFormItem
-                prop="key"
-                inline
-                :label="`${t('key')}`"
-                disabled>
-                <PInput
-                  data-testid="key-input-test"
-                  v-model="createMandateForm.key"
-                  state="default">
-                </PInput>
-              </PFormItem>
-            </PCol>
-          </PRow>
-        </div>
+        <PRow :gutter="8">
+          <PCol :span="12">
+            <PFormItem
+              prop="institutionCode"
+              inline
+              :label="`${t('institutionCode')}`"
+              disabled>
+              <PInput
+                data-testid="institutionCode-input-test"
+                v-model="createMandateForm.institutionCode"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+          <PCol :span="12">
+            <PFormItem
+              prop="branchCode"
+              inline
+              :label="`${t('branchCode')}`"
+              disabled>
+              <PInput
+                data-testid="branchCode-input-test"
+                v-model="createMandateForm.branchCode"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+        </PRow>
+        <PRow :gutter="8">
+          <PCol :span="18">
+            <PFormItem
+              prop="accountNumber"
+              inline
+              :label="`${t('accountNumber')}`"
+              disabled>
+              <PInput
+                data-testid="accountNumber-input-test"
+                v-model="createMandateForm.accountNumber"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+          <PCol :span="6">
+            <PFormItem
+              prop="key"
+              inline
+              :label="`${t('key')}`"
+              disabled>
+              <PInput
+                data-testid="key-input-test"
+                v-model="createMandateForm.key"
+                state="default">
+              </PInput>
+            </PFormItem>
+          </PCol>
+        </PRow>
         <PFormItem
           prop="bank"
           inline
@@ -255,7 +257,7 @@
     lastName: 'Last name'
     firstName: 'First name'
     email: 'Email'
-    optional: 'optional'
+    optional: ' (optional)'
     headquarters: 'Headquarters'
     address: 'Address'
     complement: 'Address complement'
@@ -286,7 +288,7 @@
     lastName: 'Prénom'
     firstName: 'Nom'
     email: 'Adresse mail'
-    optional: 'facultatif'
+    optional: ' (facultatif)'
     headquarters: 'Siège social'
     address: 'Adresse postale'
     complement: 'Complément d''addresse'
@@ -585,6 +587,22 @@ defineExpose({
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
+  }
+
+  &_title-optional {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    color: var(--el-color-neutral-gray-900);
+  }
+
+  &_optional {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%;
+    color: var(--el-color-neutral-gray-500);
   }
 
   .el-input__inner::-webkit-inner-spin-button,
