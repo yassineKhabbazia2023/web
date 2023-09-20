@@ -61,7 +61,7 @@ describe('page creation password', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
-  it.only(
+  it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
