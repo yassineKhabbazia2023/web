@@ -11,7 +11,15 @@ const routes = [
     component: {
       template: '<p class="page-title">ExpireToken</p>'
     }
-  }]
+  },
+  {
+    path: '/resendEmailSuccess',
+    name: 'resendEmailSuccess',
+    component: {
+      template: '<p class="page-title">Resend email</p>'
+    }
+  }
+]
 const router = createRouter({
   history: createWebHistory(),
   routes
@@ -20,7 +28,7 @@ router.push({
   path: '/expireToken',
   query: {
     accountId: 'accountIdSample',
-    contactId: 'contactIdSample'
+    email: 'toto@example.com'
   }
 })
 const createWrapper = () => {
@@ -42,7 +50,7 @@ describe('page expirte token', () => {
   it('should call endpoint when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyRouter = vi.spyOn(wrapper.vm.router, 'push')
-    const link = '/Activation/Invite?accountId=accountIdSample&contactId=contactIdSample'
+    const link = '/Activation/Invite?accountId=accountIdSample&email=toto@example.com'
     await waitForAsyncImports(30)
     wrapper.find('.btn-link').trigger('click')
     expect(postMock).toHaveBeenCalledTimes(1)

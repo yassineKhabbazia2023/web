@@ -1,7 +1,7 @@
-import { VueWrapper, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import CreatePassword from './CreatePassword.vue'
+import CreatePassword from './'
 
 const routes = [
   {
@@ -19,7 +19,37 @@ const routes = [
     }
   }
 ]
-vi.mock('@kpmg/common', async () => ({
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+router.push({
+  path: '/createPassword',
+  name: 'createPassword',
+  query: {
+    email: 'email',
+    accountId: 'accountId',
+    token: 'token'
+  }
+})
+
+const createWrapper = () => {
+  return mount(CreatePassword, {
+    global: {
+      plugins: [router],
+      stubs: [
+        'PForm',
+        'PFormItem',
+        'PInput',
+        'PCheckbox',
+        'PButton'
+      ]
+    }
+  })
+}
+
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
       get: () => ({
@@ -29,36 +59,19 @@ vi.mock('@kpmg/common', async () => ({
   })
 }))
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes
-})
-router.push({
-  path: '/createPassword',
-  query: {
-    contactId: 'contactId',
-    accountid: 'accountId',
-    pwrt: 'token'
-  }
-})
-
-const createWrapper = () => {
-  return mount(CreatePassword, {
-    global: {
-      plugins: [router]
-    }
-  })
-}
-
 describe('page creation password', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
   it('should redirect to page expired link when token is expired', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spy = vi.spyOn(wrapper.vm.router, 'push')
     await vi.dynamicImportSettled()
+    await flushPromises()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
-      path: '/expireToken',
-      query: { accountId: 'accountId', contactId: 'contactId' }
+      name: 'expireToken',
+      query: { accountId: 'accountId', email: 'email' }
     })
   })
 })

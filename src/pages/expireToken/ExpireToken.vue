@@ -48,10 +48,10 @@ const route = useRoute()
 const router = useRouter()
 const isLoading = ref()
 const resendLink = async () => {
-  const contactId = route.query.contactId
+  const email = route.query.email
   const accountId = route.query.accountId
   try {
-    const urlResendLink = `/Activation/Invite?accountId=${accountId}&contactId=${contactId}`
+    const urlResendLink = `/Activation/Invite?accountId=${accountId}&email=${email}`
     isLoading.value = true
     await commonApi().onboarding.post(urlResendLink)
     isLoading.value = false
