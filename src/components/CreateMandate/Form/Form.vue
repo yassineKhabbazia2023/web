@@ -30,7 +30,6 @@
             </template>
           </PInput>
         </PFormItem>
-        <div>
           <PRow :gutter="16">
             <PCol :span="12">
               <PFormItem inline :label="t('company-name')">
@@ -54,7 +53,6 @@
               </PFormItem>
             </PCol>
           </PRow>
-        </div>
       </div>
       <div v-if="step === 2">
         <PFormItem prop="title">
@@ -70,7 +68,6 @@
             {{ t('madam') }}
           </PRadio>
         </PFormItem>
-        <div>
           <PRow :gutter="8">
             <PCol :span="12">
               <PFormItem
@@ -95,7 +92,6 @@
               </PFormItem>
             </PCol>
           </PRow>
-        </div>
         <PFormItem
           inline
           :label="`${t('email')} (${t('optional')})`"
@@ -128,7 +124,6 @@
             state="default">
           </PInput>
         </PFormItem>
-        <div>
           <PRow :gutter="8">
             <PCol :span="8">
               <PFormItem
@@ -152,7 +147,6 @@
               </PFormItem>
             </PCol>
           </PRow>
-        </div>
         <PFormItem
           prop="country"
           inline
@@ -174,8 +168,8 @@
     company-name: 'Company name'
     siret-number: 'SIRET'
     title: 'Civility'
-    # mister: 'Mister'
-    # madam: 'Madam'
+    mister: 'Mister'
+    madam: 'Madam'
     lastName: 'Last name'
     firstName: 'First name'
     email: 'Email'
@@ -194,15 +188,15 @@
     company-name: 'Raison sociale'
     siret-number: 'N° SIRET'
     title: 'Civilité'
-    # mister: 'Monsieur'
-    # madam: 'Madame'
+    mister: 'Monsieur'
+    madam: 'Madame'
     lastName: 'Prénom'
     firstName: 'Nom'
     email: 'Adresse mail'
     optional: 'facultatif'
     headquarters: 'Siège social'
     address: 'Adresse postale'
-    complement: 'Complément d''addresse'
+    complement: "Complément d'adresse"
     zipCode: 'Code postal'
     city: 'Ville'
     country: 'Pays'
@@ -416,7 +410,7 @@ defineExpose({
   }
 
   &__section-title {
-    margin: 24px 0px 16px 0px;
+    margin: 32px 0px 16px 0px;
     color: var(--el-color-neutral-gray-900);
     font-size: 16px;
     font-style: normal;
