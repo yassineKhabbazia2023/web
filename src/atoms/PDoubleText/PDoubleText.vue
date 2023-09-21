@@ -8,6 +8,8 @@
         <PIcon :size="16">
           <component :is="icon" />
         </PIcon>
+      </div>
+      <div class="p-double-text__icon" v-if="profile">
         <PAvatar
           :shape="iconShape"
           :size="iconSize"
