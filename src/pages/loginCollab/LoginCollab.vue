@@ -7,14 +7,15 @@
       {{ t('formTitle') }}
     </p>
     <PButton
-          @click="handleLoginCollab()"
-          type="primary"
-          class="buttonSubmit"
-        >
-          {{ t('login')}}
-        </PButton>
+      @click="handleLoginCollab()"
+      type="primary"
+      class="buttonSubmit"
+    >
+      {{ t('login')}}
+    </PButton>
   </div>
 </template>
+
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PButton } from '@kpmg/styleguide'

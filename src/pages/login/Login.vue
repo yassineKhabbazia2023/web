@@ -198,9 +198,9 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     yourPulseSpace: 'votre Espace Pulse !'
     formTitle: 'Veuillez vous connecter pour accéder à tous vos services.'
     email: 'Email'
-    emailPlaceholder: 'Saisisser votre email'
+    emailPlaceholder: 'Saisissez votre email'
     password: 'Mot de passe'
-    passwordPlaceholder: 'Saisisser votre mot de passe'
+    passwordPlaceholder: 'Saisissez votre mot de passe'
     login: 'Me connecter'
     error: 'La combinaison email et mot de passe est incorrecte.'
 </i18n>
