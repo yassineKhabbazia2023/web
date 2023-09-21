@@ -286,7 +286,7 @@ $footer-margin: 24px;
       Pilotez l’activation des différents services Pulse 
       et la digitalisation de votre relation client.
     carouselItem2 : >-
-      Créer et suivez vos demandes de mandats bancaires en un coup d’oeil !
+      Créez et suivez vos demandes de mandats bancaires en un coup d’oeil !
     carouselItem3 : >-
       Suivez au quotidien les documents partagés par vos clients.
 </i18n>
