@@ -6,7 +6,7 @@ import {
   it,
   vi
 } from 'vitest'
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import { mount, VueWrapper } from '@vue/test-utils'
 import ResetPassword from './'
 import ElementPlus, {
   ElForm as PForm,
@@ -15,6 +15,7 @@ import ElementPlus, {
   ElButton as PButton,
   ElImage as PImage
 } from 'element-plus'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -65,9 +66,7 @@ describe('reset password', () => {
 
   it('validate the reset password form and has a redirection to the success page', async () => {
     const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
+    await waitForAsyncImports(30)
     const elForm = wrapper.find('form')
     expect(elForm.exists()).toBeTruthy()
 
