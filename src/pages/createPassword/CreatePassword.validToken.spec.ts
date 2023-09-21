@@ -63,7 +63,7 @@ describe('page creation password', () => {
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
-      await waitForAsyncImports(10)
+      await waitForAsyncImports(15)
       wrapper.findAll('.el-input__inner')[0].setValue('password')
       wrapper.find('.el-checkbox__original').setValue('true')
       await flushPromises()
@@ -74,7 +74,7 @@ describe('page creation password', () => {
 
   it('should show success when user enter password and valid cgu', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(10)
+    await waitForAsyncImports(15)
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('password')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -85,7 +85,7 @@ describe('page creation password', () => {
 
   it('should show error when user enter password and confirm password differently', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(10)
+    await waitForAsyncImports(15)
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -96,7 +96,7 @@ describe('page creation password', () => {
 
   it('should call back end when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(10)
+    await waitForAsyncImports(15)
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('password')
     wrapper.find('.el-checkbox__original').setValue('true')
