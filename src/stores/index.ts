@@ -27,5 +27,11 @@ export default defineStore('common', {
   }),
   getters: {
     isAuthenticated: (state: any) => !!state.user?.token && !isTokenExpired(state.user.token)
+  },
+  actions: {
+    logout: (state: any) => {
+      state.user = null
+      sessionStorage.removeItem('token')
+    }
   }
 })

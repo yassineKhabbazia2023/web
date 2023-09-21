@@ -46,4 +46,12 @@ describe('commonStore', () => {
 
     expect(isAuthenticated.value).toBe(true)
   })
+
+  it('should call logout function', () => {
+    const store = commonStore(pinia)
+
+    store.logout(store.$state)
+
+    expect(store.logout).toHaveBeenCalledTimes(1)
+  })
 })

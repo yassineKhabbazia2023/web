@@ -29,7 +29,7 @@ describe('api axios instances with env-vars', () => {
     await instance.post('foo/bar')
     await instance.put('foo/bar')
     await instance.delete('foo/bar')
-    expect(instance.defaults.headers.Authorization).toStrictEqual(`Bearer ${token}`)
+    expect(instance.defaults.headers.Authorization).toBe(`Bearer ${token}`)
   })
 
   it('should emit reject on response error', async () => {
