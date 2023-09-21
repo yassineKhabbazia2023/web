@@ -2,7 +2,7 @@
   <div class="page-content">
     <PImage
       type="badges"
-      name="lock"
+      name="x"
       class="badge-lock hidden-md-and-up"
     />
     <p class="expireMsg">
@@ -28,7 +28,7 @@
     helpMsg: 'Please click here to receive a new link by mail.'
     btnReceiveLink: 'Receive my link'
   fr-FR:
-    expireMsg: 'Malheuresement, votre lien a expiré...'
+    expireMsg: 'Malheureusement, votre lien a expiré...'
     helpMsg: 'Cliquez ici afin de recevoir un nouveau lien par mail.'
     btnReceiveLink: 'Recevoir mon lien'
 </i18n>
@@ -62,31 +62,42 @@ const resendLink = async () => {
 
 <style lang="scss" scoped>
 .page-content {
-  display: flex;
-  flex-direction: column;
+  margin: auto;
   height: 100%;
   @media (min-width: 992px) {
     padding: 0 0 48px 0;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    text-align: center;
   }
   text-align: left;
-  justify-content: space-evenly;
-  gap: 24px;
 
   .expireMsg {
+    @media (min-width: 992px) {
+      margin-top: 166px;
+    }
+    margin-top: 34px;
     font-weight: 600;
     font-size: 16px;
-    line-height: 19.2px;
+    line-height: 19px;
+  }
+
+  .helpMsg {
+    margin-top: 16px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
   }
 
   .btn-link {
     width: 100%;
+    margin-top: 24px;
+    @media (min-width: 992px) {
+      margin-bottom: 220px;
+    }
   }
 
   .badge-lock {
     max-width: 105px;
+    display: block;
     margin:auto;
   }
 }

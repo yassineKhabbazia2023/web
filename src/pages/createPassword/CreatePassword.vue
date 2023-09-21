@@ -251,7 +251,6 @@ onBeforeMount(async () => {
 <style lang="scss" scoped>
 .page-content {
   text-align: start;
-  max-width: 376px;
   .txt-create-account {
     font-size: 21px;
     font-weight: 600;
@@ -265,7 +264,8 @@ onBeforeMount(async () => {
   .cgu-checkbox {
     margin-top: 18px;
     white-space: pre-wrap;
-    height: 81px;
+    height: auto;
+    width: 100%;
     align-items: start;
     background-color: var(--el-color-neutral-gray-50);
     border-radius: 6px;

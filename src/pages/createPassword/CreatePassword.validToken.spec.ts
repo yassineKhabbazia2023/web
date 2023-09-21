@@ -1,7 +1,8 @@
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import CreatePassword from './'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const routes = [
   {
@@ -25,6 +26,7 @@ const router = createRouter({
   routes
 })
 router.push({
+  name: 'createPassword',
   path: '/createPassword',
   query: {
     email: 'email',
@@ -49,34 +51,30 @@ vi.mock('@kpmg/common', () => ({
   })
 }))
 
-const createWrapper = () => {
-  return mount(CreatePassword, {
+const createWrapper = () =>
+  mount(CreatePassword, {
     global: {
       plugins: [router]
     }
   })
-}
 
 describe('page creation password', () => {
-  beforeEach(() => {
-    vi.useFakeTimers()
-  })
   it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
-      await vi.dynamicImportSettled()
-      await flushPromises()
+      await waitForAsyncImports(10)
       wrapper.findAll('.el-input__inner')[0].setValue('password')
+      wrapper.find('.el-checkbox__original').setValue('true')
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(1)
       expect(wrapper.find('button').classes()).toContain('is-disabled')
     }
   )
+
   it('should show success when user enter password and valid cgu', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await vi.dynamicImportSettled()
-    await flushPromises()
+    await waitForAsyncImports(10)
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('password')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -84,10 +82,10 @@ describe('page creation password', () => {
     await flushPromises()
     expect(wrapper.find('button').classes()).not.toContain('is-disabled')
   })
+
   it('should show error when user enter password and confirm password differently', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await vi.dynamicImportSettled()
-    await flushPromises()
+    await waitForAsyncImports(10)
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -95,9 +93,10 @@ describe('page creation password', () => {
     expect(wrapper.findAll('.is-error')).toHaveLength(1)
     expect(wrapper.find('button').classes()).toContain('is-disabled')
   })
+
   it('should call back end when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await vi.dynamicImportSettled()
+    await waitForAsyncImports(10)
     wrapper.findAll('.el-input__inner')[0].setValue('password')
     wrapper.findAll('.el-input__inner')[1].setValue('password')
     wrapper.find('.el-checkbox__original').setValue('true')

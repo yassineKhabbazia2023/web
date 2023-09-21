@@ -43,15 +43,11 @@ const { t } = useI18n({
 
 <style lang="scss" scoped>
 .page-content {
-  display: flex;
-  flex-direction: column;
   height: 100%;
 
   @media (min-width: 992px) {
     padding: 0 0 193px 0;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    text-align: center;
   }
   text-align: left;
   justify-content: center;
@@ -59,17 +55,22 @@ const { t } = useI18n({
 
   .badge-email {
     max-width: 140px;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    display: block;
   }
 
   .verifyEmail {
+    margin-top: 24px;
     font-weight: 600;
     font-size: 16px;
     line-height: 19.2px;
   }
 
   .msgInfo {
-    max-width: 376px;
+    margin-top: 24px;
+    margin-bottom: 24px;
   }
 
   .link {
