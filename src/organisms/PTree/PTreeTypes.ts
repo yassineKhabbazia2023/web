@@ -5,6 +5,6 @@ type dataKeys = {
 
 export type PTreeProps = {
   data: Array<any>
-  dataKeys: dataKeys,
+  dataKeys?: dataKeys,
   hasCustomNodes?: boolean
 }
