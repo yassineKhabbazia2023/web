@@ -4,12 +4,13 @@ import {
   it,
   vi
 } from 'vitest'
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import { mount, VueWrapper } from '@vue/test-utils'
 import ResetPasswordSuccess from '.'
 import ElementPlus, {
   ElButton as PButton,
   ElImage as PImage
 } from 'element-plus'
+import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -43,9 +44,7 @@ describe('reset password success', () => {
 
   it('display the reset password success page', async () => {
     wrapper = createWrapper()
-    await vi.dynamicImportSettled()
-    await wrapper.vm.$nextTick()
-    await flushPromises()
+    await waitForAsyncImports(30)
     const badgeEmail = wrapper.find('.badge-email')
     const backToLoginBtn = wrapper.find('.back-to-login-button')
     expect(badgeEmail.exists()).toBeTruthy()

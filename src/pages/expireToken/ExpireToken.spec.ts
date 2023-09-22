@@ -46,7 +46,7 @@ vi.mock('@kpmg/common', async () => ({
     }
   })
 }))
-describe('page expirte token', () => {
+describe('page expire token', () => {
   it('should call endpoint when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyRouter = vi.spyOn(wrapper.vm.router, 'push')
