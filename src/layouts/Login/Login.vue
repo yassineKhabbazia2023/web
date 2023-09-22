@@ -149,9 +149,6 @@ const {
   padding: 24px 16px;
 
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     @media (min-width: 992px) {
       padding: 48px 48px 0;
     }
