@@ -1,14 +1,40 @@
-import { defineConfig, mergeConfig } from 'vite'
+import { defineConfig, mergeConfig } from 'vitest/config'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import eslint from 'vite-plugin-eslint'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
-import viteBaseConfig from '@kpmg/config/vite.config.base'
+import viteBaseConfig from '@kpmg/config-pulse/vite.config.base'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 // https://vitejs.dev/config/
 export default ({ mode }) => defineConfig(mergeConfig(viteBaseConfig, {
+  plugins: [
+    vue({
+      reactivityTransform: true
+    }),
+    VueI18nPlugin({
+      include: [path.resolve(__dirname, './src/**/locales/**')]
+    }),
+    viteExternalsPlugin({
+      vue: 'Vue',
+      pinia: 'Pinia',
+      'env-vars': 'EnvVars',
+      'vue-i18n': 'VueI18n',
+      'single-spa-vue': 'SingleSpaVue'
+    }, { disableInServe: mode === 'test' }),
+    // An issue occurs on vitest version 0.33.0 to 0.34.4 for 'env-vars'
+    // https://github.com/vitest-dev/vitest/issues/993
+    {
+      resolveId(id) {
+        if (id === 'env-vars') return id
+      },
+      load(id) {
+        if (id === 'env-vars') return ''
+      }
+    }
+  ],
   define: {
     'import.meta.vitest': false,
     'process.env': process.env
@@ -33,10 +59,9 @@ export default ({ mode }) => defineConfig(mergeConfig(viteBaseConfig, {
         globals: {
           vue: 'Vue'
         }
-      },
-      plugins: [vue({
-        reactivityTransform: true
-      }),
+      }
+    },
+    plugins: [
       typescriptPaths(),
       typescript({
         sourceMap: false,
@@ -44,17 +69,8 @@ export default ({ mode }) => defineConfig(mergeConfig(viteBaseConfig, {
         outDir: 'dist'
       }),
       eslint()
-      ]
-    }
+    ]
   },
-  plugins: [
-    viteExternalsPlugin({
-      vue: 'Vue',
-      pinia: 'Pinia',
-      'env-vars': 'EnvVars',
-      'vue-i18n': 'VueI18n',
-      'single-spa-vue': 'SingleSpaVue'
-    }, { disableInServe: mode === 'test' })],
   resolve: {
     dedupe: ['vue']
   },
