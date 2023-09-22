@@ -12,7 +12,7 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/bugfix/v6.0persistent'
+    ref: 'refs/heads/Release/v1.0'
 
 extends:
   template: pipelines/templates/platform.front.package.yaml@Pulse
