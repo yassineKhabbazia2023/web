@@ -12,11 +12,9 @@
         <PFormItem
           prop="ibs"
           :label="t('ibs-number')"
-          validateStatus=""
           required>
           <PInput
             v-model="createMandateForm.ibs"
-            type="number"
             data-testid="ibs-number-test"
           >
             <template #suffix>
@@ -88,7 +86,8 @@
                 prop="firstName"
                 inline
                 :label="t('firstName')">
-                <PInput v-model="createMandateForm.firstName"
+                <PInput
+v-model="createMandateForm.firstName"
                   data-testid="firstName-test">
                 </PInput>
               </PFormItem>
@@ -434,6 +433,9 @@ const checkAndEmitEvents = () => {
 
 watch(() => props.step, checkAndEmitEvents)
 watch(areFieldsFilled, checkAndEmitEvents)
+watch(() => createMandateForm.ibs, (value) => {
+  createMandateForm.ibs = value.replace(/[^0-9]/i, '')
+})
 
 const emit = defineEmits(['next-step-event-form', 'loading-event-form'])
 
@@ -442,7 +444,7 @@ const rules = reactive<any>({
     {
       required: true,
       message: t('form.error.requiredField'),
-      trigger: 'change'
+      trigger: 'blur'
     },
     {
       validator: validateIBS, trigger: 'change'
