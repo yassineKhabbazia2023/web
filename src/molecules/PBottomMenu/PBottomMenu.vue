@@ -21,6 +21,7 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, type Component } from 'vue'
+import { ElMenu, ElMenuItem } from 'element-plus'
 
 export interface Item {
   icon: string

@@ -59,6 +59,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
 import { iconResolver } from '@/utils/iconResolver'
+import { ElMenu, ElMenuItem, ElDivider } from 'element-plus'
 
 export interface EntityProps {
   idAccount: string

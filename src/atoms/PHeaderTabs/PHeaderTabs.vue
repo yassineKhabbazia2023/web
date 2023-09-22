@@ -58,6 +58,7 @@
 import PIcon from '@/atoms/PIcon'
 import { defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { ElMenu, ElMenuItem, ElSubMenu } from 'element-plus'
 
 const { t } = useI18n({
   inheritLocale: true,

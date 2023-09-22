@@ -4,6 +4,7 @@ import { flushPromises, VueWrapper } from '@vue/test-utils'
 import PHeaderTabs from '.'
 import wrapperFactory from '@tests/utils/wrapperFactory'
 import { createI18n } from 'vue-i18n'
+import { nextTick } from 'vue'
 
 const routes = [
   {
@@ -49,7 +50,8 @@ const i18n = createI18n({
 const createWrapper = (props: any = {}) =>
   wrapperFactory(PHeaderTabs, {
     global: {
-      plugins: [router, i18n]
+      plugins: [router, i18n],
+      renderStubDefaultSlot: true
     },
     props
   })
@@ -57,9 +59,10 @@ const createWrapper = (props: any = {}) =>
 describe('pHeaderTabs', () => {
   it('has 2 items in the menu', async () => {
     const wrapper: VueWrapper<any> = createWrapper({ menu })
+    await nextTick()
     router.push({ name: 'dashboard' })
     await flushPromises()
-    const items = wrapper.findAll('el-menu-item')
+    const items = wrapper.findAll('el-menu-item-stub')
 
     expect(items).toHaveLength(menu.length)
   })
@@ -69,7 +72,7 @@ describe('pHeaderTabs', () => {
     await flushPromises()
     expect(router.options.routes[0].path).toBe(menu[0].path)
 
-    const documentItem = wrapper.findAll('el-menu-item')[1]
+    const documentItem = wrapper.findAll('el-menu-item-stub')[1]
     documentItem.trigger('click')
     await flushPromises()
     expect(router.options.routes[1].path).toBe(menu[1].path)
