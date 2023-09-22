@@ -168,15 +168,10 @@ $button-padding-horizontal: (
   }
   // Button default Pegase
   &#{$self}--generic {
-    border-color: transparent;
-    color: getCssVar('color', 'neutral-gray-900');
-
-    &:hover {
-      border-color: transparent;
-      color: getCssVar('color', 'neutral-gray-900');
-    }
-
+    &,
+    &:hover,
     &:focus {
+      background: transparent;
       border-color: transparent;
       color: getCssVar('color', 'neutral-gray-900');
     }
