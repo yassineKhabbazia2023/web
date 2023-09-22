@@ -107,7 +107,8 @@ describe('app', () => {
     const wrapper: VueWrapper<any> = createWrapper()
 
     router.push({ name: 'home' })
-    await waitForAsyncImports(200)
+    await waitForAsyncImports(100)
+    await waitForAsyncImports(100)
     const getHomePageTitle = () => wrapper.find('p')
     const elHeader = wrapper.find('.el-header')
     const elAside = wrapper.find('.el-aside')
@@ -120,7 +121,8 @@ describe('app', () => {
     expect(bottomMenu.exists()).toBeTruthy()
 
     router.push({ name: 'login' })
-    await waitForAsyncImports(200)
+    await waitForAsyncImports(100)
+    await waitForAsyncImports(100)
     expect(getPageTitle().text()).toBe(LOGIN_PAGE_TITLE)
   })
 })

@@ -22,28 +22,52 @@
   </div>
 </template>
 
+<i18n lang="yaml">
+  en-US:
+    dashboard: 'Dashboard'
+    subscriptions: 'Subscriptions requests'
+  fr-FR:
+    dashboard: 'Tableau de bord'
+    subscriptions: 'Demandes d’activation'
+</i18n>
+
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import Header from './Header'
 import Navbar from './Navbar'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
+import { useI18n } from 'vue-i18n'
+import { Component } from 'vue'
 
-const menuBottomMenu = [
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local'
+})
+
+const menuHeader = [
   {
     icon: 'PIColumnsGap',
-    name: 'Dashboard',
+    text: t('dashboard'),
     path: '',
     component: {
       render: () => 'Dashboard'
     }
+  },
+  {
+    icon: 'PIFiles',
+    text: t('subscriptions'),
+    path: '/subscriptions'
   }
 ]
 
-const menuHeader = menuBottomMenu.map(({ name, path, icon }) => ({
-  text: name,
-  icon,
-  path
-}))
+const menuBottomMenu = menuHeader.map(({ icon, text, path, component }) => {
+  return {
+    icon,
+    name: text,
+    path,
+    component: (component as unknown) as Component
+  }
+})
 
 const route = useRoute()
 const routeActive = route.path

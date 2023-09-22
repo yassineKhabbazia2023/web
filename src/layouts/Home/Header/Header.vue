@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { ref, computed } from 'vue'
+import { ref, computed, Component } from 'vue'
 
 import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
 import { commonStore as store } from '@kpmg/common'
@@ -46,6 +46,7 @@ interface Item {
   icon: string
   text: string
   path: string
+  component?: Component
 }
 
 interface Props {
