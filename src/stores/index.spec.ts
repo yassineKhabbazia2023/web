@@ -13,13 +13,23 @@ vi.mock('jwt-decode', () => ({
 }))
 
 const app = createApp({})
-const pinia = createTestingPinia()
+const pinia = createTestingPinia({
+  initialState: {
+    user: null
+  },
+  stubActions: false
+})
 
 describe('commonStore', () => {
   beforeEach(() => {
     app.use(pinia)
     setActivePinia(pinia)
   })
+
+  const ISCOLLAB = [
+    true,
+    false
+  ]
 
   it('initializes user as Jean Levage', () => {
     const store = commonStore(pinia)
@@ -47,11 +57,17 @@ describe('commonStore', () => {
     expect(isAuthenticated.value).toBe(true)
   })
 
-  it('should call logout function', () => {
+  it.each(ISCOLLAB)('should call logout function', async (isCollabCondition) => {
     const store = commonStore(pinia)
 
-    store.logout(store.$state)
+    const spyLogout = vi.spyOn(store, 'logout')
+    store.$patch({
+      user: {
+        isCollab: isCollabCondition
+      }
+    })
+    await store.logout(store.$state)
 
-    expect(store.logout).toHaveBeenCalledTimes(1)
+    expect(spyLogout).toHaveBeenCalledTimes(1)
   })
 })

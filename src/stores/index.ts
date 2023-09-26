@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
+import api from '../api'
+import { msalInstance } from '../msal'
 
 type UserInfo = {
   firstName: string
@@ -8,6 +10,7 @@ type UserInfo = {
   email: string
   token: string,
   id: string,
+  isCollab: boolean,
   activeEntity: {
     idAccount: string,
     name: string,
@@ -26,12 +29,24 @@ export default defineStore('common', {
     user: null as UserInfo | null
   }),
   getters: {
-    isAuthenticated: (state: any) => !!state.user?.token && !isTokenExpired(state.user.token)
+    isAuthenticated: (state: any) => !!state.user?.token && !isTokenExpired(state.user.token),
+    isCollab: (state: any) => !!state.user?.isCollab
   },
   actions: {
-    logout: (state: any) => {
-      state.user = null
-      sessionStorage.removeItem('token')
+    logout: async (state: any) => {
+      try {
+        state.user = null
+        sessionStorage.removeItem('token')
+        if (state.user?.isCollab) {
+          msalInstance.logout()
+        } else {
+          const urlLogout = '/api/logout'
+          const data = {
+            userId: state?.user?.id
+          }
+          await api().auth.post(urlLogout, data)
+        }
+      } catch {}
     }
   }
 })
