@@ -36,3 +36,9 @@ So if needed, you simply have to push the needed routes to the ``routes`` object
 You can see that the component related to the requested page is loaded thanks to a function.
 This means that we're lazily loading the related component.<br/>
 If you want to know more about this, [read this section about lazy route loading](https://router.vuejs.org/guide/advanced/lazy-loading.html).
+
+# Lauch unit test
+
+npm run test
+
+npm run test name

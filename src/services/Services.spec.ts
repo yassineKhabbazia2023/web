@@ -1,0 +1,41 @@
+import { fetchUserEntityServices } from './Services'
+import { describe, it, expect, vi } from 'vitest'
+
+const mockPortalGet = vi.fn(() => {
+  return Promise.resolve({
+    data: {
+      value: 'test'
+    }
+  })
+})
+const headersMock = {
+  defaults: {
+    headers: {
+      Authorization: ''
+    }
+  }
+}
+vi.mock('@kpmg/common', async () => ({
+  commonApi: () => ({
+    portal: {
+      defaults: headersMock.defaults,
+      get: mockPortalGet
+    }
+  }),
+  commonStore: () => ({
+    $delete: vi.fn(),
+    $patch: vi.fn(),
+    $get: vi.fn(),
+    $post: vi.fn()
+  })
+}))
+
+describe('fetchUserEntityServices', () => {
+  it('should return folder object', async () => {
+    const folder = await fetchUserEntityServices('token', 'serviceId')
+    expect(mockPortalGet).toHaveBeenCalledTimes(1)
+    expect(mockPortalGet).toHaveBeenCalledWith('GetUserServicesByAccountId?accountId=serviceId')
+    expect(headersMock.defaults.headers.Authorization).toStrictEqual('token')
+    expect(folder).toBe('test')
+  })
+})

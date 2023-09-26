@@ -1,0 +1,8 @@
+/* eslint-disable no-unused-vars */
+export enum Permissions {
+    CAN_DELETE_FOLDER = 'CAN_DELETE_FOLDER',
+    CAN_UPLOAD_FILES = 'CAN_UPLOAD_FILES',
+    CAN_DELETE_FILES = 'CAN_DELETE_FILES',
+    CAN_CREATE_FOLDER = 'CAN_CREATE_FOLDER',
+    CAN_RESTORE_DOCUMENT = 'CAN_RESTORE_DOCUMENT',
+  }

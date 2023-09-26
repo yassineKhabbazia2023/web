@@ -1,0 +1,11 @@
+/* eslint-disable max-len */
+import type { Folder } from '@/models/Folder'
+import type { Service } from '@/models/Service'
+
+export interface TreeNodeProps {
+    node: any
+    data: any
+    selectedFolder?: Folder
+    serviceId?: Service['ServiceId'] | null
+    entityId?: string
+}

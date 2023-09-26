@@ -1,0 +1,305 @@
+import Treeview from '@/modules/Treeview'
+import { mount } from '@vue/test-utils'
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { type TreeviewProps } from '@/modules/Treeview/TreeviewTypes'
+
+import { createPinia, setActivePinia } from 'pinia'
+import { Service } from '@/models/Service'
+import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import {
+  dynamicUntilFound,
+  dynamicUntilFoundComponent
+} from '@kpmg/common/src/testing-helpers'
+import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
+import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
+import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
+import { PTree } from '@kpmg/styleguide'
+import TreeNode from './components/TreeNode/TreeNode.vue'
+
+const pinia = createPinia()
+
+const defaultProps: TreeviewProps = {
+  entityServices: [
+    { ServiceId: 'service-id-compta', ServiceName: 'Comptabilité' } as Service,
+    { ServiceId: 'service-id-gs', ServiceName: 'Gestion sociale' } as Service
+  ],
+  isLoading: false,
+  servicesFolders: foldersData,
+  currentService: 'service-id-compta',
+  selectedEntity: 'my-entity-id',
+  selectedFolder: foldersData[0][0].children[0]
+}
+
+vi.mock('@kpmg/common', async () => ({
+  commonApi: () => ({
+    ds: vi.fn()
+  }),
+  commonStore: () => ({
+    $delete: vi.fn(),
+    $patch: vi.fn(),
+    $get: vi.fn(),
+    $post: vi.fn()
+  })
+}))
+
+const mockToastPlugin = vi.fn()
+const createWrapper = (props: TreeviewProps = defaultProps) => {
+  return mount(Treeview, {
+    props,
+    global: {
+      plugins: [pinia],
+      provide: {
+        toast: mockToastPlugin
+      }
+    }
+  })
+}
+
+vi.mock('vue-inject', () => ({
+  provide: vi.fn()
+}))
+
+describe('treeview', () => {
+  // eslint-disable-next-line vitest/no-hooks
+  beforeEach(() => {
+    setActivePinia(pinia)
+  })
+  // eslint-disable-next-line vitest/no-hooks
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+  describe('props', () => {
+    it('should display a loader when the tree is not loaded', async () => {
+      const updatedProps: TreeviewProps = {
+        ...defaultProps,
+        isLoading: true
+      }
+      const wrapper = createWrapper(updatedProps)
+      const loader = await dynamicUntilFound(wrapper, '.treeview__loader')
+
+      expect(loader.exists()).toBeTruthy()
+    })
+  })
+  describe('interactions', () => {
+    describe('createFolderSection', () => {
+      it('should emit update-source-folder oppon update-source-folders', async () => {
+        const wrapper = createWrapper()
+        const createFolderSectionWrapper = await dynamicUntilFoundComponent(
+          wrapper,
+          CreateFolderSection
+        )
+
+        await createFolderSectionWrapper.vm.$emit(
+          'update-source-folders',
+          foldersData[0][0]
+        )
+
+        expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
+        expect(wrapper.emitted('update-source-folders')).toStrictEqual([
+          [foldersData[0][0]]
+        ])
+      })
+      it('should  hide create folder modal oppon on-close-create-folder', async () => {
+        const wrapper = createWrapper()
+        const createFolderSectionWrapper = await dynamicUntilFoundComponent(
+          wrapper,
+          CreateFolderSection
+        )
+
+        await createFolderSectionWrapper.vm.$emit('on-close-create-folder')
+        await wrapper.vm.$nextTick()
+        expect(
+          createFolderSectionWrapper.props('isCreateFolderModalVisible')
+        ).toBeFalsy()
+      })
+    })
+    describe('deleteFolderSection', () => {
+      it('should emit remove-folder-from-source oppon on-delete-folder-completed', async () => {
+        const wrapper = createWrapper()
+        const deleteSectionWrapper = await dynamicUntilFoundComponent(
+          wrapper,
+          DeleteFolderSection
+        )
+
+        await deleteSectionWrapper.vm.$emit('on-delete-folder-completed', foldersData[0][0])
+        await wrapper.vm.$nextTick()
+        expect(wrapper.emitted('remove-folder-from-source')).toHaveLength(1)
+        expect(wrapper.emitted('remove-folder-from-source')).toStrictEqual([
+          [foldersData[0][0]]
+        ])
+      })
+      it('should close delete folder modal oppon on-close-delete-folder', async () => {
+        const wrapper = createWrapper()
+        const deleteSectionWrapper = await dynamicUntilFoundComponent(
+          wrapper,
+          DeleteFolderSection
+        )
+
+        await deleteSectionWrapper.vm.$emit(
+          'on-close-delete-folder'
+        )
+        await wrapper.vm.$nextTick()
+        expect(deleteSectionWrapper.props('isDeleteFolderPopupVisible')).toBeFalsy()
+      })
+    })
+
+    describe('renameFolderSection', () => {
+      it('should emit update-folder-name oppon update-folder-name', async () => {
+        const wrapper = createWrapper()
+        const renameFolderSectionWrapper = await dynamicUntilFoundComponent(
+          wrapper,
+          RenameFolderSection
+        )
+
+        await renameFolderSectionWrapper.vm.$emit(
+          'update-folder-name',
+          foldersData[0][0]
+        )
+        await wrapper.vm.$nextTick()
+        expect(wrapper.emitted('update-folder-name')).toHaveLength(1)
+        expect(wrapper.emitted('update-folder-name')).toStrictEqual([
+          [foldersData[0][0]]
+        ])
+      })
+      it('should close rename modal when on-close-rename-folder', async () => {
+        const wrapper = createWrapper()
+        const renameFolderSectionWrapper = await dynamicUntilFoundComponent(
+          wrapper,
+          RenameFolderSection
+        )
+
+        await renameFolderSectionWrapper.vm.$emit(
+          'on-close-rename-folder'
+        )
+        await wrapper.vm.$nextTick()
+        expect(renameFolderSectionWrapper.props('isRenameFolderModalVisible')).toBeFalsy()
+      })
+    })
+
+    describe('main tree', () => {
+      describe('interactions', () => {
+        it('should emit selected-folder-change oppon p-tree-node-clicked', async () => {
+          const wrapper = createWrapper()
+          const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+          await wrapper.vm.$nextTick()
+          const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+          await wrapper.vm.$nextTick()
+
+          await tree.vm.$emit(
+            'p-tree-node-clicked',
+            foldersData[0][0].children[0]
+          )
+          await wrapper.vm.$nextTick()
+          expect(wrapper.emitted('selected-folder-change')).toHaveLength(1)
+        })
+      })
+      describe('treeNode', () => {
+        describe('interactions', () => {
+          it('should open delete folder modal when action is toolbox-delete-action-click',
+            async () => {
+              const wrapper = createWrapper()
+              const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+              await wrapper.vm.$nextTick()
+              const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+              await wrapper.vm.$nextTick()
+
+              const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
+              await wrapper.vm.$nextTick()
+
+              await treeNode.vm.$emit(
+                'on-toolbox-item-clicked',
+                'toolbox-delete-action-click'
+              )
+              await wrapper.vm.$nextTick()
+
+              const deleteFolderSectionWrapper =
+              await dynamicUntilFoundComponent(wrapper, DeleteFolderSection)
+
+              expect(
+                deleteFolderSectionWrapper.props('isDeleteFolderPopupVisible')
+              ).toBeTruthy()
+            })
+          it('should open rename folder modal when action is toolbox-rename-action-click',
+            async () => {
+              const wrapper = createWrapper()
+              const treeElement = await dynamicUntilFound(
+                wrapper,
+                '.el-tree'
+              )
+              await wrapper.vm.$nextTick()
+              const tree = await dynamicUntilFoundComponent(
+                treeElement,
+                PTree
+              )
+              await wrapper.vm.$nextTick()
+
+              const treeNode = await dynamicUntilFoundComponent(
+                tree,
+                TreeNode
+              )
+              await wrapper.vm.$nextTick()
+
+              await treeNode.vm.$emit(
+                'on-toolbox-item-clicked',
+                'toolbox-rename-action-click'
+              )
+              await wrapper.vm.$nextTick()
+
+              const renameFolderSectionWrapper =
+                              await dynamicUntilFoundComponent(
+                                wrapper,
+                                RenameFolderSection
+                              )
+
+              expect(
+                renameFolderSectionWrapper.props('isRenameFolderModalVisible')
+              ).toBeTruthy()
+            })
+          it('should open create folder modal when no action is defined', async () => {
+            const wrapper = createWrapper()
+            const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+            await wrapper.vm.$nextTick()
+            const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+            await wrapper.vm.$nextTick()
+
+            const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
+            await wrapper.vm.$nextTick()
+
+            await treeNode.vm.$emit(
+              'on-toolbox-item-clicked',
+              ''
+            )
+            await wrapper.vm.$nextTick()
+
+            const createFolderSectionWrapper = await dynamicUntilFoundComponent(
+              wrapper,
+              CreateFolderSection
+            )
+
+            expect(
+              createFolderSectionWrapper.props('isCreateFolderModalVisible')
+            ).toBeTruthy()
+          })
+        })
+      })
+    })
+
+    describe('bin tree', () => {
+      it('should emit selected-bin-service-change oppon selecting a node from the bin',
+        async () => {
+          const wrapper = createWrapper()
+          const treeElement = await dynamicUntilFound(wrapper, '.bin-tree')
+          await wrapper.vm.$nextTick()
+          const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+          await wrapper.vm.$nextTick()
+
+          await tree.vm.$emit(
+            'p-tree-node-clicked',
+            defaultProps.entityServices[0]
+          )
+          await wrapper.vm.$nextTick()
+          expect(wrapper.emitted('selected-bin-service-change')).toBeTruthy()
+        })
+    })
+  })
+})

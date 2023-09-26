@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { RouteRecordRaw } from 'vue-router'
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
@@ -14,7 +15,7 @@ const vueLifecycles = singleSpaVue({
     render: () => h(RenderLess)
   },
   handleInstance(app) {
-    app.use(i18n).use(pinia).use(styleGuide, { i18n })
+    app.use(i18n.value).use(pinia).use(styleGuide)
   }
 })
 
@@ -25,7 +26,6 @@ export const unmount = vueLifecycles.unmount
 routes.value.push({
   path: '/ged',
   name: 'ged',
-  // eslint-disable-next-line import/extensions
   component: () => import('@/App.vue')
 } as RouteRecordRaw)
 
