@@ -103,6 +103,7 @@ v-model="createMandateForm.firstName"
           </template>
           <PInput
             v-model="createMandateForm.email"
+            data-testid="email-test"
             state="default">
           </PInput>
         </PFormItem>
@@ -141,6 +142,7 @@ v-model="createMandateForm.firstName"
                 disabled>
                 <PInput
                   v-model="createMandateForm.zipCode"
+                  data-testid="zipCode-test"
                   state="default">
                 </PInput>
               </PFormItem>
