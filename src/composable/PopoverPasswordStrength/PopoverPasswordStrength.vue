@@ -1,6 +1,6 @@
 <template>
   <PPopover
-    :placement="top"
+    placement="top"
     :disabled="false"
     :title="t('popupTitle')"
     trigger="click"
