@@ -495,7 +495,7 @@ const rules = reactive<any>({
     }
   ],
   email: [
-    { validator: validateEmail, trigger: ['blur', 'change'] }
+    { validator: validateEmail, trigger: 'blur' }
   ],
   zipCode: [
     {
