@@ -94,6 +94,7 @@ v-model="createMandateForm.firstName"
             </PCol>
           </PRow>
         <PFormItem
+          prop="email"
           inline
           disabled>
           <template #label>
@@ -271,6 +272,8 @@ v-model="createMandateForm.firstName"
         input_2_chars: 'Input must have exactly 2 characters'
         only_numbers: 'Input must contain only numbers'
         alphanumeric_only: 'Input must contain only numbers and letters'
+        correctEmail: 'Please input correct email address'
+        validNumber: 'Please input a valid number'
   fr-FR:
     ibs-number: 'Numéro IBS'
     company-name: 'Raison sociale'
@@ -302,6 +305,8 @@ v-model="createMandateForm.firstName"
         input_2_chars: 'L''entrée doit avoir exactement 2 caractères'
         only_numbers: 'L''entrée doit contenir uniquement des chiffres'
         alphanumeric_only: 'L''entrée doit contenir uniquement des chiffres et des lettres'
+        correctEmail: 'Veuillez entrer une adresse e-mail valide'
+        validNumber: 'Veuillez entrer un nombre valide'
 </i18n>
 
 <script setup lang='ts'>
@@ -439,6 +444,17 @@ watch(() => createMandateForm.ibs, (value) => {
 
 const emit = defineEmits(['next-step-event-form', 'loading-event-form'])
 
+const validateEmail = (_: any, value: string, callback: any) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(value)) {
+    callback(new Error(t('form.error.correctEmail')))
+    emit('loading-event-form')
+  } else {
+    callback()
+    emit('next-step-event-form')
+  }
+}
+
 const rules = reactive<any>({
   ibs: [
     {
@@ -478,10 +494,25 @@ const rules = reactive<any>({
       trigger: 'blur'
     }
   ],
+  email: [
+    { validator: validateEmail, trigger: ['blur', 'change'] }
+  ],
   zipCode: [
     {
       required: true,
       message: t('form.error.requiredField'),
+      trigger: 'blur'
+    },
+    {
+      validator: (_: any, value: any, callback: any) => {
+        if (isNaN(value)) {
+          callback(new Error(t('form.error.validNumber')))
+          emit('loading-event-form')
+        } else {
+          callback()
+          emit('next-step-event-form')
+        }
+      },
       trigger: 'blur'
     }
   ],
