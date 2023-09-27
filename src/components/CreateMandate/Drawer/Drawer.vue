@@ -66,6 +66,7 @@
           :plain="false"
           :round="false"
           :loading="false"
+          :disabled="!nextStepAvailability"
           data-testid="validate-step-test"
         >
           {{ t('validate') }}

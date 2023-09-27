@@ -87,7 +87,7 @@
                 inline
                 :label="t('firstName')">
                 <PInput
-v-model="createMandateForm.firstName"
+                  v-model="createMandateForm.firstName"
                   data-testid="firstName-test">
                 </PInput>
               </PFormItem>
@@ -172,10 +172,13 @@ v-model="createMandateForm.firstName"
               prop="institutionCode"
               inline
               :label="`${t('institutionCode')}`"
+              :showMessage="validationError ? false : true"
+              :validateStatus="validationError ? 'error' : ''"
               disabled>
               <PInput
                 data-testid="institutionCode-input-test"
                 v-model="createMandateForm.institutionCode"
+                @blur="checkFields"
                 state="default">
               </PInput>
             </PFormItem>
@@ -185,10 +188,13 @@ v-model="createMandateForm.firstName"
               prop="branchCode"
               inline
               :label="`${t('branchCode')}`"
+              :showMessage="validationError ? false : true"
+              :validateStatus="validationError ? 'error' : ''"
               disabled>
               <PInput
                 data-testid="branchCode-input-test"
                 v-model="createMandateForm.branchCode"
+                @blur="checkFields"
                 state="default">
               </PInput>
             </PFormItem>
@@ -200,10 +206,13 @@ v-model="createMandateForm.firstName"
               prop="accountNumber"
               inline
               :label="`${t('accountNumber')}`"
+              :error="customErrorMessage"
+              :validateStatus="validationError ? 'error' : ''"
               disabled>
               <PInput
                 data-testid="accountNumber-input-test"
                 v-model="createMandateForm.accountNumber"
+                @blur="checkFields"
                 state="default">
               </PInput>
             </PFormItem>
@@ -213,10 +222,13 @@ v-model="createMandateForm.firstName"
               prop="key"
               inline
               :label="`${t('key')}`"
+              :showMessage="validationError ? false : true"
+              :validateStatus="validationError ? 'error' : ''"
               disabled>
               <PInput
                 data-testid="key-input-test"
                 v-model="createMandateForm.key"
+                @blur="checkFields"
                 state="default">
               </PInput>
             </PFormItem>
@@ -234,6 +246,13 @@ v-model="createMandateForm.firstName"
             disabled>
           </PInput>
         </PFormItem>
+        <PAlert type="danger" v-if="isScrapable">
+          {{ t('form.error.notListed') }}
+          <span class="create-mandate-form__content--bold">
+            {{ t('form.error.frFmMandat') }}
+          </span>
+          {{ t('form.error.contactTeam') }}
+        </PAlert>
       </div>
     </PForm>
   </div>
@@ -271,6 +290,11 @@ v-model="createMandateForm.firstName"
         input_2_chars: 'Input must have exactly 2 characters'
         only_numbers: 'Input must contain only numbers'
         alphanumeric_only: 'Input must contain only numbers and letters'
+        bankingInfoNotRecognized: 'The entered banking information is not recognized'
+        notListed: 'This bank is not listed as a JeDéclare partner and requires data scrapping.
+         We invite you to contact the '
+        contactTeam: ' teams for this.'
+        frFmMandat: 'FR-FM-MesMandats'
   fr-FR:
     ibs-number: 'Numéro IBS'
     company-name: 'Raison sociale'
@@ -302,12 +326,18 @@ v-model="createMandateForm.firstName"
         input_2_chars: 'L''entrée doit avoir exactement 2 caractères'
         only_numbers: 'L''entrée doit contenir uniquement des chiffres'
         alphanumeric_only: 'L''entrée doit contenir uniquement des chiffres et des lettres'
+        bankingInfoNotRecognized: 'Les informations bancaires saisies ne sont pas reconnues'
+        notListed: 'Cette banque n''est pas listée comme partenaire JeDéclare et doit faire l''objet
+         d''un scrapping de données. Nous vous invitons à contacter les équipes '
+        contactTeam: ' pour cela.'
+        frFmMandat: 'FR-FM-MesMandats'
 </i18n>
 
 <script setup lang='ts'>
+// Imports
 import { useI18n } from 'vue-i18n'
-import { ref, reactive, watch, computed } from 'vue'
-import { createMandate } from '@/services/mandate'
+import { ref, reactive, watch, computed, nextTick } from 'vue'
+import { createMandate, validateIban, getBankDetail } from '@/services/mandate'
 import { FormModel, Rule } from './FormModels'
 import {
   PICheck,
@@ -317,19 +347,25 @@ import {
   PIcon,
   PRadio,
   PCol,
-  PRow
+  PRow,
+  PAlert
 } from '@kpmg/styleguide'
+import type { FormInstance } from 'element-plus'
 
+// Props
 interface FormProps {
   step: number
 }
+const props = defineProps<FormProps>()
 
+// i18n
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-const createMandateFormRef = ref<any>()
+// Reactive state
+const createMandateFormRef = ref<FormInstance>()
 const createMandateForm = reactive<FormModel>({
   ibs: '',
   siretNumber: '',
@@ -349,11 +385,12 @@ const createMandateForm = reactive<FormModel>({
   key: '',
   bank: ''
 })
-
-const props = defineProps<FormProps>()
-
 const isIBSValid = ref(false)
+const customErrorMessage = ref('')
+const validationError = ref(false)
+const isScrapable = ref(false)
 
+// Computed properties
 const areFieldsFilled = computed(() => {
   const fieldsToCheck = [
     'title',
@@ -368,6 +405,7 @@ const areFieldsFilled = computed(() => {
   return fieldsToCheck.every(field => createMandateForm[field].trim() !== '')
 })
 
+// Methods
 const validateIBS = async (_: Rule, value: string, callback: any) => {
   emit('loading-event-form')
   isIBSValid.value = false
@@ -431,142 +469,168 @@ const checkAndEmitEvents = () => {
   }
 }
 
+const checkRibValidity = async (rib: string) => {
+  const { valid } = await validateIban(rib)
+
+  if (!valid) {
+    customErrorMessage.value = t('form.error.bankingInfoNotRecognized')
+    validationError.value = true
+    createMandateForm.bank = ''
+    emit('loading-event-form')
+  }
+
+  return valid
+}
+
+const getBankInformation = async (rib: string) => {
+  const bank: any = await getBankDetail(rib)
+  if (bank.jeDeclare.isScrapable) {
+    isScrapable.value = true
+    createMandateForm.bank = ''
+    emit('loading-event-form')
+    return
+  }
+
+  isScrapable.value = false
+  createMandateForm.bank = bank.name
+  emit('next-step-event-form')
+}
+
+const resetValidation = () => {
+  createMandateForm.bank = ''
+  customErrorMessage.value = ''
+  validationError.value = false
+  isScrapable.value = false
+}
+
+const checkFields = async () => {
+  const fieldsToValidate = ['institutionCode', 'branchCode', 'accountNumber', 'key']
+  const allFieldsFilled = fieldsToValidate.every(field => createMandateForm[field] !== '')
+
+  if (!allFieldsFilled) {
+    resetValidation()
+    return
+  }
+
+  await nextTick()
+  createMandateFormRef?.value?.validateField(fieldsToValidate, async (errorMessage) => {
+    console.log('errorMessage', errorMessage)
+    resetValidation()
+    const rib = [
+      createMandateForm.institutionCode,
+      createMandateForm.branchCode,
+      createMandateForm.accountNumber,
+      createMandateForm.key
+    ].join('')
+    if (rib.length !== 23) {
+      return
+    }
+    if (errorMessage) {
+      const validity = await checkRibValidity(rib)
+      if (!validity) {
+        return
+      }
+    }
+    await getBankInformation(rib)
+  })
+}
+
+// Utility functions
+const createRule = (message: string, trigger = 'blur') => ({
+  required: true,
+  message: t(message),
+  trigger
+})
+
+const createValidator = (
+  length: number,
+  regex: any,
+  errorMsg: string,
+  customError: any,
+  regexErrorMsg?: string) => ({
+  required: true,
+  validator: (_: any, value: string, callback: any) => {
+    if (value.length !== length) {
+      callback(new Error(errorMsg))
+    } else if (!regex.test(value)) {
+      callback(new Error(regexErrorMsg))
+    } else if (customError.value) {
+      callback(new Error(t('form.error.bankingInfoNotRecognized')))
+    } else {
+      callback()
+    }
+  },
+  trigger: 'blur'
+})
+
+// Validation rules
+const rules = reactive<any>({
+  ibs: [
+    createRule(t('form.error.requiredField'), 'change'),
+    { validator: validateIBS, trigger: 'change' }
+  ],
+  title: [createRule(t('form.error.mandatoryChoice'), 'change')],
+  firstName: [createRule(t('form.error.requiredField'))],
+  lastName: [createRule(t('form.error.requiredField'))],
+  address: [createRule(t('form.error.requiredField'))],
+  zipCode: [createRule(t('form.error.requiredField'))],
+  city: [createRule(t('form.error.requiredField'))],
+  country: [createRule(t('form.error.requiredField'))],
+  institutionCode: [
+    createValidator(
+      5,
+      /^\d+$/, t('form.error.input_5_chars'),
+      validationError,
+      t('form.error.only_numbers')
+    )
+  ],
+  branchCode: [
+    createValidator(
+      5,
+      /^\d+$/,
+      t('form.error.input_5_chars'),
+      validationError,
+      t('form.error.only_numbers')
+    )
+  ],
+  accountNumber: [
+    createValidator(
+      11,
+      /^[a-zA-Z0-9]+$/,
+      t('form.error.input_11_chars'),
+      validationError,
+      t('form.error.alphanumeric_only')
+    )
+  ],
+  key: [
+    createValidator(
+      2,
+      /^\d+$/,
+      t('form.error.input_2_chars'),
+      validationError,
+      t('form.error.only_numbers')
+    )
+  ]
+})
+
+// Watchers
 watch(() => props.step, checkAndEmitEvents)
 watch(areFieldsFilled, checkAndEmitEvents)
 watch(() => createMandateForm.ibs, (value) => {
   createMandateForm.ibs = value.replace(/[^0-9]/i, '')
 })
 
+// Emits
 const emit = defineEmits(['next-step-event-form', 'loading-event-form'])
 
-const rules = reactive<any>({
-  ibs: [
-    {
-      required: true,
-      message: t('form.error.requiredField'),
-      trigger: 'blur'
-    },
-    {
-      validator: validateIBS, trigger: 'change'
-    }
-  ],
-  title: [
-    {
-      required: true,
-      message: t('form.error.mandatoryChoice'),
-      trigger: 'change'
-    }
-  ],
-  firstName: [
-    {
-      required: true,
-      message: t('form.error.requiredField'),
-      trigger: 'blur'
-    }
-  ],
-  lastName: [
-    {
-      required: true,
-      message: t('form.error.requiredField'),
-      trigger: 'blur'
-    }
-  ],
-  address: [
-    {
-      required: true,
-      message: t('form.error.requiredField'),
-      trigger: 'blur'
-    }
-  ],
-  zipCode: [
-    {
-      required: true,
-      message: t('form.error.requiredField'),
-      trigger: 'blur'
-    }
-  ],
-  city: [
-    {
-      required: true,
-      message: t('form.error.requiredField'),
-      trigger: 'blur'
-    }
-  ],
-  country: [
-    {
-      required: true,
-      message: t('form.error.requiredField'),
-      trigger: 'blur'
-    }
-  ],
-  institutionCode: [
-    {
-      required: true,
-      validator: (_: any, value: any, callback: any) => {
-        if (value.length !== 5) {
-          callback(new Error(t('form.error.input_5_chars')))
-        } else if (!/^\d+$/.test(value)) {
-          callback(new Error(t('form.error.only_numbers')))
-        } else {
-          callback()
-        }
-      },
-      trigger: 'blur'
-    }
-  ],
-  branchCode: [
-    {
-      required: true,
-      validator: (_: any, value: any, callback: any) => {
-        if (value.length !== 5) {
-          callback(new Error(t('form.error.input_5_chars')))
-        } else if (!/^\d+$/.test(value)) {
-          callback(new Error(t('form.error.only_numbers')))
-        } else {
-          callback()
-        }
-      },
-      trigger: 'blur'
-    }
-  ],
-  accountNumber: [
-    {
-      required: true,
-      validator: (_: any, value: any, callback: any) => {
-        if (value.length !== 11) {
-          callback(new Error(t('form.error.input_11_chars')))
-        } else if (!/^[a-zA-Z0-9]+$/.test(value)) {
-          callback(new Error(t('form.error.alphanumeric_only')))
-        } else {
-          callback()
-        }
-      },
-      trigger: 'blur'
-    }
-  ],
-  key: [
-    {
-      required: true,
-      validator: (_: any, value: any, callback: any) => {
-        if (value.length !== 2) {
-          callback(new Error(t('form.error.input_2_chars')))
-        } else if (!/^\d+$/.test(value)) {
-          callback(new Error(t('form.error.only_numbers')))
-        } else {
-          callback()
-        }
-      },
-      trigger: 'blur'
-    }
-  ]
-})
-
+// Expose
 defineExpose({
   createMandateForm,
   validateIBS,
   checkAndEmitEvents
 })
 </script>
+
 <style lang="scss">
 .create-mandate-form {
   &__ibs {
@@ -605,6 +669,12 @@ defineExpose({
   .el-input__inner::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  &__content {
+    &--bold {
+      font-weight: 700;
+    }
   }
 }
 </style>

@@ -26,3 +26,31 @@ export const createMandate = async ({
     }
   })
 
+export const validateIban = async (iban: string) => {
+  // Simulate a delay (e.g., network request)
+  await new Promise(resolve => setTimeout(resolve, 1000))
+
+  // Dummy logic: If the iban ends with an even number, consider it valid
+  const isValid = parseInt(iban.slice(-1)) % 2 === 0
+
+  return {
+    valid: isValid
+  }
+}
+
+export const getBankDetail = async (iban: string) => {
+  // Simulate a delay (e.g., network request)
+  await new Promise(resolve => setTimeout(resolve, 1000))
+
+  // Dummy logic: If the iban ends with an even number, consider it valid
+  const isScrapable = parseInt(iban.slice(-1)) === 0
+
+  return {
+    code: iban,
+    name: 'Banque postale',
+    jeDeclare: {
+      isPartner: true,
+      isScrapable: isScrapable
+    }
+  }
+}
