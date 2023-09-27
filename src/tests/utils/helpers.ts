@@ -13,7 +13,13 @@ const menu = [
 const helpers = () => {
   const router = createRouter({
     history: createWebHistory(),
-    routes: []
+    routes: [{
+      name: 'login',
+      path: '/login',
+      component: {
+        template: '<div />'
+      }
+    }]
   })
 
   menu.forEach((m: any) => {
