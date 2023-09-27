@@ -514,7 +514,6 @@ const checkFields = async () => {
 
   await nextTick()
   createMandateFormRef?.value?.validateField(fieldsToValidate, async (errorMessage) => {
-    console.log('errorMessage', errorMessage)
     resetValidation()
     const rib = [
       createMandateForm.institutionCode,
