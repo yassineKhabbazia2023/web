@@ -8,7 +8,10 @@
     popperClass="pwdPopover"
   >
     <template #content>
-      <p :class="levelPasswordStrengthClass.class">
+      <p
+        :class="levelPasswordStrengthClass.class"
+        class="levelPassword"
+      >
         {{  levelPasswordStrengthClass.text }}
       </p>
       <p class="conditionPassword">
@@ -71,47 +74,38 @@ const levelPasswordStrengthClass = computed(() => {
 </script>
 
 <style lang="scss">
-.el-popper.el-popover.is-light.pwdPopover  {
-  min-width: 330px;
+.el-popper.el-popover.is-light.pwdPopover {
+  min-width: 340px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
 
   .el-popover__title {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 16px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
-  .conditionPassword {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14px;
-  }
-
+  .conditionPassword,
   .groupCondition {
     font-size: 12px;
     line-height: 14px;
   }
 
-  .levelPwdStrong {
-    color: var(--el-color-functionnal-green);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 16px;
-    margin-bottom: 8px;
+  .conditionPassword {
+    font-weight: 400;
   }
-  .levelPwdAverage {
-    color: var(--el-color-functionnal-orange);
+
+  .levelPassword {
     margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 16px;
-  }
-  .levelPwdWeak {
-    color: var(--el-color-functionnal-red);
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 16px;
+
+    &.levelPwdStrong {
+      color: var(--el-color-functionnal-green);
+    }
+    &.levelPwdAverage {
+      color: var(--el-color-functionnal-orange);
+    }
+    &.levelPwdWeak {
+      color: var(--el-color-functionnal-red);
+    }
   }
 }
 </style>
