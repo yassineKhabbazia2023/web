@@ -569,15 +569,12 @@ const createValidator = (
 
 const validateEmail = (_: any, value: string, callback: any) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (value === '') {
+  if (!value || emailRegex.test(value)) {
     callback()
     emit('enable-disable-next', true)
-  } else if (!emailRegex.test(value)) {
+  } else {
     callback(new Error(t('form.error.correctEmail')))
     emit('enable-disable-next', false)
-  } else {
-    callback()
-    emit('enable-disable-next', true)
   }
 }
 
