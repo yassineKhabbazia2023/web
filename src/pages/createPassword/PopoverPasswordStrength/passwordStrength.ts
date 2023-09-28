@@ -17,7 +17,7 @@ export const levelPasswordStrength = (password: string):PASSWORD_STRENGTH => {
   if (!!password && password.length < 8) return PASSWORD_STRENGTH.WEAK
   let conditionsGroup = 0
   regexArray.forEach((regex) => {
-    conditionsGroup +== regex.test(password) ? 1 : 0
+    conditionsGroup += regex.test(password) ? 1 : 0
   })
   switch (conditionsGroup) {
     case 4:

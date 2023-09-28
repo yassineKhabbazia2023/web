@@ -5,7 +5,7 @@
     :title="t('popupTitle')"
     trigger="click"
     showArrow
-    class="popover"
+    popperClass="pwdPopover"
   >
     <template #content>
       <p :class="levelPasswordStrengthClass.class">
@@ -36,7 +36,7 @@
     levelPasswordStrengthStrong: 'Fort'
     levelPasswordStrengthAverage: 'Moyen'
     levelPasswordStrengthWeak: 'Faible'
-    conditionValidPassword: 'Le mot de passe doit contenir au moins de 8 caractères au total et 4 parmi ce qui suit: '
+    conditionValidPassword: 'Le mot de passe doit contenir au moins 8 caractères au total et 4 parmi ce qui suit: '
     groupsCharacter: 'une lettre majuscule, une lettre minuscule, un chiffre, un caractère spéciale'
 </i18n>
 <!-- eslint-enable max-len -->
@@ -71,11 +71,15 @@ const levelPasswordStrengthClass = computed(() => {
 </script>
 
 <style lang="scss">
-.el-popper.el-popover.is-light {
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 16px;
-  min-width: 320px;
+.el-popper.el-popover.is-light.pwdPopover  {
+  min-width: 330px;
+
+  .el-popover__title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
+    margin-bottom: 0px;
+  }
 
   .conditionPassword {
     font-weight: 400;
@@ -90,13 +94,24 @@ const levelPasswordStrengthClass = computed(() => {
 
   .levelPwdStrong {
     color: var(--el-color-functionnal-green);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
+    margin-bottom: 8px;
   }
-
   .levelPwdAverage {
     color: var(--el-color-functionnal-orange);
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
   }
   .levelPwdWeak {
     color: var(--el-color-functionnal-red);
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16px;
   }
 }
 </style>
