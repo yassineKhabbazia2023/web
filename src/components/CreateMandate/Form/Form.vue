@@ -520,7 +520,7 @@ const checkFields = async () => {
   }
 
   await nextTick()
-  createMandateFormRef?.value?.validateField(fieldsToValidate, async (errorMessage: any) => {
+  createMandateFormRef?.value?.validateField(fieldsToValidate, async (_: any) => {
     resetValidation()
     const rib = [
       createMandateForm.institutionCode,
@@ -531,11 +531,9 @@ const checkFields = async () => {
     if (rib.length !== 23) {
       return
     }
-    if (errorMessage) {
-      const validity = await checkRibValidity(rib)
-      if (!validity) {
-        return
-      }
+    const validity = await checkRibValidity(rib)
+    if (!validity) {
+      return
     }
     await getBankInformation(rib)
   })
@@ -571,7 +569,10 @@ const createValidator = (
 
 const validateEmail = (_: any, value: string, callback: any) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!emailRegex.test(value)) {
+  if (value === '') {
+    callback()
+    emit('enable-disable-next', true)
+  } else if (!emailRegex.test(value)) {
     callback(new Error(t('form.error.correctEmail')))
     emit('enable-disable-next', false)
   } else {
