@@ -100,6 +100,7 @@ const onTreeNodeMouseleave = () => {
     isHovered.value = true
   } else {
     isHovered.value = false
+    isOpen.value = false
   }
 }
 </script>
