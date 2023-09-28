@@ -73,10 +73,8 @@ const handleCloseModal = () => {
 }
 
 const handleConfirmActionClick = () => {
-  console.log('rrrrrr', isFolderNameExists(inputContent.value))
   folderNameExists.value = false
   if (isFolderNameExists(inputContent.value)) {
-    console.log('got in here bro')
     folderNameExists.value = true
     return
   }
