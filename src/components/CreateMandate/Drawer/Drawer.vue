@@ -40,8 +40,8 @@
     </h5>
     <Form
       :step="currentStep"
-      @next-step-event-form="nextStepAvailability=true"
-      @loading-event-form="nextStepAvailability=false" />
+      @enable-disable-next="handleNextAvailability"
+      @enable-disable-validate="handleValidateAvailability" />
     <template #footer>
       <div>
         <PButton
@@ -66,6 +66,7 @@
           :plain="false"
           :round="false"
           :loading="false"
+          :disabled="!validateAvailability"
           data-testid="validate-step-test"
         >
           {{ t('validate') }}
@@ -135,6 +136,7 @@ import {
 import Form from '@/components/CreateMandate/Form'
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
+const validateAvailability = ref(false)
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -166,6 +168,14 @@ const goToNextStep = () => {
 
 const goToPreviousStep = () => {
   currentStep.value--
+}
+
+const handleNextAvailability = (availability: any) => {
+  nextStepAvailability.value = availability
+}
+
+const handleValidateAvailability = (availability: any) => {
+  validateAvailability.value = availability
 }
 
 defineExpose({
