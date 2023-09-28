@@ -248,8 +248,8 @@ describe('form.vue', () => {
     const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('1234567891')
     expect((input.element as HTMLInputElement).value).toBe('1234567891')
-    const emittedLoadingEvent: any = wrapper.emitted('loading-event-form')
-    expect(emittedLoadingEvent).toBeTruthy()
+    const emittedEnableDisableEvent: any = wrapper.emitted('enable-disable-next')
+    expect(emittedEnableDisableEvent).toBeTruthy()
     // expect(createMandate).toHaveBeenCalled()
   })
 
@@ -432,7 +432,7 @@ describe('form.vue', () => {
     await input.trigger('blur')
 
     wrapper.vm.checkAndEmitEvents()
-    expect(wrapper.emitted()['loading-event-form']).toBeTruthy()
+    expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
   })
 
   const step3TestCases = [

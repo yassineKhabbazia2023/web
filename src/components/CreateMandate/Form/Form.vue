@@ -350,7 +350,6 @@ import {
   PRow,
   PAlert
 } from '@kpmg/styleguide'
-import type { FormInstance } from 'element-plus'
 
 // Props
 interface FormProps {
@@ -365,7 +364,7 @@ const { t } = useI18n({
 })
 
 // Reactive state
-const createMandateFormRef = ref<FormInstance>()
+const createMandateFormRef = ref<any>()
 const createMandateForm = reactive<FormModel>({
   ibs: '',
   siretNumber: '',
@@ -407,7 +406,7 @@ const areFieldsFilled = computed(() => {
 
 // Methods
 const validateIBS = async (_: Rule, value: string, callback: any) => {
-  emit('loading-event-form')
+  emit('enable-disable-next', false)
   isIBSValid.value = false
   createMandateForm.siret = ''
   createMandateForm.companyName = ''
@@ -455,7 +454,7 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
         country
       })
       isIBSValid.value = true
-      emit('next-step-event-form')
+      emit('enable-disable-next', true)
     }
   } catch (_) {
   }
@@ -463,9 +462,9 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
 
 const checkAndEmitEvents = () => {
   if (areFieldsFilled.value) {
-    emit('next-step-event-form')
+    emit('enable-disable-next', true)
   } else {
-    emit('loading-event-form')
+    emit('enable-disable-next', false)
   }
 }
 
@@ -476,7 +475,7 @@ const checkRibValidity = async (rib: string) => {
     customErrorMessage.value = t('form.error.bankingInfoNotRecognized')
     validationError.value = true
     createMandateForm.bank = ''
-    emit('loading-event-form')
+    emit('enable-disable-validate', false)
   }
 
   return valid
@@ -487,16 +486,17 @@ const getBankInformation = async (rib: string) => {
   if (bank.jeDeclare.isScrapable) {
     isScrapable.value = true
     createMandateForm.bank = ''
-    emit('loading-event-form')
+    emit('enable-disable-validate', false)
     return
   }
 
   isScrapable.value = false
   createMandateForm.bank = bank.name
-  emit('next-step-event-form')
+  emit('enable-disable-validate', true)
 }
 
 const resetValidation = () => {
+  emit('enable-disable-validate', false)
   createMandateForm.bank = ''
   customErrorMessage.value = ''
   validationError.value = false
@@ -513,7 +513,7 @@ const checkFields = async () => {
   }
 
   await nextTick()
-  createMandateFormRef?.value?.validateField(fieldsToValidate, async (errorMessage) => {
+  createMandateFormRef?.value?.validateField(fieldsToValidate, async (errorMessage: any) => {
     resetValidation()
     const rib = [
       createMandateForm.institutionCode,
@@ -620,7 +620,7 @@ watch(() => createMandateForm.ibs, (value) => {
 })
 
 // Emits
-const emit = defineEmits(['next-step-event-form', 'loading-event-form'])
+const emit = defineEmits(['enable-disable-next', 'enable-disable-validate'])
 
 // Expose
 defineExpose({
