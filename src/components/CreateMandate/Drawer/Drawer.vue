@@ -101,7 +101,8 @@
         entity: 'Entity'
         signatory: 'Signatory'
         infos: 'Infos'
-        bank-identity-statement: 'Bank Identity Statement'
+        banking-data: 'Banking data'
+        bank-identity-statement: 'Bank identity statement'
         tooltip: 'The IBS number entered must be part of your
           portfolio and have an active commitment.'
     fr-FR:
@@ -112,6 +113,7 @@
         entity: 'Entité'
         signatory: 'Signataire'
         infos: 'Infos'
+        banking-data: 'Données bancaires'
         bank-identity-statement: "Relevé d’identité bancaire"
         tooltip: "Le numéro d’IBS saisi doit faire parti de
           votre portefeuille et avoir un engagement actif."

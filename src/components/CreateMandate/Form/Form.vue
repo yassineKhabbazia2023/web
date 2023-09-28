@@ -94,6 +94,7 @@
             </PCol>
           </PRow>
         <PFormItem
+          prop="email"
           inline
           disabled>
           <template #label>
@@ -102,6 +103,7 @@
           </template>
           <PInput
             v-model="createMandateForm.email"
+            data-testid="email-test"
             state="default">
           </PInput>
         </PFormItem>
@@ -140,6 +142,7 @@
                 disabled>
                 <PInput
                   v-model="createMandateForm.zipCode"
+                  data-testid="zipCode-test"
                   state="default">
                 </PInput>
               </PFormItem>
@@ -295,6 +298,8 @@
          We invite you to contact the '
         contactTeam: ' teams for this.'
         frFmMandat: 'FR-FM-MesMandats'
+        correctEmail: 'Please input correct email address'
+        validNumber: 'Please input a valid number'
   fr-FR:
     ibs-number: 'Numéro IBS'
     company-name: 'Raison sociale'
@@ -331,6 +336,8 @@
          d''un scrapping de données. Nous vous invitons à contacter les équipes '
         contactTeam: ' pour cela.'
         frFmMandat: 'FR-FM-MesMandats'
+        correctEmail: 'Veuillez entrer une adresse e-mail valide'
+        validNumber: 'Veuillez entrer un nombre valide'
 </i18n>
 
 <script setup lang='ts'>
@@ -562,6 +569,17 @@ const createValidator = (
   trigger: 'blur'
 })
 
+const validateEmail = (_: any, value: string, callback: any) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(value)) {
+    callback(new Error(t('form.error.correctEmail')))
+    emit('enable-disable-next', false)
+  } else {
+    callback()
+    emit('enable-disable-next', true)
+  }
+}
+
 // Validation rules
 const rules = reactive<any>({
   ibs: [
@@ -572,7 +590,24 @@ const rules = reactive<any>({
   firstName: [createRule(t('form.error.requiredField'))],
   lastName: [createRule(t('form.error.requiredField'))],
   address: [createRule(t('form.error.requiredField'))],
-  zipCode: [createRule(t('form.error.requiredField'))],
+  email: [
+    { validator: validateEmail, trigger: 'blur' }
+  ],
+  zipCode: [
+    createRule(t('form.error.requiredField')),
+    {
+      validator: (_: any, value: any, callback: any) => {
+        if (isNaN(value)) {
+          callback(new Error(t('form.error.validNumber')))
+          emit('enable-disable-next', false)
+        } else {
+          callback()
+          emit('enable-disable-next', true)
+        }
+      },
+      trigger: 'blur'
+    }
+  ],
   city: [createRule(t('form.error.requiredField'))],
   country: [createRule(t('form.error.requiredField'))],
   institutionCode: [

@@ -435,6 +435,31 @@ describe('form.vue', () => {
     expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
   })
 
+  const testCases = [
+    ['email', 'zipcode'],
+    ['seif@gmail.com', '75008']
+  ]
+
+  it.each(testCases)('when step value is 2 (email: %s, zipCode: %s invalid)',
+    async (email, zipCode) => {
+      const wrapper = createWrapper({ step: 2 })
+      await waitForAsyncImports(150)
+
+      const emailInput = wrapper.find('input[data-testid="email-test"]')
+      await emailInput.setValue(email)
+      await emailInput.trigger('blur')
+
+      const input = wrapper.find('input[data-testid="zipCode-test"]')
+      await input.setValue(zipCode)
+      await input.trigger('blur')
+
+      if (email === 'email') {
+        expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
+      } else {
+        expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
+      }
+    })
+
   const step3TestCases = [
     {
       initial: {
