@@ -232,8 +232,8 @@ watch(
 
 .treeview {
   width: 411px;
-  height: calc(100vh - 117px - 15px - 42px - 16px);
-  max-height: calc(100vh - 117px - 15px - 42px - 16px);
+  height: calc(100vh - 52px - 16px);
+  max-height: calc(100vh - 52px - 16px);
   overflow: hidden;
   padding-bottom: 40px;
 
@@ -247,6 +247,9 @@ watch(
     display: flex;
     align-items: flex-start;
     justify-content: center;
+  }
+
+  &__loader {
     margin-top: 40px;
   }
 

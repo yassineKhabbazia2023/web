@@ -66,7 +66,7 @@ import {
   DeleteFolder
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 
-import { PInput, PButton, PDropdown, POption } from '@kpmg/styleguide'
+import { PCol, PRow, PInput, PButton, PDropdown, POption } from '@kpmg/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
