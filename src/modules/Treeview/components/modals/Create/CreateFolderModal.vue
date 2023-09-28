@@ -100,8 +100,6 @@ const isConfirmButtonDisabled = computed(
 )
 
 const isValidInput = computed(() => {
-  // eslint-disable-next-line no-debugger
-  debugger
   return validInputAlphanumericFrench(inputContent.value)
 })
 const folderNameExists = ref(false)

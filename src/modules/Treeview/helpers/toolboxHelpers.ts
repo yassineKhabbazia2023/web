@@ -15,7 +15,7 @@ const mappingRecord: Record<string, ToolboxLineWithOrder> = {
       value: 'Supprimer',
       actionName: 'toolbox-delete-action-click'
     },
-    order: 1
+    order: 3
   },
   CAN_CREATE_FOLDER: {
     toolboxLine: {
@@ -23,7 +23,7 @@ const mappingRecord: Record<string, ToolboxLineWithOrder> = {
       value: 'Nouveau dossier',
       actionName: 'toolbox-create-action-click'
     },
-    order: 3
+    order: 1
   },
   CAN_RENAME_FOLDER: {
     toolboxLine: {
@@ -42,5 +42,5 @@ export function generateToolboxBasicData(permissions: string[]): ToolboxLine[] {
       toolboxBasicData.push(mappingRecord[permission])
     }
   }
-  return (toolboxBasicData.sort((a, b) => b.order - a.order))?.map(e => e?.toolboxLine)
+  return (toolboxBasicData.sort((a, b) => (a.order > b.order) ? 1 : -1)?.map(e => e?.toolboxLine))
 }
