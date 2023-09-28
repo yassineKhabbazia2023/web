@@ -82,7 +82,6 @@
   </div>
 </template>
 
-<!-- eslint-disable max-len -->
 <i18n lang="yaml">
   en-US:
     createAccount: 'Create your account '
@@ -121,7 +120,6 @@
     alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
     btnSubmit: 'Activer mon compte'
 </i18n>
-<!-- eslint-enable max-len -->
 
 <script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router'
@@ -141,8 +139,11 @@ import {
   PCheckbox,
   PButton
 } from '@kpmg/styleguide'
-import PopoverPasswordStrength from '@/composable/PopoverPasswordStrength'
-import { PASSWORD_STRENGTH, levelPasswordStrength } from '@/utils/passwordStrength'
+import PopoverPasswordStrength from './PopoverPasswordStrength'
+import {
+  PASSWORD_STRENGTH,
+  levelPasswordStrength
+} from './PopoverPasswordStrength/passwordStrength'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -171,8 +172,6 @@ const isValidForm = computed(() => {
     formValidity.terms &&
     levelPasswordStrength(formValue.password) === PASSWORD_STRENGTH.STRONG
 })
-
-console.log('value >', levelPasswordStrength(formValue.password) !== PASSWORD_STRENGTH.STRONG)
 
 const validatePassword = (_rule: any, value: any, callback: any) => {
   if (!value) {

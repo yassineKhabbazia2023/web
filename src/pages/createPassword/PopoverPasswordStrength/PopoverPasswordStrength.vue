@@ -8,29 +8,14 @@
     class="popover"
   >
     <template #content>
-      <p
-        class="levelPwdStrong"
-        v-if="level === PASSWORD_STRENGTH.STRONG"
-      >
-        {{ t('levelPasswordStrengthStrong') }}
-      </p>
-      <p
-        class="levelPwdAverage"
-        v-if="level === PASSWORD_STRENGTH.AVERAGE"
-      >
-        {{ t('levelPasswordStrengthAverage') }}
-      </p>
-      <p
-        class="levelPwdWeak"
-        v-if="level === PASSWORD_STRENGTH.WEAK"
-      >
-        {{ t('levelPasswordStrengthWeak') }}
+      <p :class="levelPasswordStrengthClass.class">
+        {{  levelPasswordStrengthClass.text }}
       </p>
       <p class="conditionPassword">
         {{ t('conditionValidPassword') }}
       </p>
       <p class="groupCondition">
-        {{ t('4groupsCondition') }}
+        {{ t('groupsCharacter') }}
       </p>
     </template>
     <slot />
@@ -45,25 +30,25 @@
     levelPasswordStrengthAverage: 'Average'
     levelPasswordStrengthWeak: 'Weak'
     conditionValidPassword: 'Password must contain at least 8 characters in total and 4 of the following :'
-    4groupsCondition: 'an uppercase letter, a lowercase letter, a number, a special character'
+    groupsCharacter: 'an uppercase letter, a lowercase letter, a number, a special character'
   fr-FR:
     popupTitle: 'Niveau de sécurité du mot de passe :'
     levelPasswordStrengthStrong: 'Fort'
     levelPasswordStrengthAverage: 'Moyen'
     levelPasswordStrengthWeak: 'Faible'
-    conditionValidPassword: 'Le mot de passe doit contenir au moins de 8 caractères au total et 4 parmi ce qui suit:'
-    4groupsCondition: 'une lettre majuscule, une lettre minuscule, un chiffre, un caractère spéciale'
+    conditionValidPassword: 'Le mot de passe doit contenir au moins de 8 caractères au total et 4 parmi ce qui suit: '
+    groupsCharacter: 'une lettre majuscule, une lettre minuscule, un chiffre, un caractère spéciale'
 </i18n>
 <!-- eslint-enable max-len -->
 
 <script lang="ts" setup>
 import { PPopover } from '@kpmg/styleguide'
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 import {
   PASSWORD_STRENGTH,
   levelPasswordStrength
-} from '@/utils/passwordStrength'
+} from './passwordStrength'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -72,8 +57,16 @@ const { t } = useI18n({
 
 const props = defineProps(['password'])
 
-const level = computed(() => {
-  return levelPasswordStrength(props.password)
+const levelPasswordStrengthClass = computed(() => {
+  const level = levelPasswordStrength(props.password)
+  switch (level) {
+    case PASSWORD_STRENGTH.STRONG:
+      return { class: 'levelPwdStrong', text: t('levelPasswordStrengthStrong') }
+    case PASSWORD_STRENGTH.AVERAGE:
+      return { class: 'levelPwdAverage', text: t('levelPasswordStrengthAverage') }
+    default:
+      return { class: 'levelPwdWeak', text: t('levelPasswordStrengthWeak') }
+  }
 })
 </script>
 
