@@ -1,7 +1,7 @@
 <template>
   <div
     :type="type"
-    :class="['p-text', 'padding--4', { disabled, selected }]"
+    :class="['p-text', { disabled, selected }]"
     :disabled="disabled"
     :selected="selected">
     <div class="p-text__icon" v-if="icon">
@@ -9,7 +9,7 @@
         <component :is="icon" />
       </PIcon>
     </div>
-    <div :class="['p-text__content', { 'p-text__content--bold': bold }]">
+    <div :class="['p-text__content', { 'font-bold': bold }]">
       {{ content }}
     </div>
   </div>
@@ -38,7 +38,7 @@ withDefaults(defineProps<PTextProps>(), {
   display: flex;
   align-items: center;
   min-height: 40px;
-  gap: 8px;
+  overflow: hidden;
 
   &[type="primary"]:not([disabled='true'], [selected='true']) {
     background-color: transparent;
@@ -66,6 +66,7 @@ withDefaults(defineProps<PTextProps>(), {
   &__icon {
     width: 16px;
     height: 16px;
+    margin-right: 8px;
   }
 
   &__content {
@@ -73,10 +74,6 @@ withDefaults(defineProps<PTextProps>(), {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-
-    &--bold {
-      font-weight: 700;
-    }
   }
 }
 </style>

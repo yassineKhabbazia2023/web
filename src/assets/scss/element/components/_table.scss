@@ -44,23 +44,6 @@ tbody tr td .cell {
   font-family: var(--el-font-family)
 }
 
-.el-table thead tr th {
-  font-weight: 400;
-  min-height: 40px;
-}
-
-.el-table tbody tr td.el-table__cell {
-  border-bottom: unset;
-}
-
-.el-table thead tr th .sort-caret.ascending {
-  top: -0.3rem;
-}
-
-.el-table thead tr th .sort-caret.descending {
-  bottom: -0.2rem;
-}
-
 .el-table .cell .caret-wrapper {
   height: 1.3rem;
   width: 1.3rem;
@@ -72,6 +55,23 @@ tbody tr td .cell {
 
 .el-table {
   table {
+    thead tr th.el-table__cell {
+      font-weight: 400;
+      min-height: 40px;
+      padding: 0;
+  
+      .sort-caret.ascending {
+        top: -0.3rem;
+      }
+      .sort-caret.descending {
+        bottom: -0.2rem;
+      }
+      
+    }
+    tbody tr td.el-table__cell {
+      border-bottom: unset;
+    }
+
     tr.el-table__row {
       &.p-table__row--selected, 
       &.p-table__selected-row.el-table__row--striped {
@@ -81,11 +81,18 @@ tbody tr td .cell {
       }
     }
 
-    .el-table__cell {
+    .el-table__row {
       min-height: 40px;
+    }
+
+    .el-table__cell {
       padding: 0;
       
-      .cell {
+      .cell {    
+        display: flex;
+        align-items: center;
+        min-height: 40px;
+        height: auto;
         white-space: nowrap;
       }
     }
@@ -95,9 +102,5 @@ tbody tr td .cell {
       margin-left: -12px;
       margin-right: -12px;
     }
-  }
-  .el-table__header-wrapper .el-table-column--selection > .cell,
-  .el-table__body-wrapper .el-table-column--selection > .cell {
-    height: unset;
   }
 }

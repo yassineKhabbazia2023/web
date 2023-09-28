@@ -9,95 +9,67 @@
   >
     <Variant title="Basic usage">
       <PTag
-        :type="currentType"
+        :pColor="color"
         :size="currentSize"
-        :effect="currentTheme">
-        <PIcon class="el-tag__icon--left">
-          <PIFolder />
-        </PIcon>
-        Tag
-        <PIcon class="el-tag__icon--right">
-          <PIStars />
-        </PIcon>
-      </PTag>
+        :effect="currentTheme"
+        :iconLeft="tagBasicData.iconLeft"
+        :iconRight="tagBasicData.iconRight"
+        :content="tagBasicData.content"
+      />
       <template #controls>
         <HstRadio
-          v-model="currentType"
-          title="Tag Type"
-          :options="tagTypeList" />
+          v-model="color"
+          title="Tag Color"
+          :options="tagColorList"
+        />
         <HstRadio
           v-model="currentSize"
           title="Tag Sizes"
-          :options="tagSizeList" />
+          :options="tagSizeList"
+        />
         <HstRadio
           v-model="currentTheme"
           title="Theme"
-          :options="ThemeList" />
+          :options="ThemeList"
+        />
       </template>
     </Variant>
     <Variant title="Removable Tag">
       <PTag
         :closable="closable"
-        :type="currentType"
+        :pColor="color"
         effect="plain"
         :disableTransitions="disableTransitions"
-        @close="fireClose">
-        Removable Tag
-      </PTag>
+        @close="fireClose"
+        :iconLeft="tagBasicData.iconLeft"
+        :iconRight="tagBasicData.iconRight"
+        :content="tagBasicData.content"
+      />
       <template #controls>
         <HstRadio
-          v-model="currentType"
-          title="Tag Type"
-          :options="tagTypeList" />
-        <HstCheckbox v-model="closable" title="closable" />
-        <HstCheckbox v-model="disableTransitions" title="disableTransitions" />
-      </template>
-    </Variant>
-    <Variant title="Edit Dynamically">
-      <PTag
-        v-for="tag in dynamicTags"
-        :key="tag"
-        :closable="closable"
-        :disableTransitions="disableTransitions"
-        style="margin:0 5px;"
-        @close="handleClose(tag)">
-        {{ tag }}
-      </PTag>
-      <PInput
-        v-if="inputVisible"
-        ref="InputRef"
-        v-model="inputValue"
-        style="margin-left:10px;width:120px;"
-        size="small"
-        type="primary"
-        @keyup.enter="handleInputConfirm"
-        @blur="handleInputConfirm" />
-      <PButton
-        v-else
-        class="button-new-tag ml-1"
-        type="primary"
-        plain
-        size="small"
-        @click="showInput">
-          + New Tag
-      </PButton>
-      <template v-if="dynamicTags.length > 0" #controls>
+          v-model="color"
+          title="Tag Color"
+          :options="tagColorList"
+        />
         <HstCheckbox v-model="closable" title="closable" />
         <HstCheckbox v-model="disableTransitions" title="disableTransitions" />
       </template>
     </Variant>
     <Variant title="Rounded">
       <PTag
-        :type="currentType"
+        :pColor="color"
         :effect="currentTheme"
-        :round="rounded">
-        Tag
+        :round="rounded"
+        :iconLeft="tagBasicData.iconLeft"
+        :iconRight="tagBasicData.iconRight"
+        :content="tagBasicData.content">
       </PTag>
       <template #controls>
         <HstRadio
-          v-model="currentType"
-          title="Tag Type"
-          :options="tagTypeList" />
+          v-model="color"
+          title="Tag Color"
+          :options="tagColorList"
+        />
         <HstButtonGroup
           v-model="currentTheme"
           title="Theme"
@@ -110,16 +82,21 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
+import { ref } from 'vue'
 import type { PTagProps } from './PTag'
 import { logEvent } from 'histoire/client'
-import { ElInput } from 'element-plus'
+import { PIStars } from '@/atoms/PIcon/components'
 
-const currentType = ref('success')
+const color = ref('success')
 const closable = ref(true)
 const rounded = ref(true)
 const disableTransitions = ref(true)
-const tagTypeList: { label: string; value: PTagProps['type'] }[] = [
+const tagBasicData = {
+  content: 'My tag',
+  iconLeft: PIStars,
+  iconRight: PIStars
+}
+const tagColorList: { label: string; value: PTagProps['pColor'] }[] = [
   {
     label: 'default',
     value: ''
@@ -198,27 +175,7 @@ const ThemeList: { label: string; value: PTagProps['effect'] }[] = [
     value: 'plain'
   }
 ]
-const dynamicTags = ref(['Tag 1', 'Tag 2', 'Tag 3'])
 const currentTheme = ref<PTagProps['effect']>('light')
-const inputValue = ref('')
-const inputVisible = ref(false)
-const InputRef = ref<InstanceType<typeof ElInput>>()
-function handleClose(tag: string) {
-  dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
-}
-function showInput() {
-  inputVisible.value = true
-  nextTick(() => {
-    InputRef.value?.focus()
-  })
-}
-
-function handleInputConfirm() {
-  if (inputValue.value) { dynamicTags.value.push(inputValue.value) }
-
-  inputVisible.value = false
-  inputValue.value = ''
-}
 function fireClose(e: Event) {
   logEvent('close', e)
 }

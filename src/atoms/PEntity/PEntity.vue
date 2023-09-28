@@ -52,7 +52,6 @@ withDefaults(defineProps<PTextProps>(), {
   min-height: 40px;
   gap: 8px;
   color: var(--el-fill-color-regular);
-  padding: 0 12px;
 
   &[type="primary"]:not([selected="true"]) {
     background-color: transparent;

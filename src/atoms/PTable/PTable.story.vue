@@ -82,6 +82,7 @@
         </PTableColumn>
         <PTableColumn
           label="Tag"
+          width="180"
           :sortable="tableInputsWithCells.sortable"
           >
           <template #default="scope">
@@ -89,14 +90,10 @@
               type="success"
               size="default"
               effect="light"
+              :iconLeft="scope.row.tag.iconLeft"
+              :iconRight="scope.row.tag.iconRight"
+              :content="scope.row.tag.content"
             >
-              <PIcon class="el-tag__icon--left">
-                <PIFolder />
-              </PIcon>
-              {{ scope.row.tag.status }}
-              <PIcon class="el-tag__icon--right">
-                <PIStars />
-              </PIcon>
             </PTag>
           </template>
         </PTableColumn>
@@ -186,7 +183,9 @@ const tableInputsWithCells = reactive({
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
       },
       tag: {
-        status: 'Validated'
+        content: 'Validated',
+        iconLeft: PIFolder,
+        iconRight: PIStars
       },
       switch: {
         status: ref(true),
@@ -209,7 +208,9 @@ const tableInputsWithCells = reactive({
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
       },
       tag: {
-        status: 'Validated'
+        content: 'Validated',
+        iconLeft: PIFolder,
+        iconRight: PIStars
       },
       switch: {
         status: ref(false),
@@ -232,7 +233,9 @@ const tableInputsWithCells = reactive({
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
       },
       tag: {
-        status: 'Validated'
+        content: 'Validated',
+        iconLeft: PIFolder,
+        iconRight: PIStars
       },
       switch: {
         status: ref(true),
@@ -255,7 +258,9 @@ const tableInputsWithCells = reactive({
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
       },
       tag: {
-        status: 'Validated'
+        content: 'Validated',
+        iconLeft: PIFolder,
+        iconRight: PIStars
       },
       switch: {
         status: ref(true),
@@ -278,7 +283,7 @@ const tableInputsWithCells = reactive({
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
       },
       tag: {
-        status: 'Validated'
+        content: 'Validated'
       },
       switch: {
         status: ref(false),

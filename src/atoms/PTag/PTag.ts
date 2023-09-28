@@ -1,10 +1,8 @@
-import type { TagProps } from 'element-plus'
-import type { EpPropMergeType } from 'element-plus/es/utils'
+import { type TagProps } from 'element-plus'
+import { type Component } from 'vue'
 
-export interface PTagProps extends Omit<TagProps, 'type'> {
-  type: EpPropMergeType<
-    readonly [NumberConstructor, StringConstructor],
-    ''
+export interface PTagProps extends TagProps {
+  pColor: ''
     | 'success'
     | 'warning'
     | 'danger'
@@ -15,7 +13,8 @@ export interface PTagProps extends Omit<TagProps, 'type'> {
     | 'amethyste'
     | 'gray-300'
     | 'gray-500'
-    | 'gray-900',
-    unknown
-  >
+    | 'gray-900'
+  content: string
+  iconLeft?: Component | string
+  iconRight?: Component | string
 }

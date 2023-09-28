@@ -67,7 +67,6 @@ withDefaults(defineProps<PDoubleTextProps>(), {
   align-items: center;
   height: 65px;
   gap: 8px;
-  padding: 0 12px;
 
   &[type="primary"]:not([disabled='true'], [selected='true']) {
     background-color: transparent;
