@@ -151,7 +151,7 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const email = route.query.email
+const contactId = route.query.contactId
 const accountId = route.query.accountId
 const resetPasswordToken = route.query.token
 const formRef = ref<FormInstance>()
@@ -223,11 +223,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid) => {
     if (valid) {
       const data = {
-        email,
+        contactId,
         password: formValue.password,
         resetPasswordToken: resetPasswordToken
       }
-      const urlAcceptTerms = `/Activation/AcceptTerms?email=${email}`
+      const urlAcceptTerms = `/Activation/AcceptTerms?contactId=${contactId}`
       const urlUpdatePassword = '/createResetPassword'
       try {
         await commonApi().onboarding.patch(urlAcceptTerms)
@@ -264,7 +264,7 @@ const isValidToken = async (): Promise<any> => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ name: 'expireToken', query: { email, accountId } })
+    router.push({ name: 'expireToken', query: { contactId, accountId } })
   }
 })
 </script>

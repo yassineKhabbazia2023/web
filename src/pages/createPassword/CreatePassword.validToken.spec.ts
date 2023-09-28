@@ -29,7 +29,7 @@ router.push({
   name: 'createPassword',
   path: '/createPassword',
   query: {
-    email: 'email',
+    contactId: 'contactId',
     accountId: 'accountId',
     token: 'token'
   }
@@ -113,10 +113,10 @@ describe('page creation password', () => {
     await flushPromises()
     wrapper.find('button').trigger('click')
     await flushPromises()
-    const patchLink = '/Activation/AcceptTerms?email=email'
+    const patchLink = '/Activation/AcceptTerms?contactId=contactId'
     const postLink = '/createResetPassword'
     const data = {
-      email: 'email',
+      contactId: 'contactId',
       password: 'aaAA11@@',
       resetPasswordToken: 'token'
     }
