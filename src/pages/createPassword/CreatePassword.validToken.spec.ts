@@ -29,7 +29,7 @@ router.push({
   name: 'createPassword',
   path: '/createPassword',
   query: {
-    email: 'email',
+    contactId: 'contactId',
     accountId: 'accountId',
     token: 'token'
   }
@@ -63,8 +63,8 @@ describe('page creation password', () => {
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
-      await waitForAsyncImports(30)
-      wrapper.findAll('.el-input__inner')[0].setValue('password')
+      await waitForAsyncImports(40)
+      wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
       wrapper.find('.el-checkbox__original').setValue('true')
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(1)
@@ -72,11 +72,21 @@ describe('page creation password', () => {
     }
   )
 
+  it('should show error when user enter a invalid password', async () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+    await waitForAsyncImports(40)
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11aa')
+    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
+    wrapper.find('.el-checkbox__original').setValue('true')
+    await flushPromises()
+    expect(wrapper.findAll('.is-error')).toHaveLength(1)
+  })
+
   it('should show success when user enter password and valid cgu', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(30)
-    wrapper.findAll('.el-input__inner')[0].setValue('password')
-    wrapper.findAll('.el-input__inner')[1].setValue('password')
+    await waitForAsyncImports(40)
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
+    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     wrapper.find('.el-checkbox__original').setValue('true')
     expect(wrapper.findAll('.is-error')).toHaveLength(0)
     await flushPromises()
@@ -85,8 +95,8 @@ describe('page creation password', () => {
 
   it('should show error when user enter password and confirm password differently', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(30)
-    wrapper.findAll('.el-input__inner')[0].setValue('password')
+    await waitForAsyncImports(40)
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
     wrapper.find('.el-checkbox__original').setValue('true')
     await flushPromises()
@@ -96,18 +106,19 @@ describe('page creation password', () => {
 
   it('should call back end when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(30)
-    wrapper.findAll('.el-input__inner')[0].setValue('password')
-    wrapper.findAll('.el-input__inner')[1].setValue('password')
+    await waitForAsyncImports(40)
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
+    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     wrapper.find('.el-checkbox__original').setValue('true')
     await flushPromises()
     wrapper.find('button').trigger('click')
     await flushPromises()
-    const patchLink = '/Activation/AcceptTerms?email=email'
-    const postLink = '/api/createPassword'
+    const patchLink = '/Activation/AcceptTerms?contactId=contactId'
+    const postLink = '/createResetPassword'
     const data = {
-      email: 'email',
-      password: 'password'
+      contactId: 'contactId',
+      password: 'aaAA11@@',
+      resetPasswordToken: 'token'
     }
     expect(patchMock).toHaveBeenCalledTimes(1)
     expect(patchMock).toHaveBeenCalledWith(patchLink)

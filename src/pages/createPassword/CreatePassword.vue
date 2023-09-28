@@ -22,12 +22,16 @@
         prop="password"
         required
         >
-        <PInput
+        <PopoverPasswordStrength
+          :password="formValue.password"
+        >
+          <PInput
           v-model="formValue.password"
           :placeholder="t('placeholderPassword')"
           type="password"
           showPassword
-        />
+          />
+        </PopoverPasswordStrength>
       </PFormItem>
       <PFormItem
         :label="t('labelConfirmPassword')"
@@ -95,6 +99,7 @@
     alertPasswordNotMatch: "Passwords don't match!"
     alertCgu: 'Please accept the general terms and conditions of use'
     alertPasswordRequired: 'Please enter the password'
+    alertPasswordLevelLow: 'Your password is not valid'
     btnSubmit: 'Activate my account'
   fr-FR:
     createAccount: 'Créez votre compte'
@@ -112,6 +117,7 @@
     alertPasswordNotMatch: 'Mot de passe ne correspondent pas!'
     alertCgu: "Veuillez accepter les conditions générales d'utilisation"
     alertPasswordRequired: 'Veuillez rentrer votre mot de passe'
+    alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
     btnSubmit: 'Activer mon compte'
 </i18n>
 
@@ -133,6 +139,11 @@ import {
   PCheckbox,
   PButton
 } from '@kpmg/styleguide'
+import PopoverPasswordStrength from './PopoverPasswordStrength'
+import {
+  PASSWORD_STRENGTH,
+  levelPasswordStrength
+} from './PopoverPasswordStrength/passwordStrength'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -140,8 +151,9 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const email = route.query.email
+const contactId = route.query.contactId
 const accountId = route.query.accountId
+const resetPasswordToken = route.query.token
 const formRef = ref<FormInstance>()
 const formValidity = reactive({
   password: false,
@@ -155,7 +167,10 @@ const formValue = reactive({
 })
 
 const isValidForm = computed(() => {
-  return formValidity.password && formValidity.confirmPassword && formValidity.terms
+  return formValidity.password &&
+    formValidity.confirmPassword &&
+    formValidity.terms &&
+    levelPasswordStrength(formValue.password) === PASSWORD_STRENGTH.STRONG
 })
 
 const validatePassword = (_rule: any, value: any, callback: any) => {
@@ -164,10 +179,15 @@ const validatePassword = (_rule: any, value: any, callback: any) => {
     callback(new Error(t('alertPasswordRequired')))
   } else {
     if (!formRef.value) return
-    formRef.value?.validateField('confirmPassword', () => null)
-    callback()
+    if (levelPasswordStrength(value) !== PASSWORD_STRENGTH.STRONG) {
+      formValidity.password = false
+      callback(new Error(t('alertPasswordLevelLow')))
+    } else {
+      formRef.value?.validateField('confirmPassword', () => null)
+      callback()
+    }
+    formValidity.password = true
   }
-  formValidity.password = true
 }
 
 const validateCheckPass = (_rule: any, value: any, callback: any) => {
@@ -203,11 +223,12 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid) => {
     if (valid) {
       const data = {
-        email,
-        password: formValue.password
+        contactId,
+        password: formValue.password,
+        resetPasswordToken: resetPasswordToken
       }
-      const urlAcceptTerms = `/Activation/AcceptTerms?email=${email}`
-      const urlUpdatePassword = '/api/createPassword'
+      const urlAcceptTerms = `/Activation/AcceptTerms?contactId=${contactId}`
+      const urlUpdatePassword = '/createResetPassword'
       try {
         await commonApi().onboarding.patch(urlAcceptTerms)
         const {
@@ -243,7 +264,7 @@ const isValidToken = async (): Promise<any> => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ name: 'expireToken', query: { email, accountId } })
+    router.push({ name: 'expireToken', query: { contactId, accountId } })
   }
 })
 </script>

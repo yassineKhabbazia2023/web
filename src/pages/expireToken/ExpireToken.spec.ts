@@ -28,7 +28,7 @@ router.push({
   path: '/expireToken',
   query: {
     accountId: 'accountIdSample',
-    email: 'toto@example.com'
+    contactId: 'contactId'
   }
 })
 const createWrapper = () => {
@@ -50,7 +50,7 @@ describe('page expire token', () => {
   it('should call endpoint when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyRouter = vi.spyOn(wrapper.vm.router, 'push')
-    const link = '/Activation/Invite?accountId=accountIdSample&email=toto@example.com'
+    const link = '/Activation/Invite?accountId=accountIdSample&contactId=contactId'
     await waitForAsyncImports(30)
     wrapper.find('.btn-link').trigger('click')
     expect(postMock).toHaveBeenCalledTimes(1)

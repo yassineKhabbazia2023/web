@@ -84,6 +84,7 @@ describe('login', () => {
 
   it('does not redirect to the home page if the api return an error', async () => {
     wrapper = createWrapper()
+    await waitForAsyncImports(40)
 
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')

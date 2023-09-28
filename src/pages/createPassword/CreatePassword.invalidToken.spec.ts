@@ -28,7 +28,7 @@ router.push({
   path: '/createPassword',
   name: 'createPassword',
   query: {
-    email: 'email',
+    contactId: 'contactId',
     accountId: 'accountId',
     token: 'token'
   }
@@ -71,7 +71,7 @@ describe('page creation password', () => {
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
       name: 'expireToken',
-      query: { accountId: 'accountId', email: 'email' }
+      query: { accountId: 'accountId', contactId: 'contactId' }
     })
   })
 })
