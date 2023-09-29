@@ -21,7 +21,7 @@ type UserInfo = {
 
 const isTokenExpired = (token: string) => {
   const { exp } = jwtDecode<JwtPayload>(token)
-  return !!exp && exp < Date.now()
+  return !!exp && exp * 1000 < Date.now()
 }
 
 export default defineStore('common', {

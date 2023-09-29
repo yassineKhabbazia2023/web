@@ -26,7 +26,7 @@ describe('commonStore', () => {
     setActivePinia(pinia)
   })
 
-  const ISCOLLAB = [
+  const IS_COLLAB = [
     true,
     false
   ]
@@ -57,7 +57,7 @@ describe('commonStore', () => {
     expect(isAuthenticated.value).toBe(true)
   })
 
-  it.each(ISCOLLAB)('should call logout function', async (isCollabCondition) => {
+  it.each(IS_COLLAB)('should call logout function', async (isCollabCondition) => {
     const store = commonStore(pinia)
 
     const spyLogout = vi.spyOn(store, 'logout')
