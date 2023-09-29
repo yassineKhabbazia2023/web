@@ -35,17 +35,17 @@ export default defineStore('common', {
   actions: {
     logout: async (state: any) => {
       try {
-        state.user = null
-        sessionStorage.removeItem('token')
         if (state.user?.isCollab) {
           msalInstance.logout()
         } else {
-          const urlLogout = '/api/logout'
+          const urlLogout = '/logout'
           const data = {
             userId: state?.user?.id
           }
           await api().auth.post(urlLogout, data)
         }
+        state.user = null
+        sessionStorage.removeItem('token')
       } catch {}
     }
   }
