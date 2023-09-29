@@ -55,6 +55,12 @@
           showPassword
         />
       </PFormItem>
+      <router-link
+        to="/resetPassword"
+        class="forgot-password-btn font-semibold"
+      >
+        {{ t('forgotPassword') }}
+      </router-link>
       <PFormItem class="button-wrapper">
         <PButton
           @click="handleSubmit(formRef)"
@@ -180,6 +186,16 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
 .buttonSubmit {
   width: 100%;
 }
+
+.forgot-password-btn {
+  height: 30px;
+  display: block;
+  color: var(--el-color-primary);
+
+  &:hover {
+    color: var(--el-color-primary-dark-2);
+  }
+}
 </style>
 
 <i18n lang="yaml">
@@ -193,6 +209,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     passwordPlaceholder: 'Enter your password'
     login: 'Log in'
     error: 'The email and password combination is incorrect.'
+    forgotPassword: 'Forgot your password?'
   fr-FR:
     welcomeTo: 'Bienvenue sur'
     yourPulseSpace: 'votre Espace Pulse !'
@@ -203,4 +220,5 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     passwordPlaceholder: 'Saisissez votre mot de passe'
     login: 'Me connecter'
     error: 'La combinaison email et mot de passe est incorrecte.'
+    forgotPassword: 'Mot de passe oublié ?'
 </i18n>

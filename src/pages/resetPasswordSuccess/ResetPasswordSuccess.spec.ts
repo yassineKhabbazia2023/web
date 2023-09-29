@@ -5,7 +5,7 @@ import {
   vi
 } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import ResetPasswordSuccess from '.'
+import ResetPasswordSuccess from './'
 import ElementPlus, {
   ElButton as PButton,
   ElImage as PImage

@@ -79,7 +79,7 @@ describe('reset password', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      path: '/resetpasswordsuccess',
+      path: '/resetPasswordSuccess',
       query: {
         email: 'customEmail@aol.com'
       }

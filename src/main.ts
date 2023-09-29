@@ -65,18 +65,18 @@ routes.value.push({
 })
 
 routes.value.push({
-  path: '/resetpassword',
-  name: 'resetpassword',
-  component: () => import('@/pages/resetpassword'),
+  path: '/resetPassword',
+  name: 'resetPassword',
+  component: () => import('@/pages/resetPassword'),
   meta: {
     layout: 'Login'
   }
 } as RouteRecordRaw)
 
 routes.value.push({
-  path: '/resetpasswordsuccess',
-  name: 'resetpasswordsuccess',
-  component: () => import('@/pages/resetpasswordsuccess'),
+  path: '/resetPasswordSuccess',
+  name: 'resetPasswordSuccess',
+  component: () => import('@/pages/resetPasswordSuccess'),
   meta: {
     layout: 'Login'
   }

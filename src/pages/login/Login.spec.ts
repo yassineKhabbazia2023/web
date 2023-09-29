@@ -7,12 +7,6 @@ const USER_ID = 'customUserId'
 const WEB_TOKEN = 'customToken'
 
 const mockStorePatch = vi.fn()
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: mockRouterPush
-  })
-}))
-
 const mockRouterPush = vi.fn()
 const mockAuthPost = vi.fn((_url, { _email, password }) => {
   return password === 'error'
@@ -25,6 +19,13 @@ const mockAuthPost = vi.fn((_url, { _email, password }) => {
       }
     })
 })
+
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mockRouterPush
+  })
+}))
+
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     auth: {
@@ -39,7 +40,11 @@ vi.mock('@kpmg/common', async () => ({
 let wrapper: VueWrapper<any>
 
 const createWrapper = () =>
-  mount(Login)
+  mount(Login, {
+    global: {
+      stubs: ['router-link']
+    }
+  })
 
 const getForm = () => wrapper.find('form')
 const getInputEmail = () => wrapper.findAll('input')[0]
@@ -92,5 +97,11 @@ describe('login', () => {
     await wrapper.vm.handleSubmit(getForm())
 
     expect(mockRouterPush).not.toHaveBeenCalled()
+  })
+
+  it('has a link to resetPassword page', async () => {
+    wrapper = createWrapper()
+    const forgotPasswordBtn = wrapper.find('.forgot-password-btn')
+    expect(forgotPasswordBtn.attributes('to')).toBe('/resetPassword')
   })
 })
