@@ -26,9 +26,11 @@
   en-US:
     dashboard: 'Dashboard'
     subscriptions: 'Subscriptions requests'
+    ged:  'My documents'
   fr-FR:
     dashboard: 'Tableau de bord'
     subscriptions: 'Demandes d’activation'
+    ged:  'Mes documents'
 </i18n>
 
 <script setup lang="ts">
@@ -52,6 +54,11 @@ const menuHeader = [
     component: {
       render: () => 'Dashboard'
     }
+  },
+  {
+    icon: 'PIFolder',
+    text: t('ged'),
+    path: '/ged'
   },
   {
     icon: 'PIFiles',
