@@ -26,6 +26,31 @@ export const createMandate = async ({
     }
   })
 
+/* export const downloadDocumentById = async (
+    { accountId, documentId }: any,
+    progressCallback?: (progressEvent: ProgressEvent) => void
+  ): Promise<any> => { */
+export const downloadDocumentById = async (
+  progressCallback?: (progressEvent: ProgressEvent) => void
+): Promise<any> => {
+  /* return api.ds.get(`/${accountId}/documents/${documentId}/content`, {
+    responseType: 'blob',
+    onDownloadProgress: (progressEvent: ProgressEvent) => {
+      progressCallback && progressCallback(progressEvent)
+    }
+  }) */
+  const fileProgress: any = { loaded: 0, total: 100 }
+  let intervalId: any = null
+  setTimeout(() => {
+    clearInterval(intervalId)
+  }, 2000)
+  intervalId = setInterval(() => {
+    fileProgress.loaded += 25
+    progressCallback && progressCallback(fileProgress)
+  }, 500)
+
+}
+
 export const validateIban = async (iban: string) => {
   // Simulate a delay (e.g., network request)
   await new Promise(resolve => setTimeout(resolve, 1000))
@@ -50,7 +75,7 @@ export const getBankDetail = async (iban: string) => {
     name: 'Banque postale',
     jeDeclare: {
       isPartner: true,
-      isScrapable: isScrapable
+      isScrapable
     }
   }
 }

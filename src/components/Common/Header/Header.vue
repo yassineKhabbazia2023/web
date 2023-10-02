@@ -21,6 +21,7 @@
       </PButton>
     </div>
     <Drawer
+      v-if="openDrawer"
       v-model="openDrawer"
     />
   </div>

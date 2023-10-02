@@ -1,13 +1,14 @@
 <template>
   <PDrawer
     v-model="drawerModel"
-    :title="`${t('new-collection')}`"
+    :title="currentStep <= 3 ? `${t('new-collection')}`: ''"
     :showPreviousStep="false"
     size="50%"
     direction="rtl"
     class="drawer"
   >
     <PSteps
+      v-if="currentStep <= 3"
           :active="currentStep-1"
           direction="horizontal"
           processStatus="process"
@@ -18,7 +19,7 @@
         <PStepItem :title="t('infos')" />
         <PStepItem :title="t('banking-data')" />
       </PSteps>
-    <h5 class="drawer__title">
+    <h5 class="drawer__title" v-if="currentStep <= 3">
       <div v-if="currentStep === 1">
         {{ t('entity') }}
       </div>
@@ -39,11 +40,16 @@
       </PTooltip>
     </h5>
     <Form
+      v-if="currentStep <= 3"
       :step="currentStep"
       @enable-disable-next="handleNextAvailability"
       @enable-disable-validate="handleValidateAvailability" />
+    <DownloadMandate
+      v-if="currentStep > 3"
+      @close-create-mandate-drawer="closeDrawerAndInitStep()"
+    />
     <template #footer>
-      <div>
+      <div v-if="currentStep <= 3">
         <PButton
           v-if="currentStep === 2 || currentStep === 3"
           type="default"
@@ -68,6 +74,7 @@
           :loading="false"
           :disabled="!validateAvailability"
           data-testid="validate-step-test"
+          @click="currentStep++"
         >
           {{ t('validate') }}
         </PButton>
@@ -88,6 +95,16 @@
           </PIcon>
         </PButton>
       </div>
+      <PAlert v-else>
+        <template #bold-text>
+            <div class="drawer__alert-title">
+              {{t('help')}}
+            </div>
+        </template>
+        <p class="drawer__alert-body">{{t('help-label-prefix')}}
+        <a href="" class="drawer__alert-body--color">{{t('help-label-link')}}</a>
+        {{t('help-label-suffix')}}</p>
+    </PAlert>
     </template>
   </PDrawer>
 </template>
@@ -105,6 +122,10 @@
         bank-identity-statement: 'Bank identity statement'
         tooltip: 'The IBS number entered must be part of your
           portfolio and have an active commitment.'
+        help: 'Need help?'
+        help-label-prefix: 'Consult the '
+        help-label-link: 'practical guide'
+        help-label-suffix: ' to ensure that the collection is active'
     fr-FR:
         new-collection: 'Nouvelle collecte'
         next: 'Suivant'
@@ -117,6 +138,10 @@
         bank-identity-statement: "Relevé d’identité bancaire"
         tooltip: "Le numéro d’IBS saisi doit faire parti de
           votre portefeuille et avoir un engagement actif."
+        help: "Besoin d'aide ?"
+        help-label-prefix: 'Consultez le '
+        help-label-link: 'guide pratique'
+        help-label-suffix: " pour garantir l'activation de la collecte"
 </i18n>
 
 <script setup lang='ts'>
@@ -131,9 +156,11 @@ import {
   PStepItem,
   PTooltip,
   PIcon,
-  PButton
+  PButton,
+  PAlert
 } from '@kpmg/styleguide'
 import Form from '@/components/CreateMandate/Form'
+import DownloadMandate from '@/components/CreateMandate/Download'
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
 const validateAvailability = ref(false)
@@ -178,6 +205,11 @@ const handleValidateAvailability = (availability: any) => {
   validateAvailability.value = availability
 }
 
+const closeDrawerAndInitStep = () => {
+  drawerModel.value = false
+  currentStep.value = 1
+}
+
 defineExpose({
   drawerModel,
   goToNextStep,
@@ -191,7 +223,7 @@ defineExpose({
     display: flex;
     align-items: center;
     color: var(--pulse-color-neutral-gray-900);
-    font-size: 16px;
+    font-size: 1.6rem;
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
@@ -205,6 +237,20 @@ defineExpose({
   &__tooltip {
     margin-top: 1px;
     margin-left: 8px;
+  }
+  &__alert-title {
+    display: flex;
+    align-items: start;
+  }
+  &__alert-body {
+    color: var(--pulse-color-neutral-gray-700);
+    font-size: 1.4rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+    &--color {
+      color: var(--el-color-primary);
+    }
   }
 }
 </style>
