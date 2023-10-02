@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 
 export const useInitAuth = () => {
   const router = useRouter()
-  const initAuth = async () => {
+  const initAuth = async (isCollab: boolean = false) => {
     await getToken()
     const token = sessionStorage.getItem('token')
     if (token) {
@@ -22,7 +22,8 @@ export const useInitAuth = () => {
           id,
           firstName,
           lastName,
-          email
+          email,
+          isCollab
         }
       })
       router.push('/')

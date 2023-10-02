@@ -79,7 +79,8 @@ describe('login', () => {
     expect(mockStorePatch).toHaveBeenCalledWith({
       user: {
         id: USER_ID,
-        token: WEB_TOKEN
+        token: WEB_TOKEN,
+        isCollab: false
       }
     })
 

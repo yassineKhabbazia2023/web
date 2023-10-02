@@ -241,7 +241,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
         store().$patch({
           user: {
             id,
-            token
+            token,
+            isCollab: false
           }
         })
         router.push({ name: 'home' })

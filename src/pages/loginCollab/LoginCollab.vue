@@ -30,7 +30,7 @@ const { t } = useI18n({
 const handleLoginCollab = async () => {
   msalInstance.loginRedirect()
 }
-await initAuth()
+await initAuth(true)
 </script>
 
 <style lang="scss">
