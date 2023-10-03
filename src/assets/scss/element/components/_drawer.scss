@@ -7,6 +7,12 @@ $drawer: (
 );
 
 .p-drawer {
+  @media screen and (max-width: 991px) {
+    width: 75% !important;
+  }
+  @media screen and (max-width: 767px) {
+    width: 100% !important;
+  }
   header {
     margin: 0;
     padding: 24px;
