@@ -25,11 +25,11 @@
 <i18n lang="yaml">
   en-US:
     dashboard: 'Dashboard'
-    subscriptions: 'Subscriptions requests'
+    subscriptions: 'Request validation'
     ged:  'My documents'
   fr-FR:
     dashboard: 'Tableau de bord'
-    subscriptions: 'Demandes d’activation'
+    subscriptions: 'Validation de demande'
     ged:  'Mes documents'
 </i18n>
 
