@@ -225,7 +225,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       const data = {
         contactId,
         password: formValue.password,
-        resetPasswordToken: resetPasswordToken
+        resetPasswordToken
       }
       const urlAcceptTerms = `/Activation/AcceptTerms?contactId=${contactId}`
       const urlUpdatePassword = '/createResetPassword'

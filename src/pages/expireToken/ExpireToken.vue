@@ -48,12 +48,14 @@ const route = useRoute()
 const router = useRouter()
 const isLoading = ref()
 const resendLink = async () => {
-  const contactId = route.query.contactId
-  const accountId = route.query.accountId
+  let { contactId, contactEmail, accountId } = route.query
   try {
-    const urlResendLink = `/Activation/Invite?accountId=${accountId}&contactId=${contactId}`
     isLoading.value = true
-    await commonApi().onboarding.post(urlResendLink)
+    contactEmail && (contactEmail = contactEmail.toString().trim().replace(' ', '+'))
+    contactEmail
+      ? await commonApi().auth.post('/sendResetPasswordLink', { email: contactEmail })
+      // eslint-disable-next-line max-len
+      : await commonApi().onboarding.post(`/Activation/Invite?accountId=${accountId}&contactId=${contactId}`)
     isLoading.value = false
     router.push({ path: '/resendEmailSuccess' })
   } catch {}

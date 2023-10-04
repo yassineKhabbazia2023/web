@@ -81,3 +81,12 @@ routes.value.push({
     layout: 'Login'
   }
 } as RouteRecordRaw)
+
+routes.value.push({
+  path: '/resetPasswordForm',
+  name: 'resetPasswordForm',
+  component: () => import('@/pages/resetPasswordForm'),
+  meta: {
+    layout: 'Login'
+  }
+} as RouteRecordRaw)
