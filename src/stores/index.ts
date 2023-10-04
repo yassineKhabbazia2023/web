@@ -19,7 +19,7 @@ type UserInfo = {
   }[]
 }
 
-const isTokenExpired = (token: string) => {
+export const isTokenExpired = (token: string) => {
   const { exp } = jwtDecode<JwtPayload>(token)
   return !!exp && exp * 1000 < Date.now()
 }
