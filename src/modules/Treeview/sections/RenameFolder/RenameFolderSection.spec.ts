@@ -71,7 +71,6 @@ vi.mock('vue-inject', () => ({
 }))
 
 vi.mock('@/services/Folder', () => ({
-  tokenValue: 'mocked token',
   RenameFolder: vi.fn()
 }))
 

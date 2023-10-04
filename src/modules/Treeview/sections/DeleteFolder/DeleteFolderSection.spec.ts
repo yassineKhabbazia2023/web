@@ -161,7 +161,6 @@ describe('deleteFolderSection', () => {
         await wrapper.vm.$nextTick()
 
         expect(vi.mocked(DeleteFolder)).toHaveBeenCalledWith(
-          '',
           'service-id',
           'entity-id',
           1,

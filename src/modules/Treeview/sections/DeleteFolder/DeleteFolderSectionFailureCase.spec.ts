@@ -69,7 +69,6 @@ vi.mock('vue-inject', () => ({
 }))
 
 vi.mock('@/services/Folder', () => ({
-  tokenValue: 'mocked token',
   DeleteFolder: () => {
     throw new Error('Something uncool')
   }

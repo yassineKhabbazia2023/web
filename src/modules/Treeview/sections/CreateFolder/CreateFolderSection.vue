@@ -71,7 +71,6 @@ const handleCreateFolder = async (folderName: string) => {
   isConfirmButtonLoading.value = true
   try {
     const createdFolder = (await CreateFolder(
-      '',
       props.serviceId,
       props.entityId,
       props.selectedFolder.id,

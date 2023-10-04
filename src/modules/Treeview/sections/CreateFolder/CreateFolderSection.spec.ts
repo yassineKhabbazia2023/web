@@ -80,7 +80,6 @@ vi.mock('vue-inject', () => ({
 }))
 
 vi.mock('@/services/Folder', () => ({
-  tokenValue: 'mocked token',
   CreateFolder: vi.fn()
 }))
 
@@ -196,7 +195,6 @@ describe('createFolderSection', () => {
         await wrapper.vm.$nextTick()
 
         expect(vi.mocked(CreateFolder)).toHaveBeenCalledWith(
-          '',
           'service-id',
           'entity-id',
           1,

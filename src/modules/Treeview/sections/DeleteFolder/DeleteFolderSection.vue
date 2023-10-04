@@ -59,7 +59,6 @@ const handleConfirmDeleteFolder = async () => {
   try {
     isDeleteInProgress.value = true
     await DeleteFolder(
-      '',
       props.serviceId,
       props.entityId,
       props.selectedFolder.id,

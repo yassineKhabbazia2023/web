@@ -8,17 +8,10 @@ const mockPortalGet = vi.fn(() => {
     }
   })
 })
-const headersMock = {
-  defaults: {
-    headers: {
-      Authorization: ''
-    }
-  }
-}
+
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     portal: {
-      defaults: headersMock.defaults,
       get: mockPortalGet
     }
   }),
@@ -32,10 +25,9 @@ vi.mock('@kpmg/common', async () => ({
 
 describe('fetchUserEntityServices', () => {
   it('should return folder object', async () => {
-    const folder = await fetchUserEntityServices('token', 'serviceId')
+    const folder = await fetchUserEntityServices('serviceId')
     expect(mockPortalGet).toHaveBeenCalledTimes(1)
     expect(mockPortalGet).toHaveBeenCalledWith('GetUserServicesByAccountId?accountId=serviceId')
-    expect(headersMock.defaults.headers.Authorization).toStrictEqual('token')
     expect(folder).toBe('test')
   })
 })

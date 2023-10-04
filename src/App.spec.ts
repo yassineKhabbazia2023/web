@@ -1,13 +1,23 @@
-import { mount } from '@vue/test-utils'
+
+import { VueWrapper, mount } from '@vue/test-utils'
 import Ged from './'
-// import Treeview from '@/modules/Treeview'
 import { createPinia, setActivePinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-// import {
-//   dynamicUntilFound,
-//   dynamicUntilFoundComponent
-// } from '@kpmg/common/src/testing-helpers'
-// import { Folder, FolderProperties } from '@/models/Folder'
+import { fetchUserEntityServices } from '@/services/Services'
+import { fetchServicesFolders } from '@/services/Folder'
+import { ComponentPublicInstance, nextTick } from 'vue'
+import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
+import { Folder, FolderProperties } from './models/Folder'
+import { foldersData } from './modules/Treeview/mocks/treeFoldersMock'
+import { servicesData } from './modules/Treeview/mocks/servicesDataMock'
+import Treeview from './modules/Treeview'
+import { Service } from './models/Service'
+import {
+  appendChildFolder,
+  sortFolderByName,
+  DeleteFolder,
+  renameFolder
+} from '@/modules/Treeview/helpers/folderArrayHelper'
 
 const pinia = createPinia()
 
@@ -23,13 +33,65 @@ vi.mock('@kpmg/common', async () => ({
   })
 }))
 
-const createWrapper = () => {
+vi.mock('@/services/Folder', () => ({
+  fetchServicesFolders: vi.fn(() => {
+    return foldersData
+  })
+}))
+
+vi.mock('@/services/Services', () => ({
+  fetchUserEntityServices: vi.fn(() => {
+    return servicesData
+  })
+}))
+
+vi.mock('@/modules/Treeview/helpers/folderArrayHelper', () => ({
+  appendChildFolder: vi.fn(() => {
+    return true
+  }),
+  sortFolderByName: vi.fn(),
+  DeleteFolder: vi.fn(),
+  renameFolder: vi.fn(() => {
+    return true
+  })
+}))
+
+type AppSetup = {
+  selectedEntity: string
+  currentBinService: Service['ServiceId']
+  isCreateFolderModalVisible:boolean
+}
+
+type AppProps = any
+export type AppWrapper = VueWrapper<ComponentPublicInstance<AppSetup, AppProps>>
+
+const createWrapper = (): AppWrapper => {
   return mount(Ged, {
     global: {
       plugins: [pinia]
     }
-  })
+  }) as AppWrapper
 }
+
+const folder = {
+  id: 1,
+  children: [
+      {
+        id: 2,
+        children: [{} as Folder],
+        name: 'TheFolder',
+        parent: { id: 1 },
+        permissions: [],
+        properties: {} as FolderProperties,
+        serviceId: 'some-service'
+      } as Folder
+  ],
+  name: 'A',
+  parent: { id: 0 },
+  permissions: ['CAN_CREATE_FOLDER'],
+  properties: {} as FolderProperties,
+  serviceId: 'some-service'
+} as Folder
 
 describe('ged', () => {
   // eslint-disable-next-line vitest/no-hooks
@@ -40,46 +102,106 @@ describe('ged', () => {
     const wrapper = createWrapper()
     expect(wrapper.exists()).toBeTruthy()
   })
+  describe('treeview', () => {
+    describe('interactions', () => {
+      it('should ftech user entity services when ged is rendered', async () => {
+        createWrapper()
+
+        await nextTick()
+
+        expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(1)
+      })
+
+      it('should ftech services folders when ged is rendered', async () => {
+        createWrapper()
+
+        await nextTick()
+
+        expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(1)
+      })
+
+      it(
+        'should set the current folder and current service on selected-folder-change event',
+        async () => {
+          const wrapper = createWrapper()
+          await nextTick()
+
+          const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+          await tree.vm.$emit('selected-folder-change', folder)
+          await nextTick()
+
+          expect(tree.props('selectedFolder')).toStrictEqual(folder)
+          expect(tree.props('currentService')).toStrictEqual('some-service')
+        }
+      )
+
+      it('should set the trash serviceId on selected-bin-service-change', async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        await tree.vm.$emit('selected-bin-service-change', servicesData[0].ServiceId)
+        await nextTick()
+
+        const componentInstance = wrapper.vm
+
+        expect(componentInstance.currentBinService).toStrictEqual(
+          servicesData[0].ServiceId
+        )
+      })
+
+      it('should set isCreateFolderModalVisible when open-create-folder-modal', async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        await tree.vm.$emit(
+          'open-create-folder-modal'
+        )
+        await nextTick()
+
+        const componentInstance = wrapper.vm
+
+        expect(componentInstance.isCreateFolderModalVisible).toBeTruthy()
+      })
+
+      it('should append folder in tree and sort when update-source-folders', async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        await tree.vm.$emit('update-source-folders', foldersData[0][0].children[0])
+        await nextTick()
+
+        expect(vi.mocked(appendChildFolder)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
+      })
+
+      it('should remove folder from tree when remove-folder-from-source', async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        await tree.vm.$emit(
+          'remove-folder-from-source',
+          foldersData[0][0].children[0]
+        )
+        await nextTick()
+
+        expect(vi.mocked(DeleteFolder)).toHaveBeenCalledTimes(1)
+      })
+
+      it('should rename folder in tree and sort when update-folder-name', async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        await tree.vm.$emit('update-folder-name', foldersData[0][0].children[0])
+        await nextTick()
+
+        expect(vi.mocked(renameFolder)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
+      })
+    })
+  })
 })
-
-// describe('interactions', () => {
-//   beforeEach(() => {
-//     setActivePinia(pinia)
-//   })
-//   describe('treeview', () => {
-//     it('should  when selected-folder-change emitted', async () => {
-//       const wrapper = mount(Ged)
-//       const treeview = await dynamicUntilFoundComponent(
-//         wrapper,
-//         Treeview
-//       )
-
-//       const folder = {
-//         id: 1,
-//         children: [
-//           {
-//             id: 2,
-//             children: [{} as Folder],
-//             name: 'TheFolder',
-//             parent: { id: 1 },
-//             permissions: [],
-//             properties: {} as FolderProperties,
-//             serviceId: 'some-service'
-//           } as Folder
-//         ],
-//         name: 'A',
-//         parent: { id: 0 },
-//         permissions: [],
-//         properties: {} as FolderProperties,
-//         serviceId: 'some-service'
-//       } as Folder
-
-//       await treeview.vm.$emit(
-//         'selected-folder-change',
-//         folder
-//       )
-
-//       await wrapper.vm.$nextTick()
-//     })
-//   })
-// })
