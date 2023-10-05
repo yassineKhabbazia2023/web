@@ -143,7 +143,8 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       }
     })
 
-    router.push({ name: 'home' })
+    // temporarily redirect to /entities
+    router.push('/entities')
   } catch (error: any) {
     const hasEmailOrPasswordInvalid = error.response?.data?.anomaly?.errorCode === '403042'
     if (hasEmailOrPasswordInvalid) {
