@@ -26,7 +26,8 @@ export const useInitAuth = () => {
           isCollab
         }
       })
-      router.push('/')
+      // temporarily redirect to /entities
+      router.push({ name: 'entities' })
     }
   }
   return { initAuth }
