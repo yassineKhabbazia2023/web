@@ -27,7 +27,7 @@ export const useInitAuth = () => {
         }
       })
       // temporarily redirect to /entities
-      router.push('/entities')
+      router.push({ name: 'entities' })
     }
   }
   return { initAuth }
