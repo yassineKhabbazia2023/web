@@ -232,14 +232,15 @@ $footer-margin: 24px;
     phoneNumber: '09 73 73 3000'
     emailLabel: ' — email : '
     SAVEmail: "relation-client{'@'}kpmg.fr"
-    copyright: "© KPMG ESC & GS"
+    copyright: "© 2023 KPMG S.A"
     copyrightContent: >-
-      © 2023 KPMG ESC & GS, a simplified private practice company and chartered accountancy 
-      firm registered with the Order of Chartered Accountants, French member of the global KPMG 
-      organization made up of independent firms affiliated with KPMG International Limited, 
-      a company incorporated under English law (“private company limited by guarantee”). 
-      All rights reserved. The KPMG name and logo are trademarks used under license by 
-      independent member firms of the global KPMG organization.
+      © 2023 KPMG S.A., public accounting and auditing company, 
+      French member of the global KPMG organization made up of independent firms 
+      affiliated with KPMG International Limited, a company incorporated under English
+      law (“private company limited by guarantee”). All rights reserved. 
+      The KPMG name and logo are trademarks used under license by independent member firms of 
+      the global KPMG organization. To learn more about the structure of 
+      the KPMG global organization, visit https://kpmg.com/governance.
     close: 'Close'
   fr-FR:
     legalNotice: 'Mentions légales'
@@ -249,13 +250,14 @@ $footer-margin: 24px;
     phoneNumber: '09 73 73 3000'
     emailLabel: ' — email : '
     SAVEmail: "relation-client{'@'}kpmg.fr"
-    copyright: "© KPMG ESC & GS"
+    copyright: "© 2023 KPMG S.A"
     copyrightContent: >-
-       © 2023 KPMG ESC & GS, société d’exercice libéral par actions simplifiée et société
-       d’expertise comptable inscrite au tableau de l’Ordre des experts-comptables, membre 
-       français de l’organisation mondiale KPMG constituée de cabinets indépendants affiliés 
-       à KPMG International Limited, une société de droit anglais (« private company limited 
-       by guarantee »). Tous droits réservés. Le nom et le logo KPMG sont des marques utilisées 
-       sous licence par les cabinets indépendants membres de l’organisation mondiale KPMG.
+      © 2023 KPMG S.A., société anonyme d'expertise comptable et de commissariat aux comptes, 
+      membre français de l’organisation mondiale KPMG constituée de cabinets indépendants 
+      affiliés à KPMG International Limited, une société de droit anglais (« private company 
+      limited by guarantee »). Tous droits réservés. Le nom et le logo KPMG sont des 
+      marques utilisées sous licence par les cabinets indépendants membres de l’organisation 
+      mondiale KPMG. Pour en savoir plus sur la structure de l’organisation mondiale KPMG, 
+      rendez-vous sur la page https://kpmg.com/governance (en anglais).
     close: 'Fermer'
 </i18n>
