@@ -41,6 +41,14 @@ export default ({ mode }) =>
           },
           { disableInServe: mode === 'test' }
         ),
+        {
+          resolveId(id) {
+            if (id === 'env-vars') return id
+          },
+          load(id) {
+            if (id === 'env-vars') return ''
+          }
+        },
         cssInjectedByJsPlugin()
       ],
       resolve: {

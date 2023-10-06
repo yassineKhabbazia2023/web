@@ -1,8 +1,14 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { describe, expect, it, vi } from 'vitest'
+import {
+  describe,
+  expect,
+  it,
+  vi,
+  beforeEach
+} from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import { VueWrapper, mount } from '@vue/test-utils'
+import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { commonPinia as pinia } from '@kpmg/common'
 import App from './App.vue'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
@@ -56,6 +62,10 @@ const router = createRouter({
   routes
 })
 
+vi.mock('env-vars', () => ({
+  VITE_IDLE_DURATION: 5
+}))
+
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -67,7 +77,10 @@ vi.mock('@kpmg/common', () => ({
           color: 'orange'
         }
       }
-    })
+    }),
+    actions: {
+      logout: () => vi.fn()
+    }
   }),
   commonPinia: () => createPinia()
 }))
@@ -102,12 +115,26 @@ const createWrapper = () => mount(App, {
 })
 
 describe('app', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
   setActivePinia(pinia)
+  it('should redirect to login client when user is inactive for 5 seconds', async () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+    const spyPush = vi.spyOn(wrapper.vm.router, 'push')
+    await waitForAsyncImports(30)
+    vi.advanceTimersByTime(120000) // 2 minutes
+    expect(spyPush).toHaveBeenCalledTimes(0)
+    vi.advanceTimersByTime(180000) // 3 minutes
+    await flushPromises()
+    expect(spyPush).toHaveBeenCalledTimes(1)
+    expect(spyPush).toHaveBeenCalledWith({ name: 'login' })
+  })
+
   it('load the right page with the right layout according to the route', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-
+    await waitForAsyncImports(30)
     router.push({ name: 'home' })
-    await waitForAsyncImports(100)
     await waitForAsyncImports(100)
     const getHomePageTitle = () => wrapper.find('p')
     const elHeader = wrapper.find('.el-header')
@@ -121,7 +148,6 @@ describe('app', () => {
     expect(bottomMenu.exists()).toBeTruthy()
 
     router.push({ name: 'login' })
-    await waitForAsyncImports(100)
     await waitForAsyncImports(100)
     expect(getPageTitle().text()).toBe(LOGIN_PAGE_TITLE)
   })
