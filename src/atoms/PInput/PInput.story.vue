@@ -56,6 +56,20 @@
         <HstText v-model="SearchInputData.placeholder" title="placeholder" />
       </template>
     </Variant>
+    <Variant title="Search small">
+      <PInput
+        v-model="SearchInputData.inputValue"
+        :type="SearchInputData.type"
+        :placeholder="SearchInputData.placeholder"
+        :prefixIcon="SearchInputData.prefixIcon"
+        :clearable="SearchInputData.clearable"
+        size="small"
+      >
+      </PInput>
+      <template #controls>
+        <HstText v-model="SearchInputData.placeholder" title="placeholder" />
+      </template>
+    </Variant>
   </Story>
 </template>
 

@@ -10,7 +10,11 @@ $input: (
 $input-padding-horizontal: (
   'large': 16px,
   'default': 14px,
-  'small': 8px,
+  'small': 9px,
+);
+
+$input-font-size: (
+  'small': 14px,
 );
 
 div.el-textarea {
