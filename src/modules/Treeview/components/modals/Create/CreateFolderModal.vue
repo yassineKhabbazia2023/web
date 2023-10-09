@@ -2,6 +2,7 @@
   <div class="create-folder__modal">
     <SingleInputModal
       v-model:isDialogVisible="isDialogVisible"
+      v-model:defaultInputContentValue="inputContent"
       :modalTitle="modalTitle"
       :inputLabel="inputLabel"
       :inputPlaceHolder="inputPlaceHolder"
@@ -15,7 +16,6 @@
       @on-cancel-action-click="handleCancelActionClick"
       @on-close-modal="handleCloseModal"
       @on-confirm-action-click="handleConfirmActionClick"
-      @input-content-changed="handleInputContentChnge"
     />
   </div>
 </template>
@@ -84,10 +84,6 @@ const handleConfirmActionClick = () => {
 const handleCancelActionClick = () => {
   folderNameExists.value = false
   emit('on-cancel-create-folder')
-}
-
-const handleInputContentChnge = (newValue: string) => {
-  inputContent.value = newValue
 }
 
 // Modal validations

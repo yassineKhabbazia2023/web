@@ -44,24 +44,7 @@ const emit = defineEmits([
   'update:inputContentDefault'
 ])
 
-const localInputContent = ref('')
-const inputContent = computed({
-  get() {
-    if (localInputContent.value !== '') {
-      return localInputContent.value
-    } else {
-      return props.inputContentDefault
-
-    }
-  },
-  set(value) {
-    localInputContent.value = value
-    const toSend = props.inputContentDefault !== localInputContent.value
-      ? localInputContent.value
-      : value
-    emit('update:inputContentDefault', toSend)
-  }
-})
+const inputContent = ref('')
 
 const isDialogRenameVisible = computed({
   get() {
@@ -130,6 +113,11 @@ const showErrorMsg = computed(
 // eslint-disable-next-line vitest/require-hook
 watch(inputContent, () => {
   folderNameExists.value = false
+})
+
+// eslint-disable-next-line vitest/require-hook
+watch(isDialogRenameVisible, () => {
+  inputContent.value = props.inputContentDefault
 })
 
 </script>

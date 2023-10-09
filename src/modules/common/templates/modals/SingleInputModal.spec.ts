@@ -123,19 +123,7 @@ describe('singleInputModal', () => {
 
       expect(wrapper.emitted('on-cancel-action-click')).toHaveLength(1)
     })
-    it('should emit input-content-changed on input content change', async () => {
-      const updatedProps: SingleInputModalProps = {
-        ...defaultProps,
-        isDialogVisible: true,
-        isValidInput: true
-      }
 
-      const wrapper = createWrapper(updatedProps)
-      const componentInstance = wrapper.vm
-      componentInstance.inputContent = 'test'
-      await wrapper.vm.$nextTick()
-      expect(wrapper.emitted('input-content-changed')).toHaveLength(1)
-    })
     it('should emit on-close-modal when click on close dilaog button', async () => {
       const updatedProps: SingleInputModalProps = {
         ...defaultProps,

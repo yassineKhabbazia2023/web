@@ -295,14 +295,6 @@ describe('interactions', () => {
 
     expect(wrapper.emitted('on-close-rename-folder')).toBeTruthy()
   })
-  it('should emit update:inputContentDefault when inputContent has changed', async () => {
-    const wrapper = createWrapper()
-
-    wrapper.vm.inputContent = 'hello 2'
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.emitted('update:inputContentDefault')).toBeTruthy()
-  })
 
   it('should emit update:isRenameFolderModalVisible when isDialogRenameVisible has changed',
     async () => {

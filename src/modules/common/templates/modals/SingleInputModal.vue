@@ -50,7 +50,7 @@ size="small"
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import { type SingleInputModalProps } from '@/modules/common/templates/modals/SingleInputModalTypes'
 
 import { PIXCircle, PDialog, PButton, PInput, PIcon } from '@kpmg/styleguide'
@@ -60,7 +60,6 @@ const maxInputLength = 256
 const emit = defineEmits([
   'on-close-modal',
   'on-confirm-action-click',
-  'input-content-changed',
   'on-cancel-action-click',
   'update:isDialogVisible',
   'update:defaultInputContentValue'
@@ -69,23 +68,12 @@ const emit = defineEmits([
 const props = withDefaults(defineProps<SingleInputModalProps>(), {
   isDialogVisible: false
 })
-const localInputContent = ref('')
 const inputContent = computed({
   get() {
-    if (localInputContent.value !== '') {
-      return localInputContent.value
-    } else {
-      return props.defaultInputContentValue
-
-    }
+    return props.defaultInputContentValue
   },
   set(value) {
-
-    localInputContent.value = value ?? ''
-    const toSend = props.defaultInputContentValue !== localInputContent.value
-      ? localInputContent.value
-      : value
-    emit('update:defaultInputContentValue', toSend)
+    emit('update:defaultInputContentValue', value)
   }
 })
 
@@ -114,11 +102,6 @@ const handleCancelClick = () => {
 const clearModalInputValue = () => {
   inputContent.value = ''
 }
-
-// eslint-disable-next-line vitest/require-hook
-watch(inputContent, (newVal: string | undefined) => {
-  emit('input-content-changed', newVal)
-})
 </script>
 
 <style lang="scss">
