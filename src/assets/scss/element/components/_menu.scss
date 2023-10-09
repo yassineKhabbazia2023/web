@@ -269,6 +269,8 @@ $menu: (
     background-color: getCssVar('fill-color', 'blank');
     
     &__link {
+      flex-grow: 0;
+      flex-shrink: 0;
       display: flex;
     }
 
@@ -302,7 +304,7 @@ $menu: (
     }
 
     &__logo {
-      height: 24px;
+      height: 18px;
     }
 
     .p-header-tabs {

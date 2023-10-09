@@ -14,7 +14,7 @@
           <PImage
             class="el-menu--header__logo"
             type="logos"
-            name="iconpulse-color"
+            name="pulse-color"
             fit="fill"
           />
         </router-link>
