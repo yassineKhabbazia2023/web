@@ -119,6 +119,7 @@ defineAsyncComponent(
 )
 
 export const PActionBar = defineAsyncComponent(() => import('@/molecules/PActionBar'))
+export const PActivityCard = defineAsyncComponent(() => import('@/atoms/PActivityCard'))
 export const PAlert = defineAsyncComponent(() => import('@/atoms/PAlert'))
 export const PAvatar = defineAsyncComponent(() => import('@/atoms/PAvatar'))
 export const PBankCard = defineAsyncComponent(() => import('@/atoms/PBankCard'))

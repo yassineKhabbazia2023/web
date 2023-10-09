@@ -21,6 +21,7 @@ $avatar-size: (
   $self: &;
 
   font-weight: 600;
+  text-transform: uppercase;
   
   .el-icon svg,
   .el-icon {
@@ -92,5 +93,10 @@ $avatar-size: (
   &[color="gray"] {
     background: var(--el-color-neutral-gray-50);
     color: var(--el-color-neutral-gray-500);
+  }
+
+  &[color="white"] {
+    background: var(--el-color-white);
+    color: var(--el-color-persian-500);
   }
 }

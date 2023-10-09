@@ -72,6 +72,12 @@
             <PITruck />
           </PIcon>
         </PAvatar>
+        <PAvatar
+          :shape="currentShape"
+          :size="currentSize"
+          color="white">
+          AB
+        </PAvatar>
       </div>
       <template #controls>
         <HstRadio
@@ -192,6 +198,10 @@ const avatarColorList: { label: string; value: PAvatarProps['color'] }[] = [
   {
     label: 'gray',
     value: 'gray'
+  },
+  {
+    label: 'white',
+    value: 'white'
   }
 ]
 const currentShape = ref<PAvatarProps['shape']>('circle')
