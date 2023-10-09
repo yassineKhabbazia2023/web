@@ -6,7 +6,7 @@ $table: (
   'text-color': getCssVar('fill-color', 'darker'),
   'header-text-color': getCssVar('fill-color', ''),
   'row-hover-bg-color': getCssVar('color', 'persian-100'),
-  'current-row-bg-color': getCssVar('color-primary-light-9'),
+  'current-row-bg-color': getCssVar('color', 'persian-200'),
   'header-bg-color': getCssVar('bg-color'),
   'fixed-box-shadow': getCssVar('box-shadow', 'light'),
   'bg-color': getCssVar('fill-color', 'blank'),
