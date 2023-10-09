@@ -2,19 +2,16 @@
   <div>
     <PForm
       ref="createMandateFormRef"
-      :rules="rules"
       :model="createMandateForm"
       requireAsteriskPosition="right"
       labelPosition="top"
+      :rules="rules"
       class="create-mandate-form"
     >
       <div v-if="step === 1">
-        <PFormItem
-          prop="ibs"
-          :label="t('ibs-number')"
-          required>
+        <PFormItem prop="erpId" :label="t('ibs-number')">
           <PInput
-            v-model="createMandateForm.ibs"
+            v-model="createMandateForm.erpId"
             data-testid="ibs-number-test"
           >
             <template #suffix>
@@ -28,31 +25,32 @@
             </template>
           </PInput>
         </PFormItem>
-          <PRow :gutter="16">
-            <PCol :span="12">
-              <PFormItem inline :label="t('company-name')">
-                <PInput
-                  data-testid="name-input-test"
-                  v-model="createMandateForm.name"
-                  disabled>
-                </PInput>
-              </PFormItem>
-            </PCol>
-            <PCol :span="12">
-              <PFormItem
-                inline
-                :label="t('siret-number')"
-                disabled>
-                <PInput
-                  data-testid="siretNumber-input-test"
-                  v-model="createMandateForm.siretNumber"
-                  state="default"
-                  disabled
-                >
-                </PInput>
-              </PFormItem>
-            </PCol>
-          </PRow>
+        <PRow :gutter="16">
+          <PCol :span="12">
+            <PFormItem inline :label="t('company-name')">
+              <PInput
+                data-testid="name-input-test"
+                v-model="createMandateForm.name"
+                disabled
+              >
+              </PInput>
+            </PFormItem>
+          </PCol>
+          <PCol :span="12">
+            <PFormItem
+inline
+:label="t('siret-number')"
+disabled>
+              <PInput
+                data-testid="siretNumber-input-test"
+                v-model="createMandateForm.siretNumber"
+                state="default"
+                disabled
+              >
+              </PInput>
+            </PFormItem>
+          </PCol>
+        </PRow>
       </div>
       <div v-if="step === 2">
         <PFormItem prop="title">
@@ -64,107 +62,125 @@
           <PRadio v-model="createMandateForm.title" label="M">
             {{ t('mister') }}
           </PRadio>
-          <PRadio v-model="createMandateForm.title" label="Mme">
+          <PRadio
+            v-model="createMandateForm.title"
+            label="Mme"
+          >
             {{ t('madam') }}
           </PRadio>
         </PFormItem>
-          <PRow :gutter="8">
-            <PCol :span="12">
-              <PFormItem
-                prop="lastName"
-                inline
-                :label="t('lastName')"
-                disabled>
-                <PInput
-                  v-model="createMandateForm.lastName"
-                  state="default">
-                </PInput>
-              </PFormItem>
-            </PCol>
-            <PCol :span="12">
-              <PFormItem
-                prop="firstName"
-                inline
-                :label="t('firstName')">
-                <PInput
-                  v-model="createMandateForm.firstName"
-                  data-testid="firstName-test">
-                </PInput>
-              </PFormItem>
-            </PCol>
-          </PRow>
+        <PRow :gutter="8">
+          <PCol :span="12">
+            <PFormItem
+prop="lastName"
+inline
+:label="t('lastName')"
+disabled>
+              <PInput
+                v-model="createMandateForm.lastName"
+                state="default"
+              >
+              </PInput>
+            </PFormItem>
+          </PCol>
+          <PCol :span="12">
+            <PFormItem
+prop="firstName"
+inline
+:label="t('firstName')">
+              <PInput
+                v-model="createMandateForm.firstName"
+                data-testid="firstName-test"
+              >
+              </PInput>
+            </PFormItem>
+          </PCol>
+        </PRow>
         <PFormItem
-          prop="email"
-          inline
-          disabled>
+prop="email"
+inline
+disabled>
           <template #label>
-            <span class="create-mandate-form_optional-title">{{t('email')}} </span>
-            <span class="create-mandate-form_optional">{{t('optional')}}</span>
+            <span class="create-mandate-form_optional-title"
+              >{{ t('email') }}
+            </span>
+            <span class="create-mandate-form_optional">{{
+              t('optional')
+            }}</span>
           </template>
           <PInput
             v-model="createMandateForm.email"
             data-testid="email-test"
-            state="default">
+            state="default"
+          >
           </PInput>
         </PFormItem>
         <h5 class="create-mandate-form__section-title">
-          {{t('headquarters')}}
+          {{ t('headquarters') }}
         </h5>
         <PFormItem
-          prop="address"
-          inline
-          :label="`${t('address')}`"
-          disabled>
+prop="address"
+inline
+:label="`${t('address')}`"
+disabled>
           <PInput
-            v-model="createMandateForm.address"
-            state="default">
+            v-model="createMandateForm.street"
+            state="default"
+          >
           </PInput>
         </PFormItem>
         <PFormItem
-          prop="addressComplement"
-          inline
-          disabled>
+prop="addressComplement"
+inline
+disabled>
           <template #label>
-            <span class="create-mandate-form_optional-title">{{t('complement')}} </span>
-            <span class="create-mandate-form_optional">{{t('optional')}}</span>
+            <span class="create-mandate-form_optional-title"
+              >{{ t('complement') }}
+            </span>
+            <span class="create-mandate-form_optional">{{
+              t('optional')
+            }}</span>
           </template>
           <PInput
             v-model="createMandateForm.addressComplement"
-            state="default">
+            state="default"
+          >
           </PInput>
         </PFormItem>
-          <PRow :gutter="8">
-            <PCol :span="8">
-              <PFormItem
-                prop="zipCode"
-                inline
-                :label="t('zipCode')"
-                disabled>
-                <PInput
-                  v-model="createMandateForm.zipCode"
-                  data-testid="zipCode-test"
-                  state="default">
-                </PInput>
-              </PFormItem>
-            </PCol>
-            <PCol :span="16">
-              <PFormItem
-                prop="city"
-                inline
-                :label="t('city')">
-                <PInput v-model="createMandateForm.city">
-                </PInput>
-              </PFormItem>
-            </PCol>
-          </PRow>
+        <PRow :gutter="8">
+          <PCol :span="8">
+            <PFormItem
+prop="zipCode"
+inline
+:label="t('zipCode')"
+disabled>
+              <PInput
+                v-model="createMandateForm.zipCode"
+                data-testid="zipCode-test"
+                state="default"
+              >
+              </PInput>
+            </PFormItem>
+          </PCol>
+          <PCol :span="16">
+            <PFormItem
+prop="city"
+inline
+:label="t('city')">
+              <PInput v-model="createMandateForm.city">
+              </PInput>
+            </PFormItem>
+          </PCol>
+        </PRow>
         <PFormItem
-          prop="country"
-          inline
-          :label="`${t('country')}`"
-          disabled>
+prop="country"
+inline
+:label="`${t('country')}`"
+disabled>
           <PInput
             v-model="createMandateForm.country"
-            state="default">
+            state="default"
+          >
           </PInput>
         </PFormItem>
       </div>
@@ -177,12 +193,14 @@
               :label="`${t('institutionCode')}`"
               :showMessage="validationError ? false : true"
               :validateStatus="validationError ? 'error' : ''"
-              disabled>
+              disabled
+            >
               <PInput
                 data-testid="institutionCode-input-test"
                 v-model="createMandateForm.institutionCode"
                 @blur="checkFields"
-                state="default">
+                state="default"
+              >
               </PInput>
             </PFormItem>
           </PCol>
@@ -193,12 +211,14 @@
               :label="`${t('branchCode')}`"
               :showMessage="validationError ? false : true"
               :validateStatus="validationError ? 'error' : ''"
-              disabled>
+              disabled
+            >
               <PInput
                 data-testid="branchCode-input-test"
                 v-model="createMandateForm.branchCode"
                 @blur="checkFields"
-                state="default">
+                state="default"
+              >
               </PInput>
             </PFormItem>
           </PCol>
@@ -211,12 +231,14 @@
               :label="`${t('accountNumber')}`"
               :error="customErrorMessage"
               :validateStatus="validationError ? 'error' : ''"
-              disabled>
+              disabled
+            >
               <PInput
                 data-testid="accountNumber-input-test"
                 v-model="createMandateForm.accountNumber"
                 @blur="checkFields"
-                state="default">
+                state="default"
+              >
               </PInput>
             </PFormItem>
           </PCol>
@@ -227,12 +249,14 @@
               :label="`${t('key')}`"
               :showMessage="validationError ? false : true"
               :validateStatus="validationError ? 'error' : ''"
-              disabled>
+              disabled
+            >
               <PInput
                 data-testid="key-input-test"
                 v-model="createMandateForm.key"
                 @blur="checkFields"
-                state="default">
+                state="default"
+              >
               </PInput>
             </PFormItem>
           </PCol>
@@ -241,12 +265,14 @@
           prop="bank"
           inline
           :label="`${t('bank')}`"
-          disabled>
+          disabled
+        >
           <PInput
             data-testid="bank-input-test"
             v-model="createMandateForm.bank"
             state="default"
-            disabled>
+            disabled
+          >
           </PInput>
         </PFormItem>
         <PAlert type="danger" v-if="isScrapable">
@@ -345,7 +371,7 @@
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed, nextTick } from 'vue'
 import { createMandate, validateIban, getBankDetail } from '@/services/mandate'
-import { FormModel, Rule } from './FormModels'
+import { Rule } from './FormModels'
 import {
   PICheck,
   PForm,
@@ -372,15 +398,43 @@ const { t } = useI18n({
 
 // Reactive state
 const createMandateFormRef = ref<any>()
-const createMandateForm = reactive<FormModel>({
-  ibs: '',
+/* const MandateForm = reactive<CreateMandateFormModel>({
+  company: {
+    id: '',
+    name: '',
+    siretNumber: '',
+    erpId: '',
+    signatory: {
+      title: '',
+      firstName: '',
+      lastName: '',
+      email: ''
+    },
+    address: {
+      street: '',
+      addressComplement: '',
+      zipCode: '',
+      city: '',
+      country: ''
+    }
+  },
+  bban: {
+    institutionCode: '',
+    branchCode: '',
+    accountNumber: '',
+    key: '',
+    bank: ''
+  }
+}) */
+const createMandateForm = reactive<any>({
+  erpId: '',
   siretNumber: '',
   name: '',
   title: '',
   firstName: '',
   lastName: '',
   email: '',
-  address: '',
+  street: '',
   addressComplement: '',
   zipCode: '',
   city: '',
@@ -402,21 +456,22 @@ const areFieldsFilled = computed(() => {
     'title',
     'firstName',
     'lastName',
-    'address',
+    'street',
     'zipCode',
     'city',
     'country'
   ]
 
-  return fieldsToCheck.every(field => createMandateForm[field].trim() !== '')
+  return fieldsToCheck.every((field) => createMandateForm[field].trim() !== ''
+  )
 })
 
 // Methods
 const validateIBS = async (_: Rule, value: string, callback: any) => {
   emit('enable-disable-next', false)
   isIBSValid.value = false
-  createMandateForm.siret = ''
-  createMandateForm.companyName = ''
+  createMandateForm.siretNumber = ''
+  createMandateForm.name = ''
   if (value.toString().length === 10) {
     await getDataByIbsNumber(value)
   } else {
@@ -428,33 +483,26 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
   try {
     const {
       data: {
+        id,
         name,
+        erpId,
         siretNumber,
-        signatory: {
-          title,
-          firstName,
-          lastName,
-          email,
-          address: {
-            street: address,
-            complements: addressComplement,
-            zipCode,
-            city,
-            country
-          }
-        }
+        signatory: { title, firstName, lastName, email },
+        address: { street, addressComplement, zipCode, city, country }
       }
     } = await createMandate({ ibsNumber })
     isIBSValid.value = false
-    if (createMandateForm.ibs.toString().length === 10) {
+    if (createMandateForm.erpId.toString().length === 10) {
       Object.assign(createMandateForm, {
+        id,
+        erpId,
         siretNumber,
         name,
         title,
         firstName,
         lastName,
         email,
-        address,
+        street,
         addressComplement,
         zipCode,
         city,
@@ -463,8 +511,7 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
       isIBSValid.value = true
       emit('enable-disable-next', true)
     }
-  } catch (_) {
-  }
+  } catch (_) {}
 }
 
 const checkAndEmitEvents = () => {
@@ -511,8 +558,15 @@ const resetValidation = () => {
 }
 
 const checkFields = async () => {
-  const fieldsToValidate = ['institutionCode', 'branchCode', 'accountNumber', 'key']
-  const allFieldsFilled = fieldsToValidate.every(field => createMandateForm[field] !== '')
+  const fieldsToValidate = [
+    'institutionCode',
+    'branchCode',
+    'accountNumber',
+    'key'
+  ]
+  const allFieldsFilled = fieldsToValidate.every(
+    (field) => createMandateForm[field] !== ''
+  )
 
   if (!allFieldsFilled) {
     resetValidation()
@@ -520,23 +574,26 @@ const checkFields = async () => {
   }
 
   await nextTick()
-  createMandateFormRef?.value?.validateField(fieldsToValidate, async (_: any) => {
-    resetValidation()
-    const rib = [
-      createMandateForm.institutionCode,
-      createMandateForm.branchCode,
-      createMandateForm.accountNumber,
-      createMandateForm.key
-    ].join('')
-    if (rib.length !== 23) {
-      return
+  createMandateFormRef?.value?.validateField(
+    fieldsToValidate,
+    async (_: any) => {
+      resetValidation()
+      const rib = [
+        createMandateForm.institutionCode,
+        createMandateForm.branchCode,
+        createMandateForm.accountNumber,
+        createMandateForm.key
+      ].join('')
+      if (rib.length !== 23) {
+        return
+      }
+      const validity = await checkRibValidity(rib)
+      if (!validity) {
+        return
+      }
+      await getBankInformation(rib)
     }
-    const validity = await checkRibValidity(rib)
-    if (!validity) {
-      return
-    }
-    await getBankInformation(rib)
-  })
+  )
 }
 
 // Utility functions
@@ -551,7 +608,8 @@ const createValidator = (
   regex: any,
   errorMsg: string,
   customError: any,
-  regexErrorMsg?: string) => ({
+  regexErrorMsg?: string
+) => ({
   required: true,
   validator: (_: any, value: string, callback: any) => {
     if (value.length !== length) {
@@ -580,17 +638,15 @@ const validateEmail = (_: any, value: string, callback: any) => {
 
 // Validation rules
 const rules = reactive<any>({
-  ibs: [
+  erpId: [
     createRule(t('form.error.requiredField'), 'change'),
     { validator: validateIBS, trigger: 'change' }
   ],
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
   firstName: [createRule(t('form.error.requiredField'))],
   lastName: [createRule(t('form.error.requiredField'))],
-  address: [createRule(t('form.error.requiredField'))],
-  email: [
-    { validator: validateEmail, trigger: 'blur' }
-  ],
+  email: [{ validator: validateEmail, trigger: 'blur' }],
+  street: [createRule(t('form.error.requiredField'))],
   zipCode: [
     createRule(t('form.error.requiredField')),
     {
@@ -611,7 +667,8 @@ const rules = reactive<any>({
   institutionCode: [
     createValidator(
       5,
-      /^\d+$/, t('form.error.input_5_chars'),
+      /^\d+$/,
+      t('form.error.input_5_chars'),
       validationError,
       t('form.error.only_numbers')
     )
@@ -648,9 +705,12 @@ const rules = reactive<any>({
 // Watchers
 watch(() => props.step, checkAndEmitEvents)
 watch(areFieldsFilled, checkAndEmitEvents)
-watch(() => createMandateForm.ibs, (value) => {
-  createMandateForm.ibs = value.replace(/[^0-9]/i, '')
-})
+watch(
+  () => createMandateForm.erpId,
+  (value) => {
+    createMandateForm.erpId = value.replace(/[^0-9]/i, '')
+  }
+)
 
 // Emits
 const emit = defineEmits(['enable-disable-next', 'enable-disable-validate'])

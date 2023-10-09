@@ -5,10 +5,7 @@ import { routes } from '@kpmg/common'
 routes.value.push({
   path: '/mandats',
   name: 'mandats',
-  component: () => import('@/pages/home'),
-  meta: {
-    layout: 'Home'
-  }
+  component: () => import('@/pages/home')
 } as RouteRecordRaw)
 
 export default routes
