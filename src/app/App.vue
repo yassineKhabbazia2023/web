@@ -8,10 +8,15 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, ref, markRaw, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { Idle } from 'idlejs'
+import { VITE_IDLE_DURATION } from 'env-vars'
+import { useRoute, useRouter } from 'vue-router'
+import { commonStore as useStore } from '@kpmg/common'
 import { PConfigProvider } from '@kpmg/styleguide'
 
 const route = useRoute()
+const router = useRouter()
+const store = useStore()
 const getLayout = ref()
 let previousLayout: string = ''
 watch(
@@ -28,4 +33,15 @@ watch(
     }
   }
 )
+
+const handlerIdle = async () => {
+  await store.logout(store.$state)
+  router.push({ name: 'login' })
+}
+
+const idle = new Idle()
+  .whenNotInteractive()
+  .within(VITE_IDLE_DURATION)
+  .do(async () => await handlerIdle())
+idle.start()
 </script>

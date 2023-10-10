@@ -7,6 +7,10 @@ import router from '../plugins/router'
 import { ROUTES, PAGES_TITLE } from './mock'
 import App from './'
 
+vi.mock('env-vars', () => ({
+  VITE_IDLE_DURATION: 5
+}))
+
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
@@ -44,6 +48,7 @@ const createWrapper = (userStore = {}) => mount(App, {
 
 describe('app with navigation guard', () => {
   beforeEach(() => {
+    vi.useFakeTimers()
     ROUTES.map((route) => router.addRoute(route))
   })
 

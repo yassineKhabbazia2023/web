@@ -1,18 +1,31 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia } from 'pinia'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import {
+  describe,
+  expect,
+  it,
+  vi,
+  beforeEach
+} from 'vitest'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 import router from '../plugins/router'
 import { ROUTES, PAGES_TITLE } from './mock'
 import App from './'
+
+vi.mock('env-vars', () => ({
+  VITE_IDLE_DURATION: 5
+}))
 
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({
       user: null
-    })
+    }),
+    actions: {
+      logout: () => vi.fn()
+    }
   }),
   commonPinia: () => createPinia(),
   commonApi: () => ({
@@ -45,6 +58,7 @@ const createWrapper = (userStore = {}) => mount(App, {
 
 describe('app with navigation guard', () => {
   beforeEach(() => {
+    vi.useFakeTimers()
     ROUTES.map((route) => router.addRoute(route))
   })
 
@@ -62,5 +76,16 @@ describe('app with navigation guard', () => {
     expect(wrapper.find('.aside-main-container').exists()).toBeTruthy()
     expect(wrapper.find('.main-container').exists()).toBeTruthy()
     expect(wrapper.find('.home-bottom-menu').exists()).toBeTruthy()
+  })
+
+  it('should redirect to login client when user is inactive for 5 seconds', async () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+    const spyPush = vi.spyOn(wrapper.vm.router, 'push')
+    await waitForAsyncImports(30)
+    vi.advanceTimersByTime(120000) // 2 minutes
+    expect(spyPush).toHaveBeenCalledTimes(0)
+    vi.advanceTimersByTime(180000) // 3 minutes
+    await flushPromises()
+    expect(spyPush).toHaveBeenCalledWith({ name: 'login' })
   })
 })
