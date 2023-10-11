@@ -25,7 +25,7 @@
       requireAsteriskPosition="right"
       labelPosition="top"
       @submit.prevent="handleSubmit"
-      @validate="validateHandler"
+      class="el-login-form"
     >
       <PFormItem
         :label="t('email')"
@@ -76,7 +76,7 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref, toRaw } from 'vue'
-import type { FormInstance, FormRules, FormItemProp } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { commonApi, commonStore as store } from '@kpmg/common'
 import { useRouter } from 'vue-router'
@@ -106,15 +106,36 @@ const isFormValid = computed(() =>
 
 const hasCustomError = ref(false)
 
-const validateHandler = (propName: FormItemProp, isValid: boolean) => {
-  if (typeof propName === 'string') {
-    formValidity[propName] = isValid
+const validatePassword = (_rule: any, value: any, callback: any) => {
+  if (!value) {
+    formValidity.password = false
+    callback(new Error(t('alertPasswordRequired')))
+  } else {
+    formValidity.password = true
+    callback()
+  }
+}
+
+const validateEmail = (_rule: any, value: any, callback: any) => {
+  if (!value) {
+    formValidity.email = false
+    callback(new Error(t('alertMailRequired')))
+  } else {
+    // eslint-disable-next-line
+    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+    if (emailValidator.test(value)) {
+      formValidity.email = true
+      callback()
+    } else {
+      formValidity.email = false
+      callback(new Error(t('alertMailInvalid')))
+    }
   }
 }
 
 const rules = reactive<FormRules<typeof formValues>>({
-  email: [{ trigger: 'blur', type: 'email' }],
-  password: [{ trigger: 'blur' }]
+  email: [{ trigger: 'blur', validator: validateEmail }],
+  password: [{ trigger: 'blur', validator: validatePassword }]
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
@@ -198,6 +219,10 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     color: var(--el-color-primary-dark-2);
   }
 }
+
+.el-login-form {
+  margin-bottom: 30px;
+}
 </style>
 
 <i18n lang="yaml">
@@ -212,6 +237,9 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     login: 'Log in'
     error: 'The email and password combination is incorrect.'
     forgotPassword: 'Forgot your password?'
+    alertPasswordRequired: 'Please enter your password'
+    alertMailRequired: 'Please enter your mail'
+    alertMailInvalid: 'Please enter a valid mail'
   fr-FR:
     welcomeTo: 'Bienvenue sur'
     yourPulseSpace: 'votre Espace Pulse !'
@@ -223,4 +251,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     login: 'Me connecter'
     error: 'La combinaison email et mot de passe est incorrecte.'
     forgotPassword: 'Mot de passe oublié ?'
+    alertPasswordRequired: 'Veuillez saisir votre mot de passe'
+    alertMailRequired: 'Veuillez saisir votre email'
+    alertMailInvalid: 'Veuillez saisir un email valide'
 </i18n>

@@ -18,7 +18,6 @@
       labelPosition="top"
       requireAsteriskPosition="right"
       @submit.prevent="handleSubmit"
-      @validate="validateHandler"
     >
       <PFormItem
         :label="t('email')"
@@ -68,6 +67,8 @@
     resetPasswordMsg: 'We will send you an email to reset it.'
     emailPlaceholder: 'Enter your email'
     backToLogin: 'Back to login'
+    alertMailRequired: 'Please enter your mail'
+    alertMailInvalid: 'Please enter a valid mail'
   fr-FR:
     email: 'Email'
     submitBtn: 'Réinitialiser mon mot de passe'
@@ -75,13 +76,15 @@
     resetPasswordMsg: 'Pas de panique, nous allons vous envoyer un mail pour le réinitialiser.'
     emailPlaceholder: 'Saisir votre email'
     backToLogin: 'Revenir à la connexion'
+    alertMailRequired: 'Veuillez saisir votre email'
+    alertMailInvalid: 'Veuillez saisir un email valide'
 </i18n>
 <!-- eslint-enable max-len -->
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { reactive, computed, ref, toRaw } from 'vue'
-import type { FormInstance, FormRules, FormItemProp } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { commonApi } from '@kpmg/common'
 import { PImage, PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
@@ -104,18 +107,29 @@ const formValidity: any = reactive({
   email: false
 })
 
+const validateEmail = (_rule: any, value: any, callback: any) => {
+  if (!value) {
+    formValidity.email = false
+    callback(new Error(t('alertMailRequired')))
+  } else {
+    // eslint-disable-next-line
+    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+    if (emailValidator.test(value)) {
+      formValidity.email = true
+      callback()
+    } else {
+      formValidity.email = false
+      callback(new Error(t('alertMailInvalid')))
+    }
+  }
+}
+
 const isFormValid = computed(() =>
   formValidity.email
 )
 
-const validateHandler = (propName: FormItemProp, isValid: boolean) => {
-  if (typeof propName === 'string') {
-    formValidity[propName] = isValid
-  }
-}
-
 const rules = reactive<FormRules<typeof formValues>>({
-  email: [{ trigger: 'blur', type: 'email' }]
+  email: [{ trigger: 'blur', validator: validateEmail }]
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
