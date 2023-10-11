@@ -118,7 +118,7 @@ $button-padding-horizontal: (
   &#{$self}--primary.is-plain {
     border-color: var(--el-color-primary);
     color: var(--el-color-primary);
-    background: $color-white;
+    background: transparent;
 
     &:hover {
       background: $color-white;
