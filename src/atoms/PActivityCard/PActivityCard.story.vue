@@ -1,14 +1,12 @@
 <template>
   <Story title="2. Atoms/Activity Card"
     icon="material-symbols:browse-activity-sharp"
-    :layout="{ type: 'grid', width: 400 }"
+    :layout="{ type: 'grid', width: 432 }"
   >
     <Variant title="Activity Card">
       <div class="padding--4">
         <PActivityCard :time="PActivityCardData.time" :initials="PActivityCardData.initials">
-          <template>
-            <span class="font-semibold">Alexandre De Lavandia</span> filed this document in the file <span class="font-semibold">April</span>
-          </template>
+          <span class="font-semibold">Alexandre De Lavandia</span> filed this document in the file <span class="font-semibold">April</span>
         </PActivityCard>
       </div>
     </Variant>
