@@ -3,7 +3,7 @@ import singleSpaVue from 'single-spa-vue'
 import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
 import styleGuide from '@kpmg/styleguide'
 import router from './plugins/router'
-import App from './app'
+import App from './App.vue'
 
 const vueLifecycles = singleSpaVue({
   createApp,

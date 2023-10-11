@@ -10,8 +10,8 @@
 import { defineAsyncComponent, ref, markRaw, watch } from 'vue'
 import { Idle } from 'idlejs'
 import { VITE_IDLE_DURATION } from 'env-vars'
-import { useRoute, useRouter } from 'vue-router'
 import { commonStore as useStore } from '@kpmg/common'
+import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@kpmg/styleguide'
 
 const route = useRoute()
