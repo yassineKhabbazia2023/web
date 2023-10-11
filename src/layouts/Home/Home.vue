@@ -8,7 +8,10 @@
         <PAside class="aside-container">
           <Navbar class="navbar-aside-container" />
         </PAside>
-        <PContainer class="main-container">
+        <PContainer
+          class="main-container"
+          :class="{ 'main-container--no-paddings': !stylesMetaProperties?.hasPaddings === false }"
+        >
           <router-view />
         </PContainer>
         <PContainer class="home-bottom-menu">
@@ -34,12 +37,12 @@
 </i18n>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import Header from './Header'
 import Navbar from './Navbar'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
-import { Component } from 'vue'
+import { Component, computed } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -76,59 +79,70 @@ const menuBottomMenu = menuHeader.map(({ icon, text, path, component }) => {
   }
 })
 
+const router = useRouter()
+const stylesMetaProperties = computed(() => router.currentRoute.value.meta.styles)
 const route = useRoute()
 const routeActive = route.path
 </script>
-<style scoped>
-.aside-main-container {
-  display: flex;
-}
+<style lang="scss" scoped>
 
-.home-bottom-menu {
-  display: none;
-}
+.common-layout {
 
-.aside-container {
-  width: inherit;
-}
-
-.header-container {
-  padding: 0;
-}
-
-.aside-container .navbar-aside-container {
-  height: 100vh;
-}
-
-.navbar-aside-container:not(.el-menu--collapse) {
-  @media only screen and (max-width: 991px)  {
-    width: 100%;
-  }
-}
-
-@media only screen and (max-width: 991px)  {
   .aside-main-container {
-    display: block;
+    display: flex;
   }
 
   .home-bottom-menu {
-    display: block;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: absolute;
+    display: none;
   }
-}
 
-.main-container {
-  display: block;
-  padding: 15px;
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: auto;
+  .aside-container {
+    width: inherit;
+  }
+
+  .header-container {
+    padding: 0;
+  }
+
+  .aside-container .navbar-aside-container {
+    height: 100vh;
+  }
+
+  .navbar-aside-container:not(.el-menu--collapse) {
+    @media only screen and (max-width: 991px)  {
+      width: 100%;
+    }
+  }
+
   @media only screen and (max-width: 991px)  {
-    width: auto;
+    .aside-main-container {
+      display: block;
+    }
+
+    .home-bottom-menu {
+      display: block;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+  }
+
+  .main-container {
+    display: block;
+    padding: 16px;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+
+    @media only screen and (max-width: 991px)  {
+      width: auto;
+    }
+
+    &--no-paddings {
+      padding: 0;
+    }
   }
 }
 </style>
