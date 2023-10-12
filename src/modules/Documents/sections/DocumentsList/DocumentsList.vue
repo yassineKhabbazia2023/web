@@ -3,7 +3,7 @@
   {{ t('ActionsAndFiltersPart') }}
   <PTable
   :data="documentsListWithTableStructure.documentsPage.items"
-style="width: 100%"
+  style="width: 100%"
   @sort-change="handleSortChange"
   >
     <!-- That is the current way of adding paddings without overriding styleguide -->
@@ -14,7 +14,7 @@ style="width: 100%"
       v-for="(column, index) in documentsListWithTableStructure.documentHeaders"
       :key="index"
       :label="column.columnName"
-      :width="columnSizes[column.columnName]"
+      :minWidth="columnSizes[column.columnName]"
       :sortable="sortableColumns.includes(column.columnName)"
     >
       <template #default="scope">
@@ -56,11 +56,11 @@ defineProps<DocumentsListProps>()
 
 const sortableColumns = ['Nom du document', 'Déposé le']
 const columnSizes: Record<string, number> = {
-  'Nom du document': 591,
-  '': 200,
-  'Déposé le': 200,
-  Statut: 200,
-  Actions: 72
+  'Nom du document': 590,
+  '': 199,
+  'Déposé le': 199,
+  Statut: 199,
+  Actions: 71
 }
 
 // Behaviours
