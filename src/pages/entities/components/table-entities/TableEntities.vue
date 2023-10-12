@@ -1,68 +1,72 @@
 <template>
   <div>
-    <h1>{{ titleString }}</h1>
-      <PTable
-        :data="entities"
-        :stripe="tableInputs.striped">
-        <PTableColumn
-          type="selection"
-          v-if="tableInputs.selectable"/>
-        <PTableColumn
-          :label="labelString"
-          width="280"
-          :sortable="tableInputs.sortable"
+    <h1 class="margin-bottom--4">
+      {{ titleString }}
+    </h1>
+    <PTable
+      :data="entities"
+      :stripe="tableInputs.striped"
+      highlightCurrentRow
+      :rowClassName="tableRowClassName"
+    >
+      <PTableColumn
+        v-if="tableInputs.selectable"
+        type="selection"
+      />
+      <PTableColumn
+        :label="labelString"
+      >
+        <template #default="scope">
+          <PEntity
+            :content="scope.row.name"
+            :icon="PIBuilding"
+            type="primary"
+            :selected="false"
           >
-          <template #default="scope">
-            <PEntity
-              :content="scope.row.name"
-              :icon="PIBuilding"
-              type="primary"
-              :selected="false"
-              :bold="scope.row.accountNumber === ibsSelected"
+          </PEntity>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        :label="accountString"
+      >
+        <template #default="scope">
+          <PText
+            :content="scope.row.accountNumber"
+            :icon="PIPeople"
+            type="primary"
+            :disabled="false"
+            :selected="false"
+          >
+          </PText>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        width="80"
+      >
+        <template #default="scope">
+          <span v-if="scope.row.accountNumber === ibsSelected" class="ptable-select-entity__check">
+            <PIcon
+              color="#5546FF"
+              size="16"
             >
-            </PEntity>
-          </template>
-        </PTableColumn>
-        <PTableColumn
-          :label="accountString"
-          width="200"
-          :sortable="tableInputs.sortable"
+              <PICheck data-test="icon-check" />
+            </PIcon>
+          </span>
+          <PButton
+            v-else
+            type="primary"
+            plain="true"
+            size="small"
+            class="ptable-select-entity__button el-button--icon"
+            @click="selectEntity(scope.row.accountNumber)"
           >
-          <template #default="scope">
-            <PText
-              :content="scope.row.accountNumber"
-              :icon="PIPeople"
-              :bold="scope.row.accountNumber === ibsSelected"
-              type="primary"
-              :disabled="false"
-              :selected="false"
-            >
-           </PText>
-          </template>
-        </PTableColumn>
-        <PTableColumn
-          width="80"
-          :sortable="false"
-          >
-          <template #default="scope">
-            <span v-if="scope.row.accountNumber === ibsSelected">
-              <PIcon
-                color="#5546FF"
-                size="20px">
-                <PICheck data-test= "icon-check"/>
-              </PIcon>
-            </span>
-            <span
-              class="pTable-select-entity"
-              @click="selectEntity(scope.row.accountNumber)"
-              v-else>
-              <PIcon color="#5546FF" size="20px">
-                <PIArrowRepeat />
-              </PIcon>
-            </span>
-          </template>
-        </PTableColumn>
-      </PTable>
+            <PIcon>
+              <PIArrowRepeat />
+            </PIcon>
+          </PButton>
+        </template>
+      </PTableColumn>
+    </PTable>
   </div>
 </template>
 
@@ -80,6 +84,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import {
+  PButton,
   PEntity,
   PIcon,
   PIArrowRepeat,
@@ -145,16 +150,30 @@ function selectEntity(accountNumber:string) {
   localStorage.setItem('defaultEntity', JSON.stringify(newActiveEntity))
 }
 
-function setDefaultEntity() {
+const tableRowClassName = ({ row }: any) => {
   const defaultEntity = localStorage.getItem('defaultEntity')
-  if (defaultEntity !== null) {
+
+  if (defaultEntity) {
     ibsSelected.value = (JSON.parse(defaultEntity))[0].idAccount
+
+    if (row && row.accountNumber === ibsSelected.value) {
+      return 'current-row'
+    }
   }
+  return ''
 }
 
 onMounted(async () => {
   await getEntities()
-  setDefaultEntity()
 })
 </script>
 
+<style lang="scss" scoped>
+.ptable-select-entity__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+</style>

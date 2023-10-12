@@ -62,7 +62,7 @@ describe('table-entities', () => {
     const mockGetItem = vi.spyOn(Storage.prototype, 'getItem')
     const pIcon = await dynamicUntilFound(wrapper, '.el-icon')
     expect(pIcon.exists()).toBeTruthy()
-    expect(mockGetItem).toHaveBeenCalledTimes(1)
+    expect(mockGetItem).toHaveBeenCalledWith('defaultEntity')
   })
 
   it('trigger select entity action', async () => {
@@ -75,7 +75,7 @@ describe('table-entities', () => {
     })
 
     await dynamicUntilFound(wrapper, '.el-icon')
-    const addIconButton = wrapper.get('span[class="pTable-select-entity"]')
+    const addIconButton = wrapper.find('.ptable-select-entity__button')
     await addIconButton.trigger('click')
     const checkIcon = await dynamicUntilFound(wrapper, 'svg[data-test="icon-check"]')
     expect(checkIcon.exists()).toBeTruthy()
