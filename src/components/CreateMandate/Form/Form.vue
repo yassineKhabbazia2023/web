@@ -522,8 +522,18 @@ const checkAndEmitEvents = () => {
   }
 }
 
-const checkRibValidity = async (rib: string) => {
-  const { valid } = await validateIban(rib)
+const checkRibValidity = async ({
+  bankCode,
+  branchCode,
+  accountNumber,
+  checkDigits
+}: any) => {
+  const { valid } = await validateIban({
+    bankCode,
+    branchCode,
+    accountNumber,
+    checkDigits
+  })
 
   if (!valid) {
     customErrorMessage.value = t('form.error.bankingInfoNotRecognized')
@@ -535,8 +545,8 @@ const checkRibValidity = async (rib: string) => {
   return valid
 }
 
-const getBankInformation = async (rib: string) => {
-  const bank: any = await getBankDetail(rib)
+const getBankInformation = async (bankCode: string) => {
+  const bank: any = await getBankDetail(bankCode)
   if (bank.jeDeclare.isScrapable) {
     isScrapable.value = true
     createMandateForm.bank = ''
@@ -578,20 +588,16 @@ const checkFields = async () => {
     fieldsToValidate,
     async (_: any) => {
       resetValidation()
-      const rib = [
-        createMandateForm.institutionCode,
-        createMandateForm.branchCode,
-        createMandateForm.accountNumber,
-        createMandateForm.key
-      ].join('')
-      if (rib.length !== 23) {
-        return
-      }
-      const validity = await checkRibValidity(rib)
+      const validity = await checkRibValidity({
+        bankCode: createMandateForm.institutionCode,
+        branchCode: createMandateForm.branchCode,
+        accountNumber: createMandateForm.accountNumber,
+        checkDigits: createMandateForm.key
+      })
       if (!validity) {
         return
       }
-      await getBankInformation(rib)
+      await getBankInformation(createMandateForm.institutionCode)
     }
   )
 }

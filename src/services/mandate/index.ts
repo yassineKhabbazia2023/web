@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 
+import { commonApi as api } from '@kpmg/common'
+
 /**
  *
 mandat vierge : GET /mandate/{mandateId}/unsigned
@@ -10,11 +12,12 @@ mandat signé : GET /mandate/{mandateId}/signed
 upload d'un nouveau mandat signé: POST /mandate/{mandateId}/signed
 
 */
+import { BbanModel } from '@/components/CreateMandate/Form/FormModels'
 
 export const createMandate = async ({
   ibsNumber
 }: { ibsNumber: string }): Promise<any> =>
-  // signature: /company/${ibsNumber}
+  // api().mandate.get(/company/${ibsNumber})
   Promise.resolve({
     /* data: {
       id: '140edf1b-0a59-4f70-abbc-052462faa010',
@@ -37,20 +40,20 @@ export const createMandate = async ({
     }, */
     data: {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
-      name: 'JEAN LÉVAGE',
+      name: 'Luminaires de France',
       siretNumber: '40902900600031',
       erpId: ibsNumber,
       signatory: {
-        title: 'M',
-        firstName: 'maroo',
-        lastName: 'elleuch',
-        email: 'elleuch@email.com'
+        title: 'Mme',
+        firstName: 'Constance',
+        lastName: 'Lafleur',
+        email: 'clafleur@gmail.com'
       },
       address: {
-        street: 'RUE DU COMMERCE',
-        addressComplement: '',
-        zipCode: '59590',
-        city: 'RAISMES',
+        street: '36 rue de Liège',
+        addressComplement: '4è étage',
+        zipCode: '75008',
+        city: 'Paris',
         country: 'FRANCE'
       }
     }
@@ -63,7 +66,7 @@ export const createMandate = async ({
 export const downloadDocumentById = async (
   progressCallback?: (progressEvent: ProgressEvent) => void
 ): Promise<any> => {
-  /* return api.ds.get(`/${accountId}/documents/${documentId}/content`, {
+  /* return api().mandate.get(`/${accountId}/documents/${documentId}/content`, {
     responseType: 'blob',
     onDownloadProgress: (progressEvent: ProgressEvent) => {
       progressCallback && progressCallback(progressEvent)
@@ -78,19 +81,20 @@ export const downloadDocumentById = async (
     fileProgress.loaded += 25
     progressCallback && progressCallback(fileProgress)
   }, 500)
-
 }
 
-export const validateIban = async (iban: string) => {
-  // Simulate a delay (e.g., network request)
-  // new signature: /bank/check-bban-validity
-  await new Promise(resolve => setTimeout(resolve, 1000))
-
-  // Dummy logic: If the iban ends with an even number, consider it valid
-  const isValid = parseInt(iban.slice(-1)) % 2 === 0
-
+export const validateIban = async ({
+  bankCode,
+  branchCode,
+  accountNumber,
+  checkDigits
+}: BbanModel) => {
+  const { data: { valid } } = await api().mandate.get(
+    'bank/check-bban-validity',
+    { params: { bankCode, branchCode, accountNumber, checkDigits } }
+  )
   return {
-    valid: isValid
+    valid
   }
 }
 
@@ -100,6 +104,17 @@ export const getBankDetail = async (iban: string) => {
 
   // Dummy logic: If the iban ends with an even number, consider it valid
   const isScrapable = parseInt(iban.slice(-1)) === 0
+
+  /* const { data: valid } = await api().mandate.get(
+    `bank/${bankCode}`) */
+  /* {
+      "code": "12345",
+      "name": "Banque postale",
+      "jeDeclare": {
+        "isPartner": true,
+        "isScrapable": true
+      }
+    } */
 
   return {
     code: iban,
@@ -130,8 +145,8 @@ export const getMandatesCollection = async () => {
           companyName: 'Boulangerie du canal',
           accountNumber: '66842913356',
           bankName: 'Crédit Agricole',
-          creationDate: '2023-08-14T13:12:31.926Z',
-          modificationDate: '2023-08-14T13:12:31.926Z',
+          creationDate: '2022-04-14T13:12:31.926Z',
+          modificationDate: '2023-09-17T13:12:31.926Z',
           statusCode: '40'
         },
         {
@@ -140,8 +155,8 @@ export const getMandatesCollection = async () => {
           companyName: 'Fleurs and co.',
           accountNumber: '66842913357',
           bankName: 'BNP Paribas',
-          creationDate: '2023-08-14T13:12:31.926Z',
-          modificationDate: '2023-08-14T13:12:31.926Z',
+          creationDate: '2021-09-14T13:12:31.926Z',
+          modificationDate: '2023-08-17T13:12:31.926Z',
           statusCode: '20'
         },
         {
@@ -150,8 +165,8 @@ export const getMandatesCollection = async () => {
           companyName: 'La compagnie du voyage',
           accountNumber: '66842913358',
           bankName: 'Société Générale',
-          creationDate: '2023-08-14T13:12:31.926Z',
-          modificationDate: '2023-08-14T13:12:31.926Z',
+          creationDate: '2020-08-14T13:12:31.926Z',
+          modificationDate: '2023-06-11T13:12:31.926Z',
           statusCode: '30'
         }
       ]

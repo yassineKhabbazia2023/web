@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest'
+import { defineStore } from 'pinia'
+import { describe, it, expect, vi } from 'vitest'
 import wrapperFactory from '../../../tests/utils/wrapperFactory'
 import Header from '@/components/Common/Header'
 import ListMandate from '@/components/DisplayMandate/Table'
@@ -6,6 +7,12 @@ import Home from '@/pages/home'
 import {
   waitForAsyncImports
 } from '@kpmg/common/src/testing-helpers'
+
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    state: () => ({})
+  })
+}))
 
 const createWrapper = (props: any) =>
   wrapperFactory(Home, {

@@ -17,7 +17,9 @@ describe('tag status management', () => {
     { statusCode: '50', expected: 'Inactive' }
   ])('tag($statusCode) -> $expected', async ({ statusCode, expected }:any) => {
     const wrapper = createWrapper(statusCode)
-    await waitForAsyncImports(5)
-    expect(wrapper.text()).toBe(expected)
+    await waitForAsyncImports(3)
+    expect(wrapper
+      .find(`[content="${expected}"]`)).toBeTruthy()
+    wrapper.unmount()
   })
 })

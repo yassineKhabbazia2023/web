@@ -1,10 +1,17 @@
+import { defineStore } from 'pinia'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import CreateMandateDrawer from '.'
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, vi } from 'vitest'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const createWrapper = (props: any = {}, slots: any = {}) =>
   wrapperFactory(CreateMandateDrawer, { props, slots })
+
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    state: () => ({})
+  })
+}))
 
 describe('createMandateDrawer.vue', () => {
   it('renders the component when modelValue is true', async () => {

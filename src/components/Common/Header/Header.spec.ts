@@ -1,10 +1,17 @@
+import { defineStore } from 'pinia'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Header from '.'
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, vi } from 'vitest'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const createWrapper = () =>
   wrapperFactory(Header)
+
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    state: () => ([])
+  })
+}))
 
 describe('header.vue', () => {
   const wrapper = createWrapper()
