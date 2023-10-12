@@ -1,8 +1,9 @@
 <template>
-  <el-date-picker
-    :prefixIcon="PICalendarEvent">
+  <ElDatePicker
+    :prefixIcon="PICalendarEvent"
+  >
     <slot />
-  </el-date-picker>
+  </ElDatePicker>
 </template>
 
 <script setup lang="ts">

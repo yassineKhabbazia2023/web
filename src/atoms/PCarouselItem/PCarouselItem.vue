@@ -1,5 +1,5 @@
 <template>
-  <el-carousel-item>
+  <ElCarouselItem>
     <div class="top">
       <p class="text">
         {{ text }}
@@ -13,7 +13,7 @@
       />
     </div>
     <slot />
-  </el-carousel-item>
+  </ElCarouselItem>
 </template>
 
 <script lang="ts" setup>

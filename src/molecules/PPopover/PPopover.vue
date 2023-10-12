@@ -1,5 +1,5 @@
 <template>
-  <el-popover
+  <ElPopover
     popperClass="el-popper-popover p-popover--shadow"
     :placement="placement"
     :disabled="disabled"
@@ -14,13 +14,13 @@
     <template #reference>
       <slot />
     </template>
-  </el-popover>
+  </ElPopover>
 </template>
 
 <script setup lang="ts">
+import { ElPopover } from 'element-plus'
 import type { PlacementOptions } from '@/constants/placementOptions'
 import type { TriggerOptionsType } from '@/constants/triggerOptions'
-import { ElPopover } from 'element-plus'
 export interface PPopoverProps {
   placement?: PlacementOptions
   disabled?: boolean

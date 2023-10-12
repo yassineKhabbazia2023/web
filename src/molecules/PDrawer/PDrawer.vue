@@ -1,5 +1,5 @@
 <template>
-  <el-drawer
+  <ElDrawer
     v-model="drawerModel"
     :direction="direction"
     :showClose="false"
@@ -56,15 +56,15 @@
     <template #footer>
       <slot name="footer"></slot>
     </template>
-  </el-drawer>
+  </ElDrawer>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { ElDrawer } from 'element-plus'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import { type PDrawerProps } from './PDrawer'
-import { ElDrawer } from 'element-plus'
 
 const emit = defineEmits(['drawer-previous-button-click', 'update:modelValue'])
 

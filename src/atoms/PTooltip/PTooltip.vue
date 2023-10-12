@@ -1,12 +1,12 @@
 <template>
-  <el-tooltip
+  <ElTooltip
     popperClass="shadow--4"
     :content="content"
     :placement="placement"
     :disabled="disabled"
   >
     <slot />
-  </el-tooltip>
+  </ElTooltip>
 </template>
 
 <script setup lang="ts">

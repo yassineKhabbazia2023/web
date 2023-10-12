@@ -3,7 +3,8 @@
       :type="type"
       :class="{ 'p-double-text': true, disabled, selected }"
       :disabled="disabled"
-      :selected="selected">
+      :selected="selected"
+    >
       <div class="p-double-text__icon" v-if="icon">
         <PIcon :size="16">
           <component :is="icon" />

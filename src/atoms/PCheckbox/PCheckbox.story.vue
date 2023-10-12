@@ -2,7 +2,8 @@
   <Story title="2. Atoms/Checkbox" icon="radix-icons:checkbox">
     <Variant title="Checkbox">
       <PCheckbox
-      :disabled="checkBoxControl.disabled">
+        :disabled="checkBoxControl.disabled"
+      >
         {{ checkBoxControl.contentSlot }}
       </PCheckbox>
       <template #controls>

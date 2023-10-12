@@ -1,5 +1,5 @@
 <template>
-  <el-image :src="resolvedImage"></el-image>
+  <ElImage :src="resolvedImage"></ElImage>
 </template>
 
 <script setup lang="ts">

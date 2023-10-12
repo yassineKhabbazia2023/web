@@ -1,5 +1,5 @@
 <template>
-  <el-menu
+  <ElMenu
     textColor="white"
     class="el-menu--navbar shadow--3 p-navbar"
     :collapse="isWindowUnderDesktop ? false : isCollapse"
@@ -8,7 +8,7 @@
     :ellipsis="!isWindowUnderDesktop"
     router
   >
-    <el-menu-item class="el-menu-item--title hidden-sm-and-down">
+    <ElMenuItem class="el-menu-item--title hidden-sm-and-down">
       <span class="p-menu-name-title"><slot name="title" /></span>
       <PIcon
         @click="collapseMenu"
@@ -17,8 +17,8 @@
         <PIArrowBarRight v-show="isCollapse" />
         <PIArrowBarLeft v-show="!isCollapse" />
       </PIcon>
-    </el-menu-item>
-    <el-menu-item
+    </ElMenuItem>
+    <ElMenuItem
       v-for="item in menuList"
       :index="item.path"
       :key="item.path"
@@ -27,11 +27,11 @@
         <component :is="iconResolver(item.icon)" />
       </PIcon>
       <span class="p-menu-name p-menu-name--list hidden-sm-and-down">{{ item.name }}</span>
-    </el-menu-item>
+    </ElMenuItem>
     <div class="divider hidden-sm-and-down">
-      <el-divider />
+      <ElDivider />
     </div>
-    <el-menu-item
+    <ElMenuItem
       v-for="(item, index) in entities"
       :key="item.idAccount"
       @click="handleClickEntity(item.idAccount)"
@@ -50,12 +50,13 @@
         </PAvatar>
       </span>
       <span class="p-menu-name">{{ item.name }}</span>
-    </el-menu-item>
-  </el-menu>
+    </ElMenuItem>
+  </ElMenu>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { ElDivider, ElMenu, ElMenuItem } from 'element-plus'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
 import { iconResolver } from '@/utils/iconResolver'

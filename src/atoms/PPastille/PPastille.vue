@@ -1,5 +1,5 @@
 <template>
-  <el-tag
+  <ElTag
     class="p-pastille"
     :class="{
       'p-pastille--default': kind === 'default',
@@ -14,13 +14,12 @@
       <component :is="dynamicImportedIcon"></component>
     </PIcon>
     <slot v-else />
-  </el-tag>
+  </ElTag>
 </template>
 
 <script setup lang="ts">
 import { ElTag } from 'element-plus'
 import { iconResolver } from '@/utils/iconResolver'
-import PIcon from '@/atoms/PIcon'
 
 export interface PPastilleProps {
   kind?: 'default' | 'warning' | 'persian';

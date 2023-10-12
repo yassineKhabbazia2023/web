@@ -2,10 +2,10 @@
   <Story title="2. Atoms/Input" icon="iconoir:input-field">
     <Variant title="Basic Usage">
       <PInput
+        v-model="basicInputData.inputValue"
         :type="basicInputData.type"
         :disabled="basicInputData.disabled"
         :placeholder="basicInputData.placeholder"
-        v-model="basicInputData.inputValue"
       >
       </PInput>
       <template #controls>
@@ -16,11 +16,11 @@
     </Variant>
     <Variant title="Textarea">
       <PInput
+        v-model="TextInputData.inputValue"
         :type="TextInputData.type"
         :disabled="TextInputData.disabled"
         :placeholder="TextInputData.placeholder"
         :autosize="TextInputData.autosize"
-        v-model="TextInputData.inputValue"
       >
       </PInput>
       <template #controls>
@@ -31,10 +31,10 @@
     </Variant>
     <Variant title="Password">
       <PInput
+        v-model="PasswordInputData.inputValue"
         :type="PasswordInputData.type"
         :placeholder="PasswordInputData.placeholder"
         :showPassword="PasswordInputData.showpassword"
-        v-model="PasswordInputData.inputValue"
       >
       </PInput>
       <template #controls>

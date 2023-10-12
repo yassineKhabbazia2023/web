@@ -14,6 +14,7 @@
       </ElSelect>
     </div>
     <ElPagination v-bind="$attrs" layout="prev, pager, next" />
+    <ElPagination v-bind="$attrs" layout="prev, pager, next" />
     <div class="p-pagination__total-page-counter" v-if="showTotalPageCounter">
       <slot />
     </div>
@@ -22,8 +23,15 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { ElOption, ElOptionGroup, ElPagination, ElSelect } from 'element-plus'
-import type { PaginationProps } from './PPaginationTypes'
+import { ElPagination } from 'element-plus'
+import { PDropdown } from '@/atoms/PDropdown'
+
+export interface PaginationProps {
+  showTotalPageCounter: boolean
+  pagesRanges: Array<number>
+  pageRangeSelectorGroupLabel: string
+  pageRangeSelectorSuffix: string
+}
 
 const props = defineProps<PaginationProps>()
 

@@ -1,5 +1,5 @@
 <template>
-  <el-carousel>
+  <ElCarousel>
     <PCarouselItem
       v-for="(item, index) in items"
       :key="index"
@@ -7,7 +7,7 @@
       :imageType="item.imageType"
       :imageName="item.imageName"
     />
-  </el-carousel>
+  </ElCarousel>
 </template>
 
 <script setup lang="ts">

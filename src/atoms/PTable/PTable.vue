@@ -1,12 +1,12 @@
 <template>
-  <el-table
+  <ElTable
     :data="data"
     :stripe="stripe"
     :rowClassName="tableRowClassName"
     ref="table"
   >
     <slot />
-  </el-table>
+  </ElTable>
 </template>
 
 <script lang="ts" setup>

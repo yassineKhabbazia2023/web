@@ -1,11 +1,11 @@
 <template>
-  <el-dropdown
+  <ElDropdown
     popperClass="p-toolbox shadow--3"
     placement="bottom-start"
   >
     <slot />
     <template #dropdown>
-      <el-dropdown-menu>
+      <ElDropdownMenu>
         <PToolboxItem
           v-for="(element, index) in elements"
           :key="index"
@@ -19,9 +19,9 @@
             </PIcon>
           </template>
         </PToolboxItem>
-      </el-dropdown-menu>
+      </ElDropdownMenu>
     </template>
-  </el-dropdown>
+  </ElDropdown>
 </template>
 
 <script setup lang="ts">

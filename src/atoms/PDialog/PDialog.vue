@@ -5,7 +5,7 @@
     :lockScroll="false"
     class="p-dialog radius--4"
   >
-    <slot></slot>
+    <slot />
     <template #footer>
       <slot name="footer"></slot>
     </template>

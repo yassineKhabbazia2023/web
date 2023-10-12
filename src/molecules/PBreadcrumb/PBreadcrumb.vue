@@ -1,6 +1,6 @@
 <template>
-  <el-breadcrumb :separatorIcon="ArrowRight" :class="breadCrumpSize()">
-    <el-breadcrumb-item
+  <ElBreadcrumb :separatorIcon="ArrowRight" :class="breadCrumpSize()">
+    <ElBreadcrumbItem
       v-for="item in items"
       :key="item.id"
       @click="breadcrumbItemClicked(item.id)"
@@ -14,8 +14,8 @@
           {{ item.text }}
         </a>
       </PTooltip>
-    </el-breadcrumb-item>
-  </el-breadcrumb>
+    </ElBreadcrumbItem>
+  </ElBreadcrumb>
 </template>
 
 <script setup lang="ts">

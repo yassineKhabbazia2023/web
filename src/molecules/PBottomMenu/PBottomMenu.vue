@@ -1,10 +1,10 @@
 <template>
-  <el-menu
+  <ElMenu
     :class="[{'hidden-lg-and-up': hideOnDesktop}, 'el-menu--bottom']"
     :router="useRouter"
     mode="horizontal"
   >
-    <el-menu-item
+    <ElMenuItem
       v-for="item in itemsMapped"
       :key="item.index"
       :index="item.index"
@@ -15,8 +15,8 @@
         </PIcon>
         <p>{{ item.name }}</p>
       </div>
-    </el-menu-item>
-  </el-menu>
+    </ElMenuItem>
+  </ElMenu>
 </template>
 
 <script lang="ts" setup>

@@ -1,5 +1,5 @@
 <template>
-  <el-tree
+  <ElTree
     ref="treeElement"
     class="p-tree"
     :data="data"
@@ -11,7 +11,7 @@
     <template v-if="hasCustomNodes" #default="slotProps">
       <slot v-bind="slotProps"></slot>
     </template>
-  </el-tree>
+  </ElTree>
 </template>
 
 <script setup lang="ts">

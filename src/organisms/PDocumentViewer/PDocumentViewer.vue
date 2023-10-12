@@ -1,5 +1,5 @@
 <template>
-  <el-drawer
+  <ElDrawer
     v-model="documentViewerModel"
     class="p-document-viewer"
     :direction="direction"
@@ -78,7 +78,7 @@
         <slot name="content" />
       </div>
     </div>
-  </el-drawer>
+  </ElDrawer>
 </template>
 
 <script setup lang="ts">
