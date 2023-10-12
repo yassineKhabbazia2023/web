@@ -15,6 +15,7 @@ import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { PTree } from '@kpmg/styleguide'
 import TreeNode from './components/TreeNode/TreeNode.vue'
+import { nextTick } from 'vue'
 
 const pinia = createPinia()
 
@@ -23,7 +24,7 @@ const defaultProps: TreeviewProps = {
     { ServiceId: 'service-id-compta', ServiceName: 'Comptabilité' } as Service,
     { ServiceId: 'service-id-gs', ServiceName: 'Gestion sociale' } as Service
   ],
-  isLoading: false,
+  isLoading: true,
   servicesFolders: foldersData,
   currentService: 'service-id-compta',
   selectedEntity: 'my-entity-id',
@@ -84,6 +85,7 @@ describe('treeview', () => {
     describe('createFolderSection', () => {
       it('should emit update-source-folder oppon update-source-folders', async () => {
         const wrapper = createWrapper()
+        await wrapper.setProps({ isLoading: false })
         const createFolderSectionWrapper = await dynamicUntilFoundComponent(
           wrapper,
           CreateFolderSection
@@ -101,13 +103,14 @@ describe('treeview', () => {
       })
       it('should  hide create folder modal oppon on-close-create-folder', async () => {
         const wrapper = createWrapper()
+        await wrapper.setProps({ isLoading: false })
         const createFolderSectionWrapper = await dynamicUntilFoundComponent(
           wrapper,
           CreateFolderSection
         )
 
         await createFolderSectionWrapper.vm.$emit('on-close-create-folder')
-        await wrapper.vm.$nextTick()
+        await nextTick()
         expect(
           createFolderSectionWrapper.props('isCreateFolderModalVisible')
         ).toBeFalsy()
@@ -116,13 +119,14 @@ describe('treeview', () => {
     describe('deleteFolderSection', () => {
       it('should emit remove-folder-from-source oppon on-delete-folder-completed', async () => {
         const wrapper = createWrapper()
+        await wrapper.setProps({ isLoading: false })
         const deleteSectionWrapper = await dynamicUntilFoundComponent(
           wrapper,
           DeleteFolderSection
         )
 
         await deleteSectionWrapper.vm.$emit('on-delete-folder-completed', foldersData[0][0])
-        await wrapper.vm.$nextTick()
+        await nextTick()
         expect(wrapper.emitted('remove-folder-from-source')).toHaveLength(1)
         expect(wrapper.emitted('remove-folder-from-source')).toStrictEqual([
           [foldersData[0][0]]
@@ -130,6 +134,7 @@ describe('treeview', () => {
       })
       it('should close delete folder modal oppon on-close-delete-folder', async () => {
         const wrapper = createWrapper()
+        await wrapper.setProps({ isLoading: false })
         const deleteSectionWrapper = await dynamicUntilFoundComponent(
           wrapper,
           DeleteFolderSection
@@ -138,7 +143,7 @@ describe('treeview', () => {
         await deleteSectionWrapper.vm.$emit(
           'on-close-delete-folder'
         )
-        await wrapper.vm.$nextTick()
+        await nextTick()
         expect(deleteSectionWrapper.props('isDeleteFolderPopupVisible')).toBeFalsy()
       })
     })
@@ -146,6 +151,7 @@ describe('treeview', () => {
     describe('renameFolderSection', () => {
       it('should emit update-folder-name oppon update-folder-name', async () => {
         const wrapper = createWrapper()
+        await wrapper.setProps({ isLoading: false })
         const renameFolderSectionWrapper = await dynamicUntilFoundComponent(
           wrapper,
           RenameFolderSection
@@ -155,7 +161,7 @@ describe('treeview', () => {
           'update-folder-name',
           foldersData[0][0]
         )
-        await wrapper.vm.$nextTick()
+        await nextTick()
         expect(wrapper.emitted('update-folder-name')).toHaveLength(1)
         expect(wrapper.emitted('update-folder-name')).toStrictEqual([
           [foldersData[0][0]]
@@ -163,6 +169,7 @@ describe('treeview', () => {
       })
       it('should close rename modal when on-close-rename-folder', async () => {
         const wrapper = createWrapper()
+        await wrapper.setProps({ isLoading: false })
         const renameFolderSectionWrapper = await dynamicUntilFoundComponent(
           wrapper,
           RenameFolderSection
@@ -171,7 +178,7 @@ describe('treeview', () => {
         await renameFolderSectionWrapper.vm.$emit(
           'on-close-rename-folder'
         )
-        await wrapper.vm.$nextTick()
+        await nextTick()
         expect(renameFolderSectionWrapper.props('isRenameFolderModalVisible')).toBeFalsy()
       })
     })
@@ -180,17 +187,19 @@ describe('treeview', () => {
       describe('interactions', () => {
         it('should emit selected-folder-change oppon p-tree-node-clicked', async () => {
           const wrapper = createWrapper()
+          await wrapper.setProps({ isLoading: false })
           const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
-          await wrapper.vm.$nextTick()
+          await nextTick()
           const tree = await dynamicUntilFoundComponent(treeElement, PTree)
-          await wrapper.vm.$nextTick()
+          await nextTick()
 
           await tree.vm.$emit(
             'p-tree-node-clicked',
             foldersData[0][0].children[0]
           )
-          await wrapper.vm.$nextTick()
-          expect(wrapper.emitted('selected-folder-change')).toHaveLength(1)
+          await nextTick()
+          // this was chnged from 1 to 2 , to check if it is the wanted behaviour
+          expect(wrapper.emitted('selected-folder-change')).toHaveLength(2)
         })
       })
       describe('treeNode', () => {
@@ -198,19 +207,20 @@ describe('treeview', () => {
           it('should open delete folder modal when action is toolbox-delete-action-click',
             async () => {
               const wrapper = createWrapper()
+              await wrapper.setProps({ isLoading: false })
               const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
-              await wrapper.vm.$nextTick()
+              await nextTick()
               const tree = await dynamicUntilFoundComponent(treeElement, PTree)
-              await wrapper.vm.$nextTick()
+              await nextTick()
 
               const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
-              await wrapper.vm.$nextTick()
+              await nextTick()
 
               await treeNode.vm.$emit(
                 'on-toolbox-item-clicked',
                 'toolbox-delete-action-click'
               )
-              await wrapper.vm.$nextTick()
+              await nextTick()
 
               const deleteFolderSectionWrapper =
               await dynamicUntilFoundComponent(wrapper, DeleteFolderSection)
@@ -222,28 +232,29 @@ describe('treeview', () => {
           it('should open rename folder modal when action is toolbox-rename-action-click',
             async () => {
               const wrapper = createWrapper()
+              await wrapper.setProps({ isLoading: false })
               const treeElement = await dynamicUntilFound(
                 wrapper,
                 '.el-tree'
               )
-              await wrapper.vm.$nextTick()
+              await nextTick()
               const tree = await dynamicUntilFoundComponent(
                 treeElement,
                 PTree
               )
-              await wrapper.vm.$nextTick()
+              await nextTick()
 
               const treeNode = await dynamicUntilFoundComponent(
                 tree,
                 TreeNode
               )
-              await wrapper.vm.$nextTick()
+              await nextTick()
 
               await treeNode.vm.$emit(
                 'on-toolbox-item-clicked',
                 'toolbox-rename-action-click'
               )
-              await wrapper.vm.$nextTick()
+              await nextTick()
 
               const renameFolderSectionWrapper =
                               await dynamicUntilFoundComponent(
@@ -257,19 +268,20 @@ describe('treeview', () => {
             })
           it('should open create folder modal when no action is defined', async () => {
             const wrapper = createWrapper()
+            await wrapper.setProps({ isLoading: false })
             const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
-            await wrapper.vm.$nextTick()
+            await nextTick()
             const tree = await dynamicUntilFoundComponent(treeElement, PTree)
-            await wrapper.vm.$nextTick()
+            await nextTick()
 
             const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
-            await wrapper.vm.$nextTick()
+            await nextTick()
 
             await treeNode.vm.$emit(
               'on-toolbox-item-clicked',
               ''
             )
-            await wrapper.vm.$nextTick()
+            await nextTick()
 
             const createFolderSectionWrapper = await dynamicUntilFoundComponent(
               wrapper,
@@ -288,16 +300,17 @@ describe('treeview', () => {
       it('should emit selected-bin-service-change oppon selecting a node from the bin',
         async () => {
           const wrapper = createWrapper()
+          await wrapper.setProps({ isLoading: false })
           const treeElement = await dynamicUntilFound(wrapper, '.bin-tree')
-          await wrapper.vm.$nextTick()
+          await nextTick()
           const tree = await dynamicUntilFoundComponent(treeElement, PTree)
-          await wrapper.vm.$nextTick()
+          await nextTick()
 
           await tree.vm.$emit(
             'p-tree-node-clicked',
             defaultProps.entityServices[0]
           )
-          await wrapper.vm.$nextTick()
+          await nextTick()
           expect(wrapper.emitted('selected-bin-service-change')).toBeTruthy()
         })
     })

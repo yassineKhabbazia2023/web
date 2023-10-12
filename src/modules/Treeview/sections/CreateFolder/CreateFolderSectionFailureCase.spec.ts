@@ -9,6 +9,7 @@ import {
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
+import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
@@ -95,7 +96,7 @@ describe('createFolderSection', () => {
       const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]

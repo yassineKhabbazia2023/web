@@ -5,7 +5,7 @@ import { type TreeNodeActionsProps }
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { ComponentPublicInstance } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
 import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { PToolbox } from '@kpmg/styleguide'
 
@@ -133,7 +133,7 @@ describe('treeNodeActions', () => {
       const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
 
       await toolbox.vm.$emit('visible-change', true)
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-toolbox-dropdown-close')).toStrictEqual([
         [true]
@@ -151,7 +151,7 @@ describe('treeNodeActions', () => {
       const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
 
       await toolbox.vm.$emit('p-toolbox-item-clicked', 'test')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-toolbox-item-clicked')).toStrictEqual([
         ['test']

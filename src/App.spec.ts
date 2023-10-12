@@ -18,6 +18,7 @@ import {
   DeleteFolder,
   renameFolder
 } from '@/modules/Treeview/helpers/folderArrayHelper'
+import Documents from '@/modules/Documents'
 
 const pinia = createPinia()
 
@@ -45,6 +46,10 @@ vi.mock('@/services/Services', () => ({
   })
 }))
 
+vi.mock('@/services/Documents', () => ({
+  fetchFolderDocuments: vi.fn()
+}))
+
 vi.mock('@/modules/Treeview/helpers/folderArrayHelper', () => ({
   appendChildFolder: vi.fn(() => {
     return true
@@ -59,7 +64,8 @@ vi.mock('@/modules/Treeview/helpers/folderArrayHelper', () => ({
 type AppSetup = {
   selectedEntity: string
   currentBinService: Service['ServiceId']
-  isCreateFolderModalVisible:boolean
+  currentService: Service['ServiceId']
+  isCreateFolderModalVisible: boolean
 }
 
 type AppProps = any
@@ -201,6 +207,18 @@ describe('ged', () => {
 
         expect(vi.mocked(renameFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
+      })
+    })
+  })
+
+  describe('documents', () => {
+    describe('props', () => {
+      it('should display documents component when currentService is set', async () => {
+        const wrapper = createWrapper()
+
+        const documentComponent = await dynamicUntilFoundComponent(wrapper, Documents)
+        await nextTick()
+        expect(documentComponent.exists()).toBeTruthy()
       })
     })
   })

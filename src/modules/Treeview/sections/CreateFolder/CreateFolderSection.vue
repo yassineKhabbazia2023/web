@@ -33,7 +33,7 @@ import type { Folder } from '@/models/Folder'
 import { CreateFolder } from '@/services/Folder'
 import { useI18n } from 'vue-i18n'
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
-import { PICheck, PIExclamationTriangle, PIFolderPlus, PButton }
+import { PICheck, PIExclamationTriangle, PIFolderPlus, PButton, PIcon }
   from '@kpmg/styleguide'
 import { canCreateFolder } from '@/modules/Treeview/helpers/folderPermissionsHelper'
 import { type CreateFolderSectionProps }

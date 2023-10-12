@@ -11,7 +11,7 @@ import {
   dynamicUntilFound,
   dynamicUntilFoundComponent
 } from '@kpmg/common/src/testing-helpers'
-import { ComponentPublicInstance } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
 
 const defaultProps: RenameFolderModalProps = {
   isRenameFolderModalVisible: false,
@@ -96,7 +96,7 @@ describe('props', () => {
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
-        await wrapper.vm.$nextTick()
+        await nextTick()
         expect(dialog.props('isConfirmButtonDisabled')).toBe(isBtnDisabled)
       }
     )
@@ -133,7 +133,7 @@ describe('props', () => {
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
-        await wrapper.vm.$nextTick()
+        await nextTick()
 
         expect(dialog.props('showErrorMsg')).toBe(isErrorMsgShown)
       }
@@ -171,10 +171,10 @@ describe('props', () => {
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
-        await wrapper.vm.$nextTick()
+        await nextTick()
 
         componentInstance.folderNameExists = isFolderNameExits
-        await wrapper.vm.$nextTick()
+        await nextTick()
 
         expect(dialog.props('errorMsg')).toBe(expectedValue)
       }
@@ -200,14 +200,14 @@ describe('interactions', () => {
     componentInstance.inputContent = 'TheFolder'
     componentInstance.folderNameExists = false
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const confirmButton = await dynamicUntilFound(
       dialog,
       '.confirm-action-button'
     )
     await confirmButton.trigger('click')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(wrapper.emitted('on-confirm-rename-folder')).toBeTruthy()
     expect(wrapper.emitted('on-confirm-rename-folder')).toStrictEqual([
@@ -247,14 +247,14 @@ describe('interactions', () => {
     const componentInstance = wrapper.vm
     componentInstance.inputContent = 'TheFolder'
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const confirmButton = await dynamicUntilFound(
       dialog,
       '.confirm-action-button'
     )
     await confirmButton.trigger('click')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(wrapper.emitted('on-confirm-rename-folder')).toBeFalsy()
   })
@@ -268,14 +268,14 @@ describe('interactions', () => {
     const wrapper = createWrapper(props)
 
     const dialog = await dynamicUntilFoundComponent(wrapper, SingleInputModal)
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const cancelButton = await dynamicUntilFound(
       dialog,
       '.cancel-action-button'
     )
     await cancelButton.trigger('click')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(wrapper.emitted('on-cancel-rename-folder')).toBeTruthy()
   })
@@ -291,7 +291,7 @@ describe('interactions', () => {
     const dialog = await dynamicUntilFoundComponent(wrapper, SingleInputModal)
 
     await dialog.vm.$emit('on-close-modal')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(wrapper.emitted('on-close-rename-folder')).toBeTruthy()
   })
@@ -301,7 +301,7 @@ describe('interactions', () => {
       const wrapper = createWrapper()
 
       wrapper.vm.isDialogRenameVisible = false
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('update:isRenameFolderModalVisible')).toBeTruthy()
     })

@@ -10,7 +10,7 @@ import {
   dynamicUntilFoundComponent
 } from '@kpmg/common/src/testing-helpers'
 import ConfirmationPopup from '@/modules/common/templates/popups'
-import { ComponentPublicInstance } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
 
 const defaultProps: DeleteFolderConfirmationPopupProps = {
   isDeleteFolderPopupVisible: false,
@@ -60,7 +60,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const wrapper = createWrapper(updatedProps)
 
       const popup = await dynamicUntilFoundComponent(wrapper, ConfirmationPopup)
-      await wrapper.vm.$nextTick()
+      await nextTick()
       expect(popup.exists()).toBeTruthy()
     })
 
@@ -134,7 +134,7 @@ describe('deleteFolderConfirmationPopup', () => {
         const wrapper = createWrapper()
 
         wrapper.vm.isPopupVisible = true
-        await wrapper.vm.$nextTick()
+        await nextTick()
 
         expect(wrapper.emitted('update:isDeleteFolderPopupVisible')).toBeTruthy()
       })

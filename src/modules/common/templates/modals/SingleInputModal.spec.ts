@@ -5,7 +5,7 @@ import { type SingleInputModalProps } from '@/modules/common/templates/modals/Si
 import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { createPinia, setActivePinia } from 'pinia'
 import { PDialog } from '@kpmg/styleguide'
-import { ComponentPublicInstance } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
 
 const defaultProps: SingleInputModalProps = {
   modalTitle: 'string',
@@ -102,7 +102,7 @@ describe('singleInputModal', () => {
 
       await confirmButton.trigger('click')
 
-      await wrapper.vm.$nextTick()
+      await nextTick()
       expect(wrapper.emitted('on-confirm-action-click')).toHaveLength(1)
 
     })
@@ -119,7 +119,7 @@ describe('singleInputModal', () => {
 
       await cancelButton.trigger('click')
 
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-cancel-action-click')).toHaveLength(1)
     })
@@ -133,7 +133,7 @@ describe('singleInputModal', () => {
       const pdialog = await dynamicUntilFoundComponent(wrapper, PDialog)
 
       await pdialog.vm.$emit('close')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-close-modal')).toBeTruthy()
     })
@@ -142,7 +142,7 @@ describe('singleInputModal', () => {
       const wrapper = createWrapper()
 
       wrapper.vm.isDialogVisible = true
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('update:isDialogVisible')).toBeTruthy()
     })

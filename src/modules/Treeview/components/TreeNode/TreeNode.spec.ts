@@ -11,7 +11,7 @@ import {
   dynamicUntilFound,
   dynamicUntilFoundComponent
 } from '@kpmg/common/src/testing-helpers'
-import { ComponentPublicInstance } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
 // import {
 //   PTooltip
 // } from '@kpmg/styleguide'
@@ -124,13 +124,13 @@ describe('props', () => {
   it('should not display PIcon when folder has children', async () => {
     const wrapper = createWrapper()
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
 
     expect(treeNode.classes('tree-node--no-children')).toBeFalsy()
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(treeNode.find('.tree-node__no-child-icon').exists()).toBeFalsy()
   })
@@ -151,13 +151,13 @@ describe('props', () => {
 
     const wrapper = createWrapper(props)
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
 
     expect(treeNode.classes('tree-node--no-children')).toBeTruthy()
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const dotIcon = await dynamicUntilFound(
       treeNode,
@@ -183,16 +183,16 @@ describe('props', () => {
 
   //     const wrapper = createWrapper(props)
 
-  //     await wrapper.vm.$nextTick()
+  //     await nextTick()
 
   //     const tooltip = await dynamicUntilFoundComponent(wrapper, PTooltip)
 
-  //     await wrapper.vm.$nextTick()
+  //     await nextTick()
 
   //     expect(tooltip.props('disabled')).toBeFalsy()
   //     expect(tooltip.props('content')).toBe(props.data.name)
 
-  //     await wrapper.vm.$nextTick()
+  //     await nextTick()
 
   //     const actions = await dynamicUntilFoundComponent(
   //       wrapper,
@@ -206,11 +206,11 @@ describe('props', () => {
   //   it('should disabled tooltip when folder name is short', async () => {
   //     const wrapper = createWrapper()
 
-  //     await wrapper.vm.$nextTick()
+  //     await nextTick()
 
   //     const tooltip = await dynamicUntilFoundComponent(wrapper, PTooltip)
 
-  //     await wrapper.vm.$nextTick()
+  //     await nextTick()
 
 //     expect(tooltip.props('disabled')).toBeTruthy()
 //   })
@@ -224,16 +224,16 @@ describe('interactions', () => {
   it('should set isOpen when div emit click', async () => {
     const wrapper = createWrapper()
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
 
     const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     await treeNode.trigger('click')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeTruthy()
   })
@@ -241,16 +241,16 @@ describe('interactions', () => {
   it('should set isHovered when div emit mouseover', async () => {
     const wrapper = createWrapper()
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
 
     const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     await treeNode.trigger('mouseover')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeTruthy()
   })
@@ -258,23 +258,23 @@ describe('interactions', () => {
   it('should set isHovered when div emit mouseleave', async () => {
     const wrapper = createWrapper()
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
 
     const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     await treeNode.trigger('mouseover')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeTruthy()
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     await treeNode.trigger('mouseleave')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })
@@ -284,10 +284,10 @@ describe('interactions', () => {
 
     const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     await actions.vm.$emit('p-toolbox-item-clicked', 'test')
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(wrapper.emitted('on-toolbox-item-clicked')).toStrictEqual([['test', fold]])
   })
@@ -300,10 +300,10 @@ describe('interactions', () => {
 
     const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
 
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     await actions.vm.$emit('on-toolbox-dropdown-close', false)
-    await wrapper.vm.$nextTick()
+    await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })

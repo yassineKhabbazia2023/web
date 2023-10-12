@@ -98,6 +98,7 @@ const isConfirmButtonDisabled = computed(
 const isValidInput = computed(() => {
   return validInputAlphanumericFrench(inputContent.value)
 })
+
 const folderNameExists = ref(false)
 
 const isFolderNameExists = (folderName: string): boolean => {

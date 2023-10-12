@@ -9,6 +9,7 @@ import { Folder, FolderProperties } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
 import { DeleteFolder } from '@/services/Folder'
+import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
@@ -158,7 +159,7 @@ describe('deleteFolderSection', () => {
         )
 
         await popup.vm.$emit('confirm-delete-folder')
-        await wrapper.vm.$nextTick()
+        await nextTick()
 
         expect(vi.mocked(DeleteFolder)).toHaveBeenCalledWith(
           'service-id',
@@ -183,7 +184,7 @@ describe('deleteFolderSection', () => {
       )
 
       await popup.vm.$emit('confirm-delete-folder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(popup.props('isDeleteFolderPopupVisible')).toBeFalsy()
     })
@@ -202,7 +203,7 @@ describe('deleteFolderSection', () => {
       )
 
       await popup.vm.$emit('confirm-delete-folder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-delete-folder-completed')).toBeTruthy()
       expect(wrapper.emitted('on-delete-folder-completed')).toStrictEqual([
@@ -225,7 +226,7 @@ describe('deleteFolderSection', () => {
       )
 
       await popup.vm.$emit('confirm-delete-folder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]
@@ -246,7 +247,7 @@ describe('deleteFolderSection', () => {
       )
 
       await popup.vm.$emit('cancel-delete-folder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-close-delete-folder')).toBeTruthy()
     })

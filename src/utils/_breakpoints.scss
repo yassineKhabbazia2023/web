@@ -19,13 +19,13 @@
   }
 
   @if $breakpoint == lg {
-    @media only screen and (width <= 1920px) {
+    @media only screen and (width < 1920px) {
       @content;
     }
   }
 
   @if $breakpoint == xl {
-    @media only screen and (width > 1920px) {
+    @media only screen and (width >= 1920px) {
       @content;
     }
   }

@@ -11,6 +11,7 @@ import {
 import { Folder, FolderProperties } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
+import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
@@ -97,7 +98,7 @@ describe('deleteFolderSection', () => {
       )
 
       await popup.vm.$emit('confirm-delete-folder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]

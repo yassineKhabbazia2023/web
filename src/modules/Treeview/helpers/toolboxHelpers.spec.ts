@@ -1,9 +1,10 @@
-import { generateToolboxBasicData } from './toolboxHelpers'
+import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper'
 import { describe, it, expect } from 'vitest'
 
 describe('toolboxHelpers', () => {
   it('should return correct mapping when passing permission array', () => {
-    const res = generateToolboxBasicData(['CAN_CREATE_FOLDER', 'test', 'CAN_DELETE_FOLDER'])
+    const res = generateToolboxBasicData('Folders',
+      ['CAN_CREATE_FOLDER', 'test', 'CAN_DELETE_FOLDER'])
 
     const expectedRes = [
       {
@@ -22,7 +23,7 @@ describe('toolboxHelpers', () => {
   })
 
   it('should return correct mapping when passing permission array', () => {
-    const res = generateToolboxBasicData([
+    const res = generateToolboxBasicData('Folders', [
       'CAN_RENAME_FOLDER',
       'CAN_CREATE_FOLDER'
     ])

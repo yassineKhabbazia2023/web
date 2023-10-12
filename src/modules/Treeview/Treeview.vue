@@ -4,7 +4,7 @@
       <PLoader type="gradient" size="42" />
     </div>
 
-    <div v-else>
+    <div v-else-if="defaultFolder !== null">
       <CreateFolderSection
         :serviceId="currentService"
         :entityId="selectedEntity"
@@ -22,6 +22,7 @@
         @on-delete-folder-completed="handleDeleteFolderCompleted"
         @on-close-delete-folder="handleCloseDeleteFolderModal"
       />
+
       <RenameFolderSection
         :serviceId="currentService"
         :entityId="selectedEntity"
@@ -102,9 +103,18 @@ const emit = defineEmits([
   'update-folder-name'
 ])
 
+// This always exists as it is the default structure of any service
+const defaultFolder = ref<null | Folder>(null)
 const initialSelectedNodeId = computed(() => {
-  // This always exists as it is the default structure of any service
-  return props.servicesFolders[0][0].children[0].id
+  if (!defaultFolder.value) return
+  return defaultFolder.value.id
+})
+
+// eslint-disable-next-line vitest/require-hook
+watch(() => props.isLoading, () => {
+  if (props.isLoading === true) return
+  defaultFolder.value = props.servicesFolders[0][0].children[0]
+  emit('selected-folder-change', defaultFolder.value)
 })
 
 const treeNodeSelectedFolder = ref()
@@ -152,7 +162,7 @@ const retrieveUnusedTrees = (): TreeType[] => {
   )
 }
 
-// Retreiving the source trees allow use to used their exposed functions
+// Retreiving the source trees allow us to used their internal exposed functions
 const retrieveSourceTrees = (
   currentComponentTreeRefs: TreeType[]
 ): TreeType[] => {
@@ -231,9 +241,9 @@ watch(
 @use '@/utils/breakpoints';
 
 .treeview {
-  width: 411px;
-  height: calc(100vh - 52px - 16px);
-  max-height: calc(100vh - 52px - 16px);
+  width: 100%;
+  height: calc(100vh - 52px);
+  max-height: calc(100vh - 52px);
   overflow: hidden;
   padding-bottom: 40px;
 
@@ -253,14 +263,6 @@ watch(
     margin-top: 40px;
   }
 
-  @include breakpoints.media(lg) {
-    width: 342px;
-  }
-
-  @include breakpoints.media(md) {
-    width: 239px;
-  }
-
   &__new-folder {
     margin: 8px 0 0 8px;
   }
@@ -268,48 +270,23 @@ watch(
   &__trees {
     height: 100%;
     max-height: 100%;
-    width: 411px;
+    width: 100%;
     overflow-y: auto;
     overflow-x: auto;
-
-    @include breakpoints.media(lg) {
-      width: 342px;
-    }
-
-    @include breakpoints.media(md) {
-      width: 239px;
-    }
   }
 
   .el-tree {
     width: fit-content;
-    min-width: 405px;
+    min-width: 100%;
     overflow: auto;
-
-    @include breakpoints.media(lg) {
-      min-width: 336px;
-    }
-
-    @include breakpoints.media(md) {
-      min-width: 233px;
-    }
   }
 
   .el-tree-node {
     display: flex;
     flex-direction: column;
 
-    //16 corresponds to paddings
-    min-width: calc(405px - 16px);
+    min-width: 100%;
     width: fit-content;
-
-    @include breakpoints.media(lg) {
-      min-width: calc(336px - 16px);
-    }
-
-    @include breakpoints.media(md) {
-      min-width: calc(233px - 16px);
-    }
   }
 
   .el-tree-node__content {

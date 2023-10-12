@@ -9,6 +9,7 @@ import {
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
+import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
@@ -97,7 +98,7 @@ describe('renameFolderSection', () => {
       const modal = await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]

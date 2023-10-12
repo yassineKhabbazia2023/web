@@ -23,9 +23,15 @@ export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 
+// eslint-disable-next-line vitest/require-hook
 routes.value.push({
   path: '/ged',
   name: 'ged',
+  meta: {
+    styles: {
+      hasPaddings: false
+    }
+  },
   component: () => import('@/App.vue')
 } as RouteRecordRaw)
 

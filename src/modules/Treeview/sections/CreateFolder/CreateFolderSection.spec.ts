@@ -10,7 +10,7 @@ import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { CreateFolder } from '@/services/Folder'
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
-import { ComponentPublicInstance } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
@@ -192,7 +192,7 @@ describe('createFolderSection', () => {
         const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
 
         await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
-        await wrapper.vm.$nextTick()
+        await nextTick()
 
         expect(vi.mocked(CreateFolder)).toHaveBeenCalledWith(
           'service-id',
@@ -215,7 +215,7 @@ describe('createFolderSection', () => {
       )
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(modal.props('isCreateFolderModalVisible')).toBeFalsy()
     })
@@ -230,7 +230,7 @@ describe('createFolderSection', () => {
       const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
     })
@@ -245,7 +245,7 @@ describe('createFolderSection', () => {
       const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]
@@ -265,7 +265,7 @@ describe('createFolderSection', () => {
       const button = await dynamicUntilFound(wrapper, '.treeview__new-folder')
 
       await button.trigger('click')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.vm.isDialogVisible).toBeTruthy()
     })
@@ -295,7 +295,7 @@ describe('createFolderSection', () => {
           )
 
           await modal.vm.$emit(action)
-          await wrapper.vm.$nextTick()
+          await nextTick()
 
           expect(wrapper.emitted(expectedEvent)).toBeTruthy()
         }

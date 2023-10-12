@@ -6,7 +6,7 @@ import { type ConfirmationPopupProps } from
 import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { createPinia, setActivePinia } from 'pinia'
 import { PDialog } from '@kpmg/styleguide'
-import { ComponentPublicInstance } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
 
 const defaultProps: ConfirmationPopupProps = {
   isPopupVisible: false,
@@ -95,7 +95,7 @@ describe('confirmationPopup', () => {
 
       await confirmationButton.trigger('click')
 
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-confirm-button-click')).toBeTruthy()
 
@@ -115,7 +115,7 @@ describe('confirmationPopup', () => {
 
       await cancelButton.trigger('click')
 
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-cancel-button-click')).toBeTruthy()
     })
@@ -129,7 +129,7 @@ describe('confirmationPopup', () => {
       const pdialog = await dynamicUntilFoundComponent(wrapper, PDialog)
 
       await pdialog.vm.$emit('close')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('on-close-popup')).toBeTruthy()
     })
@@ -140,7 +140,7 @@ describe('confirmationPopup', () => {
       const wrapper = createWrapper(updatedProps)
       wrapper.vm.isPopupVisible = true
 
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('update:isPopupVisible')).toBeTruthy()
     })

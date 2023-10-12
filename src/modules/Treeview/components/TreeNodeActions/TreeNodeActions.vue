@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PIThreeDots, PToolbox, PButton, PIcon } from '@kpmg/styleguide'
-import { generateToolboxBasicData } from '@/modules/Treeview/helpers/toolboxHelpers'
+import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper'
 import { type TreeNodeActionsProps }
   from '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
 
@@ -33,7 +33,7 @@ const hasActionButton = computed(() => {
 })
 const toolboxBasicData = computed(() => {
   if (hasActionButton.value) {
-    return generateToolboxBasicData(props.permissions)
+    return generateToolboxBasicData('folders', props.permissions)
   } else {
     return []
   }

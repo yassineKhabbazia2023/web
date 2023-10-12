@@ -10,6 +10,7 @@ import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { RenameFolder } from '@/services/Folder'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
+import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
@@ -145,7 +146,7 @@ describe('renameFolderSection', () => {
         )
 
         await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
-        await wrapper.vm.$nextTick()
+        await nextTick()
 
         expect(vi.mocked(RenameFolder)).toHaveBeenCalledWith(
           defaultProps.folderId,
@@ -170,7 +171,7 @@ describe('renameFolderSection', () => {
       )
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(modal.props('isRenameFolderModalVisible')).toBeFalsy()
 
@@ -187,7 +188,7 @@ describe('renameFolderSection', () => {
       const modal = await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(wrapper.emitted('update-folder-name')).toBeTruthy()
 
@@ -204,7 +205,7 @@ describe('renameFolderSection', () => {
       const modal = await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
-      await wrapper.vm.$nextTick()
+      await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]
@@ -238,7 +239,7 @@ describe('renameFolderSection', () => {
           const renameFolderModalWrapper =
                   await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
           await renameFolderModalWrapper.vm.$emit(action)
-          await wrapper.vm.$nextTick()
+          await nextTick()
 
           expect(wrapper.emitted(expectedEvent)).toBeTruthy()
         }

@@ -16,12 +16,21 @@
         @update-folder-name ="handleUpdateFolderName"
       />
     </PCol>
+
+    <PCol v-if="currentService" :span="18">
+      <Documents
+        :currentService="currentService"
+        :selectedEntity="selectedEntity"
+        :selectedFolder="currentFolder"
+      />
+    </PCol>
   </PRow>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Treeview from '@/modules/Treeview'
+import Documents from '@/modules/Documents'
 import { fetchServicesFolders } from '@/services/Folder'
 import { fetchUserEntityServices } from '@/services/Services'
 
