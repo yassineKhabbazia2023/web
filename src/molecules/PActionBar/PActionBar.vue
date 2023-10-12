@@ -44,7 +44,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import { iconsResolver } from '@/utils/iconResolver'
@@ -69,15 +69,24 @@ export interface PActionBarProps {
 
 const props = defineProps<PActionBarProps>()
 
-const truncatedRightSideButtons = props.rightSideButtons.length > 5
-  ? props.rightSideButtons.slice(0, 5)
-  : props.rightSideButtons
-const truncatedLeftSideButtons = props.leftSideButtons.length > 3
-  ? props.leftSideButtons.slice(0, 3)
-  : props.leftSideButtons
+const truncatedRightSideButtons = computed(() => {
+  return props.rightSideButtons.length > 5
+    ? props.rightSideButtons.slice(0, 5)
+    : props.rightSideButtons
+})
+const truncatedLeftSideButtons = computed(() => {
+  return props.leftSideButtons.length > 3
+    ? props.leftSideButtons.slice(0, 3)
+    : props.leftSideButtons
+})
 
-const resolvedIconsRight = iconsResolver(props.rightSideButtons, 'buttonIcon')
-const resolvedIconsLeft = iconsResolver(props.leftSideButtons, 'buttonIcon')
+const resolvedIconsRight = computed(() => {
+  return iconsResolver(props.rightSideButtons, 'buttonIcon')
+})
+
+const resolvedIconsLeft = computed(() => {
+  return iconsResolver(props.leftSideButtons, 'buttonIcon')
+})
 
 const isWindowUnderDesktop = ref(window.innerWidth < 992)
 
