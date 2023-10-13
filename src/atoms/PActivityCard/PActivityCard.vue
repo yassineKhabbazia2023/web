@@ -3,7 +3,7 @@
     <div class="p-activity-card__avatar">
       <PAvatar
         color="white"
-        size="xsmall"
+        type="xsmall"
       >
         {{ initialsTrim }}
       </PAvatar>

@@ -41,7 +41,7 @@
       <span class="p-navbar__avatar-container">
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           :color="item.color"
         >
           <PIcon>
@@ -60,7 +60,6 @@ import { ElDivider, ElMenu, ElMenuItem } from 'element-plus'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
 import { iconResolver } from '@/utils/iconResolver'
-import { ElMenu, ElMenuItem, ElDivider } from 'element-plus'
 
 export interface EntityProps {
   idAccount: string
@@ -84,7 +83,7 @@ export interface NavbarProps {
 const isCollapse = ref(true)
 
 const currentShape = ref('circle')
-const currentSize = ref('xsmall')
+const currentType = ref('xsmall')
 const activeIndex = ref('2')
 
 withDefaults(defineProps<NavbarProps>(), {

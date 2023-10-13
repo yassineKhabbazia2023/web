@@ -4,12 +4,12 @@
       <div class="demo-type">
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           :color="currentColor"
           :src="url" />
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           :color="currentColor">
           <PIcon>
             <PIPulse />
@@ -17,16 +17,16 @@
         </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           :color="currentColor"
           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           :color="currentColor"> AB </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           color="orange">
           <PIcon>
             <PICupHot />
@@ -34,7 +34,7 @@
         </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           color="persian">
           <PIcon>
             <PIShop />
@@ -42,7 +42,7 @@
         </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           color="teal">
           <PIcon>
             <PICupStraw />
@@ -50,7 +50,7 @@
         </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           color="green">
           <PIcon>
             <PIFlower />
@@ -58,7 +58,7 @@
         </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           color="fuschia">
           <PIcon>
             <PIScissors />
@@ -66,7 +66,7 @@
         </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           color="gray">
           <PIcon>
             <PITruck />
@@ -74,7 +74,7 @@
         </PAvatar>
         <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           color="white">
           AB
         </PAvatar>
@@ -85,7 +85,7 @@
           title="Avatar Shape"
           :options="avatarShapeList" />
         <HstRadio
-          v-model="currentSize"
+          v-model="currentType"
           title="Avatar Sizes"
           :options="avatarSizeList" />
         <HstRadio
@@ -97,7 +97,7 @@
     <Variant title="Fit Container">
       <PAvatar
         shape="square"
-        :size="100"
+        :type="100"
         :fit="currentFit"
         src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" />
       <template #controls>
@@ -112,7 +112,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { PAvatarProps } from './'
+import type { PAvatarProps } from './PAvatar'
 import PAvatar from './'
 
 const url = ref('https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
@@ -126,7 +126,7 @@ const avatarShapeList: { label: string; value: PAvatarProps['shape'] }[] = [
     value: 'square'
   }
 ]
-const avatarSizeList: { label: string; value: PAvatarProps['size'] }[] = [
+const avatarSizeList: { label: string; value: PAvatarProps['type'] }[] = [
   {
     label: 'xlarge',
     value: 'xlarge'
@@ -205,7 +205,7 @@ const avatarColorList: { label: string; value: PAvatarProps['color'] }[] = [
   }
 ]
 const currentShape = ref<PAvatarProps['shape']>('circle')
-const currentSize = ref<string | undefined>('default')
+const currentType = ref<string | undefined>('default')
 const currentFit = ref<PAvatarProps['fit']>('cover')
 const currentColor = ref<PAvatarProps['color']>('persian-gradient')
 </script>

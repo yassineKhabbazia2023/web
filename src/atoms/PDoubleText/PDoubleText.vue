@@ -1,44 +1,46 @@
 <template>
-    <div
-      :type="type"
-      :class="{ 'p-double-text': true, disabled, selected }"
-      :disabled="disabled"
-      :selected="selected"
-    >
-      <div class="p-double-text__icon" v-if="icon">
-        <PIcon :size="16">
-          <component :is="icon" />
-        </PIcon>
+  <div
+    :type="type"
+    :class="{ 'p-double-text': true, disabled, selected }"
+    :disabled="disabled"
+    :selected="selected"
+  >
+    <div class="p-double-text__icon" v-if="icon">
+      <PIcon :size="16">
+        <component :is="icon" />
+      </PIcon>
+    </div>
+    <div class="p-double-text__icon" v-if="profile">
+      <PAvatar
+        :shape="iconShape"
+        :type="iconType"
+        :color="iconColor">
+        {{ profile }}
+      </PAvatar>
+    </div>
+    <div :class="{ 'p-double-text__content': true, 'p-double-text--bold': bold }">
+      <div
+        :class="{ 'p-double-text__content-title': true, disabled, selected}"
+        :disabled="disabled"
+        :selected="selected"
+      >
+        {{ title }}
       </div>
-      <div class="p-double-text__icon" v-if="profile">
-        <PAvatar
-          :shape="iconShape"
-          :size="iconSize"
-          :color="iconColor">
-          {{ profile }}
-        </PAvatar>
-      </div>
-      <div :class="{ 'p-double-text__content': true, 'p-double-text--bold': bold }">
-        <div
-          :class="{ 'p-double-text__content-title': true, disabled, selected}"
-          :disabled="disabled"
-          :selected="selected"
-        >
-          {{ title }}
-        </div>
-        <div
-          :class="{ 'p-double-text__content-description': true, disabled, selected }"
-          :disabled="disabled"
-          :selected="selected"
-        >
-          {{ content }}
-        </div>
+      <div
+        :class="{ 'p-double-text__content-description': true, disabled, selected }"
+        :disabled="disabled"
+        :selected="selected"
+      >
+        {{ content }}
       </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { type Component } from 'vue'
+import PAvatar from '@/atoms/PAvatar'
+import PIcon from '@/atoms/PIcon'
 
 interface PDoubleTextProps {
   icon?: Component | string
@@ -47,7 +49,7 @@ interface PDoubleTextProps {
   content: string
   iconShape: string
   iconColor: string
-  iconSize: string
+  iconType: string
   type: 'primary' | 'secondary'
   selected: boolean
   disabled: boolean
@@ -59,7 +61,7 @@ withDefaults(defineProps<PDoubleTextProps>(), {
   iconShape: 'circle',
   iconColor: 'persian-gradient',
   bold: false,
-  iconSize: 'small'
+  iconType: 'small'
 })
 </script>
 <style lang="scss" scoped>

@@ -11,7 +11,7 @@
         <template #avatar>
           <PAvatar
           :shape="currentShape"
-          :size="currentSize"
+          :type="currentType"
           :color="currentColor"> AB </PAvatar>
         </template>
         <template #text>
@@ -38,16 +38,16 @@
 </template>
 
 <script lang="ts" setup>
+import { reactive, ref } from 'vue'
 import PAvatar from '@/atoms/PAvatar'
 import PToolbox from '@/molecules/PToolbox'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import PNotificationCard from './'
 import { type PAvatarProps } from '@/atoms/PAvatar'
-import { reactive, ref } from 'vue'
 
 const currentShape = ref<PAvatarProps['shape']>('circle')
-const currentSize = ref<string | undefined>('default')
+const currentType = ref<string | undefined>('default')
 const currentColor = ref<PAvatarProps['color']>('persian-gradient')
 
 const toolboxBasicData = ([

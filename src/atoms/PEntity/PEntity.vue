@@ -7,7 +7,7 @@
     <div class="p-entity__avatar">
       <PAvatar
         :shape="iconShape"
-        :size="iconSize"
+        :type="iconType"
         :color="iconColor">
         <PIcon>
           <component :is="icon" />
@@ -29,7 +29,7 @@ export interface PTextProps {
   type: 'primary' | 'secondary'
   iconShape: string
   iconColor: string
-  iconSize: string
+  iconType: string
   bold?: boolean
   selected: boolean
 }
@@ -39,7 +39,7 @@ withDefaults(defineProps<PTextProps>(), {
   icon: '',
   iconShape: 'circle',
   iconColor: 'persian-gradient',
-  iconSize: 'xsmall',
+  iconType: 'xsmall',
   bold: false,
   selected: false
 })

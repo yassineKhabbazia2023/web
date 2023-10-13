@@ -28,7 +28,7 @@
         <PToolbox :elements="toolboxBasicData">
           <PAvatar
             shape="circle"
-            size="small"
+            type="small"
             color="persian-gradient"
           >
             AB
