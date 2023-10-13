@@ -97,18 +97,18 @@
       :source="templateSourceGroup">
       <template #default="{ state }">
         <PDropdown v-model="state.value" placeholder="Select">
-          <el-option-group
+          <POptionGroup
             v-for="group in groupOptions"
             :key="group.label"
             :label="group.label"
           >
-            <el-option
+            <POption
               v-for="item in group.options"
               :key="item.value"
               :label="item.label"
               :value="item.value"
             />
-          </el-option-group>
+          </POptionGroup>
         </PDropdown>
       </template>
     </Variant>

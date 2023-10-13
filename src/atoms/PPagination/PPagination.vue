@@ -23,14 +23,13 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { ElPagination } from 'element-plus'
-import { PDropdown } from '@/atoms/PDropdown'
+import { ElOption, ElOptionGroup, ElPagination, ElSelect } from 'element-plus'
 
 export interface PaginationProps {
   showTotalPageCounter: boolean
-  pagesRanges: Array<number>
-  pageRangeSelectorGroupLabel: string
-  pageRangeSelectorSuffix: string
+  pageSizes: Array<number>
+  pageSizeSelectorGroupLabel: string
+  pageSizeSelectorSuffix: string
 }
 
 const props = defineProps<PaginationProps>()
