@@ -95,7 +95,6 @@ import {
 import { downloadDocumentById } from '@/services/mandate'
 // const toastPlugin:any = inject('toast')
 
-defineEmits(['close-create-mandate-drawer'])
 const downloadMandate = async () => {
   // const { data, headers } = await downloadDocumentById(
   await downloadDocumentById(

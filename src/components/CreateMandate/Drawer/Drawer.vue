@@ -162,7 +162,7 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const emit = defineEmits(['update:modelValue', 'close-create-mandate-drawer'])
+const emit = defineEmits(['update:modelValue'])
 
 const props = defineProps({
   modelValue: Boolean
