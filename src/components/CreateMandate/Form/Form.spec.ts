@@ -77,7 +77,7 @@ describe('form.vue', () => {
 
   it.each(step1TestCases)('renders the component when step value is 1', async (step1TestCase) => {
     const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(300)
+    await waitForAsyncImports(220)
     await dynamicUntilFoundComponent(wrapper, PForm)
     await dynamicUntilFoundComponent(wrapper, PFormItem)
     await dynamicUntilFoundComponent(wrapper, PInput)
