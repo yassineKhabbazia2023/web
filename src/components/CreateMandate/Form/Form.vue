@@ -69,7 +69,7 @@ disabled>
             {{ t('madam') }}
           </PRadio>
         </PFormItem>
-        <PRow :gutter="8">
+        <PRow :gutter="16">
           <PCol :span="12">
             <PFormItem
 prop="lastName"
@@ -147,7 +147,7 @@ disabled>
           >
           </PInput>
         </PFormItem>
-        <PRow :gutter="8">
+        <PRow :gutter="16">
           <PCol :span="8">
             <PFormItem
 prop="zipCode"
@@ -185,7 +185,7 @@ disabled>
         </PFormItem>
       </div>
       <div v-if="step === 3">
-        <PRow :gutter="8">
+        <PRow :gutter="16">
           <PCol :span="12">
             <PFormItem
               prop="institutionCode"
@@ -198,6 +198,7 @@ disabled>
               <PInput
                 data-testid="institutionCode-input-test"
                 v-model="createMandateForm.institutionCode"
+                placeholder="_ _ _ _ _"
                 @blur="checkFields"
                 state="default"
               >
@@ -216,6 +217,7 @@ disabled>
               <PInput
                 data-testid="branchCode-input-test"
                 v-model="createMandateForm.branchCode"
+                placeholder="_ _ _ _ _"
                 @blur="checkFields"
                 state="default"
               >
@@ -223,7 +225,7 @@ disabled>
             </PFormItem>
           </PCol>
         </PRow>
-        <PRow :gutter="8">
+        <PRow :gutter="16">
           <PCol :span="18">
             <PFormItem
               prop="accountNumber"
@@ -236,6 +238,7 @@ disabled>
               <PInput
                 data-testid="accountNumber-input-test"
                 v-model="createMandateForm.accountNumber"
+                placeholder="_ _ _ _ _ _ _ _ _ _ _"
                 @blur="checkFields"
                 state="default"
               >
@@ -254,6 +257,7 @@ disabled>
               <PInput
                 data-testid="key-input-test"
                 v-model="createMandateForm.key"
+                placeholder="_ _"
                 @blur="checkFields"
                 state="default"
               >
