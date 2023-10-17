@@ -10,7 +10,7 @@
         </PAside>
         <PContainer
           class="main-container"
-          :class="{ 'main-container--no-paddings': !stylesMetaProperties?.hasPaddings === false }"
+          :class="{ 'main-container--no-paddings': stylesMetaProperties?.hasPaddings === false }"
         >
           <router-view />
         </PContainer>
