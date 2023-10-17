@@ -29,4 +29,16 @@ describe('createMandateDrawer.vue', () => {
     expect(wrapper.vm.nextStepAvailability).toBeFalsy() */
     expect(true).toBeTruthy()
   })
+
+  it('renders the close when currentStep > 3', async () => {
+    const wrapper = createWrapper({ modelValue: true })
+    await waitForAsyncImports(150)
+    wrapper.vm.goToNextStep()
+    wrapper.vm.goToNextStep()
+    wrapper.vm.goToNextStep()
+    await wrapper.vm.$nextTick()
+    const closeButton = wrapper.find('button[data-testid="close-button-test"]')
+    await closeButton.trigger('click')
+    expect(wrapper.vm.currentStep).toBe(1)
+  })
 })

@@ -100,6 +100,7 @@
           size="default"
           plain
           @click="closeDrawerAndInitStep()"
+          data-testid="close-button-test"
         >
           {{ t('close-button') }}
         </PButton>
