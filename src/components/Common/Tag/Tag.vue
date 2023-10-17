@@ -1,9 +1,9 @@
 <template>
     <PTag
     v-if="status==='10'"
-    :pColor="tagProperties?.color"
+    :pColor="tagProperties.color"
     effect="light"
-    :iconLeft="tagProperties?.icon"
+    :iconLeft="tagProperties.icon"
     :content="t('incident')"
     type=""
     color=""
@@ -15,9 +15,9 @@
   />
   <PTag
     v-else-if="status==='20'"
-    :pColor="tagProperties?.color"
+    :pColor="tagProperties.color"
     effect="light"
-    :iconLeft="tagProperties?.icon"
+    :iconLeft="tagProperties.icon"
     :content="t('to-do')"
     type=""
     color=""
@@ -29,9 +29,9 @@
   />
   <PTag
     v-else-if="status==='30'"
-    :pColor="tagProperties?.color"
+    :pColor="tagProperties.color"
     effect="light"
-    :iconLeft="tagProperties?.icon"
+    :iconLeft="tagProperties.icon"
     :content="t('in-progress')"
     type=""
     color=""
@@ -43,9 +43,9 @@
   />
   <PTag
     v-else-if="status==='40'"
-    :pColor="tagProperties?.color"
+    :pColor="tagProperties.color"
     effect="light"
-    :iconLeft="tagProperties?.icon"
+    :iconLeft="tagProperties.icon"
     :content="`${t('active')}`"
     type=""
     color=""
@@ -57,9 +57,9 @@
   />
   <PTag
     v-else
-    :pColor="tagProperties?.color"
+    :pColor="tagProperties.color"
     effect="light"
-    :iconLeft="tagProperties?.icon"
+    :iconLeft="tagProperties.icon"
     :content="t('inactive')"
     type=""
     color=""
@@ -110,7 +110,16 @@ const statusMap = new Map([
 ])
 
 const tagProperties = computed(() => {
-  return statusMap.get(Number(props.status))
+  // Fetch the tag property based on status
+  let properties: any = statusMap.get(Number(props.status))
+
+  // If no property is found or the icon is not set, set a default value
+  if (!properties || !properties.icon) {
+    properties = {
+      ...properties,
+      icon: PIXCircle // Default icon
+    }
+  }
+  return properties
 })
 </script>
-
