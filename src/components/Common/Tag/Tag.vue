@@ -1,9 +1,9 @@
 <template>
     <PTag
     v-if="status==='10'"
-    :pColor="tagProperties.color"
+    :pColor="tagProperties?.color"
     effect="light"
-    :iconLeft="tagProperties.icon"
+    :iconLeft="tagProperties?.icon"
     :content="t('incident')"
     type=""
     color=""
@@ -15,9 +15,9 @@
   />
   <PTag
     v-else-if="status==='20'"
-    :pColor="tagProperties.color"
+    :pColor="tagProperties?.color"
     effect="light"
-    :iconLeft="tagProperties.icon"
+    :iconLeft="tagProperties?.icon"
     :content="t('to-do')"
     type=""
     color=""
@@ -29,9 +29,9 @@
   />
   <PTag
     v-else-if="status==='30'"
-    :pColor="tagProperties.color"
+    :pColor="tagProperties?.color"
     effect="light"
-    :iconLeft="tagProperties.icon"
+    :iconLeft="tagProperties?.icon"
     :content="t('in-progress')"
     type=""
     color=""
@@ -43,9 +43,9 @@
   />
   <PTag
     v-else-if="status==='40'"
-    :pColor="tagProperties.color"
+    :pColor="tagProperties?.color"
     effect="light"
-    :iconLeft="tagProperties.icon"
+    :iconLeft="tagProperties?.icon"
     :content="`${t('active')}`"
     type=""
     color=""
@@ -57,9 +57,9 @@
   />
   <PTag
     v-else
-    :pColor="tagProperties.color"
+    :pColor="tagProperties?.color"
     effect="light"
-    :iconLeft="tagProperties.icon"
+    :iconLeft="tagProperties?.icon"
     :content="t('inactive')"
     type=""
     color=""
@@ -87,6 +87,7 @@
 </i18n>
 
 <script setup lang='ts'>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PTag, PIExclamationTriangle, PIUpload, PIArrowRepeat,
@@ -108,6 +109,8 @@ const statusMap = new Map([
   [50, { color: 'gray-300', icon: PIXCircle }]
 ])
 
-const tagProperties: any = statusMap.get(Number(props.status))
+const tagProperties = computed(() => {
+  return statusMap.get(Number(props.status))
+})
 </script>
 
