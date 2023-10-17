@@ -46,7 +46,6 @@
       @enable-disable-validate="handleValidateAvailability" />
     <DownloadMandate
       v-if="currentStep > 3"
-      @close-create-mandate-drawer="closeDrawerAndInitStep()"
     />
     <template #footer>
       <div v-if="currentStep <= 3">
@@ -89,59 +88,54 @@
           data-testid="next-step-test"
           @click="goToNextStep()"
         >
-          {{ t('next')}}
+          {{ t('next') }}
           <PIcon class="el-button__icon--right">
             <PIArrowRight />
           </PIcon>
         </PButton>
       </div>
-      <PAlert v-else>
-        <template #bold-text>
-            <div class="drawer__alert-title">
-              {{t('help')}}
-            </div>
-        </template>
-        <p class="drawer__alert-body">{{t('help-label-prefix')}}
-        <a href="" class="drawer__alert-body--color">{{t('help-label-link')}}</a>
-        {{t('help-label-suffix')}}</p>
-    </PAlert>
+      <div v-else>
+        <PButton
+          type="primary"
+          size="default"
+          plain
+          @click="closeDrawerAndInitStep()"
+          data-testid="close-button-test"
+        >
+          {{ t('close-button') }}
+        </PButton>
+      </div>
     </template>
   </PDrawer>
 </template>
 
 <i18n lang="yaml">
     en-US:
-        new-collection: 'New collection'
-        next: 'Next'
-        previous: 'Previous'
-        validate: 'Validate'
-        entity: 'Entity'
-        signatory: 'Signatory'
-        infos: 'Infos'
-        banking-data: 'Banking data'
-        bank-identity-statement: 'Bank identity statement'
-        tooltip: 'The IBS number entered must be part of your
-          portfolio and have an active commitment.'
-        help: 'Need help?'
-        help-label-prefix: 'Consult the '
-        help-label-link: 'practical guide'
-        help-label-suffix: ' to ensure that the collection is active'
+      new-collection: 'New collection'
+      next: 'Next'
+      previous: 'Previous'
+      validate: 'Validate'
+      entity: 'Entity'
+      signatory: 'Signatory'
+      infos: 'Infos'
+      banking-data: 'Banking data'
+      bank-identity-statement: 'Bank identity statement'
+      tooltip: 'The IBS number entered must be part of your
+        portfolio and have an active commitment.'
+      close-button: 'Close page'
     fr-FR:
-        new-collection: 'Nouvelle collecte'
-        next: 'Suivant'
-        previous: 'Précédent'
-        validate: 'Valider'
-        entity: 'Entité'
-        signatory: 'Signataire'
-        infos: 'Infos'
-        banking-data: 'Données bancaires'
-        bank-identity-statement: "Relevé d’identité bancaire"
-        tooltip: "Le numéro d’IBS saisi doit faire parti de
-          votre portefeuille et avoir un engagement actif."
-        help: "Besoin d'aide ?"
-        help-label-prefix: 'Consultez le '
-        help-label-link: 'guide pratique'
-        help-label-suffix: " pour garantir l'activation de la collecte"
+      new-collection: 'Nouvelle collecte'
+      next: 'Suivant'
+      previous: 'Précédent'
+      validate: 'Valider'
+      entity: 'Entité'
+      signatory: 'Signataire'
+      infos: 'Infos'
+      banking-data: 'Données bancaires'
+      bank-identity-statement: "Relevé d’identité bancaire"
+      tooltip: "Le numéro d’IBS saisi doit faire parti de
+        votre portefeuille et avoir un engagement actif."
+      close-button: 'Fermer la page'
 </i18n>
 
 <script setup lang='ts'>
@@ -156,8 +150,7 @@ import {
   PStepItem,
   PTooltip,
   PIcon,
-  PButton,
-  PAlert
+  PButton
 } from '@kpmg/styleguide'
 import Form from '@/components/CreateMandate/Form'
 import DownloadMandate from '@/components/CreateMandate/Download'
@@ -229,7 +222,6 @@ defineExpose({
     line-height: 120%;
     padding: 4px 0px;
     margin-bottom: 16px;
-    text-transform: capitalize;
   }
   &__stepper {
     margin-bottom: 24px;
@@ -237,20 +229,6 @@ defineExpose({
   &__tooltip {
     margin-top: 1px;
     margin-left: 8px;
-  }
-  &__alert-title {
-    display: flex;
-    align-items: start;
-  }
-  &__alert-body {
-    color: var(--pulse-color-neutral-gray-700);
-    font-size: 1.4rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 140%;
-    &--color {
-      color: var(--el-color-primary);
-    }
   }
 }
 </style>
