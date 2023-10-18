@@ -59,7 +59,7 @@
         >
           {{ t('cguMessagePartOne') }}
           <a
-            href=""
+            :href="urlTerms"
             target="_blank"
             class="cgu-link">
             {{ t('cguLink') }}
@@ -110,7 +110,7 @@
     placeholderPassword: 'Saisir votre mot de passe'
     placeholderConfirmPassword: 'Confirmer votre mot de passe'
     validCgu: "Validez les conditions générales d'utilisation."
-    cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté '
+    cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les'
     cguLink: "conditions générales d'utilisation "
     cguMessagePartTwo: 'de KPMG Pulse.'
     alertConfirmPass: 'Veuillez confirmer votre mot de passe'
@@ -155,6 +155,7 @@ const contactId = route.query.contactId
 const accountId = route.query.accountId
 const resetPasswordToken = route.query.token
 const formRef = ref<FormInstance>()
+const urlTerms = ref('')
 const formValidity = reactive({
   password: false,
   confirmPassword: false,
@@ -262,11 +263,20 @@ const isValidToken = async (): Promise<any> => {
   } catch {}
 }
 
+const getUrlTerm = async () => {
+  const urlGetTerms = '/Terms/GetUrlOfTheCurrentActiveTerms'
+  try {
+    const { data: value } = await commonApi().onboarding.get(urlGetTerms)
+    urlTerms.value = value
+  } catch {}
+}
+
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
     router.push({ name: 'expireToken', query: { contactId, accountId } })
   }
+  await getUrlTerm()
 })
 </script>
 
@@ -297,6 +307,7 @@ onBeforeMount(async () => {
     line-height: 16px;
 
     .cgu-link {
+      color: var(--el-color-persian-500);
       font-weight: 700;
     }
   }
