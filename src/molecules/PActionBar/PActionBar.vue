@@ -11,7 +11,7 @@
         :disabled="item.disabled"
         :size="item.size"
         :class="['p-action-bar__left-btn', item.buttonName === '' ? 'el-button--icon' : '']"
-        @click="$emit(item.buttonActionName)">
+        @click="$emit('p-action-bar-button-clicked', item.buttonActionName)">
 
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsLeft[index]"></component>
@@ -32,7 +32,7 @@
         :disabled="item.disabled"
         :size="item.size"
         class="p-action-bar__right-btn"
-        @click="$emit(item.buttonActionName)">
+        @click="$emit('p-action-bar-button-clicked', item.buttonActionName)">
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsRight[index]"></component>
         </PIcon>
@@ -68,7 +68,7 @@ export interface PActionBarProps {
 }
 
 const props = defineProps<PActionBarProps>()
-
+defineEmits(['p-action-bar-button-clicked'])
 const truncatedRightSideButtons = computed(() => {
   return props.rightSideButtons.length > 5
     ? props.rightSideButtons.slice(0, 5)

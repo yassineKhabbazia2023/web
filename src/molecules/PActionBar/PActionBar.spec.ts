@@ -124,7 +124,8 @@ describe('pActionBar', () => {
 
       await button.trigger('click')
 
-      expect(wrapper.emitted('Hello i am your action')).toHaveLength(1)
+      expect(wrapper.emitted('p-action-bar-button-clicked')).toHaveLength(1)
+      expect(wrapper.emitted('p-action-bar-button-clicked')).toEqual([['Hello i am your action']])
     })
   })
 })
