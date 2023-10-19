@@ -1,21 +1,14 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-// import wrapperFactory from 'tests/utils/wrapperFactory'
 import PPagination from './'
 import { ElSelect, ElPagination } from 'element-plus'
-
-type PaginationProps = {
-  showTotalPageCounter: boolean
-  pagesRanges: Array<number>
-  pageRangeSelectorGroupLabel: string
-  pageRangeSelectorSuffix: string
-}
+import type { PaginationProps } from './PPaginationTypes'
 
 const defaultProps: PaginationProps = {
   showTotalPageCounter: true,
-  pagesRanges: [100, 200, 300],
-  pageRangeSelectorGroupLabel: 'this is the group name',
-  pageRangeSelectorSuffix: 'documents'
+  pageSizes: [100, 200, 300],
+  pageSizeSelectorGroupLabel: 'this is the group name',
+  pageSizeSelectorSuffix: 'documents'
 }
 
 const createWrapper = (props = defaultProps) =>
@@ -39,9 +32,9 @@ describe('pPagination', () => {
     it('should hide the total page counter when showTotalPageCounter is false', () => {
       const wrapper = createWrapper({
         showTotalPageCounter: false,
-        pagesRanges: [100, 200, 300],
-        pageRangeSelectorGroupLabel: 'this is the group name',
-        pageRangeSelectorSuffix: 'documents'
+        pageSizes: [100, 200, 300],
+        pageSizeSelectorGroupLabel: 'this is the group name',
+        pageSizeSelectorSuffix: 'documents'
       })
       expect(
         wrapper.find('.p-pagination__total-page-counter').exists()
