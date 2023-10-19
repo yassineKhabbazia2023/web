@@ -87,6 +87,7 @@
 </i18n>
 
 <script setup lang='ts'>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PTag, PIExclamationTriangle, PIUpload, PIArrowRepeat,
@@ -108,6 +109,17 @@ const statusMap = new Map([
   [50, { color: 'gray-300', icon: PIXCircle }]
 ])
 
-const tagProperties: any = statusMap.get(Number(props.status))
-</script>
+const tagProperties = computed(() => {
+  // Fetch the tag property based on status
+  let properties: any = statusMap.get(Number(props.status))
 
+  // If no property is found or the icon is not set, set a default value
+  if (!properties || !properties.icon) {
+    properties = {
+      ...properties,
+      icon: PIXCircle // Default icon
+    }
+  }
+  return properties
+})
+</script>
