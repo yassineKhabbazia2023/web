@@ -48,7 +48,7 @@
       <PFormItem>
         <PButton
           type="white"
-          @click="router.push({ name: 'login' })"
+          @click="router.push({ name: 'loginClient' })"
           class="back-to-login-button"
         >
           {{ t('backToLogin') }}
