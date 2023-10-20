@@ -11,9 +11,10 @@
       {{ t('msgInfo') }}
     </p>
     <a
-      href="/login"
-      class="link hidden-sm-and-down">
-      {{ t('returnHome') }}
+      href="/login-client"
+      class="link hidden-sm-and-down"
+    >
+      {{ t('returnLoginPage') }}
     </a>
   </div>
 </template>
@@ -23,11 +24,11 @@
   en-US:
     verifyEmail: 'Verify your mail box'
     msgInfo: 'A new link activation has been send to you. This link will expire in 1h30, please active your account before this delay.'
-    returnHome: 'Back to homepage'
+    returnLoginPage: 'Back to the login page'
   fr-FR:
     verifyEmail: 'Vérifier votre adresse mail'
     msgInfo: 'Le nouveau lien d''activation vient de vous être envoyé. Ce lien expire dans 1h30, veuillez activer votre compte avant ce délai.'
-    returnHome: 'Revenir à la connexion'
+    returnLoginPage: 'Revenir à la connexion'
 </i18n>
 <!-- eslint-enable max-len -->
 
