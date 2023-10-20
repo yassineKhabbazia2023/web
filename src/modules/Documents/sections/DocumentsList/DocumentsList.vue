@@ -1,10 +1,11 @@
 <template>
  <section>
-  {{ t('ActionsAndFiltersPart') }}
+  <DocumentsActionsBar :permissions="permissionsList"/>
   <PTable
   :data="documentsListWithTableStructure.documentsPage.items"
   style="width: 100%"
   @sort-change="handleSortChange"
+  @selection-change="handleSelectionChange"
   >
     <!-- That is the current way of adding paddings without overriding styleguide -->
     <PTableColumn width="32" label="" />
@@ -31,29 +32,23 @@
  </section>
 </template>
 
-<i18n lang="yaml">
-  fr-FR:
-    ActionsAndFiltersPart: "Action and filter sections will be here"
-</i18n>
-
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import type { DocumentsListProps } from './DocumentsListTypes'
 import { PTable, PTableColumn } from '@kpmg/styleguide'
 import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
-
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local'
-})
+import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
+import { Document } from '@/models/Document'
+import { computed, ref } from 'vue'
+import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
 
 const emit = defineEmits([
-  'on-sort-change'
+  'on-sort-change',
+  'on-selection-change'
 ])
 
 defineProps<DocumentsListProps>()
-
+const seletedDocuments = ref<Document[]>([])
 const sortableColumns = ['Nom du document', 'Déposé le']
 const columnSizes: Record<string, number> = {
   'Nom du document': 590,
@@ -70,5 +65,13 @@ const handleSortChange = (data:any) => {
   const sortQueryField = returnSortQueryField(columnLabel, order)
   emit('on-sort-change', sortQueryField)
 }
+const handleSelectionChange = (val: Document[]) => {
+  seletedDocuments.value = val
+  emit('on-selection-change', seletedDocuments.value)
 
+}
+
+const permissionsList = computed(() => {
+  return getPermissionsFromDocuments(seletedDocuments.value)
+})
 </script>

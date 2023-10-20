@@ -28,9 +28,11 @@ const createWrapper = (props: DocumentsListProps = defaultProps) => {
 vi.mock('@kpmg/styleguide', () => {
   const PTable = vi.importActual('@kpmg/styleguide')
   const PTableColumn = vi.importActual('@kpmg/styleguide')
+  const PActionBar = vi.importActual('@kpmg/styleguide')
   return {
     PTable,
     PTableColumn,
+    PActionBar,
     PToolbox: {
       getBoundingClientRect: () => ({
         width: 100,
@@ -64,9 +66,11 @@ describe('documentList', () => {
   vi.mock('@kpmg/styleguide', () => {
     const PTable = vi.importActual('@kpmg/styleguide')
     const PTableColumn = vi.importActual('@kpmg/styleguide')
+    const PActionBar = vi.importActual('@kpmg/styleguide')
     return {
       PTable,
       PTableColumn,
+      PActionBar,
       PToolbox: {
         getBoundingClientRect: () => ({
           width: 100,
@@ -117,6 +121,46 @@ describe('documentList', () => {
 
       expect(wrapper.emitted('on-sort-change')).toBeTruthy()
       expect(wrapper.emitted('on-sort-change')).toStrictEqual([['+name']])
+    })
+
+    it('should emit on-selection-change when selection-change', async () => {
+      const wrapper = createWrapper()
+
+      await dynamicUntilFound(wrapper, '.el-table__cell')
+      await nextTick()
+
+      const table = await dynamicUntilFoundComponent(wrapper, PTable)
+      await nextTick()
+
+      const selectedDocuments = [
+        {
+          id: '1',
+          name: 'Document 1',
+          content: { href: '' },
+          preview: { href: '' },
+          updatedBy: 'User 1',
+          updated: '2023-10-18',
+          type: 'Type 1',
+          size: 1000,
+          comments: [],
+          isUploadedInGedLoop: true,
+          folder: { id: 1, path: [] },
+          created: '2023-10-17',
+          createdBy: 'User 2',
+          account: { id: '', name: '' },
+          properties: { syncStatus: '', HasSubscribedToVault: '' },
+          lifecycleStatus: 'Status 1',
+          paymentStatus: null,
+          source: { id: 1, code: '', libelle: '' },
+          piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
+          permissions: ['read', 'write'],
+          isNew: false
+        }
+      ]
+      await table.vm.$emit('selection-change', selectedDocuments)
+
+      expect(wrapper.emitted('on-selection-change')).toBeTruthy()
+      expect(wrapper.emitted('on-selection-change')).toStrictEqual([[selectedDocuments]])
     })
   }, 30000)
 })
