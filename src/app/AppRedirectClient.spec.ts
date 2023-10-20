@@ -56,6 +56,6 @@ describe('app with navigation guard', () => {
 
     const getPageTitle = () => wrapper.find('.pageTitle').text()
     expect(getPageTitle()).toBe(PAGES_TITLE.CLIENT)
-    expect(router.currentRoute._value.name).toBe('loginClient')
+    expect(router.currentRoute.value.name).toBe('loginClient')
   })
 })
