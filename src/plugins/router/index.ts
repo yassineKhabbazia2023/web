@@ -45,6 +45,12 @@ router.beforeEach(async (to: any, _from) => {
         : 'loginClient'
     }
   }
+  if (!to.redirectedFrom && to.name === 'login') {
+    const hasUserOriginCollab = await isUserOriginCollab()
+    if (!hasUserOriginCollab) {
+      return { name: 'loginClient' }
+    }
+  }
 })
 
 export default router

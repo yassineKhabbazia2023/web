@@ -11,6 +11,8 @@ vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5
 }))
 
+const mockUserOrigin = vi.fn()
+
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
@@ -23,9 +25,7 @@ vi.mock('@kpmg/common', () => ({
   }),
   commonApi: () => ({
     user_origin: {
-      get: vi
-        .fn()
-        .mockResolvedValue({ data: 'COLLAB' })
+      get: mockUserOrigin
     }
   }),
   routes: {
@@ -33,20 +33,21 @@ vi.mock('@kpmg/common', () => ({
   }
 }))
 
-const createWrapper = (userStore = {}) => mount(App, {
-  global: {
-    plugins: [router, createTestingPinia({
-      initialState: {
-        common: {
-          user: userStore
+const createWrapper = () =>
+  mount(App, {
+    global: {
+      plugins: [router, createTestingPinia({
+        initialState: {
+          common: {
+            user: {}
+          }
         }
+      })],
+      stubs: {
+        PButton: { template: '<button><slot /></button>' }
       }
-    })],
-    stubs: {
-      PButton: { template: '<button><slot /></button>' }
     }
-  }
-})
+  })
 
 describe('app with navigation guard', () => {
   beforeEach(() => {
@@ -54,7 +55,8 @@ describe('app with navigation guard', () => {
     ROUTES.map((route) => router.addRoute(route))
   })
 
-  it('should redirect to the login page if user has no token', async () => {
+  it('should redirect to the right login page if user has no token', async () => {
+    mockUserOrigin.mockResolvedValueOnce({ data: 'COLLAB' })
     const wrapper: VueWrapper<any> = createWrapper()
     router.push({ name: 'home' })
     await waitForAsyncImports(100)
@@ -62,5 +64,17 @@ describe('app with navigation guard', () => {
 
     const getPageTitle = () => wrapper.find('.pageTitle').text()
     expect(getPageTitle()).toBe(PAGES_TITLE.COLLAB)
+  })
+
+  it('should redirect to the login client page if has user origin as client', async () => {
+    mockUserOrigin.mockResolvedValueOnce({ data: 'CLIENT' })
+    const wrapper: VueWrapper<any> = createWrapper()
+    router.push({ name: 'login' })
+    await waitForAsyncImports(100)
+    await waitForAsyncImports(100)
+
+    const getPageTitle = () => wrapper.find('.pageTitle').text()
+    expect(getPageTitle()).toBe(PAGES_TITLE.CLIENT)
+    expect(router.currentRoute.value.name).toBe('loginClient')
   })
 })
