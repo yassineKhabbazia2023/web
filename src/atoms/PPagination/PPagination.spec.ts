@@ -69,6 +69,7 @@ describe('pPagination', () => {
       wrapper.vm.selectedRange = 300
       await wrapper.vm.$nextTick()
       expect(wrapper.emitted('on-page-range-changed')).toHaveLength(1)
+      expect(wrapper.emitted('on-page-range-changed')).toStrictEqual([[300]])
     })
   })
 })

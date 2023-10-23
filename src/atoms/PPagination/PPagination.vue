@@ -36,6 +36,6 @@ const getpageSizeSelectorContent = (pageSize: number) => {
 }
 
 watch(selectedRange, () => {
-  emit('on-page-range-changed', selectedRange)
+  emit('on-page-range-changed', selectedRange.value)
 })
 </script>
