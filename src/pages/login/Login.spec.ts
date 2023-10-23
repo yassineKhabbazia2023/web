@@ -100,7 +100,7 @@ describe('login', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it('has a link to resetPassword page', async () => {
+  it('has a link to resetPassword page', () => {
     wrapper = createWrapper()
     const forgotPasswordBtn = wrapper.find('.forgot-password-btn')
     expect(forgotPasswordBtn.attributes('to')).toBe('/resetPassword')

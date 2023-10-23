@@ -1,11 +1,15 @@
 import { RouteRecordRaw } from 'vue-router'
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
-import { commoni18n as i18n, commonPinia as pinia, routes } from '@kpmg/common'
-
+import {
+  commoni18n as i18n,
+  commonPinia as pinia,
+  routes
+} from '@kpmg/common'
 import styleGuide from '@kpmg/styleguide'
 
 const RenderLess = () => ''
+const LOGIN_LAYOUT = 'Login'
 
 const vueLifecycles = singleSpaVue({
   createApp,
@@ -20,14 +24,16 @@ const vueLifecycles = singleSpaVue({
 export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
+
 routes.value.push({
   path: '/login-client',
   name: 'loginClient',
   component: () => import('@/pages/login'),
   meta: {
-    layout: 'Login'
+    layout: LOGIN_LAYOUT
   }
 } as RouteRecordRaw)
+
 routes.value.push({
   path: '/login',
   name: 'login',
@@ -37,56 +43,24 @@ routes.value.push({
   }
 } as RouteRecordRaw)
 
-routes.value.push({
-  path: '/expireToken',
-  name: 'expireToken',
-  component: () => import('@/pages/expireToken'),
-  meta: {
-    layout: 'Login'
-  }
-} as RouteRecordRaw)
+const ROUTES_USING_LOGIN_LAYOUT = [
+  'expireToken',
+  'createPassword',
+  'resendEmailSuccess',
+  'resetPassword',
+  'resetPasswordSuccess',
+  'resetPasswordForm'
+]
 
-routes.value.push({
-  path: '/createPassword',
-  name: 'createPassword',
-  component: () => import('@/pages/createPassword'),
-  meta: {
-    layout: 'Login'
-  }
-} as RouteRecordRaw)
-
-routes.value.push({
-  path: '/resendEmailSuccess',
-  name: 'resendEmailSuccess',
-  component: () => import('@/pages/resendEmailSuccess'),
-  meta: {
-    layout: 'Login'
-  }
+ROUTES_USING_LOGIN_LAYOUT.forEach(function(route) {
+  routes.value.push({
+    path: `/${route}`,
+    name: route,
+    component: function() {
+      return import(`@/pages/${route}/index.ts`)
+    },
+    meta: {
+      layout: LOGIN_LAYOUT
+    }
+  } as RouteRecordRaw)
 })
-
-routes.value.push({
-  path: '/resetPassword',
-  name: 'resetPassword',
-  component: () => import('@/pages/resetPassword'),
-  meta: {
-    layout: 'Login'
-  }
-} as RouteRecordRaw)
-
-routes.value.push({
-  path: '/resetPasswordSuccess',
-  name: 'resetPasswordSuccess',
-  component: () => import('@/pages/resetPasswordSuccess'),
-  meta: {
-    layout: 'Login'
-  }
-} as RouteRecordRaw)
-
-routes.value.push({
-  path: '/resetPasswordForm',
-  name: 'resetPasswordForm',
-  component: () => import('@/pages/resetPasswordForm'),
-  meta: {
-    layout: 'Login'
-  }
-} as RouteRecordRaw)
