@@ -96,7 +96,7 @@ const handleLogout = () => {
   emit('logout')
 }
 
-const tokenHandle = (_exp: number) => {
+const tokenHandle = (exp: number) => {
   timer = setTimeout(() => {
     isVisibleDialog.value = true
   }, exp * 1000 - 5000) // expiration time minus 5 seconds
