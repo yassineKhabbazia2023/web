@@ -12,11 +12,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: { template: '<h1>Home Page</h1>' }
-  },
-  {
-    path: '/login-client',
-    name: 'loginClient',
-    component: { template: '<h1>Login Client</h1>' }
   }
 ]
 
