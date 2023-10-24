@@ -3,8 +3,8 @@ import { Store, defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import router from '../../plugins/router'
-import PopupRenewToken from './'
-import { ROUTES } from '../mock'
+import PopupRenewToken from '.'
+import { ROUTES } from '../../app/mock'
 import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 import { commonStore } from '@kpmg/common'
 
@@ -86,7 +86,7 @@ describe('Popup renew token', () => {
     await flushPromises()
     vi.advanceTimersByTime(1697724916)
     await waitForAsyncImports(40)
-    wrapper.findAll('button')[1].trigger('click')
+    await wrapper.findAll('button')[1].trigger('click')
     expect(wrapper.emitted()).toHaveProperty('logout')
   })
   it('renew when user click on stay button', async () => {
@@ -98,7 +98,7 @@ describe('Popup renew token', () => {
     await flushPromises()
     vi.advanceTimersByTime(1697724916)
     await waitForAsyncImports(40)
-    wrapper.findAll('button')[2].trigger('click')
+    await wrapper.findAll('button')[2].trigger('click')
     expect(authPostMock).toHaveBeenCalledTimes(1)
     expect(authPostMock).toHaveBeenCalledWith(
       '/refreshToken?userId=a2566c4480ed4f40b0d2137e4baa0cea') // part sub in token

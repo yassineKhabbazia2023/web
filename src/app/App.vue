@@ -2,7 +2,7 @@
   <Suspense>
     <PConfigProvider>
       <component :is="getLayout" />
-      <PopupRenewToken @logout="handleLogout"/>
+      <PopupRenewToken @logout="handleLogout" />
     </PConfigProvider>
   </Suspense>
 </template>
@@ -14,7 +14,7 @@ import { VITE_IDLE_DURATION } from 'env-vars'
 import { commonStore as useStore } from '@kpmg/common'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@kpmg/styleguide'
-import PopupRenewToken from './popupRenewToken'
+import PopupRenewToken from '@/component/popupRenewToken'
 
 const route = useRoute()
 const router = useRouter()
