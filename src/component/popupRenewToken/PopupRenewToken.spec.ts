@@ -63,7 +63,7 @@ describe('Popup renew token', () => {
       }
     })
     vi.useFakeTimers()
-    ROUTES.map((route) => router.addRoute(route))
+    ROUTES.forEach((route) => router.addRoute(route))
   })
   it('show dialog after token change', async () => {
     store.$patch({
