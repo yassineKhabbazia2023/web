@@ -3,7 +3,7 @@
     v-model="isVisibleDialog"
     width='480px'
     modal
-    class="dialog-wrapper"
+    class="dialog-renew-token"
     :center="false"
     :title="t('title')"
   >
@@ -22,7 +22,7 @@
         :round="false"
         @click="handleLogout"
       >
-        {{  t('logout') }}
+        {{ t('logout') }}
       </PButton>
       <PButton
         type="primary"
@@ -30,7 +30,7 @@
         :round="false"
         @click="handleRenew"
       >
-        {{  t('renew') }}
+        {{ t('renew') }}
       </PButton>
     </template>
   </PDialog>
@@ -45,7 +45,7 @@
       Privacy is essential, and you've been away for a while.
       We will log you out in a few minutes unless you confirm that you are still on Pulse.
   fr-FR:
-    title: 'Votre session va expired'
+    title: 'Votre session va expirer'
     renew: 'Rester connecté'
     logout: 'Déconnexion'
     content: >-
@@ -107,8 +107,8 @@ const tokenHandle = (exp: number) => {
 }
 </script>
 
-<style lang='scss'>
-.dialog-wrapper {
+<style lang="scss">
+.dialog-renew-token {
   .popup-img > img {
     display: block;
     max-width: 221px;
