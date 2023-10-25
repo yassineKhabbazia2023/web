@@ -1,39 +1,48 @@
 <template>
-  <div
-    class="tree-node"
-    :class="{'tree-node--no-children': !hasChildren}"
-    @click="onTreeNodeClick"
-    @mouseover="onTreeNodeMouseover"
-    @mouseleave="onTreeNodeMouseleave"
+  <TreeNodeActionsToolbox
+    triggerType="contextmenu"
+    :permissions="data.permissions"
+    @p-toolbox-item-clicked = "handleItemclicked"
+    @p-toolbox-dropdown-close = "handleToolBoxDropdownStateClose"
+    class="tree-node_action-toolbox"
+    showSlotIfDataEmpty
   >
-    <PIcon
-      v-if="!hasChildren"
-      class="tree-node__no-child-icon"
-      size="12"
+    <div
+      class="tree-node"
+      :class="{'tree-node--no-children': !hasChildren}"
+      @click="onTreeNodeClick"
+      @mouseover="onTreeNodeMouseover"
+      @mouseleave="onTreeNodeMouseleave"
     >
-      <PIDot />
-    </PIcon>
-
-    <PIcon class="tree-node__icon" size="16">
-      <component :is="iconsMapping" />
-    </PIcon>
-
-    <div class="tree-node__label-with-button">
-      <PTooltip
-        :disabled="!shouldTooltipBeVisible"
-        :content="data.name"
-        :showAfter="500"
+      <PIcon
+        v-if="!hasChildren"
+        class="tree-node__no-child-icon"
+        size="12"
       >
-        <span class="tree-node__label">{{ data.name }}</span>
-      </PTooltip>
-      <TreeNodeActions
-        :permissions="data.permissions"
-        :selectedOrHovered="isOpen || isHovered"
-        @p-toolbox-item-clicked="handleItemclicked"
-        @on-toolbox-dropdown-close="handleToolBoxDropdownStateClose"
-      />
+        <PIDot />
+      </PIcon>
+
+      <PIcon class="tree-node__icon" size="16">
+        <component :is="iconsMapping" />
+      </PIcon>
+
+      <div class="tree-node__label-with-button">
+        <PTooltip
+          :disabled="!shouldTooltipBeVisible"
+          :content="data.name"
+          :showAfter="500"
+        >
+          <span class="tree-node__label">{{ data.name }}</span>
+        </PTooltip>
+        <TreeNodeActions
+          :permissions="data.permissions"
+          :selectedOrHovered="isOpen || isHovered"
+          @p-toolbox-item-clicked="handleItemclicked"
+          @p-toolbox-dropdown-close="handleToolBoxDropdownStateClose"
+        />
+      </div>
     </div>
-  </div>
+  </TreeNodeActionsToolbox>
 </template>
 
 <script setup lang="ts">
@@ -53,8 +62,9 @@ import {
 import TreeNodeActions from '@/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }
   from '@/modules/Treeview/components/TreeNode/TreeNodeTypes'
-
-const emit = defineEmits(['on-toolbox-item-clicked', 'update-folder-name'])
+import TreeNodeActionsToolbox from
+  '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
+const emit = defineEmits(['p-toolbox-item-clicked', 'update-folder-name'])
 const props = defineProps<TreeNodeProps>()
 const iconsMapping = computed(() => {
   switch (props.data.iconName) {
@@ -80,7 +90,7 @@ const isDropdownOpen = ref(false)
 const shouldTooltipBeVisible = computed(() => props.data.name.length > 16)
 
 const handleItemclicked = (action: string) => {
-  emit('on-toolbox-item-clicked', action, props.data)
+  emit('p-toolbox-item-clicked', action, props.data)
 }
 const handleToolBoxDropdownStateClose = (state: boolean) => {
   isDropdownOpen.value = state
@@ -140,6 +150,9 @@ const onTreeNodeMouseleave = () => {
     text-overflow: ellipsis;
 
     line-height: 120%;
+  }
+  &_action-toolbox {
+    width: 100%;
   }
 }
 </style>

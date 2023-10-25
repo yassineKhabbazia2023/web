@@ -1,52 +1,40 @@
 <template>
-  <PToolbox
-    trigger="click"
-    v-if="isToolBoxVisible"
-    :elements="toolboxBasicData"
-    @visible-change="handleToolboxDropdownSateChange"
+  <TreeNodeActionsToolbox
+    triggerType="click"
+    :permissions="permissions"
+    :selectedOrHovered="selectedOrHovered"
     @p-toolbox-item-clicked="handleItemclicked"
+    @p-toolbox-dropdown-close="handleToolboxDropdownSateChange"
+    :showSlotIfDataEmpty="false"
   >
     <PButton
-    class="tree-node__action"
-    circle
-    @click.stop>
+      class="tree-node__action"
+      circle
+      @click.stop
+    >
       <PIcon>
         <PIThreeDots />
       </PIcon>
     </PButton>
-  </PToolbox>
+  </TreeNodeActionsToolbox>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'
-import { PIThreeDots, PToolbox, PButton, PIcon } from '@kpmg/styleguide'
-import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper'
-import { type TreeNodeActionsProps }
-  from '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
+import { PIThreeDots, PButton, PIcon } from '@kpmg/styleguide'
+import TreeNodeActionsToolbox from
+  '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
+import { type TreeNodeActionsProps } from
+  '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
 
 const emit = defineEmits([
-  'on-toolbox-item-clicked',
-  'on-toolbox-dropdown-close'
+  'p-toolbox-item-clicked',
+  'p-toolbox-dropdown-close'
 ])
-const props = defineProps<TreeNodeActionsProps>()
-const hasActionButton = computed(() => {
-  return props.permissions && props.permissions.length > 0
-})
-const toolboxBasicData = computed(() => {
-  if (hasActionButton.value) {
-    return generateToolboxBasicData('folders', props.permissions)
-  } else {
-    return []
-  }
-})
-const hasToolboxline = computed(() => toolboxBasicData.value?.length)
-
-const isToolBoxVisible = computed(() =>
-  hasActionButton.value && hasToolboxline.value && props.selectedOrHovered)
+defineProps<TreeNodeActionsProps>()
 const handleItemclicked = (action: string) => {
-  emit('on-toolbox-item-clicked', action)
+  emit('p-toolbox-item-clicked', action)
 }
 const handleToolboxDropdownSateChange = (state: boolean) => {
-  emit('on-toolbox-dropdown-close', state)
+  emit('p-toolbox-dropdown-close', state)
 }
 </script>
 <style lang="scss" scoped>

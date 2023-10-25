@@ -56,7 +56,7 @@
                 :selectedFolder="
                   selectedFolder || props.servicesFolders[0][0].children[0]
                 "
-                @on-toolbox-item-clicked="handleToolboxItemChecked"
+                @p-toolbox-item-clicked="handleToolboxItemChecked"
 
               />
             </template>

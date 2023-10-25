@@ -279,7 +279,7 @@ describe('interactions', () => {
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })
 
-  it('should emit on-toolbox-item-clicked when p-toolbox-item-clicked is emitted', async () => {
+  it('should emit p-toolbox-item-clicked when p-toolbox-item-clicked is emitted', async () => {
     const wrapper = createWrapper()
 
     const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
@@ -289,10 +289,10 @@ describe('interactions', () => {
     await actions.vm.$emit('p-toolbox-item-clicked', 'test')
     await nextTick()
 
-    expect(wrapper.emitted('on-toolbox-item-clicked')).toStrictEqual([['test', fold]])
+    expect(wrapper.emitted('p-toolbox-item-clicked')).toStrictEqual([['test', fold]])
   })
 
-  it('should selectedOrHovered when on-toolbox-dropdown-close is emitted', async () => {
+  it('should selectedOrHovered when p-toolbox-dropdown-close is emitted', async () => {
     const folder = { ...fold, permissions: ['CAN_DELETE_FOLDER'] }
     const updatedProps = { ...defaultProps, data: folder }
 
@@ -302,7 +302,7 @@ describe('interactions', () => {
 
     await nextTick()
 
-    await actions.vm.$emit('on-toolbox-dropdown-close', false)
+    await actions.vm.$emit('p-toolbox-dropdown-close', false)
     await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()

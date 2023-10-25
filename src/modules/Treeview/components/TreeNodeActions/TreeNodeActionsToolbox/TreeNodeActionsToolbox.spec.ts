@@ -1,0 +1,152 @@
+/* eslint-disable vitest/no-hooks */
+import { VueWrapper, mount } from '@vue/test-utils'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { ComponentPublicInstance, nextTick } from 'vue'
+import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
+import { PToolbox } from '@kpmg/styleguide'
+import { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
+import TreeNodeActionsToolbox from '.'
+
+const defaultProps: TreeNodeActionsToolboxProps = {
+  permissions: [],
+  selectedOrHovered: true,
+  triggerType: 'click',
+  showSlotIfDataEmpty: false
+}
+
+type TreeNodeActionsSetup = {
+  hasActionButton: boolean
+  toolboxBasicData: any
+  isToolBoxVisible: boolean
+}
+
+export type TreeNodeActionsWrapper = VueWrapper<
+  ComponentPublicInstance<TreeNodeActionsToolboxProps, TreeNodeActionsSetup>
+>
+
+const pinia = createPinia()
+
+const createWrapper = (props: TreeNodeActionsToolboxProps = defaultProps)
+: TreeNodeActionsWrapper => {
+  return mount(TreeNodeActionsToolbox, {
+    props,
+    slots: {
+      default: '<button class="custom-button">Custom Button Content</button>'
+    },
+    global: {
+      stubs: {
+        PToolbox: {
+          template: '<span />'
+        }
+      },
+      plugins: [pinia]
+    }
+  })as unknown as TreeNodeActionsWrapper
+}
+
+describe('treeNodeActions', () => {
+  describe('props', () => {
+    beforeEach(() => {
+      setActivePinia(pinia)
+    })
+
+    it('should render PToolbox when permissions and selectedOrHovered', async () => {
+      const updatedProps: TreeNodeActionsToolboxProps = {
+        ...defaultProps,
+        permissions: ['CAN_DELETE_FOLDER']
+      }
+      const wrapper = createWrapper(updatedProps)
+      expect(wrapper.exists()).toBeTruthy()
+
+      const componentInstance = wrapper.vm
+      expect(componentInstance.isToolBoxVisible).toBeTruthy()
+      expect(componentInstance.toolboxBasicData).toStrictEqual([
+        {
+          actionName: 'toolbox-delete-action-click',
+          iconName: 'PITrash',
+          value: 'Supprimer'
+        }
+      ])
+    })
+
+    it('should not render PToolbox when permissions is empty', async () => {
+      const props: TreeNodeActionsToolboxProps = {
+        ...defaultProps,
+        permissions: []
+      }
+
+      const wrapper = createWrapper(props)
+      const componentInstance = wrapper.vm
+
+      expect(componentInstance.isToolBoxVisible).toBeFalsy()
+    })
+
+    it('should not render PToolbox when permissions not in mapping', async () => {
+      const props: TreeNodeActionsToolboxProps = {
+        ...defaultProps,
+        permissions: ['azert']
+      }
+
+      const wrapper = createWrapper(props)
+
+      const componentInstance = wrapper.vm
+      expect(componentInstance.toolboxBasicData).toHaveLength(0)
+      expect(componentInstance.isToolBoxVisible).toBeFalsy()
+
+      it('should not render PToolbox when selectedOrHovered is false', async () => {
+        const props: TreeNodeActionsToolboxProps = {
+          ...defaultProps,
+          selectedOrHovered: false
+        }
+
+        const wrapper = createWrapper(props)
+
+        // check that the toolbox items are generated correctly
+        const componentInstance = wrapper.vm
+        expect(componentInstance.toolboxBasicData).toHaveLength(1)
+
+        // check that the toolbox is hidden duo to selectedOrHovered is false
+        expect(componentInstance.isToolBoxVisible).toBeFalsy()
+      })
+    })
+  })
+
+  describe('interactions', () => {
+    it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
+      const updatedProps: TreeNodeActionsToolboxProps = {
+        ...defaultProps,
+        permissions: ['CAN_DELETE_FOLDER']
+      }
+
+      const wrapper = createWrapper(updatedProps)
+
+      const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
+
+      await toolbox.vm.$emit('visible-change', true)
+      await nextTick()
+
+      expect(wrapper.emitted('p-toolbox-dropdown-close')).toStrictEqual([
+        [true]
+      ])
+    })
+
+    it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
+      const updatedProps: TreeNodeActionsToolboxProps = {
+        ...defaultProps,
+        permissions: ['CAN_DELETE_FOLDER']
+      }
+
+      const wrapper = createWrapper(updatedProps)
+
+      const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
+
+      await toolbox.vm.$emit('p-toolbox-item-clicked', 'test')
+      await nextTick()
+
+      expect(wrapper.emitted('p-toolbox-item-clicked')).toStrictEqual([
+        ['test']
+      ])
+    })
+  })
+})

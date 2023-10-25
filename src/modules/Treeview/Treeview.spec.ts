@@ -217,7 +217,7 @@ describe('treeview', () => {
               await nextTick()
 
               await treeNode.vm.$emit(
-                'on-toolbox-item-clicked',
+                'p-toolbox-item-clicked',
                 'toolbox-delete-action-click'
               )
               await nextTick()
@@ -251,7 +251,7 @@ describe('treeview', () => {
               await nextTick()
 
               await treeNode.vm.$emit(
-                'on-toolbox-item-clicked',
+                'p-toolbox-item-clicked',
                 'toolbox-rename-action-click'
               )
               await nextTick()
@@ -278,7 +278,7 @@ describe('treeview', () => {
             await nextTick()
 
             await treeNode.vm.$emit(
-              'on-toolbox-item-clicked',
+              'p-toolbox-item-clicked',
               ''
             )
             await nextTick()
