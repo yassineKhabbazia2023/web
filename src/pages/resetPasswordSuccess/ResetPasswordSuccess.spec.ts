@@ -41,7 +41,6 @@ const createWrapper = () =>
   })
 
 describe('reset password success', () => {
-
   it('display the reset password success page', async () => {
     wrapper = createWrapper()
     await waitForAsyncImports(30)
@@ -52,7 +51,7 @@ describe('reset password success', () => {
 
     await backToLoginBtn.trigger('click')
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: 'login'
+      name: 'loginClient'
     })
   })
 })
