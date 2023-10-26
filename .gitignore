@@ -29,6 +29,7 @@ coverage
 .vs
 
 src/atoms/PIcon/components
+src/assets/images/imagesList.json
 
 auto-imports.d.ts
 components.d.ts
