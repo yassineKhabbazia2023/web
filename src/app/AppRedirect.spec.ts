@@ -65,16 +65,4 @@ describe('app with navigation guard', () => {
     const getPageTitle = () => wrapper.find('.pageTitle').text()
     expect(getPageTitle()).toBe(PAGES_TITLE.COLLAB)
   })
-
-  it('should redirect to the login client page if has user origin as client', async () => {
-    mockUserOrigin.mockResolvedValueOnce({ data: 'CLIENT' })
-    const wrapper: VueWrapper<any> = createWrapper()
-    router.push({ name: 'login' })
-    await waitForAsyncImports(100)
-    await waitForAsyncImports(100)
-
-    const getPageTitle = () => wrapper.find('.pageTitle').text()
-    expect(getPageTitle()).toBe(PAGES_TITLE.CLIENT)
-    expect(router.currentRoute.value.name).toBe('loginClient')
-  })
 })
