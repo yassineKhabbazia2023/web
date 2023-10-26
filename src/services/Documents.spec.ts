@@ -1,5 +1,6 @@
 import { it, expect, vi, describe } from 'vitest'
-import { downloadDocument, downloadDocuments, fetchFolderDocuments } from './Documents'
+import { downloadDocument, downloadDocuments, fetchFolderDocuments, deleteDocuments }
+  from './Documents'
 import type { Service } from '@/models/Service'
 
 const mockDsGet = vi.fn(() => {
@@ -18,11 +19,16 @@ const mockDsPost = vi.fn(() => {
   })
 })
 
+const mockDsDelete = vi.fn(() => {
+  return Promise.resolve()
+})
+
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     ds: {
       get: mockDsGet,
-      post: mockDsPost
+      post: mockDsPost,
+      delete: mockDsDelete
     }
   }),
   commonStore: () => ({
@@ -89,6 +95,25 @@ describe('documents service', () => {
       {
         responseType: 'blob'
       }
+    )
+  })
+
+  it('should call api  when deleteDocuments is called ', async () => {
+    const service: Service =
+      { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const documentIds = ['123']
+    const accountId = 'my-account-id'
+
+    await deleteDocuments(
+      service.ServiceId,
+      accountId,
+      documentIds
+    )
+
+    expect(mockDsDelete).toHaveBeenCalledTimes(1)
+    expect(mockDsDelete).toHaveBeenCalledWith(
+      'service-1/my-account-id/documents', { data: { ids: documentIds } }
     )
   })
 })

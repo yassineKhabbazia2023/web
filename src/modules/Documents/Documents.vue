@@ -16,6 +16,14 @@
       type="gradient"
       size="42"
     />
+    <DocumentDeleteModal
+        :serviceId="currentService"
+        :entityId="selectedEntity"
+        :isVisible="isDeletePopupVisible"
+        :documentIds="documentIdsSelected"
+        @confirm-delete-document="handleConfirmDeleteDocument"
+        @cancel-delete-document="handleCancelDeleteDocument"
+      />
   </div>
 </template>
 
@@ -36,12 +44,15 @@ import { useDownloadDocuments } from
 import { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
+import DocumentDeleteModal
+  from '@/modules/Documents/components/DocumentDeleteModal'
 
 const props = defineProps<DocumentsProps>()
 const documents = ref<DocumentsWithTableStructure | null>(null)
 const componentSortQueryField = ref('')
 const componentStartQueryField = ref(0)
 const componentLimitQueryField = ref(10)
+const isDeletePopupVisible = ref(false)
 // eslint-disable-next-line vitest/require-hook
 watch(() => props.selectedFolder, async () => {
 
@@ -88,6 +99,12 @@ const handleToolboxActionTriggered = (action: string) => {
   switch (action) {
     case 'download-document':
       handleDownloadDocumentsEvent()
+      break
+    case 'delete-document':
+      isDeletePopupVisible.value = true
+      break
+    default:
+      break
   }
 }
 
@@ -96,6 +113,12 @@ const handleActionBarButtonClick = (actionName:string) => {
     switch (actionName) {
       case 'actionbar-download-action-click':
         handleDownloadDocumentsEvent()
+        break
+      case 'actionbar-delete-action-click':
+        isDeletePopupVisible.value = true
+        break
+      default:
+        break
     }
   }
 }
@@ -105,4 +128,23 @@ const permissionsList = computed(() => {
   return getPermissionsFromDocuments(selectedDocuments.value)
 })
 
+const handleConfirmDeleteDocument = async () => {
+  if (!props.selectedFolder) return
+  isDeletePopupVisible.value = false
+  selectedDocuments.value = []
+  documents.value = await fetchFolderDocuments(
+    props.currentService,
+    props.selectedFolder.id,
+    props.selectedEntity
+  )
+}
+
+const handleCancelDeleteDocument = () => {
+  isDeletePopupVisible.value = false
+  selectedDocuments.value = []
+}
+
+const documentIdsSelected = computed(() => {
+  return selectedDocuments.value.map(x => x.id)
+})
 </script>

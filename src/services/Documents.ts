@@ -55,3 +55,13 @@ export const downloadDocuments = async (
     }
   )).data
 }
+
+export const deleteDocuments = async (
+  serviceId: Service['ServiceId'] | null,
+  entityId: string,
+  documentIds: string[]
+) => {
+  const deleteFolderUrl = `${serviceId}/${entityId}/documents`
+  const apiObject = api().ds
+  await apiObject.delete(deleteFolderUrl, { data: { ids: documentIds } })
+}

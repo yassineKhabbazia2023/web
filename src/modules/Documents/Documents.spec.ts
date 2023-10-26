@@ -20,6 +20,8 @@ import {
 } from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
 import { Document, DocumentsWithTableStructure } from '@/models/Document'
 import { ComponentPublicInstance, nextTick } from 'vue'
+import DocumentDeleteModal
+  from '@/modules/Documents/components/DocumentDeleteModal'
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 
 type DocumentsSetup = {
@@ -100,33 +102,33 @@ describe('documents', () => {
         '+name'
       )
     })
-    // an exceptional test to be able to cover the composable code cause of the complexity of mocking i18n and the toastPlugin (not recommended)
-    it(
-      'should call download document composable oppon  toolbox-action-triggered', async () => {
-        const wrapper = createWrapper()
-        const componentInstance = wrapper.vm
-        componentInstance.documents = documentsResponsePayload
-        componentInstance.selectedDocuments =
+    // an exceptional test to be able to cover the composable code cause of the
+    // complexity of mocking i18n and the toastPlugin (not recommended)
+    it('should call download document composable oppon  toolbox-action-triggered', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments =
           documentsResponsePayload.documentsPage.items
-        await nextTick()
+      await nextTick()
 
-        const documentsList = await dynamicUntilFoundComponent(
-          wrapper,
-          DocumentsList
-        )
-        await nextTick()
+      const documentsList = await dynamicUntilFoundComponent(
+        wrapper,
+        DocumentsList
+      )
+      await nextTick()
 
-        await documentsList.vm.$emit(
-          'toolbox-action-triggered',
-          'download-document'
-        )
+      await documentsList.vm.$emit(
+        'toolbox-action-triggered',
+        'download-document'
+      )
 
-        expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
-          defaultProps.currentService,
-          defaultProps.selectedEntity,
-          documentsResponsePayload.documentsPage.items[0].id
-        )
-      }
+      expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
+        defaultProps.currentService,
+        defaultProps.selectedEntity,
+        documentsResponsePayload.documentsPage.items[0].id
+      )
+    }
     )
 
     it('should use download as archive when number of selected documents is more than 1', async () => {
@@ -161,6 +163,85 @@ describe('documents', () => {
           (x) => x.id
         )
       )
+    })
+    it('should open delete modal when toolbox-action-triggered is emitted', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments =
+              [documentsResponsePayload.documentsPage.items[0]]
+      await nextTick()
+      const documents = await dynamicUntilFoundComponent(wrapper, DocumentsList)
+      await nextTick()
+
+      await documents.vm.$emit('toolbox-action-triggered', 'delete-document')
+
+      const deleteModal = await dynamicUntilFoundComponent(wrapper, DocumentDeleteModal)
+
+      expect(deleteModal.props('isVisible')).toBeTruthy()
+      expect(deleteModal.props('documentIds'))
+        .toStrictEqual([documentsResponsePayload.documentsPage.items[0].id])
+    })
+
+    it('should call fetch documents when confirm-delete-document is emitted', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      await nextTick()
+      const deleteModal = await dynamicUntilFoundComponent(wrapper, DocumentDeleteModal)
+      await nextTick()
+
+      await deleteModal.vm.$emit('confirm-delete-document')
+
+      expect(deleteModal.props('isVisible')).toBeFalsy()
+      expect(deleteModal.props('documentIds')).toStrictEqual([])
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+        foldersData[0][0].children[0].serviceId,
+        foldersData[0][0].children[0].id,
+        'my-entity'
+      )
+    })
+
+    it('should close delete modal when cancel-delete-document is emitted', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      await nextTick()
+      const deleteModal = await dynamicUntilFoundComponent(wrapper, DocumentDeleteModal)
+      await nextTick()
+
+      await deleteModal.vm.$emit('cancel-delete-document')
+
+      expect(deleteModal.props('isVisible')).toBeFalsy()
+      expect(deleteModal.props('documentIds')).toStrictEqual([])
+    })
+    // eslint-disable-next-line max-len
+    it('should open delete modal  when click on action bar download button', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments =
+              [documentsResponsePayload.documentsPage.items[0]]
+      await nextTick()
+
+      const documentActionBar = await dynamicUntilFoundComponent(
+        wrapper,
+        DocumentsActionsBar
+      )
+      await nextTick()
+
+      await documentActionBar.vm.$emit(
+        'p-action-bar-button-clicked',
+        'actionbar-delete-action-click'
+      )
+
+      await nextTick()
+      const deleteModal = await dynamicUntilFoundComponent(wrapper, DocumentDeleteModal)
+      await nextTick()
+
+      expect(deleteModal.props('isVisible')).toBeTruthy()
+      expect(deleteModal.props('documentIds'))
+        .toStrictEqual([documentsResponsePayload.documentsPage.items[0].id])
     })
   })
 })
