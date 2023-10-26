@@ -1,5 +1,5 @@
 import { it, expect, vi, describe } from 'vitest'
-import { fetchFolderDocuments } from './Documents'
+import { downloadDocument, downloadDocuments, fetchFolderDocuments } from './Documents'
 import type { Service } from '@/models/Service'
 
 const mockDsGet = vi.fn(() => {
@@ -10,10 +10,19 @@ const mockDsGet = vi.fn(() => {
   })
 })
 
+const mockDsPost = vi.fn(() => {
+  return Promise.resolve({
+    data: {
+      documents: 'posted'
+    }
+  })
+})
+
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     ds: {
-      get: mockDsGet
+      get: mockDsGet,
+      post: mockDsPost
     }
   }),
   commonStore: () => ({
@@ -46,6 +55,39 @@ describe('documents service', () => {
           start: 0,
           sort: '-created'
         }
+      }
+    )
+  })
+
+  it('should download document when downloadDocument method is called',
+    async () => {
+      const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+
+      const accountId = 'my-account-id'
+
+      await downloadDocument(service.ServiceId, accountId, '1234')
+
+      expect(mockDsGet).toHaveBeenCalledTimes(1)
+      expect(mockDsGet).toHaveBeenCalledWith(
+        'service-1/my-account-id/documents/1234/content',
+        {
+          responseType: 'blob'
+        }
+      )
+    })
+  it('should download documents  when downloadDocuments method is called', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const accountId = 'my-account-id'
+
+    await downloadDocuments(service.ServiceId, accountId, ['1234', '4567'])
+
+    expect(mockDsPost).toHaveBeenCalledTimes(1)
+    expect(mockDsPost).toHaveBeenCalledWith(
+      'service-1/my-account-id/archive',
+      { ids: ['1234', '4567'] },
+      {
+        responseType: 'blob'
       }
     )
   })

@@ -51,6 +51,8 @@
   <DocumentActions
     v-else-if="fieldType === 'ActionGroup'"
     :permissions="data.permissions"
+    @p-toolbox-item-clicked="emitClickedAction"
+    @actions-dropdown-opened="handleActionsDropdownOpening"
   />
 </template>
 
@@ -90,6 +92,8 @@ import { formatDate } from '@/modules/common/helpers/dateFormatHelper'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 
 const props = defineProps<TableElementPops>()
+
+const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])
 
 const getFileIcon = (fileName: string) => {
   switch (fileName.split('.').pop()) {
@@ -172,4 +176,13 @@ const getTagProps = computed(() => {
 const isCertified = computed(() => {
   return props.data.properties.HasSubscribedToVault === 'Oui'
 })
+
+// Actions dropdown
+
+const handleActionsDropdownOpening = () => {
+  emit('actions-dropdown-opened')
+}
+const emitClickedAction = (action: string) => {
+  emit('toolbox-action-triggered', action)
+}
 </script>

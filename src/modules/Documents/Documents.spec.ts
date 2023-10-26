@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable vitest/no-hooks */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
@@ -8,19 +9,31 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import DocumentsList from './sections/DocumentsList'
 import { DocumentsProps } from './DocumentsTypes'
-import { fetchFolderDocuments } from '@/services/Documents'
-import { documentsResponsePayload }
-  from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import { DocumentsWithTableStructure } from '@/models/Document'
+import {
+  downloadDocument,
+  fetchFolderDocuments,
+  downloadDocuments
+} from '@/services/Documents'
+import {
+  documentsResponsePayload,
+  documentsResponsePayloadMoreThanOneDoc
+} from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
+import { Document, DocumentsWithTableStructure } from '@/models/Document'
 import { ComponentPublicInstance, nextTick } from 'vue'
+import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
+  selectedDocument: Document
+  selectedDocuments: Document[]
 }
 
 export type DocumentsWrapper = VueWrapper<
   ComponentPublicInstance<DocumentsSetup, DocumentsProps>
 >
+
+const mockToastPlugin = vi.fn()
+
 const pinia = createPinia()
 
 const defaultProps = {
@@ -35,13 +48,31 @@ const createWrapper = (
   return mount(Documents, {
     props,
     global: {
-      plugins: [pinia]
+      stubs: {
+        PToolbox: {
+          template: '<span />'
+        }
+      },
+      plugins: [pinia],
+      provide: {
+        toast: mockToastPlugin
+      }
     }
   }) as unknown as DocumentsWrapper
 }
 
+vi.mock('vue-inject', () => ({
+  provide: vi.fn()
+}))
+
 vi.mock('@/services/Documents', () => ({
-  fetchFolderDocuments: vi.fn()
+  fetchFolderDocuments: vi.fn(),
+  downloadDocuments: vi.fn(),
+  downloadDocument: vi.fn()
+}))
+
+vi.mock('./helpers/downloadFilesHelper', () => ({
+  downloadFile: vi.fn()
 }))
 
 describe('documents', () => {
@@ -53,6 +84,7 @@ describe('documents', () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
+
       await nextTick()
       const documents = await dynamicUntilFoundComponent(wrapper, DocumentsList)
       await nextTick()
@@ -66,6 +98,68 @@ describe('documents', () => {
         0,
         10,
         '+name'
+      )
+    })
+    // an exceptional test to be able to cover the composable code cause of the complexity of mocking i18n and the toastPlugin (not recommended)
+    it(
+      'should call download document composable oppon  toolbox-action-triggered', async () => {
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+        componentInstance.selectedDocuments =
+          documentsResponsePayload.documentsPage.items
+        await nextTick()
+
+        const documentsList = await dynamicUntilFoundComponent(
+          wrapper,
+          DocumentsList
+        )
+        await nextTick()
+
+        await documentsList.vm.$emit(
+          'toolbox-action-triggered',
+          'download-document'
+        )
+
+        expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
+          defaultProps.currentService,
+          defaultProps.selectedEntity,
+          documentsResponsePayload.documentsPage.items[0].id
+        )
+      }
+    )
+
+    it('should use download as archive when number of selected documents is more than 1', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayloadMoreThanOneDoc
+      componentInstance.selectedDocuments =
+        documentsResponsePayloadMoreThanOneDoc.documentsPage.items
+
+      console.log(
+        'in test documentsResponsePayloadMoreThanOneDoc.documentsPage',
+        documentsResponsePayloadMoreThanOneDoc.documentsPage.items.length
+      )
+
+      await nextTick()
+
+      const documentActionBar = await dynamicUntilFoundComponent(
+        wrapper,
+        DocumentsActionsBar
+      )
+      await nextTick()
+
+      await documentActionBar.vm.$emit(
+        'p-action-bar-button-clicked',
+        'actionbar-download-action-click'
+      )
+      await nextTick()
+      expect(vi.mocked(downloadDocuments)).toHaveBeenCalledWith(
+        defaultProps.currentService,
+        defaultProps.selectedEntity,
+        documentsResponsePayloadMoreThanOneDoc.documentsPage.items.map(
+          (x) => x.id
+        )
       )
     })
   })

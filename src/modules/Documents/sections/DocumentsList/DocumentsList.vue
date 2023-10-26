@@ -1,10 +1,12 @@
 <template>
  <section>
-  <DocumentsActionsBar :permissions="permissionsList"/>
   <PTable
   :data="documentsListWithTableStructure.documentsPage.items"
   style="width: 100%"
+  ref="documentsListTable"
+  highlightCurrentRow
   @sort-change="handleSortChange"
+  @row-click="selectRow"
   @selection-change="handleSelectionChange"
   >
     <!-- That is the current way of adding paddings without overriding styleguide -->
@@ -22,7 +24,10 @@
         <TableElement
         :fieldType="column.fieldType"
         :fieldName="column.columnName"
-        :data="scope.row"/>
+        :data="scope.row"
+        @toolbox-action-triggered="handleToolboxActionTriggered"
+        @actions-dropdown-opened="selectRow(scope?.row)"
+        />
       </template>
     </PTableColumn>
 
@@ -37,18 +42,22 @@ import type { DocumentsListProps } from './DocumentsListTypes'
 import { PTable, PTableColumn } from '@kpmg/styleguide'
 import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
-import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
+import type { ElTable } from 'element-plus'
 import { Document } from '@/models/Document'
-import { computed, ref } from 'vue'
-import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
+import { ref } from 'vue'
 
 const emit = defineEmits([
   'on-sort-change',
+  'toolbox-action-triggered',
+  'actionbar-button-clicked',
+  'document-selection-change',
   'on-selection-change'
 ])
 
 defineProps<DocumentsListProps>()
-const seletedDocuments = ref<Document[]>([])
+
+const documentsListTable = ref<InstanceType<typeof ElTable>>()
+const selectedDocuments = ref<Document[]>([])
 const sortableColumns = ['Nom du document', 'Déposé le']
 const columnSizes: Record<string, number> = {
   'Nom du document': 590,
@@ -65,13 +74,30 @@ const handleSortChange = (data:any) => {
   const sortQueryField = returnSortQueryField(columnLabel, order)
   emit('on-sort-change', sortQueryField)
 }
-const handleSelectionChange = (val: Document[]) => {
-  seletedDocuments.value = val
-  emit('on-selection-change', seletedDocuments.value)
 
+const handleToolboxActionTriggered = (action: string) => {
+  emit('toolbox-action-triggered', action)
 }
 
-const permissionsList = computed(() => {
-  return getPermissionsFromDocuments(seletedDocuments.value)
-})
+const selectRow = (documentRow: Document) => {
+  const documentsListTableInstance =
+    documentsListTable.value
+      ?.$refs.table as InstanceType<typeof ElTable>
+
+  documentsListTableInstance?.clearSelection()
+  documentsListTableInstance?.toggleRowSelection(documentRow, true)
+}
+
+const handleSelectionChange = (documentsSelection:Document[]) => {
+  selectedDocuments.value = documentsSelection
+  emit('document-selection-change', selectedDocuments.value)
+  const documentsListTableInstance =
+    documentsListTable.value
+      ?.$refs.table as InstanceType<typeof ElTable>
+
+  if (documentsSelection.length === 0) {
+    documentsListTableInstance?.setCurrentRow(undefined)
+  }
+}
+
 </script>

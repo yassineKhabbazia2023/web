@@ -1,5 +1,5 @@
 import { commonApi as api } from '@kpmg/common'
-import type { DocumentsWithTableStructure } from '@/models/Document'
+import type { Document, DocumentsWithTableStructure } from '@/models/Document'
 import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'
 
@@ -23,4 +23,35 @@ export const fetchFolderDocuments = async (
       }
     })
   ).data
+}
+
+export const downloadDocument = async (
+  serviceId: Service['ServiceId'],
+  accountId: string,
+  documentId: Document['id']
+): Promise<void> => {
+  const downloadDocumentUrl = `${serviceId}/${accountId}/documents/${documentId}/content`
+  const apiObject = api().ds
+
+  return (await apiObject.get(downloadDocumentUrl, {
+    responseType: 'blob'
+  })).data
+
+}
+
+export const downloadDocuments = async (
+  serviceId: Service['ServiceId'],
+  accountId: string,
+  documentsIds: Document['id'][]
+): Promise<void> => {
+  const downloadDocumentsUrl = `${serviceId}/${accountId}/archive`
+  const apiObject = api().ds
+
+  return (await apiObject.post(
+    downloadDocumentsUrl,
+    { ids: documentsIds },
+    {
+      responseType: 'blob'
+    }
+  )).data
 }

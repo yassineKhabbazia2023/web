@@ -4,13 +4,12 @@
     trigger="click"
     :elements="toolboxBasicData"
     @visible-change="handleToolboxDropdownSateChange"
-    @p-toolbox-item-clicked="handleItemclicked"
   >
     <PButton
     type="generic"
     class="on-document-action-clicked"
     circle
-    @click.stop>
+    @click="handleActionsDropdownOpening">
       <PIcon size="14" color="#A4A4A4">
         <PIThreeDots />
       </PIcon>
@@ -25,20 +24,29 @@ import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 
 const emit = defineEmits([
-  'on-document-action-clicked',
-  'on-document-actions-dropdown-close'
+  'on-document-actions-dropdown-close',
+  'actions-dropdown-opened'
 ])
 
 const props = defineProps<DocumentActionsProps>()
 
-const toolboxBasicData = computed(() =>
-  generateToolboxBasicData('Documents', props.permissions)
-)
+const toolboxBasicData = computed(() => {
+  if (props.permissions) {
+    return generateToolboxBasicData('Documents', props.permissions)
+  } else {
+    return []
+  }
+})
 
-const handleItemclicked = (action: string) => {
-  emit('on-document-action-clicked', action)
-}
 const handleToolboxDropdownSateChange = (state: boolean) => {
   emit('on-document-actions-dropdown-close', state)
 }
+
+const handleActionsDropdownOpening = () => {
+  emit('actions-dropdown-opened')
+}
+
+defineExpose({
+  handleActionsDropdownOpening
+})
 </script>

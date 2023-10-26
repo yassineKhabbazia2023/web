@@ -2,7 +2,7 @@
 import DocumentActions from './DocumentActions.vue'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 import { VueWrapper, mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { ComponentPublicInstance, nextTick } from 'vue'
 import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
@@ -13,7 +13,6 @@ const defaultProps: DocumentActionsProps = {
 }
 
 type DocumentActionsSetup = {
-  hasActionButton: boolean
   toolboxBasicData: any
 }
 
@@ -30,28 +29,15 @@ const createWrapper = (
   return mount(DocumentActions, {
     props,
     global: {
+      stubs: {
+        PToolbox: {
+          template: '<span />'
+        }
+      },
       plugins: [pinia]
     }
   }) as unknown as DocumentActionsWrapper
 }
-
-// getBoundingClientRect is  a function that is being caused by the PToolbox component
-// from the @kpmg/styleguide package.
-
-//  This component uses the getBoundingClientRect() method to position itself on the page.
-//  it needs to be mocked in the test env.
-vi.mock('@kpmg/styleguide', () => {
-  return {
-    PToolbox: {
-      getBoundingClientRect: () => ({
-        width: 100,
-        height: 100,
-        top: 0,
-        left: 0
-      })
-    }
-  }
-})
 
 describe('documentActions', () => {
   describe('props', () => {
@@ -71,12 +57,12 @@ describe('documentActions', () => {
 
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
-          actionName: 'download-document-action-click',
+          actionName: 'download-document',
           iconName: 'PIDownload',
           value: 'Télécharger'
         },
         {
-          actionName: 'delete-document-action-click',
+          actionName: 'delete-document',
           iconName: 'PITrash',
           value: 'Supprimer'
         }
@@ -94,7 +80,7 @@ describe('documentActions', () => {
 
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
-          actionName: 'download-document-action-click',
+          actionName: 'download-document',
           iconName: 'PIDownload',
           value: 'Télécharger'
         }
@@ -122,23 +108,11 @@ describe('documentActions', () => {
         ).toStrictEqual([[true]])
       })
 
-    it('should emit on-document-action-clicked when p-toolbox-item-clicked is emitted',
-      async () => {
-        const updatedProps: DocumentActionsProps = {
-          ...defaultProps,
-          permissions: ['CAN_DELETE_DOCUMENT']
-        }
+    it('should handle handleActionsDropdownOpening', async () => {
+      const wrapper: any = createWrapper()
+      wrapper.vm.handleActionsDropdownOpening()
 
-        const wrapper = createWrapper(updatedProps)
-
-        const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
-
-        await toolbox.vm.$emit('p-toolbox-item-clicked', 'test')
-        await nextTick()
-
-        expect(wrapper.emitted('on-document-action-clicked')).toStrictEqual([
-          ['test']
-        ])
-      })
+      expect(wrapper.emitted()).toHaveProperty('actions-dropdown-opened')
+    })
   })
 })

@@ -40,7 +40,7 @@ const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
     toolboxLine: {
       iconName: 'PIInputCursorText',
       value: 'Renommer',
-      actionName: 'rename-document-action-click'
+      actionName: 'rename-document'
     },
     order: 1
   },
@@ -48,7 +48,7 @@ const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
     toolboxLine: {
       iconName: 'PIRocket',
       value: 'Envoi immédiat',
-      actionName: 'ransmit-doucment-action-click'
+      actionName: 'transmit-document'
     },
     order: 2
   },
@@ -57,7 +57,7 @@ const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
     toolboxLine: {
       iconName: 'PIDownload',
       value: 'Télécharger',
-      actionName: 'download-document-action-click'
+      actionName: 'download-document'
     },
     order: 3
   },
@@ -65,7 +65,7 @@ const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
     toolboxLine: {
       iconName: 'PIFolderMove',
       value: 'Déplacer vers',
-      actionName: 'move-document-action-click'
+      actionName: 'move-document'
     },
     order: 4
   },
@@ -73,7 +73,7 @@ const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
     toolboxLine: {
       iconName: 'PITrash',
       value: 'Supprimer',
-      actionName: 'delete-document-action-click'
+      actionName: 'delete-document'
     },
     order: 5
   }

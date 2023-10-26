@@ -37,8 +37,8 @@ import {
   PTag,
   PICheckCircle,
   PIExclamationTriangle
-
 } from '@kpmg/styleguide'
+import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 
 const document: Document = {
   id: '1',
@@ -108,7 +108,12 @@ const createWrapper = (
   return mount(TableElement, {
     props,
     global: {
-      plugins: [pinia]
+      stubs: {
+        PToolbox: {
+          template: '<span />'
+        },
+        plugins: [pinia]
+      }
     }
   }) as unknown as TableElementWrapper
 }
@@ -396,5 +401,26 @@ describe('tableElement', () => {
         }
       )
     })
+  })
+
+  describe('events', () => {
+    it('should emit actions-dropdown-opened when document action dropdown is opened', async () => {
+      const updatedProps: TableElementPops = {
+        fieldName: '',
+        fieldType: 'ActionGroup',
+        data: document
+      }
+      const wrapper = createWrapper(updatedProps)
+      const documentActions = await dynamicUntilFoundComponent(
+        wrapper,
+        DocumentActions
+      )
+      await nextTick()
+
+      await documentActions.vm.$emit('actions-dropdown-opened')
+      await nextTick()
+
+      expect(wrapper.emitted('actions-dropdown-opened')).toBeTruthy()
+    }, 30000)
   })
 })

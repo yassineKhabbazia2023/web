@@ -28,17 +28,17 @@ describe('toolbox helper', () => {
           {
             iconName: 'PIInputCursorText',
             value: 'Renommer',
-            actionName: 'rename-document-action-click'
+            actionName: 'rename-document'
           },
           {
             iconName: 'PIDownload',
             value: 'Télécharger',
-            actionName: 'download-document-action-click'
+            actionName: 'download-document'
           },
           {
             iconName: 'PITrash',
             value: 'Supprimer',
-            actionName: 'delete-document-action-click'
+            actionName: 'delete-document'
           }
         ]
       }

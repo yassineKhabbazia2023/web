@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 /* eslint-disable vitest/no-hooks */
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import DocumentsList from './DocumentsList.vue'
-import { mount } from '@vue/test-utils'
+import { VueWrapper, mount, shallowMount } from '@vue/test-utils'
 import type { DocumentsListProps } from './DocumentsListTypes'
 import { documentsResponsePayload } from '../../mocks/documentsWithTableStructureDataMock'
 import {
@@ -10,51 +11,39 @@ import {
   dynamicUntilFoundComponent
 } from '@kpmg/common/src/testing-helpers'
 
-import { PTable, PTableColumn } from '@kpmg/styleguide'
-import { nextTick } from 'vue'
+// import { PTable, PTableColumn } from '@kpmg/styleguide'
+import { PTableColumn, PTable } from '@kpmg/styleguide'
+import { ComponentPublicInstance, nextTick } from 'vue'
+import { Document } from '@/models/Document'
+import TableElement from './components/TableElement'
+
+type DocumentsListSetup = {
+  selectedDocuments: Document[]
+}
 
 const defaultProps: DocumentsListProps = {
   documentsListWithTableStructure: documentsResponsePayload
 }
-const createWrapper = (props: DocumentsListProps = defaultProps) => {
-  return mount(DocumentsList, {
+
+export type DocumentsListWrapper = VueWrapper<
+  ComponentPublicInstance<DocumentsListSetup, DocumentsListProps>
+>
+const createWrapper = (props: DocumentsListProps = defaultProps): DocumentsListWrapper => {
+  return shallowMount(DocumentsList, {
     props,
     global: {
+      stubs: {
+        PTable,
+        PTableColumn,
+        TableElement,
+        PToolbox: {
+          template: '<span />'
+        }
+      },
       plugins: [pinia]
     }
-  })
+  }) as unknown as DocumentsListWrapper
 }
-
-vi.mock('@kpmg/styleguide', () => {
-  const PTable = vi.importActual('@kpmg/styleguide')
-  const PTableColumn = vi.importActual('@kpmg/styleguide')
-  const PActionBar = vi.importActual('@kpmg/styleguide')
-  return {
-    PTable,
-    PTableColumn,
-    PActionBar,
-    PToolbox: {
-      getBoundingClientRect: () => ({
-        width: 100,
-        height: 100,
-        top: 0,
-        left: 0
-      })
-    }
-  }
-})
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  })
-}))
 
 const pinia = createPinia()
 
@@ -63,47 +52,33 @@ describe('documentList', () => {
     setActivePinia(pinia)
   })
 
-  vi.mock('@kpmg/styleguide', () => {
-    const PTable = vi.importActual('@kpmg/styleguide')
-    const PTableColumn = vi.importActual('@kpmg/styleguide')
-    const PActionBar = vi.importActual('@kpmg/styleguide')
-    return {
-      PTable,
-      PTableColumn,
-      PActionBar,
-      PToolbox: {
-        getBoundingClientRect: () => ({
-          width: 100,
-          height: 100,
-          top: 0,
-          left: 0
-        })
-      }
-    }
-  })
-
   describe('props', () => {
     it('should render columns based on provided documentHeaders', async () => {
-      const wrapper = createWrapper()
+      const wrapper: DocumentsListWrapper = mount(DocumentsList, {
+        props: defaultProps,
+        global: {
+          stubs: {
+            PToolbox: {
+              template: '<span />'
+            }
+          },
+          plugins: [pinia]
+        }
+      }) as unknown as DocumentsListWrapper
 
       await dynamicUntilFound(wrapper, '.el-table__cell')
       await nextTick()
 
       const colomuns = wrapper.findAllComponents(PTableColumn)
       await nextTick()
-      const numberOfRetrievedDocuments =
-        defaultProps.documentsListWithTableStructure.documentsPage.items.length
-      const numberOfRetrievedHeaders =
-        defaultProps.documentsListWithTableStructure.documentHeaders.length
-      const expectedColumnsCount =
-        (numberOfRetrievedHeaders + 1) * (numberOfRetrievedDocuments + 1)
 
       // eslint-disable-next-line no-console
-      console.log(expectedColumnsCount)
-      expect(colomuns).toHaveLength(0)
-    })
-  }, 30000)
+      expect(colomuns).toHaveLength(13)
+
+    }, 30000)
+  })
   describe('events', () => {
+    // Pas sreussi a récupéré table element
     it('should emit on-sort-change when sort-change', async () => {
       const emitPayload =
         // eslint-disable-next-line max-len
@@ -114,16 +89,17 @@ describe('documentList', () => {
       await dynamicUntilFound(wrapper, '.el-table__cell')
       await nextTick()
 
-      const table = await dynamicUntilFoundComponent(wrapper, PTable)
+      const table = await wrapper.findComponent(PTable)
       await nextTick()
-
       await table.vm.$emit('sort-change', JSON.parse(emitPayload))
+      await nextTick()
 
       expect(wrapper.emitted('on-sort-change')).toBeTruthy()
       expect(wrapper.emitted('on-sort-change')).toStrictEqual([['+name']])
-    })
+    }, 30000)
 
-    it('should emit on-selection-change when selection-change', async () => {
+    // Pas sreussi a récupéré table element
+    it('should emit document-selection-change oppon ptable selection-change event', async () => {
       const wrapper = createWrapper()
 
       await dynamicUntilFound(wrapper, '.el-table__cell')
@@ -132,35 +108,73 @@ describe('documentList', () => {
       const table = await dynamicUntilFoundComponent(wrapper, PTable)
       await nextTick()
 
-      const selectedDocuments = [
-        {
-          id: '1',
-          name: 'Document 1',
-          content: { href: '' },
-          preview: { href: '' },
-          updatedBy: 'User 1',
-          updated: '2023-10-18',
-          type: 'Type 1',
-          size: 1000,
-          comments: [],
-          isUploadedInGedLoop: true,
-          folder: { id: 1, path: [] },
-          created: '2023-10-17',
-          createdBy: 'User 2',
-          account: { id: '', name: '' },
-          properties: { syncStatus: '', HasSubscribedToVault: '' },
-          lifecycleStatus: 'Status 1',
-          paymentStatus: null,
-          source: { id: 1, code: '', libelle: '' },
-          piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
-          permissions: ['read', 'write'],
-          isNew: false
-        }
-      ]
-      await table.vm.$emit('selection-change', selectedDocuments)
+      await table.vm.$emit(
+        'selection-change',
+        documentsResponsePayload.documentsPage.items
+      )
+      await nextTick()
 
-      expect(wrapper.emitted('on-selection-change')).toBeTruthy()
-      expect(wrapper.emitted('on-selection-change')).toStrictEqual([[selectedDocuments]])
+      expect(wrapper.emitted('document-selection-change')).toBeTruthy()
+      expect(wrapper.emitted('document-selection-change')).toStrictEqual([
+        [documentsResponsePayload.documentsPage.items]
+      ])
+    }, 30000)
+
+    it('should select row oppon TableElement actions-dropdown-opened', async () => {
+      const wrapper: DocumentsListWrapper = mount(DocumentsList, {
+        props: defaultProps,
+        global: {
+          stubs: {
+            PToolbox: {
+              template: '<span />'
+            }
+          },
+          plugins: [pinia]
+        }
+      }) as unknown as DocumentsListWrapper
+
+      await nextTick()
+
+      await dynamicUntilFound(wrapper, '.el-table__cell')
+      await nextTick()
+
+      const tableElements = wrapper.findAllComponents(TableElement)
+
+      await tableElements[0].vm.$emit('actions-dropdown-opened', documentsResponsePayload.documentsPage.items[0])
+
+      await nextTick()
+      const componentInstance = wrapper.vm
+
+      expect(
+        componentInstance.selectedDocuments
+      ).toStrictEqual(documentsResponsePayload.documentsPage.items)
     })
-  }, 30000)
+
+    it('should propagate toolbox-action-triggered of tableElement', async () => {
+      const wrapper: DocumentsListWrapper = mount(DocumentsList, {
+        props: defaultProps,
+        global: {
+          stubs: {
+            PToolbox: {
+              template: '<span />'
+            }
+          },
+          plugins: [pinia]
+        }
+      }) as unknown as DocumentsListWrapper
+
+      await nextTick()
+
+      await dynamicUntilFound(wrapper, '.el-table__cell')
+      await nextTick()
+
+      const tableElements = wrapper.findAllComponents(TableElement)
+
+      await tableElements[0].vm.$emit('toolbox-action-triggered')
+
+      await nextTick()
+
+      expect(wrapper.emitted('toolbox-action-triggered')).toBeTruthy()
+    })
+  })
 })
