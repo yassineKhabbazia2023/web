@@ -8,11 +8,14 @@
     icon="mdi:file-image-outline"
   >
     <Variant title="Basic Usage">
-      <AsyncComponent
-        :type="basicImageData.type"
-        :name="basicImageData.name"
-        :fit="basicImageData.fit"
-      />
+      <Suspense>
+        <AsyncComponent
+          :type="basicImageData.type"
+          :name="basicImageData.name"
+          :fit="basicImageData.fit"
+        />
+      </Suspense>
+
       <template #controls>
         <HstSelect
           v-model="basicImageData.type"
@@ -61,12 +64,14 @@ const folders = IMAGES_LIST.map(folder => Object.keys(folder)[0])
 const files = computed(() =>
   IMAGES_LIST.find(folder => Object.keys(folder)[0] === basicImageData.type)
 )
-const filesName = computed(() => Object
-  .values(files.value)[0]
-  .map((file: string) => file.split('.')[0])
+
+const filesName = computed(() =>
+  Object
+    .values(files.value as object)[0]
+    .map((file: string) => file.split('.')[0])
 )
 
-let AsyncComponent
+let AsyncComponent: any
 
 const loadImage = () => {
   AsyncComponent = defineAsyncComponent(() => import('./'))
