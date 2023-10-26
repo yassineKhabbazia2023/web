@@ -18,12 +18,15 @@ import { DocumentActionsBarProps } from './DocumentActionsBarTypes'
 
 const props = defineProps<DocumentActionsBarProps>()
 const emit = defineEmits(['p-action-bar-button-clicked'])
+
 const leftSideButtons = computed(() =>
   generateActionBarLeftSideButtons(props.permissions)
 )
+
 const rightSideButtons = computed(() =>
   generateActionBarRightSideButtons(props.permissions)
 )
+
 const handleButtonClick = (name: string) => {
   emit('p-action-bar-button-clicked', name)
 }

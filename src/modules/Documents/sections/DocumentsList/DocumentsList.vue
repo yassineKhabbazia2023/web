@@ -99,5 +99,4 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
     documentsListTableInstance?.setCurrentRow(undefined)
   }
 }
-
 </script>

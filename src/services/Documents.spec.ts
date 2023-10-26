@@ -58,7 +58,7 @@ describe('documents service', () => {
       'service-1/my-account-id/documents/folder/123', {
         params: {
           limit: 10,
-          start: 0,
+          skip: 0,
           sort: '-created'
         }
       }

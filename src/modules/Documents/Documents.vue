@@ -15,7 +15,17 @@
       v-else
       type="gradient"
       size="42"
+      />
+
+    <DocumentRename
+      v-if="selectedDocuments && selectedDocuments.length === 1"
+      v-model="isRenameModalOpened"
+      :currentService="currentService"
+      :selectedEntity="selectedEntity"
+      :document="selectedDocuments[0]"
+      @document-rename="handleDocumentRename"
     />
+
     <DocumentDeleteModal
         :serviceId="currentService"
         :entityId="selectedEntity"
@@ -28,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-// eslint-disable vitest/require-hook
+// eslint-disable vitest/require-hookcurrentService
 
 import { ref, watch, computed, ComputedRef } from 'vue'
 import DocumentsList from './sections/DocumentsList'
@@ -44,6 +54,7 @@ import { useDownloadDocuments } from
 import { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
+import DocumentRename from './components/DocumentRename'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 
@@ -100,6 +111,9 @@ const handleToolboxActionTriggered = (action: string) => {
     case 'download-document':
       handleDownloadDocumentsEvent()
       break
+    case 'rename-document':
+      handleRenameDocumentEvent()
+      break
     case 'delete-document':
       isDeletePopupVisible.value = true
       break
@@ -117,6 +131,9 @@ const handleActionBarButtonClick = (actionName:string) => {
       case 'actionbar-delete-action-click':
         isDeletePopupVisible.value = true
         break
+      case 'actionbar-rename-action-click':
+        handleRenameDocumentEvent()
+        break
       default:
         break
     }
@@ -127,6 +144,23 @@ const handleActionBarButtonClick = (actionName:string) => {
 const permissionsList = computed(() => {
   return getPermissionsFromDocuments(selectedDocuments.value)
 })
+
+// Rename modal
+const isRenameModalOpened = ref(false)
+const handleRenameDocumentEvent = () => {
+  isRenameModalOpened.value = true
+}
+
+const handleDocumentRename = async () => {
+  if (!props.selectedFolder) return
+  isRenameModalOpened.value = false
+  selectedDocuments.value = []
+  documents.value = await fetchFolderDocuments(
+    props.currentService,
+    props.selectedFolder.id,
+    props.selectedEntity
+  )
+}
 
 const handleConfirmDeleteDocument = async () => {
   if (!props.selectedFolder) return

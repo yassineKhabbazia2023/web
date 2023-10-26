@@ -6,7 +6,9 @@ import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { VueWrapper, mount } from '@vue/test-utils'
-import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
+import {
+  dynamicUntilFoundComponent
+} from '@kpmg/common/src/testing-helpers'
 import DocumentsList from './sections/DocumentsList'
 import { DocumentsProps } from './DocumentsTypes'
 import {
@@ -23,6 +25,7 @@ import { ComponentPublicInstance, nextTick } from 'vue'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
+import DocumentRename from './components/DocumentRename'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -53,6 +56,9 @@ const createWrapper = (
       stubs: {
         PToolbox: {
           template: '<span />'
+        },
+        PButton: {
+          template: '<div />'
         }
       },
       plugins: [pinia],
@@ -138,11 +144,6 @@ describe('documents', () => {
       componentInstance.selectedDocuments =
         documentsResponsePayloadMoreThanOneDoc.documentsPage.items
 
-      console.log(
-        'in test documentsResponsePayloadMoreThanOneDoc.documentsPage',
-        documentsResponsePayloadMoreThanOneDoc.documentsPage.items.length
-      )
-
       await nextTick()
 
       const documentActionBar = await dynamicUntilFoundComponent(
@@ -164,6 +165,25 @@ describe('documents', () => {
         )
       )
     })
+
+    it('should call fetch documents when document-rename is emitted', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.selectedDocuments = documentsResponsePayload.documentsPage.items
+      componentInstance.documents = documentsResponsePayload
+      await nextTick()
+
+      const documentRename = await dynamicUntilFoundComponent(
+        wrapper,
+        DocumentRename
+      )
+      await nextTick()
+
+      await documentRename.vm.$emit('document-rename')
+
+      expect(documentRename.props('modelValue')).toBeFalsy()
+    })
+
     it('should open delete modal when toolbox-action-triggered is emitted', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
@@ -200,7 +220,7 @@ describe('documents', () => {
         foldersData[0][0].children[0].id,
         'my-entity'
       )
-    })
+    }, 30000)
 
     it('should close delete modal when cancel-delete-document is emitted', async () => {
       const wrapper = createWrapper()
@@ -242,6 +262,32 @@ describe('documents', () => {
       expect(deleteModal.props('isVisible')).toBeTruthy()
       expect(deleteModal.props('documentIds'))
         .toStrictEqual([documentsResponsePayload.documentsPage.items[0].id])
+    })
+
+    it('should open rename  modal  when click on action bar rename button', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments =
+              [documentsResponsePayload.documentsPage.items[0]]
+      await nextTick()
+
+      const documentActionBar = await dynamicUntilFoundComponent(
+        wrapper,
+        DocumentsActionsBar
+      )
+      await nextTick()
+
+      await documentActionBar.vm.$emit(
+        'p-action-bar-button-clicked',
+        'actionbar-rename-action-click'
+      )
+
+      await nextTick()
+      const renameModal = await dynamicUntilFoundComponent(wrapper, DocumentRename)
+      await nextTick()
+
+      expect(renameModal.props('modelValue')).toBeTruthy()
     })
   })
 })

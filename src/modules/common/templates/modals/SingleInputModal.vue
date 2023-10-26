@@ -16,6 +16,7 @@
           :maxLength="maxInputLength"
           :class="!isValidInput ? 'unValid' : ''"
         />
+        <span v-if="inputSuffix" class="single-input-modal__suffix">{{ inputSuffix }}</span>
       </div>
 
       <div v-if="showErrorMsg" class="single-input-modal__input-error">
@@ -27,10 +28,11 @@
       <template #footer>
         <div class="p-dialog__footer">
           <PButton
-type="secondary"
-size="small"
-    class="cancel-action-button"
-          @click="handleCancelClick">
+            class="cancel-action-button"
+            type="secondary"
+            size="small"
+            @click="handleCancelClick"
+          >
             {{ cancelBtnLabel }}
           </PButton>
           <PButton
@@ -68,6 +70,7 @@ const emit = defineEmits([
 const props = withDefaults(defineProps<SingleInputModalProps>(), {
   isDialogVisible: false
 })
+
 const inputContent = computed({
   get() {
     return props.defaultInputContentValue
@@ -129,6 +132,10 @@ const clearModalInputValue = () => {
   }
 
   &__input {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
     &-label {
       font-size: 12px;
       font-weight: 600;
@@ -146,8 +153,3 @@ const clearModalInputValue = () => {
   }
 }
 </style>
-
-<i18n>
-  fr-FR:
-    error-msg-alpha-num:
-</i18n>

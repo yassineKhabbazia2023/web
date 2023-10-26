@@ -6,18 +6,18 @@ import type { Folder } from '@/models/Folder'
 export const fetchFolderDocuments = async (
   serviceId: Service['ServiceId'],
   folderId: Folder['id'],
-  accountId: string,
-  start = 0,
+  entityId: string,
+  skip = 0,
   limit = 10,
   sort = '-created'
 ): Promise<DocumentsWithTableStructure> => {
-  const fetchFolderDocumentsUrl = `${serviceId}/${accountId}/documents/folder/${folderId}`
+  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
   const apiObject = api().ds
 
   return (
     await apiObject.get(fetchFolderDocumentsUrl, {
       params: {
-        start,
+        skip,
         limit,
         sort
       }
@@ -54,6 +54,21 @@ export const downloadDocuments = async (
       responseType: 'blob'
     }
   )).data
+}
+
+export const renameDocument = async (
+  serviceId: Service['ServiceId'],
+  entityId: string,
+  documentId: Document['id'],
+  newDocumentName: string
+): Promise<void> => {
+  const renameDocumentUrl = `${serviceId}/${entityId}/documents/${documentId}`
+  const requestBody = [{
+    op: 'replace',
+    path: '/name',
+    value: newDocumentName
+  }]
+  return await api().ds.patch(renameDocumentUrl, requestBody)
 }
 
 export const deleteDocuments = async (

@@ -84,7 +84,7 @@ describe('renameFolderSection', () => {
   })
 
   describe('props', () => {
-    describe('binding with create folder modal', async () => {
+    describe('binding with create folder modal', () => {
       const validTranslationCases = [
         {
           prop: 'modalTitle',
@@ -151,8 +151,8 @@ describe('renameFolderSection', () => {
         expect(vi.mocked(RenameFolder)).toHaveBeenCalledWith(
           defaultProps.folderId,
           'theNewFolderName',
-          defaultProps.serviceId,
-          defaultProps.entityId
+          defaultProps.entityId,
+          defaultProps.serviceId
         )
       }
     )

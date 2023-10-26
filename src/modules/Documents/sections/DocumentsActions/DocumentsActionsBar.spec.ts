@@ -15,6 +15,7 @@ const createWrapper = (props: DocumentActionsBarProps) =>
       plugins: [pinia]
     }
   })
+
 const findActionBarLeft = async (wrapper: any) => {
   const actionbar = await dynamicUntilFound(wrapper, '.documents-actions')
   return actionbar.find('.p-action-bar__left')

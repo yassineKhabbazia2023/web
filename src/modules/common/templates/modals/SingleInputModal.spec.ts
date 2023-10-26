@@ -81,6 +81,20 @@ describe('singleInputModal', () => {
         errorMsgSection.exists()
       ).toBeTruthy()
     })
+
+    it('shoud display suffix if it is defined', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        isDialogVisible: true,
+        inputSuffix: '.jpg'
+      })
+      const unvalidInput = await dynamicUntilFound(
+        wrapper,
+        '.single-input-modal__suffix'
+      )
+
+      expect(unvalidInput.exists()).toBeTruthy()
+    })
   })
 
   describe('interactions', () => {

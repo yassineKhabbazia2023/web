@@ -47,8 +47,8 @@ const handleRenameFolder = async (newfolderName: string) => {
     const updatedFolder = (await RenameFolder(
       props.folderId,
       newfolderName,
-      props.serviceId,
-      props.entityId
+      props.entityId,
+      props.serviceId
     )) as Folder
     isConfirmButtonLoading.value = false
     emit('update-folder-name', updatedFolder)

@@ -12,5 +12,6 @@ export interface SingleInputModalProps {
   errorMsg: string
   isConfirmButtonLoading: boolean
   defaultInputContentValue?: string
+  inputSuffix?: string
 }
 

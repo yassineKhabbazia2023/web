@@ -1,10 +1,11 @@
 import type { Folder } from '@/models/Folder'
+import type { Service } from '@/models/Service'
 
 export interface RenameFolderSectionProps {
-  serviceId: string
+  serviceId: Service['ServiceId']
   entityId: string
   folderName: string
-  folderId: number
+  folderId: Folder['id']
   parentFolder: Folder
   isRenameFolderModalVisible: boolean
 }
