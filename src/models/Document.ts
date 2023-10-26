@@ -69,6 +69,9 @@ export interface DocumentsTableStructure {
 export interface DocumentsWithTableStructure {
   documentsPage: {
     items: Document[]
+    totalItems: number
+    endIndex: number
+    startIndex: number
   }
   documentHeaders: DocumentsTableStructure[]
 }

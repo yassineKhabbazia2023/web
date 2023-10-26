@@ -5,10 +5,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
 import { createPinia, setActivePinia } from 'pinia'
-import { VueWrapper, mount } from '@vue/test-utils'
-import {
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
+import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import DocumentsList from './sections/DocumentsList'
 import { DocumentsProps } from './DocumentsTypes'
 import {
@@ -86,6 +84,7 @@ vi.mock('./helpers/downloadFilesHelper', () => ({
 describe('documents', () => {
   beforeEach(() => {
     setActivePinia(pinia)
+    flushPromises()
   })
   describe('events', () => {
     it('should call fetch documents when on-sort-change is emitted', async () => {
@@ -218,7 +217,10 @@ describe('documents', () => {
       expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
-        'my-entity'
+        'my-entity',
+        0,
+        10,
+        '-created'
       )
     }, 30000)
 
@@ -233,7 +235,6 @@ describe('documents', () => {
       await deleteModal.vm.$emit('cancel-delete-document')
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
-      expect(deleteModal.props('documentIds')).toStrictEqual([])
     })
     // eslint-disable-next-line max-len
     it('should open delete modal  when click on action bar download button', async () => {

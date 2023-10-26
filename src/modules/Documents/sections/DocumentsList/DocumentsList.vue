@@ -1,8 +1,7 @@
 <template>
- <section>
+ <section class="documents-table">
   <PTable
   :data="documentsListWithTableStructure.documentsPage.items"
-  style="width: 100%"
   ref="documentsListTable"
   highlightCurrentRow
   @sort-change="handleSortChange"
@@ -34,6 +33,8 @@
     <!-- That is the current way of adding paddings without overriding styleguide -->
     <PTableColumn width="40" label="" />
   </PTable>
+
+  <div class="blur-fade" />
  </section>
 </template>
 
@@ -100,3 +101,41 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
   }
 }
 </script>
+
+<style lang="scss">
+  .documents-table {
+    position: relative;
+    // header height - action bar wrapper height - pagination wrapper height - paddings
+    height: 100%;
+    max-height: calc(100vh - 52px - 80px - 46px);
+    width: 100%;
+    overflow-y: auto;
+
+    .blur-fade {
+      position: sticky;
+      width: 100%;
+      height: 32px;
+      bottom: 0;
+      background: linear-gradient(to bottom, transparent, white);
+      z-index: 1;
+      pointer-events: none;
+    }
+  }
+</style>
+<style>
+::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #90939999;
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px #909399AA;
+}
+
+::-webkit-scrollbar-corner {
+    background: #90939999;
+}
+</style>

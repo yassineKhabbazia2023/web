@@ -1,10 +1,12 @@
 <template>
-  <PActionBar
-    class="documents-actions"
-    :rightSideButtons="rightSideButtons"
-    :leftSideButtons="leftSideButtons"
-    @p-action-bar-button-clicked="handleButtonClick"
-  />
+  <div class="action-bar">
+    <PActionBar
+      class="documents-actions"
+      :rightSideButtons="rightSideButtons"
+      :leftSideButtons="leftSideButtons"
+      @p-action-bar-button-clicked="handleButtonClick"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -31,4 +33,10 @@ const handleButtonClick = (name: string) => {
   emit('p-action-bar-button-clicked', name)
 }
 </script>
+
+<style lang="scss">
+  .action-bar {
+    padding: 24px 16px;
+  }
+</style>
 

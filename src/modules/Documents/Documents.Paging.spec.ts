@@ -1,0 +1,170 @@
+/* eslint-disable max-len */
+/* eslint-disable vitest/no-hooks */
+
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { foldersData } from '../Treeview/mocks/treeFoldersMock'
+import Documents from './Documents.vue'
+import { createPinia, setActivePinia } from 'pinia'
+import { VueWrapper, flushPromises, shallowMount } from '@vue/test-utils'
+import { DocumentsProps } from './DocumentsTypes'
+import {
+
+  fetchFolderDocuments
+} from '@/services/Documents'
+import {
+  documentsResponsePayloadTwoPages
+} from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
+import { Document, DocumentsWithTableStructure } from '@/models/Document'
+import { ComponentPublicInstance, nextTick } from 'vue'
+
+import { PPagination } from '@kpmg/styleguide'
+
+type DocumentsSetup = {
+  documents: DocumentsWithTableStructure
+  selectedDocument: Document
+  selectedDocuments: Document[]
+}
+
+export type DocumentsWrapper = VueWrapper<
+  ComponentPublicInstance<DocumentsSetup, DocumentsProps>
+>
+
+const mockToastPlugin = vi.fn()
+
+const pinia = createPinia()
+
+const defaultProps = {
+  currentService: foldersData[0][0].children[0].serviceId,
+  selectedEntity: 'my-entity',
+  selectedFolder: foldersData[0][0].children[0]
+}
+
+vi.mock('vue-inject', () => ({
+  provide: vi.fn()
+}))
+
+vi.mock('@/services/Documents', () => ({
+  fetchFolderDocuments: vi.fn(),
+  downloadDocuments: vi.fn(),
+  downloadDocument: vi.fn()
+}))
+
+vi.mock('./helpers/downloadFilesHelper', () => ({
+  downloadFile: vi.fn()
+}))
+
+describe('documents', () => {
+  beforeEach(() => {
+    setActivePinia(pinia)
+    flushPromises()
+  })
+  describe('events', () => {
+    it('should call fetch documents when on-page-range-changed is emitted', async () => {
+      // here
+      const wrapper = shallowMount(Documents, {
+        props: defaultProps,
+        global: {
+          stubs: {
+            PPagination,
+            PToolbox: {
+              template: '<span />'
+            }
+          },
+          plugins: [pinia],
+          provide: {
+            toast: mockToastPlugin
+          }
+        }
+      }) as unknown as DocumentsWrapper
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayloadTwoPages
+
+      await nextTick()
+      const pagination = wrapper.findComponent(PPagination)
+
+      await pagination.vm.$emit('on-page-range-changed', 100)
+      await nextTick()
+
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+        foldersData[0][0].children[0].serviceId,
+        foldersData[0][0].children[0].id,
+        'my-entity',
+        0,
+        100,
+        '-created'
+      )
+    }, 30000)
+
+    it('should call fetch documents when update:current-page is emitted', async () => {
+      // here
+      const wrapper = shallowMount(Documents, {
+        props: defaultProps,
+        global: {
+          stubs: {
+            PPagination,
+            PToolbox: {
+              template: '<span />'
+            }
+          },
+          plugins: [pinia],
+          provide: {
+            toast: mockToastPlugin
+          }
+        }
+      }) as unknown as DocumentsWrapper
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayloadTwoPages
+
+      await nextTick()
+      const pagination = wrapper.findComponent(PPagination)
+
+      await pagination.vm.$emit('update:current-page', 2)
+      await nextTick()
+
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+        foldersData[0][0].children[0].serviceId,
+        foldersData[0][0].children[0].id,
+        'my-entity',
+        10,
+        10,
+        '-created'
+      )
+    })
+
+    it('should call fetch documents when update:page-size is emitted', async () => {
+      // here
+      const wrapper = shallowMount(Documents, {
+        props: defaultProps,
+        global: {
+          stubs: {
+            PPagination,
+            PToolbox: {
+              template: '<span />'
+            }
+          },
+          plugins: [pinia],
+          provide: {
+            toast: mockToastPlugin
+          }
+        }
+      }) as unknown as DocumentsWrapper
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayloadTwoPages
+
+      await nextTick()
+      const pagination = wrapper.findComponent(PPagination)
+
+      await pagination.vm.$emit('update:page-size', 25)
+      await nextTick()
+
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+        foldersData[0][0].children[0].serviceId,
+        foldersData[0][0].children[0].id,
+        'my-entity',
+        0,
+        25,
+        '-created'
+      )
+    })
+  })
+})
