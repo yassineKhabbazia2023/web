@@ -1,8 +1,6 @@
-import type { AvatarProps } from 'element-plus'
-
-export interface PAvatarProps extends AvatarProps {
-  type?: '' | 'default' | 'small' | 'large' | 'xsmall' | 'xlarge',
-  color: ''
+export interface PAvatarProps {
+  pType?: '' | 'default' | 'small' | 'large' | 'xsmall' | 'xlarge',
+  pColor?: ''
     |'persian-gradient'
     | 'orange'
     | 'persian'
@@ -10,5 +8,8 @@ export interface PAvatarProps extends AvatarProps {
     | 'green'
     | 'fuschia'
     | 'gray'
-    | 'white'
+    | 'white',
+  pFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down',
+  pSrc?: string
+  pShape? : 'circle' | 'square'
 }

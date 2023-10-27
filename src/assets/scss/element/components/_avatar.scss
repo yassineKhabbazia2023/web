@@ -27,7 +27,7 @@ $avatar-size: (
     font-size: var(--el-avatar-icon-size);
   }
 
-  &[type="xlarge"] {
+  &[pType="xlarge"] {
     --el-avatar-size: var(--el-avatar-size-xlarge);
     --el-avatar-text-size: 20px;
 
@@ -35,7 +35,7 @@ $avatar-size: (
 
     --el-avatar-icon-size: 28px;
   }
-  &[type="large"] {
+  &[pType="large"] {
     --el-avatar-size: var(--el-avatar-size-large);
     --el-avatar-text-size: 16px;
 
@@ -43,7 +43,7 @@ $avatar-size: (
 
     --el-avatar-icon-size: 22px;
   }
-  &[type="small"] {
+  &[pType="small"] {
     --el-avatar-size: var(--el-avatar-size-small);
     --el-avatar-text-size: 12px;
 
@@ -51,7 +51,7 @@ $avatar-size: (
 
     --el-avatar-icon-size: 16px;
   }
-  &[type="xsmall"] {
+  &[pType="xsmall"] {
     --el-avatar-size: var(--el-avatar-size-xsmall);
     --el-avatar-text-size: 10px;
 
@@ -59,7 +59,7 @@ $avatar-size: (
 
     --el-avatar-icon-size: 12px;
   }
-  &[type="default"] {
+  &[pType="default"] {
     --el-avatar-text-size: 14px;
 
     line-height: 14px;
