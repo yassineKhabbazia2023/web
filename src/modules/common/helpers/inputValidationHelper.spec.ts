@@ -1,32 +1,21 @@
 import {
   validInputAlphanumericFrench,
-  validInputMaxLength,
-  validInputAlphanumericFrenchWithSpecialCharacters
+  validInputMaxLength
 } from './inputValidationHelper'
 import { describe, it, expect } from 'vitest'
 
 describe('inputValidationHelper', () => {
   it('should return true if input is in french', () => {
-    const res = validInputAlphanumericFrench('ceci est un test')
+    const res = validInputAlphanumericFrench('ceci est un test$')
 
     expect(res).toBeTruthy()
   })
   it('should return false if input is not Alphanumeric French', () => {
-    const res = validInputAlphanumericFrench('ceci est un fail µµµµµµ')
+    const res = validInputAlphanumericFrench('ceci est un fail :')
 
     expect(res).toBeFalsy()
   })
 
-  it('should return false if input has special character', () => {
-    const res = validInputAlphanumericFrenchWithSpecialCharacters('oh lala ça fail$')
-
-    expect(res).toBeFalsy()
-  })
-  it('should return true if input doesn not have special character', () => {
-    const res = validInputAlphanumericFrenchWithSpecialCharacters('oh lala ça fonctionne')
-
-    expect(res).toBeTruthy()
-  })
   it('should return false if input is empty', () => {
     const res = validInputAlphanumericFrench(' ')
 

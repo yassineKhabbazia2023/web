@@ -48,7 +48,7 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
 import SingleInputModal from '@/modules/common/templates/modals'
-import { validInputMaxLength, validInputAlphanumericFrenchWithSpecialCharacters }
+import { validInputMaxLength, validInputAlphanumericFrench }
   from '@/modules/common/helpers/inputValidationHelper'
 import {
   getDocumentNameExtension,
@@ -86,11 +86,11 @@ watch(() => props.isRenameModalOpened, () => {
 })
 
 const isValidInput = computed(() =>
-  validInputAlphanumericFrenchWithSpecialCharacters(inputContent.value)
+  validInputAlphanumericFrench(inputContent.value)
 )
 
 const errorMessage = computed(() => {
-  if (!validInputAlphanumericFrenchWithSpecialCharacters(inputContent.value)) {
+  if (!validInputAlphanumericFrench(inputContent.value)) {
     return t('validations.alphaNumerique')
   }
 
@@ -107,7 +107,7 @@ const isConfirmButtonDisabled = computed(
   () =>
     inputContent.value.length === 0 ||
     !validInputMaxLength(inputContent.value) ||
-    !validInputAlphanumericFrenchWithSpecialCharacters(inputContent.value)
+    !validInputAlphanumericFrench(inputContent.value)
 )
 
 const handleCancelAction = () => {
