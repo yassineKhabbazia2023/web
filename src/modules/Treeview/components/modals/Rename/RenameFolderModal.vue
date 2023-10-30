@@ -100,8 +100,7 @@ const isValidInput = computed(() =>
 const folderNameExists = ref(false)
 
 const isFolderNameExists = (folderName: string): boolean => {
-
-  return props.parentFolder?.children?.some((folder) => folder.name === folderName)
+  return props.parentFolder?.children?.some((folder) => folder.name.trim() === folderName.trim())
 }
 
 const showErrorMsg = computed(

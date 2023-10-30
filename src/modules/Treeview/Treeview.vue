@@ -28,7 +28,7 @@
         :entityId="selectedEntity"
         :folderName="currentFolderName"
         :folderId = "currentFolderId"
-        :parentFolder="selectedFolder"
+        :parentFolder="parentNodeOfSelectedFolderTreeNodeAction"
         :isRenameFolderModalVisible="isRenameFolderModalVisible"
         @update-folder-name="handleUpdateFolderName"
         @on-close-rename-folder="handleRenameFolderModal"
@@ -91,6 +91,7 @@ import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader } from '@kpmg/styleguide'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
+import { findFolderDeepById } from './helpers/folderArrayHelper'
 
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
@@ -120,13 +121,23 @@ watch(() => props.isLoading, () => {
 const treeNodeSelectedFolder = ref()
 
 const selectedFolder = computed(():Folder => {
-  // eslint-disable-next-line no-debugger
   if (treeNodeSelectedFolder.value) {
     return treeNodeSelectedFolder.value
   }
 
   return props.selectedFolder || props.servicesFolders[0][0].children[0]
 })
+
+const parentNodeOfSelectedFolderTreeNodeAction = ref()
+
+const setParentNodeOfSelectedFolderTreeNodeAction = () => {
+  const parentFolderId =
+   treeNodeSelectedFolder.value?.parent?.id
+  parentNodeOfSelectedFolderTreeNodeAction.value = findFolderDeepById(
+    props.servicesFolders[0].filter(f => f.serviceId === props.currentService),
+    parentFolderId) as Folder
+
+}
 const currentFolderId = ref(0)
 
 const isCreateFolderModalVisible = ref(false)
@@ -218,6 +229,8 @@ const handleToolboxItemChecked = (action: string, folder:Folder) => {
     treeNodeSelectedFolder.value = folder
     isDeleteFolderPopupVisible.value = true
   } else if (action === 'toolbox-rename-action-click') {
+    treeNodeSelectedFolder.value = folder
+    setParentNodeOfSelectedFolderTreeNodeAction()
     currentFolderName.value = folder?.name
     currentFolderId.value = folder?.id
     isRenameFolderModalVisible.value = true
