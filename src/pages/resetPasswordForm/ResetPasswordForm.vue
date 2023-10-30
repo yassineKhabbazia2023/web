@@ -182,7 +182,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       const urlUpdatePassword = '/createResetPassword'
       try {
         await commonApi().auth.post(urlUpdatePassword, data)
-        router.push({ name: 'login' })
+        router.push({ name: 'loginClient' })
       } catch {}
     } else {
       return false
