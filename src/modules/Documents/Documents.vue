@@ -1,29 +1,30 @@
 <template>
-  <DocumentsActionsBar
-    :permissions="permissionsList"
-    @p-action-bar-button-clicked="handleActionBarButtonClick"/>
+  <template v-if="!isLoading && documents">
+    <DocumentsActionsBar
+      :permissions="permissionsList"
+      @p-action-bar-button-clicked="handleActionBarButtonClick"/>
 
-  <DocumentsList
-    v-if="documents"
-    :documentsListWithTableStructure="documents"
-    @on-sort-change="handleSortChange"
-    @toolbox-action-triggered="handleToolboxActionTriggered"
-    @document-selection-change="handleOnDocumentsSelectionChange"
-  />
+    <DocumentsList
+      :documentsListWithTableStructure="documents"
+      @on-sort-change="handleSortChange"
+      @toolbox-action-triggered="handleToolboxActionTriggered"
+      @document-selection-change="handleOnDocumentsSelectionChange"
+    />
 
-  <PPagination
-    v-if="documents"
-    v-model:current-page="currentPage"
-    v-model:page-size="currentPageSize"
-    :total="documents.documentsPage.totalItems"
-    showTotalPageCounter
-    :pageSizes="pagesRanges"
-    pageSizeSelectorGroupLabel=""
-    pageSizeSelectorSuffix="documents"
-    @on-page-range-changed="setCurrentPageSize"
-  >
-    <p>{{ paginationLabel }}</p>
-  </PPagination>
+    <PPagination
+      v-if="documents.documentsPage.items.length > 0"
+      v-model:current-page="currentPage"
+      v-model:page-size="currentPageSize"
+      :total="documents.documentsPage.totalItems"
+      showTotalPageCounter
+      :pageSizes="pagesRanges"
+      pageSizeSelectorGroupLabel=""
+      pageSizeSelectorSuffix="documents"
+      @on-page-range-changed="setCurrentPageSize"
+    >
+      <p>{{ paginationLabel }}</p>
+    </PPagination>
+  </template>
   <PLoader
     v-else
     type="gradient"
@@ -76,6 +77,7 @@ const pagesRanges = ref([10, 25, 50, 100])
 const currentPageSize = ref(10)
 const componentSortQueryField = ref('-created')
 const isDeletePopupVisible = ref(false)
+const isLoading = ref(false)
 
 const paginationLabel = computed(() => {
   if (!documents.value) return
@@ -94,28 +96,12 @@ const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
 // eslint-disable-next-line vitest/require-hook
 watch([() => props.selectedFolder, currentPage, currentPageSize], async () => {
-  if (!props.selectedFolder) return
-  documents.value = await fetchFolderDocuments(
-    props.currentService,
-    props.selectedFolder.id,
-    props.selectedEntity,
-    skip.value,
-    currentPageSize.value,
-    componentSortQueryField.value
-  )
+  await fetchDocuments()
 })
 
 const handleSortChange = async (sortQueryField:string) => {
   componentSortQueryField.value = sortQueryField
-  if (!props.selectedFolder) return
-  documents.value = await fetchFolderDocuments(
-    props.currentService,
-    props.selectedFolder.id,
-    props.selectedEntity,
-    skip.value,
-    currentPageSize.value,
-    componentSortQueryField.value
-  )
+  await fetchDocuments()
 }
 
 const selectedDocuments = ref<Document[]>([])
@@ -182,28 +168,15 @@ const handleRenameDocumentEvent = () => {
 }
 
 const handleDocumentRename = async () => {
-  if (!props.selectedFolder) return
   isRenameModalOpened.value = false
   selectedDocuments.value = []
-  documents.value = await fetchFolderDocuments(
-    props.currentService,
-    props.selectedFolder.id,
-    props.selectedEntity
-  )
+  await fetchDocuments()
 }
 
 const handleConfirmDeleteDocument = async () => {
-  if (!props.selectedFolder) return
   isDeletePopupVisible.value = false
   selectedDocuments.value = []
-  documents.value = await fetchFolderDocuments(
-    props.currentService,
-    props.selectedFolder.id,
-    props.selectedEntity,
-    skip.value,
-    currentPageSize.value,
-    componentSortQueryField.value
-  )
+  await fetchDocuments()
 }
 
 const handleCancelDeleteDocument = () => {
@@ -213,4 +186,18 @@ const handleCancelDeleteDocument = () => {
 const documentIdsSelected = computed(() => {
   return selectedDocuments.value.map(x => x.id)
 })
+
+const fetchDocuments = async () => {
+  if (!props.selectedFolder) return
+  isLoading.value = true
+  documents.value = await fetchFolderDocuments(
+    props.currentService,
+    props.selectedFolder.id,
+    props.selectedEntity,
+    skip.value,
+    currentPageSize.value,
+    componentSortQueryField.value
+  )
+  isLoading.value = false
+}
 </script>

@@ -39,6 +39,16 @@ const defaultProps = {
   selectedFolder: foldersData[0][0].children[0]
 }
 
+const responseNoDoc: DocumentsWithTableStructure = {
+  documentsPage: {
+    items: [],
+    totalItems: 0,
+    endIndex: 1,
+    startIndex: 1
+  },
+  documentHeaders: []
+}
+
 vi.mock('vue-inject', () => ({
   provide: vi.fn()
 }))
@@ -57,6 +67,33 @@ describe('documents', () => {
   beforeEach(() => {
     setActivePinia(pinia)
     flushPromises()
+  })
+  describe('props', () => {
+    it('should not render pagination when there is no document', async () => {
+      const wrapper = shallowMount(Documents, {
+        props: defaultProps,
+        global: {
+          stubs: {
+            PPagination,
+            PToolbox: {
+              template: '<span />'
+            }
+          },
+          plugins: [pinia],
+          provide: {
+            toast: mockToastPlugin
+          }
+        }
+      }) as unknown as DocumentsWrapper
+      const componentInstance = wrapper.vm
+      componentInstance.documents = responseNoDoc
+
+      await nextTick()
+      const pagination = wrapper.findComponent(PPagination)
+      await nextTick()
+
+      expect(pagination.exists()).toBeFalsy()
+    })
   })
   describe('events', () => {
     it('should call fetch documents when on-page-range-changed is emitted', async () => {
