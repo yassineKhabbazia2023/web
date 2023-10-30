@@ -101,12 +101,14 @@ describe('page reset password form', () => {
 
   it('should call back end when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
+    const routerPushSpy = vi.spyOn(router, 'push')
     await waitForAsyncImports(40)
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     await flushPromises()
     wrapper.find('button').trigger('click')
     await flushPromises()
+
     const postLink = '/createResetPassword'
     const data = {
       contactId: 'contactId',
@@ -115,5 +117,8 @@ describe('page reset password form', () => {
     }
     expect(postMock).toHaveBeenCalledTimes(1)
     expect(postMock).toHaveBeenCalledWith(postLink, data)
+
+    expect(routerPushSpy).toHaveBeenCalledTimes(1)
+    expect(routerPushSpy).toHaveBeenLastCalledWith({ name: 'loginClient' })
   })
 })
