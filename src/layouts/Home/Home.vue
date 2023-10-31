@@ -30,10 +30,12 @@
     dashboard: 'Dashboard'
     subscriptions: 'Request validation'
     ged:  'My documents'
+    mandate: 'Banking'
   fr-FR:
     dashboard: 'Tableau de bord'
     subscriptions: 'Validation de demande'
     ged:  'Mes documents'
+    mandate: 'Flux bancaires'
 </i18n>
 
 <script setup lang="ts">
@@ -67,6 +69,11 @@ const menuHeader = [
     icon: 'PIFiles',
     text: t('subscriptions'),
     path: '/subscriptions'
+  },
+  {
+    icon: 'PICashCoin',
+    text: t('mandate'),
+    path: '/mandats'
   }
 ]
 
