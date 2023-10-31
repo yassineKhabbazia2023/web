@@ -13,6 +13,7 @@ import {
 import ConfirmationPopup from '@/modules/common/templates/popups'
 import { nextTick } from 'vue'
 import { deleteDocuments } from '@/services/Documents'
+import { createI18n } from 'vue-i18n'
 
 const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,
@@ -20,7 +21,9 @@ const defaultProps: DocumentDeleteModalTypesProps = {
   serviceId: 'serv',
   entityId: 'ent'
 }
-
+const i18n = createI18n({
+  locale: 'fr-FR'
+})
 const pinia = createPinia()
 
 const mockToastPlugin = vi.fn()
@@ -33,7 +36,8 @@ const createWrapper = (
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
+        toast: mockToastPlugin,
+        i18n
       }
     }
   })
@@ -67,7 +71,7 @@ describe('deleteFolderConfirmationPopup', () => {
       expect(popup.exists()).toBeTruthy()
 
       // eslint-disable-next-line max-len
-      const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé et déplacé à la corbeille.'
+      const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
       expect(popup.props('title')).toStrictEqual('Supprimer ce document ?')
@@ -87,7 +91,7 @@ describe('deleteFolderConfirmationPopup', () => {
       expect(popup.exists()).toBeTruthy()
 
       // eslint-disable-next-line max-len
-      const confirmationMessage = 'Si vous cliquez sur "Confirmer", tous les documents seront supprimés et déplacés à la corbeille.'
+      const confirmationMessage = 'Si vous cliquez sur "Confirmer", tous les documents seront supprimés du dossier. Vous pourrez les restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
       expect(popup.props('title')).toStrictEqual('Supprimer ces documents ?')
@@ -107,7 +111,7 @@ describe('deleteFolderConfirmationPopup', () => {
       expect(popup.exists()).toBeTruthy()
 
       // eslint-disable-next-line max-len
-      const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé et déplacé à la corbeille.'
+      const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
       expect(popup.props('title')).toStrictEqual('Supprimer ce document ?')
@@ -168,7 +172,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
         expect(mockToastPlugin).toHaveBeenCalledTimes(1)
         const callArguments = mockToastPlugin.mock.calls[0][0]
-        expect(callArguments.message).toBe('"2" document(s) supprimé(s).')
+        expect(callArguments.message).toBe('"2" documents supprimés.')
         expect(callArguments.customClass).toBe('success')
         expect(wrapper.emitted('confirm-delete-document')).toBeTruthy()
       })

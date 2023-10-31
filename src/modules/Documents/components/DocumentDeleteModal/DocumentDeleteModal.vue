@@ -122,42 +122,41 @@ const triggerSuccessNotification = () => {
 <i18n lang="yaml">
 en-US:
   popup:
-      title: 'Supprimer ce document ?'
-      titleLoading: 'Un instant...'
-      message: 'Si vous cliquez sur "Confirmer", le document
-       sera supprimé et déplacé à la corbeille.'
-      messageLoading: 'Les documents sont en cours de suppression vers la corbeille.'
-      controls:
-        confirm: 'Confirmer'
-        cancel: 'Annuler'
-      notifications:
-        error: 'Connexion au serveur interrompue.'
-        success: '1 document supprimé.'
+    title: 'Supprimer ce document ?'
+    titleLoading: 'Un instant...'
+    message: 'Si vous cliquez sur "Confirmer", le document
+     sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
+    messageLoading: 'Le documents est en cours de suppression vers la corbeille.'
+    controls:
+      confirm: 'Confirmer'
+      cancel: 'Annuler'
+    notifications:
+      error: 'Connexion au serveur interrompue.'
+      success: '1 document supprimé.'
   popupMulti:
       title: 'Supprimer ces documents ?'
-      message: 'Si vous cliquez sur "Confirmer", tous les documents
-       seront supprimés et déplacés à la corbeille.'
+      message: 'Si vous cliquez sur "Confirmer", tous les documents seront
+       supprimés du dossier. Vous pourrez les restaurer depuis la corbeille.'
       notifications:
-        success: '"{documentsCount}" document(s) supprimé(s).'
-
+        success: '"{documentsCount}" documents supprimés.'
 fr-FR:
   popup:
-      title: 'Supprimer ce document ?'
-      titleLoading: 'Un instant...'
-      message: 'Si vous cliquez sur "Confirmer", le document
-       sera supprimé et déplacé à la corbeille.'
-      messageLoading: 'Les documents sont en cours de suppression vers la corbeille.'
-      controls:
-        confirm: 'Confirmer'
-        cancel: 'Annuler'
-      notifications:
-        error: 'Connexion au serveur interrompue.'
-        success: '1 document supprimé.'
+    title: 'Supprimer ce document ?'
+    titleLoading: 'Un instant...'
+    message: 'Si vous cliquez sur "Confirmer", le document
+     sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
+    messageLoading: 'Le documents est en cours de suppression vers la corbeille.'
+    controls:
+      confirm: 'Confirmer'
+      cancel: 'Annuler'
+    notifications:
+      error: 'Connexion au serveur interrompue.'
+      success: '1 document supprimé.'
   popupMulti:
       title: 'Supprimer ces documents ?'
-      message: 'Si vous cliquez sur "Confirmer", tous les documents
-       seront supprimés et déplacés à la corbeille.'
+      message: 'Si vous cliquez sur "Confirmer", tous les documents seront
+       supprimés du dossier. Vous pourrez les restaurer depuis la corbeille.'
       notifications:
-        success: '"{documentsCount}" document(s) supprimé(s).'
+        success: '"{documentsCount}" documents supprimés.'
 </i18n>
 
