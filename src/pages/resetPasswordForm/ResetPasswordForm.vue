@@ -177,7 +177,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
       const data = {
         contactId,
         password: formValue.password,
-        resetPasswordToken: token
+        resetPasswordToken: token,
+        isCreatePasswordAction: false
       }
       const urlUpdatePassword = '/createResetPassword'
       try {

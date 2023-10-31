@@ -113,7 +113,8 @@ describe('page reset password form', () => {
     const data = {
       contactId: 'contactId',
       password: 'aaAA11@@',
-      resetPasswordToken: 'token'
+      resetPasswordToken: 'token',
+      isCreatePasswordAction: false
     }
     expect(postMock).toHaveBeenCalledTimes(1)
     expect(postMock).toHaveBeenCalledWith(postLink, data)
