@@ -26,7 +26,7 @@ const leftSideButtons = computed(() =>
 )
 
 const rightSideButtons = computed(() =>
-  generateActionBarRightSideButtons(props.permissions)
+  generateActionBarRightSideButtons(props.permissions, props.isAnyDocumentSelected)
 )
 
 const handleButtonClick = (name: string) => {

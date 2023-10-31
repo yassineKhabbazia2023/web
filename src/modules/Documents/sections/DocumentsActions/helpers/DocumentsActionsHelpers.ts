@@ -156,14 +156,19 @@ export function generateActionBarLeftSideButtons(permissions: string[]): ActionB
     .sort((a, b) => (a.order > b.order) ? 1 : -1)?.map(e => e?.actionbarButton))
 }
 
-export function generateActionBarRightSideButtons(permissions: string[]): ActionBarButton[] {
+export function generateActionBarRightSideButtons(
+  permissions: string[],
+  isAnyDocumentSelected: boolean
+): ActionBarButton[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {
     if (rightSideButtons[permission]) {
       toolboxBasicData.push(rightSideButtons[permission])
     }
   }
-  toolboxBasicData.push(rightSideButtons.CAN_DOWNLOAD_DOCUMENT)
+  if (isAnyDocumentSelected) {
+    toolboxBasicData.push(rightSideButtons.CAN_DOWNLOAD_DOCUMENT)
+  }
   return (toolboxBasicData
     .sort((a, b) => (a.order > b.order) ? 1 : -1)?.map(e => e?.actionbarButton))
 }

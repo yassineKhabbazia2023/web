@@ -28,8 +28,9 @@ const findActionBarRight = async (wrapper: any) => {
 describe('documentsActions component', () => {
   it('should render the correct number of left side buttons', async () => {
     const permissions = ['']
+    const isAnyDocumentSelected = true
 
-    const wrapper = createWrapper({ permissions })
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
     const leftActionBar = await findActionBarLeft(wrapper)
@@ -39,7 +40,8 @@ describe('documentsActions component', () => {
 
   it('should render the default button download of right side buttons', async () => {
     const permissions = ['']
-    const wrapper = createWrapper({ permissions })
+    const isAnyDocumentSelected = true
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
     const rightActionBar = await findActionBarRight(wrapper)
@@ -49,7 +51,8 @@ describe('documentsActions component', () => {
 
   it('should render the correct number of right side buttons', async () => {
     const permissions = ['CAN_TRANSMIT_DOCUMENT', 'CAN_MOVE_DOCUMENT']
-    const wrapper = createWrapper({ permissions })
+    const isAnyDocumentSelected = true
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
     const rightActionBar = await findActionBarRight(wrapper)
@@ -60,7 +63,8 @@ describe('documentsActions component', () => {
 describe('event', () => {
   it('should emit event click', async () => {
     const permissions = ['']
-    const wrapper = createWrapper({ permissions })
+    const isAnyDocumentSelected = true
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
     const pActionBarWrapper = await dynamicUntilFoundComponent(wrapper, PActionBar)
     await nextTick()

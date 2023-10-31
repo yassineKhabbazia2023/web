@@ -2,7 +2,8 @@
   <template v-if="!isLoading && documents">
     <DocumentsActionsBar
       :permissions="permissionsList"
-      @p-action-bar-button-clicked="handleActionBarButtonClick"/>
+      @p-action-bar-button-clicked="handleActionBarButtonClick"
+      :isAnyDocumentSelected="selectedDocuments.length > 0"/>
 
     <DocumentsList
       :documentsListWithTableStructure="documents"
