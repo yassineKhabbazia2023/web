@@ -23,6 +23,7 @@ type DocumentsSetup = {
   documents: DocumentsWithTableStructure
   selectedDocument: Document
   selectedDocuments: Document[]
+  isLoading:false
 }
 
 export type DocumentsWrapper = VueWrapper<
@@ -87,12 +88,10 @@ describe('documents', () => {
       }) as unknown as DocumentsWrapper
       const componentInstance = wrapper.vm
       componentInstance.documents = responseNoDoc
-
       await nextTick()
       const pagination = wrapper.findComponent(PPagination)
-      await nextTick()
+      expect(pagination.isVisible()).toBeFalsy()
 
-      expect(pagination.exists()).toBeFalsy()
     })
   })
   describe('events', () => {

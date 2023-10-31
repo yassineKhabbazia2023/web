@@ -1,11 +1,12 @@
 <template>
-  <template v-if="!isLoading && documents">
+  <div v-show="!isLoading">
     <DocumentsActionsBar
       :permissions="permissionsList"
       @p-action-bar-button-clicked="handleActionBarButtonClick"
       :isAnyDocumentSelected="selectedDocuments.length > 0"/>
 
     <DocumentsList
+      v-if="documents"
       :documentsListWithTableStructure="documents"
       @on-sort-change="handleSortChange"
       @toolbox-action-triggered="handleToolboxActionTriggered"
@@ -13,7 +14,7 @@
     />
 
     <PPagination
-      v-if="documents.documentsPage.items.length > 0"
+      v-if="documents && documents.documentsPage.items.length > 0"
       v-model:current-page="currentPage"
       v-model:page-size="currentPageSize"
       :total="documents.documentsPage.totalItems"
@@ -25,9 +26,9 @@
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
-  </template>
+  </div>
   <PLoader
-    v-else
+    v-show="isLoading"
     type="gradient"
     size="42"
   />
