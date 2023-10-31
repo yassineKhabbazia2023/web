@@ -212,6 +212,7 @@ $footer-margin: 24px;
 
 .drawerContent {
   text-align: left;
+  font-size: 12px;
 }
 
 .logo-footer {

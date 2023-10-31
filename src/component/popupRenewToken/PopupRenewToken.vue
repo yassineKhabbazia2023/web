@@ -76,7 +76,7 @@ watch(
   () => store.user?.token,
   (token) => {
     !!token &&
-    ({ exp, sub } = jwtDecode<JwtPayload>(token as string)) &&
+    ({ exp, sub } = jwtDecode<JwtPayload>(token)) &&
     !!exp &&
     tokenHandle(exp)
   }
@@ -101,9 +101,10 @@ const handleLogout = () => {
 }
 
 const tokenHandle = (exp: number) => {
+  const delay = exp * 1000 - 5000 - Date.now()
   timer = setTimeout(() => {
     isVisibleDialog.value = true
-  }, exp * 1000 - 5000) // expiration time minus 5 seconds
+  }, delay) // expiration time minus 5 seconds
 }
 </script>
 
