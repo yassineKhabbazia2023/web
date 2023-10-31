@@ -31,7 +31,8 @@ router.push({
   query: {
     contactId: 'contactId',
     accountId: 'accountId',
-    token: 'token'
+    token: 'token',
+    email: 'email'
   }
 })
 
@@ -115,14 +116,20 @@ describe('page creation password', () => {
     await flushPromises()
     const patchLink = '/Activation/AcceptTerms?contactId=contactId'
     const postLink = '/createResetPassword'
+    const loginLink = '/login'
     const data = {
       contactId: 'contactId',
       password: 'aaAA11@@',
       resetPasswordToken: 'token'
     }
+    const dataLogin = {
+      email: 'email',
+      password: 'aaAA11@@'
+    }
     expect(patchMock).toHaveBeenCalledTimes(1)
     expect(patchMock).toHaveBeenCalledWith(patchLink)
-    expect(postMock).toHaveBeenCalledTimes(1)
-    expect(postMock).toHaveBeenCalledWith(postLink, data)
+    expect(postMock).toHaveBeenCalledTimes(2)
+    expect(postMock).toHaveBeenNthCalledWith(1, postLink, data)
+    expect(postMock).toHaveBeenNthCalledWith(2, loginLink, dataLogin)
   })
 })

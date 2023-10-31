@@ -214,6 +214,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   height: 30px;
   display: block;
   color: var(--el-color-primary);
+  font-size: 12px;
 
   &:hover {
     color: var(--el-color-primary-dark-2);

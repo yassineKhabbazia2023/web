@@ -153,6 +153,7 @@ const route = useRoute()
 const router = useRouter()
 const contactId = route.query.contactId
 const accountId = route.query.accountId
+const email = route.query.email?.toString().trim().replace(' ', '+')
 const resetPasswordToken = route.query.token
 const formRef = ref<FormInstance>()
 const urlTerms = ref('')
@@ -232,12 +233,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
       const urlUpdatePassword = '/createResetPassword'
       try {
         await commonApi().onboarding.patch(urlAcceptTerms)
+        await commonApi().auth.post(urlUpdatePassword, data)
+        const urlLogin = '/login'
         const {
           data: {
             userId: id,
             webToken: token
           }
-        } = await commonApi().auth.post(urlUpdatePassword, data)
+        } = await commonApi().auth.post(urlLogin, { email, password: formValue.password })
         sessionStorage.setItem('token', token)
         store().$patch({
           user: {
@@ -246,7 +249,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             isCollab: false
           }
         })
-        router.push({ name: 'home' })
+        router.push({ name: 'entities' })
       } catch {}
     } else {
       return false

@@ -30,7 +30,8 @@ router.push({
   query: {
     contactId: 'contactId',
     accountId: 'accountId',
-    token: 'token'
+    token: 'token',
+    email: 'email'
   }
 })
 
