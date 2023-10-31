@@ -27,7 +27,7 @@ import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import { renameDocument } from '@/services/Documents'
 import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 import { useI18n } from 'vue-i18n'
-import { PICheck } from '@kpmg/styleguide'
+import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
 
 const props = defineProps<DocumentRenameProps>()
 const emit = defineEmits(['update:modelValue', 'document-rename'])
@@ -72,9 +72,9 @@ const handleDocumentRename = async (documentName: string) => {
   } catch {
     toastPlugin({
       message: t('toaster.error'),
-      icon: PICheck,
+      icon: PIExclamationTriangle,
       showClose: true,
-      customClass: 'success',
+      customClass: 'error',
       position: 'bottom-right'
     })
   }
