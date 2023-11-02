@@ -1,2 +1,2 @@
 export { default } from './PAvatar.vue'
-export * from './PAvatar'
+export * from './PAvatarTypes'

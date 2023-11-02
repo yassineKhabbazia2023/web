@@ -1,9 +1,8 @@
 <template>
   <ElAvatar
-    v-bind="props"
     :fit="pFit"
     size="default"
-    :color="pColor"
+    :class="pClassMapper"
     :src="pSrc"
     :shape="pShape"
   >
@@ -13,7 +12,8 @@
 
 <script setup lang="ts">
 import { ElAvatar } from 'element-plus'
-import type { PAvatarProps } from './PAvatar'
+import { computed } from 'vue'
+import type { PAvatarProps } from './PAvatarTypes'
 
 const props = withDefaults(defineProps<PAvatarProps>(), {
   pType: 'default',
@@ -22,4 +22,10 @@ const props = withDefaults(defineProps<PAvatarProps>(), {
   pSrc: '',
   pShape: 'circle'
 })
+
+const pClassMapper = computed(() => ({
+  [`p-avatar--color-${props.pColor}`]: true,
+  [`p-avatar--type-${props.pType}`]: true
+}))
+
 </script>

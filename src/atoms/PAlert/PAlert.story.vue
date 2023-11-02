@@ -16,7 +16,7 @@
     </Variant>
 
     <Variant title="Success alert">
-      <PAlert type="success">
+      <PAlert pType="success">
         Not using bold text slot Lorem ipsum dolor sit amet, consectetur adipiscing
         elit. Sed venenatis quis dolor in consequat. Integer nec viverra dui.
         Quisque eget risus feugiat, pellentesque sem interdum, vehicula eros.
@@ -24,7 +24,7 @@
     </Variant>
 
     <Variant title="Warning alert">
-      <PAlert type="warning">
+      <PAlert pType="warning">
         Not using bold text slot Lorem ipsum dolor sit amet, consectetur adipiscing
         elit. Sed venenatis quis dolor in consequat. Integer nec viverra dui.
         Quisque eget risus feugiat, pellentesque sem interdum, vehicula eros.
@@ -32,7 +32,7 @@
     </Variant>
 
     <Variant title="Danger alert">
-      <PAlert type="danger">
+      <PAlert pType="danger">
         <template #bold-text>
           Using bold text slot :
         </template>
@@ -43,7 +43,7 @@
     </Variant>
 
     <Variant title="Information usage">
-      <PAlert type="information">
+      <PAlert pType="information">
         <template #bold-text>
           Using bold text slot :
         </template>

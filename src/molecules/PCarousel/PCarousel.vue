@@ -1,11 +1,11 @@
 <template>
   <ElCarousel>
     <PCarouselItem
-      v-for="(item, index) in items"
+      v-for="(item, index) in pItems"
       :key="index"
-      :text="item.text"
-      :imageType="item.imageType"
-      :imageName="item.imageName"
+      :pText="item.pText"
+      :pImageType="item.pImageType"
+      :pImageName="item.pImageName"
     />
   </ElCarousel>
 </template>
@@ -13,15 +13,7 @@
 <script setup lang="ts">
 import { ElCarousel } from 'element-plus'
 import PCarouselItem from '@/atoms/PCarouselItem'
+import type { PCarouselProps } from './PCarouselTypes'
 
-export interface PCarouselItemProps {
-  text: string,
-  imageType: string,
-  imageName: string
-}
-
-export interface PCarouselProp {
-  items: Array<PCarouselItemProps>
-}
-defineProps<PCarouselProp>()
+defineProps<PCarouselProps>()
 </script>

@@ -3,11 +3,11 @@
     <Variant title="Basic usage">
       <div class="padding--8">
         <PBankCard
-          :startTitle="bankCardBasicData.startTitle"
-          :title="bankCardBasicData.title"
-          :accountNumber="bankCardBasicData.accountNumber"
-          :accountText="bankCardBasicData.accountText"
-          :amount="bankCardBasicData.amount"
+          :pStartTitle="bankCardBasicData.startTitle"
+          :pTitle="bankCardBasicData.title"
+          :pAccountNumber="bankCardBasicData.accountNumber"
+          :pAccountText="bankCardBasicData.accountText"
+          :pAmount="bankCardBasicData.amount"
         />
       </div>
     </Variant>

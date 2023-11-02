@@ -1,7 +1,7 @@
 export interface PAvatarProps {
   pType?: '' | 'default' | 'small' | 'large' | 'xsmall' | 'xlarge',
   pColor?: ''
-    |'persian-gradient'
+    | 'persian-gradient'
     | 'orange'
     | 'persian'
     | 'teal'

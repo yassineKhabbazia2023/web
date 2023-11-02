@@ -6,22 +6,22 @@
     router
   >
     <ElMenuItem
-      v-for="item in menu.slice(0, 4)"
+      v-for="item in pHeaderMenu.slice(0, 4)"
       class="menu-item"
-      :index="item.path"
-      :route="{ path: item.path }"
-      :key="item.path"
+      :index="item.pPath"
+      :route="{ path: item.pPath }"
+      :key="item.pPath"
     >
       <PIcon>
-        <component :is="createIcon(item.icon)" />
+        <component :is="createIcon(item.pIcon)" />
       </PIcon>
       <template #title>
-        {{ item.text }}
+        {{ item.pText }}
       </template>
     </ElMenuItem>
     <ElSubMenu
       index="2"
-      v-if="menu.length > 4"
+      v-if="pHeaderMenu.length > 4"
     >
       <template #title>
         <PIcon>
@@ -30,17 +30,17 @@
         <span>{{ t('more') }}</span>
       </template>
       <ElMenuItem
-        v-for="item in menu.slice(4)"
+        v-for="item in pHeaderMenu.slice(4)"
         class="menu-item"
-        :index="item.path"
-        :route="{ path: item.path }"
-        :key="item.path"
+        :index="item.pPath"
+        :route="{ path: item.pPath }"
+        :key="item.pPath"
       >
         <PIcon>
-          <component :is="createIcon(item.icon)" />
+          <component :is="createIcon(item.pIcon)" />
         </PIcon>
         <template #title>
-          {{ item.text }}
+          {{ item.pText }}
         </template>
       </ElMenuItem>
     </ElSubMenu>
@@ -59,24 +59,15 @@ import PIcon from '@/atoms/PIcon'
 import { defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMenuItem, ElMenu, ElSubMenu } from 'element-plus'
+import type { PHeaderProps } from './PHeaderTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-export interface IMenu {
-  icon: string
-  text: string
-  path: string
-}
-
-export interface PHeaderProps {
-  menu: IMenu[]
-}
-
 withDefaults(defineProps<PHeaderProps>(), {
-  menu: () => []
+  pHeaderMenu: () => []
 })
 
 const createIcon = (name: string) => {

@@ -1,15 +1,14 @@
 <template>
-  <ElImage :src="resolvedImage"></ElImage>
+  <ElImage :src="resolvedImage" :class="`p-image--fit-${props.pFit}`"></ElImage>
 </template>
 
 <script setup lang="ts">
 import { ElImage } from 'element-plus'
 import { imageResolver } from '@/utils/imageResolver'
+import type { PImageProps } from './PImageTypes'
 
-export interface PImageCustomProps {
-  type: string
-  name: string
-}
-const props = defineProps<PImageCustomProps>()
-const resolvedImage = imageResolver(props.type, props.name)
+const props = withDefaults(defineProps<PImageProps>(), {
+  pFit: 'fill'
+})
+const resolvedImage = imageResolver(props.pType, props.pName)
 </script>

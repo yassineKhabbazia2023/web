@@ -16,13 +16,13 @@ import type { PAlertProps } from './PAlertTypes'
 import { iconResolver } from '@/utils/iconResolver'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
-  type: 'main'
+  pType: 'main'
 })
 
-const typeModifierClass = computed(() => `p-alert--${props.type}`)
+const typeModifierClass = computed(() => `p-alert--type-${props.pType}`)
 
 const typeIcon = computed(() => {
-  switch (props.type) {
+  switch (props.pType) {
     case 'success':
       return iconResolver('PICheckCircle')
 

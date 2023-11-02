@@ -12,9 +12,9 @@
     </div>
     <div class="p-double-text__icon" v-if="profile">
       <PAvatar
-        :shape="iconShape"
-        :type="iconType"
-        :color="iconColor">
+        :pShape="iconShape"
+        :pType="iconType"
+        :pColor="iconColor">
         {{ profile }}
       </PAvatar>
     </div>

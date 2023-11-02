@@ -8,14 +8,10 @@
     icon="mdi:file-image-outline"
   >
     <Variant title="Basic Usage">
-      <Suspense>
-        <AsyncComponent
-          :type="basicImageData.type"
-          :name="basicImageData.name"
-          :fit="basicImageData.fit"
-        />
-      </Suspense>
-
+      <PImage
+        :pType="basicImageData.type"
+        :pName="basicImageData.name"
+        :pFit="basicImageData.fit" />
       <template #controls>
         <HstSelect
           v-model="basicImageData.type"

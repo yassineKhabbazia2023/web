@@ -5,7 +5,7 @@
   >
     <Variant title="Activity Card">
       <div class="padding--4">
-        <PActivityCard :time="PActivityCardData.time" :initials="PActivityCardData.initials">
+        <PActivityCard :pTime="PActivityCardData.time" :pInitials="PActivityCardData.initials">
           <span class="font-semibold">Alexandre De Lavandia</span> filed this document in the file <span class="font-semibold">April</span>
         </PActivityCard>
       </div>

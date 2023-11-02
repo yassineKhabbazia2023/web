@@ -1,4 +1,4 @@
 export interface PActivityProps {
-  time: string
-  initials: string
+  pTime: string
+  pInitials: string
 }

@@ -2,14 +2,14 @@
   <ElCarouselItem>
     <div class="top">
       <p class="text">
-        {{ text }}
+        {{ pText }}
       </p>
     </div>
     <div class="bottom">
       <PImage
-        :type="imageType"
-        :name="imageName"
-        fit="fill"
+        :pType="pImageType"
+        :pName="pImageName"
+        pFit="fill"
       />
     </div>
     <slot />
@@ -19,12 +19,8 @@
 <script lang="ts" setup>
 import { ElCarouselItem } from 'element-plus'
 import PImage from '@/atoms/PImage'
+import type { PCarouselItemProps } from './PCarouselItemTypes'
 
-export interface PCarouselItemProps {
-  text: string,
-  imageType: string,
-  imageName: string
-}
 defineProps<PCarouselItemProps>()
 
 </script>

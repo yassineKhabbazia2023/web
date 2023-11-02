@@ -2,8 +2,8 @@
   <div class="p-activity-card radius--2 shadow--1">
     <div class="p-activity-card__avatar">
       <PAvatar
-        color="white"
-        type="xsmall"
+        pColor="white"
+        pType="xsmall"
       >
         {{ initialsTrim }}
       </PAvatar>
@@ -13,7 +13,7 @@
         <slot />
       </p>
       <p class="p-activity-card__time font-small">
-        {{ time }}
+        {{ pTime }}
       </p>
     </div>
   </div>
@@ -22,11 +22,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import PAvatar from '@/atoms/PAvatar'
-import type { PActivityProps } from './PActivityCardProps'
+import type { PActivityProps } from './PActivityCardTypes'
 
 const props = defineProps<PActivityProps>()
 
-const initialsTrim = computed(() => props.initials.substring(0, 2))
+const initialsTrim = computed(() => props.pInitials.substring(0, 2))
 </script>
 
 <style lang="scss" scoped>

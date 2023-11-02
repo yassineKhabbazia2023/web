@@ -16,7 +16,9 @@
 import { ElDialog } from 'element-plus'
 import { ref } from 'vue'
 
-const props = defineProps(['visible'])
+const props = defineProps({
+  visible: Boolean
+})
 const visible = ref(props.visible)
 
 const emit = defineEmits(['update:visible'])

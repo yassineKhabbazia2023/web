@@ -1,21 +1,21 @@
 <template>
   <button
     class="p-bankcard shadow--3 padding--4 radius--2"
-    :title="`${ startTitle } ${ title } - ${ accountNumber } ${ accountText }`">
+    :title="`${ pStartTitle } ${ pTitle } - ${ pAccountNumber } ${ pAccountText }`">
     <p class="p-bankcard__title font-semibold margin-bottom--2">
-      {{ title }}
+      {{ pTitle }}
     </p>
     <p class="p-bankcard__accounts font-small margin-bottom--4">
-      {{ accountNumber }} {{ accountText }}
+      {{ pAccountNumber }} {{ pAccountText }}
     </p>
     <p class="p-bankcard__amount h4">
-      {{ amount }}
+      {{ pAmount }}
     </p>
   </button>
 </template>
 
 <script setup lang="ts">
-import { type PBankCardProps } from './PBankCardProps'
+import type { PBankCardProps } from './PBankCardTypes'
 
 defineProps<PBankCardProps>()
 </script>

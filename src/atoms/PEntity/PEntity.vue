@@ -6,9 +6,9 @@
   >
     <div class="p-entity__avatar">
       <PAvatar
-        :shape="iconShape"
-        :type="iconType"
-        :color="iconColor">
+        :pShape="iconShape"
+        :pType="iconType"
+        :pColor="iconColor">
         <PIcon>
           <component :is="icon" />
         </PIcon>

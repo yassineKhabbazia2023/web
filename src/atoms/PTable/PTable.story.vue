@@ -4,7 +4,7 @@
     icon="teenyicons:table-outline"
     :layout="{ type: 'grid', width: '80%' }">
     <Variant title="PTable basic">
-      <PTable :data="tableInputs.data" :stripe="tableInputs.striped">
+      <PTable :pData="tableInputs.data" :pStripe="tableInputs.striped">
         <PTableColumn
           type="selection"
           v-if="tableInputs.selectable"/>
@@ -25,9 +25,9 @@
     </Variant>
     <Variant title="PTable advanced">
       <PTable
-        :data="tableInputsWithCells.data"
-        :stripe="tableInputsWithCells.striped"
-        fit
+        :pData="tableInputsWithCells.data"
+        :pStripe="tableInputsWithCells.striped"
+        fit="true"
       >
         <PTableColumn
           type="selection"

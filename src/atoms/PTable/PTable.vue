@@ -1,7 +1,7 @@
 <template>
   <ElTable
-    :data="data"
-    :stripe="stripe"
+    :data="pData"
+    :stripe="pStripe"
     :rowClassName="tableRowClassName"
     ref="table"
   >
@@ -10,19 +10,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ElTable } from 'element-plus'
 import { ref } from 'vue'
+import { ElTable } from 'element-plus'
+import type { PTableProps } from './PTableTypes'
 
-const table = ref<InstanceType<typeof ElTable>>()
-
-type PTableProps = {
-  data: any[]
-  stripe: boolean
-}
+/* NOTE : un usage de pfit est fait dans la story et la question
+de son usage se pose car via cet emplacement ne se bind nul part */
+const table = ref<any>()
 
 withDefaults(defineProps<PTableProps>(), {
-  data: () => [],
-  stripe: true
+  pData: () => [],
+  pStripe: true
 })
 
 // handle row selection background color not implemented by element plus
