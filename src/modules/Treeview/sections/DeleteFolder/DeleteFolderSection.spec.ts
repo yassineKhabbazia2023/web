@@ -8,7 +8,7 @@ import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/
 import { Folder, FolderProperties } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
-import { DeleteFolder } from '@/services/Folder'
+import { deleteFolder } from '@/services/Folder'
 import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
@@ -69,7 +69,7 @@ vi.mock('vue-inject', () => ({
 
 vi.mock('@/services/Folder', () => ({
   tokenValue: 'mocked token',
-  DeleteFolder: vi.fn()
+  deleteFolder: vi.fn()
 }))
 
 describe('deleteFolderSection', () => {
@@ -161,7 +161,7 @@ describe('deleteFolderSection', () => {
         await popup.vm.$emit('confirm-delete-folder')
         await nextTick()
 
-        expect(vi.mocked(DeleteFolder)).toHaveBeenCalledWith(
+        expect(vi.mocked(deleteFolder)).toHaveBeenCalledWith(
           'service-id',
           'entity-id',
           1,

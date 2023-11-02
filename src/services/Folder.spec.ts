@@ -3,7 +3,7 @@ import {
   fetchServiceFolders,
   CreateFolder,
   RenameFolder,
-  DeleteFolder,
+  deleteFolder,
   fetchServicesFolders
 } from './Folder'
 import type { Service } from '@/models/Service'
@@ -124,7 +124,7 @@ describe('folder service', () => {
     const serviceId = 'some-service-id'
     const entityId = 'some-entity-id'
 
-    await DeleteFolder(serviceId, entityId, folderId, false)
+    await deleteFolder(serviceId, entityId, folderId, false)
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/1?keepFolder=false'

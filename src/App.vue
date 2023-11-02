@@ -40,7 +40,8 @@ import {
   appendChildFolder,
   renameFolder,
   sortFolderByName,
-  DeleteFolder
+  deleteFolder,
+  findFolderDeepById
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 
 import { PCol, PRow } from '@kpmg/styleguide'
@@ -111,12 +112,21 @@ const handleUpdateSourceFolder = (data: Folder) => {
 
 // Delete folder scope
 const handleRemoveFolderFromSource = (folder: Folder) => {
-  DeleteFolder(
+  deleteFolder(
     servicesFolders.value,
     currentService.value ?? '',
     folder.parent.id,
     folder.id
   )
+
+  const currentServiceFolder = servicesFolders.value.find(
+    (sf) => sf[0].serviceId === currentService.value
+  ) as Folder[]
+  // Find deep only in currentService if defined
+  const folderToRedirectTo = findFolderDeepById(currentServiceFolder, folder.parent.id)
+  if (folderToRedirectTo) {
+    currentFolder.value = folderToRedirectTo
+  }
 }
 
 // Rename folder scope

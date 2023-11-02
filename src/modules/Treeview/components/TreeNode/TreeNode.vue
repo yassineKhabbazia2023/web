@@ -145,7 +145,7 @@ const onTreeNodeMouseleave = () => {
   }
 
   &__label {
-    max-width: 16ch;
+    max-width: 24ch;
     overflow: hidden;
     text-overflow: ellipsis;
 

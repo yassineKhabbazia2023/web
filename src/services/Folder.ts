@@ -59,7 +59,7 @@ export const RenameFolder = async (
   ).data
 }
 
-export const DeleteFolder = async (
+export const deleteFolder = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
   folderId: Folder['id'],

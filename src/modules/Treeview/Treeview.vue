@@ -81,6 +81,8 @@
 </template>
 
 <script setup lang="ts">
+/* eslint-disable vitest/require-hook */
+
 import { computed, ref, watch } from 'vue'
 import TreeNode from '@/modules/Treeview/components/TreeNode'
 import { formatBinData } from './helpers/binHelper'
@@ -111,7 +113,6 @@ const initialSelectedNodeId = computed(() => {
   return defaultFolder.value.id
 })
 
-// eslint-disable-next-line vitest/require-hook
 watch(() => props.isLoading, () => {
   if (props.isLoading === true) return
   defaultFolder.value = props.servicesFolders[0][0].children[0]
@@ -126,6 +127,17 @@ const selectedFolder = computed(():Folder => {
   }
 
   return props.selectedFolder || props.servicesFolders[0][0].children[0]
+})
+
+watch(() => props.selectedFolder, () => {
+  const { selectedFolder } = props
+  if (!selectedFolder) return
+  if (selectedFolder === treeNodeSelectedFolder.value) return
+
+  const tree = retrieveCurrentlyUsedSourceTree()
+  if (!tree) return
+  treeNodeSelectedFolder.value = selectedFolder
+  tree.setCurrentKey(selectedFolder.id)
 })
 
 const parentNodeOfSelectedFolderTreeNodeAction = ref()
@@ -171,6 +183,13 @@ const retrieveUnusedTrees = (): TreeType[] => {
   return treesRefs.value.filter(
     (tree) => tree.data[0].serviceId !== props.currentService
   )
+}
+const retrieveCurrentlyUsedSourceTree = (): TreeType => {
+  const usedTree = treesRefs.value.filter(
+    (tree) => tree.data[0].serviceId === props.currentService
+  )
+
+  return retrieveSourceTrees(usedTree)[0]
 }
 
 // Retreiving the source trees allow us to used their internal exposed functions

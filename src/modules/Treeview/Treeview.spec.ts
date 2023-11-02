@@ -1,5 +1,5 @@
 import Treeview from '@/modules/Treeview'
-import { mount } from '@vue/test-utils'
+import { mount, type DOMWrapper } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type TreeviewProps } from '@/modules/Treeview/TreeviewTypes'
 
@@ -51,6 +51,11 @@ const createWrapper = (props: TreeviewProps = defaultProps) => {
       plugins: [pinia],
       provide: {
         toast: mockToastPlugin
+      },
+      stubs: {
+        PButton: {
+          template: '<div />'
+        }
       }
     }
   })
@@ -200,6 +205,29 @@ describe('treeview', () => {
           await nextTick()
           // this was chnged from 1 to 2 , to check if it is the wanted behaviour
           expect(wrapper.emitted('selected-folder-change')).toHaveLength(2)
+        })
+
+        it('should update selected folder in the tree', async () => {
+          const baseSelectedNodeKey = foldersData[0][0].children[0].id
+          const newSelectedNodeKey = foldersData[0][0].id
+          const wrapper = createWrapper()
+          wrapper.setProps({ isLoading: false })
+          const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+          await nextTick()
+          await dynamicUntilFoundComponent(treeElement, PTree)
+          const baseSelectedNode = treeElement.find(
+            `[data-key="${baseSelectedNodeKey}"]`
+          ) as DOMWrapper<any>
+          expect(
+            baseSelectedNode.classes().includes('is-current')
+          ).toBeTruthy()
+
+          wrapper.setProps({ selectedFolder: foldersData[0][0] })
+          await nextTick()
+          const newSelectedNode = treeElement.find(
+            `[data-key="${newSelectedNodeKey}"]`
+          ) as DOMWrapper<any>
+          expect(newSelectedNode.classes().includes('is-current')).toBeTruthy()
         })
       })
       describe('treeNode', () => {

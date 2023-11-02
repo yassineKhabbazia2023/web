@@ -106,7 +106,7 @@ export const sortFolderByName = (
   })
 }
 
-export const DeleteFolder = (
+export const deleteFolder = (
   array: Folder[][],
   serviceId: string,
   parentFolderId: Folder['id'],

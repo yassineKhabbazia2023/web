@@ -15,7 +15,7 @@ import { Service } from './models/Service'
 import {
   appendChildFolder,
   sortFolderByName,
-  DeleteFolder,
+  deleteFolder,
   renameFolder
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 import Documents from '@/modules/Documents'
@@ -50,16 +50,21 @@ vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn()
 }))
 
-vi.mock('@/modules/Treeview/helpers/folderArrayHelper', () => ({
-  appendChildFolder: vi.fn(() => {
-    return true
-  }),
-  sortFolderByName: vi.fn(),
-  DeleteFolder: vi.fn(),
-  renameFolder: vi.fn(() => {
-    return true
-  })
-}))
+vi.mock('@/modules/Treeview/helpers/folderArrayHelper', async () => {
+  const actual = await vi.importActual('@/modules/Treeview/helpers/folderArrayHelper')
+  return {
+    // @ts-ignore
+    ...actual,
+    appendChildFolder: vi.fn(() => {
+      return true
+    }),
+    sortFolderByName: vi.fn(),
+    deleteFolder: vi.fn(),
+    renameFolder: vi.fn(() => {
+      return true
+    })
+  }
+})
 
 type AppSetup = {
   selectedEntity: string
@@ -194,7 +199,7 @@ describe('ged', () => {
         )
         await nextTick()
 
-        expect(vi.mocked(DeleteFolder)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(deleteFolder)).toHaveBeenCalledTimes(1)
       })
 
       it('should rename folder in tree and sort when update-folder-name', async () => {

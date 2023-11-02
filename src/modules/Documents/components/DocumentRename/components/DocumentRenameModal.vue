@@ -1,6 +1,6 @@
 <template>
   <SingleInputModal
-    v-model:isDialogVisible="isRenameModalVisible"
+    :isDialogVisible="isRenameModalOpened"
     v-model:defaultInputContentValue="inputContent"
     :modalTitle="t('title')"
     :inputLabel="t('inputLabel')"
@@ -67,22 +67,14 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const documentBaseName = getDocumentNameWithoutExtension(props.document.name)
+const documentBaseName = ref(getDocumentNameWithoutExtension(props.document.name))
 const inputContent = ref(documentBaseName)
 const fileExtension = computed(() => `.${getDocumentNameExtension(props.document.name)}`)
 const fullDocumentName = computed(() => `${inputContent.value}${fileExtension.value}`)
 
-const isRenameModalVisible = computed({
-  get() {
-    return props.isRenameModalOpened
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  }
-})
-
 watch(() => props.isRenameModalOpened, () => {
-  inputContent.value = documentBaseName
+  documentBaseName.value = getDocumentNameWithoutExtension(props.document.name)
+  inputContent.value = documentBaseName.value
 })
 
 const isValidInput = computed(() =>

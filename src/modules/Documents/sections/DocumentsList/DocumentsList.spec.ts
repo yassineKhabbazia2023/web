@@ -101,7 +101,6 @@ describe('documentList', () => {
     // Pas sreussi a récupéré table element
     it('should emit document-selection-change oppon ptable selection-change event', async () => {
       const wrapper = createWrapper()
-
       await dynamicUntilFound(wrapper, '.el-table__cell')
       await nextTick()
 

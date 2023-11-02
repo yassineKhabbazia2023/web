@@ -5,7 +5,7 @@ import {
   appendChildFolder,
   renameFolder,
   sortFolderByName,
-  DeleteFolder
+  deleteFolder
 } from './folderArrayHelper'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
@@ -239,7 +239,7 @@ describe('folderArrayHelper.spec', () => {
     expect(sorted).toBeFalsy()
   })
 
-  it('should delete folder when DeleteFolder is called', () => {
+  it('should delete folder when deleteFolder is called', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 135393637
     const serviceId = 'service-id-compta'
@@ -281,14 +281,14 @@ describe('folderArrayHelper.spec', () => {
 
     source[0][0].children[0].children = beforeDelete
 
-    const deleted = DeleteFolder(source, serviceId, parentFolderId, folderIdToDelete)
+    const deleted = deleteFolder(source, serviceId, parentFolderId, folderIdToDelete)
 
     expect(deleted).toBeTruthy()
     expect(source[0][0].children[0].children
       .some(folder => folder.id === folderIdToDelete)).toBeFalsy()
   })
 
-  it('should delete folder when DeleteFolder is called', () => {
+  it('should delete folder when deleteFolder is called', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 135393637
     const serviceId = 'service-id-compta'
@@ -330,7 +330,7 @@ describe('folderArrayHelper.spec', () => {
 
     source[0][0].children[0].children = beforeDelete
 
-    const deleted = DeleteFolder(
+    const deleted = deleteFolder(
       source,
       serviceId,
       parentFolderId,
@@ -387,7 +387,7 @@ describe('folderArrayHelper.spec', () => {
 
     source[0][0].children[0].children = beforeDelete
 
-    const deleted = DeleteFolder(
+    const deleted = deleteFolder(
       source,
       serviceId,
       parentFolderId,
@@ -439,7 +439,7 @@ describe('folderArrayHelper.spec', () => {
 
     source[0][0].children[0].children = beforeDelete
 
-    const deleted = DeleteFolder(
+    const deleted = deleteFolder(
       source,
       serviceId,
       parentFolderId,

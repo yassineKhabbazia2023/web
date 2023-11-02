@@ -19,7 +19,7 @@ import DeleteFolderConfirmationPopup
 import { type DeleteFolderSectionProps }
   from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
 
-import { DeleteFolder } from '@/services/Folder'
+import { deleteFolder } from '@/services/Folder'
 import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
 import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 
@@ -58,7 +58,7 @@ watch(toRef(props, 'isDeleteFolderPopupVisible'), (newVal) => {
 const handleConfirmDeleteFolder = async () => {
   try {
     isDeleteInProgress.value = true
-    await DeleteFolder(
+    await deleteFolder(
       props.serviceId,
       props.entityId,
       props.selectedFolder.id,
