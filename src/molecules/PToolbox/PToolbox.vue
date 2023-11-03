@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ElDropdown, ElDropdownMenu } from 'element-plus'
 import PToolboxItem from '@/atoms/PToolboxItem'
 import { iconsResolver } from '@/utils/iconResolver'
@@ -42,5 +43,5 @@ export interface PToolboxProps {
 const props = defineProps<PToolboxProps>()
 defineEmits(['p-toolbox-item-clicked'])
 
-const resolvedIcons = iconsResolver(props.elements, 'iconName')
+const resolvedIcons = computed(() => iconsResolver(props.elements, 'iconName'))
 </script>
