@@ -3,11 +3,11 @@ import { describe, it, expect } from 'vitest'
 import PBankCard from '.'
 
 const defaultProps = {
-  startTitle: 'Aller à la',
-  title: 'Synthèse des comptes',
-  accountNumber: 4,
-  accountText: 'comptes actifs',
-  amount: '248 660,00 €'
+  pStartTitle: 'Aller à la',
+  pTitle: 'Synthèse des comptes',
+  pAccountNumber: 4,
+  pAccountText: 'comptes actifs',
+  pAmount: '248 660,00 €'
 }
 
 const createWrapper = (props: any = defaultProps) =>

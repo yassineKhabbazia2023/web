@@ -7,15 +7,15 @@ import { type ChartOptions } from 'chart.js'
 
 describe('pLineChart', () => {
   it('renders the chart with correct props', () => {
-    const chartTitle = 'Sample Chart'
-    const dataLabels = ['Label 1', 'Label 2']
+    const pChartTitle = 'Sample Chart'
+    const pDataLabels = ['Label 1', 'Label 2']
     const dataValues = [
       { label: 'Value 1', dataValues: [10, 20, 30] },
       { label: 'Value 2', dataValues: [40, 50, 60] }
     ]
-    const toolTipBackgroundColor = '#FF0000'
+    const pToolTipBackgroundColor = '#FF0000'
 
-    const options: ChartOptions<'line'> = {
+    const pOptions: ChartOptions<'line'> = {
       scales: {
         y: {
           beginAtZero: true,
@@ -44,10 +44,10 @@ describe('pLineChart', () => {
         },
         title: {
           display: true,
-          text: chartTitle
+          text: pChartTitle
         },
         tooltip: {
-          backgroundColor: toolTipBackgroundColor,
+          backgroundColor: pToolTipBackgroundColor,
           callbacks: {
             title: (context: any) => {
               const currentYear = new Date().getFullYear().toString()
@@ -96,16 +96,16 @@ describe('pLineChart', () => {
 
     const wrapper = shallowMount(PLineChart, {
       propsData: {
-        chartTitle,
-        dataLabels,
-        datasets: datasetsRight,
-        toolTipBackgroundColor,
-        options
+        pChartTitle,
+        pDataLabels,
+        pDataSets: datasetsRight,
+        pToolTipBackgroundColor,
+        pOptions
       }
     })
 
     expect(wrapper.find('.line-chart-container').exists()).toBeTruthy()
-    expect(wrapper.vm.chartData.labels).toStrictEqual(dataLabels)
+    expect(wrapper.vm.chartData.labels).toStrictEqual(pDataLabels)
     expect(wrapper.vm.chartData.datasets).toHaveLength(dataValues.length)
     expect(wrapper.vm.chartData.datasets[0].label).toBe(dataValues[0].label)
   })

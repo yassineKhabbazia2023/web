@@ -1,47 +1,37 @@
 <template>
   <div
-    :type="type"
-    :class="['p-entity', { selected }]"
-    :selected="selected"
+    :type="pType"
+    :class="['p-entity', { selected: pSelected }]"
+    :selected="pSelected"
   >
     <div class="p-entity__avatar">
       <PAvatar
-        :pShape="iconShape"
-        :pType="iconType"
-        :pColor="iconColor">
+        :pShape="pIconShape"
+        :pType="pIconType"
+        :pColor="pIconColor">
         <PIcon>
-          <component :is="icon" />
+          <component :is="pIcon" />
         </PIcon>
       </PAvatar>
     </div>
-    <div :class="['p-entity__content', 'text-left', { 'p-entity__content--bold': bold }]">
-      {{ content }}
+    <div :class="['p-entity__content', 'text-left', { 'p-entity__content--bold': pBold }]">
+      {{ pContent }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { type Component } from 'vue'
+// NOTE: la classe et props "selected" est redondante, faut cleaner sauf erreur.
+import type { PEntityProps } from './PEntityTypes'
 
-export interface PTextProps {
-  content: string
-  icon?: Component | string
-  type: 'primary' | 'secondary'
-  iconShape: string
-  iconColor: string
-  iconType: string
-  bold?: boolean
-  selected: boolean
-}
-
-withDefaults(defineProps<PTextProps>(), {
-  type: 'primary',
-  icon: '',
-  iconShape: 'circle',
-  iconColor: 'persian-gradient',
-  iconType: 'xsmall',
-  bold: false,
-  selected: false
+withDefaults(defineProps<PEntityProps>(), {
+  pType: 'primary',
+  pIcon: '',
+  pIconShape: 'circle',
+  pIconColor: 'persian-gradient',
+  pIconType: 'xsmall',
+  pBold: false,
+  pSelected: false
 })
 </script>
 

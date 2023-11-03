@@ -6,10 +6,10 @@
     >
     <Variant title="Basic Usage" :source="source">
       <PEntity
-        :content="PTextBasicData.content"
-        :type="PTextBasicData.type"
-        :selected="PTextBasicData.selected"
-        :icon="PIPulse"
+        :pContent="PTextBasicData.content"
+        :pType="PTextBasicData.type"
+        :pSelected="PTextBasicData.selected"
+        :pIcon="PIPulse"
       >
       </PEntity>
       <template #controls>
@@ -44,9 +44,9 @@ const source = `
 import { PEntity } from '@kpmg/styleguide'
   
 <PEntity
-  :content="'Lorem ipsum dolor sit amet, consectetur adpiscipiline'"
-  :type="'primary'"
-  :selected:= "false"
+  :pContent="'Lorem ipsum dolor sit amet, consectetur adpiscipiline'"
+  :pType="'primary'"
+  :pSelected= "false"
 />
 `
 </script>

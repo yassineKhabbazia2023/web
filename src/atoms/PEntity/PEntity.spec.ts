@@ -9,9 +9,9 @@ describe('tests for p-entity', () => {
   it('renders with content', () => {
     const wrapper = mount(PEntity, {
       props: {
-        content,
-        type: 'primary',
-        selected: false
+        pContent: content,
+        pType: 'primary',
+        pSelected: false
       }
     })
 
@@ -28,12 +28,11 @@ describe('tests for p-entity', () => {
   it('renders with an avatar', () => {
     const wrapper = mount(PEntity, {
       props: {
-        content,
-        type: 'primary',
-        iconShape: 'circle',
-        iconColor: 'persian-gradient',
-        iconSize: 'xsmall',
-        selected: false
+        pContent: content,
+        pType: 'primary',
+        pIconShape: 'circle',
+        pIconColor: 'persian-gradient',
+        pSelected: false
       }
     })
 

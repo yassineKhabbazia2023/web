@@ -1,9 +1,13 @@
 <template>
   <ElDialog
-    v-model="visible"
+    v-model="dialogModel"
     @close="handleClose"
-    :lockScroll="false"
+    :lockScroll="pLockScroll"
     class="p-dialog radius--4"
+    :title="pTitle"
+    :width="pWidth"
+    :modal="pModal"
+    :center="pCenter"
   >
     <slot />
     <template #footer>
@@ -14,17 +18,30 @@
 
 <script setup lang="ts">
 import { ElDialog } from 'element-plus'
-import { ref } from 'vue'
-
-const props = defineProps({
-  visible: Boolean
+import { computed } from 'vue'
+import type { PDialogProps } from './PDialogTypes'
+const props = withDefaults(defineProps<PDialogProps>(), {
+  pLockScroll: false,
+  pTitle: '',
+  pWidth: '40%',
+  pModal: true,
+  pCenter: false,
+  pBeforeClose: () => {}
 })
-const visible = ref(props.visible)
 
-const emit = defineEmits(['update:visible'])
+const dialogModel = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
 
 const handleClose = () => {
-  emit('update:visible', false)
+  emit('update:modelValue', false)
 }
 
 defineExpose({ handleClose })

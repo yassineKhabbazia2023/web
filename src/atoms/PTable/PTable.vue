@@ -19,8 +19,7 @@ de son usage se pose car via cet emplacement ne se bind nul part */
 const table = ref<any>()
 
 withDefaults(defineProps<PTableProps>(), {
-  pData: () => [],
-  pStripe: true
+  pStripe: false
 })
 
 // handle row selection background color not implemented by element plus

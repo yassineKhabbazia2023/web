@@ -6,8 +6,8 @@ const timeText = '16 septembre 2023 - 15:13:08'
 const lengthTrimValue = 2
 
 const defaultProps = {
-  time: timeText,
-  initials: 'AB'
+  pTime: timeText,
+  pInitials: 'AB'
 }
 
 const createWrapper = (props: any = defaultProps) =>
@@ -19,18 +19,18 @@ describe('PActivityCard', () => {
   describe('props', () => {
     it.each([
       {
-        initials: 'AB',
+        pInitials: 'AB',
         lengthTrim: lengthTrimValue
       },
       {
-        initials: 'Abcdefgh',
+        pInitials: 'Abcdefgh',
         lengthTrim: lengthTrimValue
       }
     ])('should have the length of initials : $lengthIsTrim',
-      ({ initials, lengthTrim }) => {
+      ({ pInitials, lengthTrim }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          initials
+          pInitials
         })
         const initialsTrimLength = wrapper.find('.p-activity-card__avatar .el-avatar').text().length
         expect(initialsTrimLength).toBe(lengthTrim)

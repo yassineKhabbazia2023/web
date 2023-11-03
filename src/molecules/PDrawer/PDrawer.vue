@@ -1,26 +1,10 @@
 <template>
   <ElDrawer
     v-model="drawerModel"
-    :direction="direction"
-    :showClose="false"
+    :direction="pDirection"
+    :showClose="pShowClose"
     class="p-drawer"
-    :size="size"
-    :appendToBody="appendToBody"
-    :lockScroll="lockScroll"
-    :closeOnClickModal="closeOnClickModal"
-    :closeOnPressEscape="closeOnPressEscape"
-    :openDelay="openDelay"
-    :closeDelay="closeDelay"
-    :destroyOnClose="destroyOnClose"
-    :modal="modal"
-    :withHeader="withHeader"
-    :trapFocus="trapFocus"
-    :draggable="draggable"
-    :center="center"
-    :alignCenter="alignCenter"
-    :fullscreen="fullscreen"
-    :customClass="customClass"
-    :modalFade="modalFade"
+    :size="pSize"
   >
     <template #header>
       <div class="p-drawer__header">
@@ -29,7 +13,7 @@
             type="generic"
             plain
             @click="$emit('drawer-previous-button-click')"
-            v-if="showPreviousStep"
+            v-if="pShowPreviousStep"
             class="el-button--icon p-drawer__step-back-button"
           >
             <PIcon>
@@ -37,13 +21,13 @@
             </PIcon>
           </PButton>
           <h3 class="p-drawer__title">
-            {{ title }}
+            {{ pTitle }}
           </h3>
         </div>
         <PButton
           type="generic"
           plain
-          @click="drawerModel = false"
+          @click="$emit('close-drawer-button')"
           class="el-button--icon p-drawer__close-button"
         >
           <PIcon>
@@ -64,31 +48,19 @@ import { computed } from 'vue'
 import { ElDrawer } from 'element-plus'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
-import { type PDrawerProps } from './PDrawer'
+import type { PDrawerProps } from './PDrawerTypes'
 
-const emit = defineEmits(['drawer-previous-button-click', 'update:modelValue'])
+const emit = defineEmits([
+  'drawer-previous-button-click',
+  'update:modelValue',
+  'close-drawer-button'
+])
 
 const props = withDefaults(defineProps<PDrawerProps>(), {
-  direction: 'rtl',
-  showPreviousStep: false,
-  size: '33%',
-  appendToBody: false,
-  lockScroll: true,
-  closeOnClickModal: true,
-  closeOnPressEscape: true,
-  openDelay: 0,
-  closeDelay: 0,
-  destroyOnClose: false,
-  modal: true,
-  showClose: false,
-  withHeader: true,
-  trapFocus: false,
-  draggable: false,
-  center: false,
-  alignCenter: false,
-  fullscreen: false,
-  customClass: '',
-  modalFade: true
+  pDirection: 'rtl',
+  pShowPreviousStep: false,
+  pSize: '33%',
+  pShowClose: false
 })
 
 const drawerModel = computed({
@@ -100,4 +72,3 @@ const drawerModel = computed({
   }
 })
 </script>
-

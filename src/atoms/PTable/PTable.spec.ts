@@ -20,7 +20,7 @@ describe('pTable', () => {
         }
       },
       props: {
-        data: testData
+        pData: testData
       }
     })
 
@@ -42,8 +42,8 @@ describe('pTable', () => {
         }
       },
       props: {
-        data: testData,
-        stripe: true
+        pData: testData,
+        pStripe: true
       }
     })
 

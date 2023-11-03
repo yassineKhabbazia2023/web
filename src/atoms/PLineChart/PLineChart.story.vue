@@ -2,11 +2,11 @@
   <Story title="2. Atoms/Chart" icon="carbon:chart-line">
     <Variant title="Custom line chart legend position (left)">
       <PLineChart
-        :dataLabels="dataLabels"
-        :chartTitle="ChartBasicData.chartTitle"
-        :toolTipBackgroundColor="toolTipBackgroundColor"
-        :options="options"
-        :datasets="datasets"
+        :pDataLabels="dataLabels"
+        :pChartTitle="ChartBasicData.chartTitle"
+        :pToolTipBackgroundColor="toolTipBackgroundColor"
+        :pOptions="options"
+        :pDataSets="datasets"
       ></PLineChart>
       <template #controls>
         <hstText v-model="ChartBasicData.chartTitle" title="chartTitle" />
@@ -15,11 +15,11 @@
     </Variant>
     <Variant title="Custom line chart legend position (right)">
       <PLineChart
-        :dataLabels="dataLabels"
-        :datasets="datasetsRight"
-        :chartTitle="ChartBasicDataRight.chartTitle"
-        :toolTipBackgroundColor="toolTipBackgroundColor"
-        :options="optionsRight"
+        :pDataLabels="dataLabels"
+        :pDataSets="datasetsRight"
+        :pChartTitle="ChartBasicDataRight.chartTitle"
+        :pToolTipBackgroundColor="toolTipBackgroundColor"
+        :pOptions="optionsRight"
       ></PLineChart>
       <template #controls>
         <hstText v-model="ChartBasicDataRight.chartTitle" title="chartTitle" />
@@ -180,7 +180,7 @@ const dataValuesRight = ref([
   }
 ])
 const ChartBasicDataRight = reactive<any>({
-  chartTitle: 'Line chart title',
+  chartTitle: 'Line chart test',
   yposition: 'right'
 })
 const optionsRight = computed<ChartOptions<'line'>>(() => ({

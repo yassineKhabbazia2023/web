@@ -4,7 +4,7 @@ import PAlert from './'
 import type { PAlertProps } from './PAlertTypes'
 
 const baseProps: PAlertProps = {
-  type: 'main'
+  pType: 'main'
 }
 
 const createWrapper = (props: PAlertProps = baseProps) =>
@@ -13,7 +13,7 @@ const createWrapper = (props: PAlertProps = baseProps) =>
   })
 
 type iconResolvingType = {
-  type: PAlertProps['type']
+  type: PAlertProps['pType']
   expectedIconToResolve: string
 }
 describe('pAlert', () => {
@@ -42,7 +42,7 @@ describe('pAlert', () => {
     ] as Array<iconResolvingType>)(
       'should render icon based on type prop',
       async ({ type, expectedIconToResolve }) => {
-        const wrapper = createWrapper({ type })
+        const wrapper = createWrapper({ pType: type })
         await vi.dynamicImportSettled()
         const iconComponent = wrapper.findComponent({ name: expectedIconToResolve })
         expect(iconComponent.exists()).toBeTruthy()

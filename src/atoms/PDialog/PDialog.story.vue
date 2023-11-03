@@ -7,11 +7,11 @@
 
       <PDialog
         v-model="pDialogControl.dialogVisible"
-        :title="pDialogControl.dialogTitle"
-        :width="pDialogControl.dialogWidth"
-        :modal="pDialogControl.dialogModal"
-        :center="pDialogControl.dialogCenter"
-        :beforeClose="closeDialog"
+        :pTitle="pDialogControl.dialogTitle"
+        :pWidth="pDialogControl.dialogWidth"
+        :pModal="pDialogControl.dialogModal"
+        :pCenter="pDialogControl.dialogCenter"
+        :pBeforeClose="closeDialog"
       >
         <!-- Dialog content goes here -->
         <p class="p-dialog__text">
@@ -46,11 +46,11 @@
 
       <PDialog
         v-model="pSecondDialogControl.dialogVisible"
-        :title="pSecondDialogControl.dialogTitle"
-        :width="pSecondDialogControl.dialogWidth"
-        :modal="pSecondDialogControl.dialogModal"
-        :center="pSecondDialogControl.dialogCenter"
-        :beforeClose="closeSecondDialog"
+        :pTitle="pSecondDialogControl.dialogTitle"
+        :pWidth="pSecondDialogControl.dialogWidth"
+        :pModal="pSecondDialogControl.dialogModal"
+        :pCenter="pSecondDialogControl.dialogCenter"
+        :pBeforeClose="closeSecondDialog"
       >
         <!-- Dialog content goes here -->
         <p class="p-dialog__text">
@@ -92,11 +92,11 @@
 
       <PDialog
         v-model="pThirdDialogControl.dialogVisible"
-        :title="pThirdDialogControl.dialogTitle"
-        :width="pThirdDialogControl.dialogWidth"
-        :modal="pThirdDialogControl.dialogModal"
-        :center="pThirdDialogControl.dialogCenter"
-        :beforeClose="closeThirdDialog"
+        :pTitle="pThirdDialogControl.dialogTitle"
+        :pWidth="pThirdDialogControl.dialogWidth"
+        :pModal="pThirdDialogControl.dialogModal"
+        :pCenter="pThirdDialogControl.dialogCenter"
+        :pBeforeClose="closeThirdDialog"
       >
         <!-- Dialog content goes here -->
         <p class="p-dialog__text-file">
