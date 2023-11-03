@@ -129,7 +129,7 @@ const isFormValid = computed(() =>
 )
 
 const rules = reactive<FormRules<typeof formValues>>({
-  email: [{ trigger: 'blur', validator: validateEmail }]
+  email: [{ trigger: ['blur', 'change'], validator: validateEmail }]
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {

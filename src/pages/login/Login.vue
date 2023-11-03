@@ -134,8 +134,8 @@ const validateEmail = (_rule: any, value: any, callback: any) => {
 }
 
 const rules = reactive<FormRules<typeof formValues>>({
-  email: [{ trigger: 'blur', validator: validateEmail }],
-  password: [{ trigger: 'blur', validator: validatePassword }]
+  email: [{ trigger: ['blur', 'change'], validator: validateEmail }],
+  password: [{ trigger: ['blur', 'change'], validator: validatePassword }]
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
