@@ -45,6 +45,10 @@ $button-padding-horizontal: (
 .el-button {
   $self: &;
 
+  & + button.el-button {
+    margin-left: 0;
+  }
+
   &#{$self} {
     .el-icon {
       font-size: 16px;
@@ -121,7 +125,7 @@ $button-padding-horizontal: (
     background: transparent;
 
     &:hover {
-      background: $color-white;
+      background: transparent;
       border-color: var(--el-color-persian-700);
       color: var(--el-color-persian-700);
     }

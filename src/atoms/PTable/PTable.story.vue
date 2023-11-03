@@ -6,8 +6,8 @@
     <Variant title="PTable basic">
       <PTable :data="tableInputs.data" :stripe="tableInputs.striped">
         <PTableColumn
-        type="selection"
-        v-if="tableInputs.selectable"/>
+          type="selection"
+          v-if="tableInputs.selectable"/>
         <PTableColumn
           v-for="column in tableInputs.tableColumn"
           :key="column.prop"
@@ -24,17 +24,20 @@
       </template>
     </Variant>
     <Variant title="PTable advanced">
-      <PTable :data="tableInputsWithCells.data"
-      :stripe="tableInputsWithCells.striped"
-      fit="true">
+      <PTable
+        :data="tableInputsWithCells.data"
+        :stripe="tableInputsWithCells.striped"
+        fit
+      >
         <PTableColumn
           type="selection"
-          v-if="tableInputsWithCells.selectable"/>
+          v-if="tableInputsWithCells.selectable"
+        />
         <PTableColumn
           label="Text"
           width="180"
           :sortable="tableInputsWithCells.sortable"
-          >
+        >
           <template #default="scope">
             <PText
               :content="scope.row.text.content"
@@ -51,7 +54,7 @@
           label="Entity"
           width="220"
           :sortable="tableInputsWithCells.sortable"
-          >
+        >
           <template #default="scope">
             <PEntity
               :content="scope.row.entity.name"
@@ -66,7 +69,7 @@
           label="Double Text"
           width="180"
           :sortable="tableInputsWithCells.sortable"
-          >
+        >
           <template #default="scope">
             <PDoubleText
               :icon="iconResolver(scope.row.doubleText.icon)"
@@ -99,10 +102,39 @@
         </PTableColumn>
         <PTableColumn
           label="Switch"
-          align="center"
         >
           <template #default="scope">
             <PSwitch v-model="scope.row.switch.status" :disabled="scope.row.switch.disabled" />
+          </template>
+        </PTableColumn>
+        <PTableColumn
+          label="Smalls buttons"
+          width="300"
+        >
+          <template #default>
+            <PButton
+              type="primary"
+              size="small"
+              plain
+              class="margin-right--2"
+            >
+              Button label
+            </PButton>
+            <PButton
+              type="primary"
+              size="small"
+              plain
+              class="margin-right--2"
+            >
+              Button label
+            </PButton>
+            <PButton
+              type="primary"
+              size="small"
+              class="margin-right--2"
+            >
+              Button label
+            </PButton>
           </template>
         </PTableColumn>
       </PTable>
@@ -120,6 +152,7 @@ import { reactive, ref } from 'vue'
 import PTable from './'
 import { iconResolver } from '@/utils/iconResolver'
 import { PIFolder, PIStars } from '../PIcon/components'
+import PButton from '@/atoms/PButton'
 
 const tableInputs = reactive({
   data: [
