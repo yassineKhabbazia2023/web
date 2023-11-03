@@ -5,11 +5,11 @@
     </Variant>
 
     <Variant title="Persian loader">
-      <PLoader type="primary" size="32" />
+      <PLoader pType="primary" size="32" />
     </Variant>
 
     <Variant title="Gradient Loader">
-      <PLoader type="gradient" size="32" />
+      <PLoader pType="gradient" size="32" />
     </Variant>
   </Story>
 </template>

@@ -1,14 +1,14 @@
 <template>
   <button
     class="p-file-line-navigation-item"
-    :class="{ selected: isSelected, disabled: props.disabled }"
-    @click="handleClickFileNavigation(folderId)"
-    @dblclick="handleDoubleClickFileNavigation(folderId)"
+    :class="{ selected: isSelected, disabled: props.pDisabled }"
+    @click="handleClickFileNavigation(pFolderId)"
+    @dblclick="handleDoubleClickFileNavigation(pFolderId)"
   >
       <PIcon size="16">
         <PIFolder />
       </PIcon>
-      <span class="p-file-line-navigation-item__name">{{ folderName }}</span>
+      <span class="p-file-line-navigation-item__name">{{ pFolderName }}</span>
       <PIcon size="16">
         <PIChevronRight />
       </PIcon>
@@ -20,16 +20,16 @@ import { ref } from 'vue'
 import type { PFileLineNavigationItemTypes } from './PFileLineNavigationItemTypes'
 
 const props = withDefaults(defineProps<PFileLineNavigationItemTypes>(), {
-  selected: false,
-  disabled: false,
-  folderName: 'Name of folder'
+  pSelected: false,
+  pDisabled: false,
+  pFolderName: 'Name of folder'
 })
 
 const emit = defineEmits([
   'on-click-file-navigation',
   'on-db-click-file-navigation'
 ])
-const isSelected = ref(props.selected)
+const isSelected = ref(props.pSelected)
 
 const handleClickFileNavigation = (folderId: number) => {
   isSelected.value = !isSelected.value

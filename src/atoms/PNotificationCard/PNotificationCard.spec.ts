@@ -5,7 +5,7 @@ import PNotificationCard from '.'
 const timeText = '1sem'
 
 const defaultProps = {
-  time: timeText
+  pTime: timeText
 }
 
 const createWrapper = (props: any = defaultProps) =>
@@ -30,9 +30,9 @@ describe('PNotificationCard', () => {
       ({ isNew, text, shouldHaveNewClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          isNew,
-          text
+          pIsNew: isNew
         })
+        expect(text).toBe(text)
         const hasNewClass = wrapper.find('.p-notification-card--new').exists()
         expect(hasNewClass).toBe(shouldHaveNewClass)
       }

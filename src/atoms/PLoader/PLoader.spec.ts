@@ -6,10 +6,9 @@ describe('pLoader', () => {
   it('renders', () => {
     const wrapper = mount(PLoader, {
       props: {
-        type: 'primary'
+        pType: 'primary'
       }
     })
-
     expect(wrapper.exists()).toBeTruthy()
   })
 })

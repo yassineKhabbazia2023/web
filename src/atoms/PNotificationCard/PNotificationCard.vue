@@ -1,5 +1,5 @@
 <template>
-  <div :class="['p-notification-card shadow--1', { 'p-notification-card--new': isNew }]">
+  <div :class="['p-notification-card shadow--1', { 'p-notification-card--new': pIsNew }]">
     <button class="p-notification-card__button" @click="$emit('action-notification-click')">
       <span class="p-notification-card__notif padding-right--1" aria-hidden="true">
         <PIcon class="p-notification-card__icon" size="16">
@@ -13,7 +13,7 @@
         <slot name="text" />
       </span>
       <span class="p-notification-card__time font-small padding-left--2 padding-bottom--2">
-        {{ time }}
+        {{ pTime }}
       </span>
     </button>
     <div class="p-notification-card__actions">
@@ -23,12 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import { type PNotificationCardProps } from './PNotificationCardProps'
+import type { PNotificationCardProps } from './PNotificationCardTypes'
 
 defineEmits(['action-notification-click'])
 
 withDefaults(defineProps<PNotificationCardProps>(), {
-  isNew: false
+  pIsNew: false
 })
 </script>
 

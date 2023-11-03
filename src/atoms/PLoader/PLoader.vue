@@ -6,6 +6,7 @@
       :is="iconToLoad"
       class="p-loader__icon"
       :class="iconClassNameModifier"
+      :size="pSize"
     />
   </PIcon>
 </template>
@@ -13,22 +14,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { iconResolver } from '@/utils/iconResolver'
-
-type PLoaderProps = {
-  type?: 'default' | 'primary' | 'gradient';
-};
+import type { PLoaderProps } from './PLoaderTypes'
 
 const props = withDefaults(defineProps<PLoaderProps>(), {
-  type: 'default'
+  pType: 'default',
+  pSize: ''
 })
 
 const iconToLoad = computed(() => {
-  return props.type === 'gradient'
+  return props.pType === 'gradient'
     ? iconResolver('PILoaderGradient')
     : iconResolver('PILoader')
 })
 
-const iconClassNameModifier = computed(() => `p-loader__icon--${props.type}`)
+const iconClassNameModifier = computed(() => `p-loader__icon--type-${props.pType}`)
 </script>
 
 <style lang="scss">

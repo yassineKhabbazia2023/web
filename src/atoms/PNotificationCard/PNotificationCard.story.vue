@@ -6,13 +6,13 @@
   >
     <Variant title="Notification Card">
       <PNotificationCard
-        :time="PNotificationCardData.time"
-        :isNew="PNotificationCardData.isNew">
+        :pTime="PNotificationCardData.time"
+        :pIsNew="PNotificationCardData.isNew">
         <template #avatar>
           <PAvatar
-          :shape="currentShape"
-          :type="currentType"
-          :color="currentColor"> AB </PAvatar>
+          :pShape="currentShape"
+          :pType="currentType"
+          :pColor="currentColor"> AB </PAvatar>
         </template>
         <template #text>
           <span class="font-bold">Alexandre De Lavandia</span> filed you a document <span class="font-bold">liasse-fiscale.pdf</span> inside the folder Publications.

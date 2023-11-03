@@ -1,4 +1,4 @@
 export interface PNotificationCardProps {
-  isNew: boolean,
-  time: string
+  pIsNew?: boolean,
+  pTime: string
 }
