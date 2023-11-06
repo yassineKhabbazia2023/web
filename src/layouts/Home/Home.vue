@@ -112,16 +112,18 @@ const routeActive = route.path
   }
 
   .aside-container .navbar-aside-container {
-    height: 100vh;
+    @media only screen and (min-width: 992px) {
+      height: 100vh;
+    }
   }
 
   .navbar-aside-container:not(.el-menu--collapse) {
-    @media only screen and (max-width: 991px)  {
+    @media only screen and (max-width: 991px) {
       width: 100%;
     }
   }
 
-  @media only screen and (max-width: 991px)  {
+  @media only screen and (max-width: 991px) {
     .aside-main-container {
       display: block;
     }
