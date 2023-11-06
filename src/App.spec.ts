@@ -16,7 +16,8 @@ import {
   appendChildFolder,
   sortFolderByName,
   deleteFolder,
-  renameFolder
+  renameFolder,
+  findFolderDeepById
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 import Documents from '@/modules/Documents'
 
@@ -62,7 +63,8 @@ vi.mock('@/modules/Treeview/helpers/folderArrayHelper', async () => {
     deleteFolder: vi.fn(),
     renameFolder: vi.fn(() => {
       return true
-    })
+    }),
+    findFolderDeepById: vi.fn()
   }
 })
 
@@ -186,6 +188,7 @@ describe('ged', () => {
 
         expect(vi.mocked(appendChildFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
       })
 
       it('should remove folder from tree when remove-folder-from-source', async () => {
@@ -200,6 +203,8 @@ describe('ged', () => {
         await nextTick()
 
         expect(vi.mocked(deleteFolder)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
+
       })
 
       it('should rename folder in tree and sort when update-folder-name', async () => {
@@ -212,6 +217,8 @@ describe('ged', () => {
 
         expect(vi.mocked(renameFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
+
       })
     })
   })

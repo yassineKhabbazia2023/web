@@ -107,6 +107,18 @@ const handleUpdateSourceFolder = (data: Folder) => {
       currentService.value ?? '',
       data.parent.id
     )
+    setCurrentFolder(data.id)
+  }
+}
+
+const setCurrentFolder = (folderId: number | null) => {
+  const currentServiceFolder = servicesFolders.value.find(
+    (sf) => sf[0].serviceId === currentService.value
+  ) as Folder[]
+  // Find deep only in currentService if defined
+  const folderToRedirectTo = findFolderDeepById(currentServiceFolder, folderId)
+  if (folderToRedirectTo) {
+    currentFolder.value = folderToRedirectTo
   }
 }
 
@@ -118,15 +130,7 @@ const handleRemoveFolderFromSource = (folder: Folder) => {
     folder.parent.id,
     folder.id
   )
-
-  const currentServiceFolder = servicesFolders.value.find(
-    (sf) => sf[0].serviceId === currentService.value
-  ) as Folder[]
-  // Find deep only in currentService if defined
-  const folderToRedirectTo = findFolderDeepById(currentServiceFolder, folder.parent.id)
-  if (folderToRedirectTo) {
-    currentFolder.value = folderToRedirectTo
-  }
+  setCurrentFolder(folder.parent.id)
 }
 
 // Rename folder scope
@@ -143,6 +147,7 @@ const handleUpdateFolderName = (data: Folder) => {
       currentService.value ?? '',
       data.parent.id
     )
+    setCurrentFolder(data.id)
   }
 }
 
