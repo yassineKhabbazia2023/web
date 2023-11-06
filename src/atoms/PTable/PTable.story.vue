@@ -57,9 +57,9 @@
         >
           <template #default="scope">
             <PEntity
-              :content="scope.row.entity.name"
-              :icon="iconResolver(scope.row.entity.icon)"
-              type="primary"
+              :pContent="scope.row.entity.name"
+              :pIcon="iconResolver(scope.row.entity.icon)"
+              pType="primary"
               :selected="false"
             >
             </PEntity>

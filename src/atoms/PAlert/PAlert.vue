@@ -58,22 +58,22 @@ const typeIcon = computed(() => {
     }
   }
 
-  &--success {
+  &--type-success {
     color: var(--el-color-functionnal-green-txt);
     background-color: var(--el-color-functionnal-green-bg);
   }
 
-  &--warning {
+  &--type-warning {
     color: var(--el-color-functionnal-orange-txt);
     background-color: var(--el-color-functionnal-orange-bg);
   }
 
-  &--danger {
+  &--type-danger {
     color: var(--el-color-functionnal-red-txt);
     background-color: var(--el-color-functionnal-red-bg);
   }
 
-  &--information {
+  &--type-information {
     color: var(--el-color-secondary-cyan-txt);
     background-color: var(--el-color-secondary-cyan-bg);
   }

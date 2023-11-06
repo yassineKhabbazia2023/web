@@ -20,6 +20,7 @@
 import { ElDialog } from 'element-plus'
 import { computed } from 'vue'
 import type { PDialogProps } from './PDialogTypes'
+
 const props = withDefaults(defineProps<PDialogProps>(), {
   pLockScroll: false,
   pTitle: '',

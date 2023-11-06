@@ -1,5 +1,5 @@
 <template>
-  <div class="line-chart-container">
+  <div class="p-line-chart-container">
     <LineChart
       v-bind="lineChartProps"
       :toolTipBackgroundColor="pToolTipBackgroundColor"
@@ -43,7 +43,7 @@ defineExpose({ chartData })
 </script>
 
 <style lang="scss" scoped>
-.line-chart-container {
+.p-line-chart-container {
   width: 100%;
 }
 </style>

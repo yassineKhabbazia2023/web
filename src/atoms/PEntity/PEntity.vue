@@ -1,7 +1,7 @@
 <template>
   <div
     :type="pType"
-    :class="['p-entity', { selected: pSelected }]"
+    :class="['p-entity', typeModifierClass]"
     :selected="pSelected"
   >
     <div class="p-entity__avatar">
@@ -21,10 +21,10 @@
 </template>
 
 <script setup lang="ts">
-// NOTE: la classe et props "selected" est redondante, faut cleaner sauf erreur.
+import { computed } from 'vue'
 import type { PEntityProps } from './PEntityTypes'
 
-withDefaults(defineProps<PEntityProps>(), {
+const props = withDefaults(defineProps<PEntityProps>(), {
   pType: 'primary',
   pIcon: '',
   pIconShape: 'circle',
@@ -33,6 +33,9 @@ withDefaults(defineProps<PEntityProps>(), {
   pBold: false,
   pSelected: false
 })
+
+const typeModifierClass = computed(() => `p-entity--type-${props.pType}`)
+
 </script>
 
 <style lang="scss" scoped>
@@ -43,11 +46,11 @@ withDefaults(defineProps<PEntityProps>(), {
   gap: 8px;
   color: var(--el-fill-color-regular);
 
-  &[type="primary"]:not([selected="true"]) {
+  &--type-primary:not([selected="true"]) {
     background-color: transparent;
   }
 
-  &[type="secondary"]:not([selected="true"]) {
+  &--type-secondary:not([selected="true"]) {
     background-color: var(--el-fill-color-lighter);
   }
 
@@ -63,8 +66,7 @@ withDefaults(defineProps<PEntityProps>(), {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 300px;
-    font-size: 14px;
+    font-size: 1.4rem;
     font-weight: 400;
     letter-spacing: 0em;
 

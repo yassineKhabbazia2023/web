@@ -13,8 +13,8 @@
         <router-link to="/" class="el-menu--header__link">
           <PImage
             class="el-menu--header__logo"
-            type="logos"
-            name="pulse-color"
+            pType="logos"
+            pName="pulse-color"
             fit="fill"
           />
         </router-link>
@@ -27,9 +27,9 @@
       <template #header-right>
         <PToolbox :elements="toolboxBasicData">
           <PAvatar
-            shape="circle"
-            type="small"
-            color="persian-gradient"
+            pShape="circle"
+            pType="small"
+            pColor="persian-gradient"
           >
             AB
           </PAvatar>

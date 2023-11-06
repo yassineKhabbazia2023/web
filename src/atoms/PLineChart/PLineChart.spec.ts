@@ -104,7 +104,7 @@ describe('pLineChart', () => {
       }
     })
 
-    expect(wrapper.find('.line-chart-container').exists()).toBeTruthy()
+    expect(wrapper.find('.p-line-chart-container').exists()).toBeTruthy()
     expect(wrapper.vm.chartData.labels).toStrictEqual(pDataLabels)
     expect(wrapper.vm.chartData.datasets).toHaveLength(dataValues.length)
     expect(wrapper.vm.chartData.datasets[0].label).toBe(dataValues[0].label)
@@ -113,7 +113,7 @@ describe('pLineChart', () => {
   it('renders the chart without props', () => {
     const wrapper = shallowMount(PLineChart)
 
-    expect(wrapper.find('.line-chart-container').exists()).toBeTruthy()
+    expect(wrapper.find('.p-line-chart-container').exists()).toBeTruthy()
     expect(wrapper.vm.chartData.labels).toStrictEqual([])
     expect(wrapper.vm.chartData.datasets).toHaveLength(0)
   })

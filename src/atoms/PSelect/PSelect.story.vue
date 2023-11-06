@@ -1,18 +1,19 @@
 <template>
-  <Story title="2. Atoms/Dropdown" icon="radix-icons:margin">
+  <Story title="2. Atoms/Select" icon="radix-icons:margin">
     <Variant title="Basic usage simple" :initState="initState">
       <template #default="{ state }">
-        <PDropdown
+        <PSelect
           v-model="valueSimple"
           placeholder="Select"
           :disabled="state.disabled">
-          <el-option
+          <POption
             v-for="item in selectOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
-            :disabled="item.disabled" />
-        </PDropdown>
+            :disabled="item.disabled"
+          />
+      </PSelect>
       </template>
       <template #controls="{ state }">
         <HstText v-model="state.placeholder" title="Placeholder" />
@@ -28,7 +29,7 @@
     </Variant>
     <Variant title="multiple select" :initState="initState">
       <template #default="{ state }">
-        <PDropdown
+        <PSelect
           v-model="state.value"
           multiple
           :collapseTags="state.collapseTags"
@@ -36,14 +37,14 @@
           :disabled="state.disabled"
           :filterable="state.filterable"
         >
-          <el-option
+          <POption
             v-for="item in selectOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
             :disabled="item.disabled"
           />
-        </PDropdown>
+        </PSelect>
       </template>
       <template #controls="{ state }">
         <HstCheckbox
@@ -62,19 +63,19 @@
     </Variant>
     <Variant title="Option filtering" :initState="initState">
       <template #default="{ state }">
-        <PDropdown
+        <PSelect
           v-model="state.value"
           :filterable="state.filterable"
           :allowCreate="state.allowCreate"
           :disabled="state.disabled"
         >
-          <el-option
+          <POption
             v-for="item in selectOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
-        </PDropdown>
+        </PSelect>
       </template>
       <template #controls="{ state }">
         <HstCheckbox
@@ -96,7 +97,7 @@
       :initState="initState"
       :source="templateSourceGroup">
       <template #default="{ state }">
-        <PDropdown v-model="state.value" placeholder="Select">
+        <PSelect v-model="state.value" placeholder="Select">
           <POptionGroup
             v-for="group in groupOptions"
             :key="group.label"
@@ -109,7 +110,7 @@
               :value="item.value"
             />
           </POptionGroup>
-        </PDropdown>
+        </PSelect>
       </template>
     </Variant>
   </Story>
@@ -118,6 +119,11 @@
 <script setup lang="ts">
 import { groupOptions, selectOptions, templateSourceGroup } from '@/constants/dropdownOptions'
 import { ref } from 'vue'
+import {
+  ElOption as POption,
+  ElOptionGroup as POptionGroup,
+  ElSelect as PSelect
+} from 'element-plus'
 
 const valueSimple = ref('')
 

@@ -1,11 +1,11 @@
 <template>
-  <ElCarouselItem>
-    <div class="top">
-      <p class="text">
+  <ElCarouselItem class="p-carousel-item">
+    <div class="p-carousel-item__top">
+      <p class="p-carousel-item__text">
         {{ pText }}
       </p>
     </div>
-    <div class="bottom">
+    <div class="p-carousel-item__bottom">
       <PImage
         :pType="pImageType"
         :pName="pImageName"
@@ -22,5 +22,4 @@ import PImage from '@/atoms/PImage'
 import type { PCarouselItemProps } from './PCarouselItemTypes'
 
 defineProps<PCarouselItemProps>()
-
 </script>

@@ -7,7 +7,7 @@ $dialog: (
   'bg-color': getCssVar('bg-color'),
   'box-shadow': getCssVar('box-shadow'),
   'title-font-size': getCssVar('font-size-large'),
-  'content-font-size': 14px,
+  'content-font-size': 1.4rem,
   'font-line-height': getCssVar('font-line-height-primary'),
   'padding-primary': 20px,
   'background': var(--el-color-base-white)
@@ -30,7 +30,7 @@ $dialog: (
   }
 
   .el-dialog__body {
-    padding: 19px 16px 16px;
+    padding: 24px 16px;
   }
 
   .el-dialog__footer {

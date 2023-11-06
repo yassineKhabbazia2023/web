@@ -35,10 +35,10 @@ const iconClassNameModifier = computed(() => `p-loader__icon--type-${props.pType
   .p-loader__icon {
     animation: spin 2s linear infinite;
 
-    &--default {
+    &--type-default {
       color: var(--el-color-neutral-gray-300);
     }
-    &--primary {
+    &--type-primary {
       color: var(--el-color-persian-500);
     }
   }

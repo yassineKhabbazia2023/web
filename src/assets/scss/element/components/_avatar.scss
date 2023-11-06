@@ -18,7 +18,6 @@ $avatar-size: (
 );
 
 .el-avatar {
-  $self: &;
 
   font-weight: 600;
   
@@ -27,83 +26,89 @@ $avatar-size: (
     font-size: var(--el-avatar-icon-size);
   }
 
-  &[pType="xlarge"] {
-    --el-avatar-size: var(--el-avatar-size-xlarge);
-    --el-avatar-text-size: 20px;
+  &.p-avatar {
+    &--type-xlarge {
+      --el-avatar-size: var(--el-avatar-size-xlarge);
+      --el-avatar-text-size: 20px;
 
-    line-height: 14px;
+      line-height: 14px;
 
-    --el-avatar-icon-size: 28px;
-  }
-  &[pType="large"] {
-    --el-avatar-size: var(--el-avatar-size-large);
-    --el-avatar-text-size: 16px;
+      --el-avatar-icon-size: 28px;
+    }
+    &--type-large {
+      --el-avatar-size: var(--el-avatar-size-large);
+      --el-avatar-text-size: 16px;
 
-    line-height: 14px;
+      line-height: 14px;
 
-    --el-avatar-icon-size: 22px;
-  }
-  &[pType="small"] {
-    --el-avatar-size: var(--el-avatar-size-small);
-    --el-avatar-text-size: 12px;
+      --el-avatar-icon-size: 22px;
+    }
+    &--type-small {
+      --el-avatar-size: var(--el-avatar-size-small);
+      --el-avatar-text-size: 12px;
 
-    line-height: 14px;
+      line-height: 14px;
 
-    --el-avatar-icon-size: 16px;
-  }
-  &[pType="xsmall"] {
-    --el-avatar-size: var(--el-avatar-size-xsmall);
-    --el-avatar-text-size: 10px;
+      --el-avatar-icon-size: 16px;
+    }
+    &--type-xsmall {
+      --el-avatar-size: var(--el-avatar-size-xsmall);
+      --el-avatar-text-size: 10px;
 
-    line-height: 14px;
+      line-height: 14px;
 
-    --el-avatar-icon-size: 12px;
-  }
-  &[pType="default"] {
-    --el-avatar-text-size: 14px;
+      --el-avatar-icon-size: 12px;
+    }
+    &--type-default {
+      --el-avatar-text-size: 14px;
 
-    line-height: 14px;
+      line-height: 14px;
 
-    --el-avatar-icon-size: 18px;
-  }
+      --el-avatar-icon-size: 18px;
+    }
 
-  &[color="persian-gradient"] {
-    background: var(--persian-gradient);
-    color: getCssVar('color-white');
-  }
+    &--color-persian-gradient {
+      background: var(--persian-gradient);
+      color: getCssVar('color-white');
+    }
 
-  &[color="orange"] {
-    background: var(--el-color-functionnal-orange-bg);
-    color: var(--el-color-functionnal-orange-txt);
-  }
+    &--color-orange {
+      background: var(--el-color-functionnal-orange-bg);
+      color: var(--el-color-functionnal-orange-txt);
+    }
 
-  &[color="persian"] {
-    background: var(--el-color-persian-50);
-    color: var(--el-color-persian-700);
-  }
+    &--color-persian {
+      background: var(--el-color-persian-50);
+      color: var(--el-color-persian-700);
+    }
 
-  &[color="teal"] {
-    background: var(--el-color-functionnal-teal-bg);
-    color: var(--el-color-functionnal-teal-txt);
-  }
+    &--color-teal {
+      background: var(--el-color-functionnal-teal-bg);
+      color: var(--el-color-functionnal-teal-txt);
+    }
 
-  &[color="green"] {
-    background: var(--el-color-functionnal-green-bg);
-    color: var(--el-color-functionnal-green-txt);
-  }
+    &--color-green {
+      background: var(--el-color-functionnal-green-bg);
+      color: var(--el-color-functionnal-green-txt);
+    }
 
-  &[color="fuschia"] {
-    background: var(--el-color-secondary-fuschia-bg);
-    color: var(--el-color-secondary-fuschia-txt);
-  }
+    &--color-fuschia {
+      background: var(--el-color-secondary-fuschia-bg);
+      color: var(--el-color-secondary-fuschia-txt);
+    }
 
-  &[color="gray"] {
-    background: var(--el-color-neutral-gray-50);
-    color: var(--el-color-neutral-gray-500);
-  }
-  
-  &[color="white"] {
-    background: var(--el-color-white);
-    color: var(--el-color-persian-500);
+    &--color-gray {
+      background: var(--el-color-neutral-gray-50);
+      color: var(--el-color-neutral-gray-500);
+    }
+    
+    &--color-white {
+      background: var(--el-color-white);
+      color: var(--el-color-persian-500);
+    }
+    &--color-white {
+      background: var(--el-color-white);
+      color: var(--el-color-persian-500);
+    }
   }
 }

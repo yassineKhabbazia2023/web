@@ -11,7 +11,7 @@
       <PCarousel
         :pItems="carouselBasicData"
         arrow="never"
-        style="width:500px;height: 600px;">
+        style="width:500px; height: 600px;">
       </PCarousel>
     </Variant>
   </Story>

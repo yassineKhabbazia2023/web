@@ -213,6 +213,14 @@ $tag-padding: (
     }
   }
 
+  // For tags in PSelect 
+  &.el-tag--info.el-tag--default.el-tag--light {
+    background-color: var(--el-color-neutral-gray-100);
+    border-color: var(--el-color-neutral-gray-100);
+    --el-tag-hover-color: var(--el-color-neutral-gray-900);
+    --el-tag-text-color: var(--el-color-neutral-gray-900);
+  }
+
   &.is-closable {
     padding-right: 6px;
   }

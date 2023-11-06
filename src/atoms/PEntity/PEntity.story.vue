@@ -4,9 +4,9 @@
     icon="fluent:button-16-regular"
     :layout="{ type: 'grid', width: '300px' }"
     >
-    <Variant title="Basic Usage" :source="source">
+    <Variant title="Basic Usage">
       <PEntity
-        :pContent="PTextBasicData.content"
+        :pContent="PTextBasicData.pContent"
         :pType="PTextBasicData.type"
         :pSelected="PTextBasicData.selected"
         :pIcon="PIPulse"
@@ -18,7 +18,7 @@
           title="Type"
           :options="typeOptions"
         />
-        <HstText v-model="PTextBasicData.content" title="Content" />
+        <HstText v-model="PTextBasicData.pContent" title="Content" />
         <HstCheckbox v-model="PTextBasicData.selected" title="Selected" />
       </template>
     </Variant>
@@ -33,22 +33,12 @@ import { PIPulse } from '../PIcon/components'
 const type = 'primary' as 'primary' | 'secondary'
 
 const PTextBasicData = reactive({
-  content: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
+  pContent: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
   type,
   selected: false
 })
 
 const typeOptions = ['primary', 'secondary']
-
-const source = `
-import { PEntity } from '@kpmg/styleguide'
-  
-<PEntity
-  :pContent="'Lorem ipsum dolor sit amet, consectetur adpiscipiline'"
-  :pType="'primary'"
-  :pSelected= "false"
-/>
-`
 </script>
 
 <docs lang="md">

@@ -9,19 +9,17 @@
   >
     <Variant title="Basic Usage">
       <PImage
-        :pType="basicImageData.type"
-        :pName="basicImageData.name"
-        :pFit="basicImageData.fit" />
+        :pType="basicImageData.pType"
+        :pName="basicImageData.pName"
+        :fit="basicImageData.pFit" />
       <template #controls>
-        <HstSelect
-          v-model="basicImageData.type"
-          title="Type"
-          :options="folders"
+        <HstText
+          v-model="basicImageData.pType"
+          title="type"
         />
-        <HstSelect
-          v-model="basicImageData.name"
-          title="Name"
-          :options="filesName"
+        <HstText
+          v-model="basicImageData.pName"
+          title="name"
         />
         <hr />
         <div class="margin--2 margin-top--4">
@@ -41,44 +39,13 @@
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  defineAsyncComponent,
-  reactive,
-  toRaw,
-  watch
-} from 'vue'
-import IMAGES_LIST from '@/assets/images/imagesList.json'
+import { reactive } from 'vue'
+import PImage from '.'
 
 const basicImageData = reactive({
   type: 'paupulse',
   name: 'digitalisation',
   fit: 'fill'
-})
-
-const folders = IMAGES_LIST.map(folder => Object.keys(folder)[0])
-const files = computed(() =>
-  IMAGES_LIST.find(folder => Object.keys(folder)[0] === basicImageData.type)
-)
-
-const filesName = computed(() =>
-  Object
-    .values(files.value as object)[0]
-    .map((file: string) => file.split('.')[0])
-)
-
-let AsyncComponent: any
-
-const loadImage = () => {
-  AsyncComponent = defineAsyncComponent(() => import('./'))
-}
-loadImage()
-
-watch(basicImageData, (newValue) => {
-  const hasFileInFolder = filesName.value.includes(toRaw(newValue.name))
-  if (hasFileInFolder) {
-    loadImage()
-  }
 })
 </script>
 

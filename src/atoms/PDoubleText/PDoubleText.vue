@@ -41,15 +41,16 @@
 import { type Component } from 'vue'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
+import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
 
 interface PDoubleTextProps {
   icon?: Component | string
   profile: string
   title: string
   content: string
-  iconShape: string
-  iconColor: string
-  iconType: string
+  iconShape: PAvatarProps['pShape']
+  iconColor: PAvatarProps['pColor']
+  iconType: PAvatarProps['pType']
   type: 'primary' | 'secondary'
   selected: boolean
   disabled: boolean

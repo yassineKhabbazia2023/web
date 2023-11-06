@@ -6,8 +6,8 @@
   >
     <Variant title="Notification Card">
       <PNotificationCard
-        :pTime="PNotificationCardData.time"
-        :pIsNew="PNotificationCardData.isNew">
+        :pTime="PNotificationCardData.pTime"
+        :pIsNew="PNotificationCardData.pIsNew">
         <template #avatar>
           <PAvatar
           :pShape="currentShape"
@@ -31,7 +31,7 @@
         </template>
       </PNotificationCard>
       <template #controls>
-        <HstCheckbox v-model="PNotificationCardData.isNew" title="New notif" />
+        <HstCheckbox v-model="PNotificationCardData.pIsNew" title="New notif" />
       </template>
     </Variant>
   </Story>
@@ -46,9 +46,9 @@ import PIcon from '@/atoms/PIcon'
 import PNotificationCard from './'
 import { type PAvatarProps } from '@/atoms/PAvatar'
 
-const currentShape = ref<PAvatarProps['shape']>('circle')
-const currentType = ref<string | undefined>('default')
-const currentColor = ref<PAvatarProps['color']>('persian-gradient')
+const currentShape = ref<PAvatarProps['pShape']>('circle')
+const currentType = ref<PAvatarProps['pType']>('default')
+const currentColor = ref<PAvatarProps['pColor']>('persian-gradient')
 
 const toolboxBasicData = ([
   {
@@ -75,8 +75,8 @@ const toolboxBasicData = ([
 ])
 
 const PNotificationCardData = reactive({
-  isNew: false,
-  time: '1sem'
+  pIsNew: false,
+  pTime: '1sem'
 })
 </script>
 

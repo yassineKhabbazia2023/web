@@ -1,5 +1,5 @@
 <template>
-  <ElImage :src="resolvedImage" :class="`p-image--fit-${props.pFit}`"></ElImage>
+  <ElImage :src="resolvedImage" :fit="pFit"></ElImage>
 </template>
 
 <script setup lang="ts">

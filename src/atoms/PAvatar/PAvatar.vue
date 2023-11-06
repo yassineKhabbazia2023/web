@@ -3,6 +3,7 @@
     :fit="pFit"
     size="default"
     :class="pClassMapper"
+    class="p-avatar"
     :src="pSrc"
     :shape="pShape"
   >

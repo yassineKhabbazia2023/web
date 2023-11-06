@@ -1,17 +1,17 @@
 <template>
   <div class="p-pagination">
     <div class="p-pagination__select">
-      <ElSelect v-model="selectedRange" placement="top">
-        <ElOptionGroup :label="pageSizeSelectorGroupLabel">
-          <ElOption
+      <PSelect v-model="selectedRange" placement="top">
+        <POptionGroup :label="pageSizeSelectorGroupLabel">
+          <POption
             v-for="pageSize in pageSizes"
             :key="pageSize"
             :value="pageSize"
           >
             {{ getpageSizeSelectorContent(pageSize) }}
-          </ElOption>
-        </ElOptionGroup>
-      </ElSelect>
+          </POption>
+        </POptionGroup>
+      </PSelect>
     </div>
     <ElPagination v-bind="$attrs" layout="prev, pager, next" />
     <ElPagination v-bind="$attrs" layout="prev, pager, next" />
@@ -23,7 +23,12 @@
 
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { ElOption, ElOptionGroup, ElPagination, ElSelect } from 'element-plus'
+import {
+  ElOption as POption,
+  ElOptionGroup as POptionGroup,
+  ElPagination,
+  ElSelect as PSelect
+} from 'element-plus'
 
 export interface PaginationProps {
   showTotalPageCounter: boolean

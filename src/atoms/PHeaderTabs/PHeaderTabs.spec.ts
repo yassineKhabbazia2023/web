@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { flushPromises, VueWrapper } from '@vue/test-utils'
-import PHeaderTabs from '.'
 import wrapperFactory from '@tests/utils/wrapperFactory'
 import { createI18n } from 'vue-i18n'
 import { nextTick } from 'vue'
+import PHeaderTabs from '.'
 
 const routes = [
   {
