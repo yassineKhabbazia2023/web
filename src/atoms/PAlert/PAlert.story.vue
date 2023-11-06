@@ -52,12 +52,54 @@
         Quisque eget risus feugiat, pellentesque sem interdum, vehicula eros.
       </PAlert>
     </Variant>
+
+    <Variant title="Alert Collapse">
+      <div class="block-collapse">
+        <PCollapse
+          v-model="activeNames"
+          accordion="false"
+        >
+          <PCollapseItem
+            pType="alert"
+            pTitleCollapseItem="Some documents cannot be moved to your document space"
+            :pIcon="PIExclamationTriangle"
+            name="1"
+          >
+            <div>
+              Content
+            </div>
+          </PCollapseItem>
+          <PCollapseItem
+            pType="alert"
+            pTitleCollapseItem="Some documents cannot be moved to your document space"
+            :pIcon="PIExclamationTriangle"
+            name="2"
+          >
+            <div>
+              Content
+            </div>
+          </PCollapseItem>
+        </PCollapse>
+      </div>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import PCollapseItem from '@/atoms/PCollapseItem'
+import { PIExclamationTriangle } from '@/atoms/PIcon/components'
 import PAlert from './'
+
+const activeNames = ref(['1'])
 </script>
+
+<style lang="scss">
+.block-collapse {
+  height: 250px;
+  padding: 24px;
+}
+</style>
 
 <docs lang="md">
 ## Alert

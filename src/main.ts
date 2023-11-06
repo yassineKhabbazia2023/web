@@ -53,6 +53,10 @@ export const PCol =
   defineAsyncComponent(
     () => import('element-plus').then(({ ElCol }) => ElCol)
   )
+export const PCollapse =
+  defineAsyncComponent(
+    () => import('element-plus').then(({ ElCollapse }) => ElCollapse)
+  )
 export const PConfigProvider =
   defineAsyncComponent(
     () => import('element-plus').then(({ ElConfigProvider }) => ElConfigProvider)
@@ -129,6 +133,7 @@ export const PBreadcrumb = defineAsyncComponent(() => import('@/molecules/PBread
 export const PCarousel = defineAsyncComponent(() => import('@/molecules/PCarousel'))
 export const PCarouselItem = defineAsyncComponent(() => import('@/atoms/PCarouselItem'))
 export const PCheckbox = defineAsyncComponent(() => import('@/atoms/PCheckbox'))
+export const PCollapseItem = defineAsyncComponent(() => import('@/atoms/PCollapseItem'))
 export const PDatePicker = defineAsyncComponent(() => import('@/atoms/PDatePicker'))
 export const PDocumentViewer = defineAsyncComponent(() => import('@/organisms/PDocumentViewer'))
 export const PFileCard = defineAsyncComponent(() => import('@/molecules/PFileCard'))

@@ -2,6 +2,7 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import ElementPlus,
 {
   ElAutocomplete,
+  ElCollapse,
   ElForm,
   ElFormItem,
   ElInput,
@@ -42,6 +43,7 @@ export const setupVue3 = defineSetupVue3(({ app }) => {
   app.use(i18n)
   app.use(router)
   app.component('PAutocomplete', ElAutocomplete)
+  app.component('PCollapse', ElCollapse)
   app.component('PDropdown', ElSelect)
   app.component('PForm', ElForm)
   app.component('PFormItem', ElFormItem)

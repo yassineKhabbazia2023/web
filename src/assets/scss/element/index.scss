@@ -13,6 +13,7 @@
 @use './components/breadcrumb';
 @use './components/buttons';
 @use './components/carousel';
+@use './components/collapse';
 @use './components/dialog';
 @use './components/drawer';
 @use './components/dropdown';
@@ -55,6 +56,7 @@
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
   $button-border-radius: buttons.$button-border-radius,
+  $collapse: collapse.$collapse,
   $input: input.$input,
   $input-padding-horizontal: input.$input-padding-horizontal,
   $input-font-size: input.$input-font-size,
@@ -110,6 +112,8 @@
 @use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
 @use 'element-plus/theme-chalk/src/checkbox.scss' as *;
 @use 'element-plus/theme-chalk/src/col.scss' as *;
+@use 'element-plus/theme-chalk/src/collapse.scss' as *;
+@use 'element-plus/theme-chalk/src/collapse-item.scss' as *;
 @use 'element-plus/theme-chalk/src/container.scss' as *;
 @use 'element-plus/theme-chalk/src/date-picker.scss' as *;
 @use 'element-plus/theme-chalk/src/dialog.scss' as *;
