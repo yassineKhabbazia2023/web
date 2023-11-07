@@ -6,13 +6,13 @@
       >
       <Variant title="Basic Usage" :source="source">
         <PDoubleText
-          :icon="PIFiletypePdf"
-          :profile="PDoubleTextBasicData.profile"
-          :title="PDoubleTextBasicData.title"
-          :content="PDoubleTextBasicData.content"
-          :type="PDoubleTextBasicData.type"
-          :disabled="PDoubleTextBasicData.disabled"
-          :selected="PDoubleTextBasicData.selected"
+          :pIcon="PIFiletypePdf"
+          :pProfile="PDoubleTextBasicData.profile"
+          :pTitle="PDoubleTextBasicData.title"
+          :pContent="PDoubleTextBasicData.content"
+          :pType="PDoubleTextBasicData.type"
+          :pDisabled="PDoubleTextBasicData.disabled"
+          :pSelected="PDoubleTextBasicData.selected"
         >
         </PDoubleText>
         <template #controls>

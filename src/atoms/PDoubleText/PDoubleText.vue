@@ -1,70 +1,56 @@
 <template>
   <div
-    :type="type"
-    :class="{ 'p-double-text': true, disabled, selected }"
-    :disabled="disabled"
-    :selected="selected"
+    class="p-double-text"
+    :type="pType"
+    :disabled="pDisabled"
+    :selected="pSelected"
   >
-    <div class="p-double-text__icon" v-if="icon">
+    <div class="p-double-text__icon" v-if="pIcon">
       <PIcon :size="16">
-        <component :is="icon" />
+        <component :is="pIcon" />
       </PIcon>
     </div>
-    <div class="p-double-text__icon" v-if="profile">
+    <div class="p-double-text__icon" v-if="pProfile">
       <PAvatar
-        :pShape="iconShape"
-        :pType="iconType"
-        :pColor="iconColor">
-        {{ profile }}
+        :pShape="pIconShape"
+        :pType="pIconType"
+        :pColor="pIconColor">
+        {{ pProfile }}
       </PAvatar>
     </div>
-    <div :class="{ 'p-double-text__content': true, 'p-double-text--bold': bold }">
+    <div :class="{ 'p-double-text__content': true, 'p-double-text--bold': pBold }">
       <div
-        :class="{ 'p-double-text__content-title': true, disabled, selected}"
-        :disabled="disabled"
-        :selected="selected"
+        class="p-double-text__content-title"
+        :disabled="pDisabled"
+        :selected="pSelected"
       >
-        {{ title }}
+        {{ pTitle }}
       </div>
       <div
-        :class="{ 'p-double-text__content-description': true, disabled, selected }"
-        :disabled="disabled"
-        :selected="selected"
+        class="p-double-text__content-description"
+        :disabled="pDisabled"
+        :selected="pSelected"
       >
-        {{ content }}
+        {{ pContent }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { type Component } from 'vue'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
-import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
-
-interface PDoubleTextProps {
-  icon?: Component | string
-  profile: string
-  title: string
-  content: string
-  iconShape: PAvatarProps['pShape']
-  iconColor: PAvatarProps['pColor']
-  iconType: PAvatarProps['pType']
-  type: 'primary' | 'secondary'
-  selected: boolean
-  disabled: boolean
-  bold?: boolean
-}
+import type { PDoubleTextProps } from './PDoubleTextTypes'
 
 withDefaults(defineProps<PDoubleTextProps>(), {
-  icon: undefined,
-  iconShape: 'circle',
-  iconColor: 'persian-gradient',
-  bold: false,
-  iconType: 'small'
+  pIcon: undefined,
+  pIconShape: 'circle',
+  pIconColor: 'persian-gradient',
+  pBold: false,
+  pIconType: 'small'
 })
 </script>
+
 <style lang="scss" scoped>
 .p-double-text {
   display: flex;
