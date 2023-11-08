@@ -5,25 +5,28 @@
     @click="handleClickFileNavigation(folderId)"
     @dblclick="handleDoubleClickFileNavigation(folderId)"
   >
-      <PIcon size="16">
-        <PIFolder />
-      </PIcon>
-      <span class="p-file-line-navigation-item__name">{{ folderName }}</span>
-      <PIcon size="16">
-        <PIChevronRight />
-      </PIcon>
+    <PIcon>
+      <component :is="resolvedIconsLeft"></component>
+    </PIcon>
+    <span class="p-file-line-navigation-item__name">{{ folderName }}</span>
+    <PIcon v-if="pHasArrow" size="16">
+      <PIChevronRight />
+    </PIcon>
   </button>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import PIcon from '../PIcon'
 import type { PFileLineNavigationItemTypes } from './PFileLineNavigationItemTypes'
+import { iconResolver } from '@/utils/iconResolver'
 
 const props = withDefaults(defineProps<PFileLineNavigationItemTypes>(), {
   selected: false,
   disabled: false,
-  folderName: 'Name of folder'
+  folderName: 'Name of folder',
+  pHasArrow: true,
+  pLeftIcon: 'PIFolder'
 })
 
 const emit = defineEmits([
@@ -41,6 +44,10 @@ const handleDoubleClickFileNavigation = (folderId: number) => {
   isSelected.value = !isSelected.value
   emit('on-db-click-file-navigation', folderId)
 }
+
+const resolvedIconsLeft = computed(() => {
+  return iconResolver(props.pLeftIcon)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -65,7 +72,7 @@ const handleDoubleClickFileNavigation = (folderId: number) => {
 
   &.selected {
     overflow: hidden;
-    color:  var(--el-color-persian-500);
+    color: var(--el-color-persian-500);
     text-overflow: ellipsis;
     font-size: 1.4rem;
     font-style: normal;

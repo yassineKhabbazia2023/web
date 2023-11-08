@@ -3,4 +3,6 @@ export interface PFileLineNavigationItemTypes {
   disabled?: boolean;
   folderName?: string;
   folderId: number;
+  pHasArrow?: boolean
+  pLeftIcon?:string
 }

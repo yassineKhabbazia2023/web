@@ -5,11 +5,15 @@
         :folderName="firstProps.folderName"
         :class="{ selected: firstProps.selected, disabled: firstProps.disabled }"
         :folderId="firstProps.folderId"
+        :pHasArrow="firstProps.pHasArrow"
+        :pLeftIcon="firstProps.pLeftIcon"
       />
       <template #controls>
         <HstText v-model="firstProps.folderName" title="FolderName" />
+        <HstText v-model="firstProps.pLeftIcon" title="pLeftIcon" />
         <HstCheckbox v-model="firstProps.selected" title="selected" />
         <HstCheckbox v-model="firstProps.disabled" title="disabled" />
+        <HstCheckbox v-model="firstProps.pHasArrow" title="pHasArrow" />
       </template>
     </Variant>
   </Story>
@@ -23,7 +27,9 @@ const firstProps = reactive({
   selected: false,
   disabled: false,
   folderName: 'Name of folder',
-  folderId: 3116446
+  folderId: 3116446,
+  pHasArrow: true,
+  pLeftIcon: ''
 })
 </script>
 

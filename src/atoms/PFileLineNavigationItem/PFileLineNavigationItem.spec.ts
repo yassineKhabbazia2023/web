@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PFileLineNavigationItem from './'
 import type { PFileLineNavigationItemTypes } from './PFileLineNavigationItemTypes'
+import { PIChevronRight } from '@/atoms/PIcon/components'
 
 const defaultProps: PFileLineNavigationItemTypes = {
   selected: false,
@@ -52,6 +53,24 @@ describe('pFileLineNavigationItem', () => {
       expect(wrapper.classes().includes('disabled')).toBeFalsy()
     })
 
+    describe('should display the PIChevronRight based on the pHasArrow prop', () => {
+      const cases = [
+        { pHasArrow: true, expectedValue: true },
+        { pHasArrow: false, expectedValue: false }
+      ]
+
+      it.each(cases)('validation with "%s"', ({ pHasArrow, expectedValue }) => {
+        const wrapper = createWrapper({
+          disabled: false,
+          folderId: 123,
+          pHasArrow
+        })
+
+        expect(wrapper.findComponent(PIChevronRight).exists()).toBe(
+          expectedValue
+        )
+      })
+    })
     it('should show the folder name', () => {
       const wrapper = createWrapper({
         folderName: 'name of a random folder',
