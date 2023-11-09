@@ -5,32 +5,32 @@
   >
     <Variant title="Custom popover">
       <PPopover
-        :placement="popoverBasicData.placement"
-        :disabled="popoverBasicData.disabled"
-        :showArrow="popoverBasicData.showArrow"
-        :trigger="popoverBasicData.triggerOptions"
-        :title="popoverBasicData.title"
+        :pPlacement="popoverBasicData.pPlacement"
+        :pDisabled="popoverBasicData.pDisabled"
+        :pShowArrow="popoverBasicData.pShowArrow"
+        :pTrigger="popoverBasicData.pTriggerOptions"
+        :pTitle="popoverBasicData.pTitle"
       >
         <template #content>
-          {{ popoverBasicData.content }}
+          {{ popoverBasicData.pContent }}
         </template>
         <PButton>Button</PButton>
       </PPopover>
       <template #controls>
-        <hstText v-model="popoverBasicData.title" title="Title" />
-        <hstText v-model="popoverBasicData.content" title="content" />
+        <hstText v-model="popoverBasicData.pTitle" title="Title" />
+        <hstText v-model="popoverBasicData.pContent" title="content" />
         <hstSelect
-          v-model="popoverBasicData.placement"
+          v-model="popoverBasicData.pPlacement"
           title="placement"
           :options="placementOptions"
         />
-        <hstCheckbox v-model="popoverBasicData.disabled" title="disabled" />
+        <hstCheckbox v-model="popoverBasicData.pDisabled" title="disabled" />
         <hstSelect
-          v-model="popoverBasicData.triggerOptions"
+          v-model="popoverBasicData.pTriggerOptions"
           title="trigger"
           :options="triggerOptions"
         />
-        <hstCheckbox v-model="popoverBasicData.showArrow" title="show-arrow" />
+        <hstCheckbox v-model="popoverBasicData.pShowArrow" title="show-arrow" />
       </template>
     </Variant>
   </Story>
@@ -44,12 +44,12 @@ import triggerOptions from '@/constants/triggerOptions'
 import PButton from '@/atoms/PButton'
 
 const popoverBasicData = reactive({
-  placement: placementOptions[0].value,
-  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-  disabled: false,
-  showArrow: true,
-  triggerOptions: triggerOptions[0],
-  title: 'Title'
+  pPlacement: placementOptions[0].value,
+  pContent: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+  pDisabled: false,
+  pShowArrow: true,
+  pTriggerOptions: triggerOptions[0],
+  pTitle: 'Title'
 })
 </script>
 

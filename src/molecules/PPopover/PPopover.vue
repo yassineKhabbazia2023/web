@@ -1,11 +1,11 @@
 <template>
   <ElPopover
     popperClass="el-popper-popover p-popover--shadow"
-    :placement="placement"
-    :disabled="disabled"
-    :showArrow="showArrow"
-    :trigger="trigger"
-    :title="title"
+    :placement="pPlacement"
+    :disabled="pDisabled"
+    :showArrow="pShowArrow"
+    :trigger="pTrigger"
+    :title="pTitle"
     :width="212"
   >
     <div class="el-popover__content">
@@ -19,18 +19,10 @@
 
 <script setup lang="ts">
 import { ElPopover } from 'element-plus'
-import type { PlacementOptions } from '@/constants/placementOptions'
-import type { TriggerOptionsType } from '@/constants/triggerOptions'
-export interface PPopoverProps {
-  placement?: PlacementOptions
-  disabled?: boolean
-  showArrow?: boolean
-  trigger: TriggerOptionsType
-  title: string
-}
+import type { PPopoverProps } from './PPopoverTypes'
 
 withDefaults(defineProps<PPopoverProps>(), {
-  placement: 'top',
-  disabled: false
+  pPlacement: 'top',
+  pDisabled: false
 })
 </script>
