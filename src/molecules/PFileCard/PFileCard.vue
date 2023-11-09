@@ -1,28 +1,28 @@
 <template>
   <div class="p-file-card radius--2 shadow--2">
-    <div class="p-file-card__icon" v-if="hasIcon">
+    <div class="p-file-card__icon" v-if="pHasIcon">
       <slot name="icon" />
     </div>
     <div class="p-file-card__text">
       <p class="p-file-card__name">
-        {{ name }}
+        {{ pName }}
       </p>
       <p class="p-file-card__size">
-        {{ format }} • {{ size }}
+        {{ pFormat }} • {{ pSize }}
       </p>
     </div>
-    <div class="p-file-card__group-btn" v-if="hasButton">
+    <div class="p-file-card__group-btn" v-if="pHasButton">
       <slot name="buttons" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { PFileCardProps } from './PFileCardProps'
+import type { PFileCardProps } from './PFileCardTypes'
 
 withDefaults(defineProps<PFileCardProps>(), {
-  hasIcon: false,
-  hasButton: false
+  pHasIcon: false,
+  pHasButton: false
 })
 </script>
 

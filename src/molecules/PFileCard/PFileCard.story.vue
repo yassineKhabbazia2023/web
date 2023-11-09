@@ -6,11 +6,11 @@
     <Variant title="Default">
       <div class="padding--4">
         <PFileCard
-          :name="defaultState.name"
-          :format="defaultState.format"
-          :size="defaultState.size"
-          :hasIcon="defaultState.hasIcon"
-          :hasButton="defaultState.hasButton"
+          :pName="defaultState.pName"
+          :pFormat="defaultState.pFormat"
+          :pSize="defaultState.pSize"
+          :pHasIcon="defaultState.pHasIcon"
+          :pHasButton="defaultState.pHasButton"
         >
           <template #icon>
             <PIcon>
@@ -44,9 +44,9 @@
         </PFileCard>
       </div>
       <template #controls>
-        <HstText v-model="defaultState.name" title="Name" />
-        <HstText v-model="defaultState.format" title="Format" />
-        <HstText v-model="defaultState.size" title="File size" />
+        <HstText v-model="defaultState.pName" title="pName" />
+        <HstText v-model="defaultState.pFormat" title="pFormat" />
+        <HstText v-model="defaultState.pSize" title="File size" />
       </template>
     </Variant>
   </Story>
@@ -59,11 +59,11 @@ import PButton from '@/atoms/PButton'
 import { logEvent } from 'histoire/client'
 
 const defaultState = reactive({
-  name: 'mandat-1000308253-12248236612-signature.pdf',
-  format: 'PDF',
-  size: '25KB',
-  hasIcon: true,
-  hasButton: true
+  pName: 'mandat-1000308253-12248236612-signature.pdf',
+  pFormat: 'PDF',
+  pSize: '25KB',
+  pHasIcon: true,
+  pHasButton: true
 })
 </script>
 
