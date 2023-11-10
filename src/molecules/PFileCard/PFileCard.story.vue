@@ -20,9 +20,8 @@
           <template #buttons>
             <PButton
               class="el-button--icon"
-              type="white"
-              size="default"
-              plain="false"
+              pType="white"
+              :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
               <PIcon>
@@ -31,9 +30,8 @@
             </PButton>
             <PButton
               class="el-button--icon"
-              type="white"
-              size="default"
-              plain="false"
+              pType="white"
+              :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
               <PIcon>

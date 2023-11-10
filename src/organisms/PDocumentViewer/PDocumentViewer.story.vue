@@ -8,7 +8,7 @@
   >
     <Variant title="Document Viewer">
       <PButton
-        plain
+        pPlain
         @click="isDrawerOpened = !isDrawerOpened"
       >
         Open / close

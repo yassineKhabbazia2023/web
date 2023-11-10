@@ -2,36 +2,38 @@
   <Story title="2. Atoms/Button" icon="teenyicons:button-outline">
     <Variant title="Basic Usage">
       <PButton
-        :type="basicButtonData.type"
-        :size="basicButtonData.size"
-        :plain="basicButtonData.plain"
-        :round="basicButtonData.round"
-        :disabled="basicButtonData.disabled"
-        :loading="basicButtonData.loading"
+        :pType="basicButton.basicType"
+        :pPlain="basicButton.basicPlain"
+        :pRound="basicButton.basicRound"
+        :pCircle="basicButton.basicCircle"
+        :pDisabled="basicButton.basicDisabled"
+        :pLoading="basicButton.basicLoading"
+        :pSize="basicButton.basicSize"
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
         <PIcon class="el-button__icon--left">
           <PICalendarEvent />
         </PIcon>
-        {{ basicButtonData.text }}
+        {{ basicButton.basicText }}
         <PIcon class="el-button__icon--right">
           <PIArrowRight />
         </PIcon>
       </PButton>
       <template #controls>
-        <HstText v-model="basicButtonData.text" title="Text" />
-        <HstCheckbox v-model="basicButtonData.plain" title="Plain" />
-        <HstCheckbox v-model="basicButtonData.round" title="Round" />
-        <HstCheckbox v-model="basicButtonData.disabled" title="Disabled" />
-        <HstCheckbox v-model="basicButtonData.loading" title="Loading" />
+        <HstText v-model="basicButton.basicText" title="Text" />
+        <HstCheckbox v-model="basicButton.basicPlain" title="Plain" />
+        <HstCheckbox v-model="basicButton.basicRound" title="Round" />
+        <HstCheckbox v-model="basicButton.basicCircle" title="Circle" />
+        <HstCheckbox v-model="basicButton.basicDisabled" title="Disabled" />
+        <HstCheckbox v-model="basicButton.basicLoading" title="Loading" />
         <HstRadio
-          v-model="basicButtonData.type"
+          v-model="basicButton.basicType"
           title="Type"
-          :options="typeOptions" />
+          :options="buttonTypeList" />
         <HstRadio
-          v-model="basicButtonData.size"
+          v-model="basicButton.basicSize"
           title="Size"
-          :options="basicButtonData.sizeOptions" />
+          :options="buttonSizeList" />
       </template>
     </Variant>
     <Variant
@@ -39,58 +41,57 @@
       icon="line-md:iconify2">
       <PButton
         class="el-button--icon"
-        :type="iconButtonData.type"
-        :size="iconButtonData.size"
-        :plain="iconButtonData.plain"
-        :circle="iconButtonData.circle"
-        :disabled="iconButtonData.disabled"
-        :loading="iconButtonData.loading"
+        :pType="iconButton.iconButtonType"
+        :pPlain="iconButton.iconButtonPlain"
+        :pRound="iconButton.iconButtonRound"
+        :pCircle="iconButton.iconButtonCircle"
+        :pDisabled="iconButton.iconButtonDisabled"
+        :pLoading="iconButton.iconButtonLoading"
+        :pSize="iconButton.iconButtonSize"
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
         <PIcon><PISearch /></PIcon>
       </PButton>
       <template #controls>
-        <HstCheckbox v-model="iconButtonData.plain" title="Plain" />
-        <HstCheckbox v-model="iconButtonData.circle" title="Circle" />
-        <HstCheckbox v-model="iconButtonData.disabled" title="Disabled" />
-
+        <HstCheckbox v-model="iconButton.iconButtonPlain" title="Plain" />
+        <HstCheckbox v-model="iconButton.iconButtonRound" title="Round" />
+        <HstCheckbox v-model="iconButton.iconButtonCircle" title="Circle" />
+        <HstCheckbox v-model="iconButton.iconButtonDisabled" title="Disabled" />
+        <HstCheckbox v-model="iconButton.iconButtonLoading" title="Loading" />
         <HstRadio
-          v-model="iconButtonData.type"
+          v-model="iconButton.iconButtonType"
           title="Type"
-          :options="typeOptions"
-        />
+          :options="buttonTypeList" />
         <HstRadio
-          v-model="iconButtonData.size"
+          v-model="iconButton.iconButtonSize"
           title="Size"
-          :options="iconButtonData.sizeOptions"
-        />
+          :options="buttonSizeList" />
       </template>
     </Variant>
     <Variant
       title="Button Group"
       icon="clarity:blocks-group-line"
     >
-      <el-button-group
-        :size="buttonGroupData.size"
-        :type="buttonGroupData.type"
-      >
+      <PButtonGroup
+        :pType="groupButton.buttonGroupType"
+        :pSize="groupButton.buttonGroupSize">
         <PButton>
           {{ previousText }}
         </PButton>
         <PButton>
           {{  nextText }}
         </PButton>
-      </el-button-group>
+      </PButtonGroup>
       <template #controls>
         <HstRadio
-          v-model="buttonGroupData.type"
+          v-model="groupButton.buttonGroupType"
           title="Type"
-          :options="groupOptions"
+          :options="buttonTypeList"
         />
         <HstRadio
-          v-model="buttonGroupData.size"
+          v-model="groupButton.buttonGroupSize"
           title="Size"
-          :options="buttonGroupData.sizeOptions"
+          :options="buttonSizeList"
         />
       </template>
     </Variant>
@@ -98,13 +99,74 @@
 </template>
 
 <script setup lang="ts">
-import { type SizeOptions } from '@/constants/sizeOptions'
 import { logEvent } from 'histoire/client'
 import { ref } from 'vue'
-import { type TypeOptions, type GroupTypeOptions, typeOptions, groupOptions } from '@/constants/typeOptions'
 import PButton from './'
+import PButtonGroup from '@/atoms/PButtonGroup/'
+import type { PButtonTypes } from './PButtonTypes'
 
-const radioSizeOptions: { label: string; value:string }[] = [
+const basicButton = ref({
+  basicType: ref<PButtonTypes['pType']>('default'),
+  basicPlain: ref<PButtonTypes['pPlain']>(),
+  basicRound: ref<PButtonTypes['pRound']>(),
+  basicCircle: ref<PButtonTypes['pCircle']>(),
+  basicDisabled: ref<PButtonTypes['pDisabled']>(),
+  basicLoading: ref<PButtonTypes['pLoading']>(),
+  basicSize: ref<PButtonTypes['pSize']>('default'),
+  basicText: ref('')
+})
+
+const iconButton = ref({
+  iconButtonType: ref<PButtonTypes['pType']>('default'),
+  iconButtonPlain: ref<PButtonTypes['pPlain']>(),
+  iconButtonRound: ref<PButtonTypes['pRound']>(),
+  iconButtonCircle: ref<PButtonTypes['pCircle']>(true),
+  iconButtonDisabled: ref<PButtonTypes['pDisabled']>(),
+  iconButtonLoading: ref<PButtonTypes['pLoading']>(),
+  iconButtonSize: ref<PButtonTypes['pSize']>('default')
+})
+
+const groupButton = ref({
+  buttonGroupType: ref<PButtonTypes['pType']>('default'),
+  buttonGroupSize: ref<PButtonTypes['pSize']>('default')
+})
+
+const buttonTypeList: { label: string; value: PButtonTypes['pType'] }[] = [
+  {
+    label: 'default',
+    value: 'default'
+  },
+  {
+    label: 'primary',
+    value: 'primary'
+  },
+  {
+    label: 'white',
+    value: 'white'
+  },
+  {
+    label: 'generic',
+    value: 'generic'
+  },
+  {
+    label: 'success',
+    value: 'success'
+  },
+  {
+    label: 'warning',
+    value: 'warning'
+  },
+  {
+    label: 'danger',
+    value: 'danger'
+  },
+  {
+    label: 'info',
+    value: 'info'
+  }
+]
+
+const buttonSizeList: { label: string; value: PButtonTypes['pSize'] }[] = [
   {
     label: 'default',
     value: 'default'
@@ -114,37 +176,6 @@ const radioSizeOptions: { label: string; value:string }[] = [
     value: 'small'
   }
 ]
-
-// Basic-Button
-const basicButtonData = ref({
-  text: 'Button',
-  type: 'primary' as TypeOptions,
-  size: 'default' as SizeOptions,
-  sizeOptions: radioSizeOptions,
-  plain: false,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false
-})
-
-// Icon Button
-const iconButtonData = ref({
-  type: 'primary' as TypeOptions,
-  size: 'default' as SizeOptions,
-  sizeOptions: radioSizeOptions,
-  circle: true,
-  plain: false,
-  loading: false,
-  disabled: false
-})
-
-// Button Group
-const buttonGroupData = ref({
-  type: 'text' as GroupTypeOptions,
-  size: 'default' as SizeOptions,
-  sizeOptions: radioSizeOptions
-})
 
 const previousText = 'Previous Page'
 const nextText = 'Next Page'

@@ -10,8 +10,8 @@
       <div class="p-drawer__header">
         <div>
           <PButton
-            type="generic"
-            plain
+            pType="generic"
+            pPlain
             @click="$emit('drawer-previous-button-click')"
             v-if="pShowPreviousStep"
             class="el-button--icon p-drawer__step-back-button"
@@ -25,8 +25,8 @@
           </h3>
         </div>
         <PButton
-          type="generic"
-          plain
+          pType="generic"
+          pPlain
           @click="$emit('close-drawer-button')"
           class="el-button--icon p-drawer__close-button"
         >

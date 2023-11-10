@@ -20,12 +20,12 @@
         <template #footer>
           <div class="p-dialog__footer">
             <PButton
-              type="secondary"
-              size="small"
-              :plain="false"
-              :round="false"
-              :disabled="false"
-              :loading="false"
+              pType="default"
+              pSize="small"
+              :pPlain="false"
+              :pRound="false"
+              :pDisabled="false"
+              :pLoading="false"
               @click="closeDialog"
             >
               Fermer
@@ -59,23 +59,23 @@
         <template #footer>
           <div class="p-dialog__footer">
             <PButton
-              type="secondary"
-              size="small"
-              :plain="false"
-              :round="false"
-              :disabled="false"
-              :loading="false"
+              pType="default"
+              pSize="small"
+              :pPlain="false"
+              :pRound="false"
+              :pDisabled="false"
+              :pLoading="false"
               @click="closeSecondDialog"
             >
               Annuler
             </PButton>
             <PButton
-              type="primary"
-              size="small"
-              :plain="false"
-              :round="false"
-              :disabled="false"
-              :loading="false"
+              pType="primary"
+              pSize="small"
+              :pPlain="false"
+              :pRound="false"
+              :pDisabled="false"
+              :pLoading="false"
               @click="closeSecondDialog"
             >
               Continuer
@@ -116,23 +116,23 @@
         <template #footer>
           <div class="p-dialog__footer">
             <PButton
-              type="secondary"
-              size="small"
-              :plain="false"
-              :round="false"
-              :disabled="false"
-              :loading="false"
+              pType="secondary"
+              pSize="small"
+              :pPlain="false"
+              :pRound="false"
+              :pDisabled="false"
+              :pLoading="false"
               @click="closeThirdDialog"
             >
               Annuler
             </PButton>
             <PButton
-              type="primary"
-              size="small"
-              :plain="false"
-              :round="false"
-              :disabled="false"
-              :loading="false"
+              pType="primary"
+              pSize="small"
+              :pPlain="false"
+              :pRound="false"
+              :pDisabled="false"
+              :pLoading="false"
               @click="closeThirdDialog"
             >
               Continuer

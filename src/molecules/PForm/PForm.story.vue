@@ -43,9 +43,9 @@
       </PFormItem>
       <PFormItem>
       <PButton
-        type="primary"
+        pType="primary"
         @click="handleSubmit(formRef)"
-        :disabled="!isFormValid"
+        :pDisabled="!isFormValid"
       >
         Submit
       </PButton>

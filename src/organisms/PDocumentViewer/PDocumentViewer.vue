@@ -21,8 +21,8 @@
         <div class="p-document-viewer__header-left margin-right--2">
           <PButton
             v-if="showCloseButton"
-            type="generic"
-            plain
+            pType="generic"
+            pPlain
             @click="documentViewerModel = false"
             class="el-button--icon p-document-viewer__btn-close margin-right--2"
           >
@@ -39,10 +39,10 @@
         </div>
         <div class="p-document-viewer__header-right" v-if="hasPagination">
           <PButton
-            type="generic"
-            plain
+            pType="generic"
+            pPlain
             class="el-button--icon margin-right--2 p-document-viewer__btn-previous"
-            :disabled="!showPreviousDocument"
+            :pDisabled="!showPreviousDocument"
             @click="$emit('previous-document-button-click')"
           >
             <PIcon>
@@ -57,10 +57,10 @@
             <span class="p-document-viewer__pagination-item">{{ totalDocuments }}</span>
           </div>
           <PButton
-            type="generic"
-            plain
+            pType="generic"
+            pPlain
             class="el-button--icon margin-left--2 p-document-viewer__btn-next"
-            :disabled="!showNextDocument"
+            :pDisabled="!showNextDocument"
             @click="$emit('next-document-button-click')"
           >
             <PIcon>

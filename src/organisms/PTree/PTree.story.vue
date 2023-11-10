@@ -20,7 +20,7 @@
           <span>{{ node.label }}</span>
           <PToolbox :elements="toolboxItems">
             <PButton
-              circle
+              pCircle
               style="padding: 4px; height: 24px; margin-left: 16px"
             >
               <PIcon>

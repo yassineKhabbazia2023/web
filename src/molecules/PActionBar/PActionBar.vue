@@ -4,70 +4,33 @@
       <template
         v-for="(item, index) in truncatedLeftSideButtons"
         :key="index"
-      >
-      <PUpload
-          v-if="item.componentType === 'UPLOAD'"
-          :multiple="item.multiple"
-          :disable="item.disabled"
-          :showFileList="false"
-          :drag="false"
-          @files-selected="handleFilesSelected"
-        >
-          <PButton
-            :type="item.buttonType"
-            :plain="item.plain"
-            :circle="item.buttonName === '' ? true : false"
-            :loading="item.loading"
-            :disabled="item.disabled"
-            :size="item.size"
-            :class="[
-              'p-action-bar__left-btn',,
-              'margin-right--2',
-              item.buttonName === '' ? 'el-button--icon' : ''
-            ]"
-          >
-            <PIcon class="el-button__icon--left">
-              <component :is="resolvedIconsLeft[index]"></component>
-            </PIcon>
-            <p>{{ item.buttonName }}</p>
-          </PButton>
-        </PUpload>
+        :pType="item.buttonType"
+        :pPlain="item.plain"
+        :pCircle="item.buttonName === '' ? true : false"
+        :pLoading="item.loading"
+        :pDisabled="item.disabled"
+        :pSize="item.size"
+        :class="['p-action-bar__left-btn', item.buttonName === '' ? 'el-button--icon' : '']"
+        @click="$emit(item.buttonActionName)">
 
-        <PButton
-          v-else
-          :type="item.buttonType"
-          :plain="item.plain"
-          :circle="item.buttonName === '' ? true : false"
-          :loading="item.loading"
-          :disabled="item.disabled"
-          :size="item.size"
-          :class="[
-            'p-action-bar__left-btn',
-            item.buttonName === '' ? 'el-button--icon' : ''
-          ]"
-          @click="$emit('p-action-bar-button-clicked', item.buttonActionName)"
-        >
-          <PIcon
-            class="el-button__icon--left"
-          >
-            <component :is="resolvedIconsLeft[index]"></component>
-          </PIcon>
-          <p>
-            {{ item.buttonName }}
-          </p>
-        </PButton>
-      </template>
+        <PIcon class="el-button__icon--left">
+          <component :is="resolvedIconsLeft[index]"></component>
+        </PIcon>
+        <p>
+          {{ item.buttonName }}
+        </p>
+      </PButton>
     </div>
     <div class="p-action-bar__right">
       <PButton
         v-for="(item, index) in truncatedRightSideButtons"
         :key="index"
-        :type="item.buttonType"
-        :plain="item.plain"
-        :circle="isWindowUnderDesktop"
-        :loading="item.loading"
-        :disabled="item.disabled"
-        :size="item.size"
+        :pType="item.buttonType"
+        :pPlain="item.plain"
+        :pCircle="isWindowUnderDesktop"
+        :pLoading="item.loading"
+        :pDisabled="item.disabled"
+        :pSize="item.size"
         class="p-action-bar__right-btn"
         @click="$emit('p-action-bar-button-clicked', item.buttonActionName)"
       >

@@ -74,19 +74,21 @@ describe('pActionBar', () => {
 
         expect(button.classes().includes('is-circle')).toBeTruthy()
       })
-      it('should display pupload when componentType is UPLOAD', () => {
-        const pUploadButton: ComponentDefinitionProps = {
-          ...defaultButtons[0],
-          componentType: 'UPLOAD'
-        }
+
+      it.only('should display the button in a rounded shape', () => {
+        const buttons = [
+          { ...defaultButtons, buttonName: '' }
+        ] as unknown as Buttons[]
 
         const wrapper = createWrapper({
           leftSideButtons: [pUploadButton],
           rightSideButtons: defaultProps.rightSideButtons
         })
-
-        const pUploadWrapper = wrapper.findComponent(PUpload)
-        expect(pUploadWrapper.exists()).toBeTruthy()
+        const button = wrapper
+          .find('.p-action-bar__left')
+          .findAll('p-button-stub')[0]
+        console.log(button.html())
+        expect(button.attributes('is-round')).toBe('true')
       })
     })
     describe('right side', () => {

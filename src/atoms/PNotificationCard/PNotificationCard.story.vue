@@ -20,9 +20,9 @@
         <template #actions>
           <PToolbox :elements="toolboxBasicData">
             <PButton
-              type="generic"
+              pType="generic"
               class="el-button--icon"
-              size="small">
+              pSize="small">
               <PIcon>
                 <PIThreeDots />
               </PIcon>

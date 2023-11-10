@@ -9,7 +9,7 @@
     <div class="container">
       <Variant title="Drawer">
         <PButton
-          plain
+          pPlain
           @click="pDrawerControl.openDrawer = !pDrawerControl.openDrawer"
         >
           Open /close

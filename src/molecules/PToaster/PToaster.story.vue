@@ -1,25 +1,25 @@
 <template>
   <Story title="3. Molecules/Toaster" icon="system-uicons:message">
     <Variant title="Success notification">
-      <PButton plain @click="openSuccess">
+      <PButton pPlain @click="openSuccess">
         Success
       </PButton>
     </Variant>
 
     <Variant title="Error notification">
-      <PButton plain @click="openError">
+      <PButton pPlain @click="openError">
         Error
       </PButton>
     </Variant>
 
     <Variant title="Loading notification">
-      <PButton plain @click="openLoading">
+      <PButton pPlain @click="openLoading">
         Loading
       </PButton>
     </Variant>
 
     <Variant title="Notification with close button">
-      <PButton plain @click="openWithClose">
+      <PButton pPlain @click="openWithClose">
         Open with close button
       </PButton>
     </Variant>
