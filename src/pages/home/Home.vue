@@ -2,6 +2,12 @@
   <div>
     <Header />
     <ListMandate v-if="!loading" :data="mandatesCollection.data" />
+    <Pagination
+      v-if="!loading"
+      :pagesCount="mandatesCollection.counters.all"
+      :pagesRanges="[10, 20, 30]"
+      showTotalPageCounter
+    />
   </div>
 </template>
 
@@ -10,6 +16,7 @@ import { ref, onBeforeMount } from 'vue'
 import { getMandatesCollection } from '@/services/mandate'
 import Header from '@/components/Common/Header'
 import ListMandate from '@/components/DisplayMandate/Table'
+import Pagination from '@/components/DisplayMandate/Pagination'
 import type { MandateCollection } from './Models'
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -33,5 +40,9 @@ onBeforeMount(async () => {
     loading.value = false
   }
 })
+/* const updateTableDisplay = async ({ currentPage, itemsByPage }) => {
+  const offset = (currentPage -1) * itemsByPage
+  const limit = itemsByPage
+} */
 </script>
 

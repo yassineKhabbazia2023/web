@@ -19,25 +19,6 @@ export const createMandate = async ({
 }: { ibsNumber: string }): Promise<any> =>
   // api().mandate.get(/company/${ibsNumber})
   Promise.resolve({
-    /* data: {
-      id: '140edf1b-0a59-4f70-abbc-052462faa010',
-      name: 'MK 2000',
-      siretNumber: '50339868700015',
-      erpId: ibsNumber.toString(),
-      bankServicesProviderId: '',
-      signatory: {
-        title: 'M',
-        firstName: 'maroo',
-        lastName: 'elleuch',
-        address: {
-          street: '5 rue de liège',
-          complements: 'apt 15',
-          zipCode: '75008',
-          city: 'Paris',
-          country: 'France'
-        }
-      }
-    }, */
     data: {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
       name: 'Luminaires de France',
@@ -126,12 +107,18 @@ export const getBankDetail = async (iban: string) => {
   }
 }
 
+/* export const getMandatesCollection = async ({
+  skip = 0, limit = 10, searchTerm = '', creationDateStart = '',
+  creationDateEnd = '',
+  modificationDateStart = '', modificationDateEnd = '',
+  statusCodes = [], sortCriteria = '', sortOrder = 'Descending', apiConnected = false
+} = {}) */
 export const getMandatesCollection = async () => {
   // signature: /mandate
   return Promise.resolve({
     data: {
       counters: {
-        all: 32,
+        all: 33,
         status10: 1,
         status20: 3,
         status30: 4,

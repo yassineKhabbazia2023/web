@@ -152,7 +152,7 @@ describe('form.vue', () => {
 
   const testCases = [
     ['email', 'zipcode'],
-    ['seif@gmail.com', '75008']
+    ['seif@gmail', '750081']
   ]
 
   it.each(testCases)('when step value is 2 (email: %s, zipCode: %s invalid)',
@@ -168,11 +168,7 @@ describe('form.vue', () => {
       await input.setValue(zipCode)
       await input.trigger('blur')
 
-      if (email === 'email') {
-        expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
-      } else {
-        expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
-      }
+      expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
     })
 
   const step3TestCases = [
