@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import childProcess from 'child_process'
 // eslint-disable-next-line
 import { capitalizeFirstLetter } from '../src/utils/format.js'
 
