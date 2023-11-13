@@ -19,12 +19,12 @@
       </PIcon>
     </ElMenuItem>
     <ElMenuItem
-      v-for="item in menuList"
-      :index="item.path"
-      :key="item.path"
+      v-for="item in pMenuList"
+      :index="item.pPath"
+      :key="item.pPath"
     >
       <PIcon class="p-navbar__icon">
-        <component :is="iconResolver(item.icon)" />
+        <component :is="iconResolver(item.pIcon)" />
       </PIcon>
       <span class="p-menu-name p-menu-name--list hidden-sm-and-down">{{ item.name }}</span>
     </ElMenuItem>
@@ -32,24 +32,24 @@
       <ElDivider />
     </div>
     <ElMenuItem
-      v-for="(item, index) in entities"
-      :key="item.idAccount"
-      @click="handleClickEntity(item.idAccount)"
+      v-for="(item, index) in pEntities"
+      :key="item.pIdAccount"
+      @click="pHandleClickEntity(item.pIdAccount)"
       :index="`${index + 2}`"
       class="p-menu-item-entity"
     >
       <span class="p-navbar__avatar-container">
         <PAvatar
-          :shape="currentShape"
-          :type="currentType"
-          :color="item.color"
+          :pShape="currentShape"
+          :pType="currentType"
+          :pColor="item.pColor"
         >
           <PIcon>
-            <component :is="iconResolver(item.icon)" />
+            <component :is="iconResolver(item.pIcon)" />
           </PIcon>
         </PAvatar>
       </span>
-      <span class="p-menu-name">{{ item.name }}</span>
+      <span class="p-menu-name">{{ item.pName }}</span>
     </ElMenuItem>
   </ElMenu>
 </template>
@@ -60,25 +60,7 @@ import { ElDivider, ElMenu, ElMenuItem } from 'element-plus'
 import PAvatar from '@/atoms/PAvatar'
 import PIcon from '@/atoms/PIcon'
 import { iconResolver } from '@/utils/iconResolver'
-
-export interface EntityProps {
-  idAccount: string
-  name: string
-  icon: string
-  color: string
-}
-
-export interface MenuProps {
-  name: string
-  path: string
-  icon: string
-}
-
-export interface NavbarProps {
-  entities: EntityProps[]
-  menuList: MenuProps[]
-  handleClickEntity: Function
-}
+import type { PNavbarProps } from './PNavbarTypes'
 
 const isCollapse = ref(true)
 
@@ -86,10 +68,10 @@ const currentShape = ref('circle')
 const currentType = ref('xsmall')
 const activeIndex = ref('2')
 
-withDefaults(defineProps<NavbarProps>(), {
-  entities: () => [],
-  menuList: () => [],
-  handleClickEntity: () => {}
+withDefaults(defineProps<PNavbarProps>(), {
+  pEntities: () => [],
+  pMenuList: () => [],
+  pHandleClickEntity: () => {}
 })
 
 const collapseMenu = () => {

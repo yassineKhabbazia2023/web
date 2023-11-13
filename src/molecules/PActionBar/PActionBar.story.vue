@@ -4,7 +4,7 @@
     icon="mdi:call-to-action"
     :layout="{ type: 'single', iframe: true }">
     <Variant title="Basic usage simple">
-      <PActionBar :rightSideButtons="rightSideIcons" :leftSideButtons="leftSideIcons" />
+      <PActionBar :pRightSideButtons="pRightSideIcons" :pLeftSideButtons="pLeftSideIcons" />
     </Variant>
   </Story>
 </template>
@@ -14,117 +14,133 @@ import PActionBar from '.'
 import { ref } from 'vue'
 import type { ComponentDefinitionProps } from './PActionBarTypes'
 
-const leftSideIcons = ref<ComponentDefinitionProps[]>([{
-  buttonName: 'Déposer un document',
-  buttonType: 'primary',
-  buttonIcon: 'PIUpload',
-  buttonActionName: 'buttonActionName',
-  plain: false,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small',
-  componentType: 'UPLOAD',
-  multiple: true
+const pLeftSideIcons = ref([{
+  pButtonName: 'Déposer un document',
+  pButtonIcon: 'PIUpload',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'primary',
+    pPlain: false,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 },
 {
-  buttonName: 'Filtrer',
-  buttonType: 'primary',
-  buttonIcon: 'PIFunnel',
-  buttonActionName: 'buttonActionName',
-  plain: true,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small'
+  pButtonName: 'Filtrer',
+  pButtonIcon: 'PIFunnel',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'primary',
+    pPlain: true,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 },
 {
-  buttonName: '',
-  buttonType: 'white',
-  buttonIcon: 'PISearch',
-  buttonActionName: 'buttonActionName',
-  plain: false,
-  round: false,
-  circle: true,
-  loading: false,
-  disabled: false,
-  size: 'small'
+  pButtonName: '',
+  pButtonIcon: 'PISearch',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'white',
+    pPlain: false,
+    pRound: false,
+    pCircle: true,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 }
 ])
 
-const rightSideIcons = ref([{
-  buttonName: 'Renommer',
-  buttonType: 'white',
-  buttonIcon: 'PIPencilSquare',
-  buttonActionName: 'buttonActionName',
-  plain: true,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small'
+const pRightSideIcons = ref([{
+  pButtonName: 'Renommer',
+  pButtonIcon: 'PIPencilSquare',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'white',
+    pPlain: true,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 },
 {
-  buttonName: 'Envoi immédiat',
-  buttonType: 'white',
-  buttonIcon: 'PIRocket',
-  buttonActionName: 'buttonActionName',
-  plain: true,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small'
+  pButtonName: 'Envoi immédiat',
+  pButtonIcon: 'PIRocket',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'white',
+    pPlain: true,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 },
 {
-  buttonName: 'Filtrer',
-  buttonType: 'white',
-  buttonIcon: 'PIFunnel',
-  buttonActionName: 'buttonActionName',
-  plain: true,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small'
+  pButtonName: 'Filtrer',
+  pButtonIcon: 'PIFunnel',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'white',
+    pPlain: true,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 },
 {
-  buttonName: 'Télécharger',
-  buttonType: 'white',
-  buttonIcon: 'PIDownload',
-  buttonActionName: 'buttonActionName',
-  plain: false,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small'
+  pButtonName: 'Télécharger',
+  pButtonIcon: 'PIDownload',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'white',
+    pPlain: false,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 },
 {
-  buttonName: 'Supprimer',
-  buttonType: 'white',
-  buttonIcon: 'PITrash',
-  buttonActionName: 'buttonActionName',
-  plain: false,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small'
+  pButtonName: 'Supprimer',
+  pButtonIcon: 'PITrash',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'white',
+    pPlain: false,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 },
 {
-  buttonName: 'Consulter',
-  buttonType: 'white',
-  buttonIcon: 'PIEye',
-  buttonActionName: 'buttonActionName',
-  plain: false,
-  round: false,
-  circle: false,
-  loading: false,
-  disabled: false,
-  size: 'small'
+  pButtonName: 'Consulter',
+  pButtonIcon: 'PIEye',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'white',
+    pPlain: false,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small'
+  }
 }
 ])
 
@@ -135,53 +151,40 @@ const rightSideIcons = ref([{
 
 You can add buttons to the left or right side of the action bar layout by passing an array of `ComponentDefinitionProps` objects to the `rightSideButtons` or `leftSideButtons` props. The `ComponentDefinitionProps` type is defined as follows:
 ```javascript
-export interface ComponentDefinitionProps {
-buttonName: string;
-buttonType: string;
-buttonIcon: string;
-buttonActionName: string;
-size: string;
-plain: boolean;
-round: boolean;
-circle: boolean;
-loading: boolean;
-disabled: boolean;
-componentType?: ComponentType,
-multiple?: boolean
+export interface PActionBarProps {
+  pButtonName: string;
+  pButtonIcon: string;
+  pButtonActionName: string;
+  pButton: PButtonProps
 }
 
 ```
 **Example of passed value:**
 ```javascript
-const leftSideIcons = ref([{
-buttonName: 'Déposer un document',
-buttonType: 'primary',
-buttonIcon: 'PIUpload',
-buttonActionName: 'buttonActionName',
-plain: false,
-round: false,
-circle: false,
-loading: false,
-disabled: false
-}
+const pLeftSideIcons = ref([{
+  pButtonName: 'Déposer un document',
+  pButtonIcon: 'PIUpload',
+  pButtonActionName: 'buttonActionName',
+  pButton: {
+    pType: 'primary',
+    pPlain: false,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false
+    }
+  }
 ])
 ```
 
-You can specify the type of component to render based on the `componentType` property. The default render value is `PButton`, but if another definition is set, for example `UPLOAD`, a different type of component than PButton will be rendered.
-```javascript
-type ComponentType = 'UPLOAD' | 'SEARCH'
-```
-
-# ComponentDefinitionProps type properties
-| Property          | Type            | Description                                                                                          | Reference                                                                                                        |
-|-------------------|-----------------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| buttonName        | string          | The text content of the button                                                                       |                                                                                                                  |
-| buttonType        | string          | The type of the button. Different button types are mentioned in the PButton story.                   | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809) |
-| buttonIcon        | string          | The icon name to display. The icons' names are available in the PIcon story.                         | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
-| buttonActionName  | string          | The text value of the action that will be emitted                                                   |                                                                                                                  |
-| size, plain, round, circle, loading, disabled | Check PButton story                    | All of these properties are the PButton properties that define how the buttons will look like inside the action bar | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809) |
-| componentType     | ComponentType   | It is used to specify which component to render, could be PButton, UploadComponent, or other       |                                                                                                                  |
-| multiple          | boolean         | When the componentType is 'UPLOAD', this prop is to specify whether we can perform multiple file selections or not |                                                                                                                  |
+# Buttons type properties
+| Property          | Type                | Description                                                                                   | Reference                                                                                                                                                                        |
+|-------------------|---------------------|-----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| pButtonName       | string              | The text content of the button                                                                |                                                                                                                                                                                  |
+| pType             | string              | The type of the button. Different button types are mentioned in the PButton story.    | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809)  |
+| pButtonIcon       | string              | The icon name to display. The icons' names are available in the PIcon story.            | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
+| pButtonActionName | string              | The text value of the action that will be emitted                                             |                                                                                                                                                                                  |
+| pSize, pPlain, pRound, pCircle, pLoading, pDisabled | Check  PButton story | All of these properties are the PButton properties that define how the buttons will look like inside the action bar | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809)  |
 
 # Max number of buttons that will be displayed
 | Right side      | Left side       |

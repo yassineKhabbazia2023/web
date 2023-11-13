@@ -13,9 +13,9 @@
       >
         <PNavbar
           class="aside"
-          :entities="basicNavData.entities"
-          :handleClickEntity="handleClickEntity"
-          :menuList="basicNavData.menus"
+          :pEntities="basicNavData.entities"
+          :pHandleClickEntity="handleClickEntity"
+          :pMenuList="basicNavData.menus"
         >
           <template #title >
             Entities
@@ -25,11 +25,11 @@
         <template #controls>
           <HstJson
             v-model="basicNavData.entities"
-            title="Entities"
+            title="pEntities"
           />
           <HstJson
             v-model="basicNavData.menus"
-            title="Menus"
+            title="pMenus"
           />
         </template>
       </Variant>
@@ -43,12 +43,12 @@ import { logEvent } from 'histoire/client'
 import PNavbar from './'
 
 const entities = [
-  { name: 'Restaurant Johnny s pizza', idAccount: 'idAccount', icon: 'PICupHot', color: 'orange' },
-  { name: 'Jean Levage', idAccount: 'idAccount 2', icon: 'PIShop', color: 'green' }
+  { pName: 'Restaurant Johnny s pizza', pIdAccount: 'idAccount', pIcon: 'PICupHot', pColor: 'orange' },
+  { pName: 'Jean Levage', pIdAccount: 'idAccount 2', pIcon: 'PIShop', pColor: 'green' }
 ]
 
 const menus = [
-  { name: 'My entities', icon: 'PIGrid', path: '/entity' }
+  { pName: 'My entities', pIcon: 'PIGrid', pPath: '/entity' }
 ]
 const basicNavData = reactive({
   entities,
@@ -56,7 +56,7 @@ const basicNavData = reactive({
 })
 
 const navbarSource = computed(() => {
-  return '<PNavbar class="aside" :entities="entities" :menuList="menus"/>'
+  return '<PNavbar class="aside" :pEntities="entities" :pMenuList="menus"/>'
 })
 
 const handleClickEntity = (idAccount: string) => {
@@ -69,8 +69,8 @@ const handleClickEntity = (idAccount: string) => {
 
   | Name       | Description                                  | Type                               | Default                |
   | ---------- | -------------------------------------------- | ---------------------------------- | ---------------------- |
-  | `entities` | Entity list for the second part of the menu  | `Object as PropType<EntityProps[]>`| inherit from entities  |
-  | `menuList` | Menu list for the first part of the menu     | `Object as PropType<MenuProps[]>`  | inherit from menulist  |
+  | `pEntities` | Entity list for the second part of the menu  | `Object as PropType<EntityProps[]>`| inherit from entities  |
+  | `pMenuList` | Menu list for the first part of the menu     | `Object as PropType<MenuProps[]>`  | inherit from menulist  |
 
   ## Navbar Slots
 

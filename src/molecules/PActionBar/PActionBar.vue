@@ -4,20 +4,23 @@
       <template
         v-for="(item, index) in truncatedLeftSideButtons"
         :key="index"
-        :pType="item.buttonType"
-        :pPlain="item.plain"
-        :pCircle="item.buttonName === '' ? true : false"
-        :pLoading="item.loading"
-        :pDisabled="item.disabled"
-        :pSize="item.size"
-        :class="['p-action-bar__left-btn', item.buttonName === '' ? 'el-button--icon' : '']"
-        @click="$emit(item.buttonActionName)">
+        :pType="item.pButton.pType"
+        :pPlain="item.pButton.pPlain"
+        :pCircle="item.pButtonName === '' ? true : false"
+        :pLoading="item.pButton.pLoading"
+        :pDisabled="item.pButton.pDisabled"
+        :pSize="item.pButton.pSize"
+        :class="[
+          'p-action-bar__left-btn',
+          item.pButtonName === '' ? 'el-button--icon' : ''
+        ]"
+        @click="$emit(item.pButtonActionName)">
 
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsLeft[index]"></component>
         </PIcon>
         <p>
-          {{ item.buttonName }}
+          {{ item.pButtonName }}
         </p>
       </PButton>
     </div>
@@ -25,20 +28,19 @@
       <PButton
         v-for="(item, index) in truncatedRightSideButtons"
         :key="index"
-        :pType="item.buttonType"
-        :pPlain="item.plain"
+        :pType="item.pButton.pType"
+        :pPlain="item.pButton.pPlain"
         :pCircle="isWindowUnderDesktop"
-        :pLoading="item.loading"
-        :pDisabled="item.disabled"
-        :pSize="item.size"
+        :pLoading="item.pButton.pLoading"
+        :pDisabled="item.pButton.pDisabled"
+        :pSize="item.pButton.pSize"
         class="p-action-bar__right-btn"
-        @click="$emit('p-action-bar-button-clicked', item.buttonActionName)"
-      >
+        @click="$emit(item.pButtonActionName)">
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsRight[index]"></component>
         </PIcon>
         <p class="hidden-sm-and-down">
-          {{ item.buttonName }}
+          {{ item.pButtonActionName }}
         </p>
       </PButton>
     </div>
@@ -51,6 +53,7 @@ import PIcon from '@/atoms/PIcon'
 import PUpload from '@/atoms/PUpload'
 import { iconsResolver } from '@/utils/iconResolver'
 import type { PActionBarProps } from './PActionBarTypes'
+
 const props = defineProps<PActionBarProps>()
 
 const emit = defineEmits<{
@@ -59,24 +62,23 @@ const emit = defineEmits<{
 }>()
 
 const truncatedRightSideButtons = computed(() => {
-  return props.rightSideButtons.length > 5
-    ? props.rightSideButtons.slice(0, 5)
-    : props.rightSideButtons
+  return props.pRightSideButtons.length > 5
+    ? props.pRightSideButtons.slice(0, 5)
+    : props.pRightSideButtons
 })
 
 const truncatedLeftSideButtons = computed(() => {
-  return props.leftSideButtons.length > 3
-    ? props.leftSideButtons.slice(0, 3)
-    : props.leftSideButtons
+  return props.pLeftSideButtons.length > 3
+    ? props.pLeftSideButtons.slice(0, 3)
+    : props.pLeftSideButtons
 })
 
 const resolvedIconsRight = computed(() => {
-  return iconsResolver(props.rightSideButtons, 'buttonIcon')
+  return iconsResolver(props.pRightSideButtons, 'pButtonIcon')
 })
 
 const resolvedIconsLeft = computed(() => {
-  const resolvedIcons = iconsResolver(props.leftSideButtons, 'buttonIcon')
-  return resolvedIcons
+  return iconsResolver(props.pLeftSideButtons, 'pButtonIcon')
 })
 
 const isWindowUnderDesktop = ref(window.innerWidth < 992)

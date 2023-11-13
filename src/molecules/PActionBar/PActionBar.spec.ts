@@ -1,33 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import PActionBar from '@/molecules/PActionBar'
-import PUpload from '@/atoms/PUpload'
-import PButton from '@/atoms/PButton'
-import { mount } from '@vue/test-utils'
-import type { ComponentDefinitionProps } from './PActionBarTypes'
-
-type PActionBarProps = {
-  rightSideButtons: ComponentDefinitionProps[]
-  leftSideButtons: ComponentDefinitionProps[]
-}
+import type { PActionBarProps, PButtonActionBarProps } from './PActionBarTypes'
 
 const defaultButtons: ComponentDefinitionProps[] = [
   {
-    buttonName: 'Hello',
-    buttonType: 'white',
-    buttonIcon: 'PISearch',
-    buttonActionName: 'buttonActionName',
-    size: 'small',
-    plain: false,
-    round: false,
-    circle: true,
-    loading: false,
-    disabled: false
+    pButtonName: 'Hello',
+    pButtonIcon: 'PISearch',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pSize: 'small',
+      pPlain: false,
+      pRound: false,
+      pCircle: true,
+      pLoading: false,
+      pDisabled: false
+    }
   }
-]
+] as PButtonActionBarProps[]
 
 const defaultProps: PActionBarProps = {
-  rightSideButtons: defaultButtons,
-  leftSideButtons: defaultButtons
+  pRightSideButtons: defaultButtons,
+  pLeftSideButtons: defaultButtons
 }
 
 const createWrapper = (props = defaultProps) => {
@@ -38,9 +32,9 @@ const createWrapper = (props = defaultProps) => {
 }
 const generateButtonsArray = (nbr: number): ComponentDefinitionProps[] => {
   return Array.from({ length: nbr }, () => ({
-    buttonName: 'Hello',
-    buttonIcon: 'PISearch'
-  } as ComponentDefinitionProps))
+    pButtonName: 'Hello',
+    pButton: {}
+  }))
 }
 
 describe('pActionBar', () => {
@@ -51,23 +45,25 @@ describe('pActionBar', () => {
   describe('props', () => {
     describe('left side', () => {
       it('should display only 3 buttons', () => {
-        const buttons = generateButtonsArray(10)
+        const buttons = generateButtonsArray(10) as PButtonActionBarProps[]
         const wrapper = createWrapper({
-          leftSideButtons: buttons,
-          rightSideButtons: defaultProps.rightSideButtons
+          pLeftSideButtons: buttons,
+          pRightSideButtons: defaultProps.pRightSideButtons
         })
         const leftZoneBtns = wrapper.find('.p-action-bar__left')
         expect(leftZoneBtns.findAllComponents(PButton)).toHaveLength(3)
       })
-
-      it('should display the button in a rounded shape  if the button contain only an icon', () => {
-        const buttons: ComponentDefinitionProps[] = [
-          { ...defaultButtons[0], buttonName: '' }
-        ]
+      it('should add the class "el-button--icon" when the button dose not contain a value', () => {
+        const buttons =
+          [
+            {
+              ...defaultButtons, pButtonName: '', pButton: {}
+            }
+          ] as unknown as PButtonActionBarProps[]
 
         const wrapper = createWrapper({
-          leftSideButtons: buttons,
-          rightSideButtons: defaultProps.rightSideButtons
+          pLeftSideButtons: buttons,
+          pRightSideButtons: defaultProps.pRightSideButtons
         })
         const leftZoneWrapper = wrapper.find('.p-action-bar__left')
         const button = leftZoneWrapper.find('button')
@@ -75,28 +71,27 @@ describe('pActionBar', () => {
         expect(button.classes().includes('is-circle')).toBeTruthy()
       })
 
-      it.only('should display the button in a rounded shape', () => {
+      it('should display the button in a rounded shape', () => {
         const buttons = [
-          { ...defaultButtons, buttonName: '' }
-        ] as unknown as Buttons[]
+          { ...defaultButtons, pButtonName: '', pButton: {} }
+        ] as unknown as PButtonActionBarProps[]
 
         const wrapper = createWrapper({
-          leftSideButtons: [pUploadButton],
-          rightSideButtons: defaultProps.rightSideButtons
+          pLeftSideButtons: buttons,
+          pRightSideButtons: defaultProps.pRightSideButtons
         })
         const button = wrapper
           .find('.p-action-bar__left')
           .findAll('p-button-stub')[0]
-        console.log(button.html())
-        expect(button.attributes('is-round')).toBe('true')
+        expect(button.attributes('pcircle')).toBe('true')
       })
     })
     describe('right side', () => {
       it('should display only 5 buttons in the right side of action bar layout', () => {
-        const buttons = generateButtonsArray(10)
+        const buttons = generateButtonsArray(10) as PButtonActionBarProps[]
         const wrapper = createWrapper({
-          leftSideButtons: defaultProps.leftSideButtons,
-          rightSideButtons: buttons
+          pLeftSideButtons: defaultProps.pLeftSideButtons,
+          pRightSideButtons: buttons
         })
         const rightZoneBtns = wrapper.find('.p-action-bar__right')
         expect(rightZoneBtns.findAllComponents(PButton)).toHaveLength(5)
@@ -105,24 +100,13 @@ describe('pActionBar', () => {
   })
   describe('events', () => {
     it('should emit the provided buttonActionName event on click', async () => {
-      const buttons: ComponentDefinitionProps[] = [
-        {
-          buttonName: 'Hello',
-          buttonType: 'white',
-          buttonIcon: 'PISearch',
-          buttonActionName: 'Hello i am your action',
-          size: 'small',
-          plain: false,
-          round: false,
-          circle: true,
-          loading: false,
-          disabled: false
-        }
-      ]
+      const buttons = [
+        { ...defaultButtons, pButtonActionName: 'Hello i am your action', pButton: {} }
+      ] as unknown as PButtonActionBarProps[]
 
       const wrapper = createWrapper({
-        leftSideButtons: buttons,
-        rightSideButtons: defaultProps.rightSideButtons
+        pLeftSideButtons: buttons,
+        pRightSideButtons: defaultProps.pRightSideButtons
       })
       const button = wrapper
         .find('.p-action-bar__left')
