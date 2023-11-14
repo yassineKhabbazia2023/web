@@ -163,4 +163,5 @@ export const PToolboxItem = defineAsyncComponent(() => import('@/atoms/PToolboxI
 export const PTooltip = defineAsyncComponent(() => import('@/atoms/PTooltip'))
 export const PText = defineAsyncComponent(() => import('@/atoms/PText'))
 export const PTree = defineAsyncComponent(() => import('@/organisms/PTree'))
+export const PUpload = defineAsyncComponent(() => import('@/atoms/PUpload'))
 export const POfferCard = defineAsyncComponent(() => import('@/atoms/POfferCard'))
