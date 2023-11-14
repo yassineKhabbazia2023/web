@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import childProcess from 'child_process'
 // eslint-disable-next-line
 import { capitalizeFirstLetter } from '../src/utils/format.js'
 
@@ -75,7 +74,7 @@ async function generateIcons(iconsFolderPath, outputFolderPath) {
     } catch {
       console.log('no components folder to clean.')
     }
-    childProcess.execSync(`mkdir "${outputFolderPath}"`, { stdio: [0, 1, 2] })
+    fs.mkdirSync(outputFolderPath)
     const icons = await fetchIcons(iconsFolderPath)
 
     for (const iconPath of icons) {
