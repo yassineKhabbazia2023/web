@@ -41,7 +41,7 @@
         </template>
       </PTableColumn>
       <PTableColumn
-        width="80"
+        width="300"
       >
         <template #default="scope">
           <span v-if="scope.row.accountNumber === ibsSelected" class="ptable-select-entity__check">
@@ -57,16 +57,34 @@
             type="primary"
             plain="true"
             size="small"
-            class="ptable-select-entity__button el-button--icon"
+            class="ptable-select-entity__button el-button--icon margin-right--2"
             @click="selectEntity(scope.row.accountNumber)"
           >
             <PIcon>
               <PIArrowRepeat />
             </PIcon>
           </PButton>
+          <PButton
+            type=""
+            size="small"
+            :plain="false"
+            :round="false"
+            :disabled="false"
+            :loading="false"
+            @click="drawerHandler(scope.row.accountNumber)"
+          >
+            <PIcon class="el-button__icon--left">
+              <PIAdd />
+            </PIcon>
+            {{ t('deployBtn') }}
+          </PButton>
         </template>
       </PTableColumn>
     </PTable>
+    <SubscriptionDemand
+      v-if="openDrawer"
+      v-model="openDrawer"
+    />
   </div>
 </template>
 
@@ -75,10 +93,12 @@
     title: 'My accounts'
     label: 'Legal name'
     account: 'Account ID'
+    deployBtn: 'Deploy this folder'
   fr-FR:
     title: 'Mes dossiers'
     label: 'Raison sociale'
     account: 'ID Dossier'
+    deployBtn: 'Deployer ce dossier'
 </i18n>
 
 <script setup lang="ts">
@@ -93,10 +113,12 @@ import {
   PIPeople,
   PTable,
   PTableColumn,
-  PText
+  PText,
+  PIAdd
 } from '@kpmg/styleguide'
 import { computed, onMounted, ref } from 'vue'
 import { useEntityStore } from '@/stores/entity-store'
+import SubscriptionDemand from '@/pages/subscriptions/subscriptionDemand'
 import { commonStore } from '@kpmg/common'
 import { storeToRefs } from 'pinia'
 
@@ -162,6 +184,15 @@ const tableRowClassName = ({ row }: any) => {
   }
   return ''
 }
+
+const openDrawer = ref(false)
+const drawerHandler = (accountNumber: string) => {
+  console.log(accountNumber)
+  openDrawer.value = true
+}
+defineExpose({
+  openDrawer
+})
 
 onMounted(async () => {
   await getEntities()
