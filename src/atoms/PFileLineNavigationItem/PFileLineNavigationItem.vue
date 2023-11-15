@@ -59,7 +59,10 @@ const resolvedIconsLeft = computed(() => {
   height: 33px;
   column-gap: 8px;
   flex-shrink: 0;
+  border: none;
+  outline: none;
   cursor: pointer;
+
   background: var(--el-color-white);
   &:hover {
     background: var(--el-color-persian-50);
