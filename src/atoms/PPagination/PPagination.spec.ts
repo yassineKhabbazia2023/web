@@ -3,12 +3,16 @@ import { mount } from '@vue/test-utils'
 import PPagination from './'
 import { ElSelect, ElPagination } from 'element-plus'
 import type { PaginationProps } from './PPaginationTypes'
+import type { PaginationProps } from './PPaginationTypes'
 
 const defaultProps: PaginationProps = {
-  showTotalPageCounter: true,
-  pageSizes: [100, 200, 300],
-  pageSizeSelectorGroupLabel: 'this is the group name',
-  pageSizeSelectorSuffix: 'documents'
+  pPageSizes: [100, 200, 300],
+  pPageSizeSelectorGroupLabel: 'Number of documents',
+  pPageSizeSelectorSuffix: 'documents',
+  pShowTotalPageCounter: true,
+  pTotal: 100,
+  pCurrentPage: 1,
+  pPageSize: 100
 }
 
 const createWrapper = (props = defaultProps) =>
@@ -31,10 +35,10 @@ describe('pPagination', () => {
     })
     it('should hide the total page counter when showTotalPageCounter is false', () => {
       const wrapper = createWrapper({
-        showTotalPageCounter: false,
-        pageSizes: [100, 200, 300],
-        pageSizeSelectorGroupLabel: 'this is the group name',
-        pageSizeSelectorSuffix: 'documents'
+        ...defaultProps,
+        pShowTotalPageCounter: false,
+        pPageSizes: [100, 200, 300],
+        pPageSizeSelectorSuffix: 'documents'
       })
       expect(
         wrapper.find('.p-pagination__total-page-counter').exists()

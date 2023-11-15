@@ -1,8 +1,10 @@
+import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
+
 interface PEntityProps {
   pIdAccount: string
   pName: string
   pIcon: string
-  pColor: string
+  pColor: PAvatarProps['pColor']
 }
 
 interface PMenuProps {

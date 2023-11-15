@@ -20,6 +20,7 @@
           :pShowPreviousStep="pDrawerControl.showPreviousStep"
           :pSize="pDrawerControl.size"
           :pDirection="pDrawerControl.direction"
+          @close-drawer-button="pDrawerControl.openDrawer = false"
         />
         <template #controls>
           <HstText v-model="pDrawerControl.title" title="Title" />
@@ -50,17 +51,12 @@
 <script setup lang="ts">
 import PDrawer from '.'
 import PButton from '@/atoms/PButton'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import type { PDrawerProps } from './PDrawerTypes'
-const pDrawerControl: {
-  title: string
-  direction: PDrawerProps['pDirection']
-  showPreviousStep: boolean
-  openDrawer: boolean
-  size: number | string
-} = reactive({
+
+const pDrawerControl = reactive({
   title: 'Title',
-  direction: 'rtl',
+  direction: ref<PDrawerProps['pDirection']>('rtl'),
   showPreviousStep: false,
   size: '33%',
   openDrawer: false

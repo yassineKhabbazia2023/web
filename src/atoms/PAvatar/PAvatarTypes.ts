@@ -1,5 +1,5 @@
 export interface PAvatarProps {
-  pType?: '' | 'default' | 'small' | 'large' | 'xsmall' | 'xlarge',
+  pType?: '' | 'default' | 'small' | 'large' | 'xsmall' | 'xlarge'
   pColor?: ''
     | 'persian-gradient'
     | 'orange'
@@ -8,8 +8,8 @@ export interface PAvatarProps {
     | 'green'
     | 'fuschia'
     | 'gray'
-    | 'white',
-  pFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down',
+    | 'white'
+  pFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   pSrc?: string
   pShape? : 'circle' | 'square'
 }

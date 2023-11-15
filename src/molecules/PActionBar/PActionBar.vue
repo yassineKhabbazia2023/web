@@ -11,7 +11,7 @@
         :pDisabled="item.pButton.pDisabled"
         :pSize="item.pButton.pSize"
         :class="[
-          'p-action-bar__left-btn',
+          'p-action-bar__left-btn margin-right--2',
           item.pButtonName === '' ? 'el-button--icon' : ''
         ]"
         @click="$emit(item.pButtonActionName)">
@@ -19,9 +19,9 @@
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsLeft[index]"></component>
         </PIcon>
-        <p>
+        <span>
           {{ item.pButtonName }}
-        </p>
+        </span>
       </PButton>
     </div>
     <div class="p-action-bar__right">
@@ -34,14 +34,14 @@
         :pLoading="item.pButton.pLoading"
         :pDisabled="item.pButton.pDisabled"
         :pSize="item.pButton.pSize"
-        class="p-action-bar__right-btn"
+        class="p-action-bar__right-btn margin-left--2"
         @click="$emit(item.pButtonActionName)">
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsRight[index]"></component>
         </PIcon>
-        <p class="hidden-sm-and-down">
-          {{ item.pButtonActionName }}
-        </p>
+        <span class="hidden-sm-and-down">
+          {{ item.pButtonName }}
+        </span>
       </PButton>
     </div>
   </div>

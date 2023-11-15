@@ -10,22 +10,22 @@
 </template>
 
 <script lang="ts" setup>
+import { reactive, ref } from 'vue'
+import type { PButtonProps } from '@/atoms/PButton/PButtonTypes'
 import PActionBar from '.'
-import { ref } from 'vue'
-import type { ComponentDefinitionProps } from './PActionBarTypes'
 
-const pLeftSideIcons = ref([{
+const pLeftSideIcons = reactive([{
   pButtonName: 'Déposer un document',
   pButtonIcon: 'PIUpload',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'primary',
+    pType: ref<PButtonProps['pType']>('primary'),
     pPlain: false,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 },
 {
@@ -33,13 +33,13 @@ const pLeftSideIcons = ref([{
   pButtonIcon: 'PIFunnel',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'primary',
+    pType: ref<PButtonProps['pType']>('primary'),
     pPlain: true,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 },
 {
@@ -47,29 +47,29 @@ const pLeftSideIcons = ref([{
   pButtonIcon: 'PISearch',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'white',
+    pType: ref<PButtonProps['pType']>('white'),
     pPlain: false,
     pRound: false,
     pCircle: true,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 }
 ])
 
-const pRightSideIcons = ref([{
+const pRightSideIcons = reactive([{
   pButtonName: 'Renommer',
   pButtonIcon: 'PIPencilSquare',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'white',
+    pType: ref<PButtonProps['pType']>('white'),
     pPlain: true,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 },
 {
@@ -77,13 +77,13 @@ const pRightSideIcons = ref([{
   pButtonIcon: 'PIRocket',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'white',
+    pType: ref<PButtonProps['pType']>('white'),
     pPlain: true,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 },
 {
@@ -91,13 +91,13 @@ const pRightSideIcons = ref([{
   pButtonIcon: 'PIFunnel',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'white',
+    pType: ref<PButtonProps['pType']>('white'),
     pPlain: true,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 },
 {
@@ -105,13 +105,13 @@ const pRightSideIcons = ref([{
   pButtonIcon: 'PIDownload',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'white',
+    pType: ref<PButtonProps['pType']>('white'),
     pPlain: false,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 },
 {
@@ -119,13 +119,13 @@ const pRightSideIcons = ref([{
   pButtonIcon: 'PITrash',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'white',
+    pType: ref<PButtonProps['pType']>('white'),
     pPlain: false,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 },
 {
@@ -133,13 +133,13 @@ const pRightSideIcons = ref([{
   pButtonIcon: 'PIEye',
   pButtonActionName: 'buttonActionName',
   pButton: {
-    pType: 'white',
+    pType: ref<PButtonProps['pType']>('white'),
     pPlain: false,
     pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
-    pSize: 'small'
+    pSize: ref<PButtonProps['pSize']>('small')
   }
 }
 ])

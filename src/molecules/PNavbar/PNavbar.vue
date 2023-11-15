@@ -26,7 +26,7 @@
       <PIcon class="p-navbar__icon">
         <component :is="iconResolver(item.pIcon)" />
       </PIcon>
-      <span class="p-menu-name p-menu-name--list hidden-sm-and-down">{{ item.name }}</span>
+      <span class="p-menu-name p-menu-name--list hidden-sm-and-down">{{ item.pName }}</span>
     </ElMenuItem>
     <div class="divider hidden-sm-and-down">
       <ElDivider />
@@ -58,14 +58,14 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { ElDivider, ElMenu, ElMenuItem } from 'element-plus'
 import PAvatar from '@/atoms/PAvatar'
+import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
 import PIcon from '@/atoms/PIcon'
 import { iconResolver } from '@/utils/iconResolver'
 import type { PNavbarProps } from './PNavbarTypes'
 
 const isCollapse = ref(true)
-
-const currentShape = ref('circle')
-const currentType = ref('xsmall')
+const currentShape = ref<PAvatarProps['pShape']>('circle')
+const currentType = ref<PAvatarProps['pType']>('default')
 const activeIndex = ref('2')
 
 withDefaults(defineProps<PNavbarProps>(), {
@@ -91,5 +91,4 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
 })
-
 </script>

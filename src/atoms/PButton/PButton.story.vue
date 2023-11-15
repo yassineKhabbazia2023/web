@@ -103,35 +103,35 @@ import { logEvent } from 'histoire/client'
 import { ref } from 'vue'
 import PButton from './'
 import PButtonGroup from '@/atoms/PButtonGroup/'
-import type { PButtonTypes } from './PButtonTypes'
+import type { PButtonProps } from './PButtonTypes'
 
 const basicButton = ref({
-  basicType: ref<PButtonTypes['pType']>('default'),
-  basicPlain: ref<PButtonTypes['pPlain']>(),
-  basicRound: ref<PButtonTypes['pRound']>(),
-  basicCircle: ref<PButtonTypes['pCircle']>(),
-  basicDisabled: ref<PButtonTypes['pDisabled']>(),
-  basicLoading: ref<PButtonTypes['pLoading']>(),
-  basicSize: ref<PButtonTypes['pSize']>('default'),
+  basicType: ref<PButtonProps['pType']>('default'),
+  basicPlain: ref<PButtonProps['pPlain']>(),
+  basicRound: ref<PButtonProps['pRound']>(),
+  basicCircle: ref<PButtonProps['pCircle']>(),
+  basicDisabled: ref<PButtonProps['pDisabled']>(),
+  basicLoading: ref<PButtonProps['pLoading']>(),
+  basicSize: ref<PButtonProps['pSize']>('default'),
   basicText: ref('')
 })
 
 const iconButton = ref({
-  iconButtonType: ref<PButtonTypes['pType']>('default'),
-  iconButtonPlain: ref<PButtonTypes['pPlain']>(),
-  iconButtonRound: ref<PButtonTypes['pRound']>(),
-  iconButtonCircle: ref<PButtonTypes['pCircle']>(true),
-  iconButtonDisabled: ref<PButtonTypes['pDisabled']>(),
-  iconButtonLoading: ref<PButtonTypes['pLoading']>(),
-  iconButtonSize: ref<PButtonTypes['pSize']>('default')
+  iconButtonType: ref<PButtonProps['pType']>('default'),
+  iconButtonPlain: ref<PButtonProps['pPlain']>(),
+  iconButtonRound: ref<PButtonProps['pRound']>(),
+  iconButtonCircle: ref<PButtonProps['pCircle']>(true),
+  iconButtonDisabled: ref<PButtonProps['pDisabled']>(),
+  iconButtonLoading: ref<PButtonProps['pLoading']>(),
+  iconButtonSize: ref<PButtonProps['pSize']>('default')
 })
 
 const groupButton = ref({
-  buttonGroupType: ref<PButtonTypes['pType']>('default'),
-  buttonGroupSize: ref<PButtonTypes['pSize']>('default')
+  buttonGroupType: ref<PButtonProps['pType']>('default'),
+  buttonGroupSize: ref<PButtonProps['pSize']>('default')
 })
 
-const buttonTypeList: { label: string; value: PButtonTypes['pType'] }[] = [
+const buttonTypeList: { label: string; value: PButtonProps['pType'] }[] = [
   {
     label: 'default',
     value: 'default'
@@ -166,7 +166,7 @@ const buttonTypeList: { label: string; value: PButtonTypes['pType'] }[] = [
   }
 ]
 
-const buttonSizeList: { label: string; value: PButtonTypes['pSize'] }[] = [
+const buttonSizeList: { label: string; value: PButtonProps['pSize'] }[] = [
   {
     label: 'default',
     value: 'default'

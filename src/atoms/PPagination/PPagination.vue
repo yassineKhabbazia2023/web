@@ -2,9 +2,9 @@
   <div class="p-pagination">
     <div class="p-pagination__select">
       <PSelect v-model="selectedRange" placement="top">
-        <POptionGroup :label="pageSizeSelectorGroupLabel">
+        <POptionGroup :label="pPageSizeSelectorGroupLabel">
           <POption
-            v-for="pageSize in pageSizes"
+            v-for="pageSize in pPageSizes"
             :key="pageSize"
             :value="pageSize"
           >
@@ -13,38 +13,59 @@
         </POptionGroup>
       </PSelect>
     </div>
-    <ElPagination v-bind="$attrs" layout="prev, pager, next" />
-    <ElPagination v-bind="$attrs" layout="prev, pager, next" />
-    <div class="p-pagination__total-page-counter" v-if="showTotalPageCounter">
+
+    <ElPagination
+      v-model:current-page="currentPage"
+      v-model:page-size="modelPageSize"
+      :background="pBackground"
+      :pageSizes="pPageSizes"
+      :total="pTotal"
+      layout="prev, pager, next"
+    />
+
+    <div v-if="pShowTotalPageCounter" class="p-pagination__total-page-counter">
       <slot />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import {
   ElOption as POption,
   ElOptionGroup as POptionGroup,
   ElPagination,
   ElSelect as PSelect
 } from 'element-plus'
+import type { PaginationProps } from './PPaginationTypes'
 
-export interface PaginationProps {
-  showTotalPageCounter: boolean
-  pageSizes: Array<number>
-  pageSizeSelectorGroupLabel: string
-  pageSizeSelectorSuffix: string
-}
+const props = withDefaults(defineProps<PaginationProps>(), {
+  pBackground: false
+})
+const emit = defineEmits(['on-page-range-changed', 'update:pCurrentPage', 'update:pPageSize'])
 
-const props = defineProps<PaginationProps>()
+const currentPage = computed({
+  get() {
+    return props.pCurrentPage
+  },
+  set(value) {
+    emit('update:pCurrentPage', value)
+  }
+})
 
-const emit = defineEmits(['on-page-range-changed'])
+const modelPageSize = computed({
+  get() {
+    return props.pPageSize
+  },
+  set(value) {
+    emit('update:pPageSize', value)
+  }
+})
 
-const selectedRange = ref(props.pageSizes[0] ?? '')
+const selectedRange = ref(props.pPageSizes[0] ?? '')
 
 const getpageSizeSelectorContent = (pageSize: number) => {
-  return pageSize + ' ' + props.pageSizeSelectorSuffix
+  return pageSize + ' ' + props.pPageSizeSelectorSuffix
 }
 
 watch(selectedRange, () => {

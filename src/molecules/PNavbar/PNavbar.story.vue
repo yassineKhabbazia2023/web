@@ -38,13 +38,14 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, computed } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { logEvent } from 'histoire/client'
+import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
 import PNavbar from './'
 
 const entities = [
-  { pName: 'Restaurant Johnny s pizza', pIdAccount: 'idAccount', pIcon: 'PICupHot', pColor: 'orange' },
-  { pName: 'Jean Levage', pIdAccount: 'idAccount 2', pIcon: 'PIShop', pColor: 'green' }
+  { pName: 'Restaurant Johnny s pizza', pIdAccount: 'idAccount', pIcon: 'PICupHot', pColor: ref<PAvatarProps['pColor']>('orange') },
+  { pName: 'Jean Levage', pIdAccount: 'idAccount 2', pIcon: 'PIShop', pColor: ref<PAvatarProps['pColor']>('green') }
 ]
 
 const menus = [

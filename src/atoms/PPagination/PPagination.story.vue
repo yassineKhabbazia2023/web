@@ -2,15 +2,14 @@
   <Story title="2. Atoms/Pagination" :layout="{ type: 'single', iframe: true }">
     <Variant title="Sample">
       <PPagination
-        :total="1000"
-        :pageSizes="pageSizes"
-        pageSizeSelectorSuffix="documents"
-        pageSizeSelectorGroupLabel="Some text"
-        v-model:current-page="currentPage"
-        showTotalPageCounter
-        background
-        >
-        <p>1-25 sur 157</p>
+        v-model:pCurrentPage="currentPage"
+        v-model:pPageSize="pageSize"
+        :pPageSizes="pageSizes"
+        pPageSizeSelectorGroupLabel="Some text"
+        pPageSizeSelectorSuffix="documents"
+        pShowTotalPageCounter
+        :pTotal="1000"
+        ><p>1-25 sur 157</p>
       </PPagination>
     </Variant>
   </Story>
@@ -21,6 +20,7 @@ import PPagination from './'
 
 const currentPage = ref(1)
 const pageSizes = ref([100, 200, 300, 400])
+const pageSize = ref(pageSizes.value[0])
 </script>
 
 <docs lang="md">

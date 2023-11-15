@@ -1,25 +1,32 @@
 <template>
-  <el-button-group
+  <ElButtonGroup
     :type="computedType"
     :size="pSize">
     <slot />
-  </el-button-group>
+  </ElButtonGroup>
 </template>
 <script lang="ts" setup>
-import type { PButtonGroupProps } from './PButtonGroupTypes'
-import { computed, provide, ref } from 'vue'
+import { ElButtonGroup } from 'element-plus'
+import { computed, provide } from 'vue'
+import { type PButtonGroupProps, injectionButtonKey } from './PButtonGroupTypes'
 
 const props = withDefaults(defineProps<PButtonGroupProps>(), {
-  pType: ref('default'),
-  pSize: ref('default')
+  pType: 'default',
+  pSize: 'default'
 })
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']
+type computedButtonGroupType =
+  'default'
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
 const computedType = computed(() =>
-  nativeTypes.includes(props.pType) ? props.pType : 'default')
+  nativeTypes.includes(props.pType) ? props.pType as computedButtonGroupType : 'default')
 
 provide(
-  'childType',
+  injectionButtonKey,
   props
 )
 </script>

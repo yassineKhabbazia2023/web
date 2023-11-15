@@ -17,6 +17,7 @@
 import { computed, inject } from 'vue'
 import { ElButton } from 'element-plus'
 import type { PButtonProps } from './PButtonTypes'
+import { injectionButtonKey } from '@/atoms/PButtonGroup/PButtonGroupTypes'
 
 const props = withDefaults(defineProps<PButtonProps>(), {
   pType: 'default',
@@ -30,11 +31,14 @@ const props = withDefaults(defineProps<PButtonProps>(), {
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']
 
-const parentType = inject('childType', undefined, true) // type from group button
+const parentType = inject(
+  injectionButtonKey,
+  undefined
+) // type from group button
 
 const button = computed(() => getButtonType(parentType?.pType || props.pType))
 
-const getButtonType = (buttonType) => (
+const getButtonType = (buttonType: any) => (
   {
     buttonType,
     class: nativeTypes.includes(buttonType) ? buttonType : 'default'

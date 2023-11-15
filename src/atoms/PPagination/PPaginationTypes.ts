@@ -1,6 +1,11 @@
 export interface PaginationProps {
-  showTotalPageCounter: boolean
-  pageSizes: Array<number>
-  pageSizeSelectorGroupLabel: string
-  pageSizeSelectorSuffix: string
+  pBackground?: boolean,
+  pPageSizes: Array<number>
+  pPageSizeSelectorGroupLabel: string
+  pPageSizeSelectorSuffix: string
+  pShowTotalPageCounter: boolean
+  pTotal: number
+  // named v-model
+  pCurrentPage: number
+  pPageSize: number
 }
