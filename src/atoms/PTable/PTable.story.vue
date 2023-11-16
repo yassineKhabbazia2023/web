@@ -7,7 +7,8 @@
       <PTable :pData="tableInputs.data" :pStripe="tableInputs.striped">
         <PTableColumn
           type="selection"
-          v-if="tableInputs.selectable"/>
+          v-if="tableInputs.selectable"
+        />
         <PTableColumn
           v-for="column in tableInputs.tableColumn"
           :key="column.prop"
@@ -27,10 +28,12 @@
       <PTable
         :pData="tableInputsWithCells.data"
         :pStripe="tableInputsWithCells.striped"
-        fit="true"
+        fit
       >
         <PTableColumn
           type="selection"
+          v-if="tableInputsWithCells.selectable"
+        />
           v-if="tableInputsWithCells.selectable"
         />
         <PTableColumn
@@ -40,10 +43,10 @@
         >
           <template #default="scope">
             <PText
-              :content="scope.row.text.content"
-              :icon="iconResolver(scope.row.text.icon)"
-              :bold="false"
-              type="primary"
+              :pContent="scope.row.text.content"
+              :pIcon="iconResolver(scope.row.text.icon)"
+              :pBold="false"
+              :pType="scope.row.text.type"
               :disabled="false"
               :selected="false"
             >
@@ -59,8 +62,8 @@
             <PEntity
               :pContent="scope.row.entity.name"
               :pIcon="iconResolver(scope.row.entity.icon)"
-              pType="primary"
-              :selected="false"
+              :pType="scope.row.entity.type"
+              :pSelected="false"
             >
             </PEntity>
           </template>
@@ -72,13 +75,13 @@
         >
           <template #default="scope">
             <PDoubleText
-              :icon="iconResolver(scope.row.doubleText.icon)"
-              :profile="scope.row.doubleText.profile"
-              :title="scope.row.doubleText.title"
-              :content="scope.row.doubleText.content"
-              type="primary"
-              :disabled="false"
-              :selected="false"
+              :pIcon="iconResolver(scope.row.doubleText.icon)"
+              :pProfile="scope.row.doubleText.profile"
+              :pTitle="scope.row.doubleText.title"
+              :pContent="scope.row.doubleText.content"
+              :pType="scope.row.doubleText.type"
+              :pDisabled="false"
+              :pSelected="false"
             >
             </PDoubleText>
           </template>
@@ -149,10 +152,9 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import PTable from './'
 import { iconResolver } from '@/utils/iconResolver'
-import { PIFolder, PIStars } from '../PIcon/components'
-import PButton from '@/atoms/PButton'
+import { PIFolder, PIStars } from '@/atoms/PIcon/components'
+import PTable from './'
 
 const tableInputs = reactive({
   data: [
@@ -203,7 +205,8 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot'
+        icon: 'PICupHot',
+        type: 'primary'
       },
       entity: {
         icon: 'PIBuilding',
@@ -213,7 +216,8 @@ const tableInputsWithCells = reactive({
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
-        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        type: 'primary'
       },
       tag: {
         content: 'Validated',
@@ -228,17 +232,20 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot'
+        icon: 'PICupHot',
+        type: 'primary'
       },
       entity: {
         icon: 'PIPulse',
-        name: 'Olympia Stadium'
+        name: 'Olympia Stadium',
+        type: 'primary'
       },
       doubleText: {
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
-        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        type: 'primary'
       },
       tag: {
         content: 'Validated',
@@ -253,7 +260,8 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot'
+        icon: 'PICupHot',
+        type: 'primary'
       },
       entity: {
         icon: 'PICupStraw',
@@ -263,7 +271,8 @@ const tableInputsWithCells = reactive({
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
-        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        type: 'primary'
       },
       tag: {
         content: 'Validated',
@@ -278,7 +287,8 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot'
+        icon: 'PICupHot',
+        type: 'primary'
       },
       entity: {
         icon: 'PIShop',
@@ -288,7 +298,8 @@ const tableInputsWithCells = reactive({
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Restaurant Alfredo\'s House',
-        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        type: 'primary'
       },
       tag: {
         content: 'Validated',
@@ -303,7 +314,8 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot'
+        icon: 'PICupHot',
+        type: 'primary'
       },
       entity: {
         icon: 'PIBuilding',
@@ -313,7 +325,8 @@ const tableInputsWithCells = reactive({
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
-        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea'
+        content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
+        type: 'primary'
       },
       tag: {
         content: 'Validated'

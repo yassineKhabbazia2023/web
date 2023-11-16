@@ -3,12 +3,12 @@
   title="2. Atoms/Text"
   icon="fluent:button-16-regular"
   :layout="{ type: 'grid', width: '300px' }">
-    <Variant title="PText" :source="source">
+    <Variant title="PText">
       <PText
-         :content="PTextBasicData.content"
-         :icon="PIPerson"
-         :bold="PTextBasicData.bold"
-         :type="PTextBasicData.type"
+         :pContent="PTextBasicData.content"
+         :pIcon="PIPerson"
+         :pBold="PTextBasicData.bold"
+         :pType="PTextBasicData.type"
          :disabled="PTextBasicData.disabled"
          :selected="PTextBasicData.selected"
          >
@@ -29,16 +29,15 @@
 </template>
 
 <script setup lang="ts">
+import { reactive, ref } from 'vue'
+import { PIPerson } from '@/atoms/PIcon/components'
+import type { PTextProps } from './PTextTypes'
 import PText from './'
-import { reactive } from 'vue'
-import { PIPerson } from '../PIcon/components'
-
-const type = 'primary' as 'primary' | 'secondary' | 'drag'
 
 const PTextBasicData = reactive({
   content: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
   icon: PIPerson,
-  type,
+  type: ref<PTextProps['pType']>('primary'),
   bold: false,
   disabled: false,
   selected: false
@@ -49,17 +48,6 @@ const typeOptions = [
   'secondary',
   'drag'
 ]
-
-const source = `
-import { PIPerson } from '@kpmg/styleguide'
-
-<PTooltip
-  :content="'Lorem ipsum dolor sit amet, consectetur adpiscipiline'"
-  :icon="PIPerson"
-  :bold="false"
-  :background="false"
-/>
-`
 </script>
 
 <docs lang="md">

@@ -4,15 +4,15 @@ import PText from './'
 import { PIPerson } from '../PIcon/components'
 import { describe, it, expect } from 'vitest'
 
-const content = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
+const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
 describe('tests for p-text', () => {
 
   it('renders the content', () => {
     const wrapper = mount(PText, {
       props: {
-        content,
-        type: 'primary',
+        pContent,
+        pType: 'primary',
         disabled: false,
         selected: false
       }
@@ -25,15 +25,15 @@ describe('tests for p-text', () => {
 
     // Check if the content is rendered correctly in the cell
     const text = wrapper.text()
-    expect(text.indexOf(content)).toBeGreaterThan(-1)
+    expect(text.indexOf(pContent)).toBeGreaterThan(-1)
   })
 
   it('renders with an icon', () => {
     const wrapper = mount(PText, {
       props: {
-        icon: PIPerson,
-        content,
-        type: 'primary',
+        pIcon: PIPerson,
+        pContent,
+        pType: 'primary',
         disabled: false,
         selected: false
       }

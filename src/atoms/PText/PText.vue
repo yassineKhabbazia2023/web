@@ -1,38 +1,33 @@
 <template>
   <div
-    :type="type"
-    :class="['p-text', { disabled, selected }]"
+    :class="[pClassMapper, 'p-text', { disabled, selected }]"
     :disabled="disabled"
     :selected="selected">
-    <div class="p-text__icon" v-if="icon">
+    <div class="p-text__icon" v-if="pIcon">
       <PIcon :size="16">
-        <component :is="icon" />
+        <component :is="pIcon" />
       </PIcon>
     </div>
-    <div :class="['p-text__content', { 'font-bold': bold }]">
-      {{ content }}
+    <div :class="['p-text__content', { 'font-bold': pBold }]">
+      {{ pContent }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { type Component } from 'vue'
+import { computed } from 'vue'
+import type { PTextProps } from './PTextTypes'
 
-export interface PTextProps {
-  icon?: Component | string
-  content: string
-  bold?: boolean
-  type: 'primary' | 'secondary' | 'drag'
-  selected: boolean
-  disabled: boolean
-}
-
-withDefaults(defineProps<PTextProps>(), {
-  icon: undefined,
-  bold: false,
-  background: false
+const props = withDefaults(defineProps<PTextProps>(), {
+  pIcon: undefined,
+  pBold: false
 })
+
+const pClassMapper = computed(() => ({
+  [`p-text--type-${props.pType}`]: true
+}))
 </script>
+
 <style lang="scss" scoped>
 .p-text {
   display: flex;
@@ -40,17 +35,22 @@ withDefaults(defineProps<PTextProps>(), {
   min-height: 40px;
   overflow: hidden;
 
-  &[type="primary"]:not([disabled='true'], [selected='true']) {
+  &--type-primary:not([disabled='true'], [selected='true']) {
     background-color: transparent;
   }
 
-  &[type="secondary"]:not([disabled='true'], [selected='true']) {
+  &--type-secondary:not([disabled='true'], [selected='true']) {
     background-color: var(--el-fill-color-light);
   }
 
-  &[type="drag"]:not([disabled='true'], [selected='true']) {
+  &--type-drag:not([disabled='true'], [selected='true']) {
     background-color: var(--el-color-primary);
     color:  var(--el-fill-color-blank);
+  }
+
+  &--type-drag[disabled='true']:not([selected='true']) {
+    background-color: var(--el-color-neutral-gray-300);
+    color:  var(--el-color-neutral-gray-700);
   }
 
   &[disabled='true'] {
