@@ -1,26 +1,21 @@
 <template>
   <ElTooltip
     popperClass="shadow--4"
-    :content="content"
-    :placement="placement"
+    :content="pContent"
     :disabled="disabled"
+    :placement="pPlacement"
   >
     <slot />
   </ElTooltip>
 </template>
 
 <script setup lang="ts">
-import type { PlacementOptions } from '@/constants/placementOptions'
 import { ElTooltip } from 'element-plus'
-export interface PTooltipProps {
-  placement?: PlacementOptions
-  content: string
-  disabled?: boolean
-}
+import type { PTooltipProps } from './PTooltipTypes'
 
 withDefaults(defineProps<PTooltipProps>(), {
-  placement: 'top',
-  disabled: false
+  disabled: false,
+  pPlacement: 'top'
 })
 </script>
 

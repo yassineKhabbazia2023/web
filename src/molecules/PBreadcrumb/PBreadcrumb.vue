@@ -6,8 +6,8 @@
       @click="breadcrumbItemClicked(item.pId)"
     >
       <PTooltip
-        :content="getFullPathBreadcrumItem(item.pId)"
-        :placement="placementOptions[0].value"
+        :pContent="getFullPathBreadcrumItem(item.pId)"
+        :pPlacement="placementOptions[0].value"
         :disabled="item.pId === -1"
       >
         <a href="#">

@@ -1,9 +1,9 @@
 <template>
   <Story title="2. Atoms/Tooltip" icon="tabler:tooltip">
-    <Variant title="Custum tooltip">
+    <Variant title="Custom tooltip">
       <PTooltip
-        :content="tooltipBasicData.content"
-        :placement="tooltipBasicData.placement"
+        :pContent="tooltipBasicData.content"
+        :pPlacement="tooltipBasicData.placement"
         :disabled="tooltipBasicData.disabled"
       >
         <PButton> Hover button </PButton>
@@ -22,10 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import PTooltip from './'
 import { reactive } from 'vue'
 import placementOptions from '@/constants/placementOptions'
+import PTooltip from './'
 import PButton from '@/atoms/PButton'
+
 const tooltipBasicData = reactive({
   placement: placementOptions[0].value,
   content: 'this is a tooltip',
@@ -45,11 +46,11 @@ const tooltipBasicData = reactive({
     | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
     | append-to                 | which element the tooltip CONTENT appends to                                                                                                            | `CSSSelector \| HTMLElement` | —                                                                                                         | #el-popper-container-[randomValue]                                         |
     | effect                    | Tooltip theme, built-in theme: `dark` / `light`                                                                                                         | string                       | dark / light                                                                                              | dark                                                                       |
-    | content                   | display content, can be overridden by `slot#content`                                                                                                    | String                       | —                                                                                                         | —                                                                          |
+    | pContent                  | display content, can be overridden by `slot#content`                                                                                                    | String                       | —                                                                                                         | —                                                                          |
     | raw-content               | whether `content` is treated as HTML string                                                                                                             | boolean                      | —                                                                                                         | false                                                                      |
-    | placement                 | position of Tooltip                                                                                                                                     | string                       | top/top-start/top-end/bottom/bottom-start/bottom-end/left/left-start/left-end/right/right-start/right-end | bottom                                                                     |
+    | pPlacement                | position of Tooltip                                                                                                                                     | string                       | top/top-start/top-end/bottom/bottom-start/bottom-end/left/left-start/left-end/right/right-start/right-end | bottom                                                                     |
     | visible / v-model:visible | visibility of Tooltip                                                                                                                                   | boolean                      | —                                                                                                         | false                                                                      |
-    | disabled                  | whether Tooltip is disabled                                                                                                                             | boolean                      | —                                                                                                         | false                                                                      |
+    | disabled                 | whether Tooltip is disabled                                                                                                                             | boolean                      | —                                                                                                         | false                                                                      |
     | offset                    | offset of the Tooltip                                                                                                                                   | number                       | —                                                                                                         | 0                                                                          |
     | transition                | animation name                                                                                                                                          | string                       | —                                                                                                         | el-fade-in-linear                                                          |
     | popper-options            | [popper.js](https://popper.js.org/docs/v2/) parameters                                                                                                  | Object                       | refer to [popper.js](https://popper.js.org/docs/v2/) doc                                                  | `{modifiers: [{name: 'computeStyles',options: {gpuAcceleration: false}}]}` |
