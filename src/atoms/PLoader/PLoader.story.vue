@@ -1,15 +1,15 @@
 <template>
   <Story title="2. Atoms/Loader" icon="radix-icons:reload">
     <Variant title="Gray loader">
-      <PLoader size="32" />
+      <PLoader pSize="32" />
     </Variant>
 
     <Variant title="Persian loader">
-      <PLoader pType="primary" size="32" />
+      <PLoader pType="primary" pSize="32" />
     </Variant>
 
     <Variant title="Gradient Loader">
-      <PLoader pType="gradient" size="32" />
+      <PLoader pType="gradient" pSize="32" />
     </Variant>
   </Story>
 </template>

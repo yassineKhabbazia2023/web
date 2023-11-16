@@ -11,9 +11,9 @@
     />
     <PLoader
       v-else-if="isLoadingState"
-      type="gradient"
+      pType="gradient"
       class="p-file-and-folder-line-check__loader"
-      size="14"
+      pSize="14"
     />
     <PIcon
       v-if="!isDefaultState && !isLoadingState"
@@ -34,13 +34,13 @@
     </PIcon>
     <div class="p-file-and-folder-line-check__details">
       <div class="ellipsed-text">
-        {{ fileName }}
+        {{ pFileName }}
       </div>
       <div
-        v-if="(isErrorState || isSuccessState) && additionalText"
+        v-if="(isErrorState || isSuccessState) && pAdditionalText"
         class="p-file-and-folder-line-check__details__additional-text ellipsed-text"
       >
-        {{ additionalText }}
+        {{ pAdditionalText }}
       </div>
     </div>
   </div>
@@ -52,29 +52,23 @@ import { iconResolver } from '@/utils/iconResolver'
 import { getFileExtension } from '@/utils/strings'
 import PCheckbox from '@/atoms/PCheckbox'
 import PLoader from '@/atoms/PLoader'
-
-type PFileAndFolderLineCheckProps = {
-  fileName: string
-  additionalText?: string
-  state?: 'default' | 'loading' | 'error' | 'success'
-  modelValue: boolean
-}
+import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckTypes'
 
 const props = withDefaults(defineProps<PFileAndFolderLineCheckProps>(), {
-  state: 'default',
-  additionalText: ''
+  pState: 'default',
+  pAdditionalText: ''
 })
 
 const emit = defineEmits(['update:modelValue'])
 
-const isDefaultState = computed(() => props.state === 'default')
-const isLoadingState = computed(() => props.state === 'loading')
-const isErrorState = computed(() => props.state === 'error')
-const isSuccessState = computed(() => props.state === 'success')
+const isDefaultState = computed(() => props.pState === 'default')
+const isLoadingState = computed(() => props.pState === 'loading')
+const isErrorState = computed(() => props.pState === 'error')
+const isSuccessState = computed(() => props.pState === 'success')
 const cssStateClass = computed(() => {
   return isSelectedRef.value
     ? 'p-file-and-folder-line-check--selected'
-    : `p-file-and-folder-line-check--${props.state}`
+    : `p-file-and-folder-line-check--${props.pState}`
 })
 
 const isSelectedRef = computed({
@@ -98,7 +92,7 @@ watch(isDefaultState, () => {
 const isCheckboxDisplayed = computed(() => isDefaultState.value)
 
 const fileIconComponent = computed(() => {
-  switch (getFileExtension(props.fileName)) {
+  switch (getFileExtension(props.pFileName)) {
     case 'pdf':
       return iconResolver('PIFiletypePdf')
 

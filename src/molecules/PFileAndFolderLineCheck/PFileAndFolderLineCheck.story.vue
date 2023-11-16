@@ -5,81 +5,82 @@
   >
     <Variant title="Default line check">
       <PFileAndFolderLineCheck
-        v-model="firstVarientCheckboxVModel"
-        :fileName="PFileAndFolderLineCheckBasicData[0].fileName"
-        :state="PFileAndFolderLineCheckBasicData[0].state"
+        v-model="firstVariantCheckboxVModel"
+        :pFileName="PFileAndFolderLineCheckBasicData[0].pFileName"
+        :pState="PFileAndFolderLineCheckBasicData[0].pState"
       >
       </PFileAndFolderLineCheck>
     </Variant>
 
     <Variant title="Success line check">
       <PFileAndFolderLineCheck
-        v-model="secondVarientCheckboxVModel"
-        :fileName="PFileAndFolderLineCheckBasicData[1].fileName"
-        :additionalText="PFileAndFolderLineCheckBasicData[1].additionalText"
-        :state="PFileAndFolderLineCheckBasicData[1].state"
+        v-model="secondVariantCheckboxVModel"
+        :pFileName="PFileAndFolderLineCheckBasicData[1].pFileName"
+        :pAdditionalText="PFileAndFolderLineCheckBasicData[1].pAdditionalText"
+        :pState="PFileAndFolderLineCheckBasicData[1].pState"
       >
       </PFileAndFolderLineCheck>
     </Variant>
 
     <Variant title="Error line check">
       <PFileAndFolderLineCheck
-        v-model="thirdVarientCheckboxVModel"
-        :fileName="PFileAndFolderLineCheckBasicData[2].fileName"
-        :additionalText="PFileAndFolderLineCheckBasicData[2].additionalText"
-        :state="PFileAndFolderLineCheckBasicData[2].state"
+        v-model="thirdVariantCheckboxVModel"
+        :pFileName="PFileAndFolderLineCheckBasicData[2].pFileName"
+        :pAdditionalText="PFileAndFolderLineCheckBasicData[2].pAdditionalText"
+        :pState="PFileAndFolderLineCheckBasicData[2].pState"
       >
       </PFileAndFolderLineCheck>
     </Variant>
 
     <Variant title="Loading line check">
       <PFileAndFolderLineCheck
-        v-model="fourthVarientCheckboxVModel"
-        :fileName="PFileAndFolderLineCheckBasicData[3].fileName"
-        :state="PFileAndFolderLineCheckBasicData[3].state"
+        v-model="fourthVariantCheckboxVModel"
+        :pFileName="PFileAndFolderLineCheckBasicData[3].pFileName"
+        :pState="PFileAndFolderLineCheckBasicData[3].pState"
       >
       </PFileAndFolderLineCheck>
     </Variant>
   </Story>
 </template>
 
-<docs lang="md">
-## PFileAndFolderLineCheck
-
-<div class="responsive-iframe-container">
-<iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1350%253A6887%26mode%3Ddev" allowfullscreen></iframe>
-</div>
-</docs>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import PFileAndFolderLineCheck from './'
+import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckTypes'
 
-type stateOptions = 'default' | 'success' | 'error' | 'loading' | undefined
+type pStateOptions = PFileAndFolderLineCheckProps['pState']
 
-const firstVarientCheckboxVModel = ref(false)
-const secondVarientCheckboxVModel = ref(false)
-const thirdVarientCheckboxVModel = ref(false)
-const fourthVarientCheckboxVModel = ref(false)
+const firstVariantCheckboxVModel = ref(false)
+const secondVariantCheckboxVModel = ref(false)
+const thirdVariantCheckboxVModel = ref(false)
+const fourthVariantCheckboxVModel = ref(false)
 const PFileAndFolderLineCheckBasicData = ref([
   {
-    fileName: 'A PDF File.pdf',
-    state: 'default' as stateOptions
+    pFileName: 'A PDF File.pdf',
+    pState: 'default' as pStateOptions
   },
   {
-    fileName: 'A success state.pdf',
-    state: 'success' as stateOptions,
-    additionalText: 'Comptabilité > Dépôt > Achats'
+    pFileName: 'A success state.pdf',
+    pState: 'success' as pStateOptions,
+    pAdditionalText: 'Accountancy > Deposit > Purchases'
   },
   {
-    fileName: 'An error state.pdf',
-    state: 'error' as stateOptions,
-    additionalText: 'Unallowed file extension'
+    pFileName: 'An error state.pdf',
+    pState: 'error' as pStateOptions,
+    pAdditionalText: 'Unallowed file extension'
   },
   {
-    fileName: 'Another type of file.txt',
+    pFileName: 'Another type of file.txt',
     disabled: 'false',
-    state: 'loading' as stateOptions
+    pState: 'loading' as pStateOptions
   }
 ])
 </script>
+
+<docs lang="md">
+  ## PFileAndFolderLineCheck
+
+  <div class="responsive-iframe-container">
+    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D1350%253A6887%26mode%3Ddev" allowfullscreen></iframe>
+  </div>
+</docs>
