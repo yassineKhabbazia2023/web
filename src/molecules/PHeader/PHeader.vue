@@ -12,17 +12,9 @@
 </template>
 
 <script setup lang="ts">
-export interface IMenu {
-  icon: string
-  text: string
-  path: string
-}
-
-export interface PHeaderProps {
-  menu: IMenu[]
-}
+import type { PHeaderProps } from './PHeaderTypes'
 
 withDefaults(defineProps<PHeaderProps>(), {
-  menu: () => []
+  pHeaderMenu: () => []
 })
 </script>

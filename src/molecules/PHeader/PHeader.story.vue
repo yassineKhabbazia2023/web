@@ -5,7 +5,7 @@
   >
     <PHeader
       :ellipsis="false"
-      :menu="menu"
+      :pHeaderMenu="menu"
       :defaultActive="routeActive"
       router
     >
@@ -21,7 +21,7 @@
       </template>
       <template #menu>
         <PHeaderTabs
-          :menu="menu"
+          :pHeaderMenu="menu"
         />
       </template>
       <template #header-right>
@@ -50,13 +50,13 @@ import PHeaderTabs from '@/atoms/PHeaderTabs'
 import PImage from '@/atoms/PImage'
 
 const menu = [
-  { icon: 'PIColumnsGap', text: 'Dashboard', path: '/' },
-  { icon: 'PIChatSquareText', text: 'Lorem ipsum', path: '/loremipsum' },
-  { icon: 'PIChatSquareText', text: 'Lorem ipsum 2', path: '/loremipsum2' },
-  { icon: 'PIChatSquareText', text: 'Lorem ipsum 3', path: '/loremipsum3' },
-  { icon: 'PIChatSquareText', text: 'Lorem ipsum 4', path: '/loremipsum4' },
-  { icon: 'PIChatSquareText', text: 'Lorem ipsum 5', path: '/loremipsum5' },
-  { icon: 'PIArchive', text: 'Document', path: '/document' }
+  { pIcon: 'PIColumnsGap', pText: 'Dashboard', pPath: '/' },
+  { pIcon: 'PIChatSquareText', pText: 'Lorem ipsum', pPath: '/loremipsum' },
+  { pIcon: 'PIChatSquareText', pText: 'Lorem ipsum 2', pPath: '/loremipsum2' },
+  { pIcon: 'PIChatSquareText', pText: 'Lorem ipsum 3', pPath: '/loremipsum3' },
+  { pIcon: 'PIChatSquareText', pText: 'Lorem ipsum 4', pPath: '/loremipsum4' },
+  { pIcon: 'PIChatSquareText', pText: 'Lorem ipsum 5', pPath: '/loremipsum5' },
+  { pIcon: 'PIArchive', pText: 'Document', pPath: '/document' }
 ]
 const toolboxBasicData = ref([
   {
@@ -81,10 +81,10 @@ PHeader use as the top bar menu. Below is a list of property needed
 
 ## Props
 
-| Name          | Description                | Type                                                          | Required | Default |
-| ------------- | -------------------------- | ------------------------------------------------------------- | -------- | ------- |
-| menu          | Array of menu items object | [{icon: Icon's name, text: Menu's title, path: Menu's link }] | Yes      | -       |
-| defaultActive | Current active route       | string                                                        | Yes      | -       |
+| Name          | Description                | Type                                                             | Required | Default |
+| ------------- | -------------------------- | --------------------------------------------------------------   | -------- | ------- |
+| pHeaderMenu   | Array of menu items object | [{pIcon: Icon's name, pText: Menu's title, pPath: Menu's link }] | Yes      | -       |
+| defaultActive | Current active route       | string                                                           | Yes      | -       |
 
 ## Slot
 
