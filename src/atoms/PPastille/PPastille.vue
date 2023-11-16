@@ -1,39 +1,33 @@
 <template>
   <ElTag
     class="p-pastille"
-    :class="{
-      'p-pastille--default': kind === 'default',
-      'p-pastille--warning': kind === 'warning',
-      'p-pastille--persian': kind === 'persian',
-      'p-pastille--small': size === 'small',
-      'p-pastille--disabled': disabled,
-    }"
+    :class="[ pClassMapper,{ 'p-pastille--disabled': props.pDisabled } ]"
     round
   >
-    <PIcon v-if="!!iconName">
-      <component :is="dynamicImportedIcon"></component>
+    <PIcon v-if="!!pIconName">
+      <component :is="dynamicImportedIcon" />
     </PIcon>
     <slot v-else />
   </ElTag>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ElTag } from 'element-plus'
 import { iconResolver } from '@/utils/iconResolver'
-
-export interface PPastilleProps {
-  kind?: 'default' | 'warning' | 'persian';
-  size?: 'default' | 'small';
-  disabled?: boolean;
-  iconName?: string;
-}
+import type { PPastilleProps } from './PPastilleTypes'
 
 const props = withDefaults(defineProps<PPastilleProps>(), {
-  kind: 'default',
-  size: 'default',
-  disabled: false,
-  iconName: ''
+  pType: 'default',
+  pSize: 'default',
+  pDisabled: false,
+  pIconName: ''
 })
 
-const dynamicImportedIcon = iconResolver(props.iconName)
+const pClassMapper = computed(() => ({
+  [`p-pastille--type-${props.pType}`]: true,
+  [`p-pastille--size-${props.pSize}`]: true
+}))
+
+const dynamicImportedIcon = iconResolver(props.pIconName)
 </script>

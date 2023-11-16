@@ -1,30 +1,58 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PPastille from './PPastille.vue'
+import type { PPastilleProps } from './PPastilleTypes'
 
-type PPastilleProps = {
-  kind: 'default' | 'warning';
-  disabled?: boolean;
-};
+type PPastillePropsTypes = PPastilleProps['pType']
+const componenRootCSSClass = 'p-pastille'
 
-const createWrapper = (props: PPastilleProps) => mount(PPastille, {
+const defaultProps: PPastilleProps = {
+  pType: 'default',
+  pSize: 'default',
+  pDisabled: false,
+  pIconName: ''
+}
+
+const createWrapper = (props = defaultProps) => mount(PPastille, {
   props
 })
 describe('pPastille', () => {
   describe('props', () => {
-    it('should bind class when kind is warning', () => {
-      const wrapper = createWrapper({
-        kind: 'warning',
-        disabled: false
-      })
-      expect(wrapper.classes()).toContain('p-pastille--warning')
-    })
+    it.each([
+      {
+        pType: 'default',
+        expectedClassBinding: `${componenRootCSSClass}--type-default`
+      },
+      {
+        pType: 'warning',
+        expectedClassBinding: `${componenRootCSSClass}--type-warning`
+      },
+      {
+        pType: 'persian',
+        expectedClassBinding: `${componenRootCSSClass}--type-persian`
+      }
+    ])(
+      'should always bind class based on current type : $pType',
+      ({ pType, expectedClassBinding }) => {
+        const wrapper = createWrapper({
+          pType: pType as PPastillePropsTypes
+        })
+        expect(wrapper.classes()).toContain(expectedClassBinding)
+      }
+    )
     it('should bind class when disabled is true', () => {
       const wrapper = createWrapper({
-        kind: 'default',
-        disabled: true
+        ...defaultProps,
+        pDisabled: true
       })
-      expect(wrapper.classes()).toContain('p-pastille--disabled')
+      expect(wrapper.classes()).toContain(`${componenRootCSSClass}--disabled`)
+    })
+    it('should bind class when size is small', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pSize: 'small'
+      })
+      expect(wrapper.classes()).toContain(`${componenRootCSSClass}--size-small`)
     })
   })
 })

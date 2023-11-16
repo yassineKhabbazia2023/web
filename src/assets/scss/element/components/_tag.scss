@@ -257,23 +257,23 @@ $tag-padding: (
     color: var(--el-color-neutral-gray-500);
   }
 
-  &--warning {
+  &--type-warning {
     background: var(--el-color-functionnal-red);
     border: var(--el-color-functionnal-red);
     color: var(--el-color-base-white);
   }
 
-  &--persian {
+  &--type-persian {
     background: var(--el-color-persian-500);
     border: var(--el-color-persian-500);
     color: var(--el-color-base-white);
   }
 
-  &--small {
+  &--size-small {
     min-width: 17px;
     height: 17px;
     padding: 2px 4px;
-    font-size: 11px;
+    font-size: 1.1rem;
     font-weight: 600;
   }
 }

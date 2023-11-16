@@ -9,29 +9,29 @@
     </Variant>
 
     <Variant title="With icon">
-      <PPastille iconName="PITrash" />
+      <PPastille pIconName="PITrash" />
     </Variant>
 
     <Variant title="Warning usage">
-      <PPastille kind="warning">
+      <PPastille pType="warning">
       1
       </PPastille>
     </Variant>
 
     <Variant title="Disabled usage">
-      <PPastille disabled>
+      <PPastille pDisabled>
         1
       </PPastille>
     </Variant>
 
     <Variant title="Persian usage">
-      <PPastille kind="persian">
+      <PPastille pType="persian">
         1
       </PPastille>
     </Variant>
 
     <Variant title="Small usage">
-      <PPastille size="small">
+      <PPastille pSize="small">
         1
       </PPastille>
     </Variant>
