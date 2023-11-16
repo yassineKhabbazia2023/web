@@ -18,12 +18,10 @@ vi.mock('@kpmg/common', () => ({
 const createWrapper = (props: any) =>
   wrapperFactory(Home, {
     props,
-    global: {
-      stubs: {
-        Header: true,
-        ListMandate: true,
-        Pagination: true
-      }
+    stubs: {
+      Header: true,
+      ListMandate: true,
+      Pagination: true
     }
   })
 

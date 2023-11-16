@@ -17,28 +17,7 @@ import { BbanModel } from '@/components/CreateMandate/Form/FormModels'
 export const createMandate = async ({
   ibsNumber
 }: { ibsNumber: string }): Promise<any> =>
-  // api().mandate.get(/company/${ibsNumber})
-  Promise.resolve({
-    data: {
-      id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
-      name: 'Luminaires de France',
-      siretNumber: '40902900600031',
-      erpId: ibsNumber,
-      signatory: {
-        title: 'Mme',
-        firstName: 'Constance',
-        lastName: 'Lafleur',
-        email: 'clafleur@gmail.com'
-      },
-      address: {
-        street: '36 rue de Liège',
-        addressComplement: '4è étage',
-        zipCode: '75008',
-        city: 'Paris',
-        country: 'FRANCE'
-      }
-    }
-  })
+  api().mandate.get(`/company/${ibsNumber}`)
 
 /* export const downloadDocumentById = async (
     { accountId, documentId }: any,

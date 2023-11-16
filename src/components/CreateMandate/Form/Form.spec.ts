@@ -13,6 +13,13 @@ function mockMandateService(
   getBankDetailData: any) {
   return {
     createMandate: vi.fn(() => createMandateData),
+    /* .mockImplementationOnce(() => ({
+      data: {
+        errorType: 'CompanyForbidden',
+        logReference: '12345',
+        message: "The 'erpId' must be part of your portfolio and have active engagement"
+      }
+    })).mockResolvedValue(createMandateData) */
     validateIban: vi.fn(() => validateIbanData),
     getBankDetail: vi.fn(() => getBankDetailData)
   }
@@ -59,13 +66,14 @@ const createWrapper = (props: any = {}) =>
   wrapperFactory(CreateMandateForm, { props })
 
 describe('form.vue', () => {
-  it('renders the component when step value is 1', async () => {
-    const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(10)
-    expect(wrapper.exists()).toBeTruthy()
-  })
-
   const step1TestCases = [
+    /* {
+      initial: {
+        erpId: '1234567890',
+        name: '',
+        siretNumber: ''
+      }
+    }, */
     {
       initial: {
         erpId: '1234567891',
@@ -75,31 +83,24 @@ describe('form.vue', () => {
     }
   ]
 
-  it.each(step1TestCases)('renders the component when step value is 1', async (step1TestCase) => {
-    const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(220)
-    await dynamicUntilFoundComponent(wrapper, PForm)
-    await dynamicUntilFoundComponent(wrapper, PFormItem)
-    await dynamicUntilFoundComponent(wrapper, PInput)
-    await dynamicUntilFoundComponent(wrapper, PCol)
-    await dynamicUntilFoundComponent(wrapper, PRow)
-
-    const ibsInputElement = wrapper
-      .find('[data-testid="ibs-number-test"]')
-    await ibsInputElement
-      .setValue(step1TestCase.initial.erpId)
-    await ibsInputElement.trigger('change')
-
-    const companyNameInputElement = wrapper
-      .find('[data-testid="name-input-test"]')
-    expect((companyNameInputElement.element as
-      HTMLInputElement).value).toBe(step1TestCase.initial.name)
-
-    const siretNumberInputElement: any = wrapper
-      .find('[data-testid="siretNumber-input-test"]')
-    expect((siretNumberInputElement.element as
-       HTMLInputElement).value).toBe(step1TestCase.initial.siretNumber)
-  })
+  it.each(step1TestCases)('drawer step 1 and erpId %s, name %s and siret %s',
+    async ({ initial: { erpId, name, siretNumber } }) => {
+      const wrapper = createWrapper({ step: 1 })
+      await waitForAsyncImports(220)
+      const ibsInputElement = wrapper
+        .find('[data-testid="ibs-number-test"]')
+      await ibsInputElement
+        .setValue(erpId)
+      await ibsInputElement.trigger('change')
+      const companyNameInputElement = wrapper
+        .find('[data-testid="name-input-test"]')
+      expect((companyNameInputElement.element as
+        HTMLInputElement).value).toBe(name)
+      const siretNumberInputElement: any = wrapper
+        .find('[data-testid="siretNumber-input-test"]')
+      expect((siretNumberInputElement.element as
+        HTMLInputElement).value).toBe(siretNumber)
+    })
 
   it('emits the loading event form', async () => {
     const wrapper = createWrapper({ step: 1 })

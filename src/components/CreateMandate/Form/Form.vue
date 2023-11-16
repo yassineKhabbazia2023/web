@@ -32,22 +32,21 @@
                 data-testid="name-input-test"
                 v-model="createMandateForm.name"
                 disabled
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
           <PCol :span="12">
             <PFormItem
-inline
-:label="t('siret-number')"
-disabled>
+              inline
+              :label="t('siret-number')"
+              disabled
+            >
               <PInput
                 data-testid="siretNumber-input-test"
                 v-model="createMandateForm.siretNumber"
                 state="default"
                 disabled
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
         </PRow>
@@ -59,35 +58,32 @@ disabled>
               t('title')
             }}</label>
           </template>
-          <PRadio v-model="createMandateForm.title" label="M">
-            {{ t('mister') }}
-          </PRadio>
           <PRadio
             v-model="createMandateForm.title"
-            label="Mme"
+            label="M"
           >
+            {{ t('mister') }}
+          </PRadio>
+          <PRadio v-model="createMandateForm.title" label="Mme">
             {{ t('madam') }}
           </PRadio>
         </PFormItem>
         <PRow :gutter="16">
           <PCol :span="12">
             <PFormItem
-prop="lastName"
-inline
-:label="t('lastName')"
-disabled>
-              <PInput
-                v-model="createMandateForm.lastName"
-                state="default"
-              >
-              </PInput>
+              prop="lastName"
+              inline
+              :label="t('lastName')"
+              disabled>
+              <PInput v-model="createMandateForm.lastName" state="default" />
             </PFormItem>
           </PCol>
           <PCol :span="12">
             <PFormItem
-prop="firstName"
-inline
-:label="t('firstName')">
+              prop="firstName"
+              inline
+              :label="t('firstName')"
+            >
               <PInput
                 v-model="createMandateForm.firstName"
                 data-testid="firstName-test"
@@ -97,9 +93,10 @@ inline
           </PCol>
         </PRow>
         <PFormItem
-prop="email"
-inline
-disabled>
+          prop="email"
+          inline
+          disabled
+        >
           <template #label>
             <span class="create-mandate-form_optional-title"
               >{{ t('email') }}
@@ -119,20 +116,18 @@ disabled>
           {{ t('headquarters') }}
         </h5>
         <PFormItem
-prop="address"
-inline
-:label="`${t('address')}`"
-disabled>
-          <PInput
-            v-model="createMandateForm.street"
-            state="default"
-          >
-          </PInput>
+          prop="address"
+          inline
+          :label="`${t('address')}`"
+          disabled
+        >
+          <PInput v-model="createMandateForm.street" state="default" />
         </PFormItem>
         <PFormItem
-prop="addressComplement"
-inline
-disabled>
+          prop="addressComplement"
+          inline
+          disabled
+        >
           <template #label>
             <span class="create-mandate-form_optional-title"
               >{{ t('complement') }}
@@ -141,47 +136,41 @@ disabled>
               t('optional')
             }}</span>
           </template>
-          <PInput
-            v-model="createMandateForm.addressComplement"
-            state="default"
-          >
+          <PInput v-model="createMandateForm.addressComplement" state="default">
           </PInput>
         </PFormItem>
         <PRow :gutter="16">
           <PCol :span="8">
             <PFormItem
-prop="zipCode"
-inline
-:label="t('zipCode')"
-disabled>
+              prop="zipCode"
+              inline
+              :label="t('zipCode')"
+              disabled
+            >
               <PInput
                 v-model="createMandateForm.zipCode"
                 data-testid="zipCode-test"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
           <PCol :span="16">
             <PFormItem
-prop="city"
-inline
-:label="t('city')">
-              <PInput v-model="createMandateForm.city">
-              </PInput>
+              prop="city"
+              inline
+              :label="t('city')"
+            >
+              <PInput v-model="createMandateForm.city"/>
             </PFormItem>
           </PCol>
         </PRow>
         <PFormItem
-prop="country"
-inline
-:label="`${t('country')}`"
-disabled>
-          <PInput
-            v-model="createMandateForm.country"
-            state="default"
-          >
-          </PInput>
+          prop="country"
+          inline
+          :label="`${t('country')}`"
+          disabled
+        >
+          <PInput v-model="createMandateForm.country" state="default" />
         </PFormItem>
       </div>
       <div v-if="step === 3">
@@ -276,8 +265,7 @@ disabled>
             v-model="createMandateForm.bank"
             state="default"
             disabled
-          >
-          </PInput>
+          />
         </PFormItem>
         <PAlert type="danger" v-if="isScrapable">
           {{ t('form.error.notListed') }}
@@ -330,6 +318,8 @@ disabled>
         frFmMandat: 'FR-FM-MesMandats'
         correctEmail: 'Please input correct email address'
         validNumber: 'Please input a valid number'
+        ibsNotFound: 'IBS number not found.'
+        outWalletIBS: 'The IBS must be part of your portfolio and have active engagement.'
   fr-FR:
     ibs-number: 'Numéro IBS'
     company-name: 'Raison sociale'
@@ -368,10 +358,12 @@ disabled>
         frFmMandat: 'FR-FM-MesMandats'
         correctEmail: 'Veuillez entrer une adresse e-mail valide'
         validNumber: 'Veuillez entrer un nombre valide'
+        ibsNotFound: "Le numéro IBS saisi n'est pas reconnu."
+        outWalletIBS: "Le numéro d'IBS saisi doit faire
+         parti de votre portefeuille et avoir un engagement actif."
 </i18n>
 
 <script setup lang='ts'>
-// Imports
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed, nextTick } from 'vue'
 import { createMandate, validateIban, getBankDetail } from '@/services/mandate'
@@ -402,34 +394,6 @@ const { t } = useI18n({
 
 // Reactive state
 const createMandateFormRef = ref<any>()
-/* const MandateForm = reactive<CreateMandateFormModel>({
-  company: {
-    id: '',
-    name: '',
-    siretNumber: '',
-    erpId: '',
-    signatory: {
-      title: '',
-      firstName: '',
-      lastName: '',
-      email: ''
-    },
-    address: {
-      street: '',
-      addressComplement: '',
-      zipCode: '',
-      city: '',
-      country: ''
-    }
-  },
-  bban: {
-    institutionCode: '',
-    branchCode: '',
-    accountNumber: '',
-    key: '',
-    bank: ''
-  }
-}) */
 const createMandateForm = reactive<any>({
   erpId: '',
   siretNumber: '',
@@ -466,56 +430,59 @@ const areFieldsFilled = computed(() => {
     'country'
   ]
 
-  return fieldsToCheck.every((field) => createMandateForm[field].trim() !== ''
-  )
+  return fieldsToCheck.every((field) => createMandateForm[field].trim() !== '')
 })
 
 // Methods
 const validateIBS = async (_: Rule, value: string, callback: any) => {
-  emit('enable-disable-next', false)
-  isIBSValid.value = false
-  createMandateForm.siretNumber = ''
-  createMandateForm.name = ''
-  if (value.toString().length === 10) {
-    await getDataByIbsNumber(value)
-  } else {
-    callback()
+  try {
+    emit('enable-disable-next', false)
+    isIBSValid.value = false
+    createMandateForm.siretNumber = ''
+    createMandateForm.name = ''
+    if (value.toString().length === 10) {
+      await getDataByIbsNumber(value)
+    }
+  } catch (error: any) {
+    if (error?.message?.includes('outWalletIBS')) {
+      callback(new Error(t('form.error.outWalletIBS')))
+    }
+    if (error?.message?.includes('ibsNotFound')) {
+      callback(new Error(t('form.error.ibsNotFound')))
+    }
   }
 }
 
 const getDataByIbsNumber = async (ibsNumber: string) => {
-  try {
+  const { data } = await createMandate({ ibsNumber })
+  if (data.id) {
     const {
-      data: {
-        id,
-        name,
-        erpId,
-        siretNumber,
-        signatory: { title, firstName, lastName, email },
-        address: { street, addressComplement, zipCode, city, country }
-      }
-    } = await createMandate({ ibsNumber })
-    isIBSValid.value = false
-    if (createMandateForm.erpId.toString().length === 10) {
-      Object.assign(createMandateForm, {
-        id,
-        erpId,
-        siretNumber,
-        name,
-        title,
-        firstName,
-        lastName,
-        email,
-        street,
-        addressComplement,
-        zipCode,
-        city,
-        country
-      })
-      isIBSValid.value = true
-      emit('enable-disable-next', true)
-    }
-  } catch (_) {}
+      id,
+      name,
+      siretNumber,
+      signatory: { title, firstName, lastName, email },
+      address: { street, addressComplement, zipCode, city, country }
+    } = data
+    Object.assign(createMandateForm, {
+      id,
+      siretNumber,
+      name,
+      title,
+      firstName,
+      lastName,
+      email,
+      street,
+      addressComplement,
+      zipCode,
+      city,
+      country
+    })
+    isIBSValid.value = true
+    return emit('enable-disable-next', true)
+  }
+  throw new Error(data.errorType === 'CompanyForbidden'
+    ? 'form.error.outWalletIBS'
+    : 'form.error.ibsNotFound')
 }
 
 const checkAndEmitEvents = () => {
