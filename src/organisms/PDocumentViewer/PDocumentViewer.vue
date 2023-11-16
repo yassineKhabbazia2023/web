@@ -2,25 +2,16 @@
   <ElDrawer
     v-model="documentViewerModel"
     class="p-document-viewer"
-    :direction="direction"
-    :showClose="showClose"
-    :size="size"
-    :appendToBody="appendToBody"
-    :lockScroll="lockScroll"
-    :closeOnClickModal="closeOnClickModal"
-    :closeOnPressEscape="closeOnPressEscape"
-    :openDelay="openDelay"
-    :closeDelay="closeDelay"
-    :destroyOnClose="destroyOnClose"
-    :modal="modal"
-    :withHeader="withHeader"
-    :fullscreen="fullscreen"
-    :modalFade="modalFade">
+    :direction="pDirection"
+    :showClose="pShowClose"
+    :size="pSize"
+    :destroyOnClose="pDestroyOnClose"
+  >
     <template #header>
       <div class="p-document-viewer__header shadow--3">
         <div class="p-document-viewer__header-left margin-right--2">
           <PButton
-            v-if="showCloseButton"
+            v-if="pShowCloseButton"
             pType="generic"
             pPlain
             @click="documentViewerModel = false"
@@ -31,18 +22,18 @@
             </PIcon>
           </PButton>
           <p class="p-document-viewer__title">
-            <span v-if="hasIcon" class="margin-right--2 p-document-viewer__icon-document">
+            <span v-if="pHasIcon" class="margin-right--2 p-document-viewer__icon-document">
               <slot name="iconDocument" />
             </span>
-            {{ titleDocument }}
+            {{ pTitleDocument }}
           </p>
         </div>
-        <div class="p-document-viewer__header-right" v-if="hasPagination">
+        <div class="p-document-viewer__header-right" v-if="pHasPagination">
           <PButton
             pType="generic"
             pPlain
             class="el-button--icon margin-right--2 p-document-viewer__btn-previous"
-            :pDisabled="!showPreviousDocument"
+            :pDisabled="!pShowPreviousDocument"
             @click="$emit('previous-document-button-click')"
           >
             <PIcon>
@@ -50,17 +41,17 @@
             </PIcon>
           </PButton>
           <div class="p-document-viewer__pagination">
-            <span class="p-document-viewer__pagination-item">{{ activeDocument }}</span>
+            <span class="p-document-viewer__pagination-item">{{ pActiveDocument }}</span>
             <span class="p-document-viewer__pagination-item padding-left--2 padding-right--2">
               /
             </span>
-            <span class="p-document-viewer__pagination-item">{{ totalDocuments }}</span>
+            <span class="p-document-viewer__pagination-item">{{ pTotalDocuments }}</span>
           </div>
           <PButton
             pType="generic"
             pPlain
             class="el-button--icon margin-left--2 p-document-viewer__btn-next"
-            :pDisabled="!showNextDocument"
+            :pDisabled="!pShowNextDocument"
             @click="$emit('next-document-button-click')"
           >
             <PIcon>
@@ -84,7 +75,7 @@
 <script setup lang="ts">
 import { ElDrawer } from 'element-plus'
 import { computed } from 'vue'
-import { type PDocumentViewerProps } from './PDocumentViewerProps'
+import type { PDocumentViewerProps } from './PDocumentViewerTypes'
 
 const emit = defineEmits([
   'previous-document-button-click',
@@ -93,31 +84,15 @@ const emit = defineEmits([
 ])
 
 const props = withDefaults(defineProps<PDocumentViewerProps>(), {
-  direction: 'rtl',
-  size: '100%',
-  appendToBody: false,
-  lockScroll: true,
-  closeOnClickModal: true,
-  closeOnPressEscape: true,
-  openDelay: 0,
-  closeDelay: 0,
-  destroyOnClose: false,
-  trapFocus: false,
-  draggable: false,
-  center: false,
-  alignCenter: false,
-  modal: true,
-  showClose: false,
-  withHeader: true,
-  fullscreen: true,
-  modalFade: true,
-  title: '',
-  customClass: '',
-  hasIcon: true,
-  hasPagination: true,
-  showCloseButton: true,
-  showPreviousDocument: true,
-  showNextDocument: true
+  pDirection: 'rtl',
+  pSize: '100%',
+  destroyOnClose: true,
+  pShowClose: false,
+  pHasIcon: true,
+  pHasPagination: true,
+  pShowCloseButton: true,
+  pShowPreviousDocument: true,
+  pShowNextDocument: true
 })
 
 const documentViewerModel = computed({

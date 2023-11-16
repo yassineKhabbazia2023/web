@@ -15,13 +15,19 @@
       </PButton>
       <PDocumentViewer
         v-model="isDrawerOpened"
-        :titleDocument="documentViewerBasicData.titleDocument"
-        :activeDocument="documentViewerBasicData.activeDocument"
-        :totalDocuments="documentViewerBasicData.totalDocuments"
-        :hasIcon="documentViewerBasicData.hasIcon"
-        :hasPagination="documentViewerBasicData.hasPagination"
-        :showPreviousDocument="documentViewerBasicData.showPreviousDocument"
-        :showNextDocument="documentViewerBasicData.showNextDocument">
+        :pDestroyOnClose="documentViewerBasicData.pDestroyOnClose"
+        :pShowClose="documentViewerBasicData.pShowClose"
+        :pSize="documentViewerBasicData.pSize"
+        :pTitleDocument="documentViewerBasicData.pTitleDocument"
+        :pActiveDocument="documentViewerBasicData.pActiveDocument"
+        :pTotalDocuments="documentViewerBasicData.pTotalDocuments"
+        :pHasIcon="documentViewerBasicData.pHasIcon"
+        :pHasPagination="documentViewerBasicData.pHasPagination"
+        :pShowPreviousDocument="documentViewerBasicData.pShowPreviousDocument"
+        :pShowNextDocument="documentViewerBasicData.pShowNextDocument"
+        :pShowCloseButton="documentViewerBasicData.pShowCloseButton"
+        :pDirection="documentViewerBasicData.pDirection"
+      >
         <template #iconDocument>
           <PIcon>
             <PIFiletypePdf />
@@ -33,21 +39,26 @@
 </template>
 
 <script setup lang="ts">
-import PDocumentViewer from './'
 import { reactive, ref } from 'vue'
 import PButton from '@/atoms/PButton'
+import PDocumentViewer from './'
+import type { PDocumentViewerProps } from './PDocumentViewerTypes'
 
 const isDrawerOpened = ref(false)
 
 const documentViewerBasicData = reactive({
-  titleDocument: 'Facture-achat_20643228.pdf',
-  activeDocument: 5,
-  totalDocuments: 25,
-  hasIcon: true,
-  hasPagination: true,
-  showPreviousDocument: true,
-  showNextDocument: true,
-  showCloseButton: true
+  pShowClose: false,
+  pSize: '100%',
+  pDestroyOnClose: true,
+  pTitleDocument: 'Facture-achat_20643228.pdf',
+  pActiveDocument: 5,
+  pTotalDocuments: 25,
+  pHasIcon: true,
+  pHasPagination: true,
+  pShowPreviousDocument: true,
+  pShowNextDocument: true,
+  pShowCloseButton: true,
+  pDirection: ref<PDocumentViewerProps['pDirection']>('ltr')
 })
 </script>
 
