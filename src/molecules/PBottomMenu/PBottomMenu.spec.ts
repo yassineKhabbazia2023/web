@@ -2,8 +2,9 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { ElMenuItem, ElMenu } from 'element-plus'
-import PBottomMenu from '.'
 import { menu } from '@/constants/routesSamples'
+import PBottomMenu from '.'
+import type { PItem } from './PBottomMenuTypes'
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -24,12 +25,12 @@ describe('pBottomMenu', () => {
         }
       },
       props: {
-        items: menu.map((m) => {
+        pItems: menu.map((m): PItem => {
           return {
-            path: m.path,
-            name: m.name,
-            component: m.component,
-            icon: m.meta.icon
+            pPath: m.path,
+            pName: m.name,
+            pComponent: m.component,
+            pIcon: m.meta.icon
           }
         })
       }

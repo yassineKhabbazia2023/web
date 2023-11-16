@@ -1,27 +1,27 @@
 <template>
-  <Story
-    title="3. Molecules/BottomMenu"
-    icon="icon-park-outline:bottom-bar"
-  >
+  <Story title="3. Molecules/BottomMenu" icon="icon-park-outline:bottom-bar">
     <router-view />
-    <br><br>
+    <br /><br />
     <PBottomMenu
       :defaultActive="routeActive"
-      :items="menuItems"
-      :hideOnDesktop="false"
+      :pItems="menuItems"
+      :pHideOnDesktop="false"
     />
   </Story>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import PBottomMenu from './'
 import { menu } from '@/constants/routesSamples'
+import PBottomMenu from './'
+import type { PItem } from './PBottomMenuTypes'
 
-const menuItems = menu.map((m) => {
+const menuItems = menu.map((m): PItem => {
   return {
-    ...m,
-    icon: m.meta.icon
+    pName: m.name,
+    pPath: m.path,
+    pComponent: m.component,
+    pIcon: m.meta.icon
   }
 })
 
@@ -31,20 +31,22 @@ const routeActive = route.path
 
 <docs lang="md">
 # Context
+
 The bottom menu only appears on small desktop (phone & tablet).
 It should have almost the same content as the top/main menu.
 
 # Attributes
 
-| Name                      | Description                                       | Type                         | Accepted Values                                    | Default           |
-| ------------------------- | ------------------------------------------------- |------------------------------|----------------------------------------------------|-------------------|
-| hideOnDesktop             | Hide this element on desktop (lg and up)          | `Boolean`                    | `true` or `false`                                  | `true`            |
-| useRouter                 | Use vue router                                    | `Boolean`                    | `true` or `false`                                  | `true`            |
-| items                     | Items of the menu                                 | `Array`                      | [{icon: string, text: string: path: string}...]    | `[]`              |
-|                           | The path in the object refer to the route path    |                              |                                                    |                   |
-| defaultActive             | The default active item                           | `String`                     | a route path                                       |                   |
+| Name           | Description                                    | Type      | Accepted Values                                 | Default |
+| -------------- | ---------------------------------------------- | --------- | ----------------------------------------------- | ------- |
+| pHideOnDesktop | Hide this element on desktop (lg and up)       | `Boolean` | `true` or `false`                               | `true`  |
+| pUseRouter     | Use vue router                                 | `Boolean` | `true` or `false`                               | `true`  |
+| pItems         | Items of the menu                              | `Array`   | [{icon: string, text: string: path: string}...] | `[]`    |
+|                | The path in the object refer to the route path |           |                                                 |         |
+| defaultActive  | The default active item                        | `String`  | a route path                                    |         |
 
 # Figma
+
 <div class="responsive-figma-container">
   <iframe class="responsive-figma" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D423%253A1405%26mode%3Ddev" allowfullscreen></iframe>
 </div>

@@ -1,7 +1,7 @@
 <template>
   <ElMenu
-    :class="[{'hidden-lg-and-up': hideOnDesktop}, 'el-menu--bottom']"
-    :router="useRouter"
+    :class="[{ 'hidden-lg-and-up': pHideOnDesktop }, 'el-menu--bottom']"
+    :router="pUseRouter"
     mode="horizontal"
   >
     <ElMenuItem
@@ -20,31 +20,19 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, type Component } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import { ElMenu, ElMenuItem } from 'element-plus'
+import type { PBottomMenuProps } from './PBottomMenuTypes'
 
-export interface Item {
-  icon: string
-  name: string
-  path: string
-  component: Component
-}
-
-export interface Props {
-  hideOnDesktop?: boolean
-  useRouter?: boolean
-  items: Item[]
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  hideOnDesktop: true,
-  useRouter: true
+const props = withDefaults(defineProps<PBottomMenuProps>(), {
+  pHideOnDesktop: true,
+  pUseRouter: true
 })
 
-const itemsMapped = props.items.map(({ name, path, icon }) => ({
-  name,
-  icon,
-  index: path
+const itemsMapped = props.pItems.map(({ pName, pPath, pIcon }) => ({
+  name: pName,
+  index: pPath,
+  icon: pIcon
 }))
 
 const createIcon = (name: string) =>
