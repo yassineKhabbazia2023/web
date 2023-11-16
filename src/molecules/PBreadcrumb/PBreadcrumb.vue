@@ -1,17 +1,17 @@
 <template>
-  <ElBreadcrumb :separatorIcon="ArrowRight" :class="breadCrumpSize()">
+  <ElBreadcrumb :separatorIcon="ArrowRight" :class="breadCrumpSize">
     <ElBreadcrumbItem
-      v-for="item in items"
-      :key="item.id"
-      @click="breadcrumbItemClicked(item.id)"
+      v-for="(item, index) in items"
+      :key="index"
+      @click="breadcrumbItemClicked(item.pId)"
     >
       <PTooltip
-        :content="getFullPathBreadcrumItem(item.id)"
+        :content="getFullPathBreadcrumItem(item.pId)"
         :placement="placementOptions[0].value"
-        :disabled="item.id === -1"
+        :disabled="item.pId === -1"
       >
         <a href="#">
-          {{ item.text }}
+          {{ item.pText }}
         </a>
       </PTooltip>
     </ElBreadcrumbItem>
@@ -24,7 +24,7 @@ import { ElBreadcrumb, ElBreadcrumbItem } from 'element-plus'
 import { ArrowRight } from '@element-plus/icons-vue'
 import PTooltip from '@/atoms/PTooltip'
 import placementOptions from '@/constants/placementOptions'
-import { type PBreadcrumbProps } from './PBreadcrumbTypes'
+import type { PBreadcrumbProps } from './PBreadcrumbTypes'
 
 const props = defineProps<PBreadcrumbProps>()
 const emit = defineEmits([
@@ -33,14 +33,14 @@ const emit = defineEmits([
 ])
 
 const items = computed(() => {
-  if (props.elements.length > 6) {
+  if (props.pElements.length > 6) {
     return [
-      ...props.elements.slice(0, 3),
-      { id: -1, text: '...' },
-      ...props.elements.slice(-3)
+      ...props.pElements.slice(0, 3),
+      { pId: -1, pText: '...' },
+      ...props.pElements.slice(-3)
     ]
   } else {
-    return props.elements
+    return props.pElements
   }
 })
 
@@ -53,20 +53,20 @@ const breadcrumbItemClicked = (id: number) => {
 const getFullPathBreadcrumItem = (id: number) => {
   if (id === -1) return ''
 
-  const element = props.elements.find((item) => item.id === id)
+  const element = props.pElements.find((item) => item.pId === id)
 
   if (!element) return ''
 
-  const index = props.elements.indexOf(element)
+  const index = props.pElements.indexOf(element)
 
-  return props.elements
+  return props.pElements
     .slice(0, index + 1)
-    .map((item) => item.text)
+    .map((item) => item.pText)
     .join(' > ')
 }
 
 const breadCrumpSize = () => {
-  switch (props.size) {
+  switch (props.pSize) {
     case 'S':
       return 'small'
     case 'M':
