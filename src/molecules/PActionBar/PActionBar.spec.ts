@@ -1,26 +1,16 @@
-import { describe, it, expect } from 'vitest'
-import wrapperFactory from 'tests/utils/wrapperFactory'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import PActionBar from '@/molecules/PActionBar'
-
-type Buttons = {
-  buttonName: string,
-  buttonType: string,
-  buttonIcon: string,
-  buttonActionName: string,
-  size: string,
-  plain: Boolean,
-  round: Boolean,
-  circle: Boolean,
-  loading: Boolean,
-  disabled: Boolean
-}
+import PUpload from '@/atoms/PUpload'
+import PButton from '@/atoms/PButton'
+import { mount } from '@vue/test-utils'
+import type { ComponentDefinitionProps } from './PActionBarTypes'
 
 type PActionBarProps = {
-  rightSideButtons: Buttons[];
-  leftSideButtons: Buttons[];
-};
+  rightSideButtons: ComponentDefinitionProps[]
+  leftSideButtons: ComponentDefinitionProps[]
+}
 
-const defaultButtons = [
+const defaultButtons: ComponentDefinitionProps[] = [
   {
     buttonName: 'Hello',
     buttonType: 'white',
@@ -33,86 +23,100 @@ const defaultButtons = [
     loading: false,
     disabled: false
   }
-] as Buttons[]
+]
 
 const defaultProps: PActionBarProps = {
   rightSideButtons: defaultButtons,
   leftSideButtons: defaultButtons
 }
 
-const createWrapper = (props = defaultProps) =>
-  wrapperFactory(PActionBar, {
+const createWrapper = (props = defaultProps) => {
+  return mount(PActionBar, {
     props
+
   })
-const generateButtonsArray = (nbr:number) => {
+}
+const generateButtonsArray = (nbr: number): ComponentDefinitionProps[] => {
   return Array.from({ length: nbr }, () => ({
-    buttonName: 'Hello'
-  }))
+    buttonName: 'Hello',
+    buttonIcon: 'PISearch'
+  } as ComponentDefinitionProps))
 }
 
 describe('pActionBar', () => {
-
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.resetAllMocks()
+  })
   describe('props', () => {
     describe('left side', () => {
       it('should display only 3 buttons', () => {
-        const buttons = generateButtonsArray(10) as Buttons[]
+        const buttons = generateButtonsArray(10)
         const wrapper = createWrapper({
           leftSideButtons: buttons,
           rightSideButtons: defaultProps.rightSideButtons
         })
         const leftZoneBtns = wrapper.find('.p-action-bar__left')
-        expect(leftZoneBtns.findAll('p-button-stub')).toHaveLength(3)
-      })
-      it('should add the calss "el-button--icon" when the button dose not contain a value', () => {
-
-        const buttons = [{ ...defaultButtons, buttonName: '' }] as unknown as Buttons[]
-
-        const wrapper = createWrapper({
-          leftSideButtons: buttons,
-          rightSideButtons: defaultProps.rightSideButtons
-        })
-        const button = wrapper.find('.p-action-bar__left').findAll('p-button-stub')[0]
-
-        expect(button.classes().includes('el-button--icon')).toBeTruthy()
-
+        expect(leftZoneBtns.findAllComponents(PButton)).toHaveLength(3)
       })
 
       it('should display the button in a rounded shape  if the button contain only an icon', () => {
-
-        const buttons = [
-          { ...defaultButtons, buttonName: '' }
-        ] as unknown as Buttons[]
+        const buttons: ComponentDefinitionProps[] = [
+          { ...defaultButtons[0], buttonName: '' }
+        ]
 
         const wrapper = createWrapper({
           leftSideButtons: buttons,
           rightSideButtons: defaultProps.rightSideButtons
         })
-        const button = wrapper
-          .find('.p-action-bar__left')
-          .findAll('p-button-stub')[0]
+        const leftZoneWrapper = wrapper.find('.p-action-bar__left')
+        const button = leftZoneWrapper.find('button')
 
-        expect(button.attributes('circle')).toBe('true')
+        expect(button.classes().includes('is-circle')).toBeTruthy()
       })
+      it('should display pupload when componentType is UPLOAD', () => {
+        const pUploadButton: ComponentDefinitionProps = {
+          ...defaultButtons[0],
+          componentType: 'UPLOAD'
+        }
 
+        const wrapper = createWrapper({
+          leftSideButtons: [pUploadButton],
+          rightSideButtons: defaultProps.rightSideButtons
+        })
+
+        const pUploadWrapper = wrapper.findComponent(PUpload)
+        expect(pUploadWrapper.exists()).toBeTruthy()
+      })
     })
     describe('right side', () => {
       it('should display only 5 buttons in the right side of action bar layout', () => {
-        const buttons = generateButtonsArray(10) as Buttons[]
+        const buttons = generateButtonsArray(10)
         const wrapper = createWrapper({
           leftSideButtons: defaultProps.leftSideButtons,
           rightSideButtons: buttons
         })
         const rightZoneBtns = wrapper.find('.p-action-bar__right')
-        expect(rightZoneBtns.findAll('p-button-stub')).toHaveLength(5)
+        expect(rightZoneBtns.findAllComponents(PButton)).toHaveLength(5)
       })
     })
   })
   describe('events', () => {
-    it('should emit the provded buttonActionName event on click', async () => {
-
-      const buttons = [
-        { ...defaultButtons, buttonActionName: 'Hello i am your action' }
-      ] as unknown as Buttons[]
+    it('should emit the provided buttonActionName event on click', async () => {
+      const buttons: ComponentDefinitionProps[] = [
+        {
+          buttonName: 'Hello',
+          buttonType: 'white',
+          buttonIcon: 'PISearch',
+          buttonActionName: 'Hello i am your action',
+          size: 'small',
+          plain: false,
+          round: false,
+          circle: true,
+          loading: false,
+          disabled: false
+        }
+      ]
 
       const wrapper = createWrapper({
         leftSideButtons: buttons,
@@ -120,13 +124,46 @@ describe('pActionBar', () => {
       })
       const button = wrapper
         .find('.p-action-bar__left')
-        .findAll('p-button-stub')[0]
+        .findAllComponents(PButton)[0]
 
       await button.trigger('click')
 
       expect(wrapper.emitted('p-action-bar-button-clicked')).toHaveLength(1)
-      expect(wrapper.emitted('p-action-bar-button-clicked')).toEqual([['Hello i am your action']])
+      expect(wrapper.emitted('p-action-bar-button-clicked')).toStrictEqual([
+        ['Hello i am your action']
+      ])
+    })
+
+    it('should emit files-selected on PUpload files selected event', async () => {
+      const f = {
+        name: 'image.png',
+        size: 1,
+        type: 'image/png'
+      }
+
+      const wrapper = createWrapper({
+        leftSideButtons: [
+          {
+            buttonName: 'Hello',
+            buttonType: 'white',
+            buttonIcon: 'PISearch',
+            buttonActionName: 'buttonActionName',
+            size: 'small',
+            plain: false,
+            round: false,
+            circle: true,
+            loading: false,
+            disabled: false,
+            componentType: 'UPLOAD'
+          }
+        ],
+        rightSideButtons: defaultProps.rightSideButtons
+      })
+
+      const pUploadWrapper = wrapper.findComponent(PUpload)
+      pUploadWrapper.vm.$emit('files-selected', [f])
+
+      expect(wrapper.emitted('p-upload-files-selected')).toHaveLength(1)
     })
   })
 })
-

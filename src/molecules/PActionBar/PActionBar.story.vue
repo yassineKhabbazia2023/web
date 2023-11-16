@@ -12,8 +12,9 @@
 <script lang="ts" setup>
 import PActionBar from '.'
 import { ref } from 'vue'
+import type { ComponentDefinitionProps } from './PActionBarTypes'
 
-const leftSideIcons = ref([{
+const leftSideIcons = ref<ComponentDefinitionProps[]>([{
   buttonName: 'Déposer un document',
   buttonType: 'primary',
   buttonIcon: 'PIUpload',
@@ -23,7 +24,9 @@ const leftSideIcons = ref([{
   circle: false,
   loading: false,
   disabled: false,
-  size: 'small'
+  size: 'small',
+  componentType: 'UPLOAD',
+  multiple: true
 },
 {
   buttonName: 'Filtrer',
@@ -130,19 +133,21 @@ const rightSideIcons = ref([{
 <docs lang="md">
 # Adding buttons to the action bar layout
 
-You can add buttons to the left or right side of the action bar layout by passing an array of `Buttons` objects to the `rightSideButtons` or `leftSideButtons` props. The `Buttons` type is defined as follows:
+You can add buttons to the left or right side of the action bar layout by passing an array of `ComponentDefinitionProps` objects to the `rightSideButtons` or `leftSideButtons` props. The `ComponentDefinitionProps` type is defined as follows:
 ```javascript
-export interface Buttons {
+export interface ComponentDefinitionProps {
 buttonName: string;
 buttonType: string;
 buttonIcon: string;
 buttonActionName: string;
 size: string;
-plain: Boolean;
-round: Boolean;
-circle: Boolean;
-loading: Boolean;
-disabled: Boolean;
+plain: boolean;
+round: boolean;
+circle: boolean;
+loading: boolean;
+disabled: boolean;
+componentType?: ComponentType,
+multiple?: boolean
 }
 
 ```
@@ -162,14 +167,21 @@ disabled: false
 ])
 ```
 
-# Buttons type properties
-| Property         | Type                | Description                                                                                   | Reference                                                                                                                                                                        |
-|------------------|---------------------|-----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| buttonName       | string              | The text content of the button                                                                |                                                                                                                                                                                  |
-| buttonType       | string              | The type of the button. Different button types are mentioned in the PButton story.    | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809)  |
-| buttonIcon       | string              | The icon name to display. The icons' names are available in the PIcon story.            | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
-| buttonActionName | string              | The text value of the action that will be emitted                                             |                                                                                                                                                                                  |
-| size, plain, round, circle, loading, disabled | Check  PButton story | All of these properties are the PButton properties that define how the buttons will look like inside the action bar | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809)  |
+You can specify the type of component to render based on the `componentType` property. The default render value is `PButton`, but if another definition is set, for example `UPLOAD`, a different type of component than PButton will be rendered.
+```javascript
+type ComponentType = 'UPLOAD' | 'SEARCH'
+```
+
+# ComponentDefinitionProps type properties
+| Property          | Type            | Description                                                                                          | Reference                                                                                                        |
+|-------------------|-----------------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| buttonName        | string          | The text content of the button                                                                       |                                                                                                                  |
+| buttonType        | string          | The type of the button. Different button types are mentioned in the PButton story.                   | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809) |
+| buttonIcon        | string          | The icon name to display. The icons' names are available in the PIcon story.                         | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
+| buttonActionName  | string          | The text value of the action that will be emitted                                                   |                                                                                                                  |
+| size, plain, round, circle, loading, disabled | Check PButton story                    | All of these properties are the PButton properties that define how the buttons will look like inside the action bar | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809) |
+| componentType     | ComponentType   | It is used to specify which component to render, could be PButton, UploadComponent, or other       |                                                                                                                  |
+| multiple          | boolean         | When the componentType is 'UPLOAD', this prop is to specify whether we can perform multiple file selections or not |                                                                                                                  |
 
 # Max number of buttons that will be displayed
 | Right side      | Left side       |

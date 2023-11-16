@@ -1,25 +1,62 @@
 <template>
   <div class="p-action-bar">
     <div class="p-action-bar__left">
-      <PButton
+      <template
         v-for="(item, index) in truncatedLeftSideButtons"
         :key="index"
-        :type="item.buttonType"
-        :plain="item.plain"
-        :circle="item.buttonName === '' ? true : false"
-        :loading="item.loading"
-        :disabled="item.disabled"
-        :size="item.size"
-        :class="['p-action-bar__left-btn', item.buttonName === '' ? 'el-button--icon' : '']"
-        @click="$emit('p-action-bar-button-clicked', item.buttonActionName)">
+      >
+      <PUpload
+          v-if="item.componentType === 'UPLOAD'"
+          :multiple="item.multiple"
+          :disable="item.disabled"
+          :showFileList="false"
+          :drag="false"
+          @files-selected="handleFilesSelected"
+        >
+          <PButton
+            :type="item.buttonType"
+            :plain="item.plain"
+            :circle="item.buttonName === '' ? true : false"
+            :loading="item.loading"
+            :disabled="item.disabled"
+            :size="item.size"
+            :class="[
+              'p-action-bar__left-btn',,
+              'margin-right--2',
+              item.buttonName === '' ? 'el-button--icon' : ''
+            ]"
+          >
+            <PIcon class="el-button__icon--left">
+              <component :is="resolvedIconsLeft[index]"></component>
+            </PIcon>
+            <p>{{ item.buttonName }}</p>
+          </PButton>
+        </PUpload>
 
-        <PIcon class="el-button__icon--left">
-          <component :is="resolvedIconsLeft[index]"></component>
-        </PIcon>
-        <p>
-          {{ item.buttonName }}
-        </p>
-      </PButton>
+        <PButton
+          v-else
+          :type="item.buttonType"
+          :plain="item.plain"
+          :circle="item.buttonName === '' ? true : false"
+          :loading="item.loading"
+          :disabled="item.disabled"
+          :size="item.size"
+          :class="[
+            'p-action-bar__left-btn',
+            item.buttonName === '' ? 'el-button--icon' : ''
+          ]"
+          @click="$emit('p-action-bar-button-clicked', item.buttonActionName)"
+        >
+          <PIcon
+            class="el-button__icon--left"
+          >
+            <component :is="resolvedIconsLeft[index]"></component>
+          </PIcon>
+          <p>
+            {{ item.buttonName }}
+          </p>
+        </PButton>
+      </template>
     </div>
     <div class="p-action-bar__right">
       <PButton
@@ -32,7 +69,8 @@
         :disabled="item.disabled"
         :size="item.size"
         class="p-action-bar__right-btn"
-        @click="$emit('p-action-bar-button-clicked', item.buttonActionName)">
+        @click="$emit('p-action-bar-button-clicked', item.buttonActionName)"
+      >
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsRight[index]"></component>
         </PIcon>
@@ -47,33 +85,22 @@
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
+import PUpload from '@/atoms/PUpload'
 import { iconsResolver } from '@/utils/iconResolver'
-
-export interface Buttons {
-  buttonName: string,
-  buttonType: string,
-  buttonIcon: string,
-  buttonActionName: string,
-  size: string,
-  plain: Boolean,
-  round: Boolean,
-  circle: Boolean,
-  loading: Boolean,
-  disabled: Boolean
-}
-
-export interface PActionBarProps {
-  rightSideButtons: Buttons[];
-  leftSideButtons: Buttons[];
-}
-
+import type { PActionBarProps } from './PActionBarTypes'
 const props = defineProps<PActionBarProps>()
-defineEmits(['p-action-bar-button-clicked'])
+
+const emit = defineEmits<{
+    'p-upload-files-selected': [File[]]
+    'p-action-bar-button-clicked': [string]
+}>()
+
 const truncatedRightSideButtons = computed(() => {
   return props.rightSideButtons.length > 5
     ? props.rightSideButtons.slice(0, 5)
     : props.rightSideButtons
 })
+
 const truncatedLeftSideButtons = computed(() => {
   return props.leftSideButtons.length > 3
     ? props.leftSideButtons.slice(0, 3)
@@ -85,7 +112,8 @@ const resolvedIconsRight = computed(() => {
 })
 
 const resolvedIconsLeft = computed(() => {
-  return iconsResolver(props.leftSideButtons, 'buttonIcon')
+  const resolvedIcons = iconsResolver(props.leftSideButtons, 'buttonIcon')
+  return resolvedIcons
 })
 
 const isWindowUnderDesktop = ref(window.innerWidth < 992)
@@ -102,6 +130,9 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
 })
 
+const handleFilesSelected = (data:File[]) => {
+  emit('p-upload-files-selected', data)
+}
 </script>
 
 <style lang="scss">

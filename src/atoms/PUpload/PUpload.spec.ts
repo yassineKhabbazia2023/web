@@ -7,7 +7,6 @@ import { ElUpload } from 'element-plus'
 const defaultProps: UploadProps = {
   pMultiple: true,
   pDrag: false,
-  pShowFileList: false,
   pDisabled: false,
   pAccept: 'image/png, image/jpeg'
 }

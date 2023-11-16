@@ -6,21 +6,23 @@
   >
     <Variant title="PUpload">
       <PUpload
-        multiple
-        :disable="false"
-        showFileList
-        :drag="false"
-        :disabled="false"
+        pMultiple
+        :pDisabled="false"
+        :pDrag="false"
       >
         <PButton
           type="primary"
-          size="default"
+          size="small"
           :plain="false"
           :round="false"
           :disabled="false"
           :loading="false"
+          :circle="false"
         >
-          upload files
+          <PIcon class="el-button__icon--left">
+            <PIUpload />
+          </PIcon>
+          Déposer un document
         </PButton>
       </PUpload>
     </Variant>
