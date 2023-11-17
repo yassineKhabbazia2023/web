@@ -6,7 +6,7 @@
   >
     <Variant title="Offer Card" icon="mingcute:basket-fill">
       <div
-        class="padding--4"
+        class="padding--3"
         v-for="(offer, index) in offerCardData"
         :key="index"
       >

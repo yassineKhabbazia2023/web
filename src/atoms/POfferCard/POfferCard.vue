@@ -20,7 +20,8 @@
     </div>
     <div class="p-offer-card__chevron">
       <PIcon
-        color="#5546FF"
+        class="p-offer-card__chevron-icon"
+        color="#171717"
         size="16px"
       >
         <PIChevronRight />
@@ -40,6 +41,7 @@ defineEmits(['selectOfferEvent'])
 
 <style lang="scss" scoped>
 .p-offer-card {
+  $self: &;
   display: flex;
   width: 100%;
   align-items: center;
@@ -50,12 +52,25 @@ defineEmits(['selectOfferEvent'])
   text-align: left;
   cursor: pointer;
 
-  $this: &;
   &:hover {
-    border: 1px solid var(--el-color-secondary-amethyste);
+    border: 1px solid var(--el-color-persian-700);
 
-    #{$this}__title {
-      color: var(--el-color-secondary-amethyste);
+    #{$self}__title {
+      color: var(--el-color-persian-500);
+    }
+    #{$self}__chevron-icon {
+      color: var(--el-color-persian-700);
+    }
+  }
+
+  &:active {
+    border: 1px solid var(--el-color-persian-800);
+
+    #{$self}__title {
+      color: var(--el-color-persian-700);
+    }
+    #{$self}__chevron-icon {
+      color: var(--el-color-persian-800);
     }
   }
 
@@ -71,10 +86,6 @@ defineEmits(['selectOfferEvent'])
   &__body {
     width: 100%;
     overflow: hidden;
-
-    &:hover {
-      color: var(--el-color-secondary-amethyste);
-    }
   }
 
   &__title {
@@ -84,10 +95,6 @@ defineEmits(['selectOfferEvent'])
     color: var(--el-color-neutral-gray-900);
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    &:hover {
-      color: var(--el-color-secondary-amethyste);
-    }
   }
 
   &__description {
@@ -95,6 +102,9 @@ defineEmits(['selectOfferEvent'])
     font-weight: 400;
     line-height: 17px;
     color: var(--el-color-neutral-gray-700);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__chevron {
