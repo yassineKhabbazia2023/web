@@ -1,6 +1,12 @@
 <template>
   <button
-    class="p-offer-card padding-x--4 padding-y--2 radius--2"
+    :class="[
+      'p-offer-card',
+      'padding-x--4',
+      'padding-y--2',
+      'radius--2',
+      { disabled }
+    ]"
     @click="$emit('selectOfferEvent')"
   >
     <div class="p-offer-card__logo margin-right--4">
@@ -18,7 +24,7 @@
         {{ pDescription }}
       </p>
     </div>
-    <div class="p-offer-card__chevron">
+    <div v-if="!disabled" class="p-offer-card__chevron">
       <PIcon
         class="p-offer-card__chevron-icon"
         color="#171717"
@@ -51,6 +57,19 @@ defineEmits(['selectOfferEvent'])
   background: none;
   text-align: left;
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.disabled {
+    pointer-events: none;
+    background: var(--el-color-neutral-gray-50);
+
+    #{$self}__title{
+      color: var(--el-color-neutral-gray-500)
+    }
+    #{$self}__description{
+      color: var(--el-color-neutral-gray-300)
+    }
+  }
 
   &:hover {
     border: 1px solid var(--el-color-persian-700);
@@ -95,6 +114,7 @@ defineEmits(['selectOfferEvent'])
     color: var(--el-color-neutral-gray-900);
     text-overflow: ellipsis;
     white-space: nowrap;
+    transition: all 0.3s ease;
   }
 
   &__description {
@@ -112,6 +132,7 @@ defineEmits(['selectOfferEvent'])
     display: flex;
     flex-shrink: 0;
     flex-grow: 0;
+    transition: all 0.3s ease;
   }
 }
 </style>
