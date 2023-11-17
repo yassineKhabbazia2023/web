@@ -57,6 +57,7 @@ defineEmits(['selectOfferEvent'])
   background: none;
   text-align: left;
   cursor: pointer;
+  outline: none;
   transition: all 0.3s ease;
 
   &.disabled {
