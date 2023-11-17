@@ -63,10 +63,10 @@ defineEmits(['selectOfferEvent'])
     pointer-events: none;
     background: var(--el-color-neutral-gray-50);
 
-    #{$self}__title{
+    #{$self}__title {
       color: var(--el-color-neutral-gray-500)
     }
-    #{$self}__description{
+    #{$self}__description {
       color: var(--el-color-neutral-gray-300)
     }
   }
