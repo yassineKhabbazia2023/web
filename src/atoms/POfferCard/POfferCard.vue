@@ -1,12 +1,7 @@
 <template>
   <button
-    :class="[
-      'p-offer-card',
-      'padding-x--4',
-      'padding-y--2',
-      'radius--2',
-      { disabled }
-    ]"
+    class="p-offer-card padding-x--4 padding-y--2 radius--2"
+    :disabled="disabled"
     @click="$emit('selectOfferEvent')"
   >
     <div class="p-offer-card__logo margin-right--4">
@@ -42,7 +37,9 @@ import PIcon from '@/atoms/PIcon'
 import type { POfferCardProps } from './POfferCardTypes'
 
 defineProps<POfferCardProps>()
-defineEmits(['selectOfferEvent'])
+defineEmits<{
+  selectOfferEvent: []
+}>()
 </script>
 
 <style lang="scss" scoped>
@@ -60,7 +57,7 @@ defineEmits(['selectOfferEvent'])
   outline: none;
   transition: all 0.3s ease;
 
-  &.disabled {
+  &:disabled {
     pointer-events: none;
     background: var(--el-color-neutral-gray-50);
 

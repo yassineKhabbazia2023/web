@@ -15,6 +15,7 @@
           :pTitle="offer.pTitle"
           :pDescription="offer.pDescription"
           :disabled="offer.disabled"
+          @select-offer-event="logEvent('selectOfferEvent', $event)"
         />
       </div>
     </Variant>
@@ -23,6 +24,7 @@
 
 <script setup lang="ts">
 import POfferCard from './'
+import { logEvent } from 'histoire/client'
 import { reactive } from 'vue'
 import type { POfferCardProps } from './POfferCardTypes'
 
