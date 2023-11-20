@@ -1,6 +1,7 @@
 <template>
   <button
     class="p-offer-card padding-x--4 padding-y--2 radius--2"
+    :disabled="disabled"
     @click="$emit('selectOfferEvent')"
   >
     <div class="p-offer-card__logo margin-right--4">
@@ -18,9 +19,10 @@
         {{ pDescription }}
       </p>
     </div>
-    <div class="p-offer-card__chevron">
+    <div v-if="!disabled" class="p-offer-card__chevron">
       <PIcon
-        color="#5546FF"
+        class="p-offer-card__chevron-icon"
+        color="#171717"
         size="16px"
       >
         <PIChevronRight />
@@ -35,11 +37,14 @@ import PIcon from '@/atoms/PIcon'
 import type { POfferCardProps } from './POfferCardTypes'
 
 defineProps<POfferCardProps>()
-defineEmits(['selectOfferEvent'])
+defineEmits<{
+  selectOfferEvent: []
+}>()
 </script>
 
 <style lang="scss" scoped>
 .p-offer-card {
+  $self: &;
   display: flex;
   width: 100%;
   align-items: center;
@@ -49,13 +54,40 @@ defineEmits(['selectOfferEvent'])
   background: none;
   text-align: left;
   cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
 
-  $this: &;
+  &:disabled {
+    pointer-events: none;
+    background: var(--el-color-neutral-gray-50);
+
+    #{$self}__title {
+      color: var(--el-color-neutral-gray-500)
+    }
+    #{$self}__description {
+      color: var(--el-color-neutral-gray-300)
+    }
+  }
+
   &:hover {
-    border: 1px solid var(--el-color-secondary-amethyste);
+    border: 1px solid var(--el-color-persian-700);
 
-    #{$this}__title {
-      color: var(--el-color-secondary-amethyste);
+    #{$self}__title {
+      color: var(--el-color-persian-500);
+    }
+    #{$self}__chevron-icon {
+      color: var(--el-color-persian-700);
+    }
+  }
+
+  &:active {
+    border: 1px solid var(--el-color-persian-800);
+
+    #{$self}__title {
+      color: var(--el-color-persian-700);
+    }
+    #{$self}__chevron-icon {
+      color: var(--el-color-persian-800);
     }
   }
 
@@ -71,10 +103,6 @@ defineEmits(['selectOfferEvent'])
   &__body {
     width: 100%;
     overflow: hidden;
-
-    &:hover {
-      color: var(--el-color-secondary-amethyste);
-    }
   }
 
   &__title {
@@ -84,10 +112,7 @@ defineEmits(['selectOfferEvent'])
     color: var(--el-color-neutral-gray-900);
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    &:hover {
-      color: var(--el-color-secondary-amethyste);
-    }
+    transition: all 0.3s ease;
   }
 
   &__description {
@@ -95,6 +120,9 @@ defineEmits(['selectOfferEvent'])
     font-weight: 400;
     line-height: 17px;
     color: var(--el-color-neutral-gray-700);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__chevron {
@@ -102,6 +130,7 @@ defineEmits(['selectOfferEvent'])
     display: flex;
     flex-shrink: 0;
     flex-grow: 0;
+    transition: all 0.3s ease;
   }
 }
 </style>
