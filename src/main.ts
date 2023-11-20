@@ -143,8 +143,8 @@ export const PDrawer = defineAsyncComponent(() => import('@/molecules/PDrawer'))
 export const PEntity = defineAsyncComponent(() => import('@/atoms/PEntity'))
 export const PFileAndFolderLineCheck =
 defineAsyncComponent(() => import('@/molecules/PFileAndFolderLineCheck'))
-export const PFileLineNavigationItem =
-defineAsyncComponent(() => import('@/atoms/PFileLineNavigationItem'))
+export const PFolderLineNavigationItem =
+defineAsyncComponent(() => import('@/atoms/PFolderLineNavigationItem'))
 export const PHeader = defineAsyncComponent(() => import('@/molecules/PHeader'))
 export const PHeaderTabs = defineAsyncComponent(() => import('@/atoms/PHeaderTabs'))
 export const PIcon = defineAsyncComponent(() => import('@/atoms/PIcon'))

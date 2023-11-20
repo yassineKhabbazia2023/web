@@ -1,12 +1,14 @@
 <template>
-  <Story title="2. Atoms/FileLineNavigation" icon="radix-icons:divider-horizontal">
+  <Story title="2. Atoms/FolderLineNavigation" icon="radix-icons:divider-horizontal">
     <Variant title="Default">
-      <PFileLineNavigationItem
-        :folderName="firstProps.folderName"
-        :class="{ selected: firstProps.selected, disabled: firstProps.disabled }"
-        :folderId="firstProps.folderId"
+      <PFolderLineNavigationItem
+        :pFolderName="firstProps.folderName"
+        :class="{ pSelected: firstProps.selected, pDisabled: firstProps.disabled }"
+        :pFolderId="firstProps.folderId"
         :pHasArrow="firstProps.pHasArrow"
         :pLeftIcon="firstProps.pLeftIcon"
+        @on-click-folder-navigation="logEvent('on-click-folder-navigation', $event)"
+        @on-db-click-folder-navigation="logEvent('on-db-click-folder-navigation', $event)"
       />
       <template #controls>
         <HstText v-model="firstProps.folderName" title="FolderName" />
@@ -21,7 +23,8 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import PFileLineNavigationItem from './'
+import { logEvent } from 'histoire/client'
+import PFolderLineNavigationItem from './'
 
 const firstProps = reactive({
   selected: false,
@@ -29,7 +32,7 @@ const firstProps = reactive({
   folderName: 'Name of folder',
   folderId: 3116446,
   pHasArrow: true,
-  pLeftIcon: ''
+  pLeftIcon: 'PIFolder'
 })
 </script>
 
