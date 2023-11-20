@@ -4,6 +4,7 @@
     :content="content"
     :placement="placement"
     :disabled="disabled"
+    visible
   >
     <slot />
   </el-tooltip>
@@ -14,7 +15,7 @@ import type { PlacementOptions } from '@/constants/placementOptions'
 import { ElTooltip } from 'element-plus'
 export interface PTooltipProps {
   placement?: PlacementOptions
-  content: string,
+  content: string
   disabled?: boolean
 }
 
@@ -23,3 +24,9 @@ withDefaults(defineProps<PTooltipProps>(), {
   disabled: false
 })
 </script>
+
+<style lang="scss">
+.el-popper {
+  white-space: pre-line; // This update helps to avoid using v-html
+}
+</style>
