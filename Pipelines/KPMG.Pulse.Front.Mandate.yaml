@@ -5,14 +5,20 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+parameters:
+- name: devIndex
+  type: number
+  default: 0
+
 resources:
   repositories:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/Release/v1.0'
+    ref: 'refs/heads/Release/v2.0'
 
 extends:
   template: pipelines/templates/platform.front.mfe.yaml@Pulse
   parameters:
     mfe: mandate
+    devIndex: ${{ parameters.devIndex }}
