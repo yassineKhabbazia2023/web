@@ -11,11 +11,13 @@
         Valeurs d’espacement
       </p>
 
-      <table class="table-layout">
+      <table class="table-layout" aria-label="Valeurs d'espacement">
         <thead>
-          <th>Size (px)</th>
-          <th>Size (rem)</th>
-          <th>Exemple d’utilisation</th>
+          <tr>
+            <th>Size (px)</th>
+            <th>Size (rem)</th>
+            <th>Exemple d’utilisation</th>
+          </tr>
         </thead>
         <tbody>
           <tr>
@@ -85,7 +87,7 @@
         En créant des groupes des principaux appareils utilisés,
         nous pouvons facilement définir des breakpoints.
       </p>
-      <table class="table-layout">
+      <table class="table-layout" aria-label="Breakpoints">
         <thead>
           <th>Nom du breakpoint</th>
           <th>Device</th>

@@ -98,19 +98,21 @@
       </el-row>
     </Variant>
     <Variant title="Border style">
-      <table class="demo-border">
-        <tbody>
+      <table class="demo-border" aria-label="Border style">
+        <thead>
           <tr>
-            <td class="text">
+            <th class="text">
               Name
-            </td>
-            <td class="text">
+            </th>
+            <th class="text">
               Thickness
-            </td>
-            <td class="line">
+            </th>
+            <th class="line">
               Demo
-            </td>
+            </th>
           </tr>
+        </thead>
+        <tbody>
           <tr>
             <td class="text">
               Solid

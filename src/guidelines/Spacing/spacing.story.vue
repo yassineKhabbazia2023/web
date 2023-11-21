@@ -11,10 +11,12 @@
         Types d’espacement
       </p>
 
-      <table class="table-spacing">
+      <table class="table-spacing" aria-label="Types d'espacement">
         <thead>
-          <th>Type de l’espacement + (token)</th>
-          <th>Résultat</th>
+          <tr>
+            <th>Type de l’espacement + (token)</th>
+            <th>Résultat</th>
+          </tr>
         </thead>
         <tbody>
           <tr>
@@ -64,11 +66,13 @@
         Valeurs d’espacement
       </p>
 
-      <table class="table-spacing">
+      <table class="table-spacing" aria-label="Valeurs d'espacement">
         <thead>
-          <th>Nom de l’espacement (token)</th>
-          <th>Size (rem)</th>
-          <th>Exemple d’utilisation</th>
+          <tr>
+            <th>Nom de l’espacement (token)</th>
+            <th>Size (rem)</th>
+            <th>Exemple d’utilisation</th>
+          </tr>
         </thead>
         <tbody>
           <tr>

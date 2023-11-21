@@ -12,9 +12,10 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/bugfix/v6.0persistent'
+    ref: 'refs/heads/Release/v2.0'
 
 extends:
   template: pipelines/templates/platform.front.package.yaml@Pulse
   parameters:
     packageName: Styleguide
+    sonarExclusions: '**/color.ts,**/pulse-icon-gen.js'

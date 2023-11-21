@@ -5,13 +5,17 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+parameters:
+- name: devIndex
+  type: number
+  default: 0
+
 resources:
   repositories:
   - repository: CICD
     name: 'Plateforme Technologique/CICD'
     type: git
     ref: 'refs/heads/Release/v6.0'
-
 
 extends:
   template: PipelineTemplate.yaml@CICD
@@ -34,7 +38,7 @@ extends:
         - lint
         cmd: story:build
         test:
-          resultPath: $(Build.SourcesDirectory)/test-report.xml
+          resultPath: $(Build.SourcesDirectory)/coverage/cobertura-coverage.xml
         publishFeed:
           feedName: Constellation/PlateformePulse
           packageName: front-mfe-StyleGuide
@@ -42,66 +46,69 @@ extends:
             MFE StyleGuide v$(GitVersion.number)
     deploy:
       environments:
-      - name: DEV
-        displayName: Developpement
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-        variables:
-        - name: azureSC
-          value: DEV-MyPulseV2
-        - name: storageAccount
-          value: stpltpulsedevew001
-        - name: cdn_resourcegroup
-          value: rg-plateformepulse-dev-ew1-001
-        - name: cdn_profile
-          value: plateformepulse
-        - name: cdn_endpoint
-          value: sthistoiredevew001
-      - name: Pre_REC
-        displayName: Recette
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-        variables:
-        - name: azureSC
-          value: REC-MyPulseV2
-        - name: storageAccount
-          value: dumb
-        - name: cdn_resourcegroup
-          value: frapprecmypulse0001
-        - name: cdn_profile
-          value: mypulsev2rec
-        - name: cdn_endpoint
-          value: cdn-rec-pulse
-      - name: PREPROD
-        displayName: Preproduction
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-        variables:
-        - name: azureSC
-          value: PPR-MyPulseV2
-        - name: storageAccount
-          value: dumb
-        - name: cdn_resourcegroup
-          value: frapppprmypulse0001
-        - name: cdn_profile
-          value: mypulsebeta
-        - name: cdn_endpoint
-          value: cdn-ppr-pulse
-      - name: PROD
-        displayName: Production
-        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-        variables:
-        - name: azureSC
-          value: PRD-MyPulseV2
-        - name: storageAccount
-          value: dumb
-        - name: cdn_resourcegroup
-          value: frappprdmypulse0001
-        - name: cdn_profile
-          value: mypulse
-        - name: cdn_endpoint
-          value: cdn-prd-pulse
+      - ${{ if ne(parameters.devIndex, 0) }}:
+        - name: DEV
+          displayName: Developpement
+          ${{ if lt(parameters.devIndex, 10) }}:
+            poolAgent: Pulse-dev0${{ parameters.devIndex }}
+          ${{ else }}:
+            poolAgent: Pulse-dev${{ parameters.devIndex }}
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          variables:
+          - name: azureSC
+            value: PULSE-DEV
+          - ${{ if lt(parameters.devIndex, 10) }}:
+            - name: storageAccount
+              value: frdev0${{ parameters.devIndex }}frontsa01platform
+          - ${{ else }}:
+            - name: storageAccount
+              value: frdev${{ parameters.devIndex }}frontsa01platform
+          - name: cdn_resourcegroup
+            value: frdevcommon
+          - name: cdn_profile
+            value: frdevcommoncdn01profile
+          - ${{ if lt(parameters.devIndex, 10) }}:
+            - name: cdn_endpoint
+              value: histoire-dev0${{ parameters.devIndex }}
+          - ${{ else }}:
+            - name: cdn_endpoint
+              value: histoire-dev${{ parameters.devIndex }}
+      - ${{ if contains(variables['Build.SourceBranch'], 'develop') }}:
+        - name: ITG
+          displayName: Developpement
+          poolAgent: Pulse-itg01
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          variables:
+          - name: azureSC
+            value: PULSE-ITG
+          - name: storageAccount
+            value: fritg01frontsa01platform
+          - name: cdn_resourcegroup
+            value: fritgcommon
+          - name: cdn_profile
+            value: fritgcommoncdn01profile
+          - name: cdn_endpoint
+            value: histoire-itg01
+      - ${{ if or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')) }}:
+        - name: REC
+          displayName: Developpement
+          poolAgent: Pulse-itg01
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          variables:
+          - name: azureSC
+            value: PULSE-REC
+          - name: storageAccount
+            value: frrec01frontsa01platform
+          - name: cdn_resourcegroup
+            value: frreccommon
+          - name: cdn_profile
+            value: frreccommoncdn01profile
+          - name: cdn_endpoint
+            value: histoire-rec01
       steps:
       - type: az-blob
         name: Deploy_Mfe_Styleguide
-        artifact: Mfe_Styleguide
+        artifact: Mfe_StyleGuide
         azureServiceConnection: $(azureSC)
         storageAccount: $(storageAccount)
         container: "$web"
@@ -113,3 +120,4 @@ extends:
           endpointName: $(cdn_endpoint)
           waitForCommand: true
           path: '/'
+          type: AFD
