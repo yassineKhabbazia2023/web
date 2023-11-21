@@ -93,8 +93,8 @@ defineEmits<{
 
   &__logo {
     width: 60px;
+    height: 60px;
     display: flex;
-    height: 35px;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
