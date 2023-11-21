@@ -4,7 +4,6 @@
     :content="content"
     :placement="placement"
     :disabled="disabled"
-    visible
   >
     <slot />
   </el-tooltip>
