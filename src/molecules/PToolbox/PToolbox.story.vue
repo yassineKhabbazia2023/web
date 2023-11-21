@@ -1,7 +1,7 @@
 <template>
   <Story title="3. Molecules/Toolbox" icon="radix-icons:dropdown-menu">
     <Variant title="Custum tooltip">
-      <PToolbox :elements="toolboxBasicData">
+      <PToolbox :pElements="toolboxBasicData">
         <PButton> Hover button </PButton>
       </PToolbox>
     </Variant>
@@ -9,34 +9,36 @@
 </template>
 
 <script setup lang="ts">
-import PToolbox from '@/molecules/PToolbox'
 import PButton from '@/atoms/PButton'
-import { ref } from 'vue'
+import PToolbox from '.'
+import type { PToolboxItemProps } from '@/atoms/PToolboxItem/PToolboxItemTypes'
 
-const toolboxBasicData = ref([
+const toolboxBasicData: PToolboxItemProps[] = [
   {
-    iconName: 'PITrash',
-    value: 'Delete',
-    actionName: 'delete'
+    pIconName: 'PITrash',
+    pValue: 'Delete',
+    pActionName: 'delete',
+    pState: 'default'
   },
   {
-    iconName: 'PIAdd',
-    value: 'Add',
-    actionName: 'add'
-
+    pIconName: 'PIAdd',
+    pValue: 'Add',
+    pActionName: 'add',
+    pState: 'default'
   },
   {
-    iconName: 'PIVectorPen',
-    value: 'Rename',
-    actionName: 'rename'
+    pIconName: 'PIVectorPen',
+    pValue: 'Rename',
+    pActionName: 'rename',
+    pState: 'default'
   },
   {
-    iconName: 'PISend',
-    value: 'Transmit',
-    actionName: 'transmit'
-
+    pIconName: 'PISend',
+    pValue: 'Transmit',
+    pActionName: 'transmit',
+    pState: 'danger'
   }
-])
+]
 </script>
 
 <docs lang="md">

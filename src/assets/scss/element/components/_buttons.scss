@@ -188,4 +188,24 @@ $button-padding-horizontal: (
       color: getCssVar('color', 'neutral-gray-300');
     }
   }
+
+  &.p-button--tree {
+    flex-grow: 0;
+    flex-shrink: 0;
+    max-width: 22px;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    margin-left: 8px;
+    border-color: getCssVar('color', 'persian-50');
+    background: getCssVar('color', 'persian-50');
+    color: getCssVar('color', 'persian-500');
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+      border-color: getCssVar('color', 'persian-500');
+      outline: none;
+    }
+  }
 }

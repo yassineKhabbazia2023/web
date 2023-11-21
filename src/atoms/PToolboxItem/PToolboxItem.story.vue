@@ -2,36 +2,41 @@
   <Story title="2. Atoms/ToolboxItem" icon="radix-icons:divider-horizontal">
     <Variant title="Default">
       <PToolboxItem
-        :value="defaultState.value"
-        :hasIcon="defaultState.hasIcon"
+        :pValue="defaultState.pValue"
+        :pIconName="defaultState.pIconName"
+        :pState="defaultState.pState"
         :disabled="defaultState.disabled"
-      >
-        <template #icon>
-          <PIcon size="16">
-            <PITrash />
-          </PIcon>
-        </template>
-      </PToolboxItem>
-
+        :pActionName="defaultState.pActionName"
+      />
       <template #controls>
-        <HstText v-model="defaultState.value" title="value" />
-        <HstCheckbox v-model="defaultState.hasIcon" title="hasIcon" />
+        <HstText v-model="defaultState.pValue" title="Value" />
         <HstCheckbox v-model="defaultState.disabled" title="disabled" />
       </template>
     </Variant>
 
-    <Variant title="Without icon ">
+    <Variant title="Danger">
       <PToolboxItem
-        :value="WithoutIconState.value"
-        :hasIcon="WithoutIconState.hasIcon"
-        :disabled="WithoutIconState.disabled"
-      >
-        <template #icon>
-          x
-        </template>
-      </PToolboxItem>
+        :pValue="defaultState.pValue"
+        :pIconName="defaultState.pIconName"
+        pState="danger"
+        :disabled="defaultState.disabled"
+        :pActionName="defaultState.pActionName"
+      />
       <template #controls>
-        <HstText v-model="WithoutIconState.value" title="value" />
+        <HstText v-model="defaultState.pValue" title="Value" />
+        <HstCheckbox v-model="defaultState.disabled" title="disabled" />
+      </template>
+    </Variant>
+
+    <Variant title="Without icon">
+      <PToolboxItem
+        :pValue="WithoutIconState.pValue"
+        :pIconName="WithoutIconState.pIconName"
+        :disabled="WithoutIconState.disabled"
+        :pActionName="WithoutIconState.pActionName"
+      />
+      <template #controls>
+        <HstText v-model="WithoutIconState.pValue" title="Value" />
         <HstCheckbox v-model="WithoutIconState.disabled" title="disabled" />
       </template>
     </Variant>
@@ -41,18 +46,21 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import PToolboxItem from '@/atoms/PToolboxItem'
-import PIcon from '@/atoms/PIcon'
+import type { PToolboxItemProps } from './PToolboxItemTypes'
 
-const defaultState = reactive({
-  hasIcon: true,
-  value: 'Supprimer',
-  disabled: false
+const defaultState: PToolboxItemProps = reactive({
+  pValue: 'Supprimer',
+  pIconName: 'PITrash',
+  pActionName: 'delete',
+  disabled: false,
+  pState: 'default'
 })
 
 const WithoutIconState = reactive({
-  hasIcon: false,
-  value: 'Hello world',
-  disabled: false
+  pActionName: 'add',
+  pValue: 'Hello world',
+  disabled: false,
+  pIconName: ''
 })
 </script>
 <docs lang="md">

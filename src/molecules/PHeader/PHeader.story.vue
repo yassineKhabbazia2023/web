@@ -25,7 +25,7 @@
         />
       </template>
       <template #header-right>
-        <PToolbox :elements="toolboxBasicData">
+        <PToolbox :pElements="toolboxBasicData">
           <PAvatar
             pShape="circle"
             pType="small"
@@ -42,12 +42,12 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { ref } from 'vue'
 import PHeader from './'
 import PAvatar from '@/atoms/PAvatar'
 import PToolbox from '@/molecules/PToolbox'
 import PHeaderTabs from '@/atoms/PHeaderTabs'
 import PImage from '@/atoms/PImage'
+import type { PToolboxItemProps } from '@/atoms/PToolboxItem/PToolboxItemTypes'
 
 const menu = [
   { pIcon: 'PIColumnsGap', pText: 'Dashboard', pPath: '/' },
@@ -58,19 +58,21 @@ const menu = [
   { pIcon: 'PIChatSquareText', pText: 'Lorem ipsum 5', pPath: '/loremipsum5' },
   { pIcon: 'PIArchive', pText: 'Document', pPath: '/document' }
 ]
-const toolboxBasicData = ref([
+const toolboxBasicData: PToolboxItemProps[] = [
   {
-    iconName: 'PIPerson',
-    value: 'Profile',
-    actionName: 'profile'
+    pIconName: 'PIPerson',
+    pValue: 'Profile',
+    pActionName: 'profile',
+    pState: 'default'
   },
   {
-    iconName: 'PIPower',
-    value: 'Logout',
-    actionName: 'logout'
+    pIconName: 'PIPower',
+    pValue: 'Logout',
+    pActionName: 'logout',
+    pState: 'default'
 
   }
-])
+]
 const route = useRoute()
 
 const routeActive = route.path

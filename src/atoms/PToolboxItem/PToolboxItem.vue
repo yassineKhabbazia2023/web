@@ -1,44 +1,89 @@
 <template>
-  <div :class="['p-toolbox-item', { 'with-icon': hasIcon, disabled: disabled }]">
-    <div class="p-toolbox-item__icon" v-if="hasIcon">
-      <slot name="icon" />
+  <button
+    type="button"
+    :class="['p-toolbox-item', pClassMapper]"
+    :pActionName="pActionName"
+    :disabled="disabled"
+  >
+    <div v-if="pIconName" class="p-toolbox-item__icon margin-right--2">
+      <PIcon size="16">
+        <component :is="resolvedIcons"></component>
+      </PIcon>
     </div>
     <p class="p-toolbox-item__text">
-      {{ value }}
+      {{ pValue }}
     </p>
-  </div>
+  </button>
 </template>
 
 <script setup lang="ts">
-export interface PToolboxItemProps {
-  value: string | number;
-  hasIcon?: boolean;
-  disabled?: boolean;
-}
+import { computed } from 'vue'
+import { iconResolver } from '@/utils/iconResolver'
+import type { PToolboxItemProps } from './PToolboxItemTypes'
 
-withDefaults(defineProps<PToolboxItemProps>(), {
-  hasIcon: false,
-  disabled: false
+const props = withDefaults(defineProps<PToolboxItemProps>(), {
+  disabled: false,
+  pState: 'default',
+  pIconName: ''
+})
+
+const pClassMapper = computed(() => ({
+  [`p-toolbox-item--state-${props.pState}`]: true
+}))
+
+const resolvedIcons = computed(() => {
+  return iconResolver(props.pIconName)
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .p-toolbox-item {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
   padding: 8px 16px;
+  background: none;
+  border: none;
+  appearance: none;
   font-size: 1.4rem;
   line-height: 120%;
+  text-align: left;
   color: var(--el-color-neutral-gray-900);
   user-select: none;
-
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  $self: &;
+
+  &#{$self}--state {
+    &-danger {
+      color: var(--el-color-functionnal-red);
+
+      &:not([disabled]) {
+        &:hover {
+          color: var(--el-color-functionnal-red-txt);
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+          background: var(--el-color-functionnal-red-bg);
+        }
+
+        &:active,
+        &:focus {
+          font-weight: 600;
+          color: var(--el-color-functionnal-red);
+        }
+      }
+    }
+  }
 
   &__icon {
     display: flex;
   }
 
-  &:not(.disabled) {
+  &:not([disabled]) {
     &:hover,
     &:active {
       background: var(--el-color-persian-50);
@@ -49,7 +94,7 @@ withDefaults(defineProps<PToolboxItemProps>(), {
     }
   }
 
-  &.disabled {
+  &:disabled {
     color: var(--el-color-neutral-gray-300);
     cursor: not-allowed;
 
@@ -58,9 +103,6 @@ withDefaults(defineProps<PToolboxItemProps>(), {
     }
   }
 
-  &__icon + &__text {
-    margin-left: 8px;
-  }
   &__text {
     width: 200px;
     overflow: hidden;

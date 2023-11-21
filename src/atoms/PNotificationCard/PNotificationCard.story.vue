@@ -18,7 +18,7 @@
           <span class="font-bold">Alexandre De Lavandia</span> filed you a document <span class="font-bold">liasse-fiscale.pdf</span> inside the folder Publications.
         </template>
         <template #actions>
-          <PToolbox :elements="toolboxBasicData">
+          <PToolbox :pElements="toolboxBasicData">
             <PButton
               pType="generic"
               class="el-button--icon"
@@ -45,34 +45,38 @@ import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import PNotificationCard from './'
 import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
+import type { PToolboxItemProps } from '@/atoms/PToolboxItem/PToolboxItemTypes'
 
 const currentShape = ref<PAvatarProps['pShape']>('circle')
 const currentType = ref<PAvatarProps['pType']>('default')
 const currentColor = ref<PAvatarProps['pColor']>('persian-gradient')
 
-const toolboxBasicData = ([
+const toolboxBasicData: PToolboxItemProps[] = [
   {
-    iconName: 'PICheck',
-    value: 'Mark all read',
-    actionName: 'readall'
+    pIconName: 'PICheck',
+    pValue: 'Mark all read',
+    pActionName: 'readall',
+    pState: 'default'
   },
   {
-    iconName: 'PITrash',
-    value: 'Delete notification',
-    actionName: 'delete'
-
+    pIconName: 'PITrash',
+    pValue: 'Delete notification',
+    pActionName: 'delete',
+    pState: 'default'
   },
   {
-    iconName: 'PIGear',
-    value: 'Access to the notification\'s parameters',
-    actionName: 'parameters'
+    pIconName: 'PIGear',
+    pValue: "Access to the notification's parameters",
+    pActionName: 'parameters',
+    pState: 'default'
   },
   {
-    iconName: 'PIBellSlash',
-    value: 'Disable this type of notifications',
-    actionName: 'disable'
+    pIconName: 'PIBellSlash',
+    pValue: 'Disable this type of notifications',
+    pActionName: 'disable',
+    pState: 'default'
   }
-])
+]
 
 const PNotificationCardData = reactive({
   pIsNew: false,

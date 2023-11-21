@@ -18,10 +18,12 @@
         <!-- eslint-disable vue/no-unused-vars -->
         <template #default="{ node, data }">
           <span>{{ node.label }}</span>
-          <PToolbox :elements="toolboxItems">
+          <PToolbox :pElements="toolboxItems">
             <PButton
               pCircle
-              style="padding: 4px; height: 24px; margin-left: 16px"
+              pType="white"
+              pSize="small"
+              class="p-button--tree"
             >
               <PIcon>
                 <PIThreeDots />
@@ -39,28 +41,33 @@
 import PTree from './'
 import PButton from '@/atoms/PButton'
 import PToolbox from '@/molecules/PToolbox'
+import type { PToolboxItemProps } from '@/atoms/PToolboxItem/PToolboxItemTypes'
 import { logEvent } from 'histoire/client'
 
-const toolboxItems = [
+const toolboxItems: PToolboxItemProps[] = [
   {
-    iconName: 'PITrash',
-    value: 'Delete',
-    actionName: 'delete'
+    pIconName: 'PITrash',
+    pValue: 'Delete',
+    pActionName: 'delete',
+    pState: 'danger'
   },
   {
-    iconName: 'PIAdd',
-    value: 'Add',
-    actionName: 'add'
+    pIconName: 'PIAdd',
+    pValue: 'Add',
+    pActionName: 'add',
+    pState: 'default'
   },
   {
-    iconName: 'PIVectorPen',
-    value: 'Rename',
-    actionName: 'rename'
+    pIconName: 'PIVectorPen',
+    pValue: 'Rename',
+    pActionName: 'rename',
+    pState: 'default'
   },
   {
-    iconName: 'PISend',
-    value: 'Transmit',
-    actionName: 'transmit'
+    pIconName: 'PISend',
+    pValue: 'Transmit',
+    pActionName: 'transmit',
+    pState: 'default'
   }
 ]
 export interface Tree {

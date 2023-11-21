@@ -6,42 +6,31 @@
     <slot />
     <template #dropdown>
       <ElDropdownMenu>
-        <PToolboxItem
-          v-for="(element, index) in elements"
-          :key="index"
-          :value="element.value"
-          :hasIcon="!!element.iconName"
-          @click="$emit('p-toolbox-item-clicked', element.actionName)"
-        >
-          <template #icon>
-            <PIcon size="16">
-              <component :is="resolvedIcons[index]"></component>
-            </PIcon>
-          </template>
-        </PToolboxItem>
+        <ElDropdownItem>
+          <PToolboxItem
+            v-for="({pValue, pIconName, pState, pActionName, disabled}, index) in pElements"
+            :key="index"
+            :pValue="pValue"
+            :pIconName="pIconName"
+            :pState="pState"
+            :disabled="disabled"
+            :pActionName="pActionName"
+            @click="$emit('p-toolbox-item-clicked', pActionName)"
+          />
+        </ElDropdownItem>
       </ElDropdownMenu>
     </template>
   </ElDropdown>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { ElDropdown, ElDropdownMenu } from 'element-plus'
+import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
 import PToolboxItem from '@/atoms/PToolboxItem'
-import { iconsResolver } from '@/utils/iconResolver'
+import type { PToolboxProps } from './PToolboxTypes'
 
-type ToolboxLine = {
-  iconName: string;
-  value: string;
-  actionName: string;
-};
+withDefaults(defineProps<PToolboxProps>(), {
+  pElements: () => []
+})
 
-export interface PToolboxProps {
-  elements: Array<ToolboxLine>;
-}
-
-const props = defineProps<PToolboxProps>()
 defineEmits(['p-toolbox-item-clicked'])
-
-const resolvedIcons = computed(() => iconsResolver(props.elements, 'iconName'))
 </script>
