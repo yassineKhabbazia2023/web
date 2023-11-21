@@ -161,6 +161,7 @@
               :label="t('city')"
             >
               <PInput v-model="createMandateForm.city"/>
+
             </PFormItem>
           </PCol>
         </PRow>
@@ -180,7 +181,8 @@
               prop="institutionCode"
               inline
               :label="`${t('institutionCode')}`"
-              :showMessage="validationError ? false : true"
+              :showMessage="(!validationError || !isBankCodeValid)
+              && !isNonScrappable && !isScrappable"
               :validateStatus="validationError ? 'error' : ''"
               disabled
             >
@@ -188,7 +190,7 @@
                 data-testid="institutionCode-input-test"
                 v-model="createMandateForm.institutionCode"
                 placeholder="_ _ _ _ _"
-                @blur="checkFields"
+                @blur="checkFields()"
                 state="default"
               >
               </PInput>
@@ -199,7 +201,7 @@
               prop="branchCode"
               inline
               :label="`${t('branchCode')}`"
-              :showMessage="validationError ? false : true"
+              :showMessage="!validationError"
               :validateStatus="validationError ? 'error' : ''"
               disabled
             >
@@ -207,7 +209,7 @@
                 data-testid="branchCode-input-test"
                 v-model="createMandateForm.branchCode"
                 placeholder="_ _ _ _ _"
-                @blur="checkFields"
+                @blur="checkFields()"
                 state="default"
               >
               </PInput>
@@ -228,7 +230,7 @@
                 data-testid="accountNumber-input-test"
                 v-model="createMandateForm.accountNumber"
                 placeholder="_ _ _ _ _ _ _ _ _ _ _"
-                @blur="checkFields"
+                @blur="checkFields()"
                 state="default"
               >
               </PInput>
@@ -239,7 +241,7 @@
               prop="key"
               inline
               :label="`${t('key')}`"
-              :showMessage="validationError ? false : true"
+              :showMessage="!validationError"
               :validateStatus="validationError ? 'error' : ''"
               disabled
             >
@@ -247,7 +249,7 @@
                 data-testid="key-input-test"
                 v-model="createMandateForm.key"
                 placeholder="_ _"
-                @blur="checkFields"
+                @blur="checkFields()"
                 state="default"
               >
               </PInput>
@@ -267,12 +269,15 @@
             disabled
           />
         </PFormItem>
-        <PAlert type="danger" v-if="isScrapable">
+        <PAlert type="danger" v-if="isScrappable">
           {{ t('form.error.notListed') }}
           <span class="create-mandate-form__content--bold">
             {{ t('form.error.frFmMandat') }}
           </span>
           {{ t('form.error.contactTeam') }}
+        </PAlert>
+        <PAlert type="danger" v-if="isNonScrappable">
+          {{ t('form.error.nonScrappable') }}
         </PAlert>
       </div>
     </PForm>
@@ -320,6 +325,7 @@
         validNumber: 'Please input a valid number'
         ibsNotFound: 'IBS number not found.'
         outWalletIBS: 'The IBS must be part of your portfolio and have active engagement.'
+        nonScrappable: 'This bank is not scrappable.'
   fr-FR:
     ibs-number: 'Numéro IBS'
     company-name: 'Raison sociale'
@@ -361,12 +367,13 @@
         ibsNotFound: "Le numéro IBS saisi n'est pas reconnu."
         outWalletIBS: "Le numéro d'IBS saisi doit faire
          parti de votre portefeuille et avoir un engagement actif."
+        nonScrappable: 'Cette banque n''est pas scrappable.'
 </i18n>
 
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
-import { ref, reactive, watch, computed, nextTick } from 'vue'
-import { createMandate, validateIban, getBankDetail } from '@/services/mandate'
+import { ref, reactive, watch, computed } from 'vue'
+import { validateIban, getBankDetail, getCompany } from '@/services/mandate'
 import { Rule } from './FormModels'
 import {
   PICheck,
@@ -392,9 +399,12 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
+// Emits
+const emit = defineEmits(['enable-disable-next', 'enable-disable-validate', 'update-mandate-model'])
+
 // Reactive state
 const createMandateFormRef = ref<any>()
-const createMandateForm = reactive<any>({
+const createMandateForm: any = reactive({
   erpId: '',
   siretNumber: '',
   name: '',
@@ -416,7 +426,11 @@ const createMandateForm = reactive<any>({
 const isIBSValid = ref(false)
 const customErrorMessage = ref('')
 const validationError = ref(false)
-const isScrapable = ref(false)
+const isScrappable = ref(false)
+const isNonScrappable = ref(false)
+const isBankCodeValid = ref(false)
+const isRibValid = ref(false)
+const isValidateEnabled = computed(() => isBankCodeValid.value && isRibValid.value)
 
 // Computed properties
 const areFieldsFilled = computed(() => {
@@ -454,7 +468,7 @@ const validateIBS = async (_: Rule, value: string, callback: any) => {
 }
 
 const getDataByIbsNumber = async (ibsNumber: string) => {
-  const { data } = await createMandate({ ibsNumber })
+  const { data } = await getCompany({ ibsNumber })
   if (data.id) {
     const {
       id,
@@ -493,7 +507,7 @@ const checkAndEmitEvents = () => {
   }
 }
 
-const checkRibValidity = async ({
+const checkBbanValidity = async ({
   bankCode,
   branchCode,
   accountNumber,
@@ -509,68 +523,98 @@ const checkRibValidity = async ({
   if (!valid) {
     customErrorMessage.value = t('form.error.bankingInfoNotRecognized')
     validationError.value = true
-    createMandateForm.bank = ''
-    emit('enable-disable-validate', false)
   }
-
-  return valid
+  emit('update-mandate-model', {
+    erpId: createMandateForm.erpId,
+    bban: {
+      bankCode: createMandateForm.institutionCode,
+      branchCode: createMandateForm.branchCode,
+      accountNumber: createMandateForm.accountNumber,
+      checkDigits: createMandateForm.key
+    },
+    address: {
+      street: createMandateForm.street,
+      addressComplement: createMandateForm.addressComplement,
+      zipCode: createMandateForm.zipCode,
+      city: createMandateForm.city,
+      country: createMandateForm.country
+    },
+    signatory: {
+      title: createMandateForm.title,
+      firstName: createMandateForm.firstName,
+      lastName: createMandateForm.lastName,
+      email: createMandateForm.email
+    }
+  })
+  isRibValid.value = valid
 }
 
 const getBankInformation = async (bankCode: string) => {
-  const bank: any = await getBankDetail(bankCode)
-  if (bank.jeDeclare.isScrapable) {
-    isScrapable.value = true
-    createMandateForm.bank = ''
-    emit('enable-disable-validate', false)
-    return
-  }
+  try {
+    const bank: any = await getBankDetail(bankCode)
+    if (bank.jeDeclare.jdcPartnership === 'Scrappable') {
+      isScrappable.value = true
+      createMandateForm.bank = ''
+      isBankCodeValid.value = false
+      return { status: 'error-scrappable', data: null }
+    }
 
-  isScrapable.value = false
-  createMandateForm.bank = bank.name
-  emit('enable-disable-validate', true)
+    if (bank.jeDeclare.jdcPartnership === 'NonScrappable') {
+      isNonScrappable.value = true
+      createMandateForm.bank = bank.name
+      isBankCodeValid.value = false
+      return { status: 'error-non-scrappable', data: null }
+    }
+
+    isScrappable.value = false
+    createMandateForm.bank = bank.name
+    isBankCodeValid.value = true
+    return { status: 'success', data: bank }
+  } catch (error: any) {
+    createMandateForm.bank = ''
+    isBankCodeValid.value = false
+    return { status: 'error-not-found', error: error?.response?.data?.message }
+  }
 }
 
 const resetValidation = () => {
   emit('enable-disable-validate', false)
-  createMandateForm.bank = ''
   customErrorMessage.value = ''
   validationError.value = false
-  isScrapable.value = false
+  isScrappable.value = false
+  isNonScrappable.value = false
 }
 
-const checkFields = async () => {
+const isBbanComplete = () => {
   const fieldsToValidate = [
     'institutionCode',
     'branchCode',
     'accountNumber',
     'key'
   ]
-  const allFieldsFilled = fieldsToValidate.every(
-    (field) => createMandateForm[field] !== ''
-  )
 
-  if (!allFieldsFilled) {
+  return fieldsToValidate.every(field => createMandateForm[field] !== '')
+}
+
+const checkFields = async () => {
+  try {
     resetValidation()
-    return
-  }
-
-  await nextTick()
-  createMandateFormRef?.value?.validateField(
-    fieldsToValidate,
-    async (_: any) => {
-      resetValidation()
-      const validity = await checkRibValidity({
+    const validInstitutionCode = await createMandateFormRef?.value?.validateField('institutionCode')
+    if (validInstitutionCode) {
+      await getBankInformation(createMandateForm.institutionCode)
+    }
+  } catch (_) {
+  } finally {
+    if (isBbanComplete()) {
+      await checkBbanValidity({
         bankCode: createMandateForm.institutionCode,
         branchCode: createMandateForm.branchCode,
         accountNumber: createMandateForm.accountNumber,
         checkDigits: createMandateForm.key
       })
-      if (!validity) {
-        return
-      }
-      await getBankInformation(createMandateForm.institutionCode)
     }
-  )
+    emit('enable-disable-validate', isValidateEnabled.value)
+  }
 }
 
 // Utility functions
@@ -580,21 +624,28 @@ const createRule = (message: string, trigger = 'blur') => ({
   trigger
 })
 
+const validateInstitutionCode = async (value: string, callback: any) => {
+  const result = await getBankInformation(value)
+  if (result?.status === 'error-not-found') {
+    callback(new Error(result?.error))
+  }
+}
+
 const createValidator = (
   length: number,
   regex: any,
   errorMsg: string,
-  customError: any,
-  regexErrorMsg?: string
+  regexErrorMsg?: string,
+  fieldName?: string
 ) => ({
   required: true,
-  validator: (_: any, value: string, callback: any) => {
+  validator: async (_: any, value: string, callback: any) => {
     if (value.length !== length) {
       callback(new Error(errorMsg))
     } else if (!regex.test(value)) {
       callback(new Error(regexErrorMsg))
-    } else if (customError.value) {
-      callback(new Error(t('form.error.bankingInfoNotRecognized')))
+    } else if (fieldName === 'institutionCode') {
+      await validateInstitutionCode(value, callback)
     } else {
       callback()
     }
@@ -624,6 +675,7 @@ const rules = reactive<any>({
   lastName: [createRule(t('form.error.requiredField'))],
   email: [{ validator: validateEmail, trigger: 'blur' }],
   street: [createRule(t('form.error.requiredField'))],
+  address: [createRule(t('form.error.requiredField'))],
   zipCode: [
     createRule(t('form.error.requiredField')),
     {
@@ -646,8 +698,8 @@ const rules = reactive<any>({
       5,
       /^\d+$/,
       t('form.error.input_5_chars'),
-      validationError,
-      t('form.error.only_numbers')
+      t('form.error.only_numbers'),
+      'institutionCode'
     )
   ],
   branchCode: [
@@ -655,7 +707,6 @@ const rules = reactive<any>({
       5,
       /^\d+$/,
       t('form.error.input_5_chars'),
-      validationError,
       t('form.error.only_numbers')
     )
   ],
@@ -664,7 +715,6 @@ const rules = reactive<any>({
       11,
       /^[a-zA-Z0-9]+$/,
       t('form.error.input_11_chars'),
-      validationError,
       t('form.error.alphanumeric_only')
     )
   ],
@@ -673,7 +723,6 @@ const rules = reactive<any>({
       2,
       /^\d+$/,
       t('form.error.input_2_chars'),
-      validationError,
       t('form.error.only_numbers')
     )
   ]
@@ -688,9 +737,6 @@ watch(
     createMandateForm.erpId = value.replace(/[^0-9]/i, '')
   }
 )
-
-// Emits
-const emit = defineEmits(['enable-disable-next', 'enable-disable-validate'])
 
 // Expose
 defineExpose({

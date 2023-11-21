@@ -7,6 +7,7 @@
       :pagesCount="mandatesCollection.counters.all"
       :pagesRanges="[10, 20, 30]"
       showTotalPageCounter
+      class="padding-left--6 padding-right--6"
     />
   </div>
 </template>

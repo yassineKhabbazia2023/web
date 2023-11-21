@@ -12,9 +12,10 @@ mandat signé : GET /mandate/{mandateId}/signed
 upload d'un nouveau mandat signé: POST /mandate/{mandateId}/signed
 
 */
-import { BbanModel } from '@/components/CreateMandate/Form/FormModels'
+import { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
-export const createMandate = async ({
+// export const createMandate = async ({
+export const getCompany = async ({
   ibsNumber
 }: { ibsNumber: string }): Promise<any> =>
   api().mandate.get(`/company/${ibsNumber}`)
@@ -58,32 +59,11 @@ export const validateIban = async ({
   }
 }
 
-export const getBankDetail = async (iban: string) => {
-  // Simulate a delay (e.g., network request)
-  await new Promise(resolve => setTimeout(resolve, 1000))
+export const getBankDetail = async (bankCode: string) => {
+  const { data } = await api().mandate.get(
+    `bank/${bankCode}`)
 
-  // Dummy logic: If the iban ends with an even number, consider it valid
-  const isScrapable = parseInt(iban.slice(-1)) === 0
-
-  /* const { data: valid } = await api().mandate.get(
-    `bank/${bankCode}`) */
-  /* {
-      "code": "12345",
-      "name": "Banque postale",
-      "jeDeclare": {
-        "isPartner": true,
-        "isScrapable": true
-      }
-    } */
-
-  return {
-    code: iban,
-    name: 'Banque postale',
-    jeDeclare: {
-      isPartner: true,
-      isScrapable
-    }
-  }
+  return data
 }
 
 /* export const getMandatesCollection = async ({
@@ -139,3 +119,11 @@ export const getMandatesCollection = async () => {
     }
   })
 }
+
+export const createMandate = async ({
+  erpId,
+  signatory,
+  address,
+  bban
+}: CreateMandateModel): Promise<any> =>
+  api().mandate.post('/mandate', { erpId, signatory, address, bban })

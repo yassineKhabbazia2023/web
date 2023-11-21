@@ -94,6 +94,12 @@ import {
 } from '@kpmg/styleguide'
 import { downloadDocumentById } from '@/services/mandate'
 // const toastPlugin:any = inject('toast')
+/* defineProps({
+  documentId: {
+    type: String,
+    required: true
+  }
+}) */
 
 const downloadMandate = async () => {
   // const { data, headers } = await downloadDocumentById(

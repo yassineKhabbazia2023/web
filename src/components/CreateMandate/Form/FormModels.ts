@@ -1,19 +1,3 @@
-/* export interface FormModel {
-    [key: string]: string
-    ibs: string
-    siretNumber: string
-    name: string
-    title: string
-    firstName: string
-    lastName: string
-    email: string
-    address: string
-    addressComplement: string
-    zipCode: string
-    city: string
-    country: string
-} */
-
 export interface CompanyModel {
     id: string
     name: string
@@ -61,4 +45,11 @@ export interface Rules {
     zipCode: Rule[]
     city: Rule[]
     country: Rule[]
+}
+
+export interface CreateMandateModel {
+    erpId: Pick<CompanyModel, 'erpId' >
+    address: Pick<CompanyModel, 'address' >
+    signatory: Pick<CompanyModel, 'signatory' >
+    bban: BbanModel
 }
