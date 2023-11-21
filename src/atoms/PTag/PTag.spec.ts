@@ -1,36 +1,30 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import PTag from '.'
-import { ElTag } from 'element-plus'
 import { PIPulse } from '@/atoms/PIcon/components'
+import PTag from '.'
 
 const createWrapper = (props: any = {}) =>
   mount(PTag, {
-    props,
-    global: {
-      components: {
-        ElTag
-      }
-    }
+    props
   })
 
 describe('pTag', () => {
   describe('props', () => {
     it.each([
       {
-        iconLeft: PIPulse,
+        pIconLeft: PIPulse,
         shouldHaveIconLeftClass: true,
         text: 'show'
       },
       {
-        iconLeft: '',
+        pIconLeft: '',
         shouldHaveIconLeftClass: false,
         text: 'hide'
       }
-    ])('should $text icon zone when iconLeft is $shouldHaveIconLeftClass',
-      ({ iconLeft, text, shouldHaveIconLeftClass }) => {
+    ])('should $text icon zone when pIconLeft is $shouldHaveIconLeftClass',
+      ({ pIconLeft, text, shouldHaveIconLeftClass }) => {
         const wrapper = createWrapper({
-          iconLeft,
+          pIconLeft,
           text
         })
         const hasIconLeftClass = wrapper.find('.el-tag__icon--left').exists()
@@ -41,19 +35,19 @@ describe('pTag', () => {
     )
     it.each([
       {
-        iconRight: PIPulse,
+        pIconRight: PIPulse,
         shouldHaveIconRightClass: true,
         text: 'show'
       },
       {
-        iconRight: '',
+        pIconRight: '',
         shouldHaveIconRightClass: false,
         text: 'hide'
       }
-    ])('should $text icon zone when iconRight is $shouldHaveIconRightClass',
-      ({ iconRight, text, shouldHaveIconRightClass }) => {
+    ])('should $text icon zone when pIconRight is $shouldHaveIconRightClass',
+      ({ pIconRight, text, shouldHaveIconRightClass }) => {
         const wrapper = createWrapper({
-          iconRight,
+          pIconRight,
           text
         })
         const hasIconRightClass = wrapper.find('.el-tag__icon--right').exists()
@@ -65,7 +59,7 @@ describe('pTag', () => {
 
     it('should render the text values of the component', () => {
       const wrapper = createWrapper({
-        content: 'Validated'
+        pContent: 'Validated'
       })
 
       expect(wrapper.find('.el-tag').text())

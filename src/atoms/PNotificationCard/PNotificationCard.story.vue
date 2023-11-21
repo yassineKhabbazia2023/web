@@ -44,7 +44,7 @@ import PToolbox from '@/molecules/PToolbox'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import PNotificationCard from './'
-import { type PAvatarProps } from '@/atoms/PAvatar'
+import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
 
 const currentShape = ref<PAvatarProps['pShape']>('circle')
 const currentType = ref<PAvatarProps['pType']>('default')

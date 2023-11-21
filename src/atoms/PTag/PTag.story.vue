@@ -10,11 +10,11 @@
     <Variant title="Basic usage">
       <PTag
         :pColor="color"
-        :size="currentSize"
-        :effect="currentTheme"
-        :iconLeft="tagBasicData.iconLeft"
-        :iconRight="tagBasicData.iconRight"
-        :content="tagBasicData.content"
+        :pSize="currentSize"
+        :pEffect="currentTheme"
+        :pIconLeft="tagBasicData.iconLeft"
+        :pIconRight="tagBasicData.iconRight"
+        :pContent="tagBasicData.content"
       />
       <template #controls>
         <HstRadio
@@ -30,20 +30,20 @@
         <HstRadio
           v-model="currentTheme"
           title="Theme"
-          :options="ThemeList"
+          :options="themeList"
         />
       </template>
     </Variant>
     <Variant title="Removable Tag">
       <PTag
-        :closable="closable"
+        :pClosable="closable"
         :pColor="color"
-        effect="plain"
-        :disableTransitions="disableTransitions"
+        pEffect="plain"
+        :pDisableTransitions="disableTransitions"
         @close="fireClose"
-        :iconLeft="tagBasicData.iconLeft"
-        :iconRight="tagBasicData.iconRight"
-        :content="tagBasicData.content"
+        :pIconLeft="tagBasicData.iconLeft"
+        :pIconRight="tagBasicData.iconRight"
+        :pContent="tagBasicData.content"
       />
       <template #controls>
         <HstRadio
@@ -58,11 +58,11 @@
     <Variant title="Rounded">
       <PTag
         :pColor="color"
-        :effect="currentTheme"
-        :round="rounded"
-        :iconLeft="tagBasicData.iconLeft"
-        :iconRight="tagBasicData.iconRight"
-        :content="tagBasicData.content">
+        :pEffect="currentTheme"
+        :pRound="rounded"
+        :pIconLeft="tagBasicData.iconLeft"
+        :pIconRight="tagBasicData.iconRight"
+        :pContent="tagBasicData.content">
       </PTag>
       <template #controls>
         <HstRadio
@@ -73,7 +73,7 @@
         <HstButtonGroup
           v-model="currentTheme"
           title="Theme"
-          :options="ThemeList"
+          :options="themeList"
         />
         <HstCheckbox v-model="rounded" title="rounded" />
       </template>
@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { PTagProps } from './PTag'
+import type { PTagProps } from './PTagTypes'
 import { logEvent } from 'histoire/client'
 import { PIStars } from '@/atoms/PIcon/components'
 
@@ -146,8 +146,8 @@ const tagColorList: { label: string; value: PTagProps['pColor'] }[] = [
     value: 'gray-300'
   }
 ]
-const currentSize = ref<PTagProps['size']>('default')
-const tagSizeList: { label: string; value: PTagProps['size'] }[] = [
+const currentSize = ref<PTagProps['pSize']>('default')
+const tagSizeList: { label: string; value: PTagProps['pSize'] }[] = [
   {
     label: 'large',
     value: 'large'
@@ -161,7 +161,7 @@ const tagSizeList: { label: string; value: PTagProps['size'] }[] = [
     value: 'small'
   }
 ]
-const ThemeList: { label: string; value: PTagProps['effect'] }[] = [
+const themeList: { label: string; value: PTagProps['pEffect'] }[] = [
   {
     label: 'Dark',
     value: 'dark'
@@ -175,7 +175,7 @@ const ThemeList: { label: string; value: PTagProps['effect'] }[] = [
     value: 'plain'
   }
 ]
-const currentTheme = ref<PTagProps['effect']>('light')
+const currentTheme = ref<PTagProps['pEffect']>('light')
 function fireClose(e: Event) {
   logEvent('close', e)
 }

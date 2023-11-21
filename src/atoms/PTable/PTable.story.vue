@@ -93,12 +93,12 @@
           >
           <template #default="scope">
             <PTag
-              type="success"
-              size="default"
-              effect="light"
-              :iconLeft="scope.row.tag.iconLeft"
-              :iconRight="scope.row.tag.iconRight"
-              :content="scope.row.tag.content"
+              pColor="success"
+              pSize="default"
+              pEffect="light"
+              :pIconLeft="scope.row.tag.iconLeft"
+              :pIconRight="scope.row.tag.iconRight"
+              :pContent="scope.row.tag.content"
             >
             </PTag>
           </template>
