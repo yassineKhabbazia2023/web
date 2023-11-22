@@ -33,8 +33,10 @@ export default ({ mode }) =>
         viteExternalsPlugin({
           vue: 'Vue',
           'vue-i18n': 'VueI18n',
+          'vue-router': 'VueRouter',
           pinia: 'Pinia',
-          '@kpmg/common': 'Common'
+          '@kpmg/common': 'Common',
+          'env-vars': 'EnvVars'
         }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
         cssInjectedByJsPlugin()
       ],
@@ -63,9 +65,6 @@ export default ({ mode }) =>
       },
       preview: {
         port: PORT
-      },
-      test: {
-        testTimeout: 50000
       }
     }
   ))
