@@ -65,7 +65,8 @@
             </PIcon>
           </PButton>
           <PButton
-            type=""
+            data-ut="deploy-button"
+            type="primary"
             size="small"
             :plain="false"
             :round="false"
@@ -81,9 +82,11 @@
         </template>
       </PTableColumn>
     </PTable>
-    <SubscriptionDemand
-      v-if="openDrawer"
-      v-model="openDrawer"
+    <OffersDrawer
+      data-ut="offers-drawer"
+      v-if="openOffersDrawer"
+      v-model="openOffersDrawer"
+      :subscriptionOffers="subscriptionOffers"
     />
   </div>
 </template>
@@ -104,6 +107,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import {
+  PIAdd,
   PButton,
   PEntity,
   PIcon,
@@ -113,12 +117,15 @@ import {
   PIPeople,
   PTable,
   PTableColumn,
-  PText,
-  PIAdd
+  PText
 } from '@kpmg/styleguide'
 import { computed, onMounted, ref } from 'vue'
 import { useEntityStore } from '@/stores/entity-store'
-import SubscriptionDemand from '@/pages/subscriptions/subscriptionDemand'
+import OffersDrawer from '@/pages/entities/components/OffersDrawer'
+import type {
+  SubscriptionOffer
+} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { getSubscriptionOffers } from '@/services/SubscriptionOffersService'
 import { commonStore } from '@kpmg/common'
 import { storeToRefs } from 'pinia'
 
@@ -185,14 +192,13 @@ const tableRowClassName = ({ row }: any) => {
   return ''
 }
 
-const openDrawer = ref(false)
-const drawerHandler = (accountNumber: string) => {
-  console.log(accountNumber)
-  openDrawer.value = true
+const openOffersDrawer = ref(false)
+const subscriptionOffers = ref<SubscriptionOffer[]>([])
+
+async function drawerHandler(accountNumber: string) {
+  subscriptionOffers.value = await getSubscriptionOffers(accountNumber)
+  openOffersDrawer.value = true
 }
-defineExpose({
-  openDrawer
-})
 
 onMounted(async () => {
   await getEntities()

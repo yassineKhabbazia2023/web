@@ -80,4 +80,20 @@ describe('table-entities', () => {
     const checkIcon = await dynamicUntilFound(wrapper, 'svg[data-test="icon-check"]')
     expect(checkIcon.exists()).toBeTruthy()
   })
+
+  it('open SubscriptionDrawer when user clicks on deploy button', async () => {
+    const wrapper = mount(TableEntities, {
+      global: {
+        plugins: [
+          pinia
+        ]
+      }
+    })
+
+    await dynamicUntilFound(wrapper, '.el-icon')
+    const deployButton = wrapper.find('[data-ut=deploy-button]')
+    await deployButton.trigger('click')
+    const subscriptionDrawer = await dynamicUntilFound(wrapper, '[data-ut="offers-drawer"]')
+    expect(subscriptionDrawer.exists()).toBeTruthy()
+  })
 })
