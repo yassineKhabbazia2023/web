@@ -40,7 +40,7 @@
     levelPasswordStrengthAverage: 'Moyen'
     levelPasswordStrengthWeak: 'Faible'
     conditionValidPassword: 'Le mot de passe doit contenir au moins 8 caractères au total et 4 parmi ce qui suit: '
-    groupsCharacter: 'une lettre majuscule, une lettre minuscule, un chiffre, un caractère spéciale'
+    groupsCharacter: 'une lettre majuscule, une lettre minuscule, un chiffre, un caractère spécial'
 </i18n>
 <!-- eslint-enable max-len -->
 
