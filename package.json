@@ -6,6 +6,7 @@
     "dev": "vite --port 8085",
     "build": "vue-tsc && vite build",
     "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
     "prepare": "husky install",
     "preview": "vite preview",
     "test": "npx vitest run",
