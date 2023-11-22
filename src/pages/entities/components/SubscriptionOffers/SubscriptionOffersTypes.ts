@@ -1,4 +1,4 @@
-interface Product {
+export interface SubscriptionOfferProduct {
   productName: string
   productLabel: string
   isOptionnal: boolean
@@ -7,20 +7,24 @@ interface Product {
   globalProductConfigurationId: string
 }
 
-interface Provider {
+export interface SubscriptionOfferProvider {
   providerName: string
   providerEditor: string
   providerCategory: string
   logoName: string
-  products?: Product[]
+  products?: SubscriptionOfferProduct[]
 }
 
-export interface OfferSubscription {
+export interface SubscriptionOffer {
   globalOfferId: string
   offerName: string
   offerLabel: string
   logoName: string
   offerPrice?: number
-  providers?: Provider[]
+  providers?: SubscriptionOfferProvider[]
   approvalRequired: boolean
+}
+
+export interface SubscriptionOffersProps {
+  subscriptionOffers: SubscriptionOffer[],
 }

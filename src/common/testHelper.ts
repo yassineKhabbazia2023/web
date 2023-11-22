@@ -12,7 +12,3 @@ export async function wrapperFactory(
 
   return wrapper
 }
-
-export function getRandomElIdRemoved(html: string, replacement: string) {
-  return html.replace(/"el-id-(\.+)"/g, `"el-id-${replacement}"`)
-}
