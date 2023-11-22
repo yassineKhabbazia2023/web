@@ -18,10 +18,10 @@
 </template>
 
 <i18n lang="yaml">
-    en-US:
-      drawerTitle: 'Offers available on this folder'
-    fr-FR:
-      drawerTitle: 'Offres activables sur ce dossier'
+  en-US:
+    drawerTitle: 'Offers available on this folder'
+  fr-FR:
+    drawerTitle: 'Offres activables sur ce dossier'
 </i18n>
 
 <script setup lang="ts">

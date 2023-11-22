@@ -23,10 +23,10 @@
 </template>
 
 <i18n lang="yaml">
-    en-US:
-      subtitle: 'Select the offer you whish to activate for this folder'
-    fr-FR:
-      subtitle: 'Sélectionnez l''offre que vous souhaitez activer pour ce dossier'
+  en-US:
+    subtitle: 'Select the offer you whish to activate for this folder'
+  fr-FR:
+    subtitle: 'Sélectionnez l''offre que vous souhaitez activer pour ce dossier'
 </i18n>
 
 <script setup lang="ts">

@@ -1,4 +1,4 @@
-import type { SubscriptionOffers } from './SubscriptionOffersTypes'
+import type { SubscriptionOffer } from './SubscriptionOffersTypes'
 
 export function getMockedSubscriptionOffers() {
   const Subscription = [{
@@ -54,7 +54,7 @@ export function getMockedSubscriptionOffers() {
     offerPrice: 0,
     providers: [],
     approvalRequired: true
-  }] satisfies SubscriptionOffers[] as SubscriptionOffers[]
+  }] satisfies SubscriptionOffer[] as SubscriptionOffer[]
 
   return Subscription
 }

@@ -20,7 +20,7 @@ describe('subscriptionOffers', () => {
           }
         })
         const offers = wrapper.findAll('[data-ut=offer-list] [data-ut=offer-item]')
-        expect(offers).toHaveLength(offers.length)
+        expect(offers).toHaveLength(subscriptionOffers.length)
       }
     )
   })
