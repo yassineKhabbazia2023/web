@@ -1,7 +1,6 @@
 <template>
   <PPagination
     :showTotalPageCounter="showTotalPageCounter"
-    :pagesRanges="pagesRanges"
     :pageSizes="pagesRanges"
     :total="pagesCount"
     :pageSizeSelectorSuffix="pageRangeSelectorSuffix"

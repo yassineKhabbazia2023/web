@@ -62,60 +62,28 @@ export const validateIban = async ({
 export const getBankDetail = async (bankCode: string) => {
   const { data } = await api().mandate.get(
     `bank/${bankCode}`)
-
   return data
 }
 
-/* export const getMandatesCollection = async ({
+export const getMandatesCollection = async ({
   skip = 0, limit = 10, searchTerm = '', creationDateStart = '',
   creationDateEnd = '',
   modificationDateStart = '', modificationDateEnd = '',
-  statusCodes = [], sortCriteria = '', sortOrder = 'Descending', apiConnected = false
-} = {}) */
-export const getMandatesCollection = async () => {
-  // signature: /mandate
-  return Promise.resolve({
-    data: {
-      counters: {
-        all: 33,
-        status10: 1,
-        status20: 3,
-        status30: 4,
-        status40: 24,
-        status50: 0
-      },
-      data: [
-        {
-          id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
-          erpId: '1000265308',
-          companyName: 'Boulangerie du canal',
-          accountNumber: '66842913356',
-          bankName: 'Crédit Agricole',
-          creationDate: '2022-04-14T13:12:31.926Z',
-          modificationDate: '2023-09-17T13:12:31.926Z',
-          statusCode: '40'
-        },
-        {
-          id: 'e4ec92f2-a375-4574-b6de-235a9fe13029',
-          erpId: '1000265309',
-          companyName: 'Fleurs and co.',
-          accountNumber: '66842913357',
-          bankName: 'BNP Paribas',
-          creationDate: '2021-09-14T13:12:31.926Z',
-          modificationDate: '2023-08-17T13:12:31.926Z',
-          statusCode: '20'
-        },
-        {
-          id: 'e4ec92f2-a375-4574-b6de-235a9fe13030',
-          erpId: '1000265310',
-          companyName: 'La compagnie du voyage',
-          accountNumber: '66842913358',
-          bankName: 'Société Générale',
-          creationDate: '2020-08-14T13:12:31.926Z',
-          modificationDate: '2023-06-11T13:12:31.926Z',
-          statusCode: '30'
-        }
-      ]
+  statusCodes = [], sortCriteria = '', sortOrder = 'Descending'
+} = {}) => {
+  return api().mandate.get('/mandate', {
+    params:
+    {
+      skip,
+      limit,
+      searchTerm,
+      creationDateStart,
+      creationDateEnd,
+      modificationDateStart,
+      modificationDateEnd,
+      statusCodes,
+      sortCriteria,
+      sortOrder
     }
   })
 }

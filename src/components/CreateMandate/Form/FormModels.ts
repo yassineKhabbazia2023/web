@@ -1,21 +1,15 @@
-export interface CompanyModel {
-    id: string
-    name: string
-    siretNumber: string
-    erpId: string
-    signatory: {
-        title: string
-        firstName: string
-        lastName: string
-        email: string
-    },
-    address: {
-        street: string
-        addressComplement: string
-        zipCode: string
-        city: string
-        country: string
-    }
+interface Signatory{
+    title: string
+    firstName: string
+    lastName: string
+    email: string
+}
+interface Address {
+    street: string
+    addressComplement: string
+    zipCode: string
+    city: string
+    country: string
 }
 
 export interface BbanModel {
@@ -23,11 +17,6 @@ export interface BbanModel {
     branchCode: string
     accountNumber: string
     checkDigits: string
-}
-
-export interface CreateMandateFormModel {
-    company: CompanyModel,
-    bban: BbanModel
 }
 
 export interface Rule {
@@ -48,8 +37,8 @@ export interface Rules {
 }
 
 export interface CreateMandateModel {
-    erpId: Pick<CompanyModel, 'erpId' >
-    address: Pick<CompanyModel, 'address' >
-    signatory: Pick<CompanyModel, 'signatory' >
+    erpId: string
+    address: Address
+    signatory: Signatory
     bban: BbanModel
 }

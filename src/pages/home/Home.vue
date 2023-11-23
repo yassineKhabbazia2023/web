@@ -1,13 +1,13 @@
 <template>
   <div>
     <Header />
-    <ListMandate v-if="!loading" :data="mandatesCollection.data" />
+    <ListMandate :data="mandatesCollection.data" />
     <Pagination
-      v-if="!loading"
       :pagesCount="mandatesCollection.counters.all"
       :pagesRanges="[10, 20, 30]"
       showTotalPageCounter
       class="padding-left--6 padding-right--6"
+      @page-selected="updateTableDisplay"
     />
   </div>
 </template>
@@ -41,9 +41,21 @@ onBeforeMount(async () => {
     loading.value = false
   }
 })
-/* const updateTableDisplay = async ({ currentPage, itemsByPage }) => {
-  const offset = (currentPage -1) * itemsByPage
-  const limit = itemsByPage
-} */
+const updateTableDisplay = async ({ currentPage, itemsByPage }:
+  {currentPage: number, itemsByPage: number}) => {
+  try {
+    loading.value = true
+    const skip = (currentPage - 1) * itemsByPage
+    const limit = itemsByPage
+    const { data } = await getMandatesCollection({ skip, limit })
+    mandatesCollection.value = data
+  } finally {
+    loading.value = false
+  }
+}
+
+defineExpose({
+  updateTableDisplay
+})
 </script>
 

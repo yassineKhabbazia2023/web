@@ -158,12 +158,12 @@ import {
 import { createMandate } from '@/services/mandate'
 import Form from '@/components/CreateMandate/Form'
 import DownloadMandate from '@/components/CreateMandate/Download'
-// import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
+import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
 const validateAvailability = ref(false)
-const mandateModel = reactive({
+const mandateModel: CreateMandateModel = reactive({
   erpId: '',
   address: {
     street: '',
@@ -233,11 +233,11 @@ const closeDrawerAndInitStep = () => {
   currentStep.value = 1
 }
 
-const updateMandateModel = (mandate: any) => {
+const updateMandateModel = (mandate: CreateMandateModel) => {
   Object.assign(mandateModel, mandate)
 }
 
-const submitMandate = async (mandate: any) => {
+const submitMandate = async (mandate: CreateMandateModel) => {
   try {
     loading.value = true
     const { data: { id } } = await createMandate(mandate)
