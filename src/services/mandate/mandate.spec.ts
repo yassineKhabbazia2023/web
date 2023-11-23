@@ -1,5 +1,12 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getBankDetail, getMandatesCollection, getCompany, validateIban, createMandate } from '.'
+import {
+  getBankDetail,
+  getMandatesCollection,
+  getCompany,
+  validateIban,
+  createMandate,
+  downloadUnsignedMandate
+} from '.'
 import { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
 const mandatesList = {
@@ -87,6 +94,12 @@ const bankDetailsImplementation = (url: string) => {
   return Promise.reject(new Error('Bank not found'))
 }
 
+const downloadUnsignedMandateImplementation = (url: string) => {
+  if (url === '/mandate/e4ec92f2-a375-4574-b6de-235a9fe13028/unsigned') {
+    return Promise.resolve(new Blob(['unsigned mandate blob'], { type: 'application/pdf' }))
+  }
+}
+
 const listMandatesImplementation = (url: string, filterOptions: any) => {
   if (url && filterOptions) {
     return Promise.resolve({
@@ -126,6 +139,9 @@ vi.mock('@kpmg/common', () => {
           if (/^(bank)\/[\d]+/.test(url)) {
             return bankDetailsImplementation(url)
           }
+          if (/^\/mandate\/([a-zA-Z0-9_-]+)\/unsigned$/.test(url)) {
+            return downloadUnsignedMandateImplementation(url)
+          }
           if (url === '/mandate') {
             return listMandatesImplementation(url, params)
           }
@@ -160,6 +176,14 @@ describe('getBankDetail', () => {
 
   it('should handle errors for an invalid bank code', async () => {
     await expect(getBankDetail('352326')).rejects.toThrow('Bank not found')
+  })
+})
+
+describe('downloadUnsignedMandate', () => {
+  it('should return unsigned mandate', async () => {
+    const unsignedMandate = await downloadUnsignedMandate('e4ec92f2-a375-4574-b6de-235a9fe13028')
+    expect(unsignedMandate)
+      .toStrictEqual(new Blob(['unsigned mandate blob'], { type: 'application/pdf' }))
   })
 })
 

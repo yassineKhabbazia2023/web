@@ -18,7 +18,7 @@
             <p>{{t('deposit')}}</p>
         </div>
         <PFileCard
-            name="mandat-1000308253-12248236612-signature.pdf"
+            :name="`unsigned-mandate-${mandateId}.pdf`"
             format="PDF"
             size=""
             hasIcon
@@ -92,31 +92,49 @@ import {
   PImage,
   PAlert
 } from '@kpmg/styleguide'
-import { downloadDocumentById } from '@/services/mandate'
+import { downloadUnsignedMandate } from '@/services/mandate'
 // const toastPlugin:any = inject('toast')
-/* defineProps({
-  documentId: {
+const props = defineProps({
+  mandateId: {
     type: String,
     required: true
   }
-}) */
-
+})
+declare let window: any
 const downloadMandate = async () => {
-  // const { data, headers } = await downloadDocumentById(
-  await downloadDocumentById(
-    (progressEvent: any) => {
-      /* const downloadProgress = Math.round(
-        (progressEvent.loaded / progressEvent.total) * 100
-      ) */
-      // eslint-disable-next-line no-console
-      console.log('Progress object ', progressEvent)
-      // openLoading()
-      /* context.commit('setDownloadFile', {
-          isDownloading: true,
-          downloadPercentage: downloadProgress
-        }) */
+  try {
+    const { data } = await downloadUnsignedMandate(props.mandateId)
+    if (window && 'showSaveFilePicker' in window) {
+      const fileHandle = await window?.showSaveFilePicker({
+        suggestedName: `unsigned-mandate-${props.mandateId}.pdf`,
+        types: [{
+          description: 'PDF Document',
+          accept: { 'application/pdf': ['.pdf'] }
+        }]
+      })
+
+      // Create a FileSystemWritableFileStream to write to
+      const writableStream = await fileHandle.createWritable()
+
+      // Write the contents of the file to the stream
+      await writableStream.write(data)
+
+      // Close the file and write the contents to disk
+      await writableStream.close()
+    } else {
+      // Fallback to the traditional download method
+      const url = window.URL.createObjectURL(new Blob([data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `unsigned-mandate-${props.mandateId}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(link)
     }
-  )
+  } catch (error) {
+    console.error('Error downloading file:', error)
+  }
 }
 
 /* const openLoading = () => {

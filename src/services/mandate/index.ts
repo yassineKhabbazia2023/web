@@ -20,6 +20,12 @@ export const getCompany = async ({
 }: { ibsNumber: string }): Promise<any> =>
   api().mandate.get(`/company/${ibsNumber}`)
 
+export const downloadUnsignedMandate = async (mandateId: string) => {
+  return await api().mandate.get(`/mandate/${mandateId}/unsigned`, {
+    responseType: 'blob'
+  })
+}
+
 /* export const downloadDocumentById = async (
     { accountId, documentId }: any,
     progressCallback?: (progressEvent: ProgressEvent) => void

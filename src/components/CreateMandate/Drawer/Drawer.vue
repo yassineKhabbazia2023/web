@@ -46,6 +46,7 @@
       @enable-disable-validate="handleValidateAvailability"
       @update-mandate-model="updateMandateModel" />
     <DownloadMandate
+      :mandateId="mandateId"
       v-if="currentStep > 3"
     />
     <template #footer>
@@ -186,7 +187,7 @@ const mandateModel: CreateMandateModel = reactive({
   }
 })
 const loading = ref(false)
-const mandateId = ref(null)
+const mandateId = ref('')
 
 const { t } = useI18n({
   inheritLocale: true,
