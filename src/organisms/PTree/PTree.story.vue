@@ -2,34 +2,38 @@
   <Story title="4. Organisms/Tree" icon="carbon:tree">
     <Variant title="Basic usage">
       <PTree
-        :data="dataSource"
-        :dataKeys="dataKeys"
+        :pData="dataSource"
+        :pDataKeys="dataKeys"
+        pNodeKey="id"
         @p-tree-node-clicked="handlePTreeNodeClicked"
       />
     </Variant>
 
     <Variant title="With custom nodes">
       <PTree
-        :data="dataSource"
-        :dataKeys="dataKeys"
-        hasCustomNodes
+        :pData="dataSource"
+        :pDataKeys="dataKeys"
+        pHasCustomNodes
+        pNodeKey="id"
         @p-tree-node-clicked="handlePTreeNodeClicked"
       >
         <!-- eslint-disable vue/no-unused-vars -->
         <template #default="{ node, data }">
-          <span>{{ node.label }}</span>
-          <PToolbox :pElements="toolboxItems">
-            <PButton
-              pCircle
-              pType="white"
-              pSize="small"
-              class="p-button--tree"
-            >
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
-            </PButton>
-          </PToolbox>
+          <div class="p-tree__custom-node padding-right--2">
+            <span>{{ node.label }}</span>
+            <PToolbox :pElements="toolboxItems">
+              <PButton
+                class="p-button--tree"
+                pCircle
+                pType="white"
+                pSize="small"
+              >
+                <PIcon>
+                  <PIThreeDots />
+                </PIcon>
+              </PButton>
+            </PToolbox>
+          </div>
         </template>
         <!-- eslint-enable vue/no-unused-vars -->
       </PTree>
@@ -71,6 +75,7 @@ const toolboxItems: PToolboxItemProps[] = [
   }
 ]
 export interface Tree {
+  id: number
   label: string
   children?: Tree[]
   customData?: string
@@ -86,13 +91,16 @@ const dataKeys = {
 
 const dataSource: Tree[] = [
   {
+    id: 1,
     label: 'Level one 1',
     customData: 'Something',
     children: [
       {
+        id: 2,
         label: 'Level two 1-1',
         children: [
           {
+            id: 3,
             label: 'Level three 1-1-1'
           }
         ]
@@ -100,20 +108,25 @@ const dataSource: Tree[] = [
     ]
   },
   {
+    id: 4,
     label: 'Level one 2',
     children: [
       {
+        id: 5,
         label: 'Level two 2-1',
         children: [
           {
+            id: 6,
             label: 'Level three 2-1-1'
           }
         ]
       },
       {
+        id: 7,
         label: 'Level two 2-2',
         children: [
           {
+            id: 8,
             label: 'Level three 2-2-1'
           }
         ]
@@ -121,20 +134,25 @@ const dataSource: Tree[] = [
     ]
   },
   {
+    id: 9,
     label: 'Level one 3',
     children: [
       {
+        id: 10,
         label: 'Level two 3-1',
         children: [
           {
+            id: 11,
             label: 'Level three 3-1-1'
           }
         ]
       },
       {
+        id: 12,
         label: 'Level two 3-2',
         children: [
           {
+            id: 13,
             label: 'Level three 3-2-1'
           }
         ]
@@ -143,6 +161,15 @@ const dataSource: Tree[] = [
   }
 ]
 </script>
+
+<style>
+  .p-tree__custom-node {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+</style>
 
 <docs lang="md">
 ## Tree

@@ -2,13 +2,16 @@
   <ElTree
     ref="treeElement"
     class="p-tree"
-    :data="data"
-    :props="dataKeys"
+    :currentNodeKey="pCurrentNodeKey"
+    :defaultExpandedKeys="pDefaultExpandedKeys"
+    :data="pData"
+    :props="pDataKeys"
     :icon="treeLineIcon"
     highlightCurrent
+    :nodeKey="pNodeKey"
     @node-click="handleNodeClicked"
   >
-    <template v-if="hasCustomNodes" #default="slotProps">
+    <template v-if="pHasCustomNodes" #default="slotProps">
       <slot v-bind="slotProps"></slot>
     </template>
   </ElTree>
@@ -22,7 +25,9 @@ import { iconResolver } from '@/utils/iconResolver'
 const treeLineIcon = iconResolver('PICaretRightFill')
 
 withDefaults(defineProps<PTreeProps>(), {
-  hasCustomNodes: false
+  pCurrentNodeKey: undefined,
+  pHasCustomNodes: false,
+  pDefaultExpandedKeys: () => []
 })
 const emit = defineEmits(['p-tree-node-clicked'])
 

@@ -41,10 +41,12 @@ const customNodeSlot = `
   </template>
   `
 const baseProps: PTreeProps = {
-  data: treeData,
-  dataKeys: { label: 'label', children: 'children' },
-  hasCustomNodes: false
+  pData: treeData,
+  pDataKeys: { label: 'label', children: 'children' },
+  pHasCustomNodes: false,
+  pNodeKey: 'label'
 }
+
 const createWrapper = mount(PTree, {
   props: baseProps
 })
@@ -52,7 +54,7 @@ const createWrapper = mount(PTree, {
 const createWrapperWithScopedSlot = mount(PTree, {
   props: {
     ...baseProps,
-    hasCustomNodes: true
+    pHasCustomNodes: true
   },
   slots: {
     default: customNodeSlot
@@ -65,7 +67,7 @@ describe('pTree', () => {
       expect(wrapper.exists()).toBeTruthy()
     })
 
-    it('renders component with custom nodes when hasCustomNodes is true', () => {
+    it('renders component with custom nodes when pHasCustomNodes is true', () => {
       const wrapper = createWrapperWithScopedSlot
 
       const customTreeNodes = wrapper.findAll('.p-custom-tree-node')

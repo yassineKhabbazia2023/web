@@ -4,7 +4,10 @@ type dataKeys = {
 }
 
 export type PTreeProps = {
-  data: Array<any>
-  dataKeys?: dataKeys,
-  hasCustomNodes?: boolean
+  pCurrentNodeKey?: undefined | string | number
+  pData: Array<any>
+  pDataKeys?: dataKeys,
+  pDefaultExpandedKeys?: Array<string | number>
+  pHasCustomNodes?: boolean
+  pNodeKey: string
 }
