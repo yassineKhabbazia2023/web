@@ -72,7 +72,7 @@
             :round="false"
             :disabled="false"
             :loading="false"
-            @click="drawerHandler(scope.row.accountNumber)"
+            @click="drawerHandler"
           >
             <PIcon class="el-button__icon--left">
               <PIAdd />
@@ -125,7 +125,7 @@ import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 import type {
   SubscriptionOffer
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import { getSubscriptionOffers } from '@/services/SubscriptionOffersService'
+import { getAllOffers } from '@/services/offer'
 import { commonStore } from '@kpmg/common'
 import { storeToRefs } from 'pinia'
 
@@ -195,8 +195,8 @@ const tableRowClassName = ({ row }: any) => {
 const openOffersDrawer = ref(false)
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 
-async function drawerHandler(accountNumber: string) {
-  subscriptionOffers.value = await getSubscriptionOffers(accountNumber)
+async function drawerHandler() {
+  subscriptionOffers.value = await getAllOffers()
   openOffersDrawer.value = true
 }
 
