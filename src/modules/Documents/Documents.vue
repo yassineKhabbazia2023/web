@@ -3,7 +3,8 @@
     <DocumentsActionsBar
       :permissions="permissionsList"
       @p-action-bar-button-clicked="handleActionBarButtonClick"
-      :isAnyDocumentSelected="selectedDocuments.length > 0"/>
+      :isAnyDocumentSelected="selectedDocuments.length > 0"
+      @p-upload-files-selected="handleUploadFilesSelected"/>
 
     <DocumentsList
       v-if="documents"
@@ -48,6 +49,31 @@
       @confirm-delete-document="handleConfirmDeleteDocument"
       @cancel-delete-document="handleCancelDeleteDocument"
   />
+  <DocumentMove
+    v-if="selectedFolder"
+    :currentService="currentService"
+    :selectedEntity="selectedEntity"
+    :folder="selectedFolder"
+    :selectedDocuments="selectedDocuments"
+    :isMoveModalOpened="isMoveModalOpened"
+    :currentServiceFolder="currentServiceFolder"
+    @update-source-folders="propagateUpdateSourceFolders"
+    @close-move-documents-modal="handleCloseMoveDocumentsModal"
+    @refresh-documents-list = "fetchDocuments"
+    />
+  <DocumentUpload
+    v-if="selectedFolder && filesSelected"
+    :currentService="currentService"
+    :selectedEntity="selectedEntity"
+    :folder="selectedFolder"
+    :files="filesSelected"
+    :isUploadModalOpened="isUploadModalOpened"
+    :currentServiceFolder="currentServiceFolder"
+    @update-source-folders="propagateUpdateSourceFolders"
+    @close-upload-documents-modal="handleCloseUploadDocumentsModal"
+    @update-document-list-upload="handleUpdateDocumentListAfterUpload"
+    @refresh-documents-list = "fetchDocuments"
+    />
 </template>
 
 <script setup lang="ts">
@@ -67,12 +93,17 @@ import { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
 import DocumentRename from './components/DocumentRename'
+import DocumentMove from './components/DocumentsMove'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { PLoader, PPagination } from '@kpmg/styleguide'
+import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
+import { Folder } from '@/models/Folder'
 
 const props = defineProps<DocumentsProps>()
+const emit = defineEmits(['update-source-folders'])
+
 const documents = ref<DocumentsWithTableStructure | null>(null)
 const currentPage = ref(1)
 const pagesRanges = ref([10, 25, 50, 100])
@@ -135,6 +166,9 @@ const handleToolboxActionTriggered = (action: string) => {
     case 'delete-document':
       isDeletePopupVisible.value = true
       break
+    case 'move-document':
+      handleMoveDocumentEvent()
+      break
     default:
       break
   }
@@ -151,6 +185,9 @@ const handleActionBarButtonClick = (actionName:string) => {
         break
       case 'actionbar-rename-action-click':
         handleRenameDocumentEvent()
+        break
+      case 'actionbar-move-action-click':
+        handleMoveDocumentEvent()
         break
       default:
         break
@@ -173,6 +210,10 @@ const handleDocumentRename = async () => {
   isRenameModalOpened.value = false
   selectedDocuments.value = []
   await fetchDocuments()
+}
+const isMoveModalOpened = ref(false)
+const handleMoveDocumentEvent = () => {
+  isMoveModalOpened.value = true
 }
 
 const handleConfirmDeleteDocument = async () => {
@@ -201,5 +242,32 @@ const fetchDocuments = async () => {
     componentSortQueryField.value
   )
   isLoading.value = false
+}
+
+// upload modal
+const filesSelected = ref<File[]>([])
+const isUploadModalOpened = ref(false)
+
+const handleUploadFilesSelected = (files: File[]) => {
+  if (files && files.length) {
+    filesSelected.value.push(...files)
+    isUploadModalOpened.value = true
+  }
+}
+
+// Documents upload scope
+const propagateUpdateSourceFolders = (createdFolder:Folder) => {
+  emit('update-source-folders', createdFolder)
+}
+
+const handleCloseUploadDocumentsModal = () => {
+  isUploadModalOpened.value = false
+  filesSelected.value = []
+}
+const handleCloseMoveDocumentsModal = () => {
+  isMoveModalOpened.value = false
+}
+const handleUpdateDocumentListAfterUpload = () => {
+
 }
 </script>

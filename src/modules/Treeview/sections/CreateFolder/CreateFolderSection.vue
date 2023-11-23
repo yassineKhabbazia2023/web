@@ -1,6 +1,7 @@
 <!-- eslint-disable @intlify/vue-i18n/no-raw-text -->
 <template>
   <PButton
+    v-if="hasCreateFolderButton"
     type="white"
     class="treeview__new-folder el-button--default"
     size="small"
@@ -22,6 +23,7 @@
     :confirmBtnabel="t('modal.controls.confirm')"
     :isConfirmButtonLoading="isConfirmButtonLoading"
     :selectedFolder="selectedFolder"
+    :isCentered="isCreateFolderModalCentered"
     @on-confirm-create-folder="handleCreateFolder"
     @on-cancel-create-folder="handleCancelCreateFolder"
     @on-close-create-folder="handleCancelCreateFolder"
@@ -46,7 +48,11 @@ const { t } = useI18n({
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
-const props = defineProps<CreateFolderSectionProps>()
+const props = withDefaults(defineProps<CreateFolderSectionProps>(), {
+  isCreateFolderModaleCenterd: false,
+  isCreateFolderModalCentered: false
+})
+
 const emit = defineEmits([
   'update-source-folders',
   'on-close-create-folder'

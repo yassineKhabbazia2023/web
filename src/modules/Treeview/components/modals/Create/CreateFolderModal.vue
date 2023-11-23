@@ -13,6 +13,7 @@
       :isValidInput="isValidInput"
       :showErrorMsg="showErrorMsg"
       :isConfirmButtonLoading="isConfirmButtonLoading"
+      :isCentered="isCentered"
       @on-cancel-action-click="handleCancelActionClick"
       @on-close-modal="handleCloseModal"
       @on-confirm-action-click="handleConfirmActionClick"
@@ -36,7 +37,9 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const props = defineProps<CreateFolderModalProps>()
+const props = withDefaults(defineProps<CreateFolderModalProps>(), {
+  isCentered: false
+})
 
 const emit = defineEmits([
   'on-close-create-folder',

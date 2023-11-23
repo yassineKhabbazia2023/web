@@ -13,5 +13,6 @@ export interface SingleInputModalProps {
   isConfirmButtonLoading: boolean
   defaultInputContentValue?: string
   inputSuffix?: string
+  isCentered?: boolean
 }
 

@@ -28,6 +28,8 @@ const pinia = createPinia()
 const defaultProps: CreateFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
+  isCreateFolderModalCentered: false,
+  hasCreateFolderButton: true,
   selectedFolder: {
     id: 1,
     children: [
@@ -38,7 +40,8 @@ const defaultProps: CreateFolderSectionProps = {
         parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
+        serviceId: 'some-service',
+        iconName: ''
       } as Folder
     ],
     name: 'A',

@@ -96,7 +96,8 @@ const folder = {
         parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
+        serviceId: 'some-service',
+        iconName: ''
       } as Folder
   ],
   name: 'A',

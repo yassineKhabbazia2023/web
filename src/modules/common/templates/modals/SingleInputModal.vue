@@ -4,6 +4,7 @@
       v-model="isDialogVisible"
       @close="handleCloseModal"
       :title="modalTitle"
+      :alignCenter="isCentered"
     >
       <p class="single-input-modal__input-label">
         {{ inputLabel }}
@@ -28,7 +29,7 @@
       <template #footer>
         <div class="p-dialog__footer">
           <PButton
-            class="cancel-action-button"
+            class="cancel-action-button margin-right--4"
             type="secondary"
             size="small"
             @click="handleCancelClick"
@@ -36,7 +37,7 @@
             {{ cancelBtnLabel }}
           </PButton>
           <PButton
-          class="confirm-action-button"
+            class="confirm-action-button"
             type="primary"
             size="small"
             :disabled="isConfirmButtonDisabled"
@@ -68,7 +69,8 @@ const emit = defineEmits([
 ])
 
 const props = withDefaults(defineProps<SingleInputModalProps>(), {
-  isDialogVisible: false
+  isDialogVisible: false,
+  isCentered: false
 })
 
 const inputContent = computed({

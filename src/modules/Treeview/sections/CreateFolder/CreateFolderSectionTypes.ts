@@ -7,4 +7,6 @@ export interface CreateFolderSectionProps {
   entityId: string
   selectedFolder: Folder
   isCreateFolderModalVisible: boolean
+  isCreateFolderModalCentered?: boolean
+  hasCreateFolderButton: boolean
 }

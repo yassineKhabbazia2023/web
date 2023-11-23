@@ -1,17 +1,7 @@
-interface ActionBarButton {
-  buttonName: string
-  buttonType: string
-  buttonIcon: string
-  buttonActionName: string
-  plain: boolean
-  round: boolean
-  circle: boolean
-  loading: boolean
-  disabled: boolean
-  size: string
-}
+import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+
 interface ActionBarButtonWithOrder {
-  actionbarButton: ActionBarButton
+  actionbarButton: ButtonAction
   order: number
 }
 
@@ -27,7 +17,9 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
       circle: false,
       loading: false,
       disabled: false,
-      size: 'small'
+      size: 'small',
+      componentType: 'UPLOAD',
+      multiple: true
     },
     order: 1
   },
@@ -141,7 +133,7 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
   }
 }
 
-export function generateActionBarLeftSideButtons(permissions: string[]): ActionBarButton[] {
+export function generateActionBarLeftSideButtons(permissions: string[]): ButtonAction[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {
     if (leftSideButtons[permission]) {
@@ -159,7 +151,7 @@ export function generateActionBarLeftSideButtons(permissions: string[]): ActionB
 export function generateActionBarRightSideButtons(
   permissions: string[],
   isAnyDocumentSelected: boolean
-): ActionBarButton[] {
+): ButtonAction[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {
     if (rightSideButtons[permission]) {

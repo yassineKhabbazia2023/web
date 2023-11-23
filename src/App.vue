@@ -17,18 +17,20 @@
       />
     </PCol>
 
-    <PCol v-if="currentService" :span="18">
+    <PCol v-if="currentService && currentServiceFolder" :span="18">
       <Documents
         :currentService="currentService"
         :selectedEntity="selectedEntity"
         :selectedFolder="currentFolder"
+        :currentServiceFolder="currentServiceFolder"
+        @update-source-folders="handleUpdateSourceFolder"
       />
     </PCol>
   </PRow>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import Treeview from '@/modules/Treeview'
 import Documents from '@/modules/Documents'
 import { fetchServicesFolders } from '@/services/Folder'
@@ -64,6 +66,8 @@ const fetchGedFoldersAndServices = async () => {
   // Using the first folder serviceId by default
   currentService.value = servicesFolders.value[0][0].serviceId
 
+  servicesFolders.value[0].filter((folder:Folder) => folder.serviceId === currentService.value)
+
   isLoadingServicesOrFolders.value = false
 }
 
@@ -71,6 +75,10 @@ const fetchGedFoldersAndServices = async () => {
 const selectedEntity = ref('93012cc8-77b9-4161-8dbd-61915d935e21')
 const entityServices = ref<null | any>(null)
 const currentService = ref<string | null>(null)
+const currentServiceFolder = computed<null | Folder[]>(() => {
+  return servicesFolders.value
+    .filter((folder:Folder[]) => folder[0].serviceId === currentService.value)[0]
+})
 
 const setCurrentFolderAndService = (folder: Folder) => {
   if (currentFolder.value === folder) return

@@ -1,0 +1,264 @@
+<template>
+  <DocumentModalExplorer
+    v-model="isDocumentExplorerModalOpened"
+    :currentFolder="currentExplorerFolder"
+    :currentServiceFolder="currentServiceFolder"
+    :ExplorerAuthorizedGivenAction="isUploadAuthorized"
+    :currentService="currentService"
+    :selectedEntity="selectedEntity"
+    :documentsSelectorEmptyDocumentsListLabel="t('documentsList.noDeposableDocumentsLabel')"
+    :explorerUnauthorizedGivenActionMessage="t('folderList.explorerUnauthorizedGivenActionMessage')"
+    :foldersListEmptyFolderLabel="t('folderList.foldersListEmptyFolderLabel')"
+    :documents="explorerDocumentsForUploadFlow"
+    :modalActionsButtonsList="modalActionsbuttons"
+    :headerTitle="t('header.title')"
+        :modalTitle="
+      t(
+        'modalTitle',
+        { folderName: currentExplorerFolder.name },
+        numberOfSelectedDocuments
+      )
+    "
+    @close-modal="handleClose"
+    @navigate-to-folder="handleExplorerNavigation"
+    @update-source-folders="propagateUpdateSourceFolders"
+    @modal-action-clicked="handleUploadDocumentClicked"
+  />
+</template>
+
+<script setup lang="ts">
+import { computed, inject, ref, watch } from 'vue'
+import DocumentModalExplorer from '../DocumentsExplorerModal'
+import type { DocumentUploadProps } from './DocumentsUploadTypes'
+import { Folder } from '@/models/Folder'
+import { useI18n } from 'vue-i18n'
+import { generateActionsForModal } from '../DocumentsExplorerModal/helpers/ModalsActionsHelpers'
+import { modalButtonsUpload } from './helpers/ModalUploadActionsHelpers'
+import { uploadDocument } from '@/services/Documents'
+import { mapExplorerDocumentFromFiles } from '../../helpers/documentExplorerMapper'
+import { ExplorerUploadDocument } from './DocumentsUploadTypes'
+import { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import { PICheck } from '@kpmg/styleguide'
+import type { ExplorerDocument } from '../../DocumentsTypes'
+
+const toastPlugin = inject('toast') as unknown as ToastPluginFunc
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local'
+})
+
+const props = defineProps<DocumentUploadProps>()
+const emit = defineEmits([
+  'update:modelValue',
+  'update-source-folders',
+  'close-upload-documents-modal',
+  'update-document-list-upload',
+  'refresh-documents-list'
+])
+
+const currentExplorerFolder = ref<Folder>(props.folder)
+const modalActionsbuttons =
+  ref(generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload))
+
+// eslint-disable-next-line vitest/require-hook
+watch(
+  () => props.isUploadModalOpened,
+  () => {
+    modalActionsbuttons.value.filter(d => d.buttonActionName ===
+      'modal-add-document-action-click')[0].disabled = false
+    if (!explorerDocuments.value.some(d => d.givenActionState === 'TO_DO')) {
+      modalActionsbuttons.value.filter(d => d.buttonActionName ===
+      'modal-add-document-action-click')[0].disabled = true
+    }
+  }, { deep: true }
+)
+const isDocumentExplorerModalOpened = computed({
+  get() {
+    return props.isUploadModalOpened
+  },
+  set(value: boolean) {
+    emit('update:modelValue', value)
+  }
+})
+
+const isUploadAuthorized = computed(() => {
+  return {
+    actionName: 'modal-add-document-action-click',
+    isActionAuthorized: currentExplorerFolder.value.permissions.includes('CAN_UPLOAD_FILES')
+  }
+}
+)
+const explorerDocumentsForUploadFlow = computed(() => explorerDocuments.value)
+// Creating explorer documents
+const explorerDocuments = ref<ExplorerUploadDocument[]>(mapExplorerDocumentFromFiles(props.files))
+
+// eslint-disable-next-line vitest/require-hook
+watch(
+  () => props.files,
+  () => {
+    explorerDocuments.value = mapExplorerDocumentFromFiles(props.files)
+  }, { deep: true }
+)
+
+const numberOfSelectedDocuments = computed(() => {
+  return explorerDocuments.value.filter(
+    (document: ExplorerDocument) =>
+      document.isSelected || document.givenActionState === 'IN_PROGRESS'
+  ).length
+})
+
+// folders navigation management
+const handleExplorerNavigation = (folder: Folder) => {
+  currentExplorerFolder.value = folder
+}
+
+const propagateUpdateSourceFolders = (createdFolder: Folder) => {
+  emit('update-source-folders', createdFolder)
+}
+
+const handleUploadDocumentClicked = async (action: string) => {
+
+  if (action === 'modal-add-document-action-click') {
+    modalActionsbuttons.value = generateActionsForModal(['DEPOT_IN_PROGRESS'], modalButtonsUpload)
+    const selectedDocuments = explorerDocuments.value.filter(d => d.isSelected) || []
+    selectedDocuments.forEach((d) => { d.givenActionState = 'IN_PROGRESS' })
+    await uploadDocumentsInBatches(selectedDocuments)
+    emit('update-document-list-upload')
+
+  }
+  if (action === 'modal-cancel-document-action-click') {
+    handleClose()
+  }
+}
+
+async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
+  let batchIndex = 0
+  let uploadedDocumentCount = 0
+  let documentUploadedWithSuccess = 0
+  const destinationFolder = { ...currentExplorerFolder.value }
+  while (uploadedDocumentCount < documents.length) {
+
+    // Selects up to 5 documents for upload or fewer if remaining documents are less than 5
+    const documentsToUpload =
+      documents.slice(batchIndex, Math.min(batchIndex + 5, documents.length))
+    await Promise.allSettled(documentsToUpload.map(async (document) => {
+      try {
+        uploadedDocumentCount++
+        const uploadResult =
+         await uploadDocument(
+           props.currentService,
+           props.selectedEntity,
+           document.file,
+           currentExplorerFolder.value.id)
+        if (uploadResult) {
+          document.givenActionState = 'DONE'
+          documentUploadedWithSuccess++
+        }
+        return uploadResult
+      } catch (error: any) {
+        document.codeError = error?.response?.status
+        if (document.codeError === '500') {
+          document.givenActionState = 'ERROR'
+        } else {
+          document.givenActionState = 'FAILED'
+        }
+        return null
+      }
+    }))
+
+    batchIndex += 5
+  }
+  triggerSuccessNotification(documentUploadedWithSuccess, destinationFolder.name)
+  if (documents.length === uploadedDocumentCount &&
+    explorerDocuments.value.filter(d => !d.isSelected)) {
+    modalActionsbuttons.value =
+    generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload)
+  }
+
+  if (!explorerDocuments.value.some(d => d.givenActionState === 'TO_DO')) {
+    modalActionsbuttons.value =
+    generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload)
+    modalActionsbuttons.value.filter(d => d.buttonActionName ===
+      'modal-add-document-action-click')[0].disabled = true
+  }
+}
+
+// eslint-disable-next-line vitest/require-hook
+watch(
+  () => props.folder,
+  (folder) => {
+    currentExplorerFolder.value = folder
+  }
+)
+
+// Main modal actions
+const handleClose = () => {
+  if (explorerDocuments.value.some(d => d.givenActionState === 'DONE')) {
+    emit('refresh-documents-list')
+  }
+  explorerDocuments.value = []
+  modalActionsbuttons.value.filter(d => d.buttonActionName ===
+      'modal-add-document-action-click')[0].disabled = false
+  currentExplorerFolder.value = props.folder
+  emit('close-upload-documents-modal')
+}
+
+// Notifications Scope
+const triggerSuccessNotification = (documentsCount: number, folderName : string) => {
+  toastPlugin({
+    message: documentsCount > 1
+      ? t('notifications.successMsg.plural',
+        { documentCount: documentsCount, folderName })
+      : t('notifications.successMsg.single', { folderName }),
+    icon: PICheck,
+    showClose: true,
+    customClass: 'success',
+    position: 'bottom-right'
+  })
+}
+</script>
+
+<!-- eslint-disable max-len -->
+<i18n lang="json">
+{
+  "en-US": {
+    "modalTitle": "Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
+    "folderList": {
+      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier",
+      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+    },
+    "documentsList": {
+      "noDeposableDocumentsLabel": "Aucun document ne peut être déposé dans votre espace documentaire."
+    },
+    "notifications": {
+      "successMsg": {
+        "plural": "Les {documentCount} documents ont été déposés dans le dossier {folderName}",
+        "single": "1 document a été déposé dans le dossier {folderName}"
+      }
+    },
+    "header": {
+      "title": "Certains documents ne peuvent pas être déposés dans votre espace documentaire"
+    }
+  },
+  "fr-FR": {
+    "modalTitle": "Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
+    "folderList": {
+      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier",
+      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+    },
+    "documentsList": {
+      "noDeposableDocumentsLabel": "Aucun document ne peut être déposé dans votre espace documentaire."
+    },
+    "notifications": {
+      "successMsg": {
+        "plural": "Les {documentCount} documents ont été déposés dans le dossier {folderName}",
+        "single": "1 document a été déposé dans le dossier {folderName}"
+      }
+    },
+    "header": {
+      "title": "Certains documents ne peuvent pas être déposés dans votre espace documentaire"
+    }
+  }
+}
+</i18n>

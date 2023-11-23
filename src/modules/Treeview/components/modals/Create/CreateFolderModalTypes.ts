@@ -10,4 +10,5 @@ export interface CreateFolderModalProps {
   confirmBtnabel: string
   isConfirmButtonLoading: boolean
   selectedFolder: Folder
+  isCentered?: boolean
 }

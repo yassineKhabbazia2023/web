@@ -39,7 +39,7 @@ describe('folderArrayHelper.spec', () => {
     const parentId = 135393637
 
     const newFolder = {
-      iconName: null,
+
       id: 1111111111,
       children: [],
       name: 'NewFolder',
@@ -67,7 +67,7 @@ describe('folderArrayHelper.spec', () => {
       const parentId = 11111000
 
       const newFolder = {
-        iconName: null,
+
         id: 1111111111,
         children: [],
         name: 'NewFolder',
@@ -101,7 +101,7 @@ describe('folderArrayHelper.spec', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const serviceId = 'service-id-compta'
     const folderUpdatedData = {
-      iconName: null,
+
       id: 1111111111,
       children: [],
       name: 'NewFolder',
@@ -124,7 +124,7 @@ describe('folderArrayHelper.spec', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const serviceId = 'service-id-compta'
     const folderUpdatedData = {
-      iconName: null,
+
       id: 1111111111,
       children: [],
       name: 'NewFolder',
@@ -151,7 +151,7 @@ describe('folderArrayHelper.spec', () => {
     const beforeSort = [
       ...source[0][0].children[0].children,
       {
-        iconName: null,
+
         id: 1111111112,
         children: [],
         name: 'DEF',
@@ -166,7 +166,7 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-        iconName: null,
+
         id: 1111111111,
         children: [],
         name: 'ABC',
@@ -189,7 +189,7 @@ describe('folderArrayHelper.spec', () => {
     expect(sorted).toBeTruthy()
     expect(source[0][0].children[0].children).toStrictEqual([
       {
-        iconName: null,
+
         id: 135393649,
         children: [],
         name: 'A classer',
@@ -207,7 +207,7 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-        iconName: null,
+
         id: 1111111111,
         children: [],
         name: 'ABC',
@@ -217,7 +217,7 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-        iconName: null,
+
         id: 1111111112,
         children: [],
         name: 'DEF',
@@ -248,7 +248,7 @@ describe('folderArrayHelper.spec', () => {
     const beforeDelete = [
       ...source[0][0].children[0].children,
       {
-        iconName: null,
+
         id: 1111111112,
         children: [],
         name: 'DEF',
@@ -263,7 +263,7 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-        iconName: null,
+
         id: 1111111111,
         children: [],
         name: 'ABC',
@@ -297,7 +297,7 @@ describe('folderArrayHelper.spec', () => {
     const beforeDelete = [
       ...source[0][0].children[0].children,
       {
-        iconName: null,
+
         id: 1111111112,
         children: [],
         name: 'DEF',
@@ -312,7 +312,7 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-        iconName: null,
+
         id: 1111111111,
         children: [],
         name: 'ABC',
@@ -354,7 +354,7 @@ describe('folderArrayHelper.spec', () => {
     const beforeDelete = [
       ...source[0][0].children[0].children,
       {
-        iconName: null,
+
         id: 1111111112,
         children: [],
         name: 'DEF',
@@ -369,7 +369,7 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-        iconName: null,
+
         id: 1111111111,
         children: [],
         name: 'ABC',
@@ -406,7 +406,7 @@ describe('folderArrayHelper.spec', () => {
     const beforeDelete = [
       ...source[0][0].children[0].children,
       {
-        iconName: null,
+
         id: 1111111112,
         children: [],
         name: 'DEF',
@@ -421,7 +421,7 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-        iconName: null,
+
         id: 1111111111,
         children: [],
         name: 'ABC',

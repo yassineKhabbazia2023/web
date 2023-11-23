@@ -2,6 +2,8 @@ import { commonApi as api } from '@kpmg/common'
 import type { Document, DocumentsWithTableStructure } from '@/models/Document'
 import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'
+import { MoveDocumentsRequest } from
+  '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
 
 export const fetchFolderDocuments = async (
   serviceId: Service['ServiceId'],
@@ -79,4 +81,42 @@ export const deleteDocuments = async (
   const deleteFolderUrl = `${serviceId}/${entityId}/documents`
   const apiObject = api().ds
   await apiObject.delete(deleteFolderUrl, { data: { ids: documentIds } })
+}
+
+export const uploadDocument = async (
+  serviceId: Service['ServiceId'] | null,
+  entityId: string,
+  file: File,
+  folderId: number
+): Promise<Document> => {
+  const formData = new FormData()
+  formData.append('file', file)
+  const apiObject = api().ds
+
+  return await apiObject.post(
+    `${serviceId}/${entityId}/folders/${folderId}/documents?notify=true&source=User`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  )
+}
+
+export const moveDocuments = async (
+  serviceId: Service['ServiceId'] | null,
+  entityId: string,
+  fileMove: MoveDocumentsRequest
+): Promise<void> => {
+  const apiObject = api().ds
+  return await apiObject.post(
+    `${serviceId}/${entityId}/documents/move`,
+    JSON.stringify(fileMove),
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
 }

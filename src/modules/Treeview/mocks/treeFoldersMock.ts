@@ -11,7 +11,7 @@ export const foldersData: Folder[][] = [
           id: 135393637,
           children: [
             {
-              iconName: null,
+
               id: 135393649,
               children: [],
               name: 'A classer',
@@ -85,7 +85,7 @@ export const foldersData: Folder[][] = [
           id: 135393666,
           children: [
             {
-              iconName: null,
+
               id: 135393724,
               children: [] as Folder[],
               name: 'A classer',
@@ -123,7 +123,7 @@ export const foldersData: Folder[][] = [
           id: 135393665,
           children: [
             {
-              iconName: null,
+
               id: 135393725,
               children: [],
               name: 'Dossier Annuel',
