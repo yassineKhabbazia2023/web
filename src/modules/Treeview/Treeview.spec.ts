@@ -1,5 +1,5 @@
 import Treeview from '@/modules/Treeview'
-import { mount, type DOMWrapper } from '@vue/test-utils'
+import { mount, type DOMWrapper, flushPromises, VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type TreeviewProps } from '@/modules/Treeview/TreeviewTypes'
 
@@ -15,8 +15,16 @@ import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { PTree } from '@kpmg/styleguide'
 import TreeNode from './components/TreeNode/TreeNode.vue'
-import { nextTick } from 'vue'
+import { ComponentPublicInstance, nextTick } from 'vue'
+import { downloadFolder } from '@/services/Folder'
+type TreeviewSetup = {
+  currentFolderName: string
+  currentFolderId: number
+}
 
+export type TreeviewWrapper = VueWrapper<
+  ComponentPublicInstance<TreeviewSetup, TreeviewProps>
+>
 const pinia = createPinia()
 
 const defaultProps: TreeviewProps = {
@@ -42,9 +50,12 @@ vi.mock('@kpmg/common', async () => ({
     $post: vi.fn()
   })
 }))
+vi.mock('@/services/Folder', () => ({
+  downloadFolder: vi.fn()
+}))
 
 const mockToastPlugin = vi.fn()
-const createWrapper = (props: TreeviewProps = defaultProps) => {
+const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper => {
   return mount(Treeview, {
     props,
     global: {
@@ -58,7 +69,7 @@ const createWrapper = (props: TreeviewProps = defaultProps) => {
         }
       }
     }
-  })
+  }) as unknown as TreeviewWrapper
 }
 
 vi.mock('vue-inject', () => ({
@@ -69,6 +80,7 @@ describe('treeview', () => {
   // eslint-disable-next-line vitest/no-hooks
   beforeEach(() => {
     setActivePinia(pinia)
+    flushPromises()
   })
   // eslint-disable-next-line vitest/no-hooks
   afterEach(() => {
@@ -320,6 +332,31 @@ describe('treeview', () => {
               createFolderSectionWrapper.props('isCreateFolderModalVisible')
             ).toBeTruthy()
           })
+          it('should download when action is toolbox-download-action-click emitted',
+            async () => {
+              const wrapper = createWrapper()
+              await wrapper.setProps({ isLoading: false })
+              const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+              await nextTick()
+              const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+              await nextTick()
+              const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
+              await nextTick()
+              const componentInstance = wrapper.vm
+              componentInstance.currentFolderId = 2
+              componentInstance.currentFolderName = 'rrrrr'
+              await nextTick()
+              await treeNode.vm.$emit('p-toolbox-item-clicked',
+                'toolbox-download-action-click',
+                foldersData[0][0].children[0])
+
+              await nextTick()
+              expect(vi.mocked(downloadFolder)).toHaveBeenCalledWith(
+                defaultProps.currentService,
+                defaultProps.selectedEntity,
+                componentInstance.currentFolderId
+              )
+            })
         })
       })
     })

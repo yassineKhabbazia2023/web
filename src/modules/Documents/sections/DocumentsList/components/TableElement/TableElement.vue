@@ -1,7 +1,7 @@
 <template>
   <PText
     v-if="fieldType === 'Text'"
-    :content="formatDate(data.created)"
+    :content="formatDateStr(data.created)"
     type="primary"
     :bold="false"
     :selected="false"
@@ -88,7 +88,7 @@ import {
   PIPatchCheck
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
-import { formatDate } from '@/modules/common/helpers/dateFormatHelper'
+import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 
 const props = defineProps<TableElementPops>()

@@ -69,3 +69,18 @@ export const deleteFolder = async (
   const apiObject = api().ds
   await apiObject.delete(deleteFolderUrl)
 }
+
+export const downloadFolder = async (
+  serviceId: Service['ServiceId'],
+  entityId: string,
+  folderId: Folder['id']
+) : Promise<void> => {
+  const downloadFolderUrl = `${serviceId}/${entityId}/folders/${folderId}/archive`
+  const apiObject = api().ds
+  return (await apiObject.get(
+    downloadFolderUrl,
+    {
+      responseType: 'blob'
+    }
+  )).data
+}

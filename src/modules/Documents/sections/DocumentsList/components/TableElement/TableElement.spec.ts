@@ -9,7 +9,7 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { ComponentPublicInstance, nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
-import { formatDate } from '@/modules/common/helpers/dateFormatHelper'
+import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
 import {
   PIArrowRepeat,
   PIcon,
@@ -132,7 +132,7 @@ describe('tableElement', () => {
           fieldType: 'Text',
           expectedResult: {
             component: '.p-text',
-            content: formatDate(document.created),
+            content: formatDateStr(document.created),
             hasIcon: false
           }
         },

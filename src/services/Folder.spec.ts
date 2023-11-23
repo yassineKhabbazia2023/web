@@ -4,7 +4,8 @@ import {
   CreateFolder,
   RenameFolder,
   deleteFolder,
-  fetchServicesFolders
+  fetchServicesFolders,
+  downloadFolder
 } from './Folder'
 import type { Service } from '@/models/Service'
 
@@ -128,6 +129,22 @@ describe('folder service', () => {
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/1?keepFolder=false'
+    )
+  })
+
+  it('should download the folder  when downloadFolder method is called', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+    const folderId = 1
+    const accountId = 'my-account-id'
+
+    await downloadFolder(service.ServiceId, accountId, folderId)
+
+    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledWith(
+      'service-1/my-account-id/folders/1/archive',
+      {
+        responseType: 'blob'
+      }
     )
   })
 

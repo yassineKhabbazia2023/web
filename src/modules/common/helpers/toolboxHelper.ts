@@ -15,7 +15,7 @@ const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
       value: 'Supprimer',
       actionName: 'toolbox-delete-action-click'
     },
-    order: 3
+    order: 4
   },
   CAN_CREATE_FOLDER: {
     toolboxLine: {
@@ -32,6 +32,14 @@ const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
       actionName: 'toolbox-rename-action-click'
     },
     order: 2
+  },
+  CAN_DOWNLOAD_FOLDER: {
+    toolboxLine: {
+      iconName: 'PIDownload',
+      value: 'Télécharger',
+      actionName: 'toolbox-download-action-click'
+    },
+    order: 3
   }
 }
 
@@ -88,6 +96,8 @@ export function generateToolboxBasicData(
     target === 'Documents' ? documentsMappingRecord : foldersMappingRecord
   if (target === 'Documents') {
     toolboxBasicData.push(mappingRecord.CAN_DOWNLOAD_DOCUMENT)
+  } else {
+    toolboxBasicData.push(mappingRecord.CAN_DOWNLOAD_FOLDER)
   }
   for (const permission of permissions) {
     if (mappingRecord[permission]) {

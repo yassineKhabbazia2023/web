@@ -63,6 +63,11 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeTruthy()
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
+          iconName: 'PIDownload',
+          actionName: 'toolbox-download-action-click',
+          value: 'Télécharger'
+        },
+        {
           actionName: 'toolbox-delete-action-click',
           iconName: 'PITrash',
           value: 'Supprimer'
@@ -82,7 +87,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should not render PToolbox when permissions not in mapping', async () => {
+    it('should  permissions with upload folder by default ', async () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['azert']
@@ -91,8 +96,8 @@ describe('treeNodeActions', () => {
       const wrapper = createWrapper(props)
 
       const componentInstance = wrapper.vm
-      expect(componentInstance.toolboxBasicData).toHaveLength(0)
-      expect(componentInstance.isToolBoxVisible).toBeFalsy()
+      expect(componentInstance.toolboxBasicData).toHaveLength(1)
+      expect(componentInstance.isToolBoxVisible).toBeTruthy()
 
       it('should not render PToolbox when selectedOrHovered is false', async () => {
         const props: TreeNodeActionsToolboxProps = {

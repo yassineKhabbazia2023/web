@@ -83,7 +83,7 @@
 <script setup lang="ts">
 /* eslint-disable vitest/require-hook */
 
-import { computed, ref, watch } from 'vue'
+import { ComputedRef, computed, ref, watch } from 'vue'
 import TreeNode from '@/modules/Treeview/components/TreeNode'
 import { formatBinData } from './helpers/binHelper'
 import type { TreeviewProps, TreeType } from './TreeviewTypes'
@@ -94,6 +94,8 @@ import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader } from '@kpmg/styleguide'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { findFolderDeepById } from './helpers/folderArrayHelper'
+import { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
+import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
 
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
@@ -105,7 +107,16 @@ const emit = defineEmits([
   'remove-folder-from-source',
   'update-folder-name'
 ])
-
+const downloadFolderProps:ComputedRef<DownloadFolderComposableProps> = computed(() => {
+  return {
+    selectedFolderName: currentFolderName.value,
+    selectedFolderId: currentFolderId.value,
+    currentService: props.currentService,
+    selectedEntity: props.selectedEntity
+  }
+})
+const { handleDownloadFolderEvent } =
+  useDownloadFolder(downloadFolderProps)
 // This always exists as it is the default structure of any service
 const defaultFolder = ref<null | Folder>(null)
 const initialSelectedNodeId = computed(() => {
@@ -253,6 +264,10 @@ const handleToolboxItemChecked = (action: string, folder:Folder) => {
     currentFolderName.value = folder?.name
     currentFolderId.value = folder?.id
     isRenameFolderModalVisible.value = true
+  } else if (action === 'toolbox-download-action-click') {
+    currentFolderName.value = folder?.name
+    currentFolderId.value = folder?.id
+    handleDownloadFolderEvent()
   } else {
     treeNodeSelectedFolder.value = folder
     isCreateFolderModalVisible.value = true
