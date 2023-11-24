@@ -8,7 +8,7 @@ describe('subscriptionOffers', () => {
   let subscriptionOffers: SubscriptionOffer[]
 
   beforeEach(() => {
-    subscriptionOffers = getMockedSubscriptionOffers()
+    subscriptionOffers = getMockedSubscriptionOffers('')
   })
 
   describe('props', () => {

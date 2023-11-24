@@ -2,7 +2,6 @@ import {
   getMockedSubscriptionOffers
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
 
-export async function getSubscriptionOffers(accountNumber: string) {
-  console.log(accountNumber) // temporary code
-  return getMockedSubscriptionOffers()
+export function getSubscriptionOffers(accountId: string) {
+  return getMockedSubscriptionOffers(accountId)
 }

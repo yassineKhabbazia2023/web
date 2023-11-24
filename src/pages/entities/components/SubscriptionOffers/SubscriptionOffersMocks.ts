@@ -1,8 +1,8 @@
 import type { SubscriptionOffer } from './SubscriptionOffersTypes'
 
-export function getMockedSubscriptionOffers() {
+export function getMockedSubscriptionOffers(accountId: string) {
   const Subscription = [{
-    offerName: 'Gestion Smart',
+    offerName: `Gestion Smart for : ${accountId}`,
     offerLabel: 'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
     logoName: 'meg',
     globalOfferId: '0909484872764664525621',
