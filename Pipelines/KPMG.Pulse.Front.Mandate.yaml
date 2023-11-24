@@ -9,6 +9,13 @@ parameters:
 - name: devIndex
   type: number
   default: 0
+- name: deployType
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'standard'
+  values:
+    - standard
+    - onlyDev
 
 resources:
   repositories:
@@ -22,3 +29,4 @@ extends:
   parameters:
     mfe: mandate
     devIndex: ${{ parameters.devIndex }}
+    deployType: ${{ parameters.deployType }}
