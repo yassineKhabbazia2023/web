@@ -41,7 +41,7 @@
         </template>
       </PTableColumn>
       <PTableColumn
-        width="80"
+        width="300"
       >
         <template #default="scope">
           <span v-if="scope.row.accountNumber === ibsSelected" class="ptable-select-entity__check">
@@ -57,16 +57,37 @@
             type="primary"
             plain="true"
             size="small"
-            class="ptable-select-entity__button el-button--icon"
+            class="ptable-select-entity__button el-button--icon margin-right--2"
             @click="selectEntity(scope.row.accountNumber)"
           >
             <PIcon>
               <PIArrowRepeat />
             </PIcon>
           </PButton>
+          <PButton
+            data-ut="deploy-button"
+            type="primary"
+            size="small"
+            :plain="false"
+            :round="false"
+            :disabled="false"
+            :loading="false"
+            @click="drawerHandler(scope.row.accountNumber)"
+          >
+            <PIcon class="el-button__icon--left">
+              <PIAdd />
+            </PIcon>
+            {{ t('deployBtn') }}
+          </PButton>
         </template>
       </PTableColumn>
     </PTable>
+    <OffersDrawer
+      data-ut="offers-drawer"
+      v-if="openOffersDrawer"
+      v-model="openOffersDrawer"
+      :subscriptionOffers="subscriptionOffers"
+    />
   </div>
 </template>
 
@@ -75,15 +96,18 @@
     title: 'My accounts'
     label: 'Legal name'
     account: 'Account ID'
+    deployBtn: 'Deploy this folder'
   fr-FR:
     title: 'Mes dossiers'
     label: 'Raison sociale'
     account: 'ID Dossier'
+    deployBtn: 'Deployer ce dossier'
 </i18n>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import {
+  PIAdd,
   PButton,
   PEntity,
   PIcon,
@@ -97,6 +121,11 @@ import {
 } from '@kpmg/styleguide'
 import { computed, onMounted, ref } from 'vue'
 import { useEntityStore } from '@/stores/entity-store'
+import OffersDrawer from '@/pages/entities/components/OffersDrawer'
+import type {
+  SubscriptionOffer
+} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { getSubscriptionOffers } from '@/services/SubscriptionOffersService'
 import { commonStore } from '@kpmg/common'
 import { storeToRefs } from 'pinia'
 
@@ -161,6 +190,14 @@ const tableRowClassName = ({ row }: any) => {
     }
   }
   return ''
+}
+
+const openOffersDrawer = ref(false)
+const subscriptionOffers = ref<SubscriptionOffer[]>([])
+
+async function drawerHandler(accountNumber: string) {
+  subscriptionOffers.value = await getSubscriptionOffers(accountNumber)
+  openOffersDrawer.value = true
 }
 
 onMounted(async () => {
