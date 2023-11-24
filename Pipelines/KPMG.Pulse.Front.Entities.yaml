@@ -9,6 +9,13 @@ parameters:
 - name: devIndex
   type: number
   default: 0
+- name: deployType
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'standard'
+  values:
+    - standard
+    - onlyDev
 
 resources:
   repositories:
@@ -21,5 +28,6 @@ extends:
   template: pipelines/templates/platform.front.mfe.yaml@Pulse
   parameters:
     mfe: entities
+    deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
 

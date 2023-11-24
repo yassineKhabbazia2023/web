@@ -1,24 +1,24 @@
 <template>
   <div>
     <div>
-        <p class="subscription-offers__subtitle margin-bottom--7">
-          {{ t('subtitle') }}
-        </p>
-        <div
-          data-ut="offer-list"
-        >
-          <POfferCard
-            v-for="{globalOfferId, logoName, offerName, offerLabel} in subscriptionOffers"
-            :key="globalOfferId"
-            class="margin-bottom--3"
-            data-ut="offer-item"
-            :pLogo="logoName"
-            :pTitle="offerName"
-            :pDescription="offerLabel"
-            @select-offer-event="onSelectOffer(globalOfferId)"
-          />
-        </div>
+      <p class="subscription-offers__subtitle margin-bottom--7">
+        {{ t('subtitle') }}
+      </p>
+      <div
+        data-ut="offer-list"
+      >
+        <POfferCard
+          v-for="{ offerId, logoName, offerName, offerLabel } in subscriptionOffers"
+          :key="offerId"
+          class="margin-bottom--3"
+          data-ut="offer-item"
+          :pLogo="logoName"
+          :pTitle="offerName"
+          :pDescription="offerLabel"
+          @select-offer-event="onSelectOffer(offerId)"
+        />
       </div>
+    </div>
   </div>
 </template>
 
@@ -26,7 +26,7 @@
   en-US:
     subtitle: 'Select the offer you whish to activate for this folder'
   fr-FR:
-    subtitle: 'Sélectionnez l''offre que vous souhaitez activer pour ce dossier'
+    subtitle: "Sélectionnez l'offre que vous souhaitez activer pour ce dossier"
 </i18n>
 
 <script setup lang="ts">
@@ -47,9 +47,9 @@ const emit = defineEmits<{
 
 const props = defineProps<SubscriptionOffersProps>()
 
-function onSelectOffer(offerId: string) {
+function onSelectOffer(selectedOfferId: string) {
   const subscriptionOffer = props.subscriptionOffers
-    .find(({ globalOfferId }) => globalOfferId === offerId)
+    .find(({ offerId }) => offerId === selectedOfferId)
 
   emit('selectOffer', subscriptionOffer)
 }
