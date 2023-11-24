@@ -9,6 +9,10 @@ parameters:
 - name: devIndex
   type: number
   default: 0
+- name: deployType
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'standard'
 
 resources:
   repositories:
@@ -73,7 +77,7 @@ extends:
           - ${{ else }}:
             - name: cdn_endpoint
               value: histoire-dev${{ parameters.devIndex }}
-      - ${{ if contains(variables['Build.SourceBranch'], 'develop') }}:
+      - ${{ if and(contains(variables['Build.SourceBranch'], 'develop'), ne(parameters.deployType, 'onlyDev')) }}:
         - name: ITG
           displayName: Developpement
           poolAgent: Pulse-itg01
@@ -89,7 +93,7 @@ extends:
             value: fritgcommoncdn01profile
           - name: cdn_endpoint
             value: histoire-itg01
-      - ${{ if or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')) }}:
+      - ${{ if and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')) }}:
         - name: REC
           displayName: Developpement
           poolAgent: Pulse-itg01
