@@ -242,7 +242,7 @@ const triggerSuccessNotification = (
 <i18n lang="json">
 {
   "en-US": {
-    "modalTitle": "Déplacer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
+    "modalTitle": "Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déplacer dans ce dossier",
       "foldersListEmptyFolderLabel": "Ce dossier est vide"
@@ -261,7 +261,7 @@ const triggerSuccessNotification = (
     }
   },
   "fr-FR": {
-    "modalTitle": "Déplacer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
+    "modalTitle": "Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déplacer dans ce dossier",
       "foldersListEmptyFolderLabel": "Ce dossier est vide"

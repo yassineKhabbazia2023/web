@@ -37,7 +37,7 @@ export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocum
 
       explorerDocuments.push({
         givenActionState: state,
-        isSelected: false,
+        isSelected: true,
         content: { name: file.name },
         codeError: code,
         file
@@ -65,7 +65,7 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
       explorerDocuments.push({
         id: document.id,
         givenActionState: state,
-        isSelected: false,
+        isSelected: true,
         content: { name: document.name },
         codeError
       })

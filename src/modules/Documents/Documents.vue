@@ -54,7 +54,7 @@
     :currentService="currentService"
     :selectedEntity="selectedEntity"
     :folder="selectedFolder"
-    :selectedDocuments="selectedDocuments"
+    :selectedDocuments="selectedDocumentsForMove"
     :isMoveModalOpened="isMoveModalOpened"
     :currentServiceFolder="currentServiceFolder"
     @update-source-folders="propagateUpdateSourceFolders"
@@ -100,6 +100,7 @@ import DocumentDeleteModal
 import { PLoader, PPagination } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import { Folder } from '@/models/Folder'
+import { deepCopy } from '../common/utils/deepCopy'
 
 const props = defineProps<DocumentsProps>()
 const emit = defineEmits(['update-source-folders'])
@@ -138,6 +139,8 @@ const handleSortChange = async (sortQueryField:string) => {
 }
 
 const selectedDocuments = ref<Document[]>([])
+
+const selectedDocumentsForMove = ref<Document[]>(deepCopy(selectedDocuments.value))
 const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = computed(() => {
   return {
     selectedDocuments: selectedDocuments.value,
@@ -149,6 +152,9 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
 // documents selection handlers
 const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   selectedDocuments.value = documentsSelection
+  if (documentsSelection.length) {
+    selectedDocumentsForMove.value = documentsSelection
+  }
 }
 
 const { handleDownloadDocumentsEvent } =

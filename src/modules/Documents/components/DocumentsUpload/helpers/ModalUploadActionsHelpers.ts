@@ -38,7 +38,7 @@ export const modalButtonsUpload: Record<string, ModalActionsWithOrder> = {
   },
   DEPOT_IN_PROGRESS: {
     modalButton: {
-      buttonName: 'Depot en cours',
+      buttonName: 'Dépôt en cours',
       buttonType: 'primary',
       buttonIcon: '',
       buttonActionName: '',
