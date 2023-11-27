@@ -1,5 +1,11 @@
 <template>
   <div v-show="!isLoading">
+    <PBreadcrumb
+      class="documents-breadcrumb"
+      :elements="breadcrumbItems"
+      @p-breadcrumb-item-click="handleFolderNavigation"
+    >
+    </PBreadcrumb>
     <DocumentsActionsBar
       :permissions="permissionsList"
       @p-action-bar-button-clicked="handleActionBarButtonClick"
@@ -42,12 +48,12 @@
     @document-rename="handleDocumentRename"
   />
   <DocumentDeleteModal
-      :serviceId="currentService"
-      :entityId="selectedEntity"
-      :isVisible="isDeletePopupVisible"
-      :documentIds="documentIdsSelected"
-      @confirm-delete-document="handleConfirmDeleteDocument"
-      @cancel-delete-document="handleCancelDeleteDocument"
+    :serviceId="currentService"
+    :entityId="selectedEntity"
+    :isVisible="isDeletePopupVisible"
+    :documentIds="documentIdsSelected"
+    @confirm-delete-document="handleConfirmDeleteDocument"
+    @cancel-delete-document="handleCancelDeleteDocument"
   />
   <DocumentMove
     v-if="selectedFolder"
@@ -71,7 +77,6 @@
     :currentServiceFolder="currentServiceFolder"
     @update-source-folders="propagateUpdateSourceFolders"
     @close-upload-documents-modal="handleCloseUploadDocumentsModal"
-    @update-document-list-upload="handleUpdateDocumentListAfterUpload"
     @refresh-documents-list = "fetchDocuments"
     />
 </template>
@@ -97,14 +102,21 @@ import DocumentMove from './components/DocumentsMove'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { PLoader, PPagination } from '@kpmg/styleguide'
+import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import { Folder } from '@/models/Folder'
+import { getBreadcrumbItems }
+  from '@/modules/common/helpers/folderHelper'
+import {
+  findFolderDeepById
+} from '@/modules/Treeview/helpers/folderArrayHelper'
 import { deepCopy } from '../common/utils/deepCopy'
 
+const emit = defineEmits<{
+  'change-selected-folder': [Folder]
+  'update-source-folders': [Folder]
+}>()
 const props = defineProps<DocumentsProps>()
-const emit = defineEmits(['update-source-folders'])
-
 const documents = ref<DocumentsWithTableStructure | null>(null)
 const currentPage = ref(1)
 const pagesRanges = ref([10, 25, 50, 100])
@@ -125,6 +137,15 @@ const paginationLabel = computed(() => {
 const setCurrentPageSize = (selectedRange: number) => {
   currentPageSize.value = selectedRange
 }
+
+const breadcrumbItems = computed(() => {
+  const items = getBreadcrumbItems(props.currentServiceFolder, props.selectedFolder?.id ?? 0) ?? []
+  items.unshift({
+    id: -1,
+    text: 'Documents'
+  })
+  return items
+})
 
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
@@ -180,7 +201,7 @@ const handleToolboxActionTriggered = (action: string) => {
   }
 }
 
-const handleActionBarButtonClick = (actionName:string) => {
+const handleActionBarButtonClick = (actionName: string) => {
   if (selectedDocuments.value.length > 0) {
     switch (actionName) {
       case 'actionbar-download-action-click':
@@ -262,7 +283,7 @@ const handleUploadFilesSelected = (files: File[]) => {
 }
 
 // Documents upload scope
-const propagateUpdateSourceFolders = (createdFolder:Folder) => {
+const propagateUpdateSourceFolders = (createdFolder: Folder) => {
   emit('update-source-folders', createdFolder)
 }
 
@@ -273,7 +294,16 @@ const handleCloseUploadDocumentsModal = () => {
 const handleCloseMoveDocumentsModal = () => {
   isMoveModalOpened.value = false
 }
-const handleUpdateDocumentListAfterUpload = () => {
 
+const handleFolderNavigation = (id: number) => {
+  const folder = findFolderDeepById(props.currentServiceFolder, id)
+  if (folder) {
+    emit('change-selected-folder', folder)
+  }
 }
 </script>
+<style lang="scss">
+  .documents-breadcrumb {
+    padding: 24px 0 0 16px;
+  }
+</style>

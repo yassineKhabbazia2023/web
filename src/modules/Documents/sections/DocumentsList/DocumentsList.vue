@@ -105,9 +105,10 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
 <style lang="scss">
   .documents-table {
     position: relative;
-    // header height - action bar wrapper height - pagination wrapper height - paddings
+    // header height - breadcrumb height - action bar wrapper height
+    // - pagination wrapper height - paddings
     height: 100%;
-    max-height: calc(100vh - 52px - 80px - 46px);
+    max-height: calc(100vh - 32px - 52px - 80px - 46px);
     width: 100%;
     overflow-y: auto;
 

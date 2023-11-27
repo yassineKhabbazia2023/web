@@ -24,6 +24,7 @@
         :selectedFolder="currentFolder"
         :currentServiceFolder="currentServiceFolder"
         @update-source-folders="handleUpdateSourceFolder"
+        @change-selected-folder="setCurrentFolderAndService"
       />
     </PCol>
   </PRow>
@@ -35,7 +36,6 @@ import Treeview from '@/modules/Treeview'
 import Documents from '@/modules/Documents'
 import { fetchServicesFolders } from '@/services/Folder'
 import { fetchUserEntityServices } from '@/services/Services'
-
 import type { Folder } from '@/models/Folder'
 import type { Service } from '@/models/Service'
 import {

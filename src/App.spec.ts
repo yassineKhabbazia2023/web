@@ -1,4 +1,3 @@
-
 import { VueWrapper, mount } from '@vue/test-utils'
 import Ged from './'
 import { createPinia, setActivePinia } from 'pinia'
@@ -189,7 +188,7 @@ describe('ged', () => {
 
         expect(vi.mocked(appendChildFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
-        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
       })
 
       it('should remove folder from tree when remove-folder-from-source', async () => {
@@ -204,7 +203,7 @@ describe('ged', () => {
         await nextTick()
 
         expect(vi.mocked(deleteFolder)).toHaveBeenCalledTimes(1)
-        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
 
       })
 
@@ -218,7 +217,7 @@ describe('ged', () => {
 
         expect(vi.mocked(renameFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
-        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
 
       })
     })
@@ -233,6 +232,18 @@ describe('ged', () => {
         await nextTick()
         expect(documentComponent.exists()).toBeTruthy()
       })
+    })
+    it('should update selected folder in documents when change-selected-folder', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const documentComponent = await dynamicUntilFoundComponent(wrapper, Documents)
+      await documentComponent.vm.$emit('change-selected-folder', foldersData[0][0].children[0])
+      await nextTick()
+
+      expect(documentComponent.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
+      expect(documentComponent.props('currentService')).toStrictEqual('service-id-compta')
+
     })
   })
 })
