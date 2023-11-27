@@ -1,12 +1,14 @@
 <template>
   <Story title="3. Molecules/BottomMenu" icon="icon-park-outline:bottom-bar">
-    <router-view />
-    <br /><br />
-    <PBottomMenu
-      :defaultActive="routeActive"
-      :pItems="menuItems"
-      :pHideOnDesktop="false"
-    />
+    <Variant title="Basic Usage">
+      <router-view />
+      <br /><br />
+      <PBottomMenu
+        :defaultActive="routeActive"
+        :pItems="menuItems"
+        :pHideOnDesktop="false"
+      />
+    </Variant>
   </Story>
 </template>
 

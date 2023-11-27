@@ -65,7 +65,7 @@ import type { PNavbarProps } from './PNavbarTypes'
 
 const isCollapse = ref(true)
 const currentShape = ref<PAvatarProps['pShape']>('circle')
-const currentType = ref<PAvatarProps['pType']>('default')
+const currentType = ref<PAvatarProps['pType']>('xsmall')
 const activeIndex = ref('2')
 
 withDefaults(defineProps<PNavbarProps>(), {

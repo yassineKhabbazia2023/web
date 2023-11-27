@@ -96,6 +96,7 @@ const tagBasicData = {
   iconLeft: PIStars,
   iconRight: PIStars
 }
+
 const tagColorList: { label: string; value: PTagProps['pColor'] }[] = [
   {
     label: 'default',

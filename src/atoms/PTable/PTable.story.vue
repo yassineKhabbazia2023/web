@@ -151,9 +151,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { iconResolver } from '@/utils/iconResolver'
 import { PIFolder, PIStars } from '@/atoms/PIcon/components'
+import PDoubleText from '@/atoms/PDoubleText'
+import PEntity from '@/atoms/PEntity'
+import PTag from '@/atoms/PTag'
+import PText from '@/atoms/PText'
 import PTable from './'
 
 const tableInputs = reactive({
@@ -225,7 +229,7 @@ const tableInputsWithCells = reactive({
         iconRight: PIStars
       },
       switch: {
-        status: ref(true),
+        status: true,
         disabled: false
       }
     },
@@ -253,7 +257,7 @@ const tableInputsWithCells = reactive({
         iconRight: PIStars
       },
       switch: {
-        status: ref(false),
+        status: false,
         disabled: false
       }
     },
@@ -280,7 +284,7 @@ const tableInputsWithCells = reactive({
         iconRight: PIStars
       },
       switch: {
-        status: ref(true),
+        status: true,
         disabled: false
       }
     },
@@ -307,7 +311,7 @@ const tableInputsWithCells = reactive({
         iconRight: PIStars
       },
       switch: {
-        status: ref(true),
+        status: true,
         disabled: true
       }
     },
@@ -332,7 +336,7 @@ const tableInputsWithCells = reactive({
         content: 'Validated'
       },
       switch: {
-        status: ref(false),
+        status: true,
         disabled: true
       }
     }

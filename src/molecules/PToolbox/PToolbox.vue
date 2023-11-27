@@ -6,10 +6,11 @@
     <slot />
     <template #dropdown>
       <ElDropdownMenu>
-        <ElDropdownItem>
+        <ElDropdownItem
+          v-for="({pValue, pIconName, pState, pActionName, disabled}, index) in pElements"
+          :key="index"
+        >
           <PToolboxItem
-            v-for="({pValue, pIconName, pState, pActionName, disabled}, index) in pElements"
-            :key="index"
             :pValue="pValue"
             :pIconName="pIconName"
             :pState="pState"

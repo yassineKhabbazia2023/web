@@ -5,6 +5,12 @@ $dropdown: (
   'menu-index': 10,
 );
 
+.el-dropdown-menu {
+  &__item {
+    border: none;
+  }
+}
+
 .p-toolbox.el-popper.is-pure {
   border-color: var(--el-color-neutral-gray-50);
   padding: 8px 0;

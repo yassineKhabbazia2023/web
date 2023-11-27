@@ -1,9 +1,7 @@
 <template>
   <ElTag
     v-bind="$props"
-    :class="
-      'el-tag--' + pColor
-    "
+    :class="'el-tag--' + pColor"
     :effect="pEffect"
     :size="pSize"
     :round="pRound"
@@ -11,18 +9,31 @@
     :closable="pClosable"
   >
     <PIcon v-if="pIconLeft" class="el-tag__icon--left">
-      <component :is="pIconLeft" />
+      <component :is="getIcon(pIconLeft)" />
     </PIcon>
     {{ pContent }}
     <PIcon v-if="pIconRight" class="el-tag__icon--right">
-      <component :is="pIconRight" />
+      <component :is="getIcon(pIconRight)" />
     </PIcon>
   </ElTag>
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
 import { ElTag } from 'element-plus'
 import type { PTagProps } from './PTagTypes'
+import type { Component } from 'vue'
 
 defineProps<PTagProps>()
+
+const getIcon = (icon: string | Component) => {
+  return defineAsyncComponent(
+    () =>
+      import(
+        `../PIcon/components/${
+          typeof icon === 'string' ? icon : icon?.name
+        }.vue`
+      )
+  )
+}
 </script>

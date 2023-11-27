@@ -22,6 +22,7 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue'
 import { ElMenu, ElMenuItem } from 'element-plus'
+import PIcon from '@/atoms/PIcon'
 import type { PBottomMenuProps } from './PBottomMenuTypes'
 
 const props = withDefaults(defineProps<PBottomMenuProps>(), {

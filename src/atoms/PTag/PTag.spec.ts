@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { PIPulse } from '@/atoms/PIcon/components'
 import PTag from '.'
@@ -21,14 +21,19 @@ describe('pTag', () => {
         shouldHaveIconLeftClass: false,
         text: 'hide'
       }
-    ])('should $text icon zone when pIconLeft is $shouldHaveIconLeftClass',
-      ({ pIconLeft, text, shouldHaveIconLeftClass }) => {
+    ])(
+      'should $text icon zone when pIconLeft is $shouldHaveIconLeftClass',
+      async ({ pIconLeft, text, shouldHaveIconLeftClass }) => {
         const wrapper = createWrapper({
           pIconLeft,
           text
         })
+        await flushPromises()
         const hasIconLeftClass = wrapper.find('.el-tag__icon--left').exists()
-        const hasIconLeftComponent = wrapper.findComponent({ name: 'PIPulse' }).exists()
+        const hasIconLeftComponent = wrapper
+          .findComponent({ name: 'PIPulse' })
+          .exists()
+
         expect(hasIconLeftClass).toBe(shouldHaveIconLeftClass)
         expect(hasIconLeftComponent).toBe(shouldHaveIconLeftClass)
       }
@@ -44,14 +49,19 @@ describe('pTag', () => {
         shouldHaveIconRightClass: false,
         text: 'hide'
       }
-    ])('should $text icon zone when pIconRight is $shouldHaveIconRightClass',
-      ({ pIconRight, text, shouldHaveIconRightClass }) => {
+    ])(
+      'should $text icon zone when pIconRight is $shouldHaveIconRightClass',
+      async ({ pIconRight, text, shouldHaveIconRightClass }) => {
         const wrapper = createWrapper({
           pIconRight,
           text
         })
+        await flushPromises()
         const hasIconRightClass = wrapper.find('.el-tag__icon--right').exists()
-        const hasIconRightComponent = wrapper.findComponent({ name: 'PIPulse' }).exists()
+        const hasIconRightComponent = wrapper
+          .findComponent({ name: 'PIPulse' })
+          .exists()
+
         expect(hasIconRightClass).toBe(shouldHaveIconRightClass)
         expect(hasIconRightComponent).toBe(shouldHaveIconRightClass)
       }
@@ -62,8 +72,7 @@ describe('pTag', () => {
         pContent: 'Validated'
       })
 
-      expect(wrapper.find('.el-tag').text())
-        .toContain('Validated')
+      expect(wrapper.find('.el-tag').text()).toContain('Validated')
     })
   })
 })

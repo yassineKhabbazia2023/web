@@ -113,7 +113,7 @@ const basicButton = ref({
   basicDisabled: ref<PButtonProps['pDisabled']>(),
   basicLoading: ref<PButtonProps['pLoading']>(),
   basicSize: ref<PButtonProps['pSize']>('default'),
-  basicText: ref('')
+  basicText: ref('Button')
 })
 
 const iconButton = ref({

@@ -65,7 +65,7 @@ const getFullPathBreadcrumItem = (id: number) => {
     .join(' > ')
 }
 
-const breadCrumpSize = () => {
+const breadCrumpSize = computed(() => {
   switch (props.pSize) {
     case 'S':
       return 'small'
@@ -75,5 +75,5 @@ const breadCrumpSize = () => {
     default:
       return ''
   }
-}
+})
 </script>

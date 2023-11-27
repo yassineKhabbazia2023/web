@@ -3,7 +3,7 @@
     <Variant title="Breadcrumb">
       <PBreadcrumb :pElements="generateBreadCrumbItems(5)" />
     </Variant>
-    <Variant title="ellipsed breadcrumb ">
+    <Variant title="ellipsed breadcrumb">
       <PBreadcrumb :pElements="generateBreadCrumbItems(8)" />
     </Variant>
     <Variant title="breadcrumb size small">
