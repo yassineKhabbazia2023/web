@@ -33,13 +33,15 @@
       <component :is="fileIconComponent"></component>
     </PIcon>
     <div class="p-file-and-folder-line-check__details">
-      <span>{{ fileName }}</span>
-      <span
+      <div class="ellipsed-text">
+        {{ fileName }}
+      </div>
+      <div
         v-if="(isErrorState || isSuccessState) && additionalText"
-        class="p-file-and-folder-line-check__details__additional-text"
+        class="p-file-and-folder-line-check__details__additional-text ellipsed-text"
       >
         {{ additionalText }}
-      </span>
+      </div>
     </div>
   </div>
 </template>
@@ -142,13 +144,14 @@ const fileIconComponent = computed(() => {
   &__details {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 
-    span {
-      width: 214px;
+    .ellipsed-text {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
       height: 17px;
+      max-width: 100%;
     }
 
     &__additional-text {

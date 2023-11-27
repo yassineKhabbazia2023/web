@@ -1,19 +1,19 @@
-### Summary of your changes
+### Résumé des changements
 
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] Build process update
+- [ ] Correction de bug
+- [ ] Nouvelle fonctionnalité
+- [ ] Mise à jour de la documentation
+- [ ] Mise à jour du processus de build
 
-### Details of your changes
-Explain here all the details of your changes and why you made them that way.
+### Détails des changements
+Expliquez vos modifications et les raisons de ces dernières.
 
-### Known problems
+### Problèmes connus
+Décrivez les problèmes potentiels, introduits par vos modifications (s'il y en a).
 
-Explain here any known problems introduced by your updates.
+### Vérifications
 
-### Checks
-
-- [ ] You have tested your changes and build locally
-- [ ] Your updates are respecting our styling convention (ESlint)
-- [ ] Documentation has been updates if necessary.
+- [ ] Vous avez testé vos changements et exécuté un build en local.
+- [ ] Vous avez ajouté une image illustrant vos modifications si ces dernières ont un impact visuel.
+- [ ] Les modifications respectent nos conventions de styles (ESLint).
+- [ ] La documentation (Histoire / README) a été mise à jour si nécessaire.
