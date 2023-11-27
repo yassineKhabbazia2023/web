@@ -215,7 +215,24 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+@use '@/utils/breakpoints';
 .documents-explorer-modal {
+  margin-top: 13vh;
+
+  @include breakpoints.media(lg) {
+    width: 65%;
+  }
+
+  @include breakpoints.media(md3) {
+    width: 70%;
+    margin-top: 8vh;
+  }
+
+  @include breakpoints.media(md) {
+    width: 95%;
+    margin-top: 5vh;
+  }
+
   &__explorer {
     display: flex;
     flex-wrap: wrap;

@@ -25,7 +25,7 @@ import {
 } from './FoldersBreadCrumbTypes'
 import { Folder } from '@/models/Folder'
 import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
-import { type BreadcrumbItems }
+import type { BreadcrumbItems }
   from '@kpmg/styleguide/dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes'
 const props = defineProps<FoldersBreadCrumbProps>()
 const emit = defineEmits(['navigate-to-folder', 'open-create-folder-modal'])
