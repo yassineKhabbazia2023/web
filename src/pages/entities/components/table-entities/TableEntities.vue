@@ -86,7 +86,6 @@
       data-ut="offers-drawer"
       v-if="openOffersDrawer"
       v-model="openOffersDrawer"
-      :subscriptionOffers="subscriptionOffers"
     />
   </div>
 </template>
@@ -122,10 +121,6 @@ import {
 import { computed, onMounted, ref } from 'vue'
 import { useEntityStore } from '@/stores/entity-store'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
-import type {
-  SubscriptionOffer
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import { getAllOffers } from '@/services/offer'
 import { commonStore } from '@kpmg/common'
 import { storeToRefs } from 'pinia'
 
@@ -193,10 +188,8 @@ const tableRowClassName = ({ row }: any) => {
 }
 
 const openOffersDrawer = ref(false)
-const subscriptionOffers = ref<SubscriptionOffer[]>([])
 
 async function drawerHandler() {
-  subscriptionOffers.value = await getAllOffers()
   openOffersDrawer.value = true
 }
 

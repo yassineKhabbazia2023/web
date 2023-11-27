@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { beforeEach, describe, it, expect, vi, afterAll } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import TableEntities from './'
 import { dynamicUntilFound } from '@kpmg/common/src/testing-helpers'
 import { createPinia, setActivePinia } from 'pinia'
@@ -9,25 +9,11 @@ const entities = [
   { name: 'Entity 2', accountNumber: '456' }
 ]
 
-const offers = [
-  {
-    offerId: 10,
-    offerName: 'Meg Smart',
-    offerLabel: 'Mon expert en gestion en version start',
-    offerPrice: 0.0,
-    offerPriceType: 'free',
-    logoName: 'meg'
-  }
-]
-
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     $patch: vi.fn(),
     customers: {
       get: vi.fn().mockResolvedValue({ data: entities })
-    },
-    offer: {
-      get: vi.fn().mockResolvedValue({ data: offers })
     }
   }),
   commonStore: () => ({
@@ -40,9 +26,6 @@ const pinia = createPinia()
 describe('table-entities', () => {
   beforeEach(() => {
     setActivePinia(pinia)
-  })
-  afterAll(() => {
-    vi.restoreAllMocks()
   })
 
   it('renders entity table correctly', async () => {

@@ -25,13 +25,15 @@
 </i18n>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PDrawer
 } from '@kpmg/styleguide'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
 import SubscriptionOffers from '../SubscriptionOffers'
+import type { SubscriptionOffer } from '../SubscriptionOffers/SubscriptionOffersTypes'
+import { getAllOffers } from '@/services/offer'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -43,6 +45,7 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<OffersDrawerProps>()
+const subscriptionOffers = ref<SubscriptionOffer[]>([])
 
 const internalIsOpened = computed({
   get() {
@@ -51,5 +54,9 @@ const internalIsOpened = computed({
   set(value) {
     emit('update:modelValue', value)
   }
+})
+
+onMounted(async () => {
+  subscriptionOffers.value = await getAllOffers()
 })
 </script>

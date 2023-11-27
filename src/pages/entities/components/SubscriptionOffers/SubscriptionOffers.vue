@@ -8,7 +8,7 @@
         data-ut="offer-list"
       >
         <POfferCard
-          v-for="{ offerId, logoName, offerName, offerLabel } in offers"
+          v-for="{ offerId, logoName, offerName, offerLabel } in subscriptionOffers"
           :key="offerId"
           class="margin-bottom--3"
           data-ut="offer-item"
@@ -30,9 +30,7 @@
 </i18n>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getAllOffers } from '@/services/offer'
 import {
   POfferCard
 } from '@kpmg/styleguide'
@@ -48,7 +46,6 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<SubscriptionOffersProps>()
-const offers = ref<SubscriptionOffer[]>([])
 
 function onSelectOffer(selectedOfferId: string) {
   const subscriptionOffer = props.subscriptionOffers
@@ -56,10 +53,6 @@ function onSelectOffer(selectedOfferId: string) {
 
   emit('selectOffer', subscriptionOffer)
 }
-
-onMounted(async () => {
-  offers.value = await getAllOffers()
-})
 </script>
 
 <style lang="scss" scoped>

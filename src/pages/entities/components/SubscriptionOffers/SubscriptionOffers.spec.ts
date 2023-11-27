@@ -8,7 +8,7 @@ describe('subscriptionOffers', () => {
   let subscriptionOffers: SubscriptionOffer[]
 
   beforeEach(() => {
-    subscriptionOffers = getMockedSubscriptionOffers('')
+    subscriptionOffers = getMockedSubscriptionOffers()
   })
 
   describe('props', () => {
@@ -20,7 +20,6 @@ describe('subscriptionOffers', () => {
           }
         })
         const offers = wrapper.findAll('[data-ut=offer-list] [data-ut=offer-item]')
-        expect(offers.length).toBeGreaterThan(0)
         expect(offers).toHaveLength(subscriptionOffers.length)
       }
     )

@@ -1,23 +1,27 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import OffersDrawer from '.'
-import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
 import { wrapperFactory } from '@/common/testHelper'
+import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
 import type { SubscriptionOffer } from '../SubscriptionOffers/SubscriptionOffersTypes'
 
-describe('subscriptionOffers', () => {
-  let subscriptionOffers: SubscriptionOffer[]
+const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 
-  beforeEach(() => {
-    subscriptionOffers = getMockedSubscriptionOffers('')
+vi.mock('@kpmg/common', async () => ({
+  commonApi: () => ({
+    $patch: vi.fn(),
+    offer: {
+      get: vi.fn().mockResolvedValue({ data: subscriptionOffers })
+    }
   })
+}))
 
+describe('subscriptionOffers', () => {
   describe('props', () => {
     it('should close offers drawer when clicking on close buton',
       async () => {
         const wrapper = await wrapperFactory(OffersDrawer, {
           props: {
-            modelValue: true,
-            subscriptionOffers
+            modelValue: true
           }
         })
         const offers = wrapper.find('[data-ut=offers]')
@@ -34,8 +38,7 @@ describe('subscriptionOffers', () => {
       async () => {
         const wrapper = await wrapperFactory(OffersDrawer, {
           props: {
-            modelValue: true,
-            subscriptionOffers
+            modelValue: true
           }
         })
         const offers = wrapper.find('[data-ut=offers]')
@@ -46,8 +49,7 @@ describe('subscriptionOffers', () => {
       async () => {
         const wrapper = await wrapperFactory(OffersDrawer, {
           props: {
-            modelValue: false,
-            subscriptionOffers
+            modelValue: false
           }
         })
         const offers = wrapper.find('[data-ut=offers]')
