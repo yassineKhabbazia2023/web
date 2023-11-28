@@ -27,7 +27,8 @@ const emit = defineEmits([
 const props = withDefaults(
   defineProps<TreeNodeActionsToolboxProps>(),
   {
-    selectedOrHovered: true
+    selectedOrHovered: true,
+    isVisible: true
   }
 )
 const hasActionButton = computed(() => {
@@ -43,7 +44,7 @@ const toolboxBasicData = computed(() => {
 const hasToolboxline = computed(() => toolboxBasicData.value?.length)
 
 const isToolBoxVisible = computed(() =>
-  hasActionButton.value && hasToolboxline.value && props.selectedOrHovered)
+  hasActionButton.value && hasToolboxline.value && props.selectedOrHovered && props.isVisible)
 const handleItemclicked = (action: string) => {
   emit('p-toolbox-item-clicked', action)
 }

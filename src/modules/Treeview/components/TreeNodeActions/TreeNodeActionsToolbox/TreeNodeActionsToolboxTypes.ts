@@ -4,4 +4,5 @@ export interface TreeNodeActionsToolboxProps {
     selectedOrHovered?: boolean
     triggerType: 'click' | 'contextmenu'
     showSlotIfDataEmpty: boolean
+    isVisible?: boolean
 }

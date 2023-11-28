@@ -2,10 +2,14 @@
 import type { Folder } from '@/models/Folder'
 import type { Service } from '@/models/Service'
 
+export interface ExtendedFolder extends Folder {
+  isRootFolder?: boolean
+}
+
 export interface TreeviewProps {
   entityServices: Service[]
   isLoading: boolean,
-  servicesFolders: Folder[][],
+  servicesFolders: ExtendedFolder[][],
   currentService: string
   selectedEntity: string
   selectedFolder: null | Folder
@@ -15,3 +19,4 @@ export interface TreeviewProps {
 export type TreeType = InstanceType<any>
 
 export const services = ['1', '2', '3']
+

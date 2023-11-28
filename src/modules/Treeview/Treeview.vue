@@ -38,7 +38,7 @@
       <div class="treeview__trees">
         <PScrollbar>
           <PTree
-            v-for="(serviceFolder, index) in servicesFolders"
+            v-for="(serviceFolder, index) in extendedServiceFolders"
             :currentNodeKey="!index ? initialSelectedNodeId : ''"
             :data="serviceFolder"
             :defaultExpandedKeys="!index ? defaultExpandedKey : []"
@@ -87,7 +87,7 @@
 import { ComputedRef, computed, ref, watch } from 'vue'
 import TreeNode from '@/modules/Treeview/components/TreeNode'
 import { formatBinData } from './helpers/binHelper'
-import type { TreeviewProps, TreeType } from './TreeviewTypes'
+import type { TreeviewProps, TreeType, ExtendedFolder } from './TreeviewTypes'
 import type { Folder } from '@/models/Folder'
 import type { Service } from '@/models/Service'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
@@ -141,6 +141,10 @@ const selectedFolder = computed(():Folder => {
   return props.selectedFolder || props.servicesFolders[0][0].children[0]
 })
 
+const extendedServiceFolders = computed(() => {
+  return addAttributeIsRootFolder(props.servicesFolders)
+})
+
 watch(() => props.selectedFolder, () => {
   const { selectedFolder } = props
   if (!selectedFolder) return
@@ -179,6 +183,18 @@ const handleFolderNodeClick = (e: Folder) => {
   emit('selected-folder-change', e)
 }
 
+const determineIsRootFolder = (folder: ExtendedFolder): boolean => {
+  return folder.parent === undefined || folder.parent.id === 0
+}
+
+const addAttributeIsRootFolder = (servicesFolders: ExtendedFolder[][]) => {
+  return servicesFolders.map((service) =>
+    service.map((folder) => ({
+      ...folder,
+      isRootFolder: determineIsRootFolder(folder)
+    }))
+  )
+}
 const binTree = ref<TreeType | null>(null)
 // I could have use the "props" prop on the Tree that is used to do a property mapping
 // But as there's computation in the TreeNode, I need to map it to have a consistent property naming

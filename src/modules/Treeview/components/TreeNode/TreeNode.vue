@@ -2,6 +2,7 @@
   <TreeNodeActionsToolbox
     triggerType="contextmenu"
     :permissions="data.permissions"
+    :isVisible="!data.isRootFolder"
     @p-toolbox-item-clicked = "handleItemclicked"
     @p-toolbox-dropdown-close = "handleToolBoxDropdownStateClose"
     class="tree-node_action-toolbox"
@@ -35,6 +36,7 @@
           <span class="tree-node__label">{{ data.name }}</span>
         </PTooltip>
         <TreeNodeActions
+          v-if="!data.isRootFolder"
           :permissions="data.permissions"
           :selectedOrHovered="isOpen || isHovered"
           @p-toolbox-item-clicked="handleItemclicked"

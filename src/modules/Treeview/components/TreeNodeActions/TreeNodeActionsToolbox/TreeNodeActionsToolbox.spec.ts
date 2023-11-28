@@ -87,6 +87,19 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
+    it('should not render PToolbox when isVisible false ', async () => {
+      const updatedProps: TreeNodeActionsToolboxProps = {
+        ...defaultProps,
+        permissions: ['CAN_DELETE_FOLDER'],
+        isVisible: false
+      }
+      const wrapper = createWrapper(updatedProps)
+      expect(wrapper.exists()).toBeTruthy()
+
+      const componentInstance = wrapper.vm
+      expect(componentInstance.isToolBoxVisible).toBeFalsy()
+    })
+
     it('should  permissions with upload folder by default ', async () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
