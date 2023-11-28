@@ -8,14 +8,14 @@
         data-ut="offer-list"
       >
         <POfferCard
-          v-for="{ globalOfferId, logoName, offerName, offerLabel } in subscriptionOffers"
-          :key="globalOfferId"
+          v-for="{ offerId, logoName, offerName, offerLabel } in subscriptionOffers"
+          :key="offerId"
           class="margin-bottom--3"
           data-ut="offer-item"
           :pLogo="logoName"
           :pTitle="offerName"
           :pDescription="offerLabel"
-          @select-offer-event="onSelectOffer(globalOfferId)"
+          @select-offer-event="onSelectOffer(offerId)"
         />
       </div>
     </div>
@@ -47,9 +47,9 @@ const emit = defineEmits<{
 
 const props = defineProps<SubscriptionOffersProps>()
 
-function onSelectOffer(offerId: string) {
+function onSelectOffer(selectedOfferId: string) {
   const subscriptionOffer = props.subscriptionOffers
-    .find(({ globalOfferId }) => globalOfferId === offerId)
+    .find(({ offerId }) => offerId === selectedOfferId)
 
   emit('selectOffer', subscriptionOffer)
 }

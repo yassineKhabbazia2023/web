@@ -1,23 +1,44 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import Subscription from '.'
-import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
+import { describe, it, expect, vi } from 'vitest'
+import OffersDrawer from '.'
 import { wrapperFactory } from '@/common/testHelper'
+import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
 import type { SubscriptionOffer } from '../SubscriptionOffers/SubscriptionOffersTypes'
 
-describe('subscriptionOffers', () => {
-  let subscriptionOffers: SubscriptionOffer[]
+const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 
-  beforeEach(() => {
-    subscriptionOffers = getMockedSubscriptionOffers('')
+vi.mock('@kpmg/common', async () => ({
+  commonApi: () => ({
+    $patch: vi.fn(),
+    offer: {
+      get: vi.fn().mockResolvedValue({ data: subscriptionOffers })
+    }
   })
+}))
 
+describe('subscriptionOffers', () => {
   describe('props', () => {
+    it('should close offers drawer when clicking on close buton',
+      async () => {
+        const wrapper = await wrapperFactory(OffersDrawer, {
+          props: {
+            modelValue: true
+          }
+        })
+        const offers = wrapper.find('[data-ut=offers]')
+
+        expect(wrapper.props('modelValue')).toBeTruthy()
+        expect(offers.exists()).toBeTruthy()
+
+        await wrapper.find('.p-drawer__close-button').trigger('click')
+
+        expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+      }
+    )
     it('should display offers when drawer is opened',
       async () => {
-        const wrapper = await wrapperFactory(Subscription, {
+        const wrapper = await wrapperFactory(OffersDrawer, {
           props: {
-            modelValue: true,
-            subscriptionOffers
+            modelValue: true
           }
         })
         const offers = wrapper.find('[data-ut=offers]')
@@ -26,10 +47,9 @@ describe('subscriptionOffers', () => {
     )
     it('should NOT display offers when drawer is closed',
       async () => {
-        const wrapper = await wrapperFactory(Subscription, {
+        const wrapper = await wrapperFactory(OffersDrawer, {
           props: {
-            modelValue: false,
-            subscriptionOffers
+            modelValue: false
           }
         })
         const offers = wrapper.find('[data-ut=offers]')

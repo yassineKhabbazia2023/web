@@ -16,13 +16,13 @@ export interface SubscriptionOfferProvider {
 }
 
 export interface SubscriptionOffer {
-  globalOfferId: string
+  offerId: string
   offerName: string
   offerLabel: string
   logoName: string
   offerPrice?: number
   providers?: SubscriptionOfferProvider[]
-  approvalRequired: boolean
+  approvalRequired?: boolean
 }
 
 export interface SubscriptionOffersProps {
