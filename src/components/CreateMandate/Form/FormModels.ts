@@ -1,37 +1,15 @@
-/* export interface FormModel {
-    [key: string]: string
-    ibs: string
-    siretNumber: string
-    name: string
+interface Signatory{
     title: string
     firstName: string
     lastName: string
     email: string
-    address: string
+}
+interface Address {
+    street: string
     addressComplement: string
     zipCode: string
     city: string
     country: string
-} */
-
-export interface CompanyModel {
-    id: string
-    name: string
-    siretNumber: string
-    erpId: string
-    signatory: {
-        title: string
-        firstName: string
-        lastName: string
-        email: string
-    },
-    address: {
-        street: string
-        addressComplement: string
-        zipCode: string
-        city: string
-        country: string
-    }
 }
 
 export interface BbanModel {
@@ -39,11 +17,6 @@ export interface BbanModel {
     branchCode: string
     accountNumber: string
     checkDigits: string
-}
-
-export interface CreateMandateFormModel {
-    company: CompanyModel,
-    bban: BbanModel
 }
 
 export interface Rule {
@@ -61,4 +34,11 @@ export interface Rules {
     zipCode: Rule[]
     city: Rule[]
     country: Rule[]
+}
+
+export interface CreateMandateModel {
+    erpId: string
+    address: Address
+    signatory: Signatory
+    bban: BbanModel
 }

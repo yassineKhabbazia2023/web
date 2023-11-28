@@ -2,7 +2,7 @@
   <div>
     <PDrawer
       v-model="drawerModel"
-      :title="currentStep <= 3 ? `${t('new-collection')}`: ''"
+      :title="currentStep <= 3 ? `${t('new-collection')}` : ''"
       :showPreviousStep="false"
       :beforeClose="handleClose"
       size="50%"
@@ -11,7 +11,7 @@
     >
       <PSteps
         v-if="currentStep <= 3"
-        :active="currentStep-1"
+        :active="currentStep - 1"
         direction="horizontal"
         processStatus="process"
         finishStatus="success"
@@ -48,10 +48,16 @@
         :step="currentStep"
         @enable-disable-next="handleNextAvailability"
         @enable-disable-validate="handleValidateAvailability"
+        @update-mandate-model="updateMandateModel"
       />
-      <DownloadMandate
-        v-if="currentStep > 3"
+      <DownloadMandate :mandateId="mandateId" v-if="currentStep > 3" />
+      <Form
+        v-if="currentStep <= 3"
+        :step="currentStep"
+        @enable-disable-next="handleNextAvailability"
+        @enable-disable-validate="handleValidateAvailability"
       />
+      <DownloadMandate v-if="currentStep > 3" />
       <template #footer>
         <div v-if="currentStep <= 3">
           <PButton
@@ -71,14 +77,15 @@
           </PButton>
           <PButton
             v-if="currentStep === 3"
+            class="margin-left--4"
             type="primary"
             size="default"
             :plain="false"
             :round="false"
-            :loading="false"
+            :loading="loading"
             :disabled="!validateAvailability"
             data-testid="validate-step-test"
-            @click="currentStep++"
+            @click="submitMandate(mandateModel)"
           >
             {{ t('validate') }}
           </PButton>
@@ -92,6 +99,7 @@
             :loading="false"
             data-testid="next-step-test"
             @click="goToNextStep()"
+            class="margin-left--4"
           >
             {{ t('next') }}
             <PIcon class="el-button__icon--right">
@@ -145,7 +153,7 @@
             @click="closeDialogDrawer()"
             class="margin-left--4"
           >
-          {{ t('exit-popup') }}
+            {{ t('exit-popup') }}
           </PButton>
         </div>
       </template>
@@ -210,12 +218,38 @@ import {
   PSteps,
   PTooltip
 } from '@kpmg/styleguide'
+import { createMandate } from '@/services/mandate'
 import Form from '@/components/CreateMandate/Form'
 import DownloadMandate from '@/components/CreateMandate/Download'
+import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
 const validateAvailability = ref(false)
+const mandateModel: CreateMandateModel = reactive({
+  erpId: '',
+  address: {
+    street: '',
+    addressComplement: '',
+    zipCode: '',
+    city: '',
+    country: ''
+  },
+  signatory: {
+    title: '',
+    firstName: '',
+    lastName: '',
+    email: ''
+  },
+  bban: {
+    bankCode: '',
+    branchCode: '',
+    accountNumber: '',
+    checkDigits: ''
+  }
+})
+const loading = ref(false)
+const mandateId = ref('')
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -260,11 +294,11 @@ const goToPreviousStep = () => {
   currentStep.value--
 }
 
-const handleNextAvailability = (availability: any) => {
+const handleNextAvailability = (availability: boolean) => {
   nextStepAvailability.value = availability
 }
 
-const handleValidateAvailability = (availability: any) => {
+const handleValidateAvailability = (availability: boolean) => {
   validateAvailability.value = availability
 }
 
@@ -292,6 +326,23 @@ const closeDrawerAndInitStep = () => {
 const closeDialogDrawer = () => {
   pDialogControl.dialogVisible = false
   closeDrawerAndInitStep()
+}
+const updateMandateModel = (mandate: CreateMandateModel) => {
+  Object.assign(mandateModel, mandate)
+}
+
+const submitMandate = async (mandate: CreateMandateModel) => {
+  try {
+    loading.value = true
+    const {
+      data: { id }
+    } = await createMandate(mandate)
+    mandateId.value = id
+    currentStep.value++
+  } catch (error) {
+  } finally {
+    loading.value = false
+  }
 }
 
 defineExpose({

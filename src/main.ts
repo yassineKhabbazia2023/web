@@ -1,6 +1,5 @@
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
-import './style.scss'
 import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
 
 import styleGuide from '@kpmg/styleguide'

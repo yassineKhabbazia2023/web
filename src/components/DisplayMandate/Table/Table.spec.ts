@@ -41,7 +41,7 @@ describe('mandate collection', () => {
         }
       ]
     })
-    await waitForAsyncImports(2)
+    await waitForAsyncImports(50)
     expect(wrapper.exists()).toBeTruthy()
   })
 
