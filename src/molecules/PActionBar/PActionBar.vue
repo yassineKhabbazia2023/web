@@ -4,25 +4,60 @@
       <template
         v-for="(item, index) in truncatedLeftSideButtons"
         :key="index"
-        :pType="item.pButton.pType"
-        :pPlain="item.pButton.pPlain"
-        :pCircle="item.pButtonName === '' ? true : false"
-        :pLoading="item.pButton.pLoading"
-        :pDisabled="item.pButton.pDisabled"
-        :pSize="item.pButton.pSize"
-        :class="[
-          'p-action-bar__left-btn margin-right--2',
-          item.pButtonName === '' ? 'el-button--icon' : ''
-        ]"
-        @click="$emit(item.pButtonActionName)">
+      >
+      <PUpload
+          v-if="item.pComponentType === 'UPLOAD'"
+          :pMultiple="item.pMultiple"
+          :pDisable="item.pButton.pDisabled"
+          :pShowFileList="false"
+          :pDrag="false"
+          @files-selected="handleFilesSelected"
+        >
+          <PButton
+            :pType="item.pButton.pType"
+            :pPlain="item.pButton.pPlain"
+            :pCircle="item.pButtonName === '' ? true : false"
+            :pLoading="item.pButton.pLoading"
+            :pDisabled="item.pButton.pDisabled"
+            :pSize="item.pButton.pSize"
+            :class="[
+              'p-action-bar__left-btn',
+              'margin-right--2',
+              item.pButtonName === '' ? 'el-button--icon' : ''
+            ]"
+          >
+            <PIcon class="el-button__icon--left">
+              <component :is="resolvedIconsLeft[index]"></component>
+            </PIcon>
+            <p>{{ item.pButtonName }}</p>
+          </PButton>
+        </PUpload>
 
-        <PIcon class="el-button__icon--left">
-          <component :is="resolvedIconsLeft[index]"></component>
-        </PIcon>
-        <span>
-          {{ item.pButtonName }}
-        </span>
-      </PButton>
+        <PButton
+          v-else
+          :pType="item.pButton.pType"
+          :pPlain="item.pButton.pPlain"
+          :pCircle="item.pButtonName === '' ? true : false"
+          :pLoading="item.pButton.pLoading"
+          :pDisabled="item.pButton.pDisabled"
+          :pSize="item.pButton.pSize"
+          :class="[
+            'p-action-bar__left-btn',
+            'margin-right--2',
+            item.pButtonName === '' ? 'el-button--icon' : ''
+          ]"
+          @click="$emit('p-action-bar-button-clicked', item.pButtonActionName)"
+        >
+          <PIcon
+            class="el-button__icon--left"
+          >
+            <component :is="resolvedIconsLeft[index]"></component>
+          </PIcon>
+          <p>
+            {{ item.pButtonName }}
+          </p>
+        </PButton>
+      </template>
     </div>
     <div class="p-action-bar__right">
       <PButton
@@ -34,8 +69,9 @@
         :pLoading="item.pButton.pLoading"
         :pDisabled="item.pButton.pDisabled"
         :pSize="item.pButton.pSize"
-        class="p-action-bar__right-btn margin-left--2"
-        @click="$emit(item.pButtonActionName)">
+        class="p-action-bar__right-btn"
+        @click="$emit('p-action-bar-button-clicked', item.pButtonActionName)"
+      >
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsRight[index]"></component>
         </PIcon>
@@ -53,7 +89,6 @@ import PIcon from '@/atoms/PIcon'
 import PUpload from '@/atoms/PUpload'
 import { iconsResolver } from '@/utils/iconResolver'
 import type { PActionBarProps } from './PActionBarTypes'
-
 const props = defineProps<PActionBarProps>()
 
 const emit = defineEmits<{
@@ -78,7 +113,8 @@ const resolvedIconsRight = computed(() => {
 })
 
 const resolvedIconsLeft = computed(() => {
-  return iconsResolver(props.pLeftSideButtons, 'pButtonIcon')
+  const resolvedIcons = iconsResolver(props.pLeftSideButtons, 'pButtonIcon')
+  return resolvedIcons
 })
 
 const isWindowUnderDesktop = ref(window.innerWidth < 992)

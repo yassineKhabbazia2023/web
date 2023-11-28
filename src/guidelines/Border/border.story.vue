@@ -98,7 +98,7 @@
       </el-row>
     </Variant>
     <Variant title="Border style">
-      <table class="demo-border" aria-label="Styles de bordure">
+      <table class="demo-border" aria-label="Border style">
         <thead>
           <tr>
             <th class="text">

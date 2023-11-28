@@ -7,19 +7,27 @@
     }"
     icon="mdi:file-image-outline"
   >
+    icon="mdi:file-image-outline"
+  >
     <Variant title="Basic Usage">
-      <PImage
-        :pType="basicImageData.pType"
-        :pName="basicImageData.pName"
-        :fit="basicImageData.pFit" />
-      <template #controls>
-        <HstText
-          v-model="basicImageData.pType"
-          title="type"
+      <Suspense>
+        <AsyncComponent
+          :pType="basicImageData.type"
+          :pName="basicImageData.name"
+          :pFit="basicImageData.fit"
         />
-        <HstText
-          v-model="basicImageData.pName"
-          title="name"
+      </Suspense>
+
+      <template #controls>
+        <HstSelect
+          v-model="basicImageData.type"
+          title="Type"
+          :options="folders"
+        />
+        <HstSelect
+          v-model="basicImageData.name"
+          title="Name"
+          :options="filesName"
         />
         <hr />
         <div class="margin--2 margin-top--4">
@@ -39,13 +47,44 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import PImage from '.'
+import {
+  computed,
+  defineAsyncComponent,
+  reactive,
+  toRaw,
+  watch
+} from 'vue'
+import IMAGES_LIST from '@/assets/images/imagesList.json'
 
 const basicImageData = reactive({
   type: 'paupulse',
   name: 'digitalisation',
   fit: 'fill'
+})
+
+const folders = IMAGES_LIST.map(folder => Object.keys(folder)[0])
+const files = computed(() =>
+  IMAGES_LIST.find(folder => Object.keys(folder)[0] === basicImageData.type)
+)
+
+const filesName = computed(() =>
+  Object
+    .values(files.value as object)[0]
+    .map((file: string) => file.split('.')[0])
+)
+
+let AsyncComponent: any
+
+const loadImage = () => {
+  AsyncComponent = defineAsyncComponent(() => import('./'))
+}
+loadImage()
+
+watch(basicImageData, (newValue) => {
+  const hasFileInFolder = filesName.value.includes(toRaw(newValue.name))
+  if (hasFileInFolder) {
+    loadImage()
+  }
 })
 </script>
 

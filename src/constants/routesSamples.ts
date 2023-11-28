@@ -6,7 +6,7 @@ export const menu = [
       render: () => 'Your are in the route named Dashboard'
     },
     meta: {
-      icon: 'PIDashboard'
+      icon: 'PIColumnsGap'
     }
   },
   {

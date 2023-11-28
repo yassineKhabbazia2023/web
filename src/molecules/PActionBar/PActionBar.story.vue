@@ -4,144 +4,148 @@
     icon="mdi:call-to-action"
     :layout="{ type: 'single', iframe: true }">
     <Variant title="Basic usage simple">
-      <PActionBar :pRightSideButtons="pRightSideIcons" :pLeftSideButtons="pLeftSideIcons" />
+      <PActionBar :pLeftSideButtons="pLeftSideIcons" :pRightSideButtons="pRightSideIcons" />
     </Variant>
   </Story>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { PButtonProps } from '@/atoms/PButton/PButtonTypes'
+import { reactive } from 'vue'
+import type { ComponentDefinitionProps } from './PActionBarTypes'
 import PActionBar from '.'
 
-const pLeftSideIcons = reactive([{
-  pButtonName: 'Déposer un document',
-  pButtonIcon: 'PIUpload',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('primary'),
-    pPlain: false,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
+const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
+  {
+    pButtonName: 'Déposer un document',
+    pButtonIcon: 'PIUpload',
+    pButtonActionName: 'buttonActionName',
+    pComponentType: 'UPLOAD',
+    pMultiple: true,
+    pButton: {
+      pType: 'primary',
+      pPlain: false,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
+  },
+  {
+    pButtonName: 'Filtrer',
+    pButtonIcon: 'PIFunnel',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'primary',
+      pPlain: true,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
+  },
+  {
+    pButtonName: '',
+    pButtonIcon: 'PISearch',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pPlain: false,
+      pRound: false,
+      pCircle: true,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
   }
-},
-{
-  pButtonName: 'Filtrer',
-  pButtonIcon: 'PIFunnel',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('primary'),
-    pPlain: true,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
-  }
-},
-{
-  pButtonName: '',
-  pButtonIcon: 'PISearch',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('white'),
-    pPlain: false,
-    pRound: false,
-    pCircle: true,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
-  }
-}
 ])
 
-const pRightSideIcons = reactive([{
-  pButtonName: 'Renommer',
-  pButtonIcon: 'PIPencilSquare',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('white'),
-    pPlain: true,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
+const pRightSideIcons = reactive<ComponentDefinitionProps[]>([
+  {
+    pButtonName: 'Renommer',
+    pButtonIcon: 'PIPencilSquare',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pPlain: true,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
+  },
+  {
+    pButtonName: 'Envoi immédiat',
+    pButtonIcon: 'PIRocket',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pPlain: true,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
+  },
+  {
+    pButtonName: 'Filtrer',
+    pButtonIcon: 'PIFunnel',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pPlain: true,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
+  },
+  {
+    pButtonName: 'Télécharger',
+    pButtonIcon: 'PIDownload',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pPlain: false,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
+  },
+  {
+    pButtonName: 'Supprimer',
+    pButtonIcon: 'PITrash',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pPlain: false,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
+  },
+  {
+    pButtonName: 'Consulter',
+    pButtonIcon: 'PIEye',
+    pButtonActionName: 'buttonActionName',
+    pButton: {
+      pType: 'white',
+      pPlain: false,
+      pRound: false,
+      pCircle: false,
+      pLoading: false,
+      pDisabled: false,
+      pSize: 'small'
+    }
   }
-},
-{
-  pButtonName: 'Envoi immédiat',
-  pButtonIcon: 'PIRocket',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('white'),
-    pPlain: true,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
-  }
-},
-{
-  pButtonName: 'Filtrer',
-  pButtonIcon: 'PIFunnel',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('white'),
-    pPlain: true,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
-  }
-},
-{
-  pButtonName: 'Télécharger',
-  pButtonIcon: 'PIDownload',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('white'),
-    pPlain: false,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
-  }
-},
-{
-  pButtonName: 'Supprimer',
-  pButtonIcon: 'PITrash',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('white'),
-    pPlain: false,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
-  }
-},
-{
-  pButtonName: 'Consulter',
-  pButtonIcon: 'PIEye',
-  pButtonActionName: 'buttonActionName',
-  pButton: {
-    pType: ref<PButtonProps['pType']>('white'),
-    pPlain: false,
-    pRound: false,
-    pCircle: false,
-    pLoading: false,
-    pDisabled: false,
-    pSize: ref<PButtonProps['pSize']>('small')
-  }
-}
 ])
 
 </script>
@@ -156,6 +160,11 @@ export interface PActionBarProps {
   pButtonIcon: string;
   pButtonActionName: string;
   pButton: PButtonProps
+}
+
+export interface ComponentDefinitionProps extends PButtonActionBarProps {
+  componentType?: ComponentType,
+  multiple?: boolean
 }
 
 ```
@@ -185,6 +194,8 @@ const pLeftSideIcons = ref([{
 | pButtonIcon       | string              | The icon name to display. The icons' names are available in the PIcon story.            | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
 | pButtonActionName | string              | The text value of the action that will be emitted                                             |                                                                                                                                                                                  |
 | pSize, pPlain, pRound, pCircle, pLoading, pDisabled | Check  PButton story | All of these properties are the PButton properties that define how the buttons will look like inside the action bar | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809)  |
+| componentType     | ComponentType   | It is used to specify which component to render, could be PButton, UploadComponent, or other       |                                                                                                                  |
+| multiple          | boolean         | When the componentType is 'UPLOAD', this prop is to specify whether we can perform multiple file selections or not |                                                                                                                  |
 
 # Max number of buttons that will be displayed
 | Right side      | Left side       |

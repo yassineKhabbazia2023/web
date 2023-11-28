@@ -1,7 +1,7 @@
 <template>
   <button
     class="p-folder-line-navigation-item"
-    :class="{ selected: isSelected, disabled: props.pDisabled }"
+    :class="{ selected: isSelected, disabled: pDisabled }"
     @click="handleClickFolderNavigation(pFolderId)"
     @dblclick="handleDoubleClickFolderNavigation(pFolderId)"
   >

@@ -17,12 +17,7 @@ const defaultProps: PaginationProps = {
 
 const createWrapper = (props = defaultProps) =>
   mount(PPagination, {
-    props,
-    global: {
-      stubs: {
-        PDropdown: ElSelect
-      }
-    }
+    props
   })
 
 describe('pPagination', () => {

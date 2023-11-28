@@ -3,17 +3,17 @@
     <Variant title="Default">
       <PFolderLineNavigationItem
         :pFolderName="firstProps.folderName"
-        :class="{ pSelected: firstProps.selected, pDisabled: firstProps.disabled }"
         :pFolderId="firstProps.folderId"
         :pHasArrow="firstProps.pHasArrow"
         :pLeftIcon="firstProps.pLeftIcon"
+        :pSelected="firstProps.selected"
+        :pDisabled="firstProps.disabled"
         @on-click-folder-navigation="logEvent('on-click-folder-navigation', $event)"
         @on-db-click-folder-navigation="logEvent('on-db-click-folder-navigation', $event)"
       />
       <template #controls>
         <HstText v-model="firstProps.folderName" title="FolderName" />
         <HstText v-model="firstProps.pLeftIcon" title="pLeftIcon" />
-        <HstCheckbox v-model="firstProps.selected" title="selected" />
         <HstCheckbox v-model="firstProps.disabled" title="disabled" />
         <HstCheckbox v-model="firstProps.pHasArrow" title="pHasArrow" />
       </template>

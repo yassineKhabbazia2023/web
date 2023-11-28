@@ -6,9 +6,9 @@
   >
     <div class="p-offer-card__logo margin-right--4">
       <PImage
-        type="logos"
-        :name="pLogo"
-        fit="fill"
+        pType="logos"
+        :pName="pLogo"
+        pFit="fill"
       />
     </div>
     <div class="p-offer-card__body">

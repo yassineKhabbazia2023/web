@@ -43,5 +43,9 @@ $dialog: (
 
   .el-dialog__footer {
     padding: 0 16px 16px;
+
+    .el-button  + .el-button {
+      margin-left: 8px;
+    }
   }
 }

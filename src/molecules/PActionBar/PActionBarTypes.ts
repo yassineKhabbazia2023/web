@@ -1,13 +1,20 @@
-import type { PButtonProps } from "@/atoms/PButton/PButtonTypes";
+import type { PButtonProps } from '@/atoms/PButton/PButtonTypes'
 
 export interface PButtonActionBarProps {
   pButton: PButtonProps
-  pButtonName: string,
-  pButtonIcon: string,
+  pButtonName: string
+  pButtonIcon: string
   pButtonActionName: string
 }
 
+type ComponentType = 'UPLOAD' | 'SEARCH'
+
+export interface ComponentDefinitionProps extends PButtonActionBarProps {
+  pComponentType?: ComponentType
+  pMultiple?: boolean
+}
+
 export interface PActionBarProps {
-  pRightSideButtons: PButtonActionBarProps[],
-  pLeftSideButtons: PButtonActionBarProps[]
+  pRightSideButtons: ComponentDefinitionProps[]
+  pLeftSideButtons: ComponentDefinitionProps[]
 }

@@ -3,4 +3,5 @@ export interface UploadProps {
   pDrag?: boolean
   pDisabled?: boolean
   pAccept?: string
+  pShowFileList?: boolean
 }
