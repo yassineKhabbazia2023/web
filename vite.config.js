@@ -36,7 +36,6 @@ export default ({ mode }) =>
             pinia: 'Pinia',
             'vue-router': 'VueRouter',
             '@kpmg/common': 'Common',
-            '@kpmg/styleguide': 'StyleGuide',
             'env-vars': 'EnvVars'
           },
           { disableInServe: mode === 'test' }
