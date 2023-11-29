@@ -81,7 +81,6 @@ import { useI18n } from 'vue-i18n'
 import { commonApi, commonStore as store } from '@kpmg/common'
 import { useRouter } from 'vue-router'
 import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
-
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
