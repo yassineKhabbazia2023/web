@@ -2,7 +2,6 @@ import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import ResetPasswordForm from './'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const routes = [
   {
@@ -62,7 +61,6 @@ describe('page reset password form', () => {
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
-      await waitForAsyncImports(40)
       wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(1)
@@ -72,7 +70,6 @@ describe('page reset password form', () => {
 
   it('should show error when user enter a invalid password', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(40)
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11aa')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
     await flushPromises()
@@ -81,7 +78,6 @@ describe('page reset password form', () => {
 
   it('should show success when user enter 2 password', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(40)
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     expect(wrapper.findAll('.is-error')).toHaveLength(0)
@@ -91,7 +87,6 @@ describe('page reset password form', () => {
 
   it('should show error when user enter password and confirm password differently', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    await waitForAsyncImports(40)
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
     await flushPromises()
@@ -102,7 +97,6 @@ describe('page reset password form', () => {
   it('should call back end when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const routerPushSpy = vi.spyOn(router, 'push')
-    await waitForAsyncImports(40)
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     await flushPromises()

@@ -15,7 +15,6 @@ import ElementPlus, {
   ElButton as PButton,
   ElImage as PImage
 } from 'element-plus'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -66,7 +65,6 @@ describe('reset password', () => {
 
   it('validate the reset password form and has a redirection to the success page', async () => {
     const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
-    await waitForAsyncImports(30)
     const elForm = wrapper.find('form')
     expect(elForm.exists()).toBeTruthy()
 

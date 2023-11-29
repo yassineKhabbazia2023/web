@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 import Login from './'
 
 const USER_ID = 'customUserId'
@@ -53,7 +52,6 @@ const getInputPassword = () => wrapper.findAll('input')[1]
 describe('login', () => {
   beforeEach(async () => {
     wrapper = createWrapper()
-    await waitForAsyncImports(40)
   })
 
   afterEach(() => {
@@ -90,7 +88,6 @@ describe('login', () => {
 
   it('does not redirect to the home page if the api return an error', async () => {
     wrapper = createWrapper()
-    await waitForAsyncImports(40)
 
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
