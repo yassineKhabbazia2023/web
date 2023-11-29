@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import ExpireToken from './ExpireToken.vue'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const routes = [
   {
@@ -51,7 +50,6 @@ describe('page expire token', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyRouter = vi.spyOn(wrapper.vm.router, 'push')
     const link = '/Activation/Invite?accountId=accountIdSample&contactId=contactId'
-    await waitForAsyncImports(30)
     wrapper.find('.btn-link').trigger('click')
     expect(postMock).toHaveBeenCalledTimes(1)
     expect(postMock).toHaveBeenCalledWith(link)

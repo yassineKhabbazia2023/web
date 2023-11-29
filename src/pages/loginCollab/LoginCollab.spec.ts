@@ -1,6 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 import LoginCollab from './'
 
 vi.mock('env-vars', () => ({
@@ -23,7 +22,6 @@ const createWrapper = () =>
 describe('loginCollab', () => {
   beforeEach(async () => {
     wrapper = createWrapper()
-    await waitForAsyncImports(40)
   })
 
   afterEach(() => {
