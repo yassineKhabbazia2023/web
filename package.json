@@ -14,7 +14,6 @@
   "types": "dist/types/src/main.d.ts",
   "files": [
     "dist",
-    "src/testing-helpers/index.ts",
     "README.md",
     "package.json"
   ],
