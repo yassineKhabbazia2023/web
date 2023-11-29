@@ -1,7 +1,7 @@
 <template>
   <PTable
-    :data="mandateCollection"
-    stripe
+    :pData="mandateCollection"
+    pStripe
     class="padding-left--6 padding-right--6"
   >
     <template v-for="({ label, prop, sortable }, index) in tableHead">
@@ -12,20 +12,15 @@
         :sortable="sortable"
         :key="prop"
       >
-        <!-- <template #default="scope">
-          <PToolbox :elements="actionsBuilder(scope.row.statusCode)">
+        <template #default="scope">
+          <PToolbox :pElements="actionsBuilder(scope.row.statusCode)">
             <PButton type="generic">
               <PIcon>
                 <PIThreeDots />
               </PIcon>
             </PButton>
           </PToolbox>
-        </template> -->
-        <PButton type="generic">
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
-            </PButton>
+        </template>
       </PTableColumn>
       <PTableColumn
         v-else-if="label === `${t('status')}`"

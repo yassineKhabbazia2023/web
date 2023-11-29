@@ -1,9 +1,9 @@
 <template>
     <div class="donwload-mandate">
         <PImage
-        type="paupulse"
-        name="ok"
-        fit="fill"
+        pType="paupulse"
+        pName="ok"
+        pFit="fill"
         class="download-mandate__illustration"
         />
         <h4 class="download-mandate__title">
@@ -18,11 +18,11 @@
             <p>{{t('deposit')}}</p>
         </div>
         <PFileCard
-            :name="`unsigned-mandate-${mandateId}.pdf`"
-            format="PDF"
-            size=""
-            hasIcon
-            hasButton
+            :pName="`unsigned-mandate-${mandateId}.pdf`"
+            pFormat="PDF"
+            pSize=""
+            pHasIcon
+            pHasButton
             class="download-mandate__file-card"
         >
             <template #icon>
@@ -32,9 +32,9 @@
             </template>
             <template #buttons>
                 <PButton
-                    type="white"
-                    size="default"
-                    :plain="false"
+                    pType="white"
+                    pSize="default"
+                    :pPlain="false"
                     data-testid="download-prefilled-mandate"
                     @click="downloadMandate()"
                 >

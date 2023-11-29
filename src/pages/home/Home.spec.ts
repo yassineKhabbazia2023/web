@@ -6,9 +6,6 @@ import Header from '@/components/Common/Header'
 import ListMandate from '@/components/DisplayMandate/Table'
 import Pagination from '@/components/DisplayMandate/Pagination'
 import Home from '@/pages/home'
-import {
-  waitForAsyncImports
-} from '@kpmg/common/src/testing-helpers'
 
 const mandatesList = {
   counters: {
@@ -75,7 +72,6 @@ const createWrapper = (props: any) =>
 describe('componentName.vue', () => {
   it('renders Header component', async () => {
     const wrapper = createWrapper({})
-    await waitForAsyncImports(50)
     await wrapper.find('.btn-next').trigger('click')
     expect(wrapper.findComponent(Header).exists()).toBeTruthy()
     expect(wrapper.findComponent(ListMandate).exists()).toBeTruthy()

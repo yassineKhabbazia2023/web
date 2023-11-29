@@ -2,11 +2,11 @@
   <div>
     <PDrawer
       v-model="drawerModel"
-      :title="currentStep <= 3 ? `${t('new-collection')}` : ''"
-      :showPreviousStep="false"
+      :pTitle="currentStep <= 3 ? `${t('new-collection')}` : ''"
+      :pShowPreviousStep="false"
       :beforeClose="handleClose"
-      size="50%"
-      direction="rtl"
+      pSize="50%"
+      pDirection="rtl"
       class="drawer-create-mandate"
     >
       <PSteps
@@ -35,8 +35,8 @@
         </h2>
         <PTooltip
           v-if="currentStep === 1"
-          :content="t('tooltip')"
-          placement="top"
+          :pContent="t('tooltip')"
+          pPlacement="top"
         >
           <PIcon class="drawer-create-mandate__tooltip" color="#A4A4A4">
             <PIQuestionCircle />
@@ -62,11 +62,11 @@
         <div v-if="currentStep <= 3">
           <PButton
             v-if="currentStep === 2 || currentStep === 3"
-            type="default"
-            size="default"
-            :plain="false"
-            :round="false"
-            :loading="false"
+            pType="default"
+            pSize="default"
+            :pPlain="false"
+            :pRound="false"
+            :pLoading="false"
             data-testid="next-step-test"
             @click="goToPreviousStep()"
           >
@@ -78,12 +78,12 @@
           <PButton
             v-if="currentStep === 3"
             class="margin-left--4"
-            type="primary"
-            size="default"
-            :plain="false"
-            :round="false"
-            :loading="loading"
-            :disabled="!validateAvailability"
+            pType="primary"
+            pSize="default"
+            :pPlain="false"
+            :pRound="false"
+            :pLoading="loading"
+            :pDisabled="!validateAvailability"
             data-testid="validate-step-test"
             @click="submitMandate(mandateModel)"
           >
@@ -91,12 +91,12 @@
           </PButton>
           <PButton
             v-if="currentStep < 3"
-            type="primary"
-            size="default"
-            :plain="false"
-            :round="false"
-            :disabled="!nextStepAvailability"
-            :loading="false"
+            pType="primary"
+            pSize="default"
+            :pPlain="false"
+            :pRound="false"
+            :pDisabled="!nextStepAvailability"
+            :pLoading="false"
             data-testid="next-step-test"
             @click="goToNextStep()"
             class="margin-left--4"
@@ -109,9 +109,9 @@
         </div>
         <div v-else>
           <PButton
-            type="primary"
-            size="default"
-            plain
+            pType="primary"
+            pSize="default"
+            pPlain
             @click="closeDrawerAndInitStep()"
             data-testid="close-button-test"
           >
@@ -122,34 +122,34 @@
     </PDrawer>
     <PDialog
       v-model="pDialogControl.dialogVisible"
-      :width="pDialogControl.dialogWidth"
-      :modal="pDialogControl.dialogModal"
-      :center="pDialogControl.dialogCenter"
-      :beforeClose="closeDialog"
+      :pWidth="pDialogControl.dialogWidth"
+      :pModal="pDialogControl.dialogModal"
+      :pCenter="pDialogControl.dialogCenter"
+      :pBeforeClose="closeDialog"
       :dialogCloseOnClickModal="pDialogControl.dialogCloseOnClickModal"
       :dialogCloseOnPressEscape="pDialogControl.dialogCloseOnPressEscape"
-      :title="t('title-popup')"
+      :pTitle="t('title-popup')"
     >
       <template #footer>
         <div class="p-dialog__footer">
           <PButton
-            type="secondary"
-            size="small"
-            :plain="false"
-            :round="false"
-            :disabled="false"
-            :loading="false"
+            pType="secondary"
+            pSize="small"
+            :pPlain="false"
+            :pRound="false"
+            :pDisabled="false"
+            :pLoading="false"
             @click="pDialogControl.dialogVisible = false"
           >
             {{ t('cancel-popup') }}
           </PButton>
           <PButton
-            type="primary"
-            size="small"
-            :plain="false"
-            :round="false"
-            :disabled="false"
-            :loading="false"
+            pType="primary"
+            pSize="small"
+            :pPlain="false"
+            :pRound="false"
+            :pDisabled="false"
+            :pLoading="false"
             @click="closeDialogDrawer()"
             class="margin-left--4"
           >

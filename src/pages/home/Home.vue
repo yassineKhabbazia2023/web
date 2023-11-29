@@ -36,7 +36,7 @@ onBeforeMount(async () => {
     loading.value = true
     const { data } = await getMandatesCollection()
     mandatesCollection.value = data
-  } catch (error) {
+  } catch (_) {
   } finally {
     loading.value = false
   }

@@ -87,8 +87,7 @@
               <PInput
                 v-model="createMandateForm.firstName"
                 data-testid="firstName-test"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
         </PRow>
@@ -109,8 +108,7 @@
             v-model="createMandateForm.email"
             data-testid="email-test"
             state="default"
-          >
-          </PInput>
+          />
         </PFormItem>
         <h5 class="create-mandate-form__section-title">
           {{ t('headquarters') }}
@@ -136,8 +134,7 @@
               t('optional')
             }}</span>
           </template>
-          <PInput v-model="createMandateForm.addressComplement" state="default">
-          </PInput>
+          <PInput v-model="createMandateForm.addressComplement" state="default" />
         </PFormItem>
         <PRow :gutter="16">
           <PCol :span="8">
@@ -161,7 +158,6 @@
               :label="t('city')"
             >
               <PInput v-model="createMandateForm.city"/>
-
             </PFormItem>
           </PCol>
         </PRow>
@@ -192,8 +188,7 @@
                 placeholder="_ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
           <PCol :span="12">
@@ -211,8 +206,7 @@
                 placeholder="_ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
         </PRow>
@@ -232,8 +226,7 @@
                 placeholder="_ _ _ _ _ _ _ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
           <PCol :span="6">
@@ -251,8 +244,7 @@
                 placeholder="_ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
         </PRow>
@@ -269,14 +261,14 @@
             disabled
           />
         </PFormItem>
-        <PAlert type="danger" v-if="isScrappable">
+        <PAlert pType="danger" v-if="isScrappable">
           {{ t('form.error.notListed') }}
           <span class="create-mandate-form__content--bold">
             {{ t('form.error.frFmMandat') }}
           </span>
           {{ t('form.error.contactTeam') }}
         </PAlert>
-        <PAlert type="danger" v-if="isNonScrappable">
+        <PAlert pType="danger" v-if="isNonScrappable">
           {{ t('form.error.nonScrappable') }}
         </PAlert>
       </div>

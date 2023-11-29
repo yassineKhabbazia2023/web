@@ -6,12 +6,12 @@
       </div>
       <PButton
         class="header__create-mandate-button"
-        type="primary"
-        size="default"
-        :plain="false"
-        :round="false"
-        :disabled="false"
-        :loading="false"
+        pType="primary"
+        pSize="default"
+        :pPlain="false"
+        :pRound="false"
+        :pDisabled="false"
+        :pLoading="false"
         @click="drawerHandler"
       >
         <PIcon class="el-button__icon--left">

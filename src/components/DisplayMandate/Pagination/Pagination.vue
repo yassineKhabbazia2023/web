@@ -1,13 +1,13 @@
 <template>
   <PPagination
-    :showTotalPageCounter="showTotalPageCounter"
-    :pageSizes="pagesRanges"
-    :total="pagesCount"
-    :pageSizeSelectorSuffix="pageRangeSelectorSuffix"
-    :pageSizeSelectorGroupLabel="pageRangeSelectorGroupLabel"
+    :pShowTotalPageCounter="showTotalPageCounter"
+    :pPageSizes="pagesRanges"
+    :pTotal="pagesCount"
+    :pPageSizeSelectorSuffix="pageRangeSelectorSuffix"
+    :pPageSizeSelectorGroupLabel="pageRangeSelectorGroupLabel"
     @current-change="handleCurrentChange"
     @on-page-range-changed="handleSizeChange"
-    :pageSize="itemsByPage"
+    :pPageSize="itemsByPage"
   >
   <p>{{`${startIndex} - ${endIndex}`}} {{t('on')}} {{pagesCount}}</p>
   </PPagination>

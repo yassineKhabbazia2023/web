@@ -1,12 +1,11 @@
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Table from '.'
 import { expect, describe, it } from 'vitest'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const createWrapper = (props: any = {}) =>
   wrapperFactory(Table, { props })
 describe('mandate collection', () => {
-  it('renders the mandate table', async () => {
+  it('renders the mandate table', () => {
     const wrapper = createWrapper({
       data: [
         {
@@ -41,7 +40,6 @@ describe('mandate collection', () => {
         }
       ]
     })
-    await waitForAsyncImports(50)
     expect(wrapper.exists()).toBeTruthy()
   })
 

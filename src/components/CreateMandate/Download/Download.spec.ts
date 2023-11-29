@@ -2,7 +2,6 @@ import Download from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
 import { downloadUnsignedMandate } from '@/services/mandate'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 vi.mock('@/services/mandate', () => ({
   downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data: 'pdf-data' }))
@@ -37,7 +36,6 @@ describe('download mandate prefilled', () => {
     // eslint-disable-next-line vitest/prefer-spy-on
     window.showSaveFilePicker = vi.fn(() => Promise.resolve(fileHandleMock))
     const wrapper = createWrapper()
-    await waitForAsyncImports(50)
 
     // Act
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
@@ -59,8 +57,6 @@ describe('download mandate prefilled', () => {
     window.showSaveFilePicker = undefined
 
     const wrapper = createWrapper()
-    await waitForAsyncImports(50)
-
     // Act
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
 
@@ -76,8 +72,6 @@ describe('download mandate prefilled', () => {
     // Spy on console.error
     const consoleSpy = vi.spyOn(console, 'error')
     const wrapper = createWrapper()
-    await waitForAsyncImports(50)
-
     // Act
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
 
