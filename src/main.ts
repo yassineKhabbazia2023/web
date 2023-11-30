@@ -24,3 +24,9 @@ routes.value.push({
   name: 'entities',
   component: () => import('@/pages/entities')
 } as RouteRecordRaw)
+
+routes.value.push({
+  path: '/subscription',
+  name: 'subscription',
+  component: () => import('@/pages/subscriptions')
+} as RouteRecordRaw)

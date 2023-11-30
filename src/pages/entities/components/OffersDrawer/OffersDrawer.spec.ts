@@ -17,7 +17,7 @@ vi.mock('@kpmg/common', async () => ({
 
 describe('subscriptionOffers', () => {
   describe('props', () => {
-    it('should close offers drawer when clicking on close buton',
+    it('should close offers drawer when clicking on close button',
       async () => {
         const wrapper = await wrapperFactory(OffersDrawer, {
           props: {
