@@ -1,13 +1,13 @@
 <template>
   <div class="page-content">
     <PImage
-      type="paupulse"
-      name="mini-email"
+      pType="paupulse"
+      pName="mini-email"
       class="badge-mini-email hidden-md-and-up"
     />
     <PImage
-      type="badges"
-      name="email"
+      pType="badges"
+      pName="email"
       class="badge-email hidden-sm-and-down"
     />
     <p class="forgot-password-title">
@@ -19,7 +19,7 @@
       {{ t('associatedAccount') }}
     </p>
     <PButton
-      type="white"
+      pType="white"
       @click="router.push({ name: 'loginClient' })"
       class="back-to-login-button hidden-sm-and-down"
     >

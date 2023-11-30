@@ -1,8 +1,8 @@
 <template>
   <div class="page-content">
     <PImage
-      type="paupulse"
-      name="mini-password"
+      pType="paupulse"
+      pName="mini-password"
       class="badge-lock hidden-md-and-up"
     />
     <p class="forgot-password-title">
@@ -36,10 +36,10 @@
       </PFormItem>
       <PFormItem>
         <PButton
-          type="primary"
+          pType="primary"
           @click="handleSubmit(formRef)"
-          :disabled="!isFormValid"
-          :loading="isLoading"
+          :pDisabled="!isFormValid"
+          :pLoading="isLoading"
           class="reset-submit-button"
         >
           {{ t('submitBtn') }}
@@ -47,7 +47,7 @@
       </PFormItem>
       <PFormItem>
         <PButton
-          type="white"
+          pType="white"
           @click="router.push({ name: 'loginClient' })"
           class="back-to-login-button"
         >
