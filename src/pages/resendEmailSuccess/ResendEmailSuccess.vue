@@ -1,8 +1,8 @@
 <template>
   <div class="page-content">
     <PImage
-      type="badges"
-      name="email"
+      pType="badges"
+      pName="email"
       class="badge-email" />
     <p class="verifyEmail">
       {{ t('verifyEmail') }}
