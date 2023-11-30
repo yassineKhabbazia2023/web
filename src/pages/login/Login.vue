@@ -64,8 +64,8 @@
       <PFormItem class="button-wrapper">
         <PButton
           @click="handleSubmit(formRef)"
-          :disabled="!isFormValid"
-          type="primary"
+          :pDisabled="!isFormValid"
+          pType="primary"
           class="buttonSubmit"
         >
           {{ t('login')}}
