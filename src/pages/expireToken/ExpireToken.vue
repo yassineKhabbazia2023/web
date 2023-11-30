@@ -1,8 +1,8 @@
 <template>
   <div class="page-content">
     <PImage
-      type="badges"
-      name="x"
+      pType="badges"
+      pName="x"
       class="badge-lock hidden-md-and-up"
     />
     <p class="expireMsg">
@@ -12,10 +12,10 @@
       {{ t('helpMsg') }}
     </p>
     <PButton
-      type="primary"
-      size="large"
+      pType="primary"
+      pSize="large"
       class="btn-link"
-      :loading="isLoading"
+      :pLoading="isLoading"
       @click="resendLink">
       {{ t('btnReceiveLink') }}
     </PButton>
