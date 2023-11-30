@@ -6,7 +6,6 @@ import {
   commonPinia as pinia,
   routes
 } from '@kpmg/common'
-import styleGuide from '@kpmg/styleguide'
 
 const RenderLess = () => ''
 const LOGIN_LAYOUT = 'Login'
@@ -17,7 +16,7 @@ const vueLifecycles = singleSpaVue({
     render: () => h(RenderLess)
   },
   handleInstance(app) {
-    app.use(i18n.value).use(pinia).use(styleGuide)
+    app.use(i18n.value).use(pinia)
   }
 })
 
