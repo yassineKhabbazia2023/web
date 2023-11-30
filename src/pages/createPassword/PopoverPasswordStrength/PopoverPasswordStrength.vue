@@ -1,10 +1,10 @@
 <template>
   <PPopover
-    placement="top"
-    :disabled="false"
-    :title="t('popupTitle')"
-    trigger="click"
-    showArrow
+    pPlacement="top"
+    :pDisabled="false"
+    :pTitle="t('popupTitle')"
+    pTrigger="click"
+    pShowArrow
     popperClass="pwdPopover"
   >
     <template #content>
