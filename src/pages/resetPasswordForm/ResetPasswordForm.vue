@@ -47,9 +47,9 @@
       </PFormItem>
       <PFormItem>
         <PButton
-          type="primary"
-          :disabled="!isValidForm"
-          size="large"
+          pType="primary"
+          :pDisabled="!isValidForm"
+          pSize="large"
           class="btn-submit"
           @click="submitForm(formRef)"
         >

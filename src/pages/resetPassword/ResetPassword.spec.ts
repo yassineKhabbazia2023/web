@@ -8,13 +8,6 @@ import {
 } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import ResetPassword from './'
-import ElementPlus, {
-  ElForm as PForm,
-  ElFormItem as PFormItem,
-  ElInput as PInput,
-  ElButton as PButton,
-  ElImage as PImage
-} from 'element-plus'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -38,18 +31,7 @@ vi.mock('@kpmg/common', () => ({
 
 let wrapper: VueWrapper<any>
 const createWrapper = () =>
-  mount(ResetPassword, {
-    global: {
-      plugins: [ElementPlus],
-      components: {
-        PForm,
-        PFormItem,
-        PInput,
-        PButton,
-        PImage
-      }
-    }
-  })
+  mount(ResetPassword)
 
 const getForm = () => wrapper.find('form')
 const getInputEmail = () => wrapper.findAll('input')[0]

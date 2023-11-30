@@ -6,10 +6,6 @@ import {
 } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import ResetPasswordSuccess from './'
-import ElementPlus, {
-  ElButton as PButton,
-  ElImage as PImage
-} from 'element-plus'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -28,11 +24,6 @@ let wrapper: VueWrapper<any>
 const createWrapper = () =>
   mount(ResetPasswordSuccess, {
     global: {
-      plugins: [ElementPlus],
-      components: {
-        PButton,
-        PImage
-      },
       mocks: {
         $t: (tKey: any) => tKey
       }
