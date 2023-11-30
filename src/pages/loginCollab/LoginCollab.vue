@@ -8,7 +8,7 @@
     </p>
     <PButton
       @click="handleLoginCollab()"
-      type="primary"
+      pType="primary"
       class="buttonSubmit"
     >
       {{ t('login')}}
