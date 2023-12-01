@@ -13,7 +13,7 @@
     </p>
     <PButton
       pType="primary"
-      pSize="large"
+      pSize="default"
       class="btn-link"
       :pLoading="isLoading"
       @click="resendLink">
