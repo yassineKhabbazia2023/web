@@ -2,7 +2,7 @@
   <div class="page-content">
     <PImage
       pType="paupulse"
-      pName="mini-password"
+      pName="password"
       class="badge-lock hidden-md-and-up"
     />
     <p class="forgot-password-title">
