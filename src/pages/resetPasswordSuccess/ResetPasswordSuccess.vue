@@ -2,7 +2,7 @@
   <div class="page-content">
     <PImage
       pType="paupulse"
-      pName="mini-email"
+      pName="email"
       class="badge-mini-email hidden-md-and-up"
     />
     <PImage
