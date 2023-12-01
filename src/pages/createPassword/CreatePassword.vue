@@ -71,7 +71,7 @@
         <PButton
           pType="primary"
           :disabled="!isValidForm"
-          pSize="large"
+          pSize="default"
           class="btn-submit"
           @click="submitForm(formRef)"
         >
