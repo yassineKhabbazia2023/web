@@ -2,7 +2,7 @@
   <div v-show="!isLoading">
     <PBreadcrumb
       class="documents-breadcrumb"
-      :elements="breadcrumbItems"
+      :pElements="breadcrumbItems"
       @p-breadcrumb-item-click="handleFolderNavigation"
     >
     </PBreadcrumb>
@@ -22,13 +22,13 @@
 
     <PPagination
       v-if="documents && documents.documentsPage.items.length > 0"
-      v-model:current-page="currentPage"
-      v-model:page-size="currentPageSize"
-      :total="documents.documentsPage.totalItems"
-      showTotalPageCounter
-      :pageSizes="pagesRanges"
-      pageSizeSelectorGroupLabel=""
-      pageSizeSelectorSuffix="documents"
+      v-model:p-current-page="currentPage"
+      v-model:p-page-size="currentPageSize"
+      :pTotal="documents.documentsPage.totalItems"
+      pShowTotalPageCounter
+      :pPageSizes="pagesRanges"
+      pPageSizeSelectorGroupLabel=""
+      pPageSizeSelectorSuffix="documents"
       @on-page-range-changed="setCurrentPageSize"
     >
       <p>{{ paginationLabel }}</p>
@@ -141,8 +141,8 @@ const setCurrentPageSize = (selectedRange: number) => {
 const breadcrumbItems = computed(() => {
   const items = getBreadcrumbItems(props.currentServiceFolder, props.selectedFolder?.id ?? 0) ?? []
   items.unshift({
-    id: -1,
-    text: 'Documents'
+    pId: -1,
+    pText: 'Documents'
   })
   return items
 })
