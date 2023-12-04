@@ -30,7 +30,7 @@
       <div class="tree-node__label-with-button">
         <PTooltip
           :disabled="!shouldTooltipBeVisible"
-          :content="data.name"
+          :pContent="data.name"
           :showAfter="500"
         >
           <span class="tree-node__label">{{ data.name }}</span>
