@@ -1,7 +1,7 @@
 <template>
  <section class="documents-table">
   <PTable
-  :data="documentsListWithTableStructure.documentsPage.items"
+  :pData="documentsListWithTableStructure.documentsPage.items"
   ref="documentsListTable"
   highlightCurrentRow
   @sort-change="handleSortChange"
