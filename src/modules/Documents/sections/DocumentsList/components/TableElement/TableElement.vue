@@ -1,8 +1,8 @@
 <template>
   <PText
     v-if="fieldType === 'Text'"
-    :content="formatDateStr(data.created)"
-    type="primary"
+    :pContent="formatDateStr(data.created)"
+    pType="primary"
     :bold="false"
     :selected="false"
     :disabled="false"
@@ -10,9 +10,9 @@
 
   <PText
     v-else-if="fieldType === 'DocumentName'"
-    :content="data.name"
+    :pContent="data.name"
     :icon="getFileIcon(data.name)"
-    type="primary"
+    pType="primary"
     :bold="false"
     :selected="false"
     :disabled="false"
@@ -21,10 +21,10 @@
   <PTag
     v-else-if="fieldType === 'Tag' && isCertified && fieldName === ''"
     pColor="gray-900"
-    content="Certifié"
+    pContent="Certifié"
     :iconLeft="PIPatchCheck"
     color=""
-    effect="light"
+    pEffect="light"
     size="default"
     type=""
     :closable="false"
@@ -36,10 +36,10 @@
   <PTag
     v-else-if="fieldType === 'Tag' && getTagProps !== null && fieldName === 'Statut'"
     :pColor="getTagProps.type"
-    :content="data.piaStatus.labelFr"
+    :pContent="data.piaStatus.labelFr"
     :iconLeft="getTagProps.icon"
     color=""
-    effect="light"
+    pEffect="light"
     size="default"
     type=""
     :closable="false"
