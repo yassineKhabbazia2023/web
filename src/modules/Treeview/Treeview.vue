@@ -40,11 +40,11 @@
           <PTree
             v-for="(serviceFolder, index) in extendedServiceFolders"
             :currentNodeKey="!index ? initialSelectedNodeId : ''"
-            :data="serviceFolder"
+            :pData="serviceFolder"
             :defaultExpandedKeys="!index ? defaultExpandedKey : []"
             hasCustomNodes
             :key="serviceFolder[0].id"
-            nodeKey="id"
+            pNodeKey="id"
             ref="treesRefs"
             @p-tree-node-clicked="handleFolderNodeClick"
           >
@@ -65,9 +65,9 @@
 
           <PTree
             ref="binTree"
-            :data="binTreeData"
+            :pData="binTreeData"
             hasCustomNodes
-            nodeKey="id"
+            pNodeKey="id"
             @p-tree-node-clicked="handleBinNodeClick"
             class="bin-tree"
           >
