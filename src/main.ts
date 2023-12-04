@@ -12,10 +12,6 @@ dayjs.Ls.en.weekStart = 1
 export const fr = frLocale
 export const en = enLocale
 
-export default function install(app: any) {
-  app.use(toastPlugin)
-}
-
 export { default as PAside } from './atoms/PAside'
 export { default as PAutocomplete } from './molecules/PAutocomplete'
 export { default as PCol } from './atoms/PCol'
