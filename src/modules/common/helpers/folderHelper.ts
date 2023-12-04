@@ -16,10 +16,11 @@ export const getBreadcrumbItems = (
 
   const folder = findFolderDeepById(root, id)
   if (folder && folder.id) {
-    acc.push({
-      id: folder.id,
-      text: folder.name
-    })
+    const item: BreadcrumbItems = {
+      pId: folder.id,
+      pText: folder.name
+    }
+    acc.push(item)
 
     if (folder.parent.id === 0) {
       return acc.reverse()
