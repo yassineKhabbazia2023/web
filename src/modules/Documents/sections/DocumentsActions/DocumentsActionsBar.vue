@@ -2,8 +2,8 @@
   <div class="action-bar">
     <PActionBar
       class="documents-actions"
-      :rightSideButtons="rightSideButtons"
-      :leftSideButtons="leftSideButtons"
+      :pRightSideButtons="rightSideButtons"
+      :pLeftSideButtons="leftSideButtons"
       @p-action-bar-button-clicked="handleButtonClick"
       @p-upload-files-selected="handleUploadFilesSelected"
     />
