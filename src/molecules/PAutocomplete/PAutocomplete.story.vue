@@ -3,11 +3,11 @@
     <Variant title="Basic Usage">
       <PAutocomplete
         v-model="state"
-        :clearable="clearable"
-        placeholder="Please Input"
+        :pClearable="clearable"
+        pPlaceholder="Please Input"
         @select="handleSelect"
-        :fetchSuggestions="querySearch"
-        :triggerOnFocus="triggerOnFocus">
+        :pFetchSuggestions="querySearch"
+        :pTriggerOnFocus="triggerOnFocus">
         <template #prefix>
           <PIcon>
             <PISearch />
