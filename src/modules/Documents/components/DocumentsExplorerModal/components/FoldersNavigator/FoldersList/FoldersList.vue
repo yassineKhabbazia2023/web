@@ -29,8 +29,8 @@
     >
       <PImage
         class="folder-list__empty-folder__badge"
-        type="badges"
-        name="folder"
+        pType="badges"
+        pName="folder"
       />
       <p class="folder-list__empty-folder__label">
         {{ foldersListEmptyFolderLabel }}

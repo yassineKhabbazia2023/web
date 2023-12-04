@@ -8,7 +8,7 @@
       class="documents-list__document"
       v-for="(document, index) in filteredSortedDocuments"
       :key="index"
-      :fileName="document.content.name"
+      :pFileName="document.content.name"
       :state="getDocumentState(document?.givenActionState)"
     />
 
@@ -19,8 +19,8 @@
       <div class="no-documents-badge__wrapper">
         <PImage
           class="no-documents-badge__wrapper__illustration"
-          type="badges"
-          name="warning"
+          pType="badges"
+          pName="warning"
         />
 
         <div class="no-documents-badge__wrapper__label">
