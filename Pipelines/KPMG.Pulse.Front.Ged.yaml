@@ -13,9 +13,6 @@ parameters:
   displayName: "Technical parameter : don t modify it !"
   type: string
   default: 'standard'
-  values:
-    - standard
-    - onlyDev
 
 resources:
   repositories:
