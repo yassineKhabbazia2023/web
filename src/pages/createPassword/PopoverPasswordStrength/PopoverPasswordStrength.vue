@@ -58,7 +58,9 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const props = defineProps(['password'])
+const props = defineProps<{
+  password: string
+}>()
 
 const levelPasswordStrengthClass = computed(() => {
   const level = levelPasswordStrength(props.password)
