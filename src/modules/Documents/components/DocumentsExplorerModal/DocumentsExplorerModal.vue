@@ -2,8 +2,8 @@
   <PDialog
     v-model="isDialogVisible"
     :title="modalTitle"
+    :beforeClose="handleCloseModal"
     class="documents-explorer-modal"
-    @close="handleCloseModal"
   >
     <DocumentsExplorerHeader
       v-if="deferHeaderLoadingWorkaround && failedDocuments && failedDocuments.length"
@@ -24,6 +24,7 @@
             <DocumentsList
               :documents="explorerDocuments"
               :documentsSelectorEmptyDocumentsListLabel="documentsSelectorEmptyDocumentsListLabel"
+              :isFolderLine="isFolderLine"
             />
           </PScrollbar>
         </div>
@@ -48,6 +49,7 @@
               :isCreateFolderModalVisible="isCreateFolderModalVisible"
               :explorerUnauthorizedGivenActionMessage="explorerUnauthorizedGivenActionMessage"
               :foldersListEmptyFolderLabel="foldersListEmptyFolderLabel"
+              :explorerFolderListLineDisabledState="explorerFolderListLineDisabledState"
               @navigate-to-folder="handleFolderNavigation"
               @update-source-folders="propagateUpdateSourceFolders"
               @close-create-folder-modal="handleCloseCreateFolderModal"
@@ -81,6 +83,7 @@ import { deepCopy } from '@/modules/common/utils/deepCopy'
 import { ButtonAction } from '@/modules/common/Types/ButtonAction'
 
 const props = defineProps<DocumentsModalExplorerProps>()
+
 const emit = defineEmits([
   'update:isDialogVisible',
   'navigate-to-folder',
@@ -197,8 +200,11 @@ const handleActionButtonClicked = (action: string) => {
   emit('modal-action-clicked', action)
 }
 
-const handleCloseModal = () => {
-  emit('close-modal')
+const handleCloseModal = (done: () => void) => {
+  if (props.canCloseModal) {
+    done()
+    emit('close-modal')
+  }
 }
 
 /* This is used because for some reasons
@@ -212,6 +218,7 @@ onMounted(() => {
     deferHeaderLoadingWorkaround.value = true
   }, 4000)
 })
+
 </script>
 
 <style lang="scss">
@@ -261,6 +268,7 @@ onMounted(() => {
 
       &__content {
         padding: 4px;
+        padding-bottom: 8px;
         padding-right: 0;
       }
     }

@@ -36,7 +36,8 @@ const defaultProps: TreeviewProps = {
   servicesFolders: foldersData,
   currentService: 'service-id-compta',
   selectedEntity: 'my-entity-id',
-  selectedFolder: foldersData[0][0].children[0]
+  selectedFolder: foldersData[0][0].children[0],
+  currentServiceFolder: null
 }
 
 vi.mock('@kpmg/common', async () => ({

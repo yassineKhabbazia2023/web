@@ -6,6 +6,7 @@
       @p-breadcrumb-item-click="handleFolderNavigation"
     >
     </PBreadcrumb>
+
     <DocumentsActionsBar
       :permissions="permissionsList"
       @p-action-bar-button-clicked="handleActionBarButtonClick"
@@ -34,11 +35,13 @@
       <p>{{ paginationLabel }}</p>
     </PPagination>
   </div>
+
   <PLoader
     v-show="isLoading"
     type="gradient"
     size="42"
   />
+
   <DocumentRename
     v-if="selectedDocuments && selectedDocuments.length === 1"
     v-model="isRenameModalOpened"
@@ -47,6 +50,7 @@
     :document="selectedDocuments[0]"
     @document-rename="handleDocumentRename"
   />
+
   <DocumentDeleteModal
     :serviceId="currentService"
     :entityId="selectedEntity"
@@ -55,6 +59,7 @@
     @confirm-delete-document="handleConfirmDeleteDocument"
     @cancel-delete-document="handleCancelDeleteDocument"
   />
+
   <DocumentMove
     v-if="selectedFolder"
     :currentService="currentService"
@@ -66,7 +71,8 @@
     @update-source-folders="propagateUpdateSourceFolders"
     @close-move-documents-modal="handleCloseMoveDocumentsModal"
     @refresh-documents-list = "fetchDocuments"
-    />
+  />
+
   <DocumentUpload
     v-if="selectedFolder && filesSelected"
     :currentService="currentService"

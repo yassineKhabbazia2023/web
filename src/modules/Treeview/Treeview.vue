@@ -23,12 +23,24 @@
         @on-delete-folder-completed="handleDeleteFolderCompleted"
         @on-close-delete-folder="handleCloseDeleteFolderModal"
       />
+      <FoldersMove
+        v-if="toolBoxSelectedFolder && folderMovingDestination && currentServiceFolder"
+        :folder="folderMovingDestination"
+        :currentService="currentService"
+        :folderToMove="toolBoxSelectedFolder"
+        :isMoveModalOpened="isMoveFolderModalOpened"
+        :currentServiceFolder="currentServiceFolder"
+        :selectedEntity="selectedEntity"
+        @close-move-folder-modal="handleCloseMoveFolderModal"
+        @update-source-folders="handleOnTreeContentRefresh"
+        @refresh-tree="propagateRefreshTree"
+      />
 
       <RenameFolderSection
         :serviceId="currentService"
         :entityId="selectedEntity"
         :folderName="currentFolderName"
-        :folderId = "currentFolderId"
+        :folderId="currentFolderId"
         :parentFolder="parentNodeOfSelectedFolderTreeNodeAction"
         :isRenameFolderModalVisible="isRenameFolderModalVisible"
         @update-folder-name="handleUpdateFolderName"
@@ -58,7 +70,6 @@
                   selectedFolder || props.servicesFolders[0][0].children[0]
                 "
                 @p-toolbox-item-clicked="handleToolboxItemChecked"
-
               />
             </template>
           </PTree>
@@ -97,7 +108,7 @@ import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { findFolderDeepById } from './helpers/folderArrayHelper'
 import { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
 import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
-
+import FoldersMove from './components/modals/FoldersMove'
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
   'selected-folder-change',
@@ -106,18 +117,19 @@ const emit = defineEmits([
   'update-source-folders',
   'selected-bin-service-change',
   'remove-folder-from-source',
-  'update-folder-name'
+  'update-folder-name',
+  'refresh-tree'
 ])
-const downloadFolderProps:ComputedRef<DownloadFolderComposableProps> = computed(() => {
-  return {
-    selectedFolderName: currentFolderName.value,
-    selectedFolderId: currentFolderId.value,
-    currentService: props.currentService,
-    selectedEntity: props.selectedEntity
-  }
-})
-const { handleDownloadFolderEvent } =
-  useDownloadFolder(downloadFolderProps)
+const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
+  computed(() => {
+    return {
+      selectedFolderName: currentFolderName.value,
+      selectedFolderId: currentFolderId.value,
+      currentService: props.currentService,
+      selectedEntity: props.selectedEntity
+    }
+  })
+const { handleDownloadFolderEvent } = useDownloadFolder(downloadFolderProps)
 // This always exists as it is the default structure of any service
 const defaultFolder = ref<null | Folder>(null)
 const initialSelectedNodeId = computed(() => {
@@ -125,15 +137,18 @@ const initialSelectedNodeId = computed(() => {
   return defaultFolder.value.id
 })
 
-watch(() => props.isLoading, () => {
-  if (props.isLoading === true) return
-  defaultFolder.value = props.servicesFolders[0][0].children[0]
-  emit('selected-folder-change', defaultFolder.value)
-})
+watch(
+  () => props.isLoading,
+  () => {
+    if (props.isLoading === true) return
+    defaultFolder.value = props.servicesFolders[0][0].children[0]
+    emit('selected-folder-change', defaultFolder.value)
+  }
+)
 
 const treeNodeSelectedFolder = ref()
 
-const selectedFolder = computed(():Folder => {
+const selectedFolder = computed((): Folder => {
   if (treeNodeSelectedFolder.value) {
     return treeNodeSelectedFolder.value
   }
@@ -141,30 +156,37 @@ const selectedFolder = computed(():Folder => {
   return props.selectedFolder || props.servicesFolders[0][0].children[0]
 })
 
+
+
 const extendedServiceFolders = computed(() => {
   return addAttributeIsRootFolder(props.servicesFolders)
 })
 
-watch(() => props.selectedFolder, () => {
-  const { selectedFolder } = props
-  if (!selectedFolder) return
-  if (selectedFolder === treeNodeSelectedFolder.value) return
 
-  const tree = retrieveCurrentlyUsedSourceTree()
-  if (!tree) return
-  treeNodeSelectedFolder.value = selectedFolder
-  tree.setCurrentKey(selectedFolder.id)
-})
+watch(
+  () => props.selectedFolder,
+  () => {
+    const { selectedFolder } = props
+    if (!selectedFolder) return
+    if (selectedFolder === treeNodeSelectedFolder.value) return
+
+    const tree = retrieveCurrentlyUsedSourceTree()
+    if (!tree) return
+    treeNodeSelectedFolder.value = selectedFolder
+    tree.setCurrentKey(selectedFolder.id)
+  }
+)
 
 const parentNodeOfSelectedFolderTreeNodeAction = ref()
 
 const setParentNodeOfSelectedFolderTreeNodeAction = () => {
-  const parentFolderId =
-   treeNodeSelectedFolder.value?.parent?.id
+  const parentFolderId = treeNodeSelectedFolder.value?.parent?.id
   parentNodeOfSelectedFolderTreeNodeAction.value = findFolderDeepById(
-    props.servicesFolders[0].filter(f => f.serviceId === props.currentService),
-    parentFolderId) as Folder
-
+    props.servicesFolders[0].filter(
+      (f) => f.serviceId === props.currentService
+    ),
+    parentFolderId
+  ) as Folder
 }
 const currentFolderId = ref(0)
 
@@ -172,7 +194,9 @@ const isCreateFolderModalVisible = ref(false)
 const isDeleteFolderPopupVisible = ref(false)
 const isRenameFolderModalVisible = ref(false)
 
-const currentFolderName = ref(props.selectedFolder ? props.selectedFolder.name : '')
+const currentFolderName = ref(
+  props.selectedFolder ? props.selectedFolder.name : ''
+)
 
 const defaultExpandedKey = computed(() => [props.servicesFolders[0][0].id])
 
@@ -270,8 +294,27 @@ const handleCloseDeleteFolderModal = () => {
   isDeleteFolderPopupVisible.value = false
 }
 
+// Move folder scope
+const isMoveFolderModalOpened = ref(false)
+const handleCloseMoveFolderModal = () => {
+  isMoveFolderModalOpened.value = false
+}
+
+const propagateRefreshTree = (folderId: Folder['id']) => {
+  emit('refresh-tree', folderId)
+}
+
 // ToolBox scope
-const handleToolboxItemChecked = (action: string, folder:Folder) => {
+const toolBoxSelectedFolder = ref<Folder>()
+
+const folderMovingDestination = computed(() => {
+  if (props.currentServiceFolder && toolBoxSelectedFolder.value === selectedFolder.value) {
+    return findFolderDeepById(props.currentServiceFolder, selectedFolder.value.parent.id)
+  }
+  return selectedFolder.value
+})
+
+const handleToolboxItemChecked = (action: string, folder: Folder) => {
   if (action === 'toolbox-delete-action-click') {
     treeNodeSelectedFolder.value = folder
     isDeleteFolderPopupVisible.value = true
@@ -285,6 +328,9 @@ const handleToolboxItemChecked = (action: string, folder:Folder) => {
     currentFolderName.value = folder?.name
     currentFolderId.value = folder?.id
     handleDownloadFolderEvent()
+  } else if (action === 'move-folder') {
+    toolBoxSelectedFolder.value = folder
+    isMoveFolderModalOpened.value = true
   } else {
     treeNodeSelectedFolder.value = folder
     isCreateFolderModalVisible.value = true
@@ -298,7 +344,6 @@ watch(
     collapseUnusedTrees()
   }
 )
-
 </script>
 
 <style lang="scss">

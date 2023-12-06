@@ -8,12 +8,14 @@
         :isLoading="isLoadingServicesOrFolders"
         :servicesFolders="servicesFolders"
         :selectedFolder="currentFolder"
+        :currentServiceFolder="currentServiceFolder"
         @selected-folder-change="setCurrentFolderAndService"
         @selected-bin-service-change="setCurrentBinService"
         @open-create-folder-modal="openCreateFolderModal"
         @update-source-folders="handleUpdateSourceFolder"
         @remove-folder-from-source="handleRemoveFolderFromSource"
         @update-folder-name ="handleUpdateFolderName"
+        @refresh-tree="handleRefreshTreeAnRedirectToFolder"
       />
     </PCol>
 
@@ -157,6 +159,11 @@ const handleUpdateFolderName = (data: Folder) => {
     )
     setCurrentFolder(data.id)
   }
+}
+
+const handleRefreshTreeAnRedirectToFolder = async (folderId: Folder['id']) => {
+  await fetchGedFoldersAndServices()
+  setCurrentFolder(folderId)
 }
 
 // Main component actions

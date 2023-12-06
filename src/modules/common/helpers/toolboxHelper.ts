@@ -40,6 +40,14 @@ const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
       actionName: 'toolbox-download-action-click'
     },
     order: 3
+  },
+  CAN_MOVE_FOLDER: {
+    toolboxLine: {
+      iconName: 'PIFolderMove',
+      value: 'Déplacer vers',
+      actionName: 'move-folder'
+    },
+    order: 4
   }
 }
 

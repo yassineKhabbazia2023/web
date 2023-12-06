@@ -9,6 +9,7 @@
       v-for="(document, index) in filteredSortedDocuments"
       :key="index"
       :pFileName="document.content.name"
+      isFolderLine
       :state="getDocumentState(document?.givenActionState)"
     />
 
@@ -37,7 +38,9 @@ import { computed, ref, watch } from 'vue'
 import { DocumentsListProps } from './DocumentsListTypes'
 import { PFileAndFolderLineCheck, PImage } from '@kpmg/styleguide'
 
-const props = defineProps<DocumentsListProps>()
+const props = withDefaults(defineProps<DocumentsListProps>(), {
+  isFolderLine: false
+})
 const documents = ref(props.documents)
 
 const getDocumentState = (givenActionState: string) => {

@@ -84,3 +84,18 @@ export const downloadFolder = async (
     }
   )).data
 }
+
+export const moveFolderAsync = async (
+  serviceId: Service['ServiceId'],
+  entityId: string,
+  folderId: Folder['id'],
+  destinationFolderId: Folder['id']
+): Promise<void> => {
+  const moveFolderUrl = `${serviceId}/${entityId}/folders/${folderId}`
+  const apiObject = api().ds
+  return (
+    await apiObject.patch(moveFolderUrl, [
+      { op: 'replace', path: '/parent/id', value: destinationFolderId.toString() }
+    ])
+  ).data
+}

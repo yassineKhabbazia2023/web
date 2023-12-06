@@ -19,6 +19,7 @@
         numberOfSelectedDocuments
       )
     "
+    :canCloseModal="canCloseModal"
     @close-modal="handleClose"
     @navigate-to-folder="handleExplorerNavigation"
     @update-source-folders="propagateUpdateSourceFolders"
@@ -104,7 +105,11 @@ watch(
 const numberOfSelectedDocuments = computed(() => {
   return explorerDocuments.value.filter(
     (document: ExplorerDocument) =>
-      document.isSelected || document.givenActionState === 'IN_PROGRESS'
+      (
+        document.givenActionState !== 'ERROR' &&
+        document.givenActionState !== 'FAILED' &&
+        (document.isSelected || document.givenActionState === 'IN_PROGRESS')
+      )
   ).length
 })
 
@@ -125,6 +130,14 @@ const handleUploadDocumentClicked = async (action: string) => {
     selectedDocuments.forEach((d) => { d.givenActionState = 'IN_PROGRESS' })
     await uploadDocumentsInBatches(selectedDocuments)
     emit('update-document-list-upload')
+    const shouldCloseModal = !explorerDocuments.value.some(
+      (document: ExplorerDocument) =>
+        document.givenActionState === 'TO_DO' ||
+        document.givenActionState === 'FAILED' ||
+        document.givenActionState === 'IN_PROGRESS'
+    )
+
+    if (shouldCloseModal) handleClose()
 
   }
   if (action === 'modal-cancel-document-action-click') {
@@ -159,9 +172,10 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
       } catch (error: any) {
         document.codeError = error?.response?.status
         if (document.codeError === '500') {
-          document.givenActionState = 'ERROR'
-        } else {
           document.givenActionState = 'FAILED'
+        } else {
+          document.givenActionState = 'ERROR'
+          document.isSelected = false
         }
         return null
       }
@@ -203,6 +217,9 @@ const handleClose = () => {
   currentExplorerFolder.value = props.folder
   emit('close-upload-documents-modal')
 }
+
+const canCloseModal = computed(() =>
+  !explorerDocuments.value.some(doc => doc.givenActionState === 'IN_PROGRESS'))
 
 // Notifications Scope
 const triggerSuccessNotification = (documentsCount: number, folderName : string) => {
