@@ -156,12 +156,9 @@ const selectedFolder = computed((): Folder => {
   return props.selectedFolder || props.servicesFolders[0][0].children[0]
 })
 
-
-
 const extendedServiceFolders = computed(() => {
   return addAttributeIsRootFolder(props.servicesFolders)
 })
-
 
 watch(
   () => props.selectedFolder,
