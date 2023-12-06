@@ -70,7 +70,7 @@
       <PFormItem>
         <PButton
           pType="primary"
-          :disabled="!isValidForm"
+          :pDisabled="!isValidForm"
           pSize="default"
           class="btn-submit"
           @click="submitForm(formRef)"
