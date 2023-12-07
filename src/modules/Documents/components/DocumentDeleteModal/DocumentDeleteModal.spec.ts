@@ -1,15 +1,12 @@
 /* eslint-disable vitest/require-hook */
 /* eslint-disable vitest/no-hooks */
+import { VueWrapper, mount } from '@vue/test-utils'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
-import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { type DocumentDeleteModalTypesProps }
   from '@/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import {
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import ConfirmationPopup from '@/modules/common/templates/popups'
 import { nextTick } from 'vue'
 import { deleteDocuments } from '@/services/Documents'
@@ -51,6 +48,8 @@ vi.mock('@/services/Documents', () => ({
   deleteDocuments: vi.fn()
 }))
 
+const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent(ConfirmationPopup)
+
 describe('deleteFolderConfirmationPopup', () => {
   beforeEach(() => {
     setActivePinia(pinia)
@@ -66,7 +65,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = await dynamicUntilFoundComponent(wrapper, ConfirmationPopup)
+      const popup = findConfirmationPopup(wrapper)
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
@@ -86,7 +85,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = await dynamicUntilFoundComponent(wrapper, ConfirmationPopup)
+      const popup = findConfirmationPopup(wrapper)
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
@@ -106,7 +105,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = await dynamicUntilFoundComponent(wrapper, ConfirmationPopup)
+      const popup = findConfirmationPopup(wrapper)
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
@@ -129,10 +128,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const popup = await dynamicUntilFoundComponent(
-          wrapper,
-          ConfirmationPopup
-        )
+        const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
 
         expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
@@ -158,10 +154,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const popup = await dynamicUntilFoundComponent(
-          wrapper,
-          ConfirmationPopup
-        )
+        const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
 
         expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
@@ -186,7 +179,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = await dynamicUntilFoundComponent(wrapper, ConfirmationPopup)
+      const popup = findConfirmationPopup(wrapper)
       await popup.vm.$emit('on-cancel-button-click')
       expect(wrapper.emitted('cancel-delete-document')).toBeTruthy()
     })
@@ -200,11 +193,8 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = await dynamicUntilFoundComponent(
-        wrapper,
-        ConfirmationPopup
-      )
-      await popup.vm.$emit('on-close-popup')
+      const popup = findConfirmationPopup(wrapper)
+      popup.vm.$emit('on-close-popup')
       expect(wrapper.emitted('cancel-delete-document')).toBeTruthy()
     })
   })
