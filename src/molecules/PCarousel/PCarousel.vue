@@ -1,5 +1,15 @@
 <template>
-  <ElCarousel>
+  <ElCarousel
+    :height="pHeight"
+    :initialIndex="pInitialIndex"
+    :trigger="pTrigger"
+    :autoplay="pAutoplay"
+    :interval="pInterval"
+    :arrow="pArrow"
+    :loop="pLoop"
+    :direction="pDirection"
+    :pauseOnHover="pPauseOnHover"
+  >
     <PCarouselItem
       v-for="(item, index) in pItems"
       :key="index"
@@ -15,5 +25,15 @@ import { ElCarousel } from 'element-plus'
 import PCarouselItem from '@/atoms/PCarouselItem'
 import type { PCarouselProps } from './PCarouselTypes'
 
-defineProps<PCarouselProps>()
+withDefaults(defineProps<PCarouselProps>(), {
+  pHeight: '300px',
+  pInitialIndex: 0,
+  pTrigger: 'hover',
+  pAutoplay: true,
+  pInterval: 3000,
+  pArrow: 'hover',
+  pLoop: true,
+  pDirection: 'horizontal',
+  pPauseOnHover: true
+})
 </script>

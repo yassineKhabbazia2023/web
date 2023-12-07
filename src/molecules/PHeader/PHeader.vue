@@ -10,11 +10,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { PHeaderProps } from './PHeaderTypes'
-
-withDefaults(defineProps<PHeaderProps>(), {
-  pHeaderMenu: () => []
-})
-</script>

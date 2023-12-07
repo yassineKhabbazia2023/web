@@ -1,9 +1,6 @@
-import type { Component } from 'vue'
-
 export interface PItem {
   pName: string
   pPath: string
-  pComponent: Component
   pIcon: string
 }
 

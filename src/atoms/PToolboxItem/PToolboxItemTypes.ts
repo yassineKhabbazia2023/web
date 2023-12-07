@@ -2,6 +2,6 @@ export interface PToolboxItemProps {
   pValue: string
   pIconName?: string
   disabled?: boolean
-  pActionName: string
+  pActionName?: string
   pState?: 'default' | 'danger'
 }

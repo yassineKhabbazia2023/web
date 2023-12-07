@@ -23,7 +23,7 @@ const routes = [
   }
 ]
 
-const pHeaderMenu = [
+const pHeaderTabsMenu = [
   {
     pIcon: 'PISearch',
     pText: 'Dashboard',
@@ -58,23 +58,23 @@ const createWrapper = (props: any = {}) =>
 
 describe('pHeaderTabs', () => {
   it('has 2 items in the menu', async () => {
-    const wrapper: VueWrapper<any> = createWrapper({ pHeaderMenu })
+    const wrapper: VueWrapper<any> = createWrapper({ pHeaderTabsMenu })
     await nextTick()
     router.push({ name: 'dashboard' })
     await flushPromises()
     const items = wrapper.findAll('el-menu-item-stub')
 
-    expect(items).toHaveLength(pHeaderMenu.length)
+    expect(items).toHaveLength(pHeaderTabsMenu.length)
   })
   it('can navigate', async () => {
-    const wrapper: VueWrapper<any> = createWrapper({ pHeaderMenu })
+    const wrapper: VueWrapper<any> = createWrapper({ pHeaderTabsMenu })
     router.push({ name: 'dashboard' })
     await flushPromises()
-    expect(router.options.routes[0].path).toBe(pHeaderMenu[0].pPath)
+    expect(router.options.routes[0].path).toBe(pHeaderTabsMenu[0].pPath)
 
     const documentItem = wrapper.findAll('el-menu-item-stub')[1]
     documentItem.trigger('click')
     await flushPromises()
-    expect(router.options.routes[1].path).toBe(pHeaderMenu[1].pPath)
+    expect(router.options.routes[1].path).toBe(pHeaderTabsMenu[1].pPath)
   })
 })

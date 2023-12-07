@@ -1,12 +1,12 @@
 <template>
   <ElMenu
-    mode="horizontal"
+    :mode="pMode"
     class="p-header-tabs hidden-xs-only"
-    :ellipsis=false
+    :ellipsis="pEllipsis"
     router
   >
     <ElMenuItem
-      v-for="item in pHeaderMenu.slice(0, 4)"
+      v-for="item in pHeaderTabsMenu.slice(0, 4)"
       class="menu-item"
       :index="item.pPath"
       :route="{ path: item.pPath }"
@@ -21,7 +21,7 @@
     </ElMenuItem>
     <ElSubMenu
       index="2"
-      v-if="pHeaderMenu.length > 4"
+      v-if="pHeaderTabsMenu.length > 4"
     >
       <template #title>
         <PIcon>
@@ -30,7 +30,7 @@
         <span>{{ t('more') }}</span>
       </template>
       <ElMenuItem
-        v-for="item in pHeaderMenu.slice(4)"
+        v-for="item in pHeaderTabsMenu.slice(4)"
         class="menu-item"
         :index="item.pPath"
         :route="{ path: item.pPath }"
@@ -59,15 +59,17 @@ import PIcon from '@/atoms/PIcon'
 import { defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ElMenuItem, ElMenu, ElSubMenu } from 'element-plus'
-import type { PHeaderProps } from './PHeaderTypes'
+import type { PHeaderTabsProps } from './PHeaderTabsTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-withDefaults(defineProps<PHeaderProps>(), {
-  pHeaderMenu: () => []
+withDefaults(defineProps<PHeaderTabsProps>(), {
+  pHeaderTabsMenu: () => [],
+  pMode: 'horizontal',
+  pEllipsis: false
 })
 
 const createIcon = (name: string) => {

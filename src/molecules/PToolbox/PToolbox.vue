@@ -1,7 +1,7 @@
 <template>
   <ElDropdown
     popperClass="p-toolbox shadow--3"
-    placement="bottom-start"
+    :placement="pPlacement"
   >
     <slot />
     <template #dropdown>
@@ -30,7 +30,8 @@ import PToolboxItem from '@/atoms/PToolboxItem'
 import type { PToolboxProps } from './PToolboxTypes'
 
 withDefaults(defineProps<PToolboxProps>(), {
-  pElements: () => []
+  pElements: () => [],
+  pPlacement: 'bottom-start'
 })
 
 defineEmits(['p-toolbox-item-clicked'])

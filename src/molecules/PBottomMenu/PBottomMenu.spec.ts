@@ -29,7 +29,6 @@ describe('pBottomMenu', () => {
           return {
             pPath: m.path,
             pName: m.name,
-            pComponent: m.component,
             pIcon: m.meta.icon
           }
         })

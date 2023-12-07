@@ -4,8 +4,6 @@
     :layout="{ type: 'single', iframe: false }"
   >
     <PHeader
-      :ellipsis="false"
-      :pHeaderMenu="menu"
       :defaultActive="routeActive"
       router
     >
@@ -15,14 +13,14 @@
             class="el-menu--header__logo"
             pType="logos"
             pName="pulse-color"
-            fit="fill"
+            pFit="fill"
           />
         </router-link>
       </template>
       <template #menu>
         <PHeaderTabs
-          :pHeaderMenu="menu"
-        />
+          :pHeaderTabsMenu="menu"
+      />
       </template>
       <template #header-right>
         <PToolbox :pElements="toolboxBasicData">
@@ -85,7 +83,6 @@ PHeader use as the top bar menu. Below is a list of property needed
 
 | Name          | Description                | Type                                                             | Required | Default |
 | ------------- | -------------------------- | --------------------------------------------------------------   | -------- | ------- |
-| pHeaderMenu   | Array of menu items object | [{pIcon: Icon's name, pText: Menu's title, pPath: Menu's link }] | Yes      | -       |
 | defaultActive | Current active route       | string                                                           | Yes      | -       |
 
 ## Slot
@@ -103,14 +100,34 @@ Slot for the logo
   />
 </template>
 ```
+### menu
+
+Slot for the menu
+
+```html
+<template #menu>
+  <PHeaderTabs
+    :pHeaderTabsMenu="menu"
+  />
+</template>
+```
+
 
 ### avatar
 
 Slot for the avatar user
 
 ```html
-<template #avatar>
-  <el-avatar :size="26" :src="circleUrl" />
+<template #header-right>
+  <PToolbox :pElements="toolboxBasicData">
+    <PAvatar
+      pShape="circle"
+      pType="small"
+      pColor="persian-gradient"
+    >
+      AB
+    </PAvatar>
+  </PToolbox>
 </template>
 ```
 </docs>
