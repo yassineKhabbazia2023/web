@@ -3,9 +3,6 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type RenameFolderSectionProps }
   from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
-import {
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { RenameFolder } from '@/services/Folder'
@@ -116,10 +113,7 @@ describe('renameFolderSection', () => {
           }
           const wrapper = createWrapper(updatedProps)
 
-          const renameFolderModalWrapper = await dynamicUntilFoundComponent(
-            wrapper,
-            RenameFolderModal
-          )
+          const renameFolderModalWrapper = wrapper.findComponent(RenameFolderModal)
 
           expect(renameFolderModalWrapper.props(prop).trim()).toBe(
             expectedText.trim()
@@ -140,10 +134,7 @@ describe('renameFolderSection', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const modal = await dynamicUntilFoundComponent(
-          wrapper,
-          RenameFolderModal
-        )
+        const modal = wrapper.findComponent(RenameFolderModal)
 
         await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
         await nextTick()
@@ -165,10 +156,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(
-        wrapper,
-        RenameFolderModal
-      )
+      const modal = wrapper.findComponent(RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
@@ -185,7 +173,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
+      const modal = wrapper.findComponent(RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
@@ -202,7 +190,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
+      const modal = wrapper.findComponent(RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
@@ -237,7 +225,7 @@ describe('renameFolderSection', () => {
           const wrapper = createWrapper(updatedProps)
 
           const renameFolderModalWrapper =
-                  await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
+                  wrapper.findComponent(RenameFolderModal)
           await renameFolderModalWrapper.vm.$emit(action)
           await nextTick()
 
