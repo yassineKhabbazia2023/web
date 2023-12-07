@@ -13,7 +13,8 @@ vi.mock('env-vars', () => ({
 }))
 
 vi.mock('@/services/msal', () => ({
-  msalInstance: vi.fn()
+  msalInstance: vi.fn(),
+  getToken: vi.fn()
 }))
 let wrapper: VueWrapper<any>
 const createWrapper = () =>
