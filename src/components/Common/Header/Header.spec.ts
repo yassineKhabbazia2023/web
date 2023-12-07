@@ -19,9 +19,8 @@ describe('header.vue', () => {
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
-  it('emits click event when button is clicked', async () => {
-    expect(wrapper.vm.openDrawer).toBeFalsy()
+  it('show drawer when button is clicked', async () => {
     await wrapper.find('.header__create-mandate-button').trigger('click')
-    expect(wrapper.vm.openDrawer).toBeTruthy()
+    expect(wrapper.find('.drawer-create-mandate').exists()).toBeTruthy()
   })
 })

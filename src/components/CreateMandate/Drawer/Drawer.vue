@@ -4,10 +4,11 @@
       v-model="drawerModel"
       :pTitle="currentStep <= 3 ? `${t('new-collection')}` : ''"
       :pShowPreviousStep="false"
-      :beforeClose="handleClose"
+      :beforeClose="drawerBeforeClose(currentStep)"
       pSize="50%"
       pDirection="rtl"
       class="drawer-create-mandate"
+      @close-drawer-button="drawerBeforeClose(currentStep)"
     >
       <PSteps
         v-if="currentStep <= 3"
@@ -57,7 +58,6 @@
         @enable-disable-next="handleNextAvailability"
         @enable-disable-validate="handleValidateAvailability"
       />
-      <DownloadMandate v-if="currentStep > 3" />
       <template #footer>
         <div v-if="currentStep <= 3">
           <PButton
@@ -125,7 +125,7 @@
       :pWidth="pDialogControl.dialogWidth"
       :pModal="pDialogControl.dialogModal"
       :pCenter="pDialogControl.dialogCenter"
-      :pBeforeClose="closeDialog"
+      :pBeforeClose="closeDialogDrawer"
       :dialogCloseOnClickModal="pDialogControl.dialogCloseOnClickModal"
       :dialogCloseOnPressEscape="pDialogControl.dialogCloseOnPressEscape"
       :pTitle="t('title-popup')"
@@ -253,6 +253,7 @@ const mandateId = ref('')
 
 const { t } = useI18n({
   inheritLocale: true,
+  locale: 'en-US',
   useScope: 'local'
 })
 
@@ -284,10 +285,10 @@ const drawerModel = computed({
 
 const goToNextStep = () => {
   if (currentStep.value === 1) {
-    return currentStep.value++
+    return ++currentStep.value
   }
   nextStepAvailability.value = false
-  currentStep.value++
+  ++currentStep.value
 }
 
 const goToPreviousStep = () => {
@@ -307,26 +308,19 @@ const closeDrawerAndInitStep = () => {
   currentStep.value = 1
 }
 
-// const drawerBeforeClose = (isCancelable) => {
-//   if (currentStep.value <= 3) {
-//     pDialogControl.dialogVisible = true
-//   }
-// }
-
-// function isCancelable(cancel) {
-//   console.log(cancel)
-//   if (cancel) {
-//     console.log('dqqqqqqq')
-//     pDialogControl.dialogVisible = true
-//     return
-//   }
-//   closeDrawerAndInitStep()
-// }
+const drawerBeforeClose = (step: number) => {
+  if (step <= 3) {
+    pDialogControl.dialogVisible = true
+    return
+  }
+  closeDrawerAndInitStep()
+}
 
 const closeDialogDrawer = () => {
   pDialogControl.dialogVisible = false
   closeDrawerAndInitStep()
 }
+
 const updateMandateModel = (mandate: CreateMandateModel) => {
   Object.assign(mandateModel, mandate)
 }

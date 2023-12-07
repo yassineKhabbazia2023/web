@@ -14,7 +14,7 @@
       >
         <template #default="scope">
           <PToolbox :pElements="actionsBuilder(scope.row.statusCode)">
-            <PButton type="generic">
+            <PButton pType="generic">
               <PIcon>
                 <PIThreeDots />
               </PIcon>
@@ -53,6 +53,10 @@
         created-on: 'Created on'
         modified-on: 'Modified on'
         status: 'Status'
+        download-signed-mandate: 'Download signed mandate'
+        download-pre-filled-mandate: 'Download pre-filled mandate'
+        submit-signed-mandate: 'Submit the signed mandate'
+        cancel-telecollection: 'Cancel telecollection'
     fr-FR:
         ibs-code: 'Code IBS'
         company-name: 'Raison sociale'
@@ -61,6 +65,10 @@
         created-on: 'Créé le'
         modified-on: 'Modifié le'
         status: 'Statut'
+        download-signed-mandate: 'Télécharger le mandate signé'
+        download-pre-filled-mandate: 'Télécharger le mandat pré-rempli'
+        submit-signed-mandate: 'Déposer le mandat signé'
+        cancel-telecollection: 'Résilier la télécollecte'
 </i18n>
 
 <script setup lang='ts'>
@@ -69,6 +77,7 @@ import Tag from '@/components/Common/Tag'
 import {
   PTable,
   PTableColumn,
+  PToolbox,
   PButton,
   PIcon,
   PIThreeDots
@@ -122,34 +131,35 @@ const tableHead = [
   { label: `${t('status')}`, prop: 'statusCode', sortable: true },
   { label: 'Actions', sortable: false }
 ]
-/* const actionsBuilder = (statusCode: string | number) => {
+const actionsBuilder = (statusCode: string | number) => {
   const statusCodeNumber = Number(statusCode)
   return [
     {
-      iconName: 'PIDownload',
-      value: t('download-pre-filled-mandate'),
+      pIconName: 'PIDownload',
+      pValue: t('download-pre-filled-mandate'),
       disabled: statusCodeNumber !== 20,
-      actionName: 'download-pre-filled-mandate'
+      pActionName: 'download-pre-filled-mandate'
     },
     {
-      iconName: 'PIUpload',
-      value: t('submit-signed-mandate'),
+      pIconName: 'PIUpload',
+      pValue: t('submit-signed-mandate'),
       disabled: statusCodeNumber !== 20,
-      actionName: 'submit-signed-mandate'
+      pActionName: 'submit-signed-mandate'
     },
     {
-      iconName: 'PIDownload',
-      value: t('download-signed-mandate'),
+      pIconName: 'PIDownload',
+      pValue: t('download-signed-mandate'),
       disabled: statusCodeNumber === 20 || statusCodeNumber === 50,
-      actionName: 'download-signed-mandate'
+      pActionName: 'download-signed-mandate'
     },
     {
-      iconName: 'PIXCircle',
-      value: t('cancel-telecollection'),
+      pIconName: 'PIXCircle',
+      pValue: t('cancel-telecollection'),
       disabled: false,
-      actionName: 'cancel-telecollection'
+      pActionName: 'cancel-telecollection',
+      pState: 'danger'
     }
   ]
-} */
+}
 </script>
 

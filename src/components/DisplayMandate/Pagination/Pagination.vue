@@ -5,7 +5,7 @@
     :pTotal="pagesCount"
     :pPageSizeSelectorSuffix="pageRangeSelectorSuffix"
     :pPageSizeSelectorGroupLabel="pageRangeSelectorGroupLabel"
-    @current-change="handleCurrentChange"
+    @update:p-current-page="handleCurrentChange"
     @on-page-range-changed="handleSizeChange"
     :pPageSize="itemsByPage"
   >

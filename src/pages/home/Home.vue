@@ -1,6 +1,7 @@
 <template>
   <div>
     <Header />
+    <SearchBar v-model="searchText"/>
     <ListMandate :data="mandatesCollection.data" />
     <Pagination
       :pagesCount="mandatesCollection.counters.all"
@@ -13,11 +14,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, watch } from 'vue'
 import { getMandatesCollection } from '@/services/mandate'
 import Header from '@/components/Common/Header'
 import ListMandate from '@/components/DisplayMandate/Table'
 import Pagination from '@/components/DisplayMandate/Pagination'
+import SearchBar from '@/components/Common/SearchBar'
 import type { MandateCollection } from './Models'
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -31,6 +33,8 @@ const mandatesCollection = ref<MandateCollection>({
   data: []
 })
 const loading = ref(true)
+const itemsToDisplay = ref(10)
+const searchText = ref('')
 onBeforeMount(async () => {
   try {
     loading.value = true
@@ -41,19 +45,23 @@ onBeforeMount(async () => {
     loading.value = false
   }
 })
-const updateTableDisplay = async ({ currentPage, itemsByPage }:
-  {currentPage: number, itemsByPage: number}) => {
+const updateTableDisplay = async ({ currentPage, itemsByPage, searchTerm }:
+  {currentPage: number, itemsByPage: number, searchTerm: string}) => {
   try {
     loading.value = true
     const skip = (currentPage - 1) * itemsByPage
-    const limit = itemsByPage
-    const { data } = await getMandatesCollection({ skip, limit })
+    itemsToDisplay.value = itemsByPage
+    const { data } = await getMandatesCollection({ skip, limit: itemsByPage, searchTerm })
     mandatesCollection.value = data
   } catch (_) {
   } finally {
     loading.value = false
   }
 }
+
+watch(searchText,
+  (value: string) =>
+    updateTableDisplay({ itemsByPage: itemsToDisplay.value, searchTerm: value, currentPage: 1 }))
 
 defineExpose({
   updateTableDisplay

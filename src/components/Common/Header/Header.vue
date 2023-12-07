@@ -51,9 +51,7 @@ const openDrawer = ref(false)
 const drawerHandler = () => {
   openDrawer.value = true
 }
-defineExpose({
-  openDrawer
-})
+
 </script>
 
 <style scoped lang="scss">

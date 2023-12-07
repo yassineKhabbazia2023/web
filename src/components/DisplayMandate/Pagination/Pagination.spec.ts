@@ -1,7 +1,7 @@
 import Pagination from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it } from 'vitest'
-import { PDropdown } from '@kpmg/styleguide'
+import { PSelect } from '@kpmg/styleguide'
 
 const defaultProps = {
   pagesCount: 32,
@@ -12,17 +12,13 @@ const defaultProps = {
 const createWrapper = (props: any = {}) =>
   wrapperFactory(Pagination, {
     props: Object.assign(defaultProps, props)
-    /* global: {
-      stubs: {
-        ElSelect: PDropdown
-      }
-    } */
   })
 
 describe('pagination component', () => {
   it('renders the component when step value is 1', () => {
     const wrapper = createWrapper()
     expect(wrapper.text()).toContain('1 - 10 on 32')
+    expect(wrapper.find('li[aria-label="page 4"]')).toBeTruthy()
   })
 
   it('emits page-selected event when next button and previous are clicked', async () => {
@@ -34,16 +30,12 @@ describe('pagination component', () => {
     expect(pageSelectedEvent[1]).toStrictEqual([{ currentPage: 1, itemsByPage: 10 }])
   })
 
-  // This step is skipped cuz the select button is not rendered, and the
-  // Pdropdown isn't found in the current styleguide packgae
-  // it'll updated when the
-  // new styleguide loading approach will be finalize
-  it.skip('validateIBS when ibs length is equal to 10', async () => {
+  it('emits page-selected event when dropdown are clicked', async () => {
     const wrapper = createWrapper()
-    const selector = wrapper.findComponent(PDropdown)
-    await selector.setValue('20')
+    const selector = wrapper.findComponent(PSelect)
+    selector.setValue('20')
     await selector.trigger('change')
     const pageSelectedEvent: any = wrapper.emitted('page-selected')
-    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 1, itemsByPage: 20 }])
+    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 1, itemsByPage: '20' }])
   })
 })
