@@ -6,7 +6,6 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
 import { ComponentPublicInstance, nextTick } from 'vue'
-import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import TreeNodeActionsToolbox from './TreeNodeActionsToolbox'
 
 const defaultProps: TreeNodeActionsProps = {
@@ -43,7 +42,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = await dynamicUntilFoundComponent(wrapper, TreeNodeActionsToolbox)
+      const toolbox = wrapper.findComponent(TreeNodeActionsToolbox)
 
       await toolbox.vm.$emit('p-toolbox-dropdown-close', true)
       await nextTick()
@@ -62,7 +61,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = await dynamicUntilFoundComponent(wrapper, TreeNodeActionsToolbox)
+      const toolbox = wrapper.findComponent(TreeNodeActionsToolbox)
 
       await toolbox.vm.$emit('p-toolbox-item-clicked', 'test')
       await nextTick()
