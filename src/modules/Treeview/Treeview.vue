@@ -54,7 +54,7 @@
             :currentNodeKey="!index ? initialSelectedNodeId : ''"
             :pData="serviceFolder"
             :defaultExpandedKeys="!index ? defaultExpandedKey : []"
-            hasCustomNodes
+            pHasCustomNodes
             :key="serviceFolder[0].id"
             pNodeKey="id"
             ref="treesRefs"
@@ -62,6 +62,7 @@
           >
             <template #default="{ node, data }">
               <TreeNode
+                class="tree-node"
                 :serviceId="currentService"
                 :entityId="selectedEntity"
                 :node="node"
@@ -77,7 +78,7 @@
           <PTree
             ref="binTree"
             :pData="binTreeData"
-            hasCustomNodes
+           pHasCustomNodes
             pNodeKey="id"
             @p-tree-node-clicked="handleBinNodeClick"
             class="bin-tree"
@@ -230,12 +231,12 @@ const handleBinNodeClick = (e: Service) => {
 const treesRefs = ref<TreeType[]>([])
 const retrieveUnusedTrees = (): TreeType[] => {
   return treesRefs.value.filter(
-    (tree) => tree.data[0].serviceId !== props.currentService
+    (tree) => tree.pData[0].serviceId !== props.currentService
   )
 }
 const retrieveCurrentlyUsedSourceTree = (): TreeType => {
   const usedTree = treesRefs.value.filter(
-    (tree) => tree.data[0].serviceId === props.currentService
+    (tree) => tree.pData[0].serviceId === props.currentService
   )
 
   return retrieveSourceTrees(usedTree)[0]
