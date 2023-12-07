@@ -1,17 +1,19 @@
 <template>
-  <Story title="2. Atoms/Select" icon="radix-icons:margin">
+  <Story title="3. Molecules/Select" icon="radix-icons:margin">
     <Variant title="Basic usage simple" :initState="initState">
       <template #default="{ state }">
         <PSelect
           v-model="valueSimple"
-          placeholder="Select"
-          :disabled="state.disabled">
+          pPlaceholder="Select"
+          :pDisabled="state.disabled"
+          :pClearable="state.clearable"
+        >
           <POption
             v-for="item in selectOptions"
             :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            :disabled="item.disabled"
+            :pLabel="item.label"
+            :pValue="item.value"
+            :pDisabled="item.disabled"
           />
       </PSelect>
       </template>
@@ -31,18 +33,18 @@
       <template #default="{ state }">
         <PSelect
           v-model="state.value"
-          multiple
-          :collapseTags="state.collapseTags"
-          :collapseTagsTooltip="state.collapseTagsTooltip"
-          :disabled="state.disabled"
-          :filterable="state.filterable"
+          pMultiple
+          :pCollapseTags="state.collapseTags"
+          :pCollapseTagsTooltip="state.collapseTagsTooltip"
+          :pDisabled="state.disabled"
+          :pFilterable="state.filterable"
         >
           <POption
             v-for="item in selectOptions"
             :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            :disabled="item.disabled"
+            :pLabel="item.label"
+            :pValue="item.value"
+            :pDisabled="item.disabled"
           />
         </PSelect>
       </template>
@@ -65,15 +67,15 @@
       <template #default="{ state }">
         <PSelect
           v-model="state.value"
-          :filterable="state.filterable"
-          :allowCreate="state.allowCreate"
-          :disabled="state.disabled"
+          :pFilterable="state.filterable"
+          :pAllowCreate="state.allowCreate"
+          :pDisabled="state.disabled"
         >
           <POption
             v-for="item in selectOptions"
             :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :pLabel="item.label"
+            :pValue="item.value"
           />
         </PSelect>
       </template>
@@ -97,17 +99,17 @@
       :initState="initState"
       :source="templateSourceGroup">
       <template #default="{ state }">
-        <PSelect v-model="state.value" placeholder="Select">
+        <PSelect v-model="state.value" pPlaceholder="Select">
           <POptionGroup
             v-for="group in groupOptions"
             :key="group.label"
-            :label="group.label"
+            :pLabel="group.label"
           >
             <POption
               v-for="item in group.options"
               :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :pLabel="item.label"
+              :pValue="item.value"
             />
           </POptionGroup>
         </PSelect>
@@ -119,11 +121,8 @@
 <script setup lang="ts">
 import { groupOptions, selectOptions, templateSourceGroup } from '@/constants/dropdownOptions'
 import { ref } from 'vue'
-import {
-  ElOption as POption,
-  ElOptionGroup as POptionGroup,
-  ElSelect as PSelect
-} from 'element-plus'
+import POption from '@/atoms/POption'
+import POptionGroup from '@/molecules/POptionGroup'
 
 const valueSimple = ref('')
 

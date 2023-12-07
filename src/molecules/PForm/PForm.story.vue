@@ -3,57 +3,60 @@
     title="3. Molecules/Form"
     icon="icon-park-outline:form"
   >
-    <PForm
-      ref="formRef"
-      :rules="rules"
-      :model="formValues"
-      requireAsteriskPosition="right"
-      labelPosition="top"
-      @submit.prevent="handleSubmit"
-      @validate="validateHandler"
-    >
-      <PFormItem
-        label="Password"
-        prop="pass"
-        required
+    <Variant title="Basic Usage">
+      <PForm
+        ref="formRef"
+        :pRules="rules"
+        :pModel="formValues"
+        pRequireAsteriskPosition="right"
+        pLabelPosition="top"
+        @submit.prevent="handleSubmit"
+        @validate="validateHandler"
       >
-        <PInput
-          v-model="formValues.pass"
-          type="password"
-          autocomplete="off"
-        />
-      </PFormItem>
-      <PFormItem
-        label="Retype password"
-        prop="checkPass"
-        required
-      >
-        <PInput
-          v-model="formValues.checkPass"
-          type="password"
-          autocomplete="off"
-        />
-      </PFormItem>
-      <PFormItem
-        label="Age"
-        prop="age"
-        required
-      >
-        <PInput v-model="formValues.age" type="number" />
-      </PFormItem>
-      <PFormItem>
-      <PButton
-        pType="primary"
-        @click="handleSubmit(formRef)"
-        :pDisabled="!isFormValid"
-      >
-        Submit
-      </PButton>
-      <PButton @click="handleReset(formRef)">
-        Reset
-      </PButton>
-    </PFormItem>
-    </PForm>
+        <PFormItem
+          pLabel="Password"
+          pProp="pass"
+          pRequired
+        >
+          <PInput
+            v-model="formValues.pass"
+            pType="password"
+            pAutocomplete="off"
+          />
+        </PFormItem>
+        <PFormItem
+          pLabel="Retype password"
+          pProp="checkPass"
+          pRequired
+        >
+          <PInput
+            v-model="formValues.checkPass"
+            pType="password"
+            pAutocomplete="off"
+
+          />
+        </PFormItem>
+        <PFormItem
+          pLabel="Age"
+          pProp="age"
+          pRequired
+        >
+          <PInput v-model="formValues.age" pType="number" />
+        </PFormItem>
+        <PFormItem>
+          <PButton
+            pType="primary"
+            @click="handleSubmit(formRef)"
+            :pDisabled="!isFormValid"
+          >
+            Submit
+          </PButton>
+          <PButton @click="handleReset(formRef)">
+            Reset
+          </PButton>
+        </PFormItem>
+      </PForm>
+    </Variant>
   </Story>
 </template>
 
@@ -63,6 +66,9 @@ import { ElNotification } from 'element-plus'
 // the following types are exported in the styleguide as PFormInstance & PFormRules
 import type { FormInstance, FormRules } from 'element-plus'
 import { PICheck, PIExclamationTriangle } from '@/atoms/PIcon/components'
+import PFormItem from '@/atoms/PFormItem'
+import PButton from '@/atoms/PButton'
+import PInput from '@/atoms/PInput'
 
 const toastPlugin = inject('toast') as typeof ElNotification
 
@@ -107,7 +113,7 @@ const validateAge = (rule: any, value: any, callback: any) => {
   }, 1000)
 }
 
-const validateCheckPass = (rule: any, value: any, callback: any) => {
+const validateCheckConfirmPass = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please enter the password again'))
   } else if (value !== formValues.pass) {
@@ -117,9 +123,19 @@ const validateCheckPass = (rule: any, value: any, callback: any) => {
   }
 }
 
+const validateCheckPass = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('Please enter the password'))
+  } else if (value.length < 3) {
+    callback(new Error('Password must be at least 3 characters'))
+  } else {
+    callback()
+  }
+}
+
 const rules = reactive<FormRules<typeof formValues>>({
-  pass: [{ trigger: 'blur' }],
-  checkPass: [{ validator: validateCheckPass, trigger: 'blur' }],
+  pass: [{ validator: validateCheckPass, trigger: 'blur' }],
+  checkPass: [{ validator: validateCheckConfirmPass, trigger: 'blur' }],
   age: [{ validator: validateAge, trigger: 'blur' }]
 })
 
@@ -140,7 +156,7 @@ const openToast = ({ message, icon, customClass }: openToastArgs) => {
 
 const handleSubmit = (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  formEl.validate((valid) => {
+  formEl.validate().then((valid) => {
     openToast({
       message: valid ? 'Form submitted' : 'Error',
       icon: valid ? PICheck : PIExclamationTriangle,

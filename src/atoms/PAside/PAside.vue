@@ -1,14 +1,14 @@
 <template>
-  <el-aside :width="pWidth">
+  <ElAside :width="pWidth">
     <slot />
-  </el-aside>
+  </ElAside>
 </template>
 
 <script lang="ts" setup>
-  import { ElAside } from 'element-plus'
-  import type { PAsideProps } from './PAsideTypes'
+import { ElAside } from 'element-plus'
+import type { PAsideProps } from './PAsideTypes'
 
-  const props = withDefaults(defineProps<PAsideProps>(), {
-    pWidth: '300px'
-  })
+withDefaults(defineProps<PAsideProps>(), {
+  pWidth: '300px'
+})
 </script>

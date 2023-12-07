@@ -1,5 +1,5 @@
 export interface POptionProps {
-  pValue: string | number | boolean | object,
-  pLabel : string | number,
-  pDisabled: boolean
+  pValue: string | number | boolean | Record<string, any>,
+  pLabel?: string | number,
+  pDisabled?: boolean
 }

@@ -11,6 +11,6 @@ import { ElPopper } from 'element-plus'
 import type { PPopperProps } from './PPopperTypes'
 
 withDefaults(defineProps<PPopperProps>(), {
-  pRole: 'tooltip',
+  pRole: 'tooltip'
 })
 </script>

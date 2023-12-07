@@ -1,4 +1,4 @@
 export interface POptionGroupProps {
-  pLabel: string,
-  pDisabled: boolean
+  pLabel?: string,
+  pDisabled?: boolean
 }

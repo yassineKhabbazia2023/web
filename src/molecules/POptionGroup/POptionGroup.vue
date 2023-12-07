@@ -12,7 +12,7 @@ import { ElOptionGroup } from 'element-plus'
 import type { POptionGroupProps } from './POptionGroupTypes'
 
 withDefaults(defineProps<POptionGroupProps>(), {
-  pLabel: '',
+  pLabel: undefined,
   pDisabled: false
 })
 </script>

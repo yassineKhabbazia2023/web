@@ -8,7 +8,7 @@
 import { ElContainer } from 'element-plus'
 import type { PContainerProps } from './PContainerTypes'
 
-const props = withDefaults(defineProps<PContainerProps>(), {
+withDefaults(defineProps<PContainerProps>(), {
   pDirection: 'horizontal'
 })
 </script>

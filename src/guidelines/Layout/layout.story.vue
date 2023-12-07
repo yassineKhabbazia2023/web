@@ -140,20 +140,20 @@
         </tbody>
       </table>
 
-      <el-row
-        :gutter="basicData.gutter"
-        :justify="basicData.justify"
+      <PRow
+        :pGutter="basicData.gutter"
+        :pJustify="basicData.justify"
         class="row-layout">
-        <el-col
+        <PCol
           v-for="item in 4"
           :key="item"
-          :span="basicData.span"
-          :offset="basicData.offset"
-          :push="basicData.push"
-          :pull="basicData.pull">
+          :pSpan="basicData.span"
+          :pOffset="basicData.offset"
+          :pPush="basicData.push"
+          :pPull="basicData.pull">
           <div class="grid-item" :class="item % 2 ? 'grid-item-dark' : 'grid-item-light'" />
-        </el-col>
-      </el-row>
+        </PCol>
+      </PRow>
       <template #controls>
         <HstSlider
           v-model="basicData.gutter"
@@ -190,16 +190,18 @@
 </template>
 
 <script setup lang="ts">
-import type { RowProps } from 'element-plus'
 import { justifyOptions } from './constants'
 import { ref } from 'vue'
+import PCol from '@/atoms/PCol'
+import PRow from '@/atoms/PRow'
+import type { PRowProps } from '@/atoms/PRow/PRowTypes'
 
 // Basic Usage
 const basicData = ref({
   span: 6,
   gutter: 0,
   offset: 0,
-  justify: 'start' as RowProps['justify'],
+  justify: 'start' as PRowProps['pJustify'],
   align: 'top',
   push: 0,
   pull: 0

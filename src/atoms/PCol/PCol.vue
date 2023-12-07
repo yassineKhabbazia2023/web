@@ -24,11 +24,11 @@ withDefaults(defineProps<PColProps>(), {
   pOffset: 0,
   pPush: 0,
   pPull: 0,
-  pXs: 0,
-  pSm: 0,
-  pMd: 0,
-  pLg: 0,
-  pXl: 0,
+  pXs: undefined,
+  pSm: undefined,
+  pMd: undefined,
+  pLg: undefined,
+  pXl: undefined,
   pTag: 'div'
 })
 </script>

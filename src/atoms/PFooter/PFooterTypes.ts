@@ -1,3 +1,3 @@
 export interface PFooterProps {
-  pHeight: string
+  pHeight?: string
 }

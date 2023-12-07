@@ -48,7 +48,7 @@ function createFilter(queryString: string) {
     )
   }
 }
-function loadAll() {
+const loadAll = () => {
   return [
     { value: 'vue', link: 'https://github.com/vuejs/vue' },
     { value: 'element', link: 'https://github.com/ElemeFE/element' },

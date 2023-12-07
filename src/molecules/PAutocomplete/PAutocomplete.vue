@@ -7,7 +7,7 @@
     :debounce="pDebounce"
     :placeholder="pPlaceholder"
     :triggerOnFocus="pTriggerOnFocus"
-    :fetchSuggestions="pFetchSuggestion"
+    :fetchSuggestions="pFetchSuggestions"
     :name="pName"
     :label="pLabel"
     :hideLoading="pHideLoading"
@@ -25,7 +25,7 @@ import { ElAutocomplete } from 'element-plus'
 import type { PAutocompleteProps } from './PAutocompleteTypes'
 
 withDefaults(defineProps<PAutocompleteProps>(), {
-  pPlaceholder: '',
+  pPlaceholder: undefined,
   pClearable: false,
   pDisabled: false,
   pValueKey: 'value',
@@ -33,11 +33,11 @@ withDefaults(defineProps<PAutocompleteProps>(), {
   pPlacement: 'bottom-start',
   pTriggerOnFocus: true,
   pSelectWhenUnmatched: false,
-  pFetchSuggestion: undefined,
-  pName: '',
-  pLabel: '',
+  pFetchSuggestions: undefined,
+  pName: undefined,
+  pLabel: undefined,
   pHideLoading: false,
-  pPopperClass: '',
+  pPopperClass: undefined,
   pTeleported: true,
   pHighlightFirstItem: false,
   pFitInputWidth: false

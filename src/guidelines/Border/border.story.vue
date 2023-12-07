@@ -10,77 +10,77 @@
   >
     <Variant title="Border radius Custom Pegase">
       <el-row class="demo-radius">
-        <el-col :span="12">
+        <PCol :pSpan="12">
           <div class="title">
             Radius 4px
           </div>
           <code class="code-value">.radius--1</code>
           <div class="radius radius--1" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius 8px
           </div>
           <code class="code-value">.radius--2</code>
           <div class="radius radius--2" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius 12px
           </div>
           <code class="code-value">.radius--3</code>
           <div class="radius radius--3" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius 16px
           </div>
           <code class="code-value">.radius--4</code>
           <div class="radius radius--4" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius 20px
           </div>
           <code class="code-value">.radius--5</code>
           <div class="radius radius--5" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius 24px
           </div>
           <code class="code-value">.radius--6</code>
           <div class="radius radius--6" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius 32px
           </div>
           <code class="code-value">.radius--7</code>
           <div class="radius radius--7" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius 48px
           </div>
           <code class="code-value">.radius--8</code>
           <div class="radius radius--8" />
-        </el-col>
-        <el-col :span="12">
+        </PCol>
+        <PCol :pSpan="12">
           <div class="title">
             Radius circle
           </div>
           <code class="code-value">.radius--circle</code>
           <div class="radius radius--circle" style="width: 100px;" />
-        </el-col>
+        </PCol>
       </el-row>
     </Variant>
     <Variant title="Border radius Element Plus">
       <el-row class="demo-radius">
-        <el-col
+        <PCol
           v-for="(radius, i) in radiusGroup"
           :key="i"
-          :span="12"
+          :pSpan="12"
         >
           <div class="title">
             {{ radius.name }}
@@ -94,7 +94,7 @@
                 : '',
             }"
           />
-        </el-col>
+        </PCol>
       </el-row>
     </Variant>
     <Variant title="Border style">
@@ -143,6 +143,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import PCol from '@/atoms/PCol'
 
 const radiusGroup = ref([
   {

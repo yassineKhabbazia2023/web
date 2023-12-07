@@ -8,7 +8,7 @@
 import { ElFooter } from 'element-plus'
 import type { PFooterProps } from './PFooterTypes'
 
-const props = withDefaults(defineProps<PFooterProps>(), {
+withDefaults(defineProps<PFooterProps>(), {
   pHeight: '60px'
 })
 </script>

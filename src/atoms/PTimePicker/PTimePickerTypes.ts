@@ -1,4 +1,4 @@
-import type { Component } from "vue"
+import type { Component } from 'vue'
 import type { Dayjs } from 'dayjs'
 
 export interface PTimePickerProps {
@@ -21,9 +21,13 @@ export interface PTimePickerProps {
   pLabel: string,
   pPrefixIcon: string | Component,
   pClearIcon: string | Component,
-  pDisabledHours: (role: string, comparingDate?: Dayjs) => number[],
-  pDisabledMinutes: (hour: number, role: string, comparingDate?: Dayjs) => number[],
-  pDisabledSeconds: (hour: number, minute: number, role: string, comparingDate?: Dayjs) => number[],
+  pDisabledHours: (_role: string, _comparingDate?: Dayjs) => number[],
+  pDisabledMinutes: (_hour: number, _role: string, _comparingDate?: Dayjs) => number[],
+  pDisabledSeconds: (
+    _hour: number,
+    _minute: number,
+    _role: string,
+    _comparingDate?: Dayjs) => number[],
   pTeleported: boolean,
   pTabindex: string | number
 }

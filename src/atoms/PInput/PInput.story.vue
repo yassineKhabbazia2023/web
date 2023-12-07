@@ -3,9 +3,9 @@
     <Variant title="Basic Usage">
       <PInput
         v-model="basicInputData.inputValue"
-        :type="basicInputData.type"
-        :disabled="basicInputData.disabled"
-        :placeholder="basicInputData.placeholder"
+        :pType="basicInputData.type"
+        :pDisabled="basicInputData.disabled"
+        :pPlaceholder="basicInputData.placeholder"
       >
       </PInput>
       <template #controls>
@@ -17,10 +17,10 @@
     <Variant title="Textarea">
       <PInput
         v-model="TextInputData.inputValue"
-        :type="TextInputData.type"
-        :disabled="TextInputData.disabled"
-        :placeholder="TextInputData.placeholder"
-        :autosize="TextInputData.autosize"
+        :pType="TextInputData.type"
+        :pDisabled="TextInputData.disabled"
+        :pPlaceholder="TextInputData.placeholder"
+        :pAutosize="TextInputData.autosize"
       >
       </PInput>
       <template #controls>
@@ -32,9 +32,9 @@
     <Variant title="Password">
       <PInput
         v-model="PasswordInputData.inputValue"
-        :type="PasswordInputData.type"
-        :placeholder="PasswordInputData.placeholder"
-        :showPassword="PasswordInputData.showpassword"
+        :pType="PasswordInputData.type"
+        :pPlaceholder="PasswordInputData.placeholder"
+        :pShowPassword="PasswordInputData.showpassword"
       >
       </PInput>
       <template #controls>
@@ -46,10 +46,10 @@
     <Variant title="Search">
       <PInput
         v-model="SearchInputData.inputValue"
-        :type="SearchInputData.type"
-        :placeholder="SearchInputData.placeholder"
-        :prefixIcon="SearchInputData.prefixIcon"
-        :clearable="SearchInputData.clearable"
+        :pType="SearchInputData.type"
+        :pPlaceholder="SearchInputData.placeholder"
+        :pPrefixIcon="SearchInputData.prefixIcon"
+        :pClearable="SearchInputData.clearable"
       >
       </PInput>
       <template #controls>
@@ -59,10 +59,10 @@
     <Variant title="Search small">
       <PInput
         v-model="SearchInputData.inputValue"
-        :type="SearchInputData.type"
-        :placeholder="SearchInputData.placeholder"
-        :prefixIcon="SearchInputData.prefixIcon"
-        :clearable="SearchInputData.clearable"
+        :pType="SearchInputData.type"
+        :pPlaceholder="SearchInputData.placeholder"
+        :pPrefixIcon="SearchInputData.prefixIcon"
+        :pClearable="SearchInputData.clearable"
         size="small"
       >
       </PInput>

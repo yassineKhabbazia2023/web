@@ -48,7 +48,7 @@ import { ElSelect } from 'element-plus'
 import type { PSelectProps } from './PSelectTypes'
 
 withDefaults(defineProps<PSelectProps>(), {
-  pMultiple: undefined,
+  pMultiple: false,
   pDisabled: false,
   pValueKey: 'value',
   pSize: undefined,
@@ -84,7 +84,7 @@ withDefaults(defineProps<PSelectProps>(), {
   pValidateEvent: true,
   pPlacement: 'bottom-start',
   pMaxCollapseTags: 1,
-  pPopperOptions: undefined,
+  pPopperOptions: () => ({}),
   pAriaLabel: undefined
 })
 </script>
