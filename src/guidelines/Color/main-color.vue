@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="12">
-    <el-col :span="10" :xs="{ span: 12 }">
+    <PCol :pSpan="10" :pXs="{ span: 12 }">
       <div
         class="demo-color-box"
         :style="{ background: primary }">
@@ -24,13 +24,14 @@
           />
         </div>
       </div>
-    </el-col>
+    </PCol>
   </el-row>
 </template>
 
 <script lang="ts" setup>
 import { useCssVar } from '@vueuse/core'
 import { useCopyColor } from '@/utils'
+import PCol from '@/atoms/PCol'
 
 const primary = useCssVar('--el-color-primary')
 const colorLevel = [3, 5, 7, 8, 9].map(i => `light-${i}`)

@@ -16,7 +16,7 @@ import type { PStepProps } from './PStepTypes'
 withDefaults(defineProps<PStepProps>(), {
   pTitle: '',
   pDescription: '',
-  pIcon: '',
+  pIcon: undefined,
   pStatus: ''
 })
 </script>

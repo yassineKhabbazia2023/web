@@ -3,14 +3,14 @@
     <Variant title="Basic Usage">
       <PRadio
         v-model="radio"
-        label="1"
-        :disabled="isDisabled">
+        pLabel="1"
+        :pDisabled="isDisabled">
         Option 1
       </PRadio>
       <PRadio
         v-model="radio"
-        label="2"
-        :disabled="isDisabled">
+        pLabel="2"
+        :pDisabled="isDisabled">
         Option 2
       </PRadio>
       <template #controls>

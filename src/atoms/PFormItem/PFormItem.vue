@@ -1,5 +1,6 @@
 <template>
   <ElFormItem
+    :prop="pProp"
     :label="pLabel"
     :labelWidth="pLabelWidth"
     :required="pRequired"
@@ -20,6 +21,7 @@ import { ElFormItem } from 'element-plus'
 import type { PFormItemProps } from './PFormItemTypes'
 
 withDefaults(defineProps<PFormItemProps>(), {
+  pProp: undefined,
   pLabel: undefined,
   pLabelWidth: '',
   pRequired: undefined,

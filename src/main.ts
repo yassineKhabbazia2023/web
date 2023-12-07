@@ -13,37 +13,39 @@ export const fr = frLocale
 export const en = enLocale
 
 export {
-  // Inner Depencies for Layout, DatePicker
-  ElAside as PAside,
-  ElAutocomplete as PAutocomplete,
-  ElCol as PCol,
-  ElCollapse as PCollapse,
-  ElConfigProvider as PConfigProvider,
-  ElContainer as PContainer,
-  ElFooter as PFooter,
-  ElForm as PForm,
-  ElFormItem as PFormItem,
-  ElHeader as PCHeader,
-  ElInput as PInput,
-  ElMain as PMain,
-  ElNotification as PNotification,
-  ElOption as POption,
-  ElOptionGroup as POptionGroup,
-  ElPopper as PPopper,
-  ElPopperArrow as PPopperArrow,
-  ElPopperContent as PPopperContent,
-  ElRadio as PRadio,
-  ElRow as PRow,
-  ElScrollbar as PScrollbar,
-  ElSelect as PSelect,
-  ElStep as PStepItem,
-  ElSteps as PSteps,
-  ElSwitch as PSwitch,
-  ElTableColumn as PTableColumn,
-  ElTabPane as PTabPane,
   ElTabs as PTabs,
-  ElTimePicker as PTimePicker
+  ElTabPane as PTabPane,
+  ElTableColumn as PTableColumn
 } from 'element-plus'
+
+export { default as PAside } from './atoms/PActivityCard'
+export { default as PAutocomplete } from './molecules/PAutocomplete'
+export { default as PCol } from './atoms/PCol'
+export { default as PCollapse } from './molecules/PCollapse'
+export { default as PConfigProvider } from './molecules/PConfigProvider'
+export { default as PContainer } from './molecules/PContainer'
+export { default as PFooter } from './atoms/PFooter'
+export { default as PForm } from './molecules/PForm'
+export { default as PFormItem } from './atoms/PFormItem'
+export { default as PCHeader } from './atoms/PCHeader'
+export { default as PInput } from './atoms/PInput'
+export { default as PMain } from './atoms/PMain'
+export { default as POption } from './atoms/POption'
+export { default as POptionGroup } from './molecules/POptionGroup'
+export { default as PPopper } from './atoms/PPopper'
+export { default as PPopperArrow } from './atoms/PPopperArrow'
+export { default as PPopperContent } from './atoms/PPopperContent'
+export { default as PRadio } from './atoms/PRadio'
+export { default as PRow } from './atoms/PRow'
+export { default as PScrollbar } from './atoms/PScrollbar'
+export { default as PSelect } from './molecules/PSelect'
+export { default as PStep } from './atoms/PStep'
+export { default as PSteps } from './molecules/PSteps'
+export { default as PSwitch } from './atoms/PSwitch'
+// export { default as PTableColumn} from './atoms/PTableColumn'
+// export { default as PTabPane} from './atoms/PTabPane'
+// export { default as PTabs} from './molecules/PTabs'
+export { default as PTimePicker } from './atoms/PTimePicker'
 
 export { default as PActivityCard } from './atoms/PActivityCard'
 export { default as PActionBar } from './molecules/PActionBar'

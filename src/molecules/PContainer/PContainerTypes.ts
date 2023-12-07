@@ -1,3 +1,3 @@
 export interface PContainerProps {
-  pDirection: 'horizontal' | 'vertical'
+  pDirection?: 'horizontal' | 'vertical'
 }

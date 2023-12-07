@@ -1,6 +1,6 @@
 <template>
   <Story
-    title="2. Atoms/Tabs"
+    title="3. Molecules/Tabs"
     icon="ph:tabs-light"
     :layout="{
       type: 'grid',
@@ -10,22 +10,22 @@
     <Variant title="Basic Usage">
       <PTabs
         v-model="basicData.activeName"
-        :stretch="basicData.stretch"
+        :pStretch="basicData.stretch"
       >
         <PTabPane
           v-for="tab in tabs"
           :key="tab.name"
-          :label="tab.label"
-          :name="tab.name"
+          :pLabel="tab.label"
+          :pName="tab.name"
         >
           {{ tab.content }}
         </PTabPane>
       </PTabs>
     </Variant>
     <Variant title="Counter Usage">
-      <PTabs :stretch="basicData.stretch">
+      <PTabs :pStretch="basicData.stretch">
         <PTabPane>
-          <template #label>
+          <template #pLabel>
             <span>Option A</span>
             <PPastille
               size="small"
@@ -37,7 +37,7 @@
           Custom 1
         </PTabPane>
         <PTabPane>
-          <template #label>
+          <template #pLabel>
             <span>Option B</span>
             <PPastille
               size="small"
@@ -49,7 +49,7 @@
           Custom 2
         </PTabPane>
         <PTabPane>
-          <template #label>
+          <template #pLabel>
             <span>Option C</span>
             <PPastille
               size="small"
@@ -65,14 +65,14 @@
     <Variant title="Card Usage">
       <PTabs
         v-model="basicData.activeName"
-        type="card"
-        :stretch="basicData.stretch"
+        pType="card"
+        :pStretch="basicData.stretch"
       >
         <PTabPane
           v-for="tab in tabs"
           :key="tab.name"
-          :label="tab.label"
-          :name="tab.name"
+          :pLabel="tab.label"
+          :pName="tab.name"
         >
           {{ tab.content }}
         </PTabPane>
@@ -83,6 +83,8 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import PTabPane from '@/atoms/PTabPane'
+import PTabs from '@/molecules/PTabs'
 
 const basicData = reactive({
   activeName: '1',

@@ -1,14 +1,14 @@
 <template>
   <ElInput
     :type="pType"
-    :maxLength="pMaxlength"
-    :minLength="pMinlength"
+    :maxlength="pMaxlength"
+    :minlength="pMinlength"
     :showWordLimit="pShowWordLimit"
     :placeholder="pPlaceholder"
     :clearable="pClearable"
     :formatter="pFormatter"
     :parser="pParser"
-    :showPassord="pShowPassword"
+    :showPassword="pShowPassword"
     :disabled="pDisabled"
     :size="pSize"
     :prefixIcon="pPrefixIcon"
@@ -36,9 +36,9 @@
 <script setup lang="ts">
 import { ElInput } from 'element-plus'
 import type { PInputProps } from './PInputTypes'
-import { mutable } from 'element-plus/es/utils';
+import { mutable } from 'element-plus/es/utils/typescript'
 
-withDefaults(defineProps<PInputProps>() , {
+withDefaults(defineProps<PInputProps>(), {
   pType: 'text',
   pMaxlength: undefined,
   pMinlength: undefined,
@@ -65,7 +65,7 @@ withDefaults(defineProps<PInputProps>() , {
   pForm: undefined,
   pLabel: undefined,
   pTabindex: undefined,
-  pValidateEvents: true,
+  pValidateEvent: true,
   pInputStyle: () => mutable({} as const)
 })
 </script>

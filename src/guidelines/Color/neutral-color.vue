@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="12">
-    <el-col :span="6" :xs="{ span: 12 }">
+    <PCol :pSpan="6" :pXs="{ span: 12 }">
       <div class="demo-color-box-group">
         <div
           v-for="(text, i) in textColors"
@@ -17,9 +17,9 @@
           </div>
         </div>
       </div>
-    </el-col>
+    </PCol>
 
-    <el-col :span="6" :xs="{ span: 12 }">
+    <PCol :pSpan="6" :pXs="{ span: 12 }">
       <div class="demo-color-box-group">
         <div
           v-for="(border, i) in borderColors"
@@ -33,9 +33,9 @@
           </div>
         </div>
       </div>
-    </el-col>
+    </PCol>
 
-    <el-col :span="6" :xs="{ span: 12 }">
+    <PCol :pSpan="6" :pXs="{ span: 12 }">
       <div class="demo-color-box-group">
         <div
           v-for="(fill, i) in fillColors"
@@ -56,9 +56,9 @@
           </div>
         </div>
       </div>
-    </el-col>
+    </PCol>
 
-    <el-col :span="6" :xs="{ span: 12 }">
+    <PCol :pSpan="6" :pXs="{ span: 12 }">
       <div class="demo-color-box-group">
         <div
           class="demo-color-box demo-color-box-other"
@@ -110,12 +110,13 @@
           </div>
         </div>
       </div>
-    </el-col>
+    </PCol>
   </el-row>
 </template>
 
 <script lang="ts" setup>
 import { getCssVarName, getCssVarValue } from '@/utils'
+import PCol from '@/atoms/PCol'
 
 const backgroundTypes = ['page', '', 'overlay']
 const backgroundColors = backgroundTypes.map((type) => {

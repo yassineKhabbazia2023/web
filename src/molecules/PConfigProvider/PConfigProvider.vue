@@ -4,6 +4,7 @@
     :size="pSize"
     :zIndex="pZIndex"
     :namespace="pNamespace"
+    :button="pButton"
     :message="pMessage"
   >
     <slot />
@@ -13,11 +14,13 @@
 <script lang="ts" setup>
 import { ElConfigProvider } from 'element-plus'
 import type { PConfigProviderProps } from './PConfigProviderTypes'
+
 withDefaults(defineProps<PConfigProviderProps>(), {
   pLocale: undefined,
   pSize: 'default',
-  pZIndex: 0,
+  pZIndex: undefined,
   pNamespace: 'el',
-  pMessage: undefined,
+  pButton: undefined,
+  pMessage: undefined
 })
 </script>

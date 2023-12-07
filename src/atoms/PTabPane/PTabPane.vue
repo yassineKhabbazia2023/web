@@ -7,6 +7,9 @@
     :lazy="pLazy"
   >
     <slot />
+    <template #pLabel>
+      <slot name="label"/>
+    </template>
   </ElTabPane>
 </template>
 

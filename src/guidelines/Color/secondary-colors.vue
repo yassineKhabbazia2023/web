@@ -1,10 +1,10 @@
 <template>
   <el-row :gutter="12">
-    <el-col
+    <PCol
       v-for="(type, i) in colorsType"
       :key="i"
-      :span="6"
-      :xs="{ span: 12 }"
+      :pSpan="6"
+      :pXs="{ span: 12 }"
     >
       <div class="demo-color-box" :style="{ background: getColorValue(type) }">
         {{ type.charAt(0).toUpperCase() + type.slice(1) }}
@@ -24,12 +24,13 @@
           />
         </div>
       </div>
-    </el-col>
+    </PCol>
   </el-row>
 </template>
 
 <script lang="ts" setup>
 import { getColorValue, useCopyColor } from '@/utils'
+import PCol from '@/atoms/PCol'
 
 const colorsType = ['success', 'warning', 'danger', 'info']
 

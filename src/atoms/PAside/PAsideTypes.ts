@@ -1,3 +1,3 @@
 export interface PAsideProps {
-  pWidth: string
+  pWidth?: string
 }

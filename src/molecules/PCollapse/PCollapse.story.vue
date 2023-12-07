@@ -4,7 +4,7 @@
       <div class="block-collapse">
         <PCollapse
           v-model="activeNames"
-          :accordion="accordion"
+          :pAccordion="accordion"
         >
           <PCollapseItem
             pType="default"
@@ -48,7 +48,7 @@
       <div class="block-collapse">
         <PCollapse
           v-model="activeNames"
-          :accordion="accordion"
+          :pAccordion="accordion"
         >
           <PCollapseItem
             pType="shadow"
@@ -92,7 +92,7 @@
       <div class="block-collapse">
         <PCollapse
           v-model="activeNames"
-          :accordion="accordion"
+          :pAccordion="accordion"
         >
           <PCollapseItem
             pType="alert"
