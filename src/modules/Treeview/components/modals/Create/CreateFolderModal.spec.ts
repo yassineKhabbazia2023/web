@@ -7,10 +7,6 @@ import { type CreateFolderModalProps }
   from '@/modules/Treeview/components/modals/Create/CreateFolderModalTypes'
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
-import {
-  dynamicUntilFound,
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import { ComponentPublicInstance, nextTick } from 'vue'
 
 const defaultProps: CreateFolderModalProps = {
@@ -86,10 +82,7 @@ describe('props', () => {
 
         const wrapper = createWrapper(props)
 
-        const dialog = await dynamicUntilFoundComponent(
-          wrapper,
-          SingleInputModal
-        )
+        const dialog = wrapper.findComponent(SingleInputModal)
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
@@ -123,10 +116,7 @@ describe('props', () => {
 
         const wrapper = createWrapper(props)
 
-        const dialog = await dynamicUntilFoundComponent(
-          wrapper,
-          SingleInputModal
-        )
+        const dialog = wrapper.findComponent(SingleInputModal)
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
@@ -160,10 +150,7 @@ describe('props', () => {
 
         const wrapper = createWrapper(props)
 
-        const dialog = await dynamicUntilFoundComponent(
-          wrapper,
-          SingleInputModal
-        )
+        const dialog = wrapper.findComponent(SingleInputModal)
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
@@ -190,7 +177,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = await dynamicUntilFoundComponent(wrapper, SingleInputModal)
+    const dialog = wrapper.findComponent(SingleInputModal)
 
     const componentInstance = wrapper.vm
     componentInstance.inputContent = 'TheFolder'
@@ -198,10 +185,7 @@ describe('interactions', () => {
 
     await nextTick()
 
-    const confirmButton = await dynamicUntilFound(
-      dialog,
-      '.confirm-action-button'
-    )
+    const confirmButton = dialog.find('.confirm-action-button')
     await confirmButton.trigger('click')
     await nextTick()
 
@@ -238,17 +222,14 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = await dynamicUntilFoundComponent(wrapper, SingleInputModal)
+    const dialog = wrapper.findComponent(SingleInputModal)
 
     const componentInstance = wrapper.vm
     componentInstance.inputContent = 'TheFolder'
 
     await nextTick()
 
-    const confirmButton = await dynamicUntilFound(
-      dialog,
-      '.confirm-action-button'
-    )
+    const confirmButton = dialog.find('.confirm-action-button')
     await confirmButton.trigger('click')
     await nextTick()
 
@@ -263,13 +244,10 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = await dynamicUntilFoundComponent(wrapper, SingleInputModal)
+    const dialog = wrapper.findComponent(SingleInputModal)
     await nextTick()
 
-    const cancelButton = await dynamicUntilFound(
-      dialog,
-      '.cancel-action-button'
-    )
+    const cancelButton = dialog.find('.cancel-action-button')
     await cancelButton.trigger('click')
     await nextTick()
 
@@ -284,7 +262,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = await dynamicUntilFoundComponent(wrapper, SingleInputModal)
+    const dialog = wrapper.findComponent(SingleInputModal)
 
     await dialog.vm.$emit('on-close-modal')
     await nextTick()
