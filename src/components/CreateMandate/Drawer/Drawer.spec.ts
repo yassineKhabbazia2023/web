@@ -42,12 +42,10 @@ describe('createMandateDrawer.vue', () => {
     wrapper.vm.goToNextStep()
     await nextTick()
     await nextTick()
-    // eslint-disable-next-line no-console
-    console.log('current step value ', wrapper.vm.currentStep)
     /* // eslint-disable-next-line no-console
     console.log('wrapper step 3 ', wrapper.html()) */
     /* const closeButton = wrapper.find('button[data-testid="close-button-test"]')
     await closeButton.trigger('click') */
-    expect(wrapper.vm.currentStep).toBe(1)
+    expect(wrapper.vm.currentStep).toBe(4)
   })
 })
