@@ -5,10 +5,10 @@
     :name="pName"
     :closable="pClosable"
     :lazy="pLazy"
-  >
+    >
     <slot />
-    <template #pLabel>
-      <slot name="label"/>
+    <template v-if="!pLabel" #label>
+      <slot name="label" />
     </template>
   </ElTabPane>
 </template>
@@ -20,7 +20,7 @@ import type { PTabPaneProps } from './PTabPaneTypes'
 withDefaults(defineProps<PTabPaneProps>(), {
   pLabel: undefined,
   pDisabled: false,
-  pName: '0',
+  pName: undefined,
   pClosable: false,
   pLazy: false
 })
