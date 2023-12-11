@@ -127,9 +127,9 @@
       <template #footer>
         <div class="p-dialog__footer">
           <PButton
-            pType="secondary"
+            pType="primary"
             pSize="small"
-            :pPlain="false"
+            pPlain
             :pRound="false"
             :pDisabled="false"
             :pLoading="false"

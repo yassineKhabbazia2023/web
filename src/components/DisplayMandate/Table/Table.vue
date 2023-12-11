@@ -74,6 +74,7 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import type { PToolboxItemProps } from '@kpmg/styleguide'
 import Tag from '@/components/Common/Tag'
 import {
   PTable,
@@ -110,7 +111,7 @@ const dataFormatter = (data: any) =>
       bankName,
       creationDate: dateFormatter(creationDate),
       modificationDate: dateFormatter(modificationDate),
-      statusCode
+      statusCode: statusCode.toString()
     })
   )
 const mandateCollection = computed(() => dataFormatter(props.data))
@@ -132,26 +133,29 @@ const tableHead = [
   { label: `${t('status')}`, prop: 'statusCode', sortable: true },
   { label: 'Actions', sortable: false }
 ]
-const actionsBuilder = (statusCode: string | number) => {
+const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
   const statusCodeNumber = Number(statusCode)
   return [
     {
       pIconName: 'PIDownload',
       pValue: t('download-pre-filled-mandate'),
       disabled: statusCodeNumber !== 20,
-      pActionName: 'download-pre-filled-mandate'
+      pActionName: 'download-pre-filled-mandate',
+      pState: 'default'
     },
     {
       pIconName: 'PIUpload',
       pValue: t('submit-signed-mandate'),
       disabled: statusCodeNumber !== 20,
-      pActionName: 'submit-signed-mandate'
+      pActionName: 'submit-signed-mandate',
+      pState: 'default'
     },
     {
       pIconName: 'PIDownload',
       pValue: t('download-signed-mandate'),
       disabled: statusCodeNumber === 20 || statusCodeNumber === 50,
-      pActionName: 'download-signed-mandate'
+      pActionName: 'download-signed-mandate',
+      pState: 'default'
     },
     {
       pIconName: 'PIXCircle',

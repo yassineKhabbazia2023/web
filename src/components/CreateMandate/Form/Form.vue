@@ -454,7 +454,7 @@ const validateIBS = async (_: Rule, value: string, callback: any) => {
     if (error?.message?.includes('outWalletIBS')) {
       callback(new Error(t('form.error.outWalletIBS')))
     }
-    if (error?.message?.includes('ibsNotFound')) {
+    if (error?.message?.includes('ibsNotFound') || error?.message?.includes('404')) {
       callback(new Error(t('form.error.ibsNotFound')))
     }
   }
