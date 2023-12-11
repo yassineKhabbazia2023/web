@@ -67,7 +67,7 @@ const createWrapper = (props: any) =>
   })
 
 describe('componentName.vue', () => {
-  it('renders Header component', async () => {
+  it('should call api with search term', async () => {
     const wrapper = createWrapper({})
     vi.useFakeTimers()
     const inputValue = 'BNP Paribas'
@@ -77,9 +77,7 @@ describe('componentName.vue', () => {
     await ibsInputElement
       .setValue(inputValue)
     await ibsInputElement.trigger('change')
-    await vi.waitUntil(
-      () => (ibsInputElement.element as HTMLInputElement).value
-    )
+    await vi.advanceTimersByTimeAsync(550)
     expect(getMandatesCollection).toHaveBeenLastCalledWith({
       skip: 0,
       limit: 10,

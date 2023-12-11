@@ -436,7 +436,8 @@ const areFieldsFilled = computed(() => {
     'country'
   ]
 
-  return fieldsToCheck.every((field) => createMandateForm[field].trim() !== '')
+  return fieldsToCheck.every((field) => createMandateForm[field] &&
+  createMandateForm[field].trim() !== '')
 })
 
 // Methods

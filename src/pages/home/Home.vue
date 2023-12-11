@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <SearchBar v-model="searchText"/>
+    <SearchBar v-model="searchText" class="padding-left--6 padding-right--6 padding-bottom--6"/>
     <ListMandate :data="mandatesCollection.data" />
     <Pagination
       :pagesCount="mandatesCollection.counters.all"
@@ -20,6 +20,7 @@ import Header from '@/components/Common/Header'
 import ListMandate from '@/components/DisplayMandate/Table'
 import Pagination from '@/components/DisplayMandate/Pagination'
 import SearchBar from '@/components/Common/SearchBar'
+import { debounce } from '@/helpers/utils'
 import type { MandateCollection } from './Models'
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -58,10 +59,15 @@ const updateTableDisplay = async ({ currentPage, itemsByPage, searchTerm }:
     loading.value = false
   }
 }
+const updateTableDisplayDebounced = debounce(updateTableDisplay)
 
 watch(searchText,
   (value: string) =>
-    updateTableDisplay({ itemsByPage: itemsToDisplay.value, searchTerm: value, currentPage: 1 }))
+    updateTableDisplayDebounced({
+      itemsByPage: itemsToDisplay.value,
+      searchTerm: value,
+      currentPage: 1
+    }))
 
 defineExpose({
   updateTableDisplay

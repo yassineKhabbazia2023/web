@@ -4,11 +4,11 @@
       v-model="drawerModel"
       :pTitle="currentStep <= 3 ? `${t('new-collection')}` : ''"
       :pShowPreviousStep="false"
-      :beforeClose="drawerBeforeClose(currentStep)"
       pSize="50%"
       pDirection="rtl"
       class="drawer-create-mandate"
-      @close-drawer-button="drawerBeforeClose(currentStep)"
+      :beforeClose="drawerBeforeClose"
+      @close-drawer-button="drawerBeforeClose"
     >
       <PSteps
         v-if="currentStep <= 3"
@@ -52,12 +52,6 @@
         @update-mandate-model="updateMandateModel"
       />
       <DownloadMandate :mandateId="mandateId" v-if="currentStep > 3" />
-      <Form
-        v-if="currentStep <= 3"
-        :step="currentStep"
-        @enable-disable-next="handleNextAvailability"
-        @enable-disable-validate="handleValidateAvailability"
-      />
       <template #footer>
         <div v-if="currentStep <= 3">
           <PButton
@@ -308,11 +302,12 @@ const closeDrawerAndInitStep = () => {
   currentStep.value = 1
 }
 
-const drawerBeforeClose = (step: number) => {
-  if (step <= 3) {
+const drawerBeforeClose = (done: any) => {
+  if (currentStep.value <= 3) {
     pDialogControl.dialogVisible = true
     return
   }
+  done()
   closeDrawerAndInitStep()
 }
 

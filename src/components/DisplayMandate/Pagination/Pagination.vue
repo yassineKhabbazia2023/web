@@ -40,7 +40,12 @@ const props = withDefaults(defineProps<PaginationProps>(), {
 const currentPage = ref(1)
 const itemsByPage = ref(props.pagesRanges[0])
 
-const startIndex = computed(() => ((currentPage.value - 1) * itemsByPage.value) + 1)
+const startIndex = computed(() => {
+  if (props.pagesCount > 0) {
+    return (((currentPage.value - 1) * itemsByPage.value) + 1)
+  }
+  return 0
+})
 const endIndex = computed(() => {
   if (((startIndex.value - 1) + itemsByPage.value) >= props.pagesCount) {
     return props.pagesCount

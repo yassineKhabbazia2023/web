@@ -16,17 +16,16 @@
 </template>
 
 <i18n lang="yaml">
-      en-US:
-          search: 'Search'
-      fr-FR:
-          search: 'Rechercher'
-  </i18n>
+    en-US:
+        search: 'Search'
+    fr-FR:
+        search: 'Rechercher'
+</i18n>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { PInput, PIcon, PISearch } from '@kpmg/styleguide'
-import { debounce } from '@/helpers/utils'
 
 const props = defineProps({
   modelValue: {
@@ -36,14 +35,13 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:modelValue'])
-const searchBarEmitter = debounce(emit)
 
 const searchModel = computed({
   get() {
     return props.modelValue
   },
   set(value) {
-    searchBarEmitter('update:modelValue', value)
+    emit('update:modelValue', value)
   }
 })
 
@@ -53,9 +51,4 @@ const { t } = useI18n({
 })
 
 </script>
-
-<style scoped lang="scss">
-/* .search-bar-mandate {
-  } */
-</style>
 

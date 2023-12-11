@@ -72,6 +72,7 @@
 </i18n>
 
 <script setup lang='ts'>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tag from '@/components/Common/Tag'
 import {
@@ -112,7 +113,7 @@ const dataFormatter = (data: any) =>
       statusCode
     })
   )
-const mandateCollection = dataFormatter(props.data)
+const mandateCollection = computed(() => dataFormatter(props.data))
 const tableHead = [
   { label: `${t('ibs-code')}`, prop: 'erpId', sortable: true },
   { label: `${t('company-name')}`, prop: 'companyName', sortable: true },

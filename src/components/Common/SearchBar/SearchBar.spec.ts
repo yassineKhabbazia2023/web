@@ -1,6 +1,6 @@
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import SearchBar from '.'
-import { expect, describe, it, vi } from 'vitest'
+import { expect, describe, it } from 'vitest'
 
 const createWrapper = (props:any) =>
   wrapperFactory(SearchBar, { props })
@@ -14,10 +14,7 @@ describe('serach bar mandate', () => {
     await ibsInputElement
       .setValue(inputValue)
     await ibsInputElement.trigger('change')
-    const modelValueEvent: any = await vi.waitUntil(
-      () => wrapper.emitted('update:modelValue'),
-      { timeout: 580 })
-    expect(modelValueEvent).toHaveLength(1)
+    const modelValueEvent: any = wrapper.emitted('update:modelValue')
     expect(modelValueEvent[0]).toStrictEqual([inputValue])
   })
 })
