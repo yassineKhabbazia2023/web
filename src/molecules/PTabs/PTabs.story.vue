@@ -25,7 +25,7 @@
     <Variant title="Counter Usage">
       <PTabs :pStretch="basicData.stretch">
         <PTabPane>
-          <template #pLabel>
+          <template #label>
             <span>Option A</span>
             <PPastille
               size="small"
@@ -37,7 +37,7 @@
           Custom 1
         </PTabPane>
         <PTabPane>
-          <template #pLabel>
+          <template #label>
             <span>Option B</span>
             <PPastille
               size="small"
@@ -49,7 +49,7 @@
           Custom 2
         </PTabPane>
         <PTabPane>
-          <template #pLabel>
+          <template #label>
             <span>Option C</span>
             <PPastille
               size="small"
