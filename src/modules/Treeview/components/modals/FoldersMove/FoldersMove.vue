@@ -187,7 +187,6 @@ const moveFolder = async () => {
     )
 
     explorerDocuments.value[0].givenActionState = 'DONE'
-
     emit('refresh-tree', props.folderToMove.id)
 
     handleClose()

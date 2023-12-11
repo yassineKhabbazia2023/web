@@ -1,51 +1,49 @@
-interface ToolboxLine {
-  iconName: string
-  value: string
-  actionName: string
-}
+// eslint-disable-next-line max-len
+import type { PToolboxItemProps } from '@kpmg/styleguide/dist/types/src/atoms/PToolboxItem/PToolboxItemTypes'
+
 interface ToolboxLineWithOrder {
-  toolboxLine: ToolboxLine
+  toolboxLine: PToolboxItemProps
   order: number
 }
 
 const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
   CAN_DELETE_FOLDER: {
     toolboxLine: {
-      iconName: 'PITrash',
-      value: 'Supprimer',
-      actionName: 'toolbox-delete-action-click'
+      pIconName: 'PITrash',
+      pValue: 'Supprimer',
+      pActionName: 'toolbox-delete-action-click'
     },
     order: 4
   },
   CAN_CREATE_FOLDER: {
     toolboxLine: {
-      iconName: 'PIFolderPlus',
-      value: 'Nouveau dossier',
-      actionName: 'toolbox-create-action-click'
+      pIconName: 'PIFolderPlus',
+      pValue: 'Nouveau dossier',
+      pActionName: 'toolbox-create-action-click'
     },
     order: 1
   },
   CAN_RENAME_FOLDER: {
     toolboxLine: {
-      iconName: 'PIInputCursorText',
-      value: 'Renommer dossier',
-      actionName: 'toolbox-rename-action-click'
+      pIconName: 'PIInputCursorText',
+      pValue: 'Renommer dossier',
+      pActionName: 'toolbox-rename-action-click'
     },
     order: 2
   },
   CAN_DOWNLOAD_FOLDER: {
     toolboxLine: {
-      iconName: 'PIDownload',
-      value: 'Télécharger',
-      actionName: 'toolbox-download-action-click'
+      pIconName: 'PIDownload',
+      pValue: 'Télécharger',
+      pActionName: 'toolbox-download-action-click'
     },
     order: 3
   },
   CAN_MOVE_FOLDER: {
     toolboxLine: {
-      iconName: 'PIFolderMove',
-      value: 'Déplacer vers',
-      actionName: 'move-folder'
+      pIconName: 'PIFolderMove',
+      pValue: 'Déplacer vers',
+      pActionName: 'move-folder'
     },
     order: 4
   }
@@ -54,42 +52,42 @@ const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
 const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
   CAN_RENAME_DOCUMENT: {
     toolboxLine: {
-      iconName: 'PIInputCursorText',
-      value: 'Renommer',
-      actionName: 'rename-document'
+      pIconName: 'PIInputCursorText',
+      pValue: 'Renommer',
+      pActionName: 'rename-document'
     },
     order: 1
   },
   CAN_TRANSMIT_DOCUMENT: {
     toolboxLine: {
-      iconName: 'PIRocket',
-      value: 'Envoi immédiat',
-      actionName: 'transmit-document'
+      pIconName: 'PIRocket',
+      pValue: 'Envoi immédiat',
+      pActionName: 'transmit-document'
     },
     order: 2
   },
 
   CAN_DOWNLOAD_DOCUMENT: {
     toolboxLine: {
-      iconName: 'PIDownload',
-      value: 'Télécharger',
-      actionName: 'download-document'
+      pIconName: 'PIDownload',
+      pValue: 'Télécharger',
+      pActionName: 'download-document'
     },
     order: 3
   },
   CAN_MOVE_DOCUMENT: {
     toolboxLine: {
-      iconName: 'PIFolderMove',
-      value: 'Déplacer vers',
-      actionName: 'move-document'
+      pIconName: 'PIFolderMove',
+      pValue: 'Déplacer vers',
+      pActionName: 'move-document'
     },
     order: 4
   },
   CAN_DELETE_DOCUMENT: {
     toolboxLine: {
-      iconName: 'PITrash',
-      value: 'Supprimer',
-      actionName: 'delete-document'
+      pIconName: 'PITrash',
+      pValue: 'Supprimer',
+      pActionName: 'delete-document'
     },
     order: 5
   }
@@ -98,7 +96,7 @@ const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
 export function generateToolboxBasicData(
   target: string,
   permissions: string[]
-): ToolboxLine[] {
+): PToolboxItemProps[] {
   const toolboxBasicData: ToolboxLineWithOrder[] = []
   const mappingRecord =
     target === 'Documents' ? documentsMappingRecord : foldersMappingRecord

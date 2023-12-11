@@ -62,7 +62,6 @@
           >
             <template #default="{ node, data }">
               <TreeNode
-                class="tree-node"
                 :serviceId="currentService"
                 :entityId="selectedEntity"
                 :node="node"

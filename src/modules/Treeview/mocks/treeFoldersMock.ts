@@ -11,9 +11,30 @@ export const foldersData: Folder[][] = [
           id: 135393637,
           children: [
             {
-
               id: 135393649,
-              children: [],
+              children: [
+                {
+                  id: 11111111,
+                  children: [],
+                  name: 'MOVABLE',
+                  parent: {
+                    id: 135393649
+                  },
+                  permissions: [
+                    'CAN_DELETE_FILES',
+                    'CAN_UPLOAD_FILES',
+                    'CAN_CREATE_FOLDER',
+                    'CAN_MOVE_INTO_FOLDER',
+                    'CAN_MOVE_FOLDER'
+                  ],
+                  properties: {
+                    syncStatus: 'PENDING_SYNC',
+                    folderDescription:
+                      "Ce dossier regroupe l'ensemble des documents."
+                  } as FolderProperties,
+                  serviceId: 'service-id-compta'
+                } as Folder
+              ],
               name: 'A classer',
               parent: {
                 id: 135393637
@@ -85,7 +106,6 @@ export const foldersData: Folder[][] = [
           id: 135393666,
           children: [
             {
-
               id: 135393724,
               children: [] as Folder[],
               name: 'A classer',
@@ -123,7 +143,6 @@ export const foldersData: Folder[][] = [
           id: 135393665,
           children: [
             {
-
               id: 135393725,
               children: [],
               name: 'Dossier Annuel',

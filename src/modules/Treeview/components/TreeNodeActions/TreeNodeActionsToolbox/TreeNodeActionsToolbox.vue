@@ -3,7 +3,7 @@
     <PToolbox
       :trigger="triggerType"
       v-if="isToolBoxVisible"
-      :elements="toolboxBasicData"
+      :pElements="toolboxBasicData"
       @visible-change="handleToolboxDropdownSateChange"
       @p-toolbox-item-clicked="handleItemclicked">
       <slot />

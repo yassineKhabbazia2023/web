@@ -62,14 +62,14 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeTruthy()
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
-          iconName: 'PIDownload',
-          actionName: 'toolbox-download-action-click',
-          value: 'Télécharger'
+          pIconName: 'PIDownload',
+          pActionName: 'toolbox-download-action-click',
+          pValue: 'Télécharger'
         },
         {
-          actionName: 'toolbox-delete-action-click',
-          iconName: 'PITrash',
-          value: 'Supprimer'
+          pActionName: 'toolbox-delete-action-click',
+          pIconName: 'PITrash',
+          pValue: 'Supprimer'
         }
       ])
     })
