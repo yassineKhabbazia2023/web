@@ -15,7 +15,7 @@ const createWrapper = (props: any = defaultProps) =>
     props
   })
 
-describe('PActivityCard', () => {
+describe('pActivityCard', () => {
   describe('props', () => {
     it.each([
       {

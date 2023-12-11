@@ -112,7 +112,6 @@ Slot for the menu
 </template>
 ```
 
-
 ### avatar
 
 Slot for the avatar user

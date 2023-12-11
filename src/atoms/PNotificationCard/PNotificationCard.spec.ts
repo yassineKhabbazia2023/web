@@ -13,7 +13,7 @@ const createWrapper = (props: any = defaultProps) =>
     props
   })
 
-describe('PNotificationCard', () => {
+describe('pNotificationCard', () => {
   describe('props', () => {
     it.each([
       {

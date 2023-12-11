@@ -16,7 +16,7 @@ const createWrapper = (props = defaultProps) =>
     props
   })
 
-describe('PFolderLineNavigationItem', () => {
+describe('pFolderLineNavigationItem', () => {
   describe('props', () => {
     it('should have the selected class when selected is true', () => {
       const wrapper = createWrapper({

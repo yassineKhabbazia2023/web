@@ -3,7 +3,6 @@ import { mount } from '@vue/test-utils'
 import PPagination from './'
 import { ElSelect, ElPagination } from 'element-plus'
 import type { PaginationProps } from './PPaginationTypes'
-import type { PaginationProps } from './PPaginationTypes'
 
 const defaultProps: PaginationProps = {
   pPageSizes: [100, 200, 300],

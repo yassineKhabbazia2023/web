@@ -1,5 +1,6 @@
 <template>
-  <Story title="2. Atoms/Activity Card"
+  <Story
+title="2. Atoms/Activity Card"
     icon="material-symbols:browse-activity-sharp"
     :layout="{ type: 'grid', width: 432 }"
   >
