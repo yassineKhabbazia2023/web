@@ -2,13 +2,13 @@
   <PToolbox
     class="document-toolbox"
     trigger="click"
-    :elements="toolboxBasicData"
+    :pElements="toolboxBasicData"
     @visible-change="handleToolboxDropdownSateChange"
   >
     <PButton
-    type="generic"
+    pType="generic"
     class="on-document-action-clicked"
-    circle
+    pCircle
     @click="handleActionsDropdownOpening">
       <PIcon size="14" color="#A4A4A4">
         <PIThreeDots />

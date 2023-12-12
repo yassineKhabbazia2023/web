@@ -11,22 +11,20 @@
   <PText
     v-else-if="fieldType === 'DocumentName'"
     :pContent="data.name"
-    :icon="getFileIcon(data.name)"
     pType="primary"
-    :bold="false"
     :selected="false"
     :disabled="false"
+    :pIcon="getFileIcon(data.name)"
+    :pBold="false"
   />
 
   <PTag
     v-else-if="fieldType === 'Tag' && isCertified && fieldName === ''"
     pColor="gray-900"
     pContent="Certifié"
-    :iconLeft="PIPatchCheck"
-    color=""
+    :pIconLeft="PIPatchCheck"
     pEffect="light"
     size="default"
-    type=""
     :closable="false"
     :disableTransitions="false"
     :hit="false"
@@ -37,15 +35,14 @@
     v-else-if="fieldType === 'Tag' && getTagProps !== null && fieldName === 'Statut'"
     :pColor="getTagProps.type"
     :pContent="data.piaStatus.labelFr"
-    :iconLeft="getTagProps.icon"
-    color=""
+    :pIconLeft="getTagProps.icon"
     pEffect="light"
-    size="default"
-    type=""
-    :closable="false"
-    :disableTransitions="false"
+    pSize="default"
+    :pClosable="false"
+    :pDisableTransitions="false"
     :hit="false"
-    :round="false"
+    :pRound="false"
+    pType="primary"
   />
 
   <DocumentActions

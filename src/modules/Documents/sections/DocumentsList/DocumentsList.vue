@@ -4,6 +4,7 @@
   :pData="documentsListWithTableStructure.documentsPage.items"
   ref="documentsListTable"
   highlightCurrentRow
+  pStripe
   @sort-change="handleSortChange"
   @row-click="selectRow"
   @selection-change="handleSelectionChange"

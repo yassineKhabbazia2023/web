@@ -1,6 +1,3 @@
-/* eslint-disable vitest/no-conditional-expect */
-/* eslint-disable vitest/no-conditional-in-test */
-/* eslint-disable vitest/no-conditional-tests */
 import { describe, it, expect, beforeEach } from 'vitest'
 import TableElement from './TableElement.vue'
 import { type TableElementPops } from './TableElementTypes'
@@ -8,7 +5,6 @@ import { Document } from '@/models/Document'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { ComponentPublicInstance, nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
-import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
 import {
   PIArrowRepeat,
@@ -39,6 +35,7 @@ import {
   PIExclamationTriangle
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
+import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 
 const document: Document = {
   id: '1',
@@ -147,31 +144,47 @@ describe('tableElement', () => {
         }
       ]
 
-      it.each(cases)(
-        'pText mapping validation',
-        async ({ document, fieldType, expectedResult }) => {
-          const props: TableElementPops = {
-            ...defaultProps,
-            fieldType,
-            data: document
-          }
-
-          const wrapper = createWrapper(props)
-
-          const tag = await dynamicUntilFound(wrapper, '.p-text')
-          await nextTick()
-          expect(tag.exists()).toBeTruthy()
-          expect(tag.element.textContent).toStrictEqual(
-            expectedResult.content
-          )
-          // eslint-disable-next-line vitest/no-conditional-in-test
-          if (expectedResult.hasIcon) {
-            const icon = await dynamicUntilFoundComponent(wrapper, PIcon)
-            // eslint-disable-next-line vitest/no-conditional-expect
-            expect(icon.exists()).toBeTruthy()
-          }
+      it('pText mapping validation test case Text without icon', async () => {
+        const firstElementFieldType = cases[0].fieldType
+        const firstDocument = cases[0].document
+        const props: TableElementPops = {
+          ...defaultProps,
+          fieldType: firstElementFieldType,
+          data: firstDocument
         }
-      )
+
+        const wrapper = createWrapper(props)
+
+        const tag = wrapper.find('.p-text')
+        await nextTick()
+        expect(tag.exists()).toBeTruthy()
+        expect(tag.element.textContent).toStrictEqual(
+          cases[0].expectedResult.content
+        )
+        const icon = wrapper.findComponent(PIcon)
+        expect(icon.exists()).toBeFalsy()
+      })
+
+      it('pText mapping validation test case Text with icon', async () => {
+        const firstElementFieldType = cases[1].fieldType
+        const firstDocument = cases[1].document
+        const props: TableElementPops = {
+          ...defaultProps,
+          fieldType: firstElementFieldType,
+          data: firstDocument
+        }
+
+        const wrapper = createWrapper(props)
+
+        const tag = wrapper.find('.p-text')
+        await nextTick()
+        expect(tag.exists()).toBeTruthy()
+        expect(tag.element.textContent).toStrictEqual(
+          cases[1].expectedResult.content
+        )
+        const icon = wrapper.findComponent(PIcon)
+        expect(icon.exists()).toBeTruthy()
+      })
     })
 
     describe('should map DocumentName icons correctly based on file name extension', () => {
@@ -269,10 +282,10 @@ describe('tableElement', () => {
 
           const wrapper = createWrapper(props)
 
-          await dynamicUntilFound(wrapper, '.p-text')
+          wrapper.find('.p-text')
           await nextTick()
 
-          const icon = await dynamicUntilFoundComponent(wrapper, expectedIcon)
+          const icon = wrapper.findComponent(expectedIcon)
           expect(icon.exists()).toBeTruthy()
         }
       )
@@ -310,7 +323,7 @@ describe('tableElement', () => {
 
           const wrapper = createWrapper(props)
 
-          const tag = await dynamicUntilFoundComponent(wrapper, expectedResult.component)
+          const tag = wrapper.findComponent(expectedResult.component)
           await nextTick()
           expect(tag.exists()).toBeTruthy()
           expect(tag.element.textContent).toStrictEqual(expectedResult.content)
@@ -391,8 +404,7 @@ describe('tableElement', () => {
           }
 
           const wrapper = createWrapper(props)
-
-          const tag = await dynamicUntilFoundComponent(wrapper, PTag)
+          const tag = wrapper.findComponent(PTag)
           await nextTick()
 
           const icon = await dynamicUntilFoundComponent(tag, expectedIcon)
@@ -411,10 +423,7 @@ describe('tableElement', () => {
         data: document
       }
       const wrapper = createWrapper(updatedProps)
-      const documentActions = await dynamicUntilFoundComponent(
-        wrapper,
-        DocumentActions
-      )
+      const documentActions = wrapper.findComponent(DocumentActions)
       await nextTick()
 
       await documentActions.vm.$emit('actions-dropdown-opened')
