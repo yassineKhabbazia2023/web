@@ -8,7 +8,7 @@
         :plain="item.plain"
         :circle="item.buttonName === '' ? true : false"
         :loading="item.loading"
-        :disabled="item.disabled"
+        :pDisabled="item.disabled"
         :size="item.size"
         class="document-modal-action-explorer__button"
         @click="$emit('modal-action-button-clicked', item.buttonActionName)">
