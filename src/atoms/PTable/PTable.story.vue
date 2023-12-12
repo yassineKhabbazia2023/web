@@ -12,10 +12,10 @@
         <PTableColumn
           v-for="column in tableInputs.tableColumn"
           :key="column.prop"
-          :prop="column.prop"
-          :label="column.label"
-          :width="column.width"
-          :sortable="tableInputs.sortable"
+          :pProp="column.prop"
+          :pLabel="column.label"
+          :pWidth="column.width"
+          :pSortable="tableInputs.sortable"
         />
       </PTable>
       <template #controls>
@@ -37,9 +37,11 @@
           v-if="tableInputsWithCells.selectable"
         />
         <PTableColumn
-          label="Text"
-          width="180"
-          :sortable="tableInputsWithCells.sortable"
+          pLabel="Text"
+          pWidth="180"
+          pHasCustomColumn
+          :pSortMethod="sortMethodsText"
+          :pSortable="tableInputsWithCells.sortable"
         >
           <template #default="scope">
             <PText
@@ -54,9 +56,11 @@
           </template>
         </PTableColumn>
         <PTableColumn
-          label="Entity"
-          width="220"
-          :sortable="tableInputsWithCells.sortable"
+          pLabel="Entity"
+          pWidth="220"
+          pHasCustomColumn
+          :pSortMethod="sortMethodsEntity"
+          :pSortable="tableInputsWithCells.sortable"
         >
           <template #default="scope">
             <PEntity
@@ -69,9 +73,11 @@
           </template>
         </PTableColumn>
         <PTableColumn
-          label="Double Text"
-          width="180"
-          :sortable="tableInputsWithCells.sortable"
+          pLabel="Double Text"
+          pWidth="180"
+          pHasCustomColumn
+          :pSortMethod="sortMethodsDoubleText"
+          :pSortable="tableInputsWithCells.sortable"
         >
           <template #default="scope">
             <PDoubleText
@@ -87,9 +93,11 @@
           </template>
         </PTableColumn>
         <PTableColumn
-          label="Tag"
-          width="180"
-          :sortable="tableInputsWithCells.sortable"
+          pLabel="Tag"
+          pWidth="180"
+          pHasCustomColumn
+          :pSortMethod="sortMethodsTags"
+          :pSortable="tableInputsWithCells.sortable"
           >
           <template #default="scope">
             <PTag
@@ -104,15 +112,17 @@
           </template>
         </PTableColumn>
         <PTableColumn
-          label="Switch"
+          pLabel="Switch"
+          pHasCustomColumn
         >
           <template #default="scope">
             <PSwitch v-model="scope.row.switch.status" :disabled="scope.row.switch.disabled" />
           </template>
         </PTableColumn>
         <PTableColumn
-          label="Smalls buttons"
-          width="300"
+          pLabel="Smalls buttons"
+          pWidth="300"
+          pHasCustomColumn
         >
           <template #default>
             <PButton
@@ -345,6 +355,11 @@ const tableInputsWithCells = reactive({
   sortable: true,
   selectable: true
 })
+
+const sortMethodsText = (a: any, b: any) => a.text.content - b.text.content
+const sortMethodsDoubleText = (a: any, b: any) => a.doubleText.content - b.doubleText.content
+const sortMethodsTags = (a: any, b: any) => a.tag.content - b.tag.content
+const sortMethodsEntity = (a: any, b: any) => a.entity.name - b.entity.name
 </script>
 
 <docs lang="md">
