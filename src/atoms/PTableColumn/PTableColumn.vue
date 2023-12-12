@@ -28,7 +28,9 @@
     :filterMethod="pFilterMethod"
     :filteredValue="pFilteredValue"
   >
-    <slot />
+    <template v-if="pHasCustomColumn" #default="slotProps">
+      <slot v-bind="slotProps"/>
+    </template>
   </ElTableColumn>
 </template>
 
@@ -63,6 +65,7 @@ withDefaults(defineProps<PTableColumnProps>(), {
   pFilterPlacement: undefined,
   pFilterMultiple: true,
   pFilterMethod: undefined,
-  pFilteredValue: undefined
+  pFilteredValue: undefined,
+  pHasCustomColumn: false
 })
 </script>
