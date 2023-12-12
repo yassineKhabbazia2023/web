@@ -61,7 +61,7 @@ describe('drawer', () => {
   })
 
   describe('slots', () => {
-    it('should display header prefix and suffix slots', async () => {
+    it('should display header prefix and suffix slots', () => {
       const wrapper: VueWrapper<any> = createWrapper(
         {
           modelValue: true,
@@ -81,7 +81,7 @@ describe('drawer', () => {
       expect(headerSuffixSlotContent).toBeTruthy()
     })
 
-    it('should display header suffix and the close button on the same line', async () => {
+    it('should display header suffix and the close button on the same line', () => {
       const wrapper: VueWrapper<any> = createWrapper(
         {
           modelValue: true,
