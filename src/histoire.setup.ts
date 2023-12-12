@@ -1,10 +1,5 @@
 import { createRouter, createMemoryHistory } from 'vue-router'
-import ElementPlus,
-{
-  ElTableColumn,
-  ElTabPane,
-  ElTabs
-} from 'element-plus'
+import ElementPlus from 'element-plus'
 import './assets/scss/histoire.scss'
 import './assets/scss/index.scss'
 
@@ -28,7 +23,4 @@ export const setupVue3 = defineSetupVue3(({ app }) => {
   app.use(ElementPlus, { locale: fr })
   app.use(i18n)
   app.use(router)
-  app.component('PTableColumn', ElTableColumn)
-  app.component('PTabPane', ElTabPane)
-  app.component('PTabs', ElTabs)
 })

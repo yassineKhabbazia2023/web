@@ -12,11 +12,9 @@ dayjs.Ls.en.weekStart = 1
 export const fr = frLocale
 export const en = enLocale
 
-export {
-  ElTabs as PTabs,
-  ElTabPane as PTabPane,
-  ElTableColumn as PTableColumn
-} from 'element-plus'
+export default function install(app: any) {
+  app.use(toastPlugin)
+}
 
 export { default as PAside } from './atoms/PAside'
 export { default as PAutocomplete } from './molecules/PAutocomplete'
@@ -42,9 +40,9 @@ export { default as PSelect } from './molecules/PSelect'
 export { default as PStep } from './atoms/PStep'
 export { default as PSteps } from './molecules/PSteps'
 export { default as PSwitch } from './atoms/PSwitch'
-// export { default as PTableColumn} from './atoms/PTableColumn'
-// export { default as PTabPane} from './atoms/PTabPane'
-// export { default as PTabs} from './molecules/PTabs'
+export { default as PTableColumn} from './atoms/PTableColumn'
+export { default as PTabPane} from './atoms/PTabPane'
+export { default as PTabs} from './molecules/PTabs'
 export { default as PTimePicker } from './atoms/PTimePicker'
 
 export { default as PActivityCard } from './atoms/PActivityCard'
