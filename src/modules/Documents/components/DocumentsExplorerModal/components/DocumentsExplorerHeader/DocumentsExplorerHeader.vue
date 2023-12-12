@@ -20,8 +20,8 @@
             <PFileAndFolderLineCheck
               :modelValue="false"
               :pFileName="file?.name"
-              :additionalText="getFileErrorMessage(file?.codeError)"
-              state="error"
+              :pAdditionalText="getFileErrorMessage(file?.codeError)"
+              pState="error"
               class="files-error-item"
             />
           </div>
