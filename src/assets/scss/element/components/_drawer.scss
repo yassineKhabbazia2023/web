@@ -32,8 +32,16 @@ $drawer: (
 
     > div {
       display: flex;
-      justify-content: start;
+      align-items: center;
       min-width: 0;
+    }
+
+    &-prefix {
+      justify-content: space-between;
+    }
+  
+    &-suffix { 
+      justify-content: start;
     }
   }
 

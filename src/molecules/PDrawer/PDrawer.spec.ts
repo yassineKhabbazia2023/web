@@ -44,7 +44,9 @@ describe('drawer', () => {
       pShowPreviousStep: true
     })
     await wrapper.find('.p-drawer__step-back-button').trigger('click')
-    const emittedDrawerPreviousButton: any = wrapper.emitted('drawer-previous-button-click')
+    const emittedDrawerPreviousButton: any = wrapper.emitted(
+      'drawer-previous-button-click'
+    )
     expect(emittedDrawerPreviousButton).toBeTruthy()
   })
 
@@ -56,5 +58,44 @@ describe('drawer', () => {
     await wrapper.find('.p-drawer__close-button').trigger('click')
     const emittedModelValue: any = wrapper.emitted('close-drawer-button')
     expect(emittedModelValue).toBeTruthy()
+  })
+
+  describe('slots', () => {
+    it('should display header prefix and suffix slots', async () => {
+      const wrapper: VueWrapper<any> = createWrapper(
+        {
+          modelValue: true,
+          pTitle: 'Drawer title'
+        },
+        {
+          'header-prefix': '<p>Prefix Text</p>',
+          'header-suffix': '<p>Suffix Text</p>'
+        }
+      )
+      const drawerHeader = wrapper.find('.p-drawer__header')
+      const headerPrefixSlotContent = wrapper.find('.p-drawer__header-prefix p')
+      const headerSuffixSlotContent = wrapper.find('.p-drawer__header-suffix p')
+
+      expect(drawerHeader.attributes().style).toBe('flex-direction: column;')
+      expect(headerPrefixSlotContent).toBeTruthy()
+      expect(headerSuffixSlotContent).toBeTruthy()
+    })
+
+    it('should display header suffix and the close button on the same line', async () => {
+      const wrapper: VueWrapper<any> = createWrapper(
+        {
+          modelValue: true,
+          pTitle: 'Drawer title'
+        },
+        {
+          'header-suffix': '<p>Suffix Text</p>'
+        }
+      )
+      const drawerHeader = wrapper.find('.p-drawer__header')
+      const headerSuffixSlotContent = wrapper.find('.p-drawer__header-suffix p')
+
+      expect(drawerHeader.attributes().style).toBe('flex-direction: row-reverse;')
+      expect(headerSuffixSlotContent).toBeTruthy()
+    })
   })
 })
