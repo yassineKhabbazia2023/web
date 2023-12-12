@@ -3,7 +3,6 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type ConfirmationPopupProps } from
   '@/modules/common/templates/popups/ConfirmationPopupTypes'
-import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { createPinia, setActivePinia } from 'pinia'
 import { PDialog } from '@kpmg/styleguide'
 import { ComponentPublicInstance, nextTick } from 'vue'
@@ -37,6 +36,8 @@ const createWrapper = (
     }
   }) as unknown as ConfirmationPopupWrapper
 
+const getPopupConfirmationButton = (wrapper: VueWrapper) =>
+  wrapper.find('.confirmation-popup__confirm-button')
 describe('confirmationPopup', () => {
   // eslint-disable-next-line vitest/no-hooks
   beforeEach(() => {
@@ -58,7 +59,7 @@ describe('confirmationPopup', () => {
       }
 
       const wrapper = createWrapper(updatedProps)
-      const dialog = await dynamicUntilFoundComponent(wrapper, PDialog)
+      const dialog = wrapper.findComponent(PDialog)
       expect(dialog.exists()).toBeTruthy()
     })
 
@@ -71,10 +72,8 @@ describe('confirmationPopup', () => {
         }
 
         const wrapper = createWrapper(updatedProps)
-        const confirmationButton = await dynamicUntilFound(
-          wrapper,
-          '.confirmation-popup__confirm-button'
-        )
+        await nextTick()
+        const confirmationButton = getPopupConfirmationButton(wrapper)
 
         expect(confirmationButton.find('.is-loading').exists()).toBeTruthy()
       })
@@ -87,16 +86,11 @@ describe('confirmationPopup', () => {
         isPopupVisible: true
       }
       const wrapper = createWrapper(updatedProps)
-
-      const confirmationButton = await dynamicUntilFound(
-        wrapper,
-        '.confirmation-popup__confirm-button'
-      )
-
-      await confirmationButton.trigger('click')
-
       await nextTick()
 
+      const confirmationButton = getPopupConfirmationButton(wrapper)
+
+      await confirmationButton.trigger('click')
       expect(wrapper.emitted('on-confirm-button-click')).toBeTruthy()
 
     })
@@ -107,15 +101,10 @@ describe('confirmationPopup', () => {
         isPopupVisible: true
       }
       const wrapper = createWrapper(updatedProps)
-
-      const cancelButton = await dynamicUntilFound(
-        wrapper,
-        '.confirmation-popup__cancel-button'
-      )
+      await nextTick()
+      const cancelButton = wrapper.find('.confirmation-popup__cancel-button')
 
       await cancelButton.trigger('click')
-
-      await nextTick()
 
       expect(wrapper.emitted('on-cancel-button-click')).toBeTruthy()
     })
@@ -126,7 +115,7 @@ describe('confirmationPopup', () => {
         isPopupVisible: true
       }
       const wrapper = createWrapper(updatedProps)
-      const pdialog = await dynamicUntilFoundComponent(wrapper, PDialog)
+      const pdialog = wrapper.findComponent(PDialog)
 
       await pdialog.vm.$emit('close')
       await nextTick()
