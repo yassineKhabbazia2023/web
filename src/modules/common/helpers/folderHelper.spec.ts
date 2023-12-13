@@ -82,16 +82,16 @@ describe('folderHelper', () => {
     const res = getBreadcrumbItems(folders, 135393649)
 
     const resExpectd = [{
-      id: 135393636,
-      text: 'Comptabilité'
+      pId: 135393636,
+      pText: 'Comptabilité'
     },
     {
-      id: 135393637,
-      text: 'Dépôt'
+      pId: 135393637,
+      pText: 'Dépôt'
     },
     {
-      id: 135393649,
-      text: 'A classer'
+      pId: 135393649,
+      pText: 'A classer'
     }]
 
     expect(res).toStrictEqual(resExpectd)
