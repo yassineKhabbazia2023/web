@@ -4,13 +4,13 @@
     :class="{ 'documents-list--no-valid-document': !filteredSortedDocuments?.length }"
   >
     <PFileAndFolderLineCheck
-      v-model="document.isSelected"
-      class="documents-list__document"
       v-for="(document, index) in filteredSortedDocuments"
       :key="index"
+      v-model="document.isSelected"
       :pFileName="document.content.name"
-      isFolderLine
-      :state="getDocumentState(document?.givenActionState)"
+      pIsFolderLine
+      :pState="getDocumentState(document?.givenActionState)"
+      class="documents-list__document"
     />
 
     <div
