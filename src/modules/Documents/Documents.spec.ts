@@ -1,3 +1,4 @@
+/* eslint-disable vitest/no-hooks */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
@@ -20,6 +21,10 @@ import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import DocumentRename from './components/DocumentRename'
+import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
+import DocumentMove from './components/DocumentsMove'
+import { Folder } from '@/models/Folder'
+import { PBreadcrumb } from '@kpmg/styleguide'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -89,12 +94,135 @@ vi.mock('@kpmg/common', async () => ({
     $post: vi.fn()
   })
 }))
+
+const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
+
+const generateTestFiles = (
+  numberOfFiles: number,
+  state: 'VALID' | 'UNVALID'
+): File[] => {
+  const files: File[] = []
+  const conditionedFileSize = state === 'VALID' ? 2 : 0
+  const fileName = state === 'VALID' ? 'filename.txt' : 'filename.mykey'
+  const type = state === 'VALID' ? 'text/plain' : 'mykeyetc'
+
+  for (let i = 0; i < numberOfFiles; i++) {
+    const blob = new Blob(['Hello'], { type: 'text/plain' })
+    const fileContent = blob.slice(0, conditionedFileSize)
+    const file = new File([fileContent], fileName, {
+      type
+    })
+    files.push(file)
+  }
+  return files
+}
+
 describe('documents', () => {
+  const findDcumentActionBar = (wrapper: DocumentsWrapper) =>
+    wrapper.findComponent(DocumentsActionsBar)
+
+  const findDocumentUpload = (wrapper: DocumentsWrapper) =>
+    wrapper.findComponent(DocumentUpload)
+
+  const findDocumentMove = (wrapper: DocumentsWrapper) =>
+    wrapper.findComponent(DocumentMove)
+
+  const findDocumentsList = (wrapper: DocumentsWrapper) =>
+    wrapper.findComponent(DocumentsList)
+
+  const findPBreadCrumb = (wrapper: DocumentsWrapper) => wrapper.findComponent(PBreadcrumb)
   beforeEach(() => {
+
     setActivePinia(pinia)
     flushPromises()
   })
   describe('events', () => {
+    it('should set selected fikes on p-upload-files-selected', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const documentActionBarWrapper = findDcumentActionBar(wrapper)
+
+      const files = generateTestFiles(2, 'VALID')
+      await documentActionBarWrapper.vm.$emit('p-upload-files-selected', files)
+      await nextTick()
+
+      const documentsUploadWrapper = findDocumentUpload(wrapper)
+      expect(documentsUploadWrapper.props('files')).toStrictEqual(files)
+
+    })
+
+    it('should propagate update-source-folders event from DocumentMove', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const documentMoveWrapper = findDocumentMove(wrapper)
+
+      await documentMoveWrapper.vm.$emit(
+        'update-source-folders',
+        validDestination
+      )
+      await nextTick()
+
+      expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
+      expect(wrapper.emitted('update-source-folders')).toStrictEqual([[validDestination]])
+    })
+
+    it('should open move modal oppon documentslist toolbox-action-triggered event', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      await nextTick()
+
+      const documentsListWrapper = findDocumentsList(wrapper)
+      await documentsListWrapper.vm.$emit('toolbox-action-triggered', 'move-document')
+      await nextTick()
+
+      const documentMoveWrapper = findDocumentMove(wrapper)
+
+      expect(documentMoveWrapper.props('isMoveModalOpened')).toBeTruthy()
+    })
+
+    it('should close move modal oppon DocumentMove close-move-documents-modal event', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const documentMoveWrapper = findDocumentMove(wrapper)
+      await documentMoveWrapper.vm.$emit(
+        'close-move-documents-modal'
+      )
+      await nextTick()
+
+      expect(documentMoveWrapper.props('isMoveModalOpened')).toBeFalsy()
+    })
+
+    it('should close modal oppon DocumentUpload close-upload-documents-modal event', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const documentUploadWrapper = findDocumentUpload(wrapper)
+      await documentUploadWrapper.vm.$emit(
+        'close-upload-documents-modal '
+      )
+      await nextTick()
+
+      expect(documentUploadWrapper.props('isUploadModalOpened')).toBeFalsy()
+
+    })
+
+    it('should navigate to folder oppon PBreadcrumb p-breadcrumb-item-click event', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const pbreadCrumbWrapper = findPBreadCrumb(wrapper)
+      await pbreadCrumbWrapper.vm.$emit('p-breadcrumb-item-click', validDestination.id)
+
+      expect(wrapper.emitted('change-selected-folder')).toHaveLength(1)
+      expect(wrapper.emitted('change-selected-folder')).toStrictEqual([[validDestination]])
+    })
+
     it('should call fetch documents when on-sort-change is emitted', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
@@ -115,6 +243,7 @@ describe('documents', () => {
         '+name'
       )
     })
+
     // an exceptional test to be able to cover the composable code cause of the
     // complexity of mocking i18n and the toastPlugin (not recommended)
     it('should call download document composable oppon  toolbox-action-triggered', async () => {
