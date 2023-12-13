@@ -1,7 +1,11 @@
+/* eslint-disable max-len */
 import { it, expect, vi, describe } from 'vitest'
-import { downloadDocument, downloadDocuments, fetchFolderDocuments, deleteDocuments }
+import { downloadDocument, downloadDocuments, fetchFolderDocuments, deleteDocuments, renameDocument, uploadDocument, moveDocuments }
   from './Documents'
 import type { Service } from '@/models/Service'
+import { Document } from '@/models/Document'
+import { Folder } from '@/models/Folder'
+import { MoveDocumentsRequest } from '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
 
 const mockDsGet = vi.fn(() => {
   return Promise.resolve({
@@ -23,12 +27,17 @@ const mockDsDelete = vi.fn(() => {
   return Promise.resolve()
 })
 
+const mockDsPatch = vi.fn(() => {
+  return Promise.resolve()
+})
+
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     ds: {
       get: mockDsGet,
       post: mockDsPost,
-      delete: mockDsDelete
+      delete: mockDsDelete,
+      patch: mockDsPatch
     }
   }),
   commonStore: () => ({
@@ -114,6 +123,88 @@ describe('documents service', () => {
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
       'service-1/my-account-id/documents', { data: { ids: documentIds } }
+    )
+  })
+
+  it('should call the right api  when renameDocument is called', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const documentId: Document['id'] = '1234'
+    const accountId = 'my-account-id'
+
+    const newDocumentName = 'my-new-doc'
+    await renameDocument(
+      service.ServiceId,
+      accountId,
+      documentId,
+      newDocumentName
+    )
+
+    expect(mockDsPatch).toHaveBeenCalledTimes(1)
+    expect(mockDsPatch).toHaveBeenCalledWith(
+      'service-1/my-account-id/documents/1234',
+      [{
+        op: 'replace',
+        path: '/name',
+        value: 'my-new-doc'
+      }]
+    )
+  })
+
+  it('should call the right api  when uploadDocument is called', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const blob = new Blob(['Hello'], { type: 'text/plain' })
+    const fileContent = blob.slice(0, 10)
+    const file = new File([fileContent], 'my-file.txt', {
+      type: 'text/plain'
+    })
+
+    const accountId = 'my-account-id'
+    const folderId: Folder['id'] = 1234
+
+    await uploadDocument(service.ServiceId, accountId, file, folderId)
+
+    const expectedPayload = new FormData()
+    expectedPayload.append('file', file)
+
+    expect(mockDsPost).toHaveBeenCalledTimes(1)
+    expect(mockDsPost).toHaveBeenCalledWith(
+      'service-1/my-account-id/folders/1234/documents?notify=true&source=User',
+      expectedPayload,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+  })
+
+  it('should call the right api  when moveDocuments is called', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const accountId = 'my-account-id'
+    const fileMove: MoveDocumentsRequest = {
+      ids: ['1', '2'],
+      sourceFolderId: 123,
+      destinationFolderId: 1234,
+      moveAll: false,
+      serviceId: service.ServiceId.toString()
+    }
+
+    const expectedPayload = JSON.stringify(fileMove)
+
+    await moveDocuments(service.ServiceId, accountId, fileMove)
+
+    expect(mockDsPost).toHaveBeenCalledTimes(1)
+    expect(mockDsPost).toHaveBeenCalledWith(
+      'service-1/my-account-id/documents/move',
+      expectedPayload,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
     )
   })
 })
