@@ -103,10 +103,8 @@ describe('deleteFolderSection', () => {
       const wrapper = createWrapper(updatedProps)
 
       const popup = wrapper.findComponent(DeleteFolderConfirmationPopup)
-
+      await nextTick()
       const confirmButton = popup.find('.confirmation-popup__confirm-button')
-      // To update when toggeling between lang is availabe
-      // the test should be based on the selected language
       expect(confirmButton.element.textContent).toBe('Confirmer')
     })
 
@@ -119,9 +117,8 @@ describe('deleteFolderSection', () => {
       const wrapper = createWrapper(updatedProps)
 
       const popup = wrapper.findComponent(DeleteFolderConfirmationPopup)
-
+      await nextTick()
       const cancelButton = popup.find('.confirmation-popup__cancel-button')
-
       expect(cancelButton.element.textContent).toBe('Annuler')
     })
   })

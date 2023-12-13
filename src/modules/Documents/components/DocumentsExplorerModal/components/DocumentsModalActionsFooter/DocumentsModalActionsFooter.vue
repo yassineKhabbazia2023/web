@@ -27,7 +27,7 @@ import { ModalActionsProps } from './DocumentsModalActionsFooterTypes'
 defineProps<ModalActionsProps>()
 
 defineEmits<{
-  'modal-action-button-clicked': [String]
+  'modal-action-button-clicked': [string]
 }>()
 </script>
 <style lang="scss">
