@@ -8,20 +8,20 @@ describe('toolboxHelpers', () => {
 
     const expectedRes = [
       {
-        iconName: 'PIFolderPlus',
-        value: 'Nouveau dossier',
-        actionName: 'toolbox-create-action-click'
+        pIconName: 'PIFolderPlus',
+        pValue: 'Nouveau dossier',
+        pActionName: 'toolbox-create-action-click'
       },
       {
-        iconName: 'PIDownload',
-        value: 'Télécharger',
-        actionName: 'toolbox-download-action-click'
+        pIconName: 'PIDownload',
+        pValue: 'Télécharger',
+        pActionName: 'toolbox-download-action-click'
 
       },
       {
-        iconName: 'PITrash',
-        value: 'Supprimer',
-        actionName: 'toolbox-delete-action-click'
+        pIconName: 'PITrash',
+        pValue: 'Supprimer',
+        pActionName: 'toolbox-delete-action-click'
       }
     ]
 
@@ -36,19 +36,19 @@ describe('toolboxHelpers', () => {
 
     const expectedRes = [
       {
-        iconName: 'PIFolderPlus',
-        value: 'Nouveau dossier',
-        actionName: 'toolbox-create-action-click'
+        pIconName: 'PIFolderPlus',
+        pValue: 'Nouveau dossier',
+        pActionName: 'toolbox-create-action-click'
       },
       {
-        iconName: 'PIInputCursorText',
-        value: 'Renommer dossier',
-        actionName: 'toolbox-rename-action-click'
+        pIconName: 'PIInputCursorText',
+        pValue: 'Renommer dossier',
+        pActionName: 'toolbox-rename-action-click'
       },
       {
-        iconName: 'PIDownload',
-        value: 'Télécharger',
-        actionName: 'toolbox-download-action-click'
+        pIconName: 'PIDownload',
+        pValue: 'Télécharger',
+        pActionName: 'toolbox-download-action-click'
 
       }
     ]
