@@ -2,7 +2,6 @@ import SingleInputModal from '@/modules/common/templates/modals'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type SingleInputModalProps } from '@/modules/common/templates/modals/SingleInputModalTypes'
-import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { createPinia, setActivePinia } from 'pinia'
 import { PDialog } from '@kpmg/styleguide'
 import { ComponentPublicInstance, nextTick } from 'vue'
@@ -63,7 +62,8 @@ describe('singleInputModal', () => {
       }
 
       const wrapper = createWrapper(updatedProps)
-      const unvalidInput = await dynamicUntilFound(wrapper, '.unValid')
+      await nextTick()
+      const unvalidInput = wrapper.findComponent('.unValid')
       expect(unvalidInput.exists()).toBeTruthy()
     })
 
@@ -74,7 +74,9 @@ describe('singleInputModal', () => {
         showErrorMsg: true
       }
       const wrapper = createWrapper(updatedProps)
-      const errorMsgSection = await dynamicUntilFound(wrapper,
+      await nextTick()
+
+      const errorMsgSection = wrapper.find(
         '.single-input-modal__input-error'
       )
       expect(
@@ -88,8 +90,9 @@ describe('singleInputModal', () => {
         isDialogVisible: true,
         inputSuffix: '.jpg'
       })
-      const unvalidInput = await dynamicUntilFound(
-        wrapper,
+
+      await nextTick()
+      const unvalidInput = wrapper.find(
         '.single-input-modal__suffix'
       )
 
@@ -106,11 +109,11 @@ describe('singleInputModal', () => {
       }
 
       const wrapper = createWrapper(updatedProps)
+      await nextTick()
 
-      const input = await dynamicUntilFound(wrapper, 'input')
+      const input = wrapper.find('input')
       input.setValue('hellooooo')
-      const confirmButton = await dynamicUntilFound(
-        wrapper,
+      const confirmButton = wrapper.find(
         '.el-button--primary'
       )
 
@@ -128,8 +131,9 @@ describe('singleInputModal', () => {
       }
 
       const wrapper = createWrapper(updatedProps)
+      await nextTick()
 
-      const cancelButton = await dynamicUntilFound(wrapper, '.el-button--secondary')
+      const cancelButton = wrapper.find('.cancel-action-button')
 
       await cancelButton.trigger('click')
 
@@ -144,7 +148,9 @@ describe('singleInputModal', () => {
         isDialogVisible: true
       }
       const wrapper = createWrapper(updatedProps)
-      const pdialog = await dynamicUntilFoundComponent(wrapper, PDialog)
+      await nextTick()
+
+      const pdialog = wrapper.findComponent(PDialog)
 
       await pdialog.vm.$emit('close')
       await nextTick()
