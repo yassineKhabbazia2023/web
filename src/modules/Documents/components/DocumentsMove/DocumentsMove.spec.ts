@@ -166,7 +166,7 @@ describe('Documents Move', () => {
 
       await nextTick()
       expect(wrapper.vm.explorerDocuments).toHaveLength(1)
-
+      expect(wrapper.vm.explorerDocuments[0].givenActionState).toStrictEqual('TO_DO')
     })
   })
 

@@ -72,6 +72,53 @@ export const documentsMock : Document[] = [
     },
     properties: {
       syncStatus: 'SYNCED',
+      HasSubscribedToVault: ''
+    },
+    lifecycleStatus: 'ACTIVE',
+    paymentStatus: null,
+    source: {
+      id: 1,
+      code: 'MY_SOURCE',
+      libelle: 'My Source'
+    },
+    piaStatus: {
+      technicalName: 'Collectable',
+      labelFr: 'nouveau',
+      labelEn: 'new',
+      date: '2023-08-04T12:00:00Z'
+    },
+    permissions: ['CAN_RENAME_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
+    isNew: false
+  }
+]
+export const documentsMockWithError : Document[] = [
+  {
+    id: '1',
+    name: 'My Document ceritifé',
+    content: {
+      href: 'https://example.com/document.pdf'
+    },
+    preview: {
+      href: 'https://example.com/document_preview.png'
+    },
+    updatedBy: 'John Doe',
+    updated: '2023-08-04T12:00:00Z',
+    type: 'PDF',
+    size: 1024,
+    comments: [],
+    isUploadedInGedLoop: null,
+    folder: {
+      id: 1,
+      path: ['My Documents']
+    },
+    created: '2023-08-04T12:00:00Z',
+    createdBy: 'John Doe',
+    account: {
+      id: '1234567890',
+      name: 'Acme Corporation'
+    },
+    properties: {
+      syncStatus: 'SYNCED',
       HasSubscribedToVault: 'Oui'
     },
     lifecycleStatus: 'ACTIVE',
@@ -88,6 +135,51 @@ export const documentsMock : Document[] = [
       date: '2023-08-04T12:00:00Z'
     },
     permissions: ['CAN_RENAME_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
+    isNew: false
+  },
+  {
+    id: '2',
+    name: 'My Document ceritifé',
+    content: {
+      href: 'https://example.com/document.pdf'
+    },
+    preview: {
+      href: 'https://example.com/document_preview.png'
+    },
+    updatedBy: 'John Doe',
+    updated: '2023-08-04T12:00:00Z',
+    type: 'PDF',
+    size: 1024,
+    comments: [],
+    isUploadedInGedLoop: null,
+    folder: {
+      id: 1,
+      path: ['My Documents']
+    },
+    created: '2023-08-04T12:00:00Z',
+    createdBy: 'John Doe',
+    account: {
+      id: '1234567890',
+      name: 'Acme Corporation'
+    },
+    properties: {
+      syncStatus: 'SYNCED',
+      HasSubscribedToVault: 'Non'
+    },
+    lifecycleStatus: 'ACTIVE',
+    paymentStatus: null,
+    source: {
+      id: 1,
+      code: 'MY_SOURCE',
+      libelle: 'My Source'
+    },
+    piaStatus: {
+      technicalName: 'Collectable',
+      labelFr: 'nouveau',
+      labelEn: 'new',
+      date: '2023-08-04T12:00:00Z'
+    },
+    permissions: ['CAN_RENAME_DOCUMENT'],
     isNew: false
   }
 ]

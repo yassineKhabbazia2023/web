@@ -69,7 +69,7 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
       } else {
         codeError = ''
       }
-      const state: GivenActionState = canMoveDocument ? 'TO_DO' : 'ERROR'
+      const state: GivenActionState = canMoveDocument && !isCertified ? 'TO_DO' : 'ERROR'
       explorerDocuments.push({
         id: document.id,
         givenActionState: state,
