@@ -17,4 +17,5 @@ export interface PNavbarProps {
   pEntities: PEntityProps[]
   pMenuList: PMenuProps[]
   pHandleClickEntity: Function
+  pActiveIndex?: string
 }

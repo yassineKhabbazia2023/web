@@ -34,8 +34,8 @@
     <ElMenuItem
       v-for="(item, index) in pEntities"
       :key="item.pIdAccount"
-      @click="pHandleClickEntity(item.pIdAccount)"
-      :index="`${index + 2}`"
+      @click="props.pHandleClickEntity(item.pIdAccount)"
+      :index="`${index + MENU_ENTITIES_INDEX_START}`"
       class="p-menu-item-entity"
     >
       <span class="p-navbar__avatar-container">
@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { ElDivider, ElMenu, ElMenuItem } from 'element-plus'
 import PAvatar from '@/atoms/PAvatar'
 import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
@@ -63,15 +63,22 @@ import PIcon from '@/atoms/PIcon'
 import { iconResolver } from '@/utils/iconResolver'
 import type { PNavbarProps } from './PNavbarTypes'
 
+const MENU_ENTITIES_INDEX_START = 2
+
 const isCollapse = ref(true)
 const currentShape = ref<PAvatarProps['pShape']>('circle')
 const currentType = ref<PAvatarProps['pType']>('xsmall')
-const activeIndex = ref('2')
 
-withDefaults(defineProps<PNavbarProps>(), {
+const props = withDefaults(defineProps<PNavbarProps>(), {
   pEntities: () => [],
   pMenuList: () => [],
-  pHandleClickEntity: () => {}
+  pHandleClickEntity: () => {},
+  pActiveIndex: ''
+})
+
+const activeIndex = computed(() => {
+  const index = Number(props.pActiveIndex) + MENU_ENTITIES_INDEX_START
+  return !!props.pActiveIndex ? index.toString() : ''
 })
 
 const collapseMenu = () => {

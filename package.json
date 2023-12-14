@@ -1,6 +1,6 @@
 {
   "name": "@kpmg/styleguide",
-  "version": "1.0.0-alpha.9",
+  "version": "2.0.3-beta",
   "main": "dist/lib/styleguide.pegase.system.min.js",
   "module": "dist/lib/styleguide.pegase.es.min.js",
   "exports": {
@@ -42,7 +42,7 @@
     "test:ci": "vitest run --coverage",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
     "lint:fix": "eslint . --fix --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
-    "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; Custom: https://mypulse.zeroheight.com/; UNKNOWN\" --production --excludePrivatePackages --unknown ",
+    "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; Custom: https://mypulse.zeroheight.com/; BlueOak-1.0.0; UNKNOWN\" --production --excludePrivatePackages --unknown ",
     "format": "prettier --write src/",
     "push": "npm publish",
     "release": "npx semantic-release",
@@ -65,7 +65,7 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@histoire/plugin-vue": "^0.17.1",
-    "@kpmg/eslint-config-pulse": "^1.57.18",
+    "@kpmg/eslint-config-pulse": "^1.66.5",
     "@rollup/plugin-typescript": "^11.1.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
