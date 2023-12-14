@@ -5,7 +5,6 @@ import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { PFolderLineNavigationItem, PAlert, PImage } from '@kpmg/styleguide'
-import { Folder, FolderProperties } from '@/models/Folder'
 import FoldersList
   from '@/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
 import { type FoldersListProps }
@@ -48,27 +47,6 @@ vi.mock('@kpmg/common', async () => ({
 describe('foldersList', () => {
   describe('props', () => {
     it('should render elements when current folder has no children', async () => {
-      const curentFolder: Folder = {
-        id: 11111111,
-        children: [],
-        name: 'MOVABLE',
-        parent: {
-          id: 135393649
-        },
-        permissions: [
-          'CAN_DELETE_FILES',
-          'CAN_UPLOAD_FILES',
-          'CAN_CREATE_FOLDER',
-          'CAN_MOVE_INTO_FOLDER',
-          'CAN_MOVE_FOLDER'
-        ],
-        properties: {
-          syncStatus: 'PENDING_SYNC',
-          folderDescription:
-            "Ce dossier regroupe l'ensemble des documents."
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      }
       const props: FoldersListProps = {
         ...defaultProps,
         currentFolder: foldersData[0][0].children[0].children[0].children[0]
@@ -138,23 +116,6 @@ describe('foldersList', () => {
     it('should emit update-source-folders when update-source-folders is emitted', async () => {
       const wrapper = createWrapper()
       await nextTick()
-
-      const newFolder: Folder = {
-        id: 1212124,
-        children: [],
-        name: 'NEW',
-        parent: {
-          id: 11111111
-        },
-        permissions: [
-          'CAN_DELETE_FILES'
-        ],
-        properties: {
-          folderDescription:
-            "Ce dossier regroupe l'ensemble des documents."
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      }
 
       const section = wrapper.findComponent(CreateFolderSection)
       await section.vm.$emit('update-source-folders', newFolderData)
