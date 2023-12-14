@@ -2,22 +2,7 @@ import { defineStore } from 'pinia'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 import api from '../api'
 import { msalInstance } from '../msal'
-
-type UserInfo = {
-  firstName: string
-  lastName: string
-  occupation: string
-  email: string
-  token: string,
-  id: string,
-  isCollab: boolean,
-  activeEntity: {
-    idAccount: string,
-    name: string,
-    icon: string,
-    color: string
-  }[]
-}
+import { type UserInfo } from './types'
 
 export const isTokenExpired = (token: string) => {
   const { exp } = jwtDecode<JwtPayload>(token)
