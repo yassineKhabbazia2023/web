@@ -10,7 +10,7 @@ import FoldersList
   from '@/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
 import { type FoldersListProps }
   from './FoldersListTypes'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import { foldersData, newFolderData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 
 const defaultProps: FoldersListProps = {
@@ -71,7 +71,7 @@ describe('foldersList', () => {
       }
       const props: FoldersListProps = {
         ...defaultProps,
-        currentFolder: curentFolder
+        currentFolder: foldersData[0][0].children[0].children[0].children[0]
       }
       const wrapper = createWrapper(props)
       await nextTick()
@@ -157,11 +157,11 @@ describe('foldersList', () => {
       }
 
       const section = wrapper.findComponent(CreateFolderSection)
-      await section.vm.$emit('update-source-folders', newFolder)
+      await section.vm.$emit('update-source-folders', newFolderData)
 
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([
-        [newFolder]
+        [newFolderData]
       ])
     })
 

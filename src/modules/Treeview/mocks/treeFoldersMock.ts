@@ -180,3 +180,20 @@ export const foldersData: Folder[][] = [
     } as Folder
   ] as Folder[]
 ]
+
+export const newFolderData: Folder = {
+  id: 1212124,
+  children: [],
+  name: 'NEW',
+  parent: {
+    id: 11111111
+  },
+  permissions: [
+    'CAN_DELETE_FILES'
+  ],
+  properties: {
+    folderDescription:
+      "Ce dossier regroupe l'ensemble des documents."
+  } as FolderProperties,
+  serviceId: 'service-id-compta'
+}
