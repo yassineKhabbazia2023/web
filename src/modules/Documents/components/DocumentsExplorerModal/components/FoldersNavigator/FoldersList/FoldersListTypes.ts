@@ -5,7 +5,7 @@ import { ExplorerFoldersListLineDisabledState } from '@/modules/Documents/Docume
 export interface FoldersListProps {
   currentFolder: Folder
   currentServiceFolder: Folder[]
-  ExplorerAuthorizedGivenAction: boolean
+  explorerAuthorizedGivenAction: boolean
   currentService: Service['ServiceId']
   selectedEntity: string
   isCreateFolderModalVisible: boolean

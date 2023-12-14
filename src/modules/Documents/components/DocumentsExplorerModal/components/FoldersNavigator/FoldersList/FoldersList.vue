@@ -4,7 +4,7 @@
     :class="{ 'folder-list--no-children-folder': !doesCurrentFolderContainsChildren }"
   >
     <div
-      v-if="!ExplorerAuthorizedGivenAction"
+      v-if="!explorerAuthorizedGivenAction"
       class="folder-list__notification-wrapper padding-x--2 margin-bottom--1"
     >
       <PAlert

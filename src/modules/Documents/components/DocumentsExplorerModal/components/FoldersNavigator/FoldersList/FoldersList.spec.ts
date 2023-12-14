@@ -1,0 +1,178 @@
+/* eslint-disable vitest/no-hooks */
+/* eslint-disable max-len */
+/* eslint-disable vitest/max-expects */
+import { nextTick } from 'vue'
+import { type VueWrapper, mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { PFolderLineNavigationItem, PAlert, PImage } from '@kpmg/styleguide'
+import { Folder, FolderProperties } from '@/models/Folder'
+import FoldersList
+  from '@/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
+import { type FoldersListProps }
+  from './FoldersListTypes'
+import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
+
+const defaultProps: FoldersListProps = {
+  currentFolder: foldersData[0][0].children[0],
+  currentServiceFolder: foldersData[0],
+  explorerAuthorizedGivenAction: true,
+  currentService: 'service-id-compta',
+  selectedEntity: 'entity',
+  isCreateFolderModalVisible: true,
+  explorerUnauthorizedGivenActionMessage: 'msg',
+  foldersListEmptyFolderLabel: 'lab',
+  explorerFolderListLineDisabledState: undefined
+}
+
+const createWrapper = (
+  props: FoldersListProps = defaultProps
+): VueWrapper<any> => {
+  return mount(FoldersList, {
+    props
+  })
+}
+
+vi.mock('@kpmg/common', async () => ({
+  commonApi: () => ({
+    ds: vi.fn()
+  }),
+  commonStore: () => ({
+    $delete: vi.fn(),
+    $patch: vi.fn(),
+    $get: vi.fn(),
+    $post: vi.fn()
+  })
+}))
+
+describe('foldersList', () => {
+  describe('props', () => {
+    it('should render elements when current folder has no children', async () => {
+      const curentFolder: Folder = {
+        id: 11111111,
+        children: [],
+        name: 'MOVABLE',
+        parent: {
+          id: 135393649
+        },
+        permissions: [
+          'CAN_DELETE_FILES',
+          'CAN_UPLOAD_FILES',
+          'CAN_CREATE_FOLDER',
+          'CAN_MOVE_INTO_FOLDER',
+          'CAN_MOVE_FOLDER'
+        ],
+        properties: {
+          syncStatus: 'PENDING_SYNC',
+          folderDescription:
+            "Ce dossier regroupe l'ensemble des documents."
+        } as FolderProperties,
+        serviceId: 'service-id-compta'
+      }
+      const props: FoldersListProps = {
+        ...defaultProps,
+        currentFolder: curentFolder
+      }
+      const wrapper = createWrapper(props)
+      await nextTick()
+
+      const div = wrapper.find('.folder-list--no-children-folder')
+      expect(div.exists()).toBeTruthy()
+
+      const alert = wrapper.findComponent(PAlert)
+      expect(alert.exists()).toBeFalsy()
+
+      const lines = wrapper.findAllComponents(PFolderLineNavigationItem)
+      expect(lines).toHaveLength(0)
+
+      const img = wrapper.findComponent(PImage)
+      expect(img.exists()).toBeTruthy()
+    })
+
+    it('should render PAlert when explorerAuthorizedGivenAction is false', async () => {
+      const props: FoldersListProps = {
+        ...defaultProps,
+        explorerAuthorizedGivenAction: false
+      }
+      const wrapper = createWrapper(props)
+      await nextTick()
+
+      const alert = wrapper.findComponent(PAlert)
+      expect(alert.exists()).toBeTruthy()
+    })
+
+    it('should render elements when current folder has children', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const div = wrapper.find('.folder-list--no-children-folder')
+      expect(div.exists()).toBeFalsy()
+
+      const alert = wrapper.findComponent(PAlert)
+      expect(alert.exists()).toBeFalsy()
+
+      const lines = wrapper.findAllComponents(PFolderLineNavigationItem)
+      expect(lines).toHaveLength(1)
+      expect(lines[0].props('pHasArrow')).toBeTruthy()
+      expect(lines[0].props('pLeftIcon')).toStrictEqual('PIFolder')
+      expect(lines[0].props('pDisabled')).toBeFalsy()
+
+      const img = wrapper.findComponent(PImage)
+      expect(img.exists()).toBeFalsy()
+    })
+  })
+  describe('event', () => {
+    it('should emit navigate-to-folder when PFolderLineNavigationItem clicked', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const lines = wrapper.findComponent(PFolderLineNavigationItem)
+      lines.trigger('click')
+
+      expect(wrapper.emitted('navigate-to-folder')).toBeTruthy()
+      expect(wrapper.emitted('navigate-to-folder')).toStrictEqual([
+        [foldersData[0][0].children[0].children[0]]
+      ])
+    })
+
+    it('should emit update-source-folders when update-source-folders is emitted', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const newFolder: Folder = {
+        id: 1212124,
+        children: [],
+        name: 'NEW',
+        parent: {
+          id: 11111111
+        },
+        permissions: [
+          'CAN_DELETE_FILES'
+        ],
+        properties: {
+          folderDescription:
+            "Ce dossier regroupe l'ensemble des documents."
+        } as FolderProperties,
+        serviceId: 'service-id-compta'
+      }
+
+      const section = wrapper.findComponent(CreateFolderSection)
+      await section.vm.$emit('update-source-folders', newFolder)
+
+      expect(wrapper.emitted('update-source-folders')).toBeTruthy()
+      expect(wrapper.emitted('update-source-folders')).toStrictEqual([
+        [newFolder]
+      ])
+    })
+
+    it('should emit close-create-folder-modal when on-close-create-folder is emitted', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const section = wrapper.findComponent(CreateFolderSection)
+      await section.vm.$emit('on-close-create-folder')
+
+      expect(wrapper.emitted('close-create-folder-modal')).toBeTruthy()
+    })
+  })
+})
