@@ -43,7 +43,7 @@
             <FoldersList
               :currentFolder="currentFolder"
               :currentServiceFolder="currentServiceFolder"
-              :ExplorerAuthorizedGivenAction="ExplorerAuthorizedGivenAction.isActionAuthorized"
+              :explorerAuthorizedGivenAction="ExplorerAuthorizedGivenAction.isActionAuthorized"
               :currentService="currentService"
               :selectedEntity="selectedEntity"
               :isCreateFolderModalVisible="isCreateFolderModalVisible"
