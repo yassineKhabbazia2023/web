@@ -29,7 +29,7 @@ withDefaults(defineProps<PFormItemProps>(), {
   pError: undefined,
   pShowMessage: true,
   pInlineMessage: '',
-  pSize: undefined,
+  pSize: '',
   pFor: undefined,
   pValidateStatus: undefined
 })

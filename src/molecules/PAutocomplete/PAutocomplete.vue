@@ -15,6 +15,7 @@
     :teleported="pTeleported"
     :highlightFirstItem="pHighlightFirstItem"
     :fitInputWidth="pFitInputWidth"
+    :selectWhenUnmatched="pSelectWhenUnmatched"
   >
     <slot />
   </ElAutocomplete>
