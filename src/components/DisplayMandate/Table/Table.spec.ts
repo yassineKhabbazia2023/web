@@ -40,7 +40,6 @@ describe('mandate collection', () => {
         }
       ]
     })
-    console.log('DOM Wrapper ', wrapper.html())
     expect(wrapper.exists()).toBeTruthy()
   })
 

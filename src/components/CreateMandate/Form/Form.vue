@@ -114,7 +114,7 @@
           {{ t('headquarters') }}
         </h5>
         <PFormItem
-          prop="address"
+          prop="street"
           inline
           :label="`${t('address')}`"
           disabled
@@ -424,8 +424,11 @@ const isBankCodeValid = ref(false)
 const isRibValid = ref(false)
 const isValidateEnabled = computed(() => isBankCodeValid.value && isRibValid.value)
 
-// Computed properties
-const areFieldsFilled = computed(() => {
+const areFieldsFilled = (fieldsToCheck: string[]) =>
+  fieldsToCheck.every((field) => !!createMandateForm[field] &&
+  createMandateForm[field].trim() !== '')
+
+const areStep2FieldsFilled = computed(() => {
   const fieldsToCheck = [
     'title',
     'firstName',
@@ -435,9 +438,7 @@ const areFieldsFilled = computed(() => {
     'city',
     'country'
   ]
-
-  return fieldsToCheck.every((field) => createMandateForm[field] &&
-  createMandateForm[field].trim() !== '')
+  return areFieldsFilled(fieldsToCheck)
 })
 
 // Methods
@@ -492,12 +493,22 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
     : 'form.error.ibsNotFound')
 }
 
-const checkAndEmitEvents = () => {
-  if (areFieldsFilled.value) {
-    emit('enable-disable-next', true)
-  } else {
-    emit('enable-disable-next', false)
+const areFieldsFilledStepBased = (step: number) => {
+  const fieldsToCheckMap: any = {
+    1: ['erpId', 'siretNumber', 'name'],
+    2: [
+      'title',
+      'firstName',
+      'lastName',
+      'street',
+      'zipCode',
+      'city',
+      'country'
+    ],
+    3: ['institutionCode', 'branchCode', 'accountNumber',
+      'key', 'bank']
   }
+  emit('enable-disable-next', areFieldsFilled(fieldsToCheckMap[step]))
 }
 
 const checkBbanValidity = async ({
@@ -634,6 +645,7 @@ const createValidator = (
   required: true,
   validator: async (_: any, value: string, callback: any) => {
     if (value.length !== length) {
+      createMandateForm.bank = ''
       callback(new Error(errorMsg))
     } else if (!regex.test(value)) {
       callback(new Error(regexErrorMsg))
@@ -650,7 +662,7 @@ const validateEmail = (_: any, value: string, callback: any) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!value || emailRegex.test(value)) {
     callback()
-    emit('enable-disable-next', true)
+    areFieldsFilledStepBased(2)
   } else {
     callback(new Error(t('form.error.correctEmail')))
     emit('enable-disable-next', false)
@@ -668,7 +680,6 @@ const rules = reactive<any>({
   lastName: [createRule(t('form.error.requiredField'))],
   email: [{ validator: validateEmail, trigger: 'blur' }],
   street: [createRule(t('form.error.requiredField'))],
-  address: [createRule(t('form.error.requiredField'))],
   zipCode: [
     createRule(t('form.error.requiredField')),
     {
@@ -678,7 +689,7 @@ const rules = reactive<any>({
           emit('enable-disable-next', false)
         } else {
           callback()
-          emit('enable-disable-next', true)
+          areFieldsFilledStepBased(2)
         }
       },
       trigger: 'blur'
@@ -722,8 +733,8 @@ const rules = reactive<any>({
 })
 
 // Watchers
-watch(() => props.step, checkAndEmitEvents)
-watch(areFieldsFilled, checkAndEmitEvents)
+watch(() => props.step, () => areFieldsFilledStepBased(props.step))
+watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
 watch(
   () => createMandateForm.erpId,
   (value) => {
@@ -734,8 +745,7 @@ watch(
 // Expose
 defineExpose({
   createMandateForm,
-  validateIBS,
-  checkAndEmitEvents
+  validateIBS
 })
 </script>
 

@@ -61,7 +61,7 @@
             :pPlain="false"
             :pRound="false"
             :pLoading="false"
-            data-testid="next-step-test"
+            data-testid="previous-step-test"
             @click="goToPreviousStep()"
           >
             <PIcon class="el-button__icon--left">
@@ -115,6 +115,7 @@
       </template>
     </PDrawer>
     <PDialog
+      v-if="pDialogControl.dialogVisible"
       v-model="pDialogControl.dialogVisible"
       :pWidth="pDialogControl.dialogWidth"
       :pModal="pDialogControl.dialogModal"
@@ -133,6 +134,7 @@
             :pRound="false"
             :pDisabled="false"
             :pLoading="false"
+            data-testid="cancel-dialog-test"
             @click="pDialogControl.dialogVisible = false"
           >
             {{ t('cancel-popup') }}
@@ -144,6 +146,7 @@
             :pRound="false"
             :pDisabled="false"
             :pLoading="false"
+            data-testid="quit-dialog-test"
             @click="closeDialogDrawer()"
             class="margin-left--4"
           >
@@ -327,7 +330,7 @@ const submitMandate = async (mandate: CreateMandateModel) => {
       data: { id }
     } = await createMandate(mandate)
     mandateId.value = id
-    currentStep.value++
+    ++currentStep.value
   } catch (error) {
   } finally {
     loading.value = false
@@ -335,9 +338,7 @@ const submitMandate = async (mandate: CreateMandateModel) => {
 }
 
 defineExpose({
-  drawerModel,
-  goToNextStep,
-  currentStep,
+  validateAvailability,
   nextStepAvailability
 })
 </script>

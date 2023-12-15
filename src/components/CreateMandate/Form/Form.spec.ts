@@ -196,7 +196,6 @@ describe('form.vue', () => {
     expect((input.element as HTMLInputElement).value).toBe('1234567891')
     const emittedEnableDisableEvent: any = wrapper.emitted('enable-disable-next')
     expect(emittedEnableDisableEvent).toBeTruthy()
-    // expect(createMandate).toHaveBeenCalled()
   })
 
   it('renders the component when step value is 2', async () => {
@@ -222,16 +221,6 @@ describe('form.vue', () => {
     await input.trigger('change')
 
     expect((input.element as HTMLInputElement).value).toBe('123456789')
-  })
-
-  it('checkAndEmitEvents when fields are not filled', async () => {
-    const wrapper = createWrapper({ step: 2 })
-    const input = wrapper.find('input[data-testid="firstName-test"]')
-    await input.setValue('')
-    await input.trigger('blur')
-
-    wrapper.vm.checkAndEmitEvents()
-    expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
   })
 
   const testCases = [
