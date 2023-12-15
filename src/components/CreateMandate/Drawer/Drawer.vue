@@ -306,7 +306,7 @@ const closeDrawerAndInitStep = () => {
 }
 
 const drawerBeforeClose = (done: any) => {
-  if (currentStep.value <= 3) {
+  if (currentStep.value > 1 && currentStep.value < 4) {
     pDialogControl.dialogVisible = true
     return
   }

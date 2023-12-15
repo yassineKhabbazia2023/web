@@ -7,7 +7,6 @@
         <template #prefix>
             <PIcon
                 class="el-button__icon--left"
-                color="#5546FF"
             >
                 <PISearch />
             </PIcon>

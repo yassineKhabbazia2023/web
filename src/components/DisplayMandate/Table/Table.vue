@@ -2,6 +2,7 @@
   <PTable
     :pData="mandateCollection"
     pStripe
+    :emptyText="t('no-data')"
     class="padding-left--6 padding-right--6"
   >
     <template v-for="({ label, prop, sortable }, index) in tableHead">
@@ -57,6 +58,7 @@
         download-pre-filled-mandate: 'Download pre-filled mandate'
         submit-signed-mandate: 'Submit the signed mandate'
         cancel-telecollection: 'Cancel telecollection'
+        no-data: 'No data'
     fr-FR:
         ibs-code: 'Code IBS'
         company-name: 'Raison sociale'
@@ -69,6 +71,7 @@
         download-pre-filled-mandate: 'Télécharger le mandat pré-rempli'
         submit-signed-mandate: 'Déposer le mandat signé'
         cancel-telecollection: 'Résilier la télécollecte'
+        no-data: 'Aucun résultats'
 </i18n>
 
 <script setup lang='ts'>

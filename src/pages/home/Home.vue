@@ -22,6 +22,7 @@ import Pagination from '@/components/DisplayMandate/Pagination'
 import SearchBar from '@/components/Common/SearchBar'
 import { debounce } from '@/helpers/utils'
 import type { MandateCollection } from './Models'
+
 const mandatesCollection = ref<MandateCollection>({
   counters: {
     all: 0,
@@ -33,32 +34,29 @@ const mandatesCollection = ref<MandateCollection>({
   },
   data: []
 })
-const loading = ref(true)
+
 const itemsToDisplay = ref(10)
 const searchText = ref('')
+
 onBeforeMount(async () => {
   try {
-    loading.value = true
     const { data } = await getMandatesCollection()
     mandatesCollection.value = data
   } catch (_) {
-  } finally {
-    loading.value = false
   }
 })
-const updateTableDisplay = async ({ currentPage, itemsByPage, searchTerm }:
+
+const updateTableDisplay = async ({ currentPage, itemsByPage, searchTerm = searchText.value }:
   {currentPage: number, itemsByPage: number, searchTerm: string}) => {
   try {
-    loading.value = true
     const skip = (currentPage - 1) * itemsByPage
     itemsToDisplay.value = itemsByPage
     const { data } = await getMandatesCollection({ skip, limit: itemsByPage, searchTerm })
     mandatesCollection.value = data
   } catch (_) {
-  } finally {
-    loading.value = false
   }
 }
+
 const updateTableDisplayDebounced = debounce(updateTableDisplay)
 
 watch(searchText,
