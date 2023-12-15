@@ -52,9 +52,11 @@ describe('createMandateDrawer.vue', () => {
     await wrapper.find('button[data-testid="close-button-test"]').trigger('click')
   })
 
-  it('should open dialog modal before quit', async () => {
+  it('should open dialog modal before quit at step 2', async () => {
     const wrapper = createWrapper({ modelValue: true })
+    wrapper.vm.nextStepAvailability = true
     await nextTick()
+    await wrapper.find('button[data-testid="next-step-test"]').trigger('click')
     await wrapper.find('.p-drawer__close-button').trigger('click')
     expect(wrapper.find('.p-dialog__text').text())
       .toContain('You are about to exit the mandate creation path')

@@ -71,7 +71,7 @@
         download-pre-filled-mandate: 'Télécharger le mandat pré-rempli'
         submit-signed-mandate: 'Déposer le mandat signé'
         cancel-telecollection: 'Résilier la télécollecte'
-        no-data: 'Aucun résultats'
+        no-data: 'Aucun résultat'
 </i18n>
 
 <script setup lang='ts'>
