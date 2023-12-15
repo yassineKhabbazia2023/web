@@ -43,7 +43,7 @@ withDefaults(defineProps<PTimePickerProps>(), {
   pStartPlaceholder: undefined,
   pEndPlaceholder: undefined,
   pIsRange: false,
-  pArrowControls: false,
+  pArrowControl: false,
   pPopperClass: '',
   pRangeSeparator: '-',
   pFormat: undefined,

@@ -28,9 +28,7 @@
     :tabindex="pTabindex"
     :validateEvent="pValidateEvent"
     :inputStyle="pInputStyle"
-  >
-    <slot />
-  </ElInput>
+  />
 </template>
 
 <script setup lang="ts">
