@@ -27,15 +27,12 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue'
 import PButton from '@/atoms/PButton'
 import { PICheck, PIExclamationTriangle, PILoader } from '@/atoms/PIcon/components'
 import { ElNotification } from 'element-plus'
 
-const toastPlugin = inject('toast') as typeof ElNotification
-
 const openSuccess = () => {
-  toastPlugin({
+  ElNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: PICheck,
     showClose: false,
@@ -44,7 +41,7 @@ const openSuccess = () => {
 }
 
 const openLoading = () => {
-  toastPlugin({
+  ElNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: PILoader,
     showClose: false,
@@ -53,7 +50,7 @@ const openLoading = () => {
 }
 
 const openError = () => {
-  toastPlugin({
+  ElNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: PIExclamationTriangle,
     customClass: 'error',
@@ -62,7 +59,7 @@ const openError = () => {
 }
 
 const openWithClose = () => {
-  toastPlugin({
+  ElNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: PICheck,
     showClose: true,

@@ -6,18 +6,11 @@ import dayjs from 'dayjs'
 
 import './assets/scss/index.scss'
 
-import toastPlugin from './molecules/PToaster'
-
 export * from './atoms/PIcon/components'
-
 dayjs.Ls.en.weekStart = 1
 
 export const fr = frLocale
 export const en = enLocale
-
-export default function install(app: any) {
-  app.use(toastPlugin)
-}
 
 export {
   // Inner Depencies for Layout, DatePicker
@@ -33,6 +26,7 @@ export {
   ElHeader as PCHeader,
   ElInput as PInput,
   ElMain as PMain,
+  ElNotification as PNotification,
   ElOption as POption,
   ElOptionGroup as POptionGroup,
   ElPopper as PPopper,

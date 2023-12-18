@@ -78,7 +78,7 @@ const props = withDefaults(defineProps<PNavbarProps>(), {
 
 const activeIndex = computed(() => {
   const index = Number(props.pActiveIndex) + MENU_ENTITIES_INDEX_START
-  return !!props.pActiveIndex ? index.toString() : ''
+  return props.pActiveIndex ? index.toString() : ''
 })
 
 const collapseMenu = () => {
