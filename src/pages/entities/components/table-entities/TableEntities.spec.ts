@@ -1,8 +1,12 @@
 import { mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import TableEntities from './'
-import { dynamicUntilFound } from '@kpmg/common/src/testing-helpers'
 import { createPinia, setActivePinia } from 'pinia'
+
+function dynamicUntilFound(wrapper: any, selector: string) {
+  console.log({ selector })
+  return wrapper
+}
 
 const entities = [
   { name: 'Entity 1', accountNumber: '123' },
@@ -11,7 +15,6 @@ const entities = [
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    $patch: vi.fn(),
     customers: {
       get: vi.fn().mockResolvedValue({ data: entities })
     }

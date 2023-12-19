@@ -1,6 +1,6 @@
 <template>
   <PTable
-    :pStripe="tableInputs.striped"
+    pStripe
     :pData="requests"
     data-ut="table"
   >
@@ -81,8 +81,8 @@
           data-ut="validateButton"
           pType="primary"
           pSize="default"
-          @click="validateSubscription(scope.row.subscriptionId)"
           :pLoading="scope.row.subscriptionId === clickedRow ? !isLoading : isLoading"
+          @click="validateSubscription(scope.row.subscriptionId)"
         >
           {{ t('validate') }}
         </PButton>
@@ -116,16 +116,10 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { PButton, PDoubleText, PTable, PTableColumn, PTag, PText } from '@kpmg/styleguide'
 import { fetchSubscriptionRequests, validateSubscriptionRequest } from '../../SubscriptionsServices'
 import type { SubscriptionRequest, User } from '../../SubscriptionsTypes'
-
-const tableInputs = reactive({
-  striped: true,
-  sortable: true,
-  selectable: false
-})
 
 const { t } = useI18n({
   inheritLocale: true,

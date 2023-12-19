@@ -7,7 +7,6 @@ const mockedPutRequests = vi.fn().mockResolvedValue(null)
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    $patch: vi.fn(),
     subscription: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       put: mockedPutRequests
@@ -43,7 +42,7 @@ describe('table-validations', () => {
     }
 
     const dataRows = pTable.findAll('tr.el-table__row')
-    expect(dataRows.length).equals(2)
+    expect(dataRows.length).equals(subscriptionRequestMock.length)
 
     const cells = dataRows[0].findAll('td')
     const firstRowData: { [key: number]: string | Date } = {

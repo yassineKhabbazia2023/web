@@ -17,6 +17,7 @@ export interface User {
   lastName: string
   email: string
 }
+
 export interface SubscriptionRequest {
   subscriptionId: number
   account: {

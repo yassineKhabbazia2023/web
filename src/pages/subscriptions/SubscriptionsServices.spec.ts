@@ -8,7 +8,7 @@ import {
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     subscription: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),

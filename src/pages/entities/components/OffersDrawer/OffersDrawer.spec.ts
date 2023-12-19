@@ -6,9 +6,8 @@ import type { SubscriptionOffer } from '../SubscriptionOffers/SubscriptionOffers
 
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    $patch: vi.fn(),
     offer: {
       get: vi.fn().mockResolvedValue({ data: subscriptionOffers })
     }
