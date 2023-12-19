@@ -2,8 +2,9 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElScrollbar } from 'element-plus'
 import PScrollbar from '.'
+import type { PScrollbarProps } from './PScrollbarTypes'
 
-const propsValue = {
+const propsValue: PScrollbarProps = {
   pHeight: 12,
   pMaxHeight: 15,
   pNative: false,
