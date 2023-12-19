@@ -2,10 +2,10 @@
 <template>
   <PButton
     v-if="hasCreateFolderButton"
-    type="white"
     class="treeview__new-folder el-button--default"
-    size="small"
-    :disabled="isTreeCreateFolderBtnDisabled"
+    pType="white"
+    pSize="small"
+    :pDisabled="isTreeCreateFolderBtnDisabled"
     @click="openCreateFolderModal"
   >
     <PIcon class="el-button__icon--left">
