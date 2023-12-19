@@ -20,6 +20,6 @@ describe('clipboard', () => {
   it('should copy to clipboard a value', async () => {
     const value = 'abc'
     useCopyClipboard(value)
-    expect(copy).toHaveBeenCalledWith()
+    expect(copy).toHaveBeenCalledWithExactlyOnceWith()
   })
 })
