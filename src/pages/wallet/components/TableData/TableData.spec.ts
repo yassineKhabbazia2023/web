@@ -82,6 +82,15 @@ describe('tableData', () => {
     expect(getPopoverContent()).toContain('Deploy this folder')
   })
 
+  it('should emit clickDeploy when click on deploy button', async () => {
+    await flushPromises()
+
+    const deployButton = document.body.getElementsByClassName('p-toolbox-item__text')[0] as HTMLElement
+    deployButton.click()
+
+    expect(wrapper.emitted('clickDeploy')).toBeTruthy()
+  })
+
   it('has the first entity selected by default', async () => {
     const { id: idAccount, name } = mockTableData[0]
 

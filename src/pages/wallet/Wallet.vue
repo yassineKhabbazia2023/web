@@ -36,9 +36,11 @@
     <NoResult v-if="!state.data.length" />
 
     <TableData
+      data-ut="table"
       v-if="!!state.data.length"
       :data="state.data"
       :handleAddFavorite="handleAddFavorite"
+      @click-deploy="onClickDeploy"
     />
 
     <PPagination
@@ -55,6 +57,12 @@
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
+
+    <OffersDrawer
+      data-ut="offers-drawer"
+      v-if="openOffersDrawer"
+      v-model="openOffersDrawer"
+    />
   </div>
 </div>
 </template>
@@ -79,6 +87,7 @@ import type { IEntity, IState, ICommonEntitiesInFavorite } from './types'
 import Tags from './components/Tags'
 import NoResult from './components/NoResult'
 import TableData from './components/TableData'
+import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -265,6 +274,12 @@ onMounted(async () => {
     await fetch()
   })
 })
+
+const openOffersDrawer = ref(false)
+
+const onClickDeploy = () => {
+  openOffersDrawer.value = true
+}
 </script>
 
 <i18n lang="yaml">

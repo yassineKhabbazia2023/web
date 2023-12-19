@@ -111,6 +111,17 @@ describe('wallet', () => {
     expect(getDisplayMock).not.toHaveBeenCalledTimes(2)
   })
 
+  it('displays drawer when click on deploy', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const table = wrapper.findComponent('[data-ut=table]') as VueWrapper
+    await table.vm.$emit('click-deploy')
+
+    const subscriptionDrawer = wrapper.findComponent('[data-ut=offers-drawer]')
+    expect(subscriptionDrawer.exists()).toBeTruthy()
+  })
+
   it('displays a specific component if no items in response API', async () => {
     getDisplayMock.mockResolvedValueOnce({
       data: {
