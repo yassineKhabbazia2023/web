@@ -16,7 +16,10 @@ const propsValue = {
   pTag: 'testTag'
 }
 const createWrapper = () => mount(PCol, {
-  props: propsValue
+  props: propsValue,
+  slots: {
+    default: 'col text'
+  }
 })
 
 describe('pCol', () => {
@@ -34,5 +37,6 @@ describe('pCol', () => {
     expect(componentEP.lg).toBe(propsValue.pLg)
     expect(componentEP.xl).toBe(propsValue.pXl)
     expect(componentEP.tag).toBe(propsValue.pTag)
+    expect(wrapper.findComponent(ElCol).text()).toBe('col text')
   })
 })

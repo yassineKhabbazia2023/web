@@ -7,7 +7,10 @@ const propsValue = {
   pWidth: '200px'
 }
 const createWrapper = () => mount(PAside, {
-  props: propsValue
+  props: propsValue,
+  slots: {
+    default: 'aside'
+  }
 })
 
 describe('pAside', () => {
@@ -15,5 +18,6 @@ describe('pAside', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElAside).vm
     expect(componentVM.width).toBe(propsValue.pWidth)
+    expect(wrapper.findComponent(ElAside).text()).toBe('aside')
   })
 })

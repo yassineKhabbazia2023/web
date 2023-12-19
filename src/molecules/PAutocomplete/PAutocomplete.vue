@@ -16,9 +16,7 @@
     :highlightFirstItem="pHighlightFirstItem"
     :fitInputWidth="pFitInputWidth"
     :selectWhenUnmatched="pSelectWhenUnmatched"
-  >
-    <slot />
-  </ElAutocomplete>
+  />
 </template>
 
 <script lang="ts" setup>

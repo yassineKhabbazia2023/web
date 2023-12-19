@@ -7,7 +7,10 @@ const propsValue = {
   pAccordion: true
 }
 const createWrapper = () => mount(PCollapse, {
-  props: propsValue
+  props: propsValue,
+  slots: {
+    default: 'test'
+  }
 })
 
 describe('pCollapse', () => {
@@ -15,5 +18,6 @@ describe('pCollapse', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElCollapse).vm
     expect(componentVM.accordion).toBe(propsValue.pAccordion)
+    expect(wrapper.findComponent(ElCollapse).text()).toBe('test')
   })
 })

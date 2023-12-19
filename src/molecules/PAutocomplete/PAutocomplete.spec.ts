@@ -24,7 +24,10 @@ const propsValue: PAutocompleteProps = {
 
 const createWrapper = () => mount(PAutocomplete, {
   props: propsValue,
-  attachTo: document.body
+  attachTo: document.body,
+  slots: {
+    default: 'autocomplete text'
+  }
 })
 
 describe('pAutoComplete', () => {
