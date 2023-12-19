@@ -15,5 +15,5 @@ export interface PScrollbarProps {
   pId?: string,
   pRole?: string,
   pAriaLabel?: string,
-  pAriaOrientation?: string
+  pAriaOrientation?: 'horizontal' | 'vertical'
 }
