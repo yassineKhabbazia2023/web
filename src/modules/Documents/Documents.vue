@@ -11,7 +11,9 @@
       :permissions="permissionsList"
       @p-action-bar-button-clicked="handleActionBarButtonClick"
       :isAnyDocumentSelected="selectedDocuments.length > 0"
-      @p-upload-files-selected="handleUploadFilesSelected"/>
+      @p-upload-files-selected="handleUploadFilesSelected"
+      :isTransmitDocumentsLoading="isTransmitDocumentsLoading"
+      />
 
     <DocumentsList
       v-if="documents"
@@ -135,6 +137,7 @@ const currentPageSize = ref(10)
 const componentSortQueryField = ref('-created')
 const isDeletePopupVisible = ref(false)
 const isLoading = ref(false)
+const isTransmitDocumentsLoading = ref(false)
 
 const paginationLabel = computed(() => {
   if (!documents.value) return
@@ -201,8 +204,17 @@ useDownloadDocuments(downloadDocumentsProps)
 const { handleTransmitDocumentsEvent } =
 useTransmitDocuments(transmitDocumentsProps)
 
+const handleTransmitDocuments = async () => {
+  isTransmitDocumentsLoading.value = true
+  await handleTransmitDocumentsEvent()
+  isTransmitDocumentsLoading.value = false
+  setTimeout(async () => {
+    await fetchDocuments()
+  }, 300)
+}
+
 // Actions handlers
-const handleToolboxActionTriggered = (action: string) => {
+const handleToolboxActionTriggered = async (action: string) => {
   switch (action) {
     case 'download-document':
       handleDownloadDocumentsEvent()
@@ -217,14 +229,14 @@ const handleToolboxActionTriggered = (action: string) => {
       handleMoveDocumentEvent()
       break
     case 'transmit-document':
-      handleTransmitDocumentsEvent()
+      await handleTransmitDocuments()
       break
     default:
       break
   }
 }
 
-const handleActionBarButtonClick = (actionName: string) => {
+const handleActionBarButtonClick = async (actionName: string) => {
   if (selectedDocuments.value.length > 0) {
     switch (actionName) {
       case 'actionbar-download-action-click':
@@ -240,7 +252,7 @@ const handleActionBarButtonClick = (actionName: string) => {
         handleMoveDocumentEvent()
         break
       case 'actionbar-transmit-action-click':
-        handleTransmitDocumentsEvent()
+        await handleTransmitDocuments()
         break
       default:
         break

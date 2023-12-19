@@ -6,6 +6,11 @@ interface ActionBarButtonWithOrder {
   order: number
 }
 
+export interface ActionBarLoadingButtonsState {
+  permission: string,
+  isLoading: boolean
+}
+
 const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
   CAN_ADD_DOCUMENT: {
     actionbarButton: {
@@ -170,11 +175,19 @@ export function generateActionBarLeftSideButtons(
 
 export function generateActionBarRightSideButtons(
   permissions: string[],
-  isAnyDocumentSelected: boolean
+  isAnyDocumentSelected: boolean,
+  actionBarLoadingButtonsState?: ActionBarLoadingButtonsState
 ): ComponentDefinitionProps[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {
     if (rightSideButtons[permission]) {
+      if (actionBarLoadingButtonsState) {
+        if (permission === actionBarLoadingButtonsState.permission) {
+          rightSideButtons[permission].actionbarButton.pButton.pLoading =
+            actionBarLoadingButtonsState.isLoading
+        }
+      }
+
       toolboxBasicData.push(rightSideButtons[permission])
     }
   }

@@ -137,6 +137,7 @@ describe('documents', () => {
 
     setActivePinia(pinia)
     flushPromises()
+    vi.useFakeTimers()
   })
   describe('events', () => {
     it('should set selected fikes on p-upload-files-selected', async () => {
@@ -466,6 +467,63 @@ describe('documents', () => {
       )
     })
 
+    it('should call fetch documents oppon transmit documents event', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments = [
+        documentsResponsePayload.documentsPage.items[0]
+      ]
+      await nextTick()
+
+      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      await nextTick()
+
+      await documentActionBar.vm.$emit(
+        'p-action-bar-button-clicked',
+        'actionbar-transmit-action-click'
+      )
+      await nextTick()
+
+      vi.advanceTimersByTime(300)
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+        defaultProps.currentService,
+        defaultProps.selectedFolder.id,
+        'my-entity',
+        0,
+        10,
+        '-created'
+      )
+    })
+
+    it('should call fetch documents oppon transmit documents event triggered from toolbox',
+      async () => {
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+        componentInstance.selectedDocuments =
+        documentsResponsePayload.documentsPage.items
+        await nextTick()
+
+        const documentsList = wrapper.findComponent(DocumentsList)
+        await nextTick()
+
+        await documentsList.vm.$emit(
+          'toolbox-action-triggered',
+          'transmit-document'
+        )
+        await nextTick()
+
+        vi.advanceTimersByTime(300)
+        expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+          defaultProps.currentService,
+          defaultProps.selectedFolder.id,
+          'my-entity',
+          0,
+          10,
+          '-created'
+        )
+      })
   })
 })
 
