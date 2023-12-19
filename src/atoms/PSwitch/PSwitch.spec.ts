@@ -57,6 +57,6 @@ describe('pSwitch', () => {
     expect(componentVM.id).toBe(propsValue.pId)
     expect(wrapper.find('.el-switch').attributes('tabindex'))
       .toBe(propsValue.pTabIndex?.toString())
-    expect(wrapper.find('.el-switch').attributes('label')).toBe(propsValue.pLabel)
+    expect(wrapper.find('.el-switch__input').attributes('aria-label')).toBe(propsValue.pLabel)
   })
 })

@@ -89,6 +89,6 @@ describe('pSelect', () => {
     expect(componentVM.placement).toBe(propsValue.pPlacement)
     expect(componentVM.maxCollapseTags).toBe(propsValue.pMaxCollapseTags)
     expect(componentVM.popperOptions).toStrictEqual(propsValue.pPopperOptions)
-    expect(wrapper.find('.el-select').attributes('arialabel')).toBe(propsValue.pAriaLabel)
+    expect(wrapper.find('.el-input__inner').attributes('aria-label')).toBe(propsValue.pAriaLabel)
   })
 })
