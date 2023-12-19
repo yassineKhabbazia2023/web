@@ -4,8 +4,8 @@
       {{ titleString }}
     </h1>
     <PTable
-      :data="entities"
-      :stripe="tableInputs.striped"
+      :pData="entities"
+      :pStripe="tableInputs.striped"
       highlightCurrentRow
       :rowClassName="tableRowClassName"
     >
@@ -18,10 +18,10 @@
       >
         <template #default="scope">
           <PEntity
-            :content="scope.row.name"
-            :icon="PIBuilding"
-            type="primary"
-            :selected="false"
+            :pContent="scope.row.name"
+            :pIcon="PIBuilding"
+            pType="primary"
+            :pSelected="false"
           >
           </PEntity>
         </template>
@@ -31,9 +31,9 @@
       >
         <template #default="scope">
           <PText
-            :content="scope.row.accountNumber"
-            :icon="PIPeople"
-            type="primary"
+            :pContent="scope.row.accountNumber"
+            :pIcon="PIPeople"
+            pType="primary"
             :disabled="false"
             :selected="false"
           >
@@ -54,9 +54,9 @@
           </span>
           <PButton
             v-else
-            type="primary"
-            plain="true"
-            size="small"
+            pType="primary"
+            pPlain
+            pSize="small"
             class="ptable-select-entity__button el-button--icon margin-right--2"
             @click="selectEntity(scope.row.accountNumber)"
           >
@@ -66,12 +66,12 @@
           </PButton>
           <PButton
             data-ut="deploy-button"
-            type="primary"
-            size="small"
-            :plain="false"
-            :round="false"
-            :disabled="false"
-            :loading="false"
+            pType="primary"
+            pSize="small"
+            :pPlain="false"
+            :pRound="false"
+            :pDisabled="false"
+            :pLoading="false"
             @click="drawerHandler"
           >
             <PIcon class="el-button__icon--left">
@@ -189,7 +189,7 @@ const tableRowClassName = ({ row }: any) => {
 
 const openOffersDrawer = ref(false)
 
-async function drawerHandler() {
+function drawerHandler() {
   openOffersDrawer.value = true
 }
 

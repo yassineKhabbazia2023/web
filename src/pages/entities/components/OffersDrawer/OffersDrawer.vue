@@ -2,11 +2,12 @@
   <div>
     <PDrawer
       v-model="internalIsOpened"
-      :title="t('drawerTitle')"
-      :showPreviousStep="false"
-      size="50%"
-      direction="rtl"
+      :pTitle="t('drawerTitle')"
+      :pShowPreviousStep="false"
+      pSize="50%"
+      pDirection="rtl"
       class="drawer"
+      @close-drawer-button="closeOffersDrawer"
     >
       <SubscriptionOffers
         v-if="internalIsOpened"
@@ -55,6 +56,10 @@ const internalIsOpened = computed({
     emit('update:modelValue', value)
   }
 })
+
+const closeOffersDrawer = () => {
+  internalIsOpened.value = false
+}
 
 onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()

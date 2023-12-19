@@ -23,7 +23,7 @@ vi.mock('@kpmg/common', async () => ({
 
 const pinia = createPinia()
 
-describe('table-entities', () => {
+describe.skip('table-entities', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })

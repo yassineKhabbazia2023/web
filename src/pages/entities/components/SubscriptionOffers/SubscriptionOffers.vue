@@ -31,9 +31,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import {
-  POfferCard
-} from '@kpmg/styleguide'
+import { POfferCard } from '@kpmg/styleguide'
 import type { SubscriptionOffer, SubscriptionOffersProps } from './SubscriptionOffersTypes'
 
 const { t } = useI18n({

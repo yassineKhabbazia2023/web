@@ -34,8 +34,7 @@ export default ({ mode }) =>
           vue: 'Vue',
           'vue-i18n': 'VueI18n',
           pinia: 'Pinia',
-          '@kpmg/common': 'Common',
-          '@kpmg/styleguide': 'StyleGuide'
+          '@kpmg/common': 'Common'
         }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
         cssInjectedByJsPlugin()
       ],
