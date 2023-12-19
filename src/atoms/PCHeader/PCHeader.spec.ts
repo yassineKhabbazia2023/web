@@ -7,7 +7,10 @@ const propsValue = {
   pHeight: '60px'
 }
 const createWrapper = () => mount(PCHeader, {
-  props: propsValue
+  props: propsValue,
+  slots: {
+    default: 'header'
+  }
 })
 
 describe('pcHeader', () => {
@@ -15,5 +18,6 @@ describe('pcHeader', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElHeader).vm
     expect(componentVM.height).toBe(propsValue.pHeight)
+    expect(wrapper.findComponent(ElHeader).text()).toBe('header')
   })
 })
