@@ -1,7 +1,15 @@
 /* eslint-disable max-len */
 import { it, expect, vi, describe } from 'vitest'
-import { downloadDocument, downloadDocuments, fetchFolderDocuments, deleteDocuments, renameDocument, uploadDocument, moveDocuments }
-  from './Documents'
+import {
+  downloadDocument,
+  downloadDocuments,
+  fetchFolderDocuments,
+  deleteDocuments,
+  renameDocument,
+  uploadDocument,
+  moveDocuments,
+  transmitDocuments
+} from './Documents'
 import type { Service } from '@/models/Service'
 import { Document } from '@/models/Document'
 import { Folder } from '@/models/Folder'
@@ -207,4 +215,25 @@ describe('documents service', () => {
       }
     )
   })
+
+  it('should call api  when transmitDocuments is called ', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const documentIds = ['123']
+    const accountId = 'my-account-id'
+
+    await transmitDocuments(service.ServiceId, accountId, documentIds)
+
+    expect(mockDsPost).toHaveBeenCalledTimes(1)
+    expect(mockDsPost).toHaveBeenCalledWith(
+      'service-1/my-account-id/documents/pia-speedup-transfer',
+      { ids: documentIds },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+  })
+
 })

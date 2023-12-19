@@ -9,7 +9,8 @@ import { DocumentsProps } from './DocumentsTypes'
 import {
   downloadDocument,
   fetchFolderDocuments,
-  downloadDocuments
+  downloadDocuments,
+  transmitDocuments
 } from '@/services/Documents'
 import {
   documentsResponsePayload,
@@ -76,7 +77,8 @@ vi.mock('vue-inject', () => ({
 vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
   downloadDocuments: vi.fn(),
-  downloadDocument: vi.fn()
+  downloadDocument: vi.fn(),
+  transmitDocuments: vi.fn()
 }))
 
 vi.mock('./helpers/downloadFilesHelper', () => ({
@@ -414,6 +416,56 @@ describe('documents', () => {
 
       expect(renameModal.props('modelValue')).toBeTruthy()
     })
+
+    // eslint-disable-next-line max-len
+    it('should call transmit document composable oppon  toolbox-action-triggered', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments =
+            documentsResponsePayload.documentsPage.items
+      await nextTick()
+
+      const documentsList = wrapper.findComponent(DocumentsList)
+      await nextTick()
+
+      await documentsList.vm.$emit(
+        'toolbox-action-triggered',
+        'transmit-document'
+      )
+
+      expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
+        defaultProps.currentService,
+        defaultProps.selectedEntity,
+        [documentsResponsePayload.documentsPage.items[0].id]
+      )
+    })
+    // eslint-disable-next-line max-len
+    it('should call transmit document composable oppon click on action bar transmit button', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments = [
+        documentsResponsePayload.documentsPage.items[0]
+      ]
+      await nextTick()
+
+      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      await nextTick()
+
+      await documentActionBar.vm.$emit(
+        'p-action-bar-button-clicked',
+        'actionbar-transmit-action-click'
+      )
+
+      await nextTick()
+      expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
+        defaultProps.currentService,
+        defaultProps.selectedEntity,
+        [documentsResponsePayload.documentsPage.items[0].id]
+      )
+    })
+
   })
 })
 

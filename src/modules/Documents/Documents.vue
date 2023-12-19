@@ -103,6 +103,11 @@ import { useDownloadDocuments } from
 import { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
+import { TransmitDocumentsComposableProps }
+  // eslint-disable-next-line max-len
+  from '@/modules/Documents/components/DocumentsTransmit/TransmitDocumentsTypes'
+import { useTransmitDocuments } from
+  '@/modules/Documents/components/DocumentsTransmit/TransmitDocuments'
 import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
 import DocumentDeleteModal
@@ -176,6 +181,12 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
   }
 })
 
+const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(() => ({
+  selectedDocumentsIds: documentIdsSelected.value,
+  currentService: props.currentService,
+  selectedEntity: props.selectedEntity
+})
+)
 // documents selection handlers
 const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   selectedDocuments.value = documentsSelection
@@ -186,6 +197,9 @@ const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
 
 const { handleDownloadDocumentsEvent } =
 useDownloadDocuments(downloadDocumentsProps)
+
+const { handleTransmitDocumentsEvent } =
+useTransmitDocuments(transmitDocumentsProps)
 
 // Actions handlers
 const handleToolboxActionTriggered = (action: string) => {
@@ -201,6 +215,9 @@ const handleToolboxActionTriggered = (action: string) => {
       break
     case 'move-document':
       handleMoveDocumentEvent()
+      break
+    case 'transmit-document':
+      handleTransmitDocumentsEvent()
       break
     default:
       break
@@ -221,6 +238,9 @@ const handleActionBarButtonClick = (actionName: string) => {
         break
       case 'actionbar-move-action-click':
         handleMoveDocumentEvent()
+        break
+      case 'actionbar-transmit-action-click':
+        handleTransmitDocumentsEvent()
         break
       default:
         break
