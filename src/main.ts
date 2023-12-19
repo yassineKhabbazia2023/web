@@ -2,8 +2,6 @@ import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
 import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
 
-import styleGuide from '@kpmg/styleguide'
-
 import routes from './router'
 
 const RenderLess = () => ''
@@ -14,7 +12,7 @@ const vueLifecycles = singleSpaVue({
     render: () => h(RenderLess)
   },
   handleInstance(app: any) {
-    app.use(i18n).use(pinia).use(styleGuide).use(routes)
+    app.use(i18n).use(pinia).use(routes)
   }
 })
 
