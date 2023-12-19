@@ -26,7 +26,6 @@ describe('pPopperArrow', () => {
   it('should render correctly', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElPopperArrow).vm
-    console.log(componentVM)
     expect(componentVM.arrowOffset).toBe(propsValue.pArrowOffset)
   })
 })

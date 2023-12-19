@@ -32,10 +32,9 @@ const createWrapper = () => mount(PPopperContent, {
 })
 
 describe('pPopperContent', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElPopperContent).vm
-    console.log(componentVM)
     expect(componentVM.boundariesPadding).toBe(propsValue.pBoundariesPadding)
     expect(componentVM.fallbackPlacements).toStrictEqual(propsValue.pFallbackPlacements)
     expect(componentVM.gpuAcceleration).toBe(propsValue.pGpuAcceleration)

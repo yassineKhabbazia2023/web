@@ -25,7 +25,7 @@ const createWrapper = () => mount(PScrollbar, {
 })
 
 describe('pScrollbar', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElScrollbar).vm
     expect(componentVM.height).toBe(propsValue.pHeight)
