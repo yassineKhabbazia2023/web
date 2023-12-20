@@ -18,6 +18,7 @@ $avatar-size: (
 );
 
 .el-avatar {
+  border: 1px solid;
 
   font-weight: 600;
   
@@ -68,41 +69,67 @@ $avatar-size: (
     }
 
     &--color-persian-gradient {
+      border-color: var(--persian-gradient);
       background: var(--persian-gradient);
       color: getCssVar('color-white');
     }
 
     &--color-orange {
+      border-color: var(--el-color-functionnal-orange-bg);
       background: var(--el-color-functionnal-orange-bg);
-      color: var(--el-color-functionnal-orange-txt);
+      color: var(--el-color-functionnal-orange);
     }
 
     &--color-persian {
+      border-color: var(--el-color-persian-50);
       background: var(--el-color-persian-50);
-      color: var(--el-color-persian-700);
+      color: var(--el-color-persian-500);
     }
 
     &--color-teal {
+      border-color: var(--el-color-functionnal-teal-bg);
       background: var(--el-color-functionnal-teal-bg);
-      color: var(--el-color-functionnal-teal-txt);
+      color: var(--el-color-functionnal-teal);
     }
 
     &--color-green {
+      border-color: var(--el-color-functionnal-green-bg);
       background: var(--el-color-functionnal-green-bg);
-      color: var(--el-color-functionnal-green-txt);
+      color: var(--el-color-functionnal-green);
     }
 
     &--color-fuschia {
+      border-color: var(--el-color-secondary-fuschia-bg);
       background: var(--el-color-secondary-fuschia-bg);
-      color: var(--el-color-secondary-fuschia-txt);
+      color: var(--el-color-secondary-fuschia);
     }
 
     &--color-gray {
+      border-color: var(--el-color-neutral-gray-50);
       background: var(--el-color-neutral-gray-50);
       color: var(--el-color-neutral-gray-500);
     }
     
     &--color-white {
+      border-color: var(--el-color-white);
+      background: var(--el-color-white);
+      color: var(--el-color-persian-500);
+    }
+    
+    &--color-amethyste {
+      border-color: var(--el-color-secondary-amethyste-bg);
+      background: var(--el-color-secondary-amethyste-bg);
+      color: var(--el-color-secondary-amethyste);
+    }
+    
+    &--color-cyan {
+      border-color: var(--el-color-secondary-cyan-bg);
+      background: var(--el-color-secondary-cyan-bg);
+      color: var(--el-color-secondary-cyan);
+    }
+    
+    &--color-bordered-persian {
+      border-color: var(--el-color-persian-500);
       background: var(--el-color-white);
       color: var(--el-color-persian-500);
     }

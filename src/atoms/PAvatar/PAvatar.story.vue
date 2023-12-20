@@ -6,11 +6,13 @@
           :pShape="currentShape"
           :pType="currentType"
           :pColor="currentColor"
-          :pSrc="url" />
+          :pSrc="url"
+        />
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          :pColor="currentColor">
+          :pColor="currentColor"
+        >
           <PIcon>
             <PIPulse />
           </PIcon>
@@ -19,63 +21,99 @@
           :pShape="currentShape"
           :pType="currentType"
           :pColor="currentColor"
-          pSrc="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+          pSrc="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        />
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          :pColor="currentColor"> AB </PAvatar>
+          :pColor="currentColor"
+        >
+          AB
+        </PAvatar>
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          pColor="orange">
+          pColor="orange"
+        >
           <PIcon>
-            <PICupHot />
+            <PIPulse />
           </PIcon>
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          pColor="persian">
+          pColor="persian"
+        >
           <PIcon>
-            <PIShop />
+            <PIPulse />
           </PIcon>
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          pColor="teal">
+          pColor="teal"
+        >
           <PIcon>
-            <PICupStraw />
+            <PIPulse />
           </PIcon>
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          pColor="green">
+          pColor="green"
+        >
           <PIcon>
-            <PIFlower />
+            <PIPulse />
           </PIcon>
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          pColor="fuschia">
+          pColor="fuschia"
+        >
           <PIcon>
-            <PIScissors />
+            <PIPulse />
           </PIcon>
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          pColor="gray">
+          pColor="gray"
+        >
           <PIcon>
-            <PITruck />
+            <PIPulse />
           </PIcon>
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
-          pColor="white">
+          pColor="cyan"
+        >
+          <PIcon>
+            <PIPulse />
+          </PIcon>
+        </PAvatar>
+        <PAvatar
+          :pShape="currentShape"
+          :pType="currentType"
+          pColor="amethyste"
+        >
+          <PIcon>
+            <PIPulse />
+          </PIcon>
+        </PAvatar>
+        <PAvatar
+          :pShape="currentShape"
+          :pType="currentType"
+          pColor="white"
+        >
+          AB
+        </PAvatar>
+        <PAvatar
+          :pShape="currentShape"
+          :pType="currentType"
+          pColor="bordered-persian"
+        >
           AB
         </PAvatar>
       </div>
@@ -83,15 +121,18 @@
         <HstRadio
           v-model="currentShape"
           title="Avatar Shape"
-          :options="avatarShapeList" />
+          :options="avatarShapeList"
+        />
         <HstRadio
           v-model="currentType"
           title="Avatar Sizes"
-          :options="avatarSizeList" />
+          :options="avatarSizeList"
+        />
         <HstRadio
           v-model="currentColor"
           title="Avatar Colors"
-          :options="avatarColorList" />
+          :options="avatarColorList"
+        />
       </template>
     </Variant>
     <Variant title="Fit Container">
@@ -99,12 +140,14 @@
         pShape="square"
         pType="large"
         :pFit="currentFit"
-        pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" />
+        pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+      />
       <template #controls>
         <HstRadio
           v-model="currentFit"
           title="Avatar Fit"
-          :options="fitList" />
+          :options="fitList"
+        />
       </template>
     </Variant>
   </Story>
@@ -114,6 +157,7 @@
 import { ref } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
 import PAvatar from './'
+import { PIPulse } from '../PIcon/components'
 
 const url = ref('https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
 const avatarShapeList: { label: string; value: PAvatarProps['pShape'] }[] = [
@@ -202,6 +246,18 @@ const avatarColorList: { label: string; value: PAvatarProps['pColor'] }[] = [
   {
     label: 'white',
     value: 'white'
+  },
+  {
+    label: 'cyan',
+    value: 'cyan'
+  },
+  {
+    label: 'amethyste',
+    value: 'amethyste'
+  },
+  {
+    label: 'bordered-persian',
+    value: 'bordered-persian'
   }
 ]
 const currentShape = ref<PAvatarProps['pShape']>('circle')
