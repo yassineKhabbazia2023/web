@@ -10,7 +10,7 @@ export interface PDoubleTextProps {
   pIconColor?: PAvatarProps['pColor']
   pIconType?: PAvatarProps['pType']
   pType: 'primary' | 'secondary'
-  pSelected: boolean
-  pDisabled: boolean
+  pSelected?: boolean
+  pDisabled?: boolean
   pBold?: boolean
 }

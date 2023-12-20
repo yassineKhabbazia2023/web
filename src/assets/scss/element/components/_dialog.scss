@@ -20,9 +20,12 @@ $dialog: (
   }
 
   .el-dialog__headerbtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
-    top: 16px;
+    top: 20px;
     right: 16px;
     
     .el-dialog__close {
@@ -34,7 +37,7 @@ $dialog: (
   .el-dialog__title {
     display: flex;
     color: var(--el-text-color-regular);
-    line-height: 1.2;
+    line-height: 40px;
   }
 
   .el-dialog__body {

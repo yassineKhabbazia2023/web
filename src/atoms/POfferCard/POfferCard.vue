@@ -69,7 +69,8 @@ defineEmits<{
     }
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     border: 1px solid var(--el-color-persian-700);
 
     #{$self}__title {

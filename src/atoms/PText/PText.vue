@@ -20,7 +20,9 @@ import type { PTextProps } from './PTextTypes'
 
 const props = withDefaults(defineProps<PTextProps>(), {
   pIcon: undefined,
-  pBold: false
+  pBold: false,
+  selected: false,
+  disabled: false
 })
 
 const pClassMapper = computed(() => ({

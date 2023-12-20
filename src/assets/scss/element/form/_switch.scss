@@ -6,7 +6,10 @@ $switch: (
   'off-color': var(--el-color-neutral-gray-100),
 );
 
-.el-switch {
+// @TODO : replace later div by class p-switch (need the new component)
+div.el-switch {
+  height: auto;
+
   &.is-disabled > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--el-color-persian-200);
     --el-switch-off-color: var(--el-color-neutral-gray-100);

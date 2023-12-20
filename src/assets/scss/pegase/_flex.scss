@@ -1,0 +1,53 @@
+$justify_attrs: flex-start, flex-end, space-around, space-between, stretch, center;
+$align_attrs: flex-start, flex-end, stretch, center, end, start;
+
+.flex {
+    display: flex;
+    flex-direction: row;
+
+    @each $attr in $justify_attrs {
+        &--justify-content-#{$attr} {
+            justify-content: $attr;
+        }
+    }
+
+    @each $attr in $align_attrs {
+        &--align-items-#{$attr} {
+            align-items: $attr;
+        }
+    }
+
+    @each $attr in $align_attrs {
+        &--align-self-#{$attr} {
+            align-self: $attr;
+        }
+    }
+
+    @each $direction in row, column, row-reverse, column-reverse {
+        &--direction-#{$direction} {
+            flex-direction: $direction;
+        }
+    }
+
+    @each $wrap in wrap, no-wrap {
+        &--#{$wrap} {
+            flex-wrap: $wrap;
+        }
+    }
+
+    @for $i from 0 through 6 {
+        &--grow-#{$i} {
+            flex-grow: $i;
+        }
+
+        &--shrink-#{$i} {
+            flex-shrink: $i;
+        }
+    }
+
+    @for $i from 0 through 100 {
+        &--basis-#{$i} {
+            flex-basis: #{$i + "%"};
+        }
+    }
+}

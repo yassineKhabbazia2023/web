@@ -5,6 +5,12 @@ $dropdown: (
   'menu-index': 10,
 );
 
+.el-dropdown {
+  &:focus-visible {
+    outline: none;
+  }
+}
+
 .el-dropdown-menu {
   &__item {
     border: none;

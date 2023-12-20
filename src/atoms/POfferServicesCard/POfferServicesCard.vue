@@ -15,15 +15,21 @@
       <div
         v-for="(service, index) in pServices"
         :key="index"
-        :class="[...getServiceClass(index), 'padding-y--3']"
+        :class="[
+          ...getServiceClass(index),
+          'padding-y--3',
+          service.pDisabled ? 'p-offer-services-card__service--disabled' : ''
+        ]"
       >
         <div class="p-offer-services-card__service-details">
           <PSwitch
-            class="p-offer-services-card__service-switch"
             v-model="service.pStatus"
+            class="p-offer-services-card__service-switch"
             :disabled="service.pDisabled"
             @change="$emit('changeServiceStatus', service)"
           />
+          <!-- @TODO : change this by the active text of the switch
+              when the component will be available -->
           <p class="p-offer-services-card__service-name font-semibold margin-left--4">
             {{ service.pName }}
           </p>
@@ -95,7 +101,13 @@ const getServiceClass = (serviceIndex: number): string[] => {
     &--border {
       border-bottom: 1px solid var(--el-color-neutral-gray-100);
     }
-    &:hover {
+
+    &--disabled {
+      pointer-events: none;
+    }
+
+    &:hover,
+    &:focus {
       #{$self}__service-details {
         color: var(--el-color-persian-500);
       }

@@ -8,5 +8,5 @@ export interface PEntityProps {
   pIconColor?: string
   pIconType?: string
   pBold?: boolean
-  pSelected: boolean
+  pSelected?: boolean
 }

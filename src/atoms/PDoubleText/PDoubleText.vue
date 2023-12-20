@@ -47,7 +47,9 @@ withDefaults(defineProps<PDoubleTextProps>(), {
   pIconShape: 'circle',
   pIconColor: 'persian-gradient',
   pBold: false,
-  pIconType: 'small'
+  pIconType: 'small',
+  pSelected: false,
+  pDisabled: false
 })
 </script>
 

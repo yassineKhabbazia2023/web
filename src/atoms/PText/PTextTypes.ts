@@ -5,6 +5,6 @@ export interface PTextProps {
   pContent: string
   pBold?: boolean
   pType: 'primary' | 'secondary' | 'drag'
-  selected: boolean
-  disabled: boolean
+  selected?: boolean
+  disabled?: boolean
 }

@@ -158,3 +158,23 @@ a {
     text-decoration: underline;
   }
 }
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.pre-line {
+  white-space: pre-line;
+}

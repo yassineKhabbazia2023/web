@@ -217,6 +217,14 @@ $tag-padding: (
     padding-right: 6px;
   }
 
+  
+  .el-icon {
+    &.el-tag__icon--left,
+    &.el-tag__icon--right {
+      cursor: initial;
+    }
+  }
+
   &__icon {
     &--left {
       margin-right: 6px;
@@ -225,6 +233,10 @@ $tag-padding: (
     &--right {
       margin-left: 6px;
     }
+  }
+
+  &__close {
+    cursor: pointer;
   }
 
   &__content {
