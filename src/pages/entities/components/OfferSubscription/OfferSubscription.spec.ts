@@ -1,13 +1,14 @@
 import { describe, it, expect } from 'vitest'
 import OfferSubscription from '.'
-import { wrapperFactory } from '@/common/testHelper'
+import { mount } from '@vue/test-utils'
 import { getMockedSubscriptionOffersServices } from './OfferSubscriptionMocks'
 
 describe('offerSubscription', () => {
   describe('props', () => {
     it('should contain card', async () => {
-      const subscriptionOffer = getMockedSubscriptionOffersServices().at(0)
-      const wrapper = await wrapperFactory(OfferSubscription, {
+      const subscriptionOffers = getMockedSubscriptionOffersServices()
+      const subscriptionOffer = subscriptionOffers[0]
+      const wrapper = await mount(OfferSubscription, {
         props: {
           subscriptionOffer
         }

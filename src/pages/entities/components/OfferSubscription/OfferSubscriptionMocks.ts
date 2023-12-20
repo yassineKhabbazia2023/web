@@ -1,7 +1,7 @@
 import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
 
 export function getMockedSubscriptionOffersServices() {
-  const Subscription = [
+  const Subscription: SubscriptionOfferServices[] = [
     {
       offerId: 1,
       offerName: 'Gestion Smart',

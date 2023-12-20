@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import OfferProviderProducts from '.'
-import { wrapperFactory } from '@/common/testHelper'
+import { mount } from '@vue/test-utils'
 import {
   getMockedSubscriptionOffersServices
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
@@ -11,7 +11,7 @@ describe('offerProviderProducts', () => {
       const offerProvider = getMockedSubscriptionOffersServices()
         .at(0)
         ?.providers?.at(0)
-      const wrapper = await wrapperFactory(OfferProviderProducts, {
+      const wrapper = await mount(OfferProviderProducts, {
         props: {
           offerProvider
         }

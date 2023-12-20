@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import Subscription from '.'
 import { getMockedSubscriptionOffers } from './SubscriptionOffersMocks'
-import { wrapperFactory } from '@/common/testHelper'
+import { mount } from '@vue/test-utils'
 import type { SubscriptionOffer } from './SubscriptionOffersTypes'
 
 describe('subscriptionOffers', () => {
@@ -14,7 +14,7 @@ describe('subscriptionOffers', () => {
   describe('props', () => {
     it('should display offers',
       async () => {
-        const wrapper = await wrapperFactory(Subscription, {
+        const wrapper = await mount(Subscription, {
           props: {
             subscriptionOffers
           }
@@ -33,7 +33,7 @@ describe('subscriptionOffers', () => {
             onSelectOffer: vi.fn()
           }
 
-          const wrapper = await wrapperFactory(Subscription, {
+          const wrapper = await mount(Subscription, {
             props: {
               modelValue: true,
               subscriptionOffers
