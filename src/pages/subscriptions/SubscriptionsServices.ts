@@ -1,21 +1,19 @@
 import { commonApi } from '@kpmg/common'
 
-import type { SubscriptionDemand } from './SubscriptionsTypes'
+import type { SubscriptionDemand, SubscriptionRequest } from './SubscriptionsTypes'
 
 function handleRequestError(action: string, error: any) {
   console!.error(`Error ${action}:`, error)
 }
 
-export async function fetchSubscriptionRequests(): Promise<any> {
+export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]|undefined> {
   try {
     const response = await commonApi().subscription.get('subscription?status=pending')
 
-    return response.data ?? []
+    return response.data
   } catch (error) {
     handleRequestError('fetching subscriptions', error)
   }
-
-  return []
 }
 
 export async function validateSubscriptionRequest(subscriptionId: string): Promise<void> {

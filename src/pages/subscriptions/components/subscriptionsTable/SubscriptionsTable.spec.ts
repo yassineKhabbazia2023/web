@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
 import SubscriptionsTable from '.'
 
-const mockedPutRequests = vi.fn().mockResolvedValue(null)
+const mockedPutRequests = vi.fn(() => Promise.resolve())
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({

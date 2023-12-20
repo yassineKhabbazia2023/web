@@ -69,7 +69,7 @@
     <PTableColumn :label="t('status')">
       <template #default="scope">
         <PTag
-          :pColor="scope.row.statusCode === 'Validated' ? 'success': 'info'"
+          :pColor="scope.row.statusCode === SubscriptionStatusCode.VALIDATED ? 'success': 'info'"
           pEffect="light"
           :pContent="formatStatus(scope.row.statusCode)"
         />
@@ -119,7 +119,7 @@ import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
 import { PButton, PDoubleText, PTable, PTableColumn, PTag, PText } from '@kpmg/styleguide'
 import { fetchSubscriptionRequests, validateSubscriptionRequest } from '../../SubscriptionsServices'
-import type { SubscriptionRequest, User } from '../../SubscriptionsTypes'
+import { SubscriptionStatusCode, type SubscriptionRequest, type User } from '../../SubscriptionsTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -129,11 +129,11 @@ const { t } = useI18n({
 const requests = ref<SubscriptionRequest[]>([])
 
 const fetchSubscriptions = async () => {
-  requests.value = await fetchSubscriptionRequests()
+  requests.value = await fetchSubscriptionRequests() ?? []
 }
 
 const formatStatus = (status: string) => {
-  return status === 'Pending' ? t('toValidate') : status
+  return status === SubscriptionStatusCode.PENDING ? t('toValidate') : status
 }
 
 const clickedRow = ref('')

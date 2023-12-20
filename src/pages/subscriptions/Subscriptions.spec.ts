@@ -6,7 +6,7 @@ import Subscriptions from './'
 const subscriptionGetMock = vi.fn().mockResolvedValue({
   data: subscriptionRequestMock
 })
-const subscriptionPutMock = vi.fn().mockResolvedValue(null)
+const subscriptionPutMock = vi.fn(() => Promise.resolve())
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({

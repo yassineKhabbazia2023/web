@@ -1,4 +1,4 @@
-import { SubscriptionRequest } from '../SubscriptionsTypes'
+import { SubscriptionRequest, SubscriptionStatusCode } from '../SubscriptionsTypes'
 
 export const subscriptionRequestMock: SubscriptionRequest[] = [
   {
@@ -21,7 +21,7 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     }],
     subscriptionDate: '2023-03-24T10:05:01.6104084',
     creationDate: '2023-03-24T10:05:01.6104084',
-    statusCode: 'Pending'
+    statusCode: SubscriptionStatusCode.PENDING
   },
   {
     subscriptionId: 13,
@@ -43,6 +43,6 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     }],
     subscriptionDate: '2023-03-30T12:32:29.9400933',
     creationDate: '2023-03-30T12:32:29.9400933',
-    statusCode: 'Pending'
+    statusCode: SubscriptionStatusCode.PENDING
   }
 ]

@@ -18,6 +18,13 @@ export interface User {
   email: string
 }
 
+/* eslint-disable no-unused-vars */
+export enum SubscriptionStatusCode {
+  PENDING = 'Pending',
+  VALIDATED = 'Validated'
+}
+/* eslint-enable no-unused-vars */
+
 export interface SubscriptionRequest {
   subscriptionId: number
   account: {
@@ -33,5 +40,5 @@ export interface SubscriptionRequest {
   users: User[]
   subscriptionDate: string
   creationDate: string
-  statusCode: string
+  statusCode: SubscriptionStatusCode
 }
