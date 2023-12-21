@@ -2,16 +2,10 @@ import { commonApi as api } from '@kpmg/common'
 
 /**
  *
-mandat vierge : GET /mandate/{mandateId}/unsigned
-
-mandat signé : GET /mandate/{mandateId}/signed
-
 upload d'un nouveau mandat signé: POST /mandate/{mandateId}/signed
-
 */
 import { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
-// export const createMandate = async ({
 export const getCompany = async ({
   ibsNumber
 }: { ibsNumber: string }): Promise<any> =>
@@ -28,18 +22,6 @@ export const downloadSignedMandate = async (mandateId: string) => {
     responseType: 'blob'
   })
 }
-
-/* export const downloadDocumentById = async (
-  { accountId, documentId }: any,
-  progressCallback?: (progressEvent: ProgressEvent) => void
-): Promise<any> => {
-  return api().mandate.get(`/${accountId}/documents/${documentId}/content`, {
-    responseType: 'blob',
-    onDownloadProgress: (progressEvent: ProgressEvent) => {
-      progressCallback && progressCallback(progressEvent)
-    }
-  })
-} */
 
 export const validateIban = async ({
   bankCode,

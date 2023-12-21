@@ -81,7 +81,9 @@ describe('componentName.vue', () => {
     expect(getMandatesCollection).toHaveBeenLastCalledWith({
       skip: 0,
       limit: 10,
-      searchTerm: inputValue
+      searchTerm: inputValue,
+      sortCriteria: '',
+      sortOrder: 'Descending'
     })
   })
 })

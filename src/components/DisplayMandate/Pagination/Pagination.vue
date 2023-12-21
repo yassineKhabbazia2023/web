@@ -35,15 +35,15 @@ const { t } = useI18n({
 const emit = defineEmits(['page-selected'])
 const props = withDefaults(defineProps<PaginationProps>(), {
   pageRangeSelectorSuffix: '',
-  pageRangeSelectorGroupLabel: ' '
+  pageRangeSelectorGroupLabel: ' ',
+  currentPage: 1
 })
 
-const currentPage = ref(1)
 const itemsByPage = ref(props.pagesRanges[0])
 
 const startIndex = computed(() => {
   if (props.pagesCount > 0) {
-    return (((currentPage.value - 1) * itemsByPage.value) + 1)
+    return (((props.currentPage - 1) * itemsByPage.value) + 1)
   }
   return 0
 })
@@ -54,14 +54,13 @@ const endIndex = computed(() => {
   return startIndex.value - 1 + itemsByPage.value
 })
 
-const handleCurrentChange = (e: number) => {
-  currentPage.value = e
-  updateListDisplay(currentPage.value, itemsByPage.value)
+const handleCurrentChange = (currentPage: number) => {
+  updateListDisplay(currentPage, itemsByPage.value)
 }
 
 const handleSizeChange = (currentItemsByPage: number) => {
   itemsByPage.value = currentItemsByPage
-  updateListDisplay(currentPage.value, itemsByPage.value)
+  updateListDisplay(props.currentPage, itemsByPage.value)
 }
 
 const updateListDisplay = (currentPage: number, itemsByPage: number) =>

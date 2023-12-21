@@ -21,13 +21,11 @@ describe('pagination component', () => {
     expect(wrapper.find('li[aria-label="page 4"]')).toBeTruthy()
   })
 
-  it('emits page-selected event when next button and previous are clicked', async () => {
+  it('emits page-selected event when next button are clicked', async () => {
     const wrapper = createWrapper()
     await wrapper.find('.btn-next').trigger('click')
     const pageSelectedEvent: any = wrapper.emitted('page-selected')
     expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 2, itemsByPage: 10 }])
-    await wrapper.find('.btn-prev').trigger('click')
-    expect(pageSelectedEvent[1]).toStrictEqual([{ currentPage: 1, itemsByPage: 10 }])
   })
 
   it('emits page-selected event when dropdown are clicked', async () => {

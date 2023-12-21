@@ -16,7 +16,7 @@ export const debounce = (callback: any, timer = 500) => {
 
 export const downloadFile = (filename: string, data: any, window: any) => {
   const url = window.URL.createObjectURL(new Blob([data]))
-  let link = document.createElement('a')
+  let link: HTMLAnchorElement | null = document.createElement('a')
   link.href = url
   link.setAttribute('download', filename)
   document.body.appendChild(link)

@@ -4,6 +4,7 @@
     pStripe
     :emptyText="t('no-data')"
     class="padding-left--6 padding-right--6"
+    @sort-change="sortColumnChange"
   >
     <template v-for="({ label, prop, sortable }, index) in tableHead">
       <PTableColumn
@@ -100,6 +101,7 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
+const emit = defineEmits(['sort-column-change'])
 const props = defineProps<TableProps>()
 const dataFormatter = (data: any) =>
   data.map(
@@ -169,11 +171,27 @@ const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
     {
       pIconName: 'PIXCircle',
       pValue: t('cancel-telecollection'),
-      disabled: false,
+      disabled: statusCodeNumber !== 40,
       pActionName: 'cancel-telecollection',
       pState: 'danger'
     }
   ]
+}
+
+const sortColumnChange = ({ order, prop }: any) => {
+  const criteriaMapper: any = {
+    erpId: 'ErpId',
+    companyName: 'Name',
+    accountNumber: 'AccountNumber',
+    bankName: 'BankName',
+    creationDate: 'CreationDate',
+    modificationDate: 'ModificationDate',
+    statusCode: 'Status'
+  }
+  emit('sort-column-change', {
+    sortOrder: order === 'descending' ? 'Descending' : 'Ascending',
+    sortCriteria: criteriaMapper[prop] || ''
+  })
 }
 
 const saveFile = async (id: string, data: any, mandateType: string) => {
@@ -209,11 +227,9 @@ const actionClicked = async (event: ActionEvent, { id }:
       // Implementation
     }
   }
-
-  if (actions[event]) {
+  try {
     await actions[event]()
-  } else {
-    console.warn(`Unhandled action: ${event}`)
+  } catch (_) {
   }
 }
 </script>

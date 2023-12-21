@@ -8,7 +8,7 @@
       pDirection="rtl"
       class="drawer-create-mandate"
       :beforeClose="drawerBeforeClose"
-      @close-drawer-button="drawerBeforeClose"
+      @close-drawer-button="drawerBeforeClose(()=> {})"
     >
       <PSteps
         v-if="currentStep <= 3"

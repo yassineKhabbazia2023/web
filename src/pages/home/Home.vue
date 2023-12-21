@@ -1,14 +1,21 @@
 <template>
   <div>
     <Header />
-    <SearchBar v-model="searchText" class="padding-left--6 padding-right--6 padding-bottom--6"/>
-    <ListMandate :data="mandatesCollection.data" />
+    <SearchBar
+      v-model="searchText"
+      class="padding-left--6 padding-right--6 padding-bottom--6"
+    />
+    <ListMandate
+      :data="mandatesCollection.data"
+      @sort-column-change="updateTableDisplay"
+    />
     <Pagination
       :pagesCount="mandatesCollection.counters.all"
       :pagesRanges="[10, 20, 30]"
       showTotalPageCounter
       class="padding-left--6 padding-right--6"
       @page-selected="updateTableDisplay"
+      :currentPage="activePage"
     />
   </div>
 </template>
@@ -35,8 +42,11 @@ const mandatesCollection = ref<MandateCollection>({
   data: []
 })
 
-const itemsToDisplay = ref(10)
+const defaultItemsToDisplay = ref(10)
+const activePage = ref(1)
 const searchText = ref('')
+const defaultSortOrder = ref('Descending')
+const defaultSortCriteria = ref('')
 
 onBeforeMount(async () => {
   try {
@@ -46,12 +56,33 @@ onBeforeMount(async () => {
   }
 })
 
-const updateTableDisplay = async ({ currentPage, itemsByPage, searchTerm = searchText.value }:
-  {currentPage: number, itemsByPage: number, searchTerm: string}) => {
+const updateTableDisplay = async ({
+  currentPage = 1,
+  itemsByPage = defaultItemsToDisplay.value,
+  searchTerm = searchText.value,
+  sortOrder = defaultSortOrder.value,
+  sortCriteria = defaultSortCriteria.value
+}:
+  {
+    currentPage: number, itemsByPage: number,
+    searchTerm: string, sortOrder: string,
+    sortCriteria: string
+  }) => {
   try {
+    if (currentPage !== activePage.value) {
+      activePage.value = currentPage
+    }
     const skip = (currentPage - 1) * itemsByPage
-    itemsToDisplay.value = itemsByPage
-    const { data } = await getMandatesCollection({ skip, limit: itemsByPage, searchTerm })
+    defaultItemsToDisplay.value = itemsByPage
+    defaultSortOrder.value = sortOrder
+    defaultSortCriteria.value = sortCriteria
+    const { data } = await getMandatesCollection({
+      skip,
+      limit: itemsByPage,
+      searchTerm: searchTerm.trim(),
+      sortOrder,
+      sortCriteria
+    })
     mandatesCollection.value = data
   } catch (_) {
   }
@@ -62,10 +93,9 @@ const updateTableDisplayDebounced = debounce(updateTableDisplay)
 watch(searchText,
   (value: string) =>
     updateTableDisplayDebounced({
-      itemsByPage: itemsToDisplay.value,
-      searchTerm: value,
-      currentPage: 1
-    }))
+      searchTerm: value
+    })
+)
 
 defineExpose({
   updateTableDisplay
