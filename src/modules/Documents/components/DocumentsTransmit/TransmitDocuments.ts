@@ -19,13 +19,12 @@ export function useTransmitDocuments(
       transmitDocumentsProps.value.selectedDocumentsIds.length === 0
     ) return
 
-    try {
-      await transmitDocuments(
-        transmitDocumentsProps.value.currentService,
-        transmitDocumentsProps.value.selectedEntity,
-        transmitDocumentsProps.value.selectedDocumentsIds
-      )
-    } catch (err) { console.error(err) }
+    await transmitDocuments(
+      transmitDocumentsProps.value.currentService,
+      transmitDocumentsProps.value.selectedEntity,
+      transmitDocumentsProps.value.selectedDocumentsIds
+    )
+
   }
 
   return {

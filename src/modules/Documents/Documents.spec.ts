@@ -441,6 +441,25 @@ describe('documents', () => {
         [documentsResponsePayload.documentsPage.items[0].id]
       )
     })
+
+    // eslint-disable-next-line max-len
+    it('should not call transmit document composable oppon  toolbox-action-triggered whe no selected documents', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+
+      await nextTick()
+
+      const documentsList = wrapper.findComponent(DocumentsList)
+      await nextTick()
+
+      await documentsList.vm.$emit(
+        'toolbox-action-triggered',
+        'transmit-document'
+      )
+
+      expect(vi.mocked(transmitDocuments)).toHaveBeenCalledTimes(0)
+    })
     // eslint-disable-next-line max-len
     it('should call transmit document composable oppon click on action bar transmit button', async () => {
       const wrapper = createWrapper()
