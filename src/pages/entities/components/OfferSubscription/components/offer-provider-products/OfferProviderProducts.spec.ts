@@ -4,13 +4,16 @@ import { mount } from '@vue/test-utils'
 import {
   getMockedSubscriptionOffersServices
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
+import type {
+  SubscriptionOfferProvider
+} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 
 describe('offerProviderProducts', () => {
   describe('props', () => {
     it('should display offer provider with services', async () => {
       const offerProvider = getMockedSubscriptionOffersServices()
         .at(0)
-        ?.providers?.at(0)
+        ?.providers?.at(0) as SubscriptionOfferProvider
       const wrapper = await mount(OfferProviderProducts, {
         props: {
           offerProvider

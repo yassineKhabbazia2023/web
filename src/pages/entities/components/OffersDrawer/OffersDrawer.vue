@@ -11,11 +11,34 @@
       data-ut="drawer"
     >
       <template v-if="internalIsOpened">
-        <OfferSubscription
-          v-if="!!currentSubscriptionOffer"
-          data-ut="offer"
-          :subscriptionOffer="currentSubscriptionOffer"
-        />
+        <div v-if="!!currentSubscriptionOffer">
+          <PSteps
+            v-if="currentSubscriptionOffer?.approvalRequired"
+            :active="activeStep"
+            :direction="offerStepperConfig.direction"
+            :processStatus="offerStepperConfig.processStatus"
+            :finishStatus="offerStepperConfig.finishStatus"
+            class="margin-bottom--9"
+            data-ut="offer-stepper"
+          >
+            <PStepItem :title="offerStepTitles.services" />
+            <PStepItem :title="offerStepTitles.users" />
+            <PStepItem :title="offerStepTitles.information" />
+          </PSteps>
+          <OfferSubscription
+            v-if="activeStep === offerStepperStep.SERVICES"
+            data-ut="offer"
+            :subscriptionOffer="currentSubscriptionOffer"
+          />
+          <p
+            v-else-if="activeStep === offerStepperStep.USERS"
+          ></p>
+          <p
+            v-else-if="
+              activeStep === offerStepperStep.INFORMATION
+            "
+          ></p>
+        </div>
         <SubscriptionOffers
           v-else
           data-ut="offers"
@@ -25,11 +48,13 @@
       </template>
       <template #footer>
         <NextPreviousButtons
-          data-ut="nextPreviousButtons"
           v-if="!!currentSubscriptionOffer"
+          :hasCheckIcon="isSubmitButton"
+          data-ut="nextPreviousButtons"
           :previousLabel="t('previousLabel')"
-          :nextLabel="t('nextLabel')"
+          :nextLabel="nextLabel"
           @click-previous="onClickPrevious"
+          @click-next="onClickNext"
         />
       </template>
     </PDrawer>
@@ -37,21 +62,30 @@
 </template>
 
 <i18n lang="yaml">
-  en-US:
-    drawerTitle: 'Offers available on this folder'
-    previousLabel: 'Previous'
-    nextLabel: 'Next'
-  fr-FR:
-    drawerTitle: 'Offres activables sur ce dossier'
-    previousLabel: 'Précédent'
-    nextLabel: 'Suivant'
+en-US:
+  drawerTitle: 'Offers available on this folder'
+  previousLabel: 'Previous'
+  nextLabel: 'Next'
+  submitLabel: 'Submit'
+  services: 'Services'
+  users: 'Users'
+  information: 'Information'
+fr-FR:
+  drawerTitle: 'Offres activables sur ce dossier'
+  previousLabel: 'Précédent'
+  nextLabel: 'Suivant'
+  submitLabel: 'Valider'
+  services: 'Services'
+  users: 'Utilisateurs'
+  information: 'Informations'
 </i18n>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer } from '@kpmg/styleguide'
+import { PDrawer, PSteps, PStepItem } from '@kpmg/styleguide'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
+import { offerStepperStep } from './OffersDrawerTypes'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import NextPreviousButtons from '../NextPreviousButtons'
@@ -64,6 +98,27 @@ import { getAllOffers, getOffer } from '@/services/offer'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
+})
+
+const activeStep = ref<number>(0)
+
+const offerStepperConfig: any = {
+  direction: 'horizontal',
+  processStatus: 'process',
+  finishStatus: 'success'
+}
+
+const offerStepTitles = {
+  services: t('services'),
+  users: t('users'),
+  information: t('information')
+}
+
+const isSubmitButton = computed((): boolean => {
+  return (
+    activeStep.value === offerStepperStep.INFORMATION ||
+    !currentSubscriptionOffer.value?.approvalRequired
+  )
 })
 
 const emit = defineEmits<{
@@ -92,8 +147,25 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
   currentSubscriptionOffer.value = await getOffer(selectedOfferId)
 }
 
+const nextLabel = computed((): string => {
+  return isSubmitButton.value ? t('submitLabel') : t('nextLabel')
+})
+
 function onClickPrevious() {
-  setSelectedOffer()
+  if (activeStep.value > offerStepperStep.SERVICES) {
+    --activeStep.value
+  } else {
+    setSelectedOffer()
+  }
+}
+
+function onClickNext() {
+  if (
+    activeStep.value < offerStepperStep.INFORMATION &&
+    currentSubscriptionOffer.value?.approvalRequired
+  ) {
+    ++activeStep.value
+  }
 }
 
 function onSelectOffer(offerId: number) {

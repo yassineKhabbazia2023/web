@@ -11,15 +11,15 @@
       </PIcon>
       {{ previousLabel }}
     </PButton>
-
     <PButton
-      data-ut="nextButton"
       pType="primary"
       @click="emit('clickNext')"
+      data-ut="nextButton"
     >
       {{ nextLabel }}
       <PIcon class="el-button__icon--right">
-        <PIArrowRight />
+        <PICheck v-if="hasCheckIcon" />
+        <PIArrowRight v-else />
       </PIcon>
     </PButton>
   </div>
@@ -27,12 +27,18 @@
 
 <script setup lang="ts">
 import { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
-import { PButton, PIcon, PIArrowLeft, PIArrowRight } from '@kpmg/styleguide'
+import {
+  PButton,
+  PIcon,
+  PIArrowLeft,
+  PIArrowRight,
+  PICheck
+} from '@kpmg/styleguide'
 
 defineProps<NextPreviousButtonsProps>()
 
 const emit = defineEmits<{
-  'clickPrevious': [],
-  'clickNext': []
+  clickPrevious: []
+  clickNext: []
 }>()
 </script>

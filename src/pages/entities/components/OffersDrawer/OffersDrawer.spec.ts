@@ -2,16 +2,21 @@ import { describe, it, expect, vi } from 'vitest'
 import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
-import type { SubscriptionOffer } from '../SubscriptionOffers/SubscriptionOffersTypes'
+import { getMockedSubscriptionOffersServices } from '../OfferSubscription/OfferSubscriptionMocks'
+import type {
+  SubscriptionOffer,
+  SubscriptionOfferServices
+} from '../SubscriptionOffers/SubscriptionOffersTypes'
 
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
+const subscriptionOffersServices: SubscriptionOfferServices[] =
+getMockedSubscriptionOffersServices()
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    offer: {
-      get: vi.fn().mockResolvedValue({ data: subscriptionOffers })
-    }
-  })
+vi.mock('@/services/offer', () => ({
+  getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
+  getOffer: vi.fn((offerId) =>
+    Promise.resolve(subscriptionOffersServices.find((item) => item.offerId === offerId))
+  )
 }))
 
 async function getWrapper(isOpened: boolean) {
@@ -87,5 +92,32 @@ describe('offersDrawer', () => {
         expect(offers.exists()).toBeFalsy()
       }
     )
+  })
+  describe('offerStepper', () => {
+    it('step should change after clicking the Next button', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]')
+      await firstOffer.trigger('click')
+      await flushPromises()
+
+      const offerStepper = wrapper.find('[data-ut=offer-stepper]')
+      expect(offerStepper.exists()).toBeTruthy()
+
+      const offer = wrapper.find('[data-ut=offer]')
+      expect(offer.exists()).toBeTruthy()
+    })
+
+    it('should display the offer stepper when validation is not required', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]:nth-child(2)')
+      await firstOffer.trigger('click')
+      await flushPromises()
+
+      const offerStepper = wrapper.find('[data-ut=offer-stepper]')
+      expect(offerStepper.exists()).toBeFalsy()
+
+      const offer = wrapper.find('[data-ut=offer]')
+      expect(offer.exists()).toBeTruthy()
+    })
   })
 })

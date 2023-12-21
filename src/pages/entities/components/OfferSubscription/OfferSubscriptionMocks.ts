@@ -72,7 +72,7 @@ export function getMockedSubscriptionOffersServices() {
       offerPrice: 0,
       offerPriceType: 'free',
       logoName: 'meg',
-      approvalRequired: true,
+      approvalRequired: false,
       offersBookLink: 'test link',
       offerDescription: 'test description',
       intranetLink: 'test-link',
