@@ -14,7 +14,9 @@
         :key="prop"
       >
         <template #default="scope">
-          <PToolbox :pElements="actionsBuilder(scope.row.statusCode)">
+          <PToolbox
+            :pElements="actionsBuilder(scope.row.statusCode)"
+            @p-toolbox-item-clicked="actionClicked($event, scope.row)">
             <PButton pType="generic">
               <PIcon>
                 <PIThreeDots />
@@ -87,8 +89,12 @@ import {
   PIcon,
   PIThreeDots
 } from '@kpmg/styleguide'
-import { dateFormatter } from '@/helpers/utils'
-import type { TableProps } from './Table'
+import { dateFormatter, downloadFile } from '@/helpers/utils'
+import type { TableProps, ActionEvent } from './Table'
+import { downloadUnsignedMandate, downloadSignedMandate } from '@/services/mandate'
+
+declare let window: any
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
@@ -168,6 +174,47 @@ const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
       pState: 'danger'
     }
   ]
+}
+
+const saveFile = async (id: string, data: any, mandateType: string) => {
+  if (window.showSaveFilePicker && 'showSaveFilePicker' in window) {
+    const fileHandle = await window.showSaveFilePicker({
+      suggestedName: `${mandateType}-mandate-${id}.pdf`,
+      types: [{
+        description: 'PDF Document',
+        accept: { 'application/pdf': ['.pdf'] }
+      }]
+    })
+
+    const writableStream = await fileHandle.createWritable()
+    await writableStream.write(data)
+    await writableStream.close()
+  } else {
+    downloadFile(`${mandateType}-mandate-${id}.pdf`, data, window)
+  }
+}
+
+const actionClicked = async (event: ActionEvent, { id }:
+  { id: string, accountNumber: string, companyName: string }) => {
+  const actions: Record<any, () => Promise<void>> = {
+    'download-pre-filled-mandate': async () => {
+      const { data } = await downloadUnsignedMandate(id)
+      await saveFile(id, data, 'unsigned')
+    },
+    'download-signed-mandate': async () => {
+      const { data } = await downloadSignedMandate(id)
+      await saveFile(id, data, 'signed')
+    },
+    'cancel-telecollection': async () => {
+      // Implementation
+    }
+  }
+
+  if (actions[event]) {
+    await actions[event]()
+  } else {
+    console.warn(`Unhandled action: ${event}`)
+  }
 }
 </script>
 

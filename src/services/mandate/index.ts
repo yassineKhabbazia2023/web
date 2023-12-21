@@ -23,6 +23,12 @@ export const downloadUnsignedMandate = async (mandateId: string) => {
   })
 }
 
+export const downloadSignedMandate = async (mandateId: string) => {
+  return await api().mandate.get(`/mandate/${mandateId}/signed`, {
+    responseType: 'blob'
+  })
+}
+
 /* export const downloadDocumentById = async (
   { accountId, documentId }: any,
   progressCallback?: (progressEvent: ProgressEvent) => void

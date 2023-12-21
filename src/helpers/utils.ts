@@ -13,3 +13,15 @@ export const debounce = (callback: any, timer = 500) => {
     }, timer)
   }
 }
+
+export const downloadFile = (filename: string, data: any, window: any) => {
+  const url = window.URL.createObjectURL(new Blob([data]))
+  let link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', filename)
+  document.body.appendChild(link)
+  link.click()
+  window.URL.revokeObjectURL(url)
+  document.body.removeChild(link)
+  link = null
+}
