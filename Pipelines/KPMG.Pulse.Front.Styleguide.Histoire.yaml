@@ -51,33 +51,25 @@ extends:
     deploy:
       environments:
       - ${{ if ne(parameters.devIndex, 0) }}:
-        - name: DEV
-          displayName: Developpement
-          ${{ if lt(parameters.devIndex, 10) }}:
-            poolAgent: Pulse-dev0${{ parameters.devIndex }}
-          ${{ else }}:
-            poolAgent: Pulse-dev${{ parameters.devIndex }}
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          variables:
-          - name: azureSC
-            value: PULSE-DEV
-          - ${{ if lt(parameters.devIndex, 10) }}:
-            - name: storageAccount
-              value: frdev0${{ parameters.devIndex }}frontsa01platform
-          - ${{ else }}:
-            - name: storageAccount
-              value: frdev${{ parameters.devIndex }}frontsa01platform
+        - ${{ if lt(parameters.devIndex, 10) }}:
+          - name: storageAccount
+            value: frdev0${{ parameters.devIndex }}frontsa01platform
           - name: cdn_resourcegroup
-            value: frdevcommon
+            value: frdev0${{ parameters.devIndex }}hub
           - name: cdn_profile
-            value: frdevcommoncdn01profile
-          - ${{ if lt(parameters.devIndex, 10) }}:
-            - name: cdn_endpoint
-              value: histoire-dev0${{ parameters.devIndex }}
-          - ${{ else }}:
-            - name: cdn_endpoint
-              value: histoire-dev${{ parameters.devIndex }}
-      - ${{ if and(contains(variables['Build.SourceBranch'], 'develop'), ne(parameters.deployType, 'onlyDev')) }}:
+            value: frdev0${{ parameters.devIndex }}hubafd01profile
+          - name: cdn_endpoint
+            value: histoire-dev0${{ parameters.devIndex }}
+        - ${{ else }}:
+          - name: storageAccount
+            value: frdev${{ parameters.devIndex }}frontsa01platform
+          - name: cdn_resourcegroup
+            value: frdev${{ parameters.devIndex }}hub
+          - name: cdn_profile
+            value: frdev${{ parameters.devIndex }}hubafd01profile
+          - name: cdn_endpoint
+            value: histoire-dev${{ parameters.devIndex }}
+      - ${{ if and(contains(variables['Build.SourceBranch'], 'develop'), eq(parameters.deployType, 'standard')) }}:
         - name: ITG
           displayName: Developpement
           poolAgent: Pulse-itg01
@@ -88,12 +80,12 @@ extends:
           - name: storageAccount
             value: fritg01frontsa01platform
           - name: cdn_resourcegroup
-            value: fritgcommon
+            value: fritg01hub
           - name: cdn_profile
-            value: fritgcommoncdn01profile
+            value: fritg01hubafd01profile
           - name: cdn_endpoint
             value: histoire-itg01
-      - ${{ if and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')) }}:
+      - ${{ if or(and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')), and(contains(variables['Build.SourceBranch'], 'develop'), eq(parameters.deployType, 'developToRec'))) }}:
         - name: REC
           displayName: Developpement
           poolAgent: Pulse-itg01
@@ -104,9 +96,9 @@ extends:
           - name: storageAccount
             value: frrec01frontsa01platform
           - name: cdn_resourcegroup
-            value: frreccommon
+            value: frrec01hub
           - name: cdn_profile
-            value: frreccommoncdn01profile
+            value: frrec01hubafd01profile
           - name: cdn_endpoint
             value: histoire-rec01
       steps:
