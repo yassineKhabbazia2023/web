@@ -87,6 +87,7 @@
       v-if="openOffersDrawer"
       v-model="openOffersDrawer"
     />
+
   </div>
 </template>
 

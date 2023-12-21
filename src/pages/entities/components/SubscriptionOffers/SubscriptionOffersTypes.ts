@@ -1,28 +1,35 @@
 export interface SubscriptionOfferProduct {
   productName: string
   productLabel: string
+  enabled: boolean
   isOptionnal: boolean
-  priceType?: string
-  price?: number
-  globalProductConfigurationId: string
-}
+  priceType: string
+  price: number
+ }
 
 export interface SubscriptionOfferProvider {
   providerName: string
   providerEditor: string
   providerCategory: string
   logoName: string
-  products?: SubscriptionOfferProduct[]
+  products: SubscriptionOfferProduct[]
 }
 
 export interface SubscriptionOffer {
-  offerId: string
+  offerId: number
   offerName: string
   offerLabel: string
+  offerPrice: number
+  offerPriceType: string
   logoName: string
-  offerPrice?: number
-  providers?: SubscriptionOfferProvider[]
-  approvalRequired?: boolean
+}
+
+export interface SubscriptionOfferServices extends SubscriptionOffer {
+  offerDescription: string
+  offersBookLink: string
+  approvalRequired: boolean
+  intranetLink: string
+  providers: SubscriptionOfferProvider[]
 }
 
 export interface SubscriptionOffersProps {

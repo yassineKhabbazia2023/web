@@ -2,58 +2,52 @@ import type { SubscriptionOffer } from './SubscriptionOffersTypes'
 
 export function getMockedSubscriptionOffers() {
   const Subscription = [{
+    offerId: 1,
     offerName: 'Gestion Smart',
     offerLabel: 'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
-    logoName: 'meg',
-    offerId: '0909484872764664525621',
     offerPrice: 0,
-    providers: [],
-    approvalRequired: true
+    offerPriceType: 'free',
+    logoName: 'meg'
   },
   {
+    offerId: 2,
     offerName: 'Gestion Premium',
     offerLabel: 'Mon expert en gestion en version premium',
-    logoName: 'meg',
-    offerId: '0909484872764664525622',
     offerPrice: 0,
-    providers: [],
-    approvalRequired: true
+    offerPriceType: 'free',
+    logoName: 'meg'
   },
   {
+    offerId: 3,
     offerName: 'Mes Modules de Compta',
     offerLabel: 'Loop collaboratif (myPulse compta)',
-    logoName: 'loop-color',
-    offerId: '0909484872764664525623',
     offerPrice: 0,
-    providers: [],
-    approvalRequired: true
+    offerPriceType: 'free',
+    logoName: 'loop-color'
   },
   {
+    offerId: 4,
     offerName: 'Externalisation de la paie',
     offerLabel: 'Gestion de la paie par KPMG, pour le clients, sur Silae',
-    logoName: 'silae-color',
-    offerId: '0909484872764664525624',
     offerPrice: 0,
-    providers: [],
-    approvalRequired: true
+    offerPriceType: 'free',
+    logoName: 'silae-color'
   },
   {
+    offerId: 5,
     offerName: 'Mes modules de paie',
     offerLabel: 'Gestion de la paie par le client , sous supervision kpmg, sur Silae',
-    logoName: 'silae-color',
-    offerId: '0909484872764664525625',
     offerPrice: 0,
-    providers: [],
-    approvalRequired: true
+    offerPriceType: 'free',
+    logoName: 'silae-color'
   },
   {
+    offerId: 6,
     offerName: 'Ma Banque',
     offerLabel: 'Visualisation des données bancaires',
-    logoName: 'iconpulse-color',
-    offerId: '0909484872764664525626',
     offerPrice: 0,
-    providers: [],
-    approvalRequired: true
+    offerPriceType: 'free',
+    logoName: 'iconpulse-color'
   }] satisfies SubscriptionOffer[] as SubscriptionOffer[]
 
   return Subscription

@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { POfferCard } from '@kpmg/styleguide'
-import type { SubscriptionOffer, SubscriptionOffersProps } from './SubscriptionOffersTypes'
+import type { SubscriptionOffersProps } from './SubscriptionOffersTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -40,16 +40,13 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'selectOffer': [SubscriptionOffer|undefined]
+  'selectOffer': [number]
 }>()
 
-const props = defineProps<SubscriptionOffersProps>()
+defineProps<SubscriptionOffersProps>()
 
-function onSelectOffer(selectedOfferId: string) {
-  const subscriptionOffer = props.subscriptionOffers
-    .find(({ offerId }) => offerId === selectedOfferId)
-
-  emit('selectOffer', subscriptionOffer)
+function onSelectOffer(selectedOfferId: number) {
+  emit('selectOffer', selectedOfferId)
 }
 </script>
 

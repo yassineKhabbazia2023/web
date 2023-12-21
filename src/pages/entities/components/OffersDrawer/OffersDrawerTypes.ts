@@ -1,3 +1,3 @@
 export interface OffersDrawerProps {
-  modelValue: boolean,
+  modelValue: boolean
 }
