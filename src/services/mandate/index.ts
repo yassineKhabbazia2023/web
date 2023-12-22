@@ -23,6 +23,10 @@ export const downloadSignedMandate = async (mandateId: string) => {
   })
 }
 
+export const terminateMandate = async (mandateId: string) => {
+  return await api().mandate.post(`/mandate/${mandateId}/deactivate`)
+}
+
 export const validateIban = async ({
   bankCode,
   branchCode,
