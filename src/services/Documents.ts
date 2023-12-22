@@ -137,3 +137,18 @@ export const transmitDocuments = async (
     }
   )
 }
+
+export const previewDocument = async (
+  serviceId: Service['ServiceId'],
+  entityId: string,
+  documentId: Document['id']
+): Promise<{ data: any; headers: any }> => {
+  const apiObject = api().ds
+  return await apiObject.get(
+    `${serviceId}/${entityId}/documents/${documentId}/preview`,
+    {
+      responseType: 'arraybuffer'
+    }
+  )
+}
+

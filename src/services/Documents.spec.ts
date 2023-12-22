@@ -8,7 +8,8 @@ import {
   renameDocument,
   uploadDocument,
   moveDocuments,
-  transmitDocuments
+  transmitDocuments,
+  previewDocument
 } from './Documents'
 import type { Service } from '@/models/Service'
 import { Document } from '@/models/Document'
@@ -232,6 +233,21 @@ describe('documents service', () => {
         headers: {
           'Content-Type': 'application/json'
         }
+      }
+    )
+  })
+
+  it('should call api  when previewDocument is called ', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+    const accountId = 'my-account-id'
+
+    await previewDocument(service.ServiceId, accountId, '1234')
+
+    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledWith(
+      'service-1/my-account-id/documents/1234/preview',
+      {
+        responseType: 'arraybuffer'
       }
     )
   })

@@ -1,7 +1,7 @@
 <template>
   <div class="treeview" :class="{ 'treeview--is-loading': isLoading }">
     <div v-if="isLoading" class="treeview__loader">
-      <PLoader type="gradient" size="42" />
+      <PLoader pType="gradient" size="42" />
     </div>
 
     <div v-else-if="defaultFolder !== null">

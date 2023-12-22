@@ -56,26 +56,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  PIFileText,
-  PIFiletypeBmp,
-  PIFiletypeCsv,
-  PIFiletypeDoc,
-  PIFiletypeDocx,
-  PIFiletypeGif,
-  PIFiletypeHeic,
-  PIFiletypeJpg,
-  PIFiletypeMd,
-  PIFiletypePdf,
-  PIFiletypePng,
-  PIFiletypePpt,
-  PIFiletypePptx,
-  PIFiletypeRaw,
-  PIFiletypeSvg,
-  PIFiletypeTiff,
-  PIFiletypeTxt,
-  PIFiletypeXls,
-  PIFiletypeXlsx,
-  PIFiletypeXml,
   PIStars,
   PIArrowRepeat,
   PIExclamationTriangle,
@@ -86,56 +66,12 @@ import {
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
+import { getFileIcon } from '@/modules/Documents/helpers/filesExtensions'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 
 const props = defineProps<TableElementPops>()
 
 const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])
-
-const getFileIcon = (fileName: string) => {
-  switch (fileName.split('.').pop()) {
-    case 'bmp':
-      return PIFiletypeBmp
-    case 'csv':
-      return PIFiletypeCsv
-    case 'doc':
-      return PIFiletypeDoc
-    case 'docx':
-      return PIFiletypeDocx
-    case 'gif':
-      return PIFiletypeGif
-    case 'heic':
-      return PIFiletypeHeic
-    case 'jpg':
-      return PIFiletypeJpg
-    case 'md':
-      return PIFiletypeMd
-    case 'pdf':
-      return PIFiletypePdf
-    case 'png':
-      return PIFiletypePng
-    case 'ppt':
-      return PIFiletypePpt
-    case 'pptx':
-      return PIFiletypePptx
-    case 'raw':
-      return PIFiletypeRaw
-    case 'svg':
-      return PIFiletypeSvg
-    case 'tiff':
-      return PIFiletypeTiff
-    case 'txt':
-      return PIFiletypeTxt
-    case 'xls':
-      return PIFiletypeXls
-    case 'xlsx':
-      return PIFiletypeXlsx
-    case 'xml':
-      return PIFiletypeXml
-    default:
-      return PIFileText
-  }
-}
 
 const tagIconByState = {
   default: PIStars,

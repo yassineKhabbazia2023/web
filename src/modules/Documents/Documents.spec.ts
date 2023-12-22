@@ -26,6 +26,7 @@ import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import DocumentMove from './components/DocumentsMove'
 import { Folder } from '@/models/Folder'
 import { PBreadcrumb } from '@kpmg/styleguide'
+import DocumentPreview from './components/DocumentPreview'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -78,7 +79,13 @@ vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
   downloadDocuments: vi.fn(),
   downloadDocument: vi.fn(),
-  transmitDocuments: vi.fn()
+  transmitDocuments: vi.fn(),
+  previewDocument: vi.fn(() => {
+    return Promise.resolve({
+      data: new ArrayBuffer(1),
+      headers: { 'content-type': 'image/jpeg' }
+    })
+  })
 }))
 
 vi.mock('./helpers/downloadFilesHelper', () => ({
@@ -543,6 +550,25 @@ describe('documents', () => {
           '-created'
         )
       })
+
+    it('open drawer when row clicked', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments =
+                [documentsResponsePayload.documentsPage.items[0]]
+      await nextTick()
+      const documents = wrapper.findComponent(DocumentsList)
+      await nextTick()
+
+      await documents.vm.$emit('table-row-clicked', componentInstance.selectedDocuments[0])
+
+      const documentPreview = wrapper.findComponent(DocumentPreview)
+
+      expect(documentPreview.props('openDrawer')).toBeTruthy()
+      expect(documentPreview.props('document'))
+        .toStrictEqual(componentInstance.selectedDocuments[0])
+    })
   })
 })
 

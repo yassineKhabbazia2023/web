@@ -53,7 +53,8 @@ const emit = defineEmits([
   'toolbox-action-triggered',
   'actionbar-button-clicked',
   'document-selection-change',
-  'on-selection-change'
+  'on-selection-change',
+  'table-row-clicked'
 ])
 
 defineProps<DocumentsListProps>()
@@ -88,6 +89,7 @@ const selectRow = (documentRow: Document) => {
 
   documentsListTableInstance?.clearSelection()
   documentsListTableInstance?.toggleRowSelection(documentRow, true)
+  emit('table-row-clicked', documentRow)
 }
 
 const handleSelectionChange = (documentsSelection:Document[]) => {

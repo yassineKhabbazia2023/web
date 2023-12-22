@@ -21,6 +21,7 @@
       @on-sort-change="handleSortChange"
       @toolbox-action-triggered="handleToolboxActionTriggered"
       @document-selection-change="handleOnDocumentsSelectionChange"
+      @table-row-clicked="handleOnRowTableDocumentsClicked"
     />
 
     <PPagination
@@ -40,7 +41,7 @@
 
   <PLoader
     v-show="isLoading"
-    type="gradient"
+    pType="gradient"
     size="42"
   />
 
@@ -87,6 +88,18 @@
     @close-upload-documents-modal="handleCloseUploadDocumentsModal"
     @refresh-documents-list = "fetchDocuments"
     />
+  <DocumentPreview
+    v-if="documentToPreview"
+    :openDrawer="isPreviewDrawerOpened"
+    :document="documentToPreview"
+    :serviceId="currentService"
+    :entityId="selectedEntity"
+    :selectedDocumentIndex="selectedDocumentIndex"
+    :totalDocumentsCount="totalDocumentsCount"
+    @next-document-preview-button-click="handleNextBuuttonClickedForPreviewDocument"
+    @previous-document-preview-button-click="handlePreviewButtonClickedForPreviewDocument"
+
+  />
 </template>
 
 <script setup lang="ts">
@@ -112,6 +125,7 @@ import { useTransmitDocuments } from
   '@/modules/Documents/components/DocumentsTransmit/TransmitDocuments'
 import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
+import DocumentPreview from './components/DocumentPreview'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -139,6 +153,7 @@ const isDeletePopupVisible = ref(false)
 const isLoading = ref(false)
 const isTransmitDocumentsLoading = ref(false)
 
+const isPreviewDrawerOpened = ref(false)
 const paginationLabel = computed(() => {
   if (!documents.value) return
 
@@ -174,6 +189,9 @@ const handleSortChange = async (sortQueryField:string) => {
 }
 
 const selectedDocuments = ref<Document[]>([])
+const documentToPreview = ref<Document>()
+const selectedDocumentIndex = ref<number>(0)
+const totalDocumentsCount = ref<number>(0)
 
 const selectedDocumentsForMove = ref<Document[]>(deepCopy(selectedDocuments.value))
 const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = computed(() => {
@@ -198,6 +216,25 @@ const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   }
 }
 
+const handleOnRowTableDocumentsClicked = (document:Document) => {
+  isPreviewDrawerOpened.value = !isPreviewDrawerOpened.value
+  documentToPreview.value = document
+  if (documents.value) {
+    selectedDocumentIndex.value = getSelectedDocumentIndex(document)
+
+    totalDocumentsCount.value = documents.value.documentsPage.totalItems
+  }
+}
+const getSelectedDocumentIndex = (document:Document): number => {
+  let index = 0
+  if (documents.value) {
+    index = documents.value.documentsPage.items.indexOf(document) + 1
+    if (documents.value.documentsPage.startIndex > 0) {
+      index += documents.value.documentsPage.startIndex
+    }
+  }
+  return index
+}
 const { handleDownloadDocumentsEvent } =
 useDownloadDocuments(downloadDocumentsProps)
 
@@ -337,6 +374,26 @@ const handleFolderNavigation = (id: number) => {
   const folder = findFolderDeepById(props.currentServiceFolder, id)
   if (folder) {
     emit('change-selected-folder', folder)
+  }
+}
+const handleNextBuuttonClickedForPreviewDocument = () => {
+  if (documents.value) {
+    documentToPreview.value = documents.value?.documentsPage.items[selectedDocumentIndex.value]
+    if (documentToPreview.value) {
+      selectedDocumentIndex.value = selectedDocumentIndex.value + 1
+
+      totalDocumentsCount.value = documents.value.documentsPage.totalItems
+    }
+  }
+}
+const handlePreviewButtonClickedForPreviewDocument = () => {
+  if (documents.value) {
+    documentToPreview.value = documents.value.documentsPage.items[selectedDocumentIndex.value - 2]
+    if (documentToPreview.value) {
+      selectedDocumentIndex.value = selectedDocumentIndex.value - 1
+
+      totalDocumentsCount.value = documents.value.documentsPage.totalItems
+    }
   }
 }
 </script>
