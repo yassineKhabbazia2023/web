@@ -113,6 +113,16 @@ $spacing-unit: 0.4rem;
     &-left--#{$i} {
       margin-left: -($spacing-unit * $i) !important;
     }
+
+    &-x--#{$i} {
+      margin-left: -($spacing-unit * $i) !important;
+      margin-right: -($spacing-unit * $i) !important;
+    }
+
+    &-y--#{$i} {
+      margin-top: -($spacing-unit * $i) !important;
+      margin-bottom: -($spacing-unit * $i) !important;
+    }
   }
 
   .padding {
