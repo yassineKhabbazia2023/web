@@ -57,7 +57,7 @@ describe('pOption', () => {
     expect(pOptions).toHaveLength(options.length)
 
     expect(pOptions.at(0)?.text()).toBe(options.at(0)?.pLabel)
-    expect(pOptions.at(1)?.text()).toBe(options.at(0)?.pLabel)
+    expect(pOptions.at(1)?.text()).toBe(options.at(1)?.pLabel)
 
     const slots = wrapper.findAll('[data-ut="slot"]')
     expect(slots).toHaveLength(0)
