@@ -6,7 +6,11 @@ $dropdown: (
 );
 
 .el-dropdown {
-  &:focus-visible {
+  outline: none;
+}
+
+.el-tooltip {
+  &__trigger {
     outline: none;
   }
 }

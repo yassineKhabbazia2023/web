@@ -89,6 +89,7 @@ export { default as PToolboxItem } from './atoms/PToolboxItem'
 export { default as PTooltip } from './atoms/PTooltip'
 export { default as PTree } from './organisms/PTree'
 export { default as PUpload } from './atoms/PUpload'
+export { default as PUserCard } from './atoms/PUserCard'
 
 // Export types from components with ENUM
 export * from './atoms/PAvatar/PAvatarTypes'

@@ -15,7 +15,6 @@
             :pIconName="pIconName"
             :pState="pState"
             :disabled="disabled"
-            :pActionName="pActionName"
             @click="$emit('p-toolbox-item-clicked', pActionName)"
           />
         </ElDropdownItem>

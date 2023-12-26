@@ -6,7 +6,6 @@
         :pIconName="defaultState.pIconName"
         :pState="defaultState.pState"
         :disabled="defaultState.disabled"
-        :pActionName="defaultState.pActionName"
       />
       <template #controls>
         <HstText v-model="defaultState.pValue" title="Value" />
@@ -20,7 +19,6 @@
         :pIconName="defaultState.pIconName"
         pState="danger"
         :disabled="defaultState.disabled"
-        :pActionName="defaultState.pActionName"
       />
       <template #controls>
         <HstText v-model="defaultState.pValue" title="Value" />
@@ -33,7 +31,6 @@
         :pValue="WithoutIconState.pValue"
         :pIconName="WithoutIconState.pIconName"
         :disabled="WithoutIconState.disabled"
-        :pActionName="WithoutIconState.pActionName"
       />
       <template #controls>
         <HstText v-model="WithoutIconState.pValue" title="Value" />

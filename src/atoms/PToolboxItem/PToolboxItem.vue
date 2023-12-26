@@ -2,7 +2,6 @@
   <button
     type="button"
     :class="['p-toolbox-item', pClassMapper]"
-    :pActionName="pActionName"
     :disabled="disabled"
   >
     <div v-if="pIconName" class="p-toolbox-item__icon margin-right--2">
@@ -52,6 +51,7 @@ const resolvedIcons = computed(() => {
   user-select: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  outline: none;
 
   $self: &;
 

@@ -19,6 +19,7 @@
 @use './components/drawer';
 @use './components/dropdown';
 @use './components/image';
+@use './components/header';
 @use './components/menu';
 @use './components/notification';
 @use './components/pagination';
@@ -89,7 +90,8 @@
   $radio-checked: radio.$radio-checked,
   $radio-bordered-input-width: radio.$radio-bordered-input-width,
   $radio-bordered-input-height: radio.$radio-bordered-input-height,
-  $popover: popover.$popover
+  $popover: popover.$popover,
+  $header: header.$header
 );
 
 @forward 'element-plus/theme-chalk/src/form.scss' with (
