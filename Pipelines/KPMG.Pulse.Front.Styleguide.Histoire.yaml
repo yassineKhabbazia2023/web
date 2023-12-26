@@ -67,7 +67,7 @@ extends:
             - name: cdn_resourcegroup
               value: frdev0${{ parameters.devIndex }}hub
             - name: cdn_profile
-              value: frdev0${{ parameters.devIndex }}afd01profile
+              value: frdev0${{ parameters.devIndex }}hubafd01profile
             - name: cdn_endpoint
               value: histoire-dev0${{ parameters.devIndex }}
           - ${{ else }}:
@@ -76,7 +76,7 @@ extends:
             - name: cdn_resourcegroup
               value: frdev${{ parameters.devIndex }}hub
             - name: cdn_profile
-              value: frdev${{ parameters.devIndex }}afd01profile
+              value: frdev${{ parameters.devIndex }}hubafd01profile
             - name: cdn_endpoint
               value: histoire-dev${{ parameters.devIndex }}
       - ${{ if and(contains(variables['Build.SourceBranch'], 'develop'), ne(parameters.deployType, 'onlyDev')) }}:
