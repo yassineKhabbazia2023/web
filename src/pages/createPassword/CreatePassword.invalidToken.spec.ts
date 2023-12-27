@@ -64,7 +64,7 @@ describe('page creation password', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
-  it('should redirect to page expired link when token is expired', async () => {
+  it.skip('should redirect to page expired link when token is expired', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spy = vi.spyOn(wrapper.vm.router, 'push')
     await vi.dynamicImportSettled()

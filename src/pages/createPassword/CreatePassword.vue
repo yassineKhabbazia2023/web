@@ -11,46 +11,46 @@
     </p>
     <PForm
       class="form-password"
-      labelPosition="top"
-      hideRequiredAsterisk
-      :rules="rules"
+      pLabelPosition="top"
+      pHideRequiredAsterisk
+      :pRules="rules"
       ref="formRef"
-      :model="formValue"
+      :pModel="formValue"
     >
       <PFormItem
         :label="t('labelPassword')"
-        prop="password"
-        required
+        pProp="password"
+        pRequired
         >
         <PopoverPasswordStrength
           :password="formValue.password"
         >
           <PInput
           v-model="formValue.password"
-          :placeholder="t('placeholderPassword')"
-          type="password"
-          showPassword
+          :pPlaceholder="t('placeholderPassword')"
+          pType="password"
+          pShowPassword
           />
         </PopoverPasswordStrength>
       </PFormItem>
       <PFormItem
         :label="t('labelConfirmPassword')"
-        prop="confirmPassword"
-        required
+        pProp="confirmPassword"
+        pRequired
       >
         <PInput
           v-model="formValue.confirmPassword"
-          :placeholder="t('placeholderConfirmPassword')"
-          type="password"
-          showPassword
+          :pPlaceholder="t('placeholderConfirmPassword')"
+          pType="password"
+          pShowPassword
         />
       </PFormItem>
       <p>
         {{ t('validCgu') }}
       </p>
       <PFormItem
-        prop="terms"
-        required
+        pProp="terms"
+        pRequired
         >
         <PCheckbox
           v-model="formValue.terms"

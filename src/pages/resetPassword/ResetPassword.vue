@@ -13,25 +13,25 @@
     </p>
     <PForm
       ref="formRef"
-      :rules="rules"
-      :model="formValues"
-      labelPosition="top"
-      requireAsteriskPosition="right"
+      :pRules="rules"
+      :pModel="formValues"
+      pLabelPosition="top"
+      pRequireAsteriskPosition="right"
       @submit.prevent="handleSubmit"
     >
       <PFormItem
-        :label="t('email')"
-        prop="email"
-        required
+        :pLabel="t('email')"
+        pProp="email"
+        pRequired
       >
         <PInput
           v-model="formValues.email"
           :class="{ 'error': hasCustomerError }"
-          type="email"
-          name="email"
-          autocomplete="on"
-          autofocus
-          :placeholder="t('emailPlaceholder')"
+          pType="email"
+          pName="email"
+          pAutocomplete="on"
+          pAutofocus
+          :pPlaceholder="t('emailPlaceholder')"
         />
       </PFormItem>
       <PFormItem>
