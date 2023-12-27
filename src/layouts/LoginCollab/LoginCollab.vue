@@ -3,9 +3,9 @@
     <main class="card">
       <PRow>
         <PCol
-          :xs="24"
-          :sm="24"
-          :md="12"
+          :pXs="24"
+          :pSm="24"
+          :pMd="12"
           class="content"
         >
           <PImage
@@ -18,9 +18,9 @@
         </PCol>
 
         <PCol
-          :xs="0"
-          :sm="0"
-          :md="12"
+          :pXs="0"
+          :pSm="0"
+          :pMd="12"
           class="illustration-wrapper"
         >
           <PCarousel

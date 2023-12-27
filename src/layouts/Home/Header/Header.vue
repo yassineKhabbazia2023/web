@@ -1,9 +1,5 @@
 <template>
-  <PHeader
-    :ellipsis="false"
-    :defaultActive="routeActive"
-    router
-  >
+  <PHeader>
     <template #logo>
       <router-link to="/" class="el-menu--header__link">
         <PImage
@@ -48,7 +44,7 @@
 </i18n>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ref, computed, onMounted } from 'vue'
 
 import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
@@ -69,11 +65,9 @@ withDefaults(defineProps<Props>(), {
   headerMenu: () => []
 })
 
-const route = useRoute()
 const router = useRouter()
 const store = useStore()
 const { fetchUserData } = useDataProvider()
-const routeActive = route.path
 const firstName = ref(store.user?.firstName || '')
 const lastName = ref(store.user?.lastName || '')
 
