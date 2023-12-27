@@ -5,5 +5,6 @@ export enum offerStepperStep {
   INFORMATION = 2
 }
 export interface OffersDrawerProps {
-  modelValue: boolean
+  modelValue: boolean,
+  selectedCompanyName: string
 }

@@ -3,6 +3,7 @@ import type {
   SubscriptionOffer,
   SubscriptionOfferServices
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
 
 const handleRequestError = async (action: string, error: any) => {
   console!.error(`Error ${action}:`, error)
@@ -33,4 +34,8 @@ export const getOffer = async (
   } catch (error) {
     handleRequestError(`fetching offer ${offerId}`, error)
   }
+}
+
+export const getOffersBookLink = () : string | undefined => {
+  return VITE_CONFIG_OFFERS_BOOK
 }

@@ -2,14 +2,36 @@
   <div>
     <PDrawer
       v-model="internalIsOpened"
-      :pTitle="t('drawerTitle')"
+      :pTitle="offersDrawerTitle"
       :pShowPreviousStep="false"
       pSize="50%"
       pDirection="rtl"
-      class="drawer"
-      @close-drawer-button="closeOffersDrawer"
+      class="offers-drawer"
+      @close-drawer-button="onCloseOffersDrawer"
       data-ut="drawer"
     >
+      <template #header-prefix>
+        <p class="offers-drawer__company-name font-base">
+          {{ selectedCompanyName }}
+        </p>
+      </template>
+      <template #header-suffix>
+        <div
+          v-if="offersDrawerDetails.link"
+          class="offers-drawer__details margin-left--4"
+        >
+          <PIcon color="#5546FF" size="16">
+            <PILink45deg />
+          </PIcon>
+          <a
+            class="offers-drawer__details-link font-base link margin-left--1"
+            :href="offersDrawerDetails.link"
+            target="_blank"
+          >
+            {{ offersDrawerDetails.titleLink }}
+          </a>
+        </div>
+      </template>
       <template v-if="internalIsOpened">
         <div v-if="!!currentSubscriptionOffer">
           <PSteps
@@ -18,7 +40,7 @@
             :direction="offerStepperConfig.direction"
             :processStatus="offerStepperConfig.processStatus"
             :finishStatus="offerStepperConfig.finishStatus"
-            class="margin-bottom--9"
+            class="padding-y--3 margin-bottom--9"
             data-ut="offer-stepper"
           >
             <PStepItem :title="offerStepTitles.services" />
@@ -32,7 +54,10 @@
           />
           <p
             v-else-if="activeStep === offerStepperStep.USERS"
-          ></p>
+            data-ut="users-step"
+          >
+            {{ `Utilisateurs step: ${offerStepperStep.USERS}` }}
+          </p>
           <p
             v-else-if="
               activeStep === offerStepperStep.INFORMATION
@@ -70,6 +95,8 @@ en-US:
   services: 'Services'
   users: 'Users'
   information: 'Information'
+  offerIntranet: 'Offer Intranet'
+  offersBook: 'Offers Book'
 fr-FR:
   drawerTitle: 'Offres activables sur ce dossier'
   previousLabel: 'Précédent'
@@ -78,22 +105,30 @@ fr-FR:
   services: 'Services'
   users: 'Utilisateurs'
   information: 'Informations'
+  offerIntranet: "Intranet de l'offre"
+  offersBook: 'Book des offres'
 </i18n>
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PSteps, PStepItem } from '@kpmg/styleguide'
-import type { OffersDrawerProps } from './OffersDrawerTypes'
-import { offerStepperStep } from './OffersDrawerTypes'
+import {
+  PDrawer,
+  PSteps,
+  PStepItem,
+  PIcon,
+  PILink45deg
+} from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import NextPreviousButtons from '../NextPreviousButtons'
+import { getAllOffers, getOffer, getOffersBookLink } from '@/services/offer'
+import { offerStepperStep } from './OffersDrawerTypes'
+import type { OffersDrawerProps } from './OffersDrawerTypes'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
-import { getAllOffers, getOffer } from '@/services/offer'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -151,6 +186,29 @@ const nextLabel = computed((): string => {
   return isSubmitButton.value ? t('submitLabel') : t('nextLabel')
 })
 
+const offersDrawerTitle = computed((): string => {
+  if (currentSubscriptionOffer.value) {
+    return currentSubscriptionOffer.value.offerName
+  }
+  return t('drawerTitle')
+})
+
+const offersDrawerDetails = computed(
+  (): { link: string | undefined; titleLink: string } => {
+    if (currentSubscriptionOffer.value) {
+      return {
+        link: currentSubscriptionOffer.value.intranetLink,
+        titleLink: t('offerIntranet')
+      }
+    }
+    const offersBookLink = getOffersBookLink()
+    return {
+      link: offersBookLink,
+      titleLink: t('offersBook')
+    }
+  }
+)
+
 function onClickPrevious() {
   if (activeStep.value > offerStepperStep.SERVICES) {
     --activeStep.value
@@ -172,7 +230,7 @@ function onSelectOffer(offerId: number) {
   setSelectedOffer(offerId)
 }
 
-const closeOffersDrawer = () => {
+const onCloseOffersDrawer = () => {
   internalIsOpened.value = false
 }
 
@@ -180,3 +238,26 @@ onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
 })
 </script>
+<style lang="scss" scoped>
+.offers-drawer {
+  &__company-name {
+    color: var(--el-text-color-secondary);
+  }
+  &__details {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+
+    &-link {
+      color: var(--el-color-persian-500);
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+</style>

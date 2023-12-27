@@ -1,70 +1,69 @@
 <template>
-<div class="padding--2">
-  <h3 class="h3 margin-bottom--6">
-    {{ t('wallet') }}
-  </h3>
+  <div class="padding--2">
+    <h3 class="h3 margin-bottom--6">
+      {{ t('wallet') }}
+    </h3>
 
-  <Tags />
+    <Tags />
 
-  <div class="margin-bottom--3">
-    <PForm
-      ref="formRef"
-      :rules="rules"
-      :model="formValues"
-      @submit.prevent="handleSearchSubmit(formRef)"
-    >
-      <PFormItem
-        prop="search"
+    <div class="margin-bottom--3">
+      <PForm
+        ref="formRef"
+        :rules="rules"
+        :model="formValues"
+        @submit.prevent="handleSearchSubmit(formRef)"
       >
-        <PInput
-          v-model="formValues.search"
-          :placeholder="t('search')"
-          :prefixIcon="PISearch"
-          name="search"
-          size="small"
-          type="search"
-          autofocus
-          @keyup="handleSearchSubmit(formRef)"
-        />
-      </PFormItem>
-    </PForm>
+        <PFormItem prop="search">
+          <PInput
+            v-model="formValues.search"
+            :placeholder="t('search')"
+            :prefixIcon="PISearch"
+            name="search"
+            size="small"
+            type="search"
+            autofocus
+            @keyup="handleSearchSubmit(formRef)"
+          />
+        </PFormItem>
+      </PForm>
+    </div>
+
+    <PLoader v-if="state.isLoading" />
+
+    <div v-if="!state.isLoading">
+      <NoResult v-if="!state.data.length" />
+
+      <TableData
+        data-ut="table"
+        v-if="!!state.data.length"
+        :data="state.data"
+        :handleAddFavorite="handleAddFavorite"
+        @click-deploy="onClickDeploy"
+      />
+
+      <PPagination
+        v-if="!!state.totalItems && state.totalItems > state.limit"
+        @on-page-range-changed="handlePageRangeChanged"
+        v-model:p-current-page="state.currentPage"
+        v-model:p-page-size="state.limit"
+        :pTotal="state.totalItems"
+        :pPageSizes="PAGE_SIZES"
+        :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
+        pPageSizeSelectorSuffix=""
+        pShowTotalPageCounter
+        pBackground
+      >
+        <p>{{ paginationLabel }}</p>
+      </PPagination>
+
+      <OffersDrawer
+        data-ut="offers-drawer"
+        v-if="openOffersDrawer"
+        :selectedCompanyName="selectedCompanyName"
+        v-model="openOffersDrawer"
+      />
+    </div>
   </div>
-
-  <PLoader v-if="state.isLoading" />
-
-  <div v-if="!state.isLoading">
-    <NoResult v-if="!state.data.length" />
-
-    <TableData
-      data-ut="table"
-      v-if="!!state.data.length"
-      :data="state.data"
-      :handleAddFavorite="handleAddFavorite"
-      @click-deploy="onClickDeploy"
-    />
-
-    <PPagination
-      v-if="!!state.totalItems && state.totalItems > state.limit"
-      @on-page-range-changed="handlePageRangeChanged"
-      v-model:p-current-page="state.currentPage"
-      v-model:p-page-size="state.limit"
-      :pTotal="state.totalItems"
-      :pPageSizes="PAGE_SIZES"
-      :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
-      pPageSizeSelectorSuffix=""
-      pShowTotalPageCounter
-      pBackground
-    >
-      <p>{{ paginationLabel }}</p>
-    </PPagination>
-
-    <OffersDrawer
-      data-ut="offers-drawer"
-      v-if="openOffersDrawer"
-      v-model="openOffersDrawer"
-    />
-  </div>
-</div>
 </template>
 
 <script setup lang="ts">
@@ -95,6 +94,7 @@ const { t } = useI18n({
 })
 
 const userStore = commonStore()
+const selectedCompanyName = ref('')
 
 const PAGE_SIZES = [15, 30, 45, 60]
 
@@ -277,8 +277,9 @@ onMounted(async () => {
 
 const openOffersDrawer = ref(false)
 
-const onClickDeploy = () => {
+const onClickDeploy = (companyName: string) => {
   openOffersDrawer.value = true
+  selectedCompanyName.value = companyName
 }
 </script>
 

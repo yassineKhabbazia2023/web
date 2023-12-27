@@ -35,9 +35,18 @@ export default ({ mode }) =>
           'vue-i18n': 'VueI18n',
           'vue-router': 'VueRouter',
           pinia: 'Pinia',
-          '@kpmg/common': 'Common',
-          'env-vars': 'EnvVars'
-        }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
+          'env-vars': 'EnvVars',
+          '@kpmg/common': 'Common'
+        },
+        { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
+        {
+          resolveId(id) {
+            if (id === 'env-vars') return id
+          },
+          load(id) {
+            if (id === 'env-vars') return ''
+          }
+        },
         cssInjectedByJsPlugin()
       ],
       resolve: {

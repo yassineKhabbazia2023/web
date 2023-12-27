@@ -11,18 +11,22 @@ import type {
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
 getMockedSubscriptionOffersServices()
+const companyTestName = 'Company Test Name'
+const offersBookTestLink = 'offers-book-test-link'
 
 vi.mock('@/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
   getOffer: vi.fn((offerId) =>
     Promise.resolve(subscriptionOffersServices.find((item) => item.offerId === offerId))
-  )
+  ),
+  getOffersBookLink: vi.fn(() => offersBookTestLink)
 }))
 
 async function getWrapper(isOpened: boolean) {
   const wrapper = await mount(OffersDrawer, {
     props: {
-      modelValue: isOpened
+      modelValue: isOpened,
+      selectedCompanyName: companyTestName
     }
   })
   await flushPromises()
@@ -92,9 +96,35 @@ describe('offersDrawer', () => {
         expect(offers.exists()).toBeFalsy()
       }
     )
+    it('should display company name at the top of the drawer', async () => {
+      const wrapper = await getWrapper(true)
+      const selectedCompanyName = wrapper.find('.offers-drawer__company-name')
+
+      expect(selectedCompanyName.text()).toBe(companyTestName)
+    })
+  })
+  describe('offersDrawerHeader', () => {
+    it('should display offers book link beside the drawer title', async () => {
+      const wrapper = await getWrapper(true)
+      const offersBookLink = wrapper.find('.offers-drawer__details-link')
+
+      expect(offersBookLink.text()).toBe('Offers Book')
+      expect(offersBookLink.attributes().href).toBe(offersBookTestLink)
+    })
+    it('should display offer intranet link beside the drawer title', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOfferIntranetLink = subscriptionOffersServices[0].intranetLink
+      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]')
+      await firstOffer.trigger('click')
+      await flushPromises()
+      const offerIntranetLink = wrapper.find('.offers-drawer__details-link')
+
+      expect(offerIntranetLink.text()).toBe('Offer Intranet')
+      expect(offerIntranetLink.attributes().href).toBe(firstOfferIntranetLink)
+    })
   })
   describe('offerStepper', () => {
-    it('step should change after clicking the Next button', async () => {
+    it('the offer stepper should be displayed after clicking on offer', async () => {
       const wrapper = await getWrapper(true)
       const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]')
       await firstOffer.trigger('click')
@@ -102,6 +132,25 @@ describe('offersDrawer', () => {
 
       const offerStepper = wrapper.find('[data-ut=offer-stepper]')
       expect(offerStepper.exists()).toBeTruthy()
+
+      const offer = wrapper.find('[data-ut=offer]')
+      expect(offer.exists()).toBeTruthy()
+    })
+
+    it('should display the correct page after clicking on stepper navigation buttons', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]')
+      await firstOffer.trigger('click')
+      await flushPromises()
+
+      const nextButton = wrapper.findComponent('[data-ut=nextPreviousButtons]')
+      await (nextButton as VueWrapper).vm.$emit('clickNext')
+
+      const usersStep = wrapper.find('[data-ut=users-step]')
+      expect(usersStep.exists()).toBeTruthy()
+
+      const PreviousButton = wrapper.findComponent('[data-ut=nextPreviousButtons]')
+      await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
 
       const offer = wrapper.find('[data-ut=offer]')
       expect(offer.exists()).toBeTruthy()

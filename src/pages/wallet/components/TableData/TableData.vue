@@ -127,7 +127,7 @@
           pActionName: 'deploy',
           pState: 'default'
         }]"
-        @p-toolbox-item-clicked="onToolboxItemClicked"
+        @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row.name)"
       >
         <PButton
           pType="white"
@@ -186,7 +186,7 @@ const { user } = storeToRefs(userStore)
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{
-  clickDeploy: []
+  clickDeploy: [string]
 }>()
 
 const handleRowSelectedChange = (row: any) => {
@@ -228,9 +228,9 @@ watch(() => props.data, () => {
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 
-const onToolboxItemClicked = (action: String) => {
+const onToolboxItemClicked = (action: String, companyName: string) => {
   if (action === 'deploy') {
-    emit('clickDeploy')
+    emit('clickDeploy', companyName)
   }
 }
 </script>

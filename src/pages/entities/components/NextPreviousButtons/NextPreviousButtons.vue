@@ -16,10 +16,12 @@
       @click="emit('clickNext')"
       data-ut="nextButton"
     >
+      <PIcon v-if="hasCheckIcon" class="el-button__icon--left">
+        <PICheck />
+      </PIcon>
       {{ nextLabel }}
-      <PIcon class="el-button__icon--right">
-        <PICheck v-if="hasCheckIcon" />
-        <PIArrowRight v-else />
+      <PIcon v-if="!hasCheckIcon"  class="el-button__icon--right">
+        <PIArrowRight />
       </PIcon>
     </PButton>
   </div>
