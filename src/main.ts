@@ -90,6 +90,7 @@ export { default as PTooltip } from './atoms/PTooltip'
 export { default as PTree } from './organisms/PTree'
 export { default as PUpload } from './atoms/PUpload'
 export { default as PUserCard } from './atoms/PUserCard'
+export { setAssetsBaseUrl } from './utils/imageResolver'
 
 // Export types from components with ENUM
 export * from './atoms/PAvatar/PAvatarTypes'
