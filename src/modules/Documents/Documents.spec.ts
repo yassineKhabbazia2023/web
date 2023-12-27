@@ -25,13 +25,15 @@ import DocumentRename from './components/DocumentRename'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import DocumentMove from './components/DocumentsMove'
 import { Folder } from '@/models/Folder'
-import { PBreadcrumb } from '@kpmg/styleguide'
+import { PBreadcrumb, PPagination } from '@kpmg/styleguide'
 import DocumentPreview from './components/DocumentPreview'
+import { documentMock } from './mocks/documentMock'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
   selectedDocument: Document
   selectedDocuments: Document[]
+  isRenameModalOpened: boolean
 }
 
 export type DocumentsWrapper = VueWrapper<
@@ -140,6 +142,9 @@ describe('documents', () => {
     wrapper.findComponent(DocumentsList)
 
   const findPBreadCrumb = (wrapper: DocumentsWrapper) => wrapper.findComponent(PBreadcrumb)
+
+  const findPPagination = (wrapper: DocumentsWrapper) => wrapper.findComponent(PPagination)
+
   beforeEach(() => {
 
     setActivePinia(pinia)
@@ -551,7 +556,7 @@ describe('documents', () => {
         )
       })
 
-    it('open drawer when row clicked', async () => {
+    it('should open drawer when row clicked', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
@@ -568,6 +573,73 @@ describe('documents', () => {
       expect(documentPreview.props('openDrawer')).toBeTruthy()
       expect(documentPreview.props('document'))
         .toStrictEqual(componentInstance.selectedDocuments[0])
+    })
+
+    // eslint-disable-next-line max-len
+    it('should set selectedDocumentsForMove oppon document-selection-change event with valid payload'
+      , async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+        await nextTick()
+
+        const documentsListWrapper = findDocumentsList(wrapper)
+        await documentsListWrapper.vm.$emit(
+          'document-selection-change',
+          [documentMock]
+        )
+        await nextTick()
+
+        const documentMoveWrapper = findDocumentMove(wrapper)
+
+        expect(documentMoveWrapper.props('selectedDocuments')).toHaveLength(1)
+
+        await documentsListWrapper.vm.$emit(
+          'document-selection-change',
+          [documentMock]
+        )
+        await nextTick()
+
+        expect(documentMoveWrapper.props('selectedDocuments')).toHaveLength(1)
+
+      })
+
+    it('should set current page saize oppon on-page-range-changed event ', async () => {
+
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      await nextTick()
+
+      const pPaginationWrapper = findPPagination(wrapper)
+
+      await pPaginationWrapper.vm.$emit('on-page-range-changed', 50)
+      await nextTick()
+
+      expect(pPaginationWrapper.props('pPageSize')).toStrictEqual(50)
+    })
+
+    it('should open rename document modal oppon rename-document event', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      await nextTick()
+
+      const documentListWrapper = findDocumentsList(wrapper)
+      await documentListWrapper.vm.$emit(
+        'toolbox-action-triggered',
+        'rename-document'
+      )
+      await nextTick()
+
+      expect(componentInstance.isRenameModalOpened).toBeTruthy()
+
     })
   })
 })

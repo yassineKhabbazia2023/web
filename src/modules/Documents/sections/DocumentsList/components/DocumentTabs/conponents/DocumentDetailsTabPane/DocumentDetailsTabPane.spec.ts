@@ -4,9 +4,13 @@ import DocumentDetailsTabPane from '.'
 import { DocumentDetailsTabPaneProps } from './DocumentDetailsTabPaneTypes'
 import { vi, describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
-import { PButton } from '@kpmg/styleguide'
+import {
+  PButton, PIArrowRepeat,
+  PICheckCircle, PIExclamationTriangle, PIStars, PTag
+} from '@kpmg/styleguide'
 import { downloadDocument } from '@/services/Documents'
 import { documentMock } from '@/modules/Documents/mocks/documentMock'
+import { nextTick } from 'vue'
 
 const defaultProps: DocumentDetailsTabPaneProps = {
   document: documentMock,
@@ -66,5 +70,70 @@ describe('documentDetailsTabPane', () => {
       defaultProps.selectedEntity,
       documentMock.id
     )
+  })
+
+  describe('should rebder icon correctly based on pia status', async () => {
+    const cases = [
+      {
+        status: 'New',
+        expectedIcon: PIStars
+      },
+      {
+        status: 'Collectable',
+        expectedIcon: PIArrowRepeat
+      },
+      {
+        status: 'Collected',
+        expectedIcon: PICheckCircle
+      },
+      {
+        status: 'Duplicate',
+        expectedIcon: PICheckCircle
+      },
+      {
+        status: 'Error',
+        expectedIcon: PIExclamationTriangle
+      },
+      {
+        status: 'Archived',
+        expectedIcon: PICheckCircle
+      },
+      {
+        status: 'NotTransmitted',
+        expectedIcon: PIExclamationTriangle
+      }
+    ]
+
+    it.each(cases)(
+      'pText mapping validation',
+      async ({ status, expectedIcon }) => {
+        const updatedDocument = {
+          ...documentMock,
+          piaStatus: {
+            technicalName: status,
+            labelFr: 'Actif',
+            labelEn: 'Active',
+            date: '2023-10-11T08:09:26Z'
+          },
+          type: '.pdf',
+          folder: {
+            id: 1,
+            path: ['My Documents', 'Dir']
+          }
+
+        }
+
+        const updatedProps = { ...defaultProps, document: updatedDocument }
+        await nextTick()
+        const documentDetailsTabPane = createWrapper(updatedProps)
+        const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)[1]
+        await nextTick()
+
+        expect(
+          pTagWrapper.props('pIconLeft')
+        ).toBe(expectedIcon)
+      }
+    )
+
   })
 })
