@@ -1,9 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import OfferProviderProducts from '.'
 import { mount } from '@vue/test-utils'
-import type {
-  SubscriptionOfferProvider
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import {
   getMockedSubscriptionOffersServices
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
