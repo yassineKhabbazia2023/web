@@ -222,7 +222,7 @@ const handleOnRowTableDocumentsClicked = (document:Document) => {
   if (documents.value) {
     selectedDocumentIndex.value = getSelectedDocumentIndex(document)
 
-    totalDocumentsCount.value = documents.value.documentsPage.totalItems
+    totalDocumentsCount.value = currentPageSize.value
   }
 }
 const getSelectedDocumentIndex = (document:Document): number => {
@@ -382,7 +382,7 @@ const handleNextBuuttonClickedForPreviewDocument = () => {
     if (documentToPreview.value) {
       selectedDocumentIndex.value = selectedDocumentIndex.value + 1
 
-      totalDocumentsCount.value = documents.value.documentsPage.totalItems
+      totalDocumentsCount.value = currentPageSize.value
     }
   }
 }
@@ -392,7 +392,7 @@ const handlePreviewButtonClickedForPreviewDocument = () => {
     if (documentToPreview.value) {
       selectedDocumentIndex.value = selectedDocumentIndex.value - 1
 
-      totalDocumentsCount.value = documents.value.documentsPage.totalItems
+      totalDocumentsCount.value = currentPageSize.value
     }
   }
 }

@@ -20,7 +20,7 @@
       </div>
       <div class="field flex-100">
         <p class="libelle">
-          {{ $t('label.type') }}
+          {{ t('label.type') }}
         </p>
         <p class="label">
           {{ document.type.replace('.', '').toUpperCase() }}
@@ -28,7 +28,7 @@
       </div>
       <div class="field flex-100">
         <p class="libelle">
-          {{ $t('label.size') }}
+          {{ t('label.size') }}
         </p>
         <p class="label size">
           {{ getDocumentSize }}
@@ -36,7 +36,7 @@
       </div>
       <div class="field flex-100">
         <p class="libelle">
-          {{ $t('label.path') }}
+          {{ t('label.path') }}
         </p>
         <p class="label">
           {{ document.folder.path.join(' > ') }}
@@ -44,7 +44,7 @@
       </div>
       <div class="field flex-100">
         <p class="libelle">
-          {{ $t('label.createdBy') }}
+          {{ t('label.createdBy') }}
         </p>
         <p class="label">
           {{ document.createdBy }}
@@ -52,7 +52,7 @@
       </div>
       <div class="field flex-100">
         <p class="libelle">
-          {{ $t('label.date') }}
+          {{ t('label.date') }}
         </p>
         <p class="label">
           {{ formatDateStr(document.created) }}
@@ -60,7 +60,7 @@
       </div>
       <div class="field flex-100">
         <p class="libelle">
-          {{ $t('label.modification') }}
+          {{ t('label.modification') }}
         </p>
         <p class="label">
           {{ formatDateStr(document.updated) }}
@@ -68,7 +68,7 @@
       </div>
       <div class="field flex-100" v-if="document.piaStatus">
         <p class="libelle">
-          {{ $t('label.status') }}
+          {{ t('label.status') }}
         </p>
         <p class="label">
           <PTag
