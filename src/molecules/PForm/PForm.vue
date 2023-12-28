@@ -23,7 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import { ElForm, type FormInstance, type FormItemProp } from 'element-plus'
+import {
+  ElForm,
+  type FormInstance,
+  type FormItemProp,
+  type FormValidateCallback
+} from 'element-plus'
 import type { PFormProps } from './PFormTypes'
 import { ref } from 'vue'
 
@@ -49,10 +54,11 @@ withDefaults(defineProps<PFormProps>(), {
 })
 
 defineExpose({
-  resetFields: () => formRef?.value?.resetFields(),
-  validate: () => formRef?.value?.validate(),
-  validateField: () => formRef?.value?.validateField(),
+  resetFields: (properties = []) => formRef?.value?.resetFields(properties),
+  validate: (callback?: FormValidateCallback) => formRef?.value?.validate(callback),
+  validateField: (modelProps = [], callback: FormValidateCallback) =>
+    formRef?.value?.validateField(modelProps, callback),
   scrollToField: (prop: FormItemProp) => formRef?.value?.scrollToField(prop),
-  clearValidate: () => formRef?.value?.clearValidate()
+  clearValidate: (props = []) => formRef?.value?.clearValidate(props)
 })
 </script>

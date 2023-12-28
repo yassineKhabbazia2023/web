@@ -1,5 +1,5 @@
 <template>
-  <el-row :gutter="12">
+  <PRow :pGutter="12">
     <PCol
       v-for="(type, i) in colorsType"
       :key="i"
@@ -25,12 +25,13 @@
         </div>
       </div>
     </PCol>
-  </el-row>
+  </PRow>
 </template>
 
 <script lang="ts" setup>
 import { getColorValue, useCopyColor } from '@/utils'
 import PCol from '@/atoms/PCol'
+import PRow from '@/atoms/PRow'
 
 const colorsType = ['success', 'warning', 'danger', 'info']
 

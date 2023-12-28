@@ -1,5 +1,5 @@
 <template>
-  <el-row :gutter="12">
+  <PRow :pGutter="12">
     <PCol :pSpan="6" :pXs="{ span: 12 }">
       <div class="demo-color-box-group">
         <div
@@ -111,12 +111,13 @@
         </div>
       </div>
     </PCol>
-  </el-row>
+  </PRow>
 </template>
 
 <script lang="ts" setup>
 import { getCssVarName, getCssVarValue } from '@/utils'
 import PCol from '@/atoms/PCol'
+import PRow from '@/atoms/PRow'
 
 const backgroundTypes = ['page', '', 'overlay']
 const backgroundColors = backgroundTypes.map((type) => {

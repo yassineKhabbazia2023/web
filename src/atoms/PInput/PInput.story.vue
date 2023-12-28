@@ -10,64 +10,64 @@
       </PInput>
       <template #controls>
         <HstCheckbox v-model="basicInputData.disabled" title="Disabled" />
-        <HstText v-model="basicInputData.placeholder" title="placeholder" />
-        <HstText v-model="basicInputData.inputValue" title="input value" />
+        <HstText v-model="basicInputData.placeholder" title="Placeholder" />
+        <HstText v-model="basicInputData.inputValue" title="Input Value" />
       </template>
     </Variant>
     <Variant title="Textarea">
       <PInput
-        v-model="TextInputData.inputValue"
-        :pType="TextInputData.type"
-        :pDisabled="TextInputData.disabled"
-        :pPlaceholder="TextInputData.placeholder"
-        :pAutosize="TextInputData.autosize"
+        v-model="textInputData.inputValue"
+        :pType="textInputData.type"
+        :pDisabled="textInputData.disabled"
+        :pPlaceholder="textInputData.placeholder"
+        :pAutosize="textInputData.autosize"
       >
       </PInput>
       <template #controls>
-        <HstCheckbox v-model="TextInputData.disabled" title="Disabled" />
-        <HstText v-model="TextInputData.placeholder" title="placeholder" />
-        <HstText v-model="TextInputData.inputValue" title="Textarea put value" />
+        <HstCheckbox v-model="textInputData.disabled" title="Disabled" />
+        <HstText v-model="textInputData.placeholder" title="Placeholder" />
+        <HstText v-model="textInputData.inputValue" title="Textarea value" />
       </template>
     </Variant>
     <Variant title="Password">
       <PInput
-        v-model="PasswordInputData.inputValue"
-        :pType="PasswordInputData.type"
-        :pPlaceholder="PasswordInputData.placeholder"
-        :pShowPassword="PasswordInputData.showpassword"
+        v-model="passwordInputData.inputValue"
+        :pType="passwordInputData.type"
+        :pPlaceholder="passwordInputData.placeholder"
+        :pShowPassword="passwordInputData.showPassword"
       >
       </PInput>
       <template #controls>
-        <HstCheckbox v-model="PasswordInputData.showpassword" title="showpassword" />
-        <HstText v-model="PasswordInputData.placeholder" title="placeholder" />
-        <HstText v-model="PasswordInputData.inputValue" title="Password put value" />
+        <HstCheckbox v-model="passwordInputData.showPassword" title="Show Password" />
+        <HstText v-model="passwordInputData.placeholder" title="Placeholder" />
+        <HstText v-model="passwordInputData.inputValue" title="Password put value" />
       </template>
     </Variant>
     <Variant title="Search">
       <PInput
-        v-model="SearchInputData.inputValue"
-        :pType="SearchInputData.type"
-        :pPlaceholder="SearchInputData.placeholder"
-        :pPrefixIcon="SearchInputData.prefixIcon"
-        :pClearable="SearchInputData.clearable"
+        v-model="searchInputData.inputValue"
+        :pType="searchInputData.type"
+        :pPlaceholder="searchInputData.placeholder"
+        :pPrefixIcon="searchInputData.prefixIcon"
+        :pClearable="searchInputData.clearable"
       >
       </PInput>
       <template #controls>
-        <HstText v-model="SearchInputData.placeholder" title="placeholder" />
+        <HstText v-model="searchInputData.placeholder" title="Placeholder" />
       </template>
     </Variant>
     <Variant title="Search small">
       <PInput
-        v-model="SearchInputData.inputValue"
-        :pType="SearchInputData.type"
-        :pPlaceholder="SearchInputData.placeholder"
-        :pPrefixIcon="SearchInputData.prefixIcon"
-        :pClearable="SearchInputData.clearable"
+        v-model="searchInputData.inputValue"
+        :pType="searchInputData.type"
+        :pPlaceholder="searchInputData.placeholder"
+        :pPrefixIcon="searchInputData.prefixIcon"
+        :pClearable="searchInputData.clearable"
         size="small"
       >
       </PInput>
       <template #controls>
-        <HstText v-model="SearchInputData.placeholder" title="placeholder" />
+        <HstText v-model="searchInputData.placeholder" title="Placeholder" />
       </template>
     </Variant>
   </Story>
@@ -83,20 +83,20 @@ const basicInputData = reactive({
   placeholder: 'Please input',
   inputValue: 'Hello i am your input'
 })
-const TextInputData = reactive({
+const textInputData = reactive({
   type: 'textarea',
   disabled: false,
   placeholder: 'Please textarea',
   autosize: { minRows: 2, maxRows: 4 },
   inputValue: 'Hello i am textArea'
 })
-const PasswordInputData = reactive({
+const passwordInputData = reactive({
   type: 'password',
   placeholder: 'Please input password',
-  showpassword: true,
+  showPassword: true,
   inputValue: 'Hello i am your password'
 })
-const SearchInputData = reactive({
+const searchInputData = reactive({
   type: 'search',
   placeholder: 'Search',
   clearable: true,
