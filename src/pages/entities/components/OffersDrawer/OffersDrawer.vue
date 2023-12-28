@@ -36,16 +36,16 @@
         <div v-if="!!currentSubscriptionOffer">
           <PSteps
             v-if="currentSubscriptionOffer?.approvalRequired"
-            :active="activeStep"
-            :direction="offerStepperConfig.direction"
-            :processStatus="offerStepperConfig.processStatus"
-            :finishStatus="offerStepperConfig.finishStatus"
+            :pActive="activeStep"
+            :pDirection="offerStepperConfig.direction"
+            :pProcessStatus="offerStepperConfig.processStatus"
+            :pFinishStatus="offerStepperConfig.finishStatus"
             class="padding-y--3 margin-bottom--9"
             data-ut="offer-stepper"
           >
-            <PStepItem :title="offerStepTitles.services" />
-            <PStepItem :title="offerStepTitles.users" />
-            <PStepItem :title="offerStepTitles.information" />
+            <PStep :pTitle="offerStepTitles.services" />
+            <PStep :pTitle="offerStepTitles.users" />
+            <PStep :pTitle="offerStepTitles.information" />
           </PSteps>
           <OfferSubscription
             v-if="activeStep === offerStepperStep.SERVICES"
@@ -115,7 +115,7 @@ import { useI18n } from 'vue-i18n'
 import {
   PDrawer,
   PSteps,
-  PStepItem,
+  PStep,
   PIcon,
   PILink45deg
 } from '@kpmg/styleguide'

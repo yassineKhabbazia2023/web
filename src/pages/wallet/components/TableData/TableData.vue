@@ -10,9 +10,9 @@
   class="wallet-table"
 >
   <PTableColumn
-    :label="t('companyName')"
-    prop="name"
-    sortable
+    :pLabel="t('companyName')"
+    pProp="name"
+    pSortable
   >
     <template #default="scope">
       <div class="flex valign-center">
@@ -28,14 +28,14 @@
     </template>
   </PTableColumn>
   <PTableColumn
-    :label="t('folderID')"
-    prop="accountNumber"
-    sortable
+    :pLabel="t('folderID')"
+    pProp="accountNumber"
+    pSortable
   />
   <PTableColumn
-    :label="t('leader')"
-    prop="owner.lastName"
-    sortable
+    :pLabel="t('leader')"
+    pProp="owner.lastName"
+    pSortable
   >
     <template #default="scope">
       <div class="flex valign-center">
@@ -68,9 +68,9 @@
     </template>
   </PTableColumn>
   <PTableColumn
-    :label="t('city')"
-    prop="city"
-    sortable
+    :pLabel="t('city')"
+    pProp="city"
+    pSortable
   >
     <template #default="scope">
       <p class="capitalize">
@@ -79,9 +79,9 @@
     </template>
   </PTableColumn>
   <PTableColumn
-    :label="t('status')"
-    prop="deploymentStatus.text"
-    sortable
+    :pLabel="t('status')"
+    pProp="deploymentStatus.text"
+    pSortable
   >
     <template #default="scope">
       <PTag
@@ -93,10 +93,10 @@
     </template>
   </PTableColumn>
   <PTableColumn
-    :label="t('action')"
-    :width="100"
-    prop="isFavorite"
-    sortable
+    :pLabel="t('action')"
+    :pWidth="100"
+    pProp="isFavorite"
+    pSortable
   >
     <template #default="scope">
       <PButton
