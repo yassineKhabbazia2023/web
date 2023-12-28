@@ -34,7 +34,6 @@
                 <PButton
                     pType="white"
                     pSize="default"
-                    :pPlain="false"
                     data-testid="download-prefilled-mandate"
                     @click="downloadMandate()"
                 >

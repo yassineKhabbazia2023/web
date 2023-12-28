@@ -8,10 +8,6 @@
         class="header__create-mandate-button"
         pType="primary"
         pSize="default"
-        :pPlain="false"
-        :pRound="false"
-        :pDisabled="false"
-        :pLoading="false"
         @click="drawerHandler"
       >
         <PIcon class="el-button__icon--left">

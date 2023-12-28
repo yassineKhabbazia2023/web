@@ -20,6 +20,7 @@ describe('header.vue', () => {
   })
 
   it('show drawer when button is clicked', async () => {
+    expect(wrapper.find('.drawer-create-mandate').exists()).toBeFalsy()
     await wrapper.find('.header__create-mandate-button').trigger('click')
     expect(wrapper.find('.drawer-create-mandate').exists()).toBeTruthy()
   })

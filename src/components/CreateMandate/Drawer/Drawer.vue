@@ -74,8 +74,6 @@
             class="margin-left--4"
             pType="primary"
             pSize="default"
-            :pPlain="false"
-            :pRound="false"
             :pLoading="loading"
             :pDisabled="!validateAvailability"
             data-testid="validate-step-test"
@@ -87,10 +85,7 @@
             v-if="currentStep < 3"
             pType="primary"
             pSize="default"
-            :pPlain="false"
-            :pRound="false"
             :pDisabled="!nextStepAvailability"
-            :pLoading="false"
             data-testid="next-step-test"
             @click="goToNextStep()"
             class="margin-left--4"
@@ -131,9 +126,6 @@
             pType="primary"
             pSize="small"
             pPlain
-            :pRound="false"
-            :pDisabled="false"
-            :pLoading="false"
             data-testid="cancel-dialog-test"
             @click="pDialogControl.dialogVisible = false"
           >
@@ -142,12 +134,8 @@
           <PButton
             pType="primary"
             pSize="small"
-            :pPlain="false"
-            :pRound="false"
-            :pDisabled="false"
-            :pLoading="false"
             data-testid="quit-dialog-test"
-            @click="closeDialogDrawer()"
+            @click="closeDialogDrawer"
             class="margin-left--4"
           >
             {{ t('exit-popup') }}
