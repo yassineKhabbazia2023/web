@@ -5,8 +5,8 @@ import { DocumentDetailsTabPaneProps } from './DocumentDetailsTabPaneTypes'
 import { vi, describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
 import {
-  PButton, PIArrowRepeat,
-  PICheckCircle, PIExclamationTriangle, PIStars, PTag
+  PButton,
+  PICheckCircle, PTag
 } from '@kpmg/styleguide'
 import { downloadDocument } from '@/services/Documents'
 import { documentMock } from '@/modules/Documents/mocks/documentMock'
@@ -75,14 +75,6 @@ describe('documentDetailsTabPane', () => {
   describe('should rebder icon correctly based on pia status', async () => {
     const cases = [
       {
-        status: 'New',
-        expectedIcon: PIStars
-      },
-      {
-        status: 'Collectable',
-        expectedIcon: PIArrowRepeat
-      },
-      {
         status: 'Collected',
         expectedIcon: PICheckCircle
       },
@@ -91,16 +83,8 @@ describe('documentDetailsTabPane', () => {
         expectedIcon: PICheckCircle
       },
       {
-        status: 'Error',
-        expectedIcon: PIExclamationTriangle
-      },
-      {
         status: 'Archived',
         expectedIcon: PICheckCircle
-      },
-      {
-        status: 'NotTransmitted',
-        expectedIcon: PIExclamationTriangle
       }
     ]
 
@@ -135,6 +119,56 @@ describe('documentDetailsTabPane', () => {
       }
     )
 
+  })
+
+  it('should hide tag if label is null', async () => {
+    const updatedDocument = {
+      ...documentMock,
+      piaStatus: {
+        technicalName: '',
+        labelFr: null,
+        labelEn: 'Active',
+        date: '2023-10-11T08:09:26Z'
+      },
+      type: '.pdf',
+      folder: {
+        id: 1,
+        path: ['My Documents', 'Dir']
+      }
+    }
+
+    const updatedProps = { ...defaultProps, document: updatedDocument }
+    await nextTick()
+    const documentDetailsTabPane = createWrapper(updatedProps)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    await nextTick()
+
+    expect(pTagWrapper).toHaveLength(1)
+  })
+
+  it('should hide tag if technical name is not a transmitted document technical name', async () => {
+    const updatedDocument = {
+      ...documentMock,
+      piaStatus: {
+        technicalName: 'Collectable',
+        labelFr: null,
+        labelEn: 'Active',
+        date: '2023-10-11T08:09:26Z'
+      },
+      type: '.pdf',
+      folder: {
+        id: 1,
+        path: ['My Documents', 'Dir']
+      }
+    }
+
+    const updatedProps = { ...defaultProps, document: updatedDocument }
+    await nextTick()
+    const documentDetailsTabPane = createWrapper(updatedProps)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    await nextTick()
+
+    expect(pTagWrapper).toHaveLength(1)
   })
 
   it('should hide tag if label is null', async () => {

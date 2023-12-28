@@ -7,36 +7,36 @@
     pDirection="rtl"
     :pTitleDocument="document.name"
     :pActiveDocument="selectedDocumentIndex"
-    :pTotalDocuments = "totalDocumentsCount"
+    :pTotalDocuments="totalDocumentsCount"
     pShowClose
     pDestroyOnClose
     pHasIcon
     pHasPagination
     pShowCloseButton
-    :pShowPreviousDocument = "selectedDocumentIndex > 1"
-    :pShowNextDocument = "selectedDocumentIndex < totalDocumentsCount"
+    :pShowPreviousDocument="selectedDocumentIndex > 1"
+    :pShowNextDocument="selectedDocumentIndex < totalDocumentsCount"
     @next-document-button-click="handleNextButtonClick"
     @previous-document-button-click="handlePreviousButtonClick"
   >
-<template #iconDocument>
-    <PIcon>
-      <component :is="getFileIcon(document.name)" />
-    </PIcon>
-  </template>
-<template #media>
+    <template #iconDocument>
+      <PIcon>
+        <component :is="getFileIcon(document.name)" />
+      </PIcon>
+    </template>
+    <template #media>
       <img
-          :src="previewImage"
-          alt="preview-image"
-        />
-</template>
-<template #content>
-  <DocumentsTabs
-    :document="document"
-    :selectedEntity="entityId"
-    :currentService="serviceId"
-  />
-</template>
-</PDocumentViewer>
+      class="preview-image"
+      :src="previewImage"
+      alt="preview-image" />
+    </template>
+    <template #content>
+      <DocumentsTabs
+        :document="document"
+        :selectedEntity="entityId"
+        :currentService="serviceId"
+      />
+    </template>
+  </PDocumentViewer>
 </template>
 
 <script setup lang="ts">
@@ -65,7 +65,6 @@ const isDrawerOpened = computed({
 const previewImage = ref('')
 
 const fetchPreview = async () => {
-
   if (props.serviceId && props.entityId && props.document.id) {
     const response = await previewDocument(
       props.serviceId,
@@ -93,3 +92,11 @@ watch(
   }
 )
 </script>
+
+<style lang="scss">
+.preview-image{
+  height:auto;
+  max-height:100%;
+  max-width:100%
+}
+</style>

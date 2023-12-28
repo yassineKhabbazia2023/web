@@ -66,7 +66,7 @@
           {{ formatDateStr(document.updated) }}
         </p>
       </div>
-      <div class="field flex-100" v-if="document.piaStatus && document.piaStatus.labelFr">
+      <div class="field flex-100" v-if="shouldDisplayPiaStatusTag">
         <p class="libelle">
           {{ t('label.status') }}
         </p>
@@ -86,7 +86,7 @@
     </div>
     <PButton
       pType="primary"
-      class="treeview__new-folder el-button--default"
+      class="drawer-download-button"
       pSize="default"
       :pLoading="isLoading"
       pPlain
@@ -108,9 +108,6 @@ import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
 import {
   PTag,
   PIPatchCheck,
-  PIStars,
-  PIArrowRepeat,
-  PIExclamationTriangle,
   PICheckCircle,
   PIUpload,
   PIcon,
@@ -141,32 +138,28 @@ const { handleDownloadDocumentsEvent } =
 useDownloadDocuments(downloadDocumentsProps)
 
 const tagIconByState = {
-  default: PIStars,
-  warning: PIArrowRepeat,
-  danger: PIExclamationTriangle,
   success: PICheckCircle
 }
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {
-    case 'New':
-      return { icon: tagIconByState.default, type: '' }
-    case 'Collectable':
-      return { icon: tagIconByState.warning, type: 'warning' }
     case 'Collected':
       return { icon: tagIconByState.success, type: 'success' }
     case 'Duplicate':
       return { icon: tagIconByState.success, type: 'success' }
-    case 'Error':
-      return { icon: tagIconByState.danger, type: 'danger' }
     case 'Archived':
       return { icon: tagIconByState.success, type: 'success' }
-    case 'NotTransmitted':
-      return { icon: tagIconByState.danger, type: 'danger' }
     default:
-      return { icon: tagIconByState.danger, type: 'danger' }
+      return null
   }
 }
+
+const allowedPiaStatusTagsToDisplay = ref<string[]>(['Collected', 'Duplicate', 'Archived'])
+
+const shouldDisplayPiaStatusTag = computed(() =>
+  props.document.piaStatus &&
+props.document.piaStatus.labelFr &&
+allowedPiaStatusTagsToDisplay.value.includes(props.document.piaStatus.technicalName))
 
 const getTagProps = computed(() => {
   return tagTypeProps(props.document.piaStatus.technicalName)
@@ -215,8 +208,10 @@ const handleDownloadClick = () => {
   .details-content {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 24px;
+
     .field {
-      padding-bottom: 24px;
+      margin-bottom: 24px;
 
       &.flex-50 {
         flex: 50%;
@@ -234,7 +229,7 @@ const handleDownloadClick = () => {
         line-height: 16px;
         display: flex;
         align-items: center;
-        color: var(--grey-500);
+        color: var(--el-color-neutral-gray-500)
       }
 
       .label {
@@ -251,6 +246,10 @@ const handleDownloadClick = () => {
       padding-bottom: 0px;
     }
   }
+      .drawer-download-button{
+      float:right;
+      clear:left;
+    }
 }
 </style>
 
