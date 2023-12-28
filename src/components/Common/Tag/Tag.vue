@@ -12,18 +12,18 @@
 </template>
 
 <i18n lang="yaml">
-    en-US:
-        incident: 'Incident'
-        to-do: 'To do'
-        in-progress: 'In progress'
-        active: 'Active'
-        inactive: 'Inactive'
-    fr-FR:
-        incident: 'Incident'
-        to-do: 'A déposer'
-        in-progress: 'En cours'
-        active: 'Actif'
-        inactive: 'Résilié'
+  en-US:
+    incident: 'Incident'
+    to-do: 'To do'
+    in-progress: 'In progress'
+    active: 'Active'
+    inactive: 'Inactive'
+  fr-FR:
+    incident: 'Incident'
+    to-do: 'A déposer'
+    in-progress: 'En cours'
+    active: 'Actif'
+    inactive: 'Résilié'
 </i18n>
 
 <script setup lang='ts'>

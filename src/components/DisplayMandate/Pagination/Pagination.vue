@@ -10,15 +10,15 @@
     :pPageSize="itemsByPage"
     :pCurrentPage="currentPage"
   >
-  <p>{{`${startIndex} - ${endIndex}`}} {{t('on')}} {{pagesCount}}</p>
+    <p>{{`${startIndex} - ${endIndex}`}} {{t('on')}} {{pagesCount}}</p>
   </PPagination>
 </template>
 
 <i18n lang="yaml">
-    en-US:
-        on: 'on'
-    fr-FR:
-        on: 'sur'
+  en-US:
+    on: 'on'
+  fr-FR:
+    on: 'sur'
 </i18n>
 
 <script setup lang='ts'>

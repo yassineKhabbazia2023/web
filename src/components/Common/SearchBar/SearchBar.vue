@@ -12,10 +12,10 @@
 </template>
 
 <i18n lang="yaml">
-    en-US:
-        search: 'Search'
-    fr-FR:
-        search: 'Rechercher'
+  en-US:
+    search: 'Search'
+  fr-FR:
+    search: 'Rechercher'
 </i18n>
 
 <script setup lang="ts">

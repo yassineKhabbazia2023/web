@@ -98,7 +98,7 @@
         >
           <template #label>
             <span class="create-mandate-form_optional-title"
-              >{{ t('email') }}
+            >{{ t('email') }}
             </span>
             <span class="create-mandate-form_optional">{{
               t('optional')
@@ -128,7 +128,7 @@
         >
           <template #label>
             <span class="create-mandate-form_optional-title"
-              >{{ t('complement') }}
+            >{{ t('complement') }}
             </span>
             <span class="create-mandate-form_optional">{{
               t('optional')
@@ -178,7 +178,7 @@
               inline
               :label="`${t('institutionCode')}`"
               :showMessage="(!validationError || !isBankCodeValid)
-              && !isNonScrappable && !isScrappable"
+                && !isNonScrappable && !isScrappable"
               :validateStatus="validationError ? 'error' : ''"
               disabled
             >
