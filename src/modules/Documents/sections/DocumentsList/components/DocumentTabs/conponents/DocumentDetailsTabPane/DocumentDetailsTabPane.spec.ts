@@ -136,4 +136,29 @@ describe('documentDetailsTabPane', () => {
     )
 
   })
+
+  it('should hide tag if label is null', async () => {
+    const updatedDocument = {
+      ...documentMock,
+      piaStatus: {
+        technicalName: '',
+        labelFr: null,
+        labelEn: 'Active',
+        date: '2023-10-11T08:09:26Z'
+      },
+      type: '.pdf',
+      folder: {
+        id: 1,
+        path: ['My Documents', 'Dir']
+      }
+    }
+
+    const updatedProps = { ...defaultProps, document: updatedDocument }
+    await nextTick()
+    const documentDetailsTabPane = createWrapper(updatedProps)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    await nextTick()
+
+    expect(pTagWrapper).toHaveLength(1)
+  })
 })

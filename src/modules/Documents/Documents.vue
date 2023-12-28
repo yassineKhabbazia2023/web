@@ -109,7 +109,7 @@ import { ref, watch, computed, ComputedRef } from 'vue'
 import DocumentsList from './sections/DocumentsList'
 import { fetchFolderDocuments } from '@/services/Documents'
 import { DocumentsProps } from './DocumentsTypes'
-import type { DocumentsWithTableStructure } from '@/models/Document'
+import type { DocumentsWithTableStructure, TableRowDocument } from '@/models/Document'
 import { Document } from '@/models/Document'
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
@@ -190,7 +190,7 @@ const handleSortChange = async (sortQueryField:string) => {
 
 const selectedDocuments = ref<Document[]>([])
 const documentToPreview = ref<Document>()
-const selectedDocumentIndex = ref<number>(0)
+const selectedDocumentIndex = ref<number>(1)
 const totalDocumentsCount = ref<number>(0)
 
 const selectedDocumentsForMove = ref<Document[]>(deepCopy(selectedDocuments.value))
@@ -216,25 +216,16 @@ const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   }
 }
 
-const handleOnRowTableDocumentsClicked = (document:Document) => {
+const handleOnRowTableDocumentsClicked = (document: TableRowDocument) => {
   isPreviewDrawerOpened.value = !isPreviewDrawerOpened.value
   documentToPreview.value = document
   if (documents.value) {
-    selectedDocumentIndex.value = getSelectedDocumentIndex(document)
+    selectedDocumentIndex.value = document._rowIndex + 1
 
     totalDocumentsCount.value = currentPageSize.value
   }
 }
-const getSelectedDocumentIndex = (document:Document): number => {
-  let index = 0
-  if (documents.value) {
-    index = documents.value.documentsPage.items.indexOf(document) + 1
-    if (documents.value.documentsPage.startIndex > 0) {
-      index += documents.value.documentsPage.startIndex
-    }
-  }
-  return index
-}
+
 const { handleDownloadDocumentsEvent } =
 useDownloadDocuments(downloadDocumentsProps)
 

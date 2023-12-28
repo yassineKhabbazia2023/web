@@ -66,7 +66,7 @@
           {{ formatDateStr(document.updated) }}
         </p>
       </div>
-      <div class="field flex-100" v-if="document.piaStatus">
+      <div class="field flex-100" v-if="document.piaStatus && document.piaStatus.labelFr">
         <p class="libelle">
           {{ t('label.status') }}
         </p>

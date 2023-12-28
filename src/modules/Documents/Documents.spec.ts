@@ -16,7 +16,7 @@ import {
   documentsResponsePayload,
   documentsResponsePayloadMoreThanOneDoc
 } from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import { Document, DocumentsWithTableStructure } from '@/models/Document'
+import { Document, DocumentsWithTableStructure, TableRowDocument } from '@/models/Document'
 import { ComponentPublicInstance, nextTick } from 'vue'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
@@ -566,7 +566,11 @@ describe('documents', () => {
       const documents = wrapper.findComponent(DocumentsList)
       await nextTick()
 
-      await documents.vm.$emit('table-row-clicked', componentInstance.selectedDocuments[0])
+      const tableRowDocument: TableRowDocument = {
+        ...componentInstance.selectedDocuments[0],
+        _rowIndex: 0
+      }
+      await documents.vm.$emit('table-row-clicked', tableRowDocument)
 
       const documentPreview = wrapper.findComponent(DocumentPreview)
 

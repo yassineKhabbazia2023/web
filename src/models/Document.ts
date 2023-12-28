@@ -75,3 +75,7 @@ export interface DocumentsWithTableStructure {
   }
   documentHeaders: DocumentsTableStructure[]
 }
+
+export interface TableRowDocument extends Document{
+  _rowIndex: number
+}
