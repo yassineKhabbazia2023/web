@@ -4,4 +4,5 @@ export interface PaginationProps {
     pagesCount: number
     pageRangeSelectorSuffix?: string
     pageRangeSelectorGroupLabel?: string
+    currentPage?: number
   }

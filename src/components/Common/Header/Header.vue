@@ -6,12 +6,8 @@
       </div>
       <PButton
         class="header__create-mandate-button"
-        type="primary"
-        size="default"
-        :plain="false"
-        :round="false"
-        :disabled="false"
-        :loading="false"
+        pType="primary"
+        pSize="default"
         @click="drawerHandler"
       >
         <PIcon class="el-button__icon--left">
@@ -28,12 +24,12 @@
 </template>
 
 <i18n lang="yaml">
-    en-US:
-        bank-mandates: 'Banking flows'
-        new-mandate: 'New mandate'
-    fr-FR:
-        bank-mandates: 'Flux bancaires'
-        new-mandate: 'Nouveau mandat'
+  en-US:
+    bank-mandates: 'Banking flows'
+    new-mandate: 'New mandate'
+  fr-FR:
+    bank-mandates: 'Flux bancaires'
+    new-mandate: 'Nouveau mandat'
 </i18n>
 
 <script setup lang="ts">
@@ -51,9 +47,7 @@ const openDrawer = ref(false)
 const drawerHandler = () => {
   openDrawer.value = true
 }
-defineExpose({
-  openDrawer
-})
+
 </script>
 
 <style scoped lang="scss">

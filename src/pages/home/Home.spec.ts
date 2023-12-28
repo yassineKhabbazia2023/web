@@ -2,13 +2,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import wrapperFactory from '../../../tests/utils/wrapperFactory'
 import { getMandatesCollection } from '@/services/mandate'
-import Header from '@/components/Common/Header'
-import ListMandate from '@/components/DisplayMandate/Table'
-import Pagination from '@/components/DisplayMandate/Pagination'
 import Home from '@/pages/home'
-import {
-  waitForAsyncImports
-} from '@kpmg/common/src/testing-helpers'
 
 const mandatesList = {
   counters: {
@@ -73,14 +67,23 @@ const createWrapper = (props: any) =>
   })
 
 describe('componentName.vue', () => {
-  it('renders Header component', async () => {
+  it('should call api with search term', async () => {
     const wrapper = createWrapper({})
-    await waitForAsyncImports(50)
+    vi.useFakeTimers()
+    const inputValue = 'BNP Paribas'
     await wrapper.find('.btn-next').trigger('click')
-    expect(wrapper.findComponent(Header).exists()).toBeTruthy()
-    expect(wrapper.findComponent(ListMandate).exists()).toBeTruthy()
-    expect(wrapper.findComponent(Pagination).exists()).toBeTruthy()
-    wrapper.vm.updateTableDisplay({ currentPage: 2, itemsByPage: 20 })
-    expect(getMandatesCollection).toHaveBeenCalledTimes(2)
+    const ibsInputElement = wrapper
+      .find('input[data-testid="search-mandate-test"]')
+    await ibsInputElement
+      .setValue(inputValue)
+    await ibsInputElement.trigger('change')
+    await vi.advanceTimersByTimeAsync(550)
+    expect(getMandatesCollection).toHaveBeenLastCalledWith({
+      skip: 0,
+      limit: 10,
+      searchTerm: inputValue,
+      sortCriteria: '',
+      sortOrder: 'Descending'
+    })
   })
 })

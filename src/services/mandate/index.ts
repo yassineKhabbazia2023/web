@@ -1,20 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
-
 import { commonApi as api } from '@kpmg/common'
 
 /**
  *
-mandat vierge : GET /mandate/{mandateId}/unsigned
-
-mandat signé : GET /mandate/{mandateId}/signed
-
 upload d'un nouveau mandat signé: POST /mandate/{mandateId}/signed
-
 */
 import { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
-// export const createMandate = async ({
 export const getCompany = async ({
   ibsNumber
 }: { ibsNumber: string }): Promise<any> =>
@@ -26,28 +17,14 @@ export const downloadUnsignedMandate = async (mandateId: string) => {
   })
 }
 
-/* export const downloadDocumentById = async (
-    { accountId, documentId }: any,
-    progressCallback?: (progressEvent: ProgressEvent) => void
-  ): Promise<any> => { */
-export const downloadDocumentById = async (
-  progressCallback?: (progressEvent: ProgressEvent) => void
-): Promise<any> => {
-  /* return api().mandate.get(`/${accountId}/documents/${documentId}/content`, {
-    responseType: 'blob',
-    onDownloadProgress: (progressEvent: ProgressEvent) => {
-      progressCallback && progressCallback(progressEvent)
-    }
-  }) */
-  const fileProgress: any = { loaded: 0, total: 100 }
-  let intervalId: any = null
-  setTimeout(() => {
-    clearInterval(intervalId)
-  }, 2000)
-  intervalId = setInterval(() => {
-    fileProgress.loaded += 25
-    progressCallback && progressCallback(fileProgress)
-  }, 500)
+export const downloadSignedMandate = async (mandateId: string) => {
+  return await api().mandate.get(`/mandate/${mandateId}/signed`, {
+    responseType: 'blob'
+  })
+}
+
+export const terminateMandate = async (mandateId: string) => {
+  return await api().mandate.post(`/mandate/${mandateId}/deactivate`)
 }
 
 export const validateIban = async ({

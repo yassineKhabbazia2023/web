@@ -5,7 +5,9 @@ import {
   getCompany,
   validateIban,
   createMandate,
-  downloadUnsignedMandate
+  downloadUnsignedMandate,
+  downloadSignedMandate,
+  terminateMandate
 } from '.'
 import { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
@@ -100,6 +102,18 @@ const downloadUnsignedMandateImplementation = (url: string) => {
   }
 }
 
+const downloadSignedMandateImplementation = (url: string) => {
+  if (url === '/mandate/e4ec92f2-a375-4574-b6de-235a9fe13028/signed') {
+    return Promise.resolve(new Blob(['signed mandate blob'], { type: 'application/pdf' }))
+  }
+}
+
+const terminateMandateImplementation = (url: string) => {
+  if (url === '/mandate/e4ec92f2-a375-4574-b6de-235a9fe13028/deactivate') {
+    return Promise.resolve({})
+  }
+}
+
 const listMandatesImplementation = (url: string, filterOptions: any) => {
   if (url && filterOptions) {
     return Promise.resolve({
@@ -142,6 +156,9 @@ vi.mock('@kpmg/common', () => {
           if (/^\/mandate\/([a-zA-Z0-9_-]+)\/unsigned$/.test(url)) {
             return downloadUnsignedMandateImplementation(url)
           }
+          if (/^\/mandate\/([a-zA-Z0-9_-]+)\/signed$/.test(url)) {
+            return downloadSignedMandateImplementation(url)
+          }
           if (url === '/mandate') {
             return listMandatesImplementation(url, params)
           }
@@ -155,6 +172,9 @@ vi.mock('@kpmg/common', () => {
         post: vi.fn((url, body) => {
           if (body && url) {
             return createImplementation(body)
+          }
+          if (/^\/mandate\/([a-zA-Z0-9_-]+)\/deactivate$/.test(url)) {
+            return terminateMandateImplementation(url)
           }
         })
       }
@@ -184,6 +204,22 @@ describe('downloadUnsignedMandate', () => {
     const unsignedMandate = await downloadUnsignedMandate('e4ec92f2-a375-4574-b6de-235a9fe13028')
     expect(unsignedMandate)
       .toStrictEqual(new Blob(['unsigned mandate blob'], { type: 'application/pdf' }))
+  })
+})
+
+describe('downloadSignedMandate', () => {
+  it('should return signed mandate', async () => {
+    const unsignedMandate = await downloadSignedMandate('e4ec92f2-a375-4574-b6de-235a9fe13028')
+    expect(unsignedMandate)
+      .toStrictEqual(new Blob(['signed mandate blob'], { type: 'application/pdf' }))
+  })
+})
+
+describe('terminateMandate', () => {
+  it('should return signed mandate', async () => {
+    const terminateMandateResult = await terminateMandate('e4ec92f2-a375-4574-b6de-235a9fe13028')
+    expect(terminateMandateResult)
+      .toStrictEqual({})
   })
 })
 

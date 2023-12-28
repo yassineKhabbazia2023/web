@@ -87,8 +87,7 @@
               <PInput
                 v-model="createMandateForm.firstName"
                 data-testid="firstName-test"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
         </PRow>
@@ -99,7 +98,7 @@
         >
           <template #label>
             <span class="create-mandate-form_optional-title"
-              >{{ t('email') }}
+            >{{ t('email') }}
             </span>
             <span class="create-mandate-form_optional">{{
               t('optional')
@@ -109,14 +108,13 @@
             v-model="createMandateForm.email"
             data-testid="email-test"
             state="default"
-          >
-          </PInput>
+          />
         </PFormItem>
         <h5 class="create-mandate-form__section-title">
           {{ t('headquarters') }}
         </h5>
         <PFormItem
-          prop="address"
+          prop="street"
           inline
           :label="`${t('address')}`"
           disabled
@@ -130,14 +128,13 @@
         >
           <template #label>
             <span class="create-mandate-form_optional-title"
-              >{{ t('complement') }}
+            >{{ t('complement') }}
             </span>
             <span class="create-mandate-form_optional">{{
               t('optional')
             }}</span>
           </template>
-          <PInput v-model="createMandateForm.addressComplement" state="default">
-          </PInput>
+          <PInput v-model="createMandateForm.addressComplement" state="default" />
         </PFormItem>
         <PRow :gutter="16">
           <PCol :span="8">
@@ -161,7 +158,6 @@
               :label="t('city')"
             >
               <PInput v-model="createMandateForm.city"/>
-
             </PFormItem>
           </PCol>
         </PRow>
@@ -182,7 +178,7 @@
               inline
               :label="`${t('institutionCode')}`"
               :showMessage="(!validationError || !isBankCodeValid)
-              && !isNonScrappable && !isScrappable"
+                && !isNonScrappable && !isScrappable"
               :validateStatus="validationError ? 'error' : ''"
               disabled
             >
@@ -192,8 +188,7 @@
                 placeholder="_ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
           <PCol :span="12">
@@ -211,8 +206,7 @@
                 placeholder="_ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
         </PRow>
@@ -232,8 +226,7 @@
                 placeholder="_ _ _ _ _ _ _ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
           <PCol :span="6">
@@ -251,8 +244,7 @@
                 placeholder="_ _"
                 @blur="checkFields()"
                 state="default"
-              >
-              </PInput>
+              />
             </PFormItem>
           </PCol>
         </PRow>
@@ -269,14 +261,14 @@
             disabled
           />
         </PFormItem>
-        <PAlert type="danger" v-if="isScrappable">
+        <PAlert pType="danger" v-if="isScrappable">
           {{ t('form.error.notListed') }}
           <span class="create-mandate-form__content--bold">
             {{ t('form.error.frFmMandat') }}
           </span>
           {{ t('form.error.contactTeam') }}
         </PAlert>
-        <PAlert type="danger" v-if="isNonScrappable">
+        <PAlert pType="danger" v-if="isNonScrappable">
           {{ t('form.error.nonScrappable') }}
         </PAlert>
       </div>
@@ -432,8 +424,11 @@ const isBankCodeValid = ref(false)
 const isRibValid = ref(false)
 const isValidateEnabled = computed(() => isBankCodeValid.value && isRibValid.value)
 
-// Computed properties
-const areFieldsFilled = computed(() => {
+const areFieldsFilled = (fieldsToCheck: string[]) =>
+  fieldsToCheck.every((field) => !!createMandateForm[field] &&
+  createMandateForm[field].trim() !== '')
+
+const areStep2FieldsFilled = computed(() => {
   const fieldsToCheck = [
     'title',
     'firstName',
@@ -443,8 +438,7 @@ const areFieldsFilled = computed(() => {
     'city',
     'country'
   ]
-
-  return fieldsToCheck.every((field) => createMandateForm[field].trim() !== '')
+  return areFieldsFilled(fieldsToCheck)
 })
 
 // Methods
@@ -461,7 +455,7 @@ const validateIBS = async (_: Rule, value: string, callback: any) => {
     if (error?.message?.includes('outWalletIBS')) {
       callback(new Error(t('form.error.outWalletIBS')))
     }
-    if (error?.message?.includes('ibsNotFound')) {
+    if (error?.message?.includes('ibsNotFound') || error?.message?.includes('404')) {
       callback(new Error(t('form.error.ibsNotFound')))
     }
   }
@@ -499,12 +493,22 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
     : 'form.error.ibsNotFound')
 }
 
-const checkAndEmitEvents = () => {
-  if (areFieldsFilled.value) {
-    emit('enable-disable-next', true)
-  } else {
-    emit('enable-disable-next', false)
+const areFieldsFilledStepBased = (step: number) => {
+  const fieldsToCheckMap: any = {
+    1: ['erpId', 'siretNumber', 'name'],
+    2: [
+      'title',
+      'firstName',
+      'lastName',
+      'street',
+      'zipCode',
+      'city',
+      'country'
+    ],
+    3: ['institutionCode', 'branchCode', 'accountNumber',
+      'key', 'bank']
   }
+  emit('enable-disable-next', areFieldsFilled(fieldsToCheckMap[step]))
 }
 
 const checkBbanValidity = async ({
@@ -641,6 +645,7 @@ const createValidator = (
   required: true,
   validator: async (_: any, value: string, callback: any) => {
     if (value.length !== length) {
+      createMandateForm.bank = ''
       callback(new Error(errorMsg))
     } else if (!regex.test(value)) {
       callback(new Error(regexErrorMsg))
@@ -657,7 +662,7 @@ const validateEmail = (_: any, value: string, callback: any) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!value || emailRegex.test(value)) {
     callback()
-    emit('enable-disable-next', true)
+    areFieldsFilledStepBased(2)
   } else {
     callback(new Error(t('form.error.correctEmail')))
     emit('enable-disable-next', false)
@@ -675,7 +680,6 @@ const rules = reactive<any>({
   lastName: [createRule(t('form.error.requiredField'))],
   email: [{ validator: validateEmail, trigger: 'blur' }],
   street: [createRule(t('form.error.requiredField'))],
-  address: [createRule(t('form.error.requiredField'))],
   zipCode: [
     createRule(t('form.error.requiredField')),
     {
@@ -685,7 +689,7 @@ const rules = reactive<any>({
           emit('enable-disable-next', false)
         } else {
           callback()
-          emit('enable-disable-next', true)
+          areFieldsFilledStepBased(2)
         }
       },
       trigger: 'blur'
@@ -729,8 +733,8 @@ const rules = reactive<any>({
 })
 
 // Watchers
-watch(() => props.step, checkAndEmitEvents)
-watch(areFieldsFilled, checkAndEmitEvents)
+watch(() => props.step, () => areFieldsFilledStepBased(props.step))
+watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
 watch(
   () => createMandateForm.erpId,
   (value) => {
@@ -741,8 +745,7 @@ watch(
 // Expose
 defineExpose({
   createMandateForm,
-  validateIBS,
-  checkAndEmitEvents
+  validateIBS
 })
 </script>
 

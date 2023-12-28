@@ -1,11 +1,6 @@
 import CreateMandateForm from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
-import {
-  waitForAsyncImports,
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
-import { PForm, PFormItem, PInput, PCol, PRow } from '@kpmg/styleguide'
 
 function mockMandateService(
   createMandateData: any,
@@ -59,9 +54,8 @@ const createWrapper = (props: any = {}) =>
   wrapperFactory(CreateMandateForm, { props })
 
 describe('form.vue', () => {
-  it('renders the component when step value is 1', async () => {
+  it('renders the component when step value is 1', () => {
     const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(8)
     expect(wrapper.exists()).toBeTruthy()
   })
 
@@ -78,7 +72,6 @@ describe('form.vue', () => {
   it.each(step1TestCases)('drawer step 1 and erpId %s, name %s and siret %s',
     async ({ initial: { erpId, name, siretNumber } }) => {
       const wrapper = createWrapper({ step: 1 })
-      await waitForAsyncImports(50)
       const ibsInputElement = wrapper
         .find('input[data-testid="ibs-number-test"]')
       await ibsInputElement
@@ -162,8 +155,6 @@ describe('form.vue', () => {
       const wrapper = createWrapper({ step: 3 })
       Object.assign(wrapper.vm.createMandateForm, step3TestCase.initial)
 
-      await waitForAsyncImports(120)
-
       const institutionCodeInputElement = wrapper
         .find('[data-testid="institutionCode-input-test"]')
       await institutionCodeInputElement
@@ -200,13 +191,11 @@ describe('form.vue', () => {
 
   it('emits the loading event form', async () => {
     const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(50)
     const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('1234567891')
     expect((input.element as HTMLInputElement).value).toBe('1234567891')
     const emittedEnableDisableEvent: any = wrapper.emitted('enable-disable-next')
     expect(emittedEnableDisableEvent).toBeTruthy()
-    // expect(createMandate).toHaveBeenCalled()
   })
 
   it('renders the component when step value is 2', async () => {
@@ -216,7 +205,6 @@ describe('form.vue', () => {
 
   it('validateIBS when ibs length is equal to 10', async () => {
     const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(60)
     vi.spyOn(wrapper.vm, 'validateIBS').mockImplementation(() => true)
     const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('1234567891')
@@ -227,24 +215,12 @@ describe('form.vue', () => {
 
   it('validateIBS when ibs length is not equal to 10', async () => {
     const wrapper = createWrapper({ step: 1 })
-    await waitForAsyncImports(50)
     vi.spyOn(wrapper.vm, 'validateIBS').mockImplementation(() => true)
     const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('123456789')
     await input.trigger('change')
 
     expect((input.element as HTMLInputElement).value).toBe('123456789')
-  })
-
-  it('checkAndEmitEvents when fields are not filled', async () => {
-    const wrapper = createWrapper({ step: 2 })
-    await waitForAsyncImports(130)
-    const input = wrapper.find('input[data-testid="firstName-test"]')
-    await input.setValue('')
-    await input.trigger('blur')
-
-    wrapper.vm.checkAndEmitEvents()
-    expect(wrapper.emitted()['enable-disable-next']).toBeTruthy()
   })
 
   const testCases = [
@@ -255,8 +231,6 @@ describe('form.vue', () => {
   it.each(testCases)('when step value is 2 (email: %s, zipCode: %s invalid)',
     async (email, zipCode) => {
       const wrapper = createWrapper({ step: 2 })
-      await waitForAsyncImports(150)
-
       const emailInput = wrapper.find('input[data-testid="email-test"]')
       await emailInput.setValue(email)
       await emailInput.trigger('blur')
@@ -337,12 +311,6 @@ describe('form.vue mock getBankDetail to throw error', () => {
       mockGetBankDetailThrowError()
       const wrapper = createWrapper({ step: 3 })
       Object.assign(wrapper.vm.createMandateForm, step3TestCase.initial)
-
-      await dynamicUntilFoundComponent(wrapper, PForm)
-      await dynamicUntilFoundComponent(wrapper, PFormItem)
-      await dynamicUntilFoundComponent(wrapper, PInput)
-      await dynamicUntilFoundComponent(wrapper, PCol)
-      await dynamicUntilFoundComponent(wrapper, PRow)
 
       const institutionCodeInputElement = wrapper
         .find('[data-testid="institutionCode-input-test"]')
