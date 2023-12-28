@@ -1,5 +1,5 @@
 <template>
-  <el-row :gutter="12">
+  <PRow :pGutter="12">
     <PCol
       :pSpan="24"
       :pXs="{ span: 24 }"
@@ -20,12 +20,13 @@
         </div>
       </div>
     </PCol>
-  </el-row>
+  </PRow>
 </template>
 
 <script lang="ts" setup>
 import { getColorValue, useCopyColor } from '@/utils'
 import PCol from '@/atoms/PCol'
+import PRow from '@/atoms/PRow'
 
 const colorsType = [
   'functionnal-red',

@@ -9,7 +9,7 @@
     }"
   >
     <Variant title="Border radius Custom Pegase">
-      <el-row class="demo-radius">
+      <PRow class="demo-radius">
         <PCol :pSpan="12">
           <div class="title">
             Radius 4px
@@ -73,10 +73,10 @@
           <code class="code-value">.radius--circle</code>
           <div class="radius radius--circle" style="width: 100px;" />
         </PCol>
-      </el-row>
+      </PRow>
     </Variant>
     <Variant title="Border radius Element Plus">
-      <el-row class="demo-radius">
+      <PRow class="demo-radius">
         <PCol
           v-for="(radius, i) in radiusGroup"
           :key="i"
@@ -95,7 +95,7 @@
             }"
           />
         </PCol>
-      </el-row>
+      </PRow>
     </Variant>
     <Variant title="Border style">
       <table class="demo-border" aria-label="Border style">
@@ -144,6 +144,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PCol from '@/atoms/PCol'
+import PRow from '@/atoms/PRow'
 
 const radiusGroup = ref([
   {

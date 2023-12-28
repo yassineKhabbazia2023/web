@@ -7,24 +7,24 @@
     }"
   >
     <Variant title="Basic Usage">
-      <PButton mb2 @click="toggle">
+      <PButton class="margin-bottom--2" @click="toggle">
         Switch Language
       </PButton>
       <br />
       <PConfigProvider :pLocale="locale">
-        <el-table mb1 :data="[]" />
-        <el-pagination :total="100" />
+        <PTable class="margin-bottom--1" :pData="[]" />
+        <PPagination :pTotal="100" />
       </PConfigProvider>
     </Variant>
     <Variant title="Button">
-      <div m="b-2">
+      <div class="margin-bottom--2">
         <PCheckbox v-model="configButton.autoInsertSpace">
           autoInsertSpace
         </PCheckbox>
       </div>
 
       <PConfigProvider :pButton="configButton">
-        <PButton>中文</PButton>
+        <PButton>Click</PButton>
       </PConfigProvider>
     </Variant>
     <Variant title="Message">
@@ -39,17 +39,19 @@
 
 <script setup lang="ts">
 import en from 'element-plus/es/locale/lang/en'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import fr from 'element-plus/es/locale/lang/fr'
 import PButton from '@/atoms/PButton'
+import PTable from '@/atoms/PTable'
+import PPagination from '@/atoms/PPagination'
 import { computed, reactive, ref } from 'vue'
 import PCheckbox from '@/atoms/PCheckbox'
 import { ElMessage } from 'element-plus'
 
-const language = ref('zh-cn')
-const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
+const language = ref('fr')
+const locale = computed(() => (language.value === 'fr' ? fr : en))
 
 const toggle = () => {
-  language.value = language.value === 'zh-cn' ? 'en' : 'zh-cn'
+  language.value = language.value === 'fr' ? 'en' : 'fr'
 }
 
 const open = () => {

@@ -8,25 +8,25 @@
   >
     <Variant title="Basic Usage">
       <PContainer pDirection="vertical">
-        <PCHeader :pHeight="`${headerHeight}px`">
+        <PCHeader :pHeight="headerHeight">
           Header
         </PCHeader>
         <PContainer>
-          <PAside :pWidth="`${asideWidth}px`">
+          <PAside :pWidth="asideWidth">
             Aside
           </PAside>
           <PContainer>
             <PMain>Main</PMain>
           </PContainer>
         </PContainer>
-        <PFooter :pHeight="`${footerHeight}px`">
+        <PFooter :pHeight="footerHeight">
           Footer
         </PFooter>
       </PContainer>
       <template #controls>
-        <HstNumber v-model="headerHeight" title="HeaderHeight" />
-        <HstNumber v-model="footerHeight" title="FooterHeight" />
-        <HstNumber v-model="asideWidth" title="AsideWidth" />
+        <HstText v-model="headerHeight" title="HeaderHeight" />
+        <HstText v-model="footerHeight" title="FooterHeight" />
+        <HstText v-model="asideWidth" title="AsideWidth" />
       </template>
     </Variant>
   </Story>
@@ -40,9 +40,9 @@ import PCHeader from '@/atoms/PCHeader'
 import PFooter from '@/atoms/PFooter'
 import PMain from '@/atoms/PMain'
 
-const headerHeight = ref(52)
-const footerHeight = ref(52)
-const asideWidth = ref(236)
+const headerHeight = ref('52px')
+const footerHeight = ref('6rem')
+const asideWidth = ref('20%')
 </script>
 
 <style scoped>
