@@ -48,12 +48,12 @@
   </PTable>
   <PDialog
       v-model="pDialogControl.dialogVisible"
-      :pWidth="pDialogControl.dialogWidth"
-      :pModal="pDialogControl.dialogModal"
-      :pCenter="pDialogControl.dialogCenter"
+      pWidth="43rem"
+      pModal
+      :pCenter="false"
       :pBeforeClose="closeTerminateMandatePopup"
-      :dialogCloseOnClickModal="pDialogControl.dialogCloseOnClickModal"
-      :dialogCloseOnPressEscape="pDialogControl.dialogCloseOnPressEscape"
+      :dialogCloseOnClickModal="false"
+      dialogCloseOnPressEscape
       :pTitle="t('title-popup')"
     >
       <PAlert pType="warning" class="margin-bottom--2">
@@ -180,14 +180,7 @@ const { t } = useI18n({
 
 const emit = defineEmits(['sort-column-change'])
 const pDialogControl = reactive({
-  dialogVisible: false,
-  dialogWidth: '40%',
-  dialogModal: true,
-  dialogCenter: false,
-  dialogShowClose: true,
-  dialogCloseOnClickModal: false,
-  dialogCloseOnPressEscape: true,
-  dialogCustomClass: 'my-dialog-class'
+  dialogVisible: false
 })
 
 const accountNumberRef = ref<string>('')
@@ -310,7 +303,7 @@ const saveFile = async (id: string, data: any, mandateType: string) => {
 
 const actionClicked = async (event: ActionEvent, { id, accountNumber, companyName }:
   { id: string, accountNumber: string, companyName: string }) => {
-  const actions: Record<any, () => Promise<void>> = {
+  const actions: Record<any, () => Promise<void> | void> = {
     'download-pre-filled-mandate': async () => {
       const { data } = await downloadUnsignedMandate(id)
       await saveFile(id, data, 'unsigned')
@@ -319,7 +312,7 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
       const { data } = await downloadSignedMandate(id)
       await saveFile(id, data, 'signed')
     },
-    'cancel-telecollection': async () => {
+    'cancel-telecollection': () => {
       accountNumberRef.value = accountNumber
       companyNameRef.value = companyName
       mandateIdRef.value = id
@@ -339,8 +332,11 @@ const closeTerminateMandatePopup = () => {
 }
 
 const terminateMandateAction = async (mandateId: string) => {
-  await terminateMandate(mandateId)
-  closeTerminateMandatePopup()
+  try {
+    await terminateMandate(mandateId)
+    closeTerminateMandatePopup()
+  } catch (_) {    
+  }
 }
 </script>
 
