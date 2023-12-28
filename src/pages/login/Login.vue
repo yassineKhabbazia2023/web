@@ -20,12 +20,12 @@
 
     <PForm
       ref="formRef"
+      class="el-login-form"
       :pRules="rules"
       :pModel="formValues"
       pRequireAsteriskPosition="right"
       pLabelPosition="top"
       @submit.prevent="handleSubmit"
-      class="el-login-form"
     >
       <PFormItem
         :pLabel="t('email')"
