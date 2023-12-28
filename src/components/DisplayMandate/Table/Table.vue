@@ -335,7 +335,7 @@ const terminateMandateAction = async (mandateId: string) => {
   try {
     await terminateMandate(mandateId)
     closeTerminateMandatePopup()
-  } catch (_) {    
+  } catch (_) {
   }
 }
 </script>
