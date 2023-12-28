@@ -1,17 +1,14 @@
 <template>
-    <PInput
-        v-model="searchModel"
-        data-testid="search-mandate-test"
-        :placeholder="t('search')"
-    >
-        <template #prefix>
-            <PIcon
-                class="el-button__icon--left"
-            >
-                <PISearch />
-            </PIcon>
-        </template>
-    </PInput>
+  <PInput
+    v-model="searchModel"
+    data-testid="search-mandate-test"
+    :placeholder="t('search')">
+    <template #prefix>
+      <PIcon class="el-button__icon--left">
+        <PISearch />
+      </PIcon>
+    </template>
+  </PInput>
 </template>
 
 <i18n lang="yaml">
@@ -48,6 +45,4 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
-
 </script>
-

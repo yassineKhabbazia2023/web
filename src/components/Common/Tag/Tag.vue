@@ -1,5 +1,5 @@
 <template>
-    <PTag
+  <PTag
     :pColor="tagProperties.color"
     pEffect="light"
     :pIconLeft="tagProperties.icon"
@@ -30,8 +30,12 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  PTag, PIExclamationTriangle, PIUpload, PIArrowRepeat,
-  PICheckCircle, PIXCircle
+  PTag,
+  PIExclamationTriangle,
+  PIUpload,
+  PIArrowRepeat,
+  PICheckCircle,
+  PIXCircle
 } from '@kpmg/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
