@@ -1,6 +1,6 @@
 <template>
   <div class="common-layout">
-    <PContainer>
+    <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="52">
         <Header :headerMenu="headerMenu" />
       </PCHeader>
