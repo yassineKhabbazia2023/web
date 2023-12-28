@@ -6,7 +6,8 @@ import {
   validateIban,
   createMandate,
   downloadUnsignedMandate,
-  downloadSignedMandate
+  downloadSignedMandate,
+  terminateMandate
 } from '.'
 import { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
@@ -107,6 +108,12 @@ const downloadSignedMandateImplementation = (url: string) => {
   }
 }
 
+const terminateMandateImplementation = (url: string) => {
+  if (url === '/mandate/e4ec92f2-a375-4574-b6de-235a9fe13028/deactivate') {
+    return Promise.resolve({})
+  }
+}
+
 const listMandatesImplementation = (url: string, filterOptions: any) => {
   if (url && filterOptions) {
     return Promise.resolve({
@@ -166,6 +173,9 @@ vi.mock('@kpmg/common', () => {
           if (body && url) {
             return createImplementation(body)
           }
+          if (/^\/mandate\/([a-zA-Z0-9_-]+)\/deactivate$/.test(url)) {
+            return terminateMandateImplementation(url)
+          }
         })
       }
     })
@@ -202,6 +212,14 @@ describe('downloadSignedMandate', () => {
     const unsignedMandate = await downloadSignedMandate('e4ec92f2-a375-4574-b6de-235a9fe13028')
     expect(unsignedMandate)
       .toStrictEqual(new Blob(['signed mandate blob'], { type: 'application/pdf' }))
+  })
+})
+
+describe('terminateMandate', () => {
+  it('should return signed mandate', async () => {
+    const terminateMandateResult = await terminateMandate('e4ec92f2-a375-4574-b6de-235a9fe13028')
+    expect(terminateMandateResult)
+      .toStrictEqual({})
   })
 })
 

@@ -5,8 +5,10 @@ import * as mandateService from '@/services/mandate'
 
 interface CustomWindow extends Window {
   showSaveFilePicker?: (_: any) => Promise<any>
+  URL: any
 }
 declare let window: CustomWindow
+declare let document: any
 
 vi.mock('@/services/mandate', () => {
   return {
@@ -17,6 +19,10 @@ vi.mock('@/services/mandate', () => {
     downloadSignedMandate: vi.fn(() => {
       // Mock implementation or return value for downloadSignedMandate
       return Promise.resolve(Promise.resolve({ data: 'pdf-data' }))
+    }),
+    terminateMandate: vi.fn(() => {
+      // Mock implementation or return value for terminateMandate
+      return Promise.resolve(Promise.resolve({ data: {} }))
     })
   }
 })
@@ -52,10 +58,17 @@ const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
 }
 
 const createWrapper = (props: any = {}) =>
-  wrapperFactory(Table, { props })
+  wrapperFactory(Table, {
+    props,
+    global: {
+      mocks: {
+        t: (key: any) => `mocked-${key}`
+      }
+    }
+  })
 
 describe('mandate collection', () => {
-  it('renders the mandate table', async () => {
+  it('renders the mandate table and click on dropdown', async () => {
     const wrapper = createWrapper({
       data: [
         {
@@ -90,6 +103,12 @@ describe('mandate collection', () => {
         }
       ]
     })
+
+    await vi.dynamicImportSettled()
+    const firstDropdown = wrapper.find('.el-dropdown')
+    const button = firstDropdown.find('.el-button')
+    await button.trigger('click')
+
     expect(wrapper.exists()).toBeTruthy()
   })
 
@@ -125,13 +144,30 @@ describe('mandate collection', () => {
     expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
   })
 
+  it('renders the mandate table click on terminate mandate', async () => {
+    const wrapper = createWrapper({
+      data: []
+    })
+
+    mockShowSaveFilePicker()
+    const mandate = { id: '123' }
+
+    // Trigger the action
+    await wrapper.vm.actionClicked('cancel-telecollection',
+      { id: '123', accountNumber: '123', companyName: '123' })
+    await wrapper.vm.terminateMandateAction(mandate.id)
+
+    // Assert that the correct service function was called
+    expect(mandateService.terminateMandate).toHaveBeenCalledWith('123')
+  })
+
   it('renders the mandate table click on download signed mandate without showSaveFilePicker',
     async () => {
       const wrapper = createWrapper({
         data: []
       })
 
-      mockShowSaveFilePicker(false)
+      window.showSaveFilePicker = undefined
 
       const mandate = { id: '123' }
 

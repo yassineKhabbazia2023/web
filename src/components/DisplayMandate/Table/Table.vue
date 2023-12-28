@@ -46,6 +46,57 @@
       />
     </template>
   </PTable>
+  <PDialog
+      v-model="pDialogControl.dialogVisible"
+      pWidth="43rem"
+      pModal
+      :pCenter="false"
+      :pBeforeClose="closeTerminateMandatePopup"
+      :dialogCloseOnClickModal="false"
+      dialogCloseOnPressEscape
+      :pTitle="t('title-popup')"
+    >
+      <PAlert pType="warning" class="margin-bottom--2">
+        {{ t('alert-popup') }}
+      </PAlert>
+      <template #footer>
+        <div class="p-dialog__footer">
+          <PButton
+            pType="primary"
+            pSize="small"
+            pPlain
+            :pRound="false"
+            :pDisabled="false"
+            :pLoading="false"
+            @click="closeTerminateMandatePopup"
+          >
+            {{ t('cancel-popup') }}
+          </PButton>
+          <PButton
+            pType="primary"
+            pSize="small"
+            :pPlain="false"
+            :pRound="false"
+            :pDisabled="false"
+            :pLoading="false"
+            @click="terminateMandateAction(mandateIdRef)"
+            class="margin-left--2"
+          >
+            {{ t('terminate-mandate-popup') }}
+          </PButton>
+        </div>
+      </template>
+      <p class="p-dialog__text">
+        {{ t('text-one-popup-part1') }}
+        <strong>{{ accountNumberRef }}</strong>
+        {{ t('text-one-popup-part2') }}
+        <strong>{{ companyNameRef }}</strong>
+        {{ t('text-one-popup-part3') }}
+        <br/>
+        <br/>
+        {{ t('text-one-popup-part4') }}
+      </p>
+    </PDialog>
 </template>
 
 <i18n lang="yaml">
@@ -62,6 +113,16 @@
         submit-signed-mandate: 'Submit the signed mandate'
         cancel-telecollection: 'Cancel telecollection'
         no-data: 'No data'
+        title-popup: 'Cancel the collection'
+        alert-popup: 'Warning! This action is irreversible.'
+        text-one-popup-part1: "You are about to cancel the collection of bank flows
+          for account No. "
+        text-one-popup-part2: " for the "
+        text-one-popup-part3: " file."
+        text-one-popup-part4: 'This action is irreversible, you will no longer have access to
+          the bank movements of this account.'
+        cancel-popup: 'Cancel'
+        terminate-mandate-popup: 'Terminate'
     fr-FR:
         ibs-code: 'Code IBS'
         company-name: 'Raison sociale'
@@ -75,10 +136,20 @@
         submit-signed-mandate: 'Déposer le mandat signé'
         cancel-telecollection: 'Résilier la télécollecte'
         no-data: 'Aucun résultat'
+        title-popup: 'Résilier la collecte'
+        alert-popup: 'Attention ! Cette action est irréversible.'
+        text-one-popup-part1: "Vous êtes sur le point de résilier la collecte des flux
+          bancaires pour le compte N° "
+        text-one-popup-part2: " pour le dossier "
+        text-one-popup-part3: "."
+        text-one-popup-part4: 'Cette action est irréversible, vous n’aurez plus accès aux
+          mouvements bancaires de ce compte.'
+        cancel-popup: 'Annuler'
+        terminate-mandate-popup: 'Résilier'
 </i18n>
 
 <script setup lang='ts'>
-import { computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import Tag from '@/components/Common/Tag'
@@ -88,11 +159,17 @@ import {
   PToolbox,
   PButton,
   PIcon,
-  PIThreeDots
+  PIThreeDots,
+  PDialog,
+  PAlert
 } from '@kpmg/styleguide'
 import { dateFormatter, downloadFile } from '@/helpers/utils'
 import type { TableProps, ActionEvent } from './Table'
-import { downloadUnsignedMandate, downloadSignedMandate } from '@/services/mandate'
+import {
+  downloadUnsignedMandate,
+  downloadSignedMandate,
+  terminateMandate
+} from '@/services/mandate'
 
 declare let window: any
 
@@ -102,6 +179,14 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits(['sort-column-change'])
+const pDialogControl = reactive({
+  dialogVisible: false
+})
+
+const accountNumberRef = ref<string>('')
+const companyNameRef = ref<string>('')
+const mandateIdRef = ref<string>('')
+
 const props = defineProps<TableProps>()
 const dataFormatter = (data: any) =>
   data.map(
@@ -195,26 +280,30 @@ const sortColumnChange = ({ order, prop }: any) => {
 }
 
 const saveFile = async (id: string, data: any, mandateType: string) => {
-  if (window.showSaveFilePicker && 'showSaveFilePicker' in window) {
-    const fileHandle = await window.showSaveFilePicker({
-      suggestedName: `${mandateType}-mandate-${id}.pdf`,
-      types: [{
-        description: 'PDF Document',
-        accept: { 'application/pdf': ['.pdf'] }
-      }]
-    })
+  try {
+    if (window.showSaveFilePicker && 'showSaveFilePicker' in window) {
+      const fileHandle = await window?.showSaveFilePicker({
+        suggestedName: `${mandateType}-mandate-${id}.pdf`,
+        types: [{
+          description: 'PDF Document',
+          accept: { 'application/pdf': ['.pdf'] }
+        }]
+      })
 
-    const writableStream = await fileHandle.createWritable()
-    await writableStream.write(data)
-    await writableStream.close()
-  } else {
-    downloadFile(`${mandateType}-mandate-${id}.pdf`, data, window)
+      const writableStream = await fileHandle.createWritable()
+      await writableStream.write(data)
+      await writableStream.close()
+    } else {
+      downloadFile(`${mandateType}-mandate-${id}.pdf`, data, window)
+    }
+  } catch (error) {
+    console.error('Error downloading file:', error)
   }
 }
 
-const actionClicked = async (event: ActionEvent, { id }:
+const actionClicked = async (event: ActionEvent, { id, accountNumber, companyName }:
   { id: string, accountNumber: string, companyName: string }) => {
-  const actions: Record<any, () => Promise<void>> = {
+  const actions: Record<any, () => Promise<void> | void> = {
     'download-pre-filled-mandate': async () => {
       const { data } = await downloadUnsignedMandate(id)
       await saveFile(id, data, 'unsigned')
@@ -223,12 +312,29 @@ const actionClicked = async (event: ActionEvent, { id }:
       const { data } = await downloadSignedMandate(id)
       await saveFile(id, data, 'signed')
     },
-    'cancel-telecollection': async () => {
-      // Implementation
+    'cancel-telecollection': () => {
+      accountNumberRef.value = accountNumber
+      companyNameRef.value = companyName
+      mandateIdRef.value = id
+      pDialogControl.dialogVisible = true
     }
   }
   try {
     await actions[event]()
+  } catch (_) {
+  }
+}
+
+const closeTerminateMandatePopup = () => {
+  pDialogControl.dialogVisible = false
+  accountNumberRef.value = ''
+  companyNameRef.value = ''
+}
+
+const terminateMandateAction = async (mandateId: string) => {
+  try {
+    await terminateMandate(mandateId)
+    closeTerminateMandatePopup()
   } catch (_) {
   }
 }
