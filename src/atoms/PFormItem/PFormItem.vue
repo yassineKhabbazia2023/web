@@ -12,6 +12,7 @@
     :for="pFor"
     :validateStatus="pValidateStatus"
   >
+    <slot name="label" />
     <slot />
   </ElFormItem>
 </template>
