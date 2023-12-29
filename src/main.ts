@@ -16,7 +16,7 @@ const vueLifecycles = singleSpaVue({
   }
 })
 
-setAssetsBaseUrl(window.EnvVars.VITE_ASSETS_BASE_URL)
+setAssetsBaseUrl((window as any).EnvVars?.VITE_ASSETS_BASE_URL)
 
 export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
