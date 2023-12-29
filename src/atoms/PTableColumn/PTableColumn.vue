@@ -28,16 +28,18 @@
     :filterMethod="pFilterMethod"
     :filteredValue="pFilteredValue"
   >
-    <template v-if="pHasCustomColumn" #default="slotProps">
-      <slot v-bind="slotProps"/>
+    <template v-if="!!slots['default']" #default="slotProps">
+      <slot v-bind="slotProps" />
     </template>
   </ElTableColumn>
 </template>
 
 <script lang="ts" setup>
+import { useSlots } from 'vue'
 import { ElTableColumn } from 'element-plus'
 import type { PTableColumnProps } from './PTableColumnTypes'
 
+const slots = useSlots()
 withDefaults(defineProps<PTableColumnProps>(), {
   pType: undefined,
   pIndex: undefined,
@@ -65,7 +67,6 @@ withDefaults(defineProps<PTableColumnProps>(), {
   pFilterPlacement: undefined,
   pFilterMultiple: true,
   pFilterMethod: undefined,
-  pFilteredValue: undefined,
-  pHasCustomColumn: false
+  pFilteredValue: undefined
 })
 </script>
