@@ -59,7 +59,7 @@ const createWrapper = () =>
   })
 
 describe('page creation password', () => {
-  it.skip(
+  it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       const wrapper: VueWrapper<any> = createWrapper()
@@ -71,7 +71,7 @@ describe('page creation password', () => {
     }
   )
 
-  it.skip('should show error when user enter a invalid password', async () => {
+  it('should show error when user enter a invalid password', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11aa')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
@@ -80,7 +80,7 @@ describe('page creation password', () => {
     expect(wrapper.findAll('.is-error')).toHaveLength(1)
   })
 
-  it.skip('should show success when user enter password and valid cgu', async () => {
+  it('should show success when user enter password and valid cgu', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
@@ -90,7 +90,7 @@ describe('page creation password', () => {
     expect(wrapper.find('button').classes()).not.toContain('is-disabled')
   })
 
-  it.skip('should show error when user enter password and confirm password differently', async () => {
+  it('should show error when user enter password and confirm password differently', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
@@ -100,7 +100,7 @@ describe('page creation password', () => {
     expect(wrapper.find('button').classes()).toContain('is-disabled')
   })
 
-  it.skip('should call back end when click on button', async () => {
+  it('should call back end when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')

@@ -10,11 +10,11 @@
       {{ t('defPassword') }}
     </p>
     <PForm
+      ref="formRef"
       class="form-password"
       pLabelPosition="top"
       pHideRequiredAsterisk
       :pRules="rules"
-      ref="formRef"
       :pModel="formValue"
     >
       <PFormItem

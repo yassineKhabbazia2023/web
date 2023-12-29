@@ -10,15 +10,15 @@
       {{ t('defPassword') }}
     </p>
     <PForm
+      ref="formRef"
       class="form-password"
       pLabelPosition="top"
       pHideRequiredAsterisk
       :pRules="rules"
-      ref="formRef"
       :pModel="formValue"
     >
       <PFormItem
-        :label="t('labelPassword')"
+        :pLabel="t('labelPassword')"
         pProp="password"
         pRequired
         >
@@ -34,7 +34,7 @@
         </PopoverPasswordStrength>
       </PFormItem>
       <PFormItem
-        :label="t('labelConfirmPassword')"
+        :pLabel="t('labelConfirmPassword')"
         pProp="confirmPassword"
         pRequired
       >
