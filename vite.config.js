@@ -77,7 +77,8 @@ export default ({ mode }) =>
         port: PORT
       },
       test: {
-        testTimeout: 60000
+        testTimeout: 60000,
+        setupFiles: 'vitest.setup.ts'
       }
     })
   )
