@@ -9,7 +9,7 @@
   >
     <PButton
       class="tree-node__action"
-      circle
+      pCircle
       @click.stop
     >
       <PIcon>

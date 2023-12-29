@@ -3,7 +3,6 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { ComponentPublicInstance, nextTick } from 'vue'
-import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { PToolbox } from '@kpmg/styleguide'
 import { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
 import TreeNodeActionsToolbox from '.'
@@ -63,14 +62,14 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeTruthy()
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
-          iconName: 'PIDownload',
-          actionName: 'toolbox-download-action-click',
-          value: 'Télécharger'
+          pIconName: 'PIDownload',
+          pActionName: 'toolbox-download-action-click',
+          pValue: 'Télécharger'
         },
         {
-          actionName: 'toolbox-delete-action-click',
-          iconName: 'PITrash',
-          value: 'Supprimer'
+          pActionName: 'toolbox-delete-action-click',
+          pIconName: 'PITrash',
+          pValue: 'Supprimer'
         }
       ])
     })
@@ -139,7 +138,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
+      const toolbox = wrapper.findComponent(PToolbox)
 
       await toolbox.vm.$emit('visible-change', true)
       await nextTick()
@@ -157,7 +156,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
+      const toolbox = wrapper.findComponent(PToolbox)
 
       await toolbox.vm.$emit('p-toolbox-item-clicked', 'test')
       await nextTick()

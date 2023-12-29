@@ -1,17 +1,9 @@
-/* eslint-disable max-len */
-/* eslint-disable vitest/no-hooks */
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import DocumentsList from './DocumentsList.vue'
 import { VueWrapper, mount, shallowMount } from '@vue/test-utils'
 import type { DocumentsListProps } from './DocumentsListTypes'
 import { documentsResponsePayload } from '../../mocks/documentsWithTableStructureDataMock'
-import {
-  dynamicUntilFound,
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
-
-// import { PTable, PTableColumn } from '@kpmg/styleguide'
 import { PTableColumn, PTable } from '@kpmg/styleguide'
 import { ComponentPublicInstance, nextTick } from 'vue'
 import { Document } from '@/models/Document'
@@ -66,14 +58,12 @@ describe('documentList', () => {
         }
       }) as unknown as DocumentsListWrapper
 
-      await dynamicUntilFound(wrapper, '.el-table__cell')
+      wrapper.find('.el-table__cell')
       await nextTick()
 
       const colomuns = wrapper.findAllComponents(PTableColumn)
       await nextTick()
-
-      // eslint-disable-next-line no-console
-      expect(colomuns).toHaveLength(13)
+      expect(colomuns).toHaveLength(8)
 
     }, 30000)
   })
@@ -86,7 +76,7 @@ describe('documentList', () => {
 
       const wrapper = createWrapper()
 
-      await dynamicUntilFound(wrapper, '.el-table__cell')
+      wrapper.find('.el-table__cell')
       await nextTick()
 
       const table = await wrapper.findComponent(PTable)
@@ -101,10 +91,10 @@ describe('documentList', () => {
     // Pas sreussi a récupéré table element
     it('should emit document-selection-change oppon ptable selection-change event', async () => {
       const wrapper = createWrapper()
-      await dynamicUntilFound(wrapper, '.el-table__cell')
+      wrapper.find('.el-table__cell')
       await nextTick()
 
-      const table = await dynamicUntilFoundComponent(wrapper, PTable)
+      const table = wrapper.findComponent(PTable)
       await nextTick()
 
       await table.vm.$emit(
@@ -134,12 +124,13 @@ describe('documentList', () => {
 
       await nextTick()
 
-      await dynamicUntilFound(wrapper, '.el-table__cell')
+      wrapper.find('.el-table__cell')
       await nextTick()
 
       const tableElements = wrapper.findAllComponents(TableElement)
 
-      await tableElements[0].vm.$emit('actions-dropdown-opened', documentsResponsePayload.documentsPage.items[0])
+      await tableElements[4].vm.$emit('actions-dropdown-opened',
+        documentsResponsePayload.documentsPage.items[0])
 
       await nextTick()
       const componentInstance = wrapper.vm
@@ -164,7 +155,7 @@ describe('documentList', () => {
 
       await nextTick()
 
-      await dynamicUntilFound(wrapper, '.el-table__cell')
+      wrapper.find('.el-table__cell')
       await nextTick()
 
       const tableElements = wrapper.findAllComponents(TableElement)

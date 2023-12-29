@@ -5,7 +5,6 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { ComponentPublicInstance, nextTick } from 'vue'
-import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { PToolbox } from '@kpmg/styleguide'
 
 const defaultProps: DocumentActionsProps = {
@@ -57,14 +56,14 @@ describe('documentActions', () => {
 
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
-          actionName: 'download-document',
-          iconName: 'PIDownload',
-          value: 'Télécharger'
+          pActionName: 'download-document',
+          pIconName: 'PIDownload',
+          pValue: 'Télécharger'
         },
         {
-          actionName: 'delete-document',
-          iconName: 'PITrash',
-          value: 'Supprimer'
+          pActionName: 'delete-document',
+          pIconName: 'PITrash',
+          pValue: 'Supprimer'
         }
       ])
     })
@@ -80,9 +79,9 @@ describe('documentActions', () => {
 
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
-          actionName: 'download-document',
-          iconName: 'PIDownload',
-          value: 'Télécharger'
+          pActionName: 'download-document',
+          pIconName: 'PIDownload',
+          pValue: 'Télécharger'
         }
       ])
     })
@@ -98,7 +97,7 @@ describe('documentActions', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const toolbox = await dynamicUntilFoundComponent(wrapper, PToolbox)
+        const toolbox = wrapper.findComponent(PToolbox)
 
         await toolbox.vm.$emit('visible-change', true)
         await nextTick()

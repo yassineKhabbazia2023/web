@@ -2,15 +2,18 @@
   <div v-show="!isLoading">
     <PBreadcrumb
       class="documents-breadcrumb"
-      :elements="breadcrumbItems"
+      :pElements="breadcrumbItems"
       @p-breadcrumb-item-click="handleFolderNavigation"
     >
     </PBreadcrumb>
+
     <DocumentsActionsBar
       :permissions="permissionsList"
       @p-action-bar-button-clicked="handleActionBarButtonClick"
       :isAnyDocumentSelected="selectedDocuments.length > 0"
-      @p-upload-files-selected="handleUploadFilesSelected"/>
+      @p-upload-files-selected="handleUploadFilesSelected"
+      :isTransmitDocumentsLoading="isTransmitDocumentsLoading"
+      />
 
     <DocumentsList
       v-if="documents"
@@ -18,27 +21,30 @@
       @on-sort-change="handleSortChange"
       @toolbox-action-triggered="handleToolboxActionTriggered"
       @document-selection-change="handleOnDocumentsSelectionChange"
+      @table-row-clicked="handleOnRowTableDocumentsClicked"
     />
 
     <PPagination
       v-if="documents && documents.documentsPage.items.length > 0"
-      v-model:current-page="currentPage"
-      v-model:page-size="currentPageSize"
-      :total="documents.documentsPage.totalItems"
-      showTotalPageCounter
-      :pageSizes="pagesRanges"
-      pageSizeSelectorGroupLabel=""
-      pageSizeSelectorSuffix="documents"
+      v-model:p-current-page="currentPage"
+      v-model:p-page-size="currentPageSize"
+      :pTotal="documents.documentsPage.totalItems"
+      pShowTotalPageCounter
+      :pPageSizes="pagesRanges"
+      pPageSizeSelectorGroupLabel=""
+      pPageSizeSelectorSuffix="documents"
       @on-page-range-changed="setCurrentPageSize"
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
   </div>
+
   <PLoader
     v-show="isLoading"
-    type="gradient"
+    pType="gradient"
     size="42"
   />
+
   <DocumentRename
     v-if="selectedDocuments && selectedDocuments.length === 1"
     v-model="isRenameModalOpened"
@@ -47,6 +53,7 @@
     :document="selectedDocuments[0]"
     @document-rename="handleDocumentRename"
   />
+
   <DocumentDeleteModal
     :serviceId="currentService"
     :entityId="selectedEntity"
@@ -55,6 +62,7 @@
     @confirm-delete-document="handleConfirmDeleteDocument"
     @cancel-delete-document="handleCancelDeleteDocument"
   />
+
   <DocumentMove
     v-if="selectedFolder"
     :currentService="currentService"
@@ -66,7 +74,8 @@
     @update-source-folders="propagateUpdateSourceFolders"
     @close-move-documents-modal="handleCloseMoveDocumentsModal"
     @refresh-documents-list = "fetchDocuments"
-    />
+  />
+
   <DocumentUpload
     v-if="selectedFolder && filesSelected"
     :currentService="currentService"
@@ -79,6 +88,19 @@
     @close-upload-documents-modal="handleCloseUploadDocumentsModal"
     @refresh-documents-list = "fetchDocuments"
     />
+  <DocumentPreview
+    v-if="documentToPreview"
+    :openDrawer="isPreviewDrawerOpened"
+    :document="documentToPreview"
+    :serviceId="currentService"
+    :entityId="selectedEntity"
+    :selectedDocumentIndex="selectedDocumentIndex"
+    :totalDocumentsCount="totalDocumentsCount"
+    @next-document-preview-button-click="handleNextBuuttonClickedForPreviewDocument"
+    @previous-document-preview-button-click="handlePreviewButtonClickedForPreviewDocument"
+    @close-drawer="isPreviewDrawerOpened = false"
+
+  />
 </template>
 
 <script setup lang="ts">
@@ -88,7 +110,7 @@ import { ref, watch, computed, ComputedRef } from 'vue'
 import DocumentsList from './sections/DocumentsList'
 import { fetchFolderDocuments } from '@/services/Documents'
 import { DocumentsProps } from './DocumentsTypes'
-import type { DocumentsWithTableStructure } from '@/models/Document'
+import type { DocumentsWithTableStructure, TableRowDocument } from '@/models/Document'
 import { Document } from '@/models/Document'
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
@@ -97,8 +119,14 @@ import { useDownloadDocuments } from
 import { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
+import { TransmitDocumentsComposableProps }
+  // eslint-disable-next-line max-len
+  from '@/modules/Documents/components/DocumentsTransmit/TransmitDocumentsTypes'
+import { useTransmitDocuments } from
+  '@/modules/Documents/components/DocumentsTransmit/TransmitDocuments'
 import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
+import DocumentPreview from './components/DocumentPreview'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -124,7 +152,9 @@ const currentPageSize = ref(10)
 const componentSortQueryField = ref('-created')
 const isDeletePopupVisible = ref(false)
 const isLoading = ref(false)
+const isTransmitDocumentsLoading = ref(false)
 
+const isPreviewDrawerOpened = ref(false)
 const paginationLabel = computed(() => {
   if (!documents.value) return
 
@@ -141,8 +171,8 @@ const setCurrentPageSize = (selectedRange: number) => {
 const breadcrumbItems = computed(() => {
   const items = getBreadcrumbItems(props.currentServiceFolder, props.selectedFolder?.id ?? 0) ?? []
   items.unshift({
-    id: -1,
-    text: 'Documents'
+    pId: -1,
+    pText: 'Documents'
   })
   return items
 })
@@ -160,6 +190,9 @@ const handleSortChange = async (sortQueryField:string) => {
 }
 
 const selectedDocuments = ref<Document[]>([])
+const documentToPreview = ref<Document>()
+const selectedDocumentIndex = ref<number>(1)
+const totalDocumentsCount = ref<number>(0)
 
 const selectedDocumentsForMove = ref<Document[]>(deepCopy(selectedDocuments.value))
 const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = computed(() => {
@@ -170,6 +203,12 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
   }
 })
 
+const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(() => ({
+  selectedDocumentsIds: documentIdsSelected.value,
+  currentService: props.currentService,
+  selectedEntity: props.selectedEntity
+})
+)
 // documents selection handlers
 const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   selectedDocuments.value = documentsSelection
@@ -178,11 +217,33 @@ const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   }
 }
 
+const handleOnRowTableDocumentsClicked = (document: TableRowDocument) => {
+  isPreviewDrawerOpened.value = true
+  documentToPreview.value = document
+  if (documents.value) {
+    selectedDocumentIndex.value = document._rowIndex + 1
+
+    totalDocumentsCount.value = currentPageSize.value
+  }
+}
+
 const { handleDownloadDocumentsEvent } =
 useDownloadDocuments(downloadDocumentsProps)
 
+const { handleTransmitDocumentsEvent } =
+useTransmitDocuments(transmitDocumentsProps)
+
+const handleTransmitDocuments = async () => {
+  isTransmitDocumentsLoading.value = true
+  await handleTransmitDocumentsEvent()
+  isTransmitDocumentsLoading.value = false
+  setTimeout(async () => {
+    await fetchDocuments()
+  }, 300)
+}
+
 // Actions handlers
-const handleToolboxActionTriggered = (action: string) => {
+const handleToolboxActionTriggered = async (action: string) => {
   switch (action) {
     case 'download-document':
       handleDownloadDocumentsEvent()
@@ -196,12 +257,15 @@ const handleToolboxActionTriggered = (action: string) => {
     case 'move-document':
       handleMoveDocumentEvent()
       break
+    case 'transmit-document':
+      await handleTransmitDocuments()
+      break
     default:
       break
   }
 }
 
-const handleActionBarButtonClick = (actionName: string) => {
+const handleActionBarButtonClick = async (actionName: string) => {
   if (selectedDocuments.value.length > 0) {
     switch (actionName) {
       case 'actionbar-download-action-click':
@@ -215,6 +279,9 @@ const handleActionBarButtonClick = (actionName: string) => {
         break
       case 'actionbar-move-action-click':
         handleMoveDocumentEvent()
+        break
+      case 'actionbar-transmit-action-click':
+        await handleTransmitDocuments()
         break
       default:
         break
@@ -299,6 +366,26 @@ const handleFolderNavigation = (id: number) => {
   const folder = findFolderDeepById(props.currentServiceFolder, id)
   if (folder) {
     emit('change-selected-folder', folder)
+  }
+}
+const handleNextBuuttonClickedForPreviewDocument = () => {
+  if (documents.value) {
+    documentToPreview.value = documents.value?.documentsPage.items[selectedDocumentIndex.value]
+    if (documentToPreview.value) {
+      selectedDocumentIndex.value = selectedDocumentIndex.value + 1
+
+      totalDocumentsCount.value = currentPageSize.value
+    }
+  }
+}
+const handlePreviewButtonClickedForPreviewDocument = () => {
+  if (documents.value) {
+    documentToPreview.value = documents.value.documentsPage.items[selectedDocumentIndex.value - 2]
+    if (documentToPreview.value) {
+      selectedDocumentIndex.value = selectedDocumentIndex.value - 1
+
+      totalDocumentsCount.value = currentPageSize.value
+    }
   }
 }
 </script>

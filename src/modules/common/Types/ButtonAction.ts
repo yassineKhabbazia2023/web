@@ -2,7 +2,14 @@ type ComponentType = 'UPLOAD' | 'SEARCH'
 
 export interface ButtonAction {
   buttonName: string
-  buttonType: string
+  buttonType?: 'default'
+  | 'primary'
+  | 'white'
+  | 'generic'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
   buttonIcon: string
   buttonActionName: string
   plain: boolean
@@ -10,7 +17,7 @@ export interface ButtonAction {
   circle: boolean
   loading: boolean
   disabled: boolean
-  size: string
+  size?: 'default' | 'small'
   componentType?: ComponentType
   multiple?: boolean
 }

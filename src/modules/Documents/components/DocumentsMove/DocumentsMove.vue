@@ -24,6 +24,7 @@
         numberOfSelectedDocuments
       )
     "
+    :canCloseModal="canCloseModal"
     @close-modal="handleClose"
     @navigate-to-folder="handleExplorerNavigation"
     @update-source-folders="propagateUpdateSourceFolders"
@@ -123,7 +124,11 @@ watch(
 const numberOfSelectedDocuments = computed(() => {
   return explorerDocuments.value.filter(
     (document: ExplorerDocument) =>
-      document.isSelected || document.givenActionState === 'IN_PROGRESS'
+      (
+        document.givenActionState !== 'ERROR' &&
+        document.givenActionState !== 'FAILED' &&
+        (document.isSelected || document.givenActionState === 'IN_PROGRESS')
+      )
   ).length
 })
 
@@ -148,7 +153,17 @@ const handleMoveDocumentClicked = async (action: string) => {
       d.givenActionState = 'IN_PROGRESS'
     })
     await proceedMoveDocuments(selectedDocuments)
+
+    const shouldCloseModal = !explorerDocuments.value.some(
+      (document: ExplorerDocument) =>
+        document.givenActionState === 'TO_DO' ||
+        document.givenActionState === 'FAILED' ||
+        document.givenActionState === 'IN_PROGRESS'
+    )
+
+    if (shouldCloseModal) handleClose()
   }
+
   if (action === 'modal-cancel-document-action-click') {
     handleClose()
   }
@@ -216,6 +231,9 @@ const handleClose = () => {
   currentExplorerFolder.value = props.folder
   emit('close-move-documents-modal')
 }
+
+const canCloseModal = computed(() =>
+  !explorerDocuments.value.some(doc => doc.givenActionState === 'IN_PROGRESS'))
 
 // Notifications Scope
 const triggerSuccessNotification = (

@@ -189,9 +189,29 @@ describe('folderArrayHelper.spec', () => {
     expect(sorted).toBeTruthy()
     expect(source[0][0].children[0].children).toStrictEqual([
       {
-
         id: 135393649,
-        children: [],
+        children: [
+          {
+            id: 11111111,
+            children: [],
+            name: 'MOVABLE',
+            parent: {
+              id: 135393649
+            },
+            permissions: [
+              'CAN_DELETE_FILES',
+              'CAN_UPLOAD_FILES',
+              'CAN_CREATE_FOLDER',
+              'CAN_MOVE_INTO_FOLDER',
+              'CAN_MOVE_FOLDER'
+            ],
+            properties: {
+              syncStatus: 'PENDING_SYNC',
+              folderDescription: "Ce dossier regroupe l'ensemble des documents."
+            },
+            serviceId: 'service-id-compta'
+          }
+        ],
         name: 'A classer',
         parent: { id: 135393637 },
         permissions: [
@@ -207,7 +227,6 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-
         id: 1111111111,
         children: [],
         name: 'ABC',
@@ -217,7 +236,6 @@ describe('folderArrayHelper.spec', () => {
         serviceId: 'service-id-compta'
       },
       {
-
         id: 1111111112,
         children: [],
         name: 'DEF',

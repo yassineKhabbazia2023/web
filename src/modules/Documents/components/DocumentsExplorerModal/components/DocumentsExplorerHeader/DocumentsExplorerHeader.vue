@@ -13,15 +13,15 @@
         <PTooltip
           v-for="(file, index) in filteredFailedDocuments"
           :key="index"
-          :content="getFileErrorDescription(file?.codeError)"
+          :pContent="getFileErrorDescription(file?.codeError)"
           placement="bottom"
         >
           <div class="files-error-container__item">
             <PFileAndFolderLineCheck
               :modelValue="false"
-              :fileName="file?.name"
-              :additionalText="getFileErrorMessage(file?.codeError)"
-              state="error"
+              :pFileName="file?.name"
+              :pAdditionalText="getFileErrorMessage(file?.codeError)"
+              pState="error"
               class="files-error-item"
             />
           </div>

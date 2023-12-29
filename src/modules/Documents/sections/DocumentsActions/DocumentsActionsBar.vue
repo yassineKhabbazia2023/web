@@ -2,8 +2,8 @@
   <div class="action-bar">
     <PActionBar
       class="documents-actions"
-      :rightSideButtons="rightSideButtons"
-      :leftSideButtons="leftSideButtons"
+      :pRightSideButtons="rightSideButtons"
+      :pLeftSideButtons="leftSideButtons"
       @p-action-bar-button-clicked="handleButtonClick"
       @p-upload-files-selected="handleUploadFilesSelected"
     />
@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
+  ActionBarLoadingButtonsState,
   generateActionBarLeftSideButtons,
   generateActionBarRightSideButtons
 } from './helpers/DocumentsActionsHelpers'
@@ -26,8 +27,17 @@ const leftSideButtons = computed(() =>
   generateActionBarLeftSideButtons(props.permissions)
 )
 
+const actionBarLoadingButtonsState = computed<ActionBarLoadingButtonsState>(() => ({
+  permission: 'CAN_TRANSMIT_DOCUMENT',
+  isLoading: props.isTransmitDocumentsLoading
+})
+)
+
 const rightSideButtons = computed(() =>
-  generateActionBarRightSideButtons(props.permissions, props.isAnyDocumentSelected)
+  generateActionBarRightSideButtons(
+    props.permissions,
+    props.isAnyDocumentSelected,
+    actionBarLoadingButtonsState.value)
 )
 
 const handleButtonClick = (name: string) => {

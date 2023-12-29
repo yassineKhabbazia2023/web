@@ -7,21 +7,15 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
-import {
-  dynamicUntilFound,
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import { ComponentPublicInstance, nextTick } from 'vue'
-// import {
-//   PTooltip
-// } from '@kpmg/styleguide'
 import {
   PICalculatorEuro,
   PIFolder,
   PIInbox,
   PIKpmg,
   PIPersonVcard,
-  PITrash
+  PITrash,
+  PTooltip
 } from '@kpmg/styleguide'
 
 const fold: Folder = {
@@ -117,7 +111,7 @@ describe('props', () => {
         const wrapper = createWrapper(updatedProps)
 
         const componentInstance = wrapper.vm
-        expect(componentInstance.iconsMapping).toEqual(expectedIcon)
+        expect(componentInstance.iconsMapping).toStrictEqual(expectedIcon)
       }
     )
   })
@@ -126,7 +120,7 @@ describe('props', () => {
 
     await nextTick()
 
-    const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
+    const treeNode = await wrapper.find('.tree-node')
 
     expect(treeNode.classes('tree-node--no-children')).toBeFalsy()
 
@@ -153,67 +147,62 @@ describe('props', () => {
 
     await nextTick()
 
-    const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
+    const treeNode = wrapper.find('.tree-node')
 
     expect(treeNode.classes('tree-node--no-children')).toBeTruthy()
 
     await nextTick()
 
-    const dotIcon = await dynamicUntilFound(
-      treeNode,
-      '.tree-node__no-child-icon'
-    )
+    const dotIcon = treeNode.find('.tree-node__no-child-icon')
+
     expect(dotIcon.exists()).toBeTruthy()
   })
-  // PTooltip props from styleguide cause issue with unit tests
 
-  //   it('should activate tooltip when folder name is too long', async () => {
-  //     const props: TreeNodeProps = {
-  //       ...defaultProps,
-  //       data: {
-  //         id: 1,
-  //         children: [],
-  //         name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-  //         parent: { id: 0 },
-  //         permissions: [],
-  //         properties: {} as FolderProperties,
-  //         serviceId: 'some-service'
-  //       } as Folder
-  //     }
+  it('should activate tooltip when folder name is too long', async () => {
+    const props: TreeNodeProps = {
+      ...defaultProps,
+      data: {
+        id: 1,
+        children: [],
+        name: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+        parent: { id: 0 },
+        permissions: [],
+        properties: {} as FolderProperties,
+        serviceId: 'some-service'
+      } as Folder
+    }
 
-  //     const wrapper = createWrapper(props)
+    const wrapper = createWrapper(props)
 
-  //     await nextTick()
+    await nextTick()
 
-  //     const tooltip = await dynamicUntilFoundComponent(wrapper, PTooltip)
+    const tooltip = wrapper.findComponent(PTooltip)
 
-  //     await nextTick()
+    await nextTick()
 
-  //     expect(tooltip.props('disabled')).toBeFalsy()
-  //     expect(tooltip.props('content')).toBe(props.data.name)
+    expect(tooltip.props('disabled')).toBeFalsy()
+    expect(tooltip.props('pContent')).toBe(props.data.name)
 
-  //     await nextTick()
+    await nextTick()
 
-  //     const actions = await dynamicUntilFoundComponent(
-  //       wrapper,
-  //       TreeNodeActions
-  //     )
+    const actions = wrapper.findComponent(
+      TreeNodeActions
+    )
 
-  //     expect(actions.props('permissions')).toBe(props.data.permissions)
-  //     expect(actions.props('selectedOrHovered')).toBeFalsy()
-  //   })
+    expect(actions.props('selectedOrHovered')).toBeFalsy()
+  })
 
-  //   it('should disabled tooltip when folder name is short', async () => {
-  //     const wrapper = createWrapper()
+  it('should disabled tooltip when folder name is short', async () => {
+    const wrapper = createWrapper()
 
-  //     await nextTick()
+    await nextTick()
 
-  //     const tooltip = await dynamicUntilFoundComponent(wrapper, PTooltip)
+    const tooltip = wrapper.findComponent(PTooltip)
 
-  //     await nextTick()
+    await nextTick()
 
-//     expect(tooltip.props('disabled')).toBeTruthy()
-//   })
+    expect(tooltip.props('disabled')).toBeTruthy()
+  })
 })
 
 describe('interactions', () => {
@@ -226,9 +215,9 @@ describe('interactions', () => {
 
     await nextTick()
 
-    const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
+    const treeNode = wrapper.find('.tree-node')
 
-    const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
+    const actions = wrapper.findComponent(TreeNodeActions)
 
     await nextTick()
 
@@ -243,9 +232,9 @@ describe('interactions', () => {
 
     await nextTick()
 
-    const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
+    const treeNode = wrapper.find('.tree-node')
 
-    const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
+    const actions = wrapper.findComponent(TreeNodeActions)
 
     await nextTick()
 
@@ -260,9 +249,9 @@ describe('interactions', () => {
 
     await nextTick()
 
-    const treeNode = await dynamicUntilFound(wrapper, '.tree-node')
+    const treeNode = wrapper.find('.tree-node')
 
-    const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
+    const actions = wrapper.findComponent(TreeNodeActions)
 
     await nextTick()
 
@@ -282,7 +271,7 @@ describe('interactions', () => {
   it('should emit p-toolbox-item-clicked when p-toolbox-item-clicked is emitted', async () => {
     const wrapper = createWrapper()
 
-    const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
+    const actions = wrapper.findComponent(TreeNodeActions)
 
     await nextTick()
 
@@ -298,7 +287,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(updatedProps)
 
-    const actions = await dynamicUntilFoundComponent(wrapper, TreeNodeActions)
+    const actions = wrapper.findComponent(TreeNodeActions)
 
     await nextTick()
 

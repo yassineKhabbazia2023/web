@@ -5,9 +5,6 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type DeleteFolderSectionProps }
   from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
-import {
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import { Folder, FolderProperties } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
@@ -92,10 +89,7 @@ describe('deleteFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = await dynamicUntilFoundComponent(
-        wrapper,
-        DeleteFolderConfirmationPopup
-      )
+      const popup = wrapper.findComponent(DeleteFolderConfirmationPopup)
 
       await popup.vm.$emit('confirm-delete-folder')
       await nextTick()

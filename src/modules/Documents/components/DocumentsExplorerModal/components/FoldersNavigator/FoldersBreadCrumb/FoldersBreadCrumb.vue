@@ -2,7 +2,7 @@
   <div class="folders-breadcrumb">
     <div class="folders-breadcrumb__items">
       <PBreadcrumb
-        :elements="breadCrumbItems"
+        :pElements="breadCrumbItems"
         @p-breadcrumb-item-click="navigateToFolder"
       />
     </div>
@@ -40,8 +40,8 @@ const generateBreadCrumb = (): BreadcrumbItems[] => {
   const items: BreadcrumbItems[] = []
   let targetFolder: Folder | undefined = props.currentFolder
   items.push({
-    id: targetFolder.id,
-    text: targetFolder.name
+    pId: targetFolder.id,
+    pText: targetFolder.name
   })
   if (targetFolder && targetFolder.id && targetFolder.parent) {
     while (targetFolder && targetFolder.parent.id !== 0) {
@@ -53,8 +53,8 @@ const generateBreadCrumb = (): BreadcrumbItems[] => {
       targetFolder = parentFolder
       if (targetFolder) {
         items.push({
-          id: targetFolder.id,
-          text: targetFolder.name
+          pId: targetFolder.id,
+          pText: targetFolder.name
         })
       }
 
@@ -64,7 +64,7 @@ const generateBreadCrumb = (): BreadcrumbItems[] => {
   // To ensure accurate sorting by document ID,
   // we convert the document IDs from strings to numbers before performing the sort operation.
   // This is necessary because the sort function expects numerical values for the sorting criterion.
-  return items.sort((a, b) => Number(a.id) - Number(b.id))
+  return items.sort((a, b) => Number(a.pId) - Number(b.pId))
 }
 
 const handleCreateFolderButtonClick = () => {

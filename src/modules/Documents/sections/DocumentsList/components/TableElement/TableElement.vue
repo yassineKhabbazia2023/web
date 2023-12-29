@@ -1,8 +1,8 @@
 <template>
   <PText
     v-if="fieldType === 'Text'"
-    :content="formatDateStr(data.created)"
-    type="primary"
+    :pContent="formatDateStr(data.created)"
+    pType="primary"
     :bold="false"
     :selected="false"
     :disabled="false"
@@ -10,23 +10,21 @@
 
   <PText
     v-else-if="fieldType === 'DocumentName'"
-    :content="data.name"
-    :icon="getFileIcon(data.name)"
-    type="primary"
-    :bold="false"
+    :pContent="data.name"
+    pType="primary"
     :selected="false"
     :disabled="false"
+    :pIcon="getFileIcon(data.name)"
+    :pBold="false"
   />
 
   <PTag
     v-else-if="fieldType === 'Tag' && isCertified && fieldName === ''"
     pColor="gray-900"
-    content="Certifié"
-    :iconLeft="PIPatchCheck"
-    color=""
-    effect="light"
+    pContent="Certifié"
+    :pIconLeft="PIPatchCheck"
+    pEffect="light"
     size="default"
-    type=""
     :closable="false"
     :disableTransitions="false"
     :hit="false"
@@ -36,16 +34,15 @@
   <PTag
     v-else-if="fieldType === 'Tag' && getTagProps !== null && fieldName === 'Statut'"
     :pColor="getTagProps.type"
-    :content="data.piaStatus.labelFr"
-    :iconLeft="getTagProps.icon"
-    color=""
-    effect="light"
-    size="default"
-    type=""
-    :closable="false"
-    :disableTransitions="false"
+    :pContent="data.piaStatus.labelFr"
+    :pIconLeft="getTagProps.icon"
+    pEffect="light"
+    pSize="default"
+    :pClosable="false"
+    :pDisableTransitions="false"
     :hit="false"
-    :round="false"
+    :pRound="false"
+    pType="primary"
   />
 
   <DocumentActions
@@ -59,26 +56,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  PIFileText,
-  PIFiletypeBmp,
-  PIFiletypeCsv,
-  PIFiletypeDoc,
-  PIFiletypeDocx,
-  PIFiletypeGif,
-  PIFiletypeHeic,
-  PIFiletypeJpg,
-  PIFiletypeMd,
-  PIFiletypePdf,
-  PIFiletypePng,
-  PIFiletypePpt,
-  PIFiletypePptx,
-  PIFiletypeRaw,
-  PIFiletypeSvg,
-  PIFiletypeTiff,
-  PIFiletypeTxt,
-  PIFiletypeXls,
-  PIFiletypeXlsx,
-  PIFiletypeXml,
   PIStars,
   PIArrowRepeat,
   PIExclamationTriangle,
@@ -89,56 +66,12 @@ import {
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
+import { getFileIcon } from '@/modules/Documents/helpers/filesExtensions'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 
 const props = defineProps<TableElementPops>()
 
 const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])
-
-const getFileIcon = (fileName: string) => {
-  switch (fileName.split('.').pop()) {
-    case 'bmp':
-      return PIFiletypeBmp
-    case 'csv':
-      return PIFiletypeCsv
-    case 'doc':
-      return PIFiletypeDoc
-    case 'docx':
-      return PIFiletypeDocx
-    case 'gif':
-      return PIFiletypeGif
-    case 'heic':
-      return PIFiletypeHeic
-    case 'jpg':
-      return PIFiletypeJpg
-    case 'md':
-      return PIFiletypeMd
-    case 'pdf':
-      return PIFiletypePdf
-    case 'png':
-      return PIFiletypePng
-    case 'ppt':
-      return PIFiletypePpt
-    case 'pptx':
-      return PIFiletypePptx
-    case 'raw':
-      return PIFiletypeRaw
-    case 'svg':
-      return PIFiletypeSvg
-    case 'tiff':
-      return PIFiletypeTiff
-    case 'txt':
-      return PIFiletypeTxt
-    case 'xls':
-      return PIFiletypeXls
-    case 'xlsx':
-      return PIFiletypeXlsx
-    case 'xml':
-      return PIFiletypeXml
-    default:
-      return PIFileText
-  }
-}
 
 const tagIconByState = {
   default: PIStars,

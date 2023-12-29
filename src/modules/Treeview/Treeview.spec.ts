@@ -6,20 +6,19 @@ import { type TreeviewProps } from '@/modules/Treeview/TreeviewTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import { Service } from '@/models/Service'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import {
-  dynamicUntilFound,
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { PTree } from '@kpmg/styleguide'
-import TreeNode from './components/TreeNode/TreeNode.vue'
 import { ComponentPublicInstance, nextTick } from 'vue'
+import { Folder } from '@/models/Folder'
+import TreeNode from './components/TreeNode'
 import { downloadFolder } from '@/services/Folder'
+
 type TreeviewSetup = {
   currentFolderName: string
   currentFolderId: number
+  defaultFolder: Folder
 }
 
 export type TreeviewWrapper = VueWrapper<
@@ -36,7 +35,8 @@ const defaultProps: TreeviewProps = {
   servicesFolders: foldersData,
   currentService: 'service-id-compta',
   selectedEntity: 'my-entity-id',
-  selectedFolder: foldersData[0][0].children[0]
+  selectedFolder: foldersData[0][0].children[0],
+  currentServiceFolder: null
 }
 
 vi.mock('@kpmg/common', async () => ({
@@ -87,13 +87,13 @@ describe('treeview', () => {
     vi.restoreAllMocks()
   })
   describe('props', () => {
-    it('should display a loader when the tree is not loaded', async () => {
+    it('should display a loader when the tree is not loaded', () => {
       const updatedProps: TreeviewProps = {
         ...defaultProps,
         isLoading: true
       }
       const wrapper = createWrapper(updatedProps)
-      const loader = await dynamicUntilFound(wrapper, '.treeview__loader')
+      const loader = wrapper.find('.treeview__loader')
 
       expect(loader.exists()).toBeTruthy()
     })
@@ -103,16 +103,13 @@ describe('treeview', () => {
       it('should emit update-source-folder oppon update-source-folders', async () => {
         const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
-        const createFolderSectionWrapper = await dynamicUntilFoundComponent(
-          wrapper,
-          CreateFolderSection
-        )
+
+        const createFolderSectionWrapper = wrapper.findComponent(CreateFolderSection)
 
         await createFolderSectionWrapper.vm.$emit(
           'update-source-folders',
           foldersData[0][0]
         )
-
         expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
         expect(wrapper.emitted('update-source-folders')).toStrictEqual([
           [foldersData[0][0]]
@@ -121,10 +118,8 @@ describe('treeview', () => {
       it('should  hide create folder modal oppon on-close-create-folder', async () => {
         const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
-        const createFolderSectionWrapper = await dynamicUntilFoundComponent(
-          wrapper,
-          CreateFolderSection
-        )
+        const createFolderSectionWrapper =
+              wrapper.findComponent(CreateFolderSection)
 
         await createFolderSectionWrapper.vm.$emit('on-close-create-folder')
         await nextTick()
@@ -137,10 +132,8 @@ describe('treeview', () => {
       it('should emit remove-folder-from-source oppon on-delete-folder-completed', async () => {
         const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
-        const deleteSectionWrapper = await dynamicUntilFoundComponent(
-          wrapper,
-          DeleteFolderSection
-        )
+
+        const deleteSectionWrapper = wrapper.findComponent(DeleteFolderSection)
 
         await deleteSectionWrapper.vm.$emit('on-delete-folder-completed', foldersData[0][0])
         await nextTick()
@@ -152,10 +145,7 @@ describe('treeview', () => {
       it('should close delete folder modal oppon on-close-delete-folder', async () => {
         const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
-        const deleteSectionWrapper = await dynamicUntilFoundComponent(
-          wrapper,
-          DeleteFolderSection
-        )
+        const deleteSectionWrapper = wrapper.findComponent(DeleteFolderSection)
 
         await deleteSectionWrapper.vm.$emit(
           'on-close-delete-folder'
@@ -169,10 +159,9 @@ describe('treeview', () => {
       it('should emit update-folder-name oppon update-folder-name', async () => {
         const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
-        const renameFolderSectionWrapper = await dynamicUntilFoundComponent(
-          wrapper,
-          RenameFolderSection
-        )
+
+        const renameFolderSectionWrapper =
+          wrapper.findComponent(RenameFolderSection)
 
         await renameFolderSectionWrapper.vm.$emit(
           'update-folder-name',
@@ -187,10 +176,8 @@ describe('treeview', () => {
       it('should close rename modal when on-close-rename-folder', async () => {
         const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
-        const renameFolderSectionWrapper = await dynamicUntilFoundComponent(
-          wrapper,
-          RenameFolderSection
-        )
+        const renameFolderSectionWrapper =
+          wrapper.findComponent(RenameFolderSection)
 
         await renameFolderSectionWrapper.vm.$emit(
           'on-close-rename-folder'
@@ -205,9 +192,9 @@ describe('treeview', () => {
         it('should emit selected-folder-change oppon p-tree-node-clicked', async () => {
           const wrapper = createWrapper()
           await wrapper.setProps({ isLoading: false })
-          const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+          const treeElement = wrapper.find('.el-tree')
           await nextTick()
-          const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+          const tree = treeElement.findComponent(PTree)
           await nextTick()
 
           await tree.vm.$emit(
@@ -221,24 +208,30 @@ describe('treeview', () => {
 
         it('should update selected folder in the tree', async () => {
           const baseSelectedNodeKey = foldersData[0][0].children[0].id
-          const newSelectedNodeKey = foldersData[0][0].id
+          const newSelectedNodeKey = foldersData[0][0].children[1].id
+
           const wrapper = createWrapper()
-          wrapper.setProps({ isLoading: false })
-          const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+          await wrapper.setProps({ isLoading: false })
+
+          const treeElement = wrapper.find('.el-tree')
+          const tree = treeElement.findComponent(PTree)
           await nextTick()
-          await dynamicUntilFoundComponent(treeElement, PTree)
-          const baseSelectedNode = treeElement.find(
+
+          const baseSelectedNode = tree.find(
             `[data-key="${baseSelectedNodeKey}"]`
           ) as DOMWrapper<any>
+
           expect(
             baseSelectedNode.classes().includes('is-current')
           ).toBeTruthy()
 
-          wrapper.setProps({ selectedFolder: foldersData[0][0] })
+          wrapper.setProps({ selectedFolder: foldersData[0][0].children[1] })
           await nextTick()
-          const newSelectedNode = treeElement.find(
+
+          const newSelectedNode = tree.find(
             `[data-key="${newSelectedNodeKey}"]`
           ) as DOMWrapper<any>
+
           expect(newSelectedNode.classes().includes('is-current')).toBeTruthy()
         })
       })
@@ -248,22 +241,19 @@ describe('treeview', () => {
             async () => {
               const wrapper = createWrapper()
               await wrapper.setProps({ isLoading: false })
-              const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+              const treeElement = wrapper.find('.el-tree')
               await nextTick()
-              const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+              const tree = treeElement.findComponent(PTree)
               await nextTick()
-
-              const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
+              const treeNode = tree.findComponent(TreeNode)
               await nextTick()
-
               await treeNode.vm.$emit(
                 'p-toolbox-item-clicked',
                 'toolbox-delete-action-click'
               )
               await nextTick()
 
-              const deleteFolderSectionWrapper =
-              await dynamicUntilFoundComponent(wrapper, DeleteFolderSection)
+              const deleteFolderSectionWrapper = wrapper.findComponent(DeleteFolderSection)
 
               expect(
                 deleteFolderSectionWrapper.props('isDeleteFolderPopupVisible')
@@ -273,21 +263,12 @@ describe('treeview', () => {
             async () => {
               const wrapper = createWrapper()
               await wrapper.setProps({ isLoading: false })
-              const treeElement = await dynamicUntilFound(
-                wrapper,
-                '.el-tree'
-              )
+              const treeElement = wrapper.find('.el-tree')
               await nextTick()
-              const tree = await dynamicUntilFoundComponent(
-                treeElement,
-                PTree
-              )
+              const tree = treeElement.findComponent(PTree)
               await nextTick()
 
-              const treeNode = await dynamicUntilFoundComponent(
-                tree,
-                TreeNode
-              )
+              const treeNode = tree.findComponent(TreeNode)
               await nextTick()
 
               await treeNode.vm.$emit(
@@ -296,11 +277,7 @@ describe('treeview', () => {
               )
               await nextTick()
 
-              const renameFolderSectionWrapper =
-                              await dynamicUntilFoundComponent(
-                                wrapper,
-                                RenameFolderSection
-                              )
+              const renameFolderSectionWrapper = wrapper.findComponent(RenameFolderSection)
 
               expect(
                 renameFolderSectionWrapper.props('isRenameFolderModalVisible')
@@ -309,12 +286,12 @@ describe('treeview', () => {
           it('should open create folder modal when no action is defined', async () => {
             const wrapper = createWrapper()
             await wrapper.setProps({ isLoading: false })
-            const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+            const treeElement = wrapper.find('.el-tree')
             await nextTick()
-            const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+            const tree = treeElement.findComponent(PTree)
             await nextTick()
 
-            const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
+            const treeNode = tree.findComponent(TreeNode)
             await nextTick()
 
             await treeNode.vm.$emit(
@@ -323,10 +300,7 @@ describe('treeview', () => {
             )
             await nextTick()
 
-            const createFolderSectionWrapper = await dynamicUntilFoundComponent(
-              wrapper,
-              CreateFolderSection
-            )
+            const createFolderSectionWrapper = wrapper.findComponent(CreateFolderSection)
 
             expect(
               createFolderSectionWrapper.props('isCreateFolderModalVisible')
@@ -336,11 +310,11 @@ describe('treeview', () => {
             async () => {
               const wrapper = createWrapper()
               await wrapper.setProps({ isLoading: false })
-              const treeElement = await dynamicUntilFound(wrapper, '.el-tree')
+              const treeElement = wrapper.find('.el-tree')
               await nextTick()
-              const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+              const tree = treeElement.findComponent(PTree)
               await nextTick()
-              const treeNode = await dynamicUntilFoundComponent(tree, TreeNode)
+              const treeNode = tree.findComponent(TreeNode)
               await nextTick()
               const componentInstance = wrapper.vm
               componentInstance.currentFolderId = 2
@@ -366,9 +340,10 @@ describe('treeview', () => {
         async () => {
           const wrapper = createWrapper()
           await wrapper.setProps({ isLoading: false })
-          const treeElement = await dynamicUntilFound(wrapper, '.bin-tree')
           await nextTick()
-          const tree = await dynamicUntilFoundComponent(treeElement, PTree)
+          const treeElement = wrapper.find('.bin-tree')
+          await nextTick()
+          const tree = treeElement.findComponent(PTree)
           await nextTick()
 
           await tree.vm.$emit(

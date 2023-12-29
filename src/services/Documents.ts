@@ -120,3 +120,35 @@ export const moveDocuments = async (
     }
   )
 }
+
+export const transmitDocuments = async (
+  serviceId: Service['ServiceId'],
+  entityId: string,
+  documentsIds: string[]
+): Promise<void> => {
+  const apiObject = api().ds
+  return await apiObject.post(
+    `${serviceId}/${entityId}/documents/pia-speedup-transfer`,
+    { ids: documentsIds },
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+}
+
+export const previewDocument = async (
+  serviceId: Service['ServiceId'],
+  entityId: string,
+  documentId: Document['id']
+): Promise<{ data: any; headers: any }> => {
+  const apiObject = api().ds
+  return await apiObject.get(
+    `${serviceId}/${entityId}/documents/${documentId}/preview`,
+    {
+      responseType: 'arraybuffer'
+    }
+  )
+}
+

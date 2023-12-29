@@ -4,12 +4,13 @@
     :class="{ 'documents-list--no-valid-document': !filteredSortedDocuments?.length }"
   >
     <PFileAndFolderLineCheck
-      v-model="document.isSelected"
-      class="documents-list__document"
       v-for="(document, index) in filteredSortedDocuments"
       :key="index"
-      :fileName="document.content.name"
-      :state="getDocumentState(document?.givenActionState)"
+      v-model="document.isSelected"
+      :pFileName="document.content.name"
+      pIsFolderLine
+      :pState="getDocumentState(document?.givenActionState)"
+      class="documents-list__document"
     />
 
     <div
@@ -19,8 +20,8 @@
       <div class="no-documents-badge__wrapper">
         <PImage
           class="no-documents-badge__wrapper__illustration"
-          type="badges"
-          name="warning"
+          pType="badges"
+          pName="warning"
         />
 
         <div class="no-documents-badge__wrapper__label">
@@ -37,7 +38,9 @@ import { computed, ref, watch } from 'vue'
 import { DocumentsListProps } from './DocumentsListTypes'
 import { PFileAndFolderLineCheck, PImage } from '@kpmg/styleguide'
 
-const props = defineProps<DocumentsListProps>()
+const props = withDefaults(defineProps<DocumentsListProps>(), {
+  isFolderLine: false
+})
 const documents = ref(props.documents)
 
 const getDocumentState = (givenActionState: string) => {

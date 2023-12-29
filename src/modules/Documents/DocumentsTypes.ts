@@ -10,6 +10,13 @@ export type ExplorerDocumentContent = {
   name: string
 }
 
+export type ExplorerFolderListLineDisabledStateContext = 'MOVE_FOLDER'
+
+export interface ExplorerFoldersListLineDisabledState {
+  data: any
+  context: ExplorerFolderListLineDisabledStateContext
+}
+
 export interface ExplorerDocument {
   givenActionState: GivenActionState
   isSelected: boolean

@@ -4,7 +4,7 @@
     :class="{ 'folder-list--no-children-folder': !doesCurrentFolderContainsChildren }"
   >
     <div
-      v-if="!ExplorerAuthorizedGivenAction"
+      v-if="!explorerAuthorizedGivenAction"
       class="folder-list__notification-wrapper padding-x--2 margin-bottom--1"
     >
       <PAlert
@@ -14,29 +14,34 @@
         {{ explorerUnauthorizedGivenActionMessage }}
       </PAlert>
     </div>
+
     <PFolderLineNavigationItem
-      v-for="(folder, index) in currentFolder.children"
-      :key="index"
+      v-for="folder in currentFolder.children"
+      :key="folder.id"
       :pFolderName="folder.name"
       :pFolderId="folder.id"
       :pHasArrow="folder.children.length !== 0"
       :pLeftIcon="getIconMapping(folder.iconName)"
+      :pDisabled="isFolderLineDisabled(folder.id)"
+      :pSelected="false"
       @click="navigateToFolder(folder.id)"
     />
+
     <div
       class="folder-list__empty-folder"
       v-if="!doesCurrentFolderContainsChildren"
     >
       <PImage
         class="folder-list__empty-folder__badge"
-        type="badges"
-        name="folder"
+        pType="badges"
+        pName="folder"
       />
       <p class="folder-list__empty-folder__label">
         {{ foldersListEmptyFolderLabel }}
       </p>
     </div>
   </div>
+
   <CreateFolderSection
     :serviceId="currentService"
     :entityId="selectedEntity"
@@ -56,12 +61,12 @@ import {
   PFolderLineNavigationItem,
   PImage
 } from '@kpmg/styleguide'
-import { FolderListProps } from './FoldersLisTypes'
+import { FoldersListProps } from './FoldersListTypes'
 import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
 import { Folder } from '@/models/Folder'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 
-const props = defineProps<FolderListProps>()
+const props = defineProps<FoldersListProps>()
 const emit = defineEmits([
   'navigate-to-folder',
   'close-create-folder-modal',
@@ -82,6 +87,24 @@ const getIconMapping = (iconName: string | undefined) => {
       return 'PITrash'
     default:
       return 'PIFolder'
+  }
+}
+
+const isFolderLineDisabled = (folderLineFolderId: Folder['id']) => {
+  if (props.explorerFolderListLineDisabledState) {
+    switch (props.explorerFolderListLineDisabledState.context) {
+      case 'MOVE_FOLDER':
+        return isFolderLineDisabledBasedOnMoveFolderContext(folderLineFolderId)
+      default:
+        return false
+    }
+  }
+  return false
+}
+
+const isFolderLineDisabledBasedOnMoveFolderContext = (folderLineFolderId: Folder['id']) => {
+  if (props.explorerFolderListLineDisabledState) {
+    return props.explorerFolderListLineDisabledState.data === folderLineFolderId
   }
 }
 

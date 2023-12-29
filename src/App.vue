@@ -8,12 +8,14 @@
         :isLoading="isLoadingServicesOrFolders"
         :servicesFolders="servicesFolders"
         :selectedFolder="currentFolder"
+        :currentServiceFolder="currentServiceFolder"
         @selected-folder-change="setCurrentFolderAndService"
         @selected-bin-service-change="setCurrentBinService"
         @open-create-folder-modal="openCreateFolderModal"
         @update-source-folders="handleUpdateSourceFolder"
         @remove-folder-from-source="handleRemoveFolderFromSource"
         @update-folder-name ="handleUpdateFolderName"
+        @refresh-tree="handleRefreshTreeAnRedirectToFolder"
       />
     </PCol>
 
@@ -31,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, provide } from 'vue'
 import Treeview from '@/modules/Treeview'
 import Documents from '@/modules/Documents'
 import { fetchServicesFolders } from '@/services/Folder'
@@ -45,8 +47,13 @@ import {
   deleteFolder,
   findFolderDeepById
 } from '@/modules/Treeview/helpers/folderArrayHelper'
-
-import { PCol, PRow } from '@kpmg/styleguide'
+// import Notifications from './Notifications.vue'
+import { PCol, PRow, PNotification } from '@kpmg/styleguide'
+/* This might be refactored later to import 'PNotification' every time we need the notifications.
+The current toaster uses a mock of the 'inject' property.
+That's why we're providing the new PNotification for now.
+*/
+provide('toast', PNotification)
 
 // Folders scope
 const isLoadingServicesOrFolders = ref(true)
@@ -157,6 +164,11 @@ const handleUpdateFolderName = (data: Folder) => {
     )
     setCurrentFolder(data.id)
   }
+}
+
+const handleRefreshTreeAnRedirectToFolder = async (folderId: Folder['id']) => {
+  await fetchGedFoldersAndServices()
+  setCurrentFolder(folderId)
 }
 
 // Main component actions

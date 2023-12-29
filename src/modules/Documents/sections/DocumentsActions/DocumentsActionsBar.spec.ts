@@ -2,7 +2,6 @@ import { mount } from '@vue/test-utils'
 import DocumentsActionsBar from './DocumentsActionsBar.vue'
 import { describe, expect, it } from 'vitest'
 import { createPinia } from 'pinia'
-import { dynamicUntilFound, dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { nextTick } from 'vue'
 import { PActionBar } from '@kpmg/styleguide'
 import { DocumentActionsBarProps } from './DocumentActionsBarTypes'
@@ -16,13 +15,13 @@ const createWrapper = (props: DocumentActionsBarProps) =>
     }
   })
 
-const findActionBarLeft = async (wrapper: any) => {
-  const actionbar = await dynamicUntilFound(wrapper, '.documents-actions')
+const findActionBarLeft = (wrapper: any) => {
+  const actionbar = wrapper.find('.documents-actions')
   return actionbar.find('.p-action-bar__left')
 }
 
-const findActionBarRight = async (wrapper: any) => {
-  const actionbar = await dynamicUntilFound(wrapper, '.documents-actions')
+const findActionBarRight = (wrapper: any) => {
+  const actionbar = wrapper.find('.documents-actions')
   return actionbar.find('.p-action-bar__right')
 }
 describe('documentsActions component', () => {
@@ -33,7 +32,7 @@ describe('documentsActions component', () => {
     const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
-    const leftActionBar = await findActionBarLeft(wrapper)
+    const leftActionBar = findActionBarLeft(wrapper)
     expect(leftActionBar.exists()).toBeTruthy()
     expect(leftActionBar.findAll('.p-action-bar__left-btn')).toHaveLength(3)
   })
@@ -44,7 +43,7 @@ describe('documentsActions component', () => {
     const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
-    const rightActionBar = await findActionBarRight(wrapper)
+    const rightActionBar = findActionBarRight(wrapper)
     expect(rightActionBar.exists()).toBeTruthy()
     expect(rightActionBar.findAll('.p-action-bar__right-btn')).toHaveLength(1)
   })
@@ -55,7 +54,7 @@ describe('documentsActions component', () => {
     const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
-    const rightActionBar = await findActionBarRight(wrapper)
+    const rightActionBar = findActionBarRight(wrapper)
     expect(rightActionBar.exists()).toBeTruthy()
     expect(rightActionBar.findAll('.p-action-bar__right-btn')).toHaveLength(3)
   })
@@ -66,7 +65,7 @@ describe('event', () => {
     const isAnyDocumentSelected = true
     const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
-    const pActionBarWrapper = await dynamicUntilFoundComponent(wrapper, PActionBar)
+    const pActionBarWrapper = wrapper.findComponent(PActionBar)
     await nextTick()
     await pActionBarWrapper.vm.$emit('p-action-bar-button-clicked')
     await wrapper.vm.$nextTick()

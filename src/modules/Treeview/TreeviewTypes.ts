@@ -7,12 +7,13 @@ export interface ExtendedFolder extends Folder {
 }
 
 export interface TreeviewProps {
-  entityServices: Service[]
+  entityServices: Service[],
   isLoading: boolean,
   servicesFolders: ExtendedFolder[][],
-  currentService: string
-  selectedEntity: string
-  selectedFolder: null | Folder
+  currentService: string,
+  selectedEntity: string,
+  selectedFolder: null | Folder,
+  currentServiceFolder: null | Folder[]
 }
 
 // To update with real type when it will be availaible from the Stylguide

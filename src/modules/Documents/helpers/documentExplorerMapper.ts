@@ -11,6 +11,9 @@ import {
 } from '../../common/helpers/inputValidationHelper'
 import { Document } from '@/models/Document'
 import { ExplorerMoveDocument } from '../components/DocumentsMove/DocumentsMoveTypes'
+import { ExplorerMoveFolder }
+  from '@/modules/Treeview/components/modals/FoldersMove/FoldersMoveTypes'
+import type { Folder } from '@/models/Folder'
 
 export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocument[] => {
   const explorerDocuments: ExplorerUploadDocument[] = []
@@ -18,26 +21,31 @@ export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocum
     files.forEach((file) => {
       let state: GivenActionState = 'TO_DO'
       let code = ''
-      const extension = getDocumentNameExtension(file?.name)
+      let isSelected = true
+      const extension = getDocumentNameExtension(file?.name.toLowerCase())
       const name = getDocumentNameWithoutExtension(file?.name)
 
       if (file?.size === 0) {
         state = 'ERROR'
         code = 'FileEmpty'
+        isSelected = false
       } else if (!isExtensionAuthorized(extension)) {
         state = 'ERROR'
         code = 'UnauthorizedFileType'
+        isSelected = false
       } else if (!validInputAlphanumericFrench(name)) {
         state = 'ERROR'
         code = 'UnauthorizedCharFileName'
+        isSelected = false
       } else if (!validInputMaxLength(name)) {
         state = 'ERROR'
         code = 'FileNameLengthExceeded'
+        isSelected = false
       }
 
       explorerDocuments.push({
         givenActionState: state,
-        isSelected: true,
+        isSelected,
         content: { name: file.name },
         codeError: code,
         file
@@ -61,7 +69,7 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
       } else {
         codeError = ''
       }
-      const state: GivenActionState = canMoveDocument ? 'TO_DO' : 'ERROR'
+      const state: GivenActionState = canMoveDocument && !isCertified ? 'TO_DO' : 'ERROR'
       explorerDocuments.push({
         id: document.id,
         givenActionState: state,
@@ -70,6 +78,27 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
         codeError
       })
     })
+  }
+  return explorerDocuments
+}
+
+export const mapExplorerDocumentFromFolders = (
+  folder: Folder
+): ExplorerMoveFolder[] => {
+  const explorerDocuments: ExplorerMoveFolder[] = []
+  if (folder) {
+
+    const canMoveFolder = folder.permissions.includes('CAN_MOVE_FOLDER')
+
+    const state: GivenActionState = canMoveFolder ? 'TO_DO' : 'ERROR'
+    explorerDocuments.push({
+      folder,
+      givenActionState: state,
+      isSelected: true,
+      content: { name: folder.name },
+      codeError: ''
+    })
+
   }
   return explorerDocuments
 }
