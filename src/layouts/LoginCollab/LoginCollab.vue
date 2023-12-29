@@ -9,8 +9,8 @@
           class="content"
         >
           <PImage
-            type="logos"
-            name="pulse-color"
+            pType="logos"
+            pName="pulse-color"
             class="pulse-logo-content"
             alt="KPMG Pulse logo"
           />
@@ -24,10 +24,10 @@
           class="illustration-wrapper"
         >
           <PCarousel
-            :items="carouselData"
-            :interval="3300"
-            arrow="never"
-            height="600px"
+            :pItems="carouselData"
+            :pInterval="3300"
+            pArrow="never"
+            pHeight="600px"
             class="carousel"
           />
         </PCol>
@@ -69,15 +69,15 @@
     </footer>
 
     <PImage
-      type="logos"
-      name="kpmg-color"
+      pType="logos"
+      pName="kpmg-color"
       class="logo-footer hidden-sm-and-down"
       alt="KPMG logo"
     />
 
     <PDrawer
       v-model="isCopyrightDrawerOpened"
-      title="Copyright"
+      pTitle="Copyright"
     >
       <p class="drawerContent">
         {{ t('copyrightContent') }}
@@ -85,7 +85,7 @@
       <template #footer>
         <PButton
           @click="handleCloseDrawer"
-          type="primary"
+          pType="primary"
         >
           {{ t('close') }}
         </PButton>
@@ -114,19 +114,19 @@ const {
 
 const carouselData = [
   {
-    text: t('carouselItem1'),
-    imageName: 'digitalisation',
-    imageType: 'paupulse'
+    pText: t('carouselItem1'),
+    pImageName: 'digitalisation',
+    pImageType: 'paupulse'
   },
   {
-    text: t('carouselItem2'),
-    imageType: 'paupulse',
-    imageName: 'mandat-bancaire'
+    pText: t('carouselItem2'),
+    pImageType: 'paupulse',
+    pImageName: 'bank-mandate'
   },
   {
-    text: t('carouselItem3'),
-    imageType: 'paupulse',
-    imageName: 'document-partage'
+    pText: t('carouselItem3'),
+    pImageType: 'paupulse',
+    pImageName: 'shared-document'
   }
 ]
 </script>

@@ -1,7 +1,6 @@
 <template>
   <PHeader
     :ellipsis="false"
-    :menu="props.menu"
     :defaultActive="routeActive"
     router
   >
@@ -9,28 +8,28 @@
       <router-link to="/" class="el-menu--header__link">
         <PImage
           class="el-menu--header__logo"
-          type="logos"
-          name="pulse-color"
-          fit="fill"
+          pType="logos"
+          pName="pulse-color"
+          pFit="fill"
         />
       </router-link>
     </template>
     <template #menu>
       <PHeaderTabs
-        :menu="props.menu"
+        :pHeaderTabsMenu="headerMenu"
         class="home-header-tabs"
       />
     </template>
     <template #header-right>
       <PToolbox
-        :elements="toolboxBasicData"
+        :pElements="toolboxBasicData"
         @p-toolbox-item-clicked="logoutHandler"
       >
         <div class="avatar-container">
           <PAvatar
-            shape="circle"
-            size="small"
-            color="persian-gradient"
+            pShape="circle"
+            pType="small"
+            pColor="persian-gradient"
           >
             {{ initial }}
           </PAvatar>
@@ -49,30 +48,24 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { ref, computed, Component } from 'vue'
+import { ref, computed } from 'vue'
 
 import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
 import { commonStore as useStore } from '@kpmg/common'
 import { useI18n } from 'vue-i18n'
+import type { HeaderMenu } from './HeaderTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-interface Item {
-  icon: string
-  text: string
-  path: string
-  component?: Component
-}
-
 interface Props {
-  menu: Item[]
+  headerMenu: HeaderMenu[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  menu: () => []
+withDefaults(defineProps<Props>(), {
+  headerMenu: () => []
 })
 
 const route = useRoute()
@@ -83,9 +76,9 @@ const firstName = ref(store.user?.firstName)
 const lastName = ref(store.user?.lastName)
 const toolboxBasicData = [
   {
-    iconName: 'PIPower',
-    value: t('logout'),
-    actionName: 'logout'
+    pIconName: 'PIPower',
+    pValue: t('logout'),
+    pActionName: 'logout'
   }
 ]
 

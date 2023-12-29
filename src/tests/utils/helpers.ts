@@ -30,14 +30,31 @@ const helpers = () => {
 
   const mockUser = {
     user: {
-      activeEntity: {
-        name: 'Entity Name',
-        idAccount: 'AccountNumber',
-        icon: 'PICupHot',
-        color: 'orange'
+      entities: {
+        default: {
+          name: 'Entity Name 2',
+          idAccount: 'AccountNumber 2',
+          icon: 'PICupHot',
+          color: 'orange'
+        },
+        favorites: [
+          {
+            name: 'Entity Name 1',
+            idAccount: 'AccountNumber 1',
+            icon: 'PICupHot',
+            color: 'orange'
+          },
+          {
+            name: 'Entity Name 2',
+            idAccount: 'AccountNumber 2',
+            icon: 'PICupHot',
+            color: 'orange'
+          }
+        ]
       }
     }
   }
+
   return {
     router,
     pinia,

@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { defineStore, setActivePinia } from 'pinia'
-import Navbar from '.'
 import helpers from '../../../tests/utils/helpers'
+import Navbar from '.'
 
 const { router, pinia, mockUser } = helpers()
+
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => (mockUser)
@@ -13,7 +14,6 @@ vi.mock('@kpmg/common', () => ({
 }))
 
 const createWrapper = () => mount(Navbar, {
-  shallow: true,
   global: {
     plugins: [router]
   }
@@ -23,10 +23,20 @@ describe('navbar', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })
-  it('should display navbar section', () => {
-    const wrapper: VueWrapper<any> = createWrapper()
-    const aside = wrapper.find('.aside')
 
-    expect(aside.exists()).toBeTruthy()
+  it('displays all the favorites entities that are in the store', () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+    const FAVORITES_ENTITIES = mockUser.user.entities.favorites
+    const [firstEntityName, secondEntityName] = FAVORITES_ENTITIES.map(({ name }) => name)
+
+    expect(wrapper.text()).toContain(firstEntityName)
+    expect(wrapper.text()).toContain(secondEntityName)
+  })
+
+  it('can have an entity activated by default', () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+    const entityActivated = wrapper.find('.is-active.p-menu-item-entity')
+
+    expect(entityActivated.text()).toContain(mockUser.user.entities.default.name)
   })
 })

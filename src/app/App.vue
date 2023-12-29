@@ -8,29 +8,27 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, markRaw, watch } from 'vue'
+import { defineAsyncComponent, markRaw, ref, watch } from 'vue'
 import { Idle } from 'idlejs'
 import { VITE_IDLE_DURATION } from 'env-vars'
 import { commonStore as useStore } from '@kpmg/common'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@kpmg/styleguide'
-import PopupRenewToken from '@/component/popupRenewToken'
 
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
 const getLayout = ref()
 let previousLayout: string = ''
+
 watch(
   () => route.name,
   () => {
     const layout = route.meta?.layout || 'Home'
     if (previousLayout !== layout) {
-      getLayout.value = markRaw(
-        defineAsyncComponent(
-          () => import(`@/layouts/${layout}/index.ts`)
-        )
-      )
+      getLayout.value = markRaw(defineAsyncComponent(
+        () => import(`@/layouts/${layout}/index.ts`)
+      ))
       previousLayout = layout.toString()
     }
   }

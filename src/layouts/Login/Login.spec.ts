@@ -3,7 +3,6 @@ import { mount, VueWrapper, flushPromises } from '@vue/test-utils'
 import Login from './'
 import { LINKS } from './contants'
 import { Link } from './types'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const CGU_URL = 'https://custom-CGU.com'
 
@@ -25,9 +24,8 @@ describe('login', () => {
   let wrapper: VueWrapper<any> = createWrapper()
   const getLinks = () => wrapper.findAll('.footer .list-item a')
 
-  beforeEach(async () => {
+  beforeEach(() => {
     wrapper = createWrapper()
-    await waitForAsyncImports(20)
   })
 
   afterEach(() => {
