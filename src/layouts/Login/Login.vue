@@ -9,8 +9,8 @@
           class="content"
         >
           <PImage
-            type="logos"
-            name="pulse-color"
+            pType="logos"
+            pName="pulse-color"
             class="pulse-logo-content"
             alt="KPMG Pulse logo"
           />
@@ -24,9 +24,9 @@
           class="illustration-wrapper"
         >
           <PImage
-            type="paupulse"
-            name="connexion-default-with-pulse-icon"
-            fit="none"
+            pType="paupulse"
+            pName="connection-default"
+            pFit="none"
             class="illustration"
           />
         </PCol>
@@ -68,15 +68,15 @@
     </footer>
 
     <PImage
-      type="logos"
-      name="kpmg-color"
+      pType="logos"
+      pName="kpmg-color"
       class="logo-footer hidden-sm-and-down"
       alt="KPMG logo"
     />
 
     <PDrawer
       v-model="isCopyrightDrawerOpened"
-      title="Copyright"
+      pTitle="Copyright"
     >
       <p class="drawerContent">
         {{ t('copyrightContent') }}
@@ -84,7 +84,7 @@
       <template #footer>
         <PButton
           @click="handleCloseDrawer"
-          type="primary"
+          pType="primary"
         >
           {{ t('close') }}
         </PButton>

@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import LoginCollab from '.'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 
 const CGU_URL = 'https://custom-CGU.com'
 
@@ -24,7 +23,6 @@ describe('loginCollab', () => {
 
   beforeEach(async () => {
     wrapper = createWrapper()
-    await waitForAsyncImports(30)
   })
 
   afterEach(() => {

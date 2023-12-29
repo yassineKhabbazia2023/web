@@ -1,15 +1,15 @@
 <template>
   <PDialog
     v-model="isVisibleDialog"
-    width='480px'
-    modal
+    pWidth='480px'
+    pModal
     class="dialog-renew-token"
-    :center="false"
-    :title="t('title')"
+    :pCenter="false"
+    :pTitle="t('title')"
   >
     <PImage
-      type="paupulse"
-      name="mini-deconnexion"
+      pType="paupulse"
+      pName="logout"
       class="popup-img"
     />
     <p class="p-dialog__text">
@@ -17,17 +17,18 @@
     </p>
     <template #footer>
       <PButton
-        type="secondary"
-        size="small"
-        :round="false"
+        pPlain
+        pType="primary"
+        pSize="small"
+        :pRound="false"
         @click="handleLogout"
       >
         {{ t('logout') }}
       </PButton>
       <PButton
-        type="primary"
-        size="small"
-        :round="false"
+        pType="primary"
+        pSize="small"
+        :pRound="false"
         @click="handleRenew"
       >
         {{ t('renew') }}
@@ -75,10 +76,9 @@ let timer: any
 watch(
   () => store.user?.token,
   (token) => {
-    !!token &&
-    ({ exp, sub } = jwtDecode<JwtPayload>(token)) &&
-    !!exp &&
-    tokenHandle(exp)
+    if (!token) return
+    ({ exp, sub } = jwtDecode<JwtPayload>(token))
+    if (exp && sub) tokenHandle(exp)
   }
 )
 

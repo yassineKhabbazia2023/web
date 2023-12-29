@@ -36,7 +36,6 @@ export default ({ mode }) =>
             pinia: 'Pinia',
             'env-vars': 'EnvVars',
             '@kpmg/common': 'Common',
-            '@kpmg/styleguide': 'StyleGuide',
             'vue-router': 'VueRouter'
           },
           { disableInServe: mode === 'test' }
@@ -78,7 +77,8 @@ export default ({ mode }) =>
         port: PORT
       },
       test: {
-        testTimeout: 60000
+        testTimeout: 60000,
+        setupFiles: 'vitest.setup.ts'
       }
     })
   )

@@ -2,7 +2,7 @@
   <div class="common-layout">
     <PContainer>
       <PCHeader class="header-container" height="52">
-        <Header :menu="menuHeader" />
+        <Header :headerMenu="headerMenu" />
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
@@ -17,7 +17,7 @@
         <PContainer class="home-bottom-menu">
           <PBottomMenu
             :defaultActive="routeActive"
-            :items="menuBottomMenu"
+            :pItems="menuBottomMenu"
           />
         </PContainer>
       </PContainer>
@@ -44,45 +44,38 @@ import Header from './Header'
 import Navbar from './Navbar'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
-import { Component, computed } from 'vue'
+import { computed } from 'vue'
+import type { HeaderMenu } from './Header/HeaderTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-const menuHeader = [
-  {
-    icon: 'PIColumnsGap',
-    text: t('dashboard'),
-    path: '',
-    component: {
-      render: () => 'Dashboard'
-    }
-  },
-  {
-    icon: 'PIFolder',
-    text: t('ged'),
-    path: '/ged'
-  },
-  {
-    icon: 'PIFiles',
-    text: t('subscriptions'),
-    path: '/subscriptions'
-  },
-  {
-    icon: 'PICashCoin',
-    text: t('mandate'),
-    path: '/mandats'
-  }
-]
+const headerMenu: HeaderMenu[] = [{
+  pIcon: 'PIColumnsGap',
+  pText: t('dashboard'),
+  pPath: ''
+}, {
+  pIcon: 'PIFolder',
+  pText: t('ged'),
+  pPath: '/ged'
+}, {
+  pIcon: 'PIFiles',
+  pText: t('subscriptions'),
+  pPath: '/subscription'
+}, {
+  pIcon: 'PICashCoin',
+  pText: t('mandate'),
+  pPath: '/mandats'
+}]
 
-const menuBottomMenu = menuHeader.map(({ icon, text, path, component }) => {
+const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
   return {
-    icon,
-    name: text,
-    path,
-    component: (component as unknown) as Component
+    pIcon,
+    pName,
+    pPath,
+    pComponent: { render: () => null }
   }
 })
 

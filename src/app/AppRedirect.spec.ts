@@ -2,7 +2,6 @@ import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 import router from '../plugins/router'
 import { ROUTES, PAGES_TITLE } from './mock'
 import App from './'
@@ -59,8 +58,7 @@ describe('app with navigation guard', () => {
     mockUserOrigin.mockResolvedValueOnce({ data: 'COLLAB' })
     const wrapper: VueWrapper<any> = createWrapper()
     router.push({ name: 'home' })
-    await waitForAsyncImports(100)
-    await waitForAsyncImports(100)
+    await vi.dynamicImportSettled()
 
     const getPageTitle = () => wrapper.find('.pageTitle').text()
     expect(getPageTitle()).toBe(PAGES_TITLE.COLLAB)

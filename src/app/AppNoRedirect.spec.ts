@@ -8,7 +8,6 @@ import {
   beforeEach
 } from 'vitest'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
-import { waitForAsyncImports } from '@kpmg/common/src/testing-helpers'
 import router from '../plugins/router'
 import { ROUTES, PAGES_TITLE } from './mock'
 import App from './'
@@ -68,8 +67,7 @@ describe('app with navigation guard', () => {
   it('redirects to the right page with the right layout if user has a token', async () => {
     const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
     router.push({ name: 'home' })
-    await waitForAsyncImports(100)
-    await waitForAsyncImports(100)
+    await vi.dynamicImportSettled()
 
     const getPageTitle = () => wrapper.find('.pageTitle').text()
     expect(getPageTitle()).toBe(PAGES_TITLE.HOME)
@@ -84,7 +82,6 @@ describe('app with navigation guard', () => {
   it('should redirect to login client when user is inactive for 5 seconds', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyPush = vi.spyOn(wrapper.vm.router, 'push')
-    await waitForAsyncImports(30)
     vi.advanceTimersByTime(120000) // 2 minutes
     expect(spyPush).toHaveBeenCalledTimes(0)
     vi.advanceTimersByTime(180000) // 3 minutes

@@ -2,8 +2,9 @@
   <div>
     <PNavbar
       class="aside"
-      :entities="defaultEntity"
-      :menuList="menu"
+      :pEntities="entities"
+      :pMenuList="menu"
+      :pActiveIndex="activeEntityIndex"
     >
       <template #title>
         {{ t('title') }}
@@ -22,10 +23,10 @@
 </i18n>
 
 <script setup lang="ts">
-import useNavbarStore from '@/stores/navbar-store'
 import { useI18n } from 'vue-i18n'
 import { PNavbar } from '@kpmg/styleguide'
-import { storeToRefs } from 'pinia'
+import { commonStore } from '@kpmg/common'
+import { computed } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -34,12 +35,33 @@ const { t } = useI18n({
 
 const menu = [
   {
-    name: t('menuTitle'),
-    icon: 'PIGrid',
-    path: '/entities'
+    pName: t('menuTitle'),
+    pIcon: 'PIGrid',
+    pPath: '/entities'
   }
 ]
 
-const navbarStore = useNavbarStore()
-const { defaultEntity } = storeToRefs(navbarStore)
+const userStore = commonStore()
+
+const entities = computed(() =>
+  (userStore.user?.entities?.favorites ?? [])
+    .map((f) => ({
+      pIdAccount: f.idAccount,
+      pName: f.name,
+      pIcon: f.icon,
+      pColor: f.color
+    }))
+)
+
+const activeEntityIndex = computed(() => {
+  const userEntities = userStore.user?.entities
+  if (userEntities?.favorites && userEntities?.default) {
+    const currentEntityIndex = userEntities.favorites.findIndex(({ idAccount }) =>
+      idAccount === userEntities.default?.idAccount)
+    if (currentEntityIndex > -1) {
+      return currentEntityIndex.toString()
+    }
+  }
+  return ''
+})
 </script>
