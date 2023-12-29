@@ -17,6 +17,7 @@
     :pShowNextDocument="selectedDocumentIndex < totalDocumentsCount"
     @next-document-button-click="handleNextButtonClick"
     @previous-document-button-click="handlePreviousButtonClick"
+    @close="handleClose"
   >
     <template #iconDocument>
       <PIcon>
@@ -51,7 +52,8 @@ const props = defineProps<DocumentsPreviewProps>()
 const emit = defineEmits([
   'update:modelValue',
   'next-document-preview-button-click',
-  'previous-document-preview-button-click'
+  'previous-document-preview-button-click',
+  'close-drawer'
 ])
 
 const isDrawerOpened = computed({
@@ -91,6 +93,10 @@ watch(
     fetchPreview()
   }
 )
+
+const handleClose = () => {
+  emit('close-drawer')
+}
 </script>
 
 <style lang="scss">

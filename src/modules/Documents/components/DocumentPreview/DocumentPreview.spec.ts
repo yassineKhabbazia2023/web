@@ -128,5 +128,17 @@ describe('documentPreview', () => {
       await wrapper.findComponent(PDocumentViewer)
       expect(vi.mocked(previewDocument)).toHaveBeenCalledTimes(1)
     })
+
+    it('should emit close draxer-close event oppon PDocumentViewer close event', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const pDocumentViewerWrapper = wrapper.findComponent(PDocumentViewer)
+      await pDocumentViewerWrapper.vm.$emit('close')
+
+      await nextTick()
+
+      expect(wrapper.emitted('close-drawer')).toBeTruthy()
+    })
   })
 })

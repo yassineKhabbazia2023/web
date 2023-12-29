@@ -26,7 +26,7 @@
         :fieldName="column.columnName"
         :data="scope.row"
         @toolbox-action-triggered="handleToolboxActionTriggered"
-        @actions-dropdown-opened="selectRow(scope?.row)"
+        @actions-dropdown-opened="selectRow(scope?.row, scope?.column)"
         />
       </template>
     </PTableColumn>
@@ -45,7 +45,7 @@ import { PTable, PTableColumn } from '@kpmg/styleguide'
 import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
 import type { ElTable } from 'element-plus'
-import { Document } from '@/models/Document'
+import { Document, TableRowDocument } from '@/models/Document'
 import { ref } from 'vue'
 
 const emit = defineEmits([
@@ -57,7 +57,7 @@ const emit = defineEmits([
   'table-row-clicked'
 ])
 
-defineProps<DocumentsListProps>()
+const props = defineProps<DocumentsListProps>()
 
 const documentsListTable = ref<InstanceType<typeof ElTable>>()
 const selectedDocuments = ref<Document[]>([])
@@ -82,14 +82,23 @@ const handleToolboxActionTriggered = (action: string) => {
   emit('toolbox-action-triggered', action)
 }
 
-const selectRow = (documentRow: Document) => {
-  const documentsListTableInstance =
+const selectRow = (documentRow: TableRowDocument, column:any) => {
+  const shouldOpenDrawer = props.documentsListWithTableStructure.documentHeaders
+    .filter(h => h.columnName === column.label).length > 0 &&
+    column !== undefined &&
+    column.label !== 'Actions'
+
+  if (shouldOpenDrawer) {
+    emit('table-row-clicked', documentRow)
+  } else {
+    const documentsListTableInstance =
     documentsListTable.value
       ?.$refs.table as InstanceType<typeof ElTable>
 
-  documentsListTableInstance?.clearSelection()
-  documentsListTableInstance?.toggleRowSelection(documentRow, true)
-  emit('table-row-clicked', documentRow)
+    documentsListTableInstance?.clearSelection()
+    documentsListTableInstance?.toggleRowSelection(documentRow, true)
+  }
+
 }
 
 const handleSelectionChange = (documentsSelection:Document[]) => {

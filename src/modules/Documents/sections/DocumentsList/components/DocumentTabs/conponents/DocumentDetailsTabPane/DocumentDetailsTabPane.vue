@@ -150,7 +150,7 @@ const tagTypeProps = (piaStatus: string): PiaStatusTag => {
     case 'Archived':
       return { icon: tagIconByState.success, type: 'success' }
     default:
-      return null
+      return { icon: tagIconByState.success, type: 'success' }
   }
 }
 

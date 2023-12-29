@@ -34,6 +34,7 @@ type DocumentsSetup = {
   selectedDocument: Document
   selectedDocuments: Document[]
   isRenameModalOpened: boolean
+  isPreviewDrawerOpened: boolean
 }
 
 export type DocumentsWrapper = VueWrapper<
@@ -577,6 +578,31 @@ describe('documents', () => {
       expect(documentPreview.props('openDrawer')).toBeTruthy()
       expect(documentPreview.props('document'))
         .toStrictEqual(componentInstance.selectedDocuments[0])
+    })
+
+    it('should close drawer oppon close-drawer event', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments = [
+        documentsResponsePayload.documentsPage.items[0]
+      ]
+      await nextTick()
+      const documents = wrapper.findComponent(DocumentsList)
+      await nextTick()
+
+      const tableRowDocument: TableRowDocument = {
+        ...componentInstance.selectedDocuments[0],
+        _rowIndex: 0
+      }
+
+      await documents.vm.$emit('table-row-clicked', tableRowDocument)
+
+      const documentPreview = wrapper.findComponent(DocumentPreview)
+
+      await documentPreview.vm.$emit('close-drawer')
+      await nextTick()
+      expect(componentInstance.isPreviewDrawerOpened).toBeFalsy()
     })
 
     // eslint-disable-next-line max-len

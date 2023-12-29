@@ -129,7 +129,7 @@ describe('documentList', () => {
 
       const tableElements = wrapper.findAllComponents(TableElement)
 
-      await tableElements[0].vm.$emit('actions-dropdown-opened',
+      await tableElements[4].vm.$emit('actions-dropdown-opened',
         documentsResponsePayload.documentsPage.items[0])
 
       await nextTick()

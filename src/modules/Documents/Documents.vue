@@ -98,6 +98,7 @@
     :totalDocumentsCount="totalDocumentsCount"
     @next-document-preview-button-click="handleNextBuuttonClickedForPreviewDocument"
     @previous-document-preview-button-click="handlePreviewButtonClickedForPreviewDocument"
+    @close-drawer="isPreviewDrawerOpened = false"
 
   />
 </template>
@@ -217,7 +218,7 @@ const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
 }
 
 const handleOnRowTableDocumentsClicked = (document: TableRowDocument) => {
-  isPreviewDrawerOpened.value = !isPreviewDrawerOpened.value
+  isPreviewDrawerOpened.value = true
   documentToPreview.value = document
   if (documents.value) {
     selectedDocumentIndex.value = document._rowIndex + 1

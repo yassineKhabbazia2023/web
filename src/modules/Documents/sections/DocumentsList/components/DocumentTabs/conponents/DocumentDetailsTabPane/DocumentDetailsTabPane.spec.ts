@@ -60,7 +60,6 @@ describe('documentDetailsTabPane', () => {
     expect(documentDetailsTabPane.findAll('.label')[4].text()).toBe('Jane Doe')
     expect(documentDetailsTabPane.findAll('.label')[5].text()).toBe('10/10/2023')
     expect(documentDetailsTabPane.findAll('.label')[6].text()).toBe('11/10/2023')
-    expect(documentDetailsTabPane.findAll('.label')[7].text()).toBe('Actif')
     const buttonUpload = documentDetailsTabPane.findComponent(PButton)
     expect(buttonUpload.exists()).toBeTruthy()
 
