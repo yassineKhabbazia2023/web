@@ -74,4 +74,6 @@ describe('header', () => {
     expect(sessionStorage.getItem('token')).toBeNull()
     expect(spyRouterPush).toHaveBeenCalledWith({ name: 'login' })
   })
+
+  it.todo('should behaves correctly when user is not set and isAuthenticated is true')
 })
