@@ -2,6 +2,7 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import ElementPlus from 'element-plus'
 import './assets/scss/histoire.scss'
 import './assets/scss/index.scss'
+import { setAssetsBaseUrl } from './utils/imageResolver'
 
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
@@ -13,6 +14,7 @@ import { menu } from '@/constants/routesSamples'
 const i18n = createI18n({ locale: Intl.DateTimeFormat().resolvedOptions().locale })
 dayjs.Ls.en.weekStart = 1
 
+setAssetsBaseUrl(import.meta.env.VITE_BASE_ASSETS)
 const router = createRouter({
   history: createMemoryHistory(),
   routes: [{ path: '/', name: 'home', component: { render: () => null } }]
