@@ -15,8 +15,8 @@ const domainToBaseUrl = (domain: string | undefined) => {
 }
 
 export const requestInterceptor = (config: any) => {
-  const { user } = storeToRefs(commonStore())
-  if (user.value && user.value.token) config.headers.Authorization = `Bearer ${user.value.token}`
+  const { token } = storeToRefs(commonStore())
+  if (token.value) config.headers.Authorization = `Bearer ${token.value}`
   return config
 }
 

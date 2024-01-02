@@ -1,4 +1,3 @@
-import { createApp } from 'vue'
 import commonStore from './index'
 import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
@@ -12,7 +11,6 @@ vi.mock('jwt-decode', () => ({
   })
 }))
 
-const app = createApp({})
 const pinia = createTestingPinia({
   initialState: {
     user: null
@@ -22,7 +20,6 @@ const pinia = createTestingPinia({
 
 describe('commonStore', () => {
   beforeEach(() => {
-    app.use(pinia)
     setActivePinia(pinia)
   })
 
@@ -54,7 +51,7 @@ describe('commonStore', () => {
       }
     })
 
-    expect(isAuthenticated.value).toBe(true)
+    expect(isAuthenticated.value).toBeTruthy()
   })
 
   it.each(IS_COLLAB)('should call logout function', async (isCollabCondition) => {

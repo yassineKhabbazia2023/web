@@ -9,13 +9,16 @@ export const isTokenExpired = (token: string) => {
   return !!exp && exp * 1000 < Date.now()
 }
 
-export default defineStore('common', {
+export const store = defineStore('common', {
   state: () => ({
     user: null as UserInfo | null
   }),
   getters: {
-    isAuthenticated: (state: any) => !!state.user?.token && !isTokenExpired(state.user.token),
-    isCollab: (state: any) => !!state.user?.isCollab
+    token : (state: any) => state?.user?.token ?? sessionStorage.getItem('token') as string,
+    isAuthenticated :(getter : any ) => {
+      return !!getter.token && !isTokenExpired(getter.token)
+    },
+    isCollab: (state: any) => !!state.user?.isCollab,
   },
   actions: {
     logout: async (state: any) => {
@@ -35,3 +38,4 @@ export default defineStore('common', {
     }
   }
 })
+export default store
