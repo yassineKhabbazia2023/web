@@ -107,7 +107,6 @@ const logoutHandler = async (actionName: string) => {
     router.push({ name: 'login' })
   }
 }
-console.log('outside ', firstName.value)
 const initial = computed(() => {
   return '' + firstName.value?.charAt(0) + lastName.value?.charAt(0)
 })
