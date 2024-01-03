@@ -1,7 +1,5 @@
 <template>
-  <ElPopperArrow :arrowOffset="pArrowOffset">
-    <slot />
-  </ElPopperArrow>
+  <ElPopperArrow :arrowOffset="pArrowOffset" />
 </template>
 
 <script lang="ts" setup>

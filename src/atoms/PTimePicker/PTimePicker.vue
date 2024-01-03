@@ -24,9 +24,7 @@
     :disabledSeconds="pDisabledSeconds"
     :teleported="pTeleported"
     :tabindex="pTabindex"
-  >
-    <slot />
-  </ElTimePicker>
+  />
 </template>
 
 <script lang="ts" setup>

@@ -22,9 +22,7 @@
     :id="pId"
     :tabIndex="pTabIndex"
     :label="pLabel"
-  >
-    <slot />
-  </ElSwitch>
+  />
 </template>
 
 <script setup lang="ts">
