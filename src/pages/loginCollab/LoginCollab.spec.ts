@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import LoginCollab from './'
 
@@ -12,10 +12,30 @@ vi.mock('env-vars', () => ({
   VITE_API_MSAL_SCOPE: ''
 }))
 
+vi.mock('@/composable/useInitUserAuth', () => ({
+  default: () => {
+    return {
+      initAuthCollab: vi.fn(),
+      isTokenRetrieve: {
+        value: true
+      }
+    }
+  }
+}))
+
+const navigateToEntitiesMock = vi.fn()
+vi.mock('@/composable/useNavigation', () => ({
+  default: () => {
+    return {
+      navigateToEntities: navigateToEntitiesMock
+    }
+  }
+}))
 vi.mock('@/services/msal', () => ({
   msalInstance: vi.fn(),
   getToken: vi.fn()
 }))
+
 let wrapper: VueWrapper<any>
 const createWrapper = () =>
   mount(LoginCollab)
@@ -25,11 +45,11 @@ describe('loginCollab', () => {
     wrapper = createWrapper()
   })
 
-  afterEach(() => {
-    wrapper.unmount()
-  })
-
   it('render correctly', () => {
     expect(wrapper.exists()).toBeTruthy()
+  })
+
+  it('should redirect to entities when the authentication is done', () => {
+    expect(navigateToEntitiesMock).toHaveBeenCalledTimes(1)
   })
 })

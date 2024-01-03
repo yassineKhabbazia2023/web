@@ -21,9 +21,12 @@ import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton } from '@kpmg/styleguide'
 import { msalInstance } from '@/services/msal'
-import { useInitAuth } from '@/composable/useInitUserAuth'
+import useInitAuth from '@/composable/useInitUserAuth'
+import useNavigation from '@/composable/useNavigation'
 
-const { initAuth } = useInitAuth()
+const { initAuthCollab, isTokenRetrieve } = useInitAuth()
+const { navigateToEntities } = useNavigation()
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
@@ -32,8 +35,12 @@ const handleLoginCollab = async () => {
   msalInstance.loginRedirect()
 }
 onMounted(async () => {
-  await initAuth(true)
+  await initAuthCollab()
+  if (isTokenRetrieve.value) {
+    navigateToEntities()
+  }
 })
+
 </script>
 
 <style lang="scss">
