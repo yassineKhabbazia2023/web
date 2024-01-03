@@ -246,7 +246,8 @@ $tag-padding: (
   }
 }
 
-.el-select__tags {
+.el-select__tags,
+.el-select__collapse-tag {
   // For tags in PSelect 
   .el-tag.el-tag--info.el-tag--default.el-tag--light {
     background-color: var(--el-color-neutral-gray-100);
