@@ -14,7 +14,7 @@ import { menu } from '@/constants/routesSamples'
 const i18n = createI18n({ locale: Intl.DateTimeFormat().resolvedOptions().locale })
 dayjs.Ls.en.weekStart = 1
 
-setAssetsBaseUrl(import.meta.env.VITE_BASE_ASSETS)
+setAssetsBaseUrl(import.meta.env.VITE_ASSETS_BASE_URL)
 const router = createRouter({
   history: createMemoryHistory(),
   routes: [{ path: '/', name: 'home', component: { render: () => null } }]
