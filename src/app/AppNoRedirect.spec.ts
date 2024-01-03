@@ -10,8 +10,10 @@ import {
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import router from '../plugins/router'
 import { ROUTES, PAGES_TITLE } from './mock'
+import helpers from '@/tests/utils/helpers'
 import App from './'
 
+const { fetchUserData } = helpers()
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5
 }))
@@ -39,6 +41,9 @@ vi.mock('@kpmg/common', () => ({
   }),
   routes: {
     value: []
+  },
+  dataProvider: () => {
+    return { fetchUserData }
   }
 }))
 

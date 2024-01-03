@@ -9,7 +9,13 @@ const menu = [
     path: '/entities'
   }
 ]
-
+const fakeUser = {
+  id: '123',
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@example.com',
+  isCustomer: false
+}
 const helpers = () => {
   const router = createRouter({
     history: createWebHistory(),
@@ -30,6 +36,7 @@ const helpers = () => {
 
   const mockUser = {
     user: {
+      ...fakeUser,
       entities: {
         default: {
           name: 'Entity Name 2',
@@ -55,11 +62,14 @@ const helpers = () => {
     }
   }
 
+  const fetchUserData = () => {
+    return Promise.resolve(fakeUser)
+  }
   return {
     router,
     pinia,
-    mockUser
+    mockUser,
+    fetchUserData
   }
 }
-
 export default helpers

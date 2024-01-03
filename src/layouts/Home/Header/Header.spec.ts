@@ -6,17 +6,23 @@ import helpers from '@/tests/utils/helpers'
 import { nextTick } from 'vue'
 import { PToolbox } from '@kpmg/styleguide'
 import type { HeaderMenu } from './HeaderTypes'
-
-const { router, pinia, mockUser } = helpers()
+import { commonStore as store } from '@kpmg/common'
+const { router, pinia, mockUser, fetchUserData } = helpers()
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => (mockUser),
+    getters: {
+      isAuthenticated: () => true
+    },
     actions: {
       logout: () => vi.fn()
     }
   }),
-  commonPinia: () => pinia
+  commonPinia: () => pinia,
+  dataProvider: () => {
+    return { fetchUserData }
+  }
 }))
 
 const headerMenu: HeaderMenu[] = [{
@@ -76,5 +82,17 @@ describe('header', () => {
     await nextTick()
     expect(sessionStorage.getItem('token')).toBeNull()
     expect(spyRouterPush).toHaveBeenCalledWith({ name: 'login' })
+  })
+
+  it('should display initial user even the data in store is empty and token on sessionStorage is valid', async () => {
+    const myStore = store()
+    myStore.$patch({
+      user: null
+    })
+    wrapper = createWrapper()
+    await nextTick()
+    const initialContainer = wrapper.findComponent('[data-ut="userInitial"]')
+    await nextTick()
+    expect(initialContainer.text()).toBe('JD')
   })
 })

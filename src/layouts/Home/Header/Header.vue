@@ -30,6 +30,7 @@
             pShape="circle"
             pType="small"
             pColor="persian-gradient"
+            data-ut="userInitial"
           >
             {{ initial }}
           </PAvatar>
@@ -48,10 +49,10 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 import { PAvatar, PHeader, PHeaderTabs, PImage, PToolbox } from '@kpmg/styleguide'
-import { commonStore as useStore } from '@kpmg/common'
+import { commonStore as useStore, dataProvider as useDataProvider } from '@kpmg/common'
 import { useI18n } from 'vue-i18n'
 import type { HeaderMenu } from './HeaderTypes'
 
@@ -71,9 +72,27 @@ withDefaults(defineProps<Props>(), {
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
+const { fetchUserData } = useDataProvider()
 const routeActive = route.path
-const firstName = ref(store.user?.firstName)
-const lastName = ref(store.user?.lastName)
+const firstName = ref(store.user?.firstName || '')
+const lastName = ref(store.user?.lastName || '')
+
+onMounted(async () => {
+  if (!store.user && store.isAuthenticated) {
+    const user = await fetchUserData()
+    store.$patch({
+      user: {
+        email: user?.email,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        isCollab: user?.isCollab,
+        id: user?.id
+      }
+    })
+    firstName.value = user?.firstName
+    lastName.value = user?.lastName
+  }
+})
 const toolboxBasicData = [
   {
     pIconName: 'PIPower',
@@ -88,10 +107,10 @@ const logoutHandler = async (actionName: string) => {
     router.push({ name: 'login' })
   }
 }
-
 const initial = computed(() => {
   return '' + firstName.value?.charAt(0) + lastName.value?.charAt(0)
 })
+
 </script>
 <style scoped>
 @media only screen and (max-width: 991px)  {
