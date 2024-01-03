@@ -19,7 +19,8 @@ export default mergeConfig(
         provider: 'istanbul', // or 'v8'
         reporter: ['text', 'cobertura', 'lcov'],
         exclude: ['src/atoms/PIcon/components/*']
-      }
+      },
+      setupFiles: 'vitest.setup.ts'
     }
   })
 )

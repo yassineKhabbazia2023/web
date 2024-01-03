@@ -12,6 +12,8 @@ dayjs.Ls.en.weekStart = 1
 export const fr = frLocale
 export const en = enLocale
 
+export { ElNotification as PNotification } from 'element-plus'
+
 export { default as PAside } from './atoms/PAside'
 export { default as PAutocomplete } from './molecules/PAutocomplete'
 export { default as PCol } from './atoms/PCol'
@@ -86,6 +88,7 @@ export { default as PTooltip } from './atoms/PTooltip'
 export { default as PTree } from './organisms/PTree'
 export { default as PUpload } from './atoms/PUpload'
 export { default as PUserCard } from './atoms/PUserCard'
+export { setAssetsBaseUrl } from './utils/imageResolver'
 
 // Export types from components with ENUM
 export * from './atoms/PAvatar/PAvatarTypes'

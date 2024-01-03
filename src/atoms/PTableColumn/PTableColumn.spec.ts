@@ -7,8 +7,7 @@ import PTableColumn from '.'
 function createWrapper(
   columns: PTableColumnProps[],
   pData: any,
-  pStripe: boolean,
-  slotContent: string
+  pStripe: boolean
 ): VueWrapper {
   const Component = {
     template: `
@@ -19,7 +18,6 @@ function createWrapper(
           :pType="column.pType"
           :pLabel="column.pLabel"
           :pProp="column.pProp"
-          :pHasCustomColumn="column.pHasCustomColumn"
           data-ut="column"
         >
           <template
@@ -27,7 +25,6 @@ function createWrapper(
           >
             <span>{{ row[column.property] }}</span>
           </template>
-          <div v-if="slotContent !== ''">{{ slotContent }}</div>
         </PTableColumn>
       </PTable>
     `,
@@ -35,8 +32,7 @@ function createWrapper(
       return {
         columns,
         pData,
-        pStripe,
-        slotContent
+        pStripe
       }
     }
   }
@@ -67,12 +63,11 @@ const columns: PTableColumnProps[] = [{
   pProp: 'id'
 }, {
   pLabel: 'age',
-  pProp: 'age',
-  pHasCustomColumn: true
+  pProp: 'age'
 }]
 
 describe('pTableColumn', () => {
-  const wrapper = createWrapper(columns, pData, false, 'slot content')
+  const wrapper = createWrapper(columns, pData, false)
   it('should have column count', async () => {
     await flushPromises()
     const hiddenColumns = wrapper.findAll('[data-ut="column"]')
@@ -89,7 +84,7 @@ describe('pTableColumn', () => {
     await flushPromises()
     const thead = wrapper.find('tbody')
     const expectedBodyText = pData
-      .map(({ name, age }, index) => `${name}${index + 1}${age}`)
+      .map(({ name, age, id }) => `${name}${id}${age}`)
       .join('')
 
     expect(thead.text()).toBe(expectedBodyText)

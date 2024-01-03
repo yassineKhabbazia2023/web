@@ -81,7 +81,7 @@ extends:
               value: histoire-dev${{ parameters.devIndex }}
       - ${{ if and(contains(variables['Build.SourceBranch'], 'develop'), ne(parameters.deployType, 'onlyDev')) }}:
         - name: ITG
-          displayName: Developpement
+          displayName: Intégration
           poolAgent: Pulse-itg01
           condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           variables:
@@ -97,8 +97,8 @@ extends:
             value: histoire-itg01
       - ${{ if or(and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')), and(contains(variables['Build.SourceBranch'], 'develop'), eq(parameters.deployType, 'developToRec'))) }}:
         - name: REC
-          displayName: Developpement
-          poolAgent: Pulse-itg01
+          displayName: Recette
+          poolAgent: Pulse-rec01
           condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           variables:
           - name: azureSC

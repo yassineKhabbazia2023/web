@@ -39,7 +39,6 @@
         <PTableColumn
           pLabel="Text"
           pWidth="180"
-          pHasCustomColumn
           :pSortMethod="sortMethodsText"
           :pSortable="tableInputsWithCells.sortable"
         >
@@ -58,7 +57,6 @@
         <PTableColumn
           pLabel="Entity"
           pWidth="220"
-          pHasCustomColumn
           :pSortMethod="sortMethodsEntity"
           :pSortable="tableInputsWithCells.sortable"
         >
@@ -75,7 +73,6 @@
         <PTableColumn
           pLabel="Double Text"
           pWidth="180"
-          pHasCustomColumn
           :pSortMethod="sortMethodsDoubleText"
           :pSortable="tableInputsWithCells.sortable"
         >
@@ -95,7 +92,6 @@
         <PTableColumn
           pLabel="Tag"
           pWidth="180"
-          pHasCustomColumn
           :pSortMethod="sortMethodsTags"
           :pSortable="tableInputsWithCells.sortable"
           >
@@ -113,7 +109,6 @@
         </PTableColumn>
         <PTableColumn
           pLabel="Switch"
-          pHasCustomColumn
         >
           <template #default="scope">
             <PSwitch v-model="scope.row.switch.status" :disabled="scope.row.switch.disabled" />
@@ -122,7 +117,6 @@
         <PTableColumn
           pLabel="Smalls buttons"
           pWidth="300"
-          pHasCustomColumn
         >
           <template #default>
             <PButton

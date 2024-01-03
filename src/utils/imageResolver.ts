@@ -1,4 +1,20 @@
+const context = {
+  assetsBaseUrl: ''
+}
+
+export function getAssetsBaseUrl() {
+  if (!context.assetsBaseUrl) {
+    console.warn('should initialize AssetsBaseUrl with setAssetsBaseUrl()')
+    return ''
+  }
+  return context.assetsBaseUrl
+}
+
+export function setAssetsBaseUrl(assetsUrl: string) {
+  context.assetsBaseUrl = assetsUrl
+}
+
 export const imageResolver = (type: string, name: string) => {
-  const baseURl = import.meta.env.VITE_CDN_URL
-  return new URL(`${type}/${name}.svg`, baseURl).href
+  const baseUrl = getAssetsBaseUrl()
+  return new URL(`${type}/${name}.svg`, baseUrl).href
 }
