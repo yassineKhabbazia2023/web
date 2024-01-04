@@ -11,8 +11,8 @@
     :showPassword="pShowPassword"
     :disabled="pDisabled"
     :size="pSize"
-    :prefixIcon="pPrefixIcon"
-    :suffixIcon="pSuffixIcon"
+    :prefixIcon="getPrefixIcon"
+    :suffixIcon="getSuffixIcon"
     :rows="pRows"
     :autosize="pAutosize"
     :autocomplete="pAutocomplete"
@@ -35,8 +35,18 @@
 import { ElInput } from 'element-plus'
 import type { PInputProps } from './PInputTypes'
 import { mutable } from 'element-plus/es/utils/typescript'
+import { iconResolver } from '@/utils/iconResolver'
+import { computed } from 'vue'
 
-withDefaults(defineProps<PInputProps>(), {
+const getPrefixIcon = computed(() => {
+  return props.pPrefixIcon ? iconResolver(props.pPrefixIcon) : null
+})
+
+const getSuffixIcon = computed(() => {
+  return props.pSuffixIcon ? iconResolver(props.pSuffixIcon) : null
+})
+
+const props = withDefaults(defineProps<PInputProps>(), {
   pType: 'text',
   pMaxlength: undefined,
   pMinlength: undefined,

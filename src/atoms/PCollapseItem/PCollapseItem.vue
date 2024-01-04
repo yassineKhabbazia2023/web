@@ -10,9 +10,9 @@
         :size="16"
         class="p-collapse-item__icon margin-right--2"
       >
-        <component :is="pIcon" />
+        <component :is="iconResolver(pIcon)" />
       </PIcon>
-      <span class="p-collapse-item__title margin-right--2">{{ pTitleCollapseItem }}</span>
+      <span class="p-collapse-item__title margin-right--2 text-left">{{ pTitleCollapseItem }}</span>
     </template>
     <div class="p-collapse-item__content">
       <slot />
@@ -25,6 +25,7 @@ import { computed } from 'vue'
 import { ElCollapseItem } from 'element-plus'
 import PIcon from '@/atoms/PIcon'
 import type { PCollapseItemTypes } from './PCollapseItemTypes'
+import { iconResolver } from '@/utils/iconResolver'
 
 const props = withDefaults(defineProps<PCollapseItemTypes>(), {
   pType: 'default'

@@ -33,12 +33,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount, defineAsyncComponent } from 'vue'
+import { onBeforeMount, defineAsyncComponent, shallowRef } from 'vue'
 import { pulseGeneratedIcons } from './components/constants'
 import { manageClick } from '@/utils/mouse'
 import { useCopyClipboard } from '@/utils/clipboard'
 
-const iconsData = ref([] as any[])
+const iconsData = shallowRef([] as any[])
 onBeforeMount(() => {
   iconsData.value = pulseGeneratedIcons.map((component) => {
     return {
