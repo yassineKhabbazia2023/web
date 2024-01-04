@@ -29,12 +29,12 @@ const carouselBasicData = ref([
   {
     pText: 'Create and track your bank mandate requests at a glance!',
     pImageType: 'paupulse',
-    pImageName: 'mandat-bancaire'
+    pImageName: 'bank-mandate'
   },
   {
     pText: 'Follow the documents shared by your customers on a daily basis.',
     pImageType: 'paupulse',
-    pImageName: 'document-partage'
+    pImageName: 'shared-document'
   }
 ])
 </script>

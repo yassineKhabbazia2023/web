@@ -48,6 +48,7 @@
             pType="primary"
             @click="handleSubmit(formRef)"
             :pDisabled="!isFormValid"
+            class="margin-right--4"
           >
             Submit
           </PButton>

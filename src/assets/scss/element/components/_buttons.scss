@@ -209,3 +209,13 @@ $button-padding-horizontal: (
     }
   }
 }
+
+.el-button-group {
+  .el-button + .el-button {
+    margin-left: 12px;
+  }
+
+  .el-button--small + .el-button--small {
+    margin-left: 8px;
+  }
+}
