@@ -6,8 +6,11 @@ import {
   commonPinia as pinia,
   routes
 } from '@kpmg/common'
+import { setAssetsBaseUrl } from '@kpmg/styleguide'
 
 const RenderLess = () => ''
+
+setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
 
 const vueLifecycles = singleSpaVue({
   createApp,

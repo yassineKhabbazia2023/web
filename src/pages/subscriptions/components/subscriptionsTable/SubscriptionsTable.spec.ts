@@ -65,8 +65,8 @@ describe('table-validations', () => {
     const wrapper = mount(SubscriptionsTable)
     await flushPromises()
 
-    const validateButton = wrapper.findComponent('[data-ut="validateButton"]')
-    await validateButton?.trigger('click')
+    const validateButton = wrapper.findAll('[data-ut="validateButton"]')
+    await validateButton?.at(1)?.trigger('click')
     const subscriptionId = subscriptionRequestMock.at(0)?.subscriptionId
     expect(mockedPutRequests)
       .toHaveBeenCalledWith(`subscription?subscriptionId=${subscriptionId}`)
