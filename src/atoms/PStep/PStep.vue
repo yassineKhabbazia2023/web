@@ -4,17 +4,7 @@
     :description="pDescription"
     :icon="pIcon"
     :status="pStatus"
-  >
-    <template #description>
-      <slot name="description" />
-    </template>
-    <template #title>
-      <slot name="title" />
-    </template>
-    <template #icon>
-      <slot name="icon" />
-    </template>
-  </ElStep>
+  />
 </template>
 
 <script lang="ts" setup>
