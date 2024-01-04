@@ -87,7 +87,6 @@ const routeActive = route.path
 <style lang="scss" scoped>
 
 .common-layout {
-
   .aside-main-container {
     display: flex;
   }
@@ -127,6 +126,7 @@ const routeActive = route.path
       left: 0;
       right: 0;
       position: absolute;
+      z-index: 10;
     }
   }
 
@@ -135,11 +135,12 @@ const routeActive = route.path
     padding: 16px;
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 52px);
     overflow: auto;
 
     @media only screen and (max-width: 991px)  {
       width: auto;
+      height: calc(100vh - 102px);
     }
 
     &--no-paddings {
@@ -148,10 +149,4 @@ const routeActive = route.path
   }
 }
 </style>
-<style>
-html, body {
-  overflow: hidden;
-  margin: 0px;
-  height: 100%;
-}
-</style>
+
