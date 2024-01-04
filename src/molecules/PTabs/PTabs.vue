@@ -1,5 +1,6 @@
 <template>
   <ElTabs
+    v-model="selectedTabName"
     :type="pType"
     :closable="pClosable"
     :addable="pAddable"
@@ -13,10 +14,11 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { ElTabs } from 'element-plus'
 import type { PTabsProps } from './PTabsTypes'
 
-withDefaults(defineProps<PTabsProps>(), {
+const props = withDefaults(defineProps<PTabsProps>(), {
   pType: '',
   pClosable: false,
   pAddable: false,
@@ -24,5 +26,11 @@ withDefaults(defineProps<PTabsProps>(), {
   pTabPosition: 'top',
   pStretch: false,
   pBeforeLeave: undefined
+})
+const emit = defineEmits(['update:modelValue'])
+
+const selectedTabName = computed({
+  get: () => props.modelValue,
+  set: newValue => emit('update:modelValue', newValue)
 })
 </script>

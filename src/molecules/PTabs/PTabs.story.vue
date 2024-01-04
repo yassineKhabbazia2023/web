@@ -9,7 +9,7 @@
   >
     <Variant title="Basic Usage">
       <PTabs
-        v-model="basicData.activeName"
+        v-model="firstActiveVariant"
         :pStretch="basicData.stretch"
       >
         <PTabPane
@@ -23,8 +23,8 @@
       </PTabs>
     </Variant>
     <Variant title="Counter Usage">
-      <PTabs :pStretch="basicData.stretch">
-        <PTabPane>
+      <PTabs v-model="secondActiveVariant" :pStretch="basicData.stretch">
+        <PTabPane pName="1">
           <template #label>
             <span>Option A</span>
             <PPastille
@@ -36,7 +36,7 @@
           </template>
           Custom 1
         </PTabPane>
-        <PTabPane>
+        <PTabPane pName="2">
           <template #label>
             <span>Option B</span>
             <PPastille
@@ -48,7 +48,7 @@
           </template>
           Custom 2
         </PTabPane>
-        <PTabPane>
+        <PTabPane pName="3">
           <template #label>
             <span>Option C</span>
             <PPastille
@@ -86,6 +86,8 @@ import { reactive, ref } from 'vue'
 import PTabPane from '@/atoms/PTabPane'
 import PTabs from '@/molecules/PTabs'
 
+const firstActiveVariant = ref('1')
+const secondActiveVariant = ref('1')
 const basicData = reactive({
   activeName: '1',
   stretch: false

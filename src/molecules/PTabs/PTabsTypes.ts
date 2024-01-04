@@ -1,4 +1,5 @@
 export interface PTabsProps {
+  modelValue: string | number,
   pType?: 'card' | 'border-card' | '',
   pClosable?: boolean,
   pAddable?: boolean,
