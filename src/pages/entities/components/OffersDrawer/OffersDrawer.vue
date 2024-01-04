@@ -56,7 +56,6 @@
             v-else-if="activeStep === offerStepperStep.USERS"
             data-ut="users-step"
           >
-            {{ `Utilisateurs step: ${offerStepperStep.USERS}` }}
           </p>
           <p
             v-else-if="
