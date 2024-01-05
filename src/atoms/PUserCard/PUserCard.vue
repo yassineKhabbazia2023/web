@@ -43,10 +43,10 @@
           <slot />
         </div>
       </div>
-      <p class="p-user-card__subtitle">
+      <p v-if="pSubtitle" class="p-user-card__subtitle">
         {{ pSubtitle }}
       </p>
-      <p class="p-user-card__description">
+      <p v-if="pDescription" class="p-user-card__description">
         {{ pDescription }}
       </p>
     </div>
@@ -122,6 +122,7 @@ const slots = useSlots()
     @media screen and (min-width: 768px) {
       margin-top: 0;
       margin-left: 12px;
+      margin-bottom: 0;
       text-align: right;
     }
   }

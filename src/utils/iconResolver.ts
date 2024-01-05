@@ -1,4 +1,4 @@
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, type Component } from 'vue'
 
 export const iconsResolver = (
   iterable: Array<any>,
@@ -7,7 +7,12 @@ export const iconsResolver = (
   return iterable.map((element) => iconResolver(element[iconPropertyName]))
 }
 
-export const iconResolver = (iconName: string) =>
+export const iconResolver = (icon: string | Component) =>
   defineAsyncComponent(
-    () => import(`../atoms/PIcon/components/${iconName}.vue`)
+    () =>
+      import(
+        `../atoms/PIcon/components/${
+          typeof icon === 'string' ? icon : icon?.name
+        }.vue`
+      )
   )
