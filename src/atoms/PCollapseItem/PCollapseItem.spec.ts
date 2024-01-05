@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import PCollapseItem from './'
 import { PIPulse } from '@/atoms/PIcon/components'
 import type { PCollapseItemTypes } from './PCollapseItemTypes'
@@ -32,13 +32,14 @@ describe('pCollapseItem', () => {
         text: 'hide'
       }
     ])('should $text icon zone when icon is $hasIcon',
-      ({ pIcon, hasIcon, text }) => {
+      async ({ pIcon, hasIcon, text }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pIcon,
           hasIcon,
           text
         })
+        await flushPromises()
         const hasIconClass = wrapper.find('.p-collapse-item__icon').exists()
         const hasIconComponent = wrapper.findComponent({ name: 'PIPulse' }).exists()
         expect(hasIconClass).toBe(hasIcon)
