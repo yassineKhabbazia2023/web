@@ -7,6 +7,7 @@ import {
   createMandate,
   downloadUnsignedMandate,
   downloadSignedMandate,
+  uploadSignedMandate,
   terminateMandate
 } from '.'
 import { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
@@ -287,6 +288,13 @@ describe('createMandate', () => {
       },
       bban
     })
+    expect(id).toBe('3ef5ff10-18d1-40b1-aa24-0fcccd8445e6')
+  })
+})
+
+describe('uploadSignedMandate', () => {
+  it('should return mandate id', async () => {
+    const { data: { id } } = await uploadSignedMandate({ mandateId: '1999072765', file: {} })
     expect(id).toBe('3ef5ff10-18d1-40b1-aa24-0fcccd8445e6')
   })
 })

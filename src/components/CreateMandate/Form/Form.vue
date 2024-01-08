@@ -9,12 +9,12 @@
       class="create-mandate-form"
     >
       <div v-if="step === 1">
-        <PFormItem prop="erpId" :label="t('ibs-number')">
+        <PFormItem pProp="erpId" :pLabel="t('ibs-number')">
           <PInput
             v-model="createMandateForm.erpId"
             data-testid="ibs-number-test"
           >
-            <template #suffix>
+          <!-- <template #suffix>
               <PIcon
                 v-if="isIBSValid"
                 class="el-button__icon--right"
@@ -22,12 +22,12 @@
               >
                 <PICheck />
               </PIcon>
-            </template>
+            </template> -->
           </PInput>
         </PFormItem>
-        <PRow :gutter="16">
-          <PCol :span="12">
-            <PFormItem inline :label="t('company-name')">
+        <PRow :pGutter="16">
+          <PCol :pSpan="12">
+            <PFormItem inline :pLabel="t('company-name')">
               <PInput
                 data-testid="name-input-test"
                 v-model="createMandateForm.name"
@@ -35,16 +35,16 @@
               />
             </PFormItem>
           </PCol>
-          <PCol :span="12">
+          <PCol :pSpan="12">
             <PFormItem
               inline
-              :label="t('siret-number')"
+              :pLabel="t('siret-number')"
               disabled
             >
               <PInput
                 data-testid="siretNumber-input-test"
                 v-model="createMandateForm.siretNumber"
-                state="default"
+                pSize="default"
                 disabled
               />
             </PFormItem>
@@ -52,37 +52,42 @@
         </PRow>
       </div>
       <div v-if="step === 2">
-        <PFormItem prop="title">
+        <PFormItem pProp="title">
           <template #label>
-            <label class="create-mandate-form__title-label">{{
-              t('title')
-            }}</label>
+            <label class="create-mandate-form__title-label">
+              {{ t('title') }}
+              <span class="create-mandate-form__title-label__asterisk">
+                {{ t('form.asterisk') }}
+              </span>
+            </label>
           </template>
-          <PRadio
-            v-model="createMandateForm.title"
-            label="M"
-          >
-            {{ t('mister') }}
-          </PRadio>
-          <PRadio v-model="createMandateForm.title" label="Mme">
-            {{ t('madam') }}
-          </PRadio>
+          <div>
+            <PRadio
+              v-model="createMandateForm.title"
+              pLabel="M"
+            >
+              {{ t('mister') }}
+            </PRadio>
+            <PRadio v-model="createMandateForm.title" pLabel="Mme">
+              {{ t('madam') }}
+            </PRadio>
+          </div>
         </PFormItem>
-        <PRow :gutter="16">
-          <PCol :span="12">
+        <PRow :pGutter="16">
+          <PCol :pSpan="12">
             <PFormItem
-              prop="lastName"
+              pProp="lastName"
               inline
-              :label="t('lastName')"
+              :pLabel="t('lastName')"
               disabled>
               <PInput v-model="createMandateForm.lastName" state="default" />
             </PFormItem>
           </PCol>
-          <PCol :span="12">
+          <PCol :pSpan="12">
             <PFormItem
-              prop="firstName"
+              pProp="firstName"
               inline
-              :label="t('firstName')"
+              :pLabel="t('firstName')"
             >
               <PInput
                 v-model="createMandateForm.firstName"
@@ -92,56 +97,60 @@
           </PCol>
         </PRow>
         <PFormItem
-          prop="email"
+          pProp="email"
           inline
           disabled
         >
           <template #label>
-            <span class="create-mandate-form_optional-title"
-            >{{ t('email') }}
-            </span>
-            <span class="create-mandate-form_optional">{{
-              t('optional')
-            }}</span>
+            <div>
+              <span class="create-mandate-form_optional-title"
+              >{{ t('email') }}
+              </span>
+              <span class="create-mandate-form_optional">{{
+                t('optional')
+              }}</span>
+            </div>
           </template>
           <PInput
             v-model="createMandateForm.email"
             data-testid="email-test"
-            state="default"
+            pSize="default"
           />
         </PFormItem>
         <h5 class="create-mandate-form__section-title">
           {{ t('headquarters') }}
         </h5>
         <PFormItem
-          prop="street"
+          pProp="street"
           inline
-          :label="`${t('address')}`"
+          :pLabel="`${t('address')}`"
           disabled
         >
-          <PInput v-model="createMandateForm.street" state="default" />
+          <PInput v-model="createMandateForm.street" pSize="default" />
         </PFormItem>
         <PFormItem
-          prop="addressComplement"
+          pProp="addressComplement"
           inline
           disabled
         >
           <template #label>
-            <span class="create-mandate-form_optional-title"
-            >{{ t('complement') }}
-            </span>
-            <span class="create-mandate-form_optional">{{
-              t('optional')
-            }}</span>
+            <div>
+              <span class="create-mandate-form_optional-title"
+              >{{ t('complement') }}
+              </span>
+              <span class="create-mandate-form_optional">{{
+                t('optional')
+              }}</span>
+            </div>
           </template>
           <PInput v-model="createMandateForm.addressComplement" state="default" />
         </PFormItem>
-        <PRow :gutter="16">
-          <PCol :span="8">
+        <PRow :pGutter="16">
+          <PCol :pSpan="8">
             <PFormItem
-              prop="zipCode"
+              pProp="zipCode"
               inline
-              :label="t('zipCode')"
+              :pLabel="t('zipCode')"
               disabled
             >
               <PInput
@@ -151,97 +160,97 @@
               />
             </PFormItem>
           </PCol>
-          <PCol :span="16">
+          <PCol :pSpan="16">
             <PFormItem
-              prop="city"
+              pProp="city"
               inline
-              :label="t('city')"
+              :pLabel="t('city')"
             >
               <PInput v-model="createMandateForm.city"/>
             </PFormItem>
           </PCol>
         </PRow>
         <PFormItem
-          prop="country"
+          pProp="country"
           inline
-          :label="`${t('country')}`"
+          :pLabel="`${t('country')}`"
           disabled
         >
           <PInput v-model="createMandateForm.country" state="default" />
         </PFormItem>
       </div>
       <div v-if="step === 3">
-        <PRow :gutter="16">
-          <PCol :span="12">
+        <PRow :pGutter="16">
+          <PCol :pSpan="12">
             <PFormItem
-              prop="institutionCode"
+              pProp="institutionCode"
               inline
-              :label="`${t('institutionCode')}`"
-              :showMessage="(!validationError || !isBankCodeValid)
+              :pLabel="`${t('institutionCode')}`"
+              :pShowMessage="(!validationError || !isBankCodeValid)
                 && !isNonScrappable && !isScrappable"
-              :validateStatus="validationError ? 'error' : ''"
+              :pValidateStatus="validationError ? 'error' : ''"
               disabled
             >
               <PInput
                 data-testid="institutionCode-input-test"
                 v-model="createMandateForm.institutionCode"
-                placeholder="_ _ _ _ _"
+                pPlaceholder="_ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
               />
             </PFormItem>
           </PCol>
-          <PCol :span="12">
+          <PCol :pSpan="12">
             <PFormItem
-              prop="branchCode"
+              pProp="branchCode"
               inline
-              :label="`${t('branchCode')}`"
-              :showMessage="!validationError"
-              :validateStatus="validationError ? 'error' : ''"
+              :pLabel="`${t('branchCode')}`"
+              :pShowMessage="!validationError"
+              :pValidateStatus="validationError ? 'error' : ''"
               disabled
             >
               <PInput
                 data-testid="branchCode-input-test"
                 v-model="createMandateForm.branchCode"
-                placeholder="_ _ _ _ _"
+                pPlaceholder="_ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
               />
             </PFormItem>
           </PCol>
         </PRow>
-        <PRow :gutter="16">
-          <PCol :span="18">
+        <PRow :pGutter="16">
+          <PCol :pSpan="18">
             <PFormItem
-              prop="accountNumber"
+              pProp="accountNumber"
               inline
-              :label="`${t('accountNumber')}`"
-              :error="customErrorMessage"
-              :validateStatus="validationError ? 'error' : ''"
+              :pLabel="`${t('accountNumber')}`"
+              :pError="customErrorMessage"
+              :pValidateStatus="validationError ? 'error' : ''"
               disabled
             >
               <PInput
                 data-testid="accountNumber-input-test"
                 v-model="createMandateForm.accountNumber"
-                placeholder="_ _ _ _ _ _ _ _ _ _ _"
+                pPlaceholder="_ _ _ _ _ _ _ _ _ _ _"
                 @blur="checkFields()"
                 state="default"
               />
             </PFormItem>
           </PCol>
-          <PCol :span="6">
+          <PCol :pSpan="6">
             <PFormItem
-              prop="key"
+              pProp="key"
               inline
-              :label="`${t('key')}`"
-              :showMessage="!validationError"
-              :validateStatus="validationError ? 'error' : ''"
+              :pLabel="`${t('key')}`"
+              :pShowMessage="!validationError"
+              :pValidateStatus="validationError ? 'error' : ''"
               disabled
             >
               <PInput
                 data-testid="key-input-test"
                 v-model="createMandateForm.key"
-                placeholder="_ _"
+                pPlaceholder="_ _"
                 @blur="checkFields()"
                 state="default"
               />
@@ -249,9 +258,9 @@
           </PCol>
         </PRow>
         <PFormItem
-          prop="bank"
+          pProp="bank"
           inline
-          :label="`${t('bank')}`"
+          :pLabel="`${t('bank')}`"
           disabled
         >
           <PInput
@@ -300,6 +309,7 @@
     key: 'Key'
     bank: 'Bank'
     form:
+      asterisk: '*'
       error:
         requiredField: 'Required field'
         mandatoryChoice: 'Mandatory choice'
@@ -341,6 +351,7 @@
     key: 'Clé'
     bank: 'Banque'
     form:
+      asterisk: '*'
       error:
         requiredField: 'Champ obligatoire'
         mandatoryChoice: 'Mandatory choice'
@@ -368,11 +379,9 @@ import { ref, reactive, watch, computed } from 'vue'
 import { validateIban, getBankDetail, getCompany } from '@/services/mandate'
 import { Rule } from './FormModels'
 import {
-  PICheck,
   PForm,
   PFormItem,
   PInput,
-  PIcon,
   PRadio,
   PCol,
   PRow,
@@ -742,11 +751,19 @@ watch(
   }
 )
 
+/* function getSuffixIcon() {
+  if (isIBSValid.value) {
+    return () => h(PIcon, { color: '#5546FF' }, [h(PICheck)])
+  }
+  return ''
+} */
+
 // Expose
 defineExpose({
   createMandateForm,
   validateIBS
 })
+
 </script>
 
 <style lang="scss">
@@ -755,6 +772,23 @@ defineExpose({
     display: flex;
     &-label {
       padding-right: 8px;
+    }
+  }
+
+  .el-form-item__content {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+  }
+
+  &__title-label {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+
+    &__asterisk {
+      color: red;
     }
   }
 
@@ -767,7 +801,7 @@ defineExpose({
     line-height: 120%;
   }
 
-  &_title-optional {
+  &_optional-title {
     font-size: 12px;
     font-style: normal;
     font-weight: 600;

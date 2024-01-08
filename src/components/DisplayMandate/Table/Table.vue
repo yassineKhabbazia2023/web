@@ -1,102 +1,114 @@
 <template>
-  <PTable
-    :pData="mandateCollection"
-    pStripe
-    :emptyText="t('no-data')"
-    class="padding-left--6 padding-right--6"
-    @sort-change="sortColumnChange"
-  >
-    <template v-for="({ label, prop, sortable }, index) in tableHead">
-      <PTableColumn
-        v-if="label === 'Actions'"
-        :label="label"
-        :prop="prop"
-        :sortable="sortable"
-        :key="prop"
-      >
-        <template #default="scope">
-          <PToolbox
-            :pElements="actionsBuilder(scope.row.statusCode)"
-            @p-toolbox-item-clicked="actionClicked($event, scope.row)">
-            <PButton pType="generic">
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
-            </PButton>
-          </PToolbox>
-        </template>
-      </PTableColumn>
-      <PTableColumn
-        v-else-if="label === `${t('status')}`"
-        :label="label"
-        :prop="prop"
-        :sortable="sortable"
-        :key="label"
-      >
-        <template #default="scope">
-          <Tag :status="scope.row.statusCode" />
-        </template>
-      </PTableColumn>
-      <PTableColumn
-        v-else
-        :label="label"
-        :prop="prop"
-        :sortable="sortable"
-        :key="index"
-      />
-    </template>
-  </PTable>
-  <PDialog
-      v-model="pDialogControl.dialogVisible"
-      pWidth="43rem"
-      pModal
-      :pCenter="false"
-      :pBeforeClose="closeTerminateMandatePopup"
-      :dialogCloseOnClickModal="false"
-      dialogCloseOnPressEscape
-      :pTitle="t('title-popup')"
+  <div class="padding-x--6">
+    <PTable
+      :pData="mandateCollection"
+      pStripe
+      :emptyText="t('no-data')"
+      @sort-change="sortColumnChange"
     >
-      <PAlert pType="warning" class="margin-bottom--2">
-        {{ t('alert-popup') }}
-      </PAlert>
-      <template #footer>
-        <div class="p-dialog__footer">
-          <PButton
-            pType="primary"
-            pSize="small"
-            pPlain
-            :pRound="false"
-            :pDisabled="false"
-            :pLoading="false"
-            @click="closeTerminateMandatePopup"
-          >
-            {{ t('cancel-popup') }}
-          </PButton>
-          <PButton
-            pType="primary"
-            pSize="small"
-            :pPlain="false"
-            :pRound="false"
-            :pDisabled="false"
-            :pLoading="false"
-            @click="terminateMandateAction(mandateIdRef)"
-            class="margin-left--2"
-          >
-            {{ t('terminate-mandate-popup') }}
-          </PButton>
-        </div>
+      <template v-for="({ label, prop, sortable, width }, index) in tableHead">
+        <PTableColumn
+          v-if="label === 'Actions'"
+          :label="label"
+          :prop="prop"
+          :sortable="sortable"
+          :key="prop"
+          :width="width"
+        >
+          <template #default="scope">
+            <PToolbox
+              :pElements="actionsBuilder(scope.row.statusCode)"
+              @p-toolbox-item-clicked="actionClicked($event, scope.row)">
+              <PButton pType="generic">
+                <PIcon>
+                  <PIThreeDots />
+                </PIcon>
+              </PButton>
+            </PToolbox>
+            <!-- Hidden File Input -->
+          <input
+              id="fileUpload"
+              type="file"
+              style="display: none"
+              accept="application/pdf"
+              @change="handleFileUpload"
+            />
+          </template>
+        </PTableColumn>
+        <PTableColumn
+          v-else-if="label === `${t('status')}`"
+          :label="label"
+          :prop="prop"
+          :sortable="sortable"
+          :key="label"
+          :width="width"
+        >
+          <template #default="scope">
+            <Tag v-if="scope.row.statusCode" :status="scope.row.statusCode" />
+          </template>
+        </PTableColumn>
+        <PTableColumn
+          v-else
+          :label="label"
+          :prop="prop"
+          :sortable="sortable"
+          :key="index"
+          :width="width"
+        />
       </template>
-      <p class="p-dialog__text">
-        {{ t('text-one-popup-part1') }}
-        <strong>{{ accountNumberRef }}</strong>
-        {{ t('text-one-popup-part2') }}
-        <strong>{{ companyNameRef }}</strong>
-        {{ t('text-one-popup-part3') }}
-        <br/>
-        <br/>
-        {{ t('text-one-popup-part4') }}
-      </p>
-    </PDialog>
+    </PTable>
+  </div>
+  <PDialog
+    v-model="pDialogControl.dialogVisible"
+    pWidth="420px"
+    pModal
+    :pCenter="false"
+    :pBeforeClose="closeTerminateMandatePopup"
+    :dialogCloseOnClickModal="false"
+    dialogCloseOnPressEscape
+    :pTitle="t('title-popup')"
+  >
+    <PAlert pType="warning" class="margin-bottom--2">
+      {{ t('alert-popup') }}
+    </PAlert>
+    <template #footer>
+      <div class="p-dialog__footer">
+        <PButton
+          pType="primary"
+          pSize="small"
+          pPlain
+          :pRound="false"
+          :pDisabled="false"
+          :pLoading="false"
+          @click="closeTerminateMandatePopup"
+        >
+          {{ t('cancel-popup') }}
+        </PButton>
+        <PButton
+          pType="primary"
+          pSize="small"
+          :pPlain="false"
+          :pRound="false"
+          :pDisabled="false"
+          :pLoading="false"
+          @click="terminateMandateAction(mandateIdRef)"
+          class="margin-left--2"
+        >
+          {{ t('terminate-mandate-popup') }}
+        </PButton>
+      </div>
+    </template>
+    <p class="p-dialog__text">
+      {{ t('text-one-popup-part1') }}
+      <strong>{{ accountNumberRef }}</strong>
+      {{ t('text-one-popup-part2') }}
+      <strong>{{ companyNameRef }}</strong>
+      {{ t('text-one-popup-part3') }}
+      <br/>
+      <br/>
+      {{ t('text-one-popup-part4') }}
+    </p>
+  </PDialog>
 </template>
 
 <i18n lang="yaml">
@@ -131,7 +143,7 @@
         created-on: 'Créé le'
         modified-on: 'Modifié le'
         status: 'Statut'
-        download-signed-mandate: 'Télécharger le mandate signé'
+        download-signed-mandate: 'Télécharger le mandat signé'
         download-pre-filled-mandate: 'Télécharger le mandat pré-rempli'
         submit-signed-mandate: 'Déposer le mandat signé'
         cancel-telecollection: 'Résilier la télécollecte'
@@ -168,6 +180,7 @@ import type { TableProps, ActionEvent } from './Table'
 import {
   downloadUnsignedMandate,
   downloadSignedMandate,
+  uploadSignedMandate,
   terminateMandate
 } from '@/services/mandate'
 
@@ -179,6 +192,7 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits(['sort-column-change'])
+
 const pDialogControl = reactive({
   dialogVisible: false
 })
@@ -212,22 +226,24 @@ const dataFormatter = (data: any) =>
   )
 const mandateCollection = computed(() => dataFormatter(props.data))
 const tableHead = [
-  { label: `${t('ibs-code')}`, prop: 'erpId', sortable: true },
+  { label: `${t('ibs-code')}`, prop: 'erpId', sortable: true, width: '105' },
   { label: `${t('company-name')}`, prop: 'companyName', sortable: true },
   {
     label: `${t('account-number')}`,
     prop: 'accountNumber',
-    sortable: true
+    sortable: true,
+    width: '105'
   },
   { label: `${t('bank')}`, prop: 'bankName', sortable: true },
-  { label: `${t('created-on')}`, prop: 'creationDate', sortable: true },
+  { label: `${t('created-on')}`, prop: 'creationDate', sortable: true, width: '105' },
   {
     label: `${t('modified-on')}`,
     prop: 'modificationDate',
-    sortable: true
+    sortable: true,
+    width: '105'
   },
-  { label: `${t('status')}`, prop: 'statusCode', sortable: true },
-  { label: 'Actions', sortable: false }
+  { label: `${t('status')}`, prop: 'statusCode', sortable: true, width: '105' },
+  { label: 'Actions', sortable: false, width: '72' }
 ]
 const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
   const statusCodeNumber = Number(statusCode)
@@ -249,7 +265,7 @@ const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
     {
       pIconName: 'PIDownload',
       pValue: t('download-signed-mandate'),
-      disabled: statusCodeNumber === 20 || statusCodeNumber === 50,
+      disabled: [20, 50].includes(statusCodeNumber),
       pActionName: 'download-signed-mandate',
       pState: 'default'
     },
@@ -312,6 +328,12 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
       const { data } = await downloadSignedMandate(id)
       await saveFile(id, data, 'signed')
     },
+    'submit-signed-mandate': () => {
+      let fileUpload = document.getElementById('fileUpload')
+      mandateIdRef.value = id
+      fileUpload?.click()
+      fileUpload = null
+    },
     'cancel-telecollection': () => {
       accountNumberRef.value = accountNumber
       companyNameRef.value = companyName
@@ -322,6 +344,17 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   try {
     await actions[event]()
   } catch (_) {
+  }
+}
+
+const handleFileUpload = async (event: any) => {
+  try {
+    const filesCollection = event.target.files
+    if (filesCollection.length > 0) {
+      uploadSignedMandate({ mandateId: mandateIdRef.value, file: filesCollection[0] })
+    }
+  } catch (error) {
+    console.error('Error in mandate upload ', error)
   }
 }
 
@@ -338,5 +371,9 @@ const terminateMandateAction = async (mandateId: string) => {
   } catch (_) {
   }
 }
-</script>
 
+defineExpose({
+  sortColumnChange,
+  handleFileUpload
+})
+</script>

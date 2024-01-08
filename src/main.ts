@@ -1,9 +1,10 @@
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
 import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
-
+import { setAssetsBaseUrl } from '@kpmg/styleguide'
 import routes from './router'
 
+setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
 const RenderLess = () => ''
 
 const vueLifecycles = singleSpaVue({

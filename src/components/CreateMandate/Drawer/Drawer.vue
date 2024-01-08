@@ -18,9 +18,9 @@
         finishStatus="success"
         class="drawer-create-mandate__stepper"
       >
-        <PStepItem :title="t('entity')" />
-        <PStepItem :title="t('infos')" />
-        <PStepItem :title="t('banking-data')" />
+        <PStep :title="t('entity')" />
+        <PStep :title="t('infos')" />
+        <PStep :title="t('banking-data')" />
       </PSteps>
       <div v-if="currentStep <= 3" class="drawer-create-mandate__title">
         <h2 class="h3">
@@ -199,7 +199,7 @@ import {
   PIArrowLeft,
   PIArrowRight,
   PIQuestionCircle,
-  PStepItem,
+  PStep,
   PSteps,
   PTooltip
 } from '@kpmg/styleguide'
@@ -244,7 +244,7 @@ const { t } = useI18n({
 
 const pDialogControl = reactive({
   dialogVisible: false,
-  dialogWidth: '40%',
+  dialogWidth: '420px',
   dialogModal: true,
   dialogCenter: false,
   dialogShowClose: true,

@@ -23,6 +23,10 @@ vi.mock('@/services/mandate', () => {
     terminateMandate: vi.fn(() => {
       // Mock implementation or return value for terminateMandate
       return Promise.resolve(Promise.resolve({ data: {} }))
+    }),
+    uploadSignedMandate: vi.fn(() => {
+      // Mock implementation or return value for terminateMandate
+      return Promise.resolve(Promise.resolve(true))
     })
   }
 })
@@ -40,17 +44,17 @@ const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
     // Resetting the window object to its original state before each test
     window = Object.create(window)
     document.body.innerHTML = ''
-
     const writableStreamMock = {
-      write: vi.fn(),
-      close: vi.fn()
+      write: vi.fn(() => Promise.resolve()),
+      close: vi.fn(() => Promise.resolve())
     }
     const fileHandleMock = {
       createWritable: vi.fn(() => Promise.resolve(writableStreamMock))
     }
-
+    window.showSaveFilePicker = () => Promise.resolve(fileHandleMock)
     // Mocking window.showSaveFilePicker directly
-    window.showSaveFilePicker = vi.fn(() => Promise.resolve(fileHandleMock))
+    vi.spyOn(window, 'showSaveFilePicker').mockResolvedValue(fileHandleMock)
+    // window.showSaveFilePicker = fileHandleMock.createWritable
   } else {
     // Mocking window.showSaveFilePicker directly
     window.showSaveFilePicker = undefined
@@ -112,28 +116,10 @@ describe('mandate collection', () => {
     expect(wrapper.exists()).toBeTruthy()
   })
 
-  it('renders the mandate table click on download unsigned mandate', async () => {
-    const wrapper = createWrapper({
-      data: []
-    })
-
-    mockShowSaveFilePicker()
-
-    const mandate = { id: '123' }
-
-    // Trigger the action
-    await wrapper.vm.actionClicked('download-pre-filled-mandate', mandate)
-
-    // Assert that the correct service function was called
-    expect(mandateService.downloadUnsignedMandate).toHaveBeenCalledWith(mandate.id)
-  })
-
   it('renders the mandate table click on download signed mandate', async () => {
     const wrapper = createWrapper({
       data: []
     })
-
-    mockShowSaveFilePicker()
 
     const mandate = { id: '123' }
 
@@ -141,6 +127,7 @@ describe('mandate collection', () => {
     await wrapper.vm.actionClicked('download-signed-mandate', mandate)
 
     // Assert that the correct service function was called
+    expect(wrapper.exists()).toBeTruthy()
     expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
   })
 
@@ -149,7 +136,6 @@ describe('mandate collection', () => {
       data: []
     })
 
-    mockShowSaveFilePicker()
     const mandate = { id: '123' }
 
     // Trigger the action
@@ -167,8 +153,6 @@ describe('mandate collection', () => {
         data: []
       })
 
-      window.showSaveFilePicker = undefined
-
       const mandate = { id: '123' }
 
       // Trigger the action
@@ -177,4 +161,40 @@ describe('mandate collection', () => {
       // Assert that the correct service function was called
       expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
     })
+
+  it('should sort the table data', async () => {
+    const wrapper = createWrapper({
+      data: []
+    })
+    wrapper.vm.handleFileUpload({ target: { files: [{ name: 'mandate.pdf' }] } })
+    await wrapper.vm.sortColumnChange({ order: 'ascending', prop: 'erpId' })
+    let sortColumnEvent: any = wrapper.emitted('sort-column-change')
+    expect(sortColumnEvent[0]).toStrictEqual([{ sortOrder: 'Ascending', sortCriteria: 'ErpId' }])
+    await wrapper.vm.sortColumnChange({ order: 'descending', prop: '' })
+    sortColumnEvent = wrapper.emitted('sort-column-change')
+    expect(sortColumnEvent[1]).toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
+  })
+  it('sumit the signed mandate', () => {
+    const wrapper = createWrapper({
+      data: []
+    })
+    vi.spyOn(document, 'getElementById').mockImplementation(() => vi.fn())
+    const mandate = { id: '123' }
+    // Trigger the action
+    wrapper.vm.actionClicked('submit-signed-mandate', mandate)
+    // Assert that the correct service function was called
+    expect(document.getElementById).toHaveBeenCalledWith('fileUpload')
+  })
+  it('renders the mandate table click on download unsigned mandate', async () => {
+    const wrapper = createWrapper({
+      data: []
+    })
+    mockShowSaveFilePicker()
+    const mandate = { id: '123' }
+    // Trigger the action
+    await wrapper.vm.actionClicked('download-pre-filled-mandate', mandate)
+    // Assert that the correct service function was called
+    expect(mandateService.downloadUnsignedMandate).toHaveBeenCalledWith(mandate.id)
+  })
+
 })

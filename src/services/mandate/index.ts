@@ -1,9 +1,5 @@
 import { commonApi as api } from '@kpmg/common'
 
-/**
- *
-upload d'un nouveau mandat signé: POST /mandate/{mandateId}/signed
-*/
 import { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
 export const getCompany = async ({
@@ -78,3 +74,22 @@ export const createMandate = async ({
   bban
 }: CreateMandateModel): Promise<any> =>
   api().mandate.post('/mandate', { erpId, signatory, address, bban })
+
+export const uploadSignedMandate = async ({
+  mandateId,
+  file
+}: {mandateId: string, file: any}): Promise<any> => {
+  const formData = new FormData()
+
+  formData.append('file', file)
+
+  return await api().mandate.post(
+      `/mandate/${mandateId}/signed`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+  )
+}

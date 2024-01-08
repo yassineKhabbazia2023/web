@@ -92,6 +92,7 @@ import {
   PAlert
 } from '@kpmg/styleguide'
 import { downloadUnsignedMandate } from '@/services/mandate'
+import { downloadFile } from '@/helpers/utils'
 // const toastPlugin:any = inject('toast')
 const props = defineProps({
   mandateId: {
@@ -121,15 +122,7 @@ const downloadMandate = async () => {
       // Close the file and write the contents to disk
       await writableStream.close()
     } else {
-      // Fallback to the traditional download method
-      const url = window.URL.createObjectURL(new Blob([data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', `unsigned-mandate-${props.mandateId}.pdf`)
-      document.body.appendChild(link)
-      link.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(link)
+      downloadFile(`unsigned-mandate-${props.mandateId}.pdf`, data, window)
     }
   } catch (error) {
     console.error('Error downloading file:', error)

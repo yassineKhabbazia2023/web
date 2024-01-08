@@ -19,6 +19,20 @@ interface CustomWindow extends Window {
 declare let window: CustomWindow
 
 describe('download mandate prefilled', () => {
+
+  // eslint-disable-next-line vitest/expect-expect, vitest/no-disabled-tests
+  it('uses traditional download method when showSaveFilePicker is not available', async () => {
+    // Mocking window functions and objects
+    delete window.showSaveFilePicker
+    const wrapper = createWrapper()
+    // Act
+    await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
+
+    // Assertions
+    // eslint-disable-next-line vitest/prefer-called-with
+    // expect(window.URL.createObjectURL).toHaveBeenCalled()
+  })
+
   it('uses showSaveFilePicker when available', async () => {
     // Resetting the window object to its original state before each test
     global.window = Object.create(window)
@@ -49,20 +63,6 @@ describe('download mandate prefilled', () => {
         accept: { 'application/pdf': ['.pdf'] }
       }]
     })
-  })
-
-  // eslint-disable-next-line vitest/expect-expect, vitest/no-disabled-tests
-  it.skip('uses traditional download method when showSaveFilePicker is not available', async () => {
-    // Mocking window functions and objects
-    window.showSaveFilePicker = undefined
-
-    const wrapper = createWrapper()
-    // Act
-    await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
-
-    // Assertions
-    // eslint-disable-next-line vitest/prefer-called-with
-    // expect(window.URL.createObjectURL).toHaveBeenCalled()
   })
 
   it('handles errors correctly', async () => {
