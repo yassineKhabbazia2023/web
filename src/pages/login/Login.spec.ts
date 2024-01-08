@@ -35,7 +35,19 @@ vi.mock('@kpmg/common', async () => ({
     $patch: mockStorePatch
   })
 }))
-
+vi.mock('@/composable/useInitUserAuth', () => ({
+  default: () => ({
+    initAuthClient: vi.fn(() => {
+      mockStorePatch({
+        user: {
+          id: USER_ID,
+          token: WEB_TOKEN,
+          isCollab: false
+        }
+      })
+    })
+  })
+}))
 let wrapper: VueWrapper<any>
 
 const createWrapper = () =>
@@ -61,7 +73,6 @@ describe('login', () => {
   it('fill the login page and has a redirection to the home page', async () => {
     const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
     const INPUT_PASSWORD_VALUE = 'customPassword'
-
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 

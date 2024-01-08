@@ -22,7 +22,7 @@ export const msalInstance = new UserAgentApplication(msalConfig)
 
 export const getToken = async () => {
   if (msalInstance.getAccount()) {
-    await msalInstance
+    return await msalInstance
       .acquireTokenSilent({
         loginHint: msalInstance.getAccount().userName,
         scopes: [VITE_API_MSAL_SCOPE]
@@ -35,11 +35,13 @@ export const getToken = async () => {
             token
           }
         })
+        return token
       })
       .catch(() => {
         msalInstance.loginRedirect()
       })
   }
+  return null
 }
 
 export const getRefreshToken = () => {

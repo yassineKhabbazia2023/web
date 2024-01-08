@@ -78,15 +78,18 @@
 import { computed, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { commonApi, commonStore as store } from '@kpmg/common'
-import { useRouter } from 'vue-router'
+import { commonApi } from '@kpmg/common'
 import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
+import useInitUserAuth from '@/composable/useInitUserAuth'
+import useNavigation from '@/composable/useNavigation'
+
+const { initAuthClient } = useInitUserAuth()
+const { navigateToEntities } = useNavigation()
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
-const router = useRouter()
-
 const formRef = ref<FormInstance>()
 
 const formValues = reactive({
@@ -150,21 +153,14 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   try {
     const {
       data: {
-        userId: id,
         webToken: token
       }
     } = await commonApi().auth.post('login', toRaw(formValues))
     sessionStorage.setItem('token', token)
-    store().$patch({
-      user: {
-        id,
-        token,
-        isCollab: false
-      }
-    })
+    await initAuthClient()
 
     // temporarily redirect to /entities
-    router.push({ name: 'entities' })
+    navigateToEntities()
   } catch (error: any) {
     const hasEmailOrPasswordInvalid = error.response?.data?.anomaly?.errorCode === '403042'
     if (hasEmailOrPasswordInvalid) {
