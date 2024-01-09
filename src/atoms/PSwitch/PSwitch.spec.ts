@@ -33,7 +33,7 @@ const createWrapper = () => mount(PSwitch, {
 })
 
 describe('pSwitch', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElSwitch).vm
     expect(componentVM.loading).toBe(propsValue.pLoading)

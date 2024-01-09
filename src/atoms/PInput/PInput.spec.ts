@@ -40,7 +40,7 @@ const createWrapper = (defaultProps = propsValue) =>
 
 describe('pInput', () => {
   describe('props', () => {
-    it('should render correctly', async () => {
+    it('should render correctly', () => {
       const wrapper: VueWrapper<any> = createWrapper()
       const componentVM = wrapper.findComponent(ElInput).vm
       expect(componentVM.type).toBe(propsValue.pType)
@@ -82,7 +82,7 @@ describe('pInput', () => {
       expect(componentVM.validateEvent).toBe(propsValue.pValidateEvent)
       expect(componentVM.inputStyle).toBe(propsValue.pInputStyle)
     })
-    it('should display prefix icon if exist', async () => {
+    it('should display prefix icon if exist', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',
@@ -91,7 +91,7 @@ describe('pInput', () => {
       const prefixIcon = wrapper.find('.el-input__icon')
       expect(prefixIcon.exists()).toBeTruthy()
     })
-    it('should display suffix icon if exist', async () => {
+    it('should display suffix icon if exist', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',

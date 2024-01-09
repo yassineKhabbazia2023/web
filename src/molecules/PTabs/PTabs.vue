@@ -27,7 +27,9 @@ const props = withDefaults(defineProps<PTabsProps>(), {
   pStretch: false,
   pBeforeLeave: undefined
 })
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  'update:modelValue': [string | number]
+}>()
 
 const selectedTabName = computed({
   get: () => props.modelValue,

@@ -22,7 +22,7 @@ const createWrapper = () => mount(PFormItem, {
 })
 
 describe('pFormItem', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElFormItem).vm
     expect(componentVM.prop).toBe(propsValue.pProp)

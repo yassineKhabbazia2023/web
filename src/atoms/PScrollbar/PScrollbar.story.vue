@@ -7,19 +7,24 @@
     <Variant title="Basic Usage">
       <PScrollBar pMaxHeight="200px">
         <p
-          v-for="item in 20"
+          v-for="item in itemCountBasicUsage"
           :key="item"
           class="scrollbar-demo-item flex flex--justify-content-center flex--align-items-center margin--2 radius--1"
         >
           {{ item }}
         </p>
       </PScrollBar>
+      <HstInputNumber
+          v-model="itemCountBasicUsage"
+          title="Item counts"
+          :min="1"
+      />
     </Variant>
     <Variant title="Horizontal scroll">
       <PScrollBar>
         <div class="flex">
           <p
-            v-for="item in 50"
+            v-for="item in itemCountHorizontalScroll"
             :key="item"
             class="scrollbar-demo-item2 flex flex--justify-content-center flex--align-items-center margin--2 radius--1"
           >
@@ -27,6 +32,11 @@
           </p>
         </div>
       </PScrollBar>
+      <HstInputNumber
+          v-model="itemCountHorizontalScroll"
+          title="Item counts"
+          :min="1"
+      />
     </Variant>
     <Variant title="Max height">
       <PButton
@@ -62,6 +72,9 @@ import { ref } from 'vue'
 import PScrollBar from './'
 
 const count = ref(3)
+
+const itemCountBasicUsage = ref(20)
+const itemCountHorizontalScroll = ref(50)
 
 const onAdd = () => {
   count.value++

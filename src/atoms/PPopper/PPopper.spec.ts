@@ -12,7 +12,7 @@ const createWrapper = () => mount(PPopper, {
 })
 
 describe('pPopper', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElPopper).vm
     expect(componentVM.role).toBe(propsValue.pRole)

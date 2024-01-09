@@ -15,7 +15,7 @@ const createWrapper = () => mount(PRow, {
 })
 
 describe('pRow', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElRow).vm
     expect(componentVM.gutter).toBe(propsValue.pGutter)

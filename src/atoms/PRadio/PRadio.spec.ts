@@ -16,7 +16,7 @@ const createWrapper = () => mount(PRadio, {
 })
 
 describe('pRadio', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElRadio).vm
     expect(componentVM.label).toBe(propsValue.pLabel)

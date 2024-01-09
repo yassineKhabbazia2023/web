@@ -23,7 +23,7 @@ const createWrapper = () => mount(PPopperArrow, {
 })
 
 describe('pPopperArrow', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElPopperArrow).vm
     expect(componentVM.arrowOffset).toBe(propsValue.pArrowOffset)

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, beforeEach, it, expect } from 'vitest'
 import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import type { PTableColumnProps } from './PTableColumnTypes'
 import PTable from '@/atoms/PTable'
@@ -67,26 +67,27 @@ const columns: PTableColumnProps[] = [{
 }]
 
 describe('pTableColumn', () => {
-  const wrapper = createWrapper(columns, pData, false)
-  it('should have column count', async () => {
+  let wrapper: ReturnType<typeof createWrapper>
+  beforeEach(async () => {
+    wrapper = createWrapper(columns, pData, false)
     await flushPromises()
-    const hiddenColumns = wrapper.findAll('[data-ut="column"]')
-    expect(hiddenColumns).toHaveLength(columns.length)
+  })
+  it('should have column count', () => {
+    const columns = wrapper.findAll('[data-ut="column"]')
+    expect(columns).toHaveLength(columns.length)
   })
 
-  it('columns should have proper thead texts', async () => {
-    await flushPromises()
+  it('columns should have proper thead texts', () => {
     const thead = wrapper.find('thead')
     const expectedHeadText = columns.map(({ pLabel }) => pLabel).join('')
     expect(thead.text()).toBe(expectedHeadText)
   })
-  it('columns should have proper tbody texts', async () => {
-    await flushPromises()
-    const thead = wrapper.find('tbody')
+  it('columns should have proper tbody texts', () => {
+    const tbody = wrapper.find('tbody')
     const expectedBodyText = pData
       .map(({ name, age, id }) => `${name}${id}${age}`)
       .join('')
 
-    expect(thead.text()).toBe(expectedBodyText)
+    expect(tbody.text()).toBe(expectedBodyText)
   })
 })

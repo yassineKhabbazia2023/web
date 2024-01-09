@@ -51,7 +51,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
 }
 
 describe('pTabPane', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper(propsValue, 'content')
     const componentVM = wrapper.findComponent(ElTabPane).vm
     expect(componentVM.label).toBe(propsValue.pLabel)

@@ -11,7 +11,7 @@ const createWrapper = () => mount(PFooter, {
 })
 
 describe('pFooter', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElFooter).vm
     expect(componentVM.height).toBe(propsValue.pHeight)
