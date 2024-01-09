@@ -50,7 +50,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
   })
 }
 
-describe('pPopper', () => {
+describe('pTabPane', () => {
   it('should render correctly', async () => {
     const wrapper: VueWrapper<any> = createWrapper(propsValue, 'content')
     const componentVM = wrapper.findComponent(ElTabPane).vm

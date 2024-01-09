@@ -7,7 +7,7 @@
     :lazy="pLazy"
     >
     <slot />
-    <template v-if="!pLabel" #label>
+    <template v-if="!!slots['label']" #label>
       <slot name="label" />
     </template>
   </ElTabPane>
@@ -15,8 +15,10 @@
 
 <script lang="ts" setup>
 import { ElTabPane } from 'element-plus'
+import { useSlots } from 'vue'
 import type { PTabPaneProps } from './PTabPaneTypes'
 
+const slots = useSlots()
 withDefaults(defineProps<PTabPaneProps>(), {
   pLabel: undefined,
   pDisabled: false,
