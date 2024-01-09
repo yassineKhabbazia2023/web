@@ -2,7 +2,7 @@
   <PTable
     pStripe
     :pData="requests"
-    data-ut="table"
+    data-testid="table"
   >
     <PTableColumn :pLabel="t('dateRequest')">
       <template #default="scope">
@@ -78,7 +78,7 @@
     <PTableColumn pWidth="200">
       <template #default="scope">
         <PButton
-          data-ut="validateButton"
+          data-testid="validateButton"
           pType="primary"
           pSize="default"
           :pLoading="scope.row.subscriptionId === clickedRow ? !isLoading : isLoading"

@@ -115,10 +115,10 @@ describe('wallet', () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    const table = wrapper.findComponent('[data-ut=table]') as VueWrapper
+    const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
     await table.vm.$emit('click-deploy')
 
-    const subscriptionDrawer = wrapper.findComponent('[data-ut=offers-drawer]')
+    const subscriptionDrawer = wrapper.findComponent('[data-testid=offers-drawer]')
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })
 

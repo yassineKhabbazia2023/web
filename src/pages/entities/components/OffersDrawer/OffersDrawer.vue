@@ -8,7 +8,7 @@
       pDirection="rtl"
       class="offers-drawer"
       @close-drawer-button="onCloseOffersDrawer"
-      data-ut="drawer"
+      data-testid="drawer"
     >
       <template #header-prefix>
         <p class="offers-drawer__company-name font-base">
@@ -41,7 +41,7 @@
             :pProcessStatus="offerStepperConfig.processStatus"
             :pFinishStatus="offerStepperConfig.finishStatus"
             class="padding-y--3 margin-bottom--9"
-            data-ut="offer-stepper"
+            data-testid="offer-stepper"
           >
             <PStep :pTitle="offerStepTitles.services" />
             <PStep :pTitle="offerStepTitles.users" />
@@ -49,12 +49,12 @@
           </PSteps>
           <OfferSubscription
             v-if="activeStep === offerStepperStep.SERVICES"
-            data-ut="offer"
+            data-testid="offer"
             :subscriptionOffer="currentSubscriptionOffer"
           />
           <p
             v-else-if="activeStep === offerStepperStep.USERS"
-            data-ut="users-step"
+            data-testid="users-step"
           >
           </p>
           <p
@@ -65,7 +65,7 @@
         </div>
         <SubscriptionOffers
           v-else
-          data-ut="offers"
+          data-testid="offers"
           :subscriptionOffers="subscriptionOffers"
           @select-offer="onSelectOffer"
         />
@@ -74,7 +74,7 @@
         <NextPreviousButtons
           v-if="!!currentSubscriptionOffer"
           :hasCheckIcon="isSubmitButton"
-          data-ut="nextPreviousButtons"
+          data-testid="nextPreviousButtons"
           :previousLabel="t('previousLabel')"
           :nextLabel="nextLabel"
           @click-previous="onClickPrevious"

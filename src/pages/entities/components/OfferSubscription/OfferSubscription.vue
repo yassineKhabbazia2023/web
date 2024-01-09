@@ -6,7 +6,7 @@
     <OfferProviderProducts
       v-for="(provider, index) in subscriptionOffer.providers"
       :key="index"
-      data-ut="provider-card"
+      data-testid="provider-card"
       :offerProvider="provider"
       class="margin-bottom--3"
     />

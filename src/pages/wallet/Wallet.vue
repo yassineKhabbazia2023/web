@@ -34,7 +34,7 @@
       <NoResult v-if="!state.data.length" />
 
       <TableData
-        data-ut="table"
+        data-testid="table"
         v-if="!!state.data.length"
         :data="state.data"
         :handleAddFavorite="handleAddFavorite"
@@ -57,7 +57,7 @@
       </PPagination>
 
       <OffersDrawer
-        data-ut="offers-drawer"
+        data-testid="offers-drawer"
         v-if="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
         v-model="openOffersDrawer"
