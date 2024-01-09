@@ -32,7 +32,7 @@ describe('table-validations', () => {
     const wrapper = mount(SubscriptionsTable)
     await flushPromises()
 
-    const pTable = wrapper.findComponent('[data-ut="table"]') as VueWrapper
+    const pTable = wrapper.findComponent('[data-testid="table"]') as VueWrapper
     expect(pTable.exists()).toBeTruthy()
 
     const pTableColumns = pTable.findAllComponents({ name: 'ElTableColumn' })
@@ -65,8 +65,8 @@ describe('table-validations', () => {
     const wrapper = mount(SubscriptionsTable)
     await flushPromises()
 
-    const validateButton = wrapper.findComponent('[data-ut="validateButton"]')
-    await validateButton?.trigger('click')
+    const validateButton = wrapper.findAll('[data-testid="validateButton"]')
+    await validateButton?.at(1)?.trigger('click')
     const subscriptionId = subscriptionRequestMock.at(0)?.subscriptionId
     expect(mockedPutRequests)
       .toHaveBeenCalledWith(`subscription?subscriptionId=${subscriptionId}`)

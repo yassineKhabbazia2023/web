@@ -4,7 +4,7 @@
       pType="default"
       class="margin-right--4"
       @click="emit('clickPrevious')"
-      data-ut="previousButton"
+      data-testid="previousButton"
     >
       <PIcon class="el-button__icon--left">
         <PIArrowLeft />
@@ -14,7 +14,7 @@
     <PButton
       pType="primary"
       @click="emit('clickNext')"
-      data-ut="nextButton"
+      data-testid="nextButton"
     >
       <PIcon v-if="hasCheckIcon" class="el-button__icon--left">
         <PICheck />

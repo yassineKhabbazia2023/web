@@ -8,7 +8,7 @@
       pDirection="rtl"
       class="offers-drawer"
       @close-drawer-button="onCloseOffersDrawer"
-      data-ut="drawer"
+      data-testid="drawer"
     >
       <template #header-prefix>
         <p class="offers-drawer__company-name font-base">
@@ -36,27 +36,26 @@
         <div v-if="!!currentSubscriptionOffer">
           <PSteps
             v-if="currentSubscriptionOffer?.approvalRequired"
-            :active="activeStep"
-            :direction="offerStepperConfig.direction"
-            :processStatus="offerStepperConfig.processStatus"
-            :finishStatus="offerStepperConfig.finishStatus"
+            :pActive="activeStep"
+            :pDirection="offerStepperConfig.direction"
+            :pProcessStatus="offerStepperConfig.processStatus"
+            :pFinishStatus="offerStepperConfig.finishStatus"
             class="padding-y--3 margin-bottom--9"
-            data-ut="offer-stepper"
+            data-testid="offer-stepper"
           >
-            <PStepItem :title="offerStepTitles.services" />
-            <PStepItem :title="offerStepTitles.users" />
-            <PStepItem :title="offerStepTitles.information" />
+            <PStep :pTitle="offerStepTitles.services" />
+            <PStep :pTitle="offerStepTitles.users" />
+            <PStep :pTitle="offerStepTitles.information" />
           </PSteps>
           <OfferSubscription
             v-if="activeStep === offerStepperStep.SERVICES"
-            data-ut="offer"
+            data-testid="offer"
             :subscriptionOffer="currentSubscriptionOffer"
           />
           <p
             v-else-if="activeStep === offerStepperStep.USERS"
-            data-ut="users-step"
+            data-testid="users-step"
           >
-            {{ `Utilisateurs step: ${offerStepperStep.USERS}` }}
           </p>
           <p
             v-else-if="
@@ -66,7 +65,7 @@
         </div>
         <SubscriptionOffers
           v-else
-          data-ut="offers"
+          data-testid="offers"
           :subscriptionOffers="subscriptionOffers"
           @select-offer="onSelectOffer"
         />
@@ -75,7 +74,7 @@
         <NextPreviousButtons
           v-if="!!currentSubscriptionOffer"
           :hasCheckIcon="isSubmitButton"
-          data-ut="nextPreviousButtons"
+          data-testid="nextPreviousButtons"
           :previousLabel="t('previousLabel')"
           :nextLabel="nextLabel"
           @click-previous="onClickPrevious"
@@ -115,7 +114,7 @@ import { useI18n } from 'vue-i18n'
 import {
   PDrawer,
   PSteps,
-  PStepItem,
+  PStep,
   PIcon,
   PILink45deg
 } from '@kpmg/styleguide'

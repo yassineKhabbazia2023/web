@@ -39,7 +39,7 @@ describe('offersDrawer', () => {
     it('should close offers drawer when clicking on close buton',
       async () => {
         const wrapper = await getWrapper(true)
-        const offers = wrapper.find('[data-ut=offers]')
+        const offers = wrapper.find('[data-testid=offers]')
 
         expect(wrapper.props('modelValue')).toBeTruthy()
         expect(offers.exists()).toBeTruthy()
@@ -52,31 +52,31 @@ describe('offersDrawer', () => {
     it('should display current offer when an offer is selected',
       async () => {
         const wrapper = await getWrapper(true)
-        const secondOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]:nth-child(2)')
+        const secondOffer = wrapper.find('[data-testid=offers] [data-testid=offer-item]:nth-child(2)')
         await secondOffer.trigger('click')
         await flushPromises()
 
-        const offers = wrapper.find('[data-ut=offers]')
+        const offers = wrapper.find('[data-testid=offers]')
         expect(offers.exists()).toBeFalsy()
 
-        const offer = wrapper.find('[data-ut=offer]')
+        const offer = wrapper.find('[data-testid=offer]')
         expect(offer.exists()).toBeTruthy()
       }
     )
     it('should hide current offer when click on previousButton',
       async () => {
         const wrapper = await getWrapper(true)
-        const secondOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]:nth-child(2)')
+        const secondOffer = wrapper.find('[data-testid=offers] [data-testid=offer-item]:nth-child(2)')
         await secondOffer?.trigger('click')
         await flushPromises()
 
-        const nextPreviousButtons = wrapper.findComponent('[data-ut=nextPreviousButtons]')
+        const nextPreviousButtons = wrapper.findComponent('[data-testid=nextPreviousButtons]')
         await (nextPreviousButtons as VueWrapper).vm.$emit('clickPrevious')
 
-        const offers = wrapper.find('[data-ut=offers]')
+        const offers = wrapper.find('[data-testid=offers]')
         expect(offers.exists()).toBeTruthy()
 
-        const offer = wrapper.find('[data-ut=offer]')
+        const offer = wrapper.find('[data-testid=offer]')
         expect(offer.exists()).toBeFalsy()
       }
     )
@@ -85,14 +85,14 @@ describe('offersDrawer', () => {
     it('should display offers when drawer is opened',
       async () => {
         const wrapper = await getWrapper(true)
-        const offers = wrapper.find('[data-ut=offers]')
+        const offers = wrapper.find('[data-testid=offers]')
         expect(offers.exists()).toBeTruthy()
       }
     )
     it('should NOT display offers when drawer is closed',
       async () => {
         const wrapper = await getWrapper(false)
-        const offers = wrapper.find('[data-ut=offers]')
+        const offers = wrapper.find('[data-testid=offers]')
         expect(offers.exists()).toBeFalsy()
       }
     )
@@ -114,7 +114,7 @@ describe('offersDrawer', () => {
     it('should display offer intranet link beside the drawer title', async () => {
       const wrapper = await getWrapper(true)
       const firstOfferIntranetLink = subscriptionOffersServices[0].intranetLink
-      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]')
+      const firstOffer = wrapper.find('[data-testid=offers] [data-testid=offer-item]')
       await firstOffer.trigger('click')
       await flushPromises()
       const offerIntranetLink = wrapper.find('.offers-drawer__details-link')
@@ -126,46 +126,46 @@ describe('offersDrawer', () => {
   describe('offerStepper', () => {
     it('the offer stepper should be displayed after clicking on offer', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]')
+      const firstOffer = wrapper.find('[data-testid=offers] [data-testid=offer-item]')
       await firstOffer.trigger('click')
       await flushPromises()
 
-      const offerStepper = wrapper.find('[data-ut=offer-stepper]')
+      const offerStepper = wrapper.find('[data-testid=offer-stepper]')
       expect(offerStepper.exists()).toBeTruthy()
 
-      const offer = wrapper.find('[data-ut=offer]')
+      const offer = wrapper.find('[data-testid=offer]')
       expect(offer.exists()).toBeTruthy()
     })
 
     it('should display the correct page after clicking on stepper navigation buttons', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]')
+      const firstOffer = wrapper.find('[data-testid=offers] [data-testid=offer-item]')
       await firstOffer.trigger('click')
       await flushPromises()
 
-      const nextButton = wrapper.findComponent('[data-ut=nextPreviousButtons]')
+      const nextButton = wrapper.findComponent('[data-testid=nextPreviousButtons]')
       await (nextButton as VueWrapper).vm.$emit('clickNext')
 
-      const usersStep = wrapper.find('[data-ut=users-step]')
+      const usersStep = wrapper.find('[data-testid=users-step]')
       expect(usersStep.exists()).toBeTruthy()
 
-      const PreviousButton = wrapper.findComponent('[data-ut=nextPreviousButtons]')
+      const PreviousButton = wrapper.findComponent('[data-testid=nextPreviousButtons]')
       await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
 
-      const offer = wrapper.find('[data-ut=offer]')
+      const offer = wrapper.find('[data-testid=offer]')
       expect(offer.exists()).toBeTruthy()
     })
 
     it('should display the offer stepper when validation is not required', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = wrapper.find('[data-ut=offers] [data-ut=offer-item]:nth-child(2)')
+      const firstOffer = wrapper.find('[data-testid=offers] [data-testid=offer-item]:nth-child(2)')
       await firstOffer.trigger('click')
       await flushPromises()
 
-      const offerStepper = wrapper.find('[data-ut=offer-stepper]')
+      const offerStepper = wrapper.find('[data-testid=offer-stepper]')
       expect(offerStepper.exists()).toBeFalsy()
 
-      const offer = wrapper.find('[data-ut=offer]')
+      const offer = wrapper.find('[data-testid=offer]')
       expect(offer.exists()).toBeTruthy()
     })
   })

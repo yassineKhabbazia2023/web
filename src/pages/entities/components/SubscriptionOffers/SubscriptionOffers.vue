@@ -5,13 +5,13 @@
         {{ t('subtitle') }}
       </p>
       <div
-        data-ut="offer-list"
+        data-testid="offer-list"
       >
         <POfferCard
           v-for="{ offerId, logoName, offerName, offerLabel } in subscriptionOffers"
           :key="offerId"
           class="margin-bottom--3"
-          data-ut="offer-item"
+          data-testid="offer-item"
           :pLogo="logoName"
           :pTitle="offerName"
           :pDescription="offerLabel"

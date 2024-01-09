@@ -9,19 +9,19 @@
     <div class="margin-bottom--3">
       <PForm
         ref="formRef"
-        :rules="rules"
-        :model="formValues"
+        :pRules="rules"
+        :pModel="formValues"
         @submit.prevent="handleSearchSubmit(formRef)"
       >
         <PFormItem prop="search">
           <PInput
             v-model="formValues.search"
-            :placeholder="t('search')"
-            :prefixIcon="PISearch"
-            name="search"
-            size="small"
-            type="search"
-            autofocus
+            :pPlaceholder="t('search')"
+            :pPrefixIcon="PISearch"
+            pName="search"
+            pSize="small"
+            pType="search"
+            pAutofocus
             @keyup="handleSearchSubmit(formRef)"
           />
         </PFormItem>
@@ -34,7 +34,7 @@
       <NoResult v-if="!state.data.length" />
 
       <TableData
-        data-ut="table"
+        data-testid="table"
         v-if="!!state.data.length"
         :data="state.data"
         :handleAddFavorite="handleAddFavorite"
@@ -57,7 +57,7 @@
       </PPagination>
 
       <OffersDrawer
-        data-ut="offers-drawer"
+        data-testid="offers-drawer"
         v-if="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
         v-model="openOffersDrawer"

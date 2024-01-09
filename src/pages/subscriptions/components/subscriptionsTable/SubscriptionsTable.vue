@@ -2,9 +2,9 @@
   <PTable
     pStripe
     :pData="requests"
-    data-ut="table"
+    data-testid="table"
   >
-    <PTableColumn :label="t('dateRequest')">
+    <PTableColumn :pLabel="t('dateRequest')">
       <template #default="scope">
         <PText
           :pContent="new Date(scope.row.creationDate).toLocaleString()"
@@ -14,7 +14,7 @@
         />
       </template>
     </PTableColumn>
-    <PTableColumn :label="t('folderId')">
+    <PTableColumn :pLabel="t('folderId')">
       <template #default="scope">
         <PText
           :pContent="scope.row.account?.accountNumber"
@@ -24,7 +24,7 @@
         />
       </template>
     </PTableColumn>
-    <PTableColumn :label="t('legalName')">
+    <PTableColumn :pLabel="t('legalName')">
       <template #default="scope">
         <PText
           :pContent="scope.row.account?.accountLabel"
@@ -34,7 +34,7 @@
         />
       </template>
     </PTableColumn>
-    <PTableColumn :label="t('principalContact')">
+    <PTableColumn :pLabel="t('principalContact')">
       <template #default="scope">
         <PDoubleText
           :pTitle="title(scope.row.users)"
@@ -46,7 +46,7 @@
         />
       </template>
     </PTableColumn>
-    <PTableColumn :label="t('requester')">
+    <PTableColumn :pLabel="t('requester')">
       <template #default="scope">
         <PText
           :pContent="scope.row.applicant"
@@ -56,7 +56,7 @@
         />
       </template>
     </PTableColumn>
-    <PTableColumn :label="t('offer')">
+    <PTableColumn :pLabel="t('offer')">
       <template #default="scope">
         <PText
           :pContent="scope.row.offer?.offerLabel"
@@ -66,7 +66,7 @@
         />
       </template>
     </PTableColumn>
-    <PTableColumn :label="t('status')">
+    <PTableColumn :pLabel="t('status')">
       <template #default="scope">
         <PTag
           :pColor="scope.row.statusCode === SubscriptionStatusCode.VALIDATED ? 'success': 'info'"
@@ -75,10 +75,10 @@
         />
       </template>
     </PTableColumn>
-    <PTableColumn width="200">
+    <PTableColumn pWidth="200">
       <template #default="scope">
         <PButton
-          data-ut="validateButton"
+          data-testid="validateButton"
           pType="primary"
           pSize="default"
           :pLoading="scope.row.subscriptionId === clickedRow ? !isLoading : isLoading"

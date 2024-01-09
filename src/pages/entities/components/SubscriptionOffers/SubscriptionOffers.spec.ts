@@ -19,7 +19,7 @@ describe('subscriptionOffers', () => {
             subscriptionOffers
           }
         })
-        const offers = wrapper.findAll('[data-ut=offer-list] [data-ut=offer-item]')
+        const offers = wrapper.findAll('[data-testid=offer-list] [data-testid=offer-item]')
         expect(offers).toHaveLength(subscriptionOffers.length)
       }
     )
@@ -41,7 +41,7 @@ describe('subscriptionOffers', () => {
             methods: mockMethods
           })
           await wrapper
-            .find('[data-ut=offer-list] [data-ut=offer-item]:nth-child(2)')
+            .find('[data-testid=offer-list] [data-testid=offer-item]:nth-child(2)')
             .trigger('click')
 
           expect(wrapper.emitted('selectOffer')).toBeTruthy()

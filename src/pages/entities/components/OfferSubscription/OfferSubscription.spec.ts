@@ -13,7 +13,7 @@ describe('offerSubscription', () => {
           subscriptionOffer
         }
       })
-      const card = wrapper.findAll('[data-ut="provider-card"]')
+      const card = wrapper.findAll('[data-testid="provider-card"]')
 
       expect(card).toHaveLength(subscriptionOffer?.providers.length ?? 0)
     })
