@@ -21,7 +21,7 @@ const createWrapper = () => mount(PTabs, {
 })
 
 describe('pTabs', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElTabs).vm
     expect(componentVM.modelValue).toBe(propsValue.modelValue)

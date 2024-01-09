@@ -27,7 +27,7 @@ const createWrapper = () => mount(PForm, {
 })
 
 describe('pForm', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElForm).vm
     expect(componentVM.model).toBe(propsValue.pModel)
@@ -101,7 +101,7 @@ describe('pForm', () => {
       expect(mockScrollToField).toHaveBeenCalledWith(formItemProp)
     })
 
-    it('should properly call clearValidate', async () => {
+    it('should properly call clearValidate', () => {
       const wrapper: VueWrapper<any> = createWrapper()
       wrapper.vm.clearValidate()
 

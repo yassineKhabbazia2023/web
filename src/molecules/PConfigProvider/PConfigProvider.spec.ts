@@ -17,7 +17,7 @@ const createWrapper = () => mount(PConfigProvider, {
 })
 
 describe('pConfigProvider', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElConfigProvider).vm
     expect(componentVM.locale).toBe(propsValue.pLocale)

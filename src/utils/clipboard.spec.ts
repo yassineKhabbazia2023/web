@@ -17,7 +17,7 @@ vi.mock('@vueuse/core', () => {
 })
 
 describe('clipboard', () => {
-  it('should copy to clipboard a value', async () => {
+  it('should copy to clipboard a value', () => {
     const value = 'abc'
     useCopyClipboard(value)
     expect(copy).toHaveBeenCalledTimes(1)

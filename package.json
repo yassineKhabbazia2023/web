@@ -3,7 +3,6 @@
   "version": "2.1.4-beta",
   "main": "dist/lib/styleguide.pegase.system.min.js",
   "module": "dist/lib/styleguide.pegase.es.min.js",
-  "description": "La version 2.1.4-beta créée à partir de la branche feat/add_types_pulse",
   "exports": {
     ".": {
       "import": "./dist/lib/styleguide.pegase.es.min.js",

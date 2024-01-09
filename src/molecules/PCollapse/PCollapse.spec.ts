@@ -14,7 +14,7 @@ const createWrapper = () => mount(PCollapse, {
 })
 
 describe('pCollapse', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElCollapse).vm
     expect(componentVM.accordion).toBe(propsValue.pAccordion)

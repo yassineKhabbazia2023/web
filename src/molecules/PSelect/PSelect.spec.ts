@@ -49,7 +49,7 @@ const createWrapper = () => mount(PSelect, {
 })
 
 describe('pSelect', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElSelect).vm
     expect(componentVM.multiple).toBe(propsValue.pMultiple)

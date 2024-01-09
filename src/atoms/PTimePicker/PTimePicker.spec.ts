@@ -35,7 +35,7 @@ const createWrapper = () => mount(PTimePicker, {
 })
 
 describe('pTimePicker', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElTimePicker).vm
     expect(componentVM.readonly).toBe(propsValue.pReadonly)

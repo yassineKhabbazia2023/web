@@ -18,7 +18,7 @@ const createWrapper = () => mount(PSteps, {
 })
 
 describe('pSteps', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElSteps).vm
     expect(componentVM.space).toBe(propsValue.pSpace)

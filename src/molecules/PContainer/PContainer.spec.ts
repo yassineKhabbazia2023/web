@@ -12,7 +12,7 @@ const createWrapper = () => mount(PContainer, {
 })
 
 describe('pContainer', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElContainer).vm
     expect(componentVM.direction).toBe(propsValue.pDirection)
