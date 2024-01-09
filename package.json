@@ -47,7 +47,7 @@
     "push": "npm publish",
     "release": "npx semantic-release",
     "generate": "npm run generate:icons && npm run generate:imagesList",
-    "generate:icons": "node ./scripts/pulse-icon-gen.js ./src/assets/icons ./src/atoms/PIcon/components",
+    "generate:icons": "ts-node -P ./tsconfig.scripts.json ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
     "generate:imagesList": "node ./scripts/generateImagesList ./src/assets/images",
     "lint:style": "stylelint src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss",
     "lint:style-fix": "stylelint --fix src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss"

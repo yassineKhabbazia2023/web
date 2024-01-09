@@ -1,0 +1,14 @@
+[
+  {
+    "category": "my-category",
+    "componentName": "PIB",
+    "fileName": "b.svg",
+    "filePath": "my-folder\\b.svg",
+  },
+  {
+    "category": "my-category",
+    "componentName": "PIC",
+    "fileName": "c.svg",
+    "filePath": "my-folder\\c.svg",
+  },
+]
