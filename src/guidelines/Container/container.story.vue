@@ -7,22 +7,26 @@
     }"
   >
     <Variant title="Basic Usage">
-      <el-container>
-        <el-header :height="`${headerHeight}px`">
+      <PContainer pDirection="vertical">
+        <PCHeader :pHeight="headerHeight">
           Header
-        </el-header>
-        <el-container>
-          <el-aside :width="`${asideWidth}px`">
+        </PCHeader>
+        <PContainer>
+          <PAside :pWidth="asideWidth">
             Aside
-          </el-aside>
-          <el-container>
-            <el-main>Main</el-main>
-          </el-container>
-        </el-container>
-      </el-container>
+          </PAside>
+          <PContainer>
+            <PMain>Main</PMain>
+          </PContainer>
+        </PContainer>
+        <PFooter :pHeight="footerHeight">
+          Footer
+        </PFooter>
+      </PContainer>
       <template #controls>
-        <HstNumber v-model="headerHeight" title="HeaderHeight" />
-        <HstNumber v-model="asideWidth" title="AsideWidth" />
+        <HstText v-model="headerHeight" title="HeaderHeight" />
+        <HstText v-model="footerHeight" title="FooterHeight" />
+        <HstText v-model="asideWidth" title="AsideWidth" />
       </template>
     </Variant>
   </Story>
@@ -30,13 +34,26 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import PAside from '@/atoms/PAside'
+import PContainer from '@/molecules/PContainer'
+import PCHeader from '@/atoms/PCHeader'
+import PFooter from '@/atoms/PFooter'
+import PMain from '@/atoms/PMain'
 
-const headerHeight = ref(52)
-const asideWidth = ref(236)
+const headerHeight = ref('52px')
+const footerHeight = ref('6rem')
+const asideWidth = ref('20%')
 </script>
 
 <style scoped>
   .el-header {
+    background-color: #c6e2ff;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
+
+  .el-footer {
     background-color: #c6e2ff;
     color: #333;
     text-align: center;

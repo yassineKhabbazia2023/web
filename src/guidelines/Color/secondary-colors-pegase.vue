@@ -1,8 +1,8 @@
 <template>
-  <el-row :gutter="12">
-    <el-col
-      :span="24"
-      :xs="{ span: 24 }"
+  <PRow :pGutter="12">
+    <PCol
+      :pSpan="24"
+      :pXs="{ span: 24 }"
     >
       <div class="demo-color-box demo-color-box--pegase">
         <div class="bg-color-sub">
@@ -19,12 +19,14 @@
           </div>
         </div>
       </div>
-    </el-col>
-  </el-row>
+    </PCol>
+  </PRow>
 </template>
 
 <script lang="ts" setup>
 import { getColorValue, useCopyColor } from '@/utils'
+import PCol from '@/atoms/PCol'
+import PRow from '@/atoms/PRow'
 
 const colorsType = [
   'secondary-fuschia',

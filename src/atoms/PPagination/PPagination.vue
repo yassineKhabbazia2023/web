@@ -62,7 +62,7 @@ const modelPageSize = computed({
   }
 })
 
-const selectedRange = ref(props.pPageSizes[0] ?? '')
+const selectedRange = ref(props.pPageSizes ? props.pPageSizes?.at(0) : '')
 
 const getpageSizeSelectorContent = (pageSize: number) => {
   return pageSize + ' ' + props.pPageSizeSelectorSuffix

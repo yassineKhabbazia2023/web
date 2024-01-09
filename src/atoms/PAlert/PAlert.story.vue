@@ -57,7 +57,7 @@
       <div class="block-collapse">
         <PCollapse
           v-model="activeNames"
-          accordion="false"
+          :pAccordion="false"
         >
           <PCollapseItem
             pType="alert"

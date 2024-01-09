@@ -3,11 +3,11 @@
     <Variant title="Basic Usage">
       <PAutocomplete
         v-model="state"
-        :clearable="clearable"
-        placeholder="Please Input"
+        :pClearable="clearable"
+        pPlaceholder="Please Input"
         @select="handleSelect"
-        :fetchSuggestions="querySearch"
-        :triggerOnFocus="triggerOnFocus">
+        :pFetchSuggestions="querySearch"
+        :pTriggerOnFocus="triggerOnFocus">
         <template #prefix>
           <PIcon>
             <PISearch />
@@ -48,7 +48,7 @@ function createFilter(queryString: string) {
     )
   }
 }
-function loadAll() {
+const loadAll = () => {
   return [
     { value: 'vue', link: 'https://github.com/vuejs/vue' },
     { value: 'element', link: 'https://github.com/ElemeFE/element' },

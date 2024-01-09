@@ -4,13 +4,13 @@
       <PSwitch v-model="on"/>
     </Variant>
     <Variant title="'ON' Disabled">
-      <PSwitch v-model="alwaysOn" disabled/>
+      <PSwitch v-model="alwaysOn" pDisabled/>
     </Variant>
     <Variant title="'OFF' Default/Hover/Focus/Press">
       <PSwitch v-model="off"/>
     </Variant>
     <Variant title="'OFF' Disabled">
-      <PSwitch v-model="alwaysOff" disabled/>
+      <PSwitch v-model="alwaysOff" pDisabled/>
     </Variant>
   </Story>
 </template>

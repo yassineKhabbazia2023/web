@@ -1,6 +1,6 @@
 <template>
   <Story
-    title="2. Atoms/Tabs"
+    title="3. Molecules/Tabs"
     icon="ph:tabs-light"
     :layout="{
       type: 'grid',
@@ -9,22 +9,22 @@
   >
     <Variant title="Basic Usage">
       <PTabs
-        v-model="basicData.activeName"
-        :stretch="basicData.stretch"
+        v-model="firstActiveVariant"
+        :pStretch="basicData.stretch"
       >
         <PTabPane
           v-for="tab in tabs"
           :key="tab.name"
-          :label="tab.label"
-          :name="tab.name"
+          :pLabel="tab.label"
+          :pName="tab.name"
         >
           {{ tab.content }}
         </PTabPane>
       </PTabs>
     </Variant>
     <Variant title="Counter Usage">
-      <PTabs :stretch="basicData.stretch">
-        <PTabPane>
+      <PTabs v-model="secondActiveVariant" :pStretch="basicData.stretch">
+        <PTabPane pName="1">
           <template #label>
             <span>Option A</span>
             <PPastille
@@ -36,7 +36,7 @@
           </template>
           Custom 1
         </PTabPane>
-        <PTabPane>
+        <PTabPane pName="2">
           <template #label>
             <span>Option B</span>
             <PPastille
@@ -48,7 +48,7 @@
           </template>
           Custom 2
         </PTabPane>
-        <PTabPane>
+        <PTabPane pName="3">
           <template #label>
             <span>Option C</span>
             <PPastille
@@ -65,14 +65,14 @@
     <Variant title="Card Usage">
       <PTabs
         v-model="basicData.activeName"
-        type="card"
-        :stretch="basicData.stretch"
+        pType="card"
+        :pStretch="basicData.stretch"
       >
         <PTabPane
           v-for="tab in tabs"
           :key="tab.name"
-          :label="tab.label"
-          :name="tab.name"
+          :pLabel="tab.label"
+          :pName="tab.name"
         >
           {{ tab.content }}
         </PTabPane>
@@ -83,7 +83,11 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import PTabPane from '@/atoms/PTabPane'
+import PTabs from '@/molecules/PTabs'
 
+const firstActiveVariant = ref('1')
+const secondActiveVariant = ref('1')
 const basicData = reactive({
   activeName: '1',
   stretch: false

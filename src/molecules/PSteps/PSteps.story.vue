@@ -1,6 +1,6 @@
 <template>
   <Story
-    title="2. Atoms/Steps"
+    title="3. Molecules/Steps"
     icon="fluent:arrow-step-in-right-16-regular"
     :layout="{
       type: 'single'
@@ -10,14 +10,14 @@
       title="Basic Usage">
       <div :style="{ height: basicData.direction === 'vertical' ? '300px' : '' }">
         <PSteps
-          :active="basicData.active"
-          :direction="basicData.direction"
-          :processStatus="basicData.processStatus"
-          :finishStatus="basicData.finishStatus"
+          :pActive="basicData.active"
+          :pDirection="basicData.direction"
+          :pProcessStatus="basicData.processStatus"
+          :pFinishStatus="basicData.finishStatus"
         >
-          <PStepItem :title="basicDataTitles.step1" />
-          <PStepItem :title="basicDataTitles.step2" />
-          <PStepItem :title="basicDataTitles.step3" />
+          <PStep :pTitle="basicDataTitles.step1" />
+          <PStep :pTitle="basicDataTitles.step2" />
+          <PStep :pTitle="basicDataTitles.step3" />
         </PSteps>
       </div>
       <template #controls>
