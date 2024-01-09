@@ -11,8 +11,8 @@
     :showPassword="pShowPassword"
     :disabled="pDisabled"
     :size="pSize"
-    :prefixIcon="getPrefixIcon"
-    :suffixIcon="getSuffixIcon"
+    :prefixIcon="prefixIcon"
+    :suffixIcon="suffixIcon"
     :rows="pRows"
     :autosize="pAutosize"
     :autocomplete="pAutocomplete"
@@ -38,11 +38,11 @@ import { mutable } from 'element-plus/es/utils/typescript'
 import { iconResolver } from '@/utils/iconResolver'
 import { computed } from 'vue'
 
-const getPrefixIcon = computed(() => {
+const prefixIcon = computed(() => {
   return props.pPrefixIcon ? iconResolver(props.pPrefixIcon) : null
 })
 
-const getSuffixIcon = computed(() => {
+const suffixIcon = computed(() => {
   return props.pSuffixIcon ? iconResolver(props.pSuffixIcon) : null
 })
 
