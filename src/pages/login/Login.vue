@@ -20,39 +20,39 @@
 
     <PForm
       ref="formRef"
-      :rules="rules"
-      :model="formValues"
-      requireAsteriskPosition="right"
-      labelPosition="top"
-      @submit.prevent="handleSubmit"
       class="el-login-form"
+      :pRules="rules"
+      :pModel="formValues"
+      pRequireAsteriskPosition="right"
+      pLabelPosition="top"
+      @submit.prevent="handleSubmit"
     >
       <PFormItem
-        :label="t('email')"
-        required
-        prop="email"
+        :pLabel="t('email')"
+        pRequired
+        pProp="email"
       >
         <PInput
           v-model="formValues.email"
           :class="{ 'error': hasCustomError }"
-          :placeholder="t('emailPlaceholder')"
-          type="email"
-          name="email"
-          autocomplete="on"
-          autofocus
+          :pPlaceholder="t('emailPlaceholder')"
+          pType="email"
+          pName="email"
+          pAutocomplete="on"
+          pAutofocus
         />
       </PFormItem>
       <PFormItem
-        :label="t('password')"
-        required
-        prop="password"
+        :pLabel="t('password')"
+        pRequired
+        pProp="password"
       >
         <PInput
           v-model="formValues.password"
           :class="{ 'error': hasCustomError }"
-          :placeholder="t('passwordPlaceholder')"
-          type="password"
-          showPassword
+          :pPlaceholder="t('passwordPlaceholder')"
+          pType="password"
+          pShowPassword
         />
       </PFormItem>
       <router-link
