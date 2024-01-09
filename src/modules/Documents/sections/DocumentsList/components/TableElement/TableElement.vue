@@ -3,7 +3,7 @@
     v-if="fieldType === 'Text'"
     :pContent="formatDateStr(data.created)"
     pType="primary"
-    :bold="false"
+    :pBold="false"
     :selected="false"
     :disabled="false"
   />
@@ -24,11 +24,10 @@
     pContent="Certifié"
     :pIconLeft="PIPatchCheck"
     pEffect="light"
-    size="default"
-    :closable="false"
-    :disableTransitions="false"
-    :hit="false"
-    :round="false"
+    pSize="default"
+    :pClosable="false"
+    :pDisableTransitions="false"
+    :pRound="false"
   />
 
   <PTag
@@ -40,7 +39,6 @@
     pSize="default"
     :pClosable="false"
     :pDisableTransitions="false"
-    :hit="false"
     :pRound="false"
     pType="primary"
   />
@@ -70,7 +68,6 @@ import { getFileIcon } from '@/modules/Documents/helpers/filesExtensions'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 
 const props = defineProps<TableElementPops>()
-
 const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])
 
 const tagIconByState = {
@@ -102,18 +99,20 @@ const tagTypeProps = (piaStatus: string): PiaStatusTag => {
 }
 
 const getTagProps = computed(() => {
+  if (!props.data.piaStatus) return null
   if (props.fieldType !== 'Tag' || props.data.piaStatus.technicalName === null) return null
   return tagTypeProps(props.data.piaStatus.technicalName)
 })
 
 const isCertified = computed(() => {
+  if (!props.data.properties?.HasSubscribedToVault) return false
   return props.data.properties.HasSubscribedToVault === 'Oui'
 })
 
 // Actions dropdown
 
 const handleActionsDropdownOpening = () => {
-  emit('actions-dropdown-opened')
+  emit('actions-dropdown-opened', props.data, { label: props.fieldName })
 }
 const emitClickedAction = (action: string) => {
   emit('toolbox-action-triggered', action)

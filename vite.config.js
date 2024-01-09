@@ -65,6 +65,9 @@ export default ({ mode }) =>
       },
       preview: {
         port: PORT
+      },
+      test: {
+        setupFiles: 'vitest.setup.js'
       }
     })
   )

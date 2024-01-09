@@ -1,11 +1,10 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import Ged from './'
 import { createPinia, setActivePinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { fetchUserEntityServices } from '@/services/Services'
 import { fetchServicesFolders } from '@/services/Folder'
 import { ComponentPublicInstance, nextTick } from 'vue'
-import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 import { Folder, FolderProperties } from './models/Folder'
 import { foldersData } from './modules/Treeview/mocks/treeFoldersMock'
 import { servicesData } from './modules/Treeview/mocks/servicesDataMock'
@@ -138,8 +137,10 @@ describe('ged', () => {
         async () => {
           const wrapper = createWrapper()
           await nextTick()
+          await flushPromises()
 
-          const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+          const tree = wrapper.findComponent(Treeview)
+          await nextTick()
           await tree.vm.$emit('selected-folder-change', folder)
           await nextTick()
 
@@ -152,7 +153,9 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        const tree = wrapper.findComponent(Treeview)
+        await nextTick()
+
         await tree.vm.$emit('selected-bin-service-change', servicesData[0].ServiceId)
         await nextTick()
 
@@ -167,7 +170,7 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        const tree = wrapper.findComponent(Treeview)
         await tree.vm.$emit(
           'open-create-folder-modal'
         )
@@ -182,7 +185,9 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        const tree = wrapper.findComponent(Treeview)
+        await nextTick()
+
         await tree.vm.$emit('update-source-folders', foldersData[0][0].children[0])
         await nextTick()
 
@@ -195,7 +200,9 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        const tree = wrapper.findComponent(Treeview)
+        await nextTick()
+
         await tree.vm.$emit(
           'remove-folder-from-source',
           foldersData[0][0].children[0]
@@ -211,7 +218,9 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = await dynamicUntilFoundComponent(wrapper, Treeview)
+        const tree = wrapper.findComponent(Treeview)
+        await nextTick()
+
         await tree.vm.$emit('update-folder-name', foldersData[0][0].children[0])
         await nextTick()
 
@@ -227,8 +236,8 @@ describe('ged', () => {
     describe('props', () => {
       it('should display documents component when currentService is set', async () => {
         const wrapper = createWrapper()
-
-        const documentComponent = await dynamicUntilFoundComponent(wrapper, Documents)
+        await flushPromises()
+        const documentComponent = wrapper.findComponent(Documents)
         await nextTick()
         expect(documentComponent.exists()).toBeTruthy()
       })
@@ -236,8 +245,11 @@ describe('ged', () => {
     it('should update selected folder in documents when change-selected-folder', async () => {
       const wrapper = createWrapper()
       await nextTick()
+      await flushPromises()
 
-      const documentComponent = await dynamicUntilFoundComponent(wrapper, Documents)
+      const documentComponent = wrapper.findComponent(Documents)
+      await nextTick()
+
       await documentComponent.vm.$emit('change-selected-folder', foldersData[0][0].children[0])
       await nextTick()
 

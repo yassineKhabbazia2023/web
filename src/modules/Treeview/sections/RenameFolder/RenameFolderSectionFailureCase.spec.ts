@@ -3,9 +3,6 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type RenameFolderSectionProps }
   from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
-import {
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
@@ -95,7 +92,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(wrapper, RenameFolderModal)
+      const modal = await wrapper.findComponent(RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()

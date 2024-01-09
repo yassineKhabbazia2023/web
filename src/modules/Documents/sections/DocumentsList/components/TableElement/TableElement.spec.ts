@@ -35,7 +35,6 @@ import {
   PIExclamationTriangle
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
-import { dynamicUntilFoundComponent } from '@kpmg/common/src/testing-helpers'
 
 const document: Document = {
   id: '1',
@@ -393,8 +392,7 @@ describe('tableElement', () => {
             fieldName: 'Statut',
             data: {
               ...document,
-              piaStatus:
-              {
+              piaStatus: {
                 technicalName: status,
                 labelEn: '',
                 labelFr: '',
@@ -404,12 +402,13 @@ describe('tableElement', () => {
           }
 
           const wrapper = createWrapper(props)
-          const tag = wrapper.findComponent(PTag)
+
           await nextTick()
 
-          const icon = await dynamicUntilFoundComponent(tag, expectedIcon)
+          const pTagWrapper = wrapper.findComponent(PTag)
           await nextTick()
-          expect(icon.exists()).toBeTruthy()
+
+          expect(pTagWrapper.props('pIconLeft')).toBe(expectedIcon)
         }
       )
     })

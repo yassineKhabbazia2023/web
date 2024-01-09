@@ -1,13 +1,14 @@
 <template>
  <section class="documents-table">
   <PTable
-  :pData="documentsListWithTableStructure.documentsPage.items"
-  ref="documentsListTable"
-  highlightCurrentRow
-  pStripe
-  @sort-change="handleSortChange"
-  @row-click="selectRow"
-  @selection-change="handleSelectionChange"
+    v-if="documentsListWithTableStructure.documentsPage.items"
+    :pData="documentsListWithTableStructure.documentsPage.items"
+    ref="documentsListTable"
+    highlightCurrentRow
+    pStripe
+    @sort-change="handleSortChange"
+    @row-click="selectRow"
+    @selection-change="handleSelectionChange"
   >
     <!-- That is the current way of adding paddings without overriding styleguide -->
     <PTableColumn width="32" label="" />
@@ -22,11 +23,12 @@
     >
       <template #default="scope">
         <TableElement
-        :fieldType="column.fieldType"
-        :fieldName="column.columnName"
-        :data="scope.row"
-        @toolbox-action-triggered="handleToolboxActionTriggered"
-        @actions-dropdown-opened="selectRow(scope?.row, scope?.column)"
+          v-if="scope.row"
+          :fieldType="column.fieldType"
+          :fieldName="column.columnName"
+          :data="scope.row"
+          @toolbox-action-triggered="handleToolboxActionTriggered"
+          @actions-dropdown-opened="selectRow"
         />
       </template>
     </PTableColumn>
@@ -83,9 +85,11 @@ const handleToolboxActionTriggered = (action: string) => {
 }
 
 const selectRow = (documentRow: TableRowDocument, column:any) => {
-  const shouldOpenDrawer = props.documentsListWithTableStructure.documentHeaders
-    .filter(h => h.columnName === column.label).length > 0 &&
-    column !== undefined &&
+
+  const shouldOpenDrawer =
+     column &&
+     props.documentsListWithTableStructure.documentHeaders
+       .filter(h => h.columnName === column.label).length > 0 &&
     column.label !== 'Actions'
 
   if (shouldOpenDrawer) {
@@ -98,7 +102,6 @@ const selectRow = (documentRow: TableRowDocument, column:any) => {
     documentsListTableInstance?.clearSelection()
     documentsListTableInstance?.toggleRowSelection(documentRow, true)
   }
-
 }
 
 const handleSelectionChange = (documentsSelection:Document[]) => {

@@ -101,6 +101,7 @@ export const createBase64Image = (response: { data: any; headers: any }) => {
   ].toLowerCase()};base64,${image}`
 }
 export const getFileIcon = (fileName: string) => {
+  if (!fileName || !fileName.trim().length) return PIFileText
   switch (fileName.split('.').pop()) {
     case 'bmp':
       return PIFiletypeBmp

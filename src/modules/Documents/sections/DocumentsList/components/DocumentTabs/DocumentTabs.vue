@@ -4,14 +4,14 @@
     :stretch="tabSetting.stretch"
   >
     <PTabPane
-      :label="t('tabs.detail.label')"
-      name="1"
-        >
-          <DocumentDetailsTabPane
-            :document="document"
-            :selectedEntity="selectedEntity"
-            :currentService="currentService"
-          />
+      :pLabel="t('tabs.detail.label')"
+      pName="1"
+    >
+      <DocumentDetailsTabPane
+        :document="document"
+        :selectedEntity="selectedEntity"
+        :currentService="currentService"
+      />
     </PTabPane>
   </PTabs>
 </template>

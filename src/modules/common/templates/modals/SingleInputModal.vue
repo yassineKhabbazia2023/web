@@ -3,7 +3,7 @@
     <PDialog
       v-model="isDialogVisible"
       @close="handleCloseModal"
-      :title="modalTitle"
+      :pTitle="modalTitle"
       :alignCenter="isCentered"
     >
       <p class="single-input-modal__input-label">
@@ -11,10 +11,10 @@
       </p>
       <div class="single-input-modal__input">
         <PInput
-          type="text"
+          pType="text"
           v-model="inputContent"
-          :placeholder="inputPlaceHolder"
-          :maxLength="maxInputLength"
+          :pPlaceholder="inputPlaceHolder"
+          :pMaxLength="maxInputLength"
           :class="!isValidInput ? 'unValid' : ''"
         />
         <span v-if="inputSuffix" class="single-input-modal__suffix">{{ inputSuffix }}</span>
@@ -30,18 +30,17 @@
         <div class="p-dialog__footer">
           <PButton
             class="cancel-action-button margin-right--4"
-            type="secondary"
-            size="small"
+            pSize="small"
             @click="handleCancelClick"
           >
             {{ cancelBtnLabel }}
           </PButton>
           <PButton
             class="confirm-action-button"
-            type="primary"
-            size="small"
-            :disabled="isConfirmButtonDisabled"
-            :loading="isConfirmButtonLoading"
+            pType="primary"
+            pSize="small"
+            :pDisabled="isConfirmButtonDisabled"
+            :pLoading="isConfirmButtonLoading"
             @click="handleConfirmClick"
           >
             {{ confirmBtnabel }}

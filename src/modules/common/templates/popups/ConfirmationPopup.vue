@@ -11,8 +11,7 @@
         <div class="p-dialog__footer">
           <PButton
             class="confirmation-popup__cancel-button"
-            type="secondary"
-            size="small"
+            pSize="small"
             @click="handleCancelButtonClick"
           >
             {{ cancelButtonContent }}

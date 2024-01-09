@@ -3,9 +3,6 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type CreateFolderSectionProps }
   from '@/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import {
-  dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
@@ -96,7 +93,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
+      const modal = await wrapper.findComponent(CreateFolderModal)
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()

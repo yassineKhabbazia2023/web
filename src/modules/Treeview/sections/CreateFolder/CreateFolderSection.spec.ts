@@ -3,9 +3,6 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type CreateFolderSectionProps }
   from '@/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import {
-  dynamicUntilFound, dynamicUntilFoundComponent
-} from '@kpmg/common/src/testing-helpers'
 import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { CreateFolder } from '@/services/Folder'
@@ -109,10 +106,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const mainCreateButton = await dynamicUntilFound(
-        wrapper,
-        '.treeview__new-folder'
-      )
+      const mainCreateButton = await wrapper.find('.treeview__new-folder')
 
       expect(mainCreateButton.attributes('ariadisabled')).toBe('true')
     })
@@ -121,10 +115,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper()
 
-      const mainCreateButton = await dynamicUntilFound(
-        wrapper,
-        '.treeview__new-folder'
-      )
+      const mainCreateButton = await wrapper.find('.treeview__new-folder')
 
       expect(mainCreateButton.attributes('ariadisabled')).toBe('false')
     })
@@ -161,8 +152,7 @@ describe('createFolderSection', () => {
           }
           const wrapper = createWrapper(updatedProps)
 
-          const createFolderModalWrapper = await dynamicUntilFoundComponent(
-            wrapper,
+          const createFolderModalWrapper = await wrapper.findComponent(
             CreateFolderModal
           )
 
@@ -173,8 +163,7 @@ describe('createFolderSection', () => {
 
     it('should set the correct create folder text', async () => {
       const wrapper = createWrapper()
-      const mainCreateButton = await dynamicUntilFound(
-        wrapper,
+      const mainCreateButton = await wrapper.find(
         '.treeview__new-folder'
       )
 
@@ -192,12 +181,12 @@ describe('createFolderSection', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
+        const modal = await wrapper.findComponent(CreateFolderModal)
 
         await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
         await nextTick()
 
-        expect(vi.mocked(CreateFolder)).toHaveBeenCalledWith(
+        expect(vi.mocked(CreateFolder)).toHaveBeenLastCalledWith(
           'service-id',
           'entity-id',
           1,
@@ -212,8 +201,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(
-        wrapper,
+      const modal = await wrapper.findComponent(
         CreateFolderModal
       )
 
@@ -230,7 +218,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
+      const modal = await wrapper.findComponent(CreateFolderModal)
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
@@ -245,7 +233,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await dynamicUntilFoundComponent(wrapper, CreateFolderModal)
+      const modal = await wrapper.findComponent(CreateFolderModal)
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
@@ -265,7 +253,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const button = await dynamicUntilFound(wrapper, '.treeview__new-folder')
+      const button = await wrapper.find('.treeview__new-folder')
 
       await button.trigger('click')
       await nextTick()
@@ -292,8 +280,7 @@ describe('createFolderSection', () => {
           }
           const wrapper = createWrapper(updatedProps)
 
-          const modal = await dynamicUntilFoundComponent(
-            wrapper,
+          const modal = await wrapper.findComponent(
             CreateFolderModal
           )
 
