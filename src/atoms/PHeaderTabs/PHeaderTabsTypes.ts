@@ -8,4 +8,5 @@ export interface PHeaderTabsProps {
   pHeaderTabsMenu: PHeaderTabsMenu[]
   pMode?: 'horizontal' | 'vertical'
   pEllipsis?: boolean
+  pDefaultActive?: string
 }

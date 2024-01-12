@@ -3,6 +3,7 @@
     :mode="pMode"
     class="p-header-tabs hidden-xs-only"
     :ellipsis="pEllipsis"
+    :defaultActive="pDefaultActive"
     router
   >
     <ElMenuItem
