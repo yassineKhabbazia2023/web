@@ -2,7 +2,6 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import ElementPlus from 'element-plus'
 import './assets/scss/histoire.scss'
 import './assets/scss/index.scss'
-import { setAssetsBaseUrl } from './utils/imageResolver'
 
 // locales
 import fr from 'element-plus/es/locale/lang/fr'
@@ -10,16 +9,18 @@ import dayjs from 'dayjs'
 import { createI18n } from 'vue-i18n'
 import { defineSetupVue3 } from '@histoire/plugin-vue'
 import { menu } from '@/constants/routesSamples'
+import { initHistoire } from './initHistoireUtils'
 
 const i18n = createI18n({ locale: Intl.DateTimeFormat().resolvedOptions().locale })
 dayjs.Ls.en.weekStart = 1
 
-setAssetsBaseUrl(import.meta.env.VITE_ASSETS_BASE_URL)
 const router = createRouter({
   history: createMemoryHistory(),
   routes: [{ path: '/', name: 'home', component: { render: () => null } }]
 })
 menu.forEach(route => router.addRoute(route))
+
+initHistoire()
 
 export const setupVue3 = defineSetupVue3(({ app }) => {
   app.use(ElementPlus, { locale: fr })

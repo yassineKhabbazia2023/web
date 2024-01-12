@@ -1,6 +1,6 @@
-# Introduction 
+# Introduction
 This Styleguide (Pégase) is meant to handle all the styles and nearly all the components of our apps (MFEs).<br/>
-It is then distributed as a NPM package. 
+It is then distributed as a NPM package.
 
 # Getting Started
 
@@ -54,3 +54,19 @@ A double click copies the component PIcon and the related icon in the correct fo
   </PIcon>
 ```
 Just don't forget to change the props color and size accordingly.
+
+## Images url
+Images domain name is set by setAssetsBaseUrl()
+
+When Histoire starts, it loads env-vars.json file that is supposed to contain
+`VITE_ASSETS_BASE_URL` variable.
+
+`env-vars.json` is written by a script for each environment on Server side
+
+If not present, the default value is given by `.env` file during building job.
+
+
+_example, when Histoire is running locally:_
+
+    # .env
+    VITE_ASSETS_BASE_URL = http://localhost:6006/src/assets/images/

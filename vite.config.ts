@@ -70,6 +70,10 @@ if (process.env.HISTOIRE) {
     setupFile: './src/histoire.setup.ts',
     plugins: [HstVue()],
     outDir: './dist',
+    storyIgnored: [
+      '**/node_modules/**',
+      '**/dist/**'
+    ],
     theme: {
       colors: {
         gray: {
