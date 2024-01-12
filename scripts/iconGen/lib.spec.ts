@@ -1,5 +1,4 @@
 import * as fs from 'fs'
-import path from 'path'
 import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
 import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVG_CODE } from './mocks'
 
@@ -8,20 +7,33 @@ import {
   getComponentConstantsContent, writeComponentConstants, getComponentIndexContent, writeComponentIndex
 } from './lib'
 
-vi.mock('fs', () => {
-  return {
-    readFileSync: vi.fn(),
-    writeFileSync: vi.fn(),
-    readdirSync: vi.fn(),
-    mkdirSync: vi.fn(),
-    existsSync: vi.fn().mockReturnValue(true),
-    rmSync: vi.fn(),
-    statSync: (filePath: string) => ({
-      isDirectory: () => !filePath.includes('.'),
-      isFile: () => filePath.includes('.')
-    })
+vi.mock('fs', () => ({
+  readFileSync: vi.fn(),
+  writeFileSync: vi.fn(),
+  readdirSync: vi.fn(),
+  mkdirSync: vi.fn(),
+  existsSync: vi.fn().mockReturnValue(true),
+  rmSync: vi.fn(),
+  statSync: (filePath: string) => ({
+    isDirectory: () => !filePath.includes('.'),
+    isFile: () => filePath.includes('.')
+  })
+}))
+
+vi.mock('path', () => ({
+  default: {
+    basename: (name) => {
+      const fileName = name.match(/\/([^/]*)$/)?.at(1) ?? name
+      const match = fileName.match(/(.*)\./)
+      return match.at(1) ?? ''
+    },
+    extname: (name) => {
+      const match = name.match(/\.([^.]*)$/)
+      return match.at(0) ?? ''
+    },
+    join: (...args: string[]) => args.join('/')
   }
-})
+}))
 
 describe('pulseIconGenLib', () => {
   describe('capitalizeFirstLetter', () => {
@@ -106,7 +118,7 @@ describe('pulseIconGenLib', () => {
 
     const componentName = 'PIMyFile'
     const fileName = 'my-file.svg'
-    const filePath = `my-folder\\${fileName}`
+    const filePath = `my-folder/${fileName}`
     const outputPath = 'output-folder'
 
     beforeEach(() => {
@@ -123,7 +135,7 @@ describe('pulseIconGenLib', () => {
         expect(mockedWriteFileSync).toHaveBeenCalledOnce()
       })
       it('should return targetFilePath', () => {
-        expect(targetFilePath).toBe(`${outputPath}\\${componentName}.vue`)
+        expect(targetFilePath).toBe(`${outputPath}/${componentName}.vue`)
       })
     })
     describe('when viewBox and pathData are empty', () => {
@@ -159,7 +171,7 @@ describe('pulseIconGenLib', () => {
     let mockedRmSync: SpyInstance
     const folderPath = 'my-folder'
     const folderList = ['a.svg', 'b.svg', 'folder']
-    const keepPaths = [`${folderPath}\\${folderList.at(0)}`]
+    const keepPaths = [`${folderPath}/${folderList.at(0)}`]
 
     beforeEach(() => {
       mockedReaddirSync = vi.spyOn(fs, 'readdirSync')
@@ -172,8 +184,8 @@ describe('pulseIconGenLib', () => {
     })
     it('should call rmSync with proper arguments', () => {
       clearFolder(folderPath, keepPaths)
-      const pathToDelete1 = `${folderPath}\\${folderList.at(1)}`
-      const pathToDelete2 = `${folderPath}\\${folderList.at(2)}`
+      const pathToDelete1 = `${folderPath}/${folderList.at(1)}`
+      const pathToDelete2 = `${folderPath}/${folderList.at(2)}`
       const options = {
         recursive: true
       }
@@ -200,7 +212,7 @@ describe('pulseIconGenLib', () => {
     it('should call writeFileSync', () => {
       const icons = [MOCKED_ICON_1, MOCKED_ICON_2]
       const outputFolder = 'a/b'
-      const outputPath = path.join(outputFolder, 'constants.ts')
+      const outputPath = [outputFolder, 'constants.ts'].join('/')
 
       writeComponentConstants(outputFolder, icons)
       expect(mockedWriteFileSync).toHaveBeenCalledWith(outputPath, expect.anything())
@@ -225,7 +237,7 @@ describe('pulseIconGenLib', () => {
     it('should call writeFileSync', () => {
       const icons = [MOCKED_ICON_1, MOCKED_ICON_2]
       const outputFolder = 'a/b'
-      const outputPath = path.join(outputFolder, 'index.ts')
+      const outputPath = [outputFolder, 'index.ts'].join('/')
 
       writeComponentIndex(outputFolder, icons)
       expect(mockedWriteFileSync).toHaveBeenCalledWith(outputPath, expect.anything())

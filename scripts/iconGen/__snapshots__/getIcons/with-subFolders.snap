@@ -3,18 +3,18 @@
     "category": "my-category",
     "componentName": "PIA",
     "fileName": "a.svg",
-    "filePath": "my-folder\\a.svg",
+    "filePath": "my-folder/a.svg",
   },
   {
     "category": "SubFolder",
     "componentName": "PIB",
     "fileName": "b.svg",
-    "filePath": "my-folder\\sub-folder\\b.svg",
+    "filePath": "my-folder/sub-folder/b.svg",
   },
   {
     "category": "SubFolder",
     "componentName": "PIC",
     "fileName": "c.svg",
-    "filePath": "my-folder\\sub-folder\\c.svg",
+    "filePath": "my-folder/sub-folder/c.svg",
   },
 ]
