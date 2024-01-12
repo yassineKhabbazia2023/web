@@ -93,15 +93,18 @@ describe('tableData', () => {
     expect(getPopoverContent()).toContain('Deploy this folder')
   })
 
-  it('should resend activation mail when click on resend email button', () => {
+  it('should resend activation mail when click on resend email button', async () => {
     const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
     resendEmailButton.click()
+    await nextTick()
     const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
+    const notifText = 'Un problème est survenu lors de l’envoie du mail d’activation'
     const {
       id
     } = mockTableData[1]
     expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
-    // expect(wrapper.vm.$toast).toHaveBeenCalled()
+    const notificationContent = document.body.getElementsByClassName('el-notification__content')[0].innerHTML
+    expect(notificationContent).toContain(notifText)
   })
 
   it('should emit clickDeploy when click on deploy button', async () => {

@@ -155,7 +155,8 @@ import {
   PTableColumn,
   PToolbox,
   PICheck,
-  PIExclamationTriangle
+  PIExclamationTriangle,
+  PNotification
 } from '@kpmg/styleguide'
 import {
   onMounted,
@@ -163,7 +164,7 @@ import {
   toRaw,
   watch
 } from 'vue'
-import { ElTable, ElNotification } from 'element-plus'
+import { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { commonApi, commonStore } from '@kpmg/common'
 import type { PToolboxItemProps, Props, Row } from './types'
@@ -272,7 +273,7 @@ watch(() => props.data, () => {
 })
 
 const notifOnError = (companyName: string) => {
-  ElNotification({
+  PNotification({
     message: `Un problème est survenu lors de l’envoie du mail d’activation pour ${companyName}`,
     icon: PIExclamationTriangle,
     customClass: 'error',
@@ -290,7 +291,7 @@ const onToolboxItemClicked = async (action: String, companyName: string, account
     try {
       const { status } = await commonApi().onboarding.post(url)
       if (status === 200) {
-        ElNotification({
+        PNotification({
           message: `Un nouveau mail d’activation pour ${companyName} a bien été envoyé.`,
           icon: PICheck,
           showClose: true,
