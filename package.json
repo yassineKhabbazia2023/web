@@ -83,6 +83,7 @@
     "sass": "^1.64.1",
     "semantic-release": "^21.0.2",
     "semantic-release-ado": "^1.4.0",
+    "ts-node": "^10.9.2",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-element-plus": "^0.7.1",
     "unplugin-vue-components": "^0.25.1",
