@@ -10,6 +10,7 @@ import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 let configConsilated
@@ -51,7 +52,8 @@ const basicConfig = {
         'src/organisms'
       ]
     }),
-    eslint()
+    eslint(),
+    visualizer()
   ]
 }
 
