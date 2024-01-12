@@ -1,6 +1,6 @@
 {
   "name": "@kpmg/styleguide",
-  "version": "2.1.4-beta",
+  "version": "2.1.5",
   "main": "dist/lib/styleguide.pegase.system.min.js",
   "module": "dist/lib/styleguide.pegase.es.min.js",
   "exports": {
@@ -32,7 +32,7 @@
     "prepare": "husky install && npm run generate",
     "predev": "npm run generate",
     "prebuild": "npm run generate",
-    "prestory:dev": "npm run generate",   
+    "prestory:dev": "npm run generate",
     "prestory:build": "npm run generate",
     "preview": "vite preview",
     "story:dev": "histoire dev",
