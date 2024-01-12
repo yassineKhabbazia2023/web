@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 export enum offerStepperStep {
-  SERVICES = 0,
-  USERS = 1,
-  INFORMATION = 2
+  SERVICES,
+  CUSTOMERS,
+  COLLABORATORS,
+  INFORMATION
 }
 export interface OffersDrawerProps {
   modelValue: boolean,

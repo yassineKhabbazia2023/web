@@ -44,7 +44,8 @@
             data-testid="offer-stepper"
           >
             <PStep :pTitle="offerStepTitles.services" />
-            <PStep :pTitle="offerStepTitles.users" />
+            <PStep :pTitle="offerStepTitles.customers" />
+            <PStep :pTitle="offerStepTitles.collaborators" />
             <PStep :pTitle="offerStepTitles.information" />
           </PSteps>
           <OfferSubscription
@@ -54,10 +55,14 @@
           />
           <PrincipalContact
             :principalContact="principalContact"
-            v-else-if="activeStep === offerStepperStep.USERS && principalContact"
-            data-testid="users-step"
+            v-if="activeStep === offerStepperStep.CUSTOMERS && principalContact"
+            data-testid="customers-step"
           />
-          <p v-else-if="activeStep === offerStepperStep.INFORMATION" data-testid="information-step"></p>
+          <p
+            v-if="activeStep === offerStepperStep.COLLABORATORS"
+            data-testid="collaborators-step"
+          />
+          <p v-if="activeStep === offerStepperStep.INFORMATION" data-testid="information-step" />
         </div>
         <SubscriptionOffers
           v-else
@@ -88,7 +93,8 @@ en-US:
   nextLabel: 'Next'
   submitLabel: 'Submit'
   services: 'Services'
-  users: 'Users'
+  customers: 'Customers'
+  collaborators: 'Collaborators'
   information: 'Information'
   offerIntranet: 'Offer Intranet'
   offersBook: 'Offers Book'
@@ -98,7 +104,8 @@ fr-FR:
   nextLabel: 'Suivant'
   submitLabel: 'Valider'
   services: 'Services'
-  users: 'Utilisateurs'
+  customers: 'Clients'
+  collaborators: 'Collaborateurs'
   information: 'Informations'
   offerIntranet: "Intranet de l'offre"
   offersBook: 'Book des offres'
@@ -136,7 +143,8 @@ const offerStepperConfig: any = {
 
 const offerStepTitles = {
   services: t('services'),
-  users: t('users'),
+  customers: t('customers'),
+  collaborators: t('collaborators'),
   information: t('information')
 }
 

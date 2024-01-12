@@ -52,6 +52,9 @@ const findOfferSubscription = (wrapper: VueWrapper) =>
 const findOffers = (wrapper: VueWrapper) =>
   wrapper.find('[data-testid=offers]')
 
+const findNextPreviousButtons = (wrapper: VueWrapper) =>
+  wrapper.findComponent('[data-testid=next-previous-buttons]') as VueWrapper
+
 describe('offersDrawer', () => {
   describe('interactions', () => {
     it('should close offers drawer when clicking on close buton', async () => {
@@ -83,10 +86,9 @@ describe('offersDrawer', () => {
       await secondOffer?.trigger('click')
       await flushPromises()
 
-      const nextPreviousButtons = wrapper.findComponent(
-        '[data-testid=next-previous-buttons]'
-      )
-      await (nextPreviousButtons as VueWrapper).vm.$emit('clickPrevious')
+      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+
+      await nextPreviousButtons.vm.$emit('clickPrevious')
 
       const offers = findOffers(wrapper)
       expect(offers.exists()).toBeTruthy()
@@ -153,24 +155,27 @@ describe('offersDrawer', () => {
       await firstOffer.trigger('click')
       await flushPromises()
 
-      const nextButton = wrapper.findComponent(
-        '[data-testid=next-previous-buttons]'
-      )
-      await (nextButton as VueWrapper).vm.$emit('clickNext')
+      const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      const usersStep = wrapper.find('[data-testid=users-step]')
-      expect(usersStep.exists()).toBeTruthy()
+      await nextPreviousButtons.vm.$emit('clickNext')
+      const customersStep = wrapper.find('[data-testid=customers-step]')
+      expect(customersStep.exists()).toBeTruthy()
 
-      await (nextButton as VueWrapper).vm.$emit('clickNext')
+      await nextPreviousButtons.vm.$emit('clickNext')
+      const collaboratorsStep = wrapper.find('[data-testid=collaborators-step]')
+      expect(collaboratorsStep.exists()).toBeTruthy()
 
+      await nextPreviousButtons.vm.$emit('clickNext')
       const informationStep = wrapper.find('[data-testid=information-step]')
       expect(informationStep.exists()).toBeTruthy()
 
-      const PreviousButton = wrapper.findComponent(
-        '[data-testid=next-previous-buttons]'
-      )
-      await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
-      await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
+      await nextPreviousButtons.vm.$emit('clickPrevious')
+      await nextPreviousButtons.vm.$emit('clickPrevious')
+
+      const customersStep2 = wrapper.find('[data-testid=customers-step]')
+      expect(customersStep2.exists()).toBeTruthy()
+
+      await nextPreviousButtons.vm.$emit('clickPrevious')
 
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
