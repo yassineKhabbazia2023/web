@@ -8,11 +8,19 @@ import { commonStore } from '@kpmg/common'
 import TableData from './'
 
 const handleFavorites = vi.fn()
+const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
 
 vi.mock('@kpmg/common', () => ({
+  commonApi: () => ({
+    onboarding: {
+      post: postMock
+    }
+  }),
   commonStore: defineStore('common', {
     state: () => ({
-      user: {}
+      user: {
+        id: '565cf560-8a2a-494f-9f85-73a031ed258e'
+      }
     })
   })
 }))
@@ -77,9 +85,23 @@ describe('tableData', () => {
     })
   })
 
-  it('has a link to deploy the folder', () => {
+  it('has a correct link in toolbox', () => {
     const getPopoverContent = () => document.body.getElementsByClassName('p-toolbox-item__text')[0].innerHTML
+    const rows = wrapper.findAll('tr.el-table__row')
+    const firstRowText = rows[0]
+    expect(firstRowText.find('.el-tag__content').text()).toBe('To Deploy')
     expect(getPopoverContent()).toContain('Deploy this folder')
+  })
+
+  it('should resend activation mail when click on resend email button', () => {
+    const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
+    resendEmailButton.click()
+    const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
+    const {
+      id
+    } = mockTableData[1]
+    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
+    // expect(wrapper.vm.$toast).toHaveBeenCalled()
   })
 
   it('should emit clickDeploy when click on deploy button', async () => {
