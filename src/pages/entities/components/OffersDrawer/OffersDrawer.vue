@@ -52,16 +52,12 @@
             data-testid="offer"
             :subscriptionOffer="currentSubscriptionOffer"
           />
-          <p
-            v-else-if="activeStep === offerStepperStep.USERS"
+          <PrincipalContact
+            :principalContact="principalContact"
             data-testid="users-step"
-          >
-          </p>
-          <p
-            v-else-if="
-              activeStep === offerStepperStep.INFORMATION
-            "
-          ></p>
+            v-else-if="activeStep === offerStepperStep.USERS && principalContact"
+          />
+          <p v-else-if="activeStep === offerStepperStep.INFORMATION"></p>
         </div>
         <SubscriptionOffers
           v-else
@@ -111,19 +107,15 @@ fr-FR:
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import {
-  PDrawer,
-  PSteps,
-  PStep,
-  PIcon,
-  PILink45deg
-} from '@kpmg/styleguide'
+import { PDrawer, PSteps, PStep, PIcon, PILink45deg } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
+import PrincipalContact from '../PrincipalContact'
 import NextPreviousButtons from '../NextPreviousButtons'
-import { getAllOffers, getOffer, getOffersBookLink } from '@/services/offer'
+import { getAllOffers, getOffer, getOffersBookLink, getPrincipalContact } from '@/services/offer'
 import { offerStepperStep } from './OffersDrawerTypes'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
+import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
@@ -163,6 +155,7 @@ const props = defineProps<OffersDrawerProps>()
 
 const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
+const principalContact = ref<User | undefined>()
 
 const internalIsOpened = computed({
   get() {
@@ -235,6 +228,7 @@ const onCloseOffersDrawer = () => {
 
 onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
+  principalContact.value = await getPrincipalContact()
 })
 </script>
 <style lang="scss" scoped>
