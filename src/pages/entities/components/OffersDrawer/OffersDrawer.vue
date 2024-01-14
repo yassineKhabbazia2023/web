@@ -54,10 +54,10 @@
           />
           <PrincipalContact
             :principalContact="principalContact"
-            data-testid="users-step"
             v-else-if="activeStep === offerStepperStep.USERS && principalContact"
+            data-testid="users-step"
           />
-          <p v-else-if="activeStep === offerStepperStep.INFORMATION"></p>
+          <p v-else-if="activeStep === offerStepperStep.INFORMATION" data-testid="information-step"></p>
         </div>
         <SubscriptionOffers
           v-else
@@ -70,7 +70,7 @@
         <NextPreviousButtons
           v-if="!!currentSubscriptionOffer"
           :hasCheckIcon="isSubmitButton"
-          data-testid="nextPreviousButtons"
+          data-testid="next-previous-buttons"
           :previousLabel="t('previousLabel')"
           :nextLabel="nextLabel"
           @click-previous="onClickPrevious"

@@ -26,14 +26,12 @@ describe('principalContact', () => {
         principalContact.firstName
       } ${principalContact.lastName.toUpperCase()}`
       const principalContactElements = {
-        component: wrapper.find('[data-testid=principal-contact]'),
         fullName: wrapper.find('.p-user-card__title'),
         email: wrapper.find('.p-user-card__subtitle'),
         description: wrapper.find('.p-user-card__description'),
         notes: wrapper.find('[data-testid=principal-contact-notes]')
       }
 
-      expect(principalContactElements.component.exists()).toBeTruthy()
       expect(principalContactElements.fullName.text()).toBe(fullName)
       expect(principalContactElements.email.text()).toBe(principalContact.email)
       expect(principalContactElements.description.text()).toBe(

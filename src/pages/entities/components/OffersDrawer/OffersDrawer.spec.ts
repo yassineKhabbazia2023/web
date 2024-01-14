@@ -76,7 +76,7 @@ describe('offersDrawer', () => {
       await flushPromises()
 
       const nextPreviousButtons = wrapper.findComponent(
-        '[data-testid=nextPreviousButtons]'
+        '[data-testid=next-previous-buttons]'
       )
       await (nextPreviousButtons as VueWrapper).vm.$emit('clickPrevious')
 
@@ -152,16 +152,22 @@ describe('offersDrawer', () => {
       await flushPromises()
 
       const nextButton = wrapper.findComponent(
-        '[data-testid=nextPreviousButtons]'
+        '[data-testid=next-previous-buttons]'
       )
       await (nextButton as VueWrapper).vm.$emit('clickNext')
 
       const usersStep = wrapper.find('[data-testid=users-step]')
       expect(usersStep.exists()).toBeTruthy()
 
+      await (nextButton as VueWrapper).vm.$emit('clickNext')
+
+      const informationStep = wrapper.find('[data-testid=information-step]')
+      expect(informationStep.exists()).toBeTruthy()
+
       const PreviousButton = wrapper.findComponent(
-        '[data-testid=nextPreviousButtons]'
+        '[data-testid=next-previous-buttons]'
       )
+      await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
       await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
 
       const offer = wrapper.find('[data-testid=offer]')

@@ -1,8 +1,7 @@
 <template>
   <PUserCard
-    data-testid="principal-contact"
     :pTitle="fullName"
-    :pTag="contactType"
+    :pTag="contactTag"
     :pSubtitle="principalContact.email"
     :pDescription="contactDescription"
     pAssetLeft="Image"
@@ -52,12 +51,12 @@ const { t } = useI18n({
 })
 
 const fullName = computed(() => {
-  return `${
-    props.principalContact?.firstName
-  } ${props.principalContact?.lastName?.toUpperCase()}`
+  return `${props.principalContact?.firstName ?? ''} ${
+    props.principalContact?.lastName?.toUpperCase() ?? ''
+  }`
 })
 const contactDescription = t('contactDescription')
-const contactType = {
+const contactTag = {
   pSize: 'default',
   pColor: 'persian',
   pContent: t('signatoryCustomer'),
