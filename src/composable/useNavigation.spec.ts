@@ -13,14 +13,10 @@ describe('useNavigation', () => {
     vi.clearAllMocks()
   })
 
-  it('should navigate to entities', async () => {
-    // Setup
-    const { navigateToEntities } = useNavigation()
+  it('should navigate to wallet', () => {
+    const { navigateToWallet } = useNavigation()
+    navigateToWallet()
 
-    // Act
-    navigateToEntities()
-
-    // Assert
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'entities' })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet' })
   })
 })

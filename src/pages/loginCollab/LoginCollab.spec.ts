@@ -23,11 +23,11 @@ vi.mock('@/composable/useInitUserAuth', () => ({
   }
 }))
 
-const navigateToEntitiesMock = vi.fn()
+const navigateToWalletMock = vi.fn()
 vi.mock('@/composable/useNavigation', () => ({
   default: () => {
     return {
-      navigateToEntities: navigateToEntitiesMock
+      navigateToWallet: navigateToWalletMock
     }
   }
 }))
@@ -49,7 +49,7 @@ describe('loginCollab', () => {
     expect(wrapper.exists()).toBeTruthy()
   })
 
-  it('should redirect to entities when the authentication is done', () => {
-    expect(navigateToEntitiesMock).toHaveBeenCalledTimes(1)
+  it('should redirect to wallet when the authentication is done', () => {
+    expect(navigateToWalletMock).toHaveBeenCalledTimes(1)
   })
 })

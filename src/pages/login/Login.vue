@@ -84,7 +84,7 @@ import useInitUserAuth from '@/composable/useInitUserAuth'
 import useNavigation from '@/composable/useNavigation'
 
 const { initAuthClient } = useInitUserAuth()
-const { navigateToEntities } = useNavigation()
+const { navigateToWallet } = useNavigation()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -159,8 +159,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     sessionStorage.setItem('token', token)
     await initAuthClient()
 
-    // temporarily redirect to /entities
-    navigateToEntities()
+    navigateToWallet()
   } catch (error: any) {
     const hasEmailOrPasswordInvalid = error.response?.data?.anomaly?.errorCode === '403042'
     if (hasEmailOrPasswordInvalid) {

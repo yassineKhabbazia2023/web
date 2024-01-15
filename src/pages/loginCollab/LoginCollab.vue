@@ -25,7 +25,7 @@ import useInitAuth from '@/composable/useInitUserAuth'
 import useNavigation from '@/composable/useNavigation'
 
 const { initAuthCollab, isTokenRetrieve } = useInitAuth()
-const { navigateToEntities } = useNavigation()
+const { navigateToWallet } = useNavigation()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -37,7 +37,7 @@ const handleLoginCollab = async () => {
 onMounted(async () => {
   await initAuthCollab()
   if (isTokenRetrieve.value) {
-    navigateToEntities()
+    navigateToWallet()
   }
 })
 

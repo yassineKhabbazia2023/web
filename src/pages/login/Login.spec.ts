@@ -94,7 +94,7 @@ describe('login', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'entities' })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet' })
   })
 
   it('does not redirect to the home page if the api return an error', async () => {
