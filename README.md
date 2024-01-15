@@ -63,10 +63,17 @@ When Histoire starts, it loads env-vars.json file that is supposed to contain
 
 `env-vars.json` is written by a script for each environment on Server side
 
-If not present, the default value is given by `.env` file during building job.
-
-
 _example, when Histoire is running locally:_
 
-    # .env
-    VITE_ASSETS_BASE_URL = http://localhost:6006/src/assets/images/
+    # env-vars.json
+    {
+      "VITE_ASSETS_BASE_URL": "http://localhost:6007/src/assets/images/"
+    }
+
+_example, when Histoire is running on ITG:_
+
+    # env-vars.json
+    {
+      "VITE_ASSETS_BASE_URL": "https://assets-itg01.itg.kpmg-pulse.fr"
+    }
+
