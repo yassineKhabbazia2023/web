@@ -6,6 +6,7 @@
     :showClose="pShowClose"
     :size="pSize"
     :destroyOnClose="pDestroyOnClose"
+    modalClass="p-document-viewer-overlay"
   >
     <template #header>
       <div class="p-document-viewer__header shadow--3">
@@ -62,10 +63,10 @@
       </div>
     </template>
     <div class="p-document-viewer__content">
-      <div class="p-document-viewer__content-right">
+      <div class="p-document-viewer__content-left">
         <slot name="media" />
       </div>
-      <div class="p-document-viewer__content-left padding--6">
+      <div class="p-document-viewer__content-right padding--6">
         <slot name="content" />
       </div>
     </div>
@@ -104,3 +105,24 @@ const documentViewerModel = computed({
   }
 })
 </script>
+
+<style lang="scss">
+.p-document-viewer-overlay {
+  background-color: #171717F2;
+}
+.p-document-viewer {
+  background-color: transparent;
+
+  &__header {
+    z-index: 1;
+  }
+  &__content-right {
+    background-color: white;
+  }
+  .el-drawer {
+    &__header {
+      background-color: white;
+    }
+  }
+}
+</style>

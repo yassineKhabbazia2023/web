@@ -11,8 +11,9 @@
         pPlain
         @click="isDrawerOpened = !isDrawerOpened"
       >
-        Open / close
+        Open
       </PButton>
+      <tr/>
       <PDocumentViewer
         v-model="isDrawerOpened"
         :pDestroyOnClose="documentViewerBasicData.pDestroyOnClose"
@@ -33,6 +34,18 @@
             <PIFiletypePdf />
           </PIcon>
         </template>
+        <template #media>
+           <PDocumentDisplay
+            pSrc="src\organisms\PDocumentViewer\modele_de_facture.pdf#view=fit"
+            :pIsLoading="false"
+            pDocumentExtension="pdf"
+            errorMsgTitle="Aperçu indisponible"
+            errorMsgText="Le format de document n'est pas supporté"
+           />
+        </template>
+        <template #content>
+          <div> You can find here for exp Document details such as owner email ...</div>
+        </template>
       </PDocumentViewer>
     </Variant>
   </Story>
@@ -42,7 +55,9 @@
 import { reactive, ref } from 'vue'
 import PButton from '@/atoms/PButton'
 import PDocumentViewer from './'
+import PDocumentDisplay from '@/molecules/PDocumentDisplay'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
+import { PIFiletypePdf } from '@/atoms/PIcon/components'
 
 const isDrawerOpened = ref(false)
 
@@ -58,7 +73,7 @@ const documentViewerBasicData = reactive({
   pShowPreviousDocument: true,
   pShowNextDocument: true,
   pShowCloseButton: true,
-  pDirection: ref<PDocumentViewerProps['pDirection']>('ltr')
+  pDirection: ref<PDocumentViewerProps['pDirection']>('rtl')
 })
 </script>
 
@@ -67,6 +82,6 @@ const documentViewerBasicData = reactive({
   This component is used as Document Viewer.
 
   <div class="responsive-iframe-container">
-    <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D2527%253A9324%26mode%3Ddev" allowfullscreen></iframe>
+    <iframe class="responsive-iframe" src="https://www.figma.com/file/YPTVJIaxGaxnmuYHPkkZvi/GED---WIP?node-id=4309%3A31746&mode=dev" allowfullscreen></iframe>
   </div>
 </docs>

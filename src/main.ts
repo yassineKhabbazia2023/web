@@ -89,6 +89,7 @@ export { default as PTree } from './organisms/PTree'
 export { default as PUpload } from './atoms/PUpload'
 export { default as PUserCard } from './atoms/PUserCard'
 export { setAssetsBaseUrl } from './utils/imageResolver'
+export { default as PDocumentDisplay } from './molecules/PDocumentDisplay'
 
 // Export types
 export * from './atoms/PActivityCard/PActivityCardTypes'
@@ -159,3 +160,4 @@ export * from './molecules/PTabs/PTabsTypes'
 export * from './molecules/PToolbox/PToolboxTypes'
 export * from './organisms/PDocumentViewer/PDocumentViewerTypes'
 export * from './organisms/PTree/PTreeTypes'
+export * from './molecules/PDocumentDisplay/PDocumentDisplayTypes'

@@ -122,11 +122,12 @@ $drawer: (
     height: 100%;
   }
 
-  &__content-right {
+  &__content-left {
     width: calc(100% - 357px);
+    height: 100%;
   }
 
-  &__content-left {
+  &__content-right {
     width: 357px;
     height: 100%;
   }
