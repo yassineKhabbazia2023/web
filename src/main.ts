@@ -27,8 +27,8 @@ export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 
 routes.value.push({
-  path: '/entities',
-  name: 'entities',
+  path: '/portefeuille',
+  name: 'wallet',
   component: () => import('@/pages/wallet')
 } as RouteRecordRaw)
 
