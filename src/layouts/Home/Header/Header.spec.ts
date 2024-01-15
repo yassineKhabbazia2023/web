@@ -26,9 +26,9 @@ vi.mock('@kpmg/common', () => ({
 }))
 
 const headerMenu: HeaderMenu[] = [{
-  pIcon: 'PIColumnsGap',
-  pText: 'Dashboard',
-  pPath: ''
+  pIcon: 'PIGrid',
+  pText: 'Wallet',
+  pPath: '/portefeuille'
 }, {
   pIcon: 'PIFiles',
   pText: 'subscriptions',
@@ -38,7 +38,8 @@ const headerMenu: HeaderMenu[] = [{
 const createWrapper = (): VueWrapper<any> => mount(Header, {
   attachTo: document.body,
   props: {
-    headerMenu
+    headerMenu,
+    defaultActive: '/portefeuille'
   },
   global: {
     plugins: [router]
@@ -53,7 +54,7 @@ describe('header', () => {
   })
   it('should display header section', () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    router.push({ name: 'My entities' })
+    router.push({ name: 'wallet' })
     const header = wrapper.find('.el-menu--header')
     const logo = wrapper.find('.menu-item--logo')
 

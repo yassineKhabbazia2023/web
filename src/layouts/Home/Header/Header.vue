@@ -1,18 +1,17 @@
 <template>
   <PHeader>
     <template #logo>
-      <router-link to="/" class="el-menu--header__link">
-        <PImage
-          class="el-menu--header__logo"
-          pType="logos"
-          pName="pulse-color"
-          pFit="fill"
-        />
-      </router-link>
+      <PImage
+        class="el-menu--header__logo"
+        pType="logos"
+        pName="pulse-color"
+        pFit="fill"
+      />
     </template>
     <template #menu>
       <PHeaderTabs
         :pHeaderTabsMenu="headerMenu"
+        :pDefaultActive="defaultActive"
         class="home-header-tabs"
       />
     </template>
@@ -59,6 +58,7 @@ const { t } = useI18n({
 
 interface Props {
   headerMenu: HeaderMenu[]
+  defaultActive: string | undefined
 }
 
 withDefaults(defineProps<Props>(), {

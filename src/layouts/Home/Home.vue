@@ -2,7 +2,10 @@
   <div class="common-layout">
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="52">
-        <Header :headerMenu="headerMenu" />
+        <Header
+          :headerMenu="headerMenu"
+          :defaultActive="routeActive"
+        />
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
@@ -27,12 +30,12 @@
 
 <i18n lang="yaml">
   en-US:
-    dashboard: 'Dashboard'
+    wallet: 'Wallet'
     subscriptions: 'Request validation'
     ged:  'My documents'
     mandate: 'Banking'
   fr-FR:
-    dashboard: 'Tableau de bord'
+    wallet: 'Portefeuille'
     subscriptions: 'Validation de demande'
     ged:  'Mes documents'
     mandate: 'Flux bancaires'
@@ -53,9 +56,9 @@ const { t } = useI18n({
 })
 
 const headerMenu: HeaderMenu[] = [{
-  pIcon: 'PIColumnsGap',
-  pText: t('dashboard'),
-  pPath: ''
+  pIcon: 'PIGrid',
+  pText: t('wallet'),
+  pPath: '/portefeuille'
 }, {
   pIcon: 'PIFolder',
   pText: t('ged'),

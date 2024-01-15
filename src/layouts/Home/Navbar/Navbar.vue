@@ -15,8 +15,8 @@
 
 <i18n lang="yaml">
   en-US:
-    title: 'Entities'
-    menuTitle: 'My entities'
+    title: 'Wallet'
+    menuTitle: 'Wallet'
   fr-FR:
     title: 'Portefeuille'
     menuTitle: 'Mon portefeuille'
@@ -37,7 +37,7 @@ const menu = [
   {
     pName: t('menuTitle'),
     pIcon: 'PIGrid',
-    pPath: '/entities'
+    pPath: '/portefeuille'
   }
 ]
 

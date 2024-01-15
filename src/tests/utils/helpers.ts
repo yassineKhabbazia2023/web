@@ -4,9 +4,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const menu = [
   {
-    name: 'My entities',
+    name: 'wallet',
     icon: 'PIGrid',
-    path: '/entities'
+    path: '/portefeuille'
   }
 ]
 const fakeUser = {
