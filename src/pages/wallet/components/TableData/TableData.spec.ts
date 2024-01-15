@@ -10,6 +10,7 @@ import TableData from './'
 const handleFavorites = vi.fn()
 const postMock = vi.fn()
 const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
+const companyName = [['NOM1']]
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -59,6 +60,7 @@ describe('tableData', () => {
   afterEach(() => {
     postMock.mockReset()
     postMock.mockClear()
+    wrapper.unmount()
   })
 
   it('calls function handle when click', async () => {
@@ -106,6 +108,8 @@ describe('tableData', () => {
         webToken: 'token'
       }
     })
+    const notificationToaster = document.body.getElementsByClassName('el-notification__content')
+    expect(notificationToaster.length).toBeLessThanOrEqual(0)
     const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
     resendEmailButton.click()
     await nextTick()
@@ -125,16 +129,19 @@ describe('tableData', () => {
         webToken: ''
       }
     })
+    const notifTextError = 'A problem occurred while sending the activation email for '
+    const notificationToaster = document.body.getElementsByClassName('el-notification__content')
+    expect(notificationToaster.length).toBeLessThanOrEqual(1)
+    expect(notificationToaster[0].innerHTML).not.toContain(notifTextError)
     const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
     resendEmailButton.click()
     await nextTick()
-    const notifText = 'A problem occurred while sending the activation email for '
     const {
       id
     } = mockTableData[1]
     expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
     const notificationContent = document.body.getElementsByClassName('el-notification__content')[1].innerHTML
-    expect(notificationContent).toContain(notifText)
+    expect(notificationContent).toContain(notifTextError)
   })
 
   it('should emit clickDeploy when click on deploy button', async () => {
@@ -143,7 +150,7 @@ describe('tableData', () => {
     const deployButton = document.body.getElementsByClassName('p-toolbox-item__text')[0] as HTMLElement
     deployButton.click()
 
-    expect(wrapper.emitted('clickDeploy')).toBeFalsy() // TODO find out why
+    expect(wrapper.emitted('clickDeploy')).toStrictEqual(companyName)
   })
 
   it('has the first entity selected by default', async () => {
