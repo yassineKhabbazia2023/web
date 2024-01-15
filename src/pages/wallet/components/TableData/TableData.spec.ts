@@ -1,6 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
@@ -8,7 +8,7 @@ import { commonStore } from '@kpmg/common'
 import TableData from './'
 
 const handleFavorites = vi.fn()
-const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
+const postMock = vi.fn()
 const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
 
 vi.mock('@kpmg/common', () => ({
@@ -56,6 +56,11 @@ describe('tableData', () => {
     await flushPromises()
   })
 
+  afterEach(() => {
+    postMock.mockReset()
+    postMock.mockClear()
+  })
+
   it('calls function handle when click', async () => {
     const btnFavorite = wrapper.find('td.el-table_1_column_6 button')
     await btnFavorite.trigger('click')
@@ -94,7 +99,32 @@ describe('tableData', () => {
     expect(getPopoverContent()).toContain('Deploy this folder')
   })
 
-  it('should resend activation mail when click on resend email button', async () => {
+  it('should resend activation mail & success toaster when click on resend email button', async () => {
+    await postMock.mockReturnValueOnce({
+      status: 200,
+      data: {
+        webToken: 'token'
+      }
+    })
+    const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
+    resendEmailButton.click()
+    await nextTick()
+    const notifTextSuccess = 'A new activation email for'
+    const {
+      id
+    } = mockTableData[1]
+    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
+    const notificationContent = document.body.getElementsByClassName('el-notification__content')[0].innerHTML
+    expect(notificationContent).toContain(notifTextSuccess)
+  })
+
+  it('should show error toaster when click on resend email button', async () => {
+    await postMock.mockReturnValueOnce({
+      status: 500,
+      data: {
+        webToken: ''
+      }
+    })
     const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
     resendEmailButton.click()
     await nextTick()
@@ -103,7 +133,7 @@ describe('tableData', () => {
       id
     } = mockTableData[1]
     expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
-    const notificationContent = document.body.getElementsByClassName('el-notification__content')[0].innerHTML
+    const notificationContent = document.body.getElementsByClassName('el-notification__content')[1].innerHTML
     expect(notificationContent).toContain(notifText)
   })
 

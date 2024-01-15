@@ -395,10 +395,10 @@ fr-FR:
   action: 'Action'
   deployThisFolder: 'Déployer ce dossier'
   accessThisFolder: 'Accéder au dossier'
-  resendActivationEmail: 'Relancer mail d''activation'
+  resendActivationEmail: "Relancer mail d'activation"
   toDeploy: 'A déployer'
   inProgress: 'En cours'
-  resendMailErrorMessage: 'Un problème est survenu lors de l''envoie du mail d''activation pour '
-  resendMailSuccessMessageFirst: 'Un nouveau mail d''activation pour '
+  resendMailErrorMessage: "Un problème est survenu lors de l'envoie du mail d'activation pour "
+  resendMailSuccessMessageFirst: "Un nouveau mail d'activation pour "
   resendMailSuccessMessageSecond: ' a bien été envoyé.'
 </i18n>
