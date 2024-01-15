@@ -121,13 +121,9 @@
       </PButton>
       <PToolbox
         trigger="click"
-        :pElements="[{
-          pIconName: 'PIArrowUpCircle',
-          pValue: t('deployThisFolder'),
-          pActionName: 'deploy',
-          pState: 'default'
-        }]"
-        @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row.name)"
+        :pElements="menuElements(scope.row.deploymentStatus.text)"
+        @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row.name, scope.row.id)"
+
       >
         <PButton
           pType="white"
@@ -157,7 +153,11 @@ import {
   PTag,
   PTable,
   PTableColumn,
-  PToolbox
+  PToolbox,
+  PICheck,
+  PIExclamationTriangle,
+  PNotification,
+  type PToolboxItemProps
 } from '@kpmg/styleguide'
 import {
   onMounted,
@@ -167,7 +167,7 @@ import {
 } from 'vue'
 import { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@kpmg/common'
+import { commonApi, commonStore } from '@kpmg/common'
 import type { Props, Row } from './types'
 
 const { t } = useI18n({
@@ -179,6 +179,51 @@ const props = withDefaults(defineProps<Props>(), {
   data: [],
   handleAddFavorite: () => {}
 })
+
+const menuToDeployElements : PToolboxItemProps[] = [
+  {
+    pIconName: 'PIArrowUpCircle',
+    pValue: t('deployThisFolder'),
+    pActionName: 'deploy',
+    pState: 'default'
+  },
+  {
+    pIconName: 'PIFolder',
+    pValue: t('accessThisFolder'),
+    pActionName: 'access',
+    pState: 'default'
+  }
+]
+
+const menuInProgressElements : PToolboxItemProps[] = [
+  {
+    pIconName: 'PISend',
+    pValue: t('resendActivationEmail'),
+    pActionName: 'resendActivationEmail',
+    pState: 'default'
+  },
+  {
+    pIconName: 'PIFolder',
+    pValue: t('accessThisFolder'),
+    pActionName: 'access',
+    pState: 'default'
+  }
+]
+
+const menuConnectedElements : PToolboxItemProps[] = [
+  {
+    pIconName: 'PIFolder',
+    pValue: t('accessThisFolder'),
+    pActionName: 'access',
+    pState: 'default'
+  }
+]
+
+const menuElements = (status : string) => {
+  return status === t('toDeploy')
+    ? menuToDeployElements
+    : (status === t('inProgress') ? menuInProgressElements : menuConnectedElements)
+}
 
 const userStore = commonStore()
 const { user } = storeToRefs(userStore)
@@ -228,9 +273,42 @@ watch(() => props.data, () => {
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 
-const onToolboxItemClicked = (action: String, companyName: string) => {
+const notifOnError = (companyName: string) => {
+  PNotification({
+    message: t('resendMailErrorMessage') + companyName,
+    icon: PIExclamationTriangle,
+    customClass: 'error',
+    showClose: true,
+    position: 'bottom-right'
+  })
+}
+
+const resendActivationEmail = async (accountId: string, companyName: string) => {
+  const contactId = userStore.user?.id
+  const url = `/Activation/Invite?accountId=${accountId}&contactId=${contactId}`
+  try {
+    const { status } = await commonApi().onboarding.post(url)
+    if (status === 200) {
+      PNotification({
+        message: t('resendMailSuccessMessageFirst') + companyName + t('resendMailSuccessMessageSecond'),
+        icon: PICheck,
+        showClose: true,
+        customClass: 'success',
+        position: 'bottom-right'
+      })
+    } else {
+      notifOnError(companyName)
+    }
+  } catch {
+    notifOnError(companyName)
+  }
+}
+
+const onToolboxItemClicked = async (action: string, companyName: string, accountId: string) => {
   if (action === 'deploy') {
     emit('clickDeploy', companyName)
+  } else if (action === 'resendActivationEmail') {
+    resendActivationEmail(accountId, companyName)
   }
 }
 </script>
@@ -301,6 +379,13 @@ en-US:
   status: 'Status'
   action: 'Action'
   deployThisFolder: 'Deploy this folder'
+  accessThisFolder: 'Access this folder'
+  resendActivationEmail: 'Resend activation email'
+  toDeploy: 'To Deploy'
+  inProgress: 'In progress'
+  resendMailErrorMessage: 'A problem occurred while sending the activation email for '
+  resendMailSuccessMessageFirst: 'A new activation email for '
+  resendMailSuccessMessageSecond: ' has been sent successfully.'
 fr-FR:
   companyName: 'Nom de la société'
   folderID: 'ID Dossier'
@@ -309,4 +394,11 @@ fr-FR:
   status: 'Statut'
   action: 'Action'
   deployThisFolder: 'Déployer ce dossier'
+  accessThisFolder: 'Accéder au dossier'
+  resendActivationEmail: "Relancer mail d'activation"
+  toDeploy: 'A déployer'
+  inProgress: 'En cours'
+  resendMailErrorMessage: "Un problème est survenu lors de l'envoie du mail d'activation pour "
+  resendMailSuccessMessageFirst: "Un nouveau mail d'activation pour "
+  resendMailSuccessMessageSecond: ' a bien été envoyé.'
 </i18n>

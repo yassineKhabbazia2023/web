@@ -11,7 +11,7 @@ export const mockTableData = [
     },
     city: 'paris',
     deploymentStatus: {
-      text: 'A déployer',
+      text: 'To Deploy',
       icon: PIArrowUpCircle,
       color: 'warning'
     },
@@ -30,7 +30,7 @@ export const mockTableData = [
     },
     city: 'hanoi',
     deploymentStatus: {
-      text: 'A déployer',
+      text: 'In progress',
       icon: PIArrowUpCircle,
       color: 'warning'
     },
