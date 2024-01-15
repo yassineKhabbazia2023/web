@@ -16,14 +16,14 @@
         direction="horizontal"
         processStatus="process"
         finishStatus="success"
-        class="drawer-create-mandate__stepper"
+        class="margin-bottom--6"
       >
         <PStep :title="t('entity')" />
         <PStep :title="t('infos')" />
         <PStep :title="t('banking-data')" />
       </PSteps>
-      <div v-if="currentStep <= 3" class="drawer-create-mandate__title">
-        <h2 class="h3">
+      <div v-if="currentStep <= 3" class="drawer-create-mandate__title margin-bottom--4">
+        <p class="font-large">
           <template v-if="currentStep === 1">
             {{ t('entity') }}
           </template>
@@ -33,13 +33,13 @@
           <template v-if="currentStep === 3">
             {{ t('bank-identity-statement') }}
           </template>
-        </h2>
+        </p>
         <PTooltip
           v-if="currentStep === 1"
           :pContent="t('tooltip')"
           pPlacement="top"
         >
-          <PIcon class="drawer-create-mandate__tooltip" color="#A4A4A4">
+          <PIcon class="drawer-create-mandate__tooltip margin-left--2" color="#A4A4A4">
             <PIQuestionCircle />
           </PIcon>
         </PTooltip>
@@ -335,20 +335,13 @@ defineExpose({
   &__title {
     display: flex;
     align-items: center;
-    color: var(--pulse-color-neutral-gray-900);
-    font-size: 1.6rem;
+    color: var(--el-color-neutral-gray-900);
     font-style: normal;
-    font-weight: 600;
     line-height: 120%;
     padding: 4px 0px;
-    margin-bottom: 16px;
-  }
-  &__stepper {
-    margin-bottom: 24px;
   }
   &__tooltip {
     margin-top: 1px;
-    margin-left: 8px;
   }
 }
 </style>

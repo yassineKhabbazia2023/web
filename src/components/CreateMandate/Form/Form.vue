@@ -53,14 +53,12 @@
       </div>
       <div v-if="step === 2">
         <PFormItem pProp="title">
-          <template #label>
-            <label class="create-mandate-form__title-label">
-              {{ t('title') }}
-              <span class="create-mandate-form__title-label__asterisk">
-                {{ t('form.asterisk') }}
-              </span>
-            </label>
-          </template>
+          <label class="create-mandate-form__title-label">
+            {{ t('title') }}
+            <span class="create-mandate-form__title-label__asterisk">
+              {{ t('form.asterisk') }}
+            </span>
+          </label>
           <div>
             <PRadio
               v-model="createMandateForm.title"
@@ -101,16 +99,14 @@
           inline
           disabled
         >
-          <template #label>
-            <div>
-              <span class="create-mandate-form_optional-title"
-              >{{ t('email') }}
-              </span>
-              <span class="create-mandate-form_optional">{{
-                t('optional')
-              }}</span>
-            </div>
-          </template>
+          <div>
+            <span class="create-mandate-form_optional-title"
+            >{{ t('email') }}
+            </span>
+            <span class="create-mandate-form_optional">{{
+              t('optional')
+            }}</span>
+          </div>
           <PInput
             v-model="createMandateForm.email"
             data-testid="email-test"
@@ -133,16 +129,14 @@
           inline
           disabled
         >
-          <template #label>
-            <div>
-              <span class="create-mandate-form_optional-title"
-              >{{ t('complement') }}
-              </span>
-              <span class="create-mandate-form_optional">{{
-                t('optional')
-              }}</span>
+          <div>
+            <span class="create-mandate-form_optional-title"
+            >{{ t('complement') }}
+            </span>
+            <span class="create-mandate-form_optional">{{
+              t('optional')
+            }}</span>
             </div>
-          </template>
           <PInput v-model="createMandateForm.addressComplement" state="default" />
         </PFormItem>
         <PRow :pGutter="16">
@@ -784,6 +778,7 @@ defineExpose({
   &__title-label {
     font-size: 12px;
     font-style: normal;
+    color: var(--el-color-neutral-gray-900);
     font-weight: 600;
     line-height: 120%;
 

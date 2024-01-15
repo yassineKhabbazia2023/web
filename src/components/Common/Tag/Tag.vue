@@ -50,7 +50,7 @@ const statusMap = new Map([
   [20, { color: 'warning', icon: PIUpload, content: t('to-do') }],
   [30, { color: 'persian', icon: PIArrowRepeat, content: t('in-progress') }],
   [40, { color: 'success', icon: PICheckCircle, content: t('active') }],
-  [50, { color: 'gray-300', icon: PIXCircle, content: t('inactive') }]
+  [50, { color: 'gray-900', icon: PIXCircle, content: t('inactive') }]
 ])
 
 const tagProperties: any = computed(() => statusMap.get(Number(props.status)))

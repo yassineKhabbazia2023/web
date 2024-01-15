@@ -6,7 +6,7 @@
       :emptyText="t('no-data')"
       @sort-change="sortColumnChange"
     >
-      <template v-for="({ label, prop, sortable, width }, index) in tableHead">
+      <template v-for="({ label, prop, sortable, width }, index) in tableHead" :key="index">
         <PTableColumn
           v-if="label === 'Actions'"
           :label="label"
@@ -17,10 +17,11 @@
         >
           <template #default="scope">
             <PToolbox
+              trigger="click"
               :pElements="actionsBuilder(scope.row.statusCode)"
               @p-toolbox-item-clicked="actionClicked($event, scope.row)">
               <PButton pType="generic">
-                <PIcon>
+                <PIcon color="#A4A4A4" size="14px">
                   <PIThreeDots />
                 </PIcon>
               </PButton>
@@ -232,7 +233,7 @@ const tableHead = [
     label: `${t('account-number')}`,
     prop: 'accountNumber',
     sortable: true,
-    width: '105'
+    width: '120'
   },
   { label: `${t('bank')}`, prop: 'bankName', sortable: true },
   { label: `${t('created-on')}`, prop: 'creationDate', sortable: true, width: '105' },
