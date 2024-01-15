@@ -9,6 +9,7 @@ import TableData from './'
 
 const handleFavorites = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
+const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -19,7 +20,7 @@ vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        id: '565cf560-8a2a-494f-9f85-73a031ed258e'
+        id: contactId
       }
     })
   })
@@ -85,7 +86,7 @@ describe('tableData', () => {
     })
   })
 
-  it('has a correct link in toolbox', () => {
+  it('should be a correct link in the toolbox', () => {
     const getPopoverContent = () => document.body.getElementsByClassName('p-toolbox-item__text')[0].innerHTML
     const rows = wrapper.findAll('tr.el-table__row')
     const firstRowText = rows[0]
@@ -97,8 +98,7 @@ describe('tableData', () => {
     const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
     resendEmailButton.click()
     await nextTick()
-    const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
-    const notifText = 'Un problème est survenu lors de l’envoie du mail d’activation'
+    const notifText = 'A problem occurred while sending the activation email for '
     const {
       id
     } = mockTableData[1]

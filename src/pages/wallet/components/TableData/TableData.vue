@@ -156,7 +156,8 @@ import {
   PToolbox,
   PICheck,
   PIExclamationTriangle,
-  PNotification
+  PNotification,
+  type PToolboxItemProps
 } from '@kpmg/styleguide'
 import {
   onMounted,
@@ -167,7 +168,7 @@ import {
 import { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { commonApi, commonStore } from '@kpmg/common'
-import type { PToolboxItemProps, Props, Row } from './types'
+import type { Props, Row } from './types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -274,7 +275,7 @@ watch(() => props.data, () => {
 
 const notifOnError = (companyName: string) => {
   PNotification({
-    message: `Un problème est survenu lors de l’envoie du mail d’activation pour ${companyName}`,
+    message: t('resendMailErrorMessage') + companyName,
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: true,
@@ -282,28 +283,32 @@ const notifOnError = (companyName: string) => {
   })
 }
 
-const onToolboxItemClicked = async (action: String, companyName: string, accountId: string) => {
+const resendActivationEmail = async (accountId: string, companyName: string) => {
+  const contactId = userStore.user?.id
+  const url = `/Activation/Invite?accountId=${accountId}&contactId=${contactId}`
+  try {
+    const { status } = await commonApi().onboarding.post(url)
+    if (status === 200) {
+      PNotification({
+        message: t('resendMailSuccessMessageFirst') + companyName + t('resendMailSuccessMessageSecond'),
+        icon: PICheck,
+        showClose: true,
+        customClass: 'success',
+        position: 'bottom-right'
+      })
+    } else {
+      notifOnError(companyName)
+    }
+  } catch {
+    notifOnError(companyName)
+  }
+}
+
+const onToolboxItemClicked = async (action: string, companyName: string, accountId: string) => {
   if (action === 'deploy') {
     emit('clickDeploy', companyName)
   } else if (action === 'resendActivationEmail') {
-    const contactId = userStore.user?.id
-    const url = `/Activation/Invite?accountId=${accountId}&contactId=${contactId}`
-    try {
-      const { status } = await commonApi().onboarding.post(url)
-      if (status === 200) {
-        PNotification({
-          message: `Un nouveau mail d’activation pour ${companyName} a bien été envoyé.`,
-          icon: PICheck,
-          showClose: true,
-          customClass: 'success',
-          position: 'bottom-right'
-        })
-      } else {
-        notifOnError(companyName)
-      }
-    } catch {
-      notifOnError(companyName)
-    }
+    resendActivationEmail(accountId, companyName)
   }
 }
 </script>
@@ -378,6 +383,9 @@ en-US:
   resendActivationEmail: 'Resend activation email'
   toDeploy: 'To Deploy'
   inProgress: 'In progress'
+  resendMailErrorMessage: 'A problem occurred while sending the activation email for '
+  resendMailSuccessMessageFirst: 'A new activation email for '
+  resendMailSuccessMessageSecond: ' has been sent successfully.'
 fr-FR:
   companyName: 'Nom de la société'
   folderID: 'ID Dossier'
@@ -390,4 +398,7 @@ fr-FR:
   resendActivationEmail: 'Relancer mail d''activation'
   toDeploy: 'A déployer'
   inProgress: 'En cours'
+  resendMailErrorMessage: 'Un problème est survenu lors de l''envoie du mail d''activation pour '
+  resendMailSuccessMessageFirst: 'Un nouveau mail d''activation pour '
+  resendMailSuccessMessageSecond: ' a bien été envoyé.'
 </i18n>
