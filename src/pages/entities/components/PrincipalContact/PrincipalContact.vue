@@ -66,6 +66,7 @@ const contactTag = {
 
 const props = defineProps<PrincipalContactProps>()
 </script>
+
 <style lang="scss" scoped>
 .principal-contact {
   background: var(--el-color-neutral-gray-50);

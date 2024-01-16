@@ -29,7 +29,7 @@ vi.mock('@/services/offer', () => ({
 }))
 
 async function getWrapper(isOpened: boolean) {
-  const wrapper = await mount(OffersDrawer, {
+  const wrapper = mount(OffersDrawer, {
     props: {
       modelValue: isOpened,
       selectedCompanyName: companyTestName
@@ -40,11 +40,23 @@ async function getWrapper(isOpened: boolean) {
   return wrapper
 }
 
+const findSecondOffer = (wrapper: VueWrapper) =>
+  wrapper.find('[data-testid=offers] [data-testid=offer-item]:nth-child(2)')
+
+const findFirstOffer = (wrapper: VueWrapper) =>
+  wrapper.find('[data-testid=offers] [data-testid=offer-item]')
+
+const findOfferSubscription = (wrapper: VueWrapper) =>
+  wrapper.find('[data-testid=offer]')
+
+const findOffers = (wrapper: VueWrapper) =>
+  wrapper.find('[data-testid=offers]')
+
 describe('offersDrawer', () => {
   describe('interactions', () => {
     it('should close offers drawer when clicking on close buton', async () => {
       const wrapper = await getWrapper(true)
-      const offers = wrapper.find('[data-testid=offers]')
+      const offers = findOffers(wrapper)
 
       expect(wrapper.props('modelValue')).toBeTruthy()
       expect(offers.exists()).toBeTruthy()
@@ -55,23 +67,19 @@ describe('offersDrawer', () => {
     })
     it('should display current offer when an offer is selected', async () => {
       const wrapper = await getWrapper(true)
-      const secondOffer = wrapper.find(
-        '[data-testid=offers] [data-testid=offer-item]:nth-child(2)'
-      )
+      const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
       await flushPromises()
 
-      const offers = wrapper.find('[data-testid=offers]')
+      const offers = findOffers(wrapper)
       expect(offers.exists()).toBeFalsy()
 
-      const offer = wrapper.find('[data-testid=offer]')
+      const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
     })
     it('should hide current offer when click on previousButton', async () => {
       const wrapper = await getWrapper(true)
-      const secondOffer = wrapper.find(
-        '[data-testid=offers] [data-testid=offer-item]:nth-child(2)'
-      )
+      const secondOffer = findSecondOffer(wrapper)
       await secondOffer?.trigger('click')
       await flushPromises()
 
@@ -80,22 +88,22 @@ describe('offersDrawer', () => {
       )
       await (nextPreviousButtons as VueWrapper).vm.$emit('clickPrevious')
 
-      const offers = wrapper.find('[data-testid=offers]')
+      const offers = findOffers(wrapper)
       expect(offers.exists()).toBeTruthy()
 
-      const offer = wrapper.find('[data-testid=offer]')
+      const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeFalsy()
     })
   })
   describe('props', () => {
     it('should display offers when drawer is opened', async () => {
       const wrapper = await getWrapper(true)
-      const offers = wrapper.find('[data-testid=offers]')
+      const offers = findOffers(wrapper)
       expect(offers.exists()).toBeTruthy()
     })
     it('should NOT display offers when drawer is closed', async () => {
       const wrapper = await getWrapper(false)
-      const offers = wrapper.find('[data-testid=offers]')
+      const offers = findOffers(wrapper)
       expect(offers.exists()).toBeFalsy()
     })
     it('should display company name at the top of the drawer', async () => {
@@ -116,9 +124,7 @@ describe('offersDrawer', () => {
     it('should display offer intranet link beside the drawer title', async () => {
       const wrapper = await getWrapper(true)
       const firstOfferIntranetLink = subscriptionOffersServices[0].intranetLink
-      const firstOffer = wrapper.find(
-        '[data-testid=offers] [data-testid=offer-item]'
-      )
+      const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
       await flushPromises()
       const offerIntranetLink = wrapper.find('.offers-drawer__details-link')
@@ -130,24 +136,20 @@ describe('offersDrawer', () => {
   describe('offerStepper', () => {
     it('the offer stepper should be displayed after clicking on offer', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = wrapper.find(
-        '[data-testid=offers] [data-testid=offer-item]'
-      )
+      const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
       await flushPromises()
 
       const offerStepper = wrapper.find('[data-testid=offer-stepper]')
       expect(offerStepper.exists()).toBeTruthy()
 
-      const offer = wrapper.find('[data-testid=offer]')
+      const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
     })
 
     it('should display the correct page after clicking on stepper navigation buttons', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = wrapper.find(
-        '[data-testid=offers] [data-testid=offer-item]'
-      )
+      const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
       await flushPromises()
 
@@ -170,22 +172,20 @@ describe('offersDrawer', () => {
       await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
       await (PreviousButton as VueWrapper).vm.$emit('clickPrevious')
 
-      const offer = wrapper.find('[data-testid=offer]')
+      const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
     })
 
     it('should display the offer stepper when validation is not required', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = wrapper.find(
-        '[data-testid=offers] [data-testid=offer-item]:nth-child(2)'
-      )
-      await firstOffer.trigger('click')
+      const secondOffer = findSecondOffer(wrapper)
+      await secondOffer.trigger('click')
       await flushPromises()
 
       const offerStepper = wrapper.find('[data-testid=offer-stepper]')
       expect(offerStepper.exists()).toBeFalsy()
 
-      const offer = wrapper.find('[data-testid=offer]')
+      const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
     })
   })

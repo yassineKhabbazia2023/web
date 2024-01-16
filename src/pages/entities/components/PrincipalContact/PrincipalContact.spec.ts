@@ -2,17 +2,16 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PrincipalContact from '.'
 import { getMockedPrincipalContact } from './PrincipalContactMocks'
-import type { PrincipalContactProps } from './PrincipalContactTypes'
 
 const principalContact = getMockedPrincipalContact()
 const contactDescription =
   'This signatory user will be the first client embarked on the file.'
 
-async function getWrapper() {
-  const wrapper = await mount(PrincipalContact, {
+function getWrapper() {
+  const wrapper = mount(PrincipalContact, {
     props: {
       principalContact
-    } satisfies PrincipalContactProps as PrincipalContactProps
+    }
   })
 
   return wrapper
@@ -20,8 +19,8 @@ async function getWrapper() {
 
 describe('principalContact', () => {
   describe('props', () => {
-    it('should display component with all information', async () => {
-      const wrapper = await getWrapper()
+    it('should display component with all information', () => {
+      const wrapper = getWrapper()
       const fullName = `${
         principalContact.firstName
       } ${principalContact.lastName.toUpperCase()}`
