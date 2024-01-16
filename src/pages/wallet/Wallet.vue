@@ -61,6 +61,8 @@
         data-testid="offers-drawer"
         v-if="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
+        :accountNumber="selectedAccountNumber"
+        :userEmail="userStore?.user?.email"
         v-model="openOffersDrawer"
       />
     </div>
@@ -168,7 +170,7 @@ const handlePageRangeChanged = (newValue: number) => {
 const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
    - ${((state.currentPage - 1) * state.limit) +
-    state.data.length} 
+    state.data.length}
    ${t('on')} ${state.totalItems}`
 )
 
@@ -279,9 +281,11 @@ onMounted(async () => {
 })
 
 const openOffersDrawer = ref(false)
+const selectedAccountNumber = ref<string>('')
 
-const onClickDeploy = (companyName: string) => {
+const onClickDeploy = (accountNumber: string, companyName: string) => {
   openOffersDrawer.value = true
+  selectedAccountNumber.value = accountNumber
   selectedCompanyName.value = companyName
 }
 const onClickFolder = (companyName: string) => {

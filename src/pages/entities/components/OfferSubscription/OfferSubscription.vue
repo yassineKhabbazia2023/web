@@ -8,7 +8,11 @@
       :key="index"
       data-testid="provider-card"
       :offerProvider="provider"
+      :offerId="subscriptionOffer.offerId"
+      :selectedProducts="selectedProducts"
       class="margin-bottom--3"
+      @select-product="onSelectProduct"
+      @deselect-product="onDeselectProduct"
     />
   </div>
 </template>
@@ -27,6 +31,19 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
+
+const emit = defineEmits<{
+  'select-product': [number, string],
+  'deselect-product': [number, string]
+}>()
+
+function onSelectProduct(offerId: number, productId: string) {
+  emit('select-product', offerId, productId)
+}
+
+function onDeselectProduct(offerId: number, productId: string) {
+  emit('deselect-product', offerId, productId)
+}
 
 defineProps<OfferSubscriptionProps>()
 </script>

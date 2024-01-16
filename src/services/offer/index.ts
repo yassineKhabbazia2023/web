@@ -27,9 +27,8 @@ export const getOffer = async (
 ): Promise<SubscriptionOfferServices | undefined> => {
   try {
     const response = await commonApi().offer.get(`offers/${offerId}`)
-    if (response.data) {
-      return response.data
-    }
+
+    return response.data
   } catch (error) {
     handleRequestError(`fetching offer ${offerId}`, error)
   }

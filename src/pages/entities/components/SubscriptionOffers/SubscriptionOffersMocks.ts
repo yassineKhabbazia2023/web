@@ -1,4 +1,4 @@
-import type { SubscriptionOffer } from './SubscriptionOffersTypes'
+import type { SubscriptionOffer, SubscriptionOfferProduct } from './SubscriptionOffersTypes'
 
 export function getMockedSubscriptionOffers() {
   const Subscription = [{
@@ -51,4 +51,21 @@ export function getMockedSubscriptionOffers() {
   }] satisfies SubscriptionOffer[] as SubscriptionOffer[]
 
   return Subscription
+}
+
+export function getMockedSubscriptionOfferProduct(override: Partial<SubscriptionOfferProduct> = {}) {
+  const defaultSubscriptionOfferProduct: SubscriptionOfferProduct = {
+    productName: 'product-name',
+    productId: 'product-id',
+    productLabel: 'product-label',
+    enabled: false,
+    isOptionnal: false,
+    priceType: 'free',
+    price: 0
+  }
+
+  return {
+    ...defaultSubscriptionOfferProduct,
+    ...override
+  }
 }

@@ -122,8 +122,7 @@
       <PToolbox
         trigger="click"
         :pElements="menuElements(scope.row.deploymentStatus.text)"
-        @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row.name, scope.row.id)"
-
+        @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
       >
         <PButton
           pType="white"
@@ -231,7 +230,7 @@ const { user } = storeToRefs(userStore)
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{
-  clickDeploy: [string],
+  clickDeploy: [string, string],
   access: [string]
 }>()
 
@@ -305,13 +304,15 @@ const resendActivationEmail = async (accountId: string, companyName: string) => 
   }
 }
 
-const onToolboxItemClicked = async (action: string, companyName: string, accountId: string) => {
+const onToolboxItemClicked = async (action: string, row: any) => {
+  const { id, name, accountNumber } = row
+
   if (action === 'deploy') {
-    emit('clickDeploy', companyName)
+    emit('clickDeploy', accountNumber, name)
   } else if (action === 'resendActivationEmail') {
-    resendActivationEmail(accountId, companyName)
+    resendActivationEmail(id, name)
   } else if (action === 'access') {
-    emit('access', companyName)
+    emit('access', name)
   }
 }
 </script>

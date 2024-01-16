@@ -10,7 +10,6 @@ import TableData from './'
 const handleFavorites = vi.fn()
 const postMock = vi.fn()
 const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
-const companyName = [['NOM1']]
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -147,19 +146,23 @@ describe('tableData', () => {
   it('should emit clickDeploy when click on deploy button', async () => {
     await flushPromises()
 
+    const { accountNumber, name } = mockTableData[0]
+
     const deployButton = document.body.getElementsByClassName('p-toolbox-item__text')[0] as HTMLElement
     deployButton.click()
 
-    expect(wrapper.emitted('clickDeploy')).toStrictEqual(companyName)
+    expect(wrapper.emitted('clickDeploy')).toStrictEqual([[accountNumber, name]])
   })
 
   it('should emit access when click on access button', async () => {
     await flushPromises()
 
+    const { name } = mockTableData[0]
+
     const accessButton = document.body.getElementsByClassName('p-toolbox-item__text')[1] as HTMLElement
     accessButton.click()
 
-    expect(wrapper.emitted('access')).toStrictEqual(companyName)
+    expect(wrapper.emitted('access')).toStrictEqual([[name]])
   })
 
   it('has the first entity selected by default', async () => {

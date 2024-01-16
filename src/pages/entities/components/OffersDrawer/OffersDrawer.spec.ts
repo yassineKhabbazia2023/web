@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
@@ -9,6 +9,9 @@ import type {
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
+import * as OffersDrawerUtils from './OffersDrawerUtils'
+import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
+import { offerStepperStep } from './OffersDrawerTypes'
 
 const principalContact: User = getMockedPrincipalContact()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
@@ -28,11 +31,26 @@ vi.mock('@/services/offer', () => ({
   getPrincipalContact: vi.fn(() => Promise.resolve(principalContact))
 }))
 
+vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
+  createSubscriptionRequestNew: vi.fn()
+}))
+
+vi.mock('./OffersDrawerUtils', async () => {
+  const OffersDrawerUtils = await vi.importActual('./OffersDrawerUtils')
+
+  return OffersDrawerUtils
+})
+
+const accountNumber = 'account-number'
+const userEmail = 'user@email.com'
+
 async function getWrapper(isOpened: boolean) {
   const wrapper = mount(OffersDrawer, {
     props: {
       modelValue: isOpened,
-      selectedCompanyName: companyTestName
+      selectedCompanyName: companyTestName,
+      accountNumber,
+      userEmail
     }
   })
   await flushPromises()
@@ -47,7 +65,7 @@ const findFirstOffer = (wrapper: VueWrapper) =>
   wrapper.find('[data-testid=offers] [data-testid=offer-item]')
 
 const findOfferSubscription = (wrapper: VueWrapper) =>
-  wrapper.find('[data-testid=offer]')
+  wrapper.findComponent('[data-testid=offer]') as VueWrapper
 
 const findOffers = (wrapper: VueWrapper) =>
   wrapper.find('[data-testid=offers]')
@@ -66,7 +84,7 @@ describe('offersDrawer', () => {
 
       await wrapper.find('.p-drawer__close-button').trigger('click')
 
-      expect(wrapper.emitted()).toHaveProperty('update:modelValue')
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
     it('should display current offer when an offer is selected', async () => {
       const wrapper = await getWrapper(true)
@@ -95,6 +113,65 @@ describe('offersDrawer', () => {
 
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeFalsy()
+    })
+    describe('when user selects or deselects a product', () => {
+      const offerId = subscriptionOffersServices.at(0)?.offerId
+      const products = subscriptionOffersServices.at(0)?.providers?.at(0)?.products
+      const productId = products?.at(0)?.productId ?? ''
+      let offer: VueWrapper
+      beforeEach(async () => {
+        const wrapper = await getWrapper(true)
+        const firstOffer = findFirstOffer(wrapper)
+        await firstOffer?.trigger('click')
+        await flushPromises()
+
+        offer = findOfferSubscription(wrapper)
+      })
+      it('should call addSelectedProduct when OfferSubscription emit select-product', () => {
+        const addSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'addSelectedProduct')
+        offer.vm.$emit('select-product', offerId, productId)
+
+        expect(addSelectedProductSpy).toHaveBeenCalledWith(expect.anything(), offerId, productId)
+      })
+      it('should call removeSelectedProduct when OfferSubscription emit deselect-product', () => {
+        const removeSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'removeSelectedProduct')
+        offer.vm.$emit('deselect-product', offerId, productId)
+
+        expect(removeSelectedProductSpy).toHaveBeenCalledWith(expect.anything(), offerId, productId)
+      })
+    })
+    describe('when user has clicked 4 times on nextButton', () => {
+      it('when user has clicked 4 times on nextButton', async () => {
+        const wrapper = await getWrapper(true)
+        const secondOffer = findSecondOffer(wrapper)
+        await secondOffer.trigger('click')
+        await flushPromises()
+        const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
+
+        const nextPreviousButtons = findNextPreviousButtons(wrapper)
+        const stepCount = Object.keys(offerStepperStep).length
+        for (let i = 0; i < stepCount - 1; i++) {
+          nextPreviousButtons.vm.$emit('clickNext')
+        }
+        const expectedArgument = {
+          account: {
+            accountNumber: 'account-number'
+          },
+          applicant: 'user@email.com',
+          approvalRequired: false,
+          collaborators: [],
+          globalOfferId: 'offer-id-2',
+          notes: [],
+          products: [
+            'product-id-5'
+          ],
+          users: [
+            'cgreenall0@stumbleupon.com'
+          ]
+        }
+
+        expect(createSubscriptionRequestNewSpy).toHaveBeenCalledWith(expectedArgument)
+      })
     })
   })
   describe('props', () => {
