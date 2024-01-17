@@ -3,6 +3,8 @@ import type {
   SubscriptionOffer,
   SubscriptionOfferServices
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import { getMockedPrincipalContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
 
 const handleRequestError = async (action: string, error: any) => {
@@ -36,6 +38,14 @@ export const getOffer = async (
   }
 }
 
-export const getOffersBookLink = () : string | undefined => {
+export const getPrincipalContact = async (): Promise<User | undefined> => {
+  try {
+    return Promise.resolve(getMockedPrincipalContact())
+  } catch (error) {
+    handleRequestError('fetching principal contact', error)
+  }
+}
+
+export const getOffersBookLink = (): string | undefined => {
   return VITE_CONFIG_OFFERS_BOOK
 }

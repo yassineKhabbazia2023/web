@@ -1,16 +1,22 @@
 import { describe, it, vi, expect } from 'vitest'
-import { getAllOffers, getOffer, getOffersBookLink } from '.'
 import {
-  getMockedSubscriptionOffers
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
+  getAllOffers,
+  getOffer,
+  getOffersBookLink,
+  getPrincipalContact
+} from '.'
+import { getMockedSubscriptionOffers } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
 import {
   getMockedSubscriptionOffersServices
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
+import { getMockedPrincipalContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
+import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 
+const mockedPrincipalContact: User = getMockedPrincipalContact()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
@@ -83,5 +89,13 @@ describe('getOffersBookLink', () => {
     const offersBookLink = await getOffersBookLink()
 
     expect(offersBookLink).toBe('offers-book-test-link')
+  })
+})
+
+describe('getPrincipalContact', () => {
+  it('should return principal contact details', async () => {
+    const principalContact = await getPrincipalContact()
+
+    expect(principalContact).toStrictEqual(mockedPrincipalContact)
   })
 })
