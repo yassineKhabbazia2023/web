@@ -6,10 +6,7 @@ import type {
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { getMockedPrincipalContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
-
-const handleRequestError = async (action: string, error: any) => {
-  console!.error(`Error ${action}:`, error)
-}
+import { handleRequestError } from '@/helper/helper'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
   try {
