@@ -19,6 +19,7 @@
     <Drawer
       v-if="openDrawer"
       v-model="openDrawer"
+      @new-mandate-crated="$emit('refresh-mandate-collection')"
     />
   </div>
 </template>
@@ -42,6 +43,8 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
+
+defineEmits(['refresh-mandate-collection'])
 
 const openDrawer = ref(false)
 const drawerHandler = () => {

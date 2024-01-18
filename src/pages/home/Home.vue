@@ -1,9 +1,17 @@
 <template>
   <div>
-    <Header />
+    <Header
+      @refresh-mandate-collection="updateTableDisplay({
+      currentPage: activePage,
+      itemsByPage: defaultItemsToDisplay,
+      searchTerm: searchText,
+      sortOrder: defaultSortOrder,
+      sortCriteria: defaultSortCriteria
+      })"
+    />
     <SearchBar
       v-model="searchText"
-      class="padding-left--6 padding-right--6 padding-bottom--6"
+      class="padding-x--6 padding-bottom--6"
     />
     <ListMandate
       :data="mandatesCollection.data"
@@ -13,7 +21,7 @@
       :pagesCount="mandatesCollection.counters.all"
       :pagesRanges="[10, 20, 30]"
       showTotalPageCounter
-      class="padding-left--6 padding-right--6"
+      class="padding-x--6"
       @page-selected="updateTableDisplay"
       :currentPage="activePage"
     />

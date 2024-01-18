@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Header from '.'
 import { expect, describe, it, vi } from 'vitest'
+import Drawer from '@/components/CreateMandate/Drawer'
 
 const createWrapper = () =>
   wrapperFactory(Header)
@@ -23,5 +24,12 @@ describe('header.vue', () => {
     expect(wrapper.find('.drawer-create-mandate').exists()).toBeFalsy()
     await wrapper.find('.header__create-mandate-button').trigger('click')
     expect(wrapper.find('.drawer-create-mandate').exists()).toBeTruthy()
+  })
+
+  it('show emit refresh-mandate-collection', async () => {
+    await wrapper.find('.header__create-mandate-button').trigger('click')
+    wrapper.findComponent(Drawer).vm.$emit('new-mandate-crated')
+    const refreshMandateCollectionEvent: any = wrapper.emitted('refresh-mandate-collection')
+    expect(refreshMandateCollectionEvent).toBeDefined()
   })
 })

@@ -66,4 +66,22 @@ describe('createMandateDrawer.vue', () => {
     await wrapper.find('button[data-testid="quit-dialog-test"]').trigger('click')
     expect(wrapper.find('.p-dialog__text').exists()).toBeFalsy()
   })
+
+  it('should emit new mandate created event', async () => {
+    const wrapper = createWrapper({ modelValue: true })
+    wrapper.vm.nextStepAvailability = true
+    await nextTick()
+    await wrapper.find('button[data-testid="next-step-test"]').trigger('click')
+    wrapper.vm.nextStepAvailability = true
+    await nextTick()
+    await wrapper.find('button[data-testid="next-step-test"]').trigger('click')
+    wrapper.vm.validateAvailability = true
+    await nextTick()
+    await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
+    await nextTick()
+    await wrapper.find('button[data-testid="close-button-test"]').trigger('click')
+    const newMandateCreatedEvent: any = wrapper.emitted('new-mandate-crated')
+    expect(newMandateCreatedEvent).toBeDefined()
+  })
 })
+

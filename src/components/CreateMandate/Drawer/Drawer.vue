@@ -238,7 +238,7 @@ const mandateId = ref('')
 
 const { t } = useI18n({
   inheritLocale: true,
-  locale: 'en-US',
+  locale: 'fr-FR',
   useScope: 'local'
 })
 
@@ -253,7 +253,7 @@ const pDialogControl = reactive({
   dialogCustomClass: 'my-dialog-class'
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'new-mandate-crated'])
 
 const props = defineProps({
   modelValue: Boolean
@@ -289,6 +289,9 @@ const handleValidateAvailability = (availability: boolean) => {
 }
 
 const closeDrawerAndInitStep = () => {
+  if (currentStep.value === 4) {
+    emit('new-mandate-crated')
+  }
   drawerModel.value = false
   currentStep.value = 1
 }
