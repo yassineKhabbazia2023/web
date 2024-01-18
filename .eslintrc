@@ -1,3 +1,11 @@
 {
-  "extends": ["@kpmg/eslint-config-pulse"]
+  "extends": ["@kpmg/eslint-config-pulse"],
+  "overrides": [
+    {
+      "files": ["*Form.vue"],
+      "rules": {
+        "max-len": "off"
+      }
+    }
+  ]
 }

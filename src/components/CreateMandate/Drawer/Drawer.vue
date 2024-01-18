@@ -22,7 +22,10 @@
         <PStep :title="t('infos')" />
         <PStep :title="t('banking-data')" />
       </PSteps>
-      <div v-if="currentStep <= 3" class="drawer-create-mandate__title margin-bottom--4">
+      <div
+        v-if="currentStep <= 3"
+        class="drawer-create-mandate__title margin-bottom--4 padding-x--0 padding-y--1"
+      >
         <p class="font-large">
           <template v-if="currentStep === 1">
             {{ t('entity') }}
@@ -238,7 +241,6 @@ const mandateId = ref('')
 
 const { t } = useI18n({
   inheritLocale: true,
-  locale: 'fr-FR',
   useScope: 'local'
 })
 
@@ -341,7 +343,6 @@ defineExpose({
     color: var(--el-color-neutral-gray-900);
     font-style: normal;
     line-height: 120%;
-    padding: 4px 0px;
   }
   &__tooltip {
     margin-top: 1px;

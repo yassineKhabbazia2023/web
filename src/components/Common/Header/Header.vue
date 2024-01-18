@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="header">
-      <div class="header__title">
+    <div class="header padding--6">
+      <div class="header__title font-normal">
         {{ t('bank-mandates') }}
       </div>
       <PButton
-        class="header__create-mandate-button"
+        class="header__create-mandate-button font-semibold"
         pType="primary"
         pSize="default"
         @click="drawerHandler"
@@ -58,20 +58,16 @@ const drawerHandler = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
 
   &__title {
     color: var(--el-color-neutral-gray-900);
     font-size: 24px;
     font-style: normal;
-    font-weight: 400;
     line-height: 120%;
   }
 
   &__create-mandate-button {
-    font-size: 14px;
     font-style: normal;
-    font-weight: 600;
     line-height: 120%;
   }
 }

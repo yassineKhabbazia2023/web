@@ -4,14 +4,14 @@
       pType="paupulse"
       pName="ok"
       pFit="fill"
-      class="download-mandate__illustration"
+      class="download-mandate__illustration margin-bottom--6"
     />
-    <h4 class="download-mandate__title">
+    <h4 class="download-mandate__title font-semibold margin-bottom--2">
       {{t('generated-mandate')}}
     </h4>
-    <div class="download-mandate__body">
+    <div class="download-mandate__body margin-bottom--6 font-normal">
       <p>
-        {{t('download')}} <span class="download-mandate__body--weight">
+        {{t('download')}} <span class="font-semibold">
           {{t('manual-sign')}}
         </span>
       </p>
@@ -23,7 +23,7 @@
       pSize=""
       pHasIcon
       pHasButton
-      class="download-mandate__file-card"
+      class="download-mandate__file-card margin-x--6 margin-bottom--4"
     >
       <template #icon>
         <PIcon>
@@ -44,12 +44,12 @@
       </template>
     </PFileCard>
     <PAlert
-      class="download-mandate__file-card"
+      class="download-mandate__file-card margin-x--6 margin-bottom--4"
     >
-      <p class="download-mandate__alert-title">
+      <p class="download-mandate__alert-title font-semibold">
         {{t('help')}}
       </p>
-      <p class="download-mandate__alert-body">{{t('help-label-prefix')}}
+      <p class="download-mandate__alert-body font-normal">{{t('help-label-prefix')}}
         <a href="" class="download-mandate__alert-body--color">{{t('help-label-link')}}</a>
         {{t('help-label-suffix')}}
       </p>
@@ -80,10 +80,8 @@
 
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
-// import { inject } from 'vue'
 import {
   PFileCard,
-  // PILoader,
   PIcon,
   PButton,
   PIFiletypePdf,
@@ -93,7 +91,6 @@ import {
 } from '@kpmg/styleguide'
 import { downloadUnsignedMandate } from '@/services/mandate'
 import { downloadFile } from '@/helpers/utils'
-// const toastPlugin:any = inject('toast')
 const props = defineProps({
   mandateId: {
     type: String,
@@ -129,17 +126,6 @@ const downloadMandate = async () => {
   }
 }
 
-/* const openLoading = () => {
-  toastPlugin({
-    message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: PILoader,
-    showClose: false,
-    customClass: 'loading',
-    position: 'bottom-right',
-    duration: 2000
-  })
-} */
-
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
@@ -151,7 +137,6 @@ const { t } = useI18n({
   &__illustration {
     display: flex;
     justify-content: center;
-    margin-bottom: 24px;
     img {
       width: 316px;
       height: 300px;
@@ -162,40 +147,25 @@ const { t } = useI18n({
     text-align: center;
     font-size: 2.1rem;
     font-style: normal;
-    font-weight: 600;
     line-height: 120%;
-    margin-bottom: 8px;
   }
   &__body {
     text-align: center;
     color: var(--el-color-neutral-gray-900);
-    font-size: 1.4rem;
     font-style: normal;
-    font-weight: 400;
     line-height: 140%;
-    margin-bottom: 24px;
-    &--weight {
-      font-weight: 600;
-    }
-  }
-  &__file-card {
-    margin: 0 24px 16px;
   }
   &__button {
     display: flex;
     justify-content: center;
   }
   &__alert-title {
-    font-size: 14px;
     font-style: normal;
-    font-weight: 600;
     line-height: 140%;
   }
   &__alert-body {
     color: var(--pulse-color-neutral-gray-700);
-    font-size: 14px;
     font-style: normal;
-    font-weight: 400;
     line-height: 140%;
     &--color {
       color: var(--el-color-primary);

@@ -53,7 +53,7 @@
       </div>
       <div v-if="step === 2">
         <PFormItem pProp="title">
-          <label class="create-mandate-form__title-label">
+          <label class="create-mandate-form__title-label font-semibold">
             {{ t('title') }}
             <span class="create-mandate-form__title-label__asterisk">
               {{ t('form.asterisk') }}
@@ -100,10 +100,10 @@
           disabled
         >
           <div>
-            <span class="create-mandate-form_optional-title"
+            <span class="create-mandate-form_optional-title font-semibold"
             >{{ t('email') }}
             </span>
-            <span class="create-mandate-form_optional">{{
+            <span class="create-mandate-form_optional font-normal">{{
               t('optional')
             }}</span>
           </div>
@@ -113,7 +113,7 @@
             pSize="default"
           />
         </PFormItem>
-        <h5 class="create-mandate-form__section-title">
+        <h5 class="create-mandate-form__section-title margin-top--8 margin-bottom--4 font-semibold">
           {{ t('headquarters') }}
         </h5>
         <PFormItem
@@ -130,10 +130,10 @@
           disabled
         >
           <div>
-            <span class="create-mandate-form_optional-title"
+            <span class="create-mandate-form_optional-title font-semibold"
             >{{ t('complement') }}
             </span>
-            <span class="create-mandate-form_optional">{{
+            <span class="create-mandate-form_optional font-normal">{{
               t('optional')
             }}</span>
             </div>
@@ -266,7 +266,7 @@
         </PFormItem>
         <PAlert pType="danger" v-if="isScrappable">
           {{ t('form.error.notListed') }}
-          <span class="create-mandate-form__content--bold">
+          <span class="font-bold">
             {{ t('form.error.frFmMandat') }}
           </span>
           {{ t('form.error.contactTeam') }}
@@ -279,92 +279,97 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    ibs-number: 'IBS Number'
-    company-name: 'Company name'
-    siret-number: 'SIRET'
-    title: 'Civility'
-    mister: 'Mister'
-    madam: 'Madam'
-    lastName: 'Last name'
-    firstName: 'First name'
-    email: 'Email'
-    optional: ' (optional)'
-    headquarters: 'Headquarters'
-    address: 'Address'
-    complement: 'Address complement'
-    zipCode: 'ZipCode'
-    city: 'City'
-    country: 'Country'
-    institutionCode: 'Institution Code'
-    branchCode: 'Branch Code'
-    accountNumber: 'Account Number'
-    key: 'Key'
-    bank: 'Bank'
-    form:
-      asterisk: '*'
-      error:
-        requiredField: 'Required field'
-        mandatoryChoice: 'Mandatory choice'
-        input_5_chars: 'Input must have exactly 5 characters'
-        input_11_chars: 'Input must have exactly 11 characters'
-        input_2_chars: 'Input must have exactly 2 characters'
-        only_numbers: 'Input must contain only numbers'
-        alphanumeric_only: 'Input must contain only numbers and letters'
-        bankingInfoNotRecognized: 'The entered banking information is not recognized'
-        notListed: 'This bank is not listed as a JeDéclare partner and requires data scrapping.
-         We invite you to contact the '
-        contactTeam: ' teams for this.'
-        frFmMandat: 'FR-FM-MesMandats'
-        correctEmail: 'Please input correct email address'
-        validNumber: 'Please input a valid number'
-        ibsNotFound: 'IBS number not found.'
-        outWalletIBS: 'The IBS must be part of your portfolio and have active engagement.'
-        nonScrappable: 'This bank is not scrappable.'
-  fr-FR:
-    ibs-number: 'Numéro IBS'
-    company-name: 'Raison sociale'
-    siret-number: 'N° SIRET'
-    title: 'Civilité'
-    mister: 'Monsieur'
-    madam: 'Madame'
-    lastName: 'Prénom'
-    firstName: 'Nom'
-    email: 'Adresse mail'
-    optional: ' (facultatif)'
-    headquarters: 'Siège social'
-    address: 'Adresse postale'
-    complement: "Complément d'adresse"
-    zipCode: 'Code postal'
-    city: 'Ville'
-    country: 'Pays'
-    institutionCode: 'Code établissement'
-    branchCode: 'Code guichet'
-    accountNumber: 'Numéro de compte'
-    key: 'Clé'
-    bank: 'Banque'
-    form:
-      asterisk: '*'
-      error:
-        requiredField: 'Champ obligatoire'
-        mandatoryChoice: 'Mandatory choice'
-        input_5_chars: 'L''entrée doit avoir exactement 5 caractères'
-        input_11_chars: 'L''entrée doit avoir exactement 11 caractères'
-        input_2_chars: 'L''entrée doit avoir exactement 2 caractères'
-        only_numbers: 'L''entrée doit contenir uniquement des chiffres'
-        alphanumeric_only: 'L''entrée doit contenir uniquement des chiffres et des lettres'
-        bankingInfoNotRecognized: 'Les informations bancaires saisies ne sont pas reconnues'
-        notListed: 'Cette banque n''est pas listée comme partenaire JeDéclare et doit faire l''objet
-         d''un scrapping de données. Nous vous invitons à contacter les équipes '
-        contactTeam: ' pour cela.'
-        frFmMandat: 'FR-FM-MesMandats'
-        correctEmail: 'Veuillez entrer une adresse e-mail valide'
-        validNumber: 'Veuillez entrer un nombre valide'
-        ibsNotFound: "Le numéro IBS saisi n'est pas reconnu."
-        outWalletIBS: "Le numéro d'IBS saisi doit faire
-         parti de votre portefeuille et avoir un engagement actif."
-        nonScrappable: 'Cette banque n''est pas scrappable.'
+<i18n lang="json">
+  {
+    "en-US": {
+    "ibs-number": "IBS Number",
+    "company-name": "Company name",
+    "siret-number": "SIRET",
+    "title": "Civility",
+    "mister": "Mister",
+    "madam": "Madam",
+    "lastName": "Last name",
+    "firstName": "First name",
+    "email": "Email",
+    "optional": " (optional)",
+    "headquarters": "Headquarters",
+    "address": "Address",
+    "complement": "Address complement",
+    "zipCode": "ZipCode",
+    "city": "City",
+    "country": "Country",
+    "institutionCode": "Institution Code",
+    "branchCode": "Branch Code",
+    "accountNumber": "Account Number",
+    "key": "Key",
+    "bank": "Bank",
+    "form": {
+      "asterisk": "*",
+      "error": {
+        "requiredField": "Required field",
+        "mandatoryChoice": "Mandatory choice",
+        "input_5_chars": "Input must have exactly 5 characters",
+        "input_11_chars": "Input must have exactly 11 characters",
+        "input_2_chars": "Input must have exactly 2 characters",
+        "only_numbers": "Input must contain only numbers",
+        "alphanumeric_only": "Input must contain only numbers and letters",
+        "bankingInfoNotRecognized": "The entered banking information is not recognized",
+        "notListed": "This bank is not listed as a JeDéclare partner and requires data scrapping. We invite you to contact the ",
+        "contactTeam": " teams for this.",
+        "frFmMandat": "FR-FM-MesMandats",
+        "correctEmail": "Please input correct email address",
+        "validNumber": "Please input a valid number",
+        "ibsNotFound": "IBS number not found.",
+        "outWalletIBS": "The IBS must be part of your portfolio and have active engagement.",
+        "nonScrappable": "This bank is not scrappable."
+      }
+    }
+  },
+  "fr-FR": {
+    "ibs-number": "Numéro IBS",
+    "company-name": "Raison sociale",
+    "siret-number": "N° SIRET",
+    "title": "Civilité",
+    "mister": "Monsieur",
+    "madam": "Madame",
+    "lastName": "Prénom",
+    "firstName": "Nom",
+    "email": "Adresse mail",
+    "optional": " (facultatif)",
+    "headquarters": "Siège social",
+    "address": "Adresse postale",
+    "complement": "Complément d'adresse",
+    "zipCode": "Code postal",
+    "city": "Ville",
+    "country": "Pays",
+    "institutionCode": "Code établissement",
+    "branchCode": "Code guichet",
+    "accountNumber": "Numéro de compte",
+    "key": "Clé",
+    "bank": "Banque",
+    "form": {
+      "asterisk": "*",
+      "error": {
+        "requiredField": "Champ obligatoire",
+        "mandatoryChoice": "Mandatory choice",
+        "input_5_chars": "L'entrée doit avoir exactement 5 caractères",
+        "input_11_chars": "L'entrée doit avoir exactement 11 caractères",
+        "input_2_chars": "L'entrée doit avoir exactement 2 caractères",
+        "only_numbers": "L'entrée doit contenir uniquement des chiffres",
+        "alphanumeric_only": "L'entrée doit contenir uniquement des chiffres et des lettres",
+        "bankingInfoNotRecognized": "Les informations bancaires saisies ne sont pas reconnues",
+        "notListed": "Cette banque n'est pas listée comme partenaire JeDéclare et doit faire l'objet d'un scrapping de données. Nous vous invitons à contacter les équipes ",
+        "contactTeam": " pour cela.",
+        "frFmMandat": "FR-FM-MesMandats",
+        "correctEmail": "Veuillez entrer une adresse e-mail valide",
+        "validNumber": "Veuillez entrer un nombre valide",
+        "ibsNotFound": "Le numéro IBS saisi n'est pas reconnu.",
+        "outWalletIBS": "Le numéro d'IBS saisi doit faire parti de votre portefeuille et avoir un engagement actif.",
+        "nonScrappable": "Cette banque n'est pas scrappable."
+      }
+    }
+  }
+}
 </i18n>
 
 <script setup lang='ts'>
@@ -762,13 +767,6 @@ defineExpose({
 
 <style lang="scss">
 .create-mandate-form {
-  &__ibs {
-    display: flex;
-    &-label {
-      padding-right: 8px;
-    }
-  }
-
   .el-form-item__content {
     display: flex;
     align-items: start;
@@ -779,27 +777,23 @@ defineExpose({
     font-size: 12px;
     font-style: normal;
     color: var(--el-color-neutral-gray-900);
-    font-weight: 600;
     line-height: 120%;
 
     &__asterisk {
-      color: red;
+      color: var(--el-color-functionnal-red);
     }
   }
 
   &__section-title {
-    margin: 32px 0px 16px 0px;
     color: var(--el-color-neutral-gray-900);
     font-size: 16px;
     font-style: normal;
-    font-weight: 600;
     line-height: 120%;
   }
 
   &_optional-title {
     font-size: 12px;
     font-style: normal;
-    font-weight: 600;
     line-height: 120%;
     color: var(--el-color-neutral-gray-900);
   }
@@ -807,7 +801,6 @@ defineExpose({
   &_optional {
     font-size: 12px;
     font-style: normal;
-    font-weight: 400;
     line-height: 120%;
     color: var(--el-color-neutral-gray-500);
   }
@@ -816,12 +809,6 @@ defineExpose({
   .el-input__inner::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
-
-  &__content {
-    &--bold {
-      font-weight: 700;
-    }
   }
 }
 </style>
