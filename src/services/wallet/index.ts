@@ -1,6 +1,6 @@
 
-import { Collab } from '@/pages/folder/components/Collaborators/types'
-import { mockCollabsData } from '@/pages/folder/components/Collaborators/mockData'
+import { Collab } from '@/pages/wallet/pages/folder/Collaborators/types'
+import { mockCollabsData } from '@/pages/wallet/pages/folder/Collaborators/mockData'
 import { handleRequestError } from '@/helper/helper'
 
 export const getCollaboratorsByIdEntity = async (

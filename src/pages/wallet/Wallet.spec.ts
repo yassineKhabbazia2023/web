@@ -56,12 +56,25 @@ vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        token: 'token'
+        token: 'token',
+        entities: {
+          default: {
+            name: 'Tesla'
+          }
+        }
       }
     }),
     getters: {
       isAuthenticated: () => true
     }
+  })
+}))
+
+const mockRouterPush = vi.fn()
+
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mockRouterPush
   })
 }))
 
@@ -120,6 +133,20 @@ describe('wallet', () => {
 
     const subscriptionDrawer = wrapper.findComponent('[data-testid=offers-drawer]')
     expect(subscriptionDrawer.exists()).toBeTruthy()
+  })
+
+  it('should redirect when click on access folder', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    console.log(wrapper.vm.state)
+    const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
+    await table.vm.$emit('access', 'Tesla')
+
+    expect(mockRouterPush).toHaveBeenCalledTimes(1)
+    expect(mockRouterPush).toHaveBeenCalledWith({
+      name: 'users',
+      params: { name: 'Tesla' }
+    })
   })
 
   it('displays a specific component if no items in response API', async () => {

@@ -51,5 +51,5 @@ en-US:
   noResult: 'It looks like there are no results for your search.'
 fr-FR:
   oops: 'Oups'
-  noResult: "Il semblerait qu'il n'y ait pas de résultats à votre recherche."
+  noResult: "Il semblerait qu'il n'y ait pas de résultat à votre recherche."
 </i18n>

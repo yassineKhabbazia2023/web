@@ -1,0 +1,82 @@
+export const dataFromApi = {
+  data: {
+    items: [
+      {
+        firstName: 'Mike',
+        lastName: 'Tyson',
+        email: 'email1@doe.com',
+        isOwner: true,
+        status: 'Connecté',
+        role: 'Gérant',
+        firstDateAccess: '01/11/1923'
+      },
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'email2@doe.com',
+        isOwner: false,
+        status: 'Connecté',
+        role: 'Comptable',
+        firstDateAccess: '02/12/1923'
+      },
+      {
+        firstName: 'Alex',
+
+        lastName: 'Doe',
+        email: 'email@doe.com',
+        isOwner: false,
+        status: 'Connecté',
+        role: 'RH',
+        firstDateAccess: '02/13/1923'
+      },
+      {
+        firstName: 'David',
+        lastName: 'Beckham',
+        email: 'email@doe.com',
+        isOwner: false,
+        status: 'Connecté',
+        role: 'Commerce',
+        firstDateAccess: '01/04/1923'
+      },
+      {
+        firstName: 'Cristiano',
+        lastName: 'Ronaldo',
+        email: 'email@doe.com',
+        isOwner: false,
+        status: 'Connecté',
+        role: 'Mafia',
+        firstDateAccess: '12/04/1923'
+      },
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'email@doe.com',
+        isOwner: false,
+        status: 'Connecté',
+        role: 'Star',
+        firstDateAccess: '12/02/1923'
+      },
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'email@doe.com',
+        isOwner: false,
+        status: 'Connecté',
+        role: 'Marketing',
+        firstDateAccess: '11/12/1923'
+      },
+      {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'email@doe.com',
+        isOwner: false,
+        status: 'Invité',
+        role: 'Designer',
+        firstDateAccess: '10/01/1923'
+      }
+    ],
+    currentPage: 1,
+    totalPage: 2,
+    totalItems: 19
+  }
+}

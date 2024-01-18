@@ -39,6 +39,7 @@
         :data="state.data"
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
+        @access="onClickFolder"
       />
 
       <PPagination
@@ -87,6 +88,7 @@ import Tags from './components/Tags'
 import NoResult from './components/NoResult'
 import TableData from './components/TableData'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -94,6 +96,7 @@ const { t } = useI18n({
 })
 
 const userStore = commonStore()
+const router = useRouter()
 const selectedCompanyName = ref('')
 
 const PAGE_SIZES = [15, 30, 45, 60]
@@ -280,6 +283,9 @@ const openOffersDrawer = ref(false)
 const onClickDeploy = (companyName: string) => {
   openOffersDrawer.value = true
   selectedCompanyName.value = companyName
+}
+const onClickFolder = (companyName: string) => {
+  router.push({ name: 'users', params: { name: companyName } })
 }
 </script>
 

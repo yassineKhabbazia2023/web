@@ -231,7 +231,8 @@ const { user } = storeToRefs(userStore)
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{
-  clickDeploy: [string]
+  clickDeploy: [string],
+  access: [string]
 }>()
 
 const handleRowSelectedChange = (row: any) => {
@@ -309,6 +310,8 @@ const onToolboxItemClicked = async (action: string, companyName: string, account
     emit('clickDeploy', companyName)
   } else if (action === 'resendActivationEmail') {
     resendActivationEmail(accountId, companyName)
+  } else if (action === 'access') {
+    emit('access', companyName)
   }
 }
 </script>

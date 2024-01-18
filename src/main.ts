@@ -33,6 +33,37 @@ routes.value.push({
 } as RouteRecordRaw)
 
 routes.value.push({
+  path: '/dossier',
+  name: 'folder',
+  component: () => import('@/pages/wallet/pages/folder'),
+  children: [
+    {
+      path: ':name/utilisateurs',
+      name: 'users',
+      component: () => import('@/pages/wallet/pages/folder/users')
+    },
+    {
+      path: ':name/collaborateur',
+      name: 'collab',
+      component: () => import('@/pages/wallet/pages/folder/Collaborators')
+    },
+    {
+      path: ':name/offres',
+      name: 'offers',
+      component: () => import('@/pages/wallet/pages/folder/users')
+    }, {
+      path: ':name/informations',
+      name: 'info',
+      component: () => import('@/pages/wallet/pages/folder/users')
+    }, {
+      path: ':name/historique',
+      name: 'history',
+      component: () => import('@/pages/wallet/pages/folder/users')
+    }
+  ]
+})
+
+routes.value.push({
   path: '/subscription',
   name: 'subscription',
   component: () => import('@/pages/subscriptions')
