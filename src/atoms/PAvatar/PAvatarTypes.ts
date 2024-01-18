@@ -14,5 +14,6 @@ export interface PAvatarProps {
     | 'bordered-persian'
   pFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   pSrc?: string
-  pShape? : 'circle' | 'square'
+  pShape? : 'circle' | 'square',
+  pSelected?: boolean
 }

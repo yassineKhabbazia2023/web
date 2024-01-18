@@ -133,5 +133,9 @@ $avatar-size: (
       background: var(--el-color-white);
       color: var(--el-color-persian-500);
     }
+
+    &--selected {
+      opacity: 0.6;
+    }
   }
 }

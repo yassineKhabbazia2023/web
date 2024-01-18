@@ -1,17 +1,30 @@
 <template>
-  <ElAvatar
-    :fit="pFit"
-    size="default"
-    :class="pClassMapper"
-    class="p-avatar"
-    :src="pSrc"
-    :shape="pShape"
-  >
-    <slot />
-  </ElAvatar>
+  <div class="p-avatar-wrapper">
+    <PIcon
+      v-if="pSelected && pType=== 'small'"
+      color="#5546FF"
+      size="12px"
+      data-testid="avatar-check-icon"
+      class="p-avatar-wrapper__check-icon"
+    >
+      <PICheckCircle />
+    </PIcon>
+    <ElAvatar
+      :fit="pFit"
+      size="default"
+      :class="pClassMapper"
+      class="p-avatar"
+      :src="pSrc"
+      :shape="pShape"
+      data-testid="avatar"
+    >
+      <slot />
+    </ElAvatar>
+  </div>
 </template>
 
 <script setup lang="ts">
+import PIcon from '../PIcon'
 import { ElAvatar } from 'element-plus'
 import { computed } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
@@ -21,12 +34,31 @@ const props = withDefaults(defineProps<PAvatarProps>(), {
   pFit: 'cover',
   pColor: 'persian-gradient',
   pSrc: '',
-  pShape: 'circle'
+  pShape: 'circle',
+  pSelected: false
 })
 
 const pClassMapper = computed(() => ({
   [`p-avatar--color-${props.pColor}`]: true,
-  [`p-avatar--type-${props.pType}`]: true
+  [`p-avatar--type-${props.pType}`]: true,
+  'p-avatar--selected': props.pSelected && props.pType === 'small'
 }))
 
 </script>
+<style lang="scss" scoped>
+.p-avatar-wrapper {
+  position: relative;
+
+  &__check-icon {
+    z-index: 10;
+    position: absolute;
+    right: 6px;
+    background: radial-gradient(
+      circle,
+      var(--el-color-base-white) 68%,
+      var(--el-color-base-persian) 0%
+    );
+    border-radius: 50%;
+  }
+}
+</style>

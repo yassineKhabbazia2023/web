@@ -6,12 +6,14 @@
           :pShape="currentShape"
           :pType="currentType"
           :pColor="currentColor"
+          :pSelected="selectedState"
           :pSrc="url"
         />
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
           :pColor="currentColor"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -21,12 +23,14 @@
           :pShape="currentShape"
           :pType="currentType"
           :pColor="currentColor"
+          :pSelected="selectedState"
           pSrc="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         />
         <PAvatar
           :pShape="currentShape"
           :pType="currentType"
           :pColor="currentColor"
+          :pSelected="selectedState"
         >
           AB
         </PAvatar>
@@ -34,6 +38,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="orange"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -43,6 +48,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="persian"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -52,6 +58,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="teal"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -61,6 +68,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="green"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -70,6 +78,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="fuschia"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -79,6 +88,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="gray"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -88,6 +98,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="cyan"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -97,6 +108,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="amethyste"
+          :pSelected="selectedState"
         >
           <PIcon>
             <PIPulse />
@@ -106,6 +118,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="white"
+          :pSelected="selectedState"
         >
           AB
         </PAvatar>
@@ -113,6 +126,7 @@
           :pShape="currentShape"
           :pType="currentType"
           pColor="bordered-persian"
+          :pSelected="selectedState"
         >
           AB
         </PAvatar>
@@ -132,6 +146,11 @@
           v-model="currentColor"
           title="Avatar Colors"
           :options="avatarColorList"
+        />
+        <HstCheckbox
+          v-if="currentType === 'small'"
+          v-model="selectedState"
+          title="Avatar Selected State"
         />
       </template>
     </Variant>
@@ -264,6 +283,8 @@ const currentShape = ref<PAvatarProps['pShape']>('circle')
 const currentType = ref<PAvatarProps['pType']>('default')
 const currentFit = ref<PAvatarProps['pFit']>('cover')
 const currentColor = ref<PAvatarProps['pColor']>('persian-gradient')
+const selectedState = ref<PAvatarProps['pSelected']>(false)
+
 </script>
 
 <style lang="scss">
