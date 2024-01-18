@@ -41,7 +41,7 @@ describe('mouse simple and double click', () => {
   it('should manage simple click', async () => {
     clickMe()
     vi.runAllTimers()
-    expect(dummyFunction).toHaveBeenCalled()
+    expect(dummyFunction).toHaveBeenCalledWith()
   })
 
   it('should manage double click', () => {
@@ -50,6 +50,6 @@ describe('mouse simple and double click', () => {
       clickMe()
     }, 100)
     vi.runAllTimers()
-    expect(fooBarFunction).toHaveBeenCalled()
+    expect(fooBarFunction).toHaveBeenCalledWith()
   })
 })

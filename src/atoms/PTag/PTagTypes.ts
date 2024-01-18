@@ -10,6 +10,7 @@ export interface PTagProps {
     | 'fuschia'
     | 'cyan'
     | 'amethyste'
+    | 'gray-100'
     | 'gray-300'
     | 'gray-500'
     | 'gray-900'
