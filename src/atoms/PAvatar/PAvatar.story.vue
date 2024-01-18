@@ -173,7 +173,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
 import PAvatar from './'
 import { PIPulse } from '../PIcon/components'
@@ -285,9 +285,6 @@ const currentFit = ref<PAvatarProps['pFit']>('cover')
 const currentColor = ref<PAvatarProps['pColor']>('persian-gradient')
 const selectedState = ref<PAvatarProps['pSelected']>(false)
 
-watch(currentType, () => {
-  selectedState.value = false
-})
 </script>
 
 <style lang="scss">

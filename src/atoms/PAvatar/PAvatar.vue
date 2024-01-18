@@ -4,6 +4,7 @@
       v-if="pSelected && pType=== 'small'"
       color="#5546FF"
       size="12px"
+      data-testid="avatar-check-icon"
       class="p-avatar-wrapper__check-icon"
     >
       <PICheckCircle />
@@ -15,6 +16,7 @@
       class="p-avatar"
       :src="pSrc"
       :shape="pShape"
+      data-testid="avatar"
     >
       <slot />
     </ElAvatar>
@@ -39,7 +41,7 @@ const props = withDefaults(defineProps<PAvatarProps>(), {
 const pClassMapper = computed(() => ({
   [`p-avatar--color-${props.pColor}`]: true,
   [`p-avatar--type-${props.pType}`]: true,
-  'p-avatar--state-selected': props.pSelected
+  'p-avatar--state-selected': props.pSelected && props.pType === 'small'
 }))
 
 </script>
