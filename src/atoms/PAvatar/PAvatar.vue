@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<PAvatarProps>(), {
 const pClassMapper = computed(() => ({
   [`p-avatar--color-${props.pColor}`]: true,
   [`p-avatar--type-${props.pType}`]: true,
-  'p-avatar--state-selected': props.pSelected && props.pType === 'small'
+  'p-avatar--selected': props.pSelected && props.pType === 'small'
 }))
 
 </script>
@@ -55,7 +55,7 @@ const pClassMapper = computed(() => ({
     right: 6px;
     background: radial-gradient(
       circle,
-      #fff 68%,
+      var(--el-color-base-white) 68%,
       var(--el-color-base-persian) 0%
     );
     border-radius: 50%;
