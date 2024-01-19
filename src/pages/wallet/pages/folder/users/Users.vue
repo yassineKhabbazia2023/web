@@ -8,7 +8,7 @@
       :pImage="{
         pFit: 'fill',
         pType: 'paupulse',
-        pName: 'add-user'
+        pName: 'portrait-female'
       }"
     />
     <PLoader v-if="state.isLoading" />
@@ -276,7 +276,7 @@ const paginationLabel = computed(() =>
 )
 
 onMounted(async () => {
-  fetch()
+  await fetch()
   watch(() => [
     state.currentPage,
     state.limit

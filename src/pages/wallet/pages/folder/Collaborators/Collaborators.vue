@@ -128,7 +128,7 @@ const { user } = storeToRefs(userStore)
 const pImageProps = {
   pFit: 'fill',
   pType: 'paupulse',
-  pName: 'add-user'
+  pName: 'portrait-female-add-icon'
 } as PImageProps
 
 const collabs = ref<Collab[]>([])
