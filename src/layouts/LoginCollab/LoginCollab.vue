@@ -78,6 +78,7 @@
     <PDrawer
       v-model="isCopyrightDrawerOpened"
       pTitle="Copyright"
+      @closeDrawerButton="handleCloseDrawer"
     >
       <p class="drawerContent">
         {{ t('copyrightContent') }}
