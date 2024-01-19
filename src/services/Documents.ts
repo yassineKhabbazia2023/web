@@ -1,4 +1,5 @@
 import { commonApi as api } from '@kpmg/common'
+import { AxiosResponse } from 'axios'
 import type { Document, DocumentsWithTableStructure } from '@/models/Document'
 import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'
@@ -31,7 +32,7 @@ export const downloadDocument = async (
   serviceId: Service['ServiceId'],
   accountId: string,
   documentId: Document['id']
-): Promise<void> => {
+): Promise<Blob> => {
   const downloadDocumentUrl = `${serviceId}/${accountId}/documents/${documentId}/content`
   const apiObject = api().ds
 
@@ -137,18 +138,33 @@ export const transmitDocuments = async (
     }
   )
 }
+export interface DocumentPreviewResponse {
+  data: ArrayBuffer;
+  headers: { [key: string]: string };
+}
 
 export const previewDocument = async (
   serviceId: Service['ServiceId'],
   entityId: string,
   documentId: Document['id']
-): Promise<{ data: any; headers: any }> => {
+): Promise<DocumentPreviewResponse> => {
   const apiObject = api().ds
-  return await apiObject.get(
+  const response: AxiosResponse<ArrayBuffer> = await apiObject.get(
     `${serviceId}/${entityId}/documents/${documentId}/preview`,
     {
       responseType: 'arraybuffer'
     }
   )
+  const headers: { [key: string]: string } = {}
+  if (response.headers) {
+    for (const [header, value] of Object.entries(response.headers)) {
+      headers[header] = value as string
+    }
+  }
+
+  return {
+    data: response.data,
+    headers
+  }
 }
 

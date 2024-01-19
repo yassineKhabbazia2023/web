@@ -1,5 +1,3 @@
-<!-- eslint-disable no-undef -->
-<!-- eslint-disable max-len -->
 <template>
   <PDocumentViewer
     v-model="isDrawerOpened"
@@ -25,10 +23,13 @@
       </PIcon>
     </template>
     <template #media>
-      <img
-      class="preview-image"
-      :src="previewImage"
-      alt="preview-image" />
+      <PDocumentDisplay
+        :pSrc="previewImage"
+        :pIsLoading="isLoadingDocument"
+        :pDocumentExtension="documentExtension"
+        :errorMsgTitle="t('errorTitle')"
+        :errorMsgText="t('errorMessage')"
+      />
     </template>
     <template #content>
       <DocumentsTabs
@@ -39,16 +40,24 @@
     </template>
   </PDocumentViewer>
 </template>
-
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
-import { PDocumentViewer, PIcon } from '@kpmg/styleguide'
+import { PDocumentViewer, PIcon, PDocumentDisplay } from '@kpmg/styleguide'
 import { DocumentsPreviewProps } from './DocumentPreviewTypes'
-import { previewDocument } from '@/services/Documents'
-import { createBase64Image, getFileIcon } from '../../helpers/filesExtensions'
+import { DocumentPreviewResponse, downloadDocument, previewDocument } from '@/services/Documents'
+import { getFileExtension, getFileIcon, isImageDocument }
+  from '../../helpers/filesExtensions'
 import DocumentsTabs from '@/modules/Documents/sections/DocumentsList/components/DocumentTabs'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<DocumentsPreviewProps>()
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local'
+})
+
+const isLoadingDocument = ref(true)
+const documentExtension = computed(() => getFileExtension(props.document.name))
 const emit = defineEmits([
   'update:modelValue',
   'next-document-preview-button-click',
@@ -64,16 +73,40 @@ const isDrawerOpened = computed({
     emit('update:modelValue', value)
   }
 })
-const previewImage = ref('')
+const previewImage = ref<string|Blob|DocumentPreviewResponse>('')
 
 const fetchPreview = async () => {
   if (props.serviceId && props.entityId && props.document.id) {
-    const response = await previewDocument(
-      props.serviceId,
-      props.entityId,
-      props.document.id
-    )
-    previewImage.value = createBase64Image(response)
+    isLoadingDocument.value = true
+    try {
+
+      if (isImageDocument(documentExtension.value)) {
+        const response = await previewDocument(
+          props.serviceId,
+          props.entityId,
+          props.document.id
+        )
+        if (response) {
+          previewImage.value = response
+          isLoadingDocument.value = false
+
+        }
+      } else {
+        const responseBlob = await downloadDocument(
+          props.serviceId,
+          props.entityId,
+          props.document.id
+        )
+        if (responseBlob) {
+          previewImage.value = responseBlob
+          isLoadingDocument.value = false
+        }
+      }
+    } catch (e) {
+      isLoadingDocument.value = false
+      previewImage.value = ''
+
+    }
   }
 }
 
@@ -106,3 +139,12 @@ const handleClose = () => {
   max-width:100%
 }
 </style>
+<i18n lang="yaml">
+en-US:
+  errorTitle: Aperçu indisponible
+  errorMessage: Le format de document n'est pas supporté
+
+fr-FR:
+  errorTitle: Aperçu indisponible
+  errorMessage: Le format de document n'est pas supporté
+</i18n>

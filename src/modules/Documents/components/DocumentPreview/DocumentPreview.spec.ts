@@ -4,12 +4,12 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
-import { PDocumentViewer, PIcon } from '@kpmg/styleguide'
-import { getFileIcon } from '../../helpers/filesExtensions'
+import { PDocumentDisplay, PDocumentViewer, PIcon } from '@kpmg/styleguide'
 import { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import { documentMock } from '../../mocks/documentMock'
 import DocumentPreview from '.'
-import { previewDocument } from '@/services/Documents'
+import { downloadDocument, previewDocument } from '@/services/Documents'
+import { getFileIcon } from '../../helpers/filesExtensions'
 
 const defaultProps: DocumentsPreviewProps = {
   document: documentMock,
@@ -30,6 +30,7 @@ vi.mock('@kpmg/common', async () => ({
     $post: vi.fn()
   })
 }))
+
 const pinia = createPinia()
 
 const createWrapper = (
@@ -48,7 +49,8 @@ vi.mock('@/services/Documents', () => ({
       data: new ArrayBuffer(1),
       headers: { 'content-type': 'image/jpeg' }
     })
-  })
+  }),
+  downloadDocument: vi.fn()
 }))
 
 describe('documentPreview', () => {
@@ -87,9 +89,21 @@ describe('documentPreview', () => {
       )
       await nextTick()
       expect(wrapper.emitted('previous-document-preview-button-click')).toBeTruthy()
-      expect(vi.mocked(previewDocument)).toHaveBeenCalledTimes(1)
+      expect(vi.mocked(downloadDocument)).toHaveBeenCalledTimes(1)
+    })
+
+    it('should render PDocumentDisplay properly binded', async () => {
+      const wrapper = createWrapper()
+      expect(wrapper.exists()).toBeTruthy()
+
+      await nextTick()
+
+      const pDocumentDisplay = wrapper.findComponent(PDocumentDisplay)
+      expect(pDocumentDisplay.props('pIsLoading')).toBeTruthy()
+      expect(pDocumentDisplay.props('pDocumentExtension')).toStrictEqual('pdf')
     })
   })
+
   describe('interactions', () => {
     it('should emit event when button next clicked ', async () => {
       const wrapper = createWrapper()
@@ -119,14 +133,28 @@ describe('documentPreview', () => {
       expect(wrapper.emitted('previous-document-preview-button-click')).toBeTruthy()
     })
 
-    it('should call previewDocument to get the document ', async () => {
+    it('should call downloadDocument to get the document ', async () => {
       const wrapper = createWrapper()
       expect(wrapper.exists()).toBeTruthy()
 
       await nextTick()
 
       await wrapper.findComponent(PDocumentViewer)
+      expect(vi.mocked(downloadDocument)).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call previewDocument to get the document ', async () => {
+      documentMock.name = 'document.jpeg'
+      const wrapper = createWrapper({ ...defaultProps, document: documentMock })
+      expect(wrapper.exists()).toBeTruthy()
+
+      await nextTick()
+
+      await wrapper.findComponent(PDocumentViewer)
+      const pDocumentDisplay = wrapper.findComponent(PDocumentDisplay)
+      expect(pDocumentDisplay.props('pDocumentExtension')).toStrictEqual('jpeg')
       expect(vi.mocked(previewDocument)).toHaveBeenCalledTimes(1)
+
     })
 
     it('should emit close draxer-close event oppon PDocumentViewer close event', async () => {

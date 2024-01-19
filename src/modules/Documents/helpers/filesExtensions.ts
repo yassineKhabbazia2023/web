@@ -70,6 +70,13 @@ const authorizedExtensions = [
   'onetmp',
   'onepkg'
 ]
+export const imageExtensions =
+['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'cur']
+
+export const isImageDocument = (extension: string): boolean => {
+  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'cur']
+  return imageExtensions.includes(extension.toLowerCase())
+}
 
 export const getDocumentNameExtension = (filename: string): string => {
   const parts = filename.split('.')
@@ -84,22 +91,18 @@ export const getDocumentNameWithoutExtension = (filename: string): string => {
   return parts.join('.')
 }
 
+export const getFileExtension = (filename: string): string => {
+  const lastDotIndex = filename.lastIndexOf('.')
+  if (lastDotIndex === -1 || lastDotIndex === 0 || lastDotIndex === filename.length - 1) {
+    return ''
+  }
+  return filename.slice(lastDotIndex + 1)
+}
+
 export const isExtensionAuthorized = (extension: string): boolean => {
   return authorizedExtensions.includes(extension)
 }
 
-export const createBase64Image = (response: { data: any; headers: any }) => {
-  const image = btoa(
-    new Uint8Array(response.data).reduce(
-      (data, byte) => data + String.fromCharCode(byte),
-      ''
-    )
-  )
-
-  return `data:${response.headers[
-    'content-type'
-  ].toLowerCase()};base64,${image}`
-}
 export const getFileIcon = (fileName: string) => {
   if (!fileName || !fileName.trim().length) return PIFileText
   switch (fileName.split('.').pop()) {

@@ -16,7 +16,14 @@ import { Document } from '@/models/Document'
 import { Folder } from '@/models/Folder'
 import { MoveDocumentsRequest } from '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
 
-const mockDsGet = vi.fn(() => {
+const mockDsGet = vi.fn((url) => {
+  if (url.includes('preview')) {
+    return Promise.resolve({
+      data: new ArrayBuffer(1),
+      headers: { 'content-type': 'image/jpeg' }
+    })
+  }
+
   return Promise.resolve({
     data: {
       documents: 'fetched'
@@ -241,7 +248,7 @@ describe('documents service', () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
     const accountId = 'my-account-id'
 
-    await previewDocument(service.ServiceId, accountId, '1234')
+    const data = await previewDocument(service.ServiceId, accountId, '1234')
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
     expect(mockDsGet).toHaveBeenCalledWith(
@@ -250,6 +257,10 @@ describe('documents service', () => {
         responseType: 'arraybuffer'
       }
     )
+    expect(data).toStrictEqual({
+      data: new ArrayBuffer(1),
+      headers: { 'content-type': 'image/jpeg' }
+    })
+    expect(data.headers).toStrictEqual({ 'content-type': 'image/jpeg' })
   })
-
 })
