@@ -291,9 +291,7 @@ const selectedState = ref<PAvatarProps['pSelected']>(false)
 .demo-type {
   display: flex;
   flex-wrap: wrap;
-  .el-avatar {
-    margin: 0 8px 8px 0;
-  }
+  gap: 8px;
 }
 </style>
 

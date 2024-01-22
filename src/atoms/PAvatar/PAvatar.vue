@@ -52,7 +52,7 @@ const pClassMapper = computed(() => ({
   &__check-icon {
     z-index: 10;
     position: absolute;
-    right: 6px;
+    right: -3px;
     background: radial-gradient(
       circle,
       var(--el-color-base-white) 68%,
