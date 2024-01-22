@@ -4,6 +4,9 @@
     icon="mdi:call-to-action"
     :layout="{ type: 'single', iframe: true }">
     <Variant title="Basic usage simple">
+      <PActionBar :pLeftSideButtons="pLeftSideIcons" :pRightSideButtons="pRightSideIcons2" />
+    </Variant>
+    <Variant title="Basic usage simple without right side buttons">
       <PActionBar :pLeftSideButtons="pLeftSideIcons" :pRightSideButtons="pRightSideIcons" />
     </Variant>
   </Story>
@@ -49,6 +52,7 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
     pButtonName: '',
     pButtonIcon: 'PISearch',
     pButtonActionName: 'buttonActionName',
+    pComponentType: 'SEARCH',
     pButton: {
       pType: 'white',
       pPlain: false,
@@ -61,7 +65,7 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
   }
 ])
 
-const pRightSideIcons = reactive<ComponentDefinitionProps[]>([
+const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
   {
     pButtonName: 'Renommer',
     pButtonIcon: 'PIPencilSquare',
@@ -147,7 +151,7 @@ const pRightSideIcons = reactive<ComponentDefinitionProps[]>([
     }
   }
 ])
-
+const pRightSideIcons = reactive<ComponentDefinitionProps[]>([])
 </script>
 
 <docs lang="md">

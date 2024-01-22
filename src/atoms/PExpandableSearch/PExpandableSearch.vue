@@ -1,5 +1,8 @@
 <template>
-  <div class="p-expandable-search">
+  <div
+class="p-expandable-search
+  flex flex--align-items-center
+  flex--justify-content-start">
     <PButton
       v-if="!isSearchOpen"
       pType="white"
@@ -17,8 +20,9 @@
       :pPlaceholder="pPlaceholder"
       :pPrefixIcon="PISearch"
       pClearable
+      pSize="small"
       :class="['p-expandable-search__input', isSearchOpen ? 'isExpanded' : '']"
-      @clear="isSearchOpen = false"
+      @clear="handleClear"
       @input="handleInput"
     >
     </PInput>
@@ -35,7 +39,8 @@ import PInput from '@/atoms/PInput'
 defineProps<PExpandableSearchProps>()
 
 const emit = defineEmits<{
-  input: [string]
+  input: [string],
+  'search-expand-change':[boolean]
 }>()
 
 const searchContent = ref('')
@@ -43,6 +48,13 @@ const isSearchOpen = ref(false)
 
 const openSearchBar = () => {
   isSearchOpen.value = true
+  emit('search-expand-change', true)
+}
+
+const handleClear = () => {
+  isSearchOpen.value = false
+  emit('search-expand-change', false)
+
 }
 const handleInput = () => {
   emit('input', searchContent.value)
@@ -51,13 +63,12 @@ const handleInput = () => {
 
 <style lang="scss">
 .p-expandable-search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+  height: 32px;
+  width: 100%;
   &__input {
     width: 0;
-    transition: width 0.5s ease-in-out;
+    align-self: stretch;
+    transition: width 0.2s ease-in-out;
     .el-input__wrapper {
       display: none;
     }

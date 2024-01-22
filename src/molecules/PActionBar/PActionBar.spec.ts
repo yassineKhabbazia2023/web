@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { VueWrapper, mount } from '@vue/test-utils'
 import PButton from '@/atoms/PButton'
 import PUpload from '@/atoms/PUpload'
 import PActionBar from './'
@@ -8,6 +8,12 @@ import type {
   PButtonActionBarProps,
   ComponentDefinitionProps
 } from './PActionBarTypes'
+import PExpandableSearch from '@/atoms/PExpandableSearch'
+import type { ComponentPublicInstance } from 'vue'
+
+type PActionBarSetup = {
+  isSearchExpanded: boolean
+}
 
 const defaultButtons: ComponentDefinitionProps[] = [
   {
@@ -30,11 +36,17 @@ const defaultProps: PActionBarProps = {
   pRightSideButtons: defaultButtons,
   pLeftSideButtons: defaultButtons
 }
-const createWrapper = (props = defaultProps) =>
-  mount(PActionBar, {
-    props
+export type PActionBarWrapper = VueWrapper<
+ComponentPublicInstance<PButtonActionBarProps, PActionBarSetup>
+>
 
-  })
+const createWrapper = (
+  props: PActionBarProps = defaultProps
+): PActionBarWrapper => {
+  return mount(PActionBar, {
+    props
+  }) as unknown as PActionBarWrapper
+}
 
 const generateButtonsArray = (nbr: number): ComponentDefinitionProps[] => {
   return Array.from({ length: nbr }, () => ({
@@ -94,25 +106,113 @@ describe('pActionBar', () => {
         expect(pUploadWrapper.exists()).toBeTruthy()
       })
     })
-    describe('right side', () => {
-      it('should display only 5 buttons in the right side of action bar layout', () => {
-        const buttons = generateButtonsArray(10)
-        const wrapper = createWrapper({
-          pLeftSideButtons: defaultProps.pLeftSideButtons,
-          pRightSideButtons: buttons
-        })
-        const rightZoneBtns = wrapper.find('.p-action-bar__right')
-        expect(rightZoneBtns.findAllComponents(PButton)).toHaveLength(5)
+    it('should display PSEARCH when pComponentType is SEARCH', () => {
+      const pSearchButton: ComponentDefinitionProps = {
+        ...defaultButtons[0],
+        pComponentType: 'SEARCH'
+      }
+
+      const wrapper = createWrapper({
+        pLeftSideButtons: [pSearchButton],
+        pRightSideButtons: defaultProps.pRightSideButtons
       })
+
+      const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+      expect(pSearchWrapper.exists()).toBeTruthy()
     })
   })
-  describe('events', () => {
-    it('should emit the provided buttonActionName event on click', async () => {
-      const buttons: ComponentDefinitionProps[] = [
+
+  describe('right side', () => {
+    it('should display only 5 buttons in the right side of action bar layout', () => {
+      const buttons = generateButtonsArray(10)
+      const wrapper = createWrapper({
+        pLeftSideButtons: defaultProps.pLeftSideButtons,
+        pRightSideButtons: buttons
+      })
+      const rightZoneBtns = wrapper.find('.p-action-bar__right')
+      expect(rightZoneBtns.findAllComponents(PButton)).toHaveLength(5)
+    })
+  })
+})
+describe('events', () => {
+  it('should emit the provided left buttonActionName event on click', async () => {
+    const buttons: ComponentDefinitionProps[] = [
+      {
+        pButtonName: 'Hello',
+        pButtonActionName: 'Hello i am your action',
+        pButtonIcon: 'PISearch',
+        pButton: {
+          pType: 'white',
+          pSize: 'small',
+          pPlain: false,
+          pRound: false,
+          pCircle: true,
+          pLoading: false,
+          pDisabled: false
+        }
+      }
+    ]
+
+    const wrapper = createWrapper({
+      pLeftSideButtons: defaultProps.pLeftSideButtons,
+      pRightSideButtons: buttons
+    })
+    const button = wrapper
+      .find('.p-action-bar__right')
+      .findAllComponents(PButton)[0]
+
+    await button.trigger('click')
+
+    expect(wrapper.emitted('p-action-bar-button-clicked')).toHaveLength(1)
+    expect(wrapper.emitted('p-action-bar-button-clicked')).toStrictEqual([
+      ['Hello i am your action']
+    ])
+  })
+
+  it('should emit the provided right buttonActionName event on click', async () => {
+    const buttons: ComponentDefinitionProps[] = [
+      {
+        pButtonName: 'Hello',
+        pButtonActionName: 'Hello i am your action',
+        pButtonIcon: 'PISearch',
+        pButton: {
+          pType: 'white',
+          pSize: 'small',
+          pPlain: false,
+          pRound: false,
+          pCircle: true,
+          pLoading: false,
+          pDisabled: false
+        }
+      }
+    ]
+
+    const wrapper = createWrapper({
+      pLeftSideButtons: buttons,
+      pRightSideButtons: defaultProps.pRightSideButtons
+    })
+    const button = wrapper
+      .find('.p-action-bar__left')
+      .findAllComponents(PButton)[0]
+
+    await button.trigger('click')
+
+    expect(wrapper.emitted('p-action-bar-button-clicked')).toHaveLength(1)
+    expect(wrapper.emitted('p-action-bar-button-clicked')).toStrictEqual([
+      ['Hello i am your action']
+    ])
+  })
+
+  it('should emit files-selected on PUpload files selected event', async () => {
+    const f = {
+      name: 'image.png',
+      size: 1,
+      type: 'image/png'
+    }
+
+    const wrapper = createWrapper({
+      pLeftSideButtons: [
         {
-          pButtonName: 'Hello',
-          pButtonActionName: 'Hello i am your action',
-          pButtonIcon: 'PISearch',
           pButton: {
             pType: 'white',
             pSize: 'small',
@@ -121,58 +221,77 @@ describe('pActionBar', () => {
             pCircle: true,
             pLoading: false,
             pDisabled: false
-          }
+          },
+          pButtonName: 'Hello',
+          pButtonActionName: 'buttonActionName',
+          pButtonIcon: 'PISearch',
+          pComponentType: 'UPLOAD'
         }
-      ]
-
-      const wrapper = createWrapper({
-        pLeftSideButtons: buttons,
-        pRightSideButtons: defaultProps.pRightSideButtons
-      })
-      const button = wrapper
-        .find('.p-action-bar__left')
-        .findAllComponents(PButton)[0]
-
-      await button.trigger('click')
-
-      expect(wrapper.emitted('p-action-bar-button-clicked')).toHaveLength(1)
-      expect(wrapper.emitted('p-action-bar-button-clicked')).toStrictEqual([
-        ['Hello i am your action']
-      ])
+      ],
+      pRightSideButtons: defaultProps.pRightSideButtons
     })
 
-    it('should emit files-selected on PUpload files selected event', async () => {
-      const f = {
-        name: 'image.png',
-        size: 1,
-        type: 'image/png'
-      }
+    const pUploadWrapper = wrapper.findComponent(PUpload)
+    pUploadWrapper.vm.$emit('files-selected', [f])
 
-      const wrapper = createWrapper({
-        pLeftSideButtons: [
-          {
-            pButton: {
-              pType: 'white',
-              pSize: 'small',
-              pPlain: false,
-              pRound: false,
-              pCircle: true,
-              pLoading: false,
-              pDisabled: false
-            },
-            pButtonName: 'Hello',
-            pButtonActionName: 'buttonActionName',
-            pButtonIcon: 'PISearch',
-            pComponentType: 'UPLOAD'
-          }
-        ],
-        pRightSideButtons: defaultProps.pRightSideButtons
-      })
+    expect(wrapper.emitted('p-upload-files-selected')).toHaveLength(1)
+  })
 
-      const pUploadWrapper = wrapper.findComponent(PUpload)
-      pUploadWrapper.vm.$emit('files-selected', [f])
+  it('should emit p-search-input on PSearch files selected event', () => {
+    const searchInput = 'this is the search input'
 
-      expect(wrapper.emitted('p-upload-files-selected')).toHaveLength(1)
+    const wrapper = createWrapper({
+      pLeftSideButtons: [
+        {
+          pButton: {
+            pType: 'white',
+            pSize: 'small',
+            pPlain: false,
+            pRound: false,
+            pCircle: true,
+            pLoading: false,
+            pDisabled: false
+          },
+          pButtonName: 'Hello',
+          pButtonActionName: 'buttonActionName',
+          pButtonIcon: 'PISearch',
+          pComponentType: 'SEARCH'
+        }
+      ],
+      pRightSideButtons: defaultProps.pRightSideButtons
     })
+
+    const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+    pSearchWrapper.vm.$emit('input', searchInput)
+
+    expect(wrapper.emitted('p-search-input')).toHaveLength(1)
+  })
+
+  it('should check the state of the imput extended or not', () => {
+    const wrapper = createWrapper({
+      pLeftSideButtons: [
+        {
+          pButton: {
+            pType: 'white',
+            pSize: 'small',
+            pPlain: false,
+            pRound: false,
+            pCircle: true,
+            pLoading: false,
+            pDisabled: false
+          },
+          pButtonName: 'Hello',
+          pButtonActionName: 'buttonActionName',
+          pButtonIcon: 'PISearch',
+          pComponentType: 'SEARCH'
+        }
+      ],
+      pRightSideButtons: defaultProps.pRightSideButtons
+    })
+
+    const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+    pSearchWrapper.vm.$emit('search-expand-change', true)
+
+    expect(wrapper.vm.isSearchExpanded).toBeTruthy()
   })
 })

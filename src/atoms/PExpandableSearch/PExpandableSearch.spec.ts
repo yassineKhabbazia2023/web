@@ -32,7 +32,7 @@ const createWrapper = (props = defaultProps) =>
   mount(PExpandableSearch, {
     props
   })
-describe('PExpandableSearch', () => {
+describe('pExpandableSearch', () => {
   describe('props', () => {
     it('should bind the placeholder prop correctly', async () => {
       const wrapper = createWrapper()
@@ -62,6 +62,7 @@ describe('PExpandableSearch', () => {
 
       const pInput = findPinput(wrapper)
       expect(pInput.classes().includes('isExpanded')).toBeTruthy()
+      expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
 
     })
     it('should close search bar upon PInput clear event', async () => {
@@ -71,6 +72,7 @@ describe('PExpandableSearch', () => {
 
       const pInput = findPinput(wrapper)
       await pInput.vm.$emit('clear')
+
       await nextTick()
 
       const pInputHidden = findPinput(wrapper)
