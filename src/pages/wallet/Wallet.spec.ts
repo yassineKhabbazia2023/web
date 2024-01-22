@@ -138,7 +138,7 @@ describe('wallet', () => {
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })
 
-  it('drawer should be removed when it is closed', async () => {
+  it('removes drawer when it has been closed', async () => {
     const wrapper = createWrapper()
     await flushPromises()
 
@@ -156,7 +156,6 @@ describe('wallet', () => {
   it('should redirect when click on access folder', async () => {
     const wrapper = createWrapper()
     await flushPromises()
-    console.log(wrapper.vm.state)
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
     await table.vm.$emit('access', 'Tesla')
 
