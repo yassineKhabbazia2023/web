@@ -131,13 +131,13 @@ describe('offersDrawer', () => {
         const addSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'addSelectedProduct')
         offer.vm.$emit('select-product', offerId, productId)
 
-        expect(addSelectedProductSpy).toHaveBeenCalledWith(expect.anything(), offerId, productId)
+        expect(addSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productId)
       })
       it('should call removeSelectedProduct when OfferSubscription emit deselect-product', () => {
         const removeSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'removeSelectedProduct')
         offer.vm.$emit('deselect-product', offerId, productId)
 
-        expect(removeSelectedProductSpy).toHaveBeenCalledWith(expect.anything(), offerId, productId)
+        expect(removeSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productId)
       })
     })
     describe('when user has clicked 4 times on nextButton', () => {
@@ -170,7 +170,7 @@ describe('offersDrawer', () => {
           ]
         }
 
-        expect(createSubscriptionRequestNewSpy).toHaveBeenCalledWith(expectedArgument)
+        expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
     })
   })
