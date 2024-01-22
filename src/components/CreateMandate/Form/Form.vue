@@ -516,7 +516,32 @@ const areFieldsFilledStepBased = (step: number) => {
     3: ['institutionCode', 'branchCode', 'accountNumber',
       'key', 'bank']
   }
-  emit('enable-disable-next', areFieldsFilled(fieldsToCheckMap[step]))
+  const fieldStepFilledDone = areFieldsFilled(fieldsToCheckMap[step])
+  if (fieldStepFilledDone) {
+    emit('update-mandate-model', {
+      erpId: createMandateForm.erpId,
+      bban: {
+        bankCode: createMandateForm.institutionCode,
+        branchCode: createMandateForm.branchCode,
+        accountNumber: createMandateForm.accountNumber,
+        checkDigits: createMandateForm.key
+      },
+      address: {
+        street: createMandateForm.street,
+        addressComplement: createMandateForm.addressComplement,
+        zipCode: createMandateForm.zipCode,
+        city: createMandateForm.city,
+        country: createMandateForm.country
+      },
+      signatory: {
+        title: createMandateForm.title,
+        firstName: createMandateForm.firstName,
+        lastName: createMandateForm.lastName,
+        email: createMandateForm.email
+      }
+    })
+  }
+  emit('enable-disable-next', fieldStepFilledDone)
 }
 
 const checkBbanValidity = async ({
