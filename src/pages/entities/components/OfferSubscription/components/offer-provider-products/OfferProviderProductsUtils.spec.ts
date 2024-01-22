@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { getIsServiceSelected, getServiceTag, getTitle } from './OfferProviderProductsUtils'
+import {
+  SubscriptionPriceType
+} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 
-import type {
-  SubscriptionOfferProduct
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { SelectedProduct } from '@/pages/entities/components/OffersDrawer/OffersDrawerTypes'
 
 import { getMockedSubscriptionOfferProduct } from '../../../SubscriptionOffers/SubscriptionOffersMocks'
@@ -46,7 +46,7 @@ describe('offerProviderProductsUtils', () => {
 
     const tests = [{
       isOptionnal: false,
-      priceType: 'free' as SubscriptionOfferProduct['priceType'],
+      priceType: SubscriptionPriceType.free,
       expected: {
         pColor: 'gray-900',
         pContent: 'Inclus',
@@ -54,11 +54,11 @@ describe('offerProviderProductsUtils', () => {
       }
     }, {
       isOptionnal: true,
-      priceType: 'free' as SubscriptionOfferProduct['priceType'],
+      priceType: SubscriptionPriceType.free,
       expected: undefined
     }, {
       isOptionnal: false,
-      priceType: 'Exacte' as SubscriptionOfferProduct['priceType'],
+      priceType: SubscriptionPriceType.exact,
       expected: {
         pColor: 'gray-900',
         pContent: 'Inclus',
@@ -66,7 +66,7 @@ describe('offerProviderProductsUtils', () => {
       }
     }, {
       isOptionnal: true,
-      priceType: 'Exacte' as SubscriptionOfferProduct['priceType'],
+      priceType: SubscriptionPriceType.exact,
       expected: {
         pColor: 'amethyste',
         pContent: 'Prix additionnel',

@@ -1,3 +1,6 @@
+import {
+  SubscriptionPriceType
+} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
 
 export function getMockedSubscriptionOffersServices() {
@@ -9,7 +12,7 @@ export function getMockedSubscriptionOffersServices() {
       offerLabel:
         'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
       offerPrice: 0,
-      offerPriceType: 'free',
+      offerPriceType: SubscriptionPriceType.free,
       logoName: 'meg',
       approvalRequired: true,
       offersBookLink: 'test link',
@@ -28,7 +31,7 @@ export function getMockedSubscriptionOffersServices() {
               enabled: true,
               isOptionnal: false,
               price: 0.0,
-              priceType: 'free',
+              priceType: SubscriptionPriceType.free,
               productId: 'product-id-1'
             }
           ]
@@ -45,7 +48,7 @@ export function getMockedSubscriptionOffersServices() {
               enabled: true,
               isOptionnal: false,
               price: 0.0,
-              priceType: 'free',
+              priceType: SubscriptionPriceType.free,
               productId: 'product-id-2'
             },
             {
@@ -54,7 +57,7 @@ export function getMockedSubscriptionOffersServices() {
               enabled: true,
               isOptionnal: true,
               price: 0.0,
-              priceType: 'free',
+              priceType: SubscriptionPriceType.free,
               productId: 'product-id-3'
             },
             {
@@ -63,7 +66,7 @@ export function getMockedSubscriptionOffersServices() {
               enabled: true,
               isOptionnal: true,
               price: 0.0,
-              priceType: 'free',
+              priceType: SubscriptionPriceType.free,
               productId: 'product-id-4'
             }
           ]
@@ -76,7 +79,7 @@ export function getMockedSubscriptionOffersServices() {
       offerName: 'Gestion Premium',
       offerLabel: 'Mon expert en gestion en version premium',
       offerPrice: 0,
-      offerPriceType: 'free',
+      offerPriceType: SubscriptionPriceType.free,
       logoName: 'meg',
       approvalRequired: false,
       offersBookLink: 'test link',
@@ -95,7 +98,7 @@ export function getMockedSubscriptionOffersServices() {
               enabled: true,
               isOptionnal: false,
               price: 0.0,
-              priceType: 'free',
+              priceType: SubscriptionPriceType.free,
               productId: 'product-id-5'
             }
           ]
@@ -108,7 +111,7 @@ export function getMockedSubscriptionOffersServices() {
       offerName: 'Mes Modules de Compta',
       offerLabel: 'Loop collaboratif (myPulse compta)',
       offerPrice: 0,
-      offerPriceType: 'free',
+      offerPriceType: SubscriptionPriceType.free,
       logoName: 'loop-color',
       approvalRequired: true,
       offersBookLink: 'test link',
@@ -127,7 +130,7 @@ export function getMockedSubscriptionOffersServices() {
               enabled: true,
               isOptionnal: false,
               price: 0.0,
-              priceType: 'free',
+              priceType: SubscriptionPriceType.free,
               productId: 'product-id-6'
             }
           ]
@@ -140,7 +143,7 @@ export function getMockedSubscriptionOffersServices() {
       offerName: 'Externalisation de la paie',
       offerLabel: 'Gestion de la paie par KPMG, pour le clients, sur Silae',
       offerPrice: 0,
-      offerPriceType: 'free',
+      offerPriceType: SubscriptionPriceType.free,
       logoName: 'silae-color',
       approvalRequired: true,
       offersBookLink: 'test link',
@@ -159,7 +162,7 @@ export function getMockedSubscriptionOffersServices() {
               enabled: true,
               isOptionnal: true,
               price: 0.0,
-              priceType: 'Exacte',
+              priceType: SubscriptionPriceType.exact,
               productId: 'product-id-7'
             }
           ]

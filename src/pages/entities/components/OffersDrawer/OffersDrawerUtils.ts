@@ -1,4 +1,7 @@
 import type { SelectedProduct } from './OffersDrawerTypes'
+import {
+  SubscriptionPriceType
+} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type {
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
@@ -42,7 +45,7 @@ export function getInitialSelectedProducts(offer: SubscriptionOfferServices | un
     products.forEach((product) => {
       const { productId, priceType, isOptionnal } = product
 
-      if (!isOptionnal || priceType === 'free') {
+      if (!isOptionnal || priceType === SubscriptionPriceType.free) {
         selectedProducts.push({
           isMandatory: !isOptionnal,
           productId,

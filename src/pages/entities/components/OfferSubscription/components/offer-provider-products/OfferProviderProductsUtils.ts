@@ -1,5 +1,8 @@
 import { type PService } from '@kpmg/styleguide'
 import type { SelectedProduct } from '@/pages/entities/components/OffersDrawer/OffersDrawerTypes'
+import {
+  SubscriptionPriceType
+} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type {
   SubscriptionOfferProduct
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
@@ -32,7 +35,7 @@ export function getServiceTag(
       pContent: includedLabel
     }
   }
-  if (priceType === 'Exacte') {
+  if (priceType === SubscriptionPriceType.exact) {
     return {
       pColor: 'amethyste',
       pEffect,

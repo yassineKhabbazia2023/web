@@ -1,10 +1,12 @@
+import { SubscriptionPriceType } from './SubscriptionOffersEnums'
+
 export interface SubscriptionOfferProduct {
   productName: string
   productId: string
   productLabel: string
   enabled: boolean
   isOptionnal: boolean
-  priceType: 'Exacte' | 'free'
+  priceType: SubscriptionPriceType
   price: number
  }
 
