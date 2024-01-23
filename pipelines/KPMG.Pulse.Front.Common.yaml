@@ -12,9 +12,13 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/Release/v1.0'
+    ref: 'refs/heads/Release/v2.0'
 
 extends:
   template: pipelines/templates/platform.front.package.yaml@Pulse
   parameters:
     packageName: Common
+    versioning:
+      mode: legacy
+      major: 3
+      minor: 1
