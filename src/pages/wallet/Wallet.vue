@@ -240,6 +240,7 @@ const fetch = async () => {
             lastName: owner.lastName
           })
         },
+        hub: 'Paris',
         city: city?.toLowerCase() ?? '',
         deploymentStatus: DEPLOYMENTS[deploymentStatus - 1],
         ...rest

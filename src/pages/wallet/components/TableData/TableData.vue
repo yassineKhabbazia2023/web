@@ -10,20 +10,48 @@
   class="wallet-table"
 >
   <PTableColumn
+    pProp="isFavorite"
+    :pWidth="30"
+  >
+    <template #default="scope">
+      <PIcon
+        v-if="scope.row.isFavorite"
+        @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
+        color="#5546FF"
+        size="14px"
+      >
+        <PIStarFill />
+      </PIcon>
+      <PIcon
+        v-if="!scope.row.isFavorite"
+        @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
+        color="#5546FF"
+        size="14px"
+      >
+        <PIStar />
+      </PIcon>
+    </template>
+  </PTableColumn>
+  <PTableColumn
     :pLabel="t('companyName')"
     pProp="name"
     pSortable
   >
     <template #default="scope">
       <div class="flex valign-center">
-        <PAvatar pColor="persian">
+        <PAvatar
+          pColor="persian"
+          pType="xsmall"
+        >
           <PIcon>
             <PIPulse />
           </PIcon>
         </PAvatar>
-        <p class="font-semibold margin-left--2">
+        <a
+          class="font-semibold margin-left--2 link"
+          @click="onToolboxItemClicked('access', scope.row.name, scope.row.id)">
           {{ scope.row.name }}
-        </p>
+        </a>
       </div>
     </template>
   </PTableColumn>
@@ -42,29 +70,29 @@
         <PAvatar
           v-if="scope.row.owner.initials"
           class="margin-right--2"
-          pColor="white"
+          pColor="persian-gradient"
           pType="small"
         >
           {{ scope.row.owner.initials }}
         </PAvatar>
         <div>
-          <p class="capitalize line-height--120">
+          <p class="capitalize font-bold">
             {{ scope.row.owner.firstName }}
             <span class="uppercase"> {{ scope.row.owner.lastName }}</span>
           </p>
-          <p
-            v-if="scope.row.owner.email"
-            class="
-              font-small
-              color-gray--500
-              line-height--120
-              margin-top--2
-            "
-          >
-            {{ scope.row.owner.email }}
-          </p>
         </div>
       </div>
+    </template>
+  </PTableColumn>
+  <PTableColumn
+    :pLabel="t('email')"
+    pProp="owner.email"
+    pSortable
+  >
+    <template #default="scope">
+      <p class="capitalize">
+        {{ scope.row.owner.email }}
+      </p>
     </template>
   </PTableColumn>
   <PTableColumn
@@ -75,6 +103,17 @@
     <template #default="scope">
       <p class="capitalize">
         {{ scope.row.city }}
+      </p>
+    </template>
+  </PTableColumn>
+  <PTableColumn
+    :pLabel="t('hub')"
+    pProp="hub"
+    pSortable
+  >
+    <template #default="scope">
+      <p class="capitalize">
+        {{ scope.row.hub }}
       </p>
     </template>
   </PTableColumn>
@@ -93,32 +132,10 @@
     </template>
   </PTableColumn>
   <PTableColumn
-    :pLabel="t('action')"
-    :pWidth="100"
-    pProp="isFavorite"
-    pSortable
+    :pLabel="t('option')"
+    :pWidth="80"
   >
     <template #default="scope">
-      <PButton
-        v-if="scope.row.isFavorite"
-        @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
-        pType="white"
-        pSize="small"
-      >
-        <PIcon>
-          <PIStarFill />
-        </PIcon>
-      </PButton>
-      <PButton
-        v-if="!scope.row.isFavorite"
-        @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
-        pType="white"
-        pSize="small"
-      >
-        <PIcon>
-          <PIStar />
-        </PIcon>
-      </PButton>
       <PToolbox
         trigger="click"
         :pElements="menuElements(scope.row.deploymentStatus.text)"
@@ -318,14 +335,9 @@ const onToolboxItemClicked = async (action: string, companyName: string, account
 
 <style lang="scss">
 .wallet-table {
-  .cell {
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
-  }
-
   .el-table__body {
     .el-table__cell {
-      height: 65px;
+      height: 40px !important;
 
       &:nth-of-type(-n+5) {
         &:hover {
@@ -368,19 +380,21 @@ const onToolboxItemClicked = async (action: string, companyName: string, account
   color: var(--el-color-neutral-gray-500);
 }
 
-.line-height--120 {
-  line-height: 120%;
+.link {
+  color: var(--el-color-primary);
 }
 </style>
 
 <i18n lang="yaml">
 en-US:
   companyName: 'Company name'
-  folderID: 'Folder ID'
+  folderID: 'IBS Code'
   leader: 'Leader'
   city: 'City'
+  email: 'Email'
+  hub: 'Hub'
   status: 'Status'
-  action: 'Action'
+  option: 'Option'
   deployThisFolder: 'Deploy this folder'
   accessThisFolder: 'Access this folder'
   resendActivationEmail: 'Resend activation email'
@@ -391,11 +405,13 @@ en-US:
   resendMailSuccessMessageSecond: ' has been sent successfully.'
 fr-FR:
   companyName: 'Nom de la société'
-  folderID: 'ID Dossier'
+  folderID: 'Code IBS'
   leader: 'Dirigeant'
   city: 'Ville'
+  email: 'Mail'
+  hub: 'Hub'
   status: 'Statut'
-  action: 'Action'
+  option: 'Option'
   deployThisFolder: 'Déployer ce dossier'
   accessThisFolder: 'Accéder au dossier'
   resendActivationEmail: "Relancer mail d'activation"

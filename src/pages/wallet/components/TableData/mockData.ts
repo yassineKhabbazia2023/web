@@ -10,6 +10,7 @@ export const mockTableData = [
       initials: 'fl'
     },
     city: 'paris',
+    hub: 'paris',
     deploymentStatus: {
       text: 'To Deploy',
       icon: PIArrowUpCircle,
@@ -29,6 +30,7 @@ export const mockTableData = [
       initials: ''
     },
     city: 'hanoi',
+    hub: 'paris',
     deploymentStatus: {
       text: 'In progress',
       icon: PIArrowUpCircle,

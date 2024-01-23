@@ -64,7 +64,7 @@ describe('tableData', () => {
   })
 
   it('calls function handle when click', async () => {
-    const btnFavorite = wrapper.find('td.el-table_1_column_6 button')
+    const btnFavorite = wrapper.find('td.el-table_1_column_1 div .el-icon')
     await btnFavorite.trigger('click')
     expect(handleFavorites).toHaveBeenCalledTimes(1)
     expect(handleFavorites).toHaveBeenCalledWith(mockTableData[0].id, true)
@@ -77,6 +77,7 @@ describe('tableData', () => {
     const {
       accountNumber,
       city,
+      hub,
       deploymentStatus: { text: deploymentStatusText },
       name,
       owner: {
@@ -87,7 +88,7 @@ describe('tableData', () => {
     } = mockTableData[0]
 
     const firstRowText = rows[0].text()
-    const mockData = [name, accountNumber, firstName, lastName, email, city, deploymentStatusText]
+    const mockData = [name, accountNumber, firstName, lastName, email, city, hub, deploymentStatusText]
     mockData.forEach(data => {
       expect(firstRowText).toContain(data)
     })
