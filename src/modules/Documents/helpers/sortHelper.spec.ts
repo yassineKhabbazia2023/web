@@ -7,7 +7,9 @@ describe('sortHelper', () => {
       ['Nom du document', 'ascending', '+name'],
       ['Nom du document', 'descending', '-name'],
       ['Déposé le', 'ascending', '+created'],
-      ['Déposé le', 'descending', '-created']
+      ['Déposé le', 'descending', '-created'],
+      ['Supprimé le', 'ascending', '+deleted'],
+      ['Supprimé le', 'descending', '-deleted']
     ]
 
     it.each(testCases)(

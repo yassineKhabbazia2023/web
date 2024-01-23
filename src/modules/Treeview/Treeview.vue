@@ -23,6 +23,7 @@
         @on-delete-folder-completed="handleDeleteFolderCompleted"
         @on-close-delete-folder="handleCloseDeleteFolderModal"
       />
+
       <FoldersMove
         v-if="toolBoxSelectedFolder && folderMovingDestination && currentServiceFolder"
         :folder="folderMovingDestination"
@@ -51,9 +52,9 @@
         <PScrollbar>
           <PTree
             v-for="(serviceFolder, index) in extendedServiceFolders"
-            :currentNodeKey="!index ? initialSelectedNodeId : ''"
+            :pCurrentNodeKey="!index ? initialSelectedNodeId : ''"
             :pData="serviceFolder"
-            :defaultExpandedKeys="!index ? defaultExpandedKey : []"
+            :pDefaultExpandedKeys="!index ? defaultExpandedKey : []"
             pHasCustomNodes
             :key="serviceFolder[0].id"
             pNodeKey="id"
@@ -76,11 +77,11 @@
 
           <PTree
             ref="binTree"
+            class="bin-tree"
             :pData="binTreeData"
-           pHasCustomNodes
+            pHasCustomNodes
             pNodeKey="id"
             @p-tree-node-clicked="handleBinNodeClick"
-            class="bin-tree"
           >
             <template #default="{ node, data }">
               <TreeNode :node="node" :data="data" />
@@ -100,7 +101,7 @@ import TreeNode from '@/modules/Treeview/components/TreeNode'
 import { formatBinData } from './helpers/binHelper'
 import type { TreeviewProps, TreeType, ExtendedFolder } from './TreeviewTypes'
 import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import type { Bin } from '@/models/Bin'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader } from '@kpmg/styleguide'
@@ -198,6 +199,8 @@ const currentFolderName = ref(
 const defaultExpandedKey = computed(() => [props.servicesFolders[0][0].id])
 
 const handleFolderNodeClick = (e: Folder) => {
+  // This retrieves the source bin tree in order to collapse it
+  // as we've just clicked a domain folder
   const sourceBinTree = retrieveSourceTrees([binTree.value])
   collapseGivenTrees(sourceBinTree)
   treeNodeSelectedFolder.value = e
@@ -221,10 +224,13 @@ const binTree = ref<TreeType | null>(null)
 // But as there's computation in the TreeNode, I need to map it to have a consistent property naming
 const binTreeData = computed(() => formatBinData(props.entityServices))
 
-const handleBinNodeClick = (e: Service) => {
+const handleBinNodeClick = (e: Bin) => {
+  // This retrieves the source domain trees in order to collapse them
+  // as we've just clicked on a bin folder
   const foldersTrees = retrieveSourceTrees(treesRefs.value)
   collapseGivenTrees(foldersTrees)
-  emit('selected-bin-service-change', e.ServiceId)
+  if (e.isRootFolder) return
+  emit('selected-bin-service-change', e.id)
 }
 
 const treesRefs = ref<TreeType[]>([])

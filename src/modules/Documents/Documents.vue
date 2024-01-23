@@ -1,11 +1,10 @@
 <template>
   <div v-show="!isLoading">
-    <PBreadcrumb
-      class="documents-breadcrumb"
-      :pElements="breadcrumbItems"
-      @p-breadcrumb-item-click="handleFolderNavigation"
-    >
-    </PBreadcrumb>
+    <div class="padding-top--5 padding-left--4">
+      <PBreadcrumb
+        :pElements="breadcrumbItems"
+        @p-breadcrumb-item-click="handleFolderNavigation" />
+    </div>
 
     <DocumentsActionsBar
       :permissions="permissionsList"
@@ -105,39 +104,42 @@
 
 <script setup lang="ts">
 // eslint-disable vitest/require-hookcurrentService
-
+/* eslint-disable vitest/require-hook */
 import { ref, watch, computed, ComputedRef } from 'vue'
-import DocumentsList from './sections/DocumentsList'
-import { fetchFolderDocuments } from '@/services/Documents'
 import { DocumentsProps } from './DocumentsTypes'
-import type { DocumentsWithTableStructure, TableRowDocument } from '@/models/Document'
 import { Document } from '@/models/Document'
+import { Folder } from '@/models/Folder'
+import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
+
+import DocumentsList from './sections/DocumentsList'
+import type {
+  DocumentsWithTableStructure,
+  TableRowDocument
+} from '@/models/Document'
+import { fetchFolderDocuments } from '@/services/Documents'
+
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
+
 import { useDownloadDocuments } from
   '@/modules/Documents/components/DownloadDocuments/DownloadDocuments'
 import { DownloadDocumentsComposableProps }
-  // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
 import { TransmitDocumentsComposableProps }
-  // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DocumentsTransmit/TransmitDocumentsTypes'
 import { useTransmitDocuments } from
   '@/modules/Documents/components/DocumentsTransmit/TransmitDocuments'
+
 import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
 import DocumentPreview from './components/DocumentPreview'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
 import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
-import { Folder } from '@/models/Folder'
 import { getBreadcrumbItems }
   from '@/modules/common/helpers/folderHelper'
-import {
-  findFolderDeepById
-} from '@/modules/Treeview/helpers/folderArrayHelper'
 import { deepCopy } from '../common/utils/deepCopy'
 
 const emit = defineEmits<{
@@ -179,7 +181,6 @@ const breadcrumbItems = computed(() => {
 
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
-// eslint-disable-next-line vitest/require-hook
 watch([() => props.selectedFolder, currentPage, currentPageSize], async () => {
   await fetchDocuments()
 })
@@ -389,8 +390,3 @@ const handlePreviewButtonClickedForPreviewDocument = () => {
   }
 }
 </script>
-<style lang="scss">
-  .documents-breadcrumb {
-    padding: 24px 0 0 16px;
-  }
-</style>

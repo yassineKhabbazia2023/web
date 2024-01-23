@@ -59,35 +59,35 @@ export const documentsResponsePayload: DocumentsWithTableStructure = {
       relatedProperty: 'name',
       fieldType: 'DocumentName',
       nestedPropertyName: null,
-      ColumnOrder: 1
+      columnOrder: 1
     },
     {
       columnName: '',
       relatedProperty: 'properties',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      ColumnOrder: 2
+      columnOrder: 2
     },
     {
       columnName: 'Déposé le',
       relatedProperty: 'created',
       fieldType: 'Text',
       nestedPropertyName: null,
-      ColumnOrder: 3
+      columnOrder: 3
     },
     {
       columnName: 'Statut',
       relatedProperty: 'piaStatus',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      ColumnOrder: 4
+      columnOrder: 4
     },
     {
       columnName: 'Actions',
       relatedProperty: 'permissions',
       fieldType: 'ActionGroup',
       nestedPropertyName: null,
-      ColumnOrder: 5
+      columnOrder: 5
     }
   ]
 }
@@ -196,35 +196,35 @@ export const documentsResponsePayloadMoreThanOneDoc: DocumentsWithTableStructure
       relatedProperty: 'name',
       fieldType: 'DocumentName',
       nestedPropertyName: null,
-      ColumnOrder: 1
+      columnOrder: 1
     },
     {
       columnName: '',
       relatedProperty: 'properties',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      ColumnOrder: 2
+      columnOrder: 2
     },
     {
       columnName: 'Déposé le',
       relatedProperty: 'created',
       fieldType: 'Text',
       nestedPropertyName: null,
-      ColumnOrder: 3
+      columnOrder: 3
     },
     {
       columnName: 'Statut',
       relatedProperty: 'piaStatus',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      ColumnOrder: 4
+      columnOrder: 4
     },
     {
       columnName: 'Actions',
       relatedProperty: 'permissions',
       fieldType: 'ActionGroup',
       nestedPropertyName: null,
-      ColumnOrder: 5
+      columnOrder: 5
     }
   ]
 }
@@ -963,35 +963,35 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
       relatedProperty: 'name',
       fieldType: 'DocumentName',
       nestedPropertyName: null,
-      ColumnOrder: 1
+      columnOrder: 1
     },
     {
       columnName: '',
       relatedProperty: 'properties',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      ColumnOrder: 2
+      columnOrder: 2
     },
     {
       columnName: 'Déposé le',
       relatedProperty: 'created',
       fieldType: 'Text',
       nestedPropertyName: null,
-      ColumnOrder: 3
+      columnOrder: 3
     },
     {
       columnName: 'Statut',
       relatedProperty: 'piaStatus',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      ColumnOrder: 4
+      columnOrder: 4
     },
     {
       columnName: 'Actions',
       relatedProperty: 'permissions',
       fieldType: 'ActionGroup',
       nestedPropertyName: null,
-      ColumnOrder: 5
+      columnOrder: 5
     }
   ]
 }

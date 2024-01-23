@@ -15,11 +15,11 @@
         @update-source-folders="handleUpdateSourceFolder"
         @remove-folder-from-source="handleRemoveFolderFromSource"
         @update-folder-name ="handleUpdateFolderName"
-        @refresh-tree="handleRefreshTreeAnRedirectToFolder"
+        @refresh-tree="handleTreeRefreshAndRedirectToFolder"
       />
     </PCol>
 
-    <PCol v-if="currentService && currentServiceFolder" :span="18">
+    <PCol v-if="currentService && currentServiceFolder && !currentBinService" :span="18">
       <Documents
         :currentService="currentService"
         :selectedEntity="selectedEntity"
@@ -29,6 +29,14 @@
         @change-selected-folder="setCurrentFolderAndService"
       />
     </PCol>
+    <PCol v-else-if="currentBinService" :span="18">
+      <BinDocuments
+        :currentBinService="currentBinService"
+        :selectedEntity="selectedEntity"
+        :selectedServiceName="currentBinServiceName"
+        @navigate-to-folder="handleTreeRefreshAndRedirectToFolder"
+      />
+    </PCol>
   </PRow>
 </template>
 
@@ -36,6 +44,7 @@
 import { ref, onMounted, computed, provide } from 'vue'
 import Treeview from '@/modules/Treeview'
 import Documents from '@/modules/Documents'
+import BinDocuments from '@/modules/Bin'
 import { fetchServicesFolders } from '@/services/Folder'
 import { fetchUserEntityServices } from '@/services/Services'
 import type { Folder } from '@/models/Folder'
@@ -88,6 +97,11 @@ const currentServiceFolder = computed<null | Folder[]>(() => {
 })
 
 const setCurrentFolderAndService = (folder: Folder) => {
+  if (currentBinService.value) {
+    fetchGedFoldersAndServices()
+    setCurrentBinService(null)
+  }
+
   if (currentFolder.value === folder) return
   currentFolder.value = folder
 
@@ -97,9 +111,14 @@ const setCurrentFolderAndService = (folder: Folder) => {
 
 // Trash scope
 const currentBinService = ref<null | Service['ServiceId']>(null)
+const currentBinServiceName = ref<string>('')
 
-const setCurrentBinService = (serviceId: Service['ServiceId']) => {
+const setCurrentBinService = (serviceId: null | Service['ServiceId']) => {
   currentBinService.value = serviceId
+  if (currentBinService.value) {
+    currentBinServiceName.value = entityServices.value
+      .filter((service:Service) => service.ServiceId === serviceId)[0].ServiceName
+  }
 }
 
 // Create folder scope
@@ -166,7 +185,8 @@ const handleUpdateFolderName = (data: Folder) => {
   }
 }
 
-const handleRefreshTreeAnRedirectToFolder = async (folderId: Folder['id']) => {
+const handleTreeRefreshAndRedirectToFolder = async (folderId: Folder['id']) => {
+  setCurrentBinService(null)
   await fetchGedFoldersAndServices()
   setCurrentFolder(folderId)
 }

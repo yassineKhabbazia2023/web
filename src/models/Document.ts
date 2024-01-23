@@ -58,17 +58,30 @@ export interface Document {
   isNew: any
 }
 
+export interface BinDocument {
+  id: Document['id']
+  name: Document['name']
+  deleted: string
+  path: string[]
+}
+
+export interface RestoredDocument {
+  id: string
+  folderId: number
+}
+
 export interface DocumentsTableStructure {
   columnName: string
   relatedProperty: string
+  secondRelatedProperty?: string
   fieldType: string
   nestedPropertyName: null | string
-  ColumnOrder: number
+  columnOrder: number
 }
 
-export interface DocumentsWithTableStructure {
+export interface GenericDocumentsWithTableStructure<T> {
   documentsPage: {
-    items: Document[]
+    items: T[]
     totalItems: number
     endIndex: number
     startIndex: number
@@ -76,6 +89,8 @@ export interface DocumentsWithTableStructure {
   documentHeaders: DocumentsTableStructure[]
 }
 
+export type DocumentsWithTableStructure = GenericDocumentsWithTableStructure<Document>
+export type BinDocumentsWithTableStructure = GenericDocumentsWithTableStructure<BinDocument>
 export interface TableRowDocument extends Document{
   _rowIndex: number
 }

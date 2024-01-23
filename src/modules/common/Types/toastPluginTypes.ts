@@ -4,6 +4,7 @@ export interface ToastPluginType {
   showClose: boolean
   customClass: string
   position: string
+  onClick?: Function
 }
 
 // eslint-disable-next-line no-unused-vars

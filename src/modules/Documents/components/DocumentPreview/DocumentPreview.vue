@@ -40,6 +40,7 @@
     </template>
   </PDocumentViewer>
 </template>
+
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { PDocumentViewer, PIcon, PDocumentDisplay } from '@kpmg/styleguide'
@@ -132,7 +133,7 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .preview-image{
   height:auto;
   max-height:100%;

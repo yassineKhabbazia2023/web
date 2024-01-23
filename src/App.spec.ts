@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import Ged from './'
 import { createPinia, setActivePinia } from 'pinia'
@@ -18,6 +19,7 @@ import {
   findFolderDeepById
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 import Documents from '@/modules/Documents'
+import BinDocuments from '@/modules/Bin'
 
 const pinia = createPinia()
 
@@ -49,6 +51,10 @@ vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn()
 }))
 
+vi.mock('@/services/BinDocuments', () => ({
+  fetchBinDocuments: vi.fn()
+}))
+
 vi.mock('@/modules/Treeview/helpers/folderArrayHelper', async () => {
   const actual = await vi.importActual('@/modules/Treeview/helpers/folderArrayHelper')
   return {
@@ -71,6 +77,7 @@ type AppSetup = {
   currentBinService: Service['ServiceId']
   currentService: Service['ServiceId']
   isCreateFolderModalVisible: boolean
+  currentBinServiceName: string
 }
 
 type AppProps = any
@@ -111,12 +118,14 @@ describe('ged', () => {
     setActivePinia(pinia)
   })
   it('renders correctly', () => {
+    expect.hasAssertions()
     const wrapper = createWrapper()
     expect(wrapper.exists()).toBeTruthy()
   })
   describe('treeview', () => {
     describe('interactions', () => {
       it('should ftech user entity services when ged is rendered', async () => {
+        expect.hasAssertions()
         createWrapper()
 
         await nextTick()
@@ -125,6 +134,7 @@ describe('ged', () => {
       })
 
       it('should ftech services folders when ged is rendered', async () => {
+        expect.hasAssertions()
         createWrapper()
 
         await nextTick()
@@ -135,7 +145,27 @@ describe('ged', () => {
       it(
         'should set the current folder and current service on selected-folder-change event',
         async () => {
+          expect.hasAssertions()
           const wrapper = createWrapper()
+          await nextTick()
+          await flushPromises()
+
+          const tree = wrapper.findComponent(Treeview)
+          await tree.vm.$emit('selected-folder-change', folder)
+          await nextTick()
+
+          expect(tree.props('selectedFolder')).toStrictEqual(folder)
+          expect(tree.props('currentService')).toBe('some-service')
+        }
+      )
+
+      it(
+        'should set the current folder and current service on selected-folder-change event when currentBinService',
+        async () => {
+          expect.hasAssertions()
+          const wrapper = createWrapper()
+          const componentInstance = wrapper.vm
+          componentInstance.currentBinService = foldersData[0][0].serviceId
           await nextTick()
           await flushPromises()
 
@@ -144,14 +174,21 @@ describe('ged', () => {
           await tree.vm.$emit('selected-folder-change', folder)
           await nextTick()
 
+          const bin = wrapper.findComponent(BinDocuments)
+          await nextTick()
+          expect(bin.exists()).toBeFalsy()
+          expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
+          expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
           expect(tree.props('selectedFolder')).toStrictEqual(folder)
-          expect(tree.props('currentService')).toStrictEqual('some-service')
+          expect(tree.props('currentService')).toBe('some-service')
         }
       )
 
       it('should set the trash serviceId on selected-bin-service-change', async () => {
+        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
+        await flushPromises()
 
         const tree = wrapper.findComponent(Treeview)
         await nextTick()
@@ -164,9 +201,16 @@ describe('ged', () => {
         expect(componentInstance.currentBinService).toStrictEqual(
           servicesData[0].ServiceId
         )
+
+        const bin = wrapper.findComponent(BinDocuments)
+        await nextTick()
+        expect(bin.exists()).toBeTruthy()
+        expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
+        expect(bin.props('selectedServiceName')).toBe(servicesData[0].ServiceName)
       })
 
       it('should set isCreateFolderModalVisible when open-create-folder-modal', async () => {
+        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
 
@@ -182,6 +226,7 @@ describe('ged', () => {
       })
 
       it('should append folder in tree and sort when update-source-folders', async () => {
+        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
 
@@ -197,6 +242,7 @@ describe('ged', () => {
       })
 
       it('should remove folder from tree when remove-folder-from-source', async () => {
+        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
 
@@ -215,6 +261,7 @@ describe('ged', () => {
       })
 
       it('should rename folder in tree and sort when update-folder-name', async () => {
+        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
 
@@ -235,27 +282,90 @@ describe('ged', () => {
   describe('documents', () => {
     describe('props', () => {
       it('should display documents component when currentService is set', async () => {
+        expect.hasAssertions()
         const wrapper = createWrapper()
         await flushPromises()
         const documentComponent = wrapper.findComponent(Documents)
         await nextTick()
         expect(documentComponent.exists()).toBeTruthy()
       })
+      it('should hide documents component when currentBinService is set', async () => {
+        expect.hasAssertions()
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.currentBinService = 'bin-service-id'
+        await nextTick()
+        const document = wrapper.findComponent(Documents)
+        await nextTick()
+        expect(document.exists()).toBeFalsy()
+      })
     })
-    it('should update selected folder in documents when change-selected-folder', async () => {
-      const wrapper = createWrapper()
-      await nextTick()
-      await flushPromises()
+    describe('events', () => {
+      it('should update selected folder in documents when change-selected-folder', async () => {
+        expect.hasAssertions()
+        const wrapper = createWrapper()
+        await nextTick()
+        await flushPromises()
 
-      const documentComponent = wrapper.findComponent(Documents)
-      await nextTick()
+        const documentComponent = wrapper.findComponent(Documents)
+        await nextTick()
+        await documentComponent.vm.$emit('change-selected-folder', foldersData[0][0].children[0])
+        await nextTick()
 
-      await documentComponent.vm.$emit('change-selected-folder', foldersData[0][0].children[0])
-      await nextTick()
+        expect(documentComponent.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
+        expect(documentComponent.props('currentService')).toBe('service-id-compta')
+      })
+    })
+  })
 
-      expect(documentComponent.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
-      expect(documentComponent.props('currentService')).toStrictEqual('service-id-compta')
+  describe('bin', () => {
+    describe('props', () => {
+      it('should display bin component when currentBinService is set', async () => {
+        expect.hasAssertions()
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.currentBinService = foldersData[0][0].serviceId
+        componentInstance.selectedEntity = 'ent'
+        componentInstance.currentBinServiceName = foldersData[0][0].name
+        await nextTick()
+        const bin = wrapper.findComponent(BinDocuments)
+        await nextTick()
+        expect(bin.exists()).toBeTruthy()
+        expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
+        expect(bin.props('selectedServiceName')).toBe(foldersData[0][0].name)
+        expect(bin.props('selectedEntity')).toBe('ent')
+      })
+      it('should hide bin component when currentBinService is not set', async () => {
+        expect.hasAssertions()
+        const wrapper = createWrapper()
+        await nextTick()
+        const bin = wrapper.findComponent(BinDocuments)
+        await nextTick()
+        expect(bin.exists()).toBeFalsy()
+      })
+    })
+    describe('events', () => {
+      it('should update selected folder in documents when navigate-to-folder is emitted', async () => {
+        expect.hasAssertions()
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.currentBinService = foldersData[0][0].serviceId
+        await nextTick()
+        const bin = wrapper.findComponent(BinDocuments)
 
+        await bin.vm.$emit('navigate-to-folder', foldersData[0][0].children[0].id)
+        await nextTick()
+
+        expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
+        expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
+
+        const tree = wrapper.findComponent(Treeview)
+        await nextTick()
+
+        expect(tree.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
+        expect(tree.props('currentService')).toBe(foldersData[0][0].serviceId)
+        expect(bin.exists()).toBeFalsy()
+      })
     })
   })
 })

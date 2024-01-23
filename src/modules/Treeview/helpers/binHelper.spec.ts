@@ -15,6 +15,7 @@ const entryData: Service[] = [
 
 describe('binHelper', () => {
   it('should format bin data', () => {
+    expect.hasAssertions()
     const formattedBinData = formatBinData(entryData)
 
     const expectedServiceFormat = [
@@ -35,6 +36,7 @@ describe('binHelper', () => {
         id: 'bin',
         name: 'Corbeille',
         iconName: 'binIcon',
+        isRootFolder: true,
         children: expectedServiceFormat
       }
     ]
