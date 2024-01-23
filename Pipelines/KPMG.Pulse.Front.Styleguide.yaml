@@ -19,3 +19,7 @@ extends:
   parameters:
     packageName: Styleguide
     sonarExclusions: '**/color.ts,**/pulse-icon-gen.js'
+    versioning:
+      mode: legacy
+      major: 2
+      minor: 2
