@@ -36,15 +36,37 @@
         </template>
         <template #media>
            <PDocumentDisplay
-            pSrc="src\organisms\PDocumentViewer\modele_de_facture.pdf#view=fit"
+            :pSrc="url"
             :pIsLoading="false"
-            pDocumentExtension="pdf"
+            :pDocumentExtension="extension"
             errorMsgTitle="Aperçu indisponible"
             errorMsgText="Le format de document n'est pas supporté"
            />
         </template>
         <template #content>
-          <div> You can find here for exp Document details such as owner email ...</div>
+          <div> You can find here for exp Document details such as owner email ...,
+             please upload only a pdf file to visualize the pdf </div>
+          <PUpload
+            pMultiple
+            :pDisabled="false"
+            :pDrag="false"
+            @files-selected="handleFilesSelected"
+          >
+            <PButton
+              type="primary"
+              size="small"
+              :plain="false"
+              :round="false"
+              :disabled="false"
+              :loading="false"
+              :circle="false"
+            >
+              <PIcon class="el-button__icon--left">
+                <PIUpload />
+              </PIcon>
+              Déposer un document pdf
+            </PButton>
+      </PUpload>
         </template>
       </PDocumentViewer>
     </Variant>
@@ -54,6 +76,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import PButton from '@/atoms/PButton'
+import PUpload from '@/atoms/PUpload'
 import PDocumentViewer from './'
 import PDocumentDisplay from '@/molecules/PDocumentDisplay'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
@@ -65,7 +88,7 @@ const documentViewerBasicData = reactive({
   pShowClose: false,
   pSize: '100%',
   pDestroyOnClose: true,
-  pTitleDocument: 'Facture-achat_20643228.pdf',
+  pTitleDocument: 'Facture-achat_20643228.jpeg',
   pActiveDocument: 5,
   pTotalDocuments: 25,
   pHasIcon: true,
@@ -75,6 +98,12 @@ const documentViewerBasicData = reactive({
   pShowCloseButton: true,
   pDirection: ref<PDocumentViewerProps['pDirection']>('rtl')
 })
+const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
+const extension = ref('jpeg')
+const handleFilesSelected = (data:File[]) => {
+  url.value = URL.createObjectURL(data[0])
+  extension.value = 'pdf'
+}
 </script>
 
 <docs lang="md">

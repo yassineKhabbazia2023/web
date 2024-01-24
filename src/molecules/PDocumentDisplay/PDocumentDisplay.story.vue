@@ -6,16 +6,6 @@
       iframe: true
     }"
   >
-    <Variant title="Document Viewer pdf">
-      <PDocumentDisplay
-        style="height: 100vh;"
-        pSrc="src\organisms\PDocumentViewer\modele_de_facture.pdf#view=fit"
-        :pIsLoading="false"
-        pDocumentExtension="pdf"
-        errorMsgTitle="Aperçu indisponible"
-        errorMsgText="Le format de document n'est pas supporté"
-      />
-    </Variant>
     <Variant title="Document Viewer image ">
       <PDocumentDisplay
            style="height: 100vh;"
