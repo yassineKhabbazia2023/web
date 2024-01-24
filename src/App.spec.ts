@@ -359,11 +359,11 @@ describe('ged', () => {
         expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
         expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
 
-        const tree = wrapper.findComponent(Treeview)
+        const treeview = wrapper.findComponent(Treeview)
         await nextTick()
 
-        expect(tree.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
-        expect(tree.props('currentService')).toBe(foldersData[0][0].serviceId)
+        expect(treeview.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
+        expect(treeview.props('currentService')).toBe(foldersData[0][0].serviceId)
         expect(bin.exists()).toBeFalsy()
       })
     })

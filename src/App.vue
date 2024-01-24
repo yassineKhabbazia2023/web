@@ -186,8 +186,13 @@ const handleUpdateFolderName = (data: Folder) => {
 }
 
 const handleTreeRefreshAndRedirectToFolder = async (folderId: Folder['id']) => {
+  const serviceId = currentBinService.value
   setCurrentBinService(null)
   await fetchGedFoldersAndServices()
+
+  if (serviceId) {
+    currentService.value = serviceId.toString()
+  }
   setCurrentFolder(folderId)
 }
 
