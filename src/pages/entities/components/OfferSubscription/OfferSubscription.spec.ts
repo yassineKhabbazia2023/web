@@ -1,21 +1,47 @@
-import { describe, it, expect } from 'vitest'
+import { beforeEach, describe, it, expect } from 'vitest'
 import OfferSubscription from '.'
-import { mount } from '@vue/test-utils'
+import { type VueWrapper, mount } from '@vue/test-utils'
 import { getMockedSubscriptionOffersServices } from './OfferSubscriptionMocks'
 
+function getProviderCardComponent(wrapper: VueWrapper) {
+  return wrapper.findComponent('[data-testid="provider-card"]') as VueWrapper
+}
+
 describe('offerSubscription', () => {
+  const offerId = 1
+  const productId = 'product-id'
+  const subscriptionOffers = getMockedSubscriptionOffersServices()
+  const subscriptionOffer = subscriptionOffers[0]
+  let wrapper: VueWrapper
+
+  beforeEach(async () => {
+    wrapper = await mount(OfferSubscription, {
+      props: {
+        subscriptionOffer,
+        offerId,
+        selectedProducts: []
+      }
+    })
+  })
   describe('props', () => {
     it('should contain card', async () => {
-      const subscriptionOffers = getMockedSubscriptionOffersServices()
-      const subscriptionOffer = subscriptionOffers[0]
-      const wrapper = await mount(OfferSubscription, {
-        props: {
-          subscriptionOffer
-        }
-      })
-      const card = wrapper.findAll('[data-testid="provider-card"]')
+      const providerCards = wrapper.findAll('[data-testid="provider-card"]')
 
-      expect(card).toHaveLength(subscriptionOffer?.providers.length ?? 0)
+      expect(providerCards).toHaveLength(subscriptionOffer?.providers.length ?? 0)
+    })
+  })
+  describe('interactions', () => {
+    it('should emit "select-product" when user has selected a product', () => {
+      const providerCard = getProviderCardComponent(wrapper)
+      providerCard.vm.$emit('select-product', offerId, productId)
+
+      expect(wrapper.emitted('select-product')).toStrictEqual([[offerId, productId]])
+    })
+    it('should emit "deselect-product" when user has deselected a product', () => {
+      const providerCard = getProviderCardComponent(wrapper)
+      providerCard.vm.$emit('deselect-product', offerId, productId)
+
+      expect(wrapper.emitted('deselect-product')).toStrictEqual([[offerId, productId]])
     })
   })
 })

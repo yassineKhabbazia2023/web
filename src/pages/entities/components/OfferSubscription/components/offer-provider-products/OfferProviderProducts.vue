@@ -1,10 +1,13 @@
 <template>
-  <POfferServicesCard
-    data-ut="offer-services"
-    :pLogo="offerProvider.logoName"
-    :pTitle="getProviderName"
-    :pServices="offerProviderProducts"
-  />
+  <div>
+    <POfferServicesCard
+      data-testid="offer-services"
+      :pLogo="offerProvider.logoName"
+      :pTitle="title"
+      :pServices="services"
+      @change-service-status="onChangeServiceStatus"
+    />
+  </div>
 </template>
 
 <i18n lang="yaml">
@@ -23,71 +26,64 @@ fr-FR:
 </i18n>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { POfferServicesCard } from '@kpmg/styleguide'
-import type { OfferProviderProductsProps } from './OfferProviderProductsTypes'
-import type {
-  SubscriptionOfferProduct
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { OfferProviderProductsProps, ExtendedService } from './OfferProviderProductsTypes'
+import { getProviderServices, getTitle } from './OfferProviderProductsUtils'
+import type { PService } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
+
+const emit = defineEmits<{
+  'select-product': [number, string],
+  'deselect-product': [number, string]
+}>()
+
+const labels = {
+  included: t('included'),
+  additionalPrice: t('additionalPrice')
+}
+
 const props = defineProps<OfferProviderProductsProps>()
-const offerProviderProducts = ref<any>([])
-
-const getProviderName = computed(() => {
-  const { providerName, providerCategory } = props.offerProvider
-  switch (providerCategory.toLowerCase()) {
-    case 'pulse':
-      return `${t('platform')} ${providerName}`
-    case 'external':
-      return `${t('provider')} ${providerName}`
-    case 'internal':
-      return `${t('services')} ${providerName}`
-    default:
-      return providerName
-  }
-})
-
-const getServicePriceTag = (service: any) => {
-  const pEffect = 'light'
-
-  if (!service.isOptionnal) {
-    return {
-      pColor: 'gray-900',
-      pEffect,
-      pContent: t('included')
-    }
-  }
-  if (service.priceType === 'Exacte') {
-    return {
-      pColor: 'amethyste',
-      pEffect,
-      pContent: t('additionalPrice')
-    }
-  }
-}
-
-const getProviderProducts = () => {
-  // Format product data to match component props
-  props.offerProvider?.products.forEach(
-    (offerProduct: SubscriptionOfferProduct) => {
-      offerProviderProducts.value.push({
-        pStatus:
-          !offerProduct.isOptionnal ||
-          (offerProduct.isOptionnal && offerProduct.priceType === 'free'),
-        pDisabled: !offerProduct.isOptionnal,
-        pName: offerProduct.productLabel,
-        pTag: getServicePriceTag(offerProduct)
-      })
-    }
+const services = computed(() =>
+  getProviderServices(
+    props.offerId,
+    props.offerProvider.products,
+    props.selectedProducts,
+    labels.included,
+    labels.additionalPrice
   )
+)
+
+const ProviderCategoryTitles: Record<string, string> = {
+  pulse: t('platform'),
+  external: t('provider'),
+  internal: t('services')
 }
 
-onMounted(() => {
-  getProviderProducts()
+const title = computed(() => {
+  const category = props.offerProvider.providerCategory.toLowerCase()
+  const providerName = props.offerProvider.providerName
+
+  return getTitle(
+    ProviderCategoryTitles,
+    category,
+    providerName
+  )
 })
+
+function onChangeServiceStatus(service: PService) {
+  const { productId, pStatus } =
+    service as ExtendedService // because ExtendedService is given to POfferServicesCard
+
+  if (pStatus) {
+    emit('select-product', props.offerId, productId)
+  } else {
+    emit('deselect-product', props.offerId, productId)
+  }
+}
 </script>

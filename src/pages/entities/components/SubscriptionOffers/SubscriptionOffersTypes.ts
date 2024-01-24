@@ -1,9 +1,12 @@
+import { SubscriptionPriceType } from './SubscriptionOffersEnums'
+
 export interface SubscriptionOfferProduct {
   productName: string
+  productId: string
   productLabel: string
   enabled: boolean
   isOptionnal: boolean
-  priceType: string
+  priceType: SubscriptionPriceType
   price: number
  }
 
@@ -29,6 +32,7 @@ export interface SubscriptionOfferServices extends SubscriptionOffer {
   offersBookLink: string
   approvalRequired: boolean
   intranetLink: string
+  globalOfferId: string
   providers: SubscriptionOfferProvider[]
 }
 

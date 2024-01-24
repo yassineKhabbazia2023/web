@@ -52,6 +52,9 @@
             v-if="activeStep === offerStepperStep.SERVICES"
             data-testid="offer"
             :subscriptionOffer="currentSubscriptionOffer"
+            :selectedProducts="selectedProducts"
+            @select-product="onSelectProduct"
+            @deselect-product="onDeselectProduct"
           />
           <PrincipalContact
             :principalContact="principalContact"
@@ -121,12 +124,16 @@ import PrincipalContact from '../PrincipalContact'
 import NextPreviousButtons from '../NextPreviousButtons'
 import { getAllOffers, getOffer, getOffersBookLink, getPrincipalContact } from '@/services/offer'
 import { offerStepperStep } from './OffersDrawerTypes'
-import type { OffersDrawerProps } from './OffersDrawerTypes'
+import type { OffersDrawerProps, SelectedProduct } from './OffersDrawerTypes'
+import {
+  addSelectedProduct, removeSelectedProduct, getInitialSelectedProducts, getPostSubscriptionRequest
+} from './OffersDrawerUtils'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
+import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -162,6 +169,7 @@ const emit = defineEmits<{
 const props = defineProps<OffersDrawerProps>()
 
 const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
+const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const principalContact = ref<User | undefined>()
 
@@ -177,9 +185,10 @@ const internalIsOpened = computed({
 const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
   if (selectedOfferId === undefined) {
     currentSubscriptionOffer.value = undefined
-    return
+  } else {
+    currentSubscriptionOffer.value = await getOffer(selectedOfferId)
   }
-  currentSubscriptionOffer.value = await getOffer(selectedOfferId)
+  selectedProducts.value = getInitialSelectedProducts(currentSubscriptionOffer.value)
 }
 
 const nextLabel = computed((): string => {
@@ -210,20 +219,40 @@ const offersDrawerDetails = computed(
 )
 
 function onClickPrevious() {
-  if (activeStep.value > offerStepperStep.SERVICES) {
-    --activeStep.value
-  } else {
+  if (activeStep.value === offerStepperStep.SERVICES) {
     setSelectedOffer()
+  } else {
+    --activeStep.value
   }
 }
 
-function onClickNext() {
-  if (
-    activeStep.value < offerStepperStep.INFORMATION &&
-    currentSubscriptionOffer.value?.approvalRequired
-  ) {
-    ++activeStep.value
+function onSelectProduct(offerId: number, productId: string) {
+  addSelectedProduct(selectedProducts.value, offerId, productId)
+}
+
+function onDeselectProduct(offerId: number, productId: string) {
+  removeSelectedProduct(selectedProducts.value, offerId, productId)
+}
+
+async function validateOffer() {
+  const postSubscriptionRequest = getPostSubscriptionRequest(
+    props.accountNumber,
+    props.userEmail,
+    principalContact.value,
+    currentSubscriptionOffer.value,
+    selectedProducts.value
+  )
+  if (postSubscriptionRequest) {
+    await createSubscriptionRequestNew(postSubscriptionRequest)
   }
+}
+
+async function onClickNext() {
+  if (activeStep.value === offerStepperStep.INFORMATION) {
+    await validateOffer()
+    return
+  }
+  ++activeStep.value
 }
 
 function onSelectOffer(offerId: number) {
