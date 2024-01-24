@@ -70,6 +70,7 @@ const currentFolder = ref<null | Folder>(null)
 const servicesFolders = ref<Folder[][]>([])
 
 const fetchGedFoldersAndServices = async () => {
+  isLoadingServicesOrFolders.value = true
   entityServices.value = await fetchUserEntityServices(
     selectedEntity.value
   )
@@ -186,13 +187,12 @@ const handleUpdateFolderName = (data: Folder) => {
 }
 
 const handleTreeRefreshAndRedirectToFolder = async (folderId: Folder['id']) => {
-  const serviceId = currentBinService.value
-  setCurrentBinService(null)
   await fetchGedFoldersAndServices()
 
-  if (serviceId) {
-    currentService.value = serviceId.toString()
+  if (currentBinService.value) {
+    currentService.value = currentBinService.value.toString()
   }
+  setCurrentBinService(null)
   setCurrentFolder(folderId)
 }
 
@@ -201,7 +201,6 @@ const handleTreeRefreshAndRedirectToFolder = async (folderId: Folder['id']) => {
 onMounted(async () => {
   await fetchGedFoldersAndServices()
 })
-
 </script>
 
 <style>

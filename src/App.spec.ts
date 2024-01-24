@@ -356,8 +356,8 @@ describe('ged', () => {
         await bin.vm.$emit('navigate-to-folder', foldersData[0][0].children[0].id)
         await nextTick()
 
-        expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
-        expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
+        expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(3)
+        expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(3)
 
         const treeview = wrapper.findComponent(Treeview)
         await nextTick()

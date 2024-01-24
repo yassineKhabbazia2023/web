@@ -166,6 +166,20 @@ const paginationLabel = computed(() => {
    sur ${documents.value.documentsPage.totalItems}`
 })
 
+const fetchDocuments = async () => {
+  if (!props.selectedFolder) return
+  isLoading.value = true
+  documents.value = await fetchFolderDocuments(
+    props.currentService,
+    props.selectedFolder.id,
+    props.selectedEntity,
+    skip.value,
+    currentPageSize.value,
+    componentSortQueryField.value
+  )
+  isLoading.value = false
+}
+
 const setCurrentPageSize = (selectedRange: number) => {
   currentPageSize.value = selectedRange
 }
@@ -182,7 +196,11 @@ const breadcrumbItems = computed(() => {
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
 watch([() => props.selectedFolder, currentPage, currentPageSize], async () => {
+  if (!props.selectedFolder) return
   await fetchDocuments()
+},
+{
+  immediate: true
 })
 
 const handleSortChange = async (sortQueryField:string) => {
@@ -324,20 +342,6 @@ const handleCancelDeleteDocument = () => {
 const documentIdsSelected = computed(() => {
   return selectedDocuments.value.map(x => x.id)
 })
-
-const fetchDocuments = async () => {
-  if (!props.selectedFolder) return
-  isLoading.value = true
-  documents.value = await fetchFolderDocuments(
-    props.currentService,
-    props.selectedFolder.id,
-    props.selectedEntity,
-    skip.value,
-    currentPageSize.value,
-    componentSortQueryField.value
-  )
-  isLoading.value = false
-}
 
 // upload modal
 const filesSelected = ref<File[]>([])

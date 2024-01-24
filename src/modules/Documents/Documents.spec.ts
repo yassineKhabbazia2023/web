@@ -241,6 +241,7 @@ describe('documents', () => {
 
     it('should call fetch documents when on-sort-change is emitted', async () => {
       const wrapper = createWrapper()
+      await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
 
@@ -264,6 +265,7 @@ describe('documents', () => {
     // complexity of mocking i18n and the toastPlugin (not recommended)
     it('should call download document composable oppon  toolbox-action-triggered', async () => {
       const wrapper = createWrapper()
+      await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
@@ -331,6 +333,7 @@ describe('documents', () => {
 
     it('should open delete modal when toolbox-action-triggered is emitted', async () => {
       const wrapper = createWrapper()
+      await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
@@ -434,6 +437,7 @@ describe('documents', () => {
     // eslint-disable-next-line max-len
     it('should call transmit document composable oppon  toolbox-action-triggered', async () => {
       const wrapper = createWrapper()
+      await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
@@ -458,6 +462,7 @@ describe('documents', () => {
     // eslint-disable-next-line max-len
     it('should not call transmit document composable oppon  toolbox-action-triggered whe no selected documents', async () => {
       const wrapper = createWrapper()
+      await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
 
@@ -531,6 +536,7 @@ describe('documents', () => {
     it('should call fetch documents oppon transmit documents event triggered from toolbox',
       async () => {
         const wrapper = createWrapper()
+        await nextTick()
         const componentInstance = wrapper.vm
         componentInstance.documents = documentsResponsePayload
         componentInstance.selectedDocuments =
@@ -559,6 +565,7 @@ describe('documents', () => {
 
     it('should open drawer when row clicked', async () => {
       const wrapper = createWrapper()
+      await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
@@ -582,6 +589,7 @@ describe('documents', () => {
 
     it('should close drawer oppon close-drawer event', async () => {
       const wrapper = createWrapper()
+      await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments = [
