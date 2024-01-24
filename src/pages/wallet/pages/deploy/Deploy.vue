@@ -57,6 +57,8 @@
         data-testid="offers-drawer"
         v-if="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
+        :accountNumber="selectedAccountNumber"
+        :userEmail="userStore?.user?.email"
         v-model="openOffersDrawer"
       />
     </div>
@@ -287,9 +289,11 @@ onMounted(async () => {
 })
 
 const openOffersDrawer = ref(false)
+const selectedAccountNumber = ref<string>('')
 
-const onClickDeploy = (companyName: string) => {
+const onClickDeploy = (accountNumber: string, companyName: string) => {
   openOffersDrawer.value = true
+  selectedAccountNumber.value = accountNumber
   selectedCompanyName.value = companyName
 }
 const onClickFolder = (companyName: string) => {

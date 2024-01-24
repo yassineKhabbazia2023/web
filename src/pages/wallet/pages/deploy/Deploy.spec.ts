@@ -86,6 +86,9 @@ const createWrapper = (): VueWrapper<any> =>
     }
   })
 
+const findSubscriptionDrawer = (wrapper: VueWrapper) =>
+  wrapper.findComponent('[data-testid=offers-drawer]') as VueWrapper
+
 describe('wallet', () => {
   setActivePinia(pinia)
 
@@ -131,8 +134,23 @@ describe('wallet', () => {
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
     await table.vm.$emit('click-deploy')
 
-    const subscriptionDrawer = wrapper.findComponent('[data-testid=offers-drawer]')
+    const subscriptionDrawer = findSubscriptionDrawer(wrapper)
     expect(subscriptionDrawer.exists()).toBeTruthy()
+  })
+
+  it('removes drawer when it has been closed', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
+    await table.vm.$emit('click-deploy')
+
+    const subscriptionDrawer = findSubscriptionDrawer(wrapper)
+    expect(subscriptionDrawer.exists()).toBeTruthy()
+    await (subscriptionDrawer as VueWrapper).vm.$emit('update:modelValue', false)
+
+    const subscriptionDrawerAfter = findSubscriptionDrawer(wrapper)
+    expect(subscriptionDrawerAfter.exists()).toBeFalsy()
   })
 
   it('should redirect when click on access folder', async () => {
