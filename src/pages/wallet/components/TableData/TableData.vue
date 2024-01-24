@@ -49,7 +49,7 @@
         </PAvatar>
         <a
           class="font-semibold margin-left--2 link"
-          @click="onToolboxItemClicked('access', scope.row.name, scope.row.id)">
+          @click="onToolboxItemClicked('access', scope.row.name)">
           {{ scope.row.name }}
         </a>
       </div>
