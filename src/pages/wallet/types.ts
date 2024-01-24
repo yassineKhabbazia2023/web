@@ -1,3 +1,5 @@
+import { Component } from 'vue'
+
 export interface IEntity {
   isFavorite: boolean
   name: string
@@ -5,7 +7,12 @@ export interface IEntity {
   owner: {
     firstName: string
     lastName: string
+    email: string | null
+    initials: string | undefined
+    avatarColor: string
   }
+  id: string
+  hub: string
   city: string
   deploymentStatus: number
 }
@@ -23,4 +30,25 @@ export interface IState {
 export interface ICommonEntitiesInFavorite {
   name: string
   id: string
+}
+
+export interface IWalletData {
+  owner: {
+    firstName: string
+    lastName: string
+    email: string | null
+    initials: string | undefined
+    avatarColor: string
+  }
+  city: string
+  hub: string
+  deploymentStatus: {
+    text: string
+    icon: Component
+    color: string
+  },
+  id: string
+  accountNumber: string
+  name: string
+  isFavorite: boolean
 }

@@ -40,7 +40,7 @@
     <template #default="scope">
       <div class="flex valign-center">
         <PAvatar
-          pColor="persian"
+          :pColor="scope.row.owner.avatarColor"
           pType="xsmall"
         >
           <PIcon>
@@ -154,6 +154,14 @@
       </PToolbox>
     </template>
   </PTableColumn>
+  <PTableColumn
+    pWidth="50"
+    :pShowOverflowTooltip="false"
+  >
+    <template #default>
+      <PCheckbox :disabled="false"/>
+    </template>
+  </PTableColumn>
 </PTable>
 </template>
 
@@ -172,6 +180,7 @@ import {
   PTableColumn,
   PToolbox,
   PICheck,
+  PCheckbox,
   PIExclamationTriangle,
   PNotification,
   type PToolboxItemProps
@@ -336,12 +345,12 @@ const onToolboxItemClicked = async (action: string, companyName: string, account
 <style lang="scss">
 .wallet-table {
   .el-table__body {
-    .el-table__cell {
-      height: 40px !important;
-
-      &:nth-of-type(-n+5) {
-        &:hover {
-          cursor: pointer;
+    .el-table__row {
+      .el-table__cell {
+        &:nth-of-type(-n+5) {
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
     }
