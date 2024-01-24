@@ -1,6 +1,6 @@
 <template>
   <ElTooltip
-    popperClass="shadow--4"
+    popperClass="p-tooltip shadow--4"
     :content="pContent"
     :disabled="disabled"
     :placement="pPlacement"
