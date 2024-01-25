@@ -1,12 +1,12 @@
 <template>
   <div
-class="p-expandable-search
-  flex flex--align-items-center
-  flex--justify-content-start">
+    class="p-expandable-search flex flex--align-items-center flex--justify-content-start"
+  >
     <PButton
       v-if="!isSearchOpen"
       pType="white"
       pPlain
+      pSize="small"
       @click="openSearchBar"
     >
       <PIcon>
@@ -40,8 +40,8 @@ import PInput from '@/atoms/PInput'
 defineProps<PExpandableSearchProps>()
 
 const emit = defineEmits<{
-  input: [string],
-  'search-expand-change':[boolean]
+  input: [string]
+  'search-expand-change': [boolean]
 }>()
 
 const searchContent = ref('')
