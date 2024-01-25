@@ -301,10 +301,6 @@ const onClickFolder = (companyName: string) => {
 }
 </script>
 
-<style lang='scss' scoped>
-
-</style>
-
 <i18n lang="yaml">
   en-US:
     search: 'Search'
