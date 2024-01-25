@@ -20,6 +20,10 @@ const findPinput = (wrapper: VueWrapper) => {
   return wrapper.findComponent(PInput)
 }
 
+const findInput = (wrapper: VueWrapper) => {
+  return wrapper.find('input')
+}
+
 const expandSearch = async (wrapper: VueWrapper) => {
 
   const pButton = findPbutton(wrapper)
@@ -91,6 +95,29 @@ describe('pExpandableSearch', () => {
 
       expect(wrapper.emitted('input')).toBeTruthy()
       expect(wrapper.emitted('input')).toStrictEqual([['test']])
+    })
+
+    it('should emit search-expand-change and clear input upon pinput blur event', async () => {
+      const wrapper = createWrapper()
+
+      await expandSearch(wrapper)
+
+      const pInputWrapper = findPinput(wrapper)
+
+      await pInputWrapper.setValue('test')
+
+      await nextTick()
+
+      const input = findInput(pInputWrapper)
+      await input.trigger('focus')
+      await nextTick()
+
+      await input.trigger('blur')
+      await nextTick()
+
+      expect(wrapper.emitted('search-expand-change')).toBeTruthy()
+      expect(pInputWrapper.classes().includes('isExpanded')).toBeFalsy()
+      expect(input.element.value).toBe('')
     })
   })
 })

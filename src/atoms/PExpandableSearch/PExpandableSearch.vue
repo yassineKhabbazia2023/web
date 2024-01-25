@@ -24,6 +24,7 @@ class="p-expandable-search
       :class="['p-expandable-search__input', isSearchOpen ? 'isExpanded' : '']"
       @clear="handleClear"
       @input="handleInput"
+      @blur="handleBlur"
     >
     </PInput>
   </div>
@@ -54,10 +55,16 @@ const openSearchBar = () => {
 const handleClear = () => {
   isSearchOpen.value = false
   emit('search-expand-change', false)
-
 }
+
 const handleInput = () => {
   emit('input', searchContent.value)
+}
+
+const handleBlur = () => {
+  isSearchOpen.value = false
+  searchContent.value = ''
+  emit('search-expand-change', false)
 }
 </script>
 

@@ -294,4 +294,35 @@ describe('events', () => {
 
     expect(wrapper.vm.isSearchExpanded).toBeTruthy()
   })
+
+  it(
+    'should emit search-expand-change upon PExpandableSearch search-expand-change event', () => {
+
+      const wrapper = createWrapper({
+        pLeftSideButtons: [
+          {
+            pButton: {
+              pType: 'white',
+              pSize: 'small',
+              pPlain: false,
+              pRound: false,
+              pCircle: true,
+              pLoading: false,
+              pDisabled: false
+            },
+            pButtonName: 'Hello',
+            pButtonActionName: 'buttonActionName',
+            pButtonIcon: 'PISearch',
+            pComponentType: 'SEARCH'
+          }
+        ],
+        pRightSideButtons: defaultProps.pRightSideButtons
+      })
+
+      const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+      pSearchWrapper.vm.$emit('search-expand-change', true)
+
+      expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
+    }
+  )
 })

@@ -101,6 +101,7 @@ const emit = defineEmits<{
     'p-upload-files-selected': [File[]]
     'p-action-bar-button-clicked': [string]
     'p-search-input': [string]
+    'search-expand-change': [boolean]
 }>()
 
 const isSearchExpanded = ref(false)
@@ -134,6 +135,7 @@ const handleResize = () => {
 
 const handleExpandEvent = (value: boolean) => {
   isSearchExpanded.value = value
+  emit('search-expand-change', value)
 }
 
 onMounted(() => {
