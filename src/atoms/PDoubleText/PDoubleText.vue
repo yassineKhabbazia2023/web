@@ -99,6 +99,8 @@ withDefaults(defineProps<PDoubleTextProps>(), {
       font-size: 14px;
       line-height: 16.8px;
       color: var(--el-color-neutral-gray-900);
+      text-overflow: ellipsis;
+      overflow: hidden;
 
       &[disabled='true']{
           color: var(--el-color-neutral-gray-300);
@@ -113,6 +115,8 @@ withDefaults(defineProps<PDoubleTextProps>(), {
       font-size: 12px;
       line-height: 14.4px;
       color: var(--el-color-neutral-gray-500);
+      text-overflow: ellipsis;
+      overflow: hidden;
 
       &[disabled='true']{
           color: var(--el-color-neutral-gray-300);
