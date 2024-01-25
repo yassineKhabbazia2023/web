@@ -33,6 +33,12 @@ routes.value.push({
 } as RouteRecordRaw)
 
 routes.value.push({
+  path: '/portefeuille/collaborateurs',
+  name: 'collaborators',
+  component: () => import('@/pages/collaborators')
+} as RouteRecordRaw)
+
+routes.value.push({
   path: '/dossier',
   name: 'folder',
   component: () => import('@/pages/wallet/pages/folder'),
