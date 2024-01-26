@@ -32,7 +32,7 @@ describe('dossier', () => {
   })
 
   it('displays correctly the table', () => {
-    expect(wrapper.find('.title').text()).toBe('Wallet')
+    expect(wrapper.find('.wallet__title').text()).toBe('Wallet')
   })
   const PARAMS = [
     ['deploiment', 'tab-deploiment'],
