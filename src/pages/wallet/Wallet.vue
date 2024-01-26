@@ -48,6 +48,10 @@ const tabs = [
   {
     name: 'admin',
     trad: t('admin')
+  },
+  {
+    name: 'collaborators',
+    trad: t('collaborators')
   }
 ]
 
@@ -62,9 +66,11 @@ en-US:
   deploiment: 'Deploiment'
   bank: 'Bank flow'
   admin: 'Administrator'
+  collaborators: 'Collaborators'
 fr-FR:
   wallet: 'Portefeuille'
   deploiment: 'Déploiement'
   bank: 'Flux bancaires'
   admin: 'Administrateur'
+  collaborators: 'Collaborateurs'
 </i18n>

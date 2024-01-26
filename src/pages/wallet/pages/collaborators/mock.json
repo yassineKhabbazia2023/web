@@ -1,0 +1,174 @@
+{
+  "data": {
+    "items": [
+      {
+        "id": "1",
+        "firstName": "wilma",
+        "lastName": "Johns",
+        "email": "wilmajohns@hawkster.com",
+        "phoneNumber": "(873) 592-2450",
+        "ibsStatus": "AM",
+        "role": "Collaborateur ESC",
+        "office": "Marbury",
+        "hasAccess": false
+      },
+      {
+        "id": "2",
+        "firstName": "Fleming",
+        "lastName": "Gregory",
+        "email": "fleminggregory@hawkster.com",
+        "phoneNumber": "(949) 426-2776",
+        "ibsStatus": "CLP",
+        "role": "Collaborateur GS",
+        "office": "Elfrida",
+        "hasAccess": false
+      },
+      {
+        "id": "3",
+        "firstName": "Gloria",
+        "lastName": "Hull",
+        "email": "gloriahull@hawkster.com",
+        "phoneNumber": "(976) 515-2406",
+        "ibsStatus": "CLP",
+        "role": "Collaborateur ESC",
+        "office": "Eagletown",
+        "hasAccess": true
+      },
+      {
+        "id": "4",
+        "firstName": "Mamie",
+        "lastName": "Perry",
+        "email": "mamieperry@hawkster.com",
+        "phoneNumber": "(922) 576-3125",
+        "ibsStatus": "CLP",
+        "role": "Collaborateur ESC",
+        "office": "Chesapeake",
+        "hasAccess": false
+      },
+      {
+        "id": "5",
+        "firstName": "Levine",
+        "lastName": "Benson",
+        "email": "levinebenson@hawkster.com",
+        "phoneNumber": "(992) 468-3539",
+        "ibsStatus": "EM",
+        "role": "Support",
+        "office": "Bloomington",
+        "hasAccess": false
+      },
+      {
+        "id": "6",
+        "firstName": "Tanisha",
+        "lastName": "Jordan",
+        "email": "tanishajordan@hawkster.com",
+        "phoneNumber": "(941) 595-3354",
+        "ibsStatus": "CLP",
+        "role": "Collaborateur ESC",
+        "office": "Makena",
+        "hasAccess": true
+      },
+      {
+        "id": "7",
+        "firstName": "Hendricks",
+        "lastName": "Baker",
+        "email": "hendricksbaker@hawkster.com",
+        "phoneNumber": "(986) 440-3240",
+        "ibsStatus": "AM",
+        "role": "Collaborateur ESC",
+        "office": "Beaulieu",
+        "hasAccess": false
+      },
+      {
+        "id": "8",
+        "firstName": "Paula",
+        "lastName": "Weaver",
+        "email": "paulaweaver@hawkster.com",
+        "phoneNumber": "(991) 592-3655",
+        "ibsStatus": "CLP",
+        "role": "Collaborateur ESC",
+        "office": "Gardiner",
+        "hasAccess": true
+      },
+      {
+        "id": "9",
+        "firstName": "Rodgers",
+        "lastName": "Everett",
+        "email": "rodgerseverett@hawkster.com",
+        "phoneNumber": "(927) 412-2547",
+        "ibsStatus": "EM",
+        "role": "Collaborateur ESC",
+        "office": "Derwood",
+        "hasAccess": false
+      },
+      {
+        "id": "10",
+        "firstName": "Renee",
+        "lastName": "Zimmerman",
+        "email": "reneezimmerman@hawkster.com",
+        "phoneNumber": "(986) 423-3784",
+        "ibsStatus": "CLP",
+        "role": "Collaborateur GS",
+        "office": "Dodge",
+        "hasAccess": true
+      },
+      {
+        "id": "11",
+        "firstName": "Galloway",
+        "lastName": "Goff",
+        "email": "gallowaygoff@hawkster.com",
+        "phoneNumber": "(984) 449-3947",
+        "ibsStatus": "EM",
+        "role": "Collaborateur ESC",
+        "office": "Naomi",
+        "hasAccess": true
+      },
+      {
+        "id": "12",
+        "firstName": "Cline",
+        "lastName": "Pope",
+        "email": "clinepope@hawkster.com",
+        "phoneNumber": "(875) 456-2270",
+        "ibsStatus": "CLP",
+        "role": "Collaborateur GS",
+        "office": "Garnet",
+        "hasAccess": true
+      },
+      {
+        "id": "13",
+        "firstName": "Stefanie",
+        "lastName": "Conner",
+        "email": "stefanieconner@hawkster.com",
+        "phoneNumber": "(944) 530-2561",
+        "ibsStatus": "AM",
+        "role": "Collaborateur GS",
+        "office": "Clarksburg",
+        "hasAccess": false
+      },
+      {
+        "id": "14",
+        "firstName": "Herrera",
+        "lastName": "Wyatt",
+        "email": "herrerawyatt@hawkster.com",
+        "phoneNumber": "(901) 480-2907",
+        "ibsStatus": "EM",
+        "role": "Collaborateur GS",
+        "office": "Hayes",
+        "hasAccess": false
+      },
+      {
+        "id": "15",
+        "firstName": "Lilian",
+        "lastName": "Bowen",
+        "email": "lilianbowen@hawkster.com",
+        "phoneNumber": "(864) 404-3395",
+        "ibsStatus": "EM",
+        "role": "Collaborateur ESC",
+        "office": "Dawn",
+        "hasAccess": false
+      }
+    ],
+    "currentPage": 1,
+    "totalPages": 2,
+    "totalItems": 16
+  }
+}

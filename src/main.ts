@@ -41,6 +41,11 @@ const DEPLOY_CHILDREN_PATH = [
     path: 'administrateur',
     name: 'admin',
     page: 'deploy'
+  },
+  {
+    path: 'collaborateurs',
+    name: 'collaborators',
+    page: 'collaborators'
   }
 ]
 
