@@ -20,8 +20,13 @@
         :pShowInput="data.pShowInput"
         :pInputPlaceholder="data.pInputPlaceholder"
         :pShowDelete="data.pShowDelete"
+        :pShowOptions="data.pShowOptions"
+        :pOptions="data.pOptions"
+        :pOptionsPlaceholder="data.pOptionsPlaceholder"
+        :pOptionsValue="data.pOptionsValue"
         @click-delete="logEvent('click-delete', $event)"
         @update:p-input-value="logEvent('update:pInputValue', $event)"
+        @update:p-options-value="onUpdateOptionsValue"
       >
       </PUserAction>
       <template #controls>
@@ -33,6 +38,7 @@
         <HstText v-model="data.pTagContent" title="Tag content" />
         <HstCheckbox v-model="data.pShowInput" title="Show input"/>
         <HstText v-model="data.pInputPlaceholder" title="pInputPlaceholder"/>
+        <HstText v-model="data.pOptionsPlaceholder" title="pOptionsPlaceholder"/>
         <HstCheckbox v-model="data.pShowDelete" title="Show delete button" />
       </template>
     </Variant>
@@ -41,9 +47,10 @@
 
 <script setup lang="ts">
 import PUserAction from '.'
-import type { PUserActionProps } from './PUserActionTypes'
+import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
+import { getMockedOptions } from './PUserActionMocks'
 
 const exampleOffer1 = reactive<PUserActionProps>({
   pProfile: 'SL',
@@ -80,15 +87,34 @@ const exampleOffer3 = reactive<PUserActionProps>({
   pShowDelete: false
 })
 
+const exampleOffer4 = reactive<PUserActionProps>({
+  pProfile: 'SL',
+  pTitle: 'Suliman Lescot',
+  pDescription: 'suliman.lescot@kpmg.fr',
+  pTagContent: '',
+  pRole: '',
+  pShowInput: false,
+  pInputValue: '',
+  pInputPlaceholder: 'Entrez la fonction du collaborateur',
+  pShowDelete: true,
+  pShowOptions: true,
+  pOptions: getMockedOptions(),
+  pOptionsPlaceholder: 'Rôle IBS',
+  pOptionsValue: ''
+})
+
 const variants = [{
-  title: 'User action - Offer 1/3',
+  title: 'User action - Offer 1/4',
   data: exampleOffer1
 }, {
-  title: 'User action - Offer 2/3',
+  title: 'User action - Offer 2/4',
   data: exampleOffer2
 }, {
-  title: 'User action - Offer 3/3',
+  title: 'User action - Offer 3/4',
   data: exampleOffer3
+}, {
+  title: 'User action - Offer 4/4',
+  data: exampleOffer4
 }]
 
 const source = `
@@ -107,6 +133,11 @@ import { PUserAction } from '@kpmg/styleguide'
   @update:pInputValue="logEvent('update:pInputValue', $event)"
 />
 `
+
+function onUpdateOptionsValue(value: POptionsValue) {
+  exampleOffer4.pOptionsValue = value
+  logEvent('update:pOptionsValue', value)
+}
 </script>
 
 <docs lang="md">

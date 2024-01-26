@@ -37,6 +37,13 @@
         :pPlaceholder="pInputPlaceholder"
         class="p-user-action__input"
       />
+      <PDropdown
+        v-if="pShowOptions"
+        v-model="internalDropdownValue"
+        :pPlaceholder="pOptionsPlaceholder"
+        :pOptions="pOptions"
+        data-testid="options"
+      />
       <div
         v-if="pShowDelete"
         class="p-user-action__delete
@@ -65,12 +72,14 @@ import PAvatar from '@/atoms/PAvatar'
 import PTag from '@/atoms/PTag'
 import PInput from '@/atoms/PInput'
 import PIcon from '@/atoms/PIcon'
+import PDropdown from '@/molecules/PDropdown'
 import { PITrash } from '@/atoms/PIcon/components'
-import type { PUserActionProps } from './PUserActionTypes'
+import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 
 const emit = defineEmits<{
   'click-delete': [],
-  'update:pInputValue': [string]
+  'update:pInputValue': [string],
+  'update:pOptionsValue': [POptionsValue]
 }>()
 
 const props = withDefaults(defineProps<PUserActionProps>(), {
@@ -78,7 +87,10 @@ const props = withDefaults(defineProps<PUserActionProps>(), {
   pShowDelete: false,
   pTagContent: '',
   pShowInput: false,
-  pInputValue: ''
+  pInputValue: '',
+  pShowOptions: false,
+  pOptionsPlaceholder: '',
+  pOptions: () => []
 })
 
 const internalValue = computed({
@@ -87,6 +99,15 @@ const internalValue = computed({
   },
   set(value: string) {
     emit('update:pInputValue', value)
+  }
+})
+
+const internalDropdownValue = computed({
+  get() {
+    return props.pOptionsValue
+  },
+  set(value: POptionsValue) {
+    emit('update:pOptionsValue', value)
   }
 })
 </script>

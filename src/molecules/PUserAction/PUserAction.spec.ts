@@ -2,6 +2,7 @@ import { type VueWrapper, mount } from '@vue/test-utils'
 import PUserAction from '.'
 import { describe, it, expect } from 'vitest'
 import type { PUserActionProps } from './PUserActionTypes'
+import { getMockedOptions } from './PUserActionMocks'
 
 const defaultProps: PUserActionProps = {
   pProfile: '',
@@ -130,6 +131,34 @@ describe('testing PUserAction', () => {
 
     it('should NOT contain input if pShowInput is false', () => {
       const input = mountAndGetComponent({}, inputComponentSelector)
+
+      expect(input.exists()).toBeFalsy()
+    })
+  })
+
+  describe('options', () => {
+    const optionsComponentSelector = '[data-testid="options"]'
+    const pOptions = getMockedOptions()
+
+    it('should contain input if pShowInput is true', () => {
+      const pShowOptions = true
+      const optionsComponent = mountAndGetComponent({ pShowOptions, pOptions }, optionsComponentSelector)
+
+      expect(optionsComponent.exists()).toBeTruthy()
+    })
+
+    it('should emit update:pOptionsValue when user selects an option', async () => {
+      const pShowOptions = true
+      const firstOptionValue = pOptions.at(0)?.pValue
+      const wrapper = getWrapper({ pShowOptions, pOptions })
+      const optionsComponent = wrapper.findComponent(optionsComponentSelector) as VueWrapper
+      await optionsComponent.vm.$emit('update:modelValue', firstOptionValue)
+
+      expect(wrapper.emitted('update:pOptionsValue')).toStrictEqual([[firstOptionValue]])
+    })
+
+    it('should NOT contain input if pShowInput is false', () => {
+      const input = mountAndGetComponent({}, optionsComponentSelector)
 
       expect(input.exists()).toBeFalsy()
     })
