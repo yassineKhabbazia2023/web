@@ -1,0 +1,40 @@
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { getMockedFavoritedEntites } from '../../MockedFavoritedEntites'
+import EntityAvatar from '.'
+import type { Entity } from './EntityAvatarTypes'
+
+const entities: Entity[] = getMockedFavoritedEntites()
+
+const defaultProps = {
+  entity: entities[0],
+  hideTooltip: false,
+  selected: false
+}
+
+const createWrapper = (props = defaultProps) => {
+  const wrapper = mount(EntityAvatar, {
+    props
+  })
+
+  return wrapper
+}
+
+describe('entityAvatar', () => {
+  describe('display', () => {
+    it('should display the entity avatar with all details correctly', () => {
+      const wrapper = createWrapper()
+      const entityName = wrapper.find('.entity-wrapper__details-name')
+      const entityIbs = wrapper.find('.entity-wrapper__details-ibs')
+
+      expect(entityName.text()).toBe(entities[0].name)
+      expect(entityIbs.text()).toBe(entities[0].ibs)
+    })
+    it('should display the entity avatar with check icon when it is selected', () => {
+      const wrapper = createWrapper({ ...defaultProps, selected: true })
+      const entityAvatar = wrapper.find('[data-testid=avatar-check-icon]')
+
+      expect(entityAvatar.classes()).includes('p-avatar-wrapper__check-icon')
+    })
+  })
+})

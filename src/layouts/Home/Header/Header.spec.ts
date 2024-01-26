@@ -1,17 +1,17 @@
 import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
-import Header from './'
-import helpers from '@/tests/utils/helpers'
-import { nextTick } from 'vue'
-import { PToolbox } from '@kpmg/styleguide'
-import type { HeaderMenu } from './HeaderTypes'
 import { commonStore as store } from '@kpmg/common'
+import { nextTick } from 'vue'
+import helpers from '@/tests/utils/helpers'
+import { PToolbox } from '@kpmg/styleguide'
+import Header from './'
+
 const { router, pinia, mockUser, fetchUserData } = helpers()
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
-    state: () => (mockUser),
+    state: () => mockUser,
     getters: {
       isAuthenticated: () => true
     },
@@ -25,26 +25,13 @@ vi.mock('@kpmg/common', () => ({
   }
 }))
 
-const headerMenu: HeaderMenu[] = [{
-  pIcon: 'PIGrid',
-  pText: 'Wallet',
-  pPath: '/portefeuille'
-}, {
-  pIcon: 'PIFiles',
-  pText: 'subscriptions',
-  pPath: ''
-}]
-
-const createWrapper = (): VueWrapper<any> => mount(Header, {
-  attachTo: document.body,
-  props: {
-    headerMenu,
-    defaultActive: '/portefeuille'
-  },
-  global: {
-    plugins: [router]
-  }
-})
+const createWrapper = (): VueWrapper<any> =>
+  mount(Header, {
+    attachTo: document.body,
+    global: {
+      plugins: [router]
+    }
+  })
 
 describe('header', () => {
   let wrapper: VueWrapper<any>
@@ -52,27 +39,16 @@ describe('header', () => {
     setActivePinia(pinia)
     wrapper = createWrapper()
   })
-  it('should display header section', () => {
-    const wrapper: VueWrapper<any> = createWrapper()
+  it('should display the header section correctly', () => {
     router.push({ name: 'wallet' })
-    const header = wrapper.find('.el-menu--header')
-    const logo = wrapper.find('.menu-item--logo')
+    const header = wrapper.find('.header-section')
+    const logo = wrapper.find('.header-section__logo')
 
     expect(header.exists()).toBeTruthy()
     expect(logo.exists()).toBeTruthy()
   })
 
-  it('should contain proper menu items', async () => {
-    const menuItems = wrapper.findAll('.el-menu-item')
-
-    expect(menuItems).toHaveLength(headerMenu.length)
-
-    menuItems.forEach((menuItem, index) => {
-      expect(menuItem.text()).toBe(headerMenu.at(index)?.pText)
-    })
-  })
-
-  it('should disconnect user while clicking on logout button', async () => {
+  it('should disconnect user when clicking on the logout button', async () => {
     const spyRouterPush = vi.spyOn(router, 'push')
     await wrapper.find('.el-avatar').trigger('click')
     await nextTick()
@@ -85,15 +61,13 @@ describe('header', () => {
     expect(spyRouterPush).toHaveBeenCalledWith({ name: 'login' })
   })
 
-  it('should display initial user even the data in store is empty and token on sessionStorage is valid', async () => {
+  it('should display initial user even the data in store is empty and token on sessionStorage is valid', () => {
     const myStore = store()
     myStore.$patch({
       user: null
     })
-    wrapper = createWrapper()
-    await nextTick()
-    const initialContainer = wrapper.findComponent('[data-ut="userInitial"]')
-    await nextTick()
+
+    const initialContainer = wrapper.findComponent('[data-ut="user-initials"]')
     expect(initialContainer.text()).toBe('JD')
   })
 })

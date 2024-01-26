@@ -1,27 +1,24 @@
 <template>
   <div class="common-layout">
     <PContainer pDirection="vertical">
-      <PCHeader class="header-container" height="52">
-        <Header
-          :headerMenu="headerMenu"
-          :defaultActive="routeActive"
-        />
+      <PCHeader class="header-container" height="56">
+        <Header />
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
-          <Navbar class="navbar-aside-container" />
+          <Sidebar class="sidebar-container" />
         </PAside>
         <PContainer
           class="main-container"
-          :class="{ 'main-container--no-paddings': stylesMetaProperties?.hasPaddings === false }"
+          :class="{
+            'main-container--no-paddings':
+              stylesMetaProperties?.hasPaddings === false
+          }"
         >
           <router-view />
         </PContainer>
         <PContainer class="home-bottom-menu">
-          <PBottomMenu
-            :defaultActive="routeActive"
-            :pItems="menuBottomMenu"
-          />
+          <PBottomMenu :defaultActive="routeActive" :pItems="menuBottomMenu" />
         </PContainer>
       </PContainer>
     </PContainer>
@@ -29,49 +26,53 @@
 </template>
 
 <i18n lang="yaml">
-  en-US:
-    wallet: 'Wallet'
-    subscriptions: 'Request validation'
-    ged:  'My documents'
-    mandate: 'Banking'
-  fr-FR:
-    wallet: 'Portefeuille'
-    subscriptions: 'Validation de demande'
-    ged:  'Mes documents'
-    mandate: 'Flux bancaires'
+en-US:
+  wallet: 'Wallet'
+  subscriptions: 'Request validation'
+  ged: 'My documents'
+  mandate: 'Banking'
+fr-FR:
+  wallet: 'Portefeuille'
+  subscriptions: 'Validation de demande'
+  ged: 'Mes documents'
+  mandate: 'Flux bancaires'
 </i18n>
 
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
 import Header from './Header'
-import Navbar from './Navbar'
+import Sidebar from './Sidebar'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import type { HeaderMenu } from './Header/HeaderTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-const headerMenu: HeaderMenu[] = [{
-  pIcon: 'PIGrid',
-  pText: t('wallet'),
-  pPath: '/portefeuille'
-}, {
-  pIcon: 'PIFolder',
-  pText: t('ged'),
-  pPath: '/ged'
-}, {
-  pIcon: 'PIFiles',
-  pText: t('subscriptions'),
-  pPath: '/subscription'
-}, {
-  pIcon: 'PICashCoin',
-  pText: t('mandate'),
-  pPath: '/mandats'
-}]
+const headerMenu = [
+  {
+    pIcon: 'PIGrid',
+    pText: t('wallet'),
+    pPath: '/portefeuille'
+  },
+  {
+    pIcon: 'PIFolder',
+    pText: t('ged'),
+    pPath: '/ged'
+  },
+  {
+    pIcon: 'PIFiles',
+    pText: t('subscriptions'),
+    pPath: '/subscription'
+  },
+  {
+    pIcon: 'PICashCoin',
+    pText: t('mandate'),
+    pPath: '/mandats'
+  }
+]
 
 const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
   return {
@@ -83,12 +84,13 @@ const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
 })
 
 const router = useRouter()
-const stylesMetaProperties = computed(() => router.currentRoute.value.meta.styles)
+const stylesMetaProperties = computed(
+  () => router.currentRoute.value.meta.styles
+)
 const route = useRoute()
 const routeActive = route.path
 </script>
 <style lang="scss" scoped>
-
 .common-layout {
   .aside-main-container {
     display: flex;
@@ -106,13 +108,13 @@ const routeActive = route.path
     padding: 0;
   }
 
-  .aside-container .navbar-aside-container {
+  .aside-container .sidebar-container {
     @media only screen and (min-width: 992px) {
-      height: 100vh;
+      overflow: hidden;
     }
   }
 
-  .navbar-aside-container:not(.el-menu--collapse) {
+  .sidebar-container:not(.el-menu--collapse) {
     @media only screen and (max-width: 991px) {
       width: 100%;
     }
@@ -139,9 +141,10 @@ const routeActive = route.path
     position: relative;
     width: 100%;
     height: calc(100vh - 52px);
+    margin-top: 52px;
     overflow: auto;
 
-    @media only screen and (max-width: 991px)  {
+    @media only screen and (max-width: 991px) {
       width: auto;
       height: calc(100vh - 102px);
     }
@@ -152,4 +155,3 @@ const routeActive = route.path
   }
 }
 </style>
-
