@@ -58,12 +58,12 @@
       </PPagination>
 
       <OffersDrawer
-        data-testid="offers-drawer"
         v-if="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
         :accountNumber="selectedAccountNumber"
         :userEmail="userStore?.user?.email"
         v-model="openOffersDrawer"
+        data-testid="offers-drawer"
       />
     </div>
   </div>
@@ -149,7 +149,7 @@ const DEPLOYMENTS = [
 ]
 
 const getInitial = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
-  if (!!firstName && !!lastName) {
+  if (firstName && lastName) {
     return firstName[0] + lastName[0]
   }
 }
