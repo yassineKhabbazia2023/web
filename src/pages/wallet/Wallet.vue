@@ -1,6 +1,6 @@
 <template>
   <div class="padding--2">
-    <h3 class="h3 margin-bottom--6">
+    <h3 class="h3 margin-bottom--6 title">
       {{ t('wallet') }}
     </h3>
 
