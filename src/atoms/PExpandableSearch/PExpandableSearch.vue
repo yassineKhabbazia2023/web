@@ -37,7 +37,7 @@ import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import PButton from '@/atoms/PButton'
 import PInput from '@/atoms/PInput'
 
-defineProps<PExpandableSearchProps>()
+const props = defineProps<PExpandableSearchProps>()
 
 const emit = defineEmits<{
   input: [string]
@@ -62,9 +62,11 @@ const handleInput = () => {
 }
 
 const handleBlur = () => {
-  isSearchOpen.value = false
-  searchContent.value = ''
-  emit('search-expand-change', false)
+  if (props.pIsSearchShrinkable) {
+    isSearchOpen.value = false
+    searchContent.value = ''
+    emit('search-expand-change', false)
+  }
 }
 </script>
 

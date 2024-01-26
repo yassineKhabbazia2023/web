@@ -59,6 +59,7 @@
         </PButton>
         <PExpandableSearch
           v-else-if="item.pComponentType === 'SEARCH'"
+          :pIsSearchShrinkable ="item.pIsSearchShrinkable "
           @input="handleSearchTextTyped"
           @search-expand-change="handleExpandEvent"/>
       </template>

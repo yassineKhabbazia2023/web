@@ -12,6 +12,7 @@ type ComponentType = 'UPLOAD' | 'SEARCH'
 export interface ComponentDefinitionProps extends PButtonActionBarProps {
   pComponentType?: ComponentType
   pMultiple?: boolean
+  pIsSearchShrinkable ?: boolean
 }
 
 export interface PActionBarProps {
