@@ -5,4 +5,5 @@ export interface IProps {
   content: string
   icon: Component
   color: any
+  isSelected?: boolean
 }

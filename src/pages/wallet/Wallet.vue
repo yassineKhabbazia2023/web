@@ -4,7 +4,11 @@
       {{ t('wallet') }}
     </h3>
 
-    <Tags />
+    <Filters
+      @filter-by-status="handleFilterByDeploymentStatus"
+      @remove-filter="handleRemoveFilter"
+      data-testid="filters"
+    />
 
     <div class="margin-bottom--3">
       <PForm
@@ -86,11 +90,12 @@ import {
 } from '@kpmg/styleguide'
 import { commonApi, commonStore } from '@kpmg/common'
 import type { IEntity, IState, ICommonEntitiesInFavorite } from './types'
-import Tags from './components/Tags'
+import Filters from './components/Filters'
 import NoResult from './components/NoResult'
 import TableData from './components/TableData'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 import { useRouter } from 'vue-router'
+import { EntityStatus } from './components/Filters/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -160,7 +165,8 @@ const state: IState = reactive({
   totalPage: undefined,
   totalItems: undefined,
   search: undefined,
-  isLoading: undefined
+  isLoading: undefined,
+  filterByDeploymentStatus: undefined
 })
 
 const handlePageRangeChanged = (newValue: number) => {
@@ -203,7 +209,8 @@ const putEntitiesInCommonFavorite = (data: ICommonEntitiesInFavorite[]) => {
 const getQueryParams = () => ({
   page: state.currentPage,
   limit: state.limit,
-  search: state.search
+  search: state.search,
+  deploymentStatus: state.filterByDeploymentStatus
 })
 
 const removeFalsyValues = (obj: object) =>
@@ -225,7 +232,6 @@ const fetch = async () => {
         totalItems
       }
     } = await commonApi().wallet.get(`display?${searchParams}`)
-
     state.data = items.map(({
       owner,
       city,
@@ -274,7 +280,8 @@ onMounted(async () => {
   watch(() => [
     state.currentPage,
     state.limit,
-    state.search
+    state.search,
+    state.filterByDeploymentStatus
   ], async () => {
     await fetch()
   })
@@ -290,6 +297,12 @@ const onClickDeploy = (accountNumber: string, companyName: string) => {
 }
 const onClickFolder = (companyName: string) => {
   router.push({ name: 'users', params: { name: companyName } })
+}
+const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
+  state.filterByDeploymentStatus = filterValue.toString()
+}
+const handleRemoveFilter = () => {
+  state.filterByDeploymentStatus = undefined
 }
 </script>
 

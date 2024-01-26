@@ -18,6 +18,7 @@ export interface IState {
   totalItems: number | undefined
   search: string | undefined
   isLoading: boolean | undefined
+  filterByDeploymentStatus: string | undefined
 }
 
 export interface ICommonEntitiesInFavorite {
