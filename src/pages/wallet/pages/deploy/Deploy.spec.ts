@@ -158,12 +158,12 @@ describe('wallet', () => {
     const wrapper = createWrapper()
     await flushPromises()
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
-    await table.vm.$emit('access', 'Tesla')
+    await table.vm.$emit('access', '8126f51d-c834-4fda-82ea-00d51ee11983')
 
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({
       name: 'folder',
-      params: { name: 'Tesla' }
+      params: { id: '8126f51d-c834-4fda-82ea-00d51ee11983' }
     })
   })
 

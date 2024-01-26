@@ -158,12 +158,12 @@ describe('tableData', () => {
   it('should emit access when click on access button', async () => {
     await flushPromises()
 
-    const { name } = mockTableData[0]
+    const { id } = mockTableData[0]
 
     const accessButton = document.body.getElementsByClassName('p-toolbox-item__text')[1] as HTMLElement
     accessButton.click()
 
-    expect(wrapper.emitted('access')).toStrictEqual([[name]])
+    expect(wrapper.emitted('access')).toStrictEqual([[id]])
   })
 
   it('has the first entity selected by default', async () => {

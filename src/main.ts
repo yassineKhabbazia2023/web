@@ -109,7 +109,7 @@ routes.value.push({
 } as RouteRecordRaw)
 
 routes.value.push({
-  path: '/dossier/:name',
+  path: '/dossier/:id',
   name: 'folder',
   redirect: { name: 'users' },
   component: () => import('@/pages/folder'),

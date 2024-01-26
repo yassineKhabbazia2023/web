@@ -49,7 +49,7 @@
         </PAvatar>
         <a
           class="font-semibold margin-left--2 link"
-          @click="onToolboxItemClicked('access', scope.row.name)">
+          @click="onToolboxItemClicked('access', scope.row)">
           {{ scope.row.name }}
         </a>
       </div>
@@ -338,7 +338,7 @@ const onToolboxItemClicked = async (action: string, row: any) => {
   } else if (action === 'resendActivationEmail') {
     resendActivationEmail(id, name)
   } else if (action === 'access') {
-    emit('access', name)
+    emit('access', id)
   }
 }
 </script>

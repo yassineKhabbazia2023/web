@@ -303,8 +303,8 @@ const onClickDeploy = (accountNumber: string, companyName: string) => {
   selectedAccountNumber.value = accountNumber
   selectedCompanyName.value = companyName
 }
-const onClickFolder = (companyName: string) => {
-  router.push({ name: 'folder', params: { name: companyName } })
+const onClickFolder = (id: string) => {
+  router.push({ name: 'folder', params: { id } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
   state.filterByDeploymentStatus = filterValue.toString()
