@@ -1,15 +1,17 @@
 import { PIArrowUpCircle } from '@kpmg/styleguide'
+import { IWalletData } from '../../types'
 
-export const mockTableData = [
+export const mockTableData: IWalletData[] = [
   {
     owner: {
       firstName: 'firstName1',
       lastName: 'lastName1',
       email: 'email1',
-      phoneNumber: '',
-      initials: 'fl'
+      initials: 'fl',
+      avatarColor: 'orange'
     },
     city: 'paris',
+    hub: 'paris',
     deploymentStatus: {
       text: 'To Deploy',
       icon: PIArrowUpCircle,
@@ -25,10 +27,11 @@ export const mockTableData = [
       firstName: '',
       lastName: '',
       email: null,
-      phoneNumber: '',
-      initials: ''
+      initials: '',
+      avatarColor: 'orange'
     },
     city: 'hanoi',
+    hub: 'paris',
     deploymentStatus: {
       text: 'In progress',
       icon: PIArrowUpCircle,
