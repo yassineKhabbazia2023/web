@@ -24,7 +24,7 @@
         <div>
           <p class="line-height--120 font-semibold">
             <span class="text-capitalize">{{ scope.row.firstName }}</span>
-            <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+            <span class="text-uppercase margin-left--1">{{ scope.row.lastName }}</span>
           </p>
         </div>
       </div>
@@ -169,7 +169,7 @@ en-US:
   office: 'Office'
   access: 'Access'
   options: 'Options'
-  informationsAboutCollaborator: 'Information about the collaborator'
+  informationsAboutCollaborator: 'Collaborator information'
   detailsOfDelegations: 'Details of delegations'
   manageAccessRights: 'Manage access rights'
 fr-FR:

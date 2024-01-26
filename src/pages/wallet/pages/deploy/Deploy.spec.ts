@@ -6,6 +6,7 @@ import { commonPinia as pinia } from '@kpmg/common'
 import TableData from '../../components/TableData'
 import NoResult from '../../components/NoResult'
 import Deploy from './'
+import { EntityStatus } from '../../components/Filters/types'
 
 const putFavoriteMock = vi.fn()
 const getDisplayMock = vi.fn((_arg) =>
@@ -82,7 +83,7 @@ const createWrapper = (): VueWrapper<any> =>
   mount(Deploy, {
     plugins: [createTestingPinia()],
     global: {
-      stubs: ['Tags']
+      stubs: ['Filters']
     }
   })
 
@@ -179,5 +180,28 @@ describe('wallet', () => {
     const wrapper = createWrapper()
     await flushPromises()
     expect(wrapper.findComponent(NoResult).exists()).toBeTruthy()
+  })
+  it('should call api with the right filter when filterByStatus event is triggered', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
+    await tags.vm.$emit('filterByStatus', EntityStatus.TO_DEPLOY)
+
+    expect(getDisplayMock).toHaveBeenCalledTimes(2)
+    expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
+    expect(getDisplayMock).toHaveBeenNthCalledWith(
+      2,
+      `display?page=1&limit=15&deploymentStatus=${EntityStatus.TO_DEPLOY}`
+    )
+  })
+
+  it('should call api without filter when removeFilter  event is triggered', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
+    await tags.vm.$emit('removeFilter')
+
+    expect(getDisplayMock).toHaveBeenCalledTimes(1)
+    expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
   })
 })
