@@ -1,6 +1,6 @@
 {
   "name": "@kpmg/styleguide",
-  "version": "2.2.55",
+  "version": "2.2.71",
   "main": "dist/lib/styleguide.pegase.system.min.js",
   "module": "dist/lib/styleguide.pegase.es.min.js",
   "exports": {
