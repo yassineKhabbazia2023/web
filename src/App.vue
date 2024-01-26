@@ -70,7 +70,6 @@ const currentFolder = ref<null | Folder>(null)
 const servicesFolders = ref<Folder[][]>([])
 
 const fetchGedFoldersAndServices = async () => {
-  isLoadingServicesOrFolders.value = true
   entityServices.value = await fetchUserEntityServices(
     selectedEntity.value
   )

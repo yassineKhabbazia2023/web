@@ -28,7 +28,7 @@
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.2",
-    "@kpmg/styleguide": "^2.2.42"
+    "@kpmg/styleguide": "^2.2.71"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
