@@ -1,7 +1,9 @@
 {
   "extends": ["@kpmg/eslint-config-pulse"],
   "rules": {
-    "@intlify/vue-i18n/no-raw-text": "off"
+    "@intlify/vue-i18n/no-raw-text": "off",
+    "vitest/max-expects": "off", // règle temporairement désactivée
+    "vitest/prefer-expect-assertions": "off" // règle temporairement désactivée
   },
   "overrides": [
     {

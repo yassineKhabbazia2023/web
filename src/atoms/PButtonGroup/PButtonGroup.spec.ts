@@ -13,11 +13,15 @@ describe('test for PButtonGroup', () => {
       slots: {
         default: '<PButton>Button 1</PButton>'
       },
-      component: [PButton]
+      global: {
+        components: {
+          PButton
+        }
+      }
     })
 
     const PButtonElement = wrapper.findComponent({ name: 'PButtonGroup' })
     expect(PButtonElement.exists()).toBeTruthy()
-    expect(wrapper.find('pButton').exists()).toBeTruthy()
+    expect(wrapper.findComponent(PButton).exists()).toBeTruthy()
   })
 })

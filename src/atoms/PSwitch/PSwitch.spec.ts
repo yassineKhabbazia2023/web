@@ -48,9 +48,6 @@ describe('pSwitch', () => {
     expect(componentVM.inactiveText).toBe(propsValue.pInactiveText)
     expect(componentVM.activeValue).toBe(propsValue.pActiveValue)
     expect(componentVM.inactiveValue).toBe(propsValue.pInactiveValue)
-    expect(componentVM.activeColor).toBe(propsValue.pActiveColor)
-    expect(componentVM.inactiveColor).toBe(propsValue.pInactiveColor)
-    expect(componentVM.borderColor).toBe(propsValue.pBorderColor)
     expect(componentVM.name).toBe(propsValue.pName)
     expect(componentVM.validateEvent).toBe(propsValue.pValidateEvent)
     expect(componentVM.beforeChange).toBe(propsValue.pBeforeChange)
@@ -58,5 +55,12 @@ describe('pSwitch', () => {
     expect(wrapper.find('.el-switch').attributes('tabindex'))
       .toBe(propsValue.pTabIndex?.toString())
     expect(wrapper.find('.el-switch__input').attributes('aria-label')).toBe(propsValue.pLabel)
+
+    const { pBorderColor: border, pActiveColor: on, pInactiveColor: off } = propsValue
+    const pfx = '--el-switch-'
+    const sfx = '-color'
+
+    const expectedStyle = `${pfx}border${sfx}: ${border}; ${pfx}on${sfx}: ${on}; ${pfx}off${sfx}: ${off};`
+    expect(wrapper.attributes('style')).toBe(expectedStyle)
   })
 })

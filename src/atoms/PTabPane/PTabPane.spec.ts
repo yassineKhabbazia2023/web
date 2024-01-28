@@ -16,7 +16,12 @@ const propsValue: PTabPaneProps = {
 function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
   const Component = {
     template: `
-      <PTabs>
+      <PTabs
+        :model-value="props.pName"
+        pColor=""
+        pContent=""
+        pEffect="plain"
+      >
         <PTabPane 
           :pLabel="props.pLabel" 
           :pDisabled="props.pDisabled"

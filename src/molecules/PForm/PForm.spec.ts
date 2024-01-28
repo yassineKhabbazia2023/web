@@ -5,7 +5,7 @@ import PForm from '.'
 import type { PFormProps } from './PFormTypes'
 
 const propsValue: PFormProps = {
-  pModel: undefined,
+  pModel: {},
   pRules: undefined,
   pInline: false,
   pLabelPosition: 'right',
@@ -30,7 +30,7 @@ describe('pForm', () => {
   it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const componentVM = wrapper.findComponent(ElForm).vm
-    expect(componentVM.model).toBe(propsValue.pModel)
+    expect(componentVM.model).toStrictEqual(propsValue.pModel)
     expect(componentVM.rules).toBe(propsValue.pRules)
     expect(componentVM.inline).toBe(propsValue.pInline)
     expect(componentVM.labelPosition).toBe(propsValue.pLabelPosition)

@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils'
 import PText from './'
 import { PIPerson } from '../PIcon/components'
 import { describe, it, expect } from 'vitest'
+import { markRaw } from 'vue'
 
 const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
@@ -31,7 +32,7 @@ describe('tests for p-text', () => {
   it('renders with an icon', () => {
     const wrapper = mount(PText, {
       props: {
-        pIcon: PIPerson,
+        pIcon: markRaw(PIPerson),
         pContent,
         pType: 'primary',
         disabled: false,

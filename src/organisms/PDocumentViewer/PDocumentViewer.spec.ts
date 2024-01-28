@@ -2,8 +2,10 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PDocumentViewer from '.'
 import { ElDrawer } from 'element-plus'
+import type { PDocumentViewerProps } from './PDocumentViewerTypes'
 
-const defaultProps = {
+const defaultProps: PDocumentViewerProps = {
+  modelValue: false,
   pDirection: 'rtl',
   pSize: '100%',
   pDestroyOnClose: true,

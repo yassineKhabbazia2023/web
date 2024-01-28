@@ -1,4 +1,5 @@
 // Import necessary modules
+import { markRaw } from 'vue'
 import { mount } from '@vue/test-utils'
 import PDoubleText from './'
 import { PIFiletypePdf } from '../PIcon/components'
@@ -11,7 +12,7 @@ describe('tests for p-double-text', () => {
   it('renders with content', () => {
     const wrapper = mount(PDoubleText, {
       props: {
-        pIcon: PIFiletypePdf,
+        pIcon: markRaw(PIFiletypePdf),
         pProfile: 'FL',
         pTitle: 'Cell title',
         pContent,
@@ -34,7 +35,7 @@ describe('tests for p-double-text', () => {
   it('renders with an icon', () => {
     const wrapper = mount(PDoubleText, {
       props: {
-        pIcon: PIFiletypePdf,
+        pIcon: markRaw(PIFiletypePdf),
         pProfile: 'FL',
         pTitle: 'Cell title',
         pContent,

@@ -2,11 +2,20 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { PIPulse } from '@/atoms/PIcon/components'
 import PTag from '.'
+import type { PTagProps } from './PTagTypes'
 
-const createWrapper = (props: any = {}) =>
-  mount(PTag, {
+const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
+  const props: PTagProps = {
+    pColor: '',
+    pContent: '',
+    pEffect: 'plain',
+    ...overridenProps
+  }
+
+  return mount(PTag, {
     props
   })
+}
 
 describe('pTag', () => {
   describe('props', () => {
@@ -23,12 +32,12 @@ describe('pTag', () => {
       }
     ])(
       'should $text icon zone when pIconLeft is $shouldHaveIconLeftClass',
-      async ({ pIconLeft, text, shouldHaveIconLeftClass }) => {
+      async ({ pIconLeft, shouldHaveIconLeftClass }) => {
         const wrapper = createWrapper({
-          pIconLeft,
-          text
+          pIconLeft
         })
         await flushPromises()
+
         const hasIconLeftClass = wrapper.find('.el-tag__icon--left').exists()
         const hasIconLeftComponent = wrapper
           .findComponent({ name: 'PIPulse' })
@@ -51,10 +60,9 @@ describe('pTag', () => {
       }
     ])(
       'should $text icon zone when pIconRight is $shouldHaveIconRightClass',
-      async ({ pIconRight, text, shouldHaveIconRightClass }) => {
+      async ({ pIconRight, shouldHaveIconRightClass }) => {
         const wrapper = createWrapper({
-          pIconRight,
-          text
+          pIconRight
         })
         await flushPromises()
         const hasIconRightClass = wrapper.find('.el-tag__icon--right').exists()
