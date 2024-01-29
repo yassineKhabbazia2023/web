@@ -12,17 +12,34 @@
       :isAnyDocumentSelected="selectedDocuments.length > 0"
       @p-upload-files-selected="handleUploadFilesSelected"
       :isTransmitDocumentsLoading="isTransmitDocumentsLoading"
-      />
-
-    <DocumentsList
-      v-if="documents"
-      :documentsListWithTableStructure="documents"
-      @on-sort-change="handleSortChange"
-      @toolbox-action-triggered="handleToolboxActionTriggered"
-      @document-selection-change="handleOnDocumentsSelectionChange"
-      @table-row-clicked="handleOnRowTableDocumentsClicked"
+      :isSearchShrinkable="isSearchShrinkable"
+      @p-search-input="searchDocumentsByKeyWord"
+      @search-expand-change="handleSearchExpandChange"
     />
 
+    <DocumentsSearchAlert
+      v-if="canDisplaySearchResultAlert"
+      :documentsCount="documents?.documentsPage.totalItems ?? 0"
+    />
+
+    <div class="documents-list-wrapper">
+      <PLoader
+        v-if="isSearchLoading"
+        class="search-loader"
+        pType="gradient"
+        size="42"
+      />
+
+      <DocumentsList
+        v-if="documents"
+        :class="isSearchLoading ? 'is-searching' : ''"
+        :documentsListWithTableStructure="documents"
+        @on-sort-change="handleSortChange"
+        @toolbox-action-triggered="handleToolboxActionTriggered"
+        @document-selection-change="handleOnDocumentsSelectionChange"
+        @table-row-clicked="handleOnRowTableDocumentsClicked"
+      />
+    </div>
     <PPagination
       v-if="documents && documents.documentsPage.items.length > 0"
       v-model:p-current-page="currentPage"
@@ -41,8 +58,7 @@
   <PLoader
     v-show="isLoading"
     pType="gradient"
-    size="42"
-  />
+    size="42" />
 
   <DocumentRename
     v-if="selectedDocuments && selectedDocuments.length === 1"
@@ -72,7 +88,7 @@
     :currentServiceFolder="currentServiceFolder"
     @update-source-folders="propagateUpdateSourceFolders"
     @close-move-documents-modal="handleCloseMoveDocumentsModal"
-    @refresh-documents-list = "fetchDocuments"
+    @refresh-documents-list="fetchDocuments"
   />
 
   <DocumentUpload
@@ -85,8 +101,8 @@
     :currentServiceFolder="currentServiceFolder"
     @update-source-folders="propagateUpdateSourceFolders"
     @close-upload-documents-modal="handleCloseUploadDocumentsModal"
-    @refresh-documents-list = "fetchDocuments"
-    />
+    @refresh-documents-list="fetchDocuments"
+  />
   <DocumentPreview
     v-if="documentToPreview"
     :openDrawer="isPreviewDrawerOpened"
@@ -95,10 +111,13 @@
     :entityId="selectedEntity"
     :selectedDocumentIndex="selectedDocumentIndex"
     :totalDocumentsCount="totalDocumentsCount"
-    @next-document-preview-button-click="handleNextBuuttonClickedForPreviewDocument"
-    @previous-document-preview-button-click="handlePreviewButtonClickedForPreviewDocument"
+    @next-document-preview-button-click="
+      handleNextBuuttonClickedForPreviewDocument
+    "
+    @previous-document-preview-button-click="
+      handlePreviewButtonClickedForPreviewDocument
+    "
     @close-drawer="isPreviewDrawerOpened = false"
-
   />
 </template>
 
@@ -106,17 +125,19 @@
 // eslint-disable vitest/require-hookcurrentService
 /* eslint-disable vitest/require-hook */
 import { ref, watch, computed, ComputedRef } from 'vue'
-import { DocumentsProps } from './DocumentsTypes'
-import { Document } from '@/models/Document'
-import { Folder } from '@/models/Folder'
-import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
-
 import DocumentsList from './sections/DocumentsList'
+import {
+  fetchFolderDocuments,
+  fetchDocumentsByKeyWord
+} from '@/services/Documents'
+import { DocumentsProps } from './DocumentsTypes'
 import type {
   DocumentsWithTableStructure,
   TableRowDocument
 } from '@/models/Document'
-import { fetchFolderDocuments } from '@/services/Documents'
+import { Document } from '@/models/Document'
+import { Folder } from '@/models/Folder'
+import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
 
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
@@ -133,14 +154,13 @@ import { useTransmitDocuments } from
 import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
 import DocumentPreview from './components/DocumentPreview'
-import DocumentDeleteModal
-  from '@/modules/Documents/components/DocumentDeleteModal'
-
+import DocumentDeleteModal from '@/modules/Documents/components/DocumentDeleteModal'
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
-import { getBreadcrumbItems }
-  from '@/modules/common/helpers/folderHelper'
+import { getBreadcrumbItems } from '@/modules/common/helpers/folderHelper'
 import { deepCopy } from '../common/utils/deepCopy'
+import DocumentsSearchAlert from '@/modules/Documents/components/DocumentsSearchAlert'
 
 const emit = defineEmits<{
   'change-selected-folder': [Folder]
@@ -155,37 +175,35 @@ const componentSortQueryField = ref('-created')
 const isDeletePopupVisible = ref(false)
 const isLoading = ref(false)
 const isTransmitDocumentsLoading = ref(false)
+const isSearchLoading = ref(false)
+const isSearchExpanded = ref(false)
+const searchContent = ref('')
+
+const canDisplaySearchResultAlert = computed(() =>
+  searchContent.value && isSearchExpanded.value && !isSearchLoading.value)
 
 const isPreviewDrawerOpened = ref(false)
 const paginationLabel = computed(() => {
   if (!documents.value) return
 
-  return `${1 + ((currentPage.value - 1) * currentPageSize.value)}
-   - ${((currentPage.value - 1) * currentPageSize.value) +
-    documents.value.documentsPage.items.length} 
+  return `${1 + (currentPage.value - 1) * currentPageSize.value}
+   - ${
+     (currentPage.value - 1) * currentPageSize.value +
+     documents.value.documentsPage.items.length
+   } 
    sur ${documents.value.documentsPage.totalItems}`
 })
-
-const fetchDocuments = async () => {
-  if (!props.selectedFolder) return
-  isLoading.value = true
-  documents.value = await fetchFolderDocuments(
-    props.currentService,
-    props.selectedFolder.id,
-    props.selectedEntity,
-    skip.value,
-    currentPageSize.value,
-    componentSortQueryField.value
-  )
-  isLoading.value = false
-}
 
 const setCurrentPageSize = (selectedRange: number) => {
   currentPageSize.value = selectedRange
 }
 
 const breadcrumbItems = computed(() => {
-  const items = getBreadcrumbItems(props.currentServiceFolder, props.selectedFolder?.id ?? 0) ?? []
+  const items =
+    getBreadcrumbItems(
+      props.currentServiceFolder,
+      props.selectedFolder?.id ?? 0
+    ) ?? []
   items.unshift({
     pId: -1,
     pText: 'Documents'
@@ -193,8 +211,29 @@ const breadcrumbItems = computed(() => {
   return items
 })
 
-const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
+const fetchDocuments = async () => {
+  if (!props.selectedFolder) return
+  // eslint-disable-next-line max-len
+  if (isSearchExpanded.value && searchContent.value) {
+    await searchDocumentsByKeyWord(searchContent.value)
+  } else {
+    isLoading.value = true
+    documents.value = await fetchFolderDocuments(
+      props.currentService,
+      props.selectedFolder.id,
+      props.selectedEntity,
+      skip.value,
+      currentPageSize.value,
+      componentSortQueryField.value
+    )
+    isLoading.value = false
+  }
 
+}
+
+const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
+const isSearchShrinkable = computed(() => searchContent.value === '')
+// eslint-disable-next-line vitest/require-hook
 watch([() => props.selectedFolder, currentPage, currentPageSize], async () => {
   if (!props.selectedFolder) return
   await fetchDocuments()
@@ -203,7 +242,7 @@ watch([() => props.selectedFolder, currentPage, currentPageSize], async () => {
   immediate: true
 })
 
-const handleSortChange = async (sortQueryField:string) => {
+const handleSortChange = async (sortQueryField: string) => {
   componentSortQueryField.value = sortQueryField
   await fetchDocuments()
 }
@@ -213,23 +252,27 @@ const documentToPreview = ref<Document>()
 const selectedDocumentIndex = ref<number>(1)
 const totalDocumentsCount = ref<number>(0)
 
-const selectedDocumentsForMove = ref<Document[]>(deepCopy(selectedDocuments.value))
-const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = computed(() => {
-  return {
-    selectedDocuments: selectedDocuments.value,
+const selectedDocumentsForMove = ref<Document[]>(
+  deepCopy(selectedDocuments.value)
+)
+const downloadDocumentsProps: ComputedRef<DownloadDocumentsComposableProps> =
+  computed(() => {
+    return {
+      selectedDocuments: selectedDocuments.value,
+      currentService: props.currentService,
+      selectedEntity: props.selectedEntity
+    }
+  })
+
+const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(
+  () => ({
+    selectedDocumentsIds: documentIdsSelected.value,
     currentService: props.currentService,
     selectedEntity: props.selectedEntity
-  }
-})
-
-const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(() => ({
-  selectedDocumentsIds: documentIdsSelected.value,
-  currentService: props.currentService,
-  selectedEntity: props.selectedEntity
-})
+  })
 )
 // documents selection handlers
-const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
+const handleOnDocumentsSelectionChange = (documentsSelection: Document[]) => {
   selectedDocuments.value = documentsSelection
   if (documentsSelection.length) {
     selectedDocumentsForMove.value = documentsSelection
@@ -246,11 +289,13 @@ const handleOnRowTableDocumentsClicked = (document: TableRowDocument) => {
   }
 }
 
-const { handleDownloadDocumentsEvent } =
-useDownloadDocuments(downloadDocumentsProps)
+const { handleDownloadDocumentsEvent } = useDownloadDocuments(
+  downloadDocumentsProps
+)
 
-const { handleTransmitDocumentsEvent } =
-useTransmitDocuments(transmitDocumentsProps)
+const { handleTransmitDocumentsEvent } = useTransmitDocuments(
+  transmitDocumentsProps
+)
 
 const handleTransmitDocuments = async () => {
   isTransmitDocumentsLoading.value = true
@@ -340,8 +385,30 @@ const handleCancelDeleteDocument = () => {
 }
 
 const documentIdsSelected = computed(() => {
-  return selectedDocuments.value.map(x => x.id)
+  return selectedDocuments.value.map((document) => document.id)
 })
+
+const handleSearchExpandChange = (value: boolean) => {
+  isSearchExpanded.value = value
+}
+
+const searchDocumentsByKeyWord = async (value: string) => {
+  if (!props.selectedFolder) return
+
+  searchContent.value = value
+  isSearchLoading.value = true
+
+  documents.value = await fetchDocumentsByKeyWord(
+    props.currentService,
+    props.selectedFolder.id,
+    props.selectedEntity,
+    skip.value,
+    currentPageSize.value,
+    componentSortQueryField.value,
+    value
+  )
+  isSearchLoading.value = false
+}
 
 // upload modal
 const filesSelected = ref<File[]>([])
@@ -375,7 +442,8 @@ const handleFolderNavigation = (id: number) => {
 }
 const handleNextBuuttonClickedForPreviewDocument = () => {
   if (documents.value) {
-    documentToPreview.value = documents.value?.documentsPage.items[selectedDocumentIndex.value]
+    documentToPreview.value =
+      documents.value?.documentsPage.items[selectedDocumentIndex.value]
     if (documentToPreview.value) {
       selectedDocumentIndex.value = selectedDocumentIndex.value + 1
 
@@ -385,7 +453,8 @@ const handleNextBuuttonClickedForPreviewDocument = () => {
 }
 const handlePreviewButtonClickedForPreviewDocument = () => {
   if (documents.value) {
-    documentToPreview.value = documents.value.documentsPage.items[selectedDocumentIndex.value - 2]
+    documentToPreview.value =
+      documents.value.documentsPage.items[selectedDocumentIndex.value - 2]
     if (documentToPreview.value) {
       selectedDocumentIndex.value = selectedDocumentIndex.value - 1
 
@@ -394,3 +463,26 @@ const handlePreviewButtonClickedForPreviewDocument = () => {
   }
 }
 </script>
+<style lang="scss">
+.documents-breadcrumb {
+  padding: 24px 0 0 16px;
+}
+.documents-list-wrapper {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+
+  .p-loader {
+    font-size: 42px;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 99999;
+  }
+}
+  .is-searching {
+    .el-table {
+      opacity: 0;
+    }
+  }
+</style>

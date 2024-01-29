@@ -6,6 +6,7 @@
     ref="documentsListTable"
     highlightCurrentRow
     pStripe
+    :emptyText="t('noSearchData')"
     @sort-change="handleSortChange"
     @row-click="selectRow"
     @selection-change="handleSelectionChange"
@@ -49,6 +50,12 @@ import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
 import type { ElTable } from 'element-plus'
 import { Document, TableRowDocument } from '@/models/Document'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local'
+})
 
 const emit = defineEmits([
   'on-sort-change',
@@ -155,3 +162,13 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
     background: #90939999;
 }
 </style>
+<i18n lang="json">
+{
+  "en-US": {
+    "noSearchData": "Aucun résultat"
+  },
+  "fr-FR": {
+    "noSearchData": "Aucun résultat"
+  }
+}
+</i18n>

@@ -10,7 +10,8 @@ import {
   downloadDocument,
   fetchFolderDocuments,
   downloadDocuments,
-  transmitDocuments
+  transmitDocuments,
+  fetchDocumentsByKeyWord
 } from '@/services/Documents'
 import {
   documentsResponsePayload,
@@ -28,6 +29,7 @@ import { Folder } from '@/models/Folder'
 import { PBreadcrumb, PPagination } from '@kpmg/styleguide'
 import DocumentPreview from './components/DocumentPreview'
 import { documentMock } from './mocks/documentMock'
+import DocumentsSearchAlert from './components/DocumentsSearchAlert'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -35,6 +37,9 @@ type DocumentsSetup = {
   selectedDocuments: Document[]
   isRenameModalOpened: boolean
   isPreviewDrawerOpened: boolean
+  searchContent: string
+  isSearchExpanded: boolean
+  isSearchLoading: boolean
 }
 
 export type DocumentsWrapper = VueWrapper<
@@ -83,6 +88,9 @@ vi.mock('@/services/Documents', () => ({
   downloadDocuments: vi.fn(),
   downloadDocument: vi.fn(),
   transmitDocuments: vi.fn(),
+  fetchDocumentsByKeyWord: vi.fn(() => {
+    return documentsResponsePayload
+  }),
   previewDocument: vi.fn(() => {
     return Promise.resolve({
       data: new ArrayBuffer(1),
@@ -146,6 +154,8 @@ describe('documents', () => {
 
   const findPPagination = (wrapper: DocumentsWrapper) => wrapper.findComponent(PPagination)
 
+  const findDocumentsSearchAlert = (wrapper: DocumentsWrapper) =>
+    wrapper.findComponent(DocumentsSearchAlert)
   beforeEach(() => {
 
     setActivePinia(pinia)
@@ -244,6 +254,7 @@ describe('documents', () => {
       await nextTick()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
+      componentInstance.isSearchExpanded = false
 
       await nextTick()
       const documents = wrapper.findComponent(DocumentsList)
@@ -260,6 +271,32 @@ describe('documents', () => {
         '+name'
       )
     })
+
+    it('should call searchDocumentsByKeyWord when on-sort-change is emitted while in search state',
+      async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+        componentInstance.isSearchExpanded = true
+        componentInstance.searchContent = 'Hello'
+        await nextTick()
+
+        const documents = wrapper.findComponent(DocumentsList)
+
+        await documents.vm.$emit('on-sort-change', '+name')
+
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
+          foldersData[0][0].children[0].serviceId,
+          foldersData[0][0].children[0].id,
+          'my-entity',
+          0,
+          10,
+          '+name',
+          'Hello'
+        )
+      })
 
     // an exceptional test to be able to cover the composable code cause of the
     // complexity of mocking i18n and the toastPlugin (not recommended)
@@ -355,6 +392,7 @@ describe('documents', () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
+      componentInstance.isSearchExpanded = false
       await nextTick()
       const deleteModal = wrapper.findComponent(DocumentDeleteModal)
       await nextTick()
@@ -372,6 +410,35 @@ describe('documents', () => {
         '-created'
       )
     }, 30000)
+
+    it(
+      'should call search documents when confirm-delete-document is emitted while in search state',
+      async () => {
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+        componentInstance.isSearchExpanded = true
+        componentInstance.searchContent = 'Hello'
+
+        await nextTick()
+        const deleteModal = wrapper.findComponent(DocumentDeleteModal)
+        await nextTick()
+
+        await deleteModal.vm.$emit('confirm-delete-document')
+
+        expect(deleteModal.props('isVisible')).toBeFalsy()
+        expect(deleteModal.props('documentIds')).toStrictEqual([])
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
+          foldersData[0][0].children[0].serviceId,
+          foldersData[0][0].children[0].id,
+          'my-entity',
+          0,
+          10,
+          '-created',
+          'Hello'
+        )
+
+      }, 30000)
 
     it('should close delete modal when cancel-delete-document is emitted', async () => {
       const wrapper = createWrapper()
@@ -541,6 +608,8 @@ describe('documents', () => {
         componentInstance.documents = documentsResponsePayload
         componentInstance.selectedDocuments =
         documentsResponsePayload.documentsPage.items
+        componentInstance.isSearchExpanded = false
+
         await nextTick()
 
         const documentsList = wrapper.findComponent(DocumentsList)
@@ -560,6 +629,40 @@ describe('documents', () => {
           0,
           10,
           '-created'
+        )
+      })
+
+    it('should call search documents oppon transmit documents event triggered from toolbox',
+      async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+        componentInstance.selectedDocuments =
+            documentsResponsePayload.documentsPage.items
+        componentInstance.isSearchExpanded = true
+        componentInstance.searchContent = 'Hello'
+
+        await nextTick()
+        const documentsList = wrapper.findComponent(DocumentsList)
+
+        await documentsList.vm.$emit(
+          'toolbox-action-triggered',
+          'transmit-document'
+        )
+        await nextTick()
+
+        vi.advanceTimersByTime(300)
+
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
+          foldersData[0][0].children[0].serviceId,
+          foldersData[0][0].children[0].id,
+          'my-entity',
+          0,
+          10,
+          '-created',
+          'Hello'
         )
       })
 
@@ -679,6 +782,91 @@ describe('documents', () => {
       expect(componentInstance.isRenameModalOpened).toBeTruthy()
 
     })
+
+    it('should call fetchDocumentsByKeyWord upon p-search-input', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+
+      const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+
+      await documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
+      await nextTick()
+
+      expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
+        foldersData[0][0].children[0].serviceId,
+        foldersData[0][0].children[0].id,
+        'my-entity',
+        0,
+        10,
+        '-created',
+        'Hello'
+      )
+    })
+
+    it('should display the loader upon p-search-input', async () => {
+      const wrapper = createWrapper()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+
+      const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+
+      await documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
+      expect(wrapper.find('.search-loader').exists()).toBeTruthy()
+
+    })
+
+    describe('should display the serach results alerts upon meeting the right conditions',
+      async () => {
+        const cases = [
+          {
+            params: {
+              searchContent: 'Hello',
+              isSearchExpanded: true,
+              isSearchLoading: false
+            },
+            expectedResult: true
+          },
+          {
+            params: {
+              searchContent: '',
+              isSearchExpanded: true,
+              isSearchLoading: false
+            },
+            expectedResult: false
+          },
+          {
+            params: {
+              searchContent: '',
+              isSearchExpanded: false,
+              isSearchLoading: false
+            },
+            expectedResult: false
+          }
+        ]
+
+        it.each(cases)(
+          'pText mapping validation',
+          async ({ params, expectedResult }) => {
+            const wrapper = createWrapper()
+            const componentInstance = wrapper.vm
+            componentInstance.documents = documentsResponsePayload
+
+            componentInstance.searchContent = params.searchContent
+            componentInstance.isSearchExpanded = params.isSearchExpanded
+            componentInstance.isSearchLoading = params.isSearchLoading
+
+            await nextTick()
+
+            const documentsSearchAlertWrapper =
+              findDocumentsSearchAlert(wrapper)
+            await nextTick()
+
+            expect(documentsSearchAlertWrapper.exists()).toBe(expectedResult)
+          }
+        )
+
+      })
   })
 })
 

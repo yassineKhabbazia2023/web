@@ -9,7 +9,8 @@ import {
   uploadDocument,
   moveDocuments,
   transmitDocuments,
-  previewDocument
+  previewDocument,
+  fetchDocumentsByKeyWord
 } from './Documents'
 import type { Service } from '@/models/Service'
 import { Document } from '@/models/Document'
@@ -85,6 +86,29 @@ describe('documents service', () => {
           limit: 10,
           skip: 0,
           sort: '-created'
+        }
+      }
+    )
+  })
+
+  it('should fetsh documents with the keyword  when fetchDocumentsByKeyWord is called ', async () => {
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const folderId = 123
+    const accountId = 'my-account-id'
+
+    await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountId, 0, 10, '-created', 'test')
+
+    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledWith(
+      'service-1/my-account-id/documents/folder/123',
+      {
+        params: {
+          limit: 10,
+          skip: 0,
+          sort: '-created',
+          search: 'test',
+          findInChildFolders: true
         }
       }
     )

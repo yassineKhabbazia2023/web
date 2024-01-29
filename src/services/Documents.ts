@@ -168,3 +168,29 @@ export const previewDocument = async (
   }
 }
 
+export const fetchDocumentsByKeyWord = async (
+  serviceId: Service['ServiceId'],
+  folderId: Folder['id'],
+  entityId: string,
+  skip: number,
+  limit: number,
+  sort: string,
+  search: string,
+  findInChildFolders = true
+): Promise<DocumentsWithTableStructure> => {
+  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
+  const apiObject = api().ds
+
+  return (
+    await apiObject.get(fetchFolderDocumentsUrl, {
+      params: {
+        skip,
+        limit,
+        sort,
+        search,
+        findInChildFolders
+      }
+    })
+  ).data
+}
+

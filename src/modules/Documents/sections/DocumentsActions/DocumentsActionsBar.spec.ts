@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils'
+import { VueWrapper, mount } from '@vue/test-utils'
 import DocumentsActionsBar from './DocumentsActionsBar.vue'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { PActionBar } from '@kpmg/styleguide'
@@ -24,6 +24,11 @@ const findActionBarRight = (wrapper: any) => {
   const actionbar = wrapper.find('.documents-actions')
   return actionbar.find('.p-action-bar__right')
 }
+
+const findPactionBar = (wrapper: VueWrapper) => {
+  return wrapper.findComponent(PActionBar)
+}
+
 describe('documentsActions component', () => {
   it('should render the correct number of left side buttons', async () => {
     const permissions = ['']
@@ -34,7 +39,7 @@ describe('documentsActions component', () => {
     await nextTick()
     const leftActionBar = findActionBarLeft(wrapper)
     expect(leftActionBar.exists()).toBeTruthy()
-    expect(leftActionBar.findAll('.p-action-bar__left-btn')).toHaveLength(3)
+    expect(leftActionBar.findAll('.p-action-bar__left-btn')).toHaveLength(2)
   })
 
   it('should render the default button download of right side buttons', async () => {
@@ -65,10 +70,40 @@ describe('event', () => {
     const isAnyDocumentSelected = true
     const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
     expect(wrapper.exists()).toBeTruthy()
-    const pActionBarWrapper = wrapper.findComponent(PActionBar)
+    const pActionBarWrapper = findPactionBar(wrapper)
     await nextTick()
     await pActionBarWrapper.vm.$emit('p-action-bar-button-clicked')
     await wrapper.vm.$nextTick()
     expect(wrapper.emitted('p-action-bar-button-clicked')).toBeTruthy()
+  })
+
+  it('should propagate  PactionBar search-expand-change event', async () => {
+    const permissions = ['']
+    const isAnyDocumentSelected = true
+
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const pActionBarWrapper = findPactionBar(wrapper)
+
+    await pActionBarWrapper.vm.$emit('search-expand-change', true)
+    await nextTick()
+
+    expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
+
+  })
+
+  it('should propagate  PactionBar p-search-input event after the debounce', async () => {
+    vi.useFakeTimers()
+
+    const permissions = ['']
+    const isAnyDocumentSelected = true
+
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const pActionBarWrapper = findPactionBar(wrapper)
+
+    await pActionBarWrapper.vm.$emit('p-search-input', 'Hello')
+    await nextTick()
+    vi.advanceTimersByTime(300)
+
+    expect(wrapper.emitted('p-search-input')).toStrictEqual([['Hello']])
   })
 })

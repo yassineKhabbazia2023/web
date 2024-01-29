@@ -17,6 +17,15 @@ const defaultProps: DocumentsListProps = {
   documentsListWithTableStructure: documentsResponsePayload
 }
 
+const payloadWithZeroItems = {
+  ...documentsResponsePayload,
+  items: [
+  ],
+  totalItems: 39,
+  endIndex: 4,
+  startIndex: 1
+}
+
 export type DocumentsListWrapper = VueWrapper<
   ComponentPublicInstance<DocumentsListSetup, DocumentsListProps>
 >
@@ -192,6 +201,19 @@ describe('documentList', () => {
       await nextTick()
 
       expect(wrapper.emitted('toolbox-action-triggered')).toBeTruthy()
+    })
+
+    it('should display the correct text when not data available in the documentsList', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        documentsListWithTableStructure: payloadWithZeroItems
+      })
+
+      const table = await wrapper.findComponent(PTable)
+      const elTableStubEptyTextValue = table.find('el-table-stub').attributes('emptytext')
+      await nextTick()
+
+      expect(elTableStubEptyTextValue).toStrictEqual('Aucun résultat')
     })
   })
 })
