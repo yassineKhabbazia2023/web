@@ -14,11 +14,11 @@ export const store = defineStore('common', {
     user: null as UserInfo | null
   }),
   getters: {
-    token : (state: any) => state?.user?.token ?? sessionStorage.getItem('token') as string,
-    isAuthenticated :(getter : any ) => {
+    token: (state: any) => state?.user?.token ?? sessionStorage.getItem('token') as string,
+    isAuthenticated: (getter : any) => {
       return !!getter.token && !isTokenExpired(getter.token)
     },
-    isCollab: (state: any) => !!state.user?.isCollab,
+    isCollab: (state: any) => !!state.user?.isCollab
   },
   actions: {
     logout: async (state: any) => {
