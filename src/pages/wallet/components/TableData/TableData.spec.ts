@@ -165,6 +165,23 @@ describe('tableData', () => {
 
     expect(wrapper.emitted('access')).toStrictEqual([[id]])
   })
+  it('should change ibs selected and emit access', async () => {
+    const ibsLink = document.body.getElementsByClassName('link')[0] as HTMLElement
+    ibsLink.click()
+
+    const { id: idAccount, name } = mockTableData[0]
+    expect(wrapper.emitted('access')).toStrictEqual([[idAccount]])
+    expect(store.$patch).toHaveBeenCalledWith({
+      user: {
+        entities: {
+          default: {
+            idAccount,
+            name
+          }
+        }
+      }
+    })
+  })
 
   it('has the first entity selected by default', async () => {
     const { id: idAccount, name } = mockTableData[0]

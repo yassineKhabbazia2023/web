@@ -338,6 +338,7 @@ const onToolboxItemClicked = async (action: string, row: any) => {
   } else if (action === 'resendActivationEmail') {
     resendActivationEmail(id, name)
   } else if (action === 'access') {
+    handleRowSelectedChange(row)
     emit('access', id)
   }
 }
