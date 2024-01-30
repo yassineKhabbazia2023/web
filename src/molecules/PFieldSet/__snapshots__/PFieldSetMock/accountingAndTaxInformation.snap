@@ -10,7 +10,7 @@
     "pRules": [],
   },
   {
-    "modelValue": 0,
+    "modelValue": undefined,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -28,7 +28,7 @@
     "pLabel": "Durée de l'exercice",
   },
   {
-    "modelValue": 0,
+    "modelValue": undefined,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -46,7 +46,7 @@
     "pLabel": "Type de comptabilité",
   },
   {
-    "modelValue": 0,
+    "modelValue": undefined,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -64,7 +64,7 @@
     "pLabel": "Pays",
   },
   {
-    "modelValue": 0,
+    "modelValue": undefined,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -82,7 +82,7 @@
     "pLabel": "Régime fiscal",
   },
   {
-    "modelValue": 0,
+    "modelValue": undefined,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -100,7 +100,7 @@
     "pLabel": "Régime d'imposition",
   },
   {
-    "modelValue": 0,
+    "modelValue": undefined,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [

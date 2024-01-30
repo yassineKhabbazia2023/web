@@ -17,7 +17,7 @@ export function getMockedFields(
   if (fieldCase === 'companyIdentification') {
     return [
       getMockedInputField('lastname', 'Nom', 'Mac Cain', 30, withReadonlyFields),
-      getMockedInputField('firstname', 'Prénom', 'Johnny\'s Pizza', 65)
+      getMockedInputField('firstname', 'Prénom', "Johnny's Pizza", 65)
     ]
   }
   if (fieldCase === 'companyContact') {
@@ -45,7 +45,7 @@ export function getMockedFields(
     }]
     const accountingTypeOptions: PDropdownOption[] = [{
       pValue: 'accrual',
-      pLabel: 'Comptabilité d\'engagement'
+      pLabel: "Comptabilité d'engagement"
     }, {
       pValue: 'financial',
       pLabel: 'Comptabilité financière'
@@ -73,13 +73,13 @@ export function getMockedFields(
     }]
 
     return [
-      getMockedInputField('accountingYearStart', 'Début de l\'exercice', '01/01/2023', 30),
-      getDropdownField('accountingYearDuration', 'Durée de l\'exercice', 30, yearDurationOptions),
+      getMockedInputField('accountingYearStart', "Début de l'exercice", '01/01/2023', 30),
+      getDropdownField('accountingYearDuration', "Durée de l'exercice", 30, yearDurationOptions),
       getDropdownField('accountingType', 'Type de comptabilité', 30, accountingTypeOptions),
       getDropdownField('country', 'Pays', 30, countryOptions),
       getDropdownField('taxSystem', 'Régime fiscal', 30, taxSystemOptions),
-      getDropdownField('taxationRegime', 'Régime d\'imposition', 30, taxationRegimeOptions),
-      getDropdownField('activityType', 'Type d\'activité', 30, activityTypeOptions)
+      getDropdownField('taxationRegime', "Régime d'imposition", 30, taxationRegimeOptions),
+      getDropdownField('activityType', "Type d'activité", 30, activityTypeOptions)
     ]
   }
 }

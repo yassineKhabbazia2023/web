@@ -25,7 +25,7 @@
     "pFieldKey": "phone",
     "pFieldType": "input",
     "pLabel": "Numéro de téléphone",
-    "pPlaceholder": "John",
+    "pPlaceholder": "0123456789",
     "pRules": [
       {
         "message": "Veuillez saisir numéro de téléphone correct",

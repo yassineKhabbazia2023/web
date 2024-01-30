@@ -2,7 +2,7 @@
   <div
     class="
       flex
-      flex--gap--4
+      flex-gap--4
       flex--wrap
       flex--justify-content-stretch
       "

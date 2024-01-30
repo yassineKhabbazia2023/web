@@ -40,7 +40,7 @@
     "pRules": [],
   },
   {
-    "modelValue": 0,
+    "modelValue": undefined,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-40",
     "pDisabled": false,
     "pDropdownOptions": [
