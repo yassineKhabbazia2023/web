@@ -18,6 +18,7 @@ $dropdown: (
 .el-dropdown-menu {
   &__item {
     border: none;
+    outline: none;
   }
 }
 
