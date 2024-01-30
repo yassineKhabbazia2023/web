@@ -1,0 +1,120 @@
+[
+  {
+    "modelValue": "",
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pFieldKey": "accountingYearStart",
+    "pFieldType": "input",
+    "pLabel": "Début de l'exercice",
+    "pPlaceholder": "01/01/2023",
+    "pRules": [],
+  },
+  {
+    "modelValue": 0,
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pDropdownOptions": [
+      {
+        "pLabel": "12 mois",
+        "pValue": 12,
+      },
+      {
+        "pLabel": "24 mois",
+        "pValue": 24,
+      },
+    ],
+    "pFieldKey": "accountingYearDuration",
+    "pFieldType": "dropdown",
+    "pLabel": "Durée de l'exercice",
+  },
+  {
+    "modelValue": 0,
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pDropdownOptions": [
+      {
+        "pLabel": "Comptabilité d'engagement",
+        "pValue": "accrual",
+      },
+      {
+        "pLabel": "Comptabilité financière",
+        "pValue": "financial",
+      },
+    ],
+    "pFieldKey": "accountingType",
+    "pFieldType": "dropdown",
+    "pLabel": "Type de comptabilité",
+  },
+  {
+    "modelValue": 0,
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pDropdownOptions": [
+      {
+        "pLabel": "France",
+        "pValue": "fr",
+      },
+      {
+        "pLabel": "Belgique",
+        "pValue": "be",
+      },
+    ],
+    "pFieldKey": "country",
+    "pFieldType": "dropdown",
+    "pLabel": "Pays",
+  },
+  {
+    "modelValue": 0,
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pDropdownOptions": [
+      {
+        "pLabel": "BIC (Bénéfices Industriels et Commerciaux)",
+        "pValue": "bic",
+      },
+      {
+        "pLabel": "Autre",
+        "pValue": "other",
+      },
+    ],
+    "pFieldKey": "taxSystem",
+    "pFieldType": "dropdown",
+    "pLabel": "Régime fiscal",
+  },
+  {
+    "modelValue": 0,
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pDropdownOptions": [
+      {
+        "pLabel": "IS (impôts sur les sociétés)",
+        "pValue": "is",
+      },
+      {
+        "pLabel": "Autre",
+        "pValue": "other",
+      },
+    ],
+    "pFieldKey": "taxationRegime",
+    "pFieldType": "dropdown",
+    "pLabel": "Régime d'imposition",
+  },
+  {
+    "modelValue": 0,
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pDropdownOptions": [
+      {
+        "pLabel": "Prestataire de service",
+        "pValue": "services",
+      },
+      {
+        "pLabel": "Autre",
+        "pValue": "other",
+      },
+    ],
+    "pFieldKey": "activityType",
+    "pFieldType": "dropdown",
+    "pLabel": "Type d'activité",
+  },
+]
