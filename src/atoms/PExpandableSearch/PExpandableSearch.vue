@@ -31,13 +31,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { PISearch } from '@/atoms/PIcon/components'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import PButton from '@/atoms/PButton'
 import PInput from '@/atoms/PInput'
 
-const props = defineProps<PExpandableSearchProps>()
+const props = withDefaults(defineProps<PExpandableSearchProps>(), {
+  pIsSearchOpen: false
+})
 
 const emit = defineEmits<{
   input: [string]
@@ -45,7 +47,7 @@ const emit = defineEmits<{
 }>()
 
 const searchContent = ref('')
-const isSearchOpen = ref(false)
+const isSearchOpen = ref(props.pIsSearchOpen)
 
 const openSearchBar = () => {
   isSearchOpen.value = true
@@ -68,6 +70,18 @@ const handleBlur = () => {
     emit('search-expand-change', false)
   }
 }
+
+watch(
+  () => props.pIsSearchOpen,
+  (value) => {
+    if (!value) {
+      searchContent.value = ''
+    }
+
+    isSearchOpen.value = value
+    emit('search-expand-change', value)
+  }
+)
 </script>
 
 <style lang="scss">

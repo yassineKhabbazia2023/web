@@ -9,7 +9,7 @@ import type {
   ComponentDefinitionProps
 } from './PActionBarTypes'
 import PExpandableSearch from '@/atoms/PExpandableSearch'
-import type { ComponentPublicInstance } from 'vue'
+import { nextTick, type ComponentPublicInstance } from 'vue'
 
 type PActionBarSetup = {
   isSearchExpanded: boolean
@@ -131,6 +131,37 @@ describe('pActionBar', () => {
       })
       const rightZoneBtns = wrapper.find('.p-action-bar__right')
       expect(rightZoneBtns.findAllComponents(PButton)).toHaveLength(5)
+    })
+
+    it('should change buttons shape to circle upon  search-expand-change', async () => {
+      const wrapper = createWrapper({
+        pLeftSideButtons: [
+          {
+            pButton: {
+              pType: 'white',
+              pSize: 'small',
+              pPlain: false,
+              pRound: false,
+              pCircle: true,
+              pLoading: false,
+              pDisabled: false
+            },
+            pButtonName: 'Hello',
+            pButtonActionName: 'buttonActionName',
+            pButtonIcon: 'PISearch',
+            pComponentType: 'SEARCH'
+          }
+        ],
+        pRightSideButtons: defaultProps.pRightSideButtons
+      })
+
+      const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+      pSearchWrapper.vm.$emit('search-expand-change', true)
+      await nextTick()
+      const rightIconsWrapper = wrapper.find('.p-action-bar__right')
+      const rightIconSampleButon = rightIconsWrapper.findAllComponents(PButton)[0]
+
+      expect(rightIconSampleButon.props('pCircle')).toBeTruthy()
     })
   })
 })
@@ -325,4 +356,5 @@ describe('events', () => {
       expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
     }
   )
+
 })

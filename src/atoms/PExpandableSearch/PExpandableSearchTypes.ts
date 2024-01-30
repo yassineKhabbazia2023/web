@@ -1,5 +1,6 @@
 
 export interface PExpandableSearchProps {
   pPlaceholder?: string
-  pIsSearchShrinkable ?: boolean
+  pIsSearchShrinkable?: boolean
+  pIsSearchOpen: boolean
 }

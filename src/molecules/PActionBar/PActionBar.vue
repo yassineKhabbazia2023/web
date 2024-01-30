@@ -1,11 +1,8 @@
 <template>
   <div class="p-action-bar">
     <div class="p-action-bar__left">
-      <template
-        v-for="(item, index) in truncatedLeftSideButtons"
-        :key="index"
-      >
-      <PUpload
+      <template v-for="(item, index) in truncatedLeftSideButtons" :key="index">
+        <PUpload
           v-if="item.pComponentType === 'UPLOAD'"
           :pMultiple="item.pMultiple"
           :pDisable="item.pButton.pDisabled"
@@ -48,9 +45,7 @@
           ]"
           @click="$emit('p-action-bar-button-clicked', item.pButtonActionName)"
         >
-          <PIcon
-            class="el-button__icon--left"
-          >
+          <PIcon class="el-button__icon--left">
             <component :is="resolvedIconsLeft[index]"></component>
           </PIcon>
           <p>
@@ -59,11 +54,12 @@
         </PButton>
         <PExpandableSearch
           v-else-if="item.pComponentType === 'SEARCH'"
-          :pIsSearchShrinkable ="item.pIsSearchShrinkable "
+          :pIsSearchShrinkable="item.pIsSearchShrinkable"
+          :pIsSearchOpen="item.pIsSearchOpen"
           @input="handleSearchTextTyped"
-          @search-expand-change="handleExpandEvent"/>
+          @search-expand-change="handleExpandEvent"
+        />
       </template>
-
     </div>
     <div class="p-action-bar__right">
       <PButton
@@ -71,11 +67,14 @@
         :key="index"
         :pType="item.pButton.pType"
         :pPlain="item.pButton.pPlain"
-        :pCircle="isWindowUnderDesktop"
+        :pCircle="isIconsTypeCircle"
         :pLoading="item.pButton.pLoading"
         :pDisabled="item.pButton.pDisabled"
         :pSize="item.pButton.pSize"
-        class="p-action-bar__right-btn"
+        :class="[
+          'p-action-bar__right-btn',
+          isSearchExpanded ? 'p-action-bar__right-btn--round' : ''
+        ]"
         @click="$emit('p-action-bar-button-clicked', item.pButtonActionName)"
       >
         <PIcon class="el-button__icon--left">
@@ -99,10 +98,10 @@ import type { PActionBarProps } from './PActionBarTypes'
 const props = defineProps<PActionBarProps>()
 
 const emit = defineEmits<{
-    'p-upload-files-selected': [File[]]
-    'p-action-bar-button-clicked': [string]
-    'p-search-input': [string]
-    'search-expand-change': [boolean]
+  'p-upload-files-selected': [File[]]
+  'p-action-bar-button-clicked': [string]
+  'p-search-input': [string]
+  'search-expand-change': [boolean]
 }>()
 
 const isSearchExpanded = ref(false)
@@ -130,6 +129,10 @@ const resolvedIconsLeft = computed(() => {
 
 const isWindowUnderDesktop = ref(window.innerWidth < 992)
 
+const isIconsTypeCircle = computed(
+  () => isWindowUnderDesktop.value || isSearchExpanded.value
+)
+
 const handleResize = () => {
   isWindowUnderDesktop.value = window.innerWidth < 992
 }
@@ -147,7 +150,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
 })
 
-const handleFilesSelected = (data:File[]) => {
+const handleFilesSelected = (data: File[]) => {
   emit('p-upload-files-selected', data)
 }
 const handleSearchTextTyped = (data: string) => {
@@ -163,6 +166,11 @@ const handleSearchTextTyped = (data: string) => {
   width: 100%;
 
   &__right-btn {
+    &--round {
+      &.el-button.el-button--small .el-button__icon--left {
+        margin: 0;
+      }
+    }
     @media screen and (max-width: 992px) {
       &.el-button.el-button--small .el-button__icon--left {
         margin: 0;

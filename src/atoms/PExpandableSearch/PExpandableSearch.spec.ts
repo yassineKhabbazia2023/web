@@ -10,7 +10,8 @@ import PInput from '../PInput'
 const pPlaceholder = 'write your text in here'
 const defaultProps: PExpandableSearchProps = {
   pPlaceholder,
-  pIsSearchShrinkable: true
+  pIsSearchShrinkable: true,
+  pIsSearchOpen: false
 }
 
 const findPbutton = (wrapper: VueWrapper) => {
@@ -142,6 +143,25 @@ describe('pExpandableSearch', () => {
 
       expect(pInputWrapper.classes().includes('isExpanded')).toBeTruthy()
       expect(input.element.value).toBe('test')
+    })
+
+    it('should not shrink search input and clear the content upon pIsSearchOpen value change', async () => {
+      const updatedProps = {
+        ...defaultProps,
+        pIsSearchShrinkable: false,
+        pIsSearchOpen: true
+      }
+      const wrapper = createWrapper(updatedProps)
+
+      const pInputWrapper = findPinput(wrapper)
+
+      await pInputWrapper.setValue('test')
+
+      wrapper.setProps({ pIsSearchOpen: false })
+      await nextTick()
+
+      expect(pInputWrapper.classes().includes('isExpanded')).toBeFalsy()
+
     })
   })
 })
