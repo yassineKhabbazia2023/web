@@ -1,6 +1,8 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
+import { defineStore } from 'pinia'
+import { commonStore } from '@kpmg/common'
 import Wallet from './'
 
 const pinia = createTestingPinia()
@@ -13,6 +15,14 @@ vi.mock('vue-router', () => ({
   })
 }))
 
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    getters: {
+      isCollab: () => true
+    }
+  })
+}))
+
 const createWrapper = (): VueWrapper<any> =>
   mount(Wallet, {
     attachTo: document.body,
@@ -20,6 +30,16 @@ const createWrapper = (): VueWrapper<any> =>
       plugins: [pinia]
     }
   })
+const collaboratorsTabs = [
+  'Deploiment',
+  'Bank flow',
+  'Administrator',
+  'Collaborators'
+]
+const clientTabs = [
+  'All entities',
+  'All users'
+]
 
 describe('dossier', () => {
   let wrapper: VueWrapper<any>
@@ -49,4 +69,24 @@ describe('dossier', () => {
       })
     }
   )
+
+  it('should display the correct tab when user is collab', () => {
+    const tabsPane = wrapper.findAllComponents({ name: 'ElTabPane' })
+    collaboratorsTabs.forEach((tabPane, index) => {
+      const label = tabsPane.at(index)?.props('label')
+      expect(label).toBe(tabPane)
+    })
+  })
+
+  it('should display the correct tab when user is client', () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    wrapper = createWrapper()
+    const tabsPane = wrapper.findAllComponents({ name: 'ElTabPane' })
+    clientTabs.forEach((tabPane, index) => {
+      const label = tabsPane.at(index)?.props('label')
+      expect(label).toBe(tabPane)
+    })
+  })
 })

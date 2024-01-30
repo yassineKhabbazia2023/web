@@ -2,7 +2,7 @@ import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonPinia as pinia } from '@kpmg/common'
+import { commonStore, commonPinia as pinia } from '@kpmg/common'
 import TableData from '../../components/TableData'
 import NoResult from '../../components/NoResult'
 import Deploy from './'
@@ -66,7 +66,8 @@ vi.mock('@kpmg/common', () => ({
       }
     }),
     getters: {
-      isAuthenticated: () => true
+      isAuthenticated: () => true,
+      isCollab: () => true
     }
   })
 }))
@@ -203,5 +204,15 @@ describe('wallet', () => {
 
     expect(getDisplayMock).toHaveBeenCalledTimes(1)
     expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
+  })
+
+  it('should not displayed the filters component if the user is client', async () => {
+    const wrapper = createWrapper()
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    await flushPromises()
+    const filters = wrapper.findComponent('[data-testid=filters]') as VueWrapper
+    expect(filters.exists()).toBeFalsy()
   })
 })

@@ -28,6 +28,7 @@ import {
 } from '@kpmg/styleguide'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { commonStore } from '@kpmg/common'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -36,7 +37,9 @@ const { t } = useI18n({
 
 const activeTab = ref('deploiment')
 const router = useRouter()
-const tabs = [
+const userStore = commonStore()
+
+const collaboratorsTabs = [
   {
     name: 'deploiment',
     trad: t('deploiment')
@@ -55,6 +58,19 @@ const tabs = [
   }
 ]
 
+const clientTabs = [
+  {
+    name: 'deploiment',
+    trad: t('allEntities')
+  },
+  {
+    name: 'allUsers',
+    trad: t('allUsers')
+  }
+]
+
+const tabs = userStore.isCollab ? collaboratorsTabs : clientTabs
+
 const handleTabClick = (tab: any) => {
   router.push({ name: tab.paneName })
 }
@@ -67,10 +83,14 @@ en-US:
   bank: 'Bank flow'
   admin: 'Administrator'
   collaborators: 'Collaborators'
+  allEntities: 'All entities'
+  allUsers: 'All users'
 fr-FR:
   wallet: 'Portefeuille'
   deploiment: 'Déploiement'
   bank: 'Flux bancaires'
   admin: 'Administrateur'
   collaborators: 'Collaborateurs'
+  allEntities: 'Toutes mes entités'
+  allUsers: 'Tous les utilisateurs'
 </i18n>

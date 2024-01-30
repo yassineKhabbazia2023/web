@@ -21,7 +21,8 @@ vi.mock('@kpmg/common', () => ({
     state: () => ({
       user: {
         id: contactId
-      }
+      },
+      isCollab: true
     })
   })
 }))
@@ -40,6 +41,27 @@ const createWrapper = (): VueWrapper<any> =>
     }
   })
 
+const collaboratorsColumnLabels =
+[
+  'Company name',
+  'IBS Code',
+  'Leader',
+  'Email',
+  'City',
+  'Hub',
+  'Status',
+  'Option'
+]
+const clientsColumnLabels =
+[
+  'Company name',
+  'IBS Code',
+  'Leader',
+  'Email',
+  'City',
+  'Option'
+]
+
 describe('tableData', () => {
   let wrapper: VueWrapper<any>
   let store: any
@@ -48,7 +70,6 @@ describe('tableData', () => {
     vi.useFakeTimers()
     wrapper = createWrapper()
     store = commonStore(pinia)
-
     store.$patch({
       user: {}
     })
@@ -223,6 +244,28 @@ describe('tableData', () => {
           }
         }
       }
+    })
+  })
+
+  it('should display the correct columns when the user is a collaborator', () => {
+    const pTableColumns = wrapper.findAllComponents({ name: 'ElTableColumn' })
+    collaboratorsColumnLabels.forEach((columnLabel, index) => {
+      const indexSkiped = index + 1 // skip the first column
+      const label = pTableColumns.at(indexSkiped)?.props('label')
+      expect(label).toBe(columnLabel)
+    })
+  })
+
+  it('should display the correct columns when the user is a client', async () => {
+    store.$patch({
+      isCollab: false
+    })
+    await nextTick()
+    const pTableColumns = wrapper.findAllComponents({ name: 'ElTableColumn' })
+    clientsColumnLabels.forEach((columnLabel, index) => {
+      const indexSkiped = index + 1 // skip the first column
+      const label = pTableColumns.at(indexSkiped)?.props('label')
+      expect(label).toBe(columnLabel)
     })
   })
 })

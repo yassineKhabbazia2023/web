@@ -1,6 +1,7 @@
 <template>
   <div>
     <Filters
+      v-if="isCollab"
       @filter-by-status="handleFilterByDeploymentStatus"
       @remove-filter="handleRemoveFilter"
       data-testid="filters"
@@ -92,6 +93,7 @@ import NoResult from '../../components/NoResult'
 import TableData from '../../components/TableData'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -101,7 +103,7 @@ const { t } = useI18n({
 const userStore = commonStore()
 const router = useRouter()
 const selectedCompanyName = ref('')
-
+const { isCollab } = storeToRefs(userStore)
 const PAGE_SIZES = [15, 30, 45, 60]
 
 // search part

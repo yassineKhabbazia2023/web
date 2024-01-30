@@ -12,6 +12,7 @@
   <PTableColumn
     pProp="isFavorite"
     :pWidth="30"
+    data
   >
     <template #default="scope">
       <PIcon
@@ -106,31 +107,33 @@
       </p>
     </template>
   </PTableColumn>
-  <PTableColumn
-    :pLabel="t('hub')"
-    pProp="hub"
-    pSortable
-  >
-    <template #default="scope">
-      <p class="capitalize">
-        {{ scope.row.hub }}
-      </p>
-    </template>
-  </PTableColumn>
-  <PTableColumn
-    :pLabel="t('status')"
-    pProp="deploymentStatus.text"
-    pSortable
-  >
-    <template #default="scope">
-      <PTag
-        :pContent="scope.row.deploymentStatus.text"
-        :pColor="scope.row.deploymentStatus.color"
-        :pIconLeft="scope.row.deploymentStatus.icon"
-        pEffect="light"
-      />
-    </template>
-  </PTableColumn>
+  <template v-if="isCollab">
+    <PTableColumn
+      :pLabel="t('hub')"
+      pProp="hub"
+      pSortable
+    >
+      <template #default="scope">
+        <p class="capitalize">
+          {{ scope.row.hub }}
+        </p>
+      </template>
+    </PTableColumn>
+    <PTableColumn
+      :pLabel="t('status')"
+      pProp="deploymentStatus.text"
+      pSortable
+    >
+      <template #default="scope">
+        <PTag
+          :pContent="scope.row.deploymentStatus.text"
+          :pColor="scope.row.deploymentStatus.color"
+          :pIconLeft="scope.row.deploymentStatus.icon"
+          pEffect="light"
+        />
+      </template>
+    </PTableColumn>
+</template>
   <PTableColumn
     :pLabel="t('option')"
     :pWidth="80"
@@ -154,6 +157,7 @@
     </template>
   </PTableColumn>
   <PTableColumn
+    v-if="isCollab"
     pWidth="50"
     :pShowOverflowTooltip="false"
   >
@@ -252,6 +256,7 @@ const menuElements = (status : string) => {
 
 const userStore = commonStore()
 const { user } = storeToRefs(userStore)
+const { isCollab } = storeToRefs(userStore)
 
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
