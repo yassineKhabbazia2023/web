@@ -59,6 +59,10 @@
             <td>.padding-{position}--{token}</td>
             <td>padding-{position}: 0.25rem * {token};</td>
           </tr>
+          <tr>
+            <td>.gap--{token}</td>
+            <td>gap: 0.25rem * {token};</td>
+          </tr>
         </tbody>
       </table>
 
@@ -124,6 +128,24 @@
             <td>32</td>
             <td>8rem</td>
             <td>Margin entre les organismes et les sections</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="h4">
+        Dimensions
+      </p>
+
+      <table class="table-spacing" aria-label="Types d'espacement">
+        <thead>
+          <tr>
+            <th>Type de l’espacement + (token)</th>
+            <th>Résultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.min-width--{token}</td>
+            <td>min-width: {token} * 0.25;</td>
           </tr>
         </tbody>
       </table>

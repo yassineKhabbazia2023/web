@@ -65,6 +65,14 @@ $spacing-unit: 0.4rem;
 }
 
 @for $i from 0 through 12 {
+  .flex--gap--#{$i} {
+    gap: $spacing-unit * $i;
+  }
+
+  .min-width--#{$i} {
+    min-width: $spacing-unit * 10 * $i;
+  }
+
   .margin {
     &--#{$i} {
       margin: $spacing-unit * $i !important;
