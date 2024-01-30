@@ -23,17 +23,27 @@
       :pDisabled="pDisabled"
       :pPlaceholder="pPlaceholder"
     />
+    <PDatePicker
+      v-if="pFieldType === 'date'"
+      class="flex--grow-1"
+      v-model="internalDate"
+      :pReadonly="pReadonly"
+      :pDisabled="pDisabled"
+      :pPlaceholder="pPlaceholder"
+    />
   </PFormItem>
 </template>
 
 <script setup lang="ts" generic="T">
 import { computed } from 'vue'
+import PDatePicker from '@/atoms/PDatePicker'
+import PDropdown from '@/molecules/PDropdown'
 import PFormItem from '@/atoms/PFormItem'
 import PInput from '@/atoms/PInput'
-import PDropdown from '@/molecules/PDropdown'
 import type { PFieldProps } from './PFieldTypes'
 
 const props = withDefaults(defineProps<PFieldProps<T>>(), {
+  modelValue: undefined,
   pReadonly: false,
   pDisabled: false,
   pDropdownOptions: () => [],
@@ -47,10 +57,20 @@ const emit = defineEmits<{
 
 const internalValue = computed({
   get() {
-    return props.modelValue
+    return props.modelValue as T
   },
   set(value: T) {
     emit('update:modelValue', value)
+  }
+})
+
+const internalDate = computed({
+  get() {
+    return props.modelValue as string
+  },
+  set(value: Date|string) {
+    const isoValue = value instanceof Date ? value.toISOString().substring(0, 10) : value
+    emit('update:modelValue', isoValue as T)
   }
 })
 </script>

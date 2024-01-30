@@ -44,6 +44,27 @@
           <HstCheckbox v-model="pControlNumberSelect.pDisabled" title="Disabled" />
         </template>
       </Variant>
+      <Variant title="Datepicker">
+        <PForm
+          pLabelPosition="top"
+        >
+          <DateField
+            v-model="pControlDate.modelValue"
+            pFieldKey="c"
+            :pFieldType="pControlDate.pFieldType"
+            :pLabel="pControlDate.pLabel"
+            :pPlaceholder="pControlDate.pPlaceholder"
+            :pDisabled="pControlDate.pDisabled"
+            @update:model-value="logEvent('update:model-value', $event)"
+          />
+        </PForm>
+        <template #controls>
+          <HstText v-model="pControlDate.modelValue" title="Model value" />
+          <HstText v-model="pControlDate.pFieldType" title="FieldType" />
+          <HstText v-model="pControlDate.pPlaceholder" title="Placeholder" />
+          <HstCheckbox v-model="pControlDate.pDisabled" title="Disabled" />
+        </template>
+      </Variant>
     </div>
   </Story>
 </template>
@@ -52,16 +73,18 @@
 import PField from '.'
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
-import type { PFieldPropsInput, PFieldPropsSelect } from './PFieldTypes'
-import { getMockedInputField, getDropdownField } from './PFieldMock'
+import type { PFieldPropsInput, PFieldPropsDropdown } from './PFieldTypes'
+import { getMockedInputField, getDropdownField, getDateField } from './PFieldMock'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
 const StringField = PField<string>
 const NumberField = PField<number | undefined>
+const DateField = PField<string>
 
 const pControlStringInput = reactive<PFieldPropsInput<string>>(
   getMockedInputField('firstname', 'Prénom', 'John', 50)
 )
+
 const mockedDropdownOptions: PDropdownOption[] = [{
   pValue: 1,
   pLabel: '1 à 9'
@@ -73,8 +96,12 @@ const mockedDropdownOptions: PDropdownOption[] = [{
   pLabel: '50 et plus'
 }]
 
-const pControlNumberSelect = reactive<PFieldPropsSelect<number | undefined>>(
+const pControlNumberSelect = reactive<PFieldPropsDropdown<number | undefined>>(
   getDropdownField('range', 'Tranches', 50, mockedDropdownOptions)
+)
+
+const pControlDate = reactive<PFieldPropsDropdown<string>>(
+  getDateField('creationDate', 'Date de création', '13/12/2014', 50)
 )
 
 </script>
