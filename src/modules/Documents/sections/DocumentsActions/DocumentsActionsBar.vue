@@ -30,7 +30,12 @@ const emit = defineEmits(['p-action-bar-button-clicked', 'p-upload-files-selecte
   'p-search-input', 'search-expand-change'])
 
 const leftSideButtons = computed(() =>
-  generateActionBarLeftSideButtons(props.permissions, props.isSearchShrinkable, props.isSearchOpen)
+  generateActionBarLeftSideButtons(
+    props.permissions,
+    props.isSearchShrinkable,
+    props.isSearchOpen,
+    props.hasFiltersEnabled
+  )
 )
 
 const actionBarLoadingButtonsState = computed<ActionBarLoadingButtonsState>(() => ({

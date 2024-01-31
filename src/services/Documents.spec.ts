@@ -66,7 +66,7 @@ vi.mock('@kpmg/common', async () => ({
 }))
 
 describe('documents service', () => {
-  it('should fetsh documents  when fetchFolderDocuments is called ', async () => {
+  it('should fetch documents when fetchFolderDocuments is called ', async () => {
     const service: Service =
       { ServiceId: 'service-1', ServiceName: 'A' }
 
@@ -83,6 +83,8 @@ describe('documents service', () => {
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123', {
         params: {
+          createdEnd: null,
+          createdStart: null,
           limit: 10,
           skip: 0,
           sort: '-created'
@@ -109,6 +111,45 @@ describe('documents service', () => {
           sort: '-created',
           search: 'test',
           findInChildFolders: true
+        }
+      }
+    )
+  })
+
+  it('should fetch documents with appropriate parameters when specified', async () => {
+    const service: Service =
+      { ServiceId: 'service-1', ServiceName: 'A' }
+
+    const folderId = 123
+    const accountId = 'my-account-id'
+
+    const startDate = new Date()
+    const endDate = new Date()
+
+    await fetchFolderDocuments(
+      service.ServiceId,
+      folderId,
+      accountId,
+      0,
+      10,
+      '-created',
+      {
+        selectedPeriod: 'DAY',
+        startDate,
+        endDate
+      }
+
+    )
+
+    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledWith(
+      'service-1/my-account-id/documents/folder/123', {
+        params: {
+          limit: 10,
+          skip: 0,
+          sort: '-created',
+          createdEnd: startDate,
+          createdStart: endDate
         }
       }
     )

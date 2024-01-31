@@ -16,6 +16,7 @@
       :isSearchOpen="isSearchExpanded"
       @p-search-input="searchDocumentsByKeyWord"
       @search-expand-change="handleSearchExpandChange"
+      :hasFiltersEnabled="docSearchFilters != null"
     />
 
     <DocumentsSearchAlert
@@ -121,25 +122,32 @@
     "
     @close-drawer="isPreviewDrawerOpened = false"
   />
+
+  <DocumentSearchFiltrer
+    v-if="isFiltersDrawerOpened"
+    v-model="isFiltersDrawerOpened"
+    :filters="docSearchFilters"
+    @close-filters-drawer="isFiltersDrawerOpened = false"
+    @reset-filters-drawer="handleResetFilters"
+    @apply-filters-drawer="handleApplyFilters"
+  />
 </template>
 
 <script setup lang="ts">
 // eslint-disable vitest/require-hookcurrentService
 /* eslint-disable vitest/require-hook */
 import { ref, watch, computed, ComputedRef } from 'vue'
-import DocumentsList from './sections/DocumentsList'
-import {
-  fetchFolderDocuments,
-  fetchDocumentsByKeyWord
-} from '@/services/Documents'
 import { DocumentsProps } from './DocumentsTypes'
+import { Document } from '@/models/Document'
+import { Folder } from '@/models/Folder'
+import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
+
+import DocumentsList from './sections/DocumentsList'
 import type {
   DocumentsWithTableStructure,
   TableRowDocument
 } from '@/models/Document'
-import { Document } from '@/models/Document'
-import { Folder } from '@/models/Folder'
-import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
+import { fetchFolderDocuments, fetchDocumentsByKeyWord } from '@/services/Documents'
 
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
@@ -160,8 +168,11 @@ import DocumentDeleteModal from '@/modules/Documents/components/DocumentDeleteMo
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
-import { getBreadcrumbItems } from '@/modules/common/helpers/folderHelper'
+import { getBreadcrumbItems }
+  from '@/modules/common/helpers/folderHelper'
 import { deepCopy } from '../common/utils/deepCopy'
+import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
+import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 import DocumentsSearchAlert from '@/modules/Documents/components/DocumentsSearchAlert'
 
 const emit = defineEmits<{
@@ -170,10 +181,6 @@ const emit = defineEmits<{
 }>()
 const props = defineProps<DocumentsProps>()
 const documents = ref<DocumentsWithTableStructure | null>(null)
-const currentPage = ref(1)
-const pagesRanges = ref([10, 25, 50, 100])
-const currentPageSize = ref(10)
-const componentSortQueryField = ref('-created')
 const isDeletePopupVisible = ref(false)
 const isLoading = ref(false)
 const isTransmitDocumentsLoading = ref(false)
@@ -185,33 +192,9 @@ const canDisplaySearchResultAlert = computed(() =>
   searchContent.value && isSearchExpanded.value && !isSearchLoading.value)
 
 const isPreviewDrawerOpened = ref(false)
-const paginationLabel = computed(() => {
-  if (!documents.value) return
+const docSearchFilters = ref<DocumentSearchFilters | null>(null)
 
-  return `${1 + (currentPage.value - 1) * currentPageSize.value}
-   - ${
-     (currentPage.value - 1) * currentPageSize.value +
-     documents.value.documentsPage.items.length
-   } 
-   sur ${documents.value.documentsPage.totalItems}`
-})
-
-const setCurrentPageSize = (selectedRange: number) => {
-  currentPageSize.value = selectedRange
-}
-
-const breadcrumbItems = computed(() => {
-  const items =
-    getBreadcrumbItems(
-      props.currentServiceFolder,
-      props.selectedFolder?.id ?? 0
-    ) ?? []
-  items.unshift({
-    pId: -1,
-    pText: 'Documents'
-  })
-  return items
-})
+const componentSortQueryField = ref('-created')
 
 const fetchDocuments = async () => {
   if (!props.selectedFolder) return
@@ -226,26 +209,63 @@ const fetchDocuments = async () => {
       props.selectedEntity,
       skip.value,
       currentPageSize.value,
-      componentSortQueryField.value
+      componentSortQueryField.value,
+      docSearchFilters.value
     )
 
     isLoading.value = false
   }
 
 }
+// Breadcrumb
+
+const breadcrumbItems = computed(() => {
+  const items = getBreadcrumbItems(props.currentServiceFolder, props.selectedFolder?.id ?? 0) ?? []
+  items.unshift({
+    pId: -1,
+    pText: 'Documents'
+  })
+  return items
+})
+
+// Pagination
+
+const currentPage = ref(1)
+const pagesRanges = ref([10, 25, 50, 100])
+const currentPageSize = ref(10)
+const totalDocumentsCount = ref<number>(0)
 
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
+
+watch([() => currentPage, currentPageSize], async () => {
+  await fetchDocuments()
+})
+const paginationLabel = computed(() => {
+  if (!documents.value) return
+
+  return `${1 + ((currentPage.value - 1) * currentPageSize.value)}
+   - ${((currentPage.value - 1) * currentPageSize.value) +
+    documents.value.documentsPage.items.length} 
+   sur ${documents.value.documentsPage.totalItems}`
+})
+
+const setCurrentPageSize = (selectedRange: number) => {
+  currentPageSize.value = selectedRange
+}
+
 const isSearchShrinkable = computed(() => searchContent.value === '')
-// eslint-disable-next-line vitest/require-hook
-watch([() => props.selectedFolder, currentPage, currentPageSize], async () => {
+
+watch([() => props.selectedFolder], async () => {
   if (!props.selectedFolder) return
+  docSearchFilters.value = null
   await fetchDocuments()
 },
 {
   immediate: true
 })
 
-const handleSortChange = async (sortQueryField: string) => {
+// Sort
+const handleSortChange = async (sortQueryField:string) => {
   componentSortQueryField.value = sortQueryField
   await fetchDocuments()
 }
@@ -253,29 +273,24 @@ const handleSortChange = async (sortQueryField: string) => {
 const selectedDocuments = ref<Document[]>([])
 const documentToPreview = ref<Document>()
 const selectedDocumentIndex = ref<number>(1)
-const totalDocumentsCount = ref<number>(0)
 
-const selectedDocumentsForMove = ref<Document[]>(
-  deepCopy(selectedDocuments.value)
-)
-const downloadDocumentsProps: ComputedRef<DownloadDocumentsComposableProps> =
-  computed(() => {
-    return {
-      selectedDocuments: selectedDocuments.value,
-      currentService: props.currentService,
-      selectedEntity: props.selectedEntity
-    }
-  })
-
-const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(
-  () => ({
-    selectedDocumentsIds: documentIdsSelected.value,
+const selectedDocumentsForMove = ref<Document[]>(deepCopy(selectedDocuments.value))
+const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = computed(() => {
+  return {
+    selectedDocuments: selectedDocuments.value,
     currentService: props.currentService,
     selectedEntity: props.selectedEntity
-  })
+  }
+})
+
+const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(() => ({
+  selectedDocumentsIds: documentIdsSelected.value,
+  currentService: props.currentService,
+  selectedEntity: props.selectedEntity
+})
 )
 // documents selection handlers
-const handleOnDocumentsSelectionChange = (documentsSelection: Document[]) => {
+const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   selectedDocuments.value = documentsSelection
   if (documentsSelection.length) {
     selectedDocumentsForMove.value = documentsSelection
@@ -292,13 +307,11 @@ const handleOnRowTableDocumentsClicked = (document: TableRowDocument) => {
   }
 }
 
-const { handleDownloadDocumentsEvent } = useDownloadDocuments(
-  downloadDocumentsProps
-)
+const { handleDownloadDocumentsEvent } =
+useDownloadDocuments(downloadDocumentsProps)
 
-const { handleTransmitDocumentsEvent } = useTransmitDocuments(
-  transmitDocumentsProps
-)
+const { handleTransmitDocumentsEvent } =
+useTransmitDocuments(transmitDocumentsProps)
 
 const handleTransmitDocuments = async () => {
   isTransmitDocumentsLoading.value = true
@@ -307,56 +320,6 @@ const handleTransmitDocuments = async () => {
   setTimeout(async () => {
     await fetchDocuments()
   }, 300)
-}
-
-// Actions handlers
-const handleToolboxActionTriggered = async (action: string) => {
-  switch (action) {
-    case 'download-document':
-      handleDownloadDocumentsEvent()
-      break
-    case 'rename-document':
-      handleRenameDocumentEvent()
-      break
-    case 'delete-document':
-      isDeletePopupVisible.value = true
-      break
-    case 'move-document':
-      handleMoveDocumentEvent()
-      break
-    case 'transmit-document':
-      await handleTransmitDocuments()
-      break
-    case 'go-to-document':
-      handleGoToSearchedDocument()
-      break
-    default:
-      break
-  }
-}
-
-const handleActionBarButtonClick = async (actionName: string) => {
-  if (selectedDocuments.value.length > 0) {
-    switch (actionName) {
-      case 'actionbar-download-action-click':
-        handleDownloadDocumentsEvent()
-        break
-      case 'actionbar-delete-action-click':
-        isDeletePopupVisible.value = true
-        break
-      case 'actionbar-rename-action-click':
-        handleRenameDocumentEvent()
-        break
-      case 'actionbar-move-action-click':
-        handleMoveDocumentEvent()
-        break
-      case 'actionbar-transmit-action-click':
-        await handleTransmitDocuments()
-        break
-      default:
-        break
-    }
-  }
 }
 
 // Action bar scope
@@ -478,6 +441,76 @@ const handlePreviewButtonClickedForPreviewDocument = () => {
 
       totalDocumentsCount.value = currentPageSize.value
     }
+  }
+}
+
+// Document search filters scope
+
+const isFiltersDrawerOpened = ref(false)
+
+const handleResetFilters = async () => {
+  isFiltersDrawerOpened.value = false
+  docSearchFilters.value = null
+  await fetchDocuments()
+}
+
+const handleApplyFilters = async (val: DocumentSearchFilters) => {
+  isFiltersDrawerOpened.value = false
+  docSearchFilters.value = val
+  await fetchDocuments()
+}
+
+// Actions handlers
+const handleToolboxActionTriggered = async (action: string) => {
+  switch (action) {
+    case 'download-document':
+      handleDownloadDocumentsEvent()
+      break
+    case 'rename-document':
+      handleRenameDocumentEvent()
+      break
+    case 'delete-document':
+      isDeletePopupVisible.value = true
+      break
+    case 'move-document':
+      handleMoveDocumentEvent()
+      break
+    case 'transmit-document':
+      await handleTransmitDocuments()
+      break
+    case 'go-to-document':
+      handleGoToSearchedDocument()
+      break
+  }
+}
+
+const handleActionBarButtonClick = async (actionName: string) => {
+  switch (actionName) {
+    case 'actionbar-download-action-click':
+      if (selectedDocuments.value.length === 0) break
+      handleDownloadDocumentsEvent()
+      break
+    case 'actionbar-delete-action-click':
+      if (selectedDocuments.value.length === 0) break
+      isDeletePopupVisible.value = true
+      break
+    case 'actionbar-rename-action-click':
+      if (selectedDocuments.value.length === 0) break
+      handleRenameDocumentEvent()
+      break
+    case 'actionbar-move-action-click':
+      if (selectedDocuments.value.length === 0) break
+      handleMoveDocumentEvent()
+      break
+    case 'actionbar-transmit-action-click':
+      if (selectedDocuments.value.length === 0) break
+      await handleTransmitDocuments()
+      break
+    case 'actionbar-filter-action-click':
+      isFiltersDrawerOpened.value = true
+      break
+    default:
+      break
   }
 }
 </script>

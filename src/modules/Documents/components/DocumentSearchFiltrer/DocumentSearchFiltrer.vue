@@ -1,0 +1,199 @@
+<template>
+  <PDrawer
+    v-model="isDrawerOpened"
+    :pTitle="t('title')"
+    pShowPreviousStep
+    pSize="35%"
+    pDirection="rtl"
+    @close-drawer-button="handleClose"
+  >
+    <template v-if="isDrawerOpened">
+      <div>
+        <PText
+          :pContent="t('dropdownLabel')"
+          pBold
+          pType="primary"
+        />
+        <PSelect
+          v-model="selectedPeriod"
+          :pPlaceholder="t('dropdownPlaceholder')"
+          pClearable
+          @change="handlePeriodChange"
+        >
+          <POption
+            v-for="({ label, value }, index) in periods"
+            :key="index"
+            :pLabel="label"
+            :pValue="value"
+          />
+        </PSelect>
+      </div>
+      <div class="margin-top--6">
+        <PText
+            :pContent="t('datePickerLabel')"
+            pBold
+            pType="primary"
+        />
+        <PDatePicker
+          v-model="dateRange"
+          type="daterange"
+          :rangeSeparator="t('datePickerSeparator')"
+          :startPlaceholder="t('datePickerStartDate')"
+          :endPlaceholder="t('datePickerEndDate')"
+          format="DD/MM/YYYY"
+          @calendar-change="handleCalendarChange"
+        />
+      </div>
+    </template>
+    <template #footer>
+      <div>
+          <PButton
+            pType="primary"
+            pPlain
+            pSize="small"
+            class="margin-right--4"
+            @click="handleResetClick"
+          >
+            {{ t('reset') }}
+          </PButton>
+          <PButton
+            type="primary"
+            pSize="small"
+            @click="handleApplyClick"
+          >
+            {{ t('apply') }}
+          </PButton>
+        </div>
+    </template>
+  </PDrawer>
+</template>
+
+<script setup lang="ts">
+import { computed, ref, onMounted } from 'vue'
+import { PDrawer, PText, PSelect, POption, PButton, PDatePicker } from '@kpmg/styleguide'
+import { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
+import { useI18n } from 'vue-i18n'
+import { Period, DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+
+const props = defineProps<DocumentSearchFiltrerProps>()
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local'
+})
+
+const emit = defineEmits<{
+  'close-filters-drawer': [],
+  'apply-filters-drawer': [DocumentSearchFilters],
+  'reset-filters-drawer': [],
+  'update:modelValue': [boolean]
+}>()
+
+const isDrawerOpened = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value: boolean) {
+    emit('update:modelValue', value)
+  }
+})
+
+const selectedPeriod = ref<string>('')
+
+const periods = [
+  {
+    value: Period.DAY.toString(),
+    label: t('dropdownItems.today')
+  },
+  {
+    value: Period.WEEK.toString(),
+    label: t('dropdownItems.week')
+  },
+  {
+    value: Period.MONTH.toString(),
+    label: t('dropdownItems.month')
+  }
+]
+
+const dateRange = ref<[Date, Date ] | ''>('')
+
+const handlePeriodChange = (value: string) => {
+  switch (value) {
+    case Period.DAY:
+      dateRange.value = [new Date(), new Date()]
+      break
+    case Period.WEEK:
+      dateRange.value = [new Date(new Date().setDate(new Date().getDate() - 7)), new Date()]
+      break
+    case Period.MONTH:
+      dateRange.value = [new Date(new Date().setDate(new Date().getDate() - 30)), new Date()]
+      break
+  }
+}
+
+const handleCalendarChange = () => {
+  selectedPeriod.value = ''
+}
+
+const handleClose = () => {
+  emit('close-filters-drawer')
+}
+
+const handleResetClick = () => {
+  emit('reset-filters-drawer')
+}
+
+const handleApplyClick = () => {
+  const filtersUpdated: DocumentSearchFilters = {
+    selectedPeriod: selectedPeriod.value ? selectedPeriod.value : null,
+    startDate: dateRange.value[0] ? dateRange.value[0] as Date : null,
+    endDate: dateRange.value[1] ? dateRange.value[1] as Date : null
+  }
+  emit('apply-filters-drawer', filtersUpdated)
+}
+
+// Main component actions
+// eslint-disable-next-line vitest/require-hook
+onMounted(async () => {
+  if (!props.filters) return
+  if (props.filters.startDate && props.filters.endDate) {
+    dateRange.value = [new Date(), new Date()]
+    dateRange.value[0] = props.filters.startDate
+    dateRange.value[1] = props.filters.endDate
+  }
+  if (props.filters.selectedPeriod) {
+    selectedPeriod.value = props.filters.selectedPeriod
+  }
+})
+</script>
+
+<i18n lang="yaml">
+  en-US:
+    title: Filtres
+    reset: Réinitialiser
+    apply: Appliquer
+    dropdownLabel: Période
+    dropdownPlaceholder: Sélectionner une période
+    dropdownItems:
+      today: Les dernières 24h
+      week: Les 7 derniers jours
+      month: Les 30 derniers jours
+    datePickerLabel: Période personnalisée
+    datePickerSeparator: À
+    datePickerStartDate: Date de début
+    datePickerEndDate: Date de fin
+
+  fr-FR:
+    title: Filtres
+    reset: Réinitialiser
+    apply: Appliquer
+    dropdownLabel: Période
+    dropdownPlaceholder: Sélectionner une période
+    dropdownItems:
+      today: Les dernières 24h
+      week: Les 7 derniers jours
+      month: Les 30 derniers jours
+    datePickerLabel: Période personnalisée
+    datePickerSeparator: À
+    datePickerStartDate: Date de début
+    datePickerEndDate: Date de fin
+  </i18n>

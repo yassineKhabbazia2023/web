@@ -1,4 +1,3 @@
-/* eslint-disable vitest/prefer-expect-assertions */
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
@@ -31,6 +30,8 @@ import { PBreadcrumb, PPagination } from '@kpmg/styleguide'
 import DocumentPreview from './components/DocumentPreview'
 import { documentMock } from './mocks/documentMock'
 import DocumentsSearchAlert from './components/DocumentsSearchAlert'
+import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
+import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -41,6 +42,7 @@ type DocumentsSetup = {
   searchContent: string
   isSearchExpanded: boolean
   isSearchLoading: boolean
+  isFiltersDrawerOpened: boolean
 }
 
 export type DocumentsWrapper = VueWrapper<
@@ -261,7 +263,7 @@ describe('documents', () => {
       const documents = wrapper.findComponent(DocumentsList)
       await nextTick()
 
-      await documents.vm.$emit('on-sort-change', '+name')
+      await documents.vm.$emit('on-sort-change', '-created')
 
       expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
@@ -269,7 +271,8 @@ describe('documents', () => {
         'my-entity',
         0,
         10,
-        '+name'
+        '-created',
+        null
       )
     })
 
@@ -408,7 +411,8 @@ describe('documents', () => {
         'my-entity',
         0,
         10,
-        '-created'
+        '-created',
+        null
       )
     }, 30000)
 
@@ -597,7 +601,8 @@ describe('documents', () => {
         'my-entity',
         0,
         10,
-        '-created'
+        '-created',
+        null
       )
     })
 
@@ -629,7 +634,8 @@ describe('documents', () => {
           'my-entity',
           0,
           10,
-          '-created'
+          '-created',
+          null
         )
       })
 
@@ -895,6 +901,101 @@ describe('documents', () => {
       vi.advanceTimersByTime(300)
       expect(wrapper.emitted('change-selected-folder')).toBeTruthy()
     })
+
+    it('should close filters drawer when close-drawer event is emitted', async () => {
+      expect.hasAssertions()
+      const wrapper = createWrapper()
+      await nextTick()
+      const componentInstance = wrapper.vm
+      componentInstance.isFiltersDrawerOpened = true
+      await nextTick()
+
+      const drawer = wrapper.findComponent(DocumentSearchFiltrer)
+      await drawer.vm.$emit(
+        'close-drawer'
+      )
+      await nextTick()
+
+      expect(drawer.props('openDrawer')).toBeFalsy()
+    })
+
+    it('should open filters drawer when p-action-bar-button-clicked event', async () => {
+      expect.hasAssertions()
+      const wrapper = createWrapper()
+      await nextTick()
+
+      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+
+      await documentActionBar.vm.$emit(
+        'p-action-bar-button-clicked',
+        'actionbar-filter-action-click'
+      )
+      await nextTick()
+      const drawer = wrapper.findComponent(DocumentSearchFiltrer)
+      await nextTick()
+
+      expect(drawer.exists()).toBeTruthy()
+      expect(drawer.props('modelValue')).toBeTruthy()
+    })
+
+    it('should fetch documents when apply-filters-drawer event is emitted', async () => {
+      expect.hasAssertions()
+      const wrapper = createWrapper()
+      await nextTick()
+      const componentInstance = wrapper.vm
+      componentInstance.isFiltersDrawerOpened = true
+      await nextTick()
+
+      const res:DocumentSearchFilters = {
+        selectedPeriod: 'DAY',
+        startDate: new Date(1998, 11, 19),
+        endDate: new Date(1998, 11, 19)
+      }
+
+      const drawer = wrapper.findComponent(DocumentSearchFiltrer)
+      await drawer.vm.$emit(
+        'apply-filters-drawer', res
+      )
+      await nextTick()
+
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+        defaultProps.currentService,
+        defaultProps.selectedFolder.id,
+        'my-entity',
+        0,
+        10,
+        '-created',
+        res
+      )
+
+      expect(wrapper.vm.isFiltersDrawerOpened).toBeFalsy()
+    })
+
+    it('should handle filters reset', async () => {
+      expect.hasAssertions()
+      const wrapper = createWrapper()
+      const actionBar = wrapper.findComponent(DocumentsActionsBar)
+
+      await actionBar.vm.$emit(
+        'p-action-bar-button-clicked',
+        'actionbar-filter-action-click'
+      )
+
+      await nextTick()
+      const documentSearchFiltersWrapper = wrapper.findComponent(DocumentSearchFiltrer)
+      documentSearchFiltersWrapper.vm.$emit('reset-filters-drawer')
+      await nextTick()
+
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+        foldersData[0][0].children[0].serviceId,
+        foldersData[0][0].children[0].id,
+        'my-entity',
+        0,
+        10,
+        '-created',
+        null
+      )
+      expect(documentSearchFiltersWrapper.exists()).toBeFalsy()
+    })
   })
 })
-

@@ -5,6 +5,7 @@ import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'
 import { MoveDocumentsRequest } from
   '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
+import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 
 export const fetchFolderDocuments = async (
   serviceId: Service['ServiceId'],
@@ -12,7 +13,8 @@ export const fetchFolderDocuments = async (
   entityId: string,
   skip = 0,
   limit = 10,
-  sort = '-created'
+  sort = '-created',
+  filters: DocumentSearchFilters | null = null
 ): Promise<DocumentsWithTableStructure> => {
   const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
   const apiObject = api().ds
@@ -22,7 +24,9 @@ export const fetchFolderDocuments = async (
       params: {
         skip,
         limit,
-        sort
+        sort,
+        createdStart: (filters && filters.startDate) ?? null,
+        createdEnd: (filters && filters.endDate) ?? null
       }
     })
   ).data

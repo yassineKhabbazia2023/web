@@ -31,10 +31,12 @@ const findPactionBar = (wrapper: VueWrapper) => {
 
 describe('documentsActions component', () => {
   it('should render the correct number of left side buttons', async () => {
+    expect.hasAssertions()
     const permissions = ['']
     const isAnyDocumentSelected = true
+    const hasFiltersEnabled = false
 
-    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected, hasFiltersEnabled })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
     const leftActionBar = findActionBarLeft(wrapper)
@@ -43,9 +45,12 @@ describe('documentsActions component', () => {
   })
 
   it('should render the default button download of right side buttons', async () => {
+    expect.hasAssertions()
     const permissions = ['']
     const isAnyDocumentSelected = true
-    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const hasFiltersEnabled = false
+
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected, hasFiltersEnabled })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
     const rightActionBar = findActionBarRight(wrapper)
@@ -54,9 +59,12 @@ describe('documentsActions component', () => {
   })
 
   it('should render the correct number of right side buttons', async () => {
+    expect.hasAssertions()
     const permissions = ['CAN_TRANSMIT_DOCUMENT', 'CAN_MOVE_DOCUMENT']
     const isAnyDocumentSelected = true
-    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const hasFiltersEnabled = false
+
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected, hasFiltersEnabled })
     expect(wrapper.exists()).toBeTruthy()
     await nextTick()
     const rightActionBar = findActionBarRight(wrapper)
@@ -66,9 +74,12 @@ describe('documentsActions component', () => {
 })
 describe('event', () => {
   it('should emit event click', async () => {
+    expect.hasAssertions()
     const permissions = ['']
     const isAnyDocumentSelected = true
-    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const hasFiltersEnabled = false
+
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected, hasFiltersEnabled })
     expect(wrapper.exists()).toBeTruthy()
     const pActionBarWrapper = findPactionBar(wrapper)
     await nextTick()
@@ -78,10 +89,12 @@ describe('event', () => {
   })
 
   it('should propagate  PactionBar search-expand-change event', async () => {
+    expect.hasAssertions()
     const permissions = ['']
     const isAnyDocumentSelected = true
+    const hasFiltersEnabled = false
 
-    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected, hasFiltersEnabled })
     const pActionBarWrapper = findPactionBar(wrapper)
 
     await pActionBarWrapper.vm.$emit('search-expand-change', true)
@@ -92,12 +105,14 @@ describe('event', () => {
   })
 
   it('should propagate  PactionBar p-search-input event after the debounce', async () => {
+    expect.hasAssertions()
     vi.useFakeTimers()
 
     const permissions = ['']
     const isAnyDocumentSelected = true
+    const hasFiltersEnabled = false
 
-    const wrapper = createWrapper({ permissions, isAnyDocumentSelected })
+    const wrapper = createWrapper({ permissions, isAnyDocumentSelected, hasFiltersEnabled })
     const pActionBarWrapper = findPactionBar(wrapper)
 
     await pActionBarWrapper.vm.$emit('p-search-input', 'Hello')

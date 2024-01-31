@@ -160,7 +160,8 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
 export function generateActionBarLeftSideButtons(
   permissions: string[],
   isSearchShrinkable: boolean,
-  isSearchOpen: boolean
+  isSearchOpen: boolean,
+  hasFiltersEnabled: boolean
 ): ComponentDefinitionProps[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {
@@ -169,6 +170,13 @@ export function generateActionBarLeftSideButtons(
     }
   }
   toolboxBasicData.push(leftSideButtons.CAN_ADD_DOCUMENT)
+
+  if (hasFiltersEnabled) {
+    leftSideButtons.CAN_FILTER_FOLDER.actionbarButton.pButtonName = 'Filtrer (1)'
+  } else {
+    leftSideButtons.CAN_FILTER_FOLDER.actionbarButton.pButtonName = 'Filtrer'
+  }
+
   toolboxBasicData.push(leftSideButtons.CAN_FILTER_FOLDER)
   leftSideButtons.CAN_SEARCH_DOCUMENT.actionbarButton.pIsSearchShrinkable =
     isSearchShrinkable

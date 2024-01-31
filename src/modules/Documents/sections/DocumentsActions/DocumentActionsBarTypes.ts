@@ -4,4 +4,5 @@ export interface DocumentActionsBarProps {
   isTransmitDocumentsLoading?: boolean
   isSearchShrinkable?: boolean
   isSearchOpen?: boolean
+  hasFiltersEnabled: boolean
 }
