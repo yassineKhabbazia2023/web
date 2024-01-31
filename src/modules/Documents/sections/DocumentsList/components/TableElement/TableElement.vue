@@ -9,13 +9,24 @@
   />
 
   <PText
-    v-else-if="fieldType === 'DocumentName'"
+    v-else-if="fieldType === 'DocumentName' && !isInSearchScope"
     :pContent="data.name"
     pType="primary"
     :selected="false"
     :disabled="false"
     :pIcon="getFileIcon(data.name)"
     :pBold="false"
+  />
+
+  <PDoubleText
+    v-else-if="fieldType === 'DocumentName' && isInSearchScope"
+    pType="primary"
+    :pDisabled="false"
+    pProfile=""
+    :pTitle="data.name"
+    :pContent="getPathFromArray(data.folder?.path)"
+    :pIcon="getFileIcon(data.name)"
+    :pSelected="false"
   />
 
   <PTag
@@ -46,6 +57,7 @@
   <DocumentActions
     v-else-if="fieldType === 'ActionGroup'"
     :permissions="data.permissions"
+    :isInSearchScope="isInSearchScope"
     @p-toolbox-item-clicked="emitClickedAction"
     @actions-dropdown-opened="handleActionsDropdownOpening"
   />
@@ -60,12 +72,14 @@ import {
   PICheckCircle,
   PText,
   PTag,
-  PIPatchCheck
+  PIPatchCheck,
+  PDoubleText
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
 import { getFileIcon } from '@/modules/Documents/helpers/filesExtensions'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
+import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
 
 const props = defineProps<TableElementPops>()
 const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])

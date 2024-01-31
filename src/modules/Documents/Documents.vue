@@ -13,6 +13,7 @@
       @p-upload-files-selected="handleUploadFilesSelected"
       :isTransmitDocumentsLoading="isTransmitDocumentsLoading"
       :isSearchShrinkable="isSearchShrinkable"
+      :isSearchOpen="isSearchExpanded"
       @p-search-input="searchDocumentsByKeyWord"
       @search-expand-change="handleSearchExpandChange"
     />
@@ -34,6 +35,7 @@
         v-if="documents"
         :class="isSearchLoading ? 'is-searching' : ''"
         :documentsListWithTableStructure="documents"
+        :isInSearchScope="searchContent !== '' && isSearchExpanded"
         @on-sort-change="handleSortChange"
         @toolbox-action-triggered="handleToolboxActionTriggered"
         @document-selection-change="handleOnDocumentsSelectionChange"
@@ -226,6 +228,7 @@ const fetchDocuments = async () => {
       currentPageSize.value,
       componentSortQueryField.value
     )
+
     isLoading.value = false
   }
 
@@ -324,6 +327,9 @@ const handleToolboxActionTriggered = async (action: string) => {
     case 'transmit-document':
       await handleTransmitDocuments()
       break
+    case 'go-to-document':
+      handleGoToSearchedDocument()
+      break
     default:
       break
   }
@@ -362,6 +368,16 @@ const permissionsList = computed(() => {
 const isRenameModalOpened = ref(false)
 const handleRenameDocumentEvent = () => {
   isRenameModalOpened.value = true
+}
+
+const handleGoToSearchedDocument = () => {
+  setTimeout(() => {
+    isSearchExpanded.value = false
+    searchContent.value = ''
+
+    handleFolderNavigation(selectedDocuments.value[0].folder.id)
+  }, 300)
+
 }
 
 const handleDocumentRename = async () => {
@@ -440,6 +456,7 @@ const handleFolderNavigation = (id: number) => {
     emit('change-selected-folder', folder)
   }
 }
+
 const handleNextBuuttonClickedForPreviewDocument = () => {
   if (documents.value) {
     documentToPreview.value =
@@ -451,6 +468,7 @@ const handleNextBuuttonClickedForPreviewDocument = () => {
     }
   }
 }
+
 const handlePreviewButtonClickedForPreviewDocument = () => {
   if (documents.value) {
     documentToPreview.value =

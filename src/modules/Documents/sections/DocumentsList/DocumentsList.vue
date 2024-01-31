@@ -25,6 +25,7 @@
       <template #default="scope">
         <TableElement
           v-if="scope.row"
+          :isInSearchScope="isInSearchScope"
           :fieldType="column.fieldType"
           :fieldName="column.columnName"
           :data="scope.row"
@@ -49,7 +50,7 @@ import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
 import type { ElTable } from 'element-plus'
 import { Document, TableRowDocument } from '@/models/Document'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n({
@@ -78,6 +79,14 @@ const columnSizes: Record<string, number> = {
   Statut: 199,
   Actions: 71
 }
+const isInSearchScope = ref(props.isInSearchScope)
+// eslint-disable-next-line vitest/require-hook
+watch(
+  () => [props.isInSearchScope],
+  () => {
+    isInSearchScope.value = props.isInSearchScope
+  }
+)
 
 // Behaviours
 const handleSortChange = (data:any) => {
@@ -147,19 +156,19 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
 </style>
 <style>
 ::-webkit-scrollbar {
-    height: 8px;
-    width: 8px;
-    background: transparent;
+  height: 8px;
+  width: 8px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #90939999;
-    -webkit-border-radius: 1ex;
-    -webkit-box-shadow: 0px 1px 2px #909399AA;
+  background: #90939999;
+  -webkit-border-radius: 1ex;
+  -webkit-box-shadow: 0px 1px 2px #909399AA;
 }
 
 ::-webkit-scrollbar-corner {
-    background: #90939999;
+  background: #90939999;
 }
 </style>
 <i18n lang="json">

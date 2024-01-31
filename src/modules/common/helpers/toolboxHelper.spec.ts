@@ -23,12 +23,15 @@ describe('toolbox helper', () => {
             pValue: 'Supprimer',
             pActionName: 'toolbox-delete-action-click'
           }
-
         ]
       },
       {
         target: 'Documents',
-        permissions: ['CAN_DELETE_DOCUMENT', 'CAN_RENAME_DOCUMENT'],
+        permissions: [
+          'CAN_DELETE_DOCUMENT',
+          'CAN_RENAME_DOCUMENT',
+          'CAN_GO_TO_DOCUMENT'
+        ],
         expectedResult: [
           {
             pIconName: 'PIInputCursorText',
@@ -41,10 +44,16 @@ describe('toolbox helper', () => {
             pActionName: 'download-document'
           },
           {
+            pIconName: 'PIArrowBarRight',
+            pValue: 'Accéder au dossier',
+            pActionName: 'go-to-document'
+          },
+          {
             pIconName: 'PITrash',
             pValue: 'Supprimer',
             pActionName: 'delete-document'
           }
+
         ]
       }
     ]

@@ -32,7 +32,8 @@ import {
   PIStars,
   PTag,
   PICheckCircle,
-  PIExclamationTriangle
+  PIExclamationTriangle,
+  PDoubleText
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 
@@ -143,13 +144,15 @@ describe('tableElement', () => {
         }
       ]
 
+      // eslint-disable-next-line vitest/prefer-expect-assertions
       it('pText mapping validation test case Text without icon', async () => {
         const firstElementFieldType = cases[0].fieldType
         const firstDocument = cases[0].document
         const props: TableElementPops = {
           ...defaultProps,
           fieldType: firstElementFieldType,
-          data: firstDocument
+          data: firstDocument,
+          isInSearchScope: false
         }
 
         const wrapper = createWrapper(props)
@@ -289,6 +292,19 @@ describe('tableElement', () => {
         }
       )
     })
+    it('should use pdoubletext component when filedType is DocumentName and in search scope',
+      () => {
+        const props : TableElementPops = {
+          ...defaultProps,
+          isInSearchScope: true,
+          fieldType: 'DocumentName'
+        }
+
+        const wrapper = createWrapper(props)
+
+        const pDoubleText = wrapper.findComponent(PDoubleText)
+        expect(pDoubleText.exists()).toBeTruthy()
+      })
     it('should map PTag component correctly based on fieldType', async () => {
       const cases = [
         {

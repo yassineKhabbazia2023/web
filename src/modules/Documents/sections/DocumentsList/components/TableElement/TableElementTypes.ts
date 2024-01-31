@@ -4,6 +4,7 @@ export interface TableElementPops {
   fieldType: DocumentsTableStructure['fieldType']
   fieldName: DocumentsTableStructure['columnName']
   data: Document
+  isInSearchScope?: boolean
 }
 
 // At the moment we're unable to correctly import the tag types without importing

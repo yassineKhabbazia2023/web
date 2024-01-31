@@ -19,7 +19,7 @@ export const documentsResponsePayload: DocumentsWithTableStructure = {
         comments: [],
         isUploadedInGedLoop: true,
         folder: {
-          id: 1,
+          id: 135393637,
           path: ['My Documents']
         },
         created: '2023-10-10T12:00:00Z',

@@ -1,28 +1,23 @@
+/* eslint-disable vitest/prefer-expect-assertions */
+import { foldersMappingRecord } from '@/modules/common/data/toolboxPermissionsMapping'
 import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper'
 import { describe, it, expect } from 'vitest'
 
 describe('toolboxHelpers', () => {
+  const {
+    CAN_CREATE_FOLDER,
+    CAN_DOWNLOAD_FOLDER,
+    CAN_DELETE_FOLDER,
+    CAN_RENAME_FOLDER
+  } = foldersMappingRecord
   it('should return correct mapping when passing permission array', () => {
     const res = generateToolboxBasicData('Folders',
       ['CAN_CREATE_FOLDER', 'test', 'CAN_DELETE_FOLDER'])
 
     const expectedRes = [
-      {
-        pIconName: 'PIFolderPlus',
-        pValue: 'Nouveau dossier',
-        pActionName: 'toolbox-create-action-click'
-      },
-      {
-        pIconName: 'PIDownload',
-        pValue: 'Télécharger',
-        pActionName: 'toolbox-download-action-click'
-
-      },
-      {
-        pIconName: 'PITrash',
-        pValue: 'Supprimer',
-        pActionName: 'toolbox-delete-action-click'
-      }
+      CAN_CREATE_FOLDER.toolboxLine,
+      CAN_DOWNLOAD_FOLDER.toolboxLine,
+      CAN_DELETE_FOLDER.toolboxLine
     ]
 
     expect(res).toStrictEqual(expectedRes)
@@ -35,22 +30,9 @@ describe('toolboxHelpers', () => {
     ])
 
     const expectedRes = [
-      {
-        pIconName: 'PIFolderPlus',
-        pValue: 'Nouveau dossier',
-        pActionName: 'toolbox-create-action-click'
-      },
-      {
-        pIconName: 'PIInputCursorText',
-        pValue: 'Renommer dossier',
-        pActionName: 'toolbox-rename-action-click'
-      },
-      {
-        pIconName: 'PIDownload',
-        pValue: 'Télécharger',
-        pActionName: 'toolbox-download-action-click'
-
-      }
+      CAN_CREATE_FOLDER.toolboxLine,
+      CAN_RENAME_FOLDER.toolboxLine,
+      CAN_DOWNLOAD_FOLDER.toolboxLine
     ]
 
     expect(res).toStrictEqual(expectedRes)

@@ -1,3 +1,4 @@
+/* eslint-disable vitest/prefer-expect-assertions */
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
@@ -867,6 +868,33 @@ describe('documents', () => {
         )
 
       })
+
+    it('should redirect to document location upon go-to-document event', async () => {
+      const wrapper = createWrapper()
+      await nextTick()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments.push(
+        documentsResponsePayload.documentsPage.items[0]
+      )
+      await nextTick()
+
+      const actionBarWrapper = findDcumentActionBar(wrapper)
+
+      actionBarWrapper.vm.$emit('search-expand-change', true)
+      await nextTick()
+
+      const documentsList = wrapper.findComponent(DocumentsList)
+
+      await documentsList.vm.$emit(
+        'toolbox-action-triggered',
+        'go-to-document'
+      )
+
+      vi.useFakeTimers()
+      vi.advanceTimersByTime(300)
+      expect(wrapper.emitted('change-selected-folder')).toBeTruthy()
+    })
   })
 })
 

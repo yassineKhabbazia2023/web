@@ -32,7 +32,7 @@ const props = defineProps<DocumentActionsProps>()
 
 const toolboxBasicData = computed(() => {
   if (props.permissions) {
-    return generateToolboxBasicData('Documents', props.permissions)
+    return generateToolboxBasicData('Documents', props.permissions, props.isInSearchScope)
   } else {
     return []
   }
