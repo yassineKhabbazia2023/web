@@ -38,8 +38,8 @@ import {
   PIPulse,
   PButton
 } from '@kpmg/styleguide'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const activeTab = ref('users')
 const { t } = useI18n({
@@ -50,6 +50,7 @@ const { t } = useI18n({
 const userStore = commonStore()
 const { user } = storeToRefs(userStore)
 const router = useRouter()
+const route = useRoute()
 const tabs = [
   {
     name: 'users',
@@ -76,6 +77,10 @@ const tabs = [
 const handleTabClick = (tab: any) => {
   router.push({ name: tab.paneName, params: { name: user.value?.entities.default?.name } })
 }
+
+watch(route, (currentRoute) => {
+  activeTab.value = currentRoute.name as string
+})
 
 </script>
 

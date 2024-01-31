@@ -24,6 +24,9 @@ const mockRouterPush = vi.fn()
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush
+  }),
+  useRoute: () => ({
+    name: 'users'
   })
 }))
 
