@@ -1,0 +1,41 @@
+[
+  {
+    "modelValue": "",
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+    "pDisabled": false,
+    "pFieldKey": "email",
+    "pFieldType": "input",
+    "pLabel": "E-mail de contact",
+    "pPlaceholder": "contact@kpmg.fr",
+    "pRules": [
+      {
+        "message": "Veuillez saisir une adresse email correcte",
+        "trigger": [
+          "blur",
+          "change",
+        ],
+        "type": "email",
+      },
+    ],
+  },
+  {
+    "modelValue": "",
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+    "pDisabled": false,
+    "pFieldKey": "phone",
+    "pFieldType": "input",
+    "pLabel": "Numéro de téléphone",
+    "pPlaceholder": "0123456789",
+    "pRules": [
+      {
+        "message": "Veuillez saisir numéro de téléphone correct",
+        "pattern": "^[+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$",
+        "trigger": [
+          "blur",
+          "change",
+        ],
+        "type": "string",
+      },
+    ],
+  },
+]

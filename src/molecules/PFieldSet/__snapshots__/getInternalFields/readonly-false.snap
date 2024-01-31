@@ -1,0 +1,24 @@
+[
+  {
+    "modelValue": "Lennon",
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+    "pDisabled": false,
+    "pFieldKey": "lastname",
+    "pFieldType": "input",
+    "pLabel": "Nom",
+    "pPlaceholder": "Mac Cain",
+    "pReadonly": undefined,
+    "pRules": [],
+  },
+  {
+    "modelValue": "John",
+    "pCssClass": "flex--grow-1 min-width--4 flex--basis-65",
+    "pDisabled": false,
+    "pFieldKey": "firstname",
+    "pFieldType": "input",
+    "pLabel": "Prénom",
+    "pPlaceholder": "Johnny's Pizza",
+    "pReadonly": undefined,
+    "pRules": [],
+  },
+]

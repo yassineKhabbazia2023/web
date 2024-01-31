@@ -33,11 +33,11 @@
           </tr>
           <tr>
             <td>.margin--{token}</td>
-            <td>margin: 0.25rem * {token};</td>
+            <td>margin: 0.4rem * {token};</td>
           </tr>
           <tr>
             <td>.margin-{position}--{token}</td>
-            <td>margin-{position}: 0.25rem * {token};</td>
+            <td>margin-{position}: 0.4rem * {token};</td>
           </tr>
           <tr>
             <td>.padding--0</td>
@@ -53,11 +53,15 @@
           </tr>
           <tr>
             <td>.padding--{token}</td>
-            <td>padding: 0.25rem * {token};</td>
+            <td>padding: 0.4rem * {token};</td>
           </tr>
           <tr>
             <td>.padding-{position}--{token}</td>
-            <td>padding-{position}: 0.25rem * {token};</td>
+            <td>padding-{position}: 0.4rem * {token};</td>
+          </tr>
+          <tr>
+            <td>.flex-gap--{token}</td>
+            <td>gap: 0.4rem * {token};</td>
           </tr>
         </tbody>
       </table>
@@ -77,7 +81,7 @@
         <tbody>
           <tr>
             <td>1</td>
-            <td>0.25rem</td>
+            <td>0.4rem</td>
             <td>Margin entre icône et texte</td>
           </tr>
           <tr>
@@ -124,6 +128,24 @@
             <td>32</td>
             <td>8rem</td>
             <td>Margin entre les organismes et les sections</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="h4">
+        Dimensions
+      </p>
+
+      <table class="table-spacing" aria-label="Types d'espacement">
+        <thead>
+          <tr>
+            <th>Type de l’espacement + (token)</th>
+            <th>Résultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>.min-width--{token}</td>
+            <td>min-width: {token} * 0.25;</td>
           </tr>
         </tbody>
       </table>
