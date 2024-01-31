@@ -19,7 +19,7 @@ describe('offerProviderProductsUtils', () => {
 
     it('should return true when service is in selectedProducts', () => {
       const expected = true
-      const productId = offerProduct.productId
+      const productId = offerProduct.globalProductId ?? ''
       const selectedProducts: SelectedProduct[] = [{
         offerId,
         productId

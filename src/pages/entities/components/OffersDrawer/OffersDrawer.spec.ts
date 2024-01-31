@@ -42,6 +42,7 @@ vi.mock('./OffersDrawerUtils', async () => {
 })
 
 const accountNumber = 'account-number'
+const accountId = 'account-id'
 const userEmail = 'user@email.com'
 
 async function getWrapper(isOpened: boolean) {
@@ -50,6 +51,7 @@ async function getWrapper(isOpened: boolean) {
       modelValue: isOpened,
       selectedCompanyName: companyTestName,
       accountNumber,
+      accountId,
       userEmail
     }
   })

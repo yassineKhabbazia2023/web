@@ -237,6 +237,7 @@ function onDeselectProduct(offerId: number, productId: string) {
 async function validateOffer() {
   const postSubscriptionRequest = getPostSubscriptionRequest(
     props.accountNumber,
+    props.accountId,
     props.userEmail,
     principalContact.value,
     currentSubscriptionOffer.value,

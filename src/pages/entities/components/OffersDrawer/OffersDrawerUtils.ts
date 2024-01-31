@@ -60,6 +60,7 @@ export function getInitialSelectedProducts(offer: SubscriptionOfferServices | un
 
 export function getPostSubscriptionRequest(
   accountNumber: string,
+  accountId: string,
   userEmail: string | undefined,
   principalContact: User | undefined,
   currentSubscriptionOffer: SubscriptionOfferServices | undefined,
@@ -74,6 +75,7 @@ export function getPostSubscriptionRequest(
 
   return {
     account: {
+      globalAccountId: accountId,
       accountNumber
     },
     globalOfferId,

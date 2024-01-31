@@ -75,6 +75,7 @@ describe('offersDrawerUtils', () => {
 
   describe('getPostSubscriptionRequest', () => {
     const accountNumber = 'account-number'
+    const accountId = 'account-id'
     const userEmail = 'user@email.com'
     const principalContact = getMockedPrincipalContact()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
@@ -83,6 +84,7 @@ describe('offersDrawerUtils', () => {
     it('should return not optional and free product list', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
         accountNumber,
+        accountId,
         userEmail,
         principalContact,
         currentSubscriptionOffer,
@@ -90,7 +92,8 @@ describe('offersDrawerUtils', () => {
       )
       const expectedPostSubscriptionRequest = {
         account: {
-          accountNumber: 'account-number'
+          globalAccountId: accountId,
+          accountNumber
         },
         applicant: 'user@email.com',
         approvalRequired: true,
@@ -112,6 +115,7 @@ describe('offersDrawerUtils', () => {
     it('should return empty undefined if currentSubscriptionOffer in undefined', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
         accountNumber,
+        accountId,
         userEmail,
         principalContact,
         undefined,
