@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import LoginCollab from '.'

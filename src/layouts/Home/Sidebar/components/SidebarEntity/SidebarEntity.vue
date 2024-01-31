@@ -1,105 +1,119 @@
 <template>
-  <nav
-    :class="['sidenav-entity', { 'sidenav-entity--opened': isSidebarOpened }]"
-  >
-    <!-- Sidebar items -->
-    <ul
-      class="sidenav-entity__actions flex flex--direction-column"
+  <div :class="{ 'padding-right--0': !isSelectedEntityActive }">
+    <nav
+      :class="[
+        'sidenav-entity flex flex--direction-column',
+        { 'sidenav-entity--opened': isSidebarOpened }
+      ]"
+      data-testid="sidenav-entity"
     >
-      <li
-        :class="{
-          'text-right sidenav-entity__actions-toggle-item': isSidebarOpened
-        }"
-      >
-        <SidebarEntityItem
-          :tooltipContent="isSidebarOpened ? t('close') : t('open')"
-          :tooltipDisabled="isToggleTooltipDisabled"
-          :class="`sidenav-entity__actions-toggle--${
-            isSidebarOpened ? 'open' : 'close'
-          }`"
-          @item-clicked="onOpenCloseSidebar"
-          data-testid="open-close-toggle"
-        >
-          <PIcon
-            color="#FFF"
-            class="sidenav-entity__actions-icon radius--circle"
-          >
-            <PIArrowBarLeft v-if="isSidebarOpened" />
-            <PIArrowBarRight v-else />
-          </PIcon>
-        </SidebarEntityItem>
-      </li>
-      <li
-        class="sidenav-entity__actions-wallet flex flex--align-items-center margin-top--1"
-        :class="activeItem(walletItem.route)"
-        data-testid="wallet-item"
-      >
-        <SidebarEntityItem v-bind="walletItem">
-          <PIcon
-            :color="activeItem(walletItem.route) ? '#5546FF' : '#FFF'"
-            class="sidenav-entity__actions-icon radius--circle"
-            :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
-          >
-            <PICardList />
-          </PIcon>
-          <template #suffix-content>
-            <p class="sidenav-entity__actions-wallet-text">
-              {{ t('wallet') }}
-            </p>
-          </template>
-        </SidebarEntityItem>
-      </li>
-      <li
-        v-if="selectedEntity"
-        :class="activeItem(selectedEntityRoute)"
-        class="flex flex--align-items-center margin-top--4 is-entity"
-        data-testid="selected-entity"
-      >
-        <EntityAvatar
-          :entity="selectedEntity"
-          :hideTooltip="isSidebarOpened"
+      <!-- Sidebar items -->
+      <ul class="sidenav-entity__actions flex flex--direction-column">
+        <li
           :class="{
-            'sidenav__selected-item': activeItem(selectedEntityRoute)
+            'text-right sidenav-entity__actions-toggle-item': isSidebarOpened
           }"
-        />
-      </li>
-    </ul>
-    <!-- Star Favorites Divider -->
-    <div
-      class="sidenav-entity__star-divider flex flex--align-items-center margin-top--6 margin-bottom--1"
-    >
-      <div class="sidenav-entity__star-divider-icon" data-testid="star-divider">
-        <PIcon
-          size="12"
-          color="#C2C9FF"
-          style="width: 32px"
         >
-          <PIStarFill />
-        </PIcon>
-      </div>
-      <p
-        class="sidenav-entity__star-divider-text"
-        :class="{ 'margin-left--3': !isSidebarOpened }"
-      >
-        {{ t('favorites') }}
-      </p>
-    </div>
-    <!-- Favorites Entities -->
-    <ul
-      class="sidenav-entity__favorites flex flex--direction-column"
-      data-testid="favorites-entities"
-    >
-      <li v-for="(favoriteEntity, index) in favoritesEntities" :key="index">
-        <EntityAvatar
-          data-testid="favorite-entity"
-          :entity="favoriteEntity"
-          :hideTooltip="isSidebarOpened"
-          :selected="favoriteEntity.ibs === selectedEntity?.ibs"
-          @entity-selected="onEntitySelected"
-        />
-      </li>
-    </ul>
-  </nav>
+          <SidebarEntityItem
+            :tooltipContent="isSidebarOpened ? t('close') : t('open')"
+            :tooltipDisabled="isToggleTooltipDisabled"
+            :class="`sidenav-entity__actions-toggle--${
+              isSidebarOpened ? 'open' : 'close'
+            }`"
+            @item-clicked="onToggleSidebar"
+            data-testid="sidebar-toggle"
+          >
+            <PIcon
+              color="#FFF"
+              class="sidenav-entity__actions-icon radius--circle"
+            >
+              <PIArrowBarLeft v-if="isSidebarOpened" />
+              <PIArrowBarRight v-else />
+            </PIcon>
+          </SidebarEntityItem>
+        </li>
+        <li
+          class="sidenav-entity__actions-wallet flex flex--align-items-center margin-top--1"
+          :class="activeItem(walletItem.route)"
+          data-testid="wallet-item"
+        >
+          <SidebarEntityItem v-bind="walletItem">
+            <PIcon
+              :color="activeItem(walletItem.route) ? '#5546FF' : '#FFF'"
+              class="sidenav-entity__actions-icon radius--circle"
+              :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
+            >
+              <PICardList />
+            </PIcon>
+            <template #suffix-content>
+              <p class="sidenav-entity__actions-wallet-text">
+                {{ t('wallet') }}
+              </p>
+            </template>
+          </SidebarEntityItem>
+        </li>
+        <li
+          v-if="selectedEntity"
+          :class="isSelectedEntityActive"
+          class="flex flex--align-items-center margin-top--4 is-entity"
+          data-testid="selected-entity"
+        >
+          <EntityAvatar
+            :entity="selectedEntity"
+            :hideTooltip="isSidebarOpened"
+            :class="{
+              'sidenav__selected-item': isSelectedEntityActive
+            }"
+          />
+        </li>
+      </ul>
+      <!-- Star Divider -->
+      <template v-if="favoriteEntities.length">
+        <div
+          class="sidenav-entity__star-divider flex flex--align-items-center margin-top--6 margin-bottom--1"
+        >
+          <div
+            class="sidenav-entity__star-divider-icon"
+            data-testid="star-divider"
+          >
+            <PIcon
+              size="12"
+              color="#C2C9FF"
+              style="width: 32px"
+            >
+              <PIStarFill />
+            </PIcon>
+          </div>
+          <p
+            class="sidenav-entity__star-divider-text"
+            :class="{ 'margin-left--3': !isSidebarOpened }"
+          >
+            {{ t('favorites') }}
+          </p>
+        </div>
+        <!-- Favorite Entities -->
+        <ul
+          v-if="favoriteEntities.length"
+          class="sidenav-entity__favorites flex flex--direction-column"
+          data-testid="favorite-entities"
+        >
+          <li v-for="(favoriteEntity, index) in favoriteEntities" :key="index">
+            <EntityAvatar
+              data-testid="favorite-entity"
+              :entity="favoriteEntity"
+              :hideTooltip="isSidebarOpened"
+              :selected="favoriteEntity.idAccount === selectedEntity?.idAccount"
+              @entity-selected="onEntitySelected"
+            />
+          </li>
+        </ul>
+      </template>
+    </nav>
+    <SidebarEntityMenu
+      v-if="isSelectedEntityActive && selectedEntity"
+      :selectedEntityId="selectedEntity.idAccount"
+    />
+  </div>
 </template>
 
 <i18n lang="yaml">
@@ -116,9 +130,11 @@ fr-FR:
 </i18n>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
+import { commonStore } from '@kpmg/common'
 import {
   PIArrowBarRight,
   PIArrowBarLeft,
@@ -126,22 +142,25 @@ import {
   PIStarFill,
   PIcon
 } from '@kpmg/styleguide'
-import { getMockedFavoritedEntites } from './MockedFavoritedEntites'
 import type { Entity } from './components/EntityAvatar/EntityAvatarTypes'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
+import type { SidebarEntityProps } from './SidebarEntityTypes'
 import SidebarEntityItem from './components/SidebarEntityItem'
+import SidebarEntityMenu from './components/SidebarEntityMenu'
 import EntityAvatar from './components/EntityAvatar'
 
 const route = useRoute()
+const userStore = commonStore()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
+const { favoriteEntities } = defineProps<SidebarEntityProps>()
+
+const { user } = storeToRefs(userStore)
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
-// The following code is temporary; we will create a service later to retrieve data from the API
-const favoritesEntities: Entity[] = getMockedFavoritedEntites()
 const selectedEntity = ref<Entity | undefined>(undefined)
 
 const walletItem = computed((): SidebarEntityItemProps => {
@@ -152,7 +171,17 @@ const walletItem = computed((): SidebarEntityItemProps => {
   }
 })
 
-const onOpenCloseSidebar = () => {
+const isSelectedEntityActive = computed(() => {
+  return (
+    selectedEntity.value &&
+    activeItem({
+      name: 'folder',
+      params: { id: selectedEntity.value.idAccount }
+    })
+  )
+})
+
+const onToggleSidebar = () => {
   isToggleTooltipDisabled.value = true
   isSidebarOpened.value = !isSidebarOpened.value
 
@@ -169,20 +198,35 @@ const activeItem = (itemRoute: any) => {
     : ''
 }
 
-const selectedEntityRoute = computed(() => {
-  // It's just a temporary route; it will be changed later
-  return { name: 'folder' }
-})
+const patchDefaultEntity = (entity: Entity) => {
+  userStore.$patch({
+    user: {
+      entities: {
+        default: entity
+      }
+    }
+  })
+}
 
 const onEntitySelected = (entity: Entity) => {
+  patchDefaultEntity(entity)
   selectedEntity.value = entity
   localStorage.setItem('selected-entity', JSON.stringify(entity))
 }
+
+watch(
+  user,
+  () => {
+    selectedEntity.value = (user.value?.entities.default as Entity) ?? undefined
+  },
+  { deep: true }
+)
 
 onMounted(() => {
   const savedSelectedEntity = localStorage.getItem('selected-entity')
   if (savedSelectedEntity) {
     selectedEntity.value = JSON.parse(savedSelectedEntity)
+    patchDefaultEntity(selectedEntity.value as Entity)
   }
 })
 </script>
@@ -202,6 +246,7 @@ onMounted(() => {
   flex-shrink: 0;
   background-color: var(--el-color-base-persian);
   transition: width var(--smooth-transition);
+  overflow: hidden;
 
   &--opened {
     width: 240px;
@@ -272,14 +317,14 @@ onMounted(() => {
       }
 
       &.is-entity {
-        background-color: var(--el-color-persian-200);
+        background-color: var(--el-color-persian-100);
 
         &:before {
-          box-shadow: 5px 5px 0 3px var(--el-color-persian-200);
+          box-shadow: 5px 5px 0 3px var(--el-color-persian-100);
         }
 
         &:after {
-          box-shadow: 5px -5px 0 3px var(--el-color-persian-200);
+          box-shadow: 5px -5px 0 3px var(--el-color-persian-100);
         }
       }
 
@@ -358,7 +403,7 @@ onMounted(() => {
     content: '';
     z-index: 10;
     position: absolute;
-    bottom: 16px;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 14px;

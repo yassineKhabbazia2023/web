@@ -1,10 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
-import { getMockedFavoritedEntites } from './MockedFavoritedEntites'
+import { createTestingPinia } from '@pinia/testing'
+import { defineStore, createPinia, setActivePinia } from 'pinia'
+import { commonPinia as pinia } from '@kpmg/common'
+import { getMockedFavoriteEntities } from './MockedFavoriteEntities'
 import type { Entity } from './components/EntityAvatar/EntityAvatarTypes'
 import SidebarEntity from '.'
-
-const entities: Entity[] = getMockedFavoritedEntites()
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -15,44 +16,61 @@ vi.mock('vue-router', () => ({
   })
 }))
 
+vi.mock('@kpmg/common', () => ({
+  commonPinia: () => createPinia(),
+  commonStore: defineStore('common', {
+    getters: {
+      isAuthenticated: () => true
+    }
+  })
+}))
+
+const entities: Entity[] = getMockedFavoriteEntities()
+
 const createWrapper = () => {
-  const wrapper = mount(SidebarEntity)
+  const wrapper = mount(SidebarEntity, {
+    props: {
+      favoriteEntities: entities
+    },
+    plugins: [createTestingPinia()]
+  })
 
   return wrapper
 }
 
-const findOpenCloseToggle = (wrapper: VueWrapper) =>
-  wrapper.find('[data-testid=open-close-toggle]')
+const findSidebarToggle = (wrapper: VueWrapper) =>
+  wrapper.find('[data-testid=sidebar-toggle]')
 const findSelectedEntity = (wrapper: VueWrapper) =>
   wrapper.find('[data-testid=selected-entity]')
 
 describe('sidebarEntity', () => {
   let wrapper: VueWrapper<any>
+  setActivePinia(pinia)
   beforeEach(() => {
     wrapper = createWrapper()
   })
   describe('display', () => {
     it('should display navbar with actions and entities', () => {
-      const openCloseToggle = findOpenCloseToggle(wrapper)
+      const sidebarToggle = findSidebarToggle(wrapper)
       const walletItem = wrapper.find('[data-testid=wallet-item]')
       const selectedEntity = findSelectedEntity(wrapper)
       const starDivider = wrapper.find('[data-testid=star-divider]')
-      const favoritesEntitites = wrapper.find(
-        '[data-testid=favorites-entities]'
+      const favoriteEntities = wrapper.find(
+        '[data-testid=favorite-entities]'
       )
 
-      expect(openCloseToggle.exists()).toBeTruthy()
+      expect(sidebarToggle.exists()).toBeTruthy()
       expect(walletItem.exists()).toBeTruthy()
       expect(selectedEntity.exists()).toBeFalsy()
       expect(starDivider.exists()).toBeTruthy()
-      expect(favoritesEntitites.exists()).toBeTruthy()
+      expect(favoriteEntities.exists()).toBeTruthy()
     })
-    it('should display all favorites entities correctly', () => {
-      const favoritesEntitites = wrapper.findAll(
+    it('should display all favorite entities correctly', () => {
+      const favoriteEntities = wrapper.findAll(
         '[data-testid=favorite-entity]'
       )
 
-      expect(favoritesEntitites).toHaveLength(entities.length)
+      expect(favoriteEntities).toHaveLength(entities.length)
     })
     it('should display selected entity correctly after click on a random entity avatar', async () => {
       const firstFavoriteEntity = wrapper.find(
@@ -75,20 +93,21 @@ describe('sidebarEntity', () => {
   })
   describe('events', () => {
     it('should open sidebase when click on toggle button', async () => {
-      const openCloseToggle = findOpenCloseToggle(wrapper)
+      const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
+      const sidebarToggle = findSidebarToggle(wrapper)
       const arrowBarRightIcon = wrapper.findComponent({
         name: 'PIArrowBarRight'
       })
 
       expect(arrowBarRightIcon.exists()).toBeTruthy()
 
-      await openCloseToggle.trigger('click')
+      await sidebarToggle.trigger('click')
 
       const arrowBarLeftIcon = wrapper.findComponent({ name: 'PIArrowBarLeft' })
 
       expect(arrowBarRightIcon.exists()).toBeFalsy()
       expect(arrowBarLeftIcon.exists()).toBeTruthy()
-      expect(wrapper.classes()).includes('sidenav-entity--opened')
+      expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
     })
   })
 })

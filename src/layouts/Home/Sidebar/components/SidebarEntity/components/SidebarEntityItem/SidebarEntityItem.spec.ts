@@ -42,12 +42,12 @@ describe('sidebarEntityItem', () => {
     })
   })
   describe('events', () => {
-    it("should emit 'itemClicked' when clicking on the entity item", async () => {
+    it("should emit 'item-clicked' when clicking on the entity item", async () => {
       const entityItemButton = wrapper.findComponent('button')
 
       await entityItemButton.trigger('click')
 
-      expect(wrapper.emitted()).toHaveProperty('itemClicked')
+      expect(wrapper.emitted()).toHaveProperty('item-clicked')
     })
   })
   describe('slots', () => {

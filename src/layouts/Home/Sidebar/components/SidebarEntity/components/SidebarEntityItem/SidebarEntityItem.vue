@@ -1,8 +1,8 @@
 <template>
   <PButton
     pType="generic"
-    @click="onItemClicked"
     class="sidenav-entity__item padding--0"
+    @click="onItemClicked"
   >
     <PTooltip
       :pContent="tooltipContent"
@@ -24,11 +24,11 @@ const router = useRouter()
 
 const props = defineProps<SidebarEntityItemProps>()
 const emit = defineEmits<{
-  'itemClicked': []
+  'item-clicked': []
 }>()
 
 const onItemClicked = () => {
-  emit('itemClicked')
+  emit('item-clicked')
   if (props.route) {
     router.push(props.route)
   }

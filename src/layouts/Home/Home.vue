@@ -39,12 +39,12 @@ fr-FR:
 </i18n>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
-import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -102,6 +102,7 @@ const routeActive = route.path
 
   .aside-container {
     width: inherit;
+    overflow: visible;
   }
 
   .header-container {
@@ -109,8 +110,11 @@ const routeActive = route.path
   }
 
   .aside-container .sidebar-container {
+    height: 100vh;
     @media only screen and (min-width: 992px) {
-      overflow: hidden;
+      position: relative;
+      padding-right: 52px;
+      z-index: 10;
     }
   }
 

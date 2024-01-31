@@ -98,7 +98,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .header-section {
-  z-index: 10;
+  z-index: 20;
   position: fixed;
   top: 0;
   left: 27px;

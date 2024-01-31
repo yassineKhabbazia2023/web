@@ -1,10 +1,16 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { getMockedFavoritedEntites } from '../../MockedFavoritedEntites'
-import EntityAvatar from '.'
+import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
 import type { Entity } from './EntityAvatarTypes'
+import EntityAvatar from '.'
 
-const entities: Entity[] = getMockedFavoritedEntites()
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: vi.fn()
+  })
+}))
+
+const entities: Entity[] = getMockedFavoriteEntities()
 
 const defaultProps = {
   entity: entities[0],
@@ -35,6 +41,16 @@ describe('entityAvatar', () => {
       const entityAvatar = wrapper.find('[data-testid=avatar-check-icon]')
 
       expect(entityAvatar.classes()).includes('p-avatar-wrapper__check-icon')
+    })
+  })
+  describe('events', () => {
+    it("should emit 'entity-selected' when clicked on an entity", async () => {
+      const wrapper = createWrapper()
+      const entityAvatarButton = wrapper.find('.entity-wrapper button')
+
+      await entityAvatarButton.trigger('click')
+
+      expect(wrapper.emitted()).toHaveProperty('entity-selected')
     })
   })
 })

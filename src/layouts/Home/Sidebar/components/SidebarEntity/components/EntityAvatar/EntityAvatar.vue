@@ -4,7 +4,7 @@
       :tooltipContent="entityTooltipContent"
       :tooltipDisabled="hideTooltip"
       :class="{ 'entity-wrapper--selected': selected }"
-      :route="entityRoute"
+      :route="{ name: 'folder', params: { id: entity.idAccount } }"
       @item-clicked="$emit('entity-selected', entity)"
     >
       <PAvatar
@@ -48,11 +48,6 @@ defineEmits<{
 
 const entityTooltipContent = computed(() => {
   return `${entity.name} \n ${entity.ibs}`
-})
-
-const entityRoute = computed(() => {
-  // It's just a temporary route; it will be changed later
-  return { name: 'folder' }
 })
 </script>
 
