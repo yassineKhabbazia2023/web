@@ -39,8 +39,7 @@ const { t } = useI18n({
 const route = useRoute()
 const router = useRouter()
 const activeTab = computed(() => route.name as string)
-const userStore = commonStore()
-const { isCollab } = storeToRefs(userStore)
+const { isCollab } = storeToRefs(commonStore())
 
 const collaboratorsTabs = [
   {
@@ -76,7 +75,7 @@ const clientTabs = [
   }
 ]
 
-const tabs = isCollab.value ? collaboratorsTabs : clientTabs
+const tabs = computed(() => isCollab.value ? collaboratorsTabs : clientTabs)
 
 const handleTabClick = (tab: any) => {
   router.push({ name: tab.paneName })
