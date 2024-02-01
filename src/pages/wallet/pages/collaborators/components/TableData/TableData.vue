@@ -1,100 +1,111 @@
 <template>
-<PTable
-  :pData="props.data"
-  highlightCurrentRow
-  showOverflowTooltip
-  pStripe
-  tableLayout="fixed"
-  class="collaborator-table"
->
-  <PTableColumn
-    :pLabel="t('nameOfCollaborator')"
-    pProp="lastName"
-    pSortable
+<div>
+  <PTable
+    :pData="props.data"
+    highlightCurrentRow
+    showOverflowTooltip
+    pStripe
+    tableLayout="fixed"
   >
-    <template #default="scope">
-      <div class="flex flex--align-items-center">
-        <PAvatar
-          class="margin-right--2"
-          pColor="persian-gradient"
-          pType="xsmall"
-        >
-          {{ scope.row.initials }}
-        </PAvatar>
-        <div>
-          <p class="line-height--120 font-semibold">
-            <span class="text-capitalize">{{ scope.row.firstName }}</span>
-            <span class="text-uppercase margin-left--1">{{ scope.row.lastName }}</span>
-          </p>
-        </div>
-      </div>
-    </template>
-  </PTableColumn>
-
-  <PTableColumn
-    :pLabel="t('email')"
-    pProp="email"
-    pSortable
-  />
-
-  <PTableColumn
-    :pLabel="t('phoneNumber')"
-    pProp="phoneNumber"
-    pSortable
-  />
-
-  <PTableColumn
-    :pLabel="t('ibsStatus')"
-    pProp="ibsStatus"
-    pSortable
-  />
-
-  <PTableColumn
-    :pLabel="t('role')"
-    pProp="role"
-    pSortable
-  />
-
-  <PTableColumn
-    :pLabel="t('office')"
-    pProp="office"
-    pSortable
-  />
-
-  <PTableColumn
-    :pLabel="t('access')"
-    pProp="access"
-    pSortable
-  >
-    <template #default="scope">
-      <PSwitch
-        :modelValue="accessState[scope.row.id]"
-        @update:model-value="(val) => accessState[scope.row.id] = val"
-      />
-    </template>
-  </PTableColumn>
-
-  <PTableColumn
-    :pLabel="t('options')"
-    :pWidth="100"
-    pProp="options"
-  >
-    <PToolbox
-      trigger="click"
-      :pElements="menuElements"
+    <PTableColumn
+      :pLabel="t('nameOfCollaborator')"
+      pProp="lastName"
+      pSortable
     >
-      <PButton
-        pType="generic"
-        pSize="small"
-        class="margin-left--1"
-      >
-        <PIcon>
-          <PIThreeDots />
-        </PIcon>
-      </PButton>
-    </PToolbox>
-  </PTableColumn>
-</PTable>
+      <template #default="scope">
+        <div class="flex flex--align-items-center">
+          <PAvatar
+            class="margin-right--2"
+            pColor="persian-gradient"
+            pType="xsmall"
+          >
+            {{ scope.row.initials }}
+          </PAvatar>
+          <div>
+            <p class="line-height--120 font-semibold text-capitalize">
+              {{ scope.row.firstName }}
+              <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+            </p>
+          </div>
+        </div>
+      </template>
+    </PTableColumn>
+
+    <PTableColumn
+      :pLabel="t('email')"
+      pProp="email"
+      pSortable
+    />
+
+    <PTableColumn
+      :pLabel="t('phoneNumber')"
+      pProp="landPhone"
+      pSortable
+    />
+
+    <PTableColumn
+      :pLabel="t('ibsStatus')"
+      pProp="ibsStatus"
+      pSortable
+    />
+
+    <PTableColumn
+      :pLabel="t('role')"
+      pProp="role"
+      pSortable
+    />
+
+    <PTableColumn
+      :pLabel="t('office')"
+      pProp="office"
+      pSortable
+    />
+
+    <PTableColumn
+      :pLabel="t('access')"
+      pProp="access"
+      pSortable
+    >
+      <template #default="scope">
+        <PSwitch
+          :modelValue="accessState[scope.row.id]"
+          @update:model-value="(val) => accessState[scope.row.id] = val"
+        />
+      </template>
+    </PTableColumn>
+
+    <PTableColumn
+      :pLabel="t('options')"
+      :pWidth="100"
+      pProp="options"
+    >
+      <template #default="scope">
+        <PToolbox
+          @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
+          trigger="click"
+          :pElements="menuElements"
+        >
+          <PButton
+            pType="generic"
+            pSize="small"
+            class="margin-left--1"
+          >
+            <PIcon>
+              <PIThreeDots />
+            </PIcon>
+          </PButton>
+        </PToolbox>
+      </template>
+    </PTableColumn>
+  </PTable>
+
+  <DrawerCollabDetails
+    v-if="state.hasDrawerOpened"
+    v-model="state.hasDrawerOpened"
+    :rowData="state.rowData"
+    :hasDrawerOpened="state.hasDrawerOpened"
+  />
+</div>
 </template>
 
 <script setup lang="ts">
@@ -112,6 +123,7 @@ import {
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
 import type { Props } from './types'
+import DrawerCollabDetails from './../DrawerCollabDetails'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -147,6 +159,18 @@ const menuElements : PToolboxItemProps[] = [
     pState: 'default'
   }
 ]
+
+const state = reactive({
+  hasDrawerOpened: false,
+  rowData: undefined
+})
+
+const handleToolboxItemClick = (action: string, row: any) => {
+  if (action === 'informationsAboutCollaborator') {
+    state.rowData = row
+    state.hasDrawerOpened = true
+  }
+}
 </script>
 
 <style lang="scss" scoped>

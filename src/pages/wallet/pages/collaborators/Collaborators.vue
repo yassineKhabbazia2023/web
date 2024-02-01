@@ -62,7 +62,7 @@ import {
   PPagination
 } from '@kpmg/styleguide'
 import { getInitials } from '@/helper'
-import type { ICollab, IState } from './types'
+import type { IExtendedCollab, IState } from './types'
 import TableData from './components/TableData'
 import mock from './mock.json'
 
@@ -139,17 +139,18 @@ const fetch = async () => {
     // TODO: remove mock when endpoint is done
     // await commonApi().wallet.get(`collabs?${searchParams}`)
 
-    state.data = items.map(({
+    state.data = items.map<IExtendedCollab>(({
       firstName,
       lastName,
       ...rest
-    }: ICollab) => ({
+    }) => ({
       initials: getInitials(
         firstName,
         lastName
       ),
       firstName,
       lastName,
+      fullName: `${firstName} ${lastName}`,
       ...rest
     }))
     state.currentPage = currentPage

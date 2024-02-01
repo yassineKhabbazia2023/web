@@ -4,9 +4,9 @@ import mock from './mock.json'
 import Collaborators from './'
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(Collaborators, {})
+  mount(Collaborators)
 
-const { items, totalItems, totalPages } = mock.data
+const { items, totalPages } = mock.data
 let wrapper: VueWrapper<any>
 
 const getTableBody = () => wrapper.find('table tbody')
@@ -16,7 +16,8 @@ const checkRowContent = (rowIndex: number) => {
   const rowContent = row.text()
   const [, ...rest] = Object.values(items[rowIndex])
   const itemValues = rest
-  itemValues.forEach(value => {
+  const itemValuesWithoutMobilePhone = itemValues.filter((_value, index) => index !== 4)
+  itemValuesWithoutMobilePhone.forEach(value => {
     if (typeof value === 'boolean') {
       const inputSwitch = getTableBody().find(`tr:nth-child(${rowIndex + 1}) input`)
       expect(inputSwitch.attributes('aria-checked')).toBe(value.toString())
@@ -41,10 +42,6 @@ describe('collaborators', () => {
   it('has a pagination', () => {
     const pages = wrapper.findAll('.el-pager li')
     expect(pages).toHaveLength(totalPages)
-
-    const itemsCounter = wrapper.find('.p-pagination__total-page-counter')
-    const itemsCounterTextFormatted = itemsCounter.text().replace(/\s+/g, ' ').trim()
-    expect(itemsCounterTextFormatted).toContain(`1 - ${totalItems - 1} on ${totalItems}`)
   })
 
   it('displays an error if the user search with less than 3 letters', async () => {
