@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
-import { createApp, h } from 'vue'
+import { createApp, h, watch } from 'vue'
 import singleSpaVue from 'single-spa-vue'
 import {
   commoni18n as i18n,
@@ -129,3 +129,22 @@ routes.value.push({
   children: folderPatchChildren(FOLDER_CHILDREN_PATH)
 })
 
+watch(routes.value, (val) => {
+  const walletChildrenRoutes = val.find((item) => item.name === 'wallet')?.children ?? []
+  const mandatsRoute = val.find(
+    (item) => item.name === 'mandats'
+  ) as RouteRecordRaw
+  const folderMandats = walletChildrenRoutes.find(
+    (item) => item.name === 'folderMandats'
+  ) as RouteRecordRaw
+
+  if (mandatsRoute && !folderMandats) {
+    walletChildrenRoutes.push(
+      {
+        name: 'folderMandats',
+        path: 'mandats',
+        component: mandatsRoute.component
+      }
+    )
+  }
+}, { deep: true, immediate: true })

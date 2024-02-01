@@ -48,7 +48,7 @@ const collaboratorsTabs = [
     trad: t('folders')
   },
   {
-    name: 'mandates',
+    name: 'folderMandats',
     trad: t('mandate')
   },
   {
