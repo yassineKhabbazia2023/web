@@ -19,4 +19,10 @@ describe('useNavigation', () => {
 
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet' })
   })
+  it('should navigate to wallet-client', () => {
+    const { navigateToCustomerWallet } = useNavigation()
+    navigateToCustomerWallet()
+
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
+  })
 })

@@ -7,5 +7,9 @@ export default function useNavigation() {
     router.push({ name: 'wallet' })
   }
 
-  return { navigateToWallet }
+  const navigateToCustomerWallet = () => {
+    router.push({ name: 'wallet-client' })
+  }
+
+  return { navigateToWallet, navigateToCustomerWallet }
 }
