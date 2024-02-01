@@ -10,21 +10,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-en-US:
-  included: 'Included'
-  additionalPrice: 'Additional price'
-  platform: 'Platform services'
-  provider: "Partner's services"
-  services: 'Services'
-fr-FR:
-  included: 'Inclus'
-  additionalPrice: 'Prix additionnel'
-  platform: 'Les services de la plateforme'
-  provider: 'Les services du partenaire'
-  services: 'Les services'
-</i18n>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -87,3 +72,18 @@ function onChangeServiceStatus(service: PService) {
   }
 }
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    included: 'Included'
+    additionalPrice: 'Additional price'
+    platform: 'Platform services'
+    provider: "Partner's services"
+    services: 'Services'
+  fr-FR:
+    included: 'Inclus'
+    additionalPrice: 'Prix additionnel'
+    platform: 'Les services de la plateforme'
+    provider: 'Les services du partenaire'
+    services: 'Les services'
+</i18n>
