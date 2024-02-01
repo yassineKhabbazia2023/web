@@ -148,8 +148,8 @@ describe('documents service', () => {
           limit: 10,
           skip: 0,
           sort: '-created',
-          createdEnd: startDate,
-          createdStart: endDate
+          createdStart: startDate,
+          createdEnd: endDate
         }
       }
     )

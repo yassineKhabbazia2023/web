@@ -96,17 +96,19 @@ const currentServiceFolder = computed<null | Folder[]>(() => {
     .filter((folder:Folder[]) => folder[0].serviceId === currentService.value)[0]
 })
 
-const setCurrentFolderAndService = (folder: Folder) => {
+const setCurrentFolderAndService = async (folder: Folder) => {
   if (currentBinService.value) {
-    fetchGedFoldersAndServices()
+    await fetchGedFoldersAndServices()
+    currentService.value = folder.serviceId
     setCurrentBinService(null)
+    setCurrentFolder(folder.id)
+  } else {
+    if (currentFolder.value === folder) return
+    currentFolder.value = folder
+
+    if (currentService.value === folder.serviceId) return
+    currentService.value = folder.serviceId
   }
-
-  if (currentFolder.value === folder) return
-  currentFolder.value = folder
-
-  if (currentService.value === folder.serviceId) return
-  currentService.value = folder.serviceId
 }
 
 // Trash scope

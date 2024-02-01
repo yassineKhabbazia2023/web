@@ -171,7 +171,7 @@ describe('ged', () => {
 
           const tree = wrapper.findComponent(Treeview)
           await nextTick()
-          await tree.vm.$emit('selected-folder-change', folder)
+          await tree.vm.$emit('selected-folder-change', foldersData[0][0].children[0])
           await nextTick()
 
           const bin = wrapper.findComponent(BinDocuments)
@@ -179,8 +179,8 @@ describe('ged', () => {
           expect(bin.exists()).toBeFalsy()
           expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
           expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
-          expect(tree.props('selectedFolder')).toStrictEqual(folder)
-          expect(tree.props('currentService')).toBe('some-service')
+          expect(tree.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
+          expect(tree.props('currentService')).toBe('service-id-compta')
         }
       )
 
@@ -348,22 +348,23 @@ describe('ged', () => {
       it('should update selected folder in documents when navigate-to-folder is emitted', async () => {
         expect.hasAssertions()
         const wrapper = createWrapper()
+        await flushPromises()
         const componentInstance = wrapper.vm
         componentInstance.currentBinService = foldersData[0][0].serviceId
         await nextTick()
         const bin = wrapper.findComponent(BinDocuments)
 
-        await bin.vm.$emit('navigate-to-folder', foldersData[0][0].children[0].id)
+        bin.vm.$emit('navigate-to-folder', foldersData[0][0].children[0])
         await nextTick()
 
-        expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(3)
-        expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(3)
+        expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
+        expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
 
         const treeview = wrapper.findComponent(Treeview)
         await nextTick()
-
-        expect(treeview.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
         expect(treeview.props('currentService')).toBe(foldersData[0][0].serviceId)
+        expect(treeview.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
+        await nextTick()
         expect(bin.exists()).toBeFalsy()
       })
     })
