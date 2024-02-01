@@ -20,7 +20,8 @@ vi.mock('@kpmg/common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
     getters: {
-      isAuthenticated: () => true
+      isAuthenticated: () => true,
+      isCollab: () => true
     }
   })
 }))

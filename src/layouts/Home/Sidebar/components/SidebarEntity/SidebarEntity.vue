@@ -34,12 +34,12 @@
         </li>
         <li
           class="sidenav-entity__actions-wallet flex flex--align-items-center margin-top--1"
-          :class="activeItem(walletItem.route)"
+          :class="getActiveWallet"
           data-testid="wallet-item"
         >
           <SidebarEntityItem v-bind="walletItem">
             <PIcon
-              :color="activeItem(walletItem.route) ? '#5546FF' : '#FFF'"
+              :color="getActiveWallet ? '#5546FF' : '#FFF'"
               class="sidenav-entity__actions-icon radius--circle"
               :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
             >
@@ -158,7 +158,7 @@ const { t } = useI18n({
 
 const { favoriteEntities } = defineProps<SidebarEntityProps>()
 
-const { user } = storeToRefs(userStore)
+const { user, isCollab } = storeToRefs(userStore)
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
 const selectedEntity = ref<Entity | undefined>(undefined)
@@ -167,7 +167,7 @@ const walletItem = computed((): SidebarEntityItemProps => {
   return {
     tooltipContent: t('wallet'),
     tooltipDisabled: isSidebarOpened.value,
-    route: { name: 'wallet' }
+    route: { name: isCollab.value ? 'wallet' : 'wallet-client' }
   }
 })
 
@@ -198,6 +198,14 @@ const activeItem = (itemRoute: any) => {
     : ''
 }
 
+const getActiveWallet = computed(() => {
+  const routeName = route.matched?.at(0)?.name ?? route.name
+  if (['wallet', 'wallet-client'].includes(routeName as string)) {
+    return 'sidenav-entity__actions-active'
+  }
+  return ''
+})
+
 const patchDefaultEntity = (entity: Entity) => {
   userStore.$patch({
     user: {
@@ -217,7 +225,8 @@ const onEntitySelected = (entity: Entity) => {
 watch(
   user,
   () => {
-    selectedEntity.value = (user.value?.entities.default as Entity) ?? undefined
+    selectedEntity.value =
+      (user.value?.entities?.default as Entity) ?? undefined
   },
   { deep: true }
 )

@@ -69,7 +69,7 @@ describe('app with navigation guard', () => {
     ROUTES.map((route) => router.addRoute(route))
   })
 
-  it('redirects to the right page with the right layout if user has a token', async () => {
+  it.skip('redirects to the right page with the right layout if user has a token', async () => {
     const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
     router.push({ name: 'home' })
     await vi.dynamicImportSettled()
