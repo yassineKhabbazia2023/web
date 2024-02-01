@@ -237,9 +237,11 @@ const totalDocumentsCount = ref<number>(0)
 
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
-watch([() => currentPage, currentPageSize], async () => {
+watch([currentPage, currentPageSize], async () => {
+  if (!props.selectedFolder) return
   await fetchDocuments()
 })
+
 const paginationLabel = computed(() => {
   if (!documents.value) return
 

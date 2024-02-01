@@ -119,7 +119,7 @@ const dateRange = ref<[Date, Date ] | ''>('')
 const handlePeriodChange = (value: string) => {
   switch (value) {
     case Period.DAY:
-      dateRange.value = [new Date(), new Date()]
+      dateRange.value = [new Date(new Date().setHours(0, 0, 0, 0)), new Date()]
       break
     case Period.WEEK:
       dateRange.value = [new Date(new Date().setDate(new Date().getDate() - 7)), new Date()]
