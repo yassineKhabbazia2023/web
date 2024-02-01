@@ -93,6 +93,6 @@ const handleTabClick = (tab: any) => {
     users: 'Utilisateurs'
     collab: 'Collaborateurs'
     offers: 'Offres'
-    info: 'Information'
+    info: 'Informations'
     delegationBtn: 'Déléguer ce dossier'
 </i18n>
