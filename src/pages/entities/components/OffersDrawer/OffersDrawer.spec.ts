@@ -119,7 +119,7 @@ describe('offersDrawer', () => {
     describe('when user selects or deselects a product', () => {
       const offerId = subscriptionOffersServices.at(0)?.offerId
       const products = subscriptionOffersServices.at(0)?.providers?.at(0)?.products
-      const productId = products?.at(0)?.productId ?? ''
+      const globalProductId = products?.at(0)?.globalProductId ?? ''
       let offer: VueWrapper
       beforeEach(async () => {
         const wrapper = await getWrapper(true)
@@ -131,15 +131,15 @@ describe('offersDrawer', () => {
       })
       it('should call addSelectedProduct when OfferSubscription emit select-product', () => {
         const addSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'addSelectedProduct')
-        offer.vm.$emit('select-product', offerId, productId)
+        offer.vm.$emit('select-product', offerId, globalProductId)
 
-        expect(addSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productId)
+        expect(addSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, globalProductId)
       })
       it('should call removeSelectedProduct when OfferSubscription emit deselect-product', () => {
         const removeSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'removeSelectedProduct')
-        offer.vm.$emit('deselect-product', offerId, productId)
+        offer.vm.$emit('deselect-product', offerId, globalProductId)
 
-        expect(removeSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productId)
+        expect(removeSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, globalProductId)
       })
     })
     describe('when user has clicked 4 times on nextButton', () => {
@@ -157,7 +157,8 @@ describe('offersDrawer', () => {
         }
         const expectedArgument = {
           account: {
-            accountNumber: 'account-number'
+            accountNumber: 'account-number',
+            globalAccountId: accountId
           },
           applicant: 'user@email.com',
           approvalRequired: false,
@@ -165,10 +166,10 @@ describe('offersDrawer', () => {
           globalOfferId: 'offer-id-2',
           notes: [],
           products: [
-            'product-id-5'
+            'global-product-id-5'
           ],
           users: [
-            'cgreenall0@stumbleupon.com'
+            'test_loscos@yopmail.com'
           ]
         }
 

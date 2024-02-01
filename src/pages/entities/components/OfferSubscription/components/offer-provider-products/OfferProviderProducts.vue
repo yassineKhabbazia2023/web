@@ -77,13 +77,13 @@ const title = computed(() => {
 })
 
 function onChangeServiceStatus(service: PService) {
-  const { productId, pStatus } =
+  const { globalProductId, pStatus } =
     service as ExtendedService // because ExtendedService is given to POfferServicesCard
 
   if (pStatus) {
-    emit('select-product', props.offerId, productId)
+    emit('select-product', props.offerId, globalProductId)
   } else {
-    emit('deselect-product', props.offerId, productId)
+    emit('deselect-product', props.offerId, globalProductId)
   }
 }
 </script>

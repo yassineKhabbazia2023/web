@@ -10,5 +10,5 @@ export interface OfferProviderProductsProps {
 }
 
 export interface ExtendedService extends PService {
-  productId: string
+  globalProductId: string
 }

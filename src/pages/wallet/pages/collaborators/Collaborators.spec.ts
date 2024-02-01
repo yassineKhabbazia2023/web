@@ -51,11 +51,11 @@ describe('collaborators', () => {
     const getFormItemIsError = () => wrapper.find('.el-form-item.is-error')
     const inputSearch = wrapper.find('input[type="search"]')
 
-    expect(getFormItemIsError().exists()).toBe(false)
+    expect(getFormItemIsError().exists()).toBeFalsy()
 
     await inputSearch.setValue('az')
     await inputSearch.trigger('keyup')
 
-    expect(getFormItemIsError().exists()).toBe(true)
+    expect(getFormItemIsError().exists()).toBeTruthy()
   })
 })

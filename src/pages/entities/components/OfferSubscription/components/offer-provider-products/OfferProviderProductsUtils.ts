@@ -13,9 +13,9 @@ export function getIsServiceSelected(
   offerProduct: SubscriptionOfferProduct,
   selectedProducts: SelectedProduct[]
 ) {
-  const { productId } = offerProduct
+  const { globalProductId } = offerProduct
 
-  const index = getSelectedProductIndex(selectedProducts, offerId, productId)
+  const index = getSelectedProductIndex(selectedProducts, offerId, globalProductId)
 
   return index >= 0
 }
@@ -53,7 +53,7 @@ export function getProviderServices(
 ) {
   return products
     .map<PService>((offerProduct) => {
-      const { isOptionnal, productLabel, productId, priceType } = offerProduct
+      const { isOptionnal, productLabel, globalProductId, priceType } = offerProduct
 
       const pStatus = getIsServiceSelected(offerId, offerProduct, selectedProducts)
       const pTag = getServiceTag(isOptionnal, priceType, includedLabel, additionalPriceLabel)
@@ -63,7 +63,7 @@ export function getProviderServices(
         pDisabled: !isOptionnal,
         pName: productLabel,
         pTag,
-        productId
+        globalProductId
       }
     })
 }

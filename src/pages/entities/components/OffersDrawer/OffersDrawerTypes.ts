@@ -8,7 +8,7 @@ export enum offerStepperStep {
 
 export interface SelectedProduct {
   offerId: number
-  productId: string
+  globalProductId: string
   isMandatory?: boolean
 }
 

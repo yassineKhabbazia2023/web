@@ -5,7 +5,7 @@ export function getMockedPrincipalContact(): User {
     globalUserId: '820f0c86-d7ed-46e6-bae9-11363aec8da3',
     firstName: 'Corabel',
     lastName: 'Greenall',
-    email: 'cgreenall0@stumbleupon.com'
+    email: 'test_loscos@yopmail.com'
   }
 
   return principalContact

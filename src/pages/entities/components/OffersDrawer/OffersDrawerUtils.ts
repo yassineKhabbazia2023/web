@@ -8,24 +8,25 @@ import type {
 import type { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 
-export function getSelectedProductIndex(selectedProducts: SelectedProduct[], offerId: number, productId: string) {
+export function getSelectedProductIndex(selectedProducts: SelectedProduct[], offerId: number, globalProductId: string) {
   return selectedProducts
-    .findIndex(selectedProduct => selectedProduct.offerId === offerId && selectedProduct.productId === productId)
+    .findIndex(selectedProduct => selectedProduct.offerId === offerId &&
+      selectedProduct.globalProductId === globalProductId)
 }
 
-export function addSelectedProduct(selectedProducts: SelectedProduct[], offerId: number, productId: string) {
-  const index = getSelectedProductIndex(selectedProducts, offerId, productId)
+export function addSelectedProduct(selectedProducts: SelectedProduct[], offerId: number, globalProductId: string) {
+  const index = getSelectedProductIndex(selectedProducts, offerId, globalProductId)
 
   if (index < 0) {
     selectedProducts.push({
       offerId,
-      productId
+      globalProductId
     })
   }
 }
 
-export function removeSelectedProduct(selectedProducts: SelectedProduct[], offerId: number, productId: string) {
-  const index = getSelectedProductIndex(selectedProducts, offerId, productId)
+export function removeSelectedProduct(selectedProducts: SelectedProduct[], offerId: number, globalProductId: string) {
+  const index = getSelectedProductIndex(selectedProducts, offerId, globalProductId)
 
   if (index < 0) {
     return
@@ -43,12 +44,12 @@ export function getInitialSelectedProducts(offer: SubscriptionOfferServices | un
 
   providers?.forEach(({ products }) => {
     products.forEach((product) => {
-      const { productId, priceType, isOptionnal } = product
+      const { globalProductId, priceType, isOptionnal } = product
 
       if (!isOptionnal || priceType === SubscriptionPriceType.free) {
         selectedProducts.push({
           isMandatory: !isOptionnal,
-          productId,
+          globalProductId,
           offerId: offerId ?? 0
         })
       }
@@ -71,7 +72,7 @@ export function getPostSubscriptionRequest(
   }
   const { globalOfferId, approvalRequired } = currentSubscriptionOffer
   const principalContactEmail = principalContact?.email ?? ''
-  const products = selectedProducts.map(({ productId }) => productId)
+  const products = selectedProducts.map(({ globalProductId }) => globalProductId)
 
   return {
     account: {
