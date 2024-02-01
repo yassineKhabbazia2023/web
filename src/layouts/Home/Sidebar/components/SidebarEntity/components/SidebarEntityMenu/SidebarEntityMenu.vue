@@ -50,7 +50,6 @@ en-US:
   users: 'Users'
   information: 'Information'
   offers: 'Offers'
-  history: 'History'
   collaborators: 'Collaborators'
   documents: 'Documents'
   bank: 'Bank'
@@ -60,7 +59,6 @@ fr-FR:
   users: 'Utilisateurs'
   information: 'Informations'
   offers: 'Offres'
-  history: 'Historique'
   collaborators: 'Collaborateurs'
   documents: 'Documents'
   bank: 'Banque'
@@ -96,7 +94,7 @@ const folderSubmenu = {
     },
     {
       title: t('collaborators'),
-      index: 'collaborateur'
+      index: 'collaborateurs'
     },
     {
       title: t('offers'),
@@ -105,10 +103,6 @@ const folderSubmenu = {
     {
       title: t('information'),
       index: 'informations'
-    },
-    {
-      title: t('history'),
-      index: 'historique'
     }
   ]
 }
