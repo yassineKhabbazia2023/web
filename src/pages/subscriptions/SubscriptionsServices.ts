@@ -18,7 +18,7 @@ export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]
 
 export async function validateSubscriptionRequest(subscriptionId: string): Promise<void> {
   try {
-    await commonApi().subscription.put(`subscription?subscriptionId=${subscriptionId}`)
+    await commonApi().subscription.put(`subscription/${subscriptionId}`)
   } catch (error) {
     handleRequestError('validating subscription', error)
   }

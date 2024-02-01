@@ -69,6 +69,6 @@ describe('table-validations', () => {
     await validateButton?.at(1)?.trigger('click')
     const subscriptionId = subscriptionRequestMock.at(0)?.subscriptionId
     expect(mockedPutRequests)
-      .toHaveBeenCalledWith(`subscription?subscriptionId=${subscriptionId}`)
+      .toHaveBeenCalledWith(`subscription/${subscriptionId}`)
   })
 })

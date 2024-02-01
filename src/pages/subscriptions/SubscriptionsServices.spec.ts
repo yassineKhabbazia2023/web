@@ -31,7 +31,7 @@ describe('subscriptionsServices', () => {
       const subscriptionId = '1'
       await validateSubscriptionRequest(subscriptionId)
 
-      expect(subscriptionPutMock).toHaveBeenNthCalledWith(1, 'subscription?subscriptionId=1')
+      expect(subscriptionPutMock).toHaveBeenNthCalledWith(1, 'subscription/1')
     })
   })
   describe('createSubscriptionRequest', () => {

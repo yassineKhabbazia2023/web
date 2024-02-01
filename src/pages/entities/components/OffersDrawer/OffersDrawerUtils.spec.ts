@@ -13,11 +13,11 @@ describe('offersDrawerUtils', () => {
   beforeEach(() => {
     selectedProducts = [{
       offerId: 101,
-      productId: 'product-1'
+      globalProductId: 'product-1'
     }, {
       isMandatory: true,
       offerId: 101,
-      productId: 'product-11'
+      globalProductId: 'product-11'
     }]
     originalLength = selectedProducts.length
   })
@@ -55,19 +55,19 @@ describe('offersDrawerUtils', () => {
       const expectedSelectedProducts: SelectedProduct[] = [{
         isMandatory: true,
         offerId: 1,
-        productId: 'product-id-1'
+        globalProductId: 'global-product-id-1'
       }, {
         isMandatory: true,
         offerId: 1,
-        productId: 'product-id-2'
+        globalProductId: 'global-product-id-2'
       }, {
         isMandatory: false,
         offerId: 1,
-        productId: 'product-id-3'
+        globalProductId: 'global-product-id-3'
       }, {
         isMandatory: false,
         offerId: 1,
-        productId: 'product-id-4'
+        globalProductId: 'global-product-id-4'
       }]
       expect(selectedProducts).toStrictEqual(expectedSelectedProducts)
     })
@@ -75,6 +75,7 @@ describe('offersDrawerUtils', () => {
 
   describe('getPostSubscriptionRequest', () => {
     const accountNumber = 'account-number'
+    const accountId = 'account-id'
     const userEmail = 'user@email.com'
     const principalContact = getMockedPrincipalContact()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
@@ -83,6 +84,7 @@ describe('offersDrawerUtils', () => {
     it('should return not optional and free product list', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
         accountNumber,
+        accountId,
         userEmail,
         principalContact,
         currentSubscriptionOffer,
@@ -90,7 +92,8 @@ describe('offersDrawerUtils', () => {
       )
       const expectedPostSubscriptionRequest = {
         account: {
-          accountNumber: 'account-number'
+          globalAccountId: accountId,
+          accountNumber
         },
         applicant: 'user@email.com',
         approvalRequired: true,
@@ -98,13 +101,13 @@ describe('offersDrawerUtils', () => {
         globalOfferId: 'offer-id-1',
         notes: [],
         products: [
-          'product-id-1',
-          'product-id-2',
-          'product-id-3',
-          'product-id-4'
+          'global-product-id-1',
+          'global-product-id-2',
+          'global-product-id-3',
+          'global-product-id-4'
         ],
         users: [
-          'cgreenall0@stumbleupon.com'
+          'test_loscos@yopmail.com'
         ]
       }
       expect(postSubscriptionRequest).toStrictEqual(expectedPostSubscriptionRequest)
@@ -112,6 +115,7 @@ describe('offersDrawerUtils', () => {
     it('should return empty undefined if currentSubscriptionOffer in undefined', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
         accountNumber,
+        accountId,
         userEmail,
         principalContact,
         undefined,

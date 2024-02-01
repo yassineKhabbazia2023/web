@@ -12,12 +12,12 @@ import type { ExtendedService } from './OfferProviderProductsTypes'
 const offerProviderServices = getMockedSubscriptionOffersServices()
 const offerProviderService = offerProviderServices?.at(0)
 const offerProvider = offerProviderService?.providers?.at(0) as SubscriptionOfferProvider
-const productId = offerProvider.products.at(0)?.productId ?? ''
+const globalProductId = offerProvider.products.at(0)?.globalProductId ?? ''
 const offerId = 101
 
 function getMockedService(pStatus: boolean): ExtendedService {
   return {
-    productId: 'product-id',
+    globalProductId: 'global-product-id',
     pStatus,
     pDisabled: false,
     pName: 'Service name'
@@ -31,7 +31,7 @@ function getWrapper() {
       offerId,
       selectedProducts: [{
         offerId,
-        productId
+        globalProductId
       }]
     }
   })
@@ -72,20 +72,20 @@ describe('offerProviderProducts', () => {
     it('should emit "select-product" when user selects a product', async () => {
       const isSelected = true
       const pExtendedService = getMockedService(isSelected)
-      const { productId } = pExtendedService
+      const { globalProductId } = pExtendedService
 
       await offerServicesCard.vm.$emit('changeServiceStatus', pExtendedService)
 
-      expect(wrapper.emitted('select-product')).toStrictEqual([[offerId, productId]])
+      expect(wrapper.emitted('select-product')).toStrictEqual([[offerId, globalProductId]])
     })
     it('should emit "deselect-product" when user deselects a product', () => {
       const isSelected = false
       const pExtendedService = getMockedService(isSelected)
-      const { productId } = pExtendedService
+      const { globalProductId } = pExtendedService
 
       offerServicesCard.vm.$emit('change-service-status', pExtendedService)
 
-      expect(wrapper.emitted('deselect-product')).toStrictEqual([[offerId, productId]])
+      expect(wrapper.emitted('deselect-product')).toStrictEqual([[offerId, globalProductId]])
     })
   })
 })

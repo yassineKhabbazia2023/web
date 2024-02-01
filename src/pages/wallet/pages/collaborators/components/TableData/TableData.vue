@@ -69,7 +69,7 @@
     <template #default="scope">
       <PSwitch
         :modelValue="accessState[scope.row.id]"
-        @update:modelValue="(val) => accessState[scope.row.id] = val"
+        @update:model-value="(val) => accessState[scope.row.id] = val"
       />
     </template>
   </PTableColumn>

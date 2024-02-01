@@ -168,12 +168,12 @@ describe('tableData', () => {
   it('should emit clickDeploy when click on deploy button', async () => {
     await flushPromises()
 
-    const { accountNumber, name } = mockTableData[0]
+    const { id: accountId, accountNumber, name } = mockTableData[0]
 
     const deployButton = document.body.getElementsByClassName('p-toolbox-item__text')[0] as HTMLElement
     deployButton.click()
 
-    expect(wrapper.emitted('clickDeploy')).toStrictEqual([[accountNumber, name]])
+    expect(wrapper.emitted('clickDeploy')).toStrictEqual([[accountId, accountNumber, name]])
   })
 
   it('should emit event when click on checkbox', async () => {

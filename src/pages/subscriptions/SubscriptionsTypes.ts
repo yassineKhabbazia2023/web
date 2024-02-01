@@ -44,6 +44,7 @@ export interface SubscriptionRequest {
 }
 
 export interface SubscriptionAccount {
+  globalAccountId: string,
   accountNumber: string,
   accountLabel?: string,
   hub?: string,
