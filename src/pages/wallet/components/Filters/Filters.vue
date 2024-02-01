@@ -9,7 +9,6 @@
       padding-top--3
       padding-bottom--4
       padding-x--6
-      shadow--3
       margin-negative-x--6
     "
   >
@@ -29,6 +28,7 @@
           data-testid="filter-option"
           @click="handleClickFilter(filterValue, index)"
           @close="handleClose(index)"
+          clickable
         />
       </div>
     </div>
@@ -52,6 +52,7 @@
             :content="content"
             :icon="icon"
             color="gray-500"
+            :clickable="false"
           />
         </div>
       </div>

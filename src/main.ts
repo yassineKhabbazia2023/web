@@ -26,21 +26,16 @@ export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 
-const DEPLOY_CHILDREN_PATH = [
+const WALLET_CHILDREN_PATH = [
   {
-    path: 'deploiement',
-    name: 'deploiment',
-    page: 'deploy'
+    path: 'dossiers',
+    name: 'folders',
+    page: 'folders'
   },
   {
-    path: 'bancaire',
-    name: 'bank',
-    page: 'deploy'
-  },
-  {
-    path: 'administrateur',
-    name: 'admin',
-    page: 'deploy'
+    path: 'historique',
+    name: 'history',
+    page: 'folders'
   },
   {
     path: 'collaborateurs',
@@ -56,7 +51,7 @@ const FOLDER_CHILDREN_PATH = [
     page: 'users'
   },
   {
-    path: 'collaborateur',
+    path: 'collaborateurs',
     name: 'collab',
     page: 'collaborators'
   },
@@ -69,14 +64,16 @@ const FOLDER_CHILDREN_PATH = [
     path: 'informations',
     name: 'info',
     page: 'users'
-  }, {
-    path: 'historique',
-    name: 'history',
-    page: 'users'
   }
 ]
 
-const deployPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
+routes.value.push({
+  path: '/subscription',
+  name: 'subscription',
+  component: () => import('@/pages/subscriptions')
+} as RouteRecordRaw)
+
+const WalletPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
   const res: RouteRecordRaw[] = []
   paths.forEach((path) => {
     res.push({
@@ -85,6 +82,11 @@ const deployPatchChildren = (paths: { path: string, name: string, page: string }
       component: () => import(`@/pages/wallet/pages/${path.page}/index.js`)
     } as RouteRecordRaw)
   })
+  res.push({
+    path: 'subscriptions',
+    name: 'subscriptions',
+    component: () => import('@/pages/subscriptions')
+  } as RouteRecordRaw)
   return res
 }
 
@@ -103,9 +105,9 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
 routes.value.push({
   path: '/portefeuille',
   name: 'wallet',
-  redirect: { name: 'deploiment' },
+  redirect: { name: 'folders' },
   component: () => import('@/pages/wallet'),
-  children: deployPatchChildren(DEPLOY_CHILDREN_PATH)
+  children: WalletPatchChildren(WALLET_CHILDREN_PATH)
 } as RouteRecordRaw)
 
 routes.value.push({
@@ -116,8 +118,3 @@ routes.value.push({
   children: folderPatchChildren(FOLDER_CHILDREN_PATH)
 })
 
-routes.value.push({
-  path: '/subscription',
-  name: 'subscription',
-  component: () => import('@/pages/subscriptions')
-} as RouteRecordRaw)

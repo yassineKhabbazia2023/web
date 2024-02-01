@@ -22,12 +22,12 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useRouter, useRoute } from 'vue-router'
 import {
   PTabs,
   PTabPane
 } from '@kpmg/styleguide'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 import { commonStore } from '@kpmg/common'
 
 const { t } = useI18n({
@@ -35,32 +35,37 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const activeTab = ref('deploiment')
+const route = useRoute()
+const activeTab = computed(() => route.name as string)
 const router = useRouter()
 const userStore = commonStore()
 
 const collaboratorsTabs = [
   {
-    name: 'deploiment',
-    trad: t('deploiment')
+    name: 'folders',
+    trad: t('folders')
   },
   {
-    name: 'bank',
-    trad: t('bank')
+    name: 'mandates',
+    trad: t('mandate')
   },
   {
-    name: 'admin',
-    trad: t('admin')
+    name: 'subscriptions',
+    trad: t('subscriptions')
   },
   {
     name: 'collaborators',
     trad: t('collaborators')
+  },
+  {
+    name: 'history',
+    trad: t('history')
   }
 ]
 
 const clientTabs = [
   {
-    name: 'deploiment',
+    name: 'folders',
     trad: t('allEntities')
   },
   {
@@ -79,17 +84,19 @@ const handleTabClick = (tab: any) => {
 <i18n lang="yaml">
 en-US:
   wallet: 'Wallet'
-  deploiment: 'Deploiment'
-  bank: 'Bank flow'
-  admin: 'Administrator'
+  folders: 'Folders'
+  mandate: 'Mandate'
+  subscriptions: 'Validate demand'
+  history: 'History'
   collaborators: 'Collaborators'
   allEntities: 'All entities'
   allUsers: 'All users'
 fr-FR:
   wallet: 'Portefeuille'
-  deploiment: 'Déploiement'
-  bank: 'Flux bancaires'
-  admin: 'Administrateur'
+  folders: 'Dossiers'
+  mandate: 'Mandat'
+  subscriptions: 'Validation de la demande'
+  history: 'Historique'
   collaborators: 'Collaborateurs'
   allEntities: 'Toutes mes entités'
   allUsers: 'Tous les utilisateurs'

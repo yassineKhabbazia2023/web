@@ -16,6 +16,7 @@ describe('tags', () => {
       content: 'to debloyed',
       icon: PIArrowUpCircle,
       isSelected: false,
+      clickable: false,
       number: 0
     })
   })

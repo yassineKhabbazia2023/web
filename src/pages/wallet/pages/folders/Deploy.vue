@@ -1,12 +1,21 @@
 <template>
   <div>
-    <Filters
+    <div
       v-if="isCollab"
-      @filter-by-status="handleFilterByDeploymentStatus"
-      @remove-filter="handleRemoveFilter"
-      data-testid="filters"
-    />
+      class="flex flex--align-items-center flex--justify-content-space-between"
+    >
+      <Filters
+        @filter-by-status="handleFilterByDeploymentStatus"
+        @remove-filter="handleRemoveFilter"
+        data-testid="filters"
+      />
 
+      <PButton
+        pType="primary"
+      >
+        {{ t('delegation', selectedFolders.length) }}
+      </PButton>
+      </div>
     <div class="margin-bottom--3">
       <PForm
         ref="formRef"
@@ -41,6 +50,7 @@
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
+        @selectedFolder="onSelectedFolder"
       />
 
       <PPagination
@@ -83,6 +93,7 @@ import {
   PInput,
   PISearch,
   PLoader,
+  PButton,
   PPagination
 } from '@kpmg/styleguide'
 import { commonApi, commonStore } from '@kpmg/common'
@@ -104,6 +115,7 @@ const userStore = commonStore()
 const router = useRouter()
 const selectedCompanyName = ref('')
 const { isCollab } = storeToRefs(userStore)
+
 const PAGE_SIZES = [15, 30, 45, 60]
 
 // search part
@@ -314,23 +326,33 @@ const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
 const handleRemoveFilter = () => {
   state.filterByDeploymentStatus = undefined
 }
+
+const selectedFolders: string[] = reactive([])
+const onSelectedFolder = (id: string) => {
+  const index = selectedFolders.indexOf(id)
+  index >= 0
+    ? selectedFolders.splice(index, 1)
+    : selectedFolders.push(id)
+}
 </script>
 
 <i18n lang="yaml">
   en-US:
-    search: 'Search'
+    search: 'Find by Company''s name, IBS, Leader, Email, City...'
     errorSearchInvalid: 'Minimum three characters required'
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
     numberOfFoldersPerPage: 'number of folder per page'
     on: 'on'
+    delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
   fr-FR:
-    search: 'Rechercher'
+    search: 'Rechercher par Raison sociale, IBS, Dirigeant, Mail, Ville...'
     errorSearchInvalid: 'Trois caractères minimum requis'
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'
     numberOfFoldersPerPage: 'nombre de dossier par page'
     on: 'sur'
+    delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
 </i18n>

@@ -25,9 +25,7 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush
   }),
-  useRoute: () => ({
-    name: 'users'
-  })
+  useRoute: () => ({})
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -55,8 +53,7 @@ describe('dossier', () => {
     ['collab', 'tab-collab'],
     ['users', 'tab-users'],
     ['offers', 'tab-offers'],
-    ['info', 'tab-info'],
-    ['history', 'tab-history']
+    ['info', 'tab-info']
   ]
   it.each(PARAMS)(
     'should redirect when click on %s',

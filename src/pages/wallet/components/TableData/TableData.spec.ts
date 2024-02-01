@@ -176,6 +176,16 @@ describe('tableData', () => {
     expect(wrapper.emitted('clickDeploy')).toStrictEqual([[accountNumber, name]])
   })
 
+  it('should emit event when click on checkbox', async () => {
+    await flushPromises()
+
+    const { id: idAccount } = mockTableData[0]
+    const checkbox = document.body.getElementsByClassName('el-checkbox__original')[1] as HTMLElement
+    checkbox.click()
+
+    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[idAccount]])
+  })
+
   it('should emit access when click on access button', async () => {
     await flushPromises()
 

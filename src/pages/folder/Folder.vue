@@ -38,10 +38,9 @@ import {
   PIPulse,
   PButton
 } from '@kpmg/styleguide'
-import { ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
-const activeTab = ref('users')
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
@@ -49,8 +48,9 @@ const { t } = useI18n({
 
 const userStore = commonStore()
 const { user } = storeToRefs(userStore)
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
+const activeTab = computed(() => route.name as string)
 const tabs = [
   {
     name: 'users',
@@ -67,20 +67,12 @@ const tabs = [
   {
     name: 'info',
     trad: t('info')
-  },
-  {
-    name: 'history',
-    trad: t('history')
   }
 ]
 
 const handleTabClick = (tab: any) => {
   router.push({ name: tab.paneName, params: { name: user.value?.entities.default?.name } })
 }
-
-watch(route, (currentRoute) => {
-  activeTab.value = currentRoute.name as string
-})
 
 </script>
 
@@ -93,16 +85,14 @@ watch(route, (currentRoute) => {
 <i18n lang="yaml">
   en-US:
     users: 'Users'
-    collab: 'Collaborator'
+    collab: 'Collaborators'
     offers: 'Offer'
     info: 'Information'
-    history: 'History'
     delegationBtn: 'Delegate this case'
   fr-FR:
     users: 'Utilisateurs'
-    collab: 'Collaborateur'
+    collab: 'Collaborateurs'
     offers: 'Offres'
     info: 'Information'
-    history: 'Historique'
     delegationBtn: 'Déléguer ce dossier'
 </i18n>

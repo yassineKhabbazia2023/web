@@ -12,7 +12,8 @@ const mockRouterPush = vi.fn()
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush
-  })
+  }),
+  useRoute: () => ({})
 }))
 
 vi.mock('@kpmg/common', () => ({
@@ -31,9 +32,9 @@ const createWrapper = (): VueWrapper<any> =>
     }
   })
 const collaboratorsTabs = [
-  'Deploiment',
-  'Bank flow',
-  'Administrator',
+  'Folders',
+  'Mandate',
+  'Validate demand',
   'Collaborators'
 ]
 const clientTabs = [
@@ -45,8 +46,8 @@ describe('dossier', () => {
   let wrapper: VueWrapper<any>
 
   beforeEach(async () => {
-    vi.useFakeTimers()
     wrapper = createWrapper()
+    vi.useFakeTimers()
 
     await flushPromises()
   })
@@ -55,9 +56,10 @@ describe('dossier', () => {
     expect(wrapper.find('.wallet__title').text()).toBe('Wallet')
   })
   const PARAMS = [
-    ['deploiment', 'tab-deploiment'],
-    ['bank', 'tab-bank'],
-    ['admin', 'tab-admin']
+    ['folders', 'tab-folders'],
+    ['subscriptions', 'tab-subscriptions'],
+    ['collaborators', 'tab-collaborators'],
+    ['history', 'tab-history']
   ]
   it.each(PARAMS)(
     'should redirect when click on %s',

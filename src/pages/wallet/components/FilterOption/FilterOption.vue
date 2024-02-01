@@ -3,6 +3,7 @@
   pType="default"
   pSize="default"
   :class="[
+    { 'non-clickable': !clickable },
     'filter-option',
     `filter-option--${color}`,
     cssClass,
@@ -55,7 +56,8 @@ const handleClick = () => {
   props.isSelected ? emit('close') : emit('click')
 }
 const props = withDefaults(defineProps<IProps>(), {
-  isSelected: false
+  isSelected: false,
+  clickable: false
 })
 
 const cssClass = computed(() => {
@@ -64,6 +66,9 @@ const cssClass = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+.non-clickable {
+  pointer-events: none;
+}
 .filter-option {
   transition: border var(--el-transition-duration) ease, background var(--el-transition-duration) ease;
   &--success {

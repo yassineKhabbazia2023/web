@@ -77,7 +77,7 @@
           {{ scope.row.owner.initials }}
         </PAvatar>
         <div>
-          <p class="capitalize font-bold">
+          <p class="capitalize">
             {{ scope.row.owner.firstName }}
             <span class="uppercase"> {{ scope.row.owner.lastName }}</span>
           </p>
@@ -133,7 +133,7 @@
         />
       </template>
     </PTableColumn>
-</template>
+  </template>
   <PTableColumn
     :pLabel="t('option')"
     :pWidth="80"
@@ -161,8 +161,11 @@
     pWidth="50"
     :pShowOverflowTooltip="false"
   >
-    <template #default>
-      <PCheckbox :disabled="false"/>
+    <template #default="scope">
+      <PCheckbox
+        :disabled="false"
+        @change="onSelectedFolder(scope.row)"
+      />
     </template>
   </PTableColumn>
 </PTable>
@@ -262,7 +265,8 @@ const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{
   clickDeploy: [string, string],
-  access: [string]
+  access: [string],
+  selectedFolder: [string]
 }>()
 
 const handleRowSelectedChange = (row: any) => {
@@ -346,6 +350,11 @@ const onToolboxItemClicked = async (action: string, row: any) => {
     handleRowSelectedChange(row)
     emit('access', id)
   }
+}
+
+const onSelectedFolder = async (row: any) => {
+  const { id } = row
+  emit('selectedFolder', id)
 }
 </script>
 

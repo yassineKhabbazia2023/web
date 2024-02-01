@@ -6,4 +6,5 @@ export interface IProps {
   icon: Component
   color: any
   isSelected?: boolean
+  clickable: boolean
 }
