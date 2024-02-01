@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import { commonStore } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
 import Folder from './'
 
+const pinia = createTestingPinia()
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -14,10 +16,12 @@ vi.mock('@kpmg/common', () => ({
           }
         }
       }
-    })
+    }),
+    getters: {
+      isCollab: () => true
+    }
   })
 }))
-const pinia = createTestingPinia()
 
 const mockRouterPush = vi.fn()
 
@@ -68,4 +72,11 @@ describe('dossier', () => {
       })
     }
   )
+  it('should display the button label when the user is a client', async () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    const btnAction = wrapper.findComponent('[data-testid=btn-action]') as VueWrapper
+    expect(btnAction.text()).toBe('Delegate this case')
+  })
 })

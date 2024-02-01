@@ -1,6 +1,7 @@
 <template>
   <div>
     <PBlockHeader
+      v-if="isCollab"
       :pTitle="t('userTitle')"
       :pDescription="t('userDescription')"
       pColor="gray"
@@ -10,6 +11,7 @@
         pType: 'paupulse',
         pName: 'portrait-female'
       }"
+      data-testid="pblockHeaders"
     />
     <PLoader v-if="state.isLoading" />
     <PTable
@@ -38,6 +40,14 @@
                 {{ scope.row.initials }}
               </PAvatar>
               {{ scope.row.fullName }}
+              <PTag
+                class="margin-left--4"
+                v-if="scope.row.isOwner && !isCollab"
+                :pContent="t('owner')"
+                pColor="persian"
+                :pIconLeft="PIPatchCheck"
+                pEffect="light">
+              </PTag>
             </div>
           </div>
         </template>
@@ -54,6 +64,7 @@
         </template>
       </PTableColumn>
       <PTableColumn
+        v-if="isCollab"
         :pLabel="t('status')"
         pSortable
         pProp="status.text"
@@ -73,7 +84,7 @@
         pProp="role"
       >
         <template #default="scope">
-          <div v-if="scope.row.isOwner" class="owner-role flex flex--align-items-center">
+          <div v-if="scope.row.isOwner && isCollab" class="owner-role flex flex--align-items-center">
             <PIcon pSize="14px" class="margin-right--1">
               <PIPatchCheck />
             </PIcon>
@@ -104,7 +115,7 @@
           <PToolbox
             trigger="click"
             popperClass="toolbox-container"
-            :pElements="toolboxItem"
+            :pElements="toolboxItems"
           >
             <PButton
               pType="white"
@@ -156,8 +167,10 @@ import {
   type PToolboxItemProps
 } from '@kpmg/styleguide'
 import { computed, onMounted, reactive, watch } from 'vue'
+import { commonStore } from '@kpmg/common'
 import { IStateUser, IUserStatus } from './types'
 import { dataFromApi } from './mockData'
+import { storeToRefs } from 'pinia'
 
 const PAGE_SIZES = [15, 30, 45, 60]
 
@@ -169,6 +182,8 @@ const state: IStateUser = reactive({
   totalItems: 0,
   isLoading: false
 })
+const userStore = commonStore()
+const { isCollab } = storeToRefs(userStore)
 
 // Uncomment when implement call API
 // const getQueryParams = () => ({
@@ -192,7 +207,6 @@ const fetch = async () => {
         totalItems
       }
     } = dataFromApi
-
     state.data = items.map(({
       status,
       firstName,
@@ -233,13 +247,21 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const toolboxItem: PToolboxItemProps[] = [
+const collaboratorToolboxItem: PToolboxItemProps[] = [
   {
     pIconName: 'PIPatchCheck',
     pValue: t('assignSignatory'),
     pActionName: 'assign',
     pState: 'default'
   },
+  {
+    pIconName: 'PIPencilSquare',
+    pValue: t('modifyRights'),
+    pActionName: 'rights',
+    pState: 'default'
+  }]
+
+const clientToolboxItem: PToolboxItemProps[] = [
   {
     pIconName: 'PIPencilSquare',
     pValue: t('modifyRights'),
@@ -286,6 +308,7 @@ onMounted(async () => {
 })
 
 const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (Date.parse(b.firstDateAccess) / 1000)
+const toolboxItems = isCollab.value ? collaboratorToolboxItem : clientToolboxItem
 
 </script>
 
@@ -322,6 +345,7 @@ const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (D
     userTitle: 'Users'
     userDescription: 'Manage here users''s rights for this folder.'
     on: 'on'
+    owner: 'Owner'
   fr-FR:
     role: 'Rôle'
     user: 'Utilisateur'
@@ -337,4 +361,5 @@ const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (D
     userTitle: 'Les utilisateurs'
     userDescription: 'Gérer ici les droits des utilisateurs sur le dossier.'
     on: 'sur'
+    owner: 'Dirigeant'
 </i18n>

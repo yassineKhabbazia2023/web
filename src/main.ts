@@ -25,11 +25,15 @@ const vueLifecycles = singleSpaVue({
 export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
-
 const WALLET_CHILDREN_PATH = [
   {
     path: 'dossiers',
     name: 'folders',
+    page: 'folders'
+  },
+  {
+    path: 'mes-entites',
+    name: 'entity-client',
     page: 'folders'
   },
   {
@@ -110,6 +114,13 @@ routes.value.push({
   children: WalletPatchChildren(WALLET_CHILDREN_PATH)
 } as RouteRecordRaw)
 
+routes.value.push({
+  path: '/portefeuille',
+  name: 'wallet-client',
+  redirect: { name: 'entity-client' },
+  component: () => import('@/pages/wallet'),
+  children: WalletPatchChildren(WALLET_CHILDREN_PATH)
+} as RouteRecordRaw)
 routes.value.push({
   path: '/dossier/:id',
   name: 'folder',

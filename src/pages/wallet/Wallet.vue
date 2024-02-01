@@ -29,6 +29,7 @@ import {
 } from '@kpmg/styleguide'
 import { computed } from 'vue'
 import { commonStore } from '@kpmg/common'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -36,9 +37,10 @@ const { t } = useI18n({
 })
 
 const route = useRoute()
-const activeTab = computed(() => route.name as string)
 const router = useRouter()
+const activeTab = computed(() => route.name as string)
 const userStore = commonStore()
+const { isCollab } = storeToRefs(userStore)
 
 const collaboratorsTabs = [
   {
@@ -65,7 +67,7 @@ const collaboratorsTabs = [
 
 const clientTabs = [
   {
-    name: 'folders',
+    name: 'entity-client',
     trad: t('allEntities')
   },
   {
@@ -74,7 +76,7 @@ const clientTabs = [
   }
 ]
 
-const tabs = userStore.isCollab ? collaboratorsTabs : clientTabs
+const tabs = isCollab.value ? collaboratorsTabs : clientTabs
 
 const handleTabClick = (tab: any) => {
   router.push({ name: tab.paneName })
@@ -98,6 +100,6 @@ fr-FR:
   subscriptions: 'Validation de la demande'
   history: 'Historique'
   collaborators: 'Collaborateurs'
-  allEntities: 'Toutes mes entités'
-  allUsers: 'Tous les utilisateurs'
+  allEntities: 'Entités'
+  allUsers: 'Utilisateurs'
 </i18n>

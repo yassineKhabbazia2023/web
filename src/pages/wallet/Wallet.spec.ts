@@ -24,6 +24,14 @@ vi.mock('@kpmg/common', () => ({
   })
 }))
 
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    getters: {
+      isCollab: () => true
+    }
+  })
+}))
+
 const createWrapper = (): VueWrapper<any> =>
   mount(Wallet, {
     attachTo: document.body,

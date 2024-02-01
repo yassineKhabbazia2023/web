@@ -9,8 +9,11 @@
       <p class="font-semibold margin-left--4 title">
         {{ user?.entities.default?.name }}
       </p>
-      <PButton pType="primary">
-        {{ t('delegationBtn') }}
+      <PButton
+        pType="primary"
+        data-testid="btn-action"
+      >
+        {{ actionBtnLabel }}
       </PButton>
     </div>
     <PTabs v-model="activeTab" @tab-click="handleTabClick">
@@ -47,11 +50,11 @@ const { t } = useI18n({
 })
 
 const userStore = commonStore()
-const { user } = storeToRefs(userStore)
+const { user, isCollab } = storeToRefs(userStore)
 const route = useRoute()
 const router = useRouter()
 const activeTab = computed(() => route.name as string)
-const tabs = [
+const collabTabs = [
   {
     name: 'users',
     trad: t('users')
@@ -70,6 +73,22 @@ const tabs = [
   }
 ]
 
+const clientTabs = [
+  {
+    name: 'users',
+    trad: t('users')
+  },
+  {
+    name: 'info',
+    trad: t('info')
+  },
+  {
+    name: 'invoices',
+    trad: t('invoices')
+  }
+]
+const tabs = isCollab.value ? collabTabs : clientTabs
+const actionBtnLabel = isCollab.value ? t('delegationBtn') : t('addUser')
 const handleTabClick = (tab: any) => {
   router.push({ name: tab.paneName, params: { name: user.value?.entities.default?.name } })
 }
@@ -86,13 +105,17 @@ const handleTabClick = (tab: any) => {
   en-US:
     users: 'Users'
     collab: 'Collaborators'
-    offers: 'Offer'
-    info: 'Information'
+    offers: 'Offers'
+    info: 'Informations'
     delegationBtn: 'Delegate this case'
+    invoices: 'KPMG Invoices'
+    addUser: 'Add user'
   fr-FR:
     users: 'Utilisateurs'
     collab: 'Collaborateurs'
     offers: 'Offres'
     info: 'Informations'
     delegationBtn: 'Déléguer ce dossier'
+    invoices: 'Factures KPMG'
+    addUser: 'Ajouter un utilisateur'
 </i18n>

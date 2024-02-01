@@ -1,11 +1,26 @@
 import { VueWrapper, mount } from '@vue/test-utils'
-import { beforeEach, describe, it, expect } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { createTestingPinia } from '@pinia/testing'
+import { defineStore } from 'pinia'
 import Users from './'
 import { dataFromApi } from './mockData'
+import { commonStore } from '@kpmg/common'
+
+const pinia = createTestingPinia()
+vi.mock('@kpmg/common', () => ({
+  commonStore: defineStore('common', {
+    getters: {
+      isCollab: () => true
+    }
+  })
+}))
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Users, {
-    attachTo: document.body
+    attachTo: document.body,
+    global: {
+      plugins: [pinia]
+    }
   })
 
 describe('tableData', () => {
@@ -30,5 +45,12 @@ describe('tableData', () => {
     mockData.forEach(data => {
       expect(firstRowText).toContain(data)
     })
+  })
+  it('should not display the pBlockHeader if the user is client', () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    const blockHeader = wrapper.findComponent('[data-testid=offers-drawer]') as VueWrapper
+    expect(blockHeader.exists()).toBeFalsy()
   })
 })
