@@ -1,4 +1,4 @@
-import { shallowRef, type Component, type DefineComponent } from 'vue'
+import { shallowRef, ref, type Component, type DefineComponent } from 'vue'
 import { createPinia } from 'pinia'
 import api from './api'
 import i18n from './i18n'
@@ -12,7 +12,7 @@ export const commoni18n = shallowRef(i18n)
 export const commonStore = store
 export const commonPinia = createPinia()
 export const widgets = shallowRef([] as Component[] | DefineComponent[])
-export const routes = shallowRef([] as RouteRecordRaw[])
+export const routes = ref([] as RouteRecordRaw[])
 export const hasTokenExpired = isTokenExpired
 export const dataProvider = useDataProvider
 
