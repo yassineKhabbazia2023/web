@@ -7,11 +7,11 @@
     <Variant title="Basic Usage">
       <PDatePicker
         v-model="date"
-        type="date"
-        valueFormat="DD/MM/YYYY"
-        format="DD/MM/YYYY"
-        placeholder="Pick a day"
-        :disabledDate="disabledDate"
+        pType="date"
+        pValueFormat="DD/MM/YYYY"
+        pFormat="DD/MM/YYYY"
+        pPlaceholder="Pick a day"
+        :pDisabledDate="disabledDate"
         @blur="logEvent('blur', $event)"
         @focus="logEvent('focus', $event)"
         @change="handleChange"
@@ -24,12 +24,12 @@
         <span class="demonstration">Picker with quick options</span>
         <PDatePicker
           v-model="date"
-          type="date"
-          placeholder="Pick a day"
-          :disabledDate="disabledDate"
-          :shortcuts="shortcuts"
-          valueFormat="DD/MM/YYYY"
-          format="DD/MM/YYYY"
+          pType="date"
+          pPlaceholder="Pick a day"
+          :pDisabledDate="disabledDate"
+          :pShortcuts="shortcuts"
+          pValueFormat="DD/MM/YYYY"
+          pFormat="DD/MM/YYYY"
         />
       </div>
 
@@ -45,17 +45,17 @@
             <span class="demonstration">Week</span>
             <PDatePicker
               v-model="date"
-              type="week"
-              format="[Semaine] ww"
-              placeholder="Pick a week" />
+              pType="week"
+              pFormat="[Semaine] ww"
+              pPlaceholder="Pick a week" />
           </div>
           <div class="block">
             <span class="demonstration">Month</span>
             <PDatePicker
               v-model="date2"
-              type="month"
-              placeholder="Pick a month"
-              format="MM/YYYY" />
+              pType="month"
+              pPlaceholder="Pick a month"
+              pFormat="MM/YYYY" />
           </div>
         </div>
         <div class="container">
@@ -63,16 +63,16 @@
             <span class="demonstration">Year</span>
             <PDatePicker
               v-model="date3"
-              type="year"
-              placeholder="Pick a year" />
+              pType="year"
+              pPlaceholder="Pick a year" />
           </div>
           <div class="block">
             <span class="demonstration">Dates</span>
             <PDatePicker
               v-model="date4"
-              type="dates"
-              format="DD/MM/YYYY"
-              placeholder="Pick one or more dates" />
+              pType="dates"
+              pFormat="DD/MM/YYYY"
+              pPlaceholder="Pick one or more dates" />
           </div>
         </div>
       </div>
@@ -84,11 +84,11 @@
           <span class="demonstration">Default</span>
           <PDatePicker
             v-model="dateRange"
-            type="daterange"
-            rangeSeparator="To"
-            startPlaceholder="Start date"
-            endPlaceholder="End date"
-            format="DD/MM/YYYY"
+            pType="daterange"
+            pRangeSeparator="To"
+            pStartPlaceholder="Start date"
+            pEndPlaceholder="End date"
+            pFormat="DD/MM/YYYY"
             @calendar-change="calendarChange"
           />
         </div>
@@ -96,14 +96,14 @@
           <span class="demonstration">With quick options</span>
           <PDatePicker
             v-model="dateRange2"
-            type="daterange"
-            unlinkPanels
-            rangeSeparator="To"
-            startPlaceholder="Start date"
-            endPlaceholder="End date"
-            :shortcuts="shortcutsDataRange"
+            pType="daterange"
+            pUnlinkPanels
+            pRangeSeparator="To"
+            pStartPlaceholder="Start date"
+            pEndPlaceholder="End date"
+            :pShortcuts="shortcutsDataRange"
             @calendar-change="calendarChange"
-            format="DD/MM/YYYY"
+            pFormat="DD/MM/YYYY"
           />
         </div>
       </div>
@@ -115,25 +115,38 @@
           <span class="demonstration">Default</span>
           <PDatePicker
             v-model="dateMonth"
-            type="monthrange"
-            rangeSeparator="To"
-            startPlaceholder="Start month"
-            endPlaceholder="End month"
-            format="MM/YYYY"
+            pType="monthrange"
+            pRangeSeparator="To"
+            pStartPlaceholder="Start month"
+            pEndPlaceholder="End month"
+            pFormat="MM/YYYY"
           />
         </div>
         <div class="block">
           <span class="demonstration">With quick options</span>
           <PDatePicker
             v-model="dateMonth2"
-            type="monthrange"
-            unlinkPanels
-            rangeSeparator="To"
-            startPlaceholder="Start month"
-            endPlaceholder="End month"
-            :shortcuts="shortcutsMountRange"
+            pType="monthrange"
+            pUnlinkPanels
+            pRangeSeparator="To"
+            pStartPlaceholder="Start month"
+            pEndPlaceholder="End month"
+            :pShortcuts="shortcutsMountRange"
           />
         </div>
+      </div>
+    </Variant>
+
+    <Variant title="Calendar Lite">
+      <div class="calendar-lite-wrapper">
+        <PDatePicker
+        v-model="dateCalendar"
+        pType="date"
+        pValueFormat="YYYY-MM-DD"
+        pFormat="YYYY-MM-DD"
+        pCalendarLite
+        :pSchedulesCollection="['2024-01-29', '2024-01-27', '2024-02-05']"
+        />
       </div>
     </Variant>
   </Story>
@@ -151,7 +164,7 @@ const dateMonth2 = ref('')
 const date2 = ref('')
 const date3 = ref('')
 const date4 = ref('')
-
+const dateCalendar = ref('')
 const shortcuts = [
   {
     text: 'Today',
@@ -241,7 +254,7 @@ function visibleChange(val: boolean) {
 }
 </script>
 
-<style scoped>
+<style>
 .demo-date-picker .block {
   padding: 30px 0;
   text-align: center;
@@ -271,39 +284,10 @@ function visibleChange(val: boolean) {
   border-right: none;
 }
 
-.cell {
-  height: 30px;
-  padding: 3px 0;
-  box-sizing: border-box;
+.calendar-lite-wrapper {
+  position: relative;
 }
 
-.cell .text {
-  width: 24px;
-  height: 24px;
-  display: block;
-  margin: 0 auto;
-  line-height: 24px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 50%;
-}
-
-.cell.current .text {
-  background: #626aef;
-  color: #fff;
-}
-
-.cell .holiday {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: var(--el-color-danger);
-  border-radius: 50%;
-  bottom: 0px;
-  left: 50%;
-  transform: translateX(-50%);
-}
 </style>
 
 <docs lang="md">
