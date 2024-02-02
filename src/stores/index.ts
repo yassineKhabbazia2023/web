@@ -1,27 +1,34 @@
 import { defineStore } from 'pinia'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
-import api from '../api'
 import { msalInstance } from '../msal'
-import { type UserInfo } from './types'
+import type { UserInfo } from './types'
+import api from '../api'
 
-export const isTokenExpired = (token: string) => {
+type commonStateType = {
+  user: UserInfo | null
+}
+
+export const isTokenExpired = (token: string): boolean => {
   const { exp } = jwtDecode<JwtPayload>(token)
   return !!exp && exp * 1000 < Date.now()
 }
 
 export const store = defineStore('common', {
-  state: () => ({
-    user: null as UserInfo | null
+  state: (): commonStateType => ({
+    user: null
   }),
   getters: {
-    token: (state: any) => state?.user?.token ?? sessionStorage.getItem('token') as string,
-    isAuthenticated: (getter : any) => {
+    token: (state: commonStateType) =>
+      state?.user?.token ?? (sessionStorage.getItem('token') as string),
+    isAuthenticated: (getter: any) => {
       return !!getter.token && !isTokenExpired(getter.token)
     },
-    isCollab: (state: any) => !!state.user?.isCollab
+    isCollab: (state: commonStateType) => !!state.user?.isCollab,
+    favoriteEntities: (state: commonStateType) => state.user?.entities?.favorites ?? [],
+    defaultEntity: (state: commonStateType) => state.user?.entities?.default
   },
   actions: {
-    logout: async (state: any) => {
+    logout: async (state: commonStateType) => {
       try {
         if (state.user?.isCollab) {
           msalInstance.logout()
@@ -38,4 +45,5 @@ export const store = defineStore('common', {
     }
   }
 })
+
 export default store

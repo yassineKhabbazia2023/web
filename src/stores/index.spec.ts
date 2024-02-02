@@ -1,9 +1,24 @@
-import commonStore from './index'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Entity } from './types'
+import commonStore from './index'
 
 const now = new Date()
+const TEST_ENTITIES: Entity[] = [
+  {
+    idAccount: '7c2b430b-7190-4cd1',
+    name: 'Test 1',
+    color: 'orange',
+    ibs: 'IBS93781560ZE19'
+  },
+  {
+    idAccount: '3b2b430b-4563-4cd4',
+    name: 'Test 2',
+    color: 'cyan',
+    ibs: 'IBS43784540ZE33'
+  }
+]
 
 vi.mock('jwt-decode', () => ({
   default: () => ({
@@ -23,10 +38,7 @@ describe('commonStore', () => {
     setActivePinia(pinia)
   })
 
-  const IS_COLLAB = [
-    true,
-    false
-  ]
+  const IS_COLLAB = [true, false]
 
   it('initializes user as Jean Levage', () => {
     const store = commonStore(pinia)
@@ -41,30 +53,59 @@ describe('commonStore', () => {
     expect(user.value).toBeDefined()
   })
 
-  it('has a getter isAuthenticated', () => {
+  it('has getters for isAuthenticated and isCollab', () => {
     const store = commonStore(pinia)
-    const { isAuthenticated } = storeToRefs(store)
+    const { isAuthenticated, isCollab } = storeToRefs(store)
 
     store.$patch({
       user: {
-        token: 'aCustomToken'
+        token: 'aCustomToken',
+        isCollab: true
       }
     })
 
+    expect(isCollab.value).toBeTruthy()
     expect(isAuthenticated.value).toBeTruthy()
   })
 
-  it.each(IS_COLLAB)('should call logout function', async (isCollabCondition) => {
+  it('has getters for favoriteEntities and defaultEntity', () => {
     const store = commonStore(pinia)
+    const { favoriteEntities, defaultEntity } = storeToRefs(store)
 
-    const spyLogout = vi.spyOn(store, 'logout')
     store.$patch({
       user: {
-        isCollab: isCollabCondition
+        entities: {
+          favorites: TEST_ENTITIES,
+          default: TEST_ENTITIES[0]
+        }
       }
     })
-    await store.logout(store.$state)
 
-    expect(spyLogout).toHaveBeenCalledTimes(1)
+    expect(favoriteEntities.value).toStrictEqual(TEST_ENTITIES)
+    expect(defaultEntity.value).toStrictEqual(TEST_ENTITIES[0])
+
+    store.$patch({
+      user: null
+    })
+
+    expect(favoriteEntities.value).toStrictEqual([])
+    expect(defaultEntity.value).toBeUndefined()
   })
+
+  it.each(IS_COLLAB)(
+    'should call logout function',
+    async (isCollabCondition) => {
+      const store = commonStore(pinia)
+
+      const spyLogout = vi.spyOn(store, 'logout')
+      store.$patch({
+        user: {
+          isCollab: isCollabCondition
+        }
+      })
+      await store.logout(store.$state)
+
+      expect(spyLogout).toHaveBeenCalledTimes(1)
+    }
+  )
 })

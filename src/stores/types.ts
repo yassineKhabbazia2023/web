@@ -1,9 +1,16 @@
-
-type Entity = {
+export interface Entity {
   idAccount: string
   name: string
-  icon: string
-  color: string
+  color:
+    | 'orange'
+    | 'persian'
+    | 'cyan'
+    | 'amethyste'
+    | 'teal'
+    | 'green'
+    | 'fuschia'
+    | 'gray'
+  ibs: string
 }
 
 type Entities = {
@@ -11,13 +18,13 @@ type Entities = {
   default: Entity | undefined
 }
 
-export type UserInfo = {
+export interface UserInfo {
+  id: string
   firstName: string
   lastName: string
   occupation: string
   email: string
   token: string
-  id: string
-  isCollab: boolean
   entities: Entities
+  isCollab: boolean
 }
