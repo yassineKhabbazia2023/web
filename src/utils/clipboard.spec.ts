@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import { describe, it, expect, vi } from 'vitest'
 import { useCopyClipboard } from './clipboard'
 
