@@ -63,7 +63,6 @@ The current toaster uses a mock of the 'inject' property.
 That's why we're providing the new PNotification for now.
 */
 provide('toast', PNotification)
-
 // Folders scope
 const isLoadingServicesOrFolders = ref(true)
 const currentFolder = ref<null | Folder>(null)

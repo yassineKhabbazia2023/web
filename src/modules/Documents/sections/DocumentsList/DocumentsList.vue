@@ -143,6 +143,12 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
     width: 100%;
     overflow-y: auto;
 
+    &--search {
+      // when search is enabled, the alert changes the remaining height of the page
+      // Taking the same calculation - alert height - alert top padding
+      max-height: calc(100vh - 32px - 52px - 80px - 46px - 41px - 8px);
+    }
+
     .blur-fade {
       position: sticky;
       width: 100%;

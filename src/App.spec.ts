@@ -32,6 +32,29 @@ vi.mock('@kpmg/common', async () => ({
     $patch: vi.fn(),
     $get: vi.fn(),
     $post: vi.fn()
+  }),
+  DataStreamHubConnection: vi.fn(() => ({
+    startConnection: vi.fn(() => {
+      return Promise.resolve()
+    }),
+    getConnection: vi.fn(() => {
+      return {
+        invoke: vi.fn(),
+        on: vi.fn(),
+        stop: vi.fn()
+      }
+    }),
+    destroyConnection: vi.fn()
+  }))
+}))
+
+vi.mock('@/models/AccountingHubConnection', () => ({
+  initializedAccountingDataStreamInstance: Promise.resolve({
+    OnConnectedAsync: vi.fn(),
+    OnDisconnectedAsync: vi.fn(),
+    getConnection: vi.fn(() => ({
+      on: vi.fn()
+    }))
   })
 }))
 

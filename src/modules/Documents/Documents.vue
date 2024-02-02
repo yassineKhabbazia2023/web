@@ -34,7 +34,10 @@
 
       <DocumentsList
         v-if="documents"
-        :class="isSearchLoading ? 'is-searching' : ''"
+        :class="[
+          isSearchLoading ? 'is-searching' : '',
+          isInSearchScope ? 'documents-table--search' : ''
+        ]"
         :documentsListWithTableStructure="documents"
         :isInSearchScope="isInSearchScope"
         @on-sort-change="handleSortChange"
@@ -135,19 +138,21 @@
 
 <script setup lang="ts">
 // eslint-disable vitest/require-hookcurrentService
-/* eslint-disable vitest/require-hook */
-import { ref, watch, computed, ComputedRef } from 'vue'
+import { ref, toRefs, watch, computed, ComputedRef } from 'vue'
+import {
+  fetchFolderDocuments,
+  fetchDocumentsByKeyWord
+} from '@/services/Documents'
 import { DocumentsProps } from './DocumentsTypes'
-import { Document } from '@/models/Document'
 import { Folder } from '@/models/Folder'
 import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
 
 import DocumentsList from './sections/DocumentsList'
 import type {
+  Document,
   DocumentsWithTableStructure,
   TableRowDocument
 } from '@/models/Document'
-import { fetchFolderDocuments, fetchDocumentsByKeyWord } from '@/services/Documents'
 
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
@@ -170,12 +175,17 @@ import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import { getBreadcrumbItems }
   from '@/modules/common/helpers/folderHelper'
+import { usePiaStatusSync } from './composable/PiaStatusSync'
 import { deepCopy } from '../common/utils/deepCopy'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 import DocumentsSearchAlert from '@/modules/Documents/components/DocumentsSearchAlert'
 import { validInputMaxLength }
   from '@/modules/common/helpers/inputValidationHelper'
+
+/* The more features we add the more this component becomes bloated.
+We created a refactor task, which, unfortunately has been placed far back in the backlog.
+This will give us time to make many parts of the code composable to lighten this component. */
 
 const emit = defineEmits<{
   'change-selected-folder': [Folder]
@@ -459,6 +469,9 @@ const handlePreviewButtonClickedForPreviewDocument = () => {
   }
 }
 
+// Document notification
+const { selectedFolder } = toRefs(props)
+usePiaStatusSync(selectedFolder, documents)
 // Document search filters scope
 
 const isFiltersDrawerOpened = ref(false)

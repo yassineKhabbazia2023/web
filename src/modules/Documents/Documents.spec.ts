@@ -1,4 +1,5 @@
 /* eslint-disable vitest/prefer-expect-assertions */
+/* eslint-disable no-unused-vars */
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
@@ -116,6 +117,50 @@ vi.mock('@kpmg/common', async () => ({
     $patch: vi.fn(),
     $get: vi.fn(),
     $post: vi.fn()
+  }),
+  DataStreamHubConnection: vi.fn(() => ({
+    startConnection: vi.fn(() => {
+      return Promise.resolve()
+    }),
+    getConnection: vi.fn(() => {
+      return {
+        invoke: vi.fn(),
+        on: vi.fn(),
+        stop: vi.fn()
+      }
+    }),
+    destroyConnection: vi.fn()
+  }))
+}))
+
+const DocumentPiaStatusChangedResponseMock = {
+  folderId: 45454,
+  documentId: 'myID',
+  newStatus: {
+    technicalName: 'Duplicate',
+    labelFr: 'Transmis',
+    labelEn: 'Transmitted',
+    date: null
+  },
+  permissions: ['CAN_MOVE_DOCUMENT']
+}
+
+vi.mock('@/models/AccountingHubConnection', () => ({
+  initializedAccountingDataStreamInstance: Promise.resolve({
+    OnConnectedAsync: vi.fn(),
+    OnDisconnectedAsync: vi.fn(),
+    getConnection: vi.fn(() => ({
+      on: vi.fn()
+        .mockImplementation(
+          (eventName: string, newMethod: (res: string) => void) => {
+            if (eventName === 'DocumentPiaStatusChanged') {
+              newMethod(
+                JSON.stringify(DocumentPiaStatusChangedResponseMock)
+              )
+            }
+          }
+        )
+    }))
   })
 }))
 

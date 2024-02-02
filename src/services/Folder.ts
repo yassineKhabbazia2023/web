@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { commonApi as api } from '@kpmg/common'
 import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'

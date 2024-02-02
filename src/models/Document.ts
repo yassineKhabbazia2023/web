@@ -94,3 +94,12 @@ export type BinDocumentsWithTableStructure = GenericDocumentsWithTableStructure<
 export interface TableRowDocument extends Document{
   _rowIndex: number
 }
+
+// This response comes from signalR notification
+// Once the document PIA Status changes, it's permisions change too
+export interface DocumentStatusUpdateResponse {
+  folderId: number
+  documentId: string
+  newStatus: PiaStatus
+  permissions: string[]
+}
