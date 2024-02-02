@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import { ComponentPublicInstance, nextTick } from 'vue'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
-import { PDrawer, PText, PSelect, POption, PDatePicker, PButton } from '@kpmg/styleguide'
+import { PDrawer, PSelect, POption, PDatePicker, PButton } from '@kpmg/styleguide'
 import { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import DocumentSearchFiltrer from '.'
 import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
@@ -57,10 +57,10 @@ describe('documentSearchFiltrer', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const pTexts = wrapper.findAllComponents(PText)
+      const pTexts = wrapper.findAll('.doc-search-filter-label')
       expect(pTexts).toHaveLength(2)
-      expect(pTexts[0].props('pContent')).toBe('Période')
-      expect(pTexts[1].props('pContent')).toBe('Période personnalisée')
+      expect(pTexts[0].text()).toBe('Période')
+      expect(pTexts[1].text()).toBe('Période personnalisée')
     })
 
     it('should render PSelect properly binded', async () => {

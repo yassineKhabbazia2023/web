@@ -9,11 +9,9 @@
   >
     <template v-if="isDrawerOpened">
       <div>
-        <PText
-          :pContent="t('dropdownLabel')"
-          pBold
-          pType="primary"
-        />
+        <p class="doc-search-filter-label">
+          {{ t('dropdownLabel') }}
+        </p>
         <PSelect
           v-model="selectedPeriod"
           :pPlaceholder="t('dropdownPlaceholder')"
@@ -29,11 +27,9 @@
         </PSelect>
       </div>
       <div class="margin-top--6">
-        <PText
-            :pContent="t('datePickerLabel')"
-            pBold
-            pType="primary"
-        />
+        <p class="doc-search-filter-label">
+          {{ t('datePickerLabel') }}
+        </p>
         <PDatePicker
           v-model="dateRange"
           type="daterange"
@@ -50,7 +46,7 @@
           <PButton
             pType="primary"
             pPlain
-            pSize="small"
+            pSize="default"
             class="margin-right--4"
             @click="handleResetClick"
           >
@@ -58,7 +54,7 @@
           </PButton>
           <PButton
             type="primary"
-            pSize="small"
+            pSize="default"
             @click="handleApplyClick"
           >
             {{ t('apply') }}
@@ -70,7 +66,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
-import { PDrawer, PText, PSelect, POption, PButton, PDatePicker } from '@kpmg/styleguide'
+import { PDrawer, PSelect, POption, PButton, PDatePicker } from '@kpmg/styleguide'
 import { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import { useI18n } from 'vue-i18n'
 import { Period, DocumentSearchFilters } from '@/models/DocumentSearchFilters'
@@ -165,6 +161,15 @@ onMounted(async () => {
   }
 })
 </script>
+<style lang="scss" scoped>
+.doc-search-filter-label {
+  font-size: 12px;
+  line-height: 14px;
+  min-height: 14px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+</style>
 
 <i18n lang="yaml">
   en-US:
