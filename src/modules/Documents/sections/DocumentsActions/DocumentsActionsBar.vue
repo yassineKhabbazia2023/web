@@ -61,7 +61,7 @@ const handleUploadFilesSelected = (files:File[]) => {
 
 const debounceFunction = debounce((value: string) => {
   emit('p-search-input', value)
-}, 300)
+}, 1000)
 
 const handleSearch = (value: string) => {
   debounceFunction(value)

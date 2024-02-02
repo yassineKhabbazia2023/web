@@ -1,3 +1,4 @@
+/* eslint-disable vitest/prefer-expect-assertions */
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
@@ -140,6 +141,13 @@ const generateTestFiles = (
   return files
 }
 
+const generateTestString = (stringLength: number) => {
+  let str = ''
+  for (let i = 0; i < stringLength; i++) {
+    str += 'a'
+  }
+  return str
+}
 describe('documents', () => {
   const findDcumentActionBar = (wrapper: DocumentsWrapper) =>
     wrapper.findComponent(DocumentsActionsBar)
@@ -823,6 +831,38 @@ describe('documents', () => {
 
     })
 
+    it(
+      // eslint-disable-next-line max-len
+      'should not call fetchDocumentsByKeyWord upon p-search-input and search key is more than 256 chars',
+      async () => {
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+
+        const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+
+        const keyWord = generateTestString(1000)
+        await documentsActionBarWrapper.vm.$emit('p-search-input', keyWord)
+        await nextTick()
+
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledTimes(0)
+      })
+
+    it(// eslint-disable-next-line max-len
+      'should not call fetchDocumentsByKeyWord upon p-search-input and search key an empty string or empty spaces', async () => {
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+
+        const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+
+        const keyWord = ''
+        await documentsActionBarWrapper.vm.$emit('p-search-input', keyWord)
+        await nextTick()
+
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledTimes(0)
+      })
+
     describe('should display the serach results alerts upon meeting the right conditions',
       async () => {
         const cases = [
@@ -863,6 +903,13 @@ describe('documents', () => {
             componentInstance.isSearchExpanded = params.isSearchExpanded
             componentInstance.isSearchLoading = params.isSearchLoading
 
+            const documentsActionBarWrapper =
+                      findDcumentActionBar(wrapper)
+
+            await documentsActionBarWrapper.vm.$emit(
+              'p-search-input',
+              params.searchContent
+            )
             await nextTick()
 
             const documentsSearchAlertWrapper =
@@ -898,7 +945,7 @@ describe('documents', () => {
       )
 
       vi.useFakeTimers()
-      vi.advanceTimersByTime(300)
+      vi.advanceTimersByTime(1000)
       expect(wrapper.emitted('change-selected-folder')).toBeTruthy()
     })
 

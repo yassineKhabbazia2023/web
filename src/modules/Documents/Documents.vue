@@ -36,7 +36,7 @@
         v-if="documents"
         :class="isSearchLoading ? 'is-searching' : ''"
         :documentsListWithTableStructure="documents"
-        :isInSearchScope="searchContent !== '' && isSearchExpanded"
+        :isInSearchScope="isInSearchScope"
         @on-sort-change="handleSortChange"
         @toolbox-action-triggered="handleToolboxActionTriggered"
         @document-selection-change="handleOnDocumentsSelectionChange"
@@ -174,6 +174,8 @@ import { deepCopy } from '../common/utils/deepCopy'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 import DocumentsSearchAlert from '@/modules/Documents/components/DocumentsSearchAlert'
+import { validInputMaxLength }
+  from '@/modules/common/helpers/inputValidationHelper'
 
 const emit = defineEmits<{
   'change-selected-folder': [Folder]
@@ -187,10 +189,13 @@ const isTransmitDocumentsLoading = ref(false)
 const isSearchLoading = ref(false)
 const isSearchExpanded = ref(false)
 const searchContent = ref('')
-
+const canPerformSearch = computed(() =>
+  searchContent.value.trim() !== '' &&
+  validInputMaxLength(searchContent.value))
+const isInSearchScope =
+computed<boolean>(() => isSearchExpanded.value && canPerformSearch.value)
 const canDisplaySearchResultAlert = computed(() =>
-  searchContent.value && isSearchExpanded.value && !isSearchLoading.value)
-
+  isInSearchScope.value && canPerformSearch.value && !isSearchLoading.value)
 const isPreviewDrawerOpened = ref(false)
 const docSearchFilters = ref<DocumentSearchFilters | null>(null)
 
@@ -198,8 +203,8 @@ const componentSortQueryField = ref('-created')
 
 const fetchDocuments = async () => {
   if (!props.selectedFolder) return
-  // eslint-disable-next-line max-len
-  if (isSearchExpanded.value && searchContent.value) {
+
+  if (isInSearchScope.value) {
     await searchDocumentsByKeyWord(searchContent.value)
   } else {
     isLoading.value = true
@@ -237,7 +242,7 @@ const totalDocumentsCount = ref<number>(0)
 
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
-watch([currentPage, currentPageSize], async () => {
+watch([currentPage, currentPageSize, isInSearchScope], async () => {
   if (!props.selectedFolder) return
   await fetchDocuments()
 })
@@ -260,6 +265,7 @@ const isSearchShrinkable = computed(() => searchContent.value === '')
 watch([() => props.selectedFolder], async () => {
   if (!props.selectedFolder) return
   docSearchFilters.value = null
+  currentPage.value = 1
   await fetchDocuments()
 },
 {
@@ -374,10 +380,17 @@ const handleSearchExpandChange = (value: boolean) => {
 }
 
 const searchDocumentsByKeyWord = async (value: string) => {
+
   if (!props.selectedFolder) return
 
-  searchContent.value = value
   isSearchLoading.value = true
+
+  searchContent.value = value
+
+  if (!canPerformSearch.value) {
+    isSearchLoading.value = false
+    return
+  }
 
   documents.value = await fetchDocumentsByKeyWord(
     props.currentService,

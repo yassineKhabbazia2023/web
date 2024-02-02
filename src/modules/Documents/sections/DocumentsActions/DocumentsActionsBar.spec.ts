@@ -117,7 +117,7 @@ describe('event', () => {
 
     await pActionBarWrapper.vm.$emit('p-search-input', 'Hello')
     await nextTick()
-    vi.advanceTimersByTime(300)
+    vi.advanceTimersByTime(1000)
 
     expect(wrapper.emitted('p-search-input')).toStrictEqual([['Hello']])
   })
