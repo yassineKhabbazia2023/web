@@ -3,6 +3,7 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
+import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import type { Collab } from './types'
 import Collaborators from '.'
 
@@ -10,7 +11,10 @@ vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {}
-    })
+    }),
+    getters: {
+      defaultEntity: () => mockedEntity
+    }
   })
 }))
 

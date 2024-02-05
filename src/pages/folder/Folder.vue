@@ -7,12 +7,9 @@
         </PIcon>
       </PAvatar>
       <p class="font-semibold margin-left--4 title">
-        {{ user?.entities.default?.name }}
+        {{ defaultEntity?.name }}
       </p>
-      <PButton
-        pType="primary"
-        data-testid="btn-action"
-      >
+      <PButton pType="primary" data-testid="btn-action">
         {{ actionBtnLabel }}
       </PButton>
     </div>
@@ -50,7 +47,7 @@ const { t } = useI18n({
 })
 
 const userStore = commonStore()
-const { user, isCollab } = storeToRefs(userStore)
+const { isCollab, defaultEntity } = storeToRefs(userStore)
 const route = useRoute()
 const router = useRouter()
 const activeTab = computed(() => route.name as string)
@@ -90,9 +87,11 @@ const clientTabs = [
 const tabs = isCollab.value ? collabTabs : clientTabs
 const actionBtnLabel = isCollab.value ? t('delegationBtn') : t('addUser')
 const handleTabClick = (tab: any) => {
-  router.push({ name: tab.paneName, params: { name: user.value?.entities.default?.name } })
+  router.push({
+    name: tab.paneName,
+    params: { name: defaultEntity.value?.name }
+  })
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -102,20 +101,20 @@ const handleTabClick = (tab: any) => {
 </style>
 
 <i18n lang="yaml">
-  en-US:
-    users: 'Users'
-    collab: 'Collaborators'
-    offers: 'Offers'
-    info: 'Informations'
-    delegationBtn: 'Delegate this case'
-    invoices: 'KPMG Invoices'
-    addUser: 'Add user'
-  fr-FR:
-    users: 'Utilisateurs'
-    collab: 'Collaborateurs'
-    offers: 'Offres'
-    info: 'Informations'
-    delegationBtn: 'Déléguer ce dossier'
-    invoices: 'Factures KPMG'
-    addUser: 'Ajouter un utilisateur'
+en-US:
+  users: 'Users'
+  collab: 'Collaborators'
+  offers: 'Offers'
+  info: 'Information'
+  delegationBtn: 'Delegate this case'
+  invoices: 'KPMG Invoices'
+  addUser: 'Add user'
+fr-FR:
+  users: 'Utilisateurs'
+  collab: 'Collaborateurs'
+  offers: 'Offres'
+  info: 'Informations'
+  delegationBtn: 'Déléguer ce dossier'
+  invoices: 'Factures KPMG'
+  addUser: 'Ajouter un utilisateur'
 </i18n>

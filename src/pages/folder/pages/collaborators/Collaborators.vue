@@ -123,7 +123,7 @@ const { t } = useI18n({
 })
 
 const userStore = commonStore()
-const { user } = storeToRefs(userStore)
+const { defaultEntity } = storeToRefs(userStore)
 
 const pImageProps = {
   pFit: 'fill',
@@ -133,7 +133,7 @@ const pImageProps = {
 
 const collabs = ref<Collab[]>([])
 
-const currentEntityId = user.value?.entities?.default?.idAccount as string
+const currentEntityId = defaultEntity.value?.idAccount as string
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{

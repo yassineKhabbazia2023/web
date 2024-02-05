@@ -97,7 +97,7 @@ import {
   PButton,
   PPagination
 } from '@kpmg/styleguide'
-import { commonApi, commonStore } from '@kpmg/common'
+import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '../../types'
 import Filters from '../../components/Filters'
 import { EntityStatus } from '../../components/Filters/types'
@@ -192,7 +192,7 @@ const paginationLabel = computed(() =>
 )
 
 const DEFAULT_ENTITY_VALUES = {
-  icon: 'PIPulse',
+  ibs: 'IBS93781560ZE19',
   color: 'persian'
 }
 
@@ -204,9 +204,9 @@ const putEntitiesInCommonFavorite = (data: ICommonEntitiesInFavorite[]) => {
     .map(({ name, id: idAccount }: ICommonEntitiesInFavorite) => ({
       name,
       idAccount,
-      icon: DEFAULT_ENTITY_VALUES.icon,
+      ibs: DEFAULT_ENTITY_VALUES.ibs,
       color: DEFAULT_ENTITY_VALUES.color
-    }))
+    })) as Entity[]
 
   userStore.$patch({
     user: {

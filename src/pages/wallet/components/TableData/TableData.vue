@@ -1,6 +1,5 @@
 <template>
 <PTable
-  @current-change="handleRowSelectedChange"
   ref="selectedRow"
   :pData="props.data"
   highlightCurrentRow
@@ -278,7 +277,7 @@ const menuElementsCollaborator = (status : string) => {
 }
 
 const userStore = commonStore()
-const { user } = storeToRefs(userStore)
+const { defaultEntity } = storeToRefs(userStore)
 const { isCollab } = storeToRefs(userStore)
 
 const selectedRow = ref<InstanceType<typeof ElTable>>()
@@ -319,12 +318,11 @@ const selectRowWhenTableFullyLoaded = (row: any) => {
 onMounted(() => {
   const firstRow = props.data[0]
   selectRowWhenTableFullyLoaded(firstRow)
-  handleRowSelectedChange(firstRow)
 })
 
 watch(() => props.data, () => {
   const rowToSelect = props.data
-    .find(({ id }: Row) => id === user.value?.entities.default?.idAccount)
+    .find(({ id }: Row) => id === defaultEntity.value?.idAccount)
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 

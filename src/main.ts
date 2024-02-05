@@ -25,27 +25,36 @@ const vueLifecycles = singleSpaVue({
 export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
-const WALLET_CHILDREN_PATH = [
-  {
-    path: 'dossiers',
-    name: 'folders',
-    page: 'folders'
-  },
-  {
-    path: 'mes-entites',
-    name: 'entity-client',
-    page: 'folders'
-  },
+
+const BASE_WALLET_ROUTES = [
   {
     path: 'historique',
     name: 'history',
-    page: 'folders'
+    page: 'folders' // History page not already created; that's why we will use the folders page temporarily
   },
   {
     path: 'collaborateurs',
     name: 'collaborators',
     page: 'collaborators'
   }
+]
+
+const WALLET_CHILDREN_ROUTES = [
+  {
+    path: 'dossiers',
+    name: 'folders',
+    page: 'folders'
+  },
+  ...BASE_WALLET_ROUTES
+]
+
+const CUSTOMER_WALLET_CHILDREN_ROUTES = [
+  {
+    path: 'mes-entites',
+    name: 'entity-client',
+    page: 'folders'
+  },
+  ...BASE_WALLET_ROUTES
 ]
 
 const FOLDER_CHILDREN_PATH = [
@@ -77,7 +86,7 @@ routes.value.push({
   component: () => import('@/pages/subscriptions')
 } as RouteRecordRaw)
 
-const WalletPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
+const walletPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
   const res: RouteRecordRaw[] = []
   paths.forEach((path) => {
     res.push({
@@ -106,12 +115,13 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
   return res
 }
 
+// It's not done properly; we should separate the client and collaboration
 routes.value.push({
   path: '/portefeuille',
   name: 'wallet',
   redirect: { name: 'folders' },
   component: () => import('@/pages/wallet'),
-  children: WalletPatchChildren(WALLET_CHILDREN_PATH)
+  children: walletPatchChildren(WALLET_CHILDREN_ROUTES)
 } as RouteRecordRaw)
 
 routes.value.push({
@@ -119,8 +129,9 @@ routes.value.push({
   name: 'wallet-client',
   redirect: { name: 'entity-client' },
   component: () => import('@/pages/wallet'),
-  children: WalletPatchChildren(WALLET_CHILDREN_PATH)
+  children: walletPatchChildren(CUSTOMER_WALLET_CHILDREN_ROUTES)
 } as RouteRecordRaw)
+
 routes.value.push({
   path: '/dossier/:id',
   name: 'folder',

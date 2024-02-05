@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
-import { commonStore } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
+import { commonStore } from '@kpmg/common'
+import { mockedEntity } from '../wallet/components/TableData/mockData'
 import Folder from './'
 
 const pinia = createTestingPinia()
@@ -11,14 +12,13 @@ vi.mock('@kpmg/common', () => ({
     state: () => ({
       user: {
         entities: {
-          default: {
-            name: 'nameEntity'
-          }
+          default: mockedEntity
         }
       }
     }),
     getters: {
-      isCollab: () => true
+      isCollab: () => true,
+      defaultEntity: () => mockedEntity
     }
   })
 }))
@@ -51,7 +51,7 @@ describe('dossier', () => {
   })
 
   it('displays correctly the table', () => {
-    expect(wrapper.find('.title').text()).toBe('nameEntity')
+    expect(wrapper.find('.title').text()).toBe(mockedEntity.name)
   })
   const PARAMS = [
     ['collab', 'tab-collab'],
@@ -67,7 +67,7 @@ describe('dossier', () => {
       expect(mockRouterPush).toHaveBeenCalledWith({
         name: tabs,
         params: {
-          name: 'nameEntity'
+          name: mockedEntity.name
         }
       })
     }

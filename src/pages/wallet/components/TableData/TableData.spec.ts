@@ -10,6 +10,7 @@ import TableData from './'
 const handleFavorites = vi.fn()
 const postMock = vi.fn()
 const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
+const testEntity = { idAccount: mockTableData[0].id, name: mockTableData[0].name }
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -23,7 +24,10 @@ vi.mock('@kpmg/common', () => ({
         id: contactId
       },
       isCollab: true
-    })
+    }),
+    getters: {
+      defaultEntity: () => testEntity
+    }
   })
 }))
 
@@ -179,11 +183,10 @@ describe('tableData', () => {
   it('should emit event when click on checkbox', async () => {
     await flushPromises()
 
-    const { id: idAccount } = mockTableData[0]
     const checkbox = document.body.getElementsByClassName('el-checkbox__original')[1] as HTMLElement
     checkbox.click()
 
-    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[idAccount]])
+    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[testEntity.idAccount]])
   })
 
   it('should emit access when click on access button', async () => {
@@ -200,57 +203,13 @@ describe('tableData', () => {
     const ibsLink = document.body.getElementsByClassName('link')[0] as HTMLElement
     ibsLink.click()
 
-    const { id: idAccount, name } = mockTableData[0]
-    expect(wrapper.emitted('access')).toStrictEqual([[idAccount]])
+    expect(wrapper.emitted('access')).toStrictEqual([[testEntity.idAccount]])
     expect(store.$patch).toHaveBeenCalledWith({
       user: {
         entities: {
           default: {
-            idAccount,
-            name
-          }
-        }
-      }
-    })
-  })
-
-  it('has the first entity selected by default', async () => {
-    const { id: idAccount, name } = mockTableData[0]
-
-    vi.advanceTimersByTime(250)
-    await nextTick()
-
-    const firstRow = wrapper.find('tr.el-table__row')
-    expect(firstRow.attributes('class')).toContain('current-row')
-    expect(firstRow.text()).toContain(name)
-
-    expect(store.$patch).toHaveBeenCalledWith({
-      user: {
-        entities: {
-          default: {
-            idAccount,
-            name
-          }
-        }
-      }
-    })
-  })
-
-  it('can select another entity', async () => {
-    const { id: idAccount, name } = mockTableData[1]
-
-    const secondRow = wrapper.findAll('tr.el-table__row').at(1)
-    expect(secondRow?.attributes('class')).not.toContain('current-row')
-
-    await secondRow?.trigger('click')
-
-    expect(secondRow?.attributes('class')).toContain('current-row')
-    expect(store.$patch).toHaveBeenLastCalledWith({
-      user: {
-        entities: {
-          default: {
-            idAccount,
-            name
+            name: testEntity.name,
+            idAccount: testEntity.idAccount
           }
         }
       }
