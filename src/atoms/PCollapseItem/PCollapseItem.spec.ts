@@ -22,13 +22,13 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
   const Component = {
     template: `
     <el-collapse>
-        <PCollapseItem 
-          :pType="pType"
-          :pTitleCollapseItem="pTitleCollapseItem"
-          :pIcon="pIcon"
-        />
-      </el-collapse>
-      `,
+      <PCollapseItem
+        :pType="pType"
+        :pTitleCollapseItem="pTitleCollapseItem"
+        :pIcon="pIcon"
+      />
+    </el-collapse>
+    `,
     data() {
       return {
         pType,

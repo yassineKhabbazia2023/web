@@ -1,4 +1,3 @@
-// Import necessary modules
 import { markRaw } from 'vue'
 import { mount } from '@vue/test-utils'
 import PDoubleText from './'
