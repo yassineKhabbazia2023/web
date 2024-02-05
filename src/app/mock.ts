@@ -1,10 +1,12 @@
+import { RouteRecordRaw } from 'vue-router'
+
 export const PAGES_TITLE = {
   CLIENT: 'Login Client Page',
   COLLAB: 'Login Collab Page',
   HOME: 'Home Page'
 }
 
-export const ROUTES = [
+export const ROUTES: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',

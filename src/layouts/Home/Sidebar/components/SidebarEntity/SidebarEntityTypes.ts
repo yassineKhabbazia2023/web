@@ -1,5 +1,6 @@
-import { Entity } from './components/EntityAvatar/EntityAvatarTypes'
+import type { Entity } from '@kpmg/common'
 
 export interface SidebarEntityProps {
   favoriteEntities: Entity[]
+  totalEntities: number
 }

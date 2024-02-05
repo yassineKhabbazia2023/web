@@ -8,11 +8,14 @@ import {
   beforeEach
 } from 'vitest'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
-import router from '../plugins/router'
-import { ROUTES, PAGES_TITLE } from './mock'
 import helpers from '@/tests/utils/helpers'
+import router from '../plugins/router'
+import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
+import { ROUTES, PAGES_TITLE } from './mock'
+import type { Entity } from '@kpmg/common'
 import App from './'
 
+const favoriteEntities: Entity[] = getMockedFavoriteEntities()
 const { fetchUserData } = helpers()
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5
@@ -25,7 +28,8 @@ vi.mock('@kpmg/common', () => ({
       user: null
     }),
     getters: {
-      isAuthenticated: () => true
+      isAuthenticated: () => true,
+      favoriteEntities: () => favoriteEntities
     },
     actions: {
       logout: () => vi.fn()
@@ -69,7 +73,7 @@ describe('app with navigation guard', () => {
     ROUTES.map((route) => router.addRoute(route))
   })
 
-  it.skip('redirects to the right page with the right layout if user has a token', async () => {
+  it('redirects to the correct page with the appropriate layout when the user has a token', async () => {
     const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
     router.push({ name: 'home' })
     await vi.dynamicImportSettled()
@@ -84,7 +88,7 @@ describe('app with navigation guard', () => {
     expect(wrapper.find('.home-bottom-menu').exists()).toBeTruthy()
   })
 
-  it('should redirect to login client when user is inactive for 5 seconds', async () => {
+  it('should redirect to the login page when the user is inactive for 5 seconds', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyPush = vi.spyOn(wrapper.vm.router, 'push')
     vi.advanceTimersByTime(120000) // 2 minutes

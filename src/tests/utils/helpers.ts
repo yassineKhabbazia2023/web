@@ -14,7 +14,7 @@ const fakeUser = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'john@example.com',
-  isCustomer: false
+  isCollab: false
 }
 const helpers = () => {
   const router = createRouter({
@@ -69,7 +69,8 @@ const helpers = () => {
     router,
     pinia,
     mockUser,
-    fetchUserData
+    fetchUserData,
+    fakeUser
   }
 }
 export default helpers

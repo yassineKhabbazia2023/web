@@ -1,41 +1,34 @@
 <template>
-  <SidebarEntity :favoriteEntities="favoriteEntities" />
+  <SidebarEntity
+    :favoriteEntities="favEntities"
+    :totalEntities="totalEntities"
+  />
 </template>
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@kpmg/common'
-import type { Entity } from './components/SidebarEntity/components/EntityAvatar/EntityAvatarTypes'
+import { commonStore, type Entity } from '@kpmg/common'
+import { getFavoriteEntities, getEntities } from '@/services/entities'
 import SidebarEntity from './components/SidebarEntity'
 
 const userStore = commonStore()
-const { user } = storeToRefs(userStore)
+const { user, favoriteEntities } = storeToRefs(userStore)
 
-const favoriteEntities = ref<Entity[]>([])
-
-const getFavoriteEntities = () => {
-  let storedFavEntities = user.value?.entities?.favorites as Entity[] ?? []
-
-  // The following code is temporary as there is currently no information about ibs returned from the API
-  storedFavEntities = storedFavEntities.map((item: any) => {
-    return {
-      ...item,
-      ibs: 'IBS93773820QE19'
-    }
-  })
-
-  return storedFavEntities
-}
+const favEntities = ref<Entity[]>([])
+const totalEntities = ref<number>(0)
 
 watch(
   user,
   () => {
-    favoriteEntities.value = getFavoriteEntities()
+    favEntities.value = favoriteEntities.value
   },
   { deep: true }
 )
 
-onMounted(() => {
-  favoriteEntities.value = getFavoriteEntities()
+onMounted(async () => {
+  await getFavoriteEntities()
+  const { totalItems } = await getEntities()
+  totalEntities.value = totalItems as number
+  favEntities.value = favoriteEntities.value
 })
 </script>

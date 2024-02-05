@@ -1,6 +1,7 @@
 <template>
   <div :class="{ 'padding-right--0': !isSelectedEntityActive }">
     <nav
+      v-if="(!isCollab && totalEntities > 1) || isCollab"
       :class="[
         'sidenav-entity flex flex--direction-column',
         { 'sidenav-entity--opened': isSidebarOpened }
@@ -130,11 +131,11 @@ fr-FR:
 </i18n>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@kpmg/common'
+import { commonStore, type Entity } from '@kpmg/common'
 import {
   PIArrowBarRight,
   PIArrowBarLeft,
@@ -142,7 +143,6 @@ import {
   PIStarFill,
   PIcon
 } from '@kpmg/styleguide'
-import type { Entity } from './components/EntityAvatar/EntityAvatarTypes'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
 import SidebarEntityItem from './components/SidebarEntityItem'
@@ -156,9 +156,9 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const { favoriteEntities } = defineProps<SidebarEntityProps>()
+defineProps<SidebarEntityProps>()
 
-const { user, isCollab } = storeToRefs(userStore)
+const { user, defaultEntity, isCollab } = storeToRefs(userStore)
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
 const selectedEntity = ref<Entity | undefined>(undefined)
@@ -217,16 +217,15 @@ const patchDefaultEntity = (entity: Entity) => {
 }
 
 const onEntitySelected = (entity: Entity) => {
-  patchDefaultEntity(entity)
   selectedEntity.value = entity
+  patchDefaultEntity(entity)
   localStorage.setItem('selected-entity', JSON.stringify(entity))
 }
 
 watch(
   user,
   () => {
-    selectedEntity.value =
-      (user.value?.entities?.default as Entity) ?? undefined
+    selectedEntity.value = defaultEntity.value as Entity
   },
   { deep: true }
 )
