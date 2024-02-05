@@ -1,6 +1,7 @@
 import { generateIcons } from './iconGen/utils'
+import { logger } from '../src/utils/logger'
 
 const [iconsFolderPath, outputFolderPath] = process.argv.slice(2)
 
 generateIcons(iconsFolderPath, outputFolderPath)
-console.log('PULSEEE! Icons successfully generated !')
+logger.info('PULSEEE! Icons successfully generated !')

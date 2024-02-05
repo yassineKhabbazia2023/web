@@ -1,6 +1,7 @@
 import path from 'path'
 import { writeFileSync, readdirSync, readFileSync, statSync, rmSync, existsSync, mkdirSync } from 'fs'
 import type { Icon } from './types'
+import { logger } from '../../src/utils/logger'
 
 export function capitalizeFirstLetter(text: string) {
   if (text.includes('-')) {
@@ -55,7 +56,7 @@ export function generateComponent(componentName: string, filePath: string, outpu
     writeFileSync(filePath, componentCode)
     return filePath
   } else {
-    console.error(`${filePath}.svg - Invalid SVG format`)
+    logger.error(`${filePath}.svg - Invalid SVG format`)
     return ''
   }
 }

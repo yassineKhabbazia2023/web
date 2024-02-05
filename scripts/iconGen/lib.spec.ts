@@ -35,6 +35,8 @@ vi.mock('path', () => ({
   }
 }))
 
+vi.mock('@/utils/logger')
+
 describe('pulseIconGenLib', () => {
   describe('capitalizeFirstLetter', () => {
     const words = [{
