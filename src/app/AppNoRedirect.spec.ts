@@ -1,12 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia } from 'pinia'
-import {
-  describe,
-  expect,
-  it,
-  vi,
-  beforeEach
-} from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import helpers from '@/tests/utils/helpers'
 import router from '../plugins/router'
@@ -15,8 +9,9 @@ import { ROUTES, PAGES_TITLE } from './mock'
 import type { Entity } from '@kpmg/common'
 import App from './'
 
-const favoriteEntities: Entity[] = getMockedFavoriteEntities()
+const testEntity: Entity = getMockedFavoriteEntities()[0]
 const { fetchUserData } = helpers()
+
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5
 }))
@@ -29,7 +24,8 @@ vi.mock('@kpmg/common', () => ({
     }),
     getters: {
       isAuthenticated: () => true,
-      favoriteEntities: () => favoriteEntities
+      isCollab: () => false,
+      favoriteEntities: () => []
     },
     actions: {
       logout: () => vi.fn()
@@ -37,10 +33,17 @@ vi.mock('@kpmg/common', () => ({
   }),
   commonPinia: () => createPinia(),
   commonApi: () => ({
+    wallet: {
+      get: () =>
+        Promise.resolve({
+          data: {
+            items: [{ id: testEntity.idAccount }],
+            totalItems: 1
+          }
+        })
+    },
     user_origin: {
-      get: vi
-        .fn()
-        .mockResolvedValue({ data: 'COLLAB' })
+      get: vi.fn().mockResolvedValue({ data: 'COLLAB' })
     }
   }),
   routes: {
@@ -51,21 +54,22 @@ vi.mock('@kpmg/common', () => ({
   }
 }))
 
-const createWrapper = (userStore = {}) => mount(App, {
-  global: {
-    plugins: [router, createTestingPinia({
-      initialState: {
-        common: {
-          user: userStore
-        }
-      }
-    })],
-    stubs: {
-      PButton: { template: '<button><slot /></button>' },
-      Navbar: { template: '<nav />' }
+const getPageTitle = (wrapper: VueWrapper) => wrapper.find('.pageTitle').text()
+const createWrapper = (userStore = {}) =>
+  mount(App, {
+    global: {
+      plugins: [
+        router,
+        createTestingPinia({
+          initialState: {
+            common: {
+              user: userStore
+            }
+          }
+        })
+      ]
     }
-  }
-})
+  })
 
 describe('app with navigation guard', () => {
   beforeEach(() => {
@@ -78,8 +82,8 @@ describe('app with navigation guard', () => {
     router.push({ name: 'home' })
     await vi.dynamicImportSettled()
 
-    const getPageTitle = () => wrapper.find('.pageTitle').text()
-    expect(getPageTitle()).toBe(PAGES_TITLE.HOME)
+    const pageTitle = getPageTitle(wrapper)
+    expect(pageTitle).toBe(PAGES_TITLE.HOME)
 
     expect(wrapper.find('.common-layout').exists()).toBeTruthy()
     expect(wrapper.find('.header-container').exists()).toBeTruthy()
@@ -96,5 +100,15 @@ describe('app with navigation guard', () => {
     vi.advanceTimersByTime(180000) // 3 minutes
     await flushPromises()
     expect(spyPush).toHaveBeenCalledWith({ name: 'login' })
+  })
+
+  it('should redirect the client to the folder page if they have only one entity', async () => {
+    const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
+    router.push({ name: 'entity-client' })
+    await vi.dynamicImportSettled()
+
+    const pageTitle = getPageTitle(wrapper)
+    expect(pageTitle).toBe(PAGES_TITLE.FOLDER)
+    expect(router.currentRoute.value.name).toBe('folder')
   })
 })

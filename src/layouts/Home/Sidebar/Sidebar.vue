@@ -1,5 +1,6 @@
 <template>
   <SidebarEntity
+    v-if="isEntitiesLoaded"
     :favoriteEntities="favEntities"
     :totalEntities="totalEntities"
   />
@@ -14,6 +15,7 @@ import SidebarEntity from './components/SidebarEntity'
 const userStore = commonStore()
 const { user, favoriteEntities } = storeToRefs(userStore)
 
+const isEntitiesLoaded = ref<boolean>(false)
 const favEntities = ref<Entity[]>([])
 const totalEntities = ref<number>(0)
 
@@ -30,5 +32,6 @@ onMounted(async () => {
   const { totalItems } = await getEntities()
   totalEntities.value = totalItems as number
   favEntities.value = favoriteEntities.value
+  isEntitiesLoaded.value = true
 })
 </script>

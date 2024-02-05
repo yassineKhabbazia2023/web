@@ -156,7 +156,7 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-defineProps<SidebarEntityProps>()
+const props = defineProps<SidebarEntityProps>()
 
 const { user, defaultEntity, isCollab } = storeToRefs(userStore)
 const isSidebarOpened = ref(false)
@@ -231,10 +231,15 @@ watch(
 )
 
 onMounted(() => {
+  // The following code is temporary and will be replaced later
   const savedSelectedEntity = localStorage.getItem('selected-entity')
   if (savedSelectedEntity) {
     selectedEntity.value = JSON.parse(savedSelectedEntity)
     patchDefaultEntity(selectedEntity.value as Entity)
+  } else {
+    if (!isCollab.value && props.totalEntities === 1) {
+      selectedEntity.value = defaultEntity?.value
+    }
   }
 })
 </script>
