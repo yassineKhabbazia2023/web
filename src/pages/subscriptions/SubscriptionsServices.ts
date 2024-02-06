@@ -8,7 +8,7 @@ function handleRequestError(action: string, error: any) {
 
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]|undefined> {
   try {
-    const response = await commonApi().subscription.get('subscription?status=pending')
+    const response = await commonApi().offer.get('subscription?status=pending')
 
     return response.data
   } catch (error) {
@@ -18,7 +18,7 @@ export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]
 
 export async function validateSubscriptionRequest(subscriptionId: string): Promise<void> {
   try {
-    await commonApi().subscription.put(`subscription/${subscriptionId}`)
+    await commonApi().offer.put(`subscription/${subscriptionId}`)
   } catch (error) {
     handleRequestError('validating subscription', error)
   }
@@ -26,7 +26,7 @@ export async function validateSubscriptionRequest(subscriptionId: string): Promi
 
 export async function createSubscriptionRequest(request: SubscriptionDemand) {
   try {
-    const response = await commonApi().subscription.post('subscription', request)
+    const response = await commonApi().offer.post('subscription', request)
     if (response?.data > 0) {
       return response.data
     }
@@ -37,7 +37,7 @@ export async function createSubscriptionRequest(request: SubscriptionDemand) {
 
 export async function createSubscriptionRequestNew(request: PostSubscriptionRequest) {
   try {
-    const response = await commonApi().subscription.post('subscription', request)
+    const response = await commonApi().offer.post('subscription', request)
     if (response?.data > 0) {
       return response.data
     }

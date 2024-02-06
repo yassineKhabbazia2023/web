@@ -10,7 +10,7 @@ const subscriptionPutMock = vi.fn(() => Promise.resolve())
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    subscription: {
+    offer: {
       get: subscriptionGetMock,
       put: subscriptionPutMock
     }
