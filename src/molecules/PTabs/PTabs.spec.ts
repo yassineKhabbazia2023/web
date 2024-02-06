@@ -1,6 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { ElTabs } from 'element-plus'
 import PTabs from '.'
 import type { PTabsProps } from './PTabsTypes'
 import { nextTick } from 'vue'
@@ -23,15 +22,21 @@ const createWrapper = () => mount(PTabs, {
 describe('pTabs', () => {
   it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    const componentVM = wrapper.findComponent(ElTabs).vm
-    expect(componentVM.modelValue).toBe(propsValue.modelValue)
-    expect(componentVM.type).toBe(propsValue.pType)
-    expect(componentVM.closable).toBe(propsValue.pClosable)
-    expect(componentVM.addable).toBe(propsValue.pAddable)
-    expect(componentVM.editable).toBe(propsValue.pEditable)
-    expect(componentVM.tabPosition).toBe(propsValue.pTabPosition)
-    expect(componentVM.stretch).toBe(propsValue.pStretch)
-    expect(componentVM.beforeLeave).toBe(propsValue.pBeforeLeave)
+    const component = wrapper.findComponent({ name: 'ElTabs' })
+
+    const expectedProps = {
+      modelValue: propsValue.modelValue,
+      type: propsValue.pType,
+      closable: propsValue.pClosable,
+
+      addable: propsValue.pAddable,
+      editable: propsValue.pEditable,
+      tabPosition: propsValue.pTabPosition,
+
+      stretch: propsValue.pStretch,
+      beforeLeave: propsValue.pBeforeLeave
+    }
+    expect(component.props()).toMatchObject(expectedProps)
   })
 
   it('should re-link v-model', async () => {

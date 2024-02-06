@@ -1,7 +1,6 @@
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PAutocomplete from '.'
-import { ElAutocomplete } from 'element-plus'
 import type { PAutocompleteProps } from './PAutocompleteTypes'
 
 const propsValue: PAutocompleteProps = {
@@ -18,6 +17,7 @@ const propsValue: PAutocompleteProps = {
   pLabel: 'label',
   pHideLoading: true,
   pPopperClass: 'test',
+  pFitInputWidth: true,
   pTeleported: true,
   pHighlightFirstItem: true
 }
@@ -33,24 +33,31 @@ const createWrapper = () => mount(PAutocomplete, {
 describe('pAutoComplete', () => {
   it('should render correctly', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    const componentVM = wrapper.findComponent(ElAutocomplete).vm
+    const component = wrapper.findComponent({ name: 'ElAutocomplete' })
+
+    const expectedProps = {
+      modelValue: '',
+      placement: propsValue.pPlacement,
+      clearable: propsValue.pClearable,
+      disabled: propsValue.pDisabled,
+      valueKey: propsValue.pValueKey,
+      debounce: propsValue.pDebounce,
+      triggerOnFocus: propsValue.pTriggerOnFocus,
+      fetchSuggestions: propsValue.pFetchSuggestions,
+      name: propsValue.pName,
+      label: propsValue.pLabel,
+      hideLoading: propsValue.pHideLoading,
+      popperClass: propsValue.pPopperClass,
+      teleported: propsValue.pTeleported,
+      highlightFirstItem: propsValue.pHighlightFirstItem,
+      fitInputWidth: propsValue.pFitInputWidth,
+      selectWhenUnmatched: propsValue.pSelectWhenUnmatched
+    }
+    expect(component.props()).toMatchObject(expectedProps)
+
     const input = document.body.querySelector('.el-input__inner') as Element
 
     expect(input.getAttribute('placeholder')).toBe(propsValue.pPlaceholder)
-    expect(componentVM.clearable).toBe(propsValue.pClearable)
-    expect(componentVM.disabled).toBe(propsValue.pDisabled)
-    expect(componentVM.debounce).toBe(propsValue.pDebounce)
-    expect(componentVM.fetchSuggestions).toBe(propsValue.pFetchSuggestions)
-    expect(componentVM.hideLoading).toBe(propsValue.pHideLoading)
-    expect(componentVM.label).toBe(propsValue.pLabel)
-    expect(componentVM.highlightFirstItem).toBe(propsValue.pHighlightFirstItem)
-    expect(componentVM.selectWhenUnmatched).toBe(propsValue.pSelectWhenUnmatched)
-    expect(componentVM.teleported).toBe(propsValue.pTeleported)
-    expect(componentVM.valueKey).toBe(propsValue.pValueKey)
-    expect(componentVM.placement).toBe(propsValue.pPlacement)
-    expect(componentVM.popperClass).toBe(propsValue.pPopperClass)
-    expect(componentVM.triggerOnFocus).toBe(propsValue.pTriggerOnFocus)
-    expect(componentVM.name).toBe(propsValue.pName)
   })
 })
 

@@ -1,6 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import { ElTabPane } from 'element-plus'
 import PTabPane from '.'
 import type { PTabPaneProps } from './PTabPaneTypes'
 import PTabs from '@/molecules/PTabs'
@@ -22,8 +21,8 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
         pContent=""
         pEffect="plain"
       >
-        <PTabPane 
-          :pLabel="props.pLabel" 
+        <PTabPane
+          :pLabel="props.pLabel"
           :pDisabled="props.pDisabled"
           :pName="props.pName"
           :pClosable="props.pClosable"
@@ -58,12 +57,17 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
 describe('pTabPane', () => {
   it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper(propsValue, 'content')
-    const componentVM = wrapper.findComponent(ElTabPane).vm
-    expect(componentVM.label).toBe(propsValue.pLabel)
-    expect(componentVM.disabled).toBe(propsValue.pDisabled)
-    expect(componentVM.name).toBe(propsValue.pName)
-    expect(componentVM.closable).toBe(propsValue.pClosable)
-    expect(componentVM.lazy).toBe(propsValue.pLazy)
+    const component = wrapper.findComponent({ name: 'ElTabPane' })
+
+    const expectedProps = {
+      label: propsValue.pLabel,
+      disabled: propsValue.pDisabled,
+      name: propsValue.pName,
+      closable: propsValue.pClosable,
+      lazy: propsValue.pLazy
+    }
+    expect(component.props()).toMatchObject(expectedProps)
+
     expect(wrapper.find('.el-tab-pane').text()).toBe('content')
   })
 })

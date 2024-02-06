@@ -5,7 +5,7 @@ import type { PFieldProps } from '../PField/PFieldTypes'
 export function getMockedFields(
   fieldCase: string,
   withReadonlyFields = false
-): PFieldProps<any>[] | undefined {
+): PFieldProps<any>[] {
   const countryOptions: PDropdownOption[] = [{
     pValue: 'fr',
     pLabel: 'France'
@@ -82,4 +82,6 @@ export function getMockedFields(
       getDropdownField('activityType', "Type d'activité", 30, activityTypeOptions)
     ]
   }
+
+  return []
 }

@@ -1,6 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { ElForm } from 'element-plus'
 import PForm from '.'
 import type { PFormProps } from './PFormTypes'
 
@@ -29,23 +28,28 @@ const createWrapper = () => mount(PForm, {
 describe('pForm', () => {
   it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    const componentVM = wrapper.findComponent(ElForm).vm
-    expect(componentVM.model).toStrictEqual(propsValue.pModel)
-    expect(componentVM.rules).toBe(propsValue.pRules)
-    expect(componentVM.inline).toBe(propsValue.pInline)
-    expect(componentVM.labelPosition).toBe(propsValue.pLabelPosition)
-    expect(componentVM.labelWidth).toBe(propsValue.pLabelWidth)
-    expect(componentVM.labelSuffix).toBe(propsValue.pLabelSuffix)
-    expect(componentVM.hideRequiredAsterisk).toBe(propsValue.pHideRequiredAsterisk)
-    expect(componentVM.requireAsteriskPosition).toBe(propsValue.pRequireAsteriskPosition)
-    expect(componentVM.showMessage).toBe(propsValue.pShowMessage)
-    expect(componentVM.inlineMessage).toBe(propsValue.pInlineMessage)
-    expect(componentVM.statusIcon).toBe(propsValue.pStatusIcon)
-    expect(componentVM.validateOnRuleChange).toBe(propsValue.pValidateOnRuleChange)
-    expect(componentVM.size).toBe(propsValue.pSize)
-    expect(componentVM.disabled).toBe(propsValue.pDisabled)
-    expect(componentVM.scrollToError).toBe(propsValue.pScrollToError)
-    expect(componentVM.scrollIntoViewOptions).toBe(propsValue.pScrollIntoViewOptions)
+    const component = wrapper.findComponent({ name: 'ElForm' })
+
+    const expectedProps = {
+      model: propsValue.pModel,
+      rules: propsValue.pRules,
+      inline: propsValue.pInline,
+      labelPosition: propsValue.pLabelPosition,
+      labelWidth: propsValue.pLabelWidth,
+      labelSuffix: propsValue.pLabelSuffix,
+      hideRequiredAsterisk: propsValue.pHideRequiredAsterisk,
+      requireAsteriskPosition: propsValue.pRequireAsteriskPosition,
+      showMessage: propsValue.pShowMessage,
+      inlineMessage: propsValue.pInlineMessage,
+      statusIcon: propsValue.pStatusIcon,
+      validateOnRuleChange: propsValue.pValidateOnRuleChange,
+      size: propsValue.pSize,
+      disabled: propsValue.pDisabled,
+      scrollToError: propsValue.pScrollToError,
+      scrollIntoViewOptions: propsValue.pScrollIntoViewOptions
+    }
+
+    expect(component.props()).toMatchObject(expectedProps)
   })
 
   describe('exposed functions', () => {
