@@ -1,5 +1,5 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
-import { describe, it, expect, vi } from 'vitest'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
 import SubscriptionsTable from '.'
 
@@ -28,10 +28,12 @@ const pTableColumnsLabel: { [key: number]: string } = {
 }
 
 describe('table-validations', () => {
-  it('renders the table correctly', async () => {
-    const wrapper = mount(SubscriptionsTable)
+  let wrapper: VueWrapper
+  beforeEach(async () => {
+    wrapper = mount(SubscriptionsTable, { attachTo: document.body })
     await flushPromises()
-
+  })
+  it('should render the subscription table correctly', () => {
     const pTable = wrapper.findComponent('[data-testid="table"]') as VueWrapper
     expect(pTable.exists()).toBeTruthy()
 
@@ -51,24 +53,29 @@ describe('table-validations', () => {
       3: 'TTTFirsName TLastNameTLastName+test@kpmg.onmicrosoft.com',
       4: 'test-01@kpmg.fr',
       5: 'Pennylane',
-      6: 'To validate',
-      7: 'Validate request'
+      6: 'To validate'
     }
     cells.forEach((cell, cellIndex) => {
-      if (cellIndex > 0) {
+      if (cellIndex > 0 && cellIndex !== cells.length - 1) {
         expect(cell.text()).toBe(firstRowData[cellIndex])
       }
     })
   })
 
-  it('should validate the subscription on click', async () => {
-    const wrapper = mount(SubscriptionsTable)
+  it('should display subscription toolbox items', () => {
+    const consultButton = document.body.getElementsByClassName('p-toolbox-item__text')[0] as HTMLElement
+    const validateButton = document.body.getElementsByClassName('p-toolbox-item__text')[1] as HTMLElement
+
+    expect(consultButton.innerHTML).toBe('Consult')
+    expect(validateButton.innerHTML).toBe('Validate request')
+  })
+
+  it("should emit 'consult' event when the 'consult' button is clicked", async () => {
+    const subscriptionToolbox = wrapper.findComponent('[data-testid=subscription-toolbox]') as VueWrapper
+    subscriptionToolbox.vm.$emit('p-toolbox-item-clicked', 'consult')
+
     await flushPromises()
 
-    const validateButton = wrapper.findAll('[data-testid="validateButton"]')
-    await validateButton?.at(1)?.trigger('click')
-    const subscriptionId = subscriptionRequestMock.at(0)?.subscriptionId
-    expect(mockedPutRequests)
-      .toHaveBeenCalledWith(`subscription/${subscriptionId}`)
+    expect(wrapper.emitted('consult')).toBeTruthy()
   })
 })

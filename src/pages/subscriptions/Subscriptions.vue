@@ -1,26 +1,25 @@
 <template>
-  <div>
-    <h1 class="margin-bottom--4">
-      {{ t('title') }}
-    </h1>
-
-    <SubscriptionsTable />
+  <div class="margin-top--4">
+    <SubscriptionsTable @consult="onClickConsult" />
+    <SubscriptionDetailsDrawer
+      v-if="displaySubscriptionDrawer && subscriptionAccount"
+      v-model="displaySubscriptionDrawer"
+      :account="subscriptionAccount"
+    />
   </div>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    title: 'Offer activation request to be validated'
-  fr-FR:
-    title: "Demande d'activation d'offre à valider"
-</i18n>
-
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
+import type { SubscriptionAccount } from './SubscriptionsTypes'
 import SubscriptionsTable from './components/subscriptionsTable'
+import SubscriptionDetailsDrawer from './components/SubscriptionDetailsDrawer'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local'
-})
+const displaySubscriptionDrawer = ref<boolean>(false)
+const subscriptionAccount = ref<SubscriptionAccount | undefined>(undefined)
+
+const onClickConsult = (account: SubscriptionAccount) => {
+  subscriptionAccount.value = account
+  displaySubscriptionDrawer.value = true
+}
 </script>
