@@ -158,7 +158,7 @@ const { t } = useI18n({
 
 const props = defineProps<SidebarEntityProps>()
 
-const { user, defaultEntity, isCollab } = storeToRefs(userStore)
+const { user, defaultEntity, favoriteEntities, isCollab } = storeToRefs(userStore)
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
 const selectedEntity = ref<Entity | undefined>(undefined)

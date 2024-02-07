@@ -50,26 +50,24 @@ router.beforeEach(async (to: any, _from) => {
     }
   }
 
-  if (to.name === 'entity-client') {
-    if (!isCollab.value) {
-      const entities = await getEntities()
+  if (to.name === 'entity-client' && !isCollab.value) {
+    const entities = await getEntities()
 
-      if (entities.totalItems === 1) {
-        const firstEntity = entities.items[0]
-        store.$patch({
-          user: {
-            entities: {
-              default: {
-                idAccount: firstEntity.id,
-                name: firstEntity.name,
-                color: 'persian'
-              }
+    if (entities.totalItems === 1) {
+      const firstEntity = entities.items[0]
+      store.$patch({
+        user: {
+          entities: {
+            default: {
+              idAccount: firstEntity.id,
+              name: firstEntity.name,
+              color: 'persian'
             }
           }
-        })
+        }
+      })
 
-        router.push({ name: 'folder', params: { id: firstEntity.id } })
-      }
+      router.push({ name: 'folder', params: { id: firstEntity.id } })
     }
   }
 })

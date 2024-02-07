@@ -11,9 +11,7 @@ vi.mock('@kpmg/common', () => {
     commonApi: () => ({
       wallet: {
         get: vi.fn((url, _) => {
-          if (url === 'favorites') {
-            return getFavoriteEntitiesImplementation(throwError)
-          } else if (url === 'display') {
+          if (['favorites', 'display'].includes(url)) {
             return getEntitiesImplementation(throwError)
           }
         })
@@ -24,15 +22,6 @@ vi.mock('@kpmg/common', () => {
     })
   }
 })
-
-const getFavoriteEntitiesImplementation = (throwError: boolean) => {
-  if (throwError) {
-    return Promise.reject(new Error('No data received from the API'))
-  }
-  return Promise.resolve({
-    data: testEntities
-  })
-}
 
 const getEntitiesImplementation = (throwError: boolean) => {
   if (throwError) {
