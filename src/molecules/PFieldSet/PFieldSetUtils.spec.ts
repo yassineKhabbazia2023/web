@@ -15,7 +15,7 @@ describe('pFieldSetUtils', () => {
     }]
     it.each(tests)('should return mapped fields', ({ pReadonly }) => {
       const fields = getMockedFields('companyIdentification', pReadonly)
-      const internalFields = getInternalFields(fields || [], model, pReadonly)
+      const internalFields = getInternalFields(fields, model, pReadonly)
 
       expect(internalFields).toMatchFileSnapshot(`__snapshots__/getInternalFields/readonly-${pReadonly}.snap`)
     })

@@ -1,6 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { ElStep } from 'element-plus'
 import PStep from '.'
 import { ref } from 'vue'
 import type { PStepProps } from './PStepTypes'
@@ -32,11 +31,15 @@ describe('pStep', () => {
   describe('props', () => {
     it('should render correctly', async () => {
       const wrapper: VueWrapper<any> = createWrapper()
-      const componentVM = wrapper.findComponent(ElStep).vm
-      expect(componentVM.title).toBe(propsValue.pTitle)
-      expect(componentVM.description).toBe(propsValue.pDescription)
-      expect(componentVM.icon).toBe(propsValue.pIcon)
-      expect(componentVM.status).toBe(propsValue.pStatus)
+      const component = wrapper.findComponent({ name: 'ElStep' })
+
+      const expectedProps = {
+        title: propsValue.pTitle,
+        description: propsValue.pDescription,
+        icon: propsValue.pIcon,
+        status: propsValue.pStatus
+      }
+      expect(component.props()).toMatchObject(expectedProps)
     })
   })
 })

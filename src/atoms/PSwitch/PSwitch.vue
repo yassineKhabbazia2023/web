@@ -13,23 +13,22 @@
     :inactiveText="pInactiveText"
     :activeValue="pActiveValue"
     :inactiveValue="pInactiveValue"
-    :activeColor="pActiveColor"
-    :inactiveColor="pInactiveColor"
-    :borderColor="pBorderColor"
     :name="pName"
     :validateEvent="pValidateEvent"
     :beforeChange="pBeforeChange"
     :id="pId"
     :tabIndex="pTabIndex"
     :label="pLabel"
+    :style="cssStyle"
   />
 </template>
 
 <script setup lang="ts">
 import { ElSwitch } from 'element-plus'
+import { computed } from 'vue'
 import type { PSwitchProps } from './PSwitchTypes'
 
-withDefaults(defineProps<PSwitchProps>(), {
+const props = withDefaults(defineProps<PSwitchProps>(), {
   pDisabled: false,
   pLoading: false,
   pSize: '',
@@ -52,5 +51,14 @@ withDefaults(defineProps<PSwitchProps>(), {
   pId: undefined,
   pTabIndex: undefined,
   pLabel: undefined
+})
+
+const cssStyle = computed(() => {
+  const styles = [
+    `--el-switch-border-color: ${props.pBorderColor}`,
+    `--el-switch-on-color: ${props.pActiveColor}`,
+    `--el-switch-off-color: ${props.pInactiveColor}`
+  ]
+  return styles.join('; ')
 })
 </script>

@@ -1,7 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import PCollapseItem from './'
+
+import PCollapse from '@/molecules/PCollapse'
 import { PIPulse } from '@/atoms/PIcon/components'
+import PCollapseItem from '.'
 import type { PCollapseItemTypes } from './PCollapseItemTypes'
 
 const title = 'Validated'
@@ -9,14 +11,42 @@ type PCollapseItemTypesTest = PCollapseItemTypes['pType']
 const componenRootCSSClass = 'p-collapse-item'
 
 const defaultProps = {
-  pType: 'default',
   pTitleCollapseItem: title
 }
 
-const createWrapper = (props: any = defaultProps) =>
-  mount(PCollapseItem, {
-    props
+function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
+  const { pType, pTitleCollapseItem, pIcon } = {
+    ...defaultProps,
+    ...overridenProps
+  }
+  const Component = {
+    template: `
+    <PCollapse>
+      <PCollapseItem
+        :pType="pType"
+        :pTitleCollapseItem="pTitleCollapseItem"
+        :pIcon="pIcon"
+      />
+    </PCollapse>
+    `,
+    data() {
+      return {
+        pType,
+        pTitleCollapseItem,
+        pIcon
+      }
+    }
+  }
+
+  return mount(Component, {
+    global: {
+      components: {
+        PCollapse,
+        PCollapseItem
+      }
+    }
   })
+}
 
 describe('pCollapseItem', () => {
   describe('props', () => {
@@ -32,13 +62,8 @@ describe('pCollapseItem', () => {
         text: 'hide'
       }
     ])('should $text icon zone when icon is $hasIcon',
-      async ({ pIcon, hasIcon, text }) => {
-        const wrapper = createWrapper({
-          ...defaultProps,
-          pIcon,
-          hasIcon,
-          text
-        })
+      async ({ pIcon, hasIcon }) => {
+        const wrapper = createWrapper({ pIcon })
         await flushPromises()
         const hasIconClass = wrapper.find('.p-collapse-item__icon').exists()
         const hasIconComponent = wrapper.findComponent({ name: 'PIPulse' }).exists()
@@ -49,7 +74,8 @@ describe('pCollapseItem', () => {
 
     it('should have the "default" type by default', () => {
       const wrapper = createWrapper()
-      expect(wrapper.classes()).toContain(`${componenRootCSSClass}--type-default`)
+      const pCollapseItem = wrapper.findComponent(PCollapseItem)
+      expect(pCollapseItem.classes()).toContain(`${componenRootCSSClass}--type-default`)
     })
 
     it.each([
@@ -68,11 +94,9 @@ describe('pCollapseItem', () => {
     ])(
       'should always bind class based on current type',
       ({ pType, expectedClassBinding }) => {
-        const wrapper = createWrapper({
-          ...defaultProps,
-          pType: pType as PCollapseItemTypesTest
-        })
-        expect(wrapper.classes()).toContain(expectedClassBinding)
+        const wrapper = createWrapper({ pType: pType as PCollapseItemTypesTest })
+        const pCollapseItem = wrapper.findComponent(PCollapseItem)
+        expect(pCollapseItem.classes()).toContain(expectedClassBinding)
       }
     )
 

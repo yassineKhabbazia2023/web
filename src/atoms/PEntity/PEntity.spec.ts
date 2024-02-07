@@ -2,17 +2,19 @@
 import { mount } from '@vue/test-utils'
 import PEntity from './'
 import { describe, it, expect } from 'vitest'
+import type { PEntityProps } from './PEntityTypes'
 
 const content = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
 describe('tests for p-entity', () => {
   it('renders with content', () => {
+    const props: PEntityProps = {
+      pContent: content,
+      pType: 'primary',
+      pSelected: false
+    }
     const wrapper = mount(PEntity, {
-      props: {
-        pContent: content,
-        pType: 'primary',
-        pSelected: false
-      }
+      props
     })
 
     // Check if the cell renders correctly
@@ -26,14 +28,15 @@ describe('tests for p-entity', () => {
   })
 
   it('renders with an avatar', () => {
+    const props: PEntityProps = {
+      pContent: content,
+      pType: 'primary',
+      pIconShape: 'circle',
+      pIconColor: 'persian-gradient',
+      pSelected: false
+    }
     const wrapper = mount(PEntity, {
-      props: {
-        pContent: content,
-        pType: 'primary',
-        pIconShape: 'circle',
-        pIconColor: 'persian-gradient',
-        pSelected: false
-      }
+      props
     })
 
     // Check if the table renders correctly

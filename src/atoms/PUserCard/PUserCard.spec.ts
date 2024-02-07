@@ -90,7 +90,7 @@ describe('pUserCard', () => {
           ...defaultProps
         },
         {
-          default: '<PButton>Call to action</PButton>'
+          default: '<div>Call to action</div>'
         }
       )
       const headerRight = wrapper.find('[data-ut=header-right]')

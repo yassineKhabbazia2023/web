@@ -25,7 +25,7 @@
       </div>
     </div>
     <div v-else-if="isLoadingDocument" class="preview-section__loader-container">
-      <PLoader pType="gradient" size="50" />
+      <PLoader pType="gradient" pSize="50" />
     </div>
     <iframe
       v-else-if="isPdf"

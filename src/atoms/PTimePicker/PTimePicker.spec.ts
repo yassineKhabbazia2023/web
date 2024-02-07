@@ -1,6 +1,5 @@
 import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { ElTimePicker } from 'element-plus'
 import PTimePicker from '.'
 import type { PTimePickerProps } from './PTimePickerTypes'
 
@@ -37,7 +36,37 @@ const createWrapper = () => mount(PTimePicker, {
 describe('pTimePicker', () => {
   it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    const componentVM = wrapper.findComponent(ElTimePicker).vm
+
+    const component = wrapper.findComponent({ name: 'ElTimePicker' })
+
+    const expectedProps = {
+      readonly: propsValue.pReadonly,
+      disabled: propsValue.pDisabled,
+      editable: propsValue.pEditable,
+      clearable: propsValue.pClearable,
+      size: propsValue.pSize,
+      placeholder: propsValue.pPlaceholder,
+      startPlaceholder: propsValue.pStartPlaceholder,
+      endPlaceholder: propsValue.pEndPlaceholder,
+      isRange: propsValue.pIsRange,
+      arrowControl: propsValue.pArrowControl,
+      popperClass: propsValue.pPopperClass,
+      rangeSeparator: propsValue.pRangeSeparator,
+      format: propsValue.pFormat,
+      defaultValue: propsValue.pDefaultValue,
+      id: propsValue.pId,
+      name: propsValue.pName,
+      label: propsValue.pLabel,
+      prefixIcon: propsValue.pPrefixIcon,
+      clearIcon: propsValue.pClearIcon,
+      disabledHours: propsValue.pDisabledHours,
+      disabledMinutes: propsValue.pDisabledMinutes,
+      disabledSeconds: propsValue.pDisabledSeconds,
+      tabindex: propsValue.pTabindex
+    }
+    expect(component.props()).toMatchObject(expectedProps)
+
+    const componentVM = component.vm
     expect(componentVM.readonly).toBe(propsValue.pReadonly)
     expect(componentVM.disabled).toBe(propsValue.pDisabled)
     expect(componentVM.editable).toBe(propsValue.pEditable)

@@ -9,7 +9,7 @@
         :pShape="pIconShape"
         :pType="pIconType"
         :pColor="pIconColor">
-        <PIcon>
+        <PIcon v-if="pIcon">
           <component :is="pIcon" />
         </PIcon>
       </PAvatar>
