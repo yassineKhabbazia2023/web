@@ -1,17 +1,25 @@
 <template>
+  <div
+    class="p-user-action flex-gap--3 padding-y--2 flex flex--align-items-center flex--justify-content-space-between"
+  >
     <div
-      class="p-user-action flex-gap--3 padding-y--2 flex flex--align-items-center flex--justify-content-space-between"
+      class="
+        p-user-action__left-side
+        flex-gap--3
+        flex
+        flex--align-items-center
+        flex--justify-content-flex-start
+      "
     >
-      <div v-if="pProfile">
-        <PAvatar
-          data-testid="profile"
-          pShape="circle"
-          pType="small"
-          pColor="persian-gradient"
-        >
-          {{ pProfile }}
-        </PAvatar>
-      </div>
+      <PAvatar
+        v-if="pProfile"
+        data-testid="profile"
+        pShape="circle"
+        pType="small"
+        pColor="persian-gradient"
+      >
+        {{ pProfile }}
+      </PAvatar>
       <div class="flex--grow-1 p-user-action__text">
         <p
           class="p-user-action__title"
@@ -26,6 +34,15 @@
           {{ pDescription }}
         </p>
       </div>
+    </div>
+    <div
+      class="
+        p-user-action__right-side
+        flex-gap--3
+        flex
+        flex--align-items-center
+        flex--justify-content-flex-end
+      ">
       <PTag
         v-if="pTagContent"
         pColor="gray-100"
@@ -46,8 +63,8 @@
         class="p-user-action__input flex--grow-1"
       />
       <PDropdown
-        class="flex--grow-1 p-user-action__dropdown"
         v-if="pShowOptions"
+        class="flex--grow-1 p-user-action__dropdown"
         v-model="internalDropdownValue"
         :pPlaceholder="pOptionsPlaceholder"
         :pOptions="pOptions"
@@ -65,18 +82,16 @@
           el-button--icon
         "
         pType="white"
-        :pCircle="false"
         pSize="default"
         @click="emit('click-delete')"
         data-testid="delete-icon"
       >
-        <PIcon
-          color="#5546FF"
-        >
+        <PIcon>
           <PITrash />
         </PIcon>
       </PButton>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -128,8 +143,18 @@ const internalDropdownValue = computed({
 
 <style lang="scss" scoped>
 .p-user-action {
-  &__text {
+  &__left-side {
+    width: 100%;
     max-width: 40%;
+  }
+  &__right-side {
+    width: 100%;
+    max-width: 60%;
+  }
+
+  &__text {
+    line-height: 1.2;
+    overflow: hidden;
   }
 
   &__title {
