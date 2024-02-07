@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 
-import { ElCollapse } from 'element-plus'
+import PCollapse from '@/molecules/PCollapse'
 import { PIPulse } from '@/atoms/PIcon/components'
 import PCollapseItem from '.'
 import type { PCollapseItemTypes } from './PCollapseItemTypes'
@@ -21,13 +21,13 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
   }
   const Component = {
     template: `
-    <el-collapse>
+    <PCollapse>
       <PCollapseItem
         :pType="pType"
         :pTitleCollapseItem="pTitleCollapseItem"
         :pIcon="pIcon"
       />
-    </el-collapse>
+    </PCollapse>
     `,
     data() {
       return {
@@ -41,7 +41,7 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
   return mount(Component, {
     global: {
       components: {
-        ElCollapse,
+        PCollapse,
         PCollapseItem
       }
     }
