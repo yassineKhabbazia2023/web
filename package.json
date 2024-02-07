@@ -65,7 +65,7 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@histoire/plugin-vue": "^0.17.1",
-    "@kpmg/eslint-config-pulse": "^1.66.5",
+    "@kpmg/eslint-config-pulse": "^1.70.3",
     "@rollup/plugin-typescript": "^11.1.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
