@@ -3,7 +3,7 @@
 .el-tabs {
   $self: &;
 
-  &:not(#{$self}--card) {
+  &:not(.p-tabs--type-card, .p-tabs--type-icon) {
     > #{$self}__header {
       --el-tabs-header-height: 45px;
       
@@ -34,7 +34,7 @@
     }
   }
 
-  &#{$self}--card {
+  &.p-tabs--type-card {
     > #{$self}__header {
       border-color: getCssVar('color', 'neutral-gray-100');
 
@@ -52,6 +52,64 @@
         &.is-active {
           font-weight: 600;
         }
+      }
+    }
+  }
+
+  &.p-tabs--type-icon {
+    --el-tabs-header-height: 32px;
+
+    > #{$self}__header {
+      #{$self}__nav-wrap:after {
+        display: none;
+      }
+
+      #{$self}__nav {
+        border-radius: 8px;
+        border: 1px solid getCssVar('color', 'neutral-gray-100');
+        overflow: hidden;
+
+        #{$self}__active-bar {
+          display: none;
+        }
+      }
+
+      #{$self}__item {
+        padding: 0.8rem;
+        border-right: 1px solid getCssVar('color', 'neutral-gray-100');
+        background: getCssVar('color', 'neutral-gray-50');
+        transition: all getCssVar('transition-duration')
+        getCssVar('transition-function-ease-in-out-bezier');
+
+        &:hover {
+          .p-tab-pane__icon {
+            color: getCssVar('color', 'persian-500');
+          }
+        }
+
+        &:last-child,
+        &:nth-child(2) {
+          padding: 0.8rem;
+        }
+
+        &:last-child {
+          border: none;
+        }
+
+        &.is-active {
+          background: getCssVar('color', 'white');
+
+          .p-tab-pane__icon {
+            color: getCssVar('color', 'neutral-gray-900');
+          }
+        }
+      }
+
+      .p-tab-pane__icon {
+        font-size: 1.6rem;
+        color: getCssVar('color', 'neutral-gray-500');
+        pointer-events: none;
+        transition: color 0.3s ease;
       }
     }
   }

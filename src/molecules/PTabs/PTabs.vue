@@ -1,7 +1,11 @@
 <template>
   <ElTabs
     v-model="selectedTabName"
-    :type="pType"
+    :type="tab.type"
+    :class="[
+      'p-tabs',
+      pClassMapper
+    ]"
     :closable="pClosable"
     :addable="pAddable"
     :editable="pEditable"
@@ -18,6 +22,8 @@ import { computed } from 'vue'
 import { ElTabs } from 'element-plus'
 import type { PTabsProps } from './PTabsTypes'
 
+const nativeTypes = ['card', 'border-card']
+
 const props = withDefaults(defineProps<PTabsProps>(), {
   pType: '',
   pClosable: false,
@@ -31,8 +37,21 @@ const emit = defineEmits<{
   'update:modelValue': [string | number]
 }>()
 
+const tab = computed(() => getTabType(props.pType))
+
+const getTabType = (tabType: any) => (
+  {
+    tabType,
+    type: nativeTypes.includes(tabType) ? tabType : ''
+  })
+
 const selectedTabName = computed({
   get: () => props.modelValue,
   set: newValue => emit('update:modelValue', newValue)
 })
+
+const pClassMapper = computed(() => ({
+  [`p-tabs--type-${props.pType}`]: true
+}))
+
 </script>

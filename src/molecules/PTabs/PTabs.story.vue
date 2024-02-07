@@ -78,6 +78,22 @@
         </PTabPane>
       </PTabs>
     </Variant>
+    <Variant title="Icon Usage">
+      <PTabs
+        v-model="basicData.activeName"
+        pType="icon"
+        :pStretch="basicData.stretch"
+      >
+        <PTabPane
+          v-for="tab in tabs"
+          :key="tab.name"
+          :pName="tab.name"
+          pTabIcon="PICalendarEvent"
+        >
+          {{ tab.content }}
+        </PTabPane>
+      </PTabs>
+    </Variant>
   </Story>
 </template>
 
@@ -114,7 +130,7 @@ const tabs = ref([
 
 <docs lang="md">
   ## Tabs
-  Variant with pastille, card or simple
+  Variant with pastille, card, simple or with icon
 
   <div class="responsive-iframe-container">
     <iframe class="responsive-iframe" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D749%253A5606%26mode%3Ddev" allowfullscreen></iframe>

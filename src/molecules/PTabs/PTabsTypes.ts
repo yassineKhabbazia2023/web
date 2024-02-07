@@ -1,6 +1,6 @@
 export interface PTabsProps {
   modelValue: string | number,
-  pType?: 'card' | 'border-card' | '',
+  pType?: 'card' | 'border-card' | 'icon' | '',
   pClosable?: boolean,
   pAddable?: boolean,
   pEditable?: boolean,
