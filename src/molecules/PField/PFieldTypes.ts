@@ -2,8 +2,8 @@ import type { FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
 export interface PFieldPropsBase<T> {
-  modelValue: T,
-  pFieldType: 'input' | 'dropdown',
+  modelValue?: T | undefined,
+  pFieldType: 'input' | 'dropdown' | 'date',
   pFieldKey: string,
   pLabel: string,
   pPlaceholder?: string
@@ -17,8 +17,12 @@ export interface PFieldPropsInput<T> extends PFieldPropsBase<T> {
   pType?: string,
 }
 
-export interface PFieldPropsSelect<T> extends PFieldPropsBase<T> {
+export interface PFieldPropsDropdown<T> extends PFieldPropsBase<T> {
   pDropdownOptions?: PDropdownOption[]
 }
 
-export type PFieldProps<T> = PFieldPropsInput<T> & PFieldPropsSelect<T>
+export interface PFieldPropsDate<T> extends PFieldPropsBase<T> {
+  pType?: string,
+}
+
+export type PFieldProps<T> = PFieldPropsInput<T> & PFieldPropsDropdown<T> & PFieldPropsDate<T>

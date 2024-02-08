@@ -1,5 +1,5 @@
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
-import { getMockedInputField, getDropdownField } from '../PField/PFieldMock'
+import { getMockedInputField, getDropdownField, getDateField } from '../PField/PFieldMock'
 import type { PFieldProps } from '../PField/PFieldTypes'
 
 export function getMockedFields(
@@ -73,7 +73,7 @@ export function getMockedFields(
     }]
 
     return [
-      getMockedInputField('accountingYearStart', "Début de l'exercice", '01/01/2023', 30),
+      getDateField('accountingYearStart', "Début de l'exercice", '01/01/2023', 30),
       getDropdownField('accountingYearDuration', "Durée de l'exercice", 30, yearDurationOptions),
       getDropdownField('accountingType', 'Type de comptabilité', 30, accountingTypeOptions),
       getDropdownField('country', 'Pays', 30, countryOptions),

@@ -2,7 +2,7 @@ import { VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import PBankCard from '.'
 import type { PFieldProps } from './PFieldTypes'
-import { getMockedInputField, getDropdownField } from './PFieldMock'
+import { getMockedInputField, getDropdownField, getDateField } from './PFieldMock'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
 function createWrapper<T>(props: PFieldProps<T>) {
@@ -66,6 +66,30 @@ describe('test PField', () => {
       pDropDown.vm.$emit('update:modelValue', otherValue)
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
+    })
+  })
+  describe('with date field', () => {
+    const props = getDateField(
+      pFieldKey,
+      pLabel,
+      pPlaceholder,
+      50
+    )
+    let pDatePicker: VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper<string>(props)
+      pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
+    })
+    it('should render PDatePicker', () => {
+      expect(pDatePicker.exists()).toBeTruthy()
+    })
+    it('should emit update:modelValue when enter value', () => {
+      const otherDateIso = '2024-01-30'
+      const otherDate = new Date(otherDateIso)
+
+      pDatePicker.vm.$emit('update:modelValue', otherDate)
+
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherDateIso]])
     })
   })
 })

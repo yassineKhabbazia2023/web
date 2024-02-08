@@ -4,6 +4,7 @@ import PInput from '.'
 import type { PInputProps } from './PInputTypes'
 import { PIPulse } from '@/atoms/PIcon/components'
 
+const mockedCb = vi.fn()
 const propsValue: PInputProps = {
   pType: 'textarea',
   pMaxlength: 23,
@@ -11,8 +12,8 @@ const propsValue: PInputProps = {
   pShowWordLimit: false,
   pPlaceholder: 'placeholder',
   pClearable: false,
-  pFormatter: vi.fn(),
-  pParser: vi.fn(),
+  pFormatter: mockedCb,
+  pParser: mockedCb,
   pShowPassword: false,
   pDisabled: false,
   pSize: 'small',
@@ -61,6 +62,8 @@ describe('pInput', () => {
         containerRole: undefined,
         id: undefined,
         modelValue: '',
+        formatter: mockedCb,
+        parser: mockedCb,
         prefixIcon: null,
         suffixIcon: null,
         type: propsValue.pType,
@@ -83,8 +86,6 @@ describe('pInput', () => {
       }
 
       const props = component.props()
-      delete props.formatter
-      delete props.parser
       expect(props).toMatchObject(expectedProps)
     })
 

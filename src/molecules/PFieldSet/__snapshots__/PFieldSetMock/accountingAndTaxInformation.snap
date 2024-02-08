@@ -4,10 +4,9 @@
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pFieldKey": "accountingYearStart",
-    "pFieldType": "input",
+    "pFieldType": "date",
     "pLabel": "Début de l'exercice",
     "pPlaceholder": "01/01/2023",
-    "pRules": [],
   },
   {
     "modelValue": undefined,

@@ -1,6 +1,6 @@
 import { type FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
-import type { PFieldPropsInput, PFieldPropsSelect } from './PFieldTypes'
+import type { PFieldPropsInput, PFieldPropsDropdown, PFieldPropsDate } from './PFieldTypes'
 
 export function getMockedRule(ruleType: string): FormItemRule | undefined {
   if (ruleType === 'email') {
@@ -53,7 +53,7 @@ export function getDropdownField(
   flexBasis: number,
   pDropdownOptions?: PDropdownOption[],
   pDisabled: boolean = false
-): PFieldPropsSelect<number | undefined> {
+): PFieldPropsDropdown<number | undefined> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
 
   return {
@@ -64,5 +64,25 @@ export function getDropdownField(
     pCssClass,
     pDisabled,
     pDropdownOptions
+  }
+}
+
+export function getDateField(
+  pFieldKey: string,
+  pLabel: string,
+  pPlaceholder: string,
+  flexBasis: number,
+  pDisabled: boolean = false
+): PFieldPropsDate<string> {
+  const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
+
+  return {
+    modelValue: '',
+    pFieldKey,
+    pLabel,
+    pPlaceholder,
+    pFieldType: 'date',
+    pCssClass,
+    pDisabled
   }
 }
