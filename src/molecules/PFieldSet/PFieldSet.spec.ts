@@ -27,13 +27,10 @@ describe('test PFieldSet', () => {
   })
 
   it('should render PInput', () => {
-    expect.hasAssertions()
-
     expect(pFieldComponents).toHaveLength(pFields.length)
   })
 
   it('should emit update:pModel when enter date', () => {
-    expect.hasAssertions()
     const fieldKey = pFields.at(0)?.pFieldKey
     const newValue = 'Henry'
 

@@ -81,12 +81,9 @@ describe('test PField', () => {
       pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
     })
     it('should render PDatePicker', () => {
-      expect.hasAssertions()
-
       expect(pDatePicker.exists()).toBeTruthy()
     })
     it('should emit update:modelValue when enter value', () => {
-      expect.hasAssertions()
       const otherDateIso = '2024-01-30'
       const otherDate = new Date(otherDateIso)
 
