@@ -1,6 +1,6 @@
 export interface PDrawerProps {
   modelValue: boolean
-  pTitle: string
+  pTitle?: string
   pShowPreviousStep?: boolean
   pDirection?: 'rtl' | 'ltr' | 'ttb' | 'btt' | 'rtl'
   pSize?: number | string

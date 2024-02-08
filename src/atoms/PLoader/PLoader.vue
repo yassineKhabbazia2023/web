@@ -1,12 +1,12 @@
 <template>
   <PIcon
     class="p-loader"
+    :size="pSize"
   >
     <component
       :is="iconToLoad"
       class="p-loader__icon"
       :class="iconClassNameModifier"
-      :size="pSize"
     />
   </PIcon>
 </template>

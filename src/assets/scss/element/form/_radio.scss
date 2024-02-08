@@ -1,7 +1,7 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $radio: (
-  'font-size': getCssVar('font-size-small'),
+  'font-size': 1.4rem,
   'font-weight': 400,
   'input-height': 14px,
   'input-width': 14px,

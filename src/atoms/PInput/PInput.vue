@@ -28,15 +28,30 @@
     :tabindex="pTabindex"
     :validateEvent="pValidateEvent"
     :inputStyle="pInputStyle"
-  />
+  >
+    <template v-if="!!slots['suffix']" #suffix>
+      <slot name="suffix" />
+    </template>
+    <template v-if="!!slots['prefix']" #prefix>
+      <slot name="prefix" />
+    </template>
+    <template v-if="!!slots['prepend']" #prepend>
+      <slot name="prepend" />
+    </template>
+    <template v-if="!!slots['append']" #append>
+      <slot name="append" />
+    </template>
+  </ElInput>
 </template>
 
 <script setup lang="ts">
-import { ElInput } from 'element-plus'
-import type { PInputProps } from './PInputTypes'
+import { computed, useSlots } from 'vue'
 import { mutable } from 'element-plus/es/utils/typescript'
 import { iconResolver } from '@/utils/iconResolver'
-import { computed } from 'vue'
+import { ElInput } from 'element-plus'
+import type { PInputProps } from './PInputTypes'
+
+const slots = useSlots()
 
 const prefixIcon = computed(() => {
   return props.pPrefixIcon ? iconResolver(props.pPrefixIcon) : null

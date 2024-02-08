@@ -32,13 +32,23 @@ const propsValue: PInputProps = {
   pValidateEvent: true,
   pInputStyle: 'inputStyle'
 }
-const createWrapper = (defaultProps = propsValue) =>
-  mount(PInput, {
+const createWrapper = (defaultProps = propsValue, hasSlots = false) => {
+  const testSlots = {
+    prefix: 'Prefix Content',
+    suffix: 'Suffix Content',
+    append: 'Append Content',
+    prepend: 'Prepend Content'
+  }
+  const slots = hasSlots ? testSlots : undefined
+
+  return mount(PInput, {
     props: defaultProps,
+    slots,
     stubs: {
       ElInput: '<div>toto</div>'
     }
   })
+}
 
 describe('pInput', () => {
   describe('props', () => {
@@ -96,6 +106,27 @@ describe('pInput', () => {
       })
       const suffixIcon = wrapper.find('.el-input__icon')
       expect(suffixIcon.exists()).toBeTruthy()
+    })
+    it('should display slots if exist', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pType: 'input'
+      }, true)
+      expect(wrapper.find('.el-input__prefix').text()).toContain('Prefix Content')
+      expect(wrapper.find('.el-input__suffix').text()).toContain('Suffix Content')
+      expect(wrapper.find('.el-input-group__append').text()).toContain('Append Content')
+      expect(wrapper.find('.el-input-group__prepend').text()).toContain('Prepend Content')
+    })
+    it('should not display slots if not exist', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pType: 'input'
+      })
+
+      expect(wrapper.find('.el-input__prefix').exists()).toBeFalsy()
+      expect(wrapper.find('.el-input__suffix').exists()).toBeFalsy()
+      expect(wrapper.find('.el-input-group__append').exists()).toBeFalsy()
+      expect(wrapper.find('.el-input-group__prepend').exists()).toBeFalsy()
     })
   })
 })

@@ -70,6 +70,48 @@
         <HstText v-model="searchInputData.placeholder" title="Placeholder" />
       </template>
     </Variant>
+    <Variant title="Input with slots Usage">
+      <PInput
+        v-model="basicInputData.inputValue"
+        :pType="basicInputData.type"
+        :pDisabled="basicInputData.disabled"
+        :pPlaceholder="basicInputData.placeholder"
+      >
+        <template #suffix>
+          <PIcon
+            color="#5546FF"
+          >
+            <PICheck />
+          </PIcon>
+        </template>
+        <template #prefix>
+          <PIcon
+            color="#5546FF"
+          >
+            <PICheck />
+          </PIcon>
+        </template>
+        <template #append>
+          <PIcon
+            color="#5546FF"
+          >
+            <PICheck />
+          </PIcon>
+        </template>
+        <template #prepend>
+          <PIcon
+            color="#5546FF"
+          >
+            <PICheck />
+          </PIcon>
+        </template>
+      </PInput>
+      <template #controls>
+        <HstCheckbox v-model="basicInputData.disabled" title="Disabled" />
+        <HstText v-model="basicInputData.placeholder" title="Placeholder" />
+        <HstText v-model="basicInputData.inputValue" title="Input Value" />
+      </template>
+    </Variant>
   </Story>
 </template>
 

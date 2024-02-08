@@ -52,7 +52,7 @@ const typeIcon = computed(() => {
   color: var(--el-color-gray-900);
   background-color: var(--el-color-persian-50);
 
-  &--main {
+  &--type-main {
     #{$self}__icon {
       color: var(--el-color-persian-500)
     }
