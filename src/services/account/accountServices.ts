@@ -11,3 +11,14 @@ export async function fetchAccount(accountId: string): Promise<Account|undefined
     handleRequestError('Error while fetchAccount', error)
   }
 }
+
+export async function patchAccount(account: Account): Promise<Account|undefined> {
+  try {
+    const { accountId } = account
+    const response = await commonApi().account.patch(`accounts/${accountId}`, account)
+
+    return response.data
+  } catch (error) {
+    handleRequestError('Error while patchAccount', error)
+  }
+}

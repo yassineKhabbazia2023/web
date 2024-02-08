@@ -140,7 +140,7 @@ import NextPreviousButtons from '../NextPreviousButtons'
 import ConfirmationModal from '../ConfirmationModal'
 import { getAllOffers, getOffer, getOffersBookLink, getPrincipalContact } from '@/services/offer'
 import { offerStepperStep, type OffersDrawerProps, type SelectedProduct } from './OffersDrawerTypes'
-import { fetchAccount, type Account } from '@/services/account'
+import { fetchAccount, patchAccount, type Account } from '@/services/account'
 import {
   addSelectedProduct, removeSelectedProduct, getInitialSelectedProducts, getPostSubscriptionRequest
 } from './OffersDrawerUtils'
@@ -252,7 +252,7 @@ function onDeselectProduct(offerId: number, productId: string) {
   removeSelectedProduct(selectedProducts.value, offerId, productId)
 }
 
-async function validateOffer() {
+async function saveOffer() {
   const postSubscriptionRequest = getPostSubscriptionRequest(
     props.accountNumber,
     props.accountId,
@@ -264,6 +264,13 @@ async function validateOffer() {
   if (postSubscriptionRequest) {
     await createSubscriptionRequestNew(postSubscriptionRequest)
   }
+}
+
+async function validateOffer() {
+  if (account.value !== undefined) {
+    await patchAccount(account.value)
+  }
+  await saveOffer()
 }
 
 const handleConfirm = async () => {
