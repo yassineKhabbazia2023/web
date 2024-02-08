@@ -31,6 +31,10 @@ vi.mock('@/services/offer', () => ({
   getPrincipalContact: vi.fn(() => Promise.resolve(principalContact))
 }))
 
+vi.mock('@/services/account', () => ({
+  fetchAccount: vi.fn()
+}))
+
 vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
   createSubscriptionRequestNew: vi.fn()
 }))
