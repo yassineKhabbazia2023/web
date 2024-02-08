@@ -38,16 +38,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PAvatar, PIPulse, PIcon } from '@kpmg/styleguide'
-import type { Entity, EntityAvatarProps } from './EntityAvatarTypes'
+import type { EntityAvatarProps } from './EntityAvatarTypes'
+import type { Entity } from '@kpmg/common'
 import SidebarEntityItem from '../SidebarEntityItem'
 
-const { entity, hideTooltip, selected } = defineProps<EntityAvatarProps>()
+const props = defineProps<EntityAvatarProps>()
 defineEmits<{
   'entity-selected': [Entity]
 }>()
 
 const entityTooltipContent = computed(() => {
-  return `${entity.name} \n ${entity.ibs}`
+  return `${props.entity.name} \n ${props.entity.ibs}`
 })
 </script>
 

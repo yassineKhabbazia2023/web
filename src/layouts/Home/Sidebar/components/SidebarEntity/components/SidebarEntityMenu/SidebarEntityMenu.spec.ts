@@ -17,7 +17,7 @@ const createWrapper = (props = defaultProps) => {
   return wrapper
 }
 
-describe('sidebarEntityMenu.spec', () => {
+describe('sidebarEntityMenu', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
     wrapper = createWrapper()
@@ -32,7 +32,7 @@ describe('sidebarEntityMenu.spec', () => {
     })
   })
   describe('events', () => {
-    it("should expand the sidebar entity menu on 'mouseenter' and collapse it on 'mouseleave'", async () => {
+    it("should expand the sidebar entity menu on 'mouseover' and collapse it on 'mouseleave'", async () => {
       expect(wrapper.classes()).toContain('sidenav-entity-menu--collapsed')
 
       await wrapper.trigger('mouseover')

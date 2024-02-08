@@ -2,9 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonPinia as pinia } from '@kpmg/common'
+import { commonPinia as pinia, type Entity } from '@kpmg/common'
 import { getMockedFavoriteEntities } from './MockedFavoriteEntities'
-import type { Entity } from './components/EntityAvatar/EntityAvatarTypes'
 import SidebarEntity from '.'
 
 vi.mock('vue-router', () => ({
@@ -16,22 +15,25 @@ vi.mock('vue-router', () => ({
   })
 }))
 
+const entities: Entity[] = getMockedFavoriteEntities()
+
 vi.mock('@kpmg/common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
     getters: {
       isAuthenticated: () => true,
-      isCollab: () => true
+      isCollab: () => true,
+      favoriteEntities: () => entities,
+      defaultEntity: () => entities[0]
     }
   })
 }))
 
-const entities: Entity[] = getMockedFavoriteEntities()
-
 const createWrapper = () => {
   const wrapper = mount(SidebarEntity, {
     props: {
-      favoriteEntities: entities
+      favoriteEntities: entities,
+      totalEntities: entities.length
     },
     plugins: [createTestingPinia()]
   })
@@ -51,7 +53,7 @@ describe('sidebarEntity', () => {
     wrapper = createWrapper()
   })
   describe('display', () => {
-    it('should display navbar with actions and entities', () => {
+    it('should display the sidebar correctly with actions and entities', () => {
       const sidebarToggle = findSidebarToggle(wrapper)
       const walletItem = wrapper.find('[data-testid=wallet-item]')
       const selectedEntity = findSelectedEntity(wrapper)
@@ -73,7 +75,7 @@ describe('sidebarEntity', () => {
 
       expect(favoriteEntities).toHaveLength(entities.length)
     })
-    it('should display selected entity correctly after click on a random entity avatar', async () => {
+    it('should display the selected entity correctly after clicking on a random entity avatar', async () => {
       const firstFavoriteEntity = wrapper.find(
         '[data-testid=favorite-entity] button'
       )
@@ -93,7 +95,7 @@ describe('sidebarEntity', () => {
     })
   })
   describe('events', () => {
-    it('should open sidebase when click on toggle button', async () => {
+    it('should open the sidebar when clicking on the toggle button', async () => {
       const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
       const sidebarToggle = findSidebarToggle(wrapper)
       const arrowBarRightIcon = wrapper.findComponent({

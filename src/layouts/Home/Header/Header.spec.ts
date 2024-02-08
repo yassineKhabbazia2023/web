@@ -2,16 +2,19 @@ import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { commonStore as store } from '@kpmg/common'
+import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import helpers from '@/tests/utils/helpers'
 import { PToolbox } from '@kpmg/styleguide'
 import Header from './'
 
-const { router, pinia, mockUser, fetchUserData } = helpers()
+const { router, pinia, fetchUserData, fakeUser } = helpers()
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
-    state: () => mockUser,
+    state: () => ({
+      user: null
+    }),
     getters: {
       isAuthenticated: () => true
     },
@@ -29,7 +32,7 @@ const createWrapper = (): VueWrapper<any> =>
   mount(Header, {
     attachTo: document.body,
     global: {
-      plugins: [router]
+      plugins: [router, createTestingPinia()]
     }
   })
 
@@ -63,8 +66,15 @@ describe('header', () => {
 
   it('should display initial user even the data in store is empty and token on sessionStorage is valid', () => {
     const myStore = store()
-    myStore.$patch({
-      user: null
+
+    expect(myStore.$patch).toHaveBeenCalledWith({
+      user: {
+        email: fakeUser?.email,
+        firstName: fakeUser?.firstName,
+        lastName: fakeUser?.lastName,
+        isCollab: fakeUser?.isCollab,
+        id: fakeUser?.id
+      }
     })
 
     const initialContainer = wrapper.findComponent('[data-ut="user-initials"]')

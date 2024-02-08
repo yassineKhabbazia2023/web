@@ -78,10 +78,10 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const { selectedEntityId } = defineProps<SidebarEntityMenuProps>()
+const props = defineProps<SidebarEntityMenuProps>()
 
 const isMenuCollapsed = ref<boolean>(true)
-const activeMenuItem = ref<string>(`/dossier/${selectedEntityId}/utilisateurs`)
+const activeMenuItem = ref<string>(`/dossier/${props.selectedEntityId}/utilisateurs`)
 
 const folderSubmenu = {
   index: 'folder',
