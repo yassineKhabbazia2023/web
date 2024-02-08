@@ -12,7 +12,10 @@ dayjs.Ls.en.weekStart = 1
 export const fr = frLocale
 export const en = enLocale
 
-export { ElNotification as PNotification } from 'element-plus'
+export {
+  ElNotification as PNotification,
+  ElRadioGroup as PRadioGroup
+} from 'element-plus'
 
 export { default as PAside } from './atoms/PAside'
 export { default as PAutocomplete } from './molecules/PAutocomplete'
@@ -34,6 +37,7 @@ export { default as PPopper } from './atoms/PPopper'
 export { default as PPopperArrow } from './atoms/PPopperArrow'
 export { default as PPopperContent } from './atoms/PPopperContent'
 export { default as PRadio } from './atoms/PRadio'
+export { default as PRadioCard } from './atoms/PRadioCard'
 export { default as PRow } from './atoms/PRow'
 export { default as PScrollbar } from './atoms/PScrollbar'
 export { default as PSelect } from './molecules/PSelect'
@@ -129,6 +133,7 @@ export * from './atoms/PPopper/PPopperTypes'
 export * from './atoms/PPopperArrow/PPopperArrowTypes'
 export * from './atoms/PPopperContent/PPopperContentTypes'
 export * from './atoms/PRadio/PRadioTypes'
+export * from './atoms/PRadioCard/PRadioCardTypes'
 export * from './atoms/PRow/PRowTypes'
 export * from './atoms/PScrollbar/PScrollbarTypes'
 export * from './atoms/PStep/PStepTypes'
