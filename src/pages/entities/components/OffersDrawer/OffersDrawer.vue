@@ -65,7 +65,9 @@
             v-if="activeStep === offerStepperStep.COLLABORATORS"
             data-testid="collaborators-step"
           />
-          <p v-if="activeStep === offerStepperStep.INFORMATION" data-testid="information-step" />
+          <pre v-if="activeStep === offerStepperStep.INFORMATION" data-testid="information-step">
+            {{ account }}
+          </pre>
         </div>
         <SubscriptionOffers
           v-else
@@ -123,8 +125,8 @@ import OfferSubscription from '../OfferSubscription'
 import PrincipalContact from '../PrincipalContact'
 import NextPreviousButtons from '../NextPreviousButtons'
 import { getAllOffers, getOffer, getOffersBookLink, getPrincipalContact } from '@/services/offer'
-import { offerStepperStep } from './OffersDrawerTypes'
-import type { OffersDrawerProps, SelectedProduct } from './OffersDrawerTypes'
+import { offerStepperStep, type OffersDrawerProps, type SelectedProduct } from './OffersDrawerTypes'
+import { fetchAccount, type Account } from '@/services/account'
 import {
   addSelectedProduct, removeSelectedProduct, getInitialSelectedProducts, getPostSubscriptionRequest
 } from './OffersDrawerUtils'
@@ -172,6 +174,7 @@ const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const principalContact = ref<User | undefined>()
+const account = ref<Account | undefined>()
 
 const internalIsOpened = computed({
   get() {
@@ -267,6 +270,7 @@ const onCloseOffersDrawer = () => {
 onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
   principalContact.value = await getPrincipalContact()
+  account.value = await fetchAccount(props.accountId)
 })
 </script>
 <style lang="scss" scoped>

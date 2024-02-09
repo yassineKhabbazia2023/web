@@ -50,7 +50,7 @@
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
-        @selectedFolder="onSelectedFolder"
+        @selected-folder="onSelectedFolder"
       />
 
       <PPagination
