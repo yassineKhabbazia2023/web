@@ -17,12 +17,16 @@
         "
       >
         <div>
-          <p class="h4 margin-bottom--1">
+          <p class="h4">
             {{ pTitle }}
           </p>
           <p
             v-if="pDescription"
-            class="font-normal p-radio-card__description"
+            class="
+              p-radio-card__description
+              font-normal
+              margin-top--1
+            "
           >
             {{ pDescription }}
           </p>
