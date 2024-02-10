@@ -1,5 +1,12 @@
 <template>
   <div>
+    <ModalConfirmation
+      v-model="modalConfirmationVisible"
+      :title="t('confirmationTitle')"
+      :content="t('confirmationContent')"
+      @confirm="handleConfirm"
+      data-testid="modal-confirmation"
+    />
     <PDrawer
       v-model="internalIsOpened"
       :pTitle="offersDrawerTitle"
@@ -91,6 +98,7 @@
   </div>
 </template>
 
+<!-- eslint-disable max-len -->
 <i18n lang="yaml">
 en-US:
   drawerTitle: 'Offers available on this folder'
@@ -103,6 +111,8 @@ en-US:
   information: 'Information'
   offerIntranet: 'Offer Intranet'
   offersBook: 'Offers Book'
+  confirmationTitle: 'Attention'
+  confirmationContent: 'After confirmation, the offer activation request will be submitted, and there will be no option to revert. Please review your information carefully before proceeding.'
 fr-FR:
   drawerTitle: 'Offres activables sur ce dossier'
   previousLabel: 'Précédent'
@@ -114,6 +124,8 @@ fr-FR:
   information: 'Informations'
   offerIntranet: "Intranet de l'offre"
   offersBook: 'Book des offres'
+  confirmationTitle: 'Attention'
+  confirmationContent: "Une fois confirmée, la demande d'activation d'offre sera créée et vous ne pourrez plus revenir en arrière. Veuillez donc vérifier vos informations avant de valider."
 </i18n>
 
 <script setup lang="ts">
@@ -124,6 +136,7 @@ import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import PrincipalContact from '../PrincipalContact'
 import NextPreviousButtons from '../NextPreviousButtons'
+import ModalConfirmation from '../ModalConfirmation'
 import { getAllOffers, getOffer, getOffersBookLink, getPrincipalContact } from '@/services/offer'
 import { offerStepperStep, type OffersDrawerProps, type SelectedProduct } from './OffersDrawerTypes'
 import { fetchAccount, type Account } from '@/services/account'
@@ -175,6 +188,7 @@ const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const principalContact = ref<User | undefined>()
 const account = ref<Account | undefined>()
+const modalConfirmationVisible = ref<boolean>(false)
 
 const internalIsOpened = computed({
   get() {
@@ -251,9 +265,19 @@ async function validateOffer() {
   }
 }
 
-async function onClickNext() {
-  if (activeStep.value === offerStepperStep.INFORMATION) {
-    await validateOffer()
+const handleConfirm = async () => {
+  await validateOffer()
+  modalConfirmationVisible.value = false
+
+  // To ensure a good user experience, as closing two things simultaneously is not ideal
+  setTimeout(() => {
+    onCloseOffersDrawer()
+  }, 600)
+}
+
+function onClickNext() {
+  if (isSubmitButton.value) {
+    modalConfirmationVisible.value = true
     return
   }
   ++activeStep.value
