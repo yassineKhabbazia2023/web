@@ -17,6 +17,21 @@ vi.mock('@kpmg/common', () => ({
   })
 }))
 
+const requestMenu = [
+  {
+    pIconName: 'PIEye',
+    pValue: 'Consult',
+    pActionName: 'consult',
+    pState: 'default'
+  },
+  {
+    pIconName: 'PICheck',
+    pValue: 'Validate request',
+    pActionName: 'validate',
+    pState: 'default'
+  }
+]
+
 const pTableColumnsLabel: { [key: number]: string } = {
   0: 'Request date',
   1: 'Folder ID',
@@ -30,7 +45,7 @@ const pTableColumnsLabel: { [key: number]: string } = {
 describe('table-validations', () => {
   let wrapper: VueWrapper
   beforeEach(async () => {
-    wrapper = mount(SubscriptionsTable, { attachTo: document.body })
+    wrapper = mount(SubscriptionsTable)
     await flushPromises()
   })
   it('should render the subscription table correctly', () => {
@@ -63,11 +78,9 @@ describe('table-validations', () => {
   })
 
   it('should display subscription toolbox items', () => {
-    const consultButton = document.body.getElementsByClassName('p-toolbox-item__text')[0] as HTMLElement
-    const validateButton = document.body.getElementsByClassName('p-toolbox-item__text')[1] as HTMLElement
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
-    expect(consultButton.innerHTML).toBe('Consult')
-    expect(validateButton.innerHTML).toBe('Validate request')
+    expect(pToolbox.props('pElements')).toStrictEqual(requestMenu)
   })
 
   it("should emit 'consult' event when the 'consult' button is clicked", async () => {

@@ -2,7 +2,6 @@
   <PDrawer
     v-model="internalIsOpened"
     :pShowPreviousStep="false"
-    pTitle=""
     pSize="50%"
     pDirection="rtl"
     class="subscription-drawer"
@@ -18,11 +17,24 @@
   </PDrawer>
 </template>
 
+<i18n lang="yaml">
+  en-US:
+    number: 'No.'
+  fr-FR:
+    number: 'Nº'
+</i18n>
+
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { PDrawer } from '@kpmg/styleguide'
 import type { SubscriptionDetailsDrawerProps } from './SubscriptionDetailsDrawerTypes'
 import SubscriptionDetailsTabs from './components/SubscriptionDetailsTabs'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local'
+})
 
 const props = defineProps<SubscriptionDetailsDrawerProps>()
 const emit = defineEmits<{
@@ -38,7 +50,7 @@ const internalIsOpened = computed({
   }
 })
 const subscriptionDrawerTitle = computed(() => {
-  return `${props.account.accountLabel} - Nº ${props.account.accountNumber}`
+  return `${props.account.accountLabel} - ${t('number')} ${props.account.accountNumber}`
 })
 
 const handleCloseDrawer = () => {

@@ -93,9 +93,10 @@
             :pLoading="
               scope.row.subscriptionId === clickedRow && isLoading
             "
+            class="el-button--icon"
           >
-            <PIcon :class="{'margin-left--1': isLoading}">
-              <PIThreeDots color="#A4A4A4" />
+            <PIcon>
+              <PIThreeDots  />
             </PIcon>
           </PButton>
         </PToolbox>
