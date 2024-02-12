@@ -96,7 +96,7 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string }
     } as RouteRecordRaw)
   })
   res.push({
-    path: 'subscriptions',
+    path: 'demandes-mod',
     name: 'subscriptions',
     component: () => import('@/pages/subscriptions')
   } as RouteRecordRaw)

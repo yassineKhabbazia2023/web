@@ -42,7 +42,7 @@ const createWrapper = (): VueWrapper<any> =>
 const collaboratorsTabs = [
   'Folders',
   'Mandate',
-  'Validate demand',
+  'MOD requests',
   'Collaborators'
 ]
 const clientTabs = [
