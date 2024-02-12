@@ -50,6 +50,7 @@ defineProps<PRadioCardProps>()
 .p-radio-card {
   .el-radio__label {
     width: 100%;
+    padding-left: 12px;
 
     .p-radio-card__cta {
       .p-button--white {
