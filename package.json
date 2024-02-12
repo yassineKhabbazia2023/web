@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "MFE Login",
   "scripts": {
+    "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high",
+    "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high",
     "dev": "vite --port 8086",
     "build": "vue-tsc && vite build",
     "lint": "npx eslint .",
