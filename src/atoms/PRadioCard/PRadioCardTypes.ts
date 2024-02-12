@@ -1,5 +1,5 @@
 export interface PRadioCardProps {
-  pLabel: string
+  pLabel: string | number
   pTitle: string
   pDescription?: string
 }
