@@ -6,6 +6,7 @@ import i18n from './i18n'
 import store, { isTokenExpired } from './stores'
 import { useDataProvider } from './composables/useDataProvider'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
+import debounce from 'lodash.debounce'
 
 export * from './stores/types'
 export const commonApi = api
@@ -18,3 +19,4 @@ export const hasTokenExpired = isTokenExpired
 export const dataProvider = useDataProvider
 
 export { DataStreamHubConnection }
+export { debounce }
