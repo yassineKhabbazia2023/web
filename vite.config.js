@@ -36,7 +36,8 @@ export default ({ mode }) =>
           'vue-router': 'VueRouter',
           pinia: 'Pinia',
           'env-vars': 'EnvVars',
-          '@kpmg/common': 'Common'
+          '@kpmg/common': 'Common',
+          '@kpmg/styleguide': 'Styleguide'
         },
         { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
         {
