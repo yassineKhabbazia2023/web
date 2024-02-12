@@ -160,12 +160,12 @@ describe('offersDrawer', () => {
         for (let i = 0; i < stepCount - 1; i++) {
           nextPreviousButtons.vm.$emit('clickNext')
         }
-        const modalConfirmation = wrapper.findComponent('[data-testid="modal-confirmation"]') as VueWrapper
+        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
 
         await nextTick()
-        expect(modalConfirmation.exists()).toBeTruthy()
+        expect(confirmationModal.exists()).toBeTruthy()
 
-        modalConfirmation.vm.$emit('confirm')
+        confirmationModal.vm.$emit('confirm')
         const expectedArgument = {
           account: {
             accountNumber: 'account-number',

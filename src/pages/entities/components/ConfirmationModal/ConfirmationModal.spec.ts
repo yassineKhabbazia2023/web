@@ -1,29 +1,29 @@
 import { it, expect, describe, beforeEach } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import type { ModalConfirmationProps } from './ModalConfirmationTypes'
-import ModalConfirmation from '.'
+import type { ConfirmationModalProps } from './ConfirmationModalTypes'
+import ConfirmationModal from '.'
 
-const defaultProps: ModalConfirmationProps = {
+const defaultProps: ConfirmationModalProps = {
   modelValue: true,
   title: 'Test',
   content: 'Test Content'
 }
 
 const createWrapper = (props = defaultProps) => {
-  return mount(ModalConfirmation, {
+  return mount(ConfirmationModal, {
     props
   })
 }
 
-describe('modalConfirmation', () => {
+describe('confirmationModal', () => {
   let wrapper: VueWrapper
   beforeEach(async () => {
     wrapper = createWrapper()
     await nextTick()
   })
   describe('display', () => {
-    it('should display correctly the modal confirmation', () => {
+    it('should display correctly the confirmation modal', () => {
       const dialog = wrapper.findComponent({ name: 'PDialog' })
       const cancelButton = wrapper.find('[data-testid="cancel-button"]')
       const confirmButton = wrapper.find('[data-testid="confirm-button"]')

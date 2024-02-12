@@ -6,11 +6,11 @@
       pWidth="480px"
     >
       <template #footer>
-        <div class="padding-bottom--2">
+        <div class="p-dialog__footer">
           <PButton
             pType="primary"
+            pSize="small"
             pPlain
-            class="margin-right--1"
             @click="handleCancel"
             data-testid="cancel-button"
           >
@@ -18,6 +18,7 @@
           </PButton>
           <PButton
             pType="primary"
+            pSize="small"
             @click="emit('confirm')"
             data-testid="confirm-button"
           >
@@ -25,7 +26,7 @@
           </PButton>
         </div>
       </template>
-      <p class="margin-y--2">
+      <p class="p-dialog__text">
         {{ content }}
       </p>
     </PDialog>
@@ -45,14 +46,14 @@ fr-FR:
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDialog, PButton } from '@kpmg/styleguide'
-import type { ModalConfirmationProps } from './ModalConfirmationTypes'
+import type { ConfirmationModalProps } from './ConfirmationModalTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-const props = defineProps<ModalConfirmationProps>()
+const props = defineProps<ConfirmationModalProps>()
 const emit = defineEmits<{
   'update:modelValue': [boolean]
   confirm: []

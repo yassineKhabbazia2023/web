@@ -1,4 +1,4 @@
-export interface ModalConfirmationProps {
+export interface ConfirmationModalProps {
   modelValue: boolean
   title: string
   content: string

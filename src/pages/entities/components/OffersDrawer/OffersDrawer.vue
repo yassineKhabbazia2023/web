@@ -1,11 +1,11 @@
 <template>
   <div>
-    <ModalConfirmation
-      v-model="modalConfirmationVisible"
+    <ConfirmationModal
+      v-model="confirmationModalVisible"
       :title="t('confirmationTitle')"
       :content="t('confirmationContent')"
       @confirm="handleConfirm"
-      data-testid="modal-confirmation"
+      data-testid="confirmation-modal"
     />
     <PDrawer
       v-model="internalIsOpened"
@@ -127,6 +127,7 @@ fr-FR:
   confirmationTitle: 'Attention'
   confirmationContent: "Une fois confirmée, la demande d'activation d'offre sera créée et vous ne pourrez plus revenir en arrière. Veuillez donc vérifier vos informations avant de valider."
 </i18n>
+<!-- eslint-disable max-len -->
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
@@ -136,7 +137,7 @@ import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import PrincipalContact from '../PrincipalContact'
 import NextPreviousButtons from '../NextPreviousButtons'
-import ModalConfirmation from '../ModalConfirmation'
+import ConfirmationModal from '../ConfirmationModal'
 import { getAllOffers, getOffer, getOffersBookLink, getPrincipalContact } from '@/services/offer'
 import { offerStepperStep, type OffersDrawerProps, type SelectedProduct } from './OffersDrawerTypes'
 import { fetchAccount, type Account } from '@/services/account'
@@ -188,7 +189,7 @@ const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const principalContact = ref<User | undefined>()
 const account = ref<Account | undefined>()
-const modalConfirmationVisible = ref<boolean>(false)
+const confirmationModalVisible = ref<boolean>(false)
 
 const internalIsOpened = computed({
   get() {
@@ -267,7 +268,7 @@ async function validateOffer() {
 
 const handleConfirm = async () => {
   await validateOffer()
-  modalConfirmationVisible.value = false
+  confirmationModalVisible.value = false
 
   // To ensure a good user experience, as closing two things simultaneously is not ideal
   setTimeout(() => {
@@ -277,7 +278,7 @@ const handleConfirm = async () => {
 
 function onClickNext() {
   if (isSubmitButton.value) {
-    modalConfirmationVisible.value = true
+    confirmationModalVisible.value = true
     return
   }
   ++activeStep.value
