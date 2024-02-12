@@ -1,5 +1,6 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
 import { getMockedSubscriptionOffersServices } from '../OfferSubscription/OfferSubscriptionMocks'
@@ -159,6 +160,12 @@ describe('offersDrawer', () => {
         for (let i = 0; i < stepCount - 1; i++) {
           nextPreviousButtons.vm.$emit('clickNext')
         }
+        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+
+        await nextTick()
+        expect(confirmationModal.exists()).toBeTruthy()
+
+        confirmationModal.vm.$emit('confirm')
         const expectedArgument = {
           account: {
             accountNumber: 'account-number',
