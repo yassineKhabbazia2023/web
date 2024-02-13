@@ -1,11 +1,13 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import useInitUserAuth from '@/composable/useInitUserAuth'
-import { commonStore as store } from '@kpmg/common'
+import { commonStore as store, tokenService } from '@kpmg/common'
 import { getToken } from '@/services/msal'
+
+const givenToken = 'given-token'
 
 vi.mock('@/services/msal', () => ({
   getToken: vi.fn(() => {
-    return Promise.resolve('token')
+    return Promise.resolve(givenToken)
   })
 }))
 const mockStorePatch = vi.fn()
@@ -25,7 +27,11 @@ vi.mock('@kpmg/common', () => ({
   }),
   dataProvider: () => ({
     fetchUserData: mockFechUserDataProvider
-  })
+  }),
+  tokenService: {
+    getToken: vi.fn().mockReturnValue('a-token'),
+    setToken: vi.fn()
+  }
 }))
 
 vi.mock('@/composable/useStoreSubscription', () => ({
@@ -36,13 +42,15 @@ vi.mock('@/composable/useStoreSubscription', () => ({
 
 describe('useInitUserAuth', () => {
   afterEach(() => {
-    sessionStorage.clear()
+    localStorage.clear()
     vi.clearAllMocks()
   })
 
   it('should init auth when the user is collab', async () => {
+    const mockToken = 'mock-token'
     // Setup
-    sessionStorage.setItem('token', 'mock-token')
+    const setTokenSpy = vi.spyOn(tokenService, 'setToken')
+    vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
     const { initAuthCollab, isTokenRetrieve } = useInitUserAuth()
 
     // Act
@@ -51,12 +59,16 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(getToken).toHaveBeenCalledWith()
     expect(isTokenRetrieve.value).toBeTruthy()
-    expect(mockStorePatch).toHaveBeenCalledTimes(2)
+    expect(setTokenSpy).toHaveBeenCalledWith(givenToken)
+    expect(mockStorePatch).toHaveBeenCalledTimes(1)
   })
 
   it('should init auth when user is client', async () => {
+    const mockToken = 'mock-token'
     // Setup
-    sessionStorage.setItem('token', 'mock-token')
+    const setTokenSpy = vi.spyOn(tokenService, 'setToken')
+    vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
+
     const { initAuthClient, isTokenRetrieve } = useInitUserAuth()
 
     // Act
@@ -65,7 +77,8 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(getToken).not.toHaveBeenCalled()
     expect(isTokenRetrieve.value).toBeTruthy()
-    expect(store().$patch).toHaveBeenCalledTimes(2)
+    expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
+    expect(store().$patch).toHaveBeenCalledTimes(1)
   })
 
   it('should not update update state if the token is not present', async () => {

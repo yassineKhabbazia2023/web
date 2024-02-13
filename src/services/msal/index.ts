@@ -6,7 +6,7 @@ import {
   VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
   VITE_API_MSAL_SCOPE
 } from 'env-vars'
-import { commonStore as store } from '@kpmg/common'
+import { tokenService } from '@kpmg/common'
 import { UserAgentApplication } from 'msal'
 
 const msalConfig = {
@@ -29,15 +29,11 @@ export const getToken = async () => {
       })
       .then((response: any) => {
         const token = response.accessToken
-        sessionStorage.setItem('token', token)
-        store().$patch({
-          user: {
-            token
-          }
-        })
+        tokenService.setToken(token)
         return token
       })
-      .catch(() => {
+      .catch((e) => {
+        console.warn(e)
         msalInstance.loginRedirect()
       })
   }

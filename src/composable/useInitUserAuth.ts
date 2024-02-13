@@ -1,5 +1,5 @@
 
-import { dataProvider, commonStore as store } from '@kpmg/common'
+import { dataProvider, commonStore as store, tokenService } from '@kpmg/common'
 import { getToken } from '@/services/msal'
 import { ref } from 'vue'
 
@@ -7,7 +7,7 @@ export default function useInitUserAuth() {
   const isTokenRetrieve = ref(false)
   const { fetchUserData } = dataProvider()
   const initAuthClient = async () => {
-    const token = getTokenInSessionStorage()
+    const token = tokenService.getToken()
     isTokenRetrieve.value = !!token
     if (token) {
       await updateUserState(token)
@@ -20,13 +20,11 @@ export default function useInitUserAuth() {
       await updateUserState(token)
     }
   }
-  const getTokenInSessionStorage = () => sessionStorage.getItem('token')
   const updateUserState = async (token: string) => {
-    store().$patch({ user: { token } })
+    tokenService.setToken(token)
     const data = await fetchUserData()
     store().$patch({
       user: {
-        token,
         id: data?.id,
         firstName: data?.firstName,
         lastName: data?.lastName,

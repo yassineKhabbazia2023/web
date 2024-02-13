@@ -125,7 +125,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi, commonStore as store } from '@kpmg/common'
+import { commonApi, commonStore as store, tokenService } from '@kpmg/common'
 import {
   onBeforeMount,
   reactive,
@@ -241,14 +241,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
             webToken: token
           }
         } = await commonApi().auth.post(urlLogin, { email, password: formValue.password })
-        sessionStorage.setItem('token', token)
         store().$patch({
           user: {
             id,
-            token,
             isCollab: false
           }
         })
+        tokenService.setToken(token)
         router.push({ name: 'entities' })
       } catch {}
     } else {
