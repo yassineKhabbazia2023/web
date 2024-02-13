@@ -1,16 +1,17 @@
 import { createTestingPinia } from '@pinia/testing'
-import { Store, defineStore } from 'pinia'
+import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import router from '../../plugins/router'
 import PopupRenewToken from '.'
 import { ROUTES } from '../../app/mock'
-import { commonStore } from '@kpmg/common'
+import { tokenService } from '@kpmg/common'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { PDialog } from '@kpmg/styleguide'
 import { nextTick } from 'vue'
 
 const authPostMock = vi.fn(() => ({ data: '' }))
+
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
@@ -35,6 +36,11 @@ vi.mock('@kpmg/common', () => ({
   }),
   routes: {
     value: []
+  },
+  tokenService: {
+    setToken: vi.fn(),
+    getToken: vi.fn(),
+    registerOnChange: vi.fn()
   }
 }))
 
@@ -60,42 +66,31 @@ const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJFUTBNVVE1TjBOQ1JUS
 const { sub } = jwtDecode<JwtPayload>(TOKEN)
 describe('popup renew token', () => {
   let wrapper: VueWrapper<any>
-  let store: Store<any>
   beforeEach(async () => {
-    wrapper = createWrapper()
-    store = commonStore(pinia)
     vi.clearAllTimers()
     vi.useFakeTimers()
+    vi
+      .spyOn(tokenService, 'registerOnChange')
+      .mockImplementation((_key: string, cb: Function) => {
+        cb(TOKEN)
+      })
+    wrapper = createWrapper()
     ROUTES.forEach((route) => router.addRoute(route))
-    store.$patch({
-      user: {
-        token: null
-      }
-    })
   })
 
   it('show dialog after token change', async () => {
-    store.$patch({
-      user: {
-        token: TOKEN
-      }
-    })
-
     await flushPromises()
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeFalsy()
     vi.advanceTimersByTime(7000)
     await nextTick()
+    await flushPromises()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeTruthy()
   })
 
   it('logout when user click on logout button', async () => {
-    store.$patch({
-      user: {
-        token: TOKEN
-      }
-    })
+    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
     vi.advanceTimersByTime(7000)
@@ -107,11 +102,7 @@ describe('popup renew token', () => {
   })
 
   it('renew when user click on stay button', async () => {
-    store.$patch({
-      user: {
-        token: TOKEN
-      }
-    })
+    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
     vi.advanceTimersByTime(7000)
