@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "The mfe Entities allows the collaborators and customers to switch from an entitie to another in KPMG Pulse.",
   "scripts": {
+    "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high",
+    "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high",
     "dev": "vite --port 8085",
     "build": "vue-tsc && vite build",
     "lint": "npx eslint .",
