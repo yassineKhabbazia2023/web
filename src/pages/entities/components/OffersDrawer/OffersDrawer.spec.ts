@@ -11,8 +11,10 @@ import type {
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import * as OffersDrawerUtils from './OffersDrawerUtils'
+import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
 import { offerStepperStep } from './OffersDrawerTypes'
+import accountMock from '@/services/account/accountMock.json'
 
 const principalContact: User = getMockedPrincipalContact()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
@@ -33,7 +35,8 @@ vi.mock('@/services/offer', () => ({
 }))
 
 vi.mock('@/services/account', () => ({
-  fetchAccount: vi.fn()
+  fetchAccount: vi.fn(() => Promise.resolve(accountMock)),
+  patchAccount: vi.fn(() => Promise.resolve({}))
 }))
 
 vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
@@ -153,6 +156,7 @@ describe('offersDrawer', () => {
         const secondOffer = findSecondOffer(wrapper)
         await secondOffer.trigger('click')
         await flushPromises()
+        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
 
         const nextPreviousButtons = findNextPreviousButtons(wrapper)
@@ -166,6 +170,7 @@ describe('offersDrawer', () => {
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
+        await flushPromises()
         const expectedArgument = {
           account: {
             accountNumber: 'account-number',
@@ -184,6 +189,7 @@ describe('offersDrawer', () => {
           ]
         }
 
+        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, accountMock)
         expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
     })
