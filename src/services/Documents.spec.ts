@@ -62,7 +62,8 @@ vi.mock('@kpmg/common', async () => ({
     $patch: vi.fn(),
     $get: vi.fn(),
     $post: vi.fn()
-  })
+  }),
+  debounce: vi.fn((fn) => fn)
 }))
 
 describe('documents service', () => {

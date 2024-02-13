@@ -23,7 +23,7 @@ import {
 } from './helpers/DocumentsActionsHelpers'
 import { PActionBar } from '@kpmg/styleguide'
 import { DocumentActionsBarProps } from './DocumentActionsBarTypes'
-import debounce from 'lodash.debounce'
+import { debounce } from '@kpmg/common'
 
 const props = defineProps<DocumentActionsBarProps>()
 const emit = defineEmits(['p-action-bar-button-clicked', 'p-upload-files-selected',

@@ -130,7 +130,8 @@ vi.mock('@kpmg/common', async () => ({
       }
     }),
     destroyConnection: vi.fn()
-  }))
+  })),
+  debounce: vi.fn((fn) => fn)
 }))
 
 const DocumentPiaStatusChangedResponseMock = {
