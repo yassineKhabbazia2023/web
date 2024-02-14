@@ -24,8 +24,8 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'select-product': [number, string],
-  'deselect-product': [number, string]
+  'select-product': [number, number],
+  'deselect-product': [number, number]
 }>()
 
 const labels = {
@@ -62,13 +62,13 @@ const title = computed(() => {
 })
 
 function onChangeServiceStatus(service: PService) {
-  const { globalProductId, pStatus } =
+  const { productConfigurationId, pStatus } =
     service as ExtendedService // because ExtendedService is given to POfferServicesCard
 
   if (pStatus) {
-    emit('select-product', props.offerId, globalProductId)
+    emit('select-product', props.offerId, productConfigurationId)
   } else {
-    emit('deselect-product', props.offerId, globalProductId)
+    emit('deselect-product', props.offerId, productConfigurationId)
   }
 }
 </script>

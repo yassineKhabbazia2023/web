@@ -1,32 +1,50 @@
 import type { SelectedProduct } from './OffersDrawerTypes'
-import {
-  SubscriptionPriceType
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import type {
-  SubscriptionOfferServices
-} from '../SubscriptionOffers/SubscriptionOffersTypes'
+import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
+import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 
-export function getSelectedProductIndex(selectedProducts: SelectedProduct[], offerId: number, globalProductId: string) {
-  return selectedProducts
-    .findIndex(selectedProduct => selectedProduct.offerId === offerId &&
-      selectedProduct.globalProductId === globalProductId)
+export function getSelectedProductIndex(
+  selectedProducts: SelectedProduct[],
+  offerId: number,
+  productConfigurationId: number
+) {
+  return selectedProducts.findIndex(
+    (selectedProduct) =>
+      selectedProduct.offerId === offerId &&
+      selectedProduct.productConfigurationId === productConfigurationId
+  )
 }
 
-export function addSelectedProduct(selectedProducts: SelectedProduct[], offerId: number, globalProductId: string) {
-  const index = getSelectedProductIndex(selectedProducts, offerId, globalProductId)
+export function addSelectedProduct(
+  selectedProducts: SelectedProduct[],
+  offerId: number,
+  productConfigurationId: number
+) {
+  const index = getSelectedProductIndex(
+    selectedProducts,
+    offerId,
+    productConfigurationId
+  )
 
   if (index < 0) {
     selectedProducts.push({
       offerId,
-      globalProductId
+      productConfigurationId
     })
   }
 }
 
-export function removeSelectedProduct(selectedProducts: SelectedProduct[], offerId: number, globalProductId: string) {
-  const index = getSelectedProductIndex(selectedProducts, offerId, globalProductId)
+export function removeSelectedProduct(
+  selectedProducts: SelectedProduct[],
+  offerId: number,
+  productConfigurationId: number
+) {
+  const index = getSelectedProductIndex(
+    selectedProducts,
+    offerId,
+    productConfigurationId
+  )
 
   if (index < 0) {
     return
@@ -38,18 +56,20 @@ export function removeSelectedProduct(selectedProducts: SelectedProduct[], offer
   selectedProducts.splice(index, 1)
 }
 
-export function getInitialSelectedProducts(offer: SubscriptionOfferServices | undefined) {
+export function getInitialSelectedProducts(
+  offer: SubscriptionOfferServices | undefined
+) {
   const { offerId, providers } = offer ?? {}
   const selectedProducts: SelectedProduct[] = []
 
   providers?.forEach(({ products }) => {
     products.forEach((product) => {
-      const { globalProductId, priceType, isOptionnal } = product
+      const { productConfigurationId, priceType, isOptionnal } = product
 
       if (!isOptionnal || priceType === SubscriptionPriceType.free) {
         selectedProducts.push({
           isMandatory: !isOptionnal,
-          globalProductId,
+          productConfigurationId,
           offerId: offerId ?? 0
         })
       }
@@ -72,7 +92,9 @@ export function getPostSubscriptionRequest(
   }
   const { globalOfferId, approvalRequired } = currentSubscriptionOffer
   const principalContactEmail = principalContact?.email ?? ''
-  const products = selectedProducts.map(({ globalProductId }) => globalProductId)
+  const products = selectedProducts.map(
+    ({ productConfigurationId }) => productConfigurationId
+  )
 
   return {
     account: {

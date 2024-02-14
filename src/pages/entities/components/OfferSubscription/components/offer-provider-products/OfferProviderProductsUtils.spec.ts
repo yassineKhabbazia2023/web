@@ -19,13 +19,12 @@ describe('offerProviderProductsUtils', () => {
 
     it('should return true when service is in selectedProducts', () => {
       const expected = true
-      const globalProductId = offerProduct.globalProductId ?? ''
+      const productConfigurationId = offerProduct.productConfigurationId
       const selectedProducts: SelectedProduct[] = [{
         offerId,
-        globalProductId
+        productConfigurationId
       }]
 
-      console.log(offerId, offerProduct, selectedProducts)
       const isSelected = getIsServiceSelected(offerId, offerProduct, selectedProducts)
       expect(isSelected).toBe(expected)
     })
@@ -34,7 +33,7 @@ describe('offerProviderProductsUtils', () => {
       const expected = false
       const selectedProducts: SelectedProduct[] = [{
         offerId,
-        globalProductId: 'other'
+        productConfigurationId: 2
       }]
       const isSelected = getIsServiceSelected(offerId, offerProduct, selectedProducts)
 

@@ -57,7 +57,7 @@ export function getMockedSubscriptionOffers() {
 export function getMockedSubscriptionOfferProduct(override: Partial<SubscriptionOfferProduct> = {}) {
   const defaultSubscriptionOfferProduct: SubscriptionOfferProduct = {
     productName: 'product-name',
-    globalProductId: 'global-product-id',
+    productConfigurationId: 1,
     productLabel: 'product-label',
     enabled: false,
     isOptionnal: false,

@@ -12,12 +12,12 @@ import type { ExtendedService } from './OfferProviderProductsTypes'
 const offerProviderServices = getMockedSubscriptionOffersServices()
 const offerProviderService = offerProviderServices?.at(0)
 const offerProvider = offerProviderService?.providers?.at(0) as SubscriptionOfferProvider
-const globalProductId = offerProvider.products.at(0)?.globalProductId ?? ''
+const productConfigurationId = offerProvider.products.at(0)?.productConfigurationId ?? 1
 const offerId = 101
 
 function getMockedService(pStatus: boolean): ExtendedService {
   return {
-    globalProductId: 'global-product-id',
+    productConfigurationId: 1,
     pStatus,
     pDisabled: false,
     pName: 'Service name'
@@ -31,7 +31,7 @@ function getWrapper() {
       offerId,
       selectedProducts: [{
         offerId,
-        globalProductId
+        productConfigurationId
       }]
     }
   })
@@ -72,20 +72,20 @@ describe('offerProviderProducts', () => {
     it('should emit "select-product" when user selects a product', async () => {
       const isSelected = true
       const pExtendedService = getMockedService(isSelected)
-      const { globalProductId } = pExtendedService
+      const { productConfigurationId } = pExtendedService
 
       await offerServicesCard.vm.$emit('changeServiceStatus', pExtendedService)
 
-      expect(wrapper.emitted('select-product')).toStrictEqual([[offerId, globalProductId]])
+      expect(wrapper.emitted('select-product')).toStrictEqual([[offerId, productConfigurationId]])
     })
     it('should emit "deselect-product" when user deselects a product', () => {
       const isSelected = false
       const pExtendedService = getMockedService(isSelected)
-      const { globalProductId } = pExtendedService
+      const { productConfigurationId } = pExtendedService
 
       offerServicesCard.vm.$emit('change-service-status', pExtendedService)
 
-      expect(wrapper.emitted('deselect-product')).toStrictEqual([[offerId, globalProductId]])
+      expect(wrapper.emitted('deselect-product')).toStrictEqual([[offerId, productConfigurationId]])
     })
   })
 })

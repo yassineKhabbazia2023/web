@@ -33,15 +33,15 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'select-product': [number, string],
-  'deselect-product': [number, string]
+  'select-product': [number, number],
+  'deselect-product': [number, number]
 }>()
 
-function onSelectProduct(offerId: number, productId: string) {
+function onSelectProduct(offerId: number, productId: number) {
   emit('select-product', offerId, productId)
 }
 
-function onDeselectProduct(offerId: number, productId: string) {
+function onDeselectProduct(offerId: number, productId: number) {
   emit('deselect-product', offerId, productId)
 }
 

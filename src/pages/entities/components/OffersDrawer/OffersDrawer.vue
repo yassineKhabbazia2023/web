@@ -244,11 +244,11 @@ function onClickPrevious() {
   }
 }
 
-function onSelectProduct(offerId: number, productId: string) {
+function onSelectProduct(offerId: number, productId: number) {
   addSelectedProduct(selectedProducts.value, offerId, productId)
 }
 
-function onDeselectProduct(offerId: number, productId: string) {
+function onDeselectProduct(offerId: number, productId: number) {
   removeSelectedProduct(selectedProducts.value, offerId, productId)
 }
 

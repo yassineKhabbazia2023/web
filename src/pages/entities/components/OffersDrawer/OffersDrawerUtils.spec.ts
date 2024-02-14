@@ -13,37 +13,37 @@ describe('offersDrawerUtils', () => {
   beforeEach(() => {
     selectedProducts = [{
       offerId: 101,
-      globalProductId: 'product-1'
+      productConfigurationId: 1
     }, {
       isMandatory: true,
       offerId: 101,
-      globalProductId: 'product-11'
+      productConfigurationId: 11
     }]
     originalLength = selectedProducts.length
   })
 
   describe('addSelectedProduct', () => {
     it('should add selectedProduct in list when not present', () => {
-      addSelectedProduct(selectedProducts, 102, 'product-2')
+      addSelectedProduct(selectedProducts, 102, 2)
       expect(selectedProducts.at(-1)?.offerId).toBe(102)
     })
     it('should not add selectedProduct in list when already present', () => {
-      addSelectedProduct(selectedProducts, 101, 'product-1')
+      addSelectedProduct(selectedProducts, 101, 1)
       expect(selectedProducts).toHaveLength(originalLength)
     })
   })
 
   describe('removeSelectedProduct', () => {
     it('should remove selectedProduct in list when already present', () => {
-      removeSelectedProduct(selectedProducts, 101, 'product-1')
+      removeSelectedProduct(selectedProducts, 101, 1)
       expect(selectedProducts).toHaveLength(originalLength - 1)
     })
     it('should not remove selectedProduct in list when not present', () => {
-      removeSelectedProduct(selectedProducts, 102, 'product-2')
+      removeSelectedProduct(selectedProducts, 102, 2)
       expect(selectedProducts).toHaveLength(originalLength)
     })
     it('should not remove selectedProduct in list when isMandatory', () => {
-      removeSelectedProduct(selectedProducts, 101, 'product-11')
+      removeSelectedProduct(selectedProducts, 101, 11)
       expect(selectedProducts).toHaveLength(originalLength)
     })
   })
@@ -55,19 +55,19 @@ describe('offersDrawerUtils', () => {
       const expectedSelectedProducts: SelectedProduct[] = [{
         isMandatory: true,
         offerId: 1,
-        globalProductId: 'global-product-id-1'
+        productConfigurationId: 1
       }, {
         isMandatory: true,
         offerId: 1,
-        globalProductId: 'global-product-id-2'
+        productConfigurationId: 2
       }, {
         isMandatory: false,
         offerId: 1,
-        globalProductId: 'global-product-id-3'
+        productConfigurationId: 3
       }, {
         isMandatory: false,
         offerId: 1,
-        globalProductId: 'global-product-id-4'
+        productConfigurationId: 4
       }]
       expect(selectedProducts).toStrictEqual(expectedSelectedProducts)
     })
@@ -101,10 +101,10 @@ describe('offersDrawerUtils', () => {
         globalOfferId: 'offer-id-1',
         notes: [],
         products: [
-          'global-product-id-1',
-          'global-product-id-2',
-          'global-product-id-3',
-          'global-product-id-4'
+          1,
+          2,
+          3,
+          4
         ],
         users: [
           'test_loscos@yopmail.com'

@@ -32,7 +32,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              globalProductId: 'global-product-id-1'
+              productConfigurationId: 1
             }
           ]
         },
@@ -49,7 +49,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              globalProductId: 'global-product-id-2'
+              productConfigurationId: 2
             },
             {
               productName: 'Module caisse',
@@ -58,7 +58,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: true,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              globalProductId: 'global-product-id-3'
+              productConfigurationId: 3
             },
             {
               productName: 'Module facturation',
@@ -67,7 +67,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: true,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              globalProductId: 'global-product-id-4'
+              productConfigurationId: 4
             }
           ]
         }
@@ -99,7 +99,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              globalProductId: 'global-product-id-5'
+              productConfigurationId: 5
             }
           ]
         }
@@ -131,7 +131,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              globalProductId: 'global-product-id-6'
+              productConfigurationId: 6
             }
           ]
         }
@@ -163,7 +163,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: true,
               price: 0.0,
               priceType: SubscriptionPriceType.exact,
-              globalProductId: 'global-product-id-7'
+              productConfigurationId: 7
             }
           ]
         }
