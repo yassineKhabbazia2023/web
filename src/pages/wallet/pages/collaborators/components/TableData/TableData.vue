@@ -100,10 +100,17 @@
   </PTable>
 
   <DrawerCollabDetails
-    v-if="state.hasDrawerOpened"
-    v-model="state.hasDrawerOpened"
+    v-if="state.hasDrawerOpened.collabDetails"
+    v-model="state.hasDrawerOpened.collabDetails"
     :rowData="state.rowData"
-    :hasDrawerOpened="state.hasDrawerOpened"
+    :hasDrawerOpened="state.hasDrawerOpened.collabDetails"
+  />
+
+  <DrawerCollabRole
+    v-if="state.hasDrawerOpened.collabRole"
+    v-model="state.hasDrawerOpened.collabRole"
+    :rowData="state.rowData"
+    :hasDrawerOpened="state.hasDrawerOpened.collabRole"
   />
 </div>
 </template>
@@ -123,7 +130,9 @@ import {
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
 import type { Props } from './types'
+import { MENU_ACTIONS_NAME } from './constants'
 import DrawerCollabDetails from './../DrawerCollabDetails'
+import DrawerCollabRole from './../DrawerCollabRole'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -139,11 +148,12 @@ const access = props.data.map(({ id, hasAccess }: { id: string, hasAccess: boole
 }))
 const accessState = reactive(Object.assign({}, ...access))
 
+const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME
 const menuElements : PToolboxItemProps[] = [
   {
     pIconName: 'PIPerson',
-    pValue: t('informationsAboutCollaborator'),
-    pActionName: 'informationsAboutCollaborator',
+    pValue: t('collaboratorInformation'),
+    pActionName: collaboratorInformation,
     pState: 'default'
   },
   {
@@ -155,20 +165,26 @@ const menuElements : PToolboxItemProps[] = [
   {
     pIconName: 'PIGrid',
     pValue: t('manageAccessRights'),
-    pActionName: 'manageAccessRights',
+    pActionName: manageAccessRights,
     pState: 'default'
   }
 ]
 
 const state = reactive({
-  hasDrawerOpened: false,
+  hasDrawerOpened: {
+    collabDetails: false,
+    collabRole: false
+  },
   rowData: undefined
 })
 
 const handleToolboxItemClick = (action: string, row: any) => {
-  if (action === 'informationsAboutCollaborator') {
-    state.rowData = row
-    state.hasDrawerOpened = true
+  state.rowData = row
+  if (action === collaboratorInformation) {
+    state.hasDrawerOpened.collabDetails = true
+  }
+  if (action === manageAccessRights) {
+    state.hasDrawerOpened.collabRole = true
   }
 }
 </script>
@@ -193,7 +209,7 @@ en-US:
   office: 'Office'
   access: 'Access'
   options: 'Options'
-  informationsAboutCollaborator: 'Collaborator information'
+  collaboratorInformation: 'Collaborator information'
   detailsOfDelegations: 'Details of delegations'
   manageAccessRights: 'Manage access rights'
 fr-FR:
@@ -205,7 +221,7 @@ fr-FR:
   office: 'Bureau'
   access: 'Accès'
   options: 'Options'
-  informationsAboutCollaborator: 'Informations du collaborateur'
+  collaboratorInformation: 'Informations du collaborateur'
   detailsOfDelegations: 'Détails des délégations'
   manageAccessRights: "Gérer les droits d’accès"
 </i18n>
