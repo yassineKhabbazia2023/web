@@ -2,7 +2,7 @@ import { SubscriptionPriceType } from './SubscriptionOffersEnums'
 
 export interface SubscriptionOfferProduct {
   productName: string
-  globalProductId: string
+  productConfigurationId: number
   productLabel: string
   enabled: boolean
   isOptionnal: boolean

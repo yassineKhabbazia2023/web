@@ -64,7 +64,7 @@ export interface SubscriptionAccount {
 export interface PostSubscriptionRequest {
   account: SubscriptionAccount,
   globalOfferId: string,
-  products: string[],
+  products: number[],
   applicant: string,
   users: string[],
   collaborators: string[],
