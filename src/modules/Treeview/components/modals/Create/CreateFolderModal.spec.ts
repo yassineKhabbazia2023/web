@@ -195,46 +195,66 @@ describe('interactions', () => {
     ])
   })
 
-  it('should not emit on-confirm-create-folder when folder name already exists ', async () => {
-    const props: CreateFolderModalProps = {
-      ...defaultProps,
-      isCreateFolderModalVisible: true,
-      selectedFolder: {
-        id: 1,
-        children: [
-          {
-            id: 2,
-            children: [{} as Folder],
-            name: 'TheFolder',
-            parent: { id: 1 },
-            permissions: [],
-            properties: {} as FolderProperties,
-            serviceId: 'some-service'
-          } as Folder
-        ],
-        name: 'A',
-        parent: { id: 0 },
+  it.each([
+    {
+      childrenFolder: {
+        id: 2,
+        children: [{} as Folder],
+        name: 'TheFolder',
+        parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
         serviceId: 'some-service'
-      } as Folder
+      }
+    },
+    {
+      childrenFolder: {
+        id: 2,
+        children: [{} as Folder],
+        name: 'Thefolder',
+        parent: { id: 1 },
+        permissions: [],
+        properties: {} as FolderProperties,
+        serviceId: 'some-service'
+      }
     }
+  ])(
+    'should not emit on-confirm-create-folder when folder name already exists ',
+    async ({ childrenFolder }) => {
+      const props: CreateFolderModalProps = {
+        ...defaultProps,
+        isCreateFolderModalVisible: true,
+        selectedFolder: {
+          id: 1,
+          children: [
+            {
+              ...childrenFolder
+            } as Folder
+          ],
+          name: 'A',
+          parent: { id: 0 },
+          permissions: [],
+          properties: {} as FolderProperties,
+          serviceId: 'some-service'
+        } as Folder
+      }
 
-    const wrapper = createWrapper(props)
+      const wrapper = createWrapper(props)
 
-    const dialog = wrapper.findComponent(SingleInputModal)
+      const dialog = wrapper.findComponent(SingleInputModal)
 
-    const componentInstance = wrapper.vm
-    componentInstance.inputContent = 'TheFolder'
+      const componentInstance = wrapper.vm
+      componentInstance.inputContent = 'Thefolder'
 
-    await nextTick()
+      await nextTick()
 
-    const confirmButton = dialog.find('.confirm-action-button')
-    await confirmButton.trigger('click')
-    await nextTick()
+      const confirmButton = dialog.find('.confirm-action-button')
+      await confirmButton.trigger('click')
+      await nextTick()
 
-    expect(wrapper.emitted('on-confirm-create-folder')).toBeFalsy()
-  })
+      expect(wrapper.emitted('on-confirm-create-folder')).toBeFalsy()
+    }
+  )
 
   it('should emit on-cancel-create-folder when cancel btn click ', async () => {
     const props: CreateFolderModalProps = {
