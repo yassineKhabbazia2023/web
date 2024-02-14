@@ -14,7 +14,7 @@ import * as OffersDrawerUtils from './OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
 import { offerStepperStep } from './OffersDrawerTypes'
-import accountMock from '@/services/account/accountMock.json'
+import { getMockedAccount } from '@/services/account/accountMock'
 
 const principalContact: User = getMockedPrincipalContact()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
@@ -22,6 +22,7 @@ const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
 const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
+const mockedAccount = getMockedAccount()
 
 vi.mock('@/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
@@ -35,7 +36,7 @@ vi.mock('@/services/offer', () => ({
 }))
 
 vi.mock('@/services/account', () => ({
-  fetchAccount: vi.fn(() => Promise.resolve(accountMock)),
+  fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
   patchAccount: vi.fn(() => Promise.resolve({}))
 }))
 
@@ -189,7 +190,7 @@ describe('offersDrawer', () => {
           ]
         }
 
-        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, accountMock)
+        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount)
         expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
     })
