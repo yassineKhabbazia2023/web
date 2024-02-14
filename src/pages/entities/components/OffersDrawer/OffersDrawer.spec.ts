@@ -15,6 +15,7 @@ import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
 import { offerStepperStep } from './OffersDrawerTypes'
 import { getMockedAccount } from '@/services/account/accountMock'
+import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 
 const principalContact: User = getMockedPrincipalContact()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
@@ -51,7 +52,7 @@ vi.mock('./OffersDrawerUtils', async () => {
 })
 
 const accountNumber = 'account-number'
-const accountId = 'account-id'
+const accountId = 5
 const userEmail = 'user@email.com'
 
 async function getWrapper(isOpened: boolean) {
@@ -172,22 +173,13 @@ describe('offersDrawer', () => {
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
-        const expectedArgument = {
-          account: {
-            accountNumber: 'account-number',
-            globalAccountId: accountId
-          },
+        const expectedArgument: PostSubscriptionRequest = {
+          accountId,
           applicant: 'user@email.com',
-          approvalRequired: false,
-          collaborators: [],
-          globalOfferId: 'offer-id-2',
+          contacts: [5],
+          offerId: 2,
           notes: [],
-          products: [
-            5
-          ],
-          users: [
-            'test_loscos@yopmail.com'
-          ]
+          products: [5]
         }
 
         expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount)

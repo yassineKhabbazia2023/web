@@ -6,7 +6,6 @@ export function getMockedAccount(): Account {
     accountNumber: '1999162161',
     iconName: 'mon icone',
     isActive: true,
-    email: 'dima-cn2@wanadoo.fr',
     accountNumberSource: '1999162161',
     employeeCount: 8,
     commercialName: 'SCI Licorn',

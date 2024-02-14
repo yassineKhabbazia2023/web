@@ -3,8 +3,8 @@ import { fetchAccount, patchAccount } from '.'
 import { getMockedAccount } from './accountMock'
 import * as helper from '@/helper/helper'
 
-const accountId = '5'
-const accountIdRejected = '8'
+const accountId = 5
+const accountIdRejected = 8
 
 const mockedAccount = getMockedAccount()
 

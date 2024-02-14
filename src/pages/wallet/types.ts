@@ -49,6 +49,7 @@ export interface IWalletData {
     color: string
   },
   id: string
+  accountId?: number
   accountNumber: string
   name: string
   isFavorite: boolean

@@ -49,20 +49,14 @@ export interface Deployment {
 export interface Account {
   accountId: number
   accountNumber: string
-  legalName?: string
   iconName?: string
   isActive?: boolean
-  email?: string
   accountNumberSource?: string
-  commercialName?: string
-  legalFormCode?: string
-  siret?: string
-  nafCode?: string
-  staffSizeRange?: number
+  accountingOffice?: string
   employeeCount?: number
-  hubName?: string
-  legal?: Legal
+  commercialName?: string
   accounting?: Accounting
+  legal?: Legal
   vat?: Vat
   address?: Address[]
   phone?: string[]

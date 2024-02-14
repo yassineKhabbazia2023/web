@@ -5,6 +5,7 @@ import {
 import type { SelectedProduct } from './OffersDrawerTypes'
 import { getMockedSubscriptionOffersServices } from '../OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContact } from '../PrincipalContact/PrincipalContactMocks'
+import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 
 describe('offersDrawerUtils', () => {
   let selectedProducts: SelectedProduct[]
@@ -74,50 +75,41 @@ describe('offersDrawerUtils', () => {
   })
 
   describe('getPostSubscriptionRequest', () => {
-    const accountNumber = 'account-number'
-    const accountId = 'account-id'
+    const accountId = 5
     const userEmail = 'user@email.com'
     const principalContact = getMockedPrincipalContact()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
     const selectedProducts = getInitialSelectedProducts(currentSubscriptionOffer)
+    const { contactId } = principalContact
 
     it('should return not optional and free product list', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
-        accountNumber,
         accountId,
         userEmail,
-        principalContact,
+        contactId,
         currentSubscriptionOffer,
         selectedProducts
       )
-      const expectedPostSubscriptionRequest = {
-        account: {
-          globalAccountId: accountId,
-          accountNumber
-        },
-        applicant: 'user@email.com',
-        approvalRequired: true,
-        collaborators: [],
-        globalOfferId: 'offer-id-1',
-        notes: [],
+      const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
+        accountId,
+        offerId: 1,
         products: [
           1,
           2,
           3,
           4
         ],
-        users: [
-          'test_loscos@yopmail.com'
-        ]
+        contacts: [1],
+        notes: [],
+        applicant: 'user@email.com'
       }
       expect(postSubscriptionRequest).toStrictEqual(expectedPostSubscriptionRequest)
     })
     it('should return empty undefined if currentSubscriptionOffer in undefined', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
-        accountNumber,
         accountId,
         userEmail,
-        principalContact,
+        contactId,
         undefined,
         selectedProducts
       )

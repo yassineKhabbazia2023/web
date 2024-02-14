@@ -7,7 +7,6 @@ export function getMockedSubscriptionOffersServices() {
   const Subscription: SubscriptionOfferServices[] = [
     {
       offerId: 1,
-      globalOfferId: 'offer-id-1',
       offerName: 'Gestion Smart',
       offerLabel:
         'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
@@ -75,7 +74,6 @@ export function getMockedSubscriptionOffersServices() {
     },
     {
       offerId: 2,
-      globalOfferId: 'offer-id-2',
       offerName: 'Gestion Premium',
       offerLabel: 'Mon expert en gestion en version premium',
       offerPrice: 0,
@@ -107,7 +105,6 @@ export function getMockedSubscriptionOffersServices() {
     },
     {
       offerId: 3,
-      globalOfferId: 'offer-id-3',
       offerName: 'Mes Modules de Compta',
       offerLabel: 'Loop collaboratif (myPulse compta)',
       offerPrice: 0,
@@ -139,7 +136,6 @@ export function getMockedSubscriptionOffersServices() {
     },
     {
       offerId: 4,
-      globalOfferId: 'offer-id-4',
       offerName: 'Externalisation de la paie',
       offerLabel: 'Gestion de la paie par KPMG, pour le clients, sur Silae',
       offerPrice: 0,

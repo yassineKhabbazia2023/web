@@ -1,5 +1,6 @@
 export interface User {
-  globalUserId: string
+  contactId: number
+  userId: number
   firstName: string
   lastName: string
   email: string

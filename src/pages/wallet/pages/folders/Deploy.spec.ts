@@ -163,7 +163,7 @@ describe('wallet', () => {
     await flushPromises()
 
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
-    await table.vm.$emit('click-deploy')
+    await table.vm.$emit('click-deploy', 1, 'a', 'b')
 
     const subscriptionDrawer = findSubscriptionDrawer(wrapper)
     expect(subscriptionDrawer.exists()).toBeTruthy()
@@ -174,7 +174,7 @@ describe('wallet', () => {
     await flushPromises()
 
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
-    await table.vm.$emit('click-deploy')
+    await table.vm.$emit('click-deploy', 1, 'a', 'b')
 
     const subscriptionDrawer = findSubscriptionDrawer(wrapper)
     expect(subscriptionDrawer.exists()).toBeTruthy()
