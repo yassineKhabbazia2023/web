@@ -18,6 +18,8 @@
     "package.json"
   ],
   "scripts": {
+    "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high",
+    "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high",
     "build": "npm run build:vite && npm run build:types",
     "build:types": "vue-tsc --declaration --emitDeclarationOnly",
     "build:vite": "vite build",
@@ -29,7 +31,6 @@
     "prepare": "husky install",
     "preview": "vite preview",
     "push": "npm publish",
-    "release": "npx semantic-release",
     "test": "vitest run",
     "test:ci": "vitest run --coverage"
   },
@@ -62,9 +63,6 @@
     "@pinia/testing": "^0.1.2",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-typescript": "^11.1.1",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/exec": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
     "@types/jest": "^29.5.3",
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^20.4.4",
@@ -77,8 +75,6 @@
     "license-checker": "^25.0.1",
     "lint-staged": "^13.2.3",
     "rollup-plugin-typescript-paths": "^1.4.0",
-    "semantic-release": "21.0.2",
-    "semantic-release-ado": "^1.4.0",
     "tsconfig": "^7.0.0",
     "tslib": "^2.6.0",
     "vite": "^4.4.9",
