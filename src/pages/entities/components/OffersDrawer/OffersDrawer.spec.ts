@@ -16,6 +16,7 @@ import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServi
 import { offerStepperStep } from './OffersDrawerTypes'
 import { getMockedAccount } from '@/services/account/accountMock'
 import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import { CONTACT_ID } from './OffersDrawerConst'
 
 const principalContact: User = getMockedPrincipalContact()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
@@ -176,7 +177,7 @@ describe('offersDrawer', () => {
         const expectedArgument: PostSubscriptionRequest = {
           accountId,
           applicant: 'user@email.com',
-          contacts: [5],
+          contacts: [CONTACT_ID],
           offerId: 2,
           notes: [],
           products: [5]

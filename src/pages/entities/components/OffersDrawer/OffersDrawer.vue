@@ -150,8 +150,7 @@ import type {
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
-
-const CONTACT_ID = 5 // temporarely hard coded
+import { CONTACT_ID } from './OffersDrawerConst'
 
 const { t } = useI18n({
   inheritLocale: true,
