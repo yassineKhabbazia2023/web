@@ -150,6 +150,7 @@ import type {
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
+import { CONTACT_ID } from './OffersDrawerConst'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -254,10 +255,9 @@ function onDeselectProduct(offerId: number, productId: number) {
 
 async function saveOffer() {
   const postSubscriptionRequest = getPostSubscriptionRequest(
-    props.accountNumber,
     props.accountId,
     props.userEmail,
-    principalContact.value,
+    CONTACT_ID,
     currentSubscriptionOffer.value,
     selectedProducts.value
   )

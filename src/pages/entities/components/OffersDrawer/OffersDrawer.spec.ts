@@ -14,7 +14,9 @@ import * as OffersDrawerUtils from './OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
 import { offerStepperStep } from './OffersDrawerTypes'
-import accountMock from '@/services/account/accountMock.json'
+import { getMockedAccount } from '@/services/account/accountMock'
+import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import { CONTACT_ID } from './OffersDrawerConst'
 
 const principalContact: User = getMockedPrincipalContact()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
@@ -22,6 +24,7 @@ const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
 const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
+const mockedAccount = getMockedAccount()
 
 vi.mock('@/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
@@ -35,7 +38,7 @@ vi.mock('@/services/offer', () => ({
 }))
 
 vi.mock('@/services/account', () => ({
-  fetchAccount: vi.fn(() => Promise.resolve(accountMock)),
+  fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
   patchAccount: vi.fn(() => Promise.resolve({}))
 }))
 
@@ -50,7 +53,7 @@ vi.mock('./OffersDrawerUtils', async () => {
 })
 
 const accountNumber = 'account-number'
-const accountId = 'account-id'
+const accountId = 5
 const userEmail = 'user@email.com'
 
 async function getWrapper(isOpened: boolean) {
@@ -171,25 +174,16 @@ describe('offersDrawer', () => {
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
-        const expectedArgument = {
-          account: {
-            accountNumber: 'account-number',
-            globalAccountId: accountId
-          },
+        const expectedArgument: PostSubscriptionRequest = {
+          accountId,
           applicant: 'user@email.com',
-          approvalRequired: false,
-          collaborators: [],
-          globalOfferId: 'offer-id-2',
+          contacts: [CONTACT_ID],
+          offerId: 2,
           notes: [],
-          products: [
-            5
-          ],
-          users: [
-            'test_loscos@yopmail.com'
-          ]
+          products: [5]
         }
 
-        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, accountMock)
+        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount)
         expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
     })

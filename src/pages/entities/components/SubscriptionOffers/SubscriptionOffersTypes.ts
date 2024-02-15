@@ -32,7 +32,7 @@ export interface SubscriptionOfferServices extends SubscriptionOffer {
   offersBookLink: string
   approvalRequired: boolean
   intranetLink: string
-  globalOfferId: string
+  offerId: number
   providers: SubscriptionOfferProvider[]
 }
 

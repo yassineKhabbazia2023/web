@@ -16,6 +16,6 @@ export interface OffersDrawerProps {
   modelValue: boolean
   selectedCompanyName: string
   accountNumber: string
-  accountId: string
+  accountId: number
   userEmail: string | undefined
 }

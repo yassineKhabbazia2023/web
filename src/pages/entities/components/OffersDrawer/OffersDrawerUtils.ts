@@ -2,7 +2,6 @@ import type { SelectedProduct } from './OffersDrawerTypes'
 import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
-import type { User } from '../PrincipalContact/PrincipalContactTypes'
 
 export function getSelectedProductIndex(
   selectedProducts: SelectedProduct[],
@@ -80,33 +79,26 @@ export function getInitialSelectedProducts(
 }
 
 export function getPostSubscriptionRequest(
-  accountNumber: string,
-  accountId: string,
+  accountId: number,
   userEmail: string | undefined,
-  principalContact: User | undefined,
+  principalContact: number,
   currentSubscriptionOffer: SubscriptionOfferServices | undefined,
   selectedProducts: SelectedProduct[]
 ): PostSubscriptionRequest | undefined {
   if (currentSubscriptionOffer === undefined) {
     return
   }
-  const { globalOfferId, approvalRequired } = currentSubscriptionOffer
-  const principalContactEmail = principalContact?.email ?? ''
+  const { offerId } = currentSubscriptionOffer
   const products = selectedProducts.map(
     ({ productConfigurationId }) => productConfigurationId
   )
 
   return {
-    account: {
-      globalAccountId: accountId,
-      accountNumber
-    },
-    globalOfferId,
+    accountId,
+    offerId,
     products,
+    contacts: [principalContact],
     applicant: userEmail ?? '',
-    users: [principalContactEmail],
-    collaborators: [],
-    notes: [],
-    approvalRequired
+    notes: []
   }
 }

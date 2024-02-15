@@ -61,13 +61,16 @@ export interface SubscriptionAccount {
   }
 }
 
+export interface Note {
+  stepName: string
+  stepNote: string
+}
+
 export interface PostSubscriptionRequest {
-  account: SubscriptionAccount,
-  globalOfferId: string,
-  products: number[],
-  applicant: string,
-  users: string[],
-  collaborators: string[],
-  notes: string[],
-  approvalRequired: boolean
+  accountId: number
+  offerId: number
+  products: number[]
+  contacts: number[]
+  notes: Note[]
+  applicant: string
 }

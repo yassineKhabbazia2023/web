@@ -1,10 +1,12 @@
 import { describe, it, vi, expect } from 'vitest'
 import { fetchAccount, patchAccount } from '.'
-import accountMock from './accountMock.json'
+import { getMockedAccount } from './accountMock'
 import * as helper from '@/helper/helper'
 
-const accountId = '5'
-const accountIdRejected = '8'
+const accountId = 5
+const accountIdRejected = 8
+
+const mockedAccount = getMockedAccount()
 
 vi.mock('@kpmg/common', () => {
   return {
@@ -12,12 +14,12 @@ vi.mock('@kpmg/common', () => {
       account: {
         get: vi.fn().mockImplementation((url) => {
           return url === `accounts/${accountId}`
-            ? Promise.resolve({ data: accountMock })
+            ? Promise.resolve({ data: mockedAccount })
             : Promise.reject(new Error('rejected'))
         }),
         patch: vi.fn().mockImplementation((url) => {
           return url === `accounts/${accountId}`
-            ? Promise.resolve({ data: accountMock })
+            ? Promise.resolve({ data: mockedAccount })
             : Promise.reject(new Error('rejected'))
         })
       }
@@ -30,7 +32,7 @@ describe('test accountServices', () => {
   describe('fetchAccount', () => {
     it('should return account on success', async () => {
       const account = await fetchAccount(accountId)
-      expect(account).toStrictEqual(accountMock)
+      expect(account).toStrictEqual(mockedAccount)
     })
 
     it.skip('should call handleRequestError when an error accors', async () => {
@@ -43,17 +45,17 @@ describe('test accountServices', () => {
   describe('patchAccount', () => {
     it('should return updated account on success', async () => {
       const account = {
-        ...accountMock,
+        ...mockedAccount,
         accountId
       }
       const updatedAccount = await patchAccount(account)
-      expect(updatedAccount).toMatchObject(accountMock)
+      expect(updatedAccount).toMatchObject(mockedAccount)
     })
 
     it.skip('should call handleRequestError when an error accors', async () => {
       const handleRequestErrorSpy = vi.spyOn(helper, 'handleRequestError')
       const account = {
-        ...accountMock,
+        ...mockedAccount,
         accountId: accountIdRejected
       }
       await patchAccount(account)

@@ -69,7 +69,7 @@
       </PPagination>
 
       <OffersDrawer
-        v-if="openOffersDrawer"
+        v-if="openOffersDrawer && selectedAccountId"
         :selectedCompanyName="selectedCompanyName"
         :accountNumber="selectedAccountNumber"
         :accountId="selectedAccountId"
@@ -312,9 +312,9 @@ onMounted(async () => {
 
 const openOffersDrawer = ref(false)
 const selectedAccountNumber = ref<string>('')
-const selectedAccountId = ref<string>('')
+const selectedAccountId = ref<number | undefined>()
 
-const onClickDeploy = (accountId: string, accountNumber: string, companyName: string) => {
+const onClickDeploy = (accountId: number, accountNumber: string, companyName: string) => {
   openOffersDrawer.value = true
   selectedAccountNumber.value = accountNumber
   selectedAccountId.value = accountId

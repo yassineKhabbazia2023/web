@@ -26,6 +26,7 @@ export const mockTableData: IWalletData[] = [
       color: 'warning'
     },
     id: '5f85e793-57c0-4da6-b821-3b2888567256',
+    accountId: 1,
     accountNumber: 'V900000547',
     name: 'NOM1',
     isFavorite: false

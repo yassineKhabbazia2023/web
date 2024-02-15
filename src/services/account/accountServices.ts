@@ -4,7 +4,7 @@ import { handleRequestError } from '@/helper/helper'
 
 // This is temporarily waiting for the Gateway API
 const accountID = 5
-export async function fetchAccount(_accountId: string): Promise<Account|undefined> {
+export async function fetchAccount(_accountId: number): Promise<Account|undefined> {
   try {
     const response = await commonApi().account.get(`accounts/${accountID}`)
 
