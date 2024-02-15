@@ -61,7 +61,7 @@ export interface SubscriptionAccount {
   }
 }
 
-export interface StepNote {
+export interface Note {
   stepName: string
   stepNote: string
 }
@@ -71,6 +71,6 @@ export interface PostSubscriptionRequest {
   offerId: number
   products: number[]
   contacts: number[]
-  notes: StepNote[]
+  notes: Note[]
   applicant: string
 }
