@@ -40,7 +40,7 @@
       title="Icon Button"
       icon="line-md:iconify2">
       <PButton
-        class="el-button--icon"
+        pIconOnly
         :pType="iconButton.iconButtonType"
         :pPlain="iconButton.iconButtonPlain"
         :pRound="iconButton.iconButtonRound"

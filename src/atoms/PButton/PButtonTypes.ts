@@ -13,4 +13,5 @@ export interface PButtonProps {
   pDisabled?: boolean,
   pLoading?: boolean,
   pSize?: 'default' | 'small'
+  pIconOnly?: boolean
 }

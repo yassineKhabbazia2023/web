@@ -5,6 +5,7 @@ $select: (
   'multiple-input-color': getCssVar('text-color-regular'),
   'input-focus-border-color': getCssVar('color-primary'),
   'input-font-size': getCssVar('font-size-base'),
+  'width': 100%
 );
 
 $select-option: (
@@ -36,6 +37,8 @@ $select-tags-prefix-padding: (
 );
 
 .el-select {
+  width: var(--el-select-width);
+  
   .el-input {
     .el-select__caret.el-icon {
       &.is-reverse {

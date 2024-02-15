@@ -16,7 +16,8 @@ describe('test for PButton', () => {
         pCircle: true,
         pDisabled: true,
         pLoading: true,
-        pSize: 'small'
+        pSize: 'small',
+        pIconOnly: true
       }
     })
 
@@ -28,5 +29,6 @@ describe('test for PButton', () => {
     expect(wrapper.find('.is-loading').exists()).toBeTruthy()
     expect(wrapper.find('.is-circle').exists()).toBeTruthy()
     expect(wrapper.find('.is-disabled').exists()).toBeTruthy()
+    expect(wrapper.find('.p-button--icon').exists()).toBeTruthy()
   })
 })

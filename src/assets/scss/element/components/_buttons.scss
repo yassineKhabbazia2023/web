@@ -49,6 +49,25 @@ $button-padding-horizontal: (
     margin-left: 0;
   }
 
+  &.is-loading {
+    &:not(.el-button--icon, .p-button--icon) {
+      .el-icon.is-loading {
+        margin-right: 1.2rem;
+      }
+    }
+
+    &.el-button--icon,
+    &.p-button--icon {
+      .el-icon:not(.is-loading) {
+        display: none;
+      }
+    }
+
+    .el-button__icon--left {
+      display: none;
+    }
+  }
+
   & i[class*=el-icon] + span {
     margin-left: 0px;
   }
@@ -77,7 +96,8 @@ $button-padding-horizontal: (
         font-size: 14px;
       }
     }
-    &#{$self}--icon {
+    &#{$self}--icon,
+    &.p-button--icon {
       width: 44px;
 
       #{$self}__icon--left,

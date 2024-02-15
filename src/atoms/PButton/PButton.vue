@@ -9,12 +9,19 @@
     :size="buttonSizeParent"
     :class="pClassMapper"
   >
+    <template #loading>
+      <PIcon class="is-loading">
+        <PILoader />
+      </PIcon>
+    </template>
     <slot />
   </ElButton>
 </template>
 
 <script setup lang="ts">
 import { computed, inject } from 'vue'
+import PIcon from '@/atoms/PIcon'
+import { PILoader } from '@/atoms/PIcon/components'
 import { ElButton } from 'element-plus'
 import type { PButtonProps } from './PButtonTypes'
 import { injectionButtonKey } from '@/atoms/PButtonGroup/PButtonGroupTypes'
@@ -26,7 +33,8 @@ const props = withDefaults(defineProps<PButtonProps>(), {
   pCircle: false,
   pDisabled: false,
   pLoading: false,
-  pSize: 'default'
+  pSize: 'default',
+  pIconOnly: false
 })
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']
@@ -47,11 +55,12 @@ const getButtonType = (buttonType: any) => (
 const buttonSizeParent = computed(() =>
   parentType?.pSize !== undefined ? parentType.pSize : props.pSize)
 
-const pClassMapper = computed(() =>
-  nativeTypes.includes(button.value.buttonType)
+const pClassMapper = computed(() => {
+  const buttonTypeClass = nativeTypes.includes(button.value.buttonType)
     ? ''
-    : ({
+    : {
         [`p-button--${button.value.buttonType}`]: true
-      })
-)
+      }
+  return ['p-button', { 'p-button--icon': props.pIconOnly }, buttonTypeClass]
+})
 </script>
