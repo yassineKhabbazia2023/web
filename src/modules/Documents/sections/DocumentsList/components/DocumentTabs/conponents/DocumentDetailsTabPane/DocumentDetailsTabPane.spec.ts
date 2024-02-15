@@ -101,9 +101,8 @@ describe('documentDetailsTabPane', () => {
           type: '.pdf',
           folder: {
             id: 1,
-            path: ['My Documents', 'Dir']
+            path: ['Comptabilité', 'Dépôt']
           }
-
         }
 
         const updatedProps = { ...defaultProps, document: updatedDocument }
@@ -158,6 +157,41 @@ describe('documentDetailsTabPane', () => {
       folder: {
         id: 1,
         path: ['My Documents', 'Dir']
+      }
+    }
+
+    const updatedProps = { ...defaultProps, document: updatedDocument }
+    await nextTick()
+    const documentDetailsTabPane = createWrapper(updatedProps)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    await nextTick()
+
+    expect(pTagWrapper).toHaveLength(1)
+  })
+
+  it.each([
+    {
+      path: ['Comptabilité', 'Dépôt']
+    },
+    {
+      path: ['Comptabilité', 'Dépôt', 'Achats']
+    },
+    {
+      path: ['Comptabilité', 'Dépôt', 'Ventes']
+    }
+  ])('should hide tag if document is not inside a PIA synced folder', async ({ path }) => {
+    const updatedDocument = {
+      ...documentMock,
+      piaStatus: {
+        technicalName: 'Collectable',
+        labelFr: null,
+        labelEn: 'Active',
+        date: '2023-10-11T08:09:26Z'
+      },
+      type: '.pdf',
+      folder: {
+        id: 1,
+        path
       }
     }
 

@@ -118,6 +118,7 @@ import { useDownloadDocuments } from
 import { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
+import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
 
 const props = defineProps<DocumentDetailsTabPaneProps>()
 
@@ -157,9 +158,10 @@ const tagTypeProps = (piaStatus: string): PiaStatusTag => {
 const allowedPiaStatusTagsToDisplay = ref<string[]>(['Collected', 'Duplicate', 'Archived'])
 
 const shouldDisplayPiaStatusTag = computed(() =>
+  isInPIASyncedFolder.value && // Remove this line when back end is updated
   props.document.piaStatus &&
-props.document.piaStatus.labelFr &&
-allowedPiaStatusTagsToDisplay.value.includes(props.document.piaStatus.technicalName))
+  props.document.piaStatus.labelFr &&
+  allowedPiaStatusTagsToDisplay.value.includes(props.document.piaStatus.technicalName))
 
 const getTagProps = computed(() => {
   return tagTypeProps(props.document.piaStatus.technicalName)
@@ -180,6 +182,22 @@ const handleDownloadClick = () => {
   handleDownloadDocumentsEvent()
   isLoading.value = false
 }
+
+// This is meant to be deleted really soon once the back end is updated
+// to remove the PIA sync property from the response.
+//  Back end US here :
+// eslint-disable-next-line max-len
+// https://kpmgfr.visualstudio.com/Constellation/_backlogs/backlog/Hades/Stories?System.WorkItemType=User%20Story&workitem=304249
+
+const isInPIASyncedFolder = computed(() => {
+  const documentPath = getPathFromArray(props.document.folder.path)
+  if (
+    documentPath === 'Comptabilité > Dépôt' ||
+    documentPath === 'Comptabilité > Dépôt > Achats' ||
+    documentPath === 'Comptabilité > Dépôt > Ventes'
+  ) return true
+  return false
+})
 </script>
 <i18n lang="yaml">
   en-US:
