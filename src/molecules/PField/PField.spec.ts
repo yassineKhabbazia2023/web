@@ -37,12 +37,12 @@ describe('test PField', () => {
     it('should render PInput', () => {
       expect(pInput.exists()).toBeTruthy()
     })
-    it('should emit update:modelValue when enter value', () => {
+    it('should emit update:model-value when enter value', () => {
       const otherValue = 'Henry'
 
-      pInput.vm.$emit('update:modelValue', otherValue)
+      pInput.vm.$emit('update:model-value', otherValue)
 
-      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
     })
   })
   describe('with dropdrop field', () => {
@@ -60,12 +60,12 @@ describe('test PField', () => {
     it('should render PDropdown', () => {
       expect(pDropDown.exists()).toBeTruthy()
     })
-    it('should emit update:modelValue when enter value', () => {
+    it('should emit update:model-value when enter value', () => {
       const otherValue = 'b'
 
-      pDropDown.vm.$emit('update:modelValue', otherValue)
+      pDropDown.vm.$emit('update:model-value', otherValue)
 
-      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherValue]])
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
     })
   })
   describe('with date field', () => {
@@ -83,13 +83,13 @@ describe('test PField', () => {
     it('should render PDatePicker', () => {
       expect(pDatePicker.exists()).toBeTruthy()
     })
-    it('should emit update:modelValue when enter value', () => {
+    it('should emit update:model-value when enter value', () => {
       const otherDateIso = '2024-01-30'
       const otherDate = new Date(otherDateIso)
 
-      pDatePicker.vm.$emit('update:modelValue', otherDate)
+      pDatePicker.vm.$emit('update:model-value', otherDate)
 
-      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[otherDateIso]])
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherDateIso]])
     })
   })
 })
