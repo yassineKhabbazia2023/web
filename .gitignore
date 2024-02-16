@@ -8,7 +8,6 @@ stats.html
 
 # dependencies
 node_modules
-*.tgz
 
 # IDEs and editors
 /.idea
