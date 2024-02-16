@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<PFieldProps<T>>(), {
 })
 
 const emit = defineEmits<{
-  'update:modelValue': [T]
+  'update:model-value': [T]
 }>()
 
 const internalValue = computed({
@@ -60,7 +60,7 @@ const internalValue = computed({
     return props.modelValue as T
   },
   set(value: T) {
-    emit('update:modelValue', value)
+    emit('update:model-value', value)
   }
 })
 
@@ -70,7 +70,7 @@ const internalDate = computed({
   },
   set(value: Date|string) {
     const isoValue = value instanceof Date ? value.toISOString().substring(0, 10) : value
-    emit('update:modelValue', isoValue as T)
+    emit('update:model-value', isoValue as T)
   }
 })
 </script>
