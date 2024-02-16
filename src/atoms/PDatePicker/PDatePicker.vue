@@ -37,7 +37,7 @@
 import { computed, watch } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { PICalendarEvent } from '@/atoms/PIcon/components'
-import type { PDatePickerProps, calendarEvent } from './PDatePickerTypes'
+import type { PDatePickerProps, PDatePickerModelValue, calendarEvent } from './PDatePickerTypes'
 
 const props = withDefaults(defineProps<PDatePickerProps>(), {
   pCalendarLite: false,
@@ -55,7 +55,7 @@ const props = withDefaults(defineProps<PDatePickerProps>(), {
 
 const emit = defineEmits<{
   'selected-date': [string]
-  'update:modelValue': [string | Date]
+  'update:modelValue': [PDatePickerModelValue]
   'calendar-change': [[Date, Date]],
   'change': [Date]
 }>()
