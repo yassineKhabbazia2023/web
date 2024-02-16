@@ -106,7 +106,7 @@ const folderNameExists = ref(false)
 
 const isFolderNameExists = (folderName: string): boolean => {
   return props.selectedFolder?.children?.some(
-    (folder) => folder.name.toLowerCase() === folderName.toLowerCase()
+    (folder) => folder.name.trim().toLowerCase() === folderName.trim().toLowerCase()
   )
 }
 

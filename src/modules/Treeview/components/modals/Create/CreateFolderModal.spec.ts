@@ -217,6 +217,17 @@ describe('interactions', () => {
         properties: {} as FolderProperties,
         serviceId: 'some-service'
       }
+    },
+    {
+      childrenFolder: {
+        id: 2,
+        children: [{} as Folder],
+        name: ' Thefolder ',
+        parent: { id: 1 },
+        permissions: [],
+        properties: {} as FolderProperties,
+        serviceId: 'some-service'
+      }
     }
   ])(
     'should not emit on-confirm-create-folder when folder name already exists ',
