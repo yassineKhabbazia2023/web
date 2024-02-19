@@ -57,9 +57,9 @@
 
 <script setup lang="ts">
 import { PDialog, PButton, PImage } from '@kpmg/styleguide'
-import { ref, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { commonStore as useStore, commonApi } from '@kpmg/common'
+import { commonApi, tokenService } from '@kpmg/common'
 import jwtDecode, { JwtPayload } from 'jwt-decode'
 
 const { t } = useI18n({
@@ -67,31 +67,25 @@ const { t } = useI18n({
   useScope: 'local'
 })
 const isVisibleDialog = ref(false)
-const store = useStore()
 const emit = defineEmits(['logout'])
 let exp: number | undefined
 let sub: string | undefined
 let timer: any
 
-watch(
-  () => store.user?.token,
-  (token) => {
-    if (!token) return
-    ({ exp, sub } = jwtDecode<JwtPayload>(token))
-    if (exp && sub) tokenHandle(exp)
-  }
-)
+function onTokenChanges(token: string) {
+  if (!token) return
+
+  const decodedToken = jwtDecode<JwtPayload>(token)
+  exp = decodedToken?.exp
+  sub = decodedToken?.sub
+  if (exp && sub) tokenHandle(exp)
+}
 
 const handleRenew = async () => {
   isVisibleDialog.value = false
   const baseUrl = `/refreshToken?userId=${sub}`
   const { data: token } = await commonApi().auth.post(baseUrl)
-  store.$patch({
-    user: {
-      token
-    }
-  })
-  sessionStorage.setItem('token', token)
+  tokenService.setToken(token)
   clearTimeout(timer)
 }
 
@@ -106,6 +100,14 @@ const tokenHandle = (exp: number) => {
     isVisibleDialog.value = true
   }, delay) // expiration time minus 5 seconds
 }
+
+onMounted(() => {
+  tokenService.registerOnChange('popupcb', onTokenChanges)
+})
+
+onBeforeUnmount(() => {
+  tokenService.unregisterOnChange('popupcb')
+})
 </script>
 
 <style lang="scss">

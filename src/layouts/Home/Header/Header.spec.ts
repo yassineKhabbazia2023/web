@@ -60,11 +60,11 @@ describe('header', () => {
     const PToolboxWrapper = wrapper.findComponent(PToolbox)
     PToolboxWrapper.vm.$emit('p-toolbox-item-clicked', 'logout')
     await nextTick()
-    expect(sessionStorage.getItem('token')).toBeNull()
+    expect(localStorage.getItem('token')).toBeNull()
     expect(spyRouterPush).toHaveBeenCalledWith({ name: 'login' })
   })
 
-  it('should display initial user even the data in store is empty and token on sessionStorage is valid', () => {
+  it('should display initial user even the data in store is empty and token on localStorage is valid', () => {
     const myStore = store()
 
     expect(myStore.$patch).toHaveBeenCalledWith({
