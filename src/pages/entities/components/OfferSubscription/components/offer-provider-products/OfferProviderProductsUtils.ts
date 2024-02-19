@@ -6,7 +6,7 @@ import {
 import type {
   SubscriptionOfferProduct
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import { getSelectedProductIndex } from '../../../OffersDrawer/OffersDrawerUtils'
+import { getSelectedProductIndex } from '../../../OffersDrawer/utils/OffersDrawerUtils'
 
 export function getIsServiceSelected(
   offerId: number,

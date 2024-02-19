@@ -10,9 +10,10 @@ export function getMockedAccount(): Account {
     employeeCount: 8,
     commercialName: 'SCI Licorn',
     accounting: {
+      accountingType: 'Client',
+      activityType: 'Prestation de services',
       fiscalExerciseStartDate: '2024-02-07T15:49:54',
       fiscalExerciseDuration: 12,
-      accountingType: 'Client',
       fiscalSystem: 'Système fiscal',
       taxationSystem: 'Système de taxation'
     },
@@ -20,7 +21,7 @@ export function getMockedAccount(): Account {
       legalName: 'SCI Licorn',
       siret: '443 061 841 00047',
       legalFormCode: 'B12',
-      staffSizeRange: '4 à 15 salariés',
+      staffSizeRange: 'De 4 à 15 salariés',
       naf: [
         {
           nafId: 1,
@@ -37,8 +38,9 @@ export function getMockedAccount(): Account {
     address: [
       {
         addressId: 2,
-        street: 'Rue de liege',
-        zipCode: 'test',
+        addressLine1: 'Rue de liege',
+        addressLine2: 'test 2',
+        addressLine3: 'test 3',
         country: 'France',
         city: 'Paris'
       }

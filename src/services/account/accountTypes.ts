@@ -2,6 +2,7 @@ export interface Accounting {
   fiscalExerciseStartDate?: string
   fiscalExerciseDuration?: number
   accountingType?: string
+  activityType?: string
   fiscalSystem?: string
   taxationSystem?: string
 }
@@ -22,6 +23,12 @@ export interface Legal {
   naf?: Naf[]
 }
 
+export interface Phone {
+  phoneId: number,
+  phoneNumber?: string,
+  type?: string
+}
+
 export interface Vat {
   system?: string
   intra?: string
@@ -35,7 +42,11 @@ export interface Hub {
 
 export interface Address {
   addressId: number
-  street?: string
+  addressLine1?: string
+  addressLine2?: string
+  addressLine3?: string
+  addressType?: 'delivery' | 'billing'
+  state?: string
   zipCode?: string
   country?: string
   city?: string
@@ -59,7 +70,8 @@ export interface Account {
   legal?: Legal
   vat?: Vat
   address?: Address[]
-  phone?: string[]
+  phone?: Phone[]
+  email?: string
   hub?: Hub
   deploymentPlanning?: Deployment[]
 }

@@ -1,12 +1,12 @@
 import type { Account } from '.'
 import { commonApi } from '@kpmg/common'
-import { handleRequestError } from '@/helper/helper'
+import { handleRequestError } from '@/helper'
+import { ACCOUNT_ID } from '@/pages/entities/components/OffersDrawer/OffersDrawerConst'
 
-// This is temporarily waiting for the Gateway API
-const accountID = 5
+// The account ID is temporarily hard-coded
 export async function fetchAccount(_accountId: number): Promise<Account|undefined> {
   try {
-    const response = await commonApi().account.get(`accounts/${accountID}`)
+    const response = await commonApi().account.get(`accounts/${ACCOUNT_ID}`)
 
     return response.data
   } catch (error) {
@@ -16,7 +16,7 @@ export async function fetchAccount(_accountId: number): Promise<Account|undefine
 
 export async function patchAccount(account: Account): Promise<Account|undefined> {
   try {
-    const response = await commonApi().account.patch(`accounts/${accountID}`, account)
+    const response = await commonApi().account.patch(`accounts/${ACCOUNT_ID}`, account)
 
     return response.data
   } catch (error) {

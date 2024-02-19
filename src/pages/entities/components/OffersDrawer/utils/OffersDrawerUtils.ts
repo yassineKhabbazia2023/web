@@ -1,7 +1,8 @@
-import type { SelectedProduct } from './OffersDrawerTypes'
 import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
+import type { SelectedProduct } from '../OffersDrawerTypes'
+import type { SubscriptionOfferServices } from '../../SubscriptionOffers/SubscriptionOffersTypes'
 import type { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { Account } from '@/services/account'
 
 export function getSelectedProductIndex(
   selectedProducts: SelectedProduct[],
@@ -89,16 +90,53 @@ export function getPostSubscriptionRequest(
     return
   }
   const { offerId } = currentSubscriptionOffer
-  const products = selectedProducts.map(
+  const productConfigurations = selectedProducts.map(
     ({ productConfigurationId }) => productConfigurationId
   )
 
   return {
     accountId,
     offerId,
-    products,
+    productConfigurations,
     contacts: [principalContact],
     applicant: userEmail ?? '',
     notes: []
   }
 }
+
+export const getFirstDayOfYear = () => {
+  const firstDayOfYear = new Date(new Date().getFullYear(), 0, 1).toISOString()
+  return firstDayOfYear
+}
+
+// For now, there's no need to translate the text
+export const getMappedAPIData = (account: Account) => ({
+  'legal.siret': account?.legal?.siret ?? 'Non modifiable',
+  'legal.legalForm': account?.legal?.legalForm ?? 'Non modifiable',
+  'legal.naf.nafCode': account?.legal?.naf?.at(0)?.nafCode ?? 'Non modifiable',
+  'legal.staffSizeRange': account?.legal?.staffSizeRange ?? '',
+  'hub.hubName': account?.hub?.hubName ?? '',
+  'accounting.fiscalExerciseStartDate':
+    account?.accounting?.fiscalExerciseStartDate ?? getFirstDayOfYear(),
+  'accounting.fiscalExerciseDuration':
+    account?.accounting?.fiscalExerciseDuration ?? 12,
+  'accounting.accountingType':
+    account?.accounting?.accountingType ?? 'Engagement',
+  'accounting.activityType':
+    account?.accounting?.activityType ?? 'Prestation de services',
+  'accounting.fiscalSystem': account?.accounting?.fiscalSystem ?? 'BIC',
+  'accounting.taxationSystem':
+    account?.accounting?.taxationSystem ?? 'Impôt sur le revenu',
+  'vat.system': account?.vat?.system ?? 'Réel normal - CA3 mensuelle',
+  'vat.intra': account?.vat?.intra ?? 'Non modifiable',
+  'vat.type': account?.vat?.type ?? 'Encaissement',
+  'address.addressLine1':
+    account?.address?.at(0)?.addressLine1 ?? 'Non modifiable',
+  'address.addressLine2':
+    account?.address?.at(0)?.addressLine2 ?? 'Non modifiable',
+  'address.zipCode': account?.address?.at(0)?.zipCode ?? 'Non modifiable',
+  'address.city': account?.address?.at(0)?.city ?? 'Non modifiable',
+  'address.country': account?.address?.at(0)?.country ?? 'Non modifiable',
+  email: account?.email ?? 'Non modifiable',
+  'phone.phoneNumber': account?.phone?.at(0)?.phoneNumber ?? 'Non modifiable'
+})

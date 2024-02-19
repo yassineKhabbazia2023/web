@@ -69,7 +69,7 @@ export interface Note {
 export interface PostSubscriptionRequest {
   accountId: number
   offerId: number
-  products: number[]
+  productConfigurations: number[]
   contacts: number[]
   notes: Note[]
   applicant: string

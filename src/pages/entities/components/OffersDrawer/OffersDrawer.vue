@@ -72,9 +72,12 @@
             v-if="activeStep === offerStepperStep.COLLABORATORS"
             data-testid="collaborators-step"
           />
-          <pre v-if="activeStep === offerStepperStep.INFORMATION" data-testid="information-step">
-            {{ account }}
-          </pre>
+          <CompanyInformation
+            v-if="activeStep === offerStepperStep.INFORMATION"
+            v-model="accountFormModel"
+            :providerName="providerName"
+            data-testid="information-step"
+          />
         </div>
         <SubscriptionOffers
           v-else
@@ -135,19 +138,35 @@ import { PDrawer, PSteps, PStep, PIcon, PILink45deg } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import PrincipalContact from '../PrincipalContact'
+import CompanyInformation from '../CompanyInformation'
 import NextPreviousButtons from '../NextPreviousButtons'
 import ConfirmationModal from '../ConfirmationModal'
-import { getAllOffers, getOffer, getOffersBookLink, getPrincipalContact } from '@/services/offer'
-import { offerStepperStep, type OffersDrawerProps, type SelectedProduct } from './OffersDrawerTypes'
-import { fetchAccount, patchAccount, type Account } from '@/services/account'
 import {
-  addSelectedProduct, removeSelectedProduct, getInitialSelectedProducts, getPostSubscriptionRequest
-} from './OffersDrawerUtils'
+  getAllOffers,
+  getOffer,
+  getOffersBookLink,
+  getPrincipalContact
+} from '@/services/offer'
+import { offerStepperStep } from './OffersDrawerTypes'
+import type {
+  OffersDrawerProps,
+  SelectedProduct
+} from './OffersDrawerTypes'
+import { fetchAccount, patchAccount, type Account } from '@/services/account'
+import { generateObject } from '@/helper'
+import {
+  addSelectedProduct,
+  removeSelectedProduct,
+  getInitialSelectedProducts,
+  getPostSubscriptionRequest,
+  getMappedAPIData
+} from './utils/OffersDrawerUtils'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
+import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
 import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
 import { CONTACT_ID } from './OffersDrawerConst'
 
@@ -185,6 +204,7 @@ const emit = defineEmits<{
 const props = defineProps<OffersDrawerProps>()
 
 const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
+const accountFormModel = ref<Record<string, string | number>>({})
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const principalContact = ref<User | undefined>()
@@ -206,7 +226,9 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
   } else {
     currentSubscriptionOffer.value = await getOffer(selectedOfferId)
   }
-  selectedProducts.value = getInitialSelectedProducts(currentSubscriptionOffer.value)
+  selectedProducts.value = getInitialSelectedProducts(
+    currentSubscriptionOffer.value
+  )
 }
 
 const nextLabel = computed((): string => {
@@ -267,7 +289,26 @@ async function saveOffer() {
 
 async function validateOffer() {
   if (account.value !== undefined) {
-    await patchAccount(account.value)
+    // Only the following values are changeable in our form
+    const { accounting } = generateObject('accounting', accountFormModel.value)
+    const { hub } = generateObject('hub', accountFormModel.value)
+    const { vat } = generateObject('vat', accountFormModel.value)
+    const { legal } = generateObject('legal', accountFormModel.value)
+
+    const accountFormValue = {
+      ...account.value,
+      accounting,
+      hub: {
+        hubId: 14, // This property is temporarily hard-coded
+        ...hub
+      },
+      vat,
+      legal: {
+        ...account.value.legal,
+        staffSizeRange: legal.staffSizeRange
+      }
+    }
+    await patchAccount(accountFormValue)
   }
   await saveOffer()
 }
@@ -298,10 +339,22 @@ const onCloseOffersDrawer = () => {
   internalIsOpened.value = false
 }
 
+const providerName = computed((): ProviderFormName => {
+  return (
+    currentSubscriptionOffer.value &&
+    (currentSubscriptionOffer.value?.providers
+      .filter((item) => item.providerName !== 'PULSE')
+      .at(0)?.providerName as 'MEG' | 'LOOP')
+  )
+})
+
 onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
   principalContact.value = await getPrincipalContact()
   account.value = await fetchAccount(props.accountId)
+  if (account.value) {
+    accountFormModel.value = getMappedAPIData(account.value)
+  }
 })
 </script>
 <style lang="scss" scoped>

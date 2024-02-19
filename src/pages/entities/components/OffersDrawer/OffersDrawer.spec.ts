@@ -10,10 +10,9 @@ import type {
   SubscriptionOfferServices
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
-import * as OffersDrawerUtils from './OffersDrawerUtils'
+import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
-import { offerStepperStep } from './OffersDrawerTypes'
 import { getMockedAccount } from '@/services/account/accountMock'
 import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import { CONTACT_ID } from './OffersDrawerConst'
@@ -47,7 +46,7 @@ vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
 }))
 
 vi.mock('./OffersDrawerUtils', async () => {
-  const OffersDrawerUtils = await vi.importActual('./OffersDrawerUtils')
+  const OffersDrawerUtils = await vi.importActual('./utils/OffersDrawerUtils')
 
   return OffersDrawerUtils
 })
@@ -153,23 +152,16 @@ describe('offersDrawer', () => {
         expect(removeSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productConfigurationId)
       })
     })
-    describe('when user has clicked 4 times on nextButton', () => {
-      it('when user has clicked 4 times on nextButton', async () => {
+    describe('create subscription', () => {
+      it('should patch the account and create a subscription when the user confirms', async () => {
         const wrapper = await getWrapper(true)
-        const secondOffer = findSecondOffer(wrapper)
-        await secondOffer.trigger('click')
-        await flushPromises()
+        const firstOffer = findFirstOffer(wrapper)
+        await firstOffer.trigger('click')
+        await nextTick()
+
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
-
-        const nextPreviousButtons = findNextPreviousButtons(wrapper)
-        const stepCount = Object.keys(offerStepperStep).length
-        for (let i = 0; i < stepCount - 1; i++) {
-          nextPreviousButtons.vm.$emit('clickNext')
-        }
         const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
-
-        await nextTick()
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
@@ -178,9 +170,9 @@ describe('offersDrawer', () => {
           accountId,
           applicant: 'user@email.com',
           contacts: [CONTACT_ID],
-          offerId: 2,
+          offerId: 1,
           notes: [],
-          products: [5]
+          productConfigurations: [1, 2, 3, 4]
         }
 
         expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount)
