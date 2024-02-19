@@ -78,7 +78,7 @@
 import { computed, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
-import { commonApi } from '@kpmg/common'
+import { commonApi, tokenService } from '@kpmg/common'
 import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
 import useInitUserAuth from '@/composable/useInitUserAuth'
 import useNavigation from '@/composable/useNavigation'
@@ -156,7 +156,8 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
         webToken: token
       }
     } = await commonApi().auth.post('login', toRaw(formValues))
-    sessionStorage.setItem('token', token)
+
+    tokenService.setToken(token)
     await initAuthClient()
 
     navigateToCustomerWallet()

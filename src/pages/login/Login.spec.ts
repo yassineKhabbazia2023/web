@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, VueWrapper } from '@vue/test-utils'
 import Login from './'
+import { tokenService } from '@kpmg/common'
 
 const USER_ID = 'customUserId'
 const WEB_TOKEN = 'customToken'
@@ -25,7 +26,7 @@ vi.mock('vue-router', () => ({
   })
 }))
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     auth: {
       post: mockAuthPost
@@ -33,7 +34,10 @@ vi.mock('@kpmg/common', async () => ({
   }),
   commonStore: () => ({
     $patch: mockStorePatch
-  })
+  }),
+  tokenService: {
+    setToken: vi.fn()
+  }
 }))
 vi.mock('@/composable/useInitUserAuth', () => ({
   default: () => ({
@@ -41,7 +45,6 @@ vi.mock('@/composable/useInitUserAuth', () => ({
       mockStorePatch({
         user: {
           id: USER_ID,
-          token: WEB_TOKEN,
           isCollab: false
         }
       })
@@ -73,6 +76,8 @@ describe('login', () => {
   it('fill the login page and has a redirection to the home page', async () => {
     const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
     const INPUT_PASSWORD_VALUE = 'customPassword'
+    const setTokenSpy = vi.spyOn(tokenService, 'setToken')
+
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
@@ -88,11 +93,11 @@ describe('login', () => {
     expect(mockStorePatch).toHaveBeenCalledWith({
       user: {
         id: USER_ID,
-        token: WEB_TOKEN,
         isCollab: false
       }
     })
 
+    expect(setTokenSpy).toHaveBeenNthCalledWith(1, WEB_TOKEN)
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
