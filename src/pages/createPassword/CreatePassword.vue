@@ -241,13 +241,13 @@ const submitForm = (formEl: FormInstance | undefined) => {
             webToken: token
           }
         } = await commonApi().auth.post(urlLogin, { email, password: formValue.password })
+        tokenService.setToken(token)
         store().$patch({
           user: {
             id,
             isCollab: false
           }
         })
-        tokenService.setToken(token)
         router.push({ name: 'entities' })
       } catch {}
     } else {

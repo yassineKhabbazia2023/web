@@ -1,8 +1,10 @@
 import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
+import { tokenService } from '@kpmg/common'
 import CreatePassword from './'
 
+const mockToken = 'token'
 const routes = [
   {
     path: '/expireToken',
@@ -30,13 +32,13 @@ router.push({
   query: {
     contactId: 'contactId',
     accountId: 'accountId',
-    token: 'token',
+    token: mockToken,
     email: 'email'
   }
 })
 
 const patchMock = vi.fn()
-const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
+const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
@@ -48,7 +50,11 @@ vi.mock('@kpmg/common', () => ({
     auth: {
       post: postMock
     }
-  })
+  }),
+  tokenService: {
+    getToken: vi.fn(),
+    setToken: vi.fn()
+  }
 }))
 
 const createWrapper = () =>
@@ -107,6 +113,8 @@ describe('page creation password', () => {
     wrapper.find('.el-checkbox__original').setValue('true')
     await flushPromises()
     wrapper.find('button').trigger('click')
+    const setTokenSpy = vi.spyOn(tokenService, 'setToken')
+    vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
     await flushPromises()
     const patchLink = '/Activation/AcceptTerms?contactId=contactId'
     const postLink = '/createResetPassword'
@@ -125,5 +133,6 @@ describe('page creation password', () => {
     expect(postMock).toHaveBeenCalledTimes(2)
     expect(postMock).toHaveBeenNthCalledWith(1, postLink, data)
     expect(postMock).toHaveBeenNthCalledWith(2, loginLink, dataLogin)
+    expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
   })
 })
