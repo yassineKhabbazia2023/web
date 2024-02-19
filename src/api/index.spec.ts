@@ -1,29 +1,21 @@
 import api from './index'
 import { vi } from 'vitest'
-import { createTestingPinia } from '@pinia/testing'
-import commonStore from '../stores'
-
-const pinia = createTestingPinia()
+import { tokenService } from '../main'
 
 vi.mock('env-vars')
 vi.mock('axios')
 
 describe('api axios instances with env-vars', () => {
-
+  const token = 'abcdef-123456'
+  beforeEach(() => {
+    vi.spyOn(tokenService, 'getToken').mockReturnValue(token)
+  })
   it('should return at least one axios instance', () => {
     const instances = api()
     expect(Object.keys(instances).length).greaterThanOrEqual(1)
   })
 
-  it('each axios REST methodes should have the user\'s token in request headers', async () => {
-    const store = commonStore(pinia)
-    const token = 'abcdef-123456'
-    store.$patch({
-      user: {
-        token
-      }
-    })
-
+  it('each axios REST methods should have the user\'s token in request headers', async () => {
     const instance = api().portal
     await instance.get('foo/bar')
     await instance.post('foo/bar')

@@ -24,7 +24,6 @@ export interface UserInfo {
   lastName: string
   occupation: string
   email: string
-  token: string
   entities: Entities
   isCollab: boolean
 }

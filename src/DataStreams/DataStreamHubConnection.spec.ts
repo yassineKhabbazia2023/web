@@ -26,7 +26,7 @@ describe('dataStreamHubConnection', () => {
 
   it('should start the connection', async () => {
     await dataStreamHubConnection.startConnection()
-    expect(dataStreamHubConnection.getConnection().start).toHaveBeenCalled()
+    expect(dataStreamHubConnection.getConnection().start).toHaveBeenCalledWith()
   })
 
   it('should set isConnected to true after starting the connection', async () => {
@@ -37,7 +37,7 @@ describe('dataStreamHubConnection', () => {
   it('should stop the connection when destroyed', async () => {
     await dataStreamHubConnection.startConnection()
     await dataStreamHubConnection.destroyConnection()
-    expect(dataStreamHubConnection.getConnection().stop).toHaveBeenCalled()
+    expect(dataStreamHubConnection.getConnection().stop).toHaveBeenCalledWith()
   })
 
   it('should set isConnected to false after destroying the connection', async () => {

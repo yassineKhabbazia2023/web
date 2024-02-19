@@ -7,6 +7,7 @@ import store, { isTokenExpired } from './stores'
 import { useDataProvider } from './composables/useDataProvider'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import debounce from 'lodash.debounce'
+import { TokenService } from './token'
 
 export * from './stores/types'
 export const commonApi = api
@@ -20,3 +21,4 @@ export const dataProvider = useDataProvider
 
 export { DataStreamHubConnection }
 export { debounce }
+export const tokenService = new TokenService()

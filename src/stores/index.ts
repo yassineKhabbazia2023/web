@@ -3,6 +3,7 @@ import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { msalInstance } from '../msal'
 import type { UserInfo } from './types'
 import api from '../api'
+import { tokenService } from '../main'
 
 type commonStateType = {
   user: UserInfo | null
@@ -18,8 +19,11 @@ export const store = defineStore('common', {
     user: null
   }),
   getters: {
-    token: (state: commonStateType) =>
-      state?.user?.token ?? (sessionStorage.getItem('token') as string),
+    token(): string {
+      const token = tokenService.getToken()
+
+      return token
+    },
     isAuthenticated: (getter: any) => {
       return !!getter.token && !isTokenExpired(getter.token)
     },
@@ -28,8 +32,9 @@ export const store = defineStore('common', {
     defaultEntity: (state: commonStateType) => state.user?.entities?.default
   },
   actions: {
-    logout: async (state: commonStateType) => {
+    logout: async (state: any) => {
       try {
+        tokenService.setToken('')
         if (state.user?.isCollab) {
           msalInstance.logout()
         } else {
@@ -40,8 +45,9 @@ export const store = defineStore('common', {
           await api().auth.post(urlLogout, data)
         }
         state.user = null
-        sessionStorage.removeItem('token')
-      } catch {}
+      } catch (e) {
+        console.warn(e)
+      }
     }
   }
 })

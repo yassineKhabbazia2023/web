@@ -3,6 +3,7 @@ import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import type { Entity } from './types'
 import commonStore from './index'
+import { tokenService } from '../main'
 
 const now = new Date()
 const TEST_ENTITIES: Entity[] = [
@@ -57,9 +58,9 @@ describe('commonStore', () => {
     const store = commonStore(pinia)
     const { isAuthenticated, isCollab } = storeToRefs(store)
 
+    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce('aCustomToken')
     store.$patch({
       user: {
-        token: 'aCustomToken',
         isCollab: true
       }
     })
@@ -95,6 +96,7 @@ describe('commonStore', () => {
   it.each(IS_COLLAB)(
     'should call logout function',
     async (isCollabCondition) => {
+      const setTokenSpy = vi.spyOn(tokenService, 'setToken')
       const store = commonStore(pinia)
 
       const spyLogout = vi.spyOn(store, 'logout')
@@ -106,6 +108,7 @@ describe('commonStore', () => {
       await store.logout(store.$state)
 
       expect(spyLogout).toHaveBeenCalledTimes(1)
+      expect(setTokenSpy).toHaveBeenNthCalledWith(1, '')
     }
   )
 })

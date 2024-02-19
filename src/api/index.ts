@@ -1,7 +1,6 @@
-import commonStore from '../stores'
 import axios, { type AxiosInstance } from 'axios'
-import { storeToRefs } from 'pinia'
 import * as envVars from 'env-vars'
+import { tokenService } from '../main'
 
 const varApiPrefix = 'VITE_API_'
 
@@ -15,8 +14,8 @@ const domainToBaseUrl = (domain: string | undefined) => {
 }
 
 export const requestInterceptor = (config: any) => {
-  const { token } = storeToRefs(commonStore())
-  if (token.value) config.headers.Authorization = `Bearer ${token.value}`
+  const token = tokenService.getToken()
+  if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 }
 
