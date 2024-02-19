@@ -86,7 +86,6 @@
       <template #footer>
         <NextPreviousButtons
           v-if="!!currentSubscriptionOffer"
-          :hasCheckIcon="isSubmitButton"
           data-testid="next-previous-buttons"
           :previousLabel="t('previousLabel')"
           :nextLabel="nextLabel"

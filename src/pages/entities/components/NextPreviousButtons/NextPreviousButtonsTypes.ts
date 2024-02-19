@@ -1,5 +1,4 @@
 export type NextPreviousButtonsProps = {
-  previousLabel: string,
-  nextLabel: string,
-  hasCheckIcon: boolean,
+  previousLabel: string
+  nextLabel: string
 }

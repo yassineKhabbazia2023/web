@@ -6,9 +6,6 @@
       @click="emit('clickPrevious')"
       data-testid="previousButton"
     >
-      <PIcon class="el-button__icon--left">
-        <PIArrowLeft />
-      </PIcon>
       {{ previousLabel }}
     </PButton>
     <PButton
@@ -16,26 +13,14 @@
       @click="emit('clickNext')"
       data-testid="nextButton"
     >
-      <PIcon v-if="hasCheckIcon" class="el-button__icon--left">
-        <PICheck />
-      </PIcon>
       {{ nextLabel }}
-      <PIcon v-if="!hasCheckIcon"  class="el-button__icon--right">
-        <PIArrowRight />
-      </PIcon>
     </PButton>
   </div>
 </template>
 
 <script setup lang="ts">
 import { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
-import {
-  PButton,
-  PIcon,
-  PIArrowLeft,
-  PIArrowRight,
-  PICheck
-} from '@kpmg/styleguide'
+import { PButton } from '@kpmg/styleguide'
 
 defineProps<NextPreviousButtonsProps>()
 
