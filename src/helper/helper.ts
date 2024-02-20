@@ -31,3 +31,7 @@ export const generateObject = (
 
   return generatedObject
 }
+
+export const formatDateToLocale = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('fr-FR')
+}

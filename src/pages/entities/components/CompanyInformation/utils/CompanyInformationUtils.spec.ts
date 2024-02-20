@@ -17,6 +17,10 @@ describe('utils', () => {
       {
         providerName: 'LOOP',
         offerFormStructure: LOOPOfferFormStructure
+      },
+      {
+        providerName: 'Other',
+        offerFormStructure: []
       }
     ])(
       'should return correct form structure if the provider is $providerName',

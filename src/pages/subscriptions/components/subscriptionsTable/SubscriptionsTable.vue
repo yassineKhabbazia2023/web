@@ -7,7 +7,7 @@
     <PTableColumn :pLabel="t('dateRequest')">
       <template #default="scope">
         <PText
-          :pContent="new Date(scope.row.creationDate).toLocaleString()"
+          :pContent="d(new Date(scope.row.creationDate), 'short')"
           pType="primary"
           :disabled="false"
           :selected="false"
@@ -27,7 +27,7 @@
     <PTableColumn :pLabel="t('legalName')">
       <template #default="scope">
         <PText
-          :pContent="scope.row.account?.accountLabel"
+          :pContent="scope.row.account?.accountLegalName"
           pType="primary"
           :disabled="false"
           :selected="false"
@@ -37,12 +37,12 @@
     <PTableColumn :pLabel="t('principalContact')">
       <template #default="scope">
         <PDoubleText
-          :pTitle="title(scope.row.users)"
-          :pContent="content(scope.row.users)"
+          :pTitle="title(scope.row.clients)"
+          :pContent="content(scope.row.clients)"
           pType="primary"
           :pDisabled="false"
           :pSelected="false"
-          :pProfile="profile(scope.row.users)"
+          :pProfile="profile(scope.row.clients)"
         />
       </template>
     </PTableColumn>
@@ -70,12 +70,12 @@
       <template #default="scope">
         <PTag
           :pColor="
-            scope.row.statusCode === SubscriptionStatusCode.VALIDATED
+            scope.row.status === SubscriptionStatusCode.VALIDATED
               ? 'success'
               : 'info'
           "
           pEffect="light"
-          :pContent="formatStatus(scope.row.statusCode)"
+          :pContent="formatStatus(scope.row.status)"
         />
       </template>
     </PTableColumn>
@@ -90,13 +90,11 @@
           <PButton
             pType="white"
             pSize="small"
-            :pLoading="
-              scope.row.subscriptionId === clickedRow && isLoading
-            "
+            :pLoading="scope.row.subscriptionId === clickedRow && isLoading"
             class="el-button--icon"
           >
             <PIcon>
-              <PIThreeDots  />
+              <PIThreeDots />
             </PIcon>
           </PButton>
         </PToolbox>
@@ -151,16 +149,33 @@ import {
   fetchSubscriptionRequests,
   validateSubscriptionRequest
 } from '../../SubscriptionsServices'
+import { getInitials } from '@/helper'
+import { SubscriptionStatusCode } from '../../SubscriptionsTypes'
 import {
-  SubscriptionStatusCode,
   type SubscriptionRequest,
-  type User,
+  type Contact,
   type SubscriptionAccount
 } from '../../SubscriptionsTypes'
 
-const { t } = useI18n({
+const { t, d } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
+  datetimeFormats: {
+    'en-US': {
+      short: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      }
+    },
+    'fr-FR': {
+      short: {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      }
+    }
+  }
 })
 
 const emit = defineEmits<{
@@ -214,13 +229,13 @@ const onClickToolboxItem = async (action: string, row: any) => {
   }
 }
 
-const profile = (users: User[]) =>
-  users[0]?.firstName?.slice(0, 1)?.toUpperCase() +
-  users[0]?.lastName?.slice(0, 1)?.toUpperCase()
+const profile = (clients: Contact[]) =>
+  getInitials(clients[0]?.firstName, clients[0]?.lastName)
 
-const title = (users: User[]) => `${users[0]?.firstName} ${users[0]?.lastName}`
+const title = (clients: Contact[]) =>
+  `${clients[0]?.firstName} ${clients[0]?.lastName}`
 
-const content = (users: User[]) => users[0]?.email
+const content = (clients: Contact[]) => clients[0]?.email
 
 onMounted(async () => {
   await fetchSubscriptions()

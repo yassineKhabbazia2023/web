@@ -6,7 +6,7 @@ export const subscriptionDemandMock: SubscriptionDemand = {
   },
   applicant: 'applicant',
   offer: {
-    globalOfferId: '5'
+    offerId: 5
   },
   user: {
     email: 'a@fr.fr'

@@ -45,7 +45,7 @@ describe('subscriptionDetailsDrawer', () => {
       )
 
       expect(subscriptionDrawerTitle.text()).toBe(
-        `${subscriptionAccountTest.accountLabel} - No. ${subscriptionAccountTest.accountNumber}`
+        `${subscriptionAccountTest.accountLegalName} - No. ${subscriptionAccountTest.accountNumber}`
       )
     })
   })

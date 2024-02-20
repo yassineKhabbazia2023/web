@@ -4,15 +4,15 @@ export interface SubscriptionDemand {
   }
   applicant: string
   offer: {
-    globalOfferId: string
+    offerId: number
   }
   user: {
     email: string
   }
 }
 
-export interface User {
-  globalUserId: string
+export interface Contact {
+  contactId: number
   firstName: string
   lastName: string
   email: string
@@ -20,43 +20,43 @@ export interface User {
 
 /* eslint-disable no-unused-vars */
 export enum SubscriptionStatusCode {
-  PENDING = 'Pending',
-  VALIDATED = 'Validated'
+  PENDING = 'pending',
+  VALIDATED = 'validated'
 }
 /* eslint-enable no-unused-vars */
 
 export interface SubscriptionRequest {
   subscriptionId: number
   account: {
-    globalAccountId: string
+    accountId: number
     accountNumber: string
-    accountLabel: string
+    accountLegalName: string
   }
   applicant: string
   offer: {
-    globalOfferId: string
+    offerId: number
     offerLabel: string
   }
-  users: User[]
+  clients: Contact[]
   subscriptionDate: string
   creationDate: string
-  statusCode: SubscriptionStatusCode
+  status: SubscriptionStatusCode
 }
 
 export interface SubscriptionAccount {
-  globalAccountId: string,
-  accountNumber: string,
-  accountLabel?: string,
-  hub?: string,
+  accountId: number
+  accountNumber: string
+  accountLegalName?: string
+  hub?: string
   accounting?: {
-    beginningFiscalDate: string,
-    durationFiscalDate: string,
-    accountingMethod: string,
-    taxRegime: string,
+    beginningFiscalDate: string
+    durationFiscalDate: string
+    accountingMethod: string
+    taxRegime: string
     activityType: string
-  },
+  }
   accountTva?: {
-    tvaRegime: string,
+    tvaRegime: string
     tvaType: string
   }
 }

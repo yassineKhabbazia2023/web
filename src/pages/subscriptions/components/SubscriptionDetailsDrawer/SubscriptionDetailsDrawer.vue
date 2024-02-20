@@ -50,7 +50,7 @@ const internalIsOpened = computed({
   }
 })
 const subscriptionDrawerTitle = computed(() => {
-  return `${props.account.accountLabel} - ${t('number')} ${props.account.accountNumber}`
+  return `${props.account.accountLegalName} - ${t('number')} ${props.account.accountNumber}`
 })
 
 const handleCloseDrawer = () => {
