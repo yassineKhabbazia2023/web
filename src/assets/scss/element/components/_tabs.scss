@@ -57,7 +57,7 @@
   }
 
   &.p-tabs--type-icon {
-    --el-tabs-header-height: 32px;
+    --el-tabs-header-height: 30px;
 
     > #{$self}__header {
       #{$self}__nav-wrap:after {
@@ -65,6 +65,7 @@
       }
 
       #{$self}__nav {
+        height: 32px;
         border-radius: 8px;
         border: 1px solid getCssVar('color', 'neutral-gray-100');
         overflow: hidden;
@@ -75,6 +76,7 @@
       }
 
       #{$self}__item {
+        width: 32px;
         padding: 0.8rem;
         border-right: 1px solid getCssVar('color', 'neutral-gray-100');
         background: getCssVar('color', 'neutral-gray-50');
