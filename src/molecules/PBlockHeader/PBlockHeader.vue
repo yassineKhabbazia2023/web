@@ -3,22 +3,27 @@
     class="p-block-header"
     :class="pClassMapper"
   >
-    <PImage
-      class="p-block-header__image"
-      :pType="pImage.pType"
-      :pName="pImage.pName"
-      :pFit="pImage.pFit"
-    />
-    <div class="p-block-header__content">
-      <p class="p-block-header__title">
-        {{ pTitle }}
-      </p>
-      <p class="p-block-header__description">
-        {{ pDescription }}
-      </p>
+    <div class="p-block-header__content-wrapper">
+      <PImage
+        class="p-block-header__image"
+        :pType="pImage.pType"
+        :pName="pImage.pName"
+        :pFit="pImage.pFit"
+      />
+      <div class="p-block-header__content">
+        <p class="p-block-header__title">
+          {{ pTitle }}
+        </p>
+        <p class="p-block-header__description">
+          {{ pDescription }}
+        </p>
+      </div>
+      <div v-if="pHasButton" class="p-block-header__button">
+        <slot />
+      </div>
     </div>
-    <div v-if="pHasButton" class="p-block-header__button">
-      <slot />
+    <div v-if="$slots['suffix']" class="margin-top--4">
+      <slot name="suffix"/>
     </div>
   </div>
 </template>
@@ -42,7 +47,6 @@ const pClassMapper = computed(() => ({
 .p-block-header {
   $self: &;
 
-  display: flex;
   padding: 12px;
   border-radius: 4px 4px 0 0;
 
@@ -70,6 +74,10 @@ const pClassMapper = computed(() => ({
         font-size: 1.4rem;
       }
     }
+  }
+
+  &__content-wrapper {
+    display: flex;
   }
 
   &__image {

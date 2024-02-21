@@ -16,7 +16,14 @@
     :highlightFirstItem="pHighlightFirstItem"
     :fitInputWidth="pFitInputWidth"
     :selectWhenUnmatched="pSelectWhenUnmatched"
-  />
+  >
+    <template #prefix>
+      <slot name="prefix" />
+    </template>
+    <template #suffix>
+      <slot name="suffix" />
+    </template>
+  </ElAutocomplete>
 </template>
 
 <script lang="ts" setup>

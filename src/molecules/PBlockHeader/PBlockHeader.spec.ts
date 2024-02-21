@@ -22,9 +22,10 @@ const defaultProps = {
   }
 }
 
-const createWrapper = (props: any = defaultProps) =>
+const createWrapper = (props: any = defaultProps, slots: any = {}) =>
   mount(PBlockHeader, {
-    props
+    props,
+    slots
   })
 
 describe('pBlockHeader', () => {
@@ -110,5 +111,19 @@ describe('pBlockHeader', () => {
         expect(wrapper.classes()).toContain(expectedClassBinding)
       }
     )
+  })
+  describe('slots', () => {
+    it("should display the content of the 'suffix' slot when it exists", () => {
+      const wrapper = createWrapper(
+        defaultProps,
+        {
+          suffix: "<button data-testid='suffix-slot'>Suffix Test Button</button>"
+        }
+      )
+      const suffixSlot = wrapper.find('[data-testid=suffix-slot]')
+
+      expect(suffixSlot.exists()).toBeTruthy()
+      expect(suffixSlot.text()).toBe('Suffix Test Button')
+    })
   })
 })
