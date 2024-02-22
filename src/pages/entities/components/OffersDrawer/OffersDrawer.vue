@@ -68,8 +68,9 @@
             v-if="activeStep === offerStepperStep.CUSTOMERS && principalContact"
             data-testid="customers-step"
           />
-          <p
+          <ManageCollaborators
             v-if="activeStep === offerStepperStep.COLLABORATORS"
+            :defaultCollaborator="currentUser"
             data-testid="collaborators-step"
           />
           <CompanyInformation
@@ -141,6 +142,7 @@ import PrincipalContact from '../PrincipalContact'
 import CompanyInformation from '../CompanyInformation'
 import NextPreviousButtons from '../NextPreviousButtons'
 import ConfirmationModal from '../ConfirmationModal'
+import ManageCollaborators from '../ManageCollaborators'
 import {
   getAllOffers,
   getOffer,
@@ -277,7 +279,7 @@ function onDeselectProduct(offerId: number, productId: number) {
 async function saveOffer() {
   const postSubscriptionRequest = getPostSubscriptionRequest(
     props.accountId,
-    props.userEmail,
+    props.currentUser?.email,
     CONTACT_ID,
     currentSubscriptionOffer.value,
     selectedProducts.value

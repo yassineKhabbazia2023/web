@@ -5,6 +5,7 @@ import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
 import { getMockedSubscriptionOffersServices } from '../OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContact } from '../PrincipalContact/PrincipalContactMocks'
+import { getMockedUser } from '@/pages/entities/mocks'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
@@ -14,10 +15,12 @@ import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
 import { getMockedAccount } from '@/services/account/accountMock'
+import type { UserInfo } from '@kpmg/common'
 import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import { CONTACT_ID } from './OffersDrawerConst'
 
 const principalContact: User = getMockedPrincipalContact()
+const currentUser: UserInfo = getMockedUser()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
@@ -53,7 +56,6 @@ vi.mock('./OffersDrawerUtils', async () => {
 
 const accountNumber = 'account-number'
 const accountId = 5
-const userEmail = 'user@email.com'
 
 async function getWrapper(isOpened: boolean) {
   const wrapper = mount(OffersDrawer, {
@@ -62,7 +64,7 @@ async function getWrapper(isOpened: boolean) {
       selectedCompanyName: companyTestName,
       accountNumber,
       accountId,
-      userEmail
+      currentUser
     }
   })
   await flushPromises()
@@ -168,7 +170,7 @@ describe('offersDrawer', () => {
         await flushPromises()
         const expectedArgument: PostSubscriptionRequest = {
           accountId,
-          applicant: 'user@email.com',
+          applicant: 'john@example.com',
           contacts: [CONTACT_ID],
           offerId: 1,
           notes: [],
