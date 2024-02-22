@@ -20,7 +20,7 @@
       },
       {
         "modelValue": "",
-        "pCssClass": "flex--grow-1 min-width--1 flex--basis-10",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-15",
         "pDisabled": true,
         "pFieldKey": "address.zipCode",
         "pFieldType": "input",
@@ -28,7 +28,7 @@
       },
       {
         "modelValue": "",
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-40",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-35",
         "pDisabled": true,
         "pFieldKey": "address.city",
         "pFieldType": "input",
