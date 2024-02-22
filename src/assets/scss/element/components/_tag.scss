@@ -87,43 +87,43 @@ $tag-padding: (
       --el-tag-bg-color: var(--el-color-functionnal-green-bg);
       --el-tag-border-color: var(--el-color-functionnal-green-bg);
       --el-tag-hover-color: var(--el-color-functionnal-green);
-      --el-tag-text-color: var(--el-color-functionnal-green);
+      --el-tag-text-color: var(--el-color-functionnal-green-txt);
     }
     &#{$self}--warning {
       --el-tag-bg-color: var(--el-color-functionnal-orange-bg);
       --el-tag-border-color: var(--el-color-functionnal-orange-bg);
       --el-tag-hover-color: var(--el-color-functionnal-orange);
-      --el-tag-text-color: var(--el-color-functionnal-orange);
+      --el-tag-text-color: var(--el-color-functionnal-orange-txt);
     }
     &#{$self}--danger {
       --el-tag-bg-color: var(--el-color-functionnal-red-bg);
       --el-tag-border-color: var(--el-color-functionnal-red-bg);
       --el-tag-hover-color: var(--el-color-functionnal-red);
-      --el-tag-text-color: var(--el-color-functionnal-red);
+      --el-tag-text-color: var(--el-color-functionnal-red-txt);
     }
     &#{$self}--info {
       --el-tag-bg-color: var(--el-color-functionnal-teal-bg);
       --el-tag-border-color: var(--el-color-functionnal-teal-bg);
       --el-tag-hover-color: var(--el-color-functionnal-teal);
-      --el-tag-text-color: var(--el-color-functionnal-teal);
+      --el-tag-text-color: var(--el-color-functionnal-teal-txt);
     }
     &#{$self}--fuschia {
       --el-tag-bg-color: var(--el-color-secondary-fuschia-bg);
       --el-tag-border-color: var(--el-color-secondary-fuschia-bg);
       --el-tag-hover-color: var(--el-color-secondary-fuschia);
-      --el-tag-text-color: var(--el-color-secondary-fuschia);
+      --el-tag-text-color: var(--el-color-secondary-fuschia-txt);
     }
     &#{$self}--amethyste {
       --el-tag-bg-color: var(--el-color-secondary-amethyste-bg);
       --el-tag-border-color: var(--el-color-secondary-amethyste-bg);
       --el-tag-hover-color: var(--el-color-secondary-amethyste);
-      --el-tag-text-color: var(--el-color-secondary-amethyste);
+      --el-tag-text-color: var(--el-color-secondary-amethyste-txt);
     }
     &#{$self}--cyan {
       --el-tag-bg-color: var(--el-color-secondary-cyan-bg);
       --el-tag-border-color: var(--el-color-secondary-cyan-bg);
       --el-tag-hover-color: var(--el-color-secondary-cyan);
-      --el-tag-text-color: var(--el-color-secondary-cyan);
+      --el-tag-text-color: var(--el-color-secondary-cyan-txt);
     }
     &#{$self}--gray-500 {
       --el-tag-bg-color: var(--el-color-neutral-gray-50);
