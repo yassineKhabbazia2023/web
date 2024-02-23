@@ -32,7 +32,7 @@ export function getMockedAccount(): Account {
     },
     vat: {
       system: 'Réel normal - CA3 mensuelle',
-      intra: 'Non modifiable',
+      intra: '',
       type: 'Encaissement'
     },
     address: [
