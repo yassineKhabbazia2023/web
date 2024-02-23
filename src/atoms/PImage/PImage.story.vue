@@ -58,7 +58,7 @@ import IMAGES_LIST from '@/assets/images/imagesList.json'
 
 const basicImageData = reactive({
   type: 'paupulse',
-  name: 'digitalisation',
+  name: 'toggle',
   fit: 'fill'
 })
 

@@ -7,7 +7,7 @@
     <Variant title="User Card with Image and all choices">
       <PUserCard
         pAssetLeft="Image"
-        pAssetContent="activation"
+        pAssetContent="user-female"
         :pTitle="data.pTitle"
         :pTag="data.pTag"
         :pSubtitle="data.pSubtitle"
@@ -46,7 +46,7 @@
     <Variant title="User Card with tag right">
       <PUserCard
         pAssetLeft="Image"
-        pAssetContent="activation"
+        pAssetContent="user-male"
         :pTitle="data.pTitle"
         :pTag="data.pTag"
         :pSubtitle="data.pSubtitle"

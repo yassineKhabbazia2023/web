@@ -86,6 +86,11 @@ const slots = useSlots()
     flex-shrink: 0;
     height: 95px;
     width: auto;
+    filter: drop-shadow(0 16px 16px rgba(#7090b0, 0.04))
+      drop-shadow(0 6px 8px rgba(#7090b0, 0.05))
+      drop-shadow(0 2px 4px rgba(#7090b0, 0.08))
+      drop-shadow(0 1px 2px rgba(#7090b0, 0.05))
+      drop-shadow(0 0 2px rgba(#7090b0, 0.10));
   }
 
   &__content {
