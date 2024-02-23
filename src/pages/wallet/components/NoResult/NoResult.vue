@@ -15,7 +15,7 @@
     </p>
     <PImage
       pType="paupulse"
-      pName="empty-state"
+      pName="empty"
       class="image-no-result"
     />
   </div>

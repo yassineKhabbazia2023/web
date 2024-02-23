@@ -127,8 +127,8 @@ const { defaultEntity } = storeToRefs(userStore)
 
 const pImageProps = {
   pFit: 'fill',
-  pType: 'paupulse',
-  pName: 'portrait-female-add-icon'
+  pType: 'portrait',
+  pName: 'collab-female-add'
 } as PImageProps
 
 const collabs = ref<Collab[]>([])

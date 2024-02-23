@@ -8,8 +8,8 @@
       :pHasButton="false"
       :pImage="{
         pFit: 'fill',
-        pType: 'paupulse',
-        pName: 'portrait-female'
+        pType: 'portrait',
+        pName: 'user-female'
       }"
       data-testid="pblockHeaders"
     />
