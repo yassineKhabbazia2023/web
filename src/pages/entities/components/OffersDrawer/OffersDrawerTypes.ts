@@ -1,3 +1,5 @@
+import type { UserInfo } from '@kpmg/common'
+
 /* eslint-disable no-unused-vars */
 export enum offerStepperStep {
   SERVICES,
@@ -17,5 +19,5 @@ export interface OffersDrawerProps {
   selectedCompanyName: string
   accountNumber: string
   accountId: number
-  userEmail: string | undefined
+  currentUser: UserInfo | null
 }

@@ -73,7 +73,7 @@
         :selectedCompanyName="selectedCompanyName"
         :accountNumber="selectedAccountNumber"
         :accountId="selectedAccountId"
-        :userEmail="userStore?.user?.email"
+        :currentUser="user"
         v-model="openOffersDrawer"
         data-testid="offers-drawer"
       />
@@ -115,7 +115,7 @@ const { t } = useI18n({
 const userStore = commonStore()
 const router = useRouter()
 const selectedCompanyName = ref('')
-const { isCollab } = storeToRefs(userStore)
+const { isCollab, user } = storeToRefs(userStore)
 
 const PAGE_SIZES = [15, 30, 45, 60]
 
