@@ -116,7 +116,7 @@ const {
 const carouselData = [
   {
     pText: t('carouselItem1'),
-    pImageName: 'digitalisation',
+    pImageName: 'mirror-smartphone',
     pImageType: 'paupulse'
   },
   {

@@ -9,8 +9,8 @@
   >
     <PImage
       pType="paupulse"
-      pName="logout"
-      class="popup-img"
+      pName="toggle"
+      class="dialog-renew-token__popup-img"
     />
     <p class="p-dialog__text">
       {{ t('content') }}
@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 .dialog-renew-token {
-  .popup-img > img {
+  &__popup-img > img {
     display: block;
     max-width: 221px;
     margin: auto;
