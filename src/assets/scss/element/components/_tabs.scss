@@ -8,6 +8,7 @@
       --el-tabs-header-height: 45px;
       
       #{$self}__nav-wrap {
+        margin: 0;
         &::after {
          background: getCssVar('color', 'neutral-gray-100'); 
         }
@@ -57,11 +58,13 @@
   }
 
   &.p-tabs--type-icon {
-    --el-tabs-header-height: 30px;
-
     > #{$self}__header {
       #{$self}__nav-wrap:after {
         display: none;
+      }
+
+      #{$self}__nav-wrap {
+        margin: 0;
       }
 
       #{$self}__nav {
@@ -77,6 +80,7 @@
 
       #{$self}__item {
         width: 32px;
+        height: 100%;
         padding: 0.8rem;
         border-right: 1px solid getCssVar('color', 'neutral-gray-100');
         background: getCssVar('color', 'neutral-gray-50');
