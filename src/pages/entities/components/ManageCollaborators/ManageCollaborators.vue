@@ -9,42 +9,50 @@
       :pImage="{
         pFit: 'fill',
         pType: 'portrait',
-        pName: 'collab-male'
+        pName: 'collab-male-add'
       }"
     >
       <template #suffix>
-        <p
-          class="margin-bottom--2 font-small font-semibold"
-          data-testid="search-collaborator"
+        <PForm
+          ref="formRef"
+          :pModel="formValues"
+          pLabelPosition="top"
+          pHideRequiredAsterisk
         >
-          {{ t('searchCollaborator') }}
-        </p>
-        <PAutocomplete
-          v-model="selectedCollaborator"
-          :pFetchSuggestions="() => []"
-          :pPlaceholder="t('selectCollaborator')"
-          pClearable
-        >
-          <template #prefix>
-            <PIcon>
-              <PISearch />
-            </PIcon>
-          </template>
-        </PAutocomplete>
+          <PFormItem
+            pProp="selectedCollaborator"
+            :pLabel="t('searchCollaborator')"
+            class="margin-bottom--0"
+          >
+            <PAutocomplete
+              v-model="formValues.selectedCollaborator"
+              :pFetchSuggestions="() => []"
+              :pPlaceholder="t('selectCollaborator')"
+              pClearable
+            >
+              <template #prefix>
+                <PIcon>
+                  <PISearch />
+                </PIcon>
+              </template>
+            </PAutocomplete>
+          </PFormItem>
+        </PForm>
       </template>
     </PBlockHeader>
-    <PUserAction
-      class="margin-top--6 padding-x--4"
-      :pProfile="
-        getInitials(
-          defaultCollaborator?.firstName,
-          defaultCollaborator?.lastName
-        )
-      "
-      :pTitle="collaboratorFullName"
-      :pDescription="defaultCollaborator?.email ?? ''"
-      :pRole="collaboratorOccupation"
-    />
+    <div class="margin-top--6">
+      <PUserAction
+        :pProfile="
+          getInitials(
+            defaultCollaborator?.firstName,
+            defaultCollaborator?.lastName
+          )
+        "
+        :pTitle="collaboratorFullName"
+        :pDescription="defaultCollaborator?.email ?? ''"
+        :pRole="collaboratorOccupation"
+      />
+    </div>
   </div>
 </template>
 
@@ -55,11 +63,12 @@ import {
   PBlockHeader,
   PAutocomplete,
   PUserAction,
+  PForm,
   PIcon,
-  PISearch
+  PISearch,
+  PFormItem
 } from '@kpmg/styleguide'
 import { getInitials } from '@/helper'
-import type { Contact } from '@/pages/subscriptions/SubscriptionsTypes'
 import type { ManageCollaboratorsProps } from './ManageCollaboratorsTypes'
 
 const props = defineProps<ManageCollaboratorsProps>()
@@ -68,7 +77,9 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const selectedCollaborator = ref<Contact | undefined>()
+const formValues = ref({
+  selectedCollaborator: undefined
+})
 
 const collaboratorFullName = computed(
   () =>

@@ -34,14 +34,14 @@ describe('manageCollaborators', () => {
   })
   describe('display', () => {
     it('should correctly display the manage collaborators page', () => {
-      const searchText = wrapper.find('[data-testid=search-collaborator]')
+      const autocompleteLabel = wrapper.find('label')
       const blockHeader = wrapper.findComponent({ name: 'PBlockHeader' })
       const userAction = wrapper.findComponent({
         name: 'PUserAction'
       })
 
       expect(userAction.props()).toMatchObject(expectedUserActionProps)
-      expect(searchText.text()).toBe(expectedSearchText)
+      expect(autocompleteLabel.text()).toBe(expectedSearchText)
       expect(userAction.exists()).toBeTruthy()
       expect(blockHeader.exists()).toBeTruthy()
     })
