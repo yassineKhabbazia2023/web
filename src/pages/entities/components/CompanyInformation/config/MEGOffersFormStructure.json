@@ -14,10 +14,14 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-70",
         "pDisabled": true,
-        "pFieldKey": "legal.legalForm",
+        "pFieldKey": "legal.legalFormCode",
         "pFieldType": "dropdown",
         "pLabel": "Forme juridique",
         "pDropdownOptions": [
+          {
+            "pValue": "",
+            "pLabel": ""
+          },
           {
             "pValue": "SARL",
             "pLabel": "SARL-Société à responsabilité limitée"

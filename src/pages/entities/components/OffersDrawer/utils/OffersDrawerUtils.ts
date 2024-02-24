@@ -111,9 +111,9 @@ export const getFirstDayOfYear = () => {
 
 // For now, there's no need to translate the text
 export const getMappedAPIData = (account: Account) => ({
-  'legal.siret': account?.legal?.siret ?? 'Non modifiable',
-  'legal.legalForm': account?.legal?.legalForm ?? 'Non modifiable',
-  'legal.naf.nafCode': account?.legal?.naf?.at(0)?.nafCode ?? 'Non modifiable',
+  'legal.siret': account?.legal?.siret ?? '',
+  'legal.legalFormCode': account?.legal?.legalFormCode ?? '',
+  'legal.naf.nafCode': account?.legal?.naf?.at(0)?.nafCode ?? '',
   'legal.staffSizeRange': account?.legal?.staffSizeRange ?? '',
   'hub.hubName': account?.hub?.hubName ?? '',
   'accounting.fiscalExerciseStartDate':
@@ -128,15 +128,15 @@ export const getMappedAPIData = (account: Account) => ({
   'accounting.taxationSystem':
     account?.accounting?.taxationSystem ?? 'Impôt sur le revenu',
   'vat.system': account?.vat?.system ?? 'Réel normal - CA3 mensuelle',
-  'vat.intra': account?.vat?.intra ?? 'Non modifiable',
+  'vat.intra': account?.vat?.intra ?? '',
   'vat.type': account?.vat?.type ?? 'Encaissement',
   'address.addressLine1':
-    account?.address?.at(0)?.addressLine1 ?? 'Non modifiable',
+    account?.address?.at(0)?.addressLine1 ?? '',
   'address.addressLine2':
-    account?.address?.at(0)?.addressLine2 ?? 'Non modifiable',
-  'address.zipCode': account?.address?.at(0)?.zipCode ?? 'Non modifiable',
-  'address.city': account?.address?.at(0)?.city ?? 'Non modifiable',
-  'address.country': account?.address?.at(0)?.country ?? 'Non modifiable',
-  email: account?.email ?? 'Non modifiable',
-  'phone.phoneNumber': account?.phone?.at(0)?.phoneNumber ?? 'Non modifiable'
+    account?.address?.at(0)?.addressLine2 ?? '',
+  'address.zipCode': account?.address?.at(0)?.zipCode ?? '',
+  'address.city': account?.address?.at(0)?.city ?? '',
+  'address.country': account?.address?.at(0)?.country ?? '',
+  email: account?.email ?? '',
+  'phone.phoneNumber': account?.phone?.at(0)?.phoneNumber ?? ''
 })

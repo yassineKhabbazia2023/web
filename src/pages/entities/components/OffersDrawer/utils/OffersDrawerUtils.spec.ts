@@ -142,7 +142,7 @@ describe('offersDrawerUtils', () => {
     it('should return the mapping of API data to the form when the correct values', () => {
       const expectedResult = {
         'legal.siret': account?.legal?.siret,
-        'legal.legalForm': 'Non modifiable',
+        'legal.legalFormCode': account?.legal?.legalFormCode,
         'legal.naf.nafCode': account?.legal?.naf?.at(0)?.nafCode,
         'legal.staffSizeRange': account?.legal?.staffSizeRange,
         'hub.hubName': account?.hub?.hubName,
@@ -159,19 +159,19 @@ describe('offersDrawerUtils', () => {
         'vat.type': account?.vat?.type,
         'address.addressLine1': account?.address?.at(0)?.addressLine1,
         'address.addressLine2': account?.address?.at(0)?.addressLine2,
-        'address.zipCode': 'Non modifiable',
+        'address.zipCode': '',
         'address.city': account?.address?.at(0)?.city,
         'address.country': account?.address?.at(0)?.country,
-        email: 'Non modifiable',
-        'phone.phoneNumber': 'Non modifiable'
+        email: '',
+        'phone.phoneNumber': ''
       }
       expect(expectedResult).toStrictEqual(getMappedAPIData(account))
     })
     it('should return the mapping of API data to a form using default values if the API values are null', () => {
       const expectedResult = {
-        'legal.siret': 'Non modifiable',
-        'legal.legalForm': 'Non modifiable',
-        'legal.naf.nafCode': 'Non modifiable',
+        'legal.siret': '',
+        'legal.legalFormCode': '',
+        'legal.naf.nafCode': '',
         'legal.staffSizeRange': '',
         'hub.hubName': '',
         'accounting.fiscalExerciseStartDate': getFirstDayOfYear(),
@@ -181,15 +181,15 @@ describe('offersDrawerUtils', () => {
         'accounting.fiscalSystem': 'BIC',
         'accounting.taxationSystem': 'Impôt sur le revenu',
         'vat.system': 'Réel normal - CA3 mensuelle',
-        'vat.intra': 'Non modifiable',
+        'vat.intra': '',
         'vat.type': 'Encaissement',
-        'address.addressLine1': 'Non modifiable',
-        'address.addressLine2': 'Non modifiable',
-        'address.zipCode': 'Non modifiable',
-        'address.city': 'Non modifiable',
-        'address.country': 'Non modifiable',
-        email: 'Non modifiable',
-        'phone.phoneNumber': 'Non modifiable'
+        'address.addressLine1': '',
+        'address.addressLine2': '',
+        'address.zipCode': '',
+        'address.city': '',
+        'address.country': '',
+        email: '',
+        'phone.phoneNumber': ''
       }
       expect(expectedResult).toStrictEqual(getMappedAPIData({} as Account))
     })
