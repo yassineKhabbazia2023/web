@@ -48,4 +48,15 @@ div.el-switch {
       --el-switch-on-color: var(--el-color-persian-800);
     }
   }
+
+  .el-switch__label {
+    &.is-active {
+      color: inherit !important;
+    }
+
+    span {
+      font-weight: 600;
+      font-size: 1.6rem;
+    }
+  }
 }

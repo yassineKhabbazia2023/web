@@ -12,16 +12,28 @@
     <Variant title="'OFF' Disabled">
       <PSwitch v-model="alwaysOff" pDisabled/>
     </Variant>
+    <Variant title="with text">
+      <PSwitch v-model="withText.state" :pActiveText="withText.label" />
+    </Variant>
+
+    <template #controls>
+      <HstText v-model="withText.label" title="active text" />
+    </template>
   </Story>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 const on = ref(true)
 const off = ref(false)
 const alwaysOn = ref(true)
 const alwaysOff = ref(false)
+
+const withText = reactive({
+  state: true,
+  label: 'label'
+})
 </script>
 
 <docs lang="md">
