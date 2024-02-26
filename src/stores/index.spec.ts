@@ -5,7 +5,6 @@ import type { Entity } from './types'
 import commonStore from './index'
 import { tokenService } from '../main'
 
-const now = new Date()
 const TEST_ENTITIES: Entity[] = [
   {
     idAccount: '7c2b430b-7190-4cd1',
@@ -20,12 +19,6 @@ const TEST_ENTITIES: Entity[] = [
     ibs: 'IBS43784540ZE33'
   }
 ]
-
-vi.mock('jwt-decode', () => ({
-  default: () => ({
-    exp: now.setHours(now.getHours() + 1)
-  })
-}))
 
 const pinia = createTestingPinia({
   initialState: {
@@ -59,6 +52,7 @@ describe('commonStore', () => {
     const { isAuthenticated, isCollab } = storeToRefs(store)
 
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce('aCustomToken')
+    vi.spyOn(tokenService, 'hasValidAccessToken').mockReturnValueOnce(true)
     store.$patch({
       user: {
         isCollab: true

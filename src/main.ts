@@ -1,13 +1,14 @@
-import { shallowRef, ref, type Component, type DefineComponent } from 'vue'
+import { shallowRef, ref, reactive } from 'vue'
 import { createPinia } from 'pinia'
+import type { Component, DefineComponent } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import api from './api'
 import i18n from './i18n'
-import store, { isTokenExpired } from './stores'
+import store from './stores'
+import { TokenService, isTokenExpired } from './token'
 import { useDataProvider } from './composables/useDataProvider'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import debounce from 'lodash.debounce'
-import { TokenService } from './token'
 
 export * from './stores/types'
 export const commonApi = api
@@ -18,7 +19,7 @@ export const widgets = shallowRef([] as Component[] | DefineComponent[])
 export const routes = ref([] as RouteRecordRaw[])
 export const hasTokenExpired = isTokenExpired
 export const dataProvider = useDataProvider
+export const tokenService = reactive(TokenService.getInstance())
 
 export { DataStreamHubConnection }
 export { debounce }
-export const tokenService = new TokenService()

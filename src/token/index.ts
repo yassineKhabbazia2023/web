@@ -1,11 +1,30 @@
-interface RegisteredCallBack {
+import jwtDecode, { JwtPayload } from 'jwt-decode'
+interface RegisteredCallback {
   key: string,
   callback: (_token: string) => void
 }
 
+export const isTokenExpired = (token: string): boolean => {
+  const { exp } = jwtDecode<JwtPayload>(token)
+  return !!exp && exp * 1000 < Date.now()
+}
+
 export class TokenService {
-  token = ''
-  registeredCallBack: RegisteredCallBack[] = []
+  // eslint-disable-next-line no-use-before-define
+  private static instance: TokenService
+  private token: string = ''
+  private registeredCallbacks: RegisteredCallback[] = []
+
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
+
+  static getInstance(): TokenService {
+    if (!TokenService.instance) {
+      TokenService.instance = new TokenService()
+    }
+
+    return TokenService.instance
+  }
 
   getToken(): string {
     if (!this.token) {
@@ -20,27 +39,35 @@ export class TokenService {
     if (token) {
       localStorage.setItem('token', token)
     } else {
-      localStorage.removeItem('token')
+      this.removeToken()
     }
     this.onChange(token)
   }
 
-  registerOnChange(key: string, callback: RegisteredCallBack['callback']) {
-    this.registeredCallBack.push({
+  removeToken() {
+    localStorage.removeItem('token')
+  }
+
+  hasValidAccessToken(): boolean {
+    return !!this.token && !isTokenExpired(this.token)
+  }
+
+  registerOnChange(key: string, callback: RegisteredCallback['callback']) {
+    this.registeredCallbacks.push({
       key,
       callback
     })
   }
 
   unregisterOnChange(key: string) {
-    const index = this.registeredCallBack.findIndex(({ key: _key }) => key === _key)
+    const index = this.registeredCallbacks.findIndex(({ key: _key }) => key === _key)
 
     if (index >= 0) {
-      this.registeredCallBack.splice(index, 1)
+      this.registeredCallbacks.splice(index, 1)
     }
   }
 
   onChange(token: string) {
-    this.registeredCallBack.forEach(({ callback }) => callback(token))
+    this.registeredCallbacks.forEach(({ callback }) => callback(token))
   }
 }

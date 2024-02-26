@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import jwtDecode, { JwtPayload } from 'jwt-decode'
 import { msalInstance } from '../msal'
 import type { UserInfo } from './types'
 import api from '../api'
@@ -9,24 +8,13 @@ type commonStateType = {
   user: UserInfo | null
 }
 
-export const isTokenExpired = (token: string): boolean => {
-  const { exp } = jwtDecode<JwtPayload>(token)
-  return !!exp && exp * 1000 < Date.now()
-}
-
 export const store = defineStore('common', {
   state: (): commonStateType => ({
     user: null
   }),
   getters: {
-    token(): string {
-      const token = tokenService.getToken()
-
-      return token
-    },
-    isAuthenticated: (getter: any) => {
-      return !!getter.token && !isTokenExpired(getter.token)
-    },
+    token: (): string => tokenService.getToken(),
+    isAuthenticated: (): boolean => tokenService.hasValidAccessToken(),
     isCollab: (state: commonStateType) => !!state.user?.isCollab,
     favoriteEntities: (state: commonStateType) => state.user?.entities?.favorites ?? [],
     defaultEntity: (state: commonStateType) => state.user?.entities?.default
