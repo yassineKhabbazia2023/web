@@ -94,12 +94,30 @@
         </PTabPane>
       </PTabs>
     </Variant>
+    <Variant title="Icon Usage with Tooltip">
+      <PTabs
+        v-model="basicData.activeName"
+        pType="icon"
+        :pStretch="basicData.stretch"
+      >
+        <PTabPane
+          v-for="tab in tabs"
+          :key="tab.name"
+          :pName="tab.name"
+          pTabIcon="PICalendarEvent"
+          :pTooltip="tab.pTooltip"
+        >
+          {{ tab.content }}
+        </PTabPane>
+      </PTabs>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import PTabPane from '@/atoms/PTabPane'
+import type { PTooltipProps } from '@/atoms/PTooltip/PTooltipTypes'
 import PTabs from '@/molecules/PTabs'
 
 const firstActiveVariant = ref('1')
@@ -113,19 +131,35 @@ const tabs = ref([
   {
     label: 'Tab 1',
     name: '1',
-    content: 'Tab 1 content'
+    content: 'Tab 1 content',
+    pTooltip: {
+      pPlacement: 'bottom',
+      pContent: 'this is a tooltip',
+      disabled: false
+    } as PTooltipProps
   },
   {
     label: 'Tab 2',
     name: '2',
-    content: 'Tab 2 content'
+    content: 'Tab 2 content',
+    pTooltip: {
+      pPlacement: 'bottom',
+      pContent: 'this is a tooltip',
+      disabled: false
+    } as PTooltipProps
   },
   {
     label: 'Tab 3',
     name: '3',
-    content: 'Tab 3 content'
+    content: 'Tab 3 content',
+    pTooltip: {
+      pPlacement: 'bottom',
+      pContent: 'this is a tooltip',
+      disabled: false
+    } as PTooltipProps
   }
 ])
+
 </script>
 
 <docs lang="md">

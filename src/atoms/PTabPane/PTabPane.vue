@@ -7,10 +7,27 @@
     :lazy="pLazy"
     >
     <slot />
+
     <template v-if="!!slots['label'] || pTabIcon" #label>
-      <PIcon v-if="pTabIcon" class="p-tab-pane__icon">
-        <component :is="resolvedIcons" />
-      </PIcon>
+      <template v-if="pTabIcon">
+        <PTooltip
+          v-if="pTooltip"
+          v-bind="pTooltip"
+        >
+          <PIcon class="p-tab-pane__icon" size="14px">
+            <component :is="iconResolver(pTabIcon)" />
+          </PIcon>
+        </PTooltip>
+
+        <PIcon
+          v-else
+          class="p-tab-pane__icon"
+          size="14px"
+        >
+          <component :is="iconResolver(pTabIcon)" />
+        </PIcon>
+      </template>
+
       <slot v-else name="label" />
     </template>
   </ElTabPane>
@@ -18,23 +35,18 @@
 
 <script lang="ts" setup>
 import { ElTabPane } from 'element-plus'
-import { useSlots, computed } from 'vue'
+import { useSlots } from 'vue'
 import { iconResolver } from '@/utils/iconResolver'
+import PTooltip from '@/atoms/PTooltip'
+import PIcon from '@/atoms/PIcon'
 import type { PTabPaneProps } from './PTabPaneTypes'
 
 const slots = useSlots()
-const props = withDefaults(defineProps<PTabPaneProps>(), {
+withDefaults(defineProps<PTabPaneProps>(), {
   pLabel: undefined,
   pDisabled: false,
   pName: undefined,
   pClosable: false,
   pLazy: false
-})
-
-const resolvedIcons = computed(() => {
-  if (props.pTabIcon) {
-    return iconResolver(props.pTabIcon)
-  }
-  return ''
 })
 </script>

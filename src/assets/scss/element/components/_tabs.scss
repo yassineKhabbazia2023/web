@@ -81,7 +81,7 @@
       #{$self}__item {
         width: 32px;
         height: 100%;
-        padding: 0.8rem;
+        padding: 0;
         border-right: 1px solid getCssVar('color', 'neutral-gray-100');
         background: getCssVar('color', 'neutral-gray-50');
         transition: all getCssVar('transition-duration')
@@ -91,11 +91,6 @@
           .p-tab-pane__icon {
             color: getCssVar('color', 'persian-500');
           }
-        }
-
-        &:last-child,
-        &:nth-child(2) {
-          padding: 0.8rem;
         }
 
         &:last-child {
@@ -112,9 +107,9 @@
       }
 
       .p-tab-pane__icon {
-        font-size: 1.6rem;
+        width: 100%;
+        height: 100%;
         color: getCssVar('color', 'neutral-gray-500');
-        pointer-events: none;
         transition: color 0.3s ease;
       }
     }

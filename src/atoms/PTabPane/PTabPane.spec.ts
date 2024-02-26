@@ -2,7 +2,9 @@ import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PTabPane from '.'
 import type { PTabPaneProps } from './PTabPaneTypes'
+import type { PTooltipProps } from '@/atoms/PTooltip/PTooltipTypes'
 import PTabs from '@/molecules/PTabs'
+import PTooltip from '@/atoms/PTooltip'
 
 const propsValue: PTabPaneProps = {
   pLabel: 'label',
@@ -10,7 +12,8 @@ const propsValue: PTabPaneProps = {
   pName: 'name',
   pClosable: false,
   pLazy: false,
-  pTabIcon: 'PICalendarEvent'
+  pTabIcon: 'PICalendarEvent',
+  pTooltip: undefined
 }
 
 function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
@@ -29,6 +32,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
           :pClosable="props.pClosable"
           :pLazy="props.pLazy"
           :pTabIcon="props.pTabIcon"
+          :pTooltip="props.pTooltip"
         >
           <template
             name="label"
@@ -50,7 +54,8 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
     global: {
       components: {
         PTabs,
-        PTabPane
+        PTabPane,
+        PTooltip
       }
     }
   })
@@ -72,12 +77,6 @@ describe('pTabPane', () => {
 
     expect(wrapper.find('.el-tab-pane').text()).toBe('content')
   })
-  it('should render icon on tabs correctly', async () => {
-    const wrapper: VueWrapper<any> = createWrapper(propsValue, 'content')
-    await flushPromises()
-    expect(wrapper.find('.p-tab-pane__icon')).toBeTruthy()
-    expect(wrapper.findComponent({ name: propsValue.pTabIcon as string })).toBeTruthy()
-  })
   it.each([
     {
       pTabIcon: 'PICalendarEvent',
@@ -95,7 +94,36 @@ describe('pTabPane', () => {
       }, 'content')
       await flushPromises()
       const iconClass = wrapper.find('.p-tab-pane__icon').exists()
+      expect(wrapper.findComponent({ name: pTabIcon as string })).toBeTruthy()
       expect(iconClass).toBe(shouldHaveIconClass)
+    }
+  )
+  it.each([
+    {
+      pTooltip: {
+        pPlacement: 'bottom',
+        pContent: 'this is a tooltip',
+        disabled: false
+      } as PTooltipProps,
+      pTabIcon: 'PICalendarEvent',
+      shouldHaveTooltipClass: true
+    },
+    {
+      pTooltip: undefined,
+      pTabIcon: 'PICalendarEvent',
+      shouldHaveTooltipClass: false
+    }
+  ])('should have Tooltip component : $shouldHaveTooltipClass',
+    async ({ pTabIcon, pTooltip, shouldHaveTooltipClass }) => {
+      const wrapper: VueWrapper<any> = createWrapper({
+        ...propsValue,
+        pTabIcon,
+        pTooltip
+      }, 'content')
+      await flushPromises()
+      expect(wrapper.find('.p-tab-pane__icon.el-tooltip__trigger').exists()).toBe(shouldHaveTooltipClass)
+      expect(wrapper.find('.p-tab-pane__icon').exists()).toBeTruthy()
+      expect(wrapper.findComponent({ name: pTabIcon as string })).toBeTruthy()
     }
   )
 })
