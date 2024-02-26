@@ -1,7 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
 import mockRowData from './../../mock.json'
-import mock from './mock.json'
 import DrawerCollabDetails from './'
 
 let wrapper: VueWrapper<any>
@@ -9,8 +8,12 @@ let wrapper: VueWrapper<any>
 const { firstName, lastName } = mockRowData.data.items[0]
 const rowData = {
   ...mockRowData.data.items[0],
-  fullName: `${firstName} ${lastName}`
+  fullName: `${firstName} ${lastName}`,
+  initials: `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
 }
+
+const getCollabRoleComponent = () => wrapper.findComponent({ name: 'CollabRole' })
+const getCollabAccessComponent = () => wrapper.findComponent({ name: 'CollabAccess' })
 
 const createWrapper = (): VueWrapper<any> =>
   mount(DrawerCollabDetails, {
@@ -37,23 +40,28 @@ describe('drawerCollabDetails', () => {
     expect(tag.text()).toContain(rowData.role)
   })
 
-  it('shows multiple roles', () => {
-    const radioCards = wrapper.findAll('.p-radio-card')
-    expect(radioCards).toHaveLength(mock.data.length)
+  it('can switch between steps', async () => {
+    expect(getCollabRoleComponent().exists()).toBeTruthy()
+    expect(getCollabAccessComponent().exists()).toBeFalsy()
+
+    await getCollabRoleComponent().vm.$emit('setSelectedRoleId')
+
+    expect(getCollabRoleComponent().exists()).toBeFalsy()
+    expect(getCollabAccessComponent().exists()).toBeTruthy()
+
+    await getCollabAccessComponent().vm.$emit('goToPreviousStep')
+
+    expect(getCollabRoleComponent().exists()).toBeTruthy()
+    expect(getCollabAccessComponent().exists()).toBeFalsy()
   })
 
-  it('has a role pre selected', () => {
-    const roleSelected = mock.data.find(({ selected }) => selected)
-    const radioCardSelected = wrapper.find('.p-radio-card .el-radio.is-checked input')
-    expect((radioCardSelected.element as HTMLInputElement).value).toBe(roleSelected?.id.toString())
-  })
+  it('can display a notification when the form on the second step is submitted', async () => {
+    await getCollabRoleComponent().vm.$emit('setSelectedRoleId')
 
-  it('displays a success notification on form submitted', async () => {
     const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
     expect(getNotificationSuccess()).toHaveLength(0)
 
-    const buttonSubmit = wrapper.findAll('.el-drawer__footer button')[1]
-    await buttonSubmit.trigger('click')
+    await getCollabAccessComponent().vm.$emit('setAccesses')
 
     expect(getNotificationSuccess()[0].textContent).toContain(rowData.fullName)
   })

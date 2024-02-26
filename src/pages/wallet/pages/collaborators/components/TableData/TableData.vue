@@ -99,19 +99,21 @@
     </PTableColumn>
   </PTable>
 
-  <DrawerCollabDetails
-    v-if="state.hasDrawerOpened.collabDetails"
-    v-model="state.hasDrawerOpened.collabDetails"
-    :rowData="state.rowData"
-    :hasDrawerOpened="state.hasDrawerOpened.collabDetails"
-  />
+  <div v-if="state.rowData">
+    <DrawerCollabDetails
+      v-if="state.hasDrawerOpened.collabDetails"
+      v-model="state.hasDrawerOpened.collabDetails"
+      :rowData="state.rowData"
+      :hasDrawerOpened="state.hasDrawerOpened.collabDetails"
+    />
 
-  <DrawerCollabRole
-    v-if="state.hasDrawerOpened.collabRole"
-    v-model="state.hasDrawerOpened.collabRole"
-    :rowData="state.rowData"
-    :hasDrawerOpened="state.hasDrawerOpened.collabRole"
-  />
+    <DrawerCollabRole
+      v-if="state.hasDrawerOpened.collabRole"
+      v-model="state.hasDrawerOpened.collabRole"
+      :rowData="state.rowData"
+      :hasDrawerOpened="state.hasDrawerOpened.collabRole"
+    />
+  </div>
 </div>
 </template>
 
@@ -139,9 +141,7 @@ const { t } = useI18n({
   useScope: 'local'
 })
 
-const props = withDefaults(defineProps<Props>(), {
-  data: []
-})
+const props = defineProps<Props>()
 
 const access = props.data.map(({ id, hasAccess }: { id: string, hasAccess: boolean }) => ({
   [id]: hasAccess

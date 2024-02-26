@@ -10,7 +10,17 @@ let wrapper: VueWrapper<any>
 const createWrapper = (): VueWrapper<any> =>
   mount(TableData, {
     props: {
-      data: mock.data.items
+      data: mock.data.items.map(({
+        firstName,
+        lastName,
+        ...rest
+      }) => ({
+        initials: `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`,
+        fullName: `${firstName} ${lastName}`,
+        firstName,
+        lastName,
+        ...rest
+      }))
     },
     attachTo: document.body
   })

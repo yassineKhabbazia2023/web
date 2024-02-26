@@ -1,21 +1,13 @@
+import type { IExtendedCollab } from './../../types'
+import type { selectedRoleId } from './components/CollabRole/types'
+
 export interface Props {
-  rowData: any
+  rowData: IExtendedCollab
   hasDrawerOpened: boolean
 }
 
-export interface Role {
-  id: number
-  name: string
-  description: string
-  selected: boolean
-}
-
-interface FormValue {
-  roleIdSelected: number | undefined
-}
-
 export interface State {
-  formValue: FormValue
-  isLoading: boolean | undefined
-  roles: Role[]
+  accessesSelected: object | undefined
+  selectedRoleId: selectedRoleId
+  currentStep: number
 }

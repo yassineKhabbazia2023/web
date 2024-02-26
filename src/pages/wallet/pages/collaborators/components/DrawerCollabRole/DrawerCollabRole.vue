@@ -20,84 +20,33 @@
     />
   </PUserCard>
 
-  <i18n-t
-    class="margin-bottom--6"
-    keypath="youCanModify"
-    tag="p"
-  >
-    <template #administrator>
-      <strong>{{ t('administrator') }}</strong>
-    </template>
-  </i18n-t>
-
-  <PLoader v-if="state.isLoading" />
-
-  <PForm
-    v-if="!state.isLoading && state.roles.length"
-    @submit.prevent="handleSubmit(formRef)"
-    ref="formRef"
-    :pModel="state.formValue"
-  >
-    <PRadioGroup v-model="state.formValue.roleIdSelected">
-      <PRadioCard
-        v-for="({ description, id, name }) in state.roles"
-        :key="id"
-        :pLabel="id"
-        :pTitle="name"
-        :pDescription="description"
-      >
-        <PButton pType="white">
-          {{ t('personalize') }}
-          <PIcon class="el-button__icon--right">
-            <PIArrowRight />
-          </PIcon>
-        </PButton>
-      </PRadioCard>
-    </PRadioGroup>
-  </PForm>
-
-  <template #footer>
-    <div class="margin-left--auto">
-      <PButton
-        @click="handleReset"
-        class="margin-right--4"
-        pType="primary"
-        pPlain
-      >
-        {{ t('cancel') }}
-      </PButton>
-
-      <PButton
-        @click="handleSubmit(formRef)"
-        pType="primary"
-      >
-        {{ t('submit') }}
-      </PButton>
-    </div>
-  </template>
+  <CollabRole
+    v-if="!state.currentStep"
+    @set-drawer-not-visible="closeDrawer"
+    @set-selected-role-id="handleSetSelectedRoleId"
+  />
+  <CollabAccess
+    v-if="state.currentStep"
+    @set-accesses="handleSetAccess"
+    @go-to-previous-step="state.currentStep--"
+    :selectedCollabRole=rowData.role
+  />
 </PDrawer>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
+import { computed, reactive } from 'vue'
 import {
-  PButton,
   PDrawer,
-  PForm,
-  PIArrowRight,
-  PIcon,
   PICheck,
-  PLoader,
   PNotification,
-  PRadioCard,
-  PRadioGroup,
   PTag,
   PUserCard
 } from '@kpmg/styleguide'
 import type { State, Props } from './types'
-import mock from './mock.json'
+import CollabRole from './components/CollabRole'
+import CollabAccess from './components/CollabAccess'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -113,37 +62,25 @@ const isDrawerVisible = computed({
   set: value => emit('update:modelValue', value)
 })
 
+const closeDrawer = () => {
+  isDrawerVisible.value = false
+}
+
 const state: State = reactive({
-  formValue: {
-    roleIdSelected: undefined
-  },
-  isLoading: undefined,
-  roles: []
+  selectedRoleId: undefined,
+  accessesSelected: undefined,
+  currentStep: 0
 })
 
-const fetchRoles = async () => {
-  state.isLoading = true
-
-  try {
-    const { data } = await Promise.resolve(mock)
-    state.roles = data
-    state.formValue.roleIdSelected = data.find(({ selected }) => selected)?.id
-  } catch (err) {
-    console.error(err)
-  }
-
-  state.isLoading = false
+const handleSetSelectedRoleId = (selectedRoleId: number) => {
+  state.selectedRoleId = selectedRoleId
+  state.currentStep++
 }
 
-const formRef = ref<FormInstance>()
+const handleSetAccess = (accesses: Object) => {
+  state.accessesSelected = accesses
 
-const handleReset = () => {
-  isDrawerVisible.value = false
-}
-
-const handleSubmit = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  isDrawerVisible.value = false
+  closeDrawer()
 
   PNotification({
     message: t('notificationSuccess', { fullName: props.rowData.fullName }),
@@ -153,27 +90,13 @@ const handleSubmit = (formEl: FormInstance | undefined) => {
     position: 'bottom-right'
   })
 }
-
-onMounted(async () => {
-  await fetchRoles()
-})
 </script>
 
 <i18n lang="yaml">
 en-US:
   manageAccessRights: 'Manage access rights'
-  youCanModify: 'As an {administrator}, you can modify the role of your colleague.'
-  administrator: 'administrator'
-  personalize: 'Personalize'
-  cancel: 'Cancel'
-  submit: 'Submit'
   notificationSuccess: 'The role of {fullName} has been successfully updated.'
 fr-FR:
   manageAccessRights: "Gérer les droits d’accès"
-  youCanModify: "En tant qu'{administrator}, vous pouvez modifier le rôle de votre collaborateur."
-  administrator: 'administrateur'
-  personalize: 'Personnaliser'
-  cancel: 'Annuler'
-  submit: 'Valider'
   notificationSuccess: 'Le rôle de {fullName} a bien été mis à jour.'
 </i18n>
