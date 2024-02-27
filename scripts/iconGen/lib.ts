@@ -1,5 +1,5 @@
 import path from 'path'
-import { writeFileSync, readdirSync, readFileSync, statSync, rmSync, existsSync, mkdirSync } from 'fs'
+import { writeFileSync, readdirSync, readFileSync, statSync, existsSync, mkdirSync } from 'fs'
 import type { Icon } from './types'
 import { logger } from '../../src/utils/logger'
 
@@ -54,10 +54,8 @@ export function generateComponent(componentName: string, filePath: string, outpu
     }
     const filePath = path.join(outputPath, `${componentName}.vue`)
     writeFileSync(filePath, componentCode)
-    return filePath
   } else {
     logger.error(`${filePath}.svg - Invalid SVG format`)
-    return ''
   }
 }
 
@@ -88,16 +86,6 @@ export default ({
     componentName,
     componentCode
   }
-}
-
-export function clearFolder(folderPath: string, keepFilePaths: string[]) {
-  const fileNames = readdirSync(folderPath)
-  fileNames.forEach((fileName) => {
-    const filePath = path.join(folderPath, fileName)
-    if (!keepFilePaths.includes(filePath)) {
-      rmSync(filePath, { recursive: true })
-    }
-  })
 }
 
 export function getComponentConstantsContent(icons: Icon[]) {
