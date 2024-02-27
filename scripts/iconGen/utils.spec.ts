@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
 import * as pulseIconGenLib from './lib'
+import * as commonUtils from '../common/utils'
 
 import { generateComponents, generateIcons } from './utils'
 import { MOCKED_ICON_1, MOCKED_ICON_2 } from './mocks'
 
-vi.mock('./pulseIconGenLib', () => {
+vi.mock('./lib', () => {
   return {
     getIcons: vi.fn(),
     generateComponent: vi.fn(),
@@ -14,24 +15,25 @@ vi.mock('./pulseIconGenLib', () => {
   }
 })
 
+vi.mock('../common/utils', () => {
+  return {
+    clearFolder: vi.fn()
+  }
+})
+
 describe('pulseIconGenUtils', () => {
   const icons = [MOCKED_ICON_1, MOCKED_ICON_2]
   const outputPath = 'output-folder'
-  const validTargetFilePath = 'a/b/c.vue'
-  const expectedTargetFilePaths = [validTargetFilePath]
   let mockedGenerateComponent: SpyInstance
-  let targetFilePaths: string[]
 
   beforeEach(() => {
     mockedGenerateComponent = vi
       .spyOn(pulseIconGenLib, 'generateComponent')
-      .mockReturnValueOnce(validTargetFilePath)
-      .mockReturnValueOnce('')
   })
 
   describe('generateComponents', () => {
     beforeEach(() => {
-      targetFilePaths = generateComponents(icons, outputPath)
+      generateComponents(icons, outputPath)
     })
     it('should call generateComponent N times', () => {
       expect(mockedGenerateComponent).toHaveBeenCalledTimes(icons.length)
@@ -40,9 +42,6 @@ describe('pulseIconGenUtils', () => {
       const componentName = icons.at(0)?.componentName
       const filePath = icons.at(0)?.filePath
       expect(mockedGenerateComponent).toHaveBeenNthCalledWith(1, componentName, filePath, outputPath)
-    })
-    it('should return not empty targetFilePaths', () => {
-      expect(targetFilePaths).toStrictEqual(expectedTargetFilePaths)
     })
   })
 
@@ -60,7 +59,7 @@ describe('pulseIconGenUtils', () => {
         .spyOn(pulseIconGenLib, 'getIcons')
         .mockReturnValue(icons)
       mockedClearFolder = vi
-        .spyOn(pulseIconGenLib, 'clearFolder')
+        .spyOn(commonUtils, 'clearFolder')
         .mockReturnValue()
       mockedWriteComponentIndex = vi
         .spyOn(pulseIconGenLib, 'writeComponentIndex')
@@ -77,7 +76,7 @@ describe('pulseIconGenUtils', () => {
     })
 
     it('should call mockedClearFolder with proper arguments', () => {
-      expect(mockedClearFolder).toHaveBeenCalledWith(outputPath, expectedTargetFilePaths)
+      expect(mockedClearFolder).toHaveBeenCalledWith(outputPath)
     })
 
     it('should call mockedWriteComponentIndex with proper arguments', () => {

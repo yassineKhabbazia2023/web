@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
 import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVG_CODE } from './mocks'
 
 import {
-  capitalizeFirstLetter, getComponentInfo, getIcons, generateComponent, clearFolder,
+  capitalizeFirstLetter, getComponentInfo, getIcons, generateComponent,
   getComponentConstantsContent, writeComponentConstants, getComponentIndexContent, writeComponentIndex
 } from './lib'
 
@@ -114,7 +114,6 @@ describe('pulseIconGenLib', () => {
   })
 
   describe('generateComponent', () => {
-    let targetFilePath: string
     let mockedWriteFileSync: SpyInstance
     let mockedReadFileSync: SpyInstance
 
@@ -131,26 +130,20 @@ describe('pulseIconGenLib', () => {
       beforeEach(() => {
         mockedReadFileSync.mockReturnValueOnce(MOCKED_SVG_CODE)
 
-        targetFilePath = generateComponent(componentName, filePath, outputPath)
+        generateComponent(componentName, filePath, outputPath)
       })
       it('should call writeFileSync()', () => {
         expect(mockedWriteFileSync).toHaveBeenCalledOnce()
-      })
-      it('should return targetFilePath', () => {
-        expect(targetFilePath).toBe(`${outputPath}/${componentName}.vue`)
       })
     })
     describe('when viewBox and pathData are empty', () => {
       beforeEach(() => {
         mockedReadFileSync.mockReturnValueOnce('')
 
-        targetFilePath = generateComponent(componentName, filePath, outputPath)
+        generateComponent(componentName, filePath, outputPath)
       })
       it('should NOT call writeFileSync()', () => {
         expect(mockedWriteFileSync).not.toHaveBeenCalled()
-      })
-      it('should return emptry string', () => {
-        expect(targetFilePath).toBe('')
       })
     })
     describe('when folder does not exist', () => {
@@ -165,34 +158,6 @@ describe('pulseIconGenLib', () => {
         generateComponent(componentName, filePath, outputPath)
         expect(mockedMdirSync).toHaveBeenCalledWith(outputPath)
       })
-    })
-  })
-
-  describe('clearFolder', () => {
-    let mockedReaddirSync: SpyInstance
-    let mockedRmSync: SpyInstance
-    const folderPath = 'my-folder'
-    const folderList = ['a.svg', 'b.svg', 'folder']
-    const keepPaths = [`${folderPath}/${folderList.at(0)}`]
-
-    beforeEach(() => {
-      mockedReaddirSync = vi.spyOn(fs, 'readdirSync')
-      mockedRmSync = vi.spyOn(fs, 'rmSync')
-      mockedReaddirSync.mockReturnValue(folderList)
-    })
-    it('should call rmSync N times', () => {
-      clearFolder(folderPath, keepPaths)
-      expect(mockedRmSync).toHaveBeenCalledTimes(folderList.length - keepPaths.length)
-    })
-    it('should call rmSync with proper arguments', () => {
-      clearFolder(folderPath, keepPaths)
-      const pathToDelete1 = `${folderPath}/${folderList.at(1)}`
-      const pathToDelete2 = `${folderPath}/${folderList.at(2)}`
-      const options = {
-        recursive: true
-      }
-      expect(mockedRmSync).toHaveBeenNthCalledWith(1, pathToDelete1, options)
-      expect(mockedRmSync).toHaveBeenNthCalledWith(2, pathToDelete2, options)
     })
   })
 
