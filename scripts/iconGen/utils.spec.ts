@@ -3,21 +3,21 @@ import * as pulseIconGenLib from './lib'
 import * as commonUtils from '../common/utils'
 
 import { generateComponents, generateIcons } from './utils'
-import { MOCKED_ICON_1, MOCKED_ICON_2 } from './mocks'
+import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVGO_CONFIG } from './mocks'
 
 vi.mock('./lib', () => {
   return {
     getIcons: vi.fn(),
     generateComponent: vi.fn(),
     writeComponentIndex: vi.fn(),
-    writeComponentConstants: vi.fn(),
-    clearFolder: vi.fn()
+    writeComponentConstants: vi.fn()
   }
 })
 
 vi.mock('../common/utils', () => {
   return {
-    clearFolder: vi.fn()
+    clearFolder: vi.fn(),
+    getSvgoConfig: vi.fn()
   }
 })
 
@@ -31,17 +31,15 @@ describe('pulseIconGenUtils', () => {
       .spyOn(pulseIconGenLib, 'generateComponent')
   })
 
-  describe('generateComponents', () => {
-    beforeEach(() => {
-      generateComponents(icons, outputPath)
-    })
-    it('should call generateComponent N times', () => {
-      expect(mockedGenerateComponent).toHaveBeenCalledTimes(icons.length)
-    })
-    it('should call generateComponent with proper arguments', () => {
+  describe('scripts/iconGen/utils', () => {
+    it('should call generateComponent with proper arguments', async () => {
+      const svgoConfig = MOCKED_SVGO_CONFIG
+      await generateComponents(icons, outputPath, svgoConfig)
       const componentName = icons.at(0)?.componentName
       const filePath = icons.at(0)?.filePath
-      expect(mockedGenerateComponent).toHaveBeenNthCalledWith(1, componentName, filePath, outputPath)
+
+      expect(mockedGenerateComponent).toHaveBeenCalledTimes(icons.length)
+      expect(mockedGenerateComponent).toHaveBeenNthCalledWith(1, componentName, filePath, outputPath, svgoConfig)
     })
   })
 

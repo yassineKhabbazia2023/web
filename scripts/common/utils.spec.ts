@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
 
-import { clearFolder } from './utils'
+import { clearFolder, getSvgoConfig } from './utils'
 
 vi.mock('fs', () => ({
   mkdirSync: vi.fn(),
@@ -9,7 +9,7 @@ vi.mock('fs', () => ({
   rmSync: vi.fn()
 }))
 
-describe('pulseIconGenLib', () => {
+describe('scripts/common/utils', () => {
   describe('clearFolder', () => {
     let mockedRmSync: SpyInstance
     const folderPath = 'my-folder'
@@ -33,6 +33,14 @@ describe('pulseIconGenLib', () => {
       vi.spyOn(fs, 'existsSync').mockReturnValue(false)
       clearFolder(folderPath)
       expect(mockedRmSync).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('getSvgoConfig', () => {
+    it('should return proper object', () => {
+      const svgoConfig = getSvgoConfig()
+      expect(svgoConfig.plugins).toHaveLength(3)
+      expect(svgoConfig.plugins?.includes('removeXMLNS')).toBeTruthy()
     })
   })
 })

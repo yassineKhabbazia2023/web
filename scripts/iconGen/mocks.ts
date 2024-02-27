@@ -17,3 +17,6 @@ export const MOCKED_SVG_CODE = `<svg viewBox="0 0 16 16" xmlns="http://www.w3.or
 <path d="M4 11H2V14H4V11ZM9"/>
 </svg>`
 
+export const MOCKED_OPTIMIZED_SVG_CODE = '<svg viewBox="0 0 16 16"><path d="M4 11H2V14H4V11ZM9"/></svg>'
+
+export const MOCKED_SVGO_CONFIG = {}
