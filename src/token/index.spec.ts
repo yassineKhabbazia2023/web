@@ -80,6 +80,7 @@ describe('test token', () => {
       tokenService.setToken(tokenValue)
       tokenService.unregisterOnChange('cb')
       tokenService.setToken(newTokenValue)
+      expect(callbackSpy).toHaveBeenCalledOnce()
       expect(callbackSpy).toHaveBeenNthCalledWith(1, tokenValue)
     })
   })
