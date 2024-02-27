@@ -49,7 +49,7 @@ export class TokenService {
   }
 
   hasValidAccessToken(): boolean {
-    return !!this.token && !isTokenExpired(this.token)
+    return !!this.getToken() && !isTokenExpired(this.token)
   }
 
   registerOnChange(key: string, callback: RegisteredCallback['callback']) {
