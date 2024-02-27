@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
-import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVG_CODE } from './mocks'
+import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVG_CODE, MOCKED_OPTIMIZED_SVG_CODE, MOCKED_SVGO_CONFIG } from './mocks'
 
 import {
   capitalizeFirstLetter, getComponentInfo, getIcons, generateComponent,
@@ -13,7 +13,6 @@ vi.mock('fs', () => ({
   readdirSync: vi.fn(),
   mkdirSync: vi.fn(),
   existsSync: vi.fn().mockReturnValue(true),
-  rmSync: vi.fn(),
   statSync: (filePath: string) => ({
     isDirectory: () => !filePath.includes('.'),
     isFile: () => filePath.includes('.')
@@ -37,7 +36,7 @@ vi.mock('path', () => ({
 
 vi.mock('@/utils/logger')
 
-describe('pulseIconGenLib', () => {
+describe('scripts/iconGen/lib', () => {
   describe('capitalizeFirstLetter', () => {
     const words = [{
       word: '',
@@ -92,7 +91,7 @@ describe('pulseIconGenLib', () => {
       pathData,
       componentName,
       componentCode
-    } = getComponentInfo(iconPath, MOCKED_SVG_CODE)
+    } = getComponentInfo(iconPath, MOCKED_SVG_CODE, MOCKED_OPTIMIZED_SVG_CODE)
 
     it('should return proper iconName', () => {
       const expected = 'icon-name'
@@ -130,7 +129,7 @@ describe('pulseIconGenLib', () => {
       beforeEach(() => {
         mockedReadFileSync.mockReturnValueOnce(MOCKED_SVG_CODE)
 
-        generateComponent(componentName, filePath, outputPath)
+        generateComponent(componentName, filePath, outputPath, MOCKED_SVGO_CONFIG)
       })
       it('should call writeFileSync()', () => {
         expect(mockedWriteFileSync).toHaveBeenCalledOnce()
@@ -140,33 +139,30 @@ describe('pulseIconGenLib', () => {
       beforeEach(() => {
         mockedReadFileSync.mockReturnValueOnce('')
 
-        generateComponent(componentName, filePath, outputPath)
+        generateComponent(componentName, filePath, outputPath, MOCKED_SVGO_CONFIG)
       })
       it('should NOT call writeFileSync()', () => {
         expect(mockedWriteFileSync).not.toHaveBeenCalled()
       })
     })
     describe('when folder does not exist', () => {
-      let mockedMdirSync: SpyInstance
-      beforeEach(() => {
+      it('should call mkdirSync() with proper arguments', async () => {
         mockedReadFileSync.mockReturnValueOnce(MOCKED_SVG_CODE)
 
         vi.spyOn(fs, 'existsSync').mockReturnValue(false)
-        mockedMdirSync = vi.spyOn(fs, 'mkdirSync')
-      })
-      it('should call mkdirSync() with proper arguments', () => {
-        generateComponent(componentName, filePath, outputPath)
+        const mockedMdirSync = vi.spyOn(fs, 'mkdirSync')
+        await generateComponent(componentName, filePath, outputPath, MOCKED_SVGO_CONFIG)
         expect(mockedMdirSync).toHaveBeenCalledWith(outputPath)
       })
     })
   })
 
   describe('getComponentConstantsContent', () => {
-    it('should return proper containts', () => {
+    it('should return proper content', () => {
       const icons = [MOCKED_ICON_1, MOCKED_ICON_2]
-      const contents = getComponentConstantsContent(icons)
+      const content = getComponentConstantsContent(icons)
 
-      expect(contents).toMatchFileSnapshot('__snapshots__/getComponentConstantsContent/content.snap')
+      expect(content).toMatchFileSnapshot('__snapshots__/getComponentConstantsContent/content.snap')
     })
   })
 

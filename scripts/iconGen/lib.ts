@@ -1,3 +1,4 @@
+import { type Config, optimize } from 'svgo'
 import path from 'path'
 import { writeFileSync, readdirSync, readFileSync, statSync, existsSync, mkdirSync } from 'fs'
 import type { Icon } from './types'
@@ -43,11 +44,19 @@ export function getIcons(folder: string, category: string): Icon[] {
   return icons
 }
 
-export function generateComponent(componentName: string, filePath: string, outputPath: string) {
-  const svgCode = readFileSync(filePath, 'utf-8')
+export async function generateComponent(
+  componentName: string,
+  filePath: string,
+  outputPath: string,
+  svgoConfig: Config
+) {
+  const originalSvg = readFileSync(filePath, 'utf-8')
+  const optimized = await optimize(originalSvg, svgoConfig)
+  const { data: optimizedSvg } = optimized
+
   const {
     viewBox, pathData, componentCode
-  } = getComponentInfo(filePath, svgCode)
+  } = getComponentInfo(filePath, originalSvg, optimizedSvg)
   if (viewBox && pathData) {
     if (!existsSync(outputPath)) {
       mkdirSync(outputPath)
@@ -59,12 +68,13 @@ export function generateComponent(componentName: string, filePath: string, outpu
   }
 }
 
-export function getComponentInfo(iconPath: string, svgCode: string) {
+export function getComponentInfo(iconPath: string, svgCode: string, optimizedSvg: string) {
   const iconName = path.basename(iconPath, '.svg')
 
   const viewBox = svgCode.match(/viewBox="(.*?)"/)
   const pathData = svgCode.match(/<path(.*?)\/>/)
-  const content = pathData?.input ?? ''
+  const optimizedPathData = optimizedSvg.match(/<path(.*?)\/>/)
+  const content = optimizedPathData?.input ?? ''
   const componentName = `PI${capitalizeFirstLetter(iconName)}`
   const componentCode = `
 <!-- eslint-disable vue/max-attributes-per-line max-len -->

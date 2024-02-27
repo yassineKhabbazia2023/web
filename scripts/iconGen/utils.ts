@@ -1,17 +1,21 @@
-import { clearFolder } from '../common/utils'
-import { getIcons, generateComponent, writeComponentIndex, writeComponentConstants } from './lib'
+import { type Config } from 'svgo'
+import { clearFolder, getSvgoConfig } from '../common/utils'
+import {
+  getIcons, generateComponent, writeComponentIndex, writeComponentConstants
+} from './lib'
 import type { Icon } from './types'
 
-export function generateComponents(icons: Icon[], outputFolderPath: string) {
-  icons.forEach(({ componentName, filePath }) => {
-    generateComponent(componentName, filePath, outputFolderPath)
-  })
+export async function generateComponents(icons: Icon[], outputFolderPath: string, svgoConfig: Config) {
+  const promises = icons.map(({ componentName, filePath }) =>
+    generateComponent(componentName, filePath, outputFolderPath, svgoConfig))
+  await Promise.all(promises)
 }
 
-export function generateIcons(iconsFolderPath: string, outputFolderPath: string) {
+export async function generateIcons(iconsFolderPath: string, outputFolderPath: string) {
   const icons = getIcons(iconsFolderPath, '')
+  const svgoConfig = getSvgoConfig()
   clearFolder(outputFolderPath)
-  generateComponents(icons, outputFolderPath)
+  await generateComponents(icons, outputFolderPath, svgoConfig)
   writeComponentIndex(outputFolderPath, icons)
   writeComponentConstants(outputFolderPath, icons)
 }
