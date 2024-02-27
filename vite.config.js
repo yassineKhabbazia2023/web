@@ -35,6 +35,7 @@ export default ({ mode }) =>
             'vue-i18n': 'VueI18n',
             pinia: 'Pinia',
             '@kpmg/common': 'Common',
+            '@kpmg/styleguide': 'Styleguide',
             'env-vars': 'EnvVars'
           },
           { disableInServe: mode === 'test' }
