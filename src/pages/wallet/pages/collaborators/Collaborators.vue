@@ -25,10 +25,14 @@
 
       <PLoader v-if="state.isLoading" />
 
-      <TableData
-        v-if="!state.isLoading && state.data.length"
-        :data="state.data"
-      />
+      <div v-if="!state.isLoading">
+        <TableData
+          v-if="state.data.length"
+          :data="state.data"
+        />
+
+        <NoResult v-if="!state.data.length" />
+      </div>
     </div>
 
     <PPagination
@@ -61,7 +65,8 @@ import {
   PLoader,
   PPagination
 } from '@kpmg/styleguide'
-import { getInitials } from '@/helper'
+import { getInitials, removeFalsyValues } from '@/helper'
+import NoResult from '@/components/NoResult'
 import type { IExtendedCollab, IState } from './types'
 import TableData from './components/TableData'
 import mock from './mock.json'
@@ -124,8 +129,17 @@ const shouldShowPagination = computed(() =>
   !state.isLoading && !!state.totalItems && state.totalItems > state.limit
 )
 
+const getQueryParams = () => ({
+  page: state.currentPage,
+  limit: state.limit,
+  search: state.search
+})
+
 const fetch = async () => {
-  state.isLoading = true
+  const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
+  const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
+
+  state.isLoading = searchParams && true
 
   try {
     const {
@@ -136,7 +150,7 @@ const fetch = async () => {
         totalItems
       }
     } = await Promise.resolve(mock)
-    // TODO: remove mock when endpoint is done
+    // TODO: remove mock & searchParams in isLoading (line 142), when endpoint is done
     // await commonApi().wallet.get(`collabs?${searchParams}`)
 
     state.data = items.map<IExtendedCollab>(({

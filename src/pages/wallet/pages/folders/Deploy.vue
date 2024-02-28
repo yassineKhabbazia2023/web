@@ -98,14 +98,15 @@ import {
   PPagination
 } from '@kpmg/styleguide'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import NoResult from '@/components/NoResult'
+import OffersDrawer from '@/pages/entities/components/OffersDrawer'
+import { removeFalsyValues } from '@/helper'
 import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '../../types'
 import Filters from '../../components/Filters'
 import { EntityStatus } from '../../components/Filters/types'
-import NoResult from '../../components/NoResult'
 import TableData from '../../components/TableData'
-import OffersDrawer from '@/pages/entities/components/OffersDrawer'
-import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -223,11 +224,6 @@ const getQueryParams = () => ({
   search: state.search,
   deploymentStatus: state.filterByDeploymentStatus
 })
-
-const removeFalsyValues = (obj: object) =>
-  Object.entries(obj)
-    // eslint-disable-next-line no-return-assign
-    .reduce((acc: any, [key, value]) => (value ? (acc[key] = value, acc) : acc), {})
 
 const fetch = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())

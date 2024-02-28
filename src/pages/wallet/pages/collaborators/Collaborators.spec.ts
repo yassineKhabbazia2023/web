@@ -1,5 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { nextTick } from 'vue'
 import mock from './mock.json'
 import Collaborators from './'
 
@@ -54,5 +55,16 @@ describe('collaborators', () => {
     await inputSearch.trigger('keyup')
 
     expect(getFormItemIsError().exists()).toBeTruthy()
+  })
+
+  it('can display a no results message', async () => {
+    const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })
+
+    expect(getNoResultComponent().exists()).toBeFalsy()
+
+    wrapper.vm.state.data = []
+    await nextTick()
+
+    expect(getNoResultComponent().exists()).toBeTruthy()
   })
 })

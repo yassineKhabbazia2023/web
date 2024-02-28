@@ -35,3 +35,9 @@ export const generateObject = (
 export const formatDateToLocale = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('fr-FR')
 }
+
+export const removeFalsyValues = (obj: object) =>
+  Object.entries(obj).reduce(
+    (acc: any, [key, value]) => (value ? ((acc[key] = value), acc) : acc),
+    {}
+  )
