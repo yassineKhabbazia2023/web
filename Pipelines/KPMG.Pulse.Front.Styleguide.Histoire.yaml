@@ -19,11 +19,12 @@ resources:
   - repository: CICD
     name: 'Plateforme Technologique/CICD'
     type: git
-    ref: 'refs/heads/Release/v6.0'
+    ref: 'refs/heads/Release/v6.1'
 
 extends:
   template: PipelineTemplate.yaml@CICD
   parameters:
+    disableTelemetry: true
     versioning:
       mode: legacy
       major: 1

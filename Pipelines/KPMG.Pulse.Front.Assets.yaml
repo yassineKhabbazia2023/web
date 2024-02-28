@@ -27,11 +27,12 @@ resources:
   - repository: CICD
     name: 'Plateforme Technologique/CICD'
     type: git
-    ref: 'refs/heads/Release/v6.0'
+    ref: 'refs/heads/Release/v6.1'
 
 extends:
   template: PipelineTemplate.yaml@CICD
   parameters:
+    disableTelemetry: true
     versioning:
       mode: legacy
       major: 1
@@ -44,15 +45,19 @@ extends:
       - type: files
         name: Assets
         path: src/assets/images
+      - type: files
+        name: Fonts
+        path: src/assets/fonts
     deploy:
       environments:
       - ${{ if ne(parameters.devIndex, 0) }}:
         - name: DEV
-          displayName: Developpement
           condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           ${{ if lt(parameters.devIndex, 10) }}:
+            displayName: dev0${{ parameters.devIndex }}
             poolAgent: Pulse-dev0${{ parameters.devIndex }}
           ${{ else }}:
+            displayName: dev${{ parameters.devIndex }}
             poolAgent: Pulse-dev${{ parameters.devIndex }}
           variables:
           - name: azureSC
@@ -122,4 +127,19 @@ extends:
           endpointName: $(cdn_endpoint)
           waitForCommand: true
           path: '/'
+          type: AFD
+      - type: az-blob
+        name: Deploy_Fonts
+        artifact: Fonts
+        azureServiceConnection: $(azureSC)
+        storageAccount: $(storageAccount)
+        container: "$web"
+        targetPath: assets/fonts
+        storageDeployment: overwrite
+        purgeCdn:
+          resourceGroup: $(cdn_resourceGroup)
+          profileName: $(cdn_profile)
+          endpointName: $(cdn_endpoint)
+          waitForCommand: true
+          path: 'fonts'
           type: AFD
