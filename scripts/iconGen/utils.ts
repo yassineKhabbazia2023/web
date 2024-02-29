@@ -13,7 +13,7 @@ export async function generateComponents(icons: Icon[], outputFolderPath: string
 
 export async function generateIcons(iconsFolderPath: string, outputFolderPath: string) {
   const icons = getIcons(iconsFolderPath, '')
-  const svgoConfig = getSvgoConfig()
+  const svgoConfig = getSvgoConfig(true)
   clearFolder(outputFolderPath)
   await generateComponents(icons, outputFolderPath, svgoConfig)
   writeComponentIndex(outputFolderPath, icons)
