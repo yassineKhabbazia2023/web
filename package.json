@@ -47,9 +47,9 @@
     "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; Custom: https://mypulse.zeroheight.com/; BlueOak-1.0.0; UNKNOWN\" --production --excludePrivatePackages --unknown ",
     "format": "prettier --write src/",
     "push": "npm publish",
-    "generate": "npm run generate:icons && npm run generate:imagesList",
+    "generate": "npm run generate:icons && npm run generate:images",
     "generate:icons": "ts-node -P ./tsconfig.scripts.json ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
-    "generate:imagesList": "node ./scripts/generateImagesList ./src/assets/images",
+    "generate:images": "ts-node -P ./tsconfig.scripts.json ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images",
     "lint:style": "stylelint src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss",
     "lint:style-fix": "stylelint --fix src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss"
   },

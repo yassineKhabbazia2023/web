@@ -37,10 +37,15 @@ describe('scripts/common/utils', () => {
   })
 
   describe('getSvgoConfig', () => {
-    it('should return proper object', () => {
-      const svgoConfig = getSvgoConfig()
+    it('should return proper object when hasRemoveXmlnsPlugin is true', () => {
+      const svgoConfig = getSvgoConfig(true)
       expect(svgoConfig.plugins).toHaveLength(3)
       expect(svgoConfig.plugins?.includes('removeXMLNS')).toBeTruthy()
+    })
+    it('should return proper object when hasRemoveXmlnsPlugin is false', () => {
+      const svgoConfig = getSvgoConfig(false)
+      expect(svgoConfig.plugins).toHaveLength(2)
+      expect(svgoConfig.plugins?.includes('removeXMLNS')).toBeFalsy()
     })
   })
 })

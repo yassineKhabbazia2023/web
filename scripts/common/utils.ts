@@ -8,7 +8,7 @@ export function clearFolder(outputPath: string) {
   mkdirSync(outputPath)
 }
 
-export function getSvgoConfig(): Config {
+export function getSvgoConfig(hasRemoveXmlnsPlugin: boolean): Config {
   const pluginPresetDefault = {
     name: 'preset-default',
     params: {
@@ -22,9 +22,11 @@ export function getSvgoConfig(): Config {
   }
   const plugins = [
     'removeDimensions',
-    'removeXMLNS',
     pluginPresetDefault
   ]
+  if (hasRemoveXmlnsPlugin) {
+    plugins.push('removeXMLNS')
+  }
 
   return {
     plugins
