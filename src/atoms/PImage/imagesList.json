@@ -1,0 +1,93 @@
+[
+  {
+    "name": "badges",
+    "images": [
+      "check-success",
+      "email",
+      "eye-slash",
+      "file-pdf",
+      "folder",
+      "hourglass",
+      "lock",
+      "star",
+      "unlock-success",
+      "warning",
+      "x"
+    ]
+  },
+  {
+    "name": "forms",
+    "images": [
+      "badge",
+      "default-1",
+      "default-2",
+      "default-3",
+      "default-4",
+      "message"
+    ]
+  },
+  {
+    "name": "logos",
+    "images": [
+      "icon-pulse-bg",
+      "iconpulse-color",
+      "kpmg-black",
+      "kpmg-color",
+      "kpmg-white",
+      "loop-color",
+      "meg",
+      "microsoft-power-bi",
+      "pulse-black",
+      "pulse-color",
+      "pulse-white",
+      "silae-color"
+    ]
+  },
+  {
+    "name": "paupulse",
+    "images": [
+      "add-entity",
+      "add-user",
+      "app-authorization",
+      "bank-mandate",
+      "camera",
+      "connection-default",
+      "document-authentification",
+      "document-error",
+      "document-import",
+      "document-valid",
+      "empty",
+      "envelope",
+      "hand-up",
+      "interface",
+      "maintenance",
+      "mirror-smartphone",
+      "notes",
+      "ok",
+      "password",
+      "shared-document",
+      "time",
+      "toggle"
+    ]
+  },
+  {
+    "name": "portrait",
+    "images": [
+      "activation",
+      "collab-female-add",
+      "collab-female",
+      "collab-male-add",
+      "collab-male",
+      "collab-non-binary-add",
+      "collab-non-binary",
+      "company",
+      "delegation",
+      "user-female-add",
+      "user-female",
+      "user-male-add",
+      "user-male",
+      "user-nonbinary-add",
+      "user-nonbinary"
+    ]
+  }
+]
