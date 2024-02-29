@@ -7,8 +7,6 @@
     }"
     icon="mdi:file-image-outline"
   >
-    icon="mdi:file-image-outline"
-  >
     <Variant title="Basic Usage">
       <Suspense>
         <AsyncComponent
@@ -22,12 +20,12 @@
         <HstSelect
           v-model="basicImageData.type"
           title="Type"
-          :options="folders"
+          :options="folderNames"
         />
         <HstSelect
           v-model="basicImageData.name"
           title="Name"
-          :options="filesName"
+          :options="imageNames"
         />
         <hr />
         <div class="margin--2 margin-top--4">
@@ -38,7 +36,27 @@
             </small>
           </p>
           <p class="margin-top--4">
-            Below it s the actual list of all folders with images (including extension) inside: <pre>{{ IMAGES_LIST }}</pre>
+            Below it s the actual list of all folders with images :
+            <ul>
+              <li
+                v-for="(folder, folderIndex) in IMAGES_LIST"
+                :key="`folder-${folderIndex}`"
+                class="margin-top--2 cursor-pointer"
+                @click.stop="onClickImage(folder.name)"
+              >
+                <strong>pType="{{ folder.name }}"</strong>
+                <ul>
+                  <li
+                    class="padding-left--2 padding-top--1 cursor-pointer"
+                    v-for="(image, imageIndex) in folder.images"
+                    :key="`folder-${folderIndex}-image-${imageIndex}`"
+                    @click.stop="onClickImage(folder.name, image)"
+                  >
+                    pName="{{ image }}"
+                  </li>
+                </ul>
+              </li>
+            </ul>
           </p>
         </div>
       </template>
@@ -48,43 +66,51 @@
 
 <script setup lang="ts">
 import {
+  onMounted,
   computed,
   defineAsyncComponent,
   reactive,
   toRaw,
   watch
 } from 'vue'
-import IMAGES_LIST from '@/assets/images/imagesList.json'
+import IMAGES_LIST from './imagesList.json'
 
-const basicImageData = reactive({
-  type: 'paupulse',
-  name: 'toggle',
-  fit: 'fill'
+const folderNames = IMAGES_LIST.map(({ name }) => name)
+const imageNames = computed(() => {
+  const folder = IMAGES_LIST.find(({ name }) => name === basicImageData.type)
+  return folder?.images ?? []
 })
 
-const folders = IMAGES_LIST.map(folder => Object.keys(folder)[0])
-const files = computed(() =>
-  IMAGES_LIST.find(folder => Object.keys(folder)[0] === basicImageData.type)
-)
-
-const filesName = computed(() =>
-  Object
-    .values(files.value as object)[0]
-    .map((file: string) => file.split('.')[0])
-)
+const basicImageData = reactive<{
+  type: string,
+  name: string,
+  fit: string,
+}>({
+  type: IMAGES_LIST[0].name,
+  name: IMAGES_LIST[0].images[0],
+  fit: 'fill'
+})
 
 let AsyncComponent: any
 
 const loadImage = () => {
   AsyncComponent = defineAsyncComponent(() => import('./'))
 }
-loadImage()
+
+function onClickImage(folderName: string, imageName = '') {
+  basicImageData.type = folderName
+  basicImageData.name = imageName
+}
 
 watch(basicImageData, (newValue) => {
-  const hasFileInFolder = filesName.value.includes(toRaw(newValue.name))
+  const hasFileInFolder = imageNames.value.includes(toRaw(newValue.name))
   if (hasFileInFolder) {
     loadImage()
   }
+})
+
+onMounted(() => {
+  loadImage()
 })
 </script>
 
