@@ -49,7 +49,7 @@
     "push": "npm publish",
     "generate": "npm run generate:icons && npm run generate:images",
     "generate:icons": "ts-node -P ./tsconfig.scripts.json ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
-    "generate:images": "ts-node -P ./tsconfig.scripts.json ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images",
+    "generate:images": "ts-node -P ./tsconfig.scripts.json ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.json",
     "lint:style": "stylelint src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss",
     "lint:style-fix": "stylelint --fix src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss"
   },

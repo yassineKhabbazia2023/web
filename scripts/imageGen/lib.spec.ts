@@ -2,14 +2,20 @@ import * as fs from 'fs'
 import { describe, expect, it, vi } from 'vitest'
 import { MOCKED_OPTIMIZED_SVG_CODE, MOCKED_SVGO_CONFIG } from '../iconGen/mocks'
 
-import { getFolderImages, getFolder, getFolders, writeCompressedImage } from './lib'
+import {
+  getFolderImages, getFolder, getFolders,
+  writeCompressedImage, writeImageListFile
+} from './lib'
 
 const imageNames = ['a', 'b']
+const folderName = 'd'
+const images = imageNames.map((imageName) => `${imageName}.svg`)
+const folderContent = [...images, 'c.png', folderName]
 
 vi.mock('fs', () => ({
   readFileSync: vi.fn(),
   writeFileSync: vi.fn(),
-  readdirSync: vi.fn().mockReturnValue(['a.svg', 'b.svg', 'c.png', 'd']),
+  readdirSync: vi.fn().mockImplementation(() => folderContent),
   mkdirSync: vi.fn(),
   existsSync: vi.fn().mockReturnValue(true),
   rmSync: vi.fn(),
@@ -79,8 +85,8 @@ describe('imageGen/lib', () => {
     it('should return folders', () => {
       const folders = getFolders(originPath)
       const expected = [{
-        images: ['a', 'b'],
-        name: 'd'
+        images: imageNames,
+        name: folderName
       }]
       expect(folders).toMatchObject(expected)
     })
@@ -101,6 +107,22 @@ describe('imageGen/lib', () => {
       const targetFilePath = `${targetFolderPath}/${imageName}.svg`
       const optimizedSvg = MOCKED_OPTIMIZED_SVG_CODE
       expect(writeFileSyncSpy).toHaveBeenNthCalledWith(1, targetFilePath, optimizedSvg, 'utf-8')
+    })
+  })
+
+  describe('writeImageListFile', () => {
+    it('should call writeFileSync with proper arguments', () => {
+      const writeFileSyncSpy = vi.spyOn(fs, 'writeFileSync')
+      const imageListPath = 'image-list-path'
+      const images = ['a', 'b']
+      const folders = [{
+        name: 'folder-name',
+        images
+      }]
+      writeImageListFile(imageListPath, folders)
+      const content = `${JSON.stringify(folders, null, 2)}\n`
+
+      expect(writeFileSyncSpy).toHaveBeenNthCalledWith(1, imageListPath, content, 'utf8')
     })
   })
 })

@@ -52,3 +52,9 @@ export async function writeCompressedImage(
 
   writeFileSync(targetFilePath, optimizedSvg, 'utf-8')
 }
+
+export function writeImageListFile(imageListPath: string, folders: Folder[]) {
+  const content = JSON.stringify(folders, null, 2)
+
+  writeFileSync(imageListPath, `${content}\n`, 'utf8')
+}

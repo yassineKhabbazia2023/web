@@ -1,28 +1,15 @@
-import fs from 'fs'
 import { compressImages } from './imageGen/utils'
+import { writeImageListFile } from './imageGen/lib'
 import { clearFolder } from './common/utils'
 import { logger } from '../src/utils/logger'
 
-const [originFolder, targetFolder] = process.argv.slice(2)
+const [originFolder, targetFolder, imageListPath] = process.argv.slice(2)
 
 async function run() {
   clearFolder(targetFolder)
   const folders = await compressImages(originFolder, targetFolder)
+  writeImageListFile(imageListPath, folders)
   logger.info('Images successfully compressed')
-
-  // @TOTO refact this (see next PR)
-  const content = folders.map((folder) => {
-    const fileNames = folder.images.map((imageName) => `${imageName}.svg`)
-
-    return {
-      [folder.name]: fileNames
-    }
-  })
-  fs.writeFileSync(
-    targetFolder + '/imagesList.json',
-    JSON.stringify(content, null, 2) + '\n',
-    'utf8'
-  )
 }
 
 run()
