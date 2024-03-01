@@ -15,13 +15,15 @@ import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
 import { getMockedAccount } from '@/services/account/accountMock'
+import { getMockedStepNotes } from '../StepNote/StepNotesMock'
 import type { UserInfo } from '@kpmg/common'
-import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { Note, PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import { CONTACT_ID } from './OffersDrawerConst'
 
 const principalContact: User = getMockedPrincipalContact()
 const currentUser: UserInfo = getMockedUser()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
+const notes: Note[] = getMockedStepNotes()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
 const companyTestName = 'Company Test Name'
@@ -173,7 +175,24 @@ describe('offersDrawer', () => {
           applicant: 'john@example.com',
           contacts: [CONTACT_ID],
           offerId: 1,
-          notes: [],
+          notes: [
+            {
+              stepName: 'services',
+              stepNote: ''
+            },
+            {
+              stepName: 'customers',
+              stepNote: ''
+            },
+            {
+              stepName: 'collaborators',
+              stepNote: ''
+            },
+            {
+              stepName: 'information',
+              stepNote: ''
+            }
+          ],
           productConfigurations: [1, 2, 3, 4]
         }
 
@@ -233,8 +252,7 @@ describe('offersDrawer', () => {
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
     })
-
-    it('should display the correct page after clicking on stepper navigation buttons', async () => {
+    it('should display the correct page and maintain notes when using stepper navigation buttons', async () => {
       const wrapper = await getWrapper(true)
       const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
@@ -244,6 +262,9 @@ describe('offersDrawer', () => {
 
       await nextPreviousButtons.vm.$emit('clickNext')
       const customersStep = wrapper.find('[data-testid=customers-step]')
+      const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
+      await customersNoteStep.vm.$emit('update:modelValue', notes[1])
+      expect(customersNoteStep.props()).toStrictEqual({ modelValue: notes[1] })
       expect(customersStep.exists()).toBeTruthy()
 
       await nextPreviousButtons.vm.$emit('clickNext')
@@ -258,6 +279,8 @@ describe('offersDrawer', () => {
       await nextPreviousButtons.vm.$emit('clickPrevious')
 
       const customersStep2 = wrapper.find('[data-testid=customers-step]')
+      const customersNoteStep2 = wrapper.findComponent({ name: 'StepNote' })
+      expect(customersNoteStep2.props('modelValue')).toStrictEqual(notes[1])
       expect(customersStep2.exists()).toBeTruthy()
 
       await nextPreviousButtons.vm.$emit('clickPrevious')
@@ -266,14 +289,16 @@ describe('offersDrawer', () => {
       expect(offer.exists()).toBeTruthy()
     })
 
-    it('should display the offer stepper when validation is not required', async () => {
+    it('should not display the offer stepper and note textarea when the validation is not required', async () => {
       const wrapper = await getWrapper(true)
       const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
       await flushPromises()
 
       const offerStepper = wrapper.find('[data-testid=offer-stepper]')
+      const noteStep = wrapper.findComponent({ name: 'StepNote' })
       expect(offerStepper.exists()).toBeFalsy()
+      expect(noteStep.exists()).toBeFalsy()
 
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()

@@ -79,6 +79,11 @@
             :providerName="providerName"
             data-testid="information-step"
           />
+          <StepNote
+            v-if="currentSubscriptionOffer?.approvalRequired"
+            v-model="notes[activeStep]"
+            class="margin-top--6"
+          />
         </div>
         <SubscriptionOffers
           v-else
@@ -138,6 +143,7 @@ import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PIcon, PILink45deg } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
+import StepNote from '../StepNote'
 import PrincipalContact from '../PrincipalContact'
 import CompanyInformation from '../CompanyInformation'
 import NextPreviousButtons from '../NextPreviousButtons'
@@ -150,10 +156,8 @@ import {
   getPrincipalContact
 } from '@/services/offer'
 import { offerStepperStep } from './OffersDrawerTypes'
-import type {
-  OffersDrawerProps,
-  SelectedProduct
-} from './OffersDrawerTypes'
+import type { Note } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { OffersDrawerProps, SelectedProduct } from './OffersDrawerTypes'
 import { fetchAccount, patchAccount, type Account } from '@/services/account'
 import { generateObject } from '@/helper'
 import {
@@ -211,6 +215,7 @@ const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const principalContact = ref<User | undefined>()
 const account = ref<Account | undefined>()
+const notes = ref<Note[]>([])
 const confirmationModalVisible = ref<boolean>(false)
 
 const internalIsOpened = computed({
@@ -227,10 +232,36 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
     currentSubscriptionOffer.value = undefined
   } else {
     currentSubscriptionOffer.value = await getOffer(selectedOfferId)
+    if (currentSubscriptionOffer.value?.approvalRequired) {
+      initNoteSteps()
+    } else {
+      notes.value = []
+    }
   }
   selectedProducts.value = getInitialSelectedProducts(
     currentSubscriptionOffer.value
   )
+}
+
+const initNoteSteps = () => {
+  notes.value = [
+    {
+      stepName: 'services',
+      stepNote: ''
+    },
+    {
+      stepName: 'customers',
+      stepNote: ''
+    },
+    {
+      stepName: 'collaborators',
+      stepNote: ''
+    },
+    {
+      stepName: 'information',
+      stepNote: ''
+    }
+  ]
 }
 
 const nextLabel = computed((): string => {
@@ -282,7 +313,8 @@ async function saveOffer() {
     props.currentUser?.email,
     CONTACT_ID,
     currentSubscriptionOffer.value,
-    selectedProducts.value
+    selectedProducts.value,
+    notes.value
   )
   if (postSubscriptionRequest) {
     await createSubscriptionRequestNew(postSubscriptionRequest)

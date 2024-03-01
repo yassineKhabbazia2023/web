@@ -1,7 +1,7 @@
 import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SelectedProduct } from '../OffersDrawerTypes'
 import type { SubscriptionOfferServices } from '../../SubscriptionOffers/SubscriptionOffersTypes'
-import type { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { Note, PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import type { Account } from '@/services/account'
 
 export function getSelectedProductIndex(
@@ -84,7 +84,8 @@ export function getPostSubscriptionRequest(
   userEmail: string | undefined,
   principalContact: number,
   currentSubscriptionOffer: SubscriptionOfferServices | undefined,
-  selectedProducts: SelectedProduct[]
+  selectedProducts: SelectedProduct[],
+  notes: Note[]
 ): PostSubscriptionRequest | undefined {
   if (currentSubscriptionOffer === undefined) {
     return
@@ -100,7 +101,7 @@ export function getPostSubscriptionRequest(
     productConfigurations,
     contacts: [principalContact],
     applicant: userEmail ?? '',
-    notes: []
+    notes
   }
 }
 

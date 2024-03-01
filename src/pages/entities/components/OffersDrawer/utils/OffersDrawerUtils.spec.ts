@@ -12,9 +12,11 @@ import type { Account } from '@/services/account'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContact } from '../../PrincipalContact/PrincipalContactMocks'
 import { getMockedAccount } from '@/services/account/accountMock'
+import { getMockedStepNotes } from '../../StepNote/StepNotesMock'
 import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 
 const account = getMockedAccount()
+const notes = getMockedStepNotes()
 describe('offersDrawerUtils', () => {
   let selectedProducts: SelectedProduct[]
   let originalLength: number
@@ -106,14 +108,15 @@ describe('offersDrawerUtils', () => {
         userEmail,
         contactId,
         currentSubscriptionOffer,
-        selectedProducts
+        selectedProducts,
+        notes
       )
       const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
         accountId,
         offerId: 1,
         productConfigurations: [1, 2, 3, 4],
         contacts: [1],
-        notes: [],
+        notes,
         applicant: 'user@email.com'
       }
       expect(postSubscriptionRequest).toStrictEqual(
@@ -126,7 +129,8 @@ describe('offersDrawerUtils', () => {
         userEmail,
         contactId,
         undefined,
-        selectedProducts
+        selectedProducts,
+        notes
       )
       expect(postSubscriptionRequest).toBeUndefined()
     })
