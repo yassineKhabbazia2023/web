@@ -1,5 +1,6 @@
 import type { FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
+import type { PDatePickerProps } from '@/atoms/PDatePicker/PDatePickerTypes'
 
 export interface PFieldPropsBase<T> {
   modelValue?: T | undefined,
@@ -22,7 +23,9 @@ export interface PFieldPropsDropdown<T> extends PFieldPropsBase<T> {
 }
 
 export interface PFieldPropsDate<T> extends PFieldPropsBase<T> {
-  pType?: string,
+  pDateType?: PDatePickerProps['pType'],
+  pFormat?: string,
+  pValueFormat?: string,
 }
 
 export type PFieldProps<T> = PFieldPropsInput<T> & PFieldPropsDropdown<T> & PFieldPropsDate<T>

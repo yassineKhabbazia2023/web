@@ -1,6 +1,7 @@
 import { type FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 import type { PFieldPropsInput, PFieldPropsDropdown, PFieldPropsDate } from './PFieldTypes'
+import type { PDatePickerProps } from '@/atoms/PDatePicker/PDatePickerTypes'
 
 export function getMockedRule(ruleType: string): FormItemRule | undefined {
   if (ruleType === 'email') {
@@ -72,7 +73,10 @@ export function getDateField(
   pLabel: string,
   pPlaceholder: string,
   flexBasis: number,
-  pDisabled: boolean = false
+  pFormat: string = 'DD/MM/YYYY',
+  pValueFormat: string = 'YYYY-MM-DD',
+  pDisabled: boolean = false,
+  pDateType: PDatePickerProps['pType'] = 'date'
 ): PFieldPropsDate<string> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
 
@@ -83,6 +87,9 @@ export function getDateField(
     pPlaceholder,
     pFieldType: 'date',
     pCssClass,
-    pDisabled
+    pDisabled,
+    pDateType,
+    pFormat,
+    pValueFormat
   }
 }
