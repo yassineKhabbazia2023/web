@@ -22,6 +22,12 @@ div.el-collapse {
   & + .p-collapse-item {
     margin-top: 10px;
   }
+
+  &#{$self}--fullbody {
+    .el-collapse-item__content {
+      padding: 0;
+    }
+  }
   
   &.el-collapse-item.is-disabled {
     .el-collapse-item__header.is-active,
@@ -83,6 +89,47 @@ div.el-collapse {
     .el-collapse-item__header.is-active,
     .el-collapse-item__header:hover {
       color: getCssVar('color', 'functionnal-orange-txt');
+
+      &.is-active {
+        .el-collapse-item__arrow {
+          color: getCssVar('color', 'persian-500');
+        }
+      }
+    }
+  }
+
+  &#{$self}--type-gray {
+    border: none;
+    overflow: hidden;
+    
+    @extend .radius--2;
+
+    &.is-disabled {
+      .el-collapse-item__wrap,
+      .el-collapse-item__header {
+        background: getCssVar('color', 'neutral-gray-50');
+      }
+      
+      .el-collapse-item__header.is-active,
+      .el-collapse-item__header,
+      .el-collapse-item__header:hover,
+      .el-collapse-item__arrow,
+      .el-collapse-item__header.is-active .el-collapse-item__arrow {
+        color: getCssVar('color', 'neutral-gray-300');
+      }
+    }
+
+    .el-collapse-item__wrap,
+    .el-collapse-item__header {
+      border: none;
+      background: getCssVar('color', 'neutral-gray-50');
+    }
+
+    .el-collapse-item__header,
+    .el-collapse-item__header.is-active,
+    .el-collapse-item__header:hover {
+      font-weight: 600;
+      color: getCssVar('color', 'neutral-gray-900');
 
       &.is-active {
         .el-collapse-item__arrow {

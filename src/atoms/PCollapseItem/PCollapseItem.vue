@@ -28,10 +28,12 @@ import type { PCollapseItemTypes } from './PCollapseItemTypes'
 import { iconResolver } from '@/utils/iconResolver'
 
 const props = withDefaults(defineProps<PCollapseItemTypes>(), {
-  pType: 'default'
+  pType: 'default',
+  pFullBody: false
 })
 
 const pClassMapper = computed(() => ({
-  [`p-collapse-item--type-${props.pType}`]: true
+  [`p-collapse-item--type-${props.pType}`]: true,
+  'p-collapse-item--fullbody': props.pFullBody
 }))
 </script>

@@ -11,6 +11,7 @@
             :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
             :pIcon="firstCollapseItem.pIcon"
             :disabled="firstCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
             name="1"
           >
             <div>
@@ -22,6 +23,7 @@
             :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
             :pIcon="firstCollapseItem.pIcon"
             :disabled="secondCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
             name="2"
           >
             <div>
@@ -37,6 +39,7 @@
         </el-divider>
         <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
+        <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
         <el-divider borderStyle="dotted" contentPosition="left">
           <span>Second Collapse Item</span>
         </el-divider>
@@ -55,6 +58,7 @@
             :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
             :pIcon="firstCollapseItem.pIcon"
             :disabled="firstCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
             name="1"
           >
             <div>
@@ -66,6 +70,7 @@
             :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
             :pIcon="firstCollapseItem.pIcon"
             :disabled="secondCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
             name="2"
           >
             <div>
@@ -81,6 +86,7 @@
         </el-divider>
         <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
+        <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
         <el-divider borderStyle="dotted" contentPosition="left">
           <span>Second Collapse Item</span>
         </el-divider>
@@ -99,6 +105,7 @@
             :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
             :pIcon="firstCollapseItem.pIcon"
             :disabled="firstCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
             name="1"
           >
             <div>
@@ -110,6 +117,7 @@
             :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
             :pIcon="firstCollapseItem.pIcon"
             :disabled="secondCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
             name="2"
           >
             <div>
@@ -125,6 +133,54 @@
         </el-divider>
         <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
+        <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
+        <el-divider borderStyle="dotted" contentPosition="left">
+          <span>Second Collapse Item</span>
+        </el-divider>
+        <HstText v-model="secondCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
+        <HstCheckbox v-model="secondCollapseItem.disabled" title="Disable" />
+      </template>
+    </Variant>
+    <Variant title="Gray Variant">
+      <div class="block-collapse">
+        <PCollapse
+          v-model="activeNames"
+          :pAccordion="accordion"
+        >
+          <PCollapseItem
+            pType="gray"
+            :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
+            :pIcon="firstCollapseItem.pIcon"
+            :disabled="firstCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
+            name="1"
+          >
+            <div>
+              Content
+            </div>
+          </PCollapseItem>
+          <PCollapseItem
+            pType="gray"
+            :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
+            :pIcon="firstCollapseItem.pIcon"
+            :disabled="secondCollapseItem.disabled"
+            :pFullBody="firstCollapseItem.pFullBody"
+            name="2"
+          >
+            <div>
+              Content
+            </div>
+          </PCollapseItem>
+        </PCollapse>
+      </div>
+      <template #controls>
+        <HstCheckbox v-model="accordion" title="Accordion" />
+        <el-divider borderStyle="dotted" contentPosition="left">
+          <span>First Collapse Item</span>
+        </el-divider>
+        <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
+        <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
+        <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
         <el-divider borderStyle="dotted" contentPosition="left">
           <span>Second Collapse Item</span>
         </el-divider>
@@ -145,7 +201,8 @@ const accordion = ref(false)
 const firstCollapseItem = reactive({
   pTitleCollapseItem: 'Consistency',
   pIcon: PIArchive,
-  disabled: false
+  disabled: false,
+  pFullBody: false
 })
 const secondCollapseItem = reactive({
   pTitleCollapseItem: 'Feedback',

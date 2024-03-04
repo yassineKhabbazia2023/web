@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-
 import PCollapse from '@/molecules/PCollapse'
 import { PIPulse } from '@/atoms/PIcon/components'
 import PCollapseItem from '.'
@@ -15,7 +14,7 @@ const defaultProps = {
 }
 
 function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
-  const { pType, pTitleCollapseItem, pIcon } = {
+  const { pType, pTitleCollapseItem, pIcon, pFullBody } = {
     ...defaultProps,
     ...overridenProps
   }
@@ -26,6 +25,7 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
         :pType="pType"
         :pTitleCollapseItem="pTitleCollapseItem"
         :pIcon="pIcon"
+        :pFullBody="pFullBody"
       />
     </PCollapse>
     `,
@@ -33,7 +33,8 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
       return {
         pType,
         pTitleCollapseItem,
-        pIcon
+        pIcon,
+        pFullBody
       }
     }
   }
@@ -105,6 +106,15 @@ describe('pCollapseItem', () => {
 
       expect(wrapper.find('.p-collapse-item__title').text())
         .toContain(title)
+    })
+
+    it('should have a fullbody class when the pFullbody is true', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pFullBody: true
+      })
+
+      expect(wrapper.find('.p-collapse-item--fullbody').exists()).toBeTruthy()
     })
   })
 })
