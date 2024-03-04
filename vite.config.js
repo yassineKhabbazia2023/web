@@ -5,6 +5,7 @@ import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
+import terser from '@rollup/plugin-terser'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import viteBaseConfig from '@kpmg/config-pulse/vite.config.base'
@@ -67,7 +68,8 @@ export default ({ mode }) =>
           preserveEntrySignatures: 'strict',
           output: {
             format: 'system'
-          }
+          },
+          plugins: [terser()]
         }
       },
       server: {
