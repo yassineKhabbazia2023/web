@@ -13,6 +13,7 @@
         <PInput
           v-model="internalModel.stepNote"
           pType="textarea"
+          :pAutosize="{ minRows: 2 }"
           :pPlaceholder="t('notePlaceholder')"
         />
       </PFormItem>
