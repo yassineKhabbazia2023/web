@@ -10,6 +10,7 @@
       <Variant title="Drawer">
         <PButton
           pPlain
+          pType="primary"
           @click="pDrawerControl.openDrawer = !pDrawerControl.openDrawer"
         >
           Open /close
@@ -21,6 +22,7 @@
           :pSize="pDrawerControl.size"
           :pDirection="pDrawerControl.direction"
           @close-drawer-button="pDrawerControl.openDrawer = false"
+          :pBreadcrumb="generateBreadCrumbItems(7)"
         >
           <template v-if="pDrawerControl.showHeaderPrefix" #header-prefix>
             <p class="drawer__header-prefix-text font-base">
@@ -71,6 +73,52 @@
           />
         </template>
       </Variant>
+      <Variant title="Drawer Top">
+        <PButton
+          pPlain
+          pType="primary"
+          @click="pDrawerControl.openDrawer = !pDrawerControl.openDrawer"
+        >
+          Open /close
+        </PButton>
+        <PDrawer
+          v-model="pDrawerControl.openDrawer"
+          :pTitle="pDrawerControl.title"
+          pSize="100%"
+          pDirection="ttb"
+          @close-drawer-button="pDrawerControl.openDrawer = false"
+        >
+          <template v-if="pDrawerControl.showHeaderPrefix" #header-prefix>
+            <p class="drawer__header-prefix-text font-base">
+              Second title example
+            </p>
+          </template>
+          <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
+            <div class="drawer__header-suffix margin-left--3">
+              <PIcon color="#5546FF" size="16">
+                <PILink45deg />
+              </PIcon>
+              <a
+                class="drawer__header-suffix-link font-base link margin-left--1"
+                href="#"
+              >
+                Link example
+              </a>
+            </div>
+          </template>
+        </PDrawer>
+        <template #controls>
+          <HstText v-model="pDrawerControl.title" title="Title" />
+          <HstCheckbox
+            v-model="pDrawerControl.showHeaderPrefix"
+            title="Header Prefix"
+          />
+          <HstCheckbox
+            v-model="pDrawerControl.showHeaderSuffix"
+            title="Header Suffix"
+          />
+        </template>
+      </Variant>
     </div>
   </Story>
 </template>
@@ -80,6 +128,7 @@ import PDrawer from '.'
 import PButton from '@/atoms/PButton'
 import { reactive, ref } from 'vue'
 import type { PDrawerProps } from './PDrawerTypes'
+import type { BreadcrumbItems } from '@/molecules/PBreadcrumb/PBreadcrumbTypes'
 
 const pDrawerControl = reactive({
   title: 'Title',
@@ -91,14 +140,26 @@ const pDrawerControl = reactive({
   showHeaderSuffix: false
 })
 
+const generateBreadCrumbItems = (numberOfItems: number) => {
+  const breadcrumbItems: BreadcrumbItems[] = []
+  for (let i = 0; i < numberOfItems; i++) {
+    breadcrumbItems.push({ pId: i, pText: `Lorem ${i}` })
+  }
+  return breadcrumbItems
+}
+
 const radioDirectionOptions: { label: string; value: string }[] = [
   {
-    label: 'rtl',
+    label: 'Right to left',
     value: 'rtl'
   },
   {
-    label: 'ltr',
+    label: 'Left to right',
     value: 'ltr'
+  },
+  {
+    label: 'Top to bottom',
+    value: 'ttb'
   }
 ]
 

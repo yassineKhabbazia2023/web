@@ -5,6 +5,7 @@
     :showClose="pShowClose"
     class="p-drawer"
     :size="pSize"
+    :modalClass="pModalClass"
   >
     <template #header>
       <div
@@ -44,10 +45,15 @@
           <slot name="header-suffix"/>
         </div>
       </div>
+      <PBreadcrumb
+        v-if="pBreadcrumb && pBreadcrumb.length"
+        :pElements="pBreadcrumb"
+        pSize="S"
+      />
     </template>
     <slot />
     <template #footer>
-      <slot name="footer"></slot>
+      <slot name="footer" />
     </template>
   </ElDrawer>
 </template>
@@ -55,6 +61,7 @@
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
+import PBreadcrumb from '@/molecules/PBreadcrumb'
 import PButton from '@/atoms/PButton'
 import PIcon from '@/atoms/PIcon'
 import type { PDrawerProps } from './PDrawerTypes'
@@ -71,7 +78,8 @@ const props = withDefaults(defineProps<PDrawerProps>(), {
   pDirection: 'rtl',
   pShowPreviousStep: false,
   pSize: '33%',
-  pShowClose: false
+  pShowClose: false,
+  modalClass: ''
 })
 
 const drawerModel = computed({
@@ -82,4 +90,8 @@ const drawerModel = computed({
     emit('update:modelValue', value)
   }
 })
+
+const pModalClass = computed(() =>
+  props.pDirection === 'ttb' ? 'p-drawer--fullscreen' : ''
+)
 </script>

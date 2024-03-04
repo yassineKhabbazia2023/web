@@ -1,3 +1,5 @@
+import type { BreadcrumbItems } from '@/molecules/PBreadcrumb/PBreadcrumbTypes'
+
 export interface PDrawerProps {
   modelValue: boolean
   pTitle?: string
@@ -5,4 +7,5 @@ export interface PDrawerProps {
   pDirection?: 'rtl' | 'ltr' | 'ttb' | 'btt' | 'rtl'
   pSize?: number | string
   pShowClose?: boolean
+  pBreadcrumb?: BreadcrumbItems[]
 }

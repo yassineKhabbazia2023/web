@@ -13,7 +13,18 @@ $drawer: (
   @media screen and (max-width: 767px) {
     width: 100% !important;
   }
+
+  &--fullscreen {
+    z-index: 19 !important;
+
+    .p-drawer {
+      height: 100%;
+      padding-top: 6rem;
+    }
+  }
+
   header {
+    display: block;
     margin: 0;
     padding: 24px;
   }
