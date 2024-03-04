@@ -30,6 +30,10 @@ const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
 
+function getMockedSanitized(url: string) {
+  return `sanitized-${url}`
+}
+
 vi.mock('@/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
   getOffer: vi.fn((offerId) =>
@@ -44,6 +48,12 @@ vi.mock('@/services/offer', () => ({
 vi.mock('@/services/account', () => ({
   fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
   patchAccount: vi.fn(() => Promise.resolve({}))
+}))
+
+vi.mock('@braintree/sanitize-url', () => ({
+  default: {
+    sanitizeUrl: getMockedSanitized
+  }
 }))
 
 vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
@@ -223,20 +233,22 @@ describe('offersDrawer', () => {
     it('should display offers book link beside the drawer title', async () => {
       const wrapper = await getWrapper(true)
       const offersBookLink = wrapper.find('.offers-drawer__details-link')
+      const sanitizedLink = getMockedSanitized(offersBookTestLink)
 
       expect(offersBookLink.text()).toBe('Offers Book')
-      expect(offersBookLink.attributes().href).toBe(offersBookTestLink)
+      expect(offersBookLink.attributes().href).toBe(sanitizedLink)
     })
     it('should display offer intranet link beside the drawer title', async () => {
       const wrapper = await getWrapper(true)
       const firstOfferIntranetLink = subscriptionOffersServices[0].intranetLink
+      const sanitizedLink = getMockedSanitized(firstOfferIntranetLink)
       const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
       await flushPromises()
       const offerIntranetLink = wrapper.find('.offers-drawer__details-link')
 
       expect(offerIntranetLink.text()).toBe('Offer Intranet')
-      expect(offerIntranetLink.attributes().href).toBe(firstOfferIntranetLink)
+      expect(offerIntranetLink.attributes().href).toBe(sanitizedLink)
     })
   })
   describe('offerStepper', () => {
