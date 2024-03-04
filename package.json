@@ -42,6 +42,7 @@
     "story:preview": "histoire preview",
     "test": "npx vitest run",
     "test:ci": "vitest run --coverage",
+    "test:update": "npx vitest -u",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
     "lint:fix": "eslint . --fix --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
     "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; Custom: https://mypulse.zeroheight.com/; BlueOak-1.0.0; UNKNOWN\" --production --excludePrivatePackages --unknown ",

@@ -27,9 +27,12 @@
       v-if="pFieldType === 'date'"
       class="flex--grow-1"
       v-model="internalDate"
+      :pType="pDateType"
       :pReadonly="pReadonly"
       :pDisabled="pDisabled"
       :pPlaceholder="pPlaceholder"
+      :pFormat="pFormat"
+      :pValueFormat="pValueFormat"
     />
   </PFormItem>
 </template>
@@ -40,6 +43,7 @@ import PDatePicker from '@/atoms/PDatePicker'
 import PDropdown from '@/molecules/PDropdown'
 import PFormItem from '@/atoms/PFormItem'
 import PInput from '@/atoms/PInput'
+import dayjs from 'dayjs'
 import type { PFieldProps } from './PFieldTypes'
 
 const props = withDefaults(defineProps<PFieldProps<T>>(), {
@@ -48,7 +52,9 @@ const props = withDefaults(defineProps<PFieldProps<T>>(), {
   pDisabled: false,
   pDropdownOptions: () => [],
   pPlaceholder: '',
-  pRules: () => []
+  pRules: () => [],
+  pFormat: 'DD/MM/YYYY',
+  pValueFormat: 'YYYY-MM-DD'
 })
 
 const emit = defineEmits<{
@@ -69,7 +75,7 @@ const internalDate = computed({
     return props.modelValue as string
   },
   set(value: Date|string) {
-    const isoValue = value instanceof Date ? value.toISOString().substring(0, 10) : value
+    const isoValue = value instanceof Date ? dayjs(value).format(props.pValueFormat) : value
     emit('update:model-value', isoValue as T)
   }
 })
