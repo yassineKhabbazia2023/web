@@ -245,7 +245,7 @@ const fetch = async () => {
       deploymentStatus,
       hub,
       ...rest
-    }: IEntity): IWalletData =>
+    }: IEntity, index: number): IWalletData =>
       ({
         owner: {
           ...owner,
@@ -255,7 +255,7 @@ const fetch = async () => {
             firstName: owner.firstName,
             lastName: owner.lastName
           }),
-          avatarColor: owner.avatarColor ?? getRandomColor()
+          avatarColor: owner.avatarColor ?? getColor(index)
         },
         hub: hub ?? 'Paris',
         city: city?.toLowerCase() ?? '',
@@ -271,13 +271,15 @@ const fetch = async () => {
   state.isLoading = false
 }
 
-/// function generate random color
+const COLOR = [
+  'persian', 'orange', 'green', 'teal', 'fuschia'
+]
+
+/// function predictable color
 /// to replace by real data from api when api is done
-const getRandomColor = () => {
-  const COLOR = [
-    'persian', 'orange', 'green', 'teal', 'fuschia'
-  ]
-  return COLOR[Math.floor(Math.random() * COLOR.length)]
+const getColor = (index: number) => {
+  const colorIndex = index % COLOR.length
+  return COLOR[colorIndex]
 }
 
 const fetchTableDataAndFavorites = async () => {
