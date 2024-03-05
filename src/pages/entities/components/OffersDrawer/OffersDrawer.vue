@@ -82,6 +82,7 @@
           <StepNote
             v-if="currentSubscriptionOffer?.approvalRequired"
             v-model="notes[activeStep]"
+            :key="activeStep"
             class="margin-top--6"
           />
         </div>
