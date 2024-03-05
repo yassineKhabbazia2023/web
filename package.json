@@ -58,7 +58,7 @@
     "@intlify/unplugin-vue-i18n": "^0.12.2",
     "@vue/test-utils": "^2.4.0",
     "@vueuse/core": "^10.2.0",
-    "element-plus": "^2.3.5",
+    "element-plus": "2.4.3",
     "vue-i18n": "^9.2.2"
   },
   "devDependencies": {
