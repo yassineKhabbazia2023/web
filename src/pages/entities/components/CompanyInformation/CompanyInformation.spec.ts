@@ -4,11 +4,12 @@ import { nextTick } from 'vue'
 import MEGOffersFormStructure from './config/MEGOffersFormStructure.json'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
 import CompanyInformation from '.'
+import { getMockedAccount } from '@/services/account/accountMock'
 
 const alertInstructionText = 'If the immutable information is incorrect, you need to update it in the CRM'
 const formInstructionText = 'Please provide the following necessary information for activation :'
 const defaultProps: CompanyInformationProps = {
-  modelValue: {},
+  modelValue: getMockedAccount(),
   providerName: 'MEG'
 }
 

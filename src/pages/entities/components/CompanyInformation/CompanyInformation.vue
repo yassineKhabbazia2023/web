@@ -13,8 +13,8 @@
       {{ t('alertInstruction') }}
     </PAlert>
     <PForm
-      v-if="providerName && formStructure"
-      :pModel="internalAccountFormModel"
+      v-if="providerName && internalAccount"
+      :pModel="internalAccount"
       pLabelPosition="top"
       class="company-information__form"
       aria-describedby="company-info-note company-info-alert"
@@ -35,8 +35,9 @@
         >
           {{ section.title }}
         </p>
-        <PFieldSet
-          :pModel="internalAccountFormModel"
+        <PFieldSetAccount
+          v-if="internalAccount"
+          :pModel="internalAccount"
           :pFields="section.fields"
           class="company-information__form-section-fields"
           @update:p-model="
@@ -50,14 +51,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { cloneDeep, setWith } from 'lodash-es'
 import { PAlert, PForm, PFieldSet } from '@kpmg/styleguide'
 import { getOfferFormStructure } from './utils/CompanyInformationUtils'
+import { type Account } from '@/services/account'
 import type {
   CompanyInformationProps,
   FormSection
 } from './CompanyInformationTypes'
+
+const PFieldSetAccount = PFieldSet<Account>
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -66,25 +71,22 @@ const { t } = useI18n({
 
 const props = defineProps<CompanyInformationProps>()
 const emit = defineEmits<{
-  'update:model-value': [Record<string, string | number>]
+  'update:model-value': [Account]
 }>()
 
 const formStructure = ref<FormSection[]>()
-
-const internalAccountFormModel = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:model-value', value)
-  }
-})
+const internalAccount = ref<Account | undefined>()
 
 const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
-  internalAccountFormModel.value[fieldKey] = fieldValue
+  if (internalAccount.value === undefined) {
+    return
+  }
+  setWith(internalAccount.value, fieldKey, fieldValue, Object)
+  emit('update:model-value', internalAccount.value)
 }
 
 onMounted(() => {
+  internalAccount.value = cloneDeep(props.modelValue)
   if (props.providerName) {
     formStructure.value = getOfferFormStructure(props.providerName)
   }

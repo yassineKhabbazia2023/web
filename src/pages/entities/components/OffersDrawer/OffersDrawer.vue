@@ -87,10 +87,11 @@
             data-testid="collaborators-step"
           />
           <CompanyInformation
-            v-if="activeStep === offerStepperStep.INFORMATION"
-            v-model="accountFormModel"
+            v-if="account && activeStep === offerStepperStep.INFORMATION"
+            :modelValue="account"
             :providerName="providerName"
             data-testid="information-step"
+            @update:model-value="onUpdateAccount"
           />
           <StepNote
             v-if="currentSubscriptionOffer?.approvalRequired"
@@ -179,8 +180,7 @@ import {
   addSelectedProduct,
   removeSelectedProduct,
   getInitialSelectedProducts,
-  getPostSubscriptionRequest,
-  getMappedAPIData
+  getPostSubscriptionRequest
 } from './utils/OffersDrawerUtils'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import type {
@@ -306,6 +306,10 @@ const sanitizedOffersDrawerLink = computed(
   }
 )
 
+function onUpdateAccount(updatedAccount: Account) {
+  account.value = updatedAccount
+}
+
 function onClickPrevious() {
   if (activeStep.value === offerStepperStep.SERVICES) {
     setSelectedOffer()
@@ -338,7 +342,7 @@ async function saveOffer() {
 
 async function validateOffer() {
   if (account.value !== undefined) {
-    // Only the following values are changeable in our form
+    // This will be refact in next PR
     const { accounting } = generateObject('accounting', accountFormModel.value)
     const { hub } = generateObject('hub', accountFormModel.value)
     const { vat } = generateObject('vat', accountFormModel.value)
@@ -407,9 +411,6 @@ onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
   principalContacts.value = await getPrincipalContacts()
   account.value = await fetchAccount(ACCOUNT_ID /* props.accountId */)
-  if (account.value) {
-    accountFormModel.value = getMappedAPIData(account.value)
-  }
 })
 </script>
 <style lang="scss" scoped>
