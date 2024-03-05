@@ -1,6 +1,7 @@
 import type { Account } from '.'
 import { commonApi } from '@kpmg/common'
 import { handleRequestError } from '@/helper'
+import type { PatchOperation } from '@/services/PatchRecordService'
 
 // The account ID is temporarily hard-coded
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
@@ -13,11 +14,9 @@ export async function fetchAccount(accountId: number): Promise<Account|undefined
   }
 }
 
-export async function patchAccount(accountId: number, account: Account): Promise<Account|undefined> {
+export async function patchAccount(accountId: number, patchOperations: PatchOperation[]): Promise<void> {
   try {
-    const response = await commonApi().account.patch(`accounts/${accountId}`, account)
-
-    return response.data
+    await commonApi().account.patch(`accounts/${accountId}`, patchOperations)
   } catch (error) {
     handleRequestError('Error while patchAccount', error)
   }

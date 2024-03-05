@@ -36,7 +36,6 @@
           {{ section.title }}
         </p>
         <PFieldSetAccount
-          v-if="internalAccount"
           :pModel="internalAccount"
           :pFields="section.fields"
           class="company-information__form-section-fields"
@@ -71,7 +70,7 @@ const { t } = useI18n({
 
 const props = defineProps<CompanyInformationProps>()
 const emit = defineEmits<{
-  'update:model-value': [Account]
+  'input': [string, any]
 }>()
 
 const formStructure = ref<FormSection[]>()
@@ -82,7 +81,7 @@ const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
     return
   }
   setWith(internalAccount.value, fieldKey, fieldValue, Object)
-  emit('update:model-value', internalAccount.value)
+  emit('input', fieldKey, fieldValue)
 }
 
 onMounted(() => {

@@ -8,12 +8,14 @@ import { getMockedAccount } from '@/services/account/accountMock'
 
 const alertInstructionText = 'If the immutable information is incorrect, you need to update it in the CRM'
 const formInstructionText = 'Please provide the following necessary information for activation :'
-const defaultProps: CompanyInformationProps = {
-  modelValue: getMockedAccount(),
-  providerName: 'MEG'
-}
 
-const createWrapper = (props = defaultProps) => {
+const createWrapper = () => {
+  const account = getMockedAccount()
+  const props: CompanyInformationProps = {
+    modelValue: account,
+    providerName: 'MEG'
+  }
+
   return mount(CompanyInformation, {
     props
   })

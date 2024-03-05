@@ -1,3 +1,4 @@
+import type { PatchOperation } from '@/services/PatchRecordService'
 import type { Account } from '.'
 
 export function getMockedAccount(): Account {
@@ -58,4 +59,12 @@ export function getMockedAccount(): Account {
       }
     ]
   }
+}
+
+export function getMockedPatchOperations(): PatchOperation[] {
+  return [{
+    op: 'replace',
+    path: '/a/b',
+    value: 'c'
+  }]
 }
