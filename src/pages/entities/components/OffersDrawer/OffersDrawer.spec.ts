@@ -67,6 +67,11 @@ async function getWrapper(isOpened: boolean) {
       accountNumber,
       accountId,
       currentUser
+    },
+    global: {
+      stubs: {
+        PInput: true
+      }
     }
   })
   await flushPromises()
