@@ -24,7 +24,7 @@
       </template>
       <template #header-suffix>
         <div
-          v-if="offersDrawerDetails.link"
+          v-if="offerSanitizedUrl"
           class="offers-drawer__details margin-left--4"
         >
           <PIcon color="#5546FF" size="16">
@@ -32,10 +32,10 @@
           </PIcon>
           <a
             class="offers-drawer__details-link font-base link margin-left--1"
-            :href="offersDrawerDetails.link"
+            :href="offerSanitizedUrl"
             target="_blank"
           >
-            {{ offersDrawerDetails.titleLink }}
+            {{ sanitizedOffersDrawerLink.titleLink }}
           </a>
         </div>
       </template>
@@ -141,6 +141,7 @@ fr-FR:
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import SanitizeUrl from '@braintree/sanitize-url'
 import { PDrawer, PSteps, PStep, PIcon, PILink45deg } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
@@ -276,7 +277,7 @@ const offersDrawerTitle = computed((): string => {
   return t('drawerTitle')
 })
 
-const offersDrawerDetails = computed(
+const sanitizedOffersDrawerLink = computed(
   (): { link: string | undefined; titleLink: string } => {
     if (currentSubscriptionOffer.value) {
       return {
@@ -381,6 +382,10 @@ const providerName = computed((): ProviderFormName => {
       .filter((item) => item.providerName !== 'PULSE')
       .at(0)?.providerName as 'MEG' | 'LOOP')
   )
+})
+
+const offerSanitizedUrl = computed(() => {
+  return sanitizedOffersDrawerLink.value.link ? SanitizeUrl.sanitizeUrl(sanitizedOffersDrawerLink.value.link) : ''
 })
 
 onMounted(async () => {
