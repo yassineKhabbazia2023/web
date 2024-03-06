@@ -3,20 +3,20 @@ import {
   getAllOffers,
   getOffer,
   getOffersBookLink,
-  getPrincipalContact
+  getPrincipalContacts
 } from '.'
 import { getMockedSubscriptionOffers } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
 import {
   getMockedSubscriptionOffersServices
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
-import { getMockedPrincipalContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
+import { getMockedPrincipalContacts } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 
-const mockedPrincipalContact: User = getMockedPrincipalContact()
+const mockedPrincipalContacts: User[] = getMockedPrincipalContacts()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
@@ -37,6 +37,13 @@ vi.mock('@kpmg/common', () => {
             return getOfferImplementation(url)
           }
         })
+      },
+      gateway: {
+        get: vi.fn((url, _) => {
+          if (/\bsignatory\b/i.test(url)) {
+            return getPrincipalContactsImplementation()
+          }
+        })
       }
     })
   }
@@ -45,6 +52,12 @@ vi.mock('@kpmg/common', () => {
 const getAllOffersImplementation = () => {
   return Promise.resolve({
     data: subscriptionOffers
+  })
+}
+
+const getPrincipalContactsImplementation = () => {
+  return Promise.resolve({
+    data: mockedPrincipalContacts
   })
 }
 
@@ -94,8 +107,8 @@ describe('getOffersBookLink', () => {
 
 describe('getPrincipalContact', () => {
   it('should return principal contact details', async () => {
-    const principalContact = await getPrincipalContact()
+    const principalContacts = await getPrincipalContacts()
 
-    expect(principalContact).toStrictEqual(mockedPrincipalContact)
+    expect(principalContacts).toStrictEqual(mockedPrincipalContacts)
   })
 })

@@ -10,7 +10,7 @@ import {
 import type { SelectedProduct } from '../OffersDrawerTypes'
 import type { Account } from '@/services/account'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
-import { getMockedPrincipalContact } from '../../PrincipalContact/PrincipalContactMocks'
+import { getMockedPrincipalContacts } from '../../PrincipalContact/PrincipalContactMocks'
 import { getMockedAccount } from '@/services/account/accountMock'
 import { getMockedStepNotes } from '../../StepNote/StepNotesMock'
 import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
@@ -95,12 +95,12 @@ describe('offersDrawerUtils', () => {
   describe('getPostSubscriptionRequest', () => {
     const accountId = 5
     const userEmail = 'user@email.com'
-    const principalContact = getMockedPrincipalContact()
+    const principalContacts = getMockedPrincipalContacts()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
     const selectedProducts = getInitialSelectedProducts(
       currentSubscriptionOffer
     )
-    const { contactId } = principalContact
+    const { contactId } = principalContacts[0]
 
     it('should return not optional and free product list', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(

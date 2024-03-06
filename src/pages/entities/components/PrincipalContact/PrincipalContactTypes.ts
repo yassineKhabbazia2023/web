@@ -3,7 +3,7 @@ export interface User {
   userId: number
   firstName: string
   lastName: string
-  email: string
+  contactEmail: string
 }
 
 export type PrincipalContactProps = {

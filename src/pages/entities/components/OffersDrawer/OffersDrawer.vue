@@ -63,11 +63,20 @@
             @select-product="onSelectProduct"
             @deselect-product="onDeselectProduct"
           />
-          <PrincipalContact
-            :principalContact="principalContact"
-            v-if="activeStep === offerStepperStep.CUSTOMERS && principalContact"
-            data-testid="customers-step"
-          />
+          <template
+            v-if="
+              activeStep === offerStepperStep.CUSTOMERS &&
+              principalContacts?.length
+            "
+          >
+            <PrincipalContact
+              v-for="principalContact in principalContacts"
+              :key="principalContact.contactId"
+              :principalContact="principalContact"
+              class="margin-bottom--4"
+              data-testid="customers-step"
+            />
+          </template>
           <ManageCollaborators
             v-if="activeStep === offerStepperStep.COLLABORATORS"
             :defaultCollaborator="currentUser"
@@ -155,7 +164,7 @@ import {
   getAllOffers,
   getOffer,
   getOffersBookLink,
-  getPrincipalContact
+  getPrincipalContacts
 } from '@/services/offer'
 import { offerStepperStep } from './OffersDrawerTypes'
 import type { Note } from '@/pages/subscriptions/SubscriptionsTypes'
@@ -215,7 +224,7 @@ const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
 const accountFormModel = ref<Record<string, string | number>>({})
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
-const principalContact = ref<User | undefined>()
+const principalContacts = ref<User[] | undefined>()
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
 const confirmationModalVisible = ref<boolean>(false)
@@ -390,7 +399,7 @@ const offerSanitizedUrl = computed(() => {
 
 onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
-  principalContact.value = await getPrincipalContact()
+  principalContacts.value = await getPrincipalContacts()
   account.value = await fetchAccount(props.accountId)
   if (account.value) {
     accountFormModel.value = getMappedAPIData(account.value)
