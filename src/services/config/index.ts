@@ -1,4 +1,4 @@
 export const API_PREFIXES = {
-  OFFER: 'account/api',
+  OFFER: 'offer/api',
   ACCOUNT: 'account/api'
 }
