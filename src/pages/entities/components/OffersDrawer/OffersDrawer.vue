@@ -63,20 +63,24 @@
             @select-product="onSelectProduct"
             @deselect-product="onDeselectProduct"
           />
-          <template
+          <ul
             v-if="
               activeStep === offerStepperStep.CUSTOMERS &&
               principalContacts?.length
             "
+            class="offers-drawer__contact-list"
           >
-            <PrincipalContact
+            <li
               v-for="principalContact in principalContacts"
               :key="principalContact.contactId"
-              :principalContact="principalContact"
-              class="margin-bottom--4"
-              data-testid="customers-step"
-            />
-          </template>
+              class="margin-bottom--6"
+            >
+              <PrincipalContact
+                :principalContact="principalContact"
+                data-testid="customers-step"
+              />
+            </li>
+          </ul>
           <ManageCollaborators
             v-if="activeStep === offerStepperStep.COLLABORATORS"
             :defaultCollaborator="currentUser"
@@ -394,7 +398,9 @@ const providerName = computed((): ProviderFormName => {
 })
 
 const offerSanitizedUrl = computed(() => {
-  return sanitizedOffersDrawerLink.value.link ? sanitizeUrl(sanitizedOffersDrawerLink.value.link) : ''
+  return sanitizedOffersDrawerLink.value.link
+    ? sanitizeUrl(sanitizedOffersDrawerLink.value.link)
+    : ''
 })
 
 onMounted(async () => {
@@ -410,6 +416,9 @@ onMounted(async () => {
 .offers-drawer {
   &__company-name {
     color: var(--el-text-color-secondary);
+  }
+  &__contact-list {
+    list-style: none;
   }
   &__details {
     display: flex;
