@@ -117,7 +117,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
 import {
   PButton,
   PDrawer,
@@ -129,6 +128,7 @@ import {
   PTag,
   PUserCard
 } from '@kpmg/styleguide'
+import type { FormInstance } from '@kpmg/styleguide'
 import type Props from './types'
 
 const { t } = useI18n({
