@@ -54,7 +54,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { onMounted, reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
 import {
   PButton,
   PForm,
@@ -62,6 +61,7 @@ import {
   PRadioCard,
   PRadioGroup
 } from '@kpmg/styleguide'
+import type { FormInstance } from '@kpmg/styleguide'
 import type { State } from './types'
 import mock from './mock.json'
 

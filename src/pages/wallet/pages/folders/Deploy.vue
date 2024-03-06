@@ -84,7 +84,6 @@
 <script lang='ts' setup>
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
 import {
   PForm,
   PFormItem,
@@ -97,6 +96,7 @@ import {
   PButton,
   PPagination
 } from '@kpmg/styleguide'
+import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'

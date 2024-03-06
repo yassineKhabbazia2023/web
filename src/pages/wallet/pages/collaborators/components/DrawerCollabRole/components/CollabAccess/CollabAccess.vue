@@ -65,7 +65,6 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { onMounted, reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
 import {
   PButton,
   PForm,
@@ -73,6 +72,7 @@ import {
   PSwitch,
   PLoader
 } from '@kpmg/styleguide'
+import type { FormInstance } from '@kpmg/styleguide'
 import type { Props, State } from './types'
 import mock from './mock.json'
 
