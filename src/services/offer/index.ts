@@ -27,7 +27,7 @@ export const getOffer = async (
   offerId: number
 ): Promise<SubscriptionOfferServices | undefined> => {
   try {
-    const response = await commonApi().offer.get(`offers/${offerId}`)
+    const response = await commonApi().gateway.get(`${API_PREFIXES.OFFER}/offers/${offerId}`)
 
     return response.data
   } catch (error) {

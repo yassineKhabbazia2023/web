@@ -29,15 +29,11 @@ vi.mock('env-vars', () => ({
 vi.mock('@kpmg/common', () => {
   return {
     commonApi: () => ({
-      offer: {
-        get: vi.fn((url, _) => {
-          if (/^(offers)\/[\d]+/.test(url)) {
-            return getOfferImplementation(url)
-          }
-        })
-      },
       gateway: {
         get: vi.fn((url, _) => {
+          if (/\b(offers)\/[\d]+/.test(url)) {
+            return getOfferImplementation(url)
+          }
           if (url === `${API_PREFIXES.OFFER}/offers`) {
             return getAllOffersImplementation()
           }
