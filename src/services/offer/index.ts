@@ -6,12 +6,12 @@ import type {
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { ACCOUNT_ID } from '@/pages/entities/components/OffersDrawer/OffersDrawerConst'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
-import { API_PREFIXES } from '../api'
+import { API_PREFIXES } from '../config'
 import { handleRequestError } from '@/helper/helper'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
   try {
-    const response = await commonApi().offer.get('offers')
+    const response = await commonApi().gateway.get(`${API_PREFIXES.OFFER}/offers`)
 
     if (response?.data?.length > 0) {
       return response.data
@@ -39,9 +39,7 @@ export const getPrincipalContacts = async (): Promise<User[] | undefined> => {
   try {
     const response = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/roles/signatory/${ACCOUNT_ID}`)
 
-    if (response?.data?.length > 0) {
-      return response.data
-    }
+    return response?.data
   } catch (error) {
     handleRequestError('fetching principal contact', error)
   }

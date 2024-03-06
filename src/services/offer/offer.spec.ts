@@ -11,6 +11,7 @@ import {
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContacts } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import { API_PREFIXES } from '../config'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices
@@ -30,9 +31,6 @@ vi.mock('@kpmg/common', () => {
     commonApi: () => ({
       offer: {
         get: vi.fn((url, _) => {
-          if (url === 'offers') {
-            return getAllOffersImplementation()
-          }
           if (/^(offers)\/[\d]+/.test(url)) {
             return getOfferImplementation(url)
           }
@@ -40,6 +38,9 @@ vi.mock('@kpmg/common', () => {
       },
       gateway: {
         get: vi.fn((url, _) => {
+          if (url === `${API_PREFIXES.OFFER}/offers`) {
+            return getAllOffersImplementation()
+          }
           if (/\bsignatory\b/i.test(url)) {
             return getPrincipalContactsImplementation()
           }
