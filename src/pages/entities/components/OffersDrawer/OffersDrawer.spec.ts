@@ -51,9 +51,7 @@ vi.mock('@/services/account', () => ({
 }))
 
 vi.mock('@braintree/sanitize-url', () => ({
-  default: {
-    sanitizeUrl: getMockedSanitized
-  }
+  sanitizeUrl: getMockedSanitized
 }))
 
 vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({

@@ -141,7 +141,7 @@ fr-FR:
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import SanitizeUrl from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@braintree/sanitize-url'
 import { PDrawer, PSteps, PStep, PIcon, PILink45deg } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
@@ -385,7 +385,7 @@ const providerName = computed((): ProviderFormName => {
 })
 
 const offerSanitizedUrl = computed(() => {
-  return sanitizedOffersDrawerLink.value.link ? SanitizeUrl.sanitizeUrl(sanitizedOffersDrawerLink.value.link) : ''
+  return sanitizedOffersDrawerLink.value.link ? sanitizeUrl(sanitizedOffersDrawerLink.value.link) : ''
 })
 
 onMounted(async () => {
