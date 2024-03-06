@@ -102,6 +102,7 @@ export { default as PUserAction } from './molecules/PUserAction'
 export { default as PUserCard } from './atoms/PUserCard'
 
 // Export types
+export type { FormInstance, FormRules } from 'element-plus'
 export * from './atoms/PActivityCard/PActivityCardTypes'
 export * from './atoms/PAlert/PAlertTypes'
 export * from './atoms/PAside/PAsideTypes'
