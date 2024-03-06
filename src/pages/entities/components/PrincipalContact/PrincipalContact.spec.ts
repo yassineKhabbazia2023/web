@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PrincipalContact from '.'
-import { getMockedPrincipalContact } from './PrincipalContactMocks'
+import { getMockedPrincipalContacts } from './PrincipalContactMocks'
 
-const principalContact = getMockedPrincipalContact()
+const principalContact = getMockedPrincipalContacts()[0]
 const contactDescription =
   'This signatory user will be the first client embarked on the file.'
 
@@ -32,11 +32,10 @@ describe('principalContact', () => {
       }
 
       expect(principalContactElements.fullName.text()).toBe(fullName)
-      expect(principalContactElements.email.text()).toBe(principalContact.email)
+      expect(principalContactElements.email.text()).toBe(principalContact.contactEmail)
       expect(principalContactElements.description.text()).toBe(
         contactDescription
       )
-      expect(principalContactElements.notes.exists()).toBeTruthy()
     })
   })
 })

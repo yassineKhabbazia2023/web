@@ -2,33 +2,19 @@
   <PUserCard
     :pTitle="fullName"
     :pTag="contactTag"
-    :pSubtitle="principalContact.email"
+    :pSubtitle="principalContact.contactEmail"
     :pDescription="contactDescription"
     pAssetLeft="Image"
     pAssetContent="user-male"
     class="principal-contact"
-  >
-    <PButton
-      data-testid="principal-contact-notes"
-      pType="default"
-      pSize="small"
-      class="principal-contact__notes"
-    >
-      <PIcon class="el-button__icon--left">
-        <PIPencilSquare />
-      </PIcon>
-      {{ t('note') }}
-    </PButton>
-  </PUserCard>
+  />
 </template>
 
 <i18n lang="yaml">
 en-US:
-  note: 'Note'
   signatoryCustomer: 'Signatory customer'
   contactDescription: 'This signatory user will be the first client embarked on the file.'
 fr-FR:
-  note: 'Note'
   signatoryCustomer: 'Client signataire'
   contactDescription: 'Cet utilisateur signataire sera le premier client embarqué sur le dossier.'
 </i18n>
@@ -38,10 +24,7 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import {
   PUserCard,
-  PIVectorPen,
-  PIPencilSquare,
-  PButton,
-  PIcon
+  PIVectorPen
 } from '@kpmg/styleguide'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
 

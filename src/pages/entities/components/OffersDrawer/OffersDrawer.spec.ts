@@ -4,7 +4,7 @@ import { nextTick } from 'vue'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
 import { getMockedSubscriptionOffersServices } from '../OfferSubscription/OfferSubscriptionMocks'
-import { getMockedPrincipalContact } from '../PrincipalContact/PrincipalContactMocks'
+import { getMockedPrincipalContacts } from '../PrincipalContact/PrincipalContactMocks'
 import { getMockedUser } from '@/pages/entities/mocks'
 import type {
   SubscriptionOffer,
@@ -20,7 +20,7 @@ import type { UserInfo } from '@kpmg/common'
 import type { Note, PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import { CONTACT_ID } from './OffersDrawerConst'
 
-const principalContact: User = getMockedPrincipalContact()
+const principalContacts: User[] = getMockedPrincipalContacts()
 const currentUser: UserInfo = getMockedUser()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const notes: Note[] = getMockedStepNotes()
@@ -42,7 +42,7 @@ vi.mock('@/services/offer', () => ({
     )
   ),
   getOffersBookLink: vi.fn(() => offersBookTestLink),
-  getPrincipalContact: vi.fn(() => Promise.resolve(principalContact))
+  getPrincipalContacts: vi.fn(() => Promise.resolve(principalContacts))
 }))
 
 vi.mock('@/services/account', () => ({

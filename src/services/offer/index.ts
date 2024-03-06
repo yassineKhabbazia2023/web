@@ -4,8 +4,9 @@ import type {
   SubscriptionOfferServices
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
-import { getMockedPrincipalContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
+import { ACCOUNT_ID } from '@/pages/entities/components/OffersDrawer/OffersDrawerConst'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
+import { API_PREFIXES } from '../api'
 import { handleRequestError } from '@/helper/helper'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
@@ -34,9 +35,13 @@ export const getOffer = async (
   }
 }
 
-export const getPrincipalContact = async (): Promise<User | undefined> => {
+export const getPrincipalContacts = async (): Promise<User[] | undefined> => {
   try {
-    return Promise.resolve(getMockedPrincipalContact())
+    const response = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/roles/signatory/${ACCOUNT_ID}`)
+
+    if (response?.data?.length > 0) {
+      return response.data
+    }
   } catch (error) {
     handleRequestError('fetching principal contact', error)
   }
