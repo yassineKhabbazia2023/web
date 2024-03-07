@@ -1,6 +1,6 @@
 {
   "name": "@kpmg/styleguide",
-  "version": "2.2.329",
+  "version": "2.2.336",
   "main": "dist/lib/styleguide.pegase.system.min.js",
   "module": "dist/lib/styleguide.pegase.es.min.js",
   "exports": {
@@ -59,6 +59,7 @@
     "@vue/test-utils": "^2.4.0",
     "@vueuse/core": "^10.2.0",
     "element-plus": "2.4.3",
+    "lodash": "^4.17.21",
     "vue-i18n": "^9.2.2"
   },
   "devDependencies": {
