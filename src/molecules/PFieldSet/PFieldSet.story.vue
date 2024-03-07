@@ -24,7 +24,7 @@
             <h2 class="h3 margin-bottom--3">
               {{ section.title }}
             </h2>
-            <PFieldSet
+            <PFieldSetCustom
               v-if="section.pFields"
               :pModel="variant.model"
               :pFields="section.pFields"
@@ -51,6 +51,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { logEvent } from 'histoire/client'
+import setWith from 'lodash/setWith'
 import PFieldSet from '.'
 import { getMockedFields } from './PFieldSetMock'
 
@@ -59,9 +60,20 @@ type Section = {
   pFields: ReturnType<typeof getMockedFields>
 }
 
+type CustomModel = {
+  person: {
+    firstname: string,
+    lastName?: string
+  },
+  contact: {
+    email: string,
+    phone?: string
+  }
+}
+
 type Variant = {
   title: string,
-  model: Record<string, string|number>,
+  model: CustomModel,
   readonly: boolean,
   sections: Section[]
 }
@@ -80,15 +92,26 @@ const sections = [{
   pFields: getMockedFields('accountingAndTaxInformation')
 }]
 
+const model: CustomModel = {
+  person: {
+    firstname: 'Susan'
+  },
+  contact: {
+    email: 'email@domain.tld'
+  }
+}
+
+const PFieldSetCustom = PFieldSet<CustomModel>
+
 const variants = ref<Variant[]>([{
   title: 'Informations d\'une personne morale',
-  model: {},
+  model,
   readonly: false,
   sections
 }])
 
 function onUpdatePModel(variant: Variant, fieldKey: string, fieldValue: any) {
-  variant.model[fieldKey] = fieldValue
+  setWith(variant.model, fieldKey, fieldValue, Object)
   logEvent('update:pModel', { fieldKey, fieldValue })
 }
 </script>

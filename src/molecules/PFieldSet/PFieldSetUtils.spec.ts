@@ -5,8 +5,10 @@ import { getInternalFields } from './PFieldSetUtils'
 describe('pFieldSetUtils', () => {
   describe('getInternalFields', () => {
     const model = {
-      lastname: 'Lennon',
-      firstname: 'John'
+      person: {
+        lastname: 'Lennon',
+        firstname: 'John'
+      }
     }
     const tests = [{
       pReadonly: false

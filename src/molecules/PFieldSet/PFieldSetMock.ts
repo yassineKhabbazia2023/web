@@ -16,14 +16,14 @@ export function getMockedFields(
 
   if (fieldCase === 'companyIdentification') {
     return [
-      getMockedInputField('lastname', 'Nom', 'Mac Cain', 30, withReadonlyFields),
-      getMockedInputField('firstname', 'Prénom', "Johnny's Pizza", 65)
+      getMockedInputField('person.lastname', 'Nom', 'Mac Cain', 30, withReadonlyFields),
+      getMockedInputField('person.firstname', 'Prénom', "Johnny's Pizza", 65)
     ]
   }
   if (fieldCase === 'companyContact') {
     return [
-      getMockedInputField('email', 'E-mail de contact', 'contact@kpmg.fr', 45, false, ['email']),
-      getMockedInputField('phone', 'Numéro de téléphone', '0123456789', 45, false, ['phone'])
+      getMockedInputField('contact.email', 'E-mail de contact', 'contact@kpmg.fr', 45, false, ['email']),
+      getMockedInputField('contact.phone', 'Numéro de téléphone', '0123456789', 45, false, ['phone'])
     ]
   }
   if (fieldCase === 'companyAddress') {

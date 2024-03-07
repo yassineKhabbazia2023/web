@@ -16,17 +16,17 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T">
 import { computed } from 'vue'
 import PField from '../PField'
 import type { PFieldSetProps } from './PFieldSetTypes'
 import { getInternalFields } from './PFieldSetUtils'
 
-const props = withDefaults(defineProps<PFieldSetProps>(), {
+const props = withDefaults(defineProps<PFieldSetProps<T>>(), {
   pReadonly: false
 })
 
-const internalFields = computed(() => getInternalFields(props.pFields, props.pModel, props.pReadonly))
+const internalFields = computed(() => getInternalFields<T>(props.pFields, props.pModel, props.pReadonly))
 
 const emit = defineEmits<{
   'update:pModel': [string, any]
