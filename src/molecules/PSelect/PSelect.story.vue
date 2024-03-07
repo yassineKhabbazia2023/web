@@ -63,6 +63,45 @@
         />
       </template>
     </Variant>
+
+    <Variant title="Multiple select by toggle" :initState="initState">
+      <template #default="{ state }">
+        <PSelect
+          v-model="valueMultiple"
+          pMultiple
+          :pCollapseTags="state.collapseTags"
+          :pCollapseTagsTooltip="state.collapseTagsTooltip"
+          :pDisabled="state.disabled"
+          :pFilterable="state.filterable"
+        >
+          <template #header>
+            <PCheckbox
+              v-model="checkAll"
+              @change="handleCheckAll"
+            >
+              Tout sélectionner
+            </PCheckbox>
+          </template>
+          <POption
+            v-for="item in selectOptions"
+            :key="item.value"
+            :pLabel="item.label"
+            :pValue="item.value"
+            :pDisabled="item.disabled"
+          />
+        </PSelect>
+      </template>
+      <template #controls="{ state }">
+        <HstCheckbox
+          v-model="state.collapseTags"
+          title="CollapseTags"
+        />
+        <HstCheckbox
+          v-model="state.collapseTagsTooltip"
+          title="TagsTooltip"
+        />
+      </template>
+    </Variant>
     <Variant title="Option filtering" :initState="initState">
       <template #default="{ state }">
         <PSelect
@@ -120,11 +159,14 @@
 
 <script setup lang="ts">
 import { groupOptions, selectOptions, templateSourceGroup } from '@/constants/dropdownOptions'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import POption from '@/atoms/POption'
 import POptionGroup from '@/molecules/POptionGroup'
+import PCheckbox from '@/atoms/PCheckbox'
 
 const valueSimple = ref('')
+const checkAll = ref(false)
+const valueMultiple = ref<string[]>([])
 
 const initState = () => {
   return {
@@ -145,6 +187,18 @@ const initState = () => {
     collapseTagsTooltip: false,
     popperAppendToBody: true,
     automaticDropdown: true
+  }
+}
+
+watch(valueMultiple, (val) => {
+  checkAll.value = val.length === selectOptions.length
+})
+
+const handleCheckAll = (val:boolean) => {
+  if (val) {
+    valueMultiple.value = selectOptions.map(({ value }: { value: string }) => value)
+  } else {
+    valueMultiple.value = []
   }
 }
 </script>

@@ -39,6 +39,9 @@
     :popperOptions="pPopperOptions"
     :ariaLabel="pAriaLabel"
   >
+    <template #header>
+      <slot name="header" />
+    </template>
     <slot />
   </ElSelect>
 </template>
