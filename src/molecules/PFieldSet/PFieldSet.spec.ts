@@ -4,7 +4,9 @@ import PBankCard from '.'
 import type { PFieldSetProps } from './PFieldSetTypes'
 import { getMockedFields } from './PFieldSetMock'
 
-function createWrapper(props: PFieldSetProps) {
+type T = Record<string, any>
+
+function createWrapper(props: PFieldSetProps<T>) {
   return mount(PBankCard, {
     props
   })
@@ -12,7 +14,7 @@ function createWrapper(props: PFieldSetProps) {
 
 const pFields = getMockedFields('companyIdentification') ?? []
 
-const props: PFieldSetProps = {
+const props: PFieldSetProps<T> = {
   pModel: {},
   pFields
 }

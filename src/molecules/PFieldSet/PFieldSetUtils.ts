@@ -1,8 +1,9 @@
+import get from 'lodash/get'
 import type { PFieldProps } from '../PField/PFieldTypes'
 
-export function getInternalFields(
+export function getInternalFields<T>(
   fields: PFieldProps<any>[],
-  model: Record<string, any>,
+  model: T,
   pReadonly: boolean
 ) {
   return fields
@@ -10,6 +11,6 @@ export function getInternalFields(
       ...field,
       pReadonly: pReadonly || field.pReadonly,
       pDisabled: pReadonly || field.pDisabled,
-      modelValue: model[field.pFieldKey]
+      modelValue: get(model, field.pFieldKey)
     }))
 }
