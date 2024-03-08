@@ -1,0 +1,12 @@
+import type { PTaskItemProps } from '@/atoms/PTaskItem/PTaskItemTypes'
+export interface CalendarItemsGroupedByDate {
+  date: string
+  items: PTaskItemProps[]
+}
+export interface PCalendarProps {
+  pInitialDate?: Date
+  pItemsGroupedByDate: CalendarItemsGroupedByDate[]
+  // This should start with monday and end with sunday
+  // This means you might include days from the previous and next month
+  pInitialDateRange?: [Date, Date]
+}

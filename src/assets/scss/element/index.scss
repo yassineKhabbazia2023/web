@@ -12,6 +12,7 @@
 @use './components/avatar';
 @use './components/breadcrumb';
 @use './components/buttons';
+@use './components/calendar';
 @use './components/carousel';
 @use './components/collapse';
 @use './components/dialog';
@@ -57,6 +58,7 @@
   $button-padding-vertical: buttons.$button-padding-vertical,
   $button-padding-horizontal: buttons.$button-padding-horizontal,
   $button-border-radius: buttons.$button-border-radius,
+  $calendar: calendar.$calendar,
   $collapse: collapse.$collapse,
   $input: input.$input,
   $input-padding-horizontal: input.$input-padding-horizontal,
