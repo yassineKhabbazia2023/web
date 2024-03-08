@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import eslint from 'vite-plugin-eslint'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import typescript from '@rollup/plugin-typescript'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import viteBaseConfig from '@kpmg/config-pulse/vite.config.base'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
@@ -11,6 +12,7 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 // https://vitejs.dev/config/
 export default ({ mode }) => defineConfig(mergeConfig(viteBaseConfig, {
   plugins: [
+    visualizer(),
     vue({
       reactivityTransform: true
     }),

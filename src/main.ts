@@ -8,7 +8,8 @@ import store from './stores'
 import { TokenService, isTokenExpired } from './token'
 import { useDataProvider } from './composables/useDataProvider'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
-import debounce from 'lodash.debounce'
+import { sanitizeUrl } from '@braintree/sanitize-url'
+import { debounce, get, setWith, cloneDeep } from 'lodash-es'
 
 export * from './stores/types'
 export const commonApi = api
@@ -22,4 +23,5 @@ export const dataProvider = useDataProvider
 export const tokenService = reactive(TokenService.getInstance())
 
 export { DataStreamHubConnection }
-export { debounce }
+export { debounce, get, setWith, cloneDeep }
+export { sanitizeUrl }
