@@ -18,20 +18,20 @@ $table: (
 
 $table-font-size: (
   'large': getCssVar('font-size', 'base'),
-  'default': 14px,
-  'small': 12px,
+  'default': 1.4rem,
+  'small': 1.2rem,
 );
 
 $table-padding: (
-  'large': 12px 0,
-  'default': 12px 0,
-  'small': 4px 0,
+  'large': 1.2rem 0,
+  'default': 1.2rem 0,
+  'small': 0.4rem 0,
 );
 
 $table-cell-padding: (
-  'large': 0 16px,
-  'default': 12px,
-  'small': 0 8px,
+  'large': 0 1.6rem,
+  'default': 0 1.2rem,
+  'small': 0 0.8rem,
 );
 
 

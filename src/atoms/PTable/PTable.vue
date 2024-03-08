@@ -4,6 +4,7 @@
     :stripe="pStripe"
     :rowClassName="tableRowClassName"
     ref="table"
+    :fit="pFit"
   >
     <slot />
   </ElTable>
@@ -19,7 +20,8 @@ de son usage se pose car via cet emplacement ne se bind nul part */
 const table = ref<any>()
 
 withDefaults(defineProps<PTableProps>(), {
-  pStripe: false
+  pStripe: false,
+  pFit: true
 })
 
 // handle row selection background color not implemented by element plus

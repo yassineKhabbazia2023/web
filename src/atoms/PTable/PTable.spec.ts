@@ -43,12 +43,14 @@ describe('pTable', () => {
       },
       props: {
         pData: testData,
-        pStripe: true
+        pStripe: true,
+        pFit: true
       }
     })
 
     // Check if the stripe class is applied to the table
     const tableElement = wrapper.findComponent({ name: 'ElTable' })
     expect(tableElement.classes()).toContain('el-table--striped')
+    expect(tableElement.classes()).toContain('el-table--fit')
   })
 })
