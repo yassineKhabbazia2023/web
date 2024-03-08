@@ -189,7 +189,7 @@ import type {
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
 import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
-import { CONTACT_ID } from './OffersDrawerConst'
+import { CONTACT_ID, ACCOUNT_ID } from './OffersDrawerConst'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -357,7 +357,7 @@ async function validateOffer() {
         staffSizeRange: legal.staffSizeRange
       }
     }
-    await patchAccount(accountFormValue)
+    await patchAccount(ACCOUNT_ID, accountFormValue)
   }
   await saveOffer()
 }
@@ -406,7 +406,7 @@ const offerSanitizedUrl = computed(() => {
 onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
   principalContacts.value = await getPrincipalContacts()
-  account.value = await fetchAccount(props.accountId)
+  account.value = await fetchAccount(ACCOUNT_ID /* props.accountId */)
   if (account.value) {
     accountFormModel.value = getMappedAPIData(account.value)
   }

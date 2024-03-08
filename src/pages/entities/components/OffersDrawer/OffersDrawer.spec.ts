@@ -209,7 +209,7 @@ describe('offersDrawer', () => {
           productConfigurations: [1, 2, 3, 4]
         }
 
-        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount)
+        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedAccount)
         expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
     })

@@ -27,7 +27,6 @@ vi.mock('@kpmg/common', () => {
   }
 })
 
-// I skipped these two tests because the account ID is now static and always equal to 5
 describe('test accountServices', () => {
   describe('fetchAccount', () => {
     it('should return account on success', async () => {
@@ -35,7 +34,7 @@ describe('test accountServices', () => {
       expect(account).toStrictEqual(mockedAccount)
     })
 
-    it.skip('should call handleRequestError when an error accors', async () => {
+    it('should call handleRequestError when an error accors', async () => {
       const handleRequestErrorSpy = vi.spyOn(helper, 'handleRequestError')
       await fetchAccount(accountIdRejected)
       const expectedMessage = 'Error while fetchAccount'
@@ -48,17 +47,17 @@ describe('test accountServices', () => {
         ...mockedAccount,
         accountId
       }
-      const updatedAccount = await patchAccount(account)
+      const updatedAccount = await patchAccount(accountId, account)
       expect(updatedAccount).toMatchObject(mockedAccount)
     })
 
-    it.skip('should call handleRequestError when an error accors', async () => {
+    it('should call handleRequestError when an error accors', async () => {
       const handleRequestErrorSpy = vi.spyOn(helper, 'handleRequestError')
       const account = {
         ...mockedAccount,
         accountId: accountIdRejected
       }
-      await patchAccount(account)
+      await patchAccount(accountIdRejected, account)
       const expectedMessage = 'Error while patchAccount'
       expect(handleRequestErrorSpy).toHaveBeenNthCalledWith(1, expectedMessage, expect.any(Error))
     })
