@@ -59,10 +59,10 @@ describe('documentsList', () => {
 
       const fflcs = wrapper.findAllComponents(PFileAndFolderLineCheck)
       expect(fflcs).toHaveLength(2)
-      expect(fflcs[0].props('pFileName')).toStrictEqual('kyaaaa.pdf')
-      expect(fflcs[1].props('pFileName')).toStrictEqual('test.pdf')
-      expect(fflcs[0].props('pState')).toStrictEqual('default')
-      expect(fflcs[1].props('pState')).toStrictEqual('success')
+      expect(fflcs[0].props('pFileName')).toBe('kyaaaa.pdf')
+      expect(fflcs[1].props('pFileName')).toBe('test.pdf')
+      expect(fflcs[0].props('pState')).toBe('default')
+      expect(fflcs[1].props('pState')).toBe('success')
       expect(fflcs[0].props('modelValue')).toBeTruthy()
       expect(fflcs[1].props('modelValue')).toBeFalsy()
 

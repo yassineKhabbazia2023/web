@@ -93,7 +93,7 @@ describe('foldersMove', () => {
   })
 
   describe('props', () => {
-    it('should open and close modal based on isMoveModalOpened ', () => {
+    it('should open and close modal based on isMoveModalOpened', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
 
@@ -105,7 +105,7 @@ describe('foldersMove', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
       const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
-      expect(documentExplorerModalWrapper.props('modalTitle')).toStrictEqual(
+      expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
         `Déplacer 1 dossier dans ${validDestination.name}`
       )
     })
@@ -223,7 +223,7 @@ describe('foldersMove', () => {
 
           await nextTick()
 
-          expect(wrapper.vm.modalActionsButtons[0].buttonName).toStrictEqual(
+          expect(wrapper.vm.modalActionsButtons[0].buttonName).toBe(
             'Déplacement en cours'
           )
         })
@@ -268,7 +268,7 @@ describe('foldersMove', () => {
 
           expect(
             wrapper.vm.explorerDocuments[0].givenActionState
-          ).toStrictEqual('DONE')
+          ).toBe('DONE')
         })
 
         it('should emit refresh-tree on on modal-action-clicked event', async () => {
@@ -342,7 +342,7 @@ describe('foldersMove', () => {
       })
 
       describe('cancel', () => {
-        it('should close modal on on modal-action-clicked event ', async () => {
+        it('should close modal on on modal-action-clicked event', async () => {
           const updatedProps = {
             ...defaultProps,
             isMoveModalOpened: true

@@ -67,7 +67,7 @@ vi.mock('@kpmg/common', async () => ({
 }))
 
 describe('documents service', () => {
-  it('should fetch documents when fetchFolderDocuments is called ', async () => {
+  it('should fetch documents when fetchFolderDocuments is called', async () => {
     const service: Service =
       { ServiceId: 'service-1', ServiceName: 'A' }
 
@@ -94,7 +94,7 @@ describe('documents service', () => {
     )
   })
 
-  it('should fetsh documents with the keyword  when fetchDocumentsByKeyWord is called ', async () => {
+  it('should fetsh documents with the keyword  when fetchDocumentsByKeyWord is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const folderId = 123
@@ -189,7 +189,7 @@ describe('documents service', () => {
     )
   })
 
-  it('should call api  when deleteDocuments is called ', async () => {
+  it('should call api  when deleteDocuments is called', async () => {
     const service: Service =
       { ServiceId: 'service-1', ServiceName: 'A' }
 
@@ -290,7 +290,7 @@ describe('documents service', () => {
     )
   })
 
-  it('should call api  when transmitDocuments is called ', async () => {
+  it('should call api  when transmitDocuments is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const documentIds = ['123']
@@ -310,7 +310,7 @@ describe('documents service', () => {
     )
   })
 
-  it('should call api  when previewDocument is called ', async () => {
+  it('should call api  when previewDocument is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
     const accountId = 'my-account-id'
 

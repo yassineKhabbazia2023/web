@@ -18,7 +18,7 @@ describe('mapping functions', () => {
         expect(document).toHaveProperty('file')
       })
       expect(result).toHaveLength(files.length)
-      expect(result[0].givenActionState).toStrictEqual('TO_DO')
+      expect(result[0].givenActionState).toBe('TO_DO')
 
     })
     it('maps files to ExplorerUploadDocument with error UnauthorizedFileType', () => {
@@ -26,8 +26,8 @@ describe('mapping functions', () => {
         new File(['content'], 'example.kgjfh', { type: 'text/plain' })
       ]
       const result = mapExplorerDocumentFromFiles(files2)
-      expect(result[0].givenActionState).toStrictEqual('ERROR')
-      expect(result[0].codeError).toStrictEqual('UnauthorizedFileType')
+      expect(result[0].givenActionState).toBe('ERROR')
+      expect(result[0].codeError).toBe('UnauthorizedFileType')
     })
 
     it('maps files to ExplorerUploadDocument with error FileNameLengthExceeded', () => {
@@ -43,8 +43,8 @@ describe('mapping functions', () => {
           { type: 'text/plain' })
       ]
       const result = mapExplorerDocumentFromFiles(files2)
-      expect(result[0].givenActionState).toStrictEqual('ERROR')
-      expect(result[0].codeError).toStrictEqual('FileNameLengthExceeded')
+      expect(result[0].givenActionState).toBe('ERROR')
+      expect(result[0].codeError).toBe('FileNameLengthExceeded')
     })
 
     it('maps files to ExplorerUploadDocument with error UnauthorizedCharFileName', () => {
@@ -54,8 +54,8 @@ describe('mapping functions', () => {
           { type: 'text/plain' })
       ]
       const result = mapExplorerDocumentFromFiles(files2)
-      expect(result[0].givenActionState).toStrictEqual('ERROR')
-      expect(result[0].codeError).toStrictEqual('UnauthorizedCharFileName')
+      expect(result[0].givenActionState).toBe('ERROR')
+      expect(result[0].codeError).toBe('UnauthorizedCharFileName')
     })
   })
 
@@ -69,16 +69,16 @@ describe('mapping functions', () => {
         expect(explorerDocument).toHaveProperty('isSelected')
       })
       expect(result).toHaveLength(documents.length)
-      expect(result[0].givenActionState).toStrictEqual('TO_DO')
+      expect(result[0].givenActionState).toBe('TO_DO')
     })
     it('maps documents to ExplorerMoveDocument with error', () => {
       const documents = documentsMockWithError
       const result = mapExplorerDocumentFromDocuments(documents)
       expect(result).toHaveLength(documents.length)
-      expect(result[0].givenActionState).toStrictEqual('ERROR')
-      expect(result[0].codeError).toStrictEqual('DocumentCertifiedError')
-      expect(result[1].givenActionState).toStrictEqual('ERROR')
-      expect(result[1].codeError).toStrictEqual('PermissionInvalidError')
+      expect(result[0].givenActionState).toBe('ERROR')
+      expect(result[0].codeError).toBe('DocumentCertifiedError')
+      expect(result[1].givenActionState).toBe('ERROR')
+      expect(result[1].codeError).toBe('PermissionInvalidError')
     })
 
   })

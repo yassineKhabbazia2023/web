@@ -90,7 +90,7 @@ const createWrapper = (
 
 const pinia = createPinia()
 
-describe('Documents Move', () => {
+describe('documents Move', () => {
   const findDocumentsExplorerModal = (wrapper: DocumentsMoveWrapper) =>
     wrapper.findComponent(DocumentModalExplorer)
 
@@ -106,7 +106,7 @@ describe('Documents Move', () => {
   })
 
   describe('props', () => {
-    it('should open and close modal based on isMoveModalOpened ', () => {
+    it('should open and close modal based on isMoveModalOpened', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
 
@@ -118,7 +118,7 @@ describe('Documents Move', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
       const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
-      expect(documentExplorerModalWrapper.props('modalTitle')).toStrictEqual(
+      expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
         `Déplacer ${defaultProps.selectedDocuments.length} document dans ${validDestination.name}`
       )
     })
@@ -150,7 +150,7 @@ describe('Documents Move', () => {
       }
     )
 
-    it('should mapExplorerDocumentFromFiles when provided document are changed ', async () => {
+    it('should mapExplorerDocumentFromFiles when provided document are changed', async () => {
       const updatedProps = { ...defaultProps, selectedDocuments: [] }
       const wrapper = createWrapper(updatedProps)
 
@@ -166,7 +166,7 @@ describe('Documents Move', () => {
 
       await nextTick()
       expect(wrapper.vm.explorerDocuments).toHaveLength(1)
-      expect(wrapper.vm.explorerDocuments[0].givenActionState).toStrictEqual('TO_DO')
+      expect(wrapper.vm.explorerDocuments[0].givenActionState).toBe('TO_DO')
     })
   })
 

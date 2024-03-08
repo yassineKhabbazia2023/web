@@ -36,6 +36,7 @@ yarn-error.log
 testem.log
 /typings
 .eslintrc
+*.tgz
 
 # System Files
 .DS_Store

@@ -31,7 +31,7 @@ describe('folderArrayHelper.spec', () => {
 
       expect(folder).toHaveLength(1)
 
-      expect(folder[0].name).toStrictEqual('Comptabilité')
+      expect(folder[0].name).toBe('Comptabilité')
     })
 
   it('should add a new folder when appendChildFolder is called', () => {
@@ -120,7 +120,7 @@ describe('folderArrayHelper.spec', () => {
     expect(renamed).toBeFalsy()
   })
 
-  it('should not rename folder when renameFolder is called and the folder dose not exists', () => {
+  it('should not rename folder when renameFolder is called and the folder dose not exists (2)', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const serviceId = 'service-id-compta'
     const folderUpdatedData = {
@@ -306,7 +306,7 @@ describe('folderArrayHelper.spec', () => {
       .some(folder => folder.id === folderIdToDelete)).toBeFalsy()
   })
 
-  it('should delete folder when deleteFolder is called', () => {
+  it('should delete folder when deleteFolder is called (3)', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 135393637
     const serviceId = 'service-id-compta'

@@ -84,7 +84,7 @@ describe('documentsExplorerHeader', () => {
       await nextTick()
 
       expect(collapse.exists()).toBeTruthy()
-      expect(collapseItem.props('pTitleCollapseItem')).toStrictEqual('header')
+      expect(collapseItem.props('pTitleCollapseItem')).toBe('header')
       expect(lines).toHaveLength(1)
       expect(toolTips).toHaveLength(1)
       expect(lines[0].props('pAdditionalText')).toStrictEqual(getFileErrorMessage('FileEmpty'))

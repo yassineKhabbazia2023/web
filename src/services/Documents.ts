@@ -197,4 +197,3 @@ export const fetchDocumentsByKeyWord = async (
     })
   ).data
 }
-

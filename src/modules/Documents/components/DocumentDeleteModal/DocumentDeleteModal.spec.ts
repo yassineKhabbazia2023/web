@@ -73,7 +73,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
-      expect(popup.props('title')).toStrictEqual('Supprimer ce document ?')
+      expect(popup.props('title')).toBe('Supprimer ce document ?')
     })
 
     it('should display confirmation popup when isVisible is true and multi documents', async () => {
@@ -93,7 +93,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", tous les documents seront supprimés du dossier. Vous pourrez les restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
-      expect(popup.props('title')).toStrictEqual('Supprimer ces documents ?')
+      expect(popup.props('title')).toBe('Supprimer ces documents ?')
     })
 
     it('should display confirmation popup when isVisible is true and 1 documents', async () => {
@@ -113,7 +113,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
-      expect(popup.props('title')).toStrictEqual('Supprimer ce document ?')
+      expect(popup.props('title')).toBe('Supprimer ce document ?')
     })
   })
 

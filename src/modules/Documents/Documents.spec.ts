@@ -808,7 +808,7 @@ describe('documents', () => {
 
       })
 
-    it('should set current page saize oppon on-page-range-changed event ', async () => {
+    it('should set current page saize oppon on-page-range-changed event', async () => {
 
       const wrapper = createWrapper()
       await nextTick()
@@ -822,7 +822,7 @@ describe('documents', () => {
       await pPaginationWrapper.vm.$emit('on-page-range-changed', 50)
       await nextTick()
 
-      expect(pPaginationWrapper.props('pPageSize')).toStrictEqual(50)
+      expect(pPaginationWrapper.props('pPageSize')).toBe(50)
     })
 
     it('should open rename document modal oppon rename-document event', async () => {
@@ -910,7 +910,7 @@ describe('documents', () => {
       })
 
     describe('should display the serach results alerts upon meeting the right conditions',
-      async () => {
+      () => {
         const cases = [
           {
             params: {

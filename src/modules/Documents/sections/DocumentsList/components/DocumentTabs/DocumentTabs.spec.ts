@@ -51,7 +51,7 @@ describe('documentTabs', () => {
 
       const tabs = wrapper.findComponent(PTabs)
       await nextTick()
-      expect(tabs.props('modelValue')).toStrictEqual('1')
+      expect(tabs.props('modelValue')).toBe('1')
       expect(tabs.exists()).toBeTruthy()
 
       const tabPane = wrapper.findComponent(PTabPane)

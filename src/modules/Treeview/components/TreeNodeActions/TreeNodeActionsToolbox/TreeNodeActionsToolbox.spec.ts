@@ -86,7 +86,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should not render PToolbox when isVisible false ', async () => {
+    it('should not render PToolbox when isVisible false', async () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],
@@ -99,7 +99,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should  permissions with upload folder by default ', async () => {
+    it('should  permissions with upload folder by default', async () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['azert']
@@ -148,7 +148,7 @@ describe('treeNodeActions', () => {
       ])
     })
 
-    it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
+    it('should emit visible-change when p-toolbox-dropdown-close is emitted (2)', async () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER']

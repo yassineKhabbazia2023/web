@@ -50,7 +50,7 @@ describe('props', () => {
     setActivePinia(pinia)
   })
 
-  describe('confirm button validations', async () => {
+  describe('confirm button validations', () => {
     const folderName = `Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
       consectetur, adipisci velit Neque porro quisquam est qui dolorem
       ipsum quia dolor sit amet, consectetur, adipisci velit quisquam est
@@ -94,7 +94,7 @@ describe('props', () => {
       }
     )
   })
-  describe('error message sone display conditions', async () => {
+  describe('error message sone display conditions', () => {
     const showErrorMsgCases = [
       {
         typedValue: 'Test Content*',
@@ -129,7 +129,7 @@ describe('props', () => {
       }
     )
   })
-  describe('error message zone dynamic content', async () => {
+  describe('error message zone dynamic content', () => {
     const errorMsgValueCases = [
       {
         typedValue: 'Test Content*',
@@ -173,7 +173,7 @@ describe('interactions', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })
-  it('should emit on-confirm-rename-folder when confirm btn click ', async () => {
+  it('should emit on-confirm-rename-folder when confirm btn click', async () => {
     const props: RenameFolderModalProps = {
       ...defaultProps,
       isRenameFolderModalVisible: true
@@ -199,7 +199,7 @@ describe('interactions', () => {
     ])
   })
 
-  it('should not emit on-confirm-rename-folder when folder name already exists ', async () => {
+  it('should not emit on-confirm-rename-folder when folder name already exists', async () => {
     const props: RenameFolderModalProps = {
       ...defaultProps,
       isRenameFolderModalVisible: true,
@@ -240,7 +240,7 @@ describe('interactions', () => {
     expect(wrapper.emitted('on-confirm-rename-folder')).toBeFalsy()
   })
 
-  it('should emit on-cancel-rename-folder when cancel btn click ', async () => {
+  it('should emit on-cancel-rename-folder when cancel btn click', async () => {
     const props: RenameFolderModalProps = {
       ...defaultProps,
       isRenameFolderModalVisible: true

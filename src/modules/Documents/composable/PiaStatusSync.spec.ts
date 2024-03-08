@@ -101,7 +101,8 @@ describe('usePiaStatusSync', () => {
     fakeFolder.value = foldersData[0][0].children[1]
     await nextTick()
     const instance = await wrapper.vm.initializedAccountingDataStreamInstance
-    expect(instance.OnDisconnectedAsync).toHaveBeenCalled()
+    const folderId = documentsResponsePayload.documentsPage.items.at(0)?.folder.id
+    expect(instance.OnDisconnectedAsync).toHaveBeenNthCalledWith(1, folderId)
   })
 
   it('should not use OnConnectedAsync on null folder change', async () => {

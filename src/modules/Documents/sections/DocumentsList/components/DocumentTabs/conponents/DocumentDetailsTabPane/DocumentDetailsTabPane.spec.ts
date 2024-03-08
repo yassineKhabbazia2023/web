@@ -71,7 +71,7 @@ describe('documentDetailsTabPane', () => {
     )
   })
 
-  describe('should rebder icon correctly based on pia status', async () => {
+  describe('should rebder icon correctly based on pia status', () => {
     const cases = [
       {
         status: 'Collected',
@@ -204,7 +204,7 @@ describe('documentDetailsTabPane', () => {
     expect(pTagWrapper).toHaveLength(1)
   })
 
-  it('should hide tag if label is null', async () => {
+  it('should hide tag if label is null (2)', async () => {
     const updatedDocument = {
       ...documentMock,
       piaStatus: {

@@ -47,7 +47,7 @@ describe('props', () => {
     setActivePinia(pinia)
   })
 
-  describe('confirm button validations', async () => {
+  describe('confirm button validations', () => {
     const folderName = `Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
       consectetur, adipisci velit Neque porro quisquam est qui dolorem
       ipsum quia dolor sit amet, consectetur, adipisci velit quisquam est
@@ -91,7 +91,7 @@ describe('props', () => {
       }
     )
   })
-  describe('error message sone display conditions', async () => {
+  describe('error message sone display conditions', () => {
     const showErrorMsgCases = [
       {
         typedValue: 'Test Content*',
@@ -126,7 +126,7 @@ describe('props', () => {
       }
     )
   })
-  describe('error message zone dynamic content', async () => {
+  describe('error message zone dynamic content', () => {
     const errorMsgValueCases = [
       {
         typedValue: 'Test Content*',
@@ -169,7 +169,7 @@ describe('interactions', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })
-  it('should emit on-confirm-create-folder when confirm btn click ', async () => {
+  it('should emit on-confirm-create-folder when confirm btn click', async () => {
     const props: CreateFolderModalProps = {
       ...defaultProps,
       isCreateFolderModalVisible: true
@@ -230,7 +230,7 @@ describe('interactions', () => {
       }
     }
   ])(
-    'should not emit on-confirm-create-folder when folder name already exists ',
+    'should not emit on-confirm-create-folder when folder name already exists',
     async ({ childrenFolder }) => {
       const props: CreateFolderModalProps = {
         ...defaultProps,
@@ -267,7 +267,7 @@ describe('interactions', () => {
     }
   )
 
-  it('should emit on-cancel-create-folder when cancel btn click ', async () => {
+  it('should emit on-cancel-create-folder when cancel btn click', async () => {
     const props: CreateFolderModalProps = {
       ...defaultProps,
       isCreateFolderModalVisible: true

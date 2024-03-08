@@ -32,7 +32,7 @@ describe('documentsSearchAlert', () => {
         alert.html().includes(`${defaultProps.documentsCount} résultats`)
       ).toBeTruthy()
     })
-    it('should display the correct message when number of found documents equals 0 ', () => {
+    it('should display the correct message when number of found documents equals 0', () => {
       const wrapper = createWrapper({ ...defaultProps, documentsCount: 0 })
 
       const alert = findPalert(wrapper)

@@ -120,7 +120,7 @@ describe('createFolderSection', () => {
       expect(mainCreateButton.attributes('ariadisabled')).toBe('false')
     })
 
-    describe('binding with create folder modal', async () => {
+    describe('binding with create folder modal', () => {
       const validTranslationCases = [
         {
           prop: 'modalTitle',

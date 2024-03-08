@@ -213,7 +213,7 @@ describe('documentList', () => {
       const elTableStubEptyTextValue = table.find('el-table-stub').attributes('emptytext')
       await nextTick()
 
-      expect(elTableStubEptyTextValue).toStrictEqual('Aucun résultat')
+      expect(elTableStubEptyTextValue).toBe('Aucun résultat')
     })
   })
 })

@@ -28,7 +28,7 @@ vi.mock('@kpmg/common', async () => ({
 }))
 
 describe('trash documents service', () => {
-  it('should fetsh trash documents when fetchTrashDocuments is called ', async () => {
+  it('should fetsh trash documents when fetchTrashDocuments is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const accountId = 'my-account-id'

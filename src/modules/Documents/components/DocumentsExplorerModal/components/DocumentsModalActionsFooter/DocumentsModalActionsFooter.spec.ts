@@ -65,8 +65,8 @@ describe('documentsModalActionsFooter', () => {
       const btns = wrapper.findAllComponents(PButton)
 
       expect(btns).toHaveLength(2)
-      expect(btns[0].props('pType')).toStrictEqual('primary')
-      expect(btns[1].props('pType')).toStrictEqual('warning')
+      expect(btns[0].props('pType')).toBe('primary')
+      expect(btns[1].props('pType')).toBe('warning')
       expect(btns[0].props('pPlain')).toBeFalsy()
       expect(btns[1].props('pPlain')).toBeTruthy()
       expect(btns[0].props('pCircle')).toBeTruthy()
@@ -75,8 +75,8 @@ describe('documentsModalActionsFooter', () => {
       expect(btns[1].props('pLoading')).toBeFalsy()
       expect(btns[0].props('pDisabled')).toBeFalsy()
       expect(btns[1].props('pDisabled')).toBeFalsy()
-      expect(btns[0].props('pSize')).toStrictEqual('default')
-      expect(btns[1].props('pSize')).toStrictEqual('small')
+      expect(btns[0].props('pSize')).toBe('default')
+      expect(btns[1].props('pSize')).toBe('small')
     })
   })
 

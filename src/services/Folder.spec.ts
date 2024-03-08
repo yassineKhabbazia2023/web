@@ -59,7 +59,7 @@ vi.mock('@kpmg/common', async () => ({
 }))
 
 describe('folder service', () => {
-  it('should call fetchServiceFolders when fetchServicesFolders is called ', async () => {
+  it('should call fetchServiceFolders when fetchServicesFolders is called', async () => {
     const services = [
       { ServiceId: 'service-1', ServiceName: 'A' },
       { ServiceId: 'service-2', ServiceName: 'B' }

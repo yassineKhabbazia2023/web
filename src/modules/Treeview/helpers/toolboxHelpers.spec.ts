@@ -23,7 +23,7 @@ describe('toolboxHelpers', () => {
     expect(res).toStrictEqual(expectedRes)
   })
 
-  it('should return correct mapping when passing permission array', () => {
+  it('should return correct mapping when passing permission array (2)', () => {
     const res = generateToolboxBasicData('Folders', [
       'CAN_RENAME_FOLDER',
       'CAN_CREATE_FOLDER'

@@ -166,7 +166,7 @@ describe('foldersMove', () => {
   })
 
   describe('props', () => {
-    it('should open and close modal based on isUploadModalOpened ', () => {
+    it('should open and close modal based on isUploadModalOpened', () => {
       const updatedProps = { ...defaultProps, isUploadModalOpened: true }
       const wrapper = createWrapper(updatedProps)
 
@@ -178,7 +178,7 @@ describe('foldersMove', () => {
       const updatedProps = { ...defaultProps, isUploadModalOpened: true }
       const wrapper = createWrapper(updatedProps)
       const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
-      expect(documentExplorerModalWrapper.props('modalTitle')).toStrictEqual(
+      expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
         `Déposer ${defaultProps.files.length} documents dans ${validDestination.name}`
       )
     })
@@ -210,7 +210,7 @@ describe('foldersMove', () => {
       }
     )
 
-    it('should mapExplorerDocumentFromFiles when provided files are changed ', async () => {
+    it('should mapExplorerDocumentFromFiles when provided files are changed', async () => {
       const updatedProps = { ...defaultProps, files: [] }
       const wrapper = createWrapper(updatedProps)
 
