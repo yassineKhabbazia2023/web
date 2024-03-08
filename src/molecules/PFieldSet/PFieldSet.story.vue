@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { logEvent } from 'histoire/client'
-import setWith from 'lodash/setWith'
+import { setWith } from 'lodash-es'
 import PFieldSet from '.'
 import { getMockedFields } from './PFieldSetMock'
 
