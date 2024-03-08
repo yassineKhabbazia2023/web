@@ -71,7 +71,7 @@ const FOLDER_CHILDREN_PATH = [
   {
     path: 'offres',
     name: 'offers',
-    page: 'users'
+    page: 'offers'
   },
   {
     path: 'informations',
@@ -109,7 +109,7 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
     res.push({
       path: path.path,
       name: path.name,
-      component: () => import(`@/pages/folder/pages/${path.page}/index.js`)
+      component: () => import(`@/pages/folder/pages/${path.page}/index.ts`)
     } as RouteRecordRaw)
   })
   return res
