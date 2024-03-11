@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonPinia as pinia, type Entity } from '@kpmg/common'
+import { commonPinia as pinia, type Entity, commonStore } from '@kpmg/common'
 import { getMockedFavoriteEntities } from './MockedFavoriteEntities'
 import SidebarEntity from '.'
 
@@ -67,6 +67,18 @@ describe('sidebarEntity', () => {
       expect(selectedEntity.exists()).toBeFalsy()
       expect(starDivider.exists()).toBeTruthy()
       expect(favoriteEntities.exists()).toBeTruthy()
+    })
+    it('should display the sidebar with the appropriate background color', async () => {
+      const store = commonStore()
+      const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
+
+      expect(sidenavEntity.classes()).includes('sidenav-entity--is-collab')
+
+      // @ts-expect-error: Getter is read only
+      store.isCollab = false
+      await flushPromises()
+
+      expect(sidenavEntity.classes()).not.includes('sidenav-entity--is-collab')
     })
     it('should display all favorite entities correctly', () => {
       const favoriteEntities = wrapper.findAll(

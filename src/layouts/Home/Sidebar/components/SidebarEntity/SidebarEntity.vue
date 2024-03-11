@@ -4,7 +4,8 @@
       v-if="(!isCollab && totalEntities > 1) || isCollab"
       :class="[
         'sidenav-entity flex flex--direction-column',
-        { 'sidenav-entity--opened': isSidebarOpened }
+        { 'sidenav-entity--opened': isSidebarOpened },
+        { 'sidenav-entity--is-collab': isCollab }
       ]"
       data-testid="sidenav-entity"
     >
@@ -246,6 +247,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .sidenav-entity {
+  $self: &;
   --default-size: 32px;
   --shadow-color: rgba(85, 70, 255, 0);
   --smooth-transition: 0.4s ease;
@@ -263,6 +265,27 @@ onMounted(() => {
 
   &--opened {
     width: 240px;
+  }
+
+  &#{$self}--is-collab {
+    background-color: var(--el-color-base-blue-kpmg);
+
+    #{$self}__favorites {
+      &::before {
+        background: linear-gradient(
+          180deg,
+          var(--el-color-base-blue-kpmg) 0%,
+          var(--shadow-color) 100%
+        );
+      }
+    }
+    &::after {
+      background: linear-gradient(
+        180deg,
+        var(--shadow-color) 0%,
+        var(--el-color-base-blue-kpmg) 100%
+      );
+    }
   }
 
   &__actions,
