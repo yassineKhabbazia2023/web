@@ -1,4 +1,5 @@
 import type { PFieldProps } from '@kpmg/styleguide'
+import { type Account } from '@/services/account'
 
 export type ProviderFormName = 'MEG' | 'LOOP' | undefined
 
@@ -8,6 +9,6 @@ export type FormSection = {
 }
 
 export interface CompanyInformationProps {
-  modelValue: Record<string, string | number>
+  modelValue: Account
   providerName: ProviderFormName
 }
