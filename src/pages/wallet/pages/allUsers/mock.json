@@ -1,0 +1,129 @@
+{
+  "data": {
+    "items": [
+      {
+        "id": "c388dbbd-abb0-4f51-86a7-bba9fbbe1f95",
+        "firstName": "Goldie",
+        "lastName": "Travis",
+        "email": "goldietravis@ecolight.com",
+        "persona": "Dirigeant",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "c00e8485-7af8-481b-9acd-ad7ffa8a10a6",
+        "firstName": "Tucker",
+        "lastName": "Hull",
+        "email": "tuckerhull@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "a26559f0-f40a-4b9c-bdc5-47536b046408",
+        "firstName": "Pollard",
+        "lastName": "Stevens",
+        "email": "pollardstevens@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "bffde9b1-c781-4bf5-a77f-1051c93551c0",
+        "firstName": "Teresa",
+        "lastName": "Gilmore",
+        "email": "teresagilmore@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "3db57a1b-9e10-4317-a060-b0f3ba3f96d1",
+        "firstName": "Hicks",
+        "lastName": "Carr",
+        "email": "hickscarr@ecolight.com",
+        "persona": "Paie et RH",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "604b39d2-0c72-491c-b7d6-dfa55053828d",
+        "firstName": "Lourdes",
+        "lastName": "Mcmillan",
+        "email": "lourdesmcmillan@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "9d065d61-e49f-4d8a-9080-de4276b0abf9",
+        "firstName": "Blanca",
+        "lastName": "Flynn",
+        "email": "blancaflynn@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "1c88965c-c414-471d-8cff-b49b9d882ee9",
+        "firstName": "Ball",
+        "lastName": "Hopkins",
+        "email": "ballhopkins@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "9ffe87f6-b0d9-4442-aa3d-3b4e6ba40a55",
+        "firstName": "Carrillo",
+        "lastName": "Garrett",
+        "email": "carrillogarrett@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "74c20c3b-5161-43b0-98b5-4bf53cc9f79e",
+        "firstName": "Isabel",
+        "lastName": "Merritt",
+        "email": "isabelmerritt@ecolight.com",
+        "persona": "Paie et RH",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "0429b0e6-b6b0-45ce-9fc7-d1f1a07e7294",
+        "firstName": "Olson",
+        "lastName": "Tyler",
+        "email": "olsontyler@ecolight.com",
+        "persona": "Paie et RH",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "ab001f02-d284-4d3a-9aee-6f95e349ab60",
+        "firstName": "Bridges",
+        "lastName": "Hinton",
+        "email": "bridgeshinton@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "3a655910-d0d8-441d-91d6-20ec16ceb167",
+        "firstName": "Decker",
+        "lastName": "Estes",
+        "email": "deckerestes@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "e23336bb-1d74-4ad8-a18c-57b4db03a35e",
+        "firstName": "Campbell",
+        "lastName": "Cooley",
+        "email": "campbellcooley@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      },
+      {
+        "id": "36771940-3df6-49ae-80f5-cdd712f2245b",
+        "firstName": "Gould",
+        "lastName": "Hood",
+        "email": "gouldhood@ecolight.com",
+        "persona": "Comptable",
+        "createdAt": "07/03/2024"
+      }
+    ],
+    "currentPage": 1,
+    "totalPages": 2,
+    "totalItems": 16
+  }
+}

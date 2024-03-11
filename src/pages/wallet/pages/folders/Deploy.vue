@@ -15,7 +15,7 @@
       >
         {{ t('delegation', selectedFolders.length) }}
       </PButton>
-      </div>
+    </div>
     <div class="margin-bottom--3">
       <PForm
         ref="formRef"

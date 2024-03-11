@@ -190,10 +190,6 @@ const handleToolboxItemClick = (action: string, row: any) => {
 </script>
 
 <style lang="scss" scoped>
-.color-gray--500 {
-  color: var(--el-color-neutral-gray-500);
-}
-
 .line-height--120 {
   line-height: 120%;
 }
