@@ -2,6 +2,7 @@ import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
 import * as mandateService from '@/services/mandate'
+import { nextTick } from 'vue'
 
 interface CustomWindow extends Window {
   showSaveFilePicker?: (_: any) => Promise<any>
@@ -174,16 +175,36 @@ describe('mandate collection', () => {
     sortColumnEvent = wrapper.emitted('sort-column-change')
     expect(sortColumnEvent[1]).toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
   })
-  it('sumit the signed mandate', () => {
+  it('submit the signed mandate', async () => {
     const wrapper = createWrapper({
       data: []
     })
-    vi.spyOn(document, 'getElementById').mockImplementation(() => vi.fn())
-    const mandate = { id: '123' }
-    // Trigger the action
-    wrapper.vm.actionClicked('submit-signed-mandate', mandate)
-    // Assert that the correct service function was called
-    expect(document.getElementById).toHaveBeenCalledWith('fileUpload')
+    wrapper.vm.handleFileUpload = vi.fn()
+    let fileInput: any
+    const originalCreateElement = document.createElement.bind(document)
+    vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
+      if (tagName === 'input') {
+        fileInput = originalCreateElement('input')
+        return fileInput
+      }
+      return originalCreateElement(tagName)
+    })
+    vi.spyOn(document.body, 'appendChild').mockImplementation(() => {})
+    vi.spyOn(document.body, 'removeChild').mockImplementation(() => {})
+    await wrapper.vm.actionClicked('submit-signed-mandate',
+      { id: '123', accountNumber: 'accountNumber', companyName: 'companyName' })
+    await nextTick()
+
+    const file = new File(['mandate content'], 'mandate.pdf', { type: 'application/pdf' })
+    Object.defineProperty(fileInput, 'files', {
+      value: [file],
+      writable: false
+    })
+    // Dispatch the change event
+    const changeEvent = new Event('change', { bubbles: true })
+    fileInput.dispatchEvent(changeEvent)
+
+    expect(mandateService.uploadSignedMandate).toBeCalledWith({ mandateId: '123', file: file })
   })
   it('renders the mandate table click on download unsigned mandate', async () => {
     const wrapper = createWrapper({

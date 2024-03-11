@@ -26,14 +26,6 @@
                 </PIcon>
               </PButton>
             </PToolbox>
-            <!-- Hidden File Input -->
-          <input
-              id="fileUpload"
-              type="file"
-              style="display: none"
-              accept="application/pdf"
-              @change="handleFileUpload"
-            />
           </template>
         </PTableColumn>
         <PTableColumn
@@ -330,10 +322,19 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
       await saveFile(id, data, 'signed')
     },
     'submit-signed-mandate': () => {
-      let fileUpload = document.getElementById('fileUpload')
-      mandateIdRef.value = id
-      fileUpload?.click()
-      fileUpload = null
+      // Dynamically create a file input and set its attributes
+      const fileUpload = document.createElement('input')
+      fileUpload.type = 'file'
+      fileUpload.style.display = 'none'
+      fileUpload.accept = 'application/pdf'
+      fileUpload.onchange = (event) => handleFileUpload(event, id) // Pass the mandateId directly
+      document.body.appendChild(fileUpload) // Append the input to the body
+
+      // Trigger the file input
+      fileUpload.click()
+
+      // Cleanup: remove the file input after use
+      fileUpload.remove()
     },
     'cancel-telecollection': () => {
       accountNumberRef.value = accountNumber
@@ -348,11 +349,11 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   }
 }
 
-const handleFileUpload = async (event: any) => {
+const handleFileUpload = async (event: any, id: string) => {
   try {
     const filesCollection = event.target.files
     if (filesCollection.length > 0) {
-      uploadSignedMandate({ mandateId: mandateIdRef.value, file: filesCollection[0] })
+      await uploadSignedMandate({ mandateId: id, file: filesCollection[0] })
     }
   } catch (error) {
     console.error('Error in mandate upload ', error)
