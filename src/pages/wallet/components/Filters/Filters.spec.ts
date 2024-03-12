@@ -37,12 +37,16 @@ describe('filter', () => {
 
     const options = wrapper.findAll('.filter-option')
     expect(options).toHaveLength(Object.keys(statistic).length)
-    expect(options[0].text()).toBe(statistic.entityToDeploy + ' To Deploy')
-    expect(options[1].text()).toBe(statistic.entityInProgress + ' In progress')
-    expect(options[2].text()).toBe(statistic.entityConnected + ' Connected')
-    expect(options[3].text()).toBe(statistic.userDeclared + ' Declared')
-    expect(options[4].text()).toBe(statistic.userConnected + ' Connected')
-    expect(options[5].text()).toBe(statistic.userInvited + ' Guest(s)')
+    const optionsText = options.map(option => option.text())
+    const expectedOptionsText = [
+      `${statistic.entityToDeploy} To Deploy`,
+      `${statistic.entityInProgress} In progress`,
+      `${statistic.entityConnected} Connected`,
+      `${statistic.userDeclared} Declared`,
+      `${statistic.userConnected} Connected`,
+      `${statistic.userInvited} Guest(s)`
+    ]
+    expect(optionsText).toStrictEqual(expectedOptionsText)
   })
 
   it('should emit event filterByStatus when click on the entityStatus button', async () => {

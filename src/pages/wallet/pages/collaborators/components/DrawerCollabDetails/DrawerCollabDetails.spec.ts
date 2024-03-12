@@ -56,11 +56,15 @@ describe('drawerCollabDetails', () => {
     expect((getInputs()[inputs.indexOf(input)].element as HTMLInputElement).value).toBe(input.value)
   })
 
-  it.each(inputs)('has some inputs disabled, checking input %#', (input) => {
-    input.isDisabled
-      ? expect(getInputs()[inputs.indexOf(input)].attributes().disabled).toBeDefined()
-      : expect(getInputs()[inputs.indexOf(input)].attributes().disabled).toBeUndefined()
-  })
+  it.each((inputs).filter(({ isDisabled }) => isDisabled))('has some inputs disabled, checking input %#',
+    (input) => {
+      expect(getInputs()[inputs.indexOf(input)].attributes().disabled).toBeDefined()
+    })
+
+  it.each(inputs.filter(({ isDisabled }) => !isDisabled))('do not have some inputs disabled, checking input %#',
+    (input) => {
+      expect(getInputs()[inputs.indexOf(input)].attributes().disabled).toBeUndefined()
+    })
 
   it('displays a success notification on form submitted', async () => {
     const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')

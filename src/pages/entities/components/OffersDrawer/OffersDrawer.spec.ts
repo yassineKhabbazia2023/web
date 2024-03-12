@@ -315,7 +315,7 @@ describe('offersDrawer', () => {
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
     })
-    it('should display the correct page and maintain notes when using stepper navigation buttons', async () => {
+    it('should display the correct page and maintain notes when using stepper navigation buttons 1/2', async () => {
       const wrapper = await getWrapper(true)
       const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
@@ -333,6 +333,20 @@ describe('offersDrawer', () => {
       await nextPreviousButtons.vm.$emit('clickNext')
       const collaboratorsStep = wrapper.find('[data-testid=collaborators-step]')
       expect(collaboratorsStep.exists()).toBeTruthy()
+    })
+    it('should display the correct page and maintain notes when using stepper navigation buttons 2/2', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOffer = findFirstOffer(wrapper)
+      await firstOffer.trigger('click')
+      await flushPromises()
+
+      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+
+      await nextPreviousButtons.vm.$emit('clickNext')
+      const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
+      await customersNoteStep.vm.$emit('update:modelValue', notes[1])
+
+      await nextPreviousButtons.vm.$emit('clickNext')
 
       await nextPreviousButtons.vm.$emit('clickNext')
       const informationStep = wrapper.find('[data-testid=information-step]')

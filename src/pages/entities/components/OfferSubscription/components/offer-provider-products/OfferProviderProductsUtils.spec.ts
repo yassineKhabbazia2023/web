@@ -84,11 +84,7 @@ describe('offerProviderProductsUtils', () => {
         includedLabel,
         additionalPriceLabel
       )
-      if (expected === undefined) {
-        expect(serviceTag).toBeUndefined()
-      } else {
-        expect(serviceTag).toStrictEqual(expected)
-      }
+      expect(serviceTag).toStrictEqual(expected)
     })
   })
   describe('getTitle', () => {
