@@ -1,6 +1,6 @@
 <template>
   <div class="margin-top--6">
-    <PAlert id="folder-information-alert" data-testid="alert-instruction">
+    <PAlert id="folder-information-alert" data-testid="folder-information-alert">
       {{ t('alertInstruction') }}
     </PAlert>
     <PForm
@@ -58,5 +58,5 @@ const informationFormStructure = getInformationFormStructure()
 en-US:
   alertInstruction: 'If any information is incorrect, please update it in the CRM'
 fr-FR:
-  alertInstruction: 'Si des informations sont incorrectes, veuillez les mettres à jour dans le CRM'
+  alertInstruction: 'Si des informations sont incorrectes, veuillez les mettre à jour dans le CRM'
 </i18n>
