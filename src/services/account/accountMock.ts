@@ -10,29 +10,30 @@ export function getMockedAccount(): Account {
     employeeCount: 8,
     commercialName: 'SCI Licorn',
     accounting: {
-      accountingType: 'Client',
+      accountingType: 'Engagement',
       activityType: 'Prestation de services',
       fiscalExerciseStartDate: '2024-02-07T15:49:54',
       fiscalExerciseDuration: 12,
-      fiscalSystem: 'Système fiscal',
-      taxationSystem: 'Système de taxation'
+      fiscalSystem: 'BIC',
+      taxationSystem: 'Impôt sur le revenu'
     },
     legal: {
       legalName: 'SCI Licorn',
       siret: '443 061 841 00047',
-      legalFormCode: 'B12',
+      createdAt: '2022-01-22T12:00:00',
+      legalFormCode: 'EURL',
       staffSizeRange: 'De 4 à 15 salariés',
       naf: [
         {
           nafId: 1,
-          nafCode: '1',
-          nafLabel: '1'
+          nafCode: '96.0F4',
+          nafLabel: '96.0F4'
         }
       ]
     },
     vat: {
       system: 'Réel normal - CA3 mensuelle',
-      intra: '',
+      intra: 'FR 32 123456789',
       type: 'Encaissement'
     },
     address: [
@@ -42,13 +43,20 @@ export function getMockedAccount(): Account {
         addressLine2: 'test 2',
         addressLine3: 'test 3',
         country: 'France',
-        city: 'Paris'
+        city: 'Paris',
+        zipCode: '25300'
       }
     ],
-    phone: [],
+    phone: [
+      {
+        phoneId: 5,
+        phoneNumber: '0622827143'
+      }
+    ],
+    email: 'contact@johnnyspizza.com',
     hub: {
       hubId: 14,
-      hubName: 'Hub Centre'
+      hubName: 'Hub Normandie Seine Baie de Somme'
     },
     deploymentPlanning: [
       {

@@ -24,7 +24,7 @@
         "pDisabled": true,
         "pFieldKey": "address.zipCode",
         "pFieldType": "input",
-        "pLabel": "Code postale"
+        "pLabel": "Code postal"
       },
       {
         "modelValue": "",
