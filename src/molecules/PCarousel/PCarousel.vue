@@ -34,6 +34,6 @@ withDefaults(defineProps<PCarouselProps>(), {
   pArrow: 'hover',
   pLoop: true,
   pDirection: 'horizontal',
-  pPauseOnHover: true
+  pPauseOnHover: true,
 })
 </script>

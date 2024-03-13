@@ -140,12 +140,12 @@
     <Variant title="Calendar Lite">
       <div class="calendar-lite-wrapper">
         <PDatePicker
-        v-model="dateCalendar"
-        pType="date"
-        pValueFormat="YYYY-MM-DD"
-        pFormat="YYYY-MM-DD"
-        pCalendarLite
-        :pSchedulesCollection="['2024-01-29', '2024-01-27', '2024-02-05']"
+          v-model="dateCalendar"
+          pType="date"
+          pValueFormat="YYYY-MM-DD"
+          pFormat="YYYY-MM-DD"
+          pCalendarLite
+          :pSchedulesCollection="['2024-01-29', '2024-01-27', '2024-02-05']"
         />
       </div>
     </Variant>
@@ -168,7 +168,7 @@ const dateCalendar = ref('')
 const shortcuts = [
   {
     text: 'Today',
-    value: new Date()
+    value: new Date(),
   },
   {
     text: 'Yesterday',
@@ -176,7 +176,7 @@ const shortcuts = [
       const date = new Date()
       date.setTime(date.getTime() - 3600 * 1000 * 24)
       return date
-    }
+    },
   },
   {
     text: 'A week ago',
@@ -184,8 +184,8 @@ const shortcuts = [
       const date = new Date()
       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
       return date
-    }
-  }
+    },
+  },
 ]
 const shortcutsDataRange = [
   {
@@ -195,7 +195,7 @@ const shortcutsDataRange = [
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
       return [start, end]
-    }
+    },
   },
   {
     text: 'Last month',
@@ -204,7 +204,7 @@ const shortcutsDataRange = [
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
       return [start, end]
-    }
+    },
   },
   {
     text: 'Last 3 months',
@@ -213,13 +213,13 @@ const shortcutsDataRange = [
       const start = new Date()
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       return [start, end]
-    }
-  }
+    },
+  },
 ]
 const shortcutsMountRange = [
   {
     text: 'This month',
-    value: [new Date(), new Date()]
+    value: [new Date(), new Date()],
   },
   {
     text: 'This year',
@@ -227,7 +227,7 @@ const shortcutsMountRange = [
       const end = new Date()
       const start = new Date(new Date().getFullYear(), 0)
       return [start, end]
-    }
+    },
   },
   {
     text: 'Last 6 months',
@@ -236,8 +236,8 @@ const shortcutsMountRange = [
       const start = new Date()
       start.setMonth(start.getMonth() - 6)
       return [start, end]
-    }
-  }
+    },
+  },
 ]
 
 function disabledDate(time: Date) {

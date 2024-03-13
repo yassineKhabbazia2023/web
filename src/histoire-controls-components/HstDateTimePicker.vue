@@ -1,33 +1,3 @@
-<script lang="ts">
-import { computed } from 'vue'
-
-export default {
-  name: 'HstDateTimePicker',
-  inheritAttrs: false
-}
-</script>
-
-<script setup lang="ts">
-export interface Props {
-  title: string
-  modelValue: string
-  type: 'date' | 'time' | 'datetime'
-}
-
-const props = defineProps<Props>()
-
-const emit = defineEmits({
-  'update:modelValue': (newValue: string) => true
-})
-
-const dateModel = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value)
-  }
-})
-</script>
-
 <template>
   <label class="container">
     <span
@@ -49,6 +19,36 @@ const dateModel = computed({
     />
   </label>
 </template>
+
+<script lang="ts">
+import { computed } from 'vue'
+
+export default {
+  name: 'HstDateTimePicker',
+  inheritAttrs: false,
+}
+</script>
+
+<script setup lang="ts">
+export interface Props {
+  title: string
+  modelValue: string
+  type: 'date' | 'time' | 'datetime'
+}
+
+const props = defineProps<Props>()
+
+const emit = defineEmits({
+  'update:modelValue': (newValue: string) => true,
+})
+
+const dateModel = computed({
+  get: () => props.modelValue,
+  set: (value) => {
+    emit('update:modelValue', value)
+  },
+})
+</script>
 
 <style scoped>
 .container {

@@ -55,6 +55,6 @@ withDefaults(defineProps<PTimePickerProps>(), {
   pDisabledMinutes: undefined,
   pDisabledSeconds: undefined,
   pTeleported: true,
-  pTabindex: 0
+  pTabindex: 0,
 })
 </script>

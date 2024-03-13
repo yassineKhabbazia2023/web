@@ -10,47 +10,47 @@ const defaultProps: PPastilleProps = {
   pType: 'default',
   pSize: 'default',
   pDisabled: false,
-  pIconName: ''
+  pIconName: '',
 }
 
 const createWrapper = (props = defaultProps) => mount(PPastille, {
-  props
+  props,
 })
 describe('pPastille', () => {
   describe('props', () => {
     it.each([
       {
         pType: 'default',
-        expectedClassBinding: `${componenRootCSSClass}--type-default`
+        expectedClassBinding: `${componenRootCSSClass}--type-default`,
       },
       {
         pType: 'warning',
-        expectedClassBinding: `${componenRootCSSClass}--type-warning`
+        expectedClassBinding: `${componenRootCSSClass}--type-warning`,
       },
       {
         pType: 'persian',
-        expectedClassBinding: `${componenRootCSSClass}--type-persian`
-      }
+        expectedClassBinding: `${componenRootCSSClass}--type-persian`,
+      },
     ])(
       'should always bind class based on current type : $pType',
       ({ pType, expectedClassBinding }) => {
         const wrapper = createWrapper({
-          pType: pType as PPastillePropsTypes
+          pType: pType as PPastillePropsTypes,
         })
         expect(wrapper.classes()).toContain(expectedClassBinding)
-      }
+      },
     )
     it('should bind class when disabled is true', () => {
       const wrapper = createWrapper({
         ...defaultProps,
-        pDisabled: true
+        pDisabled: true,
       })
       expect(wrapper.classes()).toContain(`${componenRootCSSClass}--disabled`)
     })
     it('should bind class when size is small', () => {
       const wrapper = createWrapper({
         ...defaultProps,
-        pSize: 'small'
+        pSize: 'small',
       })
       expect(wrapper.classes()).toContain(`${componenRootCSSClass}--size-small`)
     })

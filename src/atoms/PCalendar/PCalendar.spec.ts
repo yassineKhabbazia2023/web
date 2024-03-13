@@ -8,15 +8,15 @@ import PCalendarDateCell from '@/atoms/PCalendarDateCell'
 
 const defaultProps: PCalendarProps = {
   pItemsGroupedByDate: itemsGroupedByDate,
-  pInitialDate: new Date('2024-03-07')
+  pInitialDate: new Date('2024-03-07'),
 }
 
 const createWrapper = (props: any = defaultProps): VueWrapper =>
   mount(PCalendar, {
     props,
     global: {
-      stubs: { PCalendarDateCell }
-    }
+      stubs: { PCalendarDateCell },
+    },
   })
 
 describe('calendar', () => {

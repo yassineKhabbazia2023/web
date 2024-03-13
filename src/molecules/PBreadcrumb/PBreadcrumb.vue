@@ -29,7 +29,7 @@ import type { PBreadcrumbProps } from './PBreadcrumbTypes'
 const props = defineProps<PBreadcrumbProps>()
 const emit = defineEmits([
   'p-breadcrumb-item-click',
-  'folder-creation-initiated'
+  'folder-creation-initiated',
 ])
 
 const items = computed(() => {
@@ -37,7 +37,7 @@ const items = computed(() => {
     return [
       ...props.pElements.slice(0, 3),
       { pId: -1, pText: '...' },
-      ...props.pElements.slice(-3)
+      ...props.pElements.slice(-3),
     ]
   } else {
     return props.pElements

@@ -1,14 +1,15 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElContainer } from 'element-plus'
 import PContainer from '.'
 import type { PContainerProps } from './PContainerTypes'
 
 const propsValue: PContainerProps = {
-  pDirection: 'horizontal'
+  pDirection: 'horizontal',
 }
 const createWrapper = () => mount(PContainer, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pContainer', () => {

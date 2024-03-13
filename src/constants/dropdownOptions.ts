@@ -1,25 +1,25 @@
 export const selectOptions = [
   {
     value: 'Option1',
-    label: 'Option1'
+    label: 'Option1',
   },
   {
     value: 'Option2',
     label: 'Option2',
-    disabled: true
+    disabled: true,
   },
   {
     value: 'Option3',
-    label: 'Option3'
+    label: 'Option3',
   },
   {
     value: 'Option4',
-    label: 'Option4'
+    label: 'Option4',
   },
   {
     value: 'Option5',
-    label: 'Option5'
-  }
+    label: 'Option5',
+  },
 ]
 
 export const groupOptions = [
@@ -28,35 +28,35 @@ export const groupOptions = [
     options: [
       {
         value: 'Shanghai',
-        label: 'Shanghai'
+        label: 'Shanghai',
       },
       {
         value: 'Beijing',
-        label: 'Beijing'
-      }
-    ]
+        label: 'Beijing',
+      },
+    ],
   },
   {
     label: 'City name',
     options: [
       {
         value: 'Chengdu',
-        label: 'Chengdu'
+        label: 'Chengdu',
       },
       {
         value: 'Shenzhen',
-        label: 'Shenzhen'
+        label: 'Shenzhen',
       },
       {
         value: 'Guangzhou',
-        label: 'Guangzhou'
+        label: 'Guangzhou',
       },
       {
         value: 'Dalian',
-        label: 'Dalian'
-      }
-    ]
-  }
+        label: 'Dalian',
+      },
+    ],
+  },
 ]
 
 export const templateSourceGroup = `

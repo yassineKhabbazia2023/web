@@ -12,10 +12,10 @@ vi.mock('@vueuse/core', () => {
       return {
         copy,
         source: {
-          value
-        }
+          value,
+        },
       }
-    })
+    }),
   }
 })
 

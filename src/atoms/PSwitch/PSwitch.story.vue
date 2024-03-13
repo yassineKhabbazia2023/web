@@ -32,7 +32,7 @@ const alwaysOff = ref(false)
 
 const withText = reactive({
   state: true,
-  label: 'label'
+  label: 'label',
 })
 </script>
 

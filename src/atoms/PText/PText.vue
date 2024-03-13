@@ -22,11 +22,11 @@ const props = withDefaults(defineProps<PTextProps>(), {
   pIcon: undefined,
   pBold: false,
   selected: false,
-  disabled: false
+  disabled: false,
 })
 
 const pClassMapper = computed(() => ({
-  [`p-text--type-${props.pType}`]: true
+  [`p-text--type-${props.pType}`]: true,
 }))
 </script>
 

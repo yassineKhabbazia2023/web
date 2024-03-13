@@ -35,13 +35,13 @@ const props = withDefaults(defineProps<PAvatarProps>(), {
   pColor: 'persian-gradient',
   pSrc: '',
   pShape: 'circle',
-  pSelected: false
+  pSelected: false,
 })
 
 const pClassMapper = computed(() => ({
   [`p-avatar--color-${props.pColor}`]: true,
   [`p-avatar--type-${props.pType}`]: true,
-  'p-avatar--selected': props.pSelected && props.pType === 'small'
+  'p-avatar--selected': props.pSelected && props.pType === 'small',
 }))
 
 </script>

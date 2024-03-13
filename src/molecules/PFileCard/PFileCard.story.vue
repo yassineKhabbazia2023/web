@@ -61,7 +61,7 @@ const defaultState = reactive({
   pFormat: 'PDF',
   pSize: '25KB',
   pHasIcon: true,
-  pHasButton: true
+  pHasButton: true,
 })
 </script>
 

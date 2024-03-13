@@ -14,11 +14,11 @@ const treeData = [
         children: [
           {
             label: 'Level three 1-1-1',
-            customData: 'Something'
-          }
-        ]
-      }
-    ]
+            customData: 'Something',
+          },
+        ],
+      },
+    ],
   },
   {
     label: 'Level one 2',
@@ -26,10 +26,10 @@ const treeData = [
     children: [
       {
         label: 'Level two 2-1',
-        customData: 'Something'
-      }
-    ]
-  }
+        customData: 'Something',
+      },
+    ],
+  },
 ]
 
 const customNodeSlot = `
@@ -44,21 +44,21 @@ const baseProps: PTreeProps = {
   pData: treeData,
   pDataKeys: { label: 'label', children: 'children' },
   pHasCustomNodes: false,
-  pNodeKey: 'label'
+  pNodeKey: 'label',
 }
 
 const createWrapper = mount(PTree, {
-  props: baseProps
+  props: baseProps,
 })
 
 const createWrapperWithScopedSlot = mount(PTree, {
   props: {
     ...baseProps,
-    pHasCustomNodes: true
+    pHasCustomNodes: true,
   },
   slots: {
-    default: customNodeSlot
-  }
+    default: customNodeSlot,
+  },
 })
 describe('pTree', () => {
   describe('props', () => {

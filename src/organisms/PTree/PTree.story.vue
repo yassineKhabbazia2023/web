@@ -53,26 +53,26 @@ const toolboxItems: PToolboxItemProps[] = [
     pIconName: 'PITrash',
     pValue: 'Delete',
     pActionName: 'delete',
-    pState: 'danger'
+    pState: 'danger',
   },
   {
     pIconName: 'PIAdd',
     pValue: 'Add',
     pActionName: 'add',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIVectorPen',
     pValue: 'Rename',
     pActionName: 'rename',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PISend',
     pValue: 'Transmit',
     pActionName: 'transmit',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 export interface Tree {
   id: number
@@ -86,7 +86,7 @@ const handlePTreeNodeClicked = (node: any) => {
 }
 const dataKeys = {
   label: 'label',
-  children: 'children'
+  children: 'children',
 }
 
 const dataSource: Tree[] = [
@@ -101,11 +101,11 @@ const dataSource: Tree[] = [
         children: [
           {
             id: 3,
-            label: 'Level three 1-1-1'
-          }
-        ]
-      }
-    ]
+            label: 'Level three 1-1-1',
+          },
+        ],
+      },
+    ],
   },
   {
     id: 4,
@@ -117,9 +117,9 @@ const dataSource: Tree[] = [
         children: [
           {
             id: 6,
-            label: 'Level three 2-1-1'
-          }
-        ]
+            label: 'Level three 2-1-1',
+          },
+        ],
       },
       {
         id: 7,
@@ -127,11 +127,11 @@ const dataSource: Tree[] = [
         children: [
           {
             id: 8,
-            label: 'Level three 2-2-1'
-          }
-        ]
-      }
-    ]
+            label: 'Level three 2-2-1',
+          },
+        ],
+      },
+    ],
   },
   {
     id: 9,
@@ -143,9 +143,9 @@ const dataSource: Tree[] = [
         children: [
           {
             id: 11,
-            label: 'Level three 3-1-1'
-          }
-        ]
+            label: 'Level three 3-1-1',
+          },
+        ],
       },
       {
         id: 12,
@@ -153,12 +153,12 @@ const dataSource: Tree[] = [
         children: [
           {
             id: 13,
-            label: 'Level three 3-2-1'
-          }
-        ]
-      }
-    ]
-  }
+            label: 'Level three 3-2-1',
+          },
+        ],
+      },
+    ],
+  },
 ]
 </script>
 

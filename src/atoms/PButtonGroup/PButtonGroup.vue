@@ -12,7 +12,7 @@ import { type PButtonGroupProps, injectionButtonKey } from './PButtonGroupTypes'
 
 const props = withDefaults(defineProps<PButtonGroupProps>(), {
   pType: 'default',
-  pSize: 'default'
+  pSize: 'default',
 })
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']
@@ -27,6 +27,6 @@ const computedType = computed(() =>
 
 provide(
   injectionButtonKey,
-  props
+  props,
 )
 </script>

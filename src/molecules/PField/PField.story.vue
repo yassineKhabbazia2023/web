@@ -97,12 +97,12 @@ import { logEvent } from 'histoire/client'
 import type {
   PFieldPropsInput,
   PFieldPropsDropdown,
-  PFieldPropsDate
+  PFieldPropsDate,
 } from './PFieldTypes'
 import {
   getMockedInputField,
   getDropdownField,
-  getDateField
+  getDateField,
 } from './PFieldMock'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
@@ -113,30 +113,30 @@ const NumberField = PField<number | undefined>
 const DateField = PField<string>
 
 const pControlStringInput = reactive<PFieldPropsInput<string>>(
-  getMockedInputField('firstname', 'Prénom', 'John', 50)
+  getMockedInputField('firstname', 'Prénom', 'John', 50),
 )
 
 const mockedDropdownOptions: PDropdownOption[] = [
   {
     pValue: 1,
-    pLabel: '1 à 9'
+    pLabel: '1 à 9',
   },
   {
     pValue: 10,
-    pLabel: '10 à 49'
+    pLabel: '10 à 49',
   },
   {
     pValue: 50,
-    pLabel: '50 et plus'
-  }
+    pLabel: '50 et plus',
+  },
 ]
 
 const pControlNumberSelect = reactive<PFieldPropsDropdown<number | undefined>>(
-  getDropdownField('range', 'Tranches', 50, mockedDropdownOptions)
+  getDropdownField('range', 'Tranches', 50, mockedDropdownOptions),
 )
 
 const pControlDate = reactive<PFieldPropsDate<string>>(
-  getDateField('creationDate', 'Date de création', '13/12/2014', 50)
+  getDateField('creationDate', 'Date de création', '13/12/2014', 50),
 )
 </script>
 

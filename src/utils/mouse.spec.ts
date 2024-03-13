@@ -9,10 +9,10 @@ vi.mock('@vueuse/core', () => {
       return {
         copy,
         source: {
-          value
-        }
+          value,
+        },
       }
-    })
+    }),
   }
 })
 
@@ -20,7 +20,6 @@ const dummyFunction = vi.fn()
 const fooBarFunction = vi.fn()
 
 const clickMe = () => {
-
   const onSingleClick = () => {
     dummyFunction()
   }
@@ -38,7 +37,7 @@ describe('mouse simple and double click', () => {
   afterEach(() => {
     vi.restoreAllMocks()
   })
-  it('should manage simple click', async () => {
+  it('should manage simple click', () => {
     clickMe()
     vi.runAllTimers()
     expect(dummyFunction).toHaveBeenCalledWith()

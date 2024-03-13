@@ -27,13 +27,13 @@ import type { PBottomMenuProps } from './PBottomMenuTypes'
 
 const props = withDefaults(defineProps<PBottomMenuProps>(), {
   pHideOnDesktop: true,
-  pUseRouter: true
+  pUseRouter: true,
 })
 
 const itemsMapped = props.pItems.map(({ pName, pPath, pIcon }) => ({
   name: pName,
   index: pPath,
-  icon: pIcon
+  icon: pIcon,
 }))
 
 const createIcon = (name: string) =>

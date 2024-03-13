@@ -64,7 +64,7 @@ import type { FormInstance } from 'element-plus'
 
 const formRef = ref<FormInstance>()
 const formValues = reactive({
-  radioValue: undefined
+  radioValue: undefined,
 })
 
 const DEFAULT_TITLE = 'Direction et administration générale'
@@ -73,11 +73,11 @@ const pRadioCard1 = reactive({
   label: 'value1',
   title: DEFAULT_TITLE,
   description: `Sed ut perspiciatis unde omnis iste natus error sit
-    voluptatem accusantium doloremque laudantium, totam rem aperiam.`
+    voluptatem accusantium doloremque laudantium, totam rem aperiam.`,
 })
 const pRadioCard2 = reactive({
   label: 'value2',
-  title: DEFAULT_TITLE
+  title: DEFAULT_TITLE,
 })
 </script>
 

@@ -10,6 +10,6 @@ export interface PDropdownProps extends PSelectProps {
 }
 
 export interface DropdownGroup {
-  label: string,
+  label: string
   options: PDropdownOption[]
 }

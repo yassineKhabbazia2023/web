@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PFormItem from '.'
 import type { PFormItemProps } from './PFormItemTypes'
@@ -14,10 +15,10 @@ const propsValue: PFormItemProps = {
   pInlineMessage: 'inline message',
   pSize: 'small',
   pFor: 'for',
-  pValidateStatus: 'error'
+  pValidateStatus: 'error',
 }
 const createWrapper = () => mount(PFormItem, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pFormItem', () => {
@@ -36,7 +37,7 @@ describe('pFormItem', () => {
       inlineMessage: propsValue.pInlineMessage,
       size: propsValue.pSize,
       for: propsValue.pFor,
-      validateStatus: propsValue.pValidateStatus
+      validateStatus: propsValue.pValidateStatus,
     }
 
     expect(component.props()).toMatchObject(expectedProps)

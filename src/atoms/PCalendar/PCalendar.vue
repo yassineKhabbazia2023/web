@@ -29,7 +29,7 @@ import type { PCalendarProps, CalendarItemsGroupedByDate } from './PCalendarType
 import PCalendarDateCell from '@/atoms/PCalendarDateCell'
 
 const props = withDefaults(defineProps<PCalendarProps>(), {
-  pInitialDate: () => new Date()
+  pInitialDate: () => new Date(),
 })
 
 const emit = defineEmits<{

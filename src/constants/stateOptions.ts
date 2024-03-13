@@ -1,24 +1,24 @@
 export const stateOptions = [
   {
     label: 'process',
-    value: 'process'
+    value: 'process',
   },
   {
     label: 'wait',
-    value: 'wait'
+    value: 'wait',
   },
   {
     label: 'finish',
-    value: 'finish'
+    value: 'finish',
   },
   {
     label: 'error',
-    value: 'error'
+    value: 'error',
   },
   {
     label: 'success',
-    value: 'success'
-  }
+    value: 'success',
+  },
 ]
 
 export default stateOptions

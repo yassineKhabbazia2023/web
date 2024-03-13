@@ -34,12 +34,12 @@ import PImage from '@/atoms/PImage'
 import type { PBlockHeaderProps } from './PBlockHeaderTypes'
 
 const props = withDefaults(defineProps<PBlockHeaderProps>(), {
-  pSize: 'default'
+  pSize: 'default',
 })
 
 const pClassMapper = computed(() => ({
   [`p-block-header--color-${props.pColor}`]: true,
-  [`p-block-header--size-${props.pSize}`]: true
+  [`p-block-header--size-${props.pSize}`]: true,
 }))
 </script>
 

@@ -14,7 +14,7 @@ export const en = enLocale
 
 export {
   ElNotification as PNotification,
-  ElRadioGroup as PRadioGroup
+  ElRadioGroup as PRadioGroup,
 } from 'element-plus'
 
 export { setAssetsBaseUrl } from './utils/imageResolver'

@@ -8,7 +8,7 @@ describe('pTable', () => {
   // Define a sample data for testing
   const testData = [
     { id: 1, name: 'John Doe', age: 30 },
-    { id: 2, name: 'Jane Smith', age: 25 }
+    { id: 2, name: 'Jane Smith', age: 25 },
     // Add more test data if needed
   ]
 
@@ -16,12 +16,12 @@ describe('pTable', () => {
     const wrapper = mount(PTable, {
       global: {
         components: {
-          ElTable
-        }
+          ElTable,
+        },
       },
       props: {
-        pData: testData
-      }
+        pData: testData,
+      },
     })
 
     // Check if the table renders correctly
@@ -38,14 +38,14 @@ describe('pTable', () => {
     const wrapper = mount(PTable, {
       global: {
         components: {
-          ElTable
-        }
+          ElTable,
+        },
       },
       props: {
         pData: testData,
         pStripe: true,
-        pFit: true
-      }
+        pFit: true,
+      },
     })
 
     // Check if the stripe class is applied to the table

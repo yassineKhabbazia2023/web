@@ -69,7 +69,7 @@ import type { PDrawerProps } from './PDrawerTypes'
 const emit = defineEmits([
   'drawer-previous-button-click',
   'update:modelValue',
-  'close-drawer-button'
+  'close-drawer-button',
 ])
 
 const slots = useSlots()
@@ -79,7 +79,7 @@ const props = withDefaults(defineProps<PDrawerProps>(), {
   pShowPreviousStep: false,
   pSize: '33%',
   pShowClose: false,
-  modalClass: ''
+  modalClass: '',
 })
 
 const drawerModel = computed({
@@ -88,10 +88,10 @@ const drawerModel = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const pModalClass = computed(() =>
-  props.pDirection === 'ttb' ? 'p-drawer--fullscreen' : ''
+  props.pDirection === 'ttb' ? 'p-drawer--fullscreen' : '',
 )
 </script>

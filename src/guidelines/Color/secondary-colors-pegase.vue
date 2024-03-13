@@ -37,7 +37,7 @@ const colorsType = [
   'secondary-amethyste-bg',
   'secondary-cyan',
   'secondary-cyan-txt',
-  'secondary-cyan-bg'
+  'secondary-cyan-bg',
 ]
 
 const { copyColor } = useCopyColor()

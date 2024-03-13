@@ -32,7 +32,7 @@ const firstProps = reactive({
   folderName: 'Name of folder',
   folderId: 3116446,
   pHasArrow: true,
-  pLeftIcon: 'PIFolder'
+  pLeftIcon: 'PIFolder',
 })
 </script>
 

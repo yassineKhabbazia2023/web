@@ -31,8 +31,8 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
+      pSize: 'small',
+    },
   },
   {
     pButtonName: 'Filtrer',
@@ -45,8 +45,8 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
+      pSize: 'small',
+    },
   },
   {
     pButtonName: '',
@@ -60,9 +60,9 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
       pCircle: true,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
-  }
+      pSize: 'small',
+    },
+  },
 ])
 
 const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
@@ -77,8 +77,8 @@ const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
+      pSize: 'small',
+    },
   },
   {
     pButtonName: 'Envoi immédiat',
@@ -91,8 +91,8 @@ const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
+      pSize: 'small',
+    },
   },
   {
     pButtonName: 'Filtrer',
@@ -105,8 +105,8 @@ const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
+      pSize: 'small',
+    },
   },
   {
     pButtonName: 'Télécharger',
@@ -119,8 +119,8 @@ const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
+      pSize: 'small',
+    },
   },
   {
     pButtonName: 'Supprimer',
@@ -133,8 +133,8 @@ const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
+      pSize: 'small',
+    },
   },
   {
     pButtonName: 'Consulter',
@@ -147,9 +147,9 @@ const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
       pCircle: false,
       pLoading: false,
       pDisabled: false,
-      pSize: 'small'
-    }
-  }
+      pSize: 'small',
+    },
+  },
 ])
 const pRightSideIcons = reactive<ComponentDefinitionProps[]>([])
 </script>

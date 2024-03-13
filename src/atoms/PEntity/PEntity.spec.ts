@@ -11,10 +11,10 @@ describe('tests for p-entity', () => {
     const props: PEntityProps = {
       pContent: content,
       pType: 'primary',
-      pSelected: false
+      pSelected: false,
     }
     const wrapper = mount(PEntity, {
-      props
+      props,
     })
 
     // Check if the cell renders correctly
@@ -33,10 +33,10 @@ describe('tests for p-entity', () => {
       pType: 'primary',
       pIconShape: 'circle',
       pIconColor: 'persian-gradient',
-      pSelected: false
+      pSelected: false,
     }
     const wrapper = mount(PEntity, {
-      props
+      props,
     })
 
     // Check if the table renders correctly

@@ -10,12 +10,12 @@ const defaultProps: PFilterOptionProps = {
   pIcon: PIArrowUpCircle,
   pSelected: false,
   pDisabled: false,
-  pNumber: 0
+  pNumber: 0,
 }
 
 const createWrapper = (props: any = defaultProps) =>
   mount(PFilterOption, {
-    props
+    props,
   })
 
 describe('filterOption', () => {
@@ -32,10 +32,10 @@ describe('filterOption', () => {
     expect(filterOption.exists()).toBeTruthy()
   })
 
-  it('should have a disabled class when the pDisabled is true and pcolor change', async () => {
+  it('should have a disabled class when the pDisabled is true and pcolor change', () => {
     const wrapper = createWrapper({
       ...defaultProps,
-      pDisabled: true
+      pDisabled: true,
     })
     const filterOption = wrapper.findComponent('.p-filter-option--disabled')
     const tag = wrapper.find('.p-filter-option__tag')
@@ -52,7 +52,7 @@ describe('filterOption', () => {
   it('should emit event close when the component is already selected', () => {
     const wrapper = createWrapper({
       ...defaultProps,
-      pSelected: true
+      pSelected: true,
     })
     wrapper.trigger('click')
     expect(wrapper.emitted('close')).toBeTruthy()

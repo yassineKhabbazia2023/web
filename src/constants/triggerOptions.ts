@@ -5,7 +5,7 @@ const triggerOptions = [
   'hover',
   'contextmenu',
   'click',
-  'focus'
+  'focus',
 ] as const
 
 export default triggerOptions

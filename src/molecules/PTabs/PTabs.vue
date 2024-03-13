@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<PTabsProps>(), {
   pEditable: false,
   pTabPosition: 'top',
   pStretch: false,
-  pBeforeLeave: undefined
+  pBeforeLeave: undefined,
 })
 const emit = defineEmits<{
   'update:modelValue': [string | number]
@@ -42,16 +42,16 @@ const tab = computed(() => getTabType(props.pType))
 const getTabType = (tabType: any) => (
   {
     tabType,
-    type: nativeTypes.includes(tabType) ? tabType : ''
+    type: nativeTypes.includes(tabType) ? tabType : '',
   })
 
 const selectedTabName = computed({
   get: () => props.modelValue,
-  set: newValue => emit('update:modelValue', newValue)
+  set: newValue => emit('update:modelValue', newValue),
 })
 
 const pClassMapper = computed(() => ({
-  [`p-tabs--type-${props.pType}`]: true
+  [`p-tabs--type-${props.pType}`]: true,
 }))
 
 </script>

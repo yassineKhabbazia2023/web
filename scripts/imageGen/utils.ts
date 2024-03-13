@@ -8,7 +8,7 @@ export async function writeCompressedImages(
   svgoConfig: Config,
   folders: Folder[],
   originPath: string,
-  targetPath: string
+  targetPath: string,
 ) {
   const promises = folders.flatMap(folder => {
     const originFolderPath = path.join(originPath, folder.name)
@@ -18,7 +18,7 @@ export async function writeCompressedImages(
       mkdirSync(targetFolderPath)
     }
     const promises = folder.images.map((image) =>
-      writeCompressedImage(svgoConfig, originFolderPath, targetFolderPath, image)
+      writeCompressedImage(svgoConfig, originFolderPath, targetFolderPath, image),
     )
 
     return promises
@@ -28,7 +28,7 @@ export async function writeCompressedImages(
 
 export async function compressImages(
   originPath: string,
-  targetPath: string
+  targetPath: string,
 ) {
   const svgoConfig = getSvgoConfig(false)
   const folders = getFolders(originPath)

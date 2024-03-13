@@ -109,7 +109,7 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
   pPlacement: 'bottom-start',
   pMaxCollapseTags: 1,
   pPopperOptions: () => ({}),
-  pAriaLabel: undefined
+  pAriaLabel: undefined,
 })
 
 const groups = computed(() => getDropdownGroups(props.pOptions))

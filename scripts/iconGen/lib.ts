@@ -29,7 +29,7 @@ export function getPathIcons(fileName: string, folder: string, category: string)
       componentName,
       fileName,
       filePath,
-      category
+      category,
     }
     return [icon]
   }
@@ -48,14 +48,14 @@ export async function generateComponent(
   componentName: string,
   filePath: string,
   outputPath: string,
-  svgoConfig: Config
+  svgoConfig: Config,
 ) {
   const originalSvg = readFileSync(filePath, 'utf-8')
   const optimized = await optimize(originalSvg, svgoConfig)
   const { data: optimizedSvg } = optimized
 
   const {
-    viewBox, pathData, componentCode
+    viewBox, pathData, componentCode,
   } = getComponentInfo(filePath, originalSvg, optimizedSvg)
   if (viewBox && pathData) {
     if (!existsSync(outputPath)) {
@@ -79,13 +79,13 @@ export function getComponentInfo(iconPath: string, svgCode: string, optimizedSvg
   const componentCode = `
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <template>
- ${content}
+  ${content}
 </template>
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <script lang="ts">
 import type { DefineComponent } from 'vue'
 export default ({
-  name: '${componentName}'
+  name: '${componentName}',
 }) as DefineComponent
 </script>
 `
@@ -94,7 +94,7 @@ export default ({
     viewBox,
     pathData,
     componentName,
-    componentCode
+    componentCode,
   }
 }
 

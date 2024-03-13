@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import PDropdown from '.'
 import type { PDropdownProps, PDropdownOption } from './PDropdownTypes'
@@ -44,7 +45,7 @@ function getPropsValue(pOptions: PDropdownOption[]) {
     pPlacement: 'bottom-start',
     pMaxCollapseTags: 1,
     pPopperOptions: {},
-    pAriaLabel: 'ariaLabel'
+    pAriaLabel: 'ariaLabel',
   }
 
   return propsValue
@@ -112,7 +113,7 @@ describe('test PDropdown', () => {
         placement: propsValue.pPlacement,
         maxCollapseTags: propsValue.pMaxCollapseTags,
         popperOptions: propsValue.pPopperOptions,
-        ariaLabel: propsValue.pAriaLabel
+        ariaLabel: propsValue.pAriaLabel,
       }
       expect(component.props()).toMatchObject(expectedProps)
 

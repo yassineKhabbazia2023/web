@@ -67,7 +67,7 @@ const NUMBER_OF_CELL_ELEMENTS_BY_BREAKPOINT = {
   lg: 4,
   md: 3,
   sm: 3,
-  xs: 2
+  xs: 2,
 }
 
 const dayNumber = computed(() => dayjs(props.pCellDate).date())
@@ -96,7 +96,7 @@ const numberOfCellElementsToDisplay = computed(() =>
   NUMBER_OF_CELL_ELEMENTS_BY_BREAKPOINT[getCurrentBreakpoint(width.value)])
 
 const slicedCellElements = computed(() =>
-  props.pCellElements.slice(0, numberOfCellElementsToDisplay.value)
+  props.pCellElements.slice(0, numberOfCellElementsToDisplay.value),
 )
 
 const shouldChevronExists = computed(() =>

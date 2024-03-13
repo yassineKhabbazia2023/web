@@ -3,7 +3,7 @@
     title="2. Atoms/Entity"
     icon="fluent:button-16-regular"
     :layout="{ type: 'grid', width: '300px' }"
-    >
+  >
     <Variant title="Basic Usage">
       <PEntity
         :pContent="PTextBasicData.pContent"
@@ -35,7 +35,7 @@ const type = 'primary' as 'primary' | 'secondary'
 const PTextBasicData = reactive({
   pContent: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
   type,
-  selected: false
+  selected: false,
 })
 
 const typeOptions = ['primary', 'secondary']

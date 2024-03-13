@@ -27,7 +27,7 @@ const treeLineIcon = iconResolver('PICaretRightFill')
 withDefaults(defineProps<PTreeProps>(), {
   pCurrentNodeKey: undefined,
   pHasCustomNodes: false,
-  pDefaultExpandedKeys: () => []
+  pDefaultExpandedKeys: () => [],
 })
 const emit = defineEmits(['p-tree-node-clicked'])
 

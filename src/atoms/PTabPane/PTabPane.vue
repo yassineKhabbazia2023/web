@@ -5,7 +5,7 @@
     :name="pName"
     :closable="pClosable"
     :lazy="pLazy"
-    >
+  >
     <slot />
 
     <template v-if="!!slots['label'] || pTabIcon" #label>
@@ -47,6 +47,6 @@ withDefaults(defineProps<PTabPaneProps>(), {
   pDisabled: false,
   pName: undefined,
   pClosable: false,
-  pLazy: false
+  pLazy: false,
 })
 </script>

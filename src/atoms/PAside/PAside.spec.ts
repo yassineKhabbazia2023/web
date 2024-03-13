@@ -1,16 +1,17 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PAside from '.'
 import { ElAside } from 'element-plus'
 
 const propsValue = {
-  pWidth: '200px'
+  pWidth: '200px',
 }
 const createWrapper = () => mount(PAside, {
   props: propsValue,
   slots: {
-    default: 'aside'
-  }
+    default: 'aside',
+  },
 })
 
 describe('pAside', () => {

@@ -35,12 +35,12 @@ import {
   ElOption as POption,
   ElOptionGroup as POptionGroup,
   ElPagination,
-  ElSelect as PSelect
+  ElSelect as PSelect,
 } from 'element-plus'
 import type { PaginationProps } from './PPaginationTypes'
 
 const props = withDefaults(defineProps<PaginationProps>(), {
-  pBackground: false
+  pBackground: false,
 })
 const emit = defineEmits(['on-page-range-changed', 'update:pCurrentPage', 'update:pPageSize'])
 
@@ -50,7 +50,7 @@ const currentPage = computed({
   },
   set(value) {
     emit('update:pCurrentPage', value)
-  }
+  },
 })
 
 const modelPageSize = computed({
@@ -59,13 +59,13 @@ const modelPageSize = computed({
   },
   set(value) {
     emit('update:pPageSize', value)
-  }
+  },
 })
 
 const selectedRange = ref(props.pPageSizes ? props.pPageSizes?.at(0) : '')
 
 const getpageSizeSelectorContent = (pageSize: number) => {
-  return pageSize + ' ' + props.pPageSizeSelectorSuffix
+  return `${pageSize} ${props.pPageSizeSelectorSuffix}`
 }
 
 watch(selectedRange, () => {

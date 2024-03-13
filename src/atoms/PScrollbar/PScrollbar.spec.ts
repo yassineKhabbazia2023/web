@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PScrollbar from '.'
 import type { PScrollbarProps } from './PScrollbarTypes'
@@ -18,10 +19,10 @@ const propsValue: PScrollbarProps = {
   pId: 'id',
   pRole: 'role',
   pAriaLabel: 'ariaLabel',
-  pAriaOrientation: 'horizontal'
+  pAriaOrientation: 'horizontal',
 }
 const createWrapper = () => mount(PScrollbar, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pScrollbar', () => {
@@ -44,7 +45,7 @@ describe('pScrollbar', () => {
       id: propsValue.pId,
       role: propsValue.pRole,
       ariaLabel: propsValue.pAriaLabel,
-      ariaOrientation: propsValue.pAriaOrientation
+      ariaOrientation: propsValue.pAriaOrientation,
     }
     expect(component.props()).toMatchObject(expectedProps)
   })

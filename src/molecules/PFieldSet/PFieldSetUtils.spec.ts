@@ -7,13 +7,13 @@ describe('pFieldSetUtils', () => {
     const model = {
       person: {
         lastname: 'Lennon',
-        firstname: 'John'
-      }
+        firstname: 'John',
+      },
     }
     const tests = [{
-      pReadonly: false
+      pReadonly: false,
     }, {
-      pReadonly: true
+      pReadonly: true,
     }]
     it.each(tests)('should return mapped fields', ({ pReadonly }) => {
       const fields = getMockedFields('companyIdentification', pReadonly)

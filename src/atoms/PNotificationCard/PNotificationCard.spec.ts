@@ -5,12 +5,12 @@ import PNotificationCard from '.'
 const timeText = '1sem'
 
 const defaultProps = {
-  pTime: timeText
+  pTime: timeText,
 }
 
 const createWrapper = (props: any = defaultProps) =>
   mount(PNotificationCard, {
-    props
+    props,
   })
 
 describe('pNotificationCard', () => {
@@ -19,23 +19,23 @@ describe('pNotificationCard', () => {
       {
         isNew: true,
         shouldHaveNewClass: true,
-        text: 'have'
+        text: 'have',
       },
       {
         isNew: false,
         shouldHaveNewClass: false,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])('should $text new class when isNew is $isNew',
       ({ isNew, text, shouldHaveNewClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pIsNew: isNew
+          pIsNew: isNew,
         })
         expect(text).toBe(text)
         const hasNewClass = wrapper.find('.p-notification-card--new').exists()
         expect(hasNewClass).toBe(shouldHaveNewClass)
-      }
+      },
     )
 
     it('should render the text values of the component', () => {

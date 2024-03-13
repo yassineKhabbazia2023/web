@@ -15,7 +15,7 @@ import type { PTooltipProps } from './PTooltipTypes'
 
 withDefaults(defineProps<PTooltipProps>(), {
   disabled: false,
-  pPlacement: 'top'
+  pPlacement: 'top',
 })
 </script>
 

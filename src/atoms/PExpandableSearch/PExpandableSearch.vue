@@ -38,7 +38,7 @@ import PButton from '@/atoms/PButton'
 import PInput from '@/atoms/PInput'
 
 const props = withDefaults(defineProps<PExpandableSearchProps>(), {
-  pIsSearchOpen: false
+  pIsSearchOpen: false,
 })
 
 const emit = defineEmits<{
@@ -80,7 +80,7 @@ watch(
 
     isSearchOpen.value = value
     emit('search-expand-change', value)
-  }
+  },
 )
 </script>
 

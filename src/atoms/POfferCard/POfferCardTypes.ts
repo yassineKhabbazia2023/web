@@ -1,6 +1,6 @@
 export interface POfferCardProps {
-  pLogo: string,
-  pTitle: string,
-  pDescription: string,
-  disabled?: boolean,
+  pLogo: string
+  pTitle: string
+  pDescription: string
+  disabled?: boolean
 }

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { ElMenuItem } from 'element-plus'
 import type { PMenuItemProps } from './PMenuItemTypes'
@@ -9,24 +10,24 @@ import PMenu from '../PMenu'
 const testMenuItemProps = {
   index: '1-1',
   route: { path: '/item1' },
-  disabled: false
+  disabled: false,
 }
 
 const defaultItems: PMenuItemProps[] = [
   {
     pIndex: testMenuItemProps.index,
     pRoute: testMenuItemProps.route,
-    pDisabled: testMenuItemProps.disabled
+    pDisabled: testMenuItemProps.disabled,
   },
   {
     pIndex: '1-2',
-    pRoute: { path: '/item2' }
+    pRoute: { path: '/item2' },
   },
   {
     pIndex: '1-3',
     pRoute: { path: '/item3' },
-    pDisabled: true
-  }
+    pDisabled: true,
+  },
 ]
 
 const createWrapper = (items: PMenuItemProps[] = defaultItems): VueWrapper => {
@@ -51,18 +52,18 @@ const createWrapper = (items: PMenuItemProps[] = defaultItems): VueWrapper => {
     `,
     data() {
       return {
-        items
+        items,
       }
-    }
+    },
   }
 
   return mount(Component, {
     global: {
       components: {
         PMenu,
-        PMenuItem
-      }
-    }
+        PMenuItem,
+      },
+    },
   })
 }
 

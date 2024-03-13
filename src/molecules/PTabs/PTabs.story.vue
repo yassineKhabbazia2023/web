@@ -124,7 +124,7 @@ const firstActiveVariant = ref('1')
 const secondActiveVariant = ref('1')
 const basicData = reactive({
   activeName: '1',
-  stretch: false
+  stretch: false,
 })
 
 const tabs = ref([
@@ -135,8 +135,8 @@ const tabs = ref([
     pTooltip: {
       pPlacement: 'bottom',
       pContent: 'this is a tooltip',
-      disabled: false
-    } as PTooltipProps
+      disabled: false,
+    } as PTooltipProps,
   },
   {
     label: 'Tab 2',
@@ -145,8 +145,8 @@ const tabs = ref([
     pTooltip: {
       pPlacement: 'bottom',
       pContent: 'this is a tooltip',
-      disabled: false
-    } as PTooltipProps
+      disabled: false,
+    } as PTooltipProps,
   },
   {
     label: 'Tab 3',
@@ -155,9 +155,9 @@ const tabs = ref([
     pTooltip: {
       pPlacement: 'bottom',
       pContent: 'this is a tooltip',
-      disabled: false
-    } as PTooltipProps
-  }
+      disabled: false,
+    } as PTooltipProps,
+  },
 ])
 
 </script>

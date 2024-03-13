@@ -13,8 +13,8 @@ describe('initHistoirePlugin', () => {
     setCachedAssetsBaseUrl('')
     axiosGetSpy = vi.spyOn(axios, 'get').mockResolvedValue({
       data: {
-        VITE_ASSETS_BASE_URL
-      }
+        VITE_ASSETS_BASE_URL,
+      },
     })
   })
 
@@ -47,7 +47,7 @@ describe('initHistoirePlugin', () => {
       const defaultUrl = 'https://default.tld'
       const url = await getCachedAssetsBaseUrl({
         SSR: true,
-        VITE_ASSETS_BASE_URL: defaultUrl
+        VITE_ASSETS_BASE_URL: defaultUrl,
       })
 
       expect(url).toBe(defaultUrl)

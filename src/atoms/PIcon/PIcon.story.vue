@@ -7,9 +7,9 @@
       iframe: false,
     }">
     <Variant>
-    <div
-      v-for="(group, indexGroup) in iconsData"
-      :key="indexGroup">
+      <div
+        v-for="(group, indexGroup) in iconsData"
+        :key="indexGroup">
         <h1>{{  group.category }}</h1>
         <ul
           class="demo-icon-list"
@@ -44,7 +44,7 @@ onBeforeMount(() => {
     return {
       name: `${component.name}`,
       category: component.category,
-      component: defineAsyncComponent(() => import(`./components/${component.name}.vue`))
+      component: defineAsyncComponent(() => import(`./components/${component.name}.vue`)),
     }
   }).reduce((groups, item) => {
     let group = groups.find((g: any) => g.category === item.category)
@@ -52,7 +52,7 @@ onBeforeMount(() => {
     if (!group) {
       group = {
         category: item.category,
-        icons: []
+        icons: [],
       }
       groups.push(group)
     }
@@ -62,7 +62,6 @@ onBeforeMount(() => {
 })
 
 const copyClipboard = (icon: any) => {
-
   const onSingleClick = () => {
     useCopyClipboard(icon.name)
   }

@@ -6,7 +6,7 @@ import { clearFolder, getSvgoConfig } from './utils'
 vi.mock('fs', () => ({
   mkdirSync: vi.fn(),
   existsSync: vi.fn().mockReturnValue(true),
-  rmSync: vi.fn()
+  rmSync: vi.fn(),
 }))
 
 describe('scripts/common/utils', () => {
@@ -25,7 +25,7 @@ describe('scripts/common/utils', () => {
       clearFolder(folderPath)
       const options = {
         force: true,
-        recursive: true
+        recursive: true,
       }
       expect(mockedRmSync).toHaveBeenNthCalledWith(1, folderPath, options)
     })

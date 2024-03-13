@@ -17,8 +17,8 @@ describe('test for PButton', () => {
         pDisabled: true,
         pLoading: true,
         pSize: 'small',
-        pIconOnly: true
-      }
+        pIconOnly: true,
+      },
     })
 
     const PButtonElement = wrapper.findComponent({ name: 'PButton' })

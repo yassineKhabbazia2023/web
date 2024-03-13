@@ -10,15 +10,15 @@ const defaultProps: PDocumentDisplayProps = {
   pIsLoading: false,
   pSrc: 'your-image-url.jpg',
   errorMsgText: '',
-  errorMsgTitle: ''
+  errorMsgTitle: '',
 }
 
 const createWrapper = (props: Partial<PDocumentDisplayProps> = {}) =>
   mount(PDocumentDisplay, {
     props: {
       ...defaultProps,
-      ...props
-    }
+      ...props,
+    },
   })
 
 describe('pDocumentDisplay', () => {
@@ -31,7 +31,7 @@ describe('pDocumentDisplay', () => {
   it('renders a "not allowed" preview if the document is not allowed for preview and not loading', () => {
     const wrapper = createWrapper({
       pDocumentExtension: 'txt',
-      pSrc: 'your-document-url.txt'
+      pSrc: 'your-document-url.txt',
     })
 
     expect(wrapper.find('.preview-section_notAllowed').exists()).toBeTruthy()
@@ -43,7 +43,7 @@ describe('pDocumentDisplay', () => {
     const wrapper = createWrapper({
       pDocumentExtension: 'pdf',
       pIsLoading: true,
-      pSrc: 'your-pdf-url.pdf'
+      pSrc: 'your-pdf-url.pdf',
     })
 
     expect(wrapper.find('.preview-section__loader-container').exists()).toBeTruthy()
@@ -52,7 +52,7 @@ describe('pDocumentDisplay', () => {
   it('renders a PDF preview using an iframe if the document is a PDF and not in loading state', () => {
     const wrapper = createWrapper({
       pDocumentExtension: 'pdf',
-      pSrc: { data: new ArrayBuffer(10), headers: { 'content-type': 'application/pdf' } }
+      pSrc: { data: new ArrayBuffer(10), headers: { 'content-type': 'application/pdf' } },
     })
 
     expect(wrapper.find('iframe.preview').exists()).toBeTruthy()
@@ -62,7 +62,7 @@ describe('pDocumentDisplay', () => {
     const wrapper = createWrapper({
       pDocumentExtension: 'png',
       pIsLoading: false,
-      pSrc: 'your-image-url.png'
+      pSrc: 'your-image-url.png',
     })
     const image = wrapper.findComponent(ElImage)
     expect(image.exists()).toBeTruthy()

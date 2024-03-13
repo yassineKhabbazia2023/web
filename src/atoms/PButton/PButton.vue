@@ -34,14 +34,14 @@ const props = withDefaults(defineProps<PButtonProps>(), {
   pDisabled: false,
   pLoading: false,
   pSize: 'default',
-  pIconOnly: false
+  pIconOnly: false,
 })
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']
 
 const parentType = inject(
   injectionButtonKey,
-  undefined
+  undefined,
 ) // type from group button
 
 const button = computed(() => getButtonType(parentType?.pType || props.pType))
@@ -49,7 +49,7 @@ const button = computed(() => getButtonType(parentType?.pType || props.pType))
 const getButtonType = (buttonType: any) => (
   {
     buttonType,
-    class: nativeTypes.includes(buttonType) ? buttonType : 'default'
+    class: nativeTypes.includes(buttonType) ? buttonType : 'default',
   })
 
 const buttonSizeParent = computed(() =>
@@ -59,7 +59,7 @@ const pClassMapper = computed(() => {
   const buttonTypeClass = nativeTypes.includes(button.value.buttonType)
     ? ''
     : {
-        [`p-button--${button.value.buttonType}`]: true
+        [`p-button--${button.value.buttonType}`]: true,
       }
   return ['p-button', { 'p-button--icon': props.pIconOnly }, buttonTypeClass]
 })

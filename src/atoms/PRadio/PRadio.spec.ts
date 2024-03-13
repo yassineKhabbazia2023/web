@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElRadio } from 'element-plus'
 import PRadio from '.'
@@ -9,10 +10,10 @@ const propsValue: PRadioProps = {
   pDisabled: false,
   pBorder: false,
   pSize: 'small',
-  pName: 'name'
+  pName: 'name',
 }
 const createWrapper = () => mount(PRadio, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pRadio', () => {

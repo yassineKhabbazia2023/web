@@ -5,11 +5,11 @@ import { logger } from '@/utils/logger'
 const ENV_VARS_URL = '/env-vars.json'
 
 const cache = {
-  assetsBaseUrl: ''
+  assetsBaseUrl: '',
 }
 
 type MetaEnv = {
-  SSR: boolean,
+  SSR: boolean
   VITE_ASSETS_BASE_URL?: string
 }
 

@@ -1,11 +1,12 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import type { PAutocompleteProps } from './PAutocompleteTypes'
 import PAutocomplete from '.'
 
 const suggestionsData = [
   { value: 'vue', link: 'test link' },
-  { value: 'vuex', link: 'test link' }
+  { value: 'vuex', link: 'test link' },
 ]
 
 const propsValue: PAutocompleteProps = {
@@ -24,7 +25,7 @@ const propsValue: PAutocompleteProps = {
   pPopperClass: 'test',
   pFitInputWidth: true,
   pTeleported: false,
-  pHighlightFirstItem: true
+  pHighlightFirstItem: true,
 }
 
 const defaultSlot = `
@@ -42,8 +43,8 @@ const createWrapper = () =>
     slots: {
       default: defaultSlot,
       prefix: "<button data-testid='prefix-slot'>Prefix Test Button</button>",
-      suffix: "<button data-testid='suffix-slot'>Suffix Test Button</button>"
-    }
+      suffix: "<button data-testid='suffix-slot'>Suffix Test Button</button>",
+    },
   })
 
 describe('pAutoComplete', () => {
@@ -71,13 +72,13 @@ describe('pAutoComplete', () => {
         teleported: propsValue.pTeleported,
         highlightFirstItem: propsValue.pHighlightFirstItem,
         fitInputWidth: propsValue.pFitInputWidth,
-        selectWhenUnmatched: propsValue.pSelectWhenUnmatched
+        selectWhenUnmatched: propsValue.pSelectWhenUnmatched,
       }
       expect(component.props()).toMatchObject(expectedProps)
     })
   })
   describe('display', () => {
-    it('should render correctly', async () => {
+    it('should render correctly', () => {
       const input = document.body.querySelector('.el-input__inner') as Element
 
       expect(input.getAttribute('placeholder')).toBe(propsValue.pPlaceholder)

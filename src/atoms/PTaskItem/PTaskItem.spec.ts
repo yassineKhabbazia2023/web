@@ -11,18 +11,18 @@ const defaultProps: PTaskItemProps = {
   pStatus: 'todo',
   pTitle: title,
   pCompletedTasks: completedTasks,
-  pTotalTasks: totalTasks
+  pTotalTasks: totalTasks,
 }
 
 const createWrapper = (props = defaultProps) => mount(PTaskItem, {
-  props
+  props,
 })
 
 describe('pTaskItem', () => {
   describe('props', () => {
     it('should render the text values of the component', () => {
       const wrapper = createWrapper({
-        ...defaultProps
+        ...defaultProps,
       })
 
       expect(wrapper.find('.p-task-item__title').text()).toContain(title)
@@ -34,7 +34,7 @@ describe('pTaskItem', () => {
       const taskItem = wrapper.find('.p-task-item')
 
       expect(taskItem.classes()).toContain(
-        `p-task-item--status-${defaultProps.pStatus}`
+        `p-task-item--status-${defaultProps.pStatus}`,
       )
     })
   })

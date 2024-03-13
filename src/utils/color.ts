@@ -14,23 +14,23 @@ export function getCssVarName(namespace: string, type: string) {
  */
 export function getCssVarValue(name: string) {
   const val = ref(
-    getComputedStyle(document.documentElement).getPropertyValue(name)
+    getComputedStyle(document.documentElement).getPropertyValue(name),
   )
   watch(
     () => {
       setTimeout(() => {
         val.value = getComputedStyle(document.documentElement).getPropertyValue(
-          name
+          name,
         )
       }, 100)
-    }, () => { }
+    }, () => { },
   )
   return val
 }
 
 export function getColorValue(type: string) {
   const color = getComputedStyle(document.documentElement).getPropertyValue(
-    `--el-color-${type}`
+    `--el-color-${type}`,
   )
   return color
 }
@@ -56,6 +56,6 @@ export function useCopyColor() {
   }
 
   return {
-    copyColor
+    copyColor,
   }
 }

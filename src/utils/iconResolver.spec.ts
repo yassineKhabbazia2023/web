@@ -3,14 +3,14 @@ import { iconResolver, iconsResolver } from '@/utils/iconResolver'
 const iconToImport = 'PITrash'
 const iconsToImport = [
   {
-    iconName: 'PIAdd'
+    iconName: 'PIAdd',
   },
   {
-    iconName: 'PITrash'
+    iconName: 'PITrash',
   },
   {
-    iconName: 'PISend'
-  }
+    iconName: 'PISend',
+  },
 ]
 describe('iconResolver', () => {
   it('should correctly retrieve import objects', () => {

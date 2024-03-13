@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElSteps } from 'element-plus'
 import PSteps from '.'
@@ -11,10 +12,10 @@ const propsValue: PStepsProps = {
   pProcessStatus: 'process',
   pFinishStatus: 'finish',
   pAlignCenter: true,
-  pSimple: true
+  pSimple: true,
 }
 const createWrapper = () => mount(PSteps, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pSteps', () => {

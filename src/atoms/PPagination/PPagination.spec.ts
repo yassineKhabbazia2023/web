@@ -11,12 +11,12 @@ const defaultProps: PaginationProps = {
   pShowTotalPageCounter: true,
   pTotal: 100,
   pCurrentPage: 1,
-  pPageSize: 100
+  pPageSize: 100,
 }
 
 const createWrapper = (props = defaultProps) =>
   mount(PPagination, {
-    props
+    props,
   })
 
 describe('pPagination', () => {
@@ -24,7 +24,7 @@ describe('pPagination', () => {
     it('should show the total page counter when showTotalPageCounter is true', () => {
       const wrapper = createWrapper()
       expect(
-        wrapper.find('.p-pagination__total-page-counter').exists()
+        wrapper.find('.p-pagination__total-page-counter').exists(),
       ).toBeTruthy()
     })
     it('should hide the total page counter when showTotalPageCounter is false', () => {
@@ -32,10 +32,10 @@ describe('pPagination', () => {
         ...defaultProps,
         pShowTotalPageCounter: false,
         pPageSizes: [100, 200, 300],
-        pPageSizeSelectorSuffix: 'documents'
+        pPageSizeSelectorSuffix: 'documents',
       })
       expect(
-        wrapper.find('.p-pagination__total-page-counter').exists()
+        wrapper.find('.p-pagination__total-page-counter').exists(),
       ).toBeFalsy()
     })
     it('should set page range selector postion to "top"', () => {

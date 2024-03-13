@@ -30,7 +30,7 @@ import type { PToolboxProps } from './PToolboxTypes'
 
 withDefaults(defineProps<PToolboxProps>(), {
   pElements: () => [],
-  pPlacement: 'bottom-start'
+  pPlacement: 'bottom-start',
 })
 
 defineEmits(['p-toolbox-item-clicked'])

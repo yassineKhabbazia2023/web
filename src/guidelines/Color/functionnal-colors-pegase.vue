@@ -43,7 +43,7 @@ const colorsType = [
   'functionnal-green-bg',
   'functionnal-teal',
   'functionnal-teal-txt',
-  'functionnal-teal-bg'
+  'functionnal-teal-bg',
 ]
 
 const { copyColor } = useCopyColor()

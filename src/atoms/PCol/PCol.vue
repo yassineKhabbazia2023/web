@@ -29,6 +29,6 @@ withDefaults(defineProps<PColProps>(), {
   pMd: undefined,
   pLg: undefined,
   pXl: undefined,
-  pTag: 'div'
+  pTag: 'div',
 })
 </script>

@@ -149,26 +149,26 @@ import PRow from '@/atoms/PRow'
 const radiusGroup = ref([
   {
     name: 'No Radius',
-    type: ''
+    type: '',
   },
   {
     name: 'Small Radius',
-    type: 'small'
+    type: 'small',
   },
   {
     name: 'Large Radius',
-    type: 'base'
+    type: 'base',
   },
   {
     name: 'Round Radius',
-    type: 'round'
-  }
+    type: 'round',
+  },
 ])
 
 function getValue(type: string) {
   const getCssVarValue = (prefix: string, type: string) =>
     getComputedStyle(document.documentElement).getPropertyValue(
-      `--el-${prefix}-${type}`
+      `--el-${prefix}-${type}`,
     )
   return getCssVarValue('border-radius', type)
 }

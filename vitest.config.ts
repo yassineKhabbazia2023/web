@@ -13,14 +13,14 @@ export default mergeConfig(
       exclude: [...configDefaults.exclude, 'e2e/*'],
       root: fileURLToPath(new URL('./', import.meta.url)),
       deps: {
-        inline: ['element-plus']
+        inline: ['element-plus'],
       },
       coverage: {
         provider: 'istanbul', // or 'v8'
         reporter: ['text', 'cobertura', 'lcov'],
-        exclude: ['src/atoms/PIcon/components/*']
+        exclude: ['src/atoms/PIcon/components/*'],
       },
-      setupFiles: 'vitest.setup.ts'
-    }
-  })
+      setupFiles: 'vitest.setup.ts',
+    },
+  }),
 )

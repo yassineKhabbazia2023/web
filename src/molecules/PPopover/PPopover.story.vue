@@ -49,7 +49,7 @@ const popoverBasicData = reactive({
   pDisabled: false,
   pShowArrow: true,
   pTriggerOptions: triggerOptions[0],
-  pTitle: 'Title'
+  pTitle: 'Title',
 })
 </script>
 

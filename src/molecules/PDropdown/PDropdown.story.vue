@@ -117,7 +117,7 @@ const initState = () => {
     collapseTags: false,
     collapseTagsTooltip: false,
     popperAppendToBody: true,
-    automaticDropdown: true
+    automaticDropdown: true,
   }
 }
 </script>

@@ -50,14 +50,14 @@ const defaultState: PToolboxItemProps = reactive({
   pIconName: 'PITrash',
   pActionName: 'delete',
   disabled: false,
-  pState: 'default'
+  pState: 'default',
 })
 
 const WithoutIconState = reactive({
   pActionName: 'add',
   pValue: 'Hello world',
   disabled: false,
-  pIconName: ''
+  pIconName: '',
 })
 </script>
 <docs lang="md">

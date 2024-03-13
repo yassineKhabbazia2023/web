@@ -56,49 +56,49 @@ import PFieldSet from '.'
 import { getMockedFields } from './PFieldSetMock'
 
 type Section = {
-  title: string,
+  title: string
   pFields: ReturnType<typeof getMockedFields>
 }
 
 type CustomModel = {
   person: {
-    firstname: string,
+    firstname: string
     lastName?: string
-  },
+  }
   contact: {
-    email: string,
+    email: string
     phone?: string
   }
 }
 
 type Variant = {
-  title: string,
-  model: CustomModel,
-  readonly: boolean,
+  title: string
+  model: CustomModel
+  readonly: boolean
   sections: Section[]
 }
 
 const sections = [{
   title: 'Identification de l\'entreprise',
-  pFields: getMockedFields('companyIdentification')
+  pFields: getMockedFields('companyIdentification'),
 }, {
   title: 'Coordonnées de l\'entreprise',
-  pFields: getMockedFields('companyContact')
+  pFields: getMockedFields('companyContact'),
 }, {
   title: 'Adresse de l\'entreprise',
-  pFields: getMockedFields('companyAddress')
+  pFields: getMockedFields('companyAddress'),
 }, {
   title: 'Informations comptables et fiscales',
-  pFields: getMockedFields('accountingAndTaxInformation')
+  pFields: getMockedFields('accountingAndTaxInformation'),
 }]
 
 const model: CustomModel = {
   person: {
-    firstname: 'Susan'
+    firstname: 'Susan',
   },
   contact: {
-    email: 'email@domain.tld'
-  }
+    email: 'email@domain.tld',
+  },
 }
 
 const PFieldSetCustom = PFieldSet<CustomModel>
@@ -107,7 +107,7 @@ const variants = ref<Variant[]>([{
   title: 'Informations d\'une personne morale',
   model,
   readonly: false,
-  sections
+  sections,
 }])
 
 function onUpdatePModel(variant: Variant, fieldKey: string, fieldValue: any) {

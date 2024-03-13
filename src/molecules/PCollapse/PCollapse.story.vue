@@ -202,11 +202,11 @@ const firstCollapseItem = reactive({
   pTitleCollapseItem: 'Consistency',
   pIcon: PIArchive,
   disabled: false,
-  pFullBody: false
+  pFullBody: false,
 })
 const secondCollapseItem = reactive({
   pTitleCollapseItem: 'Feedback',
-  disabled: false
+  disabled: false,
 })
 </script>
 

@@ -22,7 +22,7 @@ import type { PFileCardProps } from './PFileCardTypes'
 
 withDefaults(defineProps<PFileCardProps>(), {
   pHasIcon: false,
-  pHasButton: false
+  pHasButton: false,
 })
 </script>
 

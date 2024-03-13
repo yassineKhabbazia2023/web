@@ -36,7 +36,7 @@ const openSuccess = () => {
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: PICheck,
     showClose: false,
-    customClass: 'success'
+    customClass: 'success',
   })
 }
 
@@ -45,7 +45,7 @@ const openLoading = () => {
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: PILoader,
     showClose: false,
-    customClass: 'loading'
+    customClass: 'loading',
   })
 }
 
@@ -54,7 +54,7 @@ const openError = () => {
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     icon: PIExclamationTriangle,
     customClass: 'error',
-    showClose: false
+    showClose: false,
   })
 }
 
@@ -64,7 +64,7 @@ const openWithClose = () => {
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    duration: 0
+    duration: 0,
   })
 }
 </script>

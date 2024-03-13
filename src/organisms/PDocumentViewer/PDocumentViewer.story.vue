@@ -35,17 +35,17 @@
           </PIcon>
         </template>
         <template #media>
-           <PDocumentDisplay
+          <PDocumentDisplay
             :pSrc="url"
             :pIsLoading="false"
             :pDocumentExtension="extension"
             errorMsgTitle="Aperçu indisponible"
             errorMsgText="Le format de document n'est pas supporté"
-           />
+          />
         </template>
         <template #content>
           <div> You can find here for exp Document details such as owner email ...,
-             please upload only a pdf file to visualize the pdf </div>
+            please upload only a pdf file to visualize the pdf </div>
           <PUpload
             pMultiple
             :pDisabled="false"
@@ -66,7 +66,7 @@
               </PIcon>
               Déposer un document pdf
             </PButton>
-      </PUpload>
+          </PUpload>
         </template>
       </PDocumentViewer>
     </Variant>
@@ -96,7 +96,7 @@ const documentViewerBasicData = reactive({
   pShowPreviousDocument: true,
   pShowNextDocument: true,
   pShowCloseButton: true,
-  pDirection: ref<PDocumentViewerProps['pDirection']>('rtl')
+  pDirection: ref<PDocumentViewerProps['pDirection']>('rtl'),
 })
 const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
 const extension = ref('jpeg')

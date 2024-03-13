@@ -10,13 +10,13 @@ type PCollapseItemTypesTest = PCollapseItemTypes['pType']
 const componenRootCSSClass = 'p-collapse-item'
 
 const defaultProps = {
-  pTitleCollapseItem: title
+  pTitleCollapseItem: title,
 }
 
 function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
   const { pType, pTitleCollapseItem, pIcon, pFullBody } = {
     ...defaultProps,
-    ...overridenProps
+    ...overridenProps,
   }
   const Component = {
     template: `
@@ -34,18 +34,18 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
         pType,
         pTitleCollapseItem,
         pIcon,
-        pFullBody
+        pFullBody,
       }
-    }
+    },
   }
 
   return mount(Component, {
     global: {
       components: {
         PCollapse,
-        PCollapseItem
-      }
-    }
+        PCollapseItem,
+      },
+    },
   })
 }
 
@@ -55,13 +55,13 @@ describe('pCollapseItem', () => {
       {
         pIcon: PIPulse,
         hasIcon: true,
-        text: 'show'
+        text: 'show',
       },
       {
         pIcon: '',
         hasIcon: false,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])('should $text icon zone when icon is $hasIcon',
       async ({ pIcon, hasIcon }) => {
         const wrapper = createWrapper({ pIcon })
@@ -70,7 +70,7 @@ describe('pCollapseItem', () => {
         const hasIconComponent = wrapper.findComponent({ name: 'PIPulse' }).exists()
         expect(hasIconClass).toBe(hasIcon)
         expect(hasIconComponent).toBe(hasIcon)
-      }
+      },
     )
 
     it('should have the "default" type by default', () => {
@@ -82,23 +82,23 @@ describe('pCollapseItem', () => {
     it.each([
       {
         pType: 'default',
-        expectedClassBinding: `${componenRootCSSClass}--type-default`
+        expectedClassBinding: `${componenRootCSSClass}--type-default`,
       },
       {
         pType: 'shadow',
-        expectedClassBinding: `${componenRootCSSClass}--type-shadow`
+        expectedClassBinding: `${componenRootCSSClass}--type-shadow`,
       },
       {
         pType: 'alert',
-        expectedClassBinding: `${componenRootCSSClass}--type-alert`
-      }
+        expectedClassBinding: `${componenRootCSSClass}--type-alert`,
+      },
     ])(
       'should always bind class based on current type',
       ({ pType, expectedClassBinding }) => {
         const wrapper = createWrapper({ pType: pType as PCollapseItemTypesTest })
         const pCollapseItem = wrapper.findComponent(PCollapseItem)
         expect(pCollapseItem.classes()).toContain(expectedClassBinding)
-      }
+      },
     )
 
     it('should render the title values of the component', () => {
@@ -111,7 +111,7 @@ describe('pCollapseItem', () => {
     it('should have a fullbody class when the pFullbody is true', () => {
       const wrapper = createWrapper({
         ...defaultProps,
-        pFullBody: true
+        pFullBody: true,
       })
 
       expect(wrapper.find('.p-collapse-item--fullbody').exists()).toBeTruthy()

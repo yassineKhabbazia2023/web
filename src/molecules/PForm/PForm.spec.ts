@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PForm from '.'
 import type { PFormProps } from './PFormTypes'
@@ -19,10 +20,10 @@ const propsValue: PFormProps = {
   pSize: undefined,
   pDisabled: false,
   pScrollToError: false,
-  pScrollIntoViewOptions: undefined
+  pScrollIntoViewOptions: undefined,
 }
 const createWrapper = () => mount(PForm, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pForm', () => {
@@ -46,7 +47,7 @@ describe('pForm', () => {
       size: propsValue.pSize,
       disabled: propsValue.pDisabled,
       scrollToError: propsValue.pScrollToError,
-      scrollIntoViewOptions: propsValue.pScrollIntoViewOptions
+      scrollIntoViewOptions: propsValue.pScrollIntoViewOptions,
     }
 
     expect(component.props()).toMatchObject(expectedProps)
@@ -90,7 +91,7 @@ describe('pForm', () => {
       wrapper.vm.validateField([], mockedCallbackFunction)
       expect(mockValidateField).toHaveBeenCalledWith(
         [],
-        mockedCallbackFunction
+        mockedCallbackFunction,
       )
     })
 

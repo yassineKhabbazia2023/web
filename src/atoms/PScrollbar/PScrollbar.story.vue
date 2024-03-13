@@ -15,9 +15,9 @@
         </p>
       </PScrollBar>
       <HstInputNumber
-          v-model="itemCountBasicUsage"
-          title="Item counts"
-          :min="1"
+        v-model="itemCountBasicUsage"
+        title="Item counts"
+        :min="1"
       />
     </Variant>
     <Variant title="Horizontal scroll">
@@ -33,9 +33,9 @@
         </div>
       </PScrollBar>
       <HstInputNumber
-          v-model="itemCountHorizontalScroll"
-          title="Item counts"
-          :min="1"
+        v-model="itemCountHorizontalScroll"
+        title="Item counts"
+        :min="1"
       />
     </Variant>
     <Variant title="Max height">
@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import type PScrollbar from '.'
+import PScrollbar from '.'
 import { ref } from 'vue'
 import PScrollBar from './'
 

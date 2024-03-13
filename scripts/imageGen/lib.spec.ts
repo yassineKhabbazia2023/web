@@ -4,7 +4,7 @@ import { MOCKED_OPTIMIZED_SVG_CODE, MOCKED_SVGO_CONFIG } from '../iconGen/mocks'
 
 import {
   getFolderImages, getFolder, getFolders,
-  writeCompressedImage, writeImageListFile
+  writeCompressedImage, writeImageListFile,
 } from './lib'
 
 const imageNames = ['a', 'b']
@@ -21,8 +21,8 @@ vi.mock('fs', () => ({
   rmSync: vi.fn(),
   statSync: (filePath: string) => ({
     isDirectory: () => !filePath.includes('.'),
-    isFile: () => filePath.includes('.')
-  })
+    isFile: () => filePath.includes('.'),
+  }),
 }))
 
 vi.mock('path', () => ({
@@ -36,15 +36,15 @@ vi.mock('path', () => ({
       const match = name.match(/\.([^.]*)$/)
       return match.at(0) ?? ''
     },
-    join: (...args: string[]) => args.join('/')
-  }
+    join: (...args: string[]) => args.join('/'),
+  },
 }))
 
 vi.mock('@/utils/logger')
 
 vi.mock('svgo', () => ({
   loadConfig: vi.fn().mockReturnValue(MOCKED_SVGO_CONFIG),
-  optimize: vi.fn().mockResolvedValue({ data: MOCKED_OPTIMIZED_SVG_CODE })
+  optimize: vi.fn().mockResolvedValue({ data: MOCKED_OPTIMIZED_SVG_CODE }),
 }))
 
 const folderPath = 'folder-path'
@@ -66,7 +66,7 @@ describe('imageGen/lib', () => {
       const folder = getFolder(originPath, name)
       const expected = {
         name,
-        images: imageNames
+        images: imageNames,
       }
       expect(folder).toMatchObject(expected)
     })
@@ -75,7 +75,7 @@ describe('imageGen/lib', () => {
       const folder = getFolder(originPath, name)
       const expected = {
         name,
-        images: []
+        images: [],
       }
       expect(folder).toMatchObject(expected)
     })
@@ -86,7 +86,7 @@ describe('imageGen/lib', () => {
       const folders = getFolders(originPath)
       const expected = [{
         images: imageNames,
-        name: folderName
+        name: folderName,
       }]
       expect(folders).toMatchObject(expected)
     })
@@ -102,7 +102,7 @@ describe('imageGen/lib', () => {
         svgoConfig,
         originFolderPath,
         targetFolderPath,
-        imageName
+        imageName,
       )
       const targetFilePath = `${targetFolderPath}/${imageName}.svg`
       const optimizedSvg = MOCKED_OPTIMIZED_SVG_CODE
@@ -117,7 +117,7 @@ describe('imageGen/lib', () => {
       const images = ['a', 'b']
       const folders = [{
         name: 'folder-name',
-        images
+        images,
       }]
       writeImageListFile(imageListPath, folders)
       const content = `${JSON.stringify(folders, null, 2)}\n`

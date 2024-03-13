@@ -90,7 +90,7 @@ const selectedCollaborator = ref(null)
 const collaboratorsTestData = [
   { value: 'Mickaël BELLANGER - toto@kpmg.fr - (ESC, Bureau Y)', link: 'Collab1' },
   { value: 'Clémentine MICKELLE - toto@kpmg.fr - (ESC, Bureau Y)', link: 'Collab2' },
-  { value: 'Mickey Oussama - toto@kpmg.fr - (ESC, Bureau Y)', link: 'Collab13' }
+  { value: 'Mickey Oussama - toto@kpmg.fr - (ESC, Bureau Y)', link: 'Collab13' },
 ]
 const data: PBlockHeaderProps = {
   pTitle: 'Add collaborators',
@@ -101,8 +101,8 @@ const data: PBlockHeaderProps = {
   pImage: {
     pFit: 'fill',
     pType: 'paupulse',
-    pName: 'add-user'
-  }
+    pName: 'add-user',
+  },
 }
 </script>
 

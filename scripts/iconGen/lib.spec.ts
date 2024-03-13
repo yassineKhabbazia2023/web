@@ -4,7 +4,7 @@ import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVG_CODE, MOCKED_OPTIMIZED_SVG_COD
 
 import {
   capitalizeFirstLetter, getComponentInfo, getIcons, generateComponent,
-  getComponentConstantsContent, writeComponentConstants, getComponentIndexContent, writeComponentIndex
+  getComponentConstantsContent, writeComponentConstants, getComponentIndexContent, writeComponentIndex,
 } from './lib'
 
 vi.mock('fs', () => ({
@@ -15,8 +15,8 @@ vi.mock('fs', () => ({
   existsSync: vi.fn().mockReturnValue(true),
   statSync: (filePath: string) => ({
     isDirectory: () => !filePath.includes('.'),
-    isFile: () => filePath.includes('.')
-  })
+    isFile: () => filePath.includes('.'),
+  }),
 }))
 
 vi.mock('path', () => ({
@@ -30,8 +30,8 @@ vi.mock('path', () => ({
       const match = name.match(/\.([^.]*)$/)
       return match.at(0) ?? ''
     },
-    join: (...args: string[]) => args.join('/')
-  }
+    join: (...args: string[]) => args.join('/'),
+  },
 }))
 
 vi.mock('@/utils/logger')
@@ -40,25 +40,25 @@ describe('scripts/iconGen/lib', () => {
   describe('capitalizeFirstLetter', () => {
     const words = [{
       word: '',
-      expected: ''
+      expected: '',
     }, {
       word: 'a',
-      expected: 'A'
+      expected: 'A',
     }, {
       word: 'ab-c',
-      expected: 'AbC'
+      expected: 'AbC',
     }, {
       word: 'a b',
-      expected: 'A b'
+      expected: 'A b',
     }]
     it.each(words)(
       'should return \'$expected\' when \'$word\'', ({
         word,
-        expected
+        expected,
       }) => {
         const capitalized = capitalizeFirstLetter(word)
         expect(capitalized).toBe(expected)
-      }
+      },
     )
   })
 
@@ -90,7 +90,7 @@ describe('scripts/iconGen/lib', () => {
       viewBox,
       pathData,
       componentName,
-      componentCode
+      componentCode,
     } = getComponentInfo(iconPath, MOCKED_SVG_CODE, MOCKED_OPTIMIZED_SVG_CODE)
 
     it('should return proper iconName', () => {

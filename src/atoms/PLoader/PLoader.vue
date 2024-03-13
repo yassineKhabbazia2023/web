@@ -18,7 +18,7 @@ import type { PLoaderProps } from './PLoaderTypes'
 
 const props = withDefaults(defineProps<PLoaderProps>(), {
   pType: 'default',
-  pSize: ''
+  pSize: '',
 })
 
 const iconToLoad = computed(() => {

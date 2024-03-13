@@ -24,18 +24,18 @@ const carouselBasicData = ref([
   {
     pText: 'Manage the activation of the various Pulse services and the digitization of your customer relationship.',
     pImageName: 'digitalisation',
-    pImageType: 'paupulse'
+    pImageType: 'paupulse',
   },
   {
     pText: 'Create and track your bank mandate requests at a glance!',
     pImageType: 'paupulse',
-    pImageName: 'bank-mandate'
+    pImageName: 'bank-mandate',
   },
   {
     pText: 'Follow the documents shared by your customers on a daily basis.',
     pImageType: 'paupulse',
-    pImageName: 'shared-document'
-  }
+    pImageName: 'shared-document',
+  },
 ])
 </script>
 

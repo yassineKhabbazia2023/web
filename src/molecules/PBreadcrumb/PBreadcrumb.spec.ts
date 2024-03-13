@@ -8,21 +8,21 @@ import { type PBreadcrumbProps, type BreadcrumbItems } from './PBreadcrumbTypes'
 const defaultBreadCumb = [
   {
     pId: '0',
-    pText: 'Hello item'
+    pText: 'Hello item',
   },
   {
     pId: '0',
-    pText: 'Hello item'
+    pText: 'Hello item',
   },
 
   {
     pId: '0',
-    pText: 'Hello item'
-  }
+    pText: 'Hello item',
+  },
 ] as unknown as BreadcrumbItems[]
 
 const defaultProps: PBreadcrumbProps = {
-  pElements: defaultBreadCumb
+  pElements: defaultBreadCumb,
 }
 
 const createWrapper = (props = defaultProps) => {
@@ -31,9 +31,9 @@ const createWrapper = (props = defaultProps) => {
     global: {
       stubs: {
         ElBreadcrumb,
-        ElBreadcrumbItem
-      }
-    }
+        ElBreadcrumbItem,
+      },
+    },
   })
 }
 
@@ -49,14 +49,14 @@ describe('pBreadcrumb', () => {
   describe('props', () => {
     it('should display only 7 items (6 items + ellipes separator)if number of element > 6', () => {
       const wrapper = createWrapper({
-        pElements: generateBreadCrumbItems(10)
+        pElements: generateBreadCrumbItems(10),
       })
 
       expect(wrapper.findAll('.el-breadcrumb__item')).toHaveLength(7)
     })
     it('should disbale tooltip if the the item has -1 as id', () => {
       const wrapper = createWrapper({
-        pElements: generateBreadCrumbItems(10)
+        pElements: generateBreadCrumbItems(10),
       })
 
       const sampleItem = wrapper.find('p-tooltip-stub[disabled="true"]')
@@ -71,7 +71,7 @@ describe('pBreadcrumb', () => {
       await flushPromises()
       expect(wrapper.emitted('p-breadcrumb-item-click')).toHaveLength(1)
       expect(wrapper.emitted('p-breadcrumb-item-click')).toStrictEqual([
-        [defaultBreadCumb[0].pId]
+        [defaultBreadCumb[0].pId],
       ])
     })
   })

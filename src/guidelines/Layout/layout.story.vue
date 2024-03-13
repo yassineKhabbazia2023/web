@@ -77,7 +77,7 @@
         Breakpoints
       </p>
       <p><strong>“Utiliser une mise en page de 100% de largeur est le
-          meilleur moyen d'avoir une mise en page inadaptée à 100%.”</strong>
+           meilleur moyen d'avoir une mise en page inadaptée à 100%.”</strong>
         <br>
         C'est pourquoi nous préférons concevoir pour plusieurs points d'arrêt
         au lieu des 2 points d'arrêt actuels (à partir de 801px).
@@ -204,7 +204,7 @@ const basicData = ref({
   justify: 'start' as PRowProps['pJustify'],
   align: 'top',
   push: 0,
-  pull: 0
+  pull: 0,
 })
 </script>
 

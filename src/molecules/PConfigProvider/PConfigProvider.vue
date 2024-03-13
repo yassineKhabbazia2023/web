@@ -21,6 +21,6 @@ withDefaults(defineProps<PConfigProviderProps>(), {
   pZIndex: undefined,
   pNamespace: 'el',
   pButton: undefined,
-  pMessage: undefined
+  pMessage: undefined,
 })
 </script>

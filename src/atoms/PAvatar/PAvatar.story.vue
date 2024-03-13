@@ -179,105 +179,105 @@ import PAvatar from './'
 import { PIPulse } from '../PIcon/components'
 
 const url = ref('https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
-const avatarShapeList: { label: string; value: PAvatarProps['pShape'] }[] = [
+const avatarShapeList: { label: string, value: PAvatarProps['pShape'] }[] = [
   {
     label: 'circle',
-    value: 'circle'
+    value: 'circle',
   },
   {
     label: 'square',
-    value: 'square'
-  }
+    value: 'square',
+  },
 ]
-const avatarSizeList: { label: string; value: PAvatarProps['pType'] }[] = [
+const avatarSizeList: { label: string, value: PAvatarProps['pType'] }[] = [
   {
     label: 'xlarge',
-    value: 'xlarge'
+    value: 'xlarge',
   },
   {
     label: 'large',
-    value: 'large'
+    value: 'large',
   },
   {
     label: 'default',
-    value: 'default'
+    value: 'default',
   },
   {
     label: 'small',
-    value: 'small'
+    value: 'small',
   },
   {
     label: 'xsmall',
-    value: 'xsmall'
-  }
+    value: 'xsmall',
+  },
 ]
-const fitList: { label: string; value: PAvatarProps['pFit'] }[] = [
+const fitList: { label: string, value: PAvatarProps['pFit'] }[] = [
   {
     label: 'fill',
-    value: 'fill'
+    value: 'fill',
   },
   {
     label: 'contain',
-    value: 'contain'
+    value: 'contain',
   },
   {
     label: 'cover',
-    value: 'cover'
+    value: 'cover',
   },
   {
     label: 'none',
-    value: 'none'
+    value: 'none',
   },
   {
     label: 'scale-down',
-    value: 'scale-down'
-  }
+    value: 'scale-down',
+  },
 ]
-const avatarColorList: { label: string; value: PAvatarProps['pColor'] }[] = [
+const avatarColorList: { label: string, value: PAvatarProps['pColor'] }[] = [
   {
     label: 'persian-gradient',
-    value: 'persian-gradient'
+    value: 'persian-gradient',
   },
   {
     label: 'orange',
-    value: 'orange'
+    value: 'orange',
   },
   {
     label: 'persian',
-    value: 'persian'
+    value: 'persian',
   },
   {
     label: 'teal',
-    value: 'teal'
+    value: 'teal',
   },
   {
     label: 'green',
-    value: 'green'
+    value: 'green',
   },
   {
     label: 'fuschia',
-    value: 'fuschia'
+    value: 'fuschia',
   },
   {
     label: 'gray',
-    value: 'gray'
+    value: 'gray',
   },
   {
     label: 'white',
-    value: 'white'
+    value: 'white',
   },
   {
     label: 'cyan',
-    value: 'cyan'
+    value: 'cyan',
   },
   {
     label: 'amethyste',
-    value: 'amethyste'
+    value: 'amethyste',
   },
   {
     label: 'bordered-persian',
-    value: 'bordered-persian'
-  }
+    value: 'bordered-persian',
+  },
 ]
 const currentShape = ref<PAvatarProps['pShape']>('circle')
 const currentType = ref<PAvatarProps['pType']>('default')

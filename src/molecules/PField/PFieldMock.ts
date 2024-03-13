@@ -8,7 +8,7 @@ export function getMockedRule(ruleType: string): FormItemRule | undefined {
     return {
       type: 'email',
       message: 'Veuillez saisir une adresse email correcte',
-      trigger: ['blur', 'change']
+      trigger: ['blur', 'change'],
     }
   }
   if (ruleType === 'phone') {
@@ -16,7 +16,7 @@ export function getMockedRule(ruleType: string): FormItemRule | undefined {
       type: 'string',
       pattern: '^[+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$',
       message: 'Veuillez saisir numéro de téléphone correct',
-      trigger: ['blur', 'change']
+      trigger: ['blur', 'change'],
     }
   }
   throw new Error(`Unknown rule type '${ruleType}'`)
@@ -28,7 +28,7 @@ export function getMockedInputField(
   pPlaceholder: string,
   flexBasis: number,
   pDisabled: boolean = false,
-  ruleTypes?: string[]
+  ruleTypes?: string[],
 ): PFieldPropsInput<string> {
   const pRules = (ruleTypes ?? [])
     .map(ruleType => getMockedRule(ruleType))
@@ -44,7 +44,7 @@ export function getMockedInputField(
     pPlaceholder,
     pDisabled,
     pCssClass,
-    pRules
+    pRules,
   }
 }
 
@@ -53,7 +53,7 @@ export function getDropdownField(
   pLabel: string,
   flexBasis: number,
   pDropdownOptions?: PDropdownOption[],
-  pDisabled: boolean = false
+  pDisabled: boolean = false,
 ): PFieldPropsDropdown<number | undefined> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
 
@@ -64,7 +64,7 @@ export function getDropdownField(
     pFieldType: 'dropdown',
     pCssClass,
     pDisabled,
-    pDropdownOptions
+    pDropdownOptions,
   }
 }
 
@@ -76,7 +76,7 @@ export function getDateField(
   pFormat: string = 'DD/MM/YYYY',
   pValueFormat: string = 'YYYY-MM-DD',
   pDisabled: boolean = false,
-  pDateType: PDatePickerProps['pType'] = 'date'
+  pDateType: PDatePickerProps['pType'] = 'date',
 ): PFieldPropsDate<string> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
 
@@ -90,6 +90,6 @@ export function getDateField(
     pDisabled,
     pDateType,
     pFormat,
-    pValueFormat
+    pValueFormat,
   }
 }

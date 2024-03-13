@@ -5,21 +5,21 @@ export function getMockedDropdownOptions(hasGroups: boolean): PDropdownOption[] 
   return [{
     pValue: 'a',
     pLabel: 'John',
-    pDisabled: false
+    pDisabled: false,
   }, {
     pValue: 'b',
     pLabel: 'Maria',
     pDisabled: false,
-    pGroupLabel: altGroup
+    pGroupLabel: altGroup,
   }, {
     pValue: 'c',
     pLabel: 'Paul',
     pDisabled: false,
-    pGroupLabel: ''
+    pGroupLabel: '',
   }, {
     pValue: 'd',
     pLabel: 'Helen',
     pDisabled: true,
-    pGroupLabel: altGroup
+    pGroupLabel: altGroup,
   }]
 }

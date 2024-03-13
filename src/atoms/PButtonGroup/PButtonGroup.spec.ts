@@ -8,16 +8,16 @@ describe('test for PButtonGroup', () => {
     const wrapper = mount(PButtonGroup, {
       props: {
         pType: 'default',
-        pSize: 'default'
+        pSize: 'default',
       },
       slots: {
-        default: '<PButton>Button 1</PButton>'
+        default: '<PButton>Button 1</PButton>',
       },
       global: {
         components: {
-          PButton
-        }
-      }
+          PButton,
+        },
+      },
     })
 
     const PButtonElement = wrapper.findComponent({ name: 'PButtonGroup' })

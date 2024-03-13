@@ -4,6 +4,6 @@ export interface BreadcrumbItems {
 }
 
 export interface PBreadcrumbProps {
-  pElements: BreadcrumbItems[],
+  pElements: BreadcrumbItems[]
   pSize?: string
 }

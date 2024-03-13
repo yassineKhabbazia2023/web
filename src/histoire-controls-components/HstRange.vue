@@ -1,31 +1,3 @@
-<script lang="ts">
-import { computed } from 'vue'
-export default {
-  name: 'HstRange',
-  inheritAttrs: false
-}
-</script>
-
-<script setup lang="ts">
-const props = defineProps<{
-  title?: string
-  modelValue: number[]
-  min?: number
-  max?: number
-}>()
-
-const emit = defineEmits({
-  'update:modelValue': (newValue: number[]) => true
-})
-
-const RangeValue = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value)
-  }
-})
-</script>
-
 <template>
   <label class="container">
     <span
@@ -41,6 +13,34 @@ const RangeValue = computed({
     />
   </label>
 </template>
+
+<script lang="ts">
+import { computed } from 'vue'
+export default {
+  name: 'HstRange',
+  inheritAttrs: false,
+}
+</script>
+
+<script setup lang="ts">
+const props = defineProps<{
+  title?: string
+  modelValue: number[]
+  min?: number
+  max?: number
+}>()
+
+const emit = defineEmits({
+  'update:modelValue': (newValue: number[]) => true,
+})
+
+const RangeValue = computed({
+  get: () => props.modelValue,
+  set: (value) => {
+    emit('update:modelValue', value)
+  },
+})
+</script>
 
 <style scoped>
 .container {

@@ -4,12 +4,12 @@ import PAlert from './'
 import type { PAlertProps } from './PAlertTypes'
 
 const baseProps: PAlertProps = {
-  pType: 'main'
+  pType: 'main',
 }
 
 const createWrapper = (props: PAlertProps = baseProps) =>
   mount(PAlert, {
-    props
+    props,
   })
 
 type iconResolvingType = {
@@ -21,24 +21,24 @@ describe('pAlert', () => {
     it.each([
       {
         type: 'main',
-        expectedIconToResolve: 'PIInfoCircle'
+        expectedIconToResolve: 'PIInfoCircle',
       },
       {
         type: 'success',
-        expectedIconToResolve: 'PICheckCircle'
+        expectedIconToResolve: 'PICheckCircle',
       },
       {
         type: 'warning',
-        expectedIconToResolve: 'PIExclamationTriangle'
+        expectedIconToResolve: 'PIExclamationTriangle',
       },
       {
         type: 'danger',
-        expectedIconToResolve: 'PIXCircle'
+        expectedIconToResolve: 'PIXCircle',
       },
       {
         type: 'information',
-        expectedIconToResolve: 'PIInfoCircle'
-      }
+        expectedIconToResolve: 'PIInfoCircle',
+      },
     ] as Array<iconResolvingType>)(
       'should render icon based on type prop',
       async ({ type, expectedIconToResolve }) => {
@@ -46,7 +46,7 @@ describe('pAlert', () => {
         await vi.dynamicImportSettled()
         const iconComponent = wrapper.findComponent({ name: expectedIconToResolve })
         expect(iconComponent.exists()).toBeTruthy()
-      }
+      },
     )
   })
 })

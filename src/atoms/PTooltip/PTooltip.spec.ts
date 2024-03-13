@@ -12,21 +12,21 @@ const placement = placementOptions[0].value
 const defaultProps: PTooltipProps = {
   pContent: content,
   disabled,
-  pPlacement: placement
+  pPlacement: placement,
 }
 
 const createWrapper = (props = defaultProps) =>
   mount(PTooltip, {
     props,
     slots: {
-      default: '<PButton>Hover Button</PButton>'
+      default: '<PButton>Hover Button</PButton>',
     },
     global: {
       stubs: {
-        PButton: { template: '<button><slot /></button>' }
-      }
+        PButton: { template: '<button><slot /></button>' },
+      },
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 describe('pTooltip', () => {

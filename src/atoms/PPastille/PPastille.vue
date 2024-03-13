@@ -21,12 +21,12 @@ const props = withDefaults(defineProps<PPastilleProps>(), {
   pType: 'default',
   pSize: 'default',
   pDisabled: false,
-  pIconName: ''
+  pIconName: '',
 })
 
 const pClassMapper = computed(() => ({
   [`p-pastille--type-${props.pType}`]: true,
-  [`p-pastille--size-${props.pSize}`]: true
+  [`p-pastille--size-${props.pSize}`]: true,
 }))
 
 const dynamicImportedIcon = iconResolver(props.pIconName)
