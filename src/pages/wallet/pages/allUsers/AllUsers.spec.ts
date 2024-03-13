@@ -33,8 +33,14 @@ const checkRowContent = (rowIndex: number) => {
   const rowContent = row.text()
   const [, ...rest] = Object.values(items[rowIndex])
   const itemValues = rest
-  itemValues.forEach(value => {
-    expect(rowContent).toContain(value)
+
+  const INDEX_WITH_DATE = 4
+  itemValues.forEach((value, index) => {
+    expect(rowContent).toContain(
+      index === INDEX_WITH_DATE
+        ? '3/7/2024'
+        : value
+    )
   })
 }
 

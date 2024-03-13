@@ -158,7 +158,6 @@ import {
   type SubscriptionAccount
 } from '../../SubscriptionsTypes'
 
-
 const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
