@@ -17,6 +17,7 @@ export interface Legal {
   legalName?: string
   siren?: string
   siret?: string
+  createdAt?: string
   legalForm?: string
   legalFormCode?: string
   staffSizeRange?: string

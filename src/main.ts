@@ -76,7 +76,7 @@ const FOLDER_CHILDREN_PATH = [
   {
     path: 'informations',
     name: 'info',
-    page: 'users'
+    page: 'information'
   }
 ]
 
