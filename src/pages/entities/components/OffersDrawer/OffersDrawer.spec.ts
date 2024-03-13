@@ -36,6 +36,10 @@ const mockedPatchOperations = getMockedPatchOperations()
 function getMockedSanitized(url: string) {
   return `sanitized-${url}`
 }
+async function asyncEmit(component: VueWrapper, eventName: string) {
+  component.vm.$emit(eventName)
+  await nextTick()
+}
 
 vi.mock('@/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
@@ -323,14 +327,14 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      await asyncEmit(nextPreviousButtons, 'clickNext')
       const customersStep = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
       expect(customersNoteStep.props()).toStrictEqual({ modelValue: notes[1] })
       expect(customersStep.exists()).toBeTruthy()
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      await asyncEmit(nextPreviousButtons, 'clickNext')
       const collaboratorsStep = wrapper.find('[data-testid=collaborators-step]')
       expect(collaboratorsStep.exists()).toBeTruthy()
     })
@@ -342,13 +346,13 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      await asyncEmit(nextPreviousButtons, 'clickNext')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      await asyncEmit(nextPreviousButtons, 'clickNext')
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      await asyncEmit(nextPreviousButtons, 'clickNext')
       const informationStep = wrapper.find('[data-testid=information-step]')
       expect(informationStep.exists()).toBeTruthy()
 
