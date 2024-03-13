@@ -293,7 +293,7 @@ const handlePageRangeChanged = (newValue: number) => {
 const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
    - ${((state.currentPage - 1) * state.limit) +
-    state.data.length} 
+    state.data.length}
    ${t('on')} ${state.totalItems}`
 )
 

@@ -14,11 +14,13 @@ import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
-import { getMockedAccount } from '@/services/account/accountMock'
+import * as PatchRecordService from '@/services/PatchRecordService/PatchRecordService'
+import { getMockedAccount, getMockedPatchOperations } from '@/services/account/accountMock'
 import { getMockedStepNotes } from '../StepNote/StepNotesMock'
 import type { UserInfo } from '@kpmg/common'
 import type { Note, PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import { CONTACT_ID } from './OffersDrawerConst'
+import type { PatchValue } from '@/services/PatchRecordService'
 
 const principalContacts: User[] = getMockedPrincipalContacts()
 const currentUser: UserInfo = getMockedUser()
@@ -29,6 +31,7 @@ const subscriptionOffersServices: SubscriptionOfferServices[] =
 const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
+const mockedPatchOperations = getMockedPatchOperations()
 
 function getMockedSanitized(url: string) {
   return `sanitized-${url}`
@@ -52,6 +55,11 @@ vi.mock('@/services/account', () => ({
 
 vi.mock('@braintree/sanitize-url', () => ({
   sanitizeUrl: getMockedSanitized
+}))
+
+vi.mock('@/services/PatchRecordService/PatchRecordService', () => ({
+  addPathValue: vi.fn(),
+  getPatchOperations: vi.fn(() => mockedPatchOperations)
 }))
 
 vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
@@ -170,12 +178,27 @@ describe('offersDrawer', () => {
       })
     })
     describe('create subscription', () => {
-      // This UT will be refactivated in next PR
-      it.skip('should patch the account and create a subscription when the user confirms', async () => {
+      const notes = [
+        'services',
+        'customers',
+        'collaborators',
+        'information'
+      ].map(stepName => ({
+        stepName,
+        stepNote: ''
+      }))
+      const expectedArgument: PostSubscriptionRequest = {
+        accountId,
+        applicant: 'john@example.com',
+        contacts: [CONTACT_ID],
+        offerId: 1,
+        notes,
+        productConfigurations: [1, 2, 3, 4]
+      }
+      it('should patch the account and create a subscription when the user confirms', async () => {
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
-        await nextTick()
 
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
@@ -184,34 +207,58 @@ describe('offersDrawer', () => {
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
-        const expectedArgument: PostSubscriptionRequest = {
-          accountId,
-          applicant: 'john@example.com',
-          contacts: [CONTACT_ID],
-          offerId: 1,
-          notes: [
-            {
-              stepName: 'services',
-              stepNote: ''
-            },
-            {
-              stepName: 'customers',
-              stepNote: ''
-            },
-            {
-              stepName: 'collaborators',
-              stepNote: ''
-            },
-            {
-              stepName: 'information',
-              stepNote: ''
-            }
-          ],
-          productConfigurations: [1, 2, 3, 4]
-        }
 
-        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedAccount)
+        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedPatchOperations)
         expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
+      })
+      it('should not patch the account when no account diff', async () => {
+        const wrapper = await getWrapper(true)
+        const firstOffer = findFirstOffer(wrapper)
+        await firstOffer.trigger('click')
+
+        vi
+          .spyOn(PatchRecordService, 'getPatchOperations')
+          .mockReturnValue([])
+        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
+        const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
+        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+        expect(confirmationModal.exists()).toBeTruthy()
+
+        confirmationModal.vm.$emit('confirm')
+
+        expect(patchAccountSpy).not.toHaveBeenCalled()
+        expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
+      })
+    })
+    describe('when input CompanyInformation data', () => {
+      it('should call addPathValue with proper arguments', async () => {
+        const addPathValueSpy = vi.spyOn(PatchRecordService, 'addPathValue')
+
+        const wrapper = await getWrapper(true)
+        const firstOffer = findFirstOffer(wrapper)
+        await firstOffer.trigger('click')
+        await nextTick()
+
+        const nextPreviousButtons = findNextPreviousButtons(wrapper)
+        for (let i = 0; i < 3; i++) {
+          nextPreviousButtons.vm.$emit('clickNext')
+          await nextTick()
+        }
+        const component = wrapper.findComponent({ name: 'CompanyInformation' })
+        const fieldKey = 'accounting.fiscalExerciseDuration'
+        const currentValue = mockedAccount?.accounting?.fiscalExerciseDuration
+        const newValue = 10
+        component.vm.$emit('input', fieldKey, newValue)
+        const patchValues: PatchValue[] = []
+        const expectedArguments = [
+          patchValues,
+          fieldKey,
+          currentValue,
+          newValue
+        ]
+
+        expect(addPathValueSpy).toHaveBeenCalledOnce()
+        expect(addPathValueSpy).toHaveBeenNthCalledWith(1, ...expectedArguments)
       })
     })
   })

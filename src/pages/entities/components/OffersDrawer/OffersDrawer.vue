@@ -91,7 +91,7 @@
             :modelValue="account"
             :providerName="providerName"
             data-testid="information-step"
-            @update:model-value="onUpdateAccount"
+            @input="onInputAccount"
           />
           <StepNote
             v-if="currentSubscriptionOffer?.approvalRequired"
@@ -156,6 +156,7 @@ fr-FR:
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
+import { get } from 'lodash-es'
 import { PDrawer, PSteps, PStep, PIcon, PILink45deg } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
@@ -171,11 +172,12 @@ import {
   getOffersBookLink,
   getPrincipalContacts
 } from '@/services/offer'
+import { addPathValue, getPatchOperations } from '@/services/PatchRecordService/PatchRecordService'
+import { type PatchValue } from '@/services/PatchRecordService'
 import { offerStepperStep } from './OffersDrawerTypes'
 import type { Note } from '@/pages/subscriptions/SubscriptionsTypes'
 import type { OffersDrawerProps, SelectedProduct } from './OffersDrawerTypes'
 import { fetchAccount, patchAccount, type Account } from '@/services/account'
-import { generateObject } from '@/helper'
 import {
   addSelectedProduct,
   removeSelectedProduct,
@@ -225,7 +227,7 @@ const emit = defineEmits<{
 const props = defineProps<OffersDrawerProps>()
 
 const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
-const accountFormModel = ref<Record<string, string | number>>({})
+const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const principalContacts = ref<User[] | undefined>()
@@ -306,8 +308,9 @@ const sanitizedOffersDrawerLink = computed(
   }
 )
 
-function onUpdateAccount(updatedAccount: Account) {
-  account.value = updatedAccount
+function onInputAccount(fieldKey: string, value: any) {
+  const previousValue = get(account.value, fieldKey)
+  addPathValue(patchValues, fieldKey, previousValue, value)
 }
 
 function onClickPrevious() {
@@ -341,27 +344,9 @@ async function saveOffer() {
 }
 
 async function validateOffer() {
-  if (account.value !== undefined) {
-    // This will be refact in next PR
-    const { accounting } = generateObject('accounting', accountFormModel.value)
-    const { hub } = generateObject('hub', accountFormModel.value)
-    const { vat } = generateObject('vat', accountFormModel.value)
-    const { legal } = generateObject('legal', accountFormModel.value)
-
-    const accountFormValue = {
-      ...account.value,
-      accounting,
-      hub: {
-        hubId: 14, // This property is temporarily hard-coded
-        ...hub
-      },
-      vat,
-      legal: {
-        ...account.value.legal,
-        staffSizeRange: legal.staffSizeRange
-      }
-    }
-    await patchAccount(ACCOUNT_ID, accountFormValue)
+  const patchOperations = getPatchOperations(patchValues)
+  if (patchOperations.length > 0) {
+    await patchAccount(ACCOUNT_ID /* props.accountId */, patchOperations)
   }
   await saveOffer()
 }
