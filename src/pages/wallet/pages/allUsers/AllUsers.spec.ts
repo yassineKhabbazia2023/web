@@ -50,7 +50,7 @@ describe('allUsers', () => {
     checkRowContent(items.length - 1)
   })
 
-  it('can display "you" when it s the logged user', async () => {
+  it('displays "you" when it s the logged user', async () => {
     const store = commonStore(pinia)
     store.$patch({
       user: {

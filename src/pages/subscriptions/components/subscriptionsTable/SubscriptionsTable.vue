@@ -150,6 +150,7 @@ import {
   validateSubscriptionRequest
 } from '../../SubscriptionsServices'
 import { getInitials } from '@/helper'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import { SubscriptionStatusCode } from '../../SubscriptionsTypes'
 import {
   type SubscriptionRequest,
@@ -157,25 +158,11 @@ import {
   type SubscriptionAccount
 } from '../../SubscriptionsTypes'
 
+
 const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
-  datetimeFormats: {
-    'en-US': {
-      short: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric'
-      }
-    },
-    'fr-FR': {
-      short: {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric'
-      }
-    }
-  }
+  datetimeFormats
 })
 
 const emit = defineEmits<{

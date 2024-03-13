@@ -1,5 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { getInitials } from '@/helper'
 import mock from './../../mock.json'
 import TableData from './'
 
@@ -11,7 +12,10 @@ const createWrapper = (): VueWrapper<any> =>
         lastName,
         ...rest
       }) => ({
-        initials: `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`,
+        initials: getInitials(
+          firstName,
+          lastName
+        ),
         fullName: `${firstName} ${lastName}`,
         firstName,
         lastName,

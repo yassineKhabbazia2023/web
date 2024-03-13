@@ -10,7 +10,7 @@
     </div>
 
     <PPagination
-      v-if="shouldShowPagination && !!state.totalItems"
+      v-if="shouldShowPagination && state.totalItems"
       @on-page-range-changed="handlePageRangeChanged"
       v-model:p-current-page="state.currentPage"
       v-model:p-page-size="state.limit"
@@ -36,18 +36,21 @@ import {
 } from '@kpmg/styleguide'
 import { commonStore } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
+import {
+  DATE_TIME_FORMATS as datetimeFormats,
+  PAGE_SIZES
+} from '@/constants'
 import type { IState } from './types'
 import TableData from './components/TableData'
 import mock from './mock.json'
 
-const { t } = useI18n({
+const { d, t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
+  datetimeFormats
 })
 
 const userStore = commonStore()
-
-const PAGE_SIZES = [15, 30, 45, 60]
 
 const state: IState = reactive({
   data: [],
@@ -55,7 +58,7 @@ const state: IState = reactive({
   limit: 15,
   totalPages: undefined,
   totalItems: undefined,
-  isLoading: undefined
+  isLoading: false
 })
 
 const handlePageRangeChanged = (newValue: number) => {
@@ -70,7 +73,7 @@ const paginationLabel = computed(() =>
 )
 
 const shouldShowPagination = computed(() =>
-  !state.isLoading && !!state.totalItems && state.totalItems > state.limit
+  !state.isLoading && state.totalItems && state.totalItems > state.limit
 )
 
 const getQueryParams = () => ({
@@ -101,6 +104,7 @@ const fetch = async () => {
       lastName,
       persona,
       id,
+      createdAt,
       ...rest
     }) => ({
       initials: getInitials(
@@ -114,6 +118,7 @@ const fetch = async () => {
       isLoggedUser: () => id === userStore.$state.user?.id,
       persona,
       id,
+      createdAt: d(new Date(createdAt), 'short'),
       ...rest
     }))
     state.currentPage = currentPage

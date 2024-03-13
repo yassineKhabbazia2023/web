@@ -21,7 +21,7 @@
             {{ scope.row.initials }}
           </PAvatar>
           <div>
-            <p class="line-height--120 text-capitalize">
+            <p class="text-capitalize">
               <span v-if="scope.row.isLoggedUser()">{{ t('you') }}</span>
               <span v-if="!scope.row.isLoggedUser()">
                 {{ scope.row.firstName }}
@@ -58,9 +58,12 @@
           </p>
         </div>
 
-        <div v-if="!scope.row.isOwner">
+        <p
+          v-if="!scope.row.isOwner"
+          class="font-bold"
+        >
           {{ scope.row.persona }}
-        </div>
+        </p>
       </template>
     </PTableColumn>
 
@@ -84,7 +87,6 @@
           <PButton
             pType="generic"
             pSize="small"
-            class="margin-left--1"
           >
             <PIcon>
               <PIThreeDots />
@@ -155,10 +157,6 @@ const handleToolboxItemClick = (_action: string, row: any) => {
 <style lang="scss" scoped>
 .color-persian {
   color: var(--el-color-base-persian);
-}
-
-.line-height--120 {
-  line-height: 120%;
 }
 </style>
 

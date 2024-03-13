@@ -22,7 +22,7 @@
             {{ scope.row.initials }}
           </PAvatar>
           <div>
-            <p class="line-height--120 font-semibold text-capitalize">
+            <p class="font-semibold text-capitalize">
               {{ scope.row.firstName }}
               <span class="text-uppercase"> {{ scope.row.lastName }}</span>
             </p>
@@ -88,7 +88,6 @@
           <PButton
             pType="generic"
             pSize="small"
-            class="margin-left--1"
           >
             <PIcon>
               <PIThreeDots />
@@ -188,12 +187,6 @@ const handleToolboxItemClick = (action: string, row: any) => {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.line-height--120 {
-  line-height: 120%;
-}
-</style>
 
 <i18n lang="yaml">
 en-US:

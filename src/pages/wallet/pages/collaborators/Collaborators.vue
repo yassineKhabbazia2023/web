@@ -66,6 +66,7 @@ import {
 } from '@kpmg/styleguide'
 import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import { getInitials, removeFalsyValues } from '@/helper'
+import { PAGE_SIZES } from '@/constants'
 import NoResult from '@/components/NoResult'
 import type { IExtendedCollab, IState } from './types'
 import TableData from './components/TableData'
@@ -75,8 +76,6 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
-
-const PAGE_SIZES = [15, 30, 45, 60]
 
 // search part
 const formRef = ref<FormInstance>()

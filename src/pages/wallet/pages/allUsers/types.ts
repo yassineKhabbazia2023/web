@@ -17,5 +17,5 @@ export interface IState {
   limit: number
   totalPages: number | undefined
   totalItems: number | undefined
-  isLoading: boolean | undefined
+  isLoading: boolean
 }
