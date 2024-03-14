@@ -14,6 +14,15 @@ const rowData = {
 
 const getCollabRoleComponent = () => wrapper.findComponent({ name: 'CollabRole' })
 const getCollabAccessComponent = () => wrapper.findComponent({ name: 'CollabAccess' })
+const getCollabRoleAccessComponentExist = () => {
+  const collabRoleComponent = getCollabRoleComponent()
+  const collabAccessComponent = getCollabAccessComponent()
+
+  return [
+    collabRoleComponent.exists(),
+    collabAccessComponent.exists()
+  ]
+}
 
 const createWrapper = (): VueWrapper<any> =>
   mount(DrawerCollabDetails, {
@@ -41,18 +50,15 @@ describe('drawerCollabDetails', () => {
   })
 
   it('can switch between steps', async () => {
-    expect(getCollabRoleComponent().exists()).toBeTruthy()
-    expect(getCollabAccessComponent().exists()).toBeFalsy()
+    expect(getCollabRoleAccessComponentExist()).toStrictEqual([true, false])
 
     await getCollabRoleComponent().vm.$emit('setSelectedRoleId')
 
-    expect(getCollabRoleComponent().exists()).toBeFalsy()
-    expect(getCollabAccessComponent().exists()).toBeTruthy()
+    expect(getCollabRoleAccessComponentExist()).toStrictEqual([false, true])
 
     await getCollabAccessComponent().vm.$emit('goToPreviousStep')
 
-    expect(getCollabRoleComponent().exists()).toBeTruthy()
-    expect(getCollabAccessComponent().exists()).toBeFalsy()
+    expect(getCollabRoleAccessComponentExist()).toStrictEqual([true, false])
   })
 
   it('can display a notification when the form on the second step is submitted', async () => {

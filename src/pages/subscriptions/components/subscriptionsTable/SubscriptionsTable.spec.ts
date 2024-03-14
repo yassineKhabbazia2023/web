@@ -62,19 +62,18 @@ describe('table-validations', () => {
     expect(dataRows.length).equals(subscriptionRequestMock.length)
 
     const cells = dataRows[0].findAll('td')
-    const firstRowData: { [key: number]: string | Date } = {
-      1: 'V900000163',
-      2: 'Test Indicators 1',
-      3: 'TTTFirsName TLastNameTLastName+test@kpmg.onmicrosoft.com',
-      4: 'test-01@kpmg.fr',
-      5: 'Pennylane',
-      6: 'To validate'
-    }
-    cells.forEach((cell, cellIndex) => {
-      if (cellIndex > 0 && cellIndex !== cells.length - 1) {
-        expect(cell.text()).toBe(firstRowData[cellIndex])
-      }
-    })
+    const cellsText = cells.map((cell) => cell.text())
+    const expected: string[] = [
+      '3/24/2023',
+      'V900000163',
+      'Test Indicators 1',
+      'TTTFirsName TLastNameTLastName+test@kpmg.onmicrosoft.com',
+      'test-01@kpmg.fr',
+      'Pennylane',
+      'To validate',
+      ''
+    ]
+    expect(cellsText).toMatchObject(expected)
   })
 
   it('should display subscription toolbox items', () => {

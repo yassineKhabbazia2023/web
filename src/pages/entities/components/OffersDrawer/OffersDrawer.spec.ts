@@ -36,6 +36,10 @@ const mockedPatchOperations = getMockedPatchOperations()
 function getMockedSanitized(url: string) {
   return `sanitized-${url}`
 }
+async function asyncEmit(component: VueWrapper, eventName: string) {
+  component.vm.$emit(eventName)
+  await nextTick()
+}
 
 vi.mock('@/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
@@ -315,7 +319,7 @@ describe('offersDrawer', () => {
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
     })
-    it('should display the correct page and maintain notes when using stepper navigation buttons', async () => {
+    it('should display the correct page and maintain notes when using stepper navigation buttons 1/2', async () => {
       const wrapper = await getWrapper(true)
       const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
@@ -323,18 +327,32 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      await asyncEmit(nextPreviousButtons, 'clickNext')
       const customersStep = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
       expect(customersNoteStep.props()).toStrictEqual({ modelValue: notes[1] })
       expect(customersStep.exists()).toBeTruthy()
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      await asyncEmit(nextPreviousButtons, 'clickNext')
       const collaboratorsStep = wrapper.find('[data-testid=collaborators-step]')
       expect(collaboratorsStep.exists()).toBeTruthy()
+    })
+    it('should display the correct page and maintain notes when using stepper navigation buttons 2/2', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOffer = findFirstOffer(wrapper)
+      await firstOffer.trigger('click')
+      await flushPromises()
 
-      await nextPreviousButtons.vm.$emit('clickNext')
+      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+
+      await asyncEmit(nextPreviousButtons, 'clickNext')
+      const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
+      await customersNoteStep.vm.$emit('update:modelValue', notes[1])
+
+      await asyncEmit(nextPreviousButtons, 'clickNext')
+
+      await asyncEmit(nextPreviousButtons, 'clickNext')
       const informationStep = wrapper.find('[data-testid=information-step]')
       expect(informationStep.exists()).toBeTruthy()
 
