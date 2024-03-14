@@ -24,7 +24,7 @@ let previousLayout: string = ''
 watch(
   () => route.name,
   () => {
-    const layout = route.meta?.layout || 'Home'
+    const layout = (route.meta?.layout as string) || 'Home'
     if (previousLayout !== layout) {
       getLayout.value = markRaw(defineAsyncComponent(
         () => import(`@/layouts/${layout}/index.ts`),
