@@ -1,5 +1,5 @@
 <template>
-  <div class="p-user-card">
+  <div class="p-user-card" :class="pClassMapper">
     <div class="p-user-card__left" data-ut="left-asset">
       <PImage
         v-if="pAssetLeft === 'Image'"
@@ -54,13 +54,19 @@
 </template>
 
 <script lang="ts" setup>
-import { useSlots } from 'vue'
+import { computed, useSlots } from 'vue'
 import PImage from '@/atoms/PImage'
 import PAvatar from '@/atoms/PAvatar'
 import PTag from '@/atoms/PTag'
 import type { PUserCardProps } from './PUserCardTypes'
 
-defineProps<PUserCardProps>()
+const props = withDefaults(defineProps<PUserCardProps>(), {
+  pColor: 'persian'
+})
+
+const pClassMapper = computed(() => ({
+  [`p-user-card--color-${props.pColor}`]: true
+}))
 
 const slots = useSlots()
 </script>
@@ -73,7 +79,16 @@ const slots = useSlots()
   align-items: center;
   padding: 20px;
   border-radius: 4px;
-  background: var(--el-color-persian-50);
+
+  &--color {
+    &-persian {
+      background: var(--el-color-persian-50);
+    }
+
+    &-gray {
+      background: var(--el-color-neutral-gray-50);
+    }
+  }
 
   &__left {
     margin-right: 12px;

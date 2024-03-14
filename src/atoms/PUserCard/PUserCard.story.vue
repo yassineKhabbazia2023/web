@@ -24,6 +24,27 @@
         </PButton>
       </PUserCard>
     </Variant>
+    <Variant title="User Card Gray with Image and all choices">
+      <PUserCard
+        pAssetLeft="Image"
+        pAssetContent="user-female"
+        :pTitle="data.pTitle"
+        :pTag="data.pTag"
+        :pSubtitle="data.pSubtitle"
+        :pDescription="data.pDescription"
+        pColor="gray"
+      >
+        <PButton
+          pType="default"
+          pSize="small"
+        >
+          <PIcon class="el-button__icon--left">
+            <PIVectorPen />
+          </PIcon>
+          Designate a signatory
+        </PButton>
+      </PUserCard>
+    </Variant>
     <Variant title="User Card with Avatar and no description">
       <PUserCard
         pAssetLeft="Avatar"

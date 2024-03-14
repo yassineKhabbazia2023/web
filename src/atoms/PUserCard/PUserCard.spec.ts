@@ -12,7 +12,8 @@ const defaultProps = {
   pSubtitle: subtitle,
   pDescription: description,
   pAssetLeft: 'Image',
-  pAssetContent: 'activation'
+  pAssetContent: 'activation',
+  pColor: 'gray'
 }
 
 const createWrapper = (props: any = defaultProps, slots: any = {}) =>
@@ -45,6 +46,14 @@ describe('pUserCard', () => {
       expect(
         wrapper.find(`.${componentRootCSSClass}__description`).text()
       ).toContain(description)
+    })
+
+    it('should render the color of the component', () => {
+      const wrapper = createWrapper()
+
+      expect(wrapper.classes()).toContain(
+        `${componentRootCSSClass}--color-${defaultProps.pColor}`
+      )
     })
 
     it('should render the PImage component in the left block if it exists', () => {

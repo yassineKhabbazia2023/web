@@ -7,4 +7,5 @@ export interface PUserCardProps {
   pDescription?: string
   pAssetLeft: 'Image' | 'Avatar'
   pAssetContent: string
+  pColor?: 'persian' | 'gray'
 }
