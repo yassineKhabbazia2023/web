@@ -2,11 +2,11 @@
   <div>
     <Header
       @refresh-mandate-collection="updateTableDisplay({
-      currentPage: activePage,
-      itemsByPage: defaultItemsToDisplay,
-      searchTerm: searchText,
-      sortOrder: defaultSortOrder,
-      sortCriteria: defaultSortCriteria
+        currentPage: activePage,
+        itemsByPage: defaultItemsToDisplay,
+        searchTerm: searchText,
+        sortOrder: defaultSortOrder,
+        sortCriteria: defaultSortCriteria
       })"
     />
     <SearchBar
@@ -45,9 +45,9 @@ const mandatesCollection = ref<MandateCollection>({
     status20: 0,
     status30: 0,
     status40: 0,
-    status50: 0
+    status50: 0,
   },
-  data: []
+  data: [],
 })
 
 const defaultItemsToDisplay = ref(10)
@@ -69,11 +69,13 @@ const updateTableDisplay = async ({
   itemsByPage = defaultItemsToDisplay.value,
   searchTerm = searchText.value,
   sortOrder = defaultSortOrder.value,
-  sortCriteria = defaultSortCriteria.value
+  sortCriteria = defaultSortCriteria.value,
 }:
   {
-    currentPage: number, itemsByPage: number,
-    searchTerm: string, sortOrder: string,
+    currentPage: number
+    itemsByPage: number
+    searchTerm: string
+    sortOrder: string
     sortCriteria: string
   }) => {
   try {
@@ -89,7 +91,7 @@ const updateTableDisplay = async ({
       limit: itemsByPage,
       searchTerm: searchTerm.trim(),
       sortOrder,
-      sortCriteria
+      sortCriteria,
     })
     mandatesCollection.value = data
   } catch (_) {
@@ -101,12 +103,12 @@ const updateTableDisplayDebounced = debounce(updateTableDisplay)
 watch(searchText,
   (value: string) =>
     updateTableDisplayDebounced({
-      searchTerm: value
-    })
+      searchTerm: value,
+    }),
 )
 
 defineExpose({
-  updateTableDisplay
+  updateTableDisplay,
 })
 </script>
 

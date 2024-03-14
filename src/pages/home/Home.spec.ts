@@ -11,7 +11,7 @@ const mandatesList = {
     status20: 3,
     status30: 1,
     status40: 1,
-    status50: 0
+    status50: 0,
   },
   data: [
     {
@@ -22,7 +22,7 @@ const mandatesList = {
       bankName: 'Crédit Agricole',
       creationDate: '2022-04-14T13:12:31.926Z',
       modificationDate: '2023-09-17T13:12:31.926Z',
-      statusCode: '40'
+      statusCode: '40',
     },
     {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13029',
@@ -32,7 +32,7 @@ const mandatesList = {
       bankName: 'BNP Paribas',
       creationDate: '2021-09-14T13:12:31.926Z',
       modificationDate: '2023-08-17T13:12:31.926Z',
-      statusCode: '20'
+      statusCode: '20',
     },
     {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13030',
@@ -42,9 +42,9 @@ const mandatesList = {
       bankName: 'Société Générale',
       creationDate: '2020-08-14T13:12:31.926Z',
       modificationDate: '2023-06-11T13:12:31.926Z',
-      statusCode: '30'
-    }
-  ]
+      statusCode: '30',
+    },
+  ],
 }
 
 /* vi.mock('@kpmg/common', () => ({
@@ -56,14 +56,14 @@ const mandatesList = {
 vi.mock('@/services/mandate', () => ({
   getMandatesCollection: vi.fn(() => {
     return Promise.resolve({
-      data: mandatesList
+      data: mandatesList,
     })
-  })
+  }),
 }))
 
 const createWrapper = (props: any) =>
   wrapperFactory(Home, {
-    props
+    props,
   })
 
 describe('componentName.vue', () => {
@@ -83,7 +83,7 @@ describe('componentName.vue', () => {
       limit: 10,
       searchTerm: inputValue,
       sortCriteria: '',
-      sortOrder: 'Descending'
+      sortOrder: 'Descending',
     })
   })
 })

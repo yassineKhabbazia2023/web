@@ -6,12 +6,12 @@ import { PSelect } from '@kpmg/styleguide'
 const defaultProps = {
   pagesCount: 32,
   pagesRanges: [10, 20, 30],
-  showTotalPageCounter: true
+  showTotalPageCounter: true,
 }
 
 const createWrapper = (props: any = {}) =>
   wrapperFactory(Pagination, {
-    props: Object.assign(defaultProps, props)
+    props: Object.assign(defaultProps, props),
   })
 
 describe('pagination component', () => {

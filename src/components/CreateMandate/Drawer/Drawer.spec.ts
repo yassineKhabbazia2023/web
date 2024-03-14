@@ -10,20 +10,20 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
-    state: () => ({})
-  })
+    state: () => ({}),
+  }),
 }))
 
 vi.mock('@/services/mandate', () => ({
   createMandate: vi.fn(() => {
     return Promise.resolve({
-      data: { id: 'e4ec92f2-a375-4574-dssdA' }
+      data: { id: 'e4ec92f2-a375-4574-dssdA' },
     })
-  })
+  }),
 }))
 
 describe('createMandateDrawer.vue', () => {
-  it('renders the component when modelValue is true', async () => {
+  it('renders the component when modelValue is true', () => {
     const wrapper = createWrapper({ modelValue: true })
     expect(wrapper.exists()).toBeTruthy()
   })

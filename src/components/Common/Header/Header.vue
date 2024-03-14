@@ -24,15 +24,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    bank-mandates: 'Banking flows'
-    new-mandate: 'New mandate'
-  fr-FR:
-    bank-mandates: 'Flux bancaires'
-    new-mandate: 'Nouveau mandat'
-</i18n>
-
 <script setup lang="ts">
 import Drawer from '@/components/CreateMandate/Drawer'
 import { useI18n } from 'vue-i18n'
@@ -41,7 +32,7 @@ import { PButton, PIcon, PIAdd } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 defineEmits(['refresh-mandate-collection'])
@@ -72,3 +63,12 @@ const drawerHandler = () => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    bank-mandates: 'Banking flows'
+    new-mandate: 'New mandate'
+  fr-FR:
+    bank-mandates: 'Flux bancaires'
+    new-mandate: 'Nouveau mandat'
+</i18n>

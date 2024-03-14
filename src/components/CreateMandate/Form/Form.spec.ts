@@ -5,12 +5,12 @@ import { expect, describe, it, vi } from 'vitest'
 function mockMandateService(
   createMandateData: any,
   validateIbanData: any,
-  getBankDetailData: any
+  getBankDetailData: any,
 ) {
   return {
     getCompany: vi.fn(() => createMandateData),
     validateIban: vi.fn(() => validateIbanData),
-    getBankDetail: vi.fn(() => getBankDetailData)
+    getBankDetail: vi.fn(() => getBankDetailData),
   }
 }
 
@@ -26,27 +26,27 @@ vi.mock('@/services/mandate', () => {
           title: 'M',
           firstName: 'maroo',
           lastName: 'elleuch',
-          email: 'elleuch@email.com'
+          email: 'elleuch@email.com',
         },
         address: {
           street: 'RUE DU COMMERCE',
           addressComplement: '',
           zipCode: '59590',
           city: 'RAISMES',
-          country: 'FRANCE'
-        }
-      }
+          country: 'FRANCE',
+        },
+      },
     },
     {
-      valid: true
+      valid: true,
     },
     {
       code: '123451234512344567891210',
       name: 'Banque postale',
       jeDeclare: {
-        jdcPartnership: 'Partner'
-      }
-    }
+        jdcPartnership: 'Partner',
+      },
+    },
   )
 })
 
@@ -64,9 +64,9 @@ describe('form.vue', () => {
       initial: {
         erpId: '1234567891',
         name: 'Mike',
-        siretNumber: '123456789'
-      }
-    }
+        siretNumber: '123456789',
+      },
+    },
   ]
 
   it.each(step1TestCases)('drawer step 1 and erpId %s, name %s and siret %s',
@@ -93,61 +93,61 @@ describe('form.vue', () => {
         institutionCode: '12345',
         branchCode: '12345',
         accountNumber: '12345678910',
-        key: '12'
+        key: '12',
       },
       updated: {
         institutionCode: '54321',
         branchCode: '54321',
         accountNumber: '01987654321',
         key: '21',
-        valid: true
-      }
+        valid: true,
+      },
     },
     {
       initial: {
         institutionCode: '12345',
         branchCode: '12345',
         accountNumber: '12345678910',
-        key: '12'
+        key: '12',
       },
       updated: {
         institutionCode: '54321',
         branchCode: '54321',
         accountNumber: '01987654321',
         key: '21',
-        valid: true
-      }
+        valid: true,
+      },
     },
     {
       initial: {
         institutionCode: '12345',
         branchCode: '12345',
         accountNumber: '12345678910',
-        key: '12'
+        key: '12',
       },
       updated: {
         institutionCode: '5432',
         branchCode: '5432',
         accountNumber: '0198765432',
         key: '2',
-        valid: false
-      }
+        valid: false,
+      },
     },
     {
       initial: {
         institutionCode: '12345',
         branchCode: '12345',
         accountNumber: '12345678910',
-        key: '12'
+        key: '12',
       },
       updated: {
         institutionCode: '5432s',
         branchCode: '5432s',
         accountNumber: '019876543,',
         key: '2s',
-        valid: false
-      }
-    }
+        valid: false,
+      },
+    },
   ]
 
   it.each(step3TestCases)('renders the component when step value is 3 (unvalid rib)',
@@ -198,7 +198,7 @@ describe('form.vue', () => {
     expect(emittedEnableDisableEvent).toBeTruthy()
   })
 
-  it('renders the component when step value is 2', async () => {
+  it('renders the component when step value is 2', () => {
     const wrapper = createWrapper({ step: 2 })
     expect(wrapper.exists()).toBeTruthy()
   })
@@ -225,7 +225,7 @@ describe('form.vue', () => {
 
   const testCases = [
     ['email', 'zipcode'],
-    ['seif@gmail.com', '750081']
+    ['seif@gmail.com', '750081'],
   ]
 
   it.each(testCases)('when step value is 2 (email: %s, zipCode: %s invalid)',
@@ -245,14 +245,14 @@ describe('form.vue', () => {
 
 function mockMandateServiceGetBankDetailThrowError(
   createMandateData: any,
-  validateIbanData: any
+  validateIbanData: any,
 ) {
   return {
     getCompany: vi.fn(() => createMandateData),
     validateIban: vi.fn(() => validateIbanData),
     getBankDetail: vi.fn(() => {
       throw new Error('Bank not found')
-    })
+    }),
   }
 }
 
@@ -269,20 +269,20 @@ const mockGetBankDetailThrowError = () => {
             title: 'M',
             firstName: 'maroo',
             lastName: 'elleuch',
-            email: 'elleuch@email.com'
+            email: 'elleuch@email.com',
           },
           address: {
             street: 'RUE DU COMMERCE',
             addressComplement: '',
             zipCode: '59590',
             city: 'RAISMES',
-            country: 'FRANCE'
-          }
-        }
+            country: 'FRANCE',
+          },
+        },
       },
       {
-        valid: false
-      }
+        valid: false,
+      },
     )
   })
 }
@@ -294,16 +294,16 @@ describe('form.vue mock getBankDetail to throw error', () => {
         institutionCode: '12345',
         branchCode: '12345',
         accountNumber: '12345678910',
-        key: '12'
+        key: '12',
       },
       updated: {
         institutionCode: '54321',
         branchCode: '54321',
         accountNumber: '01987654321',
         key: '21',
-        valid: true
-      }
-    }
+        valid: true,
+      },
+    },
   ]
 
   it.each(step3TestCases)('renders the component when step value is 3 getBankDetail throw error',

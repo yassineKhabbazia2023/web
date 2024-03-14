@@ -29,15 +29,15 @@ describe('utils helpers', () => {
     const window: any = {
       URL: {
         createObjectURL: createObjectURLMock,
-        revokeObjectURL: revokeObjectURLMock
-      }
+        revokeObjectURL: revokeObjectURLMock,
+      },
     }
 
     // Mock document.createElement
     document.createElement = vi.fn().mockReturnValue({
       setAttribute: setAttributeMock,
       click: clickMock,
-      href: ''
+      href: '',
     })
 
     // Mock document.body.appendChild and removeChild
@@ -53,9 +53,9 @@ describe('utils helpers', () => {
     expect(createObjectURLMock).toHaveBeenCalledWith(new Blob([data]))
     expect(document.createElement).toHaveBeenCalledWith('a')
     expect(setAttributeMock).toHaveBeenCalledWith('download', filename)
-    expect(appendChildMock).toHaveBeenCalled()
-    expect(clickMock).toHaveBeenCalled()
-    expect(revokeObjectURLMock).toHaveBeenCalled()
-    expect(removeChildMock).toHaveBeenCalled()
+    expect(appendChildMock).toHaveBeenCalledOnce()
+    expect(clickMock).toHaveBeenCalledOnce()
+    expect(revokeObjectURLMock).toHaveBeenCalledOnce()
+    expect(removeChildMock).toHaveBeenCalledOnce()
   })
 })

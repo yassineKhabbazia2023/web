@@ -24,12 +24,12 @@ export default ({ mode }) =>
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => ['el-button'].includes(tag)
-            }
-          }
+              isCustomElement: (tag) => ['el-button'].includes(tag),
+            },
+          },
         }),
         VueI18nPlugin({
-          include: [path.resolve(__dirname, './src/**/locales/**')]
+          include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
         viteExternalsPlugin({
           vue: 'Vue',
@@ -37,39 +37,39 @@ export default ({ mode }) =>
           pinia: 'Pinia',
           '@kpmg/common': 'Common',
           '@kpmg/styleguide': 'Styleguide',
-          'vue-router': 'VueRouter'
+          'vue-router': 'VueRouter',
         }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
-        cssInjectedByJsPlugin()
+        cssInjectedByJsPlugin(),
       ],
       resolve: {
         alias: {
-          '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
+          '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
       },
       build: {
         lib: {
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: () => `${APP_NAME}.js`
+          fileName: () => `${APP_NAME}.js`,
         },
         rollupOptions: {
           input: 'src/main.ts',
           preserveEntrySignatures: 'strict',
           output: {
-            format: 'system'
+            format: 'system',
           },
-          plugins: [terser()]
-        }
+          plugins: [terser()],
+        },
       },
       server: {
         port: PORT,
-        origin: `http://localhost:${PORT}`
+        origin: `http://localhost:${PORT}`,
       },
       preview: {
-        port: PORT
+        port: PORT,
       },
       test: {
-        setupFiles: 'vitest.setup.ts'
-      }
-    }
+        setupFiles: 'vitest.setup.ts',
+      },
+    },
   ))
