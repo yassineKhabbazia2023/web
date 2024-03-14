@@ -31,18 +31,20 @@
       >
         <template #default="scope">
           <div class="flex flex--align-items-center">
-            <div>
+            <div class="margin-right--2">
               <PAvatar
-                class="margin-right--2"
                 pColor="bordered-persian"
                 pType="small"
               >
                 {{ scope.row.initials }}
               </PAvatar>
-              {{ scope.row.fullName }}
+            </div>
+            <p>{{ scope.row.fullName }}</p>
+            <div
+              v-if="scope.row.isOwner && !isCollab"
+              class="margin-left--4"
+            >
               <PTag
-                class="margin-left--4"
-                v-if="scope.row.isOwner && !isCollab"
                 :pContent="t('owner')"
                 pColor="persian"
                 :pIconLeft="PIPatchCheck"
