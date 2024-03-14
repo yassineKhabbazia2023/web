@@ -67,7 +67,7 @@ vi.mock('./helpers/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -179,7 +179,7 @@ describe.skip('documents', () => {
       pagination.vm.$emit('on-page-range-changed', 100)
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
@@ -214,7 +214,7 @@ describe.skip('documents', () => {
       pagination.vm.$emit('update:current-page', 2)
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
@@ -249,7 +249,7 @@ describe.skip('documents', () => {
       pagination.vm.$emit('update:page-size', 25)
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',

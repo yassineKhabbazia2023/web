@@ -150,7 +150,7 @@ const handleApplyClick = () => {
 
 // Main component actions
 // eslint-disable-next-line vitest/require-hook
-onMounted(async () => {
+onMounted(() => {
   if (!props.filters) return
   if (props.filters.startDate && props.filters.endDate) {
     dateRange.value = [new Date(), new Date()]

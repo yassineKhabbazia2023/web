@@ -60,7 +60,7 @@ describe('toolbox helper', () => {
 
     it.each(cases)(
       'pText mapping validation',
-      async ({ target, permissions, expectedResult }) => {
+      ({ target, permissions, expectedResult }) => {
         const result = generateToolboxBasicData(target, permissions)
         expect(result).toStrictEqual(expectedResult)
       },

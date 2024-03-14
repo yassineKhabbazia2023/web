@@ -48,7 +48,7 @@ const mockDsPatch = vi.fn(() => {
   return Promise.resolve()
 })
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: {
       get: mockDsGet,
@@ -81,7 +81,7 @@ describe('documents service', () => {
     )
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123', {
         params: {
           createdEnd: null,
@@ -103,7 +103,7 @@ describe('documents service', () => {
     await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountId, 0, 10, '-created', 'test')
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123',
       {
         params: {
@@ -143,7 +143,7 @@ describe('documents service', () => {
     )
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123', {
         params: {
           limit: 10,
@@ -165,7 +165,7 @@ describe('documents service', () => {
       await downloadDocument(service.ServiceId, accountId, '1234')
 
       expect(mockDsGet).toHaveBeenCalledTimes(1)
-      expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+      expect(mockDsGet).toHaveBeenCalledWith(
         'service-1/my-account-id/documents/1234/content',
         {
           responseType: 'blob',
@@ -180,7 +180,7 @@ describe('documents service', () => {
     await downloadDocuments(service.ServiceId, accountId, ['1234', '4567'])
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPost).toHaveBeenCalledWith(
       'service-1/my-account-id/archive',
       { ids: ['1234', '4567'] },
       {
@@ -203,7 +203,7 @@ describe('documents service', () => {
     )
 
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
-    expect(mockDsDelete).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsDelete).toHaveBeenCalledWith(
       'service-1/my-account-id/documents', { data: { ids: documentIds } },
     )
   })
@@ -223,7 +223,7 @@ describe('documents service', () => {
     )
 
     expect(mockDsPatch).toHaveBeenCalledTimes(1)
-    expect(mockDsPatch).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPatch).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/1234',
       [{
         op: 'replace',
@@ -251,7 +251,7 @@ describe('documents service', () => {
     expectedPayload.append('file', file)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPost).toHaveBeenCalledWith(
       'service-1/my-account-id/folders/1234/documents?notify=true&source=User',
       expectedPayload,
       {
@@ -279,7 +279,7 @@ describe('documents service', () => {
     await moveDocuments(service.ServiceId, accountId, fileMove)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPost).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/move',
       expectedPayload,
       {
@@ -299,7 +299,7 @@ describe('documents service', () => {
     await transmitDocuments(service.ServiceId, accountId, documentIds)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPost).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/pia-speedup-transfer',
       { ids: documentIds },
       {
@@ -317,7 +317,7 @@ describe('documents service', () => {
     const data = await previewDocument(service.ServiceId, accountId, '1234')
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/1234/preview',
       {
         responseType: 'arraybuffer',

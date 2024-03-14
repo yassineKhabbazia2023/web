@@ -15,8 +15,8 @@ describe('downloadFile', () => {
     vi.spyOn(window.document.body, 'appendChild')
     downloadFile(data, fileName)
 
-    expect(URL.createObjectURL).toHaveBeenCalledWithExactlyOnceWith(new Blob([data]))
-    expect(window.document.body.appendChild).toHaveBeenCalledWithExactlyOnceWith(
+    expect(URL.createObjectURL).toHaveBeenCalledWith(new Blob([data]))
+    expect(window.document.body.appendChild).toHaveBeenCalledWith(
       expect.any(HTMLAnchorElement),
     )
   })

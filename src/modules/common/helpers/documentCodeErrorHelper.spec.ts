@@ -26,7 +26,7 @@ describe('document Code Error Helper', () => {
 
     it.each(cases)(
       'pText mapping validation',
-      async ({ input, expectedResult }) => {
+      ({ input, expectedResult }) => {
         const result = getFileErrorMessage(input)
         expect(result).toStrictEqual(expectedResult)
       },
@@ -53,7 +53,7 @@ describe('document Code Error Helper', () => {
 
     it.each(cases)(
       'pText mapping validation',
-      async ({ input, expectedResult }) => {
+      ({ input, expectedResult }) => {
         const result = getFileErrorDescription(input)
         expect(result).toStrictEqual(expectedResult)
       },

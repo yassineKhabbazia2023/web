@@ -46,7 +46,7 @@ describe('documentActions', () => {
       setActivePinia(pinia)
     })
 
-    it('should render PToolbox according to the provided permissions', async () => {
+    it('should render PToolbox according to the provided permissions', () => {
       const updatedProps: DocumentActionsProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_DOCUMENT'],
@@ -70,7 +70,7 @@ describe('documentActions', () => {
       ])
     })
 
-    it('should render download action even when permissions is empty', async () => {
+    it('should render download action even when permissions is empty', () => {
       const props: DocumentActionsProps = {
         ...defaultProps,
         permissions: [],
@@ -109,7 +109,7 @@ describe('documentActions', () => {
         ).toStrictEqual([[true]])
       })
 
-    it('should handle handleActionsDropdownOpening', async () => {
+    it('should handle handleActionsDropdownOpening', () => {
       const wrapper: any = createWrapper()
       wrapper.vm.handleActionsDropdownOpening()
 

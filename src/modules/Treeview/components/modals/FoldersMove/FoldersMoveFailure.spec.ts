@@ -45,7 +45,7 @@ export type FoldersMoveWrapper = VueWrapper<
   ComponentPublicInstance<FoldersMoveProps, FoldersMoveSetup>
 >
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

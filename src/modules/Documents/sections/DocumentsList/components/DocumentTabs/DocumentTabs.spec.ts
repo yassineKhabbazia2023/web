@@ -16,7 +16,7 @@ const defaultProps: DocumentTabsProps = {
   currentService: '',
 }
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

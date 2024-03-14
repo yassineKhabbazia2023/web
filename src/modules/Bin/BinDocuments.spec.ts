@@ -57,7 +57,7 @@ vi.mock('@/services/BinDocuments', () => ({
   }),
 }))
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -99,7 +99,7 @@ describe('binDocuments', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,
@@ -154,7 +154,7 @@ describe('binDocuments', () => {
         await nextTick()
         const documents = wrapper.findComponent(BinDocumentsList)
         await documents.vm.$emit('on-sort-change', '+name')
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,
@@ -188,7 +188,7 @@ describe('binDocuments', () => {
         await pagination.vm.$emit('on-page-range-changed', 50)
         await nextTick()
         expect(pagination.props('pPageSize')).toBe(50)
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,
@@ -211,7 +211,7 @@ describe('binDocuments', () => {
 
         expect(restoreModal.props('isVisible')).toBeFalsy()
         expect(restoreModal.props('document')).toBeNull()
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,

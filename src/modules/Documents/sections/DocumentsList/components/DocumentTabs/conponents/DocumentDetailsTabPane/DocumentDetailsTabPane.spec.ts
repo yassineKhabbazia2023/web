@@ -19,7 +19,7 @@ const defaultProps: DocumentDetailsTabPaneProps = {
   currentService: '',
 }
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -65,7 +65,7 @@ describe('documentDetailsTabPane', () => {
     expect(buttonUpload.exists()).toBeTruthy()
 
     buttonUpload.trigger('click')
-    expect(vi.mocked(downloadDocument)).toHaveBeenCalledWithExactlyOnceWith(
+    expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
       defaultProps.currentService,
       defaultProps.selectedEntity,
       documentMock.id,

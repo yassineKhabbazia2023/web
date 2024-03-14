@@ -118,7 +118,7 @@ describe('toolget File Iconbox helper', () => {
 
     it.each(cases)(
       'pIcon mapping validation',
-      async ({ input, expectedResult }) => {
+      ({ input, expectedResult }) => {
         expect.hasAssertions()
         const result = getFileIcon(input)
         expect(result).toStrictEqual(expectedResult)

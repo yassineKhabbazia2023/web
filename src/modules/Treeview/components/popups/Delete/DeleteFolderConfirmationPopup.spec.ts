@@ -63,7 +63,7 @@ describe('deleteFolderConfirmationPopup', () => {
       expect(popup.exists()).toBeTruthy()
     })
 
-    it('should set the correct confirmation popup validation message', async () => {
+    it('should set the correct confirmation popup validation message', () => {
       const updatedProps: DeleteFolderConfirmationPopupProps = {
         ...defaultProps,
         isDeleteFolderPopupVisible: true,

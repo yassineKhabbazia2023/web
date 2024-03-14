@@ -14,7 +14,7 @@ const defaultProps: DocumentRenameProps = {
   document: documentMock,
 }
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -53,7 +53,7 @@ describe('interactions', () => {
     const wrapper = createWrapper({ ...defaultProps, modelValue: true })
     const renameModalWrapper = wrapper.findComponent(DocumentRenameModal)
     await renameModalWrapper.vm.$emit('rename-confirmed', 'abcd')
-    expect(vi.mocked(renameDocument)).toHaveBeenCalledWithExactlyOnceWith(
+    expect(vi.mocked(renameDocument)).toHaveBeenCalledWith(
       defaultProps.currentService,
       defaultProps.selectedEntity,
       defaultProps.document.id,

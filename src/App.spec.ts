@@ -25,7 +25,7 @@ import BinDocuments from '@/modules/Bin'
 
 const pinia = createPinia()
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

@@ -93,7 +93,7 @@ const createWrapper = (
   }) as unknown as DocumentsExplorerModalWrapper
 }
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

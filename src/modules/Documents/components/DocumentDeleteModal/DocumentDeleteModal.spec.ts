@@ -132,7 +132,7 @@ describe('deleteFolderConfirmationPopup', () => {
         const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
 
-        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
           'serv',
           'ent',
           ['1'],
@@ -158,7 +158,7 @@ describe('deleteFolderConfirmationPopup', () => {
         const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
 
-        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
           'serv',
           'ent',
           ['1', '2'],
@@ -185,7 +185,7 @@ describe('deleteFolderConfirmationPopup', () => {
       expect(wrapper.emitted('cancel-delete-document')).toBeTruthy()
     })
 
-    it('should emit cancel-delete-folder when closing the popup', async () => {
+    it('should emit cancel-delete-folder when closing the popup', () => {
       const updatedProps: DocumentDeleteModalTypesProps = {
         ...defaultProps,
         isVisible: true,

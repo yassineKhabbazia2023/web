@@ -112,7 +112,7 @@ export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
 >
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -198,7 +198,7 @@ describe('foldersMove', () => {
 
     it.each(cases)(
       'should calculate the ExplorerAuthorizedGivenAction correctly with "%s"',
-      async ({ folder, expectedResult }) => {
+      ({ folder, expectedResult }) => {
         const updatedProps = {
           ...defaultProps,
           isUploadModalOpened: true,

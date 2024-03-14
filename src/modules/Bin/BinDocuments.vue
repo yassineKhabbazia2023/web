@@ -76,7 +76,7 @@ const paginationLabel = computed(() => {
 
   return `${1 + ((currentPage.value - 1) * currentPageSize.value)}
    - ${((currentPage.value - 1) * currentPageSize.value) +
-    binDocuments.value.documentsPage.items.length} 
+    binDocuments.value.documentsPage.items.length}
    sur ${binDocuments.value.documentsPage.totalItems}`
 })
 
@@ -125,7 +125,7 @@ const handleSortChange = async (sortQueryField:string) => {
 const isRestoring = ref(false)
 const documentToRestore = ref<BinDocument | null>(null)
 
-const handleRestoreDocument = async (doc: BinDocument) => {
+const handleRestoreDocument = (doc: BinDocument) => {
   documentToRestore.value = doc
   isRestoring.value = true
 }

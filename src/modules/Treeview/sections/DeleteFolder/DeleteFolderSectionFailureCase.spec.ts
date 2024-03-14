@@ -10,7 +10,7 @@ import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

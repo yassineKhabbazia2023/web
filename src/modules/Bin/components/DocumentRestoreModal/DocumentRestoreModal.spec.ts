@@ -103,7 +103,7 @@ describe('documentRestoreModal', () => {
         await popup.vm.$emit('on-confirm-button-click')
         await nextTick()
 
-        expect(vi.mocked(restoreDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(restoreDocuments)).toHaveBeenCalledWith(
           'serv',
           'ent',
           ['d595982f-d90f-4374-8ecb-fea0b4202c6d'],

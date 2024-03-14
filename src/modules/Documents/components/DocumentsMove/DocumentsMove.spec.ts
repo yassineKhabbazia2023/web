@@ -54,7 +54,7 @@ export type DocumentsMoveWrapper = VueWrapper<
   ComponentPublicInstance<DocumentMoveProps, DocumentMoveSetup>
 >
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -138,7 +138,7 @@ describe('documents Move', () => {
 
     it.each(cases)(
       'should calculate the ExplorerAuthorizedGivenAction correctly with "%s"',
-      async ({ folder, expectedResult }) => {
+      ({ folder, expectedResult }) => {
         const updatedProps = {
           ...defaultProps,
           isMoveModalOpened: true,

@@ -25,7 +25,7 @@
           <PIXCircle class="icon" />
         </PIcon>
         <p class="message">
-          {{errorMsg}}
+          {{ errorMsg }}
         </p>
       </div>
       <template #footer>

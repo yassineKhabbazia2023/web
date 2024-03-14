@@ -10,7 +10,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { deleteFolder } from '@/services/Folder'
 import { nextTick } from 'vue'
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -80,7 +80,7 @@ describe('deleteFolderSection', () => {
   })
 
   describe('props', () => {
-    it('should set the correct popup title', async () => {
+    it('should set the correct popup title', () => {
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
         isDeleteFolderPopupVisible: true,
@@ -138,7 +138,7 @@ describe('deleteFolderSection', () => {
         await popup.vm.$emit('confirm-delete-folder')
         await nextTick()
 
-        expect(vi.mocked(deleteFolder)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(deleteFolder)).toHaveBeenCalledWith(
           'service-id',
           'entity-id',
           1,

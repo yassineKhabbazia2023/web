@@ -8,7 +8,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
 import { nextTick } from 'vue'
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

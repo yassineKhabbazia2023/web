@@ -47,12 +47,12 @@ describe('confirmationPopup', () => {
   })
 
   describe('props', () => {
-    it('should display popup when isPopupVisible is true', async () => {
+    it('should display popup when isPopupVisible is true', () => {
       const wrapper = createWrapper()
       expect(wrapper.find('.confirmation-popup__message').exists()).toBeFalsy()
     })
 
-    it('should hide popup when isPopupVisible is false', async () => {
+    it('should hide popup when isPopupVisible is false', () => {
       const updatedProps: ConfirmationPopupProps = {
         ...defaultProps,
         isConfirmButtonLoading: false,

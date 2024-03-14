@@ -9,7 +9,7 @@ const mockPortalGet = vi.fn(() => {
   })
 })
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     portal: {
       get: mockPortalGet,
@@ -27,7 +27,7 @@ describe('fetchUserEntityServices', () => {
   it('should return folder object', async () => {
     const folder = await fetchUserEntityServices('serviceId')
     expect(mockPortalGet).toHaveBeenCalledTimes(1)
-    expect(mockPortalGet).toHaveBeenCalledWithExactlyOnceWith('GetUserServicesByAccountId?accountId=serviceId')
+    expect(mockPortalGet).toHaveBeenCalledWith('GetUserServicesByAccountId?accountId=serviceId')
     expect(folder).toBe('test')
   })
 })

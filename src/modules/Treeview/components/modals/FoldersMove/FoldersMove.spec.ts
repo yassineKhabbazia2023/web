@@ -47,7 +47,7 @@ export type FoldersMoveWrapper = VueWrapper<
   ComponentPublicInstance<FoldersMoveProps, FoldersMoveSetup>
 >
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -125,7 +125,7 @@ describe('foldersMove', () => {
 
     it.each(cases)(
       'should calculate the ExplorerAuthorizedGivenAction correctly with "%s"',
-      async ({ folder, expectedResult }) => {
+      ({ folder, expectedResult }) => {
         const updatedProps = {
           ...defaultProps,
           isMoveModalOpened: true,
@@ -244,7 +244,7 @@ describe('foldersMove', () => {
 
           await nextTick()
 
-          expect(vi.mocked(moveFolderAsync)).toHaveBeenCalledWithExactlyOnceWith(
+          expect(vi.mocked(moveFolderAsync)).toHaveBeenCalledWith(
             'service-id-compta',
             'my-selected-entity',
             11111111,

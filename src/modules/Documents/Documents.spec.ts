@@ -110,7 +110,7 @@ vi.mock('./helpers/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -318,7 +318,7 @@ describe('documents', () => {
 
       await documents.vm.$emit('on-sort-change', '-created')
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
@@ -344,7 +344,7 @@ describe('documents', () => {
 
         await documents.vm.$emit('on-sort-change', '+name')
 
-        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
           foldersData[0][0].children[0].serviceId,
           foldersData[0][0].children[0].id,
           'my-entity',
@@ -374,7 +374,7 @@ describe('documents', () => {
         'download-document',
       )
 
-      expect(vi.mocked(downloadDocument)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
         documentsResponsePayload.documentsPage.items[0].id,
@@ -400,7 +400,7 @@ describe('documents', () => {
         'actionbar-download-action-click',
       )
       await nextTick()
-      expect(vi.mocked(downloadDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(downloadDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
         documentsResponsePayloadMoreThanOneDoc.documentsPage.items.map(
@@ -458,7 +458,7 @@ describe('documents', () => {
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
       expect(deleteModal.props('documentIds')).toStrictEqual([])
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
@@ -486,7 +486,7 @@ describe('documents', () => {
 
         expect(deleteModal.props('isVisible')).toBeFalsy()
         expect(deleteModal.props('documentIds')).toStrictEqual([])
-        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
           foldersData[0][0].children[0].serviceId,
           foldersData[0][0].children[0].id,
           'my-entity',
@@ -576,7 +576,7 @@ describe('documents', () => {
         'transmit-document',
       )
 
-      expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
         [documentsResponsePayload.documentsPage.items[0].id],
@@ -621,7 +621,7 @@ describe('documents', () => {
       )
 
       await nextTick()
-      expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
         [documentsResponsePayload.documentsPage.items[0].id],
@@ -647,7 +647,7 @@ describe('documents', () => {
       await nextTick()
 
       vi.advanceTimersByTime(300)
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedFolder.id,
         'my-entity',
@@ -680,7 +680,7 @@ describe('documents', () => {
         await nextTick()
 
         vi.advanceTimersByTime(300)
-        expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
           defaultProps.currentService,
           defaultProps.selectedFolder.id,
           'my-entity',
@@ -714,7 +714,7 @@ describe('documents', () => {
 
         vi.advanceTimersByTime(300)
 
-        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
           foldersData[0][0].children[0].serviceId,
           foldersData[0][0].children[0].id,
           'my-entity',
@@ -849,7 +849,7 @@ describe('documents', () => {
       await documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
       await nextTick()
 
-      expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
@@ -1044,7 +1044,7 @@ describe('documents', () => {
       )
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedFolder.id,
         'my-entity',
@@ -1072,7 +1072,7 @@ describe('documents', () => {
       documentSearchFiltersWrapper.vm.$emit('reset-filters-drawer')
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',

@@ -41,7 +41,7 @@ const mockDsDelete = vi.fn(() => {
   })
 })
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: {
       get: mockDsGet,
@@ -76,7 +76,7 @@ describe('folder service', () => {
 
     const data = await fetchServiceFolders(serviceId, entityId)
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders',
     )
     expect(data).toStrictEqual({
@@ -92,7 +92,7 @@ describe('folder service', () => {
 
     const data = await CreateFolder(serviceId, entityId, parentFolderId, folderName)
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPost).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders', {
         name: 'newFolderName',
         parentId: 1,
@@ -111,7 +111,7 @@ describe('folder service', () => {
 
     const data = await RenameFolder(folderId, folderName, serviceId, entityId)
     expect(mockDsPatch).toHaveBeenCalledTimes(1)
-    expect(mockDsPatch).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPatch).toHaveBeenCalledWith(
       'some-entity-id/some-service-id/folders/1',
       [{ op: 'replace', path: '/name', value: folderName }],
     )
@@ -127,7 +127,7 @@ describe('folder service', () => {
 
     await deleteFolder(serviceId, entityId, folderId, false)
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
-    expect(mockDsDelete).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsDelete).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/1?keepFolder=false',
     )
   })
@@ -140,7 +140,7 @@ describe('folder service', () => {
     await downloadFolder(service.ServiceId, accountId, folderId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/folders/1/archive',
       {
         responseType: 'blob',

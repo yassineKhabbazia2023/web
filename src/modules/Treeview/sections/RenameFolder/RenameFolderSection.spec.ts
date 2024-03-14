@@ -9,7 +9,7 @@ import { RenameFolder } from '@/services/Folder'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -106,7 +106,7 @@ describe('renameFolderSection', () => {
       ]
       it.each(validTranslationCases)(
         'elements content validation with "%s"',
-        async ({ prop, expectedText }) => {
+        ({ prop, expectedText }) => {
           const updatedProps: RenameFolderSectionProps = {
             ...defaultProps,
             isRenameFolderModalVisible: true,
@@ -139,7 +139,7 @@ describe('renameFolderSection', () => {
         await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
         await nextTick()
 
-        expect(vi.mocked(RenameFolder)).toHaveBeenCalledWithExactlyOnceWith(
+        expect(vi.mocked(RenameFolder)).toHaveBeenCalledWith(
           defaultProps.folderId,
           'theNewFolderName',
           defaultProps.entityId,

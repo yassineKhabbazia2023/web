@@ -20,7 +20,7 @@ const defaultProps: DocumentsPreviewProps = {
   selectedDocumentIndex: 1,
   totalDocumentsCount: 10,
 }
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

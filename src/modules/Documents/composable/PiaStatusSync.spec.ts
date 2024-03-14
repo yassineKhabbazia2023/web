@@ -8,7 +8,7 @@ import { defineComponent, ref, nextTick } from 'vue'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { documentsResponsePayload } from '../mocks/documentsWithTableStructureDataMock'
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -63,7 +63,7 @@ const testComponent = defineComponent({
 
 describe('usePiaStatusSync', () => {
   it('should update the pia status and permissions of the' +
-     'document when the pia status changes', async () => {
+     'document when the pia status changes', () => {
     const selectedFolder = ref<Folder | null>(foldersData[1][1])
     const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
     const { updateDocumentSyncStatusAndPermissions } = usePiaStatusSync(selectedFolder, documents)

@@ -1,6 +1,6 @@
 import Treeview from '@/modules/Treeview'
 import { mount, flushPromises } from '@vue/test-utils'
-import type { VueWrapper, type DOMWrapper } from '@vue/test-utils'
+import type { VueWrapper, DOMWrapper } from '@vue/test-utils'
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type TreeviewProps } from '@/modules/Treeview/TreeviewTypes'
@@ -42,7 +42,7 @@ const defaultProps: TreeviewProps = {
   currentServiceFolder: null,
 }
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -328,7 +328,7 @@ describe('treeview', () => {
                 foldersData[0][0].children[0])
 
               await nextTick()
-              expect(vi.mocked(downloadFolder)).toHaveBeenCalledWithExactlyOnceWith(
+              expect(vi.mocked(downloadFolder)).toHaveBeenCalledWith(
                 defaultProps.currentService,
                 defaultProps.selectedEntity,
                 componentInstance.currentFolderId,

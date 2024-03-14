@@ -8,7 +8,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

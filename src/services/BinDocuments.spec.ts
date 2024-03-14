@@ -22,7 +22,7 @@ const mockDsPost = vi.fn(() => {
   })
 })
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: {
       get: mockDsGet,
@@ -47,7 +47,7 @@ describe('bin documents service', () => {
     await fetchBinDocuments(service.ServiceId, accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/mapped',
       {
         params: {
@@ -68,7 +68,7 @@ describe('bin documents service', () => {
     await restoreDocuments(service.ServiceId, accountId, ['doc-id'])
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsPost).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/restore',
       {
         ids: ['doc-id'],

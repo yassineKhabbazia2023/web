@@ -52,7 +52,7 @@ describe('treeNodeActions', () => {
       setActivePinia(pinia)
     })
 
-    it('should render PToolbox when permissions and selectedOrHovered', async () => {
+    it('should render PToolbox when permissions and selectedOrHovered', () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],
@@ -76,7 +76,7 @@ describe('treeNodeActions', () => {
       ])
     })
 
-    it('should not render PToolbox when permissions is empty', async () => {
+    it('should not render PToolbox when permissions is empty', () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: [],
@@ -88,7 +88,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should not render PToolbox when isVisible false', async () => {
+    it('should not render PToolbox when isVisible false', () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],
@@ -101,7 +101,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should  permissions with upload folder by default', async () => {
+    it('should  permissions with upload folder by default', () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['azert'],
@@ -113,7 +113,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.toolboxBasicData).toHaveLength(1)
       expect(componentInstance.isToolBoxVisible).toBeTruthy()
 
-      it('should not render PToolbox when selectedOrHovered is false', async () => {
+      it('should not render PToolbox when selectedOrHovered is false', () => {
         const props: TreeNodeActionsToolboxProps = {
           ...defaultProps,
           selectedOrHovered: false,

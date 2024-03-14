@@ -36,7 +36,7 @@ describe('trash documents service', () => {
     await fetchTrashDocuments(service.ServiceId, accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
+    expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/mapped',
       {
         params: {

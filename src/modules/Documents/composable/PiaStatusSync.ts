@@ -13,7 +13,7 @@ export function usePiaStatusSync(
   documents: Ref<DocumentsWithTableStructure | null>,
 ) {
   // Changing the listened folder when on selected folder change
-  watch(selectedFolder, async (newSelectedFolderId, oldSelectedFolderId) => {
+  watch(selectedFolder, (newSelectedFolderId, oldSelectedFolderId) => {
     initializedAccountingDataStreamInstance.then((instance) => {
       if (oldSelectedFolderId) {
         instance.OnDisconnectedAsync(oldSelectedFolderId.id)
