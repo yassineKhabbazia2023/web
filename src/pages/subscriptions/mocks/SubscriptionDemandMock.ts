@@ -1,4 +1,4 @@
-import { SubscriptionDemand } from '../SubscriptionsTypes'
+import type { SubscriptionDemand } from '../SubscriptionsTypes'
 
 export const subscriptionDemandMock: SubscriptionDemand = {
   account: {

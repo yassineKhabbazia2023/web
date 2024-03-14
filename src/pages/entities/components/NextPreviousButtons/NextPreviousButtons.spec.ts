@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import NextPreviousButtons from '.'
 import { mount } from '@vue/test-utils'
-import { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
+import type { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
 
 async function getWrapper() {
   const wrapper = await mount(NextPreviousButtons, {

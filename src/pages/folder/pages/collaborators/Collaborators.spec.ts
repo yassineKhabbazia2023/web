@@ -1,5 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
@@ -31,7 +32,7 @@ const createWrapper = (): VueWrapper =>
 describe('collaborators', () => {
   let wrapper: VueWrapper
 
-  beforeEach(async () => {
+  beforeEach(() => {
     wrapper = createWrapper()
   })
 

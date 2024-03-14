@@ -1,4 +1,4 @@
-import { Component } from 'vue'
+import type { Component } from 'vue'
 
 export interface IEntity {
   isFavorite: boolean
@@ -47,7 +47,7 @@ export interface IWalletData {
     text: string
     icon: Component
     color: string
-  },
+  }
   id: string
   accountId?: number
   accountNumber: string

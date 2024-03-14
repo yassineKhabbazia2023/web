@@ -1,5 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import MEGOffersFormStructure from './config/MEGOffersFormStructure.json'
 import type { CompanyInformationProps } from './CompanyInformationTypes'

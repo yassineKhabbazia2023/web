@@ -1,37 +1,37 @@
 <template>
-<PDrawer
-  v-model="isDrawerVisible"
-  :pTitle="t('manageAccessRights')"
-  @close-drawer-button="isDrawerVisible = false"
->
-  <PUserCard
-    class="margin-bottom--6"
-    pAssetLeft="Image"
-    pAssetContent="user-male"
-    :pTitle="rowData.fullName"
-    :pSubtitle="rowData.email"
+  <PDrawer
+    v-model="isDrawerVisible"
+    :pTitle="t('manageAccessRights')"
+    @close-drawer-button="isDrawerVisible = false"
   >
-    <PTag
-      pColor="gray-500"
-      pSize="default"
-      pIconLeft="PIPerson"
-      :pContent="rowData.role"
-      pEffect="light"
-    />
-  </PUserCard>
+    <PUserCard
+      class="margin-bottom--6"
+      pAssetLeft="Image"
+      pAssetContent="user-male"
+      :pTitle="rowData.fullName"
+      :pSubtitle="rowData.email"
+    >
+      <PTag
+        pColor="gray-500"
+        pSize="default"
+        pIconLeft="PIPerson"
+        :pContent="rowData.role"
+        pEffect="light"
+      />
+    </PUserCard>
 
-  <CollabRole
-    v-if="!state.currentStep"
-    @set-drawer-not-visible="closeDrawer"
-    @set-selected-role-id="handleSetSelectedRoleId"
-  />
-  <CollabAccess
-    v-if="state.currentStep"
-    @set-accesses="handleSetAccess"
-    @go-to-previous-step="state.currentStep--"
-    :selectedCollabRole=rowData.role
-  />
-</PDrawer>
+    <CollabRole
+      v-if="!state.currentStep"
+      @set-drawer-not-visible="closeDrawer"
+      @set-selected-role-id="handleSetSelectedRoleId"
+    />
+    <CollabAccess
+      v-if="state.currentStep"
+      @set-accesses="handleSetAccess"
+      @go-to-previous-step="state.currentStep--"
+      :selectedCollabRole=rowData.role
+    />
+  </PDrawer>
 </template>
 
 <script setup lang="ts">

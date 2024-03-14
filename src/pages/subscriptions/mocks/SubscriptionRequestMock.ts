@@ -1,5 +1,5 @@
+import type { SubscriptionRequest } from '../SubscriptionsTypes'
 import {
-  SubscriptionRequest,
   SubscriptionStatusCode
 } from '../SubscriptionsTypes'
 

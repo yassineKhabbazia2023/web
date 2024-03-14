@@ -1,173 +1,173 @@
 <template>
-<PTable
-  ref="selectedRow"
-  :pData="props.data"
-  highlightCurrentRow
-  showOverflowTooltip
-  pStripe
-  tableLayout="fixed"
-  class="wallet-table"
->
-  <PTableColumn
-    pProp="isFavorite"
-    :pWidth="30"
-    data
+  <PTable
+    ref="selectedRow"
+    :pData="props.data"
+    highlightCurrentRow
+    showOverflowTooltip
+    pStripe
+    tableLayout="fixed"
+    class="wallet-table"
   >
-    <template #default="scope">
-      <PIcon
-        v-if="scope.row.isFavorite"
-        @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
-        color="#5546FF"
-        size="14px"
-      >
-        <PIStarFill />
-      </PIcon>
-      <PIcon
-        v-if="!scope.row.isFavorite"
-        @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
-        color="#5546FF"
-        size="14px"
-      >
-        <PIStar />
-      </PIcon>
-    </template>
-  </PTableColumn>
-  <PTableColumn
-    :pLabel="t('companyName')"
-    pProp="name"
-    pSortable
-  >
-    <template #default="scope">
-      <div class="flex valign-center">
-        <PAvatar
-          :pColor="scope.row.owner.avatarColor"
-          pType="xsmall"
-        >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
-        </PAvatar>
-        <a
-          class="font-semibold margin-left--2 link"
-          @click="onToolboxItemClicked('access', scope.row)">
-          {{ scope.row.name }}
-        </a>
-      </div>
-    </template>
-  </PTableColumn>
-  <PTableColumn
-    :pLabel="t('folderID')"
-    pProp="accountNumber"
-    pSortable
-  />
-  <PTableColumn
-    :pLabel="t('leader')"
-    pProp="owner.lastName"
-    pSortable
-  >
-    <template #default="scope">
-      <div class="flex valign-center">
-        <PAvatar
-          v-if="scope.row.owner.initials"
-          class="margin-right--2"
-          pColor="persian-gradient"
-          pType="small"
-        >
-          {{ scope.row.owner.initials }}
-        </PAvatar>
-        <div>
-          <p class="capitalize">
-            {{ scope.row.owner.firstName }}
-            <span class="uppercase"> {{ scope.row.owner.lastName }}</span>
-          </p>
-        </div>
-      </div>
-    </template>
-  </PTableColumn>
-  <PTableColumn
-    :pLabel="t('email')"
-    pProp="owner.email"
-    pSortable
-  >
-    <template #default="scope">
-      <p class="capitalize">
-        {{ scope.row.owner.email }}
-      </p>
-    </template>
-  </PTableColumn>
-  <PTableColumn
-    :pLabel="t('city')"
-    pProp="city"
-    pSortable
-  >
-    <template #default="scope">
-      <p class="capitalize">
-        {{ scope.row.city }}
-      </p>
-    </template>
-  </PTableColumn>
-  <template v-if="isCollab">
     <PTableColumn
-      :pLabel="t('hub')"
-      pProp="hub"
+      pProp="isFavorite"
+      :pWidth="30"
+      data
+    >
+      <template #default="scope">
+        <PIcon
+          v-if="scope.row.isFavorite"
+          @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
+          color="#5546FF"
+          size="14px"
+        >
+          <PIStarFill />
+        </PIcon>
+        <PIcon
+          v-if="!scope.row.isFavorite"
+          @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
+          color="#5546FF"
+          size="14px"
+        >
+          <PIStar />
+        </PIcon>
+      </template>
+    </PTableColumn>
+    <PTableColumn
+      :pLabel="t('companyName')"
+      pProp="name"
+      pSortable
+    >
+      <template #default="scope">
+        <div class="flex valign-center">
+          <PAvatar
+            :pColor="scope.row.owner.avatarColor"
+            pType="xsmall"
+          >
+            <PIcon>
+              <PIPulse />
+            </PIcon>
+          </PAvatar>
+          <a
+            class="font-semibold margin-left--2 link"
+            @click="onToolboxItemClicked('access', scope.row)">
+            {{ scope.row.name }}
+          </a>
+        </div>
+      </template>
+    </PTableColumn>
+    <PTableColumn
+      :pLabel="t('folderID')"
+      pProp="accountNumber"
+      pSortable
+    />
+    <PTableColumn
+      :pLabel="t('leader')"
+      pProp="owner.lastName"
+      pSortable
+    >
+      <template #default="scope">
+        <div class="flex valign-center">
+          <PAvatar
+            v-if="scope.row.owner.initials"
+            class="margin-right--2"
+            pColor="persian-gradient"
+            pType="small"
+          >
+            {{ scope.row.owner.initials }}
+          </PAvatar>
+          <div>
+            <p class="capitalize">
+              {{ scope.row.owner.firstName }}
+              <span class="uppercase"> {{ scope.row.owner.lastName }}</span>
+            </p>
+          </div>
+        </div>
+      </template>
+    </PTableColumn>
+    <PTableColumn
+      :pLabel="t('email')"
+      pProp="owner.email"
       pSortable
     >
       <template #default="scope">
         <p class="capitalize">
-          {{ scope.row.hub }}
+          {{ scope.row.owner.email }}
         </p>
       </template>
     </PTableColumn>
     <PTableColumn
-      :pLabel="t('status')"
-      pProp="deploymentStatus.text"
+      :pLabel="t('city')"
+      pProp="city"
       pSortable
     >
       <template #default="scope">
-        <PTag
-          :pContent="scope.row.deploymentStatus.text"
-          :pColor="scope.row.deploymentStatus.color"
-          :pIconLeft="scope.row.deploymentStatus.icon"
-          pEffect="light"
+        <p class="capitalize">
+          {{ scope.row.city }}
+        </p>
+      </template>
+    </PTableColumn>
+    <template v-if="isCollab">
+      <PTableColumn
+        :pLabel="t('hub')"
+        pProp="hub"
+        pSortable
+      >
+        <template #default="scope">
+          <p class="capitalize">
+            {{ scope.row.hub }}
+          </p>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        :pLabel="t('status')"
+        pProp="deploymentStatus.text"
+        pSortable
+      >
+        <template #default="scope">
+          <PTag
+            :pContent="scope.row.deploymentStatus.text"
+            :pColor="scope.row.deploymentStatus.color"
+            :pIconLeft="scope.row.deploymentStatus.icon"
+            pEffect="light"
+          />
+        </template>
+      </PTableColumn>
+    </template>
+    <PTableColumn
+      :pLabel="t('option')"
+      :pWidth="80"
+    >
+      <template #default="scope">
+        <PToolbox
+          trigger="click"
+          :pElements="isCollab ? menuElementsCollaborator(scope.row.deploymentStatus.text) : menuClient"
+          @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
+        >
+          <PButton
+            pType="white"
+            pSize="small"
+            class="margin-left--1"
+          >
+            <PIcon>
+              <PIThreeDots color="#A4A4A4" />
+            </PIcon>
+          </PButton>
+        </PToolbox>
+      </template>
+    </PTableColumn>
+    <PTableColumn
+      v-if="isCollab"
+      pWidth="50"
+      :pShowOverflowTooltip="false"
+    >
+      <template #default="scope">
+        <PCheckbox
+          :disabled="false"
+          @change="onSelectedFolder(scope.row)"
         />
       </template>
     </PTableColumn>
-  </template>
-  <PTableColumn
-    :pLabel="t('option')"
-    :pWidth="80"
-  >
-    <template #default="scope">
-      <PToolbox
-        trigger="click"
-        :pElements="isCollab ? menuElementsCollaborator(scope.row.deploymentStatus.text) : menuClient"
-        @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
-      >
-        <PButton
-          pType="white"
-          pSize="small"
-          class="margin-left--1"
-        >
-          <PIcon>
-            <PIThreeDots color="#A4A4A4" />
-          </PIcon>
-        </PButton>
-      </PToolbox>
-    </template>
-  </PTableColumn>
-  <PTableColumn
-    v-if="isCollab"
-    pWidth="50"
-    :pShowOverflowTooltip="false"
-  >
-    <template #default="scope">
-      <PCheckbox
-        :disabled="false"
-        @change="onSelectedFolder(scope.row)"
-      />
-    </template>
-  </PTableColumn>
-</PTable>
+  </PTable>
 </template>
 
 <script setup lang="ts">
@@ -196,7 +196,7 @@ import {
   toRaw,
   watch
 } from 'vue'
-import { ElTable } from 'element-plus'
+import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { commonApi, commonStore } from '@kpmg/common'
 import type { Props, Row } from './types'
@@ -283,8 +283,8 @@ const { isCollab } = storeToRefs(userStore)
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{
-  'click-deploy': [number, string, string],
-  access: [string],
+  'click-deploy': [number, string, string]
+  access: [string]
   selectedFolder: [string]
 }>()
 
@@ -357,7 +357,7 @@ const resendActivationEmail = async (accountId: string, companyName: string) => 
   }
 }
 
-const onToolboxItemClicked = async (action: string, row: any) => {
+const onToolboxItemClicked = (action: string, row: any) => {
   const { id, accountId, name, accountNumber } = row
 
   if (action === 'deploy') {
@@ -370,7 +370,7 @@ const onToolboxItemClicked = async (action: string, row: any) => {
   }
 }
 
-const onSelectedFolder = async (row: any) => {
+const onSelectedFolder = (row: any) => {
   const { id } = row
   emit('selectedFolder', id)
 }

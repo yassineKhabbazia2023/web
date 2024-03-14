@@ -24,7 +24,7 @@ describe('offerSubscription', () => {
     })
   })
   describe('props', () => {
-    it('should contain card', async () => {
+    it('should contain card', () => {
       const providerCards = wrapper.findAll('[data-testid="provider-card"]')
 
       expect(providerCards).toHaveLength(subscriptionOffer?.providers.length ?? 0)

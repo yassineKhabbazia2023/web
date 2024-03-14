@@ -1,65 +1,65 @@
 <template>
-<div class="collab-access">
-  <i18n-t
-    keypath="setOfRights"
-    tag="p"
-  >
-    <template #role>
-      <span class="font-bold">{{ selectedCollabRole }}</span>
-    </template>
-  </i18n-t>
-
-  <i18n-t
-    class="margin-bottom--6"
-    keypath="youCanModify"
-    tag="p"
-  >
-    <template #administrator>
-      <span class="font-bold">{{ t('administrator') }}</span>
-    </template>
-  </i18n-t>
-
-  <PLoader v-if="state.isLoading" />
-
-  <PForm
-    v-if="!state.isLoading && state.accesses?.length"
-    @submit.prevent="handleSubmit(formRef)"
-    ref="formRef"
-  >
-    <PFormItem
-      v-for="({ id, name }, index) in state.accesses"
-      :key="id"
-      class="collab-access__switch-wrapper"
+  <div class="collab-access">
+    <i18n-t
+      keypath="setOfRights"
+      tag="p"
     >
-      <PSwitch
-        @update:model-value="(val) => handleModelUpdate({ val, index })"
-        :modelValue="state.accesses[index].selected"
-        :pActiveText="name"
-        class="margin-right--4"
-      />
-    </PFormItem>
-  </PForm>
+      <template #role>
+        <span class="font-bold">{{ selectedCollabRole }}</span>
+      </template>
+    </i18n-t>
 
-  <Teleport to=".el-drawer__footer">
-    <div class="margin-left--auto">
-      <PButton
-        @click="handleGoToPreviousStep"
-        class="margin-right--4"
-        pType="primary"
-        pPlain
-      >
-        {{ t('previous') }}
-      </PButton>
+    <i18n-t
+      class="margin-bottom--6"
+      keypath="youCanModify"
+      tag="p"
+    >
+      <template #administrator>
+        <span class="font-bold">{{ t('administrator') }}</span>
+      </template>
+    </i18n-t>
 
-      <PButton
-        @click="handleSubmit(formRef)"
-        pType="primary"
+    <PLoader v-if="state.isLoading" />
+
+    <PForm
+      v-if="!state.isLoading && state.accesses?.length"
+      @submit.prevent="handleSubmit(formRef)"
+      ref="formRef"
+    >
+      <PFormItem
+        v-for="({ id, name }, index) in state.accesses"
+        :key="id"
+        class="collab-access__switch-wrapper"
       >
-        {{ t('submit') }}
-      </PButton>
-    </div>
-  </Teleport>
-</div>
+        <PSwitch
+          @update:model-value="(val) => handleModelUpdate({ val, index })"
+          :modelValue="state.accesses[index].selected"
+          :pActiveText="name"
+          class="margin-right--4"
+        />
+      </PFormItem>
+    </PForm>
+
+    <Teleport to=".el-drawer__footer">
+      <div class="margin-left--auto">
+        <PButton
+          @click="handleGoToPreviousStep"
+          class="margin-right--4"
+          pType="primary"
+          pPlain
+        >
+          {{ t('previous') }}
+        </PButton>
+
+        <PButton
+          @click="handleSubmit(formRef)"
+          pType="primary"
+        >
+          {{ t('submit') }}
+        </PButton>
+      </div>
+    </Teleport>
+  </div>
 </template>
 
 <script lang="ts" setup>

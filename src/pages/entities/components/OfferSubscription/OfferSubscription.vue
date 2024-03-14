@@ -16,12 +16,6 @@
     />
   </div>
 </template>
-<i18n lang="yaml">
-en-US:
-  servicesNotes: 'Enable or disable the services you want to provide for this folder'
-fr-FR:
-  servicesNotes: 'Activez ou désactivez les services que vous souhaitez donner à ce dossier'
-</i18n>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import OfferProviderProducts from './components/offer-provider-products/OfferProviderProducts.vue'
@@ -33,7 +27,7 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'select-product': [number, number],
+  'select-product': [number, number]
   'deselect-product': [number, number]
 }>()
 
@@ -47,3 +41,9 @@ function onDeselectProduct(offerId: number, productId: number) {
 
 defineProps<OfferSubscriptionProps>()
 </script>
+<i18n lang="yaml">
+en-US:
+  servicesNotes: 'Enable or disable the services you want to provide for this folder'
+fr-FR:
+  servicesNotes: 'Activez ou désactivez les services que vous souhaitez donner à ce dossier'
+</i18n>

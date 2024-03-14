@@ -33,15 +33,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-en-US:
-  confirm: 'Confirm'
-  cancel: 'Cancel'
-fr-FR:
-  confirm: 'Confirmer'
-  cancel: 'Annuler'
-</i18n>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -72,3 +63,12 @@ const handleCancel = () => {
   internalValue.value = false
 }
 </script>
+
+<i18n lang="yaml">
+en-US:
+  confirm: 'Confirm'
+  cancel: 'Cancel'
+fr-FR:
+  confirm: 'Confirmer'
+  cancel: 'Annuler'
+</i18n>

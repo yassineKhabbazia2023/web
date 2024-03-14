@@ -22,13 +22,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    subtitle: 'Select the offer you whish to activate for this folder'
-  fr-FR:
-    subtitle: "Sélectionnez l'offre que vous souhaitez activer pour ce dossier"
-</i18n>
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { POfferCard } from '@kpmg/styleguide'
@@ -60,3 +53,10 @@ function onSelectOffer(selectedOfferId: number) {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    subtitle: 'Select the offer you whish to activate for this folder'
+  fr-FR:
+    subtitle: "Sélectionnez l'offre que vous souhaitez activer pour ce dossier"
+</i18n>

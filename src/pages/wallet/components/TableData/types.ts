@@ -1,5 +1,5 @@
 export interface Props {
-  data: any,
+  data: any
   handleAddFavorite: Function
 }
 

@@ -24,7 +24,7 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'select-product': [number, number],
+  'select-product': [number, number]
   'deselect-product': [number, number]
 }>()
 

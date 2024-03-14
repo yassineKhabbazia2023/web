@@ -1,4 +1,5 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, expect, it } from 'vitest'
 import mock from './mock.json'
 import CollabRole from './'

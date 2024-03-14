@@ -87,7 +87,7 @@ import { removeFalsyValues } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
 import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '../../types'
 import Filters from '../../components/Filters'
-import { EntityStatus } from '../../components/Filters/types'
+import type { EntityStatus } from '../../components/Filters/types'
 import TableData from '../../components/TableData'
 
 const { t } = useI18n({

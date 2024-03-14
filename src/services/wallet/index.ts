@@ -1,9 +1,9 @@
 
-import { Collab } from '@/pages/folder/pages/collaborators/types'
+import type { Collab } from '@/pages/folder/pages/collaborators/types'
 import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
 import { handleRequestError } from '@/helper/helper'
 
-export const getCollaboratorsByIdEntity = async (
+export const getCollaboratorsByIdEntity = (
   idEntity: string
 ): Promise<Collab[]> => {
   try {
@@ -11,5 +11,5 @@ export const getCollaboratorsByIdEntity = async (
   } catch (error) {
     handleRequestError(`fetching collabs for entity ${idEntity}`, error)
   }
-  return []
+  return Promise.resolve([])
 }

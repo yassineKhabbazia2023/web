@@ -1,4 +1,5 @@
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import Filters from '.'
@@ -64,5 +65,4 @@ describe('filter', () => {
     await firstTagWrapper.vm.$emit('close')
     expect(wrapper.emitted('removeFilter')).toBeTruthy()
   })
-
 })

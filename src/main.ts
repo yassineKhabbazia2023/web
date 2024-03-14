@@ -1,4 +1,4 @@
-import { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import { createApp, h, watch } from 'vue'
 import singleSpaVue from 'single-spa-vue'
 import {

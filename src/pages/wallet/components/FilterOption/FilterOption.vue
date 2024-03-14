@@ -1,41 +1,41 @@
 <template>
-<PButton
-  pType="default"
-  pSize="default"
-  :class="[
-    { 'non-clickable': !clickable },
-    'filter-option',
-    `filter-option--${color}`,
-    cssClass,
-    'shadow--3',
-    'flex flex--align-items-center',
-    'radius--2'
-  ]"
-  @click="handleClick"
->
-  <span
-    class="
+  <PButton
+    pType="default"
+    pSize="default"
+    :class="[
+      { 'non-clickable': !clickable },
+      'filter-option',
+      `filter-option--${color}`,
+      cssClass,
+      'shadow--3',
+      'flex flex--align-items-center',
+      'radius--2'
+    ]"
+    @click="handleClick"
+  >
+    <span
+      class="
       filter-option__number
       font-semibold
       margin-right--3
   ">
-    {{ number }}
-  </span>
-  <PTag
-    class="filter-option__tag"
-    :pContent="content"
-    :pColor="color"
-    :pIconLeft="icon"
-    pEffect="light"
-  />
-  <PIcon
-    v-if="isSelected"
-    size="12px"
-    class="filter-option__icon"
-  >
-    <PIXCircleFill/>
-  </PIcon>
-</PButton>
+      {{ number }}
+    </span>
+    <PTag
+      class="filter-option__tag"
+      :pContent="content"
+      :pColor="color"
+      :pIconLeft="icon"
+      pEffect="light"
+    />
+    <PIcon
+      v-if="isSelected"
+      size="12px"
+      class="filter-option__icon"
+    >
+      <PIXCircleFill/>
+    </PIcon>
+  </PButton>
 </template>
 
 <script setup lang="ts">

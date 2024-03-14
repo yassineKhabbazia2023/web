@@ -17,13 +17,6 @@
   </PDrawer>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    number: 'No.'
-  fr-FR:
-    number: 'Nº'
-</i18n>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -65,3 +58,10 @@ const handleCloseDrawer = () => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    number: 'No.'
+  fr-FR:
+    number: 'Nº'
+</i18n>

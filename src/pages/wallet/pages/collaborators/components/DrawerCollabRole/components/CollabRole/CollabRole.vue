@@ -1,54 +1,54 @@
 <template>
-<div>
-  <i18n-t
-    class="margin-bottom--6"
-    keypath="youCanModify"
-    tag="p"
-  >
-    <template #administrator>
-      <span class="font-bold">{{ t('administrator') }}</span>
-    </template>
-  </i18n-t>
+  <div>
+    <i18n-t
+      class="margin-bottom--6"
+      keypath="youCanModify"
+      tag="p"
+    >
+      <template #administrator>
+        <span class="font-bold">{{ t('administrator') }}</span>
+      </template>
+    </i18n-t>
 
-  <PLoader v-if="state.isLoading" />
+    <PLoader v-if="state.isLoading" />
 
-  <PForm
-    v-if="!state.isLoading && state.roles.length"
-    @submit.prevent="handleSubmit(formRef)"
-    ref="formRef"
-    :pModel="state.formValue"
-  >
-    <PRadioGroup v-model="state.formValue.selectedRoleId">
-      <PRadioCard
-        v-for="({ description, id, name }) in state.roles"
-        :key="id"
-        :pLabel="id"
-        :pTitle="name"
-        :pDescription="description"
-      />
-    </PRadioGroup>
-  </PForm>
+    <PForm
+      v-if="!state.isLoading && state.roles.length"
+      @submit.prevent="handleSubmit(formRef)"
+      ref="formRef"
+      :pModel="state.formValue"
+    >
+      <PRadioGroup v-model="state.formValue.selectedRoleId">
+        <PRadioCard
+          v-for="({ description, id, name }) in state.roles"
+          :key="id"
+          :pLabel="id"
+          :pTitle="name"
+          :pDescription="description"
+        />
+      </PRadioGroup>
+    </PForm>
 
-  <Teleport to=".el-drawer__footer">
-    <div class="margin-left--auto">
-      <PButton
-        @click="handleCancel"
-        class="margin-right--4"
-        pType="primary"
-        pPlain
-      >
-        {{ t('cancel') }}
-      </PButton>
+    <Teleport to=".el-drawer__footer">
+      <div class="margin-left--auto">
+        <PButton
+          @click="handleCancel"
+          class="margin-right--4"
+          pType="primary"
+          pPlain
+        >
+          {{ t('cancel') }}
+        </PButton>
 
-      <PButton
-        @click="handleSubmit(formRef)"
-        pType="primary"
-      >
-        {{ t('next') }}
-      </PButton>
-    </div>
-  </Teleport>
-</div>
+        <PButton
+          @click="handleSubmit(formRef)"
+          pType="primary"
+        >
+          {{ t('next') }}
+        </PButton>
+      </div>
+    </Teleport>
+  </div>
 </template>
 
 <script lang="ts" setup>

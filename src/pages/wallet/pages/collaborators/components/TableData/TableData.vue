@@ -1,119 +1,119 @@
 <template>
-<div>
-  <PTable
-    :pData="props.data"
-    highlightCurrentRow
-    showOverflowTooltip
-    pStripe
-    tableLayout="fixed"
-  >
-    <PTableColumn
-      :pLabel="t('nameOfCollaborator')"
-      pProp="lastName"
-      pSortable
+  <div>
+    <PTable
+      :pData="props.data"
+      highlightCurrentRow
+      showOverflowTooltip
+      pStripe
+      tableLayout="fixed"
     >
-      <template #default="scope">
-        <div class="flex flex--align-items-center">
-          <PAvatar
-            class="margin-right--2"
-            pColor="persian-gradient"
-            pType="xsmall"
-          >
-            {{ scope.row.initials }}
-          </PAvatar>
-          <div>
-            <p class="font-semibold text-capitalize">
-              {{ scope.row.firstName }}
-              <span class="text-uppercase"> {{ scope.row.lastName }}</span>
-            </p>
+      <PTableColumn
+        :pLabel="t('nameOfCollaborator')"
+        pProp="lastName"
+        pSortable
+      >
+        <template #default="scope">
+          <div class="flex flex--align-items-center">
+            <PAvatar
+              class="margin-right--2"
+              pColor="persian-gradient"
+              pType="xsmall"
+            >
+              {{ scope.row.initials }}
+            </PAvatar>
+            <div>
+              <p class="font-semibold text-capitalize">
+                {{ scope.row.firstName }}
+                <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+              </p>
+            </div>
           </div>
-        </div>
-      </template>
-    </PTableColumn>
+        </template>
+      </PTableColumn>
 
-    <PTableColumn
-      :pLabel="t('email')"
-      pProp="email"
-      pSortable
-    />
+      <PTableColumn
+        :pLabel="t('email')"
+        pProp="email"
+        pSortable
+      />
 
-    <PTableColumn
-      :pLabel="t('phoneNumber')"
-      pProp="landPhone"
-      pSortable
-    />
+      <PTableColumn
+        :pLabel="t('phoneNumber')"
+        pProp="landPhone"
+        pSortable
+      />
 
-    <PTableColumn
-      :pLabel="t('ibsStatus')"
-      pProp="ibsStatus"
-      pSortable
-    />
+      <PTableColumn
+        :pLabel="t('ibsStatus')"
+        pProp="ibsStatus"
+        pSortable
+      />
 
-    <PTableColumn
-      :pLabel="t('role')"
-      pProp="role"
-      pSortable
-    />
+      <PTableColumn
+        :pLabel="t('role')"
+        pProp="role"
+        pSortable
+      />
 
-    <PTableColumn
-      :pLabel="t('office')"
-      pProp="office"
-      pSortable
-    />
+      <PTableColumn
+        :pLabel="t('office')"
+        pProp="office"
+        pSortable
+      />
 
-    <PTableColumn
-      :pLabel="t('access')"
-      pProp="access"
-      pSortable
-    >
-      <template #default="scope">
-        <PSwitch
-          :modelValue="accessState[scope.row.id]"
-          @update:model-value="(val) => accessState[scope.row.id] = val"
-        />
-      </template>
-    </PTableColumn>
+      <PTableColumn
+        :pLabel="t('access')"
+        pProp="access"
+        pSortable
+      >
+        <template #default="scope">
+          <PSwitch
+            :modelValue="accessState[scope.row.id]"
+            @update:model-value="(val) => accessState[scope.row.id] = val"
+          />
+        </template>
+      </PTableColumn>
 
-    <PTableColumn
-      :pLabel="t('options')"
-      :pWidth="100"
-      pProp="options"
-    >
-      <template #default="scope">
-        <PToolbox
-          @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
-          trigger="click"
-          :pElements="menuElements"
-        >
-          <PButton
-            pType="generic"
-            pSize="small"
+      <PTableColumn
+        :pLabel="t('options')"
+        :pWidth="100"
+        pProp="options"
+      >
+        <template #default="scope">
+          <PToolbox
+            @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
+            trigger="click"
+            :pElements="menuElements"
           >
-            <PIcon>
-              <PIThreeDots />
-            </PIcon>
-          </PButton>
-        </PToolbox>
-      </template>
-    </PTableColumn>
-  </PTable>
+            <PButton
+              pType="generic"
+              pSize="small"
+            >
+              <PIcon>
+                <PIThreeDots />
+              </PIcon>
+            </PButton>
+          </PToolbox>
+        </template>
+      </PTableColumn>
+    </PTable>
 
-  <div v-if="state.rowData">
-    <DrawerCollabDetails
-      v-if="state.hasDrawerOpened.collabDetails"
-      v-model="state.hasDrawerOpened.collabDetails"
-      :rowData="state.rowData"
-      :hasDrawerOpened="state.hasDrawerOpened.collabDetails"
-    />
+    <div v-if="state.rowData">
+      <DrawerCollabDetails
+        v-if="state.hasDrawerOpened.collabDetails"
+        v-model="state.hasDrawerOpened.collabDetails"
+        :rowData="state.rowData"
+        :hasDrawerOpened="state.hasDrawerOpened.collabDetails"
+      />
 
-    <DrawerCollabRole
-      v-if="state.hasDrawerOpened.collabRole"
-      v-model="state.hasDrawerOpened.collabRole"
-      :rowData="state.rowData"
-      :hasDrawerOpened="state.hasDrawerOpened.collabRole"
-    />
+      <DrawerCollabRole
+        v-if="state.hasDrawerOpened.collabRole"
+        v-model="state.hasDrawerOpened.collabRole"
+        :rowData="state.rowData"
+        :hasDrawerOpened="state.hasDrawerOpened.collabRole"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">

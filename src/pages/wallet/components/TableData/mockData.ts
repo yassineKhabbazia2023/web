@@ -1,5 +1,5 @@
 import { PIArrowUpCircle } from '@kpmg/styleguide'
-import { IWalletData } from '../../types'
+import type { IWalletData } from '../../types'
 import type { Entity } from '@kpmg/common'
 
 export const mockedEntity: Entity = {

@@ -66,7 +66,7 @@
           <ul
             v-if="
               activeStep === offerStepperStep.CUSTOMERS &&
-              principalContacts?.length
+                principalContacts?.length
             "
             class="offers-drawer__contact-list"
           >
@@ -121,37 +121,6 @@
     </PDrawer>
   </div>
 </template>
-
-<!-- eslint-disable max-len -->
-<i18n lang="yaml">
-en-US:
-  drawerTitle: 'Offers available on this folder'
-  previousLabel: 'Previous'
-  nextLabel: 'Next'
-  submitLabel: 'Submit'
-  services: 'Services'
-  customers: 'Customers'
-  collaborators: 'Collaborators'
-  information: 'Information'
-  offerIntranet: 'Offer Intranet'
-  offersBook: 'Offers Book'
-  confirmationTitle: 'Attention'
-  confirmationContent: 'After confirmation, the offer activation request will be submitted, and there will be no option to revert. Please review your information carefully before proceeding.'
-fr-FR:
-  drawerTitle: 'Offres activables sur ce dossier'
-  previousLabel: 'Précédent'
-  nextLabel: 'Suivant'
-  submitLabel: 'Valider'
-  services: 'Services'
-  customers: 'Clients'
-  collaborators: 'Collaborateurs'
-  information: 'Informations'
-  offerIntranet: "Intranet de l'offre"
-  offersBook: 'Book des offres'
-  confirmationTitle: 'Attention'
-  confirmationContent: "Une fois confirmée, la demande d'activation d'offre sera créée et vous ne pourrez plus revenir en arrière. Veuillez donc vérifier vos informations avant de valider."
-</i18n>
-<!-- eslint-disable max-len -->
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
@@ -296,7 +265,7 @@ const offersDrawerTitle = computed((): string => {
 })
 
 const sanitizedOffersDrawerLink = computed(
-  (): { link: string | undefined; titleLink: string } => {
+  (): { link: string | undefined, titleLink: string } => {
     if (currentSubscriptionOffer.value) {
       return {
         link: currentSubscriptionOffer.value.intranetLink,
@@ -405,6 +374,7 @@ onMounted(async () => {
   account.value = await fetchAccount(ACCOUNT_ID /* props.accountId */)
 })
 </script>
+
 <style lang="scss" scoped>
 .offers-drawer {
   &__company-name {
@@ -431,3 +401,37 @@ onMounted(async () => {
   }
 }
 </style>
+<i18n lang="yaml">
+en-US:
+  drawerTitle: 'Offers available on this folder'
+  previousLabel: 'Previous'
+  nextLabel: 'Next'
+  submitLabel: 'Submit'
+  services: 'Services'
+  customers: 'Customers'
+  collaborators: 'Collaborators'
+  information: 'Information'
+  offerIntranet: 'Offer Intranet'
+  offersBook: 'Offers Book'
+  confirmationTitle: 'Attention'
+  confirmationContent: >
+    After confirmation, the offer activation request will be submitted,
+    and there will be no option to revert. Please review your information
+    carefully before proceeding.
+fr-FR:
+  drawerTitle: 'Offres activables sur ce dossier'
+  previousLabel: 'Précédent'
+  nextLabel: 'Suivant'
+  submitLabel: 'Valider'
+  services: 'Services'
+  customers: 'Clients'
+  collaborators: 'Collaborateurs'
+  information: 'Informations'
+  offerIntranet: "Intranet de l'offre"
+  offersBook: 'Book des offres'
+  confirmationTitle: 'Attention'
+  confirmationContent: >
+    Une fois confirmée, la demande d'activation d'offre sera créée
+    et vous ne pourrez plus revenir en arrière.
+    Veuillez donc vérifier vos informations avant de valider.
+</i18n>

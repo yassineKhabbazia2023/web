@@ -1,117 +1,117 @@
 <template>
-<PDrawer
-  v-model="drawerModel"
-  :pTitle="t('informationsAboutCollaborator')"
-  @close-drawer-button="drawerModel = false"
->
-  <PUserCard
-    class="margin-bottom--6"
-    pAssetLeft="Image"
-    pAssetContent="user-male"
-    :pTitle="rowData.fullName"
-    :pSubtitle="rowData.email"
+  <PDrawer
+    v-model="drawerModel"
+    :pTitle="t('informationsAboutCollaborator')"
+    @close-drawer-button="drawerModel = false"
   >
-    <PTag
-      pColor="gray-500"
-      pSize="default"
-      pIconLeft="PIPerson"
-      :pContent="rowData.role"
-      pEffect="light"
-    />
-  </PUserCard>
+    <PUserCard
+      class="margin-bottom--6"
+      pAssetLeft="Image"
+      pAssetContent="user-male"
+      :pTitle="rowData.fullName"
+      :pSubtitle="rowData.email"
+    >
+      <PTag
+        pColor="gray-500"
+        pSize="default"
+        pIconLeft="PIPerson"
+        :pContent="rowData.role"
+        pEffect="light"
+      />
+    </PUserCard>
 
-  <i18n-t
-    class="margin-bottom--6"
-    keypath="youCanModify"
-    tag="p"
-  >
-    <template #administrator>
-      <strong>{{ t('administrator') }}</strong>
+    <i18n-t
+      class="margin-bottom--6"
+      keypath="youCanModify"
+      tag="p"
+    >
+      <template #administrator>
+        <strong>{{ t('administrator') }}</strong>
+      </template>
+    </i18n-t>
+
+    <PForm
+      @submit.prevent="handleSubmit(formRef)"
+      ref="formRef"
+      :pModel="formValues"
+      pLabelPosition="top"
+    >
+      <PFormItem
+        prop="lastName"
+        :pLabel="t('lastName')"
+      >
+        <PInput
+          :value="rowData.lastName"
+          disabled
+          pName="lastName"
+        />
+      </PFormItem>
+
+      <PFormItem
+        prop="firstName"
+        :pLabel="t('firstName')"
+      >
+        <PInput
+          :value="rowData.firstName"
+          disabled
+          pName="firstName"
+        />
+      </PFormItem>
+
+      <PFormItem
+        prop="email"
+        :pLabel="t('email')"
+      >
+        <PInput
+          :value="rowData.email"
+          disabled
+          pName="email"
+        />
+      </PFormItem>
+
+      <PFormItem
+        prop="mobilePhone"
+        :pLabel="t('mobilePhone')"
+      >
+        <PInput
+          v-model="formValues.mobilePhone"
+          :pPlaceholder="t('mobilePhone')"
+          pName="mobilePhone"
+        />
+      </PFormItem>
+
+      <PFormItem
+        prop="landPhone"
+        :pLabel="t('landPhone')"
+      >
+        <PInput
+          v-model="formValues.landPhone"
+          :pPlaceholder="t('landPhone')"
+          pName="landPhone"
+        />
+      </PFormItem>
+    </PForm>
+
+    <template #footer>
+      <div class="margin-left--auto">
+        <PButton
+          @click="handleReset"
+          class="margin-right--4"
+          pType="primary"
+          pPlain
+        >
+          {{ t('cancel') }}
+        </PButton>
+
+        <PButton
+          @click="handleSubmit(formRef)"
+          pType="primary"
+        >
+          {{ t('submit') }}
+        </PButton>
+      </div>
     </template>
-  </i18n-t>
-
-  <PForm
-    @submit.prevent="handleSubmit(formRef)"
-    ref="formRef"
-    :pModel="formValues"
-    pLabelPosition="top"
-  >
-    <PFormItem
-      prop="lastName"
-      :pLabel="t('lastName')"
-    >
-      <PInput
-        :value="rowData.lastName"
-        disabled
-        pName="lastName"
-      />
-    </PFormItem>
-
-    <PFormItem
-      prop="firstName"
-      :pLabel="t('firstName')"
-    >
-      <PInput
-        :value="rowData.firstName"
-        disabled
-        pName="firstName"
-      />
-    </PFormItem>
-
-    <PFormItem
-      prop="email"
-      :pLabel="t('email')"
-    >
-      <PInput
-        :value="rowData.email"
-        disabled
-        pName="email"
-      />
-    </PFormItem>
-
-    <PFormItem
-      prop="mobilePhone"
-      :pLabel="t('mobilePhone')"
-    >
-      <PInput
-        v-model="formValues.mobilePhone"
-        :pPlaceholder="t('mobilePhone')"
-        pName="mobilePhone"
-      />
-    </PFormItem>
-
-    <PFormItem
-      prop="landPhone"
-      :pLabel="t('landPhone')"
-    >
-      <PInput
-        v-model="formValues.landPhone"
-        :pPlaceholder="t('landPhone')"
-        pName="landPhone"
-      />
-    </PFormItem>
-  </PForm>
-
-  <template #footer>
-    <div class="margin-left--auto">
-      <PButton
-        @click="handleReset"
-        class="margin-right--4"
-        pType="primary"
-        pPlain
-      >
-        {{ t('cancel') }}
-      </PButton>
-
-      <PButton
-        @click="handleSubmit(formRef)"
-        pType="primary"
-      >
-        {{ t('submit') }}
-      </PButton>
-    </div>
-  </template>
-</PDrawer>
+  </PDrawer>
 </template>
 
 <script setup lang="ts">

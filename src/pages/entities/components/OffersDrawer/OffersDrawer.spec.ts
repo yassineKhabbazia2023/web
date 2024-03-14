@@ -1,5 +1,6 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
@@ -63,6 +64,10 @@ vi.mock('@/services/contact', () => ({
 vi.mock('@/services/account', () => ({
   fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
   patchAccount: vi.fn(() => Promise.resolve({}))
+}))
+
+vi.mock('@/services/contact', () => ({
+  getCollaborators: vi.fn(() => Promise.resolve([]))
 }))
 
 vi.mock('@/services/contact', () => ({

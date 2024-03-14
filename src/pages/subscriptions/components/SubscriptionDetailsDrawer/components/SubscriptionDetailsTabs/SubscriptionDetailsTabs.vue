@@ -11,19 +11,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-en-US:
-  services: 'Services'
-  customerUsers: 'Customer Users'
-  kpmgCollaborators: 'KPMG Collaborators'
-  information: 'Information'
-fr-FR:
-  services: 'Services'
-  customerUsers: 'Utilisateurs Clients'
-  kpmgCollaborators: 'Collaborateurs KPMG'
-  information: 'Informations'
-</i18n>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -54,3 +41,16 @@ const subscriptionDetailsTabs = [
   }
 ]
 </script>
+
+<i18n lang="yaml">
+en-US:
+  services: 'Services'
+  customerUsers: 'Customer Users'
+  kpmgCollaborators: 'KPMG Collaborators'
+  information: 'Information'
+fr-FR:
+  services: 'Services'
+  customerUsers: 'Utilisateurs Clients'
+  kpmgCollaborators: 'Collaborateurs KPMG'
+  information: 'Informations'
+</i18n>

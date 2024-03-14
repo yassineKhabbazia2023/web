@@ -1,5 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
@@ -199,7 +200,7 @@ describe('tableData', () => {
 
     expect(wrapper.emitted('access')).toStrictEqual([[id]])
   })
-  it('should change ibs selected and emit access', async () => {
+  it('should change ibs selected and emit access', () => {
     const ibsLink = document.body.getElementsByClassName('link')[0] as HTMLElement
     ibsLink.click()
 

@@ -23,6 +23,6 @@ export const getStaffSizeRange = (staffSize: number) => {
     case staffSize >= 300:
       return '+300'
     default:
-      return '' + staffSize
+      return `${staffSize}`
   }
 }

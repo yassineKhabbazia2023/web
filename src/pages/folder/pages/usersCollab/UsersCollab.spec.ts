@@ -8,7 +8,7 @@ const createWrapper = (): VueWrapper<any> =>
     attachTo: document.body
   })
 
-describe('UsersCollab', () => {
+describe('usersCollab', () => {
   let wrapper: VueWrapper<any>
 
   beforeEach(() => {
