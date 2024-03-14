@@ -1,4 +1,4 @@
-import { Document } from '@/models/Document'
+import type { Document } from '@/models/Document'
 import { describe, it, expect } from 'vitest'
 import { getPermissionsFromDocuments } from './documentSelectionHelper'
 
@@ -32,7 +32,7 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_DELETE_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '2',
@@ -55,7 +55,7 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_DELETE_DOCUMENT'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '3',
@@ -78,8 +78,8 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_MOVE_DOCUMENT'],
-        isNew: false
-      }
+        isNew: false,
+      },
     ]
     const permissions = getPermissionsFromDocuments(documents)
     expect(permissions).toEqual(['CAN_DELETE_DOCUMENT', 'CAN_MOVE_DOCUMENT'])
@@ -108,7 +108,7 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_DELETE_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '2',
@@ -131,8 +131,8 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_DELETE_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
-        isNew: false
-      }
+        isNew: false,
+      },
     ]
     const permissions = getPermissionsFromDocuments(documents)
     expect(permissions).toEqual(['CAN_DELETE_DOCUMENT', 'CAN_MOVE_DOCUMENT'])
@@ -160,7 +160,7 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_RENAME_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '2',
@@ -183,8 +183,8 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_RENAME_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
-        isNew: false
-      }
+        isNew: false,
+      },
     ]
     const permissions = getPermissionsFromDocuments(documents)
     expect(permissions).toEqual(['CAN_MOVE_DOCUMENT'])
@@ -212,8 +212,8 @@ describe('getPermissionsFromDocuments', () => {
         source: { id: 1, code: '', libelle: '' },
         piaStatus: { technicalName: '', labelFr: '', labelEn: '', date: '' },
         permissions: ['CAN_RENAME_DOCUMENT', 'CAN_MOVE_DOCUMENT'],
-        isNew: false
-      }
+        isNew: false,
+      },
     ]
     const permissions = getPermissionsFromDocuments(documents)
     expect(permissions).toEqual(['CAN_RENAME_DOCUMENT', 'CAN_MOVE_DOCUMENT'])

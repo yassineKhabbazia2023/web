@@ -1,16 +1,16 @@
 import { formatBinData } from './binHelper'
 import { describe, it, expect } from 'vitest'
-import { Service } from '@/models/Service'
+import type { Service } from '@/models/Service'
 
 const entryData: Service[] = [
   {
     ServiceId: '1',
-    ServiceName: 'abc'
+    ServiceName: 'abc',
   },
   {
     ServiceId: '2',
-    ServiceName: 'def'
-  }
+    ServiceName: 'def',
+  },
 ]
 
 describe('binHelper', () => {
@@ -22,13 +22,13 @@ describe('binHelper', () => {
       {
         id: '1',
         name: 'abc',
-        iconName: 'binIcon'
+        iconName: 'binIcon',
       },
       {
         id: '2',
         name: 'def',
-        iconName: 'binIcon'
-      }
+        iconName: 'binIcon',
+      },
     ]
 
     const expectedOutput = [
@@ -37,8 +37,8 @@ describe('binHelper', () => {
         name: 'Corbeille',
         iconName: 'binIcon',
         isRootFolder: true,
-        children: expectedServiceFormat
-      }
+        children: expectedServiceFormat,
+      },
     ]
 
     expect(formattedBinData).toStrictEqual(expectedOutput)

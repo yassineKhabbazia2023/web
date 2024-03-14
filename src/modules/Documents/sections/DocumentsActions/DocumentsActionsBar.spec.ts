@@ -1,22 +1,23 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import DocumentsActionsBar from './DocumentsActionsBar.vue'
 import { describe, expect, it, vi } from 'vitest'
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { PActionBar } from '@kpmg/styleguide'
-import { DocumentActionsBarProps } from './DocumentActionsBarTypes'
+import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
 const pinia = createPinia()
 
 const createWrapper = (props: DocumentActionsBarProps) =>
   mount(DocumentsActionsBar, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 
 vi.mock('@kpmg/common', () => ({
-  debounce: vi.fn((fn) => fn)
+  debounce: vi.fn((fn) => fn),
 }))
 
 const findActionBarLeft = (wrapper: any) => {
@@ -105,7 +106,6 @@ describe('event', () => {
     await nextTick()
 
     expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
-
   })
 
   it('should propagate  PactionBar p-search-input event after the debounce', async () => {

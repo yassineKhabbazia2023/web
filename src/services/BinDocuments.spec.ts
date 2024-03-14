@@ -2,23 +2,23 @@
 import { it, expect, vi, describe } from 'vitest'
 import {
   fetchBinDocuments,
-  restoreDocuments
+  restoreDocuments,
 } from './BinDocuments'
 import type { Service } from '@/models/Service'
 
 const mockDsGet = vi.fn(() => {
   return Promise.resolve({
     data: {
-      documents: 'fetched'
-    }
+      documents: 'fetched',
+    },
   })
 })
 
 const mockDsPost = vi.fn(() => {
   return Promise.resolve({
     data: {
-      documents: 'posted'
-    }
+      documents: 'posted',
+    },
   })
 })
 
@@ -26,15 +26,15 @@ vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
     ds: {
       get: mockDsGet,
-      post: mockDsPost
-    }
+      post: mockDsPost,
+    },
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 describe('bin documents service', () => {
@@ -47,15 +47,15 @@ describe('bin documents service', () => {
     await fetchBinDocuments(service.ServiceId, accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/trash/mapped',
       {
         params: {
           limit: 10,
           skip: 0,
-          sort: '-deleted'
-        }
-      }
+          sort: '-deleted',
+        },
+      },
     )
   })
 
@@ -68,11 +68,11 @@ describe('bin documents service', () => {
     await restoreDocuments(service.ServiceId, accountId, ['doc-id'])
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/trash/restore',
       {
-        ids: ['doc-id']
-      }
+        ids: ['doc-id'],
+      },
     )
   })
 })

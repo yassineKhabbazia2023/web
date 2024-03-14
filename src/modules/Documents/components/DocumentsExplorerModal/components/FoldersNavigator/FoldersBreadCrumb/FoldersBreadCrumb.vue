@@ -20,10 +20,10 @@
 <script setup lang="ts">
 import { PBreadcrumb, PIFolderPlus, PIcon } from '@kpmg/styleguide'
 import { computed } from 'vue'
-import {
-  FoldersBreadCrumbProps
+import type {
+  FoldersBreadCrumbProps,
 } from './FoldersBreadCrumbTypes'
-import { Folder } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
 import type { BreadcrumbItems }
   from '@kpmg/styleguide/dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes'
@@ -41,23 +41,22 @@ const generateBreadCrumb = (): BreadcrumbItems[] => {
   let targetFolder: Folder | undefined = props.currentFolder
   items.push({
     pId: targetFolder.id,
-    pText: targetFolder.name
+    pText: targetFolder.name,
   })
   if (targetFolder && targetFolder.id && targetFolder.parent) {
     while (targetFolder && targetFolder.parent.id !== 0) {
       const parentFolder = findFolderDeepById(
         props.currentServiceFolder,
-        targetFolder?.parent.id ?? null
+        targetFolder?.parent.id ?? null,
       )
 
       targetFolder = parentFolder
       if (targetFolder) {
         items.push({
           pId: targetFolder.id,
-          pText: targetFolder.name
+          pText: targetFolder.name,
         })
       }
-
     }
   }
 

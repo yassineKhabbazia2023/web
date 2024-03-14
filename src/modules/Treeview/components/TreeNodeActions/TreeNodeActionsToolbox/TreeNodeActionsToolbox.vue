@@ -17,19 +17,19 @@
 import { computed } from 'vue'
 import { PToolbox } from '@kpmg/styleguide'
 import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper'
-import { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
+import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
 
 const emit = defineEmits([
   'p-toolbox-item-clicked',
-  'p-toolbox-dropdown-close'
+  'p-toolbox-dropdown-close',
 ])
 
 const props = withDefaults(
   defineProps<TreeNodeActionsToolboxProps>(),
   {
     selectedOrHovered: true,
-    isVisible: true
-  }
+    isVisible: true,
+  },
 )
 const hasActionButton = computed(() => {
   return props.permissions && props.permissions.length > 0

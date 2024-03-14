@@ -1,13 +1,15 @@
 /* eslint-disable vitest/require-hook */
 /* eslint-disable vitest/no-hooks */
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type DeleteFolderConfirmationPopupProps }
   from '@/modules/Treeview/components/popups/Delete/DeleteFolderConfirmationPopupTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import ConfirmationPopup from '@/modules/common/templates/popups'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 
 const defaultProps: DeleteFolderConfirmationPopupProps = {
   isDeleteFolderPopupVisible: false,
@@ -15,7 +17,7 @@ const defaultProps: DeleteFolderConfirmationPopupProps = {
   folderName: '',
   confirmButtonContent: '',
   cancelButtonContent: '',
-  isConfirmButtonLoading: false
+  isConfirmButtonLoading: false,
 }
 
 type DeleteFolderConfirmationPopupSetup = {
@@ -32,13 +34,13 @@ export type DeleteFolderConfirmationPopupWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DeleteFolderConfirmationPopupProps = defaultProps
+  props: DeleteFolderConfirmationPopupProps = defaultProps,
 ): DeleteFolderConfirmationPopupWrapper => {
   return mount(DeleteFolderConfirmationPopup, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as DeleteFolderConfirmationPopupWrapper
 }
 
@@ -51,7 +53,7 @@ describe('deleteFolderConfirmationPopup', () => {
     it('should display confirmation popup when isDeleteFolderPopupVisible is true', async () => {
       const updatedProps: DeleteFolderConfirmationPopupProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -65,7 +67,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const updatedProps: DeleteFolderConfirmationPopupProps = {
         ...defaultProps,
         isDeleteFolderPopupVisible: true,
-        folderName: 'folderToDelete'
+        folderName: 'folderToDelete',
       }
 
       // eslint-disable-next-line max-len
@@ -84,7 +86,7 @@ describe('deleteFolderConfirmationPopup', () => {
     it('should emit confirm-delete-folder when confirmation button click', async () => {
       const updatedProps: DeleteFolderConfirmationPopupProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -97,7 +99,7 @@ describe('deleteFolderConfirmationPopup', () => {
     it('should emit cancel-delete-folder when cancel button click', async () => {
       const updatedProps: DeleteFolderConfirmationPopupProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -110,7 +112,7 @@ describe('deleteFolderConfirmationPopup', () => {
     it('should emit cancel-delete-folder when closing the popup', async () => {
       const updatedProps: DeleteFolderConfirmationPopupProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -129,6 +131,5 @@ describe('deleteFolderConfirmationPopup', () => {
 
         expect(wrapper.emitted('update:isDeleteFolderPopupVisible')).toBeTruthy()
       })
-
   })
 })

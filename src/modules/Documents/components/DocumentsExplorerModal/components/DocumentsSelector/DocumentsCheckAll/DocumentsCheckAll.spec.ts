@@ -6,21 +6,21 @@ import { describe, expect, it } from 'vitest'
 import { PCheckbox } from '@kpmg/styleguide'
 import DocumentsCheckAll
   from '@/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsCheckAll'
-import { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
+import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
 
 const defaultProps: DocumentsCheckAllProps = {
   disabled: false,
-  checked: false
+  checked: false,
 }
 const pinia = createPinia()
 const createWrapper = (
-  props: DocumentsCheckAllProps = defaultProps
+  props: DocumentsCheckAllProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentsCheckAll, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 describe('documentsCheckAll', () => {
@@ -44,7 +44,7 @@ describe('documentsCheckAll', () => {
       await nextTick()
       expect(wrapper.emitted('check-all-documents')).toBeTruthy()
       expect(wrapper.emitted('check-all-documents')).toStrictEqual([
-        [true]
+        [true],
       ])
     })
   })

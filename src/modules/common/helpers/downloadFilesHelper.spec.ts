@@ -5,7 +5,7 @@ import { downloadFile } from './downloadFilesHelper'
 describe('downloadFile', () => {
   beforeEach(() => {
     vi.spyOn(window.URL, 'createObjectURL').mockImplementation(
-      () => 'http://fake.url'
+      () => 'http://fake.url',
     )
   })
 
@@ -15,9 +15,9 @@ describe('downloadFile', () => {
     vi.spyOn(window.document.body, 'appendChild')
     downloadFile(data, fileName)
 
-    expect(URL.createObjectURL).toHaveBeenCalledWith(new Blob([data]))
-    expect(window.document.body.appendChild).toHaveBeenCalledWith(
-      expect.any(HTMLAnchorElement)
+    expect(URL.createObjectURL).toHaveBeenCalledWithExactlyOnceWith(new Blob([data]))
+    expect(window.document.body.appendChild).toHaveBeenCalledWithExactlyOnceWith(
+      expect.any(HTMLAnchorElement),
     )
   })
 })

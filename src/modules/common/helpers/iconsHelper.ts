@@ -18,7 +18,7 @@ import {
   PIFiletypeTxt,
   PIFiletypeXls,
   PIFiletypeXlsx,
-  PIFiletypeXml
+  PIFiletypeXml,
 } from '@kpmg/styleguide'
 
 export const getFileIcon = (stringWithDot: string) => {

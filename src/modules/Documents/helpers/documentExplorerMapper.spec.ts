@@ -1,7 +1,7 @@
 import { documentsMock, documentsMockWithError } from '../mocks/documentMock'
 import {
   mapExplorerDocumentFromDocuments,
-  mapExplorerDocumentFromFiles
+  mapExplorerDocumentFromFiles,
 } from './documentExplorerMapper'
 import { describe, it, expect } from 'vitest'
 
@@ -9,7 +9,7 @@ describe('mapping functions', () => {
   describe('mapExplorerDocumentFromFiles', () => {
     it('maps files to ExplorerUploadDocument', () => {
       const files = [
-        new File(['content'], 'example.txt', { type: 'text/plain' })
+        new File(['content'], 'example.txt', { type: 'text/plain' }),
       ]
       const result = mapExplorerDocumentFromFiles(files)
       result.forEach((document) => {
@@ -19,11 +19,10 @@ describe('mapping functions', () => {
       })
       expect(result).toHaveLength(files.length)
       expect(result[0].givenActionState).toBe('TO_DO')
-
     })
     it('maps files to ExplorerUploadDocument with error UnauthorizedFileType', () => {
       const files2 = [
-        new File(['content'], 'example.kgjfh', { type: 'text/plain' })
+        new File(['content'], 'example.kgjfh', { type: 'text/plain' }),
       ]
       const result = mapExplorerDocumentFromFiles(files2)
       expect(result[0].givenActionState).toBe('ERROR')
@@ -40,7 +39,7 @@ describe('mapping functions', () => {
           'jzdahfhqzjfhqskjghqksjglkjqgkqkjgqkgkqgkqgqsfjksqfsqgqsg' +
           'jzdahfhqzjfhqskjghqksjglkjqgkqkjgqkgkqgkqgqsfjksqfsqgqsg' +
           'kqshgkjqskgqskg.txt',
-          { type: 'text/plain' })
+          { type: 'text/plain' }),
       ]
       const result = mapExplorerDocumentFromFiles(files2)
       expect(result[0].givenActionState).toBe('ERROR')
@@ -51,7 +50,7 @@ describe('mapping functions', () => {
       const files2 = [
         new File(['content'],
           'test*kiki.txt',
-          { type: 'text/plain' })
+          { type: 'text/plain' }),
       ]
       const result = mapExplorerDocumentFromFiles(files2)
       expect(result[0].givenActionState).toBe('ERROR')
@@ -80,6 +79,5 @@ describe('mapping functions', () => {
       expect(result[1].givenActionState).toBe('ERROR')
       expect(result[1].codeError).toBe('PermissionInvalidError')
     })
-
   })
 })

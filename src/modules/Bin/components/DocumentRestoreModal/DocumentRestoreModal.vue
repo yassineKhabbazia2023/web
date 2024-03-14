@@ -27,7 +27,7 @@ import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
@@ -35,9 +35,9 @@ const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 const props = defineProps<DocumentRestoreModalTypesProps>()
 
 const emit = defineEmits<{
-  'update:isVisible': [boolean],
-  'confirm-restore-document': [],
-  'cancel-restore-document': [],
+  'update:isVisible': [boolean]
+  'confirm-restore-document': []
+  'cancel-restore-document': []
   'navigate-to-folder': [number]
 }>()
 
@@ -49,7 +49,7 @@ const isPopupVisible = computed({
   },
   set(value) {
     emit('update:isVisible', value)
-  }
+  },
 })
 
 const message = computed(() => {
@@ -80,7 +80,7 @@ const handleConfirm = async () => {
     const docs = await restoreDocuments(
       props.serviceId,
       props.entityId,
-      [props.document.id]
+      [props.document.id],
     )
 
     emit('confirm-restore-document')
@@ -104,14 +104,14 @@ const triggerErrorNotification = () => {
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: true,
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 
 const triggerSuccessNotification = (folderId: number, path: string) => {
   const msg = t('restore.notifications.success',
     {
-      folder: path
+      folder: path,
     })
 
   toastPlugin({
@@ -120,7 +120,7 @@ const triggerSuccessNotification = (folderId: number, path: string) => {
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
-    onClick: () => goToFolder(folderId)
+    onClick: () => goToFolder(folderId),
   })
 }
 </script>

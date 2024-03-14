@@ -1,4 +1,4 @@
-import { Service } from '@/models/Service'
+import type { Service } from '@/models/Service'
 
 export interface TransmitDocumentsComposableProps {
   selectedDocumentsIds: string[]

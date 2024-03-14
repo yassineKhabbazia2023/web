@@ -3,21 +3,21 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type CreateFolderSectionProps }
   from '@/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
 import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 const pinia = createPinia()
@@ -38,16 +38,16 @@ const defaultProps: CreateFolderSectionProps = {
         permissions: [],
         properties: {} as FolderProperties,
         serviceId: 'some-service',
-        iconName: ''
-      } as Folder
+        iconName: '',
+      } as Folder,
     ],
     name: 'A',
     parent: { id: 0 },
     permissions: ['CAN_CREATE_FOLDER'],
     properties: {} as FolderProperties,
-    serviceId: 'some-service'
+    serviceId: 'some-service',
   } as Folder,
-  isCreateFolderModalVisible: false
+  isCreateFolderModalVisible: false,
 }
 
 const mockToastPlugin = vi.fn()
@@ -58,21 +58,21 @@ const createWrapper = (props: CreateFolderSectionProps = defaultProps) => {
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   })
 }
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 vi.mock('@/services/Folder', () => ({
   tokenValue: 'mocked token',
   CreateFolder: () => {
     throw new Error('Something uncool')
-  }
+  },
 }))
 
 describe('createFolderSection', () => {
@@ -84,11 +84,10 @@ describe('createFolderSection', () => {
   })
 
   describe('interactions', () => {
-
     it('should display success notification correctly on success create', async () => {
       const updatedProps: CreateFolderSectionProps = {
         ...defaultProps,
-        isCreateFolderModalVisible: true
+        isCreateFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)

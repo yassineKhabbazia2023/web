@@ -9,19 +9,19 @@ import { documentMock } from '@/modules/Documents/mocks/documentMock'
 const defaultProps: DocumentRenameModalProps = {
   document: documentMock,
   isConfirmButtonLoading: false,
-  isRenameModalOpened: true
+  isRenameModalOpened: true,
 }
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentRenameModalProps = defaultProps
+  props: DocumentRenameModalProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentRenameModal, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 

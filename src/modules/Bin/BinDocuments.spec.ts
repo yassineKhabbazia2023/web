@@ -3,21 +3,23 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { binDocumentsMock } from './mocks/binDocumentMock'
 import BinDocuments from './BinDocuments.vue'
 import { createPinia, setActivePinia } from 'pinia'
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import BinDocumentsList from './sections/BinDocumentsList'
-import { BinDocumentProps } from './BinDocumentsTypes'
+import type { BinDocumentProps } from './BinDocumentsTypes'
 import {
-  fetchBinDocuments
+  fetchBinDocuments,
 } from '@/services/BinDocuments'
-import { nextTick, ComponentPublicInstance } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import DocumentRestoreModal from '@/modules/Bin/components/DocumentRestoreModal'
 import { PBreadcrumb, PPagination, PLoader } from '@kpmg/styleguide'
-import { BinDocument, BinDocumentsWithTableStructure } from '@/models/Document'
+import type { BinDocument, BinDocumentsWithTableStructure } from '@/models/Document'
 
 const defaultProps: BinDocumentProps = {
   currentBinService: 'serv',
   selectedEntity: 'ent',
-  selectedServiceName: 'compta'
+  selectedServiceName: 'compta',
 }
 
 type BinDocumentsSetup = {
@@ -34,42 +36,41 @@ export type BinDocumentsWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: BinDocumentProps = defaultProps
+  props: BinDocumentProps = defaultProps,
 ): BinDocumentsWrapper => {
   return mount(BinDocuments, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as BinDocumentsWrapper
 }
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 vi.mock('@/services/BinDocuments', () => ({
   restoreDocuments: vi.fn(),
   fetchBinDocuments: vi.fn(() => {
     return binDocumentsMock
-  })
+  }),
 }))
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 describe('binDocuments', () => {
   beforeEach(() => {
-
     setActivePinia(pinia)
   })
   describe('events', () => {
@@ -79,11 +80,11 @@ describe('binDocuments', () => {
         const items = []
         items.push({
           pId: -1,
-          pText: 'Corbeille'
+          pText: 'Corbeille',
         })
         items.push({
           pId: -1,
-          pText: defaultProps.selectedServiceName
+          pText: defaultProps.selectedServiceName,
         })
         const wrapper = createWrapper()
         await nextTick()
@@ -98,12 +99,12 @@ describe('binDocuments', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,
           10,
-          '-deleted'
+          '-deleted',
         )
         await nextTick()
         const binList = wrapper.findComponent(BinDocumentsList)
@@ -153,12 +154,12 @@ describe('binDocuments', () => {
         await nextTick()
         const documents = wrapper.findComponent(BinDocumentsList)
         await documents.vm.$emit('on-sort-change', '+name')
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,
           10,
-          '+name'
+          '+name',
         )
       })
       it('should open restore modal when restore-document-action is emitted', async () => {
@@ -187,12 +188,12 @@ describe('binDocuments', () => {
         await pagination.vm.$emit('on-page-range-changed', 50)
         await nextTick()
         expect(pagination.props('pPageSize')).toBe(50)
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,
           50,
-          '-deleted'
+          '-deleted',
         )
       })
       it('should call fetch documents when confirm-restore-document is emitted', async () => {
@@ -210,12 +211,12 @@ describe('binDocuments', () => {
 
         expect(restoreModal.props('isVisible')).toBeFalsy()
         expect(restoreModal.props('document')).toBeNull()
-        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
+        expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWithExactlyOnceWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
           0,
           10,
-          '-deleted'
+          '-deleted',
         )
       })
       it('should close restore modal when cancel-restore-document is emitted', async () => {

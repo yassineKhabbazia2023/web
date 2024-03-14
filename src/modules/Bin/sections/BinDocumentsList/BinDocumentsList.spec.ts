@@ -10,17 +10,17 @@ import { nextTick } from 'vue'
 import BinTableElement from './components/BinTableElement'
 
 const defaultProps: BinDocumentsListProps = {
-  binDocuments: binDocumentsMock
+  binDocuments: binDocumentsMock,
 }
 
 const createWrapper = (
-  props: BinDocumentsListProps = defaultProps
+  props: BinDocumentsListProps = defaultProps,
 ) => {
   return mount(BinDocumentsList, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 
@@ -44,7 +44,6 @@ describe('documentList', () => {
       const elements = wrapper.findAllComponents(BinTableElement)
       await nextTick()
       expect(elements).toHaveLength(3)
-
     })
   })
   describe('events', () => {
@@ -82,7 +81,7 @@ describe('documentList', () => {
       await nextTick()
 
       expect(wrapper.emitted('restore-document-action')).toStrictEqual([
-        [binDocumentsMock.documentsPage.items[0]]
+        [binDocumentsMock.documentsPage.items[0]],
       ])
     })
   })

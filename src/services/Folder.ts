@@ -4,7 +4,7 @@ import type { Folder } from '@/models/Folder'
 
 export const fetchServiceFolders = async (
   serviceId: Service['ServiceId'],
-  entityId: string
+  entityId: string,
 ): Promise<Folder[]> => {
   const fetchFolderUrl = `${serviceId}/${entityId}/folders`
   const apiObject = api().ds
@@ -13,14 +13,14 @@ export const fetchServiceFolders = async (
 
 export const fetchServicesFolders = async (
   services: Service[],
-  entityId: string
+  entityId: string,
 ): Promise<Folder[][]> => {
   const foldersByService: Folder[][] = []
 
   for (const s of services) {
     const serviceFolder = await fetchServiceFolders(
       s.ServiceId,
-      entityId
+      entityId,
     )
     foldersByService.push(serviceFolder)
   }
@@ -32,14 +32,14 @@ export const CreateFolder = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
   parentFolderId: Folder['id'],
-  folderName: string
+  folderName: string,
 ) => {
   const createFolderUrl = `${serviceId}/${entityId}/folders`
   const apiObject = api().ds
   return (
     await apiObject.post(createFolderUrl, {
       parentId: parentFolderId,
-      name: folderName
+      name: folderName,
     })
   ).data
 }
@@ -47,13 +47,13 @@ export const RenameFolder = async (
   folderId: Folder['id'],
   folderName: string,
   entityId: string,
-  serviceId: null | Service['ServiceId']
+  serviceId: null | Service['ServiceId'],
 ) => {
   const renameFolderUrl = `${serviceId}/${entityId}/folders/${folderId}`
   const apiObject = api().ds
   return (
     await apiObject.patch(renameFolderUrl, [
-      { op: 'replace', path: '/name', value: folderName }
+      { op: 'replace', path: '/name', value: folderName },
     ])
   ).data
 }
@@ -62,7 +62,7 @@ export const deleteFolder = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
   folderId: Folder['id'],
-  keepFolder: boolean
+  keepFolder: boolean,
 ) => {
   const deleteFolderUrl = `${serviceId}/${entityId}/folders/${folderId}?keepFolder=${keepFolder}`
   const apiObject = api().ds
@@ -72,15 +72,15 @@ export const deleteFolder = async (
 export const downloadFolder = async (
   serviceId: Service['ServiceId'],
   entityId: string,
-  folderId: Folder['id']
+  folderId: Folder['id'],
 ) : Promise<void> => {
   const downloadFolderUrl = `${serviceId}/${entityId}/folders/${folderId}/archive`
   const apiObject = api().ds
   return (await apiObject.get(
     downloadFolderUrl,
     {
-      responseType: 'blob'
-    }
+      responseType: 'blob',
+    },
   )).data
 }
 
@@ -88,13 +88,13 @@ export const moveFolderAsync = async (
   serviceId: Service['ServiceId'],
   entityId: string,
   folderId: Folder['id'],
-  destinationFolderId: Folder['id']
+  destinationFolderId: Folder['id'],
 ): Promise<void> => {
   const moveFolderUrl = `${serviceId}/${entityId}/folders/${folderId}`
   const apiObject = api().ds
   return (
     await apiObject.patch(moveFolderUrl, [
-      { op: 'replace', path: '/parent/id', value: destinationFolderId.toString() }
+      { op: 'replace', path: '/parent/id', value: destinationFolderId.toString() },
     ])
   ).data
 }

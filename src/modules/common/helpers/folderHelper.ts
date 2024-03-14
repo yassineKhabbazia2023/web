@@ -2,13 +2,13 @@ import type { Folder } from '@/models/Folder'
 import { type BreadcrumbItems }
   from '@kpmg/styleguide/dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes'
 import {
-  findFolderDeepById
+  findFolderDeepById,
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 
 export const getBreadcrumbItems = (
   root: Folder[],
   id: number,
-  acc: BreadcrumbItems[] = []
+  acc: BreadcrumbItems[] = [],
 ): BreadcrumbItems[] | undefined => {
   if (root.length === 0) {
     return []
@@ -18,7 +18,7 @@ export const getBreadcrumbItems = (
   if (folder && folder.id) {
     const item: BreadcrumbItems = {
       pId: folder.id,
-      pText: folder.name
+      pText: folder.name,
     }
     acc.push(item)
 

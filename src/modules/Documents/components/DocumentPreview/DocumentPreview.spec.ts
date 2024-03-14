@@ -2,10 +2,11 @@
 // eslint-disable-next-line vitest/max-expects
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
 import { PDocumentDisplay, PDocumentViewer, PIcon } from '@kpmg/styleguide'
-import { DocumentsPreviewProps } from './DocumentPreviewTypes'
+import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import { documentMock } from '../../mocks/documentMock'
 import DocumentPreview from '.'
 import { downloadDocument, previewDocument } from '@/services/Documents'
@@ -17,40 +18,40 @@ const defaultProps: DocumentsPreviewProps = {
   entityId: 'entityId',
   openDrawer: true,
   selectedDocumentIndex: 1,
-  totalDocumentsCount: 10
+  totalDocumentsCount: 10,
 }
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentsPreviewProps = defaultProps
+  props: DocumentsPreviewProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentPreview, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 vi.mock('@/services/Documents', () => ({
   previewDocument: vi.fn(() => {
     return Promise.resolve({
       data: new ArrayBuffer(1),
-      headers: { 'content-type': 'image/jpeg' }
+      headers: { 'content-type': 'image/jpeg' },
     })
   }),
-  downloadDocument: vi.fn()
+  downloadDocument: vi.fn(),
 }))
 
 describe('documentPreview', () => {
@@ -79,13 +80,13 @@ describe('documentPreview', () => {
       expect(icon.exists()).toBeTruthy()
       expect(getFileIcon(documentMock.name).name).toBe('PIFiletypePdf')
       await pviewer.vm.$emit(
-        'next-document-button-click'
+        'next-document-button-click',
       )
       await nextTick()
       expect(wrapper.emitted('next-document-preview-button-click')).toBeTruthy()
 
       await pviewer.vm.$emit(
-        'previous-document-button-click'
+        'previous-document-button-click',
       )
       await nextTick()
       expect(wrapper.emitted('previous-document-preview-button-click')).toBeTruthy()
@@ -113,7 +114,7 @@ describe('documentPreview', () => {
 
       const pviewer = wrapper.findComponent(PDocumentViewer)
       await pviewer.vm.$emit(
-        'next-document-button-click'
+        'next-document-button-click',
       )
       await nextTick()
       expect(wrapper.emitted('next-document-preview-button-click')).toBeTruthy()
@@ -127,7 +128,7 @@ describe('documentPreview', () => {
 
       const pviewer = wrapper.findComponent(PDocumentViewer)
       await pviewer.vm.$emit(
-        'previous-document-button-click'
+        'previous-document-button-click',
       )
       await nextTick()
       expect(wrapper.emitted('previous-document-preview-button-click')).toBeTruthy()
@@ -154,7 +155,6 @@ describe('documentPreview', () => {
       const pDocumentDisplay = wrapper.findComponent(PDocumentDisplay)
       expect(pDocumentDisplay.props('pDocumentExtension')).toBe('jpeg')
       expect(vi.mocked(previewDocument)).toHaveBeenCalledTimes(1)
-
     })
 
     it('should emit close draxer-close event oppon PDocumentViewer close event', async () => {

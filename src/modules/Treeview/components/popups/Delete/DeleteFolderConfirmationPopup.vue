@@ -26,7 +26,7 @@ import { type DeleteFolderConfirmationPopupProps }
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<DeleteFolderConfirmationPopupProps>()
@@ -34,7 +34,7 @@ const props = defineProps<DeleteFolderConfirmationPopupProps>()
 const emit = defineEmits([
   'update:isDeleteFolderPopupVisible',
   'confirm-delete-folder',
-  'cancel-delete-folder'
+  'cancel-delete-folder',
 ])
 
 const isPopupVisible = computed({
@@ -43,7 +43,7 @@ const isPopupVisible = computed({
   },
   set(value) {
     emit('update:isDeleteFolderPopupVisible', value)
-  }
+  },
 })
 
 const message = computed(() => t('message', { folderName: props.folderName }))

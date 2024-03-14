@@ -12,7 +12,7 @@
     :documents="explorerDocumentsForUploadFlow"
     :modalActionsButtonsList="modalActionsbuttons"
     :headerTitle="t('header.title')"
-        :modalTitle="
+    :modalTitle="
       t(
         'modalTitle',
         { folderName: currentExplorerFolder.name },
@@ -30,15 +30,15 @@
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue'
 import DocumentModalExplorer from '../DocumentsExplorerModal'
-import type { DocumentUploadProps } from './DocumentsUploadTypes'
-import { Folder } from '@/models/Folder'
+import type { DocumentUploadProps, ExplorerUploadDocument } from './DocumentsUploadTypes'
+import type { Folder } from '@/models/Folder'
 import { useI18n } from 'vue-i18n'
 import { generateActionsForModal } from '../DocumentsExplorerModal/helpers/ModalsActionsHelpers'
 import { modalButtonsUpload } from './helpers/ModalUploadActionsHelpers'
 import { uploadDocument } from '@/services/Documents'
 import { mapExplorerDocumentFromFiles } from '../../helpers/documentExplorerMapper'
-import { ExplorerUploadDocument } from './DocumentsUploadTypes'
-import { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+
+import type { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 import { PICheck } from '@kpmg/styleguide'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 
@@ -46,7 +46,7 @@ const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<DocumentUploadProps>()
@@ -55,7 +55,7 @@ const emit = defineEmits([
   'update-source-folders',
   'close-upload-documents-modal',
   'update-document-list-upload',
-  'refresh-documents-list'
+  'refresh-documents-list',
 ])
 
 const currentExplorerFolder = ref<Folder>(props.folder)
@@ -72,7 +72,7 @@ watch(
       modalActionsbuttons.value.filter(d => d.buttonActionName ===
       'modal-add-document-action-click')[0].disabled = true
     }
-  }, { deep: true }
+  }, { deep: true },
 )
 const isDocumentExplorerModalOpened = computed({
   get() {
@@ -80,15 +80,15 @@ const isDocumentExplorerModalOpened = computed({
   },
   set(value: boolean) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const isUploadAuthorized = computed(() => {
   return {
     actionName: 'modal-add-document-action-click',
-    isActionAuthorized: currentExplorerFolder.value.permissions.includes('CAN_UPLOAD_FILES')
+    isActionAuthorized: currentExplorerFolder.value.permissions.includes('CAN_UPLOAD_FILES'),
   }
-}
+},
 )
 const explorerDocumentsForUploadFlow = computed(() => explorerDocuments.value)
 // Creating explorer documents
@@ -99,7 +99,7 @@ watch(
   () => props.files,
   () => {
     explorerDocuments.value = mapExplorerDocumentFromFiles(props.files)
-  }, { deep: true }
+  }, { deep: true },
 )
 
 const numberOfSelectedDocuments = computed(() => {
@@ -109,7 +109,7 @@ const numberOfSelectedDocuments = computed(() => {
         document.givenActionState !== 'ERROR' &&
         document.givenActionState !== 'FAILED' &&
         (document.isSelected || document.givenActionState === 'IN_PROGRESS')
-      )
+      ),
   ).length
 })
 
@@ -123,7 +123,6 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
 }
 
 const handleUploadDocumentClicked = async (action: string) => {
-
   if (action === 'modal-add-document-action-click') {
     modalActionsbuttons.value = generateActionsForModal(['DEPOT_IN_PROGRESS'], modalButtonsUpload)
     const selectedDocuments = explorerDocuments.value.filter(d => d.isSelected) || []
@@ -134,11 +133,10 @@ const handleUploadDocumentClicked = async (action: string) => {
       (document: ExplorerDocument) =>
         document.givenActionState === 'TO_DO' ||
         document.givenActionState === 'FAILED' ||
-        document.givenActionState === 'IN_PROGRESS'
+        document.givenActionState === 'IN_PROGRESS',
     )
 
     if (shouldCloseModal) handleClose()
-
   }
   if (action === 'modal-cancel-document-action-click') {
     handleClose()
@@ -151,7 +149,6 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
   let documentUploadedWithSuccess = 0
   const destinationFolder = { ...currentExplorerFolder.value }
   while (uploadedDocumentCount < documents.length) {
-
     // Selects up to 5 documents for upload or fewer if remaining documents are less than 5
     const documentsToUpload =
       documents.slice(batchIndex, Math.min(batchIndex + 5, documents.length))
@@ -203,7 +200,7 @@ watch(
   () => props.folder,
   (folder) => {
     currentExplorerFolder.value = folder
-  }
+  },
 )
 
 // Main modal actions
@@ -231,7 +228,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

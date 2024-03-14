@@ -2,20 +2,22 @@
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { ExplorerUploadDocument, DocumentUploadProps } from './DocumentsUploadTypes'
+import type { ExplorerUploadDocument, DocumentUploadProps } from './DocumentsUploadTypes'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import { Folder } from '@/models/Folder'
-import { Service } from '@/models/Service'
-import { VueWrapper, mount } from '@vue/test-utils'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { Folder } from '@/models/Folder'
+import type { Service } from '@/models/Service'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
-import { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import DocumentsUpload from '.'
 
 const generateTestFiles = (
   numberOfFiles: number,
-  state: 'VALID' | 'UNVALID'
+  state: 'VALID' | 'UNVALID',
 ): File[] => {
   const files: File[] = []
   const conditionedFileSize = state === 'VALID' ? 2 : 0
@@ -26,7 +28,7 @@ const generateTestFiles = (
     const blob = new Blob(['Hello'], { type: 'text/plain' })
     const fileContent = blob.slice(0, conditionedFileSize)
     const file = new File([fileContent], fileName, {
-      type
+      type,
     })
     files.push(file)
   }
@@ -45,7 +47,7 @@ const defaultProps: DocumentUploadProps = {
   currentServiceFolder,
   currentService: curentService,
   selectedEntity,
-  files: validFiles
+  files: validFiles,
 }
 
 type DocumentUploadSetup = {
@@ -63,39 +65,39 @@ export type DocumentsUploadWrapper = VueWrapper<
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 vi.mock('@/services/Documents', () => ({
   uploadDocument: vi.fn(() => {
     throw new Error('something uncool')
-  })
+  }),
 }))
 
 const mockToastPlugin = vi.fn()
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 const createWrapper = (
-  props: DocumentUploadProps = defaultProps
+  props: DocumentUploadProps = defaultProps,
 ): DocumentsUploadWrapper => {
   return mount(DocumentsUpload, {
     props,
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   }) as unknown as DocumentsUploadWrapper
 }
 
@@ -111,10 +113,8 @@ describe('foldersMove', () => {
   })
 
   describe('interactions', () => {
-
     describe('upload', () => {
       describe('confirm', () => {
-
         it('should update explorerDocuments to ERROR on modal-action-clicked event', async () => {
           const updatedProps = { ...defaultProps, isUploadModalOpened: true }
 
@@ -125,20 +125,18 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-add-document-action-click'
+            'modal-add-document-action-click',
           )
 
           await nextTick()
 
           expect(wrapper.vm.explorerDocuments).toHaveLength(
             wrapper.vm.explorerDocuments.filter(
-              (d) => d.givenActionState === 'ERROR'
-            ).length
+              (d) => d.givenActionState === 'ERROR',
+            ).length,
           )
         })
-
       })
-
     })
   })
 })

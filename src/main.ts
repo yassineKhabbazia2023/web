@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
 import { commoni18n as i18n, commonPinia as pinia, routes } from '@kpmg/common'
@@ -10,11 +10,11 @@ const RenderLess = () => ''
 const vueLifecycles = singleSpaVue({
   createApp,
   appOptions: {
-    render: () => h(RenderLess)
+    render: () => h(RenderLess),
   },
   handleInstance(app) {
     app.use(i18n.value).use(pinia)
-  }
+  },
 })
 
 setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
@@ -29,9 +29,9 @@ routes.value.push({
   name: 'ged',
   meta: {
     styles: {
-      hasPaddings: false
-    }
+      hasPaddings: false,
+    },
   },
-  component: () => import('@/App.vue')
+  component: () => import('@/App.vue'),
 } as RouteRecordRaw)
 

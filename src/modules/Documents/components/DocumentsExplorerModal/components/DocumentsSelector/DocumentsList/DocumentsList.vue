@@ -35,11 +35,11 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { DocumentsListProps } from './DocumentsListTypes'
+import type { DocumentsListProps } from './DocumentsListTypes'
 import { PFileAndFolderLineCheck, PImage } from '@kpmg/styleguide'
 
 const props = withDefaults(defineProps<DocumentsListProps>(), {
-  isFolderLine: false
+  isFolderLine: false,
 })
 const documents = ref(props.documents)
 
@@ -69,14 +69,14 @@ const sortedDocumentsByState = computed(() => {
 })
 
 const filteredSortedDocuments = computed(() => sortedDocumentsByState.value.filter(
-  (x) => x?.givenActionState !== 'ERROR'
+  (x) => x?.givenActionState !== 'ERROR',
 ))
 // eslint-disable-next-line vitest/require-hook
 watch(
   () => props.documents,
   (updatedDocuments) => {
     documents.value = updatedDocuments
-  }
+  },
 )
 </script>
 

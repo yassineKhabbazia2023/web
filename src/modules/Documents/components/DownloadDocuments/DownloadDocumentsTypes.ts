@@ -1,5 +1,5 @@
-import { Service } from '@/models/Service'
-import { Document } from '@/models/Document'
+import type { Service } from '@/models/Service'
+import type { Document } from '@/models/Document'
 
 export interface DownloadDocumentsComposableProps {
   selectedDocuments: Document[]

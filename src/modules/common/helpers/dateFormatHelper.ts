@@ -8,7 +8,7 @@ export function formatDate(date: Date, separator: string): string {
   const month = date.getMonth() + 1
   const year = date.getFullYear()
 
-  const dayString = day < 10 ? '0' + day : '' + day
-  const monthString = month < 10 ? '0' + month : '' + month
+  const dayString = day < 10 ? `0${day}` : `${day}`
+  const monthString = month < 10 ? `0${month}` : `${month}`
   return `${dayString}${separator}${monthString}${separator}${year}`
 }

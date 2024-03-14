@@ -1,6 +1,7 @@
 /* eslint-disable vitest/require-hook */
 /* eslint-disable vitest/no-hooks */
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
@@ -16,17 +17,17 @@ const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,
   documentIds: [],
   serviceId: 'serv',
-  entityId: 'ent'
+  entityId: 'ent',
 }
 const i18n = createI18n({
-  locale: 'fr-FR'
+  locale: 'fr-FR',
 })
 const pinia = createPinia()
 
 const mockToastPlugin = vi.fn()
 
 const createWrapper = (
-  props: DocumentDeleteModalTypesProps = defaultProps
+  props: DocumentDeleteModalTypesProps = defaultProps,
 ) => {
   return mount(DocumentDeleteModal, {
     props,
@@ -34,18 +35,18 @@ const createWrapper = (
       plugins: [pinia],
       provide: {
         toast: mockToastPlugin,
-        i18n
-      }
-    }
+        i18n,
+      },
+    },
   })
 }
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 vi.mock('@/services/Documents', () => ({
-  deleteDocuments: vi.fn()
+  deleteDocuments: vi.fn(),
 }))
 
 const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent(ConfirmationPopup)
@@ -60,7 +61,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const updatedProps: DocumentDeleteModalTypesProps = {
         ...defaultProps,
         isVisible: true,
-        documentIds: ['1']
+        documentIds: ['1'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -80,7 +81,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const updatedProps: DocumentDeleteModalTypesProps = {
         ...defaultProps,
         isVisible: true,
-        documentIds: ['1', '2']
+        documentIds: ['1', '2'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -100,7 +101,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const updatedProps: DocumentDeleteModalTypesProps = {
         ...defaultProps,
         isVisible: true,
-        documentIds: ['1']
+        documentIds: ['1'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -123,7 +124,7 @@ describe('deleteFolderConfirmationPopup', () => {
         const updatedProps: DocumentDeleteModalTypesProps = {
           ...defaultProps,
           isVisible: true,
-          documentIds: ['1']
+          documentIds: ['1'],
         }
 
         const wrapper = createWrapper(updatedProps)
@@ -131,10 +132,10 @@ describe('deleteFolderConfirmationPopup', () => {
         const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
 
-        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
+        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWithExactlyOnceWith(
           'serv',
           'ent',
-          ['1']
+          ['1'],
         )
 
         expect(mockToastPlugin).toHaveBeenCalledTimes(1)
@@ -149,7 +150,7 @@ describe('deleteFolderConfirmationPopup', () => {
         const updatedProps: DocumentDeleteModalTypesProps = {
           ...defaultProps,
           isVisible: true,
-          documentIds: ['1', '2']
+          documentIds: ['1', '2'],
         }
 
         const wrapper = createWrapper(updatedProps)
@@ -157,10 +158,10 @@ describe('deleteFolderConfirmationPopup', () => {
         const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
 
-        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
+        expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWithExactlyOnceWith(
           'serv',
           'ent',
-          ['1', '2']
+          ['1', '2'],
         )
 
         expect(mockToastPlugin).toHaveBeenCalledTimes(1)
@@ -174,7 +175,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const updatedProps: DocumentDeleteModalTypesProps = {
         ...defaultProps,
         isVisible: true,
-        documentIds: ['1']
+        documentIds: ['1'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -188,7 +189,7 @@ describe('deleteFolderConfirmationPopup', () => {
       const updatedProps: DocumentDeleteModalTypesProps = {
         ...defaultProps,
         isVisible: true,
-        documentIds: ['1']
+        documentIds: ['1'],
       }
 
       const wrapper = createWrapper(updatedProps)

@@ -1,6 +1,7 @@
 /* eslint-disable vitest/require-hook */
 /* eslint-disable vitest/no-hooks */
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import DocumentRestoreModal from '@/modules/Bin/components/DocumentRestoreModal'
 import { restoreDocuments } from '@/services/BinDocuments'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
@@ -17,20 +18,20 @@ const defaultProps: DocumentRestoreModalTypesProps = {
     id: 'd595982f-d90f-4374-8ecb-fea0b4202c6d',
     name: 'this-is-a-test.txt',
     deleted: '2023-12-08T09:00:00.000',
-    path: ['Comptabilité', 'Dépôt', 'A classer', 'Test']
+    path: ['Comptabilité', 'Dépôt', 'A classer', 'Test'],
   },
   serviceId: 'serv',
-  entityId: 'ent'
+  entityId: 'ent',
 }
 const i18n = createI18n({
-  locale: 'fr-FR'
+  locale: 'fr-FR',
 })
 const pinia = createPinia()
 
 const mockToastPlugin = vi.fn()
 
 const createWrapper = (
-  props: DocumentRestoreModalTypesProps = defaultProps
+  props: DocumentRestoreModalTypesProps = defaultProps,
 ) => {
   return mount(DocumentRestoreModal, {
     props,
@@ -38,23 +39,23 @@ const createWrapper = (
       plugins: [pinia],
       provide: {
         toast: mockToastPlugin,
-        i18n
-      }
-    }
+        i18n,
+      },
+    },
   })
 }
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 vi.mock('@/services/BinDocuments', () => ({
   restoreDocuments: vi.fn(() => {
     return [{
       id: 'd595982f-d90f-4374-8ecb-fea0b4202c6d',
-      folderId: 12345
+      folderId: 12345,
     }]
-  })
+  }),
 }))
 
 const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent(ConfirmationPopup)
@@ -69,7 +70,7 @@ describe('documentRestoreModal', () => {
       expect.hasAssertions()
       const updatedProps: DocumentRestoreModalTypesProps = {
         ...defaultProps,
-        isVisible: true
+        isVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -93,7 +94,7 @@ describe('documentRestoreModal', () => {
         expect.hasAssertions()
         const updatedProps: DocumentRestoreModalTypesProps = {
           ...defaultProps,
-          isVisible: true
+          isVisible: true,
         }
 
         const wrapper = createWrapper(updatedProps)
@@ -102,10 +103,10 @@ describe('documentRestoreModal', () => {
         await popup.vm.$emit('on-confirm-button-click')
         await nextTick()
 
-        expect(vi.mocked(restoreDocuments)).toHaveBeenCalledWith(
+        expect(vi.mocked(restoreDocuments)).toHaveBeenCalledWithExactlyOnceWith(
           'serv',
           'ent',
-          ['d595982f-d90f-4374-8ecb-fea0b4202c6d']
+          ['d595982f-d90f-4374-8ecb-fea0b4202c6d'],
         )
         await nextTick()
         expect(wrapper.emitted('confirm-restore-document')).toBeTruthy()
@@ -120,7 +121,7 @@ describe('documentRestoreModal', () => {
       expect.hasAssertions()
       const updatedProps: DocumentRestoreModalTypesProps = {
         ...defaultProps,
-        isVisible: true
+        isVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -134,7 +135,7 @@ describe('documentRestoreModal', () => {
       expect.hasAssertions()
       const updatedProps: DocumentRestoreModalTypesProps = {
         ...defaultProps,
-        isVisible: true
+        isVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)

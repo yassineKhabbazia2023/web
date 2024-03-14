@@ -54,7 +54,7 @@ import {
   renameFolder,
   sortFolderByName,
   deleteFolder,
-  findFolderDeepById
+  findFolderDeepById,
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 // import Notifications from './Notifications.vue'
 import { PCol, PRow, PNotification } from '@kpmg/styleguide'
@@ -71,11 +71,11 @@ const servicesFolders = ref<Folder[][]>([])
 
 const fetchGedFoldersAndServices = async () => {
   entityServices.value = await fetchUserEntityServices(
-    selectedEntity.value
+    selectedEntity.value,
   )
   const foldersFetchResult = await fetchServicesFolders(
     entityServices.value,
-    selectedEntity.value
+    selectedEntity.value,
   )
 
   servicesFolders.value = foldersFetchResult
@@ -136,14 +136,14 @@ const handleUpdateSourceFolder = (data: Folder) => {
     servicesFolders.value,
     data.parent.id,
     data,
-    currentService.value ?? ''
+    currentService.value ?? '',
   )
 
   if (folderAdded) {
     sortFolderByName(
       servicesFolders.value,
       currentService.value ?? '',
-      data.parent.id
+      data.parent.id,
     )
     setCurrentFolder(data.id)
   }
@@ -151,7 +151,7 @@ const handleUpdateSourceFolder = (data: Folder) => {
 
 const setCurrentFolder = (folderId: number | null) => {
   const currentServiceFolder = servicesFolders.value.find(
-    (sf) => sf[0].serviceId === currentService.value
+    (sf) => sf[0].serviceId === currentService.value,
   ) as Folder[]
   // Find deep only in currentService if defined
   const folderToRedirectTo = findFolderDeepById(currentServiceFolder, folderId)
@@ -166,7 +166,7 @@ const handleRemoveFolderFromSource = (folder: Folder) => {
     servicesFolders.value,
     currentService.value ?? '',
     folder.parent.id,
-    folder.id
+    folder.id,
   )
   setCurrentFolder(folder.parent.id)
 }
@@ -176,14 +176,14 @@ const handleUpdateFolderName = (data: Folder) => {
   const folderUpdated = renameFolder(
     servicesFolders.value,
     currentService.value ?? '',
-    data
+    data,
   )
 
   if (folderUpdated) {
     sortFolderByName(
       servicesFolders.value,
       currentService.value ?? '',
-      data.parent.id
+      data.parent.id,
     )
     setCurrentFolder(data.id)
   }

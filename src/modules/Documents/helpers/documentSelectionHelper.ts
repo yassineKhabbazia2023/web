@@ -1,4 +1,4 @@
-import { Document } from '@/models/Document'
+import type { Document } from '@/models/Document'
 export function getPermissionsFromDocuments(documents: Document[]): string[] {
   const permissions = new Set<string>()
   for (const document of documents) {

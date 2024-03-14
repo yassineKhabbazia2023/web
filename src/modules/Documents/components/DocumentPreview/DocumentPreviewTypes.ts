@@ -1,5 +1,5 @@
-import { Document } from '@/models/Document'
-import { Service } from '@/models/Service'
+import type { Document } from '@/models/Document'
+import type { Service } from '@/models/Service'
 export interface DocumentsPreviewProps {
   openDrawer: boolean
   document: Document

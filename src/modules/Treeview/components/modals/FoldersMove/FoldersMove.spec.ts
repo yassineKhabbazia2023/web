@@ -2,16 +2,18 @@
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { ExplorerMoveFolder, FoldersMoveProps } from './FoldersMoveTypes'
+import type { ExplorerMoveFolder, FoldersMoveProps } from './FoldersMoveTypes'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import { Folder } from '@/models/Folder'
-import { Service } from '@/models/Service'
-import { VueWrapper, mount } from '@vue/test-utils'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { Folder } from '@/models/Folder'
+import type { Service } from '@/models/Service'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import FoldersMove from '.'
 import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
-import { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import { moveFolderAsync } from '@/services/Folder'
 
 const unValidDestination: Folder = foldersData[0][0] // id: 135393636
@@ -29,7 +31,7 @@ const defaultProps : FoldersMoveProps = {
   currentServiceFolder,
   currentService: curentService,
   selectedEntity,
-  folderToMove
+  folderToMove,
 }
 
 type FoldersMoveSetup = {
@@ -47,37 +49,37 @@ export type FoldersMoveWrapper = VueWrapper<
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 vi.mock('@/services/Folder', () => ({
-  moveFolderAsync: vi.fn()
+  moveFolderAsync: vi.fn(),
 }))
 
 const mockToastPlugin = vi.fn()
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 const createWrapper = (
-  props: FoldersMoveProps = defaultProps
+  props: FoldersMoveProps = defaultProps,
 ): FoldersMoveWrapper => {
   return mount(FoldersMove, {
     props,
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   }) as unknown as FoldersMoveWrapper
 }
 
@@ -106,19 +108,19 @@ describe('foldersMove', () => {
       const wrapper = createWrapper(updatedProps)
       const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
       expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
-        `Déplacer 1 dossier dans ${validDestination.name}`
+        `Déplacer 1 dossier dans ${validDestination.name}`,
       )
     })
 
     const cases = [
       {
         folder: validDestination,
-        expectedResult: true
+        expectedResult: true,
       },
       {
         folder: unValidDestination,
-        expectedResult: false
-      }
+        expectedResult: false,
+      },
     ]
 
     it.each(cases)(
@@ -127,14 +129,14 @@ describe('foldersMove', () => {
         const updatedProps = {
           ...defaultProps,
           isMoveModalOpened: true,
-          folder
+          folder,
         }
 
         const wrapper = createWrapper(updatedProps)
         expect(wrapper.vm.isMoveAuthorized.isActionAuthorized).toStrictEqual(
-          expectedResult
+          expectedResult,
         )
-      }
+      },
     )
   })
 
@@ -168,7 +170,6 @@ describe('foldersMove', () => {
       vi.advanceTimersByTime(500)
 
       expect(wrapper.emitted('close-move-folder-modal')).toHaveLength(1)
-
     })
 
     it('should set currentExplorerFolder on navigate-to-folder event', async () => {
@@ -180,11 +181,11 @@ describe('foldersMove', () => {
 
       await documentExplorerModalWrapper.vm.$emit(
         'navigate-to-folder',
-        secondValidDestination
+        secondValidDestination,
       )
 
       expect(wrapper.vm.currentExplorerFolder).toStrictEqual(
-        secondValidDestination
+        secondValidDestination,
       )
     })
 
@@ -197,12 +198,12 @@ describe('foldersMove', () => {
 
       await documentExplorerModalWrapper.vm.$emit(
         'update-source-folders',
-        secondValidDestination
+        secondValidDestination,
       )
 
       expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([
-        [secondValidDestination]
+        [secondValidDestination],
       ])
     })
 
@@ -218,13 +219,13 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-folder-action-click'
+            'modal-move-folder-action-click',
           )
 
           await nextTick()
 
           expect(wrapper.vm.modalActionsButtons[0].buttonName).toBe(
-            'Déplacement en cours'
+            'Déplacement en cours',
           )
         })
 
@@ -238,16 +239,16 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-folder-action-click'
+            'modal-move-folder-action-click',
           )
 
           await nextTick()
 
-          expect(vi.mocked(moveFolderAsync)).toHaveBeenCalledWith(
+          expect(vi.mocked(moveFolderAsync)).toHaveBeenCalledWithExactlyOnceWith(
             'service-id-compta',
             'my-selected-entity',
             11111111,
-            135393637
+            135393637,
           )
         })
 
@@ -261,13 +262,13 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-folder-action-click'
+            'modal-move-folder-action-click',
           )
 
           await nextTick()
 
           expect(
-            wrapper.vm.explorerDocuments[0].givenActionState
+            wrapper.vm.explorerDocuments[0].givenActionState,
           ).toBe('DONE')
         })
 
@@ -281,21 +282,21 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-folder-action-click'
+            'modal-move-folder-action-click',
           )
 
           await nextTick()
 
           expect(wrapper.emitted('refresh-tree')).toHaveLength(1)
           expect(wrapper.emitted('refresh-tree')).toStrictEqual([
-            [defaultProps.folderToMove.id]
+            [defaultProps.folderToMove.id],
           ])
         })
 
         it('should close modal on modal-action-clicked event', async () => {
           const updatedProps = {
             ...defaultProps,
-            isMoveModalOpened: true
+            isMoveModalOpened: true,
           }
 
           const wrapper = createWrapper(updatedProps)
@@ -305,20 +306,19 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-folder-action-click'
+            'modal-move-folder-action-click',
           )
 
           await nextTick()
           vi.advanceTimersByTime(500)
 
           expect(wrapper.emitted('close-move-folder-modal')).toHaveLength(1)
-
         })
 
         it('should display success notification on modal-action-clicked event', async () => {
           const updatedProps = {
             ...defaultProps,
-            isMoveModalOpened: true
+            isMoveModalOpened: true,
           }
 
           const wrapper = createWrapper(updatedProps)
@@ -328,14 +328,14 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-folder-action-click'
+            'modal-move-folder-action-click',
           )
 
           await nextTick()
           expect(mockToastPlugin).toHaveBeenCalledTimes(1)
           const callArguments = mockToastPlugin.mock.calls[0][0]
           expect(callArguments.message).toBe(
-            `Le dossier ${defaultProps.folderToMove.name} a été déplacé dans le dossier ${defaultProps.folder.name}`
+            `Le dossier ${defaultProps.folderToMove.name} a été déplacé dans le dossier ${defaultProps.folder.name}`,
           )
           expect(callArguments.customClass).toBe('success')
         })
@@ -345,7 +345,7 @@ describe('foldersMove', () => {
         it('should close modal on on modal-action-clicked event', async () => {
           const updatedProps = {
             ...defaultProps,
-            isMoveModalOpened: true
+            isMoveModalOpened: true,
           }
 
           const wrapper = createWrapper(updatedProps)
@@ -355,14 +355,13 @@ describe('foldersMove', () => {
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-cancel-folder-action-click'
+            'modal-cancel-folder-action-click',
           )
 
           await nextTick()
           vi.advanceTimersByTime(500)
 
           expect(wrapper.emitted('close-move-folder-modal')).toHaveLength(1)
-
         })
       })
     })

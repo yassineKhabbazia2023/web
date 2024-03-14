@@ -1,4 +1,4 @@
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 
 interface ModalActionsWithOrder {
   modalButton: ButtonAction
@@ -17,9 +17,9 @@ export const modalButtonsMove: Record<string, ModalActionsWithOrder> = {
       circle: false,
       loading: false,
       disabled: false,
-      size: 'small'
+      size: 'small',
     },
-    order: 2
+    order: 2,
   },
   CANCEL_MOVE_DOCUMENT: {
     modalButton: {
@@ -32,9 +32,9 @@ export const modalButtonsMove: Record<string, ModalActionsWithOrder> = {
       circle: false,
       loading: false,
       disabled: false,
-      size: 'small'
+      size: 'small',
     },
-    order: 1
+    order: 1,
   },
   MOVE_IN_PROGRESS: {
     modalButton: {
@@ -47,8 +47,8 @@ export const modalButtonsMove: Record<string, ModalActionsWithOrder> = {
       circle: false,
       loading: true,
       disabled: false,
-      size: 'small'
+      size: 'small',
     },
-    order: 1
-  }
+    order: 1,
+  },
 }

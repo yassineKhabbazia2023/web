@@ -8,20 +8,20 @@ describe('document Code Error Helper', () => {
     const cases = [
       {
         input: 'FileEmpty',
-        expectedResult: 'Fichier vide'
+        expectedResult: 'Fichier vide',
       },
       {
         input: 'UnauthorizedFileType',
-        expectedResult: 'Format non reconnu'
+        expectedResult: 'Format non reconnu',
       },
       {
         input: 'UnauthorizedCharFileName',
-        expectedResult: 'Caractères interdit'
+        expectedResult: 'Caractères interdit',
       },
       {
         input: 'tessssst',
-        expectedResult: 'Connexion au serveur interrompue.'
-      }
+        expectedResult: 'Connexion au serveur interrompue.',
+      },
     ]
 
     it.each(cases)(
@@ -29,7 +29,7 @@ describe('document Code Error Helper', () => {
       async ({ input, expectedResult }) => {
         const result = getFileErrorMessage(input)
         expect(result).toStrictEqual(expectedResult)
-      }
+      },
     )
   })
 
@@ -37,18 +37,18 @@ describe('document Code Error Helper', () => {
     const cases = [
       {
         input: 'FileEmpty',
-        expectedResult: 'Le document doit faire  minimum 1 octet'
+        expectedResult: 'Le document doit faire  minimum 1 octet',
       },
       {
         input: 'UnauthorizedCharFileName',
         expectedResult:
           'Le nom ne doit contenir aucun des caractères suivants : ' +
-          '“ * : &lt; &gt; ? / \\ |.'
+          '“ * : &lt; &gt; ? / \\ |.',
       },
       {
         input: 'tessssst',
-        expectedResult: 'Connexion au serveur interrompue.'
-      }
+        expectedResult: 'Connexion au serveur interrompue.',
+      },
     ]
 
     it.each(cases)(
@@ -56,7 +56,7 @@ describe('document Code Error Helper', () => {
       async ({ input, expectedResult }) => {
         const result = getFileErrorDescription(input)
         expect(result).toStrictEqual(expectedResult)
-      }
+      },
     )
   })
 })

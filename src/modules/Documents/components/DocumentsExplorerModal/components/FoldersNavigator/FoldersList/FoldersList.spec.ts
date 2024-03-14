@@ -21,27 +21,27 @@ const defaultProps: FoldersListProps = {
   isCreateFolderModalVisible: true,
   explorerUnauthorizedGivenActionMessage: 'msg',
   foldersListEmptyFolderLabel: 'lab',
-  explorerFolderListLineDisabledState: undefined
+  explorerFolderListLineDisabledState: undefined,
 }
 
 const createWrapper = (
-  props: FoldersListProps = defaultProps
+  props: FoldersListProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(FoldersList, {
-    props
+    props,
   })
 }
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 describe('foldersList', () => {
@@ -49,7 +49,7 @@ describe('foldersList', () => {
     it('should render elements when current folder has no children', async () => {
       const props: FoldersListProps = {
         ...defaultProps,
-        currentFolder: foldersData[0][0].children[0].children[0].children[0]
+        currentFolder: foldersData[0][0].children[0].children[0].children[0],
       }
       const wrapper = createWrapper(props)
       await nextTick()
@@ -70,7 +70,7 @@ describe('foldersList', () => {
     it('should render PAlert when explorerAuthorizedGivenAction is false', async () => {
       const props: FoldersListProps = {
         ...defaultProps,
-        explorerAuthorizedGivenAction: false
+        explorerAuthorizedGivenAction: false,
       }
       const wrapper = createWrapper(props)
       await nextTick()
@@ -109,7 +109,7 @@ describe('foldersList', () => {
 
       expect(wrapper.emitted('navigate-to-folder')).toBeTruthy()
       expect(wrapper.emitted('navigate-to-folder')).toStrictEqual([
-        [foldersData[0][0].children[0].children[0]]
+        [foldersData[0][0].children[0].children[0]],
       ])
     })
 
@@ -122,7 +122,7 @@ describe('foldersList', () => {
 
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([
-        [newFolderData]
+        [newFolderData],
       ])
     })
 

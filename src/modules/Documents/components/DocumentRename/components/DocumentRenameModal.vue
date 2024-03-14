@@ -19,6 +19,76 @@
   />
 </template>
 
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
+import SingleInputModal from '@/modules/common/templates/modals'
+import { validInputMaxLength, validInputAlphanumericFrench }
+  from '@/modules/common/helpers/inputValidationHelper'
+import {
+  getDocumentNameExtension,
+  getDocumentNameWithoutExtension,
+} from '@/modules/Documents/helpers/filesExtensions'
+
+const props = defineProps<DocumentRenameModalProps>()
+const emit = defineEmits([
+  'update:modelValue',
+  'close-rename-modal',
+  'rename-confirmed',
+])
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
+
+const documentBaseName = ref(getDocumentNameWithoutExtension(props.document.name))
+const inputContent = ref(documentBaseName)
+const fileExtension = computed(() => `.${getDocumentNameExtension(props.document.name)}`)
+const fullDocumentName = computed(() => `${inputContent.value}${fileExtension.value}`)
+
+watch(() => props.isRenameModalOpened, () => {
+  documentBaseName.value = getDocumentNameWithoutExtension(props.document.name)
+  inputContent.value = documentBaseName.value
+})
+
+const isValidInput = computed(() =>
+  validInputAlphanumericFrench(inputContent.value),
+)
+
+const errorMessage = computed(() => {
+  if (!validInputAlphanumericFrench(inputContent.value)) {
+    return t('validations.alphaNumerique')
+  }
+
+  return ''
+})
+
+const showErrorMsg = computed(
+  () =>
+    !isValidInput.value &&
+    inputContent.value.length !== 0,
+)
+
+const isConfirmButtonDisabled = computed(
+  () =>
+    inputContent.value.length === 0 ||
+    !validInputMaxLength(inputContent.value) ||
+    !validInputAlphanumericFrench(inputContent.value),
+)
+
+const handleCancelAction = () => {
+  emit('close-rename-modal')
+}
+const handleCloseModal = () => {
+  emit('close-rename-modal')
+}
+const handleConfirmAction = () => {
+  emit('rename-confirmed', fullDocumentName.value)
+}
+</script>
+
 <i18n lang="yaml">
 en-US:
   validations:
@@ -42,73 +112,3 @@ fr-FR:
   cancelButtonLabel: Annuler
   updateButtonLabel: Modifier
 </i18n>
-
-<script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
-import SingleInputModal from '@/modules/common/templates/modals'
-import { validInputMaxLength, validInputAlphanumericFrench }
-  from '@/modules/common/helpers/inputValidationHelper'
-import {
-  getDocumentNameExtension,
-  getDocumentNameWithoutExtension
-} from '@/modules/Documents/helpers/filesExtensions'
-
-const props = defineProps<DocumentRenameModalProps>()
-const emit = defineEmits([
-  'update:modelValue',
-  'close-rename-modal',
-  'rename-confirmed'
-])
-
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local'
-})
-
-const documentBaseName = ref(getDocumentNameWithoutExtension(props.document.name))
-const inputContent = ref(documentBaseName)
-const fileExtension = computed(() => `.${getDocumentNameExtension(props.document.name)}`)
-const fullDocumentName = computed(() => `${inputContent.value}${fileExtension.value}`)
-
-watch(() => props.isRenameModalOpened, () => {
-  documentBaseName.value = getDocumentNameWithoutExtension(props.document.name)
-  inputContent.value = documentBaseName.value
-})
-
-const isValidInput = computed(() =>
-  validInputAlphanumericFrench(inputContent.value)
-)
-
-const errorMessage = computed(() => {
-  if (!validInputAlphanumericFrench(inputContent.value)) {
-    return t('validations.alphaNumerique')
-  }
-
-  return ''
-})
-
-const showErrorMsg = computed(
-  () =>
-    !isValidInput.value &&
-    inputContent.value.length !== 0
-)
-
-const isConfirmButtonDisabled = computed(
-  () =>
-    inputContent.value.length === 0 ||
-    !validInputMaxLength(inputContent.value) ||
-    !validInputAlphanumericFrench(inputContent.value)
-)
-
-const handleCancelAction = () => {
-  emit('close-rename-modal')
-}
-const handleCloseModal = () => {
-  emit('close-rename-modal')
-}
-const handleConfirmAction = () => {
-  emit('rename-confirmed', fullDocumentName.value)
-}
-</script>

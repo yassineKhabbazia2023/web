@@ -3,19 +3,20 @@ import { mount } from '@vue/test-utils'
 import type { DocumentStatusUpdateResponse, DocumentsWithTableStructure } from '@/models/Document'
 import type { Folder } from '@/models/Folder'
 import { usePiaStatusSync } from './PiaStatusSync'
-import { defineComponent, ref, Ref, PropType, nextTick } from 'vue'
+import type { Ref, PropType } from 'vue'
+import { defineComponent, ref, nextTick } from 'vue'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { documentsResponsePayload } from '../mocks/documentsWithTableStructureDataMock'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
+    $post: vi.fn(),
   }),
   DataStreamHubConnection: vi.fn(() => ({
     startConnection: vi.fn(() => {
@@ -25,11 +26,11 @@ vi.mock('@kpmg/common', async () => ({
       return {
         invoke: vi.fn(),
         on: vi.fn().mock.calls,
-        stop: vi.fn()
+        stop: vi.fn(),
       }
     }),
-    destroyConnection: vi.fn()
-  }))
+    destroyConnection: vi.fn(),
+  })),
 }))
 
 vi.mock('@/models/AccountingHubConnection', () => ({
@@ -37,27 +38,27 @@ vi.mock('@/models/AccountingHubConnection', () => ({
     OnConnectedAsync: vi.fn(),
     OnDisconnectedAsync: vi.fn(),
     getConnection: vi.fn(() => ({
-      on: vi.fn()
-    }))
-  })
+      on: vi.fn(),
+    })),
+  }),
 }))
 
 const testComponent = defineComponent({
   props: {
     folder: {
       type: Object as PropType<Ref<Folder | null>>,
-      required: true
+      required: true,
     },
     documents: {
       type: Object as PropType<Ref<DocumentsWithTableStructure | null>>,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     return {
-      ...usePiaStatusSync(props.folder, props.documents)
+      ...usePiaStatusSync(props.folder, props.documents),
     }
-  }
+  },
 })
 
 describe('usePiaStatusSync', () => {
@@ -77,9 +78,9 @@ describe('usePiaStatusSync', () => {
         technicalName: 'Collected',
         labelFr: 'Transmis',
         labelEn: 'Transmitted',
-        date: '2023-08-04T12:00:00Z'
+        date: '2023-08-04T12:00:00Z',
       },
-      permissions: ['READ']
+      permissions: ['READ'],
     }
     updateDocumentSyncStatusAndPermissions(documents, newDocumentStatusAndUpdate)
     expect(documentToNotify?.piaStatus.labelFr).equals('Transmis')
@@ -92,8 +93,8 @@ describe('usePiaStatusSync', () => {
     const wrapper = mount(testComponent, {
       props: {
         folder: fakeFolder,
-        documents
-      }
+        documents,
+      },
     })
     await nextTick()
     fakeFolder.value = foldersData[0][0].children[0]
@@ -111,8 +112,8 @@ describe('usePiaStatusSync', () => {
     const wrapper = mount(testComponent, {
       props: {
         folder: fakeFolder,
-        documents
-      }
+        documents,
+      },
     })
     await nextTick()
     fakeFolder.value = null

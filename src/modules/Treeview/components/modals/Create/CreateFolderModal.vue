@@ -27,25 +27,25 @@ import { useI18n } from 'vue-i18n'
 import SingleInputModal from '@/modules/common/templates/modals'
 import {
   validInputMaxLength,
-  validInputAlphanumericFrench
+  validInputAlphanumericFrench,
 } from '@/modules/common/helpers/inputValidationHelper'
 import { type CreateFolderModalProps }
   from '@/modules/Treeview/components/modals/Create/CreateFolderModalTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = withDefaults(defineProps<CreateFolderModalProps>(), {
-  isCentered: false
+  isCentered: false,
 })
 
 const emit = defineEmits([
   'on-close-create-folder',
   'on-confirm-create-folder',
   'on-cancel-create-folder',
-  'update:isCreateFolderModalVisible'
+  'update:isCreateFolderModalVisible',
 ])
 
 const inputContent = ref('')
@@ -56,7 +56,7 @@ const isDialogVisible = computed({
   },
   set(value) {
     emit('update:isCreateFolderModalVisible', value)
-  }
+  },
 })
 
 const errorMsg = computed(() => {
@@ -95,7 +95,7 @@ const isConfirmButtonDisabled = computed(
   () =>
     !validInputMaxLength(inputContent.value) ||
     inputContent.value.length === 0 ||
-    !validInputAlphanumericFrench(inputContent.value)
+    !validInputAlphanumericFrench(inputContent.value),
 )
 
 const isValidInput = computed(() => {
@@ -106,14 +106,14 @@ const folderNameExists = ref(false)
 
 const isFolderNameExists = (folderName: string): boolean => {
   return props.selectedFolder?.children?.some(
-    (folder) => folder.name.trim().toLowerCase() === folderName.trim().toLowerCase()
+    (folder) => folder.name.trim().toLowerCase() === folderName.trim().toLowerCase(),
   )
 }
 
 const showErrorMsg = computed(
   () =>
     (!isValidInput.value || folderNameExists.value) &&
-    inputContent.value.length !== 0
+    inputContent.value.length !== 0,
 )
 
 // eslint-disable-next-line vitest/require-hook

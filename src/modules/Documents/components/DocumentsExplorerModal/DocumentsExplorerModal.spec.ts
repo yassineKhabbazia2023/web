@@ -1,16 +1,18 @@
 /* eslint-disable vitest/no-hooks */
 /* eslint-disable max-len */
 import { describe, it, expect, vi } from 'vitest'
-import { DocumentsModalExplorerProps, GivenActionAuthorization } from './DocumentsExplorerModalTypes'
-import { Folder } from '@/models/Folder'
+import type { DocumentsModalExplorerProps, GivenActionAuthorization } from './DocumentsExplorerModalTypes'
+import type { Folder } from '@/models/Folder'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import { Service } from '@/models/Service'
-import { GivenActionState, ExplorerDocument } from '../../DocumentsTypes'
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { Service } from '@/models/Service'
+import type { GivenActionState, ExplorerDocument } from '../../DocumentsTypes'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import { modalButtonsUpload } from '../DocumentsUpload/helpers/ModalUploadActionsHelpers'
 import { generateActionsForModal } from './helpers/ModalsActionsHelpers'
-import { VueWrapper, mount } from '@vue/test-utils'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import DocumentsExplorerModal from '.'
 import { createPinia } from 'pinia'
 import DocumentsExplorerHeader from './components/DocumentsExplorerHeader'
@@ -26,13 +28,13 @@ const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
 const selectedEntity = 'my-selected-entity'
 const explorerAuthorizedGivenAction: GivenActionAuthorization = {
   actionName: 'my-action',
-  isActionAuthorized: true
+  isActionAuthorized: true,
 }
 const buttonActions: ButtonAction[] = generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload)
 
 const generateExplorerDocuments = (
   numberOfDocuments: number,
-  state: GivenActionState
+  state: GivenActionState,
 ): ExplorerDocument[] => {
   const explorerDocuments: ExplorerDocument[] = []
 
@@ -41,9 +43,9 @@ const generateExplorerDocuments = (
       givenActionState: state,
       isSelected: false,
       content: {
-        name: 'content name'
+        name: 'content name',
       },
-      codeError: ''
+      codeError: '',
     }
     explorerDocuments.push(doc)
   }
@@ -77,37 +79,37 @@ const defaultProps: DocumentsModalExplorerProps = {
   headerTitle: 'header title',
   modalTitle: 'modal title',
   isFolderLineDisabled: false,
-  canCloseModal: false
+  canCloseModal: false,
 }
 
 const createWrapper = (
-  props: DocumentsModalExplorerProps = defaultProps
+  props: DocumentsModalExplorerProps = defaultProps,
 ): DocumentsExplorerModalWrapper => {
   return mount(DocumentsExplorerModal, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as DocumentsExplorerModalWrapper
 }
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 const pinia = createPinia()
 
 describe('documentsExplorerModal', () => {
   const findDocumentsExplorerHeader = (
-    wrapper: DocumentsExplorerModalWrapper
+    wrapper: DocumentsExplorerModalWrapper,
   ) => wrapper.findComponent(DocumentsExplorerHeader)
 
   const findDocumentsCheckAll = (wrapper: DocumentsExplorerModalWrapper) => wrapper.findComponent(DocumentsCheckAll)
@@ -119,11 +121,11 @@ describe('documentsExplorerModal', () => {
     wrapper.findComponent(FoldersList)
 
   const findDocumentsModalActionsFooter = (
-    wrapper: DocumentsExplorerModalWrapper
+    wrapper: DocumentsExplorerModalWrapper,
   ) => wrapper.findComponent(DocumentsModalActionsFooter)
 
   const findDocumentsExplorerModalByClassName = (
-    wrapper: DocumentsExplorerModalWrapper
+    wrapper: DocumentsExplorerModalWrapper,
   ) => wrapper.find('.documents-explorer-modal')
 
   describe('props', () => {
@@ -131,12 +133,12 @@ describe('documentsExplorerModal', () => {
       const cases = [
         {
           isDialogVisible: true,
-          expectedResult: true
+          expectedResult: true,
         },
         {
           isDialogVisible: false,
-          expectedResult: false
-        }
+          expectedResult: false,
+        },
       ]
 
       it.each(cases)(
@@ -144,7 +146,7 @@ describe('documentsExplorerModal', () => {
         async ({ isDialogVisible, expectedResult }) => {
           const updatedProps = {
             ...defaultProps,
-            modelValue: isDialogVisible
+            modelValue: isDialogVisible,
           }
 
           const wrapper = createWrapper(updatedProps)
@@ -153,7 +155,7 @@ describe('documentsExplorerModal', () => {
           const documentsExplorerModal = findDocumentsExplorerModalByClassName(wrapper)
 
           expect(documentsExplorerModal.exists()).toBe(expectedResult)
-        }
+        },
       )
     })
 
@@ -175,7 +177,7 @@ describe('documentsExplorerModal', () => {
       const updatedProps = {
         ...defaultProps,
         modelValue: true,
-        canCloseModal: true
+        canCloseModal: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -186,13 +188,12 @@ describe('documentsExplorerModal', () => {
       await closeButton.trigger('click')
 
       expect(wrapper.emitted('close-modal')).toBeTruthy()
-
     })
 
     it('should select all explorer documents on check-all-documents event', async () => {
       const updatedProps = {
         ...defaultProps,
-        modelValue: true
+        modelValue: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -204,14 +205,14 @@ describe('documentsExplorerModal', () => {
       await documentCheckAllWrapper.vm.$emit('check-all-documents', true)
 
       expect(wrapper.vm.explorerDocuments).toHaveLength(
-        wrapper.vm.explorerDocuments.filter(d => d.isSelected === true).length
+        wrapper.vm.explorerDocuments.filter(d => d.isSelected === true).length,
       )
     })
 
     it('should emit navigate-to-folder on navigate-to-folder event', async () => {
       const updatedProps = {
         ...defaultProps,
-        modelValue: true
+        modelValue: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -221,7 +222,7 @@ describe('documentsExplorerModal', () => {
 
       await foldersBreadCrumbWrapper.vm.$emit(
         'navigate-to-folder',
-        secondValidDestination
+        secondValidDestination,
       )
       await nextTick()
 
@@ -232,7 +233,7 @@ describe('documentsExplorerModal', () => {
     it('should open create folder modal on open-create-folder-modal event', async () => {
       const updatedProps = {
         ...defaultProps,
-        modelValue: true
+        modelValue: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -241,7 +242,7 @@ describe('documentsExplorerModal', () => {
       const foldersBreadCrumbWrapper = findFoldersBreadCrumb(wrapper)
 
       await foldersBreadCrumbWrapper.vm.$emit(
-        'open-create-folder-modal'
+        'open-create-folder-modal',
       )
       await nextTick()
 
@@ -252,7 +253,7 @@ describe('documentsExplorerModal', () => {
     it('should emit navigate-to-folder on navigate-to-folder folderlist event', async () => {
       const updatedProps = {
         ...defaultProps,
-        modelValue: true
+        modelValue: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -262,7 +263,7 @@ describe('documentsExplorerModal', () => {
 
       await folderListWrapper.vm.$emit(
         'navigate-to-folder',
-        secondValidDestination
+        secondValidDestination,
       )
       await nextTick()
 
@@ -273,7 +274,7 @@ describe('documentsExplorerModal', () => {
     it('should propagate update-source-folders event', async () => {
       const updatedProps = {
         ...defaultProps,
-        modelValue: true
+        modelValue: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -284,13 +285,13 @@ describe('documentsExplorerModal', () => {
 
       await folderListWrapper.vm.$emit(
         'update-source-folders',
-        secondValidDestination
+        secondValidDestination,
       )
 
       await nextTick()
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([
-        [secondValidDestination]
+        [secondValidDestination],
       ])
     })
 
@@ -298,7 +299,7 @@ describe('documentsExplorerModal', () => {
       const updatedProps = {
         ...defaultProps,
         modelValue: true,
-        canCloseModal: true
+        canCloseModal: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -310,13 +311,12 @@ describe('documentsExplorerModal', () => {
       await nextTick()
 
       expect(folderListWrapper.props('isCreateFolderModalVisible')).toBeFalsy()
-
     })
 
     it('should emit modal-action-clicked on modal-action-button-clicked event', async () => {
       const updatedProps = {
         ...defaultProps,
-        modelValue: true
+        modelValue: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -329,7 +329,7 @@ describe('documentsExplorerModal', () => {
       await nextTick()
 
       expect(wrapper.emitted('modal-action-clicked')).toStrictEqual([
-        ['my-action']
+        ['my-action'],
       ])
     })
   })

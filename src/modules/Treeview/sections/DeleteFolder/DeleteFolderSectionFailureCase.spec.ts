@@ -5,21 +5,21 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type DeleteFolderSectionProps }
   from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 const pinia = createPinia()
@@ -37,16 +37,16 @@ const defaultProps: DeleteFolderSectionProps = {
         parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      } as Folder
+        serviceId: 'some-service',
+      } as Folder,
     ],
     name: 'A',
     parent: { id: 0 },
     permissions: [],
     properties: {} as FolderProperties,
-    serviceId: 'some-service'
+    serviceId: 'some-service',
   } as Folder,
-  isDeleteFolderPopupVisible: false
+  isDeleteFolderPopupVisible: false,
 }
 
 const mockToastPlugin = vi.fn()
@@ -56,20 +56,20 @@ const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   })
 }
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 vi.mock('@/services/Folder', () => ({
   DeleteFolder: () => {
     throw new Error('Something uncool')
-  }
+  },
 }))
 
 describe('deleteFolderSection', () => {
@@ -84,7 +84,7 @@ describe('deleteFolderSection', () => {
     it('should display error notification correctly on fail delete', async () => {
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)

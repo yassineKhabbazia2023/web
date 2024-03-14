@@ -29,10 +29,10 @@
 <script setup lang="ts">
 import { PText, PDoubleText, PIcon, PIArrowCounterclockwise } from '@kpmg/styleguide'
 import { getFileIcon } from '@/modules/common/helpers/iconsHelper'
-import { BinTableElementProps } from './BinTableElementTypes'
+import type { BinTableElementProps } from './BinTableElementTypes'
 import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
-import { BinDocument } from '@/models/Document'
+import type { BinDocument } from '@/models/Document'
 /* This component is meant to evolve so TableItem and BinTableItem can be used in one same component
 The target is to be able to easily use any component whatever the context is.
 Right now it's kind of an in between because the "table structure from the back end"

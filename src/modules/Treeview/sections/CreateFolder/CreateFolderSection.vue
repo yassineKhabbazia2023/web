@@ -43,26 +43,26 @@ import { type CreateFolderSectionProps }
 import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const props = withDefaults(defineProps<CreateFolderSectionProps>(), {
   isCreateFolderModaleCenterd: false,
-  isCreateFolderModalCentered: false
+  isCreateFolderModalCentered: false,
 })
 
 const emit = defineEmits([
   'update-source-folders',
-  'on-close-create-folder'
+  'on-close-create-folder',
 ])
 
 const isConfirmButtonLoading = ref(false)
 const isDialogVisible = ref(false)
 
 const isTreeCreateFolderBtnDisabled = computed(
-  () => !canCreateFolder(props.selectedFolder)
+  () => !canCreateFolder(props.selectedFolder),
 )
 // Modal actions
 const openCreateFolderModal = () => {
@@ -80,7 +80,7 @@ const handleCreateFolder = async (folderName: string) => {
       props.serviceId,
       props.entityId,
       props.selectedFolder.id,
-      folderName
+      folderName,
     )) as Folder
     isConfirmButtonLoading.value = false
     emit('update-source-folders', createdFolder)
@@ -109,7 +109,7 @@ const triggerSuccessNotification = () => {
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 
@@ -119,7 +119,7 @@ const triggerErrorNotification = () => {
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: true,
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

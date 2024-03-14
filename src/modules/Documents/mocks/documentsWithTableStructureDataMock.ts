@@ -1,4 +1,4 @@
-import { DocumentsWithTableStructure } from '@/models/Document'
+import type { DocumentsWithTableStructure } from '@/models/Document'
 
 export const documentsResponsePayload: DocumentsWithTableStructure = {
   documentsPage: {
@@ -7,10 +7,10 @@ export const documentsResponsePayload: DocumentsWithTableStructure = {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -20,38 +20,38 @@ export const documentsResponsePayload: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 135393637,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
-      }
+        isNew: false,
+      },
     ],
     totalItems: 39,
     endIndex: 4,
-    startIndex: 1
+    startIndex: 1,
   },
   documentHeaders: [
     {
@@ -59,37 +59,37 @@ export const documentsResponsePayload: DocumentsWithTableStructure = {
       relatedProperty: 'name',
       fieldType: 'DocumentName',
       nestedPropertyName: null,
-      columnOrder: 1
+      columnOrder: 1,
     },
     {
       columnName: '',
       relatedProperty: 'properties',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      columnOrder: 2
+      columnOrder: 2,
     },
     {
       columnName: 'Déposé le',
       relatedProperty: 'created',
       fieldType: 'Text',
       nestedPropertyName: null,
-      columnOrder: 3
+      columnOrder: 3,
     },
     {
       columnName: 'Statut',
       relatedProperty: 'piaStatus',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      columnOrder: 4
+      columnOrder: 4,
     },
     {
       columnName: 'Actions',
       relatedProperty: 'permissions',
       fieldType: 'ActionGroup',
       nestedPropertyName: null,
-      columnOrder: 5
-    }
-  ]
+      columnOrder: 5,
+    },
+  ],
 }
 
 export const documentsResponsePayloadMoreThanOneDoc: DocumentsWithTableStructure = {
@@ -99,10 +99,10 @@ export const documentsResponsePayloadMoreThanOneDoc: DocumentsWithTableStructure
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -112,42 +112,42 @@ export const documentsResponsePayloadMoreThanOneDoc: DocumentsWithTableStructure
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -157,38 +157,38 @@ export const documentsResponsePayloadMoreThanOneDoc: DocumentsWithTableStructure
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
-      }
+        isNew: false,
+      },
     ],
     totalItems: 39,
     endIndex: 4,
-    startIndex: 1
+    startIndex: 1,
   },
   documentHeaders: [
     {
@@ -196,37 +196,37 @@ export const documentsResponsePayloadMoreThanOneDoc: DocumentsWithTableStructure
       relatedProperty: 'name',
       fieldType: 'DocumentName',
       nestedPropertyName: null,
-      columnOrder: 1
+      columnOrder: 1,
     },
     {
       columnName: '',
       relatedProperty: 'properties',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      columnOrder: 2
+      columnOrder: 2,
     },
     {
       columnName: 'Déposé le',
       relatedProperty: 'created',
       fieldType: 'Text',
       nestedPropertyName: null,
-      columnOrder: 3
+      columnOrder: 3,
     },
     {
       columnName: 'Statut',
       relatedProperty: 'piaStatus',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      columnOrder: 4
+      columnOrder: 4,
     },
     {
       columnName: 'Actions',
       relatedProperty: 'permissions',
       fieldType: 'ActionGroup',
       nestedPropertyName: null,
-      columnOrder: 5
-    }
-  ]
+      columnOrder: 5,
+    },
+  ],
 }
 
 export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
@@ -236,10 +236,10 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -249,42 +249,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -294,42 +294,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -339,42 +339,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -384,42 +384,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -429,42 +429,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -474,42 +474,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -519,42 +519,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -564,42 +564,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -609,42 +609,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -654,42 +654,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -699,42 +699,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -744,42 +744,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -789,42 +789,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -834,42 +834,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -879,42 +879,42 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
+        isNew: false,
       },
       {
         id: '1234567890',
         name: 'My Document',
         content: {
-          href: 'https://example.com/my-document.pdf'
+          href: 'https://example.com/my-document.pdf',
         },
         preview: {
-          href: 'https://example.com/my-document-preview.png'
+          href: 'https://example.com/my-document-preview.png',
         },
         updatedBy: 'John Doe',
         updated: '2023-10-11T08:09:26Z',
@@ -924,38 +924,38 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
         isUploadedInGedLoop: true,
         folder: {
           id: 1,
-          path: ['My Documents']
+          path: ['My Documents'],
         },
         created: '2023-10-10T12:00:00Z',
         createdBy: 'Jane Doe',
         account: {
           id: '1234567890',
-          name: 'My Account'
+          name: 'My Account',
         },
         properties: {
           syncStatus: 'In Sync',
-          HasSubscribedToVault: 'Yes'
+          HasSubscribedToVault: 'Yes',
         },
         lifecycleStatus: 'Active',
         paymentStatus: 'Paid',
         source: {
           id: 1,
           code: 'MY_SOURCE',
-          libelle: 'My Source'
+          libelle: 'My Source',
         },
         piaStatus: {
           technicalName: 'PIA_ACTIVE',
           labelFr: 'Actif',
           labelEn: 'Active',
-          date: '2023-10-11T08:09:26Z'
+          date: '2023-10-11T08:09:26Z',
         },
         permissions: ['READ', 'WRITE'],
-        isNew: false
-      }
+        isNew: false,
+      },
     ],
     totalItems: 39,
     endIndex: 4,
-    startIndex: 1
+    startIndex: 1,
   },
   documentHeaders: [
     {
@@ -963,35 +963,35 @@ export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure = {
       relatedProperty: 'name',
       fieldType: 'DocumentName',
       nestedPropertyName: null,
-      columnOrder: 1
+      columnOrder: 1,
     },
     {
       columnName: '',
       relatedProperty: 'properties',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      columnOrder: 2
+      columnOrder: 2,
     },
     {
       columnName: 'Déposé le',
       relatedProperty: 'created',
       fieldType: 'Text',
       nestedPropertyName: null,
-      columnOrder: 3
+      columnOrder: 3,
     },
     {
       columnName: 'Statut',
       relatedProperty: 'piaStatus',
       fieldType: 'Tag',
       nestedPropertyName: null,
-      columnOrder: 4
+      columnOrder: 4,
     },
     {
       columnName: 'Actions',
       relatedProperty: 'permissions',
       fieldType: 'ActionGroup',
       nestedPropertyName: null,
-      columnOrder: 5
-    }
-  ]
+      columnOrder: 5,
+    },
+  ],
 }

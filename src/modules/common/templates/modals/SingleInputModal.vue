@@ -66,12 +66,12 @@ const emit = defineEmits([
   'on-confirm-action-click',
   'on-cancel-action-click',
   'update:isDialogVisible',
-  'update:defaultInputContentValue'
+  'update:defaultInputContentValue',
 ])
 
 const props = withDefaults(defineProps<SingleInputModalProps>(), {
   isDialogVisible: false,
-  isCentered: false
+  isCentered: false,
 })
 
 const inputContent = computed({
@@ -80,7 +80,7 @@ const inputContent = computed({
   },
   set(value) {
     emit('update:defaultInputContentValue', value)
-  }
+  },
 })
 
 const isDialogVisible = computed({
@@ -89,7 +89,7 @@ const isDialogVisible = computed({
   },
   set(value) {
     emit('update:isDialogVisible', value)
-  }
+  },
 })
 
 // Modal actions

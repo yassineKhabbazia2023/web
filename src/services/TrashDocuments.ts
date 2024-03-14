@@ -7,7 +7,7 @@ export const fetchTrashDocuments = async (
   entityId: string,
   skip = 0,
   limit = 10,
-  sort = '-deleted'
+  sort = '-deleted',
 ): Promise<DocumentsWithTableStructure> => {
   const fetchTrashDocumentsUrl = `${serviceId}/${entityId}/trash/mapped`
   const apiObject = api().ds
@@ -17,8 +17,8 @@ export const fetchTrashDocuments = async (
       params: {
         skip,
         limit,
-        sort
-      }
+        sort,
+      },
     })
   ).data
 }

@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type DeleteFolderSectionProps }
   from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
 import { deleteFolder } from '@/services/Folder'
@@ -12,14 +12,14 @@ import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 const pinia = createPinia()
@@ -37,16 +37,16 @@ const defaultProps: DeleteFolderSectionProps = {
             parent: { id: 1 },
             permissions: [],
             properties: {} as FolderProperties,
-            serviceId: 'some-service'
-          } as Folder
+            serviceId: 'some-service',
+          } as Folder,
     ],
     name: 'A',
     parent: { id: 0 },
     permissions: [],
     properties: {} as FolderProperties,
-    serviceId: 'some-service'
+    serviceId: 'some-service',
   } as Folder,
-  isDeleteFolderPopupVisible: false
+  isDeleteFolderPopupVisible: false,
 }
 
 const mockToastPlugin = vi.fn()
@@ -56,19 +56,19 @@ const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   })
 }
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 vi.mock('@/services/Folder', () => ({
   tokenValue: 'mocked token',
-  deleteFolder: vi.fn()
+  deleteFolder: vi.fn(),
 }))
 
 describe('deleteFolderSection', () => {
@@ -83,7 +83,7 @@ describe('deleteFolderSection', () => {
     it('should set the correct popup title', async () => {
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -97,7 +97,7 @@ describe('deleteFolderSection', () => {
     it('should set the correct confirmation button content', async () => {
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -111,7 +111,7 @@ describe('deleteFolderSection', () => {
     it('should set the correct cancel button content', async () => {
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -126,10 +126,9 @@ describe('deleteFolderSection', () => {
   describe('interactions', () => {
     it('should call DeleteFolder method of the Folder service when confirm button click',
       async () => {
-
         const updatedProps: DeleteFolderSectionProps = {
           ...defaultProps,
-          isDeleteFolderPopupVisible: true
+          isDeleteFolderPopupVisible: true,
         }
 
         const wrapper = createWrapper(updatedProps)
@@ -139,19 +138,18 @@ describe('deleteFolderSection', () => {
         await popup.vm.$emit('confirm-delete-folder')
         await nextTick()
 
-        expect(vi.mocked(deleteFolder)).toHaveBeenCalledWith(
+        expect(vi.mocked(deleteFolder)).toHaveBeenCalledWithExactlyOnceWith(
           'service-id',
           'entity-id',
           1,
-          false
+          false,
         )
       })
 
     it('should close popup when api call is completed', async () => {
-
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -164,10 +162,9 @@ describe('deleteFolderSection', () => {
       expect(popup.props('isDeleteFolderPopupVisible')).toBeFalsy()
     })
     it('should emit on-delete-folder-completed on success delete folder', async () => {
-
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -179,15 +176,13 @@ describe('deleteFolderSection', () => {
 
       expect(wrapper.emitted('on-delete-folder-completed')).toBeTruthy()
       expect(wrapper.emitted('on-delete-folder-completed')).toStrictEqual([
-        [defaultProps.selectedFolder]
+        [defaultProps.selectedFolder],
       ])
-
     })
     it('should display success notification correctly on success delete', async () => {
-
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -205,7 +200,7 @@ describe('deleteFolderSection', () => {
     it('should emit on-close-delete-folder when cancel button is clicked', async () => {
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)

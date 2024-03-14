@@ -1,9 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import TableElement from './TableElement.vue'
 import { type TableElementPops } from './TableElementTypes'
-import { Document } from '@/models/Document'
-import { VueWrapper, mount } from '@vue/test-utils'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { Document } from '@/models/Document'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
 import {
@@ -33,7 +35,7 @@ import {
   PTag,
   PICheckCircle,
   PIExclamationTriangle,
-  PDoubleText
+  PDoubleText,
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 
@@ -41,10 +43,10 @@ const document: Document = {
   id: '1',
   name: 'My Document',
   content: {
-    href: 'https://example.com/document.pdf'
+    href: 'https://example.com/document.pdf',
   },
   preview: {
-    href: 'https://example.com/document_preview.png'
+    href: 'https://example.com/document_preview.png',
   },
   updatedBy: 'John Doe',
   updated: '2023-08-04T12:00:00Z',
@@ -54,39 +56,39 @@ const document: Document = {
   isUploadedInGedLoop: null,
   folder: {
     id: 1,
-    path: ['My Documents']
+    path: ['My Documents'],
   },
   created: '2023-08-04T12:00:00Z',
   createdBy: 'John Doe',
   account: {
     id: '1234567890',
-    name: 'Acme Corporation'
+    name: 'Acme Corporation',
   },
   properties: {
     syncStatus: 'SYNCED',
-    HasSubscribedToVault: 'Oui'
+    HasSubscribedToVault: 'Oui',
   },
   lifecycleStatus: 'ACTIVE',
   paymentStatus: null,
   source: {
     id: 1,
     code: 'MY_SOURCE',
-    libelle: 'My Source'
+    libelle: 'My Source',
   },
   piaStatus: {
     technicalName: 'Collected',
     labelFr: 'Transmis',
     labelEn: 'Transmitted',
-    date: '2023-08-04T12:00:00Z'
+    date: '2023-08-04T12:00:00Z',
   },
   permissions: ['CAN_RENAME_DOCUMENT'],
-  isNew: false
+  isNew: false,
 }
 
 const defaultProps: TableElementPops = {
   fieldType: '',
   fieldName: '',
-  data: document
+  data: document,
 }
 
 type TableElementSetup = {
@@ -100,18 +102,18 @@ export type TableElementWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: TableElementPops = defaultProps
+  props: TableElementPops = defaultProps,
 ): TableElementWrapper => {
   return mount(TableElement, {
     props,
     global: {
       stubs: {
         PToolbox: {
-          template: '<span />'
+          template: '<span />',
         },
-        plugins: [pinia]
-      }
-    }
+        plugins: [pinia],
+      },
+    },
   }) as unknown as TableElementWrapper
 }
 
@@ -130,8 +132,8 @@ describe('tableElement', () => {
           expectedResult: {
             component: '.p-text',
             content: formatDateStr(document.created),
-            hasIcon: false
-          }
+            hasIcon: false,
+          },
         },
         {
           document: defaultProps.data,
@@ -139,9 +141,9 @@ describe('tableElement', () => {
           expectedResult: {
             component: '.p-text',
             content: document.name,
-            hasIcon: true
-          }
-        }
+            hasIcon: true,
+          },
+        },
       ]
 
       // eslint-disable-next-line vitest/prefer-expect-assertions
@@ -152,7 +154,7 @@ describe('tableElement', () => {
           ...defaultProps,
           fieldType: firstElementFieldType,
           data: firstDocument,
-          isInSearchScope: false
+          isInSearchScope: false,
         }
 
         const wrapper = createWrapper(props)
@@ -161,7 +163,7 @@ describe('tableElement', () => {
         await nextTick()
         expect(tag.exists()).toBeTruthy()
         expect(tag.element.textContent).toStrictEqual(
-          cases[0].expectedResult.content
+          cases[0].expectedResult.content,
         )
         const icon = wrapper.findComponent(PIcon)
         expect(icon.exists()).toBeFalsy()
@@ -173,7 +175,7 @@ describe('tableElement', () => {
         const props: TableElementPops = {
           ...defaultProps,
           fieldType: firstElementFieldType,
-          data: firstDocument
+          data: firstDocument,
         }
 
         const wrapper = createWrapper(props)
@@ -182,7 +184,7 @@ describe('tableElement', () => {
         await nextTick()
         expect(tag.exists()).toBeTruthy()
         expect(tag.element.textContent).toStrictEqual(
-          cases[1].expectedResult.content
+          cases[1].expectedResult.content,
         )
         const icon = wrapper.findComponent(PIcon)
         expect(icon.exists()).toBeTruthy()
@@ -193,84 +195,84 @@ describe('tableElement', () => {
       const cases = [
         {
           fileName: 'test.bmp',
-          expectedIcon: PIFiletypeBmp
+          expectedIcon: PIFiletypeBmp,
         },
         {
           fileName: 'test.csv',
-          expectedIcon: PIFiletypeCsv
+          expectedIcon: PIFiletypeCsv,
         },
         {
           fileName: 'test.doc',
-          expectedIcon: PIFiletypeDoc
+          expectedIcon: PIFiletypeDoc,
         },
         {
           fileName: 'test.docx',
-          expectedIcon: PIFiletypeDocx
+          expectedIcon: PIFiletypeDocx,
         },
         {
           fileName: 'test.gif',
-          expectedIcon: PIFiletypeGif
+          expectedIcon: PIFiletypeGif,
         },
         {
           fileName: 'test.heic',
-          expectedIcon: PIFiletypeHeic
+          expectedIcon: PIFiletypeHeic,
         },
         {
           fileName: 'test.jpg',
-          expectedIcon: PIFiletypeJpg
+          expectedIcon: PIFiletypeJpg,
         },
         {
           fileName: 'test.md',
-          expectedIcon: PIFiletypeMd
+          expectedIcon: PIFiletypeMd,
         },
         {
           fileName: 'test.pdf',
-          expectedIcon: PIFiletypePdf
+          expectedIcon: PIFiletypePdf,
         },
         {
           fileName: 'test.png',
-          expectedIcon: PIFiletypePng
+          expectedIcon: PIFiletypePng,
         },
         {
           fileName: 'test.ppt',
-          expectedIcon: PIFiletypePpt
+          expectedIcon: PIFiletypePpt,
         },
         {
           fileName: 'test.pptx',
-          expectedIcon: PIFiletypePptx
+          expectedIcon: PIFiletypePptx,
         },
         {
           fileName: 'test.raw',
-          expectedIcon: PIFiletypeRaw
+          expectedIcon: PIFiletypeRaw,
         },
         {
           fileName: 'test.svg',
-          expectedIcon: PIFiletypeSvg
+          expectedIcon: PIFiletypeSvg,
         },
         {
           fileName: 'test.tiff',
-          expectedIcon: PIFiletypeTiff
+          expectedIcon: PIFiletypeTiff,
         },
         {
           fileName: 'test.txt',
-          expectedIcon: PIFiletypeTxt
+          expectedIcon: PIFiletypeTxt,
         },
         {
           fileName: 'test.xls',
-          expectedIcon: PIFiletypeXls
+          expectedIcon: PIFiletypeXls,
         },
         {
           fileName: 'test.xlsx',
-          expectedIcon: PIFiletypeXlsx
+          expectedIcon: PIFiletypeXlsx,
         },
         {
           fileName: 'test.xml',
-          expectedIcon: PIFiletypeXml
+          expectedIcon: PIFiletypeXml,
         },
         {
           fileName: 'test.unknown',
-          expectedIcon: PIFileText
-        }
+          expectedIcon: PIFileText,
+        },
       ]
 
       it.each(cases)(
@@ -279,7 +281,7 @@ describe('tableElement', () => {
           const props: TableElementPops = {
             ...defaultProps,
             fieldType: 'DocumentName',
-            data: { ...document, name: fileName }
+            data: { ...document, name: fileName },
           }
 
           const wrapper = createWrapper(props)
@@ -289,7 +291,7 @@ describe('tableElement', () => {
 
           const icon = wrapper.findComponent(expectedIcon)
           expect(icon.exists()).toBeTruthy()
-        }
+        },
       )
     })
     it('should use pdoubletext component when filedType is DocumentName and in search scope',
@@ -297,7 +299,7 @@ describe('tableElement', () => {
         const props : TableElementPops = {
           ...defaultProps,
           isInSearchScope: true,
-          fieldType: 'DocumentName'
+          fieldType: 'DocumentName',
         }
 
         const wrapper = createWrapper(props)
@@ -313,8 +315,8 @@ describe('tableElement', () => {
           fieldName: '',
           expectedResult: {
             component: PTag,
-            content: 'Certifié'
-          }
+            content: 'Certifié',
+          },
         },
         {
           document: defaultProps.data,
@@ -322,9 +324,9 @@ describe('tableElement', () => {
           fieldName: '',
           expectedResult: {
             component: PTag,
-            content: document.piaStatus.labelFr
-          }
-        }
+            content: document.piaStatus.labelFr,
+          },
+        },
       ]
 
       it.each(cases)(
@@ -333,7 +335,7 @@ describe('tableElement', () => {
           const props: TableElementPops = {
             ...defaultProps,
             fieldType,
-            data: document
+            data: document,
           }
 
           const wrapper = createWrapper(props)
@@ -342,7 +344,7 @@ describe('tableElement', () => {
           await nextTick()
           expect(tag.exists()).toBeTruthy()
           expect(tag.element.textContent).toStrictEqual(expectedResult.content)
-        }
+        },
       )
     })
     it('should hide certified tag when document is not certified', async () => {
@@ -353,8 +355,8 @@ describe('tableElement', () => {
         fieldName: '',
         data: {
           ...document,
-          properties: { syncStatus: '', HasSubscribedToVault: 'Non' }
-        }
+          properties: { syncStatus: '', HasSubscribedToVault: 'Non' },
+        },
       }
 
       const wrapper = createWrapper(props)
@@ -367,36 +369,36 @@ describe('tableElement', () => {
       const cases = [
         {
           status: 'New',
-          expectedIcon: PIStars
+          expectedIcon: PIStars,
         },
         {
           status: 'Collectable',
-          expectedIcon: PIArrowRepeat
+          expectedIcon: PIArrowRepeat,
         },
         {
           status: 'Collected',
-          expectedIcon: PICheckCircle
+          expectedIcon: PICheckCircle,
         },
         {
           status: 'Duplicate',
-          expectedIcon: PICheckCircle
+          expectedIcon: PICheckCircle,
         },
         {
           status: 'Error',
-          expectedIcon: PIExclamationTriangle
+          expectedIcon: PIExclamationTriangle,
         },
         {
           status: 'Archived',
-          expectedIcon: PICheckCircle
+          expectedIcon: PICheckCircle,
         },
         {
           status: 'NotTransmitted',
-          expectedIcon: PIExclamationTriangle
+          expectedIcon: PIExclamationTriangle,
         },
         {
           status: 'Unknown',
-          expectedIcon: PIExclamationTriangle
-        }
+          expectedIcon: PIExclamationTriangle,
+        },
       ]
 
       it.each(cases)(
@@ -412,9 +414,9 @@ describe('tableElement', () => {
                 technicalName: status,
                 labelEn: '',
                 labelFr: '',
-                date: defaultProps.data.piaStatus.date
-              }
-            }
+                date: defaultProps.data.piaStatus.date,
+              },
+            },
           }
 
           const wrapper = createWrapper(props)
@@ -425,7 +427,7 @@ describe('tableElement', () => {
           await nextTick()
 
           expect(pTagWrapper.props('pIconLeft')).toBe(expectedIcon)
-        }
+        },
       )
     })
   })
@@ -435,7 +437,7 @@ describe('tableElement', () => {
       const updatedProps: TableElementPops = {
         fieldName: '',
         fieldType: 'ActionGroup',
-        data: document
+        data: document,
       }
       const wrapper = createWrapper(updatedProps)
       const documentActions = wrapper.findComponent(DocumentActions)

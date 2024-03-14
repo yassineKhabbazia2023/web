@@ -6,7 +6,7 @@ interface ErrorDetail {
 const codeErrorMapping: Record<string, ErrorDetail> = {
   FileEmpty: {
     message: 'Fichier vide',
-    description: 'Le document doit faire  minimum 1 octet'
+    description: 'Le document doit faire  minimum 1 octet',
   },
   UnauthorizedFileType: {
     message: 'Format non reconnu',
@@ -14,29 +14,29 @@ const codeErrorMapping: Record<string, ErrorDetail> = {
     ' gif, jfif,\n jpe, jpeg, jpg, msg, mp4, pdf, ppt, pptx, pot, pps, ppa, ppam, png, rtf, sql,' +
     ' tif, tiff, txt, vsdx,\n xsl, xls, xlsx, xltx, xlsm, xltm, xlam' +
     ', xlsb, zip, rar, xml, pbix, ods, one, onea' +
-    ', onetoc, onetoc2,\n onetmp, onepkg'
+    ', onetoc, onetoc2,\n onetmp, onepkg',
   },
   UnauthorizedCharFileName: {
     message: 'Caractères interdit',
     description: 'Le nom ne doit contenir aucun des caractères suivants : ' +
-    '“ * : &lt; &gt; ? / \\ |.'
+    '“ * : &lt; &gt; ? / \\ |.',
   },
   FileNameLengthExceeded: {
     message: 'Nom du fichier trop long',
-    description: 'Le nom ne doit pas contenir plus de 256 caractères.'
+    description: 'Le nom ne doit pas contenir plus de 256 caractères.',
   },
   PermissionInvalidError: {
     message: 'droit de déplacement introuvable',
-    description: 'Vous n\'avez pas le droit de déplacer ce document'
+    description: 'Vous n\'avez pas le droit de déplacer ce document',
   },
   DocumentCertifiedError: {
     message: 'Document certifié',
-    description: 'Vous n\'avez pas le droit de déplacer un document certifié.'
-  }
+    description: 'Vous n\'avez pas le droit de déplacer un document certifié.',
+  },
 }
 
 export function getFileErrorMessage(
-  codeError: string
+  codeError: string,
 ): string {
   if (codeErrorMapping[codeError]) {
     return codeErrorMapping[codeError].message
@@ -46,7 +46,7 @@ export function getFileErrorMessage(
 }
 
 export function getFileErrorDescription(
-  codeError: string
+  codeError: string,
 ): string {
   if (codeError) {
     if (codeErrorMapping[codeError]) {
@@ -56,5 +56,4 @@ export function getFileErrorDescription(
     }
   }
   return 'Connexion au serveur interrompue.'
-
 }

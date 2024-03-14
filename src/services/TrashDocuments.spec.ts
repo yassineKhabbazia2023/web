@@ -1,30 +1,30 @@
 /* eslint-disable max-len */
 import { it, expect, vi, describe } from 'vitest'
 import {
-  fetchTrashDocuments
+  fetchTrashDocuments,
 } from './TrashDocuments'
 import type { Service } from '@/models/Service'
 
 const mockDsGet = vi.fn(() => {
   return Promise.resolve({
     data: {
-      documents: 'fetched'
-    }
+      documents: 'fetched',
+    },
   })
 })
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: {
-      get: mockDsGet
-    }
+      get: mockDsGet,
+    },
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 describe('trash documents service', () => {
@@ -36,15 +36,15 @@ describe('trash documents service', () => {
     await fetchTrashDocuments(service.ServiceId, accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/trash/mapped',
       {
         params: {
           limit: 10,
           skip: 0,
-          sort: '-deleted'
-        }
-      }
+          sort: '-deleted',
+        },
+      },
     )
   })
 })

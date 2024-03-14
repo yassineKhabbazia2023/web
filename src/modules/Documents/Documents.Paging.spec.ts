@@ -5,17 +5,19 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
 import { createPinia, setActivePinia } from 'pinia'
-import { VueWrapper, flushPromises, shallowMount } from '@vue/test-utils'
-import { DocumentsProps } from './DocumentsTypes'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
+import type { DocumentsProps } from './DocumentsTypes'
 import {
 
-  fetchFolderDocuments
+  fetchFolderDocuments,
 } from '@/services/Documents'
 import {
-  documentsResponsePayloadTwoPages
+  documentsResponsePayloadTwoPages,
 } from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import { Document, DocumentsWithTableStructure } from '@/models/Document'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { Document, DocumentsWithTableStructure } from '@/models/Document'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 
 import { PPagination } from '@kpmg/styleguide'
 
@@ -38,7 +40,7 @@ const defaultProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   selectedEntity: 'my-entity',
   selectedFolder: foldersData[0][0].children[0],
-  currentServiceFolder: foldersData[0]
+  currentServiceFolder: foldersData[0],
 }
 
 const responseNoDoc: DocumentsWithTableStructure = {
@@ -46,34 +48,34 @@ const responseNoDoc: DocumentsWithTableStructure = {
     items: [],
     totalItems: 0,
     endIndex: 1,
-    startIndex: 1
+    startIndex: 1,
   },
-  documentHeaders: []
+  documentHeaders: [],
 }
 
 vi.mock('vue-inject', () => ({
-  provide: vi.fn()
+  provide: vi.fn(),
 }))
 
 vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
   downloadDocuments: vi.fn(),
-  downloadDocument: vi.fn()
+  downloadDocument: vi.fn(),
 }))
 
 vi.mock('./helpers/downloadFilesHelper', () => ({
-  downloadFile: vi.fn()
+  downloadFile: vi.fn(),
 }))
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
+    $post: vi.fn(),
   }),
   DataStreamHubConnection: vi.fn(() => ({
     startConnection: vi.fn(() => {
@@ -83,12 +85,12 @@ vi.mock('@kpmg/common', async () => ({
       return {
         invoke: vi.fn(),
         on: vi.fn(),
-        stop: vi.fn()
+        stop: vi.fn(),
       }
     }),
-    destroyConnection: vi.fn()
+    destroyConnection: vi.fn(),
   })),
-  debounce: vi.fn((fn) => fn)
+  debounce: vi.fn((fn) => fn),
 }))
 
 const DocumentPiaStatusChangedResponseMock = {
@@ -98,9 +100,9 @@ const DocumentPiaStatusChangedResponseMock = {
     technicalName: 'Duplicate',
     labelFr: 'Transmis',
     labelEn: 'Transmitted',
-    date: null
+    date: null,
   },
-  permissions: ['CAN_MOVE_DOCUMENT']
+  permissions: ['CAN_MOVE_DOCUMENT'],
 }
 
 vi.mock('@/models/AccountingHubConnection', () => ({
@@ -113,13 +115,13 @@ vi.mock('@/models/AccountingHubConnection', () => ({
           (eventName: string, newMethod: (_res: string) => void) => {
             if (eventName === 'DocumentPiaStatusChanged') {
               newMethod(
-                JSON.stringify(DocumentPiaStatusChangedResponseMock)
+                JSON.stringify(DocumentPiaStatusChangedResponseMock),
               )
             }
-          }
-        )
-    }))
-  })
+          },
+        ),
+    })),
+  }),
 }))
 
 describe.skip('documents', () => {
@@ -135,21 +137,20 @@ describe.skip('documents', () => {
           stubs: {
             PPagination,
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
           plugins: [pinia],
           provide: {
-            toast: mockToastPlugin
-          }
-        }
+            toast: mockToastPlugin,
+          },
+        },
       }) as unknown as DocumentsWrapper
       const componentInstance = wrapper.vm
       componentInstance.documents = responseNoDoc
       await nextTick()
       const pagination = wrapper.findComponent(PPagination)
       expect(pagination.isVisible()).toBeFalsy()
-
     })
   })
   describe('events', () => {
@@ -160,14 +161,14 @@ describe.skip('documents', () => {
           stubs: {
             PPagination,
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
           plugins: [pinia],
           provide: {
-            toast: mockToastPlugin
-          }
-        }
+            toast: mockToastPlugin,
+          },
+        },
       }) as unknown as DocumentsWrapper
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadTwoPages
@@ -178,13 +179,13 @@ describe.skip('documents', () => {
       pagination.vm.$emit('on-page-range-changed', 100)
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
         0,
         100,
-        '-created'
+        '-created',
       )
     }, 30000)
 
@@ -195,14 +196,14 @@ describe.skip('documents', () => {
           stubs: {
             PPagination,
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
           plugins: [pinia],
           provide: {
-            toast: mockToastPlugin
-          }
-        }
+            toast: mockToastPlugin,
+          },
+        },
       }) as unknown as DocumentsWrapper
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadTwoPages
@@ -213,13 +214,13 @@ describe.skip('documents', () => {
       pagination.vm.$emit('update:current-page', 2)
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
         10,
         10,
-        '-created'
+        '-created',
       )
     })
 
@@ -230,14 +231,14 @@ describe.skip('documents', () => {
           stubs: {
             PPagination,
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
           plugins: [pinia],
           provide: {
-            toast: mockToastPlugin
-          }
-        }
+            toast: mockToastPlugin,
+          },
+        },
       }) as unknown as DocumentsWrapper
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadTwoPages
@@ -248,13 +249,13 @@ describe.skip('documents', () => {
       pagination.vm.$emit('update:page-size', 25)
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWithExactlyOnceWith(
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
         0,
         25,
-        '-created'
+        '-created',
       )
     })
   })

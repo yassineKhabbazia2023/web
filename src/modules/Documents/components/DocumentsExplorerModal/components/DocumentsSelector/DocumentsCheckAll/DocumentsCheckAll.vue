@@ -11,14 +11,14 @@
 </template>
 
 <script setup lang="ts">
-import { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
+import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
 import { PCheckbox } from '@kpmg/styleguide'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<DocumentsCheckAllProps>()
@@ -37,8 +37,8 @@ watch(
   (newValue) => {
     checked.value = newValue
   }, {
-    deep: true
-  }
+    deep: true,
+  },
 )
 </script>
 

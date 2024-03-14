@@ -1,7 +1,8 @@
 /* eslint-disable vitest/no-hooks */
 import DocumentTabs from './DocumentTabs.vue'
 import { type DocumentTabsProps } from './DocumentTabsTypes'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
@@ -12,31 +13,31 @@ import { nextTick } from 'vue'
 const defaultProps: DocumentTabsProps = {
   document: documentMock,
   selectedEntity: '',
-  currentService: ''
+  currentService: '',
 }
 
 vi.mock('@kpmg/common', async () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
-  })
+    $post: vi.fn(),
+  }),
 }))
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentTabsProps = defaultProps
+  props: DocumentTabsProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentTabs, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 
@@ -65,7 +66,6 @@ describe('documentTabs', () => {
       await nextTick()
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([['2']])
-
     })
   })
 })

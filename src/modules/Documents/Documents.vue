@@ -138,20 +138,21 @@
 
 <script setup lang="ts">
 // eslint-disable vitest/require-hookcurrentService
-import { ref, toRefs, watch, computed, ComputedRef } from 'vue'
+import type { ComputedRef } from 'vue'
+import { ref, toRefs, watch, computed } from 'vue'
 import {
   fetchFolderDocuments,
-  fetchDocumentsByKeyWord
+  fetchDocumentsByKeyWord,
 } from '@/services/Documents'
-import { DocumentsProps } from './DocumentsTypes'
-import { Folder } from '@/models/Folder'
+import type { DocumentsProps } from './DocumentsTypes'
+import type { Folder } from '@/models/Folder'
 import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
 
 import DocumentsList from './sections/DocumentsList'
 import type {
   Document,
   DocumentsWithTableStructure,
-  TableRowDocument
+  TableRowDocument,
 } from '@/models/Document'
 
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
@@ -159,9 +160,9 @@ import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documen
 
 import { useDownloadDocuments } from
   '@/modules/Documents/components/DownloadDocuments/DownloadDocuments'
-import { DownloadDocumentsComposableProps }
+import type { DownloadDocumentsComposableProps }
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
-import { TransmitDocumentsComposableProps }
+import type { TransmitDocumentsComposableProps }
   from '@/modules/Documents/components/DocumentsTransmit/TransmitDocumentsTypes'
 import { useTransmitDocuments } from
   '@/modules/Documents/components/DocumentsTransmit/TransmitDocuments'
@@ -178,7 +179,7 @@ import { getBreadcrumbItems }
 import { usePiaStatusSync } from './composable/PiaStatusSync'
 import { deepCopy } from '../common/utils/deepCopy'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
-import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 import DocumentsSearchAlert from '@/modules/Documents/components/DocumentsSearchAlert'
 import { validInputMaxLength }
   from '@/modules/common/helpers/inputValidationHelper'
@@ -225,12 +226,11 @@ const fetchDocuments = async () => {
       skip.value,
       currentPageSize.value,
       componentSortQueryField.value,
-      docSearchFilters.value
+      docSearchFilters.value,
     )
 
     isLoading.value = false
   }
-
 }
 // Breadcrumb
 
@@ -238,7 +238,7 @@ const breadcrumbItems = computed(() => {
   const items = getBreadcrumbItems(props.currentServiceFolder, props.selectedFolder?.id ?? 0) ?? []
   items.unshift({
     pId: -1,
-    pText: 'Documents'
+    pText: 'Documents',
   })
   return items
 })
@@ -279,7 +279,7 @@ watch([() => props.selectedFolder], async () => {
   await fetchDocuments()
 },
 {
-  immediate: true
+  immediate: true,
 })
 
 // Sort
@@ -297,15 +297,15 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
   return {
     selectedDocuments: selectedDocuments.value,
     currentService: props.currentService,
-    selectedEntity: props.selectedEntity
+    selectedEntity: props.selectedEntity,
   }
 })
 
 const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(() => ({
   selectedDocumentsIds: documentIdsSelected.value,
   currentService: props.currentService,
-  selectedEntity: props.selectedEntity
-})
+  selectedEntity: props.selectedEntity,
+}),
 )
 // documents selection handlers
 const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
@@ -358,7 +358,6 @@ const handleGoToSearchedDocument = () => {
 
     handleFolderNavigation(selectedDocuments.value[0].folder.id)
   }, 300)
-
 }
 
 const handleDocumentRename = async () => {
@@ -390,7 +389,6 @@ const handleSearchExpandChange = (value: boolean) => {
 }
 
 const searchDocumentsByKeyWord = async (value: string) => {
-
   if (!props.selectedFolder) return
 
   isSearchLoading.value = true
@@ -409,7 +407,7 @@ const searchDocumentsByKeyWord = async (value: string) => {
     skip.value,
     currentPageSize.value,
     componentSortQueryField.value,
-    value
+    value,
   )
   isSearchLoading.value = false
 }

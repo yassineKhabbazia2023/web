@@ -1,4 +1,4 @@
-import { Document } from '@/models/Document'
+import type { Document } from '@/models/Document'
 import type { Service } from '@/models/Service'
 
 // At the moment we're unable to correctly import the tag types without importing

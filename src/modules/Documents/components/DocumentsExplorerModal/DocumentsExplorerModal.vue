@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { PDialog, PScrollbar } from '@kpmg/styleguide'
-import { DocumentsModalExplorerProps } from './DocumentsExplorerModalTypes'
+import type { DocumentsModalExplorerProps } from './DocumentsExplorerModalTypes'
 import DocumentsExplorerHeader from './components/DocumentsExplorerHeader'
 import DocumentsCheckAll from './components/DocumentsSelector/DocumentsCheckAll'
 import FoldersList from './components/FoldersNavigator/FoldersList'
@@ -80,7 +80,7 @@ import DocumentsModalActionsFooter from './components/DocumentsModalActionsFoote
 import type { Folder } from '@/models/Folder'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 import { deepCopy } from '@/modules/common/utils/deepCopy'
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 
 const props = defineProps<DocumentsModalExplorerProps>()
 
@@ -89,7 +89,7 @@ const emit = defineEmits([
   'navigate-to-folder',
   'update-source-folders',
   'modal-action-clicked',
-  'close-modal'
+  'close-modal',
 ])
 
 const isDialogVisible = computed({
@@ -98,7 +98,7 @@ const isDialogVisible = computed({
   },
   set(value) {
     emit('update:isDialogVisible', value)
-  }
+  },
 })
 
 const isCreateFolderModalVisible = ref(false)
@@ -119,7 +119,7 @@ const isAllDocumentsChecked = computed(() => {
 const failedDocuments = computed(() =>
   explorerDocuments.value
     .filter(doc => doc.givenActionState === 'ERROR')
-    .map(doc => ({ name: doc.content.name, codeError: doc.codeError }))
+    .map(doc => ({ name: doc.content.name, codeError: doc.codeError })),
 )
 
 const buttonsList = ref<ButtonAction[]>(deepCopy(props.modalActionsButtonsList))
@@ -129,7 +129,7 @@ watch(
   () => props.modalActionsButtonsList,
   () => {
     buttonsList.value = props.modalActionsButtonsList
-  }
+  },
 )
 const mappedButtonsList = computed(() => {
   if (!props.ExplorerAuthorizedGivenAction.isActionAuthorized) {
@@ -193,7 +193,7 @@ watch(
   () => props.documents,
   (newValue) => {
     explorerDocuments.value = newValue
-  }
+  },
 )
 
 const handleActionButtonClicked = (action: string) => {

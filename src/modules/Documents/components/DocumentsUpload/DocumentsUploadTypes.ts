@@ -1,6 +1,6 @@
 import type { Folder } from '@/models/Folder'
-import { Service } from '@/models/Service'
-import { ExplorerDocument } from '../../DocumentsTypes'
+import type { Service } from '@/models/Service'
+import type { ExplorerDocument } from '../../DocumentsTypes'
 
 export interface DocumentUploadProps {
   folder: Folder

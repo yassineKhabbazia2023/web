@@ -10,33 +10,33 @@ import {
   moveDocuments,
   transmitDocuments,
   previewDocument,
-  fetchDocumentsByKeyWord
+  fetchDocumentsByKeyWord,
 } from './Documents'
 import type { Service } from '@/models/Service'
-import { Document } from '@/models/Document'
-import { Folder } from '@/models/Folder'
-import { MoveDocumentsRequest } from '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
+import type { Document } from '@/models/Document'
+import type { Folder } from '@/models/Folder'
+import type { MoveDocumentsRequest } from '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
 
 const mockDsGet = vi.fn((url) => {
   if (url.includes('preview')) {
     return Promise.resolve({
       data: new ArrayBuffer(1),
-      headers: { 'content-type': 'image/jpeg' }
+      headers: { 'content-type': 'image/jpeg' },
     })
   }
 
   return Promise.resolve({
     data: {
-      documents: 'fetched'
-    }
+      documents: 'fetched',
+    },
   })
 })
 
 const mockDsPost = vi.fn(() => {
   return Promise.resolve({
     data: {
-      documents: 'posted'
-    }
+      documents: 'posted',
+    },
   })
 })
 
@@ -54,16 +54,16 @@ vi.mock('@kpmg/common', async () => ({
       get: mockDsGet,
       post: mockDsPost,
       delete: mockDsDelete,
-      patch: mockDsPatch
-    }
+      patch: mockDsPatch,
+    },
   }),
   commonStore: () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
+    $post: vi.fn(),
   }),
-  debounce: vi.fn((fn) => fn)
+  debounce: vi.fn((fn) => fn),
 }))
 
 describe('documents service', () => {
@@ -77,20 +77,20 @@ describe('documents service', () => {
     await fetchFolderDocuments(
       service.ServiceId,
       folderId,
-      accountId
+      accountId,
     )
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/documents/folder/123', {
         params: {
           createdEnd: null,
           createdStart: null,
           limit: 10,
           skip: 0,
-          sort: '-created'
-        }
-      }
+          sort: '-created',
+        },
+      },
     )
   })
 
@@ -103,7 +103,7 @@ describe('documents service', () => {
     await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountId, 0, 10, '-created', 'test')
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/documents/folder/123',
       {
         params: {
@@ -111,9 +111,9 @@ describe('documents service', () => {
           skip: 0,
           sort: '-created',
           search: 'test',
-          findInChildFolders: true
-        }
-      }
+          findInChildFolders: true,
+        },
+      },
     )
   })
 
@@ -137,22 +137,22 @@ describe('documents service', () => {
       {
         selectedPeriod: 'DAY',
         startDate,
-        endDate
-      }
+        endDate,
+      },
 
     )
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/documents/folder/123', {
         params: {
           limit: 10,
           skip: 0,
           sort: '-created',
           createdStart: startDate,
-          createdEnd: endDate
-        }
-      }
+          createdEnd: endDate,
+        },
+      },
     )
   })
 
@@ -165,11 +165,11 @@ describe('documents service', () => {
       await downloadDocument(service.ServiceId, accountId, '1234')
 
       expect(mockDsGet).toHaveBeenCalledTimes(1)
-      expect(mockDsGet).toHaveBeenCalledWith(
+      expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
         'service-1/my-account-id/documents/1234/content',
         {
-          responseType: 'blob'
-        }
+          responseType: 'blob',
+        },
       )
     })
   it('should download documents  when downloadDocuments method is called', async () => {
@@ -180,12 +180,12 @@ describe('documents service', () => {
     await downloadDocuments(service.ServiceId, accountId, ['1234', '4567'])
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/archive',
       { ids: ['1234', '4567'] },
       {
-        responseType: 'blob'
-      }
+        responseType: 'blob',
+      },
     )
   })
 
@@ -199,12 +199,12 @@ describe('documents service', () => {
     await deleteDocuments(
       service.ServiceId,
       accountId,
-      documentIds
+      documentIds,
     )
 
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
-    expect(mockDsDelete).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents', { data: { ids: documentIds } }
+    expect(mockDsDelete).toHaveBeenCalledWithExactlyOnceWith(
+      'service-1/my-account-id/documents', { data: { ids: documentIds } },
     )
   })
 
@@ -219,17 +219,17 @@ describe('documents service', () => {
       service.ServiceId,
       accountId,
       documentId,
-      newDocumentName
+      newDocumentName,
     )
 
     expect(mockDsPatch).toHaveBeenCalledTimes(1)
-    expect(mockDsPatch).toHaveBeenCalledWith(
+    expect(mockDsPatch).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/documents/1234',
       [{
         op: 'replace',
         path: '/name',
-        value: 'my-new-doc'
-      }]
+        value: 'my-new-doc',
+      }],
     )
   })
 
@@ -239,7 +239,7 @@ describe('documents service', () => {
     const blob = new Blob(['Hello'], { type: 'text/plain' })
     const fileContent = blob.slice(0, 10)
     const file = new File([fileContent], 'my-file.txt', {
-      type: 'text/plain'
+      type: 'text/plain',
     })
 
     const accountId = 'my-account-id'
@@ -251,14 +251,14 @@ describe('documents service', () => {
     expectedPayload.append('file', file)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/folders/1234/documents?notify=true&source=User',
       expectedPayload,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     )
   })
 
@@ -271,7 +271,7 @@ describe('documents service', () => {
       sourceFolderId: 123,
       destinationFolderId: 1234,
       moveAll: false,
-      serviceId: service.ServiceId.toString()
+      serviceId: service.ServiceId.toString(),
     }
 
     const expectedPayload = JSON.stringify(fileMove)
@@ -279,14 +279,14 @@ describe('documents service', () => {
     await moveDocuments(service.ServiceId, accountId, fileMove)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/documents/move',
       expectedPayload,
       {
         headers: {
-          'Content-Type': 'application/json'
-        }
-      }
+          'Content-Type': 'application/json',
+        },
+      },
     )
   })
 
@@ -299,14 +299,14 @@ describe('documents service', () => {
     await transmitDocuments(service.ServiceId, accountId, documentIds)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(mockDsPost).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/documents/pia-speedup-transfer',
       { ids: documentIds },
       {
         headers: {
-          'Content-Type': 'application/json'
-        }
-      }
+          'Content-Type': 'application/json',
+        },
+      },
     )
   })
 
@@ -317,15 +317,15 @@ describe('documents service', () => {
     const data = await previewDocument(service.ServiceId, accountId, '1234')
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(mockDsGet).toHaveBeenCalledWithExactlyOnceWith(
       'service-1/my-account-id/documents/1234/preview',
       {
-        responseType: 'arraybuffer'
-      }
+        responseType: 'arraybuffer',
+      },
     )
     expect(data).toStrictEqual({
       data: new ArrayBuffer(1),
-      headers: { 'content-type': 'image/jpeg' }
+      headers: { 'content-type': 'image/jpeg' },
     })
     expect(data.headers).toStrictEqual({ 'content-type': 'image/jpeg' })
   })

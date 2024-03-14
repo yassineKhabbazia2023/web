@@ -9,7 +9,7 @@ describe('sortHelper', () => {
       ['Déposé le', 'ascending', '+created'],
       ['Déposé le', 'descending', '-created'],
       ['Supprimé le', 'ascending', '+deleted'],
-      ['Supprimé le', 'descending', '-deleted']
+      ['Supprimé le', 'descending', '-deleted'],
     ]
 
     it.each(testCases)(
@@ -17,7 +17,7 @@ describe('sortHelper', () => {
       (columnLabel, order, expectedResult) => {
         const actualResult = returnSortQueryField(columnLabel, order)
         expect(actualResult).toBe(expectedResult)
-      }
+      },
     )
   })
 })

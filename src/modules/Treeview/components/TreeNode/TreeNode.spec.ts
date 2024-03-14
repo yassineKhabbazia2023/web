@@ -3,11 +3,13 @@ import TreeNode from '@/modules/Treeview/components/TreeNode'
 import TreeNodeActions from '@/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }
   from '@/modules/Treeview/components/TreeNode/TreeNodeTypes'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import {
   PICalculatorEuro,
   PIFolder,
@@ -15,7 +17,7 @@ import {
   PIKpmg,
   PIPersonVcard,
   PITrash,
-  PTooltip
+  PTooltip,
 } from '@kpmg/styleguide'
 
 const fold: Folder = {
@@ -28,14 +30,14 @@ const fold: Folder = {
       parent: { id: 1 },
       permissions: [],
       properties: {} as FolderProperties,
-      serviceId: 'some-service'
-    } as Folder
+      serviceId: 'some-service',
+    } as Folder,
   ],
   name: 'A',
   parent: { id: 0 },
   permissions: [],
   properties: {} as FolderProperties,
-  serviceId: 'some-service'
+  serviceId: 'some-service',
 } as Folder
 
 type TreeNodeSetup = {
@@ -49,7 +51,7 @@ const defaultProps: TreeNodeProps = {
   data: fold,
   serviceId: 'string',
   entityId: 'string',
-  selectedFolder: {} as Folder
+  selectedFolder: {} as Folder,
 }
 
 export type TreeNodeWrapper = VueWrapper<
@@ -59,13 +61,13 @@ export type TreeNodeWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: TreeNodeProps = defaultProps
+  props: TreeNodeProps = defaultProps,
 ): TreeNodeWrapper => {
   return mount(TreeNode, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as TreeNodeWrapper
 }
 
@@ -78,28 +80,28 @@ describe('props', () => {
     const iconMappingCases = [
       {
         folderIconName: 'accountingRoot',
-        expectedIcon: PICalculatorEuro
+        expectedIcon: PICalculatorEuro,
       },
       {
         folderIconName: 'socialRoot',
-        expectedIcon: PIPersonVcard
+        expectedIcon: PIPersonVcard,
       },
       {
         folderIconName: 'deposit',
-        expectedIcon: PIInbox
+        expectedIcon: PIInbox,
       },
       {
         folderIconName: 'reservedKpmg',
-        expectedIcon: PIKpmg
+        expectedIcon: PIKpmg,
       },
       {
         folderIconName: 'binIcon',
-        expectedIcon: PITrash
+        expectedIcon: PITrash,
       },
       {
         folderIconName: 'someThing',
-        expectedIcon: PIFolder
-      }
+        expectedIcon: PIFolder,
+      },
     ]
     it.each(iconMappingCases)(
       'validate icons mapping with "%s"',
@@ -112,7 +114,7 @@ describe('props', () => {
 
         const componentInstance = wrapper.vm
         expect(componentInstance.iconsMapping).toStrictEqual(expectedIcon)
-      }
+      },
     )
   })
   it('should not display PIcon when folder has children', async () => {
@@ -139,8 +141,8 @@ describe('props', () => {
         parent: { id: 0 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      } as Folder
+        serviceId: 'some-service',
+      } as Folder,
     }
 
     const wrapper = createWrapper(props)
@@ -168,8 +170,8 @@ describe('props', () => {
         parent: { id: 0 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      } as Folder
+        serviceId: 'some-service',
+      } as Folder,
     }
 
     const wrapper = createWrapper(props)
@@ -186,7 +188,7 @@ describe('props', () => {
     await nextTick()
 
     const actions = wrapper.findComponent(
-      TreeNodeActions
+      TreeNodeActions,
     )
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
@@ -296,5 +298,4 @@ describe('interactions', () => {
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })
-
 })

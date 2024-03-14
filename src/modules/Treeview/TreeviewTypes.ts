@@ -7,12 +7,12 @@ export interface ExtendedFolder extends Folder {
 }
 
 export interface TreeviewProps {
-  entityServices: Service[],
-  isLoading: boolean,
-  servicesFolders: ExtendedFolder[][],
-  currentService: string,
-  selectedEntity: string,
-  selectedFolder: null | Folder,
+  entityServices: Service[]
+  isLoading: boolean
+  servicesFolders: ExtendedFolder[][]
+  currentService: string
+  selectedEntity: string
+  selectedFolder: null | Folder
   currentServiceFolder: null | Folder[]
 }
 

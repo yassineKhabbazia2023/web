@@ -17,34 +17,34 @@ const folders = [
             children: [],
             name: 'A classer',
             parent: {
-              id: 135393637
+              id: 135393637,
             },
             permissions: [
               'CAN_DELETE_FILES',
               'CAN_UPLOAD_FILES',
               'CAN_CREATE_FOLDER',
-              'CAN_MOVE_INTO_FOLDER'
+              'CAN_MOVE_INTO_FOLDER',
             ],
             properties: {
               syncStatus: 'PENDING_SYNC',
               folderDescription:
-                "Ce dossier regroupe l'ensemble des documents."
+                "Ce dossier regroupe l'ensemble des documents.",
             } as FolderProperties,
-            serviceId: 'service-id-compta'
-          } as Folder
+            serviceId: 'service-id-compta',
+          } as Folder,
         ] as Folder[],
         name: 'Dépôt',
         parent: {
-          id: 135393636
+          id: 135393636,
         },
         permissions: [
           'CAN_DELETE_FILES',
           'CAN_UPLOAD_FILES',
           'CAN_CREATE_FOLDER',
-          'CAN_MOVE_INTO_FOLDER'
+          'CAN_MOVE_INTO_FOLDER',
         ],
         properties: {} as FolderProperties,
-        serviceId: 'service-id-compta'
+        serviceId: 'service-id-compta',
       } as Folder,
       {
         iconName: 'deposit',
@@ -52,29 +52,29 @@ const folders = [
         children: [] as Folder[],
         name: 'KPMG',
         parent: {
-          id: 135393636
+          id: 135393636,
         },
         permissions: [],
         properties: {
           folderDescription:
-            "Ici, veuillez trouver l'ensemble des documents déposés par votre expert KPMG."
+            "Ici, veuillez trouver l'ensemble des documents déposés par votre expert KPMG.",
         } as FolderProperties,
-        serviceId: 'service-id-compta'
-      } as Folder
+        serviceId: 'service-id-compta',
+      } as Folder,
     ],
     name: 'Comptabilité',
     parent: {
-      id: 0
+      id: 0,
     },
     permissions: ['CAN_DELETE_FILES'],
     properties: {
       syncStatus: 'ERROR_SYNC',
       folderDescription:
         "Déposez et retrouvez ici l'ensemble des documents échangés avec votre expert comptable.",
-      tracingName: 'Accounting'
+      tracingName: 'Accounting',
     },
-    serviceId: 'service-id-compta'
-  } as Folder
+    serviceId: 'service-id-compta',
+  } as Folder,
 ] as Folder[]
 
 describe('folderHelper', () => {
@@ -83,15 +83,15 @@ describe('folderHelper', () => {
 
     const resExpectd = [{
       pId: 135393636,
-      pText: 'Comptabilité'
+      pText: 'Comptabilité',
     },
     {
       pId: 135393637,
-      pText: 'Dépôt'
+      pText: 'Dépôt',
     },
     {
       pId: 135393649,
-      pText: 'A classer'
+      pText: 'A classer',
     }]
 
     expect(res).toStrictEqual(resExpectd)

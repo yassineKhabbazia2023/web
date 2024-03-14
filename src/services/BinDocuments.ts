@@ -7,7 +7,7 @@ export const fetchBinDocuments = async (
   entityId: string,
   skip = 0,
   limit = 10,
-  sort = '-deleted'
+  sort = '-deleted',
 ): Promise<BinDocumentsWithTableStructure> => {
   const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/mapped`
   const apiObject = api().ds
@@ -17,8 +17,8 @@ export const fetchBinDocuments = async (
       params: {
         skip,
         limit,
-        sort
-      }
+        sort,
+      },
     })
   ).data
 }
@@ -26,14 +26,14 @@ export const fetchBinDocuments = async (
 export const restoreDocuments = async (
   serviceId: Service['ServiceId'],
   entityId: string,
-  docIds: Array<string>
+  docIds: Array<string>,
 ): Promise<RestoredDocument[]> => {
   const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/restore`
   const apiObject = api().ds
 
   return (
     await apiObject.post(fetchBinDocumentsUrl, {
-      ids: docIds
+      ids: docIds,
     })
   ).data
 }

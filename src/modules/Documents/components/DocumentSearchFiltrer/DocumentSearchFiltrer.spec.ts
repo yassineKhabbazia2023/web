@@ -1,17 +1,19 @@
 /* eslint-disable vitest/max-expects */
 // eslint-disable-next-line vitest/max-expects
 import { createPinia } from 'pinia'
-import { ComponentPublicInstance, nextTick } from 'vue'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
 import { PDrawer, PSelect, POption, PDatePicker, PButton } from '@kpmg/styleguide'
-import { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
+import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import DocumentSearchFiltrer from '.'
-import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 
 const defaultProps: DocumentSearchFiltrerProps = {
   modelValue: true,
-  filters: null
+  filters: null,
 }
 
 type DocumentSearchFiltrerSetup = {
@@ -26,13 +28,13 @@ export type DocumentSearchFiltrerWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentSearchFiltrerProps = defaultProps
+  props: DocumentSearchFiltrerProps = defaultProps,
 ): DocumentSearchFiltrerWrapper => {
   return mount(DocumentSearchFiltrer, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as DocumentSearchFiltrerWrapper
 }
 
@@ -147,7 +149,7 @@ describe('documentSearchFiltrer', () => {
       const res:DocumentSearchFilters = {
         selectedPeriod: 'DAY',
         startDate: date,
-        endDate: date
+        endDate: date,
       }
 
       expect(wrapper.emitted('apply-filters-drawer')).toStrictEqual([[res]])

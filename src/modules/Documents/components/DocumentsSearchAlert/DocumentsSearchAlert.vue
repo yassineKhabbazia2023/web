@@ -7,8 +7,8 @@
       {{ t('documentsFound.normalText') }}
     </PAlert>
     <div
-    v-else
-    class="documents-search-alert__no-documents
+      v-else
+      class="documents-search-alert__no-documents
         font-semibold padding-y--2 padding-x--6">
       <span>{{ documentsCount }}</span> {{ t('documentsNotFound') }}
     </div>
@@ -16,13 +16,13 @@
 </template>
 
 <script setup lang="ts">
-import { DocumentsSearchAlertProps } from './DocumentsSearchAlertTypes'
+import type { DocumentsSearchAlertProps } from './DocumentsSearchAlertTypes'
 import { useI18n } from 'vue-i18n'
 import { PAlert } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 defineProps<DocumentsSearchAlertProps>()

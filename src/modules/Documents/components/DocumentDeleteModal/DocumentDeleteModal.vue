@@ -29,7 +29,7 @@ import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
@@ -39,7 +39,7 @@ const props = defineProps<DocumentDeleteModalTypesProps>()
 const emit = defineEmits([
   'update:isVisible',
   'confirm-delete-document',
-  'cancel-delete-document'
+  'cancel-delete-document',
 ])
 
 const isDeleteInProgress = ref(false)
@@ -50,7 +50,7 @@ const isPopupVisible = computed({
   },
   set(value) {
     emit('update:isVisible', value)
-  }
+  },
 })
 
 const message = computed(() => {
@@ -83,7 +83,7 @@ const handleConfirmDeleteFolder = async () => {
     await deleteDocuments(
       props.serviceId,
       props.entityId,
-      props.documentIds
+      props.documentIds,
     )
 
     emit('confirm-delete-document')
@@ -101,7 +101,7 @@ const triggerErrorNotification = () => {
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: true,
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 
@@ -115,7 +115,7 @@ const triggerSuccessNotification = () => {
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

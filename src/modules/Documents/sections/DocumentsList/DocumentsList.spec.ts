@@ -1,12 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import DocumentsList from './DocumentsList.vue'
-import { VueWrapper, mount, shallowMount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import type { DocumentsListProps } from './DocumentsListTypes'
 import { documentsResponsePayload } from '../../mocks/documentsWithTableStructureDataMock'
 import { PTableColumn, PTable } from '@kpmg/styleguide'
-import { ComponentPublicInstance, nextTick } from 'vue'
-import { Document } from '@/models/Document'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
+import type { Document } from '@/models/Document'
 import TableElement from './components/TableElement'
 
 type DocumentsListSetup = {
@@ -14,7 +16,7 @@ type DocumentsListSetup = {
 }
 
 const defaultProps: DocumentsListProps = {
-  documentsListWithTableStructure: documentsResponsePayload
+  documentsListWithTableStructure: documentsResponsePayload,
 }
 
 const payloadWithZeroItems = {
@@ -23,7 +25,7 @@ const payloadWithZeroItems = {
   ],
   totalItems: 39,
   endIndex: 4,
-  startIndex: 1
+  startIndex: 1,
 }
 
 export type DocumentsListWrapper = VueWrapper<
@@ -38,11 +40,11 @@ const createWrapper = (props: DocumentsListProps = defaultProps): DocumentsListW
         PTableColumn,
         TableElement,
         PToolbox: {
-          template: '<span />'
-        }
+          template: '<span />',
+        },
       },
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as DocumentsListWrapper
 }
 
@@ -60,11 +62,11 @@ describe('documentList', () => {
         global: {
           stubs: {
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
-          plugins: [pinia]
-        }
+          plugins: [pinia],
+        },
       }) as unknown as DocumentsListWrapper
 
       wrapper.find('.el-table__cell')
@@ -73,7 +75,6 @@ describe('documentList', () => {
       const colomuns = wrapper.findAllComponents(PTableColumn)
       await nextTick()
       expect(colomuns).toHaveLength(8)
-
     }, 30000)
   })
   describe('events', () => {
@@ -108,13 +109,13 @@ describe('documentList', () => {
 
       await table.vm.$emit(
         'selection-change',
-        documentsResponsePayload.documentsPage.items
+        documentsResponsePayload.documentsPage.items,
       )
       await nextTick()
 
       expect(wrapper.emitted('document-selection-change')).toBeTruthy()
       expect(wrapper.emitted('document-selection-change')).toStrictEqual([
-        [documentsResponsePayload.documentsPage.items]
+        [documentsResponsePayload.documentsPage.items],
       ])
     }, 30000)
 
@@ -124,11 +125,11 @@ describe('documentList', () => {
         global: {
           stubs: {
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
-          plugins: [pinia]
-        }
+          plugins: [pinia],
+        },
       }) as unknown as DocumentsListWrapper
 
       await nextTick()
@@ -136,12 +137,12 @@ describe('documentList', () => {
       await nextTick()
       await tableElements[0].vm.$emit('actions-dropdown-opened',
         documentsResponsePayload.documentsPage.items[0],
-        { label: 'Actions' }
+        { label: 'Actions' },
       )
       await nextTick()
       const componentInstance = wrapper.vm
       expect(
-        componentInstance.selectedDocuments
+        componentInstance.selectedDocuments,
       ).toStrictEqual(documentsResponsePayload.documentsPage.items)
     })
     it('should select and open preview drawer', async () => {
@@ -150,11 +151,11 @@ describe('documentList', () => {
         global: {
           stubs: {
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
-          plugins: [pinia]
-        }
+          plugins: [pinia],
+        },
       }) as unknown as DocumentsListWrapper
 
       await nextTick()
@@ -162,18 +163,18 @@ describe('documentList', () => {
       await nextTick()
       await tableElements[0].vm.$emit('actions-dropdown-opened',
         documentsResponsePayload.documentsPage.items[0],
-        { label: 'Statut' }
+        { label: 'Statut' },
       )
       await nextTick()
       const componentInstance = wrapper.vm
       expect(wrapper.emitted('table-row-clicked')).toBeTruthy()
       expect(wrapper.emitted('table-row-clicked')).toStrictEqual([
-        [documentsResponsePayload.documentsPage.items[0]]
+        [documentsResponsePayload.documentsPage.items[0]],
       ])
 
       // we don't select the row if preview
       expect(
-        componentInstance.selectedDocuments
+        componentInstance.selectedDocuments,
       ).toStrictEqual([])
     })
     it('should propagate toolbox-action-triggered of tableElement', async () => {
@@ -182,11 +183,11 @@ describe('documentList', () => {
         global: {
           stubs: {
             PToolbox: {
-              template: '<span />'
-            }
+              template: '<span />',
+            },
           },
-          plugins: [pinia]
-        }
+          plugins: [pinia],
+        },
       }) as unknown as DocumentsListWrapper
 
       await nextTick()
@@ -206,7 +207,7 @@ describe('documentList', () => {
     it('should display the correct text when not data available in the documentsList', async () => {
       const wrapper = createWrapper({
         ...defaultProps,
-        documentsListWithTableStructure: payloadWithZeroItems
+        documentsListWithTableStructure: payloadWithZeroItems,
       })
 
       const table = await wrapper.findComponent(PTable)

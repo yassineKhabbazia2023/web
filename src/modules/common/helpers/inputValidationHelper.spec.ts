@@ -1,6 +1,6 @@
 import {
   validInputAlphanumericFrench,
-  validInputMaxLength
+  validInputMaxLength,
 } from './inputValidationHelper'
 import { describe, it, expect } from 'vitest'
 

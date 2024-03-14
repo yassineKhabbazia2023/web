@@ -2,11 +2,10 @@
 import { it, expect, describe } from 'vitest'
 import {
   generateActionBarRightSideButtons,
-  generateActionBarLeftSideButtons
+  generateActionBarLeftSideButtons,
 } from './DocumentsActionsHelpers'
 
 describe('documentsActionsHelpers', () => {
-
   describe('generateActionBarRightSideButtons', () => {
     it('should return mapped permission actions', () => {
       expect.hasAssertions()
@@ -24,10 +23,10 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIDownload',
-          pButtonActionName: 'actionbar-download-action-click'
+          pButtonActionName: 'actionbar-download-action-click',
         },
         {
           pButtonName: 'Déplacer',
@@ -38,11 +37,11 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIFolderMove',
-          pButtonActionName: 'actionbar-move-action-click'
-        }
+          pButtonActionName: 'actionbar-move-action-click',
+        },
       ]
       expect(res).toStrictEqual(data)
     })
@@ -56,8 +55,8 @@ describe('documentsActionsHelpers', () => {
         isDocumentSelected,
         {
           permission: 'CAN_MOVE_DOCUMENT',
-          isLoading: true
-        }
+          isLoading: true,
+        },
       )
 
       const data = [
@@ -70,10 +69,10 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIDownload',
-          pButtonActionName: 'actionbar-download-action-click'
+          pButtonActionName: 'actionbar-download-action-click',
         },
         {
           pButtonName: 'Déplacer',
@@ -84,11 +83,11 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: true,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIFolderMove',
-          pButtonActionName: 'actionbar-move-action-click'
-        }
+          pButtonActionName: 'actionbar-move-action-click',
+        },
       ]
       expect(res).toStrictEqual(data)
     })
@@ -110,7 +109,7 @@ describe('documentsActionsHelpers', () => {
         permissions,
         false,
         false,
-        hasFiltersEnabled
+        hasFiltersEnabled,
       )
 
       const data = [
@@ -123,12 +122,12 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIUpload',
           pButtonActionName: 'actionbar-add-document-action-click',
           pComponentType: 'UPLOAD',
-          pMultiple: true
+          pMultiple: true,
         },
         {
           pButtonName: 'Filtrer',
@@ -139,10 +138,10 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIFunnel',
-          pButtonActionName: 'actionbar-filter-action-click'
+          pButtonActionName: 'actionbar-filter-action-click',
         },
         {
           pButtonName: '',
@@ -153,14 +152,14 @@ describe('documentsActionsHelpers', () => {
             pCircle: true,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PISearch',
           pButtonActionName: 'actionbar-search-action-click',
           pComponentType: 'SEARCH',
           pIsSearchOpen: false,
-          pIsSearchShrinkable: false
-        }
+          pIsSearchShrinkable: false,
+        },
       ]
       expect(res).toStrictEqual(data)
     })
@@ -173,7 +172,7 @@ describe('documentsActionsHelpers', () => {
         permissions,
         false,
         false,
-        hasFiltersEnabled
+        hasFiltersEnabled,
       )
 
       const data = [
@@ -186,12 +185,12 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIUpload',
           pButtonActionName: 'actionbar-add-document-action-click',
           pComponentType: 'UPLOAD',
-          pMultiple: true
+          pMultiple: true,
         },
         {
           pButtonName: 'Filtrer (1)',
@@ -202,10 +201,10 @@ describe('documentsActionsHelpers', () => {
             pCircle: false,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PIFunnel',
-          pButtonActionName: 'actionbar-filter-action-click'
+          pButtonActionName: 'actionbar-filter-action-click',
         },
         {
           pButtonName: '',
@@ -216,14 +215,14 @@ describe('documentsActionsHelpers', () => {
             pCircle: true,
             pLoading: false,
             pDisabled: false,
-            pSize: 'small'
+            pSize: 'small',
           },
           pButtonIcon: 'PISearch',
           pButtonActionName: 'actionbar-search-action-click',
           pComponentType: 'SEARCH',
           pIsSearchOpen: false,
-          pIsSearchShrinkable: false
-        }
+          pIsSearchShrinkable: false,
+        },
       ]
       expect(res).toStrictEqual(data)
     })

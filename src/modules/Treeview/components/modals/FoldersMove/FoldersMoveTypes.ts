@@ -1,6 +1,6 @@
 import type { Folder } from '@/models/Folder'
-import { Service } from '@/models/Service'
-import { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
+import type { Service } from '@/models/Service'
+import type { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
 
 export interface FoldersMoveProps {
   folder: Folder

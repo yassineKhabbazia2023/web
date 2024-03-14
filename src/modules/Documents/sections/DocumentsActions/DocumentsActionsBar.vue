@@ -16,13 +16,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { ActionBarLoadingButtonsState } from './helpers/DocumentsActionsHelpers'
 import {
-  ActionBarLoadingButtonsState,
   generateActionBarLeftSideButtons,
-  generateActionBarRightSideButtons
+  generateActionBarRightSideButtons,
 } from './helpers/DocumentsActionsHelpers'
 import { PActionBar } from '@kpmg/styleguide'
-import { DocumentActionsBarProps } from './DocumentActionsBarTypes'
+import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
 import { debounce } from '@kpmg/common'
 
 const props = defineProps<DocumentActionsBarProps>()
@@ -34,21 +34,21 @@ const leftSideButtons = computed(() =>
     props.permissions,
     props.isSearchShrinkable,
     props.isSearchOpen,
-    props.hasFiltersEnabled
-  )
+    props.hasFiltersEnabled,
+  ),
 )
 
 const actionBarLoadingButtonsState = computed<ActionBarLoadingButtonsState>(() => ({
   permission: 'CAN_TRANSMIT_DOCUMENT',
-  isLoading: props.isTransmitDocumentsLoading
-})
+  isLoading: props.isTransmitDocumentsLoading,
+}),
 )
 
 const rightSideButtons = computed(() =>
   generateActionBarRightSideButtons(
     props.permissions,
     props.isAnyDocumentSelected,
-    actionBarLoadingButtonsState.value)
+    actionBarLoadingButtonsState.value),
 )
 
 const handleButtonClick = (name: string) => {

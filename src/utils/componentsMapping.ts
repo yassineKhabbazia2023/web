@@ -12,13 +12,13 @@ const componentsMapping: Record<string, string> = {
   // components
   Text: 'PText',
   Tag: 'PTag',
-  ActionGroup: 'PToolbox'
+  ActionGroup: 'PToolbox',
 }
 
 export const getMappedComponent = (componentKey: string): string => componentsMapping[componentKey]
 
 export const getMappedComponentAsync = (componentKey: string) => {
   return defineAsyncComponent(() =>
-    import('@kpmg/styleguide').then((res: any) => res[getMappedComponent(componentKey)])
+    import('@kpmg/styleguide').then((res: any) => res[getMappedComponent(componentKey)]),
   )
 }
