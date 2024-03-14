@@ -14,12 +14,12 @@ vi.mock('@kpmg/common', () => {
           if (['favorites', 'display'].includes(url)) {
             return getEntitiesImplementation(throwError)
           }
-        })
-      }
+        }),
+      },
     }),
     commonStore: () => ({
-      $patch: vi.fn()
-    })
+      $patch: vi.fn(),
+    }),
   }
 })
 
@@ -28,7 +28,7 @@ const getEntitiesImplementation = (throwError: boolean) => {
     return Promise.reject(new Error('No data received from the API'))
   }
   return Promise.resolve({
-    data: testEntities
+    data: testEntities,
   })
 }
 

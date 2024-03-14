@@ -1,6 +1,7 @@
 import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { commonStore as store } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
@@ -13,27 +14,27 @@ const { router, pinia, fetchUserData, fakeUser } = helpers()
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
-      user: null
+      user: null,
     }),
     getters: {
-      isAuthenticated: () => true
+      isAuthenticated: () => true,
     },
     actions: {
-      logout: () => vi.fn()
-    }
+      logout: () => vi.fn(),
+    },
   }),
   commonPinia: () => pinia,
   dataProvider: () => {
     return { fetchUserData }
-  }
+  },
 }))
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Header, {
     attachTo: document.body,
     global: {
-      plugins: [router, createTestingPinia()]
-    }
+      plugins: [router, createTestingPinia()],
+    },
   })
 
 describe('header', () => {
@@ -73,8 +74,8 @@ describe('header', () => {
         firstName: fakeUser?.firstName,
         lastName: fakeUser?.lastName,
         isCollab: fakeUser?.isCollab,
-        id: fakeUser?.id
-      }
+        id: fakeUser?.id,
+      },
     })
 
     const initialContainer = wrapper.findComponent('[data-ut="user-initials"]')

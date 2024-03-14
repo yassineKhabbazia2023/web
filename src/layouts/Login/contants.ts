@@ -1,13 +1,13 @@
 export const LINKS = [
   {
     href: 'https://kpmg.com/fr/fr/home/misc/legal.html',
-    translationKey: 'legalNotice'
+    translationKey: 'legalNotice',
   },
   {
-    translationKey: 'CGU'
+    translationKey: 'CGU',
   },
   {
     href: 'https://kpmg.com/fr/fr/home/misc/confidentialite-gestion-donnees.html',
-    translationKey: 'privacyPolicy'
-  }
+    translationKey: 'privacyPolicy',
+  },
 ]

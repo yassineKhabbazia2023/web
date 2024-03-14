@@ -31,19 +31,12 @@
     </PToolbox>
   </div>
 </template>
-<i18n lang="yaml">
-en-US:
-  logout: 'Logout'
-fr-FR:
-  logout: 'Se déconnecter'
-</i18n>
-
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   commonStore as useStore,
-  dataProvider as useDataProvider
+  dataProvider as useDataProvider,
 } from '@kpmg/common'
 import { useI18n } from 'vue-i18n'
 import { PAvatar, PImage, PToolbox } from '@kpmg/styleguide'
@@ -52,7 +45,7 @@ const router = useRouter()
 const store = useStore()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const { fetchUserData } = useDataProvider()
@@ -63,8 +56,8 @@ const authenticatedUserToolbox = [
   {
     pIconName: 'PIPower',
     pValue: t('logout'),
-    pActionName: 'logout'
-  }
+    pActionName: 'logout',
+  },
 ]
 
 const userInitials = computed(() => {
@@ -87,8 +80,8 @@ onMounted(async () => {
         firstName: user?.firstName,
         lastName: user?.lastName,
         isCollab: user?.isCollab,
-        id: user?.id
-      }
+        id: user?.id,
+      },
     })
     firstName.value = user?.firstName
     lastName.value = user?.lastName
@@ -113,3 +106,10 @@ onMounted(async () => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+en-US:
+  logout: 'Logout'
+fr-FR:
+  logout: 'Se déconnecter'
+</i18n>

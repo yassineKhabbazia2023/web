@@ -118,19 +118,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-en-US:
-  open: 'Open'
-  close: 'Close'
-  favorites: 'Favorites'
-  wallet: 'My Wallet'
-fr-FR:
-  open: 'Ouvrir'
-  close: 'Fermer'
-  favorites: 'Favoris'
-  wallet: 'Mon Portefeuille'
-</i18n>
-
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -142,7 +129,7 @@ import {
   PIArrowBarLeft,
   PICardList,
   PIStarFill,
-  PIcon
+  PIcon,
 } from '@kpmg/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
@@ -154,7 +141,7 @@ const route = useRoute()
 const userStore = commonStore()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<SidebarEntityProps>()
@@ -168,7 +155,7 @@ const walletItem = computed((): SidebarEntityItemProps => {
   return {
     tooltipContent: t('wallet'),
     tooltipDisabled: isSidebarOpened.value,
-    route: { name: isCollab.value ? 'wallet' : 'wallet-client' }
+    route: { name: isCollab.value ? 'wallet' : 'wallet-client' },
   }
 })
 
@@ -177,7 +164,7 @@ const isSelectedEntityActive = computed(() => {
     selectedEntity.value &&
     activeItem({
       name: 'folder',
-      params: { id: selectedEntity.value.idAccount }
+      params: { id: selectedEntity.value.idAccount },
     })
   )
 })
@@ -211,9 +198,9 @@ const patchDefaultEntity = (entity: Entity) => {
   userStore.$patch({
     user: {
       entities: {
-        default: entity
-      }
-    }
+        default: entity,
+      },
+    },
   })
 }
 
@@ -228,7 +215,7 @@ watch(
   () => {
     selectedEntity.value = defaultEntity.value as Entity
   },
-  { deep: true }
+  { deep: true },
 )
 
 onMounted(() => {
@@ -451,3 +438,16 @@ onMounted(() => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+en-US:
+  open: 'Open'
+  close: 'Close'
+  favorites: 'Favorites'
+  wallet: 'My Wallet'
+fr-FR:
+  open: 'Ouvrir'
+  close: 'Fermer'
+  favorites: 'Favoris'
+  wallet: 'Mon Portefeuille'
+</i18n>

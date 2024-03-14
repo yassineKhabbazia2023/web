@@ -6,15 +6,15 @@ const menu = [
   {
     name: 'wallet',
     icon: 'PIGrid',
-    path: '/portefeuille'
-  }
+    path: '/portefeuille',
+  },
 ]
 const fakeUser: Partial<UserInfo> = {
   id: '123',
   firstName: 'John',
   lastName: 'Doe',
   email: 'john@example.com',
-  isCollab: false
+  isCollab: false,
 }
 const helpers = () => {
   const router = createRouter({
@@ -24,10 +24,10 @@ const helpers = () => {
         name: 'login',
         path: '/login',
         component: {
-          template: '<div />'
-        }
-      }
-    ]
+          template: '<div />',
+        },
+      },
+    ],
   })
 
   menu.forEach((m: any) => {
@@ -44,24 +44,24 @@ const helpers = () => {
           name: 'Entity Name 2',
           idAccount: 'AccountNumber 2',
           ibs: 'IBS93781560ZE19',
-          color: 'orange'
+          color: 'orange',
         },
         favorites: [
           {
             name: 'Entity Name 1',
             idAccount: 'AccountNumber 1',
             ibs: 'IBS93781560ZE19',
-            color: 'orange'
+            color: 'orange',
           },
           {
             name: 'Entity Name 2',
             idAccount: 'AccountNumber 2',
             ibs: 'IBS93781560ZE19',
-            color: 'orange'
-          }
-        ]
-      }
-    }
+            color: 'orange',
+          },
+        ],
+      },
+    },
   }
 
   const fetchUserData = () => {
@@ -72,7 +72,7 @@ const helpers = () => {
     pinia,
     mockUser,
     fetchUserData,
-    fakeUser
+    fakeUser,
   }
 }
 export default helpers

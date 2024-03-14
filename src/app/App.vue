@@ -27,11 +27,11 @@ watch(
     const layout = route.meta?.layout || 'Home'
     if (previousLayout !== layout) {
       getLayout.value = markRaw(defineAsyncComponent(
-        () => import(`@/layouts/${layout}/index.ts`)
+        () => import(`@/layouts/${layout}/index.ts`),
       ))
       previousLayout = layout.toString()
     }
-  }
+  },
 )
 
 const handleLogout = async () => {

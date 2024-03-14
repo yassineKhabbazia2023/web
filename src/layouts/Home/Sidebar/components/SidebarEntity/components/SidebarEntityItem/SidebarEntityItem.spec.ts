@@ -1,20 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import SidebarEntityItem from '.'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: vi.fn()
+    push: vi.fn(),
   }),
   useRoute: () => ({
-    fullPath: '/portefeuille/3'
-  })
+    fullPath: '/portefeuille/3',
+  }),
 }))
 
 const defaultProps = {
   tooltipContent: 'Entity Item Test',
   tooltipDisabled: true,
-  path: '/portefeuille/3'
+  path: '/portefeuille/3',
 }
 
 const createWrapper = (props = defaultProps) => {
@@ -22,8 +23,8 @@ const createWrapper = (props = defaultProps) => {
     props,
     slots: {
       default: '<p>Entity Item Test</p>',
-      'suffix-content': "<p data-testid='suffix-slot'>Entity Item Suffix</p>"
-    }
+      'suffix-content': "<p data-testid='suffix-slot'>Entity Item Suffix</p>",
+    },
   })
 
   return wrapper
