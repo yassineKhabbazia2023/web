@@ -17,6 +17,9 @@
     :fitInputWidth="pFitInputWidth"
     :selectWhenUnmatched="pSelectWhenUnmatched"
   >
+    <template #default="props">
+      <slot v-bind="props" />
+    </template>
     <template #prefix>
       <slot name="prefix" />
     </template>
