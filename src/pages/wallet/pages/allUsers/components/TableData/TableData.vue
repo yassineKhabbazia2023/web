@@ -13,13 +13,14 @@
     >
       <template #default="scope">
         <div class="flex flex--align-items-center">
-          <PAvatar
-            class="margin-right--2"
-            pColor="bordered-persian"
-            pType="xsmall"
-          >
-            {{ scope.row.initials }}
-          </PAvatar>
+          <div class="margin-right--2">
+            <PAvatar
+              pColor="bordered-persian"
+              pType="xsmall"
+            >
+              {{ scope.row.initials }}
+            </PAvatar>
+          </div>
           <div>
             <p class="text-capitalize">
               <span v-if="scope.row.isLoggedUser()">{{ t('you') }}</span>
