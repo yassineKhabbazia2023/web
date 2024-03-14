@@ -7,11 +7,20 @@
         pPlaceholder="Please Input"
         @select="handleSelect"
         :pFetchSuggestions="querySearch"
-        :pTriggerOnFocus="triggerOnFocus">
+        :pTriggerOnFocus="triggerOnFocus"
+      >
         <template #prefix>
           <PIcon>
             <PISearch />
           </PIcon>
+        </template>
+        <template #default="{ item }">
+          <div class="value">
+            {{ item.value }}
+          </div>
+          <span class="link">
+            {{ item.link }}
+          </span>
         </template>
       </PAutocomplete>
       <template #controls>
@@ -34,6 +43,7 @@ const clearable = ref(true)
 const triggerOnFocus = ref(false)
 const state = ref('')
 const links = ref<LinkItem[]>([])
+
 const querySearch = (queryString: string, cb: any) => {
   const results = queryString
     ? links.value.filter(createFilter(queryString))
@@ -41,6 +51,7 @@ const querySearch = (queryString: string, cb: any) => {
   // call callback function to return suggestion objects
   cb(results)
 }
+
 function createFilter(queryString: string) {
   return (restaurant: LinkItem) => {
     return (
@@ -48,6 +59,7 @@ function createFilter(queryString: string) {
     )
   }
 }
+
 const loadAll = () => {
   return [
     { value: 'vue', link: 'https://github.com/vuejs/vue' },
@@ -59,9 +71,11 @@ const loadAll = () => {
     { value: 'babel', link: 'https://github.com/babel/babel' }
   ]
 }
+
 function handleSelect(value: any) {
   logEvent('select', value)
 }
+
 onMounted(() => {
   links.value = loadAll()
 })
@@ -69,15 +83,19 @@ onMounted(() => {
 
 <docs lang="md">
 ## Basic usage
+
 You can get some recommended tips based on the current input.
 
 Autocomplete component provides input suggestions. The `fetch-suggestions` attribute is a method that returns suggested input. In this example, `querySearch(queryString, cb)` returns suggestions to Autocomplete via `cb(data)` when suggestions are ready.
 
 ## Custom template
+
 Customize how suggestions are displayed.
 
 Use `scoped slot` to customize suggestion items. In the scope, you can access the suggestion object via the `item` key.
+
 ## Remote search
+
 Search data from server-side.
 
 <div class="reponsive-iframe-container">
