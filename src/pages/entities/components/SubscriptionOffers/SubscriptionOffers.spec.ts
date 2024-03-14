@@ -3,6 +3,7 @@ import Subscription from '.'
 import { getMockedSubscriptionOffers } from './SubscriptionOffersMocks'
 import { mount } from '@vue/test-utils'
 import type { SubscriptionOffer } from './SubscriptionOffersTypes'
+import { nextTick } from 'vue'
 
 describe('subscriptionOffers', () => {
   let subscriptionOffers: SubscriptionOffer[]
@@ -33,16 +34,17 @@ describe('subscriptionOffers', () => {
             onSelectOffer: vi.fn()
           }
 
-          const wrapper = await mount(Subscription, {
+          const wrapper = mount(Subscription, {
             props: {
               modelValue: true,
               subscriptionOffers
             },
             methods: mockMethods
           })
-          await wrapper
+          wrapper
             .find('[data-testid=offer-list] [data-testid=offer-item]:nth-child(2)')
             .trigger('click')
+          await nextTick()
 
           expect(wrapper.emitted('selectOffer')).toBeTruthy()
         }

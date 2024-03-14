@@ -128,7 +128,7 @@ describe('tableData', () => {
   })
 
   it('should resend activation mail & success toaster when click on resend email button', async () => {
-    await postMock.mockReturnValueOnce({
+    postMock.mockReturnValueOnce({
       status: 200,
       data: {
         webToken: 'token'
@@ -149,7 +149,7 @@ describe('tableData', () => {
   })
 
   it('should show error toaster when click on resend email button', async () => {
-    await postMock.mockReturnValueOnce({
+    postMock.mockReturnValueOnce({
       status: 500,
       data: {
         webToken: ''
