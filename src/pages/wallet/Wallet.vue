@@ -99,6 +99,6 @@ fr-FR:
   subscriptions: 'Demandes MOD'
   history: 'Historique'
   collaborators: 'Collaborateurs'
-  allEntities: 'Entités'
-  allUsers: 'Utilisateurs'
+  allEntities: 'Mes entités'
+  allUsers: 'Tous les utilisateurs'
 </i18n>

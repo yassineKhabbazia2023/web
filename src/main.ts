@@ -54,6 +54,11 @@ const CUSTOMER_WALLET_CHILDREN_ROUTES = [
     name: 'entity-client',
     page: 'folders'
   },
+  {
+    path: 'utilisateurs',
+    name: 'allUsers',
+    page: 'allUsers'
+  },
   ...BASE_WALLET_ROUTES
 ]
 

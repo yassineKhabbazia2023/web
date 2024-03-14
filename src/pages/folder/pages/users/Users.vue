@@ -168,11 +168,10 @@ import {
 } from '@kpmg/styleguide'
 import { computed, onMounted, reactive, watch } from 'vue'
 import { commonStore } from '@kpmg/common'
+import { PAGE_SIZES } from '@/constants'
 import { IStateUser, IUserStatus } from './types'
 import { dataFromApi } from './mockData'
 import { storeToRefs } from 'pinia'
-
-const PAGE_SIZES = [15, 30, 45, 60]
 
 const state: IStateUser = reactive({
   data: [],

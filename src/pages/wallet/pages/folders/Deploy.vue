@@ -15,7 +15,7 @@
       >
         {{ t('delegation', selectedFolders.length) }}
       </PButton>
-      </div>
+    </div>
     <div class="margin-bottom--3">
       <PForm
         ref="formRef"
@@ -103,6 +103,7 @@ import { storeToRefs } from 'pinia'
 import NoResult from '@/components/NoResult'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 import { removeFalsyValues } from '@/helper'
+import { PAGE_SIZES } from '@/constants'
 import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '../../types'
 import Filters from '../../components/Filters'
 import { EntityStatus } from '../../components/Filters/types'
@@ -117,8 +118,6 @@ const userStore = commonStore()
 const router = useRouter()
 const selectedCompanyName = ref('')
 const { isCollab, user } = storeToRefs(userStore)
-
-const PAGE_SIZES = [15, 30, 45, 60]
 
 // search part
 const formRef = ref<FormInstance>()
