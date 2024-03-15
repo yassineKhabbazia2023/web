@@ -10,6 +10,28 @@ import {
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
 
+function getMockedFolder(parentId: number, override: Partial<Folder> = {}) {
+  const defaultFolder = {
+    id: 1111111111,
+    children: [],
+    name: 'NewFolder',
+    parent: {
+      id: parentId,
+    },
+    permissions: [],
+    properties: {
+      syncStatus: '',
+      folderDescription: '',
+    } as FolderProperties,
+    serviceId: 'service-id-compta',
+  } as Folder
+
+  return {
+    ...defaultFolder,
+    ...override,
+  }
+}
+
 describe('folderArrayHelper.spec', () => {
   it('should get the folder from the data source when findFolderDeepById is called', () => {
     // to prevent the update of the data source
@@ -38,21 +60,7 @@ describe('folderArrayHelper.spec', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const parentId = 135393637
 
-    const newFolder = {
-
-      id: 1111111111,
-      children: [],
-      name: 'NewFolder',
-      parent: {
-        id: parentId,
-      },
-      permissions: [],
-      properties: {
-        syncStatus: '',
-        folderDescription: '',
-      } as FolderProperties,
-      serviceId: 'service-id-compta',
-    } as Folder
+    const newFolder = getMockedFolder(parentId)
 
     const serviceId = 'service-id-compta'
     const added = appendChildFolder(data, parentId, newFolder, serviceId)
@@ -66,22 +74,7 @@ describe('folderArrayHelper.spec', () => {
       const data = JSON.parse(JSON.stringify(foldersData))
       const parentId = 11111000
 
-      const newFolder = {
-
-        id: 1111111111,
-        children: [],
-        name: 'NewFolder',
-        parent: {
-          id: parentId,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      } as Folder
-
+      const newFolder = getMockedFolder(parentId)
       const serviceId = 'service-id-compta'
       const added = appendChildFolder(data, parentId, newFolder, serviceId)
 
@@ -100,21 +93,7 @@ describe('folderArrayHelper.spec', () => {
   it('should not rename folder when renameFolder is called and the folder dose not exists', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const serviceId = 'service-id-compta'
-    const folderUpdatedData = {
-
-      id: 1111111111,
-      children: [],
-      name: 'NewFolder',
-      parent: {
-        id: 1234,
-      },
-      permissions: [],
-      properties: {
-        syncStatus: '',
-        folderDescription: '',
-      } as FolderProperties,
-      serviceId: 'service-id-compta',
-    } as Folder
+    const folderUpdatedData = getMockedFolder(1234)
 
     const renamed = renameFolder(data, serviceId, folderUpdatedData)
     expect(renamed).toBeFalsy()
@@ -123,21 +102,7 @@ describe('folderArrayHelper.spec', () => {
   it('should not rename folder when renameFolder is called and the folder dose not exists (2)', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const serviceId = 'service-id-compta'
-    const folderUpdatedData = {
-
-      id: 1111111111,
-      children: [],
-      name: 'NewFolder',
-      parent: {
-        id: 1234,
-      },
-      permissions: [],
-      properties: {
-        syncStatus: '',
-        folderDescription: '',
-      } as FolderProperties,
-      serviceId: 'service-id-compta',
-    } as Folder
+    const folderUpdatedData = getMockedFolder(1234)
 
     const renamed = renameFolder(data, serviceId, folderUpdatedData)
     expect(renamed).toBeFalsy()
