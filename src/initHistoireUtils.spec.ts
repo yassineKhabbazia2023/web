@@ -44,7 +44,7 @@ describe('initHistoirePlugin', () => {
     })
 
     it('should return default url when not provided by axios', async () => {
-      const defaultUrl = 'http://default.tld'
+      const defaultUrl = 'https://default.tld'
       const url = await getCachedAssetsBaseUrl({
         SSR: true,
         VITE_ASSETS_BASE_URL: defaultUrl
