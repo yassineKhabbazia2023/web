@@ -146,14 +146,14 @@ describe('createFolderSection', () => {
       ]
       it.each(validTranslationCases)(
         'elements content validation with "%s"',
-        async ({ prop, expectedText }) => {
+        ({ prop, expectedText }) => {
           const updatedProps: CreateFolderSectionProps = {
             ...defaultProps,
             isCreateFolderModalVisible: true,
           }
           const wrapper = createWrapper(updatedProps)
 
-          const createFolderModalWrapper = await wrapper.findComponent(
+          const createFolderModalWrapper = wrapper.findComponent(
             CreateFolderModal,
           )
 
@@ -182,9 +182,9 @@ describe('createFolderSection', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const modal = await wrapper.findComponent(CreateFolderModal)
+        const modal = wrapper.findComponent(CreateFolderModal)
 
-        await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+        modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
         await nextTick()
 
         expect(vi.mocked(CreateFolder)).toHaveBeenLastCalledWith(
@@ -202,11 +202,11 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(
+      const modal = wrapper.findComponent(
         CreateFolderModal,
       )
 
-      await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+      modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
 
       expect(modal.props('isCreateFolderModalVisible')).toBeFalsy()
@@ -219,9 +219,9 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent(CreateFolderModal)
 
-      await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+      modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
@@ -234,9 +234,9 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent(CreateFolderModal)
 
-      await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+      modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
@@ -281,11 +281,11 @@ describe('createFolderSection', () => {
           }
           const wrapper = createWrapper(updatedProps)
 
-          const modal = await wrapper.findComponent(
+          const modal = wrapper.findComponent(
             CreateFolderModal,
           )
 
-          await modal.vm.$emit(action)
+          modal.vm.$emit(action)
           await nextTick()
 
           expect(wrapper.emitted(expectedEvent)).toBeTruthy()

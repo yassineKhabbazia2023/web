@@ -1,6 +1,6 @@
 import Treeview from '@/modules/Treeview'
 import { mount, flushPromises } from '@vue/test-utils'
-import type { VueWrapper, DOMWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type TreeviewProps } from '@/modules/Treeview/TreeviewTypes'
@@ -109,7 +109,7 @@ describe('treeview', () => {
 
         const createFolderSectionWrapper = wrapper.findComponent(CreateFolderSection)
 
-        await createFolderSectionWrapper.vm.$emit(
+        createFolderSectionWrapper.vm.$emit(
           'update-source-folders',
           foldersData[0][0],
         )
@@ -124,7 +124,7 @@ describe('treeview', () => {
         const createFolderSectionWrapper =
               wrapper.findComponent(CreateFolderSection)
 
-        await createFolderSectionWrapper.vm.$emit('on-close-create-folder')
+        createFolderSectionWrapper.vm.$emit('on-close-create-folder')
         await nextTick()
         expect(
           createFolderSectionWrapper.props('isCreateFolderModalVisible'),
@@ -138,7 +138,7 @@ describe('treeview', () => {
 
         const deleteSectionWrapper = wrapper.findComponent(DeleteFolderSection)
 
-        await deleteSectionWrapper.vm.$emit('on-delete-folder-completed', foldersData[0][0])
+        deleteSectionWrapper.vm.$emit('on-delete-folder-completed', foldersData[0][0])
         await nextTick()
         expect(wrapper.emitted('remove-folder-from-source')).toHaveLength(1)
         expect(wrapper.emitted('remove-folder-from-source')).toStrictEqual([
@@ -150,7 +150,7 @@ describe('treeview', () => {
         await wrapper.setProps({ isLoading: false })
         const deleteSectionWrapper = wrapper.findComponent(DeleteFolderSection)
 
-        await deleteSectionWrapper.vm.$emit(
+        deleteSectionWrapper.vm.$emit(
           'on-close-delete-folder',
         )
         await nextTick()
@@ -166,7 +166,7 @@ describe('treeview', () => {
         const renameFolderSectionWrapper =
           wrapper.findComponent(RenameFolderSection)
 
-        await renameFolderSectionWrapper.vm.$emit(
+        renameFolderSectionWrapper.vm.$emit(
           'update-folder-name',
           foldersData[0][0],
         )
@@ -182,7 +182,7 @@ describe('treeview', () => {
         const renameFolderSectionWrapper =
           wrapper.findComponent(RenameFolderSection)
 
-        await renameFolderSectionWrapper.vm.$emit(
+        renameFolderSectionWrapper.vm.$emit(
           'on-close-rename-folder',
         )
         await nextTick()
@@ -200,7 +200,7 @@ describe('treeview', () => {
           const tree = treeElement.findComponent(PTree)
           await nextTick()
 
-          await tree.vm.$emit(
+          tree.vm.$emit(
             'p-tree-node-clicked',
             foldersData[0][0].children[0],
           )
@@ -222,7 +222,7 @@ describe('treeview', () => {
 
           const baseSelectedNode = tree.find(
             `[data-key="${baseSelectedNodeKey}"]`,
-          ) as DOMWrapper<any>
+          )
 
           expect(
             baseSelectedNode.classes().includes('is-current'),
@@ -233,7 +233,7 @@ describe('treeview', () => {
 
           const newSelectedNode = tree.find(
             `[data-key="${newSelectedNodeKey}"]`,
-          ) as DOMWrapper<any>
+          )
 
           expect(newSelectedNode.classes().includes('is-current')).toBeTruthy()
         })
@@ -250,7 +250,7 @@ describe('treeview', () => {
               await nextTick()
               const treeNode = tree.findComponent(TreeNode)
               await nextTick()
-              await treeNode.vm.$emit(
+              treeNode.vm.$emit(
                 'p-toolbox-item-clicked',
                 'toolbox-delete-action-click',
               )
@@ -274,7 +274,7 @@ describe('treeview', () => {
               const treeNode = tree.findComponent(TreeNode)
               await nextTick()
 
-              await treeNode.vm.$emit(
+              treeNode.vm.$emit(
                 'p-toolbox-item-clicked',
                 'toolbox-rename-action-click',
               )
@@ -297,7 +297,7 @@ describe('treeview', () => {
             const treeNode = tree.findComponent(TreeNode)
             await nextTick()
 
-            await treeNode.vm.$emit(
+            treeNode.vm.$emit(
               'p-toolbox-item-clicked',
               '',
             )
@@ -323,7 +323,7 @@ describe('treeview', () => {
               componentInstance.currentFolderId = 2
               componentInstance.currentFolderName = 'rrrrr'
               await nextTick()
-              await treeNode.vm.$emit('p-toolbox-item-clicked',
+              treeNode.vm.$emit('p-toolbox-item-clicked',
                 'toolbox-download-action-click',
                 foldersData[0][0].children[0])
 
@@ -349,7 +349,7 @@ describe('treeview', () => {
           const tree = treeElement.findComponent(PTree)
           await nextTick()
 
-          await tree.vm.$emit(
+          tree.vm.$emit(
             'p-tree-node-clicked',
             defaultProps.entityServices[0],
           )

@@ -25,8 +25,8 @@ export const fetchFolderDocuments = async (
         skip,
         limit,
         sort,
-        createdStart: (filters && filters.startDate) ?? null,
-        createdEnd: (filters && filters.endDate) ?? null,
+        createdStart: filters?.startDate ?? null,
+        createdEnd: filters?.endDate ?? null,
       },
     })
   ).data

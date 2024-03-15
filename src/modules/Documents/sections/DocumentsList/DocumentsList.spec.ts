@@ -91,7 +91,7 @@ describe('documentList', () => {
 
       const table = await wrapper.findComponent(PTable)
       await nextTick()
-      await table.vm.$emit('sort-change', JSON.parse(emitPayload))
+      table.vm.$emit('sort-change', JSON.parse(emitPayload))
       await nextTick()
 
       expect(wrapper.emitted('on-sort-change')).toBeTruthy()
@@ -107,7 +107,7 @@ describe('documentList', () => {
       const table = wrapper.findComponent(PTable)
       await nextTick()
 
-      await table.vm.$emit(
+      table.vm.$emit(
         'selection-change',
         documentsResponsePayload.documentsPage.items,
       )
@@ -135,7 +135,7 @@ describe('documentList', () => {
       await nextTick()
       const tableElements = wrapper.findAllComponents(TableElement)
       await nextTick()
-      await tableElements[0].vm.$emit('actions-dropdown-opened',
+      tableElements[0].vm.$emit('actions-dropdown-opened',
         documentsResponsePayload.documentsPage.items[0],
         { label: 'Actions' },
       )
@@ -161,7 +161,7 @@ describe('documentList', () => {
       await nextTick()
       const tableElements = wrapper.findAllComponents(TableElement)
       await nextTick()
-      await tableElements[0].vm.$emit('actions-dropdown-opened',
+      tableElements[0].vm.$emit('actions-dropdown-opened',
         documentsResponsePayload.documentsPage.items[0],
         { label: 'Statut' },
       )
@@ -197,7 +197,7 @@ describe('documentList', () => {
 
       const tableElements = wrapper.findAllComponents(TableElement)
 
-      await tableElements[0].vm.$emit('toolbox-action-triggered')
+      tableElements[0].vm.$emit('toolbox-action-triggered')
 
       await nextTick()
 
