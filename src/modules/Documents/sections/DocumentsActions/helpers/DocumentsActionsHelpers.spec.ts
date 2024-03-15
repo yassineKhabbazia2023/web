@@ -4,6 +4,7 @@ import {
   generateActionBarRightSideButtons,
   generateActionBarLeftSideButtons,
 } from './DocumentsActionsHelpers'
+import { getData, getData2 } from './getData'
 
 describe('documentsActionsHelpers', () => {
   describe('generateActionBarRightSideButtons', () => {
@@ -13,36 +14,7 @@ describe('documentsActionsHelpers', () => {
       const isDocumentSelected = true
       const res = generateActionBarRightSideButtons(permissions, isDocumentSelected)
 
-      const data = [
-        {
-          pButtonName: 'Télécharger',
-          pButton: {
-            pType: 'white',
-            pPlain: false,
-            pRound: false,
-            pCircle: false,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIDownload',
-          pButtonActionName: 'actionbar-download-action-click',
-        },
-        {
-          pButtonName: 'Déplacer',
-          pButton: {
-            pType: 'white',
-            pPlain: true,
-            pRound: false,
-            pCircle: false,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIFolderMove',
-          pButtonActionName: 'actionbar-move-action-click',
-        },
-      ]
+      const data = getData(false)
       expect(res).toStrictEqual(data)
     })
 
@@ -59,36 +31,7 @@ describe('documentsActionsHelpers', () => {
         },
       )
 
-      const data = [
-        {
-          pButtonName: 'Télécharger',
-          pButton: {
-            pType: 'white',
-            pPlain: false,
-            pRound: false,
-            pCircle: false,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIDownload',
-          pButtonActionName: 'actionbar-download-action-click',
-        },
-        {
-          pButtonName: 'Déplacer',
-          pButton: {
-            pType: 'white',
-            pPlain: true,
-            pRound: false,
-            pCircle: false,
-            pLoading: true,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIFolderMove',
-          pButtonActionName: 'actionbar-move-action-click',
-        },
-      ]
+      const data = getData(true)
       expect(res).toStrictEqual(data)
     })
     it('should return empty when no document selected', () => {
@@ -112,55 +55,7 @@ describe('documentsActionsHelpers', () => {
         hasFiltersEnabled,
       )
 
-      const data = [
-        {
-          pButtonName: 'Déposer un document',
-          pButton: {
-            pType: 'primary',
-            pPlain: false,
-            pRound: false,
-            pCircle: false,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIUpload',
-          pButtonActionName: 'actionbar-add-document-action-click',
-          pComponentType: 'UPLOAD',
-          pMultiple: true,
-        },
-        {
-          pButtonName: 'Filtrer',
-          pButton: {
-            pType: 'primary',
-            pPlain: true,
-            pRound: false,
-            pCircle: false,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIFunnel',
-          pButtonActionName: 'actionbar-filter-action-click',
-        },
-        {
-          pButtonName: '',
-          pButton: {
-            pType: 'white',
-            pPlain: false,
-            pRound: false,
-            pCircle: true,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PISearch',
-          pButtonActionName: 'actionbar-search-action-click',
-          pComponentType: 'SEARCH',
-          pIsSearchOpen: false,
-          pIsSearchShrinkable: false,
-        },
-      ]
+      const data = getData2('Filtrer')
       expect(res).toStrictEqual(data)
     })
 
@@ -175,55 +70,7 @@ describe('documentsActionsHelpers', () => {
         hasFiltersEnabled,
       )
 
-      const data = [
-        {
-          pButtonName: 'Déposer un document',
-          pButton: {
-            pType: 'primary',
-            pPlain: false,
-            pRound: false,
-            pCircle: false,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIUpload',
-          pButtonActionName: 'actionbar-add-document-action-click',
-          pComponentType: 'UPLOAD',
-          pMultiple: true,
-        },
-        {
-          pButtonName: 'Filtrer (1)',
-          pButton: {
-            pType: 'primary',
-            pPlain: true,
-            pRound: false,
-            pCircle: false,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PIFunnel',
-          pButtonActionName: 'actionbar-filter-action-click',
-        },
-        {
-          pButtonName: '',
-          pButton: {
-            pType: 'white',
-            pPlain: false,
-            pRound: false,
-            pCircle: true,
-            pLoading: false,
-            pDisabled: false,
-            pSize: 'small',
-          },
-          pButtonIcon: 'PISearch',
-          pButtonActionName: 'actionbar-search-action-click',
-          pComponentType: 'SEARCH',
-          pIsSearchOpen: false,
-          pIsSearchShrinkable: false,
-        },
-      ]
+      const data = getData2('Filtrer (1)')
       expect(res).toStrictEqual(data)
     })
   })

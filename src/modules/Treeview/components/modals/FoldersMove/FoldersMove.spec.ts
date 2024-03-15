@@ -2,50 +2,19 @@
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import type { ExplorerMoveFolder, FoldersMoveProps } from './FoldersMoveTypes'
+import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
-import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import FoldersMove from '.'
 import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
-import type { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import { moveFolderAsync } from '@/services/Folder'
+import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 
 const unValidDestination: Folder = foldersData[0][0] // id: 135393636
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-const folderToMove: Folder = foldersData[0][0].children[0].children[0].children[0] // id : 11111111
 const secondValidDestination: Folder = foldersData[0][0].children[0].children[0] // id: 135393649
-
-const currentServiceFolder: Folder[] = foldersData[0]
-const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
-const selectedEntity = 'my-selected-entity'
-
-const defaultProps : FoldersMoveProps = {
-  folder: validDestination,
-  isMoveModalOpened: false,
-  currentServiceFolder,
-  currentService: curentService,
-  selectedEntity,
-  folderToMove,
-}
-
-type FoldersMoveSetup = {
-  isDocumentExplorerModalOpened: boolean
-  explorerDocuments: ExplorerMoveFolder[]
-  numberOfSelectedFolders: number
-  isMoveAuthorized: GivenActionAuthorization
-  modalActionsButtons: ButtonAction[]
-  currentExplorerFolder: Folder
-}
-
-export type FoldersMoveWrapper = VueWrapper<
-  ComponentPublicInstance<FoldersMoveProps, FoldersMoveSetup>
->
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
