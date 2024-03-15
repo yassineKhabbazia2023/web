@@ -11,7 +11,7 @@ export interface PSelectProps {
   pCollapseTagsTooltip?: boolean
   pMultipleLimit?: number
   pName?: string
-  pEffect?: string | 'dark' | 'light'
+  pEffect?: 'dark' | 'light'
   pAutocomplete?: string
   pPlaceholder?: string
   pFilterable?: boolean
