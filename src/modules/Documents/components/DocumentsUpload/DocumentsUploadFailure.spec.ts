@@ -14,26 +14,8 @@ import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplo
 import type { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
 import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import DocumentsUpload from '.'
+import { generateTestFiles } from '../../helpers/testHelpers'
 
-const generateTestFiles = (
-  numberOfFiles: number,
-  state: 'VALID' | 'UNVALID',
-): File[] => {
-  const files: File[] = []
-  const conditionedFileSize = state === 'VALID' ? 2 : 0
-  const fileName = state === 'VALID' ? 'filename.txt' : 'filename.mykey'
-  const type = state === 'VALID' ? 'text/plain' : 'mykeyetc'
-
-  for (let i = 0; i < numberOfFiles; i++) {
-    const blob = new Blob(['Hello'], { type: 'text/plain' })
-    const fileContent = blob.slice(0, conditionedFileSize)
-    const file = new File([fileContent], fileName, {
-      type,
-    })
-    files.push(file)
-  }
-  return files
-}
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
 const validFiles: File[] = generateTestFiles(3, 'VALID')
 
