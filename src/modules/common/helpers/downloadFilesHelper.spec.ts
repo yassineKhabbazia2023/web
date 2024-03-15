@@ -5,7 +5,7 @@ import { downloadFile } from './downloadFilesHelper'
 describe('downloadFile', () => {
   beforeEach(() => {
     vi.spyOn(window.URL, 'createObjectURL').mockImplementation(
-      () => 'http://fake.url',
+      () => 'https://fake.url',
     )
   })
 
