@@ -1,4 +1,4 @@
-import type { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import {
   findFolderDeepById,
   findCurrentServiceFolder,
@@ -10,11 +10,16 @@ import {
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
 
-function getMockedFolder(parentId: number, override: Partial<Folder> = {}) {
+function getMockedFolder(
+  parentId: number,
+  id = 1111111111,
+  name = 'NewFolder',
+  override: Partial<Folder> = {},
+): Folder {
   const defaultFolder = {
-    id: 1111111111,
+    id,
     children: [],
-    name: 'NewFolder',
+    name,
     parent: {
       id: parentId,
     },
@@ -22,9 +27,10 @@ function getMockedFolder(parentId: number, override: Partial<Folder> = {}) {
     properties: {
       syncStatus: '',
       folderDescription: '',
-    } as FolderProperties,
+      tracingName: '',
+    },
     serviceId: 'service-id-compta',
-  } as Folder
+  }
 
   return {
     ...defaultFolder,
@@ -115,36 +121,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeSort = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeSort
@@ -153,16 +131,10 @@ describe('folderArrayHelper.spec', () => {
 
     expect(sorted).toBeTruthy()
     expect(source[0][0].children[0].children).toStrictEqual([
-      {
-        id: 135393649,
+      getMockedFolder(135393637, 135393649, 'A classer', {
         children: [
-          {
-            id: 11111111,
+          getMockedFolder(135393649, 11111111, 'MOVABLE', {
             children: [],
-            name: 'MOVABLE',
-            parent: {
-              id: 135393649,
-            },
             permissions: [
               'CAN_DELETE_FILES',
               'CAN_UPLOAD_FILES',
@@ -173,12 +145,11 @@ describe('folderArrayHelper.spec', () => {
             properties: {
               syncStatus: 'PENDING_SYNC',
               folderDescription: "Ce dossier regroupe l'ensemble des documents.",
+              tracingName: 'tracing-name',
             },
             serviceId: 'service-id-compta',
-          },
+          }),
         ],
-        name: 'A classer',
-        parent: { id: 135393637 },
         permissions: [
           'CAN_DELETE_FILES',
           'CAN_UPLOAD_FILES',
@@ -188,27 +159,11 @@ describe('folderArrayHelper.spec', () => {
         properties: {
           syncStatus: 'PENDING_SYNC',
           folderDescription: "Ce dossier regroupe l'ensemble des documents.",
+          tracingName: 'tracing-name',
         },
-        serviceId: 'service-id-compta',
-      },
-      {
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: { id: 135393637 },
-        permissions: [],
-        properties: { syncStatus: '', folderDescription: '' },
-        serviceId: 'service-id-compta',
-      },
-      {
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: { id: 135393637 },
-        permissions: [],
-        properties: { syncStatus: '', folderDescription: '' },
-        serviceId: 'service-id-compta',
-      },
+      }),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
+      getMockedFolder(135393637, 1111111112, 'DEF'),
     ])
   })
 
@@ -230,36 +185,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete
@@ -279,36 +206,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete
@@ -336,36 +235,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete
@@ -387,36 +258,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637,
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: '',
-        } as FolderProperties,
-        serviceId: 'service-id-compta',
-      },
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete

@@ -31,7 +31,8 @@ export const foldersData: Folder[][] = [
                     syncStatus: 'PENDING_SYNC',
                     folderDescription:
                       "Ce dossier regroupe l'ensemble des documents.",
-                  } as FolderProperties,
+                    tracingName: 'tracing-name',
+                  },
                   serviceId: 'service-id-compta',
                 } as Folder,
               ],
@@ -49,7 +50,8 @@ export const foldersData: Folder[][] = [
                 syncStatus: 'PENDING_SYNC',
                 folderDescription:
                   "Ce dossier regroupe l'ensemble des documents.",
-              } as FolderProperties,
+                tracingName: 'tracing-name',
+              },
               serviceId: 'service-id-compta',
             } as Folder,
           ] as Folder[],
@@ -78,6 +80,7 @@ export const foldersData: Folder[][] = [
           properties: {
             folderDescription:
               "Ici, veuillez trouver l'ensemble des documents déposés par votre expert KPMG.",
+            tracingName: 'tracing-name',
           } as FolderProperties,
           serviceId: 'service-id-compta',
         } as Folder,
