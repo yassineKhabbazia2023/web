@@ -10,7 +10,7 @@ import type { Folder } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { getMockedFolder } from '@/modules/Treeview/helpers/testHelper'
+import { getMockedButtonTest, getMockedFolder } from '@/modules/Treeview/helpers/testHelper'
 
 const defaultProps: RenameFolderModalProps = {
   isRenameFolderModalVisible: false,
@@ -59,24 +59,7 @@ describe('props', () => {
       ipsum quia dolor sit amet, consectetur, adipisci velit quisquam est
       qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit`
 
-    const btnValidationCases = [
-      {
-        typedValue: 'Test Content*',
-        isBtnDisabled: true,
-      },
-      {
-        typedValue: '',
-        isBtnDisabled: true,
-      },
-      {
-        typedValue: folderName,
-        isBtnDisabled: true,
-      },
-      {
-        typedValue: 'New Folder',
-        isBtnDisabled: false,
-      },
-    ]
+    const btnValidationCases = getMockedButtonTest(folderName)
 
     it.each(btnValidationCases)(
       'button validation with "%s"',

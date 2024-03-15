@@ -1,3 +1,18 @@
+import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import type { Folder } from '@/models/Folder'
+import type { Service } from '@/models/Service'
+import type { GivenActionAuthorization }
+  from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ExplorerUploadDocument, DocumentUploadProps } from '../components/DocumentsUpload/DocumentsUploadTypes'
+
+const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
+const validFiles: File[] = generateTestFiles(3, 'VALID')
+
+const currentServiceFolder: Folder[] = foldersData[0]
+const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
+const selectedEntity = 'my-selected-entity'
+
 export function generateTestFiles(
   numberOfFiles: number,
   state: 'VALID' | 'UNVALID',
@@ -17,3 +32,21 @@ export function generateTestFiles(
   }
   return files
 }
+
+export const defaultProps: DocumentUploadProps = {
+  folder: validDestination,
+  isUploadModalOpened: false,
+  currentServiceFolder,
+  currentService: curentService,
+  selectedEntity,
+  files: validFiles,
+}
+
+export type DocumentUploadSetup = {
+    isDocumentExplorerModalOpened: boolean
+    explorerDocuments: ExplorerUploadDocument[]
+    numberOfSelectedDocuments: number
+    isUploadAuthorized: GivenActionAuthorization
+    modalActionsbuttons: ButtonAction[]
+    currentExplorerFolder: Folder
+  }

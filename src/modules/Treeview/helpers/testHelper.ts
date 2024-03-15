@@ -27,3 +27,19 @@ export function getMockedFolder(
     ...override,
   }
 }
+
+export function getMockedButtonTest(folderName: string) {
+  return [{
+    typedValue: 'Test Content*',
+    isBtnDisabled: true,
+  }, {
+    typedValue: '',
+    isBtnDisabled: true,
+  }, {
+    typedValue: folderName,
+    isBtnDisabled: true,
+  }, {
+    typedValue: 'New Folder',
+    isBtnDisabled: false,
+  }]
+}

@@ -2,44 +2,14 @@
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import type { ExplorerUploadDocument, DocumentUploadProps } from './DocumentsUploadTypes'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import type { DocumentUploadProps } from './DocumentsUploadTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
-import type { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import DocumentsUpload from '.'
-import { generateTestFiles } from '../../helpers/testHelpers'
-
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-const validFiles: File[] = generateTestFiles(3, 'VALID')
-
-const currentServiceFolder: Folder[] = foldersData[0]
-const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
-const selectedEntity = 'my-selected-entity'
-
-const defaultProps: DocumentUploadProps = {
-  folder: validDestination,
-  isUploadModalOpened: false,
-  currentServiceFolder,
-  currentService: curentService,
-  selectedEntity,
-  files: validFiles,
-}
-
-type DocumentUploadSetup = {
-  isDocumentExplorerModalOpened: boolean
-  explorerDocuments: ExplorerUploadDocument[]
-  numberOfSelectedDocuments: number
-  isUploadAuthorized: GivenActionAuthorization
-  modalActionsbuttons: ButtonAction[]
-  currentExplorerFolder: Folder
-}
+import { defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
 
 export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
