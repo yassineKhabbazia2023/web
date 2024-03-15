@@ -6,7 +6,7 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'Bilan',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 102,
         pCompletedTasks: 33
       },
@@ -23,7 +23,7 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'Bilan',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 102,
         pCompletedTasks: 33
       },
@@ -40,7 +40,7 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 16,
         pCompletedTasks: 10
       },
@@ -63,19 +63,19 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'Bilan',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 54,
         pCompletedTasks: 47
       },
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 21,
         pCompletedTasks: 15
       },
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 65,
         pCompletedTasks: 23
       }
@@ -86,7 +86,7 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 71,
         pCompletedTasks: 28
       },
@@ -103,19 +103,19 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 10,
         pCompletedTasks: 7
       },
       {
         pTitle: 'Bilan',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 26,
         pCompletedTasks: 11
       },
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 95,
         pCompletedTasks: 88
       },
@@ -156,19 +156,19 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'Bilan',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 50,
         pCompletedTasks: 44
       },
       {
         pTitle: 'Bilan',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 31,
         pCompletedTasks: 22
       },
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 66,
         pCompletedTasks: 29
       },
@@ -185,13 +185,13 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 103,
         pCompletedTasks: 68
       },
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 21,
         pCompletedTasks: 10
       }
@@ -202,19 +202,19 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 88,
         pCompletedTasks: 83
       },
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 22,
         pCompletedTasks: 22
       },
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 101,
         pCompletedTasks: 77
       }
@@ -225,7 +225,7 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 89,
         pCompletedTasks: 58
       }
@@ -236,7 +236,7 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 5,
         pCompletedTasks: 3
       }
@@ -247,13 +247,13 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 89,
         pCompletedTasks: 75
       },
       {
         pTitle: 'Bilan',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 95,
         pCompletedTasks: 81
       },
@@ -270,7 +270,7 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
     items: [
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 110,
         pCompletedTasks: 97
       },
@@ -282,13 +282,13 @@ export const itemsGroupedByDate: CalendarItemsGroupedByDate[] = [
       },
       {
         pTitle: 'IS',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 48,
         pCompletedTasks: 29
       },
       {
         pTitle: 'TVA',
-        pStatus: 'active',
+        pStatus: 'todo',
         pTotalTasks: 49,
         pCompletedTasks: 36
       }

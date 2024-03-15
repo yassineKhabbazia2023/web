@@ -8,7 +8,7 @@ const completedTasks = 3
 const totalTasks = 10
 
 const defaultProps: PTaskItemProps = {
-  pStatus: 'active',
+  pStatus: 'todo',
   pTitle: title,
   pCompletedTasks: completedTasks,
   pTotalTasks: totalTasks

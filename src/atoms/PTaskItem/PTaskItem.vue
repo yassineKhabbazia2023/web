@@ -45,7 +45,7 @@ const pClassMapper = computed(() => ({
         color: var(--el-color-neutral-gray-500);
       }
     }
-    &-active {
+    &-todo {
       background: var(--el-color-persian-100);
 
       #{$self}__numb-tasks {

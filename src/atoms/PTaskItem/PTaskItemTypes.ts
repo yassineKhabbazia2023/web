@@ -1,6 +1,6 @@
 export interface PTaskItemProps {
   pTitle: string
-  pStatus: 'active' | 'disabled' | 'done'
+  pStatus: 'todo' | 'disabled' | 'done'
   pCompletedTasks: string | number
   pTotalTasks: string | number
 }

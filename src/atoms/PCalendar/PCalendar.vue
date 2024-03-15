@@ -53,6 +53,18 @@ function handleCellClick(date: string) {
 
 <style lang="scss">
 .p-calendar {
+  .el-calendar__body {
+    padding: 0;
+
+    .el-calendar-table {
+      border-collapse: collapse;
+      thead th {
+        border: 1px solid var(--el-color-neutral-gray-100);
+        padding: 8px 0;
+      }
+    }
+  }
+
   .current .el-calendar-day,
   .next .el-calendar-day,
   .prev .el-calendar-day {

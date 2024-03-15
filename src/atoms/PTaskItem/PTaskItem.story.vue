@@ -8,7 +8,7 @@
       <ul class="padding--1 task-list-doc">
         <li class="margin-bottom--1">
           <PTaskItem
-            pStatus="active"
+            pStatus="todo"
             pTitle="Lorem Ipsum sit amet"
             pCompletedTasks="3"
             pTotalTasks="10"
