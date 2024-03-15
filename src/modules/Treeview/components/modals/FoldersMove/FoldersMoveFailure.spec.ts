@@ -110,7 +110,7 @@ describe('foldersMove', () => {
           const documentExplorerModalWrapper =
             findDocumentsExplorerModal(wrapper)
 
-          await documentExplorerModalWrapper.vm.$emit(
+          documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
             'modal-move-folder-action-click',
           )

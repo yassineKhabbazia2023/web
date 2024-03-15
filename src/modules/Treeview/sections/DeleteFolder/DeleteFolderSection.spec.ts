@@ -4,11 +4,12 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type DeleteFolderSectionProps }
   from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
-import type { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
 import { deleteFolder } from '@/services/Folder'
 import { nextTick } from 'vue'
+import { getMockedFolder } from '../../helpers/testHelper'
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -24,28 +25,22 @@ vi.mock('@kpmg/common', () => ({
 
 const pinia = createPinia()
 
+const child = getMockedFolder(1, 2, 'TheFolder', {
+  children: [{} as Folder],
+  permissions: [],
+  serviceId: 'some-service',
+})
+
+const selectedFolder = getMockedFolder(0, 1, 'A', {
+  children: [child],
+  permissions: [],
+  serviceId: 'some-service',
+})
+
 const defaultProps: DeleteFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
-  selectedFolder: {
-    id: 1,
-    children: [
-          {
-            id: 2,
-            children: [{} as Folder],
-            name: 'TheFolder',
-            parent: { id: 1 },
-            permissions: [],
-            properties: {} as FolderProperties,
-            serviceId: 'some-service',
-          } as Folder,
-    ],
-    name: 'A',
-    parent: { id: 0 },
-    permissions: [],
-    properties: {} as FolderProperties,
-    serviceId: 'some-service',
-  } as Folder,
+  selectedFolder,
   isDeleteFolderPopupVisible: false,
 }
 

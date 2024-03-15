@@ -6,10 +6,11 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type RenameFolderModalProps }
   from '@/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
-import type { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
+import { getMockedFolder } from '@/modules/Treeview/helpers/testHelper'
 
 const defaultProps: RenameFolderModalProps = {
   isRenameFolderModalVisible: false,
@@ -202,28 +203,18 @@ describe('interactions', () => {
   })
 
   it('should not emit on-confirm-rename-folder when folder name already exists', async () => {
+    const child = getMockedFolder(1, 2, 'TheFolder', {
+      children: [{} as Folder],
+      serviceId: 'some-service',
+    })
+    const parentFolder = getMockedFolder(0, 1, 'A', {
+      children: [child],
+    })
+
     const props: RenameFolderModalProps = {
       ...defaultProps,
       isRenameFolderModalVisible: true,
-      parentFolder: {
-        id: 1,
-        children: [
-          {
-            id: 2,
-            children: [{} as Folder],
-            name: 'TheFolder',
-            parent: { id: 1 },
-            permissions: [],
-            properties: {} as FolderProperties,
-            serviceId: 'some-service',
-          } as Folder,
-        ],
-        name: 'A',
-        parent: { id: 0 },
-        permissions: [],
-        properties: {} as FolderProperties,
-        serviceId: 'some-service',
-      } as Folder,
+      parentFolder,
     }
 
     const wrapper = createWrapper(props)
@@ -270,7 +261,7 @@ describe('interactions', () => {
 
     const dialog = wrapper.findComponent(SingleInputModal)
 
-    await dialog.vm.$emit('on-close-modal')
+    dialog.vm.$emit('on-close-modal')
     await nextTick()
 
     expect(wrapper.emitted('on-close-rename-folder')).toBeTruthy()
