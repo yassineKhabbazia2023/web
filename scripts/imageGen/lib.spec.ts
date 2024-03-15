@@ -29,8 +29,8 @@ vi.mock('path', () => ({
   default: {
     basename: (name) => {
       const fileName = name.match(/\/([^/]*)$/)?.at(1) ?? name
-      const match = fileName.match(/(.*)\./)
-      return match.at(1) ?? ''
+      const dotPosition = fileName.lastIndexOf('.')
+      return dotPosition > 0 ? fileName.substr(0, dotPosition) : fileName
     },
     extname: (name) => {
       const match = name.match(/\.([^.]*)$/)
