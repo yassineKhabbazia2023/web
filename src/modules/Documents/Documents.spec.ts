@@ -106,7 +106,7 @@ vi.mock('@/services/Documents', () => ({
   }),
 }))
 
-vi.mock('./helpers/downloadFilesHelper', () => ({
+vi.mock('@/modules/common/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 

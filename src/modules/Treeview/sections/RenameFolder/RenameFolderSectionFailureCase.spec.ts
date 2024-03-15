@@ -3,10 +3,10 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type RenameFolderSectionProps }
   from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
-import type { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
+import { getMockedFolder } from '../../helpers/testHelper'
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -22,28 +22,19 @@ vi.mock('@kpmg/common', () => ({
 
 const pinia = createPinia()
 
+const children = [
+  getMockedFolder(1, 2, 'TheFolder', { serviceId: 'some-service' }),
+]
+const parentFolder = getMockedFolder(0, 1, 'A', {
+  children,
+  permissions: ['CAN_CREATE_FOLDER', 'CAN_RENAME_FOLDER'],
+  serviceId: 'some-service',
+})
+
 const defaultProps: RenameFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
-  parentFolder: {
-    id: 1,
-    children: [
-      {
-        id: 2,
-        children: [{} as Folder],
-        name: 'TheFolder',
-        parent: { id: 1 },
-        permissions: [],
-        properties: {} as FolderProperties,
-        serviceId: 'some-service',
-      } as Folder,
-    ],
-    name: 'A',
-    parent: { id: 0 },
-    permissions: ['CAN_CREATE_FOLDER', 'CAN_RENAME_FOLDER'],
-    properties: {} as FolderProperties,
-    serviceId: 'some-service',
-  } as Folder,
+  parentFolder,
   isRenameFolderModalVisible: false,
   folderName: 'newFolderName',
   folderId: 2,

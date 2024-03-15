@@ -9,34 +9,7 @@ import {
 } from './folderArrayHelper'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
-
-function getMockedFolder(
-  parentId: number,
-  id = 1111111111,
-  name = 'NewFolder',
-  override: Partial<Folder> = {},
-): Folder {
-  const defaultFolder = {
-    id,
-    children: [],
-    name,
-    parent: {
-      id: parentId,
-    },
-    permissions: [],
-    properties: {
-      syncStatus: '',
-      folderDescription: '',
-      tracingName: '',
-    },
-    serviceId: 'service-id-compta',
-  }
-
-  return {
-    ...defaultFolder,
-    ...override,
-  }
-}
+import { getMockedFolder } from './testHelper'
 
 describe('folderArrayHelper.spec', () => {
   it('should get the folder from the data source when findFolderDeepById is called', () => {
