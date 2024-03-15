@@ -12,7 +12,7 @@ import { downloadFile } from '@/modules/common/helpers/downloadFilesHelper'
 export function useDownloadFolder(
   downloadFolderProps: ComputedRef<DownloadFolderComposableProps>,
 ): {
-  handleDownloadFolderEvent: () => void
+  handleDownloadFolderEvent: () => Promise<void>
 } {
   const { t } = useI18n({
     inheritLocale: true,

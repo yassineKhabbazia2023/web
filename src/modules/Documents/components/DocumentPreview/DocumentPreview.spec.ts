@@ -79,13 +79,13 @@ describe('documentPreview', () => {
       await nextTick()
       expect(icon.exists()).toBeTruthy()
       expect(getFileIcon(documentMock.name).name).toBe('PIFiletypePdf')
-      await pviewer.vm.$emit(
+      pviewer.vm.$emit(
         'next-document-button-click',
       )
       await nextTick()
       expect(wrapper.emitted('next-document-preview-button-click')).toBeTruthy()
 
-      await pviewer.vm.$emit(
+      pviewer.vm.$emit(
         'previous-document-button-click',
       )
       await nextTick()
@@ -113,7 +113,7 @@ describe('documentPreview', () => {
       await nextTick()
 
       const pviewer = wrapper.findComponent(PDocumentViewer)
-      await pviewer.vm.$emit(
+      pviewer.vm.$emit(
         'next-document-button-click',
       )
       await nextTick()
@@ -127,7 +127,7 @@ describe('documentPreview', () => {
       await nextTick()
 
       const pviewer = wrapper.findComponent(PDocumentViewer)
-      await pviewer.vm.$emit(
+      pviewer.vm.$emit(
         'previous-document-button-click',
       )
       await nextTick()
@@ -162,7 +162,7 @@ describe('documentPreview', () => {
       await nextTick()
 
       const pDocumentViewerWrapper = wrapper.findComponent(PDocumentViewer)
-      await pDocumentViewerWrapper.vm.$emit('close')
+      pDocumentViewerWrapper.vm.$emit('close')
 
       await nextTick()
 

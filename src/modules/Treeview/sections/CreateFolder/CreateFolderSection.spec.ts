@@ -162,9 +162,9 @@ describe('createFolderSection', () => {
       )
     })
 
-    it('should set the correct create folder text', async () => {
+    it('should set the correct create folder text', () => {
       const wrapper = createWrapper()
-      const mainCreateButton = await wrapper.find(
+      const mainCreateButton = wrapper.find(
         '.treeview__new-folder',
       )
 

@@ -15,7 +15,7 @@ import { useI18n } from 'vue-i18n'
 export function useDownloadDocuments(
   downloadDocumentsProps: ComputedRef<DownloadDocumentsComposableProps>,
 ): {
-  handleDownloadDocumentsEvent: () => void
+  handleDownloadDocumentsEvent: () => Promise<void>
 } {
   const { t } = useI18n({
     inheritLocale: true,

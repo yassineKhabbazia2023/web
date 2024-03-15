@@ -9,7 +9,7 @@ import type { TransmitDocumentsComposableProps } from './TransmitDocumentsTypes'
 export function useTransmitDocuments(
   transmitDocumentsProps: ComputedRef<TransmitDocumentsComposableProps>,
 ): {
-  handleTransmitDocumentsEvent: () => void
+  handleTransmitDocumentsEvent: () => Promise<void>
 } {
   // Define the composable actions
 
