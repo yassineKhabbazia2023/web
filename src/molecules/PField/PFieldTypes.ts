@@ -3,14 +3,14 @@ import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 import type { PDatePickerProps } from '@/atoms/PDatePicker/PDatePickerTypes'
 
 export interface PFieldPropsBase<T> {
-  modelValue?: T | undefined
+  modelValue?: T
   pFieldType: 'input' | 'dropdown' | 'date'
   pFieldKey: string
   pLabel: string
   pPlaceholder?: string
   pReadonly?: boolean
   pDisabled?: boolean
-  pCssClass?: string | undefined
+  pCssClass?: string
   pRules?: FormItemRule[]
 }
 
