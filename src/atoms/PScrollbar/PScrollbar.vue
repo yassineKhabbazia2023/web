@@ -42,3 +42,12 @@ withDefaults(defineProps<PScrollbarProps>(), {
   pAriaOrientation: undefined
 })
 </script>
+
+<style lang="scss">
+.el-scrollbar__bar {
+  &.is-horizontal, &.is-vertical {
+    z-index: 2000;
+  }
+  // Above everything but popup and dialog
+}
+</style>
