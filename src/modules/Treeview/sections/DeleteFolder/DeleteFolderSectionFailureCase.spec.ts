@@ -41,10 +41,6 @@ const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 vi.mock('@/services/Folder', () => ({
   DeleteFolder: () => {
     throw new Error('Something uncool')

@@ -23,10 +23,6 @@ vi.mock('@/services/Documents', () => ({
 
 const mockToastPlugin = vi.fn()
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 const createWrapper = (
   props: DocumentUploadProps = defaultProps,
 ): DocumentsUploadWrapper => {
@@ -43,7 +39,7 @@ const createWrapper = (
 
 const pinia = createPinia()
 
-describe('foldersMove', () => {
+describe('test DocumentsUpload failure', () => {
   const findDocumentsExplorerModal = (wrapper: DocumentsUploadWrapper) =>
     wrapper.findComponent(DocumentModalExplorer)
 

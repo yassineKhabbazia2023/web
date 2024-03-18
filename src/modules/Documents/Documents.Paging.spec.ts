@@ -53,10 +53,6 @@ const responseNoDoc: DocumentsWithTableStructure = {
   documentHeaders: [],
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
   downloadDocuments: vi.fn(),

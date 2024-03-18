@@ -65,10 +65,6 @@ const createWrapper = (
   }) as unknown as CreateFolderSectionWrapper
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 vi.mock('@/services/Folder', () => ({
   CreateFolder: vi.fn(),
 }))

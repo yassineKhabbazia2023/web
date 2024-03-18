@@ -45,10 +45,6 @@ const createWrapper = (
   })
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 vi.mock('@/services/BinDocuments', () => ({
   restoreDocuments: vi.fn(() => {
     return [{

@@ -87,10 +87,6 @@ const createWrapper = (
   }) as unknown as DocumentsWrapper
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
   downloadDocuments: vi.fn(),

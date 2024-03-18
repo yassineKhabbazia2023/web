@@ -60,10 +60,6 @@ vi.mock('@/services/Documents', () => ({
 
 const mockToastPlugin = vi.fn()
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 const createWrapper = (
   props: DocumentMoveProps = defaultProps,
 ): DocumentsMoveWrapper => {

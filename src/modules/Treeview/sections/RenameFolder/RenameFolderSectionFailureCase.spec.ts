@@ -42,10 +42,6 @@ const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 vi.mock('@/services/Folder', () => ({
   tokenValue: 'mocked token',
   RenameFolder: () => {

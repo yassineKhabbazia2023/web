@@ -41,10 +41,6 @@ const createWrapper = (
   })
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 vi.mock('@/services/Documents', () => ({
   deleteDocuments: vi.fn(),
 }))

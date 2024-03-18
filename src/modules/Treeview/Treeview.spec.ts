@@ -64,10 +64,6 @@ const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper =>
   }) as unknown as TreeviewWrapper
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 describe('treeview', () => {
   // eslint-disable-next-line vitest/no-hooks
   beforeEach(() => {

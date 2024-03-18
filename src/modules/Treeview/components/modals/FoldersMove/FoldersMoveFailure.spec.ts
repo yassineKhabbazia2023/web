@@ -17,10 +17,6 @@ vi.mock('@/services/Folder', () => ({
 
 const mockToastPlugin = vi.fn()
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
-
 const createWrapper = (
   props: FoldersMoveProps = defaultProps,
 ): FoldersMoveWrapper => {
@@ -37,7 +33,7 @@ const createWrapper = (
 
 const pinia = createPinia()
 
-describe('foldersMove', () => {
+describe('tes FoldersMove failure', () => {
   // Finders
 
   const findDocumentsExplorerModal = (wrapper: FoldersMoveWrapper) =>
