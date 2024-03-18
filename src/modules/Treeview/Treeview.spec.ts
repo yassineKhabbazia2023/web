@@ -42,17 +42,6 @@ const defaultProps: TreeviewProps = {
   currentServiceFolder: null,
 }
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
 vi.mock('@/services/Folder', () => ({
   downloadFolder: vi.fn(),
 }))

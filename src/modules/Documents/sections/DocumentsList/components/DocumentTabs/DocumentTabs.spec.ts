@@ -3,7 +3,7 @@ import DocumentTabs from './DocumentTabs.vue'
 import { type DocumentTabsProps } from './DocumentTabsTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
 import DocumentDetailsTabPane from './conponents/DocumentDetailsTabPane'
@@ -15,18 +15,6 @@ const defaultProps: DocumentTabsProps = {
   selectedEntity: '',
   currentService: '',
 }
-
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
 
 const pinia = createPinia()
 

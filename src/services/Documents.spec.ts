@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { it, expect, vi, describe } from 'vitest'
+import { it, expect, describe, beforeEach } from 'vitest'
 import {
   downloadDocument,
   downloadDocuments,
@@ -16,57 +16,32 @@ import type { Service } from '@/models/Service'
 import type { Document } from '@/models/Document'
 import type { Folder } from '@/models/Folder'
 import type { MoveDocumentsRequest } from '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
-
-const mockDsGet = vi.fn((url) => {
-  if (url.includes('preview')) {
-    return Promise.resolve({
-      data: new ArrayBuffer(1),
-      headers: { 'content-type': 'image/jpeg' },
-    })
-  }
-
-  return Promise.resolve({
-    data: {
-      documents: 'fetched',
-    },
-  })
-})
-
-const mockDsPost = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      documents: 'posted',
-    },
-  })
-})
-
-const mockDsDelete = vi.fn(() => {
-  return Promise.resolve()
-})
-
-const mockDsPatch = vi.fn(() => {
-  return Promise.resolve()
-})
-
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: {
-      get: mockDsGet,
-      post: mockDsPost,
-      delete: mockDsDelete,
-      patch: mockDsPatch,
-    },
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-  debounce: vi.fn((fn) => fn),
-}))
+import {
+  commonApiDsGetSpy as mockDsGet,
+  commonApiDsPostSpy as mockDsPost,
+  commonApiDsDeleteSpy as mockDsDelete,
+  commonApiDsPatchSpy as mockDsPatch,
+} from '@/../vitest.setup'
 
 describe('documents service', () => {
+  beforeEach(() => {
+    mockDsGet.mockImplementation((url: string) => {
+      const returnValue = url.includes('preview')
+        ? {
+            data: new ArrayBuffer(1),
+            headers: { 'content-type': 'image/jpeg' },
+          }
+        : {
+            data: {},
+          }
+      return Promise.resolve(returnValue)
+    })
+    mockDsPost.mockImplementation(() => ({
+      data: {
+        documents: 'posted',
+      },
+    }))
+  })
   it('should fetch documents when fetchFolderDocuments is called', async () => {
     const service: Service =
       { ServiceId: 'service-1', ServiceName: 'A' }
@@ -80,7 +55,7 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123', {
         params: {
@@ -102,7 +77,7 @@ describe('documents service', () => {
 
     await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountId, 0, 10, '-created', 'test')
 
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123',
       {
@@ -172,6 +147,7 @@ describe('documents service', () => {
         },
       )
     })
+
   it('should download documents  when downloadDocuments method is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 

@@ -19,17 +19,6 @@ const defaultProps: DocumentDetailsTabPaneProps = {
   currentService: '',
 }
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
 vi.mock('@/services/Documents', () => ({
   downloadDocument: vi.fn(),
 }))

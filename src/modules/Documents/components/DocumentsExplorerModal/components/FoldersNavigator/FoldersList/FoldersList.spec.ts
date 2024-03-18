@@ -3,7 +3,7 @@
 /* eslint-disable vitest/max-expects */
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { PFolderLineNavigationItem, PAlert, PImage } from '@kpmg/styleguide'
 import FoldersList
   from '@/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
@@ -31,18 +31,6 @@ const createWrapper = (
     props,
   })
 }
-
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
 
 describe('foldersList', () => {
   describe('props', () => {

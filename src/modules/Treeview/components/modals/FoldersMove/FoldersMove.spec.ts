@@ -16,18 +16,6 @@ const unValidDestination: Folder = foldersData[0][0] // id: 135393636
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
 const secondValidDestination: Folder = foldersData[0][0].children[0].children[0] // id: 135393649
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
-
 vi.mock('@/services/Folder', () => ({
   moveFolderAsync: vi.fn(),
 }))

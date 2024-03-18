@@ -9,18 +9,6 @@ import { RenameFolder } from '@/services/Folder'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
-
 const pinia = createPinia()
 
 const defaultProps: RenameFolderSectionProps = {

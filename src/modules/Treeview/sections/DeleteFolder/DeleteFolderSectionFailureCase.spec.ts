@@ -11,18 +11,6 @@ import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
-
 const pinia = createPinia()
 
 const selectedFolder = getMockedFolder(0, 1, 'A', {

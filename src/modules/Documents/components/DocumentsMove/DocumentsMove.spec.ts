@@ -54,18 +54,6 @@ export type DocumentsMoveWrapper = VueWrapper<
   ComponentPublicInstance<DocumentMoveProps, DocumentMoveSetup>
 >
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
-
 vi.mock('@/services/Documents', () => ({
   moveDocuments: vi.fn(),
 }))

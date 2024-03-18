@@ -1,6 +1,6 @@
 /* eslint-disable vitest/no-hooks */
 /* eslint-disable max-len */
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import type { DocumentsModalExplorerProps, GivenActionAuthorization } from './DocumentsExplorerModalTypes'
 import type { Folder } from '@/models/Folder'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
@@ -92,18 +92,6 @@ const createWrapper = (
     },
   }) as unknown as DocumentsExplorerModalWrapper
 }
-
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
 
 const pinia = createPinia()
 

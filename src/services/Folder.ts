@@ -1,4 +1,4 @@
-import { commonApi as api } from '@kpmg/common'
+import { commonApi } from '@kpmg/common'
 import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'
 
@@ -7,8 +7,9 @@ export const fetchServiceFolders = async (
   entityId: string,
 ): Promise<Folder[]> => {
   const fetchFolderUrl = `${serviceId}/${entityId}/folders`
-  const apiObject = api().ds
-  return (await apiObject.get(fetchFolderUrl)).data
+  const response = await commonApi().ds.get(fetchFolderUrl)
+
+  return response?.data
 }
 
 export const fetchServicesFolders = async (
@@ -35,13 +36,12 @@ export const CreateFolder = async (
   folderName: string,
 ) => {
   const createFolderUrl = `${serviceId}/${entityId}/folders`
-  const apiObject = api().ds
-  return (
-    await apiObject.post(createFolderUrl, {
-      parentId: parentFolderId,
-      name: folderName,
-    })
-  ).data
+  const response = await commonApi().ds.post(createFolderUrl, {
+    parentId: parentFolderId,
+    name: folderName,
+  })
+
+  return response?.data
 }
 export const RenameFolder = async (
   folderId: Folder['id'],
@@ -50,12 +50,11 @@ export const RenameFolder = async (
   serviceId: null | Service['ServiceId'],
 ) => {
   const renameFolderUrl = `${serviceId}/${entityId}/folders/${folderId}`
-  const apiObject = api().ds
-  return (
-    await apiObject.patch(renameFolderUrl, [
-      { op: 'replace', path: '/name', value: folderName },
-    ])
-  ).data
+  const response = await commonApi().ds.patch(renameFolderUrl, [
+    { op: 'replace', path: '/name', value: folderName },
+  ])
+
+  return response.data
 }
 
 export const deleteFolder = async (
@@ -65,8 +64,8 @@ export const deleteFolder = async (
   keepFolder: boolean,
 ) => {
   const deleteFolderUrl = `${serviceId}/${entityId}/folders/${folderId}?keepFolder=${keepFolder}`
-  const apiObject = api().ds
-  await apiObject.delete(deleteFolderUrl)
+
+  await commonApi().ds.delete(deleteFolderUrl)
 }
 
 export const downloadFolder = async (
@@ -75,13 +74,14 @@ export const downloadFolder = async (
   folderId: Folder['id'],
 ) : Promise<void> => {
   const downloadFolderUrl = `${serviceId}/${entityId}/folders/${folderId}/archive`
-  const apiObject = api().ds
-  return (await apiObject.get(
+  const response = await commonApi().ds.get(
     downloadFolderUrl,
     {
       responseType: 'blob',
     },
-  )).data
+  )
+
+  return response.data
 }
 
 export const moveFolderAsync = async (
@@ -91,7 +91,7 @@ export const moveFolderAsync = async (
   destinationFolderId: Folder['id'],
 ): Promise<void> => {
   const moveFolderUrl = `${serviceId}/${entityId}/folders/${folderId}`
-  const apiObject = api().ds
+  const apiObject = commonApi().ds
   return (
     await apiObject.patch(moveFolderUrl, [
       { op: 'replace', path: '/parent/id', value: destinationFolderId.toString() },

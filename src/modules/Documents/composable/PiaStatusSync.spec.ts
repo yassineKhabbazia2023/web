@@ -8,31 +8,6 @@ import { defineComponent, ref, nextTick } from 'vue'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { documentsResponsePayload } from '../mocks/documentsWithTableStructureDataMock'
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-  DataStreamHubConnection: vi.fn(() => ({
-    startConnection: vi.fn(() => {
-      return Promise.resolve()
-    }),
-    getConnection: vi.fn(() => {
-      return {
-        invoke: vi.fn(),
-        on: vi.fn().mock.calls,
-        stop: vi.fn(),
-      }
-    }),
-    destroyConnection: vi.fn(),
-  })),
-}))
-
 vi.mock('@/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     OnConnectedAsync: vi.fn(),

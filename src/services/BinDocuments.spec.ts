@@ -1,43 +1,28 @@
 /* eslint-disable max-len */
-import { it, expect, vi, describe } from 'vitest'
+import { it, expect, beforeEach, describe } from 'vitest'
 import {
   fetchBinDocuments,
   restoreDocuments,
 } from './BinDocuments'
 import type { Service } from '@/models/Service'
-
-const mockDsGet = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      documents: 'fetched',
-    },
-  })
-})
-
-const mockDsPost = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      documents: 'posted',
-    },
-  })
-})
-
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: {
-      get: mockDsGet,
-      post: mockDsPost,
-    },
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
+import {
+  commonApiDsGetSpy as mockDsGet,
+  commonApiDsPostSpy as mockDsPost,
+} from '@/../vitest.setup'
 
 describe('bin documents service', () => {
+  beforeEach(() => {
+    mockDsGet.mockResolvedValue({
+      data: {
+        documents: 'fetched',
+      },
+    })
+    mockDsPost.mockResolvedValue(() => ({
+      data: {
+        documents: 'posted',
+      },
+    }))
+  })
   it('should fetsh bin documents when fetchBinDocuments is called', async () => {
     expect.hasAssertions()
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }

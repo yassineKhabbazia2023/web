@@ -1,4 +1,4 @@
-import { it, expect, vi, describe } from 'vitest'
+import { it, expect, describe, beforeEach } from 'vitest'
 import {
   fetchServiceFolders,
   CreateFolder,
@@ -8,57 +8,29 @@ import {
   downloadFolder,
 } from './Folder'
 import type { Service } from '@/models/Service'
+import {
+  commonApiDsGetSpy as mockDsGet,
+  commonApiDsPostSpy as mockDsPost,
+  commonApiDsDeleteSpy as mockDsDelete,
+  commonApiDsPatchSpy as mockDsPatch,
+} from '@/../vitest.setup'
 
-const mockDsGet = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      folders: 'fetched',
-    },
-  })
-})
-
-const mockDsPost = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      folders: 'new folder',
-    },
-  })
-})
-
-const mockDsPatch = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      folders: 'updated',
-    },
-  })
-})
-
-const mockDsDelete = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      folders: 'deleted',
-    },
-  })
-})
-
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: {
-      get: mockDsGet,
-      post: mockDsPost,
-      patch: mockDsPatch,
-      delete: mockDsDelete,
-    },
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
+const fetchedFolder = 'fetched'
+const patchedFolder = 'patched'
 
 describe('folder service', () => {
+  beforeEach(() => {
+    mockDsGet.mockResolvedValue({
+      data: {
+        folders: fetchedFolder,
+      },
+    })
+    mockDsPatch.mockResolvedValue({
+      data: {
+        folders: patchedFolder,
+      },
+    })
+  })
   it('should call fetchServiceFolders when fetchServicesFolders is called', async () => {
     const services = [
       { ServiceId: 'service-1', ServiceName: 'A' },
@@ -75,12 +47,12 @@ describe('folder service', () => {
     const entityId = 'some-entity-id'
 
     const data = await fetchServiceFolders(serviceId, entityId)
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders',
     )
     expect(data).toStrictEqual({
-      folders: 'fetched',
+      folders: fetchedFolder,
     })
   })
 
@@ -89,6 +61,13 @@ describe('folder service', () => {
     const entityId = 'some-entity-id'
     const parentFolderId = 1
     const folderName = 'newFolderName'
+    const createdFolder = 'new folder'
+
+    mockDsPost.mockResolvedValue({
+      data: {
+        folders: createdFolder,
+      },
+    })
 
     const data = await CreateFolder(serviceId, entityId, parentFolderId, folderName)
     expect(mockDsPost).toHaveBeenCalledTimes(1)
@@ -99,7 +78,7 @@ describe('folder service', () => {
       },
     )
     expect(data).toStrictEqual({
-      folders: 'new folder',
+      folders: createdFolder,
     })
   })
 
@@ -116,7 +95,7 @@ describe('folder service', () => {
       [{ op: 'replace', path: '/name', value: folderName }],
     )
     expect(data).toStrictEqual({
-      folders: 'updated',
+      folders: patchedFolder,
     })
   })
 
@@ -139,7 +118,7 @@ describe('folder service', () => {
 
     await downloadFolder(service.ServiceId, accountId, folderId)
 
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
+    expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/folders/1/archive',
       {

@@ -67,32 +67,6 @@ vi.mock('@/modules/common/helpers/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-  DataStreamHubConnection: vi.fn(() => ({
-    startConnection: vi.fn(() => {
-      return Promise.resolve()
-    }),
-    getConnection: vi.fn(() => {
-      return {
-        invoke: vi.fn(),
-        on: vi.fn(),
-        stop: vi.fn(),
-      }
-    }),
-    destroyConnection: vi.fn(),
-  })),
-  debounce: vi.fn((fn) => fn),
-}))
-
 const DocumentPiaStatusChangedResponseMock = {
   folderId: 45454,
   documentId: 'myID',

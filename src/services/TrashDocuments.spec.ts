@@ -1,42 +1,25 @@
 /* eslint-disable max-len */
-import { it, expect, vi, describe } from 'vitest'
+import { it, expect, describe } from 'vitest'
+import { commonApiDsGetSpy } from '@/../vitest.setup'
 import {
   fetchTrashDocuments,
 } from './TrashDocuments'
 import type { Service } from '@/models/Service'
 
-const mockDsGet = vi.fn(() => {
-  return Promise.resolve({
-    data: {
-      documents: 'fetched',
-    },
-  })
-})
-
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: {
-      get: mockDsGet,
-    },
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
-
 describe('trash documents service', () => {
   it('should fetsh trash documents when fetchTrashDocuments is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+    const trashedDocumentValue = 'trashed-document'
 
+    commonApiDsGetSpy.mockResolvedValueOnce({
+      data: trashedDocumentValue,
+    })
     const accountId = 'my-account-id'
 
-    await fetchTrashDocuments(service.ServiceId, accountId)
+    const trashed = await fetchTrashDocuments(service.ServiceId, accountId)
 
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
+    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/mapped',
       {
         params: {
@@ -46,5 +29,6 @@ describe('trash documents service', () => {
         },
       },
     )
+    expect(trashed).toBe(trashedDocumentValue)
   })
 })

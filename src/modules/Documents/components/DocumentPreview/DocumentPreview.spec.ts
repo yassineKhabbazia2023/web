@@ -20,17 +20,6 @@ const defaultProps: DocumentsPreviewProps = {
   selectedDocumentIndex: 1,
   totalDocumentsCount: 10,
 }
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
 
 const pinia = createPinia()
 

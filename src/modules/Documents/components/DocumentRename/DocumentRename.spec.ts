@@ -14,12 +14,6 @@ const defaultProps: DocumentRenameProps = {
   document: documentMock,
 }
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-}))
-
 vi.mock('@/services/Documents', () => ({
   renameDocument: vi.fn(),
 }))

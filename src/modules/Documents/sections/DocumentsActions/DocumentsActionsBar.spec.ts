@@ -16,10 +16,6 @@ const createWrapper = (props: DocumentActionsBarProps) =>
     },
   })
 
-vi.mock('@kpmg/common', () => ({
-  debounce: vi.fn((fn) => fn),
-}))
-
 const findActionBarLeft = (wrapper: any) => {
   const actionbar = wrapper.find('.documents-actions')
   return actionbar.find('.p-action-bar__left')

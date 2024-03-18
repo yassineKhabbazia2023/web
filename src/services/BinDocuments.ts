@@ -1,4 +1,4 @@
-import { commonApi as api } from '@kpmg/common'
+import { commonApi } from '@kpmg/common'
 import type { BinDocumentsWithTableStructure, RestoredDocument } from '@/models/Document'
 import type { Service } from '@/models/Service'
 
@@ -10,17 +10,15 @@ export const fetchBinDocuments = async (
   sort = '-deleted',
 ): Promise<BinDocumentsWithTableStructure> => {
   const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/mapped`
-  const apiObject = api().ds
+  const response = await commonApi().ds.get(fetchBinDocumentsUrl, {
+    params: {
+      skip,
+      limit,
+      sort,
+    },
+  })
 
-  return (
-    await apiObject.get(fetchBinDocumentsUrl, {
-      params: {
-        skip,
-        limit,
-        sort,
-      },
-    })
-  ).data
+  return response.data
 }
 
 export const restoreDocuments = async (
@@ -29,11 +27,9 @@ export const restoreDocuments = async (
   docIds: Array<string>,
 ): Promise<RestoredDocument[]> => {
   const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/restore`
-  const apiObject = api().ds
+  const response = await commonApi().ds.post(fetchBinDocumentsUrl, {
+    ids: docIds,
+  })
 
-  return (
-    await apiObject.post(fetchBinDocumentsUrl, {
-      ids: docIds,
-    })
-  ).data
+  return response.data
 }

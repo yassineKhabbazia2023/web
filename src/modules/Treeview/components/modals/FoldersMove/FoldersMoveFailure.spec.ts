@@ -9,19 +9,6 @@ import FoldersMove from '.'
 import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 
-vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-  debounce: vi.fn((fn) => fn),
-}))
-
 vi.mock('@/services/Folder', () => ({
   moveFolderAsync: () => {
     throw new Error('Something uncool')
