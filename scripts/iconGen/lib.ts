@@ -101,10 +101,10 @@ export default ({
 export function getComponentConstantsContent(icons: Icon[]) {
   const list = icons.map(({ componentName, category }) => (`  {
     name: '${componentName}',
-    category: '${category}'
+    category: '${category}',
   }`))
 
-  return `export const pulseGeneratedIcons = [\n${list.join(',\n')}\n]\n`
+  return `export const pulseGeneratedIcons = [\n${list.join(',\n')},\n]\n`
 }
 
 export function writeComponentConstants(outputFolderPath: string, icons: Icon[]) {
