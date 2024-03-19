@@ -24,7 +24,9 @@
         <PIcon :size="12">
           <PIXCircle class="icon" />
         </PIcon>
-        <p class="message" v-html="errorMsg" />
+        <p class="message">
+          {{errorMsg}}
+        </p>
       </div>
       <template #footer>
         <div class="p-dialog__footer">
