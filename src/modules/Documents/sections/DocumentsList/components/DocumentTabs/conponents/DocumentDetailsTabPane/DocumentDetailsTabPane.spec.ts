@@ -19,6 +19,25 @@ const defaultProps: DocumentDetailsTabPaneProps = {
   currentService: '',
 }
 
+function getMockedUpdatedDocument(status: string, labelFr: string|null, path: string[]) {
+  const updatedDocument = {
+    ...documentMock,
+    piaStatus: {
+      technicalName: status,
+      labelFr,
+      labelEn: 'Active',
+      date: '2023-10-11T08:09:26Z',
+    },
+    type: '.pdf',
+    folder: {
+      id: 1,
+      path,
+    },
+  }
+
+  return updatedDocument
+}
+
 vi.mock('@/services/Documents', () => ({
   downloadDocument: vi.fn(),
 }))
@@ -80,21 +99,7 @@ describe('documentDetailsTabPane', () => {
     it.each(cases)(
       'pText mapping validation',
       async ({ status, expectedIcon }) => {
-        const updatedDocument = {
-          ...documentMock,
-          piaStatus: {
-            technicalName: status,
-            labelFr: 'Actif',
-            labelEn: 'Active',
-            date: '2023-10-11T08:09:26Z',
-          },
-          type: '.pdf',
-          folder: {
-            id: 1,
-            path: ['Comptabilité', 'Dépôt'],
-          },
-        }
-
+        const updatedDocument = getMockedUpdatedDocument(status, 'Actif', ['Comptabilité', 'Dépôt'])
         const updatedProps = { ...defaultProps, document: updatedDocument }
         await nextTick()
         const documentDetailsTabPane = createWrapper(updatedProps)
@@ -109,20 +114,7 @@ describe('documentDetailsTabPane', () => {
   })
 
   it('should hide tag if label is null', async () => {
-    const updatedDocument = {
-      ...documentMock,
-      piaStatus: {
-        technicalName: '',
-        labelFr: null,
-        labelEn: 'Active',
-        date: '2023-10-11T08:09:26Z',
-      },
-      type: '.pdf',
-      folder: {
-        id: 1,
-        path: ['My Documents', 'Dir'],
-      },
-    }
+    const updatedDocument = getMockedUpdatedDocument('', null, ['My Documents', 'Dir'])
 
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
@@ -134,20 +126,7 @@ describe('documentDetailsTabPane', () => {
   })
 
   it('should hide tag if technical name is not a transmitted document technical name', async () => {
-    const updatedDocument = {
-      ...documentMock,
-      piaStatus: {
-        technicalName: 'Collectable',
-        labelFr: null,
-        labelEn: 'Active',
-        date: '2023-10-11T08:09:26Z',
-      },
-      type: '.pdf',
-      folder: {
-        id: 1,
-        path: ['My Documents', 'Dir'],
-      },
-    }
+    const updatedDocument = getMockedUpdatedDocument('Collectable', null, ['My Documents', 'Dir'])
 
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
@@ -169,20 +148,7 @@ describe('documentDetailsTabPane', () => {
       path: ['Comptabilité', 'Dépôt', 'Ventes'],
     },
   ])('should hide tag if document is not inside a PIA synced folder', async ({ path }) => {
-    const updatedDocument = {
-      ...documentMock,
-      piaStatus: {
-        technicalName: 'Collectable',
-        labelFr: null,
-        labelEn: 'Active',
-        date: '2023-10-11T08:09:26Z',
-      },
-      type: '.pdf',
-      folder: {
-        id: 1,
-        path,
-      },
-    }
+    const updatedDocument = getMockedUpdatedDocument('Collectable', null, path)
 
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
@@ -194,20 +160,7 @@ describe('documentDetailsTabPane', () => {
   })
 
   it('should hide tag if label is null (2)', async () => {
-    const updatedDocument = {
-      ...documentMock,
-      piaStatus: {
-        technicalName: '',
-        labelFr: null,
-        labelEn: 'Active',
-        date: '2023-10-11T08:09:26Z',
-      },
-      type: '.pdf',
-      folder: {
-        id: 1,
-        path: ['My Documents', 'Dir'],
-      },
-    }
+    const updatedDocument = getMockedUpdatedDocument('', null, ['My Documents', 'Dir'])
 
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
