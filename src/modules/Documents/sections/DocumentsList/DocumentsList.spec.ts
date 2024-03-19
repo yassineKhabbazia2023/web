@@ -119,63 +119,53 @@ describe('documentList', () => {
       ])
     }, 30000)
 
-    it('should select row oppon TableElement actions-dropdown-opened', async () => {
-      const wrapper: DocumentsListWrapper = mount(DocumentsList, {
-        props: defaultProps,
-        global: {
-          stubs: {
-            PToolbox: {
-              template: '<span />',
+    describe('when emit actions-dropdown-opened', () => {
+      let wrapper: DocumentsListWrapper
+      beforeEach(async () => {
+        wrapper = mount(DocumentsList, {
+          props: defaultProps,
+          global: {
+            stubs: {
+              PToolbox: {
+                template: '<span />',
+              },
             },
+            plugins: [pinia],
           },
-          plugins: [pinia],
-        },
-      }) as unknown as DocumentsListWrapper
+        }) as unknown as DocumentsListWrapper
 
-      await nextTick()
-      const tableElements = wrapper.findAllComponents(TableElement)
-      await nextTick()
-      tableElements[0].vm.$emit('actions-dropdown-opened',
-        documentsResponsePayload.documentsPage.items[0],
-        { label: 'Actions' },
-      )
-      await nextTick()
-      const componentInstance = wrapper.vm
-      expect(
-        componentInstance.selectedDocuments,
-      ).toStrictEqual(documentsResponsePayload.documentsPage.items)
-    })
-    it('should select and open preview drawer', async () => {
-      const wrapper: DocumentsListWrapper = mount(DocumentsList, {
-        props: defaultProps,
-        global: {
-          stubs: {
-            PToolbox: {
-              template: '<span />',
-            },
-          },
-          plugins: [pinia],
-        },
-      }) as unknown as DocumentsListWrapper
+        await nextTick()
+      })
+      it('should select row oppon TableElement actions-dropdown-opened', async () => {
+        const tableElements = wrapper.findAllComponents(TableElement)
+        tableElements[0].vm.$emit('actions-dropdown-opened',
+          documentsResponsePayload.documentsPage.items[0],
+          { label: 'Actions' },
+        )
+        await nextTick()
+        const componentInstance = wrapper.vm
+        expect(
+          componentInstance.selectedDocuments,
+        ).toStrictEqual(documentsResponsePayload.documentsPage.items)
+      })
+      it('should select and open preview drawer', async () => {
+        const tableElements = wrapper.findAllComponents(TableElement)
+        tableElements[0].vm.$emit('actions-dropdown-opened',
+          documentsResponsePayload.documentsPage.items[0],
+          { label: 'Statut' },
+        )
+        await nextTick()
+        const componentInstance = wrapper.vm
+        expect(wrapper.emitted('table-row-clicked')).toBeTruthy()
+        expect(wrapper.emitted('table-row-clicked')).toStrictEqual([
+          [documentsResponsePayload.documentsPage.items[0]],
+        ])
 
-      await nextTick()
-      const tableElements = wrapper.findAllComponents(TableElement)
-      await nextTick()
-      tableElements[0].vm.$emit('actions-dropdown-opened',
-        documentsResponsePayload.documentsPage.items[0],
-        { label: 'Statut' },
-      )
-      await nextTick()
-      const componentInstance = wrapper.vm
-      expect(wrapper.emitted('table-row-clicked')).toBeTruthy()
-      expect(wrapper.emitted('table-row-clicked')).toStrictEqual([
-        [documentsResponsePayload.documentsPage.items[0]],
-      ])
-
-      // we don't select the row if preview
-      expect(
-        componentInstance.selectedDocuments,
-      ).toStrictEqual([])
+        // we don't select the row if preview
+        expect(
+          componentInstance.selectedDocuments,
+        ).toStrictEqual([])
+      })
     })
     it('should propagate toolbox-action-triggered of tableElement', async () => {
       const wrapper: DocumentsListWrapper = mount(DocumentsList, {
