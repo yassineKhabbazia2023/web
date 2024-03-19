@@ -184,6 +184,7 @@ describe('documents Move', () => {
       })
       await nextTick()
       await documentExplorerModalWrapper.vm.$emit('close-modal')
+      await nextTick()
 
       expect(wrapper.emitted('close-move-documents-modal')).toHaveLength(1)
     })
@@ -199,6 +200,7 @@ describe('documents Move', () => {
         'navigate-to-folder',
         secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.vm.currentExplorerFolder).toStrictEqual(
         secondValidDestination,
@@ -216,6 +218,7 @@ describe('documents Move', () => {
         'update-source-folders',
         secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([

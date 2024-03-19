@@ -107,6 +107,7 @@ describe('foldersList', () => {
 
       const section = wrapper.findComponent(CreateFolderSection)
       await section.vm.$emit('update-source-folders', newFolderData)
+      await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([
@@ -120,6 +121,7 @@ describe('foldersList', () => {
 
       const section = wrapper.findComponent(CreateFolderSection)
       await section.vm.$emit('on-close-create-folder')
+      await nextTick()
 
       expect(wrapper.emitted('close-create-folder-modal')).toBeTruthy()
     })

@@ -202,6 +202,7 @@ describe('test DocumentsUpload', () => {
       })
       await nextTick()
       await documentExplorerModalWrapper.vm.$emit('close-modal')
+      await nextTick()
 
       expect(wrapper.emitted('close-upload-documents-modal')).toHaveLength(1)
     })
@@ -217,6 +218,7 @@ describe('test DocumentsUpload', () => {
         'navigate-to-folder',
         secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.vm.currentExplorerFolder).toStrictEqual(
         secondValidDestination,
@@ -234,6 +236,7 @@ describe('test DocumentsUpload', () => {
         'update-source-folders',
         secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([

@@ -93,6 +93,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const popup = wrapper.findComponent(ConfirmationPopup)
       await popup.vm.$emit('on-confirm-button-click')
+      await nextTick()
       expect(wrapper.emitted('confirm-delete-folder')).toBeTruthy()
     })
 
@@ -106,6 +107,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const popup = wrapper.findComponent(ConfirmationPopup)
       await popup.vm.$emit('on-cancel-button-click')
+      await nextTick()
       expect(wrapper.emitted('cancel-delete-folder')).toBeTruthy()
     })
 
@@ -119,6 +121,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const popup = wrapper.findComponent(ConfirmationPopup)
       await popup.vm.$emit('on-close-popup')
+      await nextTick()
       expect(wrapper.emitted('cancel-delete-folder')).toBeTruthy()
     })
 

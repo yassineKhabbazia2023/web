@@ -6,6 +6,7 @@ import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import type { DocumentRenameProps } from './DocumentRenameTypes'
 import { documentMock } from '@/modules/Documents/mocks/documentMock'
 import { renameDocument } from '@/services/Documents'
+import { nextTick } from 'vue'
 
 const defaultProps: DocumentRenameProps = {
   modelValue: false,
@@ -47,6 +48,7 @@ describe('interactions', () => {
     const wrapper = createWrapper({ ...defaultProps, modelValue: true })
     const renameModalWrapper = wrapper.findComponent(DocumentRenameModal)
     await renameModalWrapper.vm.$emit('rename-confirmed', 'abcd')
+    await nextTick()
     expect(vi.mocked(renameDocument)).toHaveBeenCalledWith(
       defaultProps.currentService,
       defaultProps.selectedEntity,

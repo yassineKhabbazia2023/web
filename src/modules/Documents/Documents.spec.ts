@@ -251,6 +251,7 @@ describe('documents', () => {
 
       const pbreadCrumbWrapper = findPBreadCrumb(wrapper)
       await pbreadCrumbWrapper.vm.$emit('p-breadcrumb-item-click', validDestination.id)
+      await nextTick()
 
       expect(wrapper.emitted('change-selected-folder')).toHaveLength(1)
       expect(wrapper.emitted('change-selected-folder')).toStrictEqual([[validDestination]])
@@ -268,6 +269,7 @@ describe('documents', () => {
       await nextTick()
 
       await documents.vm.$emit('on-sort-change', '-created')
+      await nextTick()
 
       expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
@@ -294,6 +296,7 @@ describe('documents', () => {
         const documents = wrapper.findComponent(DocumentsList)
 
         await documents.vm.$emit('on-sort-change', '+name')
+        await nextTick()
 
         expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
           foldersData[0][0].children[0].serviceId,
@@ -324,6 +327,7 @@ describe('documents', () => {
         'toolbox-action-triggered',
         'download-document',
       )
+      await nextTick()
 
       expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
         defaultProps.currentService,
@@ -372,6 +376,7 @@ describe('documents', () => {
       await nextTick()
 
       await documentRename.vm.$emit('document-rename')
+      await nextTick()
 
       expect(documentRename.props('modelValue')).toBeFalsy()
     })
@@ -388,6 +393,7 @@ describe('documents', () => {
       await nextTick()
 
       await documents.vm.$emit('toolbox-action-triggered', 'delete-document')
+      await nextTick()
 
       const deleteModal = wrapper.findComponent(DocumentDeleteModal)
 
@@ -406,6 +412,7 @@ describe('documents', () => {
       await nextTick()
 
       await deleteModal.vm.$emit('confirm-delete-document')
+      await nextTick()
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
       expect(deleteModal.props('documentIds')).toStrictEqual([])
@@ -434,6 +441,7 @@ describe('documents', () => {
         await nextTick()
 
         await deleteModal.vm.$emit('confirm-delete-document')
+        await nextTick()
 
         expect(deleteModal.props('isVisible')).toBeFalsy()
         expect(deleteModal.props('documentIds')).toStrictEqual([])
@@ -457,6 +465,7 @@ describe('documents', () => {
       await nextTick()
 
       await deleteModal.vm.$emit('cancel-delete-document')
+      await nextTick()
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
     })
@@ -526,6 +535,7 @@ describe('documents', () => {
         'toolbox-action-triggered',
         'transmit-document',
       )
+      await nextTick()
 
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
@@ -550,6 +560,7 @@ describe('documents', () => {
         'toolbox-action-triggered',
         'transmit-document',
       )
+      await nextTick()
 
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledTimes(0)
     })
@@ -692,6 +703,7 @@ describe('documents', () => {
         _rowIndex: 0,
       }
       await documents.vm.$emit('table-row-clicked', tableRowDocument)
+      await nextTick()
 
       const documentPreview = wrapper.findComponent(DocumentPreview)
 
@@ -718,6 +730,7 @@ describe('documents', () => {
       }
 
       await documents.vm.$emit('table-row-clicked', tableRowDocument)
+      await nextTick()
 
       const documentPreview = wrapper.findComponent(DocumentPreview)
 
@@ -818,7 +831,8 @@ describe('documents', () => {
 
       const documentsActionBarWrapper = findDcumentActionBar(wrapper)
 
-      await documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
+      documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
+      await nextTick()
       expect(wrapper.find('.search-loader').exists()).toBeTruthy()
     })
 
@@ -933,6 +947,7 @@ describe('documents', () => {
         'toolbox-action-triggered',
         'go-to-document',
       )
+      await nextTick()
 
       vi.useFakeTimers()
       vi.advanceTimersByTime(1000)

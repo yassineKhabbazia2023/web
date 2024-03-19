@@ -127,6 +127,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
         const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
+        await nextTick()
 
         expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
           'serv',
@@ -153,6 +154,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
         const popup = findConfirmationPopup(wrapper)
         await popup.vm.$emit('on-confirm-button-click')
+        await nextTick()
 
         expect(vi.mocked(deleteDocuments)).toHaveBeenCalledWith(
           'serv',
@@ -178,6 +180,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const popup = findConfirmationPopup(wrapper)
       await popup.vm.$emit('on-cancel-button-click')
+      await nextTick()
       expect(wrapper.emitted('cancel-delete-document')).toBeTruthy()
     })
 

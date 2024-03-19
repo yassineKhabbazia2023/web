@@ -124,6 +124,7 @@ describe('documentRestoreModal', () => {
 
       const popup = findConfirmationPopup(wrapper)
       await popup.vm.$emit('on-cancel-button-click')
+      await nextTick()
       expect(wrapper.emitted('cancel-restore-document')).toBeTruthy()
     })
 

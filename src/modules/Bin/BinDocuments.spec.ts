@@ -138,6 +138,7 @@ describe('binDocuments', () => {
         await nextTick()
         const documents = wrapper.findComponent(BinDocumentsList)
         await documents.vm.$emit('on-sort-change', '+name')
+        await nextTick()
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
@@ -192,6 +193,7 @@ describe('binDocuments', () => {
         await nextTick()
 
         await restoreModal.vm.$emit('confirm-restore-document')
+        await nextTick()
 
         expect(restoreModal.props('isVisible')).toBeFalsy()
         expect(restoreModal.props('document')).toBeNull()
@@ -215,6 +217,7 @@ describe('binDocuments', () => {
         await nextTick()
 
         await restoreModal.vm.$emit('cancel-restore-document')
+        await nextTick()
 
         expect(restoreModal.props('isVisible')).toBeFalsy()
         expect(restoreModal.props('document')).toBeNull()
@@ -231,6 +234,7 @@ describe('binDocuments', () => {
         await nextTick()
 
         await restoreModal.vm.$emit('navigate-to-folder', 123)
+        await nextTick()
         expect(wrapper.emitted('navigate-to-folder')).toStrictEqual([[123]])
       })
     })

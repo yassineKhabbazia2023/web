@@ -116,6 +116,7 @@ describe('test FoldersMove', () => {
       wrapper.vm.explorerDocuments[0].givenActionState = 'DONE'
       await nextTick()
       await documentExplorerModalWrapper.vm.$emit('close-modal')
+      await nextTick()
 
       vi.advanceTimersByTime(500)
 
@@ -133,6 +134,7 @@ describe('test FoldersMove', () => {
         'navigate-to-folder',
         secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.vm.currentExplorerFolder).toStrictEqual(
         secondValidDestination,
@@ -150,6 +152,7 @@ describe('test FoldersMove', () => {
         'update-source-folders',
         secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([

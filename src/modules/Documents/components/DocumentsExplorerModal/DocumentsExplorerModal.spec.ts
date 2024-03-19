@@ -191,6 +191,7 @@ describe('documentsExplorerModal', () => {
       await nextTick()
 
       await documentCheckAllWrapper.vm.$emit('check-all-documents', true)
+      await nextTick()
 
       expect(wrapper.vm.explorerDocuments).toHaveLength(
         wrapper.vm.explorerDocuments.filter(d => d.isSelected === true).length,
