@@ -66,12 +66,12 @@ const errorMsg = computed(() => {
 })
 
 // Modal actions
-const handleCloseModal = () => {
+function handleCloseModal() {
   folderNameExists.value = false
   emit('on-close-rename-folder')
 }
 
-const handleConfirmActionClick = () => {
+function handleConfirmActionClick() {
   folderNameExists.value = false
   if (isFolderNameExists(inputContent.value)) {
     folderNameExists.value = true
@@ -80,7 +80,7 @@ const handleConfirmActionClick = () => {
   emit('on-confirm-rename-folder', inputContent.value)
 }
 
-const handleCancelActionClick = () => {
+function handleCancelActionClick() {
   folderNameExists.value = false
   emit('on-cancel-rename-folder')
 }
