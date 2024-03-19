@@ -1,5 +1,5 @@
 <template>
-  <PRow>
+  <PRow v-if="selectedEntity">
     <PCol :span="6">
       <Treeview
         :entityServices="entityServices"
@@ -58,6 +58,7 @@ import {
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 // import Notifications from './Notifications.vue'
 import { PCol, PRow, PNotification } from '@kpmg/styleguide'
+import { commonStore } from '@kpmg/common'
 /* This might be refactored later to import 'PNotification' every time we need the notifications.
 The current toaster uses a mock of the 'inject' property.
 That's why we're providing the new PNotification for now.
@@ -87,7 +88,9 @@ const fetchGedFoldersAndServices = async () => {
 }
 
 // Entities and services scope
-const selectedEntity = ref('93012cc8-77b9-4161-8dbd-61915d935e21')
+const userStore = commonStore()
+
+const selectedEntity = computed(() => userStore?.defaultEntity?.idAccount ?? '')
 const entityServices = ref<null | any>(null)
 const currentService = ref<string | null>(null)
 const currentServiceFolder = computed<null | Folder[]>(() => {
@@ -195,12 +198,14 @@ const handleTreeRefreshAndRedirectToFolder = async (folderId: Folder['id']) => {
   setCurrentBinService(null)
   setCurrentFolder(folderId)
 }
-
 // Main component actions
 // eslint-disable-next-line vitest/require-hook
 onMounted(async () => {
-  await fetchGedFoldersAndServices()
+  if (selectedEntity.value) {
+    await fetchGedFoldersAndServices()
+  }
 })
+
 </script>
 
 <style>

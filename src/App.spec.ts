@@ -31,7 +31,11 @@ vi.mock('@kpmg/common', async () => ({
     $delete: vi.fn(),
     $patch: vi.fn(),
     $get: vi.fn(),
-    $post: vi.fn()
+    $post: vi.fn(),
+    defaultEntity: {
+      name: 'JEAN LÉVAGE',
+      idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21'
+    }
   }),
   DataStreamHubConnection: vi.fn(() => ({
     startConnection: vi.fn(() => {
@@ -104,8 +108,7 @@ type AppSetup = {
   currentBinServiceName: string
 }
 
-type AppProps = any
-export type AppWrapper = VueWrapper<ComponentPublicInstance<AppSetup, AppProps>>
+export type AppWrapper = VueWrapper<ComponentPublicInstance<AppSetup>>
 
 const createWrapper = (): AppWrapper => {
   return mount(Ged, {
@@ -357,7 +360,9 @@ describe('ged', () => {
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
         expect(bin.props('selectedServiceName')).toBe(foldersData[0][0].name)
-        expect(bin.props('selectedEntity')).toBe('ent')
+        expect(bin.props('selectedEntity')).toBe(
+          '93012cc8-77b9-4161-8dbd-61915d935e21'
+        )
       })
       it('should hide bin component when currentBinService is not set', async () => {
         expect.hasAssertions()
