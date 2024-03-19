@@ -152,9 +152,9 @@ import {
 import { getInitials } from '@/helper'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import { SubscriptionStatusCode } from '../../SubscriptionsTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 import {
   type SubscriptionRequest,
-  type Contact,
   type SubscriptionAccount
 } from '../../SubscriptionsTypes'
 

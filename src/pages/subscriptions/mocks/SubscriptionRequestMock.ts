@@ -18,7 +18,7 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     },
     clients: [
       {
-        contactId: 1,
+        id: 1,
         firstName: 'TFirsName',
         lastName: 'TLastName',
         email: 'TLastName+test@kpmg.onmicrosoft.com'
@@ -42,7 +42,7 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     },
     clients: [
       {
-        contactId: 2,
+        id: 2,
         firstName: 'Suliman',
         lastName: 'Test',
         email: 'test-05@kpmg.onmicrosoft.com'
