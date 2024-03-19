@@ -1,3 +1,4 @@
+import type { VueWrapper } from '@vue/test-utils'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import type { Folder } from '@/models/Folder'
 import type { Service } from '@/models/Service'
@@ -50,3 +51,7 @@ export type DocumentUploadSetup = {
     modalActionsbuttons: ButtonAction[]
     currentExplorerFolder: Folder
   }
+
+export function findComponentByNameInWrapper(wrapper: VueWrapper, componentName: string) {
+  return wrapper.findComponent({ name: componentName })
+}

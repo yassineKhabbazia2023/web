@@ -7,7 +7,6 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
 import type { GivenActionAuthorization } from
   '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
 import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
@@ -18,6 +17,7 @@ import { PButton } from '@kpmg/styleguide'
 import type { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTypes'
 import DocumentsMove from '.'
 import { documentsMock } from '../../mocks/documentMock'
+import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
 
 // id: 135393636 without permission 'CAN_MOVE_INTO_FOLDER'
 const unValidDestination: Folder = foldersData[0][0]
@@ -77,9 +77,6 @@ const createWrapper = (
 const pinia = createPinia()
 
 describe('documents Move', () => {
-  const findDocumentsExplorerModal = (wrapper: DocumentsMoveWrapper) =>
-    wrapper.findComponent(DocumentModalExplorer)
-
   const findModalFooter = (wrapper: any) =>
     wrapper.findComponent(DocumentsModalActionsFooter)
 
@@ -96,14 +93,14 @@ describe('documents Move', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.exists()).toBeTruthy()
     })
 
     it('should pass the correct title based on the selected folder', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
         `Déplacer ${defaultProps.selectedDocuments.length} document dans ${validDestination.name}`,
       )
@@ -164,7 +161,7 @@ describe('documents Move', () => {
       wrapper.vm.explorerDocuments[0].givenActionState = 'FAILED'
       await nextTick()
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'modal-action-clicked',
@@ -180,7 +177,7 @@ describe('documents Move', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       wrapper.vm.explorerDocuments.forEach(element => {
         element.givenActionState = 'DONE'
@@ -196,7 +193,7 @@ describe('documents Move', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'navigate-to-folder',
@@ -213,7 +210,7 @@ describe('documents Move', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'update-source-folders',
@@ -231,7 +228,7 @@ describe('documents Move', () => {
       const wrapper = createWrapper(updatedProps)
       wrapper.setProps({ isMoveModalOpened: true })
       await nextTick()
-      const documentsExporerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentsExporerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       const footerWrapper = findModalFooter(documentsExporerModalWrapper)
 
       const confirmBtn = findConfirmButton(footerWrapper)
@@ -246,7 +243,7 @@ describe('documents Move', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findDocumentsExplorerModal(wrapper)
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -264,7 +261,7 @@ describe('documents Move', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findDocumentsExplorerModal(wrapper)
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -291,7 +288,7 @@ describe('documents Move', () => {
           await nextTick()
 
           const documentExplorerModalWrapper =
-                  findDocumentsExplorerModal(wrapper)
+                  findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',

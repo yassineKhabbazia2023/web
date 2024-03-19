@@ -8,9 +8,9 @@ import type { Folder } from '@/models/Folder'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import FoldersMove from '.'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
 import { moveFolderAsync } from '@/services/Folder'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
 
 const unValidDestination: Folder = foldersData[0][0] // id: 135393636
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
@@ -39,9 +39,6 @@ const createWrapper = (
 const pinia = createPinia()
 
 describe('test FoldersMove', () => {
-  const findDocumentsExplorerModal = (wrapper: FoldersMoveWrapper) =>
-    wrapper.findComponent(DocumentModalExplorer)
-
   beforeEach(() => {
     setActivePinia(pinia)
     vi.useFakeTimers()
@@ -52,14 +49,14 @@ describe('test FoldersMove', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.exists()).toBeTruthy()
     })
 
     it('should pass the correct title based on the selected folder', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
         `Déplacer 1 dossier dans ${validDestination.name}`,
       )
@@ -101,7 +98,7 @@ describe('test FoldersMove', () => {
       wrapper.vm.explorerDocuments[0].givenActionState = 'IN_PROGRESS'
       await nextTick()
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit('close-modal')
       await nextTick()
@@ -114,7 +111,7 @@ describe('test FoldersMove', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       wrapper.vm.explorerDocuments[0].givenActionState = 'DONE'
       await nextTick()
@@ -130,7 +127,7 @@ describe('test FoldersMove', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'navigate-to-folder',
@@ -147,7 +144,7 @@ describe('test FoldersMove', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'update-source-folders',
@@ -168,7 +165,7 @@ describe('test FoldersMove', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -188,7 +185,7 @@ describe('test FoldersMove', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -211,7 +208,7 @@ describe('test FoldersMove', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -231,7 +228,7 @@ describe('test FoldersMove', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -255,7 +252,7 @@ describe('test FoldersMove', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -277,7 +274,7 @@ describe('test FoldersMove', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -304,7 +301,7 @@ describe('test FoldersMove', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',

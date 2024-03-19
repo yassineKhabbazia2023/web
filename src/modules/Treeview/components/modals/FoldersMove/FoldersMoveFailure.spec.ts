@@ -6,8 +6,8 @@ import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import FoldersMove from '.'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
 
 vi.mock('@/services/Folder', () => ({
   moveFolderAsync: () => {
@@ -33,12 +33,7 @@ const createWrapper = (
 
 const pinia = createPinia()
 
-describe('tes FoldersMove failure', () => {
-  // Finders
-
-  const findDocumentsExplorerModal = (wrapper: FoldersMoveWrapper) =>
-    wrapper.findComponent(DocumentModalExplorer)
-
+describe('test FoldersMove failure', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })
@@ -55,7 +50,7 @@ describe('tes FoldersMove failure', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',

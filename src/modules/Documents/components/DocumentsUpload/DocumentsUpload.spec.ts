@@ -9,12 +9,12 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
 import { uploadDocument } from '@/services/Documents'
 import DocumentsUpload from '.'
 import DocumentsModalActionsFooter from '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
 import { PButton } from '@kpmg/styleguide'
 import { generateTestFiles, defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
 
 const unValidDestination: Folder = foldersData[0][0] // id: 135393636
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
@@ -95,9 +95,6 @@ const createWrapper = (
 const pinia = createPinia()
 
 describe('test DocumentsUpload', () => {
-  const findDocumentsExplorerModal = (wrapper: DocumentsUploadWrapper) =>
-    wrapper.findComponent(DocumentModalExplorer)
-
   const findModalFooter = (wrapper: any) =>
     wrapper.findComponent(DocumentsModalActionsFooter)
 
@@ -114,14 +111,14 @@ describe('test DocumentsUpload', () => {
       const updatedProps = { ...defaultProps, isUploadModalOpened: true }
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.exists()).toBeTruthy()
     })
 
     it('should pass the correct title based on the selected folder', () => {
       const updatedProps = { ...defaultProps, isUploadModalOpened: true }
       const wrapper = createWrapper(updatedProps)
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
         `Déposer ${defaultProps.files.length} documents dans ${validDestination.name}`,
       )
@@ -181,7 +178,7 @@ describe('test DocumentsUpload', () => {
       wrapper.vm.explorerDocuments[0].givenActionState = 'FAILED'
       await nextTick()
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'modal-action-clicked',
@@ -198,7 +195,7 @@ describe('test DocumentsUpload', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       wrapper.vm.explorerDocuments.forEach(element => {
         element.givenActionState = 'DONE'
@@ -214,7 +211,7 @@ describe('test DocumentsUpload', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'navigate-to-folder',
@@ -231,7 +228,7 @@ describe('test DocumentsUpload', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'update-source-folders',
@@ -249,7 +246,7 @@ describe('test DocumentsUpload', () => {
       const wrapper = createWrapper(updatedProps)
       wrapper.setProps({ isUploadModalOpened: true })
       await nextTick()
-      const documentsExporerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentsExporerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       const footerWrapper = findModalFooter(documentsExporerModalWrapper)
 
       const confirmBtn = findConfirmButton(footerWrapper)
@@ -265,7 +262,7 @@ describe('test DocumentsUpload', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findDocumentsExplorerModal(wrapper)
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -283,7 +280,7 @@ describe('test DocumentsUpload', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findDocumentsExplorerModal(wrapper)
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -310,7 +307,7 @@ describe('test DocumentsUpload', () => {
           await nextTick()
 
           const documentExplorerModalWrapper =
-                  findDocumentsExplorerModal(wrapper)
+                  findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',

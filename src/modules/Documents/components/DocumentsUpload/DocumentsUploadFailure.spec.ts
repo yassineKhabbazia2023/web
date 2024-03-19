@@ -7,9 +7,9 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
 import DocumentsUpload from '.'
 import { defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
 
 export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
@@ -40,9 +40,6 @@ const createWrapper = (
 const pinia = createPinia()
 
 describe('test DocumentsUpload failure', () => {
-  const findDocumentsExplorerModal = (wrapper: DocumentsUploadWrapper) =>
-    wrapper.findComponent(DocumentModalExplorer)
-
   beforeEach(() => {
     setActivePinia(pinia)
     vi.useFakeTimers()
@@ -57,7 +54,7 @@ describe('test DocumentsUpload failure', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findDocumentsExplorerModal(wrapper)
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
