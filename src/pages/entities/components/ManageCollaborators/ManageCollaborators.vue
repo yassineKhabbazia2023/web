@@ -42,13 +42,16 @@
         :pTitle="getContactFullName(selectedCollaborator)"
         :pDescription="selectedCollaborator.email"
         :pRole="selectedCollaborator.office"
+        :pShowDelete="canDelete"
+        data-testid="selected-collaborator-"
+        @click-delete="onClickDelete(index)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PBlockHeader,
@@ -73,17 +76,32 @@ const { t } = useI18n({
 
 const selectedCollaborators = ref<Contact[]>([])
 
+const canDelete = computed(() => selectedCollaborators.value.length > 1)
+
 function getContactFullName(contact: Contact) {
   return `${contact?.firstName} ${contact?.lastName}`
 }
 
 function addContact(contact: Contact) {
   selectedCollaborators.value.push(contact)
+  emitUpdateCollaborators()
+}
+
+function emitUpdateCollaborators() {
   emits('update:collaborators', selectedCollaborators.value)
 }
 
 function onAddContact(contact: Contact) {
   addContact(contact)
+}
+
+function onClickDelete(index: number) {
+  if (!canDelete.value) {
+    console.warn('Can not delete collaborator')
+    return
+  }
+  selectedCollaborators.value.splice(index, 1)
+  emitUpdateCollaborators()
 }
 
 onMounted(() => {
