@@ -1,6 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { nextTick } from 'vue'
+import { searchError, noResult } from '@/tests'
 import mock from './mock.json'
 import Collaborators from './'
 
@@ -33,6 +33,9 @@ describe('collaborators', () => {
     wrapper = createWrapper()
   })
 
+  searchError(createWrapper())
+  noResult(createWrapper())
+
   it('should display data in a table', () => {
     expect(getTableBody().findAll('tr')).toHaveLength(items.length)
 
@@ -43,28 +46,5 @@ describe('collaborators', () => {
   it('has a pagination', () => {
     const pages = wrapper.findAll('.el-pager li')
     expect(pages).toHaveLength(totalPages)
-  })
-
-  it('displays an error if the user search with less than 3 letters', async () => {
-    const getFormItemIsError = () => wrapper.find('.el-form-item.is-error')
-    const inputSearch = wrapper.find('input[type="search"]')
-
-    expect(getFormItemIsError().exists()).toBeFalsy()
-
-    await inputSearch.setValue('az')
-    await inputSearch.trigger('keyup')
-
-    expect(getFormItemIsError().exists()).toBeTruthy()
-  })
-
-  it('can display a no results message', async () => {
-    const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })
-
-    expect(getNoResultComponent().exists()).toBeFalsy()
-
-    wrapper.vm.state.data = []
-    await nextTick()
-
-    expect(getNoResultComponent().exists()).toBeTruthy()
   })
 })

@@ -2,10 +2,10 @@ import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
 import { commonStore } from '@kpmg/common'
 import mock from './mock.json'
 import UsersClient from './'
+import { searchError, noResult } from '@/tests'
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -50,28 +50,8 @@ describe('allUsers', () => {
     wrapper = createWrapper()
   })
 
-  it('displays an error if the user search with less than 3 letters', async () => {
-    const getFormItemIsError = () => wrapper.find('.el-form-item.is-error')
-    const inputSearch = wrapper.find('input[type="search"]')
-
-    expect(getFormItemIsError().exists()).toBeFalsy()
-
-    await inputSearch.setValue('az')
-    await inputSearch.trigger('keyup')
-
-    expect(getFormItemIsError().exists()).toBeTruthy()
-  })
-
-  it('can display a no results message', async () => {
-    const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })
-
-    expect(getNoResultComponent().exists()).toBeFalsy()
-
-    wrapper.vm.state.data = []
-    await nextTick()
-
-    expect(getNoResultComponent().exists()).toBeTruthy()
-  })
+  searchError(createWrapper())
+  noResult(createWrapper())
 
   it('displays data in a table', () => {
     expect(getTableBody().findAll('tr')).toHaveLength(items.length)
