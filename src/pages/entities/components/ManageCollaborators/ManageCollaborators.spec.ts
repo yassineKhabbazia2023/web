@@ -1,9 +1,13 @@
-import { it, describe, expect, beforeEach } from 'vitest'
+import { vi, it, describe, expect, beforeEach } from 'vitest'
 import { VueWrapper, mount } from '@vue/test-utils'
 import { getMockedUser } from '@/pages/entities/mocks'
 import { getInitials } from '@/helper'
 import type { UserInfo } from '@kpmg/common'
 import ManageCollaborators from '.'
+
+vi.mock('@/services/contact', () => ({
+  getCollaborators: vi.fn(() => Promise.resolve([]))
+}))
 
 const defaultCollaborator: UserInfo = getMockedUser()
 const expectedSearchText = 'Please search for a collaborator :'
@@ -34,15 +38,14 @@ describe('manageCollaborators', () => {
   })
   describe('display', () => {
     it('should correctly display the manage collaborators page', () => {
-      const autocompleteLabel = wrapper.find('label')
+      const pFormItem = wrapper.findComponent({ name: 'PFormItem' })
       const blockHeader = wrapper.findComponent({ name: 'PBlockHeader' })
       const userAction = wrapper.findComponent({
         name: 'PUserAction'
       })
 
+      expect(pFormItem.text()).toBe(expectedSearchText)
       expect(userAction.props()).toMatchObject(expectedUserActionProps)
-      expect(autocompleteLabel.text()).toBe(expectedSearchText)
-      expect(userAction.exists()).toBeTruthy()
       expect(blockHeader.exists()).toBeTruthy()
     })
   })

@@ -57,6 +57,10 @@ vi.mock('@/services/account', () => ({
   patchAccount: vi.fn(() => Promise.resolve({}))
 }))
 
+vi.mock('@/services/contact', () => ({
+  getCollaborators: vi.fn(() => Promise.resolve([]))
+}))
+
 vi.mock('@braintree/sanitize-url', () => ({
   sanitizeUrl: getMockedSanitized
 }))
