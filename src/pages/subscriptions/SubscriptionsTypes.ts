@@ -1,3 +1,5 @@
+import type { Contact } from '@/services/contact/contactTypes'
+
 export interface SubscriptionDemand {
   account: {
     accountNumber: string
@@ -9,13 +11,6 @@ export interface SubscriptionDemand {
   user: {
     email: string
   }
-}
-
-export interface Contact {
-  contactId: number
-  firstName: string
-  lastName: string
-  email: string
 }
 
 /* eslint-disable no-unused-vars */
