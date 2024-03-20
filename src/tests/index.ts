@@ -13,7 +13,7 @@ export const searchError = (wrapper: VueWrapper) => {
   })
 }
 
-export const noResult = async (wrapper: VueWrapper) => {
+export const noResult = async (wrapper: any) => {
   it('can display a no results message', async () => {
     const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })
     expect(getNoResultComponent().exists()).toBeFalsy()
