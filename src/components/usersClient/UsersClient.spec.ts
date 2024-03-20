@@ -2,9 +2,10 @@ import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 import { commonStore } from '@kpmg/common'
 import mock from './mock.json'
-import AllUsers from './'
+import UsersClient from './'
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -17,7 +18,7 @@ vi.mock('@kpmg/common', () => ({
 const pinia = createTestingPinia()
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(AllUsers, {
+  mount(UsersClient, {
     global: {
       plugins: [pinia]
     }
@@ -49,6 +50,29 @@ describe('allUsers', () => {
     wrapper = createWrapper()
   })
 
+  it('displays an error if the user search with less than 3 letters', async () => {
+    const getFormItemIsError = () => wrapper.find('.el-form-item.is-error')
+    const inputSearch = wrapper.find('input[type="search"]')
+
+    expect(getFormItemIsError().exists()).toBeFalsy()
+
+    await inputSearch.setValue('az')
+    await inputSearch.trigger('keyup')
+
+    expect(getFormItemIsError().exists()).toBeTruthy()
+  })
+
+  it('can display a no results message', async () => {
+    const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })
+
+    expect(getNoResultComponent().exists()).toBeFalsy()
+
+    wrapper.vm.state.data = []
+    await nextTick()
+
+    expect(getNoResultComponent().exists()).toBeTruthy()
+  })
+
   it('displays data in a table', () => {
     expect(getTableBody().findAll('tr')).toHaveLength(items.length)
 
@@ -57,6 +81,10 @@ describe('allUsers', () => {
   })
 
   it('displays "you" when it s the logged user', async () => {
+    const expectedValue = 'You'
+    const getFirstRow = () => getTableBody().find('tr')
+    expect(getFirstRow().text()).not.toContain(expectedValue)
+
     const store = commonStore(pinia)
     store.$patch({
       user: {
@@ -65,8 +93,7 @@ describe('allUsers', () => {
     })
     await flushPromises()
 
-    const firstRow = getTableBody().find('tr')
-    expect(firstRow.text()).toContain('You')
+    expect(getFirstRow().text()).toContain(expectedValue)
   })
 
   it('has a pagination', () => {

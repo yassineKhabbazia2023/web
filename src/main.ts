@@ -4,6 +4,7 @@ import singleSpaVue from 'single-spa-vue'
 import {
   commoni18n as i18n,
   commonPinia as pinia,
+  commonStore,
   routes
 } from '@kpmg/common'
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
@@ -54,19 +55,14 @@ const CUSTOMER_WALLET_CHILDREN_ROUTES = [
     name: 'entity-client',
     page: 'folders'
   },
-  {
-    path: 'utilisateurs',
-    name: 'allUsers',
-    page: 'allUsers'
-  },
   ...BASE_WALLET_ROUTES
 ]
 
 const FOLDER_CHILDREN_PATH = [
   {
-    path: 'utilisateurs',
-    name: 'users',
-    page: 'users'
+    path: 'gestion-utilisateurs',
+    name: 'usersCollab',
+    page: 'usersCollab'
   },
   {
     path: 'collaborateurs',
@@ -101,6 +97,11 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string }
     } as RouteRecordRaw)
   })
   res.push({
+    path: 'utilisateurs',
+    name: 'allUsers',
+    component: () => import('@/components/usersClient')
+  } as RouteRecordRaw)
+  res.push({
     path: 'demandes-mod',
     name: 'subscriptions',
     component: () => import('@/pages/subscriptions')
@@ -117,6 +118,11 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
       component: () => import(`@/pages/folder/pages/${path.page}/index.ts`)
     } as RouteRecordRaw)
   })
+  res.push({
+    path: 'utilisateurs',
+    name: 'usersClient',
+    component: () => import('@/components/usersClient')
+  } as RouteRecordRaw)
   return res
 }
 
@@ -140,7 +146,11 @@ routes.value.push({
 routes.value.push({
   path: '/dossier/:id',
   name: 'folder',
-  redirect: { name: 'users' },
+  redirect: () => ({
+    name: commonStore().isCollab
+      ? 'usersCollab'
+      : 'usersClient'
+  }),
   component: () => import('@/pages/folder'),
   children: folderPatchChildren(FOLDER_CHILDREN_PATH)
 })

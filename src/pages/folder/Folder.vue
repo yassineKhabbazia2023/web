@@ -53,7 +53,7 @@ const router = useRouter()
 const activeTab = computed(() => route.name as string)
 const collabTabs = [
   {
-    name: 'users',
+    name: 'usersCollab',
     trad: t('users')
   },
   {
@@ -72,7 +72,7 @@ const collabTabs = [
 
 const clientTabs = [
   {
-    name: 'users',
+    name: 'usersClient',
     trad: t('users')
   },
   {

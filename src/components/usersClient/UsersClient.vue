@@ -1,16 +1,42 @@
 <template>
   <div class="flex flex--direction-column sticky-wrapper">
     <div class="flex--grow-1 padding--2">
+      <div class="margin-bottom--6">
+        <PForm
+          @submit.prevent="handleSearchSubmit(formRef)"
+          ref="formRef"
+          :pRules="rules"
+          :pModel="formValues"
+        >
+          <PFormItem prop="search">
+            <PInput
+              @keyup="handleSearchSubmit(formRef)"
+              v-model="formValues.search"
+              :pPlaceholder="t('search')"
+              :pPrefixIcon="PISearch"
+              pName="search"
+              pSize="small"
+              pType="search"
+              pAutofocus
+            />
+          </PFormItem>
+        </PForm>
+      </div>
+
       <PLoader v-if="state.isLoading" />
 
-      <TableData
-        v-if="!state.isLoading && state.data.length"
-        :data="state.data"
-      />
+      <div v-if="!state.isLoading">
+        <TableData
+          v-if="state.data.length"
+          :data="state.data"
+        />
+
+        <NoResult v-if="!state.data.length" />
+      </div>
     </div>
 
     <PPagination
-      v-if="shouldShowPagination && state.totalItems"
+      v-if="shouldShowPagination && !!state.totalItems"
       @on-page-range-changed="handlePageRangeChanged"
       v-model:p-current-page="state.currentPage"
       v-model:p-page-size="state.limit"
@@ -29,20 +55,26 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, reactive, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import {
+  PForm,
+  PFormItem,
+  PInput,
+  PISearch,
   PLoader,
   PPagination
 } from '@kpmg/styleguide'
 import { commonStore } from '@kpmg/common'
+import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import { getInitials, removeFalsyValues } from '@/helper'
 import {
-  DATE_TIME_FORMATS as datetimeFormats,
-  PAGE_SIZES
+  PAGE_SIZES,
+  DATE_TIME_FORMATS as datetimeFormats
 } from '@/constants'
-import type { IState } from './types'
+import NoResult from '@/components/NoResult'
 import TableData from './components/TableData'
 import mock from './mock.json'
+import type { IState } from './types'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -52,12 +84,39 @@ const { d, t } = useI18n({
 
 const userStore = commonStore()
 
+// search part
+const formRef = ref<FormInstance>()
+const formValues = reactive({
+  search: undefined
+})
+const rules = reactive<FormRules<typeof formValues>>({
+  search: [{
+    trigger: 'change',
+    min: 3,
+    message: t('errorSearchInvalid')
+  }]
+})
+const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+
+  if (formEl.validate) {
+    try {
+      await formEl.validate()
+    } catch (error) {
+      return false
+    }
+  }
+  state.search = formValues.search
+}
+
+// table part
 const state: IState = reactive({
   data: [],
   currentPage: 1,
   limit: 15,
   totalPages: undefined,
   totalItems: undefined,
+  search: undefined,
   isLoading: false
 })
 
@@ -73,12 +132,13 @@ const paginationLabel = computed(() =>
 )
 
 const shouldShowPagination = computed(() =>
-  !state.isLoading && state.totalItems && state.totalItems > state.limit
+  !state.isLoading && !!state.totalItems && state.totalItems > state.limit
 )
 
 const getQueryParams = () => ({
   page: state.currentPage,
-  limit: state.limit
+  limit: state.limit,
+  search: state.search
 })
 
 const fetch = async () => {
@@ -96,7 +156,7 @@ const fetch = async () => {
         totalItems
       }
     } = await Promise.resolve(mock)
-    // TODO: remove mock & searchParams in isLoading (line 85), when endpoint is done
+    // TODO: remove mock & searchParams in isLoading (line 142), when endpoint is done
     // await commonApi().gateway.get('account/api/customers?${searchParams}')
 
     state.data = items.map(({
@@ -113,8 +173,8 @@ const fetch = async () => {
       ),
       firstName,
       lastName,
-      fullName: `${firstName} ${lastName}`,
       isOwner: persona === 'Dirigeant',
+      fullName: `${firstName} ${lastName}`,
       isLoggedUser: () => id === userStore.$state.user?.id,
       persona,
       id,
@@ -135,7 +195,8 @@ onMounted(async () => {
 
   watch(() => [
     state.currentPage,
-    state.limit
+    state.limit,
+    state.search
   ], async () => {
     await fetch()
   })
@@ -153,9 +214,13 @@ onMounted(async () => {
 
 <i18n lang="yaml">
 en-US:
+  search: 'Search'
+  errorSearchInvalid: 'Minimum three characters required'
   numberOfUsersPerPage: 'Number of users per page'
   on: 'on'
 fr-FR:
+  search: 'Rechercher'
+  errorSearchInvalid: 'Trois caractères minimum requis'
   numberOfUsersPerPage: "Nombre d'utilisateurs par page"
   on: 'sur'
 </i18n>

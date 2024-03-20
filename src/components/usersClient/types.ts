@@ -6,7 +6,6 @@ export interface IUser {
   lastName: string
   email: string
   persona: string
-  isOwner: boolean
   isLoggedUser: Function
   createdAt: string
 }
@@ -17,5 +16,6 @@ export interface IState {
   limit: number
   totalPages: number | undefined
   totalItems: number | undefined
+  search: string | undefined
   isLoading: boolean
 }
