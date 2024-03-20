@@ -331,7 +331,7 @@ describe('ged', () => {
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
         expect(bin.props('selectedServiceName')).toBe(foldersData[0][0].name)
         expect(bin.props('selectedEntity')).toBe(
-          '93012cc8-77b9-4161-8dbd-61915d935e21'
+          '93012cc8-77b9-4161-8dbd-61915d935e21',
         )
       })
       it('should hide bin component when currentBinService is not set', async () => {

@@ -10,7 +10,7 @@ import { nextTick } from 'vue'
 
 const piniaStore = createPinia()
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
