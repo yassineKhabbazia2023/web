@@ -38,15 +38,15 @@ import DocumentModalExplorer from '../DocumentsExplorerModal'
 import type {
   DocumentMoveProps,
   ExplorerMoveDocument,
-  MoveDocumentsRequest
+  MoveDocumentsRequest,
 } from './DocumentsMoveTypes'
-import { Folder } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import { useI18n } from 'vue-i18n'
 import { generateActionsForModal } from '../DocumentsExplorerModal/helpers/ModalsActionsHelpers'
 import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
 import { moveDocuments } from '@/services/Documents'
 import { mapExplorerDocumentFromDocuments } from '../../helpers/documentExplorerMapper'
-import { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import type { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 import { PICheck } from '@kpmg/styleguide'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 
@@ -54,7 +54,7 @@ const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<DocumentMoveProps>()
@@ -62,15 +62,15 @@ const emit = defineEmits([
   'update:modelValue',
   'update-source-folders',
   'close-move-documents-modal',
-  'refresh-documents-list'
+  'refresh-documents-list',
 ])
 
 const currentExplorerFolder = ref<Folder>(props.folder)
 const modalActionsButtons = ref(
   generateActionsForModal(
     ['CAN_MOVE_DOCUMENT', 'CANCEL_MOVE_DOCUMENT'],
-    modalButtonsMove
-  )
+    modalButtonsMove,
+  ),
 )
 
 // eslint-disable-next-line vitest/require-hook
@@ -78,15 +78,15 @@ watch(
   () => props.isMoveModalOpened,
   () => {
     modalActionsButtons.value.filter(
-      (d) => d.buttonActionName === 'modal-move-document-action-click'
+      (d) => d.buttonActionName === 'modal-move-document-action-click',
     )[0].disabled = false
     if (!explorerDocuments.value.some((d) => d.givenActionState === 'TO_DO')) {
       modalActionsButtons.value.filter(
-        (d) => d.buttonActionName === 'modal-move-document-action-click'
+        (d) => d.buttonActionName === 'modal-move-document-action-click',
       )[0].disabled = true
     }
   },
-  { deep: true }
+  { deep: true },
 )
 const isDocumentExplorerModalOpened = computed({
   get() {
@@ -94,20 +94,20 @@ const isDocumentExplorerModalOpened = computed({
   },
   set(value: boolean) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const isMoveAuthorized = computed(() => {
   return {
     actionName: 'modal-move-document-action-click',
-    isActionAuthorized: currentExplorerFolder.value.permissions.includes('CAN_MOVE_INTO_FOLDER')
+    isActionAuthorized: currentExplorerFolder.value.permissions.includes('CAN_MOVE_INTO_FOLDER'),
   }
-}
+},
 )
 const explorerDocumentsForMoveFlow = computed(() => explorerDocuments)
 // Creating explorer documents
 const explorerDocuments = ref<ExplorerMoveDocument[]>(
-  mapExplorerDocumentFromDocuments(props.selectedDocuments)
+  mapExplorerDocumentFromDocuments(props.selectedDocuments),
 )
 
 // eslint-disable-next-line vitest/require-hook
@@ -115,10 +115,10 @@ watch(
   () => props.selectedDocuments,
   () => {
     explorerDocuments.value = mapExplorerDocumentFromDocuments(
-      props.selectedDocuments
+      props.selectedDocuments,
     )
   },
-  { deep: true }
+  { deep: true },
 )
 
 const numberOfSelectedDocuments = computed(() => {
@@ -128,7 +128,7 @@ const numberOfSelectedDocuments = computed(() => {
         document.givenActionState !== 'ERROR' &&
         document.givenActionState !== 'FAILED' &&
         (document.isSelected || document.givenActionState === 'IN_PROGRESS')
-      )
+      ),
   ).length
 })
 
@@ -145,7 +145,7 @@ const handleMoveDocumentClicked = async (action: string) => {
   if (action === 'modal-move-document-action-click') {
     modalActionsButtons.value = generateActionsForModal(
       ['MOVE_IN_PROGRESS'],
-      modalButtonsMove
+      modalButtonsMove,
     )
     const selectedDocuments =
       explorerDocuments.value.filter((d) => d.isSelected) || []
@@ -158,7 +158,7 @@ const handleMoveDocumentClicked = async (action: string) => {
       (document: ExplorerDocument) =>
         document.givenActionState === 'TO_DO' ||
         document.givenActionState === 'FAILED' ||
-        document.givenActionState === 'IN_PROGRESS'
+        document.givenActionState === 'IN_PROGRESS',
     )
 
     if (shouldCloseModal) handleClose()
@@ -177,12 +177,12 @@ async function proceedMoveDocuments(documents: ExplorerMoveDocument[]) {
       sourceFolderId: props.folder.id,
       destinationFolderId: destinationFolder.id,
       moveAll: false,
-      serviceId: props.selectedEntity
+      serviceId: props.selectedEntity,
     }
     await moveDocuments(
       props.currentService,
       props.selectedEntity,
-      moveDocumentRequest
+      moveDocumentRequest,
     )
     documents.forEach((d) => {
       d.givenActionState = 'DONE'
@@ -198,15 +198,15 @@ async function proceedMoveDocuments(documents: ExplorerMoveDocument[]) {
   if (!explorerDocuments.value.some((d) => d.givenActionState === 'TO_DO')) {
     modalActionsButtons.value = generateActionsForModal(
       ['CAN_MOVE_DOCUMENT', 'CANCEL_MOVE_DOCUMENT'],
-      modalButtonsMove
+      modalButtonsMove,
     )
     modalActionsButtons.value.filter(
-      (d) => d.buttonActionName === 'modal-move-document-action-click'
+      (d) => d.buttonActionName === 'modal-move-document-action-click',
     )[0].disabled = true
   } else {
     modalActionsButtons.value = generateActionsForModal(
       ['CAN_MOVE_DOCUMENT', 'CANCEL_MOVE_DOCUMENT'],
-      modalButtonsMove
+      modalButtonsMove,
     )
   }
 }
@@ -216,7 +216,7 @@ watch(
   () => props.folder,
   (folder) => {
     currentExplorerFolder.value = folder
-  }
+  },
 )
 
 // Main modal actions
@@ -226,7 +226,7 @@ const handleClose = () => {
   }
   explorerDocuments.value = []
   modalActionsButtons.value.filter(
-    (d) => d.buttonActionName === 'modal-move-document-action-click'
+    (d) => d.buttonActionName === 'modal-move-document-action-click',
   )[0].disabled = false
   currentExplorerFolder.value = props.folder
   emit('close-move-documents-modal')
@@ -238,20 +238,20 @@ const canCloseModal = computed(() =>
 // Notifications Scope
 const triggerSuccessNotification = (
   documentsCount: number,
-  folderName: string
+  folderName: string,
 ) => {
   toastPlugin({
     message:
       documentsCount > 1
         ? t('notifications.successMsg.plural', {
           documentCount: documentsCount,
-          folderName
+          folderName,
         })
         : t('notifications.successMsg.single', { folderName }),
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

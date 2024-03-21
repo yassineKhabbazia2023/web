@@ -1,6 +1,6 @@
 export const downloadFile = (
   data:any,
-  fileName:string
+  fileName:string,
 ): void => {
   const url = URL.createObjectURL(new Blob([data]))
   const downloadLink = document.createElement('a')

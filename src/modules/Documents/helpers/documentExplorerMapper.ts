@@ -1,17 +1,17 @@
-import { ExplorerUploadDocument } from '../components/DocumentsUpload/DocumentsUploadTypes'
-import { GivenActionState } from '../DocumentsTypes'
+import type { ExplorerUploadDocument } from '../components/DocumentsUpload/DocumentsUploadTypes'
+import type { GivenActionState } from '../DocumentsTypes'
 import {
   getDocumentNameExtension,
   getDocumentNameWithoutExtension,
-  isExtensionAuthorized
+  isExtensionAuthorized,
 } from './filesExtensions'
 import {
   validInputAlphanumericFrench,
-  validInputMaxLength
+  validInputMaxLength,
 } from '../../common/helpers/inputValidationHelper'
-import { Document } from '@/models/Document'
-import { ExplorerMoveDocument } from '../components/DocumentsMove/DocumentsMoveTypes'
-import { ExplorerMoveFolder }
+import type { Document } from '@/models/Document'
+import type { ExplorerMoveDocument } from '../components/DocumentsMove/DocumentsMoveTypes'
+import type { ExplorerMoveFolder }
   from '@/modules/Treeview/components/modals/FoldersMove/FoldersMoveTypes'
 import type { Folder } from '@/models/Folder'
 
@@ -48,7 +48,7 @@ export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocum
         isSelected,
         content: { name: file.name },
         codeError: code,
-        file
+        file,
       })
     })
   }
@@ -75,7 +75,7 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
         givenActionState: state,
         isSelected: true,
         content: { name: document.name },
-        codeError
+        codeError,
       })
     })
   }
@@ -83,11 +83,10 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
 }
 
 export const mapExplorerDocumentFromFolders = (
-  folder: Folder
+  folder: Folder,
 ): ExplorerMoveFolder[] => {
   const explorerDocuments: ExplorerMoveFolder[] = []
   if (folder) {
-
     const canMoveFolder = folder.permissions.includes('CAN_MOVE_FOLDER')
 
     const state: GivenActionState = canMoveFolder ? 'TO_DO' : 'ERROR'
@@ -96,9 +95,8 @@ export const mapExplorerDocumentFromFolders = (
       givenActionState: state,
       isSelected: true,
       content: { name: folder.name },
-      codeError: ''
+      codeError: '',
     })
-
   }
   return explorerDocuments
 }

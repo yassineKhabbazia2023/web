@@ -1,25 +1,15 @@
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type CreateFolderSectionProps }
   from '@/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { CreateFolder } from '@/services/Folder'
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
-import { ComponentPublicInstance, nextTick } from 'vue'
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  })
-}))
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 
 const pinia = createPinia()
 
@@ -39,16 +29,16 @@ const defaultProps: CreateFolderSectionProps = {
         permissions: [],
         properties: {} as FolderProperties,
         serviceId: 'some-service',
-        iconName: ''
-      } as Folder
+        iconName: '',
+      } as Folder,
     ],
     name: 'A',
     parent: { id: 0 },
     permissions: ['CAN_CREATE_FOLDER'],
     properties: {} as FolderProperties,
-    serviceId: 'some-service'
+    serviceId: 'some-service',
   } as Folder,
-  isCreateFolderModalVisible: false
+  isCreateFolderModalVisible: false,
 }
 
 type CreateFolderSectionSetup = {
@@ -62,25 +52,21 @@ export type CreateFolderSectionWrapper = VueWrapper<
 const mockToastPlugin = vi.fn()
 
 const createWrapper = (
-  props: CreateFolderSectionProps = defaultProps
+  props: CreateFolderSectionProps = defaultProps,
 ): CreateFolderSectionWrapper => {
   return mount(CreateFolderSection, {
     props,
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   }) as unknown as CreateFolderSectionWrapper
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn()
-}))
-
 vi.mock('@/services/Folder', () => ({
-  CreateFolder: vi.fn()
+  CreateFolder: vi.fn(),
 }))
 
 describe('createFolderSection', () => {
@@ -97,11 +83,11 @@ describe('createFolderSection', () => {
     it('should disable main create folder button when permission is not available', async () => {
       const updatedSelectedFolder = {
         ...defaultProps.selectedFolder,
-        permissions: []
+        permissions: [],
       }
       const updatedProps: CreateFolderSectionProps = {
         ...defaultProps,
-        selectedFolder: updatedSelectedFolder
+        selectedFolder: updatedSelectedFolder,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -112,7 +98,6 @@ describe('createFolderSection', () => {
     })
 
     it('should enable main create folder button when permission  available', async () => {
-
       const wrapper = createWrapper()
 
       const mainCreateButton = await wrapper.find('.treeview__new-folder')
@@ -120,51 +105,51 @@ describe('createFolderSection', () => {
       expect(mainCreateButton.attributes('ariadisabled')).toBe('false')
     })
 
-    describe('binding with create folder modal', async () => {
+    describe('binding with create folder modal', () => {
       const validTranslationCases = [
         {
           prop: 'modalTitle',
-          expectedText: 'Nouveau dossier'
+          expectedText: 'Nouveau dossier',
         },
         {
           prop: 'inputLabel',
-          expectedText: 'Nom du dossier'
+          expectedText: 'Nom du dossier',
         },
         {
           prop: 'inputPlaceHolder',
-          expectedText: 'Entrez le nom de votre dossier'
+          expectedText: 'Entrez le nom de votre dossier',
         },
         {
           prop: 'cancelBtnLabel',
-          expectedText: 'Annuler'
+          expectedText: 'Annuler',
         },
         {
           prop: 'confirmBtnabel',
-          expectedText: 'Créer'
-        }
+          expectedText: 'Créer',
+        },
       ]
       it.each(validTranslationCases)(
         'elements content validation with "%s"',
-        async ({ prop, expectedText }) => {
+        ({ prop, expectedText }) => {
           const updatedProps: CreateFolderSectionProps = {
             ...defaultProps,
-            isCreateFolderModalVisible: true
+            isCreateFolderModalVisible: true,
           }
           const wrapper = createWrapper(updatedProps)
 
-          const createFolderModalWrapper = await wrapper.findComponent(
-            CreateFolderModal
+          const createFolderModalWrapper = wrapper.findComponent(
+            CreateFolderModal,
           )
 
           expect(createFolderModalWrapper.props(prop).trim()).toBe(expectedText.trim())
-        }
+        },
       )
     })
 
-    it('should set the correct create folder text', async () => {
+    it('should set the correct create folder text', () => {
       const wrapper = createWrapper()
-      const mainCreateButton = await wrapper.find(
-        '.treeview__new-folder'
+      const mainCreateButton = wrapper.find(
+        '.treeview__new-folder',
       )
 
       expect(mainCreateButton.element.textContent).toContain('Nouveau dossier')
@@ -176,36 +161,36 @@ describe('createFolderSection', () => {
       async () => {
         const updatedProps: CreateFolderSectionProps = {
           ...defaultProps,
-          isCreateFolderModalVisible: true
+          isCreateFolderModalVisible: true,
         }
 
         const wrapper = createWrapper(updatedProps)
 
-        const modal = await wrapper.findComponent(CreateFolderModal)
+        const modal = wrapper.findComponent(CreateFolderModal)
 
-        await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+        modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
         await nextTick()
 
         expect(vi.mocked(CreateFolder)).toHaveBeenLastCalledWith(
           'service-id',
           'entity-id',
           1,
-          'theNewFolder'
+          'theNewFolder',
         )
       })
     it('should close modal when api call is completed', async () => {
       const updatedProps: CreateFolderSectionProps = {
         ...defaultProps,
-        isCreateFolderModalVisible: true
+        isCreateFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(
-        CreateFolderModal
+      const modal = wrapper.findComponent(
+        CreateFolderModal,
       )
 
-      await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+      modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
 
       expect(modal.props('isCreateFolderModalVisible')).toBeFalsy()
@@ -213,14 +198,14 @@ describe('createFolderSection', () => {
     it('should emit update-source-folders on success create folder', async () => {
       const updatedProps: CreateFolderSectionProps = {
         ...defaultProps,
-        isCreateFolderModalVisible: true
+        isCreateFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent(CreateFolderModal)
 
-      await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+      modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
@@ -228,27 +213,27 @@ describe('createFolderSection', () => {
     it('should display success notification correctly on success create', async () => {
       const updatedProps: CreateFolderSectionProps = {
         ...defaultProps,
-        isCreateFolderModalVisible: true
+        isCreateFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent(CreateFolderModal)
 
-      await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
+      modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]
       expect(callArguments.message).toBe(
-        'Le dossier a été créé avec succès.'
+        'Le dossier a été créé avec succès.',
       )
       expect(callArguments.customClass).toBe('success')
     })
 
     it('should should open create folder modal when new button is clicked', async () => {
       const updatedProps: CreateFolderSectionProps = {
-        ...defaultProps
+        ...defaultProps,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -264,31 +249,31 @@ describe('createFolderSection', () => {
       const cases = [
         {
           action: 'on-cancel-create-folder',
-          expectedEvent: 'on-close-create-folder'
+          expectedEvent: 'on-close-create-folder',
         },
         {
           action: 'on-close-create-folder',
-          expectedEvent: 'on-close-create-folder'
-        }
+          expectedEvent: 'on-close-create-folder',
+        },
       ]
 
       it.each(cases)(
         'close event validation with "%s"',
         async ({ action, expectedEvent }) => {
           const updatedProps: CreateFolderSectionProps = {
-            ...defaultProps
+            ...defaultProps,
           }
           const wrapper = createWrapper(updatedProps)
 
-          const modal = await wrapper.findComponent(
-            CreateFolderModal
+          const modal = wrapper.findComponent(
+            CreateFolderModal,
           )
 
-          await modal.vm.$emit(action)
+          modal.vm.$emit(action)
           await nextTick()
 
           expect(wrapper.emitted(expectedEvent)).toBeTruthy()
-        }
+        },
       )
     })
   })

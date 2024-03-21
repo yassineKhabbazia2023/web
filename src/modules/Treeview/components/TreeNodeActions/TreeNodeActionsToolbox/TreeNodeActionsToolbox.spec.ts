@@ -1,17 +1,19 @@
 /* eslint-disable vitest/no-hooks */
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import { PToolbox } from '@kpmg/styleguide'
-import { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
+import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
 import TreeNodeActionsToolbox from '.'
 
 const defaultProps: TreeNodeActionsToolboxProps = {
   permissions: [],
   selectedOrHovered: true,
   triggerType: 'click',
-  showSlotIfDataEmpty: false
+  showSlotIfDataEmpty: false,
 }
 
 type TreeNodeActionsSetup = {
@@ -31,16 +33,16 @@ const createWrapper = (props: TreeNodeActionsToolboxProps = defaultProps)
   return mount(TreeNodeActionsToolbox, {
     props,
     slots: {
-      default: '<button class="custom-button">Custom Button Content</button>'
+      default: '<button class="custom-button">Custom Button Content</button>',
     },
     global: {
       stubs: {
         PToolbox: {
-          template: '<span />'
-        }
+          template: '<span />',
+        },
       },
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })as unknown as TreeNodeActionsWrapper
 }
 
@@ -50,10 +52,10 @@ describe('treeNodeActions', () => {
       setActivePinia(pinia)
     })
 
-    it('should render PToolbox when permissions and selectedOrHovered', async () => {
+    it('should render PToolbox when permissions and selectedOrHovered', () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
-        permissions: ['CAN_DELETE_FOLDER']
+        permissions: ['CAN_DELETE_FOLDER'],
       }
       const wrapper = createWrapper(updatedProps)
       expect(wrapper.exists()).toBeTruthy()
@@ -64,20 +66,20 @@ describe('treeNodeActions', () => {
         {
           pIconName: 'PIDownload',
           pActionName: 'toolbox-download-action-click',
-          pValue: 'Télécharger'
+          pValue: 'Télécharger',
         },
         {
           pActionName: 'toolbox-delete-action-click',
           pIconName: 'PITrash',
-          pValue: 'Supprimer'
-        }
+          pValue: 'Supprimer',
+        },
       ])
     })
 
-    it('should not render PToolbox when permissions is empty', async () => {
+    it('should not render PToolbox when permissions is empty', () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
-        permissions: []
+        permissions: [],
       }
 
       const wrapper = createWrapper(props)
@@ -86,11 +88,11 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should not render PToolbox when isVisible false ', async () => {
+    it('should not render PToolbox when isVisible false', () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],
-        isVisible: false
+        isVisible: false,
       }
       const wrapper = createWrapper(updatedProps)
       expect(wrapper.exists()).toBeTruthy()
@@ -99,10 +101,10 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should  permissions with upload folder by default ', async () => {
+    it('should  permissions with upload folder by default', () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
-        permissions: ['azert']
+        permissions: ['azert'],
       }
 
       const wrapper = createWrapper(props)
@@ -111,10 +113,10 @@ describe('treeNodeActions', () => {
       expect(componentInstance.toolboxBasicData).toHaveLength(1)
       expect(componentInstance.isToolBoxVisible).toBeTruthy()
 
-      it('should not render PToolbox when selectedOrHovered is false', async () => {
+      it('should not render PToolbox when selectedOrHovered is false', () => {
         const props: TreeNodeActionsToolboxProps = {
           ...defaultProps,
-          selectedOrHovered: false
+          selectedOrHovered: false,
         }
 
         const wrapper = createWrapper(props)
@@ -133,7 +135,7 @@ describe('treeNodeActions', () => {
     it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
-        permissions: ['CAN_DELETE_FOLDER']
+        permissions: ['CAN_DELETE_FOLDER'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -144,14 +146,14 @@ describe('treeNodeActions', () => {
       await nextTick()
 
       expect(wrapper.emitted('p-toolbox-dropdown-close')).toStrictEqual([
-        [true]
+        [true],
       ])
     })
 
-    it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
+    it('should emit visible-change when p-toolbox-dropdown-close is emitted (2)', async () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
-        permissions: ['CAN_DELETE_FOLDER']
+        permissions: ['CAN_DELETE_FOLDER'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -162,7 +164,7 @@ describe('treeNodeActions', () => {
       await nextTick()
 
       expect(wrapper.emitted('p-toolbox-item-clicked')).toStrictEqual([
-        ['test']
+        ['test'],
       ])
     })
   })

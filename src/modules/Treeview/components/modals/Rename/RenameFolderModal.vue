@@ -31,7 +31,7 @@ import { type RenameFolderModalProps }
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<RenameFolderModalProps>()
@@ -41,7 +41,7 @@ const emit = defineEmits([
   'on-confirm-rename-folder',
   'on-cancel-rename-folder',
   'update:isRenameFolderModalVisible',
-  'update:inputContentDefault'
+  'update:inputContentDefault',
 ])
 
 const inputContent = ref('')
@@ -52,7 +52,7 @@ const isDialogRenameVisible = computed({
   },
   set(value) {
     emit('update:isRenameFolderModalVisible', value)
-  }
+  },
 })
 
 const errorMsg = computed(() => {
@@ -66,12 +66,12 @@ const errorMsg = computed(() => {
 })
 
 // Modal actions
-const handleCloseModal = () => {
+function handleCloseModal() {
   folderNameExists.value = false
   emit('on-close-rename-folder')
 }
 
-const handleConfirmActionClick = () => {
+function handleConfirmActionClick() {
   folderNameExists.value = false
   if (isFolderNameExists(inputContent.value)) {
     folderNameExists.value = true
@@ -80,7 +80,7 @@ const handleConfirmActionClick = () => {
   emit('on-confirm-rename-folder', inputContent.value)
 }
 
-const handleCancelActionClick = () => {
+function handleCancelActionClick() {
   folderNameExists.value = false
   emit('on-cancel-rename-folder')
 }
@@ -91,11 +91,11 @@ const isConfirmButtonDisabled = computed(
   () =>
     !validInputMaxLength(inputContent.value) ||
     inputContent.value.length === 0 ||
-    !validInputAlphanumericFrench(inputContent.value)
+    !validInputAlphanumericFrench(inputContent.value),
 )
 
 const isValidInput = computed(() =>
-  validInputAlphanumericFrench(inputContent.value)
+  validInputAlphanumericFrench(inputContent.value),
 )
 const folderNameExists = ref(false)
 
@@ -106,7 +106,7 @@ const isFolderNameExists = (folderName: string): boolean => {
 const showErrorMsg = computed(
   () =>
     (!isValidInput.value || folderNameExists.value) &&
-    inputContent.value.length !== 0
+    inputContent.value.length !== 0,
 )
 
 // eslint-disable-next-line vitest/require-hook

@@ -28,7 +28,7 @@ import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
@@ -48,7 +48,7 @@ const handleRenameFolder = async (newfolderName: string) => {
       props.folderId,
       newfolderName,
       props.entityId,
-      props.serviceId
+      props.serviceId,
     )) as Folder
     isConfirmButtonLoading.value = false
     emit('update-folder-name', updatedFolder)
@@ -75,7 +75,7 @@ const triggerSuccessNotification = () => {
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 
@@ -85,7 +85,7 @@ const triggerErrorNotification = () => {
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: true,
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 const closeRenameFolderModal = () => {

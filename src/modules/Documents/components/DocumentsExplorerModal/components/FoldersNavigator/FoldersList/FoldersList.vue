@@ -59,18 +59,18 @@ import { computed } from 'vue'
 import {
   PAlert,
   PFolderLineNavigationItem,
-  PImage
+  PImage,
 } from '@kpmg/styleguide'
-import { FoldersListProps } from './FoldersListTypes'
+import type { FoldersListProps } from './FoldersListTypes'
 import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
-import { Folder } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 
 const props = defineProps<FoldersListProps>()
 const emit = defineEmits([
   'navigate-to-folder',
   'close-create-folder-modal',
-  'update-source-folders'
+  'update-source-folders',
 ])
 
 const getIconMapping = (iconName: string | undefined) => {

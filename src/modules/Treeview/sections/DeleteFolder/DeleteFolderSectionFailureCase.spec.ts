@@ -5,48 +5,27 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type DeleteFolderSectionProps }
   from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { FolderProperties } from '@/models/Folder'
 import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  })
-}))
+import { getMockedFolder } from '../../helpers/testHelper'
 
 const pinia = createPinia()
 
+const selectedFolder = getMockedFolder(0, 1, 'A', {
+  children: [
+    getMockedFolder(1, 2, 'TheFolder', { serviceId: 'some-service' }),
+  ],
+  permissions: [],
+  properties: {} as FolderProperties,
+  serviceId: 'some-service',
+})
 const defaultProps: DeleteFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
-  selectedFolder: {
-    id: 1,
-    children: [
-      {
-        id: 2,
-        children: [{} as Folder],
-        name: 'TheFolder',
-        parent: { id: 1 },
-        permissions: [],
-        properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      } as Folder
-    ],
-    name: 'A',
-    parent: { id: 0 },
-    permissions: [],
-    properties: {} as FolderProperties,
-    serviceId: 'some-service'
-  } as Folder,
-  isDeleteFolderPopupVisible: false
+  selectedFolder,
+  isDeleteFolderPopupVisible: false,
 }
 
 const mockToastPlugin = vi.fn()
@@ -56,20 +35,16 @@ const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   })
 }
-
-vi.mock('vue-inject', () => ({
-  provide: vi.fn()
-}))
 
 vi.mock('@/services/Folder', () => ({
   DeleteFolder: () => {
     throw new Error('Something uncool')
-  }
+  },
 }))
 
 describe('deleteFolderSection', () => {
@@ -84,14 +59,14 @@ describe('deleteFolderSection', () => {
     it('should display error notification correctly on fail delete', async () => {
       const updatedProps: DeleteFolderSectionProps = {
         ...defaultProps,
-        isDeleteFolderPopupVisible: true
+        isDeleteFolderPopupVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
 
       const popup = wrapper.findComponent(DeleteFolderConfirmationPopup)
 
-      await popup.vm.$emit('confirm-delete-folder')
+      popup.vm.$emit('confirm-delete-folder')
       await nextTick()
 
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)

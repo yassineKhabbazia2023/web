@@ -1,10 +1,12 @@
 import SingleInputModal from '@/modules/common/templates/modals'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type SingleInputModalProps } from '@/modules/common/templates/modals/SingleInputModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import { PDialog } from '@kpmg/styleguide'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 
 const defaultProps: SingleInputModalProps = {
   modalTitle: 'string',
@@ -18,7 +20,7 @@ const defaultProps: SingleInputModalProps = {
   showErrorMsg: false,
   errorMsg: 'string',
   isConfirmButtonLoading: false,
-  defaultInputContentValue: ''
+  defaultInputContentValue: '',
 }
 
 // To access variables declared within the setup
@@ -34,16 +36,16 @@ export type SingleInputModalWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: SingleInputModalProps = defaultProps
+  props: SingleInputModalProps = defaultProps,
 ): SingleInputModalWrapper => {
   return mount(SingleInputModal, {
     props,
     global: {
-      plugins: [pinia]
+      plugins: [pinia],
     },
     attrs: {
-      inputContent: String
-    }
+      inputContent: String,
+    },
   }) as SingleInputModalWrapper
 }
 
@@ -58,7 +60,7 @@ describe('singleInputModal', () => {
       const updatedProps: SingleInputModalProps = {
         ...defaultProps,
         isDialogVisible: true,
-        isValidInput: false
+        isValidInput: false,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -71,16 +73,16 @@ describe('singleInputModal', () => {
       const updatedProps: SingleInputModalProps = {
         ...defaultProps,
         isDialogVisible: true,
-        showErrorMsg: true
+        showErrorMsg: true,
       }
       const wrapper = createWrapper(updatedProps)
       await nextTick()
 
       const errorMsgSection = wrapper.find(
-        '.single-input-modal__input-error'
+        '.single-input-modal__input-error',
       )
       expect(
-        errorMsgSection.exists()
+        errorMsgSection.exists(),
       ).toBeTruthy()
     })
 
@@ -88,12 +90,12 @@ describe('singleInputModal', () => {
       const wrapper = createWrapper({
         ...defaultProps,
         isDialogVisible: true,
-        inputSuffix: '.jpg'
+        inputSuffix: '.jpg',
       })
 
       await nextTick()
       const unvalidInput = wrapper.find(
-        '.single-input-modal__suffix'
+        '.single-input-modal__suffix',
       )
 
       expect(unvalidInput.exists()).toBeTruthy()
@@ -105,7 +107,7 @@ describe('singleInputModal', () => {
       const updatedProps: SingleInputModalProps = {
         ...defaultProps,
         isDialogVisible: true,
-        isValidInput: true
+        isValidInput: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -114,20 +116,19 @@ describe('singleInputModal', () => {
       const input = wrapper.find('input')
       input.setValue('hellooooo')
       const confirmButton = wrapper.find(
-        '.el-button--primary'
+        '.el-button--primary',
       )
 
       await confirmButton.trigger('click')
 
       await nextTick()
       expect(wrapper.emitted('on-confirm-action-click')).toHaveLength(1)
-
     })
     it('should emit on-cancel-action-click when cancel btn click', async () => {
       const updatedProps: SingleInputModalProps = {
         ...defaultProps,
         isDialogVisible: true,
-        isValidInput: true
+        isValidInput: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -145,7 +146,7 @@ describe('singleInputModal', () => {
     it('should emit on-close-modal when click on close dilaog button', async () => {
       const updatedProps: SingleInputModalProps = {
         ...defaultProps,
-        isDialogVisible: true
+        isDialogVisible: true,
       }
       const wrapper = createWrapper(updatedProps)
       await nextTick()
@@ -158,7 +159,6 @@ describe('singleInputModal', () => {
       expect(wrapper.emitted('on-close-modal')).toBeTruthy()
     })
     it('should emit update:isDialogVisible when isDialogVisible has changed', async () => {
-
       const wrapper = createWrapper()
 
       wrapper.vm.isDialogVisible = true

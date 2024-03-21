@@ -38,23 +38,22 @@
 import { computed, ref, watch, inject } from 'vue'
 import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
 import type { FoldersMoveProps, ExplorerMoveFolder } from './FoldersMoveTypes'
-import { Folder } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import { useI18n } from 'vue-i18n'
 import { generateActionsForModal } from
   '@/modules/Documents/components/DocumentsExplorerModal/helpers/ModalsActionsHelpers'
 import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
 import { mapExplorerDocumentFromFolders } from '@/modules/Documents/helpers/documentExplorerMapper'
-import { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import type { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
-import type { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
+import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '@/modules/Documents/DocumentsTypes'
 import { moveFolderAsync } from '@/services/Folder'
-import { ExplorerFoldersListLineDisabledState } from '@/modules/Documents/DocumentsTypes'
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<FoldersMoveProps>()
@@ -63,21 +62,21 @@ const emit = defineEmits([
   'update:modelValue',
   'update-source-folders',
   'close-move-folder-modal',
-  'refresh-tree'
+  'refresh-tree',
 ])
 
 const currentExplorerFolder = ref<Folder>(props.folder)
 
 const explorerFolderListLineDisabledState = ref<ExplorerFoldersListLineDisabledState>({
   data: props.folderToMove.id,
-  context: 'MOVE_FOLDER'
+  context: 'MOVE_FOLDER',
 })
 
 const modalActionsButtons = ref(
   generateActionsForModal(
     ['CAN_MOVE_FOLDER', 'CANCEL_MOVE_FOLDER'],
-    modalButtonsMove
-  )
+    modalButtonsMove,
+  ),
 )
 
 const isDocumentExplorerModalOpened = computed({
@@ -86,15 +85,15 @@ const isDocumentExplorerModalOpened = computed({
   },
   set(value: boolean) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const isMoveAuthorized = computed(() => {
   return {
     actionName: 'modal-move-folder-action-click',
     isActionAuthorized: currentExplorerFolder.value.permissions.includes(
-      'CAN_MOVE_INTO_FOLDER'
-    )
+      'CAN_MOVE_INTO_FOLDER',
+    ),
   }
 })
 
@@ -102,7 +101,7 @@ const explorerDocumentsForMoveFlow = computed(() => explorerDocuments)
 
 // Creating explorer documents
 const explorerDocuments = ref<ExplorerMoveFolder[]>(
-  mapExplorerDocumentFromFolders(props.folderToMove)
+  mapExplorerDocumentFromFolders(props.folderToMove),
 )
 
 // eslint-disable-next-line vitest/require-hook
@@ -112,10 +111,10 @@ watch(
     explorerDocuments.value = mapExplorerDocumentFromFolders(props.folderToMove)
     explorerFolderListLineDisabledState.value = {
       data: props.folderToMove.id,
-      context: 'MOVE_FOLDER'
+      context: 'MOVE_FOLDER',
     }
   },
-  { deep: true }
+  { deep: true },
 )
 
 const numberOfSelectedFolders = computed(() => {
@@ -123,7 +122,7 @@ const numberOfSelectedFolders = computed(() => {
     (document: ExplorerDocument) =>
       document.givenActionState !== 'ERROR' &&
       document.givenActionState !== 'FAILED' &&
-      (document.isSelected || document.givenActionState === 'IN_PROGRESS')
+      (document.isSelected || document.givenActionState === 'IN_PROGRESS'),
   ).length
 })
 
@@ -141,7 +140,7 @@ watch(
   () => props.folder,
   (folder) => {
     currentExplorerFolder.value = folder
-  }
+  },
 )
 
 // Main modal actions
@@ -149,11 +148,11 @@ watch(
 const resetButtonsState = () => {
   modalActionsButtons.value = generateActionsForModal(
     ['CAN_MOVE_FOLDER', 'CANCEL_MOVE_FOLDER'],
-    modalButtonsMove
+    modalButtonsMove,
   )
 
   modalActionsButtons.value.filter(
-    (d) => d.buttonActionName === 'modal-move-folder-action-click'
+    (d) => d.buttonActionName === 'modal-move-folder-action-click',
   )[0].disabled = false
 }
 
@@ -167,14 +166,13 @@ const handleClose = () => {
       emit('close-move-folder-modal')
     }
   }, 500)
-
 }
 
 const moveFolder = async () => {
   try {
     modalActionsButtons.value = generateActionsForModal(
       ['MOVE_IN_PROGRESS'],
-      modalButtonsMove
+      modalButtonsMove,
     )
 
     explorerDocuments.value[0].givenActionState = 'IN_PROGRESS'
@@ -183,7 +181,7 @@ const moveFolder = async () => {
       props.currentService,
       props.selectedEntity,
       props.folderToMove.id,
-      currentExplorerFolder.value.id
+      currentExplorerFolder.value.id,
     )
 
     explorerDocuments.value[0].givenActionState = 'DONE'
@@ -192,7 +190,6 @@ const moveFolder = async () => {
     handleClose()
 
     triggerSuccessNotification(props.folderToMove.name, currentExplorerFolder.value.name)
-
   } catch (error) {
     explorerDocuments.value[0].givenActionState = 'FAILED'
 
@@ -217,14 +214,14 @@ const canCloseModal = computed(() =>
 // // Notifications Scope
 const triggerSuccessNotification = (
   movedFolderName: string,
-  targetFolderName: string
+  targetFolderName: string,
 ) => {
   toastPlugin({
     message: t('notifications.successMsg', { movedFolderName, targetFolderName }),
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 
@@ -235,7 +232,7 @@ const triggerFailureNotification = (
     icon: PIExclamationTriangle,
     showClose: true,
     customClass: 'error',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

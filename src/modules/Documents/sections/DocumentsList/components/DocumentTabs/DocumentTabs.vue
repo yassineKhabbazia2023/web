@@ -20,22 +20,22 @@
 import { PTabs, PTabPane } from '@kpmg/styleguide'
 import { reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { DocumentTabsProps } from './DocumentTabsTypes'
+import type { DocumentTabsProps } from './DocumentTabsTypes'
 import DocumentDetailsTabPane from './conponents/DocumentDetailsTabPane'
 
 defineProps<DocumentTabsProps>()
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const tabSetting = reactive({
   activeName: '1',
-  stretch: false
+  stretch: false,
 })
 const emit = defineEmits([
-  'update:modelValue'
+  'update:modelValue',
 ])
 
 const tabSettingsActiveName = computed({
@@ -44,7 +44,7 @@ const tabSettingsActiveName = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 </script>
 <i18n lang="yaml">

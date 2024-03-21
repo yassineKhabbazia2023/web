@@ -3,50 +3,29 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type RenameFolderSectionProps }
   from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  })
-}))
+import { getMockedFolder } from '../../helpers/testHelper'
 
 const pinia = createPinia()
+
+const children = [
+  getMockedFolder(1, 2, 'TheFolder', { serviceId: 'some-service' }),
+]
+const parentFolder = getMockedFolder(0, 1, 'A', {
+  children,
+  permissions: ['CAN_CREATE_FOLDER', 'CAN_RENAME_FOLDER'],
+  serviceId: 'some-service',
+})
 
 const defaultProps: RenameFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
-  parentFolder: {
-    id: 1,
-    children: [
-      {
-        id: 2,
-        children: [{} as Folder],
-        name: 'TheFolder',
-        parent: { id: 1 },
-        permissions: [],
-        properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      } as Folder
-    ],
-    name: 'A',
-    parent: { id: 0 },
-    permissions: ['CAN_CREATE_FOLDER', 'CAN_RENAME_FOLDER'],
-    properties: {} as FolderProperties,
-    serviceId: 'some-service'
-  } as Folder,
+  parentFolder,
   isRenameFolderModalVisible: false,
   folderName: 'newFolderName',
-  folderId: 2
+  folderId: 2,
 }
 
 const mockToastPlugin = vi.fn()
@@ -57,21 +36,17 @@ const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   })
 }
-
-vi.mock('vue-inject', () => ({
-  provide: vi.fn()
-}))
 
 vi.mock('@/services/Folder', () => ({
   tokenValue: 'mocked token',
   RenameFolder: () => {
     throw new Error('Something uncool')
-  }
+  },
 }))
 
 describe('renameFolderSection', () => {
@@ -83,11 +58,10 @@ describe('renameFolderSection', () => {
   })
 
   describe('interactions', () => {
-
     it('should display error notification correctly on fail rename', async () => {
       const updatedProps: RenameFolderSectionProps = {
         ...defaultProps,
-        isRenameFolderModalVisible: true
+        isRenameFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -102,6 +76,5 @@ describe('renameFolderSection', () => {
       expect(callArguments.message).toBe('Connexion au serveur interrompue.')
       expect(callArguments.customClass).toBe('error')
     })
-
   })
 })

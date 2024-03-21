@@ -44,7 +44,7 @@ import type { BinDocumentsListProps } from './BinDocumentsListTypes'
 import BinTableElement from './components/BinTableElement'
 import { PTable, PTableColumn } from '@kpmg/styleguide'
 import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
-import { BinDocument } from '@/models/Document'
+import type { BinDocument } from '@/models/Document'
 
 defineProps<BinDocumentsListProps>()
 
@@ -59,7 +59,7 @@ const sortableColumns = ['Nom du document', 'Supprimé le']
 const columnSizes: Record<string, number> = {
   'Nom du document': 770,
   'Supprimé le': 160,
-  '': 72
+  '': 72,
 }
 
 const handleSortChange = (data:any) => {

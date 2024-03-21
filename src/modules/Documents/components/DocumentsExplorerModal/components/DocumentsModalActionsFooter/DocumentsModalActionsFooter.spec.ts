@@ -5,7 +5,7 @@ import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { PButton } from '@kpmg/styleguide'
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import DocumentsModalActionsFooter
   from '@/modules/Documents/components/DocumentsExplorerModal/components/DocumentsModalActionsFooter'
 import { type ModalActionsProps }
@@ -22,7 +22,7 @@ const btnActions: Array<ButtonAction> = [
     circle: false,
     loading: false,
     disabled: false,
-    size: 'default'
+    size: 'default',
   },
   {
     buttonName: 'Annuler',
@@ -34,24 +34,24 @@ const btnActions: Array<ButtonAction> = [
     circle: false,
     loading: false,
     disabled: false,
-    size: 'small'
-  }
+    size: 'small',
+  },
 ]
 
 const defaultProps: ModalActionsProps = {
-  modalActionsButtons: btnActions
+  modalActionsButtons: btnActions,
 }
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: ModalActionsProps = defaultProps
+  props: ModalActionsProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentsModalActionsFooter, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 describe('documentsModalActionsFooter', () => {
@@ -65,8 +65,8 @@ describe('documentsModalActionsFooter', () => {
       const btns = wrapper.findAllComponents(PButton)
 
       expect(btns).toHaveLength(2)
-      expect(btns[0].props('pType')).toStrictEqual('primary')
-      expect(btns[1].props('pType')).toStrictEqual('warning')
+      expect(btns[0].props('pType')).toBe('primary')
+      expect(btns[1].props('pType')).toBe('warning')
       expect(btns[0].props('pPlain')).toBeFalsy()
       expect(btns[1].props('pPlain')).toBeTruthy()
       expect(btns[0].props('pCircle')).toBeTruthy()
@@ -75,8 +75,8 @@ describe('documentsModalActionsFooter', () => {
       expect(btns[1].props('pLoading')).toBeFalsy()
       expect(btns[0].props('pDisabled')).toBeFalsy()
       expect(btns[1].props('pDisabled')).toBeFalsy()
-      expect(btns[0].props('pSize')).toStrictEqual('default')
-      expect(btns[1].props('pSize')).toStrictEqual('small')
+      expect(btns[0].props('pSize')).toBe('default')
+      expect(btns[1].props('pSize')).toBe('small')
     })
   })
 
@@ -97,7 +97,7 @@ describe('documentsModalActionsFooter', () => {
       expect(wrapper.emitted('modal-action-button-clicked')).toBeTruthy()
       expect(wrapper.emitted('modal-action-button-clicked')).toStrictEqual([
         ['add-action-click'],
-        ['cancel-action-click']
+        ['cancel-action-click'],
       ])
     })
   })

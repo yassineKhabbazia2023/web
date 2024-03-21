@@ -9,6 +9,6 @@ export interface RenameFolderModalProps {
   cancelBtnLabel: string
   confirmBtnabel: string
   isConfirmButtonLoading: boolean
-  inputContentDefault: string,
+  inputContentDefault: string
   parentFolder: Folder
 }

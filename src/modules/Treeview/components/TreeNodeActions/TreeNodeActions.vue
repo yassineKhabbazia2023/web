@@ -27,7 +27,7 @@ import { type TreeNodeActionsProps } from
 
 const emit = defineEmits([
   'p-toolbox-item-clicked',
-  'p-toolbox-dropdown-close'
+  'p-toolbox-dropdown-close',
 ])
 defineProps<TreeNodeActionsProps>()
 const handleItemclicked = (action: string) => {

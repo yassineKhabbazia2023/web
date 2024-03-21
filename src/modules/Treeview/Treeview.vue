@@ -96,7 +96,8 @@
 <script setup lang="ts">
 /* eslint-disable vitest/require-hook */
 
-import { ComputedRef, computed, ref, watch } from 'vue'
+import type { ComputedRef } from 'vue'
+import { computed, ref, watch } from 'vue'
 import TreeNode from '@/modules/Treeview/components/TreeNode'
 import { formatBinData } from './helpers/binHelper'
 import type { TreeviewProps, TreeType, ExtendedFolder } from './TreeviewTypes'
@@ -107,7 +108,7 @@ import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader } from '@kpmg/styleguide'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { findFolderDeepById } from './helpers/folderArrayHelper'
-import { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
+import type { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
 import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
 import FoldersMove from './components/modals/FoldersMove'
 const props = defineProps<TreeviewProps>()
@@ -119,7 +120,7 @@ const emit = defineEmits([
   'selected-bin-service-change',
   'remove-folder-from-source',
   'update-folder-name',
-  'refresh-tree'
+  'refresh-tree',
 ])
 const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
   computed(() => {
@@ -127,7 +128,7 @@ const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
       selectedFolderName: currentFolderName.value,
       selectedFolderId: currentFolderId.value,
       currentService: props.currentService,
-      selectedEntity: props.selectedEntity
+      selectedEntity: props.selectedEntity,
     }
   })
 const { handleDownloadFolderEvent } = useDownloadFolder(downloadFolderProps)
@@ -144,7 +145,7 @@ watch(
     if (props.isLoading === true) return
     defaultFolder.value = props.servicesFolders[0][0].children[0]
     emit('selected-folder-change', defaultFolder.value)
-  }
+  },
 )
 
 const treeNodeSelectedFolder = ref()
@@ -172,7 +173,7 @@ watch(
     if (!tree) return
     treeNodeSelectedFolder.value = selectedFolder
     tree.setCurrentKey(selectedFolder.id)
-  }
+  },
 )
 
 const parentNodeOfSelectedFolderTreeNodeAction = ref()
@@ -181,9 +182,9 @@ const setParentNodeOfSelectedFolderTreeNodeAction = () => {
   const parentFolderId = treeNodeSelectedFolder.value?.parent?.id
   parentNodeOfSelectedFolderTreeNodeAction.value = findFolderDeepById(
     props.servicesFolders[0].filter(
-      (f) => f.serviceId === props.currentService
+      (f) => f.serviceId === props.currentService,
     ),
-    parentFolderId
+    parentFolderId,
   ) as Folder
 }
 const currentFolderId = ref(0)
@@ -193,7 +194,7 @@ const isDeleteFolderPopupVisible = ref(false)
 const isRenameFolderModalVisible = ref(false)
 
 const currentFolderName = ref(
-  props.selectedFolder ? props.selectedFolder.name : ''
+  props.selectedFolder ? props.selectedFolder.name : '',
 )
 
 const defaultExpandedKey = computed(() => [props.servicesFolders[0][0].id])
@@ -215,8 +216,8 @@ const addAttributeIsRootFolder = (servicesFolders: ExtendedFolder[][]) => {
   return servicesFolders.map((service) =>
     service.map((folder) => ({
       ...folder,
-      isRootFolder: determineIsRootFolder(folder)
-    }))
+      isRootFolder: determineIsRootFolder(folder),
+    })),
   )
 }
 const binTree = ref<TreeType | null>(null)
@@ -236,12 +237,12 @@ const handleBinNodeClick = (e: Bin) => {
 const treesRefs = ref<TreeType[]>([])
 const retrieveUnusedTrees = (): TreeType[] => {
   return treesRefs.value.filter(
-    (tree) => tree.pData[0].serviceId !== props.currentService
+    (tree) => tree.pData[0].serviceId !== props.currentService,
   )
 }
 const retrieveCurrentlyUsedSourceTree = (): TreeType => {
   const usedTree = treesRefs.value.filter(
-    (tree) => tree.pData[0].serviceId === props.currentService
+    (tree) => tree.pData[0].serviceId === props.currentService,
   )
 
   return retrieveSourceTrees(usedTree)[0]
@@ -249,10 +250,10 @@ const retrieveCurrentlyUsedSourceTree = (): TreeType => {
 
 // Retreiving the source trees allow us to used their internal exposed functions
 const retrieveSourceTrees = (
-  currentComponentTreeRefs: TreeType[]
+  currentComponentTreeRefs: TreeType[],
 ): TreeType[] => {
   return currentComponentTreeRefs.map(
-    (currentComponentTreeRef) => currentComponentTreeRef.$refs.treeElement
+    (currentComponentTreeRef) => currentComponentTreeRef.$refs.treeElement,
   )
 }
 
@@ -345,7 +346,7 @@ watch(
   () => props.currentService,
   () => {
     collapseUnusedTrees()
-  }
+  },
 )
 </script>
 

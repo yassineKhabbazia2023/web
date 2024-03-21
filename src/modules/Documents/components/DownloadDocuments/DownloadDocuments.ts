@@ -1,22 +1,22 @@
-import { ComputedRef, inject, ref } from 'vue'
+import type { ComputedRef } from 'vue'
+import { inject, ref } from 'vue'
 import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 import { PICheck, PIExclamationTriangle, PILoader } from '@kpmg/styleguide'
-import { downloadFile } from '@/modules/Documents/helpers/downloadFilesHelper'
+import { downloadFile } from '@/modules/common/helpers/downloadFilesHelper'
 import {
   downloadDocument,
-  downloadDocuments
+  downloadDocuments,
 } from '@/services/Documents'
-import { DownloadDocumentsComposableProps } from './DownloadDocumentsTypes'
+import type { DownloadDocumentsComposableProps } from './DownloadDocumentsTypes'
 import { useI18n } from 'vue-i18n'
 
 // Define the composable function
 
 export function useDownloadDocuments(
-  downloadDocumentsProps: ComputedRef<DownloadDocumentsComposableProps>
+  downloadDocumentsProps: ComputedRef<DownloadDocumentsComposableProps>,
 ): {
-  handleDownloadDocumentsEvent: () => void
+  handleDownloadDocumentsEvent: () => Promise<void>
 } {
-
   const { t } = useI18n({
     inheritLocale: true,
     useScope: 'global',
@@ -25,17 +25,17 @@ export function useDownloadDocuments(
         notifications: {
           error: 'Connexion au serveur interrompue.',
           inProgress: 'Préparation du téléchargement en cours.',
-          success: 'Préparation du téléchargement finie.'
-        }
+          success: 'Préparation du téléchargement finie.',
+        },
       },
       fr: {
         notifications: {
           error: 'Connexion au serveur interrompue.',
           inProgress: 'Préparation du téléchargement en cours.',
-          success: 'Préparation du téléchargement finie.'
-        }
-      }
-    }
+          success: 'Préparation du téléchargement finie.',
+        },
+      },
+    },
   })
 
   // Inject the toast plugin
@@ -52,7 +52,7 @@ export function useDownloadDocuments(
     if (
       !downloadDocumentsProps.value.selectedDocuments ||
       downloadDocumentsProps.value.selectedDocuments.length === 0
-    ) return
+    ) return Promise.resolve()
 
     triggerInProgressNotification()
     try {
@@ -69,31 +69,29 @@ export function useDownloadDocuments(
       }
     } catch (err) {
       triggerFailureNotification()
-
     }
-
   }
 
   // Define the helper functions
 
   const downloadSingleDocument = async (
-    downloadDocumentsProps: DownloadDocumentsComposableProps
+    downloadDocumentsProps: DownloadDocumentsComposableProps,
   ) => {
     const documentBlob = await downloadDocument(
       downloadDocumentsProps.currentService,
       downloadDocumentsProps.selectedEntity,
-      downloadDocumentsProps.selectedDocuments[0].id
+      downloadDocumentsProps.selectedDocuments[0].id,
     )
     downloadFile(documentBlob, downloadDocumentsProps.selectedDocuments[0].name)
   }
 
   const downloadMultipleDocument = async (
-    downloadDocumentsProps: DownloadDocumentsComposableProps
+    downloadDocumentsProps: DownloadDocumentsComposableProps,
   ) => {
     const documentsArchiveBlob = await downloadDocuments(
       downloadDocumentsProps.currentService,
       downloadDocumentsProps.selectedEntity,
-      downloadDocumentsProps.selectedDocuments.map((x) => x.id)
+      downloadDocumentsProps.selectedDocuments.map((x) => x.id),
     )
 
     downloadFile(documentsArchiveBlob, 'archive.zip')
@@ -107,7 +105,7 @@ export function useDownloadDocuments(
       icon: PILoader,
       showClose: true,
       customClass: 'loading',
-      position: 'bottom-right'
+      position: 'bottom-right',
     })
   }
 
@@ -117,7 +115,7 @@ export function useDownloadDocuments(
       icon: PICheck,
       showClose: true,
       customClass: 'success',
-      position: 'bottom-right'
+      position: 'bottom-right',
     })
   }
 
@@ -127,13 +125,13 @@ export function useDownloadDocuments(
       icon: PIExclamationTriangle,
       customClass: 'error',
       showClose: true,
-      position: 'bottom-right'
+      position: 'bottom-right',
     })
   }
 
   // Return the composable object
 
   return {
-    handleDownloadDocumentsEvent
+    handleDownloadDocumentsEvent,
   }
 }

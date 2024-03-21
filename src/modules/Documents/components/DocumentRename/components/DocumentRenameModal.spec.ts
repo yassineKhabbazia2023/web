@@ -9,19 +9,19 @@ import { documentMock } from '@/modules/Documents/mocks/documentMock'
 const defaultProps: DocumentRenameModalProps = {
   document: documentMock,
   isConfirmButtonLoading: false,
-  isRenameModalOpened: true
+  isRenameModalOpened: true,
 }
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentRenameModalProps = defaultProps
+  props: DocumentRenameModalProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentRenameModal, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 
@@ -31,7 +31,7 @@ describe('props', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })
-  it('should have appropriate base name', async () => {
+  it('should have appropriate base name', () => {
     const wrapper = createWrapper({ ...defaultProps, isRenameModalOpened: true })
 
     const singleInputModalWrapper = findSingleInputModalWrapper(wrapper)
@@ -43,7 +43,7 @@ describe('props', () => {
 })
 
 describe('interactions', () => {
-  it('should emit close-rename-modal on on-cancel-action-click', async () => {
+  it('should emit close-rename-modal on on-cancel-action-click', () => {
     const wrapper = createWrapper()
     const singleInputModalWrapper = findSingleInputModalWrapper(wrapper)
 
@@ -51,7 +51,7 @@ describe('interactions', () => {
     expect(wrapper.emitted()).toHaveProperty('close-rename-modal')
   })
 
-  it('should emit close-rename-modal on on-close-modal', async () => {
+  it('should emit close-rename-modal on on-close-modal', () => {
     const wrapper = createWrapper()
     const singleInputModalWrapper = findSingleInputModalWrapper(wrapper)
 
@@ -59,7 +59,7 @@ describe('interactions', () => {
     expect(wrapper.emitted()).toHaveProperty('close-rename-modal')
   })
 
-  it('should emit rename-confirmed on on-confirm-action-click', async () => {
+  it('should emit rename-confirmed on on-confirm-action-click', () => {
     const wrapper = createWrapper()
     const singleInputModalWrapper = findSingleInputModalWrapper(wrapper)
 

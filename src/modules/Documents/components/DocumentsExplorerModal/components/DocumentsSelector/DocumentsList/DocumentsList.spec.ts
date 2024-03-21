@@ -5,7 +5,7 @@ import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { PFileAndFolderLineCheck, PImage } from '@kpmg/styleguide'
-import { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
+import type { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
 import DocumentsList
   from '@/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsList'
 import { type DocumentsListProps }
@@ -16,37 +16,37 @@ const docs:Array<ExplorerDocument> = [
     givenActionState: 'DONE',
     content: { name: 'test.pdf' },
     codeError: 'FileEmpty',
-    isSelected: false
+    isSelected: false,
   },
   {
     givenActionState: 'TO_DO',
     content: { name: 'kyaaaa.pdf' },
     codeError: '',
-    isSelected: true
+    isSelected: true,
   },
   {
     givenActionState: 'ERROR',
     content: { name: 'zaza.pdf' },
     codeError: 'FileEmpty',
-    isSelected: true
+    isSelected: true,
   }]
 
 const defaultProps: DocumentsListProps = {
   documents: docs,
   documentsSelectorEmptyDocumentsListLabel: 'q',
-  isFolderLine: false
+  isFolderLine: false,
 }
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentsListProps = defaultProps
+  props: DocumentsListProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentsList, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 describe('documentsList', () => {
@@ -59,10 +59,10 @@ describe('documentsList', () => {
 
       const fflcs = wrapper.findAllComponents(PFileAndFolderLineCheck)
       expect(fflcs).toHaveLength(2)
-      expect(fflcs[0].props('pFileName')).toStrictEqual('kyaaaa.pdf')
-      expect(fflcs[1].props('pFileName')).toStrictEqual('test.pdf')
-      expect(fflcs[0].props('pState')).toStrictEqual('default')
-      expect(fflcs[1].props('pState')).toStrictEqual('success')
+      expect(fflcs[0].props('pFileName')).toBe('kyaaaa.pdf')
+      expect(fflcs[1].props('pFileName')).toBe('test.pdf')
+      expect(fflcs[0].props('pState')).toBe('default')
+      expect(fflcs[1].props('pState')).toBe('success')
       expect(fflcs[0].props('modelValue')).toBeTruthy()
       expect(fflcs[1].props('modelValue')).toBeFalsy()
 
@@ -79,11 +79,11 @@ describe('documentsList', () => {
           givenActionState: 'ERROR',
           content: { name: 'test.pdf' },
           codeError: 'FileEmpty',
-          isSelected: false
+          isSelected: false,
         }]
       const props: DocumentsListProps = {
         ...defaultProps,
-        documents: docs
+        documents: docs,
       }
       const wrapper = createWrapper(props)
       await nextTick()

@@ -20,7 +20,7 @@ class AccountingHubConnection extends DataStreamHubConnection {
 }
 
 const AccountingDataStreamInstance = new AccountingHubConnection(
-  VITE_ACCOUNTING_HUB_URL
+  VITE_ACCOUNTING_HUB_URL,
 )
 
 const initializedAccountingDataStreamInstance = AccountingDataStreamInstance.startConnection()

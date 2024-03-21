@@ -1,6 +1,7 @@
-import { ComputedRef, inject, ref } from 'vue'
+import type { ComputedRef } from 'vue'
+import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { DownloadFolderComposableProps } from './DownloadFolderTypes'
+import type { DownloadFolderComposableProps } from './DownloadFolderTypes'
 import { type ToastPluginFunc } from
   '@/modules/common/Types/toastPluginTypes'
 import { PICheck, PIExclamationTriangle, PILoader } from '@kpmg/styleguide'
@@ -9,11 +10,10 @@ import { downloadFolder } from '@/services/Folder'
 import { downloadFile } from '@/modules/common/helpers/downloadFilesHelper'
 
 export function useDownloadFolder(
-  downloadFolderProps: ComputedRef<DownloadFolderComposableProps>
+  downloadFolderProps: ComputedRef<DownloadFolderComposableProps>,
 ): {
-  handleDownloadFolderEvent: () => void
+  handleDownloadFolderEvent: () => Promise<void>
 } {
-
   const { t } = useI18n({
     inheritLocale: true,
     useScope: 'global',
@@ -22,17 +22,17 @@ export function useDownloadFolder(
         notifications: {
           error: 'Connexion au serveur interrompue.',
           inProgress: 'Préparation du téléchargement en cours.',
-          success: 'Préparation du téléchargement finie.'
-        }
+          success: 'Préparation du téléchargement finie.',
+        },
       },
       fr: {
         notifications: {
           error: 'Connexion au serveur interrompue.',
           inProgress: 'Préparation du téléchargement en cours.',
-          success: 'Préparation du téléchargement finie.'
-        }
-      }
-    }
+          success: 'Préparation du téléchargement finie.',
+        },
+      },
+    },
   })
 
   const toastPlugin = inject('toast') as unknown as ToastPluginFunc
@@ -40,7 +40,7 @@ export function useDownloadFolder(
   const inProgressNotification = ref()
 
   const handleDownloadFolderEvent = async () => {
-    if (!downloadFolderProps.value.selectedFolderId) return
+    if (!downloadFolderProps.value.selectedFolderId) return Promise.resolve()
 
     triggerInProgressNotification()
     try {
@@ -54,12 +54,12 @@ export function useDownloadFolder(
   }
 
   const triggerFolderDownload = async (
-    downloadFolderProps: DownloadFolderComposableProps
+    downloadFolderProps: DownloadFolderComposableProps,
   ) => {
     const folderBlob = await downloadFolder(
       downloadFolderProps.currentService,
       downloadFolderProps.selectedEntity,
-      downloadFolderProps.selectedFolderId
+      downloadFolderProps.selectedFolderId,
     )
     const fileName =
     `${downloadFolderProps.selectedFolderName}_${formatDate(new Date(), '_')}.zip`
@@ -74,7 +74,7 @@ export function useDownloadFolder(
       icon: PILoader,
       showClose: true,
       customClass: 'loading',
-      position: 'bottom-right'
+      position: 'bottom-right',
     })
   }
 
@@ -84,7 +84,7 @@ export function useDownloadFolder(
       icon: PICheck,
       showClose: true,
       customClass: 'success',
-      position: 'bottom-right'
+      position: 'bottom-right',
     })
   }
 
@@ -94,13 +94,13 @@ export function useDownloadFolder(
       icon: PIExclamationTriangle,
       customClass: 'error',
       showClose: true,
-      position: 'bottom-right'
+      position: 'bottom-right',
     })
   }
 
   // Return the composable object
 
   return {
-    handleDownloadFolderEvent
+    handleDownloadFolderEvent,
   }
 }

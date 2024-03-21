@@ -101,9 +101,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ComputedRef, ref } from 'vue'
+import type { ComputedRef } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { DocumentDetailsTabPaneProps, PiaStatusTag } from './DocumentDetailsTabPaneTypes'
+import type { DocumentDetailsTabPaneProps, PiaStatusTag } from './DocumentDetailsTabPaneTypes'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
 import {
   PTag,
@@ -111,11 +112,11 @@ import {
   PICheckCircle,
   PIUpload,
   PIcon,
-  PButton
+  PButton,
 } from '@kpmg/styleguide'
 import { useDownloadDocuments } from
   '@/modules/Documents/components/DownloadDocuments/DownloadDocuments'
-import { DownloadDocumentsComposableProps }
+import type { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
   from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
 import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
@@ -124,14 +125,14 @@ const props = defineProps<DocumentDetailsTabPaneProps>()
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = computed(() => {
   return {
     selectedDocuments: [props.document],
     currentService: props.currentService,
-    selectedEntity: props.selectedEntity
+    selectedEntity: props.selectedEntity,
   }
 })
 
@@ -139,7 +140,7 @@ const { handleDownloadDocumentsEvent } =
 useDownloadDocuments(downloadDocumentsProps)
 
 const tagIconByState = {
-  success: PICheckCircle
+  success: PICheckCircle,
 }
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
@@ -172,7 +173,7 @@ const isCertified = computed(() => {
 })
 
 const getDocumentSize = computed(() => {
-  return (props.document.size === 0 ? 0 : Math.floor(props.document.size / 1024)) + ' Ko'
+  return `${props.document.size === 0 ? 0 : Math.floor(props.document.size / 1024)} Ko`
 })
 
 const isLoading = ref(false)
@@ -199,28 +200,6 @@ const isInPIASyncedFolder = computed(() => {
   return false
 })
 </script>
-<i18n lang="yaml">
-  en-US:
-    label:
-      type: 'Type du document'
-      size: 'Taille du document'
-      path: 'Emplacement du document'
-      createdBy: 'Déposé par'
-      date: 'Date du dépôt'
-      modification: 'Dernière modification'
-      status: 'Etat de transmission'
-      download: 'Télécharger'
-  fr-FR:
-    label:
-      type: 'Type du document'
-      size: 'Taille du document'
-      path: 'Emplacement du document'
-      createdBy: 'Déposé par'
-      date: 'Date du dépôt'
-      modification: 'Dernière modification'
-      status: 'Etat de transmission'
-      download: 'Télécharger'
-</i18n>
 <style lang="scss">
 .document-details-container {
   .details-content {
@@ -270,4 +249,26 @@ const isInPIASyncedFolder = computed(() => {
     }
 }
 </style>
+<i18n lang="yaml">
+  en-US:
+    label:
+      type: 'Type du document'
+      size: 'Taille du document'
+      path: 'Emplacement du document'
+      createdBy: 'Déposé par'
+      date: 'Date du dépôt'
+      modification: 'Dernière modification'
+      status: 'Etat de transmission'
+      download: 'Télécharger'
+  fr-FR:
+    label:
+      type: 'Type du document'
+      size: 'Taille du document'
+      path: 'Emplacement du document'
+      createdBy: 'Déposé par'
+      date: 'Date du dépôt'
+      modification: 'Dernière modification'
+      status: 'Etat de transmission'
+      download: 'Télécharger'
+</i18n>
 

@@ -1,6 +1,6 @@
 import type { Folder } from '@/models/Folder'
-import { Service } from '@/models/Service'
-import { ExplorerFoldersListLineDisabledState } from '@/modules/Documents/DocumentsTypes'
+import type { Service } from '@/models/Service'
+import type { ExplorerFoldersListLineDisabledState } from '@/modules/Documents/DocumentsTypes'
 
 export interface FoldersListProps {
   currentFolder: Folder

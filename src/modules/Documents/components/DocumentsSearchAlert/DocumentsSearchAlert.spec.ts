@@ -1,18 +1,19 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import DocumentsSearchAlert from '.'
-import { DocumentsSearchAlertProps } from './DocumentsSearchAlertTypes'
+import type { DocumentsSearchAlertProps } from './DocumentsSearchAlertTypes'
 import { describe, it, expect } from 'vitest'
 import { PAlert } from '@kpmg/styleguide'
 
 const defaultProps: DocumentsSearchAlertProps = {
-  documentsCount: 10
+  documentsCount: 10,
 }
 
 const createWrapper = (
-  props: DocumentsSearchAlertProps = defaultProps
+  props: DocumentsSearchAlertProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentsSearchAlert, {
-    props
+    props,
   })
 }
 
@@ -29,10 +30,10 @@ describe('documentsSearchAlert', () => {
 
       expect(alert.exists()).toBeTruthy()
       expect(
-        alert.html().includes(`${defaultProps.documentsCount} résultats`)
+        alert.html().includes(`${defaultProps.documentsCount} résultats`),
       ).toBeTruthy()
     })
-    it('should display the correct message when number of found documents equals 0 ', () => {
+    it('should display the correct message when number of found documents equals 0', () => {
       const wrapper = createWrapper({ ...defaultProps, documentsCount: 0 })
 
       const alert = findPalert(wrapper)

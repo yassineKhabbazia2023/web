@@ -11,59 +11,59 @@ describe('toolbox helper', () => {
           {
             pIconName: 'PIInputCursorText',
             pValue: 'Renommer dossier',
-            pActionName: 'toolbox-rename-action-click'
+            pActionName: 'toolbox-rename-action-click',
           },
           {
             pIconName: 'PIDownload',
             pValue: 'Télécharger',
-            pActionName: 'toolbox-download-action-click'
+            pActionName: 'toolbox-download-action-click',
           },
           {
             pIconName: 'PITrash',
             pValue: 'Supprimer',
-            pActionName: 'toolbox-delete-action-click'
-          }
-        ]
+            pActionName: 'toolbox-delete-action-click',
+          },
+        ],
       },
       {
         target: 'Documents',
         permissions: [
           'CAN_DELETE_DOCUMENT',
           'CAN_RENAME_DOCUMENT',
-          'CAN_GO_TO_DOCUMENT'
+          'CAN_GO_TO_DOCUMENT',
         ],
         expectedResult: [
           {
             pIconName: 'PIInputCursorText',
             pValue: 'Renommer',
-            pActionName: 'rename-document'
+            pActionName: 'rename-document',
           },
           {
             pIconName: 'PIDownload',
             pValue: 'Télécharger',
-            pActionName: 'download-document'
+            pActionName: 'download-document',
           },
           {
             pIconName: 'PIArrowBarRight',
             pValue: 'Accéder au dossier',
-            pActionName: 'go-to-document'
+            pActionName: 'go-to-document',
           },
           {
             pIconName: 'PITrash',
             pValue: 'Supprimer',
-            pActionName: 'delete-document'
-          }
+            pActionName: 'delete-document',
+          },
 
-        ]
-      }
+        ],
+      },
     ]
 
     it.each(cases)(
       'pText mapping validation',
-      async ({ target, permissions, expectedResult }) => {
+      ({ target, permissions, expectedResult }) => {
         const result = generateToolboxBasicData(target, permissions)
         expect(result).toStrictEqual(expectedResult)
-      }
+      },
     )
   })
 })

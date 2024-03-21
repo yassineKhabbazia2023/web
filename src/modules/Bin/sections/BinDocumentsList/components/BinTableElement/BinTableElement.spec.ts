@@ -12,20 +12,20 @@ const defaultProps: BinTableElementProps = {
     id: '200fbe69-9dbd-47e3-b9a3-0d58cc46b1b2',
     name: 'Final (22) (7).jpg',
     deleted: '2023-12-14T11:41:41.650',
-    path: ['Comptabilité', 'Dépôt', 'aui classer']
-  }
+    path: ['Comptabilité', 'Dépôt', 'aui classer'],
+  },
 }
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: BinTableElementProps = defaultProps
+  props: BinTableElementProps = defaultProps,
 ) => {
   return mount(BinTableElement, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 }
 
@@ -39,7 +39,7 @@ describe('binTableElement', () => {
       expect.hasAssertions()
       const updatedProps: BinTableElementProps = {
         ...defaultProps,
-        fieldType: 'DoubleText'
+        fieldType: 'DoubleText',
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -56,7 +56,7 @@ describe('binTableElement', () => {
       expect.hasAssertions()
       const updatedProps: BinTableElementProps = {
         ...defaultProps,
-        fieldType: 'Text'
+        fieldType: 'Text',
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -71,7 +71,7 @@ describe('binTableElement', () => {
       expect.hasAssertions()
       const updatedProps: BinTableElementProps = {
         ...defaultProps,
-        fieldType: 'ActionGroup'
+        fieldType: 'ActionGroup',
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -89,7 +89,7 @@ describe('binTableElement', () => {
       expect.hasAssertions()
       const updatedProps: BinTableElementProps = {
         ...defaultProps,
-        fieldType: 'ActionGroup'
+        fieldType: 'ActionGroup',
       }
 
       const wrapper = createWrapper(updatedProps)

@@ -1,9 +1,9 @@
 <template>
   <div class="confirmation-popup">
     <PDialog
-    v-model="isPopupVisible"
-        :title="title"
-    @close="handleClosePopup">
+      v-model="isPopupVisible"
+      :title="title"
+      @close="handleClosePopup">
       <div class="confirmation-popup__message">
         {{ message }}
       </div>
@@ -38,14 +38,14 @@ import { PDialog, PButton } from '@kpmg/styleguide'
 
 // Popup defintions
 const props = withDefaults(defineProps<ConfirmationPopupProps>(), {
-  isPopupVisible: false
+  isPopupVisible: false,
 })
 
 const emit = defineEmits([
   'update:isPopupVisible',
   'on-confirm-button-click',
   'on-cancel-button-click',
-  'on-close-popup'
+  'on-close-popup',
 ])
 
 const isPopupVisible = computed({
@@ -54,7 +54,7 @@ const isPopupVisible = computed({
   },
   set(value) {
     emit('update:isPopupVisible', value)
-  }
+  },
 })
 
 // Popup actions

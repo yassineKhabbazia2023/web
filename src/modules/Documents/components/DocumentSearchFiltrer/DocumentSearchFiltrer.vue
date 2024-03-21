@@ -43,23 +43,23 @@
     </template>
     <template #footer>
       <div>
-          <PButton
-            pType="primary"
-            pPlain
-            pSize="default"
-            class="margin-right--4"
-            @click="handleResetClick"
-          >
-            {{ t('reset') }}
-          </PButton>
-          <PButton
-            type="primary"
-            pSize="default"
-            @click="handleApplyClick"
-          >
-            {{ t('apply') }}
-          </PButton>
-        </div>
+        <PButton
+          pType="primary"
+          pPlain
+          pSize="default"
+          class="margin-right--4"
+          @click="handleResetClick"
+        >
+          {{ t('reset') }}
+        </PButton>
+        <PButton
+          type="primary"
+          pSize="default"
+          @click="handleApplyClick"
+        >
+          {{ t('apply') }}
+        </PButton>
+      </div>
     </template>
   </PDrawer>
 </template>
@@ -67,20 +67,21 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { PDrawer, PSelect, POption, PButton, PDatePicker } from '@kpmg/styleguide'
-import { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
+import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import { useI18n } from 'vue-i18n'
-import { Period, DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import { Period } from '@/models/DocumentSearchFilters'
 
 const props = defineProps<DocumentSearchFiltrerProps>()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits<{
-  'close-filters-drawer': [],
-  'apply-filters-drawer': [DocumentSearchFilters],
-  'reset-filters-drawer': [],
+  'close-filters-drawer': []
+  'apply-filters-drawer': [DocumentSearchFilters]
+  'reset-filters-drawer': []
   'update:modelValue': [boolean]
 }>()
 
@@ -90,7 +91,7 @@ const isDrawerOpened = computed({
   },
   set(value: boolean) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const selectedPeriod = ref<string>('')
@@ -98,16 +99,16 @@ const selectedPeriod = ref<string>('')
 const periods = [
   {
     value: Period.DAY.toString(),
-    label: t('dropdownItems.today')
+    label: t('dropdownItems.today'),
   },
   {
     value: Period.WEEK.toString(),
-    label: t('dropdownItems.week')
+    label: t('dropdownItems.week'),
   },
   {
     value: Period.MONTH.toString(),
-    label: t('dropdownItems.month')
-  }
+    label: t('dropdownItems.month'),
+  },
 ]
 
 const dateRange = ref<[Date, Date ] | ''>('')
@@ -142,14 +143,14 @@ const handleApplyClick = () => {
   const filtersUpdated: DocumentSearchFilters = {
     selectedPeriod: selectedPeriod.value ? selectedPeriod.value : null,
     startDate: dateRange.value[0] ? dateRange.value[0] as Date : null,
-    endDate: dateRange.value[1] ? dateRange.value[1] as Date : null
+    endDate: dateRange.value[1] ? dateRange.value[1] as Date : null,
   }
   emit('apply-filters-drawer', filtersUpdated)
 }
 
 // Main component actions
 // eslint-disable-next-line vitest/require-hook
-onMounted(async () => {
+onMounted(() => {
   if (!props.filters) return
   if (props.filters.startDate && props.filters.endDate) {
     dateRange.value = [new Date(), new Date()]

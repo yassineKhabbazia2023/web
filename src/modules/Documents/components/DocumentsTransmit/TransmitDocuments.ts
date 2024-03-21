@@ -1,15 +1,15 @@
-import { ComputedRef } from 'vue'
+import type { ComputedRef } from 'vue'
 import {
-  transmitDocuments
+  transmitDocuments,
 } from '@/services/Documents'
-import { TransmitDocumentsComposableProps } from './TransmitDocumentsTypes'
+import type { TransmitDocumentsComposableProps } from './TransmitDocumentsTypes'
 
 // Define the composable function
 
 export function useTransmitDocuments(
-  transmitDocumentsProps: ComputedRef<TransmitDocumentsComposableProps>
+  transmitDocumentsProps: ComputedRef<TransmitDocumentsComposableProps>,
 ): {
-  handleTransmitDocumentsEvent: () => void
+  handleTransmitDocumentsEvent: () => Promise<void>
 } {
   // Define the composable actions
 
@@ -22,12 +22,11 @@ export function useTransmitDocuments(
     await transmitDocuments(
       transmitDocumentsProps.value.currentService,
       transmitDocumentsProps.value.selectedEntity,
-      transmitDocumentsProps.value.selectedDocumentsIds
+      transmitDocumentsProps.value.selectedDocumentsIds,
     )
-
   }
 
   return {
-    handleTransmitDocumentsEvent
+    handleTransmitDocumentsEvent,
   }
 }

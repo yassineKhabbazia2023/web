@@ -44,8 +44,9 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
 import { PDocumentViewer, PIcon, PDocumentDisplay } from '@kpmg/styleguide'
-import { DocumentsPreviewProps } from './DocumentPreviewTypes'
-import { DocumentPreviewResponse, downloadDocument, previewDocument } from '@/services/Documents'
+import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
+import type { DocumentPreviewResponse } from '@/services/Documents'
+import { downloadDocument, previewDocument } from '@/services/Documents'
 import { getFileExtension, getFileIcon, isImageDocument }
   from '../../helpers/filesExtensions'
 import DocumentsTabs from '@/modules/Documents/sections/DocumentsList/components/DocumentTabs'
@@ -54,7 +55,7 @@ import { useI18n } from 'vue-i18n'
 const props = defineProps<DocumentsPreviewProps>()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const isLoadingDocument = ref(true)
@@ -63,7 +64,7 @@ const emit = defineEmits([
   'update:modelValue',
   'next-document-preview-button-click',
   'previous-document-preview-button-click',
-  'close-drawer'
+  'close-drawer',
 ])
 
 const isDrawerOpened = computed({
@@ -72,7 +73,7 @@ const isDrawerOpened = computed({
   },
   set(value: boolean) {
     emit('update:modelValue', value)
-  }
+  },
 })
 const previewImage = ref<string|Blob|DocumentPreviewResponse>('')
 
@@ -80,23 +81,21 @@ const fetchPreview = async () => {
   if (props.serviceId && props.entityId && props.document.id) {
     isLoadingDocument.value = true
     try {
-
       if (isImageDocument(documentExtension.value)) {
         const response = await previewDocument(
           props.serviceId,
           props.entityId,
-          props.document.id
+          props.document.id,
         )
         if (response) {
           previewImage.value = response
           isLoadingDocument.value = false
-
         }
       } else {
         const responseBlob = await downloadDocument(
           props.serviceId,
           props.entityId,
-          props.document.id
+          props.document.id,
         )
         if (responseBlob) {
           previewImage.value = responseBlob
@@ -106,7 +105,6 @@ const fetchPreview = async () => {
     } catch (e) {
       isLoadingDocument.value = false
       previewImage.value = ''
-
     }
   }
 }
@@ -125,7 +123,7 @@ watch(
   () => [props.serviceId, props.entityId, props.document.id],
   () => {
     fetchPreview()
-  }
+  },
 )
 
 const handleClose = () => {

@@ -1,14 +1,15 @@
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import {
   findFolderDeepById,
   findCurrentServiceFolder,
   appendChildFolder,
   renameFolder,
   sortFolderByName,
-  deleteFolder
+  deleteFolder,
 } from './folderArrayHelper'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
+import { getMockedFolder } from './testHelper'
 
 describe('folderArrayHelper.spec', () => {
   it('should get the folder from the data source when findFolderDeepById is called', () => {
@@ -31,28 +32,14 @@ describe('folderArrayHelper.spec', () => {
 
       expect(folder).toHaveLength(1)
 
-      expect(folder[0].name).toStrictEqual('Comptabilité')
+      expect(folder[0].name).toBe('Comptabilité')
     })
 
   it('should add a new folder when appendChildFolder is called', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const parentId = 135393637
 
-    const newFolder = {
-
-      id: 1111111111,
-      children: [],
-      name: 'NewFolder',
-      parent: {
-        id: parentId
-      },
-      permissions: [],
-      properties: {
-        syncStatus: '',
-        folderDescription: ''
-      } as FolderProperties,
-      serviceId: 'service-id-compta'
-    } as Folder
+    const newFolder = getMockedFolder(parentId)
 
     const serviceId = 'service-id-compta'
     const added = appendChildFolder(data, parentId, newFolder, serviceId)
@@ -66,22 +53,7 @@ describe('folderArrayHelper.spec', () => {
       const data = JSON.parse(JSON.stringify(foldersData))
       const parentId = 11111000
 
-      const newFolder = {
-
-        id: 1111111111,
-        children: [],
-        name: 'NewFolder',
-        parent: {
-          id: parentId
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      } as Folder
-
+      const newFolder = getMockedFolder(parentId)
       const serviceId = 'service-id-compta'
       const added = appendChildFolder(data, parentId, newFolder, serviceId)
 
@@ -100,44 +72,16 @@ describe('folderArrayHelper.spec', () => {
   it('should not rename folder when renameFolder is called and the folder dose not exists', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const serviceId = 'service-id-compta'
-    const folderUpdatedData = {
-
-      id: 1111111111,
-      children: [],
-      name: 'NewFolder',
-      parent: {
-        id: 1234
-      },
-      permissions: [],
-      properties: {
-        syncStatus: '',
-        folderDescription: ''
-      } as FolderProperties,
-      serviceId: 'service-id-compta'
-    } as Folder
+    const folderUpdatedData = getMockedFolder(1234)
 
     const renamed = renameFolder(data, serviceId, folderUpdatedData)
     expect(renamed).toBeFalsy()
   })
 
-  it('should not rename folder when renameFolder is called and the folder dose not exists', () => {
+  it('should not rename folder when renameFolder is called and the folder dose not exists (2)', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
     const serviceId = 'service-id-compta'
-    const folderUpdatedData = {
-
-      id: 1111111111,
-      children: [],
-      name: 'NewFolder',
-      parent: {
-        id: 1234
-      },
-      permissions: [],
-      properties: {
-        syncStatus: '',
-        folderDescription: ''
-      } as FolderProperties,
-      serviceId: 'service-id-compta'
-    } as Folder
+    const folderUpdatedData = getMockedFolder(1234)
 
     const renamed = renameFolder(data, serviceId, folderUpdatedData)
     expect(renamed).toBeFalsy()
@@ -150,36 +94,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeSort = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      }
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeSort
@@ -188,62 +104,39 @@ describe('folderArrayHelper.spec', () => {
 
     expect(sorted).toBeTruthy()
     expect(source[0][0].children[0].children).toStrictEqual([
-      {
-        id: 135393649,
+      getMockedFolder(135393637, 135393649, 'A classer', {
         children: [
-          {
-            id: 11111111,
+          getMockedFolder(135393649, 11111111, 'MOVABLE', {
             children: [],
-            name: 'MOVABLE',
-            parent: {
-              id: 135393649
-            },
             permissions: [
               'CAN_DELETE_FILES',
               'CAN_UPLOAD_FILES',
               'CAN_CREATE_FOLDER',
               'CAN_MOVE_INTO_FOLDER',
-              'CAN_MOVE_FOLDER'
+              'CAN_MOVE_FOLDER',
             ],
             properties: {
               syncStatus: 'PENDING_SYNC',
-              folderDescription: "Ce dossier regroupe l'ensemble des documents."
+              folderDescription: "Ce dossier regroupe l'ensemble des documents.",
+              tracingName: 'tracing-name',
             },
-            serviceId: 'service-id-compta'
-          }
+            serviceId: 'service-id-compta',
+          }),
         ],
-        name: 'A classer',
-        parent: { id: 135393637 },
         permissions: [
           'CAN_DELETE_FILES',
           'CAN_UPLOAD_FILES',
           'CAN_CREATE_FOLDER',
-          'CAN_MOVE_INTO_FOLDER'
+          'CAN_MOVE_INTO_FOLDER',
         ],
         properties: {
           syncStatus: 'PENDING_SYNC',
-          folderDescription: "Ce dossier regroupe l'ensemble des documents."
+          folderDescription: "Ce dossier regroupe l'ensemble des documents.",
+          tracingName: 'tracing-name',
         },
-        serviceId: 'service-id-compta'
-      },
-      {
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: { id: 135393637 },
-        permissions: [],
-        properties: { syncStatus: '', folderDescription: '' },
-        serviceId: 'service-id-compta'
-      },
-      {
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: { id: 135393637 },
-        permissions: [],
-        properties: { syncStatus: '', folderDescription: '' },
-        serviceId: 'service-id-compta'
-      }
+      }),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
+      getMockedFolder(135393637, 1111111112, 'DEF'),
     ])
   })
 
@@ -265,36 +158,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      }
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete
@@ -306,7 +171,7 @@ describe('folderArrayHelper.spec', () => {
       .some(folder => folder.id === folderIdToDelete)).toBeFalsy()
   })
 
-  it('should delete folder when deleteFolder is called', () => {
+  it('should delete folder when deleteFolder is called (3)', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 135393637
     const serviceId = 'service-id-compta'
@@ -314,36 +179,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      }
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete
@@ -352,14 +189,14 @@ describe('folderArrayHelper.spec', () => {
       source,
       serviceId,
       parentFolderId,
-      folderIdToDelete
+      folderIdToDelete,
     )
 
     expect(deleted).toBeTruthy()
     expect(
       source[0][0].children[0].children.some(
-        (folder) => folder.id === folderIdToDelete
-      )
+        (folder) => folder.id === folderIdToDelete,
+      ),
     ).toBeFalsy()
   })
 
@@ -371,36 +208,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      }
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete
@@ -409,11 +218,10 @@ describe('folderArrayHelper.spec', () => {
       source,
       serviceId,
       parentFolderId,
-      folderIdToDelete
+      folderIdToDelete,
     )
 
     expect(deleted).toBeFalsy()
-
   })
   it('should not delete folder when provided folderId dose not exists', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
@@ -423,36 +231,8 @@ describe('folderArrayHelper.spec', () => {
 
     const beforeDelete = [
       ...source[0][0].children[0].children,
-      {
-
-        id: 1111111112,
-        children: [],
-        name: 'DEF',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      },
-      {
-
-        id: 1111111111,
-        children: [],
-        name: 'ABC',
-        parent: {
-          id: 135393637
-        },
-        permissions: [],
-        properties: {
-          syncStatus: '',
-          folderDescription: ''
-        } as FolderProperties,
-        serviceId: 'service-id-compta'
-      }
+      getMockedFolder(135393637, 1111111112, 'DEF'),
+      getMockedFolder(135393637, 1111111111, 'ABC'),
     ]
 
     source[0][0].children[0].children = beforeDelete
@@ -461,7 +241,7 @@ describe('folderArrayHelper.spec', () => {
       source,
       serviceId,
       parentFolderId,
-      folderIdToDelete
+      folderIdToDelete,
     )
 
     expect(deleted).toBeFalsy()

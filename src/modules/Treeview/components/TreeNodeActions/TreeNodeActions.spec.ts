@@ -2,15 +2,17 @@
 import TreeNodeActions from '@/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeActionsProps }
   from '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import TreeNodeActionsToolbox from './TreeNodeActionsToolbox'
 
 const defaultProps: TreeNodeActionsProps = {
   permissions: [],
-  selectedOrHovered: true
+  selectedOrHovered: true,
 }
 
 export type TreeNodeActionsWrapper = VueWrapper<
@@ -24,11 +26,11 @@ const createWrapper = (props: TreeNodeActionsProps = defaultProps): TreeNodeActi
     global: {
       stubs: {
         PToolbox: {
-          template: '<span />'
-        }
+          template: '<span />',
+        },
       },
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })as unknown as TreeNodeActionsWrapper
 }
 
@@ -37,7 +39,7 @@ describe('treeNodeActions', () => {
     it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
       const updatedProps: TreeNodeActionsProps = {
         ...defaultProps,
-        permissions: ['CAN_DELETE_FOLDER']
+        permissions: ['CAN_DELETE_FOLDER'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -48,7 +50,7 @@ describe('treeNodeActions', () => {
       await nextTick()
 
       expect(wrapper.emitted('p-toolbox-dropdown-close')).toStrictEqual([
-        [true]
+        [true],
       ])
     })
 
@@ -56,7 +58,7 @@ describe('treeNodeActions', () => {
             'p-toolbox-dropdown-close is emitted', async () => {
       const updatedProps: TreeNodeActionsProps = {
         ...defaultProps,
-        permissions: ['CAN_DELETE_FOLDER']
+        permissions: ['CAN_DELETE_FOLDER'],
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -67,7 +69,7 @@ describe('treeNodeActions', () => {
       await nextTick()
 
       expect(wrapper.emitted('p-toolbox-item-clicked')).toStrictEqual([
-        ['test']
+        ['test'],
       ])
     })
   })

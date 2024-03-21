@@ -7,7 +7,7 @@ interface ActionBarButtonWithOrder {
 }
 
 export interface ActionBarLoadingButtonsState {
-  permission: string,
+  permission: string
   isLoading: boolean
 }
 
@@ -22,14 +22,14 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: false,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PIUpload',
       pButtonActionName: 'actionbar-add-document-action-click',
       pComponentType: 'UPLOAD',
-      pMultiple: true
+      pMultiple: true,
     },
-    order: 1
+    order: 1,
   },
   CAN_FILTER_FOLDER: {
     actionbarButton: {
@@ -41,12 +41,12 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: false,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PIFunnel',
-      pButtonActionName: 'actionbar-filter-action-click'
+      pButtonActionName: 'actionbar-filter-action-click',
     },
-    order: 2
+    order: 2,
   },
   CAN_SEARCH_DOCUMENT: {
     actionbarButton: {
@@ -58,15 +58,15 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: true,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PISearch',
       pComponentType: 'SEARCH',
       pButtonActionName: 'actionbar-search-action-click',
-      pIsSearchShrinkable: true
+      pIsSearchShrinkable: true,
     },
-    order: 3
-  }
+    order: 3,
+  },
 }
 
 const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
@@ -80,12 +80,12 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: false,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PIPencilSquare',
-      pButtonActionName: 'actionbar-rename-action-click'
+      pButtonActionName: 'actionbar-rename-action-click',
     },
-    order: 1
+    order: 1,
   },
   CAN_TRANSMIT_DOCUMENT: {
     actionbarButton: {
@@ -97,12 +97,12 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: false,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PIRocket',
-      pButtonActionName: 'actionbar-transmit-action-click'
+      pButtonActionName: 'actionbar-transmit-action-click',
     },
-    order: 2
+    order: 2,
   },
   CAN_MOVE_DOCUMENT: {
     actionbarButton: {
@@ -114,12 +114,12 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: false,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PIFolderMove',
-      pButtonActionName: 'actionbar-move-action-click'
+      pButtonActionName: 'actionbar-move-action-click',
     },
-    order: 4
+    order: 4,
   },
   CAN_DOWNLOAD_DOCUMENT: {
     actionbarButton: {
@@ -131,12 +131,12 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: false,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PIDownload',
-      pButtonActionName: 'actionbar-download-action-click'
+      pButtonActionName: 'actionbar-download-action-click',
     },
-    order: 3
+    order: 3,
   },
   CAN_DELETE_DOCUMENT: {
     actionbarButton: {
@@ -148,20 +148,20 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pCircle: false,
         pLoading: false,
         pDisabled: false,
-        pSize: 'small'
+        pSize: 'small',
       },
       pButtonIcon: 'PITrash',
-      pButtonActionName: 'actionbar-delete-action-click'
+      pButtonActionName: 'actionbar-delete-action-click',
     },
-    order: 5
-  }
+    order: 5,
+  },
 }
 
 export function generateActionBarLeftSideButtons(
   permissions: string[],
   isSearchShrinkable: boolean,
   isSearchOpen: boolean,
-  hasFiltersEnabled: boolean
+  hasFiltersEnabled: boolean,
 ): ComponentDefinitionProps[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {
@@ -192,7 +192,7 @@ export function generateActionBarLeftSideButtons(
 export function generateActionBarRightSideButtons(
   permissions: string[],
   isAnyDocumentSelected: boolean,
-  actionBarLoadingButtonsState?: ActionBarLoadingButtonsState
+  actionBarLoadingButtonsState?: ActionBarLoadingButtonsState,
 ): ComponentDefinitionProps[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {

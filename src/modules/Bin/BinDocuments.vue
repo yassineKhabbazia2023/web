@@ -47,10 +47,10 @@
 // eslint-disable vitest/require-hookcurrentService
 /* eslint-disable vitest/require-hook */
 import { ref, watch, computed, onMounted } from 'vue'
-import { BinDocumentProps } from './BinDocumentsTypes'
+import type { BinDocumentProps } from './BinDocumentsTypes'
 import type {
   BinDocumentsWithTableStructure,
-  BinDocument
+  BinDocument,
 } from '@/models/Document'
 import BinDocumentsList from './sections/BinDocumentsList'
 import { fetchBinDocuments } from '@/services/BinDocuments'
@@ -76,7 +76,7 @@ const paginationLabel = computed(() => {
 
   return `${1 + ((currentPage.value - 1) * currentPageSize.value)}
    - ${((currentPage.value - 1) * currentPageSize.value) +
-    binDocuments.value.documentsPage.items.length} 
+    binDocuments.value.documentsPage.items.length}
    sur ${binDocuments.value.documentsPage.totalItems}`
 })
 
@@ -88,11 +88,11 @@ const breadcrumbItems = computed(() => {
   const items = []
   items.push({
     pId: -1,
-    pText: 'Corbeille'
+    pText: 'Corbeille',
   })
   items.push({
     pId: -1,
-    pText: props.selectedServiceName
+    pText: props.selectedServiceName,
   })
   return items
 })
@@ -111,7 +111,7 @@ const fetchBin = async () => {
     props.selectedEntity,
     skip.value,
     currentPageSize.value,
-    componentSortQueryField.value
+    componentSortQueryField.value,
   )
   isLoading.value = false
 }
@@ -125,7 +125,7 @@ const handleSortChange = async (sortQueryField:string) => {
 const isRestoring = ref(false)
 const documentToRestore = ref<BinDocument | null>(null)
 
-const handleRestoreDocument = async (doc: BinDocument) => {
+const handleRestoreDocument = (doc: BinDocument) => {
   documentToRestore.value = doc
   isRestoring.value = true
 }

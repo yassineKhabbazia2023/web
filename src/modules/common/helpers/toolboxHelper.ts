@@ -9,7 +9,7 @@ export interface ToolboxLineWithOrder {
 export function generateToolboxBasicData(
   target: string,
   permissions: string[],
-  isInSearchScope?: boolean
+  isInSearchScope?: boolean,
 ): PToolboxItemProps[] {
   const toolboxBasicData: ToolboxLineWithOrder[] = []
   const mappingRecord =

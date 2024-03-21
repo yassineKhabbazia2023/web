@@ -1,13 +1,16 @@
 /* eslint-disable vitest/no-hooks */
 import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
 import SingleInputModal from '@/modules/common/templates/modals'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type CreateFolderModalProps }
   from '@/modules/Treeview/components/modals/Create/CreateFolderModalTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
+import { getMockedButtonTest } from '@/modules/Treeview/helpers/testHelper'
 
 const defaultProps: CreateFolderModalProps = {
   isCreateFolderModalVisible: false,
@@ -17,7 +20,7 @@ const defaultProps: CreateFolderModalProps = {
   cancelBtnLabel: 'string',
   confirmBtnabel: 'string',
   isConfirmButtonLoading: false,
-  selectedFolder: {} as Folder
+  selectedFolder: {} as Folder,
 }
 
 type CreateFolderModalSetup = {
@@ -32,13 +35,13 @@ export type CreateFolderModalWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: CreateFolderModalProps = defaultProps
+  props: CreateFolderModalProps = defaultProps,
 ): CreateFolderModalWrapper => {
   return mount(CreateFolderModal, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as CreateFolderModalWrapper
 }
 
@@ -47,37 +50,20 @@ describe('props', () => {
     setActivePinia(pinia)
   })
 
-  describe('confirm button validations', async () => {
+  describe('confirm button validations', () => {
     const folderName = `Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
       consectetur, adipisci velit Neque porro quisquam est qui dolorem
       ipsum quia dolor sit amet, consectetur, adipisci velit quisquam est
       qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit`
 
-    const btnValidationCases = [
-      {
-        typedValue: 'Test Content*',
-        isBtnDisabled: true
-      },
-      {
-        typedValue: '',
-        isBtnDisabled: true
-      },
-      {
-        typedValue: folderName,
-        isBtnDisabled: true
-      },
-      {
-        typedValue: 'New Folder',
-        isBtnDisabled: false
-      }
-    ]
+    const btnValidationCases = getMockedButtonTest(folderName)
 
     it.each(btnValidationCases)(
       'button validation with "%s"',
       async ({ typedValue, isBtnDisabled }) => {
         const props: CreateFolderModalProps = {
           ...defaultProps,
-          isCreateFolderModalVisible: true
+          isCreateFolderModalVisible: true,
         }
 
         const wrapper = createWrapper(props)
@@ -88,30 +74,30 @@ describe('props', () => {
         componentInstance.inputContent = typedValue
         await nextTick()
         expect(dialog.props('isConfirmButtonDisabled')).toBe(isBtnDisabled)
-      }
+      },
     )
   })
-  describe('error message sone display conditions', async () => {
+  describe('error message sone display conditions', () => {
     const showErrorMsgCases = [
       {
         typedValue: 'Test Content*',
-        isErrorMsgShown: true
+        isErrorMsgShown: true,
       },
       {
         typedValue: '',
-        isErrorMsgShown: false
+        isErrorMsgShown: false,
       },
       {
         typedValue: 'New Folder',
-        isErrorMsgShown: false
-      }
+        isErrorMsgShown: false,
+      },
     ]
     it.each(showErrorMsgCases)(
       'error message display with "%s"',
       async ({ typedValue, isErrorMsgShown }) => {
         const props: CreateFolderModalProps = {
           ...defaultProps,
-          isCreateFolderModalVisible: true
+          isCreateFolderModalVisible: true,
         }
 
         const wrapper = createWrapper(props)
@@ -123,29 +109,29 @@ describe('props', () => {
         await nextTick()
 
         expect(dialog.props('showErrorMsg')).toBe(isErrorMsgShown)
-      }
+      },
     )
   })
-  describe('error message zone dynamic content', async () => {
+  describe('error message zone dynamic content', () => {
     const errorMsgValueCases = [
       {
         typedValue: 'Test Content*',
         expectedValue:
           'Entrez un nom qui ne contient aucun des caractères suivants : “ * : &lt; &gt; ? / \\',
-        isFolderNameExits: false
+        isFolderNameExits: false,
       },
       {
         typedValue: 'New Folder',
         expectedValue: 'Un dossier avec le nom New Folder existe déjà',
-        isFolderNameExits: true
-      }
+        isFolderNameExits: true,
+      },
     ]
     it.each(errorMsgValueCases)(
       'error message value assertion with "%s"',
       async ({ typedValue, expectedValue, isFolderNameExits }) => {
         const props: CreateFolderModalProps = {
           ...defaultProps,
-          isCreateFolderModalVisible: true
+          isCreateFolderModalVisible: true,
         }
 
         const wrapper = createWrapper(props)
@@ -160,7 +146,7 @@ describe('props', () => {
         await nextTick()
 
         expect(dialog.props('errorMsg')).toBe(expectedValue)
-      }
+      },
     )
   })
 })
@@ -169,10 +155,10 @@ describe('interactions', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })
-  it('should emit on-confirm-create-folder when confirm btn click ', async () => {
+  it('should emit on-confirm-create-folder when confirm btn click', async () => {
     const props: CreateFolderModalProps = {
       ...defaultProps,
-      isCreateFolderModalVisible: true
+      isCreateFolderModalVisible: true,
     }
 
     const wrapper = createWrapper(props)
@@ -191,7 +177,7 @@ describe('interactions', () => {
 
     expect(wrapper.emitted('on-confirm-create-folder')).toBeTruthy()
     expect(wrapper.emitted('on-confirm-create-folder')).toStrictEqual([
-      ['TheFolder']
+      ['TheFolder'],
     ])
   })
 
@@ -204,8 +190,8 @@ describe('interactions', () => {
         parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      }
+        serviceId: 'some-service',
+      },
     },
     {
       childrenFolder: {
@@ -215,8 +201,8 @@ describe('interactions', () => {
         parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      }
+        serviceId: 'some-service',
+      },
     },
     {
       childrenFolder: {
@@ -226,11 +212,11 @@ describe('interactions', () => {
         parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      }
-    }
+        serviceId: 'some-service',
+      },
+    },
   ])(
-    'should not emit on-confirm-create-folder when folder name already exists ',
+    'should not emit on-confirm-create-folder when folder name already exists',
     async ({ childrenFolder }) => {
       const props: CreateFolderModalProps = {
         ...defaultProps,
@@ -239,15 +225,15 @@ describe('interactions', () => {
           id: 1,
           children: [
             {
-              ...childrenFolder
-            } as Folder
+              ...childrenFolder,
+            } as Folder,
           ],
           name: 'A',
           parent: { id: 0 },
           permissions: [],
           properties: {} as FolderProperties,
-          serviceId: 'some-service'
-        } as Folder
+          serviceId: 'some-service',
+        } as Folder,
       }
 
       const wrapper = createWrapper(props)
@@ -264,13 +250,13 @@ describe('interactions', () => {
       await nextTick()
 
       expect(wrapper.emitted('on-confirm-create-folder')).toBeFalsy()
-    }
+    },
   )
 
-  it('should emit on-cancel-create-folder when cancel btn click ', async () => {
+  it('should emit on-cancel-create-folder when cancel btn click', async () => {
     const props: CreateFolderModalProps = {
       ...defaultProps,
-      isCreateFolderModalVisible: true
+      isCreateFolderModalVisible: true,
     }
 
     const wrapper = createWrapper(props)
@@ -288,7 +274,7 @@ describe('interactions', () => {
   it('should emit on-close-create-folder when close modal', async () => {
     const props: CreateFolderModalProps = {
       ...defaultProps,
-      isCreateFolderModalVisible: true
+      isCreateFolderModalVisible: true,
     }
 
     const wrapper = createWrapper(props)
@@ -303,7 +289,6 @@ describe('interactions', () => {
 
   it('should emit update:isCreateFolderModalVisible when isCreateFolderModalVisible is updated',
     async () => {
-
       const wrapper = createWrapper()
 
       wrapper.vm.isDialogVisible = true

@@ -1,4 +1,4 @@
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 
 interface ModalActionsWithOrder {
     modalButton: ButtonAction
@@ -7,7 +7,7 @@ interface ModalActionsWithOrder {
 
 export function generateActionsForModal(
   permissions: string[],
-  actionbuttons: Record<string, ModalActionsWithOrder>
+  actionbuttons: Record<string, ModalActionsWithOrder>,
 ): ButtonAction[] {
   const actionbuttonsData: ModalActionsWithOrder[] = []
   for (const permission of permissions) {

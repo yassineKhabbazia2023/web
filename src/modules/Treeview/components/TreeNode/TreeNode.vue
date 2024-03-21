@@ -58,7 +58,7 @@ import {
   PIPersonVcard,
   PITrash,
   PTooltip,
-  PIcon
+  PIcon,
 } from '@kpmg/styleguide'
 
 import TreeNodeActions from '@/modules/Treeview/components/TreeNodeActions'

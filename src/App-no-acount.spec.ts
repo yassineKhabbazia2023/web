@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Ged from './'
 import { createPinia, setActivePinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
@@ -9,9 +10,9 @@ import { nextTick } from 'vue'
 
 const piniaStore = createPinia()
 
-vi.mock('@kpmg/common', async () => ({
+vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    ds: vi.fn()
+    ds: vi.fn(),
   }),
   commonStore: () => ({
     $delete: vi.fn(),
@@ -19,31 +20,31 @@ vi.mock('@kpmg/common', async () => ({
     $get: vi.fn(),
     $post: vi.fn(),
     defaultEntity: {
-    }
-  })
+    },
+  }),
 }))
 
 vi.mock('@/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     getConnection: vi.fn(() => ({
-      on: vi.fn()
-    }))
-  })
+      on: vi.fn(),
+    })),
+  }),
 }))
 
 vi.mock('@/services/Folder', () => ({
-  fetchServicesFolders: vi.fn()
+  fetchServicesFolders: vi.fn(),
 }))
 
 vi.mock('@/services/Services', () => ({
-  fetchUserEntityServices: vi.fn()
+  fetchUserEntityServices: vi.fn(),
 }))
 
 const createWrapper = (): VueWrapper => {
   return mount(Ged, {
     global: {
-      plugins: [piniaStore]
-    }
+      plugins: [piniaStore],
+    },
   })
 }
 

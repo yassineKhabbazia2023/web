@@ -1,14 +1,16 @@
 /* eslint-disable vitest/no-hooks */
 import DocumentActions from './DocumentActions.vue'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import { PToolbox } from '@kpmg/styleguide'
 
 const defaultProps: DocumentActionsProps = {
-  permissions: []
+  permissions: [],
 }
 
 type DocumentActionsSetup = {
@@ -23,18 +25,18 @@ export type DocumentActionsWrapper = VueWrapper<ComponentPublicInstance<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentActionsProps = defaultProps
+  props: DocumentActionsProps = defaultProps,
 ): DocumentActionsWrapper => {
   return mount(DocumentActions, {
     props,
     global: {
       stubs: {
         PToolbox: {
-          template: '<span />'
-        }
+          template: '<span />',
+        },
       },
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as DocumentActionsWrapper
 }
 
@@ -44,10 +46,10 @@ describe('documentActions', () => {
       setActivePinia(pinia)
     })
 
-    it('should render PToolbox according to the provided permissions', async () => {
+    it('should render PToolbox according to the provided permissions', () => {
       const updatedProps: DocumentActionsProps = {
         ...defaultProps,
-        permissions: ['CAN_DELETE_DOCUMENT']
+        permissions: ['CAN_DELETE_DOCUMENT'],
       }
       const wrapper = createWrapper(updatedProps)
       expect(wrapper.exists()).toBeTruthy()
@@ -58,20 +60,20 @@ describe('documentActions', () => {
         {
           pActionName: 'download-document',
           pIconName: 'PIDownload',
-          pValue: 'Télécharger'
+          pValue: 'Télécharger',
         },
         {
           pActionName: 'delete-document',
           pIconName: 'PITrash',
-          pValue: 'Supprimer'
-        }
+          pValue: 'Supprimer',
+        },
       ])
     })
 
-    it('should render download action even when permissions is empty', async () => {
+    it('should render download action even when permissions is empty', () => {
       const props: DocumentActionsProps = {
         ...defaultProps,
-        permissions: []
+        permissions: [],
       }
 
       const wrapper = createWrapper(props)
@@ -81,8 +83,8 @@ describe('documentActions', () => {
         {
           pActionName: 'download-document',
           pIconName: 'PIDownload',
-          pValue: 'Télécharger'
-        }
+          pValue: 'Télécharger',
+        },
       ])
     })
   })
@@ -92,7 +94,7 @@ describe('documentActions', () => {
       async () => {
         const updatedProps: DocumentActionsProps = {
           ...defaultProps,
-          permissions: ['CAN_DELETE_DOCUMENT']
+          permissions: ['CAN_DELETE_DOCUMENT'],
         }
 
         const wrapper = createWrapper(updatedProps)
@@ -103,11 +105,11 @@ describe('documentActions', () => {
         await nextTick()
 
         expect(
-          wrapper.emitted('on-document-actions-dropdown-close')
+          wrapper.emitted('on-document-actions-dropdown-close'),
         ).toStrictEqual([[true]])
       })
 
-    it('should handle handleActionsDropdownOpening', async () => {
+    it('should handle handleActionsDropdownOpening', () => {
       const wrapper: any = createWrapper()
       wrapper.vm.handleActionsDropdownOpening()
 

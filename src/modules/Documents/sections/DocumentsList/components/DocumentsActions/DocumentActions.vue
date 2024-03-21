@@ -6,10 +6,10 @@
     @visible-change="handleToolboxDropdownSateChange"
   >
     <PButton
-    pType="generic"
-    class="on-document-action-clicked"
-    pCircle
-    @click="handleActionsDropdownOpening">
+      pType="generic"
+      class="on-document-action-clicked"
+      pCircle
+      @click="handleActionsDropdownOpening">
       <PIcon size="14" color="#A4A4A4">
         <PIThreeDots />
       </PIcon>
@@ -25,7 +25,7 @@ import { type DocumentActionsProps } from './DocumentActionsTypes'
 
 const emit = defineEmits([
   'on-document-actions-dropdown-close',
-  'actions-dropdown-opened'
+  'actions-dropdown-opened',
 ])
 
 const props = defineProps<DocumentActionsProps>()
@@ -47,6 +47,6 @@ const handleActionsDropdownOpening = () => {
 }
 
 defineExpose({
-  handleActionsDropdownOpening
+  handleActionsDropdownOpening,
 })
 </script>

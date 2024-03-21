@@ -73,7 +73,7 @@ import {
   PText,
   PTag,
   PIPatchCheck,
-  PDoubleText
+  PDoubleText,
 } from '@kpmg/styleguide'
 import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
@@ -88,7 +88,7 @@ const tagIconByState = {
   default: PIStars,
   warning: PIArrowRepeat,
   danger: PIExclamationTriangle,
-  success: PICheckCircle
+  success: PICheckCircle,
 }
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {

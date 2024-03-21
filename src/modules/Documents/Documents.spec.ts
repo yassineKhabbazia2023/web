@@ -5,35 +5,38 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
 import { createPinia, setActivePinia } from 'pinia'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import DocumentsList from './sections/DocumentsList'
-import { DocumentsProps } from './DocumentsTypes'
+import type { DocumentsProps } from './DocumentsTypes'
 import {
   downloadDocument,
   fetchFolderDocuments,
   downloadDocuments,
   transmitDocuments,
-  fetchDocumentsByKeyWord
+  fetchDocumentsByKeyWord,
 } from '@/services/Documents'
 import {
   documentsResponsePayload,
-  documentsResponsePayloadMoreThanOneDoc
+  documentsResponsePayloadMoreThanOneDoc,
 } from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import { Document, DocumentsWithTableStructure, TableRowDocument } from '@/models/Document'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { Document, DocumentsWithTableStructure, TableRowDocument } from '@/models/Document'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import DocumentDeleteModal
   from '@/modules/Documents/components/DocumentDeleteModal'
 import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
 import DocumentRename from './components/DocumentRename'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import DocumentMove from './components/DocumentsMove'
-import { Folder } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import { PBreadcrumb, PPagination } from '@kpmg/styleguide'
 import DocumentPreview from './components/DocumentPreview'
 import { documentMock } from './mocks/documentMock'
 import DocumentsSearchAlert from './components/DocumentsSearchAlert'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
-import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import { generateTestFiles } from './helpers/testHelpers'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -59,34 +62,30 @@ const defaultProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   selectedEntity: 'my-entity',
   selectedFolder: foldersData[0][0].children[0],
-  currentServiceFolder: foldersData[0]
+  currentServiceFolder: foldersData[0],
 }
 
 const createWrapper = (
-  props: DocumentsProps = defaultProps
+  props: DocumentsProps = defaultProps,
 ): DocumentsWrapper => {
   return mount(Documents, {
     props,
     global: {
       stubs: {
         PToolbox: {
-          template: '<span />'
+          template: '<span />',
         },
         PButton: {
-          template: '<div />'
-        }
+          template: '<div />',
+        },
       },
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   }) as unknown as DocumentsWrapper
 }
-
-vi.mock('vue-inject', () => ({
-  provide: vi.fn()
-}))
 
 vi.mock('@/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
@@ -99,39 +98,13 @@ vi.mock('@/services/Documents', () => ({
   previewDocument: vi.fn(() => {
     return Promise.resolve({
       data: new ArrayBuffer(1),
-      headers: { 'content-type': 'image/jpeg' }
+      headers: { 'content-type': 'image/jpeg' },
     })
-  })
+  }),
 }))
 
-vi.mock('./helpers/downloadFilesHelper', () => ({
-  downloadFile: vi.fn()
-}))
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  }),
-  DataStreamHubConnection: vi.fn(() => ({
-    startConnection: vi.fn(() => {
-      return Promise.resolve()
-    }),
-    getConnection: vi.fn(() => {
-      return {
-        invoke: vi.fn(),
-        on: vi.fn(),
-        stop: vi.fn()
-      }
-    }),
-    destroyConnection: vi.fn()
-  })),
-  debounce: vi.fn((fn) => fn)
+vi.mock('@/modules/common/downloadFilesHelper', () => ({
+  downloadFile: vi.fn(),
 }))
 
 const DocumentPiaStatusChangedResponseMock = {
@@ -141,9 +114,9 @@ const DocumentPiaStatusChangedResponseMock = {
     technicalName: 'Duplicate',
     labelFr: 'Transmis',
     labelEn: 'Transmitted',
-    date: null
+    date: null,
   },
-  permissions: ['CAN_MOVE_DOCUMENT']
+  permissions: ['CAN_MOVE_DOCUMENT'],
 }
 
 vi.mock('@/models/AccountingHubConnection', () => ({
@@ -156,36 +129,16 @@ vi.mock('@/models/AccountingHubConnection', () => ({
           (eventName: string, newMethod: (res: string) => void) => {
             if (eventName === 'DocumentPiaStatusChanged') {
               newMethod(
-                JSON.stringify(DocumentPiaStatusChangedResponseMock)
+                JSON.stringify(DocumentPiaStatusChangedResponseMock),
               )
             }
-          }
-        )
-    }))
-  })
+          },
+        ),
+    })),
+  }),
 }))
 
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-
-const generateTestFiles = (
-  numberOfFiles: number,
-  state: 'VALID' | 'UNVALID'
-): File[] => {
-  const files: File[] = []
-  const conditionedFileSize = state === 'VALID' ? 2 : 0
-  const fileName = state === 'VALID' ? 'filename.txt' : 'filename.mykey'
-  const type = state === 'VALID' ? 'text/plain' : 'mykeyetc'
-
-  for (let i = 0; i < numberOfFiles; i++) {
-    const blob = new Blob(['Hello'], { type: 'text/plain' })
-    const fileContent = blob.slice(0, conditionedFileSize)
-    const file = new File([fileContent], fileName, {
-      type
-    })
-    files.push(file)
-  }
-  return files
-}
 
 const generateTestString = (stringLength: number) => {
   let str = ''
@@ -214,7 +167,6 @@ describe('documents', () => {
   const findDocumentsSearchAlert = (wrapper: DocumentsWrapper) =>
     wrapper.findComponent(DocumentsSearchAlert)
   beforeEach(() => {
-
     setActivePinia(pinia)
     flushPromises()
     vi.useFakeTimers()
@@ -232,7 +184,6 @@ describe('documents', () => {
 
       const documentsUploadWrapper = findDocumentUpload(wrapper)
       expect(documentsUploadWrapper.props('files')).toStrictEqual(files)
-
     })
 
     it('should propagate update-source-folders event from DocumentMove', async () => {
@@ -243,7 +194,7 @@ describe('documents', () => {
 
       await documentMoveWrapper.vm.$emit(
         'update-source-folders',
-        validDestination
+        validDestination,
       )
       await nextTick()
 
@@ -274,7 +225,7 @@ describe('documents', () => {
 
       const documentMoveWrapper = findDocumentMove(wrapper)
       await documentMoveWrapper.vm.$emit(
-        'close-move-documents-modal'
+        'close-move-documents-modal',
       )
       await nextTick()
 
@@ -287,12 +238,11 @@ describe('documents', () => {
 
       const documentUploadWrapper = findDocumentUpload(wrapper)
       await documentUploadWrapper.vm.$emit(
-        'close-upload-documents-modal '
+        'close-upload-documents-modal ',
       )
       await nextTick()
 
       expect(documentUploadWrapper.props('isUploadModalOpened')).toBeFalsy()
-
     })
 
     it('should navigate to folder oppon PBreadcrumb p-breadcrumb-item-click event', async () => {
@@ -301,6 +251,7 @@ describe('documents', () => {
 
       const pbreadCrumbWrapper = findPBreadCrumb(wrapper)
       await pbreadCrumbWrapper.vm.$emit('p-breadcrumb-item-click', validDestination.id)
+      await nextTick()
 
       expect(wrapper.emitted('change-selected-folder')).toHaveLength(1)
       expect(wrapper.emitted('change-selected-folder')).toStrictEqual([[validDestination]])
@@ -318,6 +269,7 @@ describe('documents', () => {
       await nextTick()
 
       await documents.vm.$emit('on-sort-change', '-created')
+      await nextTick()
 
       expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         foldersData[0][0].children[0].serviceId,
@@ -326,7 +278,7 @@ describe('documents', () => {
         0,
         10,
         '-created',
-        null
+        null,
       )
     })
 
@@ -344,6 +296,7 @@ describe('documents', () => {
         const documents = wrapper.findComponent(DocumentsList)
 
         await documents.vm.$emit('on-sort-change', '+name')
+        await nextTick()
 
         expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
           foldersData[0][0].children[0].serviceId,
@@ -352,7 +305,7 @@ describe('documents', () => {
           0,
           10,
           '+name',
-          'Hello'
+          'Hello',
         )
       })
 
@@ -372,15 +325,16 @@ describe('documents', () => {
 
       await documentsList.vm.$emit(
         'toolbox-action-triggered',
-        'download-document'
+        'download-document',
       )
+      await nextTick()
 
       expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
-        documentsResponsePayload.documentsPage.items[0].id
+        documentsResponsePayload.documentsPage.items[0].id,
       )
-    }
+    },
     )
 
     it('should use download as archive when number of ' +
@@ -398,15 +352,15 @@ describe('documents', () => {
 
       await documentActionBar.vm.$emit(
         'p-action-bar-button-clicked',
-        'actionbar-download-action-click'
+        'actionbar-download-action-click',
       )
       await nextTick()
       expect(vi.mocked(downloadDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
         documentsResponsePayloadMoreThanOneDoc.documentsPage.items.map(
-          (x) => x.id
-        )
+          (x) => x.id,
+        ),
       )
     })
 
@@ -422,6 +376,7 @@ describe('documents', () => {
       await nextTick()
 
       await documentRename.vm.$emit('document-rename')
+      await nextTick()
 
       expect(documentRename.props('modelValue')).toBeFalsy()
     })
@@ -438,6 +393,7 @@ describe('documents', () => {
       await nextTick()
 
       await documents.vm.$emit('toolbox-action-triggered', 'delete-document')
+      await nextTick()
 
       const deleteModal = wrapper.findComponent(DocumentDeleteModal)
 
@@ -456,6 +412,7 @@ describe('documents', () => {
       await nextTick()
 
       await deleteModal.vm.$emit('confirm-delete-document')
+      await nextTick()
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
       expect(deleteModal.props('documentIds')).toStrictEqual([])
@@ -466,7 +423,7 @@ describe('documents', () => {
         0,
         10,
         '-created',
-        null
+        null,
       )
     }, 30000)
 
@@ -484,6 +441,7 @@ describe('documents', () => {
         await nextTick()
 
         await deleteModal.vm.$emit('confirm-delete-document')
+        await nextTick()
 
         expect(deleteModal.props('isVisible')).toBeFalsy()
         expect(deleteModal.props('documentIds')).toStrictEqual([])
@@ -494,9 +452,8 @@ describe('documents', () => {
           0,
           10,
           '-created',
-          'Hello'
+          'Hello',
         )
-
       }, 30000)
 
     it('should close delete modal when cancel-delete-document is emitted', async () => {
@@ -508,6 +465,7 @@ describe('documents', () => {
       await nextTick()
 
       await deleteModal.vm.$emit('cancel-delete-document')
+      await nextTick()
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
     })
@@ -525,7 +483,7 @@ describe('documents', () => {
 
       await documentActionBar.vm.$emit(
         'p-action-bar-button-clicked',
-        'actionbar-delete-action-click'
+        'actionbar-delete-action-click',
       )
 
       await nextTick()
@@ -550,7 +508,7 @@ describe('documents', () => {
 
       await documentActionBar.vm.$emit(
         'p-action-bar-button-clicked',
-        'actionbar-rename-action-click'
+        'actionbar-rename-action-click',
       )
 
       await nextTick()
@@ -575,13 +533,14 @@ describe('documents', () => {
 
       await documentsList.vm.$emit(
         'toolbox-action-triggered',
-        'transmit-document'
+        'transmit-document',
       )
+      await nextTick()
 
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
-        [documentsResponsePayload.documentsPage.items[0].id]
+        [documentsResponsePayload.documentsPage.items[0].id],
       )
     })
 
@@ -599,8 +558,9 @@ describe('documents', () => {
 
       await documentsList.vm.$emit(
         'toolbox-action-triggered',
-        'transmit-document'
+        'transmit-document',
       )
+      await nextTick()
 
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledTimes(0)
     })
@@ -610,7 +570,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments = [
-        documentsResponsePayload.documentsPage.items[0]
+        documentsResponsePayload.documentsPage.items[0],
       ]
       await nextTick()
 
@@ -619,14 +579,14 @@ describe('documents', () => {
 
       await documentActionBar.vm.$emit(
         'p-action-bar-button-clicked',
-        'actionbar-transmit-action-click'
+        'actionbar-transmit-action-click',
       )
 
       await nextTick()
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
         defaultProps.selectedEntity,
-        [documentsResponsePayload.documentsPage.items[0].id]
+        [documentsResponsePayload.documentsPage.items[0].id],
       )
     })
 
@@ -635,7 +595,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments = [
-        documentsResponsePayload.documentsPage.items[0]
+        documentsResponsePayload.documentsPage.items[0],
       ]
       await nextTick()
 
@@ -644,7 +604,7 @@ describe('documents', () => {
 
       await documentActionBar.vm.$emit(
         'p-action-bar-button-clicked',
-        'actionbar-transmit-action-click'
+        'actionbar-transmit-action-click',
       )
       await nextTick()
 
@@ -656,7 +616,7 @@ describe('documents', () => {
         0,
         10,
         '-created',
-        null
+        null,
       )
     })
 
@@ -677,7 +637,7 @@ describe('documents', () => {
 
         await documentsList.vm.$emit(
           'toolbox-action-triggered',
-          'transmit-document'
+          'transmit-document',
         )
         await nextTick()
 
@@ -689,7 +649,7 @@ describe('documents', () => {
           0,
           10,
           '-created',
-          null
+          null,
         )
       })
 
@@ -710,7 +670,7 @@ describe('documents', () => {
 
         await documentsList.vm.$emit(
           'toolbox-action-triggered',
-          'transmit-document'
+          'transmit-document',
         )
         await nextTick()
 
@@ -723,7 +683,7 @@ describe('documents', () => {
           0,
           10,
           '-created',
-          'Hello'
+          'Hello',
         )
       })
 
@@ -740,9 +700,10 @@ describe('documents', () => {
 
       const tableRowDocument: TableRowDocument = {
         ...componentInstance.selectedDocuments[0],
-        _rowIndex: 0
+        _rowIndex: 0,
       }
       await documents.vm.$emit('table-row-clicked', tableRowDocument)
+      await nextTick()
 
       const documentPreview = wrapper.findComponent(DocumentPreview)
 
@@ -757,7 +718,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments = [
-        documentsResponsePayload.documentsPage.items[0]
+        documentsResponsePayload.documentsPage.items[0],
       ]
       await nextTick()
       const documents = wrapper.findComponent(DocumentsList)
@@ -765,10 +726,11 @@ describe('documents', () => {
 
       const tableRowDocument: TableRowDocument = {
         ...componentInstance.selectedDocuments[0],
-        _rowIndex: 0
+        _rowIndex: 0,
       }
 
       await documents.vm.$emit('table-row-clicked', tableRowDocument)
+      await nextTick()
 
       const documentPreview = wrapper.findComponent(DocumentPreview)
 
@@ -790,7 +752,7 @@ describe('documents', () => {
         const documentsListWrapper = findDocumentsList(wrapper)
         await documentsListWrapper.vm.$emit(
           'document-selection-change',
-          [documentMock]
+          [documentMock],
         )
         await nextTick()
 
@@ -800,16 +762,14 @@ describe('documents', () => {
 
         await documentsListWrapper.vm.$emit(
           'document-selection-change',
-          [documentMock]
+          [documentMock],
         )
         await nextTick()
 
         expect(documentMoveWrapper.props('selectedDocuments')).toHaveLength(1)
-
       })
 
-    it('should set current page saize oppon on-page-range-changed event ', async () => {
-
+    it('should set current page saize oppon on-page-range-changed event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
@@ -822,7 +782,7 @@ describe('documents', () => {
       await pPaginationWrapper.vm.$emit('on-page-range-changed', 50)
       await nextTick()
 
-      expect(pPaginationWrapper.props('pPageSize')).toStrictEqual(50)
+      expect(pPaginationWrapper.props('pPageSize')).toBe(50)
     })
 
     it('should open rename document modal oppon rename-document event', async () => {
@@ -836,12 +796,11 @@ describe('documents', () => {
       const documentListWrapper = findDocumentsList(wrapper)
       await documentListWrapper.vm.$emit(
         'toolbox-action-triggered',
-        'rename-document'
+        'rename-document',
       )
       await nextTick()
 
       expect(componentInstance.isRenameModalOpened).toBeTruthy()
-
     })
 
     it('should call fetchDocumentsByKeyWord upon p-search-input', async () => {
@@ -861,7 +820,7 @@ describe('documents', () => {
         0,
         10,
         '-created',
-        'Hello'
+        'Hello',
       )
     })
 
@@ -872,9 +831,9 @@ describe('documents', () => {
 
       const documentsActionBarWrapper = findDcumentActionBar(wrapper)
 
-      await documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
+      documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
+      await nextTick()
       expect(wrapper.find('.search-loader').exists()).toBeTruthy()
-
     })
 
     it(
@@ -910,32 +869,32 @@ describe('documents', () => {
       })
 
     describe('should display the serach results alerts upon meeting the right conditions',
-      async () => {
+      () => {
         const cases = [
           {
             params: {
               searchContent: 'Hello',
               isSearchExpanded: true,
-              isSearchLoading: false
+              isSearchLoading: false,
             },
-            expectedResult: true
+            expectedResult: true,
           },
           {
             params: {
               searchContent: '',
               isSearchExpanded: true,
-              isSearchLoading: false
+              isSearchLoading: false,
             },
-            expectedResult: false
+            expectedResult: false,
           },
           {
             params: {
               searchContent: '',
               isSearchExpanded: false,
-              isSearchLoading: false
+              isSearchLoading: false,
             },
-            expectedResult: false
-          }
+            expectedResult: false,
+          },
         ]
 
         it.each(cases)(
@@ -954,7 +913,7 @@ describe('documents', () => {
 
             await documentsActionBarWrapper.vm.$emit(
               'p-search-input',
-              params.searchContent
+              params.searchContent,
             )
             await nextTick()
 
@@ -963,9 +922,8 @@ describe('documents', () => {
             await nextTick()
 
             expect(documentsSearchAlertWrapper.exists()).toBe(expectedResult)
-          }
+          },
         )
-
       })
 
     it('should redirect to document location upon go-to-document event', async () => {
@@ -974,7 +932,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments.push(
-        documentsResponsePayload.documentsPage.items[0]
+        documentsResponsePayload.documentsPage.items[0],
       )
       await nextTick()
 
@@ -987,8 +945,9 @@ describe('documents', () => {
 
       await documentsList.vm.$emit(
         'toolbox-action-triggered',
-        'go-to-document'
+        'go-to-document',
       )
+      await nextTick()
 
       vi.useFakeTimers()
       vi.advanceTimersByTime(1000)
@@ -1005,7 +964,7 @@ describe('documents', () => {
 
       const drawer = wrapper.findComponent(DocumentSearchFiltrer)
       await drawer.vm.$emit(
-        'close-drawer'
+        'close-drawer',
       )
       await nextTick()
 
@@ -1021,7 +980,7 @@ describe('documents', () => {
 
       await documentActionBar.vm.$emit(
         'p-action-bar-button-clicked',
-        'actionbar-filter-action-click'
+        'actionbar-filter-action-click',
       )
       await nextTick()
       const drawer = wrapper.findComponent(DocumentSearchFiltrer)
@@ -1042,12 +1001,12 @@ describe('documents', () => {
       const res:DocumentSearchFilters = {
         selectedPeriod: 'DAY',
         startDate: new Date(1998, 11, 19),
-        endDate: new Date(1998, 11, 19)
+        endDate: new Date(1998, 11, 19),
       }
 
       const drawer = wrapper.findComponent(DocumentSearchFiltrer)
       await drawer.vm.$emit(
-        'apply-filters-drawer', res
+        'apply-filters-drawer', res,
       )
       await nextTick()
 
@@ -1058,7 +1017,7 @@ describe('documents', () => {
         0,
         10,
         '-created',
-        res
+        res,
       )
 
       expect(wrapper.vm.isFiltersDrawerOpened).toBeFalsy()
@@ -1071,7 +1030,7 @@ describe('documents', () => {
 
       await actionBar.vm.$emit(
         'p-action-bar-button-clicked',
-        'actionbar-filter-action-click'
+        'actionbar-filter-action-click',
       )
 
       await nextTick()
@@ -1086,7 +1045,7 @@ describe('documents', () => {
         0,
         10,
         '-created',
-        null
+        null,
       )
       expect(documentSearchFiltersWrapper.exists()).toBeFalsy()
     })

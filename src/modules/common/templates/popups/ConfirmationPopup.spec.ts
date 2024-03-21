@@ -1,11 +1,13 @@
 import ConfirmationPopup from '@/modules/common/templates/popups'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type ConfirmationPopupProps } from
   '@/modules/common/templates/popups/ConfirmationPopupTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import { PDialog } from '@kpmg/styleguide'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 
 const defaultProps: ConfirmationPopupProps = {
   isPopupVisible: false,
@@ -13,7 +15,7 @@ const defaultProps: ConfirmationPopupProps = {
   message: '',
   confirmButtonContent: '',
   cancelButtonContent: '',
-  isConfirmButtonLoading: false
+  isConfirmButtonLoading: false,
 }
 
 type ConfirmationPopupSetup = {
@@ -27,13 +29,13 @@ export type ConfirmationPopupWrapper = VueWrapper<
 const pinia = createPinia()
 
 const createWrapper = (
-  props: ConfirmationPopupProps = defaultProps
+  props: ConfirmationPopupProps = defaultProps,
 ): ConfirmationPopupWrapper =>
   mount(ConfirmationPopup, {
     props,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as unknown as ConfirmationPopupWrapper
 
 const getPopupConfirmationButton = (wrapper: VueWrapper) =>
@@ -45,17 +47,15 @@ describe('confirmationPopup', () => {
   })
 
   describe('props', () => {
-
-    it('should display popup when isPopupVisible is true', async () => {
-
+    it('should display popup when isPopupVisible is true', () => {
       const wrapper = createWrapper()
       expect(wrapper.find('.confirmation-popup__message').exists()).toBeFalsy()
     })
 
-    it('should hide popup when isPopupVisible is false', async () => {
+    it('should hide popup when isPopupVisible is false', () => {
       const updatedProps: ConfirmationPopupProps = {
         ...defaultProps,
-        isConfirmButtonLoading: false
+        isConfirmButtonLoading: false,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -68,7 +68,7 @@ describe('confirmationPopup', () => {
         const updatedProps: ConfirmationPopupProps = {
           ...defaultProps,
           isPopupVisible: true,
-          isConfirmButtonLoading: true
+          isConfirmButtonLoading: true,
         }
 
         const wrapper = createWrapper(updatedProps)
@@ -83,7 +83,7 @@ describe('confirmationPopup', () => {
     it('should emit on-confirm-button-click when click on confirmation button', async () => {
       const updatedProps: ConfirmationPopupProps = {
         ...defaultProps,
-        isPopupVisible: true
+        isPopupVisible: true,
       }
       const wrapper = createWrapper(updatedProps)
       await nextTick()
@@ -92,13 +92,12 @@ describe('confirmationPopup', () => {
 
       await confirmationButton.trigger('click')
       expect(wrapper.emitted('on-confirm-button-click')).toBeTruthy()
-
     })
 
     it('should emit on-cancel-button-click when click on cancel button', async () => {
       const updatedProps: ConfirmationPopupProps = {
         ...defaultProps,
-        isPopupVisible: true
+        isPopupVisible: true,
       }
       const wrapper = createWrapper(updatedProps)
       await nextTick()
@@ -112,7 +111,7 @@ describe('confirmationPopup', () => {
     it('should emit on-close-popup when click on close dilaog button', async () => {
       const updatedProps: ConfirmationPopupProps = {
         ...defaultProps,
-        isPopupVisible: true
+        isPopupVisible: true,
       }
       const wrapper = createWrapper(updatedProps)
       const pdialog = wrapper.findComponent(PDialog)
@@ -124,7 +123,7 @@ describe('confirmationPopup', () => {
     })
     it('should emit update:isPopupVisible when isPopupVisible value has changed', async () => {
       const updatedProps: ConfirmationPopupProps = {
-        ...defaultProps
+        ...defaultProps,
       }
       const wrapper = createWrapper(updatedProps)
       wrapper.vm.isPopupVisible = true
@@ -134,5 +133,4 @@ describe('confirmationPopup', () => {
       expect(wrapper.emitted('update:isPopupVisible')).toBeTruthy()
     })
   })
-
 })

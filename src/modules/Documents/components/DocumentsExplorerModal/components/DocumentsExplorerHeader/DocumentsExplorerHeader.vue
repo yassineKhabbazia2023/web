@@ -38,24 +38,24 @@ import {
   PCollapseItem,
   PIExclamationTriangle,
   PFileAndFolderLineCheck,
-  PTooltip
+  PTooltip,
 } from '@kpmg/styleguide'
 import { type DocumentsExplorerHeaderProps } from './DocumentsExplorerHeaderTypes'
 import {
   getFileErrorMessage,
-  getFileErrorDescription
+  getFileErrorDescription,
 } from '@/modules/common/helpers/documentCodeErrorHelper'
 
 const props = defineProps<DocumentsExplorerHeaderProps>()
 
 const firstCollapseItem = reactive({
   pTitleCollapseItem: props.headerTitle,
-  pIcon: PIExclamationTriangle
+  pIcon: PIExclamationTriangle,
 })
 
 const filteredFailedDocuments = computed(() => props.documents
   .filter((d) => d.givenActionState === 'ERROR')
-  .map(doc => ({ name: doc.content.name, codeError: doc.codeError }))
+  .map(doc => ({ name: doc.content.name, codeError: doc.codeError })),
 )
 </script>
 

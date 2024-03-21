@@ -6,7 +6,7 @@ import type { Folder } from '@/models/Folder'
 
 const findParentAndOperate = (
   folders: Folder[],
-  operation: (folder: Folder) => boolean
+  operation: (folder: Folder) => boolean,
 ): boolean => {
   for (const folder of folders) {
     if (operation(folder)) {
@@ -24,7 +24,7 @@ const findParentAndOperate = (
 
 export const findFolderDeepById = (
   array: Folder[],
-  folderId: number | null
+  folderId: number | null,
 ): Folder | undefined => {
   for (let i = 0; i < array.length; i++) {
     const element = array[i]
@@ -40,7 +40,7 @@ export const findFolderDeepById = (
 
 export const findCurrentServiceFolder = (
   array: Folder[][],
-  serviceId: string
+  serviceId: string,
 ): Folder[] | undefined => {
   return array.find((innerArry) => {
     if (innerArry.some((x) => x.serviceId === serviceId)) {
@@ -54,7 +54,7 @@ export const appendChildFolder = (
   servicesFolders: Folder[][],
   parentId: number,
   newFolder: Folder,
-  serviceId: string
+  serviceId: string,
 ): boolean => {
   return servicesFolders.some((serviceFolder) => {
     if (serviceFolder[0].serviceId === serviceId) {
@@ -72,7 +72,7 @@ export const appendChildFolder = (
 export const renameFolder = (
   servicesFolders: Folder[][],
   serviceId: string,
-  folderUpdated: Folder
+  folderUpdated: Folder,
 ): boolean => {
   return servicesFolders.some((serviceFolder) => {
     if (serviceFolder[0].serviceId === serviceId) {
@@ -90,7 +90,7 @@ export const renameFolder = (
 export const sortFolderByName = (
   array: Folder[][],
   serviceId: string,
-  folderToSortId: number
+  folderToSortId: number,
 ) => {
   return array.some((serviceFolder) => {
     if (serviceFolder[0].serviceId === serviceId) {
@@ -110,14 +110,14 @@ export const deleteFolder = (
   array: Folder[][],
   serviceId: string,
   parentFolderId: Folder['id'],
-  folderIdToDelete: Folder['id']
+  folderIdToDelete: Folder['id'],
 ) => {
   return array.some((serviceFolder) => {
     if (serviceFolder[0].serviceId === serviceId) {
       return findParentAndOperate(serviceFolder, (folder) => {
         if (folder.id === parentFolderId) {
           const folderIndex = folder.children.findIndex(
-            (child) => child.id === folderIdToDelete
+            (child) => child.id === folderIdToDelete,
           )
           if (folderIndex !== -1) {
             folder.children.splice(folderIndex, 1)

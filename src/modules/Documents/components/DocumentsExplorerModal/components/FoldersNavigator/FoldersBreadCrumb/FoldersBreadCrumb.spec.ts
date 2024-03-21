@@ -1,11 +1,13 @@
-import { Folder } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
-import { FoldersBreadCrumbProps } from './FoldersBreadCrumbTypes'
-import { VueWrapper, mount } from '@vue/test-utils'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { FoldersBreadCrumbProps } from './FoldersBreadCrumbTypes'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import FoldersBreadCrumb from '.'
-import { BreadcrumbItems }
+import type { BreadcrumbItems }
   from '@kpmg/styleguide/dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes'
 import { PBreadcrumb, PIcon } from '@kpmg/styleguide'
 
@@ -14,7 +16,7 @@ const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
 
 const defaultProps: FoldersBreadCrumbProps = {
   currentFolder: validDestination,
-  currentServiceFolder
+  currentServiceFolder,
 }
 
 type FoldersBreadCrumbSetup = {
@@ -26,10 +28,10 @@ export type FoldersBreadCrumbWrapper = VueWrapper<
 >
 
 const createWrapper = (
-  props: FoldersBreadCrumbProps = defaultProps
+  props: FoldersBreadCrumbProps = defaultProps,
 ): FoldersBreadCrumbWrapper => {
   return mount(FoldersBreadCrumb, {
-    props
+    props,
   }) as unknown as FoldersBreadCrumbWrapper
 }
 
@@ -44,7 +46,7 @@ describe('foldersBreadCrumb', () => {
     it('should generate breadcrumb correctly', async () => {
       const expectedResult: BreadcrumbItems[] = [
         { pId: 135393636, pText: 'Comptabilité' },
-        { pId: 135393637, pText: 'Dépôt' }
+        { pId: 135393637, pText: 'Dépôt' },
       ]
       const wrapper = createWrapper()
 
@@ -67,7 +69,7 @@ describe('foldersBreadCrumb', () => {
 
       expect(wrapper.emitted('navigate-to-folder')).toHaveLength(1)
       expect(wrapper.emitted('navigate-to-folder')).toStrictEqual([
-        [validDestination]
+        [validDestination],
       ])
     })
     it('should open create folder modal when click on create folder icon', async () => {

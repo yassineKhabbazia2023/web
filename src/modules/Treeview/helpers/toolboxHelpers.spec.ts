@@ -8,7 +8,7 @@ describe('toolboxHelpers', () => {
     CAN_CREATE_FOLDER,
     CAN_DOWNLOAD_FOLDER,
     CAN_DELETE_FOLDER,
-    CAN_RENAME_FOLDER
+    CAN_RENAME_FOLDER,
   } = foldersMappingRecord
   it('should return correct mapping when passing permission array', () => {
     const res = generateToolboxBasicData('Folders',
@@ -17,22 +17,22 @@ describe('toolboxHelpers', () => {
     const expectedRes = [
       CAN_CREATE_FOLDER.toolboxLine,
       CAN_DOWNLOAD_FOLDER.toolboxLine,
-      CAN_DELETE_FOLDER.toolboxLine
+      CAN_DELETE_FOLDER.toolboxLine,
     ]
 
     expect(res).toStrictEqual(expectedRes)
   })
 
-  it('should return correct mapping when passing permission array', () => {
+  it('should return correct mapping when passing permission array (2)', () => {
     const res = generateToolboxBasicData('Folders', [
       'CAN_RENAME_FOLDER',
-      'CAN_CREATE_FOLDER'
+      'CAN_CREATE_FOLDER',
     ])
 
     const expectedRes = [
       CAN_CREATE_FOLDER.toolboxLine,
       CAN_RENAME_FOLDER.toolboxLine,
-      CAN_DOWNLOAD_FOLDER.toolboxLine
+      CAN_DOWNLOAD_FOLDER.toolboxLine,
     ]
 
     expect(res).toStrictEqual(expectedRes)

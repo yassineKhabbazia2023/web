@@ -2,94 +2,38 @@
 /* eslint-disable vitest/no-hooks */
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { ExplorerMoveFolder, FoldersMoveProps } from './FoldersMoveTypes'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import { Folder } from '@/models/Folder'
-import { Service } from '@/models/Service'
-import { VueWrapper, mount } from '@vue/test-utils'
-import { ComponentPublicInstance, nextTick } from 'vue'
+import type { FoldersMoveProps } from './FoldersMoveTypes'
+import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import FoldersMove from '.'
-import { GivenActionAuthorization } from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
-
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-const folderToMove: Folder =
-  foldersData[0][0].children[0].children[0].children[0] // id : 11111111
-
-const currentServiceFolder: Folder[] = foldersData[0]
-const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
-const selectedEntity = 'my-selected-entity'
-
-const defaultProps: FoldersMoveProps = {
-  folder: validDestination,
-  isMoveModalOpened: false,
-  currentServiceFolder,
-  currentService: curentService,
-  selectedEntity,
-  folderToMove
-}
-
-type FoldersMoveSetup = {
-  isDocumentExplorerModalOpened: boolean
-  explorerDocuments: ExplorerMoveFolder[]
-  numberOfSelectedFolders: number
-  isMoveAuthorized: GivenActionAuthorization
-  modalActionsButtons: ButtonAction[]
-  currentExplorerFolder: Folder
-}
-
-export type FoldersMoveWrapper = VueWrapper<
-  ComponentPublicInstance<FoldersMoveProps, FoldersMoveSetup>
->
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  }),
-  debounce: vi.fn((fn) => fn)
-}))
+import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
 
 vi.mock('@/services/Folder', () => ({
   moveFolderAsync: () => {
     throw new Error('Something uncool')
-  }
+  },
 }))
 
 const mockToastPlugin = vi.fn()
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn()
-}))
-
 const createWrapper = (
-  props: FoldersMoveProps = defaultProps
+  props: FoldersMoveProps = defaultProps,
 ): FoldersMoveWrapper => {
   return mount(FoldersMove, {
     props,
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   }) as unknown as FoldersMoveWrapper
 }
 
 const pinia = createPinia()
 
-describe('foldersMove', () => {
-  // Finders
-
-  const findDocumentsExplorerModal = (wrapper: FoldersMoveWrapper) =>
-    wrapper.findComponent(DocumentModalExplorer)
-
+describe('test FoldersMove failure', () => {
   beforeEach(() => {
     setActivePinia(pinia)
   })
@@ -100,17 +44,17 @@ describe('foldersMove', () => {
         it('should display failure notification on modal-action-clicked event', async () => {
           const updatedProps = {
             ...defaultProps,
-            isMoveModalOpened: true
+            isMoveModalOpened: true,
           }
 
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-            findDocumentsExplorerModal(wrapper)
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
-          await documentExplorerModalWrapper.vm.$emit(
+          documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-folder-action-click'
+            'modal-move-folder-action-click',
           )
 
           await nextTick()

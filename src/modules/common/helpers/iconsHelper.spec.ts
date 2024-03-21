@@ -20,7 +20,7 @@ import {
   PIFiletypeTxt,
   PIFiletypeXls,
   PIFiletypeXlsx,
-  PIFiletypeXml
+  PIFiletypeXml,
 } from '@kpmg/styleguide'
 
 describe('toolget File Iconbox helper', () => {
@@ -28,101 +28,101 @@ describe('toolget File Iconbox helper', () => {
     const cases = [
       {
         input: '.bmp',
-        expectedResult: PIFiletypeBmp
+        expectedResult: PIFiletypeBmp,
       },
       {
         input: '.csv',
-        expectedResult: PIFiletypeCsv
+        expectedResult: PIFiletypeCsv,
       },
       {
         input: '.doc',
-        expectedResult: PIFiletypeDoc
+        expectedResult: PIFiletypeDoc,
       },
       {
         input: '.docx',
-        expectedResult: PIFiletypeDocx
+        expectedResult: PIFiletypeDocx,
       },
       {
         input: '.gif',
-        expectedResult: PIFiletypeGif
+        expectedResult: PIFiletypeGif,
       },
       {
         input: '.heic',
-        expectedResult: PIFiletypeHeic
+        expectedResult: PIFiletypeHeic,
       },
       {
         input: '.jpg',
-        expectedResult: PIFiletypeJpg
+        expectedResult: PIFiletypeJpg,
       },
       {
         input: '.md',
-        expectedResult: PIFiletypeMd
+        expectedResult: PIFiletypeMd,
       },
       {
         input: '.pdf',
-        expectedResult: PIFiletypePdf
+        expectedResult: PIFiletypePdf,
       },
       {
         input: '.png',
-        expectedResult: PIFiletypePng
+        expectedResult: PIFiletypePng,
       },
       {
         input: '.ppt',
-        expectedResult: PIFiletypePpt
+        expectedResult: PIFiletypePpt,
       },
       {
         input: '.pptx',
-        expectedResult: PIFiletypePptx
+        expectedResult: PIFiletypePptx,
       },
       {
         input: '.raw',
-        expectedResult: PIFiletypeRaw
+        expectedResult: PIFiletypeRaw,
       },
       {
         input: '.svg',
-        expectedResult: PIFiletypeSvg
+        expectedResult: PIFiletypeSvg,
       },
       {
         input: '.tiff',
-        expectedResult: PIFiletypeTiff
+        expectedResult: PIFiletypeTiff,
       },
       {
         input: '.txt',
-        expectedResult: PIFiletypeTxt
+        expectedResult: PIFiletypeTxt,
       },
       {
         input: '.xls',
-        expectedResult: PIFiletypeXls
+        expectedResult: PIFiletypeXls,
       },
       {
         input: '.xlsx',
-        expectedResult: PIFiletypeXlsx
+        expectedResult: PIFiletypeXlsx,
       },
       {
         input: '.xml',
-        expectedResult: PIFiletypeXml
+        expectedResult: PIFiletypeXml,
       },
       {
         input: '.test',
-        expectedResult: PIFileText
+        expectedResult: PIFileText,
       },
       {
         input: '.text',
-        expectedResult: PIFileText
+        expectedResult: PIFileText,
       },
       {
         input: 'noDot',
-        expectedResult: PIFileText
-      }
+        expectedResult: PIFileText,
+      },
     ]
 
     it.each(cases)(
       'pIcon mapping validation',
-      async ({ input, expectedResult }) => {
+      ({ input, expectedResult }) => {
         expect.hasAssertions()
         const result = getFileIcon(input)
         expect(result).toStrictEqual(expectedResult)
-      }
+      },
     )
   })
 })

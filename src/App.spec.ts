@@ -1,86 +1,58 @@
 /* eslint-disable max-len */
-import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import Ged from './'
 import { createPinia, setActivePinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { fetchUserEntityServices } from '@/services/Services'
 import { fetchServicesFolders } from '@/services/Folder'
-import { ComponentPublicInstance, nextTick } from 'vue'
-import { Folder, FolderProperties } from './models/Folder'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
+import type { Folder, FolderProperties } from './models/Folder'
 import { foldersData } from './modules/Treeview/mocks/treeFoldersMock'
 import { servicesData } from './modules/Treeview/mocks/servicesDataMock'
 import Treeview from './modules/Treeview'
-import { Service } from './models/Service'
+import type { Service } from './models/Service'
 import {
   appendChildFolder,
   sortFolderByName,
   deleteFolder,
   renameFolder,
-  findFolderDeepById
+  findFolderDeepById,
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 import Documents from '@/modules/Documents'
 import BinDocuments from '@/modules/Bin'
 
 const pinia = createPinia()
 
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-    defaultEntity: {
-      name: 'JEAN LÉVAGE',
-      idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21'
-    }
-  }),
-  DataStreamHubConnection: vi.fn(() => ({
-    startConnection: vi.fn(() => {
-      return Promise.resolve()
-    }),
-    getConnection: vi.fn(() => {
-      return {
-        invoke: vi.fn(),
-        on: vi.fn(),
-        stop: vi.fn()
-      }
-    }),
-    destroyConnection: vi.fn()
-  })),
-  debounce: vi.fn((fn) => fn)
-}))
-
 vi.mock('@/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     OnConnectedAsync: vi.fn(),
     OnDisconnectedAsync: vi.fn(),
     getConnection: vi.fn(() => ({
-      on: vi.fn()
-    }))
-  })
+      on: vi.fn(),
+    })),
+  }),
 }))
 
 vi.mock('@/services/Folder', () => ({
   fetchServicesFolders: vi.fn(() => {
     return foldersData
-  })
+  }),
 }))
 
 vi.mock('@/services/Services', () => ({
   fetchUserEntityServices: vi.fn(() => {
     return servicesData
-  })
+  }),
 }))
 
 vi.mock('@/services/Documents', () => ({
-  fetchFolderDocuments: vi.fn()
+  fetchFolderDocuments: vi.fn(),
 }))
 
 vi.mock('@/services/BinDocuments', () => ({
-  fetchBinDocuments: vi.fn()
+  fetchBinDocuments: vi.fn(),
 }))
 
 vi.mock('@/modules/Treeview/helpers/folderArrayHelper', async () => {
@@ -96,7 +68,7 @@ vi.mock('@/modules/Treeview/helpers/folderArrayHelper', async () => {
     renameFolder: vi.fn(() => {
       return true
     }),
-    findFolderDeepById: vi.fn()
+    findFolderDeepById: vi.fn(),
   }
 })
 
@@ -113,8 +85,8 @@ export type AppWrapper = VueWrapper<ComponentPublicInstance<AppSetup>>
 const createWrapper = (): AppWrapper => {
   return mount(Ged, {
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   }) as AppWrapper
 }
 
@@ -129,14 +101,14 @@ const folder = {
         permissions: [],
         properties: {} as FolderProperties,
         serviceId: 'some-service',
-        iconName: ''
-      } as Folder
+        iconName: '',
+      } as Folder,
   ],
   name: 'A',
   parent: { id: 0 },
   permissions: ['CAN_CREATE_FOLDER'],
   properties: {} as FolderProperties,
-  serviceId: 'some-service'
+  serviceId: 'some-service',
 } as Folder
 
 describe('ged', () => {
@@ -183,7 +155,7 @@ describe('ged', () => {
 
           expect(tree.props('selectedFolder')).toStrictEqual(folder)
           expect(tree.props('currentService')).toBe('some-service')
-        }
+        },
       )
 
       it(
@@ -208,7 +180,7 @@ describe('ged', () => {
           expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
           expect(tree.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
           expect(tree.props('currentService')).toBe('service-id-compta')
-        }
+        },
       )
 
       it('should set the trash serviceId on selected-bin-service-change', async () => {
@@ -226,7 +198,7 @@ describe('ged', () => {
         const componentInstance = wrapper.vm
 
         expect(componentInstance.currentBinService).toStrictEqual(
-          servicesData[0].ServiceId
+          servicesData[0].ServiceId,
         )
 
         const bin = wrapper.findComponent(BinDocuments)
@@ -243,7 +215,7 @@ describe('ged', () => {
 
         const tree = wrapper.findComponent(Treeview)
         await tree.vm.$emit(
-          'open-create-folder-modal'
+          'open-create-folder-modal',
         )
         await nextTick()
 
@@ -278,13 +250,12 @@ describe('ged', () => {
 
         await tree.vm.$emit(
           'remove-folder-from-source',
-          foldersData[0][0].children[0]
+          foldersData[0][0].children[0],
         )
         await nextTick()
 
         expect(vi.mocked(deleteFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
-
       })
 
       it('should rename folder in tree and sort when update-folder-name', async () => {
@@ -301,7 +272,6 @@ describe('ged', () => {
         expect(vi.mocked(renameFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
-
       })
     })
   })
@@ -361,7 +331,7 @@ describe('ged', () => {
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
         expect(bin.props('selectedServiceName')).toBe(foldersData[0][0].name)
         expect(bin.props('selectedEntity')).toBe(
-          '93012cc8-77b9-4161-8dbd-61915d935e21'
+          '93012cc8-77b9-4161-8dbd-61915d935e21',
         )
       })
       it('should hide bin component when currentBinService is not set', async () => {

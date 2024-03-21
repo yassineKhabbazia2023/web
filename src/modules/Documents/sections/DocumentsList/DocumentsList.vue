@@ -1,46 +1,46 @@
 <template>
- <section class="documents-table">
-  <PTable
-    v-if="documentsListWithTableStructure.documentsPage.items"
-    :pData="documentsListWithTableStructure.documentsPage.items"
-    ref="documentsListTable"
-    highlightCurrentRow
-    pStripe
-    :emptyText="t('noSearchData')"
-    @sort-change="handleSortChange"
-    @row-click="selectRow"
-    @selection-change="handleSelectionChange"
-  >
-    <!-- That is the current way of adding paddings without overriding styleguide -->
-    <PTableColumn width="32" label="" />
-
-    <PTableColumn type="selection" />
-    <PTableColumn
-      v-for="(column, index) in documentsListWithTableStructure.documentHeaders"
-      :key="index"
-      :label="column.columnName"
-      :minWidth="columnSizes[column.columnName]"
-      :sortable="sortableColumns.includes(column.columnName)"
+  <section class="documents-table">
+    <PTable
+      v-if="documentsListWithTableStructure.documentsPage.items"
+      :pData="documentsListWithTableStructure.documentsPage.items"
+      ref="documentsListTable"
+      highlightCurrentRow
+      pStripe
+      :emptyText="t('noSearchData')"
+      @sort-change="handleSortChange"
+      @row-click="selectRow"
+      @selection-change="handleSelectionChange"
     >
-      <template #default="scope">
-        <TableElement
-          v-if="scope.row"
-          :isInSearchScope="isInSearchScope"
-          :fieldType="column.fieldType"
-          :fieldName="column.columnName"
-          :data="scope.row"
-          @toolbox-action-triggered="handleToolboxActionTriggered"
-          @actions-dropdown-opened="selectRow"
-        />
-      </template>
-    </PTableColumn>
+      <!-- That is the current way of adding paddings without overriding styleguide -->
+      <PTableColumn width="32" label="" />
 
-    <!-- That is the current way of adding paddings without overriding styleguide -->
-    <PTableColumn width="40" label="" />
-  </PTable>
+      <PTableColumn type="selection" />
+      <PTableColumn
+        v-for="(column, index) in documentsListWithTableStructure.documentHeaders"
+        :key="index"
+        :label="column.columnName"
+        :minWidth="columnSizes[column.columnName]"
+        :sortable="sortableColumns.includes(column.columnName)"
+      >
+        <template #default="scope">
+          <TableElement
+            v-if="scope.row"
+            :isInSearchScope="isInSearchScope"
+            :fieldType="column.fieldType"
+            :fieldName="column.columnName"
+            :data="scope.row"
+            @toolbox-action-triggered="handleToolboxActionTriggered"
+            @actions-dropdown-opened="selectRow"
+          />
+        </template>
+      </PTableColumn>
 
-  <div class="blur-fade" />
- </section>
+      <!-- That is the current way of adding paddings without overriding styleguide -->
+      <PTableColumn width="40" label="" />
+    </PTable>
+
+    <div class="blur-fade" />
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -49,13 +49,13 @@ import { PTable, PTableColumn } from '@kpmg/styleguide'
 import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
 import type { ElTable } from 'element-plus'
-import { Document, TableRowDocument } from '@/models/Document'
+import type { Document, TableRowDocument } from '@/models/Document'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits([
@@ -64,7 +64,7 @@ const emit = defineEmits([
   'actionbar-button-clicked',
   'document-selection-change',
   'on-selection-change',
-  'table-row-clicked'
+  'table-row-clicked',
 ])
 
 const props = defineProps<DocumentsListProps>()
@@ -77,7 +77,7 @@ const columnSizes: Record<string, number> = {
   '': 199,
   'Déposé le': 199,
   Statut: 199,
-  Actions: 71
+  Actions: 71,
 }
 const isInSearchScope = ref(props.isInSearchScope)
 // eslint-disable-next-line vitest/require-hook
@@ -85,7 +85,7 @@ watch(
   () => [props.isInSearchScope],
   () => {
     isInSearchScope.value = props.isInSearchScope
-  }
+  },
 )
 
 // Behaviours
@@ -101,7 +101,6 @@ const handleToolboxActionTriggered = (action: string) => {
 }
 
 const selectRow = (documentRow: TableRowDocument, column:any) => {
-
   const shouldOpenDrawer =
      column &&
      props.documentsListWithTableStructure.documentHeaders

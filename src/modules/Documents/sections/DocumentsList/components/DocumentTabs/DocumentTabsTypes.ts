@@ -1,4 +1,4 @@
-import { Document } from '@/models/Document'
+import type { Document } from '@/models/Document'
 import type { Service } from '@/models/Service'
 
 export interface DocumentTabsProps {

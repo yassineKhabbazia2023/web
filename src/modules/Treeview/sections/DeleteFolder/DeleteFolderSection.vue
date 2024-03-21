@@ -26,14 +26,14 @@ import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
 // Definitions
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const emit = defineEmits([
   'on-delete-folder-completed',
-  'on-close-delete-folder'
+  'on-close-delete-folder',
 ])
 
 const props = defineProps<DeleteFolderSectionProps>()
@@ -62,7 +62,7 @@ const handleConfirmDeleteFolder = async () => {
       props.serviceId,
       props.entityId,
       props.selectedFolder.id,
-      false
+      false,
     )
 
     closeDeletePopup()
@@ -83,7 +83,7 @@ const triggerErrorNotification = () => {
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: true,
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 
@@ -93,7 +93,7 @@ const triggerSuccessNotification = () => {
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

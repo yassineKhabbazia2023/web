@@ -1,11 +1,11 @@
 import { commonApi as api } from '@kpmg/common'
-import { AxiosResponse } from 'axios'
+import type { AxiosResponse } from 'axios'
 import type { Document, DocumentsWithTableStructure } from '@/models/Document'
 import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'
-import { MoveDocumentsRequest } from
+import type { MoveDocumentsRequest } from
   '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
-import { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 
 export const fetchFolderDocuments = async (
   serviceId: Service['ServiceId'],
@@ -14,7 +14,7 @@ export const fetchFolderDocuments = async (
   skip = 0,
   limit = 10,
   sort = '-created',
-  filters: DocumentSearchFilters | null = null
+  filters: DocumentSearchFilters | null = null,
 ): Promise<DocumentsWithTableStructure> => {
   const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
   const apiObject = api().ds
@@ -25,9 +25,9 @@ export const fetchFolderDocuments = async (
         skip,
         limit,
         sort,
-        createdStart: (filters && filters.startDate) ?? null,
-        createdEnd: (filters && filters.endDate) ?? null
-      }
+        createdStart: filters?.startDate ?? null,
+        createdEnd: filters?.endDate ?? null,
+      },
     })
   ).data
 }
@@ -35,21 +35,20 @@ export const fetchFolderDocuments = async (
 export const downloadDocument = async (
   serviceId: Service['ServiceId'],
   accountId: string,
-  documentId: Document['id']
+  documentId: Document['id'],
 ): Promise<Blob> => {
   const downloadDocumentUrl = `${serviceId}/${accountId}/documents/${documentId}/content`
   const apiObject = api().ds
 
   return (await apiObject.get(downloadDocumentUrl, {
-    responseType: 'blob'
+    responseType: 'blob',
   })).data
-
 }
 
 export const downloadDocuments = async (
   serviceId: Service['ServiceId'],
   accountId: string,
-  documentsIds: Document['id'][]
+  documentsIds: Document['id'][],
 ): Promise<void> => {
   const downloadDocumentsUrl = `${serviceId}/${accountId}/archive`
   const apiObject = api().ds
@@ -58,8 +57,8 @@ export const downloadDocuments = async (
     downloadDocumentsUrl,
     { ids: documentsIds },
     {
-      responseType: 'blob'
-    }
+      responseType: 'blob',
+    },
   )).data
 }
 
@@ -67,13 +66,13 @@ export const renameDocument = async (
   serviceId: Service['ServiceId'],
   entityId: string,
   documentId: Document['id'],
-  newDocumentName: string
+  newDocumentName: string,
 ): Promise<void> => {
   const renameDocumentUrl = `${serviceId}/${entityId}/documents/${documentId}`
   const requestBody = [{
     op: 'replace',
     path: '/name',
-    value: newDocumentName
+    value: newDocumentName,
   }]
   return await api().ds.patch(renameDocumentUrl, requestBody)
 }
@@ -81,7 +80,7 @@ export const renameDocument = async (
 export const deleteDocuments = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
-  documentIds: string[]
+  documentIds: string[],
 ) => {
   const deleteFolderUrl = `${serviceId}/${entityId}/documents`
   const apiObject = api().ds
@@ -92,7 +91,7 @@ export const uploadDocument = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
   file: File,
-  folderId: number
+  folderId: number,
 ): Promise<Document> => {
   const formData = new FormData()
   formData.append('file', file)
@@ -103,16 +102,16 @@ export const uploadDocument = async (
     formData,
     {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }
+        'Content-Type': 'multipart/form-data',
+      },
+    },
   )
 }
 
 export const moveDocuments = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
-  fileMove: MoveDocumentsRequest
+  fileMove: MoveDocumentsRequest,
 ): Promise<void> => {
   const apiObject = api().ds
   return await apiObject.post(
@@ -120,16 +119,16 @@ export const moveDocuments = async (
     JSON.stringify(fileMove),
     {
       headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+        'Content-Type': 'application/json',
+      },
+    },
   )
 }
 
 export const transmitDocuments = async (
   serviceId: Service['ServiceId'],
   entityId: string,
-  documentsIds: string[]
+  documentsIds: string[],
 ): Promise<void> => {
   const apiObject = api().ds
   return await apiObject.post(
@@ -137,27 +136,27 @@ export const transmitDocuments = async (
     { ids: documentsIds },
     {
       headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+        'Content-Type': 'application/json',
+      },
+    },
   )
 }
 export interface DocumentPreviewResponse {
-  data: ArrayBuffer;
-  headers: { [key: string]: string };
+  data: ArrayBuffer
+  headers: { [key: string]: string }
 }
 
 export const previewDocument = async (
   serviceId: Service['ServiceId'],
   entityId: string,
-  documentId: Document['id']
+  documentId: Document['id'],
 ): Promise<DocumentPreviewResponse> => {
   const apiObject = api().ds
   const response: AxiosResponse<ArrayBuffer> = await apiObject.get(
     `${serviceId}/${entityId}/documents/${documentId}/preview`,
     {
-      responseType: 'arraybuffer'
-    }
+      responseType: 'arraybuffer',
+    },
   )
   const headers: { [key: string]: string } = {}
   if (response.headers) {
@@ -168,7 +167,7 @@ export const previewDocument = async (
 
   return {
     data: response.data,
-    headers
+    headers,
   }
 }
 
@@ -180,7 +179,7 @@ export const fetchDocumentsByKeyWord = async (
   limit: number,
   sort: string,
   search: string,
-  findInChildFolders = true
+  findInChildFolders = true,
 ): Promise<DocumentsWithTableStructure> => {
   const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
   const apiObject = api().ds
@@ -192,9 +191,8 @@ export const fetchDocumentsByKeyWord = async (
         limit,
         sort,
         search,
-        findInChildFolders
-      }
+        findInChildFolders,
+      },
     })
   ).data
 }
-

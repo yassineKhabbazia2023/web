@@ -3,7 +3,7 @@
 /* eslint-disable vitest/max-expects */
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { PFolderLineNavigationItem, PAlert, PImage } from '@kpmg/styleguide'
 import FoldersList
   from '@/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
@@ -21,35 +21,23 @@ const defaultProps: FoldersListProps = {
   isCreateFolderModalVisible: true,
   explorerUnauthorizedGivenActionMessage: 'msg',
   foldersListEmptyFolderLabel: 'lab',
-  explorerFolderListLineDisabledState: undefined
+  explorerFolderListLineDisabledState: undefined,
 }
 
 const createWrapper = (
-  props: FoldersListProps = defaultProps
+  props: FoldersListProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(FoldersList, {
-    props
+    props,
   })
 }
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  })
-}))
 
 describe('foldersList', () => {
   describe('props', () => {
     it('should render elements when current folder has no children', async () => {
       const props: FoldersListProps = {
         ...defaultProps,
-        currentFolder: foldersData[0][0].children[0].children[0].children[0]
+        currentFolder: foldersData[0][0].children[0].children[0].children[0],
       }
       const wrapper = createWrapper(props)
       await nextTick()
@@ -70,7 +58,7 @@ describe('foldersList', () => {
     it('should render PAlert when explorerAuthorizedGivenAction is false', async () => {
       const props: FoldersListProps = {
         ...defaultProps,
-        explorerAuthorizedGivenAction: false
+        explorerAuthorizedGivenAction: false,
       }
       const wrapper = createWrapper(props)
       await nextTick()
@@ -92,7 +80,7 @@ describe('foldersList', () => {
       const lines = wrapper.findAllComponents(PFolderLineNavigationItem)
       expect(lines).toHaveLength(1)
       expect(lines[0].props('pHasArrow')).toBeTruthy()
-      expect(lines[0].props('pLeftIcon')).toStrictEqual('PIFolder')
+      expect(lines[0].props('pLeftIcon')).toBe('PIFolder')
       expect(lines[0].props('pDisabled')).toBeFalsy()
 
       const img = wrapper.findComponent(PImage)
@@ -109,7 +97,7 @@ describe('foldersList', () => {
 
       expect(wrapper.emitted('navigate-to-folder')).toBeTruthy()
       expect(wrapper.emitted('navigate-to-folder')).toStrictEqual([
-        [foldersData[0][0].children[0].children[0]]
+        [foldersData[0][0].children[0].children[0]],
       ])
     })
 
@@ -119,10 +107,11 @@ describe('foldersList', () => {
 
       const section = wrapper.findComponent(CreateFolderSection)
       await section.vm.$emit('update-source-folders', newFolderData)
+      await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toBeTruthy()
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([
-        [newFolderData]
+        [newFolderData],
       ])
     })
 
@@ -132,6 +121,7 @@ describe('foldersList', () => {
 
       const section = wrapper.findComponent(CreateFolderSection)
       await section.vm.$emit('on-close-create-folder')
+      await nextTick()
 
       expect(wrapper.emitted('close-create-folder-modal')).toBeTruthy()
     })

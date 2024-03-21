@@ -18,7 +18,7 @@ import {
   PIFiletypeTxt,
   PIFiletypeXls,
   PIFiletypeXlsx,
-  PIFiletypeXml
+  PIFiletypeXml,
 } from '@kpmg/styleguide'
 const authorizedExtensions = [
   'bmp',
@@ -68,7 +68,7 @@ const authorizedExtensions = [
   'onetoc',
   'onetoc2',
   'onetmp',
-  'onepkg'
+  'onepkg',
 ]
 export const imageExtensions =
 ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'cur']

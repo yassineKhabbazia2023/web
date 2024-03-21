@@ -1,21 +1,23 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import { Folder } from '@/models/Folder'
-import { Service } from '@/models/Service'
-import { VueWrapper, mount } from '@vue/test-utils'
-import { ComponentPublicInstance, nextTick } from 'vue'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
-import { GivenActionAuthorization } from
+import type { Folder } from '@/models/Folder'
+import type { Service } from '@/models/Service'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
+import type { GivenActionAuthorization } from
   '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
 import { moveDocuments } from '@/services/Documents'
 import DocumentsModalActionsFooter from
   '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
 import { PButton } from '@kpmg/styleguide'
-import { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTypes'
+import type { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTypes'
 import DocumentsMove from '.'
 import { documentsMock } from '../../mocks/documentMock'
+import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
 
 // id: 135393636 without permission 'CAN_MOVE_INTO_FOLDER'
 const unValidDestination: Folder = foldersData[0][0]
@@ -35,7 +37,7 @@ const defaultProps: DocumentMoveProps = {
   currentServiceFolder,
   currentService: curentService,
   selectedEntity,
-  selectedDocuments: documentsMock
+  selectedDocuments: documentsMock,
 
 }
 
@@ -52,48 +54,29 @@ export type DocumentsMoveWrapper = VueWrapper<
   ComponentPublicInstance<DocumentMoveProps, DocumentMoveSetup>
 >
 
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  })
-}))
-
 vi.mock('@/services/Documents', () => ({
-  moveDocuments: vi.fn()
+  moveDocuments: vi.fn(),
 }))
 
 const mockToastPlugin = vi.fn()
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn()
-}))
-
 const createWrapper = (
-  props: DocumentMoveProps = defaultProps
+  props: DocumentMoveProps = defaultProps,
 ): DocumentsMoveWrapper => {
   return mount(DocumentsMove, {
     props,
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   }) as unknown as DocumentsMoveWrapper
 }
 
 const pinia = createPinia()
 
-describe('Documents Move', () => {
-  const findDocumentsExplorerModal = (wrapper: DocumentsMoveWrapper) =>
-    wrapper.findComponent(DocumentModalExplorer)
-
+describe('documents Move', () => {
   const findModalFooter = (wrapper: any) =>
     wrapper.findComponent(DocumentsModalActionsFooter)
 
@@ -106,51 +89,51 @@ describe('Documents Move', () => {
   })
 
   describe('props', () => {
-    it('should open and close modal based on isMoveModalOpened ', () => {
+    it('should open and close modal based on isMoveModalOpened', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.exists()).toBeTruthy()
     })
 
     it('should pass the correct title based on the selected folder', () => {
       const updatedProps = { ...defaultProps, isMoveModalOpened: true }
       const wrapper = createWrapper(updatedProps)
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
-      expect(documentExplorerModalWrapper.props('modalTitle')).toStrictEqual(
-        `Déplacer ${defaultProps.selectedDocuments.length} document dans ${validDestination.name}`
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+      expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
+        `Déplacer ${defaultProps.selectedDocuments.length} document dans ${validDestination.name}`,
       )
     })
 
     const cases = [
       {
         folder: validDestination,
-        expectedResult: true
+        expectedResult: true,
       },
       {
         folder: unValidDestination,
-        expectedResult: false
-      }
+        expectedResult: false,
+      },
     ]
 
     it.each(cases)(
       'should calculate the ExplorerAuthorizedGivenAction correctly with "%s"',
-      async ({ folder, expectedResult }) => {
+      ({ folder, expectedResult }) => {
         const updatedProps = {
           ...defaultProps,
           isMoveModalOpened: true,
-          folder
+          folder,
         }
 
         const wrapper = createWrapper(updatedProps)
         expect(wrapper.vm.isMoveAuthorized.isActionAuthorized).toStrictEqual(
-          expectedResult
+          expectedResult,
         )
-      }
+      },
     )
 
-    it('should mapExplorerDocumentFromFiles when provided document are changed ', async () => {
+    it('should mapExplorerDocumentFromFiles when provided document are changed', async () => {
       const updatedProps = { ...defaultProps, selectedDocuments: [] }
       const wrapper = createWrapper(updatedProps)
 
@@ -161,12 +144,12 @@ describe('Documents Move', () => {
 
       wrapper.setProps({
         selectedDocuments: documentsMock,
-        isMoveModalOpened: true
+        isMoveModalOpened: true,
       })
 
       await nextTick()
       expect(wrapper.vm.explorerDocuments).toHaveLength(1)
-      expect(wrapper.vm.explorerDocuments[0].givenActionState).toStrictEqual('TO_DO')
+      expect(wrapper.vm.explorerDocuments[0].givenActionState).toBe('TO_DO')
     })
   })
 
@@ -178,10 +161,10 @@ describe('Documents Move', () => {
       wrapper.vm.explorerDocuments[0].givenActionState = 'FAILED'
       await nextTick()
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
-        'modal-action-clicked'
+        'modal-action-clicked',
       )
 
       await nextTick()
@@ -194,13 +177,14 @@ describe('Documents Move', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       wrapper.vm.explorerDocuments.forEach(element => {
         element.givenActionState = 'DONE'
       })
       await nextTick()
       await documentExplorerModalWrapper.vm.$emit('close-modal')
+      await nextTick()
 
       expect(wrapper.emitted('close-move-documents-modal')).toHaveLength(1)
     })
@@ -210,15 +194,16 @@ describe('Documents Move', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'navigate-to-folder',
-        secondValidDestination
+        secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.vm.currentExplorerFolder).toStrictEqual(
-        secondValidDestination
+        secondValidDestination,
       )
     })
 
@@ -227,26 +212,26 @@ describe('Documents Move', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const documentExplorerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
       await documentExplorerModalWrapper.vm.$emit(
         'update-source-folders',
-        secondValidDestination
+        secondValidDestination,
       )
+      await nextTick()
 
       expect(wrapper.emitted('update-source-folders')).toHaveLength(1)
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([
-        [secondValidDestination]
+        [secondValidDestination],
       ])
     })
 
     it('should disable confirm button if there is 0 documents with the todo state', async () => {
-
       const updatedProps = { ...defaultProps, selectedDocuments: [] }
       const wrapper = createWrapper(updatedProps)
       wrapper.setProps({ isMoveModalOpened: true })
       await nextTick()
-      const documentsExporerModalWrapper = findDocumentsExplorerModal(wrapper)
+      const documentsExporerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       const footerWrapper = findModalFooter(documentsExporerModalWrapper)
 
       const confirmBtn = findConfirmButton(footerWrapper)
@@ -255,18 +240,17 @@ describe('Documents Move', () => {
 
     describe('move', () => {
       describe('confirm', () => {
-
         it('should call moveDocuments  on modal-action-clicked event', async () => {
           const updatedProps = { ...defaultProps, isMoveModalOpened: true }
 
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findDocumentsExplorerModal(wrapper)
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-document-action-click'
+            'modal-move-document-action-click',
           )
 
           await nextTick()
@@ -280,27 +264,26 @@ describe('Documents Move', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findDocumentsExplorerModal(wrapper)
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-move-document-action-click'
+            'modal-move-document-action-click',
           )
 
           await nextTick()
 
           expect(wrapper.vm.explorerDocuments).toHaveLength(
-            wrapper.vm.explorerDocuments.filter(d => d.givenActionState === 'DONE').length
+            wrapper.vm.explorerDocuments.filter(d => d.givenActionState === 'DONE').length,
           )
         })
-
       })
 
       describe('cancel', () => {
         it('should close modal on cancel click', async () => {
           const updatedProps = {
             ...defaultProps,
-            isMoveModalOpened: true
+            isMoveModalOpened: true,
           }
           const wrapper = createWrapper(updatedProps)
 
@@ -308,11 +291,11 @@ describe('Documents Move', () => {
           await nextTick()
 
           const documentExplorerModalWrapper =
-                  findDocumentsExplorerModal(wrapper)
+                  findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
-            'modal-cancel-document-action-click'
+            'modal-cancel-document-action-click',
           )
 
           await nextTick()
@@ -320,7 +303,6 @@ describe('Documents Move', () => {
           expect(wrapper.emitted('close-move-documents-modal')).toBeTruthy()
         })
       })
-
     })
   })
 })

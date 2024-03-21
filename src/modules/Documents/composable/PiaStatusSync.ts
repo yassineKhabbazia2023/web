@@ -1,19 +1,19 @@
-import { Ref, watch, onMounted } from 'vue'
+import type { Ref } from 'vue'
+import { watch, onMounted } from 'vue'
 import { initializedAccountingDataStreamInstance } from '@/models/AccountingHubConnection'
 import type { Folder } from '@/models/Folder'
 import type {
   Document,
   DocumentsWithTableStructure,
-  DocumentStatusUpdateResponse
+  DocumentStatusUpdateResponse,
 } from '@/models/Document'
 
 export function usePiaStatusSync(
   selectedFolder: Ref<Folder | null>,
-  documents: Ref<DocumentsWithTableStructure | null>
+  documents: Ref<DocumentsWithTableStructure | null>,
 ) {
-
   // Changing the listened folder when on selected folder change
-  watch(selectedFolder, async (newSelectedFolderId, oldSelectedFolderId) => {
+  watch(selectedFolder, (newSelectedFolderId, oldSelectedFolderId) => {
     initializedAccountingDataStreamInstance.then((instance) => {
       if (oldSelectedFolderId) {
         instance.OnDisconnectedAsync(oldSelectedFolderId.id)
@@ -36,19 +36,19 @@ export function usePiaStatusSync(
             // folderId response is returned as number in data streams
             const document: DocumentStatusUpdateResponse = JSON.parse(response)
             updateDocumentSyncStatusAndPermissions(documents, document)
-          }
+          },
         )
     })
   })
 
   function updateDocumentSyncStatusAndPermissions(
     documents: Ref<DocumentsWithTableStructure | null>,
-    newDocumentStatusAndUpdate: DocumentStatusUpdateResponse
+    newDocumentStatusAndUpdate: DocumentStatusUpdateResponse,
   ) {
     if (!documents.value?.documentsPage.items) return
     const documentToUpdate: Document | undefined =
       documents.value.documentsPage.items.find(
-        (d: Document) => d.id === String(newDocumentStatusAndUpdate.documentId)
+        (d: Document) => d.id === String(newDocumentStatusAndUpdate.documentId),
       )
 
     if (!documentToUpdate) return
@@ -58,6 +58,6 @@ export function usePiaStatusSync(
 
   return {
     updateDocumentSyncStatusAndPermissions,
-    initializedAccountingDataStreamInstance
+    initializedAccountingDataStreamInstance,
   }
 }

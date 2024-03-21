@@ -3,23 +3,11 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type RenameFolderSectionProps }
   from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
-import { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { RenameFolder } from '@/services/Folder'
 import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
-
-vi.mock('@kpmg/common', async () => ({
-  commonApi: () => ({
-    ds: vi.fn()
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn()
-  })
-}))
 
 const pinia = createPinia()
 
@@ -36,18 +24,18 @@ const defaultProps: RenameFolderSectionProps = {
         parent: { id: 1 },
         permissions: [],
         properties: {} as FolderProperties,
-        serviceId: 'some-service'
-      } as Folder
+        serviceId: 'some-service',
+      } as Folder,
     ],
     name: 'A',
     parent: { id: 0 },
     permissions: ['CAN_CREATE_FOLDER', 'CAN_RENAME_FOLDER'],
     properties: {} as FolderProperties,
-    serviceId: 'some-service'
+    serviceId: 'some-service',
   } as Folder,
   isRenameFolderModalVisible: false,
   folderName: 'newFolderName',
-  folderId: 2
+  folderId: 2,
 }
 
 const mockToastPlugin = vi.fn()
@@ -58,18 +46,14 @@ const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin
-      }
-    }
+        toast: mockToastPlugin,
+      },
+    },
   })
 }
 
-vi.mock('vue-inject', () => ({
-  provide: vi.fn()
-}))
-
 vi.mock('@/services/Folder', () => ({
-  RenameFolder: vi.fn()
+  RenameFolder: vi.fn(),
 }))
 
 describe('renameFolderSection', () => {
@@ -85,40 +69,40 @@ describe('renameFolderSection', () => {
       const validTranslationCases = [
         {
           prop: 'modalTitle',
-          expectedText: 'Renommer'
+          expectedText: 'Renommer',
         },
         {
           prop: 'inputLabel',
-          expectedText: 'Renommer votre dossier'
+          expectedText: 'Renommer votre dossier',
         },
         {
           prop: 'inputPlaceHolder',
-          expectedText: 'Entrez le nom de votre dossier'
+          expectedText: 'Entrez le nom de votre dossier',
         },
         {
           prop: 'cancelBtnLabel',
-          expectedText: 'Annuler'
+          expectedText: 'Annuler',
         },
         {
           prop: 'confirmBtnabel',
-          expectedText: 'Modifier'
-        }
+          expectedText: 'Modifier',
+        },
       ]
       it.each(validTranslationCases)(
         'elements content validation with "%s"',
-        async ({ prop, expectedText }) => {
+        ({ prop, expectedText }) => {
           const updatedProps: RenameFolderSectionProps = {
             ...defaultProps,
-            isRenameFolderModalVisible: true
+            isRenameFolderModalVisible: true,
           }
           const wrapper = createWrapper(updatedProps)
 
           const renameFolderModalWrapper = wrapper.findComponent(RenameFolderModal)
 
           expect(renameFolderModalWrapper.props(prop).trim()).toBe(
-            expectedText.trim()
+            expectedText.trim(),
           )
-        }
+        },
       )
     })
   })
@@ -129,7 +113,7 @@ describe('renameFolderSection', () => {
       async () => {
         const updatedProps: RenameFolderSectionProps = {
           ...defaultProps,
-          isRenameFolderModalVisible: true
+          isRenameFolderModalVisible: true,
         }
 
         const wrapper = createWrapper(updatedProps)
@@ -143,15 +127,15 @@ describe('renameFolderSection', () => {
           defaultProps.folderId,
           'theNewFolderName',
           defaultProps.entityId,
-          defaultProps.serviceId
+          defaultProps.serviceId,
         )
-      }
+      },
     )
 
     it('should close modal when api call is completed', async () => {
       const updatedProps: RenameFolderSectionProps = {
         ...defaultProps,
-        isRenameFolderModalVisible: true
+        isRenameFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -162,13 +146,12 @@ describe('renameFolderSection', () => {
       await nextTick()
 
       expect(modal.props('isRenameFolderModalVisible')).toBeFalsy()
-
     })
 
     it('should emit update-folder-name on success rename folder', async () => {
       const updatedProps: RenameFolderSectionProps = {
         ...defaultProps,
-        isRenameFolderModalVisible: true
+        isRenameFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -179,13 +162,12 @@ describe('renameFolderSection', () => {
       await nextTick()
 
       expect(wrapper.emitted('update-folder-name')).toBeTruthy()
-
     })
 
     it('should display success notification correctly on success rename', async () => {
       const updatedProps: RenameFolderSectionProps = {
         ...defaultProps,
-        isRenameFolderModalVisible: true
+        isRenameFolderModalVisible: true,
       }
 
       const wrapper = createWrapper(updatedProps)
@@ -198,7 +180,7 @@ describe('renameFolderSection', () => {
       expect(mockToastPlugin).toHaveBeenCalledTimes(1)
       const callArguments = mockToastPlugin.mock.calls[0][0]
       expect(callArguments.message).toBe(
-        'Le dossier a été renommé avec succès.'
+        'Le dossier a été renommé avec succès.',
       )
       expect(callArguments.customClass).toBe('success')
     })
@@ -207,12 +189,12 @@ describe('renameFolderSection', () => {
       const cases = [
         {
           action: 'on-cancel-rename-folder',
-          expectedEvent: 'on-close-rename-folder'
+          expectedEvent: 'on-close-rename-folder',
         },
         {
           action: 'on-close-rename-folder',
-          expectedEvent: 'on-close-rename-folder'
-        }
+          expectedEvent: 'on-close-rename-folder',
+        },
       ]
 
       it.each(cases)(
@@ -220,7 +202,7 @@ describe('renameFolderSection', () => {
         async ({ action, expectedEvent }) => {
           const updatedProps: RenameFolderSectionProps = {
             ...defaultProps,
-            isRenameFolderModalVisible: true
+            isRenameFolderModalVisible: true,
           }
           const wrapper = createWrapper(updatedProps)
 
@@ -230,7 +212,7 @@ describe('renameFolderSection', () => {
           await nextTick()
 
           expect(wrapper.emitted(expectedEvent)).toBeTruthy()
-        }
+        },
       )
     })
   })
