@@ -52,7 +52,7 @@ import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
 import TableData from './components/TableData'
 import mock from './mock.json'
-import type { IState } from './types'
+import type { IState, IUserFromApi } from './types'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -97,7 +97,7 @@ const getQueryParams = () => ({
   search: state.search
 })
 
-const formatItemsFromApi = (items) =>
+const formatItemsFromApi = (items: IUserFromApi[]) =>
   items.map(({
     firstName,
     lastName,

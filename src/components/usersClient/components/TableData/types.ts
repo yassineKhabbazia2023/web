@@ -1,5 +1,5 @@
-import type { IUser } from './../../types'
+import type { IExtendedUser } from './../../types'
 
 export interface Props {
-  data: IUser[]
+  data: IExtendedUser[]
 }
