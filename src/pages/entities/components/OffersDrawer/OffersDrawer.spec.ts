@@ -19,10 +19,12 @@ import { getMockedAccount, getMockedPatchOperations } from '@/services/account/a
 import { getMockedStepNotes } from '../StepNote/StepNotesMock'
 import type { UserInfo } from '@kpmg/common'
 import type { Note, PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
-import { CONTACT_ID } from './OffersDrawerConst'
 import type { PatchValue } from '@/services/PatchRecordService'
+import type { Contact } from '@/services/contact/contactTypes'
+import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
 const principalContacts: User[] = getMockedPrincipalContacts()
+const collaborators: Contact[] = getMockedCollaborators()
 const currentUser: UserInfo = getMockedUser()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const notes: Note[] = getMockedStepNotes()
@@ -32,6 +34,7 @@ const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
 const mockedPatchOperations = getMockedPatchOperations()
+const mockedCollaborators = getMockedCollaborators()
 
 function getMockedSanitized(url: string) {
   return `sanitized-${url}`
@@ -49,7 +52,12 @@ vi.mock('@/services/offer', () => ({
     )
   ),
   getOffersBookLink: vi.fn(() => offersBookTestLink),
-  getPrincipalContacts: vi.fn(() => Promise.resolve(principalContacts))
+  getPrincipalContacts: vi.fn(() => Promise.resolve(principalContacts)),
+  getCollaborators: vi.fn(() => Promise.resolve(collaborators))
+}))
+
+vi.mock('@/services/contact', () => ({
+  getCollaborators: vi.fn(() => Promise.resolve(collaborators))
 }))
 
 vi.mock('@/services/account', () => ({
@@ -198,7 +206,7 @@ describe('offersDrawer', () => {
       const expectedArgument: PostSubscriptionRequest = {
         accountId,
         applicant: 'john@example.com',
-        contacts: [CONTACT_ID],
+        contacts: [],
         offerId: 1,
         notes,
         productConfigurations: [1, 2, 3, 4]
@@ -248,10 +256,16 @@ describe('offersDrawer', () => {
         await nextTick()
 
         const nextPreviousButtons = findNextPreviousButtons(wrapper)
-        for (let i = 0; i < 3; i++) {
+        const STEP_TO_REACH = 3
+        for (let i = 0; i < STEP_TO_REACH; i++) {
+          if (i === STEP_TO_REACH - 1) {
+            const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
+            manageCollaboratorsComponent.vm.$emit('update:collaborators', mockedCollaborators)
+          }
           nextPreviousButtons.vm.$emit('clickNext')
           await nextTick()
         }
+
         const component = wrapper.findComponent({ name: 'CompanyInformation' })
         const fieldKey = 'accounting.fiscalExerciseDuration'
         const currentValue = mockedAccount?.accounting?.fiscalExerciseDuration
@@ -356,6 +370,9 @@ describe('offersDrawer', () => {
 
       await asyncEmit(nextPreviousButtons, 'clickNext')
 
+      const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
+      manageCollaboratorsComponent.vm.$emit('update:collaborators', mockedCollaborators)
+
       await asyncEmit(nextPreviousButtons, 'clickNext')
       const informationStep = wrapper.find('[data-testid=information-step]')
       expect(informationStep.exists()).toBeTruthy()
@@ -372,6 +389,27 @@ describe('offersDrawer', () => {
 
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
+    })
+    it('should emit console.warn() when no collaborator is selected', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOffer = findFirstOffer(wrapper)
+      await firstOffer.trigger('click')
+      await flushPromises()
+      const consoleWarnSpy = vi.spyOn(console, 'warn')
+
+      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+
+      await asyncEmit(nextPreviousButtons, 'clickNext')
+      const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
+      await customersNoteStep.vm.$emit('update:modelValue', notes[1])
+
+      await asyncEmit(nextPreviousButtons, 'clickNext')
+
+      wrapper.findComponent({ name: 'ManageCollaborators' })
+
+      await asyncEmit(nextPreviousButtons, 'clickNext')
+      expect(consoleWarnSpy).toHaveBeenCalledOnce()
+      expect(consoleWarnSpy).toHaveBeenCalledWith('No collaborator')
     })
 
     it('should not display the offer stepper and note textarea when the validation is not required', async () => {

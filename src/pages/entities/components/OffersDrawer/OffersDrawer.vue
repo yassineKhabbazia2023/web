@@ -83,6 +83,7 @@
           </ul>
           <ManageCollaborators
             v-if="activeStep === offerStepperStep.COLLABORATORS"
+            v-model:collaborators="collaborators"
             :defaultCollaborator="currentUser"
             data-testid="collaborators-step"
           />
@@ -191,7 +192,8 @@ import type {
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
 import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
-import { CONTACT_ID, ACCOUNT_ID } from './OffersDrawerConst'
+import { ACCOUNT_ID } from './OffersDrawerConst'
+import type { Contact } from '@/services/contact/contactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -230,6 +232,7 @@ const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
 const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
+const collaborators = ref<Contact[]>([])
 const principalContacts = ref<User[] | undefined>()
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
@@ -333,7 +336,7 @@ async function saveOffer() {
   const postSubscriptionRequest = getPostSubscriptionRequest(
     props.accountId,
     props.currentUser?.email,
-    CONTACT_ID,
+    collaborators.value,
     currentSubscriptionOffer.value,
     selectedProducts.value,
     notes.value
@@ -362,6 +365,10 @@ const handleConfirm = async () => {
 }
 
 function onClickNext() {
+  if (activeStep.value === offerStepperStep.COLLABORATORS && collaborators.value.length === 0) {
+    console.warn('No collaborator')
+    return
+  }
   if (isSubmitButton.value) {
     confirmationModalVisible.value = true
     return

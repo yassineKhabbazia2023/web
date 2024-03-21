@@ -1,16 +1,22 @@
 import { vi, it, describe, expect, beforeEach } from 'vitest'
+import { nextTick } from 'vue'
 import { VueWrapper, mount } from '@vue/test-utils'
-import { getMockedUser } from '@/pages/entities/mocks'
+import { getMockedCollaborators } from '@/services/contact/contactMocks'
 import { getInitials } from '@/helper'
-import type { UserInfo } from '@kpmg/common'
 import ManageCollaborators from '.'
 
 vi.mock('@/services/contact', () => ({
   getCollaborators: vi.fn(() => Promise.resolve([]))
 }))
 
-const defaultCollaborator: UserInfo = getMockedUser()
+const mockedCollaborators = getMockedCollaborators()
+
+vi.mock('@/services/contact', () => ({
+  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators))
+}))
+
 const expectedSearchText = 'Please search for a collaborator :'
+const defaultCollaborator = mockedCollaborators[0]
 const expectedUserActionProps = {
   pProfile: getInitials(
     defaultCollaborator.firstName,
@@ -18,13 +24,18 @@ const expectedUserActionProps = {
   ),
   pTitle: `${defaultCollaborator.firstName} ${defaultCollaborator.lastName}`,
   pDescription: defaultCollaborator.email,
-  pRole: defaultCollaborator.occupation
+  pRole: defaultCollaborator.office
 }
 
 const createWrapper = () => {
   const wrapper = mount(ManageCollaborators, {
     props: {
-      defaultCollaborator
+      collaborators: [mockedCollaborators[0]]
+    },
+    global: {
+      stubs: {
+        CollaboratorAutocomplete: true
+      }
     }
   })
 
@@ -47,6 +58,21 @@ describe('manageCollaborators', () => {
       expect(pFormItem.text()).toBe(expectedSearchText)
       expect(userAction.props()).toMatchObject(expectedUserActionProps)
       expect(blockHeader.exists()).toBeTruthy()
+    })
+  })
+
+  describe('event', () => {
+    it('should add collaborator when emits add-contact', async () => {
+      const pUserActionBefore = wrapper.findAllComponents({ name: 'PUserAction' })
+      const countBefore = pUserActionBefore.length
+
+      const collaboratorAutocomplete = wrapper.findComponent({ name: 'CollaboratorAutocomplete' })
+      const collaborator = mockedCollaborators.at(-1)
+      collaboratorAutocomplete.vm.$emit('add-contact', collaborator)
+      await nextTick()
+      const pUserActionAfter = wrapper.findAllComponents({ name: 'PUserAction' })
+
+      expect(pUserActionAfter).toHaveLength(countBefore + 1)
     })
   })
 })

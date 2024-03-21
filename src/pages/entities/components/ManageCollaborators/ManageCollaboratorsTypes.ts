@@ -1,5 +1,5 @@
-import type { UserInfo } from '@kpmg/common'
+import type { Contact } from '@/services/contact/contactTypes'
 
 export interface ManageCollaboratorsProps {
-  defaultCollaborator: UserInfo | null
+  collaborators: Contact[]
 }

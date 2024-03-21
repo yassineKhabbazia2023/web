@@ -8,9 +8,9 @@ import {
 } from './OffersDrawerUtils'
 import type { SelectedProduct } from '../OffersDrawerTypes'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
-import { getMockedPrincipalContacts } from '../../PrincipalContact/PrincipalContactMocks'
 import { getMockedStepNotes } from '../../StepNote/StepNotesMock'
 import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
 const notes = getMockedStepNotes()
 describe('offersDrawerUtils', () => {
@@ -91,27 +91,28 @@ describe('offersDrawerUtils', () => {
   describe('getPostSubscriptionRequest', () => {
     const accountId = 5
     const userEmail = 'user@email.com'
-    const principalContacts = getMockedPrincipalContacts()
+    const collaborators = getMockedCollaborators()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
     const selectedProducts = getInitialSelectedProducts(
       currentSubscriptionOffer
     )
-    const { contactId } = principalContacts[0]
 
     it('should return not optional and free product list', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
         accountId,
         userEmail,
-        contactId,
+        collaborators,
         currentSubscriptionOffer,
         selectedProducts,
         notes
       )
+      const contacts = collaborators.map(({ id }) => id)
+
       const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
         accountId,
         offerId: 1,
         productConfigurations: [1, 2, 3, 4],
-        contacts: [1],
+        contacts,
         notes,
         applicant: 'user@email.com'
       }
@@ -123,7 +124,7 @@ describe('offersDrawerUtils', () => {
       const postSubscriptionRequest = getPostSubscriptionRequest(
         accountId,
         userEmail,
-        contactId,
+        collaborators,
         undefined,
         selectedProducts,
         notes
