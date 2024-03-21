@@ -77,4 +77,4 @@ const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
   fr-FR:
     search: 'Rechercher'
     errorSearchInvalid: 'Trois caractères minimum requis'
-  </i18n>
+</i18n>
