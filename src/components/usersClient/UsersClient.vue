@@ -2,25 +2,7 @@
   <div class="flex flex--direction-column sticky-wrapper">
     <div class="flex--grow-1 padding--2">
       <div class="margin-bottom--6">
-        <PForm
-          @submit.prevent="handleSearchSubmit(formRef)"
-          ref="formRef"
-          :pRules="rules"
-          :pModel="formValues"
-        >
-          <PFormItem prop="search">
-            <PInput
-              @keyup="handleSearchSubmit(formRef)"
-              v-model="formValues.search"
-              :pPlaceholder="t('search')"
-              :pPrefixIcon="PISearch"
-              pName="search"
-              pSize="small"
-              pType="search"
-              pAutofocus
-            />
-          </PFormItem>
-        </PForm>
+        <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
       </div>
 
       <PLoader v-if="state.isLoading" />
@@ -55,23 +37,19 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, reactive, watch } from 'vue'
 import {
-  PForm,
-  PFormItem,
-  PInput,
-  PISearch,
   PLoader,
   PPagination
 } from '@kpmg/styleguide'
 import { commonStore } from '@kpmg/common'
-import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import { getInitials, removeFalsyValues } from '@/helper'
 import {
   PAGE_SIZES,
   DATE_TIME_FORMATS as datetimeFormats
 } from '@/constants'
 import NoResult from '@/components/NoResult'
+import FormSearch from '@/components/FormSearch'
 import TableData from './components/TableData'
 import mock from './mock.json'
 import type { IState } from './types'
@@ -84,32 +62,6 @@ const { d, t } = useI18n({
 
 const userStore = commonStore()
 
-// search part
-const formRef = ref<FormInstance>()
-const formValues = reactive({
-  search: undefined
-})
-const rules = reactive<FormRules<typeof formValues>>({
-  search: [{
-    trigger: 'change',
-    min: 3,
-    message: t('errorSearchInvalid')
-  }]
-})
-const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-
-  if (formEl.validate) {
-    try {
-      await formEl.validate()
-    } catch (error) {
-      return false
-    }
-  }
-  state.search = formValues.search
-}
-
-// table part
 const state: IState = reactive({
   data: [],
   currentPage: 1,
@@ -119,6 +71,10 @@ const state: IState = reactive({
   search: undefined,
   isLoading: false
 })
+
+const handleSearchValueSubmitted = (searchValue: string) => {
+  state.search = searchValue
+}
 
 const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
@@ -141,6 +97,30 @@ const getQueryParams = () => ({
   search: state.search
 })
 
+const formatItemsFromApi = (items) =>
+  items.map(({
+    firstName,
+    lastName,
+    persona,
+    id,
+    createdAt,
+    ...rest
+  }) => ({
+    initials: getInitials(
+      firstName,
+      lastName
+    ),
+    firstName,
+    lastName,
+    isOwner: persona === 'Dirigeant',
+    fullName: `${firstName} ${lastName}`,
+    isLoggedUser: () => id === userStore.$state.user?.id,
+    persona,
+    id,
+    createdAt: d(new Date(createdAt), 'short'),
+    ...rest
+  }))
+
 const fetch = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
@@ -156,31 +136,10 @@ const fetch = async () => {
         totalItems
       }
     } = await Promise.resolve(mock)
-    // TODO: remove mock & searchParams in isLoading (line 142), when endpoint is done
+    // TODO: remove mock & searchParams in isLoading (line 128), when endpoint is done
     // await commonApi().gateway.get('account/api/customers?${searchParams}')
 
-    state.data = items.map(({
-      firstName,
-      lastName,
-      persona,
-      id,
-      createdAt,
-      ...rest
-    }) => ({
-      initials: getInitials(
-        firstName,
-        lastName
-      ),
-      firstName,
-      lastName,
-      isOwner: persona === 'Dirigeant',
-      fullName: `${firstName} ${lastName}`,
-      isLoggedUser: () => id === userStore.$state.user?.id,
-      persona,
-      id,
-      createdAt: d(new Date(createdAt), 'short'),
-      ...rest
-    }))
+    state.data = formatItemsFromApi(items)
     state.currentPage = currentPage
     state.totalPages = totalPages
     state.totalItems = totalItems
@@ -214,13 +173,9 @@ onMounted(async () => {
 
 <i18n lang="yaml">
 en-US:
-  search: 'Search'
-  errorSearchInvalid: 'Minimum three characters required'
   numberOfUsersPerPage: 'Number of users per page'
   on: 'on'
 fr-FR:
-  search: 'Rechercher'
-  errorSearchInvalid: 'Trois caractères minimum requis'
   numberOfUsersPerPage: "Nombre d'utilisateurs par page"
   on: 'sur'
 </i18n>

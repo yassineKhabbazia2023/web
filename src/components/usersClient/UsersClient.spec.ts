@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { commonStore } from '@kpmg/common'
 import mock from './mock.json'
 import UsersClient from './'
-import { searchError, noResult } from '@/tests'
+import { noResult } from '@/tests'
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -50,7 +50,6 @@ describe('allUsers', () => {
     wrapper = createWrapper()
   })
 
-  searchError(createWrapper())
   noResult(createWrapper())
 
   it('displays data in a table', () => {

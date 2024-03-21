@@ -1,6 +1,6 @@
 import { mount, VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { searchError, noResult } from '@/tests'
+import { noResult } from '@/tests'
 import mock from './mock.json'
 import Collaborators from './'
 
@@ -33,7 +33,6 @@ describe('collaborators', () => {
     wrapper = createWrapper()
   })
 
-  searchError(createWrapper())
   noResult(createWrapper())
 
   it('should display data in a table', () => {

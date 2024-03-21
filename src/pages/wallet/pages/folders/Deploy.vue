@@ -17,25 +17,10 @@
       </PButton>
     </div>
     <div class="margin-bottom--3">
-      <PForm
-        ref="formRef"
-        :pRules="rules"
-        :pModel="formValues"
-        @submit.prevent="handleSearchSubmit(formRef)"
-      >
-        <PFormItem prop="search">
-          <PInput
-            v-model="formValues.search"
-            :pPlaceholder="t('search')"
-            :pPrefixIcon="PISearch"
-            pName="search"
-            pSize="small"
-            pType="search"
-            pAutofocus
-            @keyup="handleSearchSubmit(formRef)"
-          />
-        </PFormItem>
-      </PForm>
+      <FormSearch
+        @search-value-submitted="handleSearchValueSubmitted"
+        :placeholder="t('search')"
+      />
     </div>
 
     <PLoader v-if="state.isLoading" />
@@ -85,22 +70,18 @@
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import {
-  PForm,
-  PFormItem,
   PIArrowRepeat,
   PICheckCircle,
   PIArrowUpCircle,
-  PInput,
-  PISearch,
   PLoader,
   PButton,
   PPagination
 } from '@kpmg/styleguide'
-import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import NoResult from '@/components/NoResult'
+import FormSearch from '@/components/FormSearch'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 import { removeFalsyValues } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
@@ -118,31 +99,6 @@ const userStore = commonStore()
 const router = useRouter()
 const selectedCompanyName = ref('')
 const { isCollab, user } = storeToRefs(userStore)
-
-// search part
-const formRef = ref<FormInstance>()
-const formValues = reactive({
-  search: undefined
-})
-const rules = reactive<FormRules<typeof formValues>>({
-  search: [{
-    trigger: 'change',
-    min: 3,
-    message: t('errorSearchInvalid')
-  }]
-})
-const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-
-  if (formEl.validate) {
-    try {
-      await formEl.validate()
-    } catch (error) {
-      return false
-    }
-  }
-  state.search = formValues.search
-}
 
 // table part
 const DEPLOYMENTS = [
@@ -179,6 +135,10 @@ const state: IState = reactive({
   isLoading: undefined,
   filterByDeploymentStatus: undefined
 })
+
+const handleSearchValueSubmitted = (searchValue: string) => {
+  state.search = searchValue
+}
 
 const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
@@ -339,7 +299,6 @@ const onSelectedFolder = (id: string) => {
 <i18n lang="yaml">
   en-US:
     search: 'Find by Company''s name, IBS, Leader, Email, City...'
-    errorSearchInvalid: 'Minimum three characters required'
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
@@ -348,7 +307,6 @@ const onSelectedFolder = (id: string) => {
     delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
   fr-FR:
     search: 'Rechercher par Raison sociale, IBS, Dirigeant, Mail, Ville...'
-    errorSearchInvalid: 'Trois caractères minimum requis'
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'
