@@ -34,6 +34,10 @@ vi.mock('@kpmg/common', () => ({
     $patch: vi.fn(),
     $get: vi.fn(),
     $post: vi.fn(),
+    defaultEntity: {
+      name: 'JEAN LÉVAGE',
+      idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
+    },
   }),
   DataStreamHubConnection: vi.fn(() => ({
     startConnection: vi.fn(() => {
