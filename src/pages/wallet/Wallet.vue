@@ -13,9 +13,8 @@
         :pLabel="tab.trad"
         :name="tab.name"
         :key="tab.name"
-      >
-        <router-view />
-      </PTabPane>
+      />
+      <router-view />
     </PTabs>
   </div>
 </template>
