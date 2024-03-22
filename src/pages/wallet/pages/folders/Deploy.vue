@@ -12,9 +12,11 @@
 
       <PButton
         pType="primary"
+        @click="isDelegationDrawerOpened = true"
       >
         {{ t('delegation', selectedFolders.length) }}
       </PButton>
+      <DelegationDrawer v-model="isDelegationDrawerOpened" :selectedFolders="selectedFolders" />
     </div>
     <div class="margin-bottom--3">
       <PForm
@@ -108,6 +110,7 @@ import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '..
 import Filters from '../../components/Filters'
 import { EntityStatus } from '../../components/Filters/types'
 import TableData from '../../components/TableData'
+import DelegationDrawer from '@/pages/wallet/sections/DelegationDrawer'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -119,6 +122,8 @@ const router = useRouter()
 const selectedCompanyName = ref('')
 const { isCollab, user } = storeToRefs(userStore)
 
+// delegation part
+const isDelegationDrawerOpened = ref(false)
 // search part
 const formRef = ref<FormInstance>()
 const formValues = reactive({
@@ -327,12 +332,13 @@ const handleRemoveFilter = () => {
   state.filterByDeploymentStatus = undefined
 }
 
-const selectedFolders: string[] = reactive([])
+const selectedFolders: IEntity[] = reactive([])
 const onSelectedFolder = (id: string) => {
-  const index = selectedFolders.indexOf(id)
+  console.log('scope row', id)
+  const index = selectedFolders.findIndex(e => e.id === id)
   index >= 0
     ? selectedFolders.splice(index, 1)
-    : selectedFolders.push(id)
+    : selectedFolders.push({} as IEntity)
 }
 </script>
 
