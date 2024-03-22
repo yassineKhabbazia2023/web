@@ -60,35 +60,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    createAccount: 'Your '
-    1step: 'new password.'
-    defPassword: 'Please enter and confirm your new password'
-    labelPassword: 'Your new password'
-    labelConfirmPassword: 'Confirm your new password'
-    placeholderPassword: 'Enter your new password'
-    placeholderConfirmPassword: 'Confirm your new password'
-    alertConfirmPass: 'Please confirm the password'
-    alertPasswordNotMatch: "Passwords don't match!"
-    alertPasswordRequired: 'Please enter the password'
-    alertPasswordLevelLow: 'Your password is not valid'
-    btnSubmit: 'Submit'
-  fr-FR:
-    createAccount: 'Votre '
-    1step: 'nouveau mot de passe.'
-    defPassword: 'Veuillez définir votre mot de passe et le confirmer.'
-    labelPassword: 'Définissez votre mot de passe'
-    labelConfirmPassword: 'Confirmer votre mot de passe'
-    placeholderPassword: 'Saisir votre mot de passe'
-    placeholderConfirmPassword: 'Confirmer votre mot de passe'
-    alertConfirmPass: 'Veuillez confirmer votre mot de passe'
-    alertPasswordNotMatch: 'Les mots de passe ne correspondent pas!'
-    alertPasswordRequired: 'Veuillez rentrer votre mot de passe'
-    alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
-    btnSubmit: 'Valider'
-</i18n>
-
 <script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -98,23 +69,23 @@ import {
   onBeforeMount,
   reactive,
   ref,
-  computed
+  computed,
 } from 'vue'
 import {
   PForm,
   PFormItem,
   PInput,
-  PButton
+  PButton,
 } from '@kpmg/styleguide'
 import PopoverPasswordStrength from '../createPassword/PopoverPasswordStrength'
 import {
   PASSWORD_STRENGTH,
-  levelPasswordStrength
+  levelPasswordStrength,
 } from '../createPassword/PopoverPasswordStrength/passwordStrength'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 const route = useRoute()
 const router = useRouter()
@@ -122,11 +93,11 @@ const { contactId, contactEmail, token } = route.query
 const formRef = ref<FormInstance>()
 const formValidity = reactive({
   password: false,
-  confirmPassword: false
+  confirmPassword: false,
 })
 const formValue = reactive({
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
 })
 
 const isValidForm = computed(() => {
@@ -167,7 +138,7 @@ const validateCheckPass = (_rule: any, value: any, callback: any) => {
 
 const rules = reactive<FormRules<typeof formValue>>({
   password: [{ trigger: ['change', 'blur'], validator: validatePassword }],
-  confirmPassword: [{ trigger: ['change', 'blur'], validator: validateCheckPass }]
+  confirmPassword: [{ trigger: ['change', 'blur'], validator: validateCheckPass }],
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
@@ -178,7 +149,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         contactId,
         password: formValue.password,
         resetPasswordToken: token,
-        isCreatePasswordAction: false
+        isCreatePasswordAction: false,
       }
       const urlUpdatePassword = '/createResetPassword'
       try {
@@ -229,3 +200,32 @@ onBeforeMount(async () => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    createAccount: 'Your '
+    1step: 'new password.'
+    defPassword: 'Please enter and confirm your new password'
+    labelPassword: 'Your new password'
+    labelConfirmPassword: 'Confirm your new password'
+    placeholderPassword: 'Enter your new password'
+    placeholderConfirmPassword: 'Confirm your new password'
+    alertConfirmPass: 'Please confirm the password'
+    alertPasswordNotMatch: "Passwords don't match!"
+    alertPasswordRequired: 'Please enter the password'
+    alertPasswordLevelLow: 'Your password is not valid'
+    btnSubmit: 'Submit'
+  fr-FR:
+    createAccount: 'Votre '
+    1step: 'nouveau mot de passe.'
+    defPassword: 'Veuillez définir votre mot de passe et le confirmer.'
+    labelPassword: 'Définissez votre mot de passe'
+    labelConfirmPassword: 'Confirmer votre mot de passe'
+    placeholderPassword: 'Saisir votre mot de passe'
+    placeholderConfirmPassword: 'Confirmer votre mot de passe'
+    alertConfirmPass: 'Veuillez confirmer votre mot de passe'
+    alertPasswordNotMatch: 'Les mots de passe ne correspondent pas!'
+    alertPasswordRequired: 'Veuillez rentrer votre mot de passe'
+    alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
+    btnSubmit: 'Valider'
+</i18n>

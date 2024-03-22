@@ -19,26 +19,13 @@
   </div>
 </template>
 
-<!-- eslint-disable max-len -->
-<i18n lang="yaml">
-  en-US:
-    verifyEmail: 'Verify your mail box'
-    msgInfo: 'A new link activation has been send to you. This link will expire in 1h30, please active your account before this delay.'
-    returnLoginPage: 'Back to the login page'
-  fr-FR:
-    verifyEmail: 'Vérifier votre adresse mail'
-    msgInfo: 'Le nouveau lien d''activation vient de vous être envoyé. Ce lien expire dans 1h30, veuillez activer votre compte avant ce délai.'
-    returnLoginPage: 'Revenir à la connexion'
-</i18n>
-<!-- eslint-enable max-len -->
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PImage } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 </script>
 
@@ -82,3 +69,18 @@ const { t } = useI18n({
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    verifyEmail: 'Verify your mail box'
+    msgInfo: >
+      A new link activation has been send to you.
+      This link will expire in 1h30, please active your account before this delay.
+    returnLoginPage: 'Back to the login page'
+  fr-FR:
+    verifyEmail: 'Vérifier votre adresse mail'
+    msgInfo: >
+      Le nouveau lien d'activation vient de vous être envoyé.
+      Ce lien expire dans 1h30, veuillez activer votre compte avant ce délai.
+    returnLoginPage: 'Revenir à la connexion'
+</i18n>

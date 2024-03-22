@@ -1,4 +1,5 @@
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { tokenService } from '@kpmg/common'
@@ -10,21 +11,21 @@ const routes = [
     path: '/expireToken',
     name: 'expireToken',
     component: {
-      template: '<p class="page-title">ExpireToken</p>'
-    }
+      template: '<p class="page-title">ExpireToken</p>',
+    },
   },
   {
     path: '/createPassword',
     name: 'createPassword',
     component: {
-      template: '<p class="page-title">CreatePassword</p>'
-    }
-  }
+      template: '<p class="page-title">CreatePassword</p>',
+    },
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 router.push({
   name: 'createPassword',
@@ -33,8 +34,8 @@ router.push({
     contactId: 'contactId',
     accountId: 'accountId',
     token: mockToken,
-    email: 'email'
-  }
+    email: 'email',
+  },
 })
 
 const patchMock = vi.fn()
@@ -43,25 +44,25 @@ vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
       get: () => ({
-        data: true
+        data: true,
       }),
-      patch: patchMock
+      patch: patchMock,
     },
     auth: {
-      post: postMock
-    }
+      post: postMock,
+    },
   }),
   tokenService: {
     getToken: vi.fn(),
-    setToken: vi.fn()
-  }
+    setToken: vi.fn(),
+  },
 }))
 
 const createWrapper = () =>
   mount(CreatePassword, {
     global: {
-      plugins: [router]
-    }
+      plugins: [router],
+    },
   })
 
 describe('page creation password', () => {
@@ -74,7 +75,7 @@ describe('page creation password', () => {
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(1)
       expect(wrapper.find('button').classes()).toContain('is-disabled')
-    }
+    },
   )
 
   it('should show error when user enter a invalid password', async () => {
@@ -122,11 +123,11 @@ describe('page creation password', () => {
     const data = {
       contactId: 'contactId',
       password: 'aaAA11@@',
-      resetPasswordToken: 'token'
+      resetPasswordToken: 'token',
     }
     const dataLogin = {
       email: 'email',
-      password: 'aaAA11@@'
+      password: 'aaAA11@@',
     }
     expect(patchMock).toHaveBeenCalledTimes(1)
     expect(patchMock).toHaveBeenCalledWith(patchLink)

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Login from './'
 import { tokenService } from '@kpmg/common'
 
@@ -15,29 +16,29 @@ const mockAuthPost = vi.fn((_url, { _email, password }) => {
       data: {
         userId: USER_ID,
         webToken: WEB_TOKEN,
-        email: _email
-      }
+        email: _email,
+      },
     })
 })
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
-  })
+    push: mockRouterPush,
+  }),
 }))
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     auth: {
-      post: mockAuthPost
-    }
+      post: mockAuthPost,
+    },
   }),
   commonStore: () => ({
-    $patch: mockStorePatch
+    $patch: mockStorePatch,
   }),
   tokenService: {
-    setToken: vi.fn()
-  }
+    setToken: vi.fn(),
+  },
 }))
 vi.mock('@/composable/useInitUserAuth', () => ({
   default: () => ({
@@ -45,19 +46,19 @@ vi.mock('@/composable/useInitUserAuth', () => ({
       mockStorePatch({
         user: {
           id: USER_ID,
-          isCollab: false
-        }
+          isCollab: false,
+        },
       })
-    })
-  })
+    }),
+  }),
 }))
 let wrapper: VueWrapper<any>
 
 const createWrapper = () =>
   mount(Login, {
     global: {
-      stubs: ['router-link']
-    }
+      stubs: ['router-link'],
+    },
   })
 
 const getForm = () => wrapper.find('form')
@@ -65,7 +66,7 @@ const getInputEmail = () => wrapper.findAll('input')[0]
 const getInputPassword = () => wrapper.findAll('input')[1]
 
 describe('login', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     wrapper = createWrapper()
   })
 
@@ -86,15 +87,15 @@ describe('login', () => {
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
     expect(mockAuthPost).toHaveBeenCalledWith('login', {
       email: INPUT_EMAIL_VALUE,
-      password: INPUT_PASSWORD_VALUE
+      password: INPUT_PASSWORD_VALUE,
     })
 
     expect(mockStorePatch).toHaveBeenCalledTimes(1)
     expect(mockStorePatch).toHaveBeenCalledWith({
       user: {
         id: USER_ID,
-        isCollab: false
-      }
+        isCollab: false,
+      },
     })
 
     expect(setTokenSpy).toHaveBeenNthCalledWith(1, WEB_TOKEN)

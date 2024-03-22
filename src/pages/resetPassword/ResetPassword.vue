@@ -59,28 +59,6 @@
 </template>
 
 <!-- eslint-disable max-len -->
-<i18n lang="yaml">
-  en-US:
-    email: 'Email'
-    submitBtn: 'Reset my password'
-    forgotPasswordTitle: 'Forgot your password ?'
-    resetPasswordMsg: 'We will send you an email to reset it.'
-    emailPlaceholder: 'Enter your email'
-    backToLogin: 'Back to login'
-    alertMailRequired: 'Please enter your mail'
-    alertMailInvalid: 'Please enter a valid mail'
-  fr-FR:
-    email: 'Email'
-    submitBtn: 'Réinitialiser mon mot de passe'
-    forgotPasswordTitle: 'Vous avez oublié votre mot de passe ?'
-    resetPasswordMsg: 'Pas de panique, nous allons vous envoyer un mail pour le réinitialiser.'
-    emailPlaceholder: 'Saisir votre email'
-    backToLogin: 'Revenir à la connexion'
-    alertMailRequired: 'Veuillez saisir votre email'
-    alertMailInvalid: 'Veuillez saisir un email valide'
-</i18n>
-<!-- eslint-enable max-len -->
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { reactive, computed, ref, toRaw } from 'vue'
@@ -91,7 +69,7 @@ import { PImage, PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const formRef = ref<FormInstance>()
@@ -100,11 +78,11 @@ const isLoading = ref()
 const router = useRouter()
 
 const formValues = reactive({
-  email: ''
+  email: '',
 })
 
 const formValidity: any = reactive({
-  email: false
+  email: false,
 })
 
 const validateEmail = (_rule: any, value: any, callback: any) => {
@@ -125,11 +103,11 @@ const validateEmail = (_rule: any, value: any, callback: any) => {
 }
 
 const isFormValid = computed(() =>
-  formValidity.email
+  formValidity.email,
 )
 
 const rules = reactive<FormRules<typeof formValues>>({
-  email: [{ trigger: ['blur', 'change'], validator: validateEmail }]
+  email: [{ trigger: ['blur', 'change'], validator: validateEmail }],
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
@@ -148,8 +126,8 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     router.push({
       path: '/resetPasswordSuccess',
       query: {
-        email: formValues.email || ''
-      }
+        email: formValues.email || '',
+      },
     })
   } catch (error: any) {
     const invalidResponse = error.message
@@ -161,6 +139,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
 }
 
 </script>
+<!-- eslint-enable max-len -->
 
 <style lang="scss" scoped>
 .page-content {
@@ -204,3 +183,24 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    email: 'Email'
+    submitBtn: 'Reset my password'
+    forgotPasswordTitle: 'Forgot your password ?'
+    resetPasswordMsg: 'We will send you an email to reset it.'
+    emailPlaceholder: 'Enter your email'
+    backToLogin: 'Back to login'
+    alertMailRequired: 'Please enter your mail'
+    alertMailInvalid: 'Please enter a valid mail'
+  fr-FR:
+    email: 'Email'
+    submitBtn: 'Réinitialiser mon mot de passe'
+    forgotPasswordTitle: 'Vous avez oublié votre mot de passe ?'
+    resetPasswordMsg: 'Pas de panique, nous allons vous envoyer un mail pour le réinitialiser.'
+    emailPlaceholder: 'Saisir votre email'
+    backToLogin: 'Revenir à la connexion'
+    alertMailRequired: 'Veuillez saisir votre email'
+    alertMailInvalid: 'Veuillez saisir un email valide'
+</i18n>

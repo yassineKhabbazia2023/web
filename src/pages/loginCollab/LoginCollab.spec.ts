@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import LoginCollab from './'
 
 vi.mock('env-vars', () => ({
@@ -9,7 +10,7 @@ vi.mock('env-vars', () => ({
   VITE_API_MSAL_AUTHORITY: '',
   VITE_API_MSAL_REDIRECT_URI: '',
   VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI: '',
-  VITE_API_MSAL_SCOPE: ''
+  VITE_API_MSAL_SCOPE: '',
 }))
 
 vi.mock('@/composable/useInitUserAuth', () => ({
@@ -17,23 +18,23 @@ vi.mock('@/composable/useInitUserAuth', () => ({
     return {
       initAuthCollab: vi.fn(),
       isTokenRetrieve: {
-        value: true
-      }
+        value: true,
+      },
     }
-  }
+  },
 }))
 
 const navigateToWalletMock = vi.fn()
 vi.mock('@/composable/useNavigation', () => ({
   default: () => {
     return {
-      navigateToWallet: navigateToWalletMock
+      navigateToWallet: navigateToWalletMock,
     }
-  }
+  },
 }))
 vi.mock('@/services/msal', () => ({
   msalInstance: vi.fn(),
-  getToken: vi.fn()
+  getToken: vi.fn(),
 }))
 
 let wrapper: VueWrapper<any>
@@ -41,7 +42,7 @@ const createWrapper = () =>
   mount(LoginCollab)
 
 describe('loginCollab', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     wrapper = createWrapper()
   })
 

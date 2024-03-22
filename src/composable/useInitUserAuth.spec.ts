@@ -8,7 +8,7 @@ const givenToken = 'given-token'
 vi.mock('@/services/msal', () => ({
   getToken: vi.fn(() => {
     return Promise.resolve(givenToken)
-  })
+  }),
 }))
 const mockStorePatch = vi.fn()
 const mockFechUserDataProvider = vi.fn(() => {
@@ -17,27 +17,27 @@ const mockFechUserDataProvider = vi.fn(() => {
     firstName: 'John',
     lastName: 'Doe',
     email: 'john@example.com',
-    isCollab: true
+    isCollab: true,
   })
 })
 vi.mock('@kpmg/common', () => ({
   commonApi: () => vi.fn(),
   commonStore: () => ({
-    $patch: mockStorePatch
+    $patch: mockStorePatch,
   }),
   dataProvider: () => ({
-    fetchUserData: mockFechUserDataProvider
+    fetchUserData: mockFechUserDataProvider,
   }),
   tokenService: {
     getToken: vi.fn().mockReturnValue('a-token'),
-    setToken: vi.fn()
-  }
+    setToken: vi.fn(),
+  },
 }))
 
 vi.mock('@/composable/useStoreSubscription', () => ({
   default: () => ({
-    subscribeToStoreUpdates: vi.fn()
-  })
+    subscribeToStoreUpdates: vi.fn(),
+  }),
 }))
 
 describe('useInitUserAuth', () => {
@@ -92,5 +92,4 @@ describe('useInitUserAuth', () => {
     expect(isTokenRetrieve.value).toBeFalsy()
     expect(store().$patch).not.toHaveBeenCalled()
   })
-
 })

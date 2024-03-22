@@ -1,10 +1,10 @@
-import { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import { createApp, h } from 'vue'
 import singleSpaVue from 'single-spa-vue'
 import {
   commoni18n as i18n,
   commonPinia as pinia,
-  routes
+  routes,
 } from '@kpmg/common'
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
 
@@ -16,11 +16,11 @@ setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
 const vueLifecycles = singleSpaVue({
   createApp,
   appOptions: {
-    render: () => h(RenderLess)
+    render: () => h(RenderLess),
   },
   handleInstance(app) {
     app.use(i18n.value).use(pinia)
-  }
+  },
 })
 
 export const bootstrap = vueLifecycles.bootstrap
@@ -32,8 +32,8 @@ routes.value.push({
   name: 'loginClient',
   component: () => import('@/pages/login'),
   meta: {
-    layout: LOGIN_LAYOUT
-  }
+    layout: LOGIN_LAYOUT,
+  },
 } as RouteRecordRaw)
 
 routes.value.push({
@@ -41,8 +41,8 @@ routes.value.push({
   name: 'login',
   component: () => import('@/pages/loginCollab'),
   meta: {
-    layout: 'LoginCollab'
-  }
+    layout: 'LoginCollab',
+  },
 } as RouteRecordRaw)
 
 const ROUTES_USING_LOGIN_LAYOUT = [
@@ -51,7 +51,7 @@ const ROUTES_USING_LOGIN_LAYOUT = [
   'resendEmailSuccess',
   'resetPassword',
   'resetPasswordSuccess',
-  'resetPasswordForm'
+  'resetPasswordForm',
 ]
 
 ROUTES_USING_LOGIN_LAYOUT.forEach(function(route) {
@@ -62,7 +62,7 @@ ROUTES_USING_LOGIN_LAYOUT.forEach(function(route) {
       return import(`@/pages/${route}/index.ts`)
     },
     meta: {
-      layout: LOGIN_LAYOUT
-    }
+      layout: LOGIN_LAYOUT,
+    },
   } as RouteRecordRaw)
 })

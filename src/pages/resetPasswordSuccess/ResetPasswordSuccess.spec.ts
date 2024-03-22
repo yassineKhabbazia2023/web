@@ -2,20 +2,21 @@ import {
   describe,
   expect,
   it,
-  vi
+  vi,
 } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import ResetPasswordSuccess from './'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
+    push: mockRouterPush,
   }),
   useRoute: () => ({
     query: {
-      email: ''
-    }
-  })
+      email: '',
+    },
+  }),
 }))
 
 const mockRouterPush = vi.fn()
@@ -25,9 +26,9 @@ const createWrapper = () =>
   mount(ResetPasswordSuccess, {
     global: {
       mocks: {
-        $t: (tKey: any) => tKey
-      }
-    }
+        $t: (tKey: any) => tKey,
+      },
+    },
   })
 
 describe('reset password success', () => {
@@ -40,7 +41,7 @@ describe('reset password success', () => {
 
     await backToLoginBtn.trigger('click')
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: 'loginClient'
+      name: 'loginClient',
     })
   })
 })

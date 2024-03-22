@@ -10,7 +10,7 @@ const regexArray = [
   /[A-Z]/,
   /[a-z]/,
   /[0-9]/,
-  /[^a-zA-Z0-9]/
+  /[^a-zA-Z0-9]/,
 ]
 
 export const levelPasswordStrength = (password: string):PASSWORD_STRENGTH => {

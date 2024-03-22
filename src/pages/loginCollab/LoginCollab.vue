@@ -29,9 +29,9 @@ const { navigateToWallet } = useNavigation()
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
-const handleLoginCollab = async () => {
+const handleLoginCollab = () => {
   msalInstance.loginRedirect()
 }
 onMounted(async () => {

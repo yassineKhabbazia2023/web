@@ -1,63 +1,34 @@
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
 import CreatePassword from './'
+import { getMockedRouter, getWrapper } from '../testHelper'
 
-const routes = [
-  {
-    path: '/expireToken',
-    name: 'expireToken',
-    component: {
-      template: '<p class="page-title">ExpireToken</p>'
-    }
-  },
-  {
-    path: '/createPassword',
-    name: 'createPassword',
-    component: {
-      template: '<p class="page-title">CreatePassword</p>'
-    }
-  }
-]
+const router = getMockedRouter(
+  'createPassword',
+  'CreatePassword',
+  'email',
+)
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes
-})
-router.push({
-  path: '/createPassword',
-  name: 'createPassword',
-  query: {
-    contactId: 'contactId',
-    accountId: 'accountId',
-    token: 'token',
-    email: 'email'
-  }
-})
-
-const createWrapper = () => {
-  return mount(CreatePassword, {
-    global: {
-      plugins: [router],
-      stubs: [
-        'PForm',
-        'PFormItem',
-        'PInput',
-        'PCheckbox',
-        'PButton'
-      ]
-    }
-  })
+function createWrapper() {
+  const stubs = [
+    'PForm',
+    'PFormItem',
+    'PInput',
+    'PCheckbox',
+    'PButton',
+  ]
+  return getWrapper(CreatePassword, router, stubs)
 }
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
       get: () => ({
-        data: false
-      })
-    }
-  })
+        data: false,
+      }),
+    },
+  }),
 }))
 
 describe('page creation password', () => {
@@ -72,7 +43,7 @@ describe('page creation password', () => {
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
       name: 'expireToken',
-      query: { accountId: 'accountId', contactId: 'contactId' }
+      query: { accountId: 'accountId', contactId: 'contactId' },
     })
   })
 })

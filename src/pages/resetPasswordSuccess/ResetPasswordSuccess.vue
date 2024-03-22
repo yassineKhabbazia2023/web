@@ -29,20 +29,6 @@
 </template>
 
 <!-- eslint-disable max-len -->
-<i18n lang="yaml">
-  en-US:
-    backToLogin: 'Back to login'
-    verifyMailTitle: 'Check your email address.'
-    sendEmailDescription: 'We will send an email to '
-    associatedAccount: ' if it is associated with your account to reset your password.'
-  fr-FR:
-    backToLogin: 'Revenir à la connexion'
-    verifyMailTitle: 'Vérifiez votre adresse mail.'
-    sendEmailDescription: 'Nous enverrons un mail à '
-    associatedAccount: ' s''il est associé à votre compte pour réinitialiser votre mot de passe.'
-</i18n>
-<!-- eslint-enable max-len -->
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
@@ -50,7 +36,7 @@ import { PImage, PButton } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const router = useRouter()
@@ -58,6 +44,7 @@ const route = useRoute()
 
 const email = route.query.email
 </script>
+<!-- eslint-enable max-len -->
 
 <style lang="scss" scoped>
 .page-content {
@@ -116,3 +103,16 @@ const email = route.query.email
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    backToLogin: 'Back to login'
+    verifyMailTitle: 'Check your email address.'
+    sendEmailDescription: 'We will send an email to '
+    associatedAccount: ' if it is associated with your account to reset your password.'
+  fr-FR:
+    backToLogin: 'Revenir à la connexion'
+    verifyMailTitle: 'Vérifiez votre adresse mail.'
+    sendEmailDescription: 'Nous enverrons un mail à '
+    associatedAccount: ' s''il est associé à votre compte pour réinitialiser votre mot de passe.'
+</i18n>

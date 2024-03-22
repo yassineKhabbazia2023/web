@@ -4,8 +4,8 @@ import useNavigation from '@/composable/useNavigation'
 const mockRouterPush = vi.fn()
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
-  })
+    push: mockRouterPush,
+  }),
 }))
 
 describe('useNavigation', () => {

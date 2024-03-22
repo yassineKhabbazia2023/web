@@ -4,15 +4,16 @@ import {
   describe,
   expect,
   it,
-  vi
+  vi,
 } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import ResetPassword from './'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
-  })
+    push: mockRouterPush,
+  }),
 }))
 
 const mockRouterPush = vi.fn()
@@ -24,9 +25,9 @@ const mockAuthPost = vi.fn((_url, { email }) => {
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     auth: {
-      post: mockAuthPost
-    }
-  })
+      post: mockAuthPost,
+    },
+  }),
 }))
 
 let wrapper: VueWrapper<any>
@@ -55,14 +56,14 @@ describe('reset password', () => {
 
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
     expect(mockAuthPost).toHaveBeenCalledWith('sendResetPasswordLink', {
-      email: INPUT_EMAIL_VALUE
+      email: INPUT_EMAIL_VALUE,
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith({
       path: '/resetPasswordSuccess',
       query: {
-        email: 'customEmail@aol.com'
-      }
+        email: 'customEmail@aol.com',
+      },
     })
   })
 })

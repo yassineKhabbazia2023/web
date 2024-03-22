@@ -1,4 +1,5 @@
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import ResetPasswordForm from './'
@@ -8,21 +9,21 @@ const routes = [
     path: '/expireToken',
     name: 'expireToken',
     component: {
-      template: '<p class="page-title">ExpireToken</p>'
-    }
+      template: '<p class="page-title">ExpireToken</p>',
+    },
   },
   {
     path: '/resetPasswordForm',
     name: 'resetPasswordForm',
     component: {
-      template: '<p class="page-title">ResetPasswordForm</p>'
-    }
-  }
+      template: '<p class="page-title">ResetPasswordForm</p>',
+    },
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 router.push({
   name: 'resetPasswordForm',
@@ -31,8 +32,8 @@ router.push({
     contactId: 'contactId',
     contactEmail: 'contactEmail',
     accountId: 'accountId',
-    token: 'token'
-  }
+    token: 'token',
+  },
 })
 
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
@@ -40,20 +41,20 @@ vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
       get: () => ({
-        data: true
-      })
+        data: true,
+      }),
     },
     auth: {
-      post: postMock
-    }
-  })
+      post: postMock,
+    },
+  }),
 }))
 
 const createWrapper = () =>
   mount(ResetPasswordForm, {
     global: {
-      plugins: [router]
-    }
+      plugins: [router],
+    },
   })
 
 describe('page reset password form', () => {
@@ -65,7 +66,7 @@ describe('page reset password form', () => {
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(1)
       expect(wrapper.find('button').classes()).toContain('is-disabled')
-    }
+    },
   )
 
   it('should show error when user enter a invalid password', async () => {
@@ -108,7 +109,7 @@ describe('page reset password form', () => {
       contactId: 'contactId',
       password: 'aaAA11@@',
       resetPasswordToken: 'token',
-      isCreatePasswordAction: false
+      isCreatePasswordAction: false,
     }
     expect(postMock).toHaveBeenCalledTimes(1)
     expect(postMock).toHaveBeenCalledWith(postLink, data)

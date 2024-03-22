@@ -29,8 +29,8 @@ export default function useInitUserAuth() {
         firstName: data?.firstName,
         lastName: data?.lastName,
         email: data?.email,
-        isCollab: data?.isCollab
-      }
+        isCollab: data?.isCollab,
+      },
     })
   }
 

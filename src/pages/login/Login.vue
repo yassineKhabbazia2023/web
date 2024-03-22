@@ -88,22 +88,22 @@ const { navigateToCustomerWallet } = useNavigation()
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 const formRef = ref<FormInstance>()
 
 const formValues = reactive({
   email: '',
-  password: ''
+  password: '',
 })
 
 const formValidity: any = reactive({
   email: false,
-  password: false
+  password: false,
 })
 
 const isFormValid = computed(() =>
-  formValidity.email && formValidity.password
+  formValidity.email && formValidity.password,
 )
 
 const hasCustomError = ref(false)
@@ -137,7 +137,7 @@ const validateEmail = (_rule: any, value: any, callback: any) => {
 
 const rules = reactive<FormRules<typeof formValues>>({
   email: [{ trigger: ['blur', 'change'], validator: validateEmail }],
-  password: [{ trigger: ['blur', 'change'], validator: validatePassword }]
+  password: [{ trigger: ['blur', 'change'], validator: validatePassword }],
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
@@ -153,8 +153,8 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   try {
     const {
       data: {
-        webToken: token
-      }
+        webToken: token,
+      },
     } = await commonApi().auth.post('login', toRaw(formValues))
 
     tokenService.setToken(token)
