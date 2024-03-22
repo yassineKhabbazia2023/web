@@ -55,7 +55,7 @@ describe('dossier', () => {
   })
   const PARAMS = [
     ['collab', 'tab-collab'],
-    ['users', 'tab-users'],
+    ['usersCollab', 'tab-usersCollab'],
     ['offers', 'tab-offers'],
     ['info', 'tab-info']
   ]
@@ -72,7 +72,7 @@ describe('dossier', () => {
       })
     }
   )
-  it('should display the button label when the user is a client', async () => {
+  it('should display the button label when the user is a client', () => {
     const store = commonStore()
     // @ts-expect-error: Getter is read only
     store.isCollab = false

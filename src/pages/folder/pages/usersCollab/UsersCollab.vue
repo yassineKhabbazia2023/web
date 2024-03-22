@@ -1,7 +1,6 @@
 <template>
   <div>
     <PBlockHeader
-      v-if="isCollab"
       :pTitle="t('userTitle')"
       :pDescription="t('userDescription')"
       pColor="gray"
@@ -40,17 +39,6 @@
               </PAvatar>
             </div>
             <p>{{ scope.row.fullName }}</p>
-            <div
-              v-if="scope.row.isOwner && !isCollab"
-              class="margin-left--4"
-            >
-              <PTag
-                :pContent="t('owner')"
-                pColor="persian"
-                :pIconLeft="PIPatchCheck"
-                pEffect="light">
-              </PTag>
-            </div>
           </div>
         </template>
       </PTableColumn>
@@ -66,7 +54,6 @@
         </template>
       </PTableColumn>
       <PTableColumn
-        v-if="isCollab"
         :pLabel="t('status')"
         pSortable
         pProp="status.text"
@@ -86,13 +73,16 @@
         pProp="role"
       >
         <template #default="scope">
-          <div v-if="scope.row.isOwner && isCollab" class="owner-role flex flex--align-items-center">
+          <div
+            v-if="scope.row.isOwner"
+            class="owner-role flex flex--align-items-center"
+          >
             <PIcon pSize="14px" class="margin-right--1">
               <PIPatchCheck />
             </PIcon>
             {{ scope.row.role }}
           </div>
-          <div v-else>
+          <div v-if="!scope.row.isOwner">
             <p>
               {{ scope.row.role }}
             </p>
@@ -134,19 +124,19 @@
     </PTable>
 
     <PPagination
-        v-if="state.totalItems > state.limit"
-        @on-page-range-changed="handlePageRangeChanged"
-        v-model:p-current-page="state.currentPage"
-        v-model:p-page-size="state.limit"
-        :pTotal="state.totalItems"
-        :pPageSizes="PAGE_SIZES"
-        :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
-        pPageSizeSelectorSuffix=""
-        pShowTotalPageCounter
-        pBackground
-      >
-        <p>{{ paginationLabel }}</p>
-      </PPagination>
+      v-if="state.totalItems > state.limit"
+      @on-page-range-changed="handlePageRangeChanged"
+      v-model:p-current-page="state.currentPage"
+      v-model:p-page-size="state.limit"
+      :pTotal="state.totalItems"
+      :pPageSizes="PAGE_SIZES"
+      :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
+      pPageSizeSelectorSuffix=""
+      pShowTotalPageCounter
+      pBackground
+    >
+      <p>{{ paginationLabel }}</p>
+    </PPagination>
   </div>
 </template>
 
@@ -169,11 +159,10 @@ import {
   type PToolboxItemProps
 } from '@kpmg/styleguide'
 import { computed, onMounted, reactive, watch } from 'vue'
-import { commonStore } from '@kpmg/common'
 import { PAGE_SIZES } from '@/constants'
+import { getInitials } from '@/helper'
 import { IStateUser, IUserStatus } from './types'
 import { dataFromApi } from './mockData'
-import { storeToRefs } from 'pinia'
 
 const state: IStateUser = reactive({
   data: [],
@@ -183,19 +172,12 @@ const state: IStateUser = reactive({
   totalItems: 0,
   isLoading: false
 })
-const userStore = commonStore()
-const { isCollab } = storeToRefs(userStore)
 
 // Uncomment when implement call API
 // const getQueryParams = () => ({
 //   page: state.currentPage,
 //   limit: state.limit
 // })
-
-// const removeFalsyValues = (obj: object) =>
-//   Object.entries(obj)
-//     // eslint-disable-next-line no-return-assign
-//     .reduce((acc: any, [key, value]) => (value ? (acc[key] = value, acc) : acc), {})
 
 const fetch = async () => {
   state.isLoading = true
@@ -217,7 +199,7 @@ const fetch = async () => {
       status: getStatus(status),
       firstName: firstName?.toLowerCase() ?? '',
       lastName: lastName?.toUpperCase() ?? '',
-      initials: getInitial({ firstName, lastName }),
+      initials: getInitials(firstName, lastName),
       fullName: getFullName({ firstName, lastName }),
       ...rest
     }))
@@ -237,32 +219,18 @@ const getFullName = ({ firstName, lastName }: { firstName: string, lastName: str
   }
 }
 
-const getInitial = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
-  if (firstName && lastName) {
-    return firstName[0] + lastName[0]
-  }
-}
-
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local'
 })
 
-const collaboratorToolboxItem: PToolboxItemProps[] = [
+const toolboxItems: PToolboxItemProps[] = [
   {
     pIconName: 'PIPatchCheck',
     pValue: t('assignSignatory'),
     pActionName: 'assign',
     pState: 'default'
   },
-  {
-    pIconName: 'PIPencilSquare',
-    pValue: t('modifyRights'),
-    pActionName: 'rights',
-    pState: 'default'
-  }]
-
-const clientToolboxItem: PToolboxItemProps[] = [
   {
     pIconName: 'PIPencilSquare',
     pValue: t('modifyRights'),
@@ -309,8 +277,6 @@ onMounted(async () => {
 })
 
 const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (Date.parse(b.firstDateAccess) / 1000)
-const toolboxItems = isCollab.value ? collaboratorToolboxItem : clientToolboxItem
-
 </script>
 
 <style lang="scss">
@@ -346,7 +312,6 @@ const toolboxItems = isCollab.value ? collaboratorToolboxItem : clientToolboxIte
     userTitle: 'Users'
     userDescription: 'Manage here users''s rights for this folder.'
     on: 'on'
-    owner: 'Owner'
   fr-FR:
     role: 'Rôle'
     user: 'Utilisateur'
@@ -362,5 +327,4 @@ const toolboxItems = isCollab.value ? collaboratorToolboxItem : clientToolboxIte
     userTitle: 'Les utilisateurs'
     userDescription: 'Gérer ici les droits des utilisateurs sur le dossier.'
     on: 'sur'
-    owner: 'Dirigeant'
 </i18n>
