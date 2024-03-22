@@ -18,7 +18,7 @@
     </div>
 
     <PPagination
-      v-if="shouldShowPagination && !!state.totalItems"
+      v-if="shouldShowPagination && state.totalItems"
       @on-page-range-changed="handlePageRangeChanged"
       v-model:p-current-page="state.currentPage"
       v-model:p-page-size="state.limit"
@@ -72,12 +72,12 @@ const state: IState = reactive({
   isLoading: false
 })
 
-const handleSearchValueSubmitted = (searchValue: string) => {
-  state.search = searchValue
+const handleSearchValueSubmitted = (newSearchValue: string) => {
+  state.search = newSearchValue
 }
 
-const handlePageRangeChanged = (newValue: number) => {
-  state.limit = newValue
+const handlePageRangeChanged = (newItemsPerPage: number) => {
+  state.limit = newItemsPerPage
 }
 
 const paginationLabel = computed(() =>
@@ -88,7 +88,7 @@ const paginationLabel = computed(() =>
 )
 
 const shouldShowPagination = computed(() =>
-  !state.isLoading && !!state.totalItems && state.totalItems > state.limit
+  !state.isLoading && state.totalItems && state.totalItems > state.limit
 )
 
 const getQueryParams = () => ({
