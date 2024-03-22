@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
 import { commonPinia as pinia, type Entity, commonStore } from '@kpmg/common'
@@ -8,11 +9,11 @@ import SidebarEntity from '.'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: vi.fn()
+    push: vi.fn(),
   }),
   useRoute: () => ({
-    fullPath: '/portefeuille'
-  })
+    fullPath: '/portefeuille',
+  }),
 }))
 
 const entities: Entity[] = getMockedFavoriteEntities()
@@ -24,18 +25,18 @@ vi.mock('@kpmg/common', () => ({
       isAuthenticated: () => true,
       isCollab: () => true,
       favoriteEntities: () => entities,
-      defaultEntity: () => entities[0]
-    }
-  })
+      defaultEntity: () => entities[0],
+    },
+  }),
 }))
 
 const createWrapper = () => {
   const wrapper = mount(SidebarEntity, {
     props: {
       favoriteEntities: entities,
-      totalEntities: entities.length
+      totalEntities: entities.length,
     },
-    plugins: [createTestingPinia()]
+    plugins: [createTestingPinia()],
   })
 
   return wrapper
@@ -59,7 +60,7 @@ describe('sidebarEntity', () => {
       const selectedEntity = findSelectedEntity(wrapper)
       const starDivider = wrapper.find('[data-testid=star-divider]')
       const favoriteEntities = wrapper.find(
-        '[data-testid=favorite-entities]'
+        '[data-testid=favorite-entities]',
       )
 
       expect(sidebarToggle.exists()).toBeTruthy()
@@ -82,14 +83,14 @@ describe('sidebarEntity', () => {
     })
     it('should display all favorite entities correctly', () => {
       const favoriteEntities = wrapper.findAll(
-        '[data-testid=favorite-entity]'
+        '[data-testid=favorite-entity]',
       )
 
       expect(favoriteEntities).toHaveLength(entities.length)
     })
     it('should display the selected entity correctly after clicking on a random entity avatar', async () => {
       const firstFavoriteEntity = wrapper.find(
-        '[data-testid=favorite-entity] button'
+        '[data-testid=favorite-entity] button',
       )
       const selectedEntity = findSelectedEntity(wrapper)
 
@@ -111,7 +112,7 @@ describe('sidebarEntity', () => {
       const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
       const sidebarToggle = findSidebarToggle(wrapper)
       const arrowBarRightIcon = wrapper.findComponent({
-        name: 'PIArrowBarRight'
+        name: 'PIArrowBarRight',
       })
 
       expect(arrowBarRightIcon.exists()).toBeTruthy()

@@ -37,34 +37,17 @@
   </PDialog>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    title: 'Your session will expire'
-    renew: 'Stay connect'
-    logout: 'Disconnect'
-    content: >-
-      Privacy is essential, and you've been away for a while.
-      We will log you out in a few minutes unless you confirm that you are still on Pulse.
-  fr-FR:
-    title: 'Votre session va expirer'
-    renew: 'Rester connecté'
-    logout: 'Déconnexion'
-    content: >-
-      La confidentialité est essentielle, et vous êtes absent depuis un moment.
-      Nous allons vous déconnecter dans quelques minutes sauf
-      si vous confirmez que vous êtes toujours sur Pulse.'
-</i18n>
-
 <script setup lang="ts">
 import { PDialog, PButton, PImage } from '@kpmg/styleguide'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { commonApi, tokenService } from '@kpmg/common'
-import jwtDecode, { JwtPayload } from 'jwt-decode'
+import type { JwtPayload } from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 const isVisibleDialog = ref(false)
 const emit = defineEmits(['logout'])
@@ -119,3 +102,21 @@ onBeforeUnmount(() => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    title: 'Your session will expire'
+    renew: 'Stay connect'
+    logout: 'Disconnect'
+    content: >-
+      Privacy is essential, and you've been away for a while.
+      We will log you out in a few minutes unless you confirm that you are still on Pulse.
+  fr-FR:
+    title: 'Votre session va expirer'
+    renew: 'Rester connecté'
+    logout: 'Déconnexion'
+    content: >-
+      La confidentialité est essentielle, et vous êtes absent depuis un moment.
+      Nous allons vous déconnecter dans quelques minutes sauf
+      si vous confirmez que vous êtes toujours sur Pulse.'
+</i18n>

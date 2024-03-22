@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import {
   routes as commonRoutes,
   commonStore as useStore,
-  commonApi
+  commonApi,
 } from '@kpmg/common'
 import { getEntities } from '@/services/entities'
 
@@ -12,13 +12,13 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: { template: '<h1>Home Page</h1>' }
-  }
+    component: { template: '<h1>Home Page</h1>' },
+  },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: []
+  routes: [],
 })
 
 routes.map((route) => router.addRoute(route))
@@ -27,7 +27,7 @@ const isUserOriginCollab = async () => {
   const USER_ORIGIN_URL = 'UserOrigin'
   try {
     const { data: userOrigin } = await commonApi().user_origin.get(
-      USER_ORIGIN_URL
+      USER_ORIGIN_URL,
     )
     return userOrigin === 'COLLAB'
   } catch {}
@@ -46,7 +46,7 @@ router.beforeEach(async (to: any, _from) => {
     (isHomeLayoutWithoutCustomStyles || isHomeLayoutWithCustomStyles)
   ) {
     return {
-      name: (await isUserOriginCollab()) ? 'login' : 'loginClient'
+      name: (await isUserOriginCollab()) ? 'login' : 'loginClient',
     }
   }
 
@@ -61,10 +61,10 @@ router.beforeEach(async (to: any, _from) => {
             default: {
               idAccount: firstEntity.id,
               name: firstEntity.name,
-              color: 'persian'
-            }
-          }
-        }
+              color: 'persian',
+            },
+          },
+        },
       })
 
       router.push({ name: 'folder', params: { id: firstEntity.id } })

@@ -44,27 +44,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-en-US:
-  folder: 'Folder'
-  users: 'Users'
-  information: 'Information'
-  offers: 'Offers'
-  collaborators: 'Collaborators'
-  documents: 'Documents'
-  bank: 'Bank'
-  indicators: 'Indicators'
-fr-FR:
-  folder: 'Dossier'
-  users: 'Utilisateurs'
-  information: 'Informations'
-  offers: 'Offres'
-  collaborators: 'Collaborateurs'
-  documents: 'Documents'
-  bank: 'Banque'
-  indicators: 'Indicateurs'
-</i18n>
-
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -75,7 +54,7 @@ import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 const route = useRoute()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<SidebarEntityMenuProps>()
@@ -90,48 +69,48 @@ const folderSubmenu = {
   menuItems: [
     {
       title: t('users'),
-      index: 'utilisateurs'
+      index: 'utilisateurs',
     },
     {
       title: t('collaborators'),
-      index: 'collaborateurs'
+      index: 'collaborateurs',
     },
     {
       title: t('offers'),
-      index: 'offres'
+      index: 'offres',
     },
     {
       title: t('information'),
-      index: 'informations'
-    }
-  ]
+      index: 'informations',
+    },
+  ],
 }
 
 const menuItems = [
   {
     index: '/ged',
     title: t('documents'),
-    leftIcon: 'PIFileText'
+    leftIcon: 'PIFileText',
   },
   {
     index: 'bank',
     title: t('bank'),
     leftIcon: 'PIPiggyBank',
-    disabled: true
+    disabled: true,
   },
   {
     index: 'indicators',
     title: t('indicators'),
     leftIcon: 'PIClipboardData',
-    disabled: true
-  }
+    disabled: true,
+  },
 ]
 
 watch(
   route,
   (currentRoute) => {
     activeMenuItem.value = currentRoute.fullPath
-  }
+  },
 )
 </script>
 
@@ -162,3 +141,24 @@ watch(
   }
 }
 </style>
+
+<i18n lang="yaml">
+en-US:
+  folder: 'Folder'
+  users: 'Users'
+  information: 'Information'
+  offers: 'Offers'
+  collaborators: 'Collaborators'
+  documents: 'Documents'
+  bank: 'Bank'
+  indicators: 'Indicators'
+fr-FR:
+  folder: 'Dossier'
+  users: 'Utilisateurs'
+  information: 'Informations'
+  offers: 'Offres'
+  collaborators: 'Collaborateurs'
+  documents: 'Documents'
+  bank: 'Banque'
+  indicators: 'Indicateurs'
+</i18n>

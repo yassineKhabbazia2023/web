@@ -8,12 +8,12 @@ import { setAssetsBaseUrl } from '@kpmg/styleguide'
 const vueLifecycles = singleSpaVue({
   createApp,
   appOptions: {
-    render: () => h(App)
+    render: () => h(App),
   },
   handleInstance(app: any) {
     app.use(router).use(i18n.value).use(pinia)
     i18n.value.global.locale.value = 'fr-FR'
-  }
+  },
 })
 
 setAssetsBaseUrl((window as any).EnvVars?.VITE_ASSETS_BASE_URL)

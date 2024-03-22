@@ -6,8 +6,8 @@ import EntityAvatar from '.'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: vi.fn()
-  })
+    push: vi.fn(),
+  }),
 }))
 
 const entities: Entity[] = getMockedFavoriteEntities()
@@ -15,12 +15,12 @@ const entities: Entity[] = getMockedFavoriteEntities()
 const defaultProps = {
   entity: entities[0],
   hideTooltip: false,
-  selected: false
+  selected: false,
 }
 
 const createWrapper = (props = defaultProps) => {
   const wrapper = mount(EntityAvatar, {
-    props
+    props,
   })
 
   return wrapper

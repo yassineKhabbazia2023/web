@@ -27,16 +27,16 @@ export const getFavoriteEntities = async (): Promise<Entity[]> => {
           name,
           idAccount,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
-          ibs: 'IBS93781560ZE19'
-        })
+          ibs: 'IBS93781560ZE19',
+        }),
       )
       store().$patch({
         user: {
           entities: {
             favorites: favoriteEntities,
-            default: favoriteEntities.at(0)
-          }
-        }
+            default: favoriteEntities.at(0),
+          },
+        },
       })
 
       return response.data

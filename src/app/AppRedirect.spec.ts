@@ -1,13 +1,14 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import router from '../plugins/router'
 import { ROUTES, PAGES_TITLE } from './mock'
 import App from './'
 
 vi.mock('env-vars', () => ({
-  VITE_IDLE_DURATION: 5
+  VITE_IDLE_DURATION: 5,
 }))
 
 const mockUserOrigin = vi.fn()
@@ -16,20 +17,20 @@ vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({
-      user: null
+      user: null,
     }),
     getters: {
-      isAuthenticated: () => false
-    }
+      isAuthenticated: () => false,
+    },
   }),
   commonApi: () => ({
     user_origin: {
-      get: mockUserOrigin
-    }
+      get: mockUserOrigin,
+    },
   }),
   routes: {
-    value: []
-  }
+    value: [],
+  },
 }))
 
 const createWrapper = () =>
@@ -38,14 +39,14 @@ const createWrapper = () =>
       plugins: [router, createTestingPinia({
         initialState: {
           common: {
-            user: {}
-          }
-        }
+            user: {},
+          },
+        },
       })],
       stubs: {
-        PButton: { template: '<button><slot /></button>' }
-      }
-    }
+        PButton: { template: '<button><slot /></button>' },
+      },
+    },
   })
 
 describe('app with navigation guard', () => {

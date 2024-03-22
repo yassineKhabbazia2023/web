@@ -1,7 +1,8 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia } from 'pinia'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import helpers from '@/tests/utils/helpers'
 import router from '../plugins/router'
 import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
@@ -13,23 +14,23 @@ const testEntity: Entity = getMockedFavoriteEntities()[0]
 const { fetchUserData } = helpers()
 
 vi.mock('env-vars', () => ({
-  VITE_IDLE_DURATION: 5
+  VITE_IDLE_DURATION: 5,
 }))
 
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({
-      user: null
+      user: null,
     }),
     getters: {
       isAuthenticated: () => true,
       isCollab: () => false,
-      favoriteEntities: () => []
+      favoriteEntities: () => [],
     },
     actions: {
-      logout: () => vi.fn()
-    }
+      logout: () => vi.fn(),
+    },
   }),
   commonPinia: () => createPinia(),
   commonApi: () => ({
@@ -38,20 +39,20 @@ vi.mock('@kpmg/common', () => ({
         Promise.resolve({
           data: {
             items: [{ id: testEntity.idAccount }],
-            totalItems: 1
-          }
-        })
+            totalItems: 1,
+          },
+        }),
     },
     user_origin: {
-      get: vi.fn().mockResolvedValue({ data: 'COLLAB' })
-    }
+      get: vi.fn().mockResolvedValue({ data: 'COLLAB' }),
+    },
   }),
   routes: {
-    value: []
+    value: [],
   },
   dataProvider: () => {
     return { fetchUserData }
-  }
+  },
 }))
 
 const getPageTitle = (wrapper: VueWrapper) => wrapper.find('.pageTitle').text()
@@ -63,12 +64,12 @@ const createWrapper = (userStore = {}) =>
         createTestingPinia({
           initialState: {
             common: {
-              user: userStore
-            }
-          }
-        })
-      ]
-    }
+              user: userStore,
+            },
+          },
+        }),
+      ],
+    },
   })
 
 describe('app with navigation guard', () => {

@@ -1,12 +1,14 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import router from '../../plugins/router'
 import PopupRenewToken from '.'
 import { ROUTES } from '../../app/mock'
 import { tokenService } from '@kpmg/common'
-import jwtDecode, { JwtPayload } from 'jwt-decode'
+import type { JwtPayload } from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 import { PDialog } from '@kpmg/styleguide'
 import { nextTick } from 'vue'
 
@@ -17,46 +19,46 @@ vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        token: 'token'
-      }
+        token: 'token',
+      },
     }),
     getters: {
-      isAuthenticated: () => true
-    }
+      isAuthenticated: () => true,
+    },
   }),
   commonApi: () => ({
     user_origin: {
       get: vi
         .fn()
-        .mockResolvedValue({ data: 'CLIENT' })
+        .mockResolvedValue({ data: 'CLIENT' }),
     },
     auth: {
-      post: authPostMock
-    }
+      post: authPostMock,
+    },
   }),
   routes: {
-    value: []
+    value: [],
   },
   tokenService: {
     setToken: vi.fn(),
     getToken: vi.fn(),
-    registerOnChange: vi.fn()
-  }
+    registerOnChange: vi.fn(),
+  },
 }))
 
 vi.mock('jwt-decode', () => ({
   default: () => ({
     exp: Date.now() / 1000 + 5, // expires in 5 s.
-    sub: 'something'
-  })
+    sub: 'something',
+  }),
 }))
 
 const pinia = createTestingPinia()
 
 const createWrapper = () => mount(PopupRenewToken, {
   global: {
-    plugins: [router, pinia]
-  }
+    plugins: [router, pinia],
+  },
 })
 
 const getTokenRenewalDialog = (wrapper: VueWrapper) => wrapper.findComponent(PDialog)
@@ -66,7 +68,7 @@ const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJFUTBNVVE1TjBOQ1JUS
 const { sub } = jwtDecode<JwtPayload>(TOKEN)
 describe('popup renew token', () => {
   let wrapper: VueWrapper<any>
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.clearAllTimers()
     vi.useFakeTimers()
     vi

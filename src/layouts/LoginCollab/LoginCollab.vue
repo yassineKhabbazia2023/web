@@ -63,7 +63,7 @@
           @click.prevent="handleCopyrightLink"
           href=""
         >
-        {{ t('copyright') }}
+          {{ t('copyright') }}
         </a>
       </p>
     </footer>
@@ -78,7 +78,7 @@
     <PDrawer
       v-model="isCopyrightDrawerOpened"
       pTitle="Copyright"
-      @closeDrawerButton="handleCloseDrawer"
+      @close-drawer-button="handleCloseDrawer"
     >
       <p class="drawerContent">
         {{ t('copyrightContent') }}
@@ -103,32 +103,32 @@ import { useFooterLink } from '@/composables/useFooterLink'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const {
   handleFooterLinkClick,
   handleCopyrightLink,
   isCopyrightDrawerOpened,
-  handleCloseDrawer
+  handleCloseDrawer,
 } = useFooterLink()
 
 const carouselData = [
   {
     pText: t('carouselItem1'),
     pImageName: 'mirror-smartphone',
-    pImageType: 'paupulse'
+    pImageType: 'paupulse',
   },
   {
     pText: t('carouselItem2'),
     pImageType: 'paupulse',
-    pImageName: 'bank-mandate'
+    pImageName: 'bank-mandate',
   },
   {
     pText: t('carouselItem3'),
     pImageType: 'paupulse',
-    pImageName: 'shared-document'
-  }
+    pImageName: 'shared-document',
+  },
 ]
 </script>
 

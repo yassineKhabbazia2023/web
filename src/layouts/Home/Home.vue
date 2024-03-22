@@ -25,19 +25,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-en-US:
-  wallet: 'Wallet'
-  subscriptions: 'Request validation'
-  ged: 'My documents'
-  mandate: 'Banking'
-fr-FR:
-  wallet: 'Portefeuille'
-  subscriptions: 'Validation de demande'
-  ged: 'Mes documents'
-  mandate: 'Flux bancaires'
-</i18n>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -48,30 +35,30 @@ import Sidebar from './Sidebar'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const headerMenu = [
   {
     pIcon: 'PIGrid',
     pText: t('wallet'),
-    pPath: '/portefeuille'
+    pPath: '/portefeuille',
   },
   {
     pIcon: 'PIFolder',
     pText: t('ged'),
-    pPath: '/ged'
+    pPath: '/ged',
   },
   {
     pIcon: 'PIFiles',
     pText: t('subscriptions'),
-    pPath: '/subscription'
+    pPath: '/subscription',
   },
   {
     pIcon: 'PICashCoin',
     pText: t('mandate'),
-    pPath: '/mandats'
-  }
+    pPath: '/mandats',
+  },
 ]
 
 const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
@@ -79,17 +66,18 @@ const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
     pIcon,
     pName,
     pPath,
-    pComponent: { render: () => null }
+    pComponent: { render: () => null },
   }
 })
 
 const router = useRouter()
 const stylesMetaProperties = computed(
-  () => router.currentRoute.value.meta.styles
+  () => router.currentRoute.value.meta.styles,
 )
 const route = useRoute()
 const routeActive = route.path
 </script>
+
 <style lang="scss" scoped>
 .common-layout {
   .aside-main-container {
@@ -159,3 +147,15 @@ const routeActive = route.path
   }
 }
 </style>
+<i18n lang="yaml">
+en-US:
+  wallet: 'Wallet'
+  subscriptions: 'Request validation'
+  ged: 'My documents'
+  mandate: 'Banking'
+fr-FR:
+  wallet: 'Portefeuille'
+  subscriptions: 'Validation de demande'
+  ged: 'Mes documents'
+  mandate: 'Flux bancaires'
+</i18n>

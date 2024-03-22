@@ -1,17 +1,18 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
 import SidebarEntityMenu from '.'
 
 const favoriteEntityId: string = getMockedFavoriteEntities()[0].idAccount
 
 const defaultProps = {
-  selectedEntityId: favoriteEntityId
+  selectedEntityId: favoriteEntityId,
 }
 
 const createWrapper = (props = defaultProps) => {
   const wrapper = mount(SidebarEntityMenu, {
-    props
+    props,
   })
 
   return wrapper
@@ -25,7 +26,7 @@ describe('sidebarEntityMenu', () => {
   describe('display', () => {
     it('should display the sidebar entity menu correctly', () => {
       const sidebarEntityMenu = wrapper.find(
-        '[data-testid=sidenav-menu]'
+        '[data-testid=sidenav-menu]',
       )
 
       expect(sidebarEntityMenu.exists()).toBeTruthy()

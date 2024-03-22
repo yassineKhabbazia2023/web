@@ -62,7 +62,7 @@
           @click.prevent="handleCopyrightLink"
           href=""
         >
-        {{ t('copyright') }}
+          {{ t('copyright') }}
         </a>
       </p>
     </footer>
@@ -77,7 +77,7 @@
     <PDrawer
       v-model="isCopyrightDrawerOpened"
       pTitle="Copyright"
-      @closeDrawerButton="handleCloseDrawer"
+      @close-drawer-button="handleCloseDrawer"
     >
       <p class="drawerContent">
         {{ t('copyrightContent') }}
@@ -102,13 +102,13 @@ import { useFooterLink } from '@/composables/useFooterLink'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 const {
   handleFooterLinkClick,
   handleCopyrightLink,
   isCopyrightDrawerOpened,
-  handleCloseDrawer
+  handleCloseDrawer,
 } = useFooterLink()
 
 </script>

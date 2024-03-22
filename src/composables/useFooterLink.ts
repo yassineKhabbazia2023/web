@@ -1,5 +1,5 @@
 import { commonApi } from '@kpmg/common'
-import { Link } from '../layouts/Login/types'
+import type { Link } from '../layouts/Login/types'
 import { ref } from 'vue'
 
 export const useFooterLink = () => {
@@ -32,6 +32,6 @@ export const useFooterLink = () => {
     handleFooterLinkClick,
     handleCopyrightLink,
     handleCloseDrawer,
-    isCopyrightDrawerOpened
+    isCopyrightDrawerOpened,
   }
 }
