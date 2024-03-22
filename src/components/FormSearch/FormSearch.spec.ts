@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import FormSearch from './'
 
 const createWrapper = (): VueWrapper<any> =>
@@ -36,6 +37,6 @@ describe('formSearch', () => {
       searchValue.length < 3
         ? expect(wrapper.emitted('searchValueSubmitted')).toBeFalsy()
         : expect(wrapper.emitted('searchValueSubmitted')).toStrictEqual([[searchValue]])
-    }
+    },
   )
 })

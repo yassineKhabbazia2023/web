@@ -1,23 +1,23 @@
 <template>
-<PForm
-  @submit.prevent="handleSearchSubmit(formRef)"
-  ref="formRef"
-  :pRules="rules"
-  :pModel="formValues"
->
-  <PFormItem prop="search">
-    <PInput
-      @keyup="handleSearchSubmit(formRef)"
-      v-model="formValues.search"
-      :pPlaceholder="placeholder"
-      :pPrefixIcon="PISearch"
-      pName="search"
-      pSize="small"
-      pType="search"
-      pAutofocus
-    />
-  </PFormItem>
-</PForm>
+  <PForm
+    @submit.prevent="handleSearchSubmit(formRef)"
+    ref="formRef"
+    :pRules="rules"
+    :pModel="formValues"
+  >
+    <PFormItem prop="search">
+      <PInput
+        @keyup="handleSearchSubmit(formRef)"
+        v-model="formValues.search"
+        :pPlaceholder="placeholder"
+        :pPrefixIcon="PISearch"
+        pName="search"
+        pSize="small"
+        pType="search"
+        pAutofocus
+      />
+    </PFormItem>
+  </PForm>
 </template>
 
 <script lang="ts" setup>
@@ -26,7 +26,7 @@ import {
   PForm,
   PFormItem,
   PInput,
-  PISearch
+  PISearch,
 } from '@kpmg/styleguide'
 import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import type { Props } from './types'
@@ -34,11 +34,11 @@ import { reactive, ref } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 withDefaults(defineProps<Props>(), {
-  placeholder: () => useI18n().t('search')
+  placeholder: () => useI18n().t('search'),
 })
 
 const emit = defineEmits<{
@@ -47,14 +47,14 @@ const emit = defineEmits<{
 
 const formRef = ref<FormInstance>()
 const formValues = reactive({
-  search: ''
+  search: '',
 })
 const rules = reactive<FormRules<typeof formValues>>({
   search: [{
     trigger: 'change',
     min: 3,
-    message: t('errorSearchInvalid')
-  }]
+    message: t('errorSearchInvalid'),
+  }],
 })
 const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return

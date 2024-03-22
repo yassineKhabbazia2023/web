@@ -1,9 +1,9 @@
-import { Contact } from '@/services/contact/contactTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 import { getCollaborators } from '@/services/contact'
 
 export async function getAutocompleteContacts(
   selectedCollaborators: Contact[],
-  queryString: string
+  queryString: string,
 ) {
   if (!queryString) {
     return []

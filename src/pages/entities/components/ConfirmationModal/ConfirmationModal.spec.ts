@@ -1,5 +1,6 @@
 import { it, expect, describe, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { ConfirmationModalProps } from './ConfirmationModalTypes'
 import ConfirmationModal from '.'
@@ -7,12 +8,12 @@ import ConfirmationModal from '.'
 const defaultProps: ConfirmationModalProps = {
   modelValue: true,
   title: 'Test',
-  content: 'Test Content'
+  content: 'Test Content',
 }
 
 const createWrapper = (props = defaultProps) => {
   return mount(ConfirmationModal, {
-    props
+    props,
   })
 }
 

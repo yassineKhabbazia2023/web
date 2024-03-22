@@ -7,7 +7,7 @@ export const mockCollabsData: Collab[] = [
     email: 'ouassim.hayani@kpmg.fr',
     roleFunction: 'collaborateur ESC',
     office: 'Paris',
-    hasAccess: false
+    hasAccess: false,
   },
   {
     id: '3',
@@ -16,7 +16,7 @@ export const mockCollabsData: Collab[] = [
     email: 'suliman.lescot@kpmg.fr',
     roleFunction: 'Collaborateur GS',
     office: 'Paris',
-    hasAccess: true
+    hasAccess: true,
   },
   {
     id: '4',
@@ -25,6 +25,6 @@ export const mockCollabsData: Collab[] = [
     email: 'fschotte@kpmg.fr',
     roleFunction: 'Collaborateur CLP',
     office: 'Paris',
-    hasAccess: true
-  }
+    hasAccess: true,
+  },
 ]

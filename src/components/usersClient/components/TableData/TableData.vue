@@ -1,103 +1,103 @@
 <template>
-<div>
-  <PTable
-    :pData="props.data"
-    showOverflowTooltip
-    pStripe
-    tableLayout="fixed"
-  >
-    <PTableColumn
-      :pLabel="t('user')"
-      pProp="user"
-      pSortable
+  <div>
+    <PTable
+      :pData="props.data"
+      showOverflowTooltip
+      pStripe
+      tableLayout="fixed"
     >
-      <template #default="scope">
-        <div class="flex flex--align-items-center">
-          <div class="margin-right--2">
-            <PAvatar
-              pColor="bordered-persian"
-              pType="xsmall"
-            >
-              {{ scope.row.initials }}
-            </PAvatar>
+      <PTableColumn
+        :pLabel="t('user')"
+        pProp="user"
+        pSortable
+      >
+        <template #default="scope">
+          <div class="flex flex--align-items-center">
+            <div class="margin-right--2">
+              <PAvatar
+                pColor="bordered-persian"
+                pType="xsmall"
+              >
+                {{ scope.row.initials }}
+              </PAvatar>
+            </div>
+            <div>
+              <p class="text-capitalize">
+                <span v-if="scope.row.isLoggedUser()">{{ t('you') }}</span>
+                <span v-if="!scope.row.isLoggedUser()">
+                  {{ scope.row.firstName }}
+                  <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+                </span>
+              </p>
+            </div>
           </div>
-          <div>
-            <p class="text-capitalize">
-              <span v-if="scope.row.isLoggedUser()">{{ t('you') }}</span>
-              <span v-if="!scope.row.isLoggedUser()">
-                {{ scope.row.firstName }}
-                <span class="text-uppercase"> {{ scope.row.lastName }}</span>
-              </span>
+        </template>
+      </PTableColumn>
+
+      <PTableColumn
+        :pLabel="t('email')"
+        pProp="email"
+        pSortable
+      />
+
+      <PTableColumn
+        :pLabel="t('role')"
+        pProp="persona"
+        pSortable
+      >
+        <template #default="scope">
+          <div
+            v-if="scope.row.isOwner"
+            class="flex flex--align-items-center"
+          >
+            <PIcon color="#5546FF">
+              <PIPatchCheck />
+            </PIcon>
+
+            <p class="margin-left--2 color-persian font-bold">
+              {{ scope.row.persona }}
             </p>
           </div>
-        </div>
-      </template>
-    </PTableColumn>
 
-    <PTableColumn
-      :pLabel="t('email')"
-      pProp="email"
-      pSortable
-    />
-
-    <PTableColumn
-      :pLabel="t('role')"
-      pProp="persona"
-      pSortable
-    >
-      <template #default="scope">
-        <div
-          v-if="scope.row.isOwner"
-          class="flex flex--align-items-center"
-        >
-          <PIcon color="#5546FF">
-            <PIPatchCheck />
-          </PIcon>
-
-          <p class="margin-left--2 color-persian font-bold">
+          <p
+            v-if="!scope.row.isOwner"
+            class="font-bold"
+          >
             {{ scope.row.persona }}
           </p>
-        </div>
+        </template>
+      </PTableColumn>
 
-        <p
-          v-if="!scope.row.isOwner"
-          class="font-bold"
-        >
-          {{ scope.row.persona }}
-        </p>
-      </template>
-    </PTableColumn>
+      <PTableColumn
+        :pLabel="t('dateAdded')"
+        pProp="createdAt"
+        pSortable
+      />
 
-    <PTableColumn
-      :pLabel="t('dateAdded')"
-      pProp="createdAt"
-      pSortable
-    />
-
-    <PTableColumn
-      :pLabel="t('options')"
-      :pWidth="100"
-      pProp="options"
-    >
-      <template #default="scope">
-        <PToolbox
-          @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
-          trigger="click"
-          :pElements="menuElements"
-        >
-          <PButton
-            pType="generic"
-            pSize="small"
+      <PTableColumn
+        :pLabel="t('options')"
+        :pWidth="100"
+        pProp="options"
+      >
+        <template #default="scope">
+          <PToolbox
+            @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
+            trigger="click"
+            :pElements="menuElements"
           >
-            <PIcon>
-              <PIThreeDots />
-            </PIcon>
-          </PButton>
-        </PToolbox>
-      </template>
-    </PTableColumn>
-  </PTable>
-</div>
+            <PButton
+              pType="generic"
+              pSize="small"
+            >
+              <PIcon>
+                <PIThreeDots />
+              </PIcon>
+            </PButton>
+          </PToolbox>
+        </template>
+      </PTableColumn>
+    </PTable>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -110,7 +110,7 @@ import {
   PIThreeDots,
   PTable,
   PTableColumn,
-  PToolbox
+  PToolbox,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
@@ -119,7 +119,7 @@ import { MENU_ACTIONS_NAME } from './constants'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<Props>()
@@ -130,24 +130,24 @@ const menuElements : PToolboxItemProps[] = [
     pIconName: 'PIPerson',
     pValue: t('userInformation'),
     pActionName: userInformation,
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIPencilSquare',
     pValue: t('modifyRights'),
     pActionName: modifyRights,
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PITrash',
     pValue: t('deleteUser'),
     pActionName: deleteUser,
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const state = reactive({
-  rowData: undefined
+  rowData: undefined,
 })
 
 const handleToolboxItemClick = (_action: string, row: any) => {

@@ -25,8 +25,8 @@ export interface Legal {
 }
 
 export interface Phone {
-  phoneId: number,
-  phoneNumber?: string,
+  phoneId: number
+  phoneNumber?: string
   type?: string
 }
 

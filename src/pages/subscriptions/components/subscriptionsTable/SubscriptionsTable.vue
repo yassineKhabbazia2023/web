@@ -103,33 +103,6 @@
   </PTable>
 </template>
 
-<i18n lang="yaml">
-en-US:
-  folderId: 'Folder ID'
-  legalName: 'Legal name'
-  principalContact: 'Principal Contact'
-  requester: 'Requester'
-  offer: 'Offer'
-  status: 'Status'
-  options: 'Options'
-  dateRequest: 'Request date'
-  validate: 'Validate request'
-  consult: 'Consult'
-  toValidate: 'To validate'
-fr-FR:
-  folderId: 'ID Dossier'
-  legalName: 'Raison sociale'
-  principalContact: 'Contact principal'
-  requester: 'Demandeur'
-  offer: 'Offre'
-  status: 'Statut'
-  options: 'Options'
-  dateRequest: 'Date de la demande'
-  validate: 'Valider la demande'
-  consult: 'Consulter'
-  toValidate: 'A valider'
-</i18n>
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
@@ -143,25 +116,25 @@ import {
   PTag,
   PText,
   PIThreeDots,
-  type PToolboxItemProps
+  type PToolboxItemProps,
 } from '@kpmg/styleguide'
 import {
   fetchSubscriptionRequests,
-  validateSubscriptionRequest
+  validateSubscriptionRequest,
 } from '../../SubscriptionsServices'
 import { getInitials } from '@/helper'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
-import { SubscriptionStatusCode } from '../../SubscriptionsTypes'
-import type { Contact } from '@/services/contact/contactTypes'
 import {
   type SubscriptionRequest,
-  type SubscriptionAccount
+  type SubscriptionAccount,
+  SubscriptionStatusCode,
 } from '../../SubscriptionsTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 
 const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
-  datetimeFormats
+  datetimeFormats,
 })
 
 const emit = defineEmits<{
@@ -177,14 +150,14 @@ const requestMenu: PToolboxItemProps[] = [
     pIconName: 'PIEye',
     pValue: t('consult'),
     pActionName: 'consult',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PICheck',
     pValue: t('validate'),
     pActionName: 'validate',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const fetchSubscriptions = async () => {
@@ -227,3 +200,30 @@ onMounted(async () => {
   await fetchSubscriptions()
 })
 </script>
+
+<i18n lang="yaml">
+en-US:
+  folderId: 'Folder ID'
+  legalName: 'Legal name'
+  principalContact: 'Principal Contact'
+  requester: 'Requester'
+  offer: 'Offer'
+  status: 'Status'
+  options: 'Options'
+  dateRequest: 'Request date'
+  validate: 'Validate request'
+  consult: 'Consult'
+  toValidate: 'To validate'
+fr-FR:
+  folderId: 'ID Dossier'
+  legalName: 'Raison sociale'
+  principalContact: 'Contact principal'
+  requester: 'Demandeur'
+  offer: 'Offre'
+  status: 'Statut'
+  options: 'Options'
+  dateRequest: 'Date de la demande'
+  validate: 'Valider la demande'
+  consult: 'Consulter'
+  toValidate: 'A valider'
+</i18n>

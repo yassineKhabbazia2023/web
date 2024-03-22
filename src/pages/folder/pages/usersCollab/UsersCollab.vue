@@ -156,12 +156,12 @@ import {
   PIPerson,
   PPagination,
   PBlockHeader,
-  type PToolboxItemProps
+  type PToolboxItemProps,
 } from '@kpmg/styleguide'
 import { computed, onMounted, reactive, watch } from 'vue'
 import { PAGE_SIZES } from '@/constants'
 import { getInitials } from '@/helper'
-import { IStateUser, IUserStatus } from './types'
+import type { IStateUser, IUserStatus } from './types'
 import { dataFromApi } from './mockData'
 
 const state: IStateUser = reactive({
@@ -170,7 +170,7 @@ const state: IStateUser = reactive({
   limit: 15,
   totalPage: 0,
   totalItems: 0,
-  isLoading: false
+  isLoading: false,
 })
 
 // Uncomment when implement call API
@@ -179,7 +179,7 @@ const state: IStateUser = reactive({
 //   limit: state.limit
 // })
 
-const fetch = async () => {
+const fetch = () => {
   state.isLoading = true
   try {
     const {
@@ -187,8 +187,8 @@ const fetch = async () => {
         items,
         currentPage,
         totalPage,
-        totalItems
-      }
+        totalItems,
+      },
     } = dataFromApi
     state.data = items.map(({
       status,
@@ -201,7 +201,7 @@ const fetch = async () => {
       lastName: lastName?.toUpperCase() ?? '',
       initials: getInitials(firstName, lastName),
       fullName: getFullName({ firstName, lastName }),
-      ...rest
+      ...rest,
     }))
     state.currentPage = currentPage
     state.totalPage = totalPage
@@ -215,13 +215,13 @@ const fetch = async () => {
 
 const getFullName = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
   if (firstName && lastName) {
-    return firstName + ' ' + lastName
+    return `${firstName} ${lastName}`
   }
 }
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const toolboxItems: PToolboxItemProps[] = [
@@ -229,13 +229,13 @@ const toolboxItems: PToolboxItemProps[] = [
     pIconName: 'PIPatchCheck',
     pValue: t('assignSignatory'),
     pActionName: 'assign',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIPencilSquare',
     pValue: t('modifyRights'),
     pActionName: 'rights',
-    pState: 'default'
+    pState: 'default',
   }]
 
 const getStatus = (status: string): IUserStatus => {
@@ -244,13 +244,13 @@ const getStatus = (status: string): IUserStatus => {
       return {
         text: t('statusConnect'),
         icon: PIPatchCheck,
-        color: 'success'
+        color: 'success',
       }
     default:
       return {
         text: t('statusInvite'),
         icon: PIPerson,
-        color: 'warning'
+        color: 'warning',
       }
   }
 }
@@ -263,14 +263,14 @@ const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
    - ${((state.currentPage - 1) * state.limit) +
     state.data.length}
-   ${t('on')} ${state.totalItems}`
+   ${t('on')} ${state.totalItems}`,
 )
 
 onMounted(async () => {
   await fetch()
   watch(() => [
     state.currentPage,
-    state.limit
+    state.limit,
   ], async () => {
     await fetch()
   })

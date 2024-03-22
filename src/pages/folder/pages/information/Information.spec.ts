@@ -1,5 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import InformationFormStructure from './config/InformationFormStructure.json'
 import Information from '.'
 
@@ -15,7 +16,7 @@ describe('information', () => {
     it('should correctly display the folder information', () => {
       const alertInstruction = wrapper.find('[data-testid="folder-information-alert"]')
       const informationForm = wrapper.find(
-        '[data-testid="folder-information-form"]'
+        '[data-testid="folder-information-form"]',
       )
 
       expect(informationForm.exists()).toBeTruthy()

@@ -1,17 +1,17 @@
 import { type PService } from '@kpmg/styleguide'
 import type { SelectedProduct } from '@/pages/entities/components/OffersDrawer/OffersDrawerTypes'
 import {
-  SubscriptionPriceType
+  SubscriptionPriceType,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type {
-  SubscriptionOfferProduct
+  SubscriptionOfferProduct,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import { getSelectedProductIndex } from '../../../OffersDrawer/utils/OffersDrawerUtils'
 
 export function getIsServiceSelected(
   offerId: number,
   offerProduct: SubscriptionOfferProduct,
-  selectedProducts: SelectedProduct[]
+  selectedProducts: SelectedProduct[],
 ) {
   const { productConfigurationId } = offerProduct
 
@@ -24,7 +24,7 @@ export function getServiceTag(
   isOptionnal: boolean,
   priceType: SubscriptionOfferProduct['priceType'],
   includedLabel: string,
-  additionalPriceLabel: string
+  additionalPriceLabel: string,
 ) {
   const pEffect = 'light'
 
@@ -32,14 +32,14 @@ export function getServiceTag(
     return {
       pColor: 'gray-900',
       pEffect,
-      pContent: includedLabel
+      pContent: includedLabel,
     }
   }
   if (priceType === SubscriptionPriceType.exact) {
     return {
       pColor: 'amethyste',
       pEffect,
-      pContent: additionalPriceLabel
+      pContent: additionalPriceLabel,
     }
   }
 }
@@ -49,7 +49,7 @@ export function getProviderServices(
   products: SubscriptionOfferProduct[],
   selectedProducts: SelectedProduct[],
   includedLabel: string,
-  additionalPriceLabel: string
+  additionalPriceLabel: string,
 ) {
   return products
     .map<PService>((offerProduct) => {
@@ -63,7 +63,7 @@ export function getProviderServices(
         pDisabled: !isOptionnal,
         pName: productLabel,
         pTag,
-        productConfigurationId
+        productConfigurationId,
       }
     })
 }
@@ -71,7 +71,7 @@ export function getProviderServices(
 export function getTitle(
   ProviderCategoryTitles: Record<string, string>,
   category: string,
-  providerName: string
+  providerName: string,
 ) {
   const productCategoryTitle = ProviderCategoryTitles[category]
 

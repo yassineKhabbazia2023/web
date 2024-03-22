@@ -16,7 +16,7 @@ describe('test PatchRecordService', () => {
       const expected = [{
         path,
         originalValue,
-        newValue
+        newValue,
       }]
       expect(patchValues).toMatchObject(expected)
     })
@@ -28,7 +28,7 @@ describe('test PatchRecordService', () => {
       const expected = [{
         path,
         originalValue,
-        newValue: newerValue
+        newValue: newerValue,
       }]
       expect(patchValues).toMatchObject(expected)
     })
@@ -48,7 +48,7 @@ describe('test PatchRecordService', () => {
       const expected: PatchOperation[] = [{
         op: 'replace',
         path,
-        value: newValue
+        value: newValue,
       }]
       expect(patchOperations).toMatchObject(expected)
     })

@@ -4,7 +4,7 @@ export function addPathValue(
   patchValues: PatchValue[],
   fieldKey: string,
   previousValue: ValueType,
-  newValue: ValueType
+  newValue: ValueType,
 ) {
   const path = `/${fieldKey.replace(/\./g, '/')}`
   const patchValueIndex = patchValues.findIndex(({ path: _path }) => path === _path)
@@ -19,7 +19,7 @@ export function addPathValue(
     patchValues.push({
       path,
       originalValue: previousValue,
-      newValue
+      newValue,
     })
   }
 }
@@ -28,6 +28,6 @@ export function getPatchOperations(patchValues: PatchValue[]) {
   return patchValues.map<PatchOperation>(({ path, newValue: value }) => ({
     op: 'replace',
     path,
-    value
+    value,
   }))
 }

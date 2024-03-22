@@ -58,14 +58,14 @@ import { getOfferFormStructure } from './utils/CompanyInformationUtils'
 import { type Account } from '@/services/account'
 import type {
   CompanyInformationProps,
-  FormSection
+  FormSection,
 } from './CompanyInformationTypes'
 
 const PFieldSetAccount = PFieldSet<Account>
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<CompanyInformationProps>()

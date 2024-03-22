@@ -1,4 +1,4 @@
-import { SubscriptionPriceType } from './SubscriptionOffersEnums'
+import type { SubscriptionPriceType } from './SubscriptionOffersEnums'
 
 export interface SubscriptionOfferProduct {
   productName: string
@@ -37,5 +37,5 @@ export interface SubscriptionOfferServices extends SubscriptionOffer {
 }
 
 export interface SubscriptionOffersProps {
-  subscriptionOffers: SubscriptionOffer[],
+  subscriptionOffers: SubscriptionOffer[]
 }

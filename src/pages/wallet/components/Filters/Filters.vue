@@ -1,9 +1,9 @@
 <template>
-<div class="margin-bottom--6">
-  <PLoader v-if="state.isLoading" />
-  <div
-    v-if="!state.isLoading"
-    class="
+  <div class="margin-bottom--6">
+    <PLoader v-if="state.isLoading" />
+    <div
+      v-if="!state.isLoading"
+      class="
       flex
       filter
       padding-top--3
@@ -11,59 +11,60 @@
       padding-x--6
       margin-negative-x--6
     "
-  >
-    <div>
-      <p class="filter__title font-semibold margin-bottom--3">
-        {{ t('fileBoardingRate') }}
-      </p>
-      <div class="filter__list flex">
-        <FilterOption
-          v-for="({ content, number, icon, color, filterValue, isSelected }, index) in state.entityTags"
-          :key="index"
-          :number="number"
-          :content="content"
-          :icon="icon"
-          :color="color"
-          :isSelected="isSelected"
-          data-testid="filter-option"
-          @click="handleClickFilter(filterValue, index)"
-          @close="handleClose(index)"
-          clickable
-        />
-      </div>
-    </div>
-    <div
-      class="
-        separator
-        margin-x--6
-        hidden-sm-and-down"
     >
-    </div>
-    <div>
       <div>
         <p class="filter__title font-semibold margin-bottom--3">
-          {{ t('userConnectionRate') }}
+          {{ t('fileBoardingRate') }}
         </p>
         <div class="filter__list flex">
           <FilterOption
-            v-for="({ content, number, icon }, index) in state.userTags"
+            v-for="({ content, number, icon, color, filterValue, isSelected }, index) in state.entityTags"
             :key="index"
             :number="number"
             :content="content"
             :icon="icon"
-            color="gray-500"
-            :clickable="false"
+            :color="color"
+            :isSelected="isSelected"
+            data-testid="filter-option"
+            @click="handleClickFilter(filterValue, index)"
+            @close="handleClose(index)"
+            clickable
           />
+        </div>
+      </div>
+      <div
+        class="
+        separator
+        margin-x--6
+        hidden-sm-and-down"
+      >
+      </div>
+      <div>
+        <div>
+          <p class="filter__title font-semibold margin-bottom--3">
+            {{ t('userConnectionRate') }}
+          </p>
+          <div class="filter__list flex">
+            <FilterOption
+              v-for="({ content, number, icon }, index) in state.userTags"
+              :key="index"
+              :number="number"
+              :content="content"
+              :icon="icon"
+              color="gray-500"
+              :clickable="false"
+            />
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { Component, onMounted, reactive } from 'vue'
+import type { Component } from 'vue'
+import { onMounted, reactive } from 'vue'
 import {
   PIArrowRepeat,
   PICheckCircle,
@@ -71,7 +72,7 @@ import {
   PIPerson,
   PIPower,
   PIArrowUpCircle,
-  PLoader
+  PLoader,
 } from '@kpmg/styleguide'
 import { commonApi } from '@kpmg/common'
 import type { IFilterOption, IState } from './types'
@@ -80,7 +81,7 @@ import FilterOption from '../FilterOption'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const TAGS = [
@@ -90,7 +91,7 @@ const TAGS = [
     color: 'warning',
     apiKey: 'entityToDeploy',
     filterValue: EntityStatus.TO_DEPLOY,
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('inProgress'),
@@ -98,7 +99,7 @@ const TAGS = [
     color: 'amethyste',
     apiKey: 'entityInProgress',
     filterValue: EntityStatus.IN_PROGRESS,
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('connected'),
@@ -106,32 +107,32 @@ const TAGS = [
     color: 'success',
     apiKey: 'entityConnected',
     filterValue: EntityStatus.CONNECTED,
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('declared'),
     icon: PIPatchCheck as Component,
     apiKey: 'userDeclared',
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('connected'),
     icon: PIPower as Component,
     apiKey: 'userConnected',
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('guests'),
     icon: PIPerson as Component,
     apiKey: 'userInvited',
-    isSelected: false
-  }
+    isSelected: false,
+  },
 ] as IFilterOption[]
 
 const state: IState = reactive({
   userTags: [],
   entityTags: [],
-  isLoading: undefined
+  isLoading: undefined,
 })
 
 const emit = defineEmits<{
@@ -146,7 +147,7 @@ onMounted(async () => {
     const tagsWithNumber = TAGS.map(({ apiKey, ...rest }) => ({
       ...rest,
       apiKey,
-      number: data[apiKey]
+      number: data[apiKey],
     }))
     state.userTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('user'))
     state.entityTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('entity'))
@@ -159,7 +160,6 @@ const handleClickFilter = (filterValue: EntityStatus, index:number) => {
   resetSelection(index)
   state.entityTags[index].isSelected = true
   emit('filterByStatus', filterValue)
-
 }
 const resetSelection = (excludedIndex: number) => {
   const copyEntityTags = [...state.entityTags]

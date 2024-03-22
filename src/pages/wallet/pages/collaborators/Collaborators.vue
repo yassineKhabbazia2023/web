@@ -40,7 +40,7 @@ import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch } from 'vue'
 import {
   PLoader,
-  PPagination
+  PPagination,
 } from '@kpmg/styleguide'
 import { getInitials, removeFalsyValues } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
@@ -52,7 +52,7 @@ import mock from './mock.json'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const state: IState = reactive({
@@ -62,7 +62,7 @@ const state: IState = reactive({
   totalPages: undefined,
   totalItems: undefined,
   search: undefined,
-  isLoading: undefined
+  isLoading: undefined,
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {
@@ -76,18 +76,18 @@ const handlePageRangeChanged = (newValue: number) => {
 const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
     - ${((state.currentPage - 1) * state.limit) +
-    state.data.length} 
-    ${t('on')} ${state.totalItems}`
+    state.data.length}
+    ${t('on')} ${state.totalItems}`,
 )
 
 const shouldShowPagination = computed(() =>
-  !state.isLoading && !!state.totalItems && state.totalItems > state.limit
+  !state.isLoading && !!state.totalItems && state.totalItems > state.limit,
 )
 
 const getQueryParams = () => ({
   page: state.currentPage,
   limit: state.limit,
-  search: state.search
+  search: state.search,
 })
 
 const fetch = async () => {
@@ -102,8 +102,8 @@ const fetch = async () => {
         items,
         currentPage,
         totalPages,
-        totalItems
-      }
+        totalItems,
+      },
     } = await Promise.resolve(mock)
     // TODO: remove mock & searchParams in isLoading (line 142), when endpoint is done
     // await commonApi().wallet.get(`collabs?${searchParams}`)
@@ -115,12 +115,12 @@ const fetch = async () => {
     }) => ({
       initials: getInitials(
         firstName,
-        lastName
+        lastName,
       ),
       firstName,
       lastName,
       fullName: `${firstName} ${lastName}`,
-      ...rest
+      ...rest,
     }))
     state.currentPage = currentPage
     state.totalPages = totalPages
@@ -137,7 +137,7 @@ onMounted(async () => {
   watch(() => [
     state.currentPage,
     state.limit,
-    state.search
+    state.search,
   ], async () => {
     await fetch()
   })

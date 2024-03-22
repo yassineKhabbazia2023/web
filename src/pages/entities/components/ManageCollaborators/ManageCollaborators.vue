@@ -54,11 +54,11 @@ import {
   PBlockHeader,
   PUserAction,
   PForm,
-  PFormItem
+  PFormItem,
 } from '@kpmg/styleguide'
 import { getInitials } from '@/helper'
 import type { ManageCollaboratorsProps } from './ManageCollaboratorsTypes'
-import { Contact } from '@/services/contact/contactTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 import CollaboratorAutocomplete from '../CollaboratorAutocomplete'
 
 const emits = defineEmits<{
@@ -68,7 +68,7 @@ const emits = defineEmits<{
 const props = defineProps<ManageCollaboratorsProps>()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const selectedCollaborators = ref<Contact[]>([])

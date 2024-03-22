@@ -1,5 +1,6 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { commonStore } from '@kpmg/common'
@@ -11,43 +12,43 @@ const mockRouterPush = vi.fn()
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
+    push: mockRouterPush,
   }),
-  useRoute: () => ({})
+  useRoute: () => ({}),
 }))
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     getters: {
-      isCollab: () => true
-    }
-  })
+      isCollab: () => true,
+    },
+  }),
 }))
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     getters: {
-      isCollab: () => true
-    }
-  })
+      isCollab: () => true,
+    },
+  }),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Wallet, {
     attachTo: document.body,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 const collaboratorsTabs = [
   'Folders',
   'Mandate',
   'MOD requests',
-  'Collaborators'
+  'Collaborators',
 ]
 const clientTabs = [
   'All entities',
-  'All users'
+  'All users',
 ]
 
 describe('dossier', () => {
@@ -67,7 +68,7 @@ describe('dossier', () => {
     ['folders', 'tab-folders'],
     ['subscriptions', 'tab-subscriptions'],
     ['collaborators', 'tab-collaborators'],
-    ['history', 'tab-history']
+    ['history', 'tab-history'],
   ]
   it.each(PARAMS)(
     'should redirect when click on %s',
@@ -75,9 +76,9 @@ describe('dossier', () => {
       document.getElementById(tabsName)?.click()
       expect(mockRouterPush).toHaveBeenCalledTimes(1)
       expect(mockRouterPush).toHaveBeenCalledWith({
-        name: tabs
+        name: tabs,
       })
-    }
+    },
   )
 
   it('should display the correct tab when user is collab', () => {

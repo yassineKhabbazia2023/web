@@ -1,12 +1,14 @@
-import { expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
-export const noResult = async (wrapper: any) => {
-  it('can display a no results message', async () => {
-    const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })
-    expect(getNoResultComponent().exists()).toBeFalsy()
-    wrapper.vm.state.data = []
-    await nextTick()
-    expect(getNoResultComponent().exists()).toBeTruthy()
+export const noResult = (wrapper: any) => {
+  describe('test noResult', () => {
+    it('can display a no results message', async () => {
+      const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })
+      expect(getNoResultComponent().exists()).toBeFalsy()
+      wrapper.vm.state.data = []
+      await nextTick()
+      expect(getNoResultComponent().exists()).toBeTruthy()
+    })
   })
 }

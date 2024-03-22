@@ -3,6 +3,7 @@ import Subscription from '.'
 import { getMockedSubscriptionOffers } from './SubscriptionOffersMocks'
 import { mount } from '@vue/test-utils'
 import type { SubscriptionOffer } from './SubscriptionOffersTypes'
+import { nextTick } from 'vue'
 
 describe('subscriptionOffers', () => {
   let subscriptionOffers: SubscriptionOffer[]
@@ -13,15 +14,15 @@ describe('subscriptionOffers', () => {
 
   describe('props', () => {
     it('should display offers',
-      async () => {
-        const wrapper = await mount(Subscription, {
+      () => {
+        const wrapper = mount(Subscription, {
           props: {
-            subscriptionOffers
-          }
+            subscriptionOffers,
+          },
         })
         const offers = wrapper.findAll('[data-testid=offer-list] [data-testid=offer-item]')
         expect(offers).toHaveLength(subscriptionOffers.length)
-      }
+      },
     )
   })
 
@@ -30,22 +31,23 @@ describe('subscriptionOffers', () => {
       it('should emit onSelectOffer',
         async () => {
           const mockMethods = {
-            onSelectOffer: vi.fn()
+            onSelectOffer: vi.fn(),
           }
 
-          const wrapper = await mount(Subscription, {
+          const wrapper = mount(Subscription, {
             props: {
               modelValue: true,
-              subscriptionOffers
+              subscriptionOffers,
             },
-            methods: mockMethods
+            methods: mockMethods,
           })
-          await wrapper
+          wrapper
             .find('[data-testid=offer-list] [data-testid=offer-item]:nth-child(2)')
             .trigger('click')
+          await nextTick()
 
           expect(wrapper.emitted('selectOffer')).toBeTruthy()
-        }
+        },
       )
     })
   })

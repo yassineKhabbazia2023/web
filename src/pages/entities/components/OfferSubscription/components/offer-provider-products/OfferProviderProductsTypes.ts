@@ -1,5 +1,5 @@
 import type {
-  SubscriptionOfferProvider
+  SubscriptionOfferProvider,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { SelectedProduct } from '@/pages/entities/components/OffersDrawer/OffersDrawerTypes'
 import type { PService } from '@kpmg/styleguide'

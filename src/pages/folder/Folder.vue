@@ -35,14 +35,14 @@ import {
   PAvatar,
   PIcon,
   PIPulse,
-  PButton
+  PButton,
 } from '@kpmg/styleguide'
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const userStore = commonStore()
@@ -53,42 +53,42 @@ const activeTab = computed(() => route.name as string)
 const collabTabs = [
   {
     name: 'usersCollab',
-    trad: t('users')
+    trad: t('users'),
   },
   {
     name: 'collab',
-    trad: t('collab')
+    trad: t('collab'),
   },
   {
     name: 'offers',
-    trad: t('offers')
+    trad: t('offers'),
   },
   {
     name: 'info',
-    trad: t('info')
-  }
+    trad: t('info'),
+  },
 ]
 
 const clientTabs = [
   {
     name: 'usersClient',
-    trad: t('users')
+    trad: t('users'),
   },
   {
     name: 'info',
-    trad: t('info')
+    trad: t('info'),
   },
   {
     name: 'invoices',
-    trad: t('invoices')
-  }
+    trad: t('invoices'),
+  },
 ]
 const tabs = isCollab.value ? collabTabs : clientTabs
 const actionBtnLabel = isCollab.value ? t('delegationBtn') : t('addUser')
 const handleTabClick = (tab: any) => {
   router.push({
     name: tab.paneName,
-    params: { name: defaultEntity.value?.name }
+    params: { name: defaultEntity.value?.name },
   })
 }
 </script>

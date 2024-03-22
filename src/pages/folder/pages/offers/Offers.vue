@@ -88,14 +88,14 @@ import {
   PTag,
   PTable,
   PTableColumn,
-  PImage
+  PImage,
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import { getActiveOffersMocked } from './OffersMocks'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 defineEmits<{

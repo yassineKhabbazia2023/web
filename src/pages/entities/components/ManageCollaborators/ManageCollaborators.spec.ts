@@ -1,18 +1,19 @@
 import { vi, it, describe, expect, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 import { getInitials } from '@/helper'
 import ManageCollaborators from '.'
 
 vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve([]))
+  getCollaborators: vi.fn(() => Promise.resolve([])),
 }))
 
 const mockedCollaborators = getMockedCollaborators()
 
 vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators))
+  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 
 const expectedSearchText = 'Please search for a collaborator :'
@@ -20,23 +21,23 @@ const defaultCollaborator = mockedCollaborators[0]
 const expectedUserActionProps = {
   pProfile: getInitials(
     defaultCollaborator.firstName,
-    defaultCollaborator.lastName
+    defaultCollaborator.lastName,
   ),
   pTitle: `${defaultCollaborator.firstName} ${defaultCollaborator.lastName}`,
   pDescription: defaultCollaborator.email,
-  pRole: defaultCollaborator.office
+  pRole: defaultCollaborator.office,
 }
 
 const createWrapper = () => {
   const wrapper = mount(ManageCollaborators, {
     props: {
-      collaborators: [mockedCollaborators[0]]
+      collaborators: [mockedCollaborators[0]],
     },
     global: {
       stubs: {
-        CollaboratorAutocomplete: true
-      }
-    }
+        CollaboratorAutocomplete: true,
+      },
+    },
   })
 
   return wrapper
@@ -52,7 +53,7 @@ describe('manageCollaborators', () => {
       const pFormItem = wrapper.findComponent({ name: 'PFormItem' })
       const blockHeader = wrapper.findComponent({ name: 'PBlockHeader' })
       const userAction = wrapper.findComponent({
-        name: 'PUserAction'
+        name: 'PUserAction',
       })
 
       expect(pFormItem.text()).toBe(expectedSearchText)

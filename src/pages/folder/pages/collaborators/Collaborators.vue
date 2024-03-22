@@ -7,18 +7,18 @@
     :pImage="pImageProps"
     pHasButton
   >
-  <PButton
-    pType="primary"
-    pSize="default"
-    @click="handleAddCollaborator"
-    data-testid="add-collaborator-button"
-  >
-    <PIcon class="el-button__icon--left">
-      <PIAdd/>
-    </PIcon>
-    {{ t('addCollborator') }}
-  </PButton>
-</PBlockHeader>
+    <PButton
+      pType="primary"
+      pSize="default"
+      @click="handleAddCollaborator"
+      data-testid="add-collaborator-button"
+    >
+      <PIcon class="el-button__icon--left">
+        <PIAdd/>
+      </PIcon>
+      {{ t('addCollborator') }}
+    </PButton>
+  </PBlockHeader>
   <PTable
     @current-change="handleChange"
     ref="selectedRow"
@@ -34,20 +34,20 @@
     >
       <template #default="scope">
         <div class="flex flex--align-items-center">
-        <PAvatar
-          class="margin-right--2"
-          pColor="persian-gradient"
-          pType="small"
-        >
-          {{ getInitials(scope.row.firstName,scope.row.lastName) }}
-        </PAvatar>
-        <div>
-          <p class="line-height--120">
-            <span class="text-capitalize">{{ scope.row.firstName }} &nbsp;</span>
-            <span class="text-uppercase"> {{ scope.row.lastName }}</span>
-          </p>
+          <PAvatar
+            class="margin-right--2"
+            pColor="persian-gradient"
+            pType="small"
+          >
+            {{ getInitials(scope.row.firstName,scope.row.lastName) }}
+          </PAvatar>
+          <div>
+            <p class="line-height--120">
+              <span class="text-capitalize">{{ scope.row.firstName }} &nbsp;</span>
+              <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+            </p>
+          </div>
         </div>
-      </div>
       </template>
     </PTableColumn>
     <PTableColumn
@@ -90,7 +90,7 @@
       </template>
     </PTableColumn>
   </PTable>
-  </template>
+</template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
@@ -102,14 +102,14 @@ import {
   PBlockHeader,
   PButton,
   PIAdd,
-  PIcon
+  PIcon,
 } from '@kpmg/styleguide'
 import {
   onMounted,
   ref,
-  toRaw
+  toRaw,
 } from 'vue'
-import { ElTable } from 'element-plus'
+import type { ElTable } from 'element-plus'
 import { commonStore } from '@kpmg/common'
 import type { Collab } from './types'
 import { type PImageProps } from '@kpmg/styleguide'
@@ -119,7 +119,7 @@ import { getInitials } from '@/helper/helper'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const userStore = commonStore()
@@ -128,7 +128,7 @@ const { defaultEntity } = storeToRefs(userStore)
 const pImageProps = {
   pFit: 'fill',
   pType: 'portrait',
-  pName: 'collab-female-add'
+  pName: 'collab-female-add',
 } as PImageProps
 
 const collabs = ref<Collab[]>([])

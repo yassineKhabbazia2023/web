@@ -1,5 +1,6 @@
 import { expect, describe, it, vi, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import CollaboratorAutocomplete, { type CollaboratorAutocompleteProps } from '.'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
@@ -7,12 +8,12 @@ const mockedCollaborators = getMockedCollaborators()
 
 const mockedCallbackFunction = vi.fn()
 vi.mock('./CollaboratorAutocompleteUtils', () => ({
-  getAutocompleteContacts: vi.fn(() => Promise.resolve(mockedCollaborators))
+  getAutocompleteContacts: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 
 const createWrapper = () => {
   const props: CollaboratorAutocompleteProps = {
-    selectedCollaborators: []
+    selectedCollaborators: [],
   }
 
   return mount(CollaboratorAutocomplete, {
@@ -22,27 +23,27 @@ const createWrapper = () => {
         PAutocomplete: {
           name: 'PAutocomplete',
           methods: {
-            mockedCallbackFunction
+            mockedCallbackFunction,
           },
           props: {
             pFetchSuggestions: Function,
-            modelValue: String
+            modelValue: String,
           },
           mounted() {
             this.pFetchSuggestions(this.modelValue, mockedCallbackFunction)
           },
           data() {
             return {
-              item: mockedCollaborators[0]
+              item: mockedCollaborators[0],
             }
           },
           template: `<div>
   <div data-testid="slot-prefix"><slot name="prefix" /></div>
   <div data-testid="slot-default"><slot :item="item" /></div>
-</div>`
-        }
-      }
-    }
+</div>`,
+        },
+      },
+    },
   })
 }
 
@@ -62,7 +63,7 @@ describe('test CollaboratorAutocomplete', () => {
         firstItem.email,
         firstItem.persona?.name,
         '-',
-        firstItem.office
+        firstItem.office,
       ].join(' ')
 
       expect(autocompleteRow.text()).toBe(expectedText)

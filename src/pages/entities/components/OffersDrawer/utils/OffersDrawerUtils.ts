@@ -2,35 +2,35 @@ import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionO
 import type { SelectedProduct } from '../OffersDrawerTypes'
 import type { SubscriptionOfferServices } from '../../SubscriptionOffers/SubscriptionOffersTypes'
 import type { Note, PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
-import { Contact } from '@/services/contact/contactTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 
 export function getSelectedProductIndex(
   selectedProducts: SelectedProduct[],
   offerId: number,
-  productConfigurationId: number
+  productConfigurationId: number,
 ) {
   return selectedProducts.findIndex(
     (selectedProduct) =>
       selectedProduct.offerId === offerId &&
-      selectedProduct.productConfigurationId === productConfigurationId
+      selectedProduct.productConfigurationId === productConfigurationId,
   )
 }
 
 export function addSelectedProduct(
   selectedProducts: SelectedProduct[],
   offerId: number,
-  productConfigurationId: number
+  productConfigurationId: number,
 ) {
   const index = getSelectedProductIndex(
     selectedProducts,
     offerId,
-    productConfigurationId
+    productConfigurationId,
   )
 
   if (index < 0) {
     selectedProducts.push({
       offerId,
-      productConfigurationId
+      productConfigurationId,
     })
   }
 }
@@ -38,12 +38,12 @@ export function addSelectedProduct(
 export function removeSelectedProduct(
   selectedProducts: SelectedProduct[],
   offerId: number,
-  productConfigurationId: number
+  productConfigurationId: number,
 ) {
   const index = getSelectedProductIndex(
     selectedProducts,
     offerId,
-    productConfigurationId
+    productConfigurationId,
   )
 
   if (index < 0) {
@@ -57,7 +57,7 @@ export function removeSelectedProduct(
 }
 
 export function getInitialSelectedProducts(
-  offer: SubscriptionOfferServices | undefined
+  offer: SubscriptionOfferServices | undefined,
 ) {
   const { offerId, providers } = offer ?? {}
   const selectedProducts: SelectedProduct[] = []
@@ -70,7 +70,7 @@ export function getInitialSelectedProducts(
         selectedProducts.push({
           isMandatory: !isOptionnal,
           productConfigurationId,
-          offerId: offerId ?? 0
+          offerId: offerId ?? 0,
         })
       }
     })
@@ -85,14 +85,14 @@ export function getPostSubscriptionRequest(
   collaborators: Contact[],
   currentSubscriptionOffer: SubscriptionOfferServices | undefined,
   selectedProducts: SelectedProduct[],
-  notes: Note[]
+  notes: Note[],
 ): PostSubscriptionRequest | undefined {
   if (currentSubscriptionOffer === undefined) {
     return
   }
   const { offerId } = currentSubscriptionOffer
   const productConfigurations = selectedProducts.map(
-    ({ productConfigurationId }) => productConfigurationId
+    ({ productConfigurationId }) => productConfigurationId,
   )
   const contacts = collaborators.map(({ id }) => id)
 
@@ -102,7 +102,7 @@ export function getPostSubscriptionRequest(
     productConfigurations,
     contacts,
     applicant: userEmail ?? '',
-    notes
+    notes,
   }
 }
 

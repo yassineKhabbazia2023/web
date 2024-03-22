@@ -3,18 +3,18 @@ import {
   getAllOffers,
   getOffer,
   getOffersBookLink,
-  getPrincipalContacts
+  getPrincipalContacts,
 } from '.'
 import { getMockedSubscriptionOffers } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
 import {
-  getMockedSubscriptionOffersServices
+  getMockedSubscriptionOffersServices,
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContacts } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { API_PREFIXES } from '../config'
 import type {
   SubscriptionOffer,
-  SubscriptionOfferServices
+  SubscriptionOfferServices,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 
 const mockedPrincipalContacts: User[] = getMockedPrincipalContacts()
@@ -23,7 +23,7 @@ const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
 
 vi.mock('env-vars', () => ({
-  VITE_CONFIG_OFFERS_BOOK: 'offers-book-test-link'
+  VITE_CONFIG_OFFERS_BOOK: 'offers-book-test-link',
 }))
 
 vi.mock('@kpmg/common', () => {
@@ -40,32 +40,32 @@ vi.mock('@kpmg/common', () => {
           if (/\bsignatory\b/i.test(url)) {
             return getPrincipalContactsImplementation()
           }
-        })
-      }
-    })
+        }),
+      },
+    }),
   }
 })
 
 const getAllOffersImplementation = () => {
   return Promise.resolve({
-    data: subscriptionOffers
+    data: subscriptionOffers,
   })
 }
 
 const getPrincipalContactsImplementation = () => {
   return Promise.resolve({
-    data: mockedPrincipalContacts
+    data: mockedPrincipalContacts,
   })
 }
 
 const getOfferImplementation = (url: string) => {
   const offerId = +url.split('offers/')[1]
   const offer = subscriptionOffersServices.find(
-    (item) => item.offerId === offerId
+    (item) => item.offerId === offerId,
   )
   if (offer) {
     return Promise.resolve({
-      data: offer
+      data: offer,
     })
   }
   return Promise.reject(new Error('Offer not found'))
@@ -82,7 +82,7 @@ describe('getOffer', () => {
   it('should return details of a specific offer', async () => {
     const offer = await getOffer(1)
     const offerData = subscriptionOffersServices.find(
-      (item) => item.offerId === 1
+      (item) => item.offerId === 1,
     )
 
     expect(offer).toStrictEqual(offerData)

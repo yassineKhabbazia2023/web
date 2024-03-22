@@ -1,4 +1,4 @@
-import { Component } from 'vue'
+import type { Component } from 'vue'
 /* eslint-disable no-unused-vars */
 export enum EntityStatus {
   TO_DEPLOY = 1,
@@ -13,7 +13,7 @@ export interface IFilterOption {
   icon: Component
   color: string
   apiKey: string
-  filterValue: EntityStatus,
+  filterValue: EntityStatus
   isSelected : boolean
 }
 

@@ -1,4 +1,5 @@
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import Filters from '.'
@@ -10,16 +11,16 @@ const statistic = {
   entityInProgress: 30,
   userDeclared: 10,
   userConnected: 70,
-  userInvited: 25
+  userInvited: 25,
 }
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     wallet: {
       get: () => Promise.resolve({
-        data: statistic
-      })
-    }
-  })
+        data: statistic,
+      }),
+    },
+  }),
 }))
 
 const pinia = createPinia()
@@ -44,7 +45,7 @@ describe('filter', () => {
       `${statistic.entityConnected} Connected`,
       `${statistic.userDeclared} Declared`,
       `${statistic.userConnected} Connected`,
-      `${statistic.userInvited} Guest(s)`
+      `${statistic.userInvited} Guest(s)`,
     ]
     expect(optionsText).toStrictEqual(expectedOptionsText)
   })
@@ -64,5 +65,4 @@ describe('filter', () => {
     await firstTagWrapper.vm.$emit('close')
     expect(wrapper.emitted('removeFilter')).toBeTruthy()
   })
-
 })
