@@ -42,7 +42,7 @@ import {
   PICheck,
   PNotification,
   PTag,
-  PUserCard
+  PUserCard,
 } from '@kpmg/styleguide'
 import type { State, Props } from './types'
 import CollabRole from './components/CollabRole'
@@ -50,7 +50,7 @@ import CollabAccess from './components/CollabAccess'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -59,7 +59,7 @@ const props = defineProps<Props>()
 
 const isDrawerVisible = computed({
   get: () => props.hasDrawerOpened,
-  set: value => emit('update:modelValue', value)
+  set: value => emit('update:modelValue', value),
 })
 
 const closeDrawer = () => {
@@ -69,7 +69,7 @@ const closeDrawer = () => {
 const state: State = reactive({
   selectedRoleId: undefined,
   accessesSelected: undefined,
-  currentStep: 0
+  currentStep: 0,
 })
 
 const handleSetSelectedRoleId = (selectedRoleId: number) => {
@@ -87,7 +87,7 @@ const handleSetAccess = (accesses: Object) => {
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

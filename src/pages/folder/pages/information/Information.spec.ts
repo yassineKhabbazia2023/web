@@ -16,7 +16,7 @@ describe('information', () => {
     it('should correctly display the folder information', () => {
       const alertInstruction = wrapper.find('[data-testid="folder-information-alert"]')
       const informationForm = wrapper.find(
-        '[data-testid="folder-information-form"]'
+        '[data-testid="folder-information-form"]',
       )
 
       expect(informationForm.exists()).toBeTruthy()

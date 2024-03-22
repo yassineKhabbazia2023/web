@@ -15,13 +15,13 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import {
   PUserCard,
-  PIVectorPen
+  PIVectorPen,
 } from '@kpmg/styleguide'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const fullName = computed(() => {
@@ -35,7 +35,7 @@ const contactTag = {
   pColor: 'persian',
   pContent: t('signatoryCustomer'),
   pIconLeft: PIVectorPen,
-  pEffect: 'light'
+  pEffect: 'light',
 }
 
 const props = defineProps<PrincipalContactProps>()

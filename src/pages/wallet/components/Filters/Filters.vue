@@ -72,7 +72,7 @@ import {
   PIPerson,
   PIPower,
   PIArrowUpCircle,
-  PLoader
+  PLoader,
 } from '@kpmg/styleguide'
 import { commonApi } from '@kpmg/common'
 import type { IFilterOption, IState } from './types'
@@ -81,7 +81,7 @@ import FilterOption from '../FilterOption'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const TAGS = [
@@ -91,7 +91,7 @@ const TAGS = [
     color: 'warning',
     apiKey: 'entityToDeploy',
     filterValue: EntityStatus.TO_DEPLOY,
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('inProgress'),
@@ -99,7 +99,7 @@ const TAGS = [
     color: 'amethyste',
     apiKey: 'entityInProgress',
     filterValue: EntityStatus.IN_PROGRESS,
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('connected'),
@@ -107,32 +107,32 @@ const TAGS = [
     color: 'success',
     apiKey: 'entityConnected',
     filterValue: EntityStatus.CONNECTED,
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('declared'),
     icon: PIPatchCheck as Component,
     apiKey: 'userDeclared',
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('connected'),
     icon: PIPower as Component,
     apiKey: 'userConnected',
-    isSelected: false
+    isSelected: false,
   },
   {
     content: t('guests'),
     icon: PIPerson as Component,
     apiKey: 'userInvited',
-    isSelected: false
-  }
+    isSelected: false,
+  },
 ] as IFilterOption[]
 
 const state: IState = reactive({
   userTags: [],
   entityTags: [],
-  isLoading: undefined
+  isLoading: undefined,
 })
 
 const emit = defineEmits<{
@@ -147,7 +147,7 @@ onMounted(async () => {
     const tagsWithNumber = TAGS.map(({ apiKey, ...rest }) => ({
       ...rest,
       apiKey,
-      number: data[apiKey]
+      number: data[apiKey],
     }))
     state.userTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('user'))
     state.entityTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('entity'))

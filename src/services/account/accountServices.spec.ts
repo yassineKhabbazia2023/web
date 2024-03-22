@@ -19,9 +19,9 @@ vi.mock('@kpmg/common', () => {
             ? Promise.resolve({ data: mockedAccount })
             : Promise.reject(new Error('rejected'))
         }),
-        patch: mockedAccountApiPatch
-      }
-    })
+        patch: mockedAccountApiPatch,
+      },
+    }),
   }
 })
 

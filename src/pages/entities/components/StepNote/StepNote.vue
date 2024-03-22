@@ -30,7 +30,7 @@ import type { Note } from '@/pages/subscriptions/SubscriptionsTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<StepNoteProps>()
@@ -44,7 +44,7 @@ const internalModel = computed({
   },
   set(val) {
     emit('update:modelValue', val)
-  }
+  },
 })
 </script>
 

@@ -8,7 +8,7 @@ export function getMockedSubscriptionOffers() {
     offerLabel: 'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
     offerPrice: 0,
     offerPriceType: SubscriptionPriceType.free,
-    logoName: 'meg'
+    logoName: 'meg',
   },
   {
     offerId: 2,
@@ -16,7 +16,7 @@ export function getMockedSubscriptionOffers() {
     offerLabel: 'Mon expert en gestion en version premium',
     offerPrice: 0,
     offerPriceType: SubscriptionPriceType.free,
-    logoName: 'meg'
+    logoName: 'meg',
   },
   {
     offerId: 3,
@@ -24,7 +24,7 @@ export function getMockedSubscriptionOffers() {
     offerLabel: 'Loop collaboratif (myPulse compta)',
     offerPrice: 0,
     offerPriceType: SubscriptionPriceType.free,
-    logoName: 'loop-color'
+    logoName: 'loop-color',
   },
   {
     offerId: 4,
@@ -32,7 +32,7 @@ export function getMockedSubscriptionOffers() {
     offerLabel: 'Gestion de la paie par KPMG, pour le clients, sur Silae',
     offerPrice: 0,
     offerPriceType: SubscriptionPriceType.free,
-    logoName: 'silae-color'
+    logoName: 'silae-color',
   },
   {
     offerId: 5,
@@ -40,7 +40,7 @@ export function getMockedSubscriptionOffers() {
     offerLabel: 'Gestion de la paie par le client , sous supervision kpmg, sur Silae',
     offerPrice: 0,
     offerPriceType: SubscriptionPriceType.free,
-    logoName: 'silae-color'
+    logoName: 'silae-color',
   },
   {
     offerId: 6,
@@ -48,7 +48,7 @@ export function getMockedSubscriptionOffers() {
     offerLabel: 'Visualisation des données bancaires',
     offerPrice: 0,
     offerPriceType: SubscriptionPriceType.free,
-    logoName: 'iconpulse-color'
+    logoName: 'iconpulse-color',
   }] satisfies SubscriptionOffer[] as SubscriptionOffer[]
 
   return Subscription
@@ -62,11 +62,11 @@ export function getMockedSubscriptionOfferProduct(override: Partial<Subscription
     enabled: false,
     isOptionnal: false,
     priceType: SubscriptionPriceType.free,
-    price: 0
+    price: 0,
   }
 
   return {
     ...defaultSubscriptionOfferProduct,
-    ...override
+    ...override,
   }
 }

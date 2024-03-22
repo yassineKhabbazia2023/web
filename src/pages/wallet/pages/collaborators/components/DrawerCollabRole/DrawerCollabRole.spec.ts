@@ -10,7 +10,7 @@ const { firstName, lastName } = mockRowData.data.items[0]
 const rowData = {
   ...mockRowData.data.items[0],
   fullName: `${firstName} ${lastName}`,
-  initials: `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`
+  initials: `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`,
 }
 
 const getCollabRoleComponent = () => wrapper.findComponent({ name: 'CollabRole' })
@@ -21,7 +21,7 @@ const getCollabRoleAccessComponentExist = () => {
 
   return [
     collabRoleComponent.exists(),
-    collabAccessComponent.exists()
+    collabAccessComponent.exists(),
   ]
 }
 
@@ -29,9 +29,9 @@ const createWrapper = (): VueWrapper<any> =>
   mount(DrawerCollabDetails, {
     props: {
       rowData,
-      hasDrawerOpened: true
+      hasDrawerOpened: true,
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 describe('drawerCollabDetails', () => {

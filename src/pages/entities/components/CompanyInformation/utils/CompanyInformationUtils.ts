@@ -3,7 +3,7 @@ import LOOPOfferFormStructure from '../config/LOOPOfferFormStructure.json'
 import type { FormSection, ProviderFormName } from '../CompanyInformationTypes'
 
 export const getOfferFormStructure = (
-  offerType: ProviderFormName
+  offerType: ProviderFormName,
 ): FormSection[] => {
   if (offerType === 'MEG') {
     return MEGOffersFormStructure as FormSection[]

@@ -10,8 +10,8 @@ export const getMockedUser = (): UserInfo => {
     isCollab: true,
     entities: {
       favorites: [],
-      default: undefined
-    }
+      default: undefined,
+    },
   }
 
   return user

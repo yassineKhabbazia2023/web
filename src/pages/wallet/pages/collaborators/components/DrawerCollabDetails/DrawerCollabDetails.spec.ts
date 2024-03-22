@@ -9,16 +9,16 @@ let wrapper: VueWrapper<any>
 const { firstName, lastName } = mock.data.items[0]
 const rowData = {
   ...mock.data.items[0],
-  fullName: `${firstName} ${lastName}`
+  fullName: `${firstName} ${lastName}`,
 }
 
 const createWrapper = (): VueWrapper<any> =>
   mount(DrawerCollabDetails, {
     props: {
       rowData,
-      hasDrawerOpened: true
+      hasDrawerOpened: true,
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 describe('drawerCollabDetails', () => {
@@ -42,14 +42,14 @@ describe('drawerCollabDetails', () => {
     firstName,
     email,
     mobilePhone,
-    landPhone
+    landPhone,
   } = rowData
   const inputs = [
     { name: 'lastName', value: lastName, isDisabled: true },
     { name: 'firstName', value: firstName, isDisabled: true },
     { name: 'email', value: email, isDisabled: true },
     { name: 'mobilePhone', value: mobilePhone, isDisabled: false },
-    { name: 'landPhone', value: landPhone, isDisabled: false }
+    { name: 'landPhone', value: landPhone, isDisabled: false },
   ]
   const getInputs = () => wrapper.findAll('input')
 

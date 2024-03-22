@@ -2,10 +2,10 @@ import { beforeEach, describe, it, expect } from 'vitest'
 import OfferProviderProducts from '.'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import {
-  getMockedSubscriptionOffersServices
+  getMockedSubscriptionOffersServices,
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import type {
-  SubscriptionOfferProvider
+  SubscriptionOfferProvider,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { ExtendedService } from './OfferProviderProductsTypes'
 
@@ -20,7 +20,7 @@ function getMockedService(pStatus: boolean): ExtendedService {
     productConfigurationId: 1,
     pStatus,
     pDisabled: false,
-    pName: 'Service name'
+    pName: 'Service name',
   }
 }
 
@@ -31,9 +31,9 @@ function getWrapper() {
       offerId,
       selectedProducts: [{
         offerId,
-        productConfigurationId
-      }]
-    }
+        productConfigurationId,
+      }],
+    },
   })
   return wrapper
 }
@@ -53,10 +53,10 @@ describe('offerProviderProducts', () => {
     it('should display offer provider with services', () => {
       const offerProviderName = wrapper.find('.p-offer-services-card__title')
       const offerFirstService = wrapper.find(
-        '.p-offer-services-card__service-name'
+        '.p-offer-services-card__service-name',
       )
       const offerFirstServiceSwitch = wrapper.find(
-        '.p-offer-services-card__service-switch'
+        '.p-offer-services-card__service-switch',
       )
 
       expect(offerServicesCard.exists()).toBeTruthy()
@@ -64,7 +64,7 @@ describe('offerProviderProducts', () => {
       expect(offerFirstServiceSwitch.classes()).includes('is-checked')
       expect(offerProviderName.text()).toContain(offerProvider?.providerName)
       expect(offerFirstService.text()).toBe(
-        offerProvider?.products[0].productLabel
+        offerProvider?.products[0].productLabel,
       )
     })
   })

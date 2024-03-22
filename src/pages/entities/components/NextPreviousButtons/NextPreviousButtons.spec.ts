@@ -7,8 +7,8 @@ function getWrapper() {
   const wrapper = mount(NextPreviousButtons, {
     props: {
       previousLabel: 'previous label',
-      nextLabel: 'next label'
-    } satisfies NextPreviousButtonsProps
+      nextLabel: 'next label',
+    } satisfies NextPreviousButtonsProps,
   })
 
   return wrapper

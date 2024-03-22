@@ -4,12 +4,12 @@ import {
   removeSelectedProduct,
   getInitialSelectedProducts,
   getPostSubscriptionRequest,
-  getFirstDayOfYear
+  getFirstDayOfYear,
 } from './OffersDrawerUtils'
 import type { SelectedProduct } from '../OffersDrawerTypes'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
 import { getMockedStepNotes } from '../../StepNote/StepNotesMock'
-import { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
 const notes = getMockedStepNotes()
@@ -21,13 +21,13 @@ describe('offersDrawerUtils', () => {
     selectedProducts = [
       {
         offerId: 101,
-        productConfigurationId: 1
+        productConfigurationId: 1,
       },
       {
         isMandatory: true,
         offerId: 101,
-        productConfigurationId: 11
-      }
+        productConfigurationId: 11,
+      },
     ]
     originalLength = selectedProducts.length
   })
@@ -66,23 +66,23 @@ describe('offersDrawerUtils', () => {
         {
           isMandatory: true,
           offerId: 1,
-          productConfigurationId: 1
+          productConfigurationId: 1,
         },
         {
           isMandatory: true,
           offerId: 1,
-          productConfigurationId: 2
+          productConfigurationId: 2,
         },
         {
           isMandatory: false,
           offerId: 1,
-          productConfigurationId: 3
+          productConfigurationId: 3,
         },
         {
           isMandatory: false,
           offerId: 1,
-          productConfigurationId: 4
-        }
+          productConfigurationId: 4,
+        },
       ]
       expect(selectedProducts).toStrictEqual(expectedSelectedProducts)
     })
@@ -94,7 +94,7 @@ describe('offersDrawerUtils', () => {
     const collaborators = getMockedCollaborators()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
     const selectedProducts = getInitialSelectedProducts(
-      currentSubscriptionOffer
+      currentSubscriptionOffer,
     )
 
     it('should return not optional and free product list', () => {
@@ -104,7 +104,7 @@ describe('offersDrawerUtils', () => {
         collaborators,
         currentSubscriptionOffer,
         selectedProducts,
-        notes
+        notes,
       )
       const contacts = collaborators.map(({ id }) => id)
 
@@ -114,10 +114,10 @@ describe('offersDrawerUtils', () => {
         productConfigurations: [1, 2, 3, 4],
         contacts,
         notes,
-        applicant: 'user@email.com'
+        applicant: 'user@email.com',
       }
       expect(postSubscriptionRequest).toStrictEqual(
-        expectedPostSubscriptionRequest
+        expectedPostSubscriptionRequest,
       )
     })
     it('should return empty undefined if currentSubscriptionOffer in undefined', () => {
@@ -127,7 +127,7 @@ describe('offersDrawerUtils', () => {
         collaborators,
         undefined,
         selectedProducts,
-        notes
+        notes,
       )
       expect(postSubscriptionRequest).toBeUndefined()
     })

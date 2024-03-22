@@ -188,13 +188,13 @@ import {
   PCheckbox,
   PIExclamationTriangle,
   PNotification,
-  type PToolboxItemProps
+  type PToolboxItemProps,
 } from '@kpmg/styleguide'
 import {
   onMounted,
   ref,
   toRaw,
-  watch
+  watch,
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
@@ -203,12 +203,12 @@ import type { Props, Row } from './types'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = withDefaults(defineProps<Props>(), {
   data: [],
-  handleAddFavorite: () => {}
+  handleAddFavorite: () => {},
 })
 
 const menuToDeployElements : PToolboxItemProps[] = [
@@ -216,14 +216,14 @@ const menuToDeployElements : PToolboxItemProps[] = [
     pIconName: 'PIArrowUpCircle',
     pValue: t('deployThisFolder'),
     pActionName: 'deploy',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIFolder',
     pValue: t('accessThisFolder'),
     pActionName: 'access',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const menuInProgressElements : PToolboxItemProps[] = [
@@ -231,14 +231,14 @@ const menuInProgressElements : PToolboxItemProps[] = [
     pIconName: 'PISend',
     pValue: t('resendActivationEmail'),
     pActionName: 'resendActivationEmail',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIFolder',
     pValue: t('accessThisFolder'),
     pActionName: 'access',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const menuConnectedElements : PToolboxItemProps[] = [
@@ -246,28 +246,28 @@ const menuConnectedElements : PToolboxItemProps[] = [
     pIconName: 'PIFolder',
     pValue: t('accessThisFolder'),
     pActionName: 'access',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 const menuClient : PToolboxItemProps[] = [
   {
     pIconName: 'PIPeople',
     pValue: t('users'),
     pActionName: 'users',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIFolder',
     pValue: t('info'),
     pActionName: 'info',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PICalculatorEuro',
     pValue: t('invoices'),
     pActionName: 'invoices',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const menuElementsCollaborator = (status : string) => {
@@ -294,15 +294,15 @@ const handleRowSelectedChange = (row: any) => {
     const { name, id }: Row = rowValues
     const defaultEntity = {
       name,
-      idAccount: id
+      idAccount: id,
     }
 
     userStore.$patch({
       user: {
         entities: {
-          default: defaultEntity
-        }
-      }
+          default: defaultEntity,
+        },
+      },
     })
   }
 }
@@ -332,7 +332,7 @@ const notifOnError = (companyName: string) => {
     icon: PIExclamationTriangle,
     customClass: 'error',
     showClose: true,
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 
@@ -347,7 +347,7 @@ const resendActivationEmail = async (accountId: string, companyName: string) => 
         icon: PICheck,
         showClose: true,
         customClass: 'success',
-        position: 'bottom-right'
+        position: 'bottom-right',
       })
     } else {
       notifOnError(companyName)

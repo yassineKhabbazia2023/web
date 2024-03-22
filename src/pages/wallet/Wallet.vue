@@ -24,7 +24,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import {
   PTabs,
-  PTabPane
+  PTabPane,
 } from '@kpmg/styleguide'
 import { computed } from 'vue'
 import { commonStore } from '@kpmg/common'
@@ -32,7 +32,7 @@ import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const route = useRoute()
@@ -43,35 +43,35 @@ const { isCollab } = storeToRefs(commonStore())
 const collaboratorsTabs = [
   {
     name: 'folders',
-    trad: t('folders')
+    trad: t('folders'),
   },
   {
     name: 'folderMandats',
-    trad: t('mandate')
+    trad: t('mandate'),
   },
   {
     name: 'subscriptions',
-    trad: t('subscriptions')
+    trad: t('subscriptions'),
   },
   {
     name: 'collaborators',
-    trad: t('collaborators')
+    trad: t('collaborators'),
   },
   {
     name: 'history',
-    trad: t('history')
-  }
+    trad: t('history'),
+  },
 ]
 
 const clientTabs = [
   {
     name: 'entity-client',
-    trad: t('allEntities')
+    trad: t('allEntities'),
   },
   {
     name: 'allUsers',
-    trad: t('allUsers')
-  }
+    trad: t('allUsers'),
+  },
 ]
 
 const tabs = computed(() => isCollab.value ? collaboratorsTabs : clientTabs)

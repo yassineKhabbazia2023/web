@@ -10,7 +10,7 @@ const expectedTextareaPlaceholder = 'Write your comment'
 
 const createWrapper = () =>
   mount(StepNote, {
-    props: { modelValue: notes[0] }
+    props: { modelValue: notes[0] },
   })
 
 describe('stepNote', () => {

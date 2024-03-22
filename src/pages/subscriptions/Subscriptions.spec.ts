@@ -5,7 +5,7 @@ import { subscriptionRequestMock } from './mocks/SubscriptionRequestMock'
 import Subscriptions from './'
 
 const subscriptionGetMock = vi.fn().mockResolvedValue({
-  data: subscriptionRequestMock
+  data: subscriptionRequestMock,
 })
 const subscriptionPutMock = vi.fn(() => Promise.resolve())
 
@@ -13,9 +13,9 @@ vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     offer: {
       get: subscriptionGetMock,
-      put: subscriptionPutMock
-    }
-  })
+      put: subscriptionPutMock,
+    },
+  }),
 }))
 
 describe('subscriptions', () => {
@@ -27,25 +27,25 @@ describe('subscriptions', () => {
   it("should open the subscription drawer when clicked on 'consult'", async () => {
     const subscriptionAccountTest = subscriptionRequestMock[0].account
     const subscriptionTable = wrapper.findComponent({
-      name: 'SubscriptionsTable'
+      name: 'SubscriptionsTable',
     })
 
     await subscriptionTable.vm.$emit('consult', subscriptionAccountTest)
     await flushPromises()
 
     const subscriptionDrawer = wrapper.findComponent({
-      name: 'SubscriptionDetailsDrawer'
+      name: 'SubscriptionDetailsDrawer',
     })
 
     expect(subscriptionDrawer.props('modelValue')).toBeTruthy()
     expect(subscriptionDrawer.props('account')).toMatchObject(
-      subscriptionAccountTest
+      subscriptionAccountTest,
     )
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })
   it('call TSubscriptions component', () => {
     const subscriptionsTableComponent = wrapper.findComponent({
-      name: 'SubscriptionsTable'
+      name: 'SubscriptionsTable',
     })
     expect(subscriptionsTableComponent.exists()).toBeTruthy()
   })

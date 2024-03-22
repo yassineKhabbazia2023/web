@@ -40,7 +40,7 @@ import { getMockedAccount } from '@/services/account/accountMock'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const accountModel = getMockedAccount()

@@ -18,27 +18,27 @@ import { PTabs, PTabPane } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const activeTab = ref<string>('services')
 const subscriptionDetailsTabs = [
   {
     name: 'services',
-    label: t('services')
+    label: t('services'),
   },
   {
     name: 'customerUsers',
-    label: t('customerUsers')
+    label: t('customerUsers'),
   },
   {
     name: 'kpmgCollaborators',
-    label: t('kpmgCollaborators')
+    label: t('kpmgCollaborators'),
   },
   {
     name: 'information',
-    label: t('information')
-  }
+    label: t('information'),
+  },
 ]
 </script>
 

@@ -43,7 +43,7 @@ import {
   PTag,
   PButton,
   PIcon,
-  PIXCircleFill
+  PIXCircleFill,
 } from '@kpmg/styleguide'
 import { computed } from 'vue'
 import type { IProps } from './types'
@@ -57,7 +57,7 @@ const handleClick = () => {
 }
 const props = withDefaults(defineProps<IProps>(), {
   isSelected: false,
-  clickable: false
+  clickable: false,
 })
 
 const cssClass = computed(() => {

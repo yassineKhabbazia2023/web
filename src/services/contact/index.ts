@@ -4,7 +4,7 @@ import { API_PREFIXES } from '../config'
 import type { Contact } from './contactTypes'
 
 export const getCollaborators = async (
-  search: string | null = null
+  search: string | null = null,
 ): Promise<Contact[] | undefined> => {
   try {
     const response = await commonApi().gateway.get(
@@ -12,9 +12,9 @@ export const getCollaborators = async (
       {
         params: {
           Type: 'Collaborator',
-          search
-        }
-      }
+          search,
+        },
+      },
     )
 
     return response?.data?.items

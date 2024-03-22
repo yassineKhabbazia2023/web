@@ -40,13 +40,13 @@ import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch } from 'vue'
 import {
   PLoader,
-  PPagination
+  PPagination,
 } from '@kpmg/styleguide'
 import { commonStore } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
 import {
   PAGE_SIZES,
-  DATE_TIME_FORMATS as datetimeFormats
+  DATE_TIME_FORMATS as datetimeFormats,
 } from '@/constants'
 import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
@@ -57,7 +57,7 @@ import type { IState, IUserFromApi } from './types'
 const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
-  datetimeFormats
+  datetimeFormats,
 })
 
 const userStore = commonStore()
@@ -69,7 +69,7 @@ const state: IState = reactive({
   totalPages: undefined,
   totalItems: undefined,
   search: undefined,
-  isLoading: false
+  isLoading: false,
 })
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
@@ -84,17 +84,17 @@ const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
     - ${((state.currentPage - 1) * state.limit) +
     state.data.length} 
-    ${t('on')} ${state.totalItems}`
+    ${t('on')} ${state.totalItems}`,
 )
 
 const shouldShowPagination = computed(() =>
-  !state.isLoading && state.totalItems && state.totalItems > state.limit
+  !state.isLoading && state.totalItems && state.totalItems > state.limit,
 )
 
 const getQueryParams = () => ({
   page: state.currentPage,
   limit: state.limit,
-  search: state.search
+  search: state.search,
 })
 
 const formatItemsFromApi = (items: IUserFromApi[]) =>
@@ -108,7 +108,7 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
   }) => ({
     initials: getInitials(
       firstName,
-      lastName
+      lastName,
     ),
     firstName,
     lastName,
@@ -118,7 +118,7 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
     persona,
     id,
     createdAt: d(new Date(createdAt), 'short'),
-    ...rest
+    ...rest,
   }))
 
 const fetch = async () => {
@@ -133,8 +133,8 @@ const fetch = async () => {
         items,
         currentPage,
         totalPages,
-        totalItems
-      }
+        totalItems,
+      },
     } = await Promise.resolve(mock)
     // TODO: remove mock & searchParams in isLoading (line 128), when endpoint is done
     // await commonApi().gateway.get('account/api/customers?${searchParams}')
@@ -155,7 +155,7 @@ onMounted(async () => {
   watch(() => [
     state.currentPage,
     state.limit,
-    state.search
+    state.search,
   ], async () => {
     await fetch()
   })

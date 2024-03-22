@@ -1,11 +1,12 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect } from 'vitest'
 import { dataFromApi } from './mockData'
 import UsersCollab from './'
 
 const createWrapper = (): VueWrapper<any> =>
   mount(UsersCollab, {
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 describe('usersCollab', () => {
@@ -23,7 +24,7 @@ describe('usersCollab', () => {
       lastName,
       email,
       role,
-      firstDateAccess
+      firstDateAccess,
     } = dataFromApi.data.items[0]
     const mockData = [firstName, lastName, email, 'Connected', role, firstDateAccess]
     const firstRowText = rows[0].text()

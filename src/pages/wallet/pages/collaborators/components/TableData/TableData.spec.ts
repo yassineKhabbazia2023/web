@@ -20,10 +20,10 @@ const createWrapper = (): VueWrapper<any> =>
         fullName: `${firstName} ${lastName}`,
         firstName,
         lastName,
-        ...rest
-      }))
+        ...rest,
+      })),
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 const getMenu = () => document.querySelector('.el-popper') as HTMLElement
@@ -49,6 +49,6 @@ describe('tableData', () => {
       await nextTick()
 
       expect(getDrawer().exists()).toBeTruthy()
-    }
+    },
   )
 })

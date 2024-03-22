@@ -75,7 +75,7 @@ import {
   PIArrowUpCircle,
   PLoader,
   PButton,
-  PPagination
+  PPagination,
 } from '@kpmg/styleguide'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import { useRouter } from 'vue-router'
@@ -92,7 +92,7 @@ import TableData from '../../components/TableData'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const userStore = commonStore()
@@ -105,18 +105,18 @@ const DEPLOYMENTS = [
   {
     text: t('toDeploy'),
     icon: PIArrowUpCircle,
-    color: 'warning'
+    color: 'warning',
   },
   {
     text: t('inProgress'),
     icon: PIArrowRepeat,
-    color: 'persian'
+    color: 'persian',
   },
   {
     text: t('connected'),
     icon: PICheckCircle,
-    color: 'success'
-  }
+    color: 'success',
+  },
 ]
 
 const getInitial = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
@@ -133,7 +133,7 @@ const state: IState = reactive({
   totalItems: undefined,
   search: undefined,
   isLoading: undefined,
-  filterByDeploymentStatus: undefined
+  filterByDeploymentStatus: undefined,
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {
@@ -148,12 +148,12 @@ const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
    - ${((state.currentPage - 1) * state.limit) +
     state.data.length}
-   ${t('on')} ${state.totalItems}`
+   ${t('on')} ${state.totalItems}`,
 )
 
 const DEFAULT_ENTITY_VALUES = {
   ibs: 'IBS93781560ZE19',
-  color: 'persian'
+  color: 'persian',
 }
 
 const fetchFavorites = async () =>
@@ -165,15 +165,15 @@ const putEntitiesInCommonFavorite = (data: ICommonEntitiesInFavorite[]) => {
       name,
       idAccount,
       ibs: DEFAULT_ENTITY_VALUES.ibs,
-      color: DEFAULT_ENTITY_VALUES.color
+      color: DEFAULT_ENTITY_VALUES.color,
     })) as Entity[]
 
   userStore.$patch({
     user: {
       entities: {
-        favorites: entitiesInFavorite
-      }
-    }
+        favorites: entitiesInFavorite,
+      },
+    },
   })
 }
 
@@ -181,7 +181,7 @@ const getQueryParams = () => ({
   page: state.currentPage,
   limit: state.limit,
   search: state.search,
-  deploymentStatus: state.filterByDeploymentStatus
+  deploymentStatus: state.filterByDeploymentStatus,
 })
 
 const fetch = async () => {
@@ -195,8 +195,8 @@ const fetch = async () => {
         items,
         currentPage,
         totalPage,
-        totalItems
-      }
+        totalItems,
+      },
     } = await commonApi().wallet.get(`display?${searchParams}`)
     state.data = items.map(({
       owner,
@@ -212,14 +212,14 @@ const fetch = async () => {
           lastName: owner.lastName?.toLowerCase() ?? '',
           initials: getInitial({
             firstName: owner.firstName,
-            lastName: owner.lastName
+            lastName: owner.lastName,
           }),
-          avatarColor: owner.avatarColor ?? getColor(index)
+          avatarColor: owner.avatarColor ?? getColor(index),
         },
         hub: hub ?? 'Paris',
         city: city?.toLowerCase() ?? '',
         deploymentStatus: DEPLOYMENTS[deploymentStatus - 1],
-        ...rest
+        ...rest,
       }))
     state.currentPage = currentPage
     state.totalPage = totalPage
@@ -231,7 +231,7 @@ const fetch = async () => {
 }
 
 const COLOR = [
-  'persian', 'orange', 'green', 'teal', 'fuschia'
+  'persian', 'orange', 'green', 'teal', 'fuschia',
 ]
 
 /// function predictable color
@@ -244,7 +244,7 @@ const getColor = (index: number) => {
 const fetchTableDataAndFavorites = async () => {
   const [, { data }] = await Promise.all([
     fetch(),
-    fetchFavorites()
+    fetchFavorites(),
   ])
   putEntitiesInCommonFavorite(data)
 }
@@ -261,7 +261,7 @@ onMounted(async () => {
     state.currentPage,
     state.limit,
     state.search,
-    state.filterByDeploymentStatus
+    state.filterByDeploymentStatus,
   ], async () => {
     await fetch()
   })

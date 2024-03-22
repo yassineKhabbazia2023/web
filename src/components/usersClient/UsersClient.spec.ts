@@ -11,9 +11,9 @@ import { noResult } from '@/tests'
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
-      user: {}
-    })
-  })
+      user: {},
+    }),
+  }),
 }))
 
 const pinia = createTestingPinia()
@@ -21,8 +21,8 @@ const pinia = createTestingPinia()
 const createWrapper = (): VueWrapper<any> =>
   mount(UsersClient, {
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 
 const { items, totalPages } = mock.data
@@ -41,7 +41,7 @@ const checkRowContent = (rowIndex: number) => {
     expect(rowContent).toContain(
       index === INDEX_WITH_DATE
         ? '3/7/2024'
-        : value
+        : value,
     )
   })
 }
@@ -68,8 +68,8 @@ describe('allUsers', () => {
     const store = commonStore(pinia)
     store.$patch({
       user: {
-        id: mock.data.items[0].id
-      }
+        id: mock.data.items[0].id,
+      },
     })
     await flushPromises()
 

@@ -102,12 +102,12 @@ import {
   PBlockHeader,
   PButton,
   PIAdd,
-  PIcon
+  PIcon,
 } from '@kpmg/styleguide'
 import {
   onMounted,
   ref,
-  toRaw
+  toRaw,
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { commonStore } from '@kpmg/common'
@@ -119,7 +119,7 @@ import { getInitials } from '@/helper/helper'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const userStore = commonStore()
@@ -128,7 +128,7 @@ const { defaultEntity } = storeToRefs(userStore)
 const pImageProps = {
   pFit: 'fill',
   pType: 'portrait',
-  pName: 'collab-female-add'
+  pName: 'collab-female-add',
 } as PImageProps
 
 const collabs = ref<Collab[]>([])

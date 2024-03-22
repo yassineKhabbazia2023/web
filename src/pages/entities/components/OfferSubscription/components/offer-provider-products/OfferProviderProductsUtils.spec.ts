@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { getIsServiceSelected, getServiceTag, getTitle } from './OfferProviderProductsUtils'
 import {
-  SubscriptionPriceType
+  SubscriptionPriceType,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 
 import type { SelectedProduct } from '@/pages/entities/components/OffersDrawer/OffersDrawerTypes'
@@ -9,7 +9,7 @@ import type { SelectedProduct } from '@/pages/entities/components/OffersDrawer/O
 import { getMockedSubscriptionOfferProduct } from '../../../SubscriptionOffers/SubscriptionOffersMocks'
 
 const ProviderCategoryTitles: Record<string, string> = {
-  pulse: 'Les services de la plateforme'
+  pulse: 'Les services de la plateforme',
 }
 
 describe('offerProviderProductsUtils', () => {
@@ -22,7 +22,7 @@ describe('offerProviderProductsUtils', () => {
       const productConfigurationId = offerProduct.productConfigurationId
       const selectedProducts: SelectedProduct[] = [{
         offerId,
-        productConfigurationId
+        productConfigurationId,
       }]
 
       const isSelected = getIsServiceSelected(offerId, offerProduct, selectedProducts)
@@ -33,7 +33,7 @@ describe('offerProviderProductsUtils', () => {
       const expected = false
       const selectedProducts: SelectedProduct[] = [{
         offerId,
-        productConfigurationId: 2
+        productConfigurationId: 2,
       }]
       const isSelected = getIsServiceSelected(offerId, offerProduct, selectedProducts)
 
@@ -50,39 +50,39 @@ describe('offerProviderProductsUtils', () => {
       expected: {
         pColor: 'gray-900',
         pContent: 'Inclus',
-        pEffect: 'light'
-      }
+        pEffect: 'light',
+      },
     }, {
       isOptionnal: true,
       priceType: SubscriptionPriceType.free,
-      expected: undefined
+      expected: undefined,
     }, {
       isOptionnal: false,
       priceType: SubscriptionPriceType.exact,
       expected: {
         pColor: 'gray-900',
         pContent: 'Inclus',
-        pEffect: 'light'
-      }
+        pEffect: 'light',
+      },
     }, {
       isOptionnal: true,
       priceType: SubscriptionPriceType.exact,
       expected: {
         pColor: 'amethyste',
         pContent: 'Prix additionnel',
-        pEffect: 'light'
-      }
+        pEffect: 'light',
+      },
     }]
     it.each(tests)('should return $expected when isOptionnal = $isOptionnal and priceType is \'$priceType\'', ({
       isOptionnal,
       priceType,
-      expected
+      expected,
     }) => {
       const serviceTag = getServiceTag(
         isOptionnal,
         priceType,
         includedLabel,
-        additionalPriceLabel
+        additionalPriceLabel,
       )
       expect(serviceTag).toStrictEqual(expected)
     })
@@ -91,19 +91,19 @@ describe('offerProviderProductsUtils', () => {
     const providerName = 'provider name'
     const tests = [{
       category: 'pulse',
-      expected: `Les services de la plateforme ${providerName}`
+      expected: `Les services de la plateforme ${providerName}`,
     }, {
       category: 'foo',
-      expected: providerName
+      expected: providerName,
     }]
     it.each(tests)('should return $expected when category = \'$category\'', ({
       category,
-      expected
+      expected,
     }) => {
       const title = getTitle(
         ProviderCategoryTitles,
         category,
-        providerName
+        providerName,
       )
       expect(title).toBe(expected)
     })

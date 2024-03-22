@@ -59,7 +59,7 @@ import {
   PForm,
   PLoader,
   PRadioCard,
-  PRadioGroup
+  PRadioGroup,
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
 import type { State } from './types'
@@ -67,17 +67,17 @@ import mock from './mock.json'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits(['setDrawerNotVisible', 'setSelectedRoleId'])
 
 const state: State = reactive({
   formValue: {
-    selectedRoleId: undefined
+    selectedRoleId: undefined,
   },
   isLoading: undefined,
-  roles: []
+  roles: [],
 })
 
 const fetchRoles = async () => {

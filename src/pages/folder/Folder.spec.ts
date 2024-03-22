@@ -13,32 +13,32 @@ vi.mock('@kpmg/common', () => ({
     state: () => ({
       user: {
         entities: {
-          default: mockedEntity
-        }
-      }
+          default: mockedEntity,
+        },
+      },
     }),
     getters: {
       isCollab: () => true,
-      defaultEntity: () => mockedEntity
-    }
-  })
+      defaultEntity: () => mockedEntity,
+    },
+  }),
 }))
 
 const mockRouterPush = vi.fn()
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
+    push: mockRouterPush,
   }),
-  useRoute: () => ({})
+  useRoute: () => ({}),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Folder, {
     attachTo: document.body,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 
 describe('dossier', () => {
@@ -58,7 +58,7 @@ describe('dossier', () => {
     ['collab', 'tab-collab'],
     ['usersCollab', 'tab-usersCollab'],
     ['offers', 'tab-offers'],
-    ['info', 'tab-info']
+    ['info', 'tab-info'],
   ]
   it.each(PARAMS)(
     'should redirect when click on %s',
@@ -68,10 +68,10 @@ describe('dossier', () => {
       expect(mockRouterPush).toHaveBeenCalledWith({
         name: tabs,
         params: {
-          name: mockedEntity.name
-        }
+          name: mockedEntity.name,
+        },
       })
-    }
+    },
   )
   it('should display the button label when the user is a client', () => {
     const store = commonStore()

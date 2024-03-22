@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { subscriptionRequestMock } from './mocks/SubscriptionRequestMock'
 import { subscriptionDemandMock } from './mocks/SubscriptionDemandMock'
 import {
-  fetchSubscriptionRequests, validateSubscriptionRequest, createSubscriptionRequest
+  fetchSubscriptionRequests, validateSubscriptionRequest, createSubscriptionRequest,
 } from './SubscriptionsServices'
 
 const subscriptionPutMock = vi.fn()
@@ -13,9 +13,9 @@ vi.mock('@kpmg/common', () => ({
     offer: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       put: subscriptionPutMock,
-      post: subscriptionPostMock
-    }
-  })
+      post: subscriptionPostMock,
+    },
+  }),
 }))
 
 describe('subscriptionsServices', () => {

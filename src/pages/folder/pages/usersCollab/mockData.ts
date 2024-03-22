@@ -8,7 +8,7 @@ export const dataFromApi = {
         isOwner: true,
         status: 'Connecté',
         role: 'Gérant',
-        firstDateAccess: '01/11/1923'
+        firstDateAccess: '01/11/1923',
       },
       {
         firstName: 'John',
@@ -17,7 +17,7 @@ export const dataFromApi = {
         isOwner: false,
         status: 'Connecté',
         role: 'Comptable',
-        firstDateAccess: '02/12/1923'
+        firstDateAccess: '02/12/1923',
       },
       {
         firstName: 'Alex',
@@ -27,7 +27,7 @@ export const dataFromApi = {
         isOwner: false,
         status: 'Connecté',
         role: 'RH',
-        firstDateAccess: '02/13/1923'
+        firstDateAccess: '02/13/1923',
       },
       {
         firstName: 'David',
@@ -36,7 +36,7 @@ export const dataFromApi = {
         isOwner: false,
         status: 'Connecté',
         role: 'Commerce',
-        firstDateAccess: '01/04/1923'
+        firstDateAccess: '01/04/1923',
       },
       {
         firstName: 'Cristiano',
@@ -45,7 +45,7 @@ export const dataFromApi = {
         isOwner: false,
         status: 'Connecté',
         role: 'Mafia',
-        firstDateAccess: '12/04/1923'
+        firstDateAccess: '12/04/1923',
       },
       {
         firstName: 'John',
@@ -54,7 +54,7 @@ export const dataFromApi = {
         isOwner: false,
         status: 'Connecté',
         role: 'Star',
-        firstDateAccess: '12/02/1923'
+        firstDateAccess: '12/02/1923',
       },
       {
         firstName: 'John',
@@ -63,7 +63,7 @@ export const dataFromApi = {
         isOwner: false,
         status: 'Connecté',
         role: 'Marketing',
-        firstDateAccess: '11/12/1923'
+        firstDateAccess: '11/12/1923',
       },
       {
         firstName: 'John',
@@ -72,11 +72,11 @@ export const dataFromApi = {
         isOwner: false,
         status: 'Invité',
         role: 'Designer',
-        firstDateAccess: '10/01/1923'
-      }
+        firstDateAccess: '10/01/1923',
+      },
     ],
     currentPage: 1,
     totalPage: 2,
-    totalItems: 19
-  }
+    totalItems: 19,
+  },
 }

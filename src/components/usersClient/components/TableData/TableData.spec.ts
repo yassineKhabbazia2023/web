@@ -15,16 +15,16 @@ const createWrapper = (): VueWrapper<any> =>
       }) => ({
         initials: getInitials(
           firstName,
-          lastName
+          lastName,
         ),
         fullName: `${firstName} ${lastName}`,
         firstName,
         lastName,
         isOwner: false,
         isLoggedUser: () => false,
-        ...rest
-      }))
-    }
+        ...rest,
+      })),
+    },
   })
 
 const getMenu = () => document.querySelector('.el-popper') as HTMLElement

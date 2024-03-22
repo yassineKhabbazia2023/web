@@ -41,7 +41,7 @@ import type { ConfirmationModalProps } from './ConfirmationModalTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<ConfirmationModalProps>()
@@ -56,7 +56,7 @@ const internalValue = computed({
   },
   set(value: boolean) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const handleCancel = () => {

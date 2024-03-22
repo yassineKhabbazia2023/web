@@ -126,14 +126,14 @@ import {
   PInput,
   PNotification,
   PTag,
-  PUserCard
+  PUserCard,
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
 import type Props from './types'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -142,14 +142,14 @@ const props = defineProps<Props>()
 
 const drawerModel = computed({
   get: () => props.hasDrawerOpened,
-  set: value => emit('update:modelValue', value)
+  set: value => emit('update:modelValue', value),
 })
 
 // Form part
 const formRef = ref<FormInstance>()
 const formValues = reactive({
   mobilePhone: props.rowData.mobilePhone,
-  landPhone: props.rowData.landPhone
+  landPhone: props.rowData.landPhone,
 })
 
 const handleReset = () => {
@@ -165,7 +165,7 @@ const handleSubmit = (formEl: FormInstance | undefined) => {
     icon: PICheck,
     showClose: true,
     customClass: 'success',
-    position: 'bottom-right'
+    position: 'bottom-right',
   })
 }
 </script>

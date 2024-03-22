@@ -8,7 +8,7 @@ let wrapper: VueWrapper<any>
 
 const createWrapper = (): VueWrapper<any> =>
   mount(CollabRole, {
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 describe('collabRole', () => {

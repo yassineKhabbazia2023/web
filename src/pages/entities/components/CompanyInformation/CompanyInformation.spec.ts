@@ -14,11 +14,11 @@ const createWrapper = () => {
   const account = getMockedAccount()
   const props: CompanyInformationProps = {
     modelValue: account,
-    providerName: 'MEG'
+    providerName: 'MEG',
   }
 
   return mount(CompanyInformation, {
-    props
+    props,
   })
 }
 
@@ -52,7 +52,7 @@ describe('companyInformation', () => {
       formField.vm.$emit('update:model-value', 'Test Value')
 
       expect(formField.emitted('update:model-value')).toStrictEqual([
-        ['Test Value']
+        ['Test Value'],
       ])
     })
   })

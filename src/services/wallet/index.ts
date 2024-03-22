@@ -4,7 +4,7 @@ import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
 import { handleRequestError } from '@/helper/helper'
 
 export const getCollaboratorsByIdEntity = (
-  idEntity: string
+  idEntity: string,
 ): Promise<Collab[]> => {
   try {
     return Promise.resolve(mockCollabsData)

@@ -110,7 +110,7 @@ import {
   PIThreeDots,
   PTable,
   PTableColumn,
-  PToolbox
+  PToolbox,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
@@ -119,7 +119,7 @@ import { MENU_ACTIONS_NAME } from './constants'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<Props>()
@@ -130,24 +130,24 @@ const menuElements : PToolboxItemProps[] = [
     pIconName: 'PIPerson',
     pValue: t('userInformation'),
     pActionName: userInformation,
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIPencilSquare',
     pValue: t('modifyRights'),
     pActionName: modifyRights,
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PITrash',
     pValue: t('deleteUser'),
     pActionName: deleteUser,
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const state = reactive({
-  rowData: undefined
+  rowData: undefined,
 })
 
 const handleToolboxItemClick = (_action: string, row: any) => {

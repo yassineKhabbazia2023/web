@@ -70,7 +70,7 @@ import {
   PForm,
   PFormItem,
   PSwitch,
-  PLoader
+  PLoader,
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
 import type { Props, State } from './types'
@@ -78,7 +78,7 @@ import mock from './mock.json'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits(['goToPreviousStep', 'setAccesses'])
@@ -87,7 +87,7 @@ defineProps<Props>()
 
 const state: State = reactive({
   isLoading: undefined,
-  accesses: undefined
+  accesses: undefined,
 })
 
 const fetchAccesses = async () => {

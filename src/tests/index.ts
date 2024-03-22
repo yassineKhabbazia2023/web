@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
-export const noResult = async (wrapper: any) => {
+export const noResult = (wrapper: any) => {
   describe('test NoResult', () => {
     it('can display a no results message', async () => {
       const getNoResultComponent = () => wrapper.findComponent({ name: 'NoResult' })

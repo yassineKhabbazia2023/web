@@ -13,13 +13,13 @@ vi.mock('@kpmg/common', () => {
           return url === `${API_PREFIXES.CONTACT}/contacts`
             ? Promise.resolve({
               data: {
-                items: mockedCollaborators
-              }
+                items: mockedCollaborators,
+              },
             })
             : Promise.reject(new Error('rejected'))
-        })
-      }
-    })
+        }),
+      },
+    }),
   }
 })
 

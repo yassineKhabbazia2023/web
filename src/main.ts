@@ -5,7 +5,7 @@ import {
   commoni18n as i18n,
   commonPinia as pinia,
   commonStore,
-  routes
+  routes,
 } from '@kpmg/common'
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
 
@@ -16,11 +16,11 @@ setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
 const vueLifecycles = singleSpaVue({
   createApp,
   appOptions: {
-    render: () => h(RenderLess)
+    render: () => h(RenderLess),
   },
   handleInstance(app) {
     app.use(i18n.value).use(pinia)
-  }
+  },
 })
 
 export const bootstrap = vueLifecycles.bootstrap
@@ -31,60 +31,60 @@ const BASE_WALLET_ROUTES = [
   {
     path: 'historique',
     name: 'history',
-    page: 'folders' // History page not already created; that's why we will use the folders page temporarily
+    page: 'folders', // History page not already created; that's why we will use the folders page temporarily
   },
   {
     path: 'collaborateurs',
     name: 'collaborators',
-    page: 'collaborators'
-  }
+    page: 'collaborators',
+  },
 ]
 
 const WALLET_CHILDREN_ROUTES = [
   {
     path: 'dossiers',
     name: 'folders',
-    page: 'folders'
+    page: 'folders',
   },
-  ...BASE_WALLET_ROUTES
+  ...BASE_WALLET_ROUTES,
 ]
 
 const CUSTOMER_WALLET_CHILDREN_ROUTES = [
   {
     path: 'mes-entites',
     name: 'entity-client',
-    page: 'folders'
+    page: 'folders',
   },
-  ...BASE_WALLET_ROUTES
+  ...BASE_WALLET_ROUTES,
 ]
 
 const FOLDER_CHILDREN_PATH = [
   {
     path: 'gestion-utilisateurs',
     name: 'usersCollab',
-    page: 'usersCollab'
+    page: 'usersCollab',
   },
   {
     path: 'collaborateurs',
     name: 'collab',
-    page: 'collaborators'
+    page: 'collaborators',
   },
   {
     path: 'offres',
     name: 'offers',
-    page: 'offers'
+    page: 'offers',
   },
   {
     path: 'informations',
     name: 'info',
-    page: 'information'
-  }
+    page: 'information',
+  },
 ]
 
 routes.value.push({
   path: '/subscription',
   name: 'subscription',
-  component: () => import('@/pages/subscriptions')
+  component: () => import('@/pages/subscriptions'),
 } as RouteRecordRaw)
 
 const walletPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
@@ -93,18 +93,18 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string }
     res.push({
       path: path.path,
       name: path.name,
-      component: () => import(`@/pages/wallet/pages/${path.page}/index.js`)
+      component: () => import(`@/pages/wallet/pages/${path.page}/index.js`),
     } as RouteRecordRaw)
   })
   res.push({
     path: 'utilisateurs',
     name: 'allUsers',
-    component: () => import('@/components/usersClient')
+    component: () => import('@/components/usersClient'),
   } as RouteRecordRaw)
   res.push({
     path: 'demandes-mod',
     name: 'subscriptions',
-    component: () => import('@/pages/subscriptions')
+    component: () => import('@/pages/subscriptions'),
   } as RouteRecordRaw)
   return res
 }
@@ -115,13 +115,13 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
     res.push({
       path: path.path,
       name: path.name,
-      component: () => import(`@/pages/folder/pages/${path.page}/index.ts`)
+      component: () => import(`@/pages/folder/pages/${path.page}/index.ts`),
     } as RouteRecordRaw)
   })
   res.push({
     path: 'utilisateurs',
     name: 'usersClient',
-    component: () => import('@/components/usersClient')
+    component: () => import('@/components/usersClient'),
   } as RouteRecordRaw)
   return res
 }
@@ -132,7 +132,7 @@ routes.value.push({
   name: 'wallet',
   redirect: { name: 'folders' },
   component: () => import('@/pages/wallet'),
-  children: walletPatchChildren(WALLET_CHILDREN_ROUTES)
+  children: walletPatchChildren(WALLET_CHILDREN_ROUTES),
 } as RouteRecordRaw)
 
 routes.value.push({
@@ -140,7 +140,7 @@ routes.value.push({
   name: 'wallet-client',
   redirect: { name: 'entity-client' },
   component: () => import('@/pages/wallet'),
-  children: walletPatchChildren(CUSTOMER_WALLET_CHILDREN_ROUTES)
+  children: walletPatchChildren(CUSTOMER_WALLET_CHILDREN_ROUTES),
 } as RouteRecordRaw)
 
 routes.value.push({
@@ -149,19 +149,19 @@ routes.value.push({
   redirect: () => ({
     name: commonStore().isCollab
       ? 'usersCollab'
-      : 'usersClient'
+      : 'usersClient',
   }),
   component: () => import('@/pages/folder'),
-  children: folderPatchChildren(FOLDER_CHILDREN_PATH)
+  children: folderPatchChildren(FOLDER_CHILDREN_PATH),
 })
 
 watch(routes.value, (val) => {
   const walletChildrenRoutes = val.find((item) => item.name === 'wallet')?.children ?? []
   const mandatsRoute = val.find(
-    (item) => item.name === 'mandats'
+    (item) => item.name === 'mandats',
   ) as RouteRecordRaw
   const folderMandats = walletChildrenRoutes.find(
-    (item) => item.name === 'folderMandats'
+    (item) => item.name === 'folderMandats',
   ) as RouteRecordRaw
 
   if (mandatsRoute && !folderMandats) {
@@ -169,8 +169,8 @@ watch(routes.value, (val) => {
       {
         name: 'folderMandats',
         path: 'mandats',
-        component: mandatsRoute.component
-      }
+        component: mandatsRoute.component,
+      },
     )
   }
 }, { deep: true, immediate: true })

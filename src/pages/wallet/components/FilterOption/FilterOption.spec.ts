@@ -6,7 +6,7 @@ import type { IProps } from './types'
 import { PIArrowUpCircle } from '@kpmg/styleguide'
 const createWrapper = (props: IProps) =>
   mount(FilterOption, {
-    props
+    props,
   })
 
 describe('tags', () => {
@@ -18,7 +18,7 @@ describe('tags', () => {
       icon: PIArrowUpCircle,
       isSelected: false,
       clickable: false,
-      number: 0
+      number: 0,
     })
   })
   it('renders tagWrapper correctly', () => {

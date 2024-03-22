@@ -126,7 +126,7 @@ import {
   PSwitch,
   PTable,
   PTableColumn,
-  PToolbox
+  PToolbox,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
@@ -137,13 +137,13 @@ import DrawerCollabRole from './../DrawerCollabRole'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<Props>()
 
 const access = props.data.map(({ id, hasAccess }: { id: string, hasAccess: boolean }) => ({
-  [id]: hasAccess
+  [id]: hasAccess,
 }))
 const accessState = reactive(Object.assign({}, ...access))
 
@@ -153,28 +153,28 @@ const menuElements : PToolboxItemProps[] = [
     pIconName: 'PIPerson',
     pValue: t('collaboratorInformation'),
     pActionName: collaboratorInformation,
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIClipboardData',
     pValue: t('detailsOfDelegations'),
     pActionName: 'detailsOfDelegations',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIGrid',
     pValue: t('manageAccessRights'),
     pActionName: manageAccessRights,
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const state = reactive({
   hasDrawerOpened: {
     collabDetails: false,
-    collabRole: false
+    collabRole: false,
   },
-  rowData: undefined
+  rowData: undefined,
 })
 
 const handleToolboxItemClick = (action: string, row: any) => {

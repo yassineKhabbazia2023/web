@@ -17,12 +17,12 @@ describe('subscriptionOffers', () => {
       async () => {
         const wrapper = await mount(Subscription, {
           props: {
-            subscriptionOffers
-          }
+            subscriptionOffers,
+          },
         })
         const offers = wrapper.findAll('[data-testid=offer-list] [data-testid=offer-item]')
         expect(offers).toHaveLength(subscriptionOffers.length)
-      }
+      },
     )
   })
 
@@ -31,15 +31,15 @@ describe('subscriptionOffers', () => {
       it('should emit onSelectOffer',
         async () => {
           const mockMethods = {
-            onSelectOffer: vi.fn()
+            onSelectOffer: vi.fn(),
           }
 
           const wrapper = mount(Subscription, {
             props: {
               modelValue: true,
-              subscriptionOffers
+              subscriptionOffers,
             },
-            methods: mockMethods
+            methods: mockMethods,
           })
           wrapper
             .find('[data-testid=offer-list] [data-testid=offer-item]:nth-child(2)')
@@ -47,7 +47,7 @@ describe('subscriptionOffers', () => {
           await nextTick()
 
           expect(wrapper.emitted('selectOffer')).toBeTruthy()
-        }
+        },
       )
     })
   })

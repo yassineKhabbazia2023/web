@@ -9,7 +9,7 @@ const selectedCollaborators = mockedCollaborators.slice(1, 2)
 const searchExpression = 'search'
 
 vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators))
+  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 
 describe('test CollaboratorAutocompleteUtils', () => {

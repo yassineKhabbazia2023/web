@@ -11,9 +11,9 @@ let wrapper: VueWrapper<any>
 const createWrapper = (): VueWrapper<any> =>
   mount(CollabAccess, {
     props: {
-      selectedCollabRole: SELECTED_COLLAB_ROLE
+      selectedCollabRole: SELECTED_COLLAB_ROLE,
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 describe('collabAccess', () => {

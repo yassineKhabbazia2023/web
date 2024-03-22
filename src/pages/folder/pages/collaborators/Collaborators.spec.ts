@@ -11,12 +11,12 @@ import Collaborators from '.'
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
-      user: {}
+      user: {},
     }),
     getters: {
-      defaultEntity: () => mockedEntity
-    }
-  })
+      defaultEntity: () => mockedEntity,
+    },
+  }),
 }))
 
 const pinia = createTestingPinia()
@@ -25,8 +25,8 @@ const createWrapper = (): VueWrapper =>
   mount(Collaborators, {
     attachTo: document.body,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 
 describe('collaborators', () => {

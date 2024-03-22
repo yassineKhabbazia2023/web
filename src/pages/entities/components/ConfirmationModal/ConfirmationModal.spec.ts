@@ -8,12 +8,12 @@ import ConfirmationModal from '.'
 const defaultProps: ConfirmationModalProps = {
   modelValue: true,
   title: 'Test',
-  content: 'Test Content'
+  content: 'Test Content',
 }
 
 const createWrapper = (props = defaultProps) => {
   return mount(ConfirmationModal, {
-    props
+    props,
   })
 }
 

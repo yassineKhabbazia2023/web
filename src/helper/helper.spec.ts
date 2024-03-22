@@ -3,7 +3,7 @@ import {
   formatDateToLocale,
   generateObject,
   getInitials,
-  removeFalsyValues
+  removeFalsyValues,
 } from './helper'
 
 describe('getInitials', () => {
@@ -13,13 +13,13 @@ describe('getInitials', () => {
     ['', 'Satoru', 'S'],
     [undefined, 'Gojo', 'G'],
     ['', '', ''],
-    [undefined, undefined, '']
+    [undefined, undefined, ''],
   ])(
     'returns correct initials (%s, %s) => %s',
     (firstName, lastName, expected) => {
       const initials = getInitials(firstName, lastName)
       expect(initials).toBe(expected)
-    }
+    },
   )
 })
 
@@ -47,7 +47,7 @@ describe('removeFalsyValues', () => {
       c: false,
       d: null,
       e: '',
-      f: 0
+      f: 0,
     }
     expect(removeFalsyValues(OBJECT_WITH_FALSY_VALUES)).toStrictEqual({ b: 'b' })
   })

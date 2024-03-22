@@ -9,7 +9,7 @@ import { getMockedPrincipalContacts } from '../PrincipalContact/PrincipalContact
 import { getMockedUser } from '@/pages/entities/mocks'
 import type {
   SubscriptionOffer,
-  SubscriptionOfferServices
+  SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
@@ -49,42 +49,42 @@ vi.mock('@/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
   getOffer: vi.fn((offerId) =>
     Promise.resolve(
-      subscriptionOffersServices.find((item) => item.offerId === offerId)
-    )
+      subscriptionOffersServices.find((item) => item.offerId === offerId),
+    ),
   ),
   getOffersBookLink: vi.fn(() => offersBookTestLink),
   getPrincipalContacts: vi.fn(() => Promise.resolve(principalContacts)),
-  getCollaborators: vi.fn(() => Promise.resolve(collaborators))
+  getCollaborators: vi.fn(() => Promise.resolve(collaborators)),
 }))
 
 vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve(collaborators))
+  getCollaborators: vi.fn(() => Promise.resolve(collaborators)),
 }))
 
 vi.mock('@/services/account', () => ({
   fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
-  patchAccount: vi.fn(() => Promise.resolve({}))
+  patchAccount: vi.fn(() => Promise.resolve({})),
 }))
 
 vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve([]))
+  getCollaborators: vi.fn(() => Promise.resolve([])),
 }))
 
 vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve([]))
+  getCollaborators: vi.fn(() => Promise.resolve([])),
 }))
 
 vi.mock('@braintree/sanitize-url', () => ({
-  sanitizeUrl: getMockedSanitized
+  sanitizeUrl: getMockedSanitized,
 }))
 
 vi.mock('@/services/PatchRecordService/PatchRecordService', () => ({
   addPathValue: vi.fn(),
-  getPatchOperations: vi.fn(() => mockedPatchOperations)
+  getPatchOperations: vi.fn(() => mockedPatchOperations),
 }))
 
 vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
-  createSubscriptionRequestNew: vi.fn()
+  createSubscriptionRequestNew: vi.fn(),
 }))
 
 vi.mock('./OffersDrawerUtils', async () => {
@@ -103,13 +103,13 @@ async function getWrapper(isOpened: boolean) {
       selectedCompanyName: companyTestName,
       accountNumber,
       accountId,
-      currentUser
+      currentUser,
     },
     global: {
       stubs: {
-        PInput: true
-      }
-    }
+        PInput: true,
+      },
+    },
   })
   await flushPromises()
 
@@ -203,10 +203,10 @@ describe('offersDrawer', () => {
         'services',
         'customers',
         'collaborators',
-        'information'
+        'information',
       ].map(stepName => ({
         stepName,
-        stepNote: ''
+        stepNote: '',
       }))
       const expectedArgument: PostSubscriptionRequest = {
         accountId,
@@ -214,7 +214,7 @@ describe('offersDrawer', () => {
         contacts: [],
         offerId: 1,
         notes,
-        productConfigurations: [1, 2, 3, 4]
+        productConfigurations: [1, 2, 3, 4],
       }
       it('should patch the account and create a subscription when the user confirms', async () => {
         const wrapper = await getWrapper(true)
@@ -281,7 +281,7 @@ describe('offersDrawer', () => {
           patchValues,
           fieldKey,
           currentValue,
-          newValue
+          newValue,
         ]
 
         expect(addPathValueSpy).toHaveBeenCalledOnce()

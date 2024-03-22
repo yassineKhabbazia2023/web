@@ -16,7 +16,7 @@ export function getMockedAccount(): Account {
       fiscalExerciseStartDate: '2024-02-07T15:49:54',
       fiscalExerciseDuration: 12,
       fiscalSystem: 'BIC',
-      taxationSystem: 'Impôt sur le revenu'
+      taxationSystem: 'Impôt sur le revenu',
     },
     legal: {
       legalName: 'SCI Licorn',
@@ -28,14 +28,14 @@ export function getMockedAccount(): Account {
         {
           nafId: 1,
           nafCode: '96.0F4',
-          nafLabel: '96.0F4'
-        }
-      ]
+          nafLabel: '96.0F4',
+        },
+      ],
     },
     vat: {
       system: 'Réel normal - CA3 mensuelle',
       intra: 'FR 32 123456789',
-      type: 'Encaissement'
+      type: 'Encaissement',
     },
     address: [
       {
@@ -45,27 +45,27 @@ export function getMockedAccount(): Account {
         addressLine3: 'test 3',
         country: 'France',
         city: 'Paris',
-        zipCode: '25300'
-      }
+        zipCode: '25300',
+      },
     ],
     phone: [
       {
         phoneId: 5,
-        phoneNumber: '0622827143'
-      }
+        phoneNumber: '0622827143',
+      },
     ],
     email: 'contact@johnnyspizza.com',
     hub: {
       hubId: 14,
-      hubName: 'Hub Normandie Seine Baie de Somme'
+      hubName: 'Hub Normandie Seine Baie de Somme',
     },
     deploymentPlanning: [
       {
         deploymentId: 1,
         deploymentDate: '2024-02-07T00:00:00',
-        status: 1
-      }
-    ]
+        status: 1,
+      },
+    ],
   }
 }
 
@@ -73,6 +73,6 @@ export function getMockedPatchOperations(): PatchOperation[] {
   return [{
     op: 'replace',
     path: '/a/b',
-    value: 'c'
+    value: 'c',
   }]
 }

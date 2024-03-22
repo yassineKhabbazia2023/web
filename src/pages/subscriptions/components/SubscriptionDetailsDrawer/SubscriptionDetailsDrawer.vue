@@ -26,7 +26,7 @@ import SubscriptionDetailsTabs from './components/SubscriptionDetailsTabs'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<SubscriptionDetailsDrawerProps>()
@@ -40,7 +40,7 @@ const internalIsOpened = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 const subscriptionDrawerTitle = computed(() => {
   return `${props.account.accountLegalName} - ${t('number')} ${props.account.accountNumber}`

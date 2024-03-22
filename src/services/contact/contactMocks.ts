@@ -13,8 +13,8 @@ export function getMockedCollaborators(): Contact[] {
       office: 'KPMG Paris – Liège',
       persona: {
         id: 2,
-        name: 'Admin / Collab Product'
-      }
+        name: 'Admin / Collab Product',
+      },
     },
     {
       id: 2,
@@ -27,8 +27,8 @@ export function getMockedCollaborators(): Contact[] {
       office: 'KPMG Paris – Liège',
       persona: {
         id: 4,
-        name: 'Partner GS'
-      }
+        name: 'Partner GS',
+      },
     },
     {
       id: 3,
@@ -41,8 +41,8 @@ export function getMockedCollaborators(): Contact[] {
       office: 'KPMG Paris – Liège',
       persona: {
         id: 4,
-        name: 'Partner GS'
-      }
-    }
+        name: 'Partner GS',
+      },
+    },
   ]
 }

@@ -19,8 +19,8 @@ describe('offerSubscription', () => {
       props: {
         subscriptionOffer,
         offerId,
-        selectedProducts: []
-      }
+        selectedProducts: [],
+      },
     })
   })
   describe('props', () => {
