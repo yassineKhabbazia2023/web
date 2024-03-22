@@ -12,9 +12,16 @@
 
       <PButton
         pType="primary"
+        @click="isDelegationDrawerOpened = true"
       >
         {{ t('delegation', selectedFolders.length) }}
       </PButton>
+      <DelegationDrawer
+        v-if="isDelegationDrawerOpened"
+        v-model="isDelegationDrawerOpened"
+        :selectedFolders="selectedFolders"
+        :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
+      />
     </div>
     <div class="margin-bottom--3">
       <FormSearch
@@ -69,7 +76,7 @@
 
 <script lang='ts' setup>
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import {
   PIArrowRepeat,
   PICheckCircle,
@@ -96,6 +103,8 @@ import type {
 } from '../../types'
 import Filters from '../../components/Filters'
 import TableData from '../../components/TableData'
+import DelegationDrawer from './components/DelegationDrawer'
+import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -106,6 +115,10 @@ const userStore = commonStore()
 const router = useRouter()
 const selectedCompanyName = ref('')
 const { isCollab, user } = storeToRefs(userStore)
+
+// delegation part
+const isDelegationDrawerOpened = ref(false)
+const numberOfFoldersInPortfolio = computed(() => searchResult.value.items.length)
 
 // table part
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
@@ -234,12 +247,15 @@ const handleRemoveFilter = () => {
   searchCriteria.value.filterByDeploymentStatus = undefined
 }
 
-const selectedFolders: string[] = reactive([])
-const onSelectedFolder = (id: string) => {
-  const index = selectedFolders.indexOf(id)
-  index >= 0
-    ? selectedFolders.splice(index, 1)
-    : selectedFolders.push(id)
+const selectedFolders = ref<SelectedFolder[]>([])
+const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
+  const hasAlreadySelectedSameFolder = () =>
+    selectedFolders.value.some((selectedFolder: SelectedFolder) => selectedFolder.id === newSelectedFolder.id)
+
+  selectedFolders.value =
+    hasAlreadySelectedSameFolder()
+      ? selectedFolders.value.filter((selectedFolder: SelectedFolder) => selectedFolder.id !== newSelectedFolder.id)
+      : [...selectedFolders.value, newSelectedFolder]
 }
 </script>
 
