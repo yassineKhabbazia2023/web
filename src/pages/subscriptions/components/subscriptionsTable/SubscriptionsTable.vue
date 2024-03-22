@@ -124,12 +124,12 @@ import {
 } from '../../SubscriptionsServices'
 import { getInitials } from '@/helper'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
-import { SubscriptionStatusCode } from '../../SubscriptionsTypes'
-import type { Contact } from '@/services/contact/contactTypes'
 import {
   type SubscriptionRequest,
   type SubscriptionAccount,
+  SubscriptionStatusCode,
 } from '../../SubscriptionsTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 
 const { t, d } = useI18n({
   inheritLocale: true,

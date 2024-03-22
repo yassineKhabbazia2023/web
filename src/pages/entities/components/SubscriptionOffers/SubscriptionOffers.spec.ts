@@ -14,8 +14,8 @@ describe('subscriptionOffers', () => {
 
   describe('props', () => {
     it('should display offers',
-      async () => {
-        const wrapper = await mount(Subscription, {
+      () => {
+        const wrapper = mount(Subscription, {
           props: {
             subscriptionOffers,
           },
