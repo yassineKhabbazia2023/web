@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, SpyInstance } from 'vitest'
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
+import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
+import { HubConnection } from '@microsoft/signalr'
 
 vi.mock('@microsoft/signalr')
 vi.mock('./DataStreamHubConnectionHelper', () => {
   return {
     getNewHubConnection: () => ({
       start: vi.fn().mockResolvedValue({}),
-      stop: vi.fn().mockResolvedValue({})
-    })
+      stop: vi.fn().mockResolvedValue({}),
+    }),
   }
 })
 
@@ -45,5 +47,56 @@ describe('dataStreamHubConnection', () => {
     await dataStreamHubConnection.destroyConnection()
     const isConnected = dataStreamHubConnection.getIsConnected()
     expect(isConnected).toBeFalsy()
+  })
+
+  describe('when connection fails', () => {
+    let errorSpy: SpyInstance
+    beforeEach(() => {
+      errorSpy = vi.spyOn(console, 'error')
+    })
+    it('should call console.error when start connection fails', async () => {
+      vi
+        .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
+        .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
+          return {
+            start: vi.fn().mockRejectedValueOnce('error'),
+            stop: vi.fn(),
+          } as unknown as HubConnection
+        })
+      dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
+      await dataStreamHubConnection.startConnection()
+      expect(errorSpy).toHaveBeenCalledOnce()
+      expect(errorSpy).toHaveBeenNthCalledWith(1, `Hub connection to ${mockHubUrl} failed`, 'error')
+    })
+
+    it('should call console.error when destroyConnection connection fails', async () => {
+      vi
+        .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
+        .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
+          return {
+            start: vi.fn().mockResolvedValue({}),
+            stop: vi.fn().mockRejectedValueOnce('error'),
+          } as unknown as HubConnection
+        })
+      dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
+      await dataStreamHubConnection.startConnection()
+      await dataStreamHubConnection.destroyConnection()
+      expect(errorSpy).toHaveBeenCalledOnce()
+      expect(errorSpy).toHaveBeenNthCalledWith(1, 'error')
+    })
+
+    it('should do nothing when not connected', async () => {
+      vi
+        .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
+        .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
+          return {
+            start: vi.fn(),
+            stop: vi.fn(),
+          } as unknown as HubConnection
+        })
+      dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
+      await dataStreamHubConnection.destroyConnection()
+      expect(errorSpy).not.toHaveBeenCalledOnce()
+    })
   })
 })

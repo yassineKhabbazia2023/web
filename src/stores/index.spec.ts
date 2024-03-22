@@ -10,21 +10,21 @@ const TEST_ENTITIES: Entity[] = [
     idAccount: '7c2b430b-7190-4cd1',
     name: 'Test 1',
     color: 'orange',
-    ibs: 'IBS93781560ZE19'
+    ibs: 'IBS93781560ZE19',
   },
   {
     idAccount: '3b2b430b-4563-4cd4',
     name: 'Test 2',
     color: 'cyan',
-    ibs: 'IBS43784540ZE33'
-  }
+    ibs: 'IBS43784540ZE33',
+  },
 ]
 
 const pinia = createTestingPinia({
   initialState: {
-    user: null
+    user: null,
   },
-  stubActions: false
+  stubActions: false,
 })
 
 describe('commonStore', () => {
@@ -41,8 +41,8 @@ describe('commonStore', () => {
     store.$patch({
       user: {
         lastName: 'Levage',
-        firstName: 'Jean'
-      }
+        firstName: 'Jean',
+      },
     })
     expect(user.value).toBeDefined()
   })
@@ -55,8 +55,8 @@ describe('commonStore', () => {
     vi.spyOn(tokenService, 'hasValidAccessToken').mockReturnValueOnce(true)
     store.$patch({
       user: {
-        isCollab: true
-      }
+        isCollab: true,
+      },
     })
 
     expect(isCollab.value).toBeTruthy()
@@ -71,16 +71,16 @@ describe('commonStore', () => {
       user: {
         entities: {
           favorites: TEST_ENTITIES,
-          default: TEST_ENTITIES[0]
-        }
-      }
+          default: TEST_ENTITIES[0],
+        },
+      },
     })
 
     expect(favoriteEntities.value).toStrictEqual(TEST_ENTITIES)
     expect(defaultEntity.value).toStrictEqual(TEST_ENTITIES[0])
 
     store.$patch({
-      user: null
+      user: null,
     })
 
     expect(favoriteEntities.value).toStrictEqual([])
@@ -96,13 +96,13 @@ describe('commonStore', () => {
       const spyLogout = vi.spyOn(store, 'logout')
       store.$patch({
         user: {
-          isCollab: isCollabCondition
-        }
+          isCollab: isCollabCondition,
+        },
       })
       await store.logout(store.$state)
 
       expect(spyLogout).toHaveBeenCalledTimes(1)
       expect(setTokenSpy).toHaveBeenNthCalledWith(1, '')
-    }
+    },
   )
 })

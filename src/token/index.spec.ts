@@ -4,8 +4,8 @@ import { TokenService } from '.'
 const now = new Date()
 vi.mock('jwt-decode', () => ({
   default: () => ({
-    exp: now.setHours(now.getHours() + 1)
-  })
+    exp: now.setHours(now.getHours() + 1),
+  }),
 }))
 
 describe('test token', () => {

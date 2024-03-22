@@ -32,17 +32,17 @@ export default () => {
         const baseURL = domainToBaseUrl(envVars[k])
         const instance = axios.create({
           baseURL,
-          headers: { 'Content-type': 'application/json' }
+          headers: { 'Content-type': 'application/json' },
         })
         instance.interceptors.request.use(requestInterceptor)
         instance.interceptors.response.use(
           responseInterceptorSuccess,
-          responseInterceptorError
+          responseInterceptorError,
         )
         apis[service] = instance
       }
       return apis
     },
-    {}
+    {},
   )
 }

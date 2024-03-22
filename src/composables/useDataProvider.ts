@@ -7,14 +7,14 @@ export const useDataProvider = () => {
   const fetchUserData = async () => {
     if (isAuthenticated.value) {
       const {
-        data: { firstName, lastName, id, email, isCustomer }
+        data: { firstName, lastName, id, email, isCustomer },
       } = await api().customers.get('contacts/me')
       const user = {
         id,
         firstName,
         lastName,
         email,
-        isCollab: !isCustomer
+        isCollab: !isCustomer,
       }
       return user
     }

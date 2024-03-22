@@ -1,4 +1,4 @@
-import { HubConnection } from '@microsoft/signalr'
+import type { HubConnection } from '@microsoft/signalr'
 import { storeToRefs } from 'pinia'
 import commonStore from '../stores'
 import { getNewHubConnection } from './DataStreamHubConnectionHelper'
@@ -31,7 +31,7 @@ export class DataStreamHubConnection {
         this.setIsConnected(true)
       })
       .catch((err) =>
-        console.error(`Hub connection to ${this.hubUrl} failed`, err)
+        console.error(`Hub connection to ${this.hubUrl} failed`, err),
       )
   }
 

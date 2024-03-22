@@ -1,6 +1,7 @@
-import jwtDecode, { JwtPayload } from 'jwt-decode'
+import type { JwtPayload } from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 interface RegisteredCallback {
-  key: string,
+  key: string
   callback: (_token: string) => void
 }
 
@@ -55,7 +56,7 @@ export class TokenService {
   registerOnChange(key: string, callback: RegisteredCallback['callback']) {
     this.registeredCallbacks.push({
       key,
-      callback
+      callback,
     })
   }
 

@@ -14,17 +14,17 @@ export default ({ mode }) => defineConfig(mergeConfig(viteBaseConfig, {
   plugins: [
     visualizer(),
     vue({
-      reactivityTransform: true
+      reactivityTransform: true,
     }),
     VueI18nPlugin({
-      include: [path.resolve(__dirname, './src/**/locales/**')]
+      include: [path.resolve(__dirname, './src/**/locales/**')],
     }),
     viteExternalsPlugin({
       vue: 'Vue',
       pinia: 'Pinia',
       'env-vars': 'EnvVars',
       'vue-i18n': 'VueI18n',
-      'single-spa-vue': 'SingleSpaVue'
+      'single-spa-vue': 'SingleSpaVue',
     }, { disableInServe: mode === 'test' }),
     // An issue occurs on vitest version 0.33.0 to 0.34.4 for 'env-vars'
     // https://github.com/vitest-dev/vitest/issues/993
@@ -34,24 +34,24 @@ export default ({ mode }) => defineConfig(mergeConfig(viteBaseConfig, {
       },
       load(id) {
         if (id === 'env-vars') return ''
-      }
-    }
+      },
+    },
   ],
   define: {
     'import.meta.vitest': false,
-    'process.env': process.env
+    'process.env': process.env,
   },
   test: {
     alias: {
-      '@/': new URL('./src/', import.meta.url).pathname
-    }
+      '@/': new URL('./src/', import.meta.url).pathname,
+    },
   },
   build: {
     lib: {
       name: '@kpmg/common',
       entry: path.resolve(__dirname, 'src/main.ts'),
       formats: ['es', 'umd'],
-      fileName: (format) => `lib/common.${format}.js`
+      fileName: (format) => `lib/common.${format}.js`,
     },
     rollupOptions: {
       input: 'src/main.ts',
@@ -59,24 +59,24 @@ export default ({ mode }) => defineConfig(mergeConfig(viteBaseConfig, {
       external: ['vue'],
       output: {
         globals: {
-          vue: 'Vue'
-        }
-      }
+          vue: 'Vue',
+        },
+      },
     },
     plugins: [
       typescriptPaths(),
       typescript({
         sourceMap: false,
         declaration: true,
-        outDir: 'dist'
+        outDir: 'dist',
       }),
-      eslint()
-    ]
+      eslint(),
+    ],
   },
   resolve: {
-    dedupe: ['vue']
+    dedupe: ['vue'],
   },
   server: {
-    port: 8080
-  }
+    port: 8080,
+  },
 }))

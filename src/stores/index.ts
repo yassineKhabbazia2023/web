@@ -10,14 +10,14 @@ type commonStateType = {
 
 export const store = defineStore('common', {
   state: (): commonStateType => ({
-    user: null
+    user: null,
   }),
   getters: {
     token: (): string => tokenService.getToken(),
     isAuthenticated: (): boolean => tokenService.hasValidAccessToken(),
     isCollab: (state: commonStateType) => !!state.user?.isCollab,
     favoriteEntities: (state: commonStateType) => state.user?.entities?.favorites ?? [],
-    defaultEntity: (state: commonStateType) => state.user?.entities?.default
+    defaultEntity: (state: commonStateType) => state.user?.entities?.default,
   },
   actions: {
     logout: async (state: any) => {
@@ -28,7 +28,7 @@ export const store = defineStore('common', {
         } else {
           const urlLogout = '/logout'
           const data = {
-            userId: state?.user?.id
+            userId: state?.user?.id,
           }
           await api().auth.post(urlLogout, data)
         }
@@ -36,8 +36,8 @@ export const store = defineStore('common', {
       } catch (e) {
         console.warn(e)
       }
-    }
-  }
+    },
+  },
 })
 
 export default store

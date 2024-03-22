@@ -3,5 +3,5 @@ const VITE_VARIABLE_1 = 'I am an env vars but not an api url'
 
 export {
   VITE_API_PORTAL,
-  VITE_VARIABLE_1
+  VITE_VARIABLE_1,
 }

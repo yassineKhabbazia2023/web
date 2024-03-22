@@ -2,7 +2,7 @@ import { vi } from 'vitest'
 import {
   requestInterceptor,
   responseInterceptorSuccess,
-  responseInterceptorError
+  responseInterceptorError,
 } from '../src/api'
 
 // this is just a default mock...
@@ -11,8 +11,8 @@ import {
 const defaults = {
   headers: {
     'Content-Type': '',
-    Authorization: ''
-  }
+    Authorization: '',
+  },
 }
 export default {
   defaults,
@@ -20,18 +20,18 @@ export default {
     return {
       interceptors: {
         request: {
-          use: vi.fn(() => requestInterceptor(defaults))
+          use: vi.fn(() => requestInterceptor(defaults)),
         },
         response: {
-          use: vi.fn(() => responseInterceptorSuccess, responseInterceptorError)
-        }
+          use: vi.fn(() => responseInterceptorSuccess, responseInterceptorError),
+        },
       },
 
       defaults,
       get: vi.fn((data) => Promise.resolve({ data })),
       post: vi.fn((data) => Promise.resolve({ data })),
       put: vi.fn((data) => Promise.resolve({ data })),
-      delete: vi.fn((data) => Promise.resolve({ data }))
+      delete: vi.fn((data) => Promise.resolve({ data })),
     }
-  })
+  }),
 }

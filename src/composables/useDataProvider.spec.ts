@@ -9,22 +9,22 @@ const fakeUser = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'john@example.com',
-  isCustomer: false
+  isCustomer: false,
 }
 
 const mockGetMe = vi.fn((_url) => {
   return Promise.resolve({
-    data: fakeUser
+    data: fakeUser,
   })
 })
 
 vi.mock('../api', () => ({
   default: () => ({
     customers: {
-      get: mockGetMe
-    }
-  })
-})
+      get: mockGetMe,
+    },
+  }),
+}),
 )
 
 describe('useDataProvider', () => {
@@ -43,7 +43,7 @@ describe('useDataProvider', () => {
       firstName: fakeUser.firstName,
       lastName: fakeUser.lastName,
       email: fakeUser.email,
-      isCollab: true
+      isCollab: true,
     }
     expect(user).toMatchObject(expectedResult)
   })
