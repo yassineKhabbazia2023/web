@@ -9,7 +9,7 @@
   >
     <PButton
       pType="primary"
-      pSize="default"
+      pSize="small"
       @click="handleAddCollaborator"
       data-testid="add-collaborator-button"
     >
