@@ -1,18 +1,18 @@
 <template>
   <Story
-  title="2. Atoms/Text"
-  icon="fluent:button-16-regular"
-  :layout="{ type: 'grid', width: '300px' }">
+    title="2. Atoms/Text"
+    icon="fluent:button-16-regular"
+    :layout="{ type: 'grid', width: '300px' }">
     <Variant title="PText">
       <PText
-         :pContent="PTextBasicData.content"
-         :pIcon="PIPerson"
-         :pBold="PTextBasicData.bold"
-         :pType="PTextBasicData.type"
-         :disabled="PTextBasicData.disabled"
-         :selected="PTextBasicData.selected"
-         >
-        </PText>
+        :pContent="PTextBasicData.content"
+        :pIcon="PIPerson"
+        :pBold="PTextBasicData.bold"
+        :pType="PTextBasicData.type"
+        :disabled="PTextBasicData.disabled"
+        :selected="PTextBasicData.selected"
+      >
+      </PText>
       <template #controls>
         <hstSelect
           v-model="PTextBasicData.type"
@@ -40,13 +40,13 @@ const PTextBasicData = reactive({
   type: ref<PTextProps['pType']>('primary'),
   bold: false,
   disabled: false,
-  selected: false
+  selected: false,
 })
 
 const typeOptions = [
   'primary',
   'secondary',
-  'drag'
+  'drag',
 ]
 </script>
 

@@ -117,26 +117,26 @@ const menuConfig: any = reactive({
   collapseTransition: false,
   disabledMenuItems: false,
   disabledSubmenus: false,
-  router: true
+  router: true,
 })
 
 const menuItems = [
   {
     index: '1',
-    title: 'Menu Item 1'
+    title: 'Menu Item 1',
   },
   {
     index: '2',
-    title: 'Menu Item 2'
+    title: 'Menu Item 2',
   },
   {
     index: '3',
-    title: 'Menu Item 3'
+    title: 'Menu Item 3',
   },
   {
     index: '4',
-    title: 'Menu Item 4'
-  }
+    title: 'Menu Item 4',
+  },
 ]
 
 const submenus = [
@@ -144,16 +144,16 @@ const submenus = [
     index: '1',
     title: 'Submenu 1',
     items: menuItems.map((item) => {
-      return { ...item, index: '1-' + item.index }
-    })
+      return { ...item, index: `1-${item.index}` }
+    }),
   },
   {
     index: '2',
     title: 'Submenu 2',
     items: menuItems.map((item) => {
-      return { ...item, index: '2-' + item.index }
-    })
-  }
+      return { ...item, index: `2-${item.index}` }
+    }),
+  },
 ]
 </script>
 

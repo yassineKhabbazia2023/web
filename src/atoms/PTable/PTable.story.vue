@@ -34,7 +34,7 @@
           type="selection"
           v-if="tableInputsWithCells.selectable"
         />
-          v-if="tableInputsWithCells.selectable"
+        v-if="tableInputsWithCells.selectable"
         />
         <PTableColumn
           pLabel="Text"
@@ -51,7 +51,7 @@
               :disabled="false"
               :selected="false"
             >
-           </PText>
+            </PText>
           </template>
         </PTableColumn>
         <PTableColumn
@@ -94,7 +94,7 @@
           pWidth="180"
           :pSortMethod="sortMethodsTags"
           :pSortable="tableInputsWithCells.sortable"
-          >
+        >
           <template #default="scope">
             <PTag
               pColor="success"
@@ -169,43 +169,43 @@ const tableInputs = reactive({
     {
       date: '2016-05-03',
       name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles'
+      address: 'No. 189, Grove St, Los Angeles',
     },
     {
       date: '2016-05-02',
       name: 'Jean',
-      address: 'No. 12, Park Av, San Francisco'
+      address: 'No. 12, Park Av, San Francisco',
     },
     {
       date: '2016-05-04',
       name: 'Angelo',
-      address: 'No. 28, Levage St, NYC'
+      address: 'No. 28, Levage St, NYC',
     },
     {
       date: '2016-05-01',
       name: 'Patrick',
-      address: 'Appt. 522, No. 32, Churchill Blv, Los Angeles'
-    }
+      address: 'Appt. 522, No. 32, Churchill Blv, Los Angeles',
+    },
   ],
   tableColumn: [
     {
       prop: 'date',
       label: 'Date',
-      width: 180
+      width: 180,
     },
     {
       prop: 'name',
       label: 'Name',
-      width: 180
+      width: 180,
     },
     {
       prop: 'address',
-      label: 'Address'
-    }
+      label: 'Address',
+    },
   ],
   striped: true,
   sortable: true,
-  selectable: true
+  selectable: true,
 })
 
 const tableInputsWithCells = reactive({
@@ -214,140 +214,140 @@ const tableInputsWithCells = reactive({
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
         icon: 'PICupHot',
-        type: 'primary'
+        type: 'primary',
       },
       entity: {
         icon: 'PIBuilding',
-        name: 'Lorem Ipsum Factory'
+        name: 'Lorem Ipsum Factory',
       },
       doubleText: {
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        type: 'primary'
+        type: 'primary',
       },
       tag: {
         content: 'Validated',
         iconLeft: PIFolder,
-        iconRight: PIStars
+        iconRight: PIStars,
       },
       switch: {
         status: true,
-        disabled: false
-      }
+        disabled: false,
+      },
     },
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
         icon: 'PICupHot',
-        type: 'primary'
+        type: 'primary',
       },
       entity: {
         icon: 'PIPulse',
         name: 'Olympia Stadium',
-        type: 'primary'
+        type: 'primary',
       },
       doubleText: {
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        type: 'primary'
+        type: 'primary',
       },
       tag: {
         content: 'Validated',
         iconLeft: PIFolder,
-        iconRight: PIStars
+        iconRight: PIStars,
       },
       switch: {
         status: false,
-        disabled: false
-      }
+        disabled: false,
+      },
     },
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
         icon: 'PICupHot',
-        type: 'primary'
+        type: 'primary',
       },
       entity: {
         icon: 'PICupStraw',
-        name: 'Baquery'
+        name: 'Baquery',
       },
       doubleText: {
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        type: 'primary'
+        type: 'primary',
       },
       tag: {
         content: 'Validated',
         iconLeft: PIFolder,
-        iconRight: PIStars
+        iconRight: PIStars,
       },
       switch: {
         status: true,
-        disabled: false
-      }
+        disabled: false,
+      },
     },
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
         icon: 'PICupHot',
-        type: 'primary'
+        type: 'primary',
       },
       entity: {
         icon: 'PIShop',
-        name: 'Lorem Ipsum Factory'
+        name: 'Lorem Ipsum Factory',
       },
       doubleText: {
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Restaurant Alfredo\'s House',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        type: 'primary'
+        type: 'primary',
       },
       tag: {
         content: 'Validated',
         iconLeft: PIFolder,
-        iconRight: PIStars
+        iconRight: PIStars,
       },
       switch: {
         status: true,
-        disabled: true
-      }
+        disabled: true,
+      },
     },
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
         icon: 'PICupHot',
-        type: 'primary'
+        type: 'primary',
       },
       entity: {
         icon: 'PIBuilding',
-        name: 'Neverland Swiming Pool'
+        name: 'Neverland Swiming Pool',
       },
       doubleText: {
         icon: 'PICupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        type: 'primary'
+        type: 'primary',
       },
       tag: {
-        content: 'Validated'
+        content: 'Validated',
       },
       switch: {
         status: true,
-        disabled: true
-      }
-    }
+        disabled: true,
+      },
+    },
   ],
   striped: true,
   sortable: true,
-  selectable: true
+  selectable: true,
 })
 
 const sortMethodsText = (a: any, b: any) => a.text.content - b.text.content

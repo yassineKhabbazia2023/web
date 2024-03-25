@@ -33,6 +33,6 @@ withDefaults(defineProps<PSubMenuProps>(), {
   pPopperOffset: 0,
   pShowTimeout: undefined,
   pHideTimeout: undefined,
-  pDisabled: false
+  pDisabled: false,
 })
 </script>

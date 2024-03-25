@@ -60,21 +60,21 @@ const basicData = ref<basicDataOptions>({
   active: 0,
   direction: 'horizontal',
   processStatus: 'process',
-  finishStatus: 'finish'
+  finishStatus: 'finish',
 })
 
 const basicDataTitles = ref({
   step1: 'step 1',
   step2: 'step 2',
-  step3: 'step 3'
+  step3: 'step 3',
 })
 
-const stepperDirection: { label: string; value:string }[] = [{
+const stepperDirection: { label: string, value:string }[] = [{
   label: 'vertical',
-  value: 'vertical'
+  value: 'vertical',
 }, {
   label: 'horizontal',
-  value: 'horizontal'
+  value: 'horizontal',
 }]
 </script>
 

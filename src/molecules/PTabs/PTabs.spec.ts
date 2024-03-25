@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PTabs from '.'
 import type { PTabsProps } from './PTabsTypes'
@@ -12,11 +13,11 @@ const propsValue: PTabsProps = {
   pEditable: true,
   pTabPosition: 'top',
   pStretch: false,
-  pBeforeLeave: vi.fn()
+  pBeforeLeave: vi.fn(),
 }
 
 const createWrapper = () => mount(PTabs, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pTabs', () => {
@@ -34,7 +35,7 @@ describe('pTabs', () => {
       tabPosition: propsValue.pTabPosition,
 
       stretch: propsValue.pStretch,
-      beforeLeave: propsValue.pBeforeLeave
+      beforeLeave: propsValue.pBeforeLeave,
     }
     expect(component.props()).toMatchObject(expectedProps)
   })

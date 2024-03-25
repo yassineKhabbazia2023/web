@@ -7,29 +7,29 @@ import { type Config } from 'svgo'
 
 const mockedFolders: Folder[] = [{
   name: 'folder-1',
-  images: ['a', 'b', 'c']
+  images: ['a', 'b', 'c'],
 }] as const
 
 const mockedSvgoConfig: Config = { path: 'foo' }
 
 vi.mock('fs', () => ({
   mkdirSync: vi.fn(),
-  existsSync: vi.fn().mockReturnValue(true)
+  existsSync: vi.fn().mockReturnValue(true),
 }))
 
 vi.mock('./lib', () => ({
   getFolders: vi.fn().mockImplementation(() => mockedFolders),
-  writeCompressedImage: vi.fn()
+  writeCompressedImage: vi.fn(),
 }))
 
 vi.mock('../common/utils', () => ({
-  getSvgoConfig: vi.fn().mockImplementation(() => mockedSvgoConfig)
+  getSvgoConfig: vi.fn().mockImplementation(() => mockedSvgoConfig),
 }))
 
 vi.mock('path', () => ({
   default: {
-    join: (...args: string[]) => args.join('/')
-  }
+    join: (...args: string[]) => args.join('/'),
+  },
 }))
 
 const originPath = 'origin-path'
@@ -44,7 +44,7 @@ describe('imageGen/utils', () => {
         svgoConfig,
         mockedFolders,
         originPath,
-        targetPath
+        targetPath,
       )
       const folderName = mockedFolders[0].name
       const originFolderPath = `${originPath}/${folderName}`
@@ -63,7 +63,7 @@ describe('imageGen/utils', () => {
         svgoConfig,
         mockedFolders,
         originPath,
-        targetPath
+        targetPath,
       )
       const folderName = mockedFolders[0].name
       const targetFolderPath = `${targetPath}/${folderName}`

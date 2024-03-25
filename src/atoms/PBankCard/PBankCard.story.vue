@@ -23,7 +23,7 @@ const bankCardBasicData = reactive({
   title: 'Synthèse des comptes',
   accountNumber: 4,
   accountText: 'comptes actifs',
-  amount: '248 660,00 €'
+  amount: '248 660,00 €',
 })
 </script>
 

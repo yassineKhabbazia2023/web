@@ -1,11 +1,12 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
 import PDatePicker from '.'
 
 const createWrapper = (props: any = {}) =>
   mount(PDatePicker, {
-    props
+    props,
   })
 
 describe('calendar lite', () => {
@@ -18,7 +19,7 @@ describe('calendar lite', () => {
         pValueFormat: 'YYYY-MM-DD',
         pFormat: 'YYYY-MM-DD',
         pCalendarLite: true,
-        pSchedulesCollection: ['2024-01-29', '2024-01-27', '2024-02-05']
+        pSchedulesCollection: ['2024-01-29', '2024-01-27', '2024-02-05'],
       })
 
     await wrapper.setProps({ pMonth: 'next-month' })

@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PTimePicker from '.'
 import type { PTimePickerProps } from './PTimePickerTypes'
@@ -27,10 +28,10 @@ const propsValue: PTimePickerProps = {
   pDisabledMinutes: vi.fn(),
   pDisabledSeconds: vi.fn(),
   pTeleported: true,
-  pTabindex: 0
+  pTabindex: 0,
 }
 const createWrapper = () => mount(PTimePicker, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pTimePicker', () => {
@@ -62,7 +63,7 @@ describe('pTimePicker', () => {
       disabledHours: propsValue.pDisabledHours,
       disabledMinutes: propsValue.pDisabledMinutes,
       disabledSeconds: propsValue.pDisabledSeconds,
-      tabindex: propsValue.pTabindex
+      tabindex: propsValue.pTabindex,
     }
     expect(component.props()).toMatchObject(expectedProps)
 

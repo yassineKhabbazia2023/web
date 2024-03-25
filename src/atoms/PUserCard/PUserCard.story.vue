@@ -103,8 +103,8 @@ const data: PUserCardProps = {
     pColor: 'gray-900',
     pContent: 'Entity',
     pIconLeft: PIBuilding,
-    pEffect: 'light'
-  }
+    pEffect: 'light',
+  },
 }
 </script>
 

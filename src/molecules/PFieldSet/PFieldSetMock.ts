@@ -4,26 +4,26 @@ import type { PFieldProps } from '../PField/PFieldTypes'
 
 export function getMockedFields(
   fieldCase: string,
-  withReadonlyFields = false
+  withReadonlyFields = false,
 ): PFieldProps<any>[] {
   const countryOptions: PDropdownOption[] = [{
     pValue: 'fr',
-    pLabel: 'France'
+    pLabel: 'France',
   }, {
     pValue: 'be',
-    pLabel: 'Belgique'
+    pLabel: 'Belgique',
   }]
 
   if (fieldCase === 'companyIdentification') {
     return [
       getMockedInputField('person.lastname', 'Nom', 'Mac Cain', 30, withReadonlyFields),
-      getMockedInputField('person.firstname', 'Prénom', "Johnny's Pizza", 65)
+      getMockedInputField('person.firstname', 'Prénom', "Johnny's Pizza", 65),
     ]
   }
   if (fieldCase === 'companyContact') {
     return [
       getMockedInputField('contact.email', 'E-mail de contact', 'contact@kpmg.fr', 45, false, ['email']),
-      getMockedInputField('contact.phone', 'Numéro de téléphone', '0123456789', 45, false, ['phone'])
+      getMockedInputField('contact.phone', 'Numéro de téléphone', '0123456789', 45, false, ['phone']),
     ]
   }
   if (fieldCase === 'companyAddress') {
@@ -32,44 +32,44 @@ export function getMockedFields(
       getMockedInputField('additional', 'Compléments (Bât, étage, etc.)', 'Aucune saisie', 90),
       getMockedInputField('zipCode', 'Code postal', '25300', 20),
       getMockedInputField('city', 'Ville', 'Pontarlier', 30),
-      getDropdownField('country', 'Pays', 40, countryOptions)
+      getDropdownField('country', 'Pays', 40, countryOptions),
     ]
   }
   if (fieldCase === 'accountingAndTaxInformation') {
     const yearDurationOptions: PDropdownOption[] = [{
       pValue: 12,
-      pLabel: '12 mois'
+      pLabel: '12 mois',
     }, {
       pValue: 24,
-      pLabel: '24 mois'
+      pLabel: '24 mois',
     }]
     const accountingTypeOptions: PDropdownOption[] = [{
       pValue: 'accrual',
-      pLabel: "Comptabilité d'engagement"
+      pLabel: "Comptabilité d'engagement",
     }, {
       pValue: 'financial',
-      pLabel: 'Comptabilité financière'
+      pLabel: 'Comptabilité financière',
     }]
     const taxSystemOptions: PDropdownOption[] = [{
       pValue: 'bic',
-      pLabel: 'BIC (Bénéfices Industriels et Commerciaux)'
+      pLabel: 'BIC (Bénéfices Industriels et Commerciaux)',
     }, {
       pValue: 'other',
-      pLabel: 'Autre'
+      pLabel: 'Autre',
     }]
     const taxationRegimeOptions: PDropdownOption[] = [{
       pValue: 'is',
-      pLabel: 'IS (impôts sur les sociétés)'
+      pLabel: 'IS (impôts sur les sociétés)',
     }, {
       pValue: 'other',
-      pLabel: 'Autre'
+      pLabel: 'Autre',
     }]
     const activityTypeOptions: PDropdownOption[] = [{
       pValue: 'services',
-      pLabel: 'Prestataire de service'
+      pLabel: 'Prestataire de service',
     }, {
       pValue: 'other',
-      pLabel: 'Autre'
+      pLabel: 'Autre',
     }]
 
     return [
@@ -79,7 +79,7 @@ export function getMockedFields(
       getDropdownField('country', 'Pays', 30, countryOptions),
       getDropdownField('taxSystem', 'Régime fiscal', 30, taxSystemOptions),
       getDropdownField('taxationRegime', "Régime d'imposition", 30, taxationRegimeOptions),
-      getDropdownField('activityType', "Type d'activité", 30, activityTypeOptions)
+      getDropdownField('activityType', "Type d'activité", 30, activityTypeOptions),
     ]
   }
 

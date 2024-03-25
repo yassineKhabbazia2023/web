@@ -23,6 +23,6 @@ import type { PPopoverProps } from './PPopoverTypes'
 
 withDefaults(defineProps<PPopoverProps>(), {
   pPlacement: 'top',
-  pDisabled: false
+  pDisabled: false,
 })
 </script>

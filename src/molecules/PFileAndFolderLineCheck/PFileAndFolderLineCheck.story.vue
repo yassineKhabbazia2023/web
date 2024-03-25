@@ -57,23 +57,23 @@ const fourthVariantCheckboxVModel = ref(false)
 const PFileAndFolderLineCheckBasicData = ref([
   {
     pFileName: 'A PDF File.pdf',
-    pState: 'default' as pStateOptions
+    pState: 'default' as pStateOptions,
   },
   {
     pFileName: 'A success state.pdf',
     pState: 'success' as pStateOptions,
-    pAdditionalText: 'Accountancy > Deposit > Purchases'
+    pAdditionalText: 'Accountancy > Deposit > Purchases',
   },
   {
     pFileName: 'An error state.pdf',
     pState: 'error' as pStateOptions,
-    pAdditionalText: 'Unallowed file extension'
+    pAdditionalText: 'Unallowed file extension',
   },
   {
     pFileName: 'Another type of file.txt',
     disabled: 'false',
-    pState: 'loading' as pStateOptions
-  }
+    pState: 'loading' as pStateOptions,
+  },
 ])
 </script>
 

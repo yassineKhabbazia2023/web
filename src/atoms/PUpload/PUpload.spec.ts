@@ -8,12 +8,12 @@ const defaultProps: UploadProps = {
   pMultiple: true,
   pDrag: false,
   pDisabled: false,
-  pAccept: 'image/png, image/jpeg'
+  pAccept: 'image/png, image/jpeg',
 }
 
 const createWrapper = (props = defaultProps) =>
   mount(PUpload, {
-    props
+    props,
   })
 
 describe('pUpload', () => {
@@ -30,7 +30,7 @@ describe('pUpload', () => {
   })
 
   describe('events', () => {
-    it('should emit files-selected when emitFilesEvent', async () => {
+    it('should emit files-selected when emitFilesEvent', () => {
       const wrapper = createWrapper() as any
       const f = {
         name: 'image.png',
@@ -40,8 +40,8 @@ describe('pUpload', () => {
           uid: 'c32d8b45-92fe-44f6-8b61-42c2107dfe87',
           name: 'image.png',
           size: 1,
-          type: 'image/png'
-        }
+          type: 'image/png',
+        },
       }
       wrapper.vm.files = [f]
       wrapper.vm.emitFilesEvent()

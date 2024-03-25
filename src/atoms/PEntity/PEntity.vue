@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<PEntityProps>(), {
   pIconColor: 'persian-gradient',
   pIconType: 'xsmall',
   pBold: false,
-  pSelected: false
+  pSelected: false,
 })
 
 const typeModifierClass = computed(() => `p-entity--type-${props.pType}`)

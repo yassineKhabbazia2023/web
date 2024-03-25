@@ -37,26 +37,26 @@ const props: PFilterOptionProps = reactive({
   pContent: 'A déployer',
   pIcon: PIArrowUpCircle,
   pNumber: 3,
-  pColor: 'warning'
+  pColor: 'warning',
 })
 
-const filterOptionColor: { label: string; value: PFilterOptionProps['pColor'] }[] = [
+const filterOptionColor: { label: string, value: PFilterOptionProps['pColor'] }[] = [
   {
     label: 'amethyste',
-    value: 'amethyste'
+    value: 'amethyste',
   },
   {
     label: 'success',
-    value: 'success'
+    value: 'success',
   },
   {
     label: 'warning',
-    value: 'warning'
+    value: 'warning',
   },
   {
     label: 'danger',
-    value: 'danger'
-  }
+    value: 'danger',
+  },
 ]
 </script>
 

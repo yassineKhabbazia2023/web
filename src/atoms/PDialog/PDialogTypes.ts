@@ -1,9 +1,9 @@
 export interface PDialogProps {
-  modelValue: boolean,
-  pLockScroll?: boolean,
-  pTitle?: string,
+  modelValue: boolean
+  pLockScroll?: boolean
+  pTitle?: string
   pWidth?: string | number
-  pModal?: boolean,
+  pModal?: boolean
   pCenter?: boolean
   pBeforeClose?: Function
 }

@@ -7,7 +7,7 @@ export function addOptionInGroups(groups: DropdownGroup[], pGroupLabel: string, 
   } else {
     groups.push({
       label: pGroupLabel,
-      options: [pOptions]
+      options: [pOptions],
     })
   }
 }

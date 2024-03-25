@@ -64,7 +64,7 @@ const getServiceClass = (serviceIndex: number): string[] => {
     : [
         'p-offer-services-card__service',
         'p-offer-services-card__service--border',
-        'margin-bottom--1'
+        'margin-bottom--1',
       ]
 }
 </script>

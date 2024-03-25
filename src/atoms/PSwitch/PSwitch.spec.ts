@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PSwitch from '.'
 import type { PSwitchProps } from './PSwitchTypes'
@@ -25,10 +26,10 @@ const propsValue: PSwitchProps = {
   pBeforeChange: vi.fn(),
   pId: 'id',
   pTabIndex: 0,
-  pLabel: 'label'
+  pLabel: 'label',
 }
 const createWrapper = () => mount(PSwitch, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pSwitch', () => {
@@ -51,7 +52,7 @@ describe('pSwitch', () => {
       name: propsValue.pName,
       validateEvent: propsValue.pValidateEvent,
       beforeChange: propsValue.pBeforeChange,
-      id: propsValue.pId
+      id: propsValue.pId,
     }
 
     expect(component.props()).toMatchObject(expectedProps)

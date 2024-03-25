@@ -15,7 +15,7 @@
             :pValue="item.value"
             :pDisabled="item.disabled"
           />
-      </PSelect>
+        </PSelect>
       </template>
       <template #controls="{ state }">
         <HstText v-model="state.placeholder" title="Placeholder" />
@@ -186,7 +186,7 @@ const initState = () => {
     collapseTags: false,
     collapseTagsTooltip: false,
     popperAppendToBody: true,
-    automaticDropdown: true
+    automaticDropdown: true,
   }
 }
 

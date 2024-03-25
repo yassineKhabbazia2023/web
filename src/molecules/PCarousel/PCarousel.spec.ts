@@ -2,7 +2,7 @@ import wrapperFactory from '@tests/utils/wrapperFactory'
 import PCarousel from '.'
 import { ElCarousel, ElCarouselItem } from 'element-plus'
 import { describe, it, expect } from 'vitest'
-import { VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
 import type { PCarouselProps } from './PCarouselTypes'
 
 const createWrapper = (props: PCarouselProps) =>
@@ -11,9 +11,9 @@ const createWrapper = (props: PCarouselProps) =>
     global: {
       stubs: {
         ElCarousel,
-        ElCarouselItem
-      }
-    }
+        ElCarouselItem,
+      },
+    },
   })
 
 describe('pCarousel', () => {
@@ -22,13 +22,13 @@ describe('pCarousel', () => {
     {
       pText: 'this is a test',
       pImageName: 'digitalisation',
-      pImageType: 'paupulse'
+      pImageType: 'paupulse',
     },
     {
       pText: 'this is a second test',
       pImageType: 'paupulse',
-      pImageName: 'mandat-bancaire'
-    }
+      pImageName: 'mandat-bancaire',
+    },
   ]
 
   it('should display the carousel component', () => {

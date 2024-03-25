@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { POfferServicesCardProps } from './POfferServicesCardTypes'
 import POfferServicesCard from '.'
@@ -18,20 +19,20 @@ const defaultProps: POfferServicesCardProps = {
       pTag: {
         pContent: 'Included',
         pColor: 'gray-900',
-        pEffect: 'light'
-      }
+        pEffect: 'light',
+      },
     },
     {
       pStatus: true,
       pDisabled: true,
-      pName: 'Cash register module'
-    }
-  ]
+      pName: 'Cash register module',
+    },
+  ],
 }
 
 const createWrapper = (props: POfferServicesCardProps = defaultProps) =>
   mount(POfferServicesCard, {
-    props
+    props,
   })
 
 describe('pOfferServicesCard', () => {
@@ -43,29 +44,29 @@ describe('pOfferServicesCard', () => {
     expect(
       wrapper
         .find('.p-offer-services-card__offer .p-offer-services-card__title')
-        .text()
+        .text(),
     ).toContain(offerTitle)
     expect(wrapper.find('.p-offer-services-card__services')).toBeTruthy()
   })
 
-  it('should display all services of an offer', async () => {
+  it('should display all services of an offer', () => {
     const servicesCount = wrapper.findAll(
-      '.p-offer-services-card__service'
+      '.p-offer-services-card__service',
     ).length
 
     expect(servicesCount).toBe(2)
   })
 
-  it('every service should have a switch', async () => {
+  it('every service should have a switch', () => {
     const services = wrapper.findAll('.p-offer-services-card__service')
     const servicesName = defaultProps.pServices.map((service) => service.pName)
 
     services.forEach((service, serviceIndex) => {
       expect(
-        service.find('.p-offer-services-card__service-switch')
+        service.find('.p-offer-services-card__service-switch'),
       ).toBeTruthy()
       expect(service.find('.p-offer-services-card__service-name').text()).toBe(
-        servicesName[serviceIndex]
+        servicesName[serviceIndex],
       )
     })
   })

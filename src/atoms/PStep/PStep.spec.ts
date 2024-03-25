@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PStep from '.'
 import { ref } from 'vue'
@@ -8,28 +9,28 @@ const propsValue: PStepProps = {
   pTitle: 'title',
   pDescription: 'description',
   pIcon: 'icon',
-  pStatus: 'wait'
+  pStatus: 'wait',
 }
 
 const injectSteps = {
   props: {},
   steps: ref([]),
   addStep: vi.fn(),
-  removeStep: vi.fn()
+  removeStep: vi.fn(),
 }
 const createWrapper = () =>
   mount(PStep, {
     props: propsValue,
     global: {
       provide: {
-        ElSteps: injectSteps
-      }
-    }
+        ElSteps: injectSteps,
+      },
+    },
   })
 
 describe('pStep', () => {
   describe('props', () => {
-    it('should render correctly', async () => {
+    it('should render correctly', () => {
       const wrapper: VueWrapper<any> = createWrapper()
       const component = wrapper.findComponent({ name: 'ElStep' })
 
@@ -37,7 +38,7 @@ describe('pStep', () => {
         title: propsValue.pTitle,
         description: propsValue.pDescription,
         icon: propsValue.pIcon,
-        status: propsValue.pStatus
+        status: propsValue.pStatus,
       }
       expect(component.props()).toMatchObject(expectedProps)
     })

@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PInput from '.'
 import type { PInputProps } from './PInputTypes'
@@ -31,14 +32,14 @@ const propsValue: PInputProps = {
   pLabel: 'label',
   pTabindex: 0,
   pValidateEvent: true,
-  pInputStyle: 'inputStyle'
+  pInputStyle: 'inputStyle',
 }
 const createWrapper = (defaultProps = propsValue, hasSlots = false) => {
   const testSlots = {
     prefix: 'Prefix Content',
     suffix: 'Suffix Content',
     append: 'Append Content',
-    prepend: 'Prepend Content'
+    prepend: 'Prepend Content',
   }
   const slots = hasSlots ? testSlots : undefined
 
@@ -46,8 +47,8 @@ const createWrapper = (defaultProps = propsValue, hasSlots = false) => {
     props: defaultProps,
     slots,
     stubs: {
-      ElInput: '<div>toto</div>'
-    }
+      ElInput: '<div>toto</div>',
+    },
   })
 }
 
@@ -82,7 +83,7 @@ describe('pInput', () => {
         label: propsValue.pLabel,
         tabindex: propsValue.pTabindex,
         validateEvent: propsValue.pValidateEvent,
-        inputStyle: propsValue.pInputStyle
+        inputStyle: propsValue.pInputStyle,
       }
 
       const props = component.props()
@@ -93,7 +94,7 @@ describe('pInput', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',
-        pPrefixIcon: PIPulse
+        pPrefixIcon: PIPulse,
       })
       const prefixIcon = wrapper.find('.el-input__icon')
       expect(prefixIcon.exists()).toBeTruthy()
@@ -103,7 +104,7 @@ describe('pInput', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',
-        pSuffixIcon: PIPulse
+        pSuffixIcon: PIPulse,
       })
       const suffixIcon = wrapper.find('.el-input__icon')
       expect(suffixIcon.exists()).toBeTruthy()
@@ -111,7 +112,7 @@ describe('pInput', () => {
     it('should display slots if exist', () => {
       const wrapper = createWrapper({
         ...propsValue,
-        pType: 'input'
+        pType: 'input',
       }, true)
       expect(wrapper.find('.el-input__prefix').text()).toContain('Prefix Content')
       expect(wrapper.find('.el-input__suffix').text()).toContain('Suffix Content')
@@ -121,7 +122,7 @@ describe('pInput', () => {
     it('should not display slots if not exist', () => {
       const wrapper = createWrapper({
         ...propsValue,
-        pType: 'input'
+        pType: 'input',
       })
 
       expect(wrapper.find('.el-input__prefix').exists()).toBeFalsy()

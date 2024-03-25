@@ -50,14 +50,14 @@ const props = withDefaults(defineProps<PSwitchProps>(), {
   pBeforeChange: undefined,
   pId: undefined,
   pTabIndex: undefined,
-  pLabel: undefined
+  pLabel: undefined,
 })
 
 const cssStyle = computed(() => {
   const styles = [
     `--el-switch-border-color: ${props.pBorderColor}`,
     `--el-switch-on-color: ${props.pActiveColor}`,
-    `--el-switch-off-color: ${props.pInactiveColor}`
+    `--el-switch-off-color: ${props.pInactiveColor}`,
   ]
   return styles.join('; ')
 })

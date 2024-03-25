@@ -17,7 +17,7 @@ const defaultProps: PDocumentViewerProps = {
   pHasPagination: true,
   pShowCloseButton: true,
   pShowPreviousDocument: true,
-  pShowNextDocument: true
+  pShowNextDocument: true,
 }
 
 const createWrapper = (props: any = defaultProps, slots: any = {}) =>
@@ -26,9 +26,9 @@ const createWrapper = (props: any = defaultProps, slots: any = {}) =>
     slots,
     global: {
       stubs: {
-        ElDrawer
-      }
-    }
+        ElDrawer,
+      },
+    },
   })
 
 describe('pDocumentViewer', () => {
@@ -37,89 +37,89 @@ describe('pDocumentViewer', () => {
       {
         pHasIcon: true,
         shouldHaveIconClass: true,
-        text: 'show'
+        text: 'show',
       },
       {
         pHasIcon: false,
         shouldHaveIconClass: false,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])('should $text icon zone when pHasIcon is $pHasIcon',
       ({ pHasIcon, text, shouldHaveIconClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pHasIcon,
-          text
+          text,
         })
         const hasIconClass = wrapper.find('.p-document-viewer__icon-document').exists()
         expect(hasIconClass).toBe(shouldHaveIconClass)
-      }
+      },
     )
 
     it.each([
       {
         pHasPagination: true,
         shouldHavePaginationClass: true,
-        text: 'show'
+        text: 'show',
       },
       {
         pHasPagination: false,
         shouldHavePaginationClass: false,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])('should $text pagination zone when pHasPagination is $pHasPagination',
       ({ pHasPagination, shouldHavePaginationClass, text }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pHasPagination,
-          text
+          text,
         })
         const hasPaginationClass = wrapper.find('.p-document-viewer__header-right').exists()
         expect(hasPaginationClass).toBe(shouldHavePaginationClass)
-      }
+      },
     )
 
     it.each([
       {
         pShowCloseButton: true,
         shouldHaveCloseButtonClass: true,
-        text: 'show'
+        text: 'show',
       },
       {
         pShowCloseButton: false,
         shouldHaveCloseButtonClass: false,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])('should $text close button zone when pShowCloseButton is $pShowCloseButton',
       ({ pShowCloseButton, text, shouldHaveCloseButtonClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pShowCloseButton,
-          text
+          text,
         })
         const showCloseButtonClass = wrapper.find('.p-document-viewer__btn-close').exists()
         expect(showCloseButtonClass).toBe(shouldHaveCloseButtonClass)
-      }
+      },
     )
 
     it.each([
       {
         pShowPreviousDocument: true,
         shouldHavePreviousButtonClass: false,
-        text: 'show'
+        text: 'show',
       },
       {
         pShowPreviousDocument: false,
         shouldHavePreviousButtonClass: true,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])('should $text previous document button zone ' +
       'when pShowPreviousDocument is $pShowPreviousDocument',
     ({ pShowPreviousDocument, text, shouldHavePreviousButtonClass }) => {
       const wrapper = createWrapper({
         ...defaultProps,
         pShowPreviousDocument,
-        text
+        text,
       })
       const showPreviousDocumentClass =
         wrapper.find('.p-document-viewer__btn-previous[disabled]').exists()
@@ -130,24 +130,24 @@ describe('pDocumentViewer', () => {
       {
         pShowNextDocument: true,
         shouldHaveNextDocumentClass: false,
-        text: 'show'
+        text: 'show',
       },
       {
         pShowNextDocument: false,
         shouldHaveNextDocumentClass: true,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])('should $text next document button zone when pShowNextDocument is $pShowNextDocument',
       ({ pShowNextDocument, text, shouldHaveNextDocumentClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pShowNextDocument,
-          text
+          text,
         })
         const showNextDocumentClass =
           wrapper.find('.p-document-viewer__btn-next[disabled]').exists()
         expect(showNextDocumentClass).toBe(shouldHaveNextDocumentClass)
-      }
+      },
     )
 
     it('should emit previous-document-button-click event', async () => {

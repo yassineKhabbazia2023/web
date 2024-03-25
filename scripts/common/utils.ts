@@ -15,20 +15,20 @@ export function getSvgoConfig(hasRemoveXmlnsPlugin: boolean): Config {
       overrides: {
         removeViewBox: false,
         inlineStyles: {
-          onlyMatchedOnce: false
-        }
-      }
-    }
+          onlyMatchedOnce: false,
+        },
+      },
+    },
   }
   const plugins = [
     'removeDimensions',
-    pluginPresetDefault
+    pluginPresetDefault,
   ]
   if (hasRemoveXmlnsPlugin) {
     plugins.push('removeXMLNS')
   }
 
   return {
-    plugins
+    plugins,
   } as Config
 }

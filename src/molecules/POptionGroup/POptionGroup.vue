@@ -13,6 +13,6 @@ import type { POptionGroupProps } from './POptionGroupTypes'
 
 withDefaults(defineProps<POptionGroupProps>(), {
   pLabel: undefined,
-  pDisabled: false
+  pDisabled: false,
 })
 </script>

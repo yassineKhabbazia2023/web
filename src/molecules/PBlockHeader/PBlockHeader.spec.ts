@@ -18,14 +18,14 @@ const defaultProps = {
   pImage: {
     pFit: 'fill',
     pType: 'paupulse',
-    pName: 'add-user'
-  }
+    pName: 'add-user',
+  },
 }
 
 const createWrapper = (props: any = defaultProps, slots: any = {}) =>
   mount(PBlockHeader, {
     props,
-    slots
+    slots,
   })
 
 describe('pBlockHeader', () => {
@@ -54,21 +54,21 @@ describe('pBlockHeader', () => {
     it.each([
       {
         pHasButton: true,
-        shouldHaveButtonClass: true
+        shouldHaveButtonClass: true,
       },
       {
         pHasButton: false,
-        shouldHaveButtonClass: false
-      }
+        shouldHaveButtonClass: false,
+      },
     ])('should show button zone when pHasButton is true',
       ({ pHasButton, shouldHaveButtonClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pHasButton
+          pHasButton,
         })
         const hasButtonClass = wrapper.find(`.${componentRootCSSClass}__button`).exists()
         expect(hasButtonClass).toBe(shouldHaveButtonClass)
-      }
+      },
     )
 
     it('should have the "default" size by default', () => {
@@ -79,37 +79,37 @@ describe('pBlockHeader', () => {
     it.each([
       {
         pSize: 'big',
-        expectedClassBinding: `${componentRootCSSClass}--size-big`
-      }
+        expectedClassBinding: `${componentRootCSSClass}--size-big`,
+      },
     ])(
       'should always bind class based on current size',
       ({ pSize, expectedClassBinding }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pSize: pSize as PBlockHeaderPropsSize
+          pSize: pSize as PBlockHeaderPropsSize,
         })
         expect(wrapper.classes()).toContain(expectedClassBinding)
-      }
+      },
     )
 
     it.each([
       {
         pColor: 'gray',
-        expectedClassBinding: `${componentRootCSSClass}--color-gray`
+        expectedClassBinding: `${componentRootCSSClass}--color-gray`,
       },
       {
         pColor: 'persian',
-        expectedClassBinding: `${componentRootCSSClass}--color-persian`
-      }
+        expectedClassBinding: `${componentRootCSSClass}--color-persian`,
+      },
     ])(
       'should always bind class based on current color',
       ({ pColor, expectedClassBinding }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pColor: pColor as PBlockHeaderPropsColor
+          pColor: pColor as PBlockHeaderPropsColor,
         })
         expect(wrapper.classes()).toContain(expectedClassBinding)
-      }
+      },
     )
   })
   describe('slots', () => {
@@ -117,8 +117,8 @@ describe('pBlockHeader', () => {
       const wrapper = createWrapper(
         defaultProps,
         {
-          suffix: "<button data-testid='suffix-slot'>Suffix Test Button</button>"
-        }
+          suffix: "<button data-testid='suffix-slot'>Suffix Test Button</button>",
+        },
       )
       const suffixSlot = wrapper.find('[data-testid=suffix-slot]')
 

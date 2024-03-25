@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { POPPER_INJECTION_KEY } from 'element-plus'
 import PPopperContent from '.'
@@ -12,23 +13,23 @@ const propsValue: PPopperContentProps = {
   pOffset: 12,
   pPlacement: 'bottom',
   pPopperOptions: {},
-  pStrategy: 'absolute'
+  pStrategy: 'absolute',
 }
 
 const popperInjection = {
   triggerRef: ref(),
   popperInstanceRef: ref(),
   contentRef: ref(),
-  role: computed(() => 'test-role')
+  role: computed(() => 'test-role'),
 }
 
 const createWrapper = () => mount(PPopperContent, {
   props: propsValue,
   global: {
     provide: {
-      [POPPER_INJECTION_KEY as symbol]: popperInjection
-    }
-  }
+      [POPPER_INJECTION_KEY as symbol]: popperInjection,
+    },
+  },
 })
 
 describe('pPopperContent', () => {
@@ -43,7 +44,7 @@ describe('pPopperContent', () => {
       offset: propsValue.pOffset,
       placement: propsValue.pPlacement,
       popperOptions: propsValue.pPopperOptions,
-      strategy: propsValue.pStrategy
+      strategy: propsValue.pStrategy,
     }
 
     const props = component.props()

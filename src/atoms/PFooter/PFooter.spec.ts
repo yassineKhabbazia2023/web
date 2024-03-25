@@ -1,13 +1,14 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElFooter } from 'element-plus'
 import PFooter from '.'
 
 const propsValue = {
-  pHeight: '200px'
+  pHeight: '200px',
 }
 const createWrapper = () => mount(PFooter, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pFooter', () => {

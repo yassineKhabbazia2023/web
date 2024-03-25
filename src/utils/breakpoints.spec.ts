@@ -6,28 +6,28 @@ describe('breakpoints', () => {
   it.each([
     {
       width: BREAKPOINT_SIZES.xl,
-      expectedBreakpointName: 'xl'
+      expectedBreakpointName: 'xl',
     },
     {
       width: BREAKPOINT_SIZES.lg,
-      expectedBreakpointName: 'lg'
+      expectedBreakpointName: 'lg',
     },
     {
       width: BREAKPOINT_SIZES.md,
-      expectedBreakpointName: 'md'
+      expectedBreakpointName: 'md',
     },
     {
       width: BREAKPOINT_SIZES.sm,
-      expectedBreakpointName: 'sm'
+      expectedBreakpointName: 'sm',
     },
     {
       width: BREAKPOINT_SIZES.sm - 1,
-      expectedBreakpointName: 'xs'
-    }
+      expectedBreakpointName: 'xs',
+    },
   ])(
     'gives the appropriate breakpoint name based on parameter',
     ({ width, expectedBreakpointName }) => {
       expect(getCurrentBreakpoint(width)).toStrictEqual(expectedBreakpointName)
-    }
+    },
   )
 })

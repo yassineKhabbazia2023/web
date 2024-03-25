@@ -9,11 +9,11 @@ const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
     pColor: '',
     pContent: '',
     pEffect: 'plain',
-    ...overridenProps
+    ...overridenProps,
   }
 
   return mount(PTag, {
-    props
+    props,
   })
 }
 
@@ -23,18 +23,18 @@ describe('pTag', () => {
       {
         pIconLeft: PIPulse,
         shouldHaveIconLeftClass: true,
-        text: 'show'
+        text: 'show',
       },
       {
         pIconLeft: '',
         shouldHaveIconLeftClass: false,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])(
       'should $text icon zone when pIconLeft is $shouldHaveIconLeftClass',
       async ({ pIconLeft, shouldHaveIconLeftClass }) => {
         const wrapper = createWrapper({
-          pIconLeft
+          pIconLeft,
         })
         await flushPromises()
 
@@ -45,24 +45,24 @@ describe('pTag', () => {
 
         expect(hasIconLeftClass).toBe(shouldHaveIconLeftClass)
         expect(hasIconLeftComponent).toBe(shouldHaveIconLeftClass)
-      }
+      },
     )
     it.each([
       {
         pIconRight: PIPulse,
         shouldHaveIconRightClass: true,
-        text: 'show'
+        text: 'show',
       },
       {
         pIconRight: '',
         shouldHaveIconRightClass: false,
-        text: 'hide'
-      }
+        text: 'hide',
+      },
     ])(
       'should $text icon zone when pIconRight is $shouldHaveIconRightClass',
       async ({ pIconRight, shouldHaveIconRightClass }) => {
         const wrapper = createWrapper({
-          pIconRight
+          pIconRight,
         })
         await flushPromises()
         const hasIconRightClass = wrapper.find('.el-tag__icon--right').exists()
@@ -72,12 +72,12 @@ describe('pTag', () => {
 
         expect(hasIconRightClass).toBe(shouldHaveIconRightClass)
         expect(hasIconRightComponent).toBe(shouldHaveIconRightClass)
-      }
+      },
     )
 
     it('should render the text values of the component', () => {
       const wrapper = createWrapper({
-        pContent: 'Validated'
+        pContent: 'Validated',
       })
 
       expect(wrapper.find('.el-tag').text()).toContain('Validated')

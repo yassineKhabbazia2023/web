@@ -123,27 +123,27 @@ const basicInputData = reactive({
   type: 'text',
   disabled: false,
   placeholder: 'Please input',
-  inputValue: 'Hello i am your input'
+  inputValue: 'Hello i am your input',
 })
 const textInputData = reactive({
   type: 'textarea',
   disabled: false,
   placeholder: 'Please textarea',
   autosize: { minRows: 2, maxRows: 4 },
-  inputValue: 'Hello i am textArea'
+  inputValue: 'Hello i am textArea',
 })
 const passwordInputData = reactive({
   type: 'password',
   placeholder: 'Please input password',
   showPassword: true,
-  inputValue: 'Hello i am your password'
+  inputValue: 'Hello i am your password',
 })
 const searchInputData = reactive({
   type: 'search',
   placeholder: 'Search',
   clearable: true,
   prefixIcon: PISearch,
-  inputValue: ''
+  inputValue: '',
 })
 </script>
 

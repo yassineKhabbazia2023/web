@@ -1,10 +1,10 @@
 export const pulseGeneratedIcons = [
   {
     name: 'PIC',
-    category: 'my-category'
+    category: 'my-category',
   },
   {
     name: 'PID',
-    category: 'my-category'
-  }
+    category: 'my-category',
+  },
 ]

@@ -27,7 +27,7 @@ import {
   ElForm,
   type FormInstance,
   type FormItemProp,
-  type FormValidateCallback
+  type FormValidateCallback,
 } from 'element-plus'
 import type { PFormProps } from './PFormTypes'
 import { ref } from 'vue'
@@ -50,7 +50,7 @@ withDefaults(defineProps<PFormProps>(), {
   pSize: undefined,
   pDisabled: false,
   pScrollToError: false,
-  pScrollIntoViewOptions: undefined
+  pScrollIntoViewOptions: undefined,
 })
 
 defineExpose({
@@ -59,6 +59,6 @@ defineExpose({
   validateField: (modelProps = [], callback: FormValidateCallback) =>
     formRef?.value?.validateField(modelProps, callback),
   scrollToField: (prop: FormItemProp) => formRef?.value?.scrollToField(prop),
-  clearValidate: (props = []) => formRef?.value?.clearValidate(props)
+  clearValidate: (props = []) => formRef?.value?.clearValidate(props),
 })
 </script>

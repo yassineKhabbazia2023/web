@@ -21,7 +21,7 @@ const table = ref<any>()
 
 withDefaults(defineProps<PTableProps>(), {
   pStripe: false,
-  pFit: true
+  pFit: true,
 })
 
 // handle row selection background color not implemented by element plus

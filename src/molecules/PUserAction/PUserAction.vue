@@ -106,8 +106,8 @@ import { PITrash } from '@/atoms/PIcon/components'
 import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 
 const emit = defineEmits<{
-  'click-delete': [],
-  'update:pInputValue': [string],
+  'click-delete': []
+  'update:pInputValue': [string]
   'update:pOptionsValue': [POptionsValue]
 }>()
 
@@ -119,7 +119,7 @@ const props = withDefaults(defineProps<PUserActionProps>(), {
   pInputValue: '',
   pShowOptions: false,
   pOptionsPlaceholder: '',
-  pOptions: () => []
+  pOptions: () => [],
 })
 
 const internalValue = computed({
@@ -128,7 +128,7 @@ const internalValue = computed({
   },
   set(value: string) {
     emit('update:pInputValue', value)
-  }
+  },
 })
 
 const internalDropdownValue = computed({
@@ -137,7 +137,7 @@ const internalDropdownValue = computed({
   },
   set(value: POptionsValue) {
     emit('update:pOptionsValue', value)
-  }
+  },
 })
 </script>
 

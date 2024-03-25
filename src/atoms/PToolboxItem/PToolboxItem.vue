@@ -23,11 +23,11 @@ import type { PToolboxItemProps } from './PToolboxItemTypes'
 const props = withDefaults(defineProps<PToolboxItemProps>(), {
   disabled: false,
   pState: 'default',
-  pIconName: ''
+  pIconName: '',
 })
 
 const pClassMapper = computed(() => ({
-  [`p-toolbox-item--state-${props.pState}`]: true
+  [`p-toolbox-item--state-${props.pState}`]: true,
 }))
 
 const resolvedIcons = computed(() => {

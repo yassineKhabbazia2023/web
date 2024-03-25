@@ -17,7 +17,7 @@ dayjs.Ls.en.weekStart = 1
 
 const router = createRouter({
   history: createMemoryHistory(),
-  routes: [{ path: '/', name: 'home', component: { render: () => null } }]
+  routes: [{ path: '/', name: 'home', component: { render: () => null } }],
 })
 menu.forEach(route => router.addRoute(route))
 

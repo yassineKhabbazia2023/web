@@ -89,6 +89,6 @@ const props = withDefaults(defineProps<PInputProps>(), {
   pLabel: undefined,
   pTabindex: undefined,
   pValidateEvent: true,
-  pInputStyle: () => mutable({} as const)
+  pInputStyle: () => mutable({} as const),
 })
 </script>

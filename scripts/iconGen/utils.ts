@@ -1,7 +1,7 @@
 import { type Config } from 'svgo'
 import { clearFolder, getSvgoConfig } from '../common/utils'
 import {
-  getIcons, generateComponent, writeComponentIndex, writeComponentConstants
+  getIcons, generateComponent, writeComponentIndex, writeComponentConstants,
 } from './lib'
 import type { Icon } from './types'
 

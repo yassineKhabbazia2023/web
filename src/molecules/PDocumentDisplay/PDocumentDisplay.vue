@@ -55,8 +55,8 @@ const createBase64Image = (response: DocumentPreviewResponse): string => {
   const image = btoa(
     new Uint8Array(response.data).reduce(
       (data, byte) => data + String.fromCharCode(byte),
-      ''
-    )
+      '',
+    ),
   )
 
   return `data:${response.headers[

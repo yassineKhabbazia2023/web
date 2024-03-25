@@ -81,7 +81,7 @@ import type { PDocumentViewerProps } from './PDocumentViewerTypes'
 const emit = defineEmits([
   'previous-document-button-click',
   'next-document-button-click',
-  'update:modelValue'
+  'update:modelValue',
 ])
 
 const props = withDefaults(defineProps<PDocumentViewerProps>(), {
@@ -93,7 +93,7 @@ const props = withDefaults(defineProps<PDocumentViewerProps>(), {
   pHasPagination: true,
   pShowCloseButton: true,
   pShowPreviousDocument: true,
-  pShowNextDocument: true
+  pShowNextDocument: true,
 })
 
 const documentViewerModel = computed({
@@ -102,7 +102,7 @@ const documentViewerModel = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 </script>
 

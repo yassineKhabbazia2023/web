@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import type { POptionProps } from './POptionTypes'
 import PSelect from '@/molecules/PSelect'
 import POption from '.'
@@ -23,29 +24,29 @@ function createWrapper(options: POptionProps[], slotContent: string): VueWrapper
     data() {
       return {
         options,
-        slotContent
+        slotContent,
       }
-    }
+    },
   }
 
   return mount(Component, {
     global: {
       components: {
         PSelect,
-        POption
-      }
-    }
+        POption,
+      },
+    },
   })
 }
 
 const options = [{
   pValue: 'a',
   pLabel: 'A',
-  pDisabled: false
+  pDisabled: false,
 }, {
   pValue: 'b',
   pLabel: 'B',
-  pDisabled: true
+  pDisabled: true,
 }]
 
 describe('pOption', () => {

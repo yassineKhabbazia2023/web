@@ -71,7 +71,7 @@ import {
   defineAsyncComponent,
   reactive,
   toRaw,
-  watch
+  watch,
 } from 'vue'
 import IMAGES_LIST from './imagesList.json'
 
@@ -82,13 +82,13 @@ const imageNames = computed(() => {
 })
 
 const basicImageData = reactive<{
-  type: string,
-  name: string,
-  fit: string,
+  type: string
+  name: string
+  fit: string
 }>({
   type: IMAGES_LIST[0].name,
   name: IMAGES_LIST[0].images[0],
-  fit: 'fill'
+  fit: 'fill',
 })
 
 let AsyncComponent: any

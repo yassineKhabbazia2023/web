@@ -33,27 +33,27 @@ const offerCardData: POfferCardProps[] = reactive([
     pLogo: 'loop-color',
     pTitle: 'Mes Modules de Compta',
     pDescription: 'Loop collaboratif (myPulse compta)',
-    disabled: false
+    disabled: false,
   },
   {
     pLogo: 'meg',
     pTitle: 'Gestion Smart',
     pDescription:
       'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
-    disabled: false
+    disabled: false,
   },
   {
     pLogo: 'iconpulse-color',
     pTitle: 'Ma Banque',
     pDescription: 'Visualisation des données bancaires',
-    disabled: false
+    disabled: false,
   },
   {
     pLogo: 'silae-color',
     pTitle: 'Externalisation de la paie',
     pDescription: 'Silae en externalisation',
-    disabled: true
-  }
+    disabled: true,
+  },
 ])
 </script>
 

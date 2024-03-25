@@ -9,6 +9,6 @@ import { ElHeader } from 'element-plus'
 import type { PCHeaderProps } from './PCHeaderTypes'
 
 withDefaults(defineProps<PCHeaderProps>(), {
-  pHeight: '60px'
+  pHeight: '60px',
 })
 </script>

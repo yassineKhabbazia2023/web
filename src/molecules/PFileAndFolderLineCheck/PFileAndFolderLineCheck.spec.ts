@@ -9,13 +9,13 @@ type PFileAndFolderLineCheckState = PFileAndFolderLineCheckProps['pState']
 
 const defaultProps: PFileAndFolderLineCheckProps = {
   pFileName: 'A file.pdf',
-  modelValue: false
+  modelValue: false,
 }
 const componenRootCSSClass = 'p-file-and-folder-line-check'
 
 const createWrapper = (props = defaultProps) =>
   wrapperFactory(PFileAndFolderLineCheck, {
-    props
+    props,
   })
 describe('pFileAndFolderLineCheck', () => {
   describe('props', () => {
@@ -28,29 +28,29 @@ describe('pFileAndFolderLineCheck', () => {
       {
         pState: 'loading',
         expectedClassBinding: `${componenRootCSSClass}--loading`,
-        expectedComponentToExistSelector: `.${componenRootCSSClass}__loader`
+        expectedComponentToExistSelector: `.${componenRootCSSClass}__loader`,
       },
       {
         pState: 'error',
         expectedClassBinding: `${componenRootCSSClass}--error`,
-        expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`
+        expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`,
       },
       {
         pState: 'success',
         expectedClassBinding: `${componenRootCSSClass}--success`,
-        expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`
-      }
+        expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`,
+      },
     ])(
       'should always bind class based on current state $pState',
       ({ pState, expectedClassBinding, expectedComponentToExistSelector }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pState: pState as PFileAndFolderLineCheckState
+          pState: pState as PFileAndFolderLineCheckState,
         })
         expect(wrapper.classes()).toContain(expectedClassBinding)
         const elToExist = wrapper.find(expectedComponentToExistSelector)
         expect(elToExist.exists()).toBeTruthy()
-      }
+      },
     )
   })
 
@@ -70,9 +70,9 @@ describe('pFileAndFolderLineCheck', () => {
       `,
         setup() {
           return {
-            modelValue: ref(modelValue)
+            modelValue: ref(modelValue),
           }
-        }
+        },
       })
 
       await wrapper.find('.p-file-and-folder-line-check').trigger('click')

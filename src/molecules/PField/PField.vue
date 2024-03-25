@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<PFieldProps<T>>(), {
   pPlaceholder: '',
   pRules: () => [],
   pFormat: 'DD/MM/YYYY',
-  pValueFormat: 'YYYY-MM-DD'
+  pValueFormat: 'YYYY-MM-DD',
 })
 
 const emit = defineEmits<{
@@ -67,7 +67,7 @@ const internalValue = computed({
   },
   set(value: T) {
     emit('update:model-value', value)
-  }
+  },
 })
 
 const internalDate = computed({
@@ -77,6 +77,6 @@ const internalDate = computed({
   set(value: Date|string) {
     const isoValue = value instanceof Date ? dayjs(value).format(props.pValueFormat) : value
     emit('update:model-value', isoValue as T)
-  }
+  },
 })
 </script>

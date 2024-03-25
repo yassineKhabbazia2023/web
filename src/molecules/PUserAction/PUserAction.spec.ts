@@ -7,13 +7,13 @@ import { getMockedOptions } from './PUserActionMocks'
 const defaultProps: PUserActionProps = {
   pProfile: '',
   pTitle: '',
-  pDescription: ''
+  pDescription: '',
 }
 
 function getWrapper(specificProps: Partial<PUserActionProps> = {}) {
   const props: PUserActionProps = {
     ...defaultProps,
-    ...specificProps
+    ...specificProps,
   }
   const wrapper = mount(PUserAction, { props })
 
@@ -22,7 +22,7 @@ function getWrapper(specificProps: Partial<PUserActionProps> = {}) {
 
 function mountAndGetComponent(
   specificProps: Partial<PUserActionProps> = {},
-  componentSelector: string
+  componentSelector: string,
 ) {
   const wrapper = getWrapper(specificProps)
   const component = wrapper.findComponent(componentSelector)
@@ -32,7 +32,7 @@ function mountAndGetComponent(
 
 function mountAndGetElement(
   specificProps: Partial<PUserActionProps> = {},
-  componentSelector: string
+  componentSelector: string,
 ) {
   const wrapper = getWrapper(specificProps)
   const component = wrapper.find(componentSelector)

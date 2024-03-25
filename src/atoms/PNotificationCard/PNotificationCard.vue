@@ -28,7 +28,7 @@ import type { PNotificationCardProps } from './PNotificationCardTypes'
 defineEmits(['action-notification-click'])
 
 withDefaults(defineProps<PNotificationCardProps>(), {
-  pIsNew: false
+  pIsNew: false,
 })
 </script>
 

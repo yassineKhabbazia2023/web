@@ -8,12 +8,12 @@ const defaultProps: PFolderLineNavigationItemProps = {
   pSelected: false,
   pDisabled: false,
   pFolderName: 'Name of folder',
-  pFolderId: 123
+  pFolderId: 123,
 }
 
 const createWrapper = (props = defaultProps) =>
   mount(PFolderLineNavigationItem, {
-    props
+    props,
   })
 
 describe('pFolderLineNavigationItem', () => {
@@ -21,7 +21,7 @@ describe('pFolderLineNavigationItem', () => {
     it('should have the selected class when selected is true', () => {
       const wrapper = createWrapper({
         pSelected: true,
-        pFolderId: 123
+        pFolderId: 123,
       })
       expect(wrapper.classes().includes('selected')).toBeTruthy()
     })
@@ -29,7 +29,7 @@ describe('pFolderLineNavigationItem', () => {
     it('should not have the selected class when selected is false', () => {
       const wrapper = createWrapper({
         pSelected: false,
-        pFolderId: 123
+        pFolderId: 123,
       })
 
       expect(wrapper.classes().includes('selected')).toBeFalsy()
@@ -38,7 +38,7 @@ describe('pFolderLineNavigationItem', () => {
     it('should have the disabled class when disabled is true', () => {
       const wrapper = createWrapper({
         pDisabled: true,
-        pFolderId: 123
+        pFolderId: 123,
       })
 
       expect(wrapper.classes().includes('disabled')).toBeTruthy()
@@ -47,7 +47,7 @@ describe('pFolderLineNavigationItem', () => {
     it('should not have the disabled class when disabled is false', () => {
       const wrapper = createWrapper({
         pDisabled: false,
-        pFolderId: 123
+        pFolderId: 123,
       })
 
       expect(wrapper.classes().includes('disabled')).toBeFalsy()
@@ -56,35 +56,35 @@ describe('pFolderLineNavigationItem', () => {
     describe('should display the PIChevronRight based on the pHasArrow prop', () => {
       const cases = [
         { pHasArrow: true, expectedValue: true },
-        { pHasArrow: false, expectedValue: false }
+        { pHasArrow: false, expectedValue: false },
       ]
 
       it.each(cases)('validation with "%s"', ({ pHasArrow, expectedValue }) => {
         const wrapper = createWrapper({
           pDisabled: false,
           pFolderId: 123,
-          pHasArrow
+          pHasArrow,
         })
 
         expect(wrapper.findComponent(PIChevronRight).exists()).toBe(
-          expectedValue
+          expectedValue,
         )
       })
     })
     it('should show the folder name', () => {
       const wrapper = createWrapper({
         pFolderName: 'name of a random folder',
-        pFolderId: 123
+        pFolderId: 123,
       })
       expect(
-        wrapper.find('.p-folder-line-navigation-item__folder-name').text()
+        wrapper.find('.p-folder-line-navigation-item__folder-name').text(),
       ).toBe('name of a random folder')
     })
 
     it('emits click event', async () => {
       const wrapper = createWrapper({
         pFolderName: 'name of a random folder',
-        pFolderId: 456
+        pFolderId: 456,
       })
       await wrapper.find('.p-folder-line-navigation-item').trigger('click')
       const emittedClickEvent = wrapper.emitted('on-click-folder-navigation')
@@ -95,7 +95,7 @@ describe('pFolderLineNavigationItem', () => {
     it('emits double click event', async () => {
       const wrapper = createWrapper({
         pFolderName: 'name of a random folder',
-        pFolderId: 123
+        pFolderId: 123,
       })
 
       await wrapper.find('.p-folder-line-navigation-item').trigger('dblclick')

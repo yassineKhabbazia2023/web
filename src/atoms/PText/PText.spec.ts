@@ -8,15 +8,14 @@ import { markRaw } from 'vue'
 const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
 describe('tests for p-text', () => {
-
   it('renders the content', () => {
     const wrapper = mount(PText, {
       props: {
         pContent,
         pType: 'primary',
         disabled: false,
-        selected: false
-      }
+        selected: false,
+      },
     })
 
     // Check if the cell renders correctly
@@ -36,8 +35,8 @@ describe('tests for p-text', () => {
         pContent,
         pType: 'primary',
         disabled: false,
-        selected: false
-      }
+        selected: false,
+      },
     })
 
     // Check if the table renders correctly

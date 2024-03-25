@@ -113,7 +113,7 @@ const basicButton = ref({
   basicDisabled: ref<PButtonProps['pDisabled']>(),
   basicLoading: ref<PButtonProps['pLoading']>(),
   basicSize: ref<PButtonProps['pSize']>('default'),
-  basicText: ref('Button')
+  basicText: ref('Button'),
 })
 
 const iconButton = ref({
@@ -123,58 +123,58 @@ const iconButton = ref({
   iconButtonCircle: ref<PButtonProps['pCircle']>(true),
   iconButtonDisabled: ref<PButtonProps['pDisabled']>(),
   iconButtonLoading: ref<PButtonProps['pLoading']>(),
-  iconButtonSize: ref<PButtonProps['pSize']>('default')
+  iconButtonSize: ref<PButtonProps['pSize']>('default'),
 })
 
 const groupButton = ref({
   buttonGroupType: ref<PButtonProps['pType']>('default'),
-  buttonGroupSize: ref<PButtonProps['pSize']>('default')
+  buttonGroupSize: ref<PButtonProps['pSize']>('default'),
 })
 
-const buttonTypeList: { label: string; value: PButtonProps['pType'] }[] = [
+const buttonTypeList: { label: string, value: PButtonProps['pType'] }[] = [
   {
     label: 'default',
-    value: 'default'
+    value: 'default',
   },
   {
     label: 'primary',
-    value: 'primary'
+    value: 'primary',
   },
   {
     label: 'white',
-    value: 'white'
+    value: 'white',
   },
   {
     label: 'generic',
-    value: 'generic'
+    value: 'generic',
   },
   {
     label: 'success',
-    value: 'success'
+    value: 'success',
   },
   {
     label: 'warning',
-    value: 'warning'
+    value: 'warning',
   },
   {
     label: 'danger',
-    value: 'danger'
+    value: 'danger',
   },
   {
     label: 'info',
-    value: 'info'
-  }
+    value: 'info',
+  },
 ]
 
-const buttonSizeList: { label: string; value: PButtonProps['pSize'] }[] = [
+const buttonSizeList: { label: string, value: PButtonProps['pSize'] }[] = [
   {
     label: 'default',
-    value: 'default'
+    value: 'default',
   },
   {
     label: 'small',
-    value: 'small'
-  }
+    value: 'small',
+  },
 ]
 
 const previousText = 'Previous Page'

@@ -1,5 +1,6 @@
 import { describe, beforeEach, it, expect } from 'vitest'
-import { VueWrapper, mount, flushPromises } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import type { PTableColumnProps } from './PTableColumnTypes'
 import PTable from '@/atoms/PTable'
 import PTableColumn from '.'
@@ -7,7 +8,7 @@ import PTableColumn from '.'
 function createWrapper(
   columns: PTableColumnProps[],
   pData: any,
-  pStripe: boolean
+  pStripe: boolean,
 ): VueWrapper {
   const Component = {
     template: `
@@ -32,38 +33,38 @@ function createWrapper(
       return {
         columns,
         pData,
-        pStripe
+        pStripe,
       }
-    }
+    },
   }
 
   return mount(Component, {
     global: {
       components: {
         PTable,
-        PTableColumn
-      }
-    }
+        PTableColumn,
+      },
+    },
   })
 }
 
 const pData = [
   { id: 1, name: 'John Doe', age: 30 },
   { id: 22, name: 'Jane Smith', age: 25 },
-  { id: 357, name: 'Paul Simon', age: 84 }
+  { id: 357, name: 'Paul Simon', age: 84 },
 ]
 
 const columns: PTableColumnProps[] = [{
-  pType: 'selection'
+  pType: 'selection',
 }, {
   pLabel: 'Name',
-  pProp: 'name'
+  pProp: 'name',
 }, {
   pType: 'index',
-  pProp: 'id'
+  pProp: 'id',
 }, {
   pLabel: 'age',
-  pProp: 'age'
+  pProp: 'age',
 }]
 
 describe('pTableColumn', () => {

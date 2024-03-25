@@ -50,13 +50,13 @@ const props = withDefaults(defineProps<PDatePickerProps>(), {
   pPlaceholder: '',
   pUnlinkPanels: false,
   pRangeSeparator: '-',
-  pTeleported: true
+  pTeleported: true,
 })
 
 const emit = defineEmits<{
   'selected-date': [string]
   'update:modelValue': [PDatePickerModelValue]
-  'calendar-change': [[Date, Date]],
+  'calendar-change': [[Date, Date]]
   'change': [Date]
 }>()
 
@@ -66,7 +66,7 @@ const datepickerModel = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 watch(() => props.pMonth, (value: calendarEvent) => {
@@ -83,15 +83,15 @@ const isScheduledDay = (dayjs: any) => {
 
 const scheduleDateStyle = (type: string) => {
   const commonClass = {
-    cell__schedule: true
+    cell__schedule: true,
   }
   if (type === 'prev-month' || type === 'next-month') {
     return Object.assign(commonClass, {
-      'cell__schedule--inactive': true
+      'cell__schedule--inactive': true,
     })
   }
   return Object.assign(commonClass, {
-    'cell__schedule--active': true
+    'cell__schedule--active': true,
   })
 }
 
@@ -99,7 +99,7 @@ const actOnDatepicker = (value: calendarEvent) => {
   if (value === 'next-month' || value === 'prev-month') {
     const classMapper = {
       'next-month': 'el-picker-panel__icon-btn arrow-right',
-      'prev-month': 'el-picker-panel__icon-btn arrow-left'
+      'prev-month': 'el-picker-panel__icon-btn arrow-left',
     }
     const element: HTMLElement = document.getElementsByClassName(classMapper[value])[0] as HTMLElement
     return element.click()

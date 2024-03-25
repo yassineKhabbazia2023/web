@@ -70,7 +70,7 @@ const disabledSeconds = (hour: number, minute: number) => {
 
 const value1Range = ref<[Date, Date]>([
   new Date(2016, 9, 10, 8, 40),
-  new Date(2016, 9, 10, 9, 40)
+  new Date(2016, 9, 10, 9, 40),
 ])
 </script>
 

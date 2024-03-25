@@ -30,7 +30,7 @@ import PButton from '@/atoms/PButton'
 const tooltipBasicData = reactive({
   placement: placementOptions[0].value,
   content: 'this is a tooltip',
-  disabled: false
+  disabled: false,
 })
 </script>
 

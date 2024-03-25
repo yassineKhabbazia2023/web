@@ -137,7 +137,7 @@ const pDrawerControl = reactive({
   size: '33%',
   openDrawer: false,
   showHeaderPrefix: false,
-  showHeaderSuffix: false
+  showHeaderSuffix: false,
 })
 
 const generateBreadCrumbItems = (numberOfItems: number) => {
@@ -148,30 +148,30 @@ const generateBreadCrumbItems = (numberOfItems: number) => {
   return breadcrumbItems
 }
 
-const radioDirectionOptions: { label: string; value: string }[] = [
+const radioDirectionOptions: { label: string, value: string }[] = [
   {
     label: 'Right to left',
-    value: 'rtl'
+    value: 'rtl',
   },
   {
     label: 'Left to right',
-    value: 'ltr'
+    value: 'ltr',
   },
   {
     label: 'Top to bottom',
-    value: 'ttb'
-  }
+    value: 'ttb',
+  },
 ]
 
-const radioSizeOptions: { label: string; value: string }[] = [
+const radioSizeOptions: { label: string, value: string }[] = [
   {
     label: '33%',
-    value: '33%'
+    value: '33%',
   },
   {
     label: '50%',
-    value: '50%'
-  }
+    value: '50%',
+  },
 ]
 </script>
 

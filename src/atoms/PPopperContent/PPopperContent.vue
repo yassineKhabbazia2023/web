@@ -23,6 +23,6 @@ withDefaults(defineProps<PPopperContentProps>(), {
   pOffset: 12,
   pPlacement: 'bottom',
   pPopperOptions: () => ({}),
-  pStrategy: 'absolute'
+  pStrategy: 'absolute',
 })
 </script>

@@ -14,7 +14,7 @@
 
     <Variant title="Warning usage">
       <PPastille pType="warning">
-      1
+        1
       </PPastille>
     </Variant>
 

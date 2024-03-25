@@ -1,44 +1,3 @@
-<script lang="ts">
-import { computed, ref } from 'vue'
-
-export default {
-  name: 'HstColor',
-  inheritAttrs: false
-}
-</script>
-
-<script setup lang="ts">
-
-const props = defineProps<{
-  title?: string
-  modelValue: string
-}>()
-
-const emit = defineEmits({
-  'update:modelValue': (newValue: string) => true
-})
-
-const colorModel = computed({
-  get: () => props.modelValue,
-  set: (value) => {
-    emit('update:modelValue', value)
-  }
-})
-
-const predefineColors = ref([
-  '#ff4500',
-  '#ff8c00',
-  '#ffd700',
-  '#90ee90',
-  '#00ced1',
-  '#1e90ff',
-  '#c71585',
-  'rgb(255, 120, 0)',
-  'hsv(51, 100, 98)',
-  'hsl(181, 100%, 37%)'
-])
-</script>
-
 <template>
   <label class="container">
     <span
@@ -54,6 +13,47 @@ const predefineColors = ref([
     />
   </label>
 </template>
+
+<script lang="ts">
+import { computed, ref } from 'vue'
+
+export default {
+  name: 'HstColor',
+  inheritAttrs: false,
+}
+</script>
+
+<script setup lang="ts">
+
+const props = defineProps<{
+  title?: string
+  modelValue: string
+}>()
+
+const emit = defineEmits({
+  'update:modelValue': (newValue: string) => true,
+})
+
+const colorModel = computed({
+  get: () => props.modelValue,
+  set: (value) => {
+    emit('update:modelValue', value)
+  },
+})
+
+const predefineColors = ref([
+  '#ff4500',
+  '#ff8c00',
+  '#ffd700',
+  '#90ee90',
+  '#00ced1',
+  '#1e90ff',
+  '#c71585',
+  'rgb(255, 120, 0)',
+  'hsv(51, 100, 98)',
+  'hsl(181, 100%, 37%)',
+])
+</script>
 
 <style scoped>
 .container {

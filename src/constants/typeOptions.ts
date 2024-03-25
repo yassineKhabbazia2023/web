@@ -3,36 +3,36 @@ import type { EpPropMergeType } from 'element-plus/es/utils'
 export const typeOptions = [
   {
     label: 'default',
-    value: ''
+    value: '',
   },
   {
     label: 'primary',
-    value: 'primary'
+    value: 'primary',
   },
   {
     label: 'white',
-    value: 'white'
+    value: 'white',
   },
   {
     label: 'generic',
-    value: 'generic'
+    value: 'generic',
   },
   {
     label: 'success',
-    value: 'success'
+    value: 'success',
   },
   {
     label: 'warning',
-    value: 'warning'
+    value: 'warning',
   },
   {
     label: 'danger',
-    value: 'danger'
+    value: 'danger',
   },
   {
     label: 'info',
-    value: 'info'
-  }
+    value: 'info',
+  },
 ]
 
 export default typeOptions
@@ -42,36 +42,36 @@ export type TypeOptions = typeof typeOptions[number]['value']
 export const groupOptions = [
   {
     label: 'empty',
-    value: ''
+    value: '',
   },
   {
     label: 'text',
-    value: 'text'
+    value: 'text',
   },
   {
     label: 'primary',
-    value: 'primary'
+    value: 'primary',
   },
   {
     label: 'default',
-    value: 'default'
+    value: 'default',
   },
   {
     label: 'success',
-    value: 'success'
+    value: 'success',
   },
   {
     label: 'warning',
-    value: 'warning'
+    value: 'warning',
   },
   {
     label: 'danger',
-    value: 'danger'
+    value: 'danger',
   },
   {
     label: 'info',
-    value: 'info'
-  }
+    value: 'info',
+  },
 ]
 
 export type GroupTypeOptions = EpPropMergeType<

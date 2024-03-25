@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PDrawer from '.'
 import { ElDrawer } from 'element-plus'
@@ -9,9 +10,9 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
     slots,
     global: {
       stubs: {
-        ElDrawer
-      }
-    }
+        ElDrawer,
+      },
+    },
   })
 
 describe('drawer', () => {
@@ -20,7 +21,7 @@ describe('drawer', () => {
       modelValue: true,
       pTitle: 'Drawer title',
       pShowPreviousStep: true,
-      pSize: '50%'
+      pSize: '50%',
     })
     expect(wrapper.find('header').text()).toContain('Drawer title')
     expect(wrapper.find('.p-drawer__close-button')).toBeDefined()
@@ -30,7 +31,7 @@ describe('drawer', () => {
   it('should renders the drawer component header in simple mode', () => {
     const wrapper: VueWrapper<any> = createWrapper({
       modelValue: true,
-      pTitle: 'Drawer title'
+      pTitle: 'Drawer title',
     })
     expect(wrapper.find('header').text()).toContain('Drawer title')
     expect(wrapper.find('.p-drawer__close-button')).toBeDefined()
@@ -41,11 +42,11 @@ describe('drawer', () => {
     const wrapper: VueWrapper<any> = createWrapper({
       modelValue: true,
       pTitle: 'Drawer title',
-      pShowPreviousStep: true
+      pShowPreviousStep: true,
     })
     await wrapper.find('.p-drawer__step-back-button').trigger('click')
     const emittedDrawerPreviousButton: any = wrapper.emitted(
-      'drawer-previous-button-click'
+      'drawer-previous-button-click',
     )
     expect(emittedDrawerPreviousButton).toBeTruthy()
   })
@@ -53,7 +54,7 @@ describe('drawer', () => {
   it('should emit close-drawer-button event', async () => {
     const wrapper: VueWrapper<any> = createWrapper({
       modelValue: true,
-      pTitle: 'Drawer title'
+      pTitle: 'Drawer title',
     })
     await wrapper.find('.p-drawer__close-button').trigger('click')
     const emittedModelValue: any = wrapper.emitted('close-drawer-button')
@@ -65,12 +66,12 @@ describe('drawer', () => {
       const wrapper: VueWrapper<any> = createWrapper(
         {
           modelValue: true,
-          pTitle: 'Drawer title'
+          pTitle: 'Drawer title',
         },
         {
           'header-prefix': '<p>Prefix Text</p>',
-          'header-suffix': '<p>Suffix Text</p>'
-        }
+          'header-suffix': '<p>Suffix Text</p>',
+        },
       )
       const drawerHeader = wrapper.find('.p-drawer__header')
       const headerPrefixSlotContent = wrapper.find('.p-drawer__header-prefix p')
@@ -85,11 +86,11 @@ describe('drawer', () => {
       const wrapper: VueWrapper<any> = createWrapper(
         {
           modelValue: true,
-          pTitle: 'Drawer title'
+          pTitle: 'Drawer title',
         },
         {
-          'header-suffix': '<p>Suffix Text</p>'
-        }
+          'header-suffix': '<p>Suffix Text</p>',
+        },
       )
       const drawerHeader = wrapper.find('.p-drawer__header')
       const headerSuffixSlotContent = wrapper.find('.p-drawer__header-suffix p')

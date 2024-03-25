@@ -1,14 +1,15 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElPopper } from 'element-plus'
 import PPopper from '.'
 import type { PPopperProps } from './PPopperTypes'
 
 const propsValue: PPopperProps = {
-  pRole: 'tooltip'
+  pRole: 'tooltip',
 }
 const createWrapper = () => mount(PPopper, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pPopper', () => {

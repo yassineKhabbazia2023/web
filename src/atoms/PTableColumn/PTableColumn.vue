@@ -67,6 +67,6 @@ withDefaults(defineProps<PTableColumnProps>(), {
   pFilterPlacement: undefined,
   pFilterMultiple: true,
   pFilterMethod: undefined,
-  pFilteredValue: undefined
+  pFilteredValue: undefined,
 })
 </script>

@@ -30,6 +30,6 @@ withDefaults(defineProps<PMenuProps>(), {
   pDefaultOpeneds: undefined,
   pUniqueOpened: false,
   pMenuTrigger: 'hover',
-  pCollapseTransition: true
+  pCollapseTransition: true,
 })
 </script>

@@ -1,6 +1,7 @@
 /// <reference types="histoire" />
 import path from 'path'
-import { UserConfigExport, defineConfig, mergeConfig } from 'vite'
+import type { UserConfigExport } from 'vite'
+import { defineConfig, mergeConfig } from 'vite'
 import { defaultColors } from 'histoire'
 import { HstVue } from '@histoire/plugin-vue'
 import vue from '@vitejs/plugin-vue'
@@ -17,7 +18,7 @@ let configConsilated
 const basicConfig = {
   histoire: {},
   define: {
-    'process.env': process.env
+    'process.env': process.env,
   },
   rollupOptions: {},
   resolve: {
@@ -27,21 +28,21 @@ const basicConfig = {
       '@components': `${path.resolve(__dirname, 'src/components')}/`,
       '@constants': `${path.resolve(__dirname, 'src/constants')}/`,
       '@utils': `${path.resolve(__dirname, 'src/utils')}/`,
-      '@tests': `${path.resolve(__dirname, 'tests')}/`
-    }
+      '@tests': `${path.resolve(__dirname, 'tests')}/`,
+    },
   },
   plugins: [
     vue({
-      reactivityTransform: true
+      reactivityTransform: true,
     }),
     VueI18nPlugin({
-      include: [path.resolve(__dirname, './src/**/locales/**')]
+      include: [path.resolve(__dirname, './src/**/locales/**')],
     }),
     AutoImport({
       imports: ['vue', 'vue/macros', '@vueuse/core'],
       dts: true,
       vueTemplate: true,
-      dirs: ['./src/atoms/PIcon', './src/utils']
+      dirs: ['./src/atoms/PIcon', './src/utils'],
     }),
     Components({
       dirs: [
@@ -49,12 +50,12 @@ const basicConfig = {
         'src/guidelines',
         'src/histoire-controls-components',
         'src/molecules',
-        'src/organisms'
-      ]
+        'src/organisms',
+      ],
     }),
     eslint(),
-    visualizer()
-  ]
+    visualizer(),
+  ],
 }
 
 if (process.env.HISTOIRE) {
@@ -62,8 +63,8 @@ if (process.env.HISTOIRE) {
 
   basicConfig.rollupOptions = {
     input: {
-      main: path.resolve(__dirname, 'src/histoire.setup.ts')
-    }
+      main: path.resolve(__dirname, 'src/histoire.setup.ts'),
+    },
   }
 
   basicConfig.histoire = {
@@ -72,7 +73,7 @@ if (process.env.HISTOIRE) {
     outDir: './dist',
     storyIgnored: [
       '**/node_modules/**',
-      '**/dist/**'
+      '**/dist/**',
     ],
     theme: {
       colors: {
@@ -83,39 +84,39 @@ if (process.env.HISTOIRE) {
           700: '#141414',
           750: '#141414',
           800: '#434445',
-          900: '#606266'
+          900: '#606266',
         },
         primary: {
           ...defaultColors.blue,
           500: '#409eff',
-          700: '#409eff'
-        }
+          700: '#409eff',
+        },
       },
       title: 'KPMG Pulse Styleguide - Pegase',
       logo: {
         dark: logo,
         light: logo,
-        square: logo
+        square: logo,
       },
       favicon: 'favicon.svg',
       hideColorSchemeSwitch: false,
-      storeColorScheme: true
+      storeColorScheme: true,
     },
     defaultStoryProps: {
       layout: {
         type: 'grid',
-        width: 320
+        width: 320,
       },
       responsiveDisabled: true,
-      autoPropsDisabled: true
-    }
+      autoPropsDisabled: true,
+    },
   }
 
   configConsilated = defineConfig(basicConfig)
 } else {
   configConsilated = mergeConfig(basicConfig, {
     resolve: {
-      dedupe: ['vue']
+      dedupe: ['vue'],
     },
     build: {
       minify: true,
@@ -124,7 +125,7 @@ if (process.env.HISTOIRE) {
         name: '@kpmg/styleguide',
         entry: path.resolve(__dirname, 'src/main.ts'),
         formats: ['es', 'system', 'cjs'],
-        fileName: (format) => `lib/styleguide.pegase.${format}.min.js`
+        fileName: (format) => `lib/styleguide.pegase.${format}.min.js`,
       },
       rollupOptions: {
         input: 'src/main.ts',
@@ -132,25 +133,25 @@ if (process.env.HISTOIRE) {
         external: ['vue'],
         output: {
           globals: {
-            vue: 'Vue'
-          }
+            vue: 'Vue',
+          },
         },
         plugins: [
           typescriptPaths({
-            preserveExtensions: true
+            preserveExtensions: true,
           }),
           typescript({
-            sourceMap: false
-          })
-        ]
-      }
+            sourceMap: false,
+          }),
+        ],
+      },
     },
     output: {
-      assetFileNames: 'lib/styleguide.pegase.[name][extname]'
+      assetFileNames: 'lib/styleguide.pegase.[name][extname]',
     },
     server: {
-      port: 8084
-    } as UserConfigExport
+      port: 8084,
+    } as UserConfigExport,
   })
 }
 

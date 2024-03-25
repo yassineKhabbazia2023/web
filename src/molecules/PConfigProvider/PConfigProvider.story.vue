@@ -59,10 +59,10 @@ const open = () => {
 }
 
 const configButton = reactive({
-  autoInsertSpace: true
+  autoInsertSpace: true,
 })
 
 const configMessage = reactive({
-  max: 3
+  max: 3,
 })
 </script>

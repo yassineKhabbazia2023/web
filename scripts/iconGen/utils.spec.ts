@@ -10,14 +10,14 @@ vi.mock('./lib', () => {
     getIcons: vi.fn(),
     generateComponent: vi.fn(),
     writeComponentIndex: vi.fn(),
-    writeComponentConstants: vi.fn()
+    writeComponentConstants: vi.fn(),
   }
 })
 
 vi.mock('../common/utils', () => {
   return {
     clearFolder: vi.fn(),
-    getSvgoConfig: vi.fn()
+    getSvgoConfig: vi.fn(),
   }
 })
 

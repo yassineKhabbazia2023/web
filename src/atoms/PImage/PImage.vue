@@ -8,7 +8,7 @@ import { imageResolver } from '@/utils/imageResolver'
 import type { PImageProps } from './PImageTypes'
 
 const props = withDefaults(defineProps<PImageProps>(), {
-  pFit: 'fill'
+  pFit: 'fill',
 })
 const resolvedImage = imageResolver(props.pType, props.pName)
 </script>

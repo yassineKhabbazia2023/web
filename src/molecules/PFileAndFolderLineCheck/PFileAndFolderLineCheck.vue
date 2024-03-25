@@ -56,7 +56,7 @@ import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckType
 
 const props = withDefaults(defineProps<PFileAndFolderLineCheckProps>(), {
   pState: 'default',
-  pAdditionalText: ''
+  pAdditionalText: '',
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -77,7 +77,7 @@ const isSelectedRef = computed({
   },
   set(value) {
     emit('update:modelValue', !value)
-  }
+  },
 })
 
 const setIsSelected = () => {

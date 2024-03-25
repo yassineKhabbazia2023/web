@@ -1,6 +1,6 @@
 import {
   BREAKPOINT_SIZES,
-  type breakpoint
+  type breakpoint,
 } from '@/guidelines/Layout/constants'
 
 export function getCurrentBreakpoint(windowWidth: number): breakpoint {

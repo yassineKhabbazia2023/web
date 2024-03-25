@@ -1,12 +1,12 @@
 const sizeOptions = [
   {
     label: 'default',
-    value: 'default'
+    value: 'default',
   },
   {
     label: 'small',
-    value: 'small'
-  }
+    value: 'small',
+  },
 ] as const
 
 export default sizeOptions

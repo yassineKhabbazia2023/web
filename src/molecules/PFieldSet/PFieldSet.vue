@@ -6,7 +6,7 @@
       flex--wrap
       flex--justify-content-stretch
       "
-    >
+  >
     <PField
       v-for="(field, index) in internalFields"
       :key="index"
@@ -23,7 +23,7 @@ import type { PFieldSetProps } from './PFieldSetTypes'
 import { getInternalFields } from './PFieldSetUtils'
 
 const props = withDefaults(defineProps<PFieldSetProps<T>>(), {
-  pReadonly: false
+  pReadonly: false,
 })
 
 const internalFields = computed(() => getInternalFields<T>(props.pFields, props.pModel, props.pReadonly))

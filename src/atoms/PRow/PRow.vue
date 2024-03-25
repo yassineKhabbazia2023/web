@@ -17,6 +17,6 @@ withDefaults(defineProps<PRowProps>(), {
   pGutter: 0,
   pJustify: 'start',
   pAlign: undefined,
-  pTag: 'div'
+  pTag: 'div',
 })
 </script>

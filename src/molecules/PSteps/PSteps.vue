@@ -23,6 +23,6 @@ withDefaults(defineProps<PStepsProps>(), {
   pProcessStatus: 'process',
   pFinishStatus: 'finish',
   pAlignCenter: undefined,
-  pSimple: undefined
+  pSimple: undefined,
 })
 </script>

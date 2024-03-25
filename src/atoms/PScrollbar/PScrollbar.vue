@@ -39,7 +39,7 @@ withDefaults(defineProps<PScrollbarProps>(), {
   pId: undefined,
   pRole: undefined,
   pAriaLabel: undefined,
-  pAriaOrientation: undefined
+  pAriaOrientation: undefined,
 })
 </script>
 

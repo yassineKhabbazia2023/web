@@ -15,6 +15,6 @@ withDefaults(defineProps<PStepProps>(), {
   pTitle: '',
   pDescription: '',
   pIcon: undefined,
-  pStatus: ''
+  pStatus: '',
 })
 </script>

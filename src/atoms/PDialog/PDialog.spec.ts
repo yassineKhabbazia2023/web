@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PDialog from '.'
 import { ElDialog } from 'element-plus'
@@ -9,9 +10,9 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
     slots,
     global: {
       stubs: {
-        ElDialog
-      }
-    }
+        ElDialog,
+      },
+    },
   })
 
 describe('display dialog', () => {

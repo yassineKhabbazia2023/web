@@ -7,7 +7,7 @@ export interface PUserActionProps {
   pTitle: string
   pDescription: string
   pTagContent?: string
-  pRole?: string,
+  pRole?: string
   pShowInput?: boolean
   pInputValue?: string
   pInputPlaceholder?: string

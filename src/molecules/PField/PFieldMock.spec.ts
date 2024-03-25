@@ -4,9 +4,9 @@ import { getMockedRule } from './PFieldMock'
 describe('testing PFieldSetMock', () => {
   describe('getMockedRule', () => {
     const tests = [{
-      ruleType: 'email'
+      ruleType: 'email',
     }, {
-      ruleType: 'phone'
+      ruleType: 'phone',
     }]
     it.each(tests)('expect to receive proper rules when ruleType is $ruleType', ({ ruleType }) => {
       const rules = getMockedRule(ruleType)

@@ -49,7 +49,7 @@ withDefaults(defineProps<PDoubleTextProps>(), {
   pBold: false,
   pIconType: 'small',
   pSelected: false,
-  pDisabled: false
+  pDisabled: false,
 })
 </script>
 

@@ -39,10 +39,10 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light'
-        }
-      }
-    ]
+          pEffect: 'light',
+        },
+      },
+    ],
   },
   {
     pLogo: 'meg',
@@ -55,18 +55,18 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light'
-        }
+          pEffect: 'light',
+        },
       },
       {
         pStatus: true,
         pDisabled: false,
-        pName: 'Cash register module'
+        pName: 'Cash register module',
       },
       {
         pStatus: true,
         pDisabled: false,
-        pName: 'Billing module'
+        pName: 'Billing module',
       },
       {
         pStatus: false,
@@ -75,10 +75,10 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Additional price',
           pColor: 'amethyste',
-          pEffect: 'light'
-        }
-      }
-    ]
+          pEffect: 'light',
+        },
+      },
+    ],
   },
   {
     pLogo: 'loop-color',
@@ -91,8 +91,8 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light'
-        }
+          pEffect: 'light',
+        },
       },
       {
         pStatus: false,
@@ -101,11 +101,11 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Additional price',
           pColor: 'amethyste',
-          pEffect: 'light'
-        }
-      }
-    ]
-  }
+          pEffect: 'light',
+        },
+      },
+    ],
+  },
 ])
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <Story
-     title="3. Molecules/Document Display"
+    title="3. Molecules/Document Display"
     :layout="{
       type: 'single',
       iframe: true
@@ -8,33 +8,33 @@
   >
     <Variant title="Document Viewer image ">
       <PDocumentDisplay
-           style="height: 100vh;"
-           pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-           :pIsLoading="false"
-           pDocumentExtension="jpeg"
-           errorMsgTitle="Aperçu indisponible"
-           errorMsgText="Le format de document n'est pas supporté"
-           />
+        style="height: 100vh;"
+        pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+        :pIsLoading="false"
+        pDocumentExtension="jpeg"
+        errorMsgTitle="Aperçu indisponible"
+        errorMsgText="Le format de document n'est pas supporté"
+      />
     </Variant>
     <Variant title="Document Viewer loading ">
       <PDocumentDisplay
-           style="height: 100vh;"
-           pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-           pIsLoading
-           pDocumentExtension="jpeg"
-           errorMsgTitle="Aperçu indisponible"
-           errorMsgText="Le format de document n'est pas supporté"
-           />
+        style="height: 100vh;"
+        pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+        pIsLoading
+        pDocumentExtension="jpeg"
+        errorMsgTitle="Aperçu indisponible"
+        errorMsgText="Le format de document n'est pas supporté"
+      />
     </Variant>
     <Variant title="Document Viewer not allowed ">
       <PDocumentDisplay
-           style="height: 100vh;"
-           pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-           :pIsLoading="false"
-           pDocumentExtension="jpEEeg"
-           errorMsgTitle="Aperçu indisponible"
-           errorMsgText="Le format de document n'est pas supporté"
-           />
+        style="height: 100vh;"
+        pSrc="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+        :pIsLoading="false"
+        pDocumentExtension="jpEEeg"
+        errorMsgTitle="Aperçu indisponible"
+        errorMsgText="Le format de document n'est pas supporté"
+      />
     </Variant>
   </Story>
 </template>

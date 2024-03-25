@@ -24,7 +24,7 @@ import type { PTaskItemProps } from './PTaskItemTypes'
 const props = defineProps<PTaskItemProps>()
 
 const pClassMapper = computed(() => ({
-  [`p-task-item--status-${props.pStatus}`]: true
+  [`p-task-item--status-${props.pStatus}`]: true,
 }))
 </script>
 

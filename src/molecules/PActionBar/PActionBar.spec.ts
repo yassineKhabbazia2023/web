@@ -1,12 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import PButton from '@/atoms/PButton'
 import PUpload from '@/atoms/PUpload'
 import PActionBar from './'
 import type {
   PActionBarProps,
   PButtonActionBarProps,
-  ComponentDefinitionProps
+  ComponentDefinitionProps,
 } from './PActionBarTypes'
 import PExpandableSearch from '@/atoms/PExpandableSearch'
 import { nextTick, type ComponentPublicInstance } from 'vue'
@@ -27,24 +28,24 @@ const defaultButtons: ComponentDefinitionProps[] = [
       pRound: false,
       pCircle: true,
       pLoading: false,
-      pDisabled: false
-    }
-  }
+      pDisabled: false,
+    },
+  },
 ] as PButtonActionBarProps[]
 
 const defaultProps: PActionBarProps = {
   pRightSideButtons: defaultButtons,
-  pLeftSideButtons: defaultButtons
+  pLeftSideButtons: defaultButtons,
 }
 export type PActionBarWrapper = VueWrapper<
 ComponentPublicInstance<PButtonActionBarProps, PActionBarSetup>
 >
 
 const createWrapper = (
-  props: PActionBarProps = defaultProps
+  props: PActionBarProps = defaultProps,
 ): PActionBarWrapper => {
   return mount(PActionBar, {
-    props
+    props,
   }) as unknown as PActionBarWrapper
 }
 
@@ -54,8 +55,8 @@ const generateButtonsArray = (nbr: number): ComponentDefinitionProps[] => {
     pButtonIcon: 'PISearch',
     pButtonActionName: 'action',
     pButton: {
-      ...defaultButtons[0].pButton
-    }
+      ...defaultButtons[0].pButton,
+    },
   }))
 }
 
@@ -70,7 +71,7 @@ describe('pActionBar', () => {
         const buttons = generateButtonsArray(10)
         const wrapper = createWrapper({
           pLeftSideButtons: buttons,
-          pRightSideButtons: defaultProps.pRightSideButtons
+          pRightSideButtons: defaultProps.pRightSideButtons,
         })
         const leftZoneBtns = wrapper.find('.p-action-bar__left')
         expect(leftZoneBtns.findAllComponents(PButton)).toHaveLength(3)
@@ -78,12 +79,12 @@ describe('pActionBar', () => {
 
       it('should display the button in a rounded shape  if the button contain only an icon', () => {
         const buttons: ComponentDefinitionProps[] = [
-          { ...defaultButtons[0], pButtonName: '' }
+          { ...defaultButtons[0], pButtonName: '' },
         ]
 
         const wrapper = createWrapper({
           pLeftSideButtons: buttons,
-          pRightSideButtons: defaultProps.pRightSideButtons
+          pRightSideButtons: defaultProps.pRightSideButtons,
         })
         const leftZoneWrapper = wrapper.find('.p-action-bar__left')
         const button = leftZoneWrapper.find('button')
@@ -94,12 +95,12 @@ describe('pActionBar', () => {
       it('should display pupload when pComponentType is UPLOAD', () => {
         const pUploadButton: ComponentDefinitionProps = {
           ...defaultButtons[0],
-          pComponentType: 'UPLOAD'
+          pComponentType: 'UPLOAD',
         }
 
         const wrapper = createWrapper({
           pLeftSideButtons: [pUploadButton],
-          pRightSideButtons: defaultProps.pRightSideButtons
+          pRightSideButtons: defaultProps.pRightSideButtons,
         })
 
         const pUploadWrapper = wrapper.findComponent(PUpload)
@@ -109,12 +110,12 @@ describe('pActionBar', () => {
     it('should display PSEARCH when pComponentType is SEARCH', () => {
       const pSearchButton: ComponentDefinitionProps = {
         ...defaultButtons[0],
-        pComponentType: 'SEARCH'
+        pComponentType: 'SEARCH',
       }
 
       const wrapper = createWrapper({
         pLeftSideButtons: [pSearchButton],
-        pRightSideButtons: defaultProps.pRightSideButtons
+        pRightSideButtons: defaultProps.pRightSideButtons,
       })
 
       const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
@@ -127,7 +128,7 @@ describe('pActionBar', () => {
       const buttons = generateButtonsArray(10)
       const wrapper = createWrapper({
         pLeftSideButtons: defaultProps.pLeftSideButtons,
-        pRightSideButtons: buttons
+        pRightSideButtons: buttons,
       })
       const rightZoneBtns = wrapper.find('.p-action-bar__right')
       expect(rightZoneBtns.findAllComponents(PButton)).toHaveLength(5)
@@ -144,15 +145,15 @@ describe('pActionBar', () => {
               pRound: false,
               pCircle: true,
               pLoading: false,
-              pDisabled: false
+              pDisabled: false,
             },
             pButtonName: 'Hello',
             pButtonActionName: 'buttonActionName',
             pButtonIcon: 'PISearch',
-            pComponentType: 'SEARCH'
-          }
+            pComponentType: 'SEARCH',
+          },
         ],
-        pRightSideButtons: defaultProps.pRightSideButtons
+        pRightSideButtons: defaultProps.pRightSideButtons,
       })
 
       const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
@@ -179,14 +180,14 @@ describe('events', () => {
           pRound: false,
           pCircle: true,
           pLoading: false,
-          pDisabled: false
-        }
-      }
+          pDisabled: false,
+        },
+      },
     ]
 
     const wrapper = createWrapper({
       pLeftSideButtons: defaultProps.pLeftSideButtons,
-      pRightSideButtons: buttons
+      pRightSideButtons: buttons,
     })
     const button = wrapper
       .find('.p-action-bar__right')
@@ -196,7 +197,7 @@ describe('events', () => {
 
     expect(wrapper.emitted('p-action-bar-button-clicked')).toHaveLength(1)
     expect(wrapper.emitted('p-action-bar-button-clicked')).toStrictEqual([
-      ['Hello i am your action']
+      ['Hello i am your action'],
     ])
   })
 
@@ -213,14 +214,14 @@ describe('events', () => {
           pRound: false,
           pCircle: true,
           pLoading: false,
-          pDisabled: false
-        }
-      }
+          pDisabled: false,
+        },
+      },
     ]
 
     const wrapper = createWrapper({
       pLeftSideButtons: buttons,
-      pRightSideButtons: defaultProps.pRightSideButtons
+      pRightSideButtons: defaultProps.pRightSideButtons,
     })
     const button = wrapper
       .find('.p-action-bar__left')
@@ -230,15 +231,15 @@ describe('events', () => {
 
     expect(wrapper.emitted('p-action-bar-button-clicked')).toHaveLength(1)
     expect(wrapper.emitted('p-action-bar-button-clicked')).toStrictEqual([
-      ['Hello i am your action']
+      ['Hello i am your action'],
     ])
   })
 
-  it('should emit files-selected on PUpload files selected event', async () => {
+  it('should emit files-selected on PUpload files selected event', () => {
     const f = {
       name: 'image.png',
       size: 1,
-      type: 'image/png'
+      type: 'image/png',
     }
 
     const wrapper = createWrapper({
@@ -251,15 +252,15 @@ describe('events', () => {
             pRound: false,
             pCircle: true,
             pLoading: false,
-            pDisabled: false
+            pDisabled: false,
           },
           pButtonName: 'Hello',
           pButtonActionName: 'buttonActionName',
           pButtonIcon: 'PISearch',
-          pComponentType: 'UPLOAD'
-        }
+          pComponentType: 'UPLOAD',
+        },
       ],
-      pRightSideButtons: defaultProps.pRightSideButtons
+      pRightSideButtons: defaultProps.pRightSideButtons,
     })
 
     const pUploadWrapper = wrapper.findComponent(PUpload)
@@ -281,15 +282,15 @@ describe('events', () => {
             pRound: false,
             pCircle: true,
             pLoading: false,
-            pDisabled: false
+            pDisabled: false,
           },
           pButtonName: 'Hello',
           pButtonActionName: 'buttonActionName',
           pButtonIcon: 'PISearch',
-          pComponentType: 'SEARCH'
-        }
+          pComponentType: 'SEARCH',
+        },
       ],
-      pRightSideButtons: defaultProps.pRightSideButtons
+      pRightSideButtons: defaultProps.pRightSideButtons,
     })
 
     const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
@@ -309,15 +310,15 @@ describe('events', () => {
             pRound: false,
             pCircle: true,
             pLoading: false,
-            pDisabled: false
+            pDisabled: false,
           },
           pButtonName: 'Hello',
           pButtonActionName: 'buttonActionName',
           pButtonIcon: 'PISearch',
-          pComponentType: 'SEARCH'
-        }
+          pComponentType: 'SEARCH',
+        },
       ],
-      pRightSideButtons: defaultProps.pRightSideButtons
+      pRightSideButtons: defaultProps.pRightSideButtons,
     })
 
     const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
@@ -328,7 +329,6 @@ describe('events', () => {
 
   it(
     'should emit search-expand-change upon PExpandableSearch search-expand-change event', () => {
-
       const wrapper = createWrapper({
         pLeftSideButtons: [
           {
@@ -339,22 +339,21 @@ describe('events', () => {
               pRound: false,
               pCircle: true,
               pLoading: false,
-              pDisabled: false
+              pDisabled: false,
             },
             pButtonName: 'Hello',
             pButtonActionName: 'buttonActionName',
             pButtonIcon: 'PISearch',
-            pComponentType: 'SEARCH'
-          }
+            pComponentType: 'SEARCH',
+          },
         ],
-        pRightSideButtons: defaultProps.pRightSideButtons
+        pRightSideButtons: defaultProps.pRightSideButtons,
       })
 
       const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
       pSearchWrapper.vm.$emit('search-expand-change', true)
 
       expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
-    }
+    },
   )
-
 })

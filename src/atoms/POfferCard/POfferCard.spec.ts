@@ -9,12 +9,12 @@ const description = 'My Management Expert (MEG) in start version (included in Pu
 const defaultProps = {
   pLogo: logo,
   pTitle: title,
-  pDescription: description
+  pDescription: description,
 }
 
 const createWrapper = (props: any = defaultProps) =>
   mount(POfferCard, {
-    props
+    props,
   })
 
 describe('pOfferCard', () => {

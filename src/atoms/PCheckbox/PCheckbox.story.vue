@@ -19,7 +19,7 @@ import PCheckbox from '.'
 import { reactive } from 'vue'
 const checkBoxControl = reactive({
   disabled: false,
-  contentSlot: 'Checkbox label'
+  contentSlot: 'Checkbox label',
 })
 </script>
 

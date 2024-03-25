@@ -3,7 +3,7 @@
     title="3. Molecules/User action"
     icon="fluent:button-16-regular"
     :layout="{ type: 'grid', width: '90%' }"
-    >
+  >
     <Variant
       v-for="({ title, data }, index) in variants"
       :key="index"
@@ -61,7 +61,7 @@ const exampleOffer1 = reactive<PUserActionProps>({
   pShowInput: false,
   pInputValue: '',
   pInputPlaceholder: '',
-  pShowDelete: true
+  pShowDelete: true,
 })
 
 const exampleOffer2 = reactive<PUserActionProps>({
@@ -73,7 +73,7 @@ const exampleOffer2 = reactive<PUserActionProps>({
   pShowInput: true,
   pInputValue: '',
   pInputPlaceholder: 'Entrez la fonction du collaborateur',
-  pShowDelete: true
+  pShowDelete: true,
 })
 const exampleOffer3 = reactive<PUserActionProps>({
   pProfile: 'SL',
@@ -84,7 +84,7 @@ const exampleOffer3 = reactive<PUserActionProps>({
   pShowInput: true,
   pInputValue: '',
   pInputPlaceholder: 'Entrez la fonction du collaborateur',
-  pShowDelete: false
+  pShowDelete: false,
 })
 
 const exampleOffer4 = reactive<PUserActionProps>({
@@ -100,21 +100,21 @@ const exampleOffer4 = reactive<PUserActionProps>({
   pShowOptions: true,
   pOptions: getMockedOptions(),
   pOptionsPlaceholder: 'Rôle IBS',
-  pOptionsValue: ''
+  pOptionsValue: '',
 })
 
 const variants = [{
   title: 'User action - Offer 1/4',
-  data: exampleOffer1
+  data: exampleOffer1,
 }, {
   title: 'User action - Offer 2/4',
-  data: exampleOffer2
+  data: exampleOffer2,
 }, {
   title: 'User action - Offer 3/4',
-  data: exampleOffer3
+  data: exampleOffer3,
 }, {
   title: 'User action - Offer 4/4',
-  data: exampleOffer4
+  data: exampleOffer4,
 }]
 
 const source = `

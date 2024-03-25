@@ -10,106 +10,106 @@ const elements: VueComponent[] = [
       'showHeader',
       'style',
       'emptyText',
-      'cellClassName'
-    ]
+      'cellClassName',
+    ],
   },
   {
-    name: 'ElUpload'
+    name: 'ElUpload',
   },
   {
-    name: 'ElBreadcrumb'
+    name: 'ElBreadcrumb',
   },
   {
-    name: 'ElBreadcrumbItem'
+    name: 'ElBreadcrumbItem',
   },
   {
-    name: 'ElCard'
+    name: 'ElCard',
   },
   {
     name: 'ElRadioGroup',
-    props: ['modelValue']
+    props: ['modelValue'],
   },
   {
     template: '<div><slot name="title"/><slot /><slot name="footer"/></div>',
     name: 'ElDialog',
-    props: ['modelValue']
+    props: ['modelValue'],
   },
   {
     name: 'ElDatePicker',
-    props: ['modelValue', 'placeholder', 'disabled-date']
+    props: ['modelValue', 'placeholder', 'disabled-date'],
   },
   {
     name: 'ElSelect',
-    props: ['modelValue']
+    props: ['modelValue'],
   },
   {
-    name: 'ElOption'
+    name: 'ElOption',
   },
   {
-    name: 'ElButton'
+    name: 'ElButton',
   },
   {
-    name: 'ElTabs'
+    name: 'ElTabs',
   },
   {
-    name: 'ElTabPane'
+    name: 'ElTabPane',
   },
   {
-    name: 'ElPagination'
+    name: 'ElPagination',
   },
   {
-    name: 'ElScrollbar'
+    name: 'ElScrollbar',
   },
   {
-    name: 'ElCollapseTransition'
+    name: 'ElCollapseTransition',
   },
   {
     template: '<div><slot name="prefix"/><slot /><slot name="append"/></div>',
     name: 'ElInput',
-    props: ['modelValue']
+    props: ['modelValue'],
   },
   {
     name: 'ElDropdownItem',
     props: ['disabled', 'icon'],
-    template: '<slot/>'
+    template: '<slot/>',
   },
   {
     name: 'ElDropdown',
     props: ['trigger'],
-    template: '<slot/><slot name="dropdown" />'
+    template: '<slot/><slot name="dropdown" />',
   },
   {
     name: 'ElDropdownMenu',
-    template: '<slot/>'
+    template: '<slot/>',
   },
   {
     name: 'ElTooltip',
-    template: '<div><slot/><slot name="content" /></div>'
+    template: '<div><slot/><slot name="content" /></div>',
   },
   {
-    name: 'ElBadge'
+    name: 'ElBadge',
   },
   {
     name: 'ElTableColumn',
     template:
-      '<slot :row="{ id: 45, permissions: [`CAN_RESTORE_DOCUMENT`] }" />'
+      '<slot :row="{ id: 45, permissions: [`CAN_RESTORE_DOCUMENT`] }" />',
   },
   {
-    name: 'ElTag'
+    name: 'ElTag',
   },
   {
-    name: 'ElDrawer'
+    name: 'ElDrawer',
   },
   {
     name: 'ElTree',
-    template: '<div><slot :node="{ id: 19 }" :data="{ id: 19 }" /></div>'
+    template: '<div><slot :node="{ id: 19 }" :data="{ id: 19 }" /></div>',
   },
   {
-    name: 'ElCheckboxGroup'
+    name: 'ElCheckboxGroup',
   },
   {
-    name: 'ElCheckbox'
-  }
+    name: 'ElCheckbox',
+  },
 ]
 
 const useElement = (): StubbedComponents => {
@@ -120,7 +120,7 @@ const useElement = (): StubbedComponents => {
   elements.forEach((element) => {
     result[element.name] = {
       ...element,
-      template: element.template ?? template
+      template: element.template ?? template,
     }
   })
 

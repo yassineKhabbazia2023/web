@@ -3,7 +3,7 @@
     class="flex flex--align-items-center flex--justify-content-center radius--1 text-center"
     :class="[rootWrapperClass, currentCellNumberModifier]"
   >
-     {{ pNumber }}
+    {{ pNumber }}
   </div>
 </template>
 

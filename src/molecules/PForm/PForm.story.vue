@@ -63,9 +63,8 @@
 
 <script setup lang="ts">
 import { computed, inject, reactive, ref } from 'vue'
-import { ElNotification } from 'element-plus'
 // the following types are exported in the styleguide as PFormInstance & PFormRules
-import type { FormInstance, FormRules } from 'element-plus'
+import type { ElNotification, FormInstance, FormRules } from 'element-plus'
 import { PICheck, PIExclamationTriangle } from '@/atoms/PIcon/components'
 import PFormItem from '@/atoms/PFormItem'
 import PButton from '@/atoms/PButton'
@@ -78,17 +77,17 @@ const formRef = ref<FormInstance>()
 const formValues = reactive({
   pass: '',
   checkPass: '',
-  age: ''
+  age: '',
 })
 
 const formValidity: any = reactive({
   pass: false,
   checkPass: false,
-  age: false
+  age: false,
 })
 
 const isFormValid = computed(() =>
-  formValidity.pass && formValidity.checkPass && formValidity.age
+  formValidity.pass && formValidity.checkPass && formValidity.age,
 )
 
 const validateHandler = (propName: string, isValid: boolean) => {
@@ -137,13 +136,13 @@ const validateCheckPass = (rule: any, value: any, callback: any) => {
 const rules = reactive<FormRules<typeof formValues>>({
   pass: [{ validator: validateCheckPass, trigger: 'blur' }],
   checkPass: [{ validator: validateCheckConfirmPass, trigger: 'blur' }],
-  age: [{ validator: validateAge, trigger: 'blur' }]
+  age: [{ validator: validateAge, trigger: 'blur' }],
 })
 
 export interface openToastArgs {
-  message: string;
-  icon: any;
-  customClass: string;
+  message: string
+  icon: any
+  customClass: string
 }
 
 const openToast = ({ message, icon, customClass }: openToastArgs) => {
@@ -151,7 +150,7 @@ const openToast = ({ message, icon, customClass }: openToastArgs) => {
     message,
     icon,
     showClose: false,
-    customClass
+    customClass,
   })
 }
 
@@ -161,7 +160,7 @@ const handleSubmit = (formEl: FormInstance | undefined) => {
     openToast({
       message: valid ? 'Form submitted' : 'Error',
       icon: valid ? PICheck : PIExclamationTriangle,
-      customClass: valid ? 'success' : 'error'
+      customClass: valid ? 'success' : 'error',
     })
     if (!valid) return false
   })

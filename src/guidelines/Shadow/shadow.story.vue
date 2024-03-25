@@ -69,20 +69,20 @@ import { ref } from 'vue'
 const shadowGroup = ref([
   {
     name: 'Basic Shadow',
-    type: ''
+    type: '',
   },
   {
     name: 'Light Shadow',
-    type: 'light'
+    type: 'light',
   },
   {
     name: 'Lighter Shadow',
-    type: 'lighter'
+    type: 'lighter',
   },
   {
     name: 'Dark Shadow',
-    type: 'dark'
-  }
+    type: 'dark',
+  },
 ])
 
 function getCssVarName(type: string) {

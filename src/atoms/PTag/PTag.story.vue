@@ -94,87 +94,87 @@ const disableTransitions = ref(true)
 const tagBasicData = {
   content: 'My tag',
   iconLeft: PIStars,
-  iconRight: PIStars
+  iconRight: PIStars,
 }
 
-const tagColorList: { label: string; value: PTagProps['pColor'] }[] = [
+const tagColorList: { label: string, value: PTagProps['pColor'] }[] = [
   {
     label: 'default',
-    value: ''
+    value: '',
   },
   {
     label: 'success',
-    value: 'success'
+    value: 'success',
   },
   {
     label: 'warning',
-    value: 'warning'
+    value: 'warning',
   },
   {
     label: 'danger',
-    value: 'danger'
+    value: 'danger',
   },
   {
     label: 'info',
-    value: 'info'
+    value: 'info',
   },
   {
     label: 'persian',
-    value: 'persian'
+    value: 'persian',
   },
   {
     label: 'fuschia',
-    value: 'fuschia'
+    value: 'fuschia',
   },
   {
     label: 'amethyste',
-    value: 'amethyste'
+    value: 'amethyste',
   },
   {
     label: 'cyan',
-    value: 'cyan'
+    value: 'cyan',
   },
   {
     label: 'gray-500',
-    value: 'gray-500'
+    value: 'gray-500',
   },
   {
     label: 'gray-900',
-    value: 'gray-900'
+    value: 'gray-900',
   },
   {
     label: 'gray-300 / disable',
-    value: 'gray-300'
-  }
+    value: 'gray-300',
+  },
 ]
 const currentSize = ref<PTagProps['pSize']>('default')
-const tagSizeList: { label: string; value: PTagProps['pSize'] }[] = [
+const tagSizeList: { label: string, value: PTagProps['pSize'] }[] = [
   {
     label: 'large',
-    value: 'large'
+    value: 'large',
   },
   {
     label: 'default',
-    value: 'default'
+    value: 'default',
   },
   {
     label: 'small',
-    value: 'small'
-  }
+    value: 'small',
+  },
 ]
-const themeList: { label: string; value: PTagProps['pEffect'] }[] = [
+const themeList: { label: string, value: PTagProps['pEffect'] }[] = [
   {
     label: 'Dark',
-    value: 'dark'
+    value: 'dark',
   },
   {
     label: 'Light',
-    value: 'light'
+    value: 'light',
   },
   {
     label: 'Plain',
-    value: 'plain'
-  }
+    value: 'plain',
+  },
 ]
 const currentTheme = ref<PTagProps['pEffect']>('light')
 function fireClose(e: Event) {

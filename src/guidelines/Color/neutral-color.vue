@@ -125,7 +125,7 @@ const backgroundColors = backgroundTypes.map((type) => {
     name: type
       ? `${type[0].toUpperCase() + type.slice(1)} Background`
       : 'Base Background',
-    var: getCssVarValue(getCssVarName('bg-color', type))
+    var: getCssVarValue(getCssVarName('bg-color', type)),
   }
 })
 
@@ -135,7 +135,7 @@ const borderColors = borderTypes.map((type) => {
     name: type
       ? `${type[0].toUpperCase() + type.slice(1)} Border`
       : 'Base Border',
-    var: getCssVarValue(getCssVarName('border-color', type))
+    var: getCssVarValue(getCssVarName('border-color', type)),
   }
 })
 
@@ -146,12 +146,12 @@ const fillTypes = [
   'light',
   'lighter',
   'extra-light',
-  'blank'
+  'blank',
 ]
 const fillColors = fillTypes.map((type) => {
   return {
     name: type ? `${type[0].toUpperCase() + type.slice(1)} Fill` : 'Base Fill',
-    var: getCssVarValue(getCssVarName('fill-color', type))
+    var: getCssVarValue(getCssVarName('fill-color', type)),
   }
 })
 
@@ -159,7 +159,7 @@ const textTypes = ['primary', 'regular', 'secondary', 'placeholder', 'disabled']
 const textColors = textTypes.map((type) => {
   return {
     name: `${type[0].toUpperCase() + type.slice(1)} Text`,
-    var: getCssVarValue(getCssVarName('text-color', type))
+    var: getCssVarValue(getCssVarName('text-color', type)),
   }
 })
 

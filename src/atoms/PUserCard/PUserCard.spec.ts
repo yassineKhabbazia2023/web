@@ -13,13 +13,13 @@ const defaultProps = {
   pDescription: description,
   pAssetLeft: 'Image',
   pAssetContent: 'activation',
-  pColor: 'gray'
+  pColor: 'gray',
 }
 
 const createWrapper = (props: any = defaultProps, slots: any = {}) =>
   mount(PUserCard, {
     props,
-    slots
+    slots,
   })
 
 describe('pUserCard', () => {
@@ -28,7 +28,7 @@ describe('pUserCard', () => {
       const wrapper = createWrapper()
 
       expect(wrapper.find(`.${componentRootCSSClass}__title`).text()).toContain(
-        title
+        title,
       )
     })
 
@@ -36,7 +36,7 @@ describe('pUserCard', () => {
       const wrapper = createWrapper()
 
       expect(
-        wrapper.find(`.${componentRootCSSClass}__subtitle`).text()
+        wrapper.find(`.${componentRootCSSClass}__subtitle`).text(),
       ).toContain(subtitle)
     })
 
@@ -44,7 +44,7 @@ describe('pUserCard', () => {
       const wrapper = createWrapper()
 
       expect(
-        wrapper.find(`.${componentRootCSSClass}__description`).text()
+        wrapper.find(`.${componentRootCSSClass}__description`).text(),
       ).toContain(description)
     })
 
@@ -52,7 +52,7 @@ describe('pUserCard', () => {
       const wrapper = createWrapper()
 
       expect(wrapper.classes()).toContain(
-        `${componentRootCSSClass}--color-${defaultProps.pColor}`
+        `${componentRootCSSClass}--color-${defaultProps.pColor}`,
       )
     })
 
@@ -72,8 +72,8 @@ describe('pUserCard', () => {
           pSize: 'small',
           pIconLeft: 'PIPerson',
           pContent: 'Client',
-          pEffect: 'light'
-        }
+          pEffect: 'light',
+        },
       })
       const userCardTag = wrapper.find('[data-ut=user-card-tag]')
 
@@ -84,7 +84,7 @@ describe('pUserCard', () => {
       const wrapper = createWrapper({
         ...defaultProps,
         pAssetLeft: 'Avatar',
-        pAssetContent: 'AB'
+        pAssetContent: 'AB',
       })
       const leftAsset = wrapper.find('[data-ut=left-asset]')
 
@@ -96,11 +96,11 @@ describe('pUserCard', () => {
     it('should render the right header if exist', () => {
       const wrapper = createWrapper(
         {
-          ...defaultProps
+          ...defaultProps,
         },
         {
-          default: '<div>Call to action</div>'
-        }
+          default: '<div>Call to action</div>',
+        },
       )
       const headerRight = wrapper.find('[data-ut=header-right]')
 

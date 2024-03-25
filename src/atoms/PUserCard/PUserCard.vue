@@ -61,11 +61,11 @@ import PTag from '@/atoms/PTag'
 import type { PUserCardProps } from './PUserCardTypes'
 
 const props = withDefaults(defineProps<PUserCardProps>(), {
-  pColor: 'persian'
+  pColor: 'persian',
 })
 
 const pClassMapper = computed(() => ({
-  [`p-user-card--color-${props.pColor}`]: true
+  [`p-user-card--color-${props.pColor}`]: true,
 }))
 
 const slots = useSlots()

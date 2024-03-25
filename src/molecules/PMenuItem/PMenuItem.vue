@@ -30,6 +30,6 @@ const slots = useSlots()
 withDefaults(defineProps<PMenuItemProps>(), {
   pIndex: undefined,
   pRoute: undefined,
-  pDisabled: false
+  pDisabled: false,
 })
 </script>

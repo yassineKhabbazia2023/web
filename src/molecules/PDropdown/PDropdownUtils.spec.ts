@@ -14,28 +14,28 @@ describe('test PDropdownUtils', () => {
   describe('getHasGroups()', () => {
     const tests = [{
       groups: [{
-        label: ''
+        label: '',
       }, {
-        label: 'b'
+        label: 'b',
       }],
       expected: true,
-      reason: 'at least two groups'
+      reason: 'at least two groups',
     }, {
       groups: [{
-        label: 'a'
+        label: 'a',
       }],
       expected: true,
-      reason: 'at least one group with a label'
+      reason: 'at least one group with a label',
     }, {
       groups: [{
-        label: ''
+        label: '',
       }],
       expected: false,
-      reason: 'one group without label'
+      reason: 'one group without label',
     }, {
       groups: [],
       expected: false,
-      reason: 'no group'
+      reason: 'no group',
     }]
     it.each(tests)('should return $expected when $reason', ({ groups, expected }) => {
       const hasGroups = getHasGroups(groups as DropdownGroup[])

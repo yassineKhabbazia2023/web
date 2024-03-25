@@ -9,7 +9,7 @@
         pPageSizeSelectorSuffix="documents"
         pShowTotalPageCounter
         :pTotal="1000"
-        ><p>1-25 sur 157</p>
+      ><p>1-25 sur 157</p>
       </PPagination>
     </Variant>
   </Story>

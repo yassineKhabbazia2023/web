@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import PBankCard from '.'
 import type { PFieldSetProps } from './PFieldSetTypes'
@@ -8,7 +9,7 @@ type T = Record<string, any>
 
 function createWrapper(props: PFieldSetProps<T>) {
   return mount(PBankCard, {
-    props
+    props,
   })
 }
 
@@ -16,7 +17,7 @@ const pFields = getMockedFields('companyIdentification') ?? []
 
 const props: PFieldSetProps<T> = {
   pModel: {},
-  pFields
+  pFields,
 }
 
 describe('test PFieldSet', () => {

@@ -1,34 +1,34 @@
 <template>
-    <Story
-      title="2. Atoms/DoubleText"
-      icon="fluent:button-16-regular"
-      :layout="{ type: 'grid', width: '350px' }"
+  <Story
+    title="2. Atoms/DoubleText"
+    icon="fluent:button-16-regular"
+    :layout="{ type: 'grid', width: '350px' }"
+  >
+    <Variant title="Basic Usage" :source="source">
+      <PDoubleText
+        :pIcon="PIFiletypePdf"
+        :pProfile="PDoubleTextBasicData.profile"
+        :pTitle="PDoubleTextBasicData.title"
+        :pContent="PDoubleTextBasicData.content"
+        :pType="PDoubleTextBasicData.type"
+        :pDisabled="PDoubleTextBasicData.disabled"
+        :pSelected="PDoubleTextBasicData.selected"
       >
-      <Variant title="Basic Usage" :source="source">
-        <PDoubleText
-          :pIcon="PIFiletypePdf"
-          :pProfile="PDoubleTextBasicData.profile"
-          :pTitle="PDoubleTextBasicData.title"
-          :pContent="PDoubleTextBasicData.content"
-          :pType="PDoubleTextBasicData.type"
-          :pDisabled="PDoubleTextBasicData.disabled"
-          :pSelected="PDoubleTextBasicData.selected"
-        >
-        </PDoubleText>
-        <template #controls>
-          <hstSelect
-            v-model="PDoubleTextBasicData.type"
-            title="Type"
-            :options="typeOptions"
-          />
-          <HstText v-model="PDoubleTextBasicData.profile" title="Profile" />
-          <HstText v-model="PDoubleTextBasicData.title" title="Title" />
-          <HstText v-model="PDoubleTextBasicData.content" title="Content" />
-          <HstCheckbox v-model="PDoubleTextBasicData.disabled" title="Disabled"/>
-          <HstCheckbox v-model="PDoubleTextBasicData.selected" title="Selected" />
-        </template>
-      </Variant>
-    </Story>
+      </PDoubleText>
+      <template #controls>
+        <hstSelect
+          v-model="PDoubleTextBasicData.type"
+          title="Type"
+          :options="typeOptions"
+        />
+        <HstText v-model="PDoubleTextBasicData.profile" title="Profile" />
+        <HstText v-model="PDoubleTextBasicData.title" title="Title" />
+        <HstText v-model="PDoubleTextBasicData.content" title="Content" />
+        <HstCheckbox v-model="PDoubleTextBasicData.disabled" title="Disabled"/>
+        <HstCheckbox v-model="PDoubleTextBasicData.selected" title="Selected" />
+      </template>
+    </Variant>
+  </Story>
 </template>
 
 <script setup lang="ts">
@@ -44,7 +44,7 @@ const PDoubleTextBasicData = reactive({
   content: 'Cell subtitle',
   type,
   disabled: false,
-  selected: false
+  selected: false,
 })
 
 const typeOptions = ['primary', 'secondary']

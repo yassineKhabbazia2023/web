@@ -22,7 +22,7 @@ const menuItems = menu.map((m): PItem => {
   return {
     pName: m.name,
     pPath: m.path,
-    pIcon: m.meta.icon
+    pIcon: m.meta.icon,
   }
 })
 

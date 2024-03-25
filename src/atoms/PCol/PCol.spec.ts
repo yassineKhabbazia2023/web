@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PCol from '.'
 
@@ -12,17 +13,17 @@ const propsValue = {
   pMd: 7,
   pLg: 8,
   pXl: 9,
-  pTag: 'testTag'
+  pTag: 'testTag',
 }
 const createWrapper = () => mount(PCol, {
   props: propsValue,
   slots: {
-    default: 'col text'
-  }
+    default: 'col text',
+  },
 })
 
 describe('pCol', () => {
-  it('should render correctly', async () => {
+  it('should render correctly', () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const component = wrapper.findComponent({ name: 'ElCol' })
 
@@ -36,7 +37,7 @@ describe('pCol', () => {
       md: propsValue.pMd,
       lg: propsValue.pLg,
       xl: propsValue.pXl,
-      tag: propsValue.pTag
+      tag: propsValue.pTag,
     }
     expect(component.props()).toMatchObject(expectedProps)
     expect(wrapper.findComponent({ name: 'ElCol' }).text()).toBe('col text')

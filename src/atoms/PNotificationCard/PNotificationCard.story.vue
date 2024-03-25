@@ -10,9 +10,9 @@
         :pIsNew="PNotificationCardData.pIsNew">
         <template #avatar>
           <PAvatar
-          :pShape="currentShape"
-          :pType="currentType"
-          :pColor="currentColor"> AB </PAvatar>
+            :pShape="currentShape"
+            :pType="currentType"
+            :pColor="currentColor"> AB </PAvatar>
         </template>
         <template #text>
           <span class="font-bold">Alexandre De Lavandia</span> filed you a document <span class="font-bold">liasse-fiscale.pdf</span> inside the folder Publications.
@@ -56,31 +56,31 @@ const toolboxBasicData: PToolboxItemProps[] = [
     pIconName: 'PICheck',
     pValue: 'Mark all read',
     pActionName: 'readall',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PITrash',
     pValue: 'Delete notification',
     pActionName: 'delete',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIGear',
     pValue: "Access to the notification's parameters",
     pActionName: 'parameters',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIBellSlash',
     pValue: 'Disable this type of notifications',
     pActionName: 'disable',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const PNotificationCardData = reactive({
   pIsNew: false,
-  pTime: '1sem'
+  pTime: '1sem',
 })
 </script>
 

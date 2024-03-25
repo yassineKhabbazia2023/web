@@ -1,7 +1,8 @@
 /* eslint-disable vitest/no-commented-out-tests */
 import { describe, it, expect } from 'vitest'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import PExpandableSearch from './'
 import { nextTick } from 'vue'
 import PButton from '../PButton'
@@ -11,7 +12,7 @@ const pPlaceholder = 'write your text in here'
 const defaultProps: PExpandableSearchProps = {
   pPlaceholder,
   pIsSearchShrinkable: true,
-  pIsSearchOpen: false
+  pIsSearchOpen: false,
 }
 
 const findPbutton = (wrapper: VueWrapper) => {
@@ -27,7 +28,6 @@ const findInput = (wrapper: VueWrapper) => {
 }
 
 const expandSearch = async (wrapper: VueWrapper) => {
-
   const pButton = findPbutton(wrapper)
   await nextTick()
   expect(pButton.exists()).toBeTruthy()
@@ -36,7 +36,7 @@ const expandSearch = async (wrapper: VueWrapper) => {
 
 const createWrapper = (props = defaultProps) =>
   mount(PExpandableSearch, {
-    props
+    props,
   })
 describe('pExpandableSearch', () => {
   describe('props', () => {
@@ -50,7 +50,6 @@ describe('pExpandableSearch', () => {
       expect(pInput.exists()).toBeTruthy()
       expect(pInput.props('pPlaceholder')).toBe(pPlaceholder)
     })
-
   })
 
   describe('interactions', () => {
@@ -69,7 +68,6 @@ describe('pExpandableSearch', () => {
       const pInput = findPinput(wrapper)
       expect(pInput.classes().includes('isExpanded')).toBeTruthy()
       expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
-
     })
     it('should close search bar upon PInput clear event', async () => {
       const wrapper = createWrapper()
@@ -84,7 +82,6 @@ describe('pExpandableSearch', () => {
       const pInputHidden = findPinput(wrapper)
       await nextTick()
       expect(pInputHidden.classes().includes('isExpanded')).toBeFalsy()
-
     })
     it('should emit p-input event upon PInput input event', async () => {
       const wrapper = createWrapper()
@@ -149,7 +146,7 @@ describe('pExpandableSearch', () => {
       const updatedProps = {
         ...defaultProps,
         pIsSearchShrinkable: false,
-        pIsSearchOpen: true
+        pIsSearchOpen: true,
       }
       const wrapper = createWrapper(updatedProps)
 
@@ -161,7 +158,6 @@ describe('pExpandableSearch', () => {
       await nextTick()
 
       expect(pInputWrapper.classes().includes('isExpanded')).toBeFalsy()
-
     })
   })
 })

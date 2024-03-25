@@ -15,6 +15,6 @@ import type { POptionProps } from './POptionTypes'
 withDefaults(defineProps<POptionProps>(), {
   pValue: '',
   pLabel: undefined,
-  pDisabled: false
+  pDisabled: false,
 })
 </script>

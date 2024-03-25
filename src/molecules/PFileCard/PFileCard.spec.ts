@@ -8,12 +8,12 @@ const defaultProps: PFileCardProps = {
   pFormat: 'PDF',
   pSize: '25KB',
   pHasIcon: false,
-  pHasButton: false
+  pHasButton: false,
 }
 
 const createWrapper = (props = defaultProps) =>
   wrapperFactory(PFileCard, {
-    props
+    props,
   })
 
 describe('pFileCard', () => {
@@ -21,16 +21,16 @@ describe('pFileCard', () => {
     it.each([
       {
         pHasIcon: true,
-        shouldHaveIconClass: true
+        shouldHaveIconClass: true,
       },
       {
         pHasIcon: false,
-        shouldHaveIconClass: false
-      }
+        shouldHaveIconClass: false,
+      },
     ])('should show icon zone when pHasIcon is true', ({ pHasIcon, shouldHaveIconClass }) => {
       const wrapper = createWrapper({
         ...defaultProps,
-        pHasIcon
+        pHasIcon,
       })
       const hasIconClass = wrapper.find('.p-file-card__icon').exists()
       expect(hasIconClass).toBe(shouldHaveIconClass)
@@ -39,21 +39,21 @@ describe('pFileCard', () => {
     it.each([
       {
         pHasButton: true,
-        shouldHaveButtonClass: true
+        shouldHaveButtonClass: true,
       },
       {
         pHasButton: false,
-        shouldHaveButtonClass: false
-      }
+        shouldHaveButtonClass: false,
+      },
     ])('should show button zone when pHasButton is true',
       ({ pHasButton, shouldHaveButtonClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pHasButton
+          pHasButton,
         })
         const hasButtonClass = wrapper.find('.p-file-card__group-btn').exists()
         expect(hasButtonClass).toBe(shouldHaveButtonClass)
-      }
+      },
     )
 
     it('should renders the text values of the component', () => {

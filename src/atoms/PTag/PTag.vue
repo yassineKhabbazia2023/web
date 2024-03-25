@@ -33,7 +33,7 @@ const getIcon = (icon: string | Component) => {
         `../PIcon/components/${
           typeof icon === 'string' ? icon : icon?.name
         }.vue`
-      )
+      ),
   )
 }
 </script>

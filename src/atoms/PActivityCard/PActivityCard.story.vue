@@ -1,6 +1,6 @@
 <template>
   <Story
-title="2. Atoms/Activity Card"
+    title="2. Atoms/Activity Card"
     icon="material-symbols:browse-activity-sharp"
     :layout="{ type: 'grid', width: 432 }"
   >
@@ -20,7 +20,7 @@ import PActivityCard from '.'
 
 const PActivityCardData = reactive({
   time: '16th september 2023 - 15:13:08',
-  initials: 'AB'
+  initials: 'AB',
 })
 </script>
 

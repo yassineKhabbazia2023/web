@@ -19,6 +19,6 @@ withDefaults(defineProps<PRadioProps>(), {
   pDisabled: false,
   pBorder: false,
   pSize: undefined,
-  pName: undefined
+  pName: undefined,
 })
 </script>

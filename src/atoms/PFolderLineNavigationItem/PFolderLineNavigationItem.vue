@@ -28,12 +28,12 @@ const props = withDefaults(defineProps<PFolderLineNavigationItemProps>(), {
   pDisabled: false,
   pFolderName: 'Name of folder',
   pHasArrow: true,
-  pLeftIcon: 'PIFolder'
+  pLeftIcon: 'PIFolder',
 })
 
 const emit = defineEmits([
   'on-click-folder-navigation',
-  'on-db-click-folder-navigation'
+  'on-db-click-folder-navigation',
 ])
 const isSelected = ref<boolean>(props.pSelected)
 

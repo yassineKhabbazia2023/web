@@ -3,7 +3,7 @@ import path from 'path'
 import { type Config, optimize } from 'svgo'
 
 export interface Folder {
-  name: string,
+  name: string
   images: string[]
 }
 
@@ -22,7 +22,7 @@ export function getFolder(originPath: string, name: string): Folder {
 
   return {
     name,
-    images
+    images,
   }
 }
 
@@ -40,7 +40,7 @@ export async function writeCompressedImage(
   svgoConfig: Config,
   originFolderPath: string,
   targetFolderPath: string,
-  imageName: string
+  imageName: string,
 ) {
   const imageFileName = `${imageName}.svg`
   const originFilePath = path.join(originFolderPath, imageFileName)

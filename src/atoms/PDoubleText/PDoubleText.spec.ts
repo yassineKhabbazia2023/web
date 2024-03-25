@@ -7,7 +7,6 @@ import { describe, it, expect } from 'vitest'
 const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
 describe('tests for p-double-text', () => {
-
   it('renders with content', () => {
     const wrapper = mount(PDoubleText, {
       props: {
@@ -17,8 +16,8 @@ describe('tests for p-double-text', () => {
         pContent,
         pType: 'primary',
         pDisabled: false,
-        pSelected: false
-      }
+        pSelected: false,
+      },
     })
 
     // Check if the cell renders correctly
@@ -40,8 +39,8 @@ describe('tests for p-double-text', () => {
         pContent,
         pType: 'primary',
         pDisabled: false,
-        pSelected: false
-      }
+        pSelected: false,
+      },
     })
     // Check if the table renders correctly
     const iconElement = wrapper.findComponent({ name: 'PIFiletypePdf' })

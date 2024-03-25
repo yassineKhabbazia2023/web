@@ -49,6 +49,6 @@ withDefaults(defineProps<PAutocompleteProps>(), {
   pPopperClass: undefined,
   pTeleported: true,
   pHighlightFirstItem: false,
-  pFitInputWidth: false
+  pFitInputWidth: false,
 })
 </script>

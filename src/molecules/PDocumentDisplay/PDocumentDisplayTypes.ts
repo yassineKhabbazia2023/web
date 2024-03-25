@@ -1,6 +1,6 @@
 export interface DocumentPreviewResponse {
   data: ArrayBuffer
-  headers: { [key: string]: string };
+  headers: { [key: string]: string }
 }
 export interface PDocumentDisplayProps {
   pSrc: string | Blob | DocumentPreviewResponse

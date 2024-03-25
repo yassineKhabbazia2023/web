@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PSelect from '.'
 import type { PSelectProps } from './PSelectTypes'
@@ -41,10 +42,10 @@ const props: PSelectProps = {
   pPlacement: 'bottom-start',
   pMaxCollapseTags: 1,
   pPopperOptions: {},
-  pAriaLabel: 'ariaLabel'
+  pAriaLabel: 'ariaLabel',
 }
 const createWrapper = () => mount(PSelect, {
-  props
+  props,
 })
 
 describe('pSelect', () => {
@@ -91,7 +92,7 @@ describe('pSelect', () => {
       placement: props.pPlacement,
       maxCollapseTags: props.pMaxCollapseTags,
       popperOptions: props.pPopperOptions,
-      ariaLabel: props.pAriaLabel
+      ariaLabel: props.pAriaLabel,
     }
     expect(component.props()).toStrictEqual(expectedProps)
   })

@@ -31,6 +31,6 @@ withDefaults(defineProps<PFormItemProps>(), {
   pInlineMessage: '',
   pSize: '',
   pFor: undefined,
-  pValidateStatus: undefined
+  pValidateStatus: undefined,
 })
 </script>

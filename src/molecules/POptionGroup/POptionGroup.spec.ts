@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import type { POptionGroupProps } from './POptionGroupTypes'
 import PSelect from '@/molecules/PSelect'
 import POption from '@/atoms/POption'
@@ -31,9 +32,9 @@ function createWrapper(optionGroups: POptionGroupProps[], slotContent: string): 
     data() {
       return {
         optionGroups,
-        slotContent
+        slotContent,
       }
-    }
+    },
   }
 
   return mount(Component, {
@@ -41,35 +42,35 @@ function createWrapper(optionGroups: POptionGroupProps[], slotContent: string): 
       components: {
         PSelect,
         POptionGroup,
-        POption
-      }
-    }
+        POption,
+      },
+    },
   })
 }
 
 const options1 = [{
   pValue: 'a1',
   pLabel: 'A1',
-  pDisabled: false
+  pDisabled: false,
 }, {
   pValue: 'b1',
   pLabel: 'B1',
-  pDisabled: true
+  pDisabled: true,
 }]
 const options2 = [{
   pValue: 'a2',
   pLabel: 'A2',
-  pDisabled: false
+  pDisabled: false,
 }]
 
 const optionGroups = [{
   pLabel: 'Group 1',
   pDisabled: false,
-  options: options1
+  options: options1,
 }, {
   pLabel: 'Group 2',
   pDisabled: true,
-  options: options2
+  options: options2,
 }]
 
 describe('pOptionGroup', () => {

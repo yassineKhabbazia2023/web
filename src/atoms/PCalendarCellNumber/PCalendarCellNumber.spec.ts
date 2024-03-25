@@ -6,14 +6,14 @@ import type { PCalendarCellNumberProps } from './PCalendarCellNumberTypes'
 
 const defaultProps: PCalendarCellNumberProps = {
   pNumber: 29,
-  pState: 'initial'
+  pState: 'initial',
 }
 
 const rootWrapperClass = 'p-calendar-cell-number'
 
 const createWrapper = (props: any = defaultProps): VueWrapper =>
   mount(PCalendarCellNumber, {
-    props
+    props,
   })
 
 describe('calendar cell number', () => {
@@ -26,23 +26,23 @@ describe('calendar cell number', () => {
     it.each([
       {
         pState: 'active',
-        expectedClass: `${rootWrapperClass}--state-active`
+        expectedClass: `${rootWrapperClass}--state-active`,
       },
       {
         pState: 'selected',
-        expectedClass: `${rootWrapperClass}--state-selected`
+        expectedClass: `${rootWrapperClass}--state-selected`,
       },
       {
         pState: 'current',
-        expectedClass: `${rootWrapperClass}--state-current`
-      }
+        expectedClass: `${rootWrapperClass}--state-current`,
+      },
     ])(
       'should bind appropriate modifier based on state',
       ({ pState, expectedClass }) => {
         const wrapper = createWrapper({ ...defaultProps, pState })
         const pcalendarCellNumberWrapper = wrapper.find(`.${expectedClass}`)
         expect(pcalendarCellNumberWrapper.exists()).toBeTruthy()
-      }
+      },
     )
   })
 })

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { ElMenu } from 'element-plus'
 import PMenu from '.'
 import PMenuItem from '../PMenuItem'
@@ -13,7 +14,7 @@ const defaultMenuProps = {
   router: true,
   uniqueOpened: true,
   menuTrigger: 'click',
-  collapseTransition: true
+  collapseTransition: true,
 }
 
 const defaultMenu = {
@@ -23,19 +24,19 @@ const defaultMenu = {
     {
       index: '1-1',
       title: 'Item 1',
-      route: '/item1'
+      route: '/item1',
     },
     {
       index: '1-2',
       title: 'Item 2',
-      route: '/item2'
-    }
-  ]
+      route: '/item2',
+    },
+  ],
 }
 
 const createWrapper = (
   menu: any = defaultMenu,
-  menuProps: any = defaultMenuProps
+  menuProps: any = defaultMenuProps,
 ): VueWrapper => {
   const Component = {
     template: `
@@ -74,9 +75,9 @@ const createWrapper = (
     data() {
       return {
         menu,
-        menuProps
+        menuProps,
       }
-    }
+    },
   }
 
   return mount(Component, {
@@ -84,9 +85,9 @@ const createWrapper = (
       components: {
         PMenu,
         PMenuItem,
-        PSubMenu
-      }
-    }
+        PSubMenu,
+      },
+    },
   })
 }
 

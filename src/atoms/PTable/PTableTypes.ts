@@ -1,5 +1,5 @@
 export interface PTableProps {
-  pData: any[],
+  pData: any[]
   pStripe?: boolean
   pFit?: boolean
 }

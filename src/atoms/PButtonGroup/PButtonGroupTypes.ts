@@ -7,5 +7,5 @@ export interface PButtonGroupProps {
 }
 
 export const injectionButtonKey: InjectionKey<PButtonGroupProps> = Symbol(
-  'injectionButtonKey'
+  'injectionButtonKey',
 )

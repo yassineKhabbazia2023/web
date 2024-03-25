@@ -6,12 +6,12 @@ export interface PButtonProps {
     | 'success'
     | 'warning'
     | 'danger'
-    | 'info',
-  pPlain?: boolean,
-  pRound?: boolean,
-  pCircle?: boolean,
-  pDisabled?: boolean,
-  pLoading?: boolean,
+    | 'info'
+  pPlain?: boolean
+  pRound?: boolean
+  pCircle?: boolean
+  pDisabled?: boolean
+  pLoading?: boolean
   pSize?: 'default' | 'small'
   pIconOnly?: boolean
 }

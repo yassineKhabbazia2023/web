@@ -51,7 +51,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<PFilterOptionProps>(), {
   pSelected: false,
-  pColor: 'gray-500'
+  pColor: 'gray-500',
 })
 
 const isSelected = computed({
@@ -60,7 +60,7 @@ const isSelected = computed({
   },
   set(val) {
     emit('update:p-selected', val)
-  }
+  },
 })
 
 const handleClick = () => {
@@ -71,7 +71,7 @@ const handleClick = () => {
 const cssClass = computed(() => ({
   'p-filter-option--selected': isSelected.value,
   'p-filter-option--disabled': props.pDisabled,
-  [`p-filter-option--color-${props.pColor}`]: true
+  [`p-filter-option--color-${props.pColor}`]: true,
 }))
 
 const colorMapper = computed(() => {

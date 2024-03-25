@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { ElSubMenu } from 'element-plus'
 import PMenu from '../PMenu'
 import PSubMenu from '.'
@@ -10,25 +11,25 @@ const defaultSubmenuProps = {
   popperOffset: 10,
   showTimeout: 300,
   hideTimeout: 300,
-  disabled: false
+  disabled: false,
 }
 
 const menuItems = [
   {
     index: '1-1',
     title: 'Item 1',
-    route: '/item1'
+    route: '/item1',
   },
   {
     index: '1-2',
     title: 'Item 2',
-    route: '/item2'
-  }
+    route: '/item2',
+  },
 ]
 
 const createWrapper = (
   items: any = menuItems,
-  submenuProps: any = defaultSubmenuProps
+  submenuProps: any = defaultSubmenuProps,
 ): VueWrapper => {
   const Component = {
     template: `
@@ -62,9 +63,9 @@ const createWrapper = (
     data() {
       return {
         items,
-        submenuProps
+        submenuProps,
       }
-    }
+    },
   }
 
   return mount(Component, {
@@ -72,9 +73,9 @@ const createWrapper = (
       components: {
         PMenu,
         PMenuItem,
-        PSubMenu
-      }
-    }
+        PSubMenu,
+      },
+    },
   })
 }
 
@@ -99,7 +100,7 @@ describe('pSubMenu', () => {
     it('should not open the submenu when the state is disabled', () => {
       const wrapper = createWrapper(menuItems, {
         ...defaultSubmenuProps,
-        disabled: true
+        disabled: true,
       })
       const submenu = wrapper.find('[data-testid=submenu]')
 

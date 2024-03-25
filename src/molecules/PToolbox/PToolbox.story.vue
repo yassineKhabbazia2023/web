@@ -18,26 +18,26 @@ const toolboxBasicData: PToolboxItemProps[] = [
     pIconName: 'PITrash',
     pValue: 'Delete',
     pActionName: 'delete',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIAdd',
     pValue: 'Add',
     pActionName: 'add',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PIVectorPen',
     pValue: 'Rename',
     pActionName: 'rename',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PISend',
     pValue: 'Transmit',
     pActionName: 'transmit',
-    pState: 'danger'
-  }
+    pState: 'danger',
+  },
 ]
 </script>
 

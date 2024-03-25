@@ -1,7 +1,7 @@
 import { logger } from '@/utils/logger'
 
 const context = {
-  assetsBaseUrl: ''
+  assetsBaseUrl: '',
 }
 
 export function getAssetsBaseUrl() {

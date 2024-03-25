@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElRow } from 'element-plus'
 import PRow from '.'
@@ -8,10 +9,10 @@ const propsValue: PRowProps = {
   pGutter: 0,
   pJustify: 'start',
   pAlign: 'middle',
-  pTag: 'div'
+  pTag: 'div',
 }
 const createWrapper = () => mount(PRow, {
-  props: propsValue
+  props: propsValue,
 })
 
 describe('pRow', () => {

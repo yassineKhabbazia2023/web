@@ -167,7 +167,7 @@ const pDialogControl = reactive({
   dialogCloseOnClickModal: true,
   dialogCloseOnPressEscape: true,
   dialogCustomClass: 'my-dialog-class',
-  dialogContent: 'This is a message'
+  dialogContent: 'This is a message',
 })
 
 const showSecondDialog = () => {
@@ -189,7 +189,7 @@ const pSecondDialogControl = reactive({
   dialogShowClose: true,
   dialogCloseOnClickModal: true,
   dialogCloseOnPressEscape: true,
-  dialogCustomClass: 'my-dialog-class'
+  dialogCustomClass: 'my-dialog-class',
 })
 
 const showThirdDialog = () => {
@@ -213,7 +213,7 @@ const pThirdDialogControl = reactive({
   dialogCloseOnClickModal: true,
   dialogCloseOnPressEscape: true,
   dialogCustomClass: 'my-dialog-class',
-  dialogInput: ''
+  dialogInput: '',
 })
 </script>
 

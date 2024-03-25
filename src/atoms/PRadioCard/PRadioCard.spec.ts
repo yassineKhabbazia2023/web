@@ -1,4 +1,5 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
 import PRadioCard from './'
 
@@ -7,7 +8,7 @@ let wrapper: VueWrapper
 const PROPS = {
   pDescription: 'the description',
   pLabel: 'label',
-  pTitle: 'the title'
+  pTitle: 'the title',
 }
 
 const SLOT_CONTENT = 'the slot content as CTA'
@@ -16,8 +17,8 @@ const createWrapper = (): VueWrapper =>
   mount(PRadioCard, {
     props: PROPS,
     slots: {
-      default: SLOT_CONTENT
-    }
+      default: SLOT_CONTENT,
+    },
   })
 
 describe('pRadioCard', () => {

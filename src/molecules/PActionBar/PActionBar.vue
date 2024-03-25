@@ -130,7 +130,7 @@ const resolvedIconsLeft = computed(() => {
 const isWindowUnderDesktop = ref(window.innerWidth < 992)
 
 const isIconsTypeCircle = computed(
-  () => isWindowUnderDesktop.value || isSearchExpanded.value
+  () => isWindowUnderDesktop.value || isSearchExpanded.value,
 )
 
 const handleResize = () => {

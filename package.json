@@ -67,7 +67,7 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@histoire/plugin-vue": "^0.17.1",
-    "@kpmg/eslint-config-pulse": "^1.70.3",
+    "@kpmg/eslint-config-pulse": "^1.72.5",
     "@rollup/plugin-typescript": "^11.1.2",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-istanbul": "^0.32.2",

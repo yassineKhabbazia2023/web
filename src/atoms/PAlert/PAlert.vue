@@ -16,7 +16,7 @@ import type { PAlertProps } from './PAlertTypes'
 import { iconResolver } from '@/utils/iconResolver'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
-  pType: 'main'
+  pType: 'main',
 })
 
 const typeModifierClass = computed(() => `p-alert--type-${props.pType}`)

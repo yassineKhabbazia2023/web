@@ -12,12 +12,12 @@ const defaultProps: PToolboxItemProps = {
   pActionName: action,
   pIconName: 'PIAdd',
   disabled: false,
-  pState: 'default'
+  pState: 'default',
 }
 
 const createWrapper = (props = defaultProps) =>
   mount(PToolboxItem, {
-    props
+    props,
   })
 
 describe('pToolboxItem', () => {
@@ -30,63 +30,63 @@ describe('pToolboxItem', () => {
     it.each([
       {
         pState: 'danger',
-        expectedClassBinding: `${componenRootCSSClass}--state-danger`
-      }
+        expectedClassBinding: `${componenRootCSSClass}--state-danger`,
+      },
     ])(
       'should always bind class based on current state $pState',
       ({ pState, expectedClassBinding }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pState: pState as PToolboxItemProps['pState']
+          pState: pState as PToolboxItemProps['pState'],
         })
         expect(wrapper.classes()).toContain(expectedClassBinding)
-      }
+      },
     )
 
     it.each([
       {
         disabled: true,
-        shouldHaveDisabledAttr: true
+        shouldHaveDisabledAttr: true,
       },
       {
         disabled: false,
-        shouldHaveDisabledAttr: false
-      }
+        shouldHaveDisabledAttr: false,
+      },
     ])(
       'should have disabled attribute when disabled is true',
       ({ disabled, shouldHaveDisabledAttr }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          disabled
+          disabled,
         })
 
         const hasDisabledAttr = wrapper.props('disabled')
 
         expect(hasDisabledAttr).toBe(shouldHaveDisabledAttr)
-      }
+      },
     )
 
     it.each([
       {
         pIconName: 'PIAdd',
-        shouldHaveIconClass: true
+        shouldHaveIconClass: true,
       },
       {
         pIconName: '',
-        shouldHaveIconClass: false
-      }
+        shouldHaveIconClass: false,
+      },
     ])(
       'should have Icon when Icon is set',
       async ({ pIconName, shouldHaveIconClass }) => {
         const wrapper = createWrapper({
           ...defaultProps,
-          pIconName
+          pIconName,
         })
 
         await vi.dynamicImportSettled()
         const iconComponent = wrapper.findComponent({ name: pIconName })
         expect(iconComponent.exists()).toBe(shouldHaveIconClass)
-      }
+      },
     )
 
     it('should render the action name value of the component', () => {

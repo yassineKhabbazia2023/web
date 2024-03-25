@@ -16,6 +16,27 @@
 import { reactive } from 'vue'
 import type { ComponentDefinitionProps } from './PActionBarTypes'
 import PActionBar from '.'
+import type { PButtonProps } from '@/main'
+
+function getButton(
+  pType: PButtonProps['pType'],
+  override: Partial<PButtonProps> = {},
+): PButtonProps {
+  const defaultButton: PButtonProps = {
+    pType,
+    pPlain: false,
+    pRound: false,
+    pCircle: false,
+    pLoading: false,
+    pDisabled: false,
+    pSize: 'small',
+  }
+
+  return {
+    ...defaultButton,
+    ...override,
+  }
+}
 
 const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
   {
@@ -24,45 +45,21 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
     pButtonActionName: 'buttonActionName',
     pComponentType: 'UPLOAD',
     pMultiple: true,
-    pButton: {
-      pType: 'primary',
-      pPlain: false,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
+    pButton: getButton('primary'),
   },
   {
     pButtonName: 'Filtrer',
     pButtonIcon: 'PIFunnel',
     pButtonActionName: 'buttonActionName',
-    pButton: {
-      pType: 'primary',
-      pPlain: true,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
+    pButton: getButton('primary', { pPlain: true }),
   },
   {
     pButtonName: '',
     pButtonIcon: 'PISearch',
     pButtonActionName: 'buttonActionName',
     pComponentType: 'SEARCH',
-    pButton: {
-      pType: 'white',
-      pPlain: false,
-      pRound: false,
-      pCircle: true,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
-  }
+    pButton: getButton('white', { pCircle: true }),
+  },
 ])
 
 const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
@@ -70,86 +67,38 @@ const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
     pButtonName: 'Renommer',
     pButtonIcon: 'PIPencilSquare',
     pButtonActionName: 'buttonActionName',
-    pButton: {
-      pType: 'white',
-      pPlain: true,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
+    pButton: getButton('white', { pPlain: true }),
   },
   {
     pButtonName: 'Envoi immédiat',
     pButtonIcon: 'PIRocket',
     pButtonActionName: 'buttonActionName',
-    pButton: {
-      pType: 'white',
-      pPlain: true,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
+    pButton: getButton('white', { pPlain: true }),
   },
   {
     pButtonName: 'Filtrer',
     pButtonIcon: 'PIFunnel',
     pButtonActionName: 'buttonActionName',
-    pButton: {
-      pType: 'white',
-      pPlain: true,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
+    pButton: getButton('white', { pPlain: true }),
   },
   {
     pButtonName: 'Télécharger',
     pButtonIcon: 'PIDownload',
     pButtonActionName: 'buttonActionName',
-    pButton: {
-      pType: 'white',
-      pPlain: false,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
+    pButton: getButton('white'),
   },
   {
     pButtonName: 'Supprimer',
     pButtonIcon: 'PITrash',
     pButtonActionName: 'buttonActionName',
-    pButton: {
-      pType: 'white',
-      pPlain: false,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
+    pButton: getButton('white'),
   },
   {
     pButtonName: 'Consulter',
     pButtonIcon: 'PIEye',
     pButtonActionName: 'buttonActionName',
-    pButton: {
-      pType: 'white',
-      pPlain: false,
-      pRound: false,
-      pCircle: false,
-      pLoading: false,
-      pDisabled: false,
-      pSize: 'small'
-    }
-  }
+    pButton: getButton('white'),
+  },
 ])
 const pRightSideIcons = reactive<ComponentDefinitionProps[]>([])
 </script>

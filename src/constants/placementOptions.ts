@@ -10,7 +10,7 @@ const placementOptions = [
   { label: 'bottom-end', value: 'bottom-end' },
   { label: 'left', value: 'left' },
   { label: 'left-start', value: 'left-start' },
-  { label: 'left-end', value: 'left-end' }
+  { label: 'left-end', value: 'left-end' },
 ] as const
 
 export default placementOptions

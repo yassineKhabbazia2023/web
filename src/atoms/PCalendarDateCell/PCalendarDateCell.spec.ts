@@ -12,8 +12,8 @@ vi.mock('@vueuse/core', () => {
   return {
     useWindowSize: vi.fn(() => ({
       width: ref(BREAKPOINT_SIZES.xl),
-      height: ref(768)
-    }))
+      height: ref(768),
+    })),
   }
 })
 
@@ -22,14 +22,14 @@ const defaultProps: PCalendarDateCellProps = {
   pCellDate: '2024-03-01',
   pCurrentDate: '2024-03-01',
   pCellElements: itemsGroupedByDate[0].items,
-  pCellType: 'current-month'
+  pCellType: 'current-month',
 }
 
 const rootWrapperClass = 'p-calendar-date-cell'
 
 const createWrapper = (props: any = defaultProps): VueWrapper =>
   mount(PCalendarDateCell, {
-    props
+    props,
   })
 
 describe('calendar date cell', () => {
@@ -37,16 +37,16 @@ describe('calendar date cell', () => {
     it.each([
       {
         cellType: 'prev-month',
-        expectedCssClass: `.${rootWrapperClass}--prev-month`
+        expectedCssClass: `.${rootWrapperClass}--prev-month`,
       },
       {
         cellType: 'next-month',
-        expectedCssClass: `.${rootWrapperClass}--next-month`
+        expectedCssClass: `.${rootWrapperClass}--next-month`,
       },
       {
         cellType: 'current-month',
-        expectedCssClass: `.${rootWrapperClass}--current-month`
-      }
+        expectedCssClass: `.${rootWrapperClass}--current-month`,
+      },
     ])('has the appropriate css classes based on cellType', ({ cellType, expectedCssClass }) => {
       const wrapper = createWrapper({ ...defaultProps, pCellType: cellType })
       expect(wrapper.find(expectedCssClass).exists()).toBeTruthy()
@@ -57,31 +57,31 @@ describe('calendar date cell', () => {
         pCellDate: '2024-03-01',
         pActiveDate: '2024-03-01',
         pCurrentDate: '2024-03-01',
-        expectedNumberType: 'active'
+        expectedNumberType: 'active',
       },
       {
         pCellDate: '2024-03-02',
         pActiveDate: '2024-03-01',
         pCurrentDate: '2024-03-02',
-        expectedNumberType: 'current'
+        expectedNumberType: 'current',
       },
       {
         pCellDate: '2024-02-20',
         pActiveDate: '2024-03-01',
         pCurrentDate: '2024-03-01',
-        expectedNumberType: 'inactive'
+        expectedNumberType: 'inactive',
       },
       {
         pCellDate: '2024-03-02',
         pActiveDate: '2024-03-01',
         pCurrentDate: '2024-03-01',
-        expectedNumberType: 'initial'
-      }
+        expectedNumberType: 'initial',
+      },
     ])('gives the appropriate day number state', (dayStateTestCaseProps) => {
       const wrapper = createWrapper({ ...defaultProps, ...dayStateTestCaseProps })
       const dayComponent = wrapper.findComponent(PCalendarCellNumber)
       expect(dayComponent.props('pState')).toBe(
-        dayStateTestCaseProps.expectedNumberType
+        dayStateTestCaseProps.expectedNumberType,
       )
     })
 

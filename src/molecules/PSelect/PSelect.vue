@@ -88,6 +88,6 @@ withDefaults(defineProps<PSelectProps>(), {
   pPlacement: 'bottom-start',
   pMaxCollapseTags: 1,
   pPopperOptions: () => ({}),
-  pAriaLabel: undefined
+  pAriaLabel: undefined,
 })
 </script>

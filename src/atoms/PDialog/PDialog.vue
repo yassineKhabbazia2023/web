@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pWidth: '40%',
   pModal: true,
   pCenter: false,
-  pBeforeClose: () => {}
+  pBeforeClose: () => {},
 })
 
 const dialogModel = computed({
@@ -36,7 +36,7 @@ const dialogModel = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])

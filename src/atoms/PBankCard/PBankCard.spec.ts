@@ -7,12 +7,12 @@ const defaultProps = {
   pTitle: 'Synthèse des comptes',
   pAccountNumber: 4,
   pAccountText: 'comptes actifs',
-  pAmount: '248 660,00 €'
+  pAmount: '248 660,00 €',
 }
 
 const createWrapper = (props: any = defaultProps) =>
   mount(PBankCard, {
-    props
+    props,
   })
 
 describe('pBankCard', () => {

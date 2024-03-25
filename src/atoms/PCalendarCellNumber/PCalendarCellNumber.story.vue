@@ -37,14 +37,14 @@ import type { CellNumberState } from './PCalendarCellNumberTypes'
 
 const currentcalendarCallNumberState = ref<CellNumberState>('initial')
 type calendarCellNumberRadioOptionsType = {
-  label: string,
+  label: string
   value: CellNumberState
 }
 const calendarCellNumberStates: calendarCellNumberRadioOptionsType[] = [
   { label: 'initial', value: 'initial' },
   { label: 'inactive', value: 'inactive' },
   { label: 'active', value: 'active' },
-  { label: 'current', value: 'current' }
+  { label: 'current', value: 'current' },
 ]
 </script>
 

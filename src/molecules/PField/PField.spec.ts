@@ -1,4 +1,5 @@
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import PBankCard from '.'
 import type { PFieldProps } from './PFieldTypes'
@@ -7,7 +8,7 @@ import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
 function createWrapper<T>(props: PFieldProps<T>) {
   return mount(PBankCard, {
-    props
+    props,
   })
 }
 
@@ -27,7 +28,7 @@ describe('test PField', () => {
       pPlaceholder,
       50,
       false,
-      ruleTypes
+      ruleTypes,
     )
     let pInput: VueWrapper
     beforeEach(() => {
@@ -50,7 +51,7 @@ describe('test PField', () => {
       pFieldKey,
       pLabel,
       50,
-      pDropdownOptions
+      pDropdownOptions,
     )
     let pDropDown: VueWrapper
     beforeEach(() => {
@@ -73,7 +74,7 @@ describe('test PField', () => {
       pFieldKey,
       pLabel,
       pPlaceholder,
-      50
+      50,
     )
     let pDatePicker: VueWrapper
     beforeEach(() => {

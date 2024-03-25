@@ -6,12 +6,12 @@ import PAvatar from '.'
 const defaultProps = {
   pType: 'default',
   pColor: 'orange',
-  pShape: 'circle'
+  pShape: 'circle',
 }
 
 const createWrapper = (props: any = defaultProps) =>
   mount(PAvatar, {
-    props
+    props,
   })
 
 describe('pAvatar', () => {
@@ -21,13 +21,13 @@ describe('pAvatar', () => {
       const avatarElement = wrapper.find('[data-testid=avatar]')
 
       expect(avatarElement.classes()).toContain(
-        `el-avatar--${defaultProps.pShape}`
+        `el-avatar--${defaultProps.pShape}`,
       )
       expect(avatarElement.classes()).toContain(
-        `p-avatar--color-${defaultProps.pColor}`
+        `p-avatar--color-${defaultProps.pColor}`,
       )
       expect(avatarElement.classes()).toContain(
-        `p-avatar--type-${defaultProps.pType}`
+        `p-avatar--type-${defaultProps.pType}`,
       )
     })
 
@@ -35,7 +35,7 @@ describe('pAvatar', () => {
       const wrapper: VueWrapper = createWrapper({
         ...defaultProps,
         pType: 'small',
-        pSelected: true
+        pSelected: true,
       })
       const checkIconElement = wrapper.find('[data-testid=avatar-check-icon]')
 
@@ -45,7 +45,7 @@ describe('pAvatar', () => {
     it('should not display a check icon when the avatar type is not small', () => {
       const wrapper: VueWrapper = createWrapper({
         ...defaultProps,
-        pSelected: true
+        pSelected: true,
       })
       const checkIconElement = wrapper.find('[data-testid=avatar-check-icon]')
 

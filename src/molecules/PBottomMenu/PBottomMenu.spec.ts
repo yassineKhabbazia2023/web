@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { createRouter, createMemoryHistory } from 'vue-router'
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { ElMenuItem, ElMenu } from 'element-plus'
 import { menu } from '@/constants/routesSamples'
 import PBottomMenu from '.'
@@ -8,7 +9,7 @@ import type { PItem } from './PBottomMenuTypes'
 
 const router = createRouter({
   history: createMemoryHistory(),
-  routes: [{ path: '/', name: 'home', component: { render: () => null } }]
+  routes: [{ path: '/', name: 'home', component: { render: () => null } }],
 })
 menu.forEach(route => router.addRoute(route))
 
@@ -21,18 +22,18 @@ describe('pBottomMenu', () => {
         plugins: [router],
         components: {
           ElMenuItem,
-          ElMenu
-        }
+          ElMenu,
+        },
       },
       props: {
         pItems: menu.map((m): PItem => {
           return {
             pPath: m.path,
             pName: m.name,
-            pIcon: m.meta.icon
+            pIcon: m.meta.icon,
           }
-        })
-      }
+        }),
+      },
     })
   })
 
