@@ -2,32 +2,32 @@
   <PCollapse>
     <PCollapseItem pType="gray" :pTitleCollapseItem="t('selectedFolders')">
       <PTable :pData="folders">
-          <PTableColumn
-            :pLabel="t('folderName')"
-            pProp="name"
-            pSortable
-          >
-            <template #default="scope">
-              <div class="flex align--items-center">
-                <PAvatar
-                  :pColor="scope.row.owner.avatarColor"
-                  pType="xsmall"
-                >
-                  <PIcon>
-                    <PIPulse />
-                  </PIcon>
-                </PAvatar>
-                <p class="font-semibold margin-left--2">
-                  {{ scope.row.name }}
-                </p>
-              </div>
-            </template>
-          </PTableColumn>
+        <PTableColumn
+          :pLabel="t('folderName')"
+          pProp="name"
+          pSortable
+        >
+          <template #default="scope">
+            <div class="flex align--items-center">
+              <PAvatar
+                :pColor="scope.row.owner.avatarColor"
+                pType="xsmall"
+              >
+                <PIcon>
+                  <PIPulse />
+                </PIcon>
+              </PAvatar>
+              <p class="font-semibold margin-left--2">
+                {{ scope.row.name }}
+              </p>
+            </div>
+          </template>
+        </PTableColumn>
 
-          <PTableColumn
-            :pLabel="t('IBSCode')"
-            pProp="name"
-          />
+        <PTableColumn
+          :pLabel="t('IBSCode')"
+          pProp="name"
+        />
       </PTable>
     </PCollapseItem>
   </PCollapse>
@@ -36,13 +36,13 @@
 <script setup lang="ts">
 import { PCollapse, PCollapseItem, PTable, PTableColumn, PAvatar, PIcon, PIPulse } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
-import { CollapsableFoldersListProps } from './CollapsableFoldersListTypes'
+import type { CollapsableFoldersListProps } from './CollapsableFoldersListTypes'
 
 defineProps<CollapsableFoldersListProps>()
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 </script>

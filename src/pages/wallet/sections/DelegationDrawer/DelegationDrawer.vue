@@ -54,7 +54,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const activeStep = ref<number>(0)
@@ -65,12 +65,12 @@ const isDelegationDrawerOpened = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const flowType = computed(() => props.selectedFolders.length
   ? DelegationFlowType.SPECIFIC
-  : DelegationFlowType.FULL
+  : DelegationFlowType.FULL,
 )
 
 const previousButtonLabel = computed(() => activeStep.value ? t('previousButtonLabel') : t('cancelButtonLabel'))
