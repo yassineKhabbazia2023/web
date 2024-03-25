@@ -7,6 +7,8 @@ vi.mock('@/services/mandate', () => ({
   downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data: 'pdf-data' })),
 }))
 
+vi.mock('@/helpers/utils')
+
 const createWrapper = () => wrapperFactory(Download, {
   props: {
     mandateId: 'mandate-id',
