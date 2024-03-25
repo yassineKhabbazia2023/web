@@ -55,7 +55,7 @@
             </PIcon>
 
             <p class="margin-left--2 color-persian font-bold">
-              {{ scope.row.persona }}
+              {{ scope.row.persona.name }}
             </p>
           </div>
 
@@ -63,7 +63,7 @@
             v-if="!scope.row.isOwner"
             class="font-bold"
           >
-            {{ scope.row.persona }}
+            {{ scope.row.persona.name }}
           </p>
         </template>
       </PTableColumn>

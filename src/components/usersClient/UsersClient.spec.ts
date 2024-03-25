@@ -4,14 +4,39 @@ import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { commonStore } from '@kpmg/common'
-import mock from './mock.json'
 import UsersClient from './'
+
+import { PPagination } from '@kpmg/styleguide'
+import { generateContactsMock } from './mocks/contactsDataMock.ts'
+import { getInitials } from '@/helper'
+import type { IExtendedUser } from './types.ts'
 import { noResult } from '@/tests'
+import TableData from './components/TableData'
+
+const contactsList = generateContactsMock({
+  numberOfContactsToReturn: 15,
+  contactsTotalCount: 16,
+  numberOfPages: 2,
+  currentPage: 1,
+}).data
+
+const mockGatewayGet = vi.fn(() => {
+  return Promise.resolve({
+    data: contactsList,
+  })
+})
 
 vi.mock('@kpmg/common', () => ({
+  commonApi: () => ({
+    gateway: {
+      get: mockGatewayGet,
+    },
+  }),
   commonStore: defineStore('common', {
     state: () => ({
-      user: {},
+      user: {
+        id: 2,
+      },
     }),
   }),
 }))
@@ -25,59 +50,88 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
-const { items, totalPages } = mock.data
+const data = contactsList
+
+const items = data.items
+const totalPages = data.totalPages
+
 let wrapper: VueWrapper<any>
 
-const getTableBody = () => wrapper.find('table tbody')
+const checkRowContent = (tableHtmlRow: string, contactsList: IExtendedUser[]) => {
+  contactsList.forEach((contact) => {
+    const date = new Date(contact.createdAt)
 
-const checkRowContent = (rowIndex: number) => {
-  const row = getTableBody().findAll('tr')[rowIndex]
-  const rowContent = row.text()
-  const [, ...rest] = Object.values(items[rowIndex])
-  const itemValues = rest
+    const yyyy = date.getFullYear()
+    const mm = date.getMonth() + 1
+    const dd = date.getDate()
 
-  const INDEX_WITH_DATE = 4
-  itemValues.forEach((value, index) => {
-    expect(rowContent).toContain(
-      index === INDEX_WITH_DATE
-        ? '3/7/2024'
-        : value,
+    expect(tableHtmlRow).toContain(
+      getInitials(contact.firstName, contact.lastName),
     )
+
+    expect(tableHtmlRow).toContain(`${mm}/${dd}/${yyyy}`)
   })
 }
 
-describe('allUsers', () => {
+const getTableBody = () => wrapper.find('table tbody')
+
+describe('usersClient', () => {
   beforeEach(() => {
     wrapper = createWrapper()
   })
 
-  noResult(createWrapper())
+  describe('rendering', () => {
+    it('displays formatted data correctly in the table', async () => {
+      await flushPromises()
+      expect(getTableBody().findAll('tr')).toHaveLength(items.length)
 
-  it('displays data in a table', () => {
-    expect(getTableBody().findAll('tr')).toHaveLength(items.length)
+      const row = getTableBody().find('tr').html()
 
-    checkRowContent(0)
-    checkRowContent(items.length - 1)
-  })
-
-  it('displays "you" when it s the logged user', async () => {
-    const expectedValue = 'You'
-    const getFirstRow = () => getTableBody().find('tr')
-    expect(getFirstRow().text()).not.toContain(expectedValue)
-
-    const store = commonStore(pinia)
-    store.$patch({
-      user: {
-        id: mock.data.items[0].id,
-      },
+      checkRowContent(row, items)
     })
-    await flushPromises()
 
-    expect(getFirstRow().text()).toContain(expectedValue)
+    it('should display no result page when there is no returned contacts', () => {
+      const wrapperWithNoContacts = createWrapper()
+      wrapperWithNoContacts.vm.state.data = []
+      const tableWrapper = wrapperWithNoContacts.findComponent(TableData)
+      noResult(wrapperWithNoContacts)
+      expect(tableWrapper.exists()).toBeFalsy()
+    })
+
+    it('displays "you" when it s the logged user', async () => {
+      const store = commonStore(pinia)
+      store.$patch({
+        user: {
+          id: items[0].id.toString(),
+        },
+      })
+      await flushPromises()
+
+      const firstRow = getTableBody().find('tr')
+      expect(firstRow.text()).toContain('You')
+    })
+
+    it('has a pagination', () => {
+      const pages = wrapper.findAll('.el-pager li')
+      expect(pages).toHaveLength(totalPages)
+    })
   })
 
-  it('has a pagination', () => {
-    const pages = wrapper.findAll('.el-pager li')
-    expect(pages).toHaveLength(totalPages)
+  describe('events', () => {
+    it('should call api with the right params', () => {
+      expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+
+      expect(mockGatewayGet).toHaveBeenCalledWith(
+        'customer-wallet/api/contacts?pageNumber=1&pageSize=15&type=Customer',
+      )
+    })
+
+    it('should fetch contacts upon on-page-range-changed event', () => {
+      const pPagination = wrapper.findComponent(PPagination)
+
+      pPagination.vm.$emit('on-page-range-changed', 2)
+
+      expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+    })
   })
 })

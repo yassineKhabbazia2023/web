@@ -1,9 +1,15 @@
+type Persona = {
+  id: number
+  name: string
+  description: string
+}
+
 export interface IUserFromApi {
-  id: string
+  id: number
   firstName: string
   lastName: string
   email: string
-  persona: string
+  persona: Persona
   createdAt: string
 }
 

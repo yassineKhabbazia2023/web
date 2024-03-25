@@ -42,7 +42,7 @@ import {
   PLoader,
   PPagination,
 } from '@kpmg/styleguide'
-import { commonStore } from '@kpmg/common'
+import { commonStore, commonApi } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
 import {
   PAGE_SIZES,
@@ -51,7 +51,6 @@ import {
 import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
 import TableData from './components/TableData'
-import mock from './mock.json'
 import type { IState, IUserFromApi } from './types'
 
 const { d, t } = useI18n({
@@ -92,8 +91,9 @@ const shouldShowPagination = computed(() =>
 )
 
 const getQueryParams = () => ({
-  page: state.currentPage,
-  limit: state.limit,
+  pageNumber: state.currentPage,
+  pageSize: state.limit,
+  type: 'Customer',
   search: state.search,
 })
 
@@ -106,26 +106,26 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
     createdAt,
     ...rest
   }) => ({
+    ...rest,
     initials: getInitials(
       firstName,
       lastName,
     ),
     firstName,
     lastName,
-    isOwner: persona === 'Dirigeant',
+    isOwner: persona.name === 'Dirigeant',
     fullName: `${firstName} ${lastName}`,
-    isLoggedUser: () => id === userStore.$state.user?.id,
+    isLoggedUser: () => id.toString() === userStore.$state.user?.id,
     persona,
     id,
-    createdAt: d(new Date(createdAt), 'short'),
-    ...rest,
+    createdAt: createdAt ? d(new Date(createdAt), 'short') : '',
   }))
 
 const fetch = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
 
-  state.isLoading = searchParams && true
+  state.isLoading = true
 
   try {
     const {
@@ -135,9 +135,7 @@ const fetch = async () => {
         totalPages,
         totalItems,
       },
-    } = await Promise.resolve(mock)
-    // TODO: remove mock & searchParams in isLoading (line 128), when endpoint is done
-    // await commonApi().gateway.get('account/api/customers?${searchParams}')
+    } = await commonApi().gateway.get(`customer-wallet/api/contacts?${searchParams}`)
 
     state.data = formatItemsFromApi(items)
     state.currentPage = currentPage
