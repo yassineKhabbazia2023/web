@@ -678,16 +678,9 @@ watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
 watch(
   () => createMandateForm.erpId,
   (value) => {
-    createMandateForm.erpId = value.replace(/[^0-9]/i, '')
+    createMandateForm.erpId = value.replace(/\D/ig, '')
   },
 )
-
-/* function getSuffixIcon() {
-  if (isIBSValid.value) {
-    return () => h(PIcon, { color: '#5546FF' }, [h(PICheck)])
-  }
-  return ''
-} */
 
 // Expose
 defineExpose({
