@@ -10,8 +10,8 @@ const contactDescription =
 function getWrapper() {
   const wrapper = mount(PrincipalContact, {
     props: {
-      principalContact
-    }
+      principalContact,
+    },
   })
 
   return wrapper
@@ -28,13 +28,13 @@ describe('principalContact', () => {
         fullName: wrapper.find('.p-user-card__title'),
         email: wrapper.find('.p-user-card__subtitle'),
         description: wrapper.find('.p-user-card__description'),
-        notes: wrapper.find('[data-testid=principal-contact-notes]')
+        notes: wrapper.find('[data-testid=principal-contact-notes]'),
       }
 
       expect(principalContactElements.fullName.text()).toBe(fullName)
       expect(principalContactElements.email.text()).toBe(principalContact.contactEmail)
       expect(principalContactElements.description.text()).toBe(
-        contactDescription
+        contactDescription,
       )
     })
   })

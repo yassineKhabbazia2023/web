@@ -3,7 +3,7 @@ import LOOPOfferFormStructure from '../config/LOOPOfferFormStructure.json'
 import type { FormSection, ProviderFormName } from '../CompanyInformationTypes'
 
 export const getOfferFormStructure = (
-  offerType: ProviderFormName
+  offerType: ProviderFormName,
 ): FormSection[] => {
   if (offerType === 'MEG') {
     return MEGOffersFormStructure as FormSection[]
@@ -23,6 +23,6 @@ export const getStaffSizeRange = (staffSize: number) => {
     case staffSize >= 300:
       return '+300'
     default:
-      return '' + staffSize
+      return `${staffSize}`
   }
 }

@@ -1,5 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { getMockedStepNotes } from './StepNotesMock'
 import StepNote from '.'
 
@@ -9,7 +10,7 @@ const expectedTextareaPlaceholder = 'Write your comment'
 
 const createWrapper = () =>
   mount(StepNote, {
-    props: { modelValue: notes[0] }
+    props: { modelValue: notes[0] },
   })
 
 describe('stepNote', () => {

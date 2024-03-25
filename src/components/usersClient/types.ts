@@ -1,21 +1,25 @@
-export interface IUser {
+export interface IUserFromApi {
   id: string
-  initials: string
-  fullName: string
   firstName: string
   lastName: string
   email: string
   persona: string
-  isOwner: boolean
-  isLoggedUser: Function
   createdAt: string
 }
 
+export interface IExtendedUser extends IUserFromApi {
+  initials: string
+  fullName: string
+  isLoggedUser: Function
+  isOwner: boolean
+}
+
 export interface IState {
-  data: IUser[]
+  data: IExtendedUser[]
   currentPage: number
   limit: number
   totalPages: number | undefined
   totalItems: number | undefined
+  search: string | undefined
   isLoading: boolean
 }

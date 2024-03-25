@@ -1,4 +1,5 @@
-import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
@@ -26,10 +27,10 @@ const getDisplayMock = vi.fn((_arg) =>
             firstName: null,
             lastName: null,
             email: null,
-            phoneNumber: ''
+            phoneNumber: '',
           },
           deploymentStatus: 2,
-          isFavorite: false
+          isFavorite: false,
         },
         {
           id: '8126f51d-c834-4fda-82ea-00d51ee11985',
@@ -40,22 +41,22 @@ const getDisplayMock = vi.fn((_arg) =>
             firstName: null,
             lastName: null,
             email: null,
-            phoneNumber: ''
+            phoneNumber: '',
           },
           deploymentStatus: 1,
-          isFavorite: false
-        }
-      ]
-    }
-  })
+          isFavorite: false,
+        },
+      ],
+    },
+  }),
 )
 const getFavoritesMock = vi.fn(() =>
   Promise.resolve({
     data: [{
       id: 'customId',
-      name: 'customName'
-    }]
-  })
+      name: 'customName',
+    }],
+  }),
 )
 
 vi.mock('@kpmg/common', () => ({
@@ -65,8 +66,8 @@ vi.mock('@kpmg/common', () => ({
       get: (arg: string) =>
         arg === 'favorites'
           ? getFavoritesMock()
-          : getDisplayMock(arg)
-    }
+          : getDisplayMock(arg),
+    },
   }),
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
@@ -75,24 +76,24 @@ vi.mock('@kpmg/common', () => ({
         token: 'token',
         entities: {
           default: {
-            name: 'Tesla'
-          }
-        }
-      }
+            name: 'Tesla',
+          },
+        },
+      },
     }),
     getters: {
       isAuthenticated: () => true,
-      isCollab: () => true
-    }
-  })
+      isCollab: () => true,
+    },
+  }),
 }))
 
 const mockRouterPush = vi.fn()
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
-  })
+    push: mockRouterPush,
+  }),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -100,8 +101,8 @@ const createWrapper = (): VueWrapper<any> =>
     attachTo: document.body,
     plugins: [createTestingPinia()],
     global: {
-      stubs: ['Filters']
-    }
+      stubs: ['Filters'],
+    },
   })
 
 const findSubscriptionDrawer = (wrapper: VueWrapper) =>
@@ -143,7 +144,7 @@ describe('wallet', () => {
     expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
     expect(getDisplayMock).toHaveBeenNthCalledWith(
       2,
-      `display?page=1&limit=15&search=${SEARCH_VALUE}`
+      `display?page=1&limit=15&search=${SEARCH_VALUE}`,
     )
   })
 
@@ -193,7 +194,7 @@ describe('wallet', () => {
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({
       name: 'folder',
-      params: { id: '8126f51d-c834-4fda-82ea-00d51ee11983' }
+      params: { id: '8126f51d-c834-4fda-82ea-00d51ee11983' },
     })
   })
 
@@ -203,8 +204,8 @@ describe('wallet', () => {
         currentPage: 1,
         totalPage: 1,
         totalItems: 0,
-        items: []
-      }
+        items: [],
+      },
     })
 
     const wrapper = createWrapper()
@@ -221,7 +222,7 @@ describe('wallet', () => {
     expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
     expect(getDisplayMock).toHaveBeenNthCalledWith(
       2,
-      `display?page=1&limit=15&deploymentStatus=${EntityStatus.TO_DEPLOY}`
+      `display?page=1&limit=15&deploymentStatus=${EntityStatus.TO_DEPLOY}`,
     )
   })
 

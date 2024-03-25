@@ -15,13 +15,13 @@ export const getInitials = (firstName: string|undefined, lastName: string|undefi
  */
 export const generateObject = (
   parentKey: string,
-  mainObject: Record<string, string | number>
+  mainObject: Record<string, string | number>,
 ) => {
   const generatedObject: any = { [parentKey]: {} }
 
   // To retrieve only the entries with keys that contain the parent key
   const filteredEntries = Object.fromEntries(
-    Object.entries(mainObject).filter(([key]) => key.includes(`${parentKey}.`))
+    Object.entries(mainObject).filter(([key]) => key.includes(`${parentKey}.`)),
   )
   // To construct our new object
   for (const [key, value] of Object.entries(filteredEntries)) {
@@ -39,5 +39,5 @@ export const formatDateToLocale = (dateString: string) => {
 export const removeFalsyValues = (obj: object) =>
   Object.entries(obj).reduce(
     (acc: any, [key, value]) => (value ? ((acc[key] = value), acc) : acc),
-    {}
+    {},
   )

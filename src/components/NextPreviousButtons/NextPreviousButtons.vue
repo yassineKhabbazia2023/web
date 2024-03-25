@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
+import type { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
 import { PButton } from '@kpmg/styleguide'
 
 defineProps<NextPreviousButtonsProps>()

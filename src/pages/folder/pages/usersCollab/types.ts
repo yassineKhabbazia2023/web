@@ -1,9 +1,9 @@
-import { Component } from 'vue'
+import type { Component } from 'vue'
 
 export interface IUserStatus {
-  text: string,
+  text: string
   color: '' | 'success' | 'warning' | 'danger' | 'info'
-    | 'persian' | 'fuschia' | 'cyan' | 'amethyste' | 'gray-300' | 'gray-500' | 'gray-900',
+    | 'persian' | 'fuschia' | 'cyan' | 'amethyste' | 'gray-300' | 'gray-500' | 'gray-900'
   icon: Component
 }
 export interface IUser {

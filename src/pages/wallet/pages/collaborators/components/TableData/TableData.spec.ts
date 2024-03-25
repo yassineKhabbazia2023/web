@@ -1,4 +1,5 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import mock from './../../mock.json'
@@ -19,10 +20,10 @@ const createWrapper = (): VueWrapper<any> =>
         fullName: `${firstName} ${lastName}`,
         firstName,
         lastName,
-        ...rest
-      }))
+        ...rest,
+      })),
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 const getMenu = () => document.querySelector('.el-popper') as HTMLElement
@@ -48,6 +49,6 @@ describe('tableData', () => {
       await nextTick()
 
       expect(getDrawer().exists()).toBeTruthy()
-    }
+    },
   )
 })

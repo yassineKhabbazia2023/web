@@ -20,17 +20,17 @@ import type { PService } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits<{
-  'select-product': [number, number],
+  'select-product': [number, number]
   'deselect-product': [number, number]
 }>()
 
 const labels = {
   included: t('included'),
-  additionalPrice: t('additionalPrice')
+  additionalPrice: t('additionalPrice'),
 }
 
 const props = defineProps<OfferProviderProductsProps>()
@@ -40,14 +40,14 @@ const services = computed(() =>
     props.offerProvider.products,
     props.selectedProducts,
     labels.included,
-    labels.additionalPrice
-  )
+    labels.additionalPrice,
+  ),
 )
 
 const ProviderCategoryTitles: Record<string, string> = {
   pulse: t('platform'),
   external: t('provider'),
-  internal: t('services')
+  internal: t('services'),
 }
 
 const title = computed(() => {
@@ -57,7 +57,7 @@ const title = computed(() => {
   return getTitle(
     ProviderCategoryTitles,
     category,
-    providerName
+    providerName,
   )
 })
 

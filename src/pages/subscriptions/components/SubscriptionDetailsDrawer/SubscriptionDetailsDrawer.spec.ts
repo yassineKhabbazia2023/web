@@ -11,8 +11,8 @@ async function getWrapper(isOpened: boolean) {
   const wrapper = mount(SubscriptionDetailsDrawer, {
     props: {
       modelValue: isOpened,
-      account: subscriptionAccountTest
-    }
+      account: subscriptionAccountTest,
+    },
   })
   await flushPromises()
 
@@ -24,7 +24,7 @@ describe('subscriptionDetailsDrawer', () => {
     it('should correctly display the subscription drawer with tabs', async () => {
       const wrapper = await getWrapper(true)
       const subscriptionDrawerTabs = wrapper.find(
-        '[data-testid=subscription-drawer-tabs]'
+        '[data-testid=subscription-drawer-tabs]',
       )
 
       expect(subscriptionDrawerTabs.exists()).toBeTruthy()
@@ -41,11 +41,11 @@ describe('subscriptionDetailsDrawer', () => {
     it('should correctly render the title of the subscription drawer', async () => {
       const wrapper = await getWrapper(true)
       const subscriptionDrawerTitle = wrapper.find(
-        '[data-testid=subscription-drawer-title]'
+        '[data-testid=subscription-drawer-title]',
       )
 
       expect(subscriptionDrawerTitle.text()).toBe(
-        `${subscriptionAccountTest.accountLegalName} - No. ${subscriptionAccountTest.accountNumber}`
+        `${subscriptionAccountTest.accountLegalName} - No. ${subscriptionAccountTest.accountNumber}`,
       )
     })
   })

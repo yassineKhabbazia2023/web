@@ -4,20 +4,20 @@ export function getMockedStepNotes() {
   const notes: Note[] = [
     {
       stepName: 'services',
-      stepNote: 'Test Note'
+      stepNote: 'Test Note',
     },
     {
       stepName: 'customers',
-      stepNote: 'Test Note'
+      stepNote: 'Test Note',
     },
     {
       stepName: 'collaborators',
-      stepNote: 'Test Note'
+      stepNote: 'Test Note',
     },
     {
       stepName: 'information',
-      stepNote: 'Test Note'
-    }
+      stepNote: 'Test Note',
+    },
   ]
 
   return notes

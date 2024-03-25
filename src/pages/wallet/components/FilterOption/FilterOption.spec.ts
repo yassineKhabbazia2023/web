@@ -1,11 +1,12 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { describe, expect, it, beforeEach } from 'vitest'
 import FilterOption from '.'
-import { IProps } from './types'
+import type { IProps } from './types'
 import { PIArrowUpCircle } from '@kpmg/styleguide'
 const createWrapper = (props: IProps) =>
   mount(FilterOption, {
-    props
+    props,
   })
 
 describe('tags', () => {
@@ -17,7 +18,7 @@ describe('tags', () => {
       icon: PIArrowUpCircle,
       isSelected: false,
       clickable: false,
-      number: 0
+      number: 0,
     })
   })
   it('renders tagWrapper correctly', () => {
@@ -29,7 +30,6 @@ describe('tags', () => {
     await wrapper.setProps({ isSelected: true })
     const filterOption = wrapper.findComponent('.filter-option--is-selected')
     expect(filterOption.exists()).toBeTruthy()
-
   })
 
   it('should emit event click when clicking on the component', async () => {

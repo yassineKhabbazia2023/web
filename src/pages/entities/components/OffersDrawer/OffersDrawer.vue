@@ -66,7 +66,7 @@
           <ul
             v-if="
               activeStep === offerStepperStep.CUSTOMERS &&
-              principalContacts?.length
+                principalContacts?.length
             "
             class="offers-drawer__contact-list"
           >
@@ -122,37 +122,6 @@
   </div>
 </template>
 
-<!-- eslint-disable max-len -->
-<i18n lang="yaml">
-en-US:
-  drawerTitle: 'Offers available on this folder'
-  previousLabel: 'Previous'
-  nextLabel: 'Next'
-  submitLabel: 'Submit'
-  services: 'Services'
-  customers: 'Customers'
-  collaborators: 'Collaborators'
-  information: 'Information'
-  offerIntranet: 'Offer Intranet'
-  offersBook: 'Offers Book'
-  confirmationTitle: 'Attention'
-  confirmationContent: 'After confirmation, the offer activation request will be submitted, and there will be no option to revert. Please review your information carefully before proceeding.'
-fr-FR:
-  drawerTitle: 'Offres activables sur ce dossier'
-  previousLabel: 'Précédent'
-  nextLabel: 'Suivant'
-  submitLabel: 'Valider'
-  services: 'Services'
-  customers: 'Clients'
-  collaborators: 'Collaborateurs'
-  information: 'Informations'
-  offerIntranet: "Intranet de l'offre"
-  offersBook: 'Book des offres'
-  confirmationTitle: 'Attention'
-  confirmationContent: "Une fois confirmée, la demande d'activation d'offre sera créée et vous ne pourrez plus revenir en arrière. Veuillez donc vérifier vos informations avant de valider."
-</i18n>
-<!-- eslint-disable max-len -->
-
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -171,7 +140,7 @@ import {
   getAllOffers,
   getOffer,
   getOffersBookLink,
-  getPrincipalContacts
+  getPrincipalContacts,
 } from '@/services/offer'
 import { addPathValue, getPatchOperations } from '@/services/PatchRecordService/PatchRecordService'
 import { type PatchValue } from '@/services/PatchRecordService'
@@ -183,12 +152,12 @@ import {
   addSelectedProduct,
   removeSelectedProduct,
   getInitialSelectedProducts,
-  getPostSubscriptionRequest
+  getPostSubscriptionRequest,
 } from './utils/OffersDrawerUtils'
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import type {
   SubscriptionOffer,
-  SubscriptionOfferServices
+  SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
 import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
@@ -197,7 +166,7 @@ import type { Contact } from '@/services/contact/contactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const activeStep = ref<number>(0)
@@ -205,14 +174,14 @@ const activeStep = ref<number>(0)
 const offerStepperConfig: any = {
   direction: 'horizontal',
   processStatus: 'process',
-  finishStatus: 'success'
+  finishStatus: 'success',
 }
 
 const offerStepTitles = {
   services: t('services'),
   customers: t('customers'),
   collaborators: t('collaborators'),
-  information: t('information')
+  information: t('information'),
 }
 
 const isSubmitButton = computed((): boolean => {
@@ -244,7 +213,7 @@ const internalIsOpened = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
@@ -259,7 +228,7 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
     }
   }
   selectedProducts.value = getInitialSelectedProducts(
-    currentSubscriptionOffer.value
+    currentSubscriptionOffer.value,
   )
 }
 
@@ -267,20 +236,20 @@ const initNoteSteps = () => {
   notes.value = [
     {
       stepName: 'services',
-      stepNote: ''
+      stepNote: '',
     },
     {
       stepName: 'customers',
-      stepNote: ''
+      stepNote: '',
     },
     {
       stepName: 'collaborators',
-      stepNote: ''
+      stepNote: '',
     },
     {
       stepName: 'information',
-      stepNote: ''
-    }
+      stepNote: '',
+    },
   ]
 }
 
@@ -296,19 +265,19 @@ const offersDrawerTitle = computed((): string => {
 })
 
 const sanitizedOffersDrawerLink = computed(
-  (): { link: string | undefined; titleLink: string } => {
+  (): { link: string | undefined, titleLink: string } => {
     if (currentSubscriptionOffer.value) {
       return {
         link: currentSubscriptionOffer.value.intranetLink,
-        titleLink: t('offerIntranet')
+        titleLink: t('offerIntranet'),
       }
     }
     const offersBookLink = getOffersBookLink()
     return {
       link: offersBookLink,
-      titleLink: t('offersBook')
+      titleLink: t('offersBook'),
     }
-  }
+  },
 )
 
 function onInputAccount(fieldKey: string, value: any) {
@@ -339,7 +308,7 @@ async function saveOffer() {
     collaborators.value,
     currentSubscriptionOffer.value,
     selectedProducts.value,
-    notes.value
+    notes.value,
   )
   if (postSubscriptionRequest) {
     await createSubscriptionRequestNew(postSubscriptionRequest)
@@ -405,6 +374,7 @@ onMounted(async () => {
   account.value = await fetchAccount(ACCOUNT_ID /* props.accountId */)
 })
 </script>
+
 <style lang="scss" scoped>
 .offers-drawer {
   &__company-name {
@@ -431,3 +401,37 @@ onMounted(async () => {
   }
 }
 </style>
+<i18n lang="yaml">
+en-US:
+  drawerTitle: 'Offers available on this folder'
+  previousLabel: 'Previous'
+  nextLabel: 'Next'
+  submitLabel: 'Submit'
+  services: 'Services'
+  customers: 'Customers'
+  collaborators: 'Collaborators'
+  information: 'Information'
+  offerIntranet: 'Offer Intranet'
+  offersBook: 'Offers Book'
+  confirmationTitle: 'Attention'
+  confirmationContent: >
+    After confirmation, the offer activation request will be submitted,
+    and there will be no option to revert. Please review your information
+    carefully before proceeding.
+fr-FR:
+  drawerTitle: 'Offres activables sur ce dossier'
+  previousLabel: 'Précédent'
+  nextLabel: 'Suivant'
+  submitLabel: 'Valider'
+  services: 'Services'
+  customers: 'Clients'
+  collaborators: 'Collaborateurs'
+  information: 'Informations'
+  offerIntranet: "Intranet de l'offre"
+  offersBook: 'Book des offres'
+  confirmationTitle: 'Attention'
+  confirmationContent: >
+    Une fois confirmée, la demande d'activation d'offre sera créée
+    et vous ne pourrez plus revenir en arrière.
+    Veuillez donc vérifier vos informations avant de valider.
+</i18n>

@@ -42,23 +42,26 @@
         :pTitle="getContactFullName(selectedCollaborator)"
         :pDescription="selectedCollaborator.email"
         :pRole="selectedCollaborator.office"
+        :pShowDelete="canDelete"
+        data-testid="selected-collaborator-"
+        @click-delete="onClickDelete(index)"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PBlockHeader,
   PUserAction,
   PForm,
-  PFormItem
+  PFormItem,
 } from '@kpmg/styleguide'
 import { getInitials } from '@/helper'
 import type { ManageCollaboratorsProps } from './ManageCollaboratorsTypes'
-import { Contact } from '@/services/contact/contactTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 import CollaboratorAutocomplete from '../CollaboratorAutocomplete'
 
 const emits = defineEmits<{
@@ -68,10 +71,12 @@ const emits = defineEmits<{
 const props = defineProps<ManageCollaboratorsProps>()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const selectedCollaborators = ref<Contact[]>([])
+
+const canDelete = computed(() => selectedCollaborators.value.length > 1)
 
 function getContactFullName(contact: Contact) {
   return `${contact?.firstName} ${contact?.lastName}`
@@ -79,11 +84,24 @@ function getContactFullName(contact: Contact) {
 
 function addContact(contact: Contact) {
   selectedCollaborators.value.push(contact)
+  emitUpdateCollaborators()
+}
+
+function emitUpdateCollaborators() {
   emits('update:collaborators', selectedCollaborators.value)
 }
 
 function onAddContact(contact: Contact) {
   addContact(contact)
+}
+
+function onClickDelete(index: number) {
+  if (!canDelete.value) {
+    console.warn('Can not delete collaborator')
+    return
+  }
+  selectedCollaborators.value.splice(index, 1)
+  emitUpdateCollaborators()
 }
 
 onMounted(() => {

@@ -1,4 +1,5 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, expect, it } from 'vitest'
 import mock from './mock.json'
 import CollabAccess from './'
@@ -10,9 +11,9 @@ let wrapper: VueWrapper<any>
 const createWrapper = (): VueWrapper<any> =>
   mount(CollabAccess, {
     props: {
-      selectedCollabRole: SELECTED_COLLAB_ROLE
+      selectedCollabRole: SELECTED_COLLAB_ROLE,
     },
-    attachTo: document.body
+    attachTo: document.body,
   })
 
 describe('collabAccess', () => {

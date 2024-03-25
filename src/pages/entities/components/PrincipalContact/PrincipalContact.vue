@@ -10,27 +10,18 @@
   />
 </template>
 
-<i18n lang="yaml">
-en-US:
-  signatoryCustomer: 'Signatory customer'
-  contactDescription: 'This signatory user will be the first client embarked on the file.'
-fr-FR:
-  signatoryCustomer: 'Client signataire'
-  contactDescription: 'Cet utilisateur signataire sera le premier client embarqué sur le dossier.'
-</i18n>
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import {
   PUserCard,
-  PIVectorPen
+  PIVectorPen,
 } from '@kpmg/styleguide'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const fullName = computed(() => {
@@ -44,7 +35,7 @@ const contactTag = {
   pColor: 'persian',
   pContent: t('signatoryCustomer'),
   pIconLeft: PIVectorPen,
-  pEffect: 'light'
+  pEffect: 'light',
 }
 
 const props = defineProps<PrincipalContactProps>()
@@ -59,3 +50,12 @@ const props = defineProps<PrincipalContactProps>()
   }
 }
 </style>
+
+<i18n lang="yaml">
+en-US:
+  signatoryCustomer: 'Signatory customer'
+  contactDescription: 'This signatory user will be the first client embarked on the file.'
+fr-FR:
+  signatoryCustomer: 'Client signataire'
+  contactDescription: 'Cet utilisateur signataire sera le premier client embarqué sur le dossier.'
+</i18n>

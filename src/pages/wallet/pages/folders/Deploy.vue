@@ -19,25 +19,10 @@
       <DelegationDrawer v-model="isDelegationDrawerOpened" :selectedFolders="selectedFolders" />
     </div>
     <div class="margin-bottom--3">
-      <PForm
-        ref="formRef"
-        :pRules="rules"
-        :pModel="formValues"
-        @submit.prevent="handleSearchSubmit(formRef)"
-      >
-        <PFormItem prop="search">
-          <PInput
-            v-model="formValues.search"
-            :pPlaceholder="t('search')"
-            :pPrefixIcon="PISearch"
-            pName="search"
-            pSize="small"
-            pType="search"
-            pAutofocus
-            @keyup="handleSearchSubmit(formRef)"
-          />
-        </PFormItem>
-      </PForm>
+      <FormSearch
+        @search-value-submitted="handleSearchValueSubmitted"
+        :placeholder="t('search')"
+      />
     </div>
 
     <PLoader v-if="state.isLoading" />
@@ -87,34 +72,30 @@
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 import {
-  PForm,
-  PFormItem,
   PIArrowRepeat,
   PICheckCircle,
   PIArrowUpCircle,
-  PInput,
-  PISearch,
   PLoader,
   PButton,
-  PPagination
+  PPagination,
 } from '@kpmg/styleguide'
-import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import NoResult from '@/components/NoResult'
+import FormSearch from '@/components/FormSearch'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 import { removeFalsyValues } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
 import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '../../types'
 import Filters from '../../components/Filters'
-import { EntityStatus } from '../../components/Filters/types'
+import type { EntityStatus } from '../../components/Filters/types'
 import TableData from '../../components/TableData'
 import DelegationDrawer from '@/pages/wallet/sections/DelegationDrawer'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const userStore = commonStore()
@@ -124,48 +105,24 @@ const { isCollab, user } = storeToRefs(userStore)
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
-// search part
-const formRef = ref<FormInstance>()
-const formValues = reactive({
-  search: undefined
-})
-const rules = reactive<FormRules<typeof formValues>>({
-  search: [{
-    trigger: 'change',
-    min: 3,
-    message: t('errorSearchInvalid')
-  }]
-})
-const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-
-  if (formEl.validate) {
-    try {
-      await formEl.validate()
-    } catch (error) {
-      return false
-    }
-  }
-  state.search = formValues.search
-}
 
 // table part
 const DEPLOYMENTS = [
   {
     text: t('toDeploy'),
     icon: PIArrowUpCircle,
-    color: 'warning'
+    color: 'warning',
   },
   {
     text: t('inProgress'),
     icon: PIArrowRepeat,
-    color: 'persian'
+    color: 'persian',
   },
   {
     text: t('connected'),
     icon: PICheckCircle,
-    color: 'success'
-  }
+    color: 'success',
+  },
 ]
 
 const getInitial = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
@@ -182,8 +139,12 @@ const state: IState = reactive({
   totalItems: undefined,
   search: undefined,
   isLoading: undefined,
-  filterByDeploymentStatus: undefined
+  filterByDeploymentStatus: undefined,
 })
+
+const handleSearchValueSubmitted = (searchValue: string) => {
+  state.search = searchValue
+}
 
 const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
@@ -193,12 +154,12 @@ const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
    - ${((state.currentPage - 1) * state.limit) +
     state.data.length}
-   ${t('on')} ${state.totalItems}`
+   ${t('on')} ${state.totalItems}`,
 )
 
 const DEFAULT_ENTITY_VALUES = {
   ibs: 'IBS93781560ZE19',
-  color: 'persian'
+  color: 'persian',
 }
 
 const fetchFavorites = async () =>
@@ -210,15 +171,15 @@ const putEntitiesInCommonFavorite = (data: ICommonEntitiesInFavorite[]) => {
       name,
       idAccount,
       ibs: DEFAULT_ENTITY_VALUES.ibs,
-      color: DEFAULT_ENTITY_VALUES.color
+      color: DEFAULT_ENTITY_VALUES.color,
     })) as Entity[]
 
   userStore.$patch({
     user: {
       entities: {
-        favorites: entitiesInFavorite
-      }
-    }
+        favorites: entitiesInFavorite,
+      },
+    },
   })
 }
 
@@ -226,7 +187,7 @@ const getQueryParams = () => ({
   page: state.currentPage,
   limit: state.limit,
   search: state.search,
-  deploymentStatus: state.filterByDeploymentStatus
+  deploymentStatus: state.filterByDeploymentStatus,
 })
 
 const fetch = async () => {
@@ -240,8 +201,8 @@ const fetch = async () => {
         items,
         currentPage,
         totalPage,
-        totalItems
-      }
+        totalItems,
+      },
     } = await commonApi().wallet.get(`display?${searchParams}`)
     state.data = items.map(({
       owner,
@@ -257,14 +218,14 @@ const fetch = async () => {
           lastName: owner.lastName?.toLowerCase() ?? '',
           initials: getInitial({
             firstName: owner.firstName,
-            lastName: owner.lastName
+            lastName: owner.lastName,
           }),
-          avatarColor: owner.avatarColor ?? getColor(index)
+          avatarColor: owner.avatarColor ?? getColor(index),
         },
         hub: hub ?? 'Paris',
         city: city?.toLowerCase() ?? '',
         deploymentStatus: DEPLOYMENTS[deploymentStatus - 1],
-        ...rest
+        ...rest,
       }))
     state.currentPage = currentPage
     state.totalPage = totalPage
@@ -276,7 +237,7 @@ const fetch = async () => {
 }
 
 const COLOR = [
-  'persian', 'orange', 'green', 'teal', 'fuschia'
+  'persian', 'orange', 'green', 'teal', 'fuschia',
 ]
 
 /// function predictable color
@@ -289,7 +250,7 @@ const getColor = (index: number) => {
 const fetchTableDataAndFavorites = async () => {
   const [, { data }] = await Promise.all([
     fetch(),
-    fetchFavorites()
+    fetchFavorites(),
   ])
   putEntitiesInCommonFavorite(data)
 }
@@ -306,7 +267,7 @@ onMounted(async () => {
     state.currentPage,
     state.limit,
     state.search,
-    state.filterByDeploymentStatus
+    state.filterByDeploymentStatus,
   ], async () => {
     await fetch()
   })
@@ -334,7 +295,6 @@ const handleRemoveFilter = () => {
 
 const selectedFolders: IEntity[] = reactive([])
 const onSelectedFolder = (id: string) => {
-  console.log('scope row', id)
   const index = selectedFolders.findIndex(e => e.id === id)
   index >= 0
     ? selectedFolders.splice(index, 1)
@@ -345,7 +305,6 @@ const onSelectedFolder = (id: string) => {
 <i18n lang="yaml">
   en-US:
     search: 'Find by Company''s name, IBS, Leader, Email, City...'
-    errorSearchInvalid: 'Minimum three characters required'
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
@@ -354,7 +313,6 @@ const onSelectedFolder = (id: string) => {
     delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
   fr-FR:
     search: 'Rechercher par Raison sociale, IBS, Dirigeant, Mail, Ville...'
-    errorSearchInvalid: 'Trois caractères minimum requis'
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'

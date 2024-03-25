@@ -1,4 +1,5 @@
-import { mount, VueWrapper } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { getInitials } from '@/helper'
 import mock from './../../mock.json'
@@ -14,16 +15,16 @@ const createWrapper = (): VueWrapper<any> =>
       }) => ({
         initials: getInitials(
           firstName,
-          lastName
+          lastName,
         ),
         fullName: `${firstName} ${lastName}`,
         firstName,
         lastName,
         isOwner: false,
         isLoggedUser: () => false,
-        ...rest
-      }))
-    }
+        ...rest,
+      })),
+    },
   })
 
 const getMenu = () => document.querySelector('.el-popper') as HTMLElement

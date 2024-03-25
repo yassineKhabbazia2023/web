@@ -5,16 +5,16 @@ export const DATE_TIME_FORMATS = {
     short: {
       year: 'numeric',
       month: 'numeric',
-      day: 'numeric'
-    }
+      day: 'numeric',
+    },
   },
   'fr-FR': {
     short: {
       year: 'numeric',
       month: 'numeric',
-      day: 'numeric'
-    }
-  }
+      day: 'numeric',
+    },
+  },
 } as Record<string, DefineDateTimeFormat>
 
 export const PAGE_SIZES = [15, 30, 45, 60]

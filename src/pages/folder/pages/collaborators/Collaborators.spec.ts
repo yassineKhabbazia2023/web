@@ -1,5 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
-import { VueWrapper, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
@@ -10,12 +11,12 @@ import Collaborators from '.'
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
-      user: {}
+      user: {},
     }),
     getters: {
-      defaultEntity: () => mockedEntity
-    }
-  })
+      defaultEntity: () => mockedEntity,
+    },
+  }),
 }))
 
 const pinia = createTestingPinia()
@@ -24,14 +25,14 @@ const createWrapper = (): VueWrapper =>
   mount(Collaborators, {
     attachTo: document.body,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 
 describe('collaborators', () => {
   let wrapper: VueWrapper
 
-  beforeEach(async () => {
+  beforeEach(() => {
     wrapper = createWrapper()
   })
 

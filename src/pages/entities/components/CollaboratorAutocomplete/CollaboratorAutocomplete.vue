@@ -36,8 +36,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { PAutocomplete, PISearch, PIcon } from '@kpmg/styleguide'
-import { CollaboratorAutocompleteProps } from './CollaboratorAutocompleteTypes'
-import { Contact } from '@/services/contact/contactTypes'
+import type { CollaboratorAutocompleteProps } from './CollaboratorAutocompleteTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 import { useI18n } from 'vue-i18n'
 import { getAutocompleteContacts } from './CollaboratorAutocompleteUtils'
 
@@ -46,7 +46,7 @@ const searchExpression = ref('')
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<CollaboratorAutocompleteProps>()
@@ -60,7 +60,7 @@ async function handleSearchCollaborator(queryString: string, callback: any) {
 
   callback(results)
 }
-async function onSelect(contact: Contact) {
+function onSelect(contact: Contact) {
   emits('add-contact', contact)
   searchExpression.value = ''
 }

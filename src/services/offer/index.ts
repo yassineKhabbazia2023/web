@@ -1,7 +1,7 @@
 import { commonApi } from '@kpmg/common'
 import type {
   SubscriptionOffer,
-  SubscriptionOfferServices
+  SubscriptionOfferServices,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { ACCOUNT_ID } from '@/pages/entities/components/OffersDrawer/OffersDrawerConst'
@@ -24,7 +24,7 @@ export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
 }
 
 export const getOffer = async (
-  offerId: number
+  offerId: number,
 ): Promise<SubscriptionOfferServices | undefined> => {
   try {
     const response = await commonApi().gateway.get(`${API_PREFIXES.OFFER}/offers/${offerId}`)

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
 import SubscriptionsTable from '.'
 
@@ -9,12 +10,12 @@ vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     offer: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
-      put: mockedPutRequests
-    }
+      put: mockedPutRequests,
+    },
   }),
   commonStore: () => ({
-    $patch: vi.fn()
-  })
+    $patch: vi.fn(),
+  }),
 }))
 
 const requestMenu = [
@@ -22,14 +23,14 @@ const requestMenu = [
     pIconName: 'PIEye',
     pValue: 'Consult',
     pActionName: 'consult',
-    pState: 'default'
+    pState: 'default',
   },
   {
     pIconName: 'PICheck',
     pValue: 'Validate request',
     pActionName: 'validate',
-    pState: 'default'
-  }
+    pState: 'default',
+  },
 ]
 
 const pTableColumnsLabel: { [key: number]: string } = {
@@ -39,7 +40,7 @@ const pTableColumnsLabel: { [key: number]: string } = {
   3: 'Principal Contact',
   4: 'Requester',
   5: 'Offer',
-  6: 'Status'
+  6: 'Status',
 }
 
 describe('table-validations', () => {
@@ -71,7 +72,7 @@ describe('table-validations', () => {
       'test-01@kpmg.fr',
       'Pennylane',
       'To validate',
-      ''
+      '',
     ]
     expect(cellsText).toMatchObject(expected)
   })

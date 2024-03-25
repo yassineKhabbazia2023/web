@@ -17,13 +17,6 @@
   </PDrawer>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    number: 'No.'
-  fr-FR:
-    number: 'Nº'
-</i18n>
-
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -33,7 +26,7 @@ import SubscriptionDetailsTabs from './components/SubscriptionDetailsTabs'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const props = defineProps<SubscriptionDetailsDrawerProps>()
@@ -47,7 +40,7 @@ const internalIsOpened = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 const subscriptionDrawerTitle = computed(() => {
   return `${props.account.accountLegalName} - ${t('number')} ${props.account.accountNumber}`
@@ -65,3 +58,10 @@ const handleCloseDrawer = () => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    number: 'No.'
+  fr-FR:
+    number: 'Nº'
+</i18n>

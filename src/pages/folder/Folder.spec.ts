@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore } from '@kpmg/common'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
@@ -12,32 +13,32 @@ vi.mock('@kpmg/common', () => ({
     state: () => ({
       user: {
         entities: {
-          default: mockedEntity
-        }
-      }
+          default: mockedEntity,
+        },
+      },
     }),
     getters: {
       isCollab: () => true,
-      defaultEntity: () => mockedEntity
-    }
-  })
+      defaultEntity: () => mockedEntity,
+    },
+  }),
 }))
 
 const mockRouterPush = vi.fn()
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockRouterPush
+    push: mockRouterPush,
   }),
-  useRoute: () => ({})
+  useRoute: () => ({}),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Folder, {
     attachTo: document.body,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 
 describe('dossier', () => {
@@ -55,9 +56,9 @@ describe('dossier', () => {
   })
   const PARAMS = [
     ['collab', 'tab-collab'],
-    ['users', 'tab-users'],
+    ['usersCollab', 'tab-usersCollab'],
     ['offers', 'tab-offers'],
-    ['info', 'tab-info']
+    ['info', 'tab-info'],
   ]
   it.each(PARAMS)(
     'should redirect when click on %s',
@@ -67,12 +68,12 @@ describe('dossier', () => {
       expect(mockRouterPush).toHaveBeenCalledWith({
         name: tabs,
         params: {
-          name: mockedEntity.name
-        }
+          name: mockedEntity.name,
+        },
       })
-    }
+    },
   )
-  it('should display the button label when the user is a client', async () => {
+  it('should display the button label when the user is a client', () => {
     const store = commonStore()
     // @ts-expect-error: Getter is read only
     store.isCollab = false

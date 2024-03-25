@@ -24,12 +24,12 @@ export default ({ mode }) =>
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => tag.startsWith('el-')
-            }
-          }
+              isCustomElement: (tag) => tag.startsWith('el-'),
+            },
+          },
         }),
         VueI18nPlugin({
-          include: [path.resolve(__dirname, './src/**/locales/**')]
+          include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
         viteExternalsPlugin({
           vue: 'Vue',
@@ -38,7 +38,7 @@ export default ({ mode }) =>
           pinia: 'Pinia',
           'env-vars': 'EnvVars',
           '@kpmg/common': 'Common',
-          '@kpmg/styleguide': 'Styleguide'
+          '@kpmg/styleguide': 'Styleguide',
         },
         { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
         {
@@ -47,39 +47,39 @@ export default ({ mode }) =>
           },
           load(id) {
             if (id === 'env-vars') return ''
-          }
+          },
         },
-        cssInjectedByJsPlugin()
+        cssInjectedByJsPlugin(),
       ],
       resolve: {
         alias: {
-          '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
+          '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
       },
       build: {
         lib: {
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: () => `${APP_NAME}.js`
+          fileName: () => `${APP_NAME}.js`,
         },
         rollupOptions: {
           input: 'src/main.ts',
           preserveEntrySignatures: 'strict',
           output: {
-            format: 'system'
+            format: 'system',
           },
-          plugins: [terser()]
-        }
+          plugins: [terser()],
+        },
       },
       server: {
         port: PORT,
-        origin: `http://localhost:${PORT}`
+        origin: `http://localhost:${PORT}`,
       },
       preview: {
-        port: PORT
+        port: PORT,
       },
       test: {
-        setupFiles: 'vitest.setup.ts'
-      }
-    }
+        setupFiles: 'vitest.setup.ts',
+      },
+    },
   ))

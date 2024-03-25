@@ -1,5 +1,5 @@
 import {
-  SubscriptionPriceType
+  SubscriptionPriceType,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
 
@@ -31,9 +31,9 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              productConfigurationId: 1
-            }
-          ]
+              productConfigurationId: 1,
+            },
+          ],
         },
         {
           providerName: 'MEG',
@@ -48,7 +48,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              productConfigurationId: 2
+              productConfigurationId: 2,
             },
             {
               productName: 'Module caisse',
@@ -57,7 +57,7 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: true,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              productConfigurationId: 3
+              productConfigurationId: 3,
             },
             {
               productName: 'Module facturation',
@@ -66,11 +66,11 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: true,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              productConfigurationId: 4
-            }
-          ]
-        }
-      ]
+              productConfigurationId: 4,
+            },
+          ],
+        },
+      ],
     },
     {
       offerId: 2,
@@ -97,11 +97,11 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              productConfigurationId: 5
-            }
-          ]
-        }
-      ]
+              productConfigurationId: 5,
+            },
+          ],
+        },
+      ],
     },
     {
       offerId: 3,
@@ -128,11 +128,11 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: false,
               price: 0.0,
               priceType: SubscriptionPriceType.free,
-              productConfigurationId: 6
-            }
-          ]
-        }
-      ]
+              productConfigurationId: 6,
+            },
+          ],
+        },
+      ],
     },
     {
       offerId: 4,
@@ -159,12 +159,12 @@ export function getMockedSubscriptionOffersServices() {
               isOptionnal: true,
               price: 0.0,
               priceType: SubscriptionPriceType.exact,
-              productConfigurationId: 7
-            }
-          ]
-        }
-      ]
-    }
+              productConfigurationId: 7,
+            },
+          ],
+        },
+      ],
+    },
   ] satisfies SubscriptionOfferServices[] as SubscriptionOfferServices[]
 
   return Subscription

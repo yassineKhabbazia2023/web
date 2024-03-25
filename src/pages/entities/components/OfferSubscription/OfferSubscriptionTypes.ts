@@ -2,6 +2,6 @@ import type { SubscriptionOfferServices } from '../SubscriptionOffers/Subscripti
 import type { SelectedProduct } from '../OffersDrawer/OffersDrawerTypes'
 
 export interface OfferSubscriptionProps {
-  subscriptionOffer: SubscriptionOfferServices,
+  subscriptionOffer: SubscriptionOfferServices
   selectedProducts: SelectedProduct[]
 }

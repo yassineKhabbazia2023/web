@@ -1,5 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
-import { VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
@@ -15,20 +16,20 @@ const testEntity = { idAccount: mockTableData[0].id, name: mockTableData[0].name
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
-      post: postMock
-    }
+      post: postMock,
+    },
   }),
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        id: contactId
+        id: contactId,
       },
-      isCollab: true
+      isCollab: true,
     }),
     getters: {
-      defaultEntity: () => testEntity
-    }
-  })
+      defaultEntity: () => testEntity,
+    },
+  }),
 }))
 
 const pinia = createTestingPinia()
@@ -37,12 +38,12 @@ const createWrapper = (): VueWrapper<any> =>
   mount(TableData, {
     props: {
       data: mockTableData,
-      handleAddFavorite: handleFavorites
+      handleAddFavorite: handleFavorites,
     },
     attachTo: document.body,
     global: {
-      plugins: [pinia]
-    }
+      plugins: [pinia],
+    },
   })
 
 const collaboratorsColumnLabels =
@@ -54,7 +55,7 @@ const collaboratorsColumnLabels =
   'City',
   'Hub',
   'Status',
-  'Option'
+  'Option',
 ]
 const clientsColumnLabels =
 [
@@ -63,7 +64,7 @@ const clientsColumnLabels =
   'Leader',
   'Email',
   'City',
-  'Option'
+  'Option',
 ]
 
 describe('tableData', () => {
@@ -75,7 +76,7 @@ describe('tableData', () => {
     wrapper = createWrapper()
     store = commonStore(pinia)
     store.$patch({
-      user: {}
+      user: {},
     })
 
     await flushPromises()
@@ -107,8 +108,8 @@ describe('tableData', () => {
       owner: {
         email,
         firstName,
-        lastName
-      }
+        lastName,
+      },
     } = mockTableData[0]
 
     const firstRowText = rows[0].text()
@@ -127,11 +128,11 @@ describe('tableData', () => {
   })
 
   it('should resend activation mail & success toaster when click on resend email button', async () => {
-    await postMock.mockReturnValueOnce({
+    postMock.mockReturnValueOnce({
       status: 200,
       data: {
-        webToken: 'token'
-      }
+        webToken: 'token',
+      },
     })
     const notificationToaster = document.body.getElementsByClassName('el-notification__content')
     expect(notificationToaster.length).toBeLessThanOrEqual(0)
@@ -140,7 +141,7 @@ describe('tableData', () => {
     await nextTick()
     const notifTextSuccess = 'A new activation email for'
     const {
-      id
+      id,
     } = mockTableData[1]
     expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
     const notificationContent = document.body.getElementsByClassName('el-notification__content')[0].innerHTML
@@ -148,11 +149,11 @@ describe('tableData', () => {
   })
 
   it('should show error toaster when click on resend email button', async () => {
-    await postMock.mockReturnValueOnce({
+    postMock.mockReturnValueOnce({
       status: 500,
       data: {
-        webToken: ''
-      }
+        webToken: '',
+      },
     })
     const notifTextError = 'A problem occurred while sending the activation email for '
     const notificationToaster = document.body.getElementsByClassName('el-notification__content')
@@ -162,7 +163,7 @@ describe('tableData', () => {
     resendEmailButton.click()
     await nextTick()
     const {
-      id
+      id,
     } = mockTableData[1]
     expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
     const notificationContent = document.body.getElementsByClassName('el-notification__content')[1].innerHTML
@@ -199,7 +200,7 @@ describe('tableData', () => {
 
     expect(wrapper.emitted('access')).toStrictEqual([[id]])
   })
-  it('should change ibs selected and emit access', async () => {
+  it('should change ibs selected and emit access', () => {
     const ibsLink = document.body.getElementsByClassName('link')[0] as HTMLElement
     ibsLink.click()
 
@@ -209,10 +210,10 @@ describe('tableData', () => {
         entities: {
           default: {
             name: testEntity.name,
-            idAccount: testEntity.idAccount
-          }
-        }
-      }
+            idAccount: testEntity.idAccount,
+          },
+        },
+      },
     })
   })
 
@@ -227,7 +228,7 @@ describe('tableData', () => {
 
   it('should display the correct columns when the user is a client', async () => {
     store.$patch({
-      isCollab: false
+      isCollab: false,
     })
     await nextTick()
     const pTableColumns = wrapper.findAllComponents({ name: 'ElTableColumn' })
