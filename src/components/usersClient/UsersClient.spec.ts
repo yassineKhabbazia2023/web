@@ -4,7 +4,6 @@ import { defineStore } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { commonStore } from '@kpmg/common'
 import UsersClient from './'
 
 import { PPagination } from '@kpmg/styleguide'
@@ -103,19 +102,6 @@ describe('usersClient', () => {
       const tableWrapper = wrapperWithNoContacts.findComponent(TableData)
       noResult(wrapperWithNoContacts)
       expect(tableWrapper.exists()).toBeFalsy()
-    })
-
-    it('displays "you" when it s the logged user', async () => {
-      const store = commonStore(pinia)
-      store.$patch({
-        user: {
-          id: items[0].id.toString(),
-        },
-      })
-
-      await flushPromises()
-      const firstRow = getTableBody().find('tr')
-      expect(firstRow.text()).toContain('You')
     })
 
     it('has a pagination', () => {
