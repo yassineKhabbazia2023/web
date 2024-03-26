@@ -1,3 +1,4 @@
+import type { SpyInstance } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
@@ -12,6 +13,7 @@ import { getInitials } from '@/helper'
 import type { IExtendedUser } from './types.ts'
 import { noResult } from '@/../tests'
 import TableData from './components/TableData'
+import FormSearch from '@/components/FormSearch'
 
 const contactsList = generateContactsMock({
   numberOfContactsToReturn: 15,
@@ -57,7 +59,10 @@ const totalPages = data.totalPages
 
 let wrapper: VueWrapper<any>
 
-const checkRowContent = (tableHtmlRow: string, contactsList: IExtendedUser[]) => {
+const checkRowContent = (
+  tableHtmlRow: string,
+  contactsList: IExtendedUser[],
+) => {
   contactsList.forEach((contact) => {
     const date = new Date(contact.createdAt)
 
@@ -76,8 +81,10 @@ const checkRowContent = (tableHtmlRow: string, contactsList: IExtendedUser[]) =>
 const getTableBody = () => wrapper.find('table tbody')
 
 describe('usersClient', () => {
+  let consoleErrorSpy: SpyInstance
   beforeEach(() => {
     wrapper = createWrapper()
+    consoleErrorSpy = vi.spyOn(console, 'error')
   })
 
   describe('rendering', () => {
@@ -105,8 +112,8 @@ describe('usersClient', () => {
           id: items[0].id.toString(),
         },
       })
-      await flushPromises()
 
+      await flushPromises()
       const firstRow = getTableBody().find('tr')
       expect(firstRow.text()).toContain('You')
     })
@@ -126,12 +133,47 @@ describe('usersClient', () => {
       )
     })
 
+    it('displays error message when API call fails', async () => {
+      mockGatewayGet.mockRejectedValueOnce(
+        new Error('Failed to fetch contacts'),
+      )
+
+      await wrapper.vm.fetch()
+
+      expect(wrapper.vm.state.isLoading).toBeFalsy()
+
+      expect(consoleErrorSpy).toHaveBeenCalledTimes(1)
+    })
+
     it('should fetch contacts upon on-page-range-changed event', () => {
       const pPagination = wrapper.findComponent(PPagination)
 
       pPagination.vm.$emit('on-page-range-changed', 2)
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+    })
+
+    it('should fetch contacts upon update:pCurrentPage event', () => {
+      const pPagination = wrapper.findComponent(PPagination)
+
+      pPagination.vm.$emit('update:pCurrentPage', 2)
+
+      expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+    })
+
+    it('should fetch contacts upon update:pPageSize event', () => {
+      const pPagination = wrapper.findComponent(PPagination)
+
+      pPagination.vm.$emit('update:pPageSize', 5)
+
+      expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+    })
+
+    it('should set search upon search-value-submitted event', async () => {
+      const formSearchWrapper = wrapper.findComponent(FormSearch)
+
+      await formSearchWrapper.vm.$emit('search-value-submitted', 'hello')
+      expect(wrapper.vm.state.search).toBe('hello')
     })
   })
 })

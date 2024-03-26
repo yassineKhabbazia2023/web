@@ -118,7 +118,7 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
     isLoggedUser: () => id.toString() === userStore.$state.user?.id,
     persona,
     id,
-    createdAt: createdAt ? d(new Date(createdAt), 'short') : '',
+    createdAt: d(new Date(createdAt), 'short'),
   }))
 
 const fetch = async () => {
