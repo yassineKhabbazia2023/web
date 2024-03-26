@@ -160,8 +160,8 @@ import {
 } from '@kpmg/styleguide'
 import { computed, onMounted, reactive, watch } from 'vue'
 import { PAGE_SIZES } from '@/constants'
-import { getInitials } from '@/helper'
-import type { IStateUser, IUserStatus } from './types'
+import { getInitials, getPaginationLabel } from '@/helper'
+import type { IStateUser, IUserStatus, IUser } from './types'
 import { dataFromApi } from './mockData'
 
 const state: IStateUser = reactive({
@@ -259,12 +259,7 @@ const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
 }
 
-const paginationLabel = computed(() =>
-  `${1 + ((state.currentPage - 1) * state.limit)}
-   - ${((state.currentPage - 1) * state.limit) +
-    state.data.length}
-   ${t('on')} ${state.totalItems}`,
-)
+const paginationLabel = computed(() => getPaginationLabel<IUser>(t('on'), state))
 
 onMounted(async () => {
   await fetch()

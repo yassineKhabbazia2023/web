@@ -1,3 +1,4 @@
+import type { PaginationData } from '@/helper/helperTypes'
 import type { Component } from 'vue'
 
 export interface IUserStatus {
@@ -16,11 +17,10 @@ export interface IUser {
   firstDateAccess: string
 }
 
-export interface IStateUser {
-  data: IUser[]
+export interface IStateUser extends PaginationData<IUser> {
   currentPage: number
   limit: number
-  totalPage: number
   totalItems: number
+  totalPage: number
   isLoading: boolean | undefined
 }

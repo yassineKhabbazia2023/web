@@ -1,10 +1,12 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import {
   formatDateToLocale,
   generateObject,
   getInitials,
   removeFalsyValues,
+  getPaginationLabel,
 } from './helper'
+import type { PaginationData } from './helperTypes'
 
 describe('getInitials', () => {
   it.each([
@@ -50,5 +52,34 @@ describe('removeFalsyValues', () => {
       f: 0,
     }
     expect(removeFalsyValues(OBJECT_WITH_FALSY_VALUES)).toStrictEqual({ b: 'b' })
+  })
+})
+
+describe('getPaginationLabel', () => {
+  let params: PaginationData<number>
+  beforeEach(() => {
+    params = {
+      currentPage: 1,
+      limit: 10,
+      data: [0, 1, 2, 3, 4],
+      totalItems: 55,
+    }
+  })
+  it('should return proper pagination label when value are given', () => {
+    const paginationLabel = getPaginationLabel<number>('sur', params)
+    const expected = '1 - 5 sur 55'
+    expect(paginationLabel).toBe(expected)
+  })
+
+  it('should return proper pagination label when totalItems is undefined', () => {
+    params.totalItems = undefined
+    const paginationLabel = getPaginationLabel('sur', params)
+    expect(paginationLabel).toBe('')
+  })
+
+  it('should return proper pagination label when currentPage is undefined', () => {
+    params.currentPage = undefined
+    const paginationLabel = getPaginationLabel('sur', params)
+    expect(paginationLabel).toBe('')
   })
 })
