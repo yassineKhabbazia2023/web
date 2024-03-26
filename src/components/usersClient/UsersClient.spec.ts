@@ -7,10 +7,10 @@ import { commonStore } from '@kpmg/common'
 import UsersClient from './'
 
 import { PPagination } from '@kpmg/styleguide'
-import { generateContactsMock } from '@/tests/mocks/contactsDataMock'
+import { generateContactsMock } from '@/../tests/mocks/contactsDataMock'
 import { getInitials } from '@/helper'
 import type { IExtendedUser } from './types.ts'
-import { noResult } from '@/tests'
+import { noResult } from '@/../tests'
 import TableData from './components/TableData'
 
 const contactsList = generateContactsMock({
