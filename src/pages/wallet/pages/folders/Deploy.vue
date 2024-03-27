@@ -83,7 +83,7 @@ import { storeToRefs } from 'pinia'
 import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
-import { removeFalsyValues } from '@/helper'
+import { removeFalsyValues, getPaginationLabel } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
 import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '../../types'
 import Filters from '../../components/Filters'
@@ -144,12 +144,7 @@ const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
 }
 
-const paginationLabel = computed(() =>
-  `${1 + ((state.currentPage - 1) * state.limit)}
-   - ${((state.currentPage - 1) * state.limit) +
-    state.data.length}
-   ${t('on')} ${state.totalItems}`,
-)
+const paginationLabel = computed(() => getPaginationLabel<IEntity>(t('on'), state))
 
 const DEFAULT_ENTITY_VALUES = {
   ibs: 'IBS93781560ZE19',

@@ -1,3 +1,5 @@
+import type { PaginationData } from '@/helper/helperTypes'
+
 export interface ICollab {
   id: string
   fullName: string
@@ -16,12 +18,8 @@ export interface IExtendedCollab extends ICollab {
   initials: string
 }
 
-export interface IState {
-  data: IExtendedCollab[]
-  currentPage: number
-  limit: number
+export interface IState extends PaginationData<IExtendedCollab> {
   totalPages: number | undefined
-  totalItems: number | undefined
   search: string | undefined
   isLoading: boolean | undefined
 }

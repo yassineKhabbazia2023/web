@@ -42,7 +42,7 @@ import {
   PLoader,
   PPagination,
 } from '@kpmg/styleguide'
-import { getInitials, removeFalsyValues } from '@/helper'
+import { getInitials, removeFalsyValues, getPaginationLabel } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
 import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
@@ -73,12 +73,7 @@ const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
 }
 
-const paginationLabel = computed(() =>
-  `${1 + ((state.currentPage - 1) * state.limit)}
-    - ${((state.currentPage - 1) * state.limit) +
-    state.data.length}
-    ${t('on')} ${state.totalItems}`,
-)
+const paginationLabel = computed(() => getPaginationLabel<IExtendedCollab>(t('on'), state))
 
 const shouldShowPagination = computed(() =>
   !state.isLoading && !!state.totalItems && state.totalItems > state.limit,

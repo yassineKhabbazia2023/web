@@ -1,3 +1,4 @@
+import type { PaginationData } from '@/helper/helperTypes'
 import type { Component } from 'vue'
 
 export interface IEntity {
@@ -17,12 +18,8 @@ export interface IEntity {
   deploymentStatus: number
 }
 
-export interface IState {
-  data: IEntity[]
-  currentPage: number
-  limit: number
+export interface IState extends PaginationData<IEntity> {
   totalPage: number | undefined
-  totalItems: number | undefined
   search: string | undefined
   isLoading: boolean | undefined
   filterByDeploymentStatus: string | undefined

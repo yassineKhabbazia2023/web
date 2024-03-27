@@ -1,3 +1,5 @@
+import type { PaginationData } from './helperTypes'
+
 export const handleRequestError = (action: string, error: any) => {
   console.error(`Error ${action}:`, error)
 }
@@ -41,3 +43,20 @@ export const removeFalsyValues = (obj: object) =>
     (acc: any, [key, value]) => (value ? ((acc[key] = value), acc) : acc),
     {},
   )
+
+export function getPaginationLabel<T>(onLabel: string, {
+  currentPage,
+  limit,
+  data,
+  totalItems,
+}: PaginationData<T>) {
+  if (currentPage === undefined || limit === undefined || totalItems === undefined) {
+    return ''
+  }
+  const displayCount = data.length
+  const pageIndex = currentPage - 1
+  const firstRowNumber = 1 + pageIndex * limit
+  const lastRowNumber = pageIndex * limit + displayCount
+
+  return `${firstRowNumber} - ${lastRowNumber} ${onLabel} ${totalItems}`
+}
