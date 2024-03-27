@@ -1,59 +1,23 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
 import { commonStore, commonPinia as pinia } from '@kpmg/common'
-import NoResult from '@/components/NoResult'
 import TableData from '../../components/TableData'
 import Deploy from '.'
 import { EntityStatus } from '../../components/Filters/types'
-import { ElCheckbox } from 'element-plus'
+import * as DeployUtils from './DeployUtils'
+import { nextTick } from 'vue'
+import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtilsMock'
 import { getMockedAccount } from '@/services/account/accountMock'
 
 const accountId = 5
 const mockedAccount = getMockedAccount()
 
 const putFavoriteMock = vi.fn()
-const getDisplayMock = vi.fn((_arg) =>
-  Promise.resolve({
-    data: {
-      currentPage: 1,
-      totalPage: 1,
-      totalItems: 2,
-      items: [
-        {
-          id: '8126f51d-c834-4fda-82ea-00d51ee11983',
-          accountNumber: 'V900000489',
-          name: 'Tesla',
-          city: 'Paris',
-          owner: {
-            firstName: null,
-            lastName: null,
-            email: null,
-            phoneNumber: '',
-          },
-          deploymentStatus: 2,
-          isFavorite: false,
-        },
-        {
-          id: '8126f51d-c834-4fda-82ea-00d51ee11985',
-          accountNumber: 'V900000483',
-          name: 'Tesla',
-          city: 'Paris',
-          owner: {
-            firstName: null,
-            lastName: null,
-            email: null,
-            phoneNumber: '',
-          },
-          deploymentStatus: 1,
-          isFavorite: false,
-        },
-      ],
-    },
-  }),
-)
+const mockedQueryResult = getMockedWalletQueryResult()
+
 const getFavoritesMock = vi.fn(() =>
   Promise.resolve({
     data: [{
@@ -67,10 +31,7 @@ vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     wallet: {
       put: putFavoriteMock,
-      get: (arg: string) =>
-        arg === 'favorites'
-          ? getFavoritesMock()
-          : getDisplayMock(arg),
+      get: (_url: string) => getFavoritesMock(),
     },
     gateway: {
       get: vi.fn().mockImplementation((url) => {
@@ -110,6 +71,10 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+vi.mock('./DeployUtils', async () => {
+  return await vi.importActual('./DeployUtils')
+})
+
 const createWrapper = (): VueWrapper<any> =>
   mount(Deploy, {
     attachTo: document.body,
@@ -122,19 +87,27 @@ const createWrapper = (): VueWrapper<any> =>
 const findSubscriptionDrawer = (wrapper: VueWrapper) =>
   wrapper.findComponent('[data-testid=offers-drawer]') as VueWrapper
 
-describe('wallet', () => {
-  setActivePinia(pinia)
+setActivePinia(pinia)
+describe('test Deploy', () => {
+  let mockFetchWalletData: SpyInstance
+  beforeEach(() => {
+    mockFetchWalletData = vi
+      .spyOn(DeployUtils, 'fetchWalletData')
+      .mockResolvedValue(mockedQueryResult)
+  })
 
   it('should display correct button by nombre selected ibs', async () => {
     const wrapper = createWrapper()
     await flushPromises()
     const button = wrapper.find('.el-button')
     expect(button.text()).toBe('Delegate my wallet')
-    const checkbox = wrapper.findAllComponents(ElCheckbox)[0]
-    await checkbox.trigger('click')
+    const checkbox = wrapper.findAllComponents({ name: 'ElCheckbox' })[0]
+    checkbox.trigger('click')
+    await nextTick()
     expect(button.text()).toBe('Delegate my folder')
-    const checkbox1 = wrapper.findAllComponents(ElCheckbox)[1]
-    await checkbox1.trigger('click')
+    const checkbox1 = wrapper.findAllComponents({ name: 'ElCheckbox' })[1]
+    checkbox1.trigger('click')
+    await nextTick()
     expect(button.text()).toBe('Delegate my folders')
   })
 
@@ -142,7 +115,7 @@ describe('wallet', () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    expect(getDisplayMock).toHaveBeenCalledTimes(1)
+    expect(mockFetchWalletData).toHaveBeenCalledOnce()
     expect(wrapper.findComponent(TableData).exists()).toBeTruthy()
   })
 
@@ -154,23 +127,26 @@ describe('wallet', () => {
     await wrapper.find('input[type="search"]').trigger('keyup')
     await flushPromises()
 
-    expect(getDisplayMock).toHaveBeenCalledTimes(2)
-    expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
-    expect(getDisplayMock).toHaveBeenNthCalledWith(
-      2,
-      `display?page=1&limit=15&search=${SEARCH_VALUE}`,
-    )
+    const expectedSearchCriteria = getMockedSearchCriteria({
+      currentPage: 0,
+      filterByDeploymentStatus: '',
+      limit: 15,
+      search: SEARCH_VALUE,
+    })
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(2, expect.anything(), expectedSearchCriteria)
   })
 
   it('should not call api when user search with less than 3 characters', async () => {
     const wrapper = createWrapper()
-    expect(getDisplayMock).toHaveBeenCalledTimes(1)
 
     await wrapper.find('input[type="search"]').setValue('az')
     await wrapper.find('input[type="search"]').trigger('keyup')
     await flushPromises()
 
-    expect(getDisplayMock).not.toHaveBeenCalledTimes(2)
+    expect(mockFetchWalletData).toHaveBeenCalledOnce()
+    expect(mockFetchWalletData).not.toHaveBeenCalledTimes(2)
   })
 
   it('displays drawer when click on deploy', async () => {
@@ -178,7 +154,8 @@ describe('wallet', () => {
     await flushPromises()
 
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
-    await table.vm.$emit('click-deploy', 1, 'a', 'b')
+    table.vm.$emit('click-deploy', 1, 'a', 'b')
+    await nextTick()
 
     const subscriptionDrawer = findSubscriptionDrawer(wrapper)
     expect(subscriptionDrawer.exists()).toBeTruthy()
@@ -189,11 +166,13 @@ describe('wallet', () => {
     await flushPromises()
 
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
-    await table.vm.$emit('click-deploy', 1, 'a', 'b')
+    table.vm.$emit('click-deploy', 1, 'a', 'b')
+    await nextTick()
 
     const subscriptionDrawer = findSubscriptionDrawer(wrapper)
     expect(subscriptionDrawer.exists()).toBeTruthy()
-    await (subscriptionDrawer as VueWrapper).vm.$emit('update:modelValue', false)
+    subscriptionDrawer.vm.$emit('update:modelValue', false)
+    await nextTick()
 
     const subscriptionDrawerAfter = findSubscriptionDrawer(wrapper)
     expect(subscriptionDrawerAfter.exists()).toBeFalsy()
@@ -203,7 +182,8 @@ describe('wallet', () => {
     const wrapper = createWrapper()
     await flushPromises()
     const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
-    await table.vm.$emit('access', '8126f51d-c834-4fda-82ea-00d51ee11983')
+    table.vm.$emit('access', '8126f51d-c834-4fda-82ea-00d51ee11983')
+    await nextTick()
 
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({
@@ -213,41 +193,55 @@ describe('wallet', () => {
   })
 
   it('displays a specific component if no items in response API', async () => {
-    getDisplayMock.mockResolvedValueOnce({
-      data: {
-        currentPage: 1,
-        totalPage: 1,
-        totalItems: 0,
-        items: [],
-      },
+    const mockedQueryResultNoItems = getMockedWalletQueryResult({
+      currentPage: 1,
+      totalPage: 1,
+      totalItems: 0,
+      items: [],
     })
+    mockFetchWalletData.mockResolvedValueOnce(mockedQueryResultNoItems)
 
     const wrapper = createWrapper()
     await flushPromises()
-    expect(wrapper.findComponent(NoResult).exists()).toBeTruthy()
+
+    const noResult = wrapper.findComponent({ name: 'NoResult' })
+    expect(noResult.exists()).toBeTruthy()
   })
+
   it('should call api with the right filter when filterByStatus event is triggered', async () => {
     const wrapper = createWrapper()
     await flushPromises()
     const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
-    await tags.vm.$emit('filterByStatus', EntityStatus.TO_DEPLOY)
+    tags.vm.$emit('filterByStatus', EntityStatus.TO_DEPLOY)
+    await nextTick()
 
-    expect(getDisplayMock).toHaveBeenCalledTimes(2)
-    expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
-    expect(getDisplayMock).toHaveBeenNthCalledWith(
-      2,
-      `display?page=1&limit=15&deploymentStatus=${EntityStatus.TO_DEPLOY}`,
-    )
+    const expectedSearchCriteria = getMockedSearchCriteria({
+      currentPage: 0,
+      filterByDeploymentStatus: '1',
+      limit: 15,
+      search: '',
+    })
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(2, expect.anything(), expectedSearchCriteria)
   })
 
-  it('should call api without filter when removeFilter  event is triggered', async () => {
+  it('should call api without filter when removeFilter event is triggered', async () => {
     const wrapper = createWrapper()
     await flushPromises()
     const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
-    await tags.vm.$emit('removeFilter')
+    tags.vm.$emit('removeFilter')
+    await nextTick()
 
-    expect(getDisplayMock).toHaveBeenCalledTimes(1)
-    expect(getDisplayMock).toHaveBeenNthCalledWith(1, 'display?page=1&limit=15')
+    const expectedSearchCriteria = getMockedSearchCriteria({
+      currentPage: 0,
+      filterByDeploymentStatus: undefined,
+      limit: 15,
+      search: '',
+    })
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(2, expect.anything(), expectedSearchCriteria)
   })
 
   it('should not displayed the filters component if the user is client', async () => {

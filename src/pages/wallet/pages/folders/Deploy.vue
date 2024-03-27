@@ -23,15 +23,15 @@
       />
     </div>
 
-    <PLoader v-if="state.isLoading" />
+    <PLoader v-if="isLoading" />
 
-    <div v-if="!state.isLoading">
-      <NoResult v-if="!state.data.length" />
+    <div v-if="isLoading === false">
+      <NoResult v-if="searchResult.items.length === 0" />
 
       <TableData
         data-testid="table"
-        v-if="!!state.data.length"
-        :data="state.data"
+        v-if="searchResult.items.length > 0"
+        :data="searchResult.items"
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
@@ -39,11 +39,12 @@
       />
 
       <PPagination
-        v-if="!!state.totalItems && state.totalItems > state.limit"
+        v-if="searchResult.totalItems > searchCriteria.limit"
         @on-page-range-changed="handlePageRangeChanged"
-        v-model:p-current-page="state.currentPage"
-        v-model:p-page-size="state.limit"
-        :pTotal="state.totalItems"
+        :pCurrentPage="searchResult.currentPage"
+        @update:p-current-page="onUpdateCurrentPage"
+        v-model:p-page-size="searchCriteria.limit"
+        :pTotal="searchResult.totalItems"
         :pPageSizes="PAGE_SIZES"
         :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
         pPageSizeSelectorSuffix=""
@@ -83,11 +84,17 @@ import { storeToRefs } from 'pinia'
 import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
-import { removeFalsyValues, getPaginationLabel } from '@/helper'
+import { getPaginationLabel } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
-import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '../../types'
-import Filters from '../../components/Filters'
 import type { EntityStatus } from '../../components/Filters/types'
+import { fetchWalletData } from './DeployUtils'
+import type {
+  SearchCriteria,
+  SearchResult,
+  ICommonEntitiesInFavorite,
+  DeploymentStatus,
+} from '../../types'
+import Filters from '../../components/Filters'
 import TableData from '../../components/TableData'
 
 const { t } = useI18n({
@@ -101,7 +108,7 @@ const selectedCompanyName = ref('')
 const { isCollab, user } = storeToRefs(userStore)
 
 // table part
-const DEPLOYMENTS = [
+const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   {
     text: t('toDeploy'),
     icon: PIArrowUpCircle,
@@ -117,34 +124,36 @@ const DEPLOYMENTS = [
     icon: PICheckCircle,
     color: 'success',
   },
-]
+] as const
 
-const getInitial = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
-  if (firstName && lastName) {
-    return firstName[0] + lastName[0]
-  }
-}
-
-const state: IState = reactive({
-  data: [],
-  currentPage: 1,
+const isLoading = ref<boolean | undefined>()
+const searchCriteria = ref<SearchCriteria>({
+  currentPage: 0,
   limit: 15,
-  totalPage: undefined,
-  totalItems: undefined,
-  search: undefined,
-  isLoading: undefined,
-  filterByDeploymentStatus: undefined,
+  search: '',
+  filterByDeploymentStatus: '',
+})
+const searchResult = ref<SearchResult>({
+  currentPage: 0,
+  items: [],
+  totalPage: 0,
+  totalItems: 0,
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {
-  state.search = searchValue
+  searchCriteria.value.search = searchValue
 }
 
-const handlePageRangeChanged = (newValue: number) => {
-  state.limit = newValue
+const handlePageRangeChanged = (pageRange: number) => {
+  searchCriteria.value.limit = pageRange
 }
 
-const paginationLabel = computed(() => getPaginationLabel<IEntity>(t('on'), state))
+const paginationLabel = computed(() => getPaginationLabel(t('on'), {
+  currentPage: searchCriteria.value.currentPage,
+  limit: searchCriteria.value.currentPage,
+  data: searchResult.value.items,
+  totalItems: searchResult.value.totalItems,
+}))
 
 const DEFAULT_ENTITY_VALUES = {
   ibs: 'IBS93781560ZE19',
@@ -172,68 +181,19 @@ const putEntitiesInCommonFavorite = (data: ICommonEntitiesInFavorite[]) => {
   })
 }
 
-const getQueryParams = () => ({
-  page: state.currentPage,
-  limit: state.limit,
-  search: state.search,
-  deploymentStatus: state.filterByDeploymentStatus,
-})
-
-const fetch = async () => {
-  const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
-  const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
-  state.isLoading = true
-
+async function fetch() {
+  isLoading.value = true
   try {
-    const {
-      data: {
-        items,
-        currentPage,
-        totalPage,
-        totalItems,
-      },
-    } = await commonApi().wallet.get(`display?${searchParams}`)
-    state.data = items.map(({
-      owner,
-      city,
-      deploymentStatus,
-      hub,
-      ...rest
-    }: IEntity, index: number): IWalletData =>
-      ({
-        owner: {
-          ...owner,
-          firstName: owner.firstName?.toLowerCase() ?? '',
-          lastName: owner.lastName?.toLowerCase() ?? '',
-          initials: getInitial({
-            firstName: owner.firstName,
-            lastName: owner.lastName,
-          }),
-          avatarColor: owner.avatarColor ?? getColor(index),
-        },
-        hub: hub ?? 'Paris',
-        city: city?.toLowerCase() ?? '',
-        deploymentStatus: DEPLOYMENTS[deploymentStatus - 1],
-        ...rest,
-      }))
-    state.currentPage = currentPage
-    state.totalPage = totalPage
-    state.totalItems = totalItems
-  } catch (err) {
-    console.error(err)
+    const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, searchCriteria.value)
+
+    searchResult.value.items = queryResult.items
+    searchResult.value.currentPage = queryResult.currentPage
+    searchResult.value.totalPage = queryResult.totalPage
+    searchResult.value.totalItems = queryResult.totalItems
+  } catch (e) {
+    console.error('Error while fetching data', e)
   }
-  state.isLoading = false
-}
-
-const COLOR = [
-  'persian', 'orange', 'green', 'teal', 'fuschia',
-]
-
-/// function predictable color
-/// to replace by real data from api when api is done
-const getColor = (index: number) => {
-  const colorIndex = index % COLOR.length
-  return COLOR[colorIndex]
+  isLoading.value = false
 }
 
 const fetchTableDataAndFavorites = async () => {
@@ -249,17 +209,21 @@ const handleAddFavorite = async (accountId: string, isFavorite: boolean) => {
   fetchTableDataAndFavorites()
 }
 
+function onUpdateCurrentPage(currentPage: number) {
+  searchCriteria.value.currentPage = currentPage
+}
+
 onMounted(async () => {
   await fetchTableDataAndFavorites()
+})
 
-  watch(() => [
-    state.currentPage,
-    state.limit,
-    state.search,
-    state.filterByDeploymentStatus,
-  ], async () => {
-    await fetch()
-  })
+watch(() => [
+  searchCriteria.value.currentPage,
+  searchCriteria.value.limit,
+  searchCriteria.value.search,
+  searchCriteria.value.filterByDeploymentStatus,
+], async () => {
+  await fetch()
 })
 
 const openOffersDrawer = ref(false)
@@ -276,10 +240,10 @@ const onClickFolder = (id: string) => {
   router.push({ name: 'folder', params: { id } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
-  state.filterByDeploymentStatus = filterValue.toString()
+  searchCriteria.value.filterByDeploymentStatus = filterValue.toString()
 }
 const handleRemoveFilter = () => {
-  state.filterByDeploymentStatus = undefined
+  searchCriteria.value.filterByDeploymentStatus = undefined
 }
 
 const selectedFolders: string[] = reactive([])
