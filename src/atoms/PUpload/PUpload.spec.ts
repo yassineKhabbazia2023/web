@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PUpload from './'
 import type { UploadProps } from './PUploadTypes'
-import { ElUpload } from 'element-plus'
 
 const defaultProps: UploadProps = {
   pMultiple: true,
@@ -18,14 +17,13 @@ const createWrapper = (props = defaultProps) =>
 
 describe('pUpload', () => {
   describe('props', () => {
-    it('should renders the upload with provided props', () => {
-      const wrapper = createWrapper()
-      const upload = wrapper.findComponent(ElUpload)
-      expect(upload.props('multiple')).toBeTruthy()
-      expect(upload.props('drag')).toBeFalsy()
-      expect(upload.props('showFileList')).toBeFalsy()
-      expect(upload.props('disabled')).toBeFalsy()
-      expect(upload.props('accept')).toBe('image/png, image/jpeg')
+    it('should renders the upload file line with provided props', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: 'file-line',
+      })
+      expect(wrapper.find('.p-upload--type-file-line').exists()).toBeTruthy()
+      expect(wrapper.find('.p-upload__input').exists()).toBeTruthy()
     })
   })
 

@@ -26,12 +26,23 @@
         </PButton>
       </PUpload>
     </Variant>
+    <Variant title="PUpload File Line">
+      <PUpload
+        pMultiple
+        pDrag
+        pShowFileList
+        pUploadType="file-line"
+        pTextLimitSize="5MB"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+      />
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import PUpload from '.'
-import PButton from '../PButton'
+import PButton from '@/atoms/PButton'
 </script>
 
 <docs lang="md">

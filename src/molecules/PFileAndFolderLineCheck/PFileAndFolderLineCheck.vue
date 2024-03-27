@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { iconResolver } from '@/utils/iconResolver'
-import { getFileExtension } from '@/utils/strings'
+import { getFileExtension } from '@/utils/fileExtension'
 import PCheckbox from '@/atoms/PCheckbox'
 import PLoader from '@/atoms/PLoader'
 import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckTypes'

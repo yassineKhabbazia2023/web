@@ -37,6 +37,7 @@
 @use './form/radio';
 @use './form/select';
 @use './form/switch';
+@use './form/upload';
 
 // Override Element-Plus variables
 @forward 'element-plus/theme-chalk/src/common/var.scss' with (
@@ -92,7 +93,8 @@
   $radio-bordered-input-width: radio.$radio-bordered-input-width,
   $radio-bordered-input-height: radio.$radio-bordered-input-height,
   $popover: popover.$popover,
-  $header: header.$header
+  $header: header.$header,
+  $upload: upload.$upload
 );
 
 @forward 'element-plus/theme-chalk/src/form.scss' with (

@@ -1,9 +1,0 @@
-// css3 var in packages/theme-chalk/src/upload.scss
-$upload: () !default;
-$upload: map.merge(
-  (
-    'dragger-padding-horizontal': 40px,
-    'dragger-padding-vertical': 10px,
-  ),
-  $upload
-);
