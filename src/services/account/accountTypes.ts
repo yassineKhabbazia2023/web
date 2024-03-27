@@ -89,7 +89,7 @@ export interface Account {
 export interface AccountRow {
     accountId: number
     accountGlobalUniqueId: string
-    accountNumber: number
+    accountNumber: string
     legalName: string
     isFavorite: boolean
     address: Address

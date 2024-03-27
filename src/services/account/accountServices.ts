@@ -19,7 +19,7 @@ export async function fetchAccounts(searchParams: string) {
   const url = `account/api/accounts/${searchParams}`
   const response = await commonApi().gateway.get<QueryResult<AccountRow>>(url)
 
-  return response?.data ?? []
+  return response?.data
 }
 
 export async function patchAccount(accountId: number, patchOperations: PatchOperation[]): Promise<void> {

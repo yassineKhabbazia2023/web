@@ -1,6 +1,5 @@
 import type { PatchOperation } from '@/services/PatchRecordService'
 import type { Account, AccountRow, Address, Signatory, Deployment } from '.'
-import type { QueryResult } from '@/types/commonTypes'
 
 export function getMockedAddress(override: Partial<Address> = {}): Address {
   const defaultAddress = {
@@ -54,7 +53,7 @@ export function getMockedAccountRow(override: Partial<AccountRow> = {}): Account
   const defaultAccountRow: AccountRow = {
     accountId: 1,
     accountGlobalUniqueId: 'account-global-unique-id',
-    accountNumber: 10102,
+    accountNumber: '10102',
     legalName: 'Legal Name',
     isFavorite: false,
     address: getMockedAddress(),
@@ -64,24 +63,6 @@ export function getMockedAccountRow(override: Partial<AccountRow> = {}): Account
 
   return {
     ...defaultAccountRow,
-    ...override,
-  }
-}
-
-export function getMockedAccountsQueryResult(override: Partial<QueryResult<AccountRow>> = {}): QueryResult<AccountRow> {
-  const accountRow1 = getMockedAccountRow()
-  const accountRow2 = getMockedAccountRow({ accountId: 2 })
-  const items = [accountRow1, accountRow2]
-
-  const queryResult = {
-    currentPage: 0,
-    items,
-    totalItems: items.length,
-    totalPage: 1,
-  }
-
-  return {
-    ...queryResult,
     ...override,
   }
 }
