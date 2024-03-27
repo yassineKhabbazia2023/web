@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest'
-import { fetchAccount, patchAccount } from '.'
+import { fetchAccount, fetchAccounts, patchAccount } from '.'
 import { getMockedAccount, getMockedPatchOperations } from './accountMock'
 import * as helper from '@/helper/helper'
 
@@ -21,6 +21,9 @@ vi.mock('@kpmg/common', () => {
         }),
         patch: mockedAccountApiPatch,
       },
+      gateway: {
+        get: vi.fn().mockResolvedValue({ data: [mockedAccount] }),
+      },
     }),
   }
 })
@@ -40,6 +43,16 @@ describe('test accountServices', () => {
       expect(handleRequestErrorSpy).toHaveBeenNthCalledWith(1, expectedMessage, expect.any(Error))
     })
   })
+
+  describe('fetchAccounts', () => {
+    it('should return proper accounts', async () => {
+      const searchParams = 'contactId=1'
+      const accounts = await fetchAccounts(searchParams)
+      const expectedAccounts = [mockedAccount]
+      expect(accounts).toMatchObject(expectedAccounts)
+    })
+  })
+
   describe('patchAccount', () => {
     it('should return updated account on success', async () => {
       await patchAccount(accountId, mockedPatchOperations)
