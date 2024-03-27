@@ -198,7 +198,7 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { commonApi, commonStore } from '@kpmg/common'
+import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import type { Props, Row } from './types'
 
 const { t } = useI18n({
@@ -291,12 +291,16 @@ const emit = defineEmits<{
 const handleRowSelectedChange = (row: any) => {
   const rowValues = toRaw(row)
   if (rowValues) {
-    const { name, id }: Row = rowValues
-    const defaultEntity = {
+    const { name, id, accountNumber }: Row = rowValues
+    // color is temporarily hard-coded
+    const defaultEntity: Entity = {
       name,
       idAccount: id,
+      color: 'persian',
+      ibs: accountNumber,
     }
 
+    localStorage.setItem('selected-entity', JSON.stringify(defaultEntity))
     userStore.$patch({
       user: {
         entities: {
