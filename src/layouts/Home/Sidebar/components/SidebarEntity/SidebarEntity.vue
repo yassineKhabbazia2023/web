@@ -1,11 +1,11 @@
 <template>
   <div :class="{ 'padding-right--0': !isSelectedEntityActive }">
     <nav
-      v-if="(!isCollab && totalEntities > 1) || isCollab"
+      v-if="(!isCollab && entities.length > 1) || isCollab"
       :class="[
         'sidenav-entity flex flex--direction-column',
         { 'sidenav-entity--opened': isSidebarOpened },
-        { 'sidenav-entity--is-collab': isCollab }
+        { 'sidenav-entity--is-collab': isCollab },
       ]"
       data-testid="sidenav-entity"
     >
@@ -13,7 +13,7 @@
       <ul class="sidenav-entity__actions flex flex--direction-column">
         <li
           :class="{
-            'text-right sidenav-entity__actions-toggle-item': isSidebarOpened
+            'text-right sidenav-entity__actions-toggle-item': isSidebarOpened,
           }"
         >
           <SidebarEntityItem
@@ -64,7 +64,7 @@
             :entity="selectedEntity"
             :hideTooltip="isSidebarOpened"
             :class="{
-              'sidenav__selected-item': isSelectedEntityActive
+              'sidenav__selected-item': isSelectedEntityActive,
             }"
           />
         </li>
@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
@@ -133,6 +133,7 @@ import {
 } from '@kpmg/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
+import { getDefaultEntity } from './utils'
 import SidebarEntityItem from './components/SidebarEntityItem'
 import SidebarEntityMenu from './components/SidebarEntityMenu'
 import EntityAvatar from './components/EntityAvatar'
@@ -146,7 +147,8 @@ const { t } = useI18n({
 
 const props = defineProps<SidebarEntityProps>()
 
-const { user, defaultEntity, favoriteEntities, isCollab } = storeToRefs(userStore)
+const { favoriteEntities, isCollab } =
+  storeToRefs(userStore)
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
 const selectedEntity = ref<Entity | undefined>(undefined)
@@ -210,25 +212,9 @@ const onEntitySelected = (entity: Entity) => {
   localStorage.setItem('selected-entity', JSON.stringify(entity))
 }
 
-watch(
-  user,
-  () => {
-    selectedEntity.value = defaultEntity.value as Entity
-  },
-  { deep: true },
-)
-
 onMounted(() => {
-  // The following code is temporary and will be replaced later
-  const savedSelectedEntity = localStorage.getItem('selected-entity')
-  if (savedSelectedEntity) {
-    selectedEntity.value = JSON.parse(savedSelectedEntity)
-    patchDefaultEntity(selectedEntity.value as Entity)
-  } else {
-    if (!isCollab.value && props.totalEntities === 1) {
-      selectedEntity.value = defaultEntity?.value
-    }
-  }
+  selectedEntity.value = getDefaultEntity(props.entities.at(0))
+  patchDefaultEntity(selectedEntity.value as Entity)
 })
 </script>
 

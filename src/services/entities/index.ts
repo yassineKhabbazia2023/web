@@ -1,10 +1,13 @@
 import { commonApi, commonStore as store } from '@kpmg/common'
 import type { Entity } from '@kpmg/common'
+import { API_PREFIXES } from '../config'
+import { getRandomColor } from '@/helper'
 
-const COLORS = ['orange', 'persian', 'cyan', 'amethyste']
 export const getEntities = async (): Promise<any> => {
   try {
-    const response = await commonApi().wallet.get('display')
+    const response = await commonApi().gateway.get(
+      `${API_PREFIXES.ACCOUNT}/accounts/currentuser`,
+    )
 
     if (response?.data) {
       return response.data
@@ -26,7 +29,7 @@ export const getFavoriteEntities = async (): Promise<Entity[]> => {
         ({ name, id: idAccount }: any) => ({
           name,
           idAccount,
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          color: getRandomColor(),
           ibs: 'IBS93781560ZE19',
         }),
       )
@@ -34,7 +37,6 @@ export const getFavoriteEntities = async (): Promise<Entity[]> => {
         user: {
           entities: {
             favorites: favoriteEntities,
-            default: favoriteEntities.at(0),
           },
         },
       })

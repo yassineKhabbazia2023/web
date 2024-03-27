@@ -1,21 +1,22 @@
 <template>
   <SidebarEntity
-    v-if="isEntitiesLoaded"
-    :totalEntities="totalEntities"
+    v-if="isEntitiesLoaded && entities?.length"
+    :entities="entities"
   />
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getFavoriteEntities, getEntities } from '@/services/entities'
+import type { Entity } from '@kpmg/common'
 import SidebarEntity from './components/SidebarEntity'
 
 const isEntitiesLoaded = ref<boolean>(false)
-const totalEntities = ref<number>(0)
+const entities = ref<Entity[]>([])
 
 onMounted(async () => {
   await getFavoriteEntities()
-  const { totalItems } = await getEntities()
-  totalEntities.value = totalItems as number
+  const { items } = await getEntities()
+  entities.value = items
   isEntitiesLoaded.value = true
 })
 </script>

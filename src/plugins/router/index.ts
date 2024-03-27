@@ -55,19 +55,21 @@ router.beforeEach(async (to: any, _from) => {
 
     if (entities.totalItems === 1) {
       const firstEntity = entities.items[0]
+      // color is temporarily hard-coded
       store.$patch({
         user: {
           entities: {
             default: {
-              idAccount: firstEntity.id,
-              name: firstEntity.name,
+              idAccount: firstEntity.accountId,
+              name: firstEntity.legalName,
               color: 'persian',
+              ibs: firstEntity.accountNumber,
             },
           },
         },
       })
 
-      router.push({ name: 'folder', params: { id: firstEntity.id } })
+      router.push({ name: 'folder', params: { id: firstEntity.accountId } })
     }
   }
 })

@@ -60,7 +60,7 @@ const { t } = useI18n({
 const props = defineProps<SidebarEntityMenuProps>()
 
 const isMenuCollapsed = ref<boolean>(true)
-const activeMenuItem = ref<string>(`/dossier/${props.selectedEntityId}/utilisateurs`)
+const activeMenuItem = ref<string>(`/dossier/${props.selectedEntityId}/gestion-utilisateurs`)
 
 const folderSubmenu = {
   index: 'folder',
@@ -69,7 +69,7 @@ const folderSubmenu = {
   menuItems: [
     {
       title: t('users'),
-      index: 'utilisateurs',
+      index: 'gestion-utilisateurs',
     },
     {
       title: t('collaborators'),
