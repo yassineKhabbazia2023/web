@@ -1,12 +1,16 @@
 import { describe, it, vi, expect } from 'vitest'
-import { fetchAccount, patchAccount } from '.'
-import { getMockedAccount, getMockedPatchOperations } from './accountMock'
+import { fetchAccount, fetchAccounts, patchAccount } from '.'
+import { getMockedAccount, getMockedAccountRow, getMockedPatchOperations } from './accountMock'
 import * as helper from '@/helper/helper'
 
 const accountId = 5
 const accountIdRejected = 8
+const SEARCH_CURRENT_USER = 'currentuser'
+const SEARCH_THROWS_ERROR = 'throw-error'
+const rejectedErrorMessage = 'rejected'
 
 const mockedAccount = getMockedAccount()
+const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedAccountApiPatch = vi.fn()
 
@@ -20,6 +24,13 @@ vi.mock('@kpmg/common', () => {
             : Promise.reject(new Error('rejected'))
         }),
         patch: mockedAccountApiPatch,
+      },
+      gateway: {
+        get: vi.fn().mockImplementation((url) => {
+          return url.includes(SEARCH_CURRENT_USER)
+            ? Promise.resolve({ data: [mockedAccountRow] })
+            : Promise.reject(new Error(rejectedErrorMessage))
+        }),
       },
     }),
   }
@@ -40,6 +51,24 @@ describe('test accountServices', () => {
       expect(handleRequestErrorSpy).toHaveBeenNthCalledWith(1, expectedMessage, expect.any(Error))
     })
   })
+
+  describe('fetchAccounts', () => {
+    it('should return proper accounts', async () => {
+      const searchParams = SEARCH_CURRENT_USER
+      const queryResult = await fetchAccounts(searchParams)
+      const expectedAccounts = [mockedAccountRow]
+      expect(queryResult).toMatchObject(expectedAccounts)
+    })
+
+    it('should throw an error when api throws an error', async () => {
+      const searchParams = SEARCH_THROWS_ERROR
+      const expectedErrorMessage = rejectedErrorMessage
+
+      await expect(async () => await fetchAccounts(searchParams))
+        .rejects.toThrow(expectedErrorMessage)
+    })
+  })
+
   describe('patchAccount', () => {
     it('should return updated account on success', async () => {
       await patchAccount(accountId, mockedPatchOperations)

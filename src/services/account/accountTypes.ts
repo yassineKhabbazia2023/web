@@ -57,6 +57,16 @@ export interface Deployment {
   deploymentDate?: string
   status: number
 }
+export interface Signatory {
+  contactId: number
+  globalContactId: string
+  firstName: string
+  lastName: string
+  email: string
+  status: string
+  personaName: string
+  creationDate: string
+}
 
 export interface Account {
   accountId: number
@@ -75,4 +85,14 @@ export interface Account {
   email?: string
   hub?: Hub
   deploymentPlanning?: Deployment[]
+}
+export interface AccountRow {
+    accountId: number
+    accountGlobalUniqueId: string
+    accountNumber: string
+    legalName: string
+    isFavorite: boolean
+    address: Address
+    signatory: Signatory
+    deployment: Deployment
 }

@@ -1,5 +1,71 @@
 import type { PatchOperation } from '@/services/PatchRecordService'
-import type { Account } from '.'
+import type { Account, AccountRow, Address, Signatory, Deployment } from '.'
+
+export function getMockedAddress(override: Partial<Address> = {}): Address {
+  const defaultAddress = {
+    addressId: 2,
+    addressLine1: 'Rue de liege',
+    addressLine2: 'test 2',
+    addressLine3: 'test 3',
+    country: 'France',
+    city: 'Paris',
+    zipCode: '25300',
+  }
+
+  return {
+    ...defaultAddress,
+    ...override,
+  }
+}
+
+export function getMockedSignatory(override: Partial<Signatory> = {}): Signatory {
+  const defaultSignatory = {
+    contactId: 22,
+    globalContactId: '231231-34234',
+    firstName: 'Signa',
+    lastName: 'Tory',
+    email: 'sign@kpmg.fr',
+    status: 'status',
+    personaName: 'person Name',
+    creationDate: '2024-03-25',
+  }
+
+  return {
+    ...defaultSignatory,
+    ...override,
+  }
+}
+
+export function getMockedDeployment(override: Partial<Deployment> = {}): Deployment {
+  const defaultDeployment: Deployment = {
+    deploymentId: 3242,
+    deploymentDate: '2024-02-01',
+    status: 1,
+  }
+
+  return {
+    ...defaultDeployment,
+    ...override,
+  }
+}
+
+export function getMockedAccountRow(override: Partial<AccountRow> = {}): AccountRow {
+  const defaultAccountRow: AccountRow = {
+    accountId: 1,
+    accountGlobalUniqueId: 'account-global-unique-id',
+    accountNumber: '10102',
+    legalName: 'Legal Name',
+    isFavorite: false,
+    address: getMockedAddress(),
+    signatory: getMockedSignatory(),
+    deployment: getMockedDeployment(),
+  }
+
+  return {
+    ...defaultAccountRow,
+    ...override,
+  }
+}
 
 export function getMockedAccount(): Account {
   return {
@@ -37,17 +103,7 @@ export function getMockedAccount(): Account {
       intra: 'FR 32 123456789',
       type: 'Encaissement',
     },
-    address: [
-      {
-        addressId: 2,
-        addressLine1: 'Rue de liege',
-        addressLine2: 'test 2',
-        addressLine3: 'test 3',
-        country: 'France',
-        city: 'Paris',
-        zipCode: '25300',
-      },
-    ],
+    address: [getMockedAddress()],
     phone: [
       {
         phoneId: 5,
