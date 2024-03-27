@@ -5,6 +5,9 @@ import * as helper from '@/helper/helper'
 
 const accountId = 5
 const accountIdRejected = 8
+const SEARCH_CURRENT_USER = 'currentuser'
+const SEARCH_THROWS_ERROR = 'throw-error'
+const rejectedErrorMessage = 'rejected'
 
 const mockedAccount = getMockedAccount()
 const mockedAccountRow = getMockedAccountRow()
@@ -23,7 +26,11 @@ vi.mock('@kpmg/common', () => {
         patch: mockedAccountApiPatch,
       },
       gateway: {
-        get: vi.fn().mockResolvedValue({ data: [mockedAccountRow] }),
+        get: vi.fn().mockImplementation((url) => {
+          return url.includes(SEARCH_CURRENT_USER)
+            ? Promise.resolve({ data: [mockedAccountRow] })
+            : Promise.reject(new Error(rejectedErrorMessage))
+        }),
       },
     }),
   }
@@ -47,10 +54,18 @@ describe('test accountServices', () => {
 
   describe('fetchAccounts', () => {
     it('should return proper accounts', async () => {
-      const searchParams = 'contactId=1'
-      const accounts = await fetchAccounts(searchParams)
+      const searchParams = SEARCH_CURRENT_USER
+      const queryResult = await fetchAccounts(searchParams)
       const expectedAccounts = [mockedAccountRow]
-      expect(accounts).toMatchObject(expectedAccounts)
+      expect(queryResult).toMatchObject(expectedAccounts)
+    })
+
+    it('should throw an error when api throws an error', async () => {
+      const searchParams = SEARCH_THROWS_ERROR
+      const expectedErrorMessage = rejectedErrorMessage
+
+      await expect(async () => await fetchAccounts(searchParams))
+        .rejects.toThrow(expectedErrorMessage)
     })
   })
 
