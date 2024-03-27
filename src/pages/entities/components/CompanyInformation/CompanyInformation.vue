@@ -84,10 +84,14 @@ const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
   emit('input', fieldKey, fieldValue)
 }
 
-onMounted(() => {
-  internalAccount.value = cloneDeep(props.modelValue)
-  if (props.providerName) {
-    formStructure.value = getOfferFormStructure(props.providerName)
+onMounted(async () => {
+  try {
+    internalAccount.value = cloneDeep(props.modelValue)
+    if (props.providerName) {
+      formStructure.value = await getOfferFormStructure(props.providerName)
+    }
+  } catch (e) {
+    console.error(e)
   }
 })
 </script>

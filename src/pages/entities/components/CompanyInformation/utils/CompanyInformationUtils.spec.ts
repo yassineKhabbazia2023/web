@@ -1,11 +1,22 @@
-import { it, expect, describe } from 'vitest'
+import { vi, it, expect, describe } from 'vitest'
 import {
-  getOfferFormStructure,
+  getOfferFormSections,
   getStaffSizeRange,
 } from './CompanyInformationUtils'
 import MEGOffersFormStructure from '../config/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '../config/LOOPOfferFormStructure.json'
 import type { ProviderFormName } from '../CompanyInformationTypes'
+import { getMockedAccountReferential, getMockedReferentialHubs } from '@/services/account/accountMock'
+import { getMockedFormSection } from '../CompanyInformationMock'
+
+vi.mock('@/services/account', () => ({
+  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
+  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
+}))
+
+vi.mock('@/common/referentialUtils', () => ({
+  getEnrichedFormSection: vi.fn(() => getMockedFormSection()),
+}))
 
 describe('utils', () => {
   describe('getOfferFormStructure', () => {
@@ -25,7 +36,7 @@ describe('utils', () => {
     ])(
       'should return correct form structure if the provider is $providerName',
       ({ providerName, offerFormStructure }) => {
-        const formStructure = getOfferFormStructure(
+        const formStructure = getOfferFormSections(
           providerName as ProviderFormName,
         )
 

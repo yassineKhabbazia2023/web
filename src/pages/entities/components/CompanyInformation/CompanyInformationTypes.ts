@@ -3,9 +3,13 @@ import { type Account } from '@/services/account'
 
 export type ProviderFormName = 'MEG' | 'LOOP' | undefined
 
+export interface FormField extends PFieldProps<string> {
+  referentialKey?: string
+}
+
 export type FormSection = {
   title: string
-  fields: PFieldProps<string>[]
+  fields: FormField[]
 }
 
 export interface CompanyInformationProps {

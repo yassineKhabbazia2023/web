@@ -1,4 +1,4 @@
-import { expect, describe, it, beforeEach } from 'vitest'
+import { vi, expect, describe, it, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
@@ -9,6 +9,10 @@ import { getMockedAccount } from '@/services/account/accountMock'
 
 const alertInstructionText = 'If the immutable information is incorrect, you need to update it in the CRM'
 const formInstructionText = 'Please provide the following necessary information for activation :'
+
+vi.mock('./utils/CompanyInformationUtils', () => ({
+  getOfferFormStructure: () => MEGOffersFormStructure,
+}))
 
 const createWrapper = () => {
   const account = getMockedAccount()
