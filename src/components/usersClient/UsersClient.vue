@@ -11,6 +11,7 @@
         <TableData
           v-if="state.data.length"
           :data="state.data"
+          @on-sort-change="handleSortChange"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -69,6 +70,7 @@ const state: IState = reactive({
   totalItems: undefined,
   search: undefined,
   isLoading: false,
+  sort: undefined,
 })
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
@@ -95,6 +97,7 @@ const getQueryParams = () => ({
   pageSize: state.limit,
   type: 'Customer',
   search: state.search,
+  sort: state.sort,
 })
 
 const formatItemsFromApi = (items: IUserFromApi[]) =>
@@ -147,6 +150,10 @@ const fetch = async () => {
   state.isLoading = false
 }
 
+const handleSortChange = (sortQueryField:string) => {
+  state.sort = sortQueryField
+}
+
 onMounted(async () => {
   await fetch()
 
@@ -154,6 +161,7 @@ onMounted(async () => {
     state.currentPage,
     state.limit,
     state.search,
+    state.sort,
   ], async () => {
     await fetch()
   })

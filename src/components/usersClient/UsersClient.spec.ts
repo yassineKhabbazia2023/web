@@ -167,5 +167,13 @@ describe('usersClient', () => {
       await formSearchWrapper.vm.$emit('search-value-submitted', 'hello')
       expect(wrapper.vm.state.search).toBe('hello')
     })
+
+    it('should fetch documents upon sort change', async () => {
+      const tableWrapper = wrapper.findComponent(TableData)
+
+      await tableWrapper.vm.$emit('on-sort-change', '+email')
+
+      expect(mockGatewayGet).toHaveBeenCalledTimes(2)
+    })
   })
 })

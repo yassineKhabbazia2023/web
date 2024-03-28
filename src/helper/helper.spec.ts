@@ -5,6 +5,7 @@ import {
   getInitials,
   removeFalsyValues,
   getPaginationLabel,
+  returnSortQueryField,
 } from './helper'
 import type { PaginationData } from './helperTypes'
 
@@ -81,5 +82,26 @@ describe('getPaginationLabel', () => {
     params.currentPage = undefined
     const paginationLabel = getPaginationLabel('sur', params)
     expect(paginationLabel).toBe('')
+  })
+
+  describe('should return the correct sort query field', () => {
+    const testCases = [
+      ['user', 'ascending', '+lastname'],
+      ['user', 'descending', '-lastname'],
+      ['email', 'ascending', '+email'],
+      ['email', 'descending', '-email'],
+      ['persona', 'ascending', '+persona'],
+      ['persona', 'descending', '-persona'],
+      ['createdAt', 'ascending', '+created'],
+      ['createdAt', 'descending', '-created'],
+    ]
+
+    it.each(testCases)(
+      'helper mapping with "%s"',
+      (columnLabel, order, expectedResult) => {
+        const actualResult = returnSortQueryField(columnLabel, order)
+        expect(actualResult).toBe(expectedResult)
+      },
+    )
   })
 })

@@ -28,4 +28,5 @@ export interface IState {
   totalItems: number | undefined
   search: string | undefined
   isLoading: boolean
+  sort: string | undefined
 }

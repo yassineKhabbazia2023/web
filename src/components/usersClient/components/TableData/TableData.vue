@@ -5,6 +5,7 @@
       showOverflowTooltip
       pStripe
       tableLayout="fixed"
+      @sort-change="handleSortChange"
     >
       <PTableColumn
         :pLabel="t('user')"
@@ -116,6 +117,7 @@ import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
+import { returnSortQueryField } from '@/helper'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -123,6 +125,7 @@ const { t } = useI18n({
 })
 
 const props = defineProps<Props>()
+const emit = defineEmits(['on-sort-change'])
 
 const { userInformation, modifyRights, deleteUser } = MENU_ACTIONS_NAME
 const menuElements : PToolboxItemProps[] = [
@@ -152,6 +155,13 @@ const state = reactive({
 
 const handleToolboxItemClick = (_action: string, row: any) => {
   state.rowData = row
+}
+
+const handleSortChange = (data:any) => {
+  const columnLabel = data.prop
+  const order = data.order
+  const sortQueryField = returnSortQueryField(columnLabel, order)
+  emit('on-sort-change', sortQueryField)
 }
 </script>
 

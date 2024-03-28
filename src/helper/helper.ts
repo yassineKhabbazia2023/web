@@ -60,3 +60,18 @@ export function getPaginationLabel<T>(onLabel: string, {
 
   return `${firstRowNumber} - ${lastRowNumber} ${onLabel} ${totalItems}`
 }
+
+export const returnSortQueryField = (columnProp: string, order: string | null) => {
+  const sortPrefix = order === 'ascending' ? '+' : '-'
+  let sortValue = 'lastname'
+
+  if (columnProp === 'user' && order !== null) sortValue = 'lastname'
+
+  if (columnProp === 'email' && order !== null) sortValue = 'email'
+
+  if (columnProp === 'createdAt' && order !== null) sortValue = 'created'
+
+  if (columnProp === 'persona' && order !== null) sortValue = 'persona'
+
+  return `${sortPrefix}${sortValue}`
+}
