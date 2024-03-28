@@ -19,6 +19,12 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
+vi.mock('@/services/wallet', () => ({
+  getCollaboratorsByIdEntity: vi.fn(() => {
+    return mockCollabsData
+  }),
+}))
+
 const pinia = createTestingPinia()
 
 const createWrapper = (): VueWrapper =>
@@ -54,6 +60,6 @@ describe('collaborators', () => {
     expectedCollab.hasAccess = true
     await switchComponent.trigger('click')
     const v = wrapper.emitted('accessSwitched')?.at(0)?.at(0) as Collab
-    expect(v.id).toBe(expectedCollab.id)
+    expect(v.globalContactId).toBe(expectedCollab.globalContactId)
   })
 })

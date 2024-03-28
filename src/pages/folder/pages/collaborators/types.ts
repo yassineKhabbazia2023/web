@@ -1,9 +1,9 @@
 export interface Collab {
-  id: string
+  globalContactId: string
   firstName: string
   lastName: string
   email: string
-  roleFunction : string
+  personaName : string
   office : string
   hasAccess : boolean
 }

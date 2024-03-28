@@ -1,15 +1,14 @@
 
 import type { Collab } from '@/pages/folder/pages/collaborators/types'
-import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
-import { handleRequestError } from '@/helper/helper'
+import { commonApi } from '@kpmg/common'
+import { API_PREFIXES } from '../config'
 
-export const getCollaboratorsByIdEntity = (
+export const getCollaboratorsByIdEntity = async (
   idEntity: string,
 ): Promise<Collab[]> => {
-  try {
-    return Promise.resolve(mockCollabsData)
-  } catch (error) {
-    handleRequestError(`fetching collabs for entity ${idEntity}`, error)
-  }
-  return Promise.resolve([])
+  const response = await commonApi().gateway.get(
+      `${API_PREFIXES.CUSTOMER_WALLER}/accounts/${idEntity}/contacts?Type=Collaborator`,
+  )
+
+  return response?.data
 }

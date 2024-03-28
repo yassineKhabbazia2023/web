@@ -57,7 +57,7 @@
     />
     <PTableColumn
       :pLabel="t('collaboratorFunction')"
-      pProp="roleFunction"
+      pProp="personaName"
       pSortable
     >
       <template #default="scope">
