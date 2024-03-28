@@ -96,3 +96,7 @@ export interface AccountRow {
     signatory: Signatory
     deployment: Deployment
 }
+
+export type ReferentialOptions = Record<string, string>
+
+export type ReferentialStructure = Record<string, ReferentialOptions>

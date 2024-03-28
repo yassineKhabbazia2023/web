@@ -1,5 +1,7 @@
 import type { PatchOperation } from '@/services/PatchRecordService'
-import type { Account, AccountRow, Address, Signatory, Deployment } from '.'
+import type { Account, AccountRow, Address, Signatory, Deployment, ReferentialStructure, Hub } from '.'
+import accountReferentialInformation from './__mock__/accountReferentialInformation.json'
+import referentialHubs from './__mock__/referentialHubs.json'
 
 export function getMockedAddress(override: Partial<Address> = {}): Address {
   const defaultAddress = {
@@ -131,4 +133,12 @@ export function getMockedPatchOperations(): PatchOperation[] {
     path: '/a/b',
     value: 'c',
   }]
+}
+
+export function getMockedAccountReferential(): ReferentialStructure {
+  return accountReferentialInformation
+}
+
+export function getMockedReferentialHubs(): Hub[] {
+  return referentialHubs
 }
