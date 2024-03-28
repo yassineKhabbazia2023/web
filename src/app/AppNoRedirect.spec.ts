@@ -34,11 +34,11 @@ vi.mock('@kpmg/common', () => ({
   }),
   commonPinia: () => createPinia(),
   commonApi: () => ({
-    wallet: {
+    gateway: {
       get: () =>
         Promise.resolve({
           data: {
-            items: [{ id: testEntity.idAccount }],
+            items: [{ accountId: testEntity.idAccount }],
             totalItems: 1,
           },
         }),

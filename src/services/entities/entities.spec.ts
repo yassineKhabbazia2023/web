@@ -1,6 +1,7 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest'
 import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { getFavoriteEntities, getEntities } from '.'
+import { API_PREFIXES } from '../config'
 import type { Entity } from '@kpmg/common'
 
 let throwError = false
@@ -11,7 +12,14 @@ vi.mock('@kpmg/common', () => {
     commonApi: () => ({
       wallet: {
         get: vi.fn((url, _) => {
-          if (['favorites', 'display'].includes(url)) {
+          if (url.includes('favorites')) {
+            return getEntitiesImplementation(throwError)
+          }
+        }),
+      },
+      gateway: {
+        get: vi.fn().mockImplementation((url) => {
+          if (url === `${API_PREFIXES.ACCOUNT}/accounts/currentuser`) {
             return getEntitiesImplementation(throwError)
           }
         }),

@@ -33,7 +33,7 @@ vi.mock('@kpmg/common', () => ({
 const createWrapper = () => {
   const wrapper = mount(SidebarEntity, {
     props: {
-      favoriteEntities: entities,
+      entities,
       totalEntities: entities.length,
     },
     plugins: [createTestingPinia()],
@@ -65,7 +65,7 @@ describe('sidebarEntity', () => {
 
       expect(sidebarToggle.exists()).toBeTruthy()
       expect(walletItem.exists()).toBeTruthy()
-      expect(selectedEntity.exists()).toBeFalsy()
+      expect(selectedEntity.exists()).toBeTruthy()
       expect(starDivider.exists()).toBeTruthy()
       expect(favoriteEntities.exists()).toBeTruthy()
     })
@@ -94,7 +94,7 @@ describe('sidebarEntity', () => {
       )
       const selectedEntity = findSelectedEntity(wrapper)
 
-      expect(selectedEntity.exists()).toBeFalsy()
+      expect(selectedEntity.exists()).toBeTruthy()
 
       await firstFavoriteEntity.trigger('click')
 

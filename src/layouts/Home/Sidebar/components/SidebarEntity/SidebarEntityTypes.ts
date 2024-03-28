@@ -1,3 +1,5 @@
+import type { Entity } from '@kpmg/common'
+
 export interface SidebarEntityProps {
-  totalEntities: number
+  entities: Entity[]
 }
