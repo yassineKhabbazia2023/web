@@ -25,6 +25,9 @@
       :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
       @collaborator-selection="handleCollaboratorSelection"
     />
+
+    <DelegationPreviewList
+      :delegationDetails="deligationDetails"/>
     <!-- v-else step one component -->
     <CollapsableFoldersList
       v-if="flowType === DelegationFlowType.SPECIFIC"
@@ -51,6 +54,8 @@ import CollapsableFoldersList from './components/CollapsableFoldersList'
 import NextPreviousButtons from '@/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import type { Contact } from '@/services/contact/contactTypes'
+import DelegationPreviewList from './components/DelegationPreviewList'
+import type { DelegationDetails } from './components/DelegationPreviewList/DelegationPreviewListTypes'
 
 const props = defineProps<DelegationDrawerProps>()
 const emit = defineEmits<{
@@ -93,6 +98,29 @@ const selectedCollaboratorsIds = ref<Contact['id'][]>([])
 function handleCollaboratorSelection(event: Contact['id'][]) {
   selectedCollaboratorsIds.value = event
 }
+
+// second step
+
+const deligationDetails : DelegationDetails[] = [
+  {
+    delegate: {
+      id: 1,
+      firstName: 'Oussema',
+      lastName: 'Ben Amor',
+      email: 'obenamor@kpmg.fr',
+    },
+    isAutoDelegation: true,
+  },
+  {
+    delegate: {
+      id: 2,
+      firstName: 'Mondher',
+      lastName: 'Cherif',
+      email: 'mcherif@kpmg.fr',
+    },
+    isAutoDelegation: false,
+  },
+]
 </script>
 
 <i18n lang="yaml">
