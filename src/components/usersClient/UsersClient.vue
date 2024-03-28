@@ -87,7 +87,7 @@ const paginationLabel = computed(() =>
 )
 
 const shouldShowPagination = computed(() =>
-  !state.isLoading && state.totalItems && state.totalItems > state.limit,
+  !state.isLoading && state.totalItems,
 )
 
 const getQueryParams = () => ({

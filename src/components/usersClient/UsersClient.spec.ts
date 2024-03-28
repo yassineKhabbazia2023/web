@@ -108,6 +108,12 @@ describe('usersClient', () => {
       const pages = wrapper.findAll('.el-pager li')
       expect(pages).toHaveLength(totalPages)
     })
+
+    it('should not hide pagination when total pages is less than page selected size', () => {
+      const pPaginationWrapper = wrapper.findComponent(PPagination)
+      pPaginationWrapper.vm.$emit('on-page-range-changed', 100)
+      expect(pPaginationWrapper.exists()).toBeTruthy()
+    })
   })
 
   describe('events', () => {
