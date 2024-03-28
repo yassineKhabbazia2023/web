@@ -21,7 +21,10 @@
       <PStep :title="t('automaticDelegation')" />
     </PSteps>
 
-    <!-- v-if step one component -->
+    <AddDelegatesStep
+      :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
+      @collaborator-selection="handleCollaboratorSelection"
+    />
     <!-- v-else step one component -->
     <CollapsableFoldersList
       v-if="flowType === DelegationFlowType.SPECIFIC"
@@ -46,6 +49,8 @@ import { PDrawer, PSteps, PStep } from '@kpmg/styleguide'
 import { type DelegationDrawerProps, DelegationFlowType } from './DelegationDrawerTypes'
 import CollapsableFoldersList from './components/CollapsableFoldersList'
 import NextPreviousButtons from '@/components/NextPreviousButtons'
+import AddDelegatesStep from './components/AddDelegatesStep'
+import type { Contact } from '@/services/contact/contactTypes'
 
 const props = defineProps<DelegationDrawerProps>()
 const emit = defineEmits<{
@@ -82,6 +87,11 @@ function handlePreviousClick() {
 
 function handleNextClick() {
   activeStep.value++
+}
+
+const selectedCollaboratorsIds = ref<Contact['id'][]>([])
+function handleCollaboratorSelection(event: Contact['id'][]) {
+  selectedCollaboratorsIds.value = event
 }
 </script>
 

@@ -3,6 +3,7 @@ import type { IEntity } from '@/pages/wallet/types'
 export interface DelegationDrawerProps {
   modelValue: boolean
   selectedFolders: IEntity[]
+  numberOfFoldersInPortfolio: number
 }
 
 /* eslint-disable no-unused-vars */
