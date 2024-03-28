@@ -12,7 +12,6 @@ import { nextTick } from 'vue'
 import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtilsMock'
 import { getMockedAccount } from '@/services/account/accountMock'
 
-const accountId = 5
 const mockedAccount = getMockedAccount()
 
 const putFavoriteMock = vi.fn()
@@ -35,7 +34,7 @@ vi.mock('@kpmg/common', () => ({
     },
     gateway: {
       get: vi.fn().mockImplementation((url) => {
-        if (url === `account/api/accounts/${accountId}`) {
+        if (url.includes('account/api/accounts/')) {
           return Promise.resolve({
             data: mockedAccount,
           })
