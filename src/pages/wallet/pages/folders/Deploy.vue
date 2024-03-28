@@ -16,7 +16,11 @@
       >
         {{ t('delegation', selectedFolders.length) }}
       </PButton>
-      <DelegationDrawer v-model="isDelegationDrawerOpened" :selectedFolders="selectedFolders" />
+      <DelegationDrawer
+        v-model="isDelegationDrawerOpened"
+        :selectedFolders="selectedFolders"
+        :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
+      />
     </div>
     <div class="margin-bottom--3">
       <FormSearch
@@ -32,7 +36,7 @@
 
       <TableData
         data-testid="table"
-        v-if="!!state.data.length"
+        v-if="numberOfFoldersInPortfolio"
         :data="state.data"
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
@@ -105,6 +109,7 @@ const { isCollab, user } = storeToRefs(userStore)
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
+const numberOfFoldersInPortfolio = computed(() => state.data.length)
 
 // table part
 const DEPLOYMENTS = [
