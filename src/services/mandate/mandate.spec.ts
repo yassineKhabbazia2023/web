@@ -8,79 +8,14 @@ import {
   downloadUnsignedMandate,
   downloadSignedMandate,
   uploadSignedMandate,
-  terminateMandate
+  terminateMandate,
 } from '.'
-import { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
+import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
+import { getMockedMandatesList, getMockedCompany, getMockedBban } from '@/../tests/mocks/mandateMock'
 
-const mandatesList = {
-  counters: {
-    all: 3,
-    status10: 0,
-    status20: 3,
-    status30: 1,
-    status40: 1,
-    status50: 0
-  },
-  data: [
-    {
-      id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
-      erpId: '1000265308',
-      companyName: 'Boulangerie du canal',
-      accountNumber: '66842913356',
-      bankName: 'Crédit Agricole',
-      creationDate: '2022-04-14T13:12:31.926Z',
-      modificationDate: '2023-09-17T13:12:31.926Z',
-      statusCode: '40'
-    },
-    {
-      id: 'e4ec92f2-a375-4574-b6de-235a9fe13029',
-      erpId: '1000265309',
-      companyName: 'Fleurs and co.',
-      accountNumber: '66842913357',
-      bankName: 'BNP Paribas',
-      creationDate: '2021-09-14T13:12:31.926Z',
-      modificationDate: '2023-08-17T13:12:31.926Z',
-      statusCode: '20'
-    },
-    {
-      id: 'e4ec92f2-a375-4574-b6de-235a9fe13030',
-      erpId: '1000265310',
-      companyName: 'La compagnie du voyage',
-      accountNumber: '66842913358',
-      bankName: 'Société Générale',
-      creationDate: '2020-08-14T13:12:31.926Z',
-      modificationDate: '2023-06-11T13:12:31.926Z',
-      statusCode: '30'
-    }
-  ]
-}
-
-const company = {
-  id: '2ef5ff10-18d1-40b1-aa24-0fcccd8445e4',
-  name: 'MK 2000',
-  siretNumber: '50339868700015',
-  erpId: '1999072765',
-  signatory: {
-    title: 'M',
-    firstName: 'maroo',
-    lastName: 'elleuch',
-    email: 'email@email.com'
-  },
-  address: {
-    street: '11 rue Street',
-    addressComplement: 'complement',
-    zipCode: '75014',
-    city: 'Paris',
-    country: 'France'
-  }
-}
-
-const bban = {
-  bankCode: '12310',
-  branchCode: '02001',
-  accountNumber: '12345678921',
-  checkDigits: '43'
-}
+const mandatesList = getMockedMandatesList()
+const company = getMockedCompany()
+const bban = getMockedBban()
 
 const bankDetailsImplementation = (url: string) => {
   if (url === 'bank/12345') {
@@ -89,9 +24,9 @@ const bankDetailsImplementation = (url: string) => {
         code: '12345',
         name: 'Banque example',
         jeDeclare: {
-          jdcPartnership: 'NonPartner'
-        }
-      }
+          jdcPartnership: 'NonPartner',
+        },
+      },
     })
   }
   return Promise.reject(new Error('Bank not found'))
@@ -118,7 +53,7 @@ const terminateMandateImplementation = (url: string) => {
 const listMandatesImplementation = (url: string, filterOptions: any) => {
   if (url && filterOptions) {
     return Promise.resolve({
-      data: mandatesList
+      data: mandatesList,
     })
   }
 }
@@ -126,7 +61,7 @@ const listMandatesImplementation = (url: string, filterOptions: any) => {
 const getCompanyImplementation = (url: string) => {
   if (url === '/company/1999072765') {
     return Promise.resolve({
-      data: company
+      data: company,
     })
   }
 }
@@ -134,7 +69,7 @@ const getCompanyImplementation = (url: string) => {
 const validateIbanImplementation = ({ params }: any) => {
   const { bankCode, branchCode, accountNumber, checkDigits } = params
   if (bankCode === '14410' && branchCode === '00001' &&
-      accountNumber === '12345678901' && checkDigits === '63') {
+    accountNumber === '12345678901' && checkDigits === '63') {
     return Promise.resolve({ data: { valid: true } })
   }
   return Promise.resolve({ data: { valid: false } })
@@ -177,9 +112,9 @@ vi.mock('@kpmg/common', () => {
           if (/^\/mandate\/([a-zA-Z0-9_-]+)\/deactivate$/.test(url)) {
             return terminateMandateImplementation(url)
           }
-        })
-      }
-    })
+        }),
+      },
+    }),
   }
 })
 
@@ -190,8 +125,8 @@ describe('getBankDetail', () => {
       code: '12345',
       name: 'Banque example',
       jeDeclare: {
-        jdcPartnership: 'NonPartner'
-      }
+        jdcPartnership: 'NonPartner',
+      },
     })
   })
 
@@ -245,25 +180,25 @@ describe('validateIban', () => {
       branchCode: '00001',
       accountNumber: '12345678901',
       checkDigits: '63',
-      validity: true
+      validity: true,
     },
     {
       bankCode: '12310',
       branchCode: '02001',
       accountNumber: '12345678921',
       checkDigits: '43',
-      validity: false
-    }
+      validity: false,
+    },
   ]
   it.each(ribCollection)('rib $bankCode, $branchCode, $accountNumber, $checkDigits is $validity',
     async ({
-      bankCode, branchCode, accountNumber, checkDigits, validity
+      bankCode, branchCode, accountNumber, checkDigits, validity,
     }) => {
       const { valid } = await validateIban({
         bankCode,
         branchCode,
         accountNumber,
-        checkDigits
+        checkDigits,
       })
       expect(valid).toBe(validity)
     })
@@ -277,16 +212,16 @@ describe('createMandate', () => {
         title: 'M',
         firstName: 'maroo',
         lastName: 'elleuch',
-        email: 'email@email.com'
+        email: 'email@email.com',
       },
       address: {
         street: '11 rue Street',
         addressComplement: 'complement',
         zipCode: '75014',
         city: 'Paris',
-        country: 'France'
+        country: 'France',
       },
-      bban
+      bban,
     })
     expect(id).toBe('3ef5ff10-18d1-40b1-aa24-0fcccd8445e6')
   })

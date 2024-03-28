@@ -3,6 +3,7 @@ import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
 import * as mandateService from '@/services/mandate'
 import { nextTick } from 'vue'
+import { getMockedMandatesData } from '@/../tests/mocks/mandateMock'
 
 interface CustomWindow extends Window {
   showSaveFilePicker?: (_: any) => Promise<any>
@@ -28,7 +29,7 @@ vi.mock('@/services/mandate', () => {
     uploadSignedMandate: vi.fn(() => {
       // Mock implementation or return value for terminateMandate
       return Promise.resolve(Promise.resolve(true))
-    })
+    }),
   }
 })
 
@@ -36,7 +37,7 @@ vi.mock('@/helpers/utils', () => {
   return {
     dateFormatter: vi.fn(),
     debounce: vi.fn(),
-    downloadFile: vi.fn()
+    downloadFile: vi.fn(),
   }
 })
 
@@ -47,10 +48,10 @@ const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
     document.body.innerHTML = ''
     const writableStreamMock = {
       write: vi.fn(() => Promise.resolve()),
-      close: vi.fn(() => Promise.resolve())
+      close: vi.fn(() => Promise.resolve()),
     }
     const fileHandleMock = {
-      createWritable: vi.fn(() => Promise.resolve(writableStreamMock))
+      createWritable: vi.fn(() => Promise.resolve(writableStreamMock)),
     }
     window.showSaveFilePicker = () => Promise.resolve(fileHandleMock)
     // Mocking window.showSaveFilePicker directly
@@ -67,46 +68,15 @@ const createWrapper = (props: any = {}) =>
     props,
     global: {
       mocks: {
-        t: (key: any) => `mocked-${key}`
-      }
-    }
+        t: (key: any) => `mocked-${key}`,
+      },
+    },
   })
 
 describe('mandate collection', () => {
   it('renders the mandate table and click on dropdown', async () => {
     const wrapper = createWrapper({
-      data: [
-        {
-          id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
-          erpId: '1000265308',
-          companyName: 'Boulangerie du canal',
-          accountNumber: '66842913356',
-          bankName: 'Crédit Agricole',
-          creationDate: '2023-08-14T13:12:31.926Z',
-          modificationDate: '2023-08-14T13:12:31.926Z',
-          statusCode: '40'
-        },
-        {
-          id: 'e4ec92f2-a375-4574-b6de-235a9fe13029',
-          erpId: '1000265309',
-          companyName: 'Fleurs and co.',
-          accountNumber: '66842913357',
-          bankName: 'BNP Paribas',
-          creationDate: '2023-08-14T13:12:31.926Z',
-          modificationDate: '2023-08-14T13:12:31.926Z',
-          statusCode: '20'
-        },
-        {
-          id: 'e4ec92f2-a375-4574-b6de-235a9fe13030',
-          erpId: '1000265310',
-          companyName: 'La compagnie du voyage',
-          accountNumber: '66842913358',
-          bankName: 'Société Générale',
-          creationDate: '2023-08-14T13:12:31.926Z',
-          modificationDate: '2023-08-14T13:12:31.926Z',
-          statusCode: '30'
-        }
-      ]
+      data: getMockedMandatesData(),
     })
 
     await vi.dynamicImportSettled()
@@ -119,7 +89,7 @@ describe('mandate collection', () => {
 
   it('renders the mandate table click on download signed mandate', async () => {
     const wrapper = createWrapper({
-      data: []
+      data: [],
     })
 
     const mandate = { id: '123' }
@@ -134,7 +104,7 @@ describe('mandate collection', () => {
 
   it('renders the mandate table click on terminate mandate', async () => {
     const wrapper = createWrapper({
-      data: []
+      data: [],
     })
 
     const mandate = { id: '123' }
@@ -151,7 +121,7 @@ describe('mandate collection', () => {
   it('renders the mandate table click on download signed mandate without showSaveFilePicker',
     async () => {
       const wrapper = createWrapper({
-        data: []
+        data: [],
       })
 
       const mandate = { id: '123' }
@@ -165,7 +135,7 @@ describe('mandate collection', () => {
 
   it('should sort the table data', async () => {
     const wrapper = createWrapper({
-      data: []
+      data: [],
     })
     wrapper.vm.handleFileUpload({ target: { files: [{ name: 'mandate.pdf' }] } })
     await wrapper.vm.sortColumnChange({ order: 'ascending', prop: 'erpId' })
@@ -177,9 +147,9 @@ describe('mandate collection', () => {
   })
   it('submit the signed mandate', async () => {
     const wrapper = createWrapper({
-      data: []
+      data: [],
     })
-    wrapper.vm.handleFileUpload = vi.fn()
+    vi.spyOn(wrapper.vm, 'handleFileUpload')
     let fileInput: any
     const originalCreateElement = document.createElement.bind(document)
     vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
@@ -198,17 +168,17 @@ describe('mandate collection', () => {
     const file = new File(['mandate content'], 'mandate.pdf', { type: 'application/pdf' })
     Object.defineProperty(fileInput, 'files', {
       value: [file],
-      writable: false
+      writable: false,
     })
     // Dispatch the change event
     const changeEvent = new Event('change', { bubbles: true })
     fileInput.dispatchEvent(changeEvent)
 
-    expect(mandateService.uploadSignedMandate).toBeCalledWith({ mandateId: '123', file: file })
+    expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: '123', file })
   })
   it('renders the mandate table click on download unsigned mandate', async () => {
     const wrapper = createWrapper({
-      data: []
+      data: [],
     })
     mockShowSaveFilePicker()
     const mandate = { id: '123' }
@@ -217,5 +187,4 @@ describe('mandate collection', () => {
     // Assert that the correct service function was called
     expect(mandateService.downloadUnsignedMandate).toHaveBeenCalledWith(mandate.id)
   })
-
 })

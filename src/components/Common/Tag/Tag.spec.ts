@@ -11,7 +11,7 @@ describe('tag status management', () => {
     { statusCode: '20', expected: 'To do' },
     { statusCode: '30', expected: 'In progress' },
     { statusCode: '40', expected: 'Active' },
-    { statusCode: '50', expected: 'Inactive' }
+    { statusCode: '50', expected: 'Inactive' },
   ])('tag($statusCode) -> $expected', ({ statusCode, expected }:any) => {
     const wrapper = createWrapper(statusCode)
     expect(wrapper

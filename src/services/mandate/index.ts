@@ -1,21 +1,21 @@
 import { commonApi as api } from '@kpmg/common'
 
-import { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
+import type { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 
-export const getCompany = async ({
-  ibsNumber
+export const getCompany = ({
+  ibsNumber,
 }: { ibsNumber: string }): Promise<any> =>
   api().mandate.get(`/company/${ibsNumber}`)
 
 export const downloadUnsignedMandate = async (mandateId: string) => {
   return await api().mandate.get(`/mandate/${mandateId}/unsigned`, {
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }
 
 export const downloadSignedMandate = async (mandateId: string) => {
   return await api().mandate.get(`/mandate/${mandateId}/signed`, {
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }
 
@@ -27,14 +27,14 @@ export const validateIban = async ({
   bankCode,
   branchCode,
   accountNumber,
-  checkDigits
+  checkDigits,
 }: BbanModel) => {
   const { data: { valid } } = await api().mandate.get(
     'bank/check-bban-validity',
-    { params: { bankCode, branchCode, accountNumber, checkDigits } }
+    { params: { bankCode, branchCode, accountNumber, checkDigits } },
   )
   return {
-    valid
+    valid,
   }
 }
 
@@ -44,11 +44,11 @@ export const getBankDetail = async (bankCode: string) => {
   return data
 }
 
-export const getMandatesCollection = async ({
+export const getMandatesCollection = ({
   skip = 0, limit = 10, searchTerm = '', creationDateStart = '',
   creationDateEnd = '',
   modificationDateStart = '', modificationDateEnd = '',
-  statusCodes = [], sortCriteria = '', sortOrder = 'Descending'
+  statusCodes = [], sortCriteria = '', sortOrder = 'Descending',
 } = {}) => {
   return api().mandate.get('/mandate', {
     params:
@@ -62,22 +62,22 @@ export const getMandatesCollection = async ({
       modificationDateEnd,
       statusCodes,
       sortCriteria,
-      sortOrder
-    }
+      sortOrder,
+    },
   })
 }
 
-export const createMandate = async ({
+export const createMandate = ({
   erpId,
   signatory,
   address,
-  bban
+  bban,
 }: CreateMandateModel): Promise<any> =>
   api().mandate.post('/mandate', { erpId, signatory, address, bban })
 
 export const uploadSignedMandate = async ({
   mandateId,
-  file
+  file,
 }: {mandateId: string, file: any}): Promise<any> => {
   const formData = new FormData()
 
@@ -88,8 +88,8 @@ export const uploadSignedMandate = async ({
       formData,
       {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
+          'Content-Type': 'multipart/form-data',
+        },
+      },
   )
 }

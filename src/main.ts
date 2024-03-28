@@ -10,11 +10,11 @@ const RenderLess = () => ''
 const vueLifecycles = singleSpaVue({
   createApp,
   appOptions: {
-    render: () => h(RenderLess)
+    render: () => h(RenderLess),
   },
   handleInstance(app: any) {
     app.use(i18n).use(pinia).use(routes)
-  }
+  },
 })
 
 export const bootstrap = vueLifecycles.bootstrap

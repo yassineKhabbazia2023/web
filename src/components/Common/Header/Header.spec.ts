@@ -9,8 +9,8 @@ const createWrapper = () =>
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
-    state: () => ([])
-  })
+    state: () => ([]),
+  }),
 }))
 
 describe('header.vue', () => {

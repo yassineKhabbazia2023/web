@@ -11,13 +11,6 @@
   </PInput>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    search: 'Search'
-  fr-FR:
-    search: 'Rechercher'
-</i18n>
-
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
@@ -26,8 +19,8 @@ import { PInput, PIcon, PISearch } from '@kpmg/styleguide'
 const props = defineProps({
   modelValue: {
     type: String,
-    default: null
-  }
+    default: null,
+  },
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -38,11 +31,18 @@ const searchModel = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    search: 'Search'
+  fr-FR:
+    search: 'Rechercher'
+</i18n>

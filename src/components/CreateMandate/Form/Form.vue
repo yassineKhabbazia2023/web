@@ -136,7 +136,7 @@
             <span class="create-mandate-form_optional font-normal">{{
               t('optional')
             }}</span>
-            </div>
+          </div>
           <PInput v-model="createMandateForm.addressComplement" state="default" />
         </PFormItem>
         <PRow :pGutter="16">
@@ -279,6 +279,448 @@
   </div>
 </template>
 
+<script setup lang='ts'>
+import { useI18n } from 'vue-i18n'
+import { ref, reactive, watch, computed } from 'vue'
+import { validateIban, getBankDetail, getCompany } from '@/services/mandate'
+import type { Rule } from './FormModels'
+import {
+  PForm,
+  PFormItem,
+  PInput,
+  PRadio,
+  PCol,
+  PRow,
+  PAlert,
+} from '@kpmg/styleguide'
+
+// Props
+interface FormProps {
+  step: number
+}
+const props = defineProps<FormProps>()
+
+// i18n
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
+
+// Emits
+const emit = defineEmits(['enable-disable-next', 'enable-disable-validate', 'update-mandate-model'])
+
+// Reactive state
+const createMandateFormRef = ref<any>()
+const createMandateForm: any = reactive({
+  erpId: '',
+  siretNumber: '',
+  name: '',
+  title: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  street: '',
+  addressComplement: '',
+  zipCode: '',
+  city: '',
+  country: '',
+  institutionCode: '',
+  branchCode: '',
+  accountNumber: '',
+  key: '',
+  bank: '',
+})
+const isIBSValid = ref(false)
+const customErrorMessage = ref('')
+const validationError = ref(false)
+const isScrappable = ref(false)
+const isNonScrappable = ref(false)
+const isBankCodeValid = ref(false)
+const isRibValid = ref(false)
+const isValidateEnabled = computed(() => isBankCodeValid.value && isRibValid.value)
+
+const areFieldsFilled = (fieldsToCheck: string[]) =>
+  fieldsToCheck.every((field) => !!createMandateForm[field] &&
+  createMandateForm[field].trim() !== '')
+
+const areStep2FieldsFilled = computed(() => {
+  const fieldsToCheck = [
+    'title',
+    'firstName',
+    'lastName',
+    'street',
+    'zipCode',
+    'city',
+    'country',
+  ]
+  return areFieldsFilled(fieldsToCheck)
+})
+
+// Methods
+const validateIBS = async (_: Rule, value: string, callback: any) => {
+  try {
+    emit('enable-disable-next', false)
+    isIBSValid.value = false
+    createMandateForm.siretNumber = ''
+    createMandateForm.name = ''
+    if (value.toString().length === 10) {
+      await getDataByIbsNumber(value)
+    }
+  } catch (error: any) {
+    if (error?.message?.includes('outWalletIBS')) {
+      callback(new Error(t('form.error.outWalletIBS')))
+    }
+    if (error?.message?.includes('ibsNotFound') || error?.message?.includes('404')) {
+      callback(new Error(t('form.error.ibsNotFound')))
+    }
+  }
+}
+
+const getDataByIbsNumber = async (ibsNumber: string) => {
+  const { data } = await getCompany({ ibsNumber })
+  if (data.id) {
+    const {
+      id,
+      name,
+      siretNumber,
+      signatory: { title, firstName, lastName, email },
+      address: { street, addressComplement, zipCode, city, country },
+    } = data
+    Object.assign(createMandateForm, {
+      id,
+      siretNumber,
+      name,
+      title,
+      firstName,
+      lastName,
+      email,
+      street,
+      addressComplement,
+      zipCode,
+      city,
+      country,
+    })
+    isIBSValid.value = true
+    return emit('enable-disable-next', true)
+  }
+  throw new Error(data.errorType === 'CompanyForbidden'
+    ? 'form.error.outWalletIBS'
+    : 'form.error.ibsNotFound')
+}
+
+const getMandateModel = () => {
+  return {
+    erpId: createMandateForm.erpId,
+    bban: {
+      bankCode: createMandateForm.institutionCode,
+      branchCode: createMandateForm.branchCode,
+      accountNumber: createMandateForm.accountNumber,
+      checkDigits: createMandateForm.key,
+    },
+    address: {
+      street: createMandateForm.street,
+      addressComplement: createMandateForm.addressComplement,
+      zipCode: createMandateForm.zipCode,
+      city: createMandateForm.city,
+      country: createMandateForm.country,
+    },
+    signatory: {
+      title: createMandateForm.title,
+      firstName: createMandateForm.firstName,
+      lastName: createMandateForm.lastName,
+      email: createMandateForm.email,
+    },
+  }
+}
+
+const areFieldsFilledStepBased = (step: number) => {
+  const fieldsToCheckMap: any = {
+    1: ['erpId', 'siretNumber', 'name'],
+    2: [
+      'title',
+      'firstName',
+      'lastName',
+      'street',
+      'zipCode',
+      'city',
+      'country',
+    ],
+    3: ['institutionCode', 'branchCode', 'accountNumber',
+      'key', 'bank'],
+  }
+  const fieldStepFilledDone = areFieldsFilled(fieldsToCheckMap[step])
+  if (fieldStepFilledDone) {
+    emit('update-mandate-model', getMandateModel())
+  }
+  emit('enable-disable-next', fieldStepFilledDone)
+}
+
+const checkBbanValidity = async ({
+  bankCode,
+  branchCode,
+  accountNumber,
+  checkDigits,
+}: any) => {
+  const { valid } = await validateIban({
+    bankCode,
+    branchCode,
+    accountNumber,
+    checkDigits,
+  })
+
+  if (!valid) {
+    customErrorMessage.value = t('form.error.bankingInfoNotRecognized')
+    validationError.value = true
+  }
+  emit('update-mandate-model', getMandateModel())
+  isRibValid.value = valid
+}
+
+const getBankInformation = async (bankCode: string) => {
+  try {
+    const bank: any = await getBankDetail(bankCode)
+    if (bank.jeDeclare.jdcPartnership === 'Scrappable') {
+      isScrappable.value = true
+      createMandateForm.bank = ''
+      isBankCodeValid.value = false
+      return { status: 'error-scrappable', data: null }
+    }
+
+    if (bank.jeDeclare.jdcPartnership === 'NonScrappable') {
+      isNonScrappable.value = true
+      createMandateForm.bank = bank.name
+      isBankCodeValid.value = false
+      return { status: 'error-non-scrappable', data: null }
+    }
+
+    isScrappable.value = false
+    createMandateForm.bank = bank.name
+    isBankCodeValid.value = true
+    return { status: 'success', data: bank }
+  } catch (error: any) {
+    createMandateForm.bank = ''
+    isBankCodeValid.value = false
+    return { status: 'error-not-found', error: error?.response?.data?.message }
+  }
+}
+
+const resetValidation = () => {
+  emit('enable-disable-validate', false)
+  customErrorMessage.value = ''
+  validationError.value = false
+  isScrappable.value = false
+  isNonScrappable.value = false
+}
+
+const isBbanComplete = () => {
+  const fieldsToValidate = [
+    'institutionCode',
+    'branchCode',
+    'accountNumber',
+    'key',
+  ]
+
+  return fieldsToValidate.every(field => createMandateForm[field] !== '')
+}
+
+const checkFields = async () => {
+  try {
+    resetValidation()
+    const validInstitutionCode = await createMandateFormRef?.value?.validateField('institutionCode')
+    if (validInstitutionCode) {
+      await getBankInformation(createMandateForm.institutionCode)
+    }
+  } catch (_) {
+  } finally {
+    if (isBbanComplete()) {
+      await checkBbanValidity({
+        bankCode: createMandateForm.institutionCode,
+        branchCode: createMandateForm.branchCode,
+        accountNumber: createMandateForm.accountNumber,
+        checkDigits: createMandateForm.key,
+      })
+    }
+    emit('enable-disable-validate', isValidateEnabled.value)
+  }
+}
+
+// Utility functions
+const createRule = (message: string, trigger = 'blur') => ({
+  required: true,
+  message: t(message),
+  trigger,
+})
+
+const validateInstitutionCode = async (value: string, callback: any) => {
+  const result = await getBankInformation(value)
+  if (result?.status === 'error-not-found') {
+    callback(new Error(result?.error))
+  }
+}
+
+const createValidator = (
+  length: number,
+  regex: any,
+  errorMsg: string,
+  regexErrorMsg?: string,
+  fieldName?: string,
+) => ({
+  required: true,
+  validator: async (_: any, value: string, callback: any) => {
+    if (value.length !== length) {
+      createMandateForm.bank = ''
+      callback(new Error(errorMsg))
+    } else if (!regex.test(value)) {
+      callback(new Error(regexErrorMsg))
+    } else if (fieldName === 'institutionCode') {
+      await validateInstitutionCode(value, callback)
+    } else {
+      callback()
+    }
+  },
+  trigger: 'blur',
+})
+
+const validateEmail = (_: any, value: string, callback: any) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!value || emailRegex.test(value)) {
+    callback()
+    areFieldsFilledStepBased(2)
+  } else {
+    callback(new Error(t('form.error.correctEmail')))
+    emit('enable-disable-next', false)
+  }
+}
+
+// Validation rules
+const rules = reactive<any>({
+  erpId: [
+    createRule(t('form.error.requiredField'), 'change'),
+    { validator: validateIBS, trigger: 'change' },
+  ],
+  title: [createRule(t('form.error.mandatoryChoice'), 'change')],
+  firstName: [createRule(t('form.error.requiredField'))],
+  lastName: [createRule(t('form.error.requiredField'))],
+  email: [{ validator: validateEmail, trigger: 'blur' }],
+  street: [createRule(t('form.error.requiredField'))],
+  zipCode: [
+    createRule(t('form.error.requiredField')),
+    {
+      validator: (_: any, value: any, callback: any) => {
+        if (isNaN(value)) {
+          callback(new Error(t('form.error.validNumber')))
+          emit('enable-disable-next', false)
+        } else {
+          callback()
+          areFieldsFilledStepBased(2)
+        }
+      },
+      trigger: 'blur',
+    },
+  ],
+  city: [createRule(t('form.error.requiredField'))],
+  country: [createRule(t('form.error.requiredField'))],
+  institutionCode: [
+    createValidator(
+      5,
+      /^\d+$/,
+      t('form.error.input_5_chars'),
+      t('form.error.only_numbers'),
+      'institutionCode',
+    ),
+  ],
+  branchCode: [
+    createValidator(
+      5,
+      /^\d+$/,
+      t('form.error.input_5_chars'),
+      t('form.error.only_numbers'),
+    ),
+  ],
+  accountNumber: [
+    createValidator(
+      11,
+      /^[a-zA-Z0-9]+$/,
+      t('form.error.input_11_chars'),
+      t('form.error.alphanumeric_only'),
+    ),
+  ],
+  key: [
+    createValidator(
+      2,
+      /^\d+$/,
+      t('form.error.input_2_chars'),
+      t('form.error.only_numbers'),
+    ),
+  ],
+})
+
+// Watchers
+watch(() => props.step, () => areFieldsFilledStepBased(props.step))
+watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
+watch(
+  () => createMandateForm.erpId,
+  (value) => {
+    createMandateForm.erpId = value.replace(/\D/ig, '')
+  },
+)
+
+// Expose
+defineExpose({
+  createMandateForm,
+  validateIBS,
+})
+
+</script>
+
+<style lang="scss">
+.create-mandate-form {
+  .el-form-item__content {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+  }
+
+  &__title-label {
+    font-size: 12px;
+    font-style: normal;
+    color: var(--el-color-neutral-gray-900);
+    line-height: 120%;
+
+    &__asterisk {
+      color: var(--el-color-functionnal-red);
+    }
+  }
+
+  &__section-title {
+    color: var(--el-color-neutral-gray-900);
+    font-size: 16px;
+    font-style: normal;
+    line-height: 120%;
+  }
+
+  &_optional-title {
+    font-size: 12px;
+    font-style: normal;
+    line-height: 120%;
+    color: var(--el-color-neutral-gray-900);
+  }
+
+  &_optional {
+    font-size: 12px;
+    font-style: normal;
+    line-height: 120%;
+    color: var(--el-color-neutral-gray-500);
+  }
+
+  .el-input__inner::-webkit-inner-spin-button,
+  .el-input__inner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+</style>
+
 <i18n lang="json">
   {
     "en-US": {
@@ -371,469 +813,3 @@
   }
 }
 </i18n>
-
-<script setup lang='ts'>
-import { useI18n } from 'vue-i18n'
-import { ref, reactive, watch, computed } from 'vue'
-import { validateIban, getBankDetail, getCompany } from '@/services/mandate'
-import { Rule } from './FormModels'
-import {
-  PForm,
-  PFormItem,
-  PInput,
-  PRadio,
-  PCol,
-  PRow,
-  PAlert
-} from '@kpmg/styleguide'
-
-// Props
-interface FormProps {
-  step: number
-}
-const props = defineProps<FormProps>()
-
-// i18n
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local'
-})
-
-// Emits
-const emit = defineEmits(['enable-disable-next', 'enable-disable-validate', 'update-mandate-model'])
-
-// Reactive state
-const createMandateFormRef = ref<any>()
-const createMandateForm: any = reactive({
-  erpId: '',
-  siretNumber: '',
-  name: '',
-  title: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  street: '',
-  addressComplement: '',
-  zipCode: '',
-  city: '',
-  country: '',
-  institutionCode: '',
-  branchCode: '',
-  accountNumber: '',
-  key: '',
-  bank: ''
-})
-const isIBSValid = ref(false)
-const customErrorMessage = ref('')
-const validationError = ref(false)
-const isScrappable = ref(false)
-const isNonScrappable = ref(false)
-const isBankCodeValid = ref(false)
-const isRibValid = ref(false)
-const isValidateEnabled = computed(() => isBankCodeValid.value && isRibValid.value)
-
-const areFieldsFilled = (fieldsToCheck: string[]) =>
-  fieldsToCheck.every((field) => !!createMandateForm[field] &&
-  createMandateForm[field].trim() !== '')
-
-const areStep2FieldsFilled = computed(() => {
-  const fieldsToCheck = [
-    'title',
-    'firstName',
-    'lastName',
-    'street',
-    'zipCode',
-    'city',
-    'country'
-  ]
-  return areFieldsFilled(fieldsToCheck)
-})
-
-// Methods
-const validateIBS = async (_: Rule, value: string, callback: any) => {
-  try {
-    emit('enable-disable-next', false)
-    isIBSValid.value = false
-    createMandateForm.siretNumber = ''
-    createMandateForm.name = ''
-    if (value.toString().length === 10) {
-      await getDataByIbsNumber(value)
-    }
-  } catch (error: any) {
-    if (error?.message?.includes('outWalletIBS')) {
-      callback(new Error(t('form.error.outWalletIBS')))
-    }
-    if (error?.message?.includes('ibsNotFound') || error?.message?.includes('404')) {
-      callback(new Error(t('form.error.ibsNotFound')))
-    }
-  }
-}
-
-const getDataByIbsNumber = async (ibsNumber: string) => {
-  const { data } = await getCompany({ ibsNumber })
-  if (data.id) {
-    const {
-      id,
-      name,
-      siretNumber,
-      signatory: { title, firstName, lastName, email },
-      address: { street, addressComplement, zipCode, city, country }
-    } = data
-    Object.assign(createMandateForm, {
-      id,
-      siretNumber,
-      name,
-      title,
-      firstName,
-      lastName,
-      email,
-      street,
-      addressComplement,
-      zipCode,
-      city,
-      country
-    })
-    isIBSValid.value = true
-    return emit('enable-disable-next', true)
-  }
-  throw new Error(data.errorType === 'CompanyForbidden'
-    ? 'form.error.outWalletIBS'
-    : 'form.error.ibsNotFound')
-}
-
-const areFieldsFilledStepBased = (step: number) => {
-  const fieldsToCheckMap: any = {
-    1: ['erpId', 'siretNumber', 'name'],
-    2: [
-      'title',
-      'firstName',
-      'lastName',
-      'street',
-      'zipCode',
-      'city',
-      'country'
-    ],
-    3: ['institutionCode', 'branchCode', 'accountNumber',
-      'key', 'bank']
-  }
-  const fieldStepFilledDone = areFieldsFilled(fieldsToCheckMap[step])
-  if (fieldStepFilledDone) {
-    emit('update-mandate-model', {
-      erpId: createMandateForm.erpId,
-      bban: {
-        bankCode: createMandateForm.institutionCode,
-        branchCode: createMandateForm.branchCode,
-        accountNumber: createMandateForm.accountNumber,
-        checkDigits: createMandateForm.key
-      },
-      address: {
-        street: createMandateForm.street,
-        addressComplement: createMandateForm.addressComplement,
-        zipCode: createMandateForm.zipCode,
-        city: createMandateForm.city,
-        country: createMandateForm.country
-      },
-      signatory: {
-        title: createMandateForm.title,
-        firstName: createMandateForm.firstName,
-        lastName: createMandateForm.lastName,
-        email: createMandateForm.email
-      }
-    })
-  }
-  emit('enable-disable-next', fieldStepFilledDone)
-}
-
-const checkBbanValidity = async ({
-  bankCode,
-  branchCode,
-  accountNumber,
-  checkDigits
-}: any) => {
-  const { valid } = await validateIban({
-    bankCode,
-    branchCode,
-    accountNumber,
-    checkDigits
-  })
-
-  if (!valid) {
-    customErrorMessage.value = t('form.error.bankingInfoNotRecognized')
-    validationError.value = true
-  }
-  emit('update-mandate-model', {
-    erpId: createMandateForm.erpId,
-    bban: {
-      bankCode: createMandateForm.institutionCode,
-      branchCode: createMandateForm.branchCode,
-      accountNumber: createMandateForm.accountNumber,
-      checkDigits: createMandateForm.key
-    },
-    address: {
-      street: createMandateForm.street,
-      addressComplement: createMandateForm.addressComplement,
-      zipCode: createMandateForm.zipCode,
-      city: createMandateForm.city,
-      country: createMandateForm.country
-    },
-    signatory: {
-      title: createMandateForm.title,
-      firstName: createMandateForm.firstName,
-      lastName: createMandateForm.lastName,
-      email: createMandateForm.email
-    }
-  })
-  isRibValid.value = valid
-}
-
-const getBankInformation = async (bankCode: string) => {
-  try {
-    const bank: any = await getBankDetail(bankCode)
-    if (bank.jeDeclare.jdcPartnership === 'Scrappable') {
-      isScrappable.value = true
-      createMandateForm.bank = ''
-      isBankCodeValid.value = false
-      return { status: 'error-scrappable', data: null }
-    }
-
-    if (bank.jeDeclare.jdcPartnership === 'NonScrappable') {
-      isNonScrappable.value = true
-      createMandateForm.bank = bank.name
-      isBankCodeValid.value = false
-      return { status: 'error-non-scrappable', data: null }
-    }
-
-    isScrappable.value = false
-    createMandateForm.bank = bank.name
-    isBankCodeValid.value = true
-    return { status: 'success', data: bank }
-  } catch (error: any) {
-    createMandateForm.bank = ''
-    isBankCodeValid.value = false
-    return { status: 'error-not-found', error: error?.response?.data?.message }
-  }
-}
-
-const resetValidation = () => {
-  emit('enable-disable-validate', false)
-  customErrorMessage.value = ''
-  validationError.value = false
-  isScrappable.value = false
-  isNonScrappable.value = false
-}
-
-const isBbanComplete = () => {
-  const fieldsToValidate = [
-    'institutionCode',
-    'branchCode',
-    'accountNumber',
-    'key'
-  ]
-
-  return fieldsToValidate.every(field => createMandateForm[field] !== '')
-}
-
-const checkFields = async () => {
-  try {
-    resetValidation()
-    const validInstitutionCode = await createMandateFormRef?.value?.validateField('institutionCode')
-    if (validInstitutionCode) {
-      await getBankInformation(createMandateForm.institutionCode)
-    }
-  } catch (_) {
-  } finally {
-    if (isBbanComplete()) {
-      await checkBbanValidity({
-        bankCode: createMandateForm.institutionCode,
-        branchCode: createMandateForm.branchCode,
-        accountNumber: createMandateForm.accountNumber,
-        checkDigits: createMandateForm.key
-      })
-    }
-    emit('enable-disable-validate', isValidateEnabled.value)
-  }
-}
-
-// Utility functions
-const createRule = (message: string, trigger = 'blur') => ({
-  required: true,
-  message: t(message),
-  trigger
-})
-
-const validateInstitutionCode = async (value: string, callback: any) => {
-  const result = await getBankInformation(value)
-  if (result?.status === 'error-not-found') {
-    callback(new Error(result?.error))
-  }
-}
-
-const createValidator = (
-  length: number,
-  regex: any,
-  errorMsg: string,
-  regexErrorMsg?: string,
-  fieldName?: string
-) => ({
-  required: true,
-  validator: async (_: any, value: string, callback: any) => {
-    if (value.length !== length) {
-      createMandateForm.bank = ''
-      callback(new Error(errorMsg))
-    } else if (!regex.test(value)) {
-      callback(new Error(regexErrorMsg))
-    } else if (fieldName === 'institutionCode') {
-      await validateInstitutionCode(value, callback)
-    } else {
-      callback()
-    }
-  },
-  trigger: 'blur'
-})
-
-const validateEmail = (_: any, value: string, callback: any) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!value || emailRegex.test(value)) {
-    callback()
-    areFieldsFilledStepBased(2)
-  } else {
-    callback(new Error(t('form.error.correctEmail')))
-    emit('enable-disable-next', false)
-  }
-}
-
-// Validation rules
-const rules = reactive<any>({
-  erpId: [
-    createRule(t('form.error.requiredField'), 'change'),
-    { validator: validateIBS, trigger: 'change' }
-  ],
-  title: [createRule(t('form.error.mandatoryChoice'), 'change')],
-  firstName: [createRule(t('form.error.requiredField'))],
-  lastName: [createRule(t('form.error.requiredField'))],
-  email: [{ validator: validateEmail, trigger: 'blur' }],
-  street: [createRule(t('form.error.requiredField'))],
-  zipCode: [
-    createRule(t('form.error.requiredField')),
-    {
-      validator: (_: any, value: any, callback: any) => {
-        if (isNaN(value)) {
-          callback(new Error(t('form.error.validNumber')))
-          emit('enable-disable-next', false)
-        } else {
-          callback()
-          areFieldsFilledStepBased(2)
-        }
-      },
-      trigger: 'blur'
-    }
-  ],
-  city: [createRule(t('form.error.requiredField'))],
-  country: [createRule(t('form.error.requiredField'))],
-  institutionCode: [
-    createValidator(
-      5,
-      /^\d+$/,
-      t('form.error.input_5_chars'),
-      t('form.error.only_numbers'),
-      'institutionCode'
-    )
-  ],
-  branchCode: [
-    createValidator(
-      5,
-      /^\d+$/,
-      t('form.error.input_5_chars'),
-      t('form.error.only_numbers')
-    )
-  ],
-  accountNumber: [
-    createValidator(
-      11,
-      /^[a-zA-Z0-9]+$/,
-      t('form.error.input_11_chars'),
-      t('form.error.alphanumeric_only')
-    )
-  ],
-  key: [
-    createValidator(
-      2,
-      /^\d+$/,
-      t('form.error.input_2_chars'),
-      t('form.error.only_numbers')
-    )
-  ]
-})
-
-// Watchers
-watch(() => props.step, () => areFieldsFilledStepBased(props.step))
-watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
-watch(
-  () => createMandateForm.erpId,
-  (value) => {
-    createMandateForm.erpId = value.replace(/[^0-9]/i, '')
-  }
-)
-
-/* function getSuffixIcon() {
-  if (isIBSValid.value) {
-    return () => h(PIcon, { color: '#5546FF' }, [h(PICheck)])
-  }
-  return ''
-} */
-
-// Expose
-defineExpose({
-  createMandateForm,
-  validateIBS
-})
-
-</script>
-
-<style lang="scss">
-.create-mandate-form {
-  .el-form-item__content {
-    display: flex;
-    align-items: start;
-    flex-direction: column;
-  }
-
-  &__title-label {
-    font-size: 12px;
-    font-style: normal;
-    color: var(--el-color-neutral-gray-900);
-    line-height: 120%;
-
-    &__asterisk {
-      color: var(--el-color-functionnal-red);
-    }
-  }
-
-  &__section-title {
-    color: var(--el-color-neutral-gray-900);
-    font-size: 16px;
-    font-style: normal;
-    line-height: 120%;
-  }
-
-  &_optional-title {
-    font-size: 12px;
-    font-style: normal;
-    line-height: 120%;
-    color: var(--el-color-neutral-gray-900);
-  }
-
-  &_optional {
-    font-size: 12px;
-    font-style: normal;
-    line-height: 120%;
-    color: var(--el-color-neutral-gray-500);
-  }
-
-  .el-input__inner::-webkit-inner-spin-button,
-  .el-input__inner::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-}
-</style>

@@ -57,27 +57,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    generated-mandate: 'The mandate is generated !'
-    manual-sign: 'manual sign.'
-    download: 'Download the mandate for'
-    deposit: 'Once signed, upload the mandate to KPMG Pulse to activate the collection.'
-    help: 'Need help?'
-    help-label-prefix: 'Consult the '
-    help-label-link: 'practical guide'
-    help-label-suffix: ' to ensure that the collection is active'
-  fr-FR:
-    generated-mandate: 'Le mandat est généré !'
-    manual-sign: 'signature manuscrite.'
-    download: 'Téléchargez dès maintenant le mandat pour'
-    deposit: 'Une fois signé, déposez le mandat sur KPMG Pulse pour activer la collecte.'
-    help: "Besoin d'aide ?"
-    help-label-prefix: 'Consultez le '
-    help-label-link: 'guide pratique'
-    help-label-suffix: " pour garantir l'activation de la collecte"
-</i18n>
-
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
 import {
@@ -87,15 +66,15 @@ import {
   PIFiletypePdf,
   PIDownload,
   PImage,
-  PAlert
+  PAlert,
 } from '@kpmg/styleguide'
 import { downloadUnsignedMandate } from '@/services/mandate'
 import { downloadFile } from '@/helpers/utils'
 const props = defineProps({
   mandateId: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 declare let window: any
 const downloadMandate = async () => {
@@ -106,8 +85,8 @@ const downloadMandate = async () => {
         suggestedName: `unsigned-mandate-${props.mandateId}.pdf`,
         types: [{
           description: 'PDF Document',
-          accept: { 'application/pdf': ['.pdf'] }
-        }]
+          accept: { 'application/pdf': ['.pdf'] },
+        }],
       })
 
       // Create a FileSystemWritableFileStream to write to
@@ -128,10 +107,11 @@ const downloadMandate = async () => {
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 </script>
+
 <style lang="scss">
 .download-mandate {
   &__illustration {
@@ -173,3 +153,23 @@ const { t } = useI18n({
   }
 }
 </style>
+<i18n lang="yaml">
+  en-US:
+    generated-mandate: 'The mandate is generated !'
+    manual-sign: 'manual sign.'
+    download: 'Download the mandate for'
+    deposit: 'Once signed, upload the mandate to KPMG Pulse to activate the collection.'
+    help: 'Need help?'
+    help-label-prefix: 'Consult the '
+    help-label-link: 'practical guide'
+    help-label-suffix: ' to ensure that the collection is active'
+  fr-FR:
+    generated-mandate: 'Le mandat est généré !'
+    manual-sign: 'signature manuscrite.'
+    download: 'Téléchargez dès maintenant le mandat pour'
+    deposit: 'Une fois signé, déposez le mandat sur KPMG Pulse pour activer la collecte.'
+    help: "Besoin d'aide ?"
+    help-label-prefix: 'Consultez le '
+    help-label-link: 'guide pratique'
+    help-label-suffix: " pour garantir l'activation de la collecte"
+</i18n>

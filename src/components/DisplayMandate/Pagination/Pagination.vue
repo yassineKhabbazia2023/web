@@ -14,13 +14,6 @@
   </PPagination>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    on: 'on'
-  fr-FR:
-    on: 'sur'
-</i18n>
-
 <script setup lang='ts'>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -29,14 +22,14 @@ import { PPagination } from '@kpmg/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const emit = defineEmits(['page-selected'])
 const props = withDefaults(defineProps<PaginationProps>(), {
   pageRangeSelectorSuffix: '',
   pageRangeSelectorGroupLabel: ' ',
-  currentPage: 1
+  currentPage: 1,
 })
 
 const itemsByPage = ref(props.pagesRanges[0])
@@ -67,4 +60,11 @@ const updateListDisplay = (currentPage: number, itemsByPage: number) =>
   emit('page-selected', { currentPage, itemsByPage })
 
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    on: 'on'
+  fr-FR:
+    on: 'sur'
+</i18n>
 

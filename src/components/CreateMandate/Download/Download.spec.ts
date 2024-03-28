@@ -4,22 +4,23 @@ import { expect, describe, it, vi } from 'vitest'
 import { downloadUnsignedMandate } from '@/services/mandate'
 
 vi.mock('@/services/mandate', () => ({
-  downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data: 'pdf-data' }))
+  downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data: 'pdf-data' })),
 }))
+
+vi.mock('@/helpers/utils')
 
 const createWrapper = () => wrapperFactory(Download, {
   props: {
-    mandateId: 'mandate-id'
-  }
+    mandateId: 'mandate-id',
+  },
 })
 
 interface CustomWindow extends Window {
-  showSaveFilePicker?: (_: any) => Promise<any>;
+  showSaveFilePicker?: (_: any) => Promise<any>
 }
 declare let window: CustomWindow
 
 describe('download mandate prefilled', () => {
-
   // eslint-disable-next-line vitest/expect-expect, vitest/no-disabled-tests
   it('uses traditional download method when showSaveFilePicker is not available', async () => {
     // Mocking window functions and objects
@@ -40,10 +41,10 @@ describe('download mandate prefilled', () => {
 
     const writableStreamMock = {
       write: vi.fn(),
-      close: vi.fn()
+      close: vi.fn(),
     }
     const fileHandleMock = {
-      createWritable: vi.fn(() => Promise.resolve(writableStreamMock))
+      createWritable: vi.fn(() => Promise.resolve(writableStreamMock)),
     }
 
     // Mocking window.showSaveFilePicker directly
@@ -60,8 +61,8 @@ describe('download mandate prefilled', () => {
       suggestedName: 'unsigned-mandate-mandate-id.pdf',
       types: [{
         description: 'PDF Document',
-        accept: { 'application/pdf': ['.pdf'] }
-      }]
+        accept: { 'application/pdf': ['.pdf'] },
+      }],
     })
   })
 

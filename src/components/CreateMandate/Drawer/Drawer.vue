@@ -152,45 +152,6 @@
   </div>
 </template>
 
-<i18n lang="yaml">
-  en-US:
-    new-collection: 'New collection'
-    next: 'Next'
-    previous: 'Previous'
-    validate: 'Validate'
-    entity: 'Entity'
-    signatory: 'Signatory'
-    infos: 'Infos'
-    banking-data: 'Banking data'
-    bank-identity-statement: 'Bank identity statement'
-    tooltip: 'The IBS number entered must be part of your
-      portfolio and have an active commitment.'
-    close-button: 'Close page'
-    title-popup: 'Exit mandate creation ?'
-    text-popup: 'You are about to exit the mandate creation path,
-      all progress will be lost. Do you want to leave the course?'
-    cancel-popup: 'Cancel'
-    exit-popup: 'Exit'
-  fr-FR:
-    new-collection: 'Nouvelle collecte'
-    next: 'Suivant'
-    previous: 'Précédent'
-    validate: 'Valider'
-    entity: 'Entité'
-    signatory: 'Signataire'
-    infos: 'Infos'
-    banking-data: 'Données bancaires'
-    bank-identity-statement: "Relevé d’identité bancaire"
-    tooltip: "Le numéro d’IBS saisi doit faire parti de
-      votre portefeuille et avoir un engagement actif."
-    close-button: 'Fermer la page'
-    title-popup: 'Quitter la création de mandat ?'
-    text-popup: 'Vous êtes sur le point de quitter le parcours de création de mandat,
-      toute progression sera perdue. Souhaitez-vous quitter le parcours ?'
-    cancel-popup: 'Annuler'
-    exit-popup: 'Quitter'
-</i18n>
-
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref } from 'vue'
@@ -204,7 +165,7 @@ import {
   PIQuestionCircle,
   PStep,
   PSteps,
-  PTooltip
+  PTooltip,
 } from '@kpmg/styleguide'
 import { createMandate } from '@/services/mandate'
 import Form from '@/components/CreateMandate/Form'
@@ -221,27 +182,27 @@ const mandateModel: CreateMandateModel = reactive({
     addressComplement: '',
     zipCode: '',
     city: '',
-    country: ''
+    country: '',
   },
   signatory: {
     title: '',
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
   },
   bban: {
     bankCode: '',
     branchCode: '',
     accountNumber: '',
-    checkDigits: ''
-  }
+    checkDigits: '',
+  },
 })
 const loading = ref(false)
 const mandateId = ref('')
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local'
+  useScope: 'local',
 })
 
 const pDialogControl = reactive({
@@ -252,13 +213,13 @@ const pDialogControl = reactive({
   dialogShowClose: true,
   dialogCloseOnClickModal: false,
   dialogCloseOnPressEscape: true,
-  dialogCustomClass: 'my-dialog-class'
+  dialogCustomClass: 'my-dialog-class',
 })
 
 const emit = defineEmits(['update:modelValue', 'new-mandate-crated'])
 
 const props = defineProps({
-  modelValue: Boolean
+  modelValue: Boolean,
 })
 
 const drawerModel = computed({
@@ -267,7 +228,7 @@ const drawerModel = computed({
   },
   set(value) {
     emit('update:modelValue', value)
-  }
+  },
 })
 
 const goToNextStep = () => {
@@ -320,7 +281,7 @@ const submitMandate = async (mandate: CreateMandateModel) => {
   try {
     loading.value = true
     const {
-      data: { id }
+      data: { id },
     } = await createMandate(mandate)
     mandateId.value = id
     ++currentStep.value
@@ -332,9 +293,10 @@ const submitMandate = async (mandate: CreateMandateModel) => {
 
 defineExpose({
   validateAvailability,
-  nextStepAvailability
+  nextStepAvailability,
 })
 </script>
+
 <style lang="scss">
 .drawer-create-mandate {
   &__title {
@@ -349,3 +311,41 @@ defineExpose({
   }
 }
 </style>
+<i18n lang="yaml">
+  en-US:
+    new-collection: 'New collection'
+    next: 'Next'
+    previous: 'Previous'
+    validate: 'Validate'
+    entity: 'Entity'
+    signatory: 'Signatory'
+    infos: 'Infos'
+    banking-data: 'Banking data'
+    bank-identity-statement: 'Bank identity statement'
+    tooltip: 'The IBS number entered must be part of your
+      portfolio and have an active commitment.'
+    close-button: 'Close page'
+    title-popup: 'Exit mandate creation ?'
+    text-popup: 'You are about to exit the mandate creation path,
+      all progress will be lost. Do you want to leave the course?'
+    cancel-popup: 'Cancel'
+    exit-popup: 'Exit'
+  fr-FR:
+    new-collection: 'Nouvelle collecte'
+    next: 'Suivant'
+    previous: 'Précédent'
+    validate: 'Valider'
+    entity: 'Entité'
+    signatory: 'Signataire'
+    infos: 'Infos'
+    banking-data: 'Données bancaires'
+    bank-identity-statement: "Relevé d’identité bancaire"
+    tooltip: "Le numéro d’IBS saisi doit faire parti de
+      votre portefeuille et avoir un engagement actif."
+    close-button: 'Fermer la page'
+    title-popup: 'Quitter la création de mandat ?'
+    text-popup: 'Vous êtes sur le point de quitter le parcours de création de mandat,
+      toute progression sera perdue. Souhaitez-vous quitter le parcours ?'
+    cancel-popup: 'Annuler'
+    exit-popup: 'Quitter'
+</i18n>
