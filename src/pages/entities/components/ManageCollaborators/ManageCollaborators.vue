@@ -16,6 +16,7 @@
         <PForm
           pLabelPosition="top"
           pHideRequiredAsterisk
+          @submit.prevent
         >
           <PFormItem
             :pLabel="t('searchCollaborator')"
