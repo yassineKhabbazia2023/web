@@ -5,13 +5,17 @@ import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
-import { commonStore } from '@kpmg/common'
+import { type Entity, commonStore } from '@kpmg/common'
 import TableData from './'
 
 const handleFavorites = vi.fn()
 const postMock = vi.fn()
 const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
-const testEntity = { idAccount: mockTableData[0].id, name: mockTableData[0].name }
+const testEntity = {
+  idAccount: mockTableData[0].id,
+  name: mockTableData[0].name,
+  accountNumber: mockTableData[0].accountNumber,
+}
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -202,16 +206,21 @@ describe('tableData', () => {
   })
   it('should change ibs selected and emit access', () => {
     const ibsLink = document.body.getElementsByClassName('link')[0] as HTMLElement
+    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+    const formattedEntity: Entity = {
+      name: testEntity.name,
+      idAccount: testEntity.idAccount,
+      color: 'persian',
+      ibs: testEntity.accountNumber,
+    }
     ibsLink.click()
 
+    expect(setItemSpy).toHaveBeenCalledWith('selected-entity', JSON.stringify(formattedEntity))
     expect(wrapper.emitted('access')).toStrictEqual([[testEntity.idAccount]])
     expect(store.$patch).toHaveBeenCalledWith({
       user: {
         entities: {
-          default: {
-            name: testEntity.name,
-            idAccount: testEntity.idAccount,
-          },
+          default: formattedEntity,
         },
       },
     })

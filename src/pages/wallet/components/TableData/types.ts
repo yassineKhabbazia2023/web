@@ -6,5 +6,6 @@ export interface Props {
 export interface Row {
   id: string
   name: string
+  accountNumber: string
 }
 
