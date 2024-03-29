@@ -64,7 +64,7 @@ export function getMappedAccount(
   const colorIndex = index % COLORS.length
   const avatarColor = COLORS[colorIndex]
   const hub = DEFAULT_HUB
-  const isFavorite = false // TODO should it be computed ?
+  const isFavorite = false
 
   const mappedAccount: IWalletData = {
     owner: {
