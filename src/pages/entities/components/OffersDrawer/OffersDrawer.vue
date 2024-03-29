@@ -318,9 +318,17 @@ async function saveOffer() {
 async function validateOffer() {
   const patchOperations = getPatchOperations(patchValues)
   if (patchOperations.length > 0) {
-    await patchAccount(ACCOUNT_ID /* props.accountId */, patchOperations)
+    try {
+      await patchAccount(props.accountId, patchOperations)
+    } catch (error) {
+      console.error(error)
+    }
   }
-  await saveOffer()
+  try {
+    await saveOffer()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const handleConfirm = async () => {

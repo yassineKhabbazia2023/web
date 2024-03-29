@@ -13,7 +13,6 @@ import {
   getMockedAccountReferential,
   getMockedReferentialHubs,
 } from './accountMock'
-import * as helper from '@/helper/helper'
 
 const accountId = 5
 const accountIdRejected = 8
@@ -31,14 +30,6 @@ const mockedAccountApiPatch = vi.fn()
 vi.mock('@kpmg/common', () => {
   return {
     commonApi: () => ({
-      account: {
-        get: vi.fn().mockImplementation((url) => {
-          return url === `accounts/${accountId}`
-            ? Promise.resolve({ data: mockedAccount })
-            : Promise.reject(new Error('rejected'))
-        }),
-        patch: mockedAccountApiPatch,
-      },
       gateway: {
         get: vi.fn().mockImplementation((url) => {
           if (url === 'offer/api/referentials/AccountReferentialInformation') {
@@ -51,11 +42,17 @@ vi.mock('@kpmg/common', () => {
               data: mockedReferentialHubs,
             })
           }
+          if (url === `account/api/accounts/${accountId}`) {
+            return Promise.resolve({
+              data: mockedAccount,
+            })
+          }
 
           return url.includes(SEARCH_CURRENT_USER)
             ? Promise.resolve({ data: [mockedAccountRow] })
             : Promise.reject(new Error(rejectedErrorMessage))
         }),
+        patch: mockedAccountApiPatch,
       },
     }),
   }
@@ -68,12 +65,10 @@ describe('test accountServices', () => {
       expect(account).toStrictEqual(mockedAccount)
     })
 
-    it('should call handleRequestError when an error occurs', async () => {
-      const handleRequestErrorSpy = vi.spyOn(helper, 'handleRequestError')
-      await fetchAccount(accountIdRejected)
-      const expectedMessage = 'Error while fetchAccount'
-      expect(handleRequestErrorSpy).toHaveBeenCalledOnce()
-      expect(handleRequestErrorSpy).toHaveBeenNthCalledWith(1, expectedMessage, expect.any(Error))
+    it('should throw an error when an error occurs', async () => {
+      const expectedMessage = rejectedErrorMessage
+      await expect(async () => await fetchAccount(accountIdRejected))
+        .rejects.toThrow(expectedMessage)
     })
   })
 
@@ -97,17 +92,17 @@ describe('test accountServices', () => {
   describe('patchAccount', () => {
     it('should return updated account on success', async () => {
       await patchAccount(accountId, mockedPatchOperations)
+      const expectedUrl = `account/api/accounts/${accountId}`
       expect(mockedAccountApiPatch).toHaveBeenCalledOnce()
-      expect(mockedAccountApiPatch).toHaveBeenNthCalledWith(1, `accounts/${accountId}`, mockedPatchOperations)
+      expect(mockedAccountApiPatch).toHaveBeenNthCalledWith(1, expectedUrl, mockedPatchOperations)
     })
 
-    it('should call handleRequestError when an error occurs', async () => {
-      mockedAccountApiPatch.mockRejectedValueOnce(new Error('rejected'))
-      const handleRequestErrorSpy = vi.spyOn(helper, 'handleRequestError')
-      await patchAccount(accountIdRejected, mockedPatchOperations)
-      const expectedMessage = 'Error while patchAccount'
-      expect(handleRequestErrorSpy).toHaveBeenCalledOnce()
-      expect(handleRequestErrorSpy).toHaveBeenNthCalledWith(1, expectedMessage, expect.any(Error))
+    it('should throw an error when an error occurs', async () => {
+      const errorMessage = 'Error while patchAccount'
+      mockedAccountApiPatch.mockRejectedValueOnce(new Error(errorMessage))
+
+      await expect(async () => await patchAccount(accountIdRejected, mockedPatchOperations))
+        .rejects.toThrow(errorMessage)
     })
   })
 

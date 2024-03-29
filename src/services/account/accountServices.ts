@@ -1,23 +1,18 @@
 import type { Account } from '.'
 import { commonApi } from '@kpmg/common'
 import { API_PREFIXES } from '../config'
-import { handleRequestError } from '@/helper'
 import type { PatchOperation } from '@/services/PatchRecordService'
 import type { QueryResult } from '@/types/commonTypes'
 import type { AccountRow, ReferentialStructure, Hub } from './accountTypes'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
-  try {
-    const response = await commonApi().account.get(`accounts/${accountId}`)
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}`
 
-    return response.data
-  } catch (error) {
-    handleRequestError('Error while fetchAccount', error)
-  }
+  return await fetchGatewayApi<Account>(url)
 }
 
 export async function fetchAccounts(searchParams: string) {
-  const url = `account/api/accounts/${searchParams}`
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/${searchParams}`
 
   return await fetchGatewayApi<QueryResult<AccountRow>>(url)
 }
@@ -41,9 +36,7 @@ export async function fetchAccountReferential() {
 }
 
 export async function patchAccount(accountId: number, patchOperations: PatchOperation[]): Promise<void> {
-  try {
-    await commonApi().account.patch(`accounts/${accountId}`, patchOperations)
-  } catch (error) {
-    handleRequestError('Error while patchAccount', error)
-  }
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}`
+
+  await commonApi().gateway.patch(url, patchOperations)
 }

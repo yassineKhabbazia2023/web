@@ -9,6 +9,10 @@ import TableData from '../../components/TableData'
 import Deploy from '.'
 import { EntityStatus } from '../../components/Filters/types'
 import { ElCheckbox } from 'element-plus'
+import { getMockedAccount } from '@/services/account/accountMock'
+
+const accountId = 5
+const mockedAccount = getMockedAccount()
 
 const putFavoriteMock = vi.fn()
 const getDisplayMock = vi.fn((_arg) =>
@@ -67,6 +71,16 @@ vi.mock('@kpmg/common', () => ({
         arg === 'favorites'
           ? getFavoritesMock()
           : getDisplayMock(arg),
+    },
+    gateway: {
+      get: vi.fn().mockImplementation((url) => {
+        if (url === `account/api/accounts/${accountId}`) {
+          return Promise.resolve({
+            data: mockedAccount,
+          })
+        }
+        return Promise.reject(new Error(`unmnanaged url '${url}'`))
+      }),
     },
   }),
   commonPinia: () => createPinia(),
