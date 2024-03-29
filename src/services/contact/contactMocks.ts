@@ -1,4 +1,4 @@
-import type { Contact } from './contactTypes'
+import type { Contact, Persona } from './contactTypes'
 
 export function getMockedCollaborators(): Contact[] {
   return [
@@ -14,7 +14,8 @@ export function getMockedCollaborators(): Contact[] {
       persona: {
         id: 2,
         name: 'Admin / Collab Product',
-      },
+        description: '',
+      } as Persona,
     },
     {
       id: 2,
@@ -28,7 +29,8 @@ export function getMockedCollaborators(): Contact[] {
       persona: {
         id: 4,
         name: 'Partner GS',
-      },
+        description: '',
+      } as Persona,
     },
     {
       id: 3,
@@ -42,7 +44,42 @@ export function getMockedCollaborators(): Contact[] {
       persona: {
         id: 4,
         name: 'Partner GS',
-      },
+        description: '',
+      } as Persona,
+    },
+  ]
+}
+export function getMockedCustomer(): Contact[] {
+  return [
+    {
+      id: 1,
+      firstName: 'Jean',
+      lastName: 'yve',
+      email: 'yve@gmail.fr',
+      landPhone: '0674589003',
+      mobilePhone: '0785667003',
+      type: 'client',
+      office: undefined,
+      persona: {
+        id: 2,
+        name: 'Dirigeant',
+        description: '',
+      } as Persona,
+    },
+    {
+      id: 2,
+      firstName: 'Bernard',
+      lastName: 'yve',
+      email: 'bernard@gmail.fr',
+      landPhone: '0674589003',
+      mobilePhone: '0785667003',
+      type: 'client',
+      office: undefined,
+      persona: {
+        id: 2,
+        name: 'Comptable',
+        description: '',
+      } as Persona,
     },
   ]
 }

@@ -28,5 +28,7 @@ export interface IState {
   totalItems: number | undefined
   search: string | undefined
   isLoading: boolean
+  isDrawerViewDetailsOpened: boolean
+  selectedUserId: number
   sort: string | undefined
 }

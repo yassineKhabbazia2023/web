@@ -117,6 +117,7 @@ import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
+import type { Contact } from '@/services/contact/contactTypes'
 import { returnSortQueryField } from '@/helper'
 
 const { t } = useI18n({
@@ -125,7 +126,10 @@ const { t } = useI18n({
 })
 
 const props = defineProps<Props>()
-const emit = defineEmits(['on-sort-change'])
+const emits = defineEmits<{
+  'on-sort-change': [string]
+  'click-view-information': [number]
+}>()
 
 const { userInformation, modifyRights, deleteUser } = MENU_ACTIONS_NAME
 const menuElements : PToolboxItemProps[] = [
@@ -150,18 +154,22 @@ const menuElements : PToolboxItemProps[] = [
 ]
 
 const state = reactive({
-  rowData: undefined,
+  rowData: {} as Contact,
 })
 
 const handleToolboxItemClick = (_action: string, row: any) => {
   state.rowData = row
+  if (state.rowData) {
+    const contact = state.rowData as Contact
+    emits('click-view-information', contact.id)
+  }
 }
 
 const handleSortChange = (data:any) => {
   const columnLabel = data.prop
   const order = data.order
   const sortQueryField = returnSortQueryField(columnLabel, order)
-  emit('on-sort-change', sortQueryField)
+  emits('on-sort-change', sortQueryField)
 }
 </script>
 

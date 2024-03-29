@@ -1,6 +1,7 @@
 export interface Persona {
   id: number
   name: string
+  description: string
 }
 
 export interface Contact {
@@ -13,4 +14,10 @@ export interface Contact {
   type?: 'collaborateur' | 'client'
   office?: string
   persona?: Persona
+}
+export interface PatchContactPayload {
+  firstName?: string
+  lastName?: string
+  mobilePhone?: string
+  landPhone?: string
 }

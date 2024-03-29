@@ -27,7 +27,7 @@ describe('wallet', () => {
       expect(collaborators).toStrictEqual(mockCollabsData)
 
       expect(mockGatewayGet)
-        .toHaveBeenNthCalledWith(1, `${API_PREFIXES.CUSTOMER_WALLER}/accounts/${idEntity}/contacts?Type=Collaborator`)
+        .toHaveBeenNthCalledWith(1, `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${idEntity}/contacts?Type=Collaborator`)
     })
   })
 })

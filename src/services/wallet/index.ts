@@ -7,7 +7,7 @@ export const getCollaboratorsByIdEntity = async (
   idEntity: string,
 ): Promise<Collab[]> => {
   const response = await commonApi().gateway.get(
-      `${API_PREFIXES.CUSTOMER_WALLER}/accounts/${idEntity}/contacts?Type=Collaborator`,
+      `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${idEntity}/contacts?Type=Collaborator`,
   )
 
   return response?.data

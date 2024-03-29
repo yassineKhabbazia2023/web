@@ -13,6 +13,13 @@ import type { IExtendedUser } from './types.ts'
 import { noResult } from '@/../tests'
 import TableData from './components/TableData'
 import FormSearch from '@/components/FormSearch'
+import type { PatchContactPayload } from '@/services/contact/contactTypes'
+import { mockUser } from './components/DrawerUserDetails/mockData.ts'
+
+vi.mock('@/services/contact', () => ({
+  getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
+  patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
+}))
 
 const contactsList = generateContactsMock({
   numberOfContactsToReturn: 15,
@@ -174,6 +181,11 @@ describe('usersClient', () => {
       await tableWrapper.vm.$emit('on-sort-change', '+email')
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(2)
+    })
+
+    it('should refresh when the event contact-patched is triggered', async () => {
+      await wrapper.vm.$emit('contact-patched', mockUser)
+      expect(mockGatewayGet).toHaveBeenCalledTimes(1)
     })
   })
 })

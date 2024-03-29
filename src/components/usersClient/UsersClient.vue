@@ -11,6 +11,7 @@
         <TableData
           v-if="state.data.length"
           :data="state.data"
+          @click-view-information="handleClickViewInformation"
           @on-sort-change="handleSortChange"
         />
 
@@ -33,6 +34,15 @@
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
+    <DrawerUserDetails
+      v-if="state.isDrawerViewDetailsOpened"
+      v-model="state.isDrawerViewDetailsOpened"
+      :userId="state.selectedUserId"
+      :hasDrawerOpened="state.isDrawerViewDetailsOpened"
+      :editMode="canEdit"
+      @contact-patched= "handlePatch"
+      data-testid="viewinfo-drawer"
+    />
   </div>
 </template>
 
@@ -53,6 +63,7 @@ import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
 import TableData from './components/TableData'
 import type { IState, IUserFromApi } from './types'
+import DrawerUserDetails from './components/DrawerUserDetails'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -71,6 +82,8 @@ const state: IState = reactive({
   search: undefined,
   isLoading: false,
   sort: undefined,
+  isDrawerViewDetailsOpened: false,
+  selectedUserId: 0,
 })
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
@@ -91,6 +104,8 @@ const paginationLabel = computed(() =>
 const shouldShowPagination = computed(() =>
   !state.isLoading && state.totalItems,
 )
+
+const canEdit = computed(() => true)
 
 const getQueryParams = () => ({
   pageNumber: state.currentPage,
@@ -148,6 +163,14 @@ const fetch = async () => {
     console.error(err)
   }
   state.isLoading = false
+}
+const handlePatch = async () => {
+  await fetch()
+}
+const handleClickViewInformation = (selectedUserId: number) => {
+  state.selectedUserId = selectedUserId
+  state.isDrawerViewDetailsOpened = true
+  console.log('click') // eslint-disable-line
 }
 
 const handleSortChange = (sortQueryField:string) => {
