@@ -34,8 +34,6 @@
           type="selection"
           v-if="tableInputsWithCells.selectable"
         />
-        v-if="tableInputsWithCells.selectable"
-        />
         <PTableColumn
           pLabel="Text"
           pWidth="180"

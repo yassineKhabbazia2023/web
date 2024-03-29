@@ -28,6 +28,9 @@
     :filterMethod="pFilterMethod"
     :filteredValue="pFilteredValue"
   >
+    <template v-if="!!slots['header']" #header>
+      <slot name="header" />
+    </template>
     <template v-if="!!slots['default']" #default="slotProps">
       <slot v-bind="slotProps" />
     </template>
