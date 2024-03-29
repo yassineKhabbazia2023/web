@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { fetchWalletData, getSearchParams, getMappedAccount } from './DeployUtils'
-import { getMockedSearchCriteria } from './DeployUtilsMock'
+import { getMockedMappedAccount, getMockedSearchCriteria } from './DeployUtilsMock'
 import { PIArrowUpCircle } from '@kpmg/styleguide'
 import type { DeploymentStatus, SearchCriteria } from '../../types'
 import * as accountService from '@/services/account'
@@ -51,43 +51,19 @@ describe('test DeployUtils', () => {
       ].join('')
 
       const queryResult = await fetchWalletData(deploymentStatuses, searchCriteria)
+      const item1 = getMockedMappedAccount({
+        deploymentStatus: undefined,
+      })
+      const item2 = getMockedMappedAccount({
+        accountId: 2,
+        accountNumber: '10102',
+        deploymentStatus: undefined,
+      }, 'orange')
       const expectedQueryResult = {
         currentPage: 0,
         items: [
-          {
-            accountId: 1,
-            accountNumber: '10102',
-            city: 'Paris',
-            deploymentStatus: undefined,
-            hub: 'Paris',
-            id: 'account-global-unique-id',
-            isFavorite: false,
-            name: 'Legal Name',
-            owner: {
-              avatarColor: 'persian',
-              email: 'sign@kpmg.fr',
-              firstName: 'Signa',
-              initials: 'ST',
-              lastName: 'Tory',
-            },
-          },
-          {
-            accountId: 2,
-            accountNumber: '10102',
-            city: 'Paris',
-            deploymentStatus: undefined,
-            hub: 'Paris',
-            id: 'account-global-unique-id',
-            isFavorite: false,
-            name: 'Legal Name',
-            owner: {
-              avatarColor: 'orange',
-              email: 'sign@kpmg.fr',
-              firstName: 'Signa',
-              initials: 'ST',
-              lastName: 'Tory',
-            },
-          },
+          item1,
+          item2,
         ],
         totalItems: 2,
         totalPage: 1,

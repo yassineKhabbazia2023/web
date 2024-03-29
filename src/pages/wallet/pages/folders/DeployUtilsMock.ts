@@ -47,7 +47,10 @@ export function getMockedDeploymentStatus(override: Partial<DeploymentStatus> = 
   }
 }
 
-export function getMockedMappedAccount(override: Partial<IWalletData> = {}): IWalletData {
+export function getMockedMappedAccount(
+  override: Partial<IWalletData> = {},
+  avatarColor = 'persian',
+): IWalletData {
   const defaultMappedAccount: IWalletData = {
     accountId: 1,
     accountNumber: '10102',
@@ -58,7 +61,7 @@ export function getMockedMappedAccount(override: Partial<IWalletData> = {}): IWa
     isFavorite: false,
     name: 'Legal Name',
     owner: {
-      avatarColor: 'orange',
+      avatarColor,
       email: 'sign@kpmg.fr',
       firstName: 'Signa',
       initials: 'ST',
