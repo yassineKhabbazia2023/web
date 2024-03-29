@@ -1,3 +1,4 @@
+import type { QueryResult } from '@/types/commonTypes'
 import type { PaginationData } from '@/helper/helperTypes'
 import type { Component } from 'vue'
 
@@ -30,6 +31,12 @@ export interface ICommonEntitiesInFavorite {
   id: string
 }
 
+export interface DeploymentStatus {
+  text: string
+  icon: Component
+  color: string
+}
+
 export interface IWalletData {
   owner: {
     firstName: string
@@ -40,14 +47,19 @@ export interface IWalletData {
   }
   city: string
   hub: string
-  deploymentStatus: {
-    text: string
-    icon: Component
-    color: string
-  }
+  deploymentStatus: DeploymentStatus
   id: string
   accountId?: number
   accountNumber: string
   name: string
   isFavorite: boolean
 }
+
+export interface SearchCriteria {
+  currentPage: number
+  limit: number
+  search: string | undefined
+  filterByDeploymentStatus: string | undefined
+}
+
+export interface SearchResult extends QueryResult<IWalletData> {}

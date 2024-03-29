@@ -161,7 +161,6 @@ import type {
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
 import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
-import { ACCOUNT_ID } from './OffersDrawerConst'
 import type { Contact } from '@/services/contact/contactTypes'
 
 const { t } = useI18n({
@@ -378,8 +377,8 @@ const offerSanitizedUrl = computed(() => {
 
 onMounted(async () => {
   subscriptionOffers.value = await getAllOffers()
-  principalContacts.value = await getPrincipalContacts()
-  account.value = await fetchAccount(ACCOUNT_ID /* props.accountId */)
+  principalContacts.value = await getPrincipalContacts(props.accountId)
+  account.value = await fetchAccount(props.accountId)
 })
 </script>
 

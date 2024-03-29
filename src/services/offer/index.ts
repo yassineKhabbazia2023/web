@@ -4,7 +4,6 @@ import type {
   SubscriptionOfferServices,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
-import { ACCOUNT_ID } from '@/pages/entities/components/OffersDrawer/OffersDrawerConst'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
 import { API_PREFIXES } from '../config'
 import { handleRequestError } from '@/helper/helper'
@@ -35,10 +34,10 @@ export const getOffer = async (
   }
 }
 
-export const getPrincipalContacts = async (): Promise<User[] | undefined> => {
+export const getPrincipalContacts = async (accountId: number): Promise<User[] | undefined> => {
   try {
     const response =
-      await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/roles/signatory/${ACCOUNT_ID}`)
+      await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`)
 
     return response?.data
   } catch (error) {

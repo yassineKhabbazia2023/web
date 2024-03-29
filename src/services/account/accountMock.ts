@@ -1,5 +1,6 @@
 import type { PatchOperation } from '@/services/PatchRecordService'
 import type { Account, AccountRow, Address, Signatory, Deployment, ReferentialStructure, Hub } from '.'
+import type { QueryResult } from '@/types/commonTypes'
 import accountReferentialInformation from './__mock__/accountReferentialInformation.json'
 import referentialHubs from './__mock__/referentialHubs.json'
 
@@ -47,6 +48,28 @@ export function getMockedDeployment(override: Partial<Deployment> = {}): Deploym
 
   return {
     ...defaultDeployment,
+    ...override,
+  }
+}
+
+export function getMockedAccountQueryResult(
+  override: Partial<QueryResult<AccountRow>> = {},
+): QueryResult<AccountRow> {
+  const accountRow1 = getMockedAccountRow()
+  const accountRow2 = getMockedAccountRow({
+    accountId: 2,
+    accountNumber: '10102',
+  })
+  const items = [accountRow1, accountRow2]
+
+  const defaultQueryResult: QueryResult<AccountRow> = {
+    currentPage: 1,
+    items,
+    totalItems: 2,
+    totalPage: 1,
+  }
+  return {
+    ...defaultQueryResult,
     ...override,
   }
 }

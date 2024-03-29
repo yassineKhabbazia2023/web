@@ -104,7 +104,8 @@ describe('getOffersBookLink', () => {
 
 describe('getPrincipalContact', () => {
   it('should return principal contact details', async () => {
-    const principalContacts = await getPrincipalContacts()
+    const accountId = 5
+    const principalContacts = await getPrincipalContacts(accountId)
 
     expect(principalContacts).toStrictEqual(mockedPrincipalContacts)
   })
