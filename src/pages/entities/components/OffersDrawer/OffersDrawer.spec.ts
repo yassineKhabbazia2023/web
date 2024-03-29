@@ -217,13 +217,14 @@ describe('offersDrawer', () => {
         productConfigurations: [1, 2, 3, 4],
       }
       it('should patch the account and create a subscription when the user confirms', async () => {
+        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
+        const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
+
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
 
-        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
-        const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
-        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
@@ -233,22 +234,65 @@ describe('offersDrawer', () => {
         expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
       it('should not patch the account when no account diff', async () => {
+        vi
+          .spyOn(PatchRecordService, 'getPatchOperations')
+          .mockReturnValueOnce([])
+
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
-
-        vi
-          .spyOn(PatchRecordService, 'getPatchOperations')
-          .mockReturnValue([])
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
-        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
 
         expect(patchAccountSpy).not.toHaveBeenCalled()
         expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
+      })
+
+      it('should call console.error when patch fails', async () => {
+        const errorMessage = 'patch rejected'
+        const patchAccountSpy = vi
+          .spyOn(ServicesAccount, 'patchAccount')
+          .mockRejectedValueOnce(errorMessage)
+
+        const consoleErrorSpy = vi.spyOn(console, 'error')
+        const wrapper = await getWrapper(true)
+        const firstOffer = findFirstOffer(wrapper)
+        firstOffer.trigger('click')
+
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
+        expect(confirmationModal.exists()).toBeTruthy()
+
+        confirmationModal.vm.$emit('confirm')
+        await flushPromises()
+
+        expect(patchAccountSpy).toHaveBeenCalledOnce()
+        expect(consoleErrorSpy).toHaveBeenCalledOnce()
+        expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
+      })
+
+      it('should call console.error when save fails', async () => {
+        const errorMessage = 'save rejected'
+        vi
+          .spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
+          .mockRejectedValueOnce(errorMessage)
+
+        const consoleErrorSpy = vi.spyOn(console, 'error')
+        const wrapper = await getWrapper(true)
+        const firstOffer = findFirstOffer(wrapper)
+        await firstOffer.trigger('click')
+
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
+        expect(confirmationModal.exists()).toBeTruthy()
+
+        confirmationModal.vm.$emit('confirm')
+        await flushPromises()
+
+        expect(consoleErrorSpy).toHaveBeenCalledOnce()
+        expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
     })
     describe('when input CompanyInformation data', () => {
