@@ -31,7 +31,7 @@ vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     wallet: {
       put: putFavoriteMock,
-      get: (_url: string) => getFavoritesMock(),
+      get: () => getFavoritesMock(),
     },
     gateway: {
       get: vi.fn().mockImplementation((url) => {

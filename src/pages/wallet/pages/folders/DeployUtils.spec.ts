@@ -95,23 +95,9 @@ describe('test DeployUtils', () => {
       const account = getMockedAccountRow()
       const index = 1
       const mappedAccount = getMappedAccount(deploymentStatuses, account, index)
-      const expected = {
-        accountId: 1,
-        accountNumber: '10102',
-        city: 'Paris',
+      const expected = getMockedMappedAccount({
         deploymentStatus: undefined,
-        hub: 'Paris',
-        id: 'account-global-unique-id',
-        isFavorite: false,
-        name: 'Legal Name',
-        owner: {
-          avatarColor: 'orange',
-          email: 'sign@kpmg.fr',
-          firstName: 'Signa',
-          initials: 'ST',
-          lastName: 'Tory',
-        },
-      }
+      }, 'orange')
 
       expect(mappedAccount).toMatchObject(expected)
     })
