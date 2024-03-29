@@ -1,6 +1,18 @@
 import { describe, it, vi, expect } from 'vitest'
-import { fetchAccount, fetchAccounts, patchAccount } from '.'
-import { getMockedAccount, getMockedAccountRow, getMockedPatchOperations } from './accountMock'
+import {
+  fetchAccount,
+  fetchAccounts,
+  patchAccount,
+  fetchAccountReferential,
+  fetchReferentialHubs,
+} from '.'
+import {
+  getMockedAccount,
+  getMockedAccountRow,
+  getMockedPatchOperations,
+  getMockedAccountReferential,
+  getMockedReferentialHubs,
+} from './accountMock'
 import * as helper from '@/helper/helper'
 
 const accountId = 5
@@ -10,6 +22,8 @@ const SEARCH_THROWS_ERROR = 'throw-error'
 const rejectedErrorMessage = 'rejected'
 
 const mockedAccount = getMockedAccount()
+const mockedAccountReferential = getMockedAccountReferential()
+const mockedReferentialHubs = getMockedReferentialHubs()
 const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedAccountApiPatch = vi.fn()
@@ -27,6 +41,17 @@ vi.mock('@kpmg/common', () => {
       },
       gateway: {
         get: vi.fn().mockImplementation((url) => {
+          if (url === 'offer/api/referentials/AccountReferentialInformation') {
+            return Promise.resolve({
+              data: mockedAccountReferential,
+            })
+          }
+          if (url === 'offer/api/referentials/hubs') {
+            return Promise.resolve({
+              data: mockedReferentialHubs,
+            })
+          }
+
           return url.includes(SEARCH_CURRENT_USER)
             ? Promise.resolve({ data: [mockedAccountRow] })
             : Promise.reject(new Error(rejectedErrorMessage))
@@ -83,6 +108,22 @@ describe('test accountServices', () => {
       const expectedMessage = 'Error while patchAccount'
       expect(handleRequestErrorSpy).toHaveBeenCalledOnce()
       expect(handleRequestErrorSpy).toHaveBeenNthCalledWith(1, expectedMessage, expect.any(Error))
+    })
+  })
+
+  describe('fetchAccountReferential', () => {
+    it('should return proper object', async () => {
+      const accountReferential = await fetchAccountReferential()
+
+      expect(accountReferential).toMatchObject(mockedAccountReferential)
+    })
+  })
+
+  describe('fetchReferentialHubs', () => {
+    it('should return proper object', async () => {
+      const referentialHubs = await fetchReferentialHubs()
+
+      expect(referentialHubs).toMatchObject(mockedReferentialHubs)
     })
   })
 })
