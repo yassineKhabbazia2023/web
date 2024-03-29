@@ -224,7 +224,7 @@ describe('offersDrawer', () => {
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
 
-        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
@@ -243,7 +243,7 @@ describe('offersDrawer', () => {
         await firstOffer.trigger('click')
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
-        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
@@ -263,7 +263,7 @@ describe('offersDrawer', () => {
         const firstOffer = findFirstOffer(wrapper)
         firstOffer.trigger('click')
 
-        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
@@ -285,7 +285,7 @@ describe('offersDrawer', () => {
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
 
-        const confirmationModal = wrapper.findComponent('[data-testid="confirmation-modal"]') as VueWrapper
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')

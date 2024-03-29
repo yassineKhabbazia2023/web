@@ -5,7 +5,7 @@
       :title="t('confirmationTitle')"
       :content="t('confirmationContent')"
       @confirm="handleConfirm"
-      data-testid="confirmation-modal"
+      data-testid="create-offer-confirmation-modal"
     />
     <PDrawer
       v-model="internalIsOpened"
