@@ -98,20 +98,29 @@ extends:
             value: assets-itg01
       - ${{ if or(and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')), and(contains(variables['Build.SourceBranch'], 'develop'), eq(parameters.deployType, 'developToRec'))) }}:
         - name: REC
-          displayName: Recette
           condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          poolAgent: Pulse-rec01
+          ${{ if lt(parameters.devIndex, 10) }}:
+            displayName: Recette-rec0${{ parameters.devIndex }}
+            poolAgent: Pulse-rec0${{ parameters.devIndex }}
+          ${{ else }}:
+            displayName: Recette-rec${{ parameters.devIndex }}
+            poolAgent: Pulse-rec${{ parameters.devIndex }}
           variables:
+          - name: hubEnvironment
+            ${{ if lt(parameters.devIndex, 10) }}:
+              value: rec0${{ parameters.devIndex }}
+            ${{ else }}:
+              value: rec${{ parameters.devIndex }} 
           - name: azureSC
             value: PULSE-REC
           - name: storageAccount
-            value: frrec01frontsa01platform
+            value: fr$(hubEnvironment)frontsa01platform
           - name: cdn_resourcegroup
-            value: frrec01hub
+            value: fr$(hubEnvironment)hub
           - name: cdn_profile
-            value: frrec01hubafd01profile
+            value: fr$(hubEnvironment)hubafd01profile
           - name: cdn_endpoint
-            value: assets-rec01
+            value: assets-$(hubEnvironment)
       steps:
       - type: az-blob
         name: Deploy_Assets
