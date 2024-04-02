@@ -129,7 +129,7 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
 const isLoading = ref<boolean | undefined>()
 const searchCriteria = ref<SearchCriteria>({
   currentPage: 0,
-  limit: 15,
+  limit: PAGE_SIZES[0],
   search: '',
   filterByDeploymentStatus: '',
 })
@@ -150,7 +150,7 @@ const handlePageRangeChanged = (pageRange: number) => {
 
 const paginationLabel = computed(() => getPaginationLabel(t('on'), {
   currentPage: searchCriteria.value.currentPage,
-  limit: searchCriteria.value.currentPage,
+  limit: searchCriteria.value.limit,
   data: searchResult.value.items,
   totalItems: searchResult.value.totalItems,
 }))

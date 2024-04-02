@@ -61,14 +61,29 @@ describe('getPaginationLabel', () => {
   beforeEach(() => {
     params = {
       currentPage: 1,
-      limit: 10,
-      data: [0, 1, 2, 3, 4],
+      limit: 3,
+      data: [0, 1, 2],
       totalItems: 55,
     }
   })
-  it('should return proper pagination label when value are given', () => {
+
+  it('should return proper pagination label when value are given on page 0', () => {
+    params.currentPage = 0
     const paginationLabel = getPaginationLabel<number>('sur', params)
-    const expected = '1 - 5 sur 55'
+    const expected = '1 - 3 sur 55'
+    expect(paginationLabel).toBe(expected)
+  })
+
+  it('should return proper pagination label when value are given on page 1', () => {
+    const paginationLabel = getPaginationLabel<number>('sur', params)
+    const expected = '1 - 3 sur 55'
+    expect(paginationLabel).toBe(expected)
+  })
+
+  it('should return proper pagination label when value are given on page 2', () => {
+    params.currentPage = 2
+    const paginationLabel = getPaginationLabel<number>('sur', params)
+    const expected = '4 - 6 sur 55'
     expect(paginationLabel).toBe(expected)
   })
 
