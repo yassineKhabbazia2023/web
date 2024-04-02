@@ -44,7 +44,6 @@ $align_attrs: flex-start, flex-end, stretch, center, end, start;
             flex-shrink: $i;
         }
     }
-
     @for $i from 0 through 100 {
         &--basis-#{$i} {
             flex-basis: #{$i + "%"};

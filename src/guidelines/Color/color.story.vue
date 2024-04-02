@@ -7,62 +7,104 @@
     }"
     icon="ic:outline-color-lens"
   >
-    <Variant title="Basic Usage" source=" ">
-      <h1>
-        Color
-      </h1>
-      <p>
-        Element Plus uses a specific set of palettes to specify colors
-        to provide a consistent look and feel for the products you build.
-      </p>
-      <h2>Main Color</h2>
-      <p>
-        The main color of Element Plus is bright and friendly blue.
-      </p>
-      <MainColor />
-      <h2>Secondary Colors Pegase</h2>
-      <p>
-        There are the secondary colors for Pegase.
-        From Figma : Extraites du dégradé KPMG Pulse, les couleurs vives
-        vous permettront d’apporter des touches de couleurs à vos contenus.
-        Ces touches de couleurs vives fonctionnent en duo,
-        par exemple : un picto fuschia et un cercle de soutien avec un fond en fuschia-bg
-        et un label fuschia-txt.
-        <br>
-        Nous les utiliserons principalement pour les infographies ou pictogrammes.
-      </p>
-      <SecondaryColorsPegase />
-      <h2>Functionnal Colors Pegase</h2>
-      <p>
-        Cette palette de variantes de couleurs est conçue pour toujours
-        rendre nos interfaces accessibles et compréhensibles.
-        Elles sont utilisées pour donner des indications ou des feedbacks aux utilisateurs.
-        <br>
-        Nous les utiliserons principalement pour les notifications, informations ou pictogrammes.
-      </p>
-      <FunctionnalColorsPegase />
-      <h2>Secondary Colors Element Plus</h2>
-      <p>
-        Used for basical elements of Element Plus.
-        Better to use the Technical Colors when its for custom content or override Element Plus.
-      </p>
-      <SecondaryColors />
-      <h2>
-        Neutral Color
-      </h2>
-      <p>
-        Neutral colors are for text, background and border colors.
-        You can use different neutral colors to represent the hierarchical structure.
-      </p>
-      <NeutralColor />
+    <Variant title="Basic Usage" source="">
+      <div class="margin-bottom--4">
+        <h1 class="margin-bottom--2">
+          Color
+        </h1>
+        <p>
+          Vous trouverez dans cette page, en premier, les différentes couleurs utilisées dans Pégase et leur variable css.
+          Puis en seconde partie, les classes utilitaires créées pour les background et text-color.
+        </p>
+      </div>
+      <div class="margin-bottom--4">
+        <h2 class="margin-bottom--2"> Couleur principale
+        </h2>
+        <p class="margin-bottom--4">
+          C’est LA touche de couleur de KPMG Pulse. Elle apporte du dynamisme à nos interfaces.
+          Cette couleur qui représente la marque, utilisées comme couleur primaire et accents.
+        </p>
+        <MainColor />
+      </div>
+      <div class="margin-bottom--4">
+        <h2>Secondary Colors Pegase</h2>
+        <p>
+          There are the secondary colors for Pegase.
+          From Figma : Extraites du dégradé KPMG Pulse, les couleurs vives
+          vous permettront d’apporter des touches de couleurs à vos contenus.
+          Ces touches de couleurs vives fonctionnent en duo,
+          par exemple : un picto fuschia et un cercle de soutien avec un fond en fuschia-bg
+          et un label fuschia-txt.
+          <br>
+          Nous les utiliserons principalement pour les infographies ou pictogrammes.
+        </p>
+        <SecondaryColorsPegase />
+      </div>
+      <div class="margin-bottom--4">
+        <h2>Functionnal Colors Pegase</h2>
+        <p>
+          Cette palette de variantes de couleurs est conçue pour toujours
+          rendre nos interfaces accessibles et compréhensibles.
+          Elles sont utilisées pour donner des indications ou des feedbacks aux utilisateurs.
+          <br>
+          Nous les utiliserons principalement pour les notifications, informations ou pictogrammes.
+        </p>
+        <FunctionnalColorsPegase />
+      </div>
+      <div class="margin-bottom--4">
+        <h2 class="margin-bottom--2">
+          Utilitaires de couleur Pegase
+        </h2>
+        <p class="margin-bottom--4">
+          Classes créées dans le but d'éviter de créer dans les MFE, des classes à chaque fois que l'on souhaite utiliser une couleur.
+        </p>
+        <h3 class="margin-bottom--2">
+          Les classes de texte
+        </h3>
+        <p class="margin-bottom--2">Les couleurs de texte seront préfixées par : <span class="bold">text-color--</span>
+          <br>
+          Suivi ensuite par la catégorie de couleur, puis de son idenfiant.
+          <br>
+          La classe sera donc ainsi <span class="bold">text-color--{catégorie}-{identifiant}</span>
+        </p>
+        <p class="bold margin-bottom--2">
+          Quelques exemples :
+        </p>
+        <ul class="margin-bottom--4">
+          <li><span class="text-color--persian-500">text-color--persian-500</span></li>
+          <li><span class="text-color--neutral-gray-500">text-color--neutral-gray-500</span></li>
+          <li><span class="text-color--functionnal-red-txt">text-color--functionnal-red-txt</span></li>
+          <li><span class="text-color--secondary-cyan-txt">text-color--secondary-cyan-txt</span></li>
+        </ul>
+        <h3 class="margin-bottom--2">
+          Les classes de background
+        </h3>
+        <p class="margin-bottom--2">Les couleurs de background seront préfixées par : <span class="bold">bg--</span>
+          <br>
+          Suivi ensuite par la catégorie de couleur, puis de son idenfiant.
+          <br>
+          La classe sera donc ainsi <span class="bold">bg--{catégorie}-{identifiant}</span>
+        </p>
+        <p class="bold margin-bottom--2">
+          Quelques exemples :
+        </p>
+        <ul>
+          <li><div class="bg--persian-500 padding--4 text-color--base-white">
+            bg--persian-500</div></li>
+          <li><div class="bg--neutral-gray-500 padding--4 text-color--base-white">
+            bg--neutral-gray-500</div></li>
+          <li><div class="bg--functionnal-red-bg padding--4 text-color--functionnal-red-txt">
+            bg--functionnal-red-bg</div></li>
+          <li><div class="bg--secondary-cyan-bg padding--4 text-color--secondary-cyan-txt">
+            bg--secondary-cyan-bg</div></li>
+        </ul>
+      </div>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import MainColor from './main-color.vue'
-import SecondaryColors from './secondary-colors.vue'
-import NeutralColor from './neutral-color.vue'
 import SecondaryColorsPegase from './secondary-colors-pegase.vue'
 import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
 </script>
@@ -73,7 +115,7 @@ import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
   border-radius: 4px;
   padding: 20px;
   margin: 8px 0;
-  height: 112px;
+  height: 152px;
   box-sizing: border-box;
   color: var(--el-color-white);
   font-size: 14px;
@@ -117,15 +159,16 @@ import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
   }
 
   .bg-color-sub {
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
-    height: 40px;
     left: 0;
     bottom: 0;
     position: absolute;
 
     .bg-blue-sub-item {
-      height: 100%;
       display: inline-block;
+      height: 40px;
 
       &:first-child {
         border-radius: 0 0 0 var(--el-border-radius-base);

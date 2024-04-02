@@ -8,7 +8,7 @@ $colors: (
   'base': (
     'blue-kpmg': #00338D,
     'persian': $primary-color,
-    'persian-light': #F0F3FF,
+    'persian-light': #ECEFFF,
     'white': #FFFFFF,
   ),
   'persian': (
@@ -111,6 +111,17 @@ $typePulse: ();
       @include set-css-var-value(
         ('color', $type, $variant),
         $color);
+    }
+  }
+}
+
+@each $palette, $colorsMap in $colors {
+  @each $colorName, $colorValue in $colorsMap {
+    .bg--#{$palette}-#{$colorName} {
+      background-color: $colorValue;
+    }
+    .text-color--#{$palette}-#{$colorName} {
+      color: $colorValue;
     }
   }
 }

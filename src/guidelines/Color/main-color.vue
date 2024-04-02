@@ -15,13 +15,15 @@
           <div
             v-for="level in colorLevel"
             :key="level"
-            class="bg-blue-sub-item cursor-pointer hover:shadow"
+            class="bg-blue-sub-item cursor-pointer hover:shadow text-center"
             :style="{
-              width: `${100 / 6}%`,
-              background: `var(--el-color-primary-${level})`,
+              width: `${100 / 5}%`,
+              background: `var(--el-color-persian-${level})`,
             }"
-            @click="copyColor(`primary-${level}`)"
-          />
+            @click="copyColor(`persian-${level}`)"
+          >
+            #{{ level }}
+          </div>
         </div>
       </div>
     </PCol>
@@ -35,8 +37,7 @@ import PCol from '@/atoms/PCol'
 import PRow from '@/atoms/PRow'
 
 const primary = useCssVar('--el-color-primary')
-const colorLevel = [3, 5, 7, 8, 9].map(i => `light-${i}`)
-colorLevel.unshift('dark-2')
+const colorLevel = [900, 800, 700, 600, 500, 400, 300, 200, 100, 50]
 
 const { copyColor } = useCopyColor()
 </script>
