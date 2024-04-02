@@ -1,7 +1,8 @@
 export interface Entity {
-  idAccount: string
-  name: string
-  color:
+  accountId: number
+  accountNumber: string
+  legalName: string
+  color?:
     | 'orange'
     | 'persian'
     | 'cyan'
@@ -10,7 +11,6 @@ export interface Entity {
     | 'green'
     | 'fuschia'
     | 'gray'
-  ibs: string
 }
 
 type Entities = {

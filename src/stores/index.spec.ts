@@ -7,16 +7,16 @@ import { tokenService } from '../main'
 
 const TEST_ENTITIES: Entity[] = [
   {
-    idAccount: '7c2b430b-7190-4cd1',
-    name: 'Test 1',
+    accountId: 1,
+    accountNumber: '2024643902',
+    legalName: 'Test 1',
     color: 'orange',
-    ibs: 'IBS93781560ZE19',
   },
   {
-    idAccount: '3b2b430b-4563-4cd4',
-    name: 'Test 2',
+    accountId: 2,
+    accountNumber: '3524433298',
+    legalName: 'Test 2',
     color: 'cyan',
-    ibs: 'IBS43784540ZE33',
   },
 ]
 
