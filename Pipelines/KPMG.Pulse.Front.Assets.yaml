@@ -50,7 +50,7 @@ extends:
         path: src/assets/fonts
     deploy:
       environments:
-      - ${{ if ne(parameters.devIndex, 0) }}:
+      - ${{ if and(ne(parameters.devIndex, 0), ne(parameters.deployType, 'developToRec')) }}:
         - name: DEV
           condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           ${{ if lt(parameters.devIndex, 10) }}:
