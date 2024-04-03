@@ -133,7 +133,7 @@ const pImageProps = {
 
 const collabs = ref<Collab[]>([])
 
-const currentEntityId = defaultEntity.value?.idAccount as string
+const currentEntityId = defaultEntity.value?.accountId as number
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{

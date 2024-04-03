@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@braintree/sanitize-url": "^7.0.0",
-    "@kpmg/common": "^3.1.75",
+    "@kpmg/common": "^3.1.84",
     "@kpmg/styleguide": "^2.2.413",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.3",

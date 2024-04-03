@@ -16,7 +16,7 @@
       <template #default="scope">
         <PIcon
           v-if="scope.row.isFavorite"
-          @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
+          @click.stop="handleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
           color="#5546FF"
           size="14px"
         >
@@ -24,7 +24,7 @@
         </PIcon>
         <PIcon
           v-if="!scope.row.isFavorite"
-          @click.stop="handleAddFavorite(scope.row.id, !scope.row.isFavorite)"
+          @click.stop="handleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
           color="#5546FF"
           size="14px"
         >
@@ -199,14 +199,14 @@ import {
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
-import type { Props, Row } from './types'
+import type { TableDataProps, Row } from './types'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TableDataProps>(), {
   data: [],
   handleAddFavorite: () => {},
 })
@@ -291,13 +291,13 @@ const emit = defineEmits<{
 const handleRowSelectedChange = (row: any) => {
   const rowValues = toRaw(row)
   if (rowValues) {
-    const { name, id, accountNumber }: Row = rowValues
+    const { name, accountId, accountNumber }: Row = rowValues
     // color is temporarily hard-coded
     const defaultEntity: Entity = {
-      name,
-      idAccount: id,
+      legalName: name,
+      accountId,
       color: 'persian',
-      ibs: accountNumber,
+      accountNumber,
     }
 
     localStorage.setItem('selected-entity', JSON.stringify(defaultEntity))
@@ -326,7 +326,7 @@ onMounted(() => {
 
 watch(() => props.data, () => {
   const rowToSelect = props.data
-    .find(({ id }: Row) => id === defaultEntity.value?.idAccount)
+    .find(({ accountId }: Row) => accountId === defaultEntity.value?.accountId)
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 
@@ -362,21 +362,21 @@ const resendActivationEmail = async (accountId: string, companyName: string) => 
 }
 
 const onToolboxItemClicked = (action: string, row: any) => {
-  const { id, accountId, name, accountNumber } = row
+  const { accountId, name, accountNumber } = row
 
   if (action === 'deploy') {
     emit('click-deploy', accountId ?? 5, accountNumber, name)
   } else if (action === 'resendActivationEmail') {
-    resendActivationEmail(id, name)
+    resendActivationEmail(accountId, name)
   } else if (action === 'access') {
     handleRowSelectedChange(row)
-    emit('access', id)
+    emit('access', accountId)
   }
 }
 
 const onSelectedFolder = (row: any) => {
-  const { id } = row
-  emit('selectedFolder', id)
+  const { accountId } = row
+  emit('selectedFolder', accountId)
 }
 </script>
 

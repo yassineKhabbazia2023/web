@@ -7,7 +7,7 @@
         </PIcon>
       </PAvatar>
       <p class="font-semibold margin-left--4 title">
-        {{ defaultEntity?.name }}
+        {{ defaultEntity?.legalName }}
       </p>
       <PButton pType="primary" data-testid="btn-action">
         {{ actionBtnLabel }}
@@ -88,7 +88,7 @@ const actionBtnLabel = isCollab.value ? t('delegationBtn') : t('addUser')
 const handleTabClick = (tab: any) => {
   router.push({
     name: tab.paneName,
-    params: { name: defaultEntity.value?.name },
+    params: { name: defaultEntity.value?.legalName },
   })
 }
 </script>

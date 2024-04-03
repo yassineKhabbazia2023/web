@@ -54,6 +54,7 @@ export function getMappedAccount(
     signatory,
     address,
     deployment,
+    isFavorite,
   } = account
 
   const { firstName, lastName, email } = signatory
@@ -64,7 +65,6 @@ export function getMappedAccount(
   const colorIndex = index % COLORS.length
   const avatarColor = COLORS[colorIndex]
   const hub = DEFAULT_HUB
-  const isFavorite = false
 
   const mappedAccount: IWalletData = {
     owner: {

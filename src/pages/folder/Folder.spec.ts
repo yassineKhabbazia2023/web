@@ -52,7 +52,7 @@ describe('dossier', () => {
   })
 
   it('displays correctly the table', () => {
-    expect(wrapper.find('.title').text()).toBe(mockedEntity.name)
+    expect(wrapper.find('.title').text()).toBe(mockedEntity.legalName)
   })
   const PARAMS = [
     ['collab', 'tab-collab'],
@@ -68,7 +68,7 @@ describe('dossier', () => {
       expect(mockRouterPush).toHaveBeenCalledWith({
         name: tabs,
         params: {
-          name: mockedEntity.name,
+          name: mockedEntity.legalName,
         },
       })
     },

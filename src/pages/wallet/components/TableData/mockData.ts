@@ -3,9 +3,9 @@ import type { IWalletData } from '../../types'
 import type { Entity } from '@kpmg/common'
 
 export const mockedEntity: Entity = {
-  idAccount: 'idAccountTest',
-  name: 'Entity Test',
-  ibs: 'IBS544G45F345F',
+  accountId: 1,
+  legalName: 'Entity Test',
+  accountNumber: 'IBS544G45F345F',
   color: 'orange',
 }
 
@@ -48,6 +48,7 @@ export const mockTableData: IWalletData[] = [
     },
     id: '5f85e793-57c0-4da6-b821-3b2888567255',
     accountNumber: 'V900000546',
+    accountId: 2,
     name: 'NOM2',
     isFavorite: true,
   },

@@ -12,8 +12,8 @@ const handleFavorites = vi.fn()
 const postMock = vi.fn()
 const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
 const testEntity = {
-  idAccount: mockTableData[0].id,
-  name: mockTableData[0].name,
+  accountId: mockTableData[0].accountId,
+  legalName: mockTableData[0].name,
   accountNumber: mockTableData[0].accountNumber,
 }
 
@@ -96,7 +96,7 @@ describe('tableData', () => {
     const btnFavorite = wrapper.find('td.el-table_1_column_1 div .el-icon')
     await btnFavorite.trigger('click')
     expect(handleFavorites).toHaveBeenCalledTimes(1)
-    expect(handleFavorites).toHaveBeenCalledWith(mockTableData[0].id, true)
+    expect(handleFavorites).toHaveBeenCalledWith(mockTableData[0].accountId, true)
   })
 
   it('displays correctly the table', () => {
@@ -145,9 +145,9 @@ describe('tableData', () => {
     await nextTick()
     const notifTextSuccess = 'A new activation email for'
     const {
-      id,
+      accountId,
     } = mockTableData[1]
-    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
+    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${accountId}&contactId=${contactId}`)
     const notificationContent = document.body.getElementsByClassName('el-notification__content')[0].innerHTML
     expect(notificationContent).toContain(notifTextSuccess)
   })
@@ -167,9 +167,9 @@ describe('tableData', () => {
     resendEmailButton.click()
     await nextTick()
     const {
-      id,
+      accountId,
     } = mockTableData[1]
-    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${id}&contactId=${contactId}`)
+    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${accountId}&contactId=${contactId}`)
     const notificationContent = document.body.getElementsByClassName('el-notification__content')[1].innerHTML
     expect(notificationContent).toContain(notifTextError)
   })
@@ -191,32 +191,32 @@ describe('tableData', () => {
     const checkbox = document.body.getElementsByClassName('el-checkbox__original')[1] as HTMLElement
     checkbox.click()
 
-    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[testEntity.idAccount]])
+    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[testEntity.accountId]])
   })
 
   it('should emit access when click on access button', async () => {
     await flushPromises()
 
-    const { id } = mockTableData[0]
+    const { accountId } = mockTableData[0]
 
     const accessButton = document.body.getElementsByClassName('p-toolbox-item__text')[1] as HTMLElement
     accessButton.click()
 
-    expect(wrapper.emitted('access')).toStrictEqual([[id]])
+    expect(wrapper.emitted('access')).toStrictEqual([[accountId]])
   })
   it('should change ibs selected and emit access', () => {
     const ibsLink = document.body.getElementsByClassName('link')[0] as HTMLElement
     const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
     const formattedEntity: Entity = {
-      name: testEntity.name,
-      idAccount: testEntity.idAccount,
+      legalName: testEntity.legalName,
+      accountId: testEntity.accountId,
       color: 'persian',
-      ibs: testEntity.accountNumber,
+      accountNumber: testEntity.accountNumber,
     }
     ibsLink.click()
 
     expect(setItemSpy).toHaveBeenCalledWith('selected-entity', JSON.stringify(formattedEntity))
-    expect(wrapper.emitted('access')).toStrictEqual([[testEntity.idAccount]])
+    expect(wrapper.emitted('access')).toStrictEqual([[testEntity.accountId]])
     expect(store.$patch).toHaveBeenCalledWith({
       user: {
         entities: {

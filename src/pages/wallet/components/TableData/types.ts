@@ -1,10 +1,10 @@
-export interface Props {
+export interface TableDataProps {
   data: any
   handleAddFavorite: Function
 }
 
 export interface Row {
-  id: string
+  accountId: number
   name: string
   accountNumber: string
 }

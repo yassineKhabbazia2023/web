@@ -78,7 +78,8 @@ import {
   PButton,
   PPagination,
 } from '@kpmg/styleguide'
-import { type Entity, commonApi, commonStore } from '@kpmg/common'
+import { fetchFavoriteEntities, manageFavoriteEntities } from '@/services/wallet'
+import { type Entity, commonStore } from '@kpmg/common'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import NoResult from '@/components/NoResult'
@@ -91,7 +92,6 @@ import { fetchWalletData } from './DeployUtils'
 import type {
   SearchCriteria,
   SearchResult,
-  ICommonEntitiesInFavorite,
   DeploymentStatus,
 } from '../../types'
 import Filters from '../../components/Filters'
@@ -155,22 +155,11 @@ const paginationLabel = computed(() => getPaginationLabel(t('on'), {
   totalItems: searchResult.value.totalItems,
 }))
 
-const DEFAULT_ENTITY_VALUES = {
-  ibs: 'IBS93781560ZE19',
-  color: 'persian',
-}
-
-const fetchFavorites = async () =>
-  await commonApi().wallet.get('favorites')
-
-const putEntitiesInCommonFavorite = (data: ICommonEntitiesInFavorite[]) => {
-  const entitiesInFavorite = data
-    .map(({ name, id: idAccount }: ICommonEntitiesInFavorite) => ({
-      name,
-      idAccount,
-      ibs: DEFAULT_ENTITY_VALUES.ibs,
-      color: DEFAULT_ENTITY_VALUES.color,
-    })) as Entity[]
+const putEntitiesInCommonFavorite = (data: Entity[] | undefined) => {
+  const entitiesInFavorite = data?.map((item: Entity) => ({
+    ...item,
+    color: 'persian',
+  })) as Entity[]
 
   userStore.$patch({
     user: {
@@ -185,7 +174,6 @@ async function fetch() {
   isLoading.value = true
   try {
     const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, searchCriteria.value)
-
     searchResult.value.items = queryResult.items
     searchResult.value.currentPage = queryResult.currentPage
     searchResult.value.totalPage = queryResult.totalPage
@@ -197,15 +185,15 @@ async function fetch() {
 }
 
 const fetchTableDataAndFavorites = async () => {
-  const [, { data }] = await Promise.all([
+  const [, data] = await Promise.all([
     fetch(),
-    fetchFavorites(),
+    fetchFavoriteEntities(),
   ])
   putEntitiesInCommonFavorite(data)
 }
 
-const handleAddFavorite = async (accountId: string, isFavorite: boolean) => {
-  await commonApi().wallet.put(`favorites/${accountId}/${isFavorite}`)
+const handleAddFavorite = async (accountId: number, isFavorite: boolean) => {
+  await manageFavoriteEntities(accountId, isFavorite)
   fetchTableDataAndFavorites()
 }
 
