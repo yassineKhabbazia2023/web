@@ -54,7 +54,7 @@ export function getPaginationLabel<T>(onLabel: string, {
     return ''
   }
   const displayCount = data.length
-  const pageIndex = currentPage - 1
+  const pageIndex = currentPage === 0 ? 0 : currentPage - 1
   const firstRowNumber = 1 + pageIndex * limit
   const lastRowNumber = pageIndex * limit + displayCount
 
