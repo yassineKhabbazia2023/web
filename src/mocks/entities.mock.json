@@ -1,38 +1,38 @@
 [
   {
-    "idAccount":"71fa7c2b-5de4-4d58-b06c-d55f4fdffaa5",
-    "ibs": "IBS93345820DE19",
-    "name": "Restaurant Le Grand Bleu",
+    "accountId": 1,
+    "accountNumber": "3669209950",
+    "legalName": "Restaurant Le Grand Bleu",
     "color": "orange"
   },
   {
-    "idAccount":"7c2b430b-7190-4cd1-a859-df1c0a4ed5d0",
-    "ibs": "IBS93781560ZE19",
-    "name": "Restaurant Bistro Kitchen",
+    "accountId": 2,
+    "accountNumber": "4811247468",
+    "legalName": "Restaurant Bistro Kitchen",
     "color": "persian"
   },
   {
-    "idAccount":"aba4cee6-22e9-4571-b285-d056cad73afe",
-    "ibs": "IBS93756770AE19",
-    "name": "Fleuriste de la mairie",
+    "accountId": 3,
+    "accountNumber": "3590284870",
+    "legalName": "Fleuriste de la mairie",
     "color": "green"
   },
   {
-    "idAccount":"6afaf2c5-ed4e-4e60-b3c6-96b40c041da5",
-    "ibs": "IBS93773456QE19",
-    "name": "La Maison Blanche",
+    "accountId": 4,
+    "accountNumber": "4377393628",
+    "legalName": "La Maison Blanche",
     "color": "fuschia"
   },
   {
-    "idAccount":"aaeb8237-3ad1-49f6-8895-16ddc9915462",
-    "ibs": "IBS937623420FE9",
-    "name": "La Terrasse Rouge",
+    "accountId": 5,
+    "accountNumber": "4193754384",
+    "legalName": "La Terrasse Rouge",
     "color": "gray"
   },
   {
-    "idAccount":"f4f84298-8953-45e2-ad67-d74075d9d975",
-    "ibs": "IBS93732340GE9",
-    "name": "Restaurant Maison de Pierre",
+    "accountId": 6,
+    "accountNumber": "4644722294",
+    "legalName": "Restaurant Maison de Pierre",
     "color": "orange"
   }
 ]

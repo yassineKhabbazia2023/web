@@ -103,8 +103,8 @@ describe('sidebarEntity', () => {
       const entityIbs = selectedEntity2.find('.entity-wrapper__details-ibs')
 
       expect(selectedEntity2.exists()).toBeTruthy()
-      expect(entityName.text()).toBe(entities[0].name)
-      expect(entityIbs.text()).toBe(entities[0].ibs)
+      expect(entityName.text()).toBe(entities[0].legalName)
+      expect(entityIbs.text()).toBe(entities[0].accountNumber)
     })
   })
   describe('events', () => {

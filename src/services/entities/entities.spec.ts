@@ -1,6 +1,6 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest'
 import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
-import { getFavoriteEntities, getEntities } from '.'
+import { fetchFavoriteEntities, fetchEntities } from '.'
 import { API_PREFIXES } from '../config'
 import type { Entity } from '@kpmg/common'
 
@@ -10,17 +10,13 @@ const testEntities: Entity[] = getMockedFavoriteEntities()
 vi.mock('@kpmg/common', () => {
   return {
     commonApi: () => ({
-      wallet: {
-        get: vi.fn((url, _) => {
-          if (url.includes('favorites')) {
-            return getEntitiesImplementation(throwError)
-          }
-        }),
-      },
       gateway: {
         get: vi.fn().mockImplementation((url) => {
           if (url === `${API_PREFIXES.ACCOUNT}/accounts/currentuser`) {
-            return getEntitiesImplementation(throwError)
+            return fetchEntitiesImplementation(throwError)
+          }
+          if (url === `${API_PREFIXES.WALLET}/favorites/currentuser`) {
+            return fetchEntitiesImplementation(throwError)
           }
         }),
       },
@@ -31,7 +27,7 @@ vi.mock('@kpmg/common', () => {
   }
 })
 
-const getEntitiesImplementation = (throwError: boolean) => {
+const fetchEntitiesImplementation = (throwError: boolean) => {
   if (throwError) {
     return Promise.reject(new Error('No data received from the API'))
   }
@@ -45,27 +41,27 @@ describe('entities', () => {
     throwError = false
   })
   it('should return the favorite entities of the current user', async () => {
-    const favoriteEntities = await getFavoriteEntities()
+    const favoriteEntities = await fetchFavoriteEntities()
 
     expect(favoriteEntities).toStrictEqual(testEntities)
   })
 
   it('should catch an error if favorite entities are not returned from the API', async () => {
     throwError = true
-    const favoriteEntities = await getFavoriteEntities()
+    const favoriteEntities = await fetchFavoriteEntities()
 
     expect(favoriteEntities).toStrictEqual([])
   })
 
   it('should return the entities of the current user', async () => {
-    const entities = await getEntities()
+    const entities = await fetchEntities()
 
     expect(entities).toStrictEqual(testEntities)
   })
 
   it('should catch an error if entities are not returned from the API', async () => {
     throwError = true
-    const entities = await getEntities()
+    const entities = await fetchEntities()
 
     expect(entities).toStrictEqual([])
   })

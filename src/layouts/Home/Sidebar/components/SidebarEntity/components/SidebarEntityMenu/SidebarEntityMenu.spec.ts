@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
 import SidebarEntityMenu from '.'
 
-const favoriteEntityId: string = getMockedFavoriteEntities()[0].idAccount
+const favoriteEntityId: number = getMockedFavoriteEntities()[0].accountId
 
 const defaultProps = {
   selectedEntityId: favoriteEntityId,

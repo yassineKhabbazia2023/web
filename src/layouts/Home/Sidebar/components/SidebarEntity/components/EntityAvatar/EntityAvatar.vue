@@ -4,7 +4,7 @@
       :tooltipContent="entityTooltipContent"
       :tooltipDisabled="hideTooltip"
       :class="{ 'entity-wrapper--selected': selected }"
-      :route="{ name: 'folder', params: { id: entity.idAccount } }"
+      :route="{ name: 'folder', params: { id: entity.accountId } }"
       @item-clicked="$emit('entity-selected', entity)"
     >
       <PAvatar
@@ -24,10 +24,10 @@
           :class="{ 'margin-left--1': !hideTooltip }"
         >
           <p class="entity-wrapper__details-name">
-            {{ entity.name }}
+            {{ entity.legalName }}
           </p>
           <p class="entity-wrapper__details-ibs">
-            {{ entity.ibs }}
+            {{ entity.accountNumber }}
           </p>
         </div>
       </template>
@@ -48,7 +48,7 @@ defineEmits<{
 }>()
 
 const entityTooltipContent = computed(() => {
-  return `${props.entity.name} \n ${props.entity.ibs}`
+  return `${props.entity.legalName} \n ${props.entity.accountNumber}`
 })
 </script>
 

@@ -104,7 +104,7 @@
               data-testid="favorite-entity"
               :entity="favoriteEntity"
               :hideTooltip="isSidebarOpened"
-              :selected="favoriteEntity.idAccount === selectedEntity?.idAccount"
+              :selected="favoriteEntity.accountId === selectedEntity?.accountId"
               @entity-selected="onEntitySelected"
             />
           </li>
@@ -113,7 +113,7 @@
     </nav>
     <SidebarEntityMenu
       v-if="isSelectedEntityActive && selectedEntity"
-      :selectedEntityId="selectedEntity.idAccount"
+      :selectedEntityId="selectedEntity.accountId"
     />
   </div>
 </template>
@@ -166,7 +166,7 @@ const isSelectedEntityActive = computed(() => {
     selectedEntity.value &&
     activeItem({
       name: 'folder',
-      params: { id: selectedEntity.value.idAccount },
+      params: { id: selectedEntity.value.accountId },
     })
   )
 })
@@ -213,7 +213,7 @@ const onEntitySelected = (entity: Entity) => {
 }
 
 onMounted(() => {
-  selectedEntity.value = getDefaultEntity(props.entities.at(0))
+  selectedEntity.value = getDefaultEntity(props.entities[0])
   patchDefaultEntity(selectedEntity.value as Entity)
 })
 </script>

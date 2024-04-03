@@ -3,7 +3,7 @@ import type { Entity } from '@kpmg/common'
 import { API_PREFIXES } from '../config'
 import { getRandomColor } from '@/helper'
 
-export const getEntities = async (): Promise<any> => {
+export const fetchEntities = async (): Promise<any> => {
   try {
     const response = await commonApi().gateway.get(
       `${API_PREFIXES.ACCOUNT}/accounts/currentuser`,
@@ -19,18 +19,17 @@ export const getEntities = async (): Promise<any> => {
   return []
 }
 
-export const getFavoriteEntities = async (): Promise<Entity[]> => {
+export const fetchFavoriteEntities = async (): Promise<Entity[]> => {
   try {
-    const response = await commonApi().wallet.get('favorites')
+    const response = await commonApi().gateway.get(
+      `${API_PREFIXES.WALLET}/favorites/currentuser`,
+    )
 
     if (response?.data?.length) {
-      // The code below is provisional as we intend to retrieve this information (IBS, COLOR) from the API later
       const favoriteEntities = response.data.map(
-        ({ name, id: idAccount }: any) => ({
-          name,
-          idAccount,
-          color: getRandomColor(),
-          ibs: 'IBS93781560ZE19',
+        (item: Entity) => ({
+          ...item,
+          color: getRandomColor(item.accountId),
         }),
       )
       store().$patch({

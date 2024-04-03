@@ -1,3 +1,3 @@
 export interface SidebarEntityMenuProps {
-  selectedEntityId: string
+  selectedEntityId: number
 }

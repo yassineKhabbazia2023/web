@@ -38,7 +38,7 @@ vi.mock('@kpmg/common', () => ({
       get: () =>
         Promise.resolve({
           data: {
-            items: [{ accountId: testEntity.idAccount }],
+            items: [{ accountId: testEntity.accountId }],
             totalItems: 1,
           },
         }),

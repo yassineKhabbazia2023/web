@@ -41,22 +41,22 @@ const helpers = () => {
       ...fakeUser,
       entities: {
         default: {
-          name: 'Entity Name 2',
-          idAccount: 'AccountNumber 2',
-          ibs: 'IBS93781560ZE19',
+          legalName: 'Entity Name 2',
+          accountId: 2,
+          accountNumber: '5678926536',
           color: 'orange',
         },
         favorites: [
           {
-            name: 'Entity Name 1',
-            idAccount: 'AccountNumber 1',
-            ibs: 'IBS93781560ZE19',
+            legalName: 'Entity Name 1',
+            accountId: 1,
+            accountNumber: '2035626097',
             color: 'orange',
           },
           {
-            name: 'Entity Name 2',
-            idAccount: 'AccountNumber 2',
-            ibs: 'IBS93781560ZE19',
+            legalName: 'Entity Name 2',
+            accountId: 2,
+            accountNumber: '1764126879',
             color: 'orange',
           },
         ],

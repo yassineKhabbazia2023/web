@@ -5,7 +5,7 @@ import {
   commonStore as useStore,
   commonApi,
 } from '@kpmg/common'
-import { getEntities } from '@/services/entities'
+import { fetchEntities } from '@/services/entities'
 
 const routes = [
   ...commonRoutes.value,
@@ -51,7 +51,7 @@ router.beforeEach(async (to: any, _from) => {
   }
 
   if (to.name === 'entity-client' && !isCollab.value) {
-    const entities = await getEntities()
+    const entities = await fetchEntities()
 
     if (entities.totalItems === 1) {
       const firstEntity = entities.items[0]
@@ -60,10 +60,10 @@ router.beforeEach(async (to: any, _from) => {
         user: {
           entities: {
             default: {
-              idAccount: firstEntity.accountId,
-              name: firstEntity.legalName,
+              accountId: firstEntity.accountId,
+              legalName: firstEntity.legalName,
               color: 'persian',
-              ibs: firstEntity.accountNumber,
+              accountNumber: firstEntity.accountNumber,
             },
           },
         },

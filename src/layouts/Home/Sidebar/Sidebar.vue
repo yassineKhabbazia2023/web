@@ -6,7 +6,7 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getFavoriteEntities, getEntities } from '@/services/entities'
+import { fetchFavoriteEntities, fetchEntities } from '@/services/entities'
 import type { Entity } from '@kpmg/common'
 import SidebarEntity from './components/SidebarEntity'
 
@@ -14,8 +14,8 @@ const isEntitiesLoaded = ref<boolean>(false)
 const entities = ref<Entity[]>([])
 
 onMounted(async () => {
-  await getFavoriteEntities()
-  const { items } = await getEntities()
+  await fetchFavoriteEntities()
+  const { items } = await fetchEntities()
   entities.value = items
   isEntitiesLoaded.value = true
 })

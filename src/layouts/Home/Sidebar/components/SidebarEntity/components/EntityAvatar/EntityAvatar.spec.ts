@@ -33,8 +33,8 @@ describe('entityAvatar', () => {
       const entityName = wrapper.find('.entity-wrapper__details-name')
       const entityIbs = wrapper.find('.entity-wrapper__details-ibs')
 
-      expect(entityName.text()).toBe(entities[0].name)
-      expect(entityIbs.text()).toBe(entities[0].ibs)
+      expect(entityName.text()).toBe(entities[0].legalName)
+      expect(entityIbs.text()).toBe(entities[0].accountNumber)
     })
     it('should display the entity avatar with check icon when it is selected', () => {
       const wrapper = createWrapper({ ...defaultProps, selected: true })
