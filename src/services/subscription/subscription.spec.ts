@@ -15,6 +15,8 @@ vi.mock('@kpmg/common', () => ({
     offer: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       put: subscriptionPutMock,
+    },
+    gateway: {
       post: subscriptionPostMock,
     },
   }),

@@ -1,5 +1,6 @@
 import { commonApi } from '@kpmg/common'
 import { handleRequestError } from '@/helper'
+import { API_PREFIXES } from '../config'
 import type {
   SubscriptionRequest,
   PostSubscriptionRequest,
@@ -25,7 +26,7 @@ export async function validateSubscriptionRequest(subscriptionId: string): Promi
 
 export async function createSubscriptionRequest(request: PostSubscriptionRequest) {
   try {
-    const response = await commonApi().offer.post('subscription', request)
+    const response = await commonApi().gateway.post(`${API_PREFIXES.OFFER}/subscription`, request)
 
     return response.data
   } catch (error) {
