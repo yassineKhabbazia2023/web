@@ -1,7 +1,7 @@
 <template>
   <div class="wallet padding--2">
     <h3 class="h3 margin-bottom--6 wallet__title">
-      {{ t('wallet') }}
+      {{ t('hello') }} {{ user?.firstName }}
     </h3>
 
     <PTabs
@@ -37,13 +37,13 @@ const { t } = useI18n({
 
 const route = useRoute()
 const router = useRouter()
-const activeTab = computed(() => route.name as string)
-const { isCollab } = storeToRefs(commonStore())
+const { user, isCollab } = storeToRefs(commonStore())
 
+const activeTab = computed(() => route.name as string)
 const collaboratorsTabs = [
   {
     name: 'folders',
-    trad: t('folders'),
+    trad: t('wallet'),
   },
   {
     name: 'folderMandats',
@@ -84,7 +84,7 @@ const handleTabClick = (tab: any) => {
 <i18n lang="yaml">
 en-US:
   wallet: 'Wallet'
-  folders: 'Folders'
+  hello: 'Hello'
   mandate: 'Mandate'
   subscriptions: 'MOD requests'
   history: 'History'
@@ -93,7 +93,7 @@ en-US:
   allUsers: 'All users'
 fr-FR:
   wallet: 'Portefeuille'
-  folders: 'Dossiers'
+  hello: 'Bonjour'
   mandate: 'Mandat'
   subscriptions: 'Demandes MOD'
   history: 'Historique'

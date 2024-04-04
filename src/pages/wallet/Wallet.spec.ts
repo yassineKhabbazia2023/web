@@ -19,14 +19,11 @@ vi.mock('vue-router', () => ({
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
-    getters: {
-      isCollab: () => true,
-    },
-  }),
-}))
-
-vi.mock('@kpmg/common', () => ({
-  commonStore: defineStore('common', {
+    state: () => ({
+      user: {
+        firstName: 'Jack',
+      },
+    }),
     getters: {
       isCollab: () => true,
     },
@@ -41,7 +38,7 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 const collaboratorsTabs = [
-  'Folders',
+  'Wallet',
   'Mandate',
   'MOD requests',
   'Collaborators',
@@ -62,7 +59,7 @@ describe('dossier', () => {
   })
 
   it('displays correctly the table', () => {
-    expect(wrapper.find('.wallet__title').text()).toBe('Wallet')
+    expect(wrapper.find('.wallet__title').text()).toBe('Hello Jack')
   })
   const PARAMS = [
     ['folders', 'tab-folders'],
