@@ -32,7 +32,7 @@ $text-color: (
 );
 
 $border-color: (
-  '': getCssVar('color', 'neutral-gray-100'),
+  '': getCssVar('color', 'neutral-gray-200'),
   'light': getCssVar('color', 'neutral-gray-50'),
   'lighter': getCssVar('color', 'neutral-gray-100'),
   'extra-light': #f2f6fc,
