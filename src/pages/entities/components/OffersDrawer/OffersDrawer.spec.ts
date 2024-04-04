@@ -14,12 +14,12 @@ import type {
 import type { User } from '../PrincipalContact/PrincipalContactTypes'
 import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
-import * as SubscriptionsServices from '@/pages/subscriptions/SubscriptionsServices'
+import * as subscriptionService from '@/services/subscription/subscriptionService'
 import * as PatchRecordService from '@/services/PatchRecordService/PatchRecordService'
 import { getMockedAccount, getMockedPatchOperations } from '@/services/account/accountMock'
 import { getMockedStepNotes } from '../StepNote/StepNotesMock'
 import type { UserInfo } from '@kpmg/common'
-import type { Note, PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { Note, PostSubscriptionRequest } from '@/services/subscription'
 import type { PatchValue } from '@/services/PatchRecordService'
 import type { Contact } from '@/services/contact/contactTypes'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
@@ -83,8 +83,8 @@ vi.mock('@/services/PatchRecordService/PatchRecordService', () => ({
   getPatchOperations: vi.fn(() => mockedPatchOperations),
 }))
 
-vi.mock('@/pages/subscriptions/SubscriptionsServices', () => ({
-  createSubscriptionRequestNew: vi.fn(),
+vi.mock('@/services/subscription/subscriptionService', () => ({
+  createSubscriptionRequest: vi.fn(),
 }))
 
 vi.mock('./OffersDrawerUtils', async () => {
@@ -218,7 +218,7 @@ describe('offersDrawer', () => {
       }
       it('should patch the account and create a subscription when the user confirms', async () => {
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
-        const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
+        const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
 
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
@@ -231,7 +231,7 @@ describe('offersDrawer', () => {
         await flushPromises()
 
         expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedPatchOperations)
-        expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
+        expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
       it('should not patch the account when no account diff', async () => {
         vi
@@ -242,14 +242,14 @@ describe('offersDrawer', () => {
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
-        const createSubscriptionRequestNewSpy = vi.spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
+        const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
         const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
         expect(confirmationModal.exists()).toBeTruthy()
 
         confirmationModal.vm.$emit('confirm')
 
         expect(patchAccountSpy).not.toHaveBeenCalled()
-        expect(createSubscriptionRequestNewSpy).toHaveBeenNthCalledWith(1, expectedArgument)
+        expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
 
       it('should call console.error when patch fails', async () => {
@@ -277,7 +277,7 @@ describe('offersDrawer', () => {
       it('should call console.error when save fails', async () => {
         const errorMessage = 'save rejected'
         vi
-          .spyOn(SubscriptionsServices, 'createSubscriptionRequestNew')
+          .spyOn(subscriptionService, 'createSubscriptionRequest')
           .mockRejectedValueOnce(errorMessage)
 
         const consoleErrorSpy = vi.spyOn(console, 'error')

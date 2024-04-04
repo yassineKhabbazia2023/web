@@ -1,7 +1,7 @@
-import type { SubscriptionRequest } from '../SubscriptionsTypes'
 import {
+  type SubscriptionRequest,
   SubscriptionStatusCode,
-} from '../SubscriptionsTypes'
+} from '@/services/subscription'
 
 export const subscriptionRequestMock: SubscriptionRequest[] = [
   {

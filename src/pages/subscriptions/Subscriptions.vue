@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { SubscriptionAccount } from './SubscriptionsTypes'
+import type { SubscriptionAccount } from '@/services/subscription'
 import SubscriptionsTable from './components/subscriptionsTable'
 import SubscriptionDetailsDrawer from './components/SubscriptionDetailsDrawer'
 

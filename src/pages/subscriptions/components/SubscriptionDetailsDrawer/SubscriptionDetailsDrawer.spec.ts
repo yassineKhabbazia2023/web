@@ -1,8 +1,12 @@
-import { it, expect, describe } from 'vitest'
+import { it, expect, describe, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
-import type { SubscriptionAccount } from '../../SubscriptionsTypes'
+import type { SubscriptionAccount } from '@/services/subscription'
 import SubscriptionDetailsDrawer from '.'
+
+vi.mock('@/services/subscription/subscriptionService', () => ({
+  fetchSubscriptionRequests: vi.fn(() => Promise.resolve({ data: subscriptionRequestMock })),
+}))
 
 const subscriptionAccountTest: SubscriptionAccount =
   subscriptionRequestMock[0].account

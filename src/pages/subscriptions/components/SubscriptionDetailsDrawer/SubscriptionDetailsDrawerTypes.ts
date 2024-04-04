@@ -1,4 +1,4 @@
-import type { SubscriptionAccount } from '../../SubscriptionsTypes'
+import type { SubscriptionAccount } from '@/services/subscription'
 
 export type SubscriptionDetailsDrawerProps = {
   modelValue: boolean

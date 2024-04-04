@@ -1,9 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
-import { subscriptionRequestMock } from './mocks/SubscriptionRequestMock'
-import { subscriptionDemandMock } from './mocks/SubscriptionDemandMock'
+import { subscriptionRequestMock } from '@/pages/subscriptions/mocks/SubscriptionRequestMock'
+import { subscriptionDemandMock } from '@/pages/subscriptions/mocks/SubscriptionDemandMock'
 import {
-  fetchSubscriptionRequests, validateSubscriptionRequest, createSubscriptionRequest,
-} from './SubscriptionsServices'
+  fetchSubscriptionRequests,
+  validateSubscriptionRequest,
+  createSubscriptionRequest,
+} from '.'
 
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()
@@ -18,7 +20,7 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-describe('subscriptionsServices', () => {
+describe('subscriptionService', () => {
   describe('fetchSubscriptionRequests', () => {
     it('should return subscriptions', async () => {
       const subscriptions = await fetchSubscriptionRequests()

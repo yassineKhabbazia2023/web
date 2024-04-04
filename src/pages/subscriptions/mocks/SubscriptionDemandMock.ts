@@ -1,14 +1,10 @@
-import type { SubscriptionDemand } from '../SubscriptionsTypes'
+import type { PostSubscriptionRequest } from '@/services/subscription'
 
-export const subscriptionDemandMock: SubscriptionDemand = {
-  account: {
-    accountNumber: '3',
-  },
-  applicant: 'applicant',
-  offer: {
-    offerId: 5,
-  },
-  user: {
-    email: 'a@fr.fr',
-  },
+export const subscriptionDemandMock: PostSubscriptionRequest = {
+  accountId: 1,
+  applicant: 'john@example.com',
+  contacts: [],
+  offerId: 1,
+  notes: [],
+  productConfigurations: [1, 2, 3, 4],
 }

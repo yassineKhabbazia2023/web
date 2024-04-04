@@ -1,18 +1,5 @@
 import type { Contact } from '@/services/contact/contactTypes'
 
-export interface SubscriptionDemand {
-  account: {
-    accountNumber: string
-  }
-  applicant: string
-  offer: {
-    offerId: number
-  }
-  user: {
-    email: string
-  }
-}
-
 /* eslint-disable no-unused-vars */
 export enum SubscriptionStatusCode {
   PENDING = 'pending',

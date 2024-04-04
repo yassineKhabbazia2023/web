@@ -145,7 +145,6 @@ import {
 import { addPathValue, getPatchOperations } from '@/services/PatchRecordService/PatchRecordService'
 import { type PatchValue } from '@/services/PatchRecordService'
 import { offerStepperStep } from './OffersDrawerTypes'
-import type { Note } from '@/pages/subscriptions/SubscriptionsTypes'
 import type { OffersDrawerProps, SelectedProduct } from './OffersDrawerTypes'
 import { fetchAccount, patchAccount, type Account } from '@/services/account'
 import {
@@ -160,7 +159,7 @@ import type {
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
-import { createSubscriptionRequestNew } from '@/pages/subscriptions/SubscriptionsServices'
+import { type Note, createSubscriptionRequest } from '@/services/subscription'
 import type { Contact } from '@/services/contact/contactTypes'
 
 const { t } = useI18n({
@@ -310,7 +309,7 @@ async function saveOffer() {
     notes.value,
   )
   if (postSubscriptionRequest) {
-    await createSubscriptionRequestNew(postSubscriptionRequest)
+    await createSubscriptionRequest(postSubscriptionRequest)
   }
 }
 

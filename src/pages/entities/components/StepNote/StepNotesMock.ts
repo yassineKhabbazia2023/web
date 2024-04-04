@@ -1,4 +1,4 @@
-import type { Note } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { Note } from '@/services/subscription'
 
 export function getMockedStepNotes() {
   const notes: Note[] = [

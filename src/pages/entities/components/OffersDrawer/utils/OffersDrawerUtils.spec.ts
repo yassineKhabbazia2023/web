@@ -9,7 +9,7 @@ import {
 import type { SelectedProduct } from '../OffersDrawerTypes'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
 import { getMockedStepNotes } from '../../StepNote/StepNotesMock'
-import type { PostSubscriptionRequest } from '@/pages/subscriptions/SubscriptionsTypes'
+import type { PostSubscriptionRequest } from '@/services/subscription'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
 const notes = getMockedStepNotes()

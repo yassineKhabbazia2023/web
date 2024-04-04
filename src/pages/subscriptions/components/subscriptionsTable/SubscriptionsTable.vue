@@ -119,16 +119,14 @@ import {
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
 import {
-  fetchSubscriptionRequests,
-  validateSubscriptionRequest,
-} from '../../SubscriptionsServices'
-import { getInitials } from '@/helper'
-import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
-import {
   type SubscriptionRequest,
   type SubscriptionAccount,
+  fetchSubscriptionRequests,
+  validateSubscriptionRequest,
   SubscriptionStatusCode,
-} from '../../SubscriptionsTypes'
+} from '@/services/subscription'
+import { getInitials } from '@/helper'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import type { Contact } from '@/services/contact/contactTypes'
 
 const { t, d } = useI18n({
