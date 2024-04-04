@@ -155,7 +155,7 @@ const selectedEntity = ref<Entity | undefined>(undefined)
 
 const walletItem = computed((): SidebarEntityItemProps => {
   return {
-    tooltipContent: t('wallet'),
+    tooltipContent: t('globalView'),
     tooltipDisabled: isSidebarOpened.value,
     route: { name: isCollab.value ? 'wallet' : 'wallet-client' },
   }
@@ -430,10 +430,12 @@ en-US:
   open: 'Open'
   close: 'Close'
   favorites: 'Favorites'
+  globalView: 'Global view'
   wallet: 'My Wallet'
 fr-FR:
   open: 'Ouvrir'
   close: 'Fermer'
   favorites: 'Favoris'
+  globalView: 'Vue globale'
   wallet: 'Mon Portefeuille'
 </i18n>
