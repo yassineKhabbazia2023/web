@@ -20,7 +20,7 @@ const mockGetMe = vi.fn((_url) => {
 
 vi.mock('../api', () => ({
   default: () => ({
-    customers: {
+    gateway: {
       get: mockGetMe,
     },
   }),

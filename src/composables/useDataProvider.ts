@@ -8,7 +8,7 @@ export const useDataProvider = () => {
     if (isAuthenticated.value) {
       const {
         data: { firstName, lastName, id, email, isCustomer },
-      } = await api().customers.get('contacts/me')
+      } = await api().gateway.get('contact/me')
       const user = {
         id,
         firstName,
