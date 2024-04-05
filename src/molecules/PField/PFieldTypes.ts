@@ -11,6 +11,7 @@ export interface PFieldPropsBase<T> {
   pReadonly?: boolean
   pDisabled?: boolean
   pCssClass?: string
+  pTestId?: string
   pRules?: FormItemRule[]
 }
 

@@ -29,6 +29,7 @@ export function getMockedInputField(
   flexBasis: number,
   pDisabled: boolean = false,
   ruleTypes?: string[],
+  pTestId?: string,
 ): PFieldPropsInput<string> {
   const pRules = (ruleTypes ?? [])
     .map(ruleType => getMockedRule(ruleType))
@@ -45,6 +46,7 @@ export function getMockedInputField(
     pDisabled,
     pCssClass,
     pRules,
+    pTestId,
   }
 }
 
@@ -54,6 +56,7 @@ export function getDropdownField(
   flexBasis: number,
   pDropdownOptions?: PDropdownOption[],
   pDisabled: boolean = false,
+  pTestId?: string,
 ): PFieldPropsDropdown<number | undefined> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
 
@@ -65,6 +68,7 @@ export function getDropdownField(
     pCssClass,
     pDisabled,
     pDropdownOptions,
+    pTestId,
   }
 }
 
@@ -77,6 +81,7 @@ export function getDateField(
   pValueFormat: string = 'YYYY-MM-DD',
   pDisabled: boolean = false,
   pDateType: PDatePickerProps['pType'] = 'date',
+  pTestId?: string,
 ): PFieldPropsDate<string> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
 
@@ -91,5 +96,6 @@ export function getDateField(
     pDateType,
     pFormat,
     pValueFormat,
+    pTestId,
   }
 }
