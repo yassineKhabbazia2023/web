@@ -124,7 +124,7 @@
           <tr>
             <td>lg</td>
             <td>Medium desktop</td>
-            <td>≥ 1200px</td>
+            <td>≥ 1440px</td>
             <td>12</td>
             <td>24px</td>
             <td>24px</td>

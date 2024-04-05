@@ -87,6 +87,24 @@ tbody tr td .cell {
 
     .el-table__cell {
       padding: 0;
+
+      &.is-left {
+        .cell {
+          justify-content: flex-start;
+        }
+      }
+
+      &.is-right {
+        .cell {
+          justify-content: flex-end;
+        }
+      }
+
+      &.is-center {
+        .cell {
+          justify-content: center;
+        }
+      }
       
       .cell {    
         display: flex;

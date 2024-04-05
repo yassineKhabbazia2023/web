@@ -171,6 +171,12 @@ a {
   text-decoration: underline;
 }
 
+.text-overflow {
+  &--ellipsis {
+    text-overflow: ellipsis;
+  }
+}
+
 .no-wrap {
   white-space: nowrap;
 }

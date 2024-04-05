@@ -69,7 +69,7 @@ $avatar-size: (
     }
 
     &--color-persian-gradient {
-      border-color: var(--persian-gradient);
+      border: none;
       background: var(--persian-gradient);
       color: getCssVar('color-white');
     }
