@@ -1,6 +1,6 @@
 <template>
   <ElConfigProvider
-    :locale="pLocale"
+    :locale="pLocale ?? defaultLocale"
     :size="pSize"
     :zIndex="pZIndex"
     :namespace="pNamespace"
@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts" setup>
+import defaultLocale from 'element-plus/es/locale/lang/fr'
 import { ElConfigProvider } from 'element-plus'
 import type { PConfigProviderProps } from './PConfigProviderTypes'
 
