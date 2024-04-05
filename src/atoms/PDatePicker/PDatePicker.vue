@@ -3,7 +3,7 @@
     :prefixIcon="PICalendarEvent"
     v-model="datepickerModel"
     :popperClass="popperClassComputed"
-    :class="{'p-date-picker__input--hidden': pCalendarLite}"
+    :class="{ 'p-date-picker__input--hidden': pCalendarLite }"
     :type="pType"
     :rangeSeparator="pRangeSeparator"
     :startPlaceholder="pStartPlaceholder"
@@ -16,6 +16,7 @@
     :disabled="pDisabled"
     :placeholder="pPlaceholder"
     :clearable="pClearable"
+    :teleported="pTeleported"
   >
     <template
       #default="{ isCurrent, dayjs, text, type }"
@@ -128,6 +129,7 @@ function selectedDate(date: string) {
   display: block !important;
   box-shadow: none !important;
   border: none !important;
+  position: relative !important;
   .d-arrow-left, .d-arrow-right {
     display: none !important;
   }

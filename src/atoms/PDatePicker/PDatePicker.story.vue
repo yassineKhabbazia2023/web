@@ -138,14 +138,15 @@
     </Variant>
 
     <Variant title="Calendar Lite">
-      <div class="calendar-lite-wrapper">
+      <div>
         <PDatePicker
           v-model="dateCalendar"
           pType="date"
           pValueFormat="YYYY-MM-DD"
           pFormat="YYYY-MM-DD"
           pCalendarLite
-          :pSchedulesCollection="['2024-01-29', '2024-01-27', '2024-02-05']"
+          :pTeleported="false"
+          :pSchedulesCollection="pSchedulesCollection"
         />
       </div>
     </Variant>
@@ -240,6 +241,13 @@ const shortcutsMountRange = [
   },
 ]
 
+const days = [5, 15, 23]
+const pSchedulesCollection = days.map((day) => {
+  const date = new Date()
+  date.setDate(day)
+  return date.toISOString().substring(0, 10)
+})
+
 function disabledDate(time: Date) {
   return time.getTime() > Date.now()
 }
@@ -282,10 +290,6 @@ function visibleChange(val: boolean) {
 
 .demo-date-picker .container:last-child {
   border-right: none;
-}
-
-.calendar-lite-wrapper {
-  position: relative;
 }
 
 </style>
