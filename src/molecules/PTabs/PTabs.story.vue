@@ -11,6 +11,7 @@
       <PTabs
         v-model="firstActiveVariant"
         :pStretch="basicData.stretch"
+        @update:model-value="logEvent('update:model-value', $event)"
       >
         <PTabPane
           v-for="tab in tabs"
@@ -23,7 +24,11 @@
       </PTabs>
     </Variant>
     <Variant title="Counter Usage">
-      <PTabs v-model="secondActiveVariant" :pStretch="basicData.stretch">
+      <PTabs
+        v-model="secondActiveVariant"
+        :pStretch="basicData.stretch"
+        @update:model-value="logEvent('update:model-value', $event)"
+      >
         <PTabPane pName="1">
           <template #label>
             <span>Option A</span>
@@ -67,6 +72,7 @@
         v-model="basicData.activeName"
         pType="card"
         :pStretch="basicData.stretch"
+        @update:model-value="logEvent('update:model-value', $event)"
       >
         <PTabPane
           v-for="tab in tabs"
@@ -83,6 +89,7 @@
         v-model="basicData.activeName"
         pType="icon"
         :pStretch="basicData.stretch"
+        @update:model-value="logEvent('update:model-value', $event)"
       >
         <PTabPane
           v-for="tab in tabs"
@@ -99,6 +106,7 @@
         v-model="basicData.activeName"
         pType="icon"
         :pStretch="basicData.stretch"
+        @update:model-value="logEvent('update:model-value', $event)"
       >
         <PTabPane
           v-for="tab in tabs"
@@ -111,15 +119,35 @@
         </PTabPane>
       </PTabs>
     </Variant>
+    <Variant title="Schedule icons">
+      {{ activeScheduleViewType }}
+      <PTabs
+        v-model="activeScheduleViewType"
+        pType="icon"
+        class="margin-right--2 margin-top--4"
+        @update:model-value="logEvent('update:model-value', $event)"
+      >
+        <PTabPane
+          pName="calendar"
+          pTabIcon="PICalendarEvent"
+        />
+        <PTabPane
+          pName="list"
+          pTabIcon="PIListUl"
+        />
+      </PTabs>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
+import { logEvent } from 'histoire/client'
 import { reactive, ref } from 'vue'
 import PTabPane from '@/atoms/PTabPane'
 import type { PTooltipProps } from '@/atoms/PTooltip/PTooltipTypes'
 import PTabs from '@/molecules/PTabs'
 
+const activeScheduleViewType = ref('calendar')
 const firstActiveVariant = ref('1')
 const secondActiveVariant = ref('1')
 const basicData = reactive({
