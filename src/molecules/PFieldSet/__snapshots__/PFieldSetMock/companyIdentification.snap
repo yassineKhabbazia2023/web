@@ -8,6 +8,7 @@
     "pLabel": "Nom",
     "pPlaceholder": "Mac Cain",
     "pRules": [],
+    "pTestId": undefined,
   },
   {
     "modelValue": "",
@@ -18,5 +19,6 @@
     "pLabel": "Prénom",
     "pPlaceholder": "Johnny's Pizza",
     "pRules": [],
+    "pTestId": undefined,
   },
 ]

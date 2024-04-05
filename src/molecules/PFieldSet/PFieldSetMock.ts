@@ -22,8 +22,24 @@ export function getMockedFields(
   }
   if (fieldCase === 'companyContact') {
     return [
-      getMockedInputField('contact.email', 'E-mail de contact', 'contact@kpmg.fr', 45, false, ['email']),
-      getMockedInputField('contact.phone', 'Numéro de téléphone', '0123456789', 45, false, ['phone']),
+      getMockedInputField(
+        'contact.email',
+        'E-mail de contact',
+        'contact@kpmg.fr',
+        45,
+        false,
+        ['email'],
+        'contact-email',
+      ),
+      getMockedInputField(
+        'contact.phone',
+        'Numéro de téléphone',
+        '0123456789',
+        45,
+        false,
+        ['phone'],
+        'contact-phone',
+      ),
     ]
   }
   if (fieldCase === 'companyAddress') {
@@ -73,13 +89,60 @@ export function getMockedFields(
     }]
 
     return [
-      getDateField('accountingYearStart', "Début de l'exercice", '01/01/2023', 30),
-      getDropdownField('accountingYearDuration', "Durée de l'exercice", 30, yearDurationOptions),
-      getDropdownField('accountingType', 'Type de comptabilité', 30, accountingTypeOptions),
-      getDropdownField('country', 'Pays', 30, countryOptions),
-      getDropdownField('taxSystem', 'Régime fiscal', 30, taxSystemOptions),
-      getDropdownField('taxationRegime', "Régime d'imposition", 30, taxationRegimeOptions),
-      getDropdownField('activityType', "Type d'activité", 30, activityTypeOptions),
+      getDateField(
+        'accountingYearStart',
+        "Début de l'exercice",
+        '01/01/2023',
+        30,
+      ),
+      getDropdownField(
+        'accountingYearDuration',
+        "Durée de l'exercice",
+        30,
+        yearDurationOptions,
+        false,
+        'accounting-year-duration-field',
+      ),
+      getDropdownField(
+        'accountingType',
+        'Type de comptabilité',
+        30,
+        accountingTypeOptions,
+        false,
+        'accounting-type-field',
+      ),
+      getDropdownField(
+        'country',
+        'Pays',
+        30,
+        countryOptions,
+        false,
+        'country-field',
+      ),
+      getDropdownField(
+        'taxSystem',
+        'Régime fiscal',
+        30,
+        taxSystemOptions,
+        false,
+        'tax-system-field',
+      ),
+      getDropdownField(
+        'taxationRegime',
+        "Régime d'imposition",
+        30,
+        taxationRegimeOptions,
+        false,
+        'taxation-regime-field',
+      ),
+      getDropdownField(
+        'activityType',
+        "Type d'activité",
+        30,
+        activityTypeOptions,
+        false,
+        'activity-type-field',
+      ),
     ]
   }
 

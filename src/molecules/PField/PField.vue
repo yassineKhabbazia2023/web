@@ -13,6 +13,7 @@
       :pReadonly="pReadonly"
       :pDisabled="pDisabled"
       :pPlaceholder="pPlaceholder"
+      :data-testid="pTestId"
     />
     <PDropdown
       class="flex--grow-1"
@@ -22,6 +23,7 @@
       :pReadonly="pReadonly"
       :pDisabled="pDisabled"
       :pPlaceholder="pPlaceholder"
+      :data-testid="pTestId"
     />
     <PDatePicker
       v-if="pFieldType === 'date'"
@@ -33,6 +35,7 @@
       :pPlaceholder="pPlaceholder"
       :pFormat="pFormat"
       :pValueFormat="pValueFormat"
+      :data-testid="pTestId"
     />
   </PFormItem>
 </template>
@@ -50,6 +53,7 @@ const props = withDefaults(defineProps<PFieldProps<T>>(), {
   modelValue: undefined,
   pReadonly: false,
   pDisabled: false,
+  pTestId: undefined,
   pDropdownOptions: () => [],
   pPlaceholder: '',
   pRules: () => [],

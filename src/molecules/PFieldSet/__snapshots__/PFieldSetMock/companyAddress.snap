@@ -8,6 +8,7 @@
     "pLabel": "Numéro de nom de la voie",
     "pPlaceholder": "36 rue de Besançon",
     "pRules": [],
+    "pTestId": undefined,
   },
   {
     "modelValue": "",
@@ -18,6 +19,7 @@
     "pLabel": "Compléments (Bât, étage, etc.)",
     "pPlaceholder": "Aucune saisie",
     "pRules": [],
+    "pTestId": undefined,
   },
   {
     "modelValue": "",
@@ -28,6 +30,7 @@
     "pLabel": "Code postal",
     "pPlaceholder": "25300",
     "pRules": [],
+    "pTestId": undefined,
   },
   {
     "modelValue": "",
@@ -38,6 +41,7 @@
     "pLabel": "Ville",
     "pPlaceholder": "Pontarlier",
     "pRules": [],
+    "pTestId": undefined,
   },
   {
     "modelValue": undefined,
@@ -56,5 +60,6 @@
     "pFieldKey": "country",
     "pFieldType": "dropdown",
     "pLabel": "Pays",
+    "pTestId": undefined,
   },
 ]

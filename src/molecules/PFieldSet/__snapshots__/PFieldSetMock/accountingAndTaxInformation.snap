@@ -9,6 +9,7 @@
     "pFormat": "DD/MM/YYYY",
     "pLabel": "Début de l'exercice",
     "pPlaceholder": "01/01/2023",
+    "pTestId": undefined,
     "pValueFormat": "YYYY-MM-DD",
   },
   {
@@ -28,6 +29,7 @@
     "pFieldKey": "accountingYearDuration",
     "pFieldType": "dropdown",
     "pLabel": "Durée de l'exercice",
+    "pTestId": "accounting-year-duration-field",
   },
   {
     "modelValue": undefined,
@@ -46,6 +48,7 @@
     "pFieldKey": "accountingType",
     "pFieldType": "dropdown",
     "pLabel": "Type de comptabilité",
+    "pTestId": "accounting-type-field",
   },
   {
     "modelValue": undefined,
@@ -64,6 +67,7 @@
     "pFieldKey": "country",
     "pFieldType": "dropdown",
     "pLabel": "Pays",
+    "pTestId": "country-field",
   },
   {
     "modelValue": undefined,
@@ -82,6 +86,7 @@
     "pFieldKey": "taxSystem",
     "pFieldType": "dropdown",
     "pLabel": "Régime fiscal",
+    "pTestId": "tax-system-field",
   },
   {
     "modelValue": undefined,
@@ -100,6 +105,7 @@
     "pFieldKey": "taxationRegime",
     "pFieldType": "dropdown",
     "pLabel": "Régime d'imposition",
+    "pTestId": "taxation-regime-field",
   },
   {
     "modelValue": undefined,
@@ -118,5 +124,6 @@
     "pFieldKey": "activityType",
     "pFieldType": "dropdown",
     "pLabel": "Type d'activité",
+    "pTestId": "activity-type-field",
   },
 ]

@@ -17,6 +17,7 @@
         "type": "email",
       },
     ],
+    "pTestId": "contact-email",
   },
   {
     "modelValue": "",
@@ -37,5 +38,6 @@
         "type": "string",
       },
     ],
+    "pTestId": "contact-phone",
   },
 ]
