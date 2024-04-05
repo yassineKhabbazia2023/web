@@ -49,7 +49,7 @@
             </PIcon>
             <template #suffix-content>
               <p class="sidenav-entity__actions-wallet-text">
-                {{ t('wallet') }}
+                {{ t('globalView') }}
               </p>
             </template>
           </SidebarEntityItem>
@@ -431,11 +431,9 @@ en-US:
   close: 'Close'
   favorites: 'Favorites'
   globalView: 'Global view'
-  wallet: 'My Wallet'
 fr-FR:
   open: 'Ouvrir'
   close: 'Fermer'
   favorites: 'Favoris'
   globalView: 'Vue globale'
-  wallet: 'Mon Portefeuille'
 </i18n>
