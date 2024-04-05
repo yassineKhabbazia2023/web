@@ -133,7 +133,7 @@ const pImageProps = {
 
 const collabs = ref<Collab[]>([])
 
-const currentEntityId = defaultEntity.value?.accountId as number
+const currentEntityId = defaultEntity.value?.accountId
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const emit = defineEmits<{
@@ -147,9 +147,12 @@ const handleChange = (row: any) => {
     emit('accessSwitched', collab)
   }
 }
+
 const fetchCollaborators = async () => {
+  if (!currentEntityId) return
   collabs.value = await getCollaboratorsByIdEntity(currentEntityId)
 }
+
 onMounted(async () => {
   await fetchCollaborators()
 })
