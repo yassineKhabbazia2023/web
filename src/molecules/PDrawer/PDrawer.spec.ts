@@ -38,6 +38,20 @@ describe('drawer', () => {
     expect(wrapper.find('.p-drawer__step-back-button').exists()).toBeFalsy()
   })
 
+  it('should not render the drawer component header', () => {
+    const wrapper: VueWrapper<any> = createWrapper({
+      pWithHeader: false,
+    })
+    expect(wrapper.find('.el-drawer__header').exists()).toBeFalsy()
+  })
+
+  it('should render the drawer component header', () => {
+    const wrapper: VueWrapper<any> = createWrapper({
+      pWithHeader: true,
+    })
+    expect(wrapper.find('.el-drawer__header').exists()).toBeTruthy()
+  })
+
   it('should emit drawer-previous-button-click event', async () => {
     const wrapper: VueWrapper<any> = createWrapper({
       modelValue: true,

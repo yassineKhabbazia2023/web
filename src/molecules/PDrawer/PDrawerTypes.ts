@@ -8,4 +8,5 @@ export interface PDrawerProps {
   pSize?: number | string
   pShowClose?: boolean
   pBreadcrumb?: BreadcrumbItems[]
+  pWithHeader?: boolean
 }

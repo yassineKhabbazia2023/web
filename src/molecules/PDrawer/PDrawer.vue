@@ -6,6 +6,7 @@
     class="p-drawer"
     :size="pSize"
     :modalClass="pModalClass"
+    :withHeader="pWithHeader"
   >
     <template #header>
       <div
@@ -80,6 +81,7 @@ const props = withDefaults(defineProps<PDrawerProps>(), {
   pSize: '33%',
   pShowClose: false,
   modalClass: '',
+  pWithHeader: true,
 })
 
 const drawerModel = computed({
