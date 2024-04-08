@@ -84,7 +84,7 @@ describe('table-validations', () => {
   })
 
   it("should emit 'consult' event when the 'consult' button is clicked", async () => {
-    const subscriptionToolbox = wrapper.findComponent('[data-testid=subscription-toolbox]') as VueWrapper
+    const subscriptionToolbox = wrapper.findComponent('[data-testid=subscription-actions-toolbox]') as VueWrapper
     subscriptionToolbox.vm.$emit('p-toolbox-item-clicked', 'consult')
 
     await flushPromises()
