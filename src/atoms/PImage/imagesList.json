@@ -29,6 +29,7 @@
   {
     "name": "logos",
     "images": [
+      "default-offer-color",
       "icon-pulse-bg",
       "iconpulse-color",
       "kpmg-black",
@@ -37,6 +38,7 @@
       "loop-color",
       "meg",
       "microsoft-power-bi",
+      "pennylane-color",
       "pulse-black",
       "pulse-color",
       "pulse-white",
