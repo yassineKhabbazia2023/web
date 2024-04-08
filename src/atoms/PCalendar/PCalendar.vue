@@ -1,7 +1,7 @@
 <template>
   <ElCalendar
     class="p-calendar"
-    v-model="selectedDate"
+    v-model="internalModelValue"
     :range="pInitialDateRange"
   >
     <template #header>
@@ -23,17 +23,18 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { ElCalendar } from 'element-plus'
 import type { PCalendarProps, CalendarItemsGroupedByDate } from './PCalendarTypes'
 import PCalendarDateCell from '@/atoms/PCalendarDateCell'
 
 const props = withDefaults(defineProps<PCalendarProps>(), {
-  pInitialDate: () => new Date(),
+  modelValue: () => new Date(),
 })
 
 const emit = defineEmits<{
   'cell-click': [string]
+  'update:modelValue': [Date]
 }>()
 
 const findItemsByDate = (rawDate: string): CalendarItemsGroupedByDate['items'] => {
@@ -43,8 +44,16 @@ const findItemsByDate = (rawDate: string): CalendarItemsGroupedByDate['items'] =
 }
 
 const todayDate = dayjs().toISOString()
-const selectedDate = ref(props.pInitialDate)
-const stringifiedSelectedDate = computed(() => dayjs(selectedDate.value).format('YYYY-MM-DD'))
+
+const internalModelValue = computed({
+  get() {
+    return props.modelValue
+  },
+  set(modelValue: Date) {
+    emit('update:modelValue', modelValue)
+  },
+})
+const stringifiedSelectedDate = computed(() => dayjs(props.modelValue).format('YYYY-MM-DD'))
 
 function handleCellClick(date: string) {
   emit('cell-click', dayjs(date).format('YYYY-MM-DD'))

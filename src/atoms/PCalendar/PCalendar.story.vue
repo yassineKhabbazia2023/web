@@ -7,7 +7,7 @@
     <Variant title="Basic usage">
       <div>
         <PCalendar
-          :pInitialDate="initialDate"
+          :modelValue="initialDate"
           :pItemsGroupedByDate="itemsGroupedByDate"
           @cell-click="logEvent('cell-click', $event)"
         />
