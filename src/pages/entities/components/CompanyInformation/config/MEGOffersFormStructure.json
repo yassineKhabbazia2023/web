@@ -63,7 +63,7 @@
         "pFieldKey": "accounting.fiscalExerciseDuration",
         "pFieldType": "dropdown",
         "pLabel": "Durée de l'exercice en mois",
-        "pTestId": "offer-fiscal-exercice-duration",
+        "pTestId": "offer-fiscal-exercise-duration",
         "referentialKey": "fiscalExerciseDuration"
       },
       {
