@@ -14,62 +14,40 @@
       pName="pulse-color"
       pFit="fill"
     />
-    <PToolbox
-      :pElements="authenticatedUserToolbox"
-      @p-toolbox-item-clicked="onActionClick"
+
+    <div
+      @click="$emit('showUserProfileDrawer')"
+      class="header-section__user-avatar cursor-pointer"
     >
-      <div class="header-section__user-avatar cursor-pointer">
-        <PAvatar
-          pShape="circle"
-          pType="small"
-          pColor="persian-gradient"
-          data-ut="user-initials"
-        >
-          {{ userInitials }}
-        </PAvatar>
-      </div>
-    </PToolbox>
+      <PAvatar
+        pShape="circle"
+        pType="small"
+        pColor="persian-gradient"
+        data-ut="user-initials"
+      >
+        {{ userInitials }}
+      </PAvatar>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import {
   commonStore as useStore,
   dataProvider as useDataProvider,
 } from '@kpmg/common'
-import { useI18n } from 'vue-i18n'
-import { PAvatar, PImage, PToolbox } from '@kpmg/styleguide'
+import { PAvatar, PImage } from '@kpmg/styleguide'
 
-const router = useRouter()
 const store = useStore()
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
+defineEmits(['showUserProfileDrawer'])
 
 const { fetchUserData } = useDataProvider()
 const firstName = ref(store.user?.firstName || '')
 const lastName = ref(store.user?.lastName || '')
 
-const authenticatedUserToolbox = [
-  {
-    pIconName: 'PIPower',
-    pValue: t('logout'),
-    pActionName: 'logout',
-  },
-]
-
 const userInitials = computed(() => {
   return firstName.value?.charAt(0) + lastName.value?.charAt(0)
 })
-
-const onActionClick = async (actionName: string) => {
-  if (actionName === 'logout') {
-    await store.logout(store.$state)
-    router.push({ name: 'login' })
-  }
-}
 
 onMounted(async () => {
   if (!store.user && store.isAuthenticated) {
@@ -106,10 +84,3 @@ onMounted(async () => {
   }
 }
 </style>
-
-<i18n lang="yaml">
-en-US:
-  logout: 'Logout'
-fr-FR:
-  logout: 'Se déconnecter'
-</i18n>

@@ -4,9 +4,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { commonStore as store } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
-import { nextTick } from 'vue'
 import helpers from '@/tests/utils/helpers'
-import { PToolbox } from '@kpmg/styleguide'
 import Header from './'
 
 const { router, pinia, fetchUserData, fakeUser } = helpers()
@@ -31,7 +29,6 @@ vi.mock('@kpmg/common', () => ({
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Header, {
-    attachTo: document.body,
     global: {
       plugins: [router, createTestingPinia()],
     },
@@ -43,6 +40,7 @@ describe('header', () => {
     setActivePinia(pinia)
     wrapper = createWrapper()
   })
+
   it('should display the header section correctly', () => {
     router.push({ name: 'wallet' })
     const header = wrapper.find('.header-section')
@@ -50,19 +48,6 @@ describe('header', () => {
 
     expect(header.exists()).toBeTruthy()
     expect(logo.exists()).toBeTruthy()
-  })
-
-  it('should disconnect user when clicking on the logout button', async () => {
-    const spyRouterPush = vi.spyOn(router, 'push')
-    await wrapper.find('.el-avatar').trigger('click')
-    await nextTick()
-    expect(document.body.innerHTML).contains('p-toolbox-item')
-
-    const PToolboxWrapper = wrapper.findComponent(PToolbox)
-    PToolboxWrapper.vm.$emit('p-toolbox-item-clicked', 'logout')
-    await nextTick()
-    expect(localStorage.getItem('token')).toBeNull()
-    expect(spyRouterPush).toHaveBeenCalledWith({ name: 'login' })
   })
 
   it('should display initial user even the data in store is empty and token on localStorage is valid', () => {

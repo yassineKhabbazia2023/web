@@ -2,7 +2,9 @@
   <div class="common-layout">
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
-        <Header />
+        <Header
+          @show-user-profile-drawer="hasUserProfileDrawerOpened = true"
+        />
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
@@ -15,6 +17,11 @@
               stylesMetaProperties?.hasPaddings === false
           }"
         >
+          <UserProfile
+            v-if="hasUserProfileDrawerOpened"
+            v-model="hasUserProfileDrawerOpened"
+            :hasDrawerOpened="hasUserProfileDrawerOpened"
+          />
           <router-view />
         </PContainer>
         <PContainer class="home-bottom-menu">
@@ -26,12 +33,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import Header from './Header'
 import Sidebar from './Sidebar'
+import UserProfile from '@/components/UserProfile'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -76,6 +84,8 @@ const stylesMetaProperties = computed(
 )
 const route = useRoute()
 const routeActive = route.path
+
+const hasUserProfileDrawerOpened = ref(false)
 </script>
 
 <style lang="scss" scoped>
@@ -147,6 +157,7 @@ const routeActive = route.path
   }
 }
 </style>
+
 <i18n lang="yaml">
 en-US:
   wallet: 'Wallet'
