@@ -32,6 +32,7 @@
         "pFieldKey": "legal.staffSizeRange",
         "pFieldType": "dropdown",
         "pLabel": "Effectifs",
+        "pTestId": "offer-staff-size-range",
         "referentialKey": "staffSizeRange"
       },
       {
@@ -40,6 +41,7 @@
         "pFieldKey": "hub.hubName",
         "pFieldType": "dropdown",
         "pLabel": "Hub KPMG rattaché",
+        "pTestId": "offer-hub-name-list",
         "referentialKey": "hubName"
       }
     ]
@@ -61,6 +63,7 @@
         "pFieldKey": "accounting.fiscalExerciseDuration",
         "pFieldType": "dropdown",
         "pLabel": "Durée de l'exercice en mois",
+        "pTestId": "offer-fiscal-exercise-duration",
         "referentialKey": "fiscalExerciseDuration"
       },
       {
@@ -69,6 +72,7 @@
         "pFieldKey": "accounting.accountingType",
         "pFieldType": "dropdown",
         "pLabel": "Type de comptabilité",
+        "pTestId": "offer-accounting-types",
         "referentialKey": "accountingType"
       },
       {
@@ -77,6 +81,7 @@
         "pFieldKey": "accounting.fiscalSystem",
         "pFieldType": "dropdown",
         "pLabel": "Régime fiscal",
+        "pTestId": "offer-fiscal-system-list",
         "referentialKey": "fiscalSystem"
       },
       {
@@ -85,6 +90,7 @@
         "pFieldKey": "accounting.taxationSystem",
         "pFieldType": "dropdown",
         "pLabel": "Régime d'imposition",
+        "pTestId": "offer-taxation-system-list",
         "referentialKey": "taxationSystem"
       },
       {
@@ -93,6 +99,7 @@
         "pFieldKey": "accounting.activityType",
         "pFieldType": "dropdown",
         "pLabel": "Type d'activité",
+        "pTestId": "offer-activity-types",
         "referentialKey": "activityType"
       }
     ]
@@ -106,6 +113,7 @@
         "pFieldKey": "vat.system",
         "pFieldType": "dropdown",
         "pLabel": "Régime de la TVA",
+        "pTestId": "offer-vat-system-list",
         "referentialKey": "vatSystem"
       },
       {
@@ -121,6 +129,7 @@
         "pFieldKey": "vat.type",
         "pFieldType": "dropdown",
         "pLabel": "Type de TVA",
+        "pTestId": "offer-vat-types",
         "referentialKey": "vatType"
       }
     ]

@@ -7,6 +7,7 @@
     :pTriggerOnFocus="false"
     pHighlightFirstItem
     pClearable
+    data-testid="offer-manage-collaborators-autocomplete"
     @select="onSelect"
   >
     <template #prefix>

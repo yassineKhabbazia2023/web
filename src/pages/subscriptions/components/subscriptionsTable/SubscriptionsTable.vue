@@ -84,7 +84,7 @@
         <PToolbox
           trigger="click"
           :pElements="requestMenu"
-          data-testid="subscription-toolbox"
+          data-testid="subscription-actions-toolbox"
           @p-toolbox-item-clicked="($event: string) => onClickToolboxItem($event, scope.row)"
         >
           <PButton
