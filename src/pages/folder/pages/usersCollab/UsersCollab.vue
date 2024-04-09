@@ -158,12 +158,19 @@ import {
   PBlockHeader,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
-import { computed, onMounted, reactive, watch } from 'vue'
-import { PAGE_SIZES } from '@/constants'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
+import {
+  PAGE_SIZES,
+  DATE_TIME_FORMATS as datetimeFormats,
+} from '@/constants'
 import { getInitials, getPaginationLabel } from '@/helper'
-import type { IStateUser, IUserStatus, IUser } from './types'
-import { dataFromApi } from './mockData'
+import type { IStateUser, IUserStatus, IUser, IGetAccountRelatedUsersResponse } from './types'
+import { commonStore, commonApi } from '@kpmg/common'
 
+const userStore = commonStore()
+
+const currentUserId = ref(userStore.$state?.user?.id)
+const currentAccountId = ref(userStore.$state?.user?.entities.default?.accountId)
 const state: IStateUser = reactive({
   data: [],
   currentPage: 1,
@@ -173,39 +180,27 @@ const state: IStateUser = reactive({
   isLoading: false,
 })
 
-// Uncomment when implement call API
-// const getQueryParams = () => ({
-//   page: state.currentPage,
-//   limit: state.limit
-// })
-
-const fetch = () => {
+const fetch = async () => {
   state.isLoading = true
   try {
-    const {
-      data: {
-        items,
-        currentPage,
-        totalPage,
-        totalItems,
-      },
-    } = dataFromApi
-    state.data = items.map(({
-      status,
-      firstName,
-      lastName,
-      ...rest
-    }) => ({
-      status: getStatus(status),
-      firstName: firstName?.toLowerCase() ?? '',
-      lastName: lastName?.toUpperCase() ?? '',
-      initials: getInitials(firstName, lastName),
-      fullName: getFullName({ firstName, lastName }),
-      ...rest,
-    }))
-    state.currentPage = currentPage
-    state.totalPage = totalPage
-    state.totalItems = totalItems
+    const data: IGetAccountRelatedUsersResponse =
+      await commonApi().gateway.get(`account/api/accounts/${currentAccountId.value}/contacts?type=customer`)
+
+    const formattedData: IUser[] = data.data.map((userFromApi) => {
+      return {
+        initials: getInitials(userFromApi.firstName, userFromApi.lastName),
+        status: getStatus(userFromApi.status),
+        firstName: userFromApi.firstName?.toLowerCase() ?? '',
+        lastName: userFromApi.lastName?.toUpperCase() ?? '',
+        fullName: getFullName({ firstName: userFromApi.firstName, lastName: userFromApi.lastName }) ?? '',
+        email: userFromApi.email,
+        role: userFromApi.personaName,
+        firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
+        isOwner: Number.parseInt(currentUserId.value ?? '') === userFromApi.contactId,
+      }
+    })
+
+    state.data = formattedData
   } catch (err) {
     console.error(err)
   } finally {
@@ -219,9 +214,10 @@ const getFullName = ({ firstName, lastName }: { firstName: string, lastName: str
   }
 }
 
-const { t } = useI18n({
+const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  datetimeFormats,
 })
 
 const toolboxItems: PToolboxItemProps[] = [

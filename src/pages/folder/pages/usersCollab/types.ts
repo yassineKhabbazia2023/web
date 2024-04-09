@@ -7,7 +7,26 @@ export interface IUserStatus {
     | 'persian' | 'fuschia' | 'cyan' | 'amethyste' | 'gray-300' | 'gray-500' | 'gray-900'
   icon: Component
 }
+
+export interface IUserFromApi {
+  contactId: number
+  globalContactId: string
+  firstName: string
+  lastName: string
+  email: string
+  type: string
+  status: string
+  personaName: string
+  creationDate: string
+}
+
+export interface IGetAccountRelatedUsersResponse {
+  data: IUserFromApi[]
+}
+
 export interface IUser {
+  initials: string
+  fullName: string
   firstName: string
   lastName: string
   email: string
