@@ -59,7 +59,7 @@ const collaboratorsColumnLabels =
   'City',
   'Hub',
   'Status',
-  'Option',
+  'Options',
 ]
 const clientsColumnLabels =
 [
@@ -68,7 +68,7 @@ const clientsColumnLabels =
   'Leader',
   'Email',
   'City',
-  'Option',
+  'Options',
 ]
 
 describe('tableData', () => {
@@ -93,7 +93,7 @@ describe('tableData', () => {
   })
 
   it('calls function handle when click', async () => {
-    const btnFavorite = wrapper.find('td.el-table_1_column_1 div .el-icon')
+    const btnFavorite = wrapper.find('td.el-table_1_column_1 [data-testid="wallet-remove-favorite"]')
     await btnFavorite.trigger('click')
     expect(handleFavorites).toHaveBeenCalledTimes(1)
     expect(handleFavorites).toHaveBeenCalledWith(mockTableData[0].accountId, true)

@@ -36,10 +36,10 @@
         class="
         separator
         margin-x--6
-        hidden-sm-and-down"
+        hidden-md-and-down"
       >
       </div>
-      <div>
+      <div class="hidden-md-and-down">
         <div>
           <p class="filter__title font-semibold margin-bottom--3">
             {{ t('userConnectionRate') }}

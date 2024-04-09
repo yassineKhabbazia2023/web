@@ -10,35 +10,45 @@
   >
     <PTableColumn
       pProp="isFavorite"
-      :pWidth="30"
+      :pWidth="54"
+      :pShowOverflowTooltip="false"
       data
     >
       <template #default="scope">
-        <PIcon
+        <PButton
           v-if="scope.row.isFavorite"
           @click.stop="handleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
-          color="#5546FF"
-          size="14px"
+          pType="white"
+          pSize="small"
+          pIconOnly
+          data-testid="wallet-add-favorite"
         >
-          <PIStarFill />
-        </PIcon>
-        <PIcon
+          <PIcon>
+            <PIStarFill />
+          </PIcon>
+        </PButton>
+        <PButton
           v-if="!scope.row.isFavorite"
           @click.stop="handleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
-          color="#5546FF"
-          size="14px"
+          pType="white"
+          pSize="small"
+          pIconOnly
+          data-testid="wallet-remove-favorite"
         >
-          <PIStar />
-        </PIcon>
+          <PIcon>
+            <PIStar />
+          </PIcon>
+        </PButton>
       </template>
     </PTableColumn>
     <PTableColumn
       :pLabel="t('companyName')"
       pProp="name"
       pSortable
+      pMinWidth="120px"
     >
       <template #default="scope">
-        <div class="flex valign-center">
+        <div class="flex flex--align-items-center overflow-hidden">
           <PAvatar
             :pColor="scope.row.owner.avatarColor"
             pType="xsmall"
@@ -48,8 +58,9 @@
             </PIcon>
           </PAvatar>
           <a
-            class="font-semibold margin-left--2 link"
-            @click="onToolboxItemClicked('access', scope.row)">
+            class="font-semibold margin-left--2 link text-color--persian-500 overflow-hidden text-overflow--ellipsis"
+            @click="onToolboxItemClicked('access', scope.row)"
+          >
             {{ scope.row.name }}
           </a>
         </div>
@@ -66,19 +77,19 @@
       pSortable
     >
       <template #default="scope">
-        <div class="flex valign-center">
+        <div class="flex flex--align-items-center overflow-hidden">
           <PAvatar
             v-if="scope.row.owner.initials"
             class="margin-right--2"
             pColor="persian-gradient"
-            pType="small"
+            pType="xsmall"
           >
             {{ scope.row.owner.initials }}
           </PAvatar>
-          <div>
-            <p class="capitalize">
+          <div class="overflow-hidden text-overflow--ellipsis">
+            <p class="text-capitalize overflow-hidden text-overflow--ellipsis">
               {{ scope.row.owner.firstName }}
-              <span class="uppercase"> {{ scope.row.owner.lastName }}</span>
+              <span class="text-uppercase"> {{ scope.row.owner.lastName }}</span>
             </p>
           </div>
         </div>
@@ -90,7 +101,7 @@
       pSortable
     >
       <template #default="scope">
-        <p class="capitalize">
+        <p class="overflow-hidden text-overflow--ellipsis">
           {{ scope.row.owner.email }}
         </p>
       </template>
@@ -101,7 +112,7 @@
       pSortable
     >
       <template #default="scope">
-        <p class="capitalize">
+        <p class="text-capitalize overflow-hidden text-overflow--ellipsis">
           {{ scope.row.city }}
         </p>
       </template>
@@ -113,7 +124,7 @@
         pSortable
       >
         <template #default="scope">
-          <p class="capitalize">
+          <p class="text-capitalize overflow-hidden text-overflow--ellipsis">
             {{ scope.row.hub }}
           </p>
         </template>
@@ -136,6 +147,7 @@
     <PTableColumn
       :pLabel="t('option')"
       :pWidth="80"
+      pAlign="center"
     >
       <template #default="scope">
         <PToolbox
@@ -146,10 +158,10 @@
           <PButton
             pType="white"
             pSize="small"
-            class="margin-left--1"
+            pIconOnly
           >
             <PIcon>
-              <PIThreeDots color="#A4A4A4" />
+              <PIThreeDots />
             </PIcon>
           </PButton>
         </PToolbox>
@@ -157,7 +169,7 @@
     </PTableColumn>
     <PTableColumn
       v-if="isCollab"
-      pWidth="50"
+      pWidth="46"
       :pShowOverflowTooltip="false"
     >
       <template #default="scope">
@@ -404,34 +416,6 @@ const onSelectedFolder = (row: any) => {
 }
 </style>
 
-<style lang="scss" scoped>
-.flex {
-  display: flex;
-}
-
-.valign-center {
-  align-items: center;
-}
-
-.capitalize {
-  &::first-letter {
-    text-transform: capitalize;
-  }
-}
-
-.uppercase {
-  text-transform: uppercase;
-}
-
-.color-gray--500 {
-  color: var(--el-color-neutral-gray-500);
-}
-
-.link {
-  color: var(--el-color-primary);
-}
-</style>
-
 <i18n lang="yaml">
 en-US:
   companyName: 'Company name'
@@ -441,7 +425,7 @@ en-US:
   email: 'Email'
   hub: 'Hub'
   status: 'Status'
-  option: 'Option'
+  option: 'Options'
   deployThisFolder: 'Deploy this folder'
   accessThisFolder: 'Access this folder'
   resendActivationEmail: 'Resend activation email'
@@ -461,10 +445,10 @@ fr-FR:
   email: 'Mail'
   hub: 'Hub'
   status: 'Statut'
-  option: 'Option'
+  option: 'Options'
   deployThisFolder: 'Déployer ce dossier'
   accessThisFolder: 'Accéder au dossier'
-  resendActivationEmail: "Relancer mail d'activation"
+  resendActivationEmail: "Relancer le mail d'activation"
   toDeploy: 'A déployer'
   inProgress: 'En cours'
   resendMailErrorMessage: "Un problème est survenu lors de l'envoie du mail d'activation pour "

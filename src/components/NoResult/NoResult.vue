@@ -1,10 +1,10 @@
 <template>
   <div
     class="
-      bg-gray--50
+      bg--neutral-gray-50
       padding-top--6
       text-center
-      color-gray--500
+      text-color--neutral-gray-500
     "
   >
     <p class="font-large margin-bottom--2">
@@ -32,16 +32,8 @@ const { t } = useI18n({
 </script>
 
 <style lang="scss" scoped>
-.bg-gray--50 {
-  background: var(--el-color-neutral-gray-50);
-}
-
-.color-gray--500 {
-  color: var(--el-color-neutral-gray-500);
-}
-
 .image-no-result {
-  max-width: 31.6rem;
+  max-width: 316px;
 }
 </style>
 
