@@ -66,7 +66,7 @@ import { getInitials } from '@/helper/helper'
 
 defineProps<DelegatorsAddStepProps>()
 const emit = defineEmits<{
-  'collaborator-selection': [Contact['id'][]]
+  'collaborator-selection': [Contact[]]
 }>()
 
 const { t } = useI18n({
@@ -100,7 +100,7 @@ function getFormattedFirstAndLastName(firstName: string, lastName: string) {
 }
 
 function emitCollaboratorSelection() {
-  emit('collaborator-selection', selectedCollaboratorsIds)
+  emit('collaborator-selection', selectedCollaborators.value)
 }
 
 </script>
