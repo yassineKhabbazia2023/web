@@ -1,0 +1,70 @@
+[
+  {
+    "key": "TVA",
+    "label": "TVA",
+  },
+  {
+    "key": "Bilan",
+    "label": "Bilan",
+  },
+  {
+    "key": "CRL",
+    "label": "CRL",
+  },
+  {
+    "key": "CFE",
+    "label": "CFE",
+  },
+  {
+    "key": "CVAE",
+    "label": "CVAE",
+  },
+  {
+    "key": "DES",
+    "label": "DES",
+  },
+  {
+    "key": "IFU",
+    "label": "IFU",
+  },
+  {
+    "key": "IS",
+    "label": "IS",
+  },
+  {
+    "key": "TVS",
+    "label": "TVS",
+  },
+  {
+    "key": "EVP",
+    "label": "EVP",
+  },
+  {
+    "key": "DAS",
+    "label": "Date d'arrivée d'un salarié",
+  },
+  {
+    "key": "DF",
+    "label": "Date de formation",
+  },
+  {
+    "key": "DPAE",
+    "label": "DPAE",
+  },
+  {
+    "key": "DSN",
+    "label": "DSN",
+  },
+  {
+    "key": "FDC",
+    "label": "Fin de contrat",
+  },
+  {
+    "key": "FDPE",
+    "label": "Fin de période d'essai",
+  },
+  {
+    "key": "VM",
+    "label": "Visite médicale",
+  },
+]
