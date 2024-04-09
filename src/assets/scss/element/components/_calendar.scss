@@ -1,14 +1,13 @@
 // css3 var in packages/theme-chalk/src/calendar.scss
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
-$calendar: 
-  (
-    'border':
-      var(
-        #{getCssVarName('table-border')},
-        1px solid #{getCssVar('border-color-lighter')}
-      ),
-    'header-border-bottom': getCssVar('calendar-border'),
-    'selected-bg-color': getCssVar('color', 'white'),
-    'cell-width': calc(100% / 7),
-  );
+$calendar: (
+  'border':
+    var(
+      #{getCssVarName('table-border')},
+      1px solid #{getCssVar('border-color-lighter')}
+    ),
+  'header-border-bottom': getCssVar('calendar-border'),
+  'selected-bg-color': getCssVar('color', 'white'),
+  'cell-width': calc(100% / 7),
+);

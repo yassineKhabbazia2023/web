@@ -47,7 +47,7 @@ withDefaults(defineProps<PFormProps>(), {
   pInlineMessage: false,
   pStatusIcon: false,
   pValidateOnRuleChange: true,
-  pSize: undefined,
+  pSize: 'default',
   pDisabled: false,
   pScrollToError: false,
   pScrollIntoViewOptions: undefined,
