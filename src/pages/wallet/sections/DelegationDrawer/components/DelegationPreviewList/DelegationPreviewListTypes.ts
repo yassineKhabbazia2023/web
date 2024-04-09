@@ -1,16 +1,5 @@
-
-export type Delegate = {
-  id: number
-  firstName: string
-  lastName: string
-  email: string
-}
-
-export type DelegationDetails = {
-  delegate: Delegate
-  isAutoDelegation: boolean
-}
+import type { DelegationDetails } from '@/pages/wallet/sections/DelegationDrawer/models/Delegation'
 
 export interface DelegationPreviewListProps {
-  delegationDetails: DelegationDetails[]
+  modelValue: DelegationDetails[]
 }

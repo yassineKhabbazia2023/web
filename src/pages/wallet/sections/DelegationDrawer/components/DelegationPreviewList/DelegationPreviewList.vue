@@ -45,7 +45,7 @@
       :pLabel="t('table.header.enableAutomaticDeligation')"
     >
       <template #default="scope">
-        <PCheckbox v-model="scope.row.isAutoDelegation">
+        <PCheckbox v-model="scope.row.isAutomaticallyDelegated">
           {{ t('table.header.enableAutomaticDeligation') }}
         </PCheckbox>
       </template>
@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type {
   DelegationPreviewListProps,
@@ -75,8 +75,18 @@ const { t } = useI18n({
 })
 
 const props = defineProps<DelegationPreviewListProps>()
+const emit = defineEmits<{
+  'update:modelValue': [DelegationPreviewListProps['modelValue']]
+}>()
 
-const delegationsList = ref(props.delegationDetails)
+const delegationsList = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value: DelegationPreviewListProps['modelValue']) {
+    emit('update:modelValue', value)
+  },
+})
 
 // Behaviours
 const sortMethodsDoubleText = (a: any, b: any) => a.firstName - b.firstName
