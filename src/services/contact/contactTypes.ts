@@ -10,10 +10,16 @@ export interface Contact {
   lastName: string
   email: string
   landPhone?: string
-  mobilePhone?: string
+  mobilePhone: string
   type?: 'collaborateur' | 'client'
   office?: string
   persona?: Persona
+}
+
+/* eslint-disable no-unused-vars */
+export enum ContactType {
+  Collaborator = 'Collaborator',
+  Customer = 'Customer'
 }
 export interface PatchContactPayload {
   firstName?: string

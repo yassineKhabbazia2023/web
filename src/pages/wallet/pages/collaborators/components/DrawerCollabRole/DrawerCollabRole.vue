@@ -22,6 +22,7 @@
 
     <CollabRole
       v-if="!state.currentStep"
+      :currentRole="rowData.role"
       @set-drawer-not-visible="closeDrawer"
       @set-selected-role-id="handleSetSelectedRoleId"
     />
@@ -47,13 +48,14 @@ import {
 import type { State, Props } from './types'
 import CollabRole from './components/CollabRole'
 import CollabAccess from './components/CollabAccess'
+import { updateCollaborator } from '@/services/wallet'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'update-collaborator-role'])
 
 const props = defineProps<Props>()
 
@@ -77,18 +79,31 @@ const handleSetSelectedRoleId = (selectedRoleId: number) => {
   state.currentStep++
 }
 
-const handleSetAccess = (accesses: Object) => {
-  state.accessesSelected = accesses
-
-  closeDrawer()
-
-  PNotification({
-    message: t('notificationSuccess', { fullName: props.rowData.fullName }),
-    icon: PICheck,
-    showClose: true,
-    customClass: 'success',
-    position: 'bottom-right',
-  })
+const handleSetAccess = async (accesses: object) => {
+  try {
+    state.accessesSelected = accesses
+    const updates = {
+      personaId: state.selectedRoleId,
+    }
+    const contact = await updateCollaborator(props.rowData.id, updates)
+    emit('update-collaborator-role', contact)
+    closeDrawer()
+    PNotification({
+      message: t('notificationSuccess', { fullName: props.rowData.fullName }),
+      icon: PICheck,
+      showClose: true,
+      customClass: 'success',
+      position: 'bottom-right',
+    })
+  } catch (error) {
+    PNotification({
+      message: t('notificationSuccess', { fullName: props.rowData.fullName }),
+      icon: PICheck,
+      showClose: true,
+      customClass: 'success',
+      position: 'bottom-right',
+    })
+  }
 }
 </script>
 

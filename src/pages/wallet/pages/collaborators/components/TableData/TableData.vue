@@ -104,6 +104,7 @@
         v-model="state.hasDrawerOpened.collabDetails"
         :rowData="state.rowData"
         :hasDrawerOpened="state.hasDrawerOpened.collabDetails"
+        @update-collaborator-details="handleUpdateCollaborateurDetails"
       />
 
       <DrawerCollabRole
@@ -111,6 +112,7 @@
         v-model="state.hasDrawerOpened.collabRole"
         :rowData="state.rowData"
         :hasDrawerOpened="state.hasDrawerOpened.collabRole"
+        @update-collaborator-role="handleUpdateCollaborateurRole"
       />
     </div>
   </div>
@@ -134,15 +136,16 @@ import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import DrawerCollabDetails from './../DrawerCollabDetails'
 import DrawerCollabRole from './../DrawerCollabRole'
+import type { Contact } from '@/services/contact/contactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
+const emit = defineEmits(['update-collaborator-details', 'update-collaborator-role'])
 const props = defineProps<Props>()
 
-const access = props.data.map(({ id, hasAccess }: { id: string, hasAccess: boolean }) => ({
+const access = props.data.map(({ id, hasAccess }: { id: number, hasAccess: boolean }) => ({
   [id]: hasAccess,
 }))
 const accessState = reactive(Object.assign({}, ...access))
@@ -177,6 +180,12 @@ const state = reactive({
   rowData: undefined,
 })
 
+const handleUpdateCollaborateurDetails = (contact: Contact) => {
+  emit('update-collaborator-details', contact)
+}
+const handleUpdateCollaborateurRole = (contact: Contact) => {
+  emit('update-collaborator-role', contact)
+}
 const handleToolboxItemClick = (action: string, row: any) => {
   state.rowData = row
   if (action === collaboratorInformation) {

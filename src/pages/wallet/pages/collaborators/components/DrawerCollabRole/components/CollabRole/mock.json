@@ -10,13 +10,13 @@
       "id": 648,
       "name": "Assistant(e)",
       "description": "Deserunt non ex velit est anim nulla labore.",
-      "selected": true
+      "selected": false
     },
     {
       "id": 817,
       "name": "Partner",
       "description": "Pariatur eu nulla dolor velit enim nostrud adipisicing anim velit.",
-      "selected": false
+      "selected": true
     },
     {
       "id": 644,

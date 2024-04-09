@@ -1,11 +1,27 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { flushPromises, mount } from '@vue/test-utils'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import mockRowData from './../../mock.json'
-import DrawerCollabDetails from './'
+import DrawerCollabRole from './'
+import mock from './../../mockCollaborators.json'
 
 let wrapper: VueWrapper<any>
+const mockGatewayPatch = vi.fn(() => {
+  return Promise.resolve({
+    data: mock.items[0],
+  })
+})
 
+vi.mock('@kpmg/common', () => ({
+  commonApi: () => ({
+    gateway: {
+      patch: mockGatewayPatch,
+    },
+  }),
+  commonStore: () => ({
+    $patch: vi.fn(),
+  }),
+}))
 const { firstName, lastName } = mockRowData.data.items[0]
 const rowData = {
   ...mockRowData.data.items[0],
@@ -26,7 +42,7 @@ const getCollabRoleAccessComponentExist = () => {
 }
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(DrawerCollabDetails, {
+  mount(DrawerCollabRole, {
     props: {
       rowData,
       hasDrawerOpened: true,
@@ -69,7 +85,7 @@ describe('drawerCollabDetails', () => {
     expect(getNotificationSuccess()).toHaveLength(0)
 
     await getCollabAccessComponent().vm.$emit('setAccesses')
-
+    await flushPromises()
     expect(getNotificationSuccess()[0].textContent).toContain(rowData.fullName)
   })
 })

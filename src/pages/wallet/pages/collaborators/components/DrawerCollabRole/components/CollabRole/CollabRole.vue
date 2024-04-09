@@ -63,13 +63,14 @@ import {
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
 import type { State } from './types'
-import mock from './mock.json'
-
+import { ContactType } from '@/services/contact/contactTypes'
+import { getRoles } from '@/services/wallet'
+import type { CollabRoleProps } from './CollabRoleTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
+const props = defineProps<CollabRoleProps>()
 const emit = defineEmits(['setDrawerNotVisible', 'setSelectedRoleId'])
 
 const state: State = reactive({
@@ -84,9 +85,9 @@ const fetchRoles = async () => {
   state.isLoading = true
 
   try {
-    const { data } = await Promise.resolve(mock)
-    state.roles = data
-    state.formValue.selectedRoleId = data.find(({ selected }) => selected)?.id
+    const response = await getRoles(ContactType.Collaborator)
+    state.roles = response
+    state.formValue.selectedRoleId = response.find(r => r.name === props.currentRole)?.id
   } catch (err) {
     console.error(err)
   }

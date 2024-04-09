@@ -1,14 +1,35 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it } from 'vitest'
-import mock from './../../mock.json'
+import { flushPromises, mount } from '@vue/test-utils'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import listContact from './../../mockCollaborators.json'
+import listCollab from './../../mock.json'
+
 import DrawerCollabDetails from './'
+import { updateCollaborator } from '@/services/wallet'
 
+vi.mock('@/services/wallet', () => ({
+  updateCollaborator: vi.fn(),
+}))
 let wrapper: VueWrapper<any>
+const mockGatewayPatch = vi.fn(() => {
+  return Promise.resolve({
+    data: listContact.items[0],
+  })
+})
 
-const { firstName, lastName } = mock.data.items[0]
+vi.mock('@kpmg/common', () => ({
+  commonApi: () => ({
+    gateway: {
+      patch: mockGatewayPatch,
+    },
+  }),
+  commonStore: () => ({
+    $patch: vi.fn(),
+  }),
+}))
+const { firstName, lastName } = listContact.items[0]
 const rowData = {
-  ...mock.data.items[0],
+  ...listCollab.data.items[0],
   fullName: `${firstName} ${lastName}`,
 }
 
@@ -31,7 +52,7 @@ describe('drawerCollabDetails', () => {
     expect(title.text()).toContain(rowData.fullName)
 
     const userCard = wrapper.find('.p-user-card__subtitle')
-    expect(userCard.text()).toContain(mock.data.items[0].email)
+    expect(userCard.text()).toContain(listCollab.data.items[0].email)
 
     const tag = wrapper.find('.el-tag__content')
     expect(tag.text()).toContain(rowData.role)
@@ -71,9 +92,17 @@ describe('drawerCollabDetails', () => {
     const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
     expect(getNotificationSuccess()).toHaveLength(0)
 
-    const buttonSubmit = wrapper.findAll('.el-drawer__footer button')[1]
+    const buttonSubmit = wrapper.find('[data-testid=submit-btn]')
     await buttonSubmit.trigger('click')
-
+    await flushPromises()
+    expect(vi.mocked(updateCollaborator)).toHaveBeenCalledTimes(1)
+    expect(getNotificationSuccess()).toHaveLength(1)
+    expect(wrapper.emitted('update-collaborator-details')).toHaveLength(1)
     expect(getNotificationSuccess()[0].textContent).toContain(rowData.fullName)
+  })
+  it('emits an update event and closes the drawer on reset button click', async () => {
+    const resetButton = wrapper.find('[data-testid=reset-btn]')
+    await resetButton.trigger('click')
+    expect(wrapper.emitted('update:modelValue')).toHaveLength(1)
   })
 })

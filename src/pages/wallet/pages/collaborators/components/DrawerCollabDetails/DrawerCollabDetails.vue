@@ -2,29 +2,25 @@
   <PDrawer
     v-model="drawerModel"
     :pTitle="t('informationsAboutCollaborator')"
-    @close-drawer-button="drawerModel = false"
-  >
+    @close-drawer-button="drawerModel = false">
     <PUserCard
       class="margin-bottom--6"
       pAssetLeft="Image"
       pAssetContent="user-male"
       :pTitle="rowData.fullName"
-      :pSubtitle="rowData.email"
-    >
+      :pSubtitle="rowData.email">
       <PTag
         pColor="gray-500"
         pSize="default"
         pIconLeft="PIPerson"
         :pContent="rowData.role"
-        pEffect="light"
-      />
+        pEffect="light" />
     </PUserCard>
 
     <i18n-t
       class="margin-bottom--6"
       keypath="youCanModify"
-      tag="p"
-    >
+      tag="p">
       <template #administrator>
         <strong>{{ t('administrator') }}</strong>
       </template>
@@ -34,61 +30,40 @@
       @submit.prevent="handleSubmit(formRef)"
       ref="formRef"
       :pModel="formValues"
-      pLabelPosition="top"
-    >
-      <PFormItem
-        prop="lastName"
-        :pLabel="t('lastName')"
-      >
+      pLabelPosition="top">
+      <PFormItem prop="lastName" :pLabel="t('lastName')">
         <PInput
           :value="rowData.lastName"
           disabled
-          pName="lastName"
-        />
+          pName="lastName" />
       </PFormItem>
 
-      <PFormItem
-        prop="firstName"
-        :pLabel="t('firstName')"
-      >
+      <PFormItem prop="firstName" :pLabel="t('firstName')">
         <PInput
           :value="rowData.firstName"
           disabled
-          pName="firstName"
-        />
+          pName="firstName" />
       </PFormItem>
 
-      <PFormItem
-        prop="email"
-        :pLabel="t('email')"
-      >
+      <PFormItem prop="email" :pLabel="t('email')">
         <PInput
           :value="rowData.email"
           disabled
-          pName="email"
-        />
+          pName="email" />
       </PFormItem>
 
-      <PFormItem
-        prop="mobilePhone"
-        :pLabel="t('mobilePhone')"
-      >
+      <PFormItem prop="mobilePhone" :pLabel="t('mobilePhone')">
         <PInput
           v-model="formValues.mobilePhone"
           :pPlaceholder="t('mobilePhone')"
-          pName="mobilePhone"
-        />
+          pName="mobilePhone" />
       </PFormItem>
 
-      <PFormItem
-        prop="landPhone"
-        :pLabel="t('landPhone')"
-      >
+      <PFormItem prop="landPhone" :pLabel="t('landPhone')">
         <PInput
           v-model="formValues.landPhone"
           :pPlaceholder="t('landPhone')"
-          pName="landPhone"
-        />
+          pName="landPhone" />
       </PFormItem>
     </PForm>
 
@@ -98,15 +73,15 @@
           @click="handleReset"
           class="margin-right--4"
           pType="primary"
-          pPlain
-        >
+          data-testid="reset-btn"
+          pPlain>
           {{ t('cancel') }}
         </PButton>
 
         <PButton
           @click="handleSubmit(formRef)"
           pType="primary"
-        >
+          data-testid="submit-btn">
           {{ t('submit') }}
         </PButton>
       </div>
@@ -123,6 +98,7 @@ import {
   PForm,
   PFormItem,
   PICheck,
+  PIExclamationTriangle,
   PInput,
   PNotification,
   PTag,
@@ -130,19 +106,20 @@ import {
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
 import type Props from './types'
+import { updateCollaborator } from '@/services/wallet'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'update-collaborator-details'])
 
 const props = defineProps<Props>()
 
 const drawerModel = computed({
   get: () => props.hasDrawerOpened,
-  set: value => emit('update:modelValue', value),
+  set: (value) => emit('update:modelValue', value),
 })
 
 // Form part
@@ -156,17 +133,32 @@ const handleReset = () => {
   drawerModel.value = false
 }
 
-const handleSubmit = (formEl: FormInstance | undefined) => {
+const handleSubmit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  drawerModel.value = false
-
-  PNotification({
-    message: t('notificationSuccess', { fullName: props.rowData.fullName }),
-    icon: PICheck,
-    showClose: true,
-    customClass: 'success',
-    position: 'bottom-right',
-  })
+  try {
+    const updates = {
+      landphone: formValues.landPhone,
+      mobilephone: formValues.mobilePhone,
+    }
+    const contact = await updateCollaborator(props.rowData.id, updates)
+    drawerModel.value = false
+    PNotification({
+      message: t('notificationSuccess', { fullName: props.rowData.fullName }),
+      icon: PICheck,
+      showClose: true,
+      customClass: 'success',
+      position: 'bottom-right',
+    })
+    emit('update-collaborator-details', contact)
+  } catch {
+    PNotification({
+      message: t('notificationSuccess', { fullName: props.rowData.fullName }),
+      icon: PIExclamationTriangle,
+      showClose: true,
+      customClass: 'error',
+      position: 'bottom-right',
+    })
+  }
 }
 </script>
 
@@ -189,10 +181,10 @@ fr-FR:
   youCanModify: "En tant qu'{administrator}, vous pouvez modifier le nom, le prénom et le mail de votre collaborateur directement dans IBS."
   administrator: 'administrateur'
   lastName: 'Nom'
-  firstName: "Prénom"
+  firstName: 'Prénom'
   email: 'Mail'
-  mobilePhone: "Téléphone mobile"
-  landPhone: "Téléphone fixe"
+  mobilePhone: 'Téléphone mobile'
+  landPhone: 'Téléphone fixe'
   cancel: 'Annuler'
   submit: 'Valider'
   notificationSuccess: 'Les informations de {fullName} ont bien été mises à jour.'

@@ -1,12 +1,12 @@
 import type { PaginationData } from '@/helper/helperTypes'
 
 export interface ICollab {
-  id: string
+  id: number
   fullName: string
   firstName: string
   lastName: string
   email: string
-  landPhone: string
+  landPhone?: string
   mobilePhone: string
   ibsStatus: string
   role: string

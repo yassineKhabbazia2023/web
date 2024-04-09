@@ -11,6 +11,8 @@
         <TableData
           v-if="state.data.length"
           :data="state.data"
+          @update-collaborator-details="handleUpdateCollaborateurDetails"
+          @update-collaborator-role="handleUpdateCollaborateurRole"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -48,7 +50,8 @@ import NoResult from '@/components/NoResult'
 import FormSearch from '@/components/FormSearch'
 import type { IExtendedCollab, IState } from './types'
 import TableData from './components/TableData'
-import mock from './mock.json'
+import { getCollaborators } from '@/services/wallet'
+import type { Contact } from '@/services/contact/contactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -90,42 +93,54 @@ const fetch = async () => {
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
 
   state.isLoading = searchParams && true
-
   try {
-    const {
-      data: {
-        items,
-        currentPage,
-        totalPages,
-        totalItems,
-      },
-    } = await Promise.resolve(mock)
-    // TODO: remove mock & searchParams in isLoading (line 142), when endpoint is done
-    // await commonApi().wallet.get(`collabs?${searchParams}`)
-
-    state.data = items.map<IExtendedCollab>(({
-      firstName,
-      lastName,
-      ...rest
-    }) => ({
-      initials: getInitials(
+    const response = await getCollaborators(
+      state.currentPage,
+      state.limit,
+      null,
+      state.search,
+    )
+    if (response) {
+      state.data = response?.items.map<IExtendedCollab>(({
         firstName,
         lastName,
-      ),
-      firstName,
-      lastName,
-      fullName: `${firstName} ${lastName}`,
-      ...rest,
-    }))
-    state.currentPage = currentPage
-    state.totalPages = totalPages
-    state.totalItems = totalItems
+        office,
+        persona,
+        ...rest
+      }) => ({
+        ...rest,
+        initials: getInitials(
+          firstName,
+          lastName,
+        ),
+        firstName,
+        lastName,
+        fullName: `${firstName} ${lastName}`,
+        ibsStatus: '',
+        role: persona?.name ?? '',
+        office: office ?? '',
+        hasAccess: false,
+      }))
+      state.currentPage = response.currentPage
+      state.totalPages = response.totalPages
+      state.totalItems = response.totalItems
+    }
   } catch (err) {
+    state.data = []
     console.error(err)
   }
   state.isLoading = false
 }
+const handleUpdateCollaborateurDetails = (contact: Contact) => {
+  const index = state.data.findIndex(c => c.id === contact.id)
+  state.data[index].mobilePhone = contact.mobilePhone
+  state.data[index].landPhone = contact.landPhone
+}
 
+const handleUpdateCollaborateurRole = (contact: Contact) => {
+  const index = state.data.findIndex(c => c.id === contact.id)
+  state.data[index].role = contact.persona?.name ?? ''
+}
 onMounted(async () => {
   await fetch()
 

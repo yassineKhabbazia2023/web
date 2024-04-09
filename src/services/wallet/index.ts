@@ -1,6 +1,17 @@
 import type { Collab } from '@/pages/folder/pages/collaborators/types'
-import { type Entity, commonApi } from '@kpmg/common'
+import { handleRequestError } from '@/helper/helper'
 import { API_PREFIXES } from '../config'
+import { type Entity, commonApi } from '@kpmg/common'
+import type { Contact } from '../contact/contactTypes'
+import type { Role, selectedRoleId } from
+  '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabRole/types'
+
+export interface GenericPageResponse<T> {
+    items: T[]
+    currentPage: number
+    totalPages: number
+    totalItems: number
+}
 
 export const getCollaboratorsByIdEntity = async (
   accountId: number,
@@ -38,5 +49,78 @@ export const manageFavoriteEntities = async (
     )
   } catch (error) {
     console.error('Error updating favorite status of the entity :', error)
+  }
+}
+
+export const getCollaborators = async (
+  pageNumber: number = 1,
+  pageSize: number = 10,
+  email: string | null = null,
+  search: string | null | undefined = null,
+): Promise<GenericPageResponse<Contact>> => {
+  try {
+    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/contacts`, {
+      params: {
+        type: 'Collaborator',
+        pageNumber,
+        pageSize,
+        email,
+        search,
+      },
+    })
+
+    return response?.data || { items: [], currentPage: 0, totalPages: 0, totalItems: 0 }
+  } catch (error) {
+    handleRequestError('fetching collabs', error)
+    return { items: [], currentPage: 0, totalPages: 0, totalItems: 0 }
+  }
+}
+
+export const updateCollaborator = async (
+  contactId: number,
+  updates: { [key: string]: string | selectedRoleId | null },
+): Promise<Contact> => {
+  const updateCollaboratorUrl = `${API_PREFIXES.WALLET}/contacts/${contactId}`
+  const requestBody = []
+
+  for (const key in updates) {
+    if (updates[key] !== null && updates[key] !== '') {
+      requestBody.push({
+        op: 'replace',
+        path: `/${key}`,
+        value: updates[key],
+      })
+    }
+  }
+
+  const headers = {
+    'Content-Type': 'application/json-patch+json',
+  }
+  const requestBodyJson = JSON.stringify(requestBody)
+  const response = await commonApi().gateway.patch(updateCollaboratorUrl, requestBodyJson, { headers })
+  return response.data
+}
+
+export const getRoles = async (
+  contactType: string,
+): Promise<Role[]> => {
+  try {
+    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/personas/${contactType}`)
+    return response?.data
+  } catch (error) {
+    handleRequestError('fetching roles', error)
+    return []
+  }
+}
+
+export const getPermissions = async (
+  personasId: number,
+): Promise<[]> => {
+  try {
+    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/permissions/${personasId}`)
+    return response?.data
+  } catch (error) {
+    handleRequestError('fetching parmissions', error)
+    return []
   }
 }

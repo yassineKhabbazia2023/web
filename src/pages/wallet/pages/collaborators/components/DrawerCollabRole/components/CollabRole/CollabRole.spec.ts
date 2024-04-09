@@ -1,23 +1,45 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
-import { beforeEach, afterEach, describe, expect, it } from 'vitest'
+import { flushPromises, mount } from '@vue/test-utils'
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import mock from './mock.json'
 import CollabRole from './'
+import type { CollabRoleProps } from './CollabRoleTypes'
 
+const mockGatewayGet = vi.fn(() => {
+  return Promise.resolve({
+    data: mock.data,
+  })
+})
+
+vi.mock('@kpmg/common', () => ({
+  commonApi: () => ({
+    gateway: {
+      get: mockGatewayGet,
+    },
+  }),
+  commonStore: () => ({
+    $patch: vi.fn(),
+  }),
+}))
 let wrapper: VueWrapper<any>
+
+const defaultProps: CollabRoleProps = {
+  currentRole: 'Partner',
+}
 
 const createWrapper = (): VueWrapper<any> =>
   mount(CollabRole, {
+    props: defaultProps,
     attachTo: document.body,
   })
 
 describe('collabRole', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     const drawerFooter = document.createElement('div')
     drawerFooter.classList.add('el-drawer__footer')
     document.body.appendChild(drawerFooter)
-
     wrapper = createWrapper()
+    await flushPromises()
   })
 
   afterEach(() => {
@@ -49,7 +71,6 @@ describe('collabRole', () => {
 
     const buttonSubmit = document.querySelectorAll('.el-drawer__footer button')[1] as HTMLButtonElement
     buttonSubmit.click()
-
     expect(wrapper.emitted().setSelectedRoleId).toHaveLength(1)
 
     const expectedRoleSelected = mock.data.find(({ selected }) => selected)?.id

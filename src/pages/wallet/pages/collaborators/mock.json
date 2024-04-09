@@ -2,7 +2,7 @@
   "data": {
     "items": [
       {
-        "id": "29655de8-d28e-4888-b636-59c00013be34",
+        "id": 1,
         "firstName": "David",
         "lastName": "Pruitt",
         "email": "davidpruitt@zanilla.com",
@@ -14,7 +14,7 @@
         "hasAccess": true
       },
       {
-        "id": "01c0be10-c62b-43fd-a98c-27a4d473f03b",
+        "id": 2,
         "firstName": "Chandler",
         "lastName": "Kerr",
         "email": "chandlerkerr@zanilla.com",
@@ -26,7 +26,7 @@
         "hasAccess": false
       },
       {
-        "id": "55d2754d-2e14-422c-bb17-413d2ddb1b32",
+        "id": 3,
         "firstName": "Burch",
         "lastName": "Sandoval",
         "email": "burchsandoval@zanilla.com",
@@ -38,7 +38,7 @@
         "hasAccess": false
       },
       {
-        "id": "bda73471-f94d-4580-978b-eb3a7b2f9545",
+        "id": 4,
         "firstName": "Dolly",
         "lastName": "Roberts",
         "email": "dollyroberts@zanilla.com",
@@ -50,7 +50,7 @@
         "hasAccess": true
       },
       {
-        "id": "ee6c83a9-a01d-4e34-b423-33b6035c2213",
+        "id": 5,
         "firstName": "Wilda",
         "lastName": "Garcia",
         "email": "wildagarcia@zanilla.com",
@@ -62,7 +62,7 @@
         "hasAccess": false
       },
       {
-        "id": "453ec8db-ae00-472e-aa81-f14f825d3aa9",
+        "id": 6,
         "firstName": "Jones",
         "lastName": "Gilmore",
         "email": "jonesgilmore@zanilla.com",
@@ -74,7 +74,7 @@
         "hasAccess": false
       },
       {
-        "id": "7edb4825-965e-4ca2-8db3-a5423fc0e9c8",
+        "id": 7,
         "firstName": "Cotton",
         "lastName": "Sharpe",
         "email": "cottonsharpe@zanilla.com",
@@ -86,7 +86,7 @@
         "hasAccess": false
       },
       {
-        "id": "86bccb09-8c99-42e8-b5f0-8e28f5496ce2",
+        "id": 8,
         "firstName": "Ashlee",
         "lastName": "Hawkins",
         "email": "ashleehawkins@zanilla.com",
@@ -98,7 +98,7 @@
         "hasAccess": true
       },
       {
-        "id": "c96e49b0-72ff-4341-bdcb-65ef34baaaca",
+        "id": 9,
         "firstName": "Mullins",
         "lastName": "Morrow",
         "email": "mullinsmorrow@zanilla.com",
@@ -110,7 +110,7 @@
         "hasAccess": true
       },
       {
-        "id": "1e4e4aed-786f-4384-94ac-fae61e63f845",
+        "id": 10,
         "firstName": "Hartman",
         "lastName": "Stanton",
         "email": "hartmanstanton@zanilla.com",
@@ -122,7 +122,7 @@
         "hasAccess": true
       },
       {
-        "id": "f54ea85a-a8e2-4922-a36b-d769106513ad",
+        "id": 11,
         "firstName": "Rutledge",
         "lastName": "Horton",
         "email": "rutledgehorton@zanilla.com",
@@ -134,7 +134,7 @@
         "hasAccess": false
       },
       {
-        "id": "c5ee35fb-db32-4f20-90b1-a31e5e55210a",
+        "id": 12,
         "firstName": "Herminia",
         "lastName": "Randall",
         "email": "herminiarandall@zanilla.com",
@@ -146,7 +146,7 @@
         "hasAccess": false
       },
       {
-        "id": "0b76716e-874d-4aa4-9cf9-c3ae9ed873e2",
+        "id": 13,
         "firstName": "Janette",
         "lastName": "Barker",
         "email": "janettebarker@zanilla.com",
@@ -158,7 +158,7 @@
         "hasAccess": true
       },
       {
-        "id": "045ed7d2-5bce-498a-8718-43d129cec9e6",
+        "id": 14,
         "firstName": "Bonnie",
         "lastName": "Wood",
         "email": "bonniewood@zanilla.com",
@@ -170,7 +170,7 @@
         "hasAccess": true
       },
       {
-        "id": "a2ba9fcb-89f1-4980-8de1-c61227bfedd8",
+        "id": 15,
         "firstName": "Hobbs",
         "lastName": "Villarreal",
         "email": "hobbsvillarreal@zanilla.com",
