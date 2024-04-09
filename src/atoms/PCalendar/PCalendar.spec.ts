@@ -8,7 +8,7 @@ import PCalendarDateCell from '@/atoms/PCalendarDateCell'
 
 const defaultProps: PCalendarProps = {
   pItemsGroupedByDate: itemsGroupedByDate,
-  pInitialDate: new Date('2024-03-07'),
+  modelValue: new Date('2024-03-07'),
 }
 
 const createWrapper = (props: any = defaultProps): VueWrapper =>

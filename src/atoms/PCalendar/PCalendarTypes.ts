@@ -4,7 +4,7 @@ export interface CalendarItemsGroupedByDate {
   items: PTaskItemProps[]
 }
 export interface PCalendarProps {
-  pInitialDate?: Date
+  modelValue?: Date
   pItemsGroupedByDate: CalendarItemsGroupedByDate[]
   // This should start with monday and end with sunday
   // This means you might include days from the previous and next month
