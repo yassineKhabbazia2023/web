@@ -3,6 +3,7 @@ import type { SelectedProduct } from '../OffersDrawerTypes'
 import type { SubscriptionOfferServices } from '../../SubscriptionOffers/SubscriptionOffersTypes'
 import type { Note, PostSubscriptionRequest } from '@/services/subscription'
 import type { Contact } from '@/services/contact/contactTypes'
+import type { ClientContact } from '../../PrincipalContact/PrincipalContactTypes'
 
 export function getSelectedProductIndex(
   selectedProducts: SelectedProduct[],
@@ -83,6 +84,7 @@ export function getPostSubscriptionRequest(
   accountId: number,
   userEmail: string | undefined,
   collaborators: Contact[],
+  clients: ClientContact[] | undefined,
   currentSubscriptionOffer: SubscriptionOfferServices | undefined,
   selectedProducts: SelectedProduct[],
   notes: Note[],
@@ -94,7 +96,9 @@ export function getPostSubscriptionRequest(
   const productConfigurations = selectedProducts.map(
     ({ productConfigurationId }) => productConfigurationId,
   )
-  const contacts = collaborators.map(({ id }) => id)
+  const collaboratorsIds = collaborators.map(({ id }) => id)
+  const clientsIds = clients?.map(({ contactId }) => contactId) ?? []
+  const contacts = [...clientsIds, ...collaboratorsIds]
 
   return {
     accountId,

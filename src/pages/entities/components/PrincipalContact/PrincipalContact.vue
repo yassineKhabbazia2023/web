@@ -2,7 +2,7 @@
   <PUserCard
     :pTitle="fullName"
     :pTag="contactTag"
-    :pSubtitle="principalContact.contactEmail"
+    :pSubtitle="principalContact.email"
     :pDescription="contactDescription"
     pAssetLeft="Image"
     pAssetContent="user-male"

@@ -11,7 +11,7 @@ import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
-import type { User } from '../PrincipalContact/PrincipalContactTypes'
+import type { ClientContact } from '../PrincipalContact/PrincipalContactTypes'
 import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as subscriptionService from '@/services/subscription/subscriptionService'
@@ -24,7 +24,7 @@ import type { PatchValue } from '@/services/PatchRecordService'
 import type { Contact } from '@/services/contact/contactTypes'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
-const principalContacts: User[] = getMockedPrincipalContacts()
+const principalContacts: ClientContact[] = getMockedPrincipalContacts()
 const collaborators: Contact[] = getMockedCollaborators()
 const currentUser: UserInfo = getMockedUser()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
@@ -211,7 +211,7 @@ describe('offersDrawer', () => {
       const expectedArgument: PostSubscriptionRequest = {
         accountId,
         applicant: 'john@example.com',
-        contacts: [],
+        contacts: [1, 2],
         offerId: 1,
         notes,
         productConfigurations: [1, 2, 3, 4],

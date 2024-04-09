@@ -153,7 +153,7 @@ import {
   getInitialSelectedProducts,
   getPostSubscriptionRequest,
 } from './utils/OffersDrawerUtils'
-import type { User } from '../PrincipalContact/PrincipalContactTypes'
+import type { ClientContact } from '../PrincipalContact/PrincipalContactTypes'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
@@ -200,7 +200,7 @@ const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const collaborators = ref<Contact[]>([])
-const principalContacts = ref<User[] | undefined>()
+const principalContacts = ref<ClientContact[]>()
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
 const confirmationModalVisible = ref<boolean>(false)
@@ -304,6 +304,7 @@ async function saveOffer() {
     props.accountId,
     props.currentUser?.email,
     collaborators.value,
+    principalContacts.value,
     currentSubscriptionOffer.value,
     selectedProducts.value,
     notes.value,

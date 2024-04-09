@@ -11,6 +11,7 @@ import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/Off
 import { getMockedStepNotes } from '../../StepNote/StepNotesMock'
 import type { PostSubscriptionRequest } from '@/services/subscription'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
+import { getMockedPrincipalContacts } from '../../PrincipalContact/PrincipalContactMocks'
 
 const notes = getMockedStepNotes()
 describe('offersDrawerUtils', () => {
@@ -92,6 +93,7 @@ describe('offersDrawerUtils', () => {
     const accountId = 5
     const userEmail = 'user@email.com'
     const collaborators = getMockedCollaborators()
+    const clients = getMockedPrincipalContacts()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
     const selectedProducts = getInitialSelectedProducts(
       currentSubscriptionOffer,
@@ -102,11 +104,14 @@ describe('offersDrawerUtils', () => {
         accountId,
         userEmail,
         collaborators,
+        clients,
         currentSubscriptionOffer,
         selectedProducts,
         notes,
       )
-      const contacts = collaborators.map(({ id }) => id)
+      const collaboratorsIds = collaborators.map(({ id }) => id)
+      const clientsIds = clients.map(({ contactId }) => contactId)
+      const contacts = [...clientsIds, ...collaboratorsIds]
 
       const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
         accountId,
@@ -125,6 +130,7 @@ describe('offersDrawerUtils', () => {
         accountId,
         userEmail,
         collaborators,
+        clients,
         undefined,
         selectedProducts,
         notes,
