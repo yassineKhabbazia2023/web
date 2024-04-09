@@ -9,8 +9,10 @@ const mockedPutRequests = vi.fn(() => Promise.resolve())
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     offer: {
-      get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       put: mockedPutRequests,
+    },
+    gateway: {
+      get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
     },
   }),
   commonStore: () => ({
