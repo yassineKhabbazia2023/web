@@ -14,6 +14,10 @@ const defaultProps: PaginationProps = {
   pPageSize: 100,
 }
 
+const paginationSelectId = 'pagination-select'
+const paginationPagesId = 'pagination-pages'
+const paginationCounterId = 'pagination-counter'
+
 const createWrapper = (props = defaultProps) =>
   mount(PPagination, {
     props,
@@ -68,6 +72,30 @@ describe('pPagination', () => {
       await wrapper.vm.$nextTick()
       expect(wrapper.emitted('on-page-range-changed')).toHaveLength(1)
       expect(wrapper.emitted('on-page-range-changed')).toStrictEqual([[300]])
+    })
+    it('should have root name in attribute data-testid', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pTestIdRoot: 'wallet',
+      })
+      const select = wrapper.find('.p-pagination__select .el-select')
+      const pagination = wrapper.find('.p-pagination .el-pagination')
+      const counter = wrapper.find('.p-pagination__total-page-counter')
+
+      expect(select.attributes('data-testid')).toBe(`wallet-${paginationSelectId}`)
+      expect(pagination.attributes('data-testid')).toBe(`wallet-${paginationPagesId}`)
+      expect(counter.attributes('data-testid')).toBe(`wallet-${paginationCounterId}`)
+    })
+    it('should have default identifier in attribute data-testid', () => {
+      const wrapper = createWrapper()
+
+      const select = wrapper.find('.p-pagination__select .el-select')
+      const pagination = wrapper.find('.p-pagination .el-pagination')
+      const counter = wrapper.find('.p-pagination__total-page-counter')
+
+      expect(select.attributes('data-testid')).toBe(`ppagination-${paginationSelectId}`)
+      expect(pagination.attributes('data-testid')).toBe(`ppagination-${paginationPagesId}`)
+      expect(counter.attributes('data-testid')).toBe(`ppagination-${paginationCounterId}`)
     })
   })
 })

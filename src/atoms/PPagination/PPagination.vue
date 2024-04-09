@@ -1,7 +1,11 @@
 <template>
   <div class="p-pagination">
     <div class="p-pagination__select">
-      <PSelect v-model="selectedRange" placement="top">
+      <PSelect
+        v-model="selectedRange"
+        placement="top"
+        :data-testid="`${pTestIdRoot}-pagination-select`"
+      >
         <POptionGroup :label="pPageSizeSelectorGroupLabel">
           <POption
             v-for="pageSize in pPageSizes"
@@ -21,9 +25,14 @@
       :pageSizes="pPageSizes"
       :total="pTotal"
       layout="prev, pager, next"
+      :data-testid="`${pTestIdRoot}-pagination-pages`"
     />
 
-    <div v-if="pShowTotalPageCounter" class="p-pagination__total-page-counter">
+    <div
+      v-if="pShowTotalPageCounter"
+      class="p-pagination__total-page-counter"
+      :data-testid="`${pTestIdRoot}-pagination-counter`"
+    >
       <slot />
     </div>
   </div>
@@ -41,6 +50,7 @@ import type { PaginationProps } from './PPaginationTypes'
 
 const props = withDefaults(defineProps<PaginationProps>(), {
   pBackground: false,
+  pTestIdRoot: 'ppagination',
 })
 const emit = defineEmits(['on-page-range-changed', 'update:pCurrentPage', 'update:pPageSize'])
 
