@@ -1,7 +1,6 @@
 <template>
   <PButton
     @click="handleLogout"
-    class="margin-right--4"
     pType="primary"
     pPlain
   >

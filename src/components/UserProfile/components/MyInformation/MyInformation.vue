@@ -3,7 +3,7 @@
     <div
       class="
         radius--1
-        background--persian-50
+        bg--persian-50
         padding-y--6
         margin-bottom--6
       "
@@ -11,7 +11,7 @@
       <PImage
         pType="portrait"
         pName="user-male"
-        class="image-portrait"
+        class="myInformation-image-portrait"
       />
     </div>
 
@@ -74,7 +74,7 @@
         <p
           class="
             padding-top--2
-            color-gray--300
+            text-color--neutral-gray-300
             font-small
           "
         >
@@ -116,7 +116,7 @@ import {
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
 import type { FormValues, User } from './MyInformationTypes'
-import LogoutButton from './../LogoutButton'
+import LogoutButton from '../LogoutButton'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -221,25 +221,12 @@ onMounted(async () => {
 <style lang="scss" scoped>
 $gap: 12px;
 
-.card {
-  border: 1px solid var(--el-border-color);
-  max-width: 528px;
-}
-
-.background--persian-50 {
-  background: var(--el-color-persian-50);
-}
-
-.image-portrait {
+.myInformation-image-portrait {
   height: 95px;
 }
 
 .half-width {
   width: calc(50% - $gap/2);
-}
-
-.color-gray--300 {
-  color: var(--el-color-neutral-gray-300);
 }
 </style>
 

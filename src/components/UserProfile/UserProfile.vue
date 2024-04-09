@@ -4,7 +4,7 @@
     v-model="drawerModel"
     :pTitle="t('profileSettings')"
     pDirection="ttb"
-    class="userProfileDrawer"
+    class="user-profile-drawer"
   >
     <PTabs
       v-model="activeTab"
@@ -12,12 +12,12 @@
     >
       <PTabPane
         v-for="tab in TABS"
-        :pLabel="tab.trad"
-        :name="tab.name"
-        :key="tab.name"
+        :pLabel="tab.label"
+        :name="tab.key"
+        :key="tab.key"
       />
       <div class="margin-top--6">
-        <myInformation v-if="activeTab === TABS[0].name" />
+        <MyInformation v-if="activeTab === TABS[0].key" />
       </div>
     </PTabs>
   </PDrawer>
@@ -32,7 +32,7 @@ import {
   PTabs,
 } from '@kpmg/styleguide'
 import type UserProfileProps from './UserProfileTypes'
-import myInformation from './components/MyInformation'
+import MyInformation from './components/MyInformation'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -50,20 +50,20 @@ const drawerModel = computed({
 
 const TABS = [
   {
-    name: 'myInformation',
-    trad: t('myInformation'),
+    key: 'myInformation',
+    label: t('myInformation'),
   },
   {
-    name: 'myAccessRights',
-    trad: t('myAccessRights'),
+    key: 'myAccessRights',
+    label: t('myAccessRights'),
   },
 ]
-const activeTab = ref(TABS[0].name)
+const activeTab = ref(TABS[0].key)
 </script>
 
 <!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style type="scss">
-.userProfileDrawer.ttb {
+.user-profile-drawer.ttb {
   height: 770px !important;
   width: 580px;
   right: 24px;
