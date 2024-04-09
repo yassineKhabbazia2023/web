@@ -27,8 +27,11 @@ vi.mock('@kpmg/common', () => ({
   },
 }))
 
-const createWrapper = (): VueWrapper<any> =>
+const createWrapper = (showCalendar: boolean): VueWrapper<any> =>
   mount(Header, {
+    props: {
+      showCalendar,
+    },
     global: {
       plugins: [router, createTestingPinia()],
     },
@@ -38,7 +41,7 @@ describe('header', () => {
   let wrapper: VueWrapper<any>
   beforeEach(() => {
     setActivePinia(pinia)
-    wrapper = createWrapper()
+    wrapper = createWrapper(false)
   })
 
   it('should display the header section correctly', () => {
