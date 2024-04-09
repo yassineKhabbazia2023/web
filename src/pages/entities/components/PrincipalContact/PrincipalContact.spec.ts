@@ -32,7 +32,7 @@ describe('principalContact', () => {
       }
 
       expect(principalContactElements.fullName.text()).toBe(fullName)
-      expect(principalContactElements.email.text()).toBe(principalContact.contactEmail)
+      expect(principalContactElements.email.text()).toBe(principalContact.email)
       expect(principalContactElements.description.text()).toBe(
         contactDescription,
       )

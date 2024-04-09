@@ -1,11 +1,14 @@
-export interface User {
+export interface ClientContact {
   contactId: number
-  userId: number
+  globalContactId?: string
   firstName: string
   lastName: string
-  contactEmail: string
+  email: string
+  creationDate?: string
+  personaName?: string
+  status?: string
 }
 
 export type PrincipalContactProps = {
-  principalContact: User
+  principalContact: ClientContact
 }

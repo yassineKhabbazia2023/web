@@ -10,14 +10,14 @@ import {
   getMockedSubscriptionOffersServices,
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContacts } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
-import type { User } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { API_PREFIXES } from '../config'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 
-const mockedPrincipalContacts: User[] = getMockedPrincipalContacts()
+const mockedPrincipalContacts: ClientContact[] = getMockedPrincipalContacts()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
