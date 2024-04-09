@@ -45,7 +45,7 @@ describe('home', () => {
   })
 
   it('can display the user profile drawer', async () => {
-    const getUserProfileDrawer = () => document.querySelector('.userProfileDrawer') as HTMLElement
+    const getUserProfileDrawer = () => document.querySelector('.user-profile-drawer') as HTMLElement
     expect(getUserProfileDrawer()).toBeFalsy()
 
     const userAvatar = wrapper.find('.header-section__user-avatar')
