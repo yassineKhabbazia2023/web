@@ -13,10 +13,10 @@ const subscriptionPostMock = vi.fn()
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     offer: {
-      get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       put: subscriptionPutMock,
     },
     gateway: {
+      get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       post: subscriptionPostMock,
     },
   }),

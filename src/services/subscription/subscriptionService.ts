@@ -8,7 +8,7 @@ import type {
 
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]|undefined> {
   try {
-    const response = await commonApi().offer.get('subscription?status=pending')
+    const response = await commonApi().gateway.get(`${API_PREFIXES.OFFER}/subscription?status=pending`)
 
     return response.data
   } catch (error) {
