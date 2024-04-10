@@ -40,12 +40,13 @@ describe('schedule item', () => {
     const itemData: DeadlinesByDate = notCompletelyDoneDeadlinesByDateMock[0]
 
     const wrapper = createWrapper(itemData)
-    expect(wrapper.find('.p-schedule-list-item__date').text())
+    expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
       .toBe(dateToLocaleFormat(itemData.date))
 
+    const firstDeadLineTemplate = itemData.deadlines[0].template
+    const expectedText = `${firstDeadLineTemplate.typeShortCollaborator} (${firstDeadLineTemplate.typeLong})`
     expect(wrapper.find('.p-schedule-deadline__content-label').text())
-      // eslint-disable-next-line max-len
-      .toBe(`${itemData.deadlines[0].template.typeShortCollaborator} (${itemData.deadlines[0].template.typeLong})`)
+      .toBe(expectedText)
 
     expect(wrapper.find('.p-schedule-deadline__content-progress').text())
       .toBe('1/2 files done')
@@ -58,12 +59,13 @@ describe('schedule item', () => {
     const itemData: DeadlinesByDate = doneDeadlinesByDateMock[0]
 
     const wrapper = createWrapper(itemData)
-    expect(wrapper.find('.p-schedule-list-item__date').text())
+    expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
       .toBe(dateToLocaleFormat(itemData.date))
 
+    const firstDeadLineTemplate = itemData.deadlines[0].template
+    const expectedText = `${firstDeadLineTemplate.typeShortCollaborator} (${firstDeadLineTemplate.typeLong})`
     expect(wrapper.find('.p-schedule-deadline__content-label').text())
-      // eslint-disable-next-line max-len
-      .toBe(`${itemData.deadlines[0].template.typeShortCollaborator} (${itemData.deadlines[0].template.typeLong})`)
+      .toBe(expectedText)
 
     expect(wrapper.find('.p-schedule-deadline__content-progress').text())
       .toBe(itemData.deadlines[0].accountList[0].name)

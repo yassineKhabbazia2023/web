@@ -1,9 +1,12 @@
-<!-- eslint-disable max-len -->
 <template>
   <div
-    class="p-schedule-list-item flex flex--align-items-flex-start flex--align-self-stretch flex--gap-2 padding-y--4 padding-x--6">
+    class="
+      p-schedule-list-item flex flex--align-items-flex-start
+      flex--align-self-stretch flex--gap-2 padding-y--4 padding-x--6
+    ">
     <div
       :class="dateColor"
+      data-testid="schedule-list-item-date"
     >
       {{ formattedDate }}
     </div>
