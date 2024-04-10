@@ -2,15 +2,16 @@
   <PDrawer
     class="delegation-drawer"
     v-model="isDelegationDrawerOpened"
-    @close-drawer-button="isDelegationDrawerOpened = false"
+    @close-drawer-button="closeAndResetDrawer"
+    @close="closeAndResetDrawer"
   >
     <template #header-prefix>
       <h3 class="delegation-drawer__header">
         <template v-if="flowType === DelegationFlowType.FULL">
-          {{  t('walletDelegation') }}
+          {{ t('walletDelegation') }}
         </template>
         <template v-else>
-          {{  t('folderDelegation', selectedFolders.length) }}
+          {{ t('folderDelegation', selectedFolders.length) }}
         </template>
       </h3>
     </template>
@@ -150,8 +151,8 @@ function formatCollaboratorsDetailsForDelegateSummary() {
     ))
 }
 
-const formatDelegateSummaryForGtwDelegationRequest = (delgationDetails: DelegationDetails[]) => {
-  return delgationDetails
+const formatDelegateSummaryForGtwDelegationRequest = (delegationDetails: DelegationDetails[]) => {
+  return delegationDetails
     .map(({ delegate }) => (
       {
         delegateeId: delegate.id,
@@ -207,6 +208,7 @@ const displayFailureNotification = () => {
 }
 
 const closeAndResetDrawer = () => {
+  activeStep.value = 0
   emit('update:modelValue', false)
 }
 </script>
