@@ -1,5 +1,9 @@
 <template>
-  <PDrawer class="delegation-drawer" v-model="isDelegationDrawerOpened">
+  <PDrawer
+    class="delegation-drawer"
+    v-model="isDelegationDrawerOpened"
+    @close-drawer-button="isDelegationDrawerOpened = false"
+  >
     <template #header-prefix>
       <h3 class="delegation-drawer__header">
         <template v-if="flowType === DelegationFlowType.FULL">
@@ -95,7 +99,11 @@ const previousButtonLabel = computed(() => activeStep.value ? t('previousButtonL
 const nextButtonLabel = computed(() => activeStep.value === 1 ? t('submitButtonLabel') : t('nextButtonLabel'))
 
 function handlePreviousClick() {
-  activeStep.value--
+  if (!activeStep.value) {
+    isDelegationDrawerOpened.value = false
+  } else {
+    activeStep.value--
+  }
 }
 
 const userStore = commonStore()
@@ -206,7 +214,7 @@ const closeAndResetDrawer = () => {
 
 <i18n lang="yaml">
   en-US:
-    walletDelegation: 'Delegate a wallet'
+    walletDelegation: 'Delegate my wallet'
     folderDelegation: 'Delegate a folder | Delegate multiple folders'
     addColaborator: 'Add a colaborator'
     automaticDelegation: 'Automatic delegation'
@@ -217,7 +225,7 @@ const closeAndResetDrawer = () => {
     successNotificationMessage: 'Votre portefeuille a été délégué avec succès.'
     failureNotificationMessage: 'Votre portefeuille n’a pas été délégué suite à une erreur technique.'
   fr-FR:
-    walletDelegation: 'Déléguer un portefeuille'
+    walletDelegation: 'Déléguer mon portefeuille'
     folderDelegation: 'Déléguer un dossier | Déléguer plusieurs dossiers'
     addColaborator: 'Ajout des collaborateurs'
     automaticDelegation: 'Délégation automatique'
