@@ -46,6 +46,7 @@
       <NextPreviousButtons
         :previousLabel="previousButtonLabel"
         :nextLabel="nextButtonLabel"
+        :isNextButtonDisabled="!selectedCollaborators.length"
         @click-previous="handlePreviousClick"
         @click-next="handleNextClick"
       />
@@ -58,9 +59,7 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PICheck, PNotification, PIX } from '@kpmg/styleguide'
 import { DelegationFlowType } from './DelegationDrawerTypes'
-import type {
-  DelegationDrawerProps,
-} from './DelegationDrawerTypes'
+import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 
 import NextPreviousButtons from '@/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
