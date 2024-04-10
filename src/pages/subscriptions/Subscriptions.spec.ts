@@ -16,6 +16,11 @@ vi.mock('@kpmg/common', () => ({
       put: subscriptionPutMock,
     },
   }),
+  commonStore: () => ({
+    user: {
+      email: 'test@test.com',
+    },
+  }),
 }))
 
 describe('subscriptions', () => {
