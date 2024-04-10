@@ -6,6 +6,7 @@
       showOverflowTooltip
       pStripe
       tableLayout="fixed"
+      @sort-change="handleSortChange"
     >
       <PTableColumn
         :pLabel="t('nameOfCollaborator')"
@@ -137,12 +138,14 @@ import { MENU_ACTIONS_NAME } from './constants'
 import DrawerCollabDetails from './../DrawerCollabDetails'
 import DrawerCollabRole from './../DrawerCollabRole'
 import type { Contact } from '@/services/contact/contactTypes'
+import { returnSortQueryField } from '@/helper'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-const emit = defineEmits(['update-collaborator-details', 'update-collaborator-role'])
+
+const emit = defineEmits(['update-collaborator-details', 'update-collaborator-role', 'on-sort-change'])
 const props = defineProps<Props>()
 
 const access = props.data.map(({ id, hasAccess }: { id: number, hasAccess: boolean }) => ({
@@ -194,6 +197,13 @@ const handleToolboxItemClick = (action: string, row: any) => {
   if (action === manageAccessRights) {
     state.hasDrawerOpened.collabRole = true
   }
+}
+
+const handleSortChange = (data:any) => {
+  const columnLabel = data.prop
+  const order = data.order
+  const sortQueryField = returnSortQueryField(columnLabel, order)
+  emit('on-sort-change', sortQueryField)
 }
 </script>
 

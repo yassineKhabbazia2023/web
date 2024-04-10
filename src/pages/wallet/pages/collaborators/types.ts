@@ -22,4 +22,5 @@ export interface IState extends PaginationData<IExtendedCollab> {
   totalPages: number | undefined
   search: string | undefined
   isLoading: boolean | undefined
+  sort: string | undefined
 }

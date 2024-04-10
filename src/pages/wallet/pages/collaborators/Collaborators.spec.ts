@@ -86,4 +86,12 @@ describe('collaborators', () => {
     expect(collaboratorIndex).not.toBe(-1)
     expect(wrapper.vm.state.data[collaboratorIndex].role).toBe(mock.items[0].persona.name)
   })
+
+  it('should fetch documents upon sort change', async () => {
+    const tableWrapper = wrapper.findComponent(TableData)
+
+    await tableWrapper.vm.$emit('on-sort-change', '+email')
+
+    expect(mockGatewayGet).toHaveBeenCalledTimes(2)
+  })
 })

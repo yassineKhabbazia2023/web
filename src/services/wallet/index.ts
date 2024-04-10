@@ -57,17 +57,22 @@ export const getCollaborators = async (
   pageSize: number = 10,
   email: string | null = null,
   search: string | null | undefined = null,
+  sort: string | undefined = undefined,
 ): Promise<GenericPageResponse<Contact>> => {
   try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/contacts`, {
-      params: {
-        type: 'Collaborator',
-        pageNumber,
-        pageSize,
-        email,
-        search,
+    const response = await commonApi().gateway.get(
+      `${API_PREFIXES.WALLET}/contacts`,
+      {
+        params: {
+          type: 'Collaborator',
+          pageNumber,
+          pageSize,
+          email,
+          search,
+          sort,
+        },
       },
-    })
+    )
 
     return response?.data || { items: [], currentPage: 0, totalPages: 0, totalItems: 0 }
   } catch (error) {

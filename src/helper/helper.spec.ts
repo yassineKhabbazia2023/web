@@ -109,6 +109,8 @@ describe('getPaginationLabel', () => {
       ['persona', 'descending', '-persona'],
       ['createdAt', 'ascending', '+created'],
       ['createdAt', 'descending', '-created'],
+      ['role', 'ascending', '+persona'],
+      ['role', 'descending', '-persona'],
     ]
 
     it.each(testCases)(

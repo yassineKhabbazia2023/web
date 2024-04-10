@@ -13,6 +13,7 @@
           :data="state.data"
           @update-collaborator-details="handleUpdateCollaborateurDetails"
           @update-collaborator-role="handleUpdateCollaborateurRole"
+          @on-sort-change="handleSortChange"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -66,6 +67,7 @@ const state: IState = reactive({
   totalItems: undefined,
   search: undefined,
   isLoading: undefined,
+  sort: undefined,
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {
@@ -86,6 +88,7 @@ const getQueryParams = () => ({
   page: state.currentPage,
   limit: state.limit,
   search: state.search,
+  sort: state.sort,
 })
 
 const fetch = async () => {
@@ -99,6 +102,7 @@ const fetch = async () => {
       state.limit,
       null,
       state.search,
+      state.sort,
     )
     if (response) {
       state.data = response?.items.map<IExtendedCollab>(({
@@ -141,6 +145,10 @@ const handleUpdateCollaborateurRole = (contact: Contact) => {
   const index = state.data.findIndex(c => c.id === contact.id)
   state.data[index].role = contact.persona?.name ?? ''
 }
+
+const handleSortChange = (sortQueryField:string) => {
+  state.sort = sortQueryField
+}
 onMounted(async () => {
   await fetch()
 
@@ -148,6 +156,7 @@ onMounted(async () => {
     state.currentPage,
     state.limit,
     state.search,
+    state.sort,
   ], async () => {
     await fetch()
   })

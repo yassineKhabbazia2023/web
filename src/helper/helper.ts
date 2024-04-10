@@ -73,5 +73,7 @@ export const returnSortQueryField = (columnProp: string, order: string | null) =
 
   if (columnProp === 'persona' && order !== null) sortValue = 'persona'
 
+  if (columnProp === 'role' && order !== null) sortValue = 'persona'
+
   return `${sortPrefix}${sortValue}`
 }
