@@ -1,7 +1,7 @@
 <template>
   <div
     class="p-schedule-action-bar flex flex--justify-content-space-between
-    flex--align-items-center padding-x--6 margin-bottom--4 margin-top--1 "
+      flex--align-items-center padding-x--6"
   >
     <MonthSelection
       :activeDate="activeDate"
