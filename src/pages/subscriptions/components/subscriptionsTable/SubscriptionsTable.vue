@@ -106,6 +106,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import {
   PButton,
   PDoubleText,
@@ -118,6 +119,7 @@ import {
   PIThreeDots,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
+import { commonStore } from '@kpmg/common'
 import {
   type SubscriptionRequest,
   type SubscriptionAccount,
@@ -140,8 +142,9 @@ const emit = defineEmits<{
   validate: [string]
 }>()
 
+const { user } = storeToRefs(commonStore())
 const requests = ref<SubscriptionRequest[]>([])
-const clickedRow = ref('')
+const clickedRow = ref<number>()
 const isLoading = ref(false)
 const requestMenu: PToolboxItemProps[] = [
   {
@@ -166,11 +169,11 @@ const formatStatus = (status: string) => {
   return status === SubscriptionStatusCode.PENDING ? t('toValidate') : status
 }
 
-const validateSubscription = async (subscriptionId: string) => {
+const validateSubscription = async (subscriptionId: number) => {
   if (subscriptionId) {
     isLoading.value = true
     clickedRow.value = subscriptionId
-    await validateSubscriptionRequest(subscriptionId)
+    await validateSubscriptionRequest(subscriptionId, user.value?.email)
     await fetchSubscriptions()
     isLoading.value = false
   }

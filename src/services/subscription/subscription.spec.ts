@@ -6,18 +6,17 @@ import {
   validateSubscriptionRequest,
   createSubscriptionRequest,
 } from '.'
+import { API_PREFIXES } from '../config'
 
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    offer: {
-      put: subscriptionPutMock,
-    },
     gateway: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       post: subscriptionPostMock,
+      put: subscriptionPutMock,
     },
   }),
 }))
@@ -32,10 +31,12 @@ describe('subscriptionService', () => {
   })
   describe('validateSubscriptionRequest', () => {
     it('should call subscription.put()', async () => {
-      const subscriptionId = '1'
-      await validateSubscriptionRequest(subscriptionId)
-
-      expect(subscriptionPutMock).toHaveBeenNthCalledWith(1, 'subscription/1')
+      const subscriptionId = 1
+      await validateSubscriptionRequest(subscriptionId, 'test@test.com')
+      expect(subscriptionPutMock).toHaveBeenNthCalledWith(
+        1,
+        `${API_PREFIXES.OFFER}/subscription/1?validator=test@test.com`,
+      )
     })
   })
   describe('createSubscriptionRequest', () => {
