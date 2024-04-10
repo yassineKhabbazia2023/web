@@ -35,6 +35,9 @@ const createWrapper = (): VueWrapper<any> =>
     attachTo: document.body,
     global: {
       plugins: [pinia, router],
+      stubs: {
+        Schedule: { template: '<div data-testid="schedule-stub">' },
+      },
     },
   })
 

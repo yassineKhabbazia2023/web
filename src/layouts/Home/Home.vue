@@ -1,8 +1,10 @@
 <template>
   <div class="common-layout">
+    <ScheduleDrawer v-model="showCalendar" />
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
         <Header
+          v-model:showCalendar="showCalendar"
           @show-user-profile-drawer="hasUserProfileDrawerOpened = true"
         />
       </PCHeader>
@@ -40,11 +42,13 @@ import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import UserProfile from '@/components/UserProfile'
+import ScheduleDrawer from '@/components/ScheduleDrawer'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+const showCalendar = ref(false)
 
 const headerMenu = [
   {

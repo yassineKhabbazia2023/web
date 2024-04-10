@@ -14,19 +14,37 @@
       pName="pulse-color"
       pFit="fill"
     />
-
-    <div
-      @click="$emit('showUserProfileDrawer')"
-      class="header-section__user-avatar cursor-pointer"
-    >
-      <PAvatar
-        pShape="circle"
-        pType="small"
-        pColor="persian-gradient"
-        data-ut="user-initials"
+    <div class="flex">
+      <PButton
+        class="margin-right--4"
+        pType="white"
+        pSize="small"
+        pIconOnly
+        pPlain
+        :pRound="false"
+        :pDisabled="false"
+        :pLoading="false"
+        @click="emit('update:showCalendar', !showCalendar)"
       >
-        {{ userInitials }}
-      </PAvatar>
+        <PIcon>
+          <PICalendarEvent v-if="!showCalendar" />
+          <PIArrowUp v-if="showCalendar" />
+        </PIcon>
+      </PButton>
+
+      <div
+        @click="emit('showUserProfileDrawer')"
+        class="header-section__user-avatar cursor-pointer"
+      >
+        <PAvatar
+          pShape="circle"
+          pType="small"
+          pColor="persian-gradient"
+          data-ut="user-initials"
+        >
+          {{ userInitials }}
+        </PAvatar>
+      </div>
     </div>
   </div>
 </template>
@@ -36,10 +54,17 @@ import {
   commonStore as useStore,
   dataProvider as useDataProvider,
 } from '@kpmg/common'
-import { PAvatar, PImage } from '@kpmg/styleguide'
+import { PAvatar, PImage, PButton, PIcon, PICalendarEvent, PIArrowUp } from '@kpmg/styleguide'
+import type { HeaderProps } from './HeaderTypes'
+
+defineProps<HeaderProps>()
+
+const emit = defineEmits<{
+  'update:showCalendar': [boolean]
+  'showUserProfileDrawer': []
+}>()
 
 const store = useStore()
-defineEmits(['showUserProfileDrawer'])
 
 const { fetchUserData } = useDataProvider()
 const firstName = ref(store.user?.firstName || '')
