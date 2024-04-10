@@ -3,5 +3,6 @@ import type { Options }
 
 export type FormProps = {
   checkValidity?: boolean
+  defaultCreateDate?: Date
   recipientsCollection: Options[]
 }
