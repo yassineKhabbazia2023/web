@@ -12,6 +12,7 @@
       pType="primary"
       @click="emit('clickNext')"
       data-testid="nextButton"
+      :pDisabled="props.isNextButtonDisabled"
     >
       {{ nextLabel }}
     </PButton>
@@ -22,7 +23,9 @@
 import type { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
 import { PButton } from '@kpmg/styleguide'
 
-defineProps<NextPreviousButtonsProps>()
+const props = withDefaults(defineProps<NextPreviousButtonsProps>(), {
+  isNextButtonDisabled: false,
+})
 
 const emit = defineEmits<{
   clickPrevious: []
