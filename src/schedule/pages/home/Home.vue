@@ -3,6 +3,7 @@
     <div class="p-schedule__view overflow-hidden padding-top--4">
       <ActionBar
         v-model="scheduleViewType"
+        :activeDate="activeDate"
         @display-deadline-drawer="updateDrawerDisplay"
         @calendar-event="getMonthSchedulesCollection"
       />
@@ -15,8 +16,8 @@
         <DeadlinesList
           v-if="scheduleViewType === 'list'"
           :items="deadlineItems"
-          @update-drawer-display="updateDrawerDisplay"
           :activeDate="activeDate"
+          @update-drawer-display="updateDrawerDisplay"
         />
         <Calendar
           v-else

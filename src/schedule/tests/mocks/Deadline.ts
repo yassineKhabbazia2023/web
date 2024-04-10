@@ -1,6 +1,6 @@
-import type { Schedule } from '@/components/CreateSchedule/Form/CreateScheduleFormModel'
+import type { Schedule } from '@/schedule/components/CreateSchedule/Form/CreateScheduleFormModel'
 import { recipientsIdCollection } from './Account'
-import type { DeadlinesByDate, Deadline, DeadlineAccounts } from '@/models/Deadline'
+import type { DeadlinesByDate, Deadline, DeadlineAccounts } from '@/schedule/models/Deadline'
 
 export const notCompletelyDoneDeadlinesByDateMock: DeadlinesByDate[] = [
   {
@@ -173,11 +173,18 @@ export const demoDeadlinesByDateMock: DeadlinesByDate[] = [
   },
 ]
 
+function getFormatted(index: number, modulo: number) {
+  const n = index % modulo
+
+  return `${n}`.padStart(2, '0')
+}
 // Mock data each time we refresh the component
 export function generateMockData(startDateStr: string, endDateStr: string) {
   let currentDate = new Date(startDateStr)
   const endDate = new Date(endDateStr)
   const data = []
+
+  let index = 0
 
   while (currentDate <= endDate) {
     const dayData = {
@@ -185,27 +192,24 @@ export function generateMockData(startDateStr: string, endDateStr: string) {
       deadlines: [] as Deadline[],
     }
 
-    const numDeadlines = Math.floor(Math.random() * 9) + 1 // Between 1 and 9 deadlines
+    const numDeadlines = index++ % 9
     for (let i = 0; i < numDeadlines; i++) {
+      const hour = getFormatted(i * index, 24)
+      const min = getFormatted(i * index, 60)
+      const sec = getFormatted(45 + i * index, 24)
       const deadline: Deadline = {
         id: i + 1,
-        time: `${Math.floor(Math.random() * 24)
-          .toString()
-          .padStart(2, '0')}:${Math.floor(Math.random() * 60)
-          .toString()
-          .padStart(2, '0')}:${Math.floor(Math.random() * 60)
-          .toString()
-          .padStart(2, '0')}`,
+        time: `${hour}${min}${sec}`,
         template: {
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
         },
-        globalStatus: Math.random() > 0.5 ? 'Done' : 'Todo',
+        globalStatus: (i % 2) ? 'Done' : 'Todo',
         accountList: [] as DeadlineAccounts[],
       }
 
-      const numAccounts = Math.floor(Math.random() * 10) + 1 // Between 1 and 10 accounts
+      const numAccounts = (i % 10) + 1 // Between 1 and 10 accounts
       for (let j = 0; j < numAccounts; j++) {
         const status = '011100'.at(j % 6)
 
@@ -224,4 +228,22 @@ export function generateMockData(startDateStr: string, endDateStr: string) {
   }
 
   return data
+}
+
+export function getMockedDeadlines() {
+  return [
+    {
+      template: {
+        typeShortCollaborator: 'TVA au 21',
+        typeShortCustomer: 'TVA',
+        typeLong: 'Taxe sur la valeur ajoutée',
+      },
+      globalStatus: 'Done',
+      accountList: [{
+        id: '66842913356',
+        name: 'Aperture science',
+        status: 'Todo',
+      }],
+    },
+  ]
 }

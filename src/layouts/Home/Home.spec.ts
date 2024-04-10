@@ -5,25 +5,8 @@ import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import router from '@/plugins/router'
 import Home from './'
-import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 
 const pinia = createTestingPinia()
-
-const TEST_DATE = '2024-08-14'
-
-vi.mock('@/schedule/services', () => ({
-  getSchedulesCollection: () => Promise.resolve([{
-    date: TEST_DATE,
-    deadlines: getMockedDeadlines(),
-  }]),
-
-  getAccountsCollection: () => Promise.resolve({
-    status: 'fulfilled',
-    value: accountsCollection,
-  }),
-}),
-)
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {

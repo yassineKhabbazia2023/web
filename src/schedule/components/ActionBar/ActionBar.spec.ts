@@ -5,6 +5,8 @@ import ActionBar from '.'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
 import MonthSelection from '@/schedule/components/Common/MonthSelection'
 
+const TEST_DATE = '2024-04-10'
+
 const createWrapper = (options: ComponentMountingOptions<any>) =>
   wrapperFactory(ActionBar, options)
 
@@ -13,6 +15,7 @@ describe('action bar', () => {
     it('should emit displayDeadlineDrawer when create deadline button is clicked', async () => {
       const wrapper = createWrapper({
         props: {
+          activeDate: new Date(TEST_DATE),
           modelValue: 'list',
         },
       })
@@ -25,6 +28,7 @@ describe('action bar', () => {
     it('should emit update:modelValue on tab change', () => {
       const wrapper = createWrapper({
         props: {
+          activeDate: new Date(TEST_DATE),
           modelValue: 'list',
         },
         global: {
@@ -46,6 +50,7 @@ describe('action bar', () => {
     it('should emit calendar-event', () => {
       const wrapper = createWrapper({
         props: {
+          activeDate: new Date(TEST_DATE),
           modelValue: 'list',
         },
       })

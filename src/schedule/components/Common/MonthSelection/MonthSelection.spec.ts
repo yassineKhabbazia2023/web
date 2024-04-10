@@ -2,8 +2,16 @@ import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import MonthSelection from '.'
 import { expect, describe, it } from 'vitest'
 
-const createWrapper = () =>
-  wrapperFactory(MonthSelection, {})
+const TEST_DATE = '2024-04-10'
+
+function createWrapper() {
+  const props = {
+    activeDate: new Date(TEST_DATE),
+  }
+  return wrapperFactory(MonthSelection, {
+    props,
+  })
+}
 
 describe('month.vue', () => {
   it('should emit an event containing next-month in payload', async () => {

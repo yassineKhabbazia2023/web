@@ -4,7 +4,7 @@
     pSize="100%"
     pDirection="ttb"
     :zIndex="100"
-    @close-drawer-button="internalShowCalendar"
+    @close-drawer-button="internalShowCalendar = false"
     :withHeader="false"
   >
     <Schedule />
@@ -25,10 +25,10 @@ const props = defineProps<ScheduleDrawerProps>()
 
 const internalShowCalendar = computed({
   get() {
-    return props.isOpened
+    return props.modelValue
   },
-  set(isOpened: boolean) {
-    emit('update:model-value', isOpened)
-  }
+  set(modelValue: boolean) {
+    emit('update:model-value', modelValue)
+  },
 })
 </script>

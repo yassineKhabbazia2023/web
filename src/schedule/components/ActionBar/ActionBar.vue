@@ -3,7 +3,10 @@
     class="p-schedule-action-bar flex flex--justify-content-space-between
     flex--align-items-center padding-x--6 margin-bottom--4 margin-top--1 "
   >
-    <MonthSelection @calendar-event="$emit('calendar-event', $event)" />
+    <MonthSelection
+      :activeDate="activeDate"
+      @calendar-event="$emit('calendar-event', $event)"
+    />
     <div
       class="flex flex--justify-content-flex-end flex--align-items-center"
     >

@@ -37,6 +37,7 @@ import {
   PIChevronLeft,
   PButton,
 } from '@kpmg/styleguide'
+import type { MonthSelectionProps } from './MonthSelectionTypes'
 
 const emit = defineEmits<{
   'calendar-event': [{type: string, date: Date}]
@@ -60,17 +61,17 @@ const { d } = useI18n({
   datetimeFormats,
 })
 
-const activeDate = ref(new Date())
-const monthIndex = ref(activeDate.value.getMonth())
-const activeMonth = computed(() => d(activeDate.value, 'month'))
-const activeYear = computed(() => activeDate.value.getFullYear())
+const props = defineProps<MonthSelectionProps>()
+
+const monthIndex = ref(props.activeDate.getMonth())
+const activeMonth = computed(() => d(props.activeDate, 'month'))
+const activeYear = computed(() => props.activeDate.getFullYear())
 const updateMonth = (nextOrPrevious: string) => {
   const deltaMonth = nextOrPrevious === 'prev' ? -1 : 1
   monthIndex.value += deltaMonth
 
-  const newActiveDate = new Date(activeDate.value)
+  const newActiveDate = new Date(props.activeDate)
   newActiveDate.setMonth(monthIndex.value, 1) // select first day of new month
-  activeDate.value = new Date(newActiveDate)
 
   const calendarEvent = {
     type: `${nextOrPrevious}-month`,

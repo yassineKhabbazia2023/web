@@ -1,3 +1,3 @@
 export interface ScheduleDrawerProps {
-  isOpened: boolean
+  modelValue: boolean
 }
