@@ -1,16 +1,29 @@
-<!-- eslint-disable max-len -->
 <template>
   <div
-    class="p-schedule-deadline flex flex--justify-content-space-between flex--align-items-center"
+    class="
+      p-schedule-deadline
+      flex
+      flex--justify-content-space-between
+      flex--align-items-center
+    "
     v-for="(item, index) in deadlineData"
     :key="index">
     <div
-      class="p-schedule-deadline__content flex flex--align-items-center flex--align-self-stretch padding-y--1 padding-x--2 flex--grow-1"
+      class="
+        p-schedule-deadline__content
+        flex flex--align-items-center
+        flex--align-self-stretch
+        padding-y--1
+        padding-x--2
+        flex--grow-1
+      "
       @click="pushEventToListItem"
     >
       <Icon :status="item.globalStatus" />
       <span class="p-schedule-deadline__content-label font-semibold">{{
-        `${isCollab ? item.template.typeShortCollaborator : item.template.typeShortCustomer} (${item.template?.typeLong})` }}</span>
+        `${isCollab
+          ? item.template.typeShortCollaborator
+          : item.template.typeShortCustomer} (${item.template?.typeLong})` }}</span>
       <PIcon color="#666666">
         <PIArrowRight />
       </PIcon>

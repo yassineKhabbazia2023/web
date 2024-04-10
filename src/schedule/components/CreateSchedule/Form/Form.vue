@@ -41,7 +41,7 @@
         <span class="create-schedule-form__optional-title font-semibold">{{ t('description') }}
         </span>
         <span class="create-schedule-form__optional">
-          {{ ` (${t('optional')})` }}
+          {{ t('optional') }}
         </span>
       </div>
       <PInput

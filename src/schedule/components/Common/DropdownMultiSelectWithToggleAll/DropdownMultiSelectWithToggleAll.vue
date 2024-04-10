@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<DropdownMultiSelectWithToggleAllProps>(),
 
 const emit = defineEmits<{
   'update:modelValue': [value: number[]]
-  }>()
+}>()
 
 const recipientsModel = computed({
   get() {

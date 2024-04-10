@@ -42,7 +42,7 @@ import {
   PLoader,
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
-import type { DrawerProps } from './ScheduleDrawerTypes.ts'
+import type { ScheduleDrawerProps } from './ScheduleDrawerTypes.ts'
 import CreateScheduleForm from '@/schedule/components/CreateSchedule/Form'
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
 
@@ -53,8 +53,7 @@ const { t } = useI18n({
 
 const emit = defineEmits<{ 'update:modelValue' : [value: boolean] }>()
 
-const props = withDefaults(defineProps
-  <DrawerProps>(), {
+const props = withDefaults(defineProps<ScheduleDrawerProps>(), {
   drawerUsageMode: 'creation',
 })
 

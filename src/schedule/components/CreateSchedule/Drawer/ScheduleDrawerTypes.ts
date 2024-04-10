@@ -1,5 +1,5 @@
 
-export interface DrawerProps {
+export interface ScheduleDrawerProps {
   modelValue: boolean
   scheduleId?: string
   drawerUsageMode?: string

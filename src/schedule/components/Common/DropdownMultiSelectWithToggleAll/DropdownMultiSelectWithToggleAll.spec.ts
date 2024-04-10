@@ -6,11 +6,13 @@ import { PSelect, PCheckbox } from '@kpmg/styleguide'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
 
-// eslint-disable-next-line max-len
-const createWrapper = (dropdownMultiSelectWithToggleAllProps: DropdownMultiSelectWithToggleAllProps) =>
-  wrapperFactory(DropdownMultiSelectWithToggleAll, {
+function createWrapper(
+  dropdownMultiSelectWithToggleAllProps: DropdownMultiSelectWithToggleAllProps,
+) {
+  return wrapperFactory(DropdownMultiSelectWithToggleAll, {
     props: dropdownMultiSelectWithToggleAllProps,
   })
+}
 
 describe('schedule title component', () => {
   it('emits a value in the existing field values in select options', async () => {
