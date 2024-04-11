@@ -45,7 +45,7 @@ vi.mock('@/schedule/services', () => ({
 }),
 )
 
-describe.skip('home page', () => {
+describe('home page', () => {
   it('should render home page', () => {
     const wrapper = createWrapper({
       global: {
