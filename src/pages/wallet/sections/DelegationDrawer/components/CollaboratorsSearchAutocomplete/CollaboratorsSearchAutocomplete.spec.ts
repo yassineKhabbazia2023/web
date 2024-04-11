@@ -6,7 +6,6 @@ import { PAutocomplete } from '@kpmg/styleguide'
 import { nextTick } from 'vue'
 import CollaboratorsSearchAutocomplete from '.'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
-// import * as ServiceContact from '@/services/contact'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
 vi.mock('@/services/contact', () => ({
@@ -63,12 +62,10 @@ const createWrapper = (
 }
 
 const findAutocompleteWrapper = (wrapper: VueWrapper) => wrapper.findComponent(PAutocomplete)
-// let getCollaboratorsSpy: SpyInstance
 let wrapper: VueWrapper
 describe('addDelegatesStep', () => {
   beforeEach(() => {
     wrapper = createWrapper()
-    // getCollaboratorsSpy = vi.spyOn(ServiceContact, 'getCollaborators')
   })
 
   describe('props', () => {

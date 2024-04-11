@@ -2,20 +2,13 @@ import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
-import type {
-  DelegationPreviewListProps,
-  DelegationDetails,
-} from './DelegationPreviewListTypes.ts'
+import type { DelegationPreviewListProps } from './DelegationPreviewListTypes.ts'
 import DelegationPreviewList from './DelegationPreviewList.vue'
-import {
-  PBlockHeader,
-  PTable,
-  PDoubleText,
-} from '@kpmg/styleguide'
+import { PBlockHeader, PTable, PDoubleText } from '@kpmg/styleguide'
 import { createI18n } from 'vue-i18n'
 import { getInitials } from '@/helper'
 
-const delegationList: DelegationDetails[] = [
+const delegationList: DelegationPreviewListProps['modelValue'] = [
   {
     delegate: {
       id: 1,
@@ -23,7 +16,7 @@ const delegationList: DelegationDetails[] = [
       lastName: 'Ben Amor',
       email: 'obenamor@kpmg.fr',
     },
-    isAutoDelegation: true,
+    isAutomaticallyDelegated: true,
   },
   {
     delegate: {
@@ -32,12 +25,12 @@ const delegationList: DelegationDetails[] = [
       lastName: 'LastUserName',
       email: 'luser@kpmg.fr',
     },
-    isAutoDelegation: false,
+    isAutomaticallyDelegated: false,
   },
 ]
 
 const defaultProps: DelegationPreviewListProps = {
-  delegationDetails: delegationList,
+  modelValue: delegationList,
 }
 
 export type DelegationPreviewListWrapper = VueWrapper<
@@ -69,7 +62,7 @@ const findPBlockHeader = (wrapper: DelegationPreviewListWrapper) =>
 const findPTable = (wrapper: DelegationPreviewListWrapper) =>
   wrapper.findComponent(PTable)
 
-const delegate = defaultProps.delegationDetails[0].delegate
+const delegate = defaultProps.modelValue[0].delegate
 
 describe('delegationPreviewList', () => {
   describe('rendering', () => {
@@ -105,4 +98,3 @@ describe('delegationPreviewList', () => {
     })
   })
 })
-
