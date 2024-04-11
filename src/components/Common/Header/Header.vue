@@ -66,9 +66,9 @@ const drawerHandler = () => {
 
 <i18n lang="yaml">
   en-US:
-    bank-mandates: 'Banking flows'
+    bank-mandates: ''
     new-mandate: 'New mandate'
   fr-FR:
-    bank-mandates: 'Flux bancaires'
+    bank-mandates: ''
     new-mandate: 'Nouveau mandat'
 </i18n>

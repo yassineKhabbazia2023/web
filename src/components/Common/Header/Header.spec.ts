@@ -16,7 +16,7 @@ vi.mock('@kpmg/common', () => ({
 describe('header.vue', () => {
   const wrapper = createWrapper()
   it('renders translations correctly', () => {
-    expect(wrapper.find('.header__title').text()).toBe('Banking flows')
+    expect(wrapper.find('.header__title').text()).toBe('')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
