@@ -7,8 +7,10 @@ import {
   getPermissions,
   getRoles,
   manageFavoriteEntities,
+  fetchEntitiesStatistics,
 } from '.'
 import { ContactType } from '../contact/contactTypes'
+import { getMockedEntitiesStatistics } from '@/pages/wallet/components/Filters/FiltersMocks'
 import mockCollaborators from '@/pages/wallet/pages/collaborators/mockCollaborators.json'
 import mockRoles from '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabRole/mock.json'
 import mockPermissions from
@@ -17,6 +19,7 @@ import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
 import type { Entity } from '@kpmg/common'
 
 const accountId = 5
+const mockedEntitiesStatistics = getMockedEntitiesStatistics()
 const TEST_ENTITIES: Entity[] = [
   {
     accountId: 1,
@@ -44,6 +47,9 @@ vi.mock('@kpmg/common', () => ({
         ) {
           return getCollaboratorsByIdEntityImplementation()
         }
+        if (url === `${API_PREFIXES.WALLET}/statistics/currentuser`) {
+          return fetchEntitiesStatisticsImplementation()
+        }
         if (url === `${API_PREFIXES.WALLET}/favorites/currentuser`) {
           return fetchEntitiesImplementation()
         }
@@ -62,6 +68,11 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
+const fetchEntitiesStatisticsImplementation = () => {
+  return Promise.resolve({
+    data: mockedEntitiesStatistics,
+  })
+}
 const fetchEntitiesImplementation = () => {
   return Promise.resolve({
     data: TEST_ENTITIES,
@@ -102,6 +113,13 @@ describe('collaborateurs/admin', () => {
       const favoriteEntities = await fetchFavoriteEntities()
 
       expect(favoriteEntities).toStrictEqual(TEST_ENTITIES)
+    })
+  })
+  describe('fetchEntitiesStatistics', () => {
+    it('should return the statistics for the entities associated with the current user', async () => {
+      const entitiesStatistics = await fetchEntitiesStatistics()
+
+      expect(entitiesStatistics).toStrictEqual(mockedEntitiesStatistics)
     })
   })
   describe('patchFavoriteEntity', () => {

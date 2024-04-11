@@ -2,28 +2,22 @@ import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
+import { getMockedEntitiesStatistics } from './FiltersMocks'
+import { EntityStatus } from './FiltersTypes'
 import Filters from '.'
-import { EntityStatus } from './types'
 
-const statistic = {
-  entityToDeploy: 20,
-  entityConnected: 100,
-  entityInProgress: 30,
-  userDeclared: 10,
-  userConnected: 70,
-  userInvited: 25,
-}
+const pinia = createPinia()
+const statistics = getMockedEntitiesStatistics()
+
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    wallet: {
+    gateway: {
       get: () => Promise.resolve({
-        data: statistic,
+        data: statistics,
       }),
     },
   }),
 }))
-
-const pinia = createPinia()
 
 describe('filter', () => {
   let wrapper: VueWrapper
@@ -37,15 +31,15 @@ describe('filter', () => {
     await flushPromises()
 
     const options = wrapper.findAll('.filter-option')
-    expect(options).toHaveLength(Object.keys(statistic).length)
+    expect(options).toHaveLength(Object.keys(statistics).length)
     const optionsText = options.map(option => option.text())
     const expectedOptionsText = [
-      `${statistic.entityToDeploy} To Deploy`,
-      `${statistic.entityInProgress} In progress`,
-      `${statistic.entityConnected} Connected`,
-      `${statistic.userDeclared} Declared`,
-      `${statistic.userConnected} Connected`,
-      `${statistic.userInvited} Guest(s)`,
+      `${statistics.accountToDeploy} To Deploy`,
+      `${statistics.accountInProgress} In progress`,
+      `${statistics.accountConnected} Connected`,
+      `${statistics.contactDeclared} Declared`,
+      `${statistics.contactConnected} Connected`,
+      `${statistics.contactInvited} Guest(s)`,
     ]
     expect(optionsText).toStrictEqual(expectedOptionsText)
   })
