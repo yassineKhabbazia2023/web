@@ -1,6 +1,13 @@
 <template>
   <div class="p-schedule flex">
     <div class="p-schedule__view overflow-hidden">
+      <PLoader
+        v-if="isLoading"
+        class="p-schedule__loader flex flex--justify-content-center"
+        pType="primary"
+        pSize="32"
+      />
+
       <ActionBar
         v-model="scheduleViewType"
         :activeDate="activeDate"
@@ -8,26 +15,21 @@
         @calendar-event="getMonthSchedulesCollection"
       />
 
-      <div v-if="loading" class="flex flex--justify-content-center">
-        <PLoader pType="primary" pSize="32" />
-      </div>
+      <DeadlinesList
+        v-if="scheduleViewType === 'list'"
+        :items="deadlineItems"
+        :activeDate="activeDate"
+        @update-drawer-display="updateDrawerDisplay"
+      />
 
-      <template v-if="!loading">
-        <DeadlinesList
-          v-if="scheduleViewType === 'list'"
-          :items="deadlineItems"
-          :activeDate="activeDate"
-          @update-drawer-display="updateDrawerDisplay"
-        />
-        <Calendar
-          v-else
-          :modelValue="activeDate"
-          :deadlinesByDate="deadlineItems"
-          :pRange="rangeDate"
-          data-testid="calendar-wrapper"
-          @update:model-value="onUpdateActiveDate"
-        />
-      </template>
+      <Calendar
+        v-else
+        :modelValue="activeDate"
+        :deadlinesByDate="deadlineItems"
+        :pRange="rangeDate"
+        data-testid="calendar-wrapper"
+        @update:model-value="onUpdateActiveDate"
+      />
     </div>
     <div class="p-schedule__widget">
       <PDatePicker
@@ -63,7 +65,7 @@ import { getDates } from './HomeUtils'
 const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
 const scheduleDates = ref<string[]>([])
-const loading = ref(true)
+const isLoading = ref(true)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
 
@@ -87,7 +89,7 @@ const updateDrawerDisplay = () => {
 const getMonthSchedulesCollection = async ({ date } = { date: new Date() }) => {
   try {
     activeDate.value = date
-    loading.value = true
+    isLoading.value = true
     const monthRange = getMonthInterval(new Date(activeDate.value))
     rangeDate.value = [new Date(monthRange.startDate), new Date(monthRange.endDate)]
     deadlineItems.value = await getSchedulesCollection(monthRange)
@@ -95,7 +97,7 @@ const getMonthSchedulesCollection = async ({ date } = { date: new Date() }) => {
   } catch (error) {
     console.warn(error)
   } finally {
-    loading.value = false
+    isLoading.value = false
   }
 }
 function onUpdateActiveDate(newActiveDate: Date) {
@@ -114,25 +116,26 @@ function onUpdateActiveDate(newActiveDate: Date) {
 <style lang="scss" scoped>
 .p-schedule {
   &__view {
+    flex: 1px 1 1;
     width: calc(100% - 330px);
+    position: relative;
   }
 
   &__widget {
     width: 330px;
-  }
-}
-</style>
-<style lang="scss" scoped>
-.p-schedule {
-  &__view {
-    flex: 1px 1 1;
-  }
-
-  &__widget {
     padding-top: 60px;
     flex: 330px 0 0;
   }
+
+  &__loader {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
 }
+
 .p-schedule :deep(.p-date-picker) {
   left: 10px !important;
   top: -55px !important;
