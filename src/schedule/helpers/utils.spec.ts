@@ -1,9 +1,11 @@
+import type { Deadline } from '../models/Deadline'
 import {
   dateToLocaleFormat,
   accountsDataTransformer,
   dateISOFormatter,
   daysInTheMonth,
   getYearMonth,
+  getTypeLabel,
 } from './utils'
 import { expect, describe, it } from 'vitest'
 import { accountsCollectionForSelectFormat, accountsCollection } from '@/schedule/tests/mocks/Account'
@@ -37,6 +39,33 @@ describe('utils helpers', () => {
       const yearMonth = getYearMonth(new Date(TEST_DATE))
 
       expect(yearMonth).toBe(TEST_DATE.substring(0, 7))
+    })
+  })
+
+  describe('getTypeLabel', () => {
+    const scheduleModelsByKey: Record<string, string> = {
+      TVA: 'taxe sur la valeur ajoutée',
+    }
+    const templateTva = {
+      typeShort: 'TVA',
+    } as Deadline['template']
+    const templateCustom = {
+      typeShort: 'Custom type',
+    } as Deadline['template']
+
+    const tests = [{
+      template: templateTva,
+      expected: 'taxe sur la valeur ajoutée',
+    }, {
+      template: templateCustom,
+      expected: 'Custom type',
+    }]
+    it.each(tests)('expect return $expected when isB is $isB', ({
+      template,
+      expected,
+    }) => {
+      const typeLabel = getTypeLabel(scheduleModelsByKey, template)
+      expect(typeLabel).toBe(expected)
     })
   })
 })

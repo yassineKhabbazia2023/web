@@ -4,6 +4,7 @@ import {
   getAccountsCollection,
   postSchedule,
   getScheduleModels,
+  getScheduleModelsByKey,
 } from '.'
 import type { Account } from '@/schedule/models/Account'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
@@ -69,5 +70,17 @@ describe('getScheduleModels', () => {
   it.each(labelTypes)('should return proper list when labelType = \'%i\'', (labelType) => {
     const data = getScheduleModels(labelType)
     expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.snap`)
+  })
+})
+
+describe('getScheduleModelsByKey', () => {
+  const labelTypes: ScheduleModelLabelType[] = [
+    'short',
+    'long',
+    'both',
+  ]
+  it.each(labelTypes)('should return proper list when labelType = \'%i\'', (labelType) => {
+    const data = getScheduleModelsByKey(labelType)
+    expect(data).toMatchFileSnapshot(`__snap__/getScheduleModelsByKey/${labelType}.snap`)
   })
 })

@@ -1,5 +1,6 @@
 'use strict'
 import type { Account } from '@/schedule/models/Account'
+import type { Deadline } from '../models/Deadline'
 
 export const dateToLocaleFormat = (date: string | Date, locale = 'fr') =>
   new Intl.DateTimeFormat(locale).format(new Date(date))
@@ -28,4 +29,13 @@ export const daysInTheMonth = (year: number, month: number) => {
 
 export const getYearMonth = (date: Date) => {
   return dateISOFormatter(date).substring(0, 7)
+}
+
+export function getTypeLabel(
+  scheduleModelsByKey: Record<string, string> | undefined,
+  template: Deadline['template'],
+) {
+  const { typeShort } = template
+
+  return scheduleModelsByKey?.[typeShort] ?? typeShort
 }
