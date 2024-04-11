@@ -245,7 +245,7 @@ const onSelectedFolder = (id: string) => {
 
 <i18n lang="yaml">
   en-US:
-    search: 'Find by Company''s name, IBS, Leader, Email, City...'
+    search: "Search by company name, folder ID, first name, last name, and email of the executive"
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
@@ -253,7 +253,7 @@ const onSelectedFolder = (id: string) => {
     on: 'on'
     delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
   fr-FR:
-    search: 'Rechercher par Raison sociale, IBS, Dirigeant, Mail, Ville...'
+    search: 'Rechercher par nom de société, ID de dossier, prénom, nom et e-mail du dirigeant'
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'

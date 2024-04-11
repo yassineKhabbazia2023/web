@@ -419,7 +419,7 @@ const onSelectedFolder = (row: any) => {
 <i18n lang="yaml">
 en-US:
   companyName: 'Company name'
-  folderID: 'IBS Code'
+  folderID: 'Folder ID'
   leader: 'Leader'
   city: 'City'
   email: 'Email'
@@ -439,7 +439,7 @@ en-US:
   invoices: 'KPMG Invoices'
 fr-FR:
   companyName: 'Nom de la société'
-  folderID: 'Code IBS'
+  folderID: 'ID Dossier'
   leader: 'Dirigeant'
   city: 'Ville'
   email: 'Mail'
