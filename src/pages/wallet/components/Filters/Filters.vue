@@ -74,9 +74,9 @@ import {
   PIArrowUpCircle,
   PLoader,
 } from '@kpmg/styleguide'
-import { commonApi } from '@kpmg/common'
-import type { IFilterOption, IState } from './types'
-import { EntityStatus } from './types'
+import { fetchEntitiesStatistics } from '@/services/wallet'
+import type { IFilterOption, IState } from './FiltersTypes'
+import { EntityStatus } from './FiltersTypes'
 import FilterOption from '../FilterOption'
 
 const { t } = useI18n({
@@ -89,7 +89,7 @@ const TAGS = [
     content: t('toDeploy'),
     icon: PIArrowUpCircle as Component,
     color: 'warning',
-    apiKey: 'entityToDeploy',
+    apiKey: 'accountToDeploy',
     filterValue: EntityStatus.TO_DEPLOY,
     isSelected: false,
   },
@@ -97,7 +97,7 @@ const TAGS = [
     content: t('inProgress'),
     icon: PIArrowRepeat as Component,
     color: 'amethyste',
-    apiKey: 'entityInProgress',
+    apiKey: 'accountInProgress',
     filterValue: EntityStatus.IN_PROGRESS,
     isSelected: false,
   },
@@ -105,26 +105,26 @@ const TAGS = [
     content: t('connected'),
     icon: PICheckCircle as Component,
     color: 'success',
-    apiKey: 'entityConnected',
+    apiKey: 'accountConnected',
     filterValue: EntityStatus.CONNECTED,
     isSelected: false,
   },
   {
     content: t('declared'),
     icon: PIPatchCheck as Component,
-    apiKey: 'userDeclared',
+    apiKey: 'contactDeclared',
     isSelected: false,
   },
   {
     content: t('connected'),
     icon: PIPower as Component,
-    apiKey: 'userConnected',
+    apiKey: 'contactConnected',
     isSelected: false,
   },
   {
     content: t('guests'),
     icon: PIPerson as Component,
-    apiKey: 'userInvited',
+    apiKey: 'contactInvited',
     isSelected: false,
   },
 ] as IFilterOption[]
@@ -143,14 +143,14 @@ const emit = defineEmits<{
 onMounted(async () => {
   state.isLoading = true
   try {
-    const { data } = await commonApi().wallet.get('statistics')
+    const data = await fetchEntitiesStatistics()
     const tagsWithNumber = TAGS.map(({ apiKey, ...rest }) => ({
       ...rest,
       apiKey,
       number: data[apiKey],
     }))
-    state.userTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('user'))
-    state.entityTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('entity'))
+    state.userTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('contact'))
+    state.entityTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('account'))
   } catch (err) {
     console.error(err)
   }

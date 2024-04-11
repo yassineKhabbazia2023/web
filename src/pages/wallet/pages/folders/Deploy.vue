@@ -87,7 +87,7 @@ import FormSearch from '@/components/FormSearch'
 import OffersDrawer from '@/pages/entities/components/OffersDrawer'
 import { getPaginationLabel } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
-import type { EntityStatus } from '../../components/Filters/types'
+import type { EntityStatus } from '../../components/Filters/FiltersTypes'
 import { fetchWalletData } from './DeployUtils'
 import type {
   SearchCriteria,

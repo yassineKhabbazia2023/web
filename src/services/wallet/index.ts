@@ -23,6 +23,16 @@ export const getCollaboratorsByIdEntity = async (
   return response?.data
 }
 
+export const fetchEntitiesStatistics = async () => {
+  try {
+    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/statistics/currentuser`)
+
+    return response.data
+  } catch (error) {
+    console.error('Error fetching entities statistics :', error)
+  }
+}
+
 export const fetchFavoriteEntities = async (): Promise<
   Entity[] | undefined
 > => {
