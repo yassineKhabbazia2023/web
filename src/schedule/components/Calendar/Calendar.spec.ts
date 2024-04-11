@@ -1,14 +1,17 @@
+
+import { vi, expect, describe, it } from 'vitest'
+
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore } from '@kpmg/common'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import { vi, expect, describe, it } from 'vitest'
 import Calendar from '.'
 import type { CalendarProps } from './CalendarTypes'
 import { PCalendar } from '@kpmg/styleguide'
 import { notCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 import { collabUser } from '@/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
+import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
 
 const pinia = createTestingPinia()
 vi.mock('@kpmg/common', () => ({
@@ -24,10 +27,6 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-const TvaLabel = 'TVA (Taxe sur la valeur ajoutée)'
-const mockedGetScheduleModelsByKey = vi.fn((_: string) => ({
-  TVA: TvaLabel,
-}))
 vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))

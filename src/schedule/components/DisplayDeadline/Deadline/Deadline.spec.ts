@@ -1,3 +1,4 @@
+import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import Deadline from '.'
@@ -22,10 +23,6 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-const TvaLabel = 'TVA (Taxe sur la valeur ajoutée)'
-const mockedGetScheduleModelsByKey = vi.fn((_: string) => ({
-  TVA: TvaLabel,
-}))
 vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
