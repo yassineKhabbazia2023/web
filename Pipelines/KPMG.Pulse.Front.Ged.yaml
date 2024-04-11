@@ -27,4 +27,5 @@ extends:
     mfe: ged
     devIndex: ${{ parameters.devIndex }}
     deployType: ${{ parameters.deployType }}
+    sonarExclusions: 'vitest.setup.js'
 

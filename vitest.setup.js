@@ -16,6 +16,9 @@ export const commonApiDsDeleteSpy = vi.fn().mockResolvedValue({
 export const commonApiPortalGetSpy = vi.fn().mockResolvedValue({
   data: {},
 })
+export const commonApiGatewayGetSpy = vi.fn().mockResolvedValue({
+  data: {},
+})
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -28,6 +31,9 @@ vi.mock('@kpmg/common', () => ({
     portal: {
       get: commonApiPortalGetSpy,
     },
+    gateway: {
+      get: commonApiGatewayGetSpy,
+    },
   }),
   commonStore: () => ({
     $delete: vi.fn(),
@@ -37,6 +43,7 @@ vi.mock('@kpmg/common', () => ({
     defaultEntity: {
       name: 'JEAN LÉVAGE',
       idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
+      accountNumber: '256',
     },
   }),
   DataStreamHubConnection: vi.fn(() => ({

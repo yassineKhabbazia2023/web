@@ -73,6 +73,7 @@ const fetchGedFoldersAndServices = async () => {
   entityServices.value = await fetchUserEntityServices(
     selectedEntity.value,
   )
+
   const foldersFetchResult = await fetchServicesFolders(
     entityServices.value,
     selectedEntity.value,
@@ -90,7 +91,7 @@ const fetchGedFoldersAndServices = async () => {
 // Entities and services scope
 const userStore = commonStore()
 
-const selectedEntity = computed(() => userStore?.defaultEntity?.idAccount ?? '')
+const selectedEntity = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
 const entityServices = ref<null | any>(null)
 const currentService = ref<string | null>(null)
 const currentServiceFolder = computed<null | Folder[]>(() => {

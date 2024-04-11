@@ -19,8 +19,6 @@ vi.mock('@kpmg/common', () => ({
     $patch: vi.fn(),
     $get: vi.fn(),
     $post: vi.fn(),
-    defaultEntity: {
-    },
   }),
 }))
 
@@ -49,7 +47,6 @@ const createWrapper = (): VueWrapper => {
 }
 
 describe('ged when no account is set in the store', () => {
-  // eslint-disable-next-line vitest/no-hooks
   beforeEach(() => {
     setActivePinia(piniaStore)
   })
@@ -57,7 +54,6 @@ describe('ged when no account is set in the store', () => {
   describe('treeview', () => {
     describe('interactions', () => {
       it('should not fetch user entity services when ged is rendered and account is not set', async () => {
-        expect.hasAssertions()
         createWrapper()
 
         await nextTick()
@@ -66,7 +62,6 @@ describe('ged when no account is set in the store', () => {
       })
 
       it('should not fetch services folders when ged is rendered and account is not set', async () => {
-        expect.hasAssertions()
         createWrapper()
 
         await nextTick()

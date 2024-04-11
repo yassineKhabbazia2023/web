@@ -56,7 +56,9 @@ vi.mock('@/services/BinDocuments', () => ({
 }))
 
 vi.mock('@/modules/Treeview/helpers/folderArrayHelper', async () => {
-  const actual = await vi.importActual('@/modules/Treeview/helpers/folderArrayHelper')
+  const actual = await vi.importActual(
+    '@/modules/Treeview/helpers/folderArrayHelper',
+  )
   return {
     // @ts-ignore
     ...actual,
@@ -93,16 +95,16 @@ const createWrapper = (): AppWrapper => {
 const folder = {
   id: 1,
   children: [
-      {
-        id: 2,
-        children: [{} as Folder],
-        name: 'TheFolder',
-        parent: { id: 1 },
-        permissions: [],
-        properties: {} as FolderProperties,
-        serviceId: 'some-service',
-        iconName: '',
-      } as Folder,
+    {
+      id: 2,
+      children: [{} as Folder],
+      name: 'TheFolder',
+      parent: { id: 1 },
+      permissions: [],
+      properties: {} as FolderProperties,
+      serviceId: 'some-service',
+      iconName: '',
+    } as Folder,
   ],
   name: 'A',
   parent: { id: 0 },
@@ -117,14 +119,12 @@ describe('ged', () => {
     setActivePinia(pinia)
   })
   it('renders correctly', () => {
-    expect.hasAssertions()
     const wrapper = createWrapper()
     expect(wrapper.exists()).toBeTruthy()
   })
   describe('treeview', () => {
     describe('interactions', () => {
       it('should ftech user entity services when ged is rendered', async () => {
-        expect.hasAssertions()
         createWrapper()
 
         await nextTick()
@@ -133,7 +133,6 @@ describe('ged', () => {
       })
 
       it('should ftech services folders when ged is rendered', async () => {
-        expect.hasAssertions()
         createWrapper()
 
         await nextTick()
@@ -141,47 +140,45 @@ describe('ged', () => {
         expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(1)
       })
 
-      it(
-        'should set the current folder and current service on selected-folder-change event',
-        async () => {
-          expect.hasAssertions()
-          const wrapper = createWrapper()
-          await nextTick()
-          await flushPromises()
+      it('should set the current folder and current service on selected-folder-change event', async () => {
+        const wrapper = createWrapper()
+        await nextTick()
+        await flushPromises()
 
-          const tree = wrapper.findComponent(Treeview)
-          await tree.vm.$emit('selected-folder-change', folder)
-          await nextTick()
+        const tree = wrapper.findComponent(Treeview)
+        await tree.vm.$emit('selected-folder-change', folder)
+        await nextTick()
 
-          expect(tree.props('selectedFolder')).toStrictEqual(folder)
-          expect(tree.props('currentService')).toBe('some-service')
-        },
-      )
+        expect(tree.props('selectedFolder')).toStrictEqual(folder)
+        expect(tree.props('currentService')).toBe('some-service')
+      })
 
-      it(
-        'should set the current folder and current service on selected-folder-change event when currentBinService',
-        async () => {
-          expect.hasAssertions()
-          const wrapper = createWrapper()
-          const componentInstance = wrapper.vm
-          componentInstance.currentBinService = foldersData[0][0].serviceId
-          await nextTick()
-          await flushPromises()
+      it('should set the current folder and current service on selected-folder-change event when currentBinService', async () => {
+        expect.hasAssertions()
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.currentBinService = foldersData[0][0].serviceId
+        await nextTick()
+        await flushPromises()
 
-          const tree = wrapper.findComponent(Treeview)
-          await nextTick()
-          await tree.vm.$emit('selected-folder-change', foldersData[0][0].children[0])
-          await nextTick()
+        const tree = wrapper.findComponent(Treeview)
+        await nextTick()
+        await tree.vm.$emit(
+          'selected-folder-change',
+          foldersData[0][0].children[0],
+        )
+        await nextTick()
 
-          const bin = wrapper.findComponent(BinDocuments)
-          await nextTick()
-          expect(bin.exists()).toBeFalsy()
-          expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
-          expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
-          expect(tree.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
-          expect(tree.props('currentService')).toBe('service-id-compta')
-        },
-      )
+        const bin = wrapper.findComponent(BinDocuments)
+        await nextTick()
+        expect(bin.exists()).toBeFalsy()
+        expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
+        expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
+        expect(tree.props('selectedFolder')).toStrictEqual(
+          foldersData[0][0].children[0],
+        )
+        expect(tree.props('currentService')).toBe('service-id-compta')
+      })
 
       it('should set the trash serviceId on selected-bin-service-change', async () => {
         expect.hasAssertions()
@@ -192,7 +189,10 @@ describe('ged', () => {
         const tree = wrapper.findComponent(Treeview)
         await nextTick()
 
-        await tree.vm.$emit('selected-bin-service-change', servicesData[0].ServiceId)
+        await tree.vm.$emit(
+          'selected-bin-service-change',
+          servicesData[0].ServiceId,
+        )
         await nextTick()
 
         const componentInstance = wrapper.vm
@@ -205,7 +205,9 @@ describe('ged', () => {
         await nextTick()
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
-        expect(bin.props('selectedServiceName')).toBe(servicesData[0].ServiceName)
+        expect(bin.props('selectedServiceName')).toBe(
+          servicesData[0].ServiceName,
+        )
       })
 
       it('should set isCreateFolderModalVisible when open-create-folder-modal', async () => {
@@ -214,9 +216,7 @@ describe('ged', () => {
         await nextTick()
 
         const tree = wrapper.findComponent(Treeview)
-        await tree.vm.$emit(
-          'open-create-folder-modal',
-        )
+        await tree.vm.$emit('open-create-folder-modal')
         await nextTick()
 
         const componentInstance = wrapper.vm
@@ -232,7 +232,10 @@ describe('ged', () => {
         const tree = wrapper.findComponent(Treeview)
         await nextTick()
 
-        await tree.vm.$emit('update-source-folders', foldersData[0][0].children[0])
+        await tree.vm.$emit(
+          'update-source-folders',
+          foldersData[0][0].children[0],
+        )
         await nextTick()
 
         expect(vi.mocked(appendChildFolder)).toHaveBeenCalledTimes(1)
@@ -306,11 +309,18 @@ describe('ged', () => {
 
         const documentComponent = wrapper.findComponent(Documents)
         await nextTick()
-        await documentComponent.vm.$emit('change-selected-folder', foldersData[0][0].children[0])
+        await documentComponent.vm.$emit(
+          'change-selected-folder',
+          foldersData[0][0].children[0],
+        )
         await nextTick()
 
-        expect(documentComponent.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
-        expect(documentComponent.props('currentService')).toBe('service-id-compta')
+        expect(documentComponent.props('selectedFolder')).toStrictEqual(
+          foldersData[0][0].children[0],
+        )
+        expect(documentComponent.props('currentService')).toBe(
+          'service-id-compta',
+        )
       })
     })
   })
@@ -330,9 +340,8 @@ describe('ged', () => {
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
         expect(bin.props('selectedServiceName')).toBe(foldersData[0][0].name)
-        expect(bin.props('selectedEntity')).toBe(
-          '93012cc8-77b9-4161-8dbd-61915d935e21',
-        )
+        // Value comes from store mock in vitest setup
+        expect(bin.props('selectedEntity')).toBe('256')
       })
       it('should hide bin component when currentBinService is not set', async () => {
         expect.hasAssertions()
@@ -361,8 +370,12 @@ describe('ged', () => {
 
         const treeview = wrapper.findComponent(Treeview)
         await nextTick()
-        expect(treeview.props('currentService')).toBe(foldersData[0][0].serviceId)
-        expect(treeview.props('selectedFolder')).toStrictEqual(foldersData[0][0].children[0])
+        expect(treeview.props('currentService')).toBe(
+          foldersData[0][0].serviceId,
+        )
+        expect(treeview.props('selectedFolder')).toStrictEqual(
+          foldersData[0][0].children[0],
+        )
         await nextTick()
         expect(bin.exists()).toBeFalsy()
       })
