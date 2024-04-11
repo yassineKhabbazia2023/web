@@ -1,9 +1,12 @@
 <template>
   <div
-    class="flex flex--direction-column padding--1"
-    :class="[rootWrapperClass, cellTypeModifier]"
+    class="p-calendar-date-cell flex flex--direction-column padding--1"
+    :class="[cellTypeModifier]"
   >
-    <div :class="`${rootWrapperClass}__day-number`" @click="handleEmptyCellZoneClick">
+    <div
+      class="p-calendar-date-cell__day-number"
+      @click="handleEmptyCellZoneClick"
+    >
       <PCalendarCellNumber
         class="margin-bottom--2 margin-left--auto"
         :pNumber="dayNumber"
@@ -23,15 +26,13 @@
     <!-- dynamic wrapper either showing the chevron if there are too many items
       or a blank space so we can click the empty part of the cell -->
     <div
-      class="flex flex--grow-1"
-      :class="`${rootWrapperClass}__empty-zone`"
+      class="flex flex--grow-1 p-calendar-date-cell__empty-zone"
       @click="handleEmptyCellZoneClick"
     />
 
     <div
       v-if="shouldChevronExists"
-      class="text-align--center"
-      :class="`${rootWrapperClass}__chevron-down`"
+      class="text-align--center p-calendar-date-cell__chevron-down"
     >
       <PIcon size="12" color="#171717">
         <PIChevronDown />
@@ -56,8 +57,7 @@ const emit = defineEmits<{
   'cell-click': [PCalendarDateCellProps['pCellDate']]
 }>()
 
-const rootWrapperClass = 'p-calendar-date-cell'
-const cellTypeModifier = computed(() => `${rootWrapperClass}--${props.pCellType}`)
+const cellTypeModifier = computed(() => `p-calendar-date-cell--${props.pCellType}`)
 const { width } = useWindowSize()
 
 // As the cell's height currently has fixed values, we're using fixed numbers of elements per cell.

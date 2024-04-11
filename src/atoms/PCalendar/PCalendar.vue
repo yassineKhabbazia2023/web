@@ -14,7 +14,7 @@
         :pCurrentDate="todayDate"
         :pCellElements="findItemsByDate(data.day)"
         :pCellDate="data.day"
-        :pCellType="data.type"
+        :pCellType="getDateType(pInitialDateRange, data.day, data.type)"
         @cell-click="handleCellClick(data.day)"
       />
     </template>
@@ -27,6 +27,7 @@ import { computed } from 'vue'
 import { ElCalendar } from 'element-plus'
 import type { PCalendarProps, CalendarItemsGroupedByDate } from './PCalendarTypes'
 import PCalendarDateCell from '@/atoms/PCalendarDateCell'
+import { getDateType } from './PCalendarUtils'
 
 const props = withDefaults(defineProps<PCalendarProps>(), {
   modelValue: () => new Date(),
