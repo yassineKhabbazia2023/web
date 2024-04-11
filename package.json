@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "test": "npx vitest run",
     "test:ci": "vitest run --coverage",
-    "license": "license-checker --onlyAllow \"MIT; Custom: https://kpmgfr.visualstudio.com/Constellation/; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; BlueOak-1.0.0; UNKNOWN;UNLICENSED; Unlicense\" --production --includePrivatePackages --unknown "
+    "license": "npx license-checker --onlyAllow \"MIT; Custom: https://kpmgfr.visualstudio.com/Constellation/; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; BlueOak-1.0.0; UNKNOWN;UNLICENSED; Unlicense\" --production --includePrivatePackages --unknown "
   },
   "author": "Pulse Team",
   "type": "module",
@@ -27,8 +27,8 @@
   },
   "dependencies": {
     "@braintree/sanitize-url": "^7.0.0",
-    "@kpmg/common": "^3.1.75",
-    "@kpmg/styleguide": "^2.2.380",
+    "@kpmg/common": "^3.1.88",
+    "@kpmg/styleguide": "^2.2.459",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.3",
     "single-spa-vue": "^2.5.1",
