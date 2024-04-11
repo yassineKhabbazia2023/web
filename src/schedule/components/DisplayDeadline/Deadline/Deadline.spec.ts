@@ -37,6 +37,7 @@ describe('deadline component', () => {
         typeShortCustomer: 'TVA',
         typeShortCollaborator: 'TVA au 21',
         typeLong: 'Taxe sur la valeur ajoutée',
+        typeShort: 'TVA',
       },
       globalStatus: 'Done',
       accountList: [
@@ -69,6 +70,7 @@ describe('deadline component', () => {
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [
@@ -94,6 +96,7 @@ describe('deadline component', () => {
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [

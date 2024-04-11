@@ -13,6 +13,7 @@ export const notCompletelyDoneDeadlinesByDateMock: DeadlinesByDate[] = [
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [
@@ -32,6 +33,7 @@ export const notCompletelyDoneDeadlinesByDateMock: DeadlinesByDate[] = [
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [
@@ -54,6 +56,7 @@ export const doneDeadlinesByDateMock: DeadlinesByDate[] = [
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [
@@ -72,6 +75,7 @@ export const doneDeadlinesByDateMock: DeadlinesByDate[] = [
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [
@@ -128,6 +132,7 @@ export const demoDeadlinesByDateMock: DeadlinesByDate[] = [
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [
@@ -144,6 +149,7 @@ export const demoDeadlinesByDateMock: DeadlinesByDate[] = [
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Todo',
         accountList: [
@@ -160,6 +166,7 @@ export const demoDeadlinesByDateMock: DeadlinesByDate[] = [
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: 'Done',
         accountList: [
@@ -204,6 +211,7 @@ export function generateMockData(startDateStr: string, endDateStr: string) {
           typeShortCustomer: 'TVA',
           typeShortCollaborator: 'TVA au 21',
           typeLong: 'Taxe sur la valeur ajoutée',
+          typeShort: 'TVA',
         },
         globalStatus: (i % 2) ? 'Done' : 'Todo',
         accountList: [] as DeadlineAccounts[],
