@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, type ComponentMountingOptions, type VueWrapper } from '@vue/test-utils'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import Home from '@/schedule/pages/home'
-import Drawer from '@/schedule/components/CreateSchedule/Drawer'
+import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
 import ActionBar from '@/schedule/components/ActionBar'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
@@ -53,7 +53,7 @@ describe('home page', () => {
     const wrapper = createWrapper({
       global: {
         stubs: {
-          Drawer,
+          ScheduleDrawer,
           DeadlinesList,
         },
       },
@@ -64,15 +64,15 @@ describe('home page', () => {
     const wrapper = createWrapper({
       global: {
         stubs: {
-          Drawer,
+          ScheduleDrawer,
           DeadlinesList,
         },
       },
     })
-    expect(wrapper.findComponent(Drawer).exists()).toBeFalsy()
+    expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeFalsy()
     wrapper.vm.updateDrawerDisplay()
     await nextTick()
-    expect(wrapper.findComponent(Drawer).exists()).toBeTruthy()
+    expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
   })
 
   describe('interactions', () => {
@@ -80,23 +80,23 @@ describe('home page', () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
-            Drawer,
+            ScheduleDrawer,
             DeadlinesList,
             ActionBar,
           },
         },
       })
 
-      expect(wrapper.findComponent(Drawer).exists()).toBeFalsy()
+      expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeFalsy()
       await wrapper.findComponent(ActionBar).vm.$emit('display-deadline-drawer')
-      expect(wrapper.findComponent(Drawer).exists()).toBeTruthy()
+      expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
     })
 
     it('should update the visible section on activeScheduleViewType change', async () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
-            Drawer,
+            ScheduleDrawer,
             DeadlinesList,
             ActionBar,
           },
@@ -117,7 +117,7 @@ describe('home page', () => {
       expect(calendarWrapper.exists()).toBeFalsy()
     })
 
-    describe('when activeDate is changed in calendar', () => {
+isLoadingScheduleDrawer    describe('when activeDate is changed in calendar', () => {
       let wrapper: VueWrapper
       let calendarWrapper: VueWrapper
 
@@ -125,7 +125,7 @@ describe('home page', () => {
         wrapper = createWrapper({
           global: {
             stubs: {
-              Drawer,
+              ScheduleDrawer,
               DeadlinesList,
               ActionBar,
             },
@@ -163,7 +163,7 @@ describe('home page', () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
-            Drawer,
+            ScheduleDrawer,
             DeadlinesList,
             ActionBar,
           },

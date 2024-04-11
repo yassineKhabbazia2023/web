@@ -43,7 +43,7 @@
       />
     </div>
   </div>
-  <Drawer
+  <ScheduleDrawer
     v-if="isDrawerVisible"
     v-model="isDrawerVisible"
     :defaultCreateDate="activeDate"
@@ -57,7 +57,7 @@ import { PLoader, PDatePicker } from '@kpmg/styleguide'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
-import Drawer from '@/schedule/components/CreateSchedule/Drawer'
+import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import { dateISOFormatter, daysInTheMonth, getYearMonth } from '@/schedule/helpers/utils'

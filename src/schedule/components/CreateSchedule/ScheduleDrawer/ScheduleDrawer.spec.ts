@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import Drawer from '.'
+import ScheduleDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
 import * as scheduleService from '@/schedule/services'
 import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
@@ -8,7 +8,7 @@ import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { createScheduleMockWithTypeLong } from '@/schedule/tests/mocks/Deadline'
 
 const createWrapper = (props: any = {}) =>
-  wrapperFactory(Drawer, {
+  wrapperFactory(ScheduleDrawer, {
     props,
   })
 
