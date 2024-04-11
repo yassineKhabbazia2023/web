@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { ScheduleServicesMock, KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
@@ -8,27 +8,8 @@ import Home from './'
 
 const pinia = createTestingPinia()
 
-vi.mock('@kpmg/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: null,
-    }),
-    getters: {
-      isAuthenticated: () => true,
-    },
-  }),
-  commonApi: () => ({
-    gateway: {
-      get: () => Promise.resolve({ data: {} }),
-    },
-  }),
-  routes: {
-    value: [],
-  },
-  dataProvider: () => ({
-    fetchUserData: vi.fn(),
-  }),
-}))
+vi.mock('@/schedule/services', () => ScheduleServicesMock)
+vi.mock('@kpmg/common', () => KpmgCommontMock)
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Home, {

@@ -1,13 +1,17 @@
+
+import { vi, expect, describe, it } from 'vitest'
+
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore } from '@kpmg/common'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import { vi, expect, describe, it } from 'vitest'
 import Calendar from '.'
 import type { CalendarProps } from './CalendarTypes'
 import { PCalendar } from '@kpmg/styleguide'
 import { notCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 import { collabUser } from '@/schedule/tests/mocks/User'
+import { flushPromises } from '@vue/test-utils'
+import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
 
 const pinia = createTestingPinia()
 vi.mock('@kpmg/common', () => ({
@@ -21,6 +25,10 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
     },
   }),
+}))
+
+vi.mock('@/schedule/services', () => ({
+  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 
 const FIXED_DATE = new Date(2024, 3, 1)
@@ -56,22 +64,21 @@ describe('calendar component', () => {
   it.each([
     {
       userType: 'collab',
-      firstDeadlineExpectedTitle:
-        firstDeadlineMock.template.typeShortCollaborator,
-      secondDeadlineExpectedTitle:
-        secondDeadlineMock.template.typeShortCollaborator,
+      firstDeadlineExpectedTitle: TvaLabel,
+      secondDeadlineExpectedTitle: TvaLabel,
     },
     {
       userType: 'collab',
-      firstDeadlineExpectedTitle: firstDeadlineMock.template.typeShortCollaborator,
-      secondDeadlineExpectedTitle: secondDeadlineMock.template.typeShortCollaborator,
+      firstDeadlineExpectedTitle: TvaLabel,
+      secondDeadlineExpectedTitle: TvaLabel,
     },
   ])(
     'formats deadlines appropriately',
-    ({ userType, firstDeadlineExpectedTitle, secondDeadlineExpectedTitle }) => {
+    async ({ userType, firstDeadlineExpectedTitle, secondDeadlineExpectedTitle }) => {
       // @ts-expect-error: Getter is read only
       store.isCollab = userType === 'collab'
       const wrapper = createWrapper()
+      await flushPromises()
       const calendarWrapper = wrapper.findComponent(PCalendar)
       expect(calendarWrapper.exists()).toBeTruthy()
       // checking that props are properly formatted

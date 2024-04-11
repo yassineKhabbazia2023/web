@@ -11,11 +11,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { PCalendar, PScrollbar } from '@kpmg/styleguide'
 import type { CalendarProps } from './CalendarTypes'
+import { getTypeLabel } from '@/schedule/helpers/utils'
 import { getDeadlineCompletionSummary } from '@/schedule/helpers/deadlineHelper'
 import type { Deadline } from '@/schedule/models/Deadline'
+import { getScheduleModelsByKey } from '@/schedule/services'
 
 const props = defineProps<CalendarProps>()
 
@@ -39,15 +41,17 @@ const formattedDeadlinesByDate = computed(() => props.deadlinesByDate.map((d) =>
   }
 )))
 
-const isCollab = true
+const scheduleModelsByKey = ref<Record<string, string>>()
 
 function formatItemsForCalendar(deadlines: Deadline[]) {
   return deadlines.map((d) => {
     const accountsCompletion = getDeadlineCompletionSummary(d.accountList)
+    const pTitle = getTypeLabel(
+      scheduleModelsByKey.value,
+      d.template,
+    )
     return {
-      pTitle: isCollab
-        ? d.template.typeShortCollaborator
-        : d.template.typeShortCustomer,
+      pTitle,
       pStatus: d.globalStatus.toLowerCase(),
       pCompletedTasks: accountsCompletion.accountsWithCompletedDeadline,
       pTotalTasks: accountsCompletion.accountsAmount,
@@ -55,6 +59,9 @@ function formatItemsForCalendar(deadlines: Deadline[]) {
   })
 }
 
+onMounted(() => {
+  scheduleModelsByKey.value = getScheduleModelsByKey('short')
+})
 </script>
 
 <style lang="scss" scoped>

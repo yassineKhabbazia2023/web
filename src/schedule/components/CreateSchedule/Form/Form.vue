@@ -115,7 +115,7 @@ const scheduleModel: Schedule = {
 // Utility functions
 const createRule = (message: string, trigger = 'change') => ({
   required: true,
-  message: t(message),
+  message,
   trigger,
 })
 
