@@ -1,6 +1,6 @@
 <template>
-  <div class="p-schedule">
-    <div class="p-schedule__view overflow-hidden padding-top--4">
+  <div class="p-schedule flex">
+    <div class="p-schedule__view overflow-hidden">
       <ActionBar
         v-model="scheduleViewType"
         :activeDate="activeDate"
@@ -12,7 +12,7 @@
         <PLoader pType="primary" pSize="32" />
       </div>
 
-      <template v-else>
+      <template v-if="!loading">
         <DeadlinesList
           v-if="scheduleViewType === 'list'"
           :items="deadlineItems"
@@ -29,14 +29,28 @@
         />
       </template>
     </div>
-    <div class="p-schedule__widget"></div>
-    <Drawer v-if="isDrawerVisible" v-model="isDrawerVisible" />
+    <div class="p-schedule__widget">
+      <PDatePicker
+        v-model="activeDate"
+        pType="date"
+        pValueFormat="YYYY-MM-DD"
+        pFormat="YYYY-MM-DD"
+        pCalendarLite
+        :pTeleported="false"
+        :pSchedulesCollection="scheduleDates"
+      />
+    </div>
   </div>
+  <Drawer
+    v-if="isDrawerVisible"
+    v-model="isDrawerVisible"
+    appendToBody
+  />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { PLoader } from '@kpmg/styleguide'
+import { PLoader, PDatePicker } from '@kpmg/styleguide'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
@@ -44,9 +58,11 @@ import Drawer from '@/schedule/components/CreateSchedule/Drawer'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import { dateISOFormatter, daysInTheMonth, getYearMonth } from '@/schedule/helpers/utils'
+import { getDates } from './HomeUtils'
 
 const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
+const scheduleDates = ref<string[]>([])
 const loading = ref(true)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
@@ -75,6 +91,7 @@ const getMonthSchedulesCollection = async ({ date } = { date: new Date() }) => {
     const monthRange = getMonthInterval(new Date(activeDate.value))
     rangeDate.value = [new Date(monthRange.startDate), new Date(monthRange.endDate)]
     deadlineItems.value = await getSchedulesCollection(monthRange)
+    scheduleDates.value = getDates(deadlineItems.value)
   } catch (error) {
     console.warn(error)
   } finally {
@@ -103,5 +120,21 @@ function onUpdateActiveDate(newActiveDate: Date) {
   &__widget {
     width: 330px;
   }
+}
+</style>
+<style lang="scss" scoped>
+.p-schedule {
+  &__view {
+    flex: 1px 1 1;
+  }
+
+  &__widget {
+    padding-top: 60px;
+    flex: 330px 0 0;
+  }
+}
+.p-schedule :deep(.p-date-picker) {
+  left: 10px !important;
+  top: -55px !important;
 }
 </style>

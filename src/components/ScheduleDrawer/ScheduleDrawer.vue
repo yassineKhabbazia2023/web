@@ -3,9 +3,8 @@
     v-model="internalShowCalendar"
     pSize="100%"
     pDirection="ttb"
-    :zIndex="100"
     @close-drawer-button="internalShowCalendar = false"
-    :withHeader="false"
+    :pWithHeader="false"
   >
     <Schedule />
   </PDrawer>

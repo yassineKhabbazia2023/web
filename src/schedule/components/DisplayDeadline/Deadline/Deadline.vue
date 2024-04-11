@@ -37,7 +37,7 @@
     >
       <PButton
         pType="generic"
-        class="el-button--icon"
+        pIconOnly
         pSize="small"
       >
         <PIcon>

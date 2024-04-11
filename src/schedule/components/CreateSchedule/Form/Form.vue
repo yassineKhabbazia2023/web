@@ -38,7 +38,8 @@
       disabled
     >
       <div class="font-small">
-        <span class="create-schedule-form__optional-title font-semibold">{{ t('description') }}
+        <span class="create-schedule-form__optional-title font-semibold">
+          {{ t('description') }}
         </span>
         <span class="create-schedule-form__optional">
           {{ t('optional') }}
@@ -175,7 +176,7 @@ const reminderBuilder = (reminder: string): Schedule['template'] => {
     "recipients": "Recipient(s)",
     "date": "Date",
     "description": "Description",
-    "optional": "optional",
+    "optional": " (optional)",
     "descripitionPlaceholder":
     "List the expected items to carry out the reminder (documents, information...)",
     "form": {
@@ -189,7 +190,7 @@ const reminderBuilder = (reminder: string): Schedule['template'] => {
     "recipients": "Destinataire(s)",
     "date": "Date",
     "description": "Description",
-    "optional": "facultatif",
+    "optional": " (facultatif)",
     "descripitionPlaceholder":
     "Listez les éléments attendus pour réaliser le rappel (documents, informations...)",
     "form": {
