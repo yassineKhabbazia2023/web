@@ -21,6 +21,14 @@ parameters:
   displayName: "Technical parameter : don t modify it !"
   type: string
   default: 'standard'
+# REC Iteration
+- name: RECiterations
+  type: object
+  displayName: "Technical parameter : don t modify it !"
+  default:
+  - 1
+  - 2
+  - 3
 
 resources:
   repositories:
@@ -96,31 +104,28 @@ extends:
             value: fritg01hubafd01profile
           - name: cdn_endpoint
             value: assets-itg01
-      - ${{ if or(and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')), and(contains(variables['Build.SourceBranch'], 'develop'), eq(parameters.deployType, 'developToRec'))) }}:
-        - name: REC
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          ${{ if lt(parameters.devIndex, 10) }}:
-            displayName: Recette-rec0${{ parameters.devIndex }}
-            poolAgent: Pulse-rec0${{ parameters.devIndex }}
-          ${{ else }}:
-            displayName: Recette-rec${{ parameters.devIndex }}
-            poolAgent: Pulse-rec${{ parameters.devIndex }}
-          variables:
-          - name: hubEnvironment
-            ${{ if lt(parameters.devIndex, 10) }}:
-              value: rec0${{ parameters.devIndex }}
+      - ${{ if and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')) }}:
+        - ${{ each index in parameters.RECiterations }}:
+          - name: REC${{ index }}
+            displayName: Recette-rec0${{ index }}
+            poolAgent: Pulse-rec0${{ index }}
+            ${{ if eq(parameters.devIndex, 0) }}:
+              dependsOn: Build
             ${{ else }}:
-              value: rec${{ parameters.devIndex }} 
-          - name: azureSC
-            value: PULSE-REC
-          - name: storageAccount
-            value: fr$(hubEnvironment)frontsa01platform
-          - name: cdn_resourcegroup
-            value: fr$(hubEnvironment)hub
-          - name: cdn_profile
-            value: fr$(hubEnvironment)hubafd01profile
-          - name: cdn_endpoint
-            value: assets-$(hubEnvironment)
+              dependsOn: DEV
+            variables:
+            - name: hubEnvironment
+              value: rec0${{ index }}
+            - name: azureSC
+              value: PULSE-REC
+            - name: storageAccount
+              value: fr$(hubEnvironment)frontsa01platform
+            - name: cdn_resourcegroup
+              value: fr$(hubEnvironment)hub
+            - name: cdn_profile
+              value: fr$(hubEnvironment)hubafd01profile
+            - name: cdn_endpoint
+              value: assets-$(hubEnvironment)
       steps:
       - type: az-blob
         name: Deploy_Assets
