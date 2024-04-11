@@ -29,7 +29,8 @@
 </template>
 
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
+import dayjs from 'dayjs'
+import { computed } from 'vue'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import {
   PIcon,
@@ -63,15 +64,17 @@ const { d } = useI18n({
 
 const props = defineProps<MonthSelectionProps>()
 
-const monthIndex = ref(props.activeDate.getMonth())
 const activeMonth = computed(() => d(props.activeDate, 'month'))
 const activeYear = computed(() => props.activeDate.getFullYear())
+
 const updateMonth = (nextOrPrevious: string) => {
   const deltaMonth = nextOrPrevious === 'prev' ? -1 : 1
-  monthIndex.value += deltaMonth
 
-  const newActiveDate = new Date(props.activeDate)
-  newActiveDate.setMonth(monthIndex.value, 1) // select first day of new month
+  const activeDate = dayjs(props.activeDate)
+  const newActiveDate = activeDate
+    .add(deltaMonth, 'month')
+    .set('date', 1) // select first day
+    .toDate()
 
   const calendarEvent = {
     type: `${nextOrPrevious}-month`,
