@@ -1,6 +1,6 @@
 <template>
   <div class="common-layout">
-    <ScheduleDrawer v-model="showCalendar" />
+    <ScheduleDrawer v-if="showCalendar" v-model="showCalendar" />
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
         <Header
