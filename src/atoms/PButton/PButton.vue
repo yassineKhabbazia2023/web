@@ -35,6 +35,7 @@ const props = withDefaults(defineProps<PButtonProps>(), {
   pLoading: false,
   pSize: 'default',
   pIconOnly: false,
+  pIsActive: false,
 })
 
 const nativeTypes = ['default', 'primary', 'success', 'warning', 'danger']
@@ -61,6 +62,11 @@ const pClassMapper = computed(() => {
     : {
         [`p-button--${button.value.buttonType}`]: true,
       }
-  return ['p-button', { 'p-button--icon': props.pIconOnly }, buttonTypeClass]
+  return [
+    'p-button',
+    { 'p-button--icon': props.pIconOnly },
+    buttonTypeClass,
+    { 'p-button--is-active': props.pIsActive },
+  ]
 })
 </script>

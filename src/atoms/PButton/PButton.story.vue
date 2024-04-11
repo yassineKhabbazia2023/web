@@ -7,6 +7,7 @@
         :pRound="basicButton.basicRound"
         :pCircle="basicButton.basicCircle"
         :pDisabled="basicButton.basicDisabled"
+        :pIsActive="basicButton.basicActive"
         :pLoading="basicButton.basicLoading"
         :pSize="basicButton.basicSize"
         @click="logEvent('click', { log: 'Button is clicked' })"
@@ -25,6 +26,7 @@
         <HstCheckbox v-model="basicButton.basicRound" title="Round" />
         <HstCheckbox v-model="basicButton.basicCircle" title="Circle" />
         <HstCheckbox v-model="basicButton.basicDisabled" title="Disabled" />
+        <HstCheckbox v-model="basicButton.basicActive" title="Active" />
         <HstCheckbox v-model="basicButton.basicLoading" title="Loading" />
         <HstRadio
           v-model="basicButton.basicType"
@@ -111,6 +113,7 @@ const basicButton = ref({
   basicRound: ref<PButtonProps['pRound']>(),
   basicCircle: ref<PButtonProps['pCircle']>(),
   basicDisabled: ref<PButtonProps['pDisabled']>(),
+  basicActive: ref<PButtonProps['pIsActive']>(),
   basicLoading: ref<PButtonProps['pLoading']>(),
   basicSize: ref<PButtonProps['pSize']>('default'),
   basicText: ref('Button'),

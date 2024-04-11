@@ -18,6 +18,7 @@ describe('test for PButton', () => {
         pLoading: true,
         pSize: 'small',
         pIconOnly: true,
+        pIsActive: true,
       },
     })
 
@@ -30,5 +31,6 @@ describe('test for PButton', () => {
     expect(wrapper.find('.is-circle').exists()).toBeTruthy()
     expect(wrapper.find('.is-disabled').exists()).toBeTruthy()
     expect(wrapper.find('.p-button--icon').exists()).toBeTruthy()
+    expect(wrapper.find('.p-button--is-active').exists()).toBeTruthy()
   })
 })

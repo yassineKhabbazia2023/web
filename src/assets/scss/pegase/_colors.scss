@@ -119,10 +119,10 @@ $typePulse: ();
 @each $palette, $colorsMap in $colors {
   @each $colorName, $colorValue in $colorsMap {
     .bg--#{$palette}-#{$colorName} {
-      background-color: $colorValue;
+      background-color: $colorValue !important;
     }
     .text-color--#{$palette}-#{$colorName} {
-      color: $colorValue;
+      color: $colorValue !important;
     }
   }
 }

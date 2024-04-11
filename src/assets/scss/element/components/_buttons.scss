@@ -129,7 +129,8 @@ $button-padding-horizontal: (
       border-color: var(--el-color-persian-700);
     }
 
-    &:focus {
+    &:focus,
+    &.p-button--is-active {
       background: var(--el-color-persian-800);
       border-color: var(--el-color-persian-800);
       color: $color-white;
@@ -154,7 +155,8 @@ $button-padding-horizontal: (
       color: var(--el-color-persian-700);
     }
 
-    &:focus {
+    &:focus,
+    &.p-button--is-active {
       background: $color-white;
       border-color: var(--el-color-persian-800);
       color: var(--el-color-persian-800);
@@ -180,7 +182,8 @@ $button-padding-horizontal: (
       color: var(--el-color-persian-700);
     }
 
-    &:focus {
+    &:focus,
+    &.p-button--is-active {
       background: var(--el-color-persian-100);
       border-color: var(--el-color-persian-100);
       color: var(--el-color-persian-800);
@@ -198,7 +201,8 @@ $button-padding-horizontal: (
   &.p-button--generic {
     &,
     &:hover,
-    &:focus {
+    &:focus,
+    &.p-button--is-active {
       background: transparent;
       border-color: transparent;
       color: getCssVar('color', 'neutral-gray-900');
