@@ -20,10 +20,9 @@
       @click="pushEventToListItem"
     >
       <Icon :status="item.globalStatus" />
-      <span class="p-schedule-deadline__content-label font-semibold">{{
-        `${isCollab
-          ? item.template.typeShortCollaborator
-          : item.template.typeShortCustomer} (${item.template?.typeLong})` }}</span>
+      <span class="p-schedule-deadline__content-label font-semibold">
+        {{ getTypeLabel(scheduleModelsByKey, item.template) }}
+      </span>
       <PIcon color="#666666">
         <PIArrowRight />
       </PIcon>
@@ -49,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tag from '@/schedule/components/Common/Tag'
 import Icon from '@/schedule/components/Common/Icon'
@@ -58,13 +58,15 @@ import {
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import type { Deadline, Status } from '@/schedule/models/Deadline'
 import { getDeadlineCompletionSummary } from '@/schedule/helpers/deadlineHelper'
+import { getScheduleModelsByKey } from '@/schedule/services'
+import { getTypeLabel } from '@/schedule/helpers/utils'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const isCollab = true
+const scheduleModelsByKey = ref<Record<string, string>>()
 
 defineProps({
   deadlineData: { type: Array as () => Deadline[], required: true },
@@ -104,6 +106,10 @@ const actionsBuilder = (status: Status): PToolboxItemProps[] => {
 const pushEventToListItem = () => {
   emit('update-drawer-visibility', '')
 }
+
+onMounted(() => {
+  scheduleModelsByKey.value = getScheduleModelsByKey('both')
+})
 </script>
 
 <style lang="scss" scoped>

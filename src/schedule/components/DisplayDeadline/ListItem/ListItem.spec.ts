@@ -11,8 +11,10 @@ import {
   doneDeadlinesByDateMock,
 } from '@/schedule/tests/mocks/Deadline'
 import { collabUser } from '@/schedule/tests/mocks/User'
+import { flushPromises } from '@vue/test-utils'
 
 const pinia = createTestingPinia()
+
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -25,6 +27,15 @@ vi.mock('@kpmg/common', () => ({
     },
   }),
 }))
+
+const TvaLabel = 'TVA (Taxe sur la valeur ajoutée)'
+const mockedGetScheduleModelsByKey = vi.fn((_: string) => ({
+  TVA: TvaLabel,
+}))
+vi.mock('@/schedule/services', () => ({
+  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
+}))
+
 const createWrapper = (itemData: DeadlinesByDate) =>
   wrapperFactory(ListItem, {
     props: { itemData },
@@ -36,17 +47,17 @@ const createWrapper = (itemData: DeadlinesByDate) =>
 commonStore(pinia)
 
 describe('schedule item', () => {
-  it('renders list item information with files progress', () => {
+  it('renders list item information with files progress', async () => {
     const itemData: DeadlinesByDate = notCompletelyDoneDeadlinesByDateMock[0]
 
     const wrapper = createWrapper(itemData)
+    await flushPromises()
     expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
       .toBe(dateToLocaleFormat(itemData.date))
 
-    const firstDeadLineTemplate = itemData.deadlines[0].template
-    const expectedText = `${firstDeadLineTemplate.typeShortCollaborator} (${firstDeadLineTemplate.typeLong})`
-    expect(wrapper.find('.p-schedule-deadline__content-label').text())
-      .toBe(expectedText)
+    const expectedText = TvaLabel
+    const deadLineContentLabel = wrapper.find('.p-schedule-deadline__content-label').text()
+    expect(deadLineContentLabel).toBe(expectedText)
 
     expect(wrapper.find('.p-schedule-deadline__content-progress').text())
       .toBe('1/2 files done')
@@ -55,17 +66,17 @@ describe('schedule item', () => {
       .toBe(itemData.deadlines[0].globalStatus)
   })
 
-  it('renders list item information with ibs name', () => {
+  it('renders list item information with ibs name', async () => {
     const itemData: DeadlinesByDate = doneDeadlinesByDateMock[0]
 
     const wrapper = createWrapper(itemData)
+    await flushPromises()
     expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
       .toBe(dateToLocaleFormat(itemData.date))
 
-    const firstDeadLineTemplate = itemData.deadlines[0].template
-    const expectedText = `${firstDeadLineTemplate.typeShortCollaborator} (${firstDeadLineTemplate.typeLong})`
-    expect(wrapper.find('.p-schedule-deadline__content-label').text())
-      .toBe(expectedText)
+    const expectedText = TvaLabel
+    const deadLineContentLabel = wrapper.find('.p-schedule-deadline__content-label').text()
+    expect(deadLineContentLabel).toBe(expectedText)
 
     expect(wrapper.find('.p-schedule-deadline__content-progress').text())
       .toBe(itemData.deadlines[0].accountList[0].name)

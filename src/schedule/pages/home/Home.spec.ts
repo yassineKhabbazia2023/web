@@ -20,6 +20,9 @@ vi.mock('@/schedule/services', () => ({
     key: 'TVA',
     label: 'TVA au 21',
   }],
+  getScheduleModelsByKey: () => ({
+    TVA: 'TVA au 21',
+  }),
   getSchedulesCollection: () => Promise.resolve([{
     date: TEST_DATE,
     deadlines: [

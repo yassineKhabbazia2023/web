@@ -10,6 +10,9 @@ import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 const TEST_DATE = '2024-08-14'
 
 vi.mock('@/schedule/services', () => ({
+  getScheduleModelsByKey: () => ({
+    TVA: 'TVA au 21 (Taxe sur la valeur ajoutée)',
+  }),
   getSchedulesCollection: () => Promise.resolve([{
     date: TEST_DATE,
     deadlines: getMockedDeadlines(),

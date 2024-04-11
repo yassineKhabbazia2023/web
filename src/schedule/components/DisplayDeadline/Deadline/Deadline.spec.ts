@@ -5,8 +5,10 @@ import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import type { Deadline as DeadlineData } from '@/schedule/models/Deadline'
 import { expect, describe, it, vi } from 'vitest'
 import { collabUser } from '@/schedule/tests/mocks/User'
+import { flushPromises } from '@vue/test-utils'
 
 const pinia = createTestingPinia()
+
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -20,6 +22,30 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
+const TvaLabel = 'TVA (Taxe sur la valeur ajoutée)'
+const mockedGetScheduleModelsByKey = vi.fn((_: string) => ({
+  TVA: TvaLabel,
+}))
+vi.mock('@/schedule/services', () => ({
+  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
+}))
+
+const deadlineData: DeadlineData[] = [{
+  id: 1,
+  time: '09:01:56',
+  template: {
+    typeShortCustomer: 'TVA',
+    typeShortCollaborator: 'TVA au 21',
+    typeLong: 'Taxe sur la valeur ajoutée',
+    typeShort: 'TVA',
+  },
+  globalStatus: 'Done',
+  accountList: [
+    { id: 1, name: 'Account 1', status: 'Done' },
+    { id: 2, name: 'Account 2', status: 'Todo' },
+  ],
+}]
+
 const createWrapper = (deadlineData: DeadlineData[]) =>
   wrapperFactory(Deadline, {
     props: { deadlineData },
@@ -29,27 +55,18 @@ const createWrapper = (deadlineData: DeadlineData[]) =>
   })
 
 describe('deadline component', () => {
-  it('renders deadline information with folders progression', () => {
-    const deadlineData: DeadlineData[] = [{
-      id: 1,
-      time: '09:01:56',
-      template: {
-        typeShortCustomer: 'TVA',
-        typeShortCollaborator: 'TVA au 21',
-        typeLong: 'Taxe sur la valeur ajoutée',
-        typeShort: 'TVA',
-      },
-      globalStatus: 'Done',
-      accountList: [
-        { id: 1, name: 'Account 1', status: 'Done' },
-        { id: 2, name: 'Account 2', status: 'Todo' },
-      ],
-    }]
+  it('should call getScheduleModelsByKey with proper arguments', async () => {
+    createWrapper(deadlineData)
+    await flushPromises()
+    expect(mockedGetScheduleModelsByKey).toHaveBeenCalledOnce()
+    expect(mockedGetScheduleModelsByKey).toHaveBeenNthCalledWith(1, 'both')
+  })
 
+  it('renders deadline information with folders progression', async () => {
     const wrapper = createWrapper(deadlineData)
-    expect(wrapper.find('.p-schedule-deadline__content-label').text()).toBe(
-      `${deadlineData[0].template.typeShortCollaborator} (${deadlineData[0].template.typeLong})`,
-    )
+    await flushPromises()
+    const TvaLabelText = wrapper.find('.p-schedule-deadline__content-label').text()
+    expect(TvaLabelText).toBe(TvaLabel)
     const completed = deadlineData[0].accountList
       .filter(account => account.status === 'Done').length
     const total = deadlineData[0].accountList.length
@@ -61,7 +78,7 @@ describe('deadline component', () => {
       .props('status')).toBe(deadlineData[0].globalStatus)
   })
 
-  it('should renders list item information with ibs name', () => {
+  it('should renders list item information with ibs name', async () => {
     const deadlineData: DeadlineData[] = [
       {
         id: 1,
@@ -80,6 +97,7 @@ describe('deadline component', () => {
     ]
 
     const wrapper = createWrapper(deadlineData)
+    await flushPromises()
 
     expect(wrapper.find('.p-schedule-deadline__content-progress').text())
       .toBe(deadlineData[0].accountList[0].name)
