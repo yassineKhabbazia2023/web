@@ -51,3 +51,14 @@ export function getScheduleModels(labelType: ScheduleModelLabelType): KeyLabel[]
       }
     })
 }
+
+export function getScheduleModelsByKey(labelType: ScheduleModelLabelType): Record<string, string> {
+  const scheduleModels = getScheduleModels(labelType)
+
+  return scheduleModels
+    .reduce<Record<string, string>>((scheduleModelsByKey, scheduleModel) => {
+      const { key, label } = scheduleModel
+      scheduleModelsByKey[key] = label
+      return scheduleModelsByKey
+    }, {})
+}
