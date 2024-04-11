@@ -6,6 +6,7 @@ interface Template {
   typeShortCustomer: string
   typeShortCollaborator: string
   typeLong: string
+  typeShort: string
 }
 
 export interface DeadlineAccounts extends Account {
