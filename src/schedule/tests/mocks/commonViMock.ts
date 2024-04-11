@@ -19,8 +19,10 @@ export const ScheduleServicesMock = {
     value: accountsCollection,
   }),
 }
+export const debounceMock = vi.fn((callback: Function) => callback)
 
 export const KpmgCommontMock = {
+  debounce: (callback: Function) => debounceMock(callback),
   commonStore: defineStore('common', {
     state: () => ({
       user: null,

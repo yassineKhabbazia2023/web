@@ -1,4 +1,5 @@
 import { nextTick } from 'vue'
+import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, type ComponentMountingOptions, type VueWrapper } from '@vue/test-utils'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
@@ -14,6 +15,8 @@ const createWrapper = (options: ComponentMountingOptions<any>) =>
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
 const OTHER_MONTH_DATE = '2024-11-03'
+
+vi.mock('@kpmg/common', () => KpmgCommontMock)
 
 vi.mock('@/schedule/services', () => ({
   getScheduleModels: () => [{
@@ -117,7 +120,7 @@ describe('home page', () => {
       expect(calendarWrapper.exists()).toBeFalsy()
     })
 
-isLoadingScheduleDrawer    describe('when activeDate is changed in calendar', () => {
+    describe('when activeDate is changed in calendar', () => {
       let wrapper: VueWrapper
       let calendarWrapper: VueWrapper
 

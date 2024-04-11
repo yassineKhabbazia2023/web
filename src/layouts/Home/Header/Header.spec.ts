@@ -1,3 +1,4 @@
+import { debounceMock } from '@/schedule/tests/mocks/commonViMock'
 import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
@@ -10,6 +11,7 @@ import Header from './'
 const { router, pinia, fetchUserData, fakeUser } = helpers()
 
 vi.mock('@kpmg/common', () => ({
+  debounce: (callback: Function) => debounceMock(callback),
   commonStore: defineStore('common', {
     state: () => ({
       user: null,

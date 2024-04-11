@@ -12,7 +12,7 @@
         v-model="scheduleViewType"
         :activeDate="activeDate"
         @display-deadline-drawer="updateDrawerDisplay"
-        @calendar-event="getMonthSchedulesCollection"
+        @calendar-event="onCalendarEvent"
       />
 
       <DeadlinesList
@@ -48,12 +48,14 @@
     v-model="isDrawerVisible"
     :defaultCreateDate="activeDate"
     appendToBody
+    @update:model-value="onCloseDrawer"
   />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { PLoader, PDatePicker } from '@kpmg/styleguide'
+import { debounce } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
@@ -70,6 +72,12 @@ const isLoading = ref(true)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
 
+const REFRESH_DATA_DELAY = 500
+
+const debounceRefreshData = debounce(() => {
+  refreshData()
+}, REFRESH_DATA_DELAY)
+
 const getMonthInterval = (date = new Date()) => {
   return {
     startDate: dateISOFormatter(new Date(date.setDate(1))),
@@ -80,16 +88,22 @@ const monthRange = getMonthInterval()
 const rangeDate = ref<[Date, Date]>([new Date(monthRange.startDate), new Date(monthRange.endDate)])
 
 onMounted(() => {
-  getMonthSchedulesCollection()
+  activeDate.value = new Date()
+  refreshData()
 })
 
 const updateDrawerDisplay = () => {
   isDrawerVisible.value = true
 }
 
-const getMonthSchedulesCollection = async ({ date } = { date: new Date() }) => {
+function onCalendarEvent({ date }: { date: Date }) {
+  activeDate.value = date
+  debounceRefreshData()
+}
+
+async function refreshData() {
   try {
-    activeDate.value = date
+    console.warn('fresh')
     isLoading.value = true
     const monthRange = getMonthInterval(new Date(activeDate.value))
     rangeDate.value = [new Date(monthRange.startDate), new Date(monthRange.endDate)]
@@ -101,16 +115,20 @@ const getMonthSchedulesCollection = async ({ date } = { date: new Date() }) => {
     isLoading.value = false
   }
 }
+
 function onUpdateActiveDate(newActiveDate: Date) {
   const shortActiveDate = getYearMonth(activeDate.value)
   const shortNewActiveDate = getYearMonth(newActiveDate)
 
-  const isSameMonth = shortActiveDate === shortNewActiveDate
-  if (isSameMonth) {
-    activeDate.value = newActiveDate
-  } else {
-    getMonthSchedulesCollection({ date: newActiveDate })
+  activeDate.value = newActiveDate
+  const isNotSameMonth = shortActiveDate !== shortNewActiveDate
+  if (isNotSameMonth) {
+    debounceRefreshData()
   }
+}
+
+function onCloseDrawer() {
+  debounceRefreshData()
 }
 </script>
 
