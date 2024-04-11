@@ -107,14 +107,14 @@ function handlePreviousClick() {
 }
 
 const userStore = commonStore()
-const currentUserId = userStore.$state.user?.id ?? '0'
+const currentUserId = userStore.$state.user?.id
 
 async function handleNextClick() {
   if (activeStep.value === 1 && flowType.value === DelegationFlowType.FULL) {
     const delegationRequest = {
-      delegatorId: Number.parseInt(currentUserId),
+      delegatorId: currentUserId,
       delegationDetails: formatDelegateSummaryForGtwDelegationRequest(delegationDetails.value),
-      accountIds: getCurrentUserAccounts,
+      accountIds: getCurrentUserAccounts(),
     }
     await delegateFolder(delegationRequest)
   } else {
@@ -156,7 +156,7 @@ const formatDelegateSummaryForGtwDelegationRequest = (delegationDetails: Delegat
     .map(({ delegate }) => (
       {
         delegateeId: delegate.id,
-        startDate: Date.now(),
+        startDate: new Date().toISOString(),
         endDate: null,
         note: null,
       }
@@ -172,12 +172,7 @@ const delegateFolder = async (delegationRequest: any) => {
   try {
     await commonApi().gateway.post(
       'wallet/api/delegations',
-      JSON.stringify(delegationRequest),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+      delegationRequest,
     )
     displaySuccessNotification()
   } catch (err) {
@@ -192,7 +187,7 @@ const displaySuccessNotification = () => {
     message: t('successNotificationMessage'),
     icon: PICheck,
     showClose: true,
-    customClass: 'error',
+    customClass: 'success',
     position: 'bottom-right',
   })
 }
@@ -208,7 +203,6 @@ const displayFailureNotification = () => {
 }
 
 const closeAndResetDrawer = () => {
-  activeStep.value = 0
   emit('update:modelValue', false)
 }
 </script>
@@ -236,5 +230,4 @@ const closeAndResetDrawer = () => {
     submitButtonLabel: 'Valider'
     successNotificationMessage: 'Votre portefeuille a été délégué avec succès.'
     failureNotificationMessage: 'Votre portefeuille n’a pas été délégué suite à une erreur technique.'
-
 </i18n>
