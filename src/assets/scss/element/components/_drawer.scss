@@ -19,9 +19,9 @@ $drawer: (
 
     .p-drawer {
       height: 100%;
-      padding: 6rem;
+      padding-top: 6rem;
 
-      &__body {
+      .el-drawer__body {
         padding: 0;
       }
     }
