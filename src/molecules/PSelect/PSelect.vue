@@ -22,7 +22,7 @@
     :loadingText="pLoadingText"
     :noMatchText="pNoMatchText"
     :noDataText="pNoDataText"
-    :popperClass="pPoppperClass"
+    :popperClass="pPopperClass"
     :reserveKeyword="pReserveKeyword"
     :defaultFirstOption="pDefaultFirstOption"
     :teleported="pTeleported"
@@ -39,7 +39,7 @@
     :popperOptions="pPopperOptions"
     :ariaLabel="pAriaLabel"
   >
-    <template #header>
+    <template v-if="$slots.header" #header>
       <slot name="header" />
     </template>
     <slot />
@@ -60,7 +60,7 @@ withDefaults(defineProps<PSelectProps>(), {
   pCollapseTagsTooltip: false,
   pMultipleLimit: 0,
   pName: undefined,
-  pEffect: 'light',
+  pEffect: 'dark',
   pAutocomplete: 'off',
   pPlaceholder: undefined,
   pFilterable: false,
@@ -73,7 +73,7 @@ withDefaults(defineProps<PSelectProps>(), {
   pLoadingText: undefined,
   pNoMatchText: undefined,
   pNoDataText: undefined,
-  pPoppperClass: '',
+  pPopperClass: '',
   pReserveKeyword: true,
   pDefaultFirstOption: false,
   pTeleported: true,

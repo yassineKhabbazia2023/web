@@ -22,7 +22,7 @@
     :loadingText="pLoadingText"
     :noMatchText="pNoMatchText"
     :noDataText="pNoDataText"
-    :popperClass="pPoppperClass"
+    :popperClass="pPopperClass"
     :reserveKeyword="pReserveKeyword"
     :defaultFirstOption="pDefaultFirstOption"
     :teleported="pTeleported"

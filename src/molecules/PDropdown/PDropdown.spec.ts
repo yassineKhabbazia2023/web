@@ -30,7 +30,7 @@ function getPropsValue(pOptions: PDropdownOption[]) {
     pLoadingText: 'loading text',
     pNoMatchText: 'no match text',
     pNoDataText: 'no data text',
-    pPoppperClass: 'popper class',
+    pPopperClass: 'popper class',
     pReserveKeyword: true,
     pDefaultFirstOption: false,
     pTeleported: false,
@@ -98,7 +98,7 @@ describe('test PDropdown', () => {
         loadingText: propsValue.pLoadingText,
         noMatchText: propsValue.pNoMatchText,
         noDataText: propsValue.pNoDataText,
-        popperClass: propsValue.pPoppperClass,
+        popperClass: propsValue.pPopperClass,
         reserveKeyword: propsValue.pReserveKeyword,
         defaultFirstOption: propsValue.pDefaultFirstOption,
         teleported: propsValue.pTeleported,
@@ -161,7 +161,7 @@ describe('test PDropdown', () => {
       expect(componentVM.loadingText).toBe(propsValue.pLoadingText)
       expect(componentVM.noMatchText).toBe(propsValue.pNoMatchText)
       expect(componentVM.noDataText).toBe(propsValue.pNoDataText)
-      expect(componentVM.popperClass).toBe(propsValue.pPoppperClass)
+      expect(componentVM.popperClass).toBe(propsValue.pPopperClass)
       expect(componentVM.reserveKeyword).toBe(propsValue.pReserveKeyword)
       expect(componentVM.defaultFirstOption).toBe(propsValue.pDefaultFirstOption)
       expect(componentVM.teleported).toBe(propsValue.pTeleported)

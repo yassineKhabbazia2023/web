@@ -19,7 +19,11 @@ $drawer: (
 
     .p-drawer {
       height: 100%;
-      padding-top: 6rem;
+      padding: 6rem;
+
+      &__body {
+        padding: 0;
+      }
     }
   }
 

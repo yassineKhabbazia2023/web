@@ -24,7 +24,7 @@ export interface PSelectProps {
   pLoadingText?: string
   pNoMatchText?: string
   pNoDataText?: string
-  pPoppperClass?: string
+  pPopperClass?: string
   pReserveKeyword?: boolean
   pDefaultFirstOption?: boolean
   pTeleported?: boolean

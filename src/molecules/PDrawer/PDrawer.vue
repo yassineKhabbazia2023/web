@@ -20,6 +20,7 @@
           <PButton
             pType="generic"
             pPlain
+            pIconOnly
             @click="$emit('close-drawer-button')"
             class="p-drawer__close-button"
           >
@@ -53,7 +54,7 @@
       />
     </template>
     <slot />
-    <template #footer>
+    <template v-if="$slots.footer" #footer>
       <slot name="footer" />
     </template>
   </ElDrawer>

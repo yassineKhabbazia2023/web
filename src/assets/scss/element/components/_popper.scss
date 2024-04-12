@@ -1,4 +1,5 @@
-.p-tooltip.el-popper {
+.p-tooltip.el-popper,
+.el-popper:not(.el-select__popper) {
   $self: &;
   &.is-dark {
     border: 1px solid var(--el-color-neutral-gray-700);
