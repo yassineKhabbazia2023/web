@@ -2,8 +2,11 @@ import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
 import * as mandateService from '@/services/mandate'
+import * as NotificationHelper from '@/helpers/NotificationHelper'
+import type { NotificationHandle } from '@/helpers/NotificationHelperTypes'
 import { nextTick } from 'vue'
 import { getMockedMandatesData } from '@/../tests/mocks/mandateMock'
+import { flushPromises } from '@vue/test-utils'
 
 interface CustomWindow extends Window {
   showSaveFilePicker?: (_: any) => Promise<any>
@@ -11,6 +14,10 @@ interface CustomWindow extends Window {
 }
 declare let window: CustomWindow
 declare let document: any
+
+vi.mock('@/helpers/NotificationHelper', () => ({
+  showNotification: vi.fn(),
+}))
 
 vi.mock('@/services/mandate', () => {
   return {
@@ -146,6 +153,10 @@ describe('mandate collection', () => {
     expect(sortColumnEvent[1]).toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
   })
   it('submit the signed mandate', async () => {
+    const mockedNotification = vi.fn()
+    const showNotificationSpy = vi
+      .spyOn(NotificationHelper, 'showNotification')
+      .mockReturnValue(mockedNotification as unknown as NotificationHandle)
     const wrapper = createWrapper({
       data: [],
     })
@@ -173,8 +184,17 @@ describe('mandate collection', () => {
     // Dispatch the change event
     const changeEvent = new Event('change', { bubbles: true })
     fileInput.dispatchEvent(changeEvent)
+    await flushPromises()
+    const notificationMessages = {
+      error: 'There was an error during transmission',
+      loading: 'The signed mandate is being transmitted...',
+      success: 'The signed mandate has been submitted!',
+    }
 
     expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: '123', file })
+    expect(showNotificationSpy).toHaveBeenCalledTimes(2)
+    expect(showNotificationSpy).toHaveBeenNthCalledWith(1, notificationMessages, 'loading')
+    expect(showNotificationSpy).toHaveBeenNthCalledWith(2, notificationMessages, 'success', mockedNotification)
   })
   it('renders the mandate table click on download unsigned mandate', async () => {
     const wrapper = createWrapper({

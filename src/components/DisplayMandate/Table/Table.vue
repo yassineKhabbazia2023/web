@@ -108,7 +108,6 @@
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
-import Tag from '@/components/Common/Tag'
 import {
   PTable,
   PTableColumn,
@@ -119,6 +118,7 @@ import {
   PDialog,
   PAlert,
 } from '@kpmg/styleguide'
+import Tag from '@/components/Common/Tag'
 import { dateFormatter, downloadFile } from '@/helpers/utils'
 import type { TableProps, ActionEvent } from './Table'
 import {
@@ -127,6 +127,8 @@ import {
   uploadSignedMandate,
   terminateMandate,
 } from '@/services/mandate'
+import { showNotification } from '@/helpers/NotificationHelper'
+import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
 
 declare let window: any
 
@@ -301,13 +303,18 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
 }
 
 const handleFileUpload = async (event: any, id: string) => {
+  const messages = getNotificationMessages()
+  const notification = showNotification(messages, 'loading')
+
   try {
     const filesCollection = event.target.files
     if (filesCollection.length > 0) {
       await uploadSignedMandate({ mandateId: id, file: filesCollection[0] })
     }
+    showNotification(messages, 'success', notification)
   } catch (error) {
     console.error('Error in mandate upload ', error)
+    showNotification(messages, 'error', notification)
   }
 }
 
@@ -325,10 +332,13 @@ const terminateMandateAction = async (mandateId: string) => {
   }
 }
 
-defineExpose({
-  sortColumnChange,
-  handleFileUpload,
-})
+function getNotificationMessages(): NotificationMessagesByType {
+  return {
+    loading: t('notification.loading'),
+    success: t('notification.success'),
+    error: t('notification.error'),
+  }
+}
 </script>
 
 <i18n lang="yaml">
@@ -355,6 +365,10 @@ defineExpose({
           the bank movements of this account.'
         cancel-popup: 'Cancel'
         terminate-mandate-popup: 'Terminate'
+        notification:
+          loading: 'The signed mandate is being transmitted...'
+          success: 'The signed mandate has been submitted!'
+          error: 'There was an error during transmission'
     fr-FR:
         ibs-code: 'Code IBS'
         company-name: 'Raison sociale'
@@ -378,4 +392,8 @@ defineExpose({
           mouvements bancaires de ce compte.'
         cancel-popup: 'Annuler'
         terminate-mandate-popup: 'Résilier'
+        notification:
+          loading: 'Le mandat signé est en cours de transmission...'
+          success: 'Le mandat signé a bien été déposé !'
+          error: 'Il y a eu une erreur lors de la transmission'
 </i18n>
