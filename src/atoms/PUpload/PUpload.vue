@@ -60,6 +60,7 @@ const props = withDefaults(defineProps<UploadProps>(), {
   pUploadType: 'slot',
   pShowFileList: false,
   pAction: '#',
+  pShouldClearPreviousFilesListOnUpload: false,
 })
 
 const pClassMapper = computed(() => ({
@@ -76,6 +77,9 @@ const emitFilesEvent = () => {
   const filesToUpload = files.value.map((file) => file.raw as File)
   return new Promise((resolve) => {
     resolve(emit('files-selected', filesToUpload))
+    if (props.pShouldClearPreviousFilesListOnUpload) {
+      files.value = []
+    }
   })
 }
 </script>

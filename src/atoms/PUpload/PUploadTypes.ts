@@ -9,4 +9,5 @@ export interface UploadProps {
   pTextLimitSize?: string
   pPrefixLabelFileLine?: string
   pSuffixLabelFileLine?: string
+  pShouldClearPreviousFilesListOnUpload?: boolean
 }

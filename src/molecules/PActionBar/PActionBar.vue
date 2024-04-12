@@ -10,6 +10,7 @@
           :pDrag="false"
           @files-selected="handleFilesSelected"
           pUploadType="slot"
+          pShouldClearPreviousFilesListOnUpload
         >
           <PButton
             :pType="item.pButton.pType"
