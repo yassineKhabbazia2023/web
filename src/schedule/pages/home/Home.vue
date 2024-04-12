@@ -64,6 +64,7 @@ import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import { dateISOFormatter, daysInTheMonth, getYearMonth } from '@/schedule/helpers/utils'
 import { getDates } from './HomeUtils'
+import type { HomeProps } from './HomeTypes'
 
 const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
@@ -72,7 +73,7 @@ const isLoading = ref(true)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
 
-const REFRESH_DATA_DELAY = 500
+const REFRESH_DATA_DELAY = 250
 
 const debounceRefreshData = debounce(() => {
   refreshData()
@@ -87,8 +88,12 @@ const getMonthInterval = (date = new Date()) => {
 const monthRange = getMonthInterval()
 const rangeDate = ref<[Date, Date]>([new Date(monthRange.startDate), new Date(monthRange.endDate)])
 
+const props = defineProps<HomeProps>()
+
 onMounted(() => {
-  activeDate.value = new Date()
+  activeDate.value = props.defaultActiveDateString
+    ? new Date(props.defaultActiveDateString)
+    : new Date()
   refreshData()
 })
 
@@ -103,7 +108,6 @@ function onCalendarEvent({ date }: { date: Date }) {
 
 async function refreshData() {
   try {
-    console.warn('fresh')
     isLoading.value = true
     const monthRange = getMonthInterval(new Date(activeDate.value))
     rangeDate.value = [new Date(monthRange.startDate), new Date(monthRange.endDate)]

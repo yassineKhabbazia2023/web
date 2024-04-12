@@ -126,6 +126,9 @@ describe('home page', () => {
 
       beforeEach(async () => {
         wrapper = createWrapper({
+          props: {
+            defaultActiveDate: TEST_DATE,
+          },
           global: {
             stubs: {
               ScheduleDrawer,
