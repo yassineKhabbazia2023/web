@@ -2,7 +2,7 @@
   <div class="p-pagination">
     <div class="p-pagination__select">
       <PSelect
-        v-model="selectedRange"
+        v-model="modelPageSize"
         placement="top"
         :data-testid="`${pTestIdRoot}-pagination-select`"
       >
