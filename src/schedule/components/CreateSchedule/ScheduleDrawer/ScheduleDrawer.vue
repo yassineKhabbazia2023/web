@@ -94,12 +94,14 @@ const triggerFormEvaluation = async () => {
 
 const sendReminder = async (schedule: Schedule) => {
   try {
+    loading.value = true
     loadFormIndicator.value = true
     await postSchedule(schedule)
     isDrawerOpened.value = false
   } catch (error) {
     console.warn(error)
   } finally {
+    loading.value = false
     loadFormIndicator.value = false
   }
 }

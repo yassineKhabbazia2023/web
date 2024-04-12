@@ -12,7 +12,7 @@
         v-model="scheduleViewType"
         :activeDate="activeDate"
         @display-deadline-drawer="updateDrawerDisplay"
-        @calendar-event="getMonthSchedulesCollection"
+        @calendar-event="onCalendarEvent"
       />
 
       <DeadlinesList
@@ -43,25 +43,28 @@
       />
     </div>
   </div>
-  <Drawer
+  <ScheduleDrawer
     v-if="isDrawerVisible"
     v-model="isDrawerVisible"
     :defaultCreateDate="activeDate"
     appendToBody
+    @update:model-value="onCloseDrawer"
   />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { PLoader, PDatePicker } from '@kpmg/styleguide'
+import { debounce } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
-import Drawer from '@/schedule/components/CreateSchedule/Drawer'
+import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import { dateISOFormatter, daysInTheMonth, getYearMonth } from '@/schedule/helpers/utils'
 import { getDates } from './HomeUtils'
+import type { HomeProps } from './HomeTypes'
 
 const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
@@ -69,6 +72,12 @@ const scheduleDates = ref<string[]>([])
 const isLoading = ref(true)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
+
+const REFRESH_DATA_DELAY = 250
+
+const debounceRefreshData = debounce(() => {
+  refreshData()
+}, REFRESH_DATA_DELAY)
 
 const getMonthInterval = (date = new Date()) => {
   return {
@@ -79,17 +88,26 @@ const getMonthInterval = (date = new Date()) => {
 const monthRange = getMonthInterval()
 const rangeDate = ref<[Date, Date]>([new Date(monthRange.startDate), new Date(monthRange.endDate)])
 
+const props = defineProps<HomeProps>()
+
 onMounted(() => {
-  getMonthSchedulesCollection()
+  activeDate.value = props.defaultActiveDateString
+    ? new Date(props.defaultActiveDateString)
+    : new Date()
+  refreshData()
 })
 
 const updateDrawerDisplay = () => {
   isDrawerVisible.value = true
 }
 
-const getMonthSchedulesCollection = async ({ date } = { date: new Date() }) => {
+function onCalendarEvent({ date }: { date: Date }) {
+  activeDate.value = date
+  debounceRefreshData()
+}
+
+async function refreshData() {
   try {
-    activeDate.value = date
     isLoading.value = true
     const monthRange = getMonthInterval(new Date(activeDate.value))
     rangeDate.value = [new Date(monthRange.startDate), new Date(monthRange.endDate)]
@@ -101,16 +119,20 @@ const getMonthSchedulesCollection = async ({ date } = { date: new Date() }) => {
     isLoading.value = false
   }
 }
+
 function onUpdateActiveDate(newActiveDate: Date) {
   const shortActiveDate = getYearMonth(activeDate.value)
   const shortNewActiveDate = getYearMonth(newActiveDate)
 
-  const isSameMonth = shortActiveDate === shortNewActiveDate
-  if (isSameMonth) {
-    activeDate.value = newActiveDate
-  } else {
-    getMonthSchedulesCollection({ date: newActiveDate })
+  activeDate.value = newActiveDate
+  const isNotSameMonth = shortActiveDate !== shortNewActiveDate
+  if (isNotSameMonth) {
+    debounceRefreshData()
   }
+}
+
+function onCloseDrawer() {
+  debounceRefreshData()
 }
 </script>
 

@@ -1,9 +1,10 @@
 import { nextTick } from 'vue'
+import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, type ComponentMountingOptions, type VueWrapper } from '@vue/test-utils'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import Home from '@/schedule/pages/home'
-import Drawer from '@/schedule/components/CreateSchedule/Drawer'
+import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
 import ActionBar from '@/schedule/components/ActionBar'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
@@ -14,6 +15,8 @@ const createWrapper = (options: ComponentMountingOptions<any>) =>
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
 const OTHER_MONTH_DATE = '2024-11-03'
+
+vi.mock('@kpmg/common', () => KpmgCommontMock)
 
 vi.mock('@/schedule/services', () => ({
   getScheduleModels: () => [{
@@ -53,7 +56,7 @@ describe('home page', () => {
     const wrapper = createWrapper({
       global: {
         stubs: {
-          Drawer,
+          ScheduleDrawer,
           DeadlinesList,
         },
       },
@@ -64,15 +67,15 @@ describe('home page', () => {
     const wrapper = createWrapper({
       global: {
         stubs: {
-          Drawer,
+          ScheduleDrawer,
           DeadlinesList,
         },
       },
     })
-    expect(wrapper.findComponent(Drawer).exists()).toBeFalsy()
+    expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeFalsy()
     wrapper.vm.updateDrawerDisplay()
     await nextTick()
-    expect(wrapper.findComponent(Drawer).exists()).toBeTruthy()
+    expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
   })
 
   describe('interactions', () => {
@@ -80,23 +83,23 @@ describe('home page', () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
-            Drawer,
+            ScheduleDrawer,
             DeadlinesList,
             ActionBar,
           },
         },
       })
 
-      expect(wrapper.findComponent(Drawer).exists()).toBeFalsy()
+      expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeFalsy()
       await wrapper.findComponent(ActionBar).vm.$emit('display-deadline-drawer')
-      expect(wrapper.findComponent(Drawer).exists()).toBeTruthy()
+      expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
     })
 
     it('should update the visible section on activeScheduleViewType change', async () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
-            Drawer,
+            ScheduleDrawer,
             DeadlinesList,
             ActionBar,
           },
@@ -123,9 +126,12 @@ describe('home page', () => {
 
       beforeEach(async () => {
         wrapper = createWrapper({
+          props: {
+            defaultActiveDate: TEST_DATE,
+          },
           global: {
             stubs: {
-              Drawer,
+              ScheduleDrawer,
               DeadlinesList,
               ActionBar,
             },
@@ -163,7 +169,7 @@ describe('home page', () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
-            Drawer,
+            ScheduleDrawer,
             DeadlinesList,
             ActionBar,
           },
