@@ -12,6 +12,7 @@
     </div>
     <CreateScheduleForm
       v-else
+      :defaultCreateDate="defaultCreateDate"
       :recipientsCollection="recipientsCollection"
       :checkValidity="evaluateForm"
       @update-schedule-model="sendReminder"
@@ -34,7 +35,7 @@
 import { ref, onMounted, computed, nextTick } from 'vue'
 import type { Options }
   from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
-import type { Schedule } from '@/schedule/components/CreateSchedule/Form/CreateScheduleFormModel'
+import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { getAccountsCollection, postSchedule } from '@/schedule/services'
 import {
   PButton,
@@ -43,7 +44,7 @@ import {
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes.ts'
-import CreateScheduleForm from '@/schedule/components/CreateSchedule/Form'
+import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
 
 const { t } = useI18n({

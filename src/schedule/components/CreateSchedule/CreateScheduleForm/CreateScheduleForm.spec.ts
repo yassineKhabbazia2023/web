@@ -7,7 +7,7 @@ import {
 } from '@kpmg/styleguide'
 import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
 import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
-import type { FormProps } from './FormTypes'
+import type { FormProps } from './CreateScheduleFormTypes'
 import { accountsCollection, recipientsIdCollection } from '@/schedule/tests/mocks/Account'
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
 import { createScheduleMock, createScheduleMockWithTypeLong } from '@/schedule/tests/mocks/Deadline'

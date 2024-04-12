@@ -3,7 +3,7 @@ import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import Drawer from '.'
 import { expect, describe, it, vi } from 'vitest'
 import * as scheduleService from '@/schedule/services'
-import CreateScheduleForm from '@/schedule/components/CreateSchedule/Form'
+import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { createScheduleMockWithTypeLong } from '@/schedule/tests/mocks/Deadline'
 

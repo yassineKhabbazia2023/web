@@ -57,7 +57,7 @@
 
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, onMounted } from 'vue'
 import {
   PForm,
   PFormItem,
@@ -67,7 +67,7 @@ import {
   PInput,
 } from '@kpmg/styleguide'
 import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
-import type { FormProps } from './FormTypes.ts'
+import type { FormProps } from './CreateScheduleFormTypes.ts'
 import type { Schedule } from './CreateScheduleFormModel.ts'
 import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
@@ -93,7 +93,7 @@ const createScheduleFormRef = ref<any>()
 const createScheduleForm = reactive({
   reminder: '',
   recipients: [],
-  date: '',
+  date: new Date(),
   description: '',
 })
 
@@ -154,6 +154,11 @@ const reminderBuilder = (reminder: string): Schedule['template'] => {
     typeLong: reminder,
   }
 }
+onMounted(() => {
+  if (props.defaultCreateDate) {
+    createScheduleForm.date = props.defaultCreateDate
+  }
+})
 </script>
 
 <style lang="scss" scoped>

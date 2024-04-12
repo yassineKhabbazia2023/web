@@ -46,6 +46,7 @@
   <Drawer
     v-if="isDrawerVisible"
     v-model="isDrawerVisible"
+    :defaultCreateDate="activeDate"
     appendToBody
   />
 </template>

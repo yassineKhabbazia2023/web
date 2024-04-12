@@ -1,4 +1,4 @@
-import type { Schedule } from '@/schedule/components/CreateSchedule/Form/CreateScheduleFormModel'
+import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { recipientsIdCollection } from './Account'
 import type { DeadlinesByDate, Deadline, DeadlineAccounts } from '@/schedule/models/Deadline'
 
