@@ -6,6 +6,7 @@ import type { Contact } from '../contact/contactTypes'
 import type { Role, selectedRoleId } from
   '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabRole/types'
 
+const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
 export interface GenericPageResponse<T> {
     items: T[]
     currentPage: number
@@ -84,10 +85,10 @@ export const getCollaborators = async (
       },
     )
 
-    return response?.data || { items: [], currentPage: 0, totalPages: 0, totalItems: 0 }
+    return response?.data || defaultValue
   } catch (error) {
     handleRequestError('fetching collabs', error)
-    return { items: [], currentPage: 0, totalPages: 0, totalItems: 0 }
+    return defaultValue
   }
 }
 
