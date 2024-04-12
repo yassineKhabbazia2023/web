@@ -22,7 +22,7 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--1 flex--basis-10",
         "pDisabled": true,
-        "pFieldKey": "legal.naf.nafCode",
+        "pFieldKey": "legal.naf[0].nafCode",
         "pFieldType": "input",
         "pLabel": "Code NAF"
       },
