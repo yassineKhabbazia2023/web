@@ -61,10 +61,15 @@
     </PPagination>
   </div>
 
-  <PLoader
+  <div
     v-show="isLoading"
-    pType="gradient"
-    size="42" />
+    class="loader flex flex--align-items-center flex--justify-content-center"
+  >
+    <PLoader
+      pType="gradient"
+      size="42"
+    />
+  </div>
 
   <DocumentRename
     v-if="selectedDocuments && selectedDocuments.length === 1"
@@ -262,7 +267,7 @@ const paginationLabel = computed(() => {
 
   return `${1 + ((currentPage.value - 1) * currentPageSize.value)}
    - ${((currentPage.value - 1) * currentPageSize.value) +
-    documents.value.documentsPage.items.length} 
+    documents.value.documentsPage.items.length}
    sur ${documents.value.documentsPage.totalItems}`
 })
 
@@ -541,6 +546,9 @@ const handleActionBarButtonClick = async (actionName: string) => {
 }
 </script>
 <style lang="scss">
+.loader {
+  height: 100%;
+}
 .documents-breadcrumb {
   padding: 24px 0 0 16px;
 }
