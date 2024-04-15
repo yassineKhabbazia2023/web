@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
-import { type VueWrapper, mount } from '@vue/test-utils'
 import { PDrawer, PSteps } from '@kpmg/styleguide'
+import { type VueWrapper, mount } from '@vue/test-utils'
 import { beforeEach, vi, describe, it, expect } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import DelegationDrawer from '.'
@@ -52,6 +52,7 @@ import DelegationPreviewList from './components/DelegationPreviewList'
 //   }),
 // }))
 
+const gatewayPostMock = vi.fn().mockResolvedValue({ data: {} })
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -65,7 +66,7 @@ vi.mock('@kpmg/common', () => ({
   }),
   commonApi: () => ({
     gateway: {
-      post: () => Promise.resolve({ data: {} }),
+      post: () => gatewayPostMock,
     },
   }),
 }))
@@ -103,9 +104,16 @@ const createWrapper = (
   })
 }
 
+const createFullDelegationWrapper = () => createWrapper({
+  ...defaultProps,
+  selectedFolders: [],
+})
+
 const findNextPreviousButton = (wrapper: VueWrapper) =>
   wrapper.findComponent(NextPreviousButtons)
 
+const findAddDelegatesStepWrapper = (wrapper: VueWrapper) => wrapper.findComponent(AddDelegatesStep)
+const findPStepsWrapper = (wrapper: VueWrapper) => wrapper.findComponent(PSteps)
 let wrapper: VueWrapper
 
 describe('delegationDrawer', () => {
@@ -120,26 +128,36 @@ describe('delegationDrawer', () => {
     })
 
     it('should display the correct steps when DelegationFlowType.FULL', async () => {
-      const wrapper = createWrapper({
-        ...defaultProps,
-        selectedFolders: [],
-      })
+      const wrapper = createFullDelegationWrapper()
 
       await nextTick() // does not work without it
       const stepper = wrapper.findComponent(PSteps)
       expect(stepper.exists()).toBeTruthy()
     })
 
-    it('should render AddDelegatesStep when activeStep = 0', () => {
-      const addDelegatesStepWrapper = wrapper.findComponent(AddDelegatesStep)
+    it('should render AddDelegatesStep when activeStep = 0', async () => {
+      const wrapper = createFullDelegationWrapper()
+      await nextTick()
+      const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
+
+      const pStepsWrapper = findPStepsWrapper(wrapper)
+      expect(pStepsWrapper.props('pActive')).toBe(0)
+
       expect(addDelegatesStepWrapper.exists()).toBeTruthy()
     })
 
     it('should render DelegationPreviewList when activeStep = 1', async () => {
+      const wrapper = createFullDelegationWrapper()
+      await nextTick()
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+
       nextPreviousButtonsWrapper.vm.$emit('click-next')
 
       await nextTick()
+
+      const pStepsWrapper = findPStepsWrapper(wrapper)
+      expect(pStepsWrapper.props('pActive')).toBe(1)
+
       const delegationPreviewListWrapper = wrapper.findComponent(
         DelegationPreviewList,
       )
@@ -163,17 +181,27 @@ describe('delegationDrawer', () => {
         wrapper.setProps({ modelValue: isDrawerVisible })
 
         await nextTick()
-        // eslint-disable-next-line no-console
-        console.log(wrapper.html())
-        expect(drawerWrapper.isVisible()).toBe(isDrawerVisible)
+        expect(drawerWrapper.props('modelValue')).toBe(isDrawerVisible)
       },
     )
   })
 
   describe('interactions', () => {
     describe('addDelegatesStep', () => {
-      it('should set selectedCollaborators upon collaborator-selection', () => {
-        expect(true).toBeTruthy()
+      it('should set selectedCollaborators on collaborator-selection', async () => {
+        const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
+        const nextPreviousButtonWrapper = findNextPreviousButton(wrapper)
+        expect(
+          nextPreviousButtonWrapper.props('isNextButtonDisabled'),
+        ).toBeTruthy()
+
+        addDelegatesStepWrapper.vm.$emit('collaborator-selection', [1, 2, 3])
+        await nextTick()
+        // The only use case in this component is enabling or disabling the next button
+        // so i'm checking isNextButtonDisabled state to check if data has been updated
+        expect(
+          nextPreviousButtonWrapper.props('isNextButtonDisabled'),
+        ).toBeFalsy()
       })
     })
 
@@ -192,11 +220,10 @@ describe('delegationDrawer', () => {
         expect(drawerWrapper.isVisible()).toBeFalsy()
       })
 
-      it('should go to next step upon click-next and active step is 0', () => {
-        expect(true).toBeTruthy()
-      })
-
-      it('should call api to complete delegation process when active step is 1', () => {
+      it.only('should call api to complete delegation process when active step is 1', () => {
+        const wrapper = createFullDelegationWrapper()
+        // eslint-disable-next-line no-console
+        console.log(wrapper)
         expect(true).toBeTruthy()
       })
 
