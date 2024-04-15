@@ -1,8 +1,9 @@
 <template>
   <PInput
     v-model="searchModel"
-    data-testid="search-mandate-test"
-    :placeholder="t('search')">
+    :placeholder="t('search')"
+    data-testid="mandate-search-bar"
+  >
     <template #prefix>
       <PIcon class="el-button__icon--left">
         <PISearch />

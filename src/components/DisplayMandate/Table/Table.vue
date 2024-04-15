@@ -4,6 +4,7 @@
       :pData="mandateCollection"
       pStripe
       :emptyText="t('no-data')"
+      data-testid="mandate-table"
       @sort-change="sortColumnChange"
     >
       <template v-for="({ label, prop, sortable, width }, index) in tableHead" :key="index">
@@ -19,7 +20,9 @@
             <PToolbox
               trigger="click"
               :pElements="actionsBuilder(scope.row.statusCode)"
-              @p-toolbox-item-clicked="actionClicked($event, scope.row)">
+              data-testid="mandate-actions-toolbox"
+              @p-toolbox-item-clicked="actionClicked($event, scope.row)"
+            >
               <PButton pType="generic">
                 <PIcon color="#A4A4A4" size="14px">
                   <PIThreeDots />
@@ -38,6 +41,18 @@
         >
           <template #default="scope">
             <Tag v-if="scope.row.statusCode" :status="scope.row.statusCode" />
+          </template>
+        </PTableColumn>
+        <PTableColumn
+          v-else-if="[t('company-name'), t('bank')].includes(label)"
+          :prop="prop"
+          :sortable="sortable"
+          :width="width"
+        >
+          <template #header>
+            <span :data-testid="`mandate-${label === t('bank') ? 'bank' : 'company'}-column`">
+              {{ label === t('bank') ? t('bank') : t('company-name') }}
+            </span>
           </template>
         </PTableColumn>
         <PTableColumn
