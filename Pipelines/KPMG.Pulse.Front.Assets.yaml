@@ -22,13 +22,20 @@ parameters:
   type: string
   default: 'standard'
 # REC Iteration
-- name: RECiterations
+- name: recIterations
   type: object
   displayName: "Technical parameter : don t modify it !"
   default:
   - 1
   - 2
   - 3
+# PRD Iteration
+- name: prdIterations
+  type: object
+  displayName: "Technical parameter : don t modify it !"
+  default:
+  - 1
+  - 2
 
 resources:
   repositories:
@@ -105,7 +112,7 @@ extends:
           - name: cdn_endpoint
             value: assets-itg01
       - ${{ if and(or(contains(variables['Build.SourceBranch'], 'release'), contains(variables['Build.SourceBranch'], 'hotfix')), ne(parameters.deployType, 'onlyDev')) }}:
-        - ${{ each index in parameters.RECiterations }}:
+        - ${{ each index in parameters.recIterations }}:
           - name: REC${{ index }}
             displayName: Recette-rec0${{ index }}
             poolAgent: Pulse-rec0${{ index }}
@@ -126,6 +133,44 @@ extends:
               value: fr$(hubEnvironment)hubafd01profile
             - name: cdn_endpoint
               value: assets-$(hubEnvironment)
+        - ${{ each index in parameters.prdIterations }}:
+          - name: PRD${{ index }}
+            displayName: Production-prd0${{ index }}
+            poolAgent: Pulse-prd0${{ index }}
+            dependsOn:
+            - REC1
+            - REC2
+            variables:
+            - name: hubEnvironment
+              value: prd0${{ index }}
+            - name: azureSC
+              value: PULSE-PRD
+            - name: storageAccount
+              value: fr$(hubEnvironment)frontsa01platform
+            - name: cdn_resourcegroup
+              value: fr$(hubEnvironment)hub
+            - name: cdn_profile
+              value: fr$(hubEnvironment)hubafd01profile
+            - name: cdn_endpoint
+              value: assets-$(hubEnvironment)
+        - name: PPR1
+          displayName: Preproduction-J-1
+          poolAgent: Pulse-ppr01
+          dependsOn:
+          - PRD1
+          variables:
+          - name: hubEnvironment
+            value: ppr01
+          - name: azureSC
+            value: PULSE-PPR
+          - name: storageAccount
+            value: fr$(hubEnvironment)frontsa01platform
+          - name: cdn_resourcegroup
+            value: fr$(hubEnvironment)hub
+          - name: cdn_profile
+            value: fr$(hubEnvironment)hubafd01profile
+          - name: cdn_endpoint
+            value: assets-$(hubEnvironment)
       steps:
       - type: az-blob
         name: Deploy_Assets
