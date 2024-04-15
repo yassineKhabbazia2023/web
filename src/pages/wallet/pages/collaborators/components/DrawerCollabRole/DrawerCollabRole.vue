@@ -32,6 +32,7 @@
       @go-to-previous-step="state.currentStep--"
       :selectedCollabRole=rowData.role
     />
+    <template #footer />
   </PDrawer>
 </template>
 
