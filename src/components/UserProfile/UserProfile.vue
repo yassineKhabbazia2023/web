@@ -6,20 +6,23 @@
     pDirection="ttb"
     class="user-profile-drawer"
   >
-    <PTabs
-      v-model="activeTab"
-      pStretch
-    >
-      <PTabPane
-        v-for="tab in TABS"
-        :pLabel="tab.label"
-        :name="tab.key"
-        :key="tab.key"
-      />
-      <div class="margin-top--6">
-        <MyInformation v-if="activeTab === TABS[0].key" />
-      </div>
-    </PTabs>
+    <div class="padding-x--6">
+      <PTabs
+        v-model="activeTab"
+        pStretch
+      >
+        <PTabPane
+          v-for="tab in TABS"
+          :pLabel="tab.label"
+          :name="tab.key"
+          :key="tab.key"
+        />
+        <div class="margin-top--6">
+          <MyInformation v-if="activeTab === TABS[0].key" />
+        </div>
+      </PTabs>
+    </div>
+    <template #footer />
   </PDrawer>
 </template>
 

@@ -138,16 +138,19 @@ function onCloseDrawer() {
 
 <style lang="scss" scoped>
 .p-schedule {
+  height: 100%;
+
   &__view {
-    flex: 1px 1 1;
-    width: calc(100% - 330px);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     position: relative;
   }
 
   &__widget {
     width: 330px;
-    padding-top: 60px;
-    flex: 330px 0 0;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 
   &__loader {
@@ -160,7 +163,7 @@ function onCloseDrawer() {
 }
 
 .p-schedule :deep(.p-date-picker) {
-  left: 10px !important;
-  top: -55px !important;
+  top: 5px !important;
+  left: 0 !important;
 }
 </style>

@@ -18,6 +18,7 @@ const createWrapper = (): VueWrapper<any> =>
       plugins: [pinia, router],
       stubs: {
         Schedule: { template: '<div data-testid="schedule-stub">' },
+        MyInformation: { template: '<div />' },
       },
     },
   })

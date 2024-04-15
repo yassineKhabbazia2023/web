@@ -6,6 +6,7 @@
     ">
     <div
       :class="dateColor"
+      class="p-schedule-list-item__date"
       data-testid="schedule-list-item-date"
     >
       {{ formattedDate }}
@@ -58,14 +59,6 @@ const isTodayDate = (date: string) => dateToLocaleFormat(date) === dateToLocaleF
 
   &__date {
     margin-top: 7px;
-
-    &--color-persian {
-      color: var(--el-color-persian-500)
-    }
-
-    &--color-gray {
-      color: var(--el-color-neutral-gray-500);
-    }
   }
 }
 </style>

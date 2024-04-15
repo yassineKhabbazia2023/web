@@ -16,21 +16,24 @@
     />
     <div class="flex">
       <PButton
-        class="margin-right--4"
-        pType="white"
+        :pType="showCalendar ? 'white' : 'generic'"
         pSize="small"
         pIconOnly
         pPlain
+        :pIsActive="showCalendar"
         :pRound="false"
         :pDisabled="false"
         :pLoading="false"
         @click="emit('update:showCalendar', !showCalendar)"
+        data-testid="header-section-calendar-btn"
       >
         <PIcon>
           <PICalendarEvent v-if="!showCalendar" />
-          <PIArrowUp v-if="showCalendar" />
+          <PIArrowBarUp v-if="showCalendar" />
         </PIcon>
       </PButton>
+
+      <PDivider class="margin-x--4 header-section__divider" pDirection="vertical" />
 
       <div
         @click="emit('showUserProfileDrawer')"
@@ -54,7 +57,7 @@ import {
   commonStore as useStore,
   dataProvider as useDataProvider,
 } from '@kpmg/common'
-import { PAvatar, PImage, PButton, PIcon, PICalendarEvent, PIArrowUp } from '@kpmg/styleguide'
+import { PAvatar, PImage, PDivider, PButton, PIcon, PICalendarEvent, PIArrowBarUp } from '@kpmg/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
 defineProps<HeaderProps>()
@@ -106,6 +109,10 @@ onMounted(async () => {
   &__logo {
     width: 149px;
     height: 20px;
+  }
+
+  &__divider {
+    height: 32px;
   }
 }
 </style>

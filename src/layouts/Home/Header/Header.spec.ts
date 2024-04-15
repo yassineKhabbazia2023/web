@@ -7,6 +7,7 @@ import { commonStore as store } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
 import helpers from '@/tests/utils/helpers'
 import Header from './'
+import { PICalendarEvent, PIArrowBarUp } from '@kpmg/styleguide'
 
 const { router, pinia, fetchUserData, fakeUser } = helpers()
 
@@ -70,5 +71,26 @@ describe('header', () => {
 
     const initialContainer = wrapper.findComponent('[data-ut="user-initials"]')
     expect(initialContainer.text()).toBe('JD')
+  })
+
+  it('should display the calendar and the action buttons correctly', async () => {
+    const calendarBtn = wrapper.find('[data-testid="header-section-calendar-btn"]')
+
+    expect(calendarBtn.classes()).toContain('p-button--generic')
+    expect(calendarBtn.findComponent(PICalendarEvent).exists()).toBeTruthy()
+
+    await calendarBtn.trigger('click')
+
+    expect(wrapper.emitted('update:showCalendar')).toBeTruthy()
+  })
+
+  it('should display buttons when calendar is open correctly', () => {
+    wrapper = createWrapper(true)
+
+    const calendarBtn = wrapper.find('[data-testid="header-section-calendar-btn"]')
+
+    expect(calendarBtn.classes()).toContain('p-button--white')
+    expect(calendarBtn.classes()).toContain('p-button--is-active')
+    expect(calendarBtn.findComponent(PIArrowBarUp)).toBeTruthy()
   })
 })
