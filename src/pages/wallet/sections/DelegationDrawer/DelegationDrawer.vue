@@ -2,15 +2,16 @@
   <PDrawer
     class="delegation-drawer"
     v-model="isDelegationDrawerOpened"
-    @close-drawer-button="isDelegationDrawerOpened = false"
+    @close-drawer-button="closeAndResetDrawer"
+    @close="closeAndResetDrawer"
   >
     <template #header-prefix>
       <h3 class="delegation-drawer__header">
         <template v-if="flowType === DelegationFlowType.FULL">
-          {{  t('walletDelegation') }}
+          {{ t('walletDelegation') }}
         </template>
         <template v-else>
-          {{  t('folderDelegation', selectedFolders.length) }}
+          {{ t('folderDelegation', selectedFolders.length) }}
         </template>
       </h3>
     </template>
@@ -106,14 +107,14 @@ function handlePreviousClick() {
 }
 
 const userStore = commonStore()
-const currentUserId = userStore.$state.user?.id ?? '0'
+const currentUserId = userStore.$state.user?.id
 
 async function handleNextClick() {
   if (activeStep.value === 1 && flowType.value === DelegationFlowType.FULL) {
     const delegationRequest = {
-      delegatorId: Number.parseInt(currentUserId),
+      delegatorId: currentUserId,
       delegationDetails: formatDelegateSummaryForGtwDelegationRequest(delegationDetails.value),
-      accountIds: getCurrentUserAccounts,
+      accountIds: getCurrentUserAccounts(),
     }
     await delegateFolder(delegationRequest)
   } else {
@@ -150,12 +151,12 @@ function formatCollaboratorsDetailsForDelegateSummary() {
     ))
 }
 
-const formatDelegateSummaryForGtwDelegationRequest = (delgationDetails: DelegationDetails[]) => {
-  return delgationDetails
+const formatDelegateSummaryForGtwDelegationRequest = (delegationDetails: DelegationDetails[]) => {
+  return delegationDetails
     .map(({ delegate }) => (
       {
         delegateeId: delegate.id,
-        startDate: Date.now(),
+        startDate: new Date().toISOString(),
         endDate: null,
         note: null,
       }
@@ -171,12 +172,7 @@ const delegateFolder = async (delegationRequest: any) => {
   try {
     await commonApi().gateway.post(
       'wallet/api/delegations',
-      JSON.stringify(delegationRequest),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+      delegationRequest,
     )
     displaySuccessNotification()
   } catch (err) {
@@ -191,7 +187,7 @@ const displaySuccessNotification = () => {
     message: t('successNotificationMessage'),
     icon: PICheck,
     showClose: true,
-    customClass: 'error',
+    customClass: 'success',
     position: 'bottom-right',
   })
 }
@@ -234,5 +230,4 @@ const closeAndResetDrawer = () => {
     submitButtonLabel: 'Valider'
     successNotificationMessage: 'Votre portefeuille a été délégué avec succès.'
     failureNotificationMessage: 'Votre portefeuille n’a pas été délégué suite à une erreur technique.'
-
 </i18n>

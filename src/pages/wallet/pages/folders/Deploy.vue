@@ -17,6 +17,7 @@
         {{ t('delegation', selectedFolders.length) }}
       </PButton>
       <DelegationDrawer
+        v-if="isDelegationDrawerOpened"
         v-model="isDelegationDrawerOpened"
         :selectedFolders="selectedFolders"
         :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"

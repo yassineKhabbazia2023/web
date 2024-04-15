@@ -16,6 +16,7 @@
     ref="delegateList"
     style="width: 100%"
     :pData="delegationsList"
+    pStripe
   >
     <PTableColumn
       pMinWidth="266"
@@ -42,11 +43,20 @@
     </PTableColumn>
     <PTableColumn
       pMinWidth="282"
-      :pLabel="t('table.header.enableAutomaticDeligation')"
+      :pLabel="t('table.header.enableAutomaticDelegation')"
     >
+      <template #header>
+        <PCheckbox
+          v-model="hasAllAutomaticDelegationSelected"
+          @change="handleToggleAllAutomaticDelegation"
+        >
+          <span class="text-color--neutral-gray-300">{{ t('table.header.enableAutomaticDelegation') }}</span>
+        </PCheckbox>
+      </template>
+
       <template #default="scope">
         <PCheckbox v-model="scope.row.isAutomaticallyDelegated">
-          {{ t('table.header.enableAutomaticDeligation') }}
+          {{ t('table.header.enableAutomaticDelegation') }}
         </PCheckbox>
       </template>
     </PTableColumn>
@@ -54,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type {
   DelegationPreviewListProps,
@@ -88,9 +98,16 @@ const delegationsList = computed({
   },
 })
 
+const hasAllAutomaticDelegationSelected = ref(false)
+
 // Behaviours
 const sortMethodsDoubleText = (a: any, b: any) => a.firstName - b.firstName
 
+const handleToggleAllAutomaticDelegation = () => {
+  delegationsList.value.forEach(delegationsListItem => {
+    delegationsListItem.isAutomaticallyDelegated = hasAllAutomaticDelegationSelected.value
+  })
+}
 </script>
 
 <i18n lang="json">
@@ -104,7 +121,7 @@ const sortMethodsDoubleText = (a: any, b: any) => a.firstName - b.firstName
     "table": {
       "header": {
         "collabName": "Nom du collaborateur",
-        "enableAutomaticDeligation": "Activer la délégation automatique"
+        "enableAutomaticDelegation": "Activer la délégation automatique"
       }
     }
   },
@@ -117,7 +134,7 @@ const sortMethodsDoubleText = (a: any, b: any) => a.firstName - b.firstName
     "table": {
       "header": {
         "collabName": "Nom du collaborateur",
-        "enableAutomaticDeligation": "Activer la délégation automatique"
+        "enableAutomaticDelegation": "Activer la délégation automatique"
       }
     }
   }
