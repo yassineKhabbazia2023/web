@@ -76,7 +76,7 @@ export function getMappedAccount(
     },
     city: city ?? '',
     hub,
-    deploymentStatus: deploymentStatuses[status],
+    deploymentStatus: deploymentStatuses[status - 1],
     id,
     accountId,
     accountNumber: `${accountNumber}`,

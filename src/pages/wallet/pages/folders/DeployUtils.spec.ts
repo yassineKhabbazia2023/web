@@ -52,12 +52,12 @@ describe('test DeployUtils', () => {
 
       const queryResult = await fetchWalletData(deploymentStatuses, searchCriteria)
       const item1 = getMockedMappedAccount({
-        deploymentStatus: undefined,
+        deploymentStatus: deploymentStatuses[0],
       })
       const item2 = getMockedMappedAccount({
         accountId: 2,
         accountNumber: '10102',
-        deploymentStatus: undefined,
+        deploymentStatus: deploymentStatuses[0],
       }, 'orange')
       const expectedQueryResult = {
         currentPage: 0,
@@ -96,7 +96,7 @@ describe('test DeployUtils', () => {
       const index = 1
       const mappedAccount = getMappedAccount(deploymentStatuses, account, index)
       const expected = getMockedMappedAccount({
-        deploymentStatus: undefined,
+        deploymentStatus: deploymentStatuses[0],
       }, 'orange')
 
       expect(mappedAccount).toMatchObject(expected)
