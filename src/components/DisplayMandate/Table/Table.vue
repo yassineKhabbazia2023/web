@@ -19,10 +19,9 @@
           <template #default="scope">
             <PToolbox
               trigger="click"
-              :pElements="actionsBuilder(scope.row.statusCode)"
               data-testid="mandate-actions-toolbox"
-              @p-toolbox-item-clicked="actionClicked($event, scope.row)"
-            >
+              :pElements="actionsBuilder(scope.row.statusCode)"
+              @p-toolbox-item-clicked="actionClicked($event, scope.row)">
               <PButton pType="generic">
                 <PIcon color="#A4A4A4" size="14px">
                   <PIThreeDots />
