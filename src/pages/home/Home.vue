@@ -14,8 +14,9 @@
       class="padding-x--6 padding-bottom--6"
     />
     <ListMandate
+      :currentPage="activePage"
       :data="mandatesCollection.data"
-      @sort-column-change="updateTableDisplay"
+      @refresh-mandate-collection="updateTableDisplay"
     />
     <Pagination
       :pagesCount="mandatesCollection.counters.all"
@@ -29,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { getMandatesCollection } from '@/services/mandate'
 import Header from '@/components/Common/Header'
 import ListMandate from '@/components/DisplayMandate/ListMandate'
@@ -57,11 +58,12 @@ const searchText = ref('')
 const defaultSortOrder = ref('Descending')
 const defaultSortCriteria = ref('')
 
-onBeforeMount(async () => {
+onMounted(async () => {
   try {
     const { data } = await getMandatesCollection()
     mandatesCollection.value = data
-  } catch (_) {
+  } catch (error) {
+    console.error(`Error in mandate mount ${error}`)
   }
 })
 
@@ -101,9 +103,4 @@ watch(searchText,
       searchTerm: value,
     }),
 )
-
-defineExpose({
-  updateTableDisplay,
-})
 </script>
-

@@ -95,4 +95,16 @@ describe('test Home.vue', () => {
       sortOrder: 'Descending',
     })
   })
+
+  it('should call console.error when mockedGetMandatesCollection throws an error since begining', async () => {
+    const error = 'thrown-error'
+    mockedGetMandatesCollection.mockRejectedValueOnce(error)
+    const consoleErrorSpy = vi.spyOn(console, 'error')
+
+    createWrapper({})
+    await flushPromises()
+
+    expect(consoleErrorSpy).toHaveBeenCalledOnce()
+    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, `Error in mandate mount ${error}`)
+  })
 })
