@@ -88,9 +88,11 @@ describe('mandate collection', () => {
 
     await vi.dynamicImportSettled()
     const firstDropdown = wrapper.find('.el-dropdown')
+    const toolbox = wrapper.findComponent({ name: 'PToolbox' })
     const button = firstDropdown.find('.el-button')
     await button.trigger('click')
 
+    expect(toolbox.attributes('data-testid')).toBe('mandate-actions-toolbox')
     expect(wrapper.exists()).toBeTruthy()
   })
 

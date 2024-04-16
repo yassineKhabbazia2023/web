@@ -4,9 +4,10 @@
       :pData="mandateCollection"
       pStripe
       :emptyText="t('no-data')"
+      data-testid="mandate-table"
       @sort-change="sortColumnChange"
     >
-      <template v-for="({ label, prop, sortable, width }, index) in tableHead" :key="index">
+      <template v-for="({ label, prop, sortable, width, dataTestId }, index) in tableHead" :key="index">
         <PTableColumn
           v-if="label === 'Actions'"
           :label="label"
@@ -18,6 +19,7 @@
           <template #default="scope">
             <PToolbox
               trigger="click"
+              data-testid="mandate-actions-toolbox"
               :pElements="actionsBuilder(scope.row.statusCode)"
               @p-toolbox-item-clicked="actionClicked($event, scope.row)">
               <PButton pType="generic">
@@ -42,12 +44,17 @@
         </PTableColumn>
         <PTableColumn
           v-else
-          :label="label"
           :prop="prop"
           :sortable="sortable"
           :key="index"
           :width="width"
-        />
+        >
+          <template #header>
+            <span :data-testid="dataTestId">
+              {{ label }}
+            </span>
+          </template>
+        </PTableColumn>
       </template>
     </PTable>
   </div>
@@ -173,14 +180,14 @@ const dataFormatter = (data: any) =>
 const mandateCollection = computed(() => dataFormatter(props.data))
 const tableHead = [
   { label: `${t('ibs-code')}`, prop: 'erpId', sortable: true, width: '105' },
-  { label: `${t('company-name')}`, prop: 'companyName', sortable: true },
+  { label: `${t('company-name')}`, prop: 'companyName', sortable: true, dataTestId: 'mandate-company-column' },
   {
     label: `${t('account-number')}`,
     prop: 'accountNumber',
     sortable: true,
     width: '120',
   },
-  { label: `${t('bank')}`, prop: 'bankName', sortable: true },
+  { label: `${t('bank')}`, prop: 'bankName', sortable: true, dataTestId: 'mandate-bank-column' },
   { label: `${t('created-on')}`, prop: 'creationDate', sortable: true, width: '105' },
   {
     label: `${t('modified-on')}`,

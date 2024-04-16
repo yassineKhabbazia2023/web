@@ -33,7 +33,7 @@ describe('componentName.vue', () => {
     const inputValue = 'BNP Paribas'
     await wrapper.find('.btn-next').trigger('click')
     const ibsInputElement = wrapper
-      .find('input[data-testid="search-mandate-test"]')
+      .find('input[data-testid="mandate-search-bar"]')
     await ibsInputElement
       .setValue(inputValue)
     await ibsInputElement.trigger('change')

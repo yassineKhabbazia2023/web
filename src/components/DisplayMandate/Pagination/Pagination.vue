@@ -8,6 +8,7 @@
     @update:p-current-page="handleCurrentChange"
     @on-page-range-changed="handleSizeChange"
     :pPageSize="itemsByPage"
+    pTestIdRoot="mandate"
     :pCurrentPage="currentPage"
   >
     <p>{{`${startIndex} - ${endIndex}`}} {{t('on')}} {{pagesCount}}</p>
