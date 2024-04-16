@@ -1,6 +1,6 @@
 import type { Mandate } from '@/pages/home/Models'
 
-export interface TableProps {
+export interface ListMandateProps {
   data: Mandate[]
 }
 
