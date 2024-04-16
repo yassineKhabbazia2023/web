@@ -8,4 +8,5 @@ export interface PToolboxProps {
     | 'bottom'
     | 'bottom-start'
     | 'bottom-end'
+  pElementsTestId?: string
 }
