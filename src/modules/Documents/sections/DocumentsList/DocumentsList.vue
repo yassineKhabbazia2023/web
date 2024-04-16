@@ -6,6 +6,7 @@
       ref="documentsListTable"
       highlightCurrentRow
       pStripe
+      data-testid="ged-documents-list"
       :emptyText="t('noSearchData')"
       @sort-change="handleSortChange"
       @row-click="selectRow"

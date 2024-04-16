@@ -53,6 +53,7 @@
       :pTotal="documents.documentsPage.totalItems"
       pShowTotalPageCounter
       :pPageSizes="pagesRanges"
+      pTestIdRoot="ged-documents"
       pPageSizeSelectorGroupLabel=""
       pPageSizeSelectorSuffix="documents"
       @on-page-range-changed="setCurrentPageSize"
