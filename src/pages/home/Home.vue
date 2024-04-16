@@ -32,7 +32,7 @@
 import { ref, onBeforeMount, watch } from 'vue'
 import { getMandatesCollection } from '@/services/mandate'
 import Header from '@/components/Common/Header'
-import ListMandate from '@/components/DisplayMandate/Table'
+import ListMandate from '@/components/DisplayMandate/ListMandate'
 import Pagination from '@/components/DisplayMandate/Pagination'
 import SearchBar from '@/components/Common/SearchBar'
 import { debounce } from '@/helpers/utils'

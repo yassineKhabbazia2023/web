@@ -127,7 +127,7 @@ import {
 } from '@kpmg/styleguide'
 import Tag from '@/components/Common/Tag'
 import { dateFormatter, downloadFile } from '@/helpers/utils'
-import type { TableProps, ActionEvent } from './Table'
+import type { ListMandateProps, ActionEvent } from './ListMandateTypes'
 import {
   downloadUnsignedMandate,
   downloadSignedMandate,
@@ -157,7 +157,7 @@ const accountNumberRef = ref<string>('')
 const companyNameRef = ref<string>('')
 const mandateIdRef = ref<string>('')
 
-const props = defineProps<TableProps>()
+const props = defineProps<ListMandateProps>()
 const dataFormatter = (data: any) =>
   data.map(
     ({
