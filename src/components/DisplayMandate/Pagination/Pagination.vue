@@ -17,7 +17,7 @@
 <script setup lang='ts'>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { PaginationProps } from './Pagination'
+import type { PaginationProps } from './PaginationTypes'
 import { PPagination } from '@kpmg/styleguide'
 
 const { t } = useI18n({
@@ -68,3 +68,4 @@ const updateListDisplay = (currentPage: number, itemsByPage: number) =>
     on: 'sur'
 </i18n>
 
+./PaginationTypes
