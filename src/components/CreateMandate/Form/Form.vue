@@ -547,7 +547,7 @@ const checkFields = async () => {
 // Utility functions
 const createRule = (message: string, trigger = 'blur') => ({
   required: true,
-  message: t(message),
+  message,
   trigger,
 })
 
@@ -593,18 +593,19 @@ const validateEmail = (_: any, value: string, callback: any) => {
 }
 
 // Validation rules
+const requiredFieldMessage = t('form.error.requiredField')
 const rules = reactive<any>({
   erpId: [
-    createRule(t('form.error.requiredField'), 'change'),
+    createRule(requiredFieldMessage, 'change'),
     { validator: validateIBS, trigger: 'change' },
   ],
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
-  firstName: [createRule(t('form.error.requiredField'))],
-  lastName: [createRule(t('form.error.requiredField'))],
+  firstName: [createRule(requiredFieldMessage)],
+  lastName: [createRule(requiredFieldMessage)],
   email: [{ validator: validateEmail, trigger: 'blur' }],
-  street: [createRule(t('form.error.requiredField'))],
+  street: [createRule(requiredFieldMessage)],
   zipCode: [
-    createRule(t('form.error.requiredField')),
+    createRule(requiredFieldMessage),
     {
       validator: (_: any, value: any, callback: any) => {
         if (isNaN(value)) {
@@ -618,8 +619,8 @@ const rules = reactive<any>({
       trigger: 'blur',
     },
   ],
-  city: [createRule(t('form.error.requiredField'))],
-  country: [createRule(t('form.error.requiredField'))],
+  city: [createRule(requiredFieldMessage)],
+  country: [createRule(requiredFieldMessage)],
   institutionCode: [
     createValidator(
       5,
