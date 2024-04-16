@@ -146,7 +146,7 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'sort-column-change': [Partial<UpdateTableDisplayParams>]
+  'refresh-mandate-collection': [Partial<UpdateTableDisplayParams>]
 }>()
 
 const pDialogControl = reactive({
@@ -245,10 +245,14 @@ const sortColumnChange = ({ order, prop }: any) => {
     modificationDate: 'ModificationDate',
     statusCode: 'Status',
   }
-  emit('sort-column-change', {
+  emitRefreshMandateCollection({
     sortOrder: order === 'descending' ? 'Descending' : 'Ascending',
     sortCriteria: criteriaMapper[prop] || '',
   })
+}
+
+function emitRefreshMandateCollection(params: Partial<UpdateTableDisplayParams>) {
+  emit('refresh-mandate-collection', params)
 }
 
 const saveFile = async (id: string, data: any, mandateType: string) => {
@@ -308,7 +312,8 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   }
   try {
     await actions[event]()
-  } catch (_) {
+  } catch (error) {
+    console.error(error)
   }
 }
 
@@ -325,6 +330,10 @@ const handleFileUpload = async (event: any, id: string) => {
   } catch (error) {
     console.error('Error in mandate upload ', error)
     showNotification(messages, 'error', notification)
+  } finally {
+    emitRefreshMandateCollection({
+      currentPage: props.currentPage,
+    })
   }
 }
 
@@ -338,7 +347,8 @@ const terminateMandateAction = async (mandateId: string) => {
   try {
     await terminateMandate(mandateId)
     closeTerminateMandatePopup()
-  } catch (_) {
+  } catch (error) {
+    console.error('Error downloading file:', error)
   }
 }
 

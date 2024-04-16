@@ -1,6 +1,7 @@
 import type { Mandate } from '@/pages/home/Models'
 
 export interface ListMandateProps {
+  currentPage: number
   data: Mandate[]
 }
 

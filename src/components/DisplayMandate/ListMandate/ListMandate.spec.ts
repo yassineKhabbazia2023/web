@@ -163,18 +163,22 @@ describe('mandate collection', () => {
     })
     wrapper.vm.handleFileUpload({ target: { files: [{ name: 'mandate.pdf' }] } })
     await wrapper.vm.sortColumnChange({ order: 'ascending', prop: 'erpId' })
-    let sortColumnEvent: any = wrapper.emitted('sort-column-change')
-    expect(sortColumnEvent[0]).toStrictEqual([{ sortOrder: 'Ascending', sortCriteria: 'ErpId' }])
+
+    const refreshMandateCollectionEventBefore: any = wrapper.emitted('refresh-mandate-collection')
+    expect(refreshMandateCollectionEventBefore[0]).toStrictEqual([{ sortOrder: 'Ascending', sortCriteria: 'ErpId' }])
     await wrapper.vm.sortColumnChange({ order: 'descending', prop: '' })
-    sortColumnEvent = wrapper.emitted('sort-column-change')
-    expect(sortColumnEvent[1]).toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
+
+    const refreshMandateCollectionEventAfter = wrapper.emitted('refresh-mandate-collection')
+    expect(refreshMandateCollectionEventAfter?.[1]).toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
   })
   it('submit the signed mandate', async () => {
+    const currentPage = 2
     const mockedNotification = vi.fn()
     const showNotificationSpy = vi
       .spyOn(NotificationHelper, 'showNotification')
       .mockReturnValue(mockedNotification as unknown as NotificationHandle)
     const wrapper = createWrapper({
+      currentPage,
       data: [],
     })
     vi.spyOn(wrapper.vm, 'handleFileUpload')
@@ -212,6 +216,10 @@ describe('mandate collection', () => {
     expect(showNotificationSpy).toHaveBeenCalledTimes(2)
     expect(showNotificationSpy).toHaveBeenNthCalledWith(1, notificationMessages, 'loading')
     expect(showNotificationSpy).toHaveBeenNthCalledWith(2, notificationMessages, 'success', mockedNotification)
+    const refreshMandateCollectionEvent = wrapper.emitted('refresh-mandate-collection')
+    expect(refreshMandateCollectionEvent).toStrictEqual([[{
+      currentPage,
+    }]])
   })
   it('renders the mandate table click on download unsigned mandate', async () => {
     const wrapper = createWrapper({
