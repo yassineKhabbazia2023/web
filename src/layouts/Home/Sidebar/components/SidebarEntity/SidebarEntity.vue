@@ -162,13 +162,23 @@ const walletItem = computed((): SidebarEntityItemProps => {
 })
 
 const isSelectedEntityActive = computed(() => {
-  return (
-    selectedEntity.value &&
-    activeItem({
-      name: 'folder',
-      params: { id: selectedEntity.value.accountId },
-    })
-  )
+  if (!selectedEntity.value?.accountId) return false
+
+  const params = {
+    id: selectedEntity.value.accountId,
+  }
+
+  const isFolderActiveItem = activeItem({
+    name: 'folder',
+    params,
+  })
+
+  const isGedActiveItem = activeItem({
+    name: 'ged',
+    params,
+  })
+
+  return isFolderActiveItem || isGedActiveItem
 })
 
 const onToggleSidebar = () => {

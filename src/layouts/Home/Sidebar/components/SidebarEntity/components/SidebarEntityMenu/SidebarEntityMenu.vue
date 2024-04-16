@@ -88,7 +88,7 @@ const folderSubmenu = {
 
 const menuItems = [
   {
-    index: '/ged',
+    index: `/dossier/${props.selectedEntityId}/ged`,
     title: t('documents'),
     leftIcon: 'PIFileText',
   },
