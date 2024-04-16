@@ -2,12 +2,12 @@
   <PDrawer
     class="delegation-drawer"
     v-model="isDelegationDrawerOpened"
-    @close-drawer-button="closeAndResetDrawer"
-    @close="closeAndResetDrawer"
+    @close-drawer-button="closeDrawer"
+    @close="closeDrawer"
   >
     <template #header-prefix>
       <h3 class="delegation-drawer__header">
-        <template v-if="flowType === DelegationFlowType.FULL">
+        <template v-if="!isSpecificDelegationFlowType">
           {{ t('walletDelegation') }}
         </template>
         <template v-else>
@@ -17,7 +17,7 @@
     </template>
 
     <PSteps
-      v-if="flowType === DelegationFlowType.FULL"
+      v-if="!isSpecificDelegationFlowType"
       class="margin-bottom--6"
       :pActive="activeStep"
       pFinishStatus="success"
@@ -26,9 +26,26 @@
       <PStep :title="t('automaticDelegation')" />
     </PSteps>
 
+    <div
+      v-if="isSpecificDelegationFlowType"
+      class="margin-bottom--6"
+    >
+      <CollapsableFoldersList
+        v-if="selectedFolders.length > 1"
+      >
+        <SelectedFoldersList :folders="selectedFolders" />
+      </CollapsableFoldersList>
+
+      <SelectedFoldersList
+        v-else
+        :folders="selectedFolders"
+      />
+    </div>
+
     <AddDelegatesStep
       v-if="activeStep === 0"
       :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
+      :shouldDisplayNumberOfFoldersInPortfolio="!isSpecificDelegationFlowType"
       @collaborator-selection="handleCollaboratorSelection"
     />
 
@@ -37,16 +54,10 @@
       v-model="delegationDetails"
     />
 
-    <!-- This will be used in the next US
-    <CollapsableFoldersList
-      v-if="flowType === DelegationFlowType.SPECIFIC"
-      :folders="selectedFolders"
-    /> -->
-
     <template #footer>
       <NextPreviousButtons
         :previousLabel="previousButtonLabel"
-        :nextLabel="nextButtonLabel"
+        :nextLabel="isSpecificDelegationFlowType ? t('submitButtonLabel') : nextButtonLabel"
         :isNextButtonDisabled="!selectedCollaborators.length"
         @click-previous="handlePreviousClick"
         @click-next="handleNextClick"
@@ -56,9 +67,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PICheck, PNotification, PIX } from '@kpmg/styleguide'
+import { commonApi, commonStore } from '@kpmg/common'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 
@@ -66,8 +78,9 @@ import NextPreviousButtons from '@/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import type { Contact } from '@/services/contact/contactTypes'
 import DelegationPreviewList from './components/DelegationPreviewList'
-import type { DelegationDetails } from '@/pages/wallet/sections/DelegationDrawer/models/Delegation'
-import { commonApi, commonStore } from '@kpmg/common'
+import CollapsableFoldersList from './components/CollapsableFoldersList'
+import SelectedFoldersList from './components/SelectedFoldersList'
+import type { DelegationDetails } from './models/Delegation'
 
 const props = defineProps<DelegationDrawerProps>()
 const emit = defineEmits<{
@@ -80,6 +93,7 @@ const { t } = useI18n({
 })
 
 const activeStep = ref<number>(0)
+const delegationDetails = ref<DelegationDetails[]>([])
 
 const isDelegationDrawerOpened = computed({
   get() {
@@ -94,6 +108,7 @@ const flowType = computed(() => props.selectedFolders.length
   ? DelegationFlowType.SPECIFIC
   : DelegationFlowType.FULL,
 )
+const isSpecificDelegationFlowType = computed(() => flowType.value === DelegationFlowType.SPECIFIC)
 
 const previousButtonLabel = computed(() => activeStep.value ? t('previousButtonLabel') : t('cancelButtonLabel'))
 const nextButtonLabel = computed(() => activeStep.value === 1 ? t('submitButtonLabel') : t('nextButtonLabel'))
@@ -110,11 +125,15 @@ const userStore = commonStore()
 const currentUserId = userStore.$state.user?.id
 
 async function handleNextClick() {
-  if (activeStep.value === 1 && flowType.value === DelegationFlowType.FULL) {
+  if (isSpecificDelegationFlowType.value) {
+    delegationDetails.value = formatCollaboratorsDetailsForDelegateSummary()
+  }
+
+  if (activeStep.value === 1 || isSpecificDelegationFlowType.value) {
     const delegationRequest = {
       delegatorId: currentUserId,
-      delegationDetails: formatDelegateSummaryForGtwDelegationRequest(delegationDetails.value),
-      accountIds: getCurrentUserAccounts(),
+      delegationDetails: formatDelegateSummaryForDelegationRequest(delegationDetails.value),
+      accountIds: getAccountNumberFromSelectedFolders(),
     }
     await delegateFolder(delegationRequest)
   } else {
@@ -128,13 +147,14 @@ function handleCollaboratorSelection(event: Contact[]) {
   selectedCollaborators.value = event
 }
 
-// second step
-const delegationDetails = ref<DelegationDetails[]>([])
 watch(activeStep, () => {
   if (activeStep.value === 1) {
     delegationDetails.value = formatCollaboratorsDetailsForDelegateSummary()
   }
 })
+
+const getAccountNumberFromSelectedFolders = () =>
+  props.selectedFolders.map(({ accountNumber }) => accountNumber)
 
 function formatCollaboratorsDetailsForDelegateSummary() {
   return selectedCollaborators.value
@@ -151,21 +171,15 @@ function formatCollaboratorsDetailsForDelegateSummary() {
     ))
 }
 
-const formatDelegateSummaryForGtwDelegationRequest = (delegationDetails: DelegationDetails[]) => {
+const formatDelegateSummaryForDelegationRequest = (delegationDetails: DelegationDetails[]) => {
   return delegationDetails
-    .map(({ delegate }) => (
+    .map(({ delegate, isAutomaticallyDelegated }) => (
       {
         delegateeId: delegate.id,
         startDate: new Date().toISOString(),
-        endDate: null,
-        note: null,
+        isAutomaticallyDelegated,
       }
     ))
-}
-
-const getCurrentUserAccounts = () => {
-  // return await commonApi().fateway.get(`/wallet/api/accounts/contacts/${currentUserId}`)
-  return [1, 2, 3]
 }
 
 const delegateFolder = async (delegationRequest: any) => {
@@ -179,7 +193,7 @@ const delegateFolder = async (delegationRequest: any) => {
     displayFailureNotification()
     console.error(err)
   }
-  closeAndResetDrawer()
+  closeDrawer()
 }
 
 const displaySuccessNotification = () => {
@@ -202,7 +216,7 @@ const displayFailureNotification = () => {
   })
 }
 
-const closeAndResetDrawer = () => {
+const closeDrawer = () => {
   emit('update:modelValue', false)
 }
 </script>

@@ -1,6 +1,9 @@
 <template>
   <div class="delegates-add">
-    <div class="margin-bottom--6">
+    <div
+      v-if="shouldDisplayNumberOfFoldersInPortfolio"
+      class="margin-bottom--6"
+    >
       <PAlert>
         <i18n-t
           keypath="numberOfFolders"
@@ -38,13 +41,14 @@
     </PBlockHeader>
 
     <div class="margin-top--6">
-      <template v-for="({ id, firstName, lastName, email }, index) in selectedCollaborators" :key="id">
+      <template v-for="({ id, firstName, lastName, email, persona }, index) in selectedCollaborators" :key="id">
         <div v-if="index" class="separator" />
         <div class="padding-x--4">
           <PUserAction
             :pProfile="getInitials(firstName, lastName)"
             :pTitle="getFormattedFirstAndLastName(firstName, lastName)"
             :pDescription="email"
+            :pRole="persona?.name"
             pShowDelete
             @click-delete="removeSelectedCollaborator(id)"
           />
@@ -102,7 +106,6 @@ function getFormattedFirstAndLastName(firstName: string, lastName: string) {
 function emitCollaboratorSelection() {
   emit('collaborator-selection', selectedCollaborators.value)
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -142,7 +145,7 @@ function emitCollaboratorSelection() {
     numberOfFolders: 'There are {amount} in your portfolio'
     addDelegator: 'Add delegators'
     addDelegatorDescription: 'Choose collaborators to delegate your portfolio to.'
-    searchLabel: 'Please search for a collaborator :'
+    searchLabel: 'Please search for a collaborator:'
   fr-FR:
     folders: 1 dossier | {count} dossiers
     numberOfFolders: 'Il y a {amount} dans votre portefeuille'

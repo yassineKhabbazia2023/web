@@ -36,8 +36,8 @@
       <NoResult v-if="!state.data.length" />
 
       <TableData
-        data-testid="table"
         v-if="numberOfFoldersInPortfolio"
+        data-testid="table"
         :data="state.data"
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
@@ -96,7 +96,8 @@ import type { IEntity, IState, ICommonEntitiesInFavorite, IWalletData } from '..
 import Filters from '../../components/Filters'
 import type { EntityStatus } from '../../components/Filters/types'
 import TableData from '../../components/TableData'
-import DelegationDrawer from '@/pages/wallet/sections/DelegationDrawer'
+import DelegationDrawer from './components/DelegationDrawer'
+import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -299,12 +300,15 @@ const handleRemoveFilter = () => {
   state.filterByDeploymentStatus = undefined
 }
 
-const selectedFolders: IEntity[] = reactive([])
-const onSelectedFolder = (id: string) => {
-  const index = selectedFolders.findIndex(e => e.id === id)
-  index >= 0
-    ? selectedFolders.splice(index, 1)
-    : selectedFolders.push({} as IEntity)
+const selectedFolders = ref<SelectedFolder[]>([])
+const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
+  const hasAlreadySelectedSameFolder = () =>
+    selectedFolders.value.some((selectedFolder: SelectedFolder) => selectedFolder.id === newSelectedFolder.id)
+
+  selectedFolders.value =
+    hasAlreadySelectedSameFolder()
+      ? selectedFolders.value.filter((selectedFolder: SelectedFolder) => selectedFolder.id !== newSelectedFolder.id)
+      : [...selectedFolders.value, newSelectedFolder]
 }
 </script>
 

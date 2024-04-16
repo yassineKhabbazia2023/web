@@ -12,46 +12,6 @@ import NextPreviousButtons from '@/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import DelegationPreviewList from './components/DelegationPreviewList'
 
-// vi.mock('@kpmg/common', () => ({
-//   commonApi: () => ({
-//     gateway: {
-//       get: subscriptionPostMock,
-//       patch: subscriptionPostMock,
-//       delete: subscriptionPostMock,
-//       post: subscriptionPostMock,
-//     },
-//     offer: {
-//       get: subscriptionPostMock,
-//       put: subscriptionPostMock,
-//     },
-//     onboarding: {
-//       post: subscriptionPostMock,
-//     },
-//     wallet: {
-//       put: subscriptionPostMock,
-//       get: subscriptionPostMock,
-//     },
-//     account: {
-//       get: subscriptionPostMock,
-//       patch: subscriptionPostMock,
-//     },
-//   }),
-//   commonStore: defineStore('common', {
-//     state: () => ({
-//       user: {
-//         id: 1,
-//         entities: {
-//           default: mockedEntity,
-//         },
-//       },
-//     }),
-//     getters: {
-//       isCollab: () => true,
-//       defaultEntity: () => mockedEntity,
-//     },
-//   }),
-// }))
-
 const gatewayPostMock = vi.fn().mockResolvedValue({ data: {} })
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -72,8 +32,6 @@ vi.mock('@kpmg/common', () => ({
 }))
 
 const pinia = createTestingPinia()
-
-// const subscriptionPostMock = vi.fn().mockResolvedValue({})
 
 const defaultProps = {
   modelValue: true,

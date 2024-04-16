@@ -66,23 +66,23 @@ const delegate = defaultProps.modelValue[0].delegate
 
 describe('delegationPreviewList', () => {
   describe('rendering', () => {
-    it('should display the corect header block content', () => {
-      const pBlockHeaderWraper = findPBlockHeader(wrapper)
+    it('should display the correct header block content', () => {
+      const pBlockHeaderWrapper = findPBlockHeader(wrapper)
 
-      expect(pBlockHeaderWraper.props('pTitle')).toBe('Délégation automatique')
-      expect(pBlockHeaderWraper.props('pDescription')).toBe(
+      expect(pBlockHeaderWrapper.props('pTitle')).toBe('Délégation automatique')
+      expect(pBlockHeaderWrapper.props('pDescription')).toBe(
         'Les nouveaux dossiers de votre portefeuille seront automatiquement synchronisés chez vos délégataires.',
       )
-      expect(pBlockHeaderWraper.props('pImage')).toStrictEqual({
-        pFit: 'default',
+      expect(pBlockHeaderWrapper.props('pImage')).toStrictEqual({
+        pFit: 'fill',
         pType: 'portrait',
         pName: 'delegation',
       })
     })
 
     it('should render the table formatted content correctly', () => {
-      const pTableWraper = findPTable(wrapper)
-      const pDoubleTextWrapper = pTableWraper.findComponent(PDoubleText)
+      const pTableWrapper = findPTable(wrapper)
+      const pDoubleTextWrapper = pTableWrapper.findComponent(PDoubleText)
 
       const expectedPprofile = getInitials(
         delegate.firstName,

@@ -200,6 +200,7 @@ import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { commonApi, commonStore } from '@kpmg/common'
 import type { Props, Row } from './types'
+import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -285,7 +286,7 @@ const selectedRow = ref<InstanceType<typeof ElTable>>()
 const emit = defineEmits<{
   'click-deploy': [number, string, string]
   access: [string]
-  selectedFolder: [string]
+  selectedFolder: [SelectedFolder]
 }>()
 
 const handleRowSelectedChange = (row: any) => {
@@ -371,8 +372,12 @@ const onToolboxItemClicked = (action: string, row: any) => {
 }
 
 const onSelectedFolder = (row: any) => {
-  const { id } = row
-  emit('selectedFolder', id)
+  emit('selectedFolder', {
+    accountNumber: row.accountNumber,
+    id: row.id,
+    name: row.name,
+    avatarColor: row.owner.avatarColor,
+  })
 }
 </script>
 
