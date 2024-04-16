@@ -35,7 +35,9 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-defineEmits(['refresh-mandate-collection'])
+defineEmits<{
+  'refresh-mandate-collection': []
+}>()
 
 const openDrawer = ref(false)
 const drawerHandler = () => {
