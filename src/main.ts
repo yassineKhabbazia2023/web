@@ -23,9 +23,8 @@ export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 
-// eslint-disable-next-line vitest/require-hook
 routes.value.push({
-  path: '/ged',
+  path: '/dossier/:folderId/ged',
   name: 'ged',
   meta: {
     styles: {
