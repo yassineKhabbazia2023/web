@@ -47,7 +47,6 @@ const handleDocumentRename = async (documentName: string) => {
       documentName,
     )
     isRenameDocumentModalOpened.value = false
-    isConfirmButtonLoading.value = false
 
     emit('document-rename')
     toastPlugin({
@@ -65,6 +64,8 @@ const handleDocumentRename = async (documentName: string) => {
       customClass: 'error',
       position: 'bottom-right',
     })
+  } finally {
+    isConfirmButtonLoading.value = false
   }
 }
 </script>
