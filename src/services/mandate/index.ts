@@ -45,10 +45,16 @@ export const getBankDetail = async (bankCode: string) => {
 }
 
 export const getMandatesCollection = ({
-  skip = 0, limit = 10, searchTerm = '', creationDateStart = '',
+  skip = 0,
+  limit = 10,
+  searchTerm = '',
+  creationDateStart = '',
   creationDateEnd = '',
-  modificationDateStart = '', modificationDateEnd = '',
-  statusCodes = [], sortCriteria = '', sortOrder = 'Descending',
+  modificationDateStart = '',
+  modificationDateEnd = '',
+  statusCodes = [],
+  sortCriteria = '',
+  sortOrder = 'Descending',
 } = {}) => {
   return api().mandate.get('/mandate', {
     params:

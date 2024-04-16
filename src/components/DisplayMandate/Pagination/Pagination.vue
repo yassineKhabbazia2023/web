@@ -18,15 +18,19 @@
 <script setup lang='ts'>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { PaginationProps } from './Pagination'
+import type { PaginationProps } from './PaginationTypes'
 import { PPagination } from '@kpmg/styleguide'
+import type { UpdateTableDisplayParams } from '@/pages/home/HomeTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const emit = defineEmits(['page-selected'])
+const emit = defineEmits<{
+  'page-selected': [Partial<UpdateTableDisplayParams>]
+}>()
+
 const props = withDefaults(defineProps<PaginationProps>(), {
   pageRangeSelectorSuffix: '',
   pageRangeSelectorGroupLabel: ' ',
@@ -54,7 +58,7 @@ const handleCurrentChange = (currentPage: number) => {
 
 const handleSizeChange = (currentItemsByPage: number) => {
   itemsByPage.value = currentItemsByPage
-  updateListDisplay(props.currentPage, itemsByPage.value)
+  updateListDisplay(1, itemsByPage.value)
 }
 
 const updateListDisplay = (currentPage: number, itemsByPage: number) =>
@@ -68,4 +72,3 @@ const updateListDisplay = (currentPage: number, itemsByPage: number) =>
   fr-FR:
     on: 'sur'
 </i18n>
-

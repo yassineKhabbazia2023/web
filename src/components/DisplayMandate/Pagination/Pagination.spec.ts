@@ -1,7 +1,7 @@
 import Pagination from '.'
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
+import wrapperFactory from '@/../tests/utils/wrapperFactory'
 import { expect, describe, it } from 'vitest'
-import { PSelect } from '@kpmg/styleguide'
+import { nextTick } from 'vue'
 
 const defaultProps = {
   pagesCount: 32,
@@ -28,12 +28,13 @@ describe('pagination component', () => {
     expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 2, itemsByPage: 10 }])
   })
 
-  it.skip('emits page-selected event when dropdown are clicked', async () => {
+  it('emits page-selected event when dropdown are clicked', async () => {
     const wrapper = createWrapper()
-    const selector = wrapper.findComponent(PSelect)
-    selector.setValue('20')
-    await selector.trigger('change')
+    const PPaginationComponent = wrapper.findComponent({ name: 'PPagination' })
+    const itemsByPage = 20
+    PPaginationComponent.vm.$emit('on-page-range-changed', itemsByPage)
+    await nextTick()
     const pageSelectedEvent: any = wrapper.emitted('page-selected')
-    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 1, itemsByPage: '20' }])
+    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 1, itemsByPage }])
   })
 })

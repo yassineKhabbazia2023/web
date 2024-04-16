@@ -136,6 +136,7 @@ import {
 } from '@/services/mandate'
 import { showNotification } from '@/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
+import type { UpdateTableDisplayParams } from '@/pages/home/HomeTypes'
 
 declare let window: any
 
@@ -144,7 +145,9 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const emit = defineEmits(['sort-column-change'])
+const emit = defineEmits<{
+  'sort-column-change': [Partial<UpdateTableDisplayParams>]
+}>()
 
 const pDialogControl = reactive({
   dialogVisible: false,

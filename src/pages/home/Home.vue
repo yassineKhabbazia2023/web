@@ -37,6 +37,7 @@ import Pagination from '@/components/DisplayMandate/Pagination'
 import SearchBar from '@/components/Common/SearchBar'
 import { debounce } from '@/helpers/utils'
 import type { MandateCollection } from './Models'
+import type { UpdateTableDisplayParams } from './HomeTypes'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -70,14 +71,7 @@ const updateTableDisplay = async ({
   searchTerm = searchText.value,
   sortOrder = defaultSortOrder.value,
   sortCriteria = defaultSortCriteria.value,
-}:
-  {
-    currentPage: number
-    itemsByPage: number
-    searchTerm: string
-    sortOrder: string
-    sortCriteria: string
-  }) => {
+}: Partial<UpdateTableDisplayParams>) => {
   try {
     if (currentPage !== activePage.value) {
       activePage.value = currentPage
