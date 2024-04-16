@@ -44,7 +44,7 @@
         :pDescription="selectedCollaborator.email"
         :pRole="selectedCollaborator.office"
         :pShowDelete="canDelete"
-        :data-testid="`offer-selected-collaborator-${selectedCollaborator.firstName}-${selectedCollaborator.lastName}`"
+        :data-testid="`offer-selected-collaborator-${selectedCollaborator.email}`"
         @click-delete="onClickDelete(index)"
       />
     </div>
