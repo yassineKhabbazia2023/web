@@ -94,7 +94,8 @@ const updateTableDisplay = async ({
       sortCriteria,
     })
     mandatesCollection.value = data
-  } catch (_) {
+  } catch (error) {
+    console.error(error)
   }
 }
 
