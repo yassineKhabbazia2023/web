@@ -7,7 +7,7 @@
     :pDescription="t('headerBlock.description')"
     :pHasButton="false"
     :pImage="{
-      pFit: 'default',
+      pFit: 'fill',
       pType: 'portrait',
       pName: 'delegation'
     }"

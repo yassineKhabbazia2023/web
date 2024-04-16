@@ -1,8 +1,15 @@
 import type { IEntity } from '@/pages/wallet/types'
 
+export interface SelectedFolder {
+  accountNumber: IEntity['accountNumber']
+  id: IEntity['id']
+  name: IEntity['name']
+  avatarColor: IEntity['owner']['avatarColor']
+}
+
 export interface DelegationDrawerProps {
   modelValue: boolean
-  selectedFolders: IEntity[]
+  selectedFolders: SelectedFolder[]
   numberOfFoldersInPortfolio: number
 }
 
