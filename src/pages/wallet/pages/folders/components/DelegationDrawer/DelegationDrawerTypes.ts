@@ -1,10 +1,10 @@
-import type { IEntity } from '@/pages/wallet/types'
+import type { Entity } from '@kpmg/common'
 
 export interface SelectedFolder {
-  accountNumber: IEntity['accountNumber']
-  id: IEntity['id']
-  name: IEntity['name']
-  avatarColor: IEntity['owner']['avatarColor']
+  accountNumber: Entity['accountNumber']
+  id: Entity['accountId']
+  name: Entity['legalName']
+  avatarColor: Entity['color']
 }
 
 export interface DelegationDrawerProps {

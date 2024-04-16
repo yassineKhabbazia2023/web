@@ -397,6 +397,7 @@ const onSelectedFolder = (row: any) => {
 }
 </script>
 
+<!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style lang="scss">
 .wallet-table {
   .el-table__body {

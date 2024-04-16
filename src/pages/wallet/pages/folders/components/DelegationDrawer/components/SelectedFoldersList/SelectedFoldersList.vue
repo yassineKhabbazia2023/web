@@ -24,7 +24,7 @@
 
     <PTableColumn
       :pLabel="t('IBSCode')"
-      pProp="name"
+      pProp="accountNumber"
     />
   </PTable>
 </template>
