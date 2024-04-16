@@ -10,6 +10,7 @@
       <PAlert
         class="folder-list__notification"
         type="danger"
+        data-testid="ged-unauthorized-given-action-alert"
       >
         {{ explorerUnauthorizedGivenActionMessage }}
       </PAlert>

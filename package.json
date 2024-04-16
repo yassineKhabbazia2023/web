@@ -26,14 +26,14 @@
     "*.{js,ts,vue,json}": "npm run lint"
   },
   "dependencies": {
-    "@kpmg/styleguide": "^2.2.507",
+    "@kpmg/common": "^3.1.88",
+    "@kpmg/styleguide": "^2.2.516",
     "lodash.debounce": "^4.0.8",
     "pinia": "^2.1.3",
     "single-spa-vue": "^2.5.1",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
-    "vue-router": "^4.2.2",
-    "@kpmg/common": "^3.1.88"
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",

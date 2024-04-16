@@ -4,6 +4,7 @@
       :trigger="triggerType"
       v-if="isToolBoxVisible"
       :pElements="toolboxBasicData"
+      pElementsTestId="ged-tree-node-actions-toolbox"
       @visible-change="handleToolboxDropdownSateChange"
       @p-toolbox-item-clicked="handleItemclicked">
       <slot />
