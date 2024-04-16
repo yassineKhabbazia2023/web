@@ -5,7 +5,7 @@
   >
     <slot />
     <template #dropdown>
-      <ElDropdownMenu>
+      <ElDropdownMenu :data-testid="pElementsTestId">
         <ElDropdownItem
           v-for="({pValue, pIconName, pState, pActionName, disabled}, index) in pElements"
           :key="index"
