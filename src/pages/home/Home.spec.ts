@@ -1,23 +1,18 @@
-// import { defineStore } from 'pinia'
-import { describe, it, expect, vi } from 'vitest'
+import { defineStore } from 'pinia'
+import type { SpyInstance } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import wrapperFactory from '../../../tests/utils/wrapperFactory'
-import { getMandatesCollection } from '@/services/mandate'
 import Home from '@/pages/home'
+import * as mandateService from '@/services/mandate'
 import { getMockedMandatesList } from '@/../tests/mocks/mandateMock'
+import { flushPromises, type VueWrapper } from '@vue/test-utils'
+import { nextTick } from 'vue'
+import type { AxiosResponse } from 'axios'
 
-const mandatesList = getMockedMandatesList()
-
-/* vi.mock('@kpmg/common', () => ({
+vi.mock('@/services/mandate')
+vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
-    state: () => ({})
-  })
-})) */
-
-vi.mock('@/services/mandate', () => ({
-  getMandatesCollection: vi.fn(() => {
-    return Promise.resolve({
-      data: mandatesList,
-    })
+    state: () => ([]),
   }),
 }))
 
@@ -26,9 +21,63 @@ const createWrapper = (props: any) =>
     props,
   })
 
-describe('componentName.vue', () => {
+describe('test Home.vue', () => {
+  let wrapper: VueWrapper
+  let mockedGetMandatesCollection: SpyInstance
+  beforeEach(() => {
+    mockedGetMandatesCollection = vi
+      .spyOn(mandateService, 'getMandatesCollection')
+      .mockImplementation(() => {
+        const mandatesList = getMockedMandatesList()
+
+        return Promise.resolve({
+          data: mandatesList,
+        } as AxiosResponse<any, any>)
+      })
+    wrapper = createWrapper({})
+  })
+
+  it('should call mockedGetMandatesCollection only once when Header emits "refresh-mandate-collection" twice', () => {
+    const pagination = wrapper.findComponent({ name: 'Pagination' })
+
+    pagination.vm.$emit('page-selected', {
+      currentPage: 2,
+    })
+    const expectedParams = {
+      limit: 10,
+      searchTerm: '',
+      skip: 10,
+      sortCriteria: '',
+      sortOrder: 'Descending',
+    }
+
+    expect(mockedGetMandatesCollection).toHaveBeenCalledTimes(2)
+    expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expectedParams)
+  })
+
+  it('should call mockedGetMandatesCollection when Header emits "refresh-mandate-collection"', () => {
+    const header = wrapper.findComponent({ name: 'Header' })
+    expect(mockedGetMandatesCollection).toHaveBeenCalledOnce()
+
+    header.vm.$emit('refresh-mandate-collection', {})
+    expect(mockedGetMandatesCollection).toHaveBeenCalledTimes(2)
+  })
+
+  it('should call console.error when mockedGetMandatesCollection throws an error', async () => {
+    const header = wrapper.findComponent({ name: 'Header' })
+    const error = 'thrown-error'
+    const consoleErrorSpy = vi.spyOn(console, 'error')
+    mockedGetMandatesCollection.mockRejectedValueOnce(error)
+
+    header.vm.$emit('refresh-mandate-collection', {})
+    await nextTick()
+    await flushPromises()
+
+    expect(consoleErrorSpy).toHaveBeenCalledOnce()
+    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, error)
+  })
+
   it('should call api with search term', async () => {
-    const wrapper = createWrapper({})
     vi.useFakeTimers()
     const inputValue = 'BNP Paribas'
     await wrapper.find('.btn-next').trigger('click')
@@ -38,7 +87,7 @@ describe('componentName.vue', () => {
       .setValue(inputValue)
     await ibsInputElement.trigger('change')
     await vi.advanceTimersByTimeAsync(550)
-    expect(getMandatesCollection).toHaveBeenLastCalledWith({
+    expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith({
       skip: 0,
       limit: 10,
       searchTerm: inputValue,

@@ -111,6 +111,21 @@ describe('mandate collection', () => {
     expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
   })
 
+  it('emits actionClicked', async () => {
+    const wrapper = createWrapper({
+      data: getMockedMandatesData(),
+    })
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+    pToolbox.vm.$emit('p-toolbox-item-clicked')
+
+    const id = 567
+    const mandate = { id }
+    await wrapper.vm.actionClicked('p-toolbox-item-clicked', 'cancel-telecollection', mandate)
+    await wrapper.vm.terminateMandateAction(id)
+
+    expect(mandateService.terminateMandate).toHaveBeenCalledWith(id)
+  })
+
   it('renders the mandate table click on terminate mandate', async () => {
     const wrapper = createWrapper({
       data: [],
