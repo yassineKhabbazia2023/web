@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import { PDrawer, PSteps } from '@kpmg/styleguide'
-import { type VueWrapper, mount } from '@vue/test-utils'
+import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { beforeEach, vi, describe, it, expect } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import DelegationDrawer from '.'
@@ -12,7 +12,7 @@ import NextPreviousButtons from '@/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import DelegationPreviewList from './components/DelegationPreviewList'
 
-const gatewayPostMock = vi.fn().mockResolvedValue({ data: {} })
+let gatewayPostMock = vi.fn()
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -43,6 +43,8 @@ const i18n = createI18n({
   locale: 'fr-FR',
 })
 
+const mockToastPlugin = vi.fn()
+
 const createWrapper = (
   props: DelegationDrawerProps = defaultProps,
 ): VueWrapper => {
@@ -52,6 +54,7 @@ const createWrapper = (
       plugins: [pinia],
       provide: {
         i18n,
+        toast: mockToastPlugin,
       },
       stubs: [
         'AddDelegatesStep',
@@ -178,11 +181,25 @@ describe('delegationDrawer', () => {
         expect(drawerWrapper.isVisible()).toBeFalsy()
       })
 
-      it.only('should call api to complete delegation process when active step is 1', () => {
+      it.only('should call api to complete delegation process when active step is 1', async () => {
+        gatewayPostMock = vi.fn().mockRejectedValue({ data: {} })
+
         const wrapper = createFullDelegationWrapper()
-        // eslint-disable-next-line no-console
-        console.log(wrapper)
-        expect(true).toBeTruthy()
+        await nextTick()
+
+        const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
+        // const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
+        // expect(getNotificationSuccess()).toHaveLength(0)
+
+        await addDelegatesStepWrapper.vm.$emit('handleCollaboratorSelection', [1, 2, 3])
+        await nextTick()
+
+        const nextPreviousButtonWrapper = findNextPreviousButton(wrapper)
+        await nextTick()
+        await nextPreviousButtonWrapper.vm.$emit('click-next')
+        await nextPreviousButtonWrapper.vm.$emit('click-next')
+        await flushPromises()
+        expect(gatewayPostMock).toHaveBeenCalled()
       })
 
       it('should display failure notification when api call failes then close the drawer', () => {
