@@ -5,19 +5,21 @@ import { PDrawer, PSteps } from '@kpmg/styleguide'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { beforeEach, vi, describe, it, expect } from 'vitest'
 import { createI18n } from 'vue-i18n'
-import DelegationDrawer from '.'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 import { entitiesMock } from '@/../tests/mocks/EntitiesMocks'
 import NextPreviousButtons from '@/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import DelegationPreviewList from './components/DelegationPreviewList'
+import DelegationDrawer from '.'
 
-let gatewayPostMock = vi.fn()
+const USER_ID = 'a custom user id'
+
+const gatewayPostMock = vi.fn(() => Promise.resolve())
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        id: '1',
+        id: USER_ID,
       },
     }),
     getters: {
@@ -26,7 +28,7 @@ vi.mock('@kpmg/common', () => ({
   }),
   commonApi: () => ({
     gateway: {
-      post: () => gatewayPostMock,
+      post: gatewayPostMock,
     },
   }),
 }))
@@ -110,10 +112,9 @@ describe('delegationDrawer', () => {
     it('should render DelegationPreviewList when activeStep = 1', async () => {
       const wrapper = createFullDelegationWrapper()
       await nextTick()
+
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-
       nextPreviousButtonsWrapper.vm.$emit('click-next')
-
       await nextTick()
 
       const pStepsWrapper = findPStepsWrapper(wrapper)
@@ -181,28 +182,53 @@ describe('delegationDrawer', () => {
         expect(drawerWrapper.isVisible()).toBeFalsy()
       })
 
-      it.only('should call api to complete delegation process when active step is 1', async () => {
-        gatewayPostMock = vi.fn().mockRejectedValue({ data: {} })
+      it('should call api to complete delegation process when active step is 1', async () => {
+        const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 
         const wrapper = createFullDelegationWrapper()
         await nextTick()
 
         const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
-        // const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
-        // expect(getNotificationSuccess()).toHaveLength(0)
+        const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
+        expect(getNotificationSuccess()).toHaveLength(0)
 
-        await addDelegatesStepWrapper.vm.$emit('handleCollaboratorSelection', [1, 2, 3])
-        await nextTick()
+        await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
         const nextPreviousButtonWrapper = findNextPreviousButton(wrapper)
-        await nextTick()
         await nextPreviousButtonWrapper.vm.$emit('click-next')
         await nextPreviousButtonWrapper.vm.$emit('click-next')
+
+        expect(gatewayPostMock).toHaveBeenCalledOnce()
+        expect(gatewayPostMock).toHaveBeenCalledWith(
+          'wallet/api/delegations',
+          {
+            accountIds: [],
+            delegationDetails: [
+              {
+                delegateeId: COLLABORATORS_SELECTED[0].id,
+                isAutomaticDelegation: false,
+                startDate: expect.any(String),
+              },
+              {
+                delegateeId: COLLABORATORS_SELECTED[1].id,
+                isAutomaticDelegation: false,
+                startDate: expect.any(String),
+              },
+              {
+                delegateeId: COLLABORATORS_SELECTED[2].id,
+                isAutomaticDelegation: false,
+                startDate: expect.any(String),
+              },
+            ],
+            delegatorId: USER_ID,
+            isFullDelegation: true,
+          },
+        )
         await flushPromises()
-        expect(gatewayPostMock).toHaveBeenCalled()
+        expect(getNotificationSuccess()).toHaveLength(1)
       })
 
-      it('should display failure notification when api call failes then close the drawer', () => {
+      it('should display failure notification when api call fails then close the drawer', () => {
         expect(true).toBeTruthy()
       })
     })
