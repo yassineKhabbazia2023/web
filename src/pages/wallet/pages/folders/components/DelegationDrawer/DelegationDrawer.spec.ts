@@ -13,8 +13,9 @@ import DelegationPreviewList from './components/DelegationPreviewList'
 import DelegationDrawer from '.'
 
 const USER_ID = 'a custom user id'
+const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 
-const gatewayPostMock = vi.fn(() => Promise.resolve())
+let gatewayPostMock = vi.fn().mockResolvedValue({})
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -183,8 +184,6 @@ describe('delegationDrawer', () => {
       })
 
       it('should call api to complete delegation process when active step is 1', async () => {
-        const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
-
         const wrapper = createFullDelegationWrapper()
         await nextTick()
 
@@ -228,8 +227,25 @@ describe('delegationDrawer', () => {
         expect(getNotificationSuccess()).toHaveLength(1)
       })
 
-      it('should display failure notification when api call fails then close the drawer', () => {
-        expect(true).toBeTruthy()
+      it('should display failure notification when api call fails then close the drawer', async () => {
+        gatewayPostMock = vi.fn().mockRejectedValue({})
+
+        const wrapper = createFullDelegationWrapper()
+        await nextTick()
+
+        const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
+        const getNotificationError = () => document.body.getElementsByClassName('el-notification error')
+        expect(getNotificationError()).toHaveLength(0)
+
+        await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
+
+        const nextPreviousButtonWrapper = findNextPreviousButton(wrapper)
+        await nextPreviousButtonWrapper.vm.$emit('click-next')
+        await nextPreviousButtonWrapper.vm.$emit('click-next')
+
+        expect(gatewayPostMock).toHaveBeenCalledOnce()
+        await flushPromises()
+        expect(getNotificationError()).toHaveLength(1)
       })
     })
   })
