@@ -9,12 +9,14 @@ import AddDelegatesStep from '.'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
+const mockedCollaborators = getMockedCollaborators()
 vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve(getMockedCollaborators())),
+  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 
 const defaultProps: DelegatorsAddStepProps = {
   numberOfFoldersInPortfolio: 5,
+  shouldDisplayNumberOfFoldersInPortfolio: true,
 }
 
 const i18n = createI18n({
@@ -65,7 +67,7 @@ describe('addDelegatesStep', () => {
       const emitted = wrapper.emitted('collaborator-selection')
 
       expect(emitted).toHaveLength(1)
-      expect(emitted?.at(0)).toStrictEqual([[1]])
+      expect(emitted?.at(0)).toStrictEqual([[mockedCollaborators.at(0)]])
     })
 
     it('should emit collaborator-selection on remove-collaborator event', () => {
@@ -78,7 +80,9 @@ describe('addDelegatesStep', () => {
 
       const emitted = wrapper.emitted('collaborator-selection')
       expect(emitted).toHaveLength(4)
-      expect(emitted?.at(3)).toStrictEqual([[2, 3]])
+      expect(emitted?.at(3)).toStrictEqual([
+        [mockedCollaborators.at(1), mockedCollaborators.at(2)],
+      ])
     })
 
     it('should emit collaborator-selection on user line trash icon click', async () => {

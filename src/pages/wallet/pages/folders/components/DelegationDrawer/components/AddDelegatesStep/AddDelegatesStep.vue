@@ -104,6 +104,7 @@ function getFormattedFirstAndLastName(firstName: string, lastName: string) {
 }
 
 function emitCollaboratorSelection() {
+  console.warn('>>> before emit', selectedCollaborators.value)
   emit('collaborator-selection', selectedCollaborators.value)
 }
 </script>
