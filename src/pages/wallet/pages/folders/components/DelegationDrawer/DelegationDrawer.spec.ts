@@ -15,6 +15,11 @@ import DelegationDrawer from '.'
 const USER_ID = 'a custom user id'
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 
+const getNotificationSuccess = () =>
+  document.body.getElementsByClassName('el-notification success')
+const getNotificationError = () =>
+  document.body.getElementsByClassName('el-notification error')
+
 let gatewayPostMock = vi.fn().mockResolvedValue({})
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -36,7 +41,7 @@ vi.mock('@kpmg/common', () => ({
 
 const pinia = createTestingPinia()
 
-const defaultProps = {
+const defaultProps: DelegationDrawerProps = {
   modelValue: true,
   selectedFolders: entitiesMock,
   numberOfFoldersInPortfolio: 20,
@@ -188,7 +193,6 @@ describe('delegationDrawer', () => {
         await nextTick()
 
         const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
-        const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
         expect(getNotificationSuccess()).toHaveLength(0)
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
@@ -223,6 +227,7 @@ describe('delegationDrawer', () => {
             isFullDelegation: true,
           },
         )
+
         await flushPromises()
         expect(getNotificationSuccess()).toHaveLength(1)
       })
@@ -234,7 +239,6 @@ describe('delegationDrawer', () => {
         await nextTick()
 
         const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
-        const getNotificationError = () => document.body.getElementsByClassName('el-notification error')
         expect(getNotificationError()).toHaveLength(0)
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
@@ -244,8 +248,46 @@ describe('delegationDrawer', () => {
         await nextPreviousButtonWrapper.vm.$emit('click-next')
 
         expect(gatewayPostMock).toHaveBeenCalledOnce()
+
         await flushPromises()
         expect(getNotificationError()).toHaveLength(1)
+      })
+
+      it.only('should directly post user on "specific" delegation flow type', async () => {
+        const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+
+        expect(getNotificationSuccess()).toHaveLength(0)
+
+        nextPreviousButtonsWrapper.vm.$emit('click-next')
+
+        expect(gatewayPostMock).toHaveBeenCalledWith(
+          'wallet/api/delegations',
+          {
+            accountIds: [],
+            delegationDetails: [
+              {
+                delegateeId: COLLABORATORS_SELECTED[0].id,
+                isAutomaticDelegation: false,
+                startDate: expect.any(String),
+              },
+              {
+                delegateeId: COLLABORATORS_SELECTED[1].id,
+                isAutomaticDelegation: false,
+                startDate: expect.any(String),
+              },
+              {
+                delegateeId: COLLABORATORS_SELECTED[2].id,
+                isAutomaticDelegation: false,
+                startDate: expect.any(String),
+              },
+            ],
+            delegatorId: USER_ID,
+            isFullDelegation: true,
+          },
+        )
+
+        await flushPromises()
+        expect(getNotificationSuccess()).toHaveLength(1)
       })
     })
   })

@@ -6,18 +6,19 @@ import { PTable } from '@kpmg/styleguide'
 import CollapsableFoldersList from '.'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 import { entitiesMock } from '@/../tests/mocks/EntitiesMocks'
-import type { IEntity } from '@/pages/wallet/types'
-
+import type { Entity } from '@kpmg/common'
 const i18n = createI18n({
   locale: 'fr-FR',
 })
 
-function formatFoldersProps(folders: IEntity[]): SelectedFoldersListProps['folders'] {
-  return folders.map(({ id, accountNumber, name, avatarColor }) => ({
-    id,
+function formatFoldersProps(
+  folders: Entity[],
+): SelectedFoldersListProps['folders'] {
+  return folders.map(({ accountId, accountNumber, legalName, color }) => ({
+    id: accountId,
     accountNumber,
-    name,
-    avatarColor,
+    name: legalName,
+    avatarColor: color,
   }))
 }
 
