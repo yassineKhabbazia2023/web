@@ -131,9 +131,10 @@ async function handleNextClick() {
 
   if (activeStep.value === 1 || isSpecificDelegationFlowType.value) {
     const delegationRequest = {
+      isFullDelegation: !isSpecificDelegationFlowType.value,
       delegatorId: currentUserId,
       delegationDetails: formatDelegateSummaryForDelegationRequest(delegationDetails.value),
-      accountIds: getAccountNumberFromSelectedFolders(),
+      accountIds: getAccountIdFromSelectedFolders(),
     }
     await delegateFolder(delegationRequest)
   } else {
@@ -153,8 +154,8 @@ watch(activeStep, () => {
   }
 })
 
-const getAccountNumberFromSelectedFolders = () =>
-  props.selectedFolders.map(({ accountNumber }) => accountNumber)
+const getAccountIdFromSelectedFolders = () =>
+  props.selectedFolders.map(({ id }) => id)
 
 function formatCollaboratorsDetailsForDelegateSummary() {
   return selectedCollaborators.value
@@ -166,18 +167,18 @@ function formatCollaboratorsDetailsForDelegateSummary() {
           lastName,
           email,
         },
-        isAutomaticallyDelegated: false,
+        isAutomaticDelegation: false,
       }
     ))
 }
 
 const formatDelegateSummaryForDelegationRequest = (delegationDetails: DelegationDetails[]) => {
   return delegationDetails
-    .map(({ delegate, isAutomaticallyDelegated }) => (
+    .map(({ delegate, isAutomaticDelegation }) => (
       {
         delegateeId: delegate.id,
         startDate: new Date().toISOString(),
-        isAutomaticallyDelegated,
+        isAutomaticDelegation,
       }
     ))
 }

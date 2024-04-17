@@ -55,7 +55,7 @@
       </template>
 
       <template #default="scope">
-        <PCheckbox v-model="scope.row.isAutomaticallyDelegated">
+        <PCheckbox v-model="scope.row.isAutomaticDelegation">
           {{ t('table.header.enableAutomaticDelegation') }}
         </PCheckbox>
       </template>
@@ -105,7 +105,7 @@ const sortMethodsDoubleText = (a: any, b: any) => a.firstName - b.firstName
 
 const handleToggleAllAutomaticDelegation = () => {
   delegationsList.value.forEach(delegationsListItem => {
-    delegationsListItem.isAutomaticallyDelegated = hasAllAutomaticDelegationSelected.value
+    delegationsListItem.isAutomaticDelegation = hasAllAutomaticDelegationSelected.value
   })
 }
 </script>

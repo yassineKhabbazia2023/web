@@ -16,7 +16,7 @@ const delegationList: DelegationPreviewListProps['modelValue'] = [
       lastName: 'Ben Amor',
       email: 'obenamor@kpmg.fr',
     },
-    isAutomaticallyDelegated: true,
+    isAutomaticDelegation: true,
   },
   {
     delegate: {
@@ -25,7 +25,7 @@ const delegationList: DelegationPreviewListProps['modelValue'] = [
       lastName: 'LastUserName',
       email: 'luser@kpmg.fr',
     },
-    isAutomaticallyDelegated: false,
+    isAutomaticDelegation: false,
   },
 ]
 

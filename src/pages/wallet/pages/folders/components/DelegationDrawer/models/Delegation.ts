@@ -9,5 +9,5 @@ export type Delegate = {
 
 export type DelegationDetails = {
   delegate: Delegate
-  isAutomaticallyDelegated: boolean
+  isAutomaticDelegation: boolean
 }
