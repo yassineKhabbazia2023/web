@@ -1,49 +1,47 @@
 <template>
-  <div>
-    <div>
-      <a
-        href="https://vitejs.dev"
-        target="_blank"
-        rel="noopener"
-      >
-        {{ t('vite') }}
-      </a>
-      <span>{{ t('+') }}</span>
-      <a
-        href="https://vuejs.org/"
-        target="_blank"
-        rel="noopener"
-      >
-        {{ t('vue') }}
-      </a>
-    </div>
-    <HelloWorld />
+  <div class="flex flex-gap--4 flex--wrap">
+    <LauncherCard
+      v-for="(LaunchCard, index) in LaunchCards"
+      class="flex--basis-30 flex--grow-1"
+      :key="index"
+      :title="LaunchCard.title"
+      :subtitle="LaunchCard.subtitle"
+      :imageType="LaunchCard.imageType"
+      :imageName="LaunchCard.imageName"
+      :actionLabel="LaunchCard.actionLabel"
+      :actionHref="LaunchCard.actionHref"
+      :downloadHref="LaunchCard.downloadHref"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import HelloWorld from './components/helloWorld'
+import LauncherCard from '@/components/launch-card'
+import type { LaunchCardProps } from '@/components/launch-card/LaunchCardTypes'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
+const LaunchCards: LaunchCardProps[] = [{
+  title: 'Mon outil de gestion',
+  subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
+  imageType: 'logos',
+  imageName: 'iconpulse-color',
+  actionLabel: 'Se connecter à l\'outil de gestion',
+  actionHref: 'https://www.kpmg.fr',
+  downloadHref: '',
+}, {
+  title: 'Silae',
+  subtitle: 'Accéder à votre outil de gestion de planning et du personnel - À installer',
+  imageType: 'logos',
+  imageName: 'silae-color',
+  actionLabel: 'Se connecter à Silae',
+  actionHref: 'https://www.kpmg.fr',
+  downloadHref: 'https://www.kpmg.fr',
+}, {
+  title: 'Pennylane',
+  subtitle: 'Accéder à votre outil Pennylane pour votre gestion au quotidien',
+  imageType: 'logos',
+  imageName: 'pennylane-color',
+  actionLabel: 'Se connecter à Pennylane',
+  actionHref: 'https://www.kpmg.fr',
+  downloadHref: '',
+}]
 </script>
-
-<style lang="scss" scoped>
-span {
-  margin: 0 0.5rem;
-}
-</style>
-
-<i18n lang="yaml">
-  en-US:
-    vite: 'Vite'
-    vue: 'Vue'
-    +: '+'
-  fr-FR:
-    vite: 'Vite'
-    vue: 'Vue'
-    +: '+'
-</i18n>
