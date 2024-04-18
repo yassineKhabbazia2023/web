@@ -392,7 +392,7 @@ const onSelectedFolder = (row: any) => {
     accountNumber: row.accountNumber,
     id: row.accountId,
     name: row.name,
-    avatarColor: row.owner.avatarColor,
+    avatarColor: row.owner?.avatarColor,
   })
 }
 </script>

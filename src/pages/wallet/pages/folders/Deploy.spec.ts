@@ -87,7 +87,8 @@ const findSubscriptionDrawer = (wrapper: VueWrapper) =>
   wrapper.findComponent('[data-testid=offers-drawer]') as VueWrapper
 
 setActivePinia(pinia)
-describe('test Deploy', () => {
+
+describe('deploy', () => {
   let mockFetchWalletData: SpyInstance
   beforeEach(() => {
     mockFetchWalletData = vi
@@ -95,18 +96,17 @@ describe('test Deploy', () => {
       .mockResolvedValue(mockedQueryResult)
   })
 
-  it('should display correct button by nombre selected ibs', async () => {
+  it('should display correct button by number of selected ibs', async () => {
     const wrapper = createWrapper()
     await flushPromises()
+
     const button = wrapper.find('.el-button')
     expect(button.text()).toBe('Delegate my wallet')
     const checkbox = wrapper.findAllComponents({ name: 'ElCheckbox' })[0]
-    checkbox.trigger('click')
-    await nextTick()
+    await checkbox.trigger('click')
     expect(button.text()).toBe('Delegate my folder')
     const checkbox1 = wrapper.findAllComponents({ name: 'ElCheckbox' })[1]
-    checkbox1.trigger('click')
-    await nextTick()
+    await checkbox1.trigger('click')
     expect(button.text()).toBe('Delegate my folders')
   })
 
