@@ -3,6 +3,7 @@
     <LaunchCard
       v-for="(launchCard, index) in launchCards"
       class="flex--basis-30 flex--grow-1"
+      data-testid="launchCard"
       :key="index"
       :title="launchCard.title"
       :subtitle="launchCard.subtitle"

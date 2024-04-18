@@ -12,15 +12,22 @@
     <div class="flex flex--justify-content-center margin-bottom--1">
       <PImage
         class="launch-card__image"
+        data-testid="launch-card-image"
         :pType="imageType"
         :pName="imageName"
       />
     </div>
 
-    <p class="text-center font-large font-bold">
+    <p
+      class="text-center font-large font-bold"
+      data-testid="launch-card-title"
+    >
       {{ title }}
     </p>
-    <p class="text-center flex--grow-1 margin-bottom--4">
+    <p
+      class="text-center flex--grow-1 margin-bottom--4"
+      data-testid="launch-card-subtitle"
+    >
       {{ subtitle }}
     </p>
     <div
@@ -38,6 +45,7 @@
         pSize="small"
         tag="a"
         target="_blank"
+        data-testid="launch-card-download"
       >
         {{ t('download') }}
       </PButton>
@@ -46,6 +54,7 @@
         v-if="actionLabel"
         pType="primary"
         pSize="small"
+        data-testid="launch-card-action"
         @click="emit('click-action')"
       >
         {{ actionLabel }}
@@ -71,7 +80,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-defineEmits<{
+const emit = defineEmits<{
   'click-action': []
 }>()
 
@@ -81,7 +90,6 @@ const sanitizedDownloadUrl = computed(() => {
   return props.downloadUrl
     ? sanitizeUrl(props.downloadUrl)
     : ''
-
 })
 </script>
 
