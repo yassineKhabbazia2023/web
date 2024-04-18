@@ -27,4 +27,5 @@ extends:
     mfe: entities
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
+    sonarExclusions: '**/Mock.js, **/mocks/**'
 

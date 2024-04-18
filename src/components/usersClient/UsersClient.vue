@@ -64,6 +64,7 @@ import FormSearch from '@/components/FormSearch'
 import TableData from './components/TableData'
 import type { IState, IUserFromApi } from './types'
 import DrawerUserDetails from './components/DrawerUserDetails'
+import { API_PREFIXES } from '../../services/config'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -110,7 +111,6 @@ const canEdit = computed(() => true)
 const getQueryParams = () => ({
   pageNumber: state.currentPage,
   pageSize: state.limit,
-  type: 'Customer',
   search: state.search,
   sort: state.sort,
 })
@@ -119,9 +119,9 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
   items.map(({
     firstName,
     lastName,
-    persona,
-    id,
-    createdAt,
+    personaName,
+    contactId,
+    creationDate,
     ...rest
   }) => ({
     ...rest,
@@ -131,12 +131,12 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
     ),
     firstName,
     lastName,
-    isOwner: persona.name === 'Dirigeant',
+    isOwner: personaName === 'ADMIN/Dirigeant',
     fullName: `${firstName} ${lastName}`,
-    isLoggedUser: () => id.toString() === userStore.$state.user?.id,
-    persona,
-    id,
-    createdAt: d(new Date(createdAt), 'short'),
+    isLoggedUser: () => contactId.toString() === userStore.$state.user?.id,
+    personaName,
+    contactId,
+    creationDate: d(new Date(creationDate), 'short'),
   }))
 
 const fetch = async () => {
@@ -153,7 +153,8 @@ const fetch = async () => {
         totalPages,
         totalItems,
       },
-    } = await commonApi().gateway.get(`customer-wallet/api/contacts?${searchParams}`)
+    } = await commonApi().gateway
+      .get(`${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`)
 
     state.data = formatItemsFromApi(items)
     state.currentPage = currentPage
@@ -170,7 +171,6 @@ const handlePatch = async () => {
 const handleClickViewInformation = (selectedUserId: number) => {
   state.selectedUserId = selectedUserId
   state.isDrawerViewDetailsOpened = true
-  console.log('click') // eslint-disable-line
 }
 
 const handleSortChange = (sortQueryField:string) => {

@@ -1,16 +1,10 @@
-type Persona = {
-  id: number
-  name: string
-  description: string
-}
-
 export interface IUserFromApi {
-  id: number
+  contactId: number
   firstName: string
   lastName: string
   email: string
-  persona: Persona
-  createdAt: string
+  personaName: string
+  creationDate: string
 }
 
 export interface IExtendedUser extends IUserFromApi {

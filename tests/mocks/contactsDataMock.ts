@@ -4,19 +4,13 @@ import type { IUserFromApi } from '@/components/usersClient/types'
 export const generateContactsMock = (
   request: contactsMockRequest,
 ): { data: any } => {
-  const persona = {
-    id: 24,
-    name: 'Customer',
-    description: '',
-  }
-
   const baseContactData = {
-    id: 1,
+    contactId: 1,
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email@testemail.com',
-    persona,
-    createdAt: '2024-03-07',
+    personaName: 'Customer',
+    creationDate: '2024-03-07',
   }
 
   const contactsDataArray: IUserFromApi[] = []
@@ -24,7 +18,7 @@ export const generateContactsMock = (
   for (let i = 0; i < request.numberOfContactsToReturn; i++) {
     contactsDataArray.push({
       ...baseContactData,
-      id: baseContactData.id + 1,
+      contactId: baseContactData.contactId + 1,
       firstName: baseContactData.firstName + i,
       email: baseContactData.email + i,
     })

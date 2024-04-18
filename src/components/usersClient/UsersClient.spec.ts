@@ -15,6 +15,7 @@ import TableData from './components/TableData'
 import FormSearch from '@/components/FormSearch'
 import type { PatchContactPayload } from '@/services/contact/contactTypes'
 import { mockUser } from './components/DrawerUserDetails/mockData.ts'
+import { API_PREFIXES } from '../../services/config'
 
 vi.mock('@/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
@@ -70,7 +71,7 @@ const checkRowContent = (
   contactsList: IExtendedUser[],
 ) => {
   contactsList.forEach((contact) => {
-    const date = new Date(contact.createdAt)
+    const date = new Date(contact.creationDate)
 
     const yyyy = date.getFullYear()
     const mm = date.getMonth() + 1
@@ -128,7 +129,7 @@ describe('usersClient', () => {
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
 
       expect(mockGatewayGet).toHaveBeenCalledWith(
-        'customer-wallet/api/contacts?pageNumber=1&pageSize=15&type=Customer',
+        `${API_PREFIXES.CUSTOMER_WALLET}/customers/2?pageNumber=1&pageSize=15`,
       )
     })
 

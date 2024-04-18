@@ -43,7 +43,7 @@
 
       <PTableColumn
         :pLabel="t('role')"
-        pProp="persona"
+        pProp="personaName"
         pSortable
       >
         <template #default="scope">
@@ -54,9 +54,8 @@
             <PIcon color="#5546FF">
               <PIPatchCheck />
             </PIcon>
-
             <p class="margin-left--2 color-persian font-bold">
-              {{ scope.row.persona.name }}
+              {{ scope.row.personaName }}
             </p>
           </div>
 
@@ -64,14 +63,14 @@
             v-if="!scope.row.isOwner"
             class="font-bold"
           >
-            {{ scope.row.persona.name }}
+            {{ scope.row.personaName}}
           </p>
         </template>
       </PTableColumn>
 
       <PTableColumn
         :pLabel="t('dateAdded')"
-        pProp="createdAt"
+        pProp="creationDate"
         pSortable
       />
 
@@ -117,8 +116,8 @@ import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
-import type { Contact } from '@/services/contact/contactTypes'
 import { returnSortQueryField } from '@/helper'
+import type { IExtendedUser } from '../../types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -127,7 +126,6 @@ const { t } = useI18n({
 
 const props = defineProps<Props>()
 const emits = defineEmits<{
-  'on-sort-change': [string]
   'click-view-information': [number]
 }>()
 
@@ -154,22 +152,21 @@ const menuElements : PToolboxItemProps[] = [
 ]
 
 const state = reactive({
-  rowData: {} as Contact,
+  rowData: {} as IExtendedUser,
 })
 
 const handleToolboxItemClick = (_action: string, row: any) => {
   state.rowData = row
   if (state.rowData) {
-    const contact = state.rowData as Contact
-    emits('click-view-information', contact.id)
+    const contact = state.rowData
+    emits('click-view-information', contact.contactId)
   }
 }
 
 const handleSortChange = (data:any) => {
   const columnLabel = data.prop
   const order = data.order
-  const sortQueryField = returnSortQueryField(columnLabel, order)
-  emits('on-sort-change', sortQueryField)
+  returnSortQueryField(columnLabel, order)
 }
 </script>
 
