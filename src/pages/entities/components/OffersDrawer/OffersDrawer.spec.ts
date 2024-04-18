@@ -439,7 +439,8 @@ describe('offersDrawer', () => {
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
 
-      await nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('clickPrevious')
+      await nextTick()
       const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
       expect((wrapper.vm as any).collaborators).toStrictEqual([])
