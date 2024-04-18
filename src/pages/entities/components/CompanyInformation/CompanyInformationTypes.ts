@@ -10,6 +10,7 @@ export interface FormField extends PFieldProps<string> {
 export type FormSection = {
   title: string
   fields: FormField[]
+  sectionKey?: string
 }
 
 export interface CompanyInformationProps {

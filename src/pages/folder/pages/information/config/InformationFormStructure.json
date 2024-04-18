@@ -42,7 +42,8 @@
     ]
   },
   {
-    "title": "Adresse de l'entreprise",
+    "title": "Adresse",
+    "sectionKey": "companyAddress",
     "fields": [
       {
         "modelValue": "",
@@ -162,7 +163,7 @@
       {
         "pCssClass": "flex--grow-1 min-width--1 flex--basis-20",
         "pDisabled": true,
-        "pFieldKey": "legal.createdAt",
+        "pFieldKey": "legal.creationDate",
         "pFieldType": "date",
         "pLabel": "Date de création"
       },
