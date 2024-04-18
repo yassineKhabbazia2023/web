@@ -1,17 +1,17 @@
 <template>
   <div
     class="
-    launchCard
-    padding--6
-    radius--2
-    flex
-    flex--direction-column
-    flex-gap--2
+      launch-card
+      padding--6
+      radius--2
+      flex
+      flex--direction-column
+      flex-gap--2
     "
   >
     <div class="flex flex--justify-content-center margin-bottom--1">
       <PImage
-        class="launchCard__image"
+        class="launch-card__image"
         :pType="imageType"
         :pName="imageName"
       />
@@ -31,19 +31,22 @@
         flex-gap--2
       "
     >
-      <a
-        v-if="downloadHref"
-        :href="downloadHref"
+      <PButton
+        v-if="sanitizedDownloadUrl"
+        :href="sanitizedDownloadUrl"
+        pType="white"
+        pSize="small"
+        tag="a"
         target="_blank"
-        class="padding--2 text-color--persian-500 font-small font-semibold"
       >
         {{ t('download') }}
-      </a>
+      </PButton>
 
       <PButton
         v-if="actionLabel"
         pType="primary"
         pSize="small"
+        @click="emit('click-action')"
       >
         {{ actionLabel }}
         <PIcon
@@ -57,6 +60,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { sanitizeUrl } from '@braintree/sanitize-url'
 import { useI18n } from 'vue-i18n'
 import { PImage, PIcon, PButton, PIArrowRight } from '@kpmg/styleguide'
 import type { LaunchCardProps } from './LaunchCardTypes'
@@ -66,11 +71,22 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-defineProps<LaunchCardProps>()
+defineEmits<{
+  'click-action': []
+}>()
+
+const props = defineProps<LaunchCardProps>()
+
+const sanitizedDownloadUrl = computed(() => {
+  return props.downloadUrl
+    ? sanitizeUrl(props.downloadUrl)
+    : ''
+
+})
 </script>
 
 <style lang="scss" scoped>
-.launchCard {
+.launch-card {
   border: 1px solid var(--el-color-neutral-gray-100);
 
   &__image {
