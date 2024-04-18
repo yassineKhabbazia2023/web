@@ -22,7 +22,7 @@
       :pActive="activeStep"
       pFinishStatus="success"
     >
-      <PStep :title="t('addColaborator')" />
+      <PStep :title="t('addCollaborator')" />
       <PStep :title="t('automaticDelegation')" />
     </PSteps>
 
@@ -226,7 +226,7 @@ const closeDrawer = () => {
   en-US:
     walletDelegation: 'Delegate my wallet'
     folderDelegation: 'Delegate a folder | Delegate multiple folders'
-    addColaborator: 'Add a colaborator'
+    addCollaborator: 'Add a collaborator'
     automaticDelegation: 'Automatic delegation'
     cancelButtonLabel: 'Cancel'
     previousButtonLabel: 'Cancel'
@@ -237,7 +237,7 @@ const closeDrawer = () => {
   fr-FR:
     walletDelegation: 'Déléguer mon portefeuille'
     folderDelegation: 'Déléguer un dossier | Déléguer plusieurs dossiers'
-    addColaborator: 'Ajout des collaborateurs'
+    addCollaborator: 'Ajout des collaborateurs'
     automaticDelegation: 'Délégation automatique'
     cancelButtonLabel: 'Annuler'
     previousButtonLabel: 'Précedent'
