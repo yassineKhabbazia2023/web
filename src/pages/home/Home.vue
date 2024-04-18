@@ -24,7 +24,7 @@ const LaunchCards: LaunchCardProps[] = [{
   subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
   imageType: 'logos',
   imageName: 'iconpulse-color',
-  actionLabel: 'Se connecter à l\'outil de gestion',
+  actionLabel: "Se connecter à l'outil de gestion",
   actionHref: 'https://www.kpmg.fr',
   downloadHref: '',
 }, {
