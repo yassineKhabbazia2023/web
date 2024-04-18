@@ -5,11 +5,12 @@ import accountReferentialInformation from './__mock__/accountReferentialInformat
 import referentialHubs from './__mock__/referentialHubs.json'
 
 export function getMockedAddress(override: Partial<Address> = {}): Address {
-  const defaultAddress = {
+  const defaultAddress: Address = {
     addressId: 2,
     addressLine1: 'Rue de liege',
     addressLine2: 'test 2',
     addressLine3: 'test 3',
+    addressType: 'billing',
     country: 'France',
     city: 'Paris',
     zipCode: '25300',
