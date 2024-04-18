@@ -27,4 +27,5 @@ extends:
     mfe: launcher
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
-    sonarExclusions: '*.config.js'
+    sonarExclusions: |
+      *.config.js,vitest.setup.js,src/router/index.ts,src/main.ts
