@@ -69,7 +69,7 @@ function handleCollaboratorSelection(contact: Contact) {
 }
 
 async function getCollaboratorsAutocomplete(searchValue: string, callback: any) {
-  const collaborators = await getCollaborators(searchValue) ?? []
+  const collaborators = await getCollaborators(searchValue, 100) ?? []
   callback(collaborators)
 }
 

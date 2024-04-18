@@ -3,7 +3,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import { PDrawer, PSteps } from '@kpmg/styleguide'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
-import { beforeEach, vi, describe, it, expect } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 import { entitiesMock } from '@/../tests/mocks/EntitiesMocks'
@@ -14,6 +14,16 @@ import DelegationDrawer from '.'
 
 const USER_ID = 'a custom user id'
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
+const FIRST_SELECTED_FOLDER = {
+  id: 1,
+  accountNumber: 'a custom number',
+  name: 'a custom name',
+}
+const SECOND_SELECTED_FOLDER = {
+  id: 2,
+  accountNumber: 'another custom number',
+  name: 'another custom name',
+}
 
 const getNotificationSuccess = () =>
   document.body.getElementsByClassName('el-notification success')
@@ -43,7 +53,16 @@ const pinia = createTestingPinia()
 
 const defaultProps: DelegationDrawerProps = {
   modelValue: true,
-  selectedFolders: entitiesMock,
+  selectedFolders: [
+    {
+      ...FIRST_SELECTED_FOLDER,
+      avatarColor: 'cyan',
+    },
+    {
+      ...SECOND_SELECTED_FOLDER,
+      avatarColor: 'fuschia',
+    },
+  ],
   numberOfFoldersInPortfolio: 20,
 }
 
@@ -90,6 +109,10 @@ describe('delegationDrawer', () => {
     wrapper = createWrapper()
   })
 
+  afterEach(() => {
+    document.body.outerHTML = ''
+  })
+
   describe('rendering', () => {
     it('should display the collab folders number', () => {
       const foldersNumber = wrapper.find('.delegation-drawer__header')
@@ -120,8 +143,7 @@ describe('delegationDrawer', () => {
       await nextTick()
 
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      nextPreviousButtonsWrapper.vm.$emit('click-next')
-      await nextTick()
+      await nextPreviousButtonsWrapper.vm.$emit('click-next')
 
       const pStepsWrapper = findPStepsWrapper(wrapper)
       expect(pStepsWrapper.props('pActive')).toBe(1)
@@ -163,19 +185,12 @@ describe('delegationDrawer', () => {
           nextPreviousButtonWrapper.props('isNextButtonDisabled'),
         ).toBeTruthy()
 
-        addDelegatesStepWrapper.vm.$emit('collaborator-selection', [1, 2, 3])
-        await nextTick()
+        await addDelegatesStepWrapper.vm.$emit('collaborator-selection', [1, 2, 3])
         // The only use case in this component is enabling or disabling the next button
         // so i'm checking isNextButtonDisabled state to check if data has been updated
         expect(
           nextPreviousButtonWrapper.props('isNextButtonDisabled'),
         ).toBeFalsy()
-      })
-    })
-
-    describe('delegationPreviewList', () => {
-      it('should update the delegationDetails upon auto delegation check box selection', () => {
-        expect(true).toBeTruthy()
       })
     })
 
@@ -253,17 +268,19 @@ describe('delegationDrawer', () => {
         expect(getNotificationError()).toHaveLength(1)
       })
 
-      it.only('should directly post user on "specific" delegation flow type', async () => {
+      it('should directly post user on "specific" delegation flow type', async () => {
         const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
 
         expect(getNotificationSuccess()).toHaveLength(0)
 
+        const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
+        await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
         nextPreviousButtonsWrapper.vm.$emit('click-next')
 
         expect(gatewayPostMock).toHaveBeenCalledWith(
           'wallet/api/delegations',
           {
-            accountIds: [],
+            accountIds: [FIRST_SELECTED_FOLDER.id, SECOND_SELECTED_FOLDER.id],
             delegationDetails: [
               {
                 delegateeId: COLLABORATORS_SELECTED[0].id,
@@ -282,10 +299,9 @@ describe('delegationDrawer', () => {
               },
             ],
             delegatorId: USER_ID,
-            isFullDelegation: true,
+            isFullDelegation: false,
           },
         )
-
         await flushPromises()
         expect(getNotificationSuccess()).toHaveLength(1)
       })

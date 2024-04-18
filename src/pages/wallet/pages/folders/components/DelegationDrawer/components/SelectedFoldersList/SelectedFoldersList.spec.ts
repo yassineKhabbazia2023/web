@@ -7,6 +7,7 @@ import CollapsableFoldersList from '.'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 import { entitiesMock } from '@/../tests/mocks/EntitiesMocks'
 import type { Entity } from '@kpmg/common'
+
 const i18n = createI18n({
   locale: 'fr-FR',
 })

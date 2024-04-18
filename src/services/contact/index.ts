@@ -5,6 +5,7 @@ import type { Contact, PatchContactPayload } from './contactTypes'
 
 export const getCollaborators = async (
   search: string | null = null,
+  pageSize?: number,
 ): Promise<Contact[] | undefined> => {
   try {
     const response = await commonApi().gateway.get(
@@ -13,6 +14,7 @@ export const getCollaborators = async (
         params: {
           Type: 'Collaborator',
           search,
+          pageSize,
         },
       },
     )

@@ -10,7 +10,7 @@
           tag="p"
         >
           <template #amount>
-            <span class="font-bold">{{ t('folders', numberOfFoldersInPortfolio)  }}</span>
+            <span class="font-bold">{{ t('folders', numberOfFoldersInPortfolio) }}</span>
           </template>
         </i18n-t>
       </PAlert>
@@ -104,14 +104,13 @@ function getFormattedFirstAndLastName(firstName: string, lastName: string) {
 }
 
 function emitCollaboratorSelection() {
-  console.warn('>>> before emit', selectedCollaborators.value)
   emit('collaborator-selection', selectedCollaborators.value)
 }
 </script>
 
 <style lang="scss" scoped>
 .delegates-add {
-  $self:  &;
+  $self: &;
 
   &__search-line {
     &--selected {
@@ -126,10 +125,6 @@ function emitCollaboratorSelection() {
     &:not(#{$self}--selected) #{self}__additional-information {
       color: var(--el-color-neutral-gray-300);
     }
-  }
-
-  &__colaborators-list-item:not(:first-of-type) {
-    border-top: 1px solid var(--el-color-neutral-gray-100)
   }
 }
 
