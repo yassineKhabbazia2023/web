@@ -16,8 +16,7 @@ const APP_NAME = name.split('/')[1]
 
 export default ({ mode }) =>
   defineConfig(mergeConfig(
-    viteBaseConfig,
-    {
+    viteBaseConfig, {
       plugins: [
         eslint(),
         visualizer(),
@@ -36,8 +35,11 @@ export default ({ mode }) =>
           'vue-i18n': 'VueI18n',
           pinia: 'Pinia',
           '@kpmg/common': 'Common',
-          '@kpmg/styleguide': 'StyleGuide',
-        }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
+          '@kpmg/styleguide': 'Styleguide',
+          'env-vars': 'EnvVars',
+        }, {
+          disableInServe: mode === 'test',
+        }),
         cssInjectedByJsPlugin(),
       ],
       resolve: {
@@ -67,5 +69,8 @@ export default ({ mode }) =>
       preview: {
         port: PORT,
       },
-    },
-  ))
+      test: {
+        setupFiles: 'vitest.setup.js',
+      },
+    }),
+  )

@@ -4,7 +4,11 @@
       <p v-if="user && user.firstName">
         {{ t('welcomeMsg', { firstName: user.firstName, lastName: user.lastName }) }}
       </p>
-      <el-button type="primary" @click="count++">
+      <el-button
+        data-testid="increment-button"
+        type="primary"
+        @click="count++"
+      >
         {{ t('count', { count }) }}
       </el-button>
       <p>{{ t('edit', { component: 'components/helloWorld'}) }}</p>

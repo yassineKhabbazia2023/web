@@ -1,5 +1,7 @@
 <template>
-  <h3>{{ t('title') }}</h3>
+  <h3 data-testid="title">
+    {{ t('title') }}
+  </h3>
 </template>
 
 <script setup lang="ts">
