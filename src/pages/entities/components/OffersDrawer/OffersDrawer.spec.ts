@@ -438,6 +438,12 @@ describe('offersDrawer', () => {
 
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
+
+      nextPreviousButtons.vm.$emit('clickPrevious')
+      await nextTick()
+      const secondOffer = findSecondOffer(wrapper)
+      await secondOffer.trigger('click')
+      expect((wrapper.vm as any).collaborators).toStrictEqual([])
     })
     it('should emit console.warn() when no collaborator is selected', async () => {
       const wrapper = await getWrapper(true)

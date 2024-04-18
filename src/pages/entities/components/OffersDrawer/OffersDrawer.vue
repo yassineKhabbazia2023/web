@@ -219,6 +219,7 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
     currentSubscriptionOffer.value = undefined
   } else {
     currentSubscriptionOffer.value = await getOffer(selectedOfferId)
+    collaborators.value = []
     if (currentSubscriptionOffer.value?.approvalRequired) {
       initNoteSteps()
     } else {
