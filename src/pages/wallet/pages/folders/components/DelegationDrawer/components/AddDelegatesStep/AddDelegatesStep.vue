@@ -80,7 +80,7 @@ const { t } = useI18n({
 
 const folderUsers = ref<undefined | Contact[]>()
 onMounted(async () => {
-  folderUsers.value = await getCollaborators()
+  folderUsers.value = await getCollaborators('', 100)
 })
 
 const selectedCollaboratorsIds: Contact['id'][] = reactive([])

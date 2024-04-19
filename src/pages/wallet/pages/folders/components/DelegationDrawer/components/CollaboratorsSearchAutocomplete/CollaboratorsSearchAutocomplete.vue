@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { PAutocomplete, PCheckbox } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
@@ -44,11 +44,6 @@ const emit = defineEmits<{
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
-})
-
-const allCollaboratorsUsers = ref<undefined | Contact[]>()
-onMounted(async () => {
-  allCollaboratorsUsers.value = await getCollaborators()
 })
 
 const searchAutocompleteQuery = ref('')
