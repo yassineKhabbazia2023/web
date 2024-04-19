@@ -8,6 +8,9 @@
         pPageSizeSelectorGroupLabel="Some text"
         pPageSizeSelectorSuffix="documents"
         pShowTotalPageCounter
+        @on-page-range-changed="logEvent('on-page-range-changed', $event)"
+        @update:p-page-size="logEvent('update:pPageSize', $event)"
+        @update:p-current-page="logEvent('update:pCurrentPage', $event)"
         :pTotal="1000"
       ><p>1-25 sur 157</p>
       </PPagination>
@@ -16,6 +19,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { logEvent } from 'histoire/client'
 import PPagination from './'
 
 const currentPage = ref(1)

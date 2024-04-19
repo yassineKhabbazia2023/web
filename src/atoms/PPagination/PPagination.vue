@@ -2,7 +2,7 @@
   <div class="p-pagination">
     <div class="p-pagination__select">
       <PSelect
-        v-model="modelPageSize"
+        v-model="selectedRange"
         placement="top"
         :data-testid="`${pTestIdRoot}-pagination-select`"
       >
@@ -72,13 +72,14 @@ const modelPageSize = computed({
   },
 })
 
-const selectedRange = ref(props.pPageSizes ? props.pPageSizes?.at(0) : '')
+const selectedRange = ref(props.pPageSizes ? props.pPageSizes?.at(0) : undefined)
 
 const getpageSizeSelectorContent = (pageSize: number) => {
   return `${pageSize} ${props.pPageSizeSelectorSuffix}`
 }
 
 watch(selectedRange, () => {
+  modelPageSize.value = selectedRange.value
   emit('on-page-range-changed', selectedRange.value)
 })
 </script>
