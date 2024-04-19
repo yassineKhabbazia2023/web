@@ -1,7 +1,11 @@
 import type { PDropdownOption } from '@kpmg/styleguide'
 import type { FormSection, FormField }
   from '@/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import { fetchAccountReferential, fetchReferentialHubs } from '@/services/account'
 import type { ReferentialStructure, ReferentialOptions, Hub } from '@/services/account'
+import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
+import LOOPOfferFormStructure from '@/common/config/forms/LOOPOfferFormStructure.json'
+import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
 
 export function referentialOptionsToPDropdownOption(
   referentialOptions: ReferentialOptions | undefined,
@@ -50,7 +54,6 @@ export function getEnrichedField(
   if (pFieldType !== 'dropdown') {
     return field
   }
-
   const pDropdownOptions = getReferentialDropdownOptions(
     referential,
     referentialHubs,
@@ -81,6 +84,38 @@ export function getEnrichedFormSection(
 
   return {
     title: formSection.title,
+    sectionKey: formSection.sectionKey,
     fields,
   }
+}
+
+export const getFormSections = (
+  formType: string,
+): FormSection[] => {
+  switch (formType) {
+    case 'MEG':
+      return MEGOffersFormStructure as FormSection[]
+    case 'LOOP':
+      return LOOPOfferFormStructure as FormSection[]
+    case 'CompanyProfile':
+      return InformationFormStructure as FormSection[]
+    default :
+      return []
+  }
+}
+
+export async function getFormStructure(
+  formType: string,
+) {
+  const formSections = getFormSections(formType)
+  const accountReferential = await fetchAccountReferential()
+  const referentialHubs = await fetchReferentialHubs()
+
+  const enrichedFormSections: FormSection[] = formSections.map((formSection) => getEnrichedFormSection(
+    accountReferential,
+    referentialHubs,
+    formSection,
+  ))
+
+  return enrichedFormSections
 }

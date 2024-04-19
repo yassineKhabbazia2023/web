@@ -2,16 +2,27 @@ import { vi, expect, describe, it, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import MEGOffersFormStructure from './config/MEGOffersFormStructure.json'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
+import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
+import {
+  getMockedAccount,
+  getMockedAccountReferential,
+  getMockedReferentialHubs,
+} from '@/services/account/accountMock'
 import CompanyInformation from '.'
-import { getMockedAccount } from '@/services/account/accountMock'
 
-const alertInstructionText = 'If the immutable information is incorrect, you need to update it in the CRM'
-const formInstructionText = 'Please provide the following necessary information for activation :'
+const alertInstructionText =
+  'If the immutable information is incorrect, you need to update it in the CRM'
+const formInstructionText =
+  'Please provide the following necessary information for activation :'
 
-vi.mock('./utils/CompanyInformationUtils', () => ({
-  getOfferFormStructure: () => MEGOffersFormStructure,
+vi.mock('@/services/account', () => ({
+  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
+  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
+}))
+
+vi.mock('@/common/config/referential', () => ({
+  getFormStructure: () => MEGOffersFormStructure,
 }))
 
 const createWrapper = () => {

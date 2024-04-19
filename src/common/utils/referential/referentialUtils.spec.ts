@@ -4,9 +4,13 @@ import {
   getReferentialDropdownOptions,
   getEnrichedField,
   getEnrichedFormSection,
+  getFormSections,
 } from './referentialUtils'
 import type { ReferentialOptions } from '@/services/account'
 import type { PDropdownOption } from '@kpmg/styleguide'
+import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
+import LOOPOfferFormStructure from '@/common/config/forms/LOOPOfferFormStructure.json'
+import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
 import { getMockedAccountReferential, getMockedReferentialHubs } from '@/services/account/accountMock'
 import { getMockedFormField, getMockedFormSection }
   from '@/pages/entities/components/CompanyInformation/CompanyInformationMock'
@@ -16,6 +20,11 @@ import type { FormField, FormSection }
 const mockedReferential = getMockedAccountReferential()
 const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
 const mockedFormSection = getMockedFormSection()
+
+vi.mock('@/services/account', () => ({
+  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
+  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
+}))
 
 describe('referentialUtils', () => {
   describe('referentialOptionsToPDropdownOption', () => {
@@ -147,6 +156,7 @@ describe('referentialUtils', () => {
       )
       const expected: FormSection = {
         title: 'Title',
+        sectionKey: undefined,
         fields: [{
           pFieldKey: 'field-key',
           pFieldType: 'input',
@@ -155,5 +165,35 @@ describe('referentialUtils', () => {
       }
       expect(referentialDropdownOptions).toStrictEqual(expected)
     })
+  })
+
+  describe('getFormSections', () => {
+    it.each([
+      {
+        formType: 'MEG',
+        expectedFormStructure: MEGOffersFormStructure,
+      },
+      {
+        formType: 'LOOP',
+        expectedFormStructure: LOOPOfferFormStructure,
+      },
+      {
+        formType: 'CompanyProfile',
+        expectedFormStructure: InformationFormStructure,
+      },
+      {
+        formType: 'Other',
+        expectedFormStructure: [],
+      },
+    ])(
+      'should return correct form structure if the form type is $formType',
+      ({ formType, expectedFormStructure }) => {
+        const formStructure = getFormSections(
+          formType,
+        )
+
+        expect(formStructure).toStrictEqual(expectedFormStructure)
+      },
+    )
   })
 })

@@ -57,7 +57,8 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
 import { fetchAccount, type Account } from '@/services/account'
-import { getInformationFormStructure } from './utils/InformationUtils'
+import type { FormSection } from '@/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import { getFormStructure } from '@/common/utils/referential'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -67,7 +68,7 @@ const { t } = useI18n({
 const route = useRoute()
 const isLoading = ref<boolean>(true)
 const accountModel = ref<Account | undefined>(undefined)
-const informationFormStructure = getInformationFormStructure()
+const informationFormStructure = ref<FormSection[]>()
 
 const addressSectionTitle = computed(() =>
   accountModel.value?.address?.[0].addressType === 'billing'
@@ -77,6 +78,7 @@ const addressSectionTitle = computed(() =>
 
 onMounted(async () => {
   try {
+    informationFormStructure.value = await getFormStructure('CompanyProfile')
     accountModel.value = await fetchAccount(+route.params.id)
   } catch (error) {
     console.error('Error fetching information :', error)

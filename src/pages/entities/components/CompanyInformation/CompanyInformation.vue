@@ -54,7 +54,7 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
 import { PAlert, PForm, PFieldSet } from '@kpmg/styleguide'
-import { getOfferFormStructure } from './utils/CompanyInformationUtils'
+import { getFormStructure } from '@/common/utils/referential'
 import { type Account } from '@/services/account'
 import type {
   CompanyInformationProps,
@@ -88,7 +88,7 @@ onMounted(async () => {
   try {
     internalAccount.value = cloneDeep(props.modelValue)
     if (props.providerName) {
-      formStructure.value = await getOfferFormStructure(props.providerName)
+      formStructure.value = await getFormStructure(props.providerName)
     }
   } catch (e) {
     console.error(e)
