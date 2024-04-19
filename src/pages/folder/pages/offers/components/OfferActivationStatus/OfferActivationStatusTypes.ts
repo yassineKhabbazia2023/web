@@ -6,6 +6,7 @@ export enum OfferActivationStatus {
   REJECTED = 'rejected',
   PENDING = 'pending'
 }
+/* eslint-enable no-unused-vars */
 
 export interface ActivationStatus {
   text: string
