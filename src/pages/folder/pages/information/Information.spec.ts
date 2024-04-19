@@ -2,8 +2,12 @@ import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
-import { getMockedAccount } from '@/services/account/accountMock'
-import InformationFormStructure from './config/InformationFormStructure.json'
+import {
+  getMockedAccount,
+  getMockedAccountReferential,
+  getMockedReferentialHubs,
+} from '@/services/account/accountMock'
+import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
 import Information from '.'
 
 // Expected Display Results
@@ -12,8 +16,14 @@ const expectedAlertInstruction =
   'If any information is incorrect, please update it in the CRM'
 
 // Mocks
+vi.mock('@/common/config/referential', () => ({
+  getFormStructure: () => InformationFormStructure,
+}))
+
 vi.mock('@/services/account', () => ({
   fetchAccount: vi.fn(() => Promise.resolve(getMockedAccount())),
+  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
+  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
 }))
 
 vi.mock('vue-router', () => ({
