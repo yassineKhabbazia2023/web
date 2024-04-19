@@ -42,3 +42,13 @@ export async function createSubscriptionRequest(
     handleRequestError('creating subscription', error)
   }
 }
+
+export async function fetchAccountSubscriptions(
+  accountId: number,
+): Promise<SubscriptionRequest[]> {
+  const response = await commonApi().gateway.get(
+    `${API_PREFIXES.OFFER}/subscription?accountId=${accountId}`,
+  )
+
+  return response.data
+}

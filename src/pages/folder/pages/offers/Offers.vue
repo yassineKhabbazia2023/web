@@ -8,7 +8,7 @@
       :pImage="{
         pFit: 'fill',
         pType: 'portrait',
-        pName: 'activation'
+        pName: 'activation',
       }"
       pHasButton
     >
@@ -16,7 +16,7 @@
         pType="primary"
         pSize="small"
         @click="$emit('activate-offers')"
-        data-testid="activate-offers"
+        data-testid="folder-offer-activate-offers-button"
       >
         {{ t('activateOffers') }}
         <PIcon class="el-button__icon--right">
@@ -24,10 +24,19 @@
         </PIcon>
       </PButton>
     </PBlockHeader>
+    <div
+      v-if="isLoading"
+      class="flex flex--justify-content-center margin-y--4"
+      data-testid="folder-offer-activation-loader"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
     <PTable
+      v-else
       :pData="activeOffers"
       tableLayout="fixed"
       class="offers-table"
+      data-testid="folder-offer-activation-table"
       showOverflowTooltip
       pStripe
     >
@@ -36,29 +45,22 @@
         pWidth="480px"
         pSortable
       >
-        <template #default="scope">
+        <template #default="{ row: { offer: offerActivation } }">
           <div class="flex">
             <PImage
               pType="logos"
-              :pName="scope.row.logo"
+              :pName="offerActivation.logoName"
               class="offers-table__offer-logo margin-right--2"
             />
             <p class="text-capitalize">
-              <span class="font-semibold">{{ scope.row.name }}</span
-              >&nbsp;
-              <span class="font-small">{{ scope.row.provider }}</span>
+              <span class="font-semibold">{{ offerActivation.offerName }}</span>
             </p>
           </div>
         </template>
       </PTableColumn>
       <PTableColumn :pLabel="t('status')" pSortable>
-        <template #default="scope">
-          <PTag
-            pColor="success"
-            pEffect="light"
-            pIconLeft="PICheckCircle"
-            :pContent="scope.row.status"
-          />
+        <template #default="{ row: { status: offerActivationStatus } }">
+          <OfferActivationStatus :status="offerActivationStatus" />
         </template>
       </PTableColumn>
       <PTableColumn :pLabel="t('action')" pWidth="80px">
@@ -79,20 +81,27 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import {
   PBlockHeader,
   PButton,
   PIcon,
   PIThreeDots,
   PIArrowRight,
-  PTag,
+  PLoader,
   PTable,
   PTableColumn,
   PImage,
 } from '@kpmg/styleguide'
-import { useI18n } from 'vue-i18n'
-import { getActiveOffersMocked } from './OffersMocks'
+import OfferActivationStatus from './components/OfferActivationStatus'
+import {
+  type SubscriptionRequest,
+  fetchAccountSubscriptions,
+} from '@/services/subscription'
 
+const route = useRoute()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -102,7 +111,18 @@ defineEmits<{
   'activate-offers': []
 }>()
 
-const activeOffers = getActiveOffersMocked()
+const isLoading = ref<boolean>(true)
+const activeOffers = ref<SubscriptionRequest[]>([])
+
+onMounted(async () => {
+  try {
+    activeOffers.value = await fetchAccountSubscriptions(+route.params.id)
+  } catch (error) {
+    console.error('fetching account subscriptions', error)
+  } finally {
+    isLoading.value = false
+  }
+})
 </script>
 
 <style lang="scss" scoped>
