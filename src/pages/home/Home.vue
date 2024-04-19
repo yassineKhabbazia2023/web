@@ -1,49 +1,44 @@
 <template>
-  <div>
-    <div>
-      <a
-        href="https://vitejs.dev"
-        target="_blank"
-        rel="noopener"
-      >
-        {{ t('vite') }}
-      </a>
-      <span>{{ t('+') }}</span>
-      <a
-        href="https://vuejs.org/"
-        target="_blank"
-        rel="noopener"
-      >
-        {{ t('vue') }}
-      </a>
-    </div>
-    <HelloWorld />
+  <div class="flex flex-gap--4 flex--wrap">
+    <LaunchCard
+      v-for="(launchCard, index) in launchCards"
+      class="flex--basis-30 flex--grow-1"
+      data-testid="launchCard"
+      :key="index"
+      :title="launchCard.title"
+      :subtitle="launchCard.subtitle"
+      :imageType="launchCard.imageType"
+      :imageName="launchCard.imageName"
+      :actionLabel="launchCard.actionLabel"
+      :downloadUrl="launchCard.downloadUrl"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import HelloWorld from './components/helloWorld'
+import LaunchCard from '@/components/launchCard'
+import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
+const launchCards: LaunchCardProps[] = [{
+  title: 'Mon outil de gestion',
+  subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
+  imageType: 'logos',
+  imageName: 'iconpulse-color',
+  actionLabel: "Se connecter à l'outil de gestion",
+  downloadUrl: '',
+}, {
+  title: 'Silae',
+  subtitle: 'Accéder à votre outil de gestion de planning et du personnel - À installer',
+  imageType: 'logos',
+  imageName: 'silae-color',
+  actionLabel: 'Se connecter à Silae',
+  downloadUrl: 'https://www.kpmg.fr',
+}, {
+  title: 'Pennylane',
+  subtitle: 'Accéder à votre outil Pennylane pour votre gestion au quotidien',
+  imageType: 'logos',
+  imageName: 'pennylane-color',
+  actionLabel: 'Se connecter à Pennylane',
+  downloadUrl: '',
+}]
 </script>
-
-<style lang="scss" scoped>
-span {
-  margin: 0 0.5rem;
-}
-</style>
-
-<i18n lang="yaml">
-  en-US:
-    vite: 'Vite'
-    vue: 'Vue'
-    +: '+'
-  fr-FR:
-    vite: 'Vite'
-    vue: 'Vue'
-    +: '+'
-</i18n>
