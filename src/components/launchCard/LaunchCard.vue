@@ -19,13 +19,13 @@
     </div>
 
     <p
-      class="text-center font-large font-bold"
+      class="text-center font-large font-bold text-color--neutral-gray-900"
       data-testid="launch-card-title"
     >
       {{ title }}
     </p>
     <p
-      class="text-center flex--grow-1 margin-bottom--4"
+      class="text-center flex--grow-1 margin-bottom--4 text-color--neutral-gray-700"
       data-testid="launch-card-subtitle"
     >
       {{ subtitle }}
@@ -94,8 +94,18 @@ const sanitizedDownloadUrl = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+$shadow-color: #7090b0;
+
 .launch-card {
   border: 1px solid var(--el-color-neutral-gray-100);
+
+  &:hover {
+    box-shadow: 0 12px 15px 0 rgba($shadow-color, 0.04),
+     0 8px 8px 0 rgba($shadow-color, 0.05),
+     0 4px 4px 0 rgba($shadow-color, 0.08),
+     0 2px 2px 0 rgba($shadow-color, 0.05),
+     0 1px 2px 0 rgba($shadow-color, 0.10);
+  }
 
   &__image {
     height: 6rem;
