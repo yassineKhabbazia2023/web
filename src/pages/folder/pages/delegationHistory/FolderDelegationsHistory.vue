@@ -48,7 +48,7 @@ const fakeDelegation = {
     name: 'Le chaudron baveur',
   },
   historyType: 'delegation', // History could be of any type in the future
-  description: 'Vous avez délégué ce dossier  à Amaury Lindé',
+  description: 'Vous avez délégué ce dossier à Amaury Lindé',
 }
 
 const fakeDelegations = [

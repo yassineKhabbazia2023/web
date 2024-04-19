@@ -44,7 +44,18 @@ export async function patchAccount(accountId: number, patchOperations: PatchOper
 }
 
 export async function fetchAccountDelegationHistory(accountId: Entity['accountId']): Promise<Delegation[]> {
-  const url = `${API_PREFIXES.ACCOUNT}/delegations/${accountId}/history`
-
+  // should be
+  // `${API_PREFIXES.ACCOUNT}/delegations`/${accountId}/history
+  const url = `${API_PREFIXES.WALLET}/delegations`
+  console.warn(accountId)
   return await fetchGatewayApi<Delegation[]>(url)
+}
+
+export async function deleteAccountDelegation(delegationId: Delegation['id']) {
+  const url = `${API_PREFIXES.ACCOUNT}/delegations`
+  return await commonApi().gateway.delete(url, {
+    params: {
+      delegationId,
+    },
+  })
 }

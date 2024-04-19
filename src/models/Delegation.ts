@@ -1,8 +1,8 @@
 import type { Entity } from '@kpmg/common'
 
+// Penser à bouger les types de la délégation ici pour avoir un truc global
 export interface Delegation {
-  // Move delegation type here from the delegation feature that should be merged by the time
-  // This will maybe help us to create types for the history section
+  id: number
   account: {
     id: Entity['accountId']
   }
