@@ -36,8 +36,6 @@ const formattedStatus = computed((): ActivationStatus => {
 })
 </script>
 
-<style scoped></style>
-
 <i18n lang="yaml">
 en-US:
   validated: 'Validated'
