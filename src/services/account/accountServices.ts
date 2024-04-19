@@ -1,9 +1,11 @@
 import type { Account } from '.'
 import { commonApi } from '@kpmg/common'
+import type { Entity } from '@kpmg/common'
 import { API_PREFIXES } from '../config'
 import type { PatchOperation } from '@/services/PatchRecordService'
 import type { QueryResult } from '@/types/commonTypes'
 import type { AccountRow, ReferentialStructure, Hub } from './accountTypes'
+import type { Delegation } from '@/models/Delegation'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}`
@@ -39,4 +41,10 @@ export async function patchAccount(accountId: number, patchOperations: PatchOper
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}`
 
   await commonApi().gateway.patch(url, patchOperations)
+}
+
+export async function fetchAccountDelegationHistory(accountId: Entity['accountId']): Promise<Delegation[]> {
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/${accountId}/history`
+
+  return await fetchGatewayApi<Delegation[]>(url)
 }

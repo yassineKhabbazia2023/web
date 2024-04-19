@@ -79,6 +79,11 @@ const FOLDER_CHILDREN_PATH = [
     name: 'info',
     page: 'information',
   },
+  {
+    path: 'historique-delegations',
+    name: 'delegationHistory',
+    page: 'delegationHistory',
+  },
 ]
 
 routes.value.push({
