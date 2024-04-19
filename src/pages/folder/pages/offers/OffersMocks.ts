@@ -1,16 +1,20 @@
 export const getActiveOffersMocked = () => {
   const offers = [
     {
-      name: 'Gestion Smart',
-      logo: 'meg',
-      status: 'Activée',
-      provider: 'RCA - MEG Premium',
+      status: 'Validée',
+      offer: {
+        offerName: 'Gestion Smart',
+        logoName: 'meg',
+        provider: 'RCA - MEG Premium',
+      },
     },
     {
-      name: 'Mes modules de Compta',
-      logo: 'loop-color',
-      status: 'Activée',
-      provider: 'CEGID (LOOP)',
+      status: 'Rejetée',
+      offer: {
+        offerName: 'Mes modules de Compta',
+        logoName: 'loop-color',
+        provider: 'CEGID (LOOP)',
+      },
     },
   ]
 

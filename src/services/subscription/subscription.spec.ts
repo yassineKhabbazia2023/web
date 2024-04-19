@@ -5,6 +5,7 @@ import {
   fetchSubscriptionRequests,
   validateSubscriptionRequest,
   createSubscriptionRequest,
+  fetchAccountSubscriptions,
 } from '.'
 import { API_PREFIXES } from '../config'
 
@@ -27,6 +28,13 @@ describe('subscriptionService', () => {
       const subscriptions = await fetchSubscriptionRequests()
 
       expect(subscriptions).toHaveLength(subscriptionRequestMock.length)
+    })
+  })
+  describe('fetchAccountSubscriptions', () => {
+    it('should return account subscriptions', async () => {
+      const accountSubscriptions = await fetchAccountSubscriptions(5)
+
+      expect(accountSubscriptions).toHaveLength(subscriptionRequestMock.length)
     })
   })
   describe('validateSubscriptionRequest', () => {

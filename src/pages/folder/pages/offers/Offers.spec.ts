@@ -1,9 +1,23 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import Offers from '.'
 import { getActiveOffersMocked } from './OffersMocks'
 
 const activeOffersMocked = getActiveOffersMocked()
+
+// Mocks
+vi.mock('@/services/subscription', () => ({
+  fetchAccountSubscriptions: vi.fn(() => Promise.resolve(activeOffersMocked)),
+}))
+
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    params: {
+      id: 5,
+    },
+  }),
+}))
+
 const createWrapper = (): VueWrapper => mount(Offers)
 
 describe('offers', () => {
@@ -14,7 +28,7 @@ describe('offers', () => {
   })
 
   it("should emit the 'activate-offers' event when the 'Activate Offers' button is clicked", async () => {
-    const activateOffersButton = wrapper.find('[data-testid=activate-offers]')
+    const activateOffersButton = wrapper.find('[data-testid=folder-offer-activate-offers-button]')
 
     await activateOffersButton.trigger('click')
     expect(wrapper.emitted()).toHaveProperty('activate-offers')
