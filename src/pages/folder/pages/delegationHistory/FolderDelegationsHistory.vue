@@ -15,23 +15,23 @@
       class="placeholder-delegation-card margin-top--4 margin-bottom--4"
     >
       <div>
-        {{  delegationDate }}
-        {{  account.name }}
-        {{  historyType }}
+        {{ delegationDate }}
+        {{ account.name }}
+        {{ historyType }}
       </div>
 
       <div>
-        {{  description }}
+        {{ description }}
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PInput, PISearch } from '@kpmg/styleguide'
-// import { fetchAccountDelegationHistory } from '@/services/account/accountServices'
+import { fetchAccountDelegationHistory } from '@/services/account/accountServices'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -54,6 +54,15 @@ const fakeDelegation = {
 const fakeDelegations = [
   fakeDelegation, fakeDelegation, fakeDelegation,
 ]
+
+onMounted(async () => {
+  // $route.params.id
+  // endpoint not in desktop
+  // https://api-dev78.dev.kpmg-pulse.fr/account/api/delegations/602/history
+  // https://api-dev78.dev.kpmg-pulse.fr/desktop/gtw/account/api/delegations/602/history
+  const plop = await fetchAccountDelegationHistory(602)
+  console.warn({ plop })
+})
 </script>
 
 <i18n lang="yaml">
