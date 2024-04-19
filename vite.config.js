@@ -33,13 +33,21 @@ export default ({ mode }) =>
         viteExternalsPlugin({
           vue: 'Vue',
           'vue-i18n': 'VueI18n',
+          'vue-router': 'VueRouter',
           pinia: 'Pinia',
+          'env-vars': 'EnvVars',
           '@kpmg/common': 'Common',
           '@kpmg/styleguide': 'Styleguide',
-          'env-vars': 'EnvVars',
-        }, {
-          disableInServe: mode === 'test',
-        }),
+        },
+        { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
+        {
+          resolveId(id) {
+            if (id === 'env-vars') return id
+          },
+          load(id) {
+            if (id === 'env-vars') return ''
+          },
+        },
         cssInjectedByJsPlugin(),
       ],
       resolve: {
@@ -70,7 +78,7 @@ export default ({ mode }) =>
         port: PORT,
       },
       test: {
-        setupFiles: 'vitest.setup.js',
+        setupFiles: 'vitest.setup.ts',
       },
-    }),
-  )
+    },
+  ))

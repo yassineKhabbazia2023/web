@@ -58,7 +58,3 @@ vi.mock('@kpmg/common', () => ({
   })),
   debounce: vi.fn((fn) => fn),
 }))
-
-vi.mock('vue-inject', () => ({
-  provide: vi.fn(),
-}))
