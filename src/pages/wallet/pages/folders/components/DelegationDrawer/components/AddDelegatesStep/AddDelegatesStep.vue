@@ -1,5 +1,5 @@
 <template>
-  <div class="delegates-add">
+  <div>
     <div
       v-if="shouldDisplayNumberOfFoldersInPortfolio"
       class="margin-bottom--6"
@@ -109,25 +109,6 @@ function emitCollaboratorSelection() {
 </script>
 
 <style lang="scss" scoped>
-.delegates-add {
-  $self: &;
-
-  &__search-line {
-    &--selected {
-      color: var(--el-color-base-persian);
-      font-weight: 600;
-    }
-
-    &__additional-information {
-      font-weight: 400;
-    }
-
-    &:not(#{$self}--selected) #{self}__additional-information {
-      color: var(--el-color-neutral-gray-300);
-    }
-  }
-}
-
 .separator {
   width: 100%;
   height: 1px;

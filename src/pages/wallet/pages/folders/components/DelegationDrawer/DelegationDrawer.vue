@@ -2,8 +2,8 @@
   <PDrawer
     class="delegation-drawer"
     v-model="isDelegationDrawerOpened"
-    @close-drawer-button="closeDrawer"
-    @close="closeDrawer"
+    @close-drawer-button="handleCloseDrawer"
+    @close="handleCloseDrawer"
   >
     <template #header-prefix>
       <h3 class="delegation-drawer__header">
@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PICheck, PNotification, PIX } from '@kpmg/styleguide'
 import { commonApi, commonStore } from '@kpmg/common'
@@ -125,7 +125,7 @@ const userStore = commonStore()
 const currentUserId = userStore.$state.user?.id
 
 async function handleNextClick() {
-  if (isSpecificDelegationFlowType.value) {
+  if (activeStep.value === 0) {
     delegationDetails.value = formatCollaboratorsDetailsForDelegateSummary()
   }
 
@@ -147,12 +147,6 @@ const selectedCollaborators = ref<Contact[]>([])
 function handleCollaboratorSelection(event: Contact[]) {
   selectedCollaborators.value = event
 }
-
-watch(activeStep, () => {
-  if (activeStep.value === 1) {
-    delegationDetails.value = formatCollaboratorsDetailsForDelegateSummary()
-  }
-})
 
 const getAccountIdFromSelectedFolders = () =>
   props.selectedFolders.map(({ id }) => id)
@@ -194,7 +188,7 @@ const delegateFolder = async (delegationRequest: any) => {
     displayFailureNotification()
     console.error(err)
   }
-  closeDrawer()
+  handleCloseDrawer()
 }
 
 const displaySuccessNotification = () => {
@@ -217,7 +211,7 @@ const displayFailureNotification = () => {
   })
 }
 
-const closeDrawer = () => {
+const handleCloseDrawer = () => {
   emit('update:modelValue', false)
 }
 </script>

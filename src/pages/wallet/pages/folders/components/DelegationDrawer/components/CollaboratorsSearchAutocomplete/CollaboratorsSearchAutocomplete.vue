@@ -19,7 +19,7 @@
         </span>
         <span>&nbsp;{{ t('hyphen') }}&nbsp;</span>
         <span class="delegates-add__search-line__additional-information">
-          {{ item.persona.name }}{{ t('coma') }}
+          {{ item.persona.name }}{{ t('comma') }}
           {{ item.office }}
         </span>
       </div>
@@ -78,13 +78,34 @@ function resetSearchAutocompleteQuery() {
 }
 </script>
 
+<style lang="scss" scoped>
+.delegates-add {
+  $self: &;
+
+  &__search-line {
+    &--selected {
+      color: var(--el-color-base-persian);
+      font-weight: 600;
+    }
+
+    &__additional-information {
+      font-weight: 400;
+    }
+
+    &:not(#{$self}--selected) #{self}__additional-information {
+      color: var(--el-color-neutral-gray-300);
+    }
+  }
+}
+</style>
+
 <i18n lang="yaml">
   en-US:
     searchPlaceholder: 'First name, last name, office, city, service, role'
     hyphen: '-'
-    coma: ','
+    comma: ','
   fr-FR:
-    searchPlaceholder: 'Nom, prénom, bureau, ville service, rôle'
+    searchPlaceholder: 'Nom, prénom, bureau, ville, service, rôle'
     hyphen: '-'
-    coma: ','
+    comma: ','
 </i18n>

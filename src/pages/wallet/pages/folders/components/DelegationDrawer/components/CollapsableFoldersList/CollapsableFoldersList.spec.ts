@@ -19,7 +19,7 @@ const createWrapper = (): VueWrapper => {
   })
 }
 
-let wrapper = createWrapper()
+let wrapper: VueWrapper
 
 describe('collapsable folders list', () => {
   beforeEach(() => {
