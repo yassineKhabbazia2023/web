@@ -38,7 +38,7 @@
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
         "pDisabled": false,
-        "pFieldKey": "hub.hubName",
+        "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
         "pLabel": "Hub KPMG rattaché",
         "pTestId": "offer-hub-name-list",
