@@ -212,6 +212,7 @@ import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import type { TableDataProps, Row } from './types'
+import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -297,7 +298,7 @@ const selectedRow = ref<InstanceType<typeof ElTable>>()
 const emit = defineEmits<{
   'click-deploy': [number, string, string]
   access: [string]
-  selectedFolder: [string]
+  selectedFolder: [SelectedFolder]
 }>()
 
 const handleRowSelectedChange = (row: any) => {
@@ -387,11 +388,16 @@ const onToolboxItemClicked = (action: string, row: any) => {
 }
 
 const onSelectedFolder = (row: any) => {
-  const { accountId } = row
-  emit('selectedFolder', accountId)
+  emit('selectedFolder', {
+    accountNumber: row.accountNumber,
+    id: row.accountId,
+    name: row.name,
+    avatarColor: row.owner?.avatarColor,
+  })
 }
 </script>
 
+<!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style lang="scss">
 .wallet-table {
   .el-table__body {

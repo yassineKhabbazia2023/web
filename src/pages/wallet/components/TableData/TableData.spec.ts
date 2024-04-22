@@ -191,7 +191,18 @@ describe('tableData', () => {
     const checkbox = document.body.getElementsByClassName('el-checkbox__original')[1] as HTMLElement
     checkbox.click()
 
-    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[testEntity.accountId]])
+    const {
+      accountNumber,
+      accountId: id,
+      legalName: name,
+    } = testEntity
+    const { owner: { avatarColor } } = mockTableData[0]
+    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[{
+      accountNumber,
+      avatarColor,
+      id,
+      name,
+    }]])
   })
 
   it('should emit access when click on access button', async () => {
