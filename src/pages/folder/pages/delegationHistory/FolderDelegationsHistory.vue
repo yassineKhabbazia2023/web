@@ -9,21 +9,26 @@
 
     <!-- ⏳ Check the timeline component from element plus until we have the Pegase one ⏳ -->
     <!-- ⬇️⬇️⬇️⬇️ This will also be a styleguide component, don't waste time on this ⬇️⬇️⬇️⬇️ -->
-    <div
-      v-for="({ delegationDate, account, historyType, description }, index) in fakeDelegations"
-      :key="index"
-      class="placeholder-delegation-card margin-top--4 margin-bottom--4"
-    >
-      <div>
-        {{ delegationDate }}
-        {{ account.name }}
-        {{ historyType }}
-      </div>
+    <el-timeline>
+      <el-timeline-item
+        v-for="({ delegationDate, account, historyType, description }, index) in fakeDelegations"
+        :key="index"
+        :timestamp="delegationDate"
+        class="placeholder-delegation-card margin-top--4 margin-bottom--4"
+      >
+        <div>
+          <div>
+            {{ delegationDate }}
+            {{ account.name }}
+            {{ historyType }}
+          </div>
 
-      <div>
-        {{ description }}
-      </div>
-    </div>
+          <div>
+            {{ description }}
+          </div>
+        </div>
+      </el-timeline-item>
+    </el-timeline>
   </div>
 </template>
 
@@ -31,7 +36,8 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PInput, PISearch } from '@kpmg/styleguide'
-import { fetchAccountDelegationHistory } from '@/services/account/accountServices'
+// import { fetchAccountDelegationHistory } from '@/services/account/accountServices'
+import { ElTimeline, ElTimelineItem } from 'element-plus'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -42,7 +48,7 @@ const searchValue = ref('')
 
 // Use the real interface and mock file during the mob session
 const fakeDelegation = {
-  delegationDate: '01/29/2024',
+  delegationDate: '2024/04/15',
   account: {
     id: 1,
     name: 'Le chaudron baveur',
@@ -60,8 +66,8 @@ onMounted(async () => {
   // endpoint not in desktop
   // https://api-dev78.dev.kpmg-pulse.fr/account/api/delegations/602/history
   // https://api-dev78.dev.kpmg-pulse.fr/desktop/gtw/account/api/delegations/602/history
-  const plop = await fetchAccountDelegationHistory(602)
-  console.warn({ plop })
+  // const plop = await fetchAccountDelegationHistory(602)
+  // console.warn({ plop })
 })
 </script>
 
