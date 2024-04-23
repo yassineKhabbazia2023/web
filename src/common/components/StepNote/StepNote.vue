@@ -13,6 +13,7 @@
         <PInput
           v-model="internalModel.stepNote"
           pType="textarea"
+          :pDisabled="disabled"
           :pAutosize="{ minRows: 2 }"
           :pPlaceholder="t('notePlaceholder')"
         />
@@ -33,7 +34,10 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const props = defineProps<StepNoteProps>()
+const props = withDefaults(defineProps<StepNoteProps>(), {
+  disabled: false,
+})
+
 const emit = defineEmits<{
   'update:modelValue': [Note]
 }>()
