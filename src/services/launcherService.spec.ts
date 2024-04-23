@@ -19,6 +19,7 @@ function getMockedResponse(disposition = '') {
     },
   } as unknown as AxiosResponse
 }
+
 describe('launcherServices', () => {
   describe('downloadApplication', () => {
     const progressPercentCallback = vi.fn()

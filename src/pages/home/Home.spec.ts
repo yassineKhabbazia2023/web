@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
+import { describe, expect, it, vi, beforeEach, type SpyInstance } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { mockedEnvVars } from '@/../vitest.setup'
 import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
@@ -119,6 +119,51 @@ describe('test Home', () => {
 
       expect(handleClickActionSpy).toHaveBeenCalledOnce()
       expect(handleClickActionSpy).toHaveBeenNthCalledWith(1, key)
+    })
+  })
+
+  describe('when click downlad on Silae LaunchCard', () => {
+    const mockedPercent = 47
+    const launcherKey = LAUNCHER_KEY.silae
+
+    let handleDownloadSpy: SpyInstance
+    let getSilaeDownloadLabelSpy: SpyInstance
+    let silaeLaunchCard: VueWrapper
+    beforeEach(() => {
+      handleDownloadSpy = vi
+        .spyOn(HomeUtils, 'handleDownload')
+        .mockImplementation((_key: LAUNCHER_KEY, onSilaeDownloadProgress: (_: number) => void) => {
+          onSilaeDownloadProgress(mockedPercent)
+
+          return Promise.resolve()
+        })
+      getSilaeDownloadLabelSpy = vi.spyOn(HomeUtils, 'getSilaeDownloadLabel')
+      silaeLaunchCard = getLaunchCardComponent(wrapper, launcherKey)
+    })
+
+    it('should call onClickAction when click on action-download', () => {
+      silaeLaunchCard.vm.$emit('click-download')
+
+      expect(handleDownloadSpy).toHaveBeenCalledOnce()
+      expect(handleDownloadSpy).toHaveBeenNthCalledWith(1, launcherKey, expect.any(Function))
+
+      expect(getSilaeDownloadLabelSpy).toHaveBeenCalledTimes(2)
+      expect(getSilaeDownloadLabelSpy).toHaveBeenNthCalledWith(2, mockedPercent)
+    })
+
+    it('should call onClickAction twice once when resolve between two clicks on action-download', async () => {
+      silaeLaunchCard.vm.$emit('click-download')
+      await flushPromises()
+      silaeLaunchCard.vm.$emit('click-download')
+
+      expect(handleDownloadSpy).toHaveBeenCalledTimes(2)
+    })
+
+    it('should call onClickAction only once when resolve after two clicks on action-download', () => {
+      silaeLaunchCard.vm.$emit('click-download')
+      silaeLaunchCard.vm.$emit('click-download')
+
+      expect(handleDownloadSpy).toHaveBeenCalledOnce()
     })
   })
 })
