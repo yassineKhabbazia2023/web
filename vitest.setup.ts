@@ -4,7 +4,7 @@ import { vi } from 'vitest'
 setAssetsBaseUrl('https://www.example.kpmg')
 
 export const commonApiGatewayGetSpy = vi.fn()
-export const commonApiSilaeclientGetSpy = vi.fn()
+export const commonApiSilaeClientGetSpy = vi.fn()
 export const commonApiSilaePostSpy = vi.fn()
 export const commonApiDsGetSpy = vi.fn()
 export const commonApiDsPostSpy = vi.fn().mockResolvedValue({
@@ -26,7 +26,7 @@ vi.mock('@kpmg/common', () => ({
       get: commonApiGatewayGetSpy,
     },
     silaeclient: {
-      get: commonApiSilaeclientGetSpy,
+      get: commonApiSilaeClientGetSpy,
     },
     silae: {
       post: commonApiSilaePostSpy,

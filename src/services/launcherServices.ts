@@ -1,7 +1,7 @@
 import { commonApi } from '@kpmg/common'
 import { saveAs } from 'file-saver'
 import type { AxiosResponse } from 'axios'
-import { APPLICATION_REGEXP_FILENAME, DEFAULT_APPLICATION_FILENAME, API_ROUTES }
+import { EXTRACT_DOWNLOADED_FILENAME_REGEXP, DEFAULT_APPLICATION_FILENAME, API_ROUTES }
   from './launcherServiceConsts'
 
 export async function downloadApplication(progressPercentCallback: (_: number) => void) {
@@ -20,7 +20,7 @@ export async function downloadApplication(progressPercentCallback: (_: number) =
 }
 
 export function getFileName(disposition: string) {
-  const matches = disposition.match(APPLICATION_REGEXP_FILENAME)
+  const matches = EXTRACT_DOWNLOADED_FILENAME_REGEXP.exec(disposition)
   const filename = matches?.at(1)
 
   return filename
