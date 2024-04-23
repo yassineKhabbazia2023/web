@@ -10,35 +10,21 @@
       :imageType="launchCard.imageType"
       :imageName="launchCard.imageName"
       :actionLabel="launchCard.actionLabel"
-      :downloadUrl="launchCard.downloadUrl"
+      :actionUrl="launchCard.actionUrl"
+      :downloadLabel="launchCard.downloadLabel"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import LaunchCard from '@/components/launchCard'
 import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
+import { getLaunchCards } from './HomeUtils'
 
-const launchCards: LaunchCardProps[] = [{
-  title: 'Mon outil de gestion',
-  subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
-  imageType: 'logos',
-  imageName: 'iconpulse-color',
-  actionLabel: "Se connecter à l'outil de gestion",
-  downloadUrl: '',
-}, {
-  title: 'Silae',
-  subtitle: 'Accéder à votre outil de gestion de planning et du personnel - À installer',
-  imageType: 'logos',
-  imageName: 'silae-color',
-  actionLabel: 'Se connecter à Silae',
-  downloadUrl: 'https://www.kpmg.fr',
-}, {
-  title: 'Pennylane',
-  subtitle: 'Accéder à votre outil Pennylane pour votre gestion au quotidien',
-  imageType: 'logos',
-  imageName: 'pennylane-color',
-  actionLabel: 'Se connecter à Pennylane',
-  downloadUrl: '',
-}]
+const launchCards = ref<LaunchCardProps[]>([])
+
+onMounted(() => {
+  launchCards.value = getLaunchCards()
+})
 </script>

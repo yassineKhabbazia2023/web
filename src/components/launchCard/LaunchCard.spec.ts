@@ -9,7 +9,8 @@ const defaultProps: LaunchCardProps = {
   imageType: 'image-type',
   imageName: 'image-name',
   actionLabel: 'action-label',
-  downloadUrl: 'download-url',
+  actionUrl: 'action-url',
+  downloadLabel: 'Download',
 }
 
 function getWrapper(override: Partial<LaunchCardProps> = {}) {
@@ -57,7 +58,6 @@ describe('test LaunchCard', () => {
     it('proper download button', () => {
       const download = wrapper.find('[data-testid="launch-card-download"]')
 
-      expect(download.attributes('href')).toBe(defaultProps.downloadUrl)
       expect(download.text()).toBe('Download')
     })
 
@@ -65,16 +65,27 @@ describe('test LaunchCard', () => {
       const action = wrapper.find('[data-testid="launch-card-action"]')
 
       expect(action.text()).toBe(defaultProps.actionLabel)
+      expect(action.attributes('href')).toBe(defaultProps.actionUrl)
     })
   })
 
-  describe('when no downloadUrl', () => {
-    const wrapper = getWrapper({ downloadUrl: '' })
+  describe('when no downloadButton', () => {
+    const wrapper = getWrapper({ downloadLabel: '' })
 
     it('do not display download button', () => {
       const download = wrapper.find('[data-testid="launch-card-download"]')
 
       expect(download.exists()).toBeFalsy()
+    })
+  })
+
+  describe('when no actionUrl', () => {
+    const wrapper = getWrapper({ actionUrl: '' })
+
+    it('do not set href', () => {
+      const action = wrapper.find('[data-testid="launch-card-action"]')
+
+      expect(action.attributes('href')).toBeUndefined()
     })
   })
 
@@ -88,14 +99,14 @@ describe('test LaunchCard', () => {
     })
   })
 
-  describe('when click on action button', () => {
+  describe('when click on download button', () => {
     const wrapper = getWrapper()
 
-    it('emits click-action', async () => {
-      const action = wrapper.findComponent('[data-testid="launch-card-action"]')
+    it('emits click-download', async () => {
+      const action = wrapper.findComponent('[data-testid="launch-card-download"]')
 
       await action.trigger('click')
-      expect(wrapper.emitted('click-action')).toStrictEqual([[]])
+      expect(wrapper.emitted('click-download')).toStrictEqual([[]])
     })
   })
 })

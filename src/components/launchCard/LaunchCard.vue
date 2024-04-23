@@ -39,23 +39,23 @@
       "
     >
       <PButton
-        v-if="sanitizedDownloadUrl"
-        :href="sanitizedDownloadUrl"
+        v-if="downloadLabel"
         pType="white"
         pSize="small"
-        tag="a"
-        target="_blank"
         data-testid="launch-card-download"
+        @click="emit('click-download')"
       >
-        {{ t('download') }}
+        {{ downloadLabel }}
       </PButton>
 
       <PButton
         v-if="actionLabel"
+        :href="sanitizedActionUrl"
         pType="primary"
         pSize="small"
         data-testid="launch-card-action"
-        @click="emit('click-action')"
+        tag="a"
+        target="_blank"
       >
         {{ actionLabel }}
         <PIcon
@@ -71,25 +71,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { sanitizeUrl } from '@braintree/sanitize-url'
-import { useI18n } from 'vue-i18n'
 import { PImage, PIcon, PButton, PIArrowRight } from '@kpmg/styleguide'
 import type { LaunchCardProps } from './LaunchCardTypes'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
-
 const emit = defineEmits<{
-  'click-action': []
+  'click-download': []
 }>()
 
 const props = defineProps<LaunchCardProps>()
 
-const sanitizedDownloadUrl = computed(() => {
-  return props.downloadUrl
-    ? sanitizeUrl(props.downloadUrl)
-    : ''
+const sanitizedActionUrl = computed(() => {
+  return props.actionUrl
+    ? sanitizeUrl(props.actionUrl)
+    : undefined
 })
 </script>
 
@@ -112,10 +106,3 @@ $shadow-color: #7090b0;
   }
 }
 </style>
-
-<i18n lang="yaml">
-  en-US:
-    download: 'Download'
-  fr-FR:
-    download: 'Télécharger'
-</i18n>

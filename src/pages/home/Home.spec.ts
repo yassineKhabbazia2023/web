@@ -14,7 +14,8 @@ function getWrapper() {
             'imageType',
             'imageName',
             'actionLabel',
-            'downloadUrl',
+            'actionUrl',
+            'downloadLabel',
           ],
         },
       },
@@ -37,7 +38,8 @@ describe('test Home', () => {
       const firstLaunchCard = wrapper.findComponent('[data-testid="launchCard"]')
       const expectedAttributes = {
         actionLabel: "Se connecter à l'outil de gestion",
-        downloadUrl: '',
+        actionUrl: '',
+        downloadLabel: '',
         imageName: 'iconpulse-color',
         imageType: 'logos',
         subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
