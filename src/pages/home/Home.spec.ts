@@ -1,8 +1,15 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { nextTick } from 'vue'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { mockedEnvVars } from '@/../vitest.setup'
 import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
+import { LAUNCHER_KEY } from './HomeTypes'
+import * as HomeUtils from './HomeUtils'
 import Home from '.'
+
+vi.mock('./HomeUtils', async () => {
+  return await vi.importActual('./HomeUtils')
+})
 
 function getWrapper() {
   return shallowMount(Home, {
@@ -27,6 +34,16 @@ function getWrapper() {
 
 const CARDS_LENGTH = 3
 
+function getLaunchCardComponent(wrapper: VueWrapper, key: LAUNCHER_KEY) {
+  return wrapper
+    .findComponent(`[data-testid="launch-card-${key}"]`) as unknown as VueWrapper
+}
+
+function getLaunchCardComponents(wrapper: VueWrapper) {
+  return wrapper
+    .findAllComponents('[data-testid^="launch-card-"]')
+}
+
 describe('test Home', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
@@ -34,14 +51,15 @@ describe('test Home', () => {
   })
 
   describe('default display', () => {
-    it('proper launchCards length', () => {
-      const launchCards = wrapper.findAll('[data-testid="launch-card"]')
+    it('proper launchCards length', async () => {
+      await nextTick()
+      const launchCards = getLaunchCardComponents(wrapper)
 
       expect(launchCards).toHaveLength(CARDS_LENGTH)
     })
 
-    it('proper first launchCard attributes', () => {
-      const firstLaunchCard = wrapper.findComponent('[data-testid="launch-card"]')
+    it('proper Meg launchCard attributes', () => {
+      const megLaunchCard = getLaunchCardComponent(wrapper, LAUNCHER_KEY.meg)
       const expectedAttributes = {
         actionLabel: "Se connecter à l'outil de gestion",
         actionUrl: mockedEnvVars.VITE_GESTION_MEG,
@@ -52,11 +70,11 @@ describe('test Home', () => {
         title: 'Mon outil de gestion',
       }
 
-      expect((firstLaunchCard as VueWrapper).props()).toMatchObject(expectedAttributes)
+      expect((megLaunchCard as VueWrapper).props()).toMatchObject(expectedAttributes)
     })
 
-    it('proper second launchCard attributes', () => {
-      const firstLaunchCard = wrapper.findAllComponents('[data-testid="launch-card"]').at(1)
+    it('proper silae launchCard attributes', () => {
+      const silaeLaunchCard = getLaunchCardComponent(wrapper, LAUNCHER_KEY.silae)
       const expectedAttributes = {
         actionLabel: 'Se connecter à Silae',
         actionUrl: '',
@@ -67,13 +85,13 @@ describe('test Home', () => {
         title: 'Silae',
       }
 
-      expect((firstLaunchCard as VueWrapper).props()).toMatchObject(expectedAttributes)
+      expect((silaeLaunchCard as VueWrapper).props()).toMatchObject(expectedAttributes)
     })
 
     it('should contain actionUrls', async () => {
       await flushPromises()
 
-      const launchCards = wrapper.findAllComponents('[data-testid="launch-card"]')
+      const launchCards = getLaunchCardComponents(wrapper)
       const actionUrls = launchCards
         .map((launchCard) => {
           const props = (launchCard as VueWrapper).props() as LaunchCardProps
@@ -88,6 +106,19 @@ describe('test Home', () => {
       ]
 
       expect(actionUrls).toMatchObject(expectedActionUrls)
+    })
+  })
+
+  describe('when click action on Silae LaunchCard', () => {
+    it('should call handleClickAction with proper arguments', () => {
+      const key = LAUNCHER_KEY.silae
+      const handleClickActionSpy = vi.spyOn(HomeUtils, 'handleClickAction')
+      const silaeLaunchCard = getLaunchCardComponent(wrapper, key)
+
+      silaeLaunchCard.vm.$emit('click-action')
+
+      expect(handleClickActionSpy).toHaveBeenCalledOnce()
+      expect(handleClickActionSpy).toHaveBeenNthCalledWith(1, key)
     })
   })
 })

@@ -3,6 +3,7 @@ import {
   VITE_GESTION_MEG,
   VITE_PENNYLANE_SSO_URL,
 } from 'env-vars'
+import { getSsoSilaeUrl } from '@/services/launcherServices'
 
 export function getLaunchCards(): ExtendedLaunchCard[] {
   return [{
@@ -33,4 +34,23 @@ export function getLaunchCards(): ExtendedLaunchCard[] {
     actionUrl: VITE_PENNYLANE_SSO_URL,
     downloadLabel: '',
   }]
+}
+
+export async function openSilaeUrl() {
+  const ssoSilaeUrl = await getSsoSilaeUrl()
+  if (ssoSilaeUrl) {
+    window.open(ssoSilaeUrl)
+  } else {
+    throw new Error('ssoSilaeUrl is empty')
+  }
+}
+
+export async function handleClickAction(key: LAUNCHER_KEY) {
+  try {
+    if (key === LAUNCHER_KEY.silae) {
+      await openSilaeUrl()
+    }
+  } catch (error) {
+    console.error(error)
+  }
 }
