@@ -9,4 +9,5 @@ export interface CreateFolderSectionProps {
   isCreateFolderModalVisible: boolean
   isCreateFolderModalCentered?: boolean
   hasCreateFolderButton: boolean
+  isInBinContext?: boolean
 }

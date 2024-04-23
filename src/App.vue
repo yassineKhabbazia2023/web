@@ -9,6 +9,7 @@
         :servicesFolders="servicesFolders"
         :selectedFolder="currentFolder"
         :currentServiceFolder="currentServiceFolder"
+        :isInBinContext="currentBinService !== null"
         @selected-folder-change="setCurrentFolderAndService"
         @selected-bin-service-change="setCurrentBinService"
         @open-create-folder-modal="openCreateFolderModal"

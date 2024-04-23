@@ -39,6 +39,7 @@ const defaultProps: CreateFolderSectionProps = {
     serviceId: 'some-service',
   } as Folder,
   isCreateFolderModalVisible: false,
+  isInBinContext: false,
 }
 
 type CreateFolderSectionSetup = {
@@ -92,7 +93,20 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const mainCreateButton = await wrapper.find('.treeview__new-folder')
+      const mainCreateButton = await wrapper.find('[data-testid=treeview__new-folder]')
+
+      expect(mainCreateButton.attributes('ariadisabled')).toBe('true')
+    })
+
+    it('should disable main create folder button when opening bin tree', async () => {
+      const updatedProps: CreateFolderSectionProps = {
+        ...defaultProps,
+        isInBinContext: true,
+      }
+
+      const wrapper = createWrapper(updatedProps)
+
+      const mainCreateButton = await wrapper.find('[data-testid=treeview__new-folder]')
 
       expect(mainCreateButton.attributes('ariadisabled')).toBe('true')
     })
@@ -100,7 +114,7 @@ describe('createFolderSection', () => {
     it('should enable main create folder button when permission  available', async () => {
       const wrapper = createWrapper()
 
-      const mainCreateButton = await wrapper.find('.treeview__new-folder')
+      const mainCreateButton = await wrapper.find('[data-testid=treeview__new-folder]')
 
       expect(mainCreateButton.attributes('ariadisabled')).toBe('false')
     })
@@ -149,7 +163,7 @@ describe('createFolderSection', () => {
     it('should set the correct create folder text', () => {
       const wrapper = createWrapper()
       const mainCreateButton = wrapper.find(
-        '.treeview__new-folder',
+        '[data-testid=treeview__new-folder]',
       )
 
       expect(mainCreateButton.element.textContent).toContain('Nouveau dossier')
@@ -238,7 +252,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const button = await wrapper.find('.treeview__new-folder')
+      const button = await wrapper.find('[data-testid=treeview__new-folder]')
 
       await button.trigger('click')
       await nextTick()

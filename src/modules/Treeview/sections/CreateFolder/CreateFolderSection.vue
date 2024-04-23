@@ -2,10 +2,11 @@
 <template>
   <PButton
     v-if="hasCreateFolderButton"
+    data-testid="treeview__new-folder"
     class="treeview__new-folder el-button--default"
     pType="white"
     pSize="small"
-    :pDisabled="isTreeCreateFolderBtnDisabled"
+    :pDisabled="isTreeCreateFolderBtnDisabled || isInBinContext"
     @click="openCreateFolderModal"
   >
     <PIcon class="el-button__icon--left">

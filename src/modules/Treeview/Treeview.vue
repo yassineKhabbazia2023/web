@@ -10,6 +10,7 @@
         :entityId="selectedEntity"
         :selectedFolder="selectedFolder"
         :isCreateFolderModalVisible="isCreateFolderModalVisible"
+        :isInBinContext="isInBinContext"
         hasCreateFolderButton
         @update-source-folders="handleOnTreeContentRefresh"
         @on-close-create-folder="handleCloseCreateFolderModal"

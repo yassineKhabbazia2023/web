@@ -343,6 +343,19 @@ describe('ged', () => {
         // Value comes from store mock in vitest setup
         expect(bin.props('selectedEntity')).toBe('256')
       })
+
+      it('should set the prop that will disable the create folder button when currentBinService is set', async () => {
+        const wrapper = createWrapper()
+        const componentInstance = wrapper.vm
+        componentInstance.currentBinService = foldersData[0][0].serviceId
+        componentInstance.selectedEntity = 'ent'
+        componentInstance.currentBinServiceName = foldersData[0][0].name
+        await nextTick()
+        const tree = wrapper.findComponent(Treeview)
+
+        expect(tree.props('isInBinContext')).toBeTruthy()
+      })
+
       it('should hide bin component when currentBinService is not set', async () => {
         expect.hasAssertions()
         const wrapper = createWrapper()

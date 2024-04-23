@@ -14,6 +14,7 @@ export interface TreeviewProps {
   selectedEntity: string
   selectedFolder: null | Folder
   currentServiceFolder: null | Folder[]
+  isInBinContext?: boolean
 }
 
 // To update with real type when it will be availaible from the Stylguide
