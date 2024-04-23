@@ -66,3 +66,11 @@ vi.mock('@kpmg/common', () => ({
   })),
   debounce: vi.fn((fn) => fn),
 }))
+export const mockedEnvVars = {
+  VITE_GESTION_MEG: 'https://gestion-meg',
+  VITE_API_SILAE: 'https://api-silae',
+  VITE_API_SILAE_CLIENT: 'https://silae-client',
+  VITE_PENNYLANE_SSO_URL: 'https://pennylane-sso-url',
+}
+
+vi.mock('env-vars', () => mockedEnvVars)

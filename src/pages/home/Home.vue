@@ -19,10 +19,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import LaunchCard from '@/components/launchCard'
-import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
+import { type ExtendedLaunchCard } from './HomeTypes'
 import { getLaunchCards } from './HomeUtils'
 
-const launchCards = ref<LaunchCardProps[]>([])
+const launchCards = ref<ExtendedLaunchCard[]>([])
 
 onMounted(() => {
   launchCards.value = getLaunchCards()
