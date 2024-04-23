@@ -35,13 +35,13 @@ describe('test Home', () => {
 
   describe('default display', () => {
     it('proper launchCards length', () => {
-      const launchCards = wrapper.findAll('[data-testid="launchCard"]')
+      const launchCards = wrapper.findAll('[data-testid="launch-card"]')
 
       expect(launchCards).toHaveLength(CARDS_LENGTH)
     })
 
     it('proper first launchCard attributes', () => {
-      const firstLaunchCard = wrapper.findComponent('[data-testid="launchCard"]')
+      const firstLaunchCard = wrapper.findComponent('[data-testid="launch-card"]')
       const expectedAttributes = {
         actionLabel: "Se connecter à l'outil de gestion",
         actionUrl: mockedEnvVars.VITE_GESTION_MEG,
@@ -56,7 +56,7 @@ describe('test Home', () => {
     })
 
     it('proper second launchCard attributes', () => {
-      const firstLaunchCard = wrapper.findAllComponents('[data-testid="launchCard"]').at(1)
+      const firstLaunchCard = wrapper.findAllComponents('[data-testid="launch-card"]').at(1)
       const expectedAttributes = {
         actionLabel: 'Se connecter à Silae',
         actionUrl: '',
@@ -73,7 +73,7 @@ describe('test Home', () => {
     it('should contain actionUrls', async () => {
       await flushPromises()
 
-      const launchCards = wrapper.findAllComponents('[data-testid="launchCard"]')
+      const launchCards = wrapper.findAllComponents('[data-testid="launch-card"]')
       const actionUrls = launchCards
         .map((launchCard) => {
           const props = (launchCard as VueWrapper).props() as LaunchCardProps
