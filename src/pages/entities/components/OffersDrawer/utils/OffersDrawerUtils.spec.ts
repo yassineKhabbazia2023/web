@@ -8,7 +8,7 @@ import {
 } from './OffersDrawerUtils'
 import type { SelectedProduct } from '../OffersDrawerTypes'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
-import { getMockedStepNotes } from '../../StepNote/StepNotesMock'
+import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
 import type { PostSubscriptionRequest } from '@/services/subscription'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 import { getMockedPrincipalContacts } from '../../PrincipalContact/PrincipalContactMocks'

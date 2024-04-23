@@ -17,7 +17,7 @@ import * as ServicesAccount from '@/services/account'
 import * as subscriptionService from '@/services/subscription/subscriptionService'
 import * as PatchRecordService from '@/services/PatchRecordService/PatchRecordService'
 import { getMockedAccount, getMockedPatchOperations } from '@/services/account/accountMock'
-import { getMockedStepNotes } from '../StepNote/StepNotesMock'
+import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
 import type { UserInfo } from '@kpmg/common'
 import type { Note, PostSubscriptionRequest } from '@/services/subscription'
 import type { PatchValue } from '@/services/PatchRecordService'
@@ -398,7 +398,7 @@ describe('offersDrawer', () => {
       const customersStep = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
-      expect(customersNoteStep.props()).toStrictEqual({ modelValue: notes[1] })
+      expect(customersNoteStep.props()).toStrictEqual({ disabled: false, modelValue: notes[1] })
       expect(customersStep.exists()).toBeTruthy()
 
       await asyncEmit(nextPreviousButtons, 'clickNext')
