@@ -4,5 +4,6 @@ export type LaunchCardProps = {
   imageType: string
   imageName: string
   actionLabel: string
-  downloadUrl: string
+  actionUrl: string
+  downloadLabel: string
 }
