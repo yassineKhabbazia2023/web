@@ -28,4 +28,4 @@ extends:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
     sonarExclusions: |
-      *.config.js,vitest.setup.js,src/router/index.ts,src/main.ts
+      *.config.js,vitest.setup.ts,src/router/index.ts,src/main.ts
