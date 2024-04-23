@@ -3,7 +3,7 @@
     <LaunchCard
       v-for="(launchCard, index) in launchCards"
       class="flex--basis-30 flex--grow-1"
-      data-testid="launchCard"
+      data-testid="launch-card"
       :key="index"
       :title="launchCard.title"
       :subtitle="launchCard.subtitle"
@@ -19,10 +19,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import LaunchCard from '@/components/launchCard'
-import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
+import { type ExtendedLaunchCard } from './HomeTypes'
 import { getLaunchCards } from './HomeUtils'
 
-const launchCards = ref<LaunchCardProps[]>([])
+const launchCards = ref<ExtendedLaunchCard[]>([])
 
 onMounted(() => {
   launchCards.value = getLaunchCards()

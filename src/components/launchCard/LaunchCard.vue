@@ -35,7 +35,6 @@
         flex
         flex--justify-content-center
         flex--align-items-center
-        flex-gap--2
       "
     >
       <PButton
