@@ -33,6 +33,7 @@ export default ({ mode }) =>
         viteExternalsPlugin({
           vue: 'Vue',
           'vue-i18n': 'VueI18n',
+          'file-saver': 'FileSaver',
           'vue-router': 'VueRouter',
           pinia: 'Pinia',
           'env-vars': 'EnvVars',
