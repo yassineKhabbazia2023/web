@@ -55,7 +55,7 @@
         data-testid="launch-card-action"
         tag="a"
         target="_blank"
-        @click.stop="emit('click-action')"
+        @click="emit('click-action')"
       >
         {{ actionLabel }}
         <PIcon
