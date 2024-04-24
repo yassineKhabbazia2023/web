@@ -1,16 +1,59 @@
-
 import { describe, expect, it, vi, beforeEach, type SpyInstance } from 'vitest'
-import { openSilaeUrl, handleClickAction } from './HomeUtils'
+import { getSilaeDownloadLabel, getLaunchCards, openSilaeUrl, handleClickAction, handleDownload }
+  from './HomeUtils'
 import { LAUNCHER_KEY } from './HomeTypes'
 import * as launcherServices from '@/services/launcherServices'
+import type { AxiosResponse } from 'axios'
 
 const mockedSilaeUrl = 'https://mocked.silae.url'
 
 vi.mock('@/services/launcherServices', () => ({
   getSsoSilaeUrl: vi.fn(() => mockedSilaeUrl),
+  downloadApplication: vi.fn(() => mockedSilaeUrl),
+  saveApplication: vi.fn(() => mockedSilaeUrl),
 }))
 
+function getMockedResponse(disposition = '') {
+  return {
+    data: 'application',
+    headers: {
+      'content-disposition': disposition,
+    },
+  } as unknown as AxiosResponse
+}
+
 describe('test HomeUtils', () => {
+  describe('getSilaeDownloadLabel', () => {
+    const tests = [{
+      silaeDownloadPercent: undefined,
+      expectedLabel: 'Télécharger',
+    }, {
+      silaeDownloadPercent: 23,
+      expectedLabel: 'Téléchargement (23 %)',
+    }, {
+      silaeDownloadPercent: 100,
+      expectedLabel: 'Téléchargement terminé',
+    }]
+
+    it.each(tests)('expect label to be `$expectedLabel` when silaeDownloadPercent is $silaeDownloadPercent', ({
+      silaeDownloadPercent,
+      expectedLabel,
+    }) => {
+      const downloadLabel = getSilaeDownloadLabel(silaeDownloadPercent)
+
+      expect(downloadLabel).toBe(expectedLabel)
+    })
+  })
+
+  describe('getLaunchCards', () => {
+    it('proper launchCards length', () => {
+      const downloadSilaeLabel = 'Télécharger'
+      const launchCards = getLaunchCards(downloadSilaeLabel)
+
+      expect(launchCards).toMatchFileSnapshot('__snaps__/HomeUtils/getLaunchCards/launchCards.snap')
+    })
+  })
+
   let consoleErrorSpy: SpyInstance
   beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, 'error')
@@ -41,6 +84,60 @@ describe('test HomeUtils', () => {
         .spyOn(launcherServices, 'getSsoSilaeUrl')
         .mockRejectedValueOnce(thrownError)
       await handleClickAction(LAUNCHER_KEY.silae)
+
+      expect(consoleErrorSpy).toHaveBeenCalledOnce()
+      expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, thrownError)
+    })
+  })
+
+  describe('handleDownload', () => {
+    const mockedPercent = 78
+    const mockedResponse = getMockedResponse()
+    let downloadApplicationSpy: SpyInstance
+    let saveApplicationSpy: SpyInstance
+    const onSilaeDownloadProgress = vi.fn()
+
+    beforeEach(() => {
+      downloadApplicationSpy = vi
+        .spyOn(launcherServices, 'downloadApplication')
+        .mockImplementation((progressPercentCallback: (_: number) => void) => {
+          progressPercentCallback(mockedPercent)
+
+          return Promise.resolve(mockedResponse)
+        })
+
+      saveApplicationSpy = vi
+        .spyOn(launcherServices, 'saveApplication')
+    })
+
+    it('should call downloadApplicationSpy and saveApplicationSpy when key is silae', async () => {
+      await handleDownload(LAUNCHER_KEY.silae, onSilaeDownloadProgress)
+
+      expect(downloadApplicationSpy).toHaveBeenCalledOnce()
+      expect(saveApplicationSpy).toHaveBeenCalledOnce()
+    })
+
+    it('should call onSilaeDownloadProgress callback function when key is silae', async () => {
+      await handleDownload(LAUNCHER_KEY.silae, onSilaeDownloadProgress)
+
+      expect(onSilaeDownloadProgress).toHaveBeenCalledOnce()
+      expect(onSilaeDownloadProgress).toHaveBeenNthCalledWith(1, mockedPercent)
+    })
+
+    it('should do nothing when key is meg', async () => {
+      await handleDownload(LAUNCHER_KEY.meg, onSilaeDownloadProgress)
+
+      expect(downloadApplicationSpy).not.toHaveBeenCalled()
+      expect(saveApplicationSpy).not.toHaveBeenCalled()
+    })
+
+    it('should call console.error when api throws an error', async () => {
+      const thrownError = 'thrown-error'
+      vi
+        .spyOn(launcherServices, 'downloadApplication')
+        .mockRejectedValueOnce(thrownError)
+      const consoleErrorSpy = vi.spyOn(console, 'error')
+      await handleDownload(LAUNCHER_KEY.silae, onSilaeDownloadProgress)
 
       expect(consoleErrorSpy).toHaveBeenCalledOnce()
       expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, thrownError)

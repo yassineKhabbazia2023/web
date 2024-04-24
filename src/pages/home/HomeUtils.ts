@@ -3,9 +3,9 @@ import {
   VITE_GESTION_MEG,
   VITE_PENNYLANE_SSO_URL,
 } from 'env-vars'
-import { getSsoSilaeUrl } from '@/services/launcherServices'
+import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@/services/launcherServices'
 
-export function getLaunchCards(): ExtendedLaunchCard[] {
+export function getLaunchCards(downloadSilaeLabel: string): ExtendedLaunchCard[] {
   return [{
     key: LAUNCHER_KEY.meg,
     title: 'Mon outil de gestion',
@@ -23,7 +23,7 @@ export function getLaunchCards(): ExtendedLaunchCard[] {
     imageName: 'silae-color',
     actionLabel: 'Se connecter à Silae',
     actionUrl: '',
-    downloadLabel: 'Télécharger',
+    downloadLabel: downloadSilaeLabel,
   }, {
     key: LAUNCHER_KEY.pennylane,
     title: 'Pennylane',
@@ -34,6 +34,16 @@ export function getLaunchCards(): ExtendedLaunchCard[] {
     actionUrl: VITE_PENNYLANE_SSO_URL,
     downloadLabel: '',
   }]
+}
+
+export function getSilaeDownloadLabel(silaeDownloadPercent: number | undefined = undefined) {
+  if (silaeDownloadPercent === undefined) {
+    return 'Télécharger'
+  }
+
+  return silaeDownloadPercent === 100
+    ? 'Téléchargement terminé'
+    : `Téléchargement (${silaeDownloadPercent} %)`
 }
 
 export async function openSilaeUrl() {
@@ -49,6 +59,20 @@ export async function handleClickAction(key: LAUNCHER_KEY) {
   try {
     if (key === LAUNCHER_KEY.silae) {
       await openSilaeUrl()
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function handleDownload(
+  key: LAUNCHER_KEY,
+  onSilaeDownloadProgress: (_: number) => void,
+) {
+  try {
+    if (key === LAUNCHER_KEY.silae) {
+      const response = await downloadApplication(onSilaeDownloadProgress)
+      saveApplication(response)
     }
   } catch (error) {
     console.error(error)

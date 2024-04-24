@@ -12,6 +12,7 @@
       :actionLabel="launchCard.actionLabel"
       :actionUrl="launchCard.actionUrl"
       :downloadLabel="launchCard.downloadLabel"
+      @click-download="onClickDownload(launchCard.key)"
       @click-action="onClickAction(launchCard.key)"
     />
   </div>
@@ -21,15 +22,35 @@
 import { ref, onMounted } from 'vue'
 import LaunchCard from '@/components/launchCard'
 import type { LAUNCHER_KEY, ExtendedLaunchCard } from './HomeTypes'
-import { getLaunchCards, handleClickAction } from './HomeUtils'
+import { getLaunchCards, handleClickAction, handleDownload, getSilaeDownloadLabel } from './HomeUtils'
 
 const launchCards = ref<ExtendedLaunchCard[]>([])
+const isDownloading = ref(false)
+
+function onSilaeDownloadProgress(silaeDownloadPercent: number) {
+  refreshLaunchCards(silaeDownloadPercent)
+}
+
+async function onClickDownload(key: LAUNCHER_KEY) {
+  if (isDownloading.value) {
+    return
+  }
+  onSilaeDownloadProgress(0)
+  isDownloading.value = true
+  await handleDownload(key, onSilaeDownloadProgress)
+  isDownloading.value = false
+}
 
 async function onClickAction(key: LAUNCHER_KEY) {
   await handleClickAction(key)
 }
 
 onMounted(() => {
-  launchCards.value = getLaunchCards()
+  refreshLaunchCards()
 })
+
+function refreshLaunchCards(silaeDownloadPercent: number | undefined = undefined) {
+  const downloadLabel = getSilaeDownloadLabel(silaeDownloadPercent)
+  launchCards.value = getLaunchCards(downloadLabel)
+}
 </script>
