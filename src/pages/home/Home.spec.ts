@@ -70,7 +70,7 @@ describe('test Home', () => {
         title: 'Mon outil de gestion',
       }
 
-      expect((megLaunchCard as VueWrapper).props()).toMatchObject(expectedAttributes)
+      expect(megLaunchCard.props()).toMatchObject(expectedAttributes)
     })
 
     it('proper silae launchCard attributes', () => {
@@ -85,7 +85,7 @@ describe('test Home', () => {
         title: 'Silae',
       }
 
-      expect((silaeLaunchCard as VueWrapper).props()).toMatchObject(expectedAttributes)
+      expect(silaeLaunchCard.props()).toMatchObject(expectedAttributes)
     })
 
     it('should contain actionUrls', async () => {
