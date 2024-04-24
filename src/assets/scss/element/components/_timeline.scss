@@ -1,10 +1,45 @@
-// css3 var in packages/theme-chalk/src/timeline-item.scss
-$timeline: () !default;
-$timeline: map.merge(
-  (
-    'node-size-normal': 12px,
-    'node-size-large': 14px,
-    'node-color': getCssVar('border-color-light'),
-  ),
-  $timeline
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+@use '../../pegase/shadow' as *;
+
+$timeline: (
+  'node-size-normal': 10px,
+  'node-size-large': 30px,
+  'node-color': getCssVar('border-color-lighter'),
 );
+
+.p-timeline-item {
+  $self: &;
+
+  &#{$self}--size-normal {
+    margin-left: 5px;
+    padding-top: 22px;
+    padding-right: 5px;
+    padding-bottom: 1.2rem;
+
+    .el-timeline-item__tail {
+      left: 3px;
+    }
+
+    .el-timeline-item__wrapper {
+      top: -17px;
+    }
+  }
+  &#{$self}--size-large {
+    margin-left: 15px;
+  }
+
+  .el-timeline-item__node {
+    background: var(--persian-gradient);
+    border-color: var(--el-color-base-white);
+    border-style: solid;
+    @extend .shadow--2;
+
+    &--normal {
+      border-width: 2px;
+    }
+
+    &--large {
+      border-width: 3px;
+    }
+  }
+}

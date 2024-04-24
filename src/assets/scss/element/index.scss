@@ -29,6 +29,7 @@
 @use './components/table';
 @use './components/tabs';
 @use './components/tag';
+@use './components/timeline';
 @use './components/tree';
 @use './form/checkbox';
 @use './form/datepicker';
@@ -95,6 +96,7 @@
   $text-color: colors.$text-color,
   $text-font-size: typography.$text-font-size,
   $tree: tree.$tree,
+  $timeline: timeline.$timeline,
   $upload: upload.$upload
 );
 
@@ -156,6 +158,8 @@
 @use 'element-plus/theme-chalk/src/tabs.scss' as *;
 @use 'element-plus/theme-chalk/src/tag.scss' as *;
 @use 'element-plus/theme-chalk/src/text.scss' as *;
+@use 'element-plus/theme-chalk/src/timeline.scss' as *;
+@use 'element-plus/theme-chalk/src/timeline-item.scss' as *;
 @use 'element-plus/theme-chalk/src/tooltip.scss' as *;
 @use 'element-plus/theme-chalk/src/tree.scss' as *;
 @use 'element-plus/theme-chalk/src/upload.scss' as *;
