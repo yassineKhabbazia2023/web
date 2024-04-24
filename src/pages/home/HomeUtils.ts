@@ -37,9 +37,9 @@ export function getLaunchCards(): ExtendedLaunchCard[] {
 }
 
 export async function openSilaeUrl() {
-  const ssoSilaeUrl = await getSsoSilaeUrl()
-  if (ssoSilaeUrl) {
-    window.open(ssoSilaeUrl)
+  const redirectUrl = await getSsoSilaeUrl()
+  if (redirectUrl) {
+    window.location.href = `mypulse-launch://${redirectUrl}`
   } else {
     throw new Error('ssoSilaeUrl is empty')
   }

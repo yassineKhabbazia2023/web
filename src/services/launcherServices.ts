@@ -48,5 +48,5 @@ export async function getSsoSilaeUrl() {
   if (!redirectUrl) {
     throw new Error('no redirectUrl given')
   }
-  return redirectUrl
+  return encodeURIComponent(redirectUrl)
 }

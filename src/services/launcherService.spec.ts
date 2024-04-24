@@ -127,11 +127,12 @@ describe('launcherServices', () => {
       expect(commonApiSilaePostSpy).toHaveBeenNthCalledWith(1, API_ROUTES.silaeSso, { wrapRedirect: true })
     })
 
-    it('should return redirectUrl', async () => {
+    it('should return encoded redirectUrl', async () => {
       const ssoSilaeUrl = await getSsoSilaeUrl()
       await flushPromises()
+      const expectedEncodedUrl = encodeURIComponent(redirectUrl)
 
-      expect(ssoSilaeUrl).toBe(redirectUrl)
+      expect(ssoSilaeUrl).toBe(expectedEncodedUrl)
     })
 
     it('should throw error when redirectUrl given', async () => {

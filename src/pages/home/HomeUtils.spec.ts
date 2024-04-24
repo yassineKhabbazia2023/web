@@ -5,29 +5,34 @@ import { LAUNCHER_KEY } from './HomeTypes'
 import * as launcherServices from '@/services/launcherServices'
 
 const mockedSilaeUrl = 'https://mocked.silae.url'
+
 vi.mock('@/services/launcherServices', () => ({
   getSsoSilaeUrl: vi.fn(() => mockedSilaeUrl),
 }))
 
 describe('test HomeUtils', () => {
+  let consoleErrorSpy: SpyInstance
+  beforeEach(() => {
+    consoleErrorSpy = vi.spyOn(console, 'error')
+  })
+
   describe('handleClickAction', () => {
-    let windowOpenSpy: SpyInstance
-
-    beforeEach(() => {
-      windowOpenSpy = vi.spyOn(window, 'open')
-    })
-
     it('should call window.open when key is silae', async () => {
+      Object.defineProperty(window, 'location', {
+        value: {
+          href: '',
+        },
+      })
       await handleClickAction(LAUNCHER_KEY.silae)
+      const expectedHRef = `mypulse-launch://${mockedSilaeUrl}`
 
-      expect(windowOpenSpy).toHaveBeenCalledOnce()
-      expect(windowOpenSpy).toHaveBeenNthCalledWith(1, mockedSilaeUrl)
+      expect(window.location.href).toBe(expectedHRef)
     })
 
     it('should do nothing when key is meg', async () => {
       await handleClickAction(LAUNCHER_KEY.meg)
 
-      expect(windowOpenSpy).not.toHaveBeenCalledOnce()
+      expect(consoleErrorSpy).not.toHaveBeenCalled()
     })
 
     it('should call console.error when api throws an error', async () => {
@@ -35,7 +40,6 @@ describe('test HomeUtils', () => {
       vi
         .spyOn(launcherServices, 'getSsoSilaeUrl')
         .mockRejectedValueOnce(thrownError)
-      const consoleErrorSpy = vi.spyOn(console, 'error')
       await handleClickAction(LAUNCHER_KEY.silae)
 
       expect(consoleErrorSpy).toHaveBeenCalledOnce()
