@@ -55,6 +55,7 @@
         data-testid="launch-card-action"
         tag="a"
         target="_blank"
+        @click="emit('click-action')"
       >
         {{ actionLabel }}
         <PIcon
@@ -75,6 +76,7 @@ import type { LaunchCardProps } from './LaunchCardTypes'
 
 const emit = defineEmits<{
   'click-download': []
+  'click-action': []
 }>()
 
 const props = defineProps<LaunchCardProps>()

@@ -109,4 +109,15 @@ describe('test LaunchCard', () => {
       expect(wrapper.emitted('click-download')).toStrictEqual([[]])
     })
   })
+
+  describe('when click on action button', () => {
+    const wrapper = getWrapper()
+
+    it('emits click-action', async () => {
+      const action = wrapper.findComponent('[data-testid="launch-card-action"]')
+
+      await action.trigger('click')
+      expect(wrapper.emitted('click-action')).toStrictEqual([[]])
+    })
+  })
 })
