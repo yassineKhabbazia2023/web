@@ -54,7 +54,6 @@
       "bank-mandate",
       "camera",
       "connection-default",
-      "connection-loading",
       "document-authentification",
       "document-error",
       "document-import",
@@ -73,7 +72,8 @@
       "shared-document",
       "talking",
       "time",
-      "toggle"
+      "toggle",
+      "user-desktop"
     ]
   },
   {
