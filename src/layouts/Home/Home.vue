@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoading" class="common-layout">
-    <ScheduleDrawer v-if="showCalendar" v-model="showCalendar" />
+    <HomeScheduleDrawer v-if="showCalendar" v-model="showCalendar" />
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
         <Header
@@ -41,7 +41,7 @@ import { useI18n } from 'vue-i18n'
 import { commonStore as store, dataProvider } from '@kpmg/common'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import UserProfile from '@/components/UserProfile'
-import ScheduleDrawer from '@/components/ScheduleDrawer'
+import HomeScheduleDrawer from '@/components/HomeScheduleDrawer'
 import Header from './Header'
 import Sidebar from './Sidebar'
 

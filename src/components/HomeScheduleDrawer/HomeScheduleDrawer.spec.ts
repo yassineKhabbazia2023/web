@@ -3,7 +3,7 @@ import { nextTick } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import ScheduleDrawer from './'
+import HomeScheduleDrawer from '.'
 
 vi.mock('@/schedule/services', () => ScheduleServicesMock)
 vi.mock('@kpmg/common', () => KpmgCommontMock)
@@ -13,12 +13,12 @@ function createWrapper(modelValue: boolean): VueWrapper<any> {
     modelValue,
   }
 
-  return mount(ScheduleDrawer, {
+  return mount(HomeScheduleDrawer, {
     props,
   })
 }
 
-describe('test ScheduleDrawer', () => {
+describe('test HomeScheduleDrawer', () => {
   describe('display', () => {
     const tests = [{
       modelValue: false,

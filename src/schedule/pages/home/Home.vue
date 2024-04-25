@@ -145,6 +145,7 @@ function onCloseDrawer() {
     flex-direction: column;
     width: 100%;
     position: relative;
+    border-right: 1px solid var(--el-color-neutral-gray-100);
   }
 
   &__widget {
@@ -160,10 +161,19 @@ function onCloseDrawer() {
     transform: translateX(-50%);
     z-index: 100;
   }
-}
 
-.p-schedule :deep(.p-date-picker) {
-  top: 5px !important;
-  left: 0 !important;
+  :deep(.p-date-picker) {
+    top: 5px !important;
+    left: 0 !important;
+  }
+
+  :deep(.p-calendar .el-calendar__body .el-calendar-table thead th:last-child),
+  :deep(.el-calendar-table tr td:last-child) {
+    border-right: 0px;
+  }
+
+  :deep(.el-picker__popper.el-popper[data-popper-placement^=bottom] .el-popper__arrow:before) {
+    display: none;
+  }
 }
 </style>
