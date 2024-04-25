@@ -14,6 +14,7 @@
       v-else
       :defaultCreateDate="defaultCreateDate"
       :recipientsCollection="recipientsCollection"
+      :frequenciesCollection="frequenciesCollection"
       :checkValidity="evaluateForm"
       @update-schedule-model="sendReminder"
     />
@@ -36,14 +37,14 @@ import { ref, onMounted, computed, nextTick } from 'vue'
 import type { Options }
   from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
 import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
-import { getAccountsCollection, postSchedule } from '@/schedule/services'
+import { getAccountsCollection, postSchedule, getFrequenciesCollection } from '@/schedule/services'
 import {
   PButton,
   PDrawer,
   PLoader,
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
-import type { ScheduleDrawerProps } from './ScheduleDrawerTypes.ts'
+import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
 import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
 
@@ -60,6 +61,8 @@ const props = withDefaults(defineProps<ScheduleDrawerProps>(), {
 
 const loading = ref(false)
 const recipientsCollection = ref<Options[]>([])
+const frequenciesCollection = ref<string[]>([])
+
 const evaluateForm = ref(false)
 const loadFormIndicator = ref(false)
 
@@ -75,8 +78,9 @@ const isDrawerOpened = computed({
 onMounted(async () => {
   try {
     loading.value = true
-    const accounts = await getAccountsCollection()
+    const [accounts, frequency] = await Promise.all([getAccountsCollection(), getFrequenciesCollection()])
     recipientsCollection.value = accountsDataTransformer(accounts)
+    frequenciesCollection.value = frequency
   } catch (error) {
     console.warn(error)
   } finally {

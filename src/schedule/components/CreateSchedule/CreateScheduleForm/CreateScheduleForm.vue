@@ -19,8 +19,13 @@
         :optionsCollection="recipientsCollection"
       />
     </PFormItem>
-    <PRow :pGutter="16">
-      <PCol :pSpan="12">
+    <PRow
+      :pGutter="16"
+      class="margin-bottom--0"
+    >
+      <PCol
+        :pSpan="12"
+      >
         <PFormItem pProp="date" :pLabel="t('date')">
           <PDatePicker
             v-model="createScheduleForm.date"
@@ -30,8 +35,23 @@
         </PFormItem>
       </PCol>
       <PCol :pSpan="12">
+        <PFormItem pProp="frequency" :pLabel="t('frequency')">
+          <PDropdown
+            v-model="createScheduleForm.frequency"
+            :pOptions="frequenciesOptionsFormatted"
+          />
+        </PFormItem>
       </PCol>
     </PRow>
+    <PAlert
+      v-if="showMonthlyAlert"
+      pType="warning"
+      class="margin-bottom--4"
+    >
+      <template #bold-text>
+        {{t('Warning')}}
+      </template> {{ monthyWarning(createScheduleForm.date.getDate()) }}
+    </PAlert>
     <PFormItem
       pProp="description"
       inline
@@ -57,7 +77,7 @@
 
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
-import { ref, reactive, watch, onMounted } from 'vue'
+import { ref, reactive, watch, onMounted, computed } from 'vue'
 import {
   PForm,
   PFormItem,
@@ -65,10 +85,12 @@ import {
   PCol,
   PRow,
   PInput,
+  PAlert,
+  PDropdown,
 } from '@kpmg/styleguide'
 import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
-import type { FormProps } from './CreateScheduleFormTypes.ts'
-import type { Schedule } from './CreateScheduleFormModel.ts'
+import type { FormProps } from './CreateScheduleFormTypes'
+import type { Schedule, Frequency } from './CreateScheduleFormModel'
 import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
 import { getScheduleModels } from '@/schedule/services'
@@ -95,6 +117,7 @@ const createScheduleForm = reactive({
   recipients: [],
   date: new Date(),
   description: '',
+  frequency: 'None',
 })
 
 const scheduleModel: Schedule = {
@@ -111,6 +134,20 @@ const scheduleModel: Schedule = {
   isDraft: false,
   isPrivate: false,
 }
+
+const showMonthlyAlert = computed(() =>
+  createScheduleForm.frequency === 'Monthly' && createScheduleForm.date.getDate() >= 29)
+
+const frequenciesOptionsFormatted = computed(() => {
+  const frequencyMap: Record<string, string> = {
+    None: t('None'),
+    Monthly: t('Monthly'),
+  }
+  return props.frequenciesCollection.map((key: string) => ({
+    pValue: key,
+    pLabel: frequencyMap[key],
+  }))
+})
 
 // Utility functions
 const createRule = (message: string, trigger = 'change') => ({
@@ -137,6 +174,7 @@ const evaluateForm = () => {
       scheduleModel.targets = createScheduleForm.recipients
       scheduleModel.scheduling.date = dateISOFormatter(createScheduleForm.date)
       scheduleModel.description = createScheduleForm.description
+      scheduleModel.scheduling.frequency = createScheduleForm.frequency as Frequency
       emit('update-schedule-model', scheduleModel)
     }
   })
@@ -159,6 +197,9 @@ onMounted(() => {
     createScheduleForm.date = props.defaultCreateDate
   }
 })
+
+const monthyWarning = (frequencyDate: number) =>
+    `Le ${frequencyDate} ne sera pas pris en compte pour les mois qui ne contiennent pas ce jour.`
 </script>
 
 <style lang="scss" scoped>
@@ -188,7 +229,11 @@ onMounted(() => {
       "error": {
         "requiredField": "Required field"
       }
-    }
+    },
+    "frequency": "Frequency",
+    "None": "None",
+    "Monthly": "Monthly",
+    "Warning": "Warning !"
   },
   "fr-FR": {
     "reminder": "Titre du rappel",
@@ -202,6 +247,10 @@ onMounted(() => {
       "error": {
         "requiredField": "Champ obligatoire"
       }
-    }
+    },
+    "frequency": "Périodicité",
+    "None": "Ne se répète pas",
+    "Monthly": "Tous les mois",
+    "Warning": "Attention !"
   }
 }</i18n>

@@ -5,11 +5,12 @@ import {
   postSchedule,
   getScheduleModels,
   getScheduleModelsByKey,
+  getFrequenciesCollection,
 } from '.'
 import type { Account } from '@/schedule/models/Account'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { doneDeadlinesByDateMock, createScheduleMock } from '@/schedule/tests/mocks/Deadline'
+import { doneDeadlinesByDateMock, createScheduleMock, frequenciesMock } from '@/schedule/tests/mocks/Deadline'
 import type { ScheduleModelLabelType } from './scheduleServiceTypes'
 
 const getMockApiImplementation = (mockData: Account[] | DeadlinesByDate[]) => Promise.resolve({
@@ -82,5 +83,12 @@ describe('getScheduleModelsByKey', () => {
   it.each(labelTypes)('should return proper list when labelType = \'%i\'', (labelType) => {
     const data = getScheduleModelsByKey(labelType)
     expect(data).toMatchFileSnapshot(`__snap__/getScheduleModelsByKey/${labelType}.snap`)
+  })
+})
+
+describe('getFrequenciesCollection', () => {
+  it('should return frequencies collection', async () => {
+    const data = await getFrequenciesCollection()
+    expect(data).toStrictEqual(frequenciesMock)
   })
 })

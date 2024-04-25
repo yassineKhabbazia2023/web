@@ -5,7 +5,7 @@ import { expect, describe, it, vi } from 'vitest'
 import * as scheduleService from '@/schedule/services'
 import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { createScheduleMockWithTypeLong } from '@/schedule/tests/mocks/Deadline'
+import { createScheduleMockWithTypeLong, frequenciesMock } from '@/schedule/tests/mocks/Deadline'
 
 const createWrapper = (props: any = {}) =>
   wrapperFactory(ScheduleDrawer, {
@@ -20,6 +20,7 @@ vi.mock('@/schedule/services', () => {
       key: 'TVA',
       label: 'TVA au 21',
     }],
+    getFrequenciesCollection: vi.fn(() => Promise.resolve(frequenciesMock)),
   }
 })
 

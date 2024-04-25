@@ -1,6 +1,6 @@
 import type { Account } from '@/schedule/models/Account'
 
-type Frequency = 'None' | 'Weekly' | 'Monthly' | 'Quarterly' | 'Yearly'
+export type Frequency = 'None' | 'Weekly' | 'Monthly' | 'Quarterly' | 'Yearly'
 
 interface Template {
   typeShort: string

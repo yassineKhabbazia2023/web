@@ -114,7 +114,7 @@ export const createScheduleMockWithTypeLong: Schedule = {
   scheduling: {
     date,
     time,
-    frequency,
+    frequency: 'Monthly',
   },
   description: '',
   isDraft: false,
@@ -197,3 +197,5 @@ export function getMockedDeadlines() {
     },
   ]
 }
+
+export const frequenciesMock: string[] = ['Monthly', 'None']

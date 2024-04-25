@@ -62,3 +62,8 @@ export function getScheduleModelsByKey(labelType: ScheduleModelLabelType): Recor
       return scheduleModelsByKey
     }, {})
 }
+
+export const getFrequenciesCollection = () => {
+  return Promise.resolve(['Monthly', 'None'])
+}
+

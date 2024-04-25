@@ -5,4 +5,5 @@ export type FormProps = {
   checkValidity?: boolean
   defaultCreateDate?: Date
   recipientsCollection: Options[]
+  frequenciesCollection: string[]
 }
