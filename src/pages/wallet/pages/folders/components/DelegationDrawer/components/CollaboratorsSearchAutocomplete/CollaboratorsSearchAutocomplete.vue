@@ -12,7 +12,6 @@
         :class="{'delegates-add__search-line--selected': isCollaboratorSelected(item.id)}"
         data-testid="collaborator-autocomplete-line"
       >
-        <PCheckbox :modelValue="isCollaboratorSelected(item.id)" />
         <span class="uppercase">
           {{ item.firstName }}
           {{ item.lastName}}
@@ -29,7 +28,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { PAutocomplete, PCheckbox } from '@kpmg/styleguide'
+import { PAutocomplete } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
 import type { Contact } from '@/services/contact/contactTypes'
