@@ -98,15 +98,12 @@ export const updateCollaborator = async (
 ): Promise<Contact> => {
   const updateCollaboratorUrl = `${API_PREFIXES.WALLET}/contacts/${contactId}`
   const requestBody = []
-
   for (const key in updates) {
-    if (updates[key] !== null && updates[key] !== '') {
-      requestBody.push({
-        op: 'replace',
-        path: `/${key}`,
-        value: updates[key],
-      })
-    }
+    requestBody.push({
+      op: 'replace',
+      path: `/${key}`,
+      value: updates[key],
+    })
   }
 
   const headers = {
