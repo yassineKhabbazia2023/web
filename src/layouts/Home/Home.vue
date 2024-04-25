@@ -1,5 +1,5 @@
 <template>
-  <div class="common-layout">
+  <div v-if="!isLoading" class="common-layout">
     <ScheduleDrawer v-if="showCalendar" v-model="showCalendar" />
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
@@ -35,21 +35,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { commonStore as store, dataProvider } from '@kpmg/common'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
-import Header from './Header'
-import Sidebar from './Sidebar'
 import UserProfile from '@/components/UserProfile'
 import ScheduleDrawer from '@/components/ScheduleDrawer'
+import Header from './Header'
+import Sidebar from './Sidebar'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-const showCalendar = ref(false)
 
+// Variables
+const route = useRoute()
+const router = useRouter()
+const routeActive = route.path
+const { fetchUserData } = dataProvider()
+const isLoading = ref<boolean>(true)
+const showCalendar = ref(false)
+const hasUserProfileDrawerOpened = ref(false)
+
+// Constants
 const headerMenu = [
   {
     pIcon: 'PIGrid',
@@ -82,14 +92,25 @@ const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
   }
 })
 
-const router = useRouter()
+// Computed
 const stylesMetaProperties = computed(
   () => router.currentRoute.value.meta.styles,
 )
-const route = useRoute()
-const routeActive = route.path
 
-const hasUserProfileDrawerOpened = ref(false)
+// Hooks
+onMounted(async () => {
+  try {
+    const user = await fetchUserData()
+    store().$patch({
+      user,
+    })
+    console.warn('patched')
+  } catch (error) {
+    console.error('Unable to fetch current user information: ', error)
+  } finally {
+    isLoading.value = false
+  }
+})
 </script>
 
 <style lang="scss" scoped>

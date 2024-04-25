@@ -1,12 +1,19 @@
-import { ScheduleServicesMock, KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
+import {
+  ScheduleServicesMock,
+  KpmgCommontMock,
+} from '@/schedule/tests/mocks/commonViMock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
+import { commonStore as store } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
 import router from '@/plugins/router'
-import Home from './'
+import helpers from '@/tests/utils/helpers'
+import Home from '.'
+import { nextTick } from 'vue'
 
 const pinia = createTestingPinia()
+const { fakeUser } = helpers()
 
 vi.mock('@/schedule/services', () => ScheduleServicesMock)
 vi.mock('@kpmg/common', () => KpmgCommontMock)
@@ -30,12 +37,39 @@ describe('home', () => {
   })
 
   it('can display the user profile drawer', async () => {
-    const getUserProfileDrawer = () => document.querySelector('.user-profile-drawer') as HTMLElement
+    const getUserProfileDrawer = () =>
+      document.querySelector('.user-profile-drawer') as HTMLElement
     expect(getUserProfileDrawer()).toBeFalsy()
 
     const userAvatar = wrapper.find('.header-section__user-avatar')
     await userAvatar.trigger('click')
 
     expect(getUserProfileDrawer()).toBeTruthy()
+  })
+  it('should display the app after retrieving all current user data', async () => {
+    wrapper.vm.isLoading = true
+    await nextTick()
+    let commonLayout = wrapper.find('.common-layout')
+
+    expect(commonLayout.exists()).toBeFalsy()
+
+    const myStore = store()
+
+    expect(myStore.$patch).toHaveBeenCalledOnce()
+    expect(myStore.$patch).toHaveBeenCalledWith({
+      user: {
+        id: fakeUser?.id,
+        firstName: fakeUser?.firstName,
+        lastName: fakeUser?.lastName,
+        email: fakeUser?.email,
+        isCollab: fakeUser?.isCollab,
+      },
+    })
+
+    wrapper.vm.isLoading = false
+    await nextTick()
+    commonLayout = wrapper.find('.common-layout')
+
+    expect(commonLayout.exists()).toBeTruthy()
   })
 })

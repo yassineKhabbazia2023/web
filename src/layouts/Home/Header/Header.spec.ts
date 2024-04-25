@@ -3,16 +3,16 @@ import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { commonStore as store } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
 import helpers from '@/tests/utils/helpers'
 import Header from './'
 import { PICalendarEvent, PIArrowBarUp } from '@kpmg/styleguide'
 
-const { router, pinia, fetchUserData, fakeUser } = helpers()
+const { router, pinia, fetchUserData } = helpers()
 
 vi.mock('@kpmg/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
+  getInitials: vi.fn(() => 'JD'),
   commonStore: defineStore('common', {
     state: () => ({
       user: null,
@@ -57,19 +57,8 @@ describe('header', () => {
   })
 
   it('should display initial user even the data in store is empty and token on localStorage is valid', () => {
-    const myStore = store()
-
-    expect(myStore.$patch).toHaveBeenCalledWith({
-      user: {
-        email: fakeUser?.email,
-        firstName: fakeUser?.firstName,
-        lastName: fakeUser?.lastName,
-        isCollab: fakeUser?.isCollab,
-        id: fakeUser?.id,
-      },
-    })
-
     const initialContainer = wrapper.findComponent('[data-ut="user-initials"]')
+
     expect(initialContainer.text()).toBe('JD')
   })
 

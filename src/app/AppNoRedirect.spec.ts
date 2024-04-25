@@ -32,6 +32,7 @@ vi.mock('@kpmg/common', () => ({
       logout: () => vi.fn(),
     },
   }),
+  getInitials: vi.fn(),
   commonPinia: () => createPinia(),
   commonApi: () => ({
     gateway: {

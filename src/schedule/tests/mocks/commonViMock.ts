@@ -2,8 +2,10 @@ import { defineStore } from 'pinia'
 import { vi } from 'vitest'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
+import helpers from '@/tests/utils/helpers'
 
 export const TEST_DATE = '2024-08-14'
+const { fetchUserData } = helpers()
 
 export const ScheduleServicesMock = {
   getScheduleModelsByKey: () => ({
@@ -23,6 +25,7 @@ export const debounceMock = vi.fn((callback: Function) => callback)
 
 export const KpmgCommontMock = {
   debounce: (callback: Function) => debounceMock(callback),
+  getInitials: vi.fn(),
   commonStore: defineStore('common', {
     state: () => ({
       user: null,
@@ -39,9 +42,9 @@ export const KpmgCommontMock = {
   routes: {
     value: [],
   },
-  dataProvider: () => ({
-    fetchUserData: vi.fn(),
-  }),
+  dataProvider: () => {
+    return { fetchUserData }
+  },
 }
 
 export const TvaLabel = 'TVA (Taxe sur la valeur ajoutée)'

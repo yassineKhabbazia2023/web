@@ -1,12 +1,12 @@
 <template>
   <div
     class="header-section
-    flex
-    flex--align-items-center
-    flex--justify-content-space-between
-    padding-y--3
-    padding-x--6
-    shadow--4"
+      flex
+      flex--align-items-center
+      flex--justify-content-space-between
+      padding-y--3
+      padding-x--6
+      shadow--4"
   >
     <PImage
       class="header-section__logo"
@@ -32,9 +32,10 @@
           <PIArrowBarUp v-if="showCalendar" />
         </PIcon>
       </PButton>
-
-      <PDivider class="margin-x--4 header-section__divider" pDirection="vertical" />
-
+      <PDivider
+        class="margin-x--4 header-section__divider"
+        pDirection="vertical"
+      />
       <div
         @click="emit('showUserProfileDrawer')"
         class="header-section__user-avatar cursor-pointer"
@@ -52,47 +53,31 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { commonStore, getInitials } from '@kpmg/common'
 import {
-  commonStore as useStore,
-  dataProvider as useDataProvider,
-} from '@kpmg/common'
-import { PAvatar, PImage, PDivider, PButton, PIcon, PICalendarEvent, PIArrowBarUp } from '@kpmg/styleguide'
+  PAvatar,
+  PImage,
+  PDivider,
+  PButton,
+  PIcon,
+  PICalendarEvent,
+  PIArrowBarUp,
+} from '@kpmg/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
 defineProps<HeaderProps>()
 
+const { user } = storeToRefs(commonStore())
 const emit = defineEmits<{
   'update:showCalendar': [boolean]
-  'showUserProfileDrawer': []
+  showUserProfileDrawer: []
 }>()
 
-const store = useStore()
-
-const { fetchUserData } = useDataProvider()
-const firstName = ref(store.user?.firstName || '')
-const lastName = ref(store.user?.lastName || '')
-
-const userInitials = computed(() => {
-  return firstName.value?.charAt(0) + lastName.value?.charAt(0)
-})
-
-onMounted(async () => {
-  if (!store.user && store.isAuthenticated) {
-    const user = await fetchUserData()
-    store.$patch({
-      user: {
-        email: user?.email,
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-        isCollab: user?.isCollab,
-        id: user?.id,
-      },
-    })
-    firstName.value = user?.firstName
-    lastName.value = user?.lastName
-  }
-})
+const userInitials = computed(() =>
+  getInitials(user.value?.firstName, user.value?.lastName),
+)
 </script>
 
 <style lang="scss" scoped>
