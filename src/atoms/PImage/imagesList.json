@@ -54,12 +54,15 @@
       "bank-mandate",
       "camera",
       "connection-default",
+      "connection-loading",
       "document-authentification",
       "document-error",
       "document-import",
       "document-valid",
       "empty",
       "envelope",
+      "feedcenter-fav",
+      "feedcenter",
       "hand-up",
       "interface",
       "maintenance",
@@ -68,6 +71,7 @@
       "ok",
       "password",
       "shared-document",
+      "talking",
       "time",
       "toggle"
     ]
