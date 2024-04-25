@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ScheduleDrawerProps } from './ScheduleDrawerType'
+import type { ScheduleDrawerProps } from './HomeScheduleDrawerType'
 import Schedule from '@/schedule/pages/home'
 import { PDrawer } from '@kpmg/styleguide'
 
