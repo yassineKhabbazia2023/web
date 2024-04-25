@@ -1,23 +1,29 @@
 <template>
   <div class="calendar__wrapper">
     <PScrollbar>
-      <PCalendar
-        v-model="internalModelValue"
-        :pItemsGroupedByDate="formattedDeadlinesByDate"
-        :pInitialDateRange="pRange"
-      />
+      <PConfigProvider :pLocale="locale">
+        <PCalendar
+          v-model="internalModelValue"
+          :pItemsGroupedByDate="formattedDeadlinesByDate"
+          :pInitialDateRange="pRange"
+        />
+      </PConfigProvider>
     </PScrollbar>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { PCalendar, PScrollbar } from '@kpmg/styleguide'
+import { fr, PConfigProvider, PCalendar, PScrollbar } from '@kpmg/styleguide'
 import type { CalendarProps } from './CalendarTypes'
 import { getTypeLabel } from '@/schedule/helpers/utils'
 import { getDeadlineCompletionSummary } from '@/schedule/helpers/deadlineHelper'
 import type { Deadline } from '@/schedule/models/Deadline'
 import { getScheduleModelsByKey } from '@/schedule/services'
+import { cloneDeep } from 'lodash-es'
+
+const locale = cloneDeep(fr)
+locale.el.datepicker.weeks = locale.el.datepicker.weeksFull
 
 const props = defineProps<CalendarProps>()
 
