@@ -8,6 +8,7 @@ import {
   getRoles,
   manageFavoriteEntities,
   fetchEntitiesStatistics,
+  fetchAccountCustomers,
 } from '.'
 import { ContactType } from '../contact/contactTypes'
 import { getMockedEntitiesStatistics } from '@/pages/wallet/components/Filters/FiltersMocks'
@@ -17,9 +18,11 @@ import mockPermissions from
   '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabAccess/mock.json'
 import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
 import type { Entity } from '@kpmg/common'
+import { getMockedCustomersCollab } from '@/pages/folder/pages/usersCollab/mockData'
 
 const accountId = 5
 const mockedEntitiesStatistics = getMockedEntitiesStatistics()
+const mockedCustomersCollab = getMockedCustomersCollab()
 const TEST_ENTITIES: Entity[] = [
   {
     accountId: 1,
@@ -40,12 +43,21 @@ const mockedFavoriteEntityPatch = vi.fn()
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     gateway: {
+      /**
+       * 🛠️ TODO: Need to refactor all of this code; many 'if' statements is not a good practice
+       */
       get: vi.fn().mockImplementation((url) => {
         if (
           url ===
           `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`
         ) {
           return getCollaboratorsByIdEntityImplementation()
+        }
+        if (
+          url ===
+          `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`
+        ) {
+          return fetchAccountCustomersImplementation()
         }
         if (url === `${API_PREFIXES.WALLET}/statistics/currentuser`) {
           return fetchEntitiesStatisticsImplementation()
@@ -93,6 +105,11 @@ const getCollaboratorsByIdEntityImplementation = () => {
     data: mockCollabsData,
   })
 }
+const fetchAccountCustomersImplementation = () => {
+  return Promise.resolve({
+    data: mockedCustomersCollab,
+  })
+}
 const fetchCollabsImplementation = () => {
   return Promise.resolve({
     data: {
@@ -106,6 +123,13 @@ describe('collaborateurs/admin', () => {
       const collaborators = await getCollaboratorsByIdEntity(accountId)
 
       expect(collaborators).toStrictEqual(mockCollabsData)
+    })
+  })
+  describe('fetchAccountCustomers', () => {
+    it('should return list of customers', async () => {
+      const customers = await fetchAccountCustomers(accountId)
+
+      expect(customers).toStrictEqual(mockedCustomersCollab)
     })
   })
   describe('fetchFavoriteEntities', () => {

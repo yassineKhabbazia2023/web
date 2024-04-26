@@ -1,95 +1,97 @@
 <template>
-  <PBlockHeader
-    :pTitle="t('headerTitle')"
-    :pDescription="t('headerSubTitle')"
-    pColor="gray"
-    pSize="default"
-    :pImage="pImageProps"
-    pHasButton
-  >
-    <PButton
-      pType="primary"
-      pSize="small"
-      @click="handleAddCollaborator"
-      data-testid="add-collaborator-button"
+  <div class="shadow--3 radius--2 overflow-hidden margin-top--6">
+    <PBlockHeader
+      :pTitle="t('headerTitle')"
+      :pDescription="t('headerSubTitle')"
+      pColor="gray"
+      pSize="default"
+      :pImage="pImageProps"
+      pHasButton
     >
-      <PIcon class="el-button__icon--left">
-        <PIAdd/>
-      </PIcon>
-      {{ t('addCollborator') }}
-    </PButton>
-  </PBlockHeader>
-  <PTable
-    @current-change="handleChange"
-    ref="selectedRow"
-    :pData="collabs"
-    showOverflowTooltip
-    pStripe
-    tableLayout="fixed"
-    class="collab-table"
-  >
-    <PTableColumn
-      :pLabel="t('collaboratorName')"
-      pSortable
+      <PButton
+        pType="primary"
+        pSize="small"
+        @click="handleAddCollaborator"
+        data-testid="add-collaborator-button"
+      >
+        <PIcon class="el-button__icon--left">
+          <PIAdd/>
+        </PIcon>
+        {{ t('addCollborator') }}
+      </PButton>
+    </PBlockHeader>
+    <PTable
+      @current-change="handleChange"
+      ref="selectedRow"
+      :pData="collabs"
+      showOverflowTooltip
+      pStripe
+      tableLayout="fixed"
+      class="collab-table"
     >
-      <template #default="scope">
-        <div class="flex flex--align-items-center">
-          <PAvatar
-            class="margin-right--2"
-            pColor="persian-gradient"
-            pType="small"
-          >
-            {{ getInitials(scope.row.firstName,scope.row.lastName) }}
-          </PAvatar>
-          <div>
-            <p class="line-height--120">
-              <span class="text-capitalize">{{ scope.row.firstName }} &nbsp;</span>
-              <span class="text-uppercase"> {{ scope.row.lastName }}</span>
-            </p>
+      <PTableColumn
+        :pLabel="t('collaboratorName')"
+        pSortable
+      >
+        <template #default="scope">
+          <div class="flex flex--align-items-center">
+            <PAvatar
+              class="margin-right--2"
+              pColor="persian-gradient"
+              pType="small"
+            >
+              {{ getInitials(scope.row.firstName,scope.row.lastName) }}
+            </PAvatar>
+            <div>
+              <p class="line-height--120">
+                <span class="text-capitalize">{{ scope.row.firstName }} &nbsp;</span>
+                <span class="text-uppercase"> {{ scope.row.lastName }}</span>
+              </p>
+            </div>
           </div>
-        </div>
-      </template>
-    </PTableColumn>
-    <PTableColumn
-      :pLabel="t('collaboratorEmail')"
-      pProp="email"
-      pSortable
-    />
-    <PTableColumn
-      :pLabel="t('collaboratorFunction')"
-      pProp="personaName"
-      pSortable
-    >
-      <template #default="scope">
-        <p class="text-capitalize">
-          {{ scope.row.roleFunction }}
-        </p>
-      </template>
-    </PTableColumn>
-    <PTableColumn
-      :pLabel="t('collaboratorOffice')"
-      pProp="office"
-      pSortable
-    >
-      <template #default="scope">
-        <p>
-          <span class="text-capitalize"> {{t('collaboratorOffice')}} &nbsp;</span>
-          <span class="text-uppercase"> {{ scope.row.office }} </span>
-        </p>
-      </template>
-    </PTableColumn>
-    <PTableColumn
-      :pLabel="t('collaboratorAccess')"
-      pProp="hasAccess"
-      pSortable
-    >
-      <template #default="scope">
-        <PSwitch
-          v-model="scope.row.hasAccess"
-          data-testid="switch"/>
-      </template>
-    </PTableColumn>
-  </PTable>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        :pLabel="t('collaboratorEmail')"
+        pProp="email"
+        pSortable
+      />
+      <PTableColumn
+        :pLabel="t('collaboratorFunction')"
+        pProp="personaName"
+        pSortable
+      >
+        <template #default="scope">
+          <p class="text-capitalize">
+            {{ scope.row.roleFunction }}
+          </p>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        :pLabel="t('collaboratorOffice')"
+        pProp="office"
+        pSortable
+      >
+        <template #default="scope">
+          <p>
+            <span class="text-capitalize"> {{t('collaboratorOffice')}} &nbsp;</span>
+            <span class="text-uppercase"> {{ scope.row.office }} </span>
+          </p>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        :pLabel="t('collaboratorAccess')"
+        pProp="hasAccess"
+        pSortable
+      >
+        <template #default="scope">
+          <PSwitch
+            v-model="scope.row.hasAccess"
+            data-testid="switch"/>
+        </template>
+      </PTableColumn>
+    </PTable>
+  </div>
 </template>
 
 <script setup lang="ts">

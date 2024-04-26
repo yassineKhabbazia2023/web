@@ -80,3 +80,28 @@ export const dataFromApi = {
     totalItems: 19,
   },
 }
+
+export const getMockedCustomersCollab = () => {
+  return [
+    {
+      contactId: 188,
+      contactGlobalUniqueId: '00000000-0000-0000-0000-000000000000',
+      firstName: 'Test 1',
+      lastName: 'Test 1 last',
+      email: 'test1@test.fr',
+      status: 'Declared',
+      personaName: 'ADMIN/Dirigeant',
+      creationDate: '4/16/2024',
+    },
+    {
+      contactId: 189,
+      contactGlobalUniqueId: '00000000-0000-0000-0000-000000000000',
+      firstName: 'Test 2',
+      lastName: 'Test 2 last',
+      email: 'test2@test.fr',
+      status: 'Declared',
+      personaName: 'ADMIN/Dirigeant',
+      creationDate: '4/16/2024',
+    },
+  ]
+}

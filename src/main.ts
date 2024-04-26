@@ -97,7 +97,7 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string }
     } as RouteRecordRaw)
   })
   res.push({
-    path: 'utilisateurs',
+    path: 'gestion-utilisateurs',
     name: 'allUsers',
     component: () => import('@/components/usersClient'),
   } as RouteRecordRaw)
@@ -119,7 +119,7 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
     } as RouteRecordRaw)
   })
   res.push({
-    path: 'utilisateurs',
+    path: 'gestion-utilisateurs',
     name: 'usersClient',
     component: () => import('@/components/usersClient'),
   } as RouteRecordRaw)

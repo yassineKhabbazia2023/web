@@ -5,6 +5,7 @@ import { type Entity, commonApi } from '@kpmg/common'
 import type { Contact } from '../contact/contactTypes'
 import type { Role, selectedRoleId } from
   '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabRole/types'
+import type { IUserFromApi } from '@/pages/folder/pages/usersCollab/types'
 
 const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
 export interface GenericPageResponse<T> {
@@ -19,6 +20,16 @@ export const getCollaboratorsByIdEntity = async (
 ): Promise<Collab[]> => {
   const response = await commonApi().gateway.get(
     `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`,
+  )
+
+  return response?.data
+}
+
+export const fetchAccountCustomers = async (
+  accountId: number,
+): Promise<IUserFromApi[]> => {
+  const response = await commonApi().gateway.get(
+    `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`,
   )
 
   return response?.data

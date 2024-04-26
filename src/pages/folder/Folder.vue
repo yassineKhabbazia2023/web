@@ -1,22 +1,22 @@
 <template>
-  <div>
+  <div class="folder-wrapper">
     <div class="flex flex--align-items-center">
       <PAvatar pColor="orange">
         <PIcon>
           <PIPulse />
         </PIcon>
       </PAvatar>
-      <p class="font-semibold margin-left--4 title">
+      <p class="font-semibold margin-left--4 folder-wrapper__default-entity">
         {{ defaultEntity?.legalName }}
       </p>
-      <PButton pType="primary" data-testid="btn-action">
-        {{ actionBtnLabel }}
+      <PButton pType="primary" data-testid="folder-action-button">
+        {{ actionButtonLabel }}
       </PButton>
     </div>
     <PTabs v-model="activeTab" @tab-click="handleTabClick">
       <PTabPane
-        v-for="tab in tabs"
-        :pLabel="tab.trad"
+        v-for="tab in tabsList"
+        :pLabel="tab.title"
         :name="tab.name"
         :key="tab.name"
       />
@@ -26,8 +26,10 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { useRouter, useRoute } from 'vue-router'
 import { commonStore } from '@kpmg/common'
 import {
   PTabs,
@@ -37,54 +39,61 @@ import {
   PIPulse,
   PButton,
 } from '@kpmg/styleguide'
-import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const userStore = commonStore()
-const { isCollab, defaultEntity } = storeToRefs(userStore)
+// Variables
 const route = useRoute()
 const router = useRouter()
-const activeTab = computed(() => route.name as string)
+const userStore = commonStore()
+const { defaultEntity, isCollab } = storeToRefs(userStore)
 const collabTabs = [
   {
     name: 'usersCollab',
-    trad: t('users'),
+    title: t('users'),
   },
   {
     name: 'collab',
-    trad: t('collab'),
+    title: t('collab'),
   },
   {
     name: 'offers',
-    trad: t('offers'),
+    title: t('offers'),
   },
   {
     name: 'info',
-    trad: t('info'),
+    title: t('info'),
   },
 ]
 
 const clientTabs = [
   {
     name: 'usersClient',
-    trad: t('users'),
+    title: t('users'),
   },
   {
     name: 'info',
-    trad: t('info'),
+    title: t('info'),
   },
   {
     name: 'invoices',
-    trad: t('invoices'),
+    title: t('invoices'),
   },
 ]
-const tabs = isCollab.value ? collabTabs : clientTabs
-const actionBtnLabel = isCollab.value ? t('delegationBtn') : t('addUser')
+
+// Computed
+const activeTab = computed(() => route.name as string)
+const tabsList = computed(() => {
+  return isCollab.value ? collabTabs : clientTabs
+})
+const actionButtonLabel = computed(() => {
+  return isCollab.value ? t('delegationBtn') : t('addUser')
+})
+
+// Functions
 const handleTabClick = (tab: any) => {
   router.push({
     name: tab.paneName,
@@ -94,8 +103,10 @@ const handleTabClick = (tab: any) => {
 </script>
 
 <style lang="scss" scoped>
-.title {
-  flex-grow: 2;
+.folder-wrapper {
+  &__default-entity {
+    flex-grow: 2;
+  }
 }
 </style>
 

@@ -1,6 +1,9 @@
 import type { PaginationData } from '@/helper/helperTypes'
 import type { Component } from 'vue'
 
+/**
+ * 🛠️ TODO: don't use the 'I' prefix on new types as this is against our conventions.
+ */
 export interface IUserStatus {
   text: string
   color: '' | 'success' | 'warning' | 'danger' | 'info'
@@ -18,10 +21,6 @@ export interface IUserFromApi {
   status: string
   personaName: string
   creationDate: string
-}
-
-export interface IGetAccountRelatedUsersResponse {
-  data: IUserFromApi[]
 }
 
 export interface IUser {

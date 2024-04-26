@@ -52,7 +52,9 @@ describe('dossier', () => {
   })
 
   it('displays correctly the table', () => {
-    expect(wrapper.find('.title').text()).toBe(mockedEntity.legalName)
+    expect(wrapper.find('.folder-wrapper__default-entity').text()).toBe(
+      mockedEntity.legalName,
+    )
   })
   const PARAMS = [
     ['collab', 'tab-collab'],
@@ -60,24 +62,23 @@ describe('dossier', () => {
     ['offers', 'tab-offers'],
     ['info', 'tab-info'],
   ]
-  it.each(PARAMS)(
-    'should redirect when click on %s',
-    (tabs, tabsName) => {
-      document.getElementById(tabsName)?.click()
-      expect(mockRouterPush).toHaveBeenCalledTimes(1)
-      expect(mockRouterPush).toHaveBeenCalledWith({
-        name: tabs,
-        params: {
-          name: mockedEntity.legalName,
-        },
-      })
-    },
-  )
+  it.each(PARAMS)('should redirect when click on %s', (tabs, tabsName) => {
+    document.getElementById(tabsName)?.click()
+    expect(mockRouterPush).toHaveBeenCalledTimes(1)
+    expect(mockRouterPush).toHaveBeenCalledWith({
+      name: tabs,
+      params: {
+        name: mockedEntity.legalName,
+      },
+    })
+  })
   it('should display the button label when the user is a client', () => {
     const store = commonStore()
     // @ts-expect-error: Getter is read only
     store.isCollab = false
-    const btnAction = wrapper.findComponent('[data-testid=btn-action]') as VueWrapper
+    const btnAction = wrapper.findComponent(
+      '[data-testid=folder-action-button]',
+    ) as VueWrapper
     expect(btnAction.text()).toBe('Delegate this case')
   })
 })

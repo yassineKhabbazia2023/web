@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="shadow--3 radius--2 overflow-hidden margin-top--6">
     <PBlockHeader
       :pTitle="t('userTitle')"
       :pDescription="t('userDescription')"
@@ -10,18 +10,23 @@
         pType: 'portrait',
         pName: 'user-female'
       }"
-      data-testid="pblockHeaders"
+      data-testid="folder-users-collab-block-header"
     />
-    <PLoader v-if="state.isLoading" />
+    <div
+      v-if="state.isLoading"
+      class="flex flex--justify-content-center margin-y--4"
+      data-testid="folder-users-collab-loader"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
     <PTable
-      v-if="!state.isLoading"
+      v-else
       ref="selectedRow"
       :pData="state.data"
-      highlightCurrentRow
+      tableLayout="fixed"
+      data-testid="folder-users-table"
       showOverflowTooltip
       pStripe
-      tableLayout="fixed"
-      class="wallet-table shadow-3"
     >
       <PTableColumn
         :pLabel="t('user')"
@@ -124,7 +129,7 @@
     </PTable>
 
     <PPagination
-      v-if="state.totalItems > state.limit"
+      v-if="state.totalItems"
       @on-page-range-changed="handlePageRangeChanged"
       v-model:p-current-page="state.currentPage"
       v-model:p-page-size="state.limit"
@@ -142,6 +147,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { computed, onMounted, reactive, watch } from 'vue'
 import {
   PTable,
   PTableColumn,
@@ -158,61 +166,15 @@ import {
   PBlockHeader,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { commonStore, getInitials } from '@kpmg/common'
 import {
   PAGE_SIZES,
   DATE_TIME_FORMATS as datetimeFormats,
 } from '@/constants'
-import { getInitials, getPaginationLabel } from '@/helper'
-import type { IStateUser, IUserStatus, IUser, IGetAccountRelatedUsersResponse } from './types'
-import { commonStore, commonApi } from '@kpmg/common'
-
-const userStore = commonStore()
-
-const currentUserId = ref(userStore.$state?.user?.id)
-const currentAccountId = ref(userStore.$state?.user?.entities.default?.accountId)
-const state: IStateUser = reactive({
-  data: [],
-  currentPage: 1,
-  limit: 15,
-  totalPage: 0,
-  totalItems: 0,
-  isLoading: false,
-})
-
-const fetch = async () => {
-  state.isLoading = true
-  try {
-    const data: IGetAccountRelatedUsersResponse =
-      await commonApi().gateway.get(`account/api/accounts/${currentAccountId.value}/contacts?type=customer`)
-
-    const formattedData: IUser[] = data.data.map((userFromApi) => {
-      return {
-        initials: getInitials(userFromApi.firstName, userFromApi.lastName),
-        status: getStatus(userFromApi.status),
-        firstName: userFromApi.firstName?.toLowerCase() ?? '',
-        lastName: userFromApi.lastName?.toUpperCase() ?? '',
-        fullName: getFullName({ firstName: userFromApi.firstName, lastName: userFromApi.lastName }) ?? '',
-        email: userFromApi.email,
-        role: userFromApi.personaName,
-        firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
-        isOwner: Number.parseInt(currentUserId.value ?? '') === userFromApi.contactId,
-      }
-    })
-
-    state.data = formattedData
-  } catch (err) {
-    console.error(err)
-  } finally {
-    state.isLoading = false
-  }
-}
-
-const getFullName = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
-  if (firstName && lastName) {
-    return `${firstName} ${lastName}`
-  }
-}
+import { getFullName } from '@/common/utils'
+import { fetchAccountCustomers } from '@/services/wallet'
+import { getPaginationLabel } from '@/helper'
+import type { IStateUser, IUserStatus, IUser } from './types'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -220,6 +182,17 @@ const { d, t } = useI18n({
   datetimeFormats,
 })
 
+const route = useRoute()
+const { user } = storeToRefs(commonStore())
+
+const state: IStateUser = reactive({
+  data: [],
+  currentPage: 1,
+  limit: 15,
+  totalPage: 1,
+  totalItems: 0,
+  isLoading: false,
+})
 const toolboxItems: PToolboxItemProps[] = [
   {
     pIconName: 'PIPatchCheck',
@@ -234,6 +207,45 @@ const toolboxItems: PToolboxItemProps[] = [
     pState: 'default',
   }]
 
+const paginationLabel = computed(() => getPaginationLabel<IUser>(t('on'), state))
+
+const formatAndFillUsersCollabTable = async () => {
+  state.isLoading = true
+  try {
+    const data = await fetchAccountCustomers(+route.params.id)
+
+    /**
+     * 🛠️ TODO: Need to create a function format inside utils folder
+     */
+    const formattedData: IUser[] = data.map((userFromApi) => {
+      return {
+        initials: getInitials(userFromApi.firstName, userFromApi.lastName),
+        status: getStatus(userFromApi.status),
+        firstName: userFromApi.firstName?.toLowerCase() ?? '',
+        lastName: userFromApi.lastName?.toUpperCase() ?? '',
+        fullName: getFullName({ firstName: userFromApi.firstName, lastName: userFromApi.lastName }) ?? '',
+        email: userFromApi.email,
+        role: userFromApi.personaName,
+        firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
+        isOwner: Number.parseInt(user.value?.id ?? '') === userFromApi.contactId,
+      }
+    })
+
+    /**
+     * 🛠️ TODO: Need to get pagination data from API
+     */
+    state.data = formattedData
+    state.totalItems = formattedData.length
+  } catch (err) {
+    console.error(err)
+  } finally {
+    state.isLoading = false
+  }
+}
+
+/**
+ * 🛠️ TODO: Need to add a global function for retrieving status instead of creating it each time
+ */
 const getStatus = (status: string): IUserStatus => {
   switch (status) {
     case 'Connecté':
@@ -255,19 +267,19 @@ const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
 }
 
-const paginationLabel = computed(() => getPaginationLabel<IUser>(t('on'), state))
+const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (Date.parse(b.firstDateAccess) / 1000)
 
-onMounted(async () => {
-  await fetch()
-  watch(() => [
-    state.currentPage,
-    state.limit,
-  ], async () => {
-    await fetch()
-  })
+watch(() => [
+  state.currentPage,
+  state.limit,
+], async () => {
+  await formatAndFillUsersCollabTable()
 })
 
-const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (Date.parse(b.firstDateAccess) / 1000)
+onMounted(async () => {
+  await formatAndFillUsersCollabTable()
+})
+
 </script>
 
 <style lang="scss">
