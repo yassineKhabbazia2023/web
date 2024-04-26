@@ -74,6 +74,7 @@ const activeScheduleViewType = computed({
 <style lang="scss" scoped>
 .p-schedule-action-bar {
   width: 100%;
+  border-bottom: 1px solid var(--el-color-neutral-gray-100);
 }
 </style>
 
