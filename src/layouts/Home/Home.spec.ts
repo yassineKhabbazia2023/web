@@ -30,6 +30,10 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
+function getHomeScheduleDrawer(wrapper: VueWrapper) {
+  return wrapper.findComponent({ name: 'HomeScheduleDrawer' })
+}
+
 describe('home', () => {
   let wrapper: VueWrapper<any>
   beforeEach(() => {
@@ -46,6 +50,7 @@ describe('home', () => {
 
     expect(getUserProfileDrawer()).toBeTruthy()
   })
+
   it('should display the app after retrieving all current user data', async () => {
     wrapper.vm.isLoading = true
     await nextTick()
@@ -71,5 +76,40 @@ describe('home', () => {
     commonLayout = wrapper.find('.common-layout')
 
     expect(commonLayout.exists()).toBeTruthy()
+  })
+
+  it('should show calendar drawer when header emits show-user-profile-drawer', async () => {
+    wrapper.vm.isLoading = false
+    await nextTick()
+
+    expect(getHomeScheduleDrawer(wrapper).exists()).toBeFalsy()
+
+    const header = wrapper.findComponent({ name: 'Header' })
+    await header.vm.$emit('update:show-calendar', true)
+
+    const scheduleDrawer = getHomeScheduleDrawer(wrapper)
+
+    expect(scheduleDrawer.exists()).toBeTruthy()
+    expect(scheduleDrawer.props()).toStrictEqual({
+      modelValue: true,
+    })
+  })
+
+  it('should still show calendar drawer when header emits show-user-profile-drawer and close it after', async () => {
+    wrapper.vm.isLoading = false
+    await nextTick()
+
+    expect(getHomeScheduleDrawer(wrapper).exists()).toBeFalsy()
+
+    const header = wrapper.findComponent({ name: 'Header' })
+    await header.vm.$emit('update:show-calendar', true)
+    await header.vm.$emit('update:show-calendar', false)
+
+    const scheduleDrawer = getHomeScheduleDrawer(wrapper)
+
+    expect(scheduleDrawer.exists()).toBeTruthy()
+    expect(scheduleDrawer.props()).toStrictEqual({
+      modelValue: false,
+    })
   })
 })
