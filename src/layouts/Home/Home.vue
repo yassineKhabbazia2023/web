@@ -1,6 +1,9 @@
 <template>
   <div v-if="!isLoading" class="common-layout">
-    <HomeScheduleDrawer v-if="showCalendar" v-model="showCalendar" />
+    <HomeScheduleDrawer
+      v-if="calendarHasBeenOpened"
+      v-model="showCalendar"
+    />
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
         <Header
@@ -56,7 +59,18 @@ const router = useRouter()
 const routeActive = route.path
 const { fetchUserData } = dataProvider()
 const isLoading = ref<boolean>(true)
-const showCalendar = ref(false)
+const calendarIsOpened = ref(false)
+const calendarHasBeenOpened = ref(false)
+const showCalendar = computed({
+  get: () => calendarIsOpened.value,
+  set: (value: boolean) => {
+    calendarIsOpened.value = value
+    if (value && !calendarHasBeenOpened.value) {
+      // calendar has been opened at least once
+      calendarHasBeenOpened.value = true
+    }
+  },
+})
 const hasUserProfileDrawerOpened = ref(false)
 
 // Constants
