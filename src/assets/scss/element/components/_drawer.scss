@@ -9,7 +9,6 @@ $drawer: (
 
 div.el-overlay:not(.p-drawer--mini) {
   background: rgba(0, 0, 0, 0.32);
-  border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -60,6 +59,7 @@ div.el-overlay:not(.p-drawer--mini) {
       padding-top: 6rem;
       border-radius: 0 0 16px 16px;
       @extend .shadow--6;
+      z-index: 20;
 
       @media screen and (max-width: 1920px) {
         width: 564px;

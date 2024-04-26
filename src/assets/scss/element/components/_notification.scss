@@ -24,7 +24,7 @@ $notification: (
 
   align-items: center;
   max-width: 500px;
-  gap: 8px;
+  gap: 1.6rem;
   max-height: 83px;
 
 
@@ -60,14 +60,13 @@ $notification: (
     color: var(--el-color-white);
   }
 
+  #{$self}__title {
+    display: none;
+  }
+
   #{$self}__group {
-    display: grid;
-    grid-template-columns: 0 auto auto;
-    justify-content: center;
+    display: flex;
     align-items: center;
-    column-gap: 16px;
-    margin: unset;
-    width: calc(100% - 8px);
 
     #{$self}__content {
       font-weight: 400;
@@ -77,6 +76,7 @@ $notification: (
 
     #{$self}__closeBtn {
       position: unset;
+      margin-left: 2.4rem;
       border-radius: 100%;
       background-color: var(--el-color-neutral-gray-500);
     }
