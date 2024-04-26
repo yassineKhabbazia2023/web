@@ -55,7 +55,6 @@ const pushDrawerEvent = (scheduleId: string) => emit('update-drawer-display', sc
   background: var(--el-color-neutral-gray-50);
   // Container height - action bar height
   height: 100%;
-  border-top: 1px solid var(--el-color-neutral-gray-100);
 
   &__empty-list {
     height: 100%;
