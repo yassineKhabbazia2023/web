@@ -86,6 +86,7 @@
           :pTitle="pDrawerControl.title"
           pSize="100%"
           pDirection="ttb"
+          pType="fullscreen"
           @close-drawer-button="pDrawerControl.openDrawer = false"
         >
           <template v-if="pDrawerControl.showHeaderPrefix" #header-prefix>
@@ -105,6 +106,84 @@
                 Link example
               </a>
             </div>
+          </template>
+        </PDrawer>
+        <template #controls>
+          <HstText v-model="pDrawerControl.title" title="Title" />
+          <HstCheckbox
+            v-model="pDrawerControl.showHeaderPrefix"
+            title="Header Prefix"
+          />
+          <HstCheckbox
+            v-model="pDrawerControl.showHeaderSuffix"
+            title="Header Suffix"
+          />
+        </template>
+      </Variant>
+      <Variant title="Drawer Mini">
+        <PButton
+          pPlain
+          pType="primary"
+          @click="pDrawerControl.openDrawer = !pDrawerControl.openDrawer"
+        >
+          Open /close
+        </PButton>
+        <PDrawer
+          v-model="pDrawerControl.openDrawer"
+          :pTitle="pDrawerControl.title"
+          pDirection="ttb"
+          pType="mini"
+          modal
+          @close-drawer-button="pDrawerControl.openDrawer = false"
+        >
+          <template v-if="pDrawerControl.showHeaderPrefix" #header-prefix>
+            <p class="drawer__header-prefix-text font-base">
+              Second title example
+            </p>
+          </template>
+          <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
+            <div class="drawer__header-suffix margin-left--3">
+              <PIcon color="#5546FF" size="16">
+                <PILink45deg />
+              </PIcon>
+              <a
+                class="drawer__header-suffix-link font-base link margin-left--1"
+                href="#"
+              >
+                Link example
+              </a>
+            </div>
+          </template>
+          <p class="padding-bottom--4">
+            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
+            cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est
+            laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore,
+            cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+            omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis
+            aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+            Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur
+            aut perferendis doloribus asperiores repellat."
+          </p>
+          <p>
+            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
+            cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est
+            laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore,
+            cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+            omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis
+            aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.
+            Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur
+            aut perferendis doloribus asperiores repellat."
+          </p>
+          <template #footer>
+            <PButton
+              pType="primary"
+              pPlain
+              @click="pDrawerControl.openDrawer = !pDrawerControl.openDrawer"
+            >
+              Fermer
+            </PButton>
           </template>
         </PDrawer>
         <template #controls>

@@ -4,6 +4,8 @@ import { describe, it, expect } from 'vitest'
 import PDrawer from '.'
 import { ElDrawer } from 'element-plus'
 
+const rootWrapperClass = 'p-drawer'
+
 const createWrapper = (props: any = {}, slots: any = {}) =>
   mount(PDrawer, {
     props,
@@ -74,6 +76,24 @@ describe('drawer', () => {
     const emittedModelValue: any = wrapper.emitted('close-drawer-button')
     expect(emittedModelValue).toBeTruthy()
   })
+
+  it.each([
+    {
+      pType: 'mini',
+      expectedClass: `${rootWrapperClass}--mini`,
+    },
+    {
+      pType: 'fullscreen',
+      expectedClass: `${rootWrapperClass}--fullscreen`,
+    },
+  ])(
+    'should bind appropriate modifier based on state',
+    ({ pType, expectedClass }) => {
+      const wrapper = createWrapper({ pDirection: 'ttb', pType })
+      const drawer = wrapper.find(`.${expectedClass}`)
+      expect(drawer.exists()).toBeTruthy()
+    },
+  )
 
   describe('slots', () => {
     it('should display header prefix and suffix slots', () => {

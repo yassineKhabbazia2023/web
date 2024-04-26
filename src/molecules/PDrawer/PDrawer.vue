@@ -33,6 +33,7 @@
           <PButton
             pType="generic"
             pPlain
+            pIconOnly
             @click="$emit('drawer-previous-button-click')"
             v-if="pShowPreviousStep"
             class="p-drawer__step-back-button"
@@ -94,7 +95,12 @@ const drawerModel = computed({
   },
 })
 
-const pModalClass = computed(() =>
-  props.pDirection === 'ttb' ? 'p-drawer--fullscreen' : '',
-)
+const pModalClass = computed(() => {
+  if (props.pDirection === 'ttb') {
+    return props.pType === 'mini'
+      ? 'p-drawer--mini'
+      : 'p-drawer--fullscreen'
+  }
+  return ''
+})
 </script>
