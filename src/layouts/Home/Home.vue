@@ -104,7 +104,6 @@ onMounted(async () => {
     store().$patch({
       user,
     })
-    console.warn('patched')
   } catch (error) {
     console.error('Unable to fetch current user information: ', error)
   } finally {
