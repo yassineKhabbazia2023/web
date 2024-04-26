@@ -172,7 +172,7 @@ function onCloseDrawer() {
     border-right: 0px;
   }
 
-  :deep(.el-picker__popper.el-popper[data-popper-placement^=bottom] .el-popper__arrow:before) {
+  :deep(.el-popper__arrow) {
     display: none;
   }
 }
