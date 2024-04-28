@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ScheduleDrawerProps } from './HomeScheduleDrawerType'
-import Schedule from '@/schedule/pages/home'
+import Schedule from '@/schedule/pages/schedule'
 import { PDrawer } from '@kpmg/styleguide'
 
 const emit = defineEmits<{

@@ -1,3 +1,3 @@
-export interface HomeProps {
+export interface ScheduleProps {
   defaultActiveDateString?: string
 }

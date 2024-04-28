@@ -63,8 +63,8 @@ import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import { dateISOFormatter, daysInTheMonth, getYearMonth } from '@/schedule/helpers/utils'
-import { getDates } from './HomeUtils'
-import type { HomeProps } from './HomeTypes'
+import { getDates } from './ScheduleUtils'
+import type { ScheduleProps } from './ScheduleTypes'
 
 const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
@@ -88,7 +88,7 @@ const getMonthInterval = (date = new Date()) => {
 const monthRange = getMonthInterval()
 const rangeDate = ref<[Date, Date]>([new Date(monthRange.startDate), new Date(monthRange.endDate)])
 
-const props = defineProps<HomeProps>()
+const props = defineProps<ScheduleProps>()
 
 onMounted(() => {
   activeDate.value = props.defaultActiveDateString
