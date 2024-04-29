@@ -4,8 +4,6 @@
  * @returns {string}
  */
 
-export const getFullName = ({ firstName, lastName }: { firstName: string, lastName: string }) => {
-  if (firstName && lastName) {
-    return `${firstName} ${lastName}`
-  }
+export const getFullName = (firstName: string | undefined, lastName: string | undefined) => {
+  return `${firstName ?? ''} ${lastName ?? ''}`.trim()
 }

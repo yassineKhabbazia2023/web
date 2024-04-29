@@ -223,7 +223,7 @@ const formatAndFillUsersCollabTable = async () => {
         status: getStatus(userFromApi.status),
         firstName: userFromApi.firstName?.toLowerCase() ?? '',
         lastName: userFromApi.lastName?.toUpperCase() ?? '',
-        fullName: getFullName({ firstName: userFromApi.firstName, lastName: userFromApi.lastName }) ?? '',
+        fullName: getFullName(userFromApi.firstName, userFromApi.lastName),
         email: userFromApi.email,
         role: userFromApi.personaName,
         firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),

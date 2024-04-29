@@ -2,12 +2,19 @@ import { describe, it, expect } from 'vitest'
 import { getFullName } from '.'
 
 describe('getFullName', () => {
-  it('should return the correct full name', () => {
-    const firstName = 'Jannelle'
-    const lastName = 'Braydon'
-    const expectedFullName = 'Jannelle Braydon'
-    const fullName = getFullName({ firstName, lastName })
-
-    expect(expectedFullName).toBe(fullName)
-  })
+  it.each([
+    ['Janelle', 'Boyd', 'Janelle Boyd'],
+    ['Janelle', '', 'Janelle'],
+    ['', 'Boyd', 'Boyd'],
+    [undefined, 'Boyd', 'Boyd'],
+    ['Janelle', undefined, 'Janelle'],
+    ['', '', ''],
+    [undefined, undefined, ''],
+  ])(
+    'returns the correct full name (%s, %s) => %s',
+    (firstName, lastName, expected) => {
+      const fullName = getFullName(firstName, lastName)
+      expect(fullName).toBe(expected)
+    },
+  )
 })
