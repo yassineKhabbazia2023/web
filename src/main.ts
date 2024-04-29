@@ -81,8 +81,8 @@ const FOLDER_CHILDREN_PATH = [
   },
   {
     path: 'historique-delegations',
-    name: 'delegationHistory',
-    page: 'delegationHistory',
+    name: 'delegationsHistory',
+    page: 'delegationsHistory',
   },
 ]
 

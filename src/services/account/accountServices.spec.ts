@@ -1,10 +1,13 @@
 import { describe, it, vi, expect } from 'vitest'
+import delegationsHistoryMock from './__mock__/delegationsHistory.json'
 import {
   fetchAccount,
   fetchAccounts,
   patchAccount,
   fetchAccountReferential,
   fetchReferentialHubs,
+  fetchAccountDelegationsHistory,
+  deleteAccountDelegation,
 } from '.'
 import {
   getMockedAccount,
@@ -26,6 +29,7 @@ const mockedReferentialHubs = getMockedReferentialHubs()
 const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedAccountApiPatch = vi.fn()
+const deleteDelegationSpy = vi.fn()
 
 vi.mock('@kpmg/common', () => {
   return {
@@ -47,12 +51,16 @@ vi.mock('@kpmg/common', () => {
               data: mockedAccount,
             })
           }
+          if (url === `account/api/delegations/${accountId}/history?`) {
+            return Promise.resolve({ data: delegationsHistoryMock })
+          }
 
           return url.includes(SEARCH_CURRENT_USER)
             ? Promise.resolve({ data: [mockedAccountRow] })
             : Promise.reject(new Error(rejectedErrorMessage))
         }),
         patch: mockedAccountApiPatch,
+        delete: deleteDelegationSpy,
       },
     }),
   }
@@ -119,6 +127,29 @@ describe('test accountServices', () => {
       const referentialHubs = await fetchReferentialHubs()
 
       expect(referentialHubs).toMatchObject(mockedReferentialHubs)
+    })
+  })
+
+  describe('delegations', () => {
+    it('fetch the historical of all delegations for an account', async () => {
+      const delegationsHistoryFetched = await fetchAccountDelegationsHistory(accountId, new URLSearchParams())
+      expect(delegationsHistoryFetched).toMatchObject(delegationsHistoryMock)
+    })
+
+    it('delete a delegation', () => {
+      expect(deleteDelegationSpy).not.toHaveBeenCalled()
+
+      deleteAccountDelegation(accountId)
+
+      expect(deleteDelegationSpy).toHaveBeenCalledTimes(1)
+      expect(deleteDelegationSpy).toHaveBeenCalledWith(
+        'account/api/delegations',
+        {
+          params: {
+            delegationId: accountId,
+          },
+        },
+      )
     })
   })
 })

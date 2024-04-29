@@ -5,7 +5,6 @@ import { API_PREFIXES } from '../config'
 import type { PatchOperation } from '@/services/PatchRecordService'
 import type { QueryResult } from '@/types/commonTypes'
 import type { AccountRow, ReferentialStructure, Hub } from './accountTypes'
-import type { Delegation } from '@/models/Delegation'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}`
@@ -43,15 +42,15 @@ export async function patchAccount(accountId: number, patchOperations: PatchOper
   await commonApi().gateway.patch(url, patchOperations)
 }
 
-export async function fetchAccountDelegationHistory(accountId: Entity['accountId']): Promise<Delegation[]> {
-  // should be
-  // `${API_PREFIXES.ACCOUNT}/delegations`/${accountId}/history
-  const url = `${API_PREFIXES.WALLET}/delegations`
-  console.warn(accountId)
-  return await fetchGatewayApi<Delegation[]>(url)
+export async function fetchAccountDelegationsHistory(
+  accountId: Entity['accountId'],
+  searchParams: URLSearchParams,
+) {
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/${accountId}/history?${searchParams}`
+  return await fetchGatewayApi(url)
 }
 
-export async function deleteAccountDelegation(delegationId: Delegation['id']) {
+export async function deleteAccountDelegation(delegationId: number) {
   const url = `${API_PREFIXES.ACCOUNT}/delegations`
   return await commonApi().gateway.delete(url, {
     params: {
