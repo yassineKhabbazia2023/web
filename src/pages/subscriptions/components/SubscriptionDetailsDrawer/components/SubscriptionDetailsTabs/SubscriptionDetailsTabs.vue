@@ -11,6 +11,10 @@
           v-if="activeTab === subscriptionDetailsTabsList[0].name"
           :subscriptionOfferDetails="subscriptionDetails?.offer"
         />
+        <CustomersDetails
+          v-if="activeTab === subscriptionDetailsTabsList[1].name"
+          :principalContacts="subscriptionDetails?.clients"
+        />
         <StepNote
           v-model="notes[tab.index]"
           class="margin-top--6"
@@ -29,6 +33,7 @@ import type { Note } from '@/services/subscription'
 import type { SubscriptionDetailsTabsProps, SubscriptionDetailsTab } from './SubscriptionDetailsTabsTypes'
 import StepNote from '@/common/components/StepNote'
 import ServicesDetails from './components/ServicesDetails'
+import CustomersDetails from './components/CustomersDetails'
 
 const { t } = useI18n({
   inheritLocale: true,

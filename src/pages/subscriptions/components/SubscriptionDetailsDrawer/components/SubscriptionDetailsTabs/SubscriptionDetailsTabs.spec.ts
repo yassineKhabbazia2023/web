@@ -33,7 +33,9 @@ describe('subscriptionDetailsTabs', () => {
       wrapper.vm.activeTab = 'customerUsers'
       await nextTick()
       const ServicesDetails = wrapper.findComponent({ name: 'ServicesDetails' })
+      const CustomersDetails = wrapper.findComponent({ name: 'CustomersDetails' })
 
+      expect(CustomersDetails.exists()).toBeTruthy()
       expect(ServicesDetails.exists()).toBeFalsy()
     })
   })

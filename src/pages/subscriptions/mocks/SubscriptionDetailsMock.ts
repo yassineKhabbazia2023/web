@@ -73,6 +73,13 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
       type: ContactType.Customer,
       email: 'alice.durand@example.com',
     },
+    {
+      contactId: 25,
+      firstName: 'Jannelle',
+      lastName: 'Boyd',
+      type: ContactType.Customer,
+      email: 'janelle.boyd@example.com',
+    },
   ],
   collaborators: [
     {

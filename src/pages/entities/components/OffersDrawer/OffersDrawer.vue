@@ -74,7 +74,7 @@
               activeStep === offerStepperStep.CUSTOMERS &&
                 principalContacts?.length
             "
-            class="offers-drawer__contact-list"
+            class="list-style-none"
           >
             <li
               v-for="principalContact in principalContacts"
@@ -401,9 +401,6 @@ onMounted(async () => {
 .offers-drawer {
   &__company-name {
     color: var(--el-text-color-secondary);
-  }
-  &__contact-list {
-    list-style: none;
   }
   &__details {
     display: flex;
