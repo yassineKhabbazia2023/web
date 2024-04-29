@@ -180,10 +180,10 @@ const getQueryParams = () => ({
 
 const sortByCreationDate = (delegations: Delegation[]) =>
   delegations.sort(function(a: Delegation, b: Delegation) {
-    return new Date(b.creationDate) - new Date(a.creationDate)
+    return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
   })
 
-const fetch = async () => {
+const fetchDelegationsHistory = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
 
@@ -228,7 +228,7 @@ const deleteDelegation = async (delegationId: Delegation['id'], delegatee: Deleg
   try {
     await deleteAccountDelegation(delegationId)
     displaySuccessNotification(delegatee)
-    await fetch()
+    await fetchDelegationsHistory()
   } catch (error) {
     displayErrorNotification(delegatee)
     console.error(error)
@@ -237,11 +237,11 @@ const deleteDelegation = async (delegationId: Delegation['id'], delegatee: Deleg
 
 // init part
 onMounted(async () => {
-  await fetch()
+  await fetchDelegationsHistory()
 })
 
 watch(search, async () => {
-  await fetch()
+  await fetchDelegationsHistory()
 })
 </script>
 
