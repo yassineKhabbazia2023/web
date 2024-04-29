@@ -233,12 +233,10 @@ const deleteDelegation = async (delegationId: Delegation['id'], delegatee: Deleg
 // init part
 onMounted(async () => {
   await fetch()
+})
 
-  watch(() => [
-    search.value,
-  ], async () => {
-    await fetch()
-  })
+watch(search, async () => {
+  await fetch()
 })
 </script>
 
