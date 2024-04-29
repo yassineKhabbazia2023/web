@@ -67,6 +67,10 @@ const collabTabs = [
     name: 'info',
     title: t('info'),
   },
+  {
+    name: 'delegationsHistory',
+    trad: t('delegationsHistory'),
+  },
 ]
 
 const clientTabs = [
@@ -116,6 +120,7 @@ en-US:
   collab: 'Collaborators'
   offers: 'Offers'
   info: 'Information'
+  delegationsHistory: 'Delegations history'
   delegationBtn: 'Delegate this case'
   invoices: 'KPMG Invoices'
   addUser: 'Add user'
@@ -124,6 +129,7 @@ fr-FR:
   collab: 'Collaborateurs'
   offers: 'Offres'
   info: 'Informations'
+  delegationsHistory: 'Historique des délégations'
   delegationBtn: 'Déléguer ce dossier'
   invoices: 'Factures KPMG'
   addUser: 'Ajouter un utilisateur'
