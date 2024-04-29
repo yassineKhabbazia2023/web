@@ -69,9 +69,10 @@ describe('delegationsHistory', () => {
     expect(getFirstButtonDelete.attributes('disabled')).toBeDefined()
 
     const getLastButtonDelete = getPHistoryCard(delegationsHistoryMock.items.length - 1).find('button')
-    expect(getLastButtonDelete.attributes('disabled')).not.toBeDefined()
+    expect(getLastButtonDelete.attributes('disabled')).toBeUndefined()
 
-    const geLastHistoryCardText = getPHistoryCard(delegationsHistoryMock.items.length - 1).find('.p-history-card__text').text()
+    const geLastHistoryCardText = getPHistoryCard(delegationsHistoryMock.items.length - 1)
+      .find('.p-history-card__text').text()
     expect(geLastHistoryCardText).toContain('you  delegated the folder to  Gamble Riley.')
   })
 
