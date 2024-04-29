@@ -8,68 +8,72 @@
     <PLoader v-if="isLoading" />
 
     <div v-if="!isLoading">
-      <PTimeline
+      <!-- 270px is the height above the timeline-->
+      <PScrollbar
         v-if="delegations.length"
-        class="delegations-history__timeline"
+        pHeight="calc(100vh - 270px)"
+        pViewStyle="margin-right: 8px; height: 100%;"
       >
-        <PTimelineItem
-          v-for="({ accountLegalName, creationDate, delegatee, delegator, id, isEnabled }) in delegations"
-          :key="id"
-        >
-          <PHistoryCard
-            :pDate="d(new Date(creationDate), 'short')"
-            :pEntity="accountLegalName"
-            :pType="t('delegation')"
-            pEntityIcon="PIShop"
+        <PTimeline>
+          <PTimelineItem
+            v-for="({ accountLegalName, creationDate, delegatee, delegator, id, isEnabled }) in delegations"
+            :key="id"
           >
-            <template #text>
-              <i18n-t
-                keypath="description"
-                tag="p"
-              >
-                <template #delegator>
-                  <span v-if="delegator.isCurrentUser">
-                    <span class="text-capitalize font-semibold">{{ t('you') }}</span>
-                    {{ t('have') }}
-                  </span>
-                  <span v-else>
-                    <span class="font-semibold">
-                      {{ delegator.firstName }} <span class="text-uppercase">{{ delegator.lastName }}</span>
-                    </span>
-                    <span v-if="delegatee.isCurrentUser">&nbsp;{{ t('you') }}</span>
-                    {{ t('has') }}
-                  </span>
-                </template>
-
-                <template #delegatee>
-                  <span v-if="!delegatee.isCurrentUser">
-                    {{ t('to') }}
-                    <span class="font-semibold">
-                      {{ delegatee.firstName }} <span class="text-uppercase">{{ delegatee.lastName }}</span>
-                    </span>
-                  </span>
-                </template>
-              </i18n-t>
-            </template>
-            <template #action>
-              <PTooltip
-                :pContent="tooltipContentForDeleting(isEnabled, delegator)"
-              >
-                <PButton
-                  @click="deleteDelegation(id, delegatee)"
-                  pIconOnly
-                  pType="generic"
-                  :pDisabled="!isEnabled || !delegator.isCurrentUser"
+            <PHistoryCard
+              :pDate="d(new Date(creationDate), 'short')"
+              :pEntity="accountLegalName"
+              :pType="t('delegation')"
+              pEntityIcon="PIShop"
+            >
+              <template #text>
+                <i18n-t
+                  keypath="description"
+                  tag="p"
                 >
-                  <PIcon>
-                    <PITrash />
-                  </PIcon>
-                </PButton>
-              </PTooltip>
-            </template>
-          </PHistoryCard>
-        </PTimelineItem>
-      </PTimeline>
+                  <template #delegator>
+                    <span v-if="delegator.isCurrentUser">
+                      <span class="text-capitalize font-semibold">{{ t('you') }}</span>
+                      {{ t('have') }}
+                    </span>
+                    <span v-else>
+                      <span class="font-semibold">
+                        {{ delegator.firstName }} <span class="text-uppercase">{{ delegator.lastName }}</span>
+                      </span>
+                      <span v-if="delegatee.isCurrentUser">&nbsp;{{ t('you') }}</span>
+                      {{ t('has') }}
+                    </span>
+                  </template>
+
+                  <template #delegatee>
+                    <span v-if="!delegatee.isCurrentUser">
+                      {{ t('to') }}
+                      <span class="font-semibold">
+                        {{ delegatee.firstName }} <span class="text-uppercase">{{ delegatee.lastName }}</span>
+                      </span>
+                    </span>
+                  </template>
+                </i18n-t>
+              </template>
+              <template #action>
+                <PTooltip
+                  :pContent="tooltipContentForDeleting(isEnabled, delegator)"
+                >
+                  <PButton
+                    @click="deleteDelegation(id, delegatee)"
+                    pIconOnly
+                    pType="generic"
+                    :pDisabled="!isEnabled || !delegator.isCurrentUser"
+                  >
+                    <PIcon>
+                      <PITrash />
+                    </PIcon>
+                  </PButton>
+                </PTooltip>
+              </template>
+            </PHistoryCard>
+          </PTimelineItem>
+        </PTimeline>
+      </PScrollbar>
 
       <NoResult v-if="!delegations.length" />
     </div>
@@ -90,6 +94,7 @@ import {
   PIX,
   PLoader,
   PNotification,
+  PScrollbar,
   PTimeline,
   PTimelineItem,
   PTooltip,
@@ -239,14 +244,6 @@ watch(search, async () => {
   await fetch()
 })
 </script>
-
-<style lang="scss" scoped>
-.delegations-history__timeline {
-  $heightAboveTimeline: 270px;
-  max-height: calc(100vh - $heightAboveTimeline);
-  overflow-y: auto;
-}
-</style>
 
 <i18n lang="yaml">
 en-US:
