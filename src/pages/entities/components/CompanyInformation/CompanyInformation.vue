@@ -12,8 +12,14 @@
     >
       {{ t('alertInstruction') }}
     </PAlert>
+    <div
+      v-if="isLoading"
+      class="flex flex--justify-content-center margin-y--4"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
     <PForm
-      v-if="providerName && internalAccount"
+      v-if="providerName && internalAccount && !isLoading"
       :pModel="internalAccount"
       pLabelPosition="top"
       class="company-information__form"
@@ -53,7 +59,7 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
-import { PAlert, PForm, PFieldSet } from '@kpmg/styleguide'
+import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
 import { getFormStructure } from '@/common/utils/referential'
 import { type Account } from '@/services/account'
 import type {
@@ -75,6 +81,7 @@ const emit = defineEmits<{
 
 const formStructure = ref<FormSection[]>()
 const internalAccount = ref<Account | undefined>()
+const isLoading = ref<boolean>(true)
 
 const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
   if (internalAccount.value === undefined) {
@@ -92,6 +99,8 @@ onMounted(async () => {
     }
   } catch (e) {
     console.error(e)
+  } finally {
+    isLoading.value = false
   }
 })
 </script>
@@ -105,10 +114,10 @@ onMounted(async () => {
 </style>
 
 <i18n lang="yaml">
-  en-US:
-    alertInstruction: 'If the immutable information is incorrect, you need to update it in the CRM'
-    formInstruction: 'Please provide the following necessary information for activation :'
-  fr-FR:
-    alertInstruction: 'Si les informations non modifiables sont incorrectes, vous devez les modifier dans le CRM'
-    formInstruction: "Veuillez renseigner les informations suivantes nécessaires pour l'activation :"
+en-US:
+  alertInstruction: 'If the immutable information is incorrect, you need to update it in the CRM'
+  formInstruction: 'Please provide the following necessary information for activation :'
+fr-FR:
+  alertInstruction: 'Si les informations non modifiables sont incorrectes, vous devez les modifier dans le CRM'
+  formInstruction: "Veuillez renseigner les informations suivantes nécessaires pour l'activation :"
 </i18n>

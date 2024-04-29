@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount, flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
@@ -15,6 +15,7 @@ import type { ClientContact } from '../PrincipalContact/PrincipalContactTypes'
 import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@/services/account'
 import * as subscriptionService from '@/services/subscription/subscriptionService'
+import * as offerService from '@/services/offer/index'
 import * as PatchRecordService from '@/services/PatchRecordService/PatchRecordService'
 import { getMockedAccount, getMockedPatchOperations } from '@/services/account/accountMock'
 import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
@@ -334,6 +335,20 @@ describe('offersDrawer', () => {
     })
   })
   describe('props', () => {
+    it('should display console.error when API call is rejected', async () => {
+      const errorMessage = 'Fetch API ERROR'
+      vi.spyOn(
+        offerService,
+        'getAllOffers',
+      ).mockRejectedValueOnce(errorMessage)
+      const consoleErrorSpy: SpyInstance = vi.spyOn(console, 'error')
+      await getWrapper(true)
+      expect(consoleErrorSpy).toHaveBeenCalledOnce()
+      expect(consoleErrorSpy).toHaveBeenNthCalledWith(1,
+        'Unable to retrieve data for subscribing to an offer :',
+        errorMessage,
+      )
+    })
     it('should display offers when drawer is opened', async () => {
       const wrapper = await getWrapper(true)
       const offers = findOffers(wrapper)

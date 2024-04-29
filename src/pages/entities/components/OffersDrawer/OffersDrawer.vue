@@ -39,7 +39,13 @@
           </a>
         </div>
       </template>
-      <template v-if="internalIsOpened">
+      <div
+        v-if="isLoading"
+        class="flex flex--justify-content-center margin-y--4"
+      >
+        <PLoader pType="primary" pSize="50" />
+      </div>
+      <template v-if="internalIsOpened && !isLoading">
         <div v-if="!!currentSubscriptionOffer">
           <PSteps
             v-if="currentSubscriptionOffer?.approvalRequired"
@@ -127,7 +133,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { get } from 'lodash-es'
-import { PDrawer, PSteps, PStep, PIcon, PILink45deg } from '@kpmg/styleguide'
+import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@/common/components/StepNote'
@@ -203,6 +209,7 @@ const collaborators = ref<Contact[]>([])
 const principalContacts = ref<ClientContact[]>()
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
+const isLoading = ref<boolean>(true)
 const confirmationModalVisible = ref<boolean>(false)
 
 const internalIsOpened = computed({
@@ -377,9 +384,15 @@ const offerSanitizedUrl = computed(() => {
 })
 
 onMounted(async () => {
-  subscriptionOffers.value = await getAllOffers()
-  principalContacts.value = await getPrincipalContacts(props.accountId)
-  account.value = await fetchAccount(props.accountId)
+  try {
+    subscriptionOffers.value = await getAllOffers()
+    principalContacts.value = await getPrincipalContacts(props.accountId)
+    account.value = await fetchAccount(props.accountId)
+  } catch (error) {
+    console.error('Unable to retrieve data for subscribing to an offer :', error)
+  } finally {
+    isLoading.value = false
+  }
 })
 </script>
 
