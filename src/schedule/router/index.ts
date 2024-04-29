@@ -10,7 +10,7 @@ routes.value.push({
       hasPaddings: false,
     },
   },
-  component: () => import('@/schedule/pages/home'),
+  component: () => import('@/schedule/pages/schedule'),
 } as RouteRecordRaw)
 
 export default routes

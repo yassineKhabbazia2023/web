@@ -18,7 +18,7 @@
 import { PScrollbar } from '@kpmg/styleguide'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import ListItem from '@/schedule/components/DisplayDeadline/ListItem'
-import type { ListProps } from './List.ts'
+import type { ListProps } from './ListTypes'
 
 defineProps<ListProps>()
 
