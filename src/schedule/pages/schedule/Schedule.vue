@@ -167,6 +167,10 @@ function onCloseDrawer() {
     left: 0 !important;
   }
 
+  :deep(.el-calendar-table thead th) {
+    border-top: 0px;
+  }
+
   :deep(.p-calendar .el-calendar__body .el-calendar-table thead th:last-child),
   :deep(.el-calendar-table tr td:last-child) {
     border-right: 0px;

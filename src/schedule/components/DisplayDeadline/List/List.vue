@@ -69,4 +69,3 @@ const pushDrawerEvent = (scheduleId: string) => emit('update-drawer-display', sc
   fr-FR:
     empty-list: 'Aucun évènement pour la période de'
 </i18n>
-./ListTypes.js
