@@ -3,6 +3,7 @@
     v-model="internalShowCalendar"
     pSize="100%"
     pDirection="ttb"
+    pType="fullscreen"
     @close-drawer-button="internalShowCalendar = false"
     :pWithHeader="false"
   >

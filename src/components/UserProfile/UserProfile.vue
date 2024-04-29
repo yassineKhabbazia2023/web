@@ -4,24 +4,24 @@
     v-model="drawerModel"
     :pTitle="t('profileSettings')"
     pDirection="ttb"
+    pType="mini"
+    appendToBody
     class="user-profile-drawer"
   >
-    <div class="padding-x--6">
-      <PTabs
-        v-model="activeTab"
-        pStretch
-      >
-        <PTabPane
-          v-for="tab in TABS"
-          :pLabel="tab.label"
-          :name="tab.key"
-          :key="tab.key"
-        />
-        <div class="margin-top--6">
-          <MyInformation v-if="activeTab === TABS[0].key" />
-        </div>
-      </PTabs>
-    </div>
+    <PTabs
+      v-model="activeTab"
+      pStretch
+    >
+      <PTabPane
+        v-for="tab in TABS"
+        :pLabel="tab.label"
+        :name="tab.key"
+        :key="tab.key"
+      />
+      <div class="margin-top--6">
+        <MyInformation v-if="activeTab === TABS[0].key" />
+      </div>
+    </PTabs>
     <template #footer />
   </PDrawer>
 </template>
@@ -63,17 +63,6 @@ const TABS = [
 ]
 const activeTab = ref(TABS[0].key)
 </script>
-
-<!-- eslint-disable-next-line vue/enforce-style-attribute -->
-<style type="scss">
-.user-profile-drawer.ttb {
-  height: 770px !important;
-  width: 580px;
-  right: 24px;
-  left: unset;
-  border-radius: 0 0 16px 16px;
-}
-</style>
 
 <i18n lang="yaml">
 en-US:

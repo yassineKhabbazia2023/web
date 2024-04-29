@@ -82,7 +82,7 @@ const userInitials = computed(() =>
 
 <style lang="scss" scoped>
 .header-section {
-  z-index: 20;
+  z-index: 21;
   position: fixed;
   top: 0;
   left: 27px;

@@ -21,15 +21,14 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
-let wrapper: VueWrapper<any>
-
 describe('userProfile', () => {
   beforeEach(() => {
-    wrapper = createWrapper()
+    createWrapper()
   })
 
   it('has the my information tab activated by default', () => {
-    const activeTab = wrapper.find('.el-tabs__item.is-active')
-    expect(activeTab.text()).toContain('My Information')
+    const drawer = document.querySelector('.p-drawer') as HTMLElement
+    const activeTab = drawer.querySelector('.el-tabs__item.is-active') as HTMLElement
+    expect(activeTab.textContent).toContain('My Information')
   })
 })
