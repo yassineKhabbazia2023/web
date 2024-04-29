@@ -69,7 +69,7 @@ const collabTabs = [
   },
   {
     name: 'delegationsHistory',
-    trad: t('delegationsHistory'),
+    title: t('delegationsHistory'),
   },
 ]
 
