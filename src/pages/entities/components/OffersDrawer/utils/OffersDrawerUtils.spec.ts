@@ -6,7 +6,7 @@ import {
   getPostSubscriptionRequest,
   getFirstDayOfYear,
 } from './OffersDrawerUtils'
-import type { SelectedProduct } from '../OffersDrawerTypes'
+import type { SelectedProduct } from '@/common/types'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
 import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
 import type { PostSubscriptionRequest } from '@/services/subscription'

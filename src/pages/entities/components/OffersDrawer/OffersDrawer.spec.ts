@@ -377,7 +377,7 @@ describe('offersDrawer', () => {
     })
     it('should display offer intranet link beside the drawer title', async () => {
       const wrapper = await getWrapper(true)
-      const firstOfferIntranetLink = subscriptionOffersServices[0].intranetLink
+      const firstOfferIntranetLink = subscriptionOffersServices[0].intranetLink ?? ''
       const sanitizedLink = getMockedSanitized(firstOfferIntranetLink)
       const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')

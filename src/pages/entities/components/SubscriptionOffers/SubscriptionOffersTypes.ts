@@ -6,6 +6,7 @@ export interface SubscriptionOfferProduct {
   productLabel: string
   enabled: boolean
   isOptionnal: boolean
+  isSelected?: boolean
   priceType: SubscriptionPriceType
   price: number
  }
@@ -28,11 +29,10 @@ export interface SubscriptionOffer {
 }
 
 export interface SubscriptionOfferServices extends SubscriptionOffer {
-  offerDescription: string
-  offersBookLink: string
-  approvalRequired: boolean
-  intranetLink: string
-  offerId: number
+  offerDescription?: string
+  offersBookLink?: string
+  approvalRequired?: boolean
+  intranetLink?: string
   providers: SubscriptionOfferProvider[]
 }
 

@@ -1,7 +1,7 @@
 import { commonApi } from '@kpmg/common'
 import { handleRequestError } from '@/helper'
 import { API_PREFIXES } from '../config'
-import type { SubscriptionRequest, PostSubscriptionRequest } from '.'
+import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from '.'
 
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[] | undefined> {
   try {
@@ -48,6 +48,16 @@ export async function fetchAccountSubscriptions(
 ): Promise<SubscriptionRequest[]> {
   const response = await commonApi().gateway.get(
     `${API_PREFIXES.OFFER}/subscription?accountId=${accountId}`,
+  )
+
+  return response.data
+}
+
+export async function fetchSubscriptionDetails(
+  subscriptionId: number,
+): Promise<SubscriptionDetails | undefined> {
+  const response = await commonApi().gateway.get(
+    `${API_PREFIXES.OFFER}/subscription/${subscriptionId}`,
   )
 
   return response.data

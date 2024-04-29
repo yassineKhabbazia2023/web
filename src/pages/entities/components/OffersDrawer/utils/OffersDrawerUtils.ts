@@ -1,5 +1,5 @@
 import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import type { SelectedProduct } from '../OffersDrawerTypes'
+import type { SelectedProduct } from '@/common/types'
 import type { SubscriptionOfferServices } from '../../SubscriptionOffers/SubscriptionOffersTypes'
 import type { Note, PostSubscriptionRequest } from '@/services/subscription'
 import type { Contact } from '@/services/contact/contactTypes'

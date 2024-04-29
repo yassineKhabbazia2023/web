@@ -52,7 +52,7 @@ describe('table-validations', () => {
     await flushPromises()
   })
   it('should render the subscription table correctly', () => {
-    const pTable = wrapper.findComponent('[data-testid="table"]') as VueWrapper
+    const pTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper
     expect(pTable.exists()).toBeTruthy()
 
     const pTableColumns = pTable.findAllComponents({ name: 'ElTableColumn' })

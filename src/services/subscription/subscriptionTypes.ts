@@ -1,19 +1,22 @@
-import type { Contact } from '@/services/contact/contactTypes'
+import type { SubscriptionOfferServices } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { Contact, ContactType } from '@/services/contact/contactTypes'
 
 /* eslint-disable no-unused-vars */
 export enum SubscriptionStatusCode {
   PENDING = 'pending',
-  VALIDATED = 'validated'
+  VALIDATED = 'validated',
 }
 /* eslint-enable no-unused-vars */
 
+interface Account {
+  accountId: number
+  accountNumber: string
+  accountLegalName?: string
+}
+
 export interface SubscriptionRequest {
   subscriptionId: number
-  account: {
-    accountId: number
-    accountNumber: string
-    accountLegalName: string
-  }
+  account: Account
   applicant: string
   offer: {
     offerId: number
@@ -25,10 +28,7 @@ export interface SubscriptionRequest {
   status: SubscriptionStatusCode
 }
 
-export interface SubscriptionAccount {
-  accountId: number
-  accountNumber: string
-  accountLegalName?: string
+export interface SubscriptionAccount extends Account {
   hub?: string
   accounting?: {
     beginningFiscalDate: string
@@ -55,4 +55,21 @@ export interface PostSubscriptionRequest {
   contacts: number[]
   notes: Note[]
   applicant: string
+}
+
+export interface SubscriptionContact {
+  contactId: number
+  firstName: string
+  lastName: string
+  email: string
+  type: ContactType
+}
+
+export interface SubscriptionDetails {
+  subscriptionId: number
+  account: Account
+  offer: SubscriptionOfferServices
+  clients: SubscriptionContact[]
+  collaborators: SubscriptionContact[]
+  notes: Note[]
 }

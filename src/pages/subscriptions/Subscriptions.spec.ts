@@ -30,12 +30,12 @@ describe('subscriptions', () => {
     await flushPromises()
   })
   it("should open the subscription drawer when clicked on 'consult'", async () => {
-    const subscriptionAccountTest = subscriptionRequestMock[0].account
+    const mockedSubscription = subscriptionRequestMock[0]
     const subscriptionTable = wrapper.findComponent({
       name: 'SubscriptionsTable',
     })
 
-    await subscriptionTable.vm.$emit('consult', subscriptionAccountTest)
+    await subscriptionTable.vm.$emit('consult', mockedSubscription.subscriptionId)
     await flushPromises()
 
     const subscriptionDrawer = wrapper.findComponent({
@@ -43,8 +43,8 @@ describe('subscriptions', () => {
     })
 
     expect(subscriptionDrawer.props('modelValue')).toBeTruthy()
-    expect(subscriptionDrawer.props('account')).toMatchObject(
-      subscriptionAccountTest,
+    expect(subscriptionDrawer.props('selectedSubscriptionId')).toMatchObject(
+      mockedSubscription.subscriptionId,
     )
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })

@@ -8,12 +8,6 @@ export enum offerStepperStep {
   INFORMATION
 }
 
-export interface SelectedProduct {
-  offerId: number
-  productConfigurationId: number
-  isMandatory?: boolean
-}
-
 export interface OffersDrawerProps {
   modelValue: boolean
   selectedCompanyName: string

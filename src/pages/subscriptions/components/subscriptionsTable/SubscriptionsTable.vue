@@ -2,7 +2,7 @@
   <PTable
     pStripe
     :pData="requests"
-    data-testid="table"
+    data-testid="subscriptions-table"
   >
     <PTableColumn :pLabel="t('dateRequest')">
       <template #default="scope">
@@ -122,7 +122,6 @@ import {
 import { commonStore } from '@kpmg/common'
 import {
   type SubscriptionRequest,
-  type SubscriptionAccount,
   fetchSubscriptionRequests,
   validateSubscriptionRequest,
   SubscriptionStatusCode,
@@ -138,7 +137,7 @@ const { t, d } = useI18n({
 })
 
 const emit = defineEmits<{
-  consult: [SubscriptionAccount]
+  consult: [number]
   validate: [string]
 }>()
 
@@ -162,7 +161,7 @@ const requestMenu: PToolboxItemProps[] = [
 ]
 
 const fetchSubscriptions = async () => {
-  requests.value = await fetchSubscriptionRequests() ?? []
+  requests.value = (await fetchSubscriptionRequests()) ?? []
 }
 
 const formatStatus = (status: string) => {
@@ -180,10 +179,10 @@ const validateSubscription = async (subscriptionId: number) => {
 }
 
 const onClickToolboxItem = async (action: string, row: any) => {
-  const { subscriptionId, account } = row
+  const { subscriptionId } = row
 
   if (action === 'consult') {
-    emit('consult', account)
+    emit('consult', subscriptionId)
   } else if (action === 'validate') {
     await validateSubscription(subscriptionId)
   }

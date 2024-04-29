@@ -4,7 +4,7 @@ import {
   SubscriptionPriceType,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 
-import type { SelectedProduct } from '@/pages/entities/components/OffersDrawer/OffersDrawerTypes'
+import type { SelectedProduct } from '@/common/types'
 
 import { getMockedSubscriptionOfferProduct } from '../../../SubscriptionOffers/SubscriptionOffersMocks'
 

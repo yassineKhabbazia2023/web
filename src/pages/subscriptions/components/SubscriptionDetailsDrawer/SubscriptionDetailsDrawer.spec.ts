@@ -1,21 +1,25 @@
-import { it, expect, describe, vi } from 'vitest'
-import { flushPromises, mount } from '@vue/test-utils'
-import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
+import { it, expect, describe, vi, type SpyInstance } from 'vitest'
+import { type VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import type { SubscriptionAccount } from '@/services/subscription'
+import * as SubscriptionService from '@/services/subscription/subscriptionService'
+import { getMockedSubscriptionDetails } from '../../mocks/SubscriptionDetailsMock'
 import SubscriptionDetailsDrawer from '.'
 
+const mockedSubscriptionDetails = getMockedSubscriptionDetails()
 vi.mock('@/services/subscription/subscriptionService', () => ({
-  fetchSubscriptionRequests: vi.fn(() => Promise.resolve({ data: subscriptionRequestMock })),
+  fetchSubscriptionDetails: vi.fn(() =>
+    Promise.resolve(mockedSubscriptionDetails),
+  ),
 }))
 
 const subscriptionAccountTest: SubscriptionAccount =
-  subscriptionRequestMock[0].account
+  mockedSubscriptionDetails.account
 
 async function getWrapper(isOpened: boolean) {
-  const wrapper = mount(SubscriptionDetailsDrawer, {
+  const wrapper: VueWrapper<any> = mount(SubscriptionDetailsDrawer, {
     props: {
       modelValue: isOpened,
-      account: subscriptionAccountTest,
+      selectedSubscriptionId: mockedSubscriptionDetails.subscriptionId,
     },
   })
   await flushPromises()
@@ -28,7 +32,7 @@ describe('subscriptionDetailsDrawer', () => {
     it('should correctly display the subscription drawer with tabs', async () => {
       const wrapper = await getWrapper(true)
       const subscriptionDrawerTabs = wrapper.find(
-        '[data-testid=subscription-drawer-tabs]',
+        '[data-testid=subscription-recap-drawer-tabs]',
       )
 
       expect(subscriptionDrawerTabs.exists()).toBeTruthy()
@@ -51,6 +55,30 @@ describe('subscriptionDetailsDrawer', () => {
       expect(subscriptionDrawerTitle.text()).toBe(
         `${subscriptionAccountTest.accountLegalName} - No. ${subscriptionAccountTest.accountNumber}`,
       )
+    })
+    it('should display console.error when API call is rejected', async () => {
+      const errorMessage = 'Fetch API ERROR'
+      vi.spyOn(
+        SubscriptionService,
+        'fetchSubscriptionDetails',
+      ).mockRejectedValueOnce(errorMessage)
+      const consoleErrorSpy: SpyInstance = vi.spyOn(console, 'error')
+      await getWrapper(true)
+
+      expect(consoleErrorSpy).toHaveBeenCalledOnce()
+      expect(consoleErrorSpy).toHaveBeenNthCalledWith(1,
+        'Unable to retrieve subscription summary :',
+        errorMessage,
+      )
+    })
+    it('should the drawer title be empty if the API call returns undefined', async () => {
+      vi.spyOn(
+        SubscriptionService,
+        'fetchSubscriptionDetails',
+      ).mockResolvedValue(undefined)
+      const wrapper = await getWrapper(true)
+
+      expect(wrapper.vm.subscriptionDrawerTitle).toBe('')
     })
   })
 })

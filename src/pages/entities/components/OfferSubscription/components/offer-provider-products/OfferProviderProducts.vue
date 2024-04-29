@@ -33,7 +33,10 @@ const labels = {
   additionalPrice: t('additionalPrice'),
 }
 
-const props = defineProps<OfferProviderProductsProps>()
+const props = withDefaults(defineProps<OfferProviderProductsProps>(), {
+  isRecap: false,
+})
+
 const services = computed(() =>
   getProviderServices(
     props.offerId,
@@ -41,6 +44,7 @@ const services = computed(() =>
     props.selectedProducts,
     labels.included,
     labels.additionalPrice,
+    props.isRecap,
   ),
 )
 

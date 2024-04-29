@@ -1,5 +1,5 @@
 import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
-import type { SelectedProduct } from '../OffersDrawer/OffersDrawerTypes'
+import type { SelectedProduct } from '@/common/types'
 
 export interface OfferSubscriptionProps {
   subscriptionOffer: SubscriptionOfferServices

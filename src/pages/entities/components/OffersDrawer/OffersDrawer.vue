@@ -151,7 +151,8 @@ import {
 import { addPathValue, getPatchOperations } from '@/services/PatchRecordService/PatchRecordService'
 import { type PatchValue } from '@/services/PatchRecordService'
 import { offerStepperStep } from './OffersDrawerTypes'
-import type { OffersDrawerProps, SelectedProduct } from './OffersDrawerTypes'
+import type { OffersDrawerProps } from './OffersDrawerTypes'
+import type { SelectedProduct } from '@/common/types'
 import { fetchAccount, patchAccount, type Account } from '@/services/account'
 import {
   addSelectedProduct,

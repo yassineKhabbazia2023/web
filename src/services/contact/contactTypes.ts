@@ -1,3 +1,10 @@
+/* eslint-disable no-unused-vars */
+export enum ContactType {
+  Collaborator = 'Collaborator',
+  Customer = 'Customer'
+}
+/* eslint-disable no-unused-vars */
+
 export interface Persona {
   id: number
   name: string
@@ -16,11 +23,6 @@ export interface Contact {
   persona?: Persona
 }
 
-/* eslint-disable no-unused-vars */
-export enum ContactType {
-  Collaborator = 'Collaborator',
-  Customer = 'Customer'
-}
 export interface PatchContactPayload {
   firstName?: string
   lastName?: string
