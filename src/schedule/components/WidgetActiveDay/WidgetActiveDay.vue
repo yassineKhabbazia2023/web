@@ -1,0 +1,104 @@
+<template>
+  <div class="widget-active-day flex flex--direction-column flex-gap--2">
+    <p
+      class="
+        widget-active-day__long-date
+        font-small
+        text-color--neutral-gray-500
+      "
+      data-testid="widget-active-day-long-date"
+    >
+      {{ d(activeDate, 'longDate') }}
+    </p>
+    <div
+      class="widget-active-day__no-data flex flex--direction-column flex-gap--2"
+      data-testid="widget-active-day-no-data"
+    >
+      <PImage
+        pType="paupulse"
+        pName="empty"
+        pFit="fill"
+      />
+      <p
+        class="
+          text-align-center
+          font-semibold
+          text-color--neutral-gray-900
+        "
+      >
+        {{ t('no-data-title') }}
+      </p>
+      <p
+        class="
+          text-align-center
+          font-small
+          text-color--neutral-gray-500
+        "
+      >
+        {{ t('no-data-subtitle') }}
+      </p>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import type { WidgetActiveDayProps } from './WidgetActiveDayTypes'
+import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
+import { PImage } from '@kpmg/styleguide'
+
+const datetimeFormats = {
+  'en-US': {
+    longDate: {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
+    },
+  },
+  'fr-FR': {
+    longDate: {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
+    },
+  },
+} as Record<string, DefineDateTimeFormat>
+
+const { t, d } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+  datetimeFormats,
+})
+
+defineProps<WidgetActiveDayProps>()
+</script>
+
+<style lang="scss" scoped>
+.widget-active-day {
+  margin: 22px 16px;
+  align-items: center;
+
+  &__long-date {
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  &__no-data {
+    width: 220px;
+  }
+}
+.text-align-center {
+  text-align: center;
+}
+</style>
+
+<i18n lang="yaml">
+  en-US:
+    no-data-title: 'No events planned'
+    no-data-subtitle: 'Relax, you have nothing planned today!'
+  fr-FR:
+    no-data-title: 'Aucun évènement planifié'
+    no-data-subtitle: 'Détendez-vous, vous n’avez rien de prévu ce jour !'
+</i18n>
