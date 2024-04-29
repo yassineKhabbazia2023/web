@@ -18,7 +18,7 @@
 import { PScrollbar } from '@kpmg/styleguide'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import ListItem from '@/schedule/components/DisplayDeadline/ListItem'
-import type { ListProps } from './List.ts'
+import type { ListProps } from './ListTypes'
 
 defineProps<ListProps>()
 
@@ -69,3 +69,4 @@ const pushDrawerEvent = (scheduleId: string) => emit('update-drawer-display', sc
   fr-FR:
     empty-list: 'Aucun évènement pour la période de'
 </i18n>
+./ListTypes.js
