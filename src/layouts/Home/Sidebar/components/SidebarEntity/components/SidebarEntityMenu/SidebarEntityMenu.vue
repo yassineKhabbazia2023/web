@@ -83,6 +83,10 @@ const folderSubmenu = {
       title: t('information'),
       index: 'informations',
     },
+    {
+      title: t('delegationsHistory'),
+      index: 'historique-delegations',
+    },
   ],
 }
 
@@ -152,6 +156,7 @@ en-US:
   documents: 'Documents'
   bank: 'Bank'
   indicators: 'Indicators'
+  delegationsHistory: 'Delegations history'
 fr-FR:
   folder: 'Dossier'
   users: 'Utilisateurs'
@@ -161,4 +166,5 @@ fr-FR:
   documents: 'Documents'
   bank: 'Banque'
   indicators: 'Indicateurs'
+  delegationsHistory: 'Historique des délégations'
 </i18n>
