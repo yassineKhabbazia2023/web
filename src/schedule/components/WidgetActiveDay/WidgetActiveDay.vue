@@ -89,9 +89,7 @@ const { t, d } = useI18n({
 
 const props = defineProps<WidgetActiveDayProps>()
 
-const hasData = computed(() => {
-  return (props.deadlines?.length ?? 0) > 0
-})
+const hasData = computed(() => props.deadlines.length > 0)
 </script>
 
 <style lang="scss" scoped>
