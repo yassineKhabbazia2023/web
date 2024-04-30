@@ -1,13 +1,14 @@
 <template>
   <div
+    v-for="(item, index) in internalList"
+    :key="index"
     class="
       p-schedule-deadline
       flex
       flex--justify-content-space-between
       flex--align-items-center
     "
-    v-for="(item, index) in deadlineData"
-    :key="index">
+  >
     <div
       class="
         p-schedule-deadline__content
@@ -21,18 +22,18 @@
     >
       <Icon :status="item.globalStatus" />
       <span class="p-schedule-deadline__content-label font-semibold">
-        {{ getTypeLabel(scheduleModelsByKey, item.template) }}
+        {{ item.typeLabel }}
       </span>
       <PIcon color="#666666">
         <PIArrowRight />
       </PIcon>
       <span class="p-schedule-deadline__content-progress">
-        {{ progressText(item.accountList) }}</span>
+        {{ item.progressText }}</span>
     </div>
     <Tag class="p-schedule-deadline__tag" :status="item.globalStatus" />
     <PToolbox
       trigger="click"
-      :pElements="actionsBuilder(item.globalStatus)"
+      :pElements="item.toolboxElements"
     >
       <PButton
         pType="generic"
@@ -48,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tag from '@/schedule/components/Common/Tag'
 import Icon from '@/schedule/components/Common/Icon'
@@ -56,10 +57,11 @@ import {
   PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
-import type { Deadline, Status } from '@/schedule/models/Deadline'
+import type { Status, DeadlineAccounts } from '@/schedule/models/Deadline'
 import { getDeadlineCompletionSummary } from '@/schedule/helpers/deadlineHelper'
 import { getScheduleModelsByKey } from '@/schedule/services'
 import { getTypeLabel } from '@/schedule/helpers/utils'
+import type { DeadlinesProps } from './DeadlinesTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -68,15 +70,13 @@ const { t } = useI18n({
 
 const scheduleModelsByKey = ref<Record<string, string>>()
 
-defineProps({
-  deadlineData: { type: Array as () => Deadline[], required: true },
-})
+const props = defineProps<DeadlinesProps>()
 
 const emit = defineEmits<{
   'update-drawer-visibility': [value: string]
 }>()
 
-const progressText = (accountList: any) => {
+const getProgressText = (accountList: DeadlineAccounts[]) => {
   const completion = getDeadlineCompletionSummary(accountList)
   if (completion.accountsAmount === 1) {
     return accountList[0]?.name
@@ -84,7 +84,7 @@ const progressText = (accountList: any) => {
   return `${completion.accountsWithCompletedDeadline}/${completion.accountsAmount} ${t('files-done')}`
 }
 
-const actionsBuilder = (status: Status): PToolboxItemProps[] => {
+const getToolboxElements = (status: Status): PToolboxItemProps[] => {
   return [
     {
       pIconName: 'PIEye',
@@ -106,6 +106,24 @@ const actionsBuilder = (status: Status): PToolboxItemProps[] => {
 const pushEventToListItem = () => {
   emit('update-drawer-visibility', '')
 }
+
+const internalList = computed(() => {
+  return props.deadlines
+    .map((deadline) => {
+      const { globalStatus } = deadline
+
+      const typeLabel = getTypeLabel(scheduleModelsByKey.value, deadline.template)
+      const progressText = getProgressText(deadline.accountList)
+      const toolboxElements = getToolboxElements(deadline.globalStatus)
+
+      return {
+        globalStatus,
+        typeLabel,
+        progressText,
+        toolboxElements,
+      }
+    })
+})
 
 onMounted(() => {
   scheduleModelsByKey.value = getScheduleModelsByKey('both')

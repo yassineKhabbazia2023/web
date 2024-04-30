@@ -12,8 +12,8 @@
       {{ formattedDate }}
     </div>
     <div class="flex flex--direction-column flex--grow-1 margin-left--4">
-      <Deadline
-        :deadlineData="itemData.deadlines"
+      <Deadlines
+        :deadlines="itemData.deadlines"
         @update-drawer-visibility="pushEventToList"
       />
     </div>
@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import Deadline from '@/schedule/components/DisplayDeadline/Deadline'
+import Deadlines from '@/schedule/components/DisplayDeadline/Deadlines'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { dateToLocaleFormat } from '@/schedule/helpers/utils'
 

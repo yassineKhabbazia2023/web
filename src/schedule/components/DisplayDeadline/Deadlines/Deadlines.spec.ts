@@ -1,9 +1,9 @@
 import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import Deadline from '.'
+import Deadlines from '.'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import type { Deadline as DeadlineData } from '@/schedule/models/Deadline'
+import type { Deadline } from '@/schedule/models/Deadline'
 import { expect, describe, it, vi } from 'vitest'
 import { collabUser } from '@/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
@@ -27,7 +27,7 @@ vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 
-const deadlineData: DeadlineData[] = [{
+const deadlineData: Deadline[] = [{
   id: 1,
   time: '09:01:56',
   template: {
@@ -43,9 +43,9 @@ const deadlineData: DeadlineData[] = [{
   ],
 }]
 
-const createWrapper = (deadlineData: DeadlineData[]) =>
-  wrapperFactory(Deadline, {
-    props: { deadlineData },
+const createWrapper = (deadlines: Deadline[]) =>
+  wrapperFactory(Deadlines, {
+    props: { deadlines },
     global: {
       plugins: [pinia],
     },
@@ -76,7 +76,7 @@ describe('deadline component', () => {
   })
 
   it('should renders list item information with ibs name', async () => {
-    const deadlineData: DeadlineData[] = [
+    const deadlineData: Deadline[] = [
       {
         id: 1,
         time: '09:01:56',
@@ -103,7 +103,7 @@ describe('deadline component', () => {
   })
 
   it('should emit update-drawer-visibility event', async () => {
-    const deadlineData: DeadlineData[] = [
+    const deadlineData: Deadline[] = [
       {
         id: 1,
         time: '09:01:56',
