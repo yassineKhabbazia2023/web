@@ -9,7 +9,7 @@ interface Template {
   typeShort: string
 }
 
-export interface DeadlineAccounts extends Account {
+export interface DeadlineAccount extends Account {
     status: Status
 }
 
@@ -18,7 +18,7 @@ export interface Deadline {
   time: string
   template: Template
   globalStatus: Status
-  accountList: DeadlineAccounts[]
+  accountList: DeadlineAccount[]
 }
 
 export interface DeadlinesByDate {
