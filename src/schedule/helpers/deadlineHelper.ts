@@ -1,4 +1,4 @@
-import type { Deadline, DeadlineAccounts } from '@/schedule/models/Deadline'
+import type { Deadline, DeadlineAccount } from '@/schedule/models/Deadline'
 
 export function getDeadlineCompletionSummary(accountsList: Deadline['accountList']) {
   const accountsAmount = accountsList.length
@@ -13,7 +13,7 @@ export function getDeadlineCompletionSummary(accountsList: Deadline['accountList
 }
 
 export function getProgressText(
-  accountList: DeadlineAccounts[],
+  accountList: DeadlineAccount[],
   doneLabel: string,
 ) {
   const completion = getDeadlineCompletionSummary(accountList)
