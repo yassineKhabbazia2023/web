@@ -7,7 +7,7 @@ import {
   createSubscriptionRequest,
   fetchAccountSubscriptions,
 } from '.'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()

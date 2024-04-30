@@ -1,5 +1,5 @@
 import type { contactsMockRequest } from './generateContactsMockRequest.ts'
-import type { IUserFromApi } from '@/components/usersClient/types'
+import type { IUserFromApi } from '@/common/components/UsersClient/types'
 
 export const generateContactsMock = (
   request: contactsMockRequest,

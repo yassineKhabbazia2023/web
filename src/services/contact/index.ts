@@ -1,6 +1,6 @@
 import { commonApi } from '@kpmg/common'
 import { handleRequestError } from '@/helper'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 import type { Contact, PatchContactPayload } from './contactTypes'
 
 export const getCollaborators = async (

@@ -1,7 +1,7 @@
 import type { Account } from '.'
 import { commonApi } from '@kpmg/common'
 import type { Entity } from '@kpmg/common'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 import type { PatchOperation } from '@/services/PatchRecordService'
 import type { QueryResult } from '@/types/commonTypes'
 import type { AccountRow, ReferentialStructure, Hub } from './accountTypes'

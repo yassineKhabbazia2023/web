@@ -5,7 +5,7 @@ import type {
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 import { handleRequestError } from '@/helper/helper'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {

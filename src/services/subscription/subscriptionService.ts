@@ -1,7 +1,7 @@
 import { commonApi } from '@kpmg/common'
 import { handleRequestError } from '@/helper'
-import { API_PREFIXES } from '../config'
 import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from '.'
+import { API_PREFIXES } from '@/common/config/services'
 
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[] | undefined> {
   try {

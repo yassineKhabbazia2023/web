@@ -74,7 +74,7 @@ import { commonApi, commonStore } from '@kpmg/common'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 
-import NextPreviousButtons from '@/components/NextPreviousButtons'
+import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import type { Contact } from '@/services/contact/contactTypes'
 import DelegationPreviewList from './components/DelegationPreviewList'

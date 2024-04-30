@@ -12,10 +12,10 @@ import { getInitials } from '@/helper'
 import type { IExtendedUser } from './types.ts'
 import { noResult } from '@/../tests'
 import TableData from './components/TableData'
-import FormSearch from '@/components/FormSearch'
+import FormSearch from '@/common/components/FormSearch'
 import type { PatchContactPayload } from '@/services/contact/contactTypes'
 import { mockUser } from './components/DrawerUserDetails/mockData.ts'
-import { API_PREFIXES } from '../../services/config'
+import { API_PREFIXES } from '@/common/config/services'
 
 vi.mock('@/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),

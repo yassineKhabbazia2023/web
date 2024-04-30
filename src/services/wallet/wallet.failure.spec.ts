@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 import {
   getCollaborators,
 

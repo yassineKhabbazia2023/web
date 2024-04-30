@@ -11,7 +11,7 @@ import {
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContacts } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
 import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,

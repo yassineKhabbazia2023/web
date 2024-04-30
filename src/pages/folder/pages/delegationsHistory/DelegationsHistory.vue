@@ -104,8 +104,8 @@ import { commonStore } from '@kpmg/common'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@/services/account/accountServices'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import { removeFalsyValues } from '@/helper'
-import FormSearch from '@/components/FormSearch'
-import NoResult from '@/components/NoResult'
+import FormSearch from '@/common/components/FormSearch'
+import NoResult from '@/common/components/NoResult'
 import type { Delegation } from './DelegationsHistoryTypes'
 
 const { d, t } = useI18n({

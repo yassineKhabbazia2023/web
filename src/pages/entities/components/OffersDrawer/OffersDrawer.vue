@@ -139,7 +139,7 @@ import OfferSubscription from '../OfferSubscription'
 import StepNote from '@/common/components/StepNote'
 import PrincipalContact from '../PrincipalContact'
 import CompanyInformation from '../CompanyInformation'
-import NextPreviousButtons from '@/components/NextPreviousButtons'
+import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import ConfirmationModal from '../ConfirmationModal'
 import ManageCollaborators from '../ManageCollaborators'
 import {

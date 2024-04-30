@@ -1,6 +1,6 @@
 import type { Collab } from '@/pages/folder/pages/collaborators/types'
 import { handleRequestError } from '@/helper/helper'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 import { type Entity, commonApi } from '@kpmg/common'
 import type { Contact } from '../contact/contactTypes'
 import type { Role, selectedRoleId } from

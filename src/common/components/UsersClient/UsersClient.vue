@@ -59,12 +59,12 @@ import {
   PAGE_SIZES,
   DATE_TIME_FORMATS as datetimeFormats,
 } from '@/constants'
-import NoResult from '@/components/NoResult'
-import FormSearch from '@/components/FormSearch'
+import NoResult from '@/common/components/NoResult'
+import FormSearch from '@/common/components/FormSearch'
 import TableData from './components/TableData'
 import type { IState, IUserFromApi } from './types'
 import DrawerUserDetails from './components/DrawerUserDetails'
-import { API_PREFIXES } from '../../services/config'
+import { API_PREFIXES } from '@/common/config/services'
 
 const { d, t } = useI18n({
   inheritLocale: true,

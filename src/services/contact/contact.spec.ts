@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@/common/config/services'
 import { getMockedCollaborators, getMockedCustomer } from './contactMocks'
 import { getCollaborators, getContactById, patchContact } from '.'
 import { omit } from 'lodash-es'
