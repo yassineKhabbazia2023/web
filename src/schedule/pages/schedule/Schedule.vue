@@ -41,6 +41,9 @@
         :pTeleported="false"
         :pSchedulesCollection="scheduleDates"
       />
+      <WidgetActiveDay
+        :activeDate="activeDate"
+      />
     </div>
   </div>
   <ScheduleDrawer
@@ -58,6 +61,7 @@ import { PLoader, PDatePicker } from '@kpmg/styleguide'
 import { debounce } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
+import WidgetActiveDay from '@/schedule/components/WidgetActiveDay'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import ActionBar from '@/schedule/components/ActionBar'
@@ -150,6 +154,7 @@ function onCloseDrawer() {
 
   &__widget {
     width: 330px;
+    margin-bottom: 60px;
     flex-grow: 0;
     flex-shrink: 0;
   }
@@ -163,7 +168,8 @@ function onCloseDrawer() {
   }
 
   :deep(.p-date-picker) {
-    top: 5px !important;
+    margin: 5px 1px 1px 1px;
+    top: 0 !important;
     left: 0 !important;
   }
 

@@ -3,14 +3,14 @@ import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, type ComponentMountingOptions, type VueWrapper } from '@vue/test-utils'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import Home from '@/schedule/pages/schedule'
+import Schedule from '@/schedule/pages/schedule'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
 import ActionBar from '@/schedule/components/ActionBar'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 
 const createWrapper = (options: ComponentMountingOptions<any>) =>
-  wrapperFactory(Home, options)
+  wrapperFactory(Schedule, options)
 
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
