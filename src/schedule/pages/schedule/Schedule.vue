@@ -163,7 +163,7 @@ const activeDateDeadlines = computed(() => {
 
   &__widget {
     width: 330px;
-    margin-bottom: 60px;
+    padding: 1.6rem 2.4rem;
     flex-grow: 0;
     flex-shrink: 0;
   }
@@ -174,12 +174,6 @@ const activeDateDeadlines = computed(() => {
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
-  }
-
-  :deep(.p-date-picker) {
-    margin: 5px 1px 1px 1px;
-    top: 0 !important;
-    left: 0 !important;
   }
 
   :deep(.el-calendar-table thead th) {

@@ -94,7 +94,8 @@ const hasData = computed(() => props.deadlines.length > 0)
 
 <style lang="scss" scoped>
 .widget-active-day {
-  margin: 22px 16px;
+  margin: 40px 0 0;
+
   &--has-no-data {
     align-items: center;
   }
