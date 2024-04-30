@@ -1,6 +1,6 @@
 import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { recipientsIdCollection } from './Account'
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { Deadline, DeadlinesByDate } from '@/schedule/models/Deadline'
 
 export const notCompletelyDoneDeadlinesByDateMock: DeadlinesByDate[] = [
   {
@@ -180,17 +180,20 @@ export const demoDeadlinesByDateMock: DeadlinesByDate[] = [
   },
 ]
 
-export function getMockedDeadlines() {
+export function getMockedDeadlines(): Deadline[] {
   return [
     {
+      id: 1,
+      time: '',
       template: {
         typeShortCollaborator: 'TVA au 21',
         typeShortCustomer: 'TVA',
         typeLong: 'Taxe sur la valeur ajoutée',
+        typeShort: 'TVA',
       },
       globalStatus: 'Done',
       accountList: [{
-        id: '66842913356',
+        id: 66842913356,
         name: 'Aperture science',
         status: 'Todo',
       }],
