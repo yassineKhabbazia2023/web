@@ -21,7 +21,7 @@
       />
       <p
         class="
-          text-align-center
+          text-center
           font-semibold
           text-color--neutral-gray-900
         "
@@ -30,7 +30,7 @@
       </p>
       <p
         class="
-          text-align-center
+          text-center
           font-small
           text-color--neutral-gray-500
         "
@@ -88,9 +88,6 @@ defineProps<WidgetActiveDayProps>()
   &__no-data {
     width: 220px;
   }
-}
-.text-align-center {
-  text-align: center;
 }
 </style>
 
