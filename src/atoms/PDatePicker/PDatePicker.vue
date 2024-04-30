@@ -123,15 +123,26 @@ function selectedDate(date: string) {
 </script>
 <style lang="scss">
 .p-date-picker {
-  &__input--hidden {
-    display: none;
-  }
+  inset: unset !important;
   display: block !important;
   box-shadow: none !important;
   border: none !important;
   position: relative !important;
+  &__input--hidden {
+    display: none;
+  }
   .d-arrow-left, .d-arrow-right {
     display: none !important;
+  }
+  .el-date-picker {
+    width: 100%;
+    .el-date-picker__header {
+      margin: 0;
+    }
+    .el-picker-panel__content {
+      width: 100%;
+      margin: 0;
+    }
   }
   .today {
     font-weight: 600;
