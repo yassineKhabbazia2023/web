@@ -57,8 +57,8 @@ import {
   PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
-import type { Status, DeadlineAccounts } from '@/schedule/models/Deadline'
-import { getDeadlineCompletionSummary } from '@/schedule/helpers/deadlineHelper'
+import type { Status } from '@/schedule/models/Deadline'
+import { getProgressText } from '@/schedule/helpers/deadlineHelper'
 import { getScheduleModelsByKey } from '@/schedule/services'
 import { getTypeLabel } from '@/schedule/helpers/utils'
 import type { DeadlinesProps } from './DeadlinesTypes'
@@ -75,14 +75,6 @@ const props = defineProps<DeadlinesProps>()
 const emit = defineEmits<{
   'update-drawer-visibility': [value: string]
 }>()
-
-const getProgressText = (accountList: DeadlineAccounts[]) => {
-  const completion = getDeadlineCompletionSummary(accountList)
-  if (completion.accountsAmount === 1) {
-    return accountList[0]?.name
-  }
-  return `${completion.accountsWithCompletedDeadline}/${completion.accountsAmount} ${t('files-done')}`
-}
 
 const getToolboxElements = (status: Status): PToolboxItemProps[] => {
   return [
@@ -113,7 +105,7 @@ const internalList = computed(() => {
       const { globalStatus } = deadline
 
       const typeLabel = getTypeLabel(scheduleModelsByKey.value, deadline.template)
-      const progressText = getProgressText(deadline.accountList)
+      const progressText = getProgressText(deadline.accountList, t('files-done'))
       const toolboxElements = getToolboxElements(deadline.globalStatus)
 
       return {
