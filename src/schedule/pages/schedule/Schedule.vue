@@ -43,6 +43,7 @@
       />
       <WidgetActiveDay
         :activeDate="activeDate"
+        :deadlines="activeDateDeadlines"
       />
     </div>
   </div>
@@ -56,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { PLoader, PDatePicker } from '@kpmg/styleguide'
 import { debounce } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
@@ -138,6 +139,14 @@ function onUpdateActiveDate(newActiveDate: Date) {
 function onCloseDrawer() {
   debounceRefreshData()
 }
+
+const activeDateDeadlines = computed(() => {
+  const activeDateIso = dateISOFormatter(activeDate.value)
+  const deadlineItem = deadlineItems.value
+    .find(({ date }) => date === activeDateIso)
+
+  return deadlineItem?.deadlines ?? []
+})
 </script>
 
 <style lang="scss" scoped>

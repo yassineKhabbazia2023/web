@@ -1,5 +1,11 @@
 <template>
-  <div class="widget-active-day flex flex--direction-column flex-gap--2">
+  <div
+    class="widget-active-day flex flex--direction-column flex-gap--2"
+    :class="{
+      'widget-active-day--has-no-data': !hasData
+    }"
+    data-testid="widget-active-day"
+  >
     <p
       class="
         widget-active-day__long-date
@@ -11,6 +17,14 @@
       {{ d(activeDate, 'longDate') }}
     </p>
     <div
+      v-if="hasData"
+    >
+      <WidgetDeadlines
+        :deadlines="deadlines"
+      />
+    </div>
+    <div
+      v-if="!hasData"
       class="widget-active-day__no-data flex flex--direction-column flex-gap--2"
       data-testid="widget-active-day-no-data"
     >
@@ -42,9 +56,11 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import type { WidgetActiveDayProps } from './WidgetActiveDayTypes'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import { PImage } from '@kpmg/styleguide'
+import WidgetDeadlines from '@/schedule/components/WidgetDeadlines'
 
 const datetimeFormats = {
   'en-US': {
@@ -71,13 +87,19 @@ const { t, d } = useI18n({
   datetimeFormats,
 })
 
-defineProps<WidgetActiveDayProps>()
+const props = defineProps<WidgetActiveDayProps>()
+
+const hasData = computed(() => {
+  return (props.deadlines?.length ?? 0) > 0
+})
 </script>
 
 <style lang="scss" scoped>
 .widget-active-day {
   margin: 22px 16px;
-  align-items: center;
+  &--has-no-data {
+    align-items: center;
+  }
 
   &__long-date {
     &::first-letter {
