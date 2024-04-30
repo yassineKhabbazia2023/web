@@ -42,7 +42,7 @@ function mountAndGetElement(
 
 describe('testing PUserAction', () => {
   describe('profile', () => {
-    const componentSelector = '[data-testid=profile]'
+    const componentSelector = '[data-testid=p-user-action-profile]'
     it('should contain profile when pProfile is not empty', () => {
       const pProfile = 'my profile'
       const profile = mountAndGetComponent({ pProfile }, componentSelector)
@@ -78,7 +78,7 @@ describe('testing PUserAction', () => {
   })
 
   describe('tagContent', () => {
-    const componentSelector = '[data-testid=tagContent]'
+    const componentSelector = '[data-testid=p-user-action-tag-content]'
     it('should contain tagContent if not empty', () => {
       const pTagContent = 'tag content'
       const tagContent = mountAndGetComponent({ pTagContent }, componentSelector)
@@ -137,7 +137,7 @@ describe('testing PUserAction', () => {
   })
 
   describe('options', () => {
-    const optionsComponentSelector = '[data-testid="options"]'
+    const optionsComponentSelector = '[data-testid="p-user-action-options"]'
     const pOptions = getMockedOptions()
 
     it('should contain input if pShowInput is true', () => {
@@ -176,7 +176,7 @@ describe('testing PUserAction', () => {
 
     it('should emit click-delete if click on delete icon', () => {
       const pShowDelete = true
-      const deleteIconSelector = '[data-testid="delete-icon"]'
+      const deleteIconSelector = '[data-testid="p-user-action-delete-icon"]'
       const wrapper = getWrapper({ pShowDelete })
 
       const deleteIcon = wrapper.findComponent(deleteIconSelector) as VueWrapper
@@ -189,6 +189,22 @@ describe('testing PUserAction', () => {
       const deleteElement = mountAndGetElement({}, deleteElementSelector)
 
       expect(deleteElement.exists()).toBeFalsy()
+    })
+  })
+
+  describe('warning', () => {
+    it('should contain warning alert with content when set', () => {
+      const wrapper: VueWrapper<any> = getWrapper({
+        pWarningContent: 'Test de mon alerte',
+      })
+      const alert = wrapper.find('[data-testid="p-user-action-alert"]')
+      expect(alert.exists()).toBeTruthy()
+      expect(alert.text()).toContain('Test de mon alerte')
+    })
+    it('should not contain warning alert', () => {
+      const wrapper: VueWrapper<any> = getWrapper()
+      const alert = wrapper.find('[data-testid="p-user-action-alert"]')
+      expect(alert.exists()).toBeFalsy()
     })
   })
 })

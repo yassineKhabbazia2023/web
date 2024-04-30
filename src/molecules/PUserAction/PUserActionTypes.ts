@@ -16,4 +16,5 @@ export interface PUserActionProps {
   pOptionsPlaceholder?: string
   pOptions?: PDropdownOption[]
   pOptionsValue?: POptionsValue
+  pWarningContent?: string
 }

@@ -24,6 +24,7 @@
         :pOptions="data.pOptions"
         :pOptionsPlaceholder="data.pOptionsPlaceholder"
         :pOptionsValue="data.pOptionsValue"
+        :pWarningContent="data.pWarningContent"
         @click-delete="logEvent('click-delete', $event)"
         @update:p-input-value="logEvent('update:pInputValue', $event)"
         @update:p-options-value="onUpdateOptionsValue"
@@ -103,18 +104,30 @@ const exampleOffer4 = reactive<PUserActionProps>({
   pOptionsValue: '',
 })
 
+const exampleOffer5 = reactive<PUserActionProps>({
+  pProfile: 'SL',
+  pTitle: 'Suliman Lescot',
+  pDescription: 'suliman.lescot@kpmg.fr',
+  pTagContent: '',
+  pRole: '',
+  pWarningContent: 'Vous avez déjà délégué votre portefeuille à ce collaborateur.',
+})
+
 const variants = [{
-  title: 'User action - Offer 1/4',
+  title: 'User action - Offer 1/5',
   data: exampleOffer1,
 }, {
-  title: 'User action - Offer 2/4',
+  title: 'User action - Offer 2/5',
   data: exampleOffer2,
 }, {
-  title: 'User action - Offer 3/4',
+  title: 'User action - Offer 3/5',
   data: exampleOffer3,
 }, {
-  title: 'User action - Offer 4/4',
+  title: 'User action - Offer 4/5',
   data: exampleOffer4,
+}, {
+  title: 'User action - Offer 5/5',
+  data: exampleOffer5,
 }]
 
 const source = `

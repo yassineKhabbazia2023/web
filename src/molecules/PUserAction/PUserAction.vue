@@ -13,7 +13,7 @@
     >
       <PAvatar
         v-if="pProfile"
-        data-testid="profile"
+        data-testid="p-user-action-profile"
         pShape="circle"
         pType="small"
         pColor="persian-gradient"
@@ -43,12 +43,19 @@
         flex--align-items-center
         flex--justify-content-flex-end
       ">
+      <PAlert
+        v-if="pWarningContent"
+        pType="warning"
+        data-testid="p-user-action-alert"
+      >
+        {{ pWarningContent }}
+      </PAlert>
       <PTag
         v-if="pTagContent"
         pColor="gray-100"
         :pContent="pTagContent"
         pEffect="plain"
-        data-testid="tagContent"
+        data-testid="p-user-action-tag-content"
       />
       <p
         v-if="pRole"
@@ -68,7 +75,7 @@
         v-model="internalDropdownValue"
         :pPlaceholder="pOptionsPlaceholder"
         :pOptions="pOptions"
-        data-testid="options"
+        data-testid="p-user-action-options"
       />
 
       <PButton
@@ -84,7 +91,7 @@
         pType="white"
         pSize="default"
         @click="emit('click-delete')"
-        data-testid="delete-icon"
+        data-testid="p-user-action-delete-icon"
       >
         <PIcon>
           <PITrash />
@@ -96,6 +103,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import PAlert from '@/atoms/PAlert'
 import PAvatar from '@/atoms/PAvatar'
 import PButton from '@/atoms/PButton'
 import PDropdown from '@/molecules/PDropdown'
