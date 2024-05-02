@@ -1,6 +1,6 @@
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 
-export interface ListProps {
-  items: DeadlinesByDate[] | undefined
+export interface DeadlineListProps {
+  deadlinesByDate: DeadlinesByDate[] | undefined
   activeDate: Date
 }
