@@ -39,7 +39,8 @@
         pFormat="YYYY-MM-DD"
         pCalendarLite
         :pTeleported="false"
-        :pSchedulesCollection="scheduleDates"
+        :pSchedulesCollection="calendarWidgetDates"
+        @panel-change="onCalendarWidgetChange"
       />
       <WidgetActiveDay
         :activeDate="activeDate"
@@ -73,15 +74,20 @@ import type { ScheduleProps } from './ScheduleTypes'
 
 const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
-const scheduleDates = ref<string[]>([])
+const calendarWidgetDates = ref<string[]>([])
 const isLoading = ref(true)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
+const calendarWidgetDate = ref(new Date())
 
 const REFRESH_DATA_DELAY = 250
 
 const debounceRefreshData = debounce(() => {
   refreshData()
+}, REFRESH_DATA_DELAY)
+
+const debounceRefreshCalendarWidgetData = debounce(() => {
+  refreshCalendarWidgetData()
 }, REFRESH_DATA_DELAY)
 
 const rangeDate = computed((): [Date, Date] => {
@@ -97,6 +103,7 @@ onMounted(() => {
     ? new Date(props.defaultActiveDateString)
     : new Date()
   refreshData()
+  refreshCalendarWidgetData()
 })
 
 const updateDrawerDisplay = () => {
@@ -113,11 +120,19 @@ async function refreshData() {
     isLoading.value = true
     const monthRange = getMonthInterval(activeDate.value)
     deadlineItems.value = await getSchedulesCollection(monthRange)
-    scheduleDates.value = getDates(deadlineItems.value)
   } catch (error) {
     console.warn(error)
   } finally {
     isLoading.value = false
+  }
+}
+async function refreshCalendarWidgetData() {
+  try {
+    const monthRange = getMonthInterval(calendarWidgetDate.value)
+    const deadlineItems = await getSchedulesCollection(monthRange)
+    calendarWidgetDates.value = getDates(deadlineItems)
+  } catch (error) {
+    console.warn(error)
   }
 }
 
@@ -134,6 +149,12 @@ function onUpdateActiveDate(newActiveDate: Date) {
 
 function onCloseDrawer() {
   debounceRefreshData()
+}
+
+async function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
+  calendarWidgetDate.value = newCalendarWidgetDate
+
+  await debounceRefreshCalendarWidgetData()
 }
 
 const activeDateDeadlines = computed(() => {

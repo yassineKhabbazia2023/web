@@ -8,6 +8,7 @@ import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import ActionBar from '@/schedule/components/ActionBar'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
+import * as ScheduleServices from '@/schedule/services'
 
 const createWrapper = (options: ComponentMountingOptions<any>) =>
   wrapperFactory(Schedule, options)
@@ -178,6 +179,54 @@ describe('home page', () => {
       wrapper.findComponent(ActionBar).vm.$emit('calendar-event', { type: 'next-month', date: new Date() })
       await nextTick()
       expect(wrapper.findComponent(ActionBar).emitted('calendar-event')).toHaveLength(1)
+    })
+
+    it('should load other month data when change month', async () => {
+      vi.useFakeTimers()
+      vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+        .mockResolvedValueOnce([{
+          date: TEST_DATE,
+          deadlines: [],
+        }])
+        .mockResolvedValueOnce([{
+          date: SAME_MONTH_DATE,
+          deadlines: [],
+        }])
+        .mockResolvedValueOnce([{
+          date: OTHER_MONTH_DATE,
+          deadlines: [],
+        }])
+      const wrapper = createWrapper({
+        global: {
+          stubs: {
+            ScheduleDrawer,
+            DeadlinesList,
+            ActionBar,
+            PDatePicker: {
+              name: 'PDatePicker',
+              template: '<div />',
+              props: ['pSchedulesCollection'],
+              emits: ['panel-change'],
+            },
+          },
+        },
+      })
+      await flushPromises()
+
+      const datePickerBefore = wrapper.findComponent({ name: 'PDatePicker' })
+      expect(datePickerBefore.props('pSchedulesCollection')).toStrictEqual([SAME_MONTH_DATE])
+
+      datePickerBefore.vm.$emit('panel-change', new Date(OTHER_MONTH_DATE))
+
+      await nextTick()
+      vi.advanceTimersByTime(300)
+      await nextTick()
+      await flushPromises()
+
+      const datePickerAfter = wrapper.findComponent({ name: 'PDatePicker' })
+
+      expect(datePickerAfter.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
     })
   })
 })
