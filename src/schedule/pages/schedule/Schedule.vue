@@ -67,8 +67,8 @@ import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
-import { dateISOFormatter, daysInTheMonth, getYearMonth } from '@/schedule/helpers/utils'
-import { getDates } from './ScheduleUtils'
+import { dateISOFormatter, getYearMonth } from '@/schedule/helpers/utils'
+import { getDates, getMonthInterval } from './ScheduleUtils'
 import type { ScheduleProps } from './ScheduleTypes'
 
 const scheduleViewType = ref('calendar')
@@ -84,14 +84,11 @@ const debounceRefreshData = debounce(() => {
   refreshData()
 }, REFRESH_DATA_DELAY)
 
-const getMonthInterval = (date = new Date()) => {
-  return {
-    startDate: dateISOFormatter(new Date(date.setDate(1))),
-    endDate: dateISOFormatter(new Date(date.setDate(daysInTheMonth(date.getFullYear(), date.getMonth() + 1)))),
-  }
-}
-const monthRange = getMonthInterval()
-const rangeDate = ref<[Date, Date]>([new Date(monthRange.startDate), new Date(monthRange.endDate)])
+const rangeDate = computed((): [Date, Date] => {
+  const monthRange = getMonthInterval(activeDate.value)
+
+  return [new Date(monthRange.startDate), new Date(monthRange.endDate)]
+})
 
 const props = defineProps<ScheduleProps>()
 
@@ -114,8 +111,7 @@ function onCalendarEvent({ date }: { date: Date }) {
 async function refreshData() {
   try {
     isLoading.value = true
-    const monthRange = getMonthInterval(new Date(activeDate.value))
-    rangeDate.value = [new Date(monthRange.startDate), new Date(monthRange.endDate)]
+    const monthRange = getMonthInterval(activeDate.value)
     deadlineItems.value = await getSchedulesCollection(monthRange)
     scheduleDates.value = getDates(deadlineItems.value)
   } catch (error) {
