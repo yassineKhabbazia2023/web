@@ -68,7 +68,8 @@ describe('form.vue', () => {
       new Date('April 29, 2024'))
     await nextTick()
     expect(wrapper.findComponent(PAlert).text())
-      .toContain('Le 29 ne sera pas pris en compte pour les mois qui ne contiennent pas ce jour')
+      // eslint-disable-next-line max-len
+      .toContain("Certains mois contiennent moins de 29 jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.")
   })
 })
 

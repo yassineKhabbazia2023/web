@@ -199,7 +199,8 @@ onMounted(() => {
 })
 
 const monthyWarning = (frequencyDate: number) =>
-    `Le ${frequencyDate} ne sera pas pris en compte pour les mois qui ne contiennent pas ce jour.`
+  // eslint-disable-next-line max-len
+  `Certains mois contiennent moins de ${frequencyDate} jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.`
 </script>
 
 <style lang="scss" scoped>
