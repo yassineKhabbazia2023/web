@@ -4,6 +4,13 @@
  * @returns {string}
  */
 
-export const getFullName = (firstName: string | undefined, lastName: string | undefined) => {
-  return `${firstName ?? ''} ${lastName ?? ''}`.trim()
+export const getFullName = (
+  firstName: string | undefined,
+  lastName: string | undefined,
+  lastNameToUpper: boolean = false,
+) => {
+  const fullName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
+  return lastNameToUpper && lastName
+    ? `${firstName ?? ''} ${lastName.toUpperCase()}`.trim()
+    : fullName
 }

@@ -1,10 +1,14 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { getMockedSubscriptionDetails } from '@/pages/subscriptions/mocks/SubscriptionDetailsMock'
 import SubscriptionDetailsTabs from '.'
 
 const mockedSubscriptionOfferDetails = getMockedSubscriptionDetails()
+
+vi.mock('@kpmg/common', () => ({
+  getInitials: vi.fn(),
+}))
 
 const createWrapper = (): VueWrapper<any> => {
   return mount(SubscriptionDetailsTabs, {
@@ -34,9 +38,13 @@ describe('subscriptionDetailsTabs', () => {
       await nextTick()
       const ServicesDetails = wrapper.findComponent({ name: 'ServicesDetails' })
       const CustomersDetails = wrapper.findComponent({ name: 'CustomersDetails' })
-
       expect(CustomersDetails.exists()).toBeTruthy()
       expect(ServicesDetails.exists()).toBeFalsy()
+      wrapper.vm.activeTab = 'collaborators'
+      await nextTick()
+      const CollaboratorsDetails = wrapper.findComponent({ name: 'CollaboratorsDetails' })
+      expect(CollaboratorsDetails.exists()).toBeTruthy()
+      expect(CustomersDetails.exists()).toBeFalsy()
     })
   })
   describe('props', () => {

@@ -8,12 +8,16 @@
     >
       <div v-if="subscriptionDetails" class="margin-top--6">
         <ServicesDetails
-          v-if="activeTab === subscriptionDetailsTabsList[0].name"
+          v-if="activeTab === RecapTabs.SERVICES"
           :subscriptionOfferDetails="subscriptionDetails?.offer"
         />
         <CustomersDetails
-          v-if="activeTab === subscriptionDetailsTabsList[1].name"
+          v-if="activeTab === RecapTabs.CUSTOMER_USERS"
           :principalContacts="subscriptionDetails?.clients"
+        />
+        <CollaboratorsDetails
+          v-if="activeTab === RecapTabs.COLLABORATORS"
+          :collaborators="subscriptionDetails?.collaborators"
         />
         <StepNote
           v-model="notes[tab.index]"
@@ -29,11 +33,13 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
+import { RecapTabs } from './SubscriptionDetailsTabsTypes'
 import type { Note } from '@/services/subscription'
 import type { SubscriptionDetailsTabsProps, SubscriptionDetailsTab } from './SubscriptionDetailsTabsTypes'
 import StepNote from '@/common/components/StepNote'
 import ServicesDetails from './components/ServicesDetails'
 import CustomersDetails from './components/CustomersDetails'
+import CollaboratorsDetails from './components/CollaboratorsDetails'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -58,8 +64,8 @@ const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
   },
   {
     index: 2,
-    name: 'kpmgCollaborators',
-    label: t('kpmgCollaborators'),
+    name: 'collaborators',
+    label: t('collaborators'),
   },
   {
     index: 3,
@@ -73,11 +79,11 @@ const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
 en-US:
   services: 'Services'
   customerUsers: 'Customer Users'
-  kpmgCollaborators: 'KPMG Collaborators'
+  collaborators: 'KPMG Collaborators'
   information: 'Information'
 fr-FR:
   services: 'Services'
   customerUsers: 'Utilisateurs Clients'
-  kpmgCollaborators: 'Collaborateurs KPMG'
+  collaborators: 'Collaborateurs KPMG'
   information: 'Informations'
 </i18n>

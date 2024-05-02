@@ -6,6 +6,11 @@ import { getMockedSubscriptionDetails } from '../../mocks/SubscriptionDetailsMoc
 import SubscriptionDetailsDrawer from '.'
 
 const mockedSubscriptionDetails = getMockedSubscriptionDetails()
+
+vi.mock('@kpmg/common', () => ({
+  getInitials: vi.fn(),
+}))
+
 vi.mock('@/services/subscription/subscriptionService', () => ({
   fetchSubscriptionDetails: vi.fn(() =>
     Promise.resolve(mockedSubscriptionDetails),
