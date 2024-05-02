@@ -201,7 +201,7 @@ describe('home page', () => {
         global: {
           stubs: {
             ScheduleDrawer,
-            DeadlinesList,
+            DeadlineList,
             ActionBar,
             PDatePicker: {
               name: 'PDatePicker',
