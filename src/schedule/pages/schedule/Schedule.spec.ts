@@ -5,7 +5,7 @@ import { flushPromises, type ComponentMountingOptions, type VueWrapper } from '@
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import Schedule from '@/schedule/pages/schedule'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
-import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
+import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import ActionBar from '@/schedule/components/ActionBar'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 
@@ -57,7 +57,7 @@ describe('home page', () => {
       global: {
         stubs: {
           ScheduleDrawer,
-          DeadlinesList,
+          DeadlineList,
         },
       },
     })
@@ -68,7 +68,7 @@ describe('home page', () => {
       global: {
         stubs: {
           ScheduleDrawer,
-          DeadlinesList,
+          DeadlineList,
         },
       },
     })
@@ -84,7 +84,7 @@ describe('home page', () => {
         global: {
           stubs: {
             ScheduleDrawer,
-            DeadlinesList,
+            DeadlineList,
             ActionBar,
           },
         },
@@ -100,7 +100,7 @@ describe('home page', () => {
         global: {
           stubs: {
             ScheduleDrawer,
-            DeadlinesList,
+            DeadlineList,
             ActionBar,
           },
         },
@@ -108,7 +108,7 @@ describe('home page', () => {
 
       await flushPromises()
       const actionBarWrapper = wrapper.findComponent(ActionBar)
-      const deadlinesListWrapper = wrapper.findComponent(DeadlinesList)
+      const deadlinesListWrapper = wrapper.findComponent(DeadlineList)
       const calendarWrapper = wrapper.findComponent({ name: 'Calendar' })
 
       expect(calendarWrapper.exists()).toBeTruthy()
@@ -116,7 +116,7 @@ describe('home page', () => {
 
       await actionBarWrapper.vm.$emit('update:modelValue', 'list')
 
-      expect(wrapper.findComponent(DeadlinesList).exists()).toBeTruthy()
+      expect(wrapper.findComponent(DeadlineList).exists()).toBeTruthy()
       expect(calendarWrapper.exists()).toBeFalsy()
     })
 
@@ -132,7 +132,7 @@ describe('home page', () => {
           global: {
             stubs: {
               ScheduleDrawer,
-              DeadlinesList,
+              DeadlineList,
               ActionBar,
             },
           },
@@ -170,7 +170,7 @@ describe('home page', () => {
         global: {
           stubs: {
             ScheduleDrawer,
-            DeadlinesList,
+            DeadlineList,
             ActionBar,
           },
         },

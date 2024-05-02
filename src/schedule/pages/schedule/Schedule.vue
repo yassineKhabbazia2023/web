@@ -15,7 +15,7 @@
         @calendar-event="onCalendarEvent"
       />
 
-      <DeadlinesList
+      <DeadlineList
         v-if="scheduleViewType === 'list'"
         :items="deadlineItems"
         :activeDate="activeDate"
@@ -61,7 +61,7 @@ import { onMounted, ref, computed } from 'vue'
 import { PLoader, PDatePicker } from '@kpmg/styleguide'
 import { debounce } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
-import DeadlinesList from '@/schedule/components/DisplayDeadline/List'
+import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import WidgetActiveDay from '@/schedule/components/WidgetActiveDay'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'

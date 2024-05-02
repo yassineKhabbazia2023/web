@@ -1,10 +1,10 @@
 <template>
   <div class="deadlines-list">
-    <PScrollbar v-if="items?.length">
+    <PScrollbar v-if="deadlinesByDate?.length">
       <ListItem
-        v-for="(item, index) in items"
+        v-for="(deadlineByDate, index) in deadlinesByDate"
         :key="index"
-        :itemData="item"
+        :itemData="deadlineByDate"
         @update-drawer-visibility="pushDrawerEvent"
       />
     </PScrollbar>
@@ -18,9 +18,9 @@
 import { PScrollbar } from '@kpmg/styleguide'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import ListItem from '@/schedule/components/DisplayDeadline/ListItem'
-import type { ListProps } from './ListTypes'
+import type { DeadlineListProps } from './DeadlineListTypes'
 
-defineProps<ListProps>()
+defineProps<DeadlineListProps>()
 
 const datetimeFormats = {
   'en-US': {
