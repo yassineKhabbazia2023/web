@@ -9,6 +9,7 @@ import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import ActionBar from '@/schedule/components/ActionBar'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import * as ScheduleServices from '@/schedule/services'
+import { dateISOFormatter } from '@/schedule/helpers/utils'
 
 const createWrapper = (options: ComponentMountingOptions<any>) =>
   wrapperFactory(Schedule, options)
@@ -179,6 +180,27 @@ describe('home page', () => {
       wrapper.findComponent(ActionBar).vm.$emit('calendar-event', { type: 'next-month', date: new Date() })
       await nextTick()
       expect(wrapper.findComponent(ActionBar).emitted('calendar-event')).toHaveLength(1)
+    })
+
+    it('should change activeDate when DeadlineList emits change-date', async () => {
+      const wrapper = createWrapper({
+        global: {
+          stubs: {
+            ScheduleDrawer,
+            DeadlineList,
+            ActionBar,
+          },
+        },
+      })
+      const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+      await actionBar.vm.$emit('update:modelValue', 'list')
+
+      const deadlineList = wrapper.findComponent({ name: 'DeadlineList' })
+
+      deadlineList.vm.$emit('click-date', OTHER_MONTH_DATE)
+      await nextTick()
+      const activeDate = deadlineList.props('activeDate')
+      expect(dateISOFormatter(activeDate)).toBe(OTHER_MONTH_DATE)
     })
 
     it('should load other month data when change month', async () => {

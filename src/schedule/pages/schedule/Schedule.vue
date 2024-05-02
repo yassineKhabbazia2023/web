@@ -20,6 +20,7 @@
         :deadlinesByDate="deadlineItems"
         :activeDate="activeDate"
         @update-drawer-display="updateDrawerDisplay"
+        @click-date="onClickDate"
       />
 
       <Calendar
@@ -111,8 +112,16 @@ const updateDrawerDisplay = () => {
 }
 
 function onCalendarEvent({ date }: { date: Date }) {
+  setActiveDate(date)
+}
+
+function setActiveDate(date: Date) {
   activeDate.value = date
   debounceRefreshData()
+}
+
+function onClickDate(dateIso: string) {
+  setActiveDate(new Date(dateIso))
 }
 
 async function refreshData() {
