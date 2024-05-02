@@ -5,8 +5,8 @@ import { expect, describe, it, vi } from 'vitest'
 import { notCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 
 const activeDate = new Date(2024, 5, 1)
-const createWrapper = (items: DeadlinesByDate[]) =>
-  wrapperFactory(List, { props: { activeDate, items } })
+const createWrapper = (deadlinesByDate: DeadlinesByDate[]) =>
+  wrapperFactory(List, { props: { activeDate, deadlinesByDate } })
 
 vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: () => ({

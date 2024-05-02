@@ -108,7 +108,7 @@ describe('home page', () => {
 
       await flushPromises()
       const actionBarWrapper = wrapper.findComponent(ActionBar)
-      const deadlinesListWrapper = wrapper.findComponent(DeadlineList)
+      const deadlinesListWrapper = wrapper.findComponent({ name: 'DeadlineList' })
       const calendarWrapper = wrapper.findComponent({ name: 'Calendar' })
 
       expect(calendarWrapper.exists()).toBeTruthy()

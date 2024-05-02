@@ -17,7 +17,7 @@
 
       <DeadlineList
         v-if="scheduleViewType === 'list'"
-        :items="deadlineItems"
+        :deadlinesByDate="deadlineItems"
         :activeDate="activeDate"
         @update-drawer-display="updateDrawerDisplay"
       />
