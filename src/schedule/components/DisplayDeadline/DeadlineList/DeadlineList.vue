@@ -5,7 +5,9 @@
         v-for="(deadlineByDate, index) in deadlinesByDate"
         :key="index"
         :itemData="deadlineByDate"
+        class="cursor-pointer"
         @update-drawer-visibility="pushDrawerEvent"
+        @click="$emit('click-date', deadlineByDate.date)"
       />
     </PScrollbar>
     <div v-else class="deadlines-list__empty-list flex flex--justify-content-center flex--align-items-center">
@@ -43,6 +45,7 @@ const { t, d } = useI18n({
 
 const emit = defineEmits<{
   'update-drawer-display': [scheduleId: string]
+  'click-date': [string]
 }>()
 
 const pushDrawerEvent = (scheduleId: string) => emit('update-drawer-display', scheduleId)

@@ -24,4 +24,13 @@ describe('list component', () => {
       [scheduleId],
     ])
   })
+
+  it('should emit click-date when click on ListItem', async () => {
+    const wrapper = createWrapper(notCompletelyDoneDeadlinesByDateMock)
+    const firstListItem = wrapper.findComponent({ name: 'ListItem' })
+    const firstDate = notCompletelyDoneDeadlinesByDateMock[0].date
+    await firstListItem.trigger('click')
+
+    expect(wrapper.emitted('click-date')).toStrictEqual([[firstDate]])
+  })
 })
