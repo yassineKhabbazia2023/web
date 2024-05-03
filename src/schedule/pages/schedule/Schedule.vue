@@ -101,7 +101,7 @@ const debounceRefreshCalendarWidgetData = debounce(() => {
 }, REFRESH_DATA_DELAY)
 
 const rangeDate = computed((): [Date, Date] => {
-  const monthRange = getMonthInterval(activeDate.value)
+  const monthRange = getMonthInterval(activeDate.value, 0)
 
   return [new Date(monthRange.startDate), new Date(monthRange.endDate)]
 })
@@ -136,7 +136,7 @@ function onClickDate(dateIso: string) {
 async function refreshData() {
   try {
     isLoading.value = true
-    const monthRange = getMonthInterval(activeDate.value)
+    const monthRange = getMonthInterval(activeDate.value, 7)
     deadlineItems.value = await getSchedulesCollection(monthRange)
   } catch (error) {
     console.warn(error)
@@ -147,7 +147,7 @@ async function refreshData() {
 async function refreshCalendarWidgetData() {
   try {
     calendarWidgetIsLoading.value = true
-    const monthRange = getMonthInterval(calendarWidgetDate.value)
+    const monthRange = getMonthInterval(calendarWidgetDate.value, 7)
     const deadlineItems = await getSchedulesCollection(monthRange)
     calendarWidgetDates.value = getDates(deadlineItems)
   } catch (error) {

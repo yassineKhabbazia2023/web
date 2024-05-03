@@ -1,5 +1,5 @@
+import dayjs from 'dayjs'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
-import { dateISOFormatter, daysInTheMonth } from '@/schedule/helpers/utils'
 
 export function getDates(deadlineItems: DeadlinesByDate[]) {
   return deadlineItems.reduce<string[]>((dates: string[], deadlineItem) => {
@@ -11,16 +11,18 @@ export function getDates(deadlineItems: DeadlinesByDate[]) {
   }, [])
 }
 
-export function getMonthInterval(date: Date) {
-  const lastDayOfMonth = daysInTheMonth(date.getFullYear(), date.getMonth() + 1)
-  const startDate = new Date(date)
-  const endDate = new Date(date)
-
-  startDate.setDate(1)
-  endDate.setDate(lastDayOfMonth)
+export function getMonthInterval(date: Date, extendsIntervalDays: number) {
+  const startDate = dayjs(date)
+    .startOf('month')
+    .subtract(extendsIntervalDays, 'days')
+    .format('YYYY-MM-DD')
+  const endDate = dayjs(date)
+    .endOf('month')
+    .add(extendsIntervalDays, 'days')
+    .format('YYYY-MM-DD')
 
   return {
-    startDate: dateISOFormatter(startDate),
-    endDate: dateISOFormatter(endDate),
+    startDate,
+    endDate,
   }
 }
