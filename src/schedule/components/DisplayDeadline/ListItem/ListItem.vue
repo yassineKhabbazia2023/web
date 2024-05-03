@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      p-schedule-list-item flex flex--align-items-flex-start
+      schedule-list-item flex flex--align-items-flex-start
       flex--align-self-stretch flex--gap-2 padding-y--4 padding-x--6
     ">
     <div
@@ -13,7 +13,7 @@
     </div>
     <div class="flex flex--direction-column flex--grow-1 margin-left--4">
       <Deadlines
-        :deadlines="itemData.deadlines"
+        :deadlines="deadlinesByDate.deadlines"
         @update-drawer-visibility="pushEventToList"
       />
     </div>
@@ -23,21 +23,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Deadlines from '@/schedule/components/DisplayDeadline/Deadlines'
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { ListItemProps } from './ListItemTypes'
 import { dateToLocaleFormat } from '@/schedule/helpers/utils'
 
-const props = defineProps({
-  itemData: { type: Object as () => DeadlinesByDate, default: () => { } },
-})
+const props = defineProps<ListItemProps>()
 
 const dateColor = computed(() => {
-  return isTodayDate(props.itemData.date)
+  return isTodayDate(props.deadlinesByDate.date)
     ? 'text-color--persian-500'
     : 'text-color--neutral-gray-500'
 })
 
 const formattedDate = computed(() => {
-  return dateToLocaleFormat(props.itemData.date)
+  return dateToLocaleFormat(props.deadlinesByDate.date)
 })
 
 const emit = defineEmits<{
@@ -53,7 +51,7 @@ const isTodayDate = (date: string) => dateToLocaleFormat(date) === dateToLocaleF
 </script>
 
 <style lang="scss" scoped>
-.p-schedule-list-item {
+.schedule-list-item {
   border-bottom: 1px solid var(--el-color-neutral-gray-100);
   background: var(--el-color-base-white);
 

@@ -4,7 +4,7 @@
       <ListItem
         v-for="(deadlineByDate, index) in deadlinesByDate"
         :key="index"
-        :itemData="deadlineByDate"
+        :deadlinesByDate="deadlineByDate"
         class="cursor-pointer"
         @update-drawer-visibility="pushDrawerEvent"
         @click="$emit('click-date', deadlineByDate.date)"

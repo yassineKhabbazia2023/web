@@ -33,9 +33,9 @@ vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 
-const createWrapper = (itemData: DeadlinesByDate) =>
+const createWrapper = (deadlinesByDate: DeadlinesByDate) =>
   wrapperFactory(ListItem, {
-    props: { itemData },
+    props: { deadlinesByDate },
     global: {
       plugins: [pinia],
     },
@@ -45,12 +45,12 @@ commonStore(pinia)
 
 describe('schedule item', () => {
   it('renders list item information with files progress', async () => {
-    const itemData: DeadlinesByDate = notCompletelyDoneDeadlinesByDateMock[0]
+    const deadlinesByDate: DeadlinesByDate = notCompletelyDoneDeadlinesByDateMock[0]
 
-    const wrapper = createWrapper(itemData)
+    const wrapper = createWrapper(deadlinesByDate)
     await flushPromises()
     expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
-      .toBe(dateToLocaleFormat(itemData.date))
+      .toBe(dateToLocaleFormat(deadlinesByDate.date))
 
     const expectedText = TvaLabel
     const deadLineContentLabel = wrapper.find('.p-schedule-deadline__content-label').text()
@@ -60,33 +60,33 @@ describe('schedule item', () => {
       .toBe('1/2 files done')
 
     expect(wrapper.find('.p-schedule-deadline__tag').text())
-      .toBe(itemData.deadlines[0].globalStatus)
+      .toBe(deadlinesByDate.deadlines[0].globalStatus)
   })
 
   it('renders list item information with ibs name', async () => {
-    const itemData: DeadlinesByDate = doneDeadlinesByDateMock[0]
+    const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[0]
 
-    const wrapper = createWrapper(itemData)
+    const wrapper = createWrapper(deadlinesByDate)
     await flushPromises()
     expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
-      .toBe(dateToLocaleFormat(itemData.date))
+      .toBe(dateToLocaleFormat(deadlinesByDate.date))
 
     const expectedText = TvaLabel
     const deadLineContentLabel = wrapper.find('.p-schedule-deadline__content-label').text()
     expect(deadLineContentLabel).toBe(expectedText)
 
     expect(wrapper.find('.p-schedule-deadline__content-progress').text())
-      .toBe(itemData.deadlines[0].accountList[0].name)
+      .toBe(deadlinesByDate.deadlines[0].accountList[0].name)
 
     expect(wrapper.find('.p-schedule-deadline__tag').text())
-      .toBe(itemData.deadlines[0].globalStatus)
+      .toBe(deadlinesByDate.deadlines[0].globalStatus)
   })
 
   it('should emit update-drawer-visibility event', () => {
     const scheduleId = '123456789'
-    const itemData: DeadlinesByDate = doneDeadlinesByDateMock[0]
+    const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[0]
 
-    const wrapper = createWrapper(itemData)
+    const wrapper = createWrapper(deadlinesByDate)
     wrapper.vm.pushEventToList(scheduleId)
     expect(wrapper.emitted('update-drawer-visibility')).toStrictEqual([
       [scheduleId],
