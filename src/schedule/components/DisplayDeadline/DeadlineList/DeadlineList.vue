@@ -5,6 +5,7 @@
         v-for="(deadlineByDate, index) in deadlinesByDate"
         :key="index"
         :deadlinesByDate="deadlineByDate"
+        :isActiveDate="activeDateIso === deadlineByDate.date"
         class="cursor-pointer"
         @update-drawer-visibility="pushDrawerEvent"
         @click="$emit('click-date', deadlineByDate.date)"
@@ -17,12 +18,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { PScrollbar } from '@kpmg/styleguide'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
+import { dateISOFormatter } from '@/schedule/helpers/utils'
 import ListItem from '@/schedule/components/DisplayDeadline/ListItem'
 import type { DeadlineListProps } from './DeadlineListTypes'
 
-defineProps<DeadlineListProps>()
+const props = defineProps<DeadlineListProps>()
 
 const datetimeFormats = {
   'en-US': {
@@ -49,7 +52,7 @@ const emit = defineEmits<{
 }>()
 
 const pushDrawerEvent = (scheduleId: string) => emit('update-drawer-display', scheduleId)
-
+const activeDateIso = computed(() => dateISOFormatter(props.activeDate))
 </script>
 
 <style lang="scss" scoped>

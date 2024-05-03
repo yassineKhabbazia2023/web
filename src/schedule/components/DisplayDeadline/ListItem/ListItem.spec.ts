@@ -33,15 +33,17 @@ vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 
-const createWrapper = (deadlinesByDate: DeadlinesByDate) =>
+const createWrapper = (deadlinesByDate: DeadlinesByDate, isActiveDate = false) =>
   wrapperFactory(ListItem, {
-    props: { deadlinesByDate },
+    props: { deadlinesByDate, isActiveDate },
     global: {
       plugins: [pinia],
     },
   })
 
 commonStore(pinia)
+
+const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[0]
 
 describe('schedule item', () => {
   it('renders list item information with files progress', async () => {
@@ -64,8 +66,6 @@ describe('schedule item', () => {
   })
 
   it('renders list item information with ibs name', async () => {
-    const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[0]
-
     const wrapper = createWrapper(deadlinesByDate)
     await flushPromises()
     expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
@@ -82,10 +82,38 @@ describe('schedule item', () => {
       .toBe(deadlinesByDate.deadlines[0].globalStatus)
   })
 
+  it('display properly when isActiveDate is false', () => {
+    const wrapper = createWrapper(deadlinesByDate)
+    const scheduleListItem = wrapper.find('[data-testid="schedule-list-item"]')
+
+    expect(scheduleListItem.classes()).not.toContain('schedule-list-item--is-active-date')
+    expect(scheduleListItem.classes()).not.toContain('schedule-list-item--is-today')
+  })
+
+  it('display properly when isActiveDate is true', () => {
+    const wrapper = createWrapper(deadlinesByDate, true)
+    const scheduleListItem = wrapper.find('[data-testid="schedule-list-item"]')
+
+    expect(scheduleListItem.classes()).toContain('schedule-list-item--is-active-date')
+    expect(scheduleListItem.classes()).not.toContain('schedule-list-item--is-today')
+  })
+
+  it('display properly when deadlinesByDate is today', () => {
+    const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[1]
+    const mockedToday = new Date(deadlinesByDate.date)
+
+    vi.useFakeTimers()
+    vi.setSystemTime(mockedToday)
+
+    const wrapper = createWrapper(deadlinesByDate)
+    const scheduleListItem = wrapper.find('[data-testid="schedule-list-item"]')
+
+    expect(scheduleListItem.classes()).not.toContain('schedule-list-item--is-active-date')
+    expect(scheduleListItem.classes()).toContain('schedule-list-item--is-today')
+  })
+
   it('should emit update-drawer-visibility event', () => {
     const scheduleId = '123456789'
-    const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[0]
-
     const wrapper = createWrapper(deadlinesByDate)
     wrapper.vm.pushEventToList(scheduleId)
     expect(wrapper.emitted('update-drawer-visibility')).toStrictEqual([

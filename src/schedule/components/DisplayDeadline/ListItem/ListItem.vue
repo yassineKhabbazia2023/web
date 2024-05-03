@@ -3,10 +3,15 @@
     class="
       schedule-list-item flex flex--align-items-flex-start
       flex--align-self-stretch flex--gap-2 padding-y--4 padding-x--6
-    ">
+    "
+    :class="{
+      'schedule-list-item--is-active-date': dateStatus === 'is-active-date',
+      'schedule-list-item--is-today': dateStatus === 'is-today',
+    }"
+    data-testid="schedule-list-item"
+  >
     <div
-      :class="dateColor"
-      class="p-schedule-list-item__date"
+      class="schedule-list-item__date"
       data-testid="schedule-list-item-date"
     >
       {{ formattedDate }}
@@ -28,10 +33,13 @@ import { dateToLocaleFormat } from '@/schedule/helpers/utils'
 
 const props = defineProps<ListItemProps>()
 
-const dateColor = computed(() => {
+const dateStatus = computed(() => {
+  if (props.isActiveDate) {
+    return 'is-active-date'
+  }
   return isTodayDate(props.deadlinesByDate.date)
-    ? 'text-color--persian-500'
-    : 'text-color--neutral-gray-500'
+    ? 'is-today'
+    : ''
 })
 
 const formattedDate = computed(() => {
@@ -52,11 +60,31 @@ const isTodayDate = (date: string) => dateToLocaleFormat(date) === dateToLocaleF
 
 <style lang="scss" scoped>
 .schedule-list-item {
+  $self: &;
   border-bottom: 1px solid var(--el-color-neutral-gray-100);
   background: var(--el-color-base-white);
 
+  &--is-active-date,
+  &:hover {
+    background-color: var(--el-color-persian-50);
+
+    #{$self}__date {
+      background-color: var(--el-color-persian-500);
+      color: var(--el-color-white);
+    }
+  }
+
+  &--is-today {
+    #{$self}__date {
+      color: var(--el-color-persian-500);
+    }
+  }
+
   &__date {
-    margin-top: 7px;
+    color: var(--el-neutral-gray-500);
+    margin-top: 5px;
+    border-radius: 14px;
+    padding: 2px 6px 2px 6px;
   }
 }
 </style>
