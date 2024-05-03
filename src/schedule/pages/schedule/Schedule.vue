@@ -33,6 +33,14 @@
       />
     </div>
     <div class="p-schedule__widget">
+      <PLoader
+        v-if="calendarWidgetIsLoading"
+        class="p-schedule__calendar-widget-loader flex flex--justify-content-center"
+        pType="primary"
+        pSize="32"
+        data-test-id="schedule-calendar-widget-loader"
+      />
+
       <PDatePicker
         v-model="activeDate"
         pType="date"
@@ -77,6 +85,7 @@ const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
 const calendarWidgetDates = ref<string[]>([])
 const isLoading = ref(true)
+const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
 const calendarWidgetDate = ref(new Date())
@@ -137,11 +146,14 @@ async function refreshData() {
 }
 async function refreshCalendarWidgetData() {
   try {
+    calendarWidgetIsLoading.value = true
     const monthRange = getMonthInterval(calendarWidgetDate.value)
     const deadlineItems = await getSchedulesCollection(monthRange)
     calendarWidgetDates.value = getDates(deadlineItems)
   } catch (error) {
     console.warn(error)
+  } finally {
+    calendarWidgetIsLoading.value = false
   }
 }
 
@@ -192,6 +204,7 @@ const activeDateDeadlines = computed(() => {
     padding: 1.6rem 2.4rem;
     flex-grow: 0;
     flex-shrink: 0;
+    position: relative;
   }
 
   &__loader {
@@ -200,6 +213,14 @@ const activeDateDeadlines = computed(() => {
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
+  }
+
+  &__calendar-widget-loader {
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3000;
   }
 
   :deep(.el-calendar-table thead th) {

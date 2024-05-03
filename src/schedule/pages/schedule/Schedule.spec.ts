@@ -65,6 +65,7 @@ describe('home page', () => {
     })
     expect(wrapper.exists()).toBeTruthy()
   })
+
   it('should display the drawer', async () => {
     const wrapper = createWrapper({
       global: {
@@ -79,6 +80,10 @@ describe('home page', () => {
     await nextTick()
     expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
   })
+
+  function findCalendarWidgetLoader(wrapper: VueWrapper) {
+    return wrapper.find('[data-test-id="schedule-calendar-widget-loader"]')
+  }
 
   describe('interactions', () => {
     it('should display the drawer on displayDeadlineDrawer event', async () => {
@@ -236,19 +241,27 @@ describe('home page', () => {
       })
       await flushPromises()
 
-      const datePickerBefore = wrapper.findComponent({ name: 'PDatePicker' })
-      expect(datePickerBefore.props('pSchedulesCollection')).toStrictEqual([SAME_MONTH_DATE])
+      const datePicker = wrapper.findComponent({ name: 'PDatePicker' })
+      expect(datePicker.props('pSchedulesCollection')).toStrictEqual([SAME_MONTH_DATE])
 
-      datePickerBefore.vm.$emit('panel-change', new Date(OTHER_MONTH_DATE))
+      const calendarWidgetLoaderBefore = findCalendarWidgetLoader(wrapper)
+      expect(calendarWidgetLoaderBefore.exists()).toBeFalsy()
+
+      datePicker.vm.$emit('panel-change', new Date(OTHER_MONTH_DATE))
 
       await nextTick()
       vi.advanceTimersByTime(300)
       await nextTick()
+
+      const calendarWidgetLoader = findCalendarWidgetLoader(wrapper)
+      expect(calendarWidgetLoader.exists()).toBeTruthy()
+
       await flushPromises()
 
-      const datePickerAfter = wrapper.findComponent({ name: 'PDatePicker' })
+      const calendarWidgetLoaderAfter = findCalendarWidgetLoader(wrapper)
+      expect(calendarWidgetLoaderAfter.exists()).toBeFalsy()
 
-      expect(datePickerAfter.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
+      expect(datePicker.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
     })
   })
 })
