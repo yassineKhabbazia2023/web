@@ -108,12 +108,12 @@ const rangeDate = computed((): [Date, Date] => {
 
 const props = defineProps<ScheduleProps>()
 
-onMounted(() => {
+onMounted(async () => {
   activeDate.value = props.defaultActiveDateString
     ? new Date(props.defaultActiveDateString)
     : new Date()
-  refreshData()
-  refreshCalendarWidgetData()
+  await refreshData()
+  setCalendarWidgetDates(deadlineItems.value)
 })
 
 const updateDrawerDisplay = () => {
@@ -144,17 +144,22 @@ async function refreshData() {
     isLoading.value = false
   }
 }
+
 async function refreshCalendarWidgetData() {
   try {
     calendarWidgetIsLoading.value = true
     const monthRange = getMonthInterval(calendarWidgetDate.value, 7)
     const deadlineItems = await getSchedulesCollection(monthRange)
-    calendarWidgetDates.value = getDates(deadlineItems)
+    setCalendarWidgetDates(deadlineItems)
   } catch (error) {
     console.warn(error)
   } finally {
     calendarWidgetIsLoading.value = false
   }
+}
+
+function setCalendarWidgetDates(deadlineItems: DeadlinesByDate[]) {
+  calendarWidgetDates.value = getDates(deadlineItems)
 }
 
 function onUpdateActiveDate(newActiveDate: Date) {
@@ -172,10 +177,10 @@ function onCloseDrawer() {
   debounceRefreshData()
 }
 
-async function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
+function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
   calendarWidgetDate.value = newCalendarWidgetDate
 
-  await debounceRefreshCalendarWidgetData()
+  debounceRefreshCalendarWidgetData()
 }
 
 const activeDateDeadlines = computed(() => {
