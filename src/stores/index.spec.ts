@@ -1,24 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import type { Entity } from './types'
+import { getMockedEntities, getMockedUserPermissions } from '../mocks'
 import commonStore from './index'
 import { tokenService } from '../main'
 
-const TEST_ENTITIES: Entity[] = [
-  {
-    accountId: 1,
-    accountNumber: '2024643902',
-    legalName: 'Test 1',
-    color: 'orange',
-  },
-  {
-    accountId: 2,
-    accountNumber: '3524433298',
-    legalName: 'Test 2',
-    color: 'cyan',
-  },
-]
+const mockedEntities = getMockedEntities()
+const mockedUserPermissions = getMockedUserPermissions()
 
 const pinia = createTestingPinia({
   initialState: {
@@ -26,6 +14,20 @@ const pinia = createTestingPinia({
   },
   stubActions: false,
 })
+
+const mockGetUserPermissions = vi.fn((_url) => {
+  return Promise.resolve({
+    data: mockedUserPermissions,
+  })
+})
+
+vi.mock('../api', () => ({
+  default: () => ({
+    gateway: {
+      get: mockGetUserPermissions,
+    },
+  }),
+}))
 
 describe('commonStore', () => {
   beforeEach(() => {
@@ -70,14 +72,14 @@ describe('commonStore', () => {
     store.$patch({
       user: {
         entities: {
-          favorites: TEST_ENTITIES,
-          default: TEST_ENTITIES[0],
+          favorites: mockedEntities,
+          default: mockedEntities[0],
         },
       },
     })
 
-    expect(favoriteEntities.value).toStrictEqual(TEST_ENTITIES)
-    expect(defaultEntity.value).toStrictEqual(TEST_ENTITIES[0])
+    expect(favoriteEntities.value).toStrictEqual(mockedEntities)
+    expect(defaultEntity.value).toStrictEqual(mockedEntities[0])
 
     store.$patch({
       user: null,
@@ -105,4 +107,29 @@ describe('commonStore', () => {
       expect(setTokenSpy).toHaveBeenNthCalledWith(1, '')
     },
   )
+  it('should obtain user permissions, ensuring that the getter returns the accurate permissions', async () => {
+    const store = commonStore(pinia)
+    const { userPermissions } = storeToRefs(store)
+    const spyFetchUserPermissions = vi.spyOn(store, 'fetchUserPermissions')
+
+    await store.fetchUserPermissions()
+
+    expect(spyFetchUserPermissions).toHaveBeenCalledTimes(1)
+    expect(userPermissions.value).toStrictEqual(mockedUserPermissions)
+  })
+  it('should log a console.error message when the request fails', async () => {
+    const store = commonStore(pinia)
+    const expectedErrorMessage = 'Authorization Error: API Access Denied'
+    const spyConsole = vi.spyOn(console, 'error')
+
+    mockGetUserPermissions.mockRejectedValueOnce(expectedErrorMessage)
+    await store.fetchUserPermissions()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenNthCalledWith(
+      1,
+      'Unable to fetch user permissions: ',
+      expectedErrorMessage,
+    )
+  })
 })

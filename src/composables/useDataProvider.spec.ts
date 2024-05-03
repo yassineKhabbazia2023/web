@@ -1,17 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
+import { getMockedUser } from '../mocks'
 import store from '../stores'
 import { useDataProvider } from './useDataProvider'
 
-const fakeUser = {
-  id: '123',
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john@example.com',
-  isCustomer: false,
-}
-
+const fakeUser = getMockedUser()
 const mockGetMe = vi.fn((_url) => {
   return Promise.resolve({
     data: fakeUser,

@@ -3,9 +3,12 @@ import store from '../stores'
 import { storeToRefs } from 'pinia'
 
 export const useDataProvider = () => {
-  const { isAuthenticated } = storeToRefs(store())
+  const commonStore = store()
+  const { isAuthenticated } = storeToRefs(commonStore)
+
   const fetchUserData = async () => {
     if (isAuthenticated.value) {
+      await commonStore.fetchUserPermissions()
       const {
         data: { firstName, lastName, id, email, isCustomer },
       } = await api().gateway.get('contact/me')
