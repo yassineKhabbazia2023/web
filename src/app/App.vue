@@ -14,6 +14,7 @@ import { VITE_IDLE_DURATION } from 'env-vars'
 import { commonStore as useStore } from '@kpmg/common'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@kpmg/styleguide'
+import PopupRenewToken from '@/components/PopupRenewToken'
 
 const route = useRoute()
 const router = useRouter()

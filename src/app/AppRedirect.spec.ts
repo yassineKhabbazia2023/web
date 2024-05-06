@@ -31,6 +31,11 @@ vi.mock('@kpmg/common', () => ({
   routes: {
     value: [],
   },
+  tokenService: {
+    setToken: vi.fn(),
+    getToken: vi.fn(),
+    registerOnChange: vi.fn(),
+  },
 }))
 
 const createWrapper = () =>

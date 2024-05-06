@@ -54,6 +54,11 @@ vi.mock('@kpmg/common', () => ({
   dataProvider: () => {
     return { fetchUserData }
   },
+  tokenService: {
+    setToken: vi.fn(),
+    getToken: vi.fn(),
+    registerOnChange: vi.fn(),
+  },
 }))
 
 const getPageTitle = (wrapper: VueWrapper) => wrapper.find('.pageTitle').text()
