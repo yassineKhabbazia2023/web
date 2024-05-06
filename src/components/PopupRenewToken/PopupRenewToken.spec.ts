@@ -32,7 +32,7 @@ vi.mock('@kpmg/common', () => ({
         .fn()
         .mockResolvedValue({ data: 'CLIENT' }),
     },
-    auth: {
+    gateway: {
       post: authPostMock,
     },
   }),
@@ -114,6 +114,7 @@ describe('popup renew token', () => {
     button.trigger('click')
     expect(authPostMock).toHaveBeenCalledTimes(1)
     expect(authPostMock).toHaveBeenCalledWith(
-      `/refreshToken?userId=${sub}`)
+      `authentication/api/refreshToken?userId=${sub}`,
+    )
   })
 })
