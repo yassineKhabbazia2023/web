@@ -10,6 +10,7 @@ $upload: (
   display: inline-block;
   width: auto;
   max-width: 100%;
+  line-height: 1.2;
 
   &--disabled {
 
@@ -33,6 +34,7 @@ $upload: (
 
   &--type {
     &-file-line {
+      width: 100%;
       .el-upload {
         position: relative;
         z-index: 1;
@@ -49,6 +51,7 @@ $upload: (
       }
     }
     &-dragger {
+      width: 100%;
       .el-upload {
         position: relative;
         z-index: 1;
