@@ -35,14 +35,38 @@
         pTextLimitSize="5MB"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
+        :pDisabled="uploadDisabled"
       />
+      <template #controls>
+        <HstCheckbox v-model="uploadDisabled" title="Disabled" />
+      </template>
+    </Variant>
+    <Variant title="PUpload File Dragger">
+      <PUpload
+        pMultiple
+        pDrag
+        pShowFileList
+        pUploadType="dragger"
+        pTextLimitSize="1GB"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
+        pColorFileLine="persian"
+        :pDisabled="uploadDisabled"
+      />
+      <template #controls>
+        <HstCheckbox v-model="uploadDisabled" title="Disabled" />
+      </template>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import PUpload from '.'
 import PButton from '@/atoms/PButton'
+
+const uploadDisabled = ref(false)
 </script>
 
 <docs lang="md">

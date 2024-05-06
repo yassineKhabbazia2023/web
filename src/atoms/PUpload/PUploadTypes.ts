@@ -1,3 +1,5 @@
+import type { PUploadFileLineProps } from '@/atoms/PUploadFileLine/PUploadFileLineTypes'
+
 export interface UploadProps {
   pAction?: string
   pMultiple?: boolean
@@ -5,9 +7,11 @@ export interface UploadProps {
   pDisabled?: boolean
   pAccept?: string
   pShowFileList?: boolean
-  pUploadType?: 'slot' | 'file-line'
+  pUploadType?: 'slot' | 'file-line' | 'dragger'
   pTextLimitSize?: string
   pPrefixLabelFileLine?: string
   pSuffixLabelFileLine?: string
   pShouldClearPreviousFilesListOnUpload?: boolean
+  pAuthorizedFileFormat?: string
+  pColorFileLine?: PUploadFileLineProps['pColor']
 }

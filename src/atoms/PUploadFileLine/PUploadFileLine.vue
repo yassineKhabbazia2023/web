@@ -9,7 +9,7 @@
     :class="pClassMapper"
   >
     <div class="flex flex--align-items-center overflow-hidden padding-y--2">
-      <span class="flex margin-right--3 flex-grow--0 flex--shrink-0">
+      <span class="flex margin-right--2 flex-grow--0 flex--shrink-0">
         <PLoader
           v-if="pStatus === 'uploading'"
           pSize="16"
@@ -67,7 +67,9 @@ import { PIExclamationTriangle } from '@/atoms/PIcon/components'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
 import { type UploadFile, type UploadRawFile } from 'element-plus'
 
-const props = defineProps<PUploadFileLineProps>()
+const props = withDefaults(defineProps<PUploadFileLineProps>(), {
+  pColor: 'white',
+})
 
 const emit = defineEmits<{
   'on-click-file-action': [UploadFile | UploadRawFile]
@@ -79,22 +81,40 @@ const handleClickFileAction = () => {
 
 const pClassMapper = computed(() => ({
   [`p-upload-file-line--status-${props.pStatus}`]: true,
+  [`p-upload-file-line--color-${props.pColor}`]: true,
 }))
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .p-upload-file-line {
   $self: &;
 
   width: 100%;
-  border-bottom: 1px solid transparent;
-
-  &:not(:last-child) {
-    border-color: var(--el-color-neutral-gray-100);
-  }
 
   & + #{$self} {
     margin-top: 0.8rem;
+  }
+
+  &--color {
+    &-persian {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      background: var(--el-color-persian-50);
+      border-radius: 8px;
+
+      #{$self}__icon {
+        color: var(--el-color-neutral-gray-900);
+      }
+    }
+
+    &-white {
+      background: var(--el-color-base-white);
+      border-bottom: 1px solid transparent;
+
+      &:not(:last-child) {
+        border-color: var(--el-color-neutral-gray-100);
+      }
+    }
   }
 
   &--status {

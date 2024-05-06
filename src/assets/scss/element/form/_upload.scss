@@ -3,3 +3,123 @@ $upload: (
   'dragger-padding-horizontal': 10px,
   'dragger-padding-vertical': 12px,
 );
+
+.p-upload {
+  $self: &;
+
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
+
+  &--disabled {
+
+    &#{$self}--type {
+      &-file-line,
+      &-dragger {
+        pointer-events: none;
+
+        .el-upload-dragger {
+          cursor: default;
+          background: var(--el-color-neutral-gray-50);
+          border-color: var(--el-color-neutral-gray-100);
+        }
+
+        #{$self}__input {
+          color: var(--el-color-neutral-gray-500);
+        }
+      }
+    }
+  }
+
+  &--type {
+    &-file-line {
+      .el-upload {
+        position: relative;
+        z-index: 1;
+        background: var(--el-fill-color-blank);
+
+        &:focus {
+          color: inherit;
+        }
+      }
+      .el-upload-dragger {
+        border-style: solid;
+        border-radius: 4px;
+        text-align: left;
+      }
+    }
+    &-dragger {
+      .el-upload {
+        position: relative;
+        z-index: 1;
+        background: var(--el-fill-color-blank);
+
+        &:focus {
+          color: inherit;
+        }
+      }
+      .el-upload-dragger {
+        padding: 2.8rem 3.2rem;
+        border-radius: 8px;
+        border-color: var(--el-color-neutral-gray-300);
+        text-align: left;
+
+        &.is-dragover {
+          padding: 2.8rem 3.2rem;
+          border-width: 1px;
+          border-color: var(--el-color-persian-700);
+          background: var(--el-color-persian-50);
+        }
+
+        &:hover,
+        &:focus {
+          border-color: var(--el-color-persian-700);
+        }
+        
+        &:focus {
+          background: var(--el-color-persian-50);
+        }
+      }
+      #{$self}__input {
+        flex-direction: column;
+        text-align: center;
+      }
+      #{$self}__img {
+        height: 92px;
+      }
+      #{$self}__format-size {
+        display: block;
+        text-align: center;
+        padding-top: 0.4rem;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .el-upload-list {
+    margin-top: 0.8rem;
+
+    &__item {
+      margin-bottom: 0;
+      border-bottom: 1px solid transparent;
+      border-radius: 0;
+
+      &:hover {
+        background: inherit;
+      }
+
+      &:not(:last-child) {
+        border-color: var(--el-color-neutral-gray-100);
+      }
+
+      & + .el-upload-list__item {
+        margin-top: 0.8rem;
+      }
+    }
+  }
+
+  .el-upload {
+    display: inline-block;
+    width: 100%;
+  }
+}

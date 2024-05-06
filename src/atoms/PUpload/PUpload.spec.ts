@@ -25,6 +25,21 @@ describe('pUpload', () => {
       expect(wrapper.find('.p-upload--type-file-line').exists()).toBeTruthy()
       expect(wrapper.find('.p-upload__input').exists()).toBeTruthy()
     })
+    it('should renders the upload dragger with provided props', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: 'dragger',
+      })
+      expect(wrapper.find('.p-upload--type-dragger').exists()).toBeTruthy()
+      expect(wrapper.find('.p-upload__input').exists()).toBeTruthy()
+    })
+    it('should renders the class disabled when upload is disabled', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pDisabled: true,
+      })
+      expect(wrapper.find('.p-upload--disabled').exists()).toBeTruthy()
+    })
   })
 
   describe('events', () => {
