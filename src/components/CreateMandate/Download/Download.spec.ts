@@ -1,69 +1,73 @@
+/* eslint-disable vitest/prefer-spy-on */
 import Download from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
 import { downloadUnsignedMandate } from '@/services/mandate'
+import { downloadFile, saveFileAs } from '@/helpers/utils'
+
+interface Window {
+  showSaveFilePicker: any
+  URL: any
+}
+declare let window: Window
+
+const data = 'pdf-data'
 
 vi.mock('@/services/mandate', () => ({
-  downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data: 'pdf-data' })),
+  downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data })),
 }))
 
-vi.mock('@/helpers/utils')
+vi.mock('@/helpers/utils', () => ({
+  saveFileAs: vi.fn(),
+  downloadFile: vi.fn(),
+}))
+
+const mandateId = '1243-4546-35323-43'
 
 const createWrapper = () => wrapperFactory(Download, {
   props: {
-    mandateId: 'mandate-id',
+    mandateId,
   },
 })
 
-interface CustomWindow extends Window {
-  showSaveFilePicker?: (_: any) => Promise<any>
-}
-declare let window: CustomWindow
-
 describe('download mandate prefilled', () => {
-  // eslint-disable-next-line vitest/expect-expect, vitest/no-disabled-tests
-  it('uses traditional download method when showSaveFilePicker is not available', async () => {
-    // Mocking window functions and objects
-    delete window.showSaveFilePicker
+  it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
     const wrapper = createWrapper()
+    window.showSaveFilePicker = vi.fn()
+    vi.mocked(saveFileAs).mockRejectedValueOnce(new Error('Failed to execute  showSaveFilePicker on Window'))
     // Act
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
 
     // Assertions
     // eslint-disable-next-line vitest/prefer-called-with
-    // expect(window.URL.createObjectURL).toHaveBeenCalled()
+    expect(saveFileAs).toHaveBeenCalled()
   })
 
   it('uses showSaveFilePicker when available', async () => {
-    // Resetting the window object to its original state before each test
-    global.window = Object.create(window)
-    document.body.innerHTML = ''
-
-    const writableStreamMock = {
-      write: vi.fn(),
-      close: vi.fn(),
-    }
-    const fileHandleMock = {
-      createWritable: vi.fn(() => Promise.resolve(writableStreamMock)),
-    }
-
-    // Mocking window.showSaveFilePicker directly
-    // eslint-disable-next-line vitest/prefer-spy-on
-    window.showSaveFilePicker = vi.fn(() => Promise.resolve(fileHandleMock))
     const wrapper = createWrapper()
+    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+      createWritable: vi.fn(() => Promise.resolve({
+        write: vi.fn(),
+        close: vi.fn(),
+      })),
+    }))
 
     // Act
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
 
     // Assertions
-    expect(downloadUnsignedMandate).toHaveBeenCalledOnce()
-    expect(window.showSaveFilePicker).toHaveBeenCalledWith({
-      suggestedName: 'unsigned-mandate-mandate-id.pdf',
-      types: [{
-        description: 'PDF Document',
-        accept: { 'application/pdf': ['.pdf'] },
-      }],
-    })
+    expect(saveFileAs).toHaveBeenCalledWith(mandateId, data, 'unsigned')
+  })
+
+  it('uses traditional download method when showSaveFilePicker is not available', async () => {
+    const wrapper = createWrapper()
+    delete window.showSaveFilePicker
+    // Act
+    await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
+
+    // Assertions
+    // eslint-disable-next-line vitest/prefer-called-with
+    expect(downloadFile).toHaveBeenCalled()
   })
 
   it('handles errors correctly', async () => {

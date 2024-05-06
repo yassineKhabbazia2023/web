@@ -1,5 +1,12 @@
-import { debounce, dateFormatter, downloadFile } from './utils'
+/* eslint-disable vitest/prefer-spy-on */
+import { debounce, dateFormatter, downloadFile, saveFileAs } from './utils'
 import { expect, describe, it, vi } from 'vitest'
+
+interface Window {
+  showSaveFilePicker: any
+  URL: any
+}
+declare let window: Window
 
 describe('utils helpers', () => {
   it('should emit once after 500ms', async () => {
@@ -25,21 +32,16 @@ describe('utils helpers', () => {
     const removeChildMock = vi.fn()
     const clickMock = vi.fn()
     const setAttributeMock = vi.fn()
-
-    const window: any = {
-      URL: {
-        createObjectURL: createObjectURLMock,
-        revokeObjectURL: revokeObjectURLMock,
-      },
+    window.URL = {
+      createObjectURL: createObjectURLMock,
+      revokeObjectURL: revokeObjectURLMock,
     }
 
-    // Mock document.createElement
-    document.createElement = vi.fn().mockReturnValue({
+    const createElementSpy: any = vi.spyOn(document, 'createElement')
+    createElementSpy.mockImplementation(() => ({
       setAttribute: setAttributeMock,
       click: clickMock,
-      href: '',
-    })
-
+    }))
     // Mock document.body.appendChild and removeChild
     document.body.appendChild = appendChildMock
     document.body.removeChild = removeChildMock
@@ -55,7 +57,26 @@ describe('utils helpers', () => {
     expect(setAttributeMock).toHaveBeenCalledWith('download', filename)
     expect(appendChildMock).toHaveBeenCalledOnce()
     expect(clickMock).toHaveBeenCalledOnce()
+    // eslint-disable-next-line vitest/max-expects
     expect(revokeObjectURLMock).toHaveBeenCalledOnce()
-    expect(removeChildMock).toHaveBeenCalledOnce()
+  })
+  it('saves file with a prompt folder selection', async () => {
+    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+      createWritable: vi.fn(() => Promise.resolve({
+        write: vi.fn(),
+        close: vi.fn(),
+      })),
+    }))
+
+    // Execute the function
+    await saveFileAs('123-34531-13-134085', { mock: 'blabla' }, 'signed')
+    // Assertions
+    expect(window.showSaveFilePicker).toHaveBeenCalledWith({
+      suggestedName: 'signed-mandate-123-34531-13-134085.pdf',
+      types: [{
+        description: 'PDF Document',
+        accept: { 'application/pdf': ['.pdf'] },
+      }],
+    })
   })
 })

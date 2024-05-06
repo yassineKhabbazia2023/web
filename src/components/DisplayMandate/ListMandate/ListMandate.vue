@@ -126,7 +126,7 @@ import {
   PAlert,
 } from '@kpmg/styleguide'
 import Tag from '@/components/Common/Tag'
-import { dateFormatter, downloadFile } from '@/helpers/utils'
+import { dateFormatter, downloadFile, saveFileAs } from '@/helpers/utils'
 import type { ListMandateProps, ActionEvent } from './ListMandateTypes'
 import {
   downloadUnsignedMandate,
@@ -257,18 +257,14 @@ function emitRefreshMandateCollection(params: Partial<UpdateTableDisplayParams>)
 
 const saveFile = async (id: string, data: any, mandateType: string) => {
   try {
-    if (window.showSaveFilePicker && 'showSaveFilePicker' in window) {
-      const fileHandle = await window?.showSaveFilePicker({
-        suggestedName: `${mandateType}-mandate-${id}.pdf`,
-        types: [{
-          description: 'PDF Document',
-          accept: { 'application/pdf': ['.pdf'] },
-        }],
-      })
-
-      const writableStream = await fileHandle.createWritable()
-      await writableStream.write(data)
-      await writableStream.close()
+    if ('showSaveFilePicker' in window) {
+      try {
+        await saveFileAs(id, data, mandateType)
+      } catch (error) {
+        if (error instanceof Error && error.message !== 'The user aborted a request.') {
+          downloadFile(`${mandateType}-mandate-${id}.pdf`, data, window)
+        }
+      }
     } else {
       downloadFile(`${mandateType}-mandate-${id}.pdf`, data, window)
     }

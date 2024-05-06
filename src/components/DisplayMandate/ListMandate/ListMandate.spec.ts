@@ -8,12 +8,14 @@ import { nextTick } from 'vue'
 import { getMockedMandatesData } from '@/../tests/mocks/mandateMock'
 import { flushPromises } from '@vue/test-utils'
 
-interface CustomWindow extends Window {
-  showSaveFilePicker?: (_: any) => Promise<any>
+interface Window {
+  showSaveFilePicker: any
   URL: any
 }
-declare let window: CustomWindow
+declare let window: Window
 declare let document: any
+
+const currentPage = 1
 
 vi.mock('@/helpers/NotificationHelper', () => ({
   showNotification: vi.fn(),
@@ -45,6 +47,7 @@ vi.mock('@/helpers/utils', () => {
     dateFormatter: vi.fn(),
     debounce: vi.fn(),
     downloadFile: vi.fn(),
+    saveFileAs: vi.fn(),
   }
 })
 
@@ -84,6 +87,7 @@ describe('mandate collection', () => {
   it('renders the mandate table and click on dropdown', async () => {
     const wrapper = createWrapper({
       data: getMockedMandatesData(),
+      currentPage,
     })
 
     await vi.dynamicImportSettled()
@@ -99,6 +103,7 @@ describe('mandate collection', () => {
   it('renders the mandate table click on download signed mandate', async () => {
     const wrapper = createWrapper({
       data: [],
+      currentPage,
     })
 
     const mandate = { id: '123' }
@@ -114,6 +119,7 @@ describe('mandate collection', () => {
   it('emits actionClicked', async () => {
     const wrapper = createWrapper({
       data: getMockedMandatesData(),
+      currentPage,
     })
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
     pToolbox.vm.$emit('p-toolbox-item-clicked')
@@ -129,6 +135,7 @@ describe('mandate collection', () => {
   it('renders the mandate table click on terminate mandate', async () => {
     const wrapper = createWrapper({
       data: [],
+      currentPage,
     })
 
     const mandate = { id: '123' }
@@ -146,6 +153,7 @@ describe('mandate collection', () => {
     async () => {
       const wrapper = createWrapper({
         data: [],
+        currentPage,
       })
 
       const mandate = { id: '123' }
@@ -160,6 +168,7 @@ describe('mandate collection', () => {
   it('should sort the table data', async () => {
     const wrapper = createWrapper({
       data: [],
+      currentPage,
     })
     wrapper.vm.handleFileUpload({ target: { files: [{ name: 'mandate.pdf' }] } })
     await wrapper.vm.sortColumnChange({ order: 'ascending', prop: 'erpId' })
@@ -224,6 +233,7 @@ describe('mandate collection', () => {
   it('renders the mandate table click on download unsigned mandate', async () => {
     const wrapper = createWrapper({
       data: [],
+      currentPage,
     })
     mockShowSaveFilePicker()
     const mandate = { id: '123' }

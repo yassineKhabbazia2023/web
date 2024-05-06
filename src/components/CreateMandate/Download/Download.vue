@@ -69,34 +69,25 @@ import {
   PAlert,
 } from '@kpmg/styleguide'
 import { downloadUnsignedMandate } from '@/services/mandate'
-import { downloadFile } from '@/helpers/utils'
+import { downloadFile, saveFileAs } from '@/helpers/utils'
 const props = defineProps({
   mandateId: {
     type: String,
     required: true,
   },
 })
-declare let window: any
+
 const downloadMandate = async () => {
   try {
     const { data } = await downloadUnsignedMandate(props.mandateId)
-    if (window && 'showSaveFilePicker' in window) {
-      const fileHandle = await window?.showSaveFilePicker({
-        suggestedName: `unsigned-mandate-${props.mandateId}.pdf`,
-        types: [{
-          description: 'PDF Document',
-          accept: { 'application/pdf': ['.pdf'] },
-        }],
-      })
-
-      // Create a FileSystemWritableFileStream to write to
-      const writableStream = await fileHandle.createWritable()
-
-      // Write the contents of the file to the stream
-      await writableStream.write(data)
-
-      // Close the file and write the contents to disk
-      await writableStream.close()
+    if ('showSaveFilePicker' in window) {
+      try {
+        await saveFileAs(props.mandateId, data, 'unsigned')
+      } catch (error) {
+        if (error instanceof Error && error.message !== 'The user aborted a request.') {
+          downloadFile(`unsigned-mandate-${props.mandateId}.pdf`, data, window)
+        }
+      }
     } else {
       downloadFile(`unsigned-mandate-${props.mandateId}.pdf`, data, window)
     }
@@ -112,7 +103,7 @@ const { t } = useI18n({
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .download-mandate {
   &__illustration {
     display: flex;
