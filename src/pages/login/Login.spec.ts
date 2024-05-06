@@ -29,7 +29,7 @@ vi.mock('vue-router', () => ({
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    auth: {
+    gateway: {
       post: mockAuthPost,
     },
   }),
@@ -85,7 +85,7 @@ describe('login', () => {
     await wrapper.vm.handleSubmit(getForm())
 
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
-    expect(mockAuthPost).toHaveBeenCalledWith('login', {
+    expect(mockAuthPost).toHaveBeenCalledWith('authentication/api/login', {
       email: INPUT_EMAIL_VALUE,
       password: INPUT_PASSWORD_VALUE,
     })

@@ -39,13 +39,11 @@ router.push({
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    onboarding: {
+    gateway: {
+      post: postMock,
       get: () => ({
         data: true,
       }),
-    },
-    auth: {
-      post: postMock,
     },
   }),
 }))
@@ -104,7 +102,7 @@ describe('page reset password form', () => {
     wrapper.find('button').trigger('click')
     await flushPromises()
 
-    const postLink = '/createResetPassword'
+    const postLink = 'authentication/api/createNewPassword'
     const data = {
       contactId: 'contactId',
       password: 'aaAA11@@',

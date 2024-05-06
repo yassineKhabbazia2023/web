@@ -42,7 +42,7 @@ const resendLink = async () => {
     isLoading.value = true
     contactEmail && (contactEmail = contactEmail.toString().trim().replace(' ', '+'))
     contactEmail
-      ? await commonApi().auth.post('/sendResetPasswordLink', { email: contactEmail })
+      ? await commonApi().gateway.post('authentication/api/sendResetPasswordLink', { email: contactEmail })
       // eslint-disable-next-line max-len
       : await commonApi().onboarding.post(`/Activation/Invite?accountId=${accountId}&contactId=${contactId}`)
     isLoading.value = false

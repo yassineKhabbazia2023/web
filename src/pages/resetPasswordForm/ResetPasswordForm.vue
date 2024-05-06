@@ -151,9 +151,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
         resetPasswordToken: token,
         isCreatePasswordAction: false,
       }
-      const urlUpdatePassword = '/createResetPassword'
+      const urlUpdatePassword = 'authentication/api/createNewPassword'
       try {
-        await commonApi().auth.post(urlUpdatePassword, data)
+        await commonApi().gateway.post(urlUpdatePassword, data)
         router.push({ name: 'loginClient' })
       } catch {}
     } else {
@@ -163,9 +163,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
 }
 
 const isValidToken = async (): Promise<any> => {
-  const urlValidToken = `/Activation/IsInvitationTokenValid?invitationToken=${token}`
+  const urlValidToken = `authentication/api/IsInvitationTokenValid?invitationToken=${token}`
   try {
-    const { data: value } = await commonApi().onboarding.get(urlValidToken)
+    const { data: value } = await commonApi().gateway.get(urlValidToken)
     return value
   } catch {}
 }

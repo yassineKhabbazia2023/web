@@ -155,7 +155,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       data: {
         webToken: token,
       },
-    } = await commonApi().auth.post('login', toRaw(formValues))
+    } = await commonApi().gateway.post('authentication/api/login', toRaw(formValues))
 
     tokenService.setToken(token)
     await initAuthClient()
