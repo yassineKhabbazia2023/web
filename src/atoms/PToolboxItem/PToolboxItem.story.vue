@@ -13,12 +13,12 @@
       </template>
     </Variant>
 
-    <Variant title="Danger">
+    <Variant title="Danger with pIconName as Component">
       <PToolboxItem
-        :pValue="defaultState.pValue"
-        :pIconName="defaultState.pIconName"
-        pState="danger"
-        :disabled="defaultState.disabled"
+        :pValue="dangerState.pValue"
+        :pIconName="dangerState.pIconName"
+        :pState="dangerState.pState"
+        :disabled="dangerState.disabled"
       />
       <template #controls>
         <HstText v-model="defaultState.pValue" title="Value" />
@@ -44,6 +44,7 @@
 import { reactive } from 'vue'
 import PToolboxItem from '@/atoms/PToolboxItem'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
+import { PIAdd } from '@/atoms/PIcon/components'
 
 const defaultState: PToolboxItemProps = reactive({
   pValue: 'Supprimer',
@@ -51,6 +52,14 @@ const defaultState: PToolboxItemProps = reactive({
   pActionName: 'delete',
   disabled: false,
   pState: 'default',
+})
+
+const dangerState: PToolboxItemProps = reactive({
+  pValue: 'Supprimer',
+  pIconName: PIAdd,
+  pActionName: 'delete',
+  disabled: false,
+  pState: 'danger',
 })
 
 const WithoutIconState = reactive({

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PToolboxItem from '@/atoms/PToolboxItem'
+import { PIAdd } from '@/atoms/PIcon/components'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
 
 const action = 'delete'
@@ -69,15 +70,15 @@ describe('pToolboxItem', () => {
     it.each([
       {
         pIconName: 'PIAdd',
-        shouldHaveIconClass: true,
+        shouldHaveIcon: true,
       },
       {
         pIconName: '',
-        shouldHaveIconClass: false,
+        shouldHaveIcon: false,
       },
     ])(
       'should have Icon when Icon is set',
-      async ({ pIconName, shouldHaveIconClass }) => {
+      async ({ pIconName, shouldHaveIcon }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pIconName,
@@ -85,9 +86,19 @@ describe('pToolboxItem', () => {
 
         await vi.dynamicImportSettled()
         const iconComponent = wrapper.findComponent({ name: pIconName })
-        expect(iconComponent.exists()).toBe(shouldHaveIconClass)
+        expect(iconComponent.exists()).toBe(shouldHaveIcon)
       },
     )
+
+    it('should has icon when pIconName is a component', () => {
+      const pIconName = PIAdd
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pIconName,
+      })
+      const iconComponent = wrapper.findComponent({ name: 'PIAdd' })
+      expect(iconComponent.exists()).toBeTruthy()
+    })
 
     it('should render the action name value of the component', () => {
       const wrapper = createWrapper()

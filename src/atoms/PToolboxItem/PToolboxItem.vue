@@ -4,9 +4,9 @@
     :class="['p-toolbox-item', pClassMapper]"
     :disabled="disabled"
   >
-    <div v-if="pIconName" class="p-toolbox-item__icon margin-right--2">
+    <div v-if="iconComponent" class="p-toolbox-item__icon margin-right--2">
       <PIcon size="16">
-        <component :is="resolvedIcons"></component>
+        <component :is="iconComponent"></component>
       </PIcon>
     </div>
     <p class="p-toolbox-item__text">
@@ -30,8 +30,13 @@ const pClassMapper = computed(() => ({
   [`p-toolbox-item--state-${props.pState}`]: true,
 }))
 
-const resolvedIcons = computed(() => {
-  return iconResolver(props.pIconName)
+const iconComponent = computed(() => {
+  if (!props.pIconName) {
+    return undefined
+  }
+  return typeof props.pIconName === 'string'
+    ? iconResolver(props.pIconName)
+    : props.pIconName
 })
 </script>
 
