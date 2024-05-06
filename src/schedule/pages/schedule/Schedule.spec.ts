@@ -10,6 +10,8 @@ import ActionBar from '@/schedule/components/ActionBar'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import * as ScheduleServices from '@/schedule/services'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
+import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 
 const createWrapper = (options: ComponentMountingOptions<any>) =>
   wrapperFactory(Schedule, options)
@@ -53,7 +55,14 @@ vi.mock('@/schedule/services', () => ({
 }),
 )
 
+const mockedToday = new Date(TEST_DATE)
+
 describe('home page', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+    vi.setSystemTime(mockedToday)
+  })
+
   it('should render home page', () => {
     const wrapper = createWrapper({
       global: {
@@ -100,6 +109,57 @@ describe('home page', () => {
       expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeFalsy()
       await wrapper.findComponent(ActionBar).vm.$emit('display-deadline-drawer')
       expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
+    })
+
+    it('should give filtered deadlines of current month to DeadlineList', async () => {
+      const mockedDeadLinesA = getMockedDeadlines()
+      const currentMounthDeadlines: DeadlinesByDate[] = [{
+        date: TEST_DATE,
+        deadlines: mockedDeadLinesA,
+      }, {
+        date: SAME_MONTH_DATE,
+        deadlines: [],
+      }]
+      const nextMounthDeadlines: DeadlinesByDate[] = [{
+        date: OTHER_MONTH_DATE,
+        deadlines: mockedDeadLinesA,
+      }]
+
+      vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+        .mockResolvedValueOnce([
+          ...currentMounthDeadlines,
+          ...nextMounthDeadlines,
+        ])
+
+      const expectedDeadlinesByDate = [...currentMounthDeadlines]
+
+      const wrapper = createWrapper({
+        global: {
+          stubs: {
+            ScheduleDrawer,
+            DeadlineList: {
+              name: 'DeadlineList',
+              template: '<div />',
+              props: ['modelValue', 'deadlinesByDate', 'pRange'],
+            },
+            ActionBar,
+            Calendar: {
+              name: 'Calendar',
+              template: '<div />',
+            },
+          },
+        },
+      })
+
+      await flushPromises()
+      const actionBarWrapper = wrapper.findComponent(ActionBar)
+
+      await actionBarWrapper.vm.$emit('update:modelValue', 'list')
+      const deadlinesListWrapper = wrapper.findComponent({ name: 'DeadlineList' })
+      await nextTick()
+
+      expect(deadlinesListWrapper.props('deadlinesByDate')).toStrictEqual(expectedDeadlinesByDate)
     })
 
     it('should update the visible section on activeScheduleViewType change', async () => {
@@ -209,7 +269,6 @@ describe('home page', () => {
     })
 
     it('should load other month data when change month', async () => {
-      vi.useFakeTimers()
       vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([{

@@ -17,7 +17,7 @@
 
       <DeadlineList
         v-if="scheduleViewType === 'list'"
-        :deadlinesByDate="deadlineItems"
+        :deadlinesByDate="filteredDeadlineItems"
         :activeDate="activeDate"
         @update-drawer-display="updateDrawerDisplay"
         @click-date="onClickDate"
@@ -184,6 +184,14 @@ const activeDateDeadlines = computed(() => {
     .find(({ date }) => date === activeDateIso)
 
   return deadlineItem?.deadlines ?? []
+})
+
+const filteredDeadlineItems = computed(() => {
+  const [startDate, endDate] = rangeDate.value
+  const startDateIso = dateISOFormatter(startDate)
+  const endDateIso = dateISOFormatter(endDate)
+
+  return deadlineItems.value.filter(({ date }) => startDateIso <= date && date <= endDateIso)
 })
 </script>
 
