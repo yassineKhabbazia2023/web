@@ -7,6 +7,7 @@ import Schedule from '@/schedule/pages/schedule'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import ActionBar from '@/schedule/components/ActionBar'
+import { getMonthInterval } from './ScheduleUtils'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import * as ScheduleServices from '@/schedule/services'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
@@ -73,6 +74,25 @@ describe('home page', () => {
       },
     })
     expect(wrapper.exists()).toBeTruthy()
+  })
+
+  it('should call getSchedulesCollection only once onMounted', async () => {
+    const getSchedulesCollectionSpy = vi
+      .spyOn(ScheduleServices, 'getSchedulesCollection')
+
+    createWrapper({
+      global: {
+        stubs: {
+          ScheduleDrawer,
+          DeadlineList,
+        },
+      },
+    })
+    await flushPromises()
+    const expectedMonthRange = getMonthInterval(mockedToday, 7)
+
+    expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
+    expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedMonthRange)
   })
 
   it('should display the drawer', async () => {
@@ -271,10 +291,6 @@ describe('home page', () => {
     it('should load other month data when change month', async () => {
       vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
-        .mockResolvedValueOnce([{
-          date: TEST_DATE,
-          deadlines: [],
-        }])
         .mockResolvedValueOnce([{
           date: SAME_MONTH_DATE,
           deadlines: [],
