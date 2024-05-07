@@ -19,6 +19,11 @@ vi.mock('env-vars', () => ({
 
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
+  tokenService: {
+    setToken: () => vi.fn(),
+    registerOnChange: () => vi.fn(),
+    unregisterOnChange: () => vi.fn(),
+  },
   commonStore: defineStore('common', {
     state: () => ({
       user: null,
