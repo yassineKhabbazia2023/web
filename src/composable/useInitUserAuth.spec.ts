@@ -81,7 +81,7 @@ describe('useInitUserAuth', () => {
     expect(store().$patch).toHaveBeenCalledTimes(1)
   })
 
-  it('should not update update state if the token is not present', async () => {
+  it('should not update state if the token is not present', async () => {
     // Setup
     const { initAuthClient, isTokenRetrieve } = useInitUserAuth()
 
@@ -91,5 +91,18 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(isTokenRetrieve.value).toBeFalsy()
     expect(store().$patch).not.toHaveBeenCalled()
+  })
+
+  it('should not set gigyaUserId given that the token is not available', () => {
+    // Setup
+    const mockGigyaUserId = 'gigya-user-id'
+
+    const { setStoreGigyaUserId } = useInitUserAuth()
+
+    // Act
+    setStoreGigyaUserId(mockGigyaUserId)
+
+    // Assert
+    expect(store().$patch).toHaveBeenCalledTimes(0)
   })
 })

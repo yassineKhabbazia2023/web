@@ -9,6 +9,7 @@ export default function useInitUserAuth() {
 
   const setStoreGigyaUserId = (gigyaUserId: string) => {
     const token = tokenService.getToken()
+
     if (token) {
       store().$patch({
         user: {
