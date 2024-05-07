@@ -7,6 +7,7 @@ import Schedule from '@/schedule/pages/schedule'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import ActionBar from '@/schedule/components/ActionBar'
+import { getMonthInterval } from './ScheduleUtils'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import * as ScheduleServices from '@/schedule/services'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
@@ -73,6 +74,25 @@ describe('home page', () => {
       },
     })
     expect(wrapper.exists()).toBeTruthy()
+  })
+
+  it('should call getSchedulesCollection only once onMounted', async () => {
+    const getSchedulesCollectionSpy = vi
+      .spyOn(ScheduleServices, 'getSchedulesCollection')
+
+    createWrapper({
+      global: {
+        stubs: {
+          ScheduleDrawer,
+          DeadlineList,
+        },
+      },
+    })
+    await flushPromises()
+    const expectedMonthRange = getMonthInterval(mockedToday, 7)
+
+    expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
+    expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedMonthRange)
   })
 
   it('should display the drawer', async () => {
@@ -268,13 +288,62 @@ describe('home page', () => {
       expect(dateISOFormatter(activeDate)).toBe(OTHER_MONTH_DATE)
     })
 
-    it('should load other month data when change month', async () => {
+    it('should load other month data when change day from Widget Calendar', async () => {
+      const mockedDeadLinesA = getMockedDeadlines()
       vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([{
-          date: TEST_DATE,
+          date: SAME_MONTH_DATE,
           deadlines: [],
         }])
+        .mockResolvedValueOnce([{
+          date: OTHER_MONTH_DATE,
+          deadlines: mockedDeadLinesA,
+        }])
+      const wrapper = createWrapper({
+        global: {
+          stubs: {
+            ScheduleDrawer,
+            DeadlineList,
+            ActionBar,
+            PDatePicker: {
+              name: 'PDatePicker',
+              template: '<div />',
+              props: ['pSchedulesCollection'],
+              emits: ['panel-change'],
+            },
+            Calendar: {
+              name: 'Calendar',
+              template: '<div />',
+              props: ['deadlinesByDate'],
+            },
+          },
+        },
+      })
+      await flushPromises()
+
+      const datePicker = wrapper.findComponent({ name: 'PDatePicker' })
+      expect(datePicker.props('pSchedulesCollection')).toStrictEqual([SAME_MONTH_DATE])
+
+      datePicker.vm.$emit('update:model-value', new Date(OTHER_MONTH_DATE))
+
+      await nextTick()
+      vi.advanceTimersByTime(300)
+      await nextTick()
+
+      await flushPromises()
+      const expectedDeadlinesByDate: DeadlinesByDate[] = [{
+        date: OTHER_MONTH_DATE,
+        deadlines: mockedDeadLinesA,
+      }]
+
+      const calendar = wrapper.findComponent({ name: 'Calendar' })
+      expect(calendar.props('deadlinesByDate')).toStrictEqual(expectedDeadlinesByDate)
+    })
+
+    it('should load other month data when change month from widget Calendar', async () => {
+      vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([{
           date: SAME_MONTH_DATE,
           deadlines: [],
@@ -319,6 +388,50 @@ describe('home page', () => {
 
       const calendarWidgetLoaderAfter = findCalendarWidgetLoader(wrapper)
       expect(calendarWidgetLoaderAfter.exists()).toBeFalsy()
+
+      expect(datePicker.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
+    })
+
+    it('should load other month data when change active date from calendar', async () => {
+      vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+        .mockResolvedValueOnce([{
+          date: SAME_MONTH_DATE,
+          deadlines: [],
+        }])
+        .mockResolvedValueOnce([{
+          date: OTHER_MONTH_DATE,
+          deadlines: [],
+        }])
+      const wrapper = createWrapper({
+        global: {
+          stubs: {
+            ScheduleDrawer,
+            DeadlineList,
+            ActionBar,
+            PDatePicker: {
+              name: 'PDatePicker',
+              template: '<div />',
+              props: ['pSchedulesCollection'],
+              emits: ['panel-change'],
+            },
+            Calendar: {
+              name: 'Calendar',
+              template: '<div />',
+              emits: ['update:model-value'],
+            },
+          },
+        },
+      })
+      await flushPromises()
+
+      const datePicker = wrapper.findComponent({ name: 'PDatePicker' })
+      expect(datePicker.props('pSchedulesCollection')).toStrictEqual([SAME_MONTH_DATE])
+
+      const calendar = wrapper.findComponent({ name: 'Calendar' })
+      calendar.vm.$emit('update:model-value', new Date(OTHER_MONTH_DATE))
+
+      await flushPromises()
 
       expect(datePicker.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
     })

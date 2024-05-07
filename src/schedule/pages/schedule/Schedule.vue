@@ -42,13 +42,14 @@
       />
 
       <PDatePicker
-        v-model="activeDate"
+        :modelValue="activeDate"
         pType="date"
         pValueFormat="YYYY-MM-DD"
         pFormat="YYYY-MM-DD"
         pCalendarLite
         :pTeleported="false"
         :pSchedulesCollection="calendarWidgetDates"
+        @update:model-value="onCalendarWidgetUpdate"
         @panel-change="onCalendarWidgetChange"
       />
       <WidgetActiveDay
@@ -68,7 +69,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { PLoader, PDatePicker } from '@kpmg/styleguide'
+import { PLoader, PDatePicker, type PDatePickerModelValue } from '@kpmg/styleguide'
 import { debounce } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
@@ -108,12 +109,11 @@ const rangeDate = computed((): [Date, Date] => {
 
 const props = defineProps<ScheduleProps>()
 
-onMounted(() => {
+onMounted(async () => {
   activeDate.value = props.defaultActiveDateString
     ? new Date(props.defaultActiveDateString)
     : new Date()
-  refreshData()
-  refreshCalendarWidgetData()
+  await refreshData()
 })
 
 const updateDrawerDisplay = () => {
@@ -129,6 +129,10 @@ function setActiveDate(date: Date) {
   debounceRefreshData()
 }
 
+function onCalendarWidgetUpdate(date: PDatePickerModelValue) {
+  onUpdateActiveDate(date as Date)
+}
+
 function onClickDate(dateIso: string) {
   setActiveDate(new Date(dateIso))
 }
@@ -138,23 +142,29 @@ async function refreshData() {
     isLoading.value = true
     const monthRange = getMonthInterval(activeDate.value, 7)
     deadlineItems.value = await getSchedulesCollection(monthRange)
+    setCalendarWidgetDates(deadlineItems.value)
   } catch (error) {
     console.warn(error)
   } finally {
     isLoading.value = false
   }
 }
+
 async function refreshCalendarWidgetData() {
   try {
     calendarWidgetIsLoading.value = true
     const monthRange = getMonthInterval(calendarWidgetDate.value, 7)
     const deadlineItems = await getSchedulesCollection(monthRange)
-    calendarWidgetDates.value = getDates(deadlineItems)
+    setCalendarWidgetDates(deadlineItems)
   } catch (error) {
     console.warn(error)
   } finally {
     calendarWidgetIsLoading.value = false
   }
+}
+
+function setCalendarWidgetDates(deadlineItems: DeadlinesByDate[]) {
+  calendarWidgetDates.value = getDates(deadlineItems)
 }
 
 function onUpdateActiveDate(newActiveDate: Date) {
@@ -172,10 +182,10 @@ function onCloseDrawer() {
   debounceRefreshData()
 }
 
-async function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
+function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
   calendarWidgetDate.value = newCalendarWidgetDate
 
-  await debounceRefreshCalendarWidgetData()
+  debounceRefreshCalendarWidgetData()
 }
 
 const activeDateDeadlines = computed(() => {
