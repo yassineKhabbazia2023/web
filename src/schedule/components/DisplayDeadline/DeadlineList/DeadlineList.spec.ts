@@ -15,13 +15,14 @@ vi.mock('@/schedule/services', () => ({
 }))
 
 describe('list component', () => {
-  it('should emit update-drawer-display event', () => {
-    const scheduleId = '123456789'
+  it('should emit select-deadline event when first ListItem emits select-deadline', () => {
+    const occurrenceId = '123456789'
 
     const wrapper = createWrapper(notCompletelyDoneDeadlinesByDateMock)
-    wrapper.vm.pushDrawerEvent(scheduleId)
-    expect(wrapper.emitted('update-drawer-display')).toStrictEqual([
-      [scheduleId],
+    const firstListItem = wrapper.findComponent({ name: 'ListItem' })
+    firstListItem.vm.$emit('select-deadline', occurrenceId)
+    expect(wrapper.emitted('select-deadline')).toStrictEqual([
+      [occurrenceId],
     ])
   })
 

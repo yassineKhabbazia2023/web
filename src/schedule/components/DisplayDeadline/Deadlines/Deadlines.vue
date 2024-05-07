@@ -73,7 +73,7 @@ const scheduleModelsByKey = ref<Record<string, string>>()
 const props = defineProps<DeadlinesProps>()
 
 const emit = defineEmits<{
-  'update-drawer-visibility': [value: string]
+  'select-deadline': [value: string]
 }>()
 
 const getToolboxElements = (status: Status): PToolboxItemProps[] => {
@@ -96,7 +96,7 @@ const getToolboxElements = (status: Status): PToolboxItemProps[] => {
 }
 
 const pushEventToListItem = () => {
-  emit('update-drawer-visibility', '')
+  emit('select-deadline', '')
 }
 
 const internalList = computed(() => {

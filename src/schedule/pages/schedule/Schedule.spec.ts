@@ -95,21 +95,6 @@ describe('home page', () => {
     expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedMonthRange)
   })
 
-  it('should display the drawer', async () => {
-    const wrapper = createWrapper({
-      global: {
-        stubs: {
-          ScheduleDrawer,
-          DeadlineList,
-        },
-      },
-    })
-    expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeFalsy()
-    wrapper.vm.updateDrawerDisplay()
-    await nextTick()
-    expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
-  })
-
   function findCalendarWidgetLoader(wrapper: VueWrapper) {
     return wrapper.find('[data-test-id="schedule-calendar-widget-loader"]')
   }
@@ -119,16 +104,23 @@ describe('home page', () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
-            ScheduleDrawer,
+            ScheduleDrawer: {
+              name: 'ScheduleDrawer',
+              template: '<div />',
+            },
             DeadlineList,
-            ActionBar,
+            ActionBar: {
+              name: 'ActionBar',
+              template: '<div />',
+              emits: ['create-schedule'],
+            },
           },
         },
       })
 
-      expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeFalsy()
-      await wrapper.findComponent(ActionBar).vm.$emit('display-deadline-drawer')
-      expect(wrapper.findComponent(ScheduleDrawer).exists()).toBeTruthy()
+      expect(wrapper.findComponent({ name: 'ScheduleDrawer' }).exists()).toBeFalsy()
+      await wrapper.findComponent({ name: 'ActionBar' }).vm.$emit('create-schedule')
+      expect(wrapper.findComponent({ name: 'ScheduleDrawer' }).exists()).toBeTruthy()
     })
 
     it('should give filtered deadlines of current month to DeadlineList', async () => {

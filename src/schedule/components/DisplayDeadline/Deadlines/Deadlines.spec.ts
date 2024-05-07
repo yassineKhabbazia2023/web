@@ -102,7 +102,7 @@ describe('deadline component', () => {
       .toBe(deadlineData[0].globalStatus)
   })
 
-  it('should emit update-drawer-visibility event', async () => {
+  it('should emit select-deadline event', async () => {
     const deadlineData: Deadline[] = [
       {
         id: 1,
@@ -122,7 +122,7 @@ describe('deadline component', () => {
 
     const wrapper = createWrapper(deadlineData)
     await wrapper.find('.p-schedule-deadline__content').trigger('click')
-    expect(wrapper.emitted('update-drawer-visibility')).toStrictEqual([
+    expect(wrapper.emitted('select-deadline')).toStrictEqual([
       [''],
     ])
   })

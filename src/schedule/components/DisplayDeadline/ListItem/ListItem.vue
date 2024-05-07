@@ -19,7 +19,7 @@
     <div class="flex flex--direction-column flex--grow-1 margin-left--4">
       <Deadlines
         :deadlines="deadlinesByDate.deadlines"
-        @update-drawer-visibility="pushEventToList"
+        @select-deadline="emit('select-deadline', $event)"
       />
     </div>
   </div>
@@ -47,10 +47,8 @@ const formattedDate = computed(() => {
 })
 
 const emit = defineEmits<{
-  'update-drawer-visibility': [scheduleId: string]
+  'select-deadline': [scheduleId: string]
 }>()
-
-const pushEventToList = (scheduleId: string) => emit('update-drawer-visibility', scheduleId)
 
 const today = new Date()
 

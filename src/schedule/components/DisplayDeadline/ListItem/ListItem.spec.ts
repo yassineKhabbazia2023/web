@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
@@ -112,12 +113,15 @@ describe('schedule item', () => {
     expect(scheduleListItem.classes()).toContain('schedule-list-item--is-today')
   })
 
-  it('should emit update-drawer-visibility event', () => {
-    const scheduleId = '123456789'
+  it('should emit select-deadline event', async () => {
+    const occurrenceId = 123456789
     const wrapper = createWrapper(deadlinesByDate)
-    wrapper.vm.pushEventToList(scheduleId)
-    expect(wrapper.emitted('update-drawer-visibility')).toStrictEqual([
-      [scheduleId],
+    const firstDeadline = wrapper.findComponent({ name: 'Deadlines' })
+    firstDeadline.vm.$emit('select-deadline', occurrenceId)
+    await nextTick()
+
+    expect(wrapper.emitted('select-deadline')).toStrictEqual([
+      [occurrenceId],
     ])
   })
 })

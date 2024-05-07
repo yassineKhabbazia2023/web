@@ -7,7 +7,7 @@
         :deadlinesByDate="deadlineByDate"
         :isActiveDate="activeDateIso === deadlineByDate.date"
         class="cursor-pointer"
-        @update-drawer-visibility="pushDrawerEvent"
+        @select-deadline="emit('select-deadline', $event)"
         @click="$emit('click-date', deadlineByDate.date)"
       />
     </PScrollbar>
@@ -47,11 +47,10 @@ const { t, d } = useI18n({
 })
 
 const emit = defineEmits<{
-  'update-drawer-display': [scheduleId: string]
+  'select-deadline': [scheduleId: string]
   'click-date': [string]
 }>()
 
-const pushDrawerEvent = (scheduleId: string) => emit('update-drawer-display', scheduleId)
 const activeDateIso = computed(() => dateISOFormatter(props.activeDate))
 </script>
 

@@ -12,7 +12,7 @@ const createWrapper = (options: ComponentMountingOptions<any>) =>
 
 describe('action bar', () => {
   describe('interactions', () => {
-    it('should emit displayDeadlineDrawer when create deadline button is clicked', async () => {
+    it('should emit create-schedule when create deadline button is clicked', async () => {
       const wrapper = createWrapper({
         props: {
           activeDate: new Date(TEST_DATE),
@@ -22,7 +22,7 @@ describe('action bar', () => {
 
       await wrapper.find('[data-testid="create-schedule"]').trigger('click')
 
-      expect(wrapper.emitted('displayDeadlineDrawer')).toHaveLength(1)
+      expect(wrapper.emitted('create-schedule')).toHaveLength(1)
     })
 
     it('should emit update:modelValue on tab change', () => {

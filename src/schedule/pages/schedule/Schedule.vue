@@ -11,7 +11,7 @@
       <ActionBar
         v-model="scheduleViewType"
         :activeDate="activeDate"
-        @display-deadline-drawer="updateDrawerDisplay"
+        @create-schedule="updateDrawerDisplay"
         @calendar-event="onCalendarEvent"
       />
 
@@ -19,7 +19,7 @@
         v-if="scheduleViewType === 'list'"
         :deadlinesByDate="filteredDeadlineItems"
         :activeDate="activeDate"
-        @update-drawer-display="updateDrawerDisplay"
+        @select-deadline="updateDrawerDisplay"
         @click-date="onClickDate"
       />
 

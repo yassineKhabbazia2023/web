@@ -28,7 +28,7 @@
       </PTabs>
 
       <PButton
-        @click="$emit('displayDeadlineDrawer')"
+        @click="$emit('create-schedule')"
         pType="primary"
         pSize="small"
         data-testid="create-schedule"
@@ -51,7 +51,7 @@ import MonthSelection from '@/schedule/components/Common/MonthSelection'
 
 const props = defineProps<ActionBarProps>()
 const emit = defineEmits<{
-  displayDeadlineDrawer: [void]
+  'create-schedule': []
   'update:modelValue': [value: string]
   'calendar-event': [{type: string, date: Date}]
 }>()
