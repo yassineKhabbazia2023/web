@@ -66,8 +66,8 @@ function onTokenChanges(token: string) {
 
 const handleRenew = async () => {
   isVisibleDialog.value = false
-  const baseUrl = `/refreshToken?userId=${sub}`
-  const { data: token } = await commonApi().auth.post(baseUrl)
+  const baseUrl = `authentication/api/refreshToken?userId=${sub}`
+  const { data: token } = await commonApi().gateway.post(baseUrl)
   tokenService.setToken(token)
   clearTimeout(timer)
 }
