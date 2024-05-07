@@ -5,6 +5,7 @@ import Login from './'
 import { tokenService } from '@kpmg/common'
 
 const USER_ID = 'customUserId'
+const GIGYA_USER_ID = 'customGigyaUserId'
 const WEB_TOKEN = 'customToken'
 
 const mockStorePatch = vi.fn()
@@ -50,6 +51,13 @@ vi.mock('@/composable/useInitUserAuth', () => ({
         },
       })
     }),
+    setStoreGigyaUserId: vi.fn(() => {
+      mockStorePatch({
+        user: {
+          gigyaUserId: GIGYA_USER_ID,
+        },
+      })
+    }),
   }),
 }))
 let wrapper: VueWrapper<any>
@@ -90,11 +98,16 @@ describe('login', () => {
       password: INPUT_PASSWORD_VALUE,
     })
 
-    expect(mockStorePatch).toHaveBeenCalledTimes(1)
+    expect(mockStorePatch).toHaveBeenCalledTimes(2)
     expect(mockStorePatch).toHaveBeenCalledWith({
       user: {
         id: USER_ID,
         isCollab: false,
+      },
+    })
+    expect(mockStorePatch).toHaveBeenCalledWith({
+      user: {
+        gigyaUserId: GIGYA_USER_ID,
       },
     })
 
