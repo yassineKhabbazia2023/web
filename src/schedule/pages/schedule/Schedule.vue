@@ -113,7 +113,6 @@ onMounted(async () => {
     ? new Date(props.defaultActiveDateString)
     : new Date()
   await refreshData()
-  setCalendarWidgetDates(deadlineItems.value)
 })
 
 const updateDrawerDisplay = () => {
@@ -138,6 +137,7 @@ async function refreshData() {
     isLoading.value = true
     const monthRange = getMonthInterval(activeDate.value, 7)
     deadlineItems.value = await getSchedulesCollection(monthRange)
+    setCalendarWidgetDates(deadlineItems.value)
   } catch (error) {
     console.warn(error)
   } finally {

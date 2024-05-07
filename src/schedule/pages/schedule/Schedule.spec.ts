@@ -288,7 +288,7 @@ describe('home page', () => {
       expect(dateISOFormatter(activeDate)).toBe(OTHER_MONTH_DATE)
     })
 
-    it('should load other month data when change month', async () => {
+    it('should load other month data when change month from widget Calendar', async () => {
       vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([{
@@ -335,6 +335,50 @@ describe('home page', () => {
 
       const calendarWidgetLoaderAfter = findCalendarWidgetLoader(wrapper)
       expect(calendarWidgetLoaderAfter.exists()).toBeFalsy()
+
+      expect(datePicker.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
+    })
+
+    it('should load other month data when change active date from calendar', async () => {
+      vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+        .mockResolvedValueOnce([{
+          date: SAME_MONTH_DATE,
+          deadlines: [],
+        }])
+        .mockResolvedValueOnce([{
+          date: OTHER_MONTH_DATE,
+          deadlines: [],
+        }])
+      const wrapper = createWrapper({
+        global: {
+          stubs: {
+            ScheduleDrawer,
+            DeadlineList,
+            ActionBar,
+            PDatePicker: {
+              name: 'PDatePicker',
+              template: '<div />',
+              props: ['pSchedulesCollection'],
+              emits: ['panel-change'],
+            },
+            Calendar: {
+              name: 'Calendar',
+              template: '<div />',
+              emits: ['update:model-value'],
+            },
+          },
+        },
+      })
+      await flushPromises()
+
+      const datePicker = wrapper.findComponent({ name: 'PDatePicker' })
+      expect(datePicker.props('pSchedulesCollection')).toStrictEqual([SAME_MONTH_DATE])
+
+      const calendar = wrapper.findComponent({ name: 'Calendar' })
+      calendar.vm.$emit('update:model-value', new Date(OTHER_MONTH_DATE))
+
+      await flushPromises()
 
       expect(datePicker.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
     })
