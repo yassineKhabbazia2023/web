@@ -42,13 +42,14 @@
       />
 
       <PDatePicker
-        v-model="activeDate"
+        :modelValue="activeDate"
         pType="date"
         pValueFormat="YYYY-MM-DD"
         pFormat="YYYY-MM-DD"
         pCalendarLite
         :pTeleported="false"
         :pSchedulesCollection="calendarWidgetDates"
+        @update:model-value="onCalendarWidgetUpdate"
         @panel-change="onCalendarWidgetChange"
       />
       <WidgetActiveDay
@@ -68,7 +69,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { PLoader, PDatePicker } from '@kpmg/styleguide'
+import { PLoader, PDatePicker, type PDatePickerModelValue } from '@kpmg/styleguide'
 import { debounce } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
@@ -126,6 +127,10 @@ function onCalendarEvent({ date }: { date: Date }) {
 function setActiveDate(date: Date) {
   activeDate.value = date
   debounceRefreshData()
+}
+
+function onCalendarWidgetUpdate(date: PDatePickerModelValue) {
+  onUpdateActiveDate(date as Date)
 }
 
 function onClickDate(dateIso: string) {
