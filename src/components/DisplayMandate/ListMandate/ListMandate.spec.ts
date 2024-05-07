@@ -174,11 +174,13 @@ describe('mandate collection', () => {
     await wrapper.vm.sortColumnChange({ order: 'ascending', prop: 'erpId' })
 
     const refreshMandateCollectionEventBefore: any = wrapper.emitted('refresh-mandate-collection')
-    expect(refreshMandateCollectionEventBefore[0]).toStrictEqual([{ sortOrder: 'Ascending', sortCriteria: 'ErpId' }])
+    expect(refreshMandateCollectionEventBefore[0])
+      .toStrictEqual([{ sortOrder: 'Ascending', sortCriteria: 'ErpId' }])
     await wrapper.vm.sortColumnChange({ order: 'descending', prop: '' })
 
     const refreshMandateCollectionEventAfter = wrapper.emitted('refresh-mandate-collection')
-    expect(refreshMandateCollectionEventAfter?.[1]).toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
+    expect(refreshMandateCollectionEventAfter?.[1])
+      .toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
   })
   it('submit the signed mandate', async () => {
     const currentPage = 2
@@ -224,7 +226,8 @@ describe('mandate collection', () => {
     expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: '123', file })
     expect(showNotificationSpy).toHaveBeenCalledTimes(2)
     expect(showNotificationSpy).toHaveBeenNthCalledWith(1, notificationMessages, 'loading')
-    expect(showNotificationSpy).toHaveBeenNthCalledWith(2, notificationMessages, 'success', mockedNotification)
+    expect(showNotificationSpy)
+      .toHaveBeenNthCalledWith(2, notificationMessages, 'success', mockedNotification)
     const refreshMandateCollectionEvent = wrapper.emitted('refresh-mandate-collection')
     expect(refreshMandateCollectionEvent).toStrictEqual([[{
       currentPage,

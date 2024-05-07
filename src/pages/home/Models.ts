@@ -4,6 +4,7 @@ export interface Mandate {
     companyName: string
     accountNumber: string
     bankName: string
+    jdcPartnership: string | number
     creationDate: string
     modificationDate: string
     statusCode: string

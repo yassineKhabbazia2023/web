@@ -7,7 +7,9 @@
       data-testid="mandate-table"
       @sort-change="sortColumnChange"
     >
-      <template v-for="({ label, prop, sortable, width, dataTestId }, index) in tableHead" :key="index">
+      <template
+        v-for="({ label, prop, sortable, width, dataTestId }, index) in tableHead"
+        :key="index">
         <PTableColumn
           v-if="label === 'Actions'"
           :label="label"
@@ -20,7 +22,7 @@
             <PToolbox
               trigger="click"
               data-testid="mandate-actions-toolbox"
-              :pElements="actionsBuilder(scope.row.statusCode)"
+              :pElements="actionsBuilder(scope.row.statusCode, scope.row.jdcPartnership)"
               @p-toolbox-item-clicked="actionClicked($event, scope.row)">
               <PButton pType="generic">
                 <PIcon color="#A4A4A4" size="14px">
@@ -166,6 +168,7 @@ const dataFormatter = (data: any) =>
       companyName,
       accountNumber,
       bankName,
+      jdcPartnership,
       creationDate,
       modificationDate,
       statusCode,
@@ -175,6 +178,7 @@ const dataFormatter = (data: any) =>
       companyName,
       accountNumber,
       bankName,
+      jdcPartnership,
       creationDate: dateFormatter(creationDate),
       modificationDate: dateFormatter(modificationDate),
       statusCode: statusCode.toString(),
@@ -201,9 +205,10 @@ const tableHead = [
   { label: `${t('status')}`, prop: 'statusCode', sortable: true, width: '105' },
   { label: 'Actions', sortable: false, width: '72' },
 ]
-const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
+const actionsBuilder = (statusCode: string | number, jdcPartnership: string | number): PToolboxItemProps[] => {
   const statusCodeNumber = Number(statusCode)
-  return [
+  const jdcPartnershipNumber = Number(jdcPartnership)
+  const actions: PToolboxItemProps[] = [
     {
       pIconName: 'PIDownload',
       pValue: t('download-pre-filled-mandate'),
@@ -219,13 +224,6 @@ const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
       pState: 'default',
     },
     {
-      pIconName: 'PIDownload',
-      pValue: t('download-signed-mandate'),
-      disabled: [20, 50].includes(statusCodeNumber),
-      pActionName: 'download-signed-mandate',
-      pState: 'default',
-    },
-    {
       pIconName: 'PIXCircle',
       pValue: t('cancel-telecollection'),
       disabled: statusCodeNumber !== 40,
@@ -233,6 +231,18 @@ const actionsBuilder = (statusCode: string | number): PToolboxItemProps[] => {
       pState: 'danger',
     },
   ]
+
+  if (jdcPartnershipNumber !== 2) {
+    actions.push({
+      pIconName: 'PIDownload',
+      pValue: t('download-signed-mandate'),
+      disabled: [20, 50].includes(statusCodeNumber),
+      pActionName: 'download-signed-mandate',
+      pState: 'default',
+    })
+  }
+
+  return actions
 }
 
 const sortColumnChange = ({ order, prop }: any) => {
