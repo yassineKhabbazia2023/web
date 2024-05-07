@@ -13,6 +13,7 @@
       @click="emit('clickNext')"
       data-testid="nextButton"
       :pDisabled="props.isNextButtonDisabled"
+      :pLoading="props.isNextButtonLoading"
     >
       {{ nextLabel }}
     </PButton>
@@ -25,6 +26,7 @@ import { PButton } from '@kpmg/styleguide'
 
 const props = withDefaults(defineProps<NextPreviousButtonsProps>(), {
   isNextButtonDisabled: false,
+  isNextButtonLoading: false,
 })
 
 const emit = defineEmits<{
