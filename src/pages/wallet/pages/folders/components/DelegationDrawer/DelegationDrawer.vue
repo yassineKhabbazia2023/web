@@ -59,6 +59,7 @@
         :previousLabel="previousButtonLabel"
         :nextLabel="isSpecificDelegationFlowType ? t('submitButtonLabel') : nextButtonLabel"
         :isNextButtonDisabled="!selectedCollaborators.length"
+        :isNextButtonLoading="isNextButtonLoading"
         @click-previous="handlePreviousClick"
         @click-next="handleNextClick"
       />
@@ -124,6 +125,8 @@ function handlePreviousClick() {
 const userStore = commonStore()
 const currentUserId = userStore.$state.user?.id
 
+const isNextButtonLoading = ref<boolean>(false)
+
 async function handleNextClick() {
   if (activeStep.value === 0) {
     delegationDetails.value = formatCollaboratorsDetailsForDelegateSummary()
@@ -136,7 +139,10 @@ async function handleNextClick() {
       delegationDetails: formatDelegateSummaryForDelegationRequest(delegationDetails.value),
       accountIds: getAccountIdFromSelectedFolders(),
     }
+    isNextButtonLoading.value = true
     await delegateFolder(delegationRequest)
+    isNextButtonLoading.value = false
+    handleCloseDrawer()
   } else {
     activeStep.value++
   }
@@ -188,7 +194,6 @@ const delegateFolder = async (delegationRequest: any) => {
     handleDisplayNotification(false, delegationRequest.accountIds.length)
     console.error(err)
   }
-  handleCloseDrawer()
 }
 
 const displaySuccessNotification = (message:string) => {
@@ -242,17 +247,38 @@ const handleCloseDrawer = () => {
 
 <i18n lang="yaml">
 en-US:
-  walletDelegation: "Delegate my wallet"
-  folderDelegation: "Delegate a folder | Delegate multiple folders"
-  addCollaborator: "Add a collaborator"
-  automaticDelegation: "Automatic delegation"
-  cancelButtonLabel: "Cancel"
-  previousButtonLabel: "Cancel"
-  nextButtonLabel: "Next"
-  submitButtonLabel: "Submit"
+  walletDelegation: 'Delegate my wallet'
+  folderDelegation: 'Delegate a folder | Delegate multiple folders'
+  addCollaborator: 'Add a collaborator'
+  automaticDelegation: 'Automatic delegation'
+  cancelButtonLabel: 'Cancel'
+  previousButtonLabel: 'Cancel'
+  nextButtonLabel: 'Next'
+  submitButtonLabel: 'Submit'
   notificationMessages:
     flowTypeFull:
-      successNotificationMessage: "Votre portefeuille a été délégué avec succès."
+      successNotificationMessage: 'Your wallet has been successfully delegated.'
+      failureNotificationMessage: 'Your wallet was not delegated due to a technical error.'
+    flowTypeSpecific:
+      successNotificationMessage: >
+        The folder has been successfully delegated. |
+        The folders have been successfully delegated.
+      failureNotificationMessage: >
+        The folder was not delegated following a technical error. |
+        The folders were not delegated following a technical error.
+
+fr-FR:
+  walletDelegation: 'Déléguer mon portefeuille'
+  folderDelegation: 'Déléguer un dossier | Déléguer plusieurs dossiers'
+  addCollaborator: 'Ajout des collaborateurs'
+  automaticDelegation: 'Délégation automatique'
+  cancelButtonLabel: 'Annuler'
+  previousButtonLabel: 'Précedent'
+  nextButtonLabel: 'Suivant'
+  submitButtonLabel: 'Valider'
+  notificationMessages:
+    flowTypeFull:
+      successNotificationMessage: 'Votre portefeuille a été délégué avec succès.'
       failureNotificationMessage: "Votre portefeuille n’a pas été délégué suite à une erreur technique."
     flowTypeSpecific:
       successNotificationMessage: >
@@ -261,26 +287,4 @@ en-US:
       failureNotificationMessage: >
         Le dossier n’a pas été délégué suite à une erreur technique. |
         Les dossiers n’ont pas été délégués suite à une erreur technique.
-
-fr-FR:
-  walletDelegation: "Déléguer mon portefeuille"
-  folderDelegation: "Déléguer un dossier | Déléguer plusieurs dossiers"
-  addCollaborator: "Ajout des collaborateurs"
-  automaticDelegation: "Délégation automatique"
-  cancelButtonLabel: "Annuler"
-  previousButtonLabel: "Précedent"
-  nextButtonLabel: "Suivant"
-  submitButtonLabel: "Valider"
-  notificationMessages:
-    flowTypeFull:
-      successNotificationMessage: "Votre portefeuille a été délégué avec succès."
-      failureNotificationMessage: "Votre portefeuille n’a pas été délégué suite à une erreur technique."
-    flowTypeSpecific:
-      successNotificationMessage: >
-        Le dossier a été délégué avec succès. |
-        Les dossiers ont été délégués avec succès."
-      failureNotificationMessage: >
-        Le dossier n’a pas été délégué suite à une erreur technique. |
-        Les dossiers n’ont pas été délégués suite à une erreur technique.
-
 </i18n>

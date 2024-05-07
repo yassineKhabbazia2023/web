@@ -212,9 +212,17 @@ describe('delegationDrawer', () => {
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
-        const nextPreviousButtonWrapper = findNextPreviousButton(wrapper)
-        await nextPreviousButtonWrapper.vm.$emit('click-next')
-        await nextPreviousButtonWrapper.vm.$emit('click-next')
+        const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+        const getNextButton = () => nextPreviousButtonsWrapper.findAll('button')[1]
+
+        expect(getNextButton().attributes('disabled')).toBeUndefined()
+        expect(getNextButton().classes('is-loading')).toBeFalsy()
+
+        await nextPreviousButtonsWrapper.vm.$emit('click-next')
+        await nextPreviousButtonsWrapper.vm.$emit('click-next')
+
+        expect(getNextButton().attributes('disabled')).toBeDefined()
+        expect(getNextButton().classes('is-loading')).toBeTruthy()
 
         expect(gatewayPostMock).toHaveBeenCalledOnce()
         expect(gatewayPostMock).toHaveBeenCalledWith(
@@ -244,6 +252,10 @@ describe('delegationDrawer', () => {
         )
 
         await flushPromises()
+
+        expect(getNextButton().attributes('disabled')).toBeUndefined()
+        expect(getNextButton().classes('is-loading')).toBeFalsy()
+
         expect(getNotificationSuccess()).toHaveLength(1)
       })
 
@@ -258,9 +270,9 @@ describe('delegationDrawer', () => {
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
-        const nextPreviousButtonWrapper = findNextPreviousButton(wrapper)
-        await nextPreviousButtonWrapper.vm.$emit('click-next')
-        await nextPreviousButtonWrapper.vm.$emit('click-next')
+        const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+        await nextPreviousButtonsWrapper.vm.$emit('click-next')
+        await nextPreviousButtonsWrapper.vm.$emit('click-next')
 
         expect(gatewayPostMock).toHaveBeenCalledOnce()
 
@@ -270,12 +282,20 @@ describe('delegationDrawer', () => {
 
       it('should directly post user on "specific" delegation flow type', async () => {
         const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+        const getNextButton = () => nextPreviousButtonsWrapper.findAll('button')[1]
 
         expect(getNotificationSuccess()).toHaveLength(0)
 
         const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
-        nextPreviousButtonsWrapper.vm.$emit('click-next')
+
+        expect(getNextButton().attributes('disabled')).toBeUndefined()
+        expect(getNextButton().classes('is-loading')).toBeFalsy()
+
+        await nextPreviousButtonsWrapper.vm.$emit('click-next')
+
+        expect(getNextButton().attributes('disabled')).toBeDefined()
+        expect(getNextButton().classes('is-loading')).toBeTruthy()
 
         expect(gatewayPostMock).toHaveBeenCalledWith(
           'wallet/api/delegations',
@@ -302,7 +322,12 @@ describe('delegationDrawer', () => {
             isFullDelegation: false,
           },
         )
+
         await flushPromises()
+
+        expect(getNextButton().attributes('disabled')).toBeUndefined()
+        expect(getNextButton().classes('is-loading')).toBeFalsy()
+
         expect(getNotificationSuccess()).toHaveLength(1)
       })
     })
