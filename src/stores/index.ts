@@ -31,11 +31,11 @@ export const store = defineStore('common', {
         if (state.user?.isCollab) {
           msalInstance.logout()
         } else {
-          const urlLogout = '/logout'
+          const urlLogout = 'authentication/api/logout'
           const data = {
-            userId: state?.user?.id,
+            gigyaUserId: state?.user?.gigyaUserId,
           }
-          await api().auth.post(urlLogout, data)
+          await api().gateway.post(urlLogout, data)
         }
         state.user = null
       } catch (e) {

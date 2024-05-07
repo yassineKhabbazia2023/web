@@ -26,4 +26,5 @@ export interface UserInfo {
   email: string
   entities: Entities
   isCollab: boolean
+  gigyaUserId: string
 }
