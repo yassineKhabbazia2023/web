@@ -5,6 +5,7 @@ import Login from './'
 import { tokenService } from '@kpmg/common'
 
 const USER_ID = 'customUserId'
+const GIGYA_USER_ID = 'customGigyaUserId'
 const WEB_TOKEN = 'customToken'
 
 const mockStorePatch = vi.fn()
@@ -29,7 +30,7 @@ vi.mock('vue-router', () => ({
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    auth: {
+    gateway: {
       post: mockAuthPost,
     },
   }),
@@ -47,6 +48,13 @@ vi.mock('@/composable/useInitUserAuth', () => ({
         user: {
           id: USER_ID,
           isCollab: false,
+        },
+      })
+    }),
+    setStoreGigyaUserId: vi.fn(() => {
+      mockStorePatch({
+        user: {
+          gigyaUserId: GIGYA_USER_ID,
         },
       })
     }),
@@ -85,16 +93,21 @@ describe('login', () => {
     await wrapper.vm.handleSubmit(getForm())
 
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
-    expect(mockAuthPost).toHaveBeenCalledWith('login', {
+    expect(mockAuthPost).toHaveBeenCalledWith('authentication/api/login', {
       email: INPUT_EMAIL_VALUE,
       password: INPUT_PASSWORD_VALUE,
     })
 
-    expect(mockStorePatch).toHaveBeenCalledTimes(1)
+    expect(mockStorePatch).toHaveBeenCalledTimes(2)
     expect(mockStorePatch).toHaveBeenCalledWith({
       user: {
         id: USER_ID,
         isCollab: false,
+      },
+    })
+    expect(mockStorePatch).toHaveBeenCalledWith({
+      user: {
+        gigyaUserId: GIGYA_USER_ID,
       },
     })
 

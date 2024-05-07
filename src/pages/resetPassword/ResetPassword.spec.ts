@@ -24,7 +24,7 @@ const mockAuthPost = vi.fn((_url, { email }) => {
 })
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    auth: {
+    gateway: {
       post: mockAuthPost,
     },
   }),
@@ -55,9 +55,12 @@ describe('reset password', () => {
     await wrapper.vm.handleSubmit(getForm())
 
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
-    expect(mockAuthPost).toHaveBeenCalledWith('sendResetPasswordLink', {
-      email: INPUT_EMAIL_VALUE,
-    })
+    expect(mockAuthPost).toHaveBeenCalledWith(
+      'authentication/api/sendResetPasswordLink',
+      {
+        email: INPUT_EMAIL_VALUE,
+      },
+    )
 
     expect(mockRouterPush).toHaveBeenCalledWith({
       path: '/resetPasswordSuccess',

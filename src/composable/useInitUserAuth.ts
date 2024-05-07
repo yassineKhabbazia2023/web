@@ -6,6 +6,19 @@ import { ref } from 'vue'
 export default function useInitUserAuth() {
   const isTokenRetrieve = ref(false)
   const { fetchUserData } = dataProvider()
+
+  const setStoreGigyaUserId = (gigyaUserId: string) => {
+    const token = tokenService.getToken()
+
+    if (token) {
+      store().$patch({
+        user: {
+          gigyaUserId,
+        },
+      })
+    }
+  }
+
   const initAuthClient = async () => {
     const token = tokenService.getToken()
     isTokenRetrieve.value = !!token
@@ -34,5 +47,5 @@ export default function useInitUserAuth() {
     })
   }
 
-  return { initAuthCollab, initAuthClient, isTokenRetrieve }
+  return { initAuthCollab, initAuthClient, isTokenRetrieve, setStoreGigyaUserId }
 }

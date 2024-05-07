@@ -83,7 +83,7 @@ import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
 import useInitUserAuth from '@/composable/useInitUserAuth'
 import useNavigation from '@/composable/useNavigation'
 
-const { initAuthClient } = useInitUserAuth()
+const { initAuthClient, setStoreGigyaUserId } = useInitUserAuth()
 const { navigateToCustomerWallet } = useNavigation()
 
 const { t } = useI18n({
@@ -154,15 +154,17 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     const {
       data: {
         webToken: token,
+        userId,
       },
-    } = await commonApi().auth.post('login', toRaw(formValues))
+    } = await commonApi().gateway.post('authentication/api/login', toRaw(formValues))
 
     tokenService.setToken(token)
     await initAuthClient()
+    setStoreGigyaUserId(userId)
 
     navigateToCustomerWallet()
   } catch (error: any) {
-    const hasEmailOrPasswordInvalid = error.response?.data?.anomaly?.errorCode === '403042'
+    const hasEmailOrPasswordInvalid = error.response?.data?.errorCode === '403042'
     if (hasEmailOrPasswordInvalid) {
       hasCustomError.value = true
     }

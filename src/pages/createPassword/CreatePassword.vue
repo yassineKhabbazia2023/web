@@ -191,17 +191,17 @@ const submitForm = (formEl: FormInstance | undefined) => {
         resetPasswordToken,
       }
       const urlAcceptTerms = `/Activation/AcceptTerms?contactId=${contactId}`
-      const urlUpdatePassword = '/createResetPassword'
+      const urlUpdatePassword = 'authentication/api/createNewPassword'
       try {
         await commonApi().onboarding.patch(urlAcceptTerms)
-        await commonApi().auth.post(urlUpdatePassword, data)
-        const urlLogin = '/login'
+        await commonApi().gateway.post(urlUpdatePassword, data)
+        const urlLogin = 'authentication/api/login'
         const {
           data: {
             userId: id,
             webToken: token,
           },
-        } = await commonApi().auth.post(urlLogin, { email, password: formValue.password })
+        } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
         tokenService.setToken(token)
         store().$patch({
           user: {
@@ -219,9 +219,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
 const isValidToken = async (): Promise<any> => {
   const token = route.query.token
-  const urlValidToken = `/Activation/IsInvitationTokenValid?invitationToken=${token}`
+  const urlValidToken = `authentication/api/IsInvitationTokenValid?invitationToken=${token}`
   try {
-    const { data: value } = await commonApi().onboarding.get(urlValidToken)
+    const { data: value } = await commonApi().gateway.get(urlValidToken)
     return value
   } catch {}
 }

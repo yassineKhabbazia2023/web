@@ -121,7 +121,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   }
   try {
     isLoading.value = true
-    await commonApi().auth.post('sendResetPasswordLink', toRaw(formValues))
+    await commonApi().gateway.post('authentication/api/sendResetPasswordLink', toRaw(formValues))
     isLoading.value = false
     router.push({
       path: '/resetPasswordSuccess',

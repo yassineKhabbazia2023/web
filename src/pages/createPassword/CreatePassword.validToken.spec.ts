@@ -43,12 +43,12 @@ const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     onboarding: {
+      patch: patchMock,
+    },
+    gateway: {
       get: () => ({
         data: true,
       }),
-      patch: patchMock,
-    },
-    auth: {
       post: postMock,
     },
   }),
@@ -118,8 +118,8 @@ describe('page creation password', () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
     await flushPromises()
     const patchLink = '/Activation/AcceptTerms?contactId=contactId'
-    const postLink = '/createResetPassword'
-    const loginLink = '/login'
+    const postLink = 'authentication/api/createNewPassword'
+    const loginLink = 'authentication/api/login'
     const data = {
       contactId: 'contactId',
       password: 'aaAA11@@',

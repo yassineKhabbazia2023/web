@@ -23,7 +23,7 @@ function createWrapper() {
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    onboarding: {
+    gateway: {
       get: () => ({
         data: false,
       }),
