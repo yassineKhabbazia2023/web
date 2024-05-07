@@ -54,7 +54,7 @@ import { useI18n } from 'vue-i18n'
 import Tag from '@/schedule/components/Common/Tag'
 import Icon from '@/schedule/components/Common/Icon'
 import {
-  PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton,
+  PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import type { Status } from '@/schedule/models/Deadline'
@@ -79,14 +79,14 @@ const emit = defineEmits<{
 const getToolboxElements = (status: Status): PToolboxItemProps[] => {
   return [
     {
-      pIconName: 'PIEye',
+      pIconName: PIEye,
       pValue: t('reminder-details'),
       disabled: !status,
       pActionName: 'view-reminder-details',
       pState: 'default',
     },
     {
-      pIconName: 'PITrash',
+      pIconName: PITrash,
       pValue: t('delete-reminder'),
       disabled: !status,
       pActionName: 'delete-reminder',
