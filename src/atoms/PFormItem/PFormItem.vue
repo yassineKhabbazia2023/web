@@ -12,7 +12,13 @@
     :for="pFor"
     :validateStatus="pValidateStatus"
   >
+    <template v-if="$slots.label" #label>
+      <slot name="label" />
+    </template>
     <slot />
+    <template v-if="$slots.error" #error>
+      <slot name="error" />
+    </template>
   </ElFormItem>
 </template>
 
