@@ -4,31 +4,27 @@
       {{ t('hello') }} {{ user?.firstName }}
     </h3>
 
-    <PTabs
-      v-model="activeTab"
-      @tab-click="handleTabClick"
-    >
-      <PTabPane
-        v-for="tab in tabs"
-        :pLabel="tab.trad"
-        :name="tab.name"
-        :key="tab.name"
-      />
+    <PTabs v-model="activeTab" @tab-click="handleTabClick">
+      <template v-for="tab in tabs" :key="tab.name">
+        <PTabPane
+          v-if="tab.display"
+          :pLabel="tab.title"
+          :name="tab.name"
+        />
+      </template>
       <router-view />
     </PTabs>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import { useRouter, useRoute } from 'vue-router'
-import {
-  PTabs,
-  PTabPane,
-} from '@kpmg/styleguide'
 import { computed } from 'vue'
-import { commonStore } from '@kpmg/common'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { useRouter, useRoute } from 'vue-router'
+import { PTabs, PTabPane } from '@kpmg/styleguide'
+import { commonStore, userPermissions } from '@kpmg/common'
+import { PERMISSION_CODES } from '@/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -37,44 +33,52 @@ const { t } = useI18n({
 
 const route = useRoute()
 const router = useRouter()
+const { hasPermission } = userPermissions()
 const { user, isCollab } = storeToRefs(commonStore())
 
 const activeTab = computed(() => route.name as string)
 const collaboratorsTabs = [
   {
     name: 'folders',
-    trad: t('wallet'),
+    title: t('wallet'),
+    display: true,
   },
   {
     name: 'folderMandats',
-    trad: t('mandate'),
+    title: t('mandate'),
+    display: hasPermission(PERMISSION_CODES.MANDATE),
   },
   {
     name: 'subscriptions',
-    trad: t('subscriptions'),
+    title: t('subscriptions'),
+    display: hasPermission(PERMISSION_CODES.SUBSCRIPTIONS),
   },
   {
     name: 'collaborators',
-    trad: t('collaborators'),
+    title: t('collaborators'),
+    display: hasPermission(PERMISSION_CODES.COLLABORATORS),
   },
   {
     name: 'history',
-    trad: t('history'),
+    title: t('history'),
+    display: hasPermission(PERMISSION_CODES.HISTORY),
   },
 ]
 
 const clientTabs = [
   {
     name: 'entity-client',
-    trad: t('allEntities'),
+    title: t('allEntities'),
+    display: true,
   },
   {
     name: 'allUsers',
-    trad: t('allUsers'),
+    title: t('allUsers'),
+    display: hasPermission(PERMISSION_CODES.USERS),
   },
 ]
 
-const tabs = computed(() => isCollab.value ? collaboratorsTabs : clientTabs)
+const tabs = computed(() => (isCollab.value ? collaboratorsTabs : clientTabs))
 
 const handleTabClick = (tab: any) => {
   router.push({ name: tab.paneName })

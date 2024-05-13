@@ -1,14 +1,15 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { commonStore } from '@kpmg/common'
+import { PERMISSION_CODES } from '@/constants'
 import Wallet from './'
 
 const pinia = createTestingPinia()
 
 const mockRouterPush = vi.fn()
+const mockHasPermission = vi.fn((_code: string) => true)
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -28,6 +29,9 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
     },
   }),
+  userPermissions: () => ({
+    hasPermission: mockHasPermission,
+  }),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -37,16 +41,8 @@ const createWrapper = (): VueWrapper<any> =>
       plugins: [pinia],
     },
   })
-const collaboratorsTabs = [
-  'Wallet',
-  'Mandate',
-  'MOD requests',
-  'Collaborators',
-]
-const clientTabs = [
-  'All entities',
-  'All users',
-]
+const collaboratorsTabs = ['Wallet', 'Mandate', 'MOD requests', 'Collaborators']
+const clientTabs = ['All entities', 'All users']
 
 describe('dossier', () => {
   let wrapper: VueWrapper<any>
@@ -67,16 +63,27 @@ describe('dossier', () => {
     ['collaborators', 'tab-collaborators'],
     ['history', 'tab-history'],
   ]
-  it.each(PARAMS)(
-    'should redirect when click on %s',
-    (tabs, tabsName) => {
-      document.getElementById(tabsName)?.click()
-      expect(mockRouterPush).toHaveBeenCalledTimes(1)
-      expect(mockRouterPush).toHaveBeenCalledWith({
-        name: tabs,
-      })
-    },
-  )
+  it.each(PARAMS)('should redirect when click on %s', (tabs, tabsName) => {
+    document.getElementById(tabsName)?.click()
+    expect(mockRouterPush).toHaveBeenCalledTimes(1)
+    expect(mockRouterPush).toHaveBeenCalledWith({
+      name: tabs,
+    })
+  })
+
+  it('should only display tabs to which the user has permission to access', () => {
+    mockHasPermission.mockImplementation((code: string) =>
+      [PERMISSION_CODES.COLLABORATORS, PERMISSION_CODES.HISTORY].includes(code),
+    )
+    wrapper = createWrapper()
+    const collaboratorsTabsAccess = ['Wallet', 'Collaborators', 'History']
+    const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
+
+    collaboratorsTabsAccess.forEach((tabPane, index) => {
+      const label = tabsPane.at(index)?.props('pLabel')
+      expect(label).toBe(tabPane)
+    })
+  })
 
   it('should display the correct tab when user is collab', () => {
     const tabsPane = wrapper.findAllComponents({ name: 'ElTabPane' })

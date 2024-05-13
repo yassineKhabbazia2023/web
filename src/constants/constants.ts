@@ -18,3 +18,12 @@ export const DATE_TIME_FORMATS = {
 } as Record<string, DefineDateTimeFormat>
 
 export const PAGE_SIZES = [15, 30, 45, 60]
+
+export const PERMISSION_CODES = {
+  MANDATE: 'COMAND001',
+  SUBSCRIPTIONS: 'COOFF002',
+  COLLABORATORS: 'COADMI001',
+  HISTORY: 'COGES001',
+  POWERBI_REPORT: 'CORAP001',
+  USERS: 'CLUSER001',
+}
