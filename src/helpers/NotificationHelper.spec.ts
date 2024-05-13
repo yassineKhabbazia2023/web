@@ -9,6 +9,7 @@ vi.mock('@kpmg/styleguide', () => {
     PICheck: 'PICheck',
     PIExclamationTriangle: 'PIExclamationTriangle',
     PILoader: 'PILoader',
+    PIDownload: 'PIDownload',
     PNotification: vi.fn(),
   }
 })

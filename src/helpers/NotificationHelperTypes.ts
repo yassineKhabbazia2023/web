@@ -1,7 +1,8 @@
 export type NotificationMessagesByType = {
-  loading: string
-  success: string
-  error: string
+  loading?: string
+  success?: string
+  error?: string
+  downloading?: string
 }
 
 export type NotificationHandle = {

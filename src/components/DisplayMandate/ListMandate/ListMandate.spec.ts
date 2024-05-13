@@ -218,6 +218,7 @@ describe('mandate collection', () => {
     fileInput.dispatchEvent(changeEvent)
     await flushPromises()
     const notificationMessages = {
+      downloading: 'The download is in preparation',
       error: 'There was an error during transmission',
       loading: 'The signed mandate is being transmitted...',
       success: 'The signed mandate has been submitted!',

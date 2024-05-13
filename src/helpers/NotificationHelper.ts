@@ -10,11 +10,12 @@ const ICONS_BY_TYPE = {
   loading: PILoader,
   success: PICheck,
   error: PIExclamationTriangle,
+  downloading: PILoader,
 }
 
 export function showNotification(
   messagesByType: NotificationMessagesByType | undefined,
-  type: 'loading' | 'success' | 'error',
+  type: 'loading' | 'success' | 'error' | 'downloading',
   previousNotification?: NotificationHandle,
 ) {
   previousNotification?.close()

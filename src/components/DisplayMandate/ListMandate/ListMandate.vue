@@ -287,12 +287,10 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   { id: string, accountNumber: string, companyName: string }) => {
   const actions: Record<any, () => Promise<void> | void> = {
     'download-pre-filled-mandate': async () => {
-      const { data } = await downloadUnsignedMandate(id)
-      await saveFile(id, data, 'unsigned')
+      await downloadAndSaveMandate(downloadUnsignedMandate, id, 'unsigned')
     },
     'download-signed-mandate': async () => {
-      const { data } = await downloadSignedMandate(id)
-      await saveFile(id, data, 'signed')
+      await downloadAndSaveMandate(downloadSignedMandate, id, 'signed')
     },
     'submit-signed-mandate': () => {
       // Dynamically create a file input and set its attributes
@@ -324,7 +322,7 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
 }
 
 const handleFileUpload = async (event: any, id: string) => {
-  const messages = getNotificationMessages()
+  const messages = getNotificationMessages('upload')
   const notification = showNotification(messages, 'loading')
 
   try {
@@ -358,11 +356,26 @@ const terminateMandateAction = async (mandateId: string) => {
   }
 }
 
-function getNotificationMessages(): NotificationMessagesByType {
+function getNotificationMessages(action: 'upload' | 'download'): NotificationMessagesByType {
   return {
     loading: t('notification.loading'),
     success: t('notification.success'),
-    error: t('notification.error'),
+    error: action === 'upload' ? t('notification.error') : t('notification.downloading-error'),
+    downloading: t('notification.downloading'),
+  }
+}
+
+const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandateType: string) => {
+  const messages = getNotificationMessages('download')
+  const notification = showNotification(messages, 'downloading')
+  try {
+    const { data } = await downloadFunction(id)
+    await saveFile(id, data, mandateType)
+  } catch (error) {
+    console.error('Error downloading mandate:', error)
+    showNotification(messages, 'error', notification)
+  } finally {
+    notification.close()
   }
 }
 </script>
@@ -395,6 +408,8 @@ function getNotificationMessages(): NotificationMessagesByType {
           loading: 'The signed mandate is being transmitted...'
           success: 'The signed mandate has been submitted!'
           error: 'There was an error during transmission'
+          downloading: 'The download is in preparation'
+          downloading-error: 'There was an error during preparation'
     fr-FR:
         ibs-code: 'Code IBS'
         company-name: 'Raison sociale'
@@ -422,4 +437,6 @@ function getNotificationMessages(): NotificationMessagesByType {
           loading: 'Le mandat signé est en cours de transmission...'
           success: 'Le mandat signé a bien été déposé !'
           error: 'Il y a eu une erreur lors de la transmission'
+          downloading: 'Le téléchargement est en cours de préparation'
+          downloading-error: "Il y'a eu une erreur lors de la préparation"
 </i18n>

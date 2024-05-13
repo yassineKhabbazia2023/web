@@ -70,6 +70,8 @@ import {
 } from '@kpmg/styleguide'
 import { downloadUnsignedMandate } from '@/services/mandate'
 import { downloadFile, saveFileAs } from '@/helpers/utils'
+import { showNotification } from '@/helpers/NotificationHelper'
+import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
 const props = defineProps({
   mandateId: {
     type: String,
@@ -78,6 +80,11 @@ const props = defineProps({
 })
 
 const downloadMandate = async () => {
+  const messages: NotificationMessagesByType = {
+    downloading: t('notification.downloading'),
+    error: t('notification.downloading-error'),
+  }
+  const notification = showNotification(messages, 'downloading')
   try {
     const { data } = await downloadUnsignedMandate(props.mandateId)
     if ('showSaveFilePicker' in window) {
@@ -93,6 +100,9 @@ const downloadMandate = async () => {
     }
   } catch (error) {
     console.error('Error downloading file:', error)
+    showNotification(messages, 'error', notification)
+  } finally {
+    notification.close()
   }
 }
 
@@ -154,6 +164,9 @@ const { t } = useI18n({
     help-label-prefix: 'Consult the '
     help-label-link: 'practical guide'
     help-label-suffix: ' to ensure that the collection is active'
+    notification:
+      downloading: 'The download is in preparation'
+      downloading-error: 'There was an error during preparation'
   fr-FR:
     generated-mandate: 'Le mandat est généré !'
     manual-sign: 'signature manuscrite.'
@@ -163,4 +176,7 @@ const { t } = useI18n({
     help-label-prefix: 'Consultez le '
     help-label-link: 'guide pratique'
     help-label-suffix: " pour garantir l'activation de la collecte"
+    notification:
+      downloading: 'Le téléchargement est en cours de préparation'
+      downloading-error: "Il y'a eu une erreur lors de la préparation"
 </i18n>
