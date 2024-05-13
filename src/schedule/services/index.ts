@@ -1,5 +1,5 @@
 import { commonApi as api } from '@kpmg/common'
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { DeadlinesByDate, Occurrence } from '@/schedule/models/Deadline'
 import type { Account } from '@/schedule/models/Account'
 import type { KeyLabel } from '@/schedule/models/commonTypes'
 import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
@@ -67,3 +67,9 @@ export const getFrequenciesCollection = () => {
   return Promise.resolve(['Monthly', 'None'])
 }
 
+export async function getOccurrence(occurenceId: number) {
+  const url = `/occurrences/${occurenceId}`
+  const { data } = await api().schedule.get<Occurrence>(url)
+
+  return data
+}
