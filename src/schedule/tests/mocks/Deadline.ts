@@ -97,7 +97,8 @@ export function getMockedBasicDeadline() {
 
 export function getMockedDeadline(override: Partial<Deadline> = {}) {
   const defaultDeadline: Deadline = {
-    id: 1,
+    scheduleId: 1,
+    occurrenceId: 1,
     time: '',
     template: {
       typeShortCollaborator: '',

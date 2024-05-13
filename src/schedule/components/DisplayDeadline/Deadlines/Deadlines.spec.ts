@@ -75,22 +75,8 @@ describe('deadline component', () => {
   })
 
   it('should emit select-deadline event', async () => {
-    const deadlineData: Deadline[] = [
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 2, name: 'Account 2', status: 'Todo' },
-        ],
-      },
-    ]
+    const deadline = getSmartMockedDeadline()
+    const deadlineData: Deadline[] = [deadline]
 
     const wrapper = createWrapper(deadlineData)
     await wrapper.find('.p-schedule-deadline__content').trigger('click')

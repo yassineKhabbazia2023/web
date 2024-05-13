@@ -11,7 +11,8 @@ export interface DeadlineAccount extends Account {
     status: Status
 }
 export interface Deadline {
-  id: number
+  scheduleId: number
+  occurrenceId: number
   time: string
   template: Template
   globalStatus: Status
