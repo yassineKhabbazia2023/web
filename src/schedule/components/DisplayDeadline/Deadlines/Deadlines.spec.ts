@@ -7,6 +7,7 @@ import type { Deadline } from '@/schedule/models/Deadline'
 import { expect, describe, it, vi } from 'vitest'
 import { collabUser } from '@/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
+import { getSmartMockedDeadline } from '@/schedule/tests/mocks/Deadline'
 
 const pinia = createTestingPinia()
 
@@ -27,21 +28,7 @@ vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 
-const deadlineData: Deadline[] = [{
-  id: 1,
-  time: '09:01:56',
-  template: {
-    typeShortCustomer: 'TVA',
-    typeShortCollaborator: 'TVA au 21',
-    typeLong: 'Taxe sur la valeur ajoutée',
-    typeShort: 'TVA',
-  },
-  globalStatus: 'Done',
-  accountList: [
-    { id: 1, name: 'Account 1', status: 'Done' },
-    { id: 2, name: 'Account 2', status: 'Todo' },
-  ],
-}]
+const deadlineData: Deadline[] = [getSmartMockedDeadline()]
 
 const createWrapper = (deadlines: Deadline[]) =>
   wrapperFactory(Deadlines, {
@@ -76,22 +63,7 @@ describe('deadline component', () => {
   })
 
   it('should renders list item information with ibs name', async () => {
-    const deadlineData: Deadline[] = [
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 2, name: 'Account 2', status: 'Todo' },
-        ],
-      },
-    ]
+    const deadlineData: Deadline[] = [getSmartMockedDeadline('1/2 files done')]
 
     const wrapper = createWrapper(deadlineData)
     await flushPromises()

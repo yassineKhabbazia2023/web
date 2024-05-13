@@ -1,204 +1,116 @@
-import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
-import { recipientsIdCollection } from './Account'
-import type { Deadline, DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { DeadlineAccount, Template, Deadline, DeadlinesByDate } from '@/schedule/models/Deadline'
 
-export const notCompletelyDoneDeadlinesByDateMock: DeadlinesByDate[] = [
-  {
+export function getNotCompletelyDoneDeadlinesByDateMock(): DeadlinesByDate[] {
+  const template = getTvaMockedTemplate()
+  const deadlineAccount1done = getMockedDeadlineAccount(1, 'Done')
+  const deadlineAccount2todo = getMockedDeadlineAccount(2, 'Todo')
+
+  const deadline = getMockedDeadline({
+    time: '09:01:56',
+    template,
+    accountList: [
+      deadlineAccount1done,
+      deadlineAccount2todo,
+    ],
+  })
+  const deadlines = [deadline]
+
+  return [{
     date: '2024-02-22',
-    deadlines: [
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 1, name: 'Account 1', status: 'Done' },
-          { id: 2, name: 'Account 2', status: 'Todo' },
-        ],
-      },
-    ],
-  },
-  {
+    deadlines,
+  }, {
     date: '2024-02-21',
-    deadlines: [
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 1, name: 'Account 1', status: 'Done' },
-          { id: 2, name: 'Account 2', status: 'Todo' },
-        ],
-      },
-    ],
-  },
-]
-
-export const doneDeadlinesByDateMock: DeadlinesByDate[] = [
-  {
-    date: '2024-02-22',
-    deadlines: [
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 1, name: 'Account 1', status: 'Done' },
-        ],
-      },
-    ],
-  },
-  {
-    date: '2024-02-21',
-    deadlines: [
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 1, name: 'Account 1', status: 'Done' },
-        ],
-      },
-    ],
-  },
-]
-
-const frequency = 'None'
-const date = '2024-03-20'
-const time = ''
-
-export const createScheduleMock: Schedule = {
-  template: {
-    typeShort: 'TVA',
-  },
-  targets: recipientsIdCollection,
-  scheduling: {
-    date,
-    time,
-    frequency,
-  },
-  description: '',
-  isDraft: false,
-  isPrivate: false,
+    deadlines,
+  }]
 }
 
-export const createScheduleMockWithTypeLong: Schedule = {
-  template: {
-    typeShort: 'autre',
-    typeLong: 'IS',
-  },
-  targets: recipientsIdCollection,
-  scheduling: {
-    date,
-    time,
-    frequency: 'Monthly',
-  },
-  description: '',
-  isDraft: false,
-  isPrivate: false,
+export function getMockedDeadlineAccount(
+  id: number,
+  status: DeadlineAccount['status'],
+  name?: string,
+): DeadlineAccount {
+  return {
+    id,
+    status,
+    name: name ?? `Account ${id}`,
+  }
 }
 
-export const demoDeadlinesByDateMock: DeadlinesByDate[] = [
-  {
-    date: '2024-03-10',
-    deadlines: [
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 1, name: 'Account 1', status: 'Done' },
-          { id: 2, name: 'Account 2', status: 'Todo' },
-          { id: 3, name: 'Account 1', status: 'Done' },
-          { id: 4, name: 'Account 2', status: 'Todo' },
-        ],
-      },
-      {
-        id: 1,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Todo',
-        accountList: [
-          { id: 1, name: 'Account 1', status: 'Done' },
-          { id: 2, name: 'Account 2', status: 'Todo' },
-          { id: 3, name: 'Account 1', status: 'Done' },
-          { id: 4, name: 'Account 2', status: 'Todo' },
-        ],
-      },
-      {
-        id: 3,
-        time: '09:01:56',
-        template: {
-          typeShortCustomer: 'TVA',
-          typeShortCollaborator: 'TVA au 21',
-          typeLong: 'Taxe sur la valeur ajoutée',
-          typeShort: 'TVA',
-        },
-        globalStatus: 'Done',
-        accountList: [
-          { id: 1, name: 'Account 1', status: 'Done' },
-          { id: 2, name: 'Account 2', status: 'Todo' },
-          { id: 3, name: 'Account 1', status: 'Done' },
-          { id: 4, name: 'Account 2', status: 'Todo' },
-        ],
-      },
+export function getDoneDeadlinesByDateMock(): DeadlinesByDate[] {
+  const template = getTvaMockedTemplate()
+  const deadlineAccount1done = getMockedDeadlineAccount(1, 'Done')
+
+  const deadline = getMockedDeadline({
+    time: '09:01:56',
+    template,
+    accountList: [
+      deadlineAccount1done,
     ],
-  },
-]
+  })
+  const deadlines = [deadline]
+
+  return [{
+    date: '2024-02-22',
+    deadlines,
+  }, {
+    date: '2024-02-21',
+    deadlines,
+  }]
+}
 
 export function getMockedDeadlines(): Deadline[] {
-  return [
-    {
-      id: 1,
-      time: '',
-      template: {
-        typeShortCollaborator: 'TVA au 21',
-        typeShortCustomer: 'TVA',
-        typeLong: 'Taxe sur la valeur ajoutée',
-        typeShort: 'TVA',
-      },
-      globalStatus: 'Done',
-      accountList: [{
-        id: 66842913356,
-        name: 'Aperture science',
-        status: 'Todo',
-      }],
-    },
-  ]
+  return [getMockedBasicDeadline()]
 }
 
-export const frequenciesMock: string[] = ['Monthly', 'None']
+export function getTvaMockedTemplate(): Template {
+  return {
+    typeShortCollaborator: 'TVA au 21',
+    typeShortCustomer: 'TVA',
+    typeLong: 'Taxe sur la valeur ajoutée',
+    typeShort: 'TVA',
+  }
+}
+
+export function getSmartMockedDeadline(deadlineAccount1Name?: string) {
+  const template = getTvaMockedTemplate()
+  const deadlineAccount1done = getMockedDeadlineAccount(1, 'Done', deadlineAccount1Name)
+  const deadlineAccount2todo = getMockedDeadlineAccount(2, 'Todo')
+
+  return getMockedDeadline({
+    template,
+    accountList: [
+      deadlineAccount1done,
+      deadlineAccount2todo,
+    ],
+  })
+}
+
+export function getMockedBasicDeadline() {
+  const template = getTvaMockedTemplate()
+  const deadlineAccount = getMockedDeadlineAccount(66842913356, 'Todo', 'Aperture science')
+
+  return getMockedDeadline({
+    template,
+    accountList: [deadlineAccount],
+  })
+}
+
+export function getMockedDeadline(override: Partial<Deadline> = {}) {
+  const defaultDeadline: Deadline = {
+    id: 1,
+    time: '',
+    template: {
+      typeShortCollaborator: '',
+      typeShortCustomer: '',
+      typeLong: '',
+      typeShort: '',
+    },
+    globalStatus: 'Done',
+    accountList: [],
+  }
+
+  return {
+    ...defaultDeadline,
+    ...override,
+  }
+}

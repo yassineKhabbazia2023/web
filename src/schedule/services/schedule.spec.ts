@@ -10,7 +10,8 @@ import {
 import type { Account } from '@/schedule/models/Account'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { doneDeadlinesByDateMock, createScheduleMock, frequenciesMock } from '@/schedule/tests/mocks/Deadline'
+import { getDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
+import { getMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
 import type { ScheduleModelLabelType } from './scheduleServiceTypes'
 
 const getMockApiImplementation = (mockData: Account[] | DeadlinesByDate[]) => Promise.resolve({
@@ -18,6 +19,8 @@ const getMockApiImplementation = (mockData: Account[] | DeadlinesByDate[]) => Pr
 })
 
 const scheduleId = '1234-332-32121-212'
+const doneDeadlinesByDateMock = getDoneDeadlinesByDateMock()
+const createScheduleMock = getMockSchedule()
 
 vi.mock('@kpmg/common', () => {
   return {

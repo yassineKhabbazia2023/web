@@ -9,8 +9,8 @@ import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { expect, describe, it, vi } from 'vitest'
 import { dateToLocaleFormat } from '@/schedule/helpers/utils'
 import {
-  notCompletelyDoneDeadlinesByDateMock,
-  doneDeadlinesByDateMock,
+  getNotCompletelyDoneDeadlinesByDateMock,
+  getDoneDeadlinesByDateMock,
 } from '@/schedule/tests/mocks/Deadline'
 import { collabUser } from '@/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
@@ -44,10 +44,12 @@ const createWrapper = (deadlinesByDate: DeadlinesByDate, isActiveDate = false) =
 
 commonStore(pinia)
 
+const doneDeadlinesByDateMock = getDoneDeadlinesByDateMock()
 const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[0]
 
 describe('schedule item', () => {
   it('renders list item information with files progress', async () => {
+    const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
     const deadlinesByDate: DeadlinesByDate = notCompletelyDoneDeadlinesByDateMock[0]
 
     const wrapper = createWrapper(deadlinesByDate)

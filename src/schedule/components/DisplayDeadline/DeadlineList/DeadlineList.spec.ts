@@ -2,7 +2,9 @@ import List from '.'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { expect, describe, it, vi } from 'vitest'
-import { notCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
+import { getNotCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
+
+const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
 
 const activeDate = new Date(2024, 5, 1)
 const createWrapper = (deadlinesByDate: DeadlinesByDate[]) =>

@@ -1,10 +1,7 @@
 import { getDeadlineCompletionSummary, getProgressText } from '@/schedule/helpers/deadlineHelper'
 import { expect, describe, it } from 'vitest'
-import type { Deadline, DeadlineAccount, Status } from '@/schedule/models/Deadline'
-import { notCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
-
-const accountsList: Deadline['accountList'] =
-  notCompletelyDoneDeadlinesByDateMock[0].deadlines[0].accountList
+import type { DeadlineAccount, Status } from '@/schedule/models/Deadline'
+import { getNotCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 
 function getMockedAccount(id: number, status: Status): DeadlineAccount {
   return {
@@ -17,7 +14,10 @@ function getMockedAccount(id: number, status: Status): DeadlineAccount {
 describe('deadline helpers', () => {
   describe('getDeadlineCompletionSummary', () => {
     it('should return completion object', () => {
-      const summary = getDeadlineCompletionSummary(accountsList)
+      const mockDeadlines = getNotCompletelyDoneDeadlinesByDateMock()
+      const accountList = mockDeadlines[0].deadlines[0].accountList
+
+      const summary = getDeadlineCompletionSummary(accountList)
       expect(summary).toStrictEqual({
         accountsAmount: 2,
         accountsWithCompletedDeadline: 1,

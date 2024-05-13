@@ -13,7 +13,11 @@ import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/Dropd
 import type { FormProps } from './CreateScheduleFormTypes'
 import { accountsCollection, recipientsIdCollection } from '@/schedule/tests/mocks/Account'
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
-import { createScheduleMock, createScheduleMockWithTypeLong, frequenciesMock } from '@/schedule/tests/mocks/Deadline'
+import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock }
+  from '@/schedule/tests/mocks/Schedule'
+
+const createScheduleMock = getMockSchedule()
+const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
 
 const createWrapper = (props: FormProps) =>
   wrapperFactory(CreateScheduleForm, { props })

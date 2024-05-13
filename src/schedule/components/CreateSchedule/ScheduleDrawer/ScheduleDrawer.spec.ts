@@ -5,7 +5,9 @@ import { expect, describe, it, vi } from 'vitest'
 import * as scheduleService from '@/schedule/services'
 import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { createScheduleMockWithTypeLong, frequenciesMock } from '@/schedule/tests/mocks/Deadline'
+import { getMonthlyMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
+
+const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
 
 const createWrapper = (props: any = {}) =>
   wrapperFactory(ScheduleDrawer, {

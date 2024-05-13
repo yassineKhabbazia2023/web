@@ -2,12 +2,12 @@ import type { Account } from '@/schedule/models/Account'
 
 export type Frequency = 'None' | 'Weekly' | 'Monthly' | 'Quarterly' | 'Yearly'
 
-interface Template {
+export interface Template {
   typeShort: string
   typeLong?: string
 }
 
-interface Scheduling {
+export interface Scheduling {
   date: string
   time: string
   frequency: Frequency

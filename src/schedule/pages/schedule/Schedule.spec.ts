@@ -33,21 +33,7 @@ vi.mock('@/schedule/services', () => ({
   }),
   getSchedulesCollection: () => Promise.resolve([{
     date: TEST_DATE,
-    deadlines: [
-      {
-        template: {
-          typeShortCollaborator: 'TVA au 21',
-          typeShortCustomer: 'TVA',
-          typeLong: 'Taxe sur la valeur ajoutée',
-        },
-        globalStatus: 'Done',
-        accountList: [{
-          id: '66842913356',
-          name: 'Aperture science',
-          status: 'Todo',
-        }],
-      },
-    ],
+    deadlines: getMockedDeadlines(),
   }]),
   getAccountsCollection: () => Promise.resolve({
     status: 'fulfilled',

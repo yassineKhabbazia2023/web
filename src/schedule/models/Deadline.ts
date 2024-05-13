@@ -1,18 +1,15 @@
 import type { Account } from './Account'
 
 export type Status = 'Done' | 'Todo' | 'Draft'
-
-interface Template {
+export interface Template {
   typeShortCustomer: string
   typeShortCollaborator: string
   typeLong: string
   typeShort: string
 }
-
 export interface DeadlineAccount extends Account {
     status: Status
 }
-
 export interface Deadline {
   id: number
   time: string

@@ -8,10 +8,12 @@ import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import Calendar from '.'
 import type { CalendarProps } from './CalendarTypes'
 import { PCalendar } from '@kpmg/styleguide'
-import { notCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
+import { getNotCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 import { collabUser } from '@/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
 import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
+
+const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
 
 const pinia = createTestingPinia()
 vi.mock('@kpmg/common', () => ({
