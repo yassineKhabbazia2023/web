@@ -23,3 +23,28 @@ export interface DeadlinesByDate {
   date: string
   deadlines: Deadline[]
 }
+
+interface User {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+}
+
+interface Schedule {
+  id: number
+  description: string
+  attachment: string | null
+  frequency: string
+  reminders: number[]
+  createdBy?: User
+}
+
+export interface Occurrence {
+  id: number
+  occurrenceDate: string
+  schedule: Schedule
+  template: Template
+  globalStatus: string
+  accountList: DeadlineAccount[]
+}
