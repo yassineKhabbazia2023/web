@@ -44,6 +44,11 @@ vi.mock('@/schedule/services', () => ({
 
 const mockedToday = new Date(TEST_DATE)
 
+const OccurrenceDrawerStub = {
+  name: 'OccurrenceDrawer',
+  template: '<div />',
+}
+
 describe('home page', () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -56,6 +61,7 @@ describe('home page', () => {
         stubs: {
           ScheduleDrawer,
           DeadlineList,
+          OccurrenceDrawer: OccurrenceDrawerStub,
         },
       },
     })
@@ -71,6 +77,7 @@ describe('home page', () => {
         stubs: {
           ScheduleDrawer,
           DeadlineList,
+          OccurrenceDrawer: OccurrenceDrawerStub,
         },
       },
     })
@@ -146,6 +153,7 @@ describe('home page', () => {
               name: 'Calendar',
               template: '<div />',
             },
+            OccurrenceDrawer: OccurrenceDrawerStub,
           },
         },
       })
@@ -167,6 +175,7 @@ describe('home page', () => {
             ScheduleDrawer,
             DeadlineList,
             ActionBar,
+            OccurrenceDrawer: OccurrenceDrawerStub,
           },
         },
       })
@@ -199,6 +208,7 @@ describe('home page', () => {
               ScheduleDrawer,
               DeadlineList,
               ActionBar,
+              OccurrenceDrawer: OccurrenceDrawerStub,
             },
           },
         })
@@ -237,6 +247,7 @@ describe('home page', () => {
             ScheduleDrawer,
             DeadlineList,
             ActionBar,
+            OccurrenceDrawer: OccurrenceDrawerStub,
           },
         },
       })
@@ -252,6 +263,7 @@ describe('home page', () => {
             ScheduleDrawer,
             DeadlineList,
             ActionBar,
+            OccurrenceDrawer: OccurrenceDrawerStub,
           },
         },
       })
@@ -342,6 +354,7 @@ describe('home page', () => {
               props: ['pSchedulesCollection'],
               emits: ['panel-change'],
             },
+            OccurrenceDrawer: OccurrenceDrawerStub,
           },
         },
       })
@@ -412,6 +425,59 @@ describe('home page', () => {
       await flushPromises()
 
       expect(datePicker.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
+    })
+
+    describe('when select-deadline', () => {
+      let wrapper: VueWrapper
+
+      beforeEach(async () => {
+        wrapper = createWrapper({
+          global: {
+            stubs: {
+              ScheduleDrawer,
+              DeadlineList,
+              ActionBar,
+              PDatePicker: true,
+              Calendar: true,
+            },
+          },
+        })
+        await flushPromises()
+
+        const actionBarWrapper = wrapper.findComponent({ name: 'ActionBar' })
+        actionBarWrapper.vm.$emit('update:modelValue', 'list')
+        await nextTick()
+      })
+
+      it('should display OccurrenceDrawer', async () => {
+        const occurrenceDrawerBefore = wrapper.findComponent({ name: 'OccurrenceDrawer' })
+        expect(occurrenceDrawerBefore.exists()).toBeFalsy()
+
+        const deadlineList = wrapper.findComponent({ name: 'DeadlineList' })
+        deadlineList.vm.$emit('select-deadline', 4)
+        await nextTick()
+
+        const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
+        expect(occurrenceDrawerAfter.exists()).toBeTruthy()
+
+        occurrenceDrawerAfter.vm.$emit('update:model-value', false)
+        await nextTick()
+      })
+
+      it('should hide OccurrenceDrawer when it is closed', async () => {
+        const deadlineList = wrapper.findComponent({ name: 'DeadlineList' })
+        deadlineList.vm.$emit('select-deadline', 4)
+        await nextTick()
+
+        const occurrenceDrawerBefore = wrapper.findComponent({ name: 'OccurrenceDrawer' })
+        expect(occurrenceDrawerBefore.exists()).toBeTruthy()
+
+        occurrenceDrawerBefore.vm.$emit('update:model-value', false)
+        await nextTick()
+
+        const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
+        expect(occurrenceDrawerAfter.exists()).toBeFalsy()
+      })
     })
   })
 })

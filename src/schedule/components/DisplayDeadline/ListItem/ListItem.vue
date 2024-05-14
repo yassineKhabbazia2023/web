@@ -47,7 +47,7 @@ const formattedDate = computed(() => {
 })
 
 const emit = defineEmits<{
-  'select-deadline': [scheduleId: string]
+  'select-deadline': [occurrenceId: number]
 }>()
 
 const today = new Date()

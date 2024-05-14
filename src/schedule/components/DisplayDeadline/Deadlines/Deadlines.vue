@@ -18,7 +18,7 @@
         padding-x--2
         flex--grow-1
       "
-      @click="pushEventToListItem"
+      @click="emit('select-deadline', item.occurrenceId)"
     >
       <Icon :status="item.globalStatus" />
       <span class="p-schedule-deadline__content-label font-semibold">
@@ -73,7 +73,7 @@ const scheduleModelsByKey = ref<Record<string, string>>()
 const props = defineProps<DeadlinesProps>()
 
 const emit = defineEmits<{
-  'select-deadline': [value: string]
+  'select-deadline': [occurrenceId: number]
 }>()
 
 const getToolboxElements = (status: Status): PToolboxItemProps[] => {
@@ -95,20 +95,17 @@ const getToolboxElements = (status: Status): PToolboxItemProps[] => {
   ]
 }
 
-const pushEventToListItem = () => {
-  emit('select-deadline', '')
-}
-
 const internalList = computed(() => {
   return props.deadlines
     .map((deadline) => {
-      const { globalStatus } = deadline
+      const { globalStatus, occurrenceId } = deadline
 
       const typeLabel = getTypeLabel(scheduleModelsByKey.value, deadline.template)
       const progressText = getProgressText(deadline.accountList, t('files-done'))
       const toolboxElements = getToolboxElements(deadline.globalStatus)
 
       return {
+        occurrenceId,
         globalStatus,
         typeLabel,
         progressText,

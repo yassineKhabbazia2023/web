@@ -18,7 +18,7 @@ vi.mock('@/schedule/services', () => ({
 
 describe('list component', () => {
   it('should emit select-deadline event when first ListItem emits select-deadline', () => {
-    const occurrenceId = '123456789'
+    const occurrenceId = 123456789
 
     const wrapper = createWrapper(notCompletelyDoneDeadlinesByDateMock)
     const firstListItem = wrapper.findComponent({ name: 'ListItem' })

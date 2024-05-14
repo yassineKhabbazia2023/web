@@ -47,7 +47,7 @@ const { t, d } = useI18n({
 })
 
 const emit = defineEmits<{
-  'select-deadline': [scheduleId: string]
+  'select-deadline': [occurrenceId: number]
   'click-date': [string]
 }>()
 

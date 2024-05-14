@@ -77,11 +77,12 @@ describe('deadline component', () => {
   it('should emit select-deadline event', async () => {
     const deadline = getSmartMockedDeadline()
     const deadlineData: Deadline[] = [deadline]
+    const { occurrenceId } = deadline
 
     const wrapper = createWrapper(deadlineData)
     await wrapper.find('.p-schedule-deadline__content').trigger('click')
     expect(wrapper.emitted('select-deadline')).toStrictEqual([
-      [''],
+      [occurrenceId],
     ])
   })
 })

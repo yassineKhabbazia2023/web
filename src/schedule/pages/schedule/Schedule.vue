@@ -11,7 +11,7 @@
       <ActionBar
         v-model="scheduleViewType"
         :activeDate="activeDate"
-        @create-schedule="updateDrawerDisplay"
+        @create-schedule="isDrawerVisible = true"
         @calendar-event="onCalendarEvent"
       />
 
@@ -19,7 +19,7 @@
         v-if="scheduleViewType === 'list'"
         :deadlinesByDate="filteredDeadlineItems"
         :activeDate="activeDate"
-        @select-deadline="updateDrawerDisplay"
+        @select-deadline="onSelectDeadline"
         @click-date="onClickDate"
       />
 
@@ -58,6 +58,14 @@
       />
     </div>
   </div>
+  <OccurrenceDrawer
+    v-if="occurrenceId !== undefined"
+    :modelValue="occurrenceId !== undefined"
+    :occurrenceId="occurrenceId"
+    :defaultCreateDate="activeDate"
+    appendToBody
+    @update:model-value="occurrenceId = undefined"
+  />
   <ScheduleDrawer
     v-if="isDrawerVisible"
     v-model="isDrawerVisible"
@@ -78,6 +86,7 @@ import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
+import OccurrenceDrawer from '@/schedule/components/OccurrenceDrawer'
 import { dateISOFormatter, getYearMonth } from '@/schedule/helpers/utils'
 import { getDates, getMonthInterval } from './ScheduleUtils'
 import type { ScheduleProps } from './ScheduleTypes'
@@ -90,6 +99,7 @@ const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
 const calendarWidgetDate = ref(new Date())
+const occurrenceId = ref<number>()
 
 const REFRESH_DATA_DELAY = 250
 
@@ -114,10 +124,11 @@ onMounted(async () => {
     ? new Date(props.defaultActiveDateString)
     : new Date()
   await refreshData()
+  setCalendarWidgetDates(deadlineItems.value)
 })
 
-const updateDrawerDisplay = () => {
-  isDrawerVisible.value = true
+function onSelectDeadline(selectedOccurrenceId: number) {
+  occurrenceId.value = selectedOccurrenceId
 }
 
 function onCalendarEvent({ date }: { date: Date }) {
