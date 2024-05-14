@@ -105,7 +105,7 @@ describe('add collaborators drawer', () => {
     })
 
     describe('nextPreviousButtons', () => {
-      it('should call api to complete delegation process when active step is 1', async () => {
+      it('should call api to add collaborators to entity', async () => {
         const addCollaboratorsCard = findAddCollaboratorsCardWrapper(wrapper)
         expect(getNotificationSuccess()).toHaveLength(0)
 
@@ -141,6 +141,7 @@ describe('add collaborators drawer', () => {
           },
         )
 
+        expect(nextPreviousButtonWrapper.props('isNextButtonLoading')).toBeTruthy()
         await flushPromises()
         expect(getNotificationSuccess()).toHaveLength(1)
       })

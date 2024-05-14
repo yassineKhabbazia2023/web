@@ -20,6 +20,7 @@
         :previousLabel="t('previousLabel')"
         :nextLabel="t('nextLabel')"
         :isNextButtonDisabled="!selectedCollaborators.length"
+        :isNextButtonLoading="isNextButtonLoading"
         @click-previous="handleCloseDrawer"
         @click-next="handleSubmit"
       />
@@ -41,6 +42,7 @@ import { getFullName } from '@/common/utils/helpers/helpers'
 const props = defineProps<AddCollaboratorsDrawerProps>()
 const emit = defineEmits<{
   'update:modelValue': [boolean]
+  'refresh-collaborators-list': []
 }>()
 
 const { t } = useI18n({
@@ -48,6 +50,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+const isNextButtonLoading = ref(false)
 const isAddCollaboratorsDrawerOpened = computed({
   get() {
     return props.modelValue
@@ -62,6 +65,7 @@ const handleCloseDrawer = () => {
 }
 
 const handleSubmit = async () => {
+  isNextButtonLoading.value = true
   // This endpoint in its current state does not allow us to send a list
   const addContactPromises: Promise<any>[] = selectedCollaborators.value
     .map(({ id }) => addContactToEntity(props.entityId, id))
@@ -81,7 +85,9 @@ const handleSubmit = async () => {
   displayAddCollaboratorSuccessNotifications(successfulResults)
   displayAddCollaboratorErrorNotifications(failedResults)
 
+  isNextButtonLoading.value = false
   isAddCollaboratorsDrawerOpened.value = false
+  emit('refresh-collaborators-list')
 }
 
 // PromiseSettledResult type isn't availaible in typescript, it doens't know about it
@@ -144,7 +150,7 @@ function handleCollaboratorSelection(event: Contact[]) {
     nextLabel: 'Valider'
     addCollaboratorsSuccess: >
       Le collaborateur a été ajouté au dossier avec succès |
-      {amountOfAddedPeople} ont été ajoutés au dossier avec succès
+      {amountOfAddedPeople} collaborateurs ont été ajoutés au dossier avec succès
     addCollaboratorsError: >
       Le collaborateur {collaboratorFullName} n'a pas pas pu être ajouté au dossier suite à un problème technique.
 </i18n>

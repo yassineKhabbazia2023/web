@@ -1,6 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
@@ -8,6 +8,7 @@ import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import type { Collab } from './types'
 import Collaborators from '.'
 import AddCollaboratorDrawer from './sections/AddCollaboratorDrawer'
+import * as walletServices from '@/services/wallet'
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -50,6 +51,21 @@ describe('collaborators', () => {
 
     const addCollaboratorDrawerWrapper = wrapper.findComponent(AddCollaboratorDrawer)
     expect(addCollaboratorDrawerWrapper.isVisible).toBeTruthy()
+  })
+
+  it('should refresh list on collaborators add', async () => {
+    const addCollabButton = wrapper.find('[data-testid=add-collaborator-button]')
+    await addCollabButton.trigger('click')
+
+    const getCollaboratorsSpy = vi.spyOn(
+      walletServices,
+      'getCollaboratorsByIdEntity',
+    )
+
+    const addCollaboratorDrawerWrapper = wrapper.findComponent(AddCollaboratorDrawer)
+    addCollaboratorDrawerWrapper.vm.$emit('refresh-collaborators-list')
+    await flushPromises()
+    expect(getCollaboratorsSpy).toHaveBeenCalledOnce()
   })
 
   it('should display the table with the list of collaborator', () => {

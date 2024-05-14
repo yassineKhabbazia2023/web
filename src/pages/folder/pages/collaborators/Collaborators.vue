@@ -4,6 +4,7 @@
       v-if="currentEntityId && isAddCollaboratorsDrawerOpened"
       v-model="isAddCollaboratorsDrawerOpened"
       :entityId="currentEntityId"
+      @refresh-collaborators-list="fetchCollaborators"
     />
 
     <PBlockHeader
