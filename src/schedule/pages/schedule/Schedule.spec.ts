@@ -1,8 +1,7 @@
-import { nextTick } from 'vue'
-import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { flushPromises, type ComponentMountingOptions, type VueWrapper } from '@vue/test-utils'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
+import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
+import { nextTick } from 'vue'
+import { flushPromises, type ComponentMountingOptions, type VueWrapper, shallowMount } from '@vue/test-utils'
 import Schedule from '@/schedule/pages/schedule'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
@@ -15,7 +14,7 @@ import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 
 const createWrapper = (options: ComponentMountingOptions<any>) =>
-  wrapperFactory(Schedule, options)
+  shallowMount(Schedule, options)
 
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
@@ -43,6 +42,12 @@ vi.mock('@/schedule/services', () => ({
 )
 
 const mockedToday = new Date(TEST_DATE)
+
+const ActionBarStub = {
+  name: 'ActionBar',
+  template: '<div />',
+  emits: ['create-schedule'],
+}
 
 const OccurrenceDrawerStub = {
   name: 'OccurrenceDrawer',
@@ -102,11 +107,7 @@ describe('home page', () => {
               template: '<div />',
             },
             DeadlineList,
-            ActionBar: {
-              name: 'ActionBar',
-              template: '<div />',
-              emits: ['create-schedule'],
-            },
+            ActionBar: ActionBarStub,
           },
         },
       })
@@ -148,7 +149,7 @@ describe('home page', () => {
               template: '<div />',
               props: ['modelValue', 'deadlinesByDate', 'pRange'],
             },
-            ActionBar,
+            ActionBar: ActionBarStub,
             Calendar: {
               name: 'Calendar',
               template: '<div />',
@@ -174,8 +175,7 @@ describe('home page', () => {
           stubs: {
             ScheduleDrawer,
             DeadlineList,
-            ActionBar,
-            OccurrenceDrawer: OccurrenceDrawerStub,
+            ActionBar: ActionBarStub,
           },
         },
       })
@@ -207,8 +207,7 @@ describe('home page', () => {
             stubs: {
               ScheduleDrawer,
               DeadlineList,
-              ActionBar,
-              OccurrenceDrawer: OccurrenceDrawerStub,
+              ActionBar: ActionBarStub,
             },
           },
         })
@@ -246,8 +245,7 @@ describe('home page', () => {
           stubs: {
             ScheduleDrawer,
             DeadlineList,
-            ActionBar,
-            OccurrenceDrawer: OccurrenceDrawerStub,
+            ActionBar: ActionBarStub,
           },
         },
       })
@@ -262,8 +260,7 @@ describe('home page', () => {
           stubs: {
             ScheduleDrawer,
             DeadlineList,
-            ActionBar,
-            OccurrenceDrawer: OccurrenceDrawerStub,
+            ActionBar: ActionBarStub,
           },
         },
       })
@@ -295,7 +292,7 @@ describe('home page', () => {
           stubs: {
             ScheduleDrawer,
             DeadlineList,
-            ActionBar,
+            ActionBar: ActionBarStub,
             PDatePicker: {
               name: 'PDatePicker',
               template: '<div />',
@@ -347,7 +344,7 @@ describe('home page', () => {
           stubs: {
             ScheduleDrawer,
             DeadlineList,
-            ActionBar,
+            ActionBar: ActionBarStub,
             PDatePicker: {
               name: 'PDatePicker',
               template: '<div />',
@@ -399,7 +396,7 @@ describe('home page', () => {
           stubs: {
             ScheduleDrawer,
             DeadlineList,
-            ActionBar,
+            ActionBar: ActionBarStub,
             PDatePicker: {
               name: 'PDatePicker',
               template: '<div />',
@@ -436,7 +433,7 @@ describe('home page', () => {
             stubs: {
               ScheduleDrawer,
               DeadlineList,
-              ActionBar,
+              ActionBar: ActionBarStub,
               PDatePicker: true,
               Calendar: true,
             },

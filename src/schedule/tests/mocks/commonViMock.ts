@@ -26,12 +26,14 @@ export const debounceMock = vi.fn((callback: Function) => callback)
 export const KpmgCommontMock = {
   debounce: (callback: Function) => debounceMock(callback),
   getInitials: vi.fn(),
+  commoni18n: vi.fn(),
   commonStore: defineStore('common', {
     state: () => ({
       user: null,
     }),
     getters: {
       isAuthenticated: () => true,
+      isCollab: () => true,
     },
   }),
   commonApi: () => ({

@@ -1,4 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
+import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
+import { createTestingPinia } from '@pinia/testing'
+import { commonStore as useCommonStore } from '@kpmg/common'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import type { ComponentMountingOptions } from '@vue/test-utils'
 import ActionBar from '.'
@@ -9,6 +12,10 @@ const TEST_DATE = '2024-04-10'
 
 const createWrapper = (options: ComponentMountingOptions<any>) =>
   wrapperFactory(ActionBar, options)
+
+const pinia = createTestingPinia()
+vi.mock('@kpmg/common', () => KpmgCommontMock)
+const commonStore = useCommonStore(pinia)
 
 describe('action bar', () => {
   describe('interactions', () => {
@@ -57,6 +64,17 @@ describe('action bar', () => {
       wrapper.findComponent(MonthSelection)
         .vm.$emit('calendar-event', { type: 'next-month', date: new Date() })
       expect(wrapper.emitted('calendar-event')).toBeTruthy()
+    })
+    it('should hide create schedule', () => {
+      // @ts-expect-error: Getter is read only
+      commonStore.isCollab = false
+      const wrapper = createWrapper({
+        props: {
+          activeDate: new Date(TEST_DATE),
+          modelValue: 'list',
+        },
+      })
+      expect(wrapper.find('[data-testid="create-schedule"]').exists()).toBeFalsy()
     })
   })
 })

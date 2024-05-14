@@ -28,6 +28,7 @@
       </PTabs>
 
       <PButton
+        v-if="commonStore.isCollab"
         @click="$emit('create-schedule')"
         pType="primary"
         pSize="small"
@@ -46,6 +47,7 @@
 import { computed } from 'vue'
 import { PButton, PTabs, PTabPane, PIcon, PIAdd } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
+import { commonStore as useCommonStore } from '@kpmg/common'
 import type { ActionBarProps } from './ActionBarTypes'
 import MonthSelection from '@/schedule/components/Common/MonthSelection'
 
@@ -60,6 +62,8 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const commonStore = useCommonStore()
 
 const activeScheduleViewType = computed({
   get() {
