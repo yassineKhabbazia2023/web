@@ -6,19 +6,22 @@ import {
   getScheduleModels,
   getScheduleModelsByKey,
   getFrequenciesCollection,
+  getOccurrence,
 } from '.'
 import type { Account } from '@/schedule/models/Account'
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { DeadlinesByDate, Occurrence } from '@/schedule/models/Deadline'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { getDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 import { getMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
 import type { ScheduleModelLabelType } from './scheduleServiceTypes'
+import { getMockedOccurrence } from '../tests/mocks/Occurrence'
 
-const getMockApiImplementation = (mockData: Account[] | DeadlinesByDate[]) => Promise.resolve({
+const getMockApiImplementation = (mockData: Account[] | DeadlinesByDate[] | Occurrence) => Promise.resolve({
   data: mockData,
 })
 
 const scheduleId = '1234-332-32121-212'
+const mockedOccurrence = getMockedOccurrence()
 const doneDeadlinesByDateMock = getDoneDeadlinesByDateMock()
 const createScheduleMock = getMockSchedule()
 
@@ -32,6 +35,9 @@ vi.mock('@kpmg/common', () => {
           }
           if (/^\/accounts$/.test(url)) {
             return getMockApiImplementation(accountsCollection)
+          }
+          if (url === `/occurrences/${mockedOccurrence.id}`) {
+            return getMockApiImplementation(mockedOccurrence)
           }
         }),
         post: vi.fn((url, _) => {
@@ -93,5 +99,14 @@ describe('getFrequenciesCollection', () => {
   it('should return frequencies collection', async () => {
     const data = await getFrequenciesCollection()
     expect(data).toStrictEqual(frequenciesMock)
+  })
+})
+
+describe('getOccurrence', () => {
+  it('should return a specific occurrence', async () => {
+    const occurrenceId = mockedOccurrence.id
+    const data = await getOccurrence(occurrenceId)
+
+    expect(data).toStrictEqual(mockedOccurrence)
   })
 })
