@@ -39,7 +39,6 @@ vi.mock('@kpmg/common', () => {
           if (url === `/occurrences/${mockedOccurrence.id}`) {
             return getMockApiImplementation(mockedOccurrence)
           }
-          console.error(`Unmanaged url '${url}'`)
         }),
         post: vi.fn((url, _) => {
           if (/^\/schedules$/.test(url)) {
@@ -104,7 +103,7 @@ describe('getFrequenciesCollection', () => {
 })
 
 describe('getOccurrence', () => {
-  it('should return frequencies collection', async () => {
+  it('should return a specific occurrence', async () => {
     const occurrenceId = mockedOccurrence.id
     const data = await getOccurrence(occurrenceId)
 
