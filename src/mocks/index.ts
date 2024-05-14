@@ -1,4 +1,4 @@
-import type { Entity } from '../stores/types'
+import type { Entity, SelectedEntity } from '../stores/types'
 
 export const getMockedUser = () => {
   return {
@@ -34,3 +34,13 @@ export const getMockedEntities = (): Entity[] => [
     color: 'cyan',
   },
 ]
+
+export const getMockedSelectedEntity = (): SelectedEntity => {
+  return {
+    accountId: 1,
+    accountNumber: '2024643902',
+    legalName: 'Test 1',
+    color: 'orange',
+    permissions: ['COUSER002', 'COINFO001', 'COUSER001'],
+  }
+}

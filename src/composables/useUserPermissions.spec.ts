@@ -1,15 +1,17 @@
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, setActivePinia } from 'pinia'
-import { getMockedUserPermissions } from '../mocks'
+import { getMockedSelectedEntity, getMockedUserPermissions } from '../mocks'
 import { useUserPermissions } from './useUserPermissions'
 
 const mockedUserPermissions = getMockedUserPermissions()
+const mockedSelectedEntity = getMockedSelectedEntity()
 
 vi.mock('../stores', () => ({
   default: defineStore('common', {
     getters: {
       userPermissions: () => mockedUserPermissions,
+      defaultEntity: () => mockedSelectedEntity,
     },
   }),
 }))

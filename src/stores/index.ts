@@ -20,7 +20,8 @@ export const store = defineStore('common', {
     token: (): string => tokenService.getToken(),
     isAuthenticated: (): boolean => tokenService.hasValidAccessToken(),
     isCollab: (state: commonStateType) => !!state.user?.isCollab,
-    favoriteEntities: (state: commonStateType) => state.user?.entities?.favorites ?? [],
+    favoriteEntities: (state: commonStateType) =>
+      state.user?.entities?.favorites ?? [],
     defaultEntity: (state: commonStateType) => state.user?.entities?.default,
     userPermissions: (state: commonStateType) => state.permissions,
   },
@@ -49,7 +50,22 @@ export const store = defineStore('common', {
         )
         this.permissions = data
       } catch (error) {
-        console.error('Unable to fetch user permissions: ', error)
+        console.error('Unable to retrieve user permissions: ', error)
+      }
+    },
+    async fetchUserAccountPermissions() {
+      try {
+        if (this.user?.entities?.default) {
+          const { data } = await api().gateway.get(
+            `${AUTH_API}/authorization/currentuser?accountId=${this.user.entities.default?.accountId}`,
+          )
+          this.user.entities.default.permissions = data
+        }
+      } catch (error) {
+        console.error(
+          'Unable to retrieve permissions for this account: ',
+          error,
+        )
       }
     },
   },

@@ -13,9 +13,13 @@ export interface Entity {
     | 'gray'
 }
 
+export interface SelectedEntity extends Entity {
+  permissions?: string[]
+}
+
 type Entities = {
   favorites: Entity[] | undefined
-  default: Entity | undefined
+  default: SelectedEntity | undefined
 }
 
 export interface UserInfo {

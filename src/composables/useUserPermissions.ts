@@ -3,16 +3,21 @@ import store from '../stores'
 
 export const useUserPermissions = () => {
   const commonStore = store()
-  const { userPermissions } = storeToRefs(commonStore)
+  const { userPermissions, defaultEntity } = storeToRefs(commonStore)
 
-  const hasPermission = (permissionCode: string | string[]): boolean => {
+  const hasPermission = (
+    permissionCode: string | string[],
+  ): boolean => {
+    const defaultEntityPermissions = defaultEntity.value?.permissions ?? []
+    const permissionsList = [...defaultEntityPermissions, ...userPermissions.value]
+
     if (Array.isArray(permissionCode)) {
       return permissionCode.some((permission) =>
-        userPermissions.value.includes(permission),
+        permissionsList.includes(permission),
       )
     }
 
-    return userPermissions.value.includes(permissionCode)
+    return permissionsList.includes(permissionCode)
   }
 
   return { hasPermission }

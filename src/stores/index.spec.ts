@@ -6,7 +6,7 @@ import commonStore from './index'
 import { tokenService } from '../main'
 
 const mockedEntities = getMockedEntities()
-const mockedUserPermissions = getMockedUserPermissions()
+const mockedPermissions = getMockedUserPermissions()
 
 const pinia = createTestingPinia({
   initialState: {
@@ -15,16 +15,16 @@ const pinia = createTestingPinia({
   stubActions: false,
 })
 
-const mockGetUserPermissions = vi.fn((_url) => {
+const mockGetPermissions = vi.fn((_url) => {
   return Promise.resolve({
-    data: mockedUserPermissions,
+    data: mockedPermissions,
   })
 })
 
 vi.mock('../api', () => ({
   default: () => ({
     gateway: {
-      get: mockGetUserPermissions,
+      get: mockGetPermissions,
     },
   }),
 }))
@@ -115,20 +115,74 @@ describe('commonStore', () => {
     await store.fetchUserPermissions()
 
     expect(spyFetchUserPermissions).toHaveBeenCalledTimes(1)
-    expect(userPermissions.value).toStrictEqual(mockedUserPermissions)
+    expect(userPermissions.value).toStrictEqual(mockedPermissions)
   })
   it('should log a console.error message when the request fails', async () => {
     const store = commonStore(pinia)
     const expectedErrorMessage = 'Authorization Error: API Access Denied'
     const spyConsole = vi.spyOn(console, 'error')
 
-    mockGetUserPermissions.mockRejectedValueOnce(expectedErrorMessage)
+    mockGetPermissions.mockRejectedValueOnce(expectedErrorMessage)
     await store.fetchUserPermissions()
 
     expect(spyConsole).toHaveBeenCalledOnce()
     expect(spyConsole).toHaveBeenNthCalledWith(
       1,
-      'Unable to fetch user permissions: ',
+      'Unable to retrieve user permissions: ',
+      expectedErrorMessage,
+    )
+  })
+  it('should the selected account permissions be undefined if the user does not select an account', async () => {
+    const store = commonStore(pinia)
+    const { defaultEntity } = storeToRefs(store)
+    const spyFetchUserAccountPermissions = vi.spyOn(
+      store,
+      'fetchUserAccountPermissions',
+    )
+
+    await store.fetchUserAccountPermissions()
+
+    expect(defaultEntity.value?.permissions).toBeUndefined()
+    expect(spyFetchUserAccountPermissions).toHaveBeenCalledTimes(1)
+  })
+  it('should ensure that user account permissions are obtained correctly', async () => {
+    const store = commonStore(pinia)
+    store.$patch({
+      user: {
+        entities: {
+          default: {
+            accountId: 2,
+            accountNumber: '2024643902',
+            legalName: 'Test 2',
+          },
+        },
+      },
+    })
+    const { defaultEntity } = storeToRefs(store)
+    const spyFetchUserAccountPermissions = vi.spyOn(
+      store,
+      'fetchUserAccountPermissions',
+    )
+
+    await store.fetchUserAccountPermissions()
+
+    expect(spyFetchUserAccountPermissions).toHaveBeenCalledTimes(1)
+    expect(defaultEntity.value?.permissions).toStrictEqual(
+      mockedPermissions,
+    )
+  })
+  it('should log a console.error message when the request fails to retrieve account permissions', async () => {
+    const store = commonStore(pinia)
+    const expectedErrorMessage = 'Authorization Error: API Access Denied'
+    const spyConsole = vi.spyOn(console, 'error')
+
+    mockGetPermissions.mockRejectedValueOnce(expectedErrorMessage)
+    await store.fetchUserAccountPermissions()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenNthCalledWith(
+      1,
+      'Unable to retrieve permissions for this account: ',
       expectedErrorMessage,
     )
   })
