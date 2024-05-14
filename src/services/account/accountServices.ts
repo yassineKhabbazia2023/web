@@ -1,4 +1,5 @@
 import type { Account } from '.'
+import type { Contact } from '@/services/contact/contactTypes'
 import { commonApi } from '@kpmg/common'
 import type { Entity } from '@kpmg/common'
 import { API_PREFIXES } from '@/common/config/services'
@@ -57,4 +58,37 @@ export async function deleteAccountDelegation(delegationId: number) {
       delegationId,
     },
   })
+}
+
+export async function addContactToEntity(
+  accountId: Account['accountId'],
+  contactId: Contact['id'],
+) {
+  const url = `${API_PREFIXES.ACCOUNT}/roles`
+  const result = await commonApi().gateway.post(url, {
+    accountId,
+    contactId,
+    isSignatory: true,
+    isFavorite: true,
+    isDelegation: true,
+  })
+
+  return {
+    ...result,
+    accountId,
+  }
+}
+
+export async function fetchContactsFromSameHub(
+  search: string | null,
+  pageSize: number = 100,
+): Promise<Contact[]> {
+  const url = `${API_PREFIXES.ACCOUNT}/roles/currentuser/hub/contact`
+  const { data } = await commonApi().gateway.get(url, {
+    params: {
+      search,
+      pageSize,
+    },
+  })
+  return data.items
 }

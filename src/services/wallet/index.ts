@@ -22,7 +22,7 @@ export const getCollaboratorsByIdEntity = async (
     `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`,
   )
 
-  return response?.data
+  return response?.data.items
 }
 
 export const fetchAccountCustomers = async (
@@ -32,7 +32,7 @@ export const fetchAccountCustomers = async (
     `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`,
   )
 
-  return response?.data
+  return response?.data.items
 }
 
 export const fetchEntitiesStatistics = async () => {

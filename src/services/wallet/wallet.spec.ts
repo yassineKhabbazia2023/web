@@ -102,12 +102,16 @@ const fetchPermissions = () => {
 }
 const getCollaboratorsByIdEntityImplementation = () => {
   return Promise.resolve({
-    data: mockCollabsData,
+    data: {
+      items: mockCollabsData,
+    },
   })
 }
 const fetchAccountCustomersImplementation = () => {
   return Promise.resolve({
-    data: mockedCustomersCollab,
+    data: {
+      items: mockedCustomersCollab,
+    },
   })
 }
 const fetchCollabsImplementation = () => {

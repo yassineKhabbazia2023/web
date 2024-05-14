@@ -1,5 +1,11 @@
 <template>
   <div class="shadow--3 radius--2 overflow-hidden margin-top--6">
+    <AddCollaboratorsDrawer
+      v-if="currentEntityId && isAddCollaboratorsDrawerOpened"
+      v-model="isAddCollaboratorsDrawerOpened"
+      :entityId="currentEntityId"
+    />
+
     <PBlockHeader
       :pTitle="t('headerTitle')"
       :pDescription="t('headerSubTitle')"
@@ -11,7 +17,7 @@
       <PButton
         pType="primary"
         pSize="small"
-        @click="handleAddCollaborator"
+        @click="isAddCollaboratorsDrawerOpened = true"
         data-testid="add-collaborator-button"
       >
         <PIcon class="el-button__icon--left">
@@ -118,6 +124,7 @@ import { type PImageProps } from '@kpmg/styleguide'
 import { getCollaboratorsByIdEntity } from '@/services/wallet'
 import { storeToRefs } from 'pinia'
 import { getInitials } from '@/helper/helper'
+import AddCollaboratorsDrawer from './sections/AddCollaboratorDrawer'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -143,6 +150,8 @@ const emit = defineEmits<{
   'accessSwitched': [Collab]
 }>()
 
+const isAddCollaboratorsDrawerOpened = ref(false)
+
 const handleChange = (row: any) => {
   const collab = toRaw(row) as Collab
   if (collab) {
@@ -158,10 +167,6 @@ const fetchCollaborators = async () => {
 onMounted(async () => {
   await fetchCollaborators()
 })
-
-const handleAddCollaborator = () => {
-  emit('collaboratorAdded')
-}
 </script>
 
   <style lang="scss">

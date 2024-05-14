@@ -7,6 +7,7 @@ import { mockCollabsData } from './mockData'
 import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import type { Collab } from './types'
 import Collaborators from '.'
+import AddCollaboratorDrawer from './sections/AddCollaboratorDrawer'
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -32,6 +33,7 @@ const createWrapper = (): VueWrapper =>
     attachTo: document.body,
     global: {
       plugins: [pinia],
+      stubs: ['AddCollaboratorsDrawer'],
     },
   })
 
@@ -45,7 +47,9 @@ describe('collaborators', () => {
   it('should call add-collaborator event when click on add collaborator button', async () => {
     const addCollabButton = wrapper.find('[data-testid=add-collaborator-button]')
     await addCollabButton.trigger('click')
-    expect(wrapper.emitted()).toHaveProperty('collaboratorAdded')
+
+    const addCollaboratorDrawerWrapper = wrapper.findComponent(AddCollaboratorDrawer)
+    expect(addCollaboratorDrawerWrapper.isVisible).toBeTruthy()
   })
 
   it('should display the table with the list of collaborator', () => {

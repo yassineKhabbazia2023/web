@@ -8,6 +8,8 @@ import {
   fetchReferentialHubs,
   fetchAccountDelegationsHistory,
   deleteAccountDelegation,
+  addContactToEntity,
+  fetchContactsFromSameHub,
 } from '.'
 import {
   getMockedAccount,
@@ -16,6 +18,7 @@ import {
   getMockedAccountReferential,
   getMockedReferentialHubs,
 } from './accountMock'
+import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
 const accountId = 5
 const accountIdRejected = 8
@@ -29,7 +32,9 @@ const mockedReferentialHubs = getMockedReferentialHubs()
 const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedAccountApiPatch = vi.fn()
+const mockedCollaborators = getMockedCollaborators()
 const deleteDelegationSpy = vi.fn()
+const postSpy = vi.fn()
 
 vi.mock('@kpmg/common', () => {
   return {
@@ -54,6 +59,13 @@ vi.mock('@kpmg/common', () => {
           if (url === `account/api/delegations/${accountId}/history?`) {
             return Promise.resolve({ data: delegationsHistoryMock })
           }
+          if (url === 'account/api/roles/currentuser/hub/contact') {
+            return Promise.resolve({
+              data: {
+                items: mockedCollaborators,
+              },
+            })
+          }
 
           return url.includes(SEARCH_CURRENT_USER)
             ? Promise.resolve({ data: [mockedAccountRow] })
@@ -61,6 +73,7 @@ vi.mock('@kpmg/common', () => {
         }),
         patch: mockedAccountApiPatch,
         delete: deleteDelegationSpy,
+        post: postSpy,
       },
     }),
   }
@@ -150,6 +163,27 @@ describe('test accountServices', () => {
           },
         },
       )
+    })
+  })
+
+  describe('roles', () => {
+    it('should post addContactToEntity', async () => {
+      await addContactToEntity(1, 1000)
+      expect(postSpy).toHaveBeenCalledWith(
+        'account/api/roles',
+        {
+          accountId: 1,
+          contactId: 1000,
+          isSignatory: true,
+          isFavorite: true,
+          isDelegation: true,
+        },
+      )
+    })
+
+    it('should fetch contacts from same hub', async () => {
+      const result = await fetchContactsFromSameHub('searchValue', 100)
+      expect(result).toStrictEqual(mockedCollaborators)
     })
   })
 })
