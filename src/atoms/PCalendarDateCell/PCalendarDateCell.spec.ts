@@ -34,6 +34,13 @@ const createWrapper = (props: any = defaultProps): VueWrapper =>
 
 describe('calendar date cell', () => {
   describe('props', () => {
+    it('data-cell-date should be 2024-03-01', () => {
+      const wrapper = createWrapper()
+      const div = wrapper.find('.p-calendar-date-cell')
+
+      expect(div.attributes('data-cell-date')).toBe(defaultProps.pCurrentDate)
+    })
+
     it.each([
       {
         cellType: 'prev-month',

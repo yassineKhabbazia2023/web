@@ -1,7 +1,8 @@
 <template>
   <div
     class="p-calendar-date-cell flex flex--direction-column padding--1"
-    :class="[cellTypeModifier]"
+    :class="cssClass"
+    :data-cell-date="pCellDate"
   >
     <div
       class="p-calendar-date-cell__day-number"
@@ -57,7 +58,11 @@ const emit = defineEmits<{
   'cell-click': [PCalendarDateCellProps['pCellDate']]
 }>()
 
-const cellTypeModifier = computed(() => `p-calendar-date-cell--${props.pCellType}`)
+const cssClass = computed(() => {
+  return [
+    `p-calendar-date-cell--${props.pCellType}`,
+  ]
+})
 const { width } = useWindowSize()
 
 // As the cell's height currently has fixed values, we're using fixed numbers of elements per cell.
