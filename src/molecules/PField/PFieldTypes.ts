@@ -17,6 +17,7 @@ export interface PFieldPropsBase<T> {
 
 export interface PFieldPropsInput<T> extends PFieldPropsBase<T> {
   pType?: string
+  pAutosize?: boolean
 }
 
 export interface PFieldPropsDropdown<T> extends PFieldPropsBase<T> {

@@ -13,6 +13,7 @@
       :pReadonly="pReadonly"
       :pDisabled="pDisabled"
       :pPlaceholder="pPlaceholder"
+      :pAutosize="pAutosize"
       :data-testid="pTestId"
     />
     <PDropdown
