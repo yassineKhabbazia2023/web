@@ -214,6 +214,7 @@ const patchDefaultEntity = (entity: Entity) => {
       },
     },
   })
+  userStore.fetchUserAccountPermissions()
 }
 
 const onEntitySelected = (entity: Entity) => {

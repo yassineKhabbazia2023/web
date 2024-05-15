@@ -27,6 +27,9 @@ vi.mock('@kpmg/common', () => ({
       favoriteEntities: () => entities,
       defaultEntity: () => entities[0],
     },
+    actions: {
+      fetchUserAccountPermissions: () => vi.fn(),
+    },
   }),
 }))
 

@@ -30,6 +30,7 @@ vi.mock('@kpmg/common', () => ({
     },
     actions: {
       logout: () => vi.fn(),
+      fetchUserAccountPermissions: () => vi.fn(),
     },
   }),
   getInitials: vi.fn(),
@@ -54,6 +55,9 @@ vi.mock('@kpmg/common', () => ({
   dataProvider: () => {
     return { fetchUserData }
   },
+  userPermissions: () => ({
+    hasPermission: () => vi.fn(() => true),
+  }),
   tokenService: {
     setToken: vi.fn(),
     getToken: vi.fn(),

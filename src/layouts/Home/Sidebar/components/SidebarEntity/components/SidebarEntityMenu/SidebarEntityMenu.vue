@@ -2,7 +2,7 @@
   <div
     :class="[
       'sidenav-entity-menu',
-      { 'sidenav-entity-menu--collapsed': isMenuCollapsed }
+      { 'sidenav-entity-menu--collapsed': isMenuCollapsed },
     ]"
     @mouseover="isMenuCollapsed = false"
     @mouseleave="isMenuCollapsed = true"
@@ -45,10 +45,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { userPermissions } from '@kpmg/common'
 import { PMenuItem, PMenu, PSubMenu } from '@kpmg/styleguide'
+import { PERMISSION_CODES } from '@/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 
 const route = useRoute()
@@ -58,11 +60,14 @@ const { t } = useI18n({
 })
 
 const props = defineProps<SidebarEntityMenuProps>()
+const { hasPermission } = userPermissions()
 
 const isMenuCollapsed = ref<boolean>(true)
-const activeMenuItem = ref<string>(`/dossier/${props.selectedEntityId}/gestion-utilisateurs`)
+const activeMenuItem = ref<string>(
+  `/dossier/${props.selectedEntityId}/gestion-utilisateurs`,
+)
 
-const folderSubmenu = {
+const folderSubmenu = computed(() => ({
   index: 'folder',
   title: t('folder'),
   icon: 'PIHouse',
@@ -70,52 +75,57 @@ const folderSubmenu = {
     {
       title: t('users'),
       index: 'gestion-utilisateurs',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
     },
     {
       title: t('collaborators'),
       index: 'collaborateurs',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
     },
     {
       title: t('offers'),
       index: 'offres',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
     },
     {
       title: t('information'),
       index: 'informations',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
     },
     {
       title: t('delegationsHistory'),
       index: 'historique-delegations',
+      display: hasPermission(PERMISSION_CODES.HISTORY),
     },
-  ],
-}
+  ].filter((item) => item.display),
+}))
 
-const menuItems = [
+const menuItems = computed(() => [
   {
     index: `/dossier/${props.selectedEntityId}/ged`,
     title: t('documents'),
     leftIcon: 'PIFileText',
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
   },
   {
     index: 'bank',
     title: t('bank'),
     leftIcon: 'PIPiggyBank',
     disabled: true,
+    display: true,
   },
   {
     index: 'indicators',
     title: t('indicators'),
     leftIcon: 'PIClipboardData',
     disabled: true,
+    display: true,
   },
-]
+].filter((item) => item.display))
 
-watch(
-  route,
-  (currentRoute) => {
-    activeMenuItem.value = currentRoute.fullPath
-  },
-)
+watch(route, (currentRoute) => {
+  activeMenuItem.value = currentRoute.fullPath
+})
 </script>
 
 <style lang="scss" scoped>
