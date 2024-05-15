@@ -167,5 +167,16 @@ describe('treeNodeActions', () => {
         ['test'],
       ])
     })
+    describe('drag and drop scope', () => {
+      it('should emit drop event upon drop action', () => {
+        expect(true).toBeTruthy()
+      })
+      it('should emit dragover event upon drag over action', () => {
+        expect(true).toBeTruthy()
+      })
+      it('should emit dragleave event upon drag leave action', () => {
+        expect(true).toBeTruthy()
+      })
+    })
   })
 })

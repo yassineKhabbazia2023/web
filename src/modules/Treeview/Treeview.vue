@@ -49,6 +49,12 @@
         @on-close-rename-folder="handleRenameFolderModal"
       />
 
+      <DocumentsDropConfirmationPopup
+        :isVisible="isVisible"
+        :numberOfDocumentsToDrop="numberOfDocumentsToDrop"
+        :destinationPath="dropDestinationFolder"
+      />
+
       <div class="treeview__trees">
         <PScrollbar>
           <PTree
@@ -72,6 +78,8 @@
                   selectedFolder || props.servicesFolders[0][0].children[0]
                 "
                 @p-toolbox-item-clicked="handleToolboxItemChecked"
+                @documents-dropped-on-tree-node="handleDocumentDroppedOnTreeNode"
+                @expand-or-collapse-node="handleExpandOrCollapseNode"
               />
             </template>
           </PTree>
@@ -108,10 +116,14 @@ import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader } from '@kpmg/styleguide'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
-import { findFolderDeepById } from './helpers/folderArrayHelper'
+import { findFolderDeepById, getFolderPath } from './helpers/folderArrayHelper'
 import type { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
 import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
 import FoldersMove from './components/modals/FoldersMove'
+import DocumentsDropConfirmationPopup from '@/modules/Treeview/components/popups/DocumentsDrop'
+import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
+import type { Document } from '@/models/Document'
+
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
   'selected-folder-change',
@@ -123,6 +135,7 @@ const emit = defineEmits([
   'update-folder-name',
   'refresh-tree',
 ])
+
 const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
   computed(() => {
     return {
@@ -132,6 +145,7 @@ const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
       selectedEntity: props.selectedEntity,
     }
   })
+
 const { handleDownloadFolderEvent } = useDownloadFolder(downloadFolderProps)
 // This always exists as it is the default structure of any service
 const defaultFolder = ref<null | Folder>(null)
@@ -241,6 +255,7 @@ const retrieveUnusedTrees = (): TreeType[] => {
     (tree) => tree.pData[0].serviceId !== props.currentService,
   )
 }
+
 const retrieveCurrentlyUsedSourceTree = (): TreeType => {
   const usedTree = treesRefs.value.filter(
     (tree) => tree.pData[0].serviceId === props.currentService,
@@ -342,6 +357,39 @@ const handleToolboxItemChecked = (action: string, folder: Folder) => {
   }
 }
 
+// I'm going to make a composable out of this
+function handleExpandOrCollapseNode(nodeKey: any) {
+  const tree = retrieveCurrentlyUsedSourceTree()
+
+  const nodeToCollapseOrExpand = tree.getNode(nodeKey)
+  if (nodeToCollapseOrExpand.expanded) nodeToCollapseOrExpand.collapse()
+  else nodeToCollapseOrExpand.expand()
+}
+
+function handleDocumentDroppedOnTreeNode(event: Document[]) {
+  // Check if universe is the same
+  // eslint-disable-next-line no-console
+  console.log('TREE - Drop interception', event)
+  // Documents in drop event are always from the same folder
+  const dragEventSourceFolder = event.at(0)?.folder
+  if (!dragEventSourceFolder || !props.currentServiceFolder) return
+  // En fait je me prends la tête pour rien à cet endroit
+  // Pour quand je reviens sur la tâche ->
+  // Il faut que dans l'event ici je renvoie le dossier du Treenode sur lequel on dépose
+  // pour le filer à le fonction juste en dessous plutôt que dragEventSourceFolder
+  // car ça n'a en fait rien à voir
+  // Après ça, tout devrait être ok
+
+  // const targetFolderPath = getFolderPath(props.currentServiceFolder, dragEventSourceFolder)
+  // dropDestinationFolder.value = getPathFromArray(targetFolderPath)
+  console.log(getPathFromArray, getFolderPath)
+  isVisible.value = true
+}
+
+// drop popups and notifications managemnt
+const isVisible = ref(false)
+const dropDestinationFolder = ref('')
+const numberOfDocumentsToDrop = ref(0)
 // eslint-disable-next-line vitest/require-hook
 watch(
   () => props.currentService,

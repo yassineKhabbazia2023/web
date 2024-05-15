@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import type { Folder } from '@/models/Folder'
+import type { Document } from '@/models/Document'
+import { ServicesIds } from '@/modules/common/constants/services'
 
 // move to module
 
@@ -129,4 +131,27 @@ export const deleteFolder = (
     }
     return false
   })
+}
+
+export const getFolderPath = (folders: Folder[], folder: Folder): string[] => {
+  // Vérifier si le serviceId du dossier correspond à l'un des IDs dans l'enum
+  if (folder.serviceId === ServicesIds.ACCOUNTING || folder.serviceId === ServicesIds.SOCIAL) {
+    return [folder.name] // Commencez le chemin ici, ne remontez pas plus loin
+  }
+
+  // Si le dossier n'a pas de parent, on commence le chemin avec son propre nom
+  if (!folder.parent) {
+    return [folder.name]
+  }
+
+  // Trouver le parent du dossier actuel dans la liste des dossiers
+  const parentFolder = folders.find(f => f.id === folder.parent.id)
+
+  if (!parentFolder) {
+    // Si le parent n'est pas trouvé, commencez simplement avec le nom du dossier actuel
+    return [folder.name]
+  }
+
+  // Récursion: obtenir le chemin du parent et ajouter le nom du dossier actuel
+  return [...getFolderPath(folders, parentFolder), folder.name]
 }

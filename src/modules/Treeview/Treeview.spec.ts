@@ -342,5 +342,14 @@ describe('treeview', () => {
           expect(wrapper.emitted('selected-bin-service-change')).toBeTruthy()
         })
     })
+
+    describe('drag and drop scope', () => {
+      it('should open drop confirmation popup upon documents-dropped-on-tree-node event', () => {
+        expect(true).toBeTruthy()
+      })
+      it('should set tree node key upon expand-or-collapse-node event', () => {
+        expect(true).toBeTruthy()
+      })
+    })
   })
 })

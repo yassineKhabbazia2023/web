@@ -210,10 +210,6 @@ onMounted(async () => {
 
 </script>
 
-<style>
-html,
-body {
-  background-color: white !important;
-  color: black;
-}
+<style lang="scss">
+@import './styles/main';
 </style>

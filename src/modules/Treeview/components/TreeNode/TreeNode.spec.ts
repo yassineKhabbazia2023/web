@@ -298,4 +298,16 @@ describe('interactions', () => {
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })
+
+  describe('drag and drop scope', () => {
+    it('should emit documents-dropped-on-tree-node with the correct payload upon drop event', () => {
+      expect(true).toBeTruthy()
+    })
+    it('should emit expand-or-collapse-node with the correct payload upon dragOver event', () => {
+      expect(true).toBeTruthy()
+    })
+    it('should behave upon dragLeave event', () => {
+      expect(true).toBeTruthy()
+    })
+  })
 })

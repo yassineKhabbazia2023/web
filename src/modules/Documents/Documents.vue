@@ -40,6 +40,7 @@
         ]"
         :documentsListWithTableStructure="documents"
         :isInSearchScope="isInSearchScope"
+        :currentService="currentService"
         @on-sort-change="handleSortChange"
         @toolbox-action-triggered="handleToolboxActionTriggered"
         @document-selection-change="handleOnDocumentsSelectionChange"

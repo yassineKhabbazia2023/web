@@ -7,6 +7,8 @@
       highlightCurrentRow
       pStripe
       data-testid="ged-documents-list"
+      :rowClassName="tableRowClassName"
+      currentRowKey="id"
       :emptyText="t('noSearchData')"
       @sort-change="handleSortChange"
       @row-click="selectRow"
@@ -42,6 +44,16 @@
 
     <div class="blur-fade" />
   </section>
+
+  <!-- This is necessary because of how the dragImage is working in the drag and drop API
+  when making the reference element hidden, it has to be placed in the  -->
+  <Teleport to="body">
+    <DocumentDragGhost
+      ref="ghostRef"
+      :displayedName="draggedFilenameToUse"
+      :numberOfDocuments="validDraggedFilesCount"
+    />
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -51,8 +63,10 @@ import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
 import type { ElTable } from 'element-plus'
 import type { Document, TableRowDocument } from '@/models/Document'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useDocumentsDragAndDrop } from './composables/DocumentsDragAndDrop'
+import DocumentDragGhost from './components/DocumentDragGhost'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -71,7 +85,7 @@ const emit = defineEmits([
 const props = defineProps<DocumentsListProps>()
 
 const documentsListTable = ref<InstanceType<typeof ElTable>>()
-const selectedDocuments = ref<Document[]>([])
+const selectedDocuments = ref<DocumentsListProps['documentsListWithTableStructure']['documentsPage']['items']>([])
 const sortableColumns = ['Nom du document', 'Déposé le']
 const columnSizes: Record<string, number> = {
   'Nom du document': 590,
@@ -80,13 +94,22 @@ const columnSizes: Record<string, number> = {
   Statut: 199,
   Actions: 71,
 }
+
 const isInSearchScope = ref(props.isInSearchScope)
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => [props.isInSearchScope],
   () => {
     isInSearchScope.value = props.isInSearchScope
   },
+)
+
+const validDraggedFilesCount = ref(0)
+const draggedFilenameToUse = computed(() => selectedDocuments.value.at(0)?.name ?? '')
+
+useDocumentsDragAndDrop(
+  selectedDocuments,
+  ref(props.currentService),
+  validDraggedFilesCount,
 )
 
 // Behaviours
@@ -99,6 +122,14 @@ const handleSortChange = (data:any) => {
 
 const handleToolboxActionTriggered = (action: string) => {
   emit('toolbox-action-triggered', action)
+}
+
+const tableRowClassName = ({
+  row,
+}: {
+  row: Document
+}) => {
+  return `document-row ${row.id}`
 }
 
 const selectRow = (documentRow: TableRowDocument, column:any) => {
@@ -133,7 +164,7 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .documents-table {
     position: relative;
     // header height - breadcrumb height - action bar wrapper height
