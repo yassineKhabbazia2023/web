@@ -27,8 +27,8 @@ function createWrapper(override: Partial<WidgetDeadlinesProps> = {}) {
 }
 
 describe('test WidgetDeadlines', () => {
+  const deadlines = getMockedDeadlines()
   it('should render properly', async () => {
-    const deadlines = getMockedDeadlines()
     const wrapper = createWrapper({
       deadlines,
     })
@@ -41,5 +41,13 @@ describe('test WidgetDeadlines', () => {
 
     expect(items).toHaveLength(deadlines.length)
     expect(items.at(0)?.text()).toBe(expectedText)
+  })
+  it('should emit select-deadline event when first widget deadline element is clicked', async () => {
+    const wrapper = createWrapper({ deadlines })
+    const firstItem = wrapper.findAll('[data-testid="widget-deadlines-item"]')[0]
+    await firstItem.trigger('click')
+    expect(wrapper.emitted('select-deadline')).toStrictEqual([
+      [1],
+    ])
   })
 })

@@ -6,6 +6,7 @@ import Schedule from '@/schedule/pages/schedule'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import ActionBar from '@/schedule/components/ActionBar'
+import WidgetActiveDay from '@/schedule/components/WidgetActiveDay'
 import { getMonthInterval } from './ScheduleUtils'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import * as ScheduleServices from '@/schedule/services'
@@ -474,6 +475,17 @@ describe('home page', () => {
 
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
         expect(occurrenceDrawerAfter.exists()).toBeFalsy()
+      })
+
+      it('should display OccurrenceDrawer when deadline is select in widget list', async () => {
+        const occurrenceDrawerBefore = wrapper.findComponent({ name: 'OccurrenceDrawer' })
+        expect(occurrenceDrawerBefore.exists()).toBeFalsy()
+
+        wrapper.findComponent(WidgetActiveDay).vm.$emit('select-deadline', 1234567890)
+        await nextTick()
+
+        const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
+        expect(occurrenceDrawerAfter.exists()).toBeTruthy()
       })
     })
   })

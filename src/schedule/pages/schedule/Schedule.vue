@@ -55,6 +55,7 @@
       <WidgetActiveDay
         :activeDate="activeDate"
         :deadlines="activeDateDeadlines"
+        @select-deadline="onSelectDeadline"
       />
     </div>
   </div>

@@ -21,6 +21,7 @@
     >
       <WidgetDeadlines
         :deadlines="deadlines"
+        @select-deadline="$emit('select-deadline', $event)"
       />
     </div>
     <div
@@ -86,6 +87,10 @@ const { t, d } = useI18n({
   useScope: 'local',
   datetimeFormats,
 })
+
+defineEmits<{
+  'select-deadline': [occurrenceId: number]
+}>()
 
 const props = defineProps<WidgetActiveDayProps>()
 

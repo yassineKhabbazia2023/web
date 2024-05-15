@@ -13,6 +13,7 @@
         :key="index"
         data-testid="widget-deadlines-item"
         class="flex"
+        @click="$emit('select-deadline', item.occurrenceId)"
       >
         <div class="padding-top--1 margin-right--2">
           <Icon :status="item.globalStatus" />
@@ -45,6 +46,10 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+defineEmits<{
+  'select-deadline': [occurrenceId: number]
+}>()
+
 const scheduleModelsByKey = ref<Record<string, string>>()
 
 const props = defineProps<WidgetDeadlinesProps>()
@@ -52,7 +57,7 @@ const props = defineProps<WidgetDeadlinesProps>()
 const internalList = computed(() => {
   return props.deadlines
     .map((deadline) => {
-      const { globalStatus } = deadline
+      const { globalStatus, occurrenceId } = deadline
 
       const typeLabel = getTypeLabel(scheduleModelsByKey.value, deadline.template)
       const progressText = getProgressText(deadline.accountList, t('files-done'))
@@ -61,6 +66,7 @@ const internalList = computed(() => {
         globalStatus,
         typeLabel,
         progressText,
+        occurrenceId,
       }
     })
 })
