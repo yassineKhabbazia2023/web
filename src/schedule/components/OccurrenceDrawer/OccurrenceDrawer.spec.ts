@@ -6,9 +6,36 @@ import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
 import { frequenciesMock } from '@/schedule/tests/mocks/Schedule'
 import { flushPromises } from '@vue/test-utils'
-import { getMockedOccurrence } from '@/schedule/tests/mocks/Occurrence'
+import { getMockedOccurrence, getMockedScheduleOccurrence } from '@/schedule/tests/mocks/Occurrence'
+import { mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
 
-const mockedOccurrence = getMockedOccurrence()
+const mockedOccurrence = getMockedOccurrence({
+  schedule: getMockedScheduleOccurrence({
+    frequency: 'Monthly',
+    description: 'Description',
+  }),
+})
+
+vi.mock('@/schedule/services', () => {
+  return {
+    postSchedule: vi.fn(),
+    getAccountsCollection: vi.fn(() => Promise.resolve(accountsCollection)),
+    getScheduleModels: () => [{
+      key: 'TVA',
+      label: 'TVA au 21',
+    }],
+    getFrequenciesCollection: vi.fn(() => Promise.resolve(frequenciesMock)),
+    getOccurrence: vi.fn(() => Promise.resolve(mockedOccurrence)),
+    getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
+  }
+})
+
+vi.mock('./OccurrenceDrawerHelper', () => ({
+  getFrequencyLabel: vi.fn(() => 'Frequency label'),
+  getCreatedByLabel: vi.fn(() => 'createdby label'),
+  getShortLabel: vi.fn(() => 'short label'),
+  getLongLabel: vi.fn(() => 'long label'),
+}))
 
 const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
   const defaultProps: OccurrenceDrawerProps = {
@@ -25,19 +52,6 @@ const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
   })
 }
 
-vi.mock('@/schedule/services', () => {
-  return {
-    postSchedule: vi.fn(),
-    getAccountsCollection: vi.fn(() => Promise.resolve(accountsCollection)),
-    getScheduleModels: () => [{
-      key: 'TVA',
-      label: 'TVA au 21',
-    }],
-    getFrequenciesCollection: vi.fn(() => Promise.resolve(frequenciesMock)),
-    getOccurrence: vi.fn(() => Promise.resolve(mockedOccurrence)),
-  }
-})
-
 describe('drawer.vue', () => {
   it('should display loader until data are loaded', async () => {
     const wrapper = createWrapper({ modelValue: true })
@@ -47,15 +61,48 @@ describe('drawer.vue', () => {
   })
 
   it('give proper attributes to PDrawer when data are loaded', async () => {
-    const expectedTitle = mockedOccurrence.template.typeLong
+    const expectedTitle = 'short label'
     const wrapper = createWrapper({ modelValue: true })
     await flushPromises()
+    await nextTick()
 
     const pLoader = wrapper.findComponent({ name: 'PLoader' })
     const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
 
     expect(pLoader.exists()).toBeFalsy()
     expect(pDrawer.props('pTitle')).toBe(expectedTitle)
+  })
+
+  it('should emit update:model-value false when drawer is closed', async () => {
+    const wrapper = createWrapper({ modelValue: true })
+    await flushPromises()
+
+    const pDrawer = wrapper.findComponent({ name: 'pDrawer' })
+    pDrawer.vm.$emit('close-drawer-button')
+    expect(wrapper.emitted('update:model-value')).toStrictEqual([[false]])
+  })
+
+  it('should display properly', async () => {
+    const wrapper = createWrapper({ modelValue: true })
+    await flushPromises()
+
+    const fields = wrapper.findAll('[data-testid*="occurrence-drawer-"]')
+    const display = fields.reduce((texts, field) => {
+      const dataTextId = field.attributes('data-testid') ?? ''
+      texts[dataTextId] = field.text()
+
+      return texts
+    }, {} as Record<string, string>)
+
+    const expectedDisplay: Record<string, string> = {
+      'occurrence-drawer-long-label': 'long label',
+      'occurrence-drawer-frequency-label': 'Frequency label',
+      'occurrence-drawer-description': 'Description',
+      'occurrence-drawer-created-by': 'Created bycreatedby label',
+      'occurrence-drawer-occurrence-date': 'Wednesday, May 1, 2024',
+    }
+
+    expect(display).toStrictEqual(expectedDisplay)
   })
 })
 
