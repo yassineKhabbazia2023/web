@@ -8,6 +8,7 @@ export const getMockedUser = (): UserInfo => {
     email: 'john@example.com',
     occupation: 'Consultant Advisory',
     isCollab: true,
+    gigyaUserId: 'test',
     entities: {
       favorites: [],
       default: undefined,

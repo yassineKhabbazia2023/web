@@ -1,5 +1,5 @@
 <template>
-  <div class="folder-wrapper">
+  <div v-if="!isLoading" class="folder-wrapper">
     <div class="flex flex--align-items-center">
       <PAvatar pColor="orange">
         <PIcon>
@@ -16,9 +16,9 @@
     <PTabs v-model="activeTab" @tab-click="handleTabClick">
       <PTabPane
         v-for="tab in tabsList"
+        :key="tab.name"
         :pLabel="tab.title"
         :name="tab.name"
-        :key="tab.name"
       />
       <router-view />
     </PTabs>
@@ -26,11 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { commonStore } from '@kpmg/common'
+import { commonStore, userPermissions } from '@kpmg/common'
 import {
   PTabs,
   PTabPane,
@@ -39,6 +39,7 @@ import {
   PIPulse,
   PButton,
 } from '@kpmg/styleguide'
+import { PERMISSION_CODES } from '@/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -48,50 +49,60 @@ const { t } = useI18n({
 // Variables
 const route = useRoute()
 const router = useRouter()
+const isLoading = ref(false)
 const userStore = commonStore()
+const { hasPermission } = userPermissions()
 const { defaultEntity, isCollab } = storeToRefs(userStore)
-const collabTabs = [
+
+// Computed
+const collabTabs = computed(() => [
   {
     name: 'usersCollab',
     title: t('users'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
   },
   {
     name: 'collab',
     title: t('collab'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
   },
   {
     name: 'offers',
     title: t('offers'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
   },
   {
     name: 'info',
     title: t('info'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
   },
   {
     name: 'delegationsHistory',
     title: t('delegationsHistory'),
+    display: hasPermission(PERMISSION_CODES.HISTORY),
   },
-]
-
-const clientTabs = [
+])
+const clientTabs = computed(() => [
   {
     name: 'usersClient',
     title: t('users'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
   },
   {
     name: 'info',
     title: t('info'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
   },
   {
     name: 'invoices',
     title: t('invoices'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_INVOICES),
   },
-]
-
-// Computed
+])
 const activeTab = computed(() => route.name as string)
 const tabsList = computed(() => {
-  return isCollab.value ? collabTabs : clientTabs
+  const tabs = isCollab.value ? collabTabs.value : clientTabs.value
+  return tabs.filter(({ display }) => display)
 })
 const actionButtonLabel = computed(() => {
   return isCollab.value ? t('delegationBtn') : t('addUser')
@@ -104,6 +115,13 @@ const handleTabClick = (tab: any) => {
     params: { name: defaultEntity.value?.legalName },
   })
 }
+
+// Hooks
+onMounted(async () => {
+  isLoading.value = true
+  await userStore.fetchUserAccountPermissions()
+  isLoading.value = false
+})
 </script>
 
 <style lang="scss" scoped>

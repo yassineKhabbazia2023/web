@@ -6,6 +6,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { commonStore } from '@kpmg/common'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
 import Folder from './'
+import { PERMISSION_CODES } from '@/constants'
 
 const pinia = createTestingPinia()
 vi.mock('@kpmg/common', () => ({
@@ -21,10 +22,17 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
       defaultEntity: () => mockedEntity,
     },
+    actions: {
+      fetchUserAccountPermissions: () => vi.fn(),
+    },
+  }),
+  userPermissions: () => ({
+    hasPermission: mockHasPermission,
   }),
 }))
 
 const mockRouterPush = vi.fn()
+const mockHasPermission = vi.fn((_code: string[]) => true)
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -70,6 +78,19 @@ describe('dossier', () => {
       params: {
         name: mockedEntity.legalName,
       },
+    })
+  })
+  it('should only display tabs to which the user has permission to access', async () => {
+    mockHasPermission.mockImplementation((permissions: string[]) =>
+      permissions.includes(PERMISSION_CODES.ACCOUNT_INFORMATION[0]),
+    )
+    wrapper = createWrapper()
+    await flushPromises()
+    const folderTabsAccess = ['Information']
+    const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
+    folderTabsAccess.forEach((tabPane, index) => {
+      const label = tabsPane.at(index)?.props('pLabel')
+      expect(label).toBe(tabPane)
     })
   })
   it('should display the button label when the user is a client', () => {
