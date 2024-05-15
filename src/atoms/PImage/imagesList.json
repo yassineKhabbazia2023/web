@@ -95,5 +95,12 @@
       "user-nonbinary-add",
       "user-nonbinary"
     ]
+  },
+  {
+    "name": "qrcode",
+    "images": [
+      "android",
+      "ios"
+    ]
   }
 ]
