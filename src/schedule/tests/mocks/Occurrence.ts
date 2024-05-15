@@ -1,28 +1,45 @@
-import type { Occurrence } from '@/schedule/models/Deadline'
+import type { Occurrence, Schedule, Template } from '@/schedule/models/Deadline'
+
+export function getMockedScheduleOccurrence(override: Partial<Schedule> = {}): Schedule {
+  const defaultSchedule: Schedule = {
+    id: 49,
+    description: '',
+    attachment: null,
+    frequency: 'None',
+    reminders: [],
+    createdBy: {
+      id: 209,
+      firstName: 'Jerry',
+      lastName: 'Lewis',
+      email: 'jerry.lewis@kpmg.test',
+    },
+  }
+  return {
+    ...defaultSchedule,
+    ...override,
+  }
+}
+
+export function getMockedTemplateOccurrence(override: Partial<Template> = {}): Template {
+  const defaultTemplate: Template = {
+    typeShort: 'CRL',
+    typeShortCustomer: 'CRL',
+    typeShortCollaborator: 'CRL',
+    typeLong: 'Contribution sur les revenus locatifs',
+  }
+
+  return {
+    ...defaultTemplate,
+    ...override,
+  }
+}
 
 export function getMockedOccurrence(override: Partial<Occurrence> = {}): Occurrence {
   const defaultOccurrence: Occurrence = {
     id: 61,
     occurrenceDate: '05/01/2024 00:00:00',
-    schedule: {
-      id: 49,
-      description: '',
-      attachment: null,
-      frequency: 'None',
-      reminders: [],
-      createdBy: {
-        id: 209,
-        firstName: 'a',
-        lastName: 'a',
-        email: 'clementprati@kpmg.fr',
-      },
-    },
-    template: {
-      typeShort: 'CRL',
-      typeShortCustomer: 'CRL',
-      typeShortCollaborator: 'CRL',
-      typeLong: 'Contribution sur les revenus locatifs',
-    },
+    schedule: getMockedScheduleOccurrence(),
+    template: getMockedTemplateOccurrence(),
     globalStatus: 'Done',
     accountList: [
       {

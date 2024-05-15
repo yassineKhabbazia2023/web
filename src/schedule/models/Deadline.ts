@@ -8,7 +8,7 @@ export interface Template {
   typeShort: string
 }
 export interface DeadlineAccount extends Account {
-    status: Status
+  status: Status
 }
 export interface Deadline {
   scheduleId: number
@@ -31,7 +31,7 @@ interface User {
   email: string
 }
 
-interface Schedule {
+export interface Schedule {
   id: number
   description: string
   attachment: string | null

@@ -12,10 +12,10 @@
   "schedule": {
     "attachment": null,
     "createdBy": {
-      "email": "clementprati@kpmg.fr",
-      "firstName": "a",
+      "email": "jerry.lewis@kpmg.test",
+      "firstName": "Jerry",
       "id": 209,
-      "lastName": "a",
+      "lastName": "Lewis",
     },
     "description": "",
     "frequency": "None",

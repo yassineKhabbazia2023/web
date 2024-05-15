@@ -51,7 +51,7 @@ export const KpmgCommontMock = {
 
 export const TvaLabel = 'TVA (Taxe sur la valeur ajoutée)'
 
-export const mockedGetScheduleModelsByKey = vi.fn((_: string) => ({
+export const mockedGetScheduleModelsByKey = vi.fn((_: string): Record<string, string> => ({
   TVA: TvaLabel,
 }))
 
