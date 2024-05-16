@@ -105,6 +105,7 @@ import {
   PASSWORD_STRENGTH,
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
+import useNavigation from '@/composable/useNavigation'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -181,6 +182,7 @@ const rules = reactive<FormRules<typeof formValue>>({
   terms: [{ trigger: 'change', validator: validateTerm }],
 })
 
+const { navigateToCustomerWallet } = useNavigation()
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid) => {
@@ -209,7 +211,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             isCollab: false,
           },
         })
-        router.push({ name: 'entities' })
+        navigateToCustomerWallet()
       } catch {}
     } else {
       return false
