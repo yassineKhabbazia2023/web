@@ -1,5 +1,5 @@
 import { commonApi as api } from '@kpmg/common'
-import type { DeadlinesByDate, Occurrence } from '@/schedule/models/Deadline'
+import type { DeadlinesByDate, Occurrence, Status } from '@/schedule/models/Deadline'
 import type { Account } from '@/schedule/models/Account'
 import type { KeyLabel } from '@/schedule/models/commonTypes'
 import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
@@ -67,9 +67,23 @@ export const getFrequenciesCollection = () => {
   return Promise.resolve(['Monthly', 'None'])
 }
 
-export async function getOccurrence(occurenceId: number) {
-  const url = `/occurrences/${occurenceId}`
+export async function getOccurrence(occurrenceId: number) {
+  const url = `/occurrences/${occurrenceId}`
   const { data } = await api().schedule.get<Occurrence>(url)
 
   return data
+}
+
+export async function postDeadlineAccountStatus(
+  occurrenceId: number,
+  accountId: number,
+  status: Status,
+) {
+  const url = `/occurrences/${occurrenceId}/accounts/${accountId}/deadline-status`
+  const payload = {
+    status,
+  }
+  const response = await api().schedule.post<Occurrence>(url, payload)
+
+  return response.data
 }

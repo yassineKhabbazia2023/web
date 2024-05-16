@@ -7,6 +7,7 @@ import {
   getScheduleModelsByKey,
   getFrequenciesCollection,
   getOccurrence,
+  postDeadlineAccountStatus,
 } from '.'
 import type { Account } from '@/schedule/models/Account'
 import type { DeadlinesByDate, Occurrence } from '@/schedule/models/Deadline'
@@ -40,10 +41,16 @@ vi.mock('@kpmg/common', () => {
             return getMockApiImplementation(mockedOccurrence)
           }
         }),
-        post: vi.fn((url, _) => {
+        post: vi.fn((url, payload) => {
           if (/^\/schedules$/.test(url)) {
             return Promise.resolve({ data: { id: scheduleId } })
           }
+          return Promise.resolve({
+            data: {
+              url,
+              payload,
+            },
+          })
         }),
       },
     }),
@@ -108,5 +115,22 @@ describe('getOccurrence', () => {
     const data = await getOccurrence(occurrenceId)
 
     expect(data).toStrictEqual(mockedOccurrence)
+  })
+})
+
+describe('postDeadlineAccountStatus', () => {
+  it('should call schedule.post with proper url and payloads', async () => {
+    const occurrenceId = mockedOccurrence.id
+    const accountId = 12
+    const status = 'Done'
+    const data = await postDeadlineAccountStatus(occurrenceId, accountId, status)
+    const expectedData = {
+      url: `/occurrences/${occurrenceId}/accounts/${accountId}/deadline-status`,
+      payload: {
+        status,
+      },
+    }
+
+    expect(data).toStrictEqual(expectedData)
   })
 })
