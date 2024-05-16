@@ -65,14 +65,14 @@
     :occurrenceId="occurrenceId"
     :defaultCreateDate="activeDate"
     appendToBody
-    @update:model-value="occurrenceId = undefined"
+    @update:model-value="onCloseOccurrenceDrawer"
   />
   <ScheduleDrawer
     v-if="isDrawerVisible"
     v-model="isDrawerVisible"
     :defaultCreateDate="activeDate"
     appendToBody
-    @update:model-value="onCloseDrawer"
+    @update:model-value="onCloseScheduleDrawer"
   />
 </template>
 
@@ -190,7 +190,12 @@ function onUpdateActiveDate(newActiveDate: Date) {
   }
 }
 
-function onCloseDrawer() {
+function onCloseScheduleDrawer() {
+  debounceRefreshData()
+}
+
+function onCloseOccurrenceDrawer() {
+  occurrenceId.value = undefined
   debounceRefreshData()
 }
 

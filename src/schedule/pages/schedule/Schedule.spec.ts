@@ -463,6 +463,9 @@ describe('home page', () => {
       })
 
       it('should hide OccurrenceDrawer when it is closed', async () => {
+        const getSchedulesCollectionSpy = vi
+          .spyOn(ScheduleServices, 'getSchedulesCollection')
+
         const deadlineList = wrapper.findComponent({ name: 'DeadlineList' })
         deadlineList.vm.$emit('select-deadline', 4)
         await nextTick()
@@ -475,6 +478,11 @@ describe('home page', () => {
 
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
         expect(occurrenceDrawerAfter.exists()).toBeFalsy()
+
+        vi.advanceTimersByTime(300)
+        await nextTick()
+
+        expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
       })
 
       it('should display OccurrenceDrawer when deadline is select in widget list', async () => {
