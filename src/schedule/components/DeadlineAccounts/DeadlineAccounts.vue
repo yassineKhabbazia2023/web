@@ -22,6 +22,7 @@
       >
         <PCheckbox
           :modelValue="status === 'Done'"
+          @update:model-value="emit('toggle-status', id, status)"
         >
           <span
             :class="{
@@ -54,7 +55,11 @@
 <script setup lang="ts">
 import type { DeadlineAccountsProps } from './DeadlineAccountsTypes'
 import { PCheckbox, PFormItem } from '@kpmg/styleguide'
+import type { Status } from '@/schedule/models/Deadline'
 
+const emit = defineEmits<{
+  'toggle-status': [number, Status]
+}>()
 defineProps<DeadlineAccountsProps>()
 </script>
 

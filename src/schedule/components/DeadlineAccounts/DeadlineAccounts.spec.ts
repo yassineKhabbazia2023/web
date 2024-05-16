@@ -37,6 +37,7 @@ const createWrapper = (override: Partial<DeadlineAccountsProps> = {}) => {
           name: 'PCheckbox',
           template: '<div><slot /></div>',
           props: ['modelValue'],
+          emits: ['update:model-value'],
         },
       },
     },
@@ -56,6 +57,25 @@ describe('test DeadlineAccounts', () => {
   it('should display proper title', () => {
     const PFormItem = wrapper.findComponent({ name: 'PFormItem' })
     expect(PFormItem.props('pLabel')).toBe(title)
+  })
+
+  it('should emit toggle-status when PCheckbox emits update:model-value', () => {
+    const doneDeadlineAccount = deadlineAccounts[0]
+    const todoDeadlineAccount = deadlineAccounts[1]
+
+    const pCheckboxDone = doneDeadlineAccount.findComponent({ name: 'PCheckbox' })
+    const pCheckboxTodo = todoDeadlineAccount.findComponent({ name: 'PCheckbox' })
+
+    const { id: idDone, status: statusDone } = mockedMockedDeadlineAccountDONE
+    const { id: idTodo, status: statusTodo } = mockedMockedDeadlineAccountTODO
+
+    pCheckboxDone.vm.$emit('update:model-value')
+    pCheckboxTodo.vm.$emit('update:model-value')
+
+    expect(wrapper.emitted('toggle-status')).toStrictEqual([
+      [idDone, statusDone],
+      [idTodo, statusTodo],
+    ])
   })
 
   describe('on done deadline account', () => {
