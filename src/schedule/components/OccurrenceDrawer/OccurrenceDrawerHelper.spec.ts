@@ -1,9 +1,11 @@
 import { expect, describe, it } from 'vitest'
+import type { Status } from '@/schedule/models/Deadline'
 import {
   getFrequencyLabel,
   getCreatedByLabel,
   getShortLabel,
   getLongLabel,
+  getNewStatus,
 } from './OccurrenceDrawerHelper'
 import {
   getMockedOccurrence,
@@ -122,6 +124,30 @@ describe('test OccurrenceDrawerHelper', () => {
     }) => {
       const longLabel = getLongLabel(longScheduleModelsByKey, shortLabel, occurrence)
       expect(longLabel).toBe(expected)
+    })
+  })
+
+  describe('getNewStatus', () => {
+    const tests: {
+      actualStatus: Status
+      expected: Status
+    }[] = [{
+      actualStatus: 'Done',
+      expected: 'Todo',
+    }, {
+      actualStatus: 'Todo',
+      expected: 'Done',
+    }, {
+      actualStatus: 'Draft',
+      expected: 'Done',
+    }]
+
+    it.each(tests)('should return $expected status when actualStatus is $actualStatus', ({
+      actualStatus,
+      expected,
+    }) => {
+      const newStatus = getNewStatus(actualStatus)
+      expect(newStatus).toBe(expected)
     })
   })
 })

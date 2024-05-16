@@ -1,4 +1,4 @@
-import type { Occurrence } from '@/schedule/models/Deadline'
+import type { Occurrence, Status } from '@/schedule/models/Deadline'
 import { getTypeLabel } from '@/schedule/helpers/utils'
 
 export function getFrequencyLabel(
@@ -43,4 +43,16 @@ export function getLongLabel(
   return (longLabel && longLabel !== shortLabel)
     ? `(${longLabel})`
     : ''
+}
+
+const NEW_STATUSES: Record<Status, Status> = {
+  Todo: 'Done',
+  Done: 'Todo',
+  Draft: 'Done',
+}
+
+export function getNewStatus(
+  actualStatus: Status,
+): Status {
+  return NEW_STATUSES[actualStatus]
 }

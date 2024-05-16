@@ -8,6 +8,7 @@ import { frequenciesMock } from '@/schedule/tests/mocks/Schedule'
 import { flushPromises } from '@vue/test-utils'
 import { getMockedOccurrence, getMockedScheduleOccurrence } from '@/schedule/tests/mocks/Occurrence'
 import { mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
+import * as scheduleServices from '@/schedule/services'
 
 const mockedOccurrence = getMockedOccurrence({
   schedule: getMockedScheduleOccurrence({
@@ -27,20 +28,28 @@ vi.mock('@/schedule/services', () => {
     getFrequenciesCollection: vi.fn(() => Promise.resolve(frequenciesMock)),
     getOccurrence: vi.fn(() => Promise.resolve(mockedOccurrence)),
     getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
+    postDeadlineAccountStatus: vi.fn(),
   }
 })
 
-vi.mock('./OccurrenceDrawerHelper', () => ({
-  getFrequencyLabel: vi.fn(() => 'Frequency label'),
-  getCreatedByLabel: vi.fn(() => 'createdby label'),
-  getShortLabel: vi.fn(() => 'short label'),
-  getLongLabel: vi.fn(() => 'long label'),
-}))
+vi.mock('./OccurrenceDrawerHelper', async () => {
+  const actual = await vi.importActual('./OccurrenceDrawerHelper')
+
+  return {
+    ...actual as Object,
+    getFrequencyLabel: vi.fn(() => 'Frequency label'),
+    getCreatedByLabel: vi.fn(() => 'createdby label'),
+    getShortLabel: vi.fn(() => 'short label'),
+    getLongLabel: vi.fn(() => 'long label'),
+  }
+})
+
+const occurrenceId = 442
 
 const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
   const defaultProps: OccurrenceDrawerProps = {
     modelValue: true,
-    occurrenceId: 442,
+    occurrenceId,
   }
   const props = {
     ...defaultProps,
@@ -103,6 +112,23 @@ describe('drawer.vue', () => {
     }
 
     expect(display).toStrictEqual(expectedDisplay)
+  })
+
+  it('should call postDeadlineAccountStatus when DeadlineAccount emits toggle-status', async () => {
+    const postDeadlineAccountStatusSpy = vi.spyOn(scheduleServices, 'postDeadlineAccountStatus')
+    const accountId = 12
+    const status = 'Todo'
+    const expectedStatus = 'Done'
+
+    const wrapper = createWrapper({ modelValue: true })
+    await flushPromises()
+
+    const firstDeadlineAccount = wrapper.findComponent({ name: 'DeadlineAccounts' })
+    firstDeadlineAccount.vm.$emit('toggle-status', accountId, status)
+    await nextTick()
+
+    expect(postDeadlineAccountStatusSpy).toHaveBeenCalledOnce()
+    expect(postDeadlineAccountStatusSpy).toHaveBeenNthCalledWith(1, occurrenceId, accountId, expectedStatus)
   })
 })
 

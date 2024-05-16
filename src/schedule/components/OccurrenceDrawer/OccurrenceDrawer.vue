@@ -26,7 +26,14 @@
       </p>
     </template>
 
-    <div v-if="isLoading" class="flex flex--justify-content-center">
+    <div
+      v-if="isLoading"
+      class="
+        occurrence-drawer__loader
+        flex
+        flex--justify-content-center
+      "
+    >
       <PLoader pType="primary" pSize="32" />
     </div>
     <PForm
@@ -63,6 +70,7 @@
         :title="t('deadlineAccounts')"
         :deadlineAccounts="occurrence.accountList"
         class="margin-top--4"
+        @toggle-status="onToggleDeadlineAccountStatus"
       />
       <StringField
         v-if="occurrence?.schedule?.description"
@@ -105,7 +113,6 @@
           pType="danger"
           pPlain
           pSize="default"
-          :pLoading="isLoading"
         >
           {{ t('delete') }}
         </PButton>
@@ -116,7 +123,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { getOccurrence, getScheduleModelsByKey } from '@/schedule/services'
+import { getOccurrence, getScheduleModelsByKey, postDeadlineAccountStatus } from '@/schedule/services'
 import {
   PButton,
   PDrawer,
@@ -128,7 +135,7 @@ import {
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
-import type { Occurrence } from '@/schedule/models/Deadline'
+import type { Occurrence, Status } from '@/schedule/models/Deadline'
 import Tag from '@/schedule/components/Common/Tag'
 import DeadlineAccounts from '@/schedule/components/DeadlineAccounts'
 import {
@@ -136,6 +143,7 @@ import {
   getCreatedByLabel,
   getShortLabel,
   getLongLabel,
+  getNewStatus,
 } from './OccurrenceDrawerHelper'
 import { datetimeFormats } from '@/schedule/helpers/datetimeFormatsConsts'
 
@@ -181,7 +189,20 @@ const isDrawerOpened = computed({
   },
 })
 
-onMounted(async () => {
+async function onToggleDeadlineAccountStatus(accountId: number, actualStatus: Status) {
+  try {
+    isLoading.value = true
+    const status = getNewStatus(actualStatus)
+    await postDeadlineAccountStatus(props.occurrenceId, accountId, status)
+  } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
+  }
+  await refreshOccurrence()
+}
+
+async function refreshOccurrence() {
   try {
     isLoading.value = true
     shortScheduleModelsByKey.value = getScheduleModelsByKey('short')
@@ -192,11 +213,22 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+onMounted(async () => {
+  shortScheduleModelsByKey.value = getScheduleModelsByKey('short')
+  longScheduleModelsByKey.value = getScheduleModelsByKey('long')
+  await refreshOccurrence()
 })
 </script>
 
 <style lang="scss" scoped>
 .occurrence-drawer {
+  &__loader {
+    position: absolute;
+    width: calc(100% - 24px);
+  }
+
   &__occurrence-date {
     &::first-letter {
       text-transform: capitalize;
