@@ -59,6 +59,11 @@
           {{ frequencyLabel }}
         </span>
       </p>
+      <DeadlineAccounts
+        :title="t('deadlineAccounts')"
+        :deadlineAccounts="occurrence.accountList"
+        class="margin-top--4"
+      />
       <StringField
         v-if="occurrence?.schedule?.description"
         :modelValue="occurrence.schedule.description"
@@ -125,6 +130,7 @@ import { useI18n } from 'vue-i18n'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
 import type { Occurrence } from '@/schedule/models/Deadline'
 import Tag from '@/schedule/components/Common/Tag'
+import DeadlineAccounts from '@/schedule/components/DeadlineAccounts'
 import {
   getFrequencyLabel,
   getCreatedByLabel,
@@ -203,12 +209,14 @@ onMounted(async () => {
   en-US:
     description: 'Description'
     createdBy: 'Created by'
+    deadlineAccounts: 'Accounts'
     delete: 'Delete'
     frequency:
       Monthly: 'Monthly'
   fr-FR:
     description: 'Description'
     createdBy: 'Créé par'
+    deadlineAccounts: 'Destinataires'
     delete: 'Supprimer le rappel'
     frequency:
       Monthly: 'Tous les mois'
