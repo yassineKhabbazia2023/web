@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import {
   routes as commonRoutes,
@@ -12,8 +12,8 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: { template: '<h1>Home Page</h1>' },
-  },
+    component: () => import('@/pages/Home'),
+  } as RouteRecordRaw,
 ]
 
 const router = createRouter({

@@ -8,12 +8,14 @@
       padding-x--6
       shadow--4"
   >
-    <PImage
-      class="header-section__logo"
-      pType="logos"
-      pName="pulse-color"
-      pFit="fill"
-    />
+    <router-link to="/">
+      <PImage
+        class="header-section__logo"
+        pType="logos"
+        pName="pulse-color"
+        pFit="fill"
+      />
+    </router-link>
     <div class="flex">
       <PButton
         :pType="showCalendar ? 'white' : 'generic'"

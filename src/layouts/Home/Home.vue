@@ -154,17 +154,7 @@ onMounted(async () => {
     }
   }
 
-  .sidebar-container:not(.el-menu--collapse) {
-    @media only screen and (max-width: 991px) {
-      width: 100%;
-    }
-  }
-
   @media only screen and (max-width: 991px) {
-    .aside-main-container {
-      display: block;
-    }
-
     .home-bottom-menu {
       display: block;
       bottom: 0;
@@ -180,13 +170,12 @@ onMounted(async () => {
     padding: 16px;
     position: relative;
     width: 100%;
-    height: calc(100vh - 52px);
-    margin-top: 52px;
+    height: calc(100vh - 56px);
+    margin-top: 56px;
     overflow: auto;
 
     @media only screen and (max-width: 991px) {
-      width: auto;
-      height: calc(100vh - 102px);
+      height: calc(100vh - 108px);
     }
 
     &--no-paddings {
