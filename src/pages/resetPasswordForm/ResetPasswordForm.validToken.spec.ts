@@ -105,7 +105,7 @@ describe('page reset password form', () => {
     const postLink = 'authentication/api/createNewPassword'
     const data = {
       contactId: 'contactId',
-      password: 'aaAA11@@',
+      newPassword: 'aaAA11@@',
       resetPasswordToken: 'token',
       isCreatePasswordAction: false,
     }

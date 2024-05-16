@@ -147,7 +147,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (valid) {
       const data = {
         contactId,
-        password: formValue.password,
+        newPassword: formValue.password,
         resetPasswordToken: token,
         isCreatePasswordAction: false,
       }

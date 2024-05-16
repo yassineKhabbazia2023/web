@@ -122,7 +122,7 @@ describe('page creation password', () => {
     const loginLink = 'authentication/api/login'
     const data = {
       contactId: 'contactId',
-      password: 'aaAA11@@',
+      newPassword: 'aaAA11@@',
       resetPasswordToken: 'token',
     }
     const dataLogin = {
