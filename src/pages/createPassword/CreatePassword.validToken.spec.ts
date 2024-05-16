@@ -50,6 +50,7 @@ vi.mock('@kpmg/common', () => ({
         data: true,
       }),
       post: postMock,
+      patch: patchMock,
     },
   }),
   tokenService: {
@@ -117,7 +118,7 @@ describe('page creation password', () => {
     const setTokenSpy = vi.spyOn(tokenService, 'setToken')
     vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
     await flushPromises()
-    const patchLink = '/Activation/AcceptTerms?contactId=contactId'
+    const patchLink = '/authentication/api/cgu/accept-terms'
     const postLink = 'authentication/api/createNewPassword'
     const loginLink = 'authentication/api/login'
     const data = {

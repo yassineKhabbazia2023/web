@@ -190,10 +190,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
         newPassword: formValue.password,
         resetPasswordToken,
       }
-      const urlAcceptTerms = `/Activation/AcceptTerms?contactId=${contactId}`
+      const urlAcceptTerms = '/authentication/api/cgu/accept-terms'
       const urlUpdatePassword = 'authentication/api/createNewPassword'
       try {
-        await commonApi().onboarding.patch(urlAcceptTerms)
+        await commonApi().gateway.patch(urlAcceptTerms)
         await commonApi().gateway.post(urlUpdatePassword, data)
         const urlLogin = 'authentication/api/login'
         const {
