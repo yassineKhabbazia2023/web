@@ -1,9 +1,6 @@
 <template>
   <div v-if="!isLoading" class="common-layout">
-    <HomeScheduleDrawer
-      v-if="calendarHasBeenOpened"
-      v-model="showCalendar"
-    />
+    <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
         <Header
@@ -19,7 +16,7 @@
           class="main-container"
           :class="{
             'main-container--no-paddings':
-              stylesMetaProperties?.hasPaddings === false
+              stylesMetaProperties?.hasPaddings === false,
           }"
         >
           <UserProfile
@@ -39,10 +36,12 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
+import { productFruits } from 'product-fruits'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { commonStore as store, dataProvider } from '@kpmg/common'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
+import { getBrowserName } from './utils'
 import UserProfile from '@/components/UserProfile'
 import HomeScheduleDrawer from '@/components/HomeScheduleDrawer'
 import Header from './Header'
@@ -115,6 +114,17 @@ const stylesMetaProperties = computed(
 onMounted(async () => {
   try {
     const user = await fetchUserData()
+    productFruits.init('C1dNXwiLfzooNaB0', 'FR', {
+      username: user?.id,
+      role: user?.isCollab ? 'Collaborateur' : 'Client',
+      props: {
+        browser: getBrowserName(),
+      },
+    })
+
+    productFruits.safeExec(($productFruits: any) => {
+      $productFruits.push(['pageChanged'])
+    })
     store().$patch({
       user,
     })
