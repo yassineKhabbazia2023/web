@@ -6,6 +6,7 @@
           v-model="internalModelValue"
           :pItemsGroupedByDate="formattedDeadlinesByDate"
           :pInitialDateRange="pRange"
+          @select-deadline="$emit('select-deadline', $event)"
         />
       </PConfigProvider>
     </PScrollbar>
@@ -29,6 +30,7 @@ const props = defineProps<CalendarProps>()
 
 const emit = defineEmits<{
   'update:modelValue': [Date]
+  'select-deadline': [occurrenceId: number]
 }>()
 
 const internalModelValue = computed({
@@ -61,6 +63,7 @@ function formatItemsForCalendar(deadlines: Deadline[]) {
       pStatus: d.globalStatus.toLowerCase(),
       pCompletedTasks: accountsCompletion.accountsWithCompletedDeadline,
       pTotalTasks: accountsCompletion.accountsAmount,
+      pItemId: d.occurrenceId,
     }
   })
 }

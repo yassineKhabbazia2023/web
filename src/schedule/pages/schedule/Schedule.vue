@@ -30,6 +30,7 @@
         :pRange="rangeDate"
         data-testid="calendar-wrapper"
         @update:model-value="onUpdateActiveDate"
+        @select-deadline="onSelectDeadline"
       />
     </div>
     <div class="p-schedule__widget">

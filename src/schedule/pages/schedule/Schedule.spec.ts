@@ -20,6 +20,7 @@ const createWrapper = (options: ComponentMountingOptions<any>) =>
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
 const OTHER_MONTH_DATE = '2024-11-03'
+const OccurenceId = 1234567890
 
 vi.mock('@kpmg/common', () => KpmgCommontMock)
 
@@ -489,7 +490,18 @@ describe('home page', () => {
         const occurrenceDrawerBefore = wrapper.findComponent({ name: 'OccurrenceDrawer' })
         expect(occurrenceDrawerBefore.exists()).toBeFalsy()
 
-        wrapper.findComponent(WidgetActiveDay).vm.$emit('select-deadline', 1234567890)
+        wrapper.findComponent(WidgetActiveDay).vm.$emit('select-deadline', OccurenceId)
+        await nextTick()
+
+        const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
+        expect(occurrenceDrawerAfter.exists()).toBeTruthy()
+      })
+
+      it('should display OccurrenceDrawer when deadline is select in calendar view', async () => {
+        const occurrenceDrawerBefore = wrapper.findComponent({ name: 'Calendar' })
+        expect(occurrenceDrawerBefore.exists()).toBeFalsy()
+
+        wrapper.findComponent(WidgetActiveDay).vm.$emit('select-deadline', OccurenceId)
         await nextTick()
 
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })

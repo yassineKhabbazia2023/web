@@ -93,6 +93,7 @@ describe('calendar component', () => {
               pTitle: firstDeadlineExpectedTitle,
               pStatus: firstDeadlineMock.globalStatus.toLocaleLowerCase(),
               pCompletedTasks: 1,
+              pItemId: 1,
               pTotalTasks: 2,
             },
           ],
@@ -104,6 +105,7 @@ describe('calendar component', () => {
               pTitle: secondDeadlineExpectedTitle,
               pStatus: secondDeadlineMock.globalStatus.toLocaleLowerCase(),
               pCompletedTasks: 1,
+              pItemId: 1,
               pTotalTasks: 2,
             },
           ],
@@ -111,4 +113,10 @@ describe('calendar component', () => {
       ])
     },
   )
+  it('should emit select-deadline event', () => {
+    const wrapper = createWrapper()
+    const occurrenceId = 1234567890
+    wrapper.findComponent(PCalendar).vm.$emit('select-deadline', occurrenceId)
+    expect(wrapper.emitted('select-deadline')).toStrictEqual([[occurrenceId]])
+  })
 })
