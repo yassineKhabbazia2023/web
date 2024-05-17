@@ -93,6 +93,7 @@ $shadow-color: #7090b0;
 
 .launch-card {
   border: 1px solid var(--el-color-neutral-gray-100);
+  max-width: 350px;
 
   &:hover {
     box-shadow: 0 12px 15px 0 rgba($shadow-color, 0.04),

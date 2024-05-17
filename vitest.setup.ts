@@ -1,7 +1,15 @@
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
 import { vi } from 'vitest'
+import type { Entity } from '@kpmg/common'
 
 setAssetsBaseUrl('https://www.example.kpmg')
+
+export const mockedEntity: Entity = {
+  accountId: 1,
+  legalName: 'Entity Test',
+  accountNumber: 'IBS544G45F345F',
+  color: 'orange',
+}
 
 export const commonApiGatewayGetSpy = vi.fn()
 export const commonApiSilaeClientGetSpy = vi.fn()
@@ -47,10 +55,7 @@ vi.mock('@kpmg/common', () => ({
     $patch: vi.fn(),
     $get: vi.fn(),
     $post: vi.fn(),
-    defaultEntity: {
-      name: 'JEAN LÉVAGE',
-      idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
-    },
+    defaultEntity: mockedEntity,
   }),
   userPermissions: () => ({
     hasPermission: mockHasPermission,

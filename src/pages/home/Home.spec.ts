@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { describe, expect, it, vi, beforeEach, type SpyInstance } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { mockedEnvVars } from '@/../vitest.setup'
+import { mockedEntity, mockedEnvVars } from '@/../vitest.setup'
 import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
 import { LAUNCHER_KEY } from './HomeTypes'
 import * as HomeUtils from './HomeUtils'
@@ -15,18 +15,8 @@ function getWrapper() {
   return shallowMount(Home, {
     global: {
       stubs: {
-        LaunchCard: {
-          template: '<div />',
-          props: [
-            'title',
-            'subtitle',
-            'imageType',
-            'imageName',
-            'actionLabel',
-            'actionUrl',
-            'downloadLabel',
-          ],
-        },
+        PBreadcrumb: true,
+        LaunchCard: true,
       },
     },
   })
@@ -51,11 +41,20 @@ describe('test Home', () => {
   })
 
   describe('default display', () => {
-    it('proper launchCards length', async () => {
+    it('proper launchCards length and breadcrumb elements', async () => {
       await nextTick()
       const launchCards = getLaunchCardComponents(wrapper)
+      const PBreadcrumb = wrapper.findComponent({ name: 'PBreadcrumb' })
+      const expectedBreadcrumbElements = [{
+        pId: -1,
+        pText: mockedEntity.legalName,
+      }, {
+        pId: -1,
+        pText: 'Applications',
+      }]
 
       expect(launchCards).toHaveLength(CARDS_LENGTH)
+      expect(PBreadcrumb.props('pElements')).toStrictEqual(expectedBreadcrumbElements)
     })
 
     it('should display filtered cards', async () => {
