@@ -166,9 +166,10 @@ import {
   PBlockHeader,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
-import { commonStore, getInitials } from '@kpmg/common'
+import { commonStore, getInitials, userPermissions } from '@kpmg/common'
 import {
   PAGE_SIZES,
+  PERMISSION_CODES,
   DATE_TIME_FORMATS as datetimeFormats,
 } from '@/constants'
 import { getFullName } from '@/common/utils'
@@ -184,6 +185,7 @@ const { d, t } = useI18n({
 
 const route = useRoute()
 const { user } = storeToRefs(commonStore())
+const { hasPermission } = userPermissions()
 
 const state: IStateUser = reactive({
   data: [],
@@ -193,19 +195,32 @@ const state: IStateUser = reactive({
   totalItems: 0,
   isLoading: false,
 })
-const toolboxItems: PToolboxItemProps[] = [
-  {
-    pIconName: 'PIPatchCheck',
-    pValue: t('assignSignatory'),
-    pActionName: 'assign',
-    pState: 'default',
-  },
-  {
-    pIconName: 'PIPencilSquare',
-    pValue: t('modifyRights'),
-    pActionName: 'rights',
-    pState: 'default',
-  }]
+const toolboxItems = computed(
+  () =>
+    [
+      {
+        pIconName: 'PIPatchCheck',
+        pValue: t('assignSignatory'),
+        pActionName: 'assign',
+        pState: 'default',
+        display: true,
+      },
+      {
+        pIconName: 'PIPencilSquare',
+        pValue: t('modifyRights'),
+        pActionName: 'rights',
+        pState: 'default',
+        display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS),
+      },
+    ]
+      .filter(({ display }) => display)
+      .map(({ pIconName, pValue, pActionName, pState }) => ({
+        pIconName,
+        pValue,
+        pActionName,
+        pState,
+      })) as PToolboxItemProps[],
+)
 
 const paginationLabel = computed(() => getPaginationLabel<IUser>(t('on'), state))
 
@@ -279,7 +294,6 @@ watch(() => [
 onMounted(async () => {
   await formatAndFillUsersCollabTable()
 })
-
 </script>
 
 <style lang="scss">
@@ -296,38 +310,37 @@ onMounted(async () => {
     width: 230px;
   }
 }
-
 </style>
 
 <i18n lang="yaml">
-  en-US:
-    role: 'Function'
-    user: 'User'
-    status: 'Status'
-    action: 'Action'
-    email: 'Email'
-    dateAccess: 'First date access'
-    assignSignatory: 'Designate as signatory'
-    modifyRights: 'Change the rights'
-    statusConnect: 'Connected'
-    statusInvite: 'Invited'
-    numberOfFoldersPerPage: 'number of folder per page'
-    userTitle: 'Users'
-    userDescription: 'Manage here users''s rights for this folder.'
-    on: 'on'
-  fr-FR:
-    role: 'Rôle'
-    user: 'Utilisateur'
-    status: 'Statut'
-    action: 'Action'
-    email: 'E-mail'
-    dateAccess: 'Date d''ajout'
-    assignSignatory: 'Désigner en tant que signataire'
-    modifyRights: 'Modifier les droits'
-    statusConnect: 'Connecté'
-    statusInvite: 'Invité'
-    numberOfFoldersPerPage: 'nombre de dossier par page'
-    userTitle: 'Les utilisateurs'
-    userDescription: 'Gérer ici les droits des utilisateurs sur le dossier.'
-    on: 'sur'
+en-US:
+  role: 'Function'
+  user: 'User'
+  status: 'Status'
+  action: 'Action'
+  email: 'Email'
+  dateAccess: 'First date access'
+  assignSignatory: 'Designate as signatory'
+  modifyRights: 'Change the rights'
+  statusConnect: 'Connected'
+  statusInvite: 'Invited'
+  numberOfFoldersPerPage: 'number of folder per page'
+  userTitle: 'Users'
+  userDescription: "Manage here users's rights for this folder."
+  on: 'on'
+fr-FR:
+  role: 'Rôle'
+  user: 'Utilisateur'
+  status: 'Statut'
+  action: 'Action'
+  email: 'E-mail'
+  dateAccess: "Date d'ajout"
+  assignSignatory: 'Désigner en tant que signataire'
+  modifyRights: 'Modifier les droits'
+  statusConnect: 'Connecté'
+  statusInvite: 'Invité'
+  numberOfFoldersPerPage: 'nombre de dossier par page'
+  userTitle: 'Les utilisateurs'
+  userDescription: 'Gérer ici les droits des utilisateurs sur le dossier.'
+  on: 'sur'
 </i18n>

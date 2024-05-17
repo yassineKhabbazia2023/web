@@ -6,6 +6,7 @@ import { getMockedCustomersCollab } from './mockData'
 import UsersCollab from '.'
 
 const mockedCustomersCollab = getMockedCustomersCollab()
+const mockHasPermission = vi.fn((_code: string) => true)
 
 vi.mock('@/services/wallet', () => ({
   fetchAccountCustomers: vi.fn(() => Promise.resolve(mockedCustomersCollab)),
@@ -28,7 +29,19 @@ vi.mock('@kpmg/common', () => ({
     }),
   }),
   getInitials: vi.fn(),
+  userPermissions: () => ({
+    hasPermission: mockHasPermission,
+  }),
 }))
+
+const toolBoxElementsWithoutPermissions = [
+  {
+    pActionName: 'assign',
+    pIconName: 'PIPatchCheck',
+    pState: 'default',
+    pValue: 'Designate as signatory',
+  },
+]
 
 const pinia = createTestingPinia()
 
@@ -48,11 +61,21 @@ describe('usersCollab', () => {
   })
   describe('display', () => {
     it('displays the Block Header', () => {
+      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
       const blockHeader = wrapper.findComponent(
         '[data-testid=folder-users-collab-block-header]',
       )
 
       expect(blockHeader.exists()).toBeTruthy()
+      expect(pToolbox.props('pElements')).toHaveLength(2)
+    })
+    it('should display only the actions that the user has permission to perform', () => {
+      mockHasPermission.mockReturnValue(false)
+      wrapper = createWrapper()
+      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      expect(pToolbox.props('pElements')).toHaveLength(1)
+      expect(pToolbox.props('pElements')).toStrictEqual(toolBoxElementsWithoutPermissions)
     })
     it('should display correctly the users collab table', () => {
       const usersTable = wrapper.find('[data-testid=folder-users-table]')
