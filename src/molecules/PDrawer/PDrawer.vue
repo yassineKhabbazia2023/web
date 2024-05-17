@@ -29,22 +29,28 @@
             </PIcon>
           </PButton>
         </div>
-        <div class="p-drawer__header-suffix">
-          <PButton
-            pType="generic"
-            pPlain
-            pIconOnly
-            @click="$emit('drawer-previous-button-click')"
-            v-if="pShowPreviousStep"
-            class="p-drawer__step-back-button"
-          >
-            <PIcon>
-              <PIArrowLeft />
-            </PIcon>
-          </PButton>
-          <h3 class="p-drawer__title">
-            {{ pTitle }}
-          </h3>
+        <div
+          class="p-drawer__header-suffix"
+          :class="{ 'p-drawer__header-suffix--column': pSuffixUnderTitle }"
+        >
+          <div class="flex flex--align-items-center flex--justify-content-flex-start">
+            <PButton
+              pType="generic"
+              pPlain
+              pIconOnly
+              @click="$emit('drawer-previous-button-click')"
+              v-if="pShowPreviousStep"
+              class="p-drawer__step-back-button"
+            >
+              <PIcon>
+                <PIArrowLeft />
+              </PIcon>
+            </PButton>
+            <h3 class="p-drawer__title">
+              {{ pTitle }}
+            </h3>
+          </div>
+
           <slot name="header-suffix"/>
         </div>
       </div>
@@ -84,6 +90,7 @@ const props = withDefaults(defineProps<PDrawerProps>(), {
   pShowClose: false,
   modalClass: '',
   pWithHeader: true,
+  pSuffixUnderTitle: false,
 })
 
 const drawerModel = computed({

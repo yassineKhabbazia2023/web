@@ -33,6 +33,36 @@
         </PHistoryCard>
       </div>
     </Variant>
+    <Variant title="Entity tooltip">
+      <div class="padding--3">
+        <PHistoryCard
+          pDate="03/03/2024"
+          pType="Délégation"
+          pEntityIcon="PIShop"
+          pEntity="3 dossiers"
+          pTooltipEntityContent="Bateau, Voiture, Moto"
+        >
+          <template #text>
+            <span class="font-bold">Corinne CAMPISCIANNO</span>
+            a délégué le dossier à
+            <span class="font-bold"> Ouassim HAYANI.</span>
+          </template>
+          <template #action>
+            <PTooltip pContent="Supprimer la délégation">
+              <PButton
+                pType="generic"
+                pSize="default"
+                pIconOnly
+              >
+                <PIcon>
+                  <PITrash />
+                </PIcon>
+              </PButton>
+            </PTooltip>
+          </template>
+        </PHistoryCard>
+      </div>
+    </Variant>
   </Story>
 </template>
 

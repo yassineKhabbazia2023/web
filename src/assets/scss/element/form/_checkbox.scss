@@ -25,4 +25,15 @@ $checkbox: (
         }
       }
     }
-}}
+  }
+}
+
+.p-checkbox {
+  $self: &;
+
+  &#{$self}--rounded {
+    .el-checkbox__inner {
+      border-radius: 100%;
+    }
+  }
+}

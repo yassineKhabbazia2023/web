@@ -101,6 +101,7 @@ describe('drawer', () => {
         {
           modelValue: true,
           pTitle: 'Drawer title',
+          pSuffixUnderTitle: true,
         },
         {
           'header-prefix': '<p>Prefix Text</p>',
@@ -110,9 +111,11 @@ describe('drawer', () => {
       const drawerHeader = wrapper.find('.p-drawer__header')
       const headerPrefixSlotContent = wrapper.find('.p-drawer__header-prefix p')
       const headerSuffixSlotContent = wrapper.find('.p-drawer__header-suffix p')
+      const headerSuffixUnderTitle = wrapper.find('.p-drawer__header-suffix--column')
 
       expect(drawerHeader.attributes().style).toBe('flex-direction: column;')
       expect(headerPrefixSlotContent).toBeTruthy()
+      expect(headerSuffixUnderTitle).toBeTruthy()
       expect(headerSuffixSlotContent).toBeTruthy()
     })
 

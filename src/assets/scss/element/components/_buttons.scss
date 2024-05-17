@@ -170,6 +170,33 @@ $button-padding-horizontal: (
       color: var(--el-color-persian-200);
     }
   }
+  // Button danger Pegase
+  &#{$self}--danger.is-plain {
+    border-color: var(--el-color-functionnal-red);
+    color: var(--el-color-functionnal-red);
+    background: transparent;
+
+    &:hover {
+      background: var(--el-color-functionnal-red-bg);
+      border-color: var(--el-color-functionnal-red);
+      color: var(--el-color-functionnal-red);
+    }
+
+    &:focus,
+    &.p-button--is-active {
+      background: var(--el-color-functionnal-red-bg);
+      border-color: var(--el-color-functionnal-red-txt);
+      color: var(--el-color-functionnal-red-txt);
+    }
+
+    &.is-disabled,
+    &.is-disabled:hover,
+    &.is-disabled:focus {
+      background: $color-white;
+      border-color: var(--el-color-neutral-gray-100);
+      color: var(--el-color-neutral-gray-100);
+    }
+  }
   // Button white Pegase
   &.p-button--white {
     border-color: $color-white;

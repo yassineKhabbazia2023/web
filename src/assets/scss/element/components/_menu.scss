@@ -360,6 +360,11 @@ $menu: (
         font-weight: 600;
       }
 
+      .el-menu-item-content {
+        display: flex;
+        align-items: center;
+      }
+
       [class^="el-icon"] {
         margin-right: 8px;
       }

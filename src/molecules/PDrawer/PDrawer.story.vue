@@ -21,6 +21,7 @@
           :pShowPreviousStep="pDrawerControl.showPreviousStep"
           :pSize="pDrawerControl.size"
           :pDirection="pDrawerControl.direction"
+          :pSuffixUnderTitle="pDrawerControl.pSuffixUnderTitle"
           @close-drawer-button="pDrawerControl.openDrawer = false"
           :pBreadcrumb="generateBreadCrumbItems(7)"
         >
@@ -70,6 +71,10 @@
           <HstCheckbox
             v-model="pDrawerControl.showHeaderSuffix"
             title="Header Suffix"
+          />
+          <HstCheckbox
+            v-model="pDrawerControl.pSuffixUnderTitle"
+            title="Header Suffix under title"
           />
         </template>
       </Variant>
@@ -217,6 +222,7 @@ const pDrawerControl = reactive({
   openDrawer: false,
   showHeaderPrefix: false,
   showHeaderSuffix: false,
+  pSuffixUnderTitle: false,
 })
 
 const generateBreadCrumbItems = (numberOfItems: number) => {
@@ -282,6 +288,7 @@ const radioSizeOptions: { label: string, value: string }[] = [
   | showPreviousStep | Hide or show the previous step button | `Boolean` | `true` or `false` | `false` |
   | pSize            | The width of drawer when opened       | `String`  | `33%` or `50%`    | `33%`   |
   | pShowClose       | The el drawer close button visibility | `String`  | `33%` or `50%`    | `33%`   |
+  | pSuffixUnderTitle| Props to put suffix under title       | `Boolean` | `33%` or `50%`    | `33%`   |
 
   ## Drawer Slots
 

@@ -10,4 +10,5 @@ export interface PDrawerProps {
   pBreadcrumb?: BreadcrumbItems[]
   pWithHeader?: boolean
   pType?: 'mini' | 'fullscreen'
+  pSuffixUnderTitle?: boolean
 }

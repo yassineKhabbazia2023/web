@@ -14,7 +14,7 @@ const createWrapper = (props: any = defaultProps) =>
     props,
   })
 
-describe('pBankCard', () => {
+describe('pDivider', () => {
   describe('props', () => {
     it('should render the the component with good classes', () => {
       const wrapper = createWrapper()

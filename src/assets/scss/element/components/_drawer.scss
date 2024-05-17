@@ -118,6 +118,11 @@ div.el-overlay:not(.p-drawer--mini) {
   
     &-suffix { 
       justify-content: start;
+
+      &--column {
+        flex-direction: column;
+        align-items: flex-start !important;
+      }
     }
   }
 

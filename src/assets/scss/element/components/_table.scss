@@ -74,9 +74,22 @@ tbody tr td .cell {
 
     tr.el-table__row {
       &.p-table__row--selected, 
-      &.p-table__selected-row.el-table__row--striped {
+      &.p-table__row--selected.el-table__row--striped {
         td.el-table__cell {
           background-color: var(--el-color-persian-200);
+        }
+      }
+      &.p-table__row--disabled, 
+      &.p-table__row--disabled.el-table__row--striped {
+        td.el-table__cell {
+          background-color: var(--el-color-neutral-gray-50);
+          color: var(--el-color-neutral-gray-300);
+          pointer-events: none;
+
+          .p-double-text__content-description,
+          .p-double-text__content-title {
+            color: var(--el-color-neutral-gray-300);
+          }
         }
       }
     }

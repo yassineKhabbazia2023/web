@@ -5,4 +5,5 @@ export interface PHistoryCardProps {
   pType: string
   pEntityIcon?: Component | string
   pEntity?: string
+  pTooltipEntityContent?: string
 }

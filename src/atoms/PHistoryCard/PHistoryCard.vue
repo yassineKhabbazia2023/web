@@ -31,7 +31,23 @@
           />
         </li>
         <li v-if="pEntity" class="p-history-card__list-item">
+          <PTooltip
+            v-if="pTooltipEntityContent"
+            :pContent="pTooltipEntityContent"
+            pPlacement="bottom"
+            data-testid="history-card-entity-tooltip"
+          >
+            <PTag
+              pSize="small"
+              pColor="gray-500"
+              pEffect="light"
+              :pIconLeft="pEntityIcon"
+              :pContent="pEntity"
+              data-testid="history-card-entity"
+            />
+          </PTooltip>
           <PTag
+            v-else
             pSize="small"
             pColor="gray-500"
             pEffect="light"

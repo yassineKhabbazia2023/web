@@ -11,6 +11,18 @@
         <HstText v-model="checkBoxControl.contentSlot" title="ContentSlot" />
       </template>
     </Variant>
+    <Variant title="Checkbox rounded">
+      <PCheckbox
+        pRounded
+        :disabled="checkBoxControl.disabled"
+      >
+        {{ checkBoxControl.contentSlot }}
+      </PCheckbox>
+      <template #controls>
+        <HstCheckbox v-model="checkBoxControl.disabled" title="Disabled" />
+        <HstText v-model="checkBoxControl.contentSlot" title="ContentSlot" />
+      </template>
+    </Variant>
   </Story>
 </template>
 

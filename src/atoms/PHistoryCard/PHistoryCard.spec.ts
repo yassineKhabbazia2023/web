@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils'
 import PHistoryCard from '.'
 import { describe, it, expect } from 'vitest'
 import type { PHistoryCardProps } from './PHistoryCardTypes'
+import { nextTick } from 'vue'
 
 const props: PHistoryCardProps = {
   pDate: '12/12/24',
@@ -41,6 +42,15 @@ describe('pHistoryCard', () => {
       const entity = wrapper.find('[data-testid="history-card-entity"]')
       expect(entity.text()).toContain('Entity')
       expect(entity.findComponent({ name: 'PIShop' as string })).toBeTruthy()
+    })
+    it('should display Tooltip content if content is set', async () => {
+      const wrapper = createWrapper({
+        ...props,
+        pTooltipEntityContent: 'Test',
+      })
+      await nextTick()
+      const entity = wrapper.find('[data-testid="history-card-entity"].el-tooltip__trigger')
+      expect(entity.exists()).toBeTruthy()
     })
   })
 })
