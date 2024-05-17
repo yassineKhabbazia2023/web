@@ -6,6 +6,7 @@ import type { PCalendarDateCellProps } from './PCalendarDateCellTypes'
 import PCalendarCellNumber from '@/atoms/PCalendarCellNumber'
 import { itemsGroupedByDate } from '@/atoms/PCalendar/PCalendarMocks'
 import { BREAKPOINT_SIZES } from '@/guidelines/Layout/constants'
+import PTaskItem from '@/atoms/PTaskItem'
 
 import { ref } from 'vue'
 vi.mock('@vueuse/core', () => {
@@ -107,6 +108,13 @@ describe('calendar date cell', () => {
       expect(emittedEvents).toHaveLength(2)
       expect(emittedEvents?.at(0)).toStrictEqual(['2024-03-01'])
       expect(emittedEvents?.at(1)).toStrictEqual(['2024-03-01'])
+    })
+
+    it('emits select-deadline when an item is clicked', () => {
+      const wrapper = createWrapper()
+      wrapper.findAllComponents(PTaskItem)[0].trigger('click')
+      const emittedEvents = wrapper.emitted('select-deadline')
+      expect(emittedEvents).toHaveLength(1)
     })
   })
 })

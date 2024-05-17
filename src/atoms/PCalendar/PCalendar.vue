@@ -16,6 +16,7 @@
         :pCellDate="data.day"
         :pCellType="getDateType(pInitialDateRange, data.day, data.type)"
         @cell-click="handleCellClick(data.day)"
+        @select-deadline="$emit('select-deadline', $event)"
       />
     </template>
   </ElCalendar>
@@ -36,6 +37,7 @@ const props = withDefaults(defineProps<PCalendarProps>(), {
 const emit = defineEmits<{
   'cell-click': [string]
   'update:modelValue': [Date]
+  'select-deadline': [itemId: number]
 }>()
 
 const findItemsByDate = (rawDate: string): CalendarItemsGroupedByDate['items'] => {

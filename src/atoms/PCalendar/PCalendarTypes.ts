@@ -1,7 +1,8 @@
-import type { PTaskItemProps } from '@/atoms/PTaskItem/PTaskItemTypes'
+import type { CalendarCellItemProps } from '@/atoms/PCalendarDateCell/PCalendarDateCellTypes'
+
 export interface CalendarItemsGroupedByDate {
   date: string
-  items: PTaskItemProps[]
+  items: CalendarCellItemProps[]
 }
 export interface PCalendarProps {
   modelValue?: Date

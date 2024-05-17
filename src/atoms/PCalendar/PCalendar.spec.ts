@@ -39,5 +39,12 @@ describe('calendar', () => {
       const emittedEvent = emittedEvents?.at(0)
       expect(emittedEvent).toStrictEqual(['2024-02-25'])
     })
+    it('should emits select-deadline with occurence id', () => {
+      const wrapper = createWrapper()
+      const cellItemId = 12345
+      const firstCalendarCell = wrapper.findComponent(PCalendarDateCell)
+      firstCalendarCell.vm.$emit('select-deadline', cellItemId)
+      expect(wrapper.emitted('select-deadline')).toStrictEqual([[cellItemId]])
+    })
   })
 })

@@ -16,13 +16,14 @@
     </div>
 
     <PTaskItem
-      v-for="({ pTitle, pStatus, pCompletedTasks, pTotalTasks }, index) in slicedCellElements"
+      v-for="({ pTitle, pStatus, pCompletedTasks, pTotalTasks, pItemId }, index) in slicedCellElements"
       :key="index"
       class="margin-bottom--1"
       :pTitle="pTitle"
       :pStatus="pStatus"
       :pCompletedTasks="pCompletedTasks"
       :pTotalTasks="pTotalTasks"
+      @click.stop="$emit('select-deadline', pItemId)"
     />
     <!-- dynamic wrapper either showing the chevron if there are too many items
       or a blank space so we can click the empty part of the cell -->
@@ -56,6 +57,7 @@ import { getCurrentBreakpoint } from '@/utils/breakpoints'
 const props = defineProps<PCalendarDateCellProps>()
 const emit = defineEmits<{
   'cell-click': [PCalendarDateCellProps['pCellDate']]
+  'select-deadline': [itemId: number]
 }>()
 
 const cssClass = computed(() => {
