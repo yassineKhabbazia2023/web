@@ -36,12 +36,13 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
-import { productFruits } from 'product-fruits'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { productFruits } from 'product-fruits'
+import { VITE_PRODUCT_FRUITS_KEY } from 'env-vars'
 import { commonStore as store, dataProvider } from '@kpmg/common'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
-import { getBrowserName } from './utils'
+import { getBrowserName } from '@/helper'
 import UserProfile from '@/components/UserProfile'
 import HomeScheduleDrawer from '@/components/HomeScheduleDrawer'
 import Header from './Header'
@@ -114,17 +115,17 @@ const stylesMetaProperties = computed(
 onMounted(async () => {
   try {
     const user = await fetchUserData()
-    productFruits.init('C1dNXwiLfzooNaB0', 'FR', {
-      username: user?.id,
-      role: user?.isCollab ? 'Collaborateur' : 'Client',
-      props: {
-        browser: getBrowserName(),
-      },
-    })
+    const isProd = import.meta.env.PROD
+    if (isProd) {
+      productFruits.init(VITE_PRODUCT_FRUITS_KEY, 'fr', {
+        username: user?.id,
+        role: user?.isCollab ? 'Collaborateur' : 'Client',
+        props: {
+          browser: getBrowserName(),
+        },
+      })
+    }
 
-    productFruits.safeExec(($productFruits: any) => {
-      $productFruits.push(['pageChanged'])
-    })
     store().$patch({
       user,
     })
