@@ -50,6 +50,7 @@
       />
 
       <DocumentsDropConfirmationPopup
+        v-if="isVisible"
         :isVisible="isVisible"
         :numberOfDocumentsToDrop="numberOfDocumentsToDrop"
         :destinationPath="dropDestinationFolder"
@@ -116,12 +117,12 @@ import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader } from '@kpmg/styleguide'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
-import { findFolderDeepById, getFolderPath } from './helpers/folderArrayHelper'
+import { findFolderDeepById } from './helpers/folderArrayHelper'
 import type { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
 import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
 import FoldersMove from './components/modals/FoldersMove'
 import DocumentsDropConfirmationPopup from '@/modules/Treeview/components/popups/DocumentsDrop'
-import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
+// import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
 import type { Document } from '@/models/Document'
 
 const props = defineProps<TreeviewProps>()
@@ -369,8 +370,8 @@ function handleExpandOrCollapseNode(nodeKey: any) {
 function handleDocumentDroppedOnTreeNode(event: Document[]) {
   // Check if universe is the same
   // eslint-disable-next-line no-console
-  console.log('TREE - Drop interception', event)
   // Documents in drop event are always from the same folder
+  // console.warn('TREE - Drop interception', event)
   const dragEventSourceFolder = event.at(0)?.folder
   if (!dragEventSourceFolder || !props.currentServiceFolder) return
   // En fait je me prends la tête pour rien à cet endroit
@@ -382,7 +383,7 @@ function handleDocumentDroppedOnTreeNode(event: Document[]) {
 
   // const targetFolderPath = getFolderPath(props.currentServiceFolder, dragEventSourceFolder)
   // dropDestinationFolder.value = getPathFromArray(targetFolderPath)
-  console.log(getPathFromArray, getFolderPath)
+  // console.warn(getPathFromArray, getFolderPath)
   isVisible.value = true
 }
 

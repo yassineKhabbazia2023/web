@@ -1,19 +1,17 @@
 <template>
-  <div>
-    <ConfirmationPopup
-      v-model:isPopupVisible="isPopupVisible"
-      :title="t('title',numberOfDocumentsToDrop)"
-      :message="t('message',{destination:destinationPath},numberOfDocumentsToDrop)"
-      :confirmButtonContent="t('controls.confirm')"
-      :cancelButtonContent="t('controls.cancel')"
-      :isConfirmButtonLoading="false"
-      @on-confirm-button-click="handleConfirmDropAction"
-      @on-cancel-button-click="handleCancelDropAction"
-      @on-close-popup="handleClosePopup"
-
-    />
-  </div>
+  <ConfirmationPopup
+    v-model:isPopupVisible="isPopupVisible"
+    :title="t('title',numberOfDocumentsToDrop)"
+    :message="t('message',{destination:destinationPath},numberOfDocumentsToDrop)"
+    :confirmButtonContent="t('controls.confirm')"
+    :cancelButtonContent="t('controls.cancel')"
+    :isConfirmButtonLoading="false"
+    @on-confirm-button-click="handleConfirmDropAction"
+    @on-cancel-button-click="handleCancelDropAction"
+    @on-close-popup="handleClosePopup"
+  />
 </template>
+
 <script setup lang="ts">
 import { computed, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -49,24 +47,24 @@ const handleConfirmDropAction = () => {
 const handleClosePopup = () => {
   emit('close-popup')
 }
-
 </script>
+
 <i18n lang="yaml">
 en-US:
-    title: 'Déplacer ce document ? | Déplacer ces documents ?'
-    message: >
-      Si vous cliquez sur "Confirmer", le document sera déplacé dans le dossier {destination} |
-      Si vous cliquez sur "Confirmer", les documents seront déplacés dans le dossier {destination}
-    controls:
-      confirm: 'Confirmer'
-      cancel: 'Annuler'
+  title: 'Déplacer ce document ? | Déplacer ces documents ?'
+  message: >
+    Si vous cliquez sur "Confirmer", le document sera déplacé dans le dossier {destination} |
+    Si vous cliquez sur "Confirmer", les documents seront déplacés dans le dossier {destination}
+  controls:
+    confirm: 'Confirmer'
+    cancel: 'Annuler'
 fr-FR:
-    title: 'Déplacer ce document ? | Déplacer ces documents ?'
-    message: >
-      Si vous cliquez sur "Confirmer", le document sera déplacé dans le dossier {destination} |
-      Si vous cliquez sur "Confirmer", les documents seront déplacés dans le dossier {destination}
-    controls:
-      confirm: 'Confirmer'
-      cancel: 'Annuler'
+  title: 'Déplacer ce document ? | Déplacer ces documents ?'
+  message: >
+    Si vous cliquez sur "Confirmer", le document sera déplacé dans le dossier {destination} |
+    Si vous cliquez sur "Confirmer", les documents seront déplacés dans le dossier {destination}
+  controls:
+    confirm: 'Confirmer'
+    cancel: 'Annuler'
 </i18n>
 

@@ -186,7 +186,6 @@ function handleDrop(event: DragEvent) {
   lastTarget = null
 
   const documentsToMove: Document[] = JSON.parse(event.dataTransfer?.getData('application/json+document') ?? '')
-  console.log('DROOOOOOOPPPPPPP', event)
   if (!documentsToMove) return
   emit('documents-dropped-on-tree-node', documentsToMove)
   removeDragoverClass()
