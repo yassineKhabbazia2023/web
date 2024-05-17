@@ -21,6 +21,7 @@
         data-testid="occurrence-accounts-row"
       >
         <PCheckbox
+          pRounded
           :modelValue="status === 'Done'"
           @update:model-value="emit('toggle-status', id, status)"
         >
