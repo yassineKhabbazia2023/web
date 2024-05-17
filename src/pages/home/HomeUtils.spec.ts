@@ -1,9 +1,17 @@
 import { describe, expect, it, vi, beforeEach, type SpyInstance } from 'vitest'
-import { getSilaeDownloadLabel, getLaunchCards, openSilaeUrl, handleClickAction, handleDownload }
-  from './HomeUtils'
+import {
+  getSilaeDownloadLabel,
+  getLaunchCards,
+  openSilaeUrl,
+  handleClickAction,
+  handleDownload,
+  getAuthorizedKeys,
+} from './HomeUtils'
 import { LAUNCHER_KEY } from './HomeTypes'
 import * as launcherServices from '@/services/launcherServices'
 import type { AxiosResponse } from 'axios'
+import { PERMISSION_CODES } from '@/common/authorizationConst'
+import { mockHasPermission } from '@/../vitest.setup'
 
 const mockedSilaeUrl = 'https://mocked.silae.url'
 
@@ -46,11 +54,28 @@ describe('test HomeUtils', () => {
   })
 
   describe('getLaunchCards', () => {
-    it('proper launchCards length', () => {
+    it('should return proper launchCards', () => {
       const downloadSilaeLabel = 'Télécharger'
-      const launchCards = getLaunchCards(downloadSilaeLabel)
+      const authorizedKeys: LAUNCHER_KEY[] = [
+        LAUNCHER_KEY.meg,
+        LAUNCHER_KEY.silae,
+        LAUNCHER_KEY.pennylane,
+      ]
+      const launchCards = getLaunchCards(downloadSilaeLabel, authorizedKeys)
 
       expect(launchCards).toMatchFileSnapshot('__snaps__/HomeUtils/getLaunchCards/launchCards.snap')
+    })
+
+    it('should return filtered launchCards', () => {
+      const downloadSilaeLabel = 'Télécharger'
+      const authorizedKeys: LAUNCHER_KEY[] = [
+        LAUNCHER_KEY.meg,
+        LAUNCHER_KEY.pennylane,
+      ]
+      const launchCards = getLaunchCards(downloadSilaeLabel, authorizedKeys)
+      const launchCardKeys = launchCards.map(({ key }) => key)
+
+      expect(launchCardKeys).toStrictEqual(authorizedKeys)
     })
   })
 
@@ -152,6 +177,21 @@ describe('test HomeUtils', () => {
         .mockResolvedValueOnce('')
 
       await expect(async () => await openSilaeUrl()).rejects.toThrow(expectedError)
+    })
+  })
+
+  describe('getAuthorizedKeys', () => {
+    it('should return authorized keys', () => {
+      mockHasPermission.mockImplementation((code: string) =>
+        [PERMISSION_CODES.silae, PERMISSION_CODES.meg].includes(code),
+      )
+      const expectedAuthorizedKeys = [
+        LAUNCHER_KEY.meg,
+        LAUNCHER_KEY.silae,
+      ]
+      const authorizedKeys = getAuthorizedKeys()
+
+      expect(authorizedKeys).toStrictEqual(expectedAuthorizedKeys)
     })
   })
 })

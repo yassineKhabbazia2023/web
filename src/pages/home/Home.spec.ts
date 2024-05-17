@@ -58,6 +58,21 @@ describe('test Home', () => {
       expect(launchCards).toHaveLength(CARDS_LENGTH)
     })
 
+    it('should display filtered cards', async () => {
+      const mockedAuthorizedKeys = [
+        LAUNCHER_KEY.pennylane,
+        LAUNCHER_KEY.silae,
+      ]
+      vi
+        .spyOn(HomeUtils, 'getAuthorizedKeys')
+        .mockReturnValueOnce(mockedAuthorizedKeys)
+      const wrapper = getWrapper()
+      await flushPromises()
+      const launchCards = getLaunchCardComponents(wrapper)
+
+      expect(launchCards).toHaveLength(mockedAuthorizedKeys.length)
+    })
+
     it('proper Meg launchCard attributes', () => {
       const megLaunchCard = getLaunchCardComponent(wrapper, LAUNCHER_KEY.meg)
       const expectedAttributes = {

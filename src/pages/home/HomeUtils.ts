@@ -4,9 +4,13 @@ import {
   VITE_PENNYLANE_SSO_URL,
 } from 'env-vars'
 import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@/services/launcherServices'
+import { LAUNCHER_AUTHORIZATIONS } from '@/common/authorizationConst'
+import { userPermissions } from '@kpmg/common'
 
-export function getLaunchCards(downloadSilaeLabel: string): ExtendedLaunchCard[] {
-  return [{
+const { hasPermission } = userPermissions()
+
+export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: LAUNCHER_KEY[]): ExtendedLaunchCard[] {
+  const launchCards = [{
     key: LAUNCHER_KEY.meg,
     title: 'Mon outil de gestion',
     subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
@@ -34,6 +38,8 @@ export function getLaunchCards(downloadSilaeLabel: string): ExtendedLaunchCard[]
     actionUrl: VITE_PENNYLANE_SSO_URL,
     downloadLabel: '',
   }]
+
+  return launchCards.filter(({ key }) => authorizedKeys.includes(key))
 }
 
 export function getSilaeDownloadLabel(silaeDownloadPercent: number | undefined = undefined) {
@@ -77,4 +83,10 @@ export async function handleDownload(
   } catch (error) {
     console.error(error)
   }
+}
+
+export function getAuthorizedKeys() {
+  return LAUNCHER_AUTHORIZATIONS
+    .filter(({ authorizationCode }) => hasPermission(authorizationCode))
+    .map<LAUNCHER_KEY>(({ key }) => key)
 }

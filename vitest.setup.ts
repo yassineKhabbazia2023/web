@@ -19,6 +19,7 @@ export const commonApiDsDeleteSpy = vi.fn().mockResolvedValue({
 export const commonApiPortalGetSpy = vi.fn().mockResolvedValue({
   data: {},
 })
+export const mockHasPermission = vi.fn((_: string) => true)
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -50,6 +51,9 @@ vi.mock('@kpmg/common', () => ({
       name: 'JEAN LÉVAGE',
       idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
     },
+  }),
+  userPermissions: () => ({
+    hasPermission: mockHasPermission,
   }),
   DataStreamHubConnection: vi.fn(() => ({
     startConnection: vi.fn(() => {

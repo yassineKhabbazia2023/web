@@ -22,10 +22,17 @@
 import { ref, onMounted } from 'vue'
 import LaunchCard from '@/components/launchCard'
 import type { LAUNCHER_KEY, ExtendedLaunchCard } from './HomeTypes'
-import { getLaunchCards, handleClickAction, handleDownload, getSilaeDownloadLabel } from './HomeUtils'
+import {
+  getLaunchCards,
+  handleClickAction,
+  handleDownload,
+  getSilaeDownloadLabel,
+  getAuthorizedKeys,
+} from './HomeUtils'
 
 const launchCards = ref<ExtendedLaunchCard[]>([])
 const isDownloading = ref(false)
+const authorizedKeys = ref<LAUNCHER_KEY[]>([])
 
 function onSilaeDownloadProgress(silaeDownloadPercent: number) {
   refreshLaunchCards(silaeDownloadPercent)
@@ -46,11 +53,12 @@ async function onClickAction(key: LAUNCHER_KEY) {
 }
 
 onMounted(() => {
+  authorizedKeys.value = getAuthorizedKeys()
   refreshLaunchCards()
 })
 
 function refreshLaunchCards(silaeDownloadPercent: number | undefined = undefined) {
   const downloadLabel = getSilaeDownloadLabel(silaeDownloadPercent)
-  launchCards.value = getLaunchCards(downloadLabel)
+  launchCards.value = getLaunchCards(downloadLabel, authorizedKeys.value)
 }
 </script>
