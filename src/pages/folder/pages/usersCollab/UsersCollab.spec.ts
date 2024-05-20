@@ -67,7 +67,7 @@ describe('usersCollab', () => {
       )
 
       expect(blockHeader.exists()).toBeTruthy()
-      expect(pToolbox.props('pElements')).toHaveLength(2)
+      expect(pToolbox.props('pElements')).toHaveLength(3)
     })
     it('should display only the actions that the user has permission to perform', () => {
       mockHasPermission.mockReturnValue(false)

@@ -212,6 +212,13 @@ const toolboxItems = computed(
         pState: 'default',
         display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS),
       },
+      {
+        pIconName: 'PITrash',
+        pValue: t('deleteUser'),
+        pActionName: 'delete',
+        pState: 'default',
+        display: hasPermission(PERMISSION_CODES.DELETE_USER),
+      },
     ]
       .filter(({ display }) => display)
       .map(({ pIconName, pValue, pActionName, pState }) => ({
@@ -322,6 +329,7 @@ en-US:
   dateAccess: 'First date access'
   assignSignatory: 'Designate as signatory'
   modifyRights: 'Change the rights'
+  deleteUser: 'Delete the user'
   statusConnect: 'Connected'
   statusInvite: 'Invited'
   numberOfFoldersPerPage: 'number of folder per page'
@@ -337,6 +345,7 @@ fr-FR:
   dateAccess: "Date d'ajout"
   assignSignatory: 'Désigner en tant que signataire'
   modifyRights: 'Modifier les droits'
+  deleteUser: "Supprimer l'utilisateur"
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
   numberOfFoldersPerPage: 'nombre de dossier par page'
