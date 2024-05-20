@@ -63,19 +63,6 @@
       />
 
       <PTableColumn
-        :pLabel="t('access')"
-        pProp="access"
-        pSortable
-      >
-        <template #default="scope">
-          <PSwitch
-            :modelValue="accessState[scope.row.id]"
-            @update:model-value="(val) => accessState[scope.row.id] = val"
-          />
-        </template>
-      </PTableColumn>
-
-      <PTableColumn
         :pLabel="t('options')"
         :pWidth="100"
         pProp="options"
@@ -126,7 +113,6 @@ import {
   PButton,
   PIcon,
   PIThreeDots,
-  PSwitch,
   PTable,
   PTableColumn,
   PToolbox,
@@ -147,11 +133,6 @@ const { t } = useI18n({
 
 const emit = defineEmits(['update-collaborator-details', 'update-collaborator-role', 'on-sort-change'])
 const props = defineProps<Props>()
-
-const access = props.data.map(({ id, hasAccess }: { id: number, hasAccess: boolean }) => ({
-  [id]: hasAccess,
-}))
-const accessState = reactive(Object.assign({}, ...access))
 
 const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME
 const menuElements : PToolboxItemProps[] = [
@@ -215,7 +196,6 @@ en-US:
   ibsStatus: 'IBS Status'
   role: 'Role'
   office: 'Office'
-  access: 'Access'
   options: 'Options'
   collaboratorInformation: 'Collaborator information'
   detailsOfDelegations: 'Details of delegations'
@@ -227,7 +207,6 @@ fr-FR:
   ibsStatus: 'Status IBS'
   role: 'Rôle'
   office: 'Bureau'
-  access: 'Accès'
   options: 'Options'
   collaboratorInformation: 'Informations du collaborateur'
   detailsOfDelegations: 'Détails des délégations'

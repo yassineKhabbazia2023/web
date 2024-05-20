@@ -11,7 +11,6 @@ export interface ICollab {
   ibsStatus: string
   role: string
   office: string
-  hasAccess: boolean
 }
 
 export interface IExtendedCollab extends ICollab {

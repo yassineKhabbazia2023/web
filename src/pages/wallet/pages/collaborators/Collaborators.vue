@@ -123,7 +123,6 @@ const fetch = async () => {
         ibsStatus: '',
         role: persona?.name ?? '',
         office: office ?? '',
-        hasAccess: false,
       }))
       state.currentPage = response.currentPage
       state.totalPages = response.totalPages

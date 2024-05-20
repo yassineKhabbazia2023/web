@@ -10,8 +10,7 @@
         "mobilePhone": "(841) 594-2643",
         "ibsStatus": "AM",
         "role": "Collaborateur ESC",
-        "office": "Kenmar",
-        "hasAccess": true
+        "office": "Kenmar"
       },
       {
         "id": 2,
@@ -22,8 +21,7 @@
         "mobilePhone": "(999) 402-2641",
         "ibsStatus": "AM",
         "role": "Support",
-        "office": "Gilgo",
-        "hasAccess": false
+        "office": "Gilgo"
       },
       {
         "id": 3,
@@ -34,8 +32,7 @@
         "mobilePhone": "(862) 463-2492",
         "ibsStatus": "AM",
         "role": "Support",
-        "office": "Fannett",
-        "hasAccess": false
+        "office": "Fannett"
       },
       {
         "id": 4,
@@ -46,8 +43,7 @@
         "mobilePhone": "(849) 401-2953",
         "ibsStatus": "EM",
         "role": "Support",
-        "office": "Herlong",
-        "hasAccess": true
+        "office": "Herlong"
       },
       {
         "id": 5,
@@ -58,8 +54,7 @@
         "mobilePhone": "(829) 506-3111",
         "ibsStatus": "CLP",
         "role": "Support",
-        "office": "Mayfair",
-        "hasAccess": false
+        "office": "Mayfair"
       },
       {
         "id": 6,
@@ -70,8 +65,7 @@
         "mobilePhone": "(875) 481-3093",
         "ibsStatus": "AM",
         "role": "Collaborateur GS",
-        "office": "Olney",
-        "hasAccess": false
+        "office": "Olney"
       },
       {
         "id": 7,
@@ -82,8 +76,7 @@
         "mobilePhone": "(866) 519-2535",
         "ibsStatus": "EM",
         "role": "Support",
-        "office": "Stouchsburg",
-        "hasAccess": false
+        "office": "Stouchsburg"
       },
       {
         "id": 8,
@@ -94,8 +87,7 @@
         "mobilePhone": "(917) 512-2913",
         "ibsStatus": "AM",
         "role": "Support",
-        "office": "Dorneyville",
-        "hasAccess": true
+        "office": "Dorneyville"
       },
       {
         "id": 9,
@@ -106,8 +98,7 @@
         "mobilePhone": "(833) 440-2028",
         "ibsStatus": "EM",
         "role": "Collaborateur ESC",
-        "office": "Chilton",
-        "hasAccess": true
+        "office": "Chilton"
       },
       {
         "id": 10,
@@ -118,8 +109,7 @@
         "mobilePhone": "(877) 440-3723",
         "ibsStatus": "AM",
         "role": "Support",
-        "office": "Camas",
-        "hasAccess": true
+        "office": "Camas"
       },
       {
         "id": 11,
@@ -130,8 +120,7 @@
         "mobilePhone": "(846) 470-3306",
         "ibsStatus": "EM",
         "role": "Collaborateur GS",
-        "office": "Delco",
-        "hasAccess": false
+        "office": "Delco"
       },
       {
         "id": 12,
@@ -142,8 +131,7 @@
         "mobilePhone": "(877) 567-2788",
         "ibsStatus": "AM",
         "role": "Collaborateur ESC",
-        "office": "Sexton",
-        "hasAccess": false
+        "office": "Sexton"
       },
       {
         "id": 13,
@@ -154,8 +142,7 @@
         "mobilePhone": "(822) 560-3032",
         "ibsStatus": "AM",
         "role": "Collaborateur GS",
-        "office": "Odessa",
-        "hasAccess": true
+        "office": "Odessa"
       },
       {
         "id": 14,
@@ -166,8 +153,7 @@
         "mobilePhone": "(866) 525-3412",
         "ibsStatus": "AM",
         "role": "Collaborateur GS",
-        "office": "Southmont",
-        "hasAccess": true
+        "office": "Southmont"
       },
       {
         "id": 15,
@@ -178,8 +164,7 @@
         "mobilePhone": "(941) 402-3517",
         "ibsStatus": "EM",
         "role": "Support",
-        "office": "Ezel",
-        "hasAccess": true
+        "office": "Ezel"
       }
     ],
     "currentPage": 1,
