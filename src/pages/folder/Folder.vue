@@ -59,6 +59,18 @@ const { hasPermission } = userPermissions()
 const { defaultEntity, isCollab } = storeToRefs(userStore)
 
 // Computed
+const commonTabs = computed(() => [
+  {
+    name: 'offers',
+    title: t('offers'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
+  },
+  {
+    name: 'info',
+    title: t('info'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
+  },
+])
 const collabTabs = computed(() => [
   {
     name: 'usersCollab',
@@ -70,16 +82,7 @@ const collabTabs = computed(() => [
     title: t('collab'),
     display: hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
   },
-  {
-    name: 'offers',
-    title: t('offers'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
-  },
-  {
-    name: 'info',
-    title: t('info'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
-  },
+  ...commonTabs.value,
   {
     name: 'delegationsHistory',
     title: t('delegationsHistory'),
@@ -92,16 +95,7 @@ const clientTabs = computed(() => [
     title: t('users'),
     display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
   },
-  {
-    name: 'info',
-    title: t('info'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
-  },
-  {
-    name: 'invoices',
-    title: t('invoices'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_INVOICES),
-  },
+  ...commonTabs.value,
 ])
 const activeTab = computed(() => route.name as string)
 const tabsList = computed(() => {
@@ -147,7 +141,6 @@ en-US:
   info: 'Information'
   delegationsHistory: 'Delegations history'
   delegationBtn: 'Delegate this case'
-  invoices: 'KPMG Invoices'
   addUser: 'Add user'
 fr-FR:
   users: 'Utilisateurs'
@@ -156,6 +149,5 @@ fr-FR:
   info: 'Informations'
   delegationsHistory: 'Historique des délégations'
   delegationBtn: 'Déléguer ce dossier'
-  invoices: 'Factures KPMG'
   addUser: 'Ajouter un utilisateur'
 </i18n>

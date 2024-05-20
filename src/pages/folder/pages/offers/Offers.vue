@@ -1,8 +1,8 @@
 <template>
   <div class="shadow--3 radius--2 overflow-hidden margin-top--6">
     <PBlockHeader
-      :pTitle="t('headerTitle')"
-      :pDescription="t('headerSubtitle')"
+      :pTitle="headerTitle"
+      :pDescription="headerSubtitle"
       pColor="gray"
       pSize="default"
       :pImage="{
@@ -13,6 +13,7 @@
       pHasButton
     >
       <PButton
+        v-if="isCollab"
         pType="primary"
         pSize="small"
         @click="$emit('activate-offers')"
@@ -63,7 +64,11 @@
           <OfferActivationStatus :status="offerActivationStatus" />
         </template>
       </PTableColumn>
-      <PTableColumn :pLabel="t('action')" pWidth="80px">
+      <PTableColumn
+        v-if="isCollab"
+        :pLabel="t('action')"
+        pWidth="80px"
+      >
         <template #default>
           <PButton
             pType="white"
@@ -81,9 +86,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { commonStore } from '@kpmg/common'
 import {
   PBlockHeader,
   PButton,
@@ -112,7 +119,11 @@ defineEmits<{
 }>()
 
 const isLoading = ref<boolean>(true)
+const { isCollab } = storeToRefs(commonStore())
 const activeOffers = ref<SubscriptionRequest[]>([])
+
+const headerTitle = computed(() => isCollab.value ? t('collabHeaderTitle') : t('clientHeaderTitle'))
+const headerSubtitle = computed(() => isCollab.value ? t('collabHeaderSubtitle') : t('clientHeaderSubtitle'))
 
 onMounted(async () => {
   try {
@@ -135,15 +146,19 @@ onMounted(async () => {
 </style>
 <i18n lang="yaml">
 en-US:
-  headerTitle: 'Offer activation'
-  headerSubtitle: 'Manage the offers enabled and activatable for this folder.'
+  collabHeaderTitle: 'Offer activation'
+  clientHeaderTitle: 'Activated offers'
+  collabHeaderSubtitle: 'Manage the offers enabled and activatable for this folder.'
+  clientHeaderSubtitle: 'Digital offers activated for this entity.'
   activateOffers: 'Activate offers'
   offer: 'Offer'
   status: 'Status'
   action: 'Action'
 fr-FR:
-  headerTitle: "Activation d'offres"
-  headerSubtitle: 'Gérez les offres activées et activables pour ce dossier'
+  collabHeaderTitle: "Activation d'offres"
+  clientHeaderTitle: 'Offres activées'
+  collabHeaderSubtitle: 'Gérez les offres activées et activables pour ce dossier'
+  clientHeaderSubtitle: 'Les offres digitales activées pour cette entité'
   activateOffers: 'Activer les offres'
   offer: 'Offre'
   status: 'Statut'
