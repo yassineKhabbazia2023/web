@@ -93,6 +93,17 @@ describe('dossier', () => {
       expect(label).toBe(tabPane)
     })
   })
+  it("should not display the 'Add User' button if the client does not have the necessary permissions", async () => {
+    const store = commonStore()
+    mockHasPermission.mockReturnValue(false)
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    await flushPromises()
+    wrapper = createWrapper()
+    const folderActionButton = wrapper.findComponent({ name: 'PButton' })
+
+    expect(folderActionButton.exists()).toBeFalsy()
+  })
   it('should display the button label when the user is a client', () => {
     const store = commonStore()
     // @ts-expect-error: Getter is read only
@@ -100,6 +111,6 @@ describe('dossier', () => {
     const btnAction = wrapper.findComponent(
       '[data-testid=folder-action-button]',
     ) as VueWrapper
-    expect(btnAction.text()).toBe('Delegate this case')
+    expect(btnAction.text()).toBe('Add user')
   })
 })

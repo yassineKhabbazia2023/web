@@ -9,7 +9,11 @@
       <p class="font-semibold margin-left--4 folder-wrapper__default-entity">
         {{ defaultEntity?.legalName }}
       </p>
-      <PButton pType="primary" data-testid="folder-action-button">
+      <PButton
+        v-if="isFolderActionButtonDisplayed"
+        pType="primary"
+        data-testid="folder-action-button"
+      >
         {{ actionButtonLabel }}
       </PButton>
     </div>
@@ -106,6 +110,9 @@ const tabsList = computed(() => {
 })
 const actionButtonLabel = computed(() => {
   return isCollab.value ? t('delegationBtn') : t('addUser')
+})
+const isFolderActionButtonDisplayed = computed<boolean>(() => {
+  return isCollab.value ? true : hasPermission(PERMISSION_CODES.ADD_USERS)
 })
 
 // Functions
