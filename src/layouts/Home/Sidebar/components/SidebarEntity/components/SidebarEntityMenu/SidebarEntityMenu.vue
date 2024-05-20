@@ -33,7 +33,6 @@
         v-for="menuItem in menuItems"
         :key="menuItem.index"
         :pIndex="menuItem.index"
-        :pDisabled="menuItem.disabled"
         :pLeftIcon="menuItem.leftIcon"
       >
         <template #title>
@@ -63,9 +62,7 @@ const props = defineProps<SidebarEntityMenuProps>()
 const { hasPermission } = userPermissions()
 
 const isMenuCollapsed = ref<boolean>(true)
-const activeMenuItem = ref<string>(
-  `/dossier/${props.selectedEntityId}/gestion-utilisateurs`,
-)
+const activeMenuItem = ref<string>(route.fullPath)
 
 const folderSubmenu = computed(() => ({
   index: 'folder',
@@ -108,18 +105,10 @@ const menuItems = computed(() => [
     display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
   },
   {
-    index: 'bank',
-    title: t('bank'),
-    leftIcon: 'PIPiggyBank',
-    disabled: true,
-    display: true,
-  },
-  {
-    index: 'indicators',
-    title: t('indicators'),
-    leftIcon: 'PIClipboardData',
-    disabled: true,
-    display: true,
+    index: '/launcher',
+    title: t('apps'),
+    leftIcon: 'PIGrid',
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
   },
 ].filter((item) => item.display))
 
@@ -164,8 +153,7 @@ en-US:
   offers: 'Offers'
   collaborators: 'Collaborators'
   documents: 'Documents'
-  bank: 'Bank'
-  indicators: 'Indicators'
+  apps: 'Applications'
   delegationsHistory: 'Delegations history'
 fr-FR:
   folder: 'Dossier'
@@ -174,7 +162,6 @@ fr-FR:
   offers: 'Offres'
   collaborators: 'Collaborateurs'
   documents: 'Documents'
-  bank: 'Banque'
-  indicators: 'Indicateurs'
+  apps: 'Applications'
   delegationsHistory: 'Historique des délégations'
 </i18n>

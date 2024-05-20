@@ -15,6 +15,12 @@ const defaultProps = {
   selectedEntityId: favoriteEntityId,
 }
 
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    fullPath: '/launcher',
+  }),
+}))
+
 vi.mock('@kpmg/common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
@@ -54,7 +60,7 @@ describe('sidebarEntityMenu', () => {
       )
       wrapper = createWrapper()
       const sidebarEntityMenuItems = wrapper.findAll('.p-menu-item__title').map((item) => item.text())
-      const menuItemsWithAccess = ['Information', 'Bank', 'Indicators']
+      const menuItemsWithAccess = ['Information']
       const menuItemsWithoutAccess = 'Users'
 
       expect(sidebarEntityMenuItems).toStrictEqual(menuItemsWithAccess)

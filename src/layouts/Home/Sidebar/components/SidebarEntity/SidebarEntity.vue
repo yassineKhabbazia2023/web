@@ -178,7 +178,12 @@ const isSelectedEntityActive = computed(() => {
     params,
   })
 
-  return isFolderActiveItem || isGedActiveItem
+  const isLauncherActiveItem = activeItem({
+    name: 'launcher',
+    params,
+  })
+
+  return isFolderActiveItem || isGedActiveItem || isLauncherActiveItem
 })
 
 const onToggleSidebar = () => {
