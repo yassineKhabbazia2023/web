@@ -1,9 +1,6 @@
 <template>
   <div
     class="widget-active-day flex flex--direction-column flex-gap--2"
-    :class="{
-      'widget-active-day--has-no-data': !hasData
-    }"
     data-testid="widget-active-day"
   >
     <p
@@ -11,6 +8,7 @@
         widget-active-day__long-date
         font-small
         text-color--neutral-gray-500
+        text-center
       "
       data-testid="widget-active-day-long-date"
     >
@@ -26,7 +24,13 @@
     </div>
     <div
       v-if="!hasData"
-      class="widget-active-day__no-data flex flex--direction-column flex-gap--2"
+      class="
+        widget-active-day__no-data
+        flex
+        flex--direction-column
+        flex-gap--2
+        flex--align-self-center
+      "
       data-testid="widget-active-day-no-data"
     >
       <PImage
@@ -100,10 +104,6 @@ const hasData = computed(() => props.deadlines.length > 0)
 <style lang="scss" scoped>
 .widget-active-day {
   margin: 40px 0 0;
-
-  &--has-no-data {
-    align-items: center;
-  }
 
   &__long-date {
     &::first-letter {

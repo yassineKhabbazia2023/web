@@ -2,17 +2,26 @@
   <PScrollbar>
     <ul
       class="
+        widget-deadlines
         list-style-none
         flex
         flex--direction-column
-        flex-gap--5
+        flex-gap--1
+        padding--1
       "
     >
       <li
         v-for="(item, index) in internalList"
         :key="index"
         data-testid="widget-deadlines-item"
-        class="flex"
+        class="
+          widget-deadlines__item
+          flex
+          shadow--3
+          radius--2
+          padding--2
+          cursor-pointer
+        "
         @click="$emit('select-deadline', item.occurrenceId)"
       >
         <div class="padding-top--1 margin-right--2">
@@ -74,6 +83,16 @@ onMounted(() => {
   scheduleModelsByKey.value = getScheduleModelsByKey('both')
 })
 </script>
+
+<style lang="scss" scoped>
+.widget-deadlines {
+  &__item {
+    &:hover {
+      background-color: var(--el-color-persian-100);
+    }
+  }
+}
+</style>
 
 <i18n lang="yaml">
   en-US:
