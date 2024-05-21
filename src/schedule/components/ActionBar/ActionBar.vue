@@ -3,7 +3,7 @@
     class="p-schedule-action-bar flex flex--justify-content-space-between
       flex--align-items-center padding-x--6"
   >
-    <MonthSelection
+    <ActionBarLeft
       :activeDate="activeDate"
       @calendar-event="$emit('calendar-event', $event)"
     />
@@ -49,7 +49,7 @@ import { PButton, PTabs, PTabPane, PIcon, PIAdd } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import { commonStore as useCommonStore } from '@kpmg/common'
 import type { ActionBarProps } from './ActionBarTypes'
-import MonthSelection from '@/schedule/components/Common/MonthSelection'
+import ActionBarLeft from '@/schedule/components/ActionBarLeft'
 
 const props = defineProps<ActionBarProps>()
 const emit = defineEmits<{

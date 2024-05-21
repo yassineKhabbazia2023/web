@@ -1,5 +1,5 @@
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import MonthSelection from '.'
+import ActionBarLeft from '.'
 import { expect, describe, it } from 'vitest'
 
 const TEST_DATE = '2024-04-10'
@@ -8,7 +8,7 @@ function createWrapper() {
   const props = {
     activeDate: new Date(TEST_DATE),
   }
-  return wrapperFactory(MonthSelection, {
+  return wrapperFactory(ActionBarLeft, {
     props,
   })
 }

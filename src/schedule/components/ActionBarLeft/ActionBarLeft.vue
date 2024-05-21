@@ -38,7 +38,7 @@ import {
   PIChevronLeft,
   PButton,
 } from '@kpmg/styleguide'
-import type { MonthSelectionProps } from './MonthSelectionTypes'
+import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
 const emit = defineEmits<{
   'calendar-event': [{type: string, date: Date}]
@@ -62,7 +62,7 @@ const { d } = useI18n({
   datetimeFormats,
 })
 
-const props = defineProps<MonthSelectionProps>()
+const props = defineProps<ActionBarLeftProps>()
 
 const activeMonth = computed(() => d(props.activeDate, 'month'))
 const activeYear = computed(() => props.activeDate.getFullYear())

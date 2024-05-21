@@ -6,7 +6,7 @@ import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import type { ComponentMountingOptions } from '@vue/test-utils'
 import ActionBar from '.'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
-import MonthSelection from '@/schedule/components/Common/MonthSelection'
+import ActionBarLeft from '@/schedule/components/ActionBarLeft'
 
 const TEST_DATE = '2024-04-10'
 
@@ -61,7 +61,7 @@ describe('action bar', () => {
           modelValue: 'list',
         },
       })
-      wrapper.findComponent(MonthSelection)
+      wrapper.findComponent(ActionBarLeft)
         .vm.$emit('calendar-event', { type: 'next-month', date: new Date() })
       expect(wrapper.emitted('calendar-event')).toBeTruthy()
     })
