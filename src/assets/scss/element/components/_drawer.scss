@@ -16,7 +16,10 @@ div.el-overlay:not(.p-drawer--mini) {
 }
 
 .p-drawer {
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 1199px) {
+    width: 50% !important;
+  }
+  @media screen and (max-width: 991px) {
     width: 75% !important;
   }
   @media screen and (max-width: 767px) {

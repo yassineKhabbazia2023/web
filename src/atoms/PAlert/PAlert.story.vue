@@ -82,19 +82,35 @@
         </PCollapse>
       </div>
     </Variant>
+
+    <Variant title="Closable">
+      <PAlert
+        pClosable
+        pIcon="PIArrowHere"
+        @close="logEvent('close', $event)"
+      >
+        <template #bold-text>
+          Using bold text slot :
+        </template>
+        Lorem ipsum dolor sit amet, consectetur adipiscing
+        elit. Sed venenatis quis dolor in consequat. Integer nec viverra dui.
+        Quisque eget risus feugiat, pellentesque sem interdum, vehicula eros.
+      </PAlert>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import PCollapseItem from '@/atoms/PCollapseItem'
+import { logEvent } from 'histoire/client'
 import { PIExclamationTriangle } from '@/atoms/PIcon/components'
 import PAlert from './'
 
 const activeNames = ref(['1'])
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .block-collapse {
   height: 250px;
   padding: 24px;

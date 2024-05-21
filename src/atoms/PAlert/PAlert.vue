@@ -1,25 +1,43 @@
 <template>
   <div class="p-alert" :class="[typeModifierClass]">
-    <PIcon class="p-alert__icon" size="16">
+    <PIcon class="p-alert__icon" :size="iconSize">
       <component :is="typeIcon" />
     </PIcon>
-    <div class="p-alert__content">
-      <span class="p-alert__content--bold"><slot name="bold-text"/></span>
+    <div class="p-alert__content margin-left--3">
+      <span class="font-bold"><slot name="bold-text"/></span>
       <slot />
     </div>
+    <button
+      v-if="pClosable"
+      @click="$emit('close')"
+      class="p-alert__close-btn padding--0 margin-left--2"
+    >
+      <PIcon color="#332689" size="16">
+        <PIX />
+      </PIcon>
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import PIcon from '@/atoms/PIcon'
+import { PIX } from '@/atoms/PIcon/components'
 import type { PAlertProps } from './PAlertTypes'
 import { iconResolver } from '@/utils/iconResolver'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
   pType: 'main',
+  pIcon: '',
+  pClosable: false,
 })
 
+defineEmits<{
+  'close': []
+}>()
+
 const typeModifierClass = computed(() => `p-alert--type-${props.pType}`)
+const iconSize = computed(() => props.pIcon ? 32 : 16)
 
 const typeIcon = computed(() => {
   switch (props.pType) {
@@ -32,7 +50,7 @@ const typeIcon = computed(() => {
     case 'danger':
       return iconResolver('PIXCircle')
 
-    default: return iconResolver('PIInfoCircle')
+    default: return props.pIcon ? iconResolver(props.pIcon) : iconResolver('PIInfoCircle')
   }
 })
 
@@ -77,13 +95,11 @@ const typeIcon = computed(() => {
     color: var(--el-color-secondary-cyan-txt);
     background-color: var(--el-color-secondary-cyan-bg);
   }
-
-  &__content {
-    margin-left: 12px;
-
-    &--bold {
-      font-weight: 700;
-    }
+  &__close-btn {
+    appearance: none;
+    background: none;
+    border: none;
+    line-height: 1;
   }
 }
 </style>

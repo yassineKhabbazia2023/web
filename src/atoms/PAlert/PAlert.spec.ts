@@ -49,4 +49,15 @@ describe('pAlert', () => {
       },
     )
   })
+  it('should emits close-alert', async () => {
+    const wrapper = createWrapper({ pClosable: true })
+    await wrapper.findComponent({ name: 'PIX' }).trigger('click')
+    expect(wrapper.emitted('close')).toBeTruthy()
+  })
+  it('should show the arrow icon', async () => {
+    const wrapper = createWrapper({ pIcon: 'PIArrowHere' })
+    await vi.dynamicImportSettled()
+    const pIArrowIconComponent = wrapper.findComponent({ name: 'PIArrowHere' })
+    expect(pIArrowIconComponent.exists()).toBeTruthy()
+  })
 })
