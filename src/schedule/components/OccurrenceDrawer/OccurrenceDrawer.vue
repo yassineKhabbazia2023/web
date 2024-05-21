@@ -39,6 +39,7 @@
     <PForm
       v-if="occurrence"
       pLabelPosition="top"
+      class="margin-bottom--6"
     >
       <p class="flex flex--align-items-center">
         <PIcon>
@@ -69,7 +70,7 @@
       <DeadlineAccounts
         :title="t('deadlineAccounts')"
         :deadlineAccounts="occurrence.accountList"
-        class="margin-top--4"
+        class="margin-top--6"
         @toggle-status="onToggleDeadlineAccountStatus"
       />
       <StringField
@@ -81,13 +82,12 @@
         :pLabel="t('description')"
         pDisabled
         pAutosize
-        class="margin-top--4"
+        class="margin-top--6"
         data-testid="occurrence-drawer-description"
       />
       <p
         class="
-          margin-top--4
-          margin-bottom--2
+          margin-top--6
           font-semibold
           font-small
         "

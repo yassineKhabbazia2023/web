@@ -16,6 +16,7 @@
           font-base
         "
         :class="{
+          'padding-top--3': index > 0,
           'occurrence-accounts__row--done': status === 'Done',
         }"
         data-testid="occurrence-accounts-row"
@@ -67,7 +68,6 @@ defineProps<DeadlineAccountsProps>()
 <style lang="scss" scoped>
 .occurrence-accounts {
   &__row {
-    padding: 6px 0;
     &--done {
       text-decoration: line-through var(--el-color-neutral-gray-300);
     }
