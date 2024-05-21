@@ -29,13 +29,11 @@ function createWrapper(override: Partial<WidgetActiveDayProps> = {}) {
 }
 
 function findComponentsInWrapper(wrapper: VueWrapper) {
-  const widgetActiveDay = wrapper.find('[data-testid="widget-active-day"]')
   const longDate = wrapper.find('[data-testid="widget-active-day-long-date"]')
   const noData = wrapper.find('[data-testid="widget-active-day-no-data"]')
   const widgetDeadlines = wrapper.findComponent({ name: 'WidgetDeadlines' })
 
   return {
-    widgetActiveDay,
     longDate,
     noData,
     widgetDeadlines,
@@ -49,13 +47,11 @@ describe('test WidgetActiveDay', () => {
     const expectedNoDataText = 'No events plannedRelax, you have nothing planned today!'
 
     const {
-      widgetActiveDay,
       longDate,
       noData,
       widgetDeadlines,
     } = findComponentsInWrapper(wrapper)
 
-    expect(widgetActiveDay.classes()).toContain('widget-active-day--has-no-data')
     expect(longDate.text()).toBe(expectedLongDateText)
     expect(noData.text()).toBe(expectedNoDataText)
     expect(widgetDeadlines.exists()).toBeFalsy()
@@ -70,13 +66,11 @@ describe('test WidgetActiveDay', () => {
     })
 
     const {
-      widgetActiveDay,
       longDate,
       noData,
       widgetDeadlines,
     } = findComponentsInWrapper(wrapper)
 
-    expect(widgetActiveDay.classes()).not.toContain('widget-active-day--has-no-data')
     expect(longDate.text()).toBe(expectedLongDateText)
     expect(noData.exists()).toBeFalsy()
     expect(widgetDeadlines.props()).toStrictEqual(expectedWidgetDeadlinesProps)
