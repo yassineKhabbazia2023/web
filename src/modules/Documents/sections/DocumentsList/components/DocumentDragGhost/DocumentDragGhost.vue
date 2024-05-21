@@ -11,14 +11,14 @@
         flex
         flex--align-items-center
         padding-y--4
-        padding-x--3
+        padding-x--4
         shadow--2
       "
     >
       <PIcon>
         <component :is="iconComponent" />
       </PIcon>
-      <div class="padding-left--2">
+      <div class="document-drag-ghost__filename padding-left--4">
         {{ displayedName }}
       </div>
       <div
@@ -40,7 +40,7 @@
 import { computed } from 'vue'
 import { PIcon } from '@kpmg/styleguide'
 import { getFileIcon } from '@/modules/common/helpers/iconsHelper'
-import type { DocumentDragGhostProps } from './DocumentDragGhost'
+import type { DocumentDragGhostProps } from './DocumentDragGhostTypes'
 
 const props = withDefaults(
   defineProps<DocumentDragGhostProps>(),
@@ -55,29 +55,47 @@ const iconComponent = computed(() => getFileIcon(props.displayedName))
 </script>
 
 <style lang="scss" scoped>
+$ghostWidth: 276px;
+$ghostHeight: 56px;
 .document-drag-ghost {
+  $self: &;
+
   position: absolute;
   left: -1000px;
+  width: $ghostWidth;
+  height: $ghostHeight;
 
   &__content {
     background: var(--el-color-persian-500);
     position: absolute;
     top: 0;
     left: 0;
-    min-width: 200px;
+    width: $ghostWidth;
+    height: $ghostHeight;
     color: white;
     border-radius: 8px;
     font-weight: 600;
   }
 
   &__multiple-outline {
+    display: none;
     position: absolute;
-    width: calc(100% + 4px);
-    height: 100%;
-    top: 4px;
-    left: 0;
+    width: $ghostWidth;
+    height: $ghostHeight;
+    top: 8px;
+    left: 8px;
     background: var(--el-color-persian-300);
     border-radius: 8px;
+  }
+
+  &--multiple #{$self}__multiple-outline {
+    display: block;
+  }
+
+  &__filename {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   &__number-of-documents {

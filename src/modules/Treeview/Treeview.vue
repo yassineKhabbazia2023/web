@@ -50,10 +50,12 @@
       />
 
       <DocumentsDropConfirmationPopup
-        v-if="isVisible"
-        :isVisible="isVisible"
+        v-if="isDropDialogVisible"
+        v-model="isDropDialogVisible"
         :numberOfDocumentsToDrop="numberOfDocumentsToDrop"
         :destinationPath="dropDestinationFolder"
+        :isDocumentDropConfirmButtonLoading="isDocumentDropConfirmButtonLoading"
+        @confirm-documents-drop="handleConfirmDocumentDrop"
       />
 
       <div class="treeview__trees">
@@ -115,15 +117,18 @@ import type { Folder } from '@/models/Folder'
 import type { Bin } from '@/models/Bin'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
-import { PScrollbar, PTree, PLoader } from '@kpmg/styleguide'
+import { PScrollbar, PTree, PLoader, PICheck, PIX, PNotification } from '@kpmg/styleguide'
 import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { findFolderDeepById } from './helpers/folderArrayHelper'
 import type { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
 import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
 import FoldersMove from './components/modals/FoldersMove'
 import DocumentsDropConfirmationPopup from '@/modules/Treeview/components/popups/DocumentsDrop'
-// import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
+import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
+import { getFolderPath } from '@/modules/Treeview/helpers/folderArrayHelper'
 import type { Document } from '@/models/Document'
+import { moveDocuments } from '@/services/Documents'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
@@ -135,7 +140,13 @@ const emit = defineEmits([
   'remove-folder-from-source',
   'update-folder-name',
   'refresh-tree',
+  'refresh-documents-list',
 ])
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
   computed(() => {
@@ -359,6 +370,9 @@ const handleToolboxItemChecked = (action: string, folder: Folder) => {
 }
 
 // I'm going to make a composable out of this
+// I'm going to make a composable out of this
+// I'm going to make a composable out of this
+// I'm going to make a composable out of this
 function handleExpandOrCollapseNode(nodeKey: any) {
   const tree = retrieveCurrentlyUsedSourceTree()
 
@@ -367,28 +381,101 @@ function handleExpandOrCollapseNode(nodeKey: any) {
   else nodeToCollapseOrExpand.expand()
 }
 
-function handleDocumentDroppedOnTreeNode(event: Document[]) {
-  // Check if universe is the same
-  // eslint-disable-next-line no-console
-  // Documents in drop event are always from the same folder
-  // console.warn('TREE - Drop interception', event)
-  const dragEventSourceFolder = event.at(0)?.folder
-  if (!dragEventSourceFolder || !props.currentServiceFolder) return
-  // En fait je me prends la tête pour rien à cet endroit
-  // Pour quand je reviens sur la tâche ->
-  // Il faut que dans l'event ici je renvoie le dossier du Treenode sur lequel on dépose
-  // pour le filer à le fonction juste en dessous plutôt que dragEventSourceFolder
-  // car ça n'a en fait rien à voir
-  // Après ça, tout devrait être ok
+const documentDropDestinationFolder = ref<Folder['id'] | null>(null)
+const documentDropDestinationFolderName = ref('')
+const draggedDocumentsTomove = ref<Document[]>([])
+function handleDocumentDroppedOnTreeNode(documents: Document[], targetFolder: Folder) {
+  if (!props.currentServiceFolder) return
+  draggedDocumentsTomove.value = documents
 
-  // const targetFolderPath = getFolderPath(props.currentServiceFolder, dragEventSourceFolder)
-  // dropDestinationFolder.value = getPathFromArray(targetFolderPath)
-  // console.warn(getPathFromArray, getFolderPath)
-  isVisible.value = true
+  const firstDocument = documents.at(0)
+  if (!firstDocument) return
+
+  const targetFolderPath = getFolderPath(props.currentServiceFolder, targetFolder)
+  if (!targetFolderPath) return
+  documentDropDestinationFolderName.value = targetFolderPath[targetFolderPath.length - 1]
+  dropDestinationFolder.value = getPathFromArray(targetFolderPath)
+  documentDropDestinationFolder.value = targetFolder.id
+  isDropDialogVisible.value = true
+}
+
+const isDocumentDropConfirmButtonLoading = ref(false)
+async function handleConfirmDocumentDrop() {
+  if (!documentDropDestinationFolder.value) return
+
+  const formattedMoveDocumentsRequest = formatMoveDocumentsRequest()
+
+  if (!formattedMoveDocumentsRequest) return
+
+  try {
+    isDocumentDropConfirmButtonLoading.value = true
+    await moveDocuments(
+      props.currentService,
+      props.selectedEntity,
+      formattedMoveDocumentsRequest,
+    )
+
+    displaySuccessNotification(formattedMoveDocumentsRequest.ids.length)
+
+    emit('refresh-documents-list', true)
+  } catch (error) {
+    displayErrorNotification(formattedMoveDocumentsRequest.ids.length)
+  } finally {
+    isDropDialogVisible.value = false
+    isDocumentDropConfirmButtonLoading.value = false
+  }
+}
+
+function displaySuccessNotification(droppedDocumentsCount: number) {
+  PNotification({
+    message: t(
+      'dropSuccessNotification',
+      {
+        droppedDocumentsCount,
+        folderName: dropDestinationFolder.value,
+      },
+      droppedDocumentsCount,
+    ),
+    icon: PICheck,
+    showClose: true,
+    customClass: 'success',
+    position: 'bottom-right',
+  })
+}
+
+function displayErrorNotification(droppedDocumentsCount: number) {
+  PNotification({
+    message: t(
+      'dropErrorNotification',
+      {
+        droppedDocumentsCount,
+        folderName: dropDestinationFolder.value,
+      },
+      droppedDocumentsCount,
+    ),
+    icon: PIX,
+    showClose: true,
+    customClass: 'error',
+    position: 'bottom-right',
+  })
+}
+
+function formatMoveDocumentsRequest() {
+  const documentsIds = draggedDocumentsTomove.value.map(document => document.id)
+  const sourceFolderId = draggedDocumentsTomove.value.at(0)?.folder.id
+
+  if (!sourceFolderId || !documentDropDestinationFolder.value) return
+  return {
+    ids: documentsIds,
+    sourceFolderId,
+    destinationFolderId: documentDropDestinationFolder.value,
+    moveAll: false,
+    serviceId: props.currentService,
+  }
 }
 
 // drop popups and notifications managemnt
-const isVisible = ref(false)
+const isDropDialogVisible = ref(false)
 const dropDestinationFolder = ref('')
 const numberOfDocumentsToDrop = ref(0)
 // eslint-disable-next-line vitest/require-hook
@@ -457,3 +544,20 @@ watch(
   }
 }
 </style>
+
+<i18n lang="yaml">
+en-US:
+  dropSuccessNotification: >
+    {droppedDocumentsCount} document has been moved in {folderName} folder |
+    {droppedDocumentsCount} documents have been moved in {folderName} folder
+  dropErrorNotification: >
+    Connection has been interrupted with {droppedDocumentsCount} document concerned |
+    Connection has been interrupted with {droppedDocumentsCount} documents concerned
+fr-FR:
+  dropSuccessNotification: >
+    {droppedDocumentsCount} document a été déplacé dans le dossier {folderName} |
+    {droppedDocumentsCount} documents ont été déplacés dans le dossier {folderName}
+  dropErrorNotification: >
+    Connexion au serveur interrompue pour {droppedDocumentsCount} document |
+    Connexion au serveur interrompue pour {droppedDocumentsCount} documents
+</i18n>

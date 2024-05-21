@@ -51,7 +51,7 @@
     <DocumentDragGhost
       ref="ghostRef"
       :displayedName="draggedFilenameToUse"
-      :numberOfDocuments="validDraggedFilesCount"
+      :numberOfDocuments="draggedDocuments.length"
     />
   </Teleport>
 </template>
@@ -83,7 +83,6 @@ const emit = defineEmits([
 ])
 
 const props = defineProps<DocumentsListProps>()
-
 const documentsListTable = ref<InstanceType<typeof ElTable>>()
 const selectedDocuments = ref<DocumentsListProps['documentsListWithTableStructure']['documentsPage']['items']>([])
 const sortableColumns = ['Nom du document', 'Déposé le']
@@ -103,13 +102,13 @@ watch(
   },
 )
 
-const validDraggedFilesCount = ref(0)
+const draggedDocuments = ref<Document[]>([])
 const draggedFilenameToUse = computed(() => selectedDocuments.value.at(0)?.name ?? '')
 
 useDocumentsDragAndDrop(
   selectedDocuments,
   ref(props.currentService),
-  validDraggedFilesCount,
+  draggedDocuments,
 )
 
 // Behaviours
@@ -124,12 +123,19 @@ const handleToolboxActionTriggered = (action: string) => {
   emit('toolbox-action-triggered', action)
 }
 
+const draggedDocumentsIds = computed(() => draggedDocuments.value.map(document => document.id))
+// const selectedDocumentsIds = selectedDocuments.value.map(document => document.id)
 const tableRowClassName = ({
   row,
 }: {
   row: Document
 }) => {
-  return `document-row ${row.id}`
+  const isLineDragged = draggedDocumentsIds.value.includes(row.id)
+  return `
+    document-row
+    ${row.id}
+    ${isLineDragged ? 'p-table__row--disabled' : ''}
+    `
 }
 
 const selectRow = (documentRow: TableRowDocument, column:any) => {

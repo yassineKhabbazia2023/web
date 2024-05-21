@@ -17,11 +17,13 @@
         @remove-folder-from-source="handleRemoveFolderFromSource"
         @update-folder-name ="handleUpdateFolderName"
         @refresh-tree="handleTreeRefreshAndRedirectToFolder"
+        @refresh-documents-list="refreshDocumentsList"
       />
     </PCol>
 
     <PCol v-if="currentService && currentServiceFolder && !currentBinService" :span="18">
       <Documents
+        ref="documentsRef"
         :currentService="currentService"
         :selectedEntity="selectedEntity"
         :selectedFolder="currentFolder"
@@ -200,8 +202,13 @@ const handleTreeRefreshAndRedirectToFolder = async (folderId: Folder['id']) => {
   setCurrentBinService(null)
   setCurrentFolder(folderId)
 }
+
+const documentsRef = ref()
+
+function refreshDocumentsList() {
+  documentsRef.value.refreshDocumentsList()
+}
 // Main component actions
-// eslint-disable-next-line vitest/require-hook
 onMounted(async () => {
   if (selectedEntity.value) {
     await fetchGedFoldersAndServices()

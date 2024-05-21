@@ -546,7 +546,17 @@ const handleActionBarButtonClick = async (actionName: string) => {
       break
   }
 }
+
+// This function is exposed in order to let parent component refresh the documents list
+// this is usefull for the drag and drop as the events are handled in the Tree module
+// which has no direct relation with the Documents module
+async function refreshDocumentsList() {
+  await fetchDocuments()
+}
+
+defineExpose({ refreshDocumentsList })
 </script>
+
 <style lang="scss">
 .loader {
   height: 100%;

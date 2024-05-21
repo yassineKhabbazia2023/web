@@ -1,15 +1,18 @@
 <template>
-  <ConfirmationPopup
-    v-model:isPopupVisible="isPopupVisible"
-    :title="t('title',numberOfDocumentsToDrop)"
-    :message="t('message',{destination:destinationPath},numberOfDocumentsToDrop)"
-    :confirmButtonContent="t('controls.confirm')"
-    :cancelButtonContent="t('controls.cancel')"
-    :isConfirmButtonLoading="false"
-    @on-confirm-button-click="handleConfirmDropAction"
-    @on-cancel-button-click="handleCancelDropAction"
-    @on-close-popup="handleClosePopup"
-  />
+  <div>
+    <ConfirmationPopup
+      v-model:isPopupVisible="isPopupVisible"
+      :title="t('title',numberOfDocumentsToDrop)"
+      :message="t('message',{destination:destinationPath},numberOfDocumentsToDrop)"
+      :confirmButtonContent="t('controls.confirm')"
+      :cancelButtonContent="t('controls.cancel')"
+      :isConfirmButtonLoading="isDocumentDropConfirmButtonLoading"
+      @on-confirm-button-click="handleConfirmDropAction"
+      @on-cancel-button-click="handleCancelDropAction"
+      @on-close-popup="handleClosePopup"
+
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -25,19 +28,19 @@ const { t } = useI18n({
 
 const props = defineProps<DocumentsDropConfirmationPopupProps>()
 
-const emit = defineEmits(['update:isVisible', 'cancel-documents-drop', 'confirm-documents-drop', 'close-popup'])
+const emit = defineEmits(['update:modelValue', 'confirm-documents-drop'])
 
 const isPopupVisible = computed({
   get() {
-    return props.isVisible
+    return props.modelValue
   },
   set(value) {
-    emit('update:isVisible', value)
+    emit('update:modelValue', value)
   },
 })
 
 const handleCancelDropAction = () => {
-  emit('cancel-documents-drop')
+  isPopupVisible.value = false
 }
 
 const handleConfirmDropAction = () => {
@@ -45,7 +48,7 @@ const handleConfirmDropAction = () => {
 }
 
 const handleClosePopup = () => {
-  emit('close-popup')
+  isPopupVisible.value = false
 }
 </script>
 

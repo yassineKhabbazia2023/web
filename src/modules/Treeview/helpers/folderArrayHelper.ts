@@ -133,25 +133,25 @@ export const deleteFolder = (
   })
 }
 
-export const getFolderPath = (folders: Folder[], folder: Folder): string[] => {
-  // Vérifier si le serviceId du dossier correspond à l'un des IDs dans l'enum
-  if (folder.serviceId === ServicesIds.ACCOUNTING || folder.serviceId === ServicesIds.SOCIAL) {
-    return [folder.name] // Commencez le chemin ici, ne remontez pas plus loin
+export function getFolderPath(folders: Folder[], targetFolder: Folder): string[] | null {
+  for (const folder of folders) {
+    if (folder.id === targetFolder.id) {
+      // The target folder is found, return the path to it consisting of its name
+      return [folder.name]
+    }
+
+    if (folder.children.length > 0) {
+      // Recursively search for the target folder in the children of the current folder
+      const pathInChildren = getFolderPath(folder.children, targetFolder)
+
+      if (pathInChildren !== null) {
+        // The target folder is found in the children, return the complete path to it
+        // by prefixing the path in the children with the name of the current folder
+        return [folder.name, ...pathInChildren]
+      }
+    }
   }
 
-  // Si le dossier n'a pas de parent, on commence le chemin avec son propre nom
-  if (!folder.parent) {
-    return [folder.name]
-  }
-
-  // Trouver le parent du dossier actuel dans la liste des dossiers
-  const parentFolder = folders.find(f => f.id === folder.parent.id)
-
-  if (!parentFolder) {
-    // Si le parent n'est pas trouvé, commencez simplement avec le nom du dossier actuel
-    return [folder.name]
-  }
-
-  // Récursion: obtenir le chemin du parent et ajouter le nom du dossier actuel
-  return [...getFolderPath(folders, parentFolder), folder.name]
+  // The target folder is not found, return null
+  return null
 }

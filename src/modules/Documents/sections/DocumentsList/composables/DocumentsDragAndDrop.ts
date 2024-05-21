@@ -6,7 +6,7 @@ import type { DocumentsListProps } from '../DocumentsListTypes'
 export function useDocumentsDragAndDrop(
   selectedFolders: Ref<Document[]>,
   currentService: Ref<DocumentsListProps['currentService']>,
-  validDraggedFilesCount: Ref<number>,
+  draggedDocuments: Ref<Document[]>,
 ) {
   function getDocumentsRowElements() {
     return document.getElementsByClassName('document-row')
@@ -34,10 +34,12 @@ export function useDocumentsDragAndDrop(
     }),
   )
 
+  // If you're searching for the handling of the drop event,
+  // check in the Treeview folder as this is where documents are dropped
   function handleDragStart(event: DragEvent): void {
     if (!event.dataTransfer) return
 
-    validDraggedFilesCount.value = documentsToMove.value.length
+    draggedDocuments.value = documentsToMove.value
 
     const ghost = document.getElementsByClassName('document-drag-ghost').item(0)
     event.dataTransfer.setDragImage(ghost!, 0, 0)
@@ -101,6 +103,7 @@ export function useDocumentsDragAndDrop(
   }
 
   function handleDragEnd() {
+    draggedDocuments.value = []
     document.body.classList.remove('grabbing')
   }
 }

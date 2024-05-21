@@ -1,5 +1,6 @@
 export interface DocumentsDropConfirmationPopupProps {
-  isVisible: boolean
+  modelValue: boolean
   numberOfDocumentsToDrop: number
   destinationPath: string
+  isDocumentDropConfirmButtonLoading: boolean
 }

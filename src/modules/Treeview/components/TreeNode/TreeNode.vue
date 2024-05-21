@@ -47,7 +47,7 @@
         />
 
         <PIcon
-          v-if="isDragovered"
+          v-show="isDragovered"
           :color="isErrorDragover ? '#FF0000' : '#5546FF'"
           size="18"
         >
@@ -187,7 +187,7 @@ function handleDrop(event: DragEvent) {
 
   const documentsToMove: Document[] = JSON.parse(event.dataTransfer?.getData('application/json+document') ?? '')
   if (!documentsToMove) return
-  emit('documents-dropped-on-tree-node', documentsToMove)
+  emit('documents-dropped-on-tree-node', documentsToMove, props.data)
   removeDragoverClass()
 }
 
@@ -256,6 +256,8 @@ This component (the node) is not inside the design system which is why we overri
     That's why i'm using a negative margin here as it's not breaking anything at all
     Tree base arrow size - half its paddings (as we still want the left padding) */
     margin-left: calc(0px - 12px - 8px);
+    // As the negative margin breaks the sizing, i'm increasing the width of the container
+    width: calc(100% + 12px + 8px)
   }
 
   &__no-child-icon {
