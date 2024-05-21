@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/pages/Home'),
+    component: { template: '<h1>Login Page</h1>' },
   } as RouteRecordRaw,
 ]
 
@@ -50,26 +50,33 @@ router.beforeEach(async (to: any, _from) => {
     }
   }
 
-  if (to.name === 'entity-client' && !isCollab.value) {
+  if (['entity-client', 'home'].includes(to.name)) {
     const entities = await fetchEntities()
-
-    if (entities.totalItems === 1) {
-      const firstEntity = entities.items[0]
-      // color is temporarily hard-coded
-      store.$patch({
-        user: {
-          entities: {
-            default: {
-              accountId: firstEntity.accountId,
-              legalName: firstEntity.legalName,
-              color: 'persian',
-              accountNumber: firstEntity.accountNumber,
+    if (to.name === 'home') {
+      if (!isCollab.value && entities.totalItems > 1) {
+        return { name: 'entity-client' }
+      } else if (isCollab.value) {
+        return { name: 'wallet' }
+      }
+    } else if (to.name === 'entity-client' && !isCollab.value) {
+      if (entities.totalItems === 1) {
+        const firstEntity = entities.items[0]
+        // color is temporarily hard-coded
+        store.$patch({
+          user: {
+            entities: {
+              default: {
+                accountId: firstEntity.accountId,
+                legalName: firstEntity.legalName,
+                color: 'persian',
+                accountNumber: firstEntity.accountNumber,
+              },
             },
           },
-        },
-      })
+        })
 
-      router.push({ name: 'folder', params: { id: firstEntity.accountId } })
+        return { name: 'folder', params: { id: firstEntity.accountId } }
+      }
     }
   }
 })

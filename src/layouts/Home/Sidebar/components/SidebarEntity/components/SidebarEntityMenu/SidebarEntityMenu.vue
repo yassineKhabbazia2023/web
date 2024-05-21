@@ -14,6 +14,14 @@
       class="sidenav-entity-menu__main-menu"
       data-testid="sidenav-menu"
     >
+      <PMenuItem
+        :pIndex="`/dossier/${props.selectedEntityId}`"
+        pLeftIcon="PIHouse"
+      >
+        <template #title>
+          {{ t('home') }}
+        </template>
+      </PMenuItem>
       <PSubMenu :pIndex="folderSubmenu.index" :pIcon="folderSubmenu.icon">
         <template #title>
           {{ folderSubmenu.title }}
@@ -67,7 +75,7 @@ const activeMenuItem = ref<string>(route.fullPath)
 const folderSubmenu = computed(() => ({
   index: 'folder',
   title: t('folder'),
-  icon: 'PIHouse',
+  icon: 'PIFolder',
   menuItems: [
     {
       title: t('users'),
@@ -155,6 +163,7 @@ en-US:
   documents: 'Documents'
   apps: 'Applications'
   delegationsHistory: 'Delegations history'
+  home: 'Home'
 fr-FR:
   folder: 'Dossier'
   users: 'Utilisateurs'
@@ -164,4 +173,5 @@ fr-FR:
   documents: 'Documents'
   apps: 'Applications'
   delegationsHistory: 'Historique des délégations'
+  home: 'Accueil'
 </i18n>
