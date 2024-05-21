@@ -9,72 +9,71 @@ import {
   getOccurrence,
   postDeadlineAccountStatus,
 } from '.'
-import type { Account } from '@/schedule/models/Account'
-import type { DeadlinesByDate, Occurrence } from '@/schedule/models/Deadline'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { getDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 import { getMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
 import type { ScheduleModelLabelType } from './scheduleServiceTypes'
 import { getMockedOccurrence } from '../tests/mocks/Occurrence'
-
-const getMockApiImplementation = (mockData: Account[] | DeadlinesByDate[] | Occurrence) => Promise.resolve({
-  data: mockData,
-})
+import { getDoneDeadlinesByDateMock } from '../tests/mocks/Deadline'
 
 const scheduleId = '1234-332-32121-212'
 const mockedOccurrence = getMockedOccurrence()
-const doneDeadlinesByDateMock = getDoneDeadlinesByDateMock()
 const createScheduleMock = getMockSchedule()
+
+const commonApiGetSpy = vi.fn()
+const commonApiPostSpy = vi.fn()
 
 vi.mock('@kpmg/common', () => {
   return {
     commonApi: () => ({
       schedule: {
-        get: vi.fn((url, _) => {
-          if (/^\/schedules$/.test(url)) {
-            return getMockApiImplementation(doneDeadlinesByDateMock)
-          }
-          if (/^\/accounts$/.test(url)) {
-            return getMockApiImplementation(accountsCollection)
-          }
-          if (url === `/occurrences/${mockedOccurrence.id}`) {
-            return getMockApiImplementation(mockedOccurrence)
-          }
-        }),
-        post: vi.fn((url, payload) => {
-          if (/^\/schedules$/.test(url)) {
-            return Promise.resolve({ data: { id: scheduleId } })
-          }
-          return Promise.resolve({
-            data: {
-              url,
-              payload,
-            },
-          })
-        }),
+        get: commonApiGetSpy,
+        post: commonApiPostSpy,
       },
     }),
   }
 })
 
 describe('getSchedulesCollection', () => {
-  it('should return schedules list', async () => {
-    const data = await getSchedulesCollection({ startDate: '2024-03-31', endDate: '2024-03-31' })
-    expect(data).toStrictEqual(doneDeadlinesByDateMock)
+  it('should return mocked response with proper params', async () => {
+    const mockedDeadlinesByDate = getDoneDeadlinesByDateMock()
+    commonApiGetSpy.mockResolvedValueOnce({ data: mockedDeadlinesByDate })
+    const params = {
+      startDate: '2024-03-31',
+      endDate: '2024-03-31',
+    }
+    const expectedUrl = '/schedules'
+    const data = await getSchedulesCollection(params)
+
+    expect(commonApiGetSpy).toHaveBeenCalledOnce()
+    expect(commonApiGetSpy).toHaveBeenNthCalledWith(1, expectedUrl, { params })
+    expect(data).toStrictEqual(mockedDeadlinesByDate)
   })
 })
 
 describe('getAccountsCollection', () => {
   it('should return accounts list', async () => {
+    commonApiGetSpy.mockResolvedValueOnce({ data: accountsCollection })
+
+    const expectedUrl = '/accounts'
     const data = await getAccountsCollection()
+
+    expect(commonApiGetSpy).toHaveBeenCalledOnce()
+    expect(commonApiGetSpy).toHaveBeenNthCalledWith(1, expectedUrl)
     expect(data).toStrictEqual(accountsCollection)
   })
 })
 
 describe('postSchedule', () => {
   it('should return an id of the new schedule', async () => {
+    const mockedData = { id: scheduleId }
+    commonApiPostSpy.mockResolvedValueOnce({ data: mockedData })
+
+    const expectedUrl = '/schedules'
     const data = await postSchedule(createScheduleMock)
-    expect(data).toStrictEqual({ id: scheduleId })
+
+    expect(commonApiPostSpy).toHaveBeenCalledOnce()
+    expect(commonApiPostSpy).toHaveBeenNthCalledWith(1, expectedUrl, createScheduleMock)
+    expect(data).toStrictEqual(mockedData)
   })
 })
 
@@ -111,26 +110,33 @@ describe('getFrequenciesCollection', () => {
 
 describe('getOccurrence', () => {
   it('should return a specific occurrence', async () => {
+    commonApiGetSpy.mockResolvedValueOnce({ data: mockedOccurrence })
     const occurrenceId = mockedOccurrence.id
+
+    const expectedUrl = `/occurrences/${occurrenceId}`
     const data = await getOccurrence(occurrenceId)
 
+    expect(commonApiGetSpy).toHaveBeenCalledOnce()
+    expect(commonApiGetSpy).toHaveBeenNthCalledWith(1, expectedUrl)
     expect(data).toStrictEqual(mockedOccurrence)
   })
 })
 
 describe('postDeadlineAccountStatus', () => {
   it('should call schedule.post with proper url and payloads', async () => {
+    commonApiPostSpy.mockResolvedValueOnce({ data: mockedOccurrence })
     const occurrenceId = mockedOccurrence.id
     const accountId = 12
     const status = 'Done'
-    const data = await postDeadlineAccountStatus(occurrenceId, accountId, status)
-    const expectedData = {
-      url: `/occurrences/${occurrenceId}/accounts/${accountId}/deadline-status`,
-      payload: {
-        status,
-      },
-    }
 
-    expect(data).toStrictEqual(expectedData)
+    const expectedUrl = `/occurrences/${occurrenceId}/accounts/${accountId}/deadline-status`
+    const expectedPayload = {
+      status,
+    }
+    const data = await postDeadlineAccountStatus(occurrenceId, accountId, status)
+
+    expect(commonApiPostSpy).toHaveBeenCalledOnce()
+    expect(commonApiPostSpy).toHaveBeenNthCalledWith(1, expectedUrl, expectedPayload)
+    expect(data).toStrictEqual(mockedOccurrence)
   })
 })
