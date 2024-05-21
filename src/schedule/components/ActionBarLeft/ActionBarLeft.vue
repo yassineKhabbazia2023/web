@@ -6,6 +6,7 @@
       pSize="small"
       data-testid="schedule-prev-month-button"
       pIconOnly
+      class="margin-right--2"
     >
       <PIcon>
         <PIChevronLeft />
@@ -17,6 +18,7 @@
       pSize="small"
       data-testid="schedule-next-month-button"
       pIconOnly
+      class="margin-right--2"
     >
       <PIcon>
         <PIChevronRight />
