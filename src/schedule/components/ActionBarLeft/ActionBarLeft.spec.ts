@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import ActionBarLeft from '.'
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, vi } from 'vitest'
 
 const TEST_DATE = '2024-04-10'
 
@@ -31,6 +31,17 @@ describe('month.vue', () => {
 
     const newActiveDate = wrapper.emitted('update:active-date')?.at(0)?.at(0) as Date
     expect(dayjs(newActiveDate).format('YYYY-MM-DD')).toBe(NEW_DATE)
+  })
+
+  it('should emit update:active-date with today date', async () => {
+    const mockedToday = new Date('2024-05-21T13:00:00.000Z')
+    vi.useFakeTimers()
+    vi.setSystemTime(mockedToday)
+
+    const wrapper = createWrapper()
+    const todayButton = wrapper.find('[data-testid="action-bar-left-today"]')
+    await todayButton.trigger('click')
+    expect(wrapper.emitted('update:active-date')).toStrictEqual([[mockedToday]])
   })
 })
 

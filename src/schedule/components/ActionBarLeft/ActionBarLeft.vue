@@ -27,6 +27,15 @@
     <span class="h4 font-semibold text-capitalize">
       {{ activeMonth }} {{ activeYear }}
     </span>
+    <PButton
+      @click="onClickToday"
+      class="margin-left--6"
+      data-testid="action-bar-left-today"
+      pType="default"
+      pSize="small"
+    >
+      {{ t('today') }}
+    </PButton>
   </div>
 </template>
 
@@ -58,7 +67,7 @@ const datetimeFormats = {
     },
   },
 } as Record<string, DefineDateTimeFormat>
-const { d } = useI18n({
+const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
@@ -80,4 +89,17 @@ const updateMonth = (nextOrPrevious: string) => {
 
   emit('update:active-date', newActiveDate)
 }
+
+function onClickToday() {
+  const newActiveDate = new Date()
+
+  emit('update:active-date', newActiveDate)
+}
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    today: 'Today'
+  fr-FR:
+    today: "Aujourd'hui"
+</i18n>
