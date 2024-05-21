@@ -12,7 +12,7 @@
         v-model="scheduleViewType"
         :activeDate="activeDate"
         @create-schedule="isDrawerVisible = true"
-        @calendar-event="onCalendarEvent"
+        @update:active-date="setActiveDate"
       />
 
       <DeadlineList
@@ -131,10 +131,6 @@ onMounted(async () => {
 
 function onSelectDeadline(selectedOccurrenceId: number) {
   occurrenceId.value = selectedOccurrenceId
-}
-
-function onCalendarEvent({ date }: { date: Date }) {
-  setActiveDate(date)
 }
 
 function setActiveDate(date: Date) {

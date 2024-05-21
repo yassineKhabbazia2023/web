@@ -241,7 +241,7 @@ describe('home page', () => {
       })
     })
 
-    it('should fired calendar-event', async () => {
+    it('should fired update:active-date', async () => {
       const wrapper = createWrapper({
         global: {
           stubs: {
@@ -251,9 +251,11 @@ describe('home page', () => {
           },
         },
       })
-      wrapper.findComponent(ActionBar).vm.$emit('calendar-event', { type: 'next-month', date: new Date() })
+      const newDate = new Date(OTHER_MONTH_DATE)
+      wrapper.findComponent(ActionBar).vm.$emit('update:active-date', newDate)
       await nextTick()
-      expect(wrapper.findComponent(ActionBar).emitted('calendar-event')).toHaveLength(1)
+      const actionBar = wrapper.findComponent(ActionBar)
+      expect(actionBar.emitted('update:active-date')).toStrictEqual([[newDate]])
     })
 
     it('should change activeDate when DeadlineList emits change-date', async () => {

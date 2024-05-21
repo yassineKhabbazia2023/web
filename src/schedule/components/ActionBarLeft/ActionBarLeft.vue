@@ -41,7 +41,7 @@ import {
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
 const emit = defineEmits<{
-  'calendar-event': [{type: string, date: Date}]
+  'update:active-date': [Date]
 }>()
 
 const datetimeFormats = {
@@ -72,15 +72,10 @@ const updateMonth = (nextOrPrevious: string) => {
 
   const activeDate = dayjs(props.activeDate)
   const newActiveDate = activeDate
-    .add(deltaMonth, 'month')
     .set('date', 1) // select first day
+    .add(deltaMonth, 'month')
     .toDate()
 
-  const calendarEvent = {
-    type: `${nextOrPrevious}-month`,
-    date: newActiveDate,
-  }
-
-  emit('calendar-event', calendarEvent)
+  emit('update:active-date', newActiveDate)
 }
 </script>

@@ -5,7 +5,7 @@
   >
     <ActionBarLeft
       :activeDate="activeDate"
-      @calendar-event="$emit('calendar-event', $event)"
+      @update:active-date="emit('update:active-date', $event)"
     />
     <div
       class="flex flex--justify-content-flex-end flex--align-items-center"
@@ -29,7 +29,7 @@
 
       <PButton
         v-if="commonStore.isCollab"
-        @click="$emit('create-schedule')"
+        @click="emit('create-schedule')"
         pType="primary"
         pSize="small"
         data-testid="create-schedule"
@@ -55,7 +55,7 @@ const props = defineProps<ActionBarProps>()
 const emit = defineEmits<{
   'create-schedule': []
   'update:modelValue': [value: string]
-  'calendar-event': [{type: string, date: Date}]
+  'update:active-date': [Date]
 }>()
 
 const { t } = useI18n({

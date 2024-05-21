@@ -54,16 +54,17 @@ describe('action bar', () => {
       expect(emittedEvent?.at(0)).toStrictEqual([emitValue])
     })
 
-    it('should emit calendar-event', () => {
+    it('should emit update:active-date', () => {
       const wrapper = createWrapper({
         props: {
           activeDate: new Date(TEST_DATE),
           modelValue: 'list',
         },
       })
-      wrapper.findComponent(ActionBarLeft)
-        .vm.$emit('calendar-event', { type: 'next-month', date: new Date() })
-      expect(wrapper.emitted('calendar-event')).toBeTruthy()
+      const newDate = new Date('2024-05-03')
+      const actionBarLeft = wrapper.findComponent(ActionBarLeft)
+      actionBarLeft.vm.$emit('update:active-date', newDate)
+      expect(wrapper.emitted('update:active-date')).toStrictEqual([[newDate]])
     })
     it('should hide create schedule', () => {
       // @ts-expect-error: Getter is read only
