@@ -4,7 +4,6 @@ import singleSpaVue from 'single-spa-vue'
 import {
   commoni18n as i18n,
   commonPinia as pinia,
-  commonStore,
   routes,
 } from '@kpmg/common'
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
@@ -151,12 +150,7 @@ routes.value.push({
 routes.value.push({
   path: '/dossier/:id',
   name: 'folder',
-  redirect: () => ({
-    name: commonStore().isCollab
-      ? 'usersCollab'
-      : 'usersClient',
-  }),
-  component: () => import('@/pages/folder'),
+  component: () => import('@/pages/folder/pages/home'),
   children: folderPatchChildren(FOLDER_CHILDREN_PATH),
 })
 
