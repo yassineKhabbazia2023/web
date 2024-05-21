@@ -213,6 +213,7 @@ import { storeToRefs } from 'pinia'
 import { type Entity, commonApi, commonStore } from '@kpmg/common'
 import type { TableDataProps, Row } from './types'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
+import { API_PREFIXES } from '@/common/config/services'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -353,11 +354,10 @@ const notifOnError = (companyName: string) => {
   })
 }
 
-const resendActivationEmail = async (accountId: string, companyName: string) => {
-  const contactId = userStore.user?.id
-  const url = `/Activation/Invite?accountId=${accountId}&contactId=${contactId}`
+const resendActivationEmail = async (companyName: string, signatoryId: number) => {
+  const url = `${API_PREFIXES.CONTACT}/customers/${signatoryId}`
   try {
-    const { status } = await commonApi().onboarding.post(url)
+    const { status } = await commonApi().gateway.post(url)
     if (status === 200) {
       PNotification({
         message: t('resendMailSuccessMessageFirst') + companyName + t('resendMailSuccessMessageSecond'),
@@ -375,12 +375,13 @@ const resendActivationEmail = async (accountId: string, companyName: string) => 
 }
 
 const onToolboxItemClicked = (action: string, row: any) => {
-  const { accountId, name, accountNumber } = row
+  const { accountId, name, accountNumber, owner } = row
 
   if (action === 'deploy') {
     emit('click-deploy', accountId ?? 5, accountNumber, name)
   } else if (action === 'resendActivationEmail') {
-    resendActivationEmail(accountId, name)
+    const signatoryId = owner.contactId
+    resendActivationEmail(name, signatoryId)
   } else if (action === 'access') {
     handleRowSelectedChange(row)
     emit('access', accountId)

@@ -12,6 +12,7 @@ export const mockedEntity: Entity = {
 export const mockTableData: IWalletData[] = [
   {
     owner: {
+      contactId: 1,
       firstName: 'firstName1',
       lastName: 'lastName1',
       email: 'email1',
@@ -33,6 +34,7 @@ export const mockTableData: IWalletData[] = [
   },
   {
     owner: {
+      contactId: 2,
       firstName: '',
       lastName: '',
       email: null,

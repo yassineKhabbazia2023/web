@@ -61,6 +61,7 @@ export function getMockedMappedAccount(
     isFavorite: false,
     name: 'Legal Name',
     owner: {
+      contactId: 22,
       avatarColor,
       email: 'sign@kpmg.fr',
       firstName: 'Signa',

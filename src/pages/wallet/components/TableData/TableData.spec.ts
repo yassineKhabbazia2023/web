@@ -7,6 +7,7 @@ import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
 import { type Entity, commonStore } from '@kpmg/common'
 import TableData from './'
+import { API_PREFIXES } from '@/common/config/services'
 
 const handleFavorites = vi.fn()
 const postMock = vi.fn()
@@ -19,7 +20,7 @@ const testEntity = {
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
-    onboarding: {
+    gateway: {
       post: postMock,
     },
   }),
@@ -145,9 +146,9 @@ describe('tableData', () => {
     await nextTick()
     const notifTextSuccess = 'A new activation email for'
     const {
-      accountId,
+      owner,
     } = mockTableData[1]
-    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${accountId}&contactId=${contactId}`)
+    expect(postMock).toHaveBeenCalledWith(`${API_PREFIXES.CONTACT}/customers/${owner.contactId}`)
     const notificationContent = document.body.getElementsByClassName('el-notification__content')[0].innerHTML
     expect(notificationContent).toContain(notifTextSuccess)
   })
@@ -167,9 +168,9 @@ describe('tableData', () => {
     resendEmailButton.click()
     await nextTick()
     const {
-      accountId,
+      owner,
     } = mockTableData[1]
-    expect(postMock).toHaveBeenCalledWith(`/Activation/Invite?accountId=${accountId}&contactId=${contactId}`)
+    expect(postMock).toHaveBeenCalledWith(`${API_PREFIXES.CONTACT}/customers/${owner.contactId}`)
     const notificationContent = document.body.getElementsByClassName('el-notification__content')[1].innerHTML
     expect(notificationContent).toContain(notifTextError)
   })

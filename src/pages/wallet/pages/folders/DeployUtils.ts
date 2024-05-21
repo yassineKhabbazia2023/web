@@ -57,7 +57,7 @@ export function getMappedAccount(
     isFavorite,
   } = account
 
-  const { firstName, lastName, email } = signatory
+  const { contactId, firstName, lastName, email } = signatory
   const { city } = address
   const { status } = deployment
 
@@ -68,6 +68,7 @@ export function getMappedAccount(
 
   const mappedAccount: IWalletData = {
     owner: {
+      contactId,
       firstName,
       lastName,
       email,

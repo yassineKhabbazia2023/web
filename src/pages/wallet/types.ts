@@ -10,6 +10,7 @@ export interface DeploymentStatus {
 
 export interface IWalletData {
   owner: {
+    contactId: number
     firstName: string
     lastName: string
     email: string | null
