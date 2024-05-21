@@ -105,7 +105,7 @@ const menuItems = computed(() => [
     display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
   },
   {
-    index: '/launcher',
+    index: `/dossier/${props.selectedEntityId}/launcher`,
     title: t('apps'),
     leftIcon: 'PIGrid',
     display: hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
