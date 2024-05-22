@@ -57,7 +57,7 @@ export function getMappedAccount(
     isFavorite,
   } = account
 
-  const { contactId, firstName, lastName, email } = signatory
+  const { contactId, firstName, lastName, email } = signatory ?? {}
   const { city } = address
   const { status } = deployment
 
