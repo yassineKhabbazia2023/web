@@ -1,10 +1,10 @@
 <template>
-  <div class="donwload-mandate">
+  <div class="download-mandate">
     <PImage
       pType="paupulse"
       pName="ok"
-      pFit="fill"
-      class="download-mandate__illustration margin-bottom--6"
+      pFit="contain"
+      class="download-mandate__illustration margin-bottom--6 margin-x--auto"
     />
     <h4 class="download-mandate__title font-semibold margin-bottom--2">
       {{t('generated-mandate')}}
@@ -116,12 +116,8 @@ const { t } = useI18n({
 <style lang="scss" scoped>
 .download-mandate {
   &__illustration {
-    display: flex;
-    justify-content: center;
-    img {
-      width: 316px;
-      height: 300px;
-    }
+    display: block;
+    width: 316px;
   }
   &__title {
     color: var(--el-color-neutral-gray-900);
