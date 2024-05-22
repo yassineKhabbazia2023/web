@@ -4,10 +4,30 @@ import type { Component } from 'vue'
 /**
  * 🛠️ TODO: don't use the 'I' prefix on new types as this is against our conventions.
  */
+
+/* eslint-disable no-unused-vars */
+export enum userActions {
+  MODIFY_RIGHTS = 'modifyRights',
+  DELETE_USER = 'deleteUser',
+  ASSIGN_SIGNATORY = 'assignSignatory',
+}
+/* eslint-disable no-unused-vars */
+
 export interface IUserStatus {
   text: string
-  color: '' | 'success' | 'warning' | 'danger' | 'info'
-    | 'persian' | 'fuschia' | 'cyan' | 'amethyste' | 'gray-300' | 'gray-500' | 'gray-900'
+  color:
+    | ''
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info'
+    | 'persian'
+    | 'fuschia'
+    | 'cyan'
+    | 'amethyste'
+    | 'gray-300'
+    | 'gray-500'
+    | 'gray-900'
   icon: Component
 }
 

@@ -21,7 +21,6 @@
     </div>
     <PTable
       v-else
-      ref="selectedRow"
       :pData="state.data"
       tableLayout="fixed"
       data-testid="folder-users-table"
@@ -108,15 +107,17 @@
         :pLabel="t('action')"
         :pWidth="100"
       >
-        <template #default>
+        <template #default="scope">
           <PToolbox
             trigger="click"
             popperClass="toolbox-container"
             :pElements="toolboxItems"
+            @p-toolbox-item-clicked="$event => handleUserAction($event, scope.row)"
           >
             <PButton
               pType="white"
               pSize="small"
+              data-testid="folder-users-collab-action"
               class="margin-left--1"
             >
               <PIcon>
@@ -143,13 +144,19 @@
       <p>{{ paginationLabel }}</p>
     </PPagination>
   </div>
+  <!--🛡️ Modify Rights Drawer 🛡️-->
+  <ManageRightsDrawer
+    v-if="selectedRow"
+    v-model="isManageRightsDrawerOpened"
+    :userInfo="selectedRow"
+  />
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, reactive, watch } from 'vue'
+import { computed, onMounted, reactive, watch, ref } from 'vue'
 import {
   PTable,
   PTableColumn,
@@ -176,6 +183,8 @@ import { getFullName } from '@/common/utils'
 import { fetchAccountCustomers } from '@/services/wallet'
 import { getPaginationLabel } from '@/helper'
 import type { IStateUser, IUserStatus, IUser } from './types'
+import { userActions } from './types'
+import ManageRightsDrawer from './components/ManageRightsDrawer'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -184,9 +193,10 @@ const { d, t } = useI18n({
 })
 
 const route = useRoute()
-const { user } = storeToRefs(commonStore())
+const selectedRow = ref(undefined)
 const { hasPermission } = userPermissions()
-
+const { user } = storeToRefs(commonStore())
+const isManageRightsDrawerOpened = ref(false)
 const state: IStateUser = reactive({
   data: [],
   currentPage: 1,
@@ -195,27 +205,28 @@ const state: IStateUser = reactive({
   totalItems: 0,
   isLoading: false,
 })
+
 const toolboxItems = computed(
   () =>
     [
       {
         pIconName: 'PIPatchCheck',
         pValue: t('assignSignatory'),
-        pActionName: 'assign',
+        pActionName: userActions.ASSIGN_SIGNATORY,
         pState: 'default',
         display: true,
       },
       {
         pIconName: 'PIPencilSquare',
         pValue: t('modifyRights'),
-        pActionName: 'rights',
+        pActionName: userActions.MODIFY_RIGHTS,
         pState: 'default',
         display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS),
       },
       {
         pIconName: 'PITrash',
         pValue: t('deleteUser'),
-        pActionName: 'delete',
+        pActionName: userActions.DELETE_USER,
         pState: 'default',
         display: hasPermission(PERMISSION_CODES.DELETE_USER),
       },
@@ -287,6 +298,13 @@ const getStatus = (status: string): IUserStatus => {
 
 const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
+}
+
+const handleUserAction = (action: string, row: any) => {
+  selectedRow.value = row
+  if (action === userActions.MODIFY_RIGHTS) {
+    isManageRightsDrawerOpened.value = true
+  }
 }
 
 const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (Date.parse(b.firstDateAccess) / 1000)

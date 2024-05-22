@@ -2,10 +2,15 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import { getMockedCustomersCollab } from './mockData'
+import { dataFromApi, getMockedCustomersCollab } from './mockData'
 import UsersCollab from '.'
 
 const mockedCustomersCollab = getMockedCustomersCollab()
+const mockedUser = {
+  ...dataFromApi.data.items[0],
+  fullName: "Johnny's Pizza",
+  initials: 'JP',
+}
 const mockHasPermission = vi.fn((_code: string) => true)
 
 vi.mock('@/services/wallet', () => ({
@@ -36,7 +41,7 @@ vi.mock('@kpmg/common', () => ({
 
 const toolBoxElementsWithoutPermissions = [
   {
-    pActionName: 'assign',
+    pActionName: 'assignSignatory',
     pIconName: 'PIPatchCheck',
     pState: 'default',
     pValue: 'Designate as signatory',
@@ -111,6 +116,16 @@ describe('usersCollab', () => {
       expect(pagination.props('pCurrentPage')).toBe(1)
       expect(pagination.props('pPageSize')).toBe(15)
       expect(totalItems).toBe(mockedCustomersCollab.length)
+    })
+  })
+  describe('events', () => {
+    it("should display the 'Modify Rights' drawer when the 'Modify Rights' action is clicked", async () => {
+      await wrapper.vm.handleUserAction('modifyRights', mockedUser)
+      const manageRightsDrawer = wrapper.findComponent({ name: 'ManageRightsDrawer' })
+
+      expect(manageRightsDrawer.exists()).toBeTruthy()
+      expect(manageRightsDrawer.props('modelValue')).toBeTruthy()
+      expect(manageRightsDrawer.props('userInfo')).toMatchObject(mockedUser)
     })
   })
 })
