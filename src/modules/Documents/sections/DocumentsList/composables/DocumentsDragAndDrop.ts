@@ -1,4 +1,4 @@
-import { computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { computed, watch, onBeforeUnmount } from 'vue'
 import type { Ref } from 'vue'
 import type { Document } from '@/models/Document'
 import type { DocumentsListProps } from '../DocumentsListTypes'
@@ -12,13 +12,15 @@ export function useDocumentsDragAndDrop(
     return document.getElementsByClassName('document-row')
   }
 
-  onMounted(() => {
+  watch(selectedFolders, () => bindDragProperties())
+
+  function bindDragProperties() {
     const documentRowElements = getDocumentsRowElements()
     Array.from(documentRowElements).forEach((element) => {
       ;(element as HTMLElement).addEventListener('dragstart', handleDragStart)
       ;(element as HTMLElement).addEventListener('dragend', handleDragEnd)
     })
-  })
+  }
 
   onBeforeUnmount(() => {
     const documentRowElements = getDocumentsRowElements()
@@ -58,6 +60,7 @@ export function useDocumentsDragAndDrop(
 
     if (newElement) {
       addDragAndDropAttributes(newElement)
+      bindDragProperties()
     } else {
       const removedElement = getRemovedSelectedFolder(
         previousDocuments,

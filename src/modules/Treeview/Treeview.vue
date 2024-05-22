@@ -369,10 +369,7 @@ const handleToolboxItemChecked = (action: string, folder: Folder) => {
   }
 }
 
-// I'm going to make a composable out of this
-// I'm going to make a composable out of this
-// I'm going to make a composable out of this
-// I'm going to make a composable out of this
+// This is going to be a whole composable
 function handleExpandOrCollapseNode(nodeKey: any) {
   const tree = retrieveCurrentlyUsedSourceTree()
 
@@ -384,6 +381,7 @@ function handleExpandOrCollapseNode(nodeKey: any) {
 const documentDropDestinationFolder = ref<Folder['id'] | null>(null)
 const documentDropDestinationFolderName = ref('')
 const draggedDocumentsTomove = ref<Document[]>([])
+
 function handleDocumentDroppedOnTreeNode(documents: Document[], targetFolder: Folder) {
   if (!props.currentServiceFolder) return
   draggedDocumentsTomove.value = documents

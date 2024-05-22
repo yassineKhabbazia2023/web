@@ -123,18 +123,14 @@ const handleToolboxActionTriggered = (action: string) => {
   emit('toolbox-action-triggered', action)
 }
 
-const draggedDocumentsIds = computed(() => draggedDocuments.value.map(document => document.id))
-// const selectedDocumentsIds = selectedDocuments.value.map(document => document.id)
 const tableRowClassName = ({
   row,
 }: {
   row: Document
 }) => {
-  const isLineDragged = draggedDocumentsIds.value.includes(row.id)
   return `
     document-row
     ${row.id}
-    ${isLineDragged ? 'p-table__row--disabled' : ''}
     `
 }
 

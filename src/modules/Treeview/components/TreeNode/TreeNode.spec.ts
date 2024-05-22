@@ -313,7 +313,7 @@ describe('interactions', () => {
 
       await wrapper.trigger('drop', { dataTransfer: { getData: () => JSON.stringify(DOCUMENT_TO_MOVE) } })
 
-      expect(wrapper.emitted('documents-dropped-on-tree-node')).toStrictEqual([[DOCUMENT_TO_MOVE]])
+      expect(wrapper.emitted('documents-dropped-on-tree-node')).toStrictEqual([[DOCUMENT_TO_MOVE, defaultProps.data]])
     })
 
     it('should emit expand-or-collapse-node with the correct payload upon dragOver event', async () => {

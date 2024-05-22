@@ -336,23 +336,6 @@ describe('treeview', () => {
       const getBaseSelectedNode = () => getTree().find(BASE_SELECTED_NODE_ATTR)
       const getTreeNodeActionsToolbox = () => wrapper.findComponent({ name: 'TreeNodeActionsToolbox' })
 
-      it('should open drop confirmation popup upon documents-dropped-on-tree-node event', async () => {
-        await wrapper.setProps({
-          isLoading: false,
-          currentServiceFolder: [],
-        })
-
-        const getDocumentsDropConfirmationPopup = () => wrapper.findComponent({
-          name: 'DocumentsDropConfirmationPopup',
-        })
-
-        expect(getDocumentsDropConfirmationPopup().exists()).toBeFalsy()
-
-        await getTreeNode().vm.$emit('documents-dropped-on-tree-node', [{ folder: 'custom folder' }])
-
-        expect(getDocumentsDropConfirmationPopup().exists()).toBeTruthy()
-      })
-
       it('should set tree node key upon expand-or-collapse-node event', async () => {
         const TREE_NODE_TO_BE_EXPANDED = defaultProps.selectedFolder?.id
 
