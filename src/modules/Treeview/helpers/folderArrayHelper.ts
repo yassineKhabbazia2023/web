@@ -130,3 +130,26 @@ export const deleteFolder = (
     return false
   })
 }
+
+export function getFolderPath(folders: Folder[], targetFolder: Folder): string[] | null {
+  for (const folder of folders) {
+    if (folder.id === targetFolder.id) {
+      // The target folder is found, return the path to it consisting of its name
+      return [folder.name]
+    }
+
+    if (folder.children.length > 0) {
+      // Recursively search for the target folder in the children of the current folder
+      const pathInChildren = getFolderPath(folder.children, targetFolder)
+
+      if (pathInChildren !== null) {
+        // The target folder is found in the children, return the complete path to it
+        // by prefixing the path in the children with the name of the current folder
+        return [folder.name, ...pathInChildren]
+      }
+    }
+  }
+
+  // The target folder is not found, return null
+  return null
+}

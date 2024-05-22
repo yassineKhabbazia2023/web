@@ -5,7 +5,7 @@ import { type TreeNodeProps }
   from '@/modules/Treeview/components/TreeNode/TreeNodeTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import type { Folder, FolderProperties } from '@/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
@@ -297,5 +297,32 @@ describe('interactions', () => {
     await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
+  })
+
+  describe('drag and drop scope', () => {
+    let wrapper: TreeNodeWrapper
+
+    beforeEach(() => {
+      vi.useFakeTimers()
+      wrapper = createWrapper()
+    })
+
+    it('should emit documents-dropped-on-tree-node with the correct payload upon drop event', async () => {
+      const DOCUMENT_TO_MOVE = 'a custom document'
+      expect(wrapper.emitted('documents-dropped-on-tree-node')).toBeFalsy()
+
+      await wrapper.trigger('drop', { dataTransfer: { getData: () => JSON.stringify(DOCUMENT_TO_MOVE) } })
+
+      expect(wrapper.emitted('documents-dropped-on-tree-node')).toStrictEqual([[DOCUMENT_TO_MOVE, defaultProps.data]])
+    })
+
+    it('should emit expand-or-collapse-node with the correct payload upon dragOver event', async () => {
+      expect(wrapper.emitted('expand-or-collapse-node')).toBeFalsy()
+
+      await wrapper.trigger('dragover', { dataTransfer: { types: [fold.serviceId] } })
+      vi.runAllTimers()
+
+      expect(wrapper.emitted('expand-or-collapse-node')).toStrictEqual([[fold.id]])
+    })
   })
 })

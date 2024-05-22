@@ -709,7 +709,10 @@ describe('documents', () => {
 
       expect(documentPreview.props('openDrawer')).toBeTruthy()
       expect(documentPreview.props('document'))
-        .toStrictEqual(componentInstance.selectedDocuments[0])
+        .toStrictEqual({
+          _rowIndex: 0,
+          ...componentInstance.selectedDocuments[0],
+        })
     })
 
     it('should close drawer oppon close-drawer event', async () => {

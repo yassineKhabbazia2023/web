@@ -10,7 +10,6 @@ import type { Service } from '@/models/Service'
 import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
 import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
-import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
 import { PTree } from '@kpmg/styleguide'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
@@ -61,13 +60,20 @@ const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper =>
         },
       },
     },
+    attachTo: document.body,
   }) as unknown as TreeviewWrapper
 }
 
+let wrapper: VueWrapper
+
 describe('treeview', () => {
+  const getRenameFolderSectionWrapper = () =>
+    wrapper.findComponent({ name: 'RenameFolderSection' })
+
   // eslint-disable-next-line vitest/no-hooks
   beforeEach(() => {
     setActivePinia(pinia)
+    wrapper = createWrapper()
     flushPromises()
   })
   // eslint-disable-next-line vitest/no-hooks
@@ -76,11 +82,6 @@ describe('treeview', () => {
   })
   describe('props', () => {
     it('should display a loader when the tree is not loaded', () => {
-      const updatedProps: TreeviewProps = {
-        ...defaultProps,
-        isLoading: true,
-      }
-      const wrapper = createWrapper(updatedProps)
       const loader = wrapper.find('.treeview__loader')
 
       expect(loader.exists()).toBeTruthy()
@@ -89,7 +90,6 @@ describe('treeview', () => {
   describe('interactions', () => {
     describe('createFolderSection', () => {
       it('should emit update-source-folder oppon update-source-folders', async () => {
-        const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
 
         const createFolderSectionWrapper = wrapper.findComponent(CreateFolderSection)
@@ -104,7 +104,6 @@ describe('treeview', () => {
         ])
       })
       it('should  hide create folder modal oppon on-close-create-folder', async () => {
-        const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
         const createFolderSectionWrapper =
               wrapper.findComponent(CreateFolderSection)
@@ -118,7 +117,6 @@ describe('treeview', () => {
     })
     describe('deleteFolderSection', () => {
       it('should emit remove-folder-from-source oppon on-delete-folder-completed', async () => {
-        const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
 
         const deleteSectionWrapper = wrapper.findComponent(DeleteFolderSection)
@@ -131,7 +129,6 @@ describe('treeview', () => {
         ])
       })
       it('should close delete folder modal oppon on-close-delete-folder', async () => {
-        const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
         const deleteSectionWrapper = wrapper.findComponent(DeleteFolderSection)
 
@@ -145,13 +142,9 @@ describe('treeview', () => {
 
     describe('renameFolderSection', () => {
       it('should emit update-folder-name oppon update-folder-name', async () => {
-        const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
 
-        const renameFolderSectionWrapper =
-          wrapper.findComponent(RenameFolderSection)
-
-        renameFolderSectionWrapper.vm.$emit(
+        getRenameFolderSectionWrapper().vm.$emit(
           'update-folder-name',
           foldersData[0][0],
         )
@@ -162,23 +155,19 @@ describe('treeview', () => {
         ])
       })
       it('should close rename modal when on-close-rename-folder', async () => {
-        const wrapper = createWrapper()
         await wrapper.setProps({ isLoading: false })
-        const renameFolderSectionWrapper =
-          wrapper.findComponent(RenameFolderSection)
 
-        renameFolderSectionWrapper.vm.$emit(
+        getRenameFolderSectionWrapper().vm.$emit(
           'on-close-rename-folder',
         )
         await nextTick()
-        expect(renameFolderSectionWrapper.props('isRenameFolderModalVisible')).toBeFalsy()
+        expect(getRenameFolderSectionWrapper().props('isRenameFolderModalVisible')).toBeFalsy()
       })
     })
 
     describe('main tree', () => {
       describe('interactions', () => {
         it('should emit selected-folder-change oppon p-tree-node-clicked', async () => {
-          const wrapper = createWrapper()
           await wrapper.setProps({ isLoading: false })
           const treeElement = wrapper.find('.el-tree')
           await nextTick()
@@ -198,7 +187,6 @@ describe('treeview', () => {
           const baseSelectedNodeKey = foldersData[0][0].children[0].id
           const newSelectedNodeKey = foldersData[0][0].children[1].id
 
-          const wrapper = createWrapper()
           await wrapper.setProps({ isLoading: false })
 
           const treeElement = wrapper.find('.el-tree')
@@ -227,7 +215,6 @@ describe('treeview', () => {
         describe('interactions', () => {
           it('should open delete folder modal when action is toolbox-delete-action-click',
             async () => {
-              const wrapper = createWrapper()
               await wrapper.setProps({ isLoading: false })
               const treeElement = wrapper.find('.el-tree')
               await nextTick()
@@ -249,7 +236,6 @@ describe('treeview', () => {
             })
           it('should open rename folder modal when action is toolbox-rename-action-click',
             async () => {
-              const wrapper = createWrapper()
               await wrapper.setProps({ isLoading: false })
               const treeElement = wrapper.find('.el-tree')
               await nextTick()
@@ -265,14 +251,11 @@ describe('treeview', () => {
               )
               await nextTick()
 
-              const renameFolderSectionWrapper = wrapper.findComponent(RenameFolderSection)
-
               expect(
-                renameFolderSectionWrapper.props('isRenameFolderModalVisible'),
+                getRenameFolderSectionWrapper().props('isRenameFolderModalVisible'),
               ).toBeTruthy()
             })
           it('should open create folder modal when no action is defined', async () => {
-            const wrapper = createWrapper()
             await wrapper.setProps({ isLoading: false })
             const treeElement = wrapper.find('.el-tree')
             await nextTick()
@@ -326,7 +309,6 @@ describe('treeview', () => {
     describe('bin tree', () => {
       it('should emit selected-bin-service-change oppon selecting a node from the bin',
         async () => {
-          const wrapper = createWrapper()
           await wrapper.setProps({ isLoading: false })
           await nextTick()
           const treeElement = wrapper.find('.bin-tree')
@@ -341,6 +323,49 @@ describe('treeview', () => {
           await nextTick()
           expect(wrapper.emitted('selected-bin-service-change')).toBeTruthy()
         })
+    })
+
+    describe('drag and drop scope', () => {
+      const BASE_SELECTED_NODE = foldersData[0][0].id
+      const BASE_SELECTED_NODE_ATTR = `[data-key="${BASE_SELECTED_NODE}"]`
+
+      const getTreeNode = () => wrapper.findComponent({ name: 'TreeNode' })
+      const getTreeElement = () => wrapper.find('.el-tree')
+      const getTree = () => getTreeElement().findComponent({ name: 'PTree' })
+      const getBaseSelectedNode = () => getTree().find(BASE_SELECTED_NODE_ATTR)
+      const getTreeNodeActionsToolbox = () => wrapper.findComponent({ name: 'TreeNodeActionsToolbox' })
+
+      it('should set tree node key upon expand-or-collapse-node event', async () => {
+        const TREE_NODE_TO_BE_EXPANDED = defaultProps.selectedFolder?.id
+
+        await wrapper.setProps({ isLoading: false })
+
+        const getExpandedNode = () => getBaseSelectedNode().find(`[data-key="${TREE_NODE_TO_BE_EXPANDED}"].is-expanded`)
+
+        expect(getExpandedNode().exists()).toBeFalsy()
+
+        await getTreeNode().vm.$emit('expand-or-collapse-node', TREE_NODE_TO_BE_EXPANDED)
+        await flushPromises()
+
+        expect(getExpandedNode().exists()).toBeTruthy()
+      })
+
+      it('should behave upon dragLeave event on TreeNode', async () => {
+        await wrapper.setProps({ isLoading: false })
+        await nextTick()
+
+        const getBaseSelectedNodeContentClasses = () =>
+          document.querySelector(`${BASE_SELECTED_NODE_ATTR} .el-tree-node__content`)?.classList
+        expect(getBaseSelectedNodeContentClasses()).toHaveLength(1)
+
+        await getTreeNodeActionsToolbox().trigger('dragover')
+
+        expect(getBaseSelectedNodeContentClasses()).toHaveLength(5)
+
+        await getTreeNodeActionsToolbox().trigger('dragleave')
+
+        expect(getBaseSelectedNodeContentClasses()).toHaveLength(1)
+      })
     })
   })
 })
