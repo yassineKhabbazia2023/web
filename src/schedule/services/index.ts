@@ -4,11 +4,10 @@ import type { Account } from '@/schedule/models/Account'
 import type { KeyLabel } from '@/schedule/models/commonTypes'
 import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { CSV_DATA } from './scheduleCollection'
-import type { ScheduleModelLabelType } from './scheduleServiceTypes'
+import type { ScheduleModelLabelType, ScheduleApiQueryParams } from './scheduleServiceTypes'
 
-export const getSchedulesCollection = async (
-  { startDate, endDate }: {startDate: string, endDate: string}): Promise<DeadlinesByDate[]> => {
-  const { data } = await api().schedule.get('/schedules', { params: { startDate, endDate } })
+export const getSchedulesCollection = async (params: ScheduleApiQueryParams) => {
+  const { data } = await api().schedule.get<DeadlinesByDate[]>('/schedules', { params })
   return data
 }
 

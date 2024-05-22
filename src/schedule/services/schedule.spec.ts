@@ -40,6 +40,7 @@ describe('getSchedulesCollection', () => {
     const params = {
       startDate: '2024-03-31',
       endDate: '2024-03-31',
+      searchTerm: 'abc',
     }
     const expectedUrl = '/schedules'
     const data = await getSchedulesCollection(params)
