@@ -13,6 +13,10 @@ import * as ScheduleServices from '@/schedule/services'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
+import { createTestingPinia } from '@pinia/testing'
+import { commonStore as useCommonStore } from '@kpmg/common'
+
+const pinia = createTestingPinia()
 
 const createWrapper = (options: ComponentMountingOptions<any>) =>
   shallowMount(Schedule, options)
@@ -23,6 +27,9 @@ const OTHER_MONTH_DATE = '2024-11-03'
 const OccurenceId = 1234567890
 
 vi.mock('@kpmg/common', () => KpmgCommontMock)
+const commonStore = useCommonStore(pinia)
+// @ts-expect-error: Getter is read only
+commonStore.isCollab = false
 
 vi.mock('@/schedule/services', () => ({
   getScheduleModels: () => [{

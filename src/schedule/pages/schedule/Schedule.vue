@@ -65,6 +65,7 @@
     :modelValue="occurrenceId !== undefined"
     :occurrenceId="occurrenceId"
     :defaultCreateDate="activeDate"
+    :isCollab="isCollab"
     appendToBody
     @update:model-value="onCloseOccurrenceDrawer"
   />
@@ -80,7 +81,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { PLoader, PDatePicker, type PDatePickerModelValue } from '@kpmg/styleguide'
-import { debounce } from '@kpmg/common'
+import { debounce, commonStore as useCommonStore } from '@kpmg/common'
 import { getSchedulesCollection } from '@/schedule/services'
 import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import WidgetActiveDay from '@/schedule/components/WidgetActiveDay'
@@ -92,6 +93,9 @@ import OccurrenceDrawer from '@/schedule/components/OccurrenceDrawer'
 import { dateISOFormatter, getYearMonth } from '@/schedule/helpers/utils'
 import { getDates, getMonthInterval } from './ScheduleUtils'
 import type { ScheduleProps } from './ScheduleTypes'
+import { storeToRefs } from 'pinia'
+
+const { isCollab } = storeToRefs(useCommonStore())
 
 const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])

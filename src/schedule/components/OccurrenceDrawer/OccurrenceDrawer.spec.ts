@@ -50,6 +50,7 @@ const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
   const defaultProps: OccurrenceDrawerProps = {
     modelValue: true,
     occurrenceId,
+    isCollab: true,
   }
   const props = {
     ...defaultProps,
@@ -129,6 +130,17 @@ describe('drawer.vue', () => {
 
     expect(postDeadlineAccountStatusSpy).toHaveBeenCalledOnce()
     expect(postDeadlineAccountStatusSpy).toHaveBeenNthCalledWith(1, occurrenceId, accountId, expectedStatus)
+  })
+  it('should show alert note when not checked', async () => {
+    const wrapper = createWrapper({ isCollab: false })
+    await flushPromises()
+    expect(wrapper.findComponent({ name: 'PAlert' }).exists()).toBeTruthy()
+  })
+  it('should hide alert note when clicked', async () => {
+    const wrapper = createWrapper({ isCollab: false })
+    await flushPromises()
+    await wrapper.findComponent({ name: 'PAlert' }).vm.$emit('close')
+    expect(wrapper.findComponent({ name: 'PAlert' }).exists()).toBeFalsy()
   })
 })
 

@@ -73,6 +73,16 @@
         class="margin-top--6"
         @toggle-status="onToggleDeadlineAccountStatus"
       />
+      <PAlert
+        @close="setAlertVisibility"
+        pClosable
+        pIcon="PIArrowHere"
+        v-if="isNoteAlertShown  && !isCollab"
+      >
+        <template #bold-text>
+          {{t('check')}}
+        </template> {{ t('reminderCollabNote') }}
+      </PAlert>
       <StringField
         v-if="occurrence?.schedule?.description"
         :modelValue="occurrence.schedule.description"
@@ -132,6 +142,7 @@ import {
   PICalendarEvent,
   PForm,
   PField,
+  PAlert,
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
@@ -168,6 +179,8 @@ const occurrence = ref<Occurrence>()
 const frequencyLabels: Record<string, string> = {
   Monthly: t('frequency.Monthly'),
 }
+
+const isNoteAlertShown = ref(true)
 
 const frequencyLabel = computed(() => getFrequencyLabel(frequencyLabels, occurrence.value))
 const createdByLabel = computed(() => getCreatedByLabel(occurrence.value))
@@ -218,8 +231,14 @@ async function refreshOccurrence() {
 onMounted(async () => {
   shortScheduleModelsByKey.value = getScheduleModelsByKey('short')
   longScheduleModelsByKey.value = getScheduleModelsByKey('long')
+  isNoteAlertShown.value = !document.cookie.split('; ').find((row) => row.startsWith('showDeadlineReminderOnce'))
   await refreshOccurrence()
 })
+
+const setAlertVisibility = () => {
+  document.cookie = 'showDeadlineReminderOnce=true; SameSite=Lax;'
+  isNoteAlertShown.value = false
+}
 </script>
 
 <style lang="scss" scoped>
@@ -245,6 +264,8 @@ onMounted(async () => {
     delete: 'Delete'
     frequency:
       Monthly: 'Monthly'
+    check: 'Check here'
+    reminderCollabNote: 'to let your colleague know that you have completed the required action.'
   fr-FR:
     description: 'Description'
     createdBy: 'Créé par'
@@ -252,4 +273,6 @@ onMounted(async () => {
     delete: 'Supprimer le rappel'
     frequency:
       Monthly: 'Tous les mois'
+    check: 'Cochez ici'
+    reminderCollabNote: "pour indiquer à votre collaborateur que vous avez réalisé l’action attendue."
 </i18n>
