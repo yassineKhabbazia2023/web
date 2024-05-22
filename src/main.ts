@@ -150,7 +150,7 @@ routes.value.push({
 routes.value.push({
   path: '/dossier/:id',
   name: 'folder',
-  component: () => import('@/pages/folder/pages/home'),
+  component: () => import('@/pages/folder'),
   children: folderPatchChildren(FOLDER_CHILDREN_PATH),
 })
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading" class="folder-wrapper">
+  <div v-if="!isLoading && activeTab !== 'folder'" class="folder-wrapper">
     <div class="flex flex--align-items-center">
       <PAvatar pColor="orange">
         <PIcon>
@@ -27,6 +27,7 @@
       <router-view />
     </PTabs>
   </div>
+  <Home v-else-if="activeTab === 'folder'" />
 </template>
 
 <script setup lang="ts">
@@ -44,6 +45,7 @@ import {
   PButton,
 } from '@kpmg/styleguide'
 import { PERMISSION_CODES } from '@/constants'
+import Home from './pages/home'
 
 const { t } = useI18n({
   inheritLocale: true,

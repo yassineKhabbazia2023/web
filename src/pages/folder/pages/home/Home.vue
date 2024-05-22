@@ -311,5 +311,5 @@ const { defaultEntity, isCollab } = storeToRefs(commonStore())
     socialMobile: 'Saisissez les variables de paie de vos salariés'
     ios: 'iOS'
     android: 'Android'
-    accessClient: "Cette fonctionnalité n'est accessible qu'à votre client"
+    accessClient: "Cette fonctionnalité n'est accessible que par votre client"
 </i18n>
