@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import type { Folder } from '@/models/Folder'
-import type { Document } from '@/models/Document'
-import { ServicesIds } from '@/modules/common/constants/services'
 
 // move to module
 

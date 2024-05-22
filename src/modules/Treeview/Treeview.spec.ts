@@ -73,9 +73,8 @@ describe('treeview', () => {
   // eslint-disable-next-line vitest/no-hooks
   beforeEach(() => {
     setActivePinia(pinia)
-    flushPromises()
-
     wrapper = createWrapper()
+    flushPromises()
   })
   // eslint-disable-next-line vitest/no-hooks
   afterEach(() => {

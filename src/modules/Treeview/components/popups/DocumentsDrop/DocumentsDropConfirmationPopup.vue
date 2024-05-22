@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ConfirmationPopup from '@/modules/common/templates/popups'
 import { type DocumentsDropConfirmationPopupProps } from './DocumentsDropConfirmationPopupTypes'
@@ -54,13 +54,13 @@ const handleClosePopup = () => {
 
 <i18n lang="yaml">
 en-US:
-  title: 'Déplacer ce document ? | Déplacer ces documents ?'
+  title: 'Move this document ? | Move these documents ?'
   message: >
-    Si vous cliquez sur "Confirmer", le document sera déplacé dans le dossier {destination} |
-    Si vous cliquez sur "Confirmer", les documents seront déplacés dans le dossier {destination}
+    If you click on the "Submit" button, the document will me moved to {destination} |
+    If you click on the "Submit" button", documents will be moved to {destination}
   controls:
-    confirm: 'Confirmer'
-    cancel: 'Annuler'
+    confirm: 'Submit'
+    cancel: 'Cancel'
 fr-FR:
   title: 'Déplacer ce document ? | Déplacer ces documents ?'
   message: >

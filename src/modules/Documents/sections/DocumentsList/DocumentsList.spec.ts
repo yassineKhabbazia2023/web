@@ -17,6 +17,7 @@ type DocumentsListSetup = {
 
 const defaultProps: DocumentsListProps = {
   documentsListWithTableStructure: documentsResponsePayload,
+  currentService: '1000',
 }
 
 const payloadWithZeroItems = {

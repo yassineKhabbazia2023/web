@@ -40,7 +40,7 @@ describe('documentList', () => {
 
       const confirmationPopupWrapper = findConfirmationPopup(wrapper)
       expect(confirmationPopupWrapper.props('cancelButtonContent')).toBe(
-        'Annuler',
+        'Cancel',
       )
     },
     )
