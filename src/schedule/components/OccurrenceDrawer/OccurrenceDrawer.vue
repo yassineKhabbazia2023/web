@@ -6,6 +6,7 @@
     pSize="33%"
     pDirection="rtl"
     @close-drawer-button="isDrawerOpened = false"
+    pSuffixUnderTitle
   >
     <template
       v-if="occurrence"
@@ -19,7 +20,7 @@
       #header-suffix
     >
       <p
-        class="padding-left--2 text-color--neutral-gray-700"
+        class="text-color--neutral-gray-700"
         data-testid="occurrence-drawer-long-label"
       >
         {{ longLabel }}
