@@ -6,7 +6,7 @@ import { recipientsIdCollection } from './Account'
 const date = '2024-03-20'
 const time = ''
 
-export function getMockSchedule(): Schedule {
+export function getMockSchedule(reminders: number[] = []): Schedule {
   const template: Template = {
     typeShort: 'TVA',
   }
@@ -21,13 +21,13 @@ export function getMockSchedule(): Schedule {
     targets: recipientsIdCollection,
     scheduling,
     description: '',
-    reminders: [],
+    reminders,
     isDraft: false,
     isPrivate: false,
   }
 }
 
-export function getMonthlyMockSchedule(): Schedule {
+export function getMonthlyMockSchedule(reminders: number[] = []): Schedule {
   const template: Template = {
     typeShort: TEMPLATE_TYPE_SHORT_OTHER,
     typeLong: 'IS',
@@ -43,7 +43,7 @@ export function getMonthlyMockSchedule(): Schedule {
     targets: recipientsIdCollection,
     scheduling,
     description: '',
-    reminders: [],
+    reminders,
     isDraft: false,
     isPrivate: false,
   }
