@@ -20,4 +20,5 @@ export interface Schedule {
   description?: string
   isDraft?: boolean
   isPrivate?: boolean
+  reminders: number[]
 }

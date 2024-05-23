@@ -21,6 +21,7 @@ export function getMockSchedule(): Schedule {
     targets: recipientsIdCollection,
     scheduling,
     description: '',
+    reminders: [],
     isDraft: false,
     isPrivate: false,
   }
@@ -42,6 +43,7 @@ export function getMonthlyMockSchedule(): Schedule {
     targets: recipientsIdCollection,
     scheduling,
     description: '',
+    reminders: [],
     isDraft: false,
     isPrivate: false,
   }
@@ -62,6 +64,7 @@ export function getMockedSchedule(override: Partial<Schedule> = {}) {
       frequency: 'Monthly',
     },
     description: '',
+    reminders: [],
     isDraft: false,
     isPrivate: false,
   }

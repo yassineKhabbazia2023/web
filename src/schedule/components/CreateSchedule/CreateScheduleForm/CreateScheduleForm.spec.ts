@@ -54,8 +54,9 @@ describe('form.vue', () => {
     )
     DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
     const PDatePickerComponent = wrapper.findComponent(PDatePicker)
-    PDatePickerComponent.vm.$emit('update:modelValue',
-      new Date('Wed Mar 20 2024 11:55:50 GMT+0100 (heure normale d’Europe centrale)'))
+    const newDate = new Date(expected.scheduling.date)
+    PDatePickerComponent.vm.$emit('update:modelValue', newDate)
+
     await wrapper.setProps({ checkValidity: true })
     const frequencyComponent = wrapper.findAllComponents(PSelect)[2]
     await frequencyComponent.setValue(frequency)

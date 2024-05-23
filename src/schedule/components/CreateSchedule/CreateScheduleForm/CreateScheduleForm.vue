@@ -126,6 +126,7 @@ const scheduleModel: Schedule = {
     typeShort: '',
   },
   targets: [],
+  reminders: [],
   scheduling: {
     date: '',
     time: '',
@@ -176,6 +177,7 @@ const evaluateForm = () => {
       scheduleModel.scheduling.date = dateISOFormatter(createScheduleForm.date)
       scheduleModel.description = createScheduleForm.description
       scheduleModel.scheduling.frequency = createScheduleForm.frequency as Frequency
+      scheduleModel.reminders = []
       emit('update-schedule-model', scheduleModel)
     }
   })
