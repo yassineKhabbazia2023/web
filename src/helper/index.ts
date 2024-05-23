@@ -36,3 +36,21 @@ export const getBrowserName = (): string => {
     return 'Unknown'
   }
 }
+
+/**
+ * Return duplicate rows in list
+ * @example list([1, 2, 1]) returns [1]
+ * @param list: T[]
+ * @returns T[]
+ */
+export function getDuplicates<T>(list: T[]) {
+  return list
+    .reduce<T[]>((duplicates, value, index) => {
+      const isDuplicate = duplicates.indexOf(value) < 0 && list.indexOf(value, index + 1) > 0
+
+      if (isDuplicate) {
+        duplicates.push(value)
+      }
+      return duplicates
+    }, [] as T[])
+}

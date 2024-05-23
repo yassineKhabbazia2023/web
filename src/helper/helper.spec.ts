@@ -1,5 +1,5 @@
 import { expect, describe, it, vi } from 'vitest'
-import { getBrowserName } from '.'
+import { getBrowserName, getDuplicates } from '.'
 
 describe('helper', () => {
   describe('getBrowserName', () => {
@@ -42,5 +42,30 @@ describe('helper', () => {
         expect(browserName).toBe(expectedBrowserName)
       },
     )
+  })
+
+  describe('getDuplicates', () => {
+    it('should return duplicates', () => {
+      const list = [
+        null,
+        undefined,
+        undefined,
+        'a',
+        1,
+        2,
+        1,
+        'b',
+        'B',
+        'a',
+        1,
+      ]
+      const duplicates = getDuplicates<number|string|null|undefined>(list)
+      const expectedDuplicated = [
+        undefined,
+        'a',
+        1,
+      ]
+      expect(duplicates).toStrictEqual(expectedDuplicated)
+    })
   })
 })
