@@ -59,11 +59,12 @@ describe('test ScheduleReminder', () => {
     })
 
     it('should emit update:model-value with proper value when input value', () => {
-      const newValue = 2
+      const newValue = 2.2
+      const expectedNewValue = -2
       const pInput = wrapper.findComponent({ name: 'PInput' })
       pInput.vm.$emit('update:model-value', newValue)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[-newValue]])
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedNewValue]])
     })
 
     it('should emit update:model-value with proper value when change option', () => {

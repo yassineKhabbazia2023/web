@@ -70,7 +70,7 @@ const isAfter = computed({
 const internalValue = computed({
   get: () => Math.abs(props.modelValue),
   set: (value: number) => {
-    emitUpdateModelValue(isAfter.value, value)
+    emitUpdateModelValue(isAfter.value, Math.round(value))
   },
 })
 
