@@ -26,7 +26,7 @@
       pType="generic"
       pPlain
       pIconOnly
-      @click="$emit('delete')"
+      @click="emit('delete')"
       data-testid="schedule-reminder-delete"
     >
       <PIcon color="#A4A4A4">
