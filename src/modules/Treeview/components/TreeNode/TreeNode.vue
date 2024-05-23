@@ -157,7 +157,11 @@ function handleDragOver(event: DragEvent) {
   // and another funtion to check permissions on folder (can move into)
   if (!isNodeHoveredWithDraggedItem.value) isNodeHoveredWithDraggedItem.value = true
 
-  if (!hasSameServiceId(event) || props.data.isRootFolder) {
+  if (
+    !hasSameServiceId(event) ||
+    props.data.isRootFolder ||
+    !props.data.permissions.includes('CAN_MOVE_INTO_FOLDER')
+  ) {
     addDragoverClass(true)
   } else {
     addDragoverClass()
@@ -181,14 +185,23 @@ function handleDragLeave(_event: DragEvent) {
 }
 
 function handleDrop(event: DragEvent) {
+  if (isErrorDragover.value) {
+    removeDragoverClass()
+    clearNodeExpandTimeout()
+  } else {
+    removeDragoverClass()
+    clearNodeExpandTimeout()
+
+    const documentsToMove: Document[] = JSON.parse(event.dataTransfer?.getData('application/json+document') ?? '')
+    if (!documentsToMove) return
+    emit('documents-dropped-on-tree-node', documentsToMove, props.data)
+  }
+}
+
+function clearNodeExpandTimeout() {
   if (dragOverTimer) clearTimeout(dragOverTimer)
   dragOverTimer = null
   lastTarget = null
-
-  const documentsToMove: Document[] = JSON.parse(event.dataTransfer?.getData('application/json+document') ?? '')
-  if (!documentsToMove) return
-  emit('documents-dropped-on-tree-node', documentsToMove, props.data)
-  removeDragoverClass()
 }
 
 // Element Plus does not allow us to bind class to the tree node wrapper

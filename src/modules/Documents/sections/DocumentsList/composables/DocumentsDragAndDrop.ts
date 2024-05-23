@@ -12,8 +12,6 @@ export function useDocumentsDragAndDrop(
     return document.getElementsByClassName('document-row')
   }
 
-  watch(selectedFolders, () => bindDragProperties())
-
   function bindDragProperties() {
     const documentRowElements = getDocumentsRowElements()
     Array.from(documentRowElements).forEach((element) => {
@@ -56,18 +54,22 @@ export function useDocumentsDragAndDrop(
   // There's nothing to handle Drag & Drop in the Table component nativaly (Element Plus)
   // This is why i'm doing attribute binding based on rows classes of selectedFolders
   watch(selectedFolders, (newDocuments, previousDocuments) => {
-    const newElement = getNewSelectedFolder(previousDocuments, newDocuments)
-
-    if (newElement) {
-      addDragAndDropAttributes(newElement)
+    if (hasLengthDifferenceMoreThanOne(newDocuments, previousDocuments)) {
+      addDragAndDropAttributesMultiple(newDocuments)
       bindDragProperties()
     } else {
-      const removedElement = getRemovedSelectedFolder(
-        previousDocuments,
-        newDocuments,
-      )
-      if (!removedElement) return
-      removeDragAndDropAttributes(removedElement)
+      const newElement = getNewSelectedFolder(previousDocuments, newDocuments)
+      if (newElement) {
+        addDragAndDropAttributes(newElement)
+        bindDragProperties()
+      } else {
+        const removedElement = getRemovedSelectedFolder(
+          previousDocuments,
+          newDocuments,
+        )
+        if (!removedElement) return
+        removeDragAndDropAttributes(removedElement)
+      }
     }
   })
 
@@ -93,6 +95,10 @@ export function useDocumentsDragAndDrop(
     element.setAttribute('draggable', 'true')
   }
 
+  function addDragAndDropAttributesMultiple(documents: Document[]) {
+    documents.forEach((document) => addDragAndDropAttributes(document))
+  }
+
   function removeDragAndDropAttributes(documentItem: Document) {
     const element = getDocumentRowNode(documentItem)
     if (!element) return
@@ -108,5 +114,13 @@ export function useDocumentsDragAndDrop(
   function handleDragEnd() {
     draggedDocuments.value = []
     document.body.classList.remove('grabbing')
+  }
+
+  // When I am watching selected documents, I use the newly selected document to bind drag attributes.
+  // However, there is also the case when I click the "select all documents" button.
+  // This function is useful to know that I added multiple documents in a single click and that I need to bind
+  // multiple drag events instead of just one.
+  function hasLengthDifferenceMoreThanOne(firstArray: any[], secondArray: any[]) {
+    return Math.abs(firstArray.length - secondArray.length) > 1
   }
 }
