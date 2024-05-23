@@ -104,10 +104,10 @@ watch(
 
 const draggedDocuments = ref<Document[]>([])
 const draggedFilenameToUse = computed(() => selectedDocuments.value.at(0)?.name ?? '')
-
+const currentService = computed(() => props.currentService)
 useDocumentsDragAndDrop(
   selectedDocuments,
-  ref(props.currentService),
+  currentService,
   draggedDocuments,
 )
 
