@@ -22,6 +22,9 @@ vi.mock('@kpmg/common', () => ({
   commonStore: () => ({
     $patch: vi.fn(),
   }),
+  userPermissions: () => ({
+    hasPermission: () => vi.fn(),
+  }),
 }))
 const createWrapper = (): VueWrapper<any> =>
   mount(Collaborators)

@@ -46,6 +46,12 @@ const toolBoxElementsWithoutPermissions = [
     pState: 'default',
     pValue: 'Designate as signatory',
   },
+  {
+    pIconName: 'PIPencilSquare',
+    pValue: 'Change the rights',
+    pActionName: 'modifyRights',
+    pState: 'default',
+  },
 ]
 
 const pinia = createTestingPinia()
@@ -79,7 +85,7 @@ describe('usersCollab', () => {
       wrapper = createWrapper()
       const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
-      expect(pToolbox.props('pElements')).toHaveLength(1)
+      expect(pToolbox.props('pElements')).toHaveLength(2)
       expect(pToolbox.props('pElements')).toStrictEqual(toolBoxElementsWithoutPermissions)
     })
     it('should display correctly the users collab table', () => {

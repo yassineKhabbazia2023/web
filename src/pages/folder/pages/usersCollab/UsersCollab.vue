@@ -221,7 +221,7 @@ const toolboxItems = computed(
         pValue: t('modifyRights'),
         pActionName: userActions.MODIFY_RIGHTS,
         pState: 'default',
-        display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS),
+        display: true,
       },
       {
         pIconName: 'PITrash',

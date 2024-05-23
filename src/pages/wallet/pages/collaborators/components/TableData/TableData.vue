@@ -118,13 +118,15 @@ import {
   PToolbox,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import DrawerCollabDetails from './../DrawerCollabDetails'
 import DrawerCollabRole from './../DrawerCollabRole'
 import type { Contact } from '@/services/contact/contactTypes'
 import { returnSortQueryField } from '@/helper'
+import { userPermissions } from '@kpmg/common'
+import { PERMISSION_CODES } from '@/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -133,28 +135,41 @@ const { t } = useI18n({
 
 const emit = defineEmits(['update-collaborator-details', 'update-collaborator-role', 'on-sort-change'])
 const props = defineProps<Props>()
+const { hasPermission } = userPermissions()
 
 const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME
-const menuElements : PToolboxItemProps[] = [
-  {
-    pIconName: 'PIPerson',
-    pValue: t('collaboratorInformation'),
-    pActionName: collaboratorInformation,
-    pState: 'default',
-  },
-  {
-    pIconName: 'PIClipboardData',
-    pValue: t('detailsOfDelegations'),
-    pActionName: 'detailsOfDelegations',
-    pState: 'default',
-  },
-  {
-    pIconName: 'PIGrid',
-    pValue: t('manageAccessRights'),
-    pActionName: manageAccessRights,
-    pState: 'default',
-  },
-]
+const menuElements = computed<PToolboxItemProps[]>(() =>
+  [
+    {
+      pIconName: 'PIPerson',
+      pValue: t('collaboratorInformation'),
+      pActionName: collaboratorInformation,
+      pState: 'default',
+      display: true,
+    },
+    {
+      pIconName: 'PIClipboardData',
+      pValue: t('detailsOfDelegations'),
+      pActionName: 'detailsOfDelegations',
+      pState: 'default',
+      display: true,
+    },
+    {
+      pIconName: 'PIGrid',
+      pValue: t('manageAccessRights'),
+      pActionName: manageAccessRights,
+      pState: 'default',
+      display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_COLLAB),
+    },
+  ]
+    .filter(({ display }) => display)
+    .map(({ pIconName, pValue, pActionName, pState }) => ({
+      pIconName,
+      pValue,
+      pActionName,
+      pState,
+    })) as PToolboxItemProps[],
+)
 
 const state = reactive({
   hasDrawerOpened: {

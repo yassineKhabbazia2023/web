@@ -48,6 +48,9 @@ vi.mock('@kpmg/common', () => ({
       },
     }),
   }),
+  userPermissions: () => ({
+    hasPermission: () => vi.fn(),
+  }),
 }))
 
 const pinia = createTestingPinia()

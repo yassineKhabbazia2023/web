@@ -12,6 +12,7 @@ import { PTable } from '@kpmg/styleguide'
 
 let wrapper: VueWrapper<any>
 
+const mockHasPermission = vi.fn((_code: string) => true)
 const mockGatewayGet = vi.fn(() => {
   return Promise.resolve({
     data: mock,
@@ -26,6 +27,9 @@ vi.mock('@kpmg/common', () => ({
   }),
   commonStore: () => ({
     $patch: vi.fn(),
+  }),
+  userPermissions: () => ({
+    hasPermission: mockHasPermission,
   }),
 }))
 const createWrapper = (): VueWrapper<any> =>
@@ -57,6 +61,21 @@ const createWrapper = (): VueWrapper<any> =>
 
 const getMenu = () => document.querySelector('.el-popper') as HTMLElement
 
+const toolBoxElementsWithoutPermissions = [
+  {
+    pIconName: 'PIPerson',
+    pValue: 'Collaborator information',
+    pActionName: 'collaboratorInformation',
+    pState: 'default',
+  },
+  {
+    pIconName: 'PIClipboardData',
+    pValue: 'Details of delegations',
+    pActionName: 'detailsOfDelegations',
+    pState: 'default',
+  },
+]
+
 describe('tableData', () => {
   beforeEach(() => {
     wrapper = createWrapper()
@@ -80,6 +99,15 @@ describe('tableData', () => {
       expect(getDrawer().exists()).toBeTruthy()
     },
   )
+
+  it('should display only the actions that the user has permission to perform', () => {
+    mockHasPermission.mockReturnValue(false)
+    wrapper = createWrapper()
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+    expect(pToolbox.props('pElements')).toHaveLength(2)
+    expect(pToolbox.props('pElements')).toStrictEqual(toolBoxElementsWithoutPermissions)
+  })
 
   it('emits event update collaborators details when event is emitted', async () => {
     wrapper.vm.handleToolboxItemClick('collaboratorInformation', mock.items[0])
