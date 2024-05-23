@@ -1,7 +1,7 @@
 'use strict'
 import type { Account } from '@/schedule/models/Account'
 import type { Deadline } from '../models/Deadline'
-import { TEMPLATE_TYPE_SHORT_AUTRE } from './scheduleConsts'
+import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
 
 export const dateToLocaleFormat = (date: string | Date, locale = 'fr') =>
   new Intl.DateTimeFormat(locale).format(new Date(date))
@@ -37,7 +37,7 @@ export function getTypeLabel(
   template: Deadline['template'],
 ) {
   const { typeShort, typeLong } = template
-  if (typeShort === TEMPLATE_TYPE_SHORT_AUTRE) {
+  if (typeShort === TEMPLATE_TYPE_SHORT_OTHER) {
     return typeLong
   }
 

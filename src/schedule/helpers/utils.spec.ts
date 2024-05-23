@@ -9,7 +9,7 @@ import {
 } from './utils'
 import { expect, describe, it } from 'vitest'
 import { accountsCollectionForSelectFormat, accountsCollection } from '@/schedule/tests/mocks/Account'
-import { TEMPLATE_TYPE_SHORT_AUTRE } from './scheduleConsts'
+import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
 
 const TEST_DATE = '2024-08-14'
 
@@ -54,7 +54,7 @@ describe('utils helpers', () => {
       typeShort: 'Custom type',
     } as Deadline['template']
     const templateAutre = {
-      typeShort: TEMPLATE_TYPE_SHORT_AUTRE,
+      typeShort: TEMPLATE_TYPE_SHORT_OTHER,
       typeLong: 'Type long',
     } as Deadline['template']
 

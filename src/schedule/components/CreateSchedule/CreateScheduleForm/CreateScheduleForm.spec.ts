@@ -15,7 +15,7 @@ import { accountsCollection, recipientsIdCollection } from '@/schedule/tests/moc
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
 import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock }
   from '@/schedule/tests/mocks/Schedule'
-import { TEMPLATE_TYPE_SHORT_AUTRE } from '@/schedule/helpers/scheduleConsts'
+import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
 
 const createScheduleMock = getMockSchedule()
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
@@ -36,7 +36,7 @@ describe('form.vue', () => {
   it.each([
     { type: 'TVA', typeShort: 'TVA', expected: createScheduleMock, frequency: 'None' },
     {
-      type: TEMPLATE_TYPE_SHORT_AUTRE,
+      type: TEMPLATE_TYPE_SHORT_OTHER,
       typeShort: 'IS',
       expected: createScheduleMockWithTypeLong,
       frequency: 'Monthly',

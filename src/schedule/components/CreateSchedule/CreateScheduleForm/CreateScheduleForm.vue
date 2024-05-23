@@ -94,7 +94,7 @@ import type { Schedule, Frequency } from './CreateScheduleFormModel'
 import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
 import { getScheduleModels } from '@/schedule/services'
-import { TEMPLATE_TYPE_SHORT_AUTRE } from '@/schedule/helpers/scheduleConsts'
+import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
 
 // i18n
 const { t } = useI18n({
@@ -189,7 +189,7 @@ const reminderBuilder = (reminder: string): Schedule['template'] => {
   }
 
   return {
-    typeShort: TEMPLATE_TYPE_SHORT_AUTRE,
+    typeShort: TEMPLATE_TYPE_SHORT_OTHER,
     typeLong: reminder,
   }
 }
