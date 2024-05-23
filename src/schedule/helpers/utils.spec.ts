@@ -9,6 +9,7 @@ import {
 } from './utils'
 import { expect, describe, it } from 'vitest'
 import { accountsCollectionForSelectFormat, accountsCollection } from '@/schedule/tests/mocks/Account'
+import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
 
 const TEST_DATE = '2024-08-14'
 
@@ -52,13 +53,20 @@ describe('utils helpers', () => {
     const templateCustom = {
       typeShort: 'Custom type',
     } as Deadline['template']
+    const templateAutre = {
+      typeShort: TEMPLATE_TYPE_SHORT_OTHER,
+      typeLong: 'Type long',
+    } as Deadline['template']
 
     const tests = [{
       template: templateTva,
       expected: 'taxe sur la valeur ajoutée',
     }, {
       template: templateCustom,
-      expected: 'Custom type',
+      expected: templateCustom.typeShort,
+    }, {
+      template: templateAutre,
+      expected: templateAutre.typeLong,
     }]
     it.each(tests)('expect return $expected when isB is $isB', ({
       template,

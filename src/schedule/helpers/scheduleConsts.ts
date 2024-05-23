@@ -19,4 +19,4 @@ export const datetimeFormats = {
   },
 } as Record<string, DefineDateTimeFormat>
 
-export const TEMPLATE_TYPE_SHORT_AUTRE = 'autre'
+export const TEMPLATE_TYPE_SHORT_OTHER = 'autre'

@@ -1,4 +1,4 @@
-import { TEMPLATE_TYPE_SHORT_AUTRE } from '@/schedule/helpers/scheduleConsts'
+import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
 import type { Schedule, Scheduling, Template }
   from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { recipientsIdCollection } from './Account'
@@ -28,7 +28,7 @@ export function getMockSchedule(): Schedule {
 
 export function getMonthlyMockSchedule(): Schedule {
   const template: Template = {
-    typeShort: TEMPLATE_TYPE_SHORT_AUTRE,
+    typeShort: TEMPLATE_TYPE_SHORT_OTHER,
     typeLong: 'IS',
   }
   const scheduling: Scheduling = {
