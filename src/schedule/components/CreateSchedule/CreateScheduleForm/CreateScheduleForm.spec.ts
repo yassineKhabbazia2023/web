@@ -15,6 +15,7 @@ import { accountsCollection, recipientsIdCollection } from '@/schedule/tests/moc
 import { accountsDataTransformer } from '@/schedule/helpers/utils'
 import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock }
   from '@/schedule/tests/mocks/Schedule'
+import { TEMPLATE_TYPE_SHORT_AUTRE } from '@/schedule/helpers/scheduleConsts'
 
 const createScheduleMock = getMockSchedule()
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
@@ -34,7 +35,12 @@ vi.mock('@/schedule/services', () => {
 describe('form.vue', () => {
   it.each([
     { type: 'TVA', typeShort: 'TVA', expected: createScheduleMock, frequency: 'None' },
-    { type: 'autre', typeShort: 'IS', expected: createScheduleMockWithTypeLong, frequency: 'Monthly' },
+    {
+      type: TEMPLATE_TYPE_SHORT_AUTRE,
+      typeShort: 'IS',
+      expected: createScheduleMockWithTypeLong,
+      frequency: 'Monthly',
+    },
   ])('emits the schedule model with reminder as $type', async ({ typeShort, expected, frequency }) => {
     const wrapper = createWrapper(
       {

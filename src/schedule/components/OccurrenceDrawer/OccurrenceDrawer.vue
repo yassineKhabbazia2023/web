@@ -157,7 +157,7 @@ import {
   getLongLabel,
   getNewStatus,
 } from './OccurrenceDrawerHelper'
-import { datetimeFormats } from '@/schedule/helpers/datetimeFormatsConsts'
+import { datetimeFormats } from '@/schedule/helpers/scheduleConsts'
 
 const StringField = PField<string>
 
