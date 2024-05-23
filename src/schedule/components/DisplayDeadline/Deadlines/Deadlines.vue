@@ -34,6 +34,7 @@
     <PToolbox
       trigger="click"
       :pElements="item.toolboxElements"
+      @p-toolbox-item-clicked="actionClicked($event, item.occurrenceId)"
     >
       <PButton
         pType="generic"
@@ -61,7 +62,7 @@ import type { Status } from '@/schedule/models/Deadline'
 import { getProgressText } from '@/schedule/helpers/deadlineHelper'
 import { getScheduleModelsByKey } from '@/schedule/services'
 import { getTypeLabel } from '@/schedule/helpers/utils'
-import type { DeadlinesProps } from './DeadlinesTypes'
+import type { DeadlinesProps, DeadlineEvent } from './DeadlinesTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -117,6 +118,18 @@ const internalList = computed(() => {
 onMounted(() => {
   scheduleModelsByKey.value = getScheduleModelsByKey('both')
 })
+
+const actionClicked = (event: DeadlineEvent, occurrenceId: number) => {
+  const actions: Record<DeadlineEvent, () => void> = {
+    'view-reminder-details': () =>
+      emit('select-deadline', occurrenceId),
+  }
+  try {
+    actions[event]()
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <style lang="scss" scoped>

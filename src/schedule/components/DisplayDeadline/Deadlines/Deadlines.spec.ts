@@ -74,13 +74,25 @@ describe('deadline component', () => {
       .toBe(deadlineData[0].globalStatus)
   })
 
-  it('should emit select-deadline event', async () => {
+  it('should emit select-deadline event on item cliked', async () => {
     const deadline = getSmartMockedDeadline()
     const deadlineData: Deadline[] = [deadline]
     const { occurrenceId } = deadline
 
     const wrapper = createWrapper(deadlineData)
     await wrapper.find('.p-schedule-deadline__content').trigger('click')
+    expect(wrapper.emitted('select-deadline')).toStrictEqual([
+      [occurrenceId],
+    ])
+  })
+
+  it('should emit select-deadline event on toolbox cliked', async () => {
+    const deadline = getSmartMockedDeadline()
+    const deadlineData: Deadline[] = [deadline]
+    const { occurrenceId } = deadline
+
+    const wrapper = createWrapper(deadlineData)
+    await wrapper.vm.actionClicked('view-reminder-details', occurrenceId)
     expect(wrapper.emitted('select-deadline')).toStrictEqual([
       [occurrenceId],
     ])
