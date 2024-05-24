@@ -6,6 +6,7 @@ import { type VueWrapper, shallowMount } from '@vue/test-utils'
 const createWrapper = (override: Partial<ScheduleReminderProps> = {}) => {
   const defaultProps: ScheduleReminderProps = {
     modelValue: 0,
+    isError: false,
   }
   const props = {
     ...defaultProps,
@@ -16,6 +17,11 @@ const createWrapper = (override: Partial<ScheduleReminderProps> = {}) => {
     props,
     global: {
       stubs: {
+        PFormItem: {
+          name: 'PFormItem',
+          template: '<div><slot /></div>',
+          props: ['pError'],
+        },
         PInput: {
           name: 'PInput',
           template: '<div />',
@@ -32,10 +38,12 @@ const createWrapper = (override: Partial<ScheduleReminderProps> = {}) => {
 }
 
 function getComponents(wrapper: VueWrapper) {
+  const PFormItem = wrapper.findComponent({ name: 'PFormItem' })
   const pInput = wrapper.findComponent({ name: 'PInput' })
   const pDropdown = wrapper.findComponent({ name: 'PDropdown' })
 
   return {
+    PFormItem,
     pInput,
     pDropdown,
   }
@@ -51,9 +59,11 @@ describe('test ScheduleReminder', () => {
 
     it('should display properly', () => {
       const {
+        PFormItem,
         pInput,
         pDropdown,
       } = getComponents(wrapper)
+      expect(PFormItem.props('pError')).toBe('')
       expect(pInput.props('modelValue')).toStrictEqual(-modelValue)
       expect(pDropdown.props('modelValue')).toBeFalsy()
     })
@@ -110,6 +120,20 @@ describe('test ScheduleReminder', () => {
       pInput.vm.$emit('update:model-value', true)
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[modelValue]])
+    })
+  })
+  describe('when isError', () => {
+    const isError = true
+    let wrapper:VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper({ isError })
+    })
+
+    it('should set PFormItem pError', () => {
+      const {
+        PFormItem,
+      } = getComponents(wrapper)
+      expect(PFormItem.props('pError')).toBe('error')
     })
   })
 })

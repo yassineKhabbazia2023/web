@@ -1,5 +1,7 @@
 <template>
-  <div
+  <PFormItem
+    :pError="isError ? 'error' : ''"
+    :pShowMessage="false"
     class="
       schedule-reminder
       flex
@@ -33,12 +35,13 @@
         <PIX />
       </PIcon>
     </PButton>
-  </div>
+  </PFormItem>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
+  PFormItem,
   PButton,
   PIcon,
   PIX,
@@ -89,7 +92,15 @@ const options = [{
 </script>
 
 <style lang="scss" scoped>
-.schedule-reminder{
+.schedule-reminder {
+  margin-bottom: 0 !important;
+
+  :deep(.el-form-item__content) {
+    font-size: inherit;
+    flex-wrap: inherit;
+    line-height: inherit;
+  }
+
   &__value {
     flex-basis: 57px;
     :deep(.el-input__inner) {

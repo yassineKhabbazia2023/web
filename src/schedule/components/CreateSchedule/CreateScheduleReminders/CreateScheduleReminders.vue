@@ -14,6 +14,7 @@
     </PButton>
     <ScheduleReminder
       v-for="(reminder, index) in reminders"
+      :isError="false"
       :key="index"
       :modelValue="reminder"
       class="margin-top--2"
