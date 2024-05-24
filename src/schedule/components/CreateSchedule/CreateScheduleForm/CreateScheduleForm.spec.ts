@@ -16,6 +16,7 @@ import { accountsDataTransformer } from '@/schedule/helpers/utils'
 import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock }
   from '@/schedule/tests/mocks/Schedule'
 import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
+import { TEST_DATE } from '@/schedule/tests/mocks/commonViMock'
 
 const mockedReminders = [2]
 const createScheduleMock = getMockSchedule(mockedReminders)
@@ -33,7 +34,7 @@ vi.mock('@/schedule/services', () => {
   }
 })
 
-describe('form.vue', () => {
+describe('test CreateScheduleForm', () => {
   it.each([
     {
       type: 'TVA',
@@ -74,6 +75,41 @@ describe('form.vue', () => {
       expected,
     ])
   })
+
+  it('should not emit update-schedule-model when data is not valid', async () => {
+    const mockedReminders = [
+      1,
+      1,
+    ]
+    const typeShort = 'TVA'
+    const frequency = 'None'
+
+    const wrapper = createWrapper(
+      {
+        recipientsCollection: accountsDataTransformer(accountsCollection),
+        frequenciesCollection: frequenciesMock,
+      })
+    const DropdownScheduleComponent = wrapper.findComponent(DropdownSchedule)
+    DropdownScheduleComponent.vm.$emit('update:modelValue', typeShort)
+    const DropdownMultiSelectWithToggleAllComponent = wrapper.findComponent(
+      DropdownMultiSelectWithToggleAll,
+    )
+    DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
+    const PDatePickerComponent = wrapper.findComponent(PDatePicker)
+    const newDate = new Date(TEST_DATE)
+    PDatePickerComponent.vm.$emit('update:modelValue', newDate)
+
+    const createScheduleReminders = wrapper.findComponent({ name: 'CreateScheduleReminders' })
+    createScheduleReminders.vm.$emit('update:model-value', mockedReminders)
+
+    await wrapper.setProps({ checkValidity: true })
+    const frequencyComponent = wrapper.findAllComponents(PSelect)[2]
+    await frequencyComponent.setValue(frequency)
+    await flushPromises()
+
+    expect(wrapper.emitted('update-schedule-model')).toBeUndefined()
+  })
+
   it('should show alert message', async () => {
     const wrapper = createWrapper(
       {

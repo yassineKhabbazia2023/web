@@ -54,6 +54,7 @@
     </PAlert>
     <CreateScheduleReminders
       v-model="reminders"
+      ref="createScheduleRemindersRef"
     />
     <PFormItem
       pProp="description"
@@ -116,7 +117,8 @@ const emit = defineEmits<{
 const scheduleModels = getScheduleModels('both')
 
 // Reactive state
-const createScheduleFormRef = ref<any>()
+const createScheduleFormRef = ref<InstanceType<typeof PForm>>()
+const createScheduleRemindersRef = ref<InstanceType<typeof CreateScheduleReminders>>()
 const createScheduleForm = reactive({
   reminder: '',
   recipients: [],
@@ -174,8 +176,9 @@ const rules = reactive<any>({
 watch(() => props.checkValidity, (value: boolean) => value && evaluateForm())
 
 const evaluateForm = () => {
-  createScheduleFormRef?.value?.validate((isValid: boolean) => {
-    if (isValid) {
+  createScheduleFormRef.value?.validate((isValid: boolean) => {
+    const isCreateScheduleRemindersValid = createScheduleRemindersRef.value?.getIsValid()
+    if (isValid && isCreateScheduleRemindersValid) {
       scheduleModel.template = reminderBuilder(createScheduleForm.reminder)
       scheduleModel.targets = createScheduleForm.recipients
       scheduleModel.scheduling.date = dateISOFormatter(createScheduleForm.date)

@@ -1,6 +1,7 @@
 <template>
   <div>
     <PButton
+      :pDisabled="reminders.length >= MAX_REMINDER_COUNT"
       pType="white"
       pSize="small"
       pPlain
@@ -13,29 +14,55 @@
       <span class="margin-left--2">{{ t('add')}}</span>
     </PButton>
     <ScheduleReminder
-      v-for="(reminder, index) in reminders"
-      :isError="false"
+      v-for="({ isError, reminder }, index) in internalReminders"
+      :isError="isError"
       :key="index"
       :modelValue="reminder"
       class="margin-top--2"
       @update:model-value="onUpdateReminder(index, $event)"
       @delete="onDeleteReminder(index)"
     />
+    <PAlert
+      v-if="duplicateReminders.length > 0"
+      class="margin-top--3"
+      pType="danger"
+    >
+      {{ t('duplicateErrorMessage') }}
+    </PAlert>
+    <PAlert
+      v-if="reminders.length > 0"
+      class="margin-top--3"
+    >
+      <i18n-t
+        keypath="disclaimer"
+        tag="p"
+      >
+        <template #plateform>
+          <span class="font-semibold">{{ t('plateform') }}</span>
+        </template>
+        <template #email>
+          <span class="font-semibold">{{ t('email') }}</span>
+        </template>
+      </i18n-t>
+    </PAlert>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import {
   PButton,
   PIcon,
   PIBell,
+  PAlert,
 } from '@kpmg/styleguide'
 import ScheduleReminder from '@/schedule/components/ScheduleReminder'
 import { useI18n } from 'vue-i18n'
+import { getDuplicates } from '@/helper'
 import type { CreateScheduleRemindersProps } from './CreateScheduleRemindersTypes'
 
 const DEFAULT_REMINDER = -1
+const MAX_REMINDER_COUNT = 3
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -52,29 +79,63 @@ const reminders = computed(() => {
   return [...props.modelValue]
 })
 
-function emitUpdateReminders(reminders: number[]) {
+const internalReminders = computed(() => {
+  return reminders.value
+    .map(reminder => ({
+      reminder,
+      isError: duplicateReminders.value.includes(reminder),
+    }))
+})
+
+function onUpdateReminders(reminders: number[]) {
+  clearDuplicates()
   emit('update:model-value', reminders)
 }
 
 function onUpdateReminder(index: number, reminder: number) {
   reminders.value[index] = reminder
-  emitUpdateReminders(reminders.value)
+  onUpdateReminders(reminders.value)
 }
 
 function onDeleteReminder(index: number) {
   reminders.value.splice(index, 1)
-  emitUpdateReminders(reminders.value)
+  onUpdateReminders(reminders.value)
 }
 
 function onClickAddRemider() {
   reminders.value.push(DEFAULT_REMINDER)
-  emitUpdateReminders(reminders.value)
+  onUpdateReminders(reminders.value)
 }
+
+const duplicateReminders = ref<number[]>([])
+
+function clearDuplicates() {
+  duplicateReminders.value = []
+}
+
+function getIsValid() {
+  duplicateReminders.value = getDuplicates<number>(props.modelValue)
+
+  return props.modelValue.length <= MAX_REMINDER_COUNT &&
+    duplicateReminders.value.length === 0
+}
+
+defineExpose({
+  getIsValid,
+})
 </script>
 
 <i18n lang="yaml">
   en-US:
     add: 'Add an alert'
+    disclaimer: The recipient(s) will be notified on the {plateform} or by {email}
+    plateform: KPMG Pulse plateform
+    email: e-mail
+    duplicateErrorMessage: Some reminders are equals, please remove duplicates.
   fr-FR:
     add: 'Ajouter une alerte'
+    disclaimer: Le ou les destinataires seront notifiés sur la {plateform} et par {email}
+    plateform: plateforme KPMG Pulse
+    email: e-mail
+    duplicateErrorMessage: Certaines alertes sont identiques, veuillez retirer les doublons.
 </i18n>

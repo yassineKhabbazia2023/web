@@ -46,7 +46,7 @@ export const getBrowserName = (): string => {
 export function getDuplicates<T>(list: T[]) {
   return list
     .reduce<T[]>((duplicates, value, index) => {
-      const isDuplicate = duplicates.indexOf(value) < 0 && list.indexOf(value, index + 1) > 0
+      const isDuplicate = !duplicates.includes(value) && list.includes(value, index + 1)
 
       if (isDuplicate) {
         duplicates.push(value)
