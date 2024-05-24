@@ -65,7 +65,7 @@ describe('collaborators', () => {
 
   beforeEach(() => {
     const folderWrapperForBtn = document.createElement('div')
-    folderWrapperForBtn.classList.add('folder__collab__teleported-content')
+    folderWrapperForBtn.classList.add('folder__teleported-content')
     document.body.appendChild(folderWrapperForBtn)
 
     wrapper = createWrapper()
