@@ -17,8 +17,9 @@ import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock }
   from '@/schedule/tests/mocks/Schedule'
 import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
 
-const createScheduleMock = getMockSchedule()
-const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
+const mockedReminders = [2]
+const createScheduleMock = getMockSchedule(mockedReminders)
+const createScheduleMockWithTypeLong = getMonthlyMockSchedule(mockedReminders)
 
 const createWrapper = (props: FormProps) =>
   wrapperFactory(CreateScheduleForm, { props })
@@ -34,8 +35,12 @@ vi.mock('@/schedule/services', () => {
 
 describe('form.vue', () => {
   it.each([
-    { type: 'TVA', typeShort: 'TVA', expected: createScheduleMock, frequency: 'None' },
     {
+      type: 'TVA',
+      typeShort: 'TVA',
+      expected: createScheduleMock,
+      frequency: 'None',
+    }, {
       type: TEMPLATE_TYPE_SHORT_OTHER,
       typeShort: 'IS',
       expected: createScheduleMockWithTypeLong,
@@ -56,6 +61,9 @@ describe('form.vue', () => {
     const PDatePickerComponent = wrapper.findComponent(PDatePicker)
     const newDate = new Date(expected.scheduling.date)
     PDatePickerComponent.vm.$emit('update:modelValue', newDate)
+
+    const createScheduleReminders = wrapper.findComponent({ name: 'CreateScheduleReminders' })
+    createScheduleReminders.vm.$emit('update:model-value', mockedReminders)
 
     await wrapper.setProps({ checkValidity: true })
     const frequencyComponent = wrapper.findAllComponents(PSelect)[2]

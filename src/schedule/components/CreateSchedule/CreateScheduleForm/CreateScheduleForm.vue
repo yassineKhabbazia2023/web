@@ -52,6 +52,9 @@
         {{t('Warning')}}
       </template> {{ monthyWarning(createScheduleForm.date.getDate()) }}
     </PAlert>
+    <CreateScheduleReminders
+      v-model="reminders"
+    />
     <PFormItem
       pProp="description"
       inline
@@ -89,6 +92,7 @@ import {
   PDropdown,
 } from '@kpmg/styleguide'
 import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
+import CreateScheduleReminders from '@/schedule/components/CreateSchedule/CreateScheduleReminders'
 import type { FormProps } from './CreateScheduleFormTypes'
 import type { Schedule, Frequency } from './CreateScheduleFormModel'
 import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
@@ -96,13 +100,13 @@ import { dateISOFormatter } from '@/schedule/helpers/utils'
 import { getScheduleModels } from '@/schedule/services'
 import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
 
-// i18n
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
 const props = defineProps<FormProps>()
+const reminders = ref<number[]>([])
 
 // Emits
 const emit = defineEmits<{
@@ -177,7 +181,7 @@ const evaluateForm = () => {
       scheduleModel.scheduling.date = dateISOFormatter(createScheduleForm.date)
       scheduleModel.description = createScheduleForm.description
       scheduleModel.scheduling.frequency = createScheduleForm.frequency as Frequency
-      scheduleModel.reminders = []
+      scheduleModel.reminders = reminders.value
       emit('update-schedule-model', scheduleModel)
     }
   })
