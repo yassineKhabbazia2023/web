@@ -14,9 +14,10 @@
       :rowData="rowDataForDrawers"
     />
 
+    <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
     <Teleport
       v-if="currentEntityId"
-      to=".folder__collab__teleported-content"
+      to=".folder__teleported-content"
     >
       <PButton
         @click="isAddCollaboratorsDrawerOpened = true"

@@ -63,13 +63,12 @@ describe('collaborators', () => {
     document.querySelector('[data-testid=add-collaborator-button]') as HTMLButtonElement
   const getToolboxAction = () => wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
-  beforeEach(async () => {
+  beforeEach(() => {
     const folderWrapperForBtn = document.createElement('div')
     folderWrapperForBtn.classList.add('folder__collab__teleported-content')
     document.body.appendChild(folderWrapperForBtn)
 
     wrapper = createWrapper()
-    await flushPromises()
   })
 
   it('can display the add-collaborator drawer', async () => {
