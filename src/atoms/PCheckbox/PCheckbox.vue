@@ -3,8 +3,12 @@
     class="p-checkbox"
     :class="{
       'p-checkbox--rounded': pRounded
-    }">
-    <slot />
+    }"
+    :label="pLabel"
+  >
+    <template v-if="$slots.default">
+      <slot />
+    </template>
   </ElCheckbox>
 </template>
 
