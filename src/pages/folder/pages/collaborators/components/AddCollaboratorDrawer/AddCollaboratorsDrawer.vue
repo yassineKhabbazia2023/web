@@ -1,14 +1,12 @@
 <template>
   <PDrawer
-    class="delegation-drawer"
+    data-testid="add-collaborator-drawer"
     v-model="isAddCollaboratorsDrawerOpened"
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"
   >
     <template #header-prefix>
-      <h3 class="delegation-drawer__header">
-        {{ t('addCollaborators') }}
-      </h3>
+      <h3>{{ t('addCollaborators') }}</h3>
     </template>
 
     <div class="margin-bottom--6">

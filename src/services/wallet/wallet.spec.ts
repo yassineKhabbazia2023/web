@@ -47,10 +47,7 @@ vi.mock('@kpmg/common', () => ({
        * 🛠️ TODO: Need to refactor all of this code; many 'if' statements is not a good practice
        */
       get: vi.fn().mockImplementation((url) => {
-        if (
-          url ===
-          `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`
-        ) {
+        if (url.startsWith(`${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`)) {
           return getCollaboratorsByIdEntityImplementation()
         }
         if (
@@ -124,9 +121,9 @@ const fetchCollabsImplementation = () => {
 describe('collaborateurs/admin', () => {
   describe('getCollaboratorsByIdEntity', () => {
     it('should return list of collaborators', async () => {
-      const collaborators = await getCollaboratorsByIdEntity(accountId)
+      const { items } = await getCollaboratorsByIdEntity(accountId)
 
-      expect(collaborators).toStrictEqual(mockCollabsData)
+      expect(items).toStrictEqual(mockCollabsData)
     })
   })
   describe('fetchAccountCustomers', () => {

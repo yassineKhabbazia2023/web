@@ -6,8 +6,6 @@ import { MENU_ACTIONS_NAME } from './constants'
 import TableData from './'
 import mock from '../../mockCollaborators.json'
 import { getInitials } from '@/helper'
-import DrawerCollabDetails from '../DrawerCollabDetails'
-import DrawerCollabRole from '../DrawerCollabRole'
 import { PTable } from '@kpmg/styleguide'
 
 let wrapper: VueWrapper<any>
@@ -112,7 +110,7 @@ describe('tableData', () => {
   it('emits event update collaborators details when event is emitted', async () => {
     wrapper.vm.handleToolboxItemClick('collaboratorInformation', mock.items[0])
     await nextTick()
-    const drawerCollabDetails = wrapper.findComponent(DrawerCollabDetails)
+    const drawerCollabDetails = wrapper.findComponent({ name: 'DrawerCollabDetails' })
     expect(drawerCollabDetails.exists()).toBeTruthy()
     drawerCollabDetails.vm.$emit('update-collaborator-details', mock.items[0])
     expect(wrapper.emitted('update-collaborator-details')).toHaveLength(1)
@@ -122,7 +120,7 @@ describe('tableData', () => {
   it('emits event update collaborators role when event is emitted', async () => {
     wrapper.vm.handleToolboxItemClick('manageAccessRights', mock.items[0])
     await nextTick()
-    const drawerCollabRole = wrapper.findComponent(DrawerCollabRole)
+    const drawerCollabRole = wrapper.findComponent({ name: 'DrawerCollabRole' })
     expect(drawerCollabRole.exists()).toBeTruthy()
     drawerCollabRole.vm.$emit('update-collaborator-role', mock.items[0])
     expect(wrapper.emitted('update-collaborator-role')).toHaveLength(1)

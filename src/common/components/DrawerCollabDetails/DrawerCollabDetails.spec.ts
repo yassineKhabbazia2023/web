@@ -1,11 +1,11 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import listContact from './../../mockCollaborators.json'
-import listCollab from './../../mock.json'
+import listContact from '@/pages/wallet/pages/collaborators/mockCollaborators.json'
+import listCollab from '@/pages/wallet/pages/collaborators/mock.json'
 
-import DrawerCollabDetails from './'
 import { updateCollaborator } from '@/services/wallet'
+import DrawerCollabDetails from './'
 
 vi.mock('@/services/wallet', () => ({
   updateCollaborator: vi.fn(),

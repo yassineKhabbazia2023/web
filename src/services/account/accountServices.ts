@@ -92,3 +92,17 @@ export async function fetchContactsFromSameHub(
   })
   return data.items
 }
+
+export async function deleteContactFromAccount(
+  accountId: Account['accountId'],
+  contactId: Contact['id'],
+) {
+  const URL = `${API_PREFIXES.ACCOUNT}/roles`
+
+  return await commonApi().gateway.delete(URL, {
+    params: {
+      accountId,
+      contactId,
+    },
+  })
+}

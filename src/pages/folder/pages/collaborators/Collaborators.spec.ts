@@ -5,10 +5,8 @@ import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
 import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
-import type { Collab } from './types'
-import Collaborators from '.'
-import AddCollaboratorDrawer from './sections/AddCollaboratorDrawer'
 import * as walletServices from '@/services/wallet'
+import Collaborators from '.'
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -19,12 +17,27 @@ vi.mock('@kpmg/common', () => ({
       defaultEntity: () => mockedEntity,
     },
   }),
+  userPermissions: () => ({
+    hasPermission: () => true,
+  }),
+}))
+
+vi.mock('@/services/account', () => ({
+  deleteContactFromAccount: vi.fn(() => Promise.resolve()),
+  fetchContactsFromSameHub: vi.fn(() => Promise.resolve([])),
+}))
+
+vi.mock('@/services/contact', () => ({
+  getContactById: vi.fn(() => Promise.resolve({})),
 }))
 
 vi.mock('@/services/wallet', () => ({
-  getCollaboratorsByIdEntity: vi.fn(() => {
-    return mockCollabsData
-  }),
+  getCollaboratorsByIdEntity: vi.fn(() => Promise.resolve({
+    items: mockCollabsData,
+    currentPage: 1,
+    totalPage: 1,
+    totalItems: mockCollabsData.length,
+  })),
 }))
 
 const pinia = createTestingPinia()
@@ -34,36 +47,43 @@ const createWrapper = (): VueWrapper =>
     attachTo: document.body,
     global: {
       plugins: [pinia],
-      stubs: ['AddCollaboratorsDrawer'],
+      stubs: {
+        AddCollaboratorsDrawer: {
+          name: 'AddCollaboratorsDrawer',
+          template: '<div />',
+        },
+      },
     },
   })
 
 describe('collaborators', () => {
   let wrapper: VueWrapper
+  const getAddCollaboratorDrawer = () => wrapper.findComponent({ name: 'AddCollaboratorsDrawer' })
+  const getAddCollaboratorButton = () =>
+    document.querySelector('[data-testid=add-collaborator-button]') as HTMLButtonElement
+  const getToolboxAction = () => wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
   beforeEach(() => {
+    const folderWrapperForBtn = document.createElement('div')
+    folderWrapperForBtn.classList.add('folder__teleported-content')
+    document.body.appendChild(folderWrapperForBtn)
+
     wrapper = createWrapper()
   })
 
-  it('should call add-collaborator event when click on add collaborator button', async () => {
-    const addCollabButton = wrapper.find('[data-testid=add-collaborator-button]')
-    await addCollabButton.trigger('click')
+  it('can display the add-collaborator drawer', async () => {
+    expect(getAddCollaboratorDrawer().exists()).toBeFalsy()
 
-    const addCollaboratorDrawerWrapper = wrapper.findComponent(AddCollaboratorDrawer)
-    expect(addCollaboratorDrawerWrapper.isVisible).toBeTruthy()
-  })
+    await getAddCollaboratorButton().click()
 
-  it('should refresh list on collaborators add', async () => {
-    const addCollabButton = wrapper.find('[data-testid=add-collaborator-button]')
-    await addCollabButton.trigger('click')
+    expect(getAddCollaboratorDrawer().exists()).toBeTruthy()
 
     const getCollaboratorsSpy = vi.spyOn(
       walletServices,
       'getCollaboratorsByIdEntity',
     )
 
-    const addCollaboratorDrawerWrapper = wrapper.findComponent(AddCollaboratorDrawer)
-    addCollaboratorDrawerWrapper.vm.$emit('refresh-collaborators-list')
+    getAddCollaboratorDrawer().vm.$emit('refresh-collaborators-list')
     await flushPromises()
     expect(getCollaboratorsSpy).toHaveBeenCalledOnce()
   })
@@ -73,13 +93,36 @@ describe('collaborators', () => {
     expect(rows).toHaveLength(mockCollabsData.length)
   })
 
-  it('should call the event accessSwitched with the correct params and the access value should be false', async () => {
-    const firstRow = wrapper.findAll('tr.el-table__row')[0]
-    const switchComponent = firstRow.find('[data-testid=switch]')
-    const expectedCollab = mockCollabsData[0]
-    expectedCollab.hasAccess = true
-    await switchComponent.trigger('click')
-    const v = wrapper.emitted('accessSwitched')?.at(0)?.at(0) as Collab
-    expect(v.globalContactId).toBe(expectedCollab.globalContactId)
+  it('can display the detail of the collaborator', async () => {
+    const getDrawerCollabDetails = () => wrapper.findComponent({ name: 'DrawerCollabDetails' })
+
+    expect(getDrawerCollabDetails().exists()).toBeFalsy()
+
+    await getToolboxAction().vm.$emit('p-toolbox-item-clicked', 'collaboratorInformation')
+    await flushPromises()
+
+    expect(getDrawerCollabDetails().exists()).toBeTruthy()
+  })
+
+  it('can delete a collaborator from an entity and see a success notification', async () => {
+    const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
+    expect(getNotificationSuccess()).toHaveLength(0)
+
+    await getToolboxAction().vm.$emit('p-toolbox-item-clicked', 'removeCollaborator')
+    await flushPromises()
+
+    expect(getNotificationSuccess()).toHaveLength(1)
+  })
+
+  it('has a pagination', () => {
+    const pages = wrapper.findAll('.el-pager li')
+    const pagination = wrapper.findComponent({ name: 'PPagination' })
+    const totalItems = wrapper.find('[data-testid=ppagination-pagination-counter]')
+
+    expect(pages).toHaveLength(1)
+    expect(pagination.exists()).toBeTruthy()
+    expect(pagination.props('pCurrentPage')).toBe(1)
+    expect(pagination.props('pPageSize')).toBe(15)
+    expect(totalItems.text()).toContain(mockCollabsData.length)
   })
 })
