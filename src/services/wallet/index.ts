@@ -11,18 +11,20 @@ const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
 export interface GenericPageResponse<T> {
     items: T[]
     currentPage: number
-    totalPages: number
     totalItems: number
+    totalPages?: number
+    totalPage?: number // due to getCollaboratorsByIdEntity :/
 }
 
 export const getCollaboratorsByIdEntity = async (
   accountId: number,
-): Promise<Collab[]> => {
+  queryParams?: URLSearchParams,
+): Promise<GenericPageResponse<Collab>> => {
   const response = await commonApi().gateway.get(
-    `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`,
+    `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator&${queryParams}`,
   )
 
-  return response?.data.items
+  return response?.data
 }
 
 export const fetchAccountCustomers = async (

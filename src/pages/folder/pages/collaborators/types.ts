@@ -7,6 +7,7 @@ export interface Collab {
   office : string
   hasAccess : boolean
 }
+
 export interface ListCollabProps {
   idEntity: string
 }

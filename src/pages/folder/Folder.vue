@@ -6,15 +6,17 @@
           <PIPulse />
         </PIcon>
       </PAvatar>
-      <p class="font-semibold margin-left--4 folder-wrapper__default-entity">
+      <p class="margin-left--3 folder-wrapper__default-entity h4">
         {{ defaultEntity?.legalName }}
       </p>
+      <div :class="`folder__${activeTab}__teleported-content`" />
       <PButton
-        v-if="isFolderActionButtonDisplayed"
+        v-if="canAddUser"
         pType="primary"
+        pSize="small"
         data-testid="folder-action-button"
       >
-        {{ actionButtonLabel }}
+        {{ t('addUser') }}
       </PButton>
     </div>
     <PTabs v-model="activeTab" @tab-click="handleTabClick">
@@ -104,13 +106,8 @@ const tabsList = computed(() => {
   const tabs = isCollab.value ? collabTabs.value : clientTabs.value
   return tabs.filter(({ display }) => display)
 })
-const actionButtonLabel = computed(() => {
-  return isCollab.value ? t('delegationBtn') : t('addUser')
-})
-const isFolderActionButtonDisplayed = computed<boolean>(() => {
-  return isCollab.value ? true : hasPermission(PERMISSION_CODES.ADD_USERS)
-})
 
+const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
 // Functions
 const handleTabClick = (tab: any) => {
   router.push({
@@ -142,7 +139,6 @@ en-US:
   offers: 'Offers'
   info: 'Information'
   delegationsHistory: 'Delegations history'
-  delegationBtn: 'Delegate this case'
   addUser: 'Add user'
 fr-FR:
   users: 'Utilisateurs'
@@ -150,6 +146,5 @@ fr-FR:
   offers: 'Offres'
   info: 'Informations'
   delegationsHistory: 'Historique des délégations'
-  delegationBtn: 'Déléguer ce dossier'
   addUser: 'Ajouter un utilisateur'
 </i18n>
