@@ -68,6 +68,10 @@
           {{ frequencyLabel }}
         </span>
       </p>
+      <DeadlineReminders
+        v-if="isCollab"
+        :reminders="occurrence.schedule.reminders"
+      />
       <DeadlineAccounts
         :title="t('deadlineAccounts')"
         :deadlineAccounts="occurrence.accountList"
@@ -151,6 +155,7 @@ import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
 import type { Occurrence, Status } from '@/schedule/models/Deadline'
 import Tag from '@/schedule/components/Common/Tag'
 import DeadlineAccounts from '@/schedule/components/DeadlineAccounts'
+import DeadlineReminders from '@/schedule/components/DeadlineReminders'
 import {
   getFrequencyLabel,
   getCreatedByLabel,
