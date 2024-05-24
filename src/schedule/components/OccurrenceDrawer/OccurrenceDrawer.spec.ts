@@ -107,6 +107,7 @@ describe('drawer.vue', () => {
     const expectedDisplay: Record<string, string> = {
       'occurrence-drawer-long-label': 'long label',
       'occurrence-drawer-frequency-label': 'Frequency label',
+      'occurrence-drawer-delete': 'Delete',
       'occurrence-drawer-description': 'Description',
       'occurrence-drawer-created-by': 'Created bycreatedby label',
       'occurrence-drawer-occurrence-date': 'Wednesday, May 1, 2024',
@@ -141,6 +142,13 @@ describe('drawer.vue', () => {
     await flushPromises()
     await wrapper.findComponent({ name: 'PAlert' }).vm.$emit('close')
     expect(wrapper.findComponent({ name: 'PAlert' }).exists()).toBeFalsy()
+  })
+  it('should display delete button only to Collab', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    expect(wrapper.find('[data-testid=occurrence-drawer-delete]').exists()).toBeTruthy()
+    await wrapper.setProps({ isCollab: false })
+    expect(wrapper.find('[data-testid=occurrence-drawer-delete]').exists()).toBeFalsy()
   })
 })
 

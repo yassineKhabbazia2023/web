@@ -114,7 +114,7 @@
     </PForm>
 
     <template
-      v-if="occurrence"
+      v-if="occurrence && isCollab"
       #footer
     >
       <div
@@ -124,6 +124,7 @@
           pType="danger"
           pPlain
           pSize="default"
+          data-testid="occurrence-drawer-delete"
         >
           {{ t('delete') }}
         </PButton>
