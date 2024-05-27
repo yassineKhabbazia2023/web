@@ -150,5 +150,25 @@ describe('drawer.vue', () => {
     await wrapper.setProps({ isCollab: false })
     expect(wrapper.find('[data-testid=occurrence-drawer-delete]').exists()).toBeFalsy()
   })
+
+  it('should display deadlinesReminders component when isCollab', async () => {
+    const isCollab = true
+    const wrapper = createWrapper({
+      isCollab,
+    })
+    await flushPromises()
+    const deadlineReminders = wrapper.findComponent({ name: 'DeadlineReminders' })
+    expect(deadlineReminders.exists()).toBeTruthy()
+  })
+
+  it('should NOT display deadlinesReminders component when NOT isCollab', async () => {
+    const isCollab = false
+    const wrapper = createWrapper({
+      isCollab,
+    })
+    await flushPromises()
+    const deadlineReminders = wrapper.findComponent({ name: 'DeadlineReminders' })
+    expect(deadlineReminders.exists()).toBeFalsy()
+  })
 })
 
