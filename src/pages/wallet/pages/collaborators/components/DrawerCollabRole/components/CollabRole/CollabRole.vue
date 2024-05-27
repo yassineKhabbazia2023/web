@@ -27,7 +27,7 @@
           :pDescription="description"
         >
           <PButton
-            v-if="state.formValue.selectedRoleId === id"
+            v-if="currentRole === name"
             pPlain
             pType="white"
             class="flex flex--align-items-center"
