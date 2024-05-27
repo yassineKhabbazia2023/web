@@ -187,6 +187,7 @@ onMounted(async () => {
 
     @media only screen and (max-width: 991px) {
       height: calc(100vh - 108px);
+      margin-left: 50px;
     }
 
     &--no-paddings {
