@@ -144,11 +144,10 @@
       <p>{{ paginationLabel }}</p>
     </PPagination>
   </div>
-  <!--🛡️ Modify Rights Drawer 🛡️-->
   <ManageRightsDrawer
     v-if="selectedRow"
     v-model="isManageRightsDrawerOpened"
-    :userInfo="selectedRow"
+    :selectedUser="selectedRow"
   />
 </template>
 
@@ -184,7 +183,7 @@ import { fetchAccountCustomers } from '@/services/wallet'
 import { getPaginationLabel } from '@/helper'
 import type { IStateUser, IUserStatus, IUser } from './types'
 import { userActions } from './types'
-import ManageRightsDrawer from './components/ManageRightsDrawer'
+import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -252,6 +251,7 @@ const formatAndFillUsersCollabTable = async () => {
      */
     const formattedData: IUser[] = data.map((userFromApi) => {
       return {
+        contactId: userFromApi.contactId,
         initials: getInitials(userFromApi.firstName, userFromApi.lastName),
         status: getStatus(userFromApi.status),
         firstName: userFromApi.firstName?.toLowerCase() ?? '',

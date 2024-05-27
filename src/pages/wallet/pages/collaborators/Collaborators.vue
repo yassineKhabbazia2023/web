@@ -110,6 +110,7 @@ const fetch = async () => {
         lastName,
         office,
         persona,
+        id,
         ...rest
       }) => ({
         ...rest,
@@ -119,6 +120,7 @@ const fetch = async () => {
         ),
         firstName,
         lastName,
+        id,
         fullName: `${firstName} ${lastName}`,
         ibsStatus: '',
         role: persona?.name ?? '',

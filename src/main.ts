@@ -103,7 +103,7 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string }
   res.push({
     path: 'gestion-utilisateurs',
     name: 'allUsers',
-    component: () => import('@/common/components/UsersClient'),
+    component: () => import('@/pages/folder/pages/usersClient'),
   } as RouteRecordRaw)
   res.push({
     path: 'demandes-mod',
@@ -125,7 +125,7 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
   res.push({
     path: 'gestion-utilisateurs',
     name: 'usersClient',
-    component: () => import('@/common/components/UsersClient'),
+    component: () => import('@/pages/folder/pages/usersClient'),
   } as RouteRecordRaw)
   return res
 }

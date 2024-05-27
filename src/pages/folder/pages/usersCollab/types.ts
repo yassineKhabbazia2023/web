@@ -44,15 +44,16 @@ export interface IUserFromApi {
 }
 
 export interface IUser {
+  contactId: number
   initials: string
   fullName: string
   firstName: string
   lastName: string
   email: string
   isOwner: boolean
-  status: string | IUserStatus
+  status?: string | IUserStatus
   role: string
-  firstDateAccess: string
+  firstDateAccess?: string
 }
 
 export interface IStateUser extends PaginationData<IUser> {

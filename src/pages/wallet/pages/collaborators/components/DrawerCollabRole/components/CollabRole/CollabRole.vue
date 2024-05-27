@@ -20,12 +20,25 @@
     >
       <PRadioGroup v-model="state.formValue.selectedRoleId">
         <PRadioCard
-          v-for="({ description, id, name }) in state.roles"
+          v-for="{ description, id, name } in state.roles"
           :key="id"
           :pLabel="id"
           :pTitle="name"
           :pDescription="description"
-        />
+        >
+          <PButton
+            v-if="state.formValue.selectedRoleId === id"
+            pPlain
+            pType="white"
+            class="flex flex--align-items-center"
+            @click="handlePersonalizeRights"
+          >
+            {{ t('personalize') }}
+            <PIcon class="el-button__icon--right">
+              <PIArrowRight />
+            </PIcon>
+          </PButton>
+        </PRadioCard>
       </PRadioGroup>
     </PForm>
 
@@ -40,10 +53,7 @@
           {{ t('cancel') }}
         </PButton>
 
-        <PButton
-          @click="handleSubmit(formRef)"
-          pType="primary"
-        >
+        <PButton @click="handleSubmit(formRef)" pType="primary">
           {{ t('next') }}
         </PButton>
       </div>
@@ -60,6 +70,8 @@ import {
   PLoader,
   PRadioCard,
   PRadioGroup,
+  PIArrowRight,
+  PIcon,
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
 import type { State } from './types'
@@ -71,7 +83,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 const props = defineProps<CollabRoleProps>()
-const emit = defineEmits(['setDrawerNotVisible', 'setSelectedRoleId'])
+const emit = defineEmits(['setDrawerNotVisible', 'setSelectedRoleId', 'display-manage-rights'])
 
 const state: State = reactive({
   formValue: {
@@ -87,7 +99,9 @@ const fetchRoles = async () => {
   try {
     const response = await getRoles(ContactType.Collaborator)
     state.roles = response
-    state.formValue.selectedRoleId = response.find(r => r.name === props.currentRole)?.id
+    state.formValue.selectedRoleId = response.find(
+      (r) => r.name === props.currentRole,
+    )?.id
   } catch (err) {
     console.error(err)
   }
@@ -99,6 +113,10 @@ const formRef = ref<FormInstance>()
 
 const handleCancel = () => {
   emit('setDrawerNotVisible')
+}
+
+const handlePersonalizeRights = () => {
+  emit('display-manage-rights')
 }
 
 const handleSubmit = (formEl: FormInstance | undefined) => {
@@ -113,11 +131,13 @@ onMounted(async () => {
 
 <i18n lang="yaml">
 en-US:
+  personalize: 'Personalize'
   youCanModify: 'As an {administrator}, you can modify the role of your colleague.'
   administrator: 'administrator'
   cancel: 'Cancel'
   next: 'Next'
 fr-FR:
+  personalize: 'Personnaliser'
   youCanModify: "En tant qu'{administrator}, vous pouvez modifier le rôle de votre collaborateur."
   administrator: 'administrateur'
   cancel: 'Annuler'

@@ -131,7 +131,7 @@ describe('usersCollab', () => {
 
       expect(manageRightsDrawer.exists()).toBeTruthy()
       expect(manageRightsDrawer.props('modelValue')).toBeTruthy()
-      expect(manageRightsDrawer.props('userInfo')).toMatchObject(mockedUser)
+      expect(manageRightsDrawer.props('selectedUser')).toMatchObject(mockedUser)
     })
   })
 })

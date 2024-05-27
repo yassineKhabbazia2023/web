@@ -21,24 +21,39 @@
     </PUserCard>
 
     <CollabRole
-      v-if="!state.currentStep"
+      v-if="!state.currentStep && !isManageRightsDisplayed"
       :currentRole="rowData.role"
       @set-drawer-not-visible="closeDrawer"
       @set-selected-role-id="handleSetSelectedRoleId"
+      @display-manage-rights="isManageRightsDisplayed = true"
+    />
+    <RightsList
+      v-if="isManageRightsDisplayed"
+      :contactId="rowData.id"
+      v-model="authorizationsState"
     />
     <CollabAccess
-      v-if="state.currentStep"
+      v-if="state.currentStep && !isManageRightsDisplayed"
       @set-accesses="handleSetAccess"
       @go-to-previous-step="state.currentStep--"
-      :selectedCollabRole=rowData.role
+      :selectedCollabRole="rowData.role"
     />
-    <template #footer />
+    <template #footer>
+      <NextPreviousButtons
+        v-if="isManageRightsDisplayed"
+        data-testid="next-previous-buttons"
+        :previousLabel="t('previousLabel')"
+        :nextLabel="t('submit')"
+        @click-previous="handlePreviousClick"
+        @click-next="handleUpdatePermissions"
+      />
+    </template>
   </PDrawer>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import {
   PDrawer,
   PICheck,
@@ -49,7 +64,12 @@ import {
 import type { State, Props } from './types'
 import CollabRole from './components/CollabRole'
 import CollabAccess from './components/CollabAccess'
+import RightsList from '@/common/components/ManageRightsDrawer/components/RightsList'
+import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import { updateCollaborator } from '@/services/wallet'
+import type { AuthorizationState } from '@/common/components/ManageRightsDrawer/ManageRightsTypes'
+import { updateUserPermissions } from '@/services/authorization'
+import { getPermissionCodes } from '@/common/components/ManageRightsDrawer/utils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -60,9 +80,14 @@ const emit = defineEmits(['update:modelValue', 'update-collaborator-role'])
 
 const props = defineProps<Props>()
 
+const authorizationsState = ref<Record<string, AuthorizationState>>({})
+
+const isManageRightsDisplayed = ref(false)
+const isLoading = ref(false)
+
 const isDrawerVisible = computed({
   get: () => props.hasDrawerOpened,
-  set: value => emit('update:modelValue', value),
+  set: (value) => emit('update:modelValue', value),
 })
 
 const closeDrawer = () => {
@@ -78,6 +103,34 @@ const state: State = reactive({
 const handleSetSelectedRoleId = (selectedRoleId: number) => {
   state.selectedRoleId = selectedRoleId
   state.currentStep++
+}
+
+const handleUpdatePermissions = async () => {
+  isLoading.value = true
+  try {
+    const permissionsCodes = getPermissionCodes(authorizationsState.value)
+    await updateUserPermissions(props.rowData.id, null, permissionsCodes)
+    closeDrawer()
+    PNotification({
+      message: t('modifyRightsSucceeded', {
+        userFullName: props.rowData.fullName,
+      }),
+      icon: PICheck,
+      showClose: true,
+      customClass: 'success',
+      position: 'bottom-right',
+      duration: 3000,
+    })
+  } catch (error) {
+    console.error('Permission update unsuccessful :', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const handlePreviousClick = () => {
+  state.currentStep = 0
+  isManageRightsDisplayed.value = false
 }
 
 const handleSetAccess = async (accesses: object) => {
@@ -110,9 +163,15 @@ const handleSetAccess = async (accesses: object) => {
 
 <i18n lang="yaml">
 en-US:
+  submit: 'Submit'
+  previousLabel: 'Previous'
+  modifyRightsSucceeded: "{userFullName}'s rights have indeed been modified"
   manageAccessRights: 'Manage access rights'
   notificationSuccess: 'The role of {fullName} has been successfully updated.'
 fr-FR:
-  manageAccessRights: "Gérer les droits d’accès"
+  submit: 'Valider'
+  previousLabel: 'Précédent'
+  modifyRightsSucceeded: 'Les droits de {userFullName} ont bien été modifiés'
+  manageAccessRights: 'Gérer les droits d’accès'
   notificationSuccess: 'Le rôle de {fullName} a bien été mis à jour.'
 </i18n>

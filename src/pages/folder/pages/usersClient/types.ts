@@ -23,6 +23,7 @@ export interface IState {
   search: string | undefined
   isLoading: boolean
   isDrawerViewDetailsOpened: boolean
+  isManageRightsDrawerOpened: boolean
   selectedUserId: number
   sort: string | undefined
 }

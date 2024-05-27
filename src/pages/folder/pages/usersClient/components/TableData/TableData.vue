@@ -120,6 +120,7 @@ import { MENU_ACTIONS_NAME } from './constants'
 import { PERMISSION_CODES } from '@/constants'
 import { returnSortQueryField } from '@/helper'
 import type { IExtendedUser } from '../../types'
+import { userActions } from './types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -130,6 +131,7 @@ const props = defineProps<Props>()
 const { hasPermission } = userPermissions()
 const emits = defineEmits<{
   'click-view-information': [number]
+  'display-manage-rights': [number]
 }>()
 
 const { userInformation, modifyRights, deleteUser } = MENU_ACTIONS_NAME
@@ -170,11 +172,12 @@ const state = reactive({
   rowData: {} as IExtendedUser,
 })
 
-const handleToolboxItemClick = (_action: string, row: any) => {
+const handleToolboxItemClick = (action: string, row: any) => {
   state.rowData = row
-  if (state.rowData) {
-    const contact = state.rowData
-    emits('click-view-information', contact.contactId)
+  if (action === userActions.MODIFY_RIGHTS) {
+    emits('display-manage-rights', row.contactId)
+  } else {
+    emits('click-view-information', row.contactId)
   }
 }
 

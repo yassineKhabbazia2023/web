@@ -25,15 +25,8 @@ const toolBoxElementsWithoutPermissions = [
 const createWrapper = (): VueWrapper<any> =>
   mount(TableData, {
     props: {
-      data: mock.data.items.map(({
-        firstName,
-        lastName,
-        ...rest
-      }) => ({
-        initials: getInitials(
-          firstName,
-          lastName,
-        ),
+      data: mock.data.items.map(({ firstName, lastName, ...rest }) => ({
+        initials: getInitials(firstName, lastName),
         fullName: `${firstName} ${lastName}`,
         firstName,
         lastName,
@@ -65,7 +58,9 @@ describe('tableData', () => {
     await flushPromises()
 
     expect(wrapper.emitted('click-view-information')).toBeTruthy()
-    expect(wrapper.emitted('click-view-information')).toStrictEqual([[row.contactId]])
+    expect(wrapper.emitted('click-view-information')).toStrictEqual([
+      [row.contactId],
+    ])
   })
 
   it('should display only the actions that the user has permission to perform', () => {
@@ -74,6 +69,23 @@ describe('tableData', () => {
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
     expect(pToolbox.props('pElements')).toHaveLength(1)
-    expect(pToolbox.props('pElements')).toStrictEqual(toolBoxElementsWithoutPermissions)
+    expect(pToolbox.props('pElements')).toStrictEqual(
+      toolBoxElementsWithoutPermissions,
+    )
+  })
+
+  describe('events', () => {
+    it('should emit event to display drawer', async () => {
+      const wrapper = createWrapper()
+      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      pToolbox.vm.$emit(
+        'p-toolbox-item-clicked',
+        'modifyRights',
+      )
+      await nextTick()
+
+      expect(wrapper.emitted('display-manage-rights')).toBeTruthy()
+    })
   })
 })

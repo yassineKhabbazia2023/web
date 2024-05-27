@@ -12,6 +12,7 @@
           v-if="state.data.length"
           :data="state.data"
           @click-view-information="handleClickViewInformation"
+          @display-manage-rights="handleDisplayManageRights"
           @on-sort-change="handleSortChange"
         />
 
@@ -40,8 +41,13 @@
       :userId="state.selectedUserId"
       :hasDrawerOpened="state.isDrawerViewDetailsOpened"
       :editMode="canEdit"
-      @contact-patched= "handlePatch"
+      @contact-patched="handlePatch"
       data-testid="viewinfo-drawer"
+    />
+    <ManageRightsDrawer
+      v-if="state.isManageRightsDrawerOpened"
+      v-model="state.isManageRightsDrawerOpened"
+      :selectedUser="getUserInfo"
     />
   </div>
 </template>
@@ -49,22 +55,18 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch } from 'vue'
-import {
-  PLoader,
-  PPagination,
-} from '@kpmg/styleguide'
+import { PLoader, PPagination } from '@kpmg/styleguide'
 import { commonStore, commonApi } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
-import {
-  PAGE_SIZES,
-  DATE_TIME_FORMATS as datetimeFormats,
-} from '@/constants'
+import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
 import TableData from './components/TableData'
 import type { IState, IUserFromApi } from './types'
+import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
 import DrawerUserDetails from './components/DrawerUserDetails'
 import { API_PREFIXES } from '@/common/config/services'
+import type { IUser } from '../usersCollab/types'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -84,6 +86,7 @@ const state: IState = reactive({
   isLoading: false,
   sort: undefined,
   isDrawerViewDetailsOpened: false,
+  isManageRightsDrawerOpened: false,
   selectedUserId: 0,
 })
 
@@ -95,18 +98,29 @@ const handlePageRangeChanged = (newItemsPerPage: number) => {
   state.limit = newItemsPerPage
 }
 
-const paginationLabel = computed(() =>
-  `${1 + ((state.currentPage - 1) * state.limit)}
-    - ${((state.currentPage - 1) * state.limit) +
-    state.data.length} 
+const paginationLabel = computed(
+  () =>
+    `${1 + (state.currentPage - 1) * state.limit}
+    - ${(state.currentPage - 1) * state.limit + state.data.length} 
     ${t('on')} ${state.totalItems}`,
 )
 
-const shouldShowPagination = computed(() =>
-  !state.isLoading && state.totalItems,
+const shouldShowPagination = computed(
+  () => !state.isLoading && state.totalItems,
 )
 
 const canEdit = computed(() => true)
+
+const getUserInfo = computed(() => {
+  const userInfo = state.data.find(
+    (user) => user.contactId === state.selectedUserId,
+  )
+
+  return {
+    ...userInfo,
+    role: userInfo?.personaName,
+  } as IUser
+})
 
 const getQueryParams = () => ({
   pageNumber: state.currentPage,
@@ -116,28 +130,27 @@ const getQueryParams = () => ({
 })
 
 const formatItemsFromApi = (items: IUserFromApi[]) =>
-  items.map(({
-    firstName,
-    lastName,
-    personaName,
-    contactId,
-    creationDate,
-    ...rest
-  }) => ({
-    ...rest,
-    initials: getInitials(
+  items.map(
+    ({
       firstName,
       lastName,
-    ),
-    firstName,
-    lastName,
-    isOwner: personaName === 'ADMIN/Dirigeant',
-    fullName: `${firstName} ${lastName}`,
-    isLoggedUser: () => contactId.toString() === userStore.$state.user?.id,
-    personaName,
-    contactId,
-    creationDate: d(new Date(creationDate), 'short'),
-  }))
+      personaName,
+      contactId,
+      creationDate,
+      ...rest
+    }) => ({
+      ...rest,
+      initials: getInitials(firstName, lastName),
+      firstName,
+      lastName,
+      isOwner: personaName === 'ADMIN/Dirigeant',
+      fullName: `${firstName} ${lastName}`,
+      isLoggedUser: () => contactId.toString() === userStore.$state.user?.id,
+      personaName,
+      contactId,
+      creationDate: d(new Date(creationDate), 'short'),
+    }),
+  )
 
 const fetch = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
@@ -147,14 +160,10 @@ const fetch = async () => {
 
   try {
     const {
-      data: {
-        items,
-        currentPage,
-        totalPages,
-        totalItems,
-      },
-    } = await commonApi().gateway
-      .get(`${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`)
+      data: { items, currentPage, totalPages, totalItems },
+    } = await commonApi().gateway.get(
+      `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`,
+    )
 
     state.data = formatItemsFromApi(items)
     state.currentPage = currentPage
@@ -173,21 +182,24 @@ const handleClickViewInformation = (selectedUserId: number) => {
   state.isDrawerViewDetailsOpened = true
 }
 
-const handleSortChange = (sortQueryField:string) => {
+const handleDisplayManageRights = (selectedUserId: number) => {
+  state.selectedUserId = selectedUserId
+  state.isManageRightsDrawerOpened = true
+}
+
+const handleSortChange = (sortQueryField: string) => {
   state.sort = sortQueryField
 }
 
 onMounted(async () => {
   await fetch()
 
-  watch(() => [
-    state.currentPage,
-    state.limit,
-    state.search,
-    state.sort,
-  ], async () => {
-    await fetch()
-  })
+  watch(
+    () => [state.currentPage, state.limit, state.search, state.sort],
+    async () => {
+      await fetch()
+    },
+  )
 })
 </script>
 
