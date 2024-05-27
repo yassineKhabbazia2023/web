@@ -15,6 +15,13 @@ const createWrapper = (override: Partial<CreateScheduleRemindersProps> = {}) => 
 
   return shallowMount(CreateScheduleReminders, {
     props,
+    global: {
+      stubs: {
+        PAlert: {
+          template: '<div><slot /></div>',
+        },
+      },
+    },
   })
 }
 
@@ -31,9 +38,12 @@ describe('test CreateScheduleReminders', () => {
 
     it('should display two reminders with proper values', () => {
       const scheduleReminders = wrapper.findAllComponents({ name: 'ScheduleReminder' })
+      const disclaimer = wrapper.find('[data-testid="create-schedule-disclaimer"]')
+
       expect(scheduleReminders).toHaveLength(2)
       expect(scheduleReminders.at(0)?.props('modelValue')).toBe(modelValue[0])
       expect(scheduleReminders.at(1)?.props('modelValue')).toBe(modelValue[1])
+      expect(disclaimer.exists()).toBeTruthy()
     })
 
     it('should emit proper update:model-value when click on add button', async () => {
@@ -108,11 +118,40 @@ describe('test CreateScheduleReminders', () => {
       const isValid = (wrapper.vm as any).getIsValid()
       await nextTick()
       const scheduleReminders = wrapper.findAllComponents({ name: 'ScheduleReminder' })
+      const errorMessage = wrapper.find('[data-testid="create-schedule-duplicate-reminders-error-message"]')
+      const expectedErrorMessage = 'Some reminders are equals, please remove duplicates.'
 
       expect(isValid).toBeFalsy()
       expect(scheduleReminders.at(0)?.props('isError')).toBeTruthy()
       expect(scheduleReminders.at(1)?.props('isError')).toBeFalsy()
       expect(scheduleReminders.at(2)?.props('isError')).toBeTruthy()
+      expect(errorMessage.text()).toBe(expectedErrorMessage)
+    })
+  })
+
+  describe('when there is empty reminders', () => {
+    const modelValue = [
+      -1,
+      2,
+      0,
+    ]
+    let wrapper: VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper({ modelValue })
+    })
+
+    it('should manage isError status', async () => {
+      const isValid = (wrapper.vm as any).getIsValid()
+      await nextTick()
+      const scheduleReminders = wrapper.findAllComponents({ name: 'ScheduleReminder' })
+      const errorMessage = wrapper.find('[data-testid="create-schedule-empty-reminders-error-message"]')
+      const expectedErrorMessage = 'Please enter a number greater than or equal to 1'
+
+      expect(isValid).toBeFalsy()
+      expect(scheduleReminders.at(0)?.props('isError')).toBeFalsy()
+      expect(scheduleReminders.at(1)?.props('isError')).toBeFalsy()
+      expect(scheduleReminders.at(2)?.props('isError')).toBeTruthy()
+      expect(errorMessage.text()).toBe(expectedErrorMessage)
     })
   })
 

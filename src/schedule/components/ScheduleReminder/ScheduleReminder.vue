@@ -15,13 +15,13 @@
       :pMin="1"
       class="schedule-reminder__value"
     />
-    <span class="schedule-reminder__days text-center">{{ t('days', internalValue) }}</span>
+    <span class="schedule-reminder__days flex--grow-0 text-center">{{ t('days', internalValue) }}</span>
     <PDropdown
       v-model="isAfter"
       :pOptions="options"
       class="schedule-reminder__option"
     />
-    <span class="flex--grow--1 margin-left--3">
+    <span class="flex--grow-1 margin-left--3">
       {{ t('date') }}
     </span>
     <PButton
@@ -99,6 +99,8 @@ const options = [{
     font-size: inherit;
     flex-wrap: inherit;
     line-height: inherit;
+    display: flex;
+    justify-content: space-between;
   }
 
   &__value {

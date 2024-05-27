@@ -24,14 +24,24 @@
     />
     <PAlert
       v-if="duplicateReminders.length > 0"
-      class="margin-top--3"
+      class="margin-top--2 font-base"
       pType="danger"
+      data-testid="create-schedule-duplicate-reminders-error-message"
     >
       {{ t('duplicateErrorMessage') }}
     </PAlert>
     <PAlert
+      v-if="emptyReminders.length > 0"
+      class="margin-top--2 font-base"
+      pType="danger"
+      data-testid="create-schedule-empty-reminders-error-message"
+    >
+      {{ t('emptyRemindersErrorMessage') }}
+    </PAlert>
+    <PAlert
       v-if="reminders.length > 0"
-      class="margin-top--3"
+      class="margin-top--2 font-base"
+      data-testid="create-schedule-disclaimer"
     >
       <i18n-t
         keypath="disclaimer"
@@ -81,10 +91,15 @@ const reminders = computed(() => {
 
 const internalReminders = computed(() => {
   return reminders.value
-    .map(reminder => ({
-      reminder,
-      isError: duplicateReminders.value.includes(reminder),
-    }))
+    .map(reminder => {
+      const isError = duplicateReminders.value.includes(reminder) ||
+        emptyReminders.value.includes(reminder)
+
+      return {
+        reminder,
+        isError,
+      }
+    })
 })
 
 function onUpdateReminders(reminders: number[]) {
@@ -108,16 +123,20 @@ function onClickAddRemider() {
 }
 
 const duplicateReminders = ref<number[]>([])
+const emptyReminders = ref<number[]>([])
 
 function clearDuplicates() {
+  emptyReminders.value = []
   duplicateReminders.value = []
 }
 
 function getIsValid() {
   duplicateReminders.value = getDuplicates<number>(props.modelValue)
+  emptyReminders.value = props.modelValue.filter(reminder => !reminder)
 
   return props.modelValue.length <= MAX_REMINDER_COUNT &&
-    duplicateReminders.value.length === 0
+    duplicateReminders.value.length === 0 &&
+    emptyReminders.value.length === 0
 }
 
 defineExpose({
@@ -132,10 +151,12 @@ defineExpose({
     plateform: KPMG Pulse plateform
     email: e-mail
     duplicateErrorMessage: Some reminders are equals, please remove duplicates.
+    emptyRemindersErrorMessage: Please enter a number greater than or equal to 1
   fr-FR:
     add: 'Ajouter une alerte'
     disclaimer: Le ou les destinataires seront notifiés sur la {plateform} et par {email}
     plateform: plateforme KPMG Pulse
     email: e-mail
     duplicateErrorMessage: Certaines alertes sont identiques, veuillez retirer les doublons.
+    emptyRemindersErrorMessage: Veuillez renseigner un nombre supérieur ou égal à 1.
 </i18n>
