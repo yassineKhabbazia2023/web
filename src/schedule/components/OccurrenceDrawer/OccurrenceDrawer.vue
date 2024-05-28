@@ -118,7 +118,7 @@
     </PForm>
 
     <template
-      v-if="occurrence && isCollab"
+      v-if="false && occurrence && isCollab"
       #footer
     >
       <div

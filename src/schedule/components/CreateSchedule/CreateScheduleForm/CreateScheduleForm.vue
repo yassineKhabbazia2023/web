@@ -5,7 +5,7 @@
     pHideRequiredAsterisk
     pLabelPosition="top"
     :pRules="rules"
-    class="create-schedule-form font-small"
+    class="create-schedule-form"
   >
     <PFormItem pProp="reminder" :pLabel="t('reminder')">
       <DropdownSchedule
@@ -55,13 +55,14 @@
     <CreateScheduleReminders
       v-model="reminders"
       ref="createScheduleRemindersRef"
+      class="margin-bottom--4"
     />
     <PFormItem
       pProp="description"
       inline
       disabled
     >
-      <div class="font-small">
+      <div class="font-small margin-bottom--2">
         <span class="create-schedule-form__optional-title font-semibold">
           {{ t('description') }}
         </span>
@@ -223,6 +224,9 @@ const monthyWarning = (frequencyDate: number) =>
   &__optional {
     line-height: 120%;
     color: var(--el-color-neutral-gray-500);
+  }
+  :deep(.el-form-item__content) {
+    line-height: inherit;
   }
 }
 </style>
