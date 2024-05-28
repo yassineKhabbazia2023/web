@@ -63,6 +63,11 @@ const collaboratorsTabs = [
     title: t('history'),
     display: hasPermission(PERMISSION_CODES.HISTORY),
   },
+  {
+    name: 'folderLauncher',
+    title: t('launcher'),
+    display: hasPermission(PERMISSION_CODES.LAUNCHER),
+  },
 ]
 
 const clientTabs = [
@@ -92,6 +97,7 @@ en-US:
   mandate: 'Mandate'
   subscriptions: 'MOD requests'
   history: 'History'
+  launcher: 'Applications'
   collaborators: 'Collaborators'
   allEntities: 'All entities'
   allUsers: 'All users'
@@ -101,6 +107,7 @@ fr-FR:
   mandate: 'Mandat'
   subscriptions: 'Demandes MOD'
   history: 'Historique'
+  launcher: 'Applications'
   collaborators: 'Collaborateurs'
   allEntities: 'Mes entités'
   allUsers: 'Tous les utilisateurs'

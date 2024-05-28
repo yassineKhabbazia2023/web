@@ -172,4 +172,22 @@ watch(routes.value, (val) => {
       },
     )
   }
+
+  const launcherCollabRoute = val.find(
+    (item) => item.name === 'launcher',
+  ) as RouteRecordRaw
+
+  const folderLauncher = walletChildrenRoutes.find(
+    (item) => item.name === 'folderLauncher',
+  ) as RouteRecordRaw
+
+  if (launcherCollabRoute && !folderLauncher) {
+    walletChildrenRoutes.push(
+      {
+        name: 'folderLauncher',
+        path: 'launcher',
+        component: launcherCollabRoute.component,
+      },
+    )
+  }
 }, { deep: true, immediate: true })

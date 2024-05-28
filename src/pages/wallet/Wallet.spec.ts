@@ -62,6 +62,8 @@ describe('dossier', () => {
     ['subscriptions', 'tab-subscriptions'],
     ['collaborators', 'tab-collaborators'],
     ['history', 'tab-history'],
+    ['folderMandats', 'tab-folderMandats'],
+    ['folderLauncher', 'tab-folderLauncher'],
   ]
   it.each(PARAMS)('should redirect when click on %s', (tabs, tabsName) => {
     document.getElementById(tabsName)?.click()
@@ -69,6 +71,18 @@ describe('dossier', () => {
     expect(mockRouterPush).toHaveBeenCalledWith({
       name: tabs,
     })
+  })
+
+  it('should not display Launcher when user does not have authorization', async () => {
+    mockHasPermission.mockImplementation((code: string) =>
+      ![PERMISSION_CODES.LAUNCHER].includes(code),
+    )
+    wrapper = createWrapper()
+
+    await flushPromises()
+
+    const element = wrapper.find('#tab-folderLauncher')
+    expect(element.exists()).toBeFalsy()
   })
 
   it('should only display tabs to which the user has permission to access', () => {
