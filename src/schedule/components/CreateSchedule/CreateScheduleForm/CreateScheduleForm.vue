@@ -5,7 +5,7 @@
     pHideRequiredAsterisk
     pLabelPosition="top"
     :pRules="rules"
-    class="create-schedule-form font-small"
+    class="create-schedule-form"
   >
     <PFormItem pProp="reminder" :pLabel="t('reminder')">
       <DropdownSchedule

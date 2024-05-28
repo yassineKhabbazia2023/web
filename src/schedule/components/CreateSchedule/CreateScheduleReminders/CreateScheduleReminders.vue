@@ -24,7 +24,7 @@
     />
     <PAlert
       v-if="duplicateReminders.length > 0"
-      class="margin-top--2 font-base"
+      class="margin-top--2"
       pType="danger"
       data-testid="create-schedule-duplicate-reminders-error-message"
     >
@@ -32,7 +32,7 @@
     </PAlert>
     <PAlert
       v-if="emptyReminders.length > 0"
-      class="margin-top--2 font-base"
+      class="margin-top--2"
       pType="danger"
       data-testid="create-schedule-empty-reminders-error-message"
     >
@@ -40,7 +40,7 @@
     </PAlert>
     <PAlert
       v-if="reminders.length > 0"
-      class="margin-top--2 font-base"
+      class="margin-top--2"
       data-testid="create-schedule-disclaimer"
     >
       <i18n-t
