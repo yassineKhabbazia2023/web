@@ -16,7 +16,7 @@
 
     <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
     <Teleport
-      v-if="currentEntityId"
+      v-if="currentEntityId && isMounted"
       to=".folder__teleported-content"
     >
       <PButton
@@ -196,6 +196,7 @@ const { defaultEntity } = storeToRefs(userStore)
 const { hasPermission } = userPermissions()
 
 const isLoading = ref(false)
+const isMounted = ref(false)
 const collabs = ref<Collab[]>([])
 
 const isAddCollaboratorsDrawerOpened = ref(false)
@@ -405,6 +406,7 @@ const fetchCollaborators = async () => {
 }
 
 onMounted(async () => {
+  isMounted.value = true
   await fetchCollaborators()
 })
 
