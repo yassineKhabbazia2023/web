@@ -87,6 +87,6 @@ export async function handleDownload(
 
 export function getAuthorizedKeys() {
   return LAUNCHER_AUTHORIZATIONS
-    .filter(({ authorizationCode }) => hasPermission(authorizationCode))
+    .filter(({ authorizationCodes }) => hasPermission(authorizationCodes))
     .map<LAUNCHER_KEY>(({ key }) => key)
 }

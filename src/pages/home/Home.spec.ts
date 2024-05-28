@@ -6,6 +6,13 @@ import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
 import { LAUNCHER_KEY } from './HomeTypes'
 import * as HomeUtils from './HomeUtils'
 import Home from '.'
+import * as VueRouter from 'vue-router'
+
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    name: 'launcher',
+  }),
+}))
 
 vi.mock('./HomeUtils', async () => {
   return await vi.importActual('./HomeUtils')
@@ -68,7 +75,9 @@ describe('test Home', () => {
       const wrapper = getWrapper()
       await flushPromises()
       const launchCards = getLaunchCardComponents(wrapper)
+      const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
 
+      expect(noLauncher.exists()).toBeFalsy()
       expect(launchCards).toHaveLength(mockedAuthorizedKeys.length)
     })
 
@@ -120,6 +129,39 @@ describe('test Home', () => {
       ]
 
       expect(actionUrls).toMatchObject(expectedActionUrls)
+    })
+  })
+
+  describe('when route is launcher-collab', () => {
+    it('proper launchCards length and breadcrumb elements', async () => {
+      vi
+        .spyOn(VueRouter, 'useRoute')
+        .mockReturnValueOnce({
+          name: 'launcher-collab',
+        } as VueRouter.RouteLocationNormalizedLoaded)
+      const wrapper = getWrapper()
+      await nextTick()
+      const launchCards = getLaunchCardComponents(wrapper)
+      const PBreadcrumb = wrapper.findComponent({ name: 'PBreadcrumb' })
+
+      expect(launchCards).toHaveLength(CARDS_LENGTH)
+      expect(PBreadcrumb.exists()).toBeFalsy()
+    })
+  })
+
+  describe('when no launcher app to display', () => {
+    it('should display filtered cards', async () => {
+      const mockedAuthorizedKeys: LAUNCHER_KEY[] = []
+      vi
+        .spyOn(HomeUtils, 'getAuthorizedKeys')
+        .mockReturnValueOnce(mockedAuthorizedKeys)
+      const wrapper = getWrapper()
+      await flushPromises()
+      const launchCards = getLaunchCardComponents(wrapper)
+      const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
+
+      expect(noLauncher.exists()).toBeTruthy()
+      expect(launchCards).toHaveLength(mockedAuthorizedKeys.length)
     })
   })
 

@@ -182,9 +182,11 @@ describe('test HomeUtils', () => {
 
   describe('getAuthorizedKeys', () => {
     it('should return authorized keys', () => {
-      mockHasPermission.mockImplementation((code: string) =>
-        [PERMISSION_CODES.silae, PERMISSION_CODES.meg].includes(code),
-      )
+      mockHasPermission.mockImplementation((code: string[]) => {
+        const mockedPermissions = [PERMISSION_CODES.silae, PERMISSION_CODES.meg]
+
+        return code.some((code) => mockedPermissions.includes(code))
+      })
       const expectedAuthorizedKeys = [
         LAUNCHER_KEY.meg,
         LAUNCHER_KEY.silae,

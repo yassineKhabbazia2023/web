@@ -27,7 +27,7 @@ export const commonApiDsDeleteSpy = vi.fn().mockResolvedValue({
 export const commonApiPortalGetSpy = vi.fn().mockResolvedValue({
   data: {},
 })
-export const mockHasPermission = vi.fn((_: string) => true)
+export const mockHasPermission = vi.fn((_: string[]) => true)
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({

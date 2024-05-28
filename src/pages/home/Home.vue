@@ -1,6 +1,7 @@
 <template>
   <div>
     <PBreadcrumb
+      v-if="breadcrumbElements.length > 0"
       :pElements="breadcrumbElements"
     />
     <h1 class="h4 margin-top--3 text-color--neutral-gray-700">
@@ -9,6 +10,14 @@
     <h2 class="margin-top--8 font-small text-color--neutral-gray-500">
       {{ t('active-section-title') }}
     </h2>
+    <PAlert
+      v-if="launchCards.length === 0"
+      pType="danger"
+      class="margin-top--3"
+      data-testid="home-no-launcher"
+    >
+      {{ t('no-launcher') }}
+    </PAlert>
     <div class="margin-top--2 flex flex-gap--4 flex--wrap">
       <LaunchCard
         v-for="(launchCard, index) in launchCards"
@@ -31,6 +40,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LaunchCard from '@/components/launchCard'
 import type { LAUNCHER_KEY, ExtendedLaunchCard } from './HomeTypes'
@@ -41,8 +51,10 @@ import {
   getSilaeDownloadLabel,
   getAuthorizedKeys,
 } from './HomeUtils'
-import { PBreadcrumb } from '@kpmg/styleguide'
+import { PBreadcrumb, PAlert } from '@kpmg/styleguide'
 import { commonStore as useStore } from '@kpmg/common'
+
+const route = useRoute()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -73,13 +85,17 @@ async function onClickAction(key: LAUNCHER_KEY) {
   await handleClickAction(key)
 }
 
-const breadcrumbElements = [{
+const breadcrumbElementsClient = [{
   pId: -1,
   pText: commonStore.defaultEntity?.legalName ?? '',
 }, {
   pId: -1,
   pText: t('title'),
 }]
+
+const breadcrumbElements = route.name === 'launcher'
+  ? breadcrumbElementsClient
+  : []
 
 onMounted(() => {
   authorizedKeys.value = getAuthorizedKeys()
@@ -96,7 +112,9 @@ function refreshLaunchCards(silaeDownloadPercent: number | undefined = undefined
   en-US:
     title: 'Applications'
     active-section-title: 'Active applications'
+    no-launcher: 'You do not have the necessary permissions to access these applications.'
   fr-FR:
     title: 'Applications'
     active-section-title: 'Applications activées'
+    no-launcher: "Vous n'avez pas les permissions nécessaires pour accéder à ces applications."
 </i18n>
