@@ -5,41 +5,49 @@
       :pLabel="tab.label"
       :pName="tab.name"
       :key="tab.name"
-    >
-      <div v-if="subscriptionDetails" class="margin-top--6">
-        <ServicesDetails
-          v-if="activeTab === RecapTabs.SERVICES"
-          :subscriptionOfferDetails="subscriptionDetails?.offer"
-        />
-        <CustomersDetails
-          v-if="activeTab === RecapTabs.CUSTOMER_USERS"
-          :principalContacts="subscriptionDetails?.clients"
-        />
-        <CollaboratorsDetails
-          v-if="activeTab === RecapTabs.COLLABORATORS"
-          :collaborators="subscriptionDetails?.collaborators"
-        />
-        <StepNote
-          v-model="notes[tab.index]"
-          class="margin-top--6"
-          disabled
-        />
-      </div>
-    </PTabPane>
+    />
+    <div v-if="subscriptionDetails" class="margin-top--6">
+      <ServicesDetails
+        v-if="activeTab === RecapTabs.SERVICES"
+        :subscriptionOfferDetails="subscriptionDetails?.offer"
+      />
+      <CustomersDetails
+        v-if="activeTab === RecapTabs.CUSTOMER_USERS"
+        :principalContacts="subscriptionDetails?.clients"
+      />
+      <CollaboratorsDetails
+        v-if="activeTab === RecapTabs.COLLABORATORS"
+        :collaborators="subscriptionDetails?.collaborators"
+      />
+      <InformationDetails
+        v-if="activeTab === RecapTabs.INFORMATION"
+        :subscriptionOfferDetails="subscriptionDetails?.offer"
+        :accountId="subscriptionDetails.account.accountId"
+      />
+      <StepNote
+        v-model="notes[noteIndex]"
+        class="margin-top--6"
+        disabled
+      />
+    </div>
   </PTabs>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
 import { RecapTabs } from './SubscriptionDetailsTabsTypes'
 import type { Note } from '@/services/subscription'
-import type { SubscriptionDetailsTabsProps, SubscriptionDetailsTab } from './SubscriptionDetailsTabsTypes'
+import type {
+  SubscriptionDetailsTabsProps,
+  SubscriptionDetailsTab,
+} from './SubscriptionDetailsTabsTypes'
 import StepNote from '@/common/components/StepNote'
 import ServicesDetails from './components/ServicesDetails'
 import CustomersDetails from './components/CustomersDetails'
 import CollaboratorsDetails from './components/CollaboratorsDetails'
+import InformationDetails from './components/InformationDetails'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -50,6 +58,10 @@ const props = defineProps<SubscriptionDetailsTabsProps>()
 
 const notes = ref<Note[]>(props.subscriptionDetails?.notes ?? [])
 const activeTab = ref<SubscriptionDetailsTab['name']>('services')
+
+const noteIndex = computed(() =>
+  Object.values(RecapTabs).indexOf(activeTab.value as RecapTabs),
+)
 
 const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
   {
