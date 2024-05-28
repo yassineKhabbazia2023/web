@@ -11,7 +11,7 @@
       <PImage
         pType="portrait"
         pName="user-male"
-        class="myInformation-image-portrait"
+        class="my-information__image-portrait"
       />
     </div>
 
@@ -80,6 +80,9 @@
         >
           {{ t('requiredFields') }}
         </p>
+        <div class="margin-top--6">
+          <LegalLinks />
+        </div>
 
         <Teleport to=".el-drawer__footer">
           <div class="flex flex--justify-content-space-between">
@@ -115,6 +118,7 @@ import {
   PNotification,
 } from '@kpmg/styleguide'
 import type { FormInstance } from '@kpmg/styleguide'
+import LegalLinks from '@/components/LegalLinks'
 import type { FormValues, User } from './MyInformationTypes'
 import LogoutButton from '../LogoutButton'
 
@@ -221,8 +225,10 @@ onMounted(async () => {
 <style lang="scss" scoped>
 $gap: 12px;
 
-.myInformation-image-portrait {
-  height: 95px;
+.my-information {
+  &__image-portrait {
+    height: 95px;
+  }
 }
 
 .half-width {

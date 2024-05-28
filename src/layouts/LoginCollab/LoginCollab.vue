@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <main class="card">
+    <main class="card margin-bottom--6">
       <PRow>
         <PCol
           :pXs="24"
@@ -35,21 +35,9 @@
     </main>
 
     <footer class="footer">
-      <ul class="list-links">
-        <li
-          v-for="link in LINKS"
-          :key="link.translationKey"
-          class="list-item"
-        >
-          <a
-            class="link"
-            @click.prevent="handleFooterLinkClick(link)"
-            href=""
-          >
-            {{ t(link.translationKey) }}
-          </a>
-        </li>
-      </ul>
+      <div class="footer__legal-links margin-bottom--4">
+        <LegalLinks />
+      </div>
 
       <p class="support">
         {{ t('contactSupport') }}
@@ -97,9 +85,9 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { LINKS } from '../Login/contants'
 import { PButton, PCol, PDrawer, PCarousel, PRow, PImage } from '@kpmg/styleguide'
 import { useFooterLink } from '@/composables/useFooterLink'
+import LegalLinks from '@/components/LegalLinks'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -107,7 +95,6 @@ const { t } = useI18n({
 })
 
 const {
-  handleFooterLinkClick,
   handleCopyrightLink,
   isCopyrightDrawerOpened,
   handleCloseDrawer,
@@ -138,6 +125,8 @@ const carouselData = [
   font-style: italic;
 }
 .wrapper {
+  position: relative;
+  padding: 2.4rem 1.6rem;
   @media (min-width: 992px) {
     background: var(--el-color-base-persian-light)
       url('../Login/images/icon-pulse-bg.svg') no-repeat right;
@@ -147,9 +136,8 @@ const carouselData = [
     background-size: contain;
   }
   background: var(--el-color-base-persian-light);
-  height: 100vh;
+  min-height: 100vh;
   text-align: center;
-  padding-top: 24px;
 }
 
 .card {
@@ -165,7 +153,6 @@ const carouselData = [
   }
   background: var(--el-color-base-white);
   border-radius: 16px;
-  margin: 0 16px 24px 16px;
   padding: 24px 16px;
 
   .content {
@@ -208,24 +195,13 @@ $footer-margin: 24px;
 .footer {
   @media (min-width: 992px) and (min-height: 635px) {
     position: absolute;
+    left: 0;
     bottom: $footer-margin;
     width: 100%;
   }
 
-  .list-links {
-    display: flex;
-    list-style: none;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-
-    .list-item {
-      &:not(:last-of-type):after {
-        content: "•";
-        color: var(--el-color-neutral-gray-300-rgb);
-        padding: 0 8px;
-      }
-    }
+  &__legal-links {
+    text-align: center;
   }
 }
 
@@ -244,16 +220,13 @@ $footer-margin: 24px;
 <!-- eslint-disable @intlify/vue-i18n/no-unused-keys no-trailing-spaces -->
 <i18n lang="yaml">
   en-US:
-    legalNotice: 'Legal Notice'
-    CGU: 'CGU'
-    privacyPolicy: 'Privacy Policy'
     contactSupport: 'Contact support : '
     phoneNumber: '09 73 73 3000'
     emailLabel: ' — email : '
     SAVEmail: "relation-client{'@'}kpmg.fr"
-    copyright: "© 2023 KPMG S.A"
+    copyright: "© 2024 KPMG S.A"
     copyrightContent: >-
-      © 2023 KPMG S.A., public accounting and auditing company, 
+      © 2024 KPMG S.A., public accounting and auditing company, 
       French member of the global KPMG organization made up of independent firms 
       affiliated with KPMG International Limited, a company incorporated under English
       law (“private company limited by guarantee”). All rights reserved. 
@@ -268,16 +241,13 @@ $footer-margin: 24px;
     carouselItem3 : >-
       Follow the documents shared by your customers on a daily basis.
   fr-FR:
-    legalNotice: 'Mentions légales'
-    CGU: 'CGU'
-    privacyPolicy: 'Politique de confidentialité'
     contactSupport: 'Contact support : '
     phoneNumber: '09 73 73 3000'
     emailLabel: ' — email : '
     SAVEmail: "relation-client{'@'}kpmg.fr"
-    copyright: "© 2023 KPMG S.A"
+    copyright: "© 2024 KPMG S.A"
     copyrightContent: >-
-      © 2023 KPMG S.A., société anonyme d'expertise comptable et de commissariat aux comptes, 
+      © 2024 KPMG S.A., société anonyme d'expertise comptable et de commissariat aux comptes, 
       membre français de l’organisation mondiale KPMG constituée de cabinets indépendants 
       affiliés à KPMG International Limited, une société de droit anglais (« private company 
       limited by guarantee »). Tous droits réservés. Le nom et le logo KPMG sont des 

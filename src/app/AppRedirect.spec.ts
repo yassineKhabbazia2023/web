@@ -36,6 +36,7 @@ vi.mock('@kpmg/common', () => ({
     getToken: vi.fn(),
     registerOnChange: vi.fn(),
   },
+  fetchUrlTerms: vi.fn(),
 }))
 
 const createWrapper = () =>

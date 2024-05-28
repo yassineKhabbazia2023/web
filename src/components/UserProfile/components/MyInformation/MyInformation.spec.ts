@@ -48,6 +48,7 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
     },
   }),
+  fetchUrlTerms: vi.fn(),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
