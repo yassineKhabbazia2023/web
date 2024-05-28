@@ -1,32 +1,22 @@
 import { describe, it, expect, beforeEach, vi, type SpyInstance } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonStore, commonPinia as pinia } from '@kpmg/common'
+import { setActivePinia } from 'pinia'
+import { commonPinia as pinia } from '@kpmg/common'
 import * as SubscriptionServices from '@/services/subscription'
+import { mockHasPermission } from '@/../vitest.setup'
 import { getActiveOffersMocked } from './OffersMocks'
 import Offers from '.'
 
-const activeOffersMocked = getActiveOffersMocked()
-
 // Mocks
+const activeOffersMocked = getActiveOffersMocked()
 vi.mock('@/services/subscription', () => ({
   fetchAccountSubscriptions: vi.fn(() => Promise.resolve(activeOffersMocked)),
 }))
-
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
       id: 5,
-    },
-  }),
-}))
-vi.mock('@kpmg/common', () => ({
-  commonPinia: () => createPinia(),
-  commonStore: defineStore('common', {
-    getters: {
-      isAuthenticated: () => true,
-      isCollab: () => true,
     },
   }),
 }))
@@ -43,36 +33,36 @@ describe('offers', () => {
 
   describe('display', () => {
     it('display the table containing the list of offers', () => {
+      const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
       const columns = wrapper.findAllComponents({ name: 'PTableColumn' })
       const rows = wrapper.findAll('tr.el-table__row')
 
       expect(columns).toHaveLength(3)
       expect(rows).toHaveLength(activeOffersMocked.length)
+      expect(offersDrawer.exists()).toBeFalsy()
     })
 
-    it('should not display the actions column and activate the offers button for the client', async () => {
-      const store = commonStore()
-      // @ts-expect-error: Getter is read only
-      store.isCollab = false
+    it('should not display the activate offers button if the user does not have permission', async () => {
+      mockHasPermission.mockImplementation(() => false)
+      wrapper = createWrapper()
       await flushPromises()
       const activateOffersButton = wrapper.find(
         '[data-testid=folder-offer-activate-offers-button]',
       )
-      const columns = wrapper.findAllComponents({ name: 'PTableColumn' })
-
-      expect(columns).toHaveLength(2)
       expect(activateOffersButton.exists()).toBeFalsy()
     })
   })
 
   describe('events', () => {
-    it("should emit the 'activate-offers' event when the 'Activate Offers' button is clicked", async () => {
+    it('should display the offers drawer when clicking on the activate offers button', async () => {
       const activateOffersButton = wrapper.find(
         '[data-testid=folder-offer-activate-offers-button]',
       )
-
       await activateOffersButton.trigger('click')
-      expect(wrapper.emitted()).toHaveProperty('activate-offers')
+      const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
+
+      expect(offersDrawer.exists()).toBeTruthy()
+      expect(offersDrawer.props('modelValue')).toBeTruthy()
     })
 
     it('should catch the error and display it in the console when the API call fails', async () => {

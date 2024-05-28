@@ -13,10 +13,10 @@
       pHasButton
     >
       <PButton
-        v-if="isCollab"
+        v-if="hasPermission(PERMISSION_CODES.ACTIVATE_OFFER)"
         pType="primary"
         pSize="small"
-        @click="$emit('activate-offers')"
+        @click="handleActivateOffersClick"
         data-testid="folder-offer-activate-offers-button"
       >
         {{ t('activateOffers') }}
@@ -83,6 +83,15 @@
       </PTableColumn>
     </PTable>
   </div>
+  <OffersDrawer
+    v-if="isOffersDrawerOpened && defaultEntity"
+    :selectedCompanyName="defaultEntity.legalName"
+    :accountNumber="defaultEntity.accountNumber"
+    :accountId="defaultEntity.accountId"
+    :currentUser="user"
+    v-model="isOffersDrawerOpened"
+    data-testid="offers-drawer"
+  />
 </template>
 
 <script setup lang="ts">
@@ -90,7 +99,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@kpmg/common'
+import { commonStore, userPermissions } from '@kpmg/common'
 import {
   PBlockHeader,
   PButton,
@@ -107,6 +116,8 @@ import {
   type SubscriptionRequest,
   fetchAccountSubscriptions,
 } from '@/services/subscription'
+import OffersDrawer from '@/pages/entities/components/OffersDrawer'
+import { PERMISSION_CODES } from '@/constants'
 
 const route = useRoute()
 const { t } = useI18n({
@@ -118,12 +129,22 @@ defineEmits<{
   'activate-offers': []
 }>()
 
-const isLoading = ref<boolean>(true)
-const { isCollab } = storeToRefs(commonStore())
+const isLoading = ref(true)
+const isOffersDrawerOpened = ref(false)
+const { hasPermission } = userPermissions()
 const activeOffers = ref<SubscriptionRequest[]>([])
+const { isCollab, defaultEntity, user } = storeToRefs(commonStore())
 
-const headerTitle = computed(() => isCollab.value ? t('collabHeaderTitle') : t('clientHeaderTitle'))
-const headerSubtitle = computed(() => isCollab.value ? t('collabHeaderSubtitle') : t('clientHeaderSubtitle'))
+const headerTitle = computed(() =>
+  isCollab.value ? t('collabHeaderTitle') : t('clientHeaderTitle'),
+)
+const headerSubtitle = computed(() =>
+  isCollab.value ? t('collabHeaderSubtitle') : t('clientHeaderSubtitle'),
+)
+
+const handleActivateOffersClick = () => {
+  isOffersDrawerOpened.value = true
+}
 
 onMounted(async () => {
   try {
