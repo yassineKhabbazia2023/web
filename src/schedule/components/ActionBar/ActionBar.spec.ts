@@ -1,30 +1,31 @@
-import { describe, it, expect, vi } from 'vitest'
-import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
-import { createTestingPinia } from '@pinia/testing'
-import { commonStore as useCommonStore } from '@kpmg/common'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import type { ComponentMountingOptions } from '@vue/test-utils'
+import { describe, it, expect } from 'vitest'
+import { shallowMount } from '@vue/test-utils'
 import ActionBar from '.'
-import { PTabs, PTabPane } from '@kpmg/styleguide'
-import ActionBarLeft from '@/schedule/components/ActionBarLeft'
+import type { ActionBarProps } from './ActionBarTypes'
 
 const TEST_DATE = '2024-04-10'
 
-const createWrapper = (options: ComponentMountingOptions<any>) =>
-  wrapperFactory(ActionBar, options)
+function createWrapper(override: Partial<ActionBarProps> = {}) {
+  const defaultProps: ActionBarProps = {
+    modelValue: 'list',
+    activeDate: new Date(TEST_DATE),
+    isCollab: false,
+  }
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
 
-const pinia = createTestingPinia()
-vi.mock('@kpmg/common', () => KpmgCommontMock)
-const commonStore = useCommonStore(pinia)
+  return shallowMount(ActionBar, {
+    props,
+  })
+}
 
 describe('action bar', () => {
   describe('interactions', () => {
-    it('should emit create-schedule when create deadline button is clicked', async () => {
+    it('should emit create-schedule when create deadline button is clicked when isCollab', async () => {
       const wrapper = createWrapper({
-        props: {
-          activeDate: new Date(TEST_DATE),
-          modelValue: 'list',
-        },
+        isCollab: true,
       })
 
       await wrapper.find('[data-testid="create-schedule"]').trigger('click')
@@ -33,20 +34,9 @@ describe('action bar', () => {
     })
 
     it('should emit update:modelValue on tab change', () => {
-      const wrapper = createWrapper({
-        props: {
-          activeDate: new Date(TEST_DATE),
-          modelValue: 'list',
-        },
-        global: {
-          stubs: {
-            PTabs,
-            PTabPane,
-          },
-        },
-      })
+      const wrapper = createWrapper()
       const emitValue = 'calendar'
-      wrapper.findComponent(PTabs).vm.$emit('update:modelValue', emitValue)
+      wrapper.findComponent({ name: 'PTabs' }).vm.$emit('update:modelValue', emitValue)
 
       const emittedEvent = wrapper.emitted('update:modelValue')
       expect(emittedEvent).toHaveLength(1)
@@ -55,26 +45,14 @@ describe('action bar', () => {
     })
 
     it('should emit update:active-date', () => {
-      const wrapper = createWrapper({
-        props: {
-          activeDate: new Date(TEST_DATE),
-          modelValue: 'list',
-        },
-      })
+      const wrapper = createWrapper()
       const newDate = new Date('2024-05-03')
-      const actionBarLeft = wrapper.findComponent(ActionBarLeft)
+      const actionBarLeft = wrapper.findComponent({ name: 'ActionBarLeft' })
       actionBarLeft.vm.$emit('update:active-date', newDate)
       expect(wrapper.emitted('update:active-date')).toStrictEqual([[newDate]])
     })
-    it('should hide create schedule', () => {
-      // @ts-expect-error: Getter is read only
-      commonStore.isCollab = false
-      const wrapper = createWrapper({
-        props: {
-          activeDate: new Date(TEST_DATE),
-          modelValue: 'list',
-        },
-      })
+    it('should not show create schedule when NOT isCollab', () => {
+      const wrapper = createWrapper()
       expect(wrapper.find('[data-testid="create-schedule"]').exists()).toBeFalsy()
     })
   })

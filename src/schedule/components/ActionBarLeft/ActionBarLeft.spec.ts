@@ -1,15 +1,21 @@
+import { shallowMount } from '@vue/test-utils'
 import dayjs from 'dayjs'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
 import ActionBarLeft from '.'
 import { expect, describe, it, vi } from 'vitest'
+import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
 const TEST_DATE = '2024-04-10'
 
-function createWrapper() {
-  const props = {
+function createWrapper(override: Partial<ActionBarLeftProps> = {}) {
+  const defaultProps: ActionBarLeftProps = {
     activeDate: new Date(TEST_DATE),
   }
-  return wrapperFactory(ActionBarLeft, {
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
+
+  return shallowMount(ActionBarLeft, {
     props,
   })
 }

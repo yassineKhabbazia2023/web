@@ -11,6 +11,7 @@
       <ActionBar
         v-model="scheduleViewType"
         :activeDate="activeDate"
+        :isCollab="isCollab"
         @create-schedule="isDrawerVisible = true"
         @update:active-date="setActiveDate"
       />
