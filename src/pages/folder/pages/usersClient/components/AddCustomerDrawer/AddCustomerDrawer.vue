@@ -55,6 +55,7 @@
           <PInput
             v-model="formData.lastName"
             :disabled="disabledFormInputs.lastName"
+            data-testid="last-name-input"
           />
         </PFormItem>
 
@@ -65,6 +66,7 @@
           <PInput
             v-model="formData.firstName"
             :disabled="disabledFormInputs.firstName"
+            data-testid="first-name-input"
           />
         </PFormItem>
 
@@ -76,6 +78,7 @@
             v-model="formData.mobilePhone"
             pType="tel"
             :disabled="disabledFormInputs.mobilePhone"
+            data-testid="mobile-phone-input"
           />
         </PFormItem>
       </PForm>

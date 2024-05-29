@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import { PDrawer } from '@kpmg/styleguide'
-import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
+import { type VueWrapper, type DOMWrapper, mount, flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
@@ -72,18 +72,28 @@ const formDataMock = {
   lastName: 'Leplubo',
   mobilePhone: '0123456789',
 }
-function getFillFormFields(wrapper: VueWrapper) {
-  const inputs = wrapper.findAll('input')
-  const emailInput = inputs[0]
-  const lastNameInput = inputs[1]
-  const firstNameInput = inputs[2]
-  const mobilePhoneInput = inputs[3]
+
+function fillFormFields(wrapper: VueWrapper) {
+  const {
+    emailInput,
+    lastNameInput,
+    firstNameInput,
+    mobilePhoneInput,
+  } = getFormFields(wrapper)
 
   const { email, firstName, lastName, mobilePhone } = formDataMock
   emailInput.setValue(email)
   firstNameInput.setValue(firstName)
   lastNameInput.setValue(lastName)
   mobilePhoneInput.setValue(mobilePhone)
+}
+
+function getFormFields(wrapper: VueWrapper) {
+  const inputs = wrapper.findAll('[data-testid$="-input"]') as DOMWrapper<HTMLInputElement>[]
+  const emailInput = inputs[0]
+  const lastNameInput = inputs[1]
+  const firstNameInput = inputs[2]
+  const mobilePhoneInput = inputs[3]
 
   return {
     emailInput,
@@ -120,7 +130,7 @@ describe('add customer drawer', () => {
 
     it('should render add customer feedback after form submit', async () => {
       vi.useFakeTimers()
-      getFillFormFields(wrapper)
+      fillFormFields(wrapper)
       // To simulate the debounce time
       vi.advanceTimersByTime(600)
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
@@ -137,7 +147,7 @@ describe('add customer drawer', () => {
     it('should still render add customer feedback after form submit', async () => {
       gatewayPostMock = vi.fn().mockRejectedValue({})
       vi.useFakeTimers()
-      getFillFormFields(wrapper)
+      fillFormFields(wrapper)
       // To simulate the debounce time
       vi.advanceTimersByTime(600)
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
@@ -153,8 +163,8 @@ describe('add customer drawer', () => {
 
     it('should also render add customer feedback after form submit', async () => {
       vi.useFakeTimers()
-      getFillFormFields(wrapper)
-      vi.advanceTimersByTime(1000)
+      fillFormFields(wrapper)
+      vi.advanceTimersByTime(600)
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
       await nextPreviousButtonsWrapper.vm.$emit('click-next')
       await flushPromises()
@@ -169,27 +179,26 @@ describe('add customer drawer', () => {
 
   describe('interactions', () => {
     it('should fill the form if email exists', async () => {
-      const inputs = wrapper.findAll('input')
-      // email input is the first one
-      const emailInput = inputs[0]
+      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
       emailInput.setValue(formDataMock.email)
-      await inputs[0].trigger('blur')
+      await emailInput.trigger('blur')
       await flushPromises()
       await nextTick()
 
-      expect(inputs[1].element.value).toBe(customerMock.lastName)
-      expect(inputs[1].element.disabled).toBeTruthy()
-      expect(inputs[2].element.value).toBe(customerMock.firstName)
-      expect(inputs[2].element.disabled).toBeTruthy()
-      expect(inputs[3].element.value).toBe(customerMock.mobilePhone)
-      expect(inputs[3].element.disabled).toBeTruthy()
+      expect(lastNameInput.element.value).toBe(customerMock.lastName)
+      expect(lastNameInput.element.disabled).toBeTruthy()
+      expect(firstNameInput.element.value).toBe(customerMock.firstName)
+      expect(firstNameInput.element.disabled).toBeTruthy()
+      expect(mobilePhoneInput.element.value).toBe(customerMock.mobilePhone)
+      expect(mobilePhoneInput.element.disabled).toBeTruthy()
 
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
       expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeFalsy()
     })
 
     it('should bind values', () => {
-      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFillFormFields(wrapper)
+      fillFormFields(wrapper)
+      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
       const { email, firstName, lastName, mobilePhone } = formDataMock
 
       expect(emailInput.element.value).toBe(email)

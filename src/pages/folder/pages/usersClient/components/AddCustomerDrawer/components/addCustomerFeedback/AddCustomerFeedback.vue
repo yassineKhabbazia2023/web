@@ -3,6 +3,7 @@
     <PUserCard
       pAssetLeft="Image"
       pAssetContent="user-male"
+      pColor="gray"
       :pTitle="fullName"
       :pSubtitle="email"
     />
@@ -31,12 +32,13 @@
       <i18n-t
         class="margin-bottom--6"
         keypath="ifContactExists"
-        tag="p">
+        tag="p"
+      >
         <template #addEntity>
-          <strong>{{ t('addEntity') }}</strong>
+          <span class="font-bold">{{ t('addEntity') }}</span>
         </template>
         <template #myEntities>
-          <strong>{{ t('myEntities') }}</strong>
+          <span class="font-bold">{{ t('myEntities') }}</span>
         </template>
       </i18n-t>
     </div>
@@ -84,8 +86,8 @@ withDefaults(defineProps<AddCustomerFeedbackProps>(), {
     ifContactDoesNotExists: 'Si votre contact est un nouvel utilisateur, il vient de recevoir son e-mail de bienvenue.'
     ifContactExists: >
       Si votre contact a déjà un compte sur la plateforme KPMG Pulse,
-      il doit cliquer sur le le bouton {addEntity} sur sa page {myEntities}.
-    addEntity: 'AJouter une entité'
+      il doit cliquer sur le le bouton {addEntity} dans sa page {myEntities}.
+    addEntity: 'Ajouter une entité'
     myEntities: 'Mes entités'
     technicalError: "Votre contact n’a pas été ajouté suite à une erreur technique. Veuillez réessayer plus tard."
 </i18n>
