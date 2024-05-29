@@ -36,6 +36,11 @@
     >
       {{ t('today') }}
     </PButton>
+    <PExpandableSearch
+      class="margin-left--4"
+      :pIsSearchShrinkable="isSearchShrinkable"
+      @input="emit('update:search-term', $event)"
+    />
   </div>
 </template>
 
@@ -48,11 +53,13 @@ import {
   PIChevronRight,
   PIChevronLeft,
   PButton,
+  PExpandableSearch,
 } from '@kpmg/styleguide'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
 const emit = defineEmits<{
   'update:active-date': [Date]
+  'update:search-term': [string]
 }>()
 
 const datetimeFormats = {
@@ -77,6 +84,7 @@ const props = defineProps<ActionBarLeftProps>()
 
 const activeMonth = computed(() => d(props.activeDate, 'month'))
 const activeYear = computed(() => props.activeDate.getFullYear())
+const isSearchShrinkable = computed(() => props.searchTerm === '')
 
 const updateMonth = (nextOrPrevious: string) => {
   const deltaMonth = nextOrPrevious === 'prev' ? -1 : 1

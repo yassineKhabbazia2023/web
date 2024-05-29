@@ -5,7 +5,9 @@
   >
     <ActionBarLeft
       :activeDate="activeDate"
+      :searchTerm="searchTerm"
       @update:active-date="emit('update:active-date', $event)"
+      @update:search-term="emit('update:search-term', $event)"
     />
     <div
       class="flex flex--justify-content-flex-end flex--align-items-center"
@@ -55,6 +57,7 @@ const emit = defineEmits<{
   'create-schedule': []
   'update:modelValue': [value: string]
   'update:active-date': [Date]
+  'update:search-term': [string]
 }>()
 
 const { t } = useI18n({

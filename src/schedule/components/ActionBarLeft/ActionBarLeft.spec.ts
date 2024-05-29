@@ -9,6 +9,7 @@ const TEST_DATE = '2024-04-10'
 function createWrapper(override: Partial<ActionBarLeftProps> = {}) {
   const defaultProps: ActionBarLeftProps = {
     activeDate: new Date(TEST_DATE),
+    searchTerm: '',
   }
   const props = {
     ...defaultProps,
@@ -48,6 +49,27 @@ describe('month.vue', () => {
     const todayButton = wrapper.find('[data-testid="action-bar-left-today"]')
     await todayButton.trigger('click')
     expect(wrapper.emitted('update:active-date')).toStrictEqual([[mockedToday]])
+  })
+
+  it('should emit update:search-term when PExpandableSearch changes', () => {
+    const searchTermAfter = 'my search'
+    const wrapper = createWrapper()
+
+    const pExpandableSearch = wrapper.findComponent({ name: 'PExpandableSearch' })
+    expect(pExpandableSearch.props('pIsSearchShrinkable')).toBeTruthy()
+
+    pExpandableSearch.vm.$emit('input', searchTermAfter)
+    expect(wrapper.emitted('update:search-term')).toStrictEqual([[searchTermAfter]])
+  })
+
+  it('should set pIsSearchShrinkable to false when searchTerm is not empty', () => {
+    const searchTerm = 'my search'
+    const wrapper = createWrapper({
+      searchTerm,
+    })
+
+    const pExpandableSearch = wrapper.findComponent({ name: 'PExpandableSearch' })
+    expect(pExpandableSearch.props('pIsSearchShrinkable')).toBeFalsy()
   })
 })
 

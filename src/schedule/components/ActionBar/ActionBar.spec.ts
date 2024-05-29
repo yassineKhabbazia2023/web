@@ -10,6 +10,7 @@ function createWrapper(override: Partial<ActionBarProps> = {}) {
     modelValue: 'list',
     activeDate: new Date(TEST_DATE),
     isCollab: false,
+    searchTerm: '',
   }
   const props = {
     ...defaultProps,
@@ -51,9 +52,26 @@ describe('action bar', () => {
       actionBarLeft.vm.$emit('update:active-date', newDate)
       expect(wrapper.emitted('update:active-date')).toStrictEqual([[newDate]])
     })
+
     it('should not show create schedule when NOT isCollab', () => {
       const wrapper = createWrapper()
       expect(wrapper.find('[data-testid="create-schedule"]').exists()).toBeFalsy()
+    })
+
+    it('should emit update:search-term when actionBarLeft emits update:search-term', () => {
+      const searchTermBefore = 'before'
+      const searchTermAfter = 'after'
+      const wrapper = createWrapper({
+        searchTerm: searchTermBefore,
+        modelValue: 'list',
+      })
+
+      const actionBarLeft = wrapper.findComponent({ name: 'ActionBarLeft' })
+      expect(actionBarLeft.props('searchTerm')).toBe(searchTermBefore)
+
+      actionBarLeft.vm.$emit('update:search-term', searchTermAfter)
+
+      expect(wrapper.emitted('update:search-term')).toStrictEqual([[searchTermAfter]])
     })
   })
 })

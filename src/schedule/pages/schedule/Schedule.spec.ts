@@ -55,6 +55,7 @@ const mockedToday = new Date(TEST_DATE)
 const ActionBarStub = {
   name: 'ActionBar',
   template: '<div />',
+  props: ['searchTerm'],
   emits: ['create-schedule'],
 }
 
@@ -516,6 +517,28 @@ describe('home page', () => {
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
         expect(occurrenceDrawerAfter.exists()).toBeTruthy()
       })
+    })
+
+    it('should set searchTerm when ActionBar emits update:search-term', async () => {
+      const newSearchTerm = 'search term'
+      const wrapper = createWrapper({
+        global: {
+          stubs: {
+            ScheduleDrawer: {
+              name: 'ScheduleDrawer',
+              template: '<div />',
+            },
+            DeadlineList,
+            ActionBar: ActionBarStub,
+          },
+        },
+      })
+
+      const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+      expect(actionBar.props('searchTerm')).toBe('')
+      await actionBar.vm.$emit('update:search-term', newSearchTerm)
+      await nextTick()
+      expect(actionBar.props('searchTerm')).toBe(newSearchTerm)
     })
   })
 })

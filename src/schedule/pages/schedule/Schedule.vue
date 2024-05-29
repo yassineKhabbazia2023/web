@@ -10,6 +10,7 @@
 
       <ActionBar
         v-model="scheduleViewType"
+        v-model:searchTerm="searchTerm"
         :activeDate="activeDate"
         :isCollab="isCollab"
         @create-schedule="isDrawerVisible = true"
@@ -102,6 +103,7 @@ const scheduleViewType = ref('calendar')
 const deadlineItems = ref<DeadlinesByDate[]>([])
 const calendarWidgetDates = ref<string[]>([])
 const isLoading = ref(true)
+const searchTerm = ref('')
 const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
 const activeDate = ref(new Date())
