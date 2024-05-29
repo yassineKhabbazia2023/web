@@ -344,7 +344,7 @@ const toolboxItems = computed(
         pValue: t('removeCollaborator'),
         pActionName: 'removeCollaborator',
         pState: 'default',
-        display: hasPermission(PERMISSION_CODES.DELETE_USER),
+        display: hasPermission(PERMISSION_CODES.DELETE_COLLAB),
       },
     ]
       .filter(({ display }) => display)
