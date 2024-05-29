@@ -65,14 +65,14 @@ div.el-overlay:not(.p-drawer--mini) {
       z-index: 20;
 
       @media screen and (max-width: 1920px) {
-        width: 564px;
+        width: 590px;
       }
       @media screen and (max-width: 1440px) {
         width: 464px !important;
       }
 
       .el-drawer__body {
-        padding: 0 2.4rem 1.6rem;
+        padding: 0 2.4rem 2rem;
       }
     }
   }

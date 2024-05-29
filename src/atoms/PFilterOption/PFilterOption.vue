@@ -12,12 +12,13 @@
     :disabled="pDisabled"
   >
     <span
+      v-if="pValue !== undefined"
       class="
         p-filter-option__number
         font-semibold
         margin-right--3"
     >
-      {{ pNumber }}
+      {{ pValue }}
     </span>
     <PTag
       class="p-filter-option__tag"
@@ -44,8 +45,6 @@ import { PIXCircleFill } from '@/atoms/PIcon/components'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
 
 const emit = defineEmits<{
-  'click': []
-  'close': []
   'update:p-selected': [boolean]
 }>()
 
@@ -65,7 +64,6 @@ const isSelected = computed({
 
 const handleClick = () => {
   isSelected.value = !isSelected.value
-  isSelected.value ? emit('close') : emit('click')
 }
 
 const cssClass = computed(() => ({
@@ -123,6 +121,10 @@ const colorMapper = computed(() => {
     border-color: var(--el-color-neutral-gray-50);
   }
 
+  &--color-gray-900 {
+    border-color: var(--el-color-neutral-gray-100);
+  }
+
   &--selected {
     &#{$self}--color-success {
       border-color: var(--el-color-functionnal-green);
@@ -138,6 +140,10 @@ const colorMapper = computed(() => {
 
     &#{$self}--color-danger {
       border-color: var(--el-color-functionnal-red);
+    }
+
+    &#{$self}--color-gray-900 {
+      border-color: var(--el-color-neutral-gray-900);
     }
   }
 
@@ -157,6 +163,10 @@ const colorMapper = computed(() => {
 
     &#{$self}--color-danger {
       background-color: var(--el-color-functionnal-red-bg);
+    }
+
+    &#{$self}--color-gray-900 {
+      background-color: var(--el-color-neutral-gray-100);
     }
   }
 

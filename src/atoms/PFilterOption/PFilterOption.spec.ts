@@ -10,7 +10,7 @@ const defaultProps: PFilterOptionProps = {
   pIcon: PIArrowUpCircle,
   pSelected: false,
   pDisabled: false,
-  pNumber: 0,
+  pValue: 0,
 }
 
 const createWrapper = (props: any = defaultProps) =>
@@ -43,19 +43,19 @@ describe('filterOption', () => {
     expect(filterOption.exists()).toBeTruthy()
   })
 
-  it('should emit event click when clicking on the component', () => {
+  it('should emit event update:p-selected=true when clicking on the component', () => {
     const wrapper = createWrapper()
     wrapper.trigger('click')
-    expect(wrapper.emitted('click')).toBeTruthy()
+    expect(wrapper.emitted('update:p-selected')).toStrictEqual([[true]])
   })
 
-  it('should emit event close when the component is already selected', () => {
+  it('should emit event update:p-selected=false when the component is already selected', () => {
     const wrapper = createWrapper({
       ...defaultProps,
       pSelected: true,
     })
     wrapper.trigger('click')
-    expect(wrapper.emitted('close')).toBeTruthy()
+    expect(wrapper.emitted('update:p-selected')).toStrictEqual([[false]])
   })
 
   it('should render the text values of the component', () => {

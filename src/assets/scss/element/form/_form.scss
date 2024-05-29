@@ -26,16 +26,11 @@ $form-item-error-padding-top: (
 .el-form {
   .el-form-item {
     margin-bottom: 16px;
-    &.is-error.is-required,
-    &.is-error {
-      margin-bottom: 36px;
-    }
   
     .el-form-item__label {
       font-weight: 600;
     }
   }
-  
   .el-form-item__content .el-form-item__error {
     display: flex;
   
@@ -44,6 +39,10 @@ $form-item-error-padding-top: (
       width: 12px;
       height: 12px;
       margin-right: 8px;
+    }
+
+    &--inline {
+      margin-left: 0;
     }
   }
 }

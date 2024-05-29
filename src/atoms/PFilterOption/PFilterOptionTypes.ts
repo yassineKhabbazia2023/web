@@ -1,9 +1,9 @@
 import type { Component } from 'vue'
 
 export interface PFilterOptionProps {
-  pNumber: number
+  pValue?: string | number
   pContent: string
-  pColor: 'success' | 'warning' | 'amethyste' | 'danger' | 'gray-500'
+  pColor: 'success' | 'warning' | 'amethyste' | 'danger' | 'gray-500' | 'gray-900'
   pSelected?: boolean
   pDisabled?: boolean
   pIcon: Component | string
