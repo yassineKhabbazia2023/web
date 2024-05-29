@@ -1,6 +1,13 @@
 <template>
   <div class="flex flex--direction-column sticky-wrapper">
     <div class="flex--grow-1 padding--2">
+      <PButton pType="primary" @click="isAddCustomerDrawerOpened = true" />
+      <AddCustomerDrawer
+        v-if="currentEntityId && currentEntityName"
+        v-model="isAddCustomerDrawerOpened"
+        :targetEntityId="currentEntityId"
+        :targetEntityName="currentEntityName"
+      />
       <div class="margin-bottom--6">
         <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
       </div>
@@ -54,8 +61,8 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, reactive, watch } from 'vue'
-import { PLoader, PPagination } from '@kpmg/styleguide'
+import { computed, onMounted, reactive, watch, ref } from 'vue'
+import { PLoader, PPagination, PButton } from '@kpmg/styleguide'
 import { commonStore, commonApi } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
 import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
@@ -67,6 +74,7 @@ import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
 import DrawerUserDetails from './components/DrawerUserDetails'
 import { API_PREFIXES } from '@/common/config/services'
 import type { IUser } from '../usersCollab/types'
+import AddCustomerDrawer from './components/AddCustomerDrawer'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -101,7 +109,7 @@ const handlePageRangeChanged = (newItemsPerPage: number) => {
 const paginationLabel = computed(
   () =>
     `${1 + (state.currentPage - 1) * state.limit}
-    - ${(state.currentPage - 1) * state.limit + state.data.length} 
+    - ${(state.currentPage - 1) * state.limit + state.data.length}
     ${t('on')} ${state.totalItems}`,
 )
 
@@ -201,6 +209,11 @@ onMounted(async () => {
     },
   )
 })
+
+const defaultEntity = computed(() => userStore.defaultEntity)
+const currentEntityId = computed(() => defaultEntity.value?.accountId)
+const currentEntityName = computed(() => defaultEntity.value?.legalName)
+const isAddCustomerDrawerOpened = ref(false)
 </script>
 
 <style lang="scss" scoped>

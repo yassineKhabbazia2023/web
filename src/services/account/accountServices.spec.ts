@@ -10,6 +10,7 @@ import {
   deleteAccountDelegation,
   addContactToEntity,
   fetchContactsFromSameHub,
+  addCustomerToEntity,
 } from '.'
 import {
   getMockedAccount,
@@ -19,6 +20,7 @@ import {
   getMockedReferentialHubs,
 } from './accountMock'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
+import { API_PREFIXES } from '@/common/config/services'
 
 const accountId = 5
 const accountIdRejected = 8
@@ -184,6 +186,18 @@ describe('test accountServices', () => {
     it('should fetch contacts from same hub', async () => {
       const result = await fetchContactsFromSameHub('searchValue', 100)
       expect(result).toStrictEqual(mockedCollaborators)
+    })
+
+    it('should add customer to entity', async () => {
+      const postRequestBody = {
+        firstName: mockedCollaborators[0].firstName,
+        lastName: mockedCollaborators[0].lastName,
+        email: mockedCollaborators[0].email,
+        mobilePhone: mockedCollaborators[0].mobilePhone,
+        accountNumber: String(mockedAccount.accountId),
+      }
+      await addCustomerToEntity(postRequestBody)
+      expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`, postRequestBody)
     })
   })
 })

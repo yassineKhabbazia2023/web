@@ -106,3 +106,16 @@ export async function deleteContactFromAccount(
     },
   })
 }
+
+type addCustomerToEntityBody = {
+  firstName: Contact['firstName']
+  lastName: Contact['lastName']
+  email: Contact['email']
+  mobilePhone: Contact['mobilePhone']
+  accountNumber: string
+}
+
+export async function addCustomerToEntity(customerInformation: addCustomerToEntityBody) {
+  const url = `${API_PREFIXES.ACCOUNT}/customers`
+  return await commonApi().gateway.post(url, customerInformation)
+}
