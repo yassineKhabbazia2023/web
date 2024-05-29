@@ -14,12 +14,12 @@ describe('legalLinks', () => {
   it('can read the notices', async () => {
     await flushPromises()
     await vi.dynamicImportSettled()
-    const copyrightsLink = wrapper.find('[data-testid="legal-links-notices"]')
-    const isDrawerOpen = () => wrapper.find('.p-drawer.open')
+    const noticeLink = wrapper.find('[data-testid="legal-links-notices"]')
+    const cookiesNoticesDrawer = wrapper.find('[data-testid="cookies-notices-drawer"]')
 
-    expect(isDrawerOpen().exists()).toBeFalsy()
+    expect(cookiesNoticesDrawer.classes()).toContainEqual('close')
 
-    await copyrightsLink.trigger('click')
-    expect(isDrawerOpen().exists()).toBeTruthy()
+    await noticeLink.trigger('click')
+    expect(cookiesNoticesDrawer.classes()).toContainEqual('open')
   })
 })

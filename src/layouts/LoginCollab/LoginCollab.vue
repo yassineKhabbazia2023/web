@@ -67,6 +67,7 @@
       v-model="isCopyrightDrawerOpened"
       pTitle="Copyright"
       @close-drawer-button="handleCloseDrawer"
+      data-testid="login-copyright-drawer"
     >
       <p class="drawerContent">
         {{ t('copyrightContent') }}

@@ -19,11 +19,10 @@ describe('login', () => {
     await flushPromises()
     await vi.dynamicImportSettled()
     const copyrightsLink = wrapper.find('.support + p .link')
-    const isDrawerOpen = () => wrapper.find('.p-drawer.open')
+    const getLoginCopyrightDrawerClasses = () => wrapper.find('[data-testid="login-copyright-drawer"]').classes()
 
-    expect(isDrawerOpen().exists()).toBeFalsy()
-
+    expect(getLoginCopyrightDrawerClasses()).not.toContainEqual('open')
     await copyrightsLink.trigger('click')
-    expect(isDrawerOpen().exists()).toBeTruthy()
+    expect(getLoginCopyrightDrawerClasses()).toContainEqual('open')
   })
 })

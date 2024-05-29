@@ -15,7 +15,7 @@
     <li class="legal-links__item flex flex--align-items-center">
       <button
         class="legal-links__link"
-        @click="drawerNotices.openDrawer = !drawerNotices.openDrawer"
+        @click="drawerVisibility = !drawerVisibility"
         data-testid="legal-links-notices"
       >
         {{ t('cookiesNotices') }}
@@ -53,40 +53,45 @@
       </a>
     </li>
   </ul>
-  <PDrawer
-    v-model="drawerNotices.openDrawer"
-    @close-drawer-button="drawerNotices.openDrawer = false"
-    :pTitle="t('cookiesNotices')"
+  <div
+    v-show="drawerVisibility"
+    :class="drawerVisibility ? 'open' : 'close'"
+    data-testid="cookies-notices-drawer"
   >
-    <!-- OneTrust Cookies List start -->
-    <div id="ot-sdk-cookie-policy"></div>
-    <!-- OneTrust Cookies List end -->
+    <PDrawer
+      modelValue
+      @close-drawer-button="drawerVisibility = false"
+      :pTitle="t('cookiesNotices')"
+    >
+      <!-- OneTrust Cookies List start -->
+      <div id="ot-sdk-cookie-policy"></div>
+      <!-- OneTrust Cookies List end -->
 
-    <template #footer>
-      <PButton
-        @click="drawerNotices.openDrawer = false"
-        pType="primary"
-      >
-        {{ t('close') }}
-      </PButton>
-    </template>
-  </PDrawer>
+      <template #footer>
+        <PButton
+          @click="drawerVisibility = false"
+          pType="primary"
+        >
+          {{ t('close') }}
+        </PButton>
+      </template>
+    </PDrawer>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { reactive, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { PButton, PDrawer } from '@kpmg/styleguide'
 import { fetchUrlTerms } from '@kpmg/common'
+
+const drawerVisibility = ref(false)
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const drawerNotices = reactive({
-  openDrawer: false,
-})
 const urlTerms = ref()
 onMounted(async () => {
   urlTerms.value = await fetchUrlTerms()
