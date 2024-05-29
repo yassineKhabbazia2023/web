@@ -105,20 +105,28 @@ const folderSubmenu = computed(() => ({
   ].filter((item) => item.display),
 }))
 
-const menuItems = computed(() => [
-  {
-    index: `/dossier/${props.selectedEntityId}/ged`,
-    title: t('documents'),
-    leftIcon: 'PIFileText',
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
-  },
-  {
-    index: `/dossier/${props.selectedEntityId}/launcher`,
-    title: t('apps'),
-    leftIcon: 'PIGrid',
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
-  },
-].filter((item) => item.display))
+const menuItems = computed(() =>
+  [
+    {
+      title: t('biReports'),
+      index: `/dossier/${props.selectedEntityId}/rapports-bi`,
+      leftIcon: 'PIClipboardData',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_POWERBI_REPORT),
+    },
+    {
+      index: `/dossier/${props.selectedEntityId}/ged`,
+      title: t('documents'),
+      leftIcon: 'PIFileText',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
+    },
+    {
+      index: `/dossier/${props.selectedEntityId}/launcher`,
+      title: t('apps'),
+      leftIcon: 'PIGrid',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
+    },
+  ].filter((item) => item.display),
+)
 
 watch(route, (currentRoute) => {
   activeMenuItem.value = currentRoute.fullPath
@@ -164,6 +172,7 @@ en-US:
   apps: 'Applications'
   delegationsHistory: 'Delegations history'
   home: 'Home'
+  biReports: 'BI reports'
 fr-FR:
   folder: 'Dossier'
   users: 'Utilisateurs'
@@ -174,4 +183,5 @@ fr-FR:
   apps: 'Applications'
   delegationsHistory: 'Historique des délégations'
   home: 'Accueil'
+  biReports: 'Rapports BI'
 </i18n>

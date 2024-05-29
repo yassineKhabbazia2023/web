@@ -167,7 +167,7 @@ const isSelectedEntityActive = computed(() => {
   const params = {
     id: selectedEntity.value.accountId,
   }
-
+  // TODO: This part needs to be refactored
   const isFolderActiveItem = activeItem({
     name: 'folder',
     params,
@@ -183,7 +183,12 @@ const isSelectedEntityActive = computed(() => {
     params,
   })
 
-  return isFolderActiveItem || isGedActiveItem || isLauncherActiveItem
+  const isReportsBIActiveItem = activeItem({
+    name: 'reports',
+    params,
+  })
+
+  return isFolderActiveItem || isGedActiveItem || isLauncherActiveItem || isReportsBIActiveItem
 })
 
 const onToggleSidebar = () => {
