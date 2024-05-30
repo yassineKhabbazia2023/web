@@ -25,6 +25,7 @@
       @clear="handleClear"
       @input="handleInput"
       @blur="handleBlur"
+      @key:enter="emit('enter')"
     >
     </PInput>
   </div>
@@ -44,6 +45,7 @@ const props = withDefaults(defineProps<PExpandableSearchProps>(), {
 const emit = defineEmits<{
   input: [string]
   'search-expand-change': [boolean]
+  'enter': []
 }>()
 
 const searchContent = ref('')

@@ -5,7 +5,10 @@
         :pPlaceholder="placeholder"
         :pIsSearchShrinkable ="pIsSearchShrinkable "
         :pIsSearchOpen="pIsSearchOpen"
-        @input="logEvent('input', $event)" />
+        @input="logEvent('input', $event)"
+        @search-expand-change="logEvent('search-expand-change', $event)"
+        @enter="logEvent('enter', $event)"
+      />
       <template #controls>
         <HstText v-model="placeholder" title="Placeholder" />
         <HstCheckbox v-model="pIsSearchShrinkable " title="pIsSearchShrinkable "/>
