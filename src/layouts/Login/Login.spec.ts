@@ -3,10 +3,10 @@
  */
 import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import Login from './'
 
-const createWrapper = () => mount(Login)
+const createWrapper = () => shallowMount(Login)
 
 describe('login', () => {
   const wrapper: VueWrapper<any> = createWrapper()
@@ -18,11 +18,11 @@ describe('login', () => {
   it('can read the copyrights', async () => {
     await flushPromises()
     await vi.dynamicImportSettled()
-    const copyrightsLink = wrapper.find('.support + p .link')
-    const getLoginCopyrightDrawerClasses = () => wrapper.find('[data-testid="login-copyright-drawer"]').classes()
+    const loginCopyrightLink = wrapper.find('[data-testid="login-copyright-link"]')
+    const loginDrawer = wrapper.findComponent({ name: 'PDrawer' })
 
-    expect(getLoginCopyrightDrawerClasses()).not.toContainEqual('open')
-    await copyrightsLink.trigger('click')
-    expect(getLoginCopyrightDrawerClasses()).toContainEqual('open')
+    expect(loginDrawer.props('modelValue')).toBeFalsy()
+    await loginCopyrightLink.trigger('click')
+    expect(loginDrawer.props('modelValue')).toBeTruthy()
   })
 })

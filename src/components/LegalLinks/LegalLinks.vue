@@ -25,14 +25,17 @@
       <!-- OneTrust Cookies Settings button start -->
       <button
         id="ot-sdk-btn"
-        class="legal-links__link ot-sdk-show-settingbutton is"
+        class="legal-links__link ot-sdk-show-settings"
       >
         {{ t('cookiesParameters') }}
       </button>
       <!-- OneTrust Cookies Settings button end -->
     </li>
-    <!-- Miss link -->
-    <li class="legal-links__item flex flex--align-items-center">
+    <li
+      v-if="!isCollab && route.name !== 'login'"
+      class="legal-links__item flex flex--align-items-center"
+      data-testid="legal-links-cgu"
+    >
       <a
         class="legal-links__link"
         :href="urlTerms"
@@ -81,16 +84,21 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { PButton, PDrawer } from '@kpmg/styleguide'
-import { fetchUrlTerms } from '@kpmg/common'
-
-const drawerVisibility = ref(false)
+import { commonStore, fetchUrlTerms } from '@kpmg/common'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const { isCollab } = storeToRefs(commonStore())
+const route = useRoute()
+
+const drawerVisibility = ref(false)
 
 const urlTerms = ref()
 onMounted(async () => {

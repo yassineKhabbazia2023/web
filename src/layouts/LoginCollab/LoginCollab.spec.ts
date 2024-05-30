@@ -1,21 +1,21 @@
 
 import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import LoginCollab from '.'
 
-const createWrapper = () => mount(LoginCollab)
+const createWrapper = () => shallowMount(LoginCollab)
 
 describe('loginCollab', () => {
   it('can read the copyrights', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     await flushPromises()
     await vi.dynamicImportSettled()
-    const copyrightsLink = wrapper.find('.support + p .link')
-    const getLoginCopyrightDrawerClasses = () => wrapper.find('[data-testid="login-copyright-drawer"]').classes()
+    const loginCollabCopyrightLink = wrapper.find('[data-testid="login-collab-copyright-link"]')
+    const loginCollabDrawer = wrapper.findComponent({ name: 'PDrawer' })
 
-    expect(getLoginCopyrightDrawerClasses()).not.toContainEqual('open')
-    await copyrightsLink.trigger('click')
-    expect(getLoginCopyrightDrawerClasses()).toContainEqual('open')
+    expect(loginCollabDrawer.props('modelValue')).toBeFalsy()
+    await loginCollabCopyrightLink.trigger('click')
+    expect(loginCollabDrawer.props('modelValue')).toBeTruthy()
   })
 })

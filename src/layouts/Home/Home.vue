@@ -158,9 +158,9 @@ onMounted(async () => {
 
   .aside-container .sidebar-container {
     height: 100vh;
+    padding-right: 52px;
     @media only screen and (min-width: 992px) {
       position: relative;
-      padding-right: 52px;
       z-index: 10;
     }
   }
@@ -187,7 +187,6 @@ onMounted(async () => {
 
     @media only screen and (max-width: 991px) {
       height: calc(100vh - 108px);
-      margin-left: 50px;
     }
 
     &--no-paddings {

@@ -26,7 +26,6 @@
           <PImage
             pType="paupulse"
             pName="connection-default"
-            pFit="none"
             class="illustration"
           />
         </PCol>
@@ -49,6 +48,7 @@
           class="link"
           @click.prevent="handleCopyrightLink"
           href=""
+          data-testid="login-copyright-link"
         >
           {{ t('copyright') }}
         </a>
@@ -108,6 +108,13 @@ const {
 .wrapper {
   position: relative;
   padding: 2.4rem 1.6rem;
+  background: var(--el-color-base-persian-light);
+  height: 100vh;
+  text-align: center;
+
+  @media screen and (max-height: 700px) {
+    overflow-y: scroll;
+  }
   @media (min-width: 992px) {
     background: var(--el-color-base-persian-light)
       url('./images/icon-pulse-bg.svg') no-repeat right;
@@ -116,9 +123,6 @@ const {
   @media (min-height: 1028px) {
     background-size: contain;
   }
-  background: var(--el-color-base-persian-light);
-  min-height: 100vh;
-  text-align: center;
 }
 
 .card {
@@ -176,7 +180,7 @@ $footer-margin: 24px;
   font-size: 1.2rem;
 }
 .footer {
-  @media (min-width: 992px) and (min-height: 635px) {
+  @media (min-width: 992px) and (min-height: 700px) {
     position: absolute;
     left: 0;
     bottom: $footer-margin;
@@ -209,12 +213,12 @@ $footer-margin: 24px;
     SAVEmail: "relation-client{'@'}kpmg.fr"
     copyright: "© 2024 KPMG S.A"
     copyrightContent: >-
-      © 2024 KPMG S.A., public accounting and auditing company, 
-      French member of the global KPMG organization made up of independent firms 
+      © 2024 KPMG S.A., public accounting and auditing company,
+      French member of the global KPMG organization made up of independent firms
       affiliated with KPMG International Limited, a company incorporated under English
-      law (“private company limited by guarantee”). All rights reserved. 
-      The KPMG name and logo are trademarks used under license by independent member firms of 
-      the global KPMG organization. To learn more about the structure of 
+      law (“private company limited by guarantee”). All rights reserved.
+      The KPMG name and logo are trademarks used under license by independent member firms of
+      the global KPMG organization. To learn more about the structure of
       the KPMG global organization, visit https://kpmg.com/governance.
     close: 'Close'
   fr-FR:
@@ -224,12 +228,12 @@ $footer-margin: 24px;
     SAVEmail: "relation-client{'@'}kpmg.fr"
     copyright: "© 2024 KPMG S.A"
     copyrightContent: >-
-      © 2024 KPMG S.A., société anonyme d'expertise comptable et de commissariat aux comptes, 
-      membre français de l’organisation mondiale KPMG constituée de cabinets indépendants 
-      affiliés à KPMG International Limited, une société de droit anglais (« private company 
-      limited by guarantee »). Tous droits réservés. Le nom et le logo KPMG sont des 
-      marques utilisées sous licence par les cabinets indépendants membres de l’organisation 
-      mondiale KPMG. Pour en savoir plus sur la structure de l’organisation mondiale KPMG, 
+      © 2024 KPMG S.A., société anonyme d'expertise comptable et de commissariat aux comptes,
+      membre français de l’organisation mondiale KPMG constituée de cabinets indépendants
+      affiliés à KPMG International Limited, une société de droit anglais (« private company
+      limited by guarantee »). Tous droits réservés. Le nom et le logo KPMG sont des
+      marques utilisées sous licence par les cabinets indépendants membres de l’organisation
+      mondiale KPMG. Pour en savoir plus sur la structure de l’organisation mondiale KPMG,
       rendez-vous sur la page https://kpmg.com/governance (en anglais).
     close: 'Fermer'
 </i18n>
