@@ -1,18 +1,29 @@
-import { flushPromises } from '@vue/test-utils'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
+import { flushPromises, mount } from '@vue/test-utils'
 import ScheduleDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
 import * as scheduleService from '@/schedule/services'
-import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { getMonthlyMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
+import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
 
+const TEST_DATE = '2024-08-14'
+const mockedToday = new Date(TEST_DATE)
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
 
-const createWrapper = (props: any = {}) =>
-  wrapperFactory(ScheduleDrawer, {
+function createWrapper(override: Partial<ScheduleDrawerProps> = {}) {
+  const defaultProps: ScheduleDrawerProps = {
+    modelValue: true,
+    defaultCreateDate: mockedToday,
+  }
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
+
+  return mount(ScheduleDrawer, {
     props,
   })
+}
 
 vi.mock('@/schedule/services', () => {
   return {
@@ -34,19 +45,21 @@ describe('drawer.vue', () => {
 
   it('should emit update:modelValue event', async () => {
     const wrapper = createWrapper({ modelValue: true })
-    await wrapper.vm.triggerFormEvaluation()
+    const sendReminderButton = wrapper.find('[data-testid="schedule-send-reminder-button"]')
+    await sendReminderButton.trigger('click')
     await wrapper.find('.p-drawer__close-button').trigger('click')
     expect(wrapper.emitted('update:modelValue')).toStrictEqual([
       [false],
     ])
   })
+
   it('should call sendReminder service when the cta send-reminder is clicked', async () => {
     // Arrange
     const wrapper = createWrapper({ modelValue: true })
 
     // Act
     await flushPromises()
-    const scheduleForm = wrapper.findComponent(CreateScheduleForm)
+    const scheduleForm = wrapper.findComponent({ name: 'CreateScheduleForm' })
     scheduleForm.vm.$emit('update-schedule-model', createScheduleMockWithTypeLong)
 
     // Assert

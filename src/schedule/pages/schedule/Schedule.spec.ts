@@ -1,12 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
 import { nextTick } from 'vue'
-import { flushPromises, type ComponentMountingOptions, type VueWrapper, shallowMount } from '@vue/test-utils'
+import { flushPromises, type VueWrapper, shallowMount } from '@vue/test-utils'
 import Schedule from '@/schedule/pages/schedule'
-import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
-import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
-import ActionBar from '@/schedule/components/ActionBar'
-import WidgetActiveDay from '@/schedule/components/WidgetActiveDay'
+import type { ScheduleProps } from './ScheduleTypes'
 import { getMonthInterval } from './ScheduleUtils'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import * as ScheduleServices from '@/schedule/services'
@@ -17,9 +14,6 @@ import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useCommonStore } from '@kpmg/common'
 
 const pinia = createTestingPinia()
-
-const createWrapper = (options: ComponentMountingOptions<any>) =>
-  shallowMount(Schedule, options)
 
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
@@ -64,6 +58,45 @@ const OccurrenceDrawerStub = {
   template: '<div />',
 }
 
+function createWrapper(override: Partial<ScheduleProps> = {}) {
+  const defaultProps: ScheduleProps = {}
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
+
+  return shallowMount(Schedule, {
+    props,
+    global: {
+      stubs: {
+        DeadlineList: {
+          name: 'DeadlineList',
+          template: '<div />',
+          props: ['modelValue', 'deadlinesByDate', 'activeDate'],
+        },
+        OccurrenceDrawer: OccurrenceDrawerStub,
+        ScheduleDrawer: {
+          name: 'ScheduleDrawer',
+          template: '<div />',
+        },
+        ActionBar: ActionBarStub,
+        Calendar: {
+          name: 'Calendar',
+          template: '<div />',
+          props: ['modelValue', 'deadlinesByDate', 'pRange'],
+          emits: ['update:model-value'],
+        },
+        PDatePicker: {
+          name: 'PDatePicker',
+          template: '<div />',
+          props: ['pSchedulesCollection'],
+          emits: ['panel-change'],
+        },
+      },
+    },
+  })
+}
+
 describe('home page', () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -71,15 +104,7 @@ describe('home page', () => {
   })
 
   it('should render home page', () => {
-    const wrapper = createWrapper({
-      global: {
-        stubs: {
-          ScheduleDrawer,
-          DeadlineList,
-          OccurrenceDrawer: OccurrenceDrawerStub,
-        },
-      },
-    })
+    const wrapper = createWrapper()
     expect(wrapper.exists()).toBeTruthy()
   })
 
@@ -87,15 +112,7 @@ describe('home page', () => {
     const getSchedulesCollectionSpy = vi
       .spyOn(ScheduleServices, 'getSchedulesCollection')
 
-    createWrapper({
-      global: {
-        stubs: {
-          ScheduleDrawer,
-          DeadlineList,
-          OccurrenceDrawer: OccurrenceDrawerStub,
-        },
-      },
-    })
+    createWrapper()
     await flushPromises()
     const expectedMonthRange = getMonthInterval(mockedToday, 7)
 
@@ -109,18 +126,7 @@ describe('home page', () => {
 
   describe('interactions', () => {
     it('should display the drawer on displayDeadlineDrawer event', async () => {
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer: {
-              name: 'ScheduleDrawer',
-              template: '<div />',
-            },
-            DeadlineList,
-            ActionBar: ActionBarStub,
-          },
-        },
-      })
+      const wrapper = createWrapper()
 
       expect(wrapper.findComponent({ name: 'ScheduleDrawer' }).exists()).toBeFalsy()
       await wrapper.findComponent({ name: 'ActionBar' }).vm.$emit('create-schedule')
@@ -150,27 +156,10 @@ describe('home page', () => {
 
       const expectedDeadlinesByDate = [...currentMounthDeadlines]
 
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer,
-            DeadlineList: {
-              name: 'DeadlineList',
-              template: '<div />',
-              props: ['modelValue', 'deadlinesByDate', 'pRange'],
-            },
-            ActionBar: ActionBarStub,
-            Calendar: {
-              name: 'Calendar',
-              template: '<div />',
-            },
-            OccurrenceDrawer: OccurrenceDrawerStub,
-          },
-        },
-      })
+      const wrapper = createWrapper()
 
       await flushPromises()
-      const actionBarWrapper = wrapper.findComponent(ActionBar)
+      const actionBarWrapper = wrapper.findComponent({ name: 'ActionBar' })
 
       await actionBarWrapper.vm.$emit('update:modelValue', 'list')
       const deadlinesListWrapper = wrapper.findComponent({ name: 'DeadlineList' })
@@ -180,18 +169,10 @@ describe('home page', () => {
     })
 
     it('should update the visible section on activeScheduleViewType change', async () => {
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer,
-            DeadlineList,
-            ActionBar: ActionBarStub,
-          },
-        },
-      })
+      const wrapper = createWrapper()
 
       await flushPromises()
-      const actionBarWrapper = wrapper.findComponent(ActionBar)
+      const actionBarWrapper = wrapper.findComponent({ name: 'ActionBar' })
       const deadlinesListWrapper = wrapper.findComponent({ name: 'DeadlineList' })
       const calendarWrapper = wrapper.findComponent({ name: 'Calendar' })
 
@@ -200,7 +181,7 @@ describe('home page', () => {
 
       await actionBarWrapper.vm.$emit('update:modelValue', 'list')
 
-      expect(wrapper.findComponent(DeadlineList).exists()).toBeTruthy()
+      expect(wrapper.findComponent({ name: 'DeadlineList' }).exists()).toBeTruthy()
       expect(calendarWrapper.exists()).toBeFalsy()
     })
 
@@ -210,16 +191,7 @@ describe('home page', () => {
 
       beforeEach(async () => {
         wrapper = createWrapper({
-          props: {
-            defaultActiveDate: TEST_DATE,
-          },
-          global: {
-            stubs: {
-              ScheduleDrawer,
-              DeadlineList,
-              ActionBar: ActionBarStub,
-            },
-          },
+          defaultActiveDateString: TEST_DATE,
         })
 
         await flushPromises()
@@ -250,32 +222,16 @@ describe('home page', () => {
     })
 
     it('should fired update:active-date', async () => {
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer,
-            DeadlineList,
-            ActionBar: ActionBarStub,
-          },
-        },
-      })
+      const wrapper = createWrapper()
       const newDate = new Date(OTHER_MONTH_DATE)
-      wrapper.findComponent(ActionBar).vm.$emit('update:active-date', newDate)
+      wrapper.findComponent({ name: 'ActionBar' }).vm.$emit('update:active-date', newDate)
       await nextTick()
-      const actionBar = wrapper.findComponent(ActionBar)
+      const actionBar = wrapper.findComponent({ name: 'ActionBar' })
       expect(actionBar.emitted('update:active-date')).toStrictEqual([[newDate]])
     })
 
     it('should change activeDate when DeadlineList emits change-date', async () => {
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer,
-            DeadlineList,
-            ActionBar: ActionBarStub,
-          },
-        },
-      })
+      const wrapper = createWrapper()
       const actionBar = wrapper.findComponent({ name: 'ActionBar' })
       await actionBar.vm.$emit('update:modelValue', 'list')
 
@@ -299,26 +255,7 @@ describe('home page', () => {
           date: OTHER_MONTH_DATE,
           deadlines: mockedDeadLinesA,
         }])
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer,
-            DeadlineList,
-            ActionBar: ActionBarStub,
-            PDatePicker: {
-              name: 'PDatePicker',
-              template: '<div />',
-              props: ['pSchedulesCollection'],
-              emits: ['panel-change'],
-            },
-            Calendar: {
-              name: 'Calendar',
-              template: '<div />',
-              props: ['deadlinesByDate'],
-            },
-          },
-        },
-      })
+      const wrapper = createWrapper()
       await flushPromises()
 
       const datePicker = wrapper.findComponent({ name: 'PDatePicker' })
@@ -351,22 +288,7 @@ describe('home page', () => {
           date: OTHER_MONTH_DATE,
           deadlines: [],
         }])
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer,
-            DeadlineList,
-            ActionBar: ActionBarStub,
-            PDatePicker: {
-              name: 'PDatePicker',
-              template: '<div />',
-              props: ['pSchedulesCollection'],
-              emits: ['panel-change'],
-            },
-            OccurrenceDrawer: OccurrenceDrawerStub,
-          },
-        },
-      })
+      const wrapper = createWrapper()
       await flushPromises()
 
       const datePicker = wrapper.findComponent({ name: 'PDatePicker' })
@@ -403,26 +325,7 @@ describe('home page', () => {
           date: OTHER_MONTH_DATE,
           deadlines: [],
         }])
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer,
-            DeadlineList,
-            ActionBar: ActionBarStub,
-            PDatePicker: {
-              name: 'PDatePicker',
-              template: '<div />',
-              props: ['pSchedulesCollection'],
-              emits: ['panel-change'],
-            },
-            Calendar: {
-              name: 'Calendar',
-              template: '<div />',
-              emits: ['update:model-value'],
-            },
-          },
-        },
-      })
+      const wrapper = createWrapper()
       await flushPromises()
 
       const datePicker = wrapper.findComponent({ name: 'PDatePicker' })
@@ -440,17 +343,7 @@ describe('home page', () => {
       let wrapper: VueWrapper
 
       beforeEach(async () => {
-        wrapper = createWrapper({
-          global: {
-            stubs: {
-              ScheduleDrawer,
-              DeadlineList,
-              ActionBar: ActionBarStub,
-              PDatePicker: true,
-              Calendar: true,
-            },
-          },
-        })
+        wrapper = createWrapper()
         await flushPromises()
 
         const actionBarWrapper = wrapper.findComponent({ name: 'ActionBar' })
@@ -500,7 +393,7 @@ describe('home page', () => {
         const occurrenceDrawerBefore = wrapper.findComponent({ name: 'OccurrenceDrawer' })
         expect(occurrenceDrawerBefore.exists()).toBeFalsy()
 
-        wrapper.findComponent(WidgetActiveDay).vm.$emit('select-deadline', OccurenceId)
+        wrapper.findComponent({ name: 'WidgetActiveDay' }).vm.$emit('select-deadline', OccurenceId)
         await nextTick()
 
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
@@ -511,7 +404,7 @@ describe('home page', () => {
         const occurrenceDrawerBefore = wrapper.findComponent({ name: 'Calendar' })
         expect(occurrenceDrawerBefore.exists()).toBeFalsy()
 
-        wrapper.findComponent(WidgetActiveDay).vm.$emit('select-deadline', OccurenceId)
+        wrapper.findComponent({ name: 'WidgetActiveDay' }).vm.$emit('select-deadline', OccurenceId)
         await nextTick()
 
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
@@ -521,18 +414,7 @@ describe('home page', () => {
 
     it('should set searchTerm when ActionBar emits update:search-term', async () => {
       const newSearchTerm = 'search term'
-      const wrapper = createWrapper({
-        global: {
-          stubs: {
-            ScheduleDrawer: {
-              name: 'ScheduleDrawer',
-              template: '<div />',
-            },
-            DeadlineList,
-            ActionBar: ActionBarStub,
-          },
-        },
-      })
+      const wrapper = createWrapper()
 
       const actionBar = wrapper.findComponent({ name: 'ActionBar' })
       expect(actionBar.props('searchTerm')).toBe('')
