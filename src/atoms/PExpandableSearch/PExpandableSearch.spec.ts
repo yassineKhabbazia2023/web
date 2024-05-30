@@ -162,16 +162,16 @@ describe('pExpandableSearch', () => {
       expect(pInputWrapper.classes().includes('isExpanded')).toBeFalsy()
     })
 
-    it('should emit "enter" when PInput emits key:enter', async () => {
+    it('should emit "enter" when PInput emits keyup.enter', async () => {
       const updatedProps = {
         ...defaultProps,
         pIsSearchShrinkable: false,
         pIsSearchOpen: true,
       }
       const wrapper = createWrapper(updatedProps)
-      const pInputWrapper = findPinput(wrapper)
+      const pInput = wrapper.find('[data-testid="p-expandable-search-input"]')
 
-      await pInputWrapper.vm.$emit('key:enter')
+      await pInput.trigger('keyup.enter')
 
       expect(wrapper.emitted('enter')).toStrictEqual([[]])
     })

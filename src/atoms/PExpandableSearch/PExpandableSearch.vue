@@ -24,7 +24,8 @@
       :class="['p-expandable-search__input', isSearchOpen ? 'isExpanded' : '']"
       @clear="handleClear"
       @blur="handleBlur"
-      @key:enter="emit('enter')"
+      @keyup.enter="emit('enter')"
+      data-testid="p-expandable-search-input"
     >
     </PInput>
   </div>
