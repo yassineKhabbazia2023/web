@@ -5,8 +5,8 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore } from '@kpmg/common'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
-import Folder from './'
 import { PERMISSION_CODES } from '@/constants'
+import Folder from './'
 
 const pinia = createTestingPinia()
 vi.mock('@kpmg/common', () => ({
@@ -33,12 +33,13 @@ vi.mock('@kpmg/common', () => ({
 
 const mockRouterPush = vi.fn()
 const mockHasPermission = vi.fn((_code: string[]) => true)
+let useRouteResponse = {}
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
   }),
-  useRoute: () => ({}),
+  useRoute: () => (useRouteResponse),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -54,6 +55,7 @@ describe('dossier', () => {
 
   beforeEach(async () => {
     vi.useFakeTimers()
+    useRouteResponse = {}
     wrapper = createWrapper()
 
     await flushPromises()
@@ -77,6 +79,32 @@ describe('dossier', () => {
       name: tabs,
       params: {
         name: mockedEntity.legalName,
+      },
+    })
+  })
+
+  it.only('should redirect to userClient if user is a client', async () => {
+    useRouteResponse = { name: 'usersCollab' }
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    await flushPromises()
+
+    wrapper = createWrapper()
+
+    await document.getElementById('tab-usersClient')?.click()
+
+    expect(mockRouterPush).toHaveBeenCalledTimes(2)
+    expect(mockRouterPush).toHaveBeenNthCalledWith(1, {
+      name: 'usersClient',
+      params: {
+        name: mockedEntity.legalName,
+      },
+    })
+    expect(mockRouterPush).toHaveBeenNthCalledWith(2, {
+      name: 'usersClient',
+      params: {
+        id: mockedEntity.accountId,
       },
     })
   })
