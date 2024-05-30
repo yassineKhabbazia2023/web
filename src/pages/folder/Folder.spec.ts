@@ -83,7 +83,7 @@ describe('dossier', () => {
     })
   })
 
-  it.only('should redirect to userClient if user is a client', async () => {
+  it('should redirect to userClient if user is a client', async () => {
     useRouteResponse = { name: 'usersCollab' }
     const store = commonStore()
     // @ts-expect-error: Getter is read only
