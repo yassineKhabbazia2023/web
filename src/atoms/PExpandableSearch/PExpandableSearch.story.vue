@@ -2,15 +2,16 @@
   <Story title="2. Atoms/ExpandableSearch" icon="tabler:search">
     <Variant title="Basic Usage">
       <PExpandableSearch
-        :pPlaceholder="placeholder"
+        :pPlaceholder="pPlaceholder"
+        v-model:pSearchContent="pSearchContent"
         :pIsSearchShrinkable ="pIsSearchShrinkable "
         :pIsSearchOpen="pIsSearchOpen"
-        @input="logEvent('input', $event)"
+        @update:p-search-content="logEvent('input', $event)"
         @search-expand-change="logEvent('search-expand-change', $event)"
         @enter="logEvent('enter', $event)"
       />
       <template #controls>
-        <HstText v-model="placeholder" title="Placeholder" />
+        <HstText v-model="pPlaceholder" title="Placeholder" />
         <HstCheckbox v-model="pIsSearchShrinkable " title="pIsSearchShrinkable "/>
         <HstCheckbox v-model="pIsSearchOpen " title="pIsSearchOpen "/>
       </template>
@@ -23,7 +24,8 @@ import { logEvent } from 'histoire/client'
 import PExpandableSearch from './'
 import { ref } from 'vue'
 
-const placeholder = ref('')
+const pPlaceholder = ref('')
+const pSearchContent = ref('')
 const pIsSearchShrinkable = ref(true)
 const pIsSearchOpen = ref(false)
 </script>

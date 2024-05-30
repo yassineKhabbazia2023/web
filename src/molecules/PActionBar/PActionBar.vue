@@ -45,7 +45,7 @@
             'margin-right--2',
             item.pButtonName === '' ? 'el-button--icon' : ''
           ]"
-          @click="$emit('p-action-bar-button-clicked', item.pButtonActionName)"
+          @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
         >
           <PIcon class="el-button__icon--left">
             <component :is="resolvedIconsLeft[index]"></component>
@@ -55,10 +55,11 @@
           </p>
         </PButton>
         <PExpandableSearch
+          v-model:pSearchContent="pSearchContent"
           v-else-if="item.pComponentType === 'SEARCH'"
           :pIsSearchShrinkable="item.pIsSearchShrinkable"
           :pIsSearchOpen="item.pIsSearchOpen"
-          @input="handleSearchTextTyped"
+          @update:p-search-content="handleSearchTextTyped"
           @search-expand-change="handleExpandEvent"
         />
       </template>
@@ -77,7 +78,7 @@
           'p-action-bar__right-btn',
           isSearchExpanded ? 'p-action-bar__right-btn--round' : ''
         ]"
-        @click="$emit('p-action-bar-button-clicked', item.pButtonActionName)"
+        @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
       >
         <PIcon class="el-button__icon--left">
           <component :is="resolvedIconsRight[index]"></component>
@@ -155,6 +156,8 @@ onBeforeUnmount(() => {
 const handleFilesSelected = (data: File[]) => {
   emit('p-upload-files-selected', data)
 }
+
+const pSearchContent = ref('')
 const handleSearchTextTyped = (data: string) => {
   emit('p-search-input', data)
 }

@@ -15,7 +15,7 @@
     </PButton>
 
     <PInput
-      v-model="searchContent"
+      v-model="internalSearchContent"
       pType="search"
       :pPlaceholder="pPlaceholder"
       :pPrefixIcon="PISearch"
@@ -23,7 +23,6 @@
       pSize="small"
       :class="['p-expandable-search__input', isSearchOpen ? 'isExpanded' : '']"
       @clear="handleClear"
-      @input="handleInput"
       @blur="handleBlur"
       @key:enter="emit('enter')"
     >
@@ -32,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { PISearch } from '@/atoms/PIcon/components'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import PButton from '@/atoms/PButton'
@@ -45,10 +44,14 @@ const props = withDefaults(defineProps<PExpandableSearchProps>(), {
 const emit = defineEmits<{
   input: [string]
   'search-expand-change': [boolean]
+  'update:p-search-content': [string]
   'enter': []
 }>()
 
-const searchContent = ref('')
+const internalSearchContent = computed({
+  get: () => props.pSearchContent ?? '',
+  set: (searchContent: string) => emit('update:p-search-content', searchContent),
+})
 const isSearchOpen = ref(props.pIsSearchOpen)
 
 const openSearchBar = () => {
@@ -61,14 +64,10 @@ const handleClear = () => {
   emit('search-expand-change', false)
 }
 
-const handleInput = () => {
-  emit('input', searchContent.value)
-}
-
 const handleBlur = () => {
   if (props.pIsSearchShrinkable) {
     isSearchOpen.value = false
-    searchContent.value = ''
+    internalSearchContent.value = ''
     emit('search-expand-change', false)
   }
 }
@@ -77,7 +76,7 @@ watch(
   () => props.pIsSearchOpen,
   (value) => {
     if (!value) {
-      searchContent.value = ''
+      internalSearchContent.value = ''
     }
 
     isSearchOpen.value = value

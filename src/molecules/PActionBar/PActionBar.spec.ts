@@ -294,7 +294,7 @@ describe('events', () => {
     })
 
     const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
-    pSearchWrapper.vm.$emit('input', searchInput)
+    pSearchWrapper.vm.$emit('update:p-search-content', searchInput)
 
     expect(wrapper.emitted('p-search-input')).toHaveLength(1)
   })

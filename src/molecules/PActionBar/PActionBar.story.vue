@@ -4,16 +4,27 @@
     icon="mdi:call-to-action"
     :layout="{ type: 'single', iframe: true }">
     <Variant title="Basic usage simple">
-      <PActionBar :pLeftSideButtons="pLeftSideIcons" :pRightSideButtons="pRightSideIcons2" />
+      <PActionBar
+        :pLeftSideButtons="pLeftSideIcons"
+        :pRightSideButtons="pRightSideIcons2"
+        @p-upload-files-selected="logEvent('p-upload-files-selected', $event)"
+        @p-action-bar-button-clicked="logEvent('p-action-bar-button-clicked', $event)"
+        @p-search-input="logEvent('p-search-input', $event)"
+        @search-expand-change="logEvent('search-expand-change', $event)"
+      />
     </Variant>
     <Variant title="Basic usage simple without right side buttons">
-      <PActionBar :pLeftSideButtons="pLeftSideIcons" :pRightSideButtons="pRightSideIcons" />
+      <PActionBar
+        :pLeftSideButtons="pLeftSideIcons"
+        :pRightSideButtons="pRightSideIcons"
+      />
     </Variant>
   </Story>
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
+import { logEvent } from 'histoire/client'
 import type { ComponentDefinitionProps } from './PActionBarTypes'
 import PActionBar from '.'
 import type { PButtonProps } from '@/main'

@@ -66,6 +66,7 @@ describe('pExpandableSearch', () => {
       await nextTick()
 
       const pInput = findPinput(wrapper)
+
       expect(pInput.classes().includes('isExpanded')).toBeTruthy()
       expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])
     })
@@ -88,12 +89,12 @@ describe('pExpandableSearch', () => {
 
       await expandSearch(wrapper)
 
-      await wrapper.find('input').setValue('test')
-
+      const inputElement = findInput(wrapper)
+      inputElement.setValue('test')
       await nextTick()
 
-      expect(wrapper.emitted('input')).toBeTruthy()
-      expect(wrapper.emitted('input')).toStrictEqual([['test']])
+      expect(wrapper.emitted('update:p-search-content')).toBeTruthy()
+      expect(wrapper.emitted('update:p-search-content')).toStrictEqual([['test']])
     })
 
     it('should emit search-expand-change and clear input upon pinput blur event', async () => {
@@ -127,19 +128,20 @@ describe('pExpandableSearch', () => {
 
       const pInputWrapper = findPinput(wrapper)
 
-      await pInputWrapper.setValue('test')
+      const newPSearchContent = 'test'
+      await pInputWrapper.setValue(newPSearchContent)
 
       await nextTick()
 
       const input = findInput(pInputWrapper)
-      await input.trigger('focus')
+      input.trigger('focus')
       await nextTick()
 
-      await input.trigger('blur')
+      input.trigger('blur')
       await nextTick()
 
       expect(pInputWrapper.classes().includes('isExpanded')).toBeTruthy()
-      expect(input.element.value).toBe('test')
+      expect(wrapper.emitted('update:p-search-content')).toStrictEqual([[newPSearchContent]])
     })
 
     it('should not shrink search input and clear the content upon pIsSearchOpen value change', async () => {
