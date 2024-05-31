@@ -6,8 +6,8 @@ import AddCustomerFeedback from '.'
 import type { AddCustomerFeedbackProps } from './AddCustomerFeedbackTypes'
 
 const defaultProps = {
-  fullName: 'Amaury Linde',
-  email: 'amaury@linde.fr',
+  fullName: 'Amaury Leplubo',
+  email: 'this@isafakeemail.cc',
   isError: false,
 }
 
