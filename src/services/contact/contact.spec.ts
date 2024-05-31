@@ -1,7 +1,7 @@
 import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@/common/config/services'
 import { getMockedCollaborators, getMockedCustomer } from './contactMocks'
-import { getCollaborators, getContactById, patchContact } from '.'
+import { getCollaborators, getContactById, getUserByEmail, patchContact } from '.'
 import { omit } from 'lodash-es'
 import type { PatchContactPayload } from './contactTypes'
 
@@ -60,6 +60,12 @@ describe('contact', () => {
       expect(contact).toStrictEqual(mockedContact[0])
     })
   })
+
+  it('should get user by email', async () => {
+    const contact = await getUserByEmail(mockedCollaborators[0].email)
+    expect(contact).toStrictEqual(mockedCollaborators[0])
+  })
+
   describe('patchContact', () => {
     it('should return the patched contact with given payload', async () => {
       const patchPayload = omit(mockedContact[0], 'id', 'persona', 'email', 'type', 'office') as PatchContactPayload

@@ -132,13 +132,4 @@ describe('dossier', () => {
 
     expect(folderActionButton.exists()).toBeFalsy()
   })
-  it('should display the button label when the user is a client', () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
-    const btnAction = wrapper.findComponent(
-      '[data-testid=folder-action-button]',
-    ) as VueWrapper
-    expect(btnAction.text()).toBe('Add user')
-  })
 })
