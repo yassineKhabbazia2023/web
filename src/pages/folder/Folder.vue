@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading && activeTab !== 'folder'" class="folder-wrapper">
+  <div v-if="areTabsDisplayed" class="folder-wrapper">
     <div class="flex flex--align-items-center">
       <PAvatar pColor="orange">
         <PIcon>
@@ -11,17 +11,21 @@
       </p>
       <div class="folder__teleported-content" />
     </div>
-    <PTabs v-model="activeTab" @tab-click="handleTabClick">
+    <PTabs
+      v-if="!isLoading"
+      :modelValue="activeTab"
+      @tab-click="handleTabClick"
+    >
       <PTabPane
         v-for="tab in tabsList"
         :key="tab.name"
         :pLabel="tab.title"
         :name="tab.name"
       />
-      <router-view />
     </PTabs>
   </div>
-  <Home v-else-if="activeTab === 'folder'" />
+  <Home v-else-if="isHomeDisplayed" />
+  <router-view />
 </template>
 
 <script setup lang="ts">
@@ -50,6 +54,7 @@ const route = useRoute()
 const router = useRouter()
 const isLoading = ref(false)
 const userStore = commonStore()
+const activeTab = computed(() => route.name as string)
 const { hasPermission } = userPermissions()
 const { defaultEntity, isCollab } = storeToRefs(userStore)
 
@@ -92,17 +97,20 @@ const clientTabs = computed(() => [
   },
   ...commonTabs.value,
 ])
-const activeTab = ref(route.name as string)
 const tabsList = computed(() => {
   const tabs = isCollab.value ? collabTabs.value : clientTabs.value
   return tabs.filter(({ display }) => display)
 })
+const NO_TABS = ['reports', 'folder']
+const areTabsDisplayed = computed(
+  () => !NO_TABS.includes(route.name as string),
+)
+const isHomeDisplayed = computed(() => route.name === 'folder')
 
 // Functions
 const handleTabClick = (tab: any) => {
   router.push({
     name: tab.paneName,
-    params: { name: defaultEntity.value?.legalName },
   })
 }
 
@@ -111,7 +119,6 @@ const handleTabClick = (tab: any) => {
 // but, in the end, usersCollab & usersClient should, perhaps, be merged or managed in another way
 const redirectToUsersClientIfClient = () => {
   if (route.name === 'usersCollab' && !isCollab.value) {
-    activeTab.value = 'usersClient'
     router.push({
       name: 'usersClient',
       params: { id: defaultEntity.value?.accountId },
@@ -120,7 +127,6 @@ const redirectToUsersClientIfClient = () => {
 }
 
 watch(route, () => {
-  activeTab.value = route.name as string
   redirectToUsersClientIfClient()
 })
 

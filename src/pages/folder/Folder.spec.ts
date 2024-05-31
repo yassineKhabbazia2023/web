@@ -77,9 +77,6 @@ describe('dossier', () => {
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({
       name: tabs,
-      params: {
-        name: mockedEntity.legalName,
-      },
     })
   })
 
@@ -97,9 +94,6 @@ describe('dossier', () => {
     expect(mockRouterPush).toHaveBeenCalledTimes(2)
     expect(mockRouterPush).toHaveBeenNthCalledWith(1, {
       name: 'usersClient',
-      params: {
-        name: mockedEntity.legalName,
-      },
     })
     expect(mockRouterPush).toHaveBeenNthCalledWith(2, {
       name: 'usersClient',

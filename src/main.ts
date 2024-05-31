@@ -127,6 +127,16 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
     name: 'usersClient',
     component: () => import('@/pages/folder/pages/usersClient'),
   } as RouteRecordRaw)
+  res.push({
+    path: 'rapports-bi',
+    name: 'reports',
+    component: () => import('@/pages/power-bi/pages/bi-reports'),
+    meta: {
+      styles: {
+        hasPaddings: false,
+      },
+    },
+  } as RouteRecordRaw)
   return res
 }
 
