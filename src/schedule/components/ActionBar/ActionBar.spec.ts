@@ -11,6 +11,7 @@ function createWrapper(override: Partial<ActionBarProps> = {}) {
     activeDate: new Date(TEST_DATE),
     isCollab: false,
     searchTerm: '',
+    isSearchState: false,
   }
   const props = {
     ...defaultProps,
@@ -23,15 +24,37 @@ function createWrapper(override: Partial<ActionBarProps> = {}) {
 }
 
 describe('action bar', () => {
+  describe('display', () => {
+    const tests = [{
+      isSearchState: false,
+      expected: true,
+    }, {
+      isSearchState: true,
+      expected: false,
+    }]
+    it.each(tests)('actionBarRight.exists should be $expected when isSearchState is $isSearchState', ({
+      isSearchState,
+      expected,
+    }) => {
+      const wrapper = createWrapper({
+        isSearchState,
+      })
+
+      const actionBarRight = wrapper.find('[data-testid="action-bar-right"]')
+
+      expect(actionBarRight.exists()).toBe(expected)
+    })
+  })
+
   describe('interactions', () => {
     it('should emit create-schedule when create deadline button is clicked when isCollab', async () => {
       const wrapper = createWrapper({
         isCollab: true,
       })
 
-      await wrapper.find('[data-testid="create-schedule"]').trigger('click')
+      await wrapper.find('[data-testid="action-bar-create-schedule-button"]').trigger('click')
 
-      expect(wrapper.emitted('create-schedule')).toHaveLength(1)
+      expect(wrapper.emitted('create-schedule')).toStrictEqual([[]])
     })
 
     it('should emit update:modelValue on tab change', () => {
@@ -55,7 +78,7 @@ describe('action bar', () => {
 
     it('should not show create schedule when NOT isCollab', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('[data-testid="create-schedule"]').exists()).toBeFalsy()
+      expect(wrapper.find('[data-testid="action-bar-create-schedule-button"]').exists()).toBeFalsy()
     })
 
     it('should emit update:search-term when actionBarLeft emits update:search-term', () => {
@@ -72,6 +95,21 @@ describe('action bar', () => {
       actionBarLeft.vm.$emit('update:search-term', searchTermAfter)
 
       expect(wrapper.emitted('update:search-term')).toStrictEqual([[searchTermAfter]])
+    })
+
+    it('should emit update:is-search-state when actionBarLeft emits update:is-search-state', () => {
+      const isSearchStateBefore = true
+      const isSearchStateAfter = false
+      const wrapper = createWrapper({
+        isSearchState: isSearchStateBefore,
+      })
+
+      const actionBarLeft = wrapper.findComponent({ name: 'ActionBarLeft' })
+      expect(actionBarLeft.props('isSearchState')).toBe(isSearchStateBefore)
+
+      actionBarLeft.vm.$emit('update:is-search-state', isSearchStateAfter)
+
+      expect(wrapper.emitted('update:is-search-state')).toStrictEqual([[isSearchStateAfter]])
     })
   })
 })
