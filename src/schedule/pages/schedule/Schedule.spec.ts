@@ -452,7 +452,7 @@ describe('home page', () => {
         const actionBar = wrapper.findComponent({ name: 'ActionBar' })
         await actionBar.vm.$emit('update:search-term', newSearchTerm)
         await nextTick()
-        await actionBar.vm.$emit('update:model-value', 'list')
+        await actionBar.vm.$emit('update:is-search-state', true)
         await flushPromises()
         expect(getAdvancedSearchParamsSpy).toHaveBeenCalledOnce()
         expect(getAdvancedSearchParamsSpy).toHaveBeenNthCalledWith(1, today, newSearchTerm)

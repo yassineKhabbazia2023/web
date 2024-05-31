@@ -10,6 +10,7 @@ function createWrapper(override: Partial<ActionBarLeftProps> = {}) {
   const defaultProps: ActionBarLeftProps = {
     activeDate: new Date(TEST_DATE),
     searchTerm: '',
+    isSearchState: false,
   }
   const props = {
     ...defaultProps,
@@ -56,20 +57,59 @@ describe('month.vue', () => {
     const wrapper = createWrapper()
 
     const pExpandableSearch = wrapper.findComponent({ name: 'PExpandableSearch' })
-    expect(pExpandableSearch.props('pIsSearchShrinkable')).toBeTruthy()
 
-    pExpandableSearch.vm.$emit('input', searchTermAfter)
+    pExpandableSearch.vm.$emit('update:p-search-content', searchTermAfter)
     expect(wrapper.emitted('update:search-term')).toStrictEqual([[searchTermAfter]])
   })
 
-  it('should set pIsSearchShrinkable to false when searchTerm is not empty', () => {
-    const searchTerm = 'my search'
+  it('should emit update:is-search-state when PExpandableSearch emits enter', () => {
+    const wrapper = createWrapper()
+
+    const pExpandableSearch = wrapper.findComponent({ name: 'PExpandableSearch' })
+
+    pExpandableSearch.vm.$emit('enter')
+
+    expect(wrapper.emitted('update:is-search-state')).toStrictEqual([[true]])
+  })
+
+  it('should display properly when isSearchState is true', () => {
+    const isSearchState = true
     const wrapper = createWrapper({
-      searchTerm,
+      isSearchState,
     })
 
     const pExpandableSearch = wrapper.findComponent({ name: 'PExpandableSearch' })
+    const prevMountButton = wrapper.find('[data-testid=schedule-prev-month-button]')
+
     expect(pExpandableSearch.props('pIsSearchShrinkable')).toBeFalsy()
+    expect(prevMountButton.exists()).toBeFalsy()
+  })
+
+  it('should display properly when isSearchState is false', () => {
+    const isSearchState = false
+    const wrapper = createWrapper({
+      isSearchState,
+    })
+
+    const pExpandableSearch = wrapper.findComponent({ name: 'PExpandableSearch' })
+    const endSearchStateButton = wrapper.find('[data-testid="action-bar-left-end-search-state-button"]')
+    const prevMountButton = wrapper.find('[data-testid=schedule-prev-month-button]')
+
+    expect(pExpandableSearch.props('pIsSearchShrinkable')).toBeTruthy()
+    expect(endSearchStateButton.exists()).toBeFalsy()
+    expect(prevMountButton.exists()).toBeTruthy()
+  })
+
+  it('should emit update:is-search-state when clicks on action-bar-left-end-search-state-button', () => {
+    const wrapper = createWrapper({
+      isSearchState: true,
+    })
+
+    const endSearchStateButton = wrapper.find('[data-testid="action-bar-left-end-search-state-button"]')
+
+    endSearchStateButton.trigger('click')
+
+    expect(wrapper.emitted('update:is-search-state')).toStrictEqual([[false]])
   })
 })
 

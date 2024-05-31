@@ -1,21 +1,35 @@
 <template>
   <div
-    class="p-schedule-action-bar flex flex--justify-content-space-between
-      flex--align-items-center padding-x--6"
+    class="
+      p-schedule-action-bar
+      flex
+      flex--justify-content-space-between
+      flex--align-items-center
+      padding-x--6
+      padding-y--4
+    "
   >
     <ActionBarLeft
       :activeDate="activeDate"
       :searchTerm="searchTerm"
+      :isSearchState="isSearchState"
       @update:active-date="emit('update:active-date', $event)"
       @update:search-term="emit('update:search-term', $event)"
+      @update:is-search-state="emit('update:is-search-state', $event)"
     />
     <div
-      class="flex flex--justify-content-flex-end flex--align-items-center"
+      v-if="!isSearchState"
+      class="
+        flex
+        flex--justify-content-flex-end
+        flex--align-items-center
+      "
+      data-testid="action-bar-right"
     >
       <PTabs
         v-model="activeScheduleViewType"
         pType="icon"
-        class="margin-right--2 margin-top--4"
+        class="margin-right--2"
       >
         <PTabPane
           pName="calendar"
@@ -34,7 +48,7 @@
         @click="emit('create-schedule')"
         pType="primary"
         pSize="small"
-        data-testid="create-schedule"
+        data-testid="action-bar-create-schedule-button"
       >
         <PIcon class="el-button__icon--left">
           <PIAdd />
@@ -58,6 +72,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: string]
   'update:active-date': [Date]
   'update:search-term': [string]
+  'update:is-search-state': [boolean]
 }>()
 
 const { t } = useI18n({
@@ -79,6 +94,10 @@ const activeScheduleViewType = computed({
 .p-schedule-action-bar {
   width: 100%;
   border-bottom: 1px solid var(--el-color-neutral-gray-100);
+
+  :deep(.el-tabs__header) {
+    margin-bottom: 0;
+  }
 }
 </style>
 

@@ -3,4 +3,5 @@ export interface ActionBarProps {
   activeDate: Date
   isCollab: boolean
   searchTerm: string
+  isSearchState: boolean
 }

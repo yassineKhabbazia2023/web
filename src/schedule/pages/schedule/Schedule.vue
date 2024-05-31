@@ -13,9 +13,10 @@
         v-model:searchTerm="searchTerm"
         :activeDate="activeDate"
         :isCollab="isCollab"
+        :isSearchState="isSearchState"
         @create-schedule="isDrawerVisible = true"
         @update:active-date="setActiveDate"
-        @update:model-value="onUpdateScheduleViewType"
+        @update:is-search-state="onUpdateIsSearchState"
       />
 
       <DeadlineList
@@ -105,6 +106,7 @@ const deadlineItems = ref<DeadlinesByDate[]>([])
 const advancedSearchDeadlineItems = ref<DeadlinesByDate[]>([])
 const calendarWidgetDates = ref<string[]>([])
 const isLoading = ref(true)
+const isSearchState = ref(false)
 const searchTerm = ref('')
 const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
@@ -170,6 +172,7 @@ async function refreshData() {
 
 async function refreshAdvancedSearch() {
   if (!searchTerm.value) {
+    advancedSearchDeadlineItems.value = []
     return
   }
   try {
@@ -227,9 +230,14 @@ function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
   debounceRefreshCalendarWidgetData()
 }
 
-async function onUpdateScheduleViewType(viewType: string) {
-  if (viewType === 'list' && searchTerm.value) {
+async function onUpdateIsSearchState(newIsSearchState: boolean) {
+  isSearchState.value = newIsSearchState
+  if (newIsSearchState && searchTerm.value) {
     await refreshAdvancedSearch()
+    scheduleViewType.value = 'list'
+  }
+  if (!newIsSearchState && searchTerm.value) {
+    searchTerm.value = ''
   }
 }
 
@@ -250,7 +258,7 @@ const filteredDeadlineItems = computed(() => {
 })
 
 const deadlineListItems = computed(() => {
-  return searchTerm.value ? advancedSearchDeadlineItems.value : filteredDeadlineItems.value
+  return isSearchState.value ? advancedSearchDeadlineItems.value : filteredDeadlineItems.value
 })
 </script>
 
