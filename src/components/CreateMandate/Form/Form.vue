@@ -597,7 +597,7 @@ const requiredFieldMessage = t('form.error.requiredField')
 const rules = reactive<any>({
   erpId: [
     createRule(requiredFieldMessage, 'change'),
-    { validator: validateIBS, trigger: 'change' },
+    { validator: validateIBS, trigger: ['change'] },
   ],
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
   firstName: [createRule(requiredFieldMessage)],
@@ -662,6 +662,11 @@ watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
 watch(
   () => createMandateForm.erpId,
   (value) => {
+    if (!value) {
+      emit('enable-disable-next', false)
+      createMandateForm.siretNumber = ''
+      createMandateForm.name = ''
+    }
     createMandateForm.erpId = value.replace(/\D/ig, '')
   },
 )

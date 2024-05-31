@@ -198,6 +198,17 @@ describe('form.vue', () => {
     expect(emittedEnableDisableEvent).toBeTruthy()
   })
 
+  it('should disable next step button', async () => {
+    const wrapper = createWrapper({ step: 1 })
+    const input = wrapper.find('input[data-testid="ibs-number-test"]')
+    await input.setValue('1234567891')
+    expect((input.element as HTMLInputElement).value).toBe('1234567891')
+    await input.setValue('')
+    expect((input.element as HTMLInputElement).value).toBe('')
+    const emittedEnableDisableEvent = wrapper.emitted('enable-disable-next')
+    expect(emittedEnableDisableEvent).toBeTruthy()
+  })
+
   it('renders the component when step value is 2', () => {
     const wrapper = createWrapper({ step: 2 })
     expect(wrapper.exists()).toBeTruthy()
