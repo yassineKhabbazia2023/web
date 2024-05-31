@@ -8,11 +8,10 @@ import { entityMock } from '@/../tests/mocks/EntitiesMocks'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import AddCustomerDrawer from '.'
 import AddCustomerFeedback from './components/addCustomerFeedback'
-import { API_PREFIXES } from '@/common/config/services'
 import { getMockedCustomer } from '@/services/contact/contactMocks'
 
 const customerMock = getMockedCustomer()[0]
-console.log(API_PREFIXES, PDrawer, nextTick, flushPromises)
+
 let gatewayPostMock = vi.fn().mockResolvedValue({})
 const gatewayGetMock = vi.fn(() => {
   return Promise.resolve({

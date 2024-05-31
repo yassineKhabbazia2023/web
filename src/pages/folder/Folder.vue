@@ -10,14 +10,6 @@
         {{ defaultEntity?.legalName }}
       </p>
       <div class="folder__teleported-content" />
-      <PButton
-        v-if="canAddUser"
-        pType="primary"
-        pSize="small"
-        data-testid="folder-action-button"
-      >
-        {{ t('addUser') }}
-      </PButton>
     </div>
     <PTabs v-model="activeTab" @tab-click="handleTabClick">
       <PTabPane
@@ -44,7 +36,6 @@ import {
   PAvatar,
   PIcon,
   PIPulse,
-  PButton,
 } from '@kpmg/styleguide'
 import { PERMISSION_CODES } from '@/constants'
 import Home from './pages/home'
@@ -107,7 +98,6 @@ const tabsList = computed(() => {
   return tabs.filter(({ display }) => display)
 })
 
-const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
 // Functions
 const handleTabClick = (tab: any) => {
   router.push({
@@ -158,12 +148,10 @@ en-US:
   offers: 'Offers'
   info: 'Information'
   delegationsHistory: 'Delegations history'
-  addUser: 'Add user'
 fr-FR:
   users: 'Utilisateurs'
   collab: 'Collaborateurs'
   offers: 'Offres'
   info: 'Informations'
   delegationsHistory: 'Historique des délégations'
-  addUser: 'Ajouter un utilisateur'
 </i18n>

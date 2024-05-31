@@ -1,9 +1,26 @@
 <template>
   <div class="flex flex--direction-column sticky-wrapper">
     <div class="flex--grow-1 padding--2">
-      <PButton pType="primary" @click="isAddCustomerDrawerOpened = true" />
+      <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
+      <Teleport
+        v-if="currentEntityId && isMounted && canAddUser"
+        to=".folder__teleported-content"
+      >
+        <PButton
+          @click="isAddCustomerDrawerOpened = true"
+          pType="primary"
+          pSize="small"
+          data-testid="add-customer-button"
+        >
+          <PIcon>
+            <PIPersonAdd />
+          </PIcon>
+          <span class="padding-left--2">{{ t('addCustomer') }}</span>
+        </PButton>
+      </Teleport>
+
       <AddCustomerDrawer
-        v-if="currentEntityId && currentEntityName"
+        v-if="currentEntityId && currentEntityName && isAddCustomerDrawerOpened"
         v-model="isAddCustomerDrawerOpened"
         :targetEntityId="currentEntityId"
         :targetEntityName="currentEntityName"
@@ -62,10 +79,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
-import { PLoader, PPagination, PButton } from '@kpmg/styleguide'
-import { commonStore, commonApi } from '@kpmg/common'
+import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@kpmg/styleguide'
+import { commonStore, commonApi, userPermissions } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
-import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
+import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats, PERMISSION_CODES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
 import TableData from './components/TableData'
@@ -97,6 +114,14 @@ const state: IState = reactive({
   isManageRightsDrawerOpened: false,
   selectedUserId: 0,
 })
+
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
+
+const { hasPermission } = userPermissions()
+const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
   state.search = newSearchValue
@@ -227,9 +252,11 @@ const isAddCustomerDrawerOpened = ref(false)
 
 <i18n lang="yaml">
 en-US:
+  addCustomer: "Add a customer"
   numberOfUsersPerPage: 'Number of users per page'
   on: 'on'
 fr-FR:
+  addCustomer: "Ajouter un utilisateur"
   numberOfUsersPerPage: "Nombre d'utilisateurs par page"
   on: 'sur'
 </i18n>

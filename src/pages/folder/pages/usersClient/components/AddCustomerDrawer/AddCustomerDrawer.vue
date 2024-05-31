@@ -98,6 +98,7 @@
         :isNextButtonDisabled="isNextButtonDisabled"
         :isNextButtonLoading="isNextButtonLoading"
         @click-next="handleFormSubmit"
+        @click-previous="isDrawerOpened = false"
       />
       <PButton
         v-else
