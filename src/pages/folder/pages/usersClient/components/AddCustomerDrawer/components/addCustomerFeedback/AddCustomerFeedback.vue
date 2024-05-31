@@ -24,7 +24,7 @@
       class="text-center"
       data-testid="valid-add-customer-request-text"
     >
-      <h3>{{  t('contactInvited') }}</h3>
+      <h3>{{ t('contactInvited') }}</h3>
       <p class="margin-top--2 margin-bottom--4">
         {{ t('ifContactDoesNotExists') }}
       </p>
@@ -42,7 +42,7 @@
         </template>
       </i18n-t>
     </div>
-    <PAlert v-else pType="danger">
+    <PAlert v-else-if="isError" pType="danger">
       {{ t('technicalError') }}
     </PAlert>
   </div>

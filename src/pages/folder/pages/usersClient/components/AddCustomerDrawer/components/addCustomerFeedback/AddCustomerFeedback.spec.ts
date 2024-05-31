@@ -31,11 +31,11 @@ const createWrapper = (
 
 let wrapper = createWrapper()
 
-function getImageWrapper(wrapper: VueWrapper) {
+function getImageWrapper() {
   return wrapper.findComponent(PImage)
 }
 
-function findSuccessTextWrapper(wrapper: VueWrapper) {
+function findSuccessTextWrapper() {
   return wrapper.find('[data-testid=valid-add-customer-request-text]')
 }
 
@@ -46,8 +46,8 @@ describe('add customer drawer', () => {
 
   describe('add customer feedback', () => {
     it('should render image and text when isError is false', () => {
-      const imageWrapper = getImageWrapper(wrapper)
-      const successTextWrapper = findSuccessTextWrapper(wrapper)
+      const imageWrapper = getImageWrapper()
+      const successTextWrapper = findSuccessTextWrapper()
       expect(imageWrapper.props('pName')).toBe('ok')
       expect(successTextWrapper.exists()).toBeTruthy()
     })
@@ -57,9 +57,9 @@ describe('add customer drawer', () => {
         ...defaultProps,
         isError: true,
       })
-      const imageWrapper = getImageWrapper(wrapper)
+      const imageWrapper = getImageWrapper()
       const alertWrapper = wrapper.findComponent(PAlert)
-      const successTextWrapper = findSuccessTextWrapper(wrapper)
+      const successTextWrapper = findSuccessTextWrapper()
 
       expect(imageWrapper.props('pName')).toBe('maintenance')
       expect(alertWrapper.exists()).toBeTruthy()

@@ -54,7 +54,7 @@ const createWrapper = (
   })
 }
 
-let wrapper = createWrapper()
+let wrapper: VueWrapper
 
 const findNextPreviousButton = (wrapper: VueWrapper) =>
   wrapper.findComponent(NextPreviousButtons)
@@ -66,7 +66,7 @@ const findAddCustomerFeedback = (wrapper: VueWrapper) =>
   wrapper.findComponent(AddCustomerFeedback)
 
 const formDataMock = {
-  email: 'amaury@linde.fr',
+  email: 'this@isafakeemail.cc',
   firstName: 'Amaury',
   lastName: 'Leplubo',
   mobilePhone: '0123456789',

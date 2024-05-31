@@ -19,7 +19,7 @@
       </div>
 
       <div class="margin-y--6">
-        {{  t('fillUserInformation') }}
+        {{ t('fillUserInformation') }}
       </div>
       <PForm
         ref="addCustomerFormRef"
