@@ -88,7 +88,7 @@ function fillFormFields(wrapper: VueWrapper) {
 }
 
 function getFormFields(wrapper: VueWrapper) {
-  const inputs = wrapper.findAll('[data-testid$="-input"]') as DOMWrapper<HTMLInputElement>[]
+  const inputs: DOMWrapper<HTMLInputElement>[] = wrapper.findAll('[data-testid$="-input"]')
   const emailInput = inputs[0]
   const lastNameInput = inputs[1]
   const firstNameInput = inputs[2]
