@@ -98,10 +98,23 @@ import { dateISOFormatter, getYearMonth } from '@/schedule/helpers/utils'
 import { getDates, getMonthInterval, getAdvancedSearchParams } from './ScheduleUtils'
 import type { ScheduleProps } from './ScheduleTypes'
 import { storeToRefs } from 'pinia'
+import type { ViewType } from '@/schedule/models/commonTypes'
 
 const { isCollab } = storeToRefs(useCommonStore())
 
-const scheduleViewType = ref('calendar')
+const currentscheduleViewType = ref<ViewType>('calendar')
+const previousScheduleViewType = ref<ViewType>(currentscheduleViewType.value)
+const scheduleViewType = computed({
+  get: () => currentscheduleViewType.value,
+  set: (scheduleViewType: ViewType) => {
+    if (currentscheduleViewType.value === scheduleViewType) {
+      return
+    }
+    previousScheduleViewType.value = currentscheduleViewType.value
+    currentscheduleViewType.value = scheduleViewType
+  },
+})
+
 const deadlineItems = ref<DeadlinesByDate[]>([])
 const advancedSearchDeadlineItems = ref<DeadlinesByDate[]>([])
 const calendarWidgetDates = ref<string[]>([])
@@ -240,6 +253,7 @@ async function onUpdateIsSearchState(newIsSearchState: boolean) {
     await refreshAdvancedSearch()
   } else {
     searchTerm.value = ''
+    scheduleViewType.value = previousScheduleViewType.value
   }
 }
 

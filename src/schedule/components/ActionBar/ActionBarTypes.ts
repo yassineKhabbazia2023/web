@@ -1,5 +1,7 @@
+import type { ViewType } from '@/schedule/models/commonTypes'
+
 export interface ActionBarProps {
-  modelValue: string
+  modelValue: ViewType
   activeDate: Date
   isCollab: boolean
   searchTerm: string

@@ -55,10 +55,9 @@ const newSearchTerm = 'search term'
 const ActionBarStub = {
   name: 'ActionBar',
   template: '<div />',
-  props: ['searchTerm'],
+  props: ['modelValue', 'activeDate', 'isCollab', 'isSearchState', 'searchTerm'],
   emits: ['create-schedule'],
 }
-
 const OccurrenceDrawerStub = {
   name: 'OccurrenceDrawer',
   template: '<div />',
@@ -429,7 +428,7 @@ describe('home page', () => {
       expect(actionBar.props('searchTerm')).toBe(newSearchTerm)
     })
 
-    describe('when click on vue list button', () => {
+    describe('when enter in search state', () => {
       it('should trigger advanced search if search term is NOT empty', async () => {
         const mockedSearchParams = {
           startDate: '2023-08-14',
@@ -458,6 +457,48 @@ describe('home page', () => {
         expect(getAdvancedSearchParamsSpy).toHaveBeenNthCalledWith(1, today, newSearchTerm)
         expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
         expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(2, mockedSearchParams)
+      })
+
+      it('should trigger advanced search if search term is empty', async () => {
+        const getAdvancedSearchParamsSpy = vi
+          .spyOn(ScheduleUtils, 'getAdvancedSearchParams')
+        const getSchedulesCollectionSpy = vi
+          .spyOn(ScheduleServices, 'getSchedulesCollection')
+        const wrapper = createWrapper()
+
+        const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+        await actionBar.vm.$emit('update:is-search-state', true)
+        await flushPromises()
+        expect(getAdvancedSearchParamsSpy).not.toHaveBeenCalled()
+        expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
+      })
+
+      it('should toggle vue list / vue calendar', async () => {
+        const wrapper = createWrapper()
+        const expectedActionBarPropsBefore = {
+          activeDate: mockedToday,
+          isCollab: false,
+          isSearchState: true,
+          modelValue: 'list',
+          searchTerm: newSearchTerm,
+        }
+        const expectedActionBarPropsAfter = {
+          ...expectedActionBarPropsBefore,
+          isSearchState: false,
+          modelValue: 'calendar',
+          searchTerm: '',
+        }
+
+        const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+        await actionBar.vm.$emit('update:search-term', newSearchTerm)
+        await nextTick()
+        await actionBar.vm.$emit('update:is-search-state', true)
+        await flushPromises()
+        expect(actionBar.props()).toStrictEqual(expectedActionBarPropsBefore)
+
+        await actionBar.vm.$emit('update:is-search-state', false)
+        await flushPromises()
+        expect(actionBar.props()).toStrictEqual(expectedActionBarPropsAfter)
       })
 
       it('should not call getAdvancedSearchParams if search term IS EMPTY', async () => {
