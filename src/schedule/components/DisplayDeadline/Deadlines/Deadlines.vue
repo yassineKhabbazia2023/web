@@ -89,7 +89,7 @@ const getToolboxElements = (status: Status): PToolboxItemProps[] => {
     {
       pIconName: PITrash,
       pValue: t('delete-reminder'),
-      disabled: !status,
+      disabled: true,
       pActionName: 'delete-reminder',
       pState: 'danger',
     },
