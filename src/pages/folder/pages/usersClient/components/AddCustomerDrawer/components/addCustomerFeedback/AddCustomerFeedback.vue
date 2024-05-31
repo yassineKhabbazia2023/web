@@ -86,7 +86,7 @@ withDefaults(defineProps<AddCustomerFeedbackProps>(), {
     ifContactDoesNotExists: 'Si votre contact est un nouvel utilisateur, il vient de recevoir son e-mail de bienvenue.'
     ifContactExists: >
       Si votre contact a déjà un compte sur la plateforme KPMG Pulse,
-      il doit cliquer sur le le bouton {addEntity} dans sa page {myEntities}.
+      il doit cliquer sur le bouton {addEntity} dans sa page {myEntities}.
     addEntity: 'Ajouter une entité'
     myEntities: 'Mes entités'
     technicalError: "Votre contact n’a pas été ajouté suite à une erreur technique. Veuillez réessayer plus tard."

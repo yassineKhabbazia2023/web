@@ -2,7 +2,7 @@
   <PDrawer v-model="isDrawerOpened" pSize="45%">
     <template #header-prefix>
       <div class="add-customer-drawer__header">
-        <span>{{ targetEntityName }}</span>
+        <span class="add-customer-drawer__entity-name">{{ targetEntityName }}</span>
         <h3>
           {{ t('addUser')}}
         </h3>
@@ -159,12 +159,12 @@ function debouncedCheckIfNextButtonShouldBeEnabled() {
   return debounce(() => checkIfNextButtonShouldBeEnabled(), 600)
 }
 
-async function checkIfNextButtonShouldBeEnabled() {
+function checkIfNextButtonShouldBeEnabled() {
   if (!addCustomerFormRef.value) return
 
   const { lastName, firstName, email } = formData
   if (lastName && firstName && email) {
-    await addCustomerFormRef.value.validate()
+    addCustomerFormRef.value.validate()
       .then(() => {
         isNextButtonDisabled.value = false
       })
@@ -279,10 +279,8 @@ const userFullName = computed(() => getFullName(formData.firstName, formData.las
 
 <style lang="scss" scoped>
 .add-customer-drawer {
-  &__header {
-    > span {
-      color: var(--el-color-neutral-gray-300)
-    }
+  &__entity-name {
+    color: var(--el-color-neutral-gray-300)
   }
   &__add-image {
     width: 250px;
