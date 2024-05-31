@@ -1,8 +1,13 @@
 import { expect, describe, it } from 'vitest'
 import {
+  getDates,
   getMonthInterval,
   getAdvancedSearchParams,
 } from './ScheduleUtils'
+import {
+  getDoneDeadlinesByDateMock,
+  getNotCompletelyDoneDeadlinesByDateMock,
+} from '@/schedule/tests/mocks/Deadline'
 
 const TEST_DATE = '2024-08-14'
 
@@ -51,6 +56,21 @@ describe('test ScheduleUtils', () => {
       }
 
       expect(monthInterval).toStrictEqual(expectedMonthInterval)
+    })
+  })
+
+  describe('getDates', () => {
+    it('should return distinct dates', () => {
+      const mockedDeadlinesByDate = [
+        ...getDoneDeadlinesByDateMock(),
+        ...getNotCompletelyDoneDeadlinesByDateMock(),
+      ]
+      const expectedDates = [
+        mockedDeadlinesByDate[0].date,
+        mockedDeadlinesByDate[1].date,
+      ]
+      const dates = getDates(mockedDeadlinesByDate)
+      expect(dates).toStrictEqual(expectedDates)
     })
   })
 })
