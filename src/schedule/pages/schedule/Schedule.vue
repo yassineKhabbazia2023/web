@@ -23,6 +23,7 @@
         v-if="scheduleViewType === 'list'"
         :deadlinesByDate="deadlineListItems"
         :activeDate="activeDate"
+        :isSearchState="isSearchState"
         @select-deadline="onSelectDeadline"
         @click-date="onClickDate"
       />

@@ -1,14 +1,38 @@
-import List from '.'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
-import { expect, describe, it, vi } from 'vitest'
+import { expect, describe, beforeEach, it, vi } from 'vitest'
 import { getNotCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
+import type { DeadlineListProps } from './DeadlineListTypes'
+import DeadlineList from '.'
 
 const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
 
 const activeDate = new Date(2024, 5, 1)
-const createWrapper = (deadlinesByDate: DeadlinesByDate[]) =>
-  wrapperFactory(List, { props: { activeDate, deadlinesByDate } })
+
+function createWrapper(override: Partial<DeadlineListProps> = {}) {
+  const deadlinesByDate: DeadlinesByDate[] = []
+  const defaultProps: DeadlineListProps = {
+    deadlinesByDate,
+    activeDate,
+    isSearchState: false,
+  }
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
+
+  return shallowMount(DeadlineList, {
+    props,
+    global: {
+      stubs: {
+        PScrollbar: {
+          name: 'PScrollbar',
+          template: '<div><slot /></div>',
+        },
+      },
+    },
+  })
+}
 
 vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: () => ({
@@ -16,24 +40,52 @@ vi.mock('@/schedule/services', () => ({
   }),
 }))
 
-describe('list component', () => {
-  it('should emit select-deadline event when first ListItem emits select-deadline', () => {
-    const occurrenceId = 123456789
+describe('test DeadlineList', () => {
+  describe('when list is NOT empty', () => {
+    let wrapper: VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper({
+        deadlinesByDate: notCompletelyDoneDeadlinesByDateMock,
+      })
+    })
+    it('should emit select-deadline event when first ListItem emits select-deadline', () => {
+      const occurrenceId = 123456789
 
-    const wrapper = createWrapper(notCompletelyDoneDeadlinesByDateMock)
-    const firstListItem = wrapper.findComponent({ name: 'ListItem' })
-    firstListItem.vm.$emit('select-deadline', occurrenceId)
-    expect(wrapper.emitted('select-deadline')).toStrictEqual([
-      [occurrenceId],
-    ])
+      const firstListItem = wrapper.findComponent({ name: 'ListItem' })
+      firstListItem.vm.$emit('select-deadline', occurrenceId)
+
+      expect(wrapper.emitted('select-deadline')).toStrictEqual([
+        [occurrenceId],
+      ])
+    })
+
+    it('should emit click-date when click on ListItem', async () => {
+      const firstListItem = wrapper.findComponent({ name: 'ListItem' })
+      const firstDate = notCompletelyDoneDeadlinesByDateMock[0].date
+      await firstListItem.trigger('click')
+
+      expect(wrapper.emitted('click-date')).toStrictEqual([[firstDate]])
+    })
   })
 
-  it('should emit click-date when click on ListItem', async () => {
-    const wrapper = createWrapper(notCompletelyDoneDeadlinesByDateMock)
-    const firstListItem = wrapper.findComponent({ name: 'ListItem' })
-    const firstDate = notCompletelyDoneDeadlinesByDateMock[0].date
-    await firstListItem.trigger('click')
+  describe('when list is empty', () => {
+    const tests = [{
+      isSearchState: false,
+      expectedErrorMessage: 'No events for June',
+    }, {
+      isSearchState: true,
+      expectedErrorMessage: 'No events matching your search',
+    }]
 
-    expect(wrapper.emitted('click-date')).toStrictEqual([[firstDate]])
+    it.each(tests)('should display $expectedErrorMessage when isSearchState is $isSearchState', ({
+      isSearchState,
+      expectedErrorMessage,
+    }) => {
+      const wrapper = createWrapper({
+        isSearchState,
+      })
+      const message = wrapper.find('[data-testid="deadlines-list-empty-list-message"]')
+      expect(message.text()).toBe(expectedErrorMessage)
+    })
   })
 })
