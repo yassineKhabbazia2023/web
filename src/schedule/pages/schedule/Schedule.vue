@@ -232,11 +232,13 @@ function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
 
 async function onUpdateIsSearchState(newIsSearchState: boolean) {
   isSearchState.value = newIsSearchState
-  if (newIsSearchState && searchTerm.value) {
-    await refreshAdvancedSearch()
-    scheduleViewType.value = 'list'
+  if (!searchTerm.value) {
+    return
   }
-  if (!newIsSearchState && searchTerm.value) {
+  if (newIsSearchState) {
+    scheduleViewType.value = 'list'
+    await refreshAdvancedSearch()
+  } else {
     searchTerm.value = ''
   }
 }
