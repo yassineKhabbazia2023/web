@@ -72,10 +72,10 @@ describe('removeUserDialog', () => {
     expect(vi.mocked(deleteContactFromAccount)).toHaveBeenCalledOnce()
     expect(vi.mocked(deleteContactFromAccount)).toHaveBeenCalledWith(
       Number(ACCOUNT_ID),
-      USER_TO_REMOVE.contactId
+      USER_TO_REMOVE.contactId,
     )
     expect(getNotificationSuccess()).toHaveLength(1)
     expect(wrapper.emitted('userRemoved')).toBeTruthy()
-    expect(wrapper.emitted('update:modelValue')).toEqual([[false]])
+    expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 })
