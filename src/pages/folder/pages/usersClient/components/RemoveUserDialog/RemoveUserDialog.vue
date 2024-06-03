@@ -8,6 +8,7 @@
     </p>
 
     <PUserCard
+      v-if="userToRemove"
       class="margin-bottom--2"
       pAssetLeft="Avatar"
       :pAssetContent="userToRemove.initials"
@@ -19,7 +20,7 @@
       <div class="p-dialog__footer">
         <PButton
           pType="white"
-          @click="closeDrawer"
+          @click="handleCloseDrawer"
         >
           {{ t('cancel') }}
         </PButton>
@@ -27,7 +28,7 @@
         <PButton
           pType="primary"
           @click="handleRemoveUser"
-          data-testid="removeUserButton"
+          data-testid="remove-user-button"
         >
           <PIcon class="el-button__icon--left">
             <PIPersonRemove />
@@ -66,7 +67,7 @@ const currentEntityId = Number(route.params.id)
 
 const emits = defineEmits<{
   'update:modelValue': [boolean]
-  'userRemoved': [boolean]
+  'user-removed': []
 }>()
 
 const props = defineProps<RemoveUserDialogProps>()
@@ -76,7 +77,7 @@ const dialogModel = computed({
   set: value => emits('update:modelValue', value),
 })
 
-const closeDrawer = () => {
+const handleCloseDrawer = () => {
   dialogModel.value = false
 }
 
@@ -104,7 +105,7 @@ const handleRemoveUser = async () => {
   try {
     await deleteContactFromAccount(currentEntityId, props.userToRemove.contactId)
     displaySuccessNotificationRemovedCollaborator()
-    emits('userRemoved', true)
+    emits('user-removed')
   } catch (error) {
     displayErrorNotificationRemovedCollaborator()
     console.error(error)
@@ -125,9 +126,9 @@ const handleRemoveUser = async () => {
   fr-FR:
     removeUser: "Retirer l'utilisateur"
     confirmation: >-
-      Vous êtes sur le point de retirer l’utilisateur de cette entité,
+      Vous êtes sur le point de retirer l'utilisateur de cette entité,
        il ne pourra plus y accéder. Êtes-vous sûr de vouloir continuer ?
     cancel: 'Annuler'
-    userHasBeenRemoved: "L’utilisateur {fullName} a bien été retiré."
-    userWasNotRemoved: "L'utilisateur {fullName} n'a pas été retiré de l’entité suite à une erreur technique."
+    userHasBeenRemoved: "L'utilisateur {fullName} a bien été retiré."
+    userWasNotRemoved: "L'utilisateur {fullName} n'a pas été retiré de l'entité suite à une erreur technique."
 </i18n>

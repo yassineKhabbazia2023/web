@@ -53,20 +53,18 @@ describe('removeUserDialog', () => {
 
     const pUserCardComponent = wrapper.findComponent({ name: 'PUserCard' })
 
-    expect(pUserCardComponent.props()).toStrictEqual(
-      expect.objectContaining({
-        pAssetContent: initials,
-        pTitle: fullName,
-        pSubtitle: email,
-      }),
-    )
+    expect(pUserCardComponent.props()).toMatchObject({
+      pAssetContent: initials,
+      pTitle: fullName,
+      pSubtitle: email,
+    })
   })
 
   it('removes a user and display a success notification', async () => {
     const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
     expect(getNotificationSuccess()).toHaveLength(0)
 
-    const removeUserButton = wrapper.find('[data-testid=removeUserButton]')
+    const removeUserButton = wrapper.find('[data-testid=remove-user-button]')
     await removeUserButton.trigger('click')
 
     expect(vi.mocked(deleteContactFromAccount)).toHaveBeenCalledOnce()
@@ -75,7 +73,7 @@ describe('removeUserDialog', () => {
       USER_TO_REMOVE.contactId,
     )
     expect(getNotificationSuccess()).toHaveLength(1)
-    expect(wrapper.emitted('userRemoved')).toBeTruthy()
+    expect(wrapper.emitted('user-removed')).toBeTruthy()
     expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 })

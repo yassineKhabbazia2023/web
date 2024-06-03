@@ -43,6 +43,7 @@ vi.mock('@kpmg/common', () => ({
     state: () => ({
       user: {
         id: 2,
+
       },
     }),
   }),
@@ -188,7 +189,7 @@ describe('usersClient', () => {
       wrapper.vm.state.isRemoveUserDialogOpened = true
       await nextTick()
       const removeUserDialogComponent = wrapper.findComponent({ name: 'RemoveUserDialog' })
-      await removeUserDialogComponent.vm.$emit('userRemoved', true)
+      await removeUserDialogComponent.vm.$emit('user-removed')
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(2)
     })

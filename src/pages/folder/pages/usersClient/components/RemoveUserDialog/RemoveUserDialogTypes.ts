@@ -1,4 +1,6 @@
+import type { IExtendedUser } from '../../types'
+
 export interface RemoveUserDialogProps {
   modelValue: boolean
-  userToRemove: any
+  userToRemove: IExtendedUser | undefined
 }
