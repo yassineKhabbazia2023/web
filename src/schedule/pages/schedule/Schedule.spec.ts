@@ -4,9 +4,9 @@ import { nextTick } from 'vue'
 import { flushPromises, type VueWrapper, shallowMount } from '@vue/test-utils'
 import Schedule from '@/schedule/pages/schedule'
 import type { ScheduleProps } from './ScheduleTypes'
-import { getMonthInterval } from './ScheduleUtils'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import * as ScheduleServices from '@/schedule/services'
+import * as ScheduleUtils from './ScheduleUtils'
 import { dateISOFormatter } from '@/schedule/helpers/utils'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
@@ -25,6 +25,10 @@ const commonStore = useCommonStore(pinia)
 // @ts-expect-error: Getter is read only
 commonStore.isCollab = false
 
+vi.mock('./ScheduleUtils', async () => {
+  return await vi.importActual('./ScheduleUtils')
+})
+
 vi.mock('@/schedule/services', () => ({
   getScheduleModels: () => [{
     key: 'TVA',
@@ -33,6 +37,7 @@ vi.mock('@/schedule/services', () => ({
   getScheduleModelsByKey: () => ({
     TVA: 'TVA au 21',
   }),
+  getAdvancedSearchParams: vi.fn(),
   getSchedulesCollection: () => Promise.resolve([{
     date: TEST_DATE,
     deadlines: getMockedDeadlines(),
@@ -45,14 +50,14 @@ vi.mock('@/schedule/services', () => ({
 )
 
 const mockedToday = new Date(TEST_DATE)
+const newSearchTerm = 'search term'
 
 const ActionBarStub = {
   name: 'ActionBar',
   template: '<div />',
-  props: ['searchTerm'],
+  props: ['modelValue', 'activeDate', 'isCollab', 'isSearchState', 'searchTerm'],
   emits: ['create-schedule'],
 }
-
 const OccurrenceDrawerStub = {
   name: 'OccurrenceDrawer',
   template: '<div />',
@@ -97,6 +102,19 @@ function createWrapper(override: Partial<ScheduleProps> = {}) {
   })
 }
 
+const mockedDeadLinesA = getMockedDeadlines()
+const currentMounthDeadlines: DeadlinesByDate[] = [{
+  date: TEST_DATE,
+  deadlines: mockedDeadLinesA,
+}, {
+  date: SAME_MONTH_DATE,
+  deadlines: [],
+}]
+const nextMounthDeadlines: DeadlinesByDate[] = [{
+  date: OTHER_MONTH_DATE,
+  deadlines: mockedDeadLinesA,
+}]
+
 describe('home page', () => {
   beforeEach(() => {
     vi.useFakeTimers()
@@ -114,7 +132,8 @@ describe('home page', () => {
 
     createWrapper()
     await flushPromises()
-    const expectedMonthRange = getMonthInterval(mockedToday, 7)
+
+    const expectedMonthRange = ScheduleUtils.getMonthInterval(mockedToday, 7)
 
     expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
     expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedMonthRange)
@@ -134,19 +153,6 @@ describe('home page', () => {
     })
 
     it('should give filtered deadlines of current month to DeadlineList', async () => {
-      const mockedDeadLinesA = getMockedDeadlines()
-      const currentMounthDeadlines: DeadlinesByDate[] = [{
-        date: TEST_DATE,
-        deadlines: mockedDeadLinesA,
-      }, {
-        date: SAME_MONTH_DATE,
-        deadlines: [],
-      }]
-      const nextMounthDeadlines: DeadlinesByDate[] = [{
-        date: OTHER_MONTH_DATE,
-        deadlines: mockedDeadLinesA,
-      }]
-
       vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([
@@ -413,7 +419,6 @@ describe('home page', () => {
     })
 
     it('should set searchTerm when ActionBar emits update:search-term', async () => {
-      const newSearchTerm = 'search term'
       const wrapper = createWrapper()
 
       const actionBar = wrapper.findComponent({ name: 'ActionBar' })
@@ -421,6 +426,101 @@ describe('home page', () => {
       await actionBar.vm.$emit('update:search-term', newSearchTerm)
       await nextTick()
       expect(actionBar.props('searchTerm')).toBe(newSearchTerm)
+    })
+
+    describe('when enter in search state', () => {
+      it('should trigger advanced search if search term is NOT empty', async () => {
+        const mockedSearchParams = {
+          startDate: '2023-08-14',
+          endDate: '2025-08-14',
+          searchTerm: newSearchTerm,
+        }
+        const getAdvancedSearchParamsSpy = vi
+          .spyOn(ScheduleUtils, 'getAdvancedSearchParams')
+          .mockReturnValue(mockedSearchParams)
+        const getSchedulesCollectionSpy = vi
+          .spyOn(ScheduleServices, 'getSchedulesCollection')
+          .mockResolvedValue(currentMounthDeadlines)
+          .mockResolvedValueOnce([
+            ...currentMounthDeadlines,
+            ...nextMounthDeadlines,
+          ])
+        const wrapper = createWrapper()
+        const today = new Date(TEST_DATE)
+
+        const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+        await actionBar.vm.$emit('update:search-term', newSearchTerm)
+        await nextTick()
+        await actionBar.vm.$emit('update:is-search-state', true)
+        await flushPromises()
+        expect(getAdvancedSearchParamsSpy).toHaveBeenCalledOnce()
+        expect(getAdvancedSearchParamsSpy).toHaveBeenNthCalledWith(1, today, newSearchTerm)
+        expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
+        expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(2, mockedSearchParams)
+      })
+
+      it('should trigger advanced search if search term is empty', async () => {
+        const getAdvancedSearchParamsSpy = vi
+          .spyOn(ScheduleUtils, 'getAdvancedSearchParams')
+        const getSchedulesCollectionSpy = vi
+          .spyOn(ScheduleServices, 'getSchedulesCollection')
+        const wrapper = createWrapper()
+
+        const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+        await actionBar.vm.$emit('update:is-search-state', true)
+        await flushPromises()
+        expect(getAdvancedSearchParamsSpy).not.toHaveBeenCalled()
+        expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
+      })
+
+      it('should toggle vue list / vue calendar', async () => {
+        const wrapper = createWrapper()
+        const expectedActionBarPropsBefore = {
+          activeDate: mockedToday,
+          isCollab: false,
+          isSearchState: true,
+          modelValue: 'list',
+          searchTerm: newSearchTerm,
+        }
+        const expectedActionBarPropsAfter = {
+          ...expectedActionBarPropsBefore,
+          isSearchState: false,
+          modelValue: 'calendar',
+          searchTerm: '',
+        }
+
+        const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+        await actionBar.vm.$emit('update:search-term', newSearchTerm)
+        await nextTick()
+        await actionBar.vm.$emit('update:is-search-state', true)
+        await flushPromises()
+        expect(actionBar.props()).toStrictEqual(expectedActionBarPropsBefore)
+
+        await actionBar.vm.$emit('update:is-search-state', false)
+        await flushPromises()
+        expect(actionBar.props()).toStrictEqual(expectedActionBarPropsAfter)
+      })
+
+      it('should not call getAdvancedSearchParams if search term IS EMPTY', async () => {
+        const getAdvancedSearchParamsSpy = vi
+          .spyOn(ScheduleUtils, 'getAdvancedSearchParams')
+        const getSchedulesCollectionSpy = vi
+          .spyOn(ScheduleServices, 'getSchedulesCollection')
+          .mockResolvedValue(currentMounthDeadlines)
+          .mockResolvedValueOnce([
+            ...currentMounthDeadlines,
+            ...nextMounthDeadlines,
+          ])
+        const wrapper = createWrapper()
+
+        const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+        await actionBar.vm.$emit('update:search-term', '')
+        await nextTick()
+        await actionBar.vm.$emit('update:model-value', 'list')
+        await flushPromises()
+        expect(getAdvancedSearchParamsSpy).not.toHaveBeenCalled()
+        expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
+      })
     })
   })
 })

@@ -1,7 +1,7 @@
 <template>
   <Suspense>
     <PConfigProvider>
-      <component :is="getLayout" />
+      <component :is="getLayout" :illustration="illustration" />
       <PopupRenewToken @logout="handleLogout" />
     </PConfigProvider>
   </Suspense>
@@ -21,11 +21,13 @@ const router = useRouter()
 const store = useStore()
 const getLayout = ref()
 let previousLayout: string = ''
+const illustration = ref()
 
 watch(
   () => route.name,
   () => {
     const layout = (route.meta?.layout as string) || 'Home'
+    illustration.value = route.meta?.illustration
     if (previousLayout !== layout) {
       getLayout.value = markRaw(defineAsyncComponent(
         () => import(`@/layouts/${layout}/index.ts`),

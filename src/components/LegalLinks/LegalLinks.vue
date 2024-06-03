@@ -14,8 +14,10 @@
     </li>
     <li class="legal-links__item flex flex--align-items-center">
       <button
+        type="button"
         class="legal-links__link"
         @click="drawerVisibility = !drawerVisibility"
+        @click.stop.prevent
         data-testid="legal-links-notices"
       >
         {{ t('cookiesNotices') }}
@@ -24,6 +26,8 @@
     <li class="legal-links__item flex flex--align-items-center">
       <!-- OneTrust Cookies Settings button start -->
       <button
+        @click.stop.prevent
+        type="button"
         id="ot-sdk-btn"
         class="legal-links__link ot-sdk-show-settings"
       >
@@ -65,6 +69,9 @@
       modelValue
       @close-drawer-button="drawerVisibility = false"
       :pTitle="t('cookiesNotices')"
+      :class="{
+        'padding-top--12': isAuthenticated
+      }"
     >
       <!-- OneTrust Cookies List start -->
       <div id="ot-sdk-cookie-policy"></div>
@@ -95,7 +102,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const { isCollab } = storeToRefs(commonStore())
+const { isCollab, isAuthenticated } = storeToRefs(commonStore())
 const route = useRoute()
 
 const drawerVisibility = ref(false)
@@ -110,7 +117,6 @@ onMounted(async () => {
 .legal-links {
   $self: &;
   display: inline-flex;
-
   &__item {
     margin-right: 0.4rem;
 
@@ -128,7 +134,9 @@ onMounted(async () => {
       }
     }
   }
-  &__link {
+  &__link,
+  #ot-sdk-btn.ot-sdk-show-settings,
+  #ot-sdk-btn.optanon-show-settings {
     color: var(--el-color-primary);
     font-style: italic;
     font-size: 1.2rem;
@@ -140,7 +148,9 @@ onMounted(async () => {
 
     &:hover,
     &:focus {
-      text-decoration: underline
+      text-decoration: underline;
+      background: none;
+      color: var(--el-color-primary);
     }
   }
 }

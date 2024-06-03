@@ -1,45 +1,69 @@
 <template>
   <div class="flex flex--align-items-center">
+    <template v-if="!isSearchState">
+      <PButton
+        @click="updateMonth('prev')"
+        pType="generic"
+        pSize="small"
+        data-testid="schedule-prev-month-button"
+        pIconOnly
+        class="margin-right--2"
+      >
+        <PIcon>
+          <PIChevronLeft />
+        </PIcon>
+      </PButton>
+      <PButton
+        @click="updateMonth('next')"
+        pType="generic"
+        pSize="small"
+        data-testid="schedule-next-month-button"
+        pIconOnly
+        class="margin-right--2"
+      >
+        <PIcon>
+          <PIChevronRight />
+        </PIcon>
+      </PButton>
+      <span
+        class="
+          h4
+          font-semibold
+          text-capitalize
+          white-space--no-wrap
+        "
+      >
+        {{ activeMonth }} {{ activeYear }}
+      </span>
+      <PButton
+        @click="onClickToday"
+        class="margin-left--6"
+        data-testid="action-bar-left-today"
+        pType="default"
+        pSize="small"
+      >
+        {{ t('today') }}
+      </PButton>
+    </template>
     <PButton
-      @click="updateMonth('prev')"
+      v-if="isSearchState"
+      @click="emit('update:is-search-state', false)"
       pType="generic"
       pSize="small"
-      data-testid="schedule-prev-month-button"
+      data-testid="action-bar-left-end-search-state-button"
       pIconOnly
-      class="margin-right--2"
     >
       <PIcon>
-        <PIChevronLeft />
+        <PIArrowLeft />
       </PIcon>
     </PButton>
-    <PButton
-      @click="updateMonth('next')"
-      pType="generic"
-      pSize="small"
-      data-testid="schedule-next-month-button"
-      pIconOnly
-      class="margin-right--2"
-    >
-      <PIcon>
-        <PIChevronRight />
-      </PIcon>
-    </PButton>
-    <span class="h4 font-semibold text-capitalize">
-      {{ activeMonth }} {{ activeYear }}
-    </span>
-    <PButton
-      @click="onClickToday"
-      class="margin-left--6"
-      data-testid="action-bar-left-today"
-      pType="default"
-      pSize="small"
-    >
-      {{ t('today') }}
-    </PButton>
+
     <PExpandableSearch
-      class="margin-left--4"
-      :pIsSearchShrinkable="isSearchShrinkable"
-      @input="emit('update:search-term', $event)"
+      class="action-bar-left__expandable-search margin-left--2"
+      :pSearchContent="searchTerm"
+      :pIsSearchShrinkable="!isSearchState"
+      @update:p-search-content="emit('update:search-term', $event)"
+      @enter="emit('update:is-search-state', true)"
     />
   </div>
 </template>
@@ -54,12 +78,14 @@ import {
   PIChevronLeft,
   PButton,
   PExpandableSearch,
+  PIArrowLeft,
 } from '@kpmg/styleguide'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
 const emit = defineEmits<{
   'update:active-date': [Date]
   'update:search-term': [string]
+  'update:is-search-state': [boolean]
 }>()
 
 const datetimeFormats = {
@@ -84,7 +110,6 @@ const props = defineProps<ActionBarLeftProps>()
 
 const activeMonth = computed(() => d(props.activeDate, 'month'))
 const activeYear = computed(() => props.activeDate.getFullYear())
-const isSearchShrinkable = computed(() => props.searchTerm === '')
 
 const updateMonth = (nextOrPrevious: string) => {
   const deltaMonth = nextOrPrevious === 'prev' ? -1 : 1

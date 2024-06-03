@@ -13,14 +13,17 @@
         v-model:searchTerm="searchTerm"
         :activeDate="activeDate"
         :isCollab="isCollab"
+        :isSearchState="isSearchState"
         @create-schedule="isDrawerVisible = true"
         @update:active-date="setActiveDate"
+        @update:is-search-state="onUpdateIsSearchState"
       />
 
       <DeadlineList
         v-if="scheduleViewType === 'list'"
-        :deadlinesByDate="filteredDeadlineItems"
+        :deadlinesByDate="deadlineListItems"
         :activeDate="activeDate"
+        :isSearchState="isSearchState"
         @select-deadline="onSelectDeadline"
         @click-date="onClickDate"
       />
@@ -93,16 +96,31 @@ import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import OccurrenceDrawer from '@/schedule/components/OccurrenceDrawer'
 import { dateISOFormatter, getYearMonth } from '@/schedule/helpers/utils'
-import { getDates, getMonthInterval } from './ScheduleUtils'
+import { getDates, getMonthInterval, getAdvancedSearchParams } from './ScheduleUtils'
 import type { ScheduleProps } from './ScheduleTypes'
 import { storeToRefs } from 'pinia'
+import type { ViewType } from '@/schedule/models/commonTypes'
 
 const { isCollab } = storeToRefs(useCommonStore())
 
-const scheduleViewType = ref('calendar')
+const currentscheduleViewType = ref<ViewType>('calendar')
+const previousScheduleViewType = ref<ViewType>(currentscheduleViewType.value)
+const scheduleViewType = computed({
+  get: () => currentscheduleViewType.value,
+  set: (scheduleViewType: ViewType) => {
+    if (currentscheduleViewType.value === scheduleViewType) {
+      return
+    }
+    previousScheduleViewType.value = currentscheduleViewType.value
+    currentscheduleViewType.value = scheduleViewType
+  },
+})
+
 const deadlineItems = ref<DeadlinesByDate[]>([])
+const advancedSearchDeadlineItems = ref<DeadlinesByDate[]>([])
 const calendarWidgetDates = ref<string[]>([])
 const isLoading = ref(true)
+const isSearchState = ref(false)
 const searchTerm = ref('')
 const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
@@ -160,6 +178,23 @@ async function refreshData() {
     deadlineItems.value = await getSchedulesCollection(monthRange)
     setCalendarWidgetDates(deadlineItems.value)
   } catch (error) {
+    console.error(error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+async function refreshAdvancedSearch() {
+  if (!searchTerm.value) {
+    advancedSearchDeadlineItems.value = []
+    return
+  }
+  try {
+    isLoading.value = true
+    const today = new Date()
+    const searchParams = getAdvancedSearchParams(today, searchTerm.value)
+    advancedSearchDeadlineItems.value = await getSchedulesCollection(searchParams)
+  } catch (error) {
     console.warn(error)
   } finally {
     isLoading.value = false
@@ -209,6 +244,20 @@ function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
   debounceRefreshCalendarWidgetData()
 }
 
+async function onUpdateIsSearchState(newIsSearchState: boolean) {
+  isSearchState.value = newIsSearchState
+  if (!searchTerm.value) {
+    return
+  }
+  if (newIsSearchState) {
+    scheduleViewType.value = 'list'
+    await refreshAdvancedSearch()
+  } else {
+    searchTerm.value = ''
+    scheduleViewType.value = previousScheduleViewType.value
+  }
+}
+
 const activeDateDeadlines = computed(() => {
   const activeDateIso = dateISOFormatter(activeDate.value)
   const deadlineItem = deadlineItems.value
@@ -223,6 +272,10 @@ const filteredDeadlineItems = computed(() => {
   const endDateIso = dateISOFormatter(endDate)
 
   return deadlineItems.value.filter(({ date }) => startDateIso <= date && date <= endDateIso)
+})
+
+const deadlineListItems = computed(() => {
+  return isSearchState.value ? advancedSearchDeadlineItems.value : filteredDeadlineItems.value
 })
 </script>
 

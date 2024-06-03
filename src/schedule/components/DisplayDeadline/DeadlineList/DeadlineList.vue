@@ -11,8 +11,17 @@
         @click="$emit('click-date', deadlineByDate.date)"
       />
     </PScrollbar>
-    <div v-else class="deadlines-list__empty-list flex flex--justify-content-center flex--align-items-center">
-      {{  t('empty-list') }} {{ d(activeDate, 'month') }}
+    <div
+      v-else
+      class="
+        deadlines-list__empty-list
+        flex
+        flex--justify-content-center
+        flex--align-items-center
+      "
+      data-testid="deadlines-list-empty-list-message"
+    >
+      {{ emptyListMessage }}
     </div>
   </div>
 </template>
@@ -52,6 +61,13 @@ const emit = defineEmits<{
 }>()
 
 const activeDateIso = computed(() => dateISOFormatter(props.activeDate))
+const emptyListMessage = computed(() => {
+  const period = d(props.activeDate, 'month')
+
+  return props.isSearchState
+    ? t('empty-list.search-state')
+    : t('empty-list.normal-state', { period })
+})
 </script>
 
 <style lang="scss" scoped>
@@ -70,7 +86,11 @@ const activeDateIso = computed(() => dateISOFormatter(props.activeDate))
 
 <i18n lang="yaml">
   en-US:
-    empty-list: 'No events for '
+    empty-list:
+      normal-state: 'No events for {period}'
+      search-state: 'No events matching your search'
   fr-FR:
-    empty-list: 'Aucun évènement pour la période de'
+    empty-list:
+      normal-state: 'Aucun évènement pour la période de {period}'
+      search-state: 'Aucun événement correspondant à votre recherche'
 </i18n>

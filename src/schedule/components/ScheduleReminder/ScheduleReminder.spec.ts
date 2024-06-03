@@ -52,6 +52,7 @@ function getComponents(wrapper: VueWrapper) {
 describe('test ScheduleReminder', () => {
   describe('when modelValue is < 0', () => {
     const modelValue = -1
+    const expectedValue = `${-modelValue}`
     let wrapper:VueWrapper
     beforeEach(() => {
       wrapper = createWrapper({ modelValue })
@@ -64,12 +65,12 @@ describe('test ScheduleReminder', () => {
         pDropdown,
       } = getComponents(wrapper)
       expect(PFormItem.props('pError')).toBe('')
-      expect(pInput.props('modelValue')).toStrictEqual(-modelValue)
+      expect(pInput.props('modelValue')).toBe(expectedValue)
       expect(pDropdown.props('modelValue')).toBeFalsy()
     })
 
     it('should emit update:model-value with proper value when input value', () => {
-      const newValue = 2.2
+      const newValue = '2.2'
       const expectedNewValue = -2
       const pInput = wrapper.findComponent({ name: 'PInput' })
       pInput.vm.$emit('update:model-value', newValue)
@@ -90,9 +91,20 @@ describe('test ScheduleReminder', () => {
 
       expect(wrapper.emitted('delete')).toStrictEqual([[]])
     })
+
+    it('should emit update:model-value with 0 when input string value', () => {
+      const newValue = 'abc'
+      const expectedValue = 0
+      const pInput = wrapper.findComponent({ name: 'PInput' })
+      pInput.vm.$emit('update:model-value', newValue)
+
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedValue]])
+    })
   })
+
   describe('when modelValue is > 0', () => {
     const modelValue = 1
+    const expectedValue = `${modelValue}`
     let wrapper:VueWrapper
     beforeEach(() => {
       wrapper = createWrapper({ modelValue })
@@ -103,16 +115,17 @@ describe('test ScheduleReminder', () => {
         pInput,
         pDropdown,
       } = getComponents(wrapper)
-      expect(pInput.props('modelValue')).toStrictEqual(modelValue)
+      expect(pInput.props('modelValue')).toBe(expectedValue)
       expect(pDropdown.props('modelValue')).toBeTruthy()
     })
 
     it('should emit update:model-value with proper value when input value', () => {
-      const newValue = 2
+      const newValue = '2'
+      const expectedValue = 2
       const pInput = wrapper.findComponent({ name: 'PInput' })
       pInput.vm.$emit('update:model-value', newValue)
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[newValue]])
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedValue]])
     })
 
     it('should emit update:model-value with proper value when change option', () => {
@@ -121,7 +134,17 @@ describe('test ScheduleReminder', () => {
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[modelValue]])
     })
+
+    it('should emit update:model-value with 0 when input string value', () => {
+      const newValue = 'abc'
+      const expectedValue = 0
+      const pInput = wrapper.findComponent({ name: 'PInput' })
+      pInput.vm.$emit('update:model-value', newValue)
+
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedValue]])
+    })
   })
+
   describe('when isError', () => {
     const isError = true
     let wrapper:VueWrapper

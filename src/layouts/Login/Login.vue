@@ -25,7 +25,7 @@
         >
           <PImage
             pType="paupulse"
-            pName="connection-default"
+            :pName="illustration"
             class="illustration"
           />
         </PCol>
@@ -88,11 +88,17 @@ import { useI18n } from 'vue-i18n'
 import { PButton, PCol, PDrawer, PImage, PRow } from '@kpmg/styleguide'
 import { useFooterLink } from '@/composables/useFooterLink'
 import LegalLinks from '@/components/LegalLinks'
+import { type LoginLayoutProps } from '@/layouts/Login/LoginTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+withDefaults(defineProps<LoginLayoutProps>(), {
+  illustration: 'connection-default',
+})
+
 const {
   handleCopyrightLink,
   isCopyrightDrawerOpened,

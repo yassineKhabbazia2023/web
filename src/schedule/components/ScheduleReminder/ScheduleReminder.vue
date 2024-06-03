@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import {
   PFormItem,
   PButton,
@@ -70,15 +70,22 @@ const isAfter = computed({
   },
 })
 
+const enteredValue = ref<string>()
 const internalValue = computed({
-  get: () => Math.abs(props.modelValue),
-  set: (value: number) => {
-    emitUpdateModelValue(isAfter.value, Math.round(value))
+  get: () => enteredValue.value ?? `${Math.abs(props.modelValue)}`,
+  set: (value: string) => {
+    enteredValue.value = value
+    emitUpdateModelValue(isAfter.value, value)
   },
 })
 
-function emitUpdateModelValue(internalIsAfter: boolean, internalValue: number) {
-  const modelValue = internalIsAfter ? internalValue : -internalValue
+function emitUpdateModelValue(isAfter: boolean, value: string) {
+  const internalValue = parseInt(value)
+  const integerValue = isNaN(internalValue) ? 0 : internalValue
+
+  const modelValue = (isAfter || integerValue === 0)
+    ? integerValue
+    : -integerValue
   emit('update:model-value', modelValue)
 }
 
