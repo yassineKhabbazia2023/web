@@ -38,6 +38,7 @@
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @on-sort-change="handleSortChange"
+          @remove-user="handleRemoveUser"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -59,6 +60,14 @@
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
+
+    <RemoveUserDialog
+      v-if="state.isRemoveUserDialogOpened"
+      v-model="state.isRemoveUserDialogOpened"
+      :userToRemove="state.userToRemove"
+      @user-removed="fetch"
+    />
+
     <DrawerUserDetails
       v-if="state.isDrawerViewDetailsOpened"
       v-model="state.isDrawerViewDetailsOpened"
@@ -68,6 +77,7 @@
       @contact-patched="handlePatch"
       data-testid="viewinfo-drawer"
     />
+
     <ManageRightsDrawer
       v-if="state.isManageRightsDrawerOpened"
       v-model="state.isManageRightsDrawerOpened"
@@ -85,13 +95,14 @@ import { getInitials, removeFalsyValues } from '@/helper'
 import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats, PERMISSION_CODES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
-import TableData from './components/TableData'
-import type { IState, IUserFromApi } from './types'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
-import DrawerUserDetails from './components/DrawerUserDetails'
 import { API_PREFIXES } from '@/common/config/services'
-import type { IUser } from '../usersCollab/types'
+import TableData from './components/TableData'
+import DrawerUserDetails from './components/DrawerUserDetails'
+import RemoveUserDialog from './components/RemoveUserDialog'
 import AddCustomerDrawer from './components/AddCustomerDrawer'
+import type { IUser } from '../usersCollab/types'
+import type { IState, IUserFromApi } from './types'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -112,7 +123,9 @@ const state: IState = reactive({
   sort: undefined,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
+  isRemoveUserDialogOpened: false,
   selectedUserId: 0,
+  userToRemove: undefined,
 })
 
 const isMounted = ref(false)
@@ -222,6 +235,11 @@ const handleDisplayManageRights = (selectedUserId: number) => {
 
 const handleSortChange = (sortQueryField: string) => {
   state.sort = sortQueryField
+}
+
+const handleRemoveUser = (row: any) => {
+  state.userToRemove = row
+  state.isRemoveUserDialogOpened = true
 }
 
 onMounted(async () => {

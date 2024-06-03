@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getInitials } from '@/helper'
 import mock from './../../mock.json'
 import TableData from './'
+import { userActions } from './types'
 import { nextTick } from 'vue'
 
 const mockHasPermission = vi.fn((_code: string) => true)
@@ -49,19 +50,40 @@ describe('tableData', () => {
     expect(menuItems).toHaveLength(3)
   })
 
-  it('should emit click-view-information upon toolbox click event', async () => {
-    const wrapper = createWrapper()
-    const row = { contactId: 123 }
+  const {
+    MODIFY_RIGHTS,
+    REMOVE_USER,
+    USER_INFORMATION,
+  } = userActions
+  const ACTIONS_AND_ASSOCIATED_EVENTS = [
+    [MODIFY_RIGHTS, 'display-manage-rights'],
+    [REMOVE_USER, 'remove-user'],
+    [USER_INFORMATION, 'click-view-information'],
+  ]
 
-    wrapper.vm.handleToolboxItemClick('', row)
-    await nextTick()
-    await flushPromises()
+  it.each(ACTIONS_AND_ASSOCIATED_EVENTS)(
+    'can click on %s inside the toolbox and emit %s',
+    async (action, expectedEvent) => {
+      const wrapper = createWrapper()
 
-    expect(wrapper.emitted('click-view-information')).toBeTruthy()
-    expect(wrapper.emitted('click-view-information')).toStrictEqual([
-      [row.contactId],
-    ])
-  })
+      const row = { contactId: 123 }
+
+      wrapper.vm.handleToolboxItemClick(action, row)
+      await nextTick()
+      await flushPromises()
+
+      expect(wrapper.emitted(expectedEvent)).toBeTruthy()
+
+      const isRemoveUserAction = action === REMOVE_USER
+      expect(wrapper.emitted(expectedEvent)).toStrictEqual([
+        [
+          isRemoveUserAction
+            ? { contactId: row.contactId }
+            : row.contactId,
+        ],
+      ])
+    },
+  )
 
   it('should display only the actions that the user has permission to perform', () => {
     mockHasPermission.mockReturnValue(false)

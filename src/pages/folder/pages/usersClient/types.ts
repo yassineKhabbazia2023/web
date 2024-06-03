@@ -24,6 +24,8 @@ export interface IState {
   isLoading: boolean
   isDrawerViewDetailsOpened: boolean
   isManageRightsDrawerOpened: boolean
+  isRemoveUserDialogOpened: boolean
+  userToRemove: IExtendedUser | undefined
   selectedUserId: number
   sort: string | undefined
 }
