@@ -28,7 +28,7 @@
   </ul>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T = string">
 import { computed } from 'vue'
 import PFilterOption from '@/atoms/PFilterOption'
 import type { PFilterGroupProps } from './PFilterGroupTypes'

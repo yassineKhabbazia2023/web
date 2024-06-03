@@ -8,6 +8,8 @@
     :width="pWidth"
     :modal="pModal"
     :center="pCenter"
+    :alignCenter="pAlignCenter"
+    :showClose="pShowClose"
   >
     <slot />
     <template #footer>
@@ -28,6 +30,8 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pModal: true,
   pCenter: false,
   pBeforeClose: () => {},
+  pShowClose: true,
+  pAlignCenter: false,
 })
 
 const dialogModel = computed({

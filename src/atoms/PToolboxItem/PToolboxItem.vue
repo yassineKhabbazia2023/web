@@ -1,5 +1,26 @@
 <template>
+  <PTooltip
+    v-if="pContentTooltip"
+    :pContent="pContentTooltip"
+    :pPlacement="pPlacementTooltip"
+  >
+    <button
+      type="button"
+      :class="['p-toolbox-item', pClassMapper]"
+      :disabled="disabled"
+    >
+      <div v-if="iconComponent" class="p-toolbox-item__icon margin-right--2">
+        <PIcon size="16">
+          <component :is="iconComponent" />
+        </PIcon>
+      </div>
+      <p class="p-toolbox-item__text">
+        {{ pValue }}
+      </p>
+    </button>
+  </PTooltip>
   <button
+    v-else
     type="button"
     :class="['p-toolbox-item', pClassMapper]"
     :disabled="disabled"
@@ -18,12 +39,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { iconResolver } from '@/utils/iconResolver'
+import PTooltip from '@/atoms/PTooltip'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
 
 const props = withDefaults(defineProps<PToolboxItemProps>(), {
   disabled: false,
   pState: 'default',
   pIconName: '',
+  pPlacementTooltip: 'left',
+  pContentTooltip: undefined,
 })
 
 const pClassMapper = computed(() => ({

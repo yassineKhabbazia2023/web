@@ -6,5 +6,7 @@ export interface PDialogProps {
   pModal?: boolean
   pCenter?: boolean
   pBeforeClose?: Function
+  pAlignCenter?: boolean
+  pShowClose?: boolean
 }
 

@@ -1,8 +1,8 @@
 import type { PFilterOptionProps } from '@/atoms/PFilterOption/PFilterOptionTypes'
-export interface PFilterOption extends Omit<PFilterOptionProps, 'pSelected'>{
-  pCode: string
+export interface FilterOption<T = string> extends Omit<PFilterOptionProps, 'pSelected'>{
+  pCode: T
 }
-export interface PFilterGroupProps {
+export interface PFilterGroupProps<T = string> {
   modelValue: string[]
-  pFilters: PFilterOption[]
+  pFilters: FilterOption<T>[]
 }

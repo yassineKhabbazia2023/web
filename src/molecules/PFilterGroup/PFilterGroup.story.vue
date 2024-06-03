@@ -20,10 +20,10 @@
 import { ref } from 'vue'
 import { logEvent } from 'histoire/client'
 import PFilterGroup from '.'
-import type { PFilterOption } from '@/molecules/PFilterGroup/PFilterGroupTypes'
+import type { FilterOption } from '@/molecules/PFilterGroup/PFilterGroupTypes'
 
 const pSelectedCodes = ref<string[]>([])
-const pFilters: PFilterOption[] = [
+const pFilters: FilterOption[] = [
   {
     pIcon: 'PICheck',
     pValue: '2',

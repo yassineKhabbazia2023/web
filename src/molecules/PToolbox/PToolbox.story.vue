@@ -19,6 +19,7 @@ const toolboxBasicData: PToolboxItemProps[] = [
     pValue: 'Delete',
     pActionName: 'delete',
     pState: 'default',
+    pContentTooltip: 'Test tooltip',
   },
   {
     pIconName: 'PIAdd',

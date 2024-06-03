@@ -112,5 +112,15 @@ describe('pToolboxItem', () => {
       expect(wrapper.find('.p-toolbox-item__text').text())
         .toContain(value)
     })
+
+    it('should render tooltip around toolbox item when tooltip content is set', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pContentTooltip: 'Content of my tooltip',
+      })
+      const toolbox = wrapper.find('.p-toolbox-item.el-tooltip__trigger')
+
+      expect(toolbox.exists()).toBeTruthy()
+    })
   })
 })

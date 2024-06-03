@@ -2,12 +2,15 @@
   <ElDropdown
     popperClass="p-toolbox shadow--3"
     :placement="pPlacement"
+    :teleported="pTeleported"
   >
     <slot />
     <template #dropdown>
       <ElDropdownMenu :data-testid="pElementsTestId">
         <ElDropdownItem
-          v-for="({pValue, pIconName, pState, pActionName, disabled}, index) in pElements"
+          v-for="({
+            pValue, pIconName, pState, pActionName, disabled, pPlacementTooltip, pContentTooltip
+          }, index) in pElements"
           :key="index"
         >
           <PToolboxItem
@@ -15,6 +18,8 @@
             :pIconName="pIconName"
             :pState="pState"
             :disabled="disabled"
+            :pPlacementTooltip="pPlacementTooltip"
+            :pContentTooltip="pContentTooltip"
             @click="$emit('p-toolbox-item-clicked', pActionName)"
           />
         </ElDropdownItem>
@@ -31,6 +36,7 @@ import type { PToolboxProps } from './PToolboxTypes'
 withDefaults(defineProps<PToolboxProps>(), {
   pElements: () => [],
   pPlacement: 'bottom-start',
+  pTeleported: false,
 })
 
 defineEmits(['p-toolbox-item-clicked'])
