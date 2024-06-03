@@ -3,7 +3,7 @@
     v-model="dialogModel"
     :pTitle="t('removeUser')"
   >
-    <p class="p-dialog__text margin-bottom--6">
+    <p class="margin-bottom--6">
       {{ t('confirmation') }}
     </p>
 
