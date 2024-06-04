@@ -7,9 +7,9 @@ export const ReloadOneTrust = () => {
   if (OneTrust != null) {
     OneTrust.LoadBanner()
     const otBannerSdk = document.getElementById('onetrust-banner-sdk') as HTMLElement
-    const otConsentSdk = document.getElementById('onetrust-consent-sdk') as HTMLElement
-    otBannerSdk.style.display = 'none'
-    otConsentSdk.style.display = 'none'
+    if (otBannerSdk) {
+      otBannerSdk.style.display = 'none'
+    }
     setTimeout(function() {
       const toggleDisplay = document.getElementsByClassName(
         'ot-sdk-show-settings',
@@ -17,7 +17,6 @@ export const ReloadOneTrust = () => {
 
       for (let i = 0; i < toggleDisplay.length; i++) {
         (toggleDisplay[i] as HTMLElement).onclick = function(event: any) {
-          otConsentSdk.style.display = 'block'
           event.stopImmediatePropagation()
           OneTrust.ToggleInfoDisplay()
         }
