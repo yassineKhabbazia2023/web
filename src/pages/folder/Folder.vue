@@ -33,7 +33,7 @@ import { computed, ref, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { commonStore, userPermissions } from '@kpmg/common'
+import { commonStore } from '@kpmg/common'
 import {
   PTabs,
   PTabPane,
@@ -41,9 +41,9 @@ import {
   PIcon,
   PIPulse,
 } from '@kpmg/styleguide'
-import { PERMISSION_CODES } from '@/constants'
 import Home from './pages/home'
-import { type Tab } from './FolderTypes'
+import { getTabAuthorisations, getTabs } from './FolderHelper'
+import type { TabName, Tab } from './FolderTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -56,53 +56,20 @@ const router = useRouter()
 const isLoading = ref(false)
 const userStore = commonStore()
 const activeTab = computed(() => route.name as string)
-const { hasPermission } = userPermissions()
 const { defaultEntity, isCollab } = storeToRefs(userStore)
 
 // Computed
-const commonTabs = computed<Tab[]>(() => [
-  {
-    name: 'offers',
-    title: t('offers'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
-  },
-  {
-    name: 'info',
-    title: t('info'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
-  },
-])
+const tabTitles: Record<TabName, string> = {
+  offers: t('offers'),
+  info: t('info'),
+  usersCollab: t('users'),
+  collab: t('collab'),
+  delegationsHistory: t('delegationsHistory'),
+  usersClient: t('users'),
+}
+const tabAuthorisations = computed(() => getTabAuthorisations(isCollab.value))
 
-const collabTabs = computed<Tab[]>(() => [
-  {
-    name: 'usersCollab',
-    title: t('users'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
-  },
-  {
-    name: 'collab',
-    title: t('collab'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
-  },
-  ...commonTabs.value,
-  {
-    name: 'delegationsHistory',
-    title: t('delegationsHistory'),
-    display: hasPermission(PERMISSION_CODES.HISTORY),
-  },
-])
-const clientTabs = computed<Tab[]>(() => [
-  {
-    name: 'usersClient',
-    title: t('users'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
-  },
-  ...commonTabs.value,
-])
-const tabsList = computed<Tab[]>(() => {
-  const tabs = isCollab.value ? collabTabs.value : clientTabs.value
-  return tabs.filter(({ display }) => display)
-})
+const tabsList = computed<Tab[]>(() => getTabs(tabAuthorisations.value, tabTitles))
 
 const NO_TABS = ['reports', 'folder']
 const areTabsDisplayed = computed(

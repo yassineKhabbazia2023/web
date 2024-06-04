@@ -3,5 +3,4 @@ export type TabName = 'offers' | 'info' | 'usersCollab' | 'collab' | 'delegation
 export interface Tab {
   name: TabName
   title: string
-  display: boolean
 }

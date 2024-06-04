@@ -5,10 +5,26 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore } from '@kpmg/common'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
-import { PERMISSION_CODES } from '@/constants'
+import type { Tab } from './FolderTypes'
+import * as FolderHelper from './FolderHelper'
 import Folder from './'
 
 const pinia = createTestingPinia()
+
+const mockedTabs: Tab[] = [{
+  name: 'collab',
+  title: 'Collaborateurs',
+}, {
+  name: 'usersCollab',
+  title: 'Utilisateurs',
+}, {
+  name: 'offers',
+  title: 'Offres',
+}, {
+  name: 'info',
+  title: 'Informations',
+}]
+
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
@@ -26,13 +42,18 @@ vi.mock('@kpmg/common', () => ({
       fetchUserAccountPermissions: () => vi.fn(),
     },
   }),
-  userPermissions: () => ({
-    hasPermission: mockHasPermission,
-  }),
 }))
 
+vi.mock('./FolderHelper', () => {
+  return {
+    getTabAuthorisations: vi.fn(),
+    getTabs: vi.fn(() => {
+      return mockedTabs
+    }),
+  }
+})
+
 const mockRouterPush = vi.fn()
-const mockHasPermission = vi.fn((_code: string[]) => true)
 let useRouteResponse = {}
 
 vi.mock('vue-router', () => ({
@@ -81,6 +102,17 @@ describe('dossier', () => {
   })
 
   it('should redirect to userClient if user is a client', async () => {
+    const mockedTabs: Tab[] = [{
+      name: 'usersCollab',
+      title: 'Utilisateurs',
+    }, {
+      name: 'usersClient',
+      title: 'Utilisateurs',
+    }]
+    vi
+      .spyOn(FolderHelper, 'getTabs')
+      .mockReturnValue(mockedTabs)
+
     useRouteResponse = { name: 'usersCollab' }
     const store = commonStore()
     // @ts-expect-error: Getter is read only
@@ -89,11 +121,11 @@ describe('dossier', () => {
 
     wrapper = createWrapper()
 
-    await document.getElementById('tab-usersClient')?.click()
+    await document.getElementById('tab-usersCollab')?.click()
 
     expect(mockRouterPush).toHaveBeenCalledTimes(2)
     expect(mockRouterPush).toHaveBeenNthCalledWith(1, {
-      name: 'usersClient',
+      name: 'usersCollab',
     })
     expect(mockRouterPush).toHaveBeenNthCalledWith(2, {
       name: 'usersClient',
@@ -103,12 +135,18 @@ describe('dossier', () => {
     })
   })
   it('should only display tabs to which the user has permission to access', async () => {
-    mockHasPermission.mockImplementation((permissions: string[]) =>
-      permissions.includes(PERMISSION_CODES.ACCOUNT_INFORMATION[0]),
-    )
+    const title = 'Information'
+    const mockedTabs: Tab[] = [{
+      name: 'info',
+      title,
+    }]
+    vi
+      .spyOn(FolderHelper, 'getTabs')
+      .mockReturnValue(mockedTabs)
     wrapper = createWrapper()
     await flushPromises()
-    const folderTabsAccess = ['Information']
+
+    const folderTabsAccess = [title]
     const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
     folderTabsAccess.forEach((tabPane, index) => {
       const label = tabsPane.at(index)?.props('pLabel')
@@ -116,10 +154,10 @@ describe('dossier', () => {
     })
   })
   it("should not display the 'Add User' button if the client does not have the necessary permissions", async () => {
-    const store = commonStore()
-    mockHasPermission.mockReturnValue(false)
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
+    vi
+      .spyOn(FolderHelper, 'getTabs')
+      .mockReturnValue([])
+
     await flushPromises()
     wrapper = createWrapper()
     const folderActionButton = wrapper.findComponent({ name: 'PButton' })
