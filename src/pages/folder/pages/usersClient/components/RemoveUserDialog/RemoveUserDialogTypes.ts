@@ -1,6 +1,6 @@
 import type { IExtendedUser } from '../../types'
 
-interface userToRemoveInfo {
+interface UserToRemoveInfo {
   initials: IExtendedUser['initials']
   fullName: IExtendedUser['fullName']
   email: IExtendedUser['email']
@@ -9,5 +9,5 @@ interface userToRemoveInfo {
 
 export interface RemoveUserDialogProps {
   modelValue: boolean
-  userToRemove: userToRemoveInfo
+  userToRemove: UserToRemoveInfo
 }
