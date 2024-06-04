@@ -43,6 +43,7 @@ import {
 } from '@kpmg/styleguide'
 import { PERMISSION_CODES } from '@/constants'
 import Home from './pages/home'
+import { type Tab } from './FolderTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -59,7 +60,7 @@ const { hasPermission } = userPermissions()
 const { defaultEntity, isCollab } = storeToRefs(userStore)
 
 // Computed
-const commonTabs = computed(() => [
+const commonTabs = computed<Tab[]>(() => [
   {
     name: 'offers',
     title: t('offers'),
@@ -71,7 +72,8 @@ const commonTabs = computed(() => [
     display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
   },
 ])
-const collabTabs = computed(() => [
+
+const collabTabs = computed<Tab[]>(() => [
   {
     name: 'usersCollab',
     title: t('users'),
@@ -89,7 +91,7 @@ const collabTabs = computed(() => [
     display: hasPermission(PERMISSION_CODES.HISTORY),
   },
 ])
-const clientTabs = computed(() => [
+const clientTabs = computed<Tab[]>(() => [
   {
     name: 'usersClient',
     title: t('users'),
@@ -97,10 +99,11 @@ const clientTabs = computed(() => [
   },
   ...commonTabs.value,
 ])
-const tabsList = computed(() => {
+const tabsList = computed<Tab[]>(() => {
   const tabs = isCollab.value ? collabTabs.value : clientTabs.value
   return tabs.filter(({ display }) => display)
 })
+
 const NO_TABS = ['reports', 'folder']
 const areTabsDisplayed = computed(
   () => !NO_TABS.includes(route.name as string),
