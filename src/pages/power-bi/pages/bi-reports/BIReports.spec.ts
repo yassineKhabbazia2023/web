@@ -2,6 +2,7 @@ import { it, describe, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import * as reportingServices from '@/services/reporting'
 import { getMockedBIReports } from './BIReportsMocks'
+import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import BIReports from '.'
 
@@ -19,7 +20,8 @@ vi.mock('@/services/reporting', () => ({
   fetchBIReports: vi.fn(() => Promise.resolve({ items: mockedReports })),
 }))
 
-const createWrapper = (): VueWrapper<any> => mount(BIReports)
+const createWrapper = (): VueWrapper<any> =>
+  mount(BIReports, { plugins: [createTestingPinia()] })
 
 describe('biReports', () => {
   let wrapper: VueWrapper<any>
@@ -30,8 +32,10 @@ describe('biReports', () => {
   describe('display', () => {
     it('should display the BI reports correctly', () => {
       const reportsList = wrapper.findComponent({ name: 'ReportsList' })
+      const reportDisplay = wrapper.findComponent({ name: 'ReportDisplay' })
 
       expect(reportsList.exists()).toBeTruthy()
+      expect(reportDisplay.exists()).toBeTruthy()
       expect(reportsList.props('selectedReport')).toStrictEqual(
         mockedReports[0],
       )

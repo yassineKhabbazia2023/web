@@ -3,7 +3,7 @@
     class="
       report-card
       flex
-      flex--align-items-center
+      flex--direction-column
       flex--justify-content-flex-start
       flex-gap--2
       radius--1
@@ -13,13 +13,13 @@
     :class="{ 'report-card--selected': internalIsSelected }"
     @click="handleReportSelection"
   >
-    <PIcon
-      size="16"
-      class="report-card__icon"
-      data-testid="report-card-icon"
-    >
-      <PIFiletypeNone />
-    </PIcon>
+    <PTag
+      pColor="persian"
+      pSize="default"
+      :pContent="type"
+      pEffect="plain"
+      data-testid="report-card-type"
+    />
     <div class="report-card__details flex flex--direction-column">
       <p class="report-card__name" data-testid="report-card-name">
         {{ name }}
@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PIcon, PIFiletypeNone } from '@kpmg/styleguide'
+import { PTag } from '@kpmg/styleguide'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import type { ReportCardProps } from './ReportCardTypes'
 
@@ -86,23 +86,19 @@ const handleReportSelection = () => {
   transition: all 0.3s ease;
 
   &__details {
-    white-space: nowrap;
+    width: 100%;
     overflow: hidden;
+    white-space: nowrap;
   }
 
   &__name {
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  &__name,
-  &__icon {
     transition: all 0.3s ease;
   }
 
   &:hover {
-    #{$self}__name,
-    #{$self}__icon {
+    #{$self}__name {
       color: var(--el-color-persian-500);
     }
   }

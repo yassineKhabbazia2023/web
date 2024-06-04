@@ -11,10 +11,14 @@
       data-testid="reports-list-scrollbar"
     >
       <ul class="list-style-none">
-        <li v-for="{ reportId, type, updateDate } in reports" :key="reportId">
+        <li
+          v-for="{ reportId, type, updateDate, reportLabel } in reports"
+          :key="reportId"
+        >
           <ReportCard
-            :name="type.customerLabel"
+            :name="reportLabel"
             :updatedDate="updateDate"
+            :type="type.customerLabel"
             :isSelected="internalSelectedReport.reportId === reportId"
             class="margin-bottom--3"
             @select-report="handleReportSelection(reportId)"
