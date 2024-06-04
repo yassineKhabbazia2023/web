@@ -3,7 +3,7 @@
     <div class="flex--grow-1 padding--2">
       <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
       <Teleport
-        v-if="currentEntityId && isMounted && canAddUser"
+        v-if="shouldDisplayTeleport"
         to=".folder__teleported-content"
       >
         <PButton
@@ -62,7 +62,7 @@
     </PPagination>
 
     <RemoveUserDialog
-      v-if="state.isRemoveUserDialogOpened"
+      v-if="state.isRemoveUserDialogOpened && state.userToRemove"
       v-model="state.isRemoveUserDialogOpened"
       :userToRemove="state.userToRemove"
       @user-removed="fetch"
@@ -89,6 +89,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@kpmg/styleguide'
 import { commonStore, commonApi, userPermissions } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
@@ -110,6 +111,7 @@ const { d, t } = useI18n({
   datetimeFormats,
 })
 
+const route = useRoute()
 const userStore = commonStore()
 
 const state: IState = reactive({
@@ -129,9 +131,6 @@ const state: IState = reactive({
 })
 
 const isMounted = ref(false)
-onMounted(() => {
-  isMounted.value = true
-})
 
 const { hasPermission } = userPermissions()
 const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
@@ -242,21 +241,29 @@ const handleRemoveUser = (row: any) => {
   state.isRemoveUserDialogOpened = true
 }
 
-onMounted(async () => {
-  await fetch()
-
-  watch(
-    () => [state.currentPage, state.limit, state.search, state.sort],
-    async () => {
-      await fetch()
-    },
-  )
-})
-
 const defaultEntity = computed(() => userStore.defaultEntity)
 const currentEntityId = computed(() => defaultEntity.value?.accountId)
 const currentEntityName = computed(() => defaultEntity.value?.legalName)
 const isAddCustomerDrawerOpened = ref(false)
+
+const shouldDisplayTeleport = computed(() =>
+  currentEntityId.value &&
+  isMounted.value &&
+  canAddUser.value &&
+  route.name === 'usersClient',
+)
+
+onMounted(async () => {
+  isMounted.value = true
+  await fetch()
+})
+
+watch(
+  () => [state.currentPage, state.limit, state.search, state.sort],
+  async () => {
+    await fetch()
+  },
+)
 </script>
 
 <style lang="scss" scoped>

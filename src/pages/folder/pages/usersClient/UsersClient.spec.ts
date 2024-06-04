@@ -187,7 +187,9 @@ describe('usersClient', () => {
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
 
       wrapper.vm.state.isRemoveUserDialogOpened = true
+      wrapper.vm.state.userToRemove = {}
       await nextTick()
+
       const removeUserDialogComponent = wrapper.findComponent({ name: 'RemoveUserDialog' })
       await removeUserDialogComponent.vm.$emit('user-removed')
 

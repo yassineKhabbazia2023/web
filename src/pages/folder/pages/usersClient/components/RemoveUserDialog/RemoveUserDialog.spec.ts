@@ -15,7 +15,7 @@ const USER_TO_REMOVE = {
   initials: 'ab',
   fullName: 'a b',
   email: 'customEmail@labas.be',
-  contactId: 'customContactId',
+  contactId: 4,
 }
 
 vi.mock('@/services/account', () => ({
