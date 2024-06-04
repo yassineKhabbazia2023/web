@@ -23,7 +23,7 @@ type Entities = {
 }
 
 export interface UserInfo {
-  id: string
+  id: number
   firstName: string
   lastName: string
   occupation: string
