@@ -3,6 +3,6 @@ export interface FilterOption<T = string> extends Omit<PFilterOptionProps, 'pSel
   pCode: T
 }
 export interface PFilterGroupProps<T = string> {
-  modelValue: string[]
+  modelValue: T[]
   pFilters: FilterOption<T>[]
 }

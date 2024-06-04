@@ -13,6 +13,15 @@
         />
       </div>
     </Variant>
+    <Variant title="type Number">
+      <div class="padding--4">
+        <PFilterGroupNumber
+          v-model="selectedIds"
+          :pFilters="filtersNumber"
+          @update:model-value="logEvent('update:model-value', $event)"
+        />
+      </div>
+    </Variant>
   </Story>
 </template>
 
@@ -22,7 +31,9 @@ import { logEvent } from 'histoire/client'
 import PFilterGroup from '.'
 import type { FilterOption } from '@/molecules/PFilterGroup/PFilterGroupTypes'
 
+const PFilterGroupNumber = PFilterGroup<number>
 const pSelectedCodes = ref<string[]>([])
+const selectedIds = ref<number[]>([])
 const pFilters: FilterOption[] = [
   {
     pIcon: 'PICheck',
@@ -57,6 +68,42 @@ const pFilters: FilterOption[] = [
     pContent: 'Résilié',
     pColor: 'gray-900',
     pCode: 'resilie',
+  },
+]
+const filtersNumber: FilterOption<number>[] = [
+  {
+    pIcon: 'PICheck',
+    pValue: '2',
+    pContent: 'Incident',
+    pColor: 'danger',
+    pCode: 1,
+  },
+  {
+    pIcon: 'PICheck',
+    pValue: '4',
+    pContent: 'Deploiment',
+    pColor: 'warning',
+    pCode: 2,
+  },
+  {
+    pIcon: 'PICheck',
+    pContent: 'Actif',
+    pColor: 'success',
+    pCode: 3,
+  },
+  {
+    pIcon: 'PICheck',
+    pValue: 2,
+    pContent: 'En cours',
+    pColor: 'amethyste',
+    pCode: 4,
+  },
+  {
+    pIcon: 'PIXCircle',
+    pValue: '9',
+    pContent: 'Résilié',
+    pColor: 'gray-900',
+    pCode: 5,
   },
 ]
 </script>

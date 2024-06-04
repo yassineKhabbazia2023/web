@@ -33,13 +33,13 @@ import { computed } from 'vue'
 import PFilterOption from '@/atoms/PFilterOption'
 import type { PFilterGroupProps } from './PFilterGroupTypes'
 
-const props = defineProps<PFilterGroupProps>()
+const props = defineProps<PFilterGroupProps<T>>()
 
 const emit = defineEmits<{
-  'update:model-value': [string[]]
+  'update:model-value': [T[]]
 }>()
 
-function onToggleSelected(pCode: string, isSelected: boolean) {
+function onToggleSelected(pCode: T, isSelected: boolean) {
   const isPresent = props.modelValue.includes(pCode)
 
   if (isSelected && !isPresent) {
@@ -52,7 +52,7 @@ function onToggleSelected(pCode: string, isSelected: boolean) {
   }
 }
 
-function emitUpdateSelectedCodes(selectedCodes: string[]) {
+function emitUpdateSelectedCodes(selectedCodes: T[]) {
   emit('update:model-value', selectedCodes)
 }
 
