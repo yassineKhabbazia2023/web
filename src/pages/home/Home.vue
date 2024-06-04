@@ -1,15 +1,22 @@
 <template>
   <div>
-    <PBreadcrumb
-      v-if="breadcrumbElements.length > 0"
-      :pElements="breadcrumbElements"
-    />
-    <h1 class="h4 margin-top--3 text-color--neutral-gray-700">
-      {{ t('title') }}
-    </h1>
-    <h2 class="margin-top--8 font-small text-color--neutral-gray-500">
-      {{ t('active-section-title') }}
-    </h2>
+    <template v-if="isClient">
+      <PBreadcrumb
+        :pElements="breadcrumbElements"
+      />
+      <h1
+        class="h4 margin-top--3 text-color--neutral-gray-700"
+        data-testid="launcher-home-title"
+      >
+        {{ t('title') }}
+      </h1>
+      <h2
+        class="margin-top--8 font-small text-color--neutral-gray-500"
+        data-testid="launcher-home-section-title"
+      >
+        {{ t('active-section-title') }}
+      </h2>
+    </template>
     <PAlert
       v-if="launchCards.length === 0"
       pType="danger"
@@ -39,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import LaunchCard from '@/components/launchCard'
@@ -85,17 +92,14 @@ async function onClickAction(key: LAUNCHER_KEY) {
   await handleClickAction(key)
 }
 
-const breadcrumbElementsClient = [{
+const isClient = computed(() => route.name === 'launcher')
+const breadcrumbElements = [{
   pId: -1,
   pText: commonStore.defaultEntity?.legalName ?? '',
 }, {
   pId: -1,
   pText: t('title'),
 }]
-
-const breadcrumbElements = route.name === 'launcher'
-  ? breadcrumbElementsClient
-  : []
 
 onMounted(() => {
   authorizedKeys.value = getAuthorizedKeys()

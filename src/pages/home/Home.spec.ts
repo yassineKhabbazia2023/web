@@ -52,6 +52,8 @@ describe('test Home', () => {
       await nextTick()
       const launchCards = getLaunchCardComponents(wrapper)
       const PBreadcrumb = wrapper.findComponent({ name: 'PBreadcrumb' })
+      const title = wrapper.find('[data-testid="launcher-home-title"]')
+      const sectionTitle = wrapper.find('[data-testid="launcher-home-section-title"]')
       const expectedBreadcrumbElements = [{
         pId: -1,
         pText: mockedEntity.legalName,
@@ -62,6 +64,8 @@ describe('test Home', () => {
 
       expect(launchCards).toHaveLength(CARDS_LENGTH)
       expect(PBreadcrumb.props('pElements')).toStrictEqual(expectedBreadcrumbElements)
+      expect(title.exists()).toBeTruthy()
+      expect(sectionTitle.exists()).toBeTruthy()
     })
 
     it('should display filtered cards', async () => {
@@ -143,9 +147,13 @@ describe('test Home', () => {
       await nextTick()
       const launchCards = getLaunchCardComponents(wrapper)
       const PBreadcrumb = wrapper.findComponent({ name: 'PBreadcrumb' })
+      const title = wrapper.find('[data-testid="launcher-home-title"]')
+      const sectionTitle = wrapper.find('[data-testid="launcher-home-section-title"]')
 
       expect(launchCards).toHaveLength(CARDS_LENGTH)
       expect(PBreadcrumb.exists()).toBeFalsy()
+      expect(title.exists()).toBeFalsy()
+      expect(sectionTitle.exists()).toBeFalsy()
     })
   })
 
