@@ -42,33 +42,6 @@
       />
 
       <PTableColumn
-        :pLabel="t('role')"
-        pProp="personaName"
-        pSortable
-      >
-        <template #default="scope">
-          <div
-            v-if="scope.row.isOwner"
-            class="flex flex--align-items-center"
-          >
-            <PIcon color="#5546FF">
-              <PIPatchCheck />
-            </PIcon>
-            <p class="margin-left--2 color-persian font-bold">
-              {{ scope.row.personaName }}
-            </p>
-          </div>
-
-          <p
-            v-if="!scope.row.isOwner"
-            class="font-bold"
-          >
-            {{ scope.row.personaName}}
-          </p>
-        </template>
-      </PTableColumn>
-
-      <PTableColumn
         :pLabel="t('dateAdded')"
         pProp="creationDate"
         pSortable
@@ -106,7 +79,6 @@ import {
   PAvatar,
   PButton,
   PIcon,
-  PIPatchCheck,
   PIThreeDots,
   PTable,
   PTableColumn,
@@ -198,7 +170,6 @@ const handleSortChange = (data:any) => {
 en-US:
   user: 'User'
   email: 'Email'
-  role: 'Role'
   dateAdded: 'Date added'
   options: 'Options'
   userInformation: 'User information'
@@ -208,7 +179,6 @@ en-US:
 fr-FR:
   user: 'Utilisateur'
   email: 'E-Mail'
-  role: 'Fonction'
   dateAdded: "Date d'ajout"
   options: 'Options'
   userInformation: "Informations de l’utilisateur"
