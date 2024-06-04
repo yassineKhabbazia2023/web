@@ -262,7 +262,7 @@ const formatAndFillUsersCollabTable = async () => {
         email: userFromApi.email,
         role: userFromApi.personaName,
         firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
-        isOwner: Number.parseInt(user.value?.id ?? '') === userFromApi.contactId,
+        isOwner: user.value?.id === userFromApi.contactId,
       }
     })
 

@@ -196,7 +196,7 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
       lastName,
       isOwner: personaName === 'ADMIN/Dirigeant',
       fullName: `${firstName} ${lastName}`,
-      isLoggedUser: () => contactId.toString() === userStore.$state.user?.id,
+      isLoggedUser: contactId === userStore.$state.user?.id,
       personaName,
       contactId,
       creationDate: d(new Date(creationDate), 'short'),

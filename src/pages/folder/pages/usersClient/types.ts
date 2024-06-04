@@ -10,7 +10,7 @@ export interface IUserFromApi {
 export interface IExtendedUser extends IUserFromApi {
   initials: string
   fullName: string
-  isLoggedUser: Function
+  isLoggedUser: boolean
   isOwner: boolean
 }
 

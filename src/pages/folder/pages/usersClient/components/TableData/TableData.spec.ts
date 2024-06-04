@@ -32,7 +32,7 @@ const createWrapper = (): VueWrapper<any> =>
         firstName,
         lastName,
         isOwner: false,
-        isLoggedUser: () => false,
+        isLoggedUser: false,
         ...rest,
       })),
     },

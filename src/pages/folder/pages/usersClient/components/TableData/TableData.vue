@@ -24,8 +24,8 @@
             </div>
             <div>
               <p class="text-capitalize">
-                <span v-if="scope.row.isLoggedUser()">{{ t('you') }}</span>
-                <span v-if="!scope.row.isLoggedUser()">
+                <span v-if="scope.row.isLoggedUser">{{ t('you') }}</span>
+                <span v-if="!scope.row.isLoggedUser">
                   {{ scope.row.firstName }}
                   <span class="text-uppercase"> {{ scope.row.lastName }}</span>
                 </span>
