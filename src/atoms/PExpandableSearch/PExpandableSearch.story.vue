@@ -6,6 +6,7 @@
         v-model:pSearchContent="pSearchContent"
         :pIsSearchShrinkable ="pIsSearchShrinkable "
         :pIsSearchOpen="pIsSearchOpen"
+        :pFocusOnExpand="pFocusOnExpand"
         @update:p-search-content="logEvent('input', $event)"
         @search-expand-change="logEvent('search-expand-change', $event)"
         @enter="logEvent('enter', $event)"
@@ -14,6 +15,7 @@
         <HstText v-model="pPlaceholder" title="Placeholder" />
         <HstCheckbox v-model="pIsSearchShrinkable " title="pIsSearchShrinkable "/>
         <HstCheckbox v-model="pIsSearchOpen " title="pIsSearchOpen "/>
+        <HstCheckbox v-model="pFocusOnExpand " title="pFocusOnExpand "/>
       </template>
     </Variant>
   </Story>
@@ -28,4 +30,5 @@ const pPlaceholder = ref('')
 const pSearchContent = ref('')
 const pIsSearchShrinkable = ref(true)
 const pIsSearchOpen = ref(false)
+const pFocusOnExpand = ref(false)
 </script>

@@ -1,8 +1,8 @@
 /* eslint-disable vitest/no-commented-out-tests */
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { mount, shallowMount } from '@vue/test-utils'
 import PExpandableSearch from './'
 import { nextTick } from 'vue'
 import PButton from '../PButton'
@@ -174,6 +174,31 @@ describe('pExpandableSearch', () => {
       await pInput.trigger('keyup.enter')
 
       expect(wrapper.emitted('enter')).toStrictEqual([[]])
+    })
+
+    it('should call PInput.focus() on expand when pFocusOnExpand is true', async () => {
+      const props = {
+        pIsSearchOpen: false,
+        pFocusOnExpand: true,
+      }
+      const focusSpy = vi.fn()
+      const wrapper = shallowMount(PExpandableSearch, {
+        props,
+        global: {
+          stubs: {
+            PInput: {
+              template: '<div />',
+              methods: {
+                focus: focusSpy,
+              },
+            },
+          },
+        },
+      })
+      const pButton = findPbutton(wrapper)
+      await pButton.trigger('click')
+
+      expect(focusSpy).toHaveBeenCalledOnce()
     })
   })
 })

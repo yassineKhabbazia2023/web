@@ -1,5 +1,6 @@
 <template>
   <ElInput
+    ref="inputRef"
     :type="pType"
     :maxlength="pMaxlength"
     :minlength="pMinlength"
@@ -45,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, ref } from 'vue'
 import { mutable } from 'element-plus/es/utils/typescript'
 import { iconResolver } from '@/utils/iconResolver'
 import { ElInput } from 'element-plus'
@@ -90,5 +91,14 @@ const props = withDefaults(defineProps<PInputProps>(), {
   pTabindex: undefined,
   pValidateEvent: true,
   pInputStyle: () => mutable({} as const),
+})
+const inputRef = ref<InstanceType<typeof ElInput>>()
+
+function focus() {
+  inputRef.value?.focus()
+}
+
+defineExpose({
+  focus,
 })
 </script>

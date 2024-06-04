@@ -15,6 +15,7 @@
     </PButton>
 
     <PInput
+      ref="inputRef"
       v-model="internalSearchContent"
       pType="search"
       :pPlaceholder="pPlaceholder"
@@ -42,6 +43,8 @@ const props = withDefaults(defineProps<PExpandableSearchProps>(), {
   pIsSearchOpen: false,
 })
 
+const inputRef = ref<InstanceType<typeof PInput>>()
+
 const emit = defineEmits<{
   input: [string]
   'search-expand-change': [boolean]
@@ -58,6 +61,9 @@ const isSearchOpen = ref(props.pIsSearchOpen)
 const openSearchBar = () => {
   isSearchOpen.value = true
   emit('search-expand-change', true)
+  if (props.pFocusOnExpand) {
+    setFocus()
+  }
 }
 
 const handleClear = () => {
@@ -84,6 +90,10 @@ watch(
     emit('search-expand-change', value)
   },
 )
+
+function setFocus() {
+  inputRef.value?.focus()
+}
 </script>
 
 <style lang="scss">
