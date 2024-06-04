@@ -16,7 +16,7 @@
       <button
         type="button"
         class="legal-links__link"
-        @click="drawerVisibility = !drawerVisibility"
+        @click="handleClick"
         @click.stop.prevent
         data-testid="legal-links-notices"
       >
@@ -72,6 +72,7 @@
       :class="{
         'padding-top--12': isAuthenticated
       }"
+      :closeOnClickModal="false"
     >
       <!-- OneTrust Cookies List start -->
       <div id="ot-sdk-cookie-policy"></div>
@@ -96,6 +97,7 @@ import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { PButton, PDrawer } from '@kpmg/styleguide'
 import { commonStore, fetchUrlTerms } from '@kpmg/common'
+import { ReloadOneTrust } from '@/plugins/OneTrust'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -107,6 +109,10 @@ const route = useRoute()
 
 const drawerVisibility = ref(false)
 
+const handleClick = () => {
+  drawerVisibility.value = !drawerVisibility.value
+  ReloadOneTrust()
+}
 const urlTerms = ref()
 onMounted(async () => {
   urlTerms.value = await fetchUrlTerms()
@@ -157,18 +163,18 @@ onMounted(async () => {
 </style>
 
 <i18n lang="yaml">
-  en-US:
-    legalNotice: 'Legal Notice'
-    cookiesNotices: 'Cookies notices'
-    cookiesParameters: 'Cookies parameters'
-    CGU: 'CGU'
-    privacyPolicy: 'Privacy Policy'
-    close: 'Close'
-  fr-FR:
-    legalNotice: 'Mentions légales'
-    cookiesNotices: 'Notices de cookies'
-    cookiesParameters: 'Paramètres de cookies'
-    CGU: 'CGU'
-    privacyPolicy: 'Politique de confidentialité'
-    close: 'Fermer'
+en-US:
+  legalNotice: 'Legal Notice'
+  cookiesNotices: 'Cookies notices'
+  cookiesParameters: 'Cookies parameters'
+  CGU: 'CGU'
+  privacyPolicy: 'Privacy Policy'
+  close: 'Close'
+fr-FR:
+  legalNotice: 'Mentions légales'
+  cookiesNotices: 'Notices de cookies'
+  cookiesParameters: 'Paramètres de cookies'
+  CGU: 'CGU'
+  privacyPolicy: 'Politique de confidentialité'
+  close: 'Fermer'
 </i18n>

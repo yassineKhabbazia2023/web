@@ -27,4 +27,4 @@ extends:
     mfe: router
     devIndex: ${{ parameters.devIndex }}
     deployType: ${{ parameters.deployType }}
-    sonarExclusions: src/main.ts
+    sonarExclusions: src/main.ts, src/plugins/OneTrust/index.ts
