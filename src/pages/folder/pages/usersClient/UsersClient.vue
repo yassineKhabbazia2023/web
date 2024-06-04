@@ -3,7 +3,7 @@
     <div class="flex--grow-1 padding--2">
       <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
       <Teleport
-        v-if="currentEntityId && isMounted && canAddUser"
+        v-if="shouldDisplayTeleport"
         to=".folder__teleported-content"
       >
         <PButton
@@ -38,6 +38,7 @@
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @on-sort-change="handleSortChange"
+          @remove-user="handleRemoveUser"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -59,6 +60,14 @@
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
+
+    <RemoveUserDialog
+      v-if="state.isRemoveUserDialogOpened && state.userToRemove"
+      v-model="state.isRemoveUserDialogOpened"
+      :userToRemove="state.userToRemove"
+      @user-removed="fetch"
+    />
+
     <DrawerUserDetails
       v-if="state.isDrawerViewDetailsOpened"
       v-model="state.isDrawerViewDetailsOpened"
@@ -68,6 +77,7 @@
       @contact-patched="handlePatch"
       data-testid="viewinfo-drawer"
     />
+
     <ManageRightsDrawer
       v-if="state.isManageRightsDrawerOpened"
       v-model="state.isManageRightsDrawerOpened"
@@ -79,19 +89,21 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@kpmg/styleguide'
 import { commonStore, commonApi, userPermissions } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
 import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats, PERMISSION_CODES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
-import TableData from './components/TableData'
-import type { IState, IUserFromApi } from './types'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
-import DrawerUserDetails from './components/DrawerUserDetails'
 import { API_PREFIXES } from '@/common/config/services'
-import type { IUser } from '../usersCollab/types'
+import TableData from './components/TableData'
+import DrawerUserDetails from './components/DrawerUserDetails'
+import RemoveUserDialog from './components/RemoveUserDialog'
 import AddCustomerDrawer from './components/AddCustomerDrawer'
+import type { IUser } from '../usersCollab/types'
+import type { IState, IUserFromApi } from './types'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -99,6 +111,7 @@ const { d, t } = useI18n({
   datetimeFormats,
 })
 
+const route = useRoute()
 const userStore = commonStore()
 
 const state: IState = reactive({
@@ -112,13 +125,12 @@ const state: IState = reactive({
   sort: undefined,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
+  isRemoveUserDialogOpened: false,
   selectedUserId: 0,
+  userToRemove: undefined,
 })
 
 const isMounted = ref(false)
-onMounted(() => {
-  isMounted.value = true
-})
 
 const { hasPermission } = userPermissions()
 const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
@@ -224,21 +236,34 @@ const handleSortChange = (sortQueryField: string) => {
   state.sort = sortQueryField
 }
 
-onMounted(async () => {
-  await fetch()
-
-  watch(
-    () => [state.currentPage, state.limit, state.search, state.sort],
-    async () => {
-      await fetch()
-    },
-  )
-})
+const handleRemoveUser = (row: any) => {
+  state.userToRemove = row
+  state.isRemoveUserDialogOpened = true
+}
 
 const defaultEntity = computed(() => userStore.defaultEntity)
 const currentEntityId = computed(() => defaultEntity.value?.accountId)
 const currentEntityName = computed(() => defaultEntity.value?.legalName)
 const isAddCustomerDrawerOpened = ref(false)
+
+const shouldDisplayTeleport = computed(() =>
+  currentEntityId.value &&
+  isMounted.value &&
+  canAddUser.value &&
+  route.name === 'usersClient',
+)
+
+onMounted(async () => {
+  isMounted.value = true
+  await fetch()
+})
+
+watch(
+  () => [state.currentPage, state.limit, state.search, state.sort],
+  async () => {
+    await fetch()
+  },
+)
 </script>
 
 <style lang="scss" scoped>

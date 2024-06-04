@@ -3,8 +3,9 @@ import type { IExtendedUser } from './../../types'
 /* eslint-disable no-unused-vars */
 export enum userActions {
   MODIFY_RIGHTS = 'modifyRights',
-  DELETE_USER = 'deleteUser',
+  REMOVE_USER = 'removeUser',
   ASSIGN_SIGNATORY = 'assignSignatory',
+  USER_INFORMATION = 'userInformation',
 }
 /* eslint-disable no-unused-vars */
 

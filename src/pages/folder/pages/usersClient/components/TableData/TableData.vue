@@ -104,9 +104,10 @@ const { hasPermission } = userPermissions()
 const emits = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
+  'remove-user': [IExtendedUser]
 }>()
 
-const { userInformation, modifyRights, deleteUser } = MENU_ACTIONS_NAME
+const { userInformation, modifyRights, removeUser } = MENU_ACTIONS_NAME
 const menuElements = computed<PToolboxItemProps[]>(() =>
   [
     {
@@ -124,9 +125,9 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER),
     },
     {
-      pIconName: 'PITrash',
-      pValue: t('deleteUser'),
-      pActionName: deleteUser,
+      pIconName: 'PIPersonRemove',
+      pValue: t('removeUser'),
+      pActionName: removeUser,
       pState: 'default',
       display: hasPermission(PERMISSION_CODES.DELETE_USER),
     },
@@ -148,12 +149,16 @@ const handleToolboxItemClick = (action: string, row: any) => {
   state.rowData = row
   if (action === userActions.MODIFY_RIGHTS) {
     emits('display-manage-rights', row.contactId)
-  } else {
+  }
+  if (action === userActions.REMOVE_USER) {
+    emits('remove-user', row)
+  }
+  if (action === userActions.USER_INFORMATION) {
     emits('click-view-information', row.contactId)
   }
 }
 
-const handleSortChange = (data:any) => {
+const handleSortChange = (data: any) => {
   const columnLabel = data.prop
   const order = data.order
   returnSortQueryField(columnLabel, order)
@@ -174,7 +179,7 @@ en-US:
   options: 'Options'
   userInformation: 'User information'
   modifyRights: 'Modify rights'
-  deleteUser: 'Delete User'
+  removeUser: 'Remove User'
   you: 'You'
 fr-FR:
   user: 'Utilisateur'
@@ -183,6 +188,6 @@ fr-FR:
   options: 'Options'
   userInformation: "Informations de l’utilisateur"
   modifyRights: 'Modifier les droits'
-  deleteUser: "Supprimer l’utilisateur"
+  removeUser: "Retirer l’utilisateur"
   you: 'Vous'
 </i18n>
