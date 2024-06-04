@@ -122,7 +122,7 @@ import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import { validEmailPattern, validPhoneNumberPattern } from '@/common/utils/helpers/forms'
 import { getUserByEmail } from '@/services/contact'
-import { addCustomerToEntity } from '@/services/account'
+import { createCustomer, addContactToEntity } from '@/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 
 const { t } = useI18n({
@@ -133,6 +133,7 @@ const { t } = useI18n({
 const props = defineProps<AddCustomerDrawerProps>()
 const emit = defineEmits<{
   'update:modelValue': [boolean]
+  'refresh-customers-list': [void]
 }>()
 
 const isDrawerOpened = computed({
@@ -181,15 +182,15 @@ const disabledFormInputs = reactive({
 })
 
 const doesUserEmailExists = ref(false)
+const fetchedUser = ref()
 async function checkIfUserExists() {
   if (!formData.email) return
-  const fetchedUser = await getUserByEmail(formData.email)
-
-  if (fetchedUser) {
+  fetchedUser.value = await getUserByEmail(formData.email)
+  if (fetchedUser.value) {
     doesUserEmailExists.value = true
-    formData.firstName = fetchedUser.firstName
-    formData.lastName = fetchedUser.lastName
-    formData.mobilePhone = fetchedUser.mobilePhone
+    formData.firstName = fetchedUser.value.firstName
+    formData.lastName = fetchedUser.value.lastName
+    formData.mobilePhone = fetchedUser.value.mobilePhone
 
     disabledFormInputs.firstName = true
     disabledFormInputs.lastName = true
@@ -220,17 +221,22 @@ async function handleFormSubmit() {
     isNextButtonLoading.value = true
 
     const { firstName, lastName, mobilePhone, email } = formData
-    await addCustomerToEntity({
-      firstName,
-      lastName,
-      mobilePhone,
-      email,
-      accountNumber: String(props.targetEntityId),
-    })
+    if (!doesUserEmailExists.value) {
+      fetchedUser.value = await createCustomer({
+        firstName,
+        lastName,
+        mobilePhone,
+        email,
+        accountNumber: props.targetEntityNumber,
+      })
+    }
+    await addContactToEntity(props.targetEntityId, fetchedUser.value.id)
 
     hasFormBeenSent.value = true
     isNextButtonLoading.value = false
+    emit('refresh-customers-list')
   } catch (error) {
+    console.error(error)
     hasFormBeenSent.value = true
     isNextButtonDisabled.value = true
     isNextButtonLoading.value = false

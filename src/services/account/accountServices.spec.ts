@@ -10,7 +10,7 @@ import {
   deleteAccountDelegation,
   addContactToEntity,
   fetchContactsFromSameHub,
-  addCustomerToEntity,
+  createCustomer,
 } from '.'
 import {
   getMockedAccount,
@@ -176,9 +176,9 @@ describe('test accountServices', () => {
         {
           accountId: 1,
           contactId: 1000,
-          isSignatory: true,
-          isFavorite: true,
-          isDelegation: true,
+          isSignatory: false,
+          isFavorite: false,
+          isDelegation: false,
         },
       )
     })
@@ -189,6 +189,8 @@ describe('test accountServices', () => {
     })
 
     it('should add customer to entity', async () => {
+      const newId = 123
+      postSpy.mockResolvedValue({ data: newId })
       const postRequestBody = {
         firstName: mockedCollaborators[0].firstName,
         lastName: mockedCollaborators[0].lastName,
@@ -196,8 +198,9 @@ describe('test accountServices', () => {
         mobilePhone: mockedCollaborators[0].mobilePhone,
         accountNumber: String(mockedAccount.accountId),
       }
-      await addCustomerToEntity(postRequestBody)
+      const id = await createCustomer(postRequestBody)
       expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`, postRequestBody)
+      expect(id).toBe(newId)
     })
   })
 })

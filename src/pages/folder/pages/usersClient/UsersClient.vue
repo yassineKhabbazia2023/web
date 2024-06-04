@@ -20,10 +20,16 @@
       </Teleport>
 
       <AddCustomerDrawer
-        v-if="currentEntityId && currentEntityName && isAddCustomerDrawerOpened"
+        v-if="currentEntityId &&
+          currentEntityName &&
+          currentEntityNumber &&
+          isAddCustomerDrawerOpened
+        "
         v-model="isAddCustomerDrawerOpened"
         :targetEntityId="currentEntityId"
         :targetEntityName="currentEntityName"
+        :targetEntityNumber="currentEntityNumber"
+        @refresh-customers-list="fetch"
       />
       <div class="margin-bottom--6">
         <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
@@ -244,6 +250,7 @@ const handleRemoveUser = (row: any) => {
 const defaultEntity = computed(() => userStore.defaultEntity)
 const currentEntityId = computed(() => defaultEntity.value?.accountId)
 const currentEntityName = computed(() => defaultEntity.value?.legalName)
+const currentEntityNumber = computed(() => defaultEntity.value?.accountNumber)
 const isAddCustomerDrawerOpened = ref(false)
 
 const shouldDisplayTeleport = computed(() =>

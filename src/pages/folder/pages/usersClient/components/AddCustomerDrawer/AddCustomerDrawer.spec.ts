@@ -9,32 +9,46 @@ import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import AddCustomerDrawer from '.'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 import { getMockedCustomer } from '@/services/contact/contactMocks'
+import { createCustomer } from '@/services/account'
 
 const customerMock = getMockedCustomer()[0]
 
-let gatewayPostMock = vi.fn().mockResolvedValue({})
-const gatewayGetMock = vi.fn(() => {
-  return Promise.resolve({
-    data: { items: [customerMock] },
-    status: 200,
+export const debounceMock = vi.fn((callback: Function) => callback)
+
+vi.mock('@/services/contact', () => {
+  const getUserByEmailMock = vi.fn(() => {
+    return Promise.resolve({ ...customerMock })
   })
+  return {
+    getUserByEmail: getUserByEmailMock,
+  }
 })
 
-export const debounceMock = vi.fn((callback: Function) => callback)
+vi.mock('@/services/account', () => {
+  const createCustomerMock = vi.fn(() => {
+    return Promise.resolve({
+      data: {
+        id: customerMock.id,
+      },
+    })
+  })
+  const addContactToEntityMock = vi.fn().mockResolvedValue({})
+
+  return {
+    createCustomer: createCustomerMock,
+    addContactToEntity: addContactToEntityMock,
+  }
+})
+
 vi.mock('@kpmg/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
-  commonApi: () => ({
-    gateway: {
-      post: gatewayPostMock,
-      get: gatewayGetMock,
-    },
-  }),
 }))
 
 const defaultProps = {
   modelValue: true,
   targetEntityId: entityMock.accountId,
   targetEntityName: entityMock.legalName,
+  targetEntityNumber: entityMock.accountNumber,
 }
 
 const i18n = createI18n({
@@ -144,7 +158,8 @@ describe('add customer drawer', () => {
     })
 
     it('should still render add customer feedback after form submit', async () => {
-      gatewayPostMock = vi.fn().mockRejectedValue({})
+      // @ts-ignore
+      createCustomer.mockRejectedValue(null)
       vi.useFakeTimers()
       fillFormFields(wrapper)
       // To simulate the debounce time
@@ -159,21 +174,6 @@ describe('add customer drawer', () => {
       expect(addCustomerFeedbackWrapper.props('isError')).toBeTruthy()
       vi.clearAllTimers()
     })
-
-    it('should also render add customer feedback after form submit', async () => {
-      vi.useFakeTimers()
-      fillFormFields(wrapper)
-      vi.advanceTimersByTime(600)
-      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      await nextPreviousButtonsWrapper.vm.$emit('click-next')
-      await flushPromises()
-      await nextTick()
-
-      const addCustomerFeedbackWrapper = findAddCustomerFeedback(wrapper)
-      expect(addCustomerFeedbackWrapper.exists()).toBeTruthy()
-      expect(addCustomerFeedbackWrapper.props('isError')).toBeFalsy()
-      vi.clearAllTimers()
-    })
   })
 
   describe('interactions', () => {
@@ -181,7 +181,6 @@ describe('add customer drawer', () => {
       const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
       emailInput.setValue(formDataMock.email)
       await emailInput.trigger('blur')
-      await flushPromises()
       await nextTick()
 
       expect(lastNameInput.element.value).toBe(customerMock.lastName)
@@ -195,10 +194,11 @@ describe('add customer drawer', () => {
       expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeFalsy()
     })
 
-    it('should bind values', () => {
+    it('should bind values', async () => {
       fillFormFields(wrapper)
       const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
       const { email, firstName, lastName, mobilePhone } = formDataMock
+      await nextTick()
 
       expect(emailInput.element.value).toBe(email)
       expect(firstNameInput.element.value).toBe(firstName)

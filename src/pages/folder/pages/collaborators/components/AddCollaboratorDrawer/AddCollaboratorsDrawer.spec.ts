@@ -124,9 +124,9 @@ describe('add collaborators drawer', () => {
           {
             accountId: defaultProps.entityId,
             contactId: 1,
-            isSignatory: true,
-            isFavorite: true,
-            isDelegation: true,
+            isSignatory: false,
+            isFavorite: false,
+            isDelegation: false,
           },
         )
         expect(gatewayPostMock).toHaveBeenNthCalledWith(
@@ -135,9 +135,9 @@ describe('add collaborators drawer', () => {
           {
             accountId: defaultProps.entityId,
             contactId: 2,
-            isSignatory: true,
-            isFavorite: true,
-            isDelegation: true,
+            isSignatory: false,
+            isFavorite: false,
+            isDelegation: false,
           },
         )
 
