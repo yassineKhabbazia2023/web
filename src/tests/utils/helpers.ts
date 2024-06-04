@@ -10,7 +10,7 @@ const menu = [
   },
 ]
 const fakeUser: Partial<UserInfo> = {
-  id: '123',
+  id: 123,
   firstName: 'John',
   lastName: 'Doe',
   email: 'john@example.com',
