@@ -9,5 +9,4 @@ export interface PToolboxProps {
     | 'bottom-start'
     | 'bottom-end'
   pElementsTestId?: string
-  pTeleported?: boolean
 }
