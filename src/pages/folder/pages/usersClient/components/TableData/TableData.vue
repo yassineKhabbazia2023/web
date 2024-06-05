@@ -23,7 +23,12 @@
               </PAvatar>
             </div>
             <div>
-              <p class="text-capitalize">
+              <p
+                class="text-capitalize"
+                :class="{
+                  'font-bold': scope.row.isSignatory,
+                }"
+              >
                 <span v-if="scope.row.isLoggedUser">{{ t('you') }}</span>
                 <span v-if="!scope.row.isLoggedUser">
                   {{ scope.row.firstName }}

@@ -12,6 +12,7 @@ export interface IExtendedUser extends IUserFromApi {
   fullName: string
   isLoggedUser: boolean
   isOwner: boolean
+  isSignatory: boolean
 }
 
 export interface IState {

@@ -111,6 +111,8 @@ import AddCustomerDrawer from './components/AddCustomerDrawer'
 import type { IUser } from '../usersCollab/types'
 import type { IState } from './types'
 import { formatItemsFromApi } from './UsersClientHelper'
+import { getPrincipalContacts } from '@/services/offer'
+import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -193,7 +195,7 @@ const fetch = async () => {
       `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`,
     )
 
-    state.data = formatItemsFromApi(items, userStore.$state.user?.id)
+    state.data = formatItemsFromApi(items, userStore.$state.user?.id, principalContacts.value)
     state.currentPage = currentPage
     state.totalPages = totalPages
     state.totalItems = totalItems
@@ -229,6 +231,7 @@ const currentEntityId = computed(() => defaultEntity.value?.accountId)
 const currentEntityName = computed(() => defaultEntity.value?.legalName)
 const currentEntityNumber = computed(() => defaultEntity.value?.accountNumber)
 const isAddCustomerDrawerOpened = ref(false)
+const principalContacts = ref<ClientContact[]>([])
 
 const shouldDisplayTeleport = computed(() =>
   currentEntityId.value &&
@@ -239,6 +242,7 @@ const shouldDisplayTeleport = computed(() =>
 
 onMounted(async () => {
   isMounted.value = true
+  await loadPrincipalContacts()
   await fetch()
 })
 
@@ -248,6 +252,14 @@ watch(
     await fetch()
   },
 )
+
+watch(currentEntityId, async () => await loadPrincipalContacts())
+
+async function loadPrincipalContacts() {
+  if (currentEntityId.value) {
+    principalContacts.value = await getPrincipalContacts(currentEntityId.value) ?? []
+  }
+}
 </script>
 
 <style lang="scss" scoped>

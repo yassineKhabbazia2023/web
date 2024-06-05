@@ -31,6 +31,7 @@ const createWrapper = (): VueWrapper<any> =>
         fullName: `${firstName} ${lastName}`,
         firstName,
         lastName,
+        isSignatory: false,
         isOwner: false,
         isLoggedUser: false,
         ...rest,

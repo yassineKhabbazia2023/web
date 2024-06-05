@@ -13,11 +13,23 @@ import FormSearch from '@/common/components/FormSearch'
 import type { PatchContactPayload } from '@/services/contact/contactTypes'
 import { mockUser } from './components/DrawerUserDetails/mockData.ts'
 import { API_PREFIXES } from '@/common/config/services'
+import * as OfferServices from '@/services/offer'
+import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import UsersClient from './'
 
 vi.mock('@/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
   patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
+}))
+
+vi.mock('@/services/offer', () => ({
+  getPrincipalContacts: vi.fn(),
+}))
+
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    name: '',
+  }),
 }))
 
 const contactsList = generateContactsMock({
@@ -43,9 +55,11 @@ vi.mock('@kpmg/common', () => ({
     state: () => ({
       user: {
         id: 2,
-
       },
     }),
+    getters: {
+      defaultEntity: () => mockedEntity,
+    },
   }),
   userPermissions: () => ({
     hasPermission: () => vi.fn(),
@@ -94,7 +108,10 @@ const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 
 describe('usersClient', () => {
   let consoleErrorSpy: SpyInstance
+  let getPrincipalContactsSpy: SpyInstance
   beforeEach(() => {
+    getPrincipalContactsSpy = vi
+      .spyOn(OfferServices, 'getPrincipalContacts')
     wrapper = createWrapper()
     consoleErrorSpy = vi.spyOn(console, 'error')
   })
@@ -102,11 +119,18 @@ describe('usersClient', () => {
   describe('rendering', () => {
     it('displays formatted data correctly in the table', async () => {
       await flushPromises()
+
       expect(getTableBody().findAll('tr')).toHaveLength(items.length)
 
       const row = getTableBody().find('tr').html()
 
       checkRowContent(row, items)
+    })
+
+    it('should call getPrincipalContacts on mounted', async () => {
+      await flushPromises()
+
+      expect(getPrincipalContactsSpy).toHaveBeenCalledOnce()
     })
 
     it('should display no result page when there is no returned contacts', async () => {
