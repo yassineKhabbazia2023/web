@@ -3,6 +3,7 @@
     v-model="searchModel"
     :placeholder="t('search')"
     data-testid="mandate-search-bar"
+    size="small"
   >
     <template #prefix>
       <PIcon class="el-button__icon--left">

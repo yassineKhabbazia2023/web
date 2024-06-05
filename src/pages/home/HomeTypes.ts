@@ -4,4 +4,5 @@ export type UpdateTableDisplayParams = {
   searchTerm: string
   sortOrder: string
   sortCriteria: string
+  statusCodes?: number[]
 }

@@ -1,17 +1,12 @@
 <template>
   <div>
     <Header
-      @refresh-mandate-collection="updateTableDisplay({
-        currentPage: activePage,
-        itemsByPage: defaultItemsToDisplay,
-        searchTerm: searchText,
-        sortOrder: defaultSortOrder,
-        sortCriteria: defaultSortCriteria
-      })"
+      class="padding-top--2"
+      @refresh-mandate-collection="onRefresh"
     />
     <SearchBar
       v-model="searchText"
-      class="padding-x--6 padding-bottom--6"
+      class="padding-y--6"
     />
     <ListMandate
       :currentPage="activePage"
@@ -60,7 +55,7 @@ const defaultSortCriteria = ref('')
 
 onMounted(async () => {
   try {
-    const { data } = await getMandatesCollection()
+    const { data } = await getMandatesCollection({})
     mandatesCollection.value = data
   } catch (error) {
     console.error(`Error in mandate mount ${error}`)
@@ -73,6 +68,7 @@ const updateTableDisplay = async ({
   searchTerm = searchText.value,
   sortOrder = defaultSortOrder.value,
   sortCriteria = defaultSortCriteria.value,
+  statusCodes = [],
 }: Partial<UpdateTableDisplayParams>) => {
   try {
     if (currentPage !== activePage.value) {
@@ -88,11 +84,24 @@ const updateTableDisplay = async ({
       searchTerm: searchTerm.trim(),
       sortOrder,
       sortCriteria,
+      statusCodes,
     })
     mandatesCollection.value = data
   } catch (error) {
     console.error(error)
   }
+}
+
+async function onRefresh(override: Partial<UpdateTableDisplayParams> = {}) {
+  const params = {
+    currentPage: activePage.value,
+    itemsByPage: defaultItemsToDisplay.value,
+    searchTerm: searchText.value,
+    sortOrder: defaultSortOrder.value,
+    sortCriteria: defaultSortCriteria.value,
+    ...override,
+  }
+  await updateTableDisplay(params)
 }
 
 const updateTableDisplayDebounced = debounce(updateTableDisplay)
