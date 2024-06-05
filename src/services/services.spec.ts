@@ -1,36 +1,14 @@
 import { describe, it, expect, vi } from 'vitest'
-import * as services from '.'
+import { fetchUrlTerms } from '.'
+import { VITE_API_GATEWAY } from '../../__mocks__/env-vars'
 
-const CGU_URL = 'https://custom-CGU.com'
-const mockGetUrlTerms = vi.fn(() => ({
-  data: {
-    value: CGU_URL,
-  },
-}))
+vi.mock('env-vars')
 
-vi.mock('../api', () => ({
-  default: () => ({
-    gateway: {
-      get: mockGetUrlTerms,
-    },
-  }),
-}),
-)
+const CGU_URL = 'contact/api/terms/latest/content?language=fr'
 
 describe('fetchUrlTerms', () => {
   it('should return the terms URL', async () => {
-    const checkUrl = await services.fetchUrlTerms()
-    expect(checkUrl).toBe(CGU_URL)
-  })
-  it('should catch error', async () => {
-    mockGetUrlTerms.mockRejectedValue('error api')
-    const spyFetchUrlTerms = vi.spyOn(
-      services,
-      'fetchUrlTerms',
-    )
-
-    await services.fetchUrlTerms()
-
-    expect(spyFetchUrlTerms).toHaveBeenCalledOnce()
+    const checkUrl = await fetchUrlTerms()
+    expect(checkUrl).toBe(`${VITE_API_GATEWAY}${CGU_URL}`)
   })
 })

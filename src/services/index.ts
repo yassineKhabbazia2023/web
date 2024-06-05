@@ -1,15 +1,6 @@
-import commonApi from '../api'
+import { VITE_API_GATEWAY } from 'env-vars'
 
-export const fetchUrlTerms = async (
+export const fetchUrlTerms = (
   lang: string = 'fr',
-): Promise<string | undefined> => {
-  const urlTerms = `contact/api/contacts/terms/latest/content?language=${lang}`
-  try {
-    const {
-      data: { value },
-    } = await commonApi().gateway.get(urlTerms)
-    return value
-  } catch (error) {
-    console.error('Unable to fetch URL Terms: ', error)
-  }
-}
+): Promise<string> =>
+  Promise.resolve(`${VITE_API_GATEWAY}contact/api/terms/latest/content?language=${lang}`)
