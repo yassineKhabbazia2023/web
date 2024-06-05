@@ -103,7 +103,7 @@ const filters = [{
 <style scoped lang="scss">
 .header {
   display: flex;
-  justify-pContent: space-between;
+  justify-content: space-between;
   align-items: center;
 
   &__title {
