@@ -98,7 +98,7 @@ import { computed, onMounted, reactive, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@kpmg/styleguide'
 import { commonStore, commonApi, userPermissions } from '@kpmg/common'
-import { getInitials, removeFalsyValues } from '@/helper'
+import { removeFalsyValues } from '@/helper'
 import { PAGE_SIZES, PERMISSION_CODES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
@@ -109,7 +109,8 @@ import DrawerUserDetails from './components/DrawerUserDetails'
 import RemoveUserDialog from './components/RemoveUserDialog'
 import AddCustomerDrawer from './components/AddCustomerDrawer'
 import type { IUser } from '../usersCollab/types'
-import type { IState, IUserFromApi } from './types'
+import type { IState } from './types'
+import { formatItemsFromApi } from './UsersClientHelper'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -179,27 +180,6 @@ const getQueryParams = () => ({
   sort: state.sort,
 })
 
-const formatItemsFromApi = (items: IUserFromApi[]) =>
-  items.map(
-    ({
-      firstName,
-      lastName,
-      personaName,
-      contactId,
-      ...rest
-    }) => ({
-      ...rest,
-      initials: getInitials(firstName, lastName),
-      firstName,
-      lastName,
-      isOwner: personaName === 'ADMIN/Dirigeant',
-      fullName: `${firstName} ${lastName}`,
-      isLoggedUser: contactId === userStore.$state.user?.id,
-      personaName,
-      contactId,
-    }),
-  )
-
 const fetch = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
@@ -213,7 +193,7 @@ const fetch = async () => {
       `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`,
     )
 
-    state.data = formatItemsFromApi(items)
+    state.data = formatItemsFromApi(items, userStore.$state.user?.id)
     state.currentPage = currentPage
     state.totalPages = totalPages
     state.totalItems = totalItems
