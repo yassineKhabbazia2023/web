@@ -101,9 +101,6 @@ export const getMandatesCollection = ({
     sortCriteria,
     sortOrder,
   }
-  const parsed = parseParams(params)
-  console.warn({ parsed })
-
   return api().mandate.get('/mandate', {
     params,
     paramsSerializer: (params) => parseParams(params),
