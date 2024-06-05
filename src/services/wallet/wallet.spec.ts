@@ -4,8 +4,7 @@ import {
   fetchFavoriteEntities,
   getCollaborators,
   getCollaboratorsByIdEntity,
-  getPermissions,
-  getRoles,
+  fetchContactRoles,
   manageFavoriteEntities,
   fetchEntitiesStatistics,
   fetchAccountCustomers,
@@ -13,16 +12,18 @@ import {
 import { ContactType } from '../contact/contactTypes'
 import { getMockedEntitiesStatistics } from '@/pages/wallet/components/Filters/FiltersMocks'
 import mockCollaborators from '@/pages/wallet/pages/collaborators/mockCollaborators.json'
-import mockRoles from '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabRole/mock.json'
-import mockPermissions from
-  '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabAccess/mock.json'
 import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
 import type { Entity } from '@kpmg/common'
 import { getMockedCustomersCollab } from '@/pages/folder/pages/usersCollab/mockData'
+import {
+  getMockedCollabRoles,
+} from '@/pages/wallet/pages/collaborators/components/CollabRightsDrawer/components/CollabRoles/CollabRolesMocks'
 
 const accountId = 5
 const mockedEntitiesStatistics = getMockedEntitiesStatistics()
 const mockedCustomersCollab = getMockedCustomersCollab()
+const mockedCollabRoles = getMockedCollabRoles()
+
 const TEST_ENTITIES: Entity[] = [
   {
     accountId: 1,
@@ -68,9 +69,6 @@ vi.mock('@kpmg/common', () => ({
         if (url === `${API_PREFIXES.WALLET}/personas/Collaborator`) {
           return fetchRoles()
         }
-        if (url === `${API_PREFIXES.WALLET}/permissions/123`) {
-          return fetchPermissions()
-        }
       }),
       patch: mockedFavoriteEntityPatch,
     },
@@ -89,12 +87,7 @@ const fetchEntitiesImplementation = () => {
 }
 const fetchRoles = () => {
   return Promise.resolve({
-    data: mockRoles.data,
-  })
-}
-const fetchPermissions = () => {
-  return Promise.resolve({
-    data: mockPermissions,
+    data: mockedCollabRoles,
   })
 }
 const getCollaboratorsByIdEntityImplementation = () => {
@@ -164,12 +157,8 @@ describe('collaborateurs/admin', () => {
     })
 
     it('should return list of roles', async () => {
-      const roles = await getRoles(ContactType.Collaborator)
-      expect(roles).toStrictEqual(mockRoles.data)
-    })
-    it('should return list of permissions', async () => {
-      const permissions = await getPermissions(123)
-      expect(permissions).toStrictEqual(mockPermissions)
+      const roles = await fetchContactRoles(ContactType.Collaborator)
+      expect(roles).toStrictEqual(mockedCollabRoles)
     })
   })
 })

@@ -2,10 +2,20 @@ import { vi } from 'vitest'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
 import { commonPinia as pinia } from '@kpmg/common'
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
+import {
+  getMockedAuthorizationsConfig,
+} from '@/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
 
 setAssetsBaseUrl('https://www.example.kpmg')
 
+const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
+
+// Exported Mocks
 export const mockHasPermission = vi.fn((_code: string) => true)
+export const mockUpdateUserPermission = vi.fn()
+export const mockFetchAuthorizationsConfig = vi.fn(() =>
+  Promise.resolve(mockedAuthorizationsConfig),
+)
 
 // Power BI Mocks
 window.powerbi = {
@@ -17,6 +27,12 @@ vi.mock('powerbi-client', () => ({
 }))
 
 setActivePinia(pinia)
+// Service Mocks
+vi.mock('@/services/authorization', () => ({
+  fetchAuthorizationsConfig: mockFetchAuthorizationsConfig,
+  updateUserPermissions: mockUpdateUserPermission,
+}))
+
 vi.mock('@kpmg/common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {

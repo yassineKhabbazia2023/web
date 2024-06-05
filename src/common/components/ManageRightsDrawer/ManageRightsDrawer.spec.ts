@@ -3,11 +3,9 @@ import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { dataFromApi } from '@/pages/folder/pages/usersCollab/mockData'
 import * as authorizationServices from '@/services/authorization'
-import { getMockedAuthorizationsConfig } from './components/RightsList/RightsListMocks'
 import ManageRightsDrawer from '.'
 
 // Mocks
-const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 const mockedAccountId = 602
 const mockedUser = {
   contactId: 25,
@@ -21,12 +19,6 @@ vi.mock('vue-router', () => ({
       id: mockedAccountId,
     },
   }),
-}))
-vi.mock('@/services/authorization', () => ({
-  fetchAuthorizationsConfig: vi.fn(() =>
-    Promise.resolve(mockedAuthorizationsConfig),
-  ),
-  updateUserPermissions: vi.fn(),
 }))
 
 const createWrapper = (): VueWrapper<any> => {
