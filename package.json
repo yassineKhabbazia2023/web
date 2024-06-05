@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@kpmg/common": "^3.1.113",
-    "@kpmg/styleguide": "^2.2.510",
+    "@kpmg/styleguide": "^2.2.627",
     "pinia": "^2.1.3",
     "single-spa-vue": "^2.5.1",
     "vue": "^3.3.4",
