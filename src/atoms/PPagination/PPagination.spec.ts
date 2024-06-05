@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import PPagination from './'
 import { ElSelect, ElPagination } from 'element-plus'
@@ -66,10 +67,12 @@ describe('pPagination', () => {
       await dropdown.trigger('change')
       expect(dropdown.emitted('update:modelValue')).toHaveLength(1)
     })
+
     it('should emit on-page-range-changed on page range selector change', async () => {
-      const wrapper = createWrapper() as any
-      wrapper.vm.selectedRange = 300
-      await wrapper.vm.$nextTick()
+      const wrapper = createWrapper()
+      const dropdown = wrapper.findComponent(ElSelect)
+      dropdown.vm.$emit('update:model-value', 300)
+      await nextTick()
       expect(wrapper.emitted('on-page-range-changed')).toHaveLength(1)
       expect(wrapper.emitted('on-page-range-changed')).toStrictEqual([[300]])
     })

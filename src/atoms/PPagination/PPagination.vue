@@ -2,7 +2,7 @@
   <div class="p-pagination">
     <div class="p-pagination__select">
       <PSelect
-        v-model="selectedRange"
+        v-model="modelPageSize"
         placement="top"
         :data-testid="`${pTestIdRoot}-pagination-select`"
       >
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue'
+import { computed } from 'vue'
 import {
   ElOption as POption,
   ElOptionGroup as POptionGroup,
@@ -69,17 +69,11 @@ const modelPageSize = computed({
   },
   set(value) {
     emit('update:pPageSize', value)
+    emit('on-page-range-changed', value)
   },
 })
-
-const selectedRange = ref(props.pPageSizes ? props.pPageSizes?.at(0) : undefined)
 
 const getpageSizeSelectorContent = (pageSize: number) => {
   return `${pageSize} ${props.pPageSizeSelectorSuffix}`
 }
-
-watch(selectedRange, () => {
-  modelPageSize.value = selectedRange.value
-  emit('on-page-range-changed', selectedRange.value)
-})
 </script>
