@@ -1,6 +1,5 @@
 <template>
   <div>
-    <pre>{{ filters }}</pre>
     <div class="header">
       <div class="header__title font-normal">
         {{ t('bank-mandates') }}
