@@ -29,6 +29,7 @@ vi.mock('@kpmg/common', () => ({
       }),
     },
   }),
+  fetchUrlTerms: vi.fn(),
 }))
 
 describe('page creation password', () => {

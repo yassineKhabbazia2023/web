@@ -1,0 +1,162 @@
+<template>
+  <div class="validation-cgu text-left">
+    <h1 class="h4 margin-y--4">
+      {{ t('titleCGU') }}
+    </h1>
+    <p class="margin-bottom--10 font-large font-normal">
+      {{ t('contentCGU') }}
+    </p>
+    <PForm
+      ref="cguFormRef"
+      :pRules="rules"
+      :pModel=formValue>
+      <PFormItem
+        pProp="terms"
+        class="margin-bottom--10"
+      >
+        <PCheckbox
+          v-model="formValue.terms"
+          class="
+            validation-cgu__checkbox
+            font-base font-normal
+            padding--3
+            bg--neutral-gray-50
+            radius--2
+            width-100
+          "
+          ref="checkbox"
+        >
+          {{ t('cguMessagePartOne') }}
+          <a
+            :href="urlTerms"
+            target="_blank"
+            class="validation-cgu__link font-bold text-color--persian-500">
+            {{ t('cguLink') }}
+          </a>
+          {{ t('cguMessagePartTwo') }}
+        </PCheckbox>
+      </PFormItem>
+      <PTooltip
+        v-if="!formValue.terms"
+        :pContent="t('contentCGU')"
+        pPlacement="top"
+      >
+        <PButton
+          pDisabled
+          pType="primary"
+          class="width-100 margin-bottom--2"
+        >
+          {{ t('confirm') }}
+        </PButton>
+      </PTooltip>
+      <PButton
+        v-else
+        pType="primary"
+        class="width-100 margin-bottom--2"
+        :pLoading="loading"
+        data-testid="cgu-button-confirm"
+        @click="acceptNewCgu(termsId, userId)"
+      >
+        {{ t('confirm') }}
+      </PButton>
+      <PButton
+        pType="white"
+        class="width-100"
+        :pLoading="loading"
+        data-testid="cgu-button-back"
+        @click="back()"
+      >
+        {{ t('back') }}
+      </PButton>
+    </PForm>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
+import { onMounted, ref, reactive } from 'vue'
+import type { FormRules } from 'element-plus'
+import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@kpmg/styleguide'
+import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
+import { fetchUrlTerms } from '@kpmg/common'
+import { updateTermsByContactId } from '@/services/cgu'
+import { useRouter } from 'vue-router'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
+
+const router = useRouter()
+
+defineProps<ValidationCGUProps>()
+
+const formValue = reactive({
+  terms: false,
+})
+const cguFormRef = ref()
+const urlTerms = ref('')
+const loading = ref(false)
+
+const rules = reactive<FormRules<typeof formValue>>({
+  terms: [{ trigger: 'change', required: true, message: t('cguRequired') }],
+})
+
+onMounted(async () => {
+  urlTerms.value = await fetchUrlTerms()
+})
+
+const acceptNewCgu = async (termsId: string, userId: string) => {
+  try {
+    loading.value = true
+    await updateTermsByContactId(parseInt(userId), parseInt(termsId))
+    router.push({ name: 'wallet-client' })
+  } catch (error) {
+    console.warn(error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const back = () => router.back()
+</script>
+
+<style lang="scss" scoped>
+.validation-cgu  {
+  &__checkbox {
+    align-items: start;
+    white-space: pre-wrap;
+    height: auto;
+  }
+  &__link {
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}
+.width-100 {
+  width: 100%;
+}
+</style>
+
+<i18n lang="yaml">
+  en-US:
+    titleCGU: 'Nous avons mis à jour nos conditions générales d’utilisation'
+    contentCGU: 'Pour accéder à la plateforme, veuillez consulter et accepter ces changements.'
+    cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the '
+    cguRequired: 'Accept terms in order to access plateform'
+    cguLink: 'general terms and conditions of use '
+    cguMessagePartTwo: 'of KPMG Pulse.'
+    confirm: 'Confirm'
+    back: 'Back'
+  fr-FR:
+    titleCGU: 'Nous avons mis à jour nos conditions générales d’utilisation'
+    contentCGU: 'Pour accéder à la plateforme, veuillez consulter et accepter ces changements.'
+    cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les'
+    cguRequired: 'Veuillez accepter les CGU pour accéder à la plateforme'
+    cguLink: "conditions générales d'utilisation "
+    cguMessagePartTwo: 'de KPMG Pulse.'
+    confirm: 'Confirmer'
+    back: 'Retour'
+</i18n>

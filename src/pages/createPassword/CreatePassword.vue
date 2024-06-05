@@ -54,14 +54,21 @@
       >
         <PCheckbox
           v-model="formValue.terms"
-          class="cgu-checkbox"
+          class="
+            cgu-checkbox
+            font-base
+            font-normal
+            padding--3
+            bg--neutral-gray-50
+            radius--2
+          "
           ref="checkbox"
         >
           {{ t('cguMessagePartOne') }}
           <a
             :href="urlTerms"
             target="_blank"
-            class="cgu-link">
+            class="cgu-link font-bold text-color--persian-500">
             {{ t('cguLink') }}
           </a>
           {{ t('cguMessagePartTwo') }}
@@ -86,12 +93,13 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi, commonStore as store, tokenService } from '@kpmg/common'
+import { commonApi, commonStore as store, fetchUrlTerms, tokenService } from '@kpmg/common'
 import {
   onBeforeMount,
   reactive,
   ref,
   computed,
+  onMounted,
 } from 'vue'
 import {
   PForm,
@@ -228,20 +236,14 @@ const isValidToken = async (): Promise<any> => {
   } catch {}
 }
 
-const getUrlTerm = async () => {
-  const urlGetTerms = '/Terms/GetUrlOfTheCurrentActiveTerms'
-  try {
-    const { data: value } = await commonApi().onboarding.get(urlGetTerms)
-    urlTerms.value = value
-  } catch {}
-}
-
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
     router.push({ name: 'expireToken', query: { contactId, accountId } })
   }
-  await getUrlTerm()
+})
+onMounted(async () => {
+  urlTerms.value = await fetchUrlTerms()
 })
 </script>
 
@@ -264,16 +266,12 @@ onBeforeMount(async () => {
     height: auto;
     width: 100%;
     align-items: start;
-    background-color: var(--el-color-neutral-gray-50);
-    border-radius: 6px;
-    padding: 14px 12px 16px 12px;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
 
     .cgu-link {
-      color: var(--el-color-persian-500);
-      font-weight: 700;
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
     }
   }
   .form-password {

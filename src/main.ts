@@ -37,6 +37,17 @@ routes.value.push({
 } as RouteRecordRaw)
 
 routes.value.push({
+  path: '/validation-cgu/:termsId/utilisateur/:userId',
+  name: 'validationCGU',
+  component: () => import('@/pages/validationCGU'),
+  props: true,
+  meta: {
+    layout: LOGIN_LAYOUT,
+    illustration: 'document-authentification',
+  },
+} as RouteRecordRaw)
+
+routes.value.push({
   path: '/login',
   name: 'login',
   component: () => import('@/pages/loginCollab'),

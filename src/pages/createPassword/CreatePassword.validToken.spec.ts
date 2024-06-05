@@ -40,7 +40,9 @@ router.push({
 
 const patchMock = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
+const CGU_URL = 'https://custom-CGU.com'
 vi.mock('@kpmg/common', () => ({
+  fetchUrlTerms: vi.fn(() => CGU_URL),
   commonApi: () => ({
     onboarding: {
       patch: patchMock,

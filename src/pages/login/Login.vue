@@ -78,10 +78,12 @@
 import { computed, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { commonApi, tokenService } from '@kpmg/common'
 import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
 import useInitUserAuth from '@/composable/useInitUserAuth'
 import useNavigation from '@/composable/useNavigation'
+import { getTermsByContactId } from '@/services/cgu'
 
 const { initAuthClient, setStoreGigyaUserId } = useInitUserAuth()
 const { navigateToCustomerWallet } = useNavigation()
@@ -90,6 +92,8 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const router = useRouter()
 const formRef = ref<FormInstance>()
 
 const formValues = reactive({
@@ -159,10 +163,14 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     } = await commonApi().gateway.post('authentication/api/login', toRaw(formValues))
 
     tokenService.setToken(token)
-    await initAuthClient()
+    const data = await initAuthClient()
     setStoreGigyaUserId(userId)
 
-    navigateToCustomerWallet()
+    const { isCurrent, terms } = await getTermsByContactId(data?.id)
+    if (isCurrent) {
+      return navigateToCustomerWallet()
+    }
+    router.push({ name: 'validationCGU', params: { termsId: terms.termsId, userId: data?.id } })
   } catch (error: any) {
     const hasEmailOrPasswordInvalid = error.response?.data?.errorCode === '403042'
     if (hasEmailOrPasswordInvalid) {

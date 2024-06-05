@@ -23,7 +23,7 @@ export default function useInitUserAuth() {
     const token = tokenService.getToken()
     isTokenRetrieve.value = !!token
     if (token) {
-      await updateUserState(token)
+      return await updateUserState(token)
     }
   }
   const initAuthCollab = async () => {
@@ -45,6 +45,7 @@ export default function useInitUserAuth() {
         isCollab: data?.isCollab,
       },
     })
+    return data
   }
 
   return { initAuthCollab, initAuthClient, isTokenRetrieve, setStoreGigyaUserId }
