@@ -99,7 +99,7 @@ import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@kpmg/styleguide'
 import { commonStore, commonApi, userPermissions } from '@kpmg/common'
 import { getInitials, removeFalsyValues } from '@/helper'
-import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats, PERMISSION_CODES } from '@/constants'
+import { PAGE_SIZES, PERMISSION_CODES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
@@ -111,10 +111,9 @@ import AddCustomerDrawer from './components/AddCustomerDrawer'
 import type { IUser } from '../usersCollab/types'
 import type { IState, IUserFromApi } from './types'
 
-const { d, t } = useI18n({
+const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
-  datetimeFormats,
 })
 
 const route = useRoute()
@@ -187,7 +186,6 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
       lastName,
       personaName,
       contactId,
-      creationDate,
       ...rest
     }) => ({
       ...rest,
@@ -199,7 +197,6 @@ const formatItemsFromApi = (items: IUserFromApi[]) =>
       isLoggedUser: contactId === userStore.$state.user?.id,
       personaName,
       contactId,
-      creationDate: d(new Date(creationDate), 'short'),
     }),
   )
 

@@ -45,7 +45,11 @@
         :pLabel="t('dateAdded')"
         pProp="creationDate"
         pSortable
-      />
+      >
+        <template #default="scope">
+          {{ d(scope.row.creationDate, 'short')}}
+        </template>
+      </PTableColumn>
 
       <PTableColumn
         :pLabel="t('options')"
@@ -89,14 +93,15 @@ import { reactive, computed } from 'vue'
 import { userPermissions } from '@kpmg/common'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
-import { PERMISSION_CODES } from '@/constants'
+import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import { returnSortQueryField } from '@/helper'
 import type { IExtendedUser } from '../../types'
 import { userActions } from './types'
 
-const { t } = useI18n({
+const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  datetimeFormats,
 })
 
 const props = defineProps<Props>()
