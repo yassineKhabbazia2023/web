@@ -7,57 +7,53 @@ describe('test FolderHelper', () => {
   describe('getTabAuthorisations', () => {
     const tests = [{
       isCollab: true,
-      hasPermissionReturnValue: true,
+      hasPermission: true,
       expectedAuthorisations: {
         collab: true,
         delegationsHistory: true,
         info: true,
         offers: true,
-        usersClient: false,
-        usersCollab: true,
+        users: true,
       },
     }, {
       isCollab: false,
-      hasPermissionReturnValue: true,
+      hasPermission: true,
       expectedAuthorisations: {
         collab: true,
         delegationsHistory: false,
         info: true,
         offers: true,
-        usersClient: true,
-        usersCollab: false,
+        users: true,
       },
     }, {
       isCollab: true,
-      hasPermissionReturnValue: false,
+      hasPermission: false,
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
         info: false,
         offers: false,
-        usersClient: false,
-        usersCollab: false,
+        users: false,
       },
     }, {
       isCollab: false,
-      hasPermissionReturnValue: false,
+      hasPermission: false,
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
         info: false,
         offers: false,
-        usersClient: false,
-        usersCollab: false,
+        users: false,
       },
     }]
     it.each(tests)(
       'should return proper authorisations when isCollab is $isCollab and hasPermission returns $hasPermission',
       ({
         isCollab,
-        hasPermissionReturnValue,
+        hasPermission,
         expectedAuthorisations,
       }) => {
-        mockHasPermission.mockReturnValue(hasPermissionReturnValue)
+        mockHasPermission.mockReturnValue(hasPermission)
         const tabAuthorisations = getTabAuthorisations(isCollab)
 
         expect(tabAuthorisations).toStrictEqual(expectedAuthorisations)
@@ -71,12 +67,10 @@ describe('test FolderHelper', () => {
         delegationsHistory: false,
         info: true,
         offers: true,
-        usersClient: true,
-        usersCollab: false,
+        users: true,
       }
       const titles: Record<TabName, string> = {
-        usersClient: 'Utilisateurs',
-        usersCollab: 'Utilisateurs',
+        users: 'Utilisateurs',
         collab: 'Collaborateurs',
         offers: 'Offres',
         info: 'Informations',
@@ -84,7 +78,7 @@ describe('test FolderHelper', () => {
       }
       const tabs = getTabs(tabAuthorisations, titles)
       const expectedTabs: Tab[] = [{
-        name: 'usersClient',
+        name: 'users',
         title: 'Utilisateurs',
       }, {
         name: 'collab',

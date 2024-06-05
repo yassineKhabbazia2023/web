@@ -3,7 +3,6 @@ import { beforeEach, describe, it, expect, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@kpmg/common'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
@@ -15,7 +14,7 @@ const mockedTabs: Tab[] = [{
   name: 'collab',
   title: 'Collaborateurs',
 }, {
-  name: 'usersCollab',
+  name: 'users',
   title: 'Utilisateurs',
 }, {
   name: 'offers',
@@ -89,7 +88,7 @@ describe('dossier', () => {
   })
   const PARAMS = [
     ['collab', 'tab-collab'],
-    ['usersCollab', 'tab-usersCollab'],
+    ['users', 'tab-users'],
     ['offers', 'tab-offers'],
     ['info', 'tab-info'],
   ]
@@ -101,39 +100,6 @@ describe('dossier', () => {
     })
   })
 
-  it('should redirect to userClient if user is a client', async () => {
-    const mockedTabs: Tab[] = [{
-      name: 'usersCollab',
-      title: 'Utilisateurs',
-    }, {
-      name: 'usersClient',
-      title: 'Utilisateurs',
-    }]
-    vi
-      .spyOn(FolderHelper, 'getTabs')
-      .mockReturnValue(mockedTabs)
-
-    useRouteResponse = { name: 'usersCollab' }
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
-    await flushPromises()
-
-    wrapper = createWrapper()
-
-    await document.getElementById('tab-usersCollab')?.click()
-
-    expect(mockRouterPush).toHaveBeenCalledTimes(2)
-    expect(mockRouterPush).toHaveBeenNthCalledWith(1, {
-      name: 'usersCollab',
-    })
-    expect(mockRouterPush).toHaveBeenNthCalledWith(2, {
-      name: 'usersClient',
-      params: {
-        id: mockedEntity.accountId,
-      },
-    })
-  })
   it('should only display tabs to which the user has permission to access', async () => {
     const title = 'Information'
     const mockedTabs: Tab[] = [{

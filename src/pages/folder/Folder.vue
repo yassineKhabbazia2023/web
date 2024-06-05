@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
@@ -62,10 +62,9 @@ const { defaultEntity, isCollab } = storeToRefs(userStore)
 const tabTitles: Record<TabName, string> = {
   offers: t('offers'),
   info: t('info'),
-  usersCollab: t('users'),
+  users: t('users'),
   collab: t('collab'),
   delegationsHistory: t('delegationsHistory'),
-  usersClient: t('users'),
 }
 const tabAuthorisations = computed(() => getTabAuthorisations(isCollab.value))
 
@@ -84,27 +83,10 @@ const handleTabClick = (tab: any) => {
   })
 }
 
-// TODO: usersCollab & usersClient have the same path, and usersCollab is loaded instead of
-// usersClient, that s why there is this "trick" (redirectToUsersClientIfClient & watch) below,
-// but, in the end, usersCollab & usersClient should, perhaps, be merged or managed in another way
-const redirectToUsersClientIfClient = () => {
-  if (route.name === 'usersCollab' && !isCollab.value) {
-    router.push({
-      name: 'usersClient',
-      params: { id: defaultEntity.value?.accountId },
-    })
-  }
-}
-
-watch(route, () => {
-  redirectToUsersClientIfClient()
-})
-
 // Hooks
 onMounted(async () => {
   isLoading.value = true
   await userStore.fetchUserAccountPermissions()
-  redirectToUsersClientIfClient()
   isLoading.value = false
 })
 </script>

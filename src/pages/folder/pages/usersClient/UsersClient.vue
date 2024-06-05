@@ -254,7 +254,7 @@ const shouldDisplayTeleport = computed(() =>
   currentEntityId.value &&
   isMounted.value &&
   canAddUser.value &&
-  route.name === 'usersClient',
+  route.name === 'users',
 )
 
 onMounted(async () => {
