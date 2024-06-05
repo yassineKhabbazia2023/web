@@ -5,7 +5,7 @@
       <PCHeader class="header-container" height="56">
         <Header
           v-model:showCalendar="showCalendar"
-          @show-user-profile-drawer="hasUserProfileDrawerOpened = true"
+          @show-user-profile-drawer="handleClick"
         />
       </PCHeader>
       <PContainer class="aside-main-container">
@@ -45,6 +45,7 @@ import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import { getBrowserName } from '@/helper'
 import UserProfile from '@/components/UserProfile'
 import HomeScheduleDrawer from '@/components/HomeScheduleDrawer'
+import { ReloadOneTrust } from '@/plugins/OneTrust'
 import Header from './Header'
 import Sidebar from './Sidebar'
 
@@ -73,6 +74,10 @@ const showCalendar = computed({
 })
 const hasUserProfileDrawerOpened = ref(false)
 
+const handleClick = () => {
+  hasUserProfileDrawerOpened.value = true
+  ReloadOneTrust()
+}
 // Constants
 const headerMenu = [
   {

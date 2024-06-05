@@ -26,6 +26,7 @@
     "*.{js, ts, vue, json}": "npm run lint"
   },
   "dependencies": {
+    "@kpmg/common": "^3.1.113",
     "@kpmg/styleguide": "^2.2.617",
     "dayjs": "^1.11.10",
     "idlejs": "^3.0.0",
@@ -42,7 +43,6 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@intlify/unplugin-vue-i18n": "^0.11.0",
-    "@kpmg/common": "^3.1.106",
     "@kpmg/config-pulse": "^1.59.1-beta1",
     "@kpmg/eslint-config-pulse": "^1.72.5",
     "@pinia/testing": "^0.1.3",
