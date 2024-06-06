@@ -1,3 +1,3 @@
 export interface UsersClientProps {
-  currentEntityId: number | undefined
+  entityId: number | undefined
 }

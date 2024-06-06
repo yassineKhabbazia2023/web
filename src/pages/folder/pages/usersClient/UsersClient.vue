@@ -183,6 +183,8 @@ const getQueryParams = () => ({
   sort: state.sort,
 })
 
+const props = defineProps<UsersClientProps>()
+
 const fetch = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
@@ -241,13 +243,11 @@ const shouldDisplayTeleport = computed(() =>
   route.name === 'users',
 )
 
-const props = defineProps<UsersClientProps>()
-
 onMounted(async () => {
   isMounted.value = true
   await loadPrincipalContacts()
   await fetch()
-  console.warn(`currentEntityId = ${props.currentEntityId}`)
+  console.warn(`entityId = ${props.entityId}`)
 })
 
 watch(
