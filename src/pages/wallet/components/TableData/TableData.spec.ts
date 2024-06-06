@@ -69,7 +69,6 @@ const clientsColumnLabels =
   'Leader',
   'Email',
   'City',
-  'Options',
 ]
 
 describe('tableData', () => {
