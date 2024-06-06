@@ -207,12 +207,6 @@ describe('usersClient', () => {
       expect(wrapper.vm.state.search).toBe('hello')
     })
 
-    it('should fetch documents upon sort change', async () => {
-      await getTableDataComponent().vm.$emit('on-sort-change', '+email')
-
-      expect(mockGatewayGet).toHaveBeenCalledTimes(2)
-    })
-
     it('should refresh when the event contact-patched is triggered', async () => {
       await wrapper.vm.$emit('contact-patched', mockUser)
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)

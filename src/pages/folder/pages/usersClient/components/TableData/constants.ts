@@ -1,5 +1,6 @@
 export const MENU_ACTIONS_NAME = {
-  userInformation: 'userInformation',
+  deleteUser: 'deleteUser',
   modifyRights: 'modifyRights',
   removeUser: 'removeUser',
+  userInformation: 'userInformation',
 }

@@ -13,6 +13,7 @@ export function formatItemsFromApi(
       const {
         firstName,
         lastName,
+        email,
         personaName,
         contactId,
       } = item
@@ -22,8 +23,11 @@ export function formatItemsFromApi(
       const extendedUser: IExtendedUser = {
         ...item,
         initials: getInitials(firstName, lastName),
-        isOwner: personaName === 'ADMIN/Dirigeant',
         fullName: `${firstName} ${lastName}`,
+        firstName: firstName.toLowerCase(),
+        lastName: lastName.toLowerCase(),
+        email: email.toLowerCase(),
+        isOwner: personaName === 'ADMIN/Dirigeant',
         isLoggedUser: contactId === currentUserId,
         isSignatory,
       }
