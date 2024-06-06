@@ -111,6 +111,7 @@ import AddCustomerDrawer from './components/AddCustomerDrawer'
 import type { IUser } from '../usersCollab/types'
 import type { IState } from './types'
 import { formatItemsFromApi } from './UsersClientHelper'
+import type { UsersClientProps } from './UsersClientTypes'
 import { getPrincipalContacts } from '@/services/offer'
 import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 
@@ -240,10 +241,13 @@ const shouldDisplayTeleport = computed(() =>
   route.name === 'users',
 )
 
+const props = defineProps<UsersClientProps>()
+
 onMounted(async () => {
   isMounted.value = true
   await loadPrincipalContacts()
   await fetch()
+  console.warn(`currentEntityId = ${props.currentEntityId}`)
 })
 
 watch(
