@@ -1,5 +1,5 @@
 <template>
-  <div class="padding-x--6">
+  <div>
     <PTable
       :pData="mandateCollection"
       pStripe

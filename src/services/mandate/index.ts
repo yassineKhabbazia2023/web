@@ -44,6 +44,39 @@ export const getBankDetail = async (bankCode: string) => {
   return data
 }
 
+export function parseParams(params: Record<string, any>) {
+  const keys = Object.keys(params)
+  const options: string[] = []
+
+  keys.forEach((key) => {
+    const param = params[key]
+    const isParamTypeArray = Array.isArray(param)
+
+    if (isParamTypeArray) {
+      param
+        .forEach(value => {
+          options.push(`${key}=${value}`)
+        })
+    } else {
+      options.push(`${key}=${param}`)
+    }
+  })
+
+  return options.join('&')
+}
+type GetMandatesCollectionParams = {
+  skip: number
+  limit: number
+  searchTerm: string
+  creationDateStart: string
+  creationDateEnd: string
+  modificationDateStart: string
+  modificationDateEnd: string
+  statusCodes: number[]
+  sortCriteria: string
+  sortOrder: string
+}
+
 export const getMandatesCollection = ({
   skip = 0,
   limit = 10,
@@ -55,21 +88,22 @@ export const getMandatesCollection = ({
   statusCodes = [],
   sortCriteria = '',
   sortOrder = 'Descending',
-} = {}) => {
+}: Partial<GetMandatesCollectionParams>) => {
+  const params = {
+    skip,
+    limit,
+    searchTerm,
+    creationDateStart,
+    creationDateEnd,
+    modificationDateStart,
+    modificationDateEnd,
+    statusCodes,
+    sortCriteria,
+    sortOrder,
+  }
   return api().mandate.get('/mandate', {
-    params:
-    {
-      skip,
-      limit,
-      searchTerm,
-      creationDateStart,
-      creationDateEnd,
-      modificationDateStart,
-      modificationDateEnd,
-      statusCodes,
-      sortCriteria,
-      sortOrder,
-    },
+    params,
+    paramsSerializer: (params) => parseParams(params),
   })
 }
 

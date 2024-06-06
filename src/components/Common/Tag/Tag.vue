@@ -22,6 +22,7 @@ import {
   PICheckCircle,
   PIXCircle,
 } from '@kpmg/styleguide'
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -33,7 +34,7 @@ const props = defineProps({
 const statusMap = new Map([
   [10, { color: 'danger', icon: PIExclamationTriangle, content: t('incident') }],
   [20, { color: 'warning', icon: PIUpload, content: t('to-do') }],
-  [30, { color: 'persian', icon: PIArrowRepeat, content: t('in-progress') }],
+  [30, { color: 'amethyste', icon: PIArrowRepeat, content: t('in-progress') }],
   [40, { color: 'success', icon: PICheckCircle, content: t('active') }],
   [50, { color: 'gray-900', icon: PIXCircle, content: t('inactive') }],
 ])
@@ -50,7 +51,7 @@ const tagProperties: any = computed(() => statusMap.get(Number(props.status)))
     inactive: 'Inactive'
   fr-FR:
     incident: 'Incident'
-    to-do: 'A déposer'
+    to-do: 'À déposer'
     in-progress: 'En cours'
     active: 'Actif'
     inactive: 'Résilié'
