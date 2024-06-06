@@ -19,6 +19,7 @@
     >
       <PLoader pType="primary" pSize="50" />
     </div>
+
     <PTable
       v-else
       :pData="state.data"
@@ -194,8 +195,9 @@ const { d, t } = useI18n({
 const route = useRoute()
 const selectedRow = ref(undefined)
 const { hasPermission } = userPermissions()
-const { user } = storeToRefs(commonStore())
 const isManageRightsDrawerOpened = ref(false)
+const { user } = storeToRefs(commonStore())
+
 const state: IStateUser = reactive({
   data: [],
   currentPage: 1,
@@ -260,7 +262,7 @@ const formatAndFillUsersCollabTable = async () => {
         email: userFromApi.email,
         role: userFromApi.personaName,
         firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
-        isOwner: Number.parseInt(user.value?.id ?? '') === userFromApi.contactId,
+        isOwner: user.value?.id === userFromApi.contactId,
       }
     })
 

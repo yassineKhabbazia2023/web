@@ -23,9 +23,14 @@
               </PAvatar>
             </div>
             <div>
-              <p class="text-capitalize">
-                <span v-if="scope.row.isLoggedUser()">{{ t('you') }}</span>
-                <span v-if="!scope.row.isLoggedUser()">
+              <p
+                class="text-capitalize"
+                :class="{
+                  'font-bold': scope.row.isSignatory,
+                }"
+              >
+                <span v-if="scope.row.isLoggedUser">{{ t('you') }}</span>
+                <span v-if="!scope.row.isLoggedUser">
                   {{ scope.row.firstName }}
                   <span class="text-uppercase"> {{ scope.row.lastName }}</span>
                 </span>
@@ -42,37 +47,14 @@
       />
 
       <PTableColumn
-        :pLabel="t('role')"
-        pProp="personaName"
-        pSortable
-      >
-        <template #default="scope">
-          <div
-            v-if="scope.row.isOwner"
-            class="flex flex--align-items-center"
-          >
-            <PIcon color="#5546FF">
-              <PIPatchCheck />
-            </PIcon>
-            <p class="margin-left--2 color-persian font-bold">
-              {{ scope.row.personaName }}
-            </p>
-          </div>
-
-          <p
-            v-if="!scope.row.isOwner"
-            class="font-bold"
-          >
-            {{ scope.row.personaName}}
-          </p>
-        </template>
-      </PTableColumn>
-
-      <PTableColumn
         :pLabel="t('dateAdded')"
         pProp="creationDate"
         pSortable
-      />
+      >
+        <template #default="scope">
+          {{ d(scope.row.creationDate, 'short')}}
+        </template>
+      </PTableColumn>
 
       <PTableColumn
         :pLabel="t('options')"
@@ -106,7 +88,6 @@ import {
   PAvatar,
   PButton,
   PIcon,
-  PIPatchCheck,
   PIThreeDots,
   PTable,
   PTableColumn,
@@ -117,14 +98,15 @@ import { reactive, computed } from 'vue'
 import { userPermissions } from '@kpmg/common'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
-import { PERMISSION_CODES } from '@/constants'
+import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import { returnSortQueryField } from '@/helper'
 import type { IExtendedUser } from '../../types'
 import { userActions } from './types'
 
-const { t } = useI18n({
+const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  datetimeFormats,
 })
 
 const props = defineProps<Props>()
@@ -132,9 +114,10 @@ const { hasPermission } = userPermissions()
 const emits = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
+  'remove-user': [IExtendedUser]
 }>()
 
-const { userInformation, modifyRights, deleteUser } = MENU_ACTIONS_NAME
+const { userInformation, modifyRights, removeUser } = MENU_ACTIONS_NAME
 const menuElements = computed<PToolboxItemProps[]>(() =>
   [
     {
@@ -152,9 +135,9 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER),
     },
     {
-      pIconName: 'PITrash',
-      pValue: t('deleteUser'),
-      pActionName: deleteUser,
+      pIconName: 'PIPersonRemove',
+      pValue: t('removeUser'),
+      pActionName: removeUser,
       pState: 'default',
       display: hasPermission(PERMISSION_CODES.DELETE_USER),
     },
@@ -176,12 +159,16 @@ const handleToolboxItemClick = (action: string, row: any) => {
   state.rowData = row
   if (action === userActions.MODIFY_RIGHTS) {
     emits('display-manage-rights', row.contactId)
-  } else {
+  }
+  if (action === userActions.REMOVE_USER) {
+    emits('remove-user', row)
+  }
+  if (action === userActions.USER_INFORMATION) {
     emits('click-view-information', row.contactId)
   }
 }
 
-const handleSortChange = (data:any) => {
+const handleSortChange = (data: any) => {
   const columnLabel = data.prop
   const order = data.order
   returnSortQueryField(columnLabel, order)
@@ -198,21 +185,19 @@ const handleSortChange = (data:any) => {
 en-US:
   user: 'User'
   email: 'Email'
-  role: 'Role'
   dateAdded: 'Date added'
   options: 'Options'
   userInformation: 'User information'
   modifyRights: 'Modify rights'
-  deleteUser: 'Delete User'
+  removeUser: 'Remove User'
   you: 'You'
 fr-FR:
   user: 'Utilisateur'
   email: 'E-Mail'
-  role: 'Fonction'
   dateAdded: "Date d'ajout"
   options: 'Options'
   userInformation: "Informations de l’utilisateur"
   modifyRights: 'Modifier les droits'
-  deleteUser: "Supprimer l’utilisateur"
+  removeUser: "Retirer l’utilisateur"
   you: 'Vous'
 </i18n>

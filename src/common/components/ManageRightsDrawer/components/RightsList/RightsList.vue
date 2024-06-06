@@ -202,7 +202,7 @@ fr-FR:
   administration: 'Administration'
   offer: 'Offre et souscription'
   reports: 'Rapports'
-  mirrorView: 'Vue mirroir client'
+  mirrorView: 'Vue miroir client'
   manage: 'Gestion des dossiers'
   prod: 'Production métier'
   rightsNote: 'Activez ou désactivez les fonctionnalités que vous souhaitez donner pour cet utilisateur.'

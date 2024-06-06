@@ -95,7 +95,7 @@
         @update-collaborator-details="handleUpdateCollaborateurDetails"
       />
 
-      <DrawerCollabRole
+      <CollabRightsDrawer
         v-if="state.hasDrawerOpened.collabRole"
         v-model="state.hasDrawerOpened.collabRole"
         :rowData="state.rowData"
@@ -122,7 +122,7 @@ import { reactive, computed } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import DrawerCollabDetails from '@/common/components/DrawerCollabDetails'
-import DrawerCollabRole from './../DrawerCollabRole'
+import CollabRightsDrawer from './../CollabRightsDrawer'
 import type { Contact } from '@/services/contact/contactTypes'
 import { returnSortQueryField } from '@/helper'
 import { userPermissions } from '@kpmg/common'

@@ -60,8 +60,8 @@ const CUSTOMER_WALLET_CHILDREN_ROUTES = [
 const FOLDER_CHILDREN_PATH = [
   {
     path: 'gestion-utilisateurs',
-    name: 'usersCollab',
-    page: 'usersCollab',
+    name: 'users',
+    page: 'users',
   },
   {
     path: 'collaborateurs',
@@ -97,13 +97,13 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string }
     res.push({
       path: path.path,
       name: path.name,
-      component: () => import(`@/pages/wallet/pages/${path.page}/index.js`),
+      component: () => import(`@/pages/wallet/pages/${path.page}/index.ts`),
     } as RouteRecordRaw)
   })
   res.push({
     path: 'gestion-utilisateurs',
     name: 'allUsers',
-    component: () => import('@/pages/folder/pages/usersClient'),
+    component: () => import('@/pages/folder/pages/users'),
   } as RouteRecordRaw)
   res.push({
     path: 'demandes-mod',
@@ -124,8 +124,18 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
   })
   res.push({
     path: 'gestion-utilisateurs',
-    name: 'usersClient',
-    component: () => import('@/pages/folder/pages/usersClient'),
+    name: 'users',
+    component: () => import('@/pages/folder/pages/users'),
+  } as RouteRecordRaw)
+  res.push({
+    path: 'rapports-bi',
+    name: 'reports',
+    component: () => import('@/pages/power-bi/pages/bi-reports'),
+    meta: {
+      styles: {
+        hasPaddings: false,
+      },
+    },
   } as RouteRecordRaw)
   return res
 }

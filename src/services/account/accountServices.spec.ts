@@ -10,6 +10,7 @@ import {
   deleteAccountDelegation,
   addContactToEntity,
   fetchContactsFromSameHub,
+  createCustomer,
 } from '.'
 import {
   getMockedAccount,
@@ -19,6 +20,7 @@ import {
   getMockedReferentialHubs,
 } from './accountMock'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
+import { API_PREFIXES } from '@/common/config/services'
 
 const accountId = 5
 const accountIdRejected = 8
@@ -174,9 +176,9 @@ describe('test accountServices', () => {
         {
           accountId: 1,
           contactId: 1000,
-          isSignatory: true,
-          isFavorite: true,
-          isDelegation: true,
+          isSignatory: false,
+          isFavorite: false,
+          isDelegation: false,
         },
       )
     })
@@ -184,6 +186,21 @@ describe('test accountServices', () => {
     it('should fetch contacts from same hub', async () => {
       const result = await fetchContactsFromSameHub('searchValue', 100)
       expect(result).toStrictEqual(mockedCollaborators)
+    })
+
+    it('should add customer to entity', async () => {
+      const newId = 123
+      postSpy.mockResolvedValue({ data: newId })
+      const postRequestBody = {
+        firstName: mockedCollaborators[0].firstName,
+        lastName: mockedCollaborators[0].lastName,
+        email: mockedCollaborators[0].email,
+        mobilePhone: mockedCollaborators[0].mobilePhone,
+        accountNumber: String(mockedAccount.accountId),
+      }
+      const id = await createCustomer(postRequestBody)
+      expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`, postRequestBody)
+      expect(id).toBe(newId)
     })
   })
 })

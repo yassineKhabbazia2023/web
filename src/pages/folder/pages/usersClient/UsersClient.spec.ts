@@ -1,25 +1,35 @@
 import type { SpyInstance } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
+import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import UsersClient from './'
-
-import { PPagination } from '@kpmg/styleguide'
 import { generateContactsMock } from '@/../tests/mocks/contactsDataMock'
 import { getInitials } from '@/helper'
 import type { IExtendedUser } from './types.ts'
 import { noResult } from '@/../tests'
-import TableData from './components/TableData'
 import FormSearch from '@/common/components/FormSearch'
 import type { PatchContactPayload } from '@/services/contact/contactTypes'
 import { mockUser } from './components/DrawerUserDetails/mockData.ts'
 import { API_PREFIXES } from '@/common/config/services'
+import * as OfferServices from '@/services/offer'
+import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
+import UsersClient from './'
 
 vi.mock('@/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
   patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
+}))
+
+vi.mock('@/services/offer', () => ({
+  getPrincipalContacts: vi.fn(),
+}))
+
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    name: '',
+  }),
 }))
 
 const contactsList = generateContactsMock({
@@ -47,6 +57,9 @@ vi.mock('@kpmg/common', () => ({
         id: 2,
       },
     }),
+    getters: {
+      defaultEntity: () => mockedEntity,
+    },
   }),
   userPermissions: () => ({
     hasPermission: () => vi.fn(),
@@ -59,6 +72,7 @@ const createWrapper = (): VueWrapper<any> =>
   mount(UsersClient, {
     global: {
       plugins: [pinia],
+      stubs: ['RemoveUserDialog'],
     },
   })
 
@@ -89,10 +103,15 @@ const checkRowContent = (
 }
 
 const getTableBody = () => wrapper.find('table tbody')
+const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination' })
+const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 
 describe('usersClient', () => {
   let consoleErrorSpy: SpyInstance
+  let getPrincipalContactsSpy: SpyInstance
   beforeEach(() => {
+    getPrincipalContactsSpy = vi
+      .spyOn(OfferServices, 'getPrincipalContacts')
     wrapper = createWrapper()
     consoleErrorSpy = vi.spyOn(console, 'error')
   })
@@ -100,6 +119,7 @@ describe('usersClient', () => {
   describe('rendering', () => {
     it('displays formatted data correctly in the table', async () => {
       await flushPromises()
+
       expect(getTableBody().findAll('tr')).toHaveLength(items.length)
 
       const row = getTableBody().find('tr').html()
@@ -107,12 +127,17 @@ describe('usersClient', () => {
       checkRowContent(row, items)
     })
 
-    it('should display no result page when there is no returned contacts', () => {
-      const wrapperWithNoContacts = createWrapper()
-      wrapperWithNoContacts.vm.state.data = []
-      const tableWrapper = wrapperWithNoContacts.findComponent(TableData)
-      noResult(wrapperWithNoContacts)
-      expect(tableWrapper.exists()).toBeFalsy()
+    it('should call getPrincipalContacts on mounted', async () => {
+      await flushPromises()
+
+      expect(getPrincipalContactsSpy).toHaveBeenCalledOnce()
+    })
+
+    it('should display no result page when there is no returned contacts', async () => {
+      wrapper.vm.state.data = []
+      await nextTick()
+      noResult(wrapper)
+      expect(getTableDataComponent().exists()).toBeFalsy()
     })
 
     it('has a pagination', () => {
@@ -121,9 +146,8 @@ describe('usersClient', () => {
     })
 
     it('should not hide pagination when total pages is less than page selected size', () => {
-      const pPaginationWrapper = wrapper.findComponent(PPagination)
-      pPaginationWrapper.vm.$emit('on-page-range-changed', 100)
-      expect(pPaginationWrapper.exists()).toBeTruthy()
+      getPaginationComponent().vm.$emit('on-page-range-changed', 100)
+      expect(getPaginationComponent().exists()).toBeTruthy()
     })
   })
 
@@ -144,30 +168,23 @@ describe('usersClient', () => {
       await wrapper.vm.fetch()
 
       expect(wrapper.vm.state.isLoading).toBeFalsy()
-
       expect(consoleErrorSpy).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch contacts upon on-page-range-changed event', () => {
-      const pPagination = wrapper.findComponent(PPagination)
-
-      pPagination.vm.$emit('on-page-range-changed', 2)
+      getPaginationComponent().vm.$emit('on-page-range-changed', 2)
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch contacts upon update:pCurrentPage event', () => {
-      const pPagination = wrapper.findComponent(PPagination)
-
-      pPagination.vm.$emit('update:pCurrentPage', 2)
+      getPaginationComponent().vm.$emit('update:pCurrentPage', 2)
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch contacts upon update:pPageSize event', () => {
-      const pPagination = wrapper.findComponent(PPagination)
-
-      pPagination.vm.$emit('update:pPageSize', 5)
+      getPaginationComponent().vm.$emit('update:pPageSize', 5)
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
     })
@@ -180,9 +197,7 @@ describe('usersClient', () => {
     })
 
     it('should fetch documents upon sort change', async () => {
-      const tableWrapper = wrapper.findComponent(TableData)
-
-      await tableWrapper.vm.$emit('on-sort-change', '+email')
+      await getTableDataComponent().vm.$emit('on-sort-change', '+email')
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(2)
     })
@@ -190,6 +205,19 @@ describe('usersClient', () => {
     it('should refresh when the event contact-patched is triggered', async () => {
       await wrapper.vm.$emit('contact-patched', mockUser)
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+    })
+
+    it('reload the list of clients when a client is removed', async () => {
+      expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+
+      wrapper.vm.state.isRemoveUserDialogOpened = true
+      wrapper.vm.state.userToRemove = {}
+      await nextTick()
+
+      const removeUserDialogComponent = wrapper.findComponent({ name: 'RemoveUserDialog' })
+      await removeUserDialogComponent.vm.$emit('user-removed')
+
+      expect(mockGatewayGet).toHaveBeenCalledTimes(2)
     })
   })
 })

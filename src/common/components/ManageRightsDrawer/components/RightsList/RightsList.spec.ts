@@ -15,11 +15,6 @@ const mockedAccountId = 602
 const mockedContactId = 25
 const mockedUseRoute = useRoute as Mock
 vi.mock('vue-router')
-vi.mock('@/services/authorization', () => ({
-  fetchAuthorizationsConfig: vi.fn(() =>
-    Promise.resolve(mockedAuthorizationsConfig),
-  ),
-}))
 
 // Expectations
 const expectedRightsNote =

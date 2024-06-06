@@ -18,7 +18,7 @@ export const generateContactsMock = (
   for (let i = 0; i < request.numberOfContactsToReturn; i++) {
     contactsDataArray.push({
       ...baseContactData,
-      contactId: baseContactData.contactId + 1,
+      contactId: baseContactData.contactId + i,
       firstName: baseContactData.firstName + i,
       email: baseContactData.email + i,
     })

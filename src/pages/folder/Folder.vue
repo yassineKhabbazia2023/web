@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading && activeTab !== 'folder'" class="folder-wrapper">
+  <div v-if="areTabsDisplayed" class="folder-wrapper">
     <div class="flex flex--align-items-center">
       <PAvatar pColor="orange">
         <PIcon>
@@ -10,26 +10,22 @@
         {{ defaultEntity?.legalName }}
       </p>
       <div class="folder__teleported-content" />
-      <PButton
-        v-if="canAddUser"
-        pType="primary"
-        pSize="small"
-        data-testid="folder-action-button"
-      >
-        {{ t('addUser') }}
-      </PButton>
     </div>
-    <PTabs v-model="activeTab" @tab-click="handleTabClick">
+    <PTabs
+      v-if="!isLoading"
+      :modelValue="activeTab"
+      @tab-click="handleTabClick"
+    >
       <PTabPane
         v-for="tab in tabsList"
         :key="tab.name"
         :pLabel="tab.title"
         :name="tab.name"
       />
-      <router-view />
     </PTabs>
   </div>
-  <Home v-else-if="activeTab === 'folder'" />
+  <Home v-else-if="isHomeDisplayed" />
+  <router-view />
 </template>
 
 <script setup lang="ts">
@@ -37,17 +33,17 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { commonStore, userPermissions } from '@kpmg/common'
+import { commonStore } from '@kpmg/common'
 import {
   PTabs,
   PTabPane,
   PAvatar,
   PIcon,
   PIPulse,
-  PButton,
 } from '@kpmg/styleguide'
-import { PERMISSION_CODES } from '@/constants'
 import Home from './pages/home'
+import { getTabAuthorisations, getTabs } from './FolderHelper'
+import type { TabName, Tab } from './FolderTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -59,60 +55,31 @@ const route = useRoute()
 const router = useRouter()
 const isLoading = ref(false)
 const userStore = commonStore()
-const { hasPermission } = userPermissions()
+const activeTab = computed(() => route.name as string)
 const { defaultEntity, isCollab } = storeToRefs(userStore)
 
 // Computed
-const commonTabs = computed(() => [
-  {
-    name: 'offers',
-    title: t('offers'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
-  },
-  {
-    name: 'info',
-    title: t('info'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
-  },
-])
-const collabTabs = computed(() => [
-  {
-    name: 'usersCollab',
-    title: t('users'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
-  },
-  {
-    name: 'collab',
-    title: t('collab'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
-  },
-  ...commonTabs.value,
-  {
-    name: 'delegationsHistory',
-    title: t('delegationsHistory'),
-    display: hasPermission(PERMISSION_CODES.HISTORY),
-  },
-])
-const clientTabs = computed(() => [
-  {
-    name: 'usersClient',
-    title: t('users'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
-  },
-  ...commonTabs.value,
-])
-const activeTab = computed(() => route.name as string)
-const tabsList = computed(() => {
-  const tabs = isCollab.value ? collabTabs.value : clientTabs.value
-  return tabs.filter(({ display }) => display)
-})
+const tabTitles: Record<TabName, string> = {
+  offers: t('offers'),
+  info: t('info'),
+  users: t('users'),
+  collab: t('collab'),
+  delegationsHistory: t('delegationsHistory'),
+}
+const tabAuthorisations = computed(() => getTabAuthorisations(isCollab.value))
 
-const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
+const tabsList = computed<Tab[]>(() => getTabs(tabAuthorisations.value, tabTitles))
+
+const NO_TABS = ['reports', 'folder']
+const areTabsDisplayed = computed(
+  () => !NO_TABS.includes(route.name as string),
+)
+const isHomeDisplayed = computed(() => route.name === 'folder')
+
 // Functions
 const handleTabClick = (tab: any) => {
   router.push({
     name: tab.paneName,
-    params: { name: defaultEntity.value?.legalName },
   })
 }
 
@@ -139,12 +106,10 @@ en-US:
   offers: 'Offers'
   info: 'Information'
   delegationsHistory: 'Delegations history'
-  addUser: 'Add user'
 fr-FR:
   users: 'Utilisateurs'
   collab: 'Collaborateurs'
   offers: 'Offres'
   info: 'Informations'
   delegationsHistory: 'Historique des délégations'
-  addUser: 'Ajouter un utilisateur'
 </i18n>

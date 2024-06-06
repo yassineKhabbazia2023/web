@@ -145,6 +145,7 @@
       </PTableColumn>
     </template>
     <PTableColumn
+      v-if="isCollab"
       :pLabel="t('option')"
       :pWidth="80"
       pAlign="center"
@@ -152,7 +153,7 @@
       <template #default="scope">
         <PToolbox
           trigger="click"
-          :pElements="isCollab ? menuElementsCollaborator(scope.row.deploymentStatus.text) : menuClient"
+          :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
           @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
         >
           <PButton
@@ -260,26 +261,6 @@ const menuConnectedElements : PToolboxItemProps[] = [
     pIconName: 'PIFolder',
     pValue: t('accessThisFolder'),
     pActionName: 'access',
-    pState: 'default',
-  },
-]
-const menuClient : PToolboxItemProps[] = [
-  {
-    pIconName: 'PIPeople',
-    pValue: t('users'),
-    pActionName: 'users',
-    pState: 'default',
-  },
-  {
-    pIconName: 'PIFolder',
-    pValue: t('info'),
-    pActionName: 'info',
-    pState: 'default',
-  },
-  {
-    pIconName: 'PICalculatorEuro',
-    pValue: t('invoices'),
-    pActionName: 'invoices',
     pState: 'default',
   },
 ]
@@ -441,9 +422,6 @@ en-US:
   resendMailErrorMessage: 'A problem occurred while sending the activation email for '
   resendMailSuccessMessageFirst: 'A new activation email for '
   resendMailSuccessMessageSecond: ' has been sent successfully.'
-  users: 'Users'
-  info: 'Information'
-  invoices: 'KPMG Invoices'
 fr-FR:
   companyName: 'Nom de la société'
   folderID: 'ID Dossier'
@@ -461,7 +439,4 @@ fr-FR:
   resendMailErrorMessage: "Un problème est survenu lors de l'envoie du mail d'activation pour "
   resendMailSuccessMessageFirst: "Un nouveau mail d'activation pour "
   resendMailSuccessMessageSecond: ' a bien été envoyé.'
-  users: 'Utilisateurs'
-  info: 'Informations'
-  invoices: 'Factures KPMG'
 </i18n>

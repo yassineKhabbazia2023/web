@@ -1,6 +1,36 @@
 <template>
   <div class="flex flex--direction-column sticky-wrapper">
     <div class="flex--grow-1 padding--2">
+      <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
+      <Teleport
+        v-if="shouldDisplayTeleport"
+        to=".folder__teleported-content"
+      >
+        <PButton
+          @click="isAddCustomerDrawerOpened = true"
+          pType="primary"
+          pSize="small"
+          data-testid="add-customer-button"
+        >
+          <PIcon>
+            <PIPersonAdd />
+          </PIcon>
+          <span class="padding-left--2">{{ t('addCustomer') }}</span>
+        </PButton>
+      </Teleport>
+
+      <AddCustomerDrawer
+        v-if="currentEntityId &&
+          currentEntityName &&
+          currentEntityNumber &&
+          isAddCustomerDrawerOpened
+        "
+        v-model="isAddCustomerDrawerOpened"
+        :targetEntityId="currentEntityId"
+        :targetEntityName="currentEntityName"
+        :targetEntityNumber="currentEntityNumber"
+        @refresh-customers-list="fetch"
+      />
       <div class="margin-bottom--6">
         <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
       </div>
@@ -14,6 +44,7 @@
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @on-sort-change="handleSortChange"
+          @remove-user="handleRemoveUser"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -35,6 +66,14 @@
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
+
+    <RemoveUserDialog
+      v-if="state.isRemoveUserDialogOpened && state.userToRemove"
+      v-model="state.isRemoveUserDialogOpened"
+      :userToRemove="state.userToRemove"
+      @user-removed="fetch"
+    />
+
     <DrawerUserDetails
       v-if="state.isDrawerViewDetailsOpened"
       v-model="state.isDrawerViewDetailsOpened"
@@ -44,6 +83,7 @@
       @contact-patched="handlePatch"
       data-testid="viewinfo-drawer"
     />
+
     <ManageRightsDrawer
       v-if="state.isManageRightsDrawerOpened"
       v-model="state.isManageRightsDrawerOpened"
@@ -54,26 +94,33 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, reactive, watch } from 'vue'
-import { PLoader, PPagination } from '@kpmg/styleguide'
-import { commonStore, commonApi } from '@kpmg/common'
-import { getInitials, removeFalsyValues } from '@/helper'
-import { PAGE_SIZES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
+import { computed, onMounted, reactive, watch, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@kpmg/styleguide'
+import { commonStore, commonApi, userPermissions } from '@kpmg/common'
+import { removeFalsyValues } from '@/helper'
+import { PAGE_SIZES, PERMISSION_CODES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
-import TableData from './components/TableData'
-import type { IState, IUserFromApi } from './types'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
-import DrawerUserDetails from './components/DrawerUserDetails'
 import { API_PREFIXES } from '@/common/config/services'
+import TableData from './components/TableData'
+import DrawerUserDetails from './components/DrawerUserDetails'
+import RemoveUserDialog from './components/RemoveUserDialog'
+import AddCustomerDrawer from './components/AddCustomerDrawer'
 import type { IUser } from '../usersCollab/types'
+import type { IState } from './types'
+import { formatItemsFromApi } from './UsersClientHelper'
+import type { UsersClientProps } from './UsersClientTypes'
+import { getPrincipalContacts } from '@/services/offer'
+import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 
-const { d, t } = useI18n({
+const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
-  datetimeFormats,
 })
 
+const route = useRoute()
 const userStore = commonStore()
 
 const state: IState = reactive({
@@ -87,8 +134,15 @@ const state: IState = reactive({
   sort: undefined,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
+  isRemoveUserDialogOpened: false,
   selectedUserId: 0,
+  userToRemove: undefined,
 })
+
+const isMounted = ref(false)
+
+const { hasPermission } = userPermissions()
+const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
   state.search = newSearchValue
@@ -101,7 +155,7 @@ const handlePageRangeChanged = (newItemsPerPage: number) => {
 const paginationLabel = computed(
   () =>
     `${1 + (state.currentPage - 1) * state.limit}
-    - ${(state.currentPage - 1) * state.limit + state.data.length} 
+    - ${(state.currentPage - 1) * state.limit + state.data.length}
     ${t('on')} ${state.totalItems}`,
 )
 
@@ -129,29 +183,6 @@ const getQueryParams = () => ({
   sort: state.sort,
 })
 
-const formatItemsFromApi = (items: IUserFromApi[]) =>
-  items.map(
-    ({
-      firstName,
-      lastName,
-      personaName,
-      contactId,
-      creationDate,
-      ...rest
-    }) => ({
-      ...rest,
-      initials: getInitials(firstName, lastName),
-      firstName,
-      lastName,
-      isOwner: personaName === 'ADMIN/Dirigeant',
-      fullName: `${firstName} ${lastName}`,
-      isLoggedUser: () => contactId.toString() === userStore.$state.user?.id,
-      personaName,
-      contactId,
-      creationDate: d(new Date(creationDate), 'short'),
-    }),
-  )
-
 const fetch = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
@@ -165,7 +196,7 @@ const fetch = async () => {
       `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`,
     )
 
-    state.data = formatItemsFromApi(items)
+    state.data = formatItemsFromApi(items, userStore.$state.user?.id, principalContacts.value)
     state.currentPage = currentPage
     state.totalPages = totalPages
     state.totalItems = totalItems
@@ -191,16 +222,48 @@ const handleSortChange = (sortQueryField: string) => {
   state.sort = sortQueryField
 }
 
-onMounted(async () => {
-  await fetch()
+const handleRemoveUser = (row: any) => {
+  state.userToRemove = row
+  state.isRemoveUserDialogOpened = true
+}
 
-  watch(
-    () => [state.currentPage, state.limit, state.search, state.sort],
-    async () => {
-      await fetch()
-    },
-  )
+const defaultEntity = computed(() => userStore.defaultEntity)
+const currentEntityId = computed(() => defaultEntity.value?.accountId)
+const currentEntityName = computed(() => defaultEntity.value?.legalName)
+const currentEntityNumber = computed(() => defaultEntity.value?.accountNumber)
+const isAddCustomerDrawerOpened = ref(false)
+const principalContacts = ref<ClientContact[]>([])
+
+const shouldDisplayTeleport = computed(() =>
+  currentEntityId.value &&
+  isMounted.value &&
+  canAddUser.value &&
+  route.name === 'users',
+)
+
+const props = defineProps<UsersClientProps>()
+
+onMounted(async () => {
+  isMounted.value = true
+  await loadPrincipalContacts()
+  await fetch()
+  console.warn(`currentEntityId = ${props.currentEntityId}`)
 })
+
+watch(
+  () => [state.currentPage, state.limit, state.search, state.sort],
+  async () => {
+    await fetch()
+  },
+)
+
+watch(currentEntityId, async () => await loadPrincipalContacts())
+
+async function loadPrincipalContacts() {
+  if (currentEntityId.value) {
+    principalContacts.value = await getPrincipalContacts(currentEntityId.value) ?? []
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -214,9 +277,11 @@ onMounted(async () => {
 
 <i18n lang="yaml">
 en-US:
+  addCustomer: "Add a customer"
   numberOfUsersPerPage: 'Number of users per page'
   on: 'on'
 fr-FR:
+  addCustomer: "Ajouter un utilisateur"
   numberOfUsersPerPage: "Nombre d'utilisateurs par page"
   on: 'sur'
 </i18n>

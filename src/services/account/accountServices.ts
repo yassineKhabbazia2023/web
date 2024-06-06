@@ -68,9 +68,9 @@ export async function addContactToEntity(
   const result = await commonApi().gateway.post(url, {
     accountId,
     contactId,
-    isSignatory: true,
-    isFavorite: true,
-    isDelegation: true,
+    isSignatory: false,
+    isFavorite: false,
+    isDelegation: false,
   })
 
   return {
@@ -105,4 +105,18 @@ export async function deleteContactFromAccount(
       contactId,
     },
   })
+}
+
+type createCustomerBody = {
+  firstName: Contact['firstName']
+  lastName: Contact['lastName']
+  email: Contact['email']
+  mobilePhone: Contact['mobilePhone']
+  accountNumber: string
+}
+
+export async function createCustomer(customerInformation: createCustomerBody) {
+  const url = `${API_PREFIXES.ACCOUNT}/customers`
+  const { data } = await commonApi().gateway.post(url, customerInformation)
+  return data
 }

@@ -3,8 +3,7 @@ import { handleRequestError } from '@/helper/helper'
 import { API_PREFIXES } from '@/common/config/services'
 import { type Entity, commonApi } from '@kpmg/common'
 import type { Contact } from '../contact/contactTypes'
-import type { Role, selectedRoleId } from
-  '@/pages/wallet/pages/collaborators/components/DrawerCollabRole/components/CollabRole/types'
+import type { Role } from '@/pages/wallet/pages/collaborators/components/CollabRightsDrawer/CollabRightsDrawerTypes'
 import type { IUserFromApi } from '@/pages/folder/pages/usersCollab/types'
 
 const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
@@ -107,7 +106,7 @@ export const getCollaborators = async (
 
 export const updateCollaborator = async (
   contactId: number,
-  updates: { [key: string]: string | selectedRoleId | null },
+  updates: { [key: string]: string | number | undefined },
 ): Promise<Contact> => {
   const updateCollaboratorUrl = `${API_PREFIXES.WALLET}/contacts/${contactId}`
   const requestBody = []
@@ -127,7 +126,7 @@ export const updateCollaborator = async (
   return response.data
 }
 
-export const getRoles = async (
+export const fetchContactRoles = async (
   contactType: string,
 ): Promise<Role[]> => {
   try {
@@ -135,18 +134,6 @@ export const getRoles = async (
     return response?.data
   } catch (error) {
     handleRequestError('fetching roles', error)
-    return []
-  }
-}
-
-export const getPermissions = async (
-  personasId: number,
-): Promise<[]> => {
-  try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/permissions/${personasId}`)
-    return response?.data
-  } catch (error) {
-    handleRequestError('fetching parmissions', error)
     return []
   }
 }

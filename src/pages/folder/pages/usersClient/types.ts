@@ -10,8 +10,9 @@ export interface IUserFromApi {
 export interface IExtendedUser extends IUserFromApi {
   initials: string
   fullName: string
-  isLoggedUser: Function
+  isLoggedUser: boolean
   isOwner: boolean
+  isSignatory: boolean
 }
 
 export interface IState {
@@ -24,6 +25,8 @@ export interface IState {
   isLoading: boolean
   isDrawerViewDetailsOpened: boolean
   isManageRightsDrawerOpened: boolean
+  isRemoveUserDialogOpened: boolean
+  userToRemove: IExtendedUser | undefined
   selectedUserId: number
   sort: string | undefined
 }
