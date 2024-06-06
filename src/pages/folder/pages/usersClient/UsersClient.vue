@@ -29,7 +29,7 @@
         :targetEntityId="currentEntityId"
         :targetEntityName="currentEntityName"
         :targetEntityNumber="currentEntityNumber"
-        @refresh-customers-list="fetch"
+        @refresh-customers-list="fetchUsers"
       />
       <div class="margin-bottom--6">
         <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
@@ -71,7 +71,7 @@
       v-if="state.isRemoveUserDialogOpened && state.userToRemove"
       v-model="state.isRemoveUserDialogOpened"
       :userToRemove="state.userToRemove"
-      @user-removed="fetch"
+      @user-removed="fetchUsers"
     />
 
     <DrawerUserDetails
@@ -97,13 +97,12 @@ import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@kpmg/styleguide'
-import { commonStore, commonApi, userPermissions } from '@kpmg/common'
+import { commonStore, userPermissions } from '@kpmg/common'
 import { removeFalsyValues } from '@/helper'
 import { PAGE_SIZES, PERMISSION_CODES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
-import { API_PREFIXES } from '@/common/config/services'
 import TableData from './components/TableData'
 import DrawerUserDetails from './components/DrawerUserDetails'
 import RemoveUserDialog from './components/RemoveUserDialog'
@@ -114,6 +113,7 @@ import { formatItemsFromApi } from './UsersClientHelper'
 import type { UsersClientProps } from './UsersClientTypes'
 import { getPrincipalContacts } from '@/services/offer'
 import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import { fetchAccountContacts, fetchCustomers } from '@/services/wallet'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -176,27 +176,31 @@ const getUserInfo = computed(() => {
   } as IUser
 })
 
-const getQueryParams = () => ({
-  pageNumber: state.currentPage,
-  pageSize: state.limit,
-  search: state.search,
-  sort: state.sort,
-})
+function getQueryParams(type: string | undefined) {
+  return {
+    pageNumber: state.currentPage,
+    pageSize: state.limit,
+    search: state.search,
+    sort: state.sort,
+    Type: type,
+  }
+}
 
 const props = defineProps<UsersClientProps>()
 
-const fetch = async () => {
-  const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
-  const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
-
+async function fetchUsers() {
   state.isLoading = true
 
   try {
-    const {
-      data: { items, currentPage, totalPages, totalItems },
-    } = await commonApi().gateway.get(
-      `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`,
-    )
+    const type = props.entityId ? 'Customer' : undefined
+    const queryParams = getQueryParams(type)
+    const queryParamsWithoutUndefined = removeFalsyValues(queryParams)
+    const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
+    const data = props.entityId
+      ? await fetchAccountContacts(props.entityId, searchParams)
+      : await fetchCustomers(userStore.$state.user?.id, searchParams)
+
+    const { items, currentPage, totalPages, totalItems } = data
 
     state.data = formatItemsFromApi(items, userStore.$state.user?.id, principalContacts.value)
     state.currentPage = currentPage
@@ -204,11 +208,13 @@ const fetch = async () => {
     state.totalItems = totalItems
   } catch (err) {
     console.error(err)
+  } finally {
+    state.isLoading = false
   }
-  state.isLoading = false
 }
+
 const handlePatch = async () => {
-  await fetch()
+  await fetchUsers()
 }
 const handleClickViewInformation = (selectedUserId: number) => {
   state.selectedUserId = selectedUserId
@@ -246,14 +252,13 @@ const shouldDisplayTeleport = computed(() =>
 onMounted(async () => {
   isMounted.value = true
   await loadPrincipalContacts()
-  await fetch()
-  console.warn(`entityId = ${props.entityId}`)
+  await fetchUsers()
 })
 
 watch(
   () => [state.currentPage, state.limit, state.search, state.sort],
   async () => {
-    await fetch()
+    await fetchUsers()
   },
 )
 

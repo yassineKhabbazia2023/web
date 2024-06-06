@@ -12,9 +12,11 @@ import { noResult } from '@/../tests'
 import FormSearch from '@/common/components/FormSearch'
 import type { PatchContactPayload } from '@/services/contact/contactTypes'
 import { mockUser } from './components/DrawerUserDetails/mockData.ts'
-import { API_PREFIXES } from '@/common/config/services'
 import * as OfferServices from '@/services/offer'
+import * as WalletServices from '@/services/wallet'
+import type { IUserFromApi } from '@/pages/folder/pages/usersCollab/types'
 import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
+import type { UsersClientProps } from './UsersClientTypes'
 import UsersClient from './'
 
 vi.mock('@/services/contact', () => ({
@@ -39,18 +41,12 @@ const contactsList = generateContactsMock({
   currentPage: 1,
 }).data
 
-const mockGatewayGet = vi.fn(() => {
-  return Promise.resolve({
-    data: contactsList,
-  })
-})
+vi.mock('@/services/wallet', () => ({
+  fetchAccountContacts: vi.fn(),
+  fetchCustomers: vi.fn(),
+}))
 
 vi.mock('@kpmg/common', () => ({
-  commonApi: () => ({
-    gateway: {
-      get: mockGatewayGet,
-    },
-  }),
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -68,13 +64,19 @@ vi.mock('@kpmg/common', () => ({
 
 const pinia = createTestingPinia()
 
-const createWrapper = (): VueWrapper<any> =>
-  mount(UsersClient, {
+function createWrapper(entityId?: number) {
+  const props: UsersClientProps = {
+    entityId,
+  }
+
+  return mount(UsersClient, {
+    props,
     global: {
       plugins: [pinia],
       stubs: ['RemoveUserDialog'],
     },
   })
+}
 
 const data = contactsList
 
@@ -109,10 +111,15 @@ const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 describe('usersClient', () => {
   let consoleErrorSpy: SpyInstance
   let getPrincipalContactsSpy: SpyInstance
-  beforeEach(() => {
+  let mockGatewayGet: SpyInstance
+  beforeEach(async () => {
     getPrincipalContactsSpy = vi
       .spyOn(OfferServices, 'getPrincipalContacts')
+    mockGatewayGet = vi
+      .spyOn(WalletServices, 'fetchCustomers')
+      .mockResolvedValue(contactsList)
     wrapper = createWrapper()
+    await nextTick()
     consoleErrorSpy = vi.spyOn(console, 'error')
   })
 
@@ -142,6 +149,7 @@ describe('usersClient', () => {
 
     it('has a pagination', () => {
       const pages = wrapper.findAll('.el-pager li')
+
       expect(pages).toHaveLength(totalPages)
     })
 
@@ -154,10 +162,13 @@ describe('usersClient', () => {
   describe('events', () => {
     it('should call api with the right params', () => {
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+      const urlSearchParams = new URLSearchParams({
+        pageNumber: '1',
+        pageSize: '15',
+      })
 
-      expect(mockGatewayGet).toHaveBeenCalledWith(
-        `${API_PREFIXES.CUSTOMER_WALLET}/customers/2?pageNumber=1&pageSize=15`,
-      )
+      expect(mockGatewayGet).toHaveBeenCalledOnce()
+      expect(mockGatewayGet).toHaveBeenNthCalledWith(1, 2, urlSearchParams)
     })
 
     it('displays error message when API call fails', async () => {
@@ -165,7 +176,7 @@ describe('usersClient', () => {
         new Error('Failed to fetch contacts'),
       )
 
-      await wrapper.vm.fetch()
+      await wrapper.vm.fetchUsers()
 
       expect(wrapper.vm.state.isLoading).toBeFalsy()
       expect(consoleErrorSpy).toHaveBeenCalledTimes(1)
@@ -218,6 +229,46 @@ describe('usersClient', () => {
       await removeUserDialogComponent.vm.$emit('user-removed')
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('when entityId is set', () => {
+    const entityId = 42
+    let fetchAccountContactsSpy: SpyInstance
+    const mockedItems: IUserFromApi[] = [{
+      contactId: 1,
+      firstName: 'Goldie',
+      lastName: 'Travis',
+      email: 'goldietravis@ecolight.com',
+      personaName: 'Dirigeant',
+      creationDate: '2024-03-07',
+      globalContactId: 'global-contact-id',
+      type: 'string',
+      status: 'status',
+    }]
+    const mockedResponse: WalletServices.GenericPageResponse<IUserFromApi> = {
+      items: mockedItems,
+      currentPage: 1,
+      totalItems: 3,
+      totalPages: 1,
+    }
+
+    beforeEach(() => {
+      fetchAccountContactsSpy = vi
+        .spyOn(WalletServices, 'fetchAccountContacts')
+        .mockResolvedValue(mockedResponse)
+      createWrapper(entityId)
+    })
+
+    it('should call api with the right params', () => {
+      const urlSearchParams = new URLSearchParams({
+        pageNumber: '1',
+        pageSize: '15',
+        Type: 'Customer',
+      })
+
+      expect(fetchAccountContactsSpy).toHaveBeenCalledOnce()
+      expect(fetchAccountContactsSpy).toHaveBeenNthCalledWith(1, entityId, urlSearchParams)
     })
   })
 })

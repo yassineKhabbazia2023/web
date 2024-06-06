@@ -26,14 +26,32 @@ export const getCollaboratorsByIdEntity = async (
   return response?.data
 }
 
-export const fetchAccountCustomers = async (
+export async function fetchAccountCustomers(
   accountId: number,
-): Promise<IUserFromApi[]> => {
-  const response = await commonApi().gateway.get(
-    `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`,
-  )
+): Promise<IUserFromApi[]> {
+  const searchParams = new URLSearchParams({
+    Type: 'customer',
+  })
+  const data = await fetchAccountContacts(accountId, searchParams)
 
-  return response?.data.items
+  return data?.items
+}
+
+export async function fetchAccountContacts(
+  accountId: number,
+  searchParams: URLSearchParams,
+): Promise<GenericPageResponse<IUserFromApi>> {
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?${searchParams}`
+  const response = await commonApi().gateway.get(url)
+
+  return response?.data
+}
+
+export async function fetchCustomers(userId: number | undefined, searchParams: URLSearchParams) {
+  const url = `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userId}?${searchParams}`
+  const { data } = await commonApi().gateway.get(url)
+
+  return data
 }
 
 export const fetchEntitiesStatistics = async () => {
