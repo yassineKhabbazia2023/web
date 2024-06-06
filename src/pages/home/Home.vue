@@ -92,7 +92,7 @@ const updateTableDisplay = async ({
   }
 }
 
-async function onRefresh(override: Partial<UpdateTableDisplayParams> = {}) {
+async function onRefresh(override: Partial<UpdateTableDisplayParams>) {
   const params = {
     currentPage: activePage.value,
     itemsByPage: defaultItemsToDisplay.value,

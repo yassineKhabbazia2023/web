@@ -44,7 +44,7 @@ export const getBankDetail = async (bankCode: string) => {
   return data
 }
 
-function parseParams(params: Record<string, any>) {
+export function parseParams(params: Record<string, any>) {
   const keys = Object.keys(params)
   const options: string[] = []
 
