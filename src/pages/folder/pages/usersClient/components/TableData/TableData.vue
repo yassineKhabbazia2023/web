@@ -145,7 +145,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       display: hasPermission(PERMISSION_CODES.DELETE_USER) && props.isInAnEntityPage,
     },
     {
-      // TODO: this item will be handle soon
+      // this item will be handle soon
       pIconName: 'PITrash',
       pValue: t('deleteUser'),
       pActionName: deleteUser,
