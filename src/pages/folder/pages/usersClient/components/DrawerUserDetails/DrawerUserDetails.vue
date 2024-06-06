@@ -117,7 +117,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, reactive, ref, defineProps, defineEmits, onMounted } from 'vue'
+import { computed, reactive, ref, onMounted } from 'vue'
 import {
   PButton,
   PDrawer,

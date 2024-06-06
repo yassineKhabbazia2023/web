@@ -14,6 +14,12 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
+vi.mock('vue-router', () => ({
+  useRoute: () => ({ name: 'users' }),
+}))
+
+let wrapper: VueWrapper<any>
+
 const toolBoxElementsWithoutPermissions = [
   {
     pIconName: 'PIPerson',
@@ -36,6 +42,7 @@ const createWrapper = (): VueWrapper<any> =>
         isLoggedUser: false,
         ...rest,
       })),
+      isInAnEntityPage: true,
     },
   })
 
@@ -43,10 +50,10 @@ const getMenu = () => document.querySelector('.el-popper') as HTMLElement
 
 describe('tableData', () => {
   beforeEach(() => {
-    createWrapper()
+    wrapper = createWrapper()
   })
 
-  it('has a menu with 3 items', () => {
+  it('has a menu with 3 items if the route name is users', () => {
     const menuItems = getMenu().querySelectorAll('li')
     expect(menuItems).toHaveLength(3)
   })
@@ -65,8 +72,6 @@ describe('tableData', () => {
   it.each(ACTIONS_AND_ASSOCIATED_EVENTS)(
     'can click on %s inside the toolbox and emit %s',
     async (action, expectedEvent) => {
-      const wrapper = createWrapper()
-
       const row = { contactId: 123 }
 
       wrapper.vm.handleToolboxItemClick(action, row)
@@ -88,7 +93,7 @@ describe('tableData', () => {
 
   it('should display only the actions that the user has permission to perform', () => {
     mockHasPermission.mockReturnValue(false)
-    const wrapper = createWrapper()
+    wrapper = createWrapper()
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
     expect(pToolbox.props('pElements')).toHaveLength(1)
@@ -99,7 +104,6 @@ describe('tableData', () => {
 
   describe('events', () => {
     it('should emit event to display drawer', async () => {
-      const wrapper = createWrapper()
       const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
       pToolbox.vm.$emit(

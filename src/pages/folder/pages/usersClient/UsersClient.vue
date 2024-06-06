@@ -43,8 +43,8 @@
           :data="state.data"
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
-          @on-sort-change="handleSortChange"
           @remove-user="handleRemoveUser"
+          :isInAnEntityPage="!!props.entityId"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -131,7 +131,6 @@ const state: IState = reactive({
   totalItems: undefined,
   search: undefined,
   isLoading: false,
-  sort: undefined,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
   isRemoveUserDialogOpened: false,
@@ -180,7 +179,6 @@ const getQueryParams = () => ({
   pageNumber: state.currentPage,
   pageSize: state.limit,
   search: state.search,
-  sort: state.sort,
 })
 
 const props = defineProps<UsersClientProps>()
@@ -193,7 +191,12 @@ const fetch = async () => {
 
   try {
     const {
-      data: { items, currentPage, totalPages, totalItems },
+      data: {
+        currentPage,
+        items,
+        totalItems,
+        totalPages,
+      },
     } = await commonApi().gateway.get(
       `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userStore.$state.user?.id}?${searchParams}`,
     )
@@ -218,10 +221,6 @@ const handleClickViewInformation = (selectedUserId: number) => {
 const handleDisplayManageRights = (selectedUserId: number) => {
   state.selectedUserId = selectedUserId
   state.isManageRightsDrawerOpened = true
-}
-
-const handleSortChange = (sortQueryField: string) => {
-  state.sort = sortQueryField
 }
 
 const handleRemoveUser = (row: any) => {
@@ -251,7 +250,11 @@ onMounted(async () => {
 })
 
 watch(
-  () => [state.currentPage, state.limit, state.search, state.sort],
+  () => [
+    state.currentPage,
+    state.limit,
+    state.search,
+  ],
   async () => {
     await fetch()
   },
