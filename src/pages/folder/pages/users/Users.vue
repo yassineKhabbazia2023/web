@@ -2,7 +2,7 @@
   <UsersCollab v-if="isCollab" />
   <UsersClient
     v-else
-    :currentEntityId="currentEntityId"
+    :entityId="entityId"
   />
 </template>
 
@@ -17,7 +17,7 @@ import UsersClient from '@/pages/folder/pages/usersClient'
 const { isCollab } = storeToRefs(commonStore())
 const route = useRoute()
 
-const currentEntityId = computed(() => {
+const entityId = computed(() => {
   const isChildFolder = route.matched.some(({ name }) => name === 'folder')
   if (!isChildFolder) {
     return undefined
