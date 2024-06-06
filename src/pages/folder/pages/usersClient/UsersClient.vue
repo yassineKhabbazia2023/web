@@ -44,7 +44,7 @@
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @remove-user="handleRemoveUser"
-          :isInAnEntityPage="!!props.entityId"
+          :isInAnEntityPage="!!entityId"
         />
 
         <NoResult v-if="!state.data.length" />
