@@ -67,6 +67,24 @@
       @update:p-search-content="emit('update:search-term', $event)"
       @enter="emit('update:is-search-state', true)"
     />
+    <PButton
+      class="margin-left--2"
+      pSize="small"
+      @click="emit('open-drawer-filters', true)"
+      data-testid="open-drawer-filters-button"
+    >
+      <PIcon>
+        <PIFunnel />
+      </PIcon>
+      <PPastille
+        class="margin-left--2"
+        pType="persian"
+        pSize="small"
+        v-if="activeFilters"
+      >
+        {{ activeFilters }}
+      </PPastille>
+    </PButton>
   </div>
 </template>
 
@@ -78,9 +96,11 @@ import {
   PIcon,
   PIChevronRight,
   PIChevronLeft,
+  PIFunnel,
   PButton,
   PExpandableSearch,
   PIArrowLeft,
+  PPastille,
 } from '@kpmg/styleguide'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
@@ -88,6 +108,7 @@ const emit = defineEmits<{
   'update:active-date': [Date]
   'update:search-term': [string]
   'update:is-search-state': [boolean]
+  'open-drawer-filters': [boolean]
 }>()
 
 const datetimeFormats = {

@@ -14,9 +14,11 @@
       :activeDate="activeDate"
       :searchTerm="searchTerm"
       :isSearchState="isSearchState"
+      :activeFilters="activeFilters"
       @update:active-date="emit('update:active-date', $event)"
       @update:search-term="emit('update:search-term', $event)"
       @update:is-search-state="emit('update:is-search-state', $event)"
+      @open-drawer-filters="emit('open-drawer-filters', $event)"
     />
     <div
       v-if="!isSearchState"
@@ -68,13 +70,16 @@ import { useI18n } from 'vue-i18n'
 import type { ActionBarProps } from './ActionBarTypes'
 import ActionBarLeft from '@/schedule/components/ActionBarLeft'
 
-const props = defineProps<ActionBarProps>()
+const props = withDefaults(defineProps<ActionBarProps>(), {
+  activeFilters: 0,
+})
 const emit = defineEmits<{
   'create-schedule': []
   'update:modelValue': [value: string]
   'update:active-date': [Date]
   'update:search-term': [string]
   'update:is-search-state': [boolean]
+  'open-drawer-filters': [boolean]
 }>()
 
 const { t } = useI18n({
