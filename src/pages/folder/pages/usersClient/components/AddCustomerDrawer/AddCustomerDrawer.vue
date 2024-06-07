@@ -1,5 +1,9 @@
 <template>
-  <PDrawer v-model="isDrawerOpened" pSize="45%">
+  <PDrawer
+    v-model="isDrawerOpened"
+    pSize="45%"
+    @close-drawer-button="isDrawerOpened = false"
+  >
     <template #header-prefix>
       <div class="add-customer-drawer__header">
         <span class="add-customer-drawer__entity-name">{{ targetEntityName }}</span>

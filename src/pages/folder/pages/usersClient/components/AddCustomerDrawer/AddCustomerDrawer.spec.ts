@@ -205,5 +205,12 @@ describe('add customer drawer', () => {
       expect(lastNameInput.element.value).toBe(lastName)
       expect(mobilePhoneInput.element.value).toBe(mobilePhone)
     })
+
+    it('should close the drawer on close-drawer-button event', async () => {
+      const drawerWrapper = findAddCustomerDrawer(wrapper)
+      drawerWrapper.vm.$emit('close-drawer-button')
+      await nextTick()
+      expect(drawerWrapper.isVisible()).toBeFalsy()
+    })
   })
 })
