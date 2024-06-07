@@ -6,7 +6,9 @@ import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
 import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import * as walletServices from '@/services/wallet'
+import { commonStore } from '@kpmg/common'
 import Collaborators from '.'
+import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -14,6 +16,7 @@ vi.mock('@kpmg/common', () => ({
       user: {},
     }),
     getters: {
+      isCollab: () => true,
       defaultEntity: () => mockedEntity,
     },
   }),
@@ -124,5 +127,19 @@ describe('collaborators', () => {
     expect(pagination.props('pCurrentPage')).toBe(1)
     expect(pagination.props('pPageSize')).toBe(15)
     expect(totalItems.text()).toContain(mockCollabsData.length)
+  })
+
+  it('should not display actions when is NOT Collab', async () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    await nextTick()
+
+    const collaboratorsAction = wrapper.find('[data-testid="collaborators-action"]')
+
+    const addCollaboratorButton = getAddCollaboratorButton()
+
+    expect(collaboratorsAction.exists()).toBeFalsy()
+    expect(addCollaboratorButton).toBeFalsy()
   })
 })
