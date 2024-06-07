@@ -10,6 +10,7 @@
     "
   >
     <ActionBarLeft
+      class="flex--grow-1"
       :activeDate="activeDate"
       :searchTerm="searchTerm"
       :isSearchState="isSearchState"
@@ -23,6 +24,7 @@
         flex
         flex--justify-content-flex-end
         flex--align-items-center
+        margin-left--2
       "
       data-testid="action-bar-right"
     >

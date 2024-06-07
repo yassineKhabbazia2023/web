@@ -246,9 +246,6 @@ function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
 
 async function onUpdateIsSearchState(newIsSearchState: boolean) {
   isSearchState.value = newIsSearchState
-  if (!searchTerm.value) {
-    return
-  }
   if (newIsSearchState) {
     scheduleViewType.value = 'list'
     await refreshAdvancedSearch()
