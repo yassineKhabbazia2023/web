@@ -3,6 +3,8 @@ export interface ConfirmationPopupProps {
   title: string
   message: string
   confirmButtonContent: string
-  cancelButtonContent: string
+  cancelButtonContent?: string
   isConfirmButtonLoading: boolean
+  alignCenter?: boolean
+  showClose?: boolean
 }

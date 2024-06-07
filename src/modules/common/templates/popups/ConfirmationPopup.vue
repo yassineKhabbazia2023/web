@@ -3,13 +3,17 @@
     <PDialog
       v-model="isPopupVisible"
       :title="title"
-      @close="handleClosePopup">
+      @close="handleClosePopup"
+      :pShowClose="showClose"
+      :pAlignCenter="alignCenter"
+    >
       <div class="confirmation-popup__message">
         {{ message }}
       </div>
       <template #footer>
-        <div class="p-dialog__footer">
+        <div class="p-dialog__footer margin-y--2">
           <PButton
+            v-if="cancelButtonContent"
             class="confirmation-popup__cancel-button"
             pSize="small"
             @click="handleCancelButtonClick"
@@ -39,6 +43,8 @@ import { PDialog, PButton } from '@kpmg/styleguide'
 // Popup defintions
 const props = withDefaults(defineProps<ConfirmationPopupProps>(), {
   isPopupVisible: false,
+  alignCenter: false,
+  showClose: true,
 })
 
 const emit = defineEmits([
