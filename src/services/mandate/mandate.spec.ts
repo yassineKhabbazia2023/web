@@ -9,6 +9,7 @@ import {
   downloadSignedMandate,
   uploadSignedMandate,
   terminateMandate,
+  parseParams,
 } from '.'
 import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 import { getMockedMandatesList, getMockedCompany, getMockedBban } from '@/../tests/mocks/mandateMock'
@@ -231,5 +232,18 @@ describe('uploadSignedMandate', () => {
   it('should return mandate id', async () => {
     const { data: { id } } = await uploadSignedMandate({ mandateId: '1999072765', file: {} })
     expect(id).toBe('3ef5ff10-18d1-40b1-aa24-0fcccd8445e6')
+  })
+})
+
+describe('parseParams', () => {
+  it('should return parsed params', () => {
+    const params: Record<string, any> = {
+      a: '0',
+      b: ['1', '2', 3],
+    }
+    const expectedParsedParams = 'a=0&b=1&b=2&b=3'
+    const parsedParams = parseParams(params)
+
+    expect(parsedParams).toBe(expectedParsedParams)
   })
 })

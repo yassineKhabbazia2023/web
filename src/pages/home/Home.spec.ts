@@ -49,6 +49,7 @@ describe('test Home.vue', () => {
       skip: 10,
       sortCriteria: '',
       sortOrder: 'Descending',
+      statusCodes: [],
     }
 
     expect(mockedGetMandatesCollection).toHaveBeenCalledTimes(2)
@@ -93,6 +94,7 @@ describe('test Home.vue', () => {
       searchTerm: inputValue,
       sortCriteria: '',
       sortOrder: 'Descending',
+      statusCodes: [],
     })
   })
 

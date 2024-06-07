@@ -1,17 +1,12 @@
 <template>
   <div>
     <Header
-      @refresh-mandate-collection="updateTableDisplay({
-        currentPage: activePage,
-        itemsByPage: defaultItemsToDisplay,
-        searchTerm: searchText,
-        sortOrder: defaultSortOrder,
-        sortCriteria: defaultSortCriteria
-      })"
+      class="padding-top--2"
+      @refresh-mandate-collection="onRefresh"
     />
     <SearchBar
       v-model="searchText"
-      class="padding-x--6 padding-bottom--6"
+      class="padding-y--6"
     />
     <ListMandate
       :currentPage="activePage"
@@ -20,10 +15,10 @@
     />
     <Pagination
       :pagesCount="mandatesCollection.counters.all"
-      :pagesRanges="[10, 20, 30]"
+      :pagesRanges="PAGE_SIZES"
       showTotalPageCounter
       class="padding-x--6"
-      @page-selected="updateTableDisplay"
+      @page-selected="onRefresh"
       :currentPage="activePage"
     />
   </div>
@@ -39,6 +34,7 @@ import SearchBar from '@/components/Common/SearchBar'
 import { debounce } from '@/helpers/utils'
 import type { MandateCollection } from './Models'
 import type { UpdateTableDisplayParams } from './HomeTypes'
+import { PAGE_SIZES } from '@/constants'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -57,10 +53,11 @@ const activePage = ref(1)
 const searchText = ref('')
 const defaultSortOrder = ref('Descending')
 const defaultSortCriteria = ref('')
+const currentStatusCodes = ref<number[]>([])
 
 onMounted(async () => {
   try {
-    const { data } = await getMandatesCollection()
+    const { data } = await getMandatesCollection({})
     mandatesCollection.value = data
   } catch (error) {
     console.error(`Error in mandate mount ${error}`)
@@ -73,7 +70,9 @@ const updateTableDisplay = async ({
   searchTerm = searchText.value,
   sortOrder = defaultSortOrder.value,
   sortCriteria = defaultSortCriteria.value,
+  statusCodes = [],
 }: Partial<UpdateTableDisplayParams>) => {
+  currentStatusCodes.value = statusCodes
   try {
     if (currentPage !== activePage.value) {
       activePage.value = currentPage
@@ -88,11 +87,25 @@ const updateTableDisplay = async ({
       searchTerm: searchTerm.trim(),
       sortOrder,
       sortCriteria,
+      statusCodes,
     })
     mandatesCollection.value = data
   } catch (error) {
     console.error(error)
   }
+}
+
+async function onRefresh(override: Partial<UpdateTableDisplayParams>) {
+  const params = {
+    currentPage: activePage.value,
+    itemsByPage: defaultItemsToDisplay.value,
+    searchTerm: searchText.value,
+    sortOrder: defaultSortOrder.value,
+    sortCriteria: defaultSortCriteria.value,
+    statusCodes: currentStatusCodes.value,
+    ...override,
+  }
+  await updateTableDisplay(params)
 }
 
 const updateTableDisplayDebounced = debounce(updateTableDisplay)

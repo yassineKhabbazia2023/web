@@ -80,7 +80,7 @@ describe('createMandateDrawer.vue', () => {
     await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
     await nextTick()
     await wrapper.find('button[data-testid="close-button-test"]').trigger('click')
-    const newMandateCreatedEvent: any = wrapper.emitted('new-mandate-crated')
+    const newMandateCreatedEvent: any = wrapper.emitted('new-mandate-created')
     expect(newMandateCreatedEvent).toBeDefined()
   })
 })
