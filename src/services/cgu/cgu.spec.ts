@@ -7,7 +7,7 @@ import {
 const cguMock = {
   isCurrent: true,
   terms: {
-    termsId: '123456',
+    termsId: 123456,
   },
 }
 

@@ -1,8 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-// import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import validationCGU from './'
-// import { getTermsByContactId } from '@/services/cgu'
 
 const mockRouterPush = vi.fn()
 const mockRouterBack = vi.fn()

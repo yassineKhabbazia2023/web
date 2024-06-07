@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { tokenService } from '@kpmg/common'
 import CreatePassword from './'
+import { getTermsByContactId, updateTermsByContactId } from '@/services/cgu'
 
 const mockToken = 'token'
 const routes = [
@@ -41,6 +42,18 @@ router.push({
 const patchMock = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 const CGU_URL = 'https://custom-CGU.com'
+
+vi.mock('@/services/cgu', () => ({
+  updateTermsByContactId: vi.fn(),
+  getTermsByContactId: vi
+    .fn(() => Promise.resolve({
+      isCurrent: true,
+      terms: {
+        termsId: 123456,
+      },
+    })),
+}))
+
 vi.mock('@kpmg/common', () => ({
   fetchUrlTerms: vi.fn(() => CGU_URL),
   commonApi: () => ({
@@ -52,7 +65,6 @@ vi.mock('@kpmg/common', () => ({
         data: true,
       }),
       post: postMock,
-      patch: patchMock,
     },
   }),
   tokenService: {
@@ -120,7 +132,6 @@ describe('page creation password', () => {
     const setTokenSpy = vi.spyOn(tokenService, 'setToken')
     vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
     await flushPromises()
-    const patchLink = '/authentication/api/cgu/accept-terms'
     const postLink = 'authentication/api/createNewPassword'
     const loginLink = 'authentication/api/login'
     const data = {
@@ -132,11 +143,19 @@ describe('page creation password', () => {
       email: 'email',
       password: 'aaAA11@@',
     }
-    expect(patchMock).toHaveBeenCalledTimes(1)
-    expect(patchMock).toHaveBeenCalledWith(patchLink)
+    expect(updateTermsByContactId).toHaveBeenCalledTimes(1)
+    expect(getTermsByContactId).toHaveBeenCalled()
     expect(postMock).toHaveBeenCalledTimes(2)
     expect(postMock).toHaveBeenNthCalledWith(1, postLink, data)
     expect(postMock).toHaveBeenNthCalledWith(2, loginLink, dataLogin)
     expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
+  })
+
+  it('should throw error', async () => {
+    vi.mocked(getTermsByContactId).mockRejectedValue('Async error')
+    const wrapper: VueWrapper<any> = createWrapper()
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
+    await flushPromises()
+    await expect(getTermsByContactId).rejects.toThrow('Async error')
   })
 })

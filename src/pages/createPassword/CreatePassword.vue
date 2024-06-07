@@ -114,6 +114,7 @@ import {
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
 import useNavigation from '@/composable/useNavigation'
+import { getTermsByContactId, updateTermsByContactId } from '@/services/cgu'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -127,6 +128,7 @@ const email = route.query.email?.toString().trim().replace(' ', '+')
 const resetPasswordToken = route.query.token
 const formRef = ref<FormInstance>()
 const urlTerms = ref('')
+const termsId = ref<null | number>(null)
 const formValidity = reactive({
   password: false,
   confirmPassword: false,
@@ -200,10 +202,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
         newPassword: formValue.password,
         resetPasswordToken,
       }
-      const urlAcceptTerms = '/authentication/api/cgu/accept-terms'
       const urlUpdatePassword = 'authentication/api/createNewPassword'
       try {
-        await commonApi().gateway.patch(urlAcceptTerms)
+        await updateTermsByContactId(parseInt(contactId as string), termsId.value as number)
         await commonApi().gateway.post(urlUpdatePassword, data)
         const urlLogin = 'authentication/api/login'
         const {
@@ -243,7 +244,13 @@ onBeforeMount(async () => {
   }
 })
 onMounted(async () => {
-  urlTerms.value = await fetchUrlTerms()
+  try {
+    urlTerms.value = await fetchUrlTerms()
+    const { terms } = await getTermsByContactId(parseInt(contactId as string))
+    termsId.value = terms.termsId
+  } catch (error) {
+    console.error(error)
+  }
 })
 </script>
 
