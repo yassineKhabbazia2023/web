@@ -25,7 +25,7 @@
     <Drawer
       v-if="openDrawer"
       v-model="openDrawer"
-      @new-mandate-crated="onNewMandateCreated"
+      @new-mandate-created="emitRefreshMandateCollection"
     />
   </div>
 </template>
@@ -60,15 +60,16 @@ const drawerHandler = () => {
 
 const activeFilters = ref<number[]>([])
 
-function onNewMandateCreated() {
+function emitRefreshMandateCollection() {
   emit('refresh-mandate-collection', {
+    currentPage: 1,
     statusCodes: activeFilters.value,
   })
 }
 
 function onClickFilter(activeFilterCodes: number[]) {
   activeFilters.value = activeFilterCodes
-  onNewMandateCreated()
+  emitRefreshMandateCollection()
 }
 
 const filters = [{

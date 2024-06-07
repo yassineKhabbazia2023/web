@@ -15,10 +15,10 @@
     />
     <Pagination
       :pagesCount="mandatesCollection.counters.all"
-      :pagesRanges="[10, 20, 30]"
+      :pagesRanges="PAGE_SIZES"
       showTotalPageCounter
       class="padding-x--6"
-      @page-selected="updateTableDisplay"
+      @page-selected="onRefresh"
       :currentPage="activePage"
     />
   </div>
@@ -34,6 +34,7 @@ import SearchBar from '@/components/Common/SearchBar'
 import { debounce } from '@/helpers/utils'
 import type { MandateCollection } from './Models'
 import type { UpdateTableDisplayParams } from './HomeTypes'
+import { PAGE_SIZES } from '@/constants'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -52,6 +53,7 @@ const activePage = ref(1)
 const searchText = ref('')
 const defaultSortOrder = ref('Descending')
 const defaultSortCriteria = ref('')
+const currentStatusCodes = ref<number[]>([])
 
 onMounted(async () => {
   try {
@@ -70,6 +72,7 @@ const updateTableDisplay = async ({
   sortCriteria = defaultSortCriteria.value,
   statusCodes = [],
 }: Partial<UpdateTableDisplayParams>) => {
+  currentStatusCodes.value = statusCodes
   try {
     if (currentPage !== activePage.value) {
       activePage.value = currentPage
@@ -99,6 +102,7 @@ async function onRefresh(override: Partial<UpdateTableDisplayParams>) {
     searchTerm: searchText.value,
     sortOrder: defaultSortOrder.value,
     sortCriteria: defaultSortCriteria.value,
+    statusCodes: currentStatusCodes.value,
     ...override,
   }
   await updateTableDisplay(params)

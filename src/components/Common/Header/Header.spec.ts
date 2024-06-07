@@ -29,7 +29,7 @@ describe('header.vue', () => {
 
   it('show emit refresh-mandate-collection', async () => {
     await wrapper.find('.header__create-mandate-button').trigger('click')
-    wrapper.findComponent(Drawer).vm.$emit('new-mandate-crated')
+    wrapper.findComponent(Drawer).vm.$emit('new-mandate-created')
     const refreshMandateCollectionEvent: any = wrapper.emitted('refresh-mandate-collection')
     expect(refreshMandateCollectionEvent).toBeDefined()
   })
@@ -64,8 +64,14 @@ describe('header.vue', () => {
         pIcon: 'PIXCircle',
       }]
       const expectedRefreshMandateCollectionEvent = [
-        [{ statusCodes: [] }],
-        [{ statusCodes: activeFilters }],
+        [{
+          currentPage: 1,
+          statusCodes: [],
+        }],
+        [{
+          currentPage: 1,
+          statusCodes: activeFilters,
+        }],
       ]
 
       const pFilterGroup = wrapper.findComponent({ name: 'PFilterGroup' })

@@ -216,7 +216,10 @@ const pDialogControl = reactive({
   dialogCustomClass: 'my-dialog-class',
 })
 
-const emit = defineEmits(['update:modelValue', 'new-mandate-crated'])
+const emit = defineEmits<{
+  'update:modelValue': [boolean]
+  'new-mandate-created': []
+}>()
 
 const props = defineProps({
   modelValue: Boolean,
@@ -253,7 +256,7 @@ const handleValidateAvailability = (availability: boolean) => {
 
 const closeDrawerAndInitStep = () => {
   if (currentStep.value === 4) {
-    emit('new-mandate-crated')
+    emit('new-mandate-created')
   }
   drawerModel.value = false
   currentStep.value = 1
