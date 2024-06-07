@@ -8,6 +8,7 @@
         flex--direction-column
         flex-gap--1
         padding--1
+        padding-bottom--4
       "
     >
       <li
@@ -17,21 +18,21 @@
         class="
           widget-deadlines__item
           flex
-          shadow--3
           radius--2
           padding--2
           cursor-pointer
+          bg--base-white
         "
         @click="$emit('select-deadline', item.occurrenceId)"
       >
-        <div class="padding-top--1 margin-right--2">
+        <div class="widget-deadlines__item__icon margin-right--2">
           <Icon :status="item.globalStatus" />
         </div>
         <div>
           <p class="text-color--neutral-gray-900 font-semibold">
             {{ item.typeLabel }}
           </p>
-          <p class="text-color--neutral-gray-700">
+          <p class="padding-top--1 text-color--neutral-gray-700">
             {{ item.progressText }}
           </p>
         </div>
@@ -85,10 +86,33 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+$shadow-color: #7090b0;
+
 .widget-deadlines {
   &__item {
+    // see explainations here: https://blog.dudak.me/2014/css-shadows-under-adjacent-elements/
+    position: relative;
+    z-index: 10;
+    &::before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 8px;
+      box-shadow: 0 16px 16px 0 rgba($shadow-color, 0.04),
+        0 4px 4px 0 rgba($shadow-color, 0.05),
+        0 2px 4px 0 rgba($shadow-color, 0.08),
+        0 1px 2px 0 rgba($shadow-color, 0.05),
+        0 0 2px 0 rgba($shadow-color, 0.10);
+    }
     &:hover {
       background-color: var(--el-color-persian-100);
+    }
+    &__icon {
+      padding-top: 2px;
     }
   }
 }

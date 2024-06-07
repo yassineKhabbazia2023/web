@@ -59,9 +59,11 @@
     </PButton>
 
     <PExpandableSearch
-      class="action-bar-left__expandable-search margin-left--2"
+      class="action-bar-left__expandable-search margin-left--2 margin-right--12"
       :pSearchContent="searchTerm"
       :pIsSearchShrinkable="!isSearchState"
+      :pPlaceholder="t('placeholder')"
+      pFocusOnExpand
       @update:p-search-content="emit('update:search-term', $event)"
       @enter="emit('update:is-search-state', true)"
     />
@@ -130,9 +132,19 @@ function onClickToday() {
 }
 </script>
 
+<style lang="scss" scoped>
+.action-bar-left {
+  &__expandable-search {
+    max-width: 400px;
+  }
+}
+</style>
+
 <i18n lang="yaml">
   en-US:
     today: 'Today'
+    placeholder: 'Look for a deadline, a file...'
   fr-FR:
     today: "Aujourd'hui"
+    placeholder: "Rechercher un rappel, un dossier..."
 </i18n>
