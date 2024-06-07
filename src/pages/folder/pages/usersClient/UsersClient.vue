@@ -43,8 +43,8 @@
           :data="state.data"
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
-          @on-sort-change="handleSortChange"
           @remove-user="handleRemoveUser"
+          :isInAnEntityPage="!!entityId"
         />
 
         <NoResult v-if="!state.data.length" />
@@ -131,7 +131,6 @@ const state: IState = reactive({
   totalItems: undefined,
   search: undefined,
   isLoading: false,
-  sort: undefined,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
   isRemoveUserDialogOpened: false,
@@ -181,7 +180,6 @@ function getQueryParams(type: string | undefined) {
     pageNumber: state.currentPage,
     pageSize: state.limit,
     search: state.search,
-    sort: state.sort,
     Type: type,
   }
 }
@@ -226,10 +224,6 @@ const handleDisplayManageRights = (selectedUserId: number) => {
   state.isManageRightsDrawerOpened = true
 }
 
-const handleSortChange = (sortQueryField: string) => {
-  state.sort = sortQueryField
-}
-
 const handleRemoveUser = (row: any) => {
   state.userToRemove = row
   state.isRemoveUserDialogOpened = true
@@ -256,7 +250,11 @@ onMounted(async () => {
 })
 
 watch(
-  () => [state.currentPage, state.limit, state.search, state.sort],
+  () => [
+    state.currentPage,
+    state.limit,
+    state.search,
+  ],
   async () => {
     await fetchUsers()
   },
