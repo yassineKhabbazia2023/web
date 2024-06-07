@@ -28,5 +28,4 @@ export interface IState {
   isRemoveUserDialogOpened: boolean
   userToRemove: IExtendedUser | undefined
   selectedUserId: number
-  sort: string | undefined
 }

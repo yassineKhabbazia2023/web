@@ -45,7 +45,7 @@ describe('test User', () => {
     expect(wrapper.findComponent({ name: shouldNotExist }).exists()).toBeFalsy()
   })
 
-  describe('currentEntityId', () => {
+  describe('entityId', () => {
     const tests = [{
       parentName: 'folder',
       mockedAccountId: 63,
@@ -85,7 +85,7 @@ describe('test User', () => {
       const wrapper = createWrapper()
       const usersClient = wrapper.findComponent({ name: 'UsersClient' })
 
-      expect(usersClient.props('currentEntityId')).toStrictEqual(expected)
+      expect(usersClient.props('entityId')).toStrictEqual(expected)
     })
   })
 })

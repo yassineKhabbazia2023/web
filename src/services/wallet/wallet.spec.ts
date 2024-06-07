@@ -8,12 +8,15 @@ import {
   manageFavoriteEntities,
   fetchEntitiesStatistics,
   fetchAccountCustomers,
+  fetchAccountContacts,
+  fetchCustomers,
 } from '.'
 import { ContactType } from '../contact/contactTypes'
 import { getMockedEntitiesStatistics } from '@/pages/wallet/components/Filters/FiltersMocks'
 import mockCollaborators from '@/pages/wallet/pages/collaborators/mockCollaborators.json'
 import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
 import type { Entity } from '@kpmg/common'
+import * as Common from '@kpmg/common'
 import { getMockedCustomersCollab } from '@/pages/folder/pages/usersCollab/mockData'
 import {
   getMockedCollabRoles,
@@ -124,6 +127,61 @@ describe('collaborateurs/admin', () => {
       const customers = await fetchAccountCustomers(accountId)
 
       expect(customers).toStrictEqual(mockedCustomersCollab)
+    })
+  })
+
+  describe('fetchAccountContacts', () => {
+    it('should return list of contacts', async () => {
+      const mockedData = {
+        items: [],
+      }
+      const getSpy = vi.fn().mockResolvedValue({ data: mockedData })
+      vi
+        .spyOn(Common, 'commonApi')
+        .mockReturnValue({
+          gateway: {
+            get: getSpy,
+          },
+        } as any)
+      const params = {
+        Type: 'Customer',
+        limit: '50',
+      }
+      const searchParams = new URLSearchParams(params)
+      const contacts = await fetchAccountContacts(accountId, searchParams)
+      const expectedArguments = 'account/api/accounts/5/contacts?Type=Customer&limit=50'
+
+      expect(getSpy).toHaveBeenCalledOnce()
+      expect(getSpy).toHaveBeenNthCalledWith(1, expectedArguments)
+      expect(contacts).toStrictEqual(mockedData)
+    })
+  })
+
+  describe('fetchCustomers', () => {
+    it("should return list of user's customers", async () => {
+      const accountId = 34
+      const mockedData = {
+        items: [],
+      }
+      const getSpy = vi.fn().mockResolvedValue({ data: mockedData })
+      vi
+        .spyOn(Common, 'commonApi')
+        .mockReturnValue({
+          gateway: {
+            get: getSpy,
+          },
+        } as any)
+      const params = {
+        searchTerm: 'search term',
+        limit: '50',
+      }
+      const searchParams = new URLSearchParams(params)
+      const contacts = await fetchCustomers(accountId, searchParams)
+      const expectedArguments = 'customer-wallet/api/customers/34?searchTerm=search+term&limit=50'
+
+      expect(getSpy).toHaveBeenCalledOnce()
+      expect(getSpy).toHaveBeenNthCalledWith(1, expectedArguments)
+      expect(contacts).toStrictEqual(mockedData)
     })
   })
   describe('fetchFavoriteEntities', () => {

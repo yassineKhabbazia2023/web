@@ -1,15 +1,14 @@
 <template>
   <div>
     <PTable
-      :pData="props.data"
+      :pData="data"
       showOverflowTooltip
       pStripe
       tableLayout="fixed"
-      @sort-change="handleSortChange"
     >
       <PTableColumn
         :pLabel="t('user')"
-        pProp="user"
+        pProp="initials"
         pSortable
       >
         <template #default="scope">
@@ -94,12 +93,11 @@ import {
   PToolbox,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
-import { reactive, computed } from 'vue'
+import { computed, reactive } from 'vue'
 import { userPermissions } from '@kpmg/common'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
-import { returnSortQueryField } from '@/helper'
 import type { IExtendedUser } from '../../types'
 import { userActions } from './types'
 
@@ -117,7 +115,12 @@ const emits = defineEmits<{
   'remove-user': [IExtendedUser]
 }>()
 
-const { userInformation, modifyRights, removeUser } = MENU_ACTIONS_NAME
+const {
+  deleteUser,
+  modifyRights,
+  removeUser,
+  userInformation,
+} = MENU_ACTIONS_NAME
 const menuElements = computed<PToolboxItemProps[]>(() =>
   [
     {
@@ -132,14 +135,22 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('modifyRights'),
       pActionName: modifyRights,
       pState: 'default',
-      display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER),
+      display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
     },
     {
       pIconName: 'PIPersonRemove',
       pValue: t('removeUser'),
       pActionName: removeUser,
       pState: 'default',
-      display: hasPermission(PERMISSION_CODES.DELETE_USER),
+      display: hasPermission(PERMISSION_CODES.DELETE_USER) && props.isInAnEntityPage,
+    },
+    {
+      // this item will be handle soon
+      pIconName: 'PITrash',
+      pValue: t('deleteUser'),
+      pActionName: deleteUser,
+      pState: 'danger',
+      display: hasPermission(PERMISSION_CODES.DELETE_USER) && !props.isInAnEntityPage,
     },
   ]
     .filter(({ display }) => display)
@@ -167,12 +178,6 @@ const handleToolboxItemClick = (action: string, row: any) => {
     emits('click-view-information', row.contactId)
   }
 }
-
-const handleSortChange = (data: any) => {
-  const columnLabel = data.prop
-  const order = data.order
-  returnSortQueryField(columnLabel, order)
-}
 </script>
 
 <style lang="scss" scoped>
@@ -190,14 +195,16 @@ en-US:
   userInformation: 'User information'
   modifyRights: 'Modify rights'
   removeUser: 'Remove User'
+  deleteUser: 'Delete User'
   you: 'You'
 fr-FR:
   user: 'Utilisateur'
   email: 'E-Mail'
   dateAdded: "Date d'ajout"
   options: 'Options'
-  userInformation: "Informations de l’utilisateur"
+  userInformation: "Informations de l'utilisateur"
   modifyRights: 'Modifier les droits'
-  removeUser: "Retirer l’utilisateur"
+  removeUser: "Retirer l'utilisateur"
+  deleteUser: "Supprimer l'utilisateur"
   you: 'Vous'
 </i18n>

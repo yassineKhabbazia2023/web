@@ -4,6 +4,7 @@ import {
   getOffer,
   getOffersBookLink,
   getPrincipalContacts,
+  fetchCollaborators,
 } from '.'
 import { getMockedSubscriptionOffers } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
 import {
@@ -16,7 +17,9 @@ import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { getMockedCollaborators } from '../contact/contactMocks'
 
+const mockedCollaborators = getMockedCollaborators()
 const mockedPrincipalContacts: ClientContact[] = getMockedPrincipalContacts()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
@@ -40,6 +43,9 @@ vi.mock('@kpmg/common', () => {
           if (/\bsignatory\b/i.test(url)) {
             return getPrincipalContactsImplementation()
           }
+          if (url === `${API_PREFIXES.OFFER}/contacts`) {
+            return getfetchCollaboratorsImplementation()
+          }
         }),
       },
     }),
@@ -49,6 +55,14 @@ vi.mock('@kpmg/common', () => {
 const getAllOffersImplementation = () => {
   return Promise.resolve({
     data: subscriptionOffers,
+  })
+}
+
+const getfetchCollaboratorsImplementation = () => {
+  return Promise.resolve({
+    data: {
+      items: mockedCollaborators,
+    },
   })
 }
 
@@ -91,6 +105,14 @@ describe('getOffer', () => {
     const offer = await getOffer(50)
 
     expect(offer).toBeUndefined()
+  })
+})
+
+describe('fetchCollaborators', () => {
+  it('should return list of collaborators', async () => {
+    const collaborators = await fetchCollaborators()
+
+    expect(collaborators).toStrictEqual(mockedCollaborators)
   })
 })
 

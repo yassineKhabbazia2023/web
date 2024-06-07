@@ -16,7 +16,7 @@
 
     <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
     <Teleport
-      v-if="currentEntityId && isMounted"
+      v-if="shouldShowAddButton"
       to=".folder__teleported-content"
     >
       <PButton
@@ -99,8 +99,10 @@
           </template>
         </PTableColumn>
         <PTableColumn
+          v-if="toolboxItems.length > 0"
           :pLabel="t('action')"
           :pWidth="100"
+          data-testid="collaborators-action"
         >
           <template #default="scope">
             <PToolbox
@@ -192,7 +194,7 @@ const { t } = useI18n({
 })
 
 const userStore = commonStore()
-const { defaultEntity } = storeToRefs(userStore)
+const { isCollab, defaultEntity } = storeToRefs(userStore)
 const { hasPermission } = userPermissions()
 
 const isLoading = ref(false)
@@ -325,7 +327,7 @@ const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
 const paginationLabel = computed(() =>
   `${1 + ((state.currentPage - 1) * state.limit)}
     - ${((state.currentPage - 1) * state.limit) +
-    collabs.value.length} 
+    collabs.value.length}
     ${t('on')} ${state.totalItems}`,
 )
 
@@ -337,14 +339,14 @@ const toolboxItems = computed(
         pValue: t('collaboratorInformation'),
         pActionName: 'collaboratorInformation',
         pState: 'default',
-        display: true,
+        display: isCollab.value,
       },
       {
         pIconName: 'PITrash',
         pValue: t('removeCollaborator'),
         pActionName: 'removeCollaborator',
         pState: 'default',
-        display: hasPermission(PERMISSION_CODES.DELETE_COLLAB),
+        display: isCollab.value && hasPermission(PERMISSION_CODES.DELETE_COLLAB),
       },
     ]
       .filter(({ display }) => display)
@@ -358,6 +360,10 @@ const toolboxItems = computed(
 
 const shouldShowPagination = computed(() =>
   !isLoading.value && state.totalItems,
+)
+
+const shouldShowAddButton = computed(() =>
+  currentEntityId !== undefined && isMounted.value && isCollab.value,
 )
 
 const getQueryParams = () => ({

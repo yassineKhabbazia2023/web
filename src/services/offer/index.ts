@@ -7,6 +7,7 @@ import type { ClientContact } from '@/pages/entities/components/PrincipalContact
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
 import { API_PREFIXES } from '@/common/config/services'
 import { handleRequestError } from '@/helper/helper'
+import type { Contact } from '../contact/contactTypes'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
   try {
@@ -42,6 +43,28 @@ export const getPrincipalContacts = async (accountId: number): Promise<ClientCon
     return response?.data
   } catch (error) {
     handleRequestError('fetching principal contact', error)
+  }
+}
+
+export const fetchCollaborators = async (
+  search: string | null = null,
+  pageSize?: number,
+): Promise<Contact[] | undefined> => {
+  try {
+    const response = await commonApi().gateway.get(
+      `${API_PREFIXES.OFFER}/contacts`,
+      {
+        params: {
+          Type: 'Collaborator',
+          search,
+          pageSize,
+        },
+      },
+    )
+
+    return response?.data?.items
+  } catch (error) {
+    handleRequestError('fetching contacts', error)
   }
 }
 

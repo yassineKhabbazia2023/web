@@ -1,5 +1,5 @@
 import type { Contact } from '@/services/contact/contactTypes'
-import { getCollaborators } from '@/services/contact'
+import { fetchCollaborators } from '@/services/offer'
 
 export async function getAutocompleteContacts(
   selectedCollaborators: Contact[],
@@ -9,7 +9,7 @@ export async function getAutocompleteContacts(
     return []
   }
   const selectedCollaboratorsIds = selectedCollaborators.map(({ id }) => id)
-  const autocompleteCollaborators = await getCollaborators(queryString) ?? []
+  const autocompleteCollaborators = await fetchCollaborators(queryString) ?? []
   const collaborators = autocompleteCollaborators?.filter(({ id }) => selectedCollaboratorsIds.indexOf(id) < 0)
 
   return collaborators
