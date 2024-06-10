@@ -15,15 +15,6 @@ const customerMock = getMockedCustomer()[0]
 
 export const debounceMock = vi.fn((callback: Function) => callback)
 
-vi.mock('@/services/contact', () => {
-  const getUserByEmailMock = vi.fn(() => {
-    return Promise.resolve({ ...customerMock })
-  })
-  return {
-    getUserByEmail: getUserByEmailMock,
-  }
-})
-
 vi.mock('@/services/account', () => {
   const createCustomerMock = vi.fn(() => {
     return Promise.resolve({
@@ -34,9 +25,13 @@ vi.mock('@/services/account', () => {
   })
   const addContactToEntityMock = vi.fn().mockResolvedValue({})
 
+  const getAccountUserByEmailMock = vi.fn(() => {
+    return Promise.resolve({ ...customerMock })
+  })
   return {
     createCustomer: createCustomerMock,
     addContactToEntity: addContactToEntityMock,
+    getAccountUserByEmail: getAccountUserByEmailMock,
   }
 })
 

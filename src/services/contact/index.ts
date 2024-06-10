@@ -53,13 +53,3 @@ export const patchContact = async (
   )
   return response?.data
 }
-
-export async function getUserByEmail(email: string): Promise<Contact | null> {
-  const { data, status } = await commonApi().gateway.get(`${API_PREFIXES.CONTACT}/contacts`,
-    {
-      params: {
-        email,
-      },
-    })
-  return status === 204 ? null : data.items[0]
-}
