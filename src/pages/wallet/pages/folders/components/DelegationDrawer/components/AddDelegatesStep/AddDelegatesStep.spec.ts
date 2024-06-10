@@ -10,8 +10,10 @@ import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
 const mockedCollaborators = getMockedCollaborators()
-vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
+vi.mock('@/services/wallet', () => ({
+  getCollaborators: vi.fn(() => Promise.resolve({
+    items: mockedCollaborators,
+  })),
 }))
 
 const defaultProps: DelegatorsAddStepProps = {

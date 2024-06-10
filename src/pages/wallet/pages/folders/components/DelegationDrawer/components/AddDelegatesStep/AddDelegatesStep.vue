@@ -64,7 +64,7 @@ import { PAlert, PBlockHeader, PUserAction } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
-import { getCollaborators } from '@/services/contact'
+import { getCollaborators } from '@/services/wallet'
 import type { Contact } from '@/services/contact/contactTypes'
 import { getInitials } from '@/helper/helper'
 
@@ -80,7 +80,8 @@ const { t } = useI18n({
 
 const folderUsers = ref<undefined | Contact[]>()
 onMounted(async () => {
-  folderUsers.value = await getCollaborators('', 100)
+  const { items } = await getCollaborators(1, 100)
+  folderUsers.value = items
 })
 
 const selectedCollaboratorsIds: Contact['id'][] = reactive([])
