@@ -90,6 +90,14 @@ const emit = defineEmits<{
 
 const files = ref<UploadFile[]>([])
 
+function clearFiles() {
+  uploadElement.value?.clearFiles()
+}
+
+defineExpose({
+  clearFiles,
+})
+
 const emitFilesEvent = () => {
   const filesToUpload = files.value.map((file) => file.raw as File)
   return new Promise((resolve) => {

@@ -17,8 +17,9 @@ $upload: (
     &#{$self}--type {
       &-file-line,
       &-dragger {
-        pointer-events: none;
-
+        .el-upload {
+          pointer-events: none;
+        }
         .el-upload-dragger {
           cursor: default;
           background: var(--el-color-neutral-gray-50);
@@ -101,6 +102,12 @@ $upload: (
 
   .el-upload-list {
     margin-top: 0.8rem;
+
+    &--text {
+      .el-upload-list__item {
+        border: none;
+      }
+    }
 
     &__item {
       margin-bottom: 0;
