@@ -1,19 +1,26 @@
 import { describe, it, expect, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
+import * as ReportService from '@/services/reporting'
 import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
 import { createTestingPinia } from '@pinia/testing'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
 import { commonPinia as pinia } from '@kpmg/common'
 import { PERMISSION_CODES } from '@/constants'
 import SidebarEntityMenu from '.'
+import { getMockedBIReports } from './SidebarEntityMenuMocks'
 
+const mockedBIReports = getMockedBIReports()
 const favoriteEntityId: number = getMockedFavoriteEntities()[0].accountId
 const mockHasPermission = vi.fn((_code: string[]) => true)
 
 const defaultProps = {
   selectedEntityId: favoriteEntityId,
 }
+
+vi.mock('@/services/reporting', () => ({
+  fetchBIReports: vi.fn(() => Promise.resolve({ totalItems: 0 })),
+}))
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -48,9 +55,7 @@ describe('sidebarEntityMenu', () => {
   describe('display', () => {
     it('should display the sidebar entity menu correctly', () => {
       wrapper = createWrapper()
-      const sidebarEntityMenu = wrapper.find(
-        '[data-testid=sidenav-menu]',
-      )
+      const sidebarEntityMenu = wrapper.find('[data-testid=sidenav-menu]')
 
       expect(sidebarEntityMenu.exists()).toBeTruthy()
     })
@@ -59,12 +64,37 @@ describe('sidebarEntityMenu', () => {
         permissions.includes(PERMISSION_CODES.ACCOUNT_INFORMATION[0]),
       )
       wrapper = createWrapper()
-      const sidebarEntityMenuItems = wrapper.findAll('.p-menu-item__title').map((item) => item.text())
+      const sidebarEntityMenuItems = wrapper
+        .findAll('.p-menu-item__title')
+        .map((item) => item.text())
       const menuItemsWithAccess = ['Home', 'Information']
       const menuItemsWithoutAccess = 'Users'
 
       expect(sidebarEntityMenuItems).toStrictEqual(menuItemsWithAccess)
       expect(sidebarEntityMenuItems).not.toContain(menuItemsWithoutAccess)
+    })
+    it('should not display the Power BI menu if the user does not have BI reports', () => {
+      wrapper = createWrapper()
+      const sidebarEntityMenuItems = wrapper
+        .findAll('.p-menu-item__title')
+        .map((item) => item.text())
+
+      expect(sidebarEntityMenuItems).not.toContain('BI reports')
+    })
+    it('should display the Power BI menu if the user has BI reports', async () => {
+      vi.spyOn(ReportService, 'fetchBIReports').mockResolvedValue({
+        items: mockedBIReports,
+        totalItems: mockedBIReports.length,
+        currentPage: 1,
+        totalPage: 1,
+      })
+      wrapper = createWrapper()
+      await flushPromises()
+      const sidebarEntityMenuItems = wrapper
+        .findAll('.p-menu-item__title')
+        .map((item) => item.text())
+
+      expect(sidebarEntityMenuItems).toContain('BI reports')
     })
   })
   describe('events', () => {
