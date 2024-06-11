@@ -51,6 +51,7 @@ export interface IUser {
   lastName: string
   email: string
   isOwner: boolean
+  role?: string
   status?: string | IUserStatus
   firstDateAccess?: string
 }
