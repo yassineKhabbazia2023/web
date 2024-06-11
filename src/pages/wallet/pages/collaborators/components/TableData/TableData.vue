@@ -133,7 +133,11 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const emit = defineEmits(['update-collaborator-details', 'update-collaborator-role', 'on-sort-change'])
+const emit = defineEmits([
+  'update-collaborator-details',
+  'update-collaborator-role',
+  'on-sort-change',
+])
 const props = defineProps<Props>()
 const { hasPermission } = userPermissions()
 
