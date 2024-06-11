@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import dayjs from 'dayjs'
 import ActionBarLeft from '.'
 import { expect, describe, it, vi } from 'vitest'
@@ -11,13 +11,14 @@ function createWrapper(override: Partial<ActionBarLeftProps> = {}) {
     activeDate: new Date(TEST_DATE),
     searchTerm: '',
     isSearchState: false,
+    activeFilters: 0,
   }
   const props = {
     ...defaultProps,
     ...override,
   }
 
-  return shallowMount(ActionBarLeft, {
+  return mount(ActionBarLeft, {
     props,
   })
 }
@@ -110,6 +111,16 @@ describe('month.vue', () => {
     endSearchStateButton.trigger('click')
 
     expect(wrapper.emitted('update:is-search-state')).toStrictEqual([[false]])
+  })
+
+  it('should emit an event open-drawer-filters', async () => {
+    const wrapper = createWrapper({
+      activeFilters: 3,
+    })
+    const filterButton = wrapper.find('button[data-testid="open-drawer-filters-button"]')
+    expect(filterButton.text()).toContain(3)
+    await filterButton.trigger('click')
+    expect(wrapper.emitted('open-drawer-filters')).toStrictEqual([[true]])
   })
 })
 

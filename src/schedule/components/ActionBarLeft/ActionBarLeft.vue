@@ -1,5 +1,15 @@
 <template>
-  <div class="flex flex--align-items-center">
+  <div
+    class="
+      action-bar-left
+      flex
+      flex--align-items-center
+    "
+    :class="{
+      'action-bar-left--is-expanded': isExpanded,
+      'action-bar-left--is-collapsed': !isExpanded,
+    }"
+  >
     <template v-if="!isSearchState">
       <PButton
         @click="updateMonth('prev')"
@@ -59,28 +69,49 @@
     </PButton>
 
     <PExpandableSearch
-      class="action-bar-left__expandable-search margin-left--2 margin-right--12"
+      class="margin-left--2"
       :pSearchContent="searchTerm"
       :pIsSearchShrinkable="!isSearchState"
       :pPlaceholder="t('placeholder')"
       pFocusOnExpand
       @update:p-search-content="emit('update:search-term', $event)"
       @enter="emit('update:is-search-state', true)"
+      @search-expand-change="isExpanded = $event"
     />
+    <PButton
+      class="margin-left--2"
+      pSize="small"
+      @click="emit('open-drawer-filters', true)"
+      data-testid="open-drawer-filters-button"
+    >
+      <PIcon>
+        <PIFunnel />
+      </PIcon>
+      <PPastille
+        class="margin-left--2"
+        pType="persian"
+        pSize="small"
+        v-if="activeFilters"
+      >
+        {{ activeFilters }}
+      </PPastille>
+    </PButton>
   </div>
 </template>
 
 <script setup lang='ts'>
 import dayjs from 'dayjs'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import {
   PIcon,
   PIChevronRight,
   PIChevronLeft,
+  PIFunnel,
   PButton,
   PExpandableSearch,
   PIArrowLeft,
+  PPastille,
 } from '@kpmg/styleguide'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
@@ -88,6 +119,7 @@ const emit = defineEmits<{
   'update:active-date': [Date]
   'update:search-term': [string]
   'update:is-search-state': [boolean]
+  'open-drawer-filters': [boolean]
 }>()
 
 const datetimeFormats = {
@@ -109,6 +141,7 @@ const { t, d } = useI18n({
 })
 
 const props = defineProps<ActionBarLeftProps>()
+const isExpanded = ref(false)
 
 const activeMonth = computed(() => d(props.activeDate, 'month'))
 const activeYear = computed(() => props.activeDate.getFullYear())
@@ -134,8 +167,12 @@ function onClickToday() {
 
 <style lang="scss" scoped>
 .action-bar-left {
-  &__expandable-search {
-    max-width: 400px;
+  &--is-collapsed:deep(.p-expandable-search) {
+    width: inherit;
+  }
+  &--is-expanded:deep(.p-expandable-search) {
+    width: 100%;
+    max-width: 424px;
   }
 }
 </style>

@@ -111,5 +111,15 @@ describe('action bar', () => {
 
       expect(wrapper.emitted('update:is-search-state')).toStrictEqual([[isSearchStateAfter]])
     })
+
+    it('should emit open-drawer-filters when triggered in  actionBarLeft', () => {
+      const wrapper = createWrapper()
+
+      const actionBarLeft = wrapper.findComponent({ name: 'ActionBarLeft' })
+
+      actionBarLeft.vm.$emit('open-drawer-filters', true)
+
+      expect(wrapper.emitted('open-drawer-filters')).toStrictEqual([[true]])
+    })
   })
 })

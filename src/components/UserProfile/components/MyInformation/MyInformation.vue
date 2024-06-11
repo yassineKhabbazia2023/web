@@ -105,7 +105,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { onMounted, reactive, ref } from 'vue'
-import { commonApi, commonStore } from '@kpmg/common'
+import { commonApi } from '@kpmg/common'
 import {
   PButton,
   PForm,
@@ -126,8 +126,6 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-const userStore = commonStore()
 
 const user: User = reactive({
   firstName: undefined,
@@ -151,8 +149,7 @@ const rules = reactive({
   }],
 })
 
-const CONTACT_ID = userStore.user?.id
-const CONTACT_API_ENDPOINT = `contact/api/contacts/${CONTACT_ID}`
+const CONTACT_API_ENDPOINT = 'contact/api/contacts/currentuser'
 
 const handleFormSubmit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
