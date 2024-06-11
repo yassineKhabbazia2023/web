@@ -114,7 +114,7 @@ describe('myInformation', () => {
 
     expect(mockPatch).toHaveBeenCalledOnce()
     expect(mockPatch).toHaveBeenCalledWith(
-      `contact/api/contacts/${USER_ID}`,
+      'contact/api/contacts/currentuser',
       [{
         op: 'replace',
         path: '/MobilePhone',
