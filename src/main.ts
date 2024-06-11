@@ -90,12 +90,6 @@ const FOLDER_CHILDREN_PATH = [
   },
 ]
 
-routes.value.push({
-  path: '/subscription',
-  name: 'subscription',
-  component: () => import('@/pages/subscriptions'),
-} as RouteRecordRaw)
-
 const walletPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
   const res: RouteRecordRaw[] = []
   paths.forEach((path) => {
