@@ -32,7 +32,11 @@
         {{ pPrefixLabelFileLine }}
         <span
           class="font-semibold"
-          :class="pDisabled ? 'text-color--neutral-gray-500' : 'text-color--persian-500'"
+          :class="
+            pDisabled
+              ? 'text-color--neutral-gray-500'
+              : 'text-color--persian-500'
+          "
         >
           {{ pSuffixLabelFileLine }}
         </span>
@@ -70,6 +74,7 @@ const uploadElement = ref<InstanceType<typeof ElUpload> | null>(null)
 
 function removeFile(file: UploadFile | UploadRawFile) {
   uploadElement.value?.handleRemove(file)
+  emit('delete-file', file)
 }
 
 const props = withDefaults(defineProps<UploadProps>(), {
@@ -86,6 +91,7 @@ const pClassMapper = computed(() => ({
 
 const emit = defineEmits<{
   'files-selected': [File[]]
+  'delete-file': [UploadFile | UploadRawFile]
 }>()
 
 const files = ref<UploadFile[]>([])
