@@ -20,6 +20,7 @@
       pColorFileLine="persian"
       :pDisabled="isDisabled"
       @files-selected="handleReportUpload"
+      @delete-file="emit('delete-report')"
     />
   </PFormItem>
 </template>
@@ -41,6 +42,7 @@ withDefaults(defineProps<UploadBIReportProps>(), {
 
 const emit = defineEmits<{
   'upload-report': [File]
+  'delete-report': []
 }>()
 
 const uploadBIReport = ref()

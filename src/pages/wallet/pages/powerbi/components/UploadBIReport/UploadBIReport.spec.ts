@@ -31,5 +31,11 @@ describe('uploadBIReport', () => {
         [mockedBIReports[0]],
       ])
     })
+    it("should emit 'delete-report' when removing the BI report", () => {
+      const reportUploader = wrapper.findComponent({ name: 'PUpload' })
+      reportUploader.vm.$emit('delete-file')
+
+      expect(wrapper.emitted('delete-report')).toBeTruthy()
+    })
   })
 })

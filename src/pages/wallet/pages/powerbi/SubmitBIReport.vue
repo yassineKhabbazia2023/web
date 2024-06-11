@@ -22,8 +22,9 @@
         <PCol :pSpan="24" :pMd="12">
           <UploadBIReport
             ref="uploadBIReport"
-            @upload-report="handleReportUpload"
             :isDisabled="!!reportFile"
+            @upload-report="handleReportUpload"
+            @delete-report="handleDeleteReport"
           />
         </PCol>
         <PCol :pSpan="24" :pMd="12">
@@ -106,6 +107,9 @@ const isValidationButtonDisabled = computed(() => {
 // Event listeners
 const handleReportUpload = (report: File) => {
   reportFile.value = report
+}
+const handleDeleteReport = () => {
+  reportFile.value = undefined
 }
 const handleResetUploadInfo = () => {
   if (uploadBIReport.value) {
