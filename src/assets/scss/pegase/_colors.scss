@@ -118,10 +118,12 @@ $typePulse: ();
 
 @each $palette, $colorsMap in $colors {
   @each $colorName, $colorValue in $colorsMap {
-    .bg--#{$palette}-#{$colorName} {
-      background-color: $colorValue !important;
+    .bg--#{$palette}-#{$colorName},
+    .hover-bg--#{$palette}-#{$colorName}:hover {
+        background-color: $colorValue !important;
     }
-    .text-color--#{$palette}-#{$colorName} {
+    .text-color--#{$palette}-#{$colorName},
+    .hover-text-color--#{$palette}-#{$colorName}:hover {
       color: $colorValue !important;
     }
   }

@@ -85,28 +85,125 @@
           <br>
           La classe sera donc ainsi <span class="bold">bg--{catégorie}-{identifiant}</span>
         </p>
-        <p class="bold margin-bottom--2">
+        <p
+          class="
+            bold margin-bottom--2
+            hover-bg--persian-500
+            hover-text-color--secondary-cyan-txt
+          ">
           Quelques exemples :
         </p>
         <ul>
-          <li><div class="bg--persian-500 padding--4 text-color--base-white">
-            bg--persian-500</div></li>
-          <li><div class="bg--neutral-gray-500 padding--4 text-color--base-white">
-            bg--neutral-gray-500</div></li>
-          <li><div class="bg--functionnal-red-bg padding--4 text-color--functionnal-red-txt">
-            bg--functionnal-red-bg</div></li>
-          <li><div class="bg--secondary-cyan-bg padding--4 text-color--secondary-cyan-txt">
-            bg--secondary-cyan-bg</div></li>
+          <li>
+            <pre
+              class="
+                padding--4
+                bg--persian-500
+                text-color--base-white
+                hover-bg--base-white
+                hover-text-color--persian-500
+              "
+            >
+              bg--persian-500
+              text-color--base-white
+              hover-bg--base-white
+              hover-text-color--persian-500
+            </pre>
+          </li>
+          <li>
+            <pre
+              class="
+                padding--4
+                bg--neutral-gray-500
+                text-color--base-white
+                hover-bg--base-white
+                hover-text-color--neutral-gray-500
+              "
+            >
+              bg--neutral-gray-500
+              text-color--base-white
+              hover-bg--base-white
+              hover-text-color--neutral-gray-500
+            </pre>
+          </li>
+          <li>
+            <pre
+              class="
+                padding--4
+                bg--functionnal-red-bg
+                text-color--functionnal-red-txt
+                hover-bg--functionnal-red-txt
+                hover-text-color--functionnal-red-bg
+              "
+            >
+              bg--functionnal-red-bg
+              text-color--functionnal-red-txt
+              hover-bg--functionnal-red-txt
+              hover-text-color--functionnal-red-bg
+            </pre>
+          </li>
+          <li>
+            <pre
+              class="
+                padding--4
+                bg--secondary-cyan-bg
+                text-color--secondary-cyan-txt
+                hover-text-color--secondary-cyan-bg
+                hover-bg--secondary-cyan-txt
+              "
+            >
+              bg--secondary-cyan-bg
+              text-color--secondary-cyan-txt
+              hover-text-color--secondary-cyan-bg
+              hover-bg--secondary-cyan-txt
+            </pre>
+          </li>
         </ul>
       </div>
+    </Variant>
+    <Variant title="Dictionary" source="">
+      <ColorDictionary :groupKey="groupKey" :prefix="prefix" />
+      <template #controls>
+        <HstSelect
+          v-model="prefix"
+          title="Prefix"
+          :options="prefixes" />
+        <HstSelect
+          v-model="groupKey"
+          title="Group"
+          :options="groupKeys" />
+      </template>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import MainColor from './main-color.vue'
+import ColorDictionary from './ColorDictionary.vue'
 import SecondaryColorsPegase from './secondary-colors-pegase.vue'
 import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
+import type { Prefix } from './ColorsDictionaryTypes'
+import { colorsConfig } from './colorsConfig'
+
+const groupKeys = [
+  '',
+  ...Object.keys(colorsConfig),
+].reduce((groupKeys, key) => {
+  groupKeys[key] = key || '-all-'
+
+  return groupKeys
+}, {} as Record<string, string>)
+
+const prefixes: Prefix[] = [
+  'bg',
+  'text-color',
+  'hover-bg',
+  'hover-text-color',
+]
+
+const groupKey = ref(Object.keys(groupKeys)[0])
+const prefix = ref<Prefix>(prefixes[0])
 </script>
 
 <style lang="scss">
@@ -178,6 +275,7 @@ import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
     .bg-secondary-sub-item {
       height: 100%;
       display: inline-block;
+
       &:first-child {
         border-radius: 0 0 0 var(--el-border-radius-base);
       }
@@ -191,6 +289,10 @@ import FunctionnalColorsPegase from './functionnal-colors-pegase.vue'
 
 .demo-color-box-lite {
   color: var(--el-text-color-primary);
+}
+
+pre {
+  white-space: pre-line;
 }
 </style>
 <docs lang="md">
