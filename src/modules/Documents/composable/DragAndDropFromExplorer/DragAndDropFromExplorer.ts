@@ -72,6 +72,7 @@ export function useDragAndDropFromExplorer(
     }
 
     await uploadDocuments(validDroppedFiles.value)
+    await displayPreUploadErrorsNotifications()
     droppedFilesFromExplorer.value.length = 0
   }
 
