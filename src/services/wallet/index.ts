@@ -28,13 +28,13 @@ export const getCollaboratorsByIdEntity = async (
 
 export async function fetchAccountCustomers(
   accountId: number,
-): Promise<IUserFromApi[]> {
+  queryParams?: any,
+) {
   const searchParams = new URLSearchParams({
+    ...queryParams,
     Type: 'customer',
   })
-  const data = await fetchAccountContacts(accountId, searchParams)
-
-  return data?.items
+  return await fetchAccountContacts(accountId, searchParams)
 }
 
 export async function fetchAccountContacts(

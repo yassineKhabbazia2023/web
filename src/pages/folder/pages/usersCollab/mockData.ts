@@ -9,6 +9,7 @@ export const dataFromApi = {
         status: 'Connecté',
         role: 'Gérant',
         firstDateAccess: '01/11/1923',
+        contactId: 1,
       },
       {
         firstName: 'John',
@@ -18,16 +19,17 @@ export const dataFromApi = {
         status: 'Connecté',
         role: 'Comptable',
         firstDateAccess: '02/12/1923',
+        contactId: 2,
       },
       {
         firstName: 'Alex',
-
         lastName: 'Doe',
         email: 'email@doe.com',
         isOwner: false,
         status: 'Connecté',
         role: 'RH',
         firstDateAccess: '02/13/1923',
+        contactId: 3,
       },
       {
         firstName: 'David',
@@ -37,6 +39,7 @@ export const dataFromApi = {
         status: 'Connecté',
         role: 'Commerce',
         firstDateAccess: '01/04/1923',
+        contactId: 4,
       },
       {
         firstName: 'Cristiano',
@@ -46,6 +49,7 @@ export const dataFromApi = {
         status: 'Connecté',
         role: 'Mafia',
         firstDateAccess: '12/04/1923',
+        contactId: 5,
       },
       {
         firstName: 'John',
@@ -55,6 +59,7 @@ export const dataFromApi = {
         status: 'Connecté',
         role: 'Star',
         firstDateAccess: '12/02/1923',
+        contactId: 6,
       },
       {
         firstName: 'John',
@@ -64,6 +69,7 @@ export const dataFromApi = {
         status: 'Connecté',
         role: 'Marketing',
         firstDateAccess: '11/12/1923',
+        contactId: 7,
       },
       {
         firstName: 'John',
@@ -73,6 +79,7 @@ export const dataFromApi = {
         status: 'Invité',
         role: 'Designer',
         firstDateAccess: '10/01/1923',
+        contactId: 8,
       },
     ],
     currentPage: 1,

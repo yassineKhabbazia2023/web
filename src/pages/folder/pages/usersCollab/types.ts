@@ -51,15 +51,18 @@ export interface IUser {
   lastName: string
   email: string
   isOwner: boolean
+  role?: string
   status?: string | IUserStatus
-  role: string
   firstDateAccess?: string
 }
 
 export interface IStateUser extends PaginationData<IUser> {
   currentPage: number
   limit: number
-  totalItems: number
-  totalPage: number
+  totalItems: number | undefined
+  totalPage: number | undefined
   isLoading: boolean | undefined
+  sort: string | undefined
+  order: string | undefined
+  search: string | undefined
 }

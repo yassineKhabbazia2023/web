@@ -1,17 +1,5 @@
 <template>
-  <div class="shadow--3 radius--2 overflow-hidden margin-top--6">
-    <PBlockHeader
-      :pTitle="t('userTitle')"
-      :pDescription="t('userDescription')"
-      pColor="gray"
-      :pHasButton="false"
-      :pImage="{
-        pFit: 'fill',
-        pType: 'portrait',
-        pName: 'user-female'
-      }"
-      data-testid="folder-users-collab-block-header"
-    />
+  <div class="margin-top--6">
     <div
       v-if="state.isLoading"
       class="flex flex--justify-content-center margin-y--4"
@@ -20,130 +8,117 @@
       <PLoader pType="primary" pSize="50" />
     </div>
 
-    <PTable
-      v-else
-      :pData="state.data"
-      tableLayout="fixed"
-      data-testid="folder-users-table"
-      showOverflowTooltip
-      pStripe
-    >
-      <PTableColumn
-        :pLabel="t('user')"
-        pProp="lastName"
-        pSortable
-      >
-        <template #default="scope">
-          <div class="flex flex--align-items-center">
-            <div class="margin-right--2">
-              <PAvatar
-                pColor="bordered-persian"
-                pType="small"
-              >
-                {{ scope.row.initials }}
-              </PAvatar>
-            </div>
-            <p>{{ scope.row.fullName }}</p>
-          </div>
-        </template>
-      </PTableColumn>
-      <PTableColumn
-        :pLabel="t('email')"
-        pProp="email"
-        pSortable
-      >
-        <template #default="scope">
-          <p>
-            {{ scope.row.email }}
-          </p>
-        </template>
-      </PTableColumn>
-      <PTableColumn
-        :pLabel="t('status')"
-        pSortable
-        pProp="status.text"
-      >
-        <template #default="scope">
-          <PTag
-            :pContent="scope.row.status.text"
-            :pColor="scope.row.status.color"
-            :pIconLeft="scope.row.status.icon"
-            pEffect="light"
-          />
-        </template>
-      </PTableColumn>
-      <PTableColumn
-        :pLabel="t('role')"
-        pSortable
-        pProp="role"
-      >
-        <template #default="scope">
-          <div
-            v-if="scope.row.isOwner"
-            class="owner-role flex flex--align-items-center"
-          >
-            <PIcon pSize="14px" class="margin-right--1">
-              <PIPatchCheck />
-            </PIcon>
-            {{ scope.row.role }}
-          </div>
-          <div v-if="!scope.row.isOwner">
-            <p>
-              {{ scope.row.role }}
-            </p>
-          </div>
-        </template>
-      </PTableColumn>
-      <PTableColumn
-        :pLabel="t('dateAccess')"
-        pSortable
-        :pSortMethod="sortDate"
-        pProp="firstDateAccess"
-      >
-        <template #default="scope">
-          {{ scope.row.firstDateAccess }}
-        </template>
-      </PTableColumn>
-      <PTableColumn
-        :pLabel="t('action')"
-        :pWidth="100"
-      >
-        <template #default="scope">
-          <PToolbox
-            trigger="click"
-            popperClass="toolbox-container"
-            :pElements="toolboxItems"
-            @p-toolbox-item-clicked="$event => handleUserAction($event, scope.row)"
-          >
-            <PButton
-              pType="white"
-              pSize="small"
-              data-testid="folder-users-collab-action"
-              class="margin-left--1"
-            >
-              <PIcon>
-                <PIThreeDots color="#A4A4A4" />
-              </PIcon>
-            </PButton>
-          </PToolbox>
-        </template>
-      </PTableColumn>
-    </PTable>
+    <div class="margin-bottom--6">
+      <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
+    </div>
 
-    <PPagination
-      v-if="state.totalItems"
-      @on-page-range-changed="handlePageRangeChanged"
-      v-model:p-current-page="state.currentPage"
-      v-model:p-page-size="state.limit"
-      :pTotal="state.totalItems"
-      :pPageSizes="PAGE_SIZES"
-      :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
-      pPageSizeSelectorSuffix=""
-      pShowTotalPageCounter
-      pBackground
-    >
-      <p>{{ paginationLabel }}</p>
-    </PPagination>
+    <div v-if="!state.isLoading">
+      <div v-if="state.totalItems">
+        <PTable
+          @sort-change="handleSortChange"
+          :pData="state.data"
+          tableLayout="fixed"
+          data-testid="folder-users-table"
+          showOverflowTooltip
+          pStripe
+        >
+          <PTableColumn
+            :pLabel="t('user')"
+            pProp="name"
+            pSortable="custom"
+          >
+            <template #default="scope">
+              <div class="flex flex--align-items-center">
+                <div class="margin-right--2">
+                  <PAvatar
+                    pColor="bordered-persian"
+                    pType="small"
+                  >
+                    {{ scope.row.initials }}
+                  </PAvatar>
+                </div>
+                <p>{{ scope.row.fullName }}</p>
+              </div>
+            </template>
+          </PTableColumn>
+          <PTableColumn
+            :pLabel="t('email')"
+            pProp="email"
+            pSortable="custom"
+          >
+            <template #default="scope">
+              <p>
+                {{ scope.row.email }}
+              </p>
+            </template>
+          </PTableColumn>
+          <PTableColumn
+            :pLabel="t('status')"
+            pSortable="custom"
+            pProp="status"
+          >
+            <template #default="scope">
+              <PTag
+                :pContent="scope.row.status.text"
+                :pColor="scope.row.status.color"
+                :pIconLeft="scope.row.status.icon"
+                pEffect="light"
+              />
+            </template>
+          </PTableColumn>
+          <PTableColumn
+            :pLabel="t('dateAccess')"
+            pSortable="custom"
+            pProp="date"
+          >
+            <template #default="scope">
+              {{ scope.row.firstDateAccess }}
+            </template>
+          </PTableColumn>
+          <PTableColumn
+            :pLabel="t('action')"
+            :pWidth="100"
+          >
+            <template #default="scope">
+              <PToolbox
+                trigger="click"
+                popperClass="toolbox-container"
+                :pElements="toolboxItems"
+                @p-toolbox-item-clicked="$event => handleUserAction($event, scope.row)"
+              >
+                <PButton
+                  pType="generic"
+                  pSize="small"
+                  class="margin-left--1"
+                  data-testid="folder-users-collab-action"
+                >
+                  <PIcon>
+                    <PIThreeDots color="#A4A4A4" />
+                  </PIcon>
+                </PButton>
+              </PToolbox>
+            </template>
+          </PTableColumn>
+        </PTable>
+
+        <PPagination
+          class="margin-top--6"
+          @on-page-range-changed="handlePageRangeChanged"
+          v-model:p-current-page="state.currentPage"
+          v-model:p-page-size="state.limit"
+          :pTotal="state.totalItems"
+          :pPageSizes="PAGE_SIZES"
+          :pPageSizeSelectorGroupLabel="t('numberOfUserPerPage')"
+          pPageSizeSelectorSuffix=""
+          pShowTotalPageCounter
+          pBackground
+        >
+          <p>{{ paginationLabel }}</p>
+        </PPagination>
+      </div>
+
+      <NoResult v-if="!state.totalItems" />
+    </div>
   </div>
   <ManageRightsDrawer
     v-if="selectedRow"
@@ -170,21 +145,21 @@ import {
   PAvatar,
   PIPerson,
   PPagination,
-  PBlockHeader,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
-import { commonStore, getInitials, userPermissions } from '@kpmg/common'
+import { commonStore, getInitials } from '@kpmg/common'
 import {
   PAGE_SIZES,
-  PERMISSION_CODES,
   DATE_TIME_FORMATS as datetimeFormats,
 } from '@/constants'
 import { getFullName } from '@/common/utils'
 import { fetchAccountCustomers } from '@/services/wallet'
-import { getPaginationLabel } from '@/helper'
+import { getPaginationLabel, removeFalsyValues } from '@/helper'
 import type { IStateUser, IUserStatus, IUser } from './types'
 import { userActions } from './types'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
+import NoResult from '@/common/components/NoResult'
+import FormSearch from '@/common/components/FormSearch'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -194,7 +169,6 @@ const { d, t } = useI18n({
 
 const route = useRoute()
 const selectedRow = ref(undefined)
-const { hasPermission } = userPermissions()
 const isManageRightsDrawerOpened = ref(false)
 const { user } = storeToRefs(commonStore())
 
@@ -202,9 +176,12 @@ const state: IStateUser = reactive({
   data: [],
   currentPage: 1,
   limit: 15,
-  totalPage: 1,
-  totalItems: 0,
+  totalPage: undefined,
+  totalItems: undefined,
   isLoading: false,
+  search: undefined,
+  sort: undefined,
+  order: undefined,
 })
 
 const toolboxItems = computed(
@@ -215,43 +192,35 @@ const toolboxItems = computed(
         pValue: t('assignSignatory'),
         pActionName: userActions.ASSIGN_SIGNATORY,
         pState: 'default',
-        display: true,
       },
       {
         pIconName: 'PIPencilSquare',
         pValue: t('modifyRights'),
         pActionName: userActions.MODIFY_RIGHTS,
         pState: 'default',
-        display: true,
       },
-      {
-        pIconName: 'PITrash',
-        pValue: t('deleteUser'),
-        pActionName: userActions.DELETE_USER,
-        pState: 'default',
-        display: hasPermission(PERMISSION_CODES.DELETE_USER),
-      },
-    ]
-      .filter(({ display }) => display)
-      .map(({ pIconName, pValue, pActionName, pState }) => ({
-        pIconName,
-        pValue,
-        pActionName,
-        pState,
-      })) as PToolboxItemProps[],
+    ] as PToolboxItemProps[],
 )
 
 const paginationLabel = computed(() => getPaginationLabel<IUser>(t('on'), state))
 
 const formatAndFillUsersCollabTable = async () => {
+  const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
+
   state.isLoading = true
+
   try {
-    const data = await fetchAccountCustomers(+route.params.id)
+    const {
+      currentPage,
+      items,
+      totalItems,
+      totalPage,
+    } = await fetchAccountCustomers(+route.params.id, queryParamsWithoutUndefined)
 
     /**
      * 🛠️ TODO: Need to create a function format inside utils folder
      */
-    const formattedData: IUser[] = data.map((userFromApi) => {
+    const formattedData: IUser[] = items.map((userFromApi) => {
       return {
         contactId: userFromApi.contactId,
         initials: getInitials(userFromApi.firstName, userFromApi.lastName),
@@ -260,7 +229,6 @@ const formatAndFillUsersCollabTable = async () => {
         lastName: userFromApi.lastName?.toUpperCase() ?? '',
         fullName: getFullName(userFromApi.firstName, userFromApi.lastName),
         email: userFromApi.email,
-        role: userFromApi.personaName,
         firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
         isOwner: user.value?.id === userFromApi.contactId,
       }
@@ -270,7 +238,9 @@ const formatAndFillUsersCollabTable = async () => {
      * 🛠️ TODO: Need to get pagination data from API
      */
     state.data = formattedData
-    state.totalItems = formattedData.length
+    state.totalItems = totalItems
+    state.currentPage = currentPage
+    state.totalPage = totalPage
   } catch (err) {
     console.error(err)
   } finally {
@@ -283,7 +253,7 @@ const formatAndFillUsersCollabTable = async () => {
  */
 const getStatus = (status: string): IUserStatus => {
   switch (status) {
-    case 'Connecté':
+    case 'Connected':
       return {
         text: t('statusConnect'),
         icon: PIPatchCheck,
@@ -298,8 +268,17 @@ const getStatus = (status: string): IUserStatus => {
   }
 }
 
+const handleSearchValueSubmitted = (newSearchValue: string) => {
+  state.search = newSearchValue
+}
+
 const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
+}
+
+const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
+  state.sort = prop
+  state.order = order
 }
 
 const handleUserAction = (action: string, row: any) => {
@@ -309,11 +288,20 @@ const handleUserAction = (action: string, row: any) => {
   }
 }
 
-const sortDate = (a: any, b: any) => (Date.parse(a.firstDateAccess) / 1000) - (Date.parse(b.firstDateAccess) / 1000)
+const getQueryParams = () => ({
+  pageNumber: state.currentPage,
+  pageSize: state.limit,
+  search: state.search,
+  'sorting.field': state.sort,
+  'sorting.descending': state.order === 'descending',
+})
 
 watch(() => [
   state.currentPage,
   state.limit,
+  state.search,
+  state.sort,
+  state.order,
 ], async () => {
   await formatAndFillUsersCollabTable()
 })
@@ -323,12 +311,8 @@ onMounted(async () => {
 })
 </script>
 
+<!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style lang="scss">
-.owner-role {
-  color: var(--el-color-primary);
-  font-weight: 700;
-}
-
 .toolbox-container {
   .el-scrollbar {
     padding: 5px 0px;
@@ -341,7 +325,6 @@ onMounted(async () => {
 
 <i18n lang="yaml">
 en-US:
-  role: 'Function'
   user: 'User'
   status: 'Status'
   action: 'Action'
@@ -349,15 +332,11 @@ en-US:
   dateAccess: 'First date access'
   assignSignatory: 'Designate as signatory'
   modifyRights: 'Change the rights'
-  deleteUser: 'Delete the user'
   statusConnect: 'Connected'
   statusInvite: 'Invited'
-  numberOfFoldersPerPage: 'number of folder per page'
-  userTitle: 'Users'
-  userDescription: "Manage here users's rights for this folder."
+  numberOfUserPerPage: 'number of user per page'
   on: 'on'
 fr-FR:
-  role: 'Rôle'
   user: 'Utilisateur'
   status: 'Statut'
   action: 'Action'
@@ -365,11 +344,8 @@ fr-FR:
   dateAccess: "Date d'ajout"
   assignSignatory: 'Désigner en tant que signataire'
   modifyRights: 'Modifier les droits'
-  deleteUser: "Supprimer l'utilisateur"
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
-  numberOfFoldersPerPage: 'nombre de dossier par page'
-  userTitle: 'Les utilisateurs'
-  userDescription: 'Gérer ici les droits des utilisateurs sur le dossier.'
+  numberOfUserPerPage: "nombre de d'utilisateur par page"
   on: 'sur'
 </i18n>

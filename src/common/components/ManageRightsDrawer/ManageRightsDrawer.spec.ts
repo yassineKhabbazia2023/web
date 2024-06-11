@@ -8,7 +8,6 @@ import ManageRightsDrawer from '.'
 // Mocks
 const mockedAccountId = 602
 const mockedUser = {
-  contactId: 25,
   fullName: "Johnny's Pizza",
   initials: 'JP',
   ...dataFromApi.data.items[0],

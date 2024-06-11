@@ -15,6 +15,7 @@
       data-testid="manage-rights-user-card"
     >
       <PTag
+        v-if="selectedUser.role"
         pSize="default"
         pEffect="light"
         pColor="gray-900"
