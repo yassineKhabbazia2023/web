@@ -17,6 +17,7 @@
         @create-schedule="isDrawerVisible = true"
         @update:active-date="setActiveDate"
         @update:is-search-state="onUpdateIsSearchState"
+        @open-drawer-filters="isFilterDrawerVisible = true"
       />
 
       <DeadlineList
@@ -81,6 +82,11 @@
     appendToBody
     @update:model-value="onCloseScheduleDrawer"
   />
+  <FilterDrawer
+    v-if="isFilterDrawerVisible"
+    v-model="isFilterDrawerVisible"
+    appendToBody
+  />
 </template>
 
 <script setup lang="ts">
@@ -92,6 +98,7 @@ import DeadlineList from '@/schedule/components/DisplayDeadline/DeadlineList'
 import WidgetActiveDay from '@/schedule/components/WidgetActiveDay'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
+import FilterDrawer from '@/schedule/components/FilterDrawer'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import OccurrenceDrawer from '@/schedule/components/OccurrenceDrawer'
@@ -124,6 +131,7 @@ const isSearchState = ref(false)
 const searchTerm = ref('')
 const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
+const isFilterDrawerVisible = ref(false)
 const activeDate = ref(new Date())
 const calendarWidgetDate = ref(new Date())
 const occurrenceId = ref<number>()

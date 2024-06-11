@@ -521,6 +521,20 @@ describe('home page', () => {
         expect(getAdvancedSearchParamsSpy).not.toHaveBeenCalled()
         expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
       })
+
+      it('should open FilterDrawer when ActionBar emits open-drawer-filters event', async () => {
+        const wrapper = createWrapper()
+
+        const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+        const filterDrawerBefore = wrapper.findComponent({ name: 'FilterDrawer' })
+        expect(filterDrawerBefore.exists()).toBeFalsy()
+
+        actionBar.vm.$emit('open-drawer-filters')
+        await nextTick()
+
+        const filterDrawerAfter = wrapper.findComponent({ name: 'FilterDrawer' })
+        expect(filterDrawerAfter.exists()).toBeTruthy()
+      })
     })
   })
 })
