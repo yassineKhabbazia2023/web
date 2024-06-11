@@ -11,6 +11,7 @@ const createWrapper = (): VueWrapper => {
   return mount(ReportDisplay, {
     props: {
       selectedReport: mockedSelectedReport,
+      token: 'tokenTest',
     },
     plugins: [createTestingPinia()],
   })
@@ -24,7 +25,9 @@ describe('reportDisplay', () => {
   })
   describe('display', () => {
     it('should display the Power BI iframe correctly with the account name', () => {
-      const accountName = wrapper.find('[data-testid=report-display-account-name]')
+      const accountName = wrapper.find(
+        '[data-testid=report-display-account-name]',
+      )
       const powerbiIframe = wrapper.find('[data-testid=report-display-iframe]')
 
       expect(powerbiIframe.exists()).toBeTruthy()

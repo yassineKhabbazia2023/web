@@ -20,7 +20,7 @@ export const mockFetchAuthorizationsConfig = vi.fn(() =>
 // Power BI Mocks
 window.powerbi = {
   reset: () => vi.fn(),
-  bootstrap: () => vi.fn(),
+  embed: () => vi.fn(),
 } as any
 vi.mock('powerbi-client', () => ({
   powerBiEmbed: () => vi.fn(),

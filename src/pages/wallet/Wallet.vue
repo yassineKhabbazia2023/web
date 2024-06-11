@@ -49,6 +49,11 @@ const collaboratorsTabs = [
     display: hasPermission(PERMISSION_CODES.MANDATE),
   },
   {
+    name: 'powerbi',
+    title: t('uploadPowerBIReport'),
+    display: hasPermission(PERMISSION_CODES.POWERBI_REPORT),
+  },
+  {
     name: 'subscriptions',
     title: t('subscriptions'),
     display: hasPermission(PERMISSION_CODES.SUBSCRIPTIONS),
@@ -101,6 +106,7 @@ en-US:
   collaborators: 'Collaborators'
   allEntities: 'All entities'
   allUsers: 'All users'
+  uploadPowerBIReport: 'Upload a BI report'
 fr-FR:
   wallet: 'Portefeuille'
   hello: 'Bonjour'
@@ -111,4 +117,5 @@ fr-FR:
   collaborators: 'Collaborateurs'
   allEntities: 'Mes entités'
   allUsers: 'Tous les utilisateurs'
+  uploadPowerBIReport: 'Déposer un rapport BI'
 </i18n>

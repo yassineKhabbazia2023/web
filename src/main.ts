@@ -37,6 +37,11 @@ const BASE_WALLET_ROUTES = [
     name: 'collaborators',
     page: 'collaborators',
   },
+  {
+    path: 'deposer-rapport-bi',
+    name: 'powerbi',
+    page: 'powerbi',
+  },
 ]
 
 const WALLET_CHILDREN_ROUTES = [

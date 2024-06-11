@@ -8,7 +8,7 @@ import BIReports from '.'
 
 // Mocks
 const mockedAccountId = 602
-const mockedReports = getMockedBIReports()
+const mockedBIReports = getMockedBIReports()
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
@@ -17,7 +17,8 @@ vi.mock('vue-router', () => ({
   }),
 }))
 vi.mock('@/services/reporting', () => ({
-  fetchBIReports: vi.fn(() => Promise.resolve({ items: mockedReports })),
+  fetchBIReports: vi.fn(() => Promise.resolve({ items: mockedBIReports })),
+  fetchBIToken: vi.fn(() => 'tokenTest'),
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -37,23 +38,23 @@ describe('biReports', () => {
       expect(reportsList.exists()).toBeTruthy()
       expect(reportDisplay.exists()).toBeTruthy()
       expect(reportsList.props('selectedReport')).toStrictEqual(
-        mockedReports[0],
+        mockedBIReports[0],
       )
     })
   })
   describe('events', () => {
     it("should update 'selectedReports' when ReportsList emits 'update:selectedReport'", async () => {
       const reportsList = wrapper.findComponent({ name: 'ReportsList' })
-      reportsList.vm.$emit('update:selectedReport', mockedReports[1])
+      reportsList.vm.$emit('update:selectedReport', mockedBIReports[1])
       await nextTick()
       const selectedReport = wrapper.vm.selectedReport
 
-      expect(selectedReport).toStrictEqual(mockedReports[1])
+      expect(selectedReport).toStrictEqual(mockedBIReports[1])
     })
     it('should select the first report by default', () => {
       const selectedReport = wrapper.vm.selectedReport
 
-      expect(selectedReport).toStrictEqual(mockedReports[0])
+      expect(selectedReport).toStrictEqual(mockedBIReports[0])
     })
     it('should call the reporting API with the correct parameters to fetch the reports related to an account', () => {
       const spyFetchBIReports = vi.spyOn(reportingServices, 'fetchBIReports')

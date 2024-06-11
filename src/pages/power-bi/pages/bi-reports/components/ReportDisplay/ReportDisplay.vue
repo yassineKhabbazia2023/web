@@ -42,14 +42,19 @@ const { defaultEntity } = storeToRefs(commonStore())
 
 const powerBIConfig = computed(() => ({
   type: 'report',
+  accessToken: props.token,
   embedUrl: selectedReport.value.embededReportUrl,
-  id: String(selectedReport.value.reportId),
+  id: selectedReport.value.embededReportId,
+  settings: {
+    filterPaneEnabled: false,
+    navContentPaneEnabled: true,
+  },
 }))
 
 const loadPowerBIReport = () => {
   const powerbiContainer = powerbiSection.value as HTMLElement
   window.powerbi.reset(powerbiContainer)
-  window.powerbi.bootstrap(powerbiContainer, powerBIConfig.value)
+  window.powerbi.embed(powerbiContainer, powerBIConfig.value)
 }
 
 // If a different report is selected, the new report should be loaded again
