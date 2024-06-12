@@ -14,6 +14,7 @@ import type { ExplorerMoveDocument } from '../components/DocumentsMove/Documents
 import type { ExplorerMoveFolder }
   from '@/modules/Treeview/components/modals/FoldersMove/FoldersMoveTypes'
 import type { Folder } from '@/models/Folder'
+import { MAX_FILE_SIZE_BYTES } from '@/modules/common/constants/files'
 
 export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocument[] => {
   const explorerDocuments: ExplorerUploadDocument[] = []
@@ -28,6 +29,10 @@ export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocum
       if (file?.size === 0) {
         state = 'ERROR'
         code = 'FileEmpty'
+        isSelected = false
+      } else if (file?.size > MAX_FILE_SIZE_BYTES) {
+        state = 'ERROR'
+        code = 'FileTooLarge'
         isSelected = false
       } else if (!isExtensionAuthorized(extension)) {
         state = 'ERROR'
