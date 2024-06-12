@@ -39,6 +39,12 @@ describe('submitBIReport', () => {
     })
   })
   describe('events', () => {
+    it('should delete the report when the user resets or deletes it', () => {
+      const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
+      uploadBIReport.vm.$emit('delete-report')
+
+      expect(wrapper.vm.reportFile).toBeUndefined()
+    })
     it("should emit 'upload-report' when the user uploads a BI report", () => {
       const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
       uploadBIReport.vm.$emit('upload-report', mockedPowerBIReport)

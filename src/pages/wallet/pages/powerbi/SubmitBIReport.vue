@@ -70,7 +70,15 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted, computed } from 'vue'
-import { PButton, PCol, PForm, PRow, PLoader } from '@kpmg/styleguide'
+import {
+  PButton,
+  PCol,
+  PForm,
+  PRow,
+  PLoader,
+  PIX,
+  PNotification,
+} from '@kpmg/styleguide'
 import UploadBIReport from './components/UploadBIReport'
 import BIReportSubmitted from './components/BIReportSubmitted'
 import BIReportInformation from './components/BIReportInformation'
@@ -95,7 +103,7 @@ const reportUploadInfo = ref<ReportInfo>({})
 const reportTypesDropdownValues = computed(() =>
   reportTypes.value.map((reportType: ReportType) => ({
     pValue: reportType.reportTypeId,
-    pLabel: reportType.customerLabel,
+    pLabel: `${reportType.collaboratorLabel} (${reportType.customerLabel})`,
   })),
 )
 const isValidationButtonDisabled = computed(() => {
@@ -136,6 +144,13 @@ const handleUploadBIReport = async () => {
     }
   } catch (error) {
     handleResetUploadInfo()
+    PNotification({
+      message: t('reportUploadFailed'),
+      icon: PIX,
+      showClose: true,
+      customClass: 'error',
+      position: 'bottom-right',
+    })
     console.error('Unable to upload BI report: ', error)
   } finally {
     isUploading.value = false
@@ -157,7 +172,11 @@ onMounted(async () => {
 en-US:
   reset: 'Reset'
   validate: 'Validate the deposit'
+  reportUploadFailed: >
+    A problem occurred when submitting your report. Please try again or contact the support
 fr-FR:
   reset: 'Réinitialiser'
   validate: 'Valider le depôt'
+  reportUploadFailed: >
+    Un problème est survenu lors du dépôt de votre rapport. Veuillez réessayer ou contacter le support
 </i18n>

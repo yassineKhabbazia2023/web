@@ -13,10 +13,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import {
-  PUserCard,
-  PIVectorPen,
-} from '@kpmg/styleguide'
+import { getFullName } from '@/common/utils'
+import { PUserCard, PIVectorPen } from '@kpmg/styleguide'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
 
 const { t } = useI18n({
@@ -24,11 +22,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const fullName = computed(() => {
-  return `${props.principalContact?.firstName ?? ''} ${
-    props.principalContact?.lastName?.toUpperCase() ?? ''
-  }`
-})
+const props = defineProps<PrincipalContactProps>()
 const contactDescription = t('contactDescription')
 const contactTag = {
   pSize: 'default',
@@ -38,7 +32,13 @@ const contactTag = {
   pEffect: 'light',
 }
 
-const props = defineProps<PrincipalContactProps>()
+const fullName = computed(() =>
+  getFullName(
+    props.principalContact.firstName,
+    props.principalContact.lastName,
+    true,
+  ),
+)
 </script>
 
 <style lang="scss" scoped>

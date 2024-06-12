@@ -10,6 +10,7 @@ import BIReportInformation from '.'
 const mockedReportTypeId = 5
 const mockedAccounts = entitiesMock
 const mockedCallbackFunction = vi.fn()
+const selectedAccount = mockedAccounts[0]
 const mockedBIReports = getMockedBIReports()
 const mockedReportTypesDropdown = getMockedReportTypesDropdown()
 vi.mock('@/services/reporting', () => ({
@@ -18,7 +19,7 @@ vi.mock('@/services/reporting', () => ({
 }))
 
 // Expectations
-const expectedAccountAutocompleteRow = `${mockedAccounts[0].legalName} (${mockedAccounts[0].accountNumber})`
+const expectedAccountAutocompleteRow = `${selectedAccount.legalName} (${selectedAccount.accountNumber})`
 const expectedReportUploadInfo =
   'You can either create a new report or update an existing one'
 
@@ -86,12 +87,13 @@ describe('biReportInformation', () => {
         '[data-testid=powerbi-account-item]',
       )
 
-      expect(autocompleteAccountItem.text()).toBe(expectedAccountAutocompleteRow)
+      expect(autocompleteAccountItem.text()).toBe(
+        expectedAccountAutocompleteRow,
+      )
     })
   })
   describe('events', () => {
     it('should call the reporting API to fetch reports when a report type is selected', () => {
-      const selectedAccount = mockedAccounts[0]
       const spyFetchBIReports = vi.spyOn(ReportingService, 'fetchBIReports')
       wrapper = createWrapper()
 
@@ -109,8 +111,30 @@ describe('biReportInformation', () => {
         mockedReportTypeId,
       )
     })
+    it('should reset the report name when changing the report type', async () => {
+      const reportTypesDropdown = wrapper.findComponent({ name: 'PDropdown' })
+      reportTypesDropdown.vm.$emit('update:modelValue', mockedReportTypeId)
+      const accountSearchAutocomplete = wrapper.findComponent({
+        name: 'PAutocomplete',
+      })
+      accountSearchAutocomplete.vm.$emit('select', selectedAccount)
+      await flushPromises()
+
+      wrapper.vm.handleSelectReportName(mockedBIReports[0].reportId)
+      reportTypesDropdown.vm.$emit('change')
+
+      expect(wrapper.emitted('update:reportUploadInfo')).toBeTruthy()
+      expect(wrapper.emitted('update:reportUploadInfo')).toStrictEqual([
+        [
+          {
+            accountId: mockedAccounts[0].accountId,
+            accountLabel: expectedAccountAutocompleteRow,
+            reportTypeId: mockedReportTypeId,
+          },
+        ],
+      ])
+    })
     it('should enable users to enter the report name after selecting the report type and account', async () => {
-      const selectedAccount = mockedAccounts[0]
       const reportTypesDropdown = wrapper.findComponent({ name: 'PDropdown' })
       reportTypesDropdown.vm.$emit('update:modelValue', mockedReportTypeId)
       const accountSearchAutocomplete = wrapper.findComponent({

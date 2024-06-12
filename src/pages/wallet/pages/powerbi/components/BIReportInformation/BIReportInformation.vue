@@ -4,6 +4,7 @@
       v-model="internalReportUploadInfo.reportTypeId"
       :pPlaceholder="t('placeholderTypeReport')"
       :pOptions="reportTypes"
+      @change="handleResetOtherFields"
       data-testid="powerbi-report-types-dropdown"
     />
   </PFormItem>
@@ -107,6 +108,27 @@ const internalReportUploadInfo = computed({
 })
 
 // Functions
+const fetchReportNames = async () => {
+  const { accountId, reportTypeId } = internalReportUploadInfo.value
+  try {
+    if (accountId && reportTypeId) {
+      const { items } = await fetchBIReports(accountId, reportTypeId)
+      reportList.value = items
+    }
+  } catch (error) {
+    console.error('Unable to fetch report names: ', error)
+  }
+}
+const handleResetOtherFields = () => {
+  const { reportTypeId, accountId, accountLabel } =
+    internalReportUploadInfo.value
+  internalReportUploadInfo.value = {
+    reportTypeId,
+    accountId,
+    accountLabel,
+  }
+  fetchReportNames()
+}
 const handleSearchAccount = async (queryString: string, callback: any) => {
   const defaulSearch = {
     currentPage: 0,
@@ -119,18 +141,10 @@ const handleSearchAccount = async (queryString: string, callback: any) => {
 
   callback(items)
 }
-const handleSelectAccount = async (account: Entity) => {
+const handleSelectAccount = (account: Entity) => {
   internalReportUploadInfo.value.accountId = account.accountId
   internalReportUploadInfo.value.accountLabel = `${account.legalName} (${account.accountNumber})`
-  const { accountId, reportTypeId } = internalReportUploadInfo.value
-  try {
-    if (accountId && reportTypeId) {
-      const { items } = await fetchBIReports(accountId, reportTypeId)
-      reportList.value = items
-    }
-  } catch (error) {
-    console.error('Unable to fetch report names: ', error)
-  }
+  fetchReportNames()
 }
 const handleSelectReportName = (reportId: number) => {
   const report = reportList.value.find(
