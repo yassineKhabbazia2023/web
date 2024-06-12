@@ -1,5 +1,13 @@
 <template>
-  <div v-show="!isLoading">
+  <div
+    v-show="!isLoading"
+    class="
+      documents
+      flex
+      flex--direction-column
+      height--100
+    "
+  >
     <div class="padding-top--5 padding-left--4">
       <PBreadcrumb
         :pElements="breadcrumbItems"
@@ -24,48 +32,73 @@
       :documentsCount="documents?.documentsPage.totalItems ?? 0"
     />
 
-    <div class="documents-list-wrapper">
-      <PLoader
-        v-if="isSearchLoading"
-        class="search-loader"
-        pType="gradient"
-        size="42"
-      />
-
-      <DocumentsList
-        v-if="documents"
-        :class="[
-          isSearchLoading ? 'is-searching' : '',
-          isInSearchScope ? 'documents-table--search' : ''
-        ]"
-        :documentsListWithTableStructure="documents"
-        :isInSearchScope="isInSearchScope"
-        :currentService="currentService"
-        @on-sort-change="handleSortChange"
-        @toolbox-action-triggered="handleToolboxActionTriggered"
-        @document-selection-change="handleOnDocumentsSelectionChange"
-        @table-row-clicked="handleOnRowTableDocumentsClicked"
-      />
-    </div>
-    <PPagination
-      v-if="documents && documents.documentsPage.items.length > 0"
-      v-model:p-current-page="currentPage"
-      v-model:p-page-size="currentPageSize"
-      :pTotal="documents.documentsPage.totalItems"
-      pShowTotalPageCounter
-      :pPageSizes="pagesRanges"
-      pTestIdRoot="ged-documents"
-      pPageSizeSelectorGroupLabel=""
-      pPageSizeSelectorSuffix="documents"
-      @on-page-range-changed="setCurrentPageSize"
+    <div
+      class="flex--grow-1 position--relative"
+      :class="
+        {
+          'documents--is-drag-overed': isDropZoneVisible,
+          'documents--not-valid-drop-zone': isAllowedDropZone
+        }"
+      @drop.prevent="handleDropFromExplorer"
+      @dragover.prevent="handleDragOverFromExplorer"
+      @dragleave="handleDragLeaveFromExplorer"
     >
-      <p>{{ paginationLabel }}</p>
-    </PPagination>
+      <div class="documents-list-wrapper">
+        <PLoader
+          v-if="isSearchLoading"
+          class="search-loader"
+          pType="gradient"
+          size="42"
+        />
+
+        <DocumentsList
+          v-if="documents"
+          :class="[
+            isSearchLoading ? 'is-searching' : '',
+            isInSearchScope ? 'documents-table--search' : ''
+          ]"
+          :documentsListWithTableStructure="documents"
+          :isInSearchScope="isInSearchScope"
+          :currentService="currentService"
+          @on-sort-change="handleSortChange"
+          @toolbox-action-triggered="handleToolboxActionTriggered"
+          @document-selection-change="handleOnDocumentsSelectionChange"
+          @table-row-clicked="handleOnRowTableDocumentsClicked"
+        />
+      </div>
+      <PPagination
+        v-if="documents && documents.documentsPage.items.length > 0"
+        v-model:p-current-page="currentPage"
+        v-model:p-page-size="currentPageSize"
+        :pTotal="documents.documentsPage.totalItems"
+        pShowTotalPageCounter
+        :pPageSizes="pagesRanges"
+        pTestIdRoot="ged-documents"
+        pPageSizeSelectorGroupLabel=""
+        pPageSizeSelectorSuffix="documents"
+        @on-page-range-changed="setCurrentPageSize"
+      >
+        <p>{{ paginationLabel }}</p>
+      </PPagination>
+
+      <Transition>
+        <DocumentsDropZone
+          v-if="isDropZoneVisible"
+          :isAllowedDropZone="isAllowedDropZone"
+        />
+      </Transition>
+    </div>
   </div>
 
   <div
     v-show="isLoading"
-    class="loader flex flex--align-items-center flex--justify-content-center"
+    class="
+      loader
+      height--100
+      flex
+      flex--align-items-center
+      flex--justify-content-center
+    "
   >
     <PLoader
       pType="gradient"
@@ -102,6 +135,13 @@
     @update-source-folders="propagateUpdateSourceFolders"
     @close-move-documents-modal="handleCloseMoveDocumentsModal"
     @refresh-documents-list="fetchDocuments"
+  />
+
+  <DocumentsDropModal
+    v-if="selectedFolder"
+    :isVisible="isDropFromExplorerConfirmationModalVisible"
+    :targetFolderName="selectedFolder.name"
+    :numberOfUploadedFiles="validDroppedFiles.length"
   />
 
   <DocumentUpload
@@ -190,6 +230,9 @@ import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 import DocumentsSearchAlert from '@/modules/Documents/components/DocumentsSearchAlert'
 import { validInputMaxLength }
   from '@/modules/common/helpers/inputValidationHelper'
+import DocumentsDropZone from './components/DocumentsDropZone'
+import { useDragAndDropFromExplorer } from './composable/DragAndDropFromExplorer'
+import DocumentsDropModal from './components/DocumentsDropModal'
 
 /* The more features we add the more this component becomes bloated.
 We created a refactor task, which, unfortunately has been placed far back in the backlog.
@@ -547,6 +590,23 @@ const handleActionBarButtonClick = async (actionName: string) => {
   }
 }
 
+// Drag and drop -> Composable
+const { currentService, selectedEntity } = toRefs(props)
+const {
+  isDropZoneVisible,
+  isAllowedDropZone,
+  isDropFromExplorerConfirmationModalVisible,
+  handleDropFromExplorer,
+  handleDragOverFromExplorer,
+  handleDragLeaveFromExplorer,
+  validDroppedFiles,
+} = useDragAndDropFromExplorer(
+  currentService,
+  selectedEntity,
+  selectedFolder,
+  refreshDocumentsList,
+)
+
 // This function is exposed in order to let parent component refresh the documents list
 // this is usefull for the drag and drop as the events are handled in the Tree module
 // which has no direct relation with the Documents module
@@ -557,10 +617,26 @@ async function refreshDocumentsList() {
 defineExpose({ refreshDocumentsList })
 </script>
 
-<style lang="scss">
-.loader {
-  height: 100%;
+<style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
 }
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.documents {
+
+  &--is-drag-overed *:not(.documents-drop-zone){
+    pointer-events: none;
+    position: relative;
+    z-index: -1;
+  }
+}
+
 .documents-breadcrumb {
   padding: 24px 0 0 16px;
 }

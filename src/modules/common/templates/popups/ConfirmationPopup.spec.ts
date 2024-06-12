@@ -14,8 +14,10 @@ const defaultProps: ConfirmationPopupProps = {
   title: '',
   message: '',
   confirmButtonContent: '',
-  cancelButtonContent: '',
+  cancelButtonContent: 'Content !',
   isConfirmButtonLoading: false,
+  showClose: true,
+  alignCenter: false,
 }
 
 type ConfirmationPopupSetup = {

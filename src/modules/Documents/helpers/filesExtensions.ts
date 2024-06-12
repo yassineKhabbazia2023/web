@@ -100,7 +100,7 @@ export const getFileExtension = (filename: string): string => {
 }
 
 export const isExtensionAuthorized = (extension: string): boolean => {
-  return authorizedExtensions.includes(extension)
+  return authorizedExtensions.includes(extension.toLocaleLowerCase())
 }
 
 export const getFileIcon = (fileName: string) => {
