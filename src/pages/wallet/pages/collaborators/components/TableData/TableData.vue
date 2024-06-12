@@ -133,7 +133,11 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const emit = defineEmits(['update-collaborator-details', 'update-collaborator-role', 'on-sort-change'])
+const emit = defineEmits<{
+  'update-collaborator-details': [Contact]
+  'update-collaborator-role': [Contact]
+  'on-sort-change': [string]
+}>()
 const props = defineProps<Props>()
 const { hasPermission } = userPermissions()
 
@@ -195,7 +199,7 @@ const handleToolboxItemClick = (action: string, row: any) => {
   }
 }
 
-const handleSortChange = (data:any) => {
+const handleSortChange = (data: any) => {
   const columnLabel = data.prop
   const order = data.order
   const sortQueryField = returnSortQueryField(columnLabel, order)

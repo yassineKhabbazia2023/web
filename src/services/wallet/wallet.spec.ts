@@ -124,9 +124,9 @@ describe('collaborateurs/admin', () => {
   })
   describe('fetchAccountCustomers', () => {
     it('should return list of customers', async () => {
-      const customers = await fetchAccountCustomers(accountId)
+      const { items } = await fetchAccountCustomers(accountId)
 
-      expect(customers).toStrictEqual(mockedCustomersCollab)
+      expect(items).toStrictEqual(mockedCustomersCollab)
     })
   })
 

@@ -11,6 +11,7 @@ import {
   addContactToEntity,
   fetchContactsFromSameHub,
   createCustomer,
+  getAccountUserByEmail,
 } from '.'
 import {
   getMockedAccount,
@@ -62,6 +63,13 @@ vi.mock('@kpmg/common', () => {
             return Promise.resolve({ data: delegationsHistoryMock })
           }
           if (url === 'account/api/roles/currentuser/hub/contact') {
+            return Promise.resolve({
+              data: {
+                items: mockedCollaborators,
+              },
+            })
+          }
+          if (url === `${API_PREFIXES.ACCOUNT}/contacts`) {
             return Promise.resolve({
               data: {
                 items: mockedCollaborators,
@@ -202,5 +210,10 @@ describe('test accountServices', () => {
       expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`, postRequestBody)
       expect(id).toBe(newId)
     })
+  })
+
+  it("get account's user by email", async () => {
+    const contact = await getAccountUserByEmail(mockedCollaborators[0].email)
+    expect(contact).toStrictEqual(mockedCollaborators[0])
   })
 })

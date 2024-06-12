@@ -113,7 +113,7 @@
               data-testid="toolbox-action"
             >
               <PButton
-                pType="white"
+                pType="generic"
                 pSize="small"
                 class="margin-left--1"
               >

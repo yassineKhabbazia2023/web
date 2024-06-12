@@ -1,5 +1,9 @@
 <template>
-  <PDrawer v-model="isDrawerOpened" pSize="45%">
+  <PDrawer
+    v-model="isDrawerOpened"
+    pSize="45%"
+    @close-drawer-button="isDrawerOpened = false"
+  >
     <template #header-prefix>
       <div class="add-customer-drawer__header">
         <span class="add-customer-drawer__entity-name">{{ targetEntityName }}</span>
@@ -121,8 +125,7 @@ import { getFullName } from '@/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import { validEmailPattern, validPhoneNumberPattern } from '@/common/utils/helpers/forms'
-import { getUserByEmail } from '@/services/contact'
-import { createCustomer, addContactToEntity } from '@/services/account'
+import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 
 const { t } = useI18n({
@@ -185,7 +188,7 @@ const doesUserEmailExists = ref(false)
 const fetchedUser = ref()
 async function checkIfUserExists() {
   if (!formData.email) return
-  fetchedUser.value = await getUserByEmail(formData.email)
+  fetchedUser.value = await getAccountUserByEmail(formData.email)
   if (fetchedUser.value) {
     doesUserEmailExists.value = true
     formData.firstName = fetchedUser.value.firstName

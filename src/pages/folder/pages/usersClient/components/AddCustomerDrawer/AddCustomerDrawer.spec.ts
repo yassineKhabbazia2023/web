@@ -15,15 +15,6 @@ const customerMock = getMockedCustomer()[0]
 
 export const debounceMock = vi.fn((callback: Function) => callback)
 
-vi.mock('@/services/contact', () => {
-  const getUserByEmailMock = vi.fn(() => {
-    return Promise.resolve({ ...customerMock })
-  })
-  return {
-    getUserByEmail: getUserByEmailMock,
-  }
-})
-
 vi.mock('@/services/account', () => {
   const createCustomerMock = vi.fn(() => {
     return Promise.resolve({
@@ -34,9 +25,13 @@ vi.mock('@/services/account', () => {
   })
   const addContactToEntityMock = vi.fn().mockResolvedValue({})
 
+  const getAccountUserByEmailMock = vi.fn(() => {
+    return Promise.resolve({ ...customerMock })
+  })
   return {
     createCustomer: createCustomerMock,
     addContactToEntity: addContactToEntityMock,
+    getAccountUserByEmail: getAccountUserByEmailMock,
   }
 })
 
@@ -204,6 +199,13 @@ describe('add customer drawer', () => {
       expect(firstNameInput.element.value).toBe(firstName)
       expect(lastNameInput.element.value).toBe(lastName)
       expect(mobilePhoneInput.element.value).toBe(mobilePhone)
+    })
+
+    it('should close the drawer on close-drawer-button event', async () => {
+      const drawerWrapper = findAddCustomerDrawer(wrapper)
+      drawerWrapper.vm.$emit('close-drawer-button')
+      await nextTick()
+      expect(drawerWrapper.isVisible()).toBeFalsy()
     })
   })
 })

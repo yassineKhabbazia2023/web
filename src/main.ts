@@ -37,6 +37,11 @@ const BASE_WALLET_ROUTES = [
     name: 'collaborators',
     page: 'collaborators',
   },
+  {
+    path: 'deposer-rapport-bi',
+    name: 'powerbi',
+    page: 'powerbi',
+  },
 ]
 
 const WALLET_CHILDREN_ROUTES = [
@@ -84,12 +89,6 @@ const FOLDER_CHILDREN_PATH = [
     page: 'delegationsHistory',
   },
 ]
-
-routes.value.push({
-  path: '/subscription',
-  name: 'subscription',
-  component: () => import('@/pages/subscriptions'),
-} as RouteRecordRaw)
 
 const walletPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
   const res: RouteRecordRaw[] = []

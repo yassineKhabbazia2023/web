@@ -32,7 +32,7 @@ import { PAutocomplete } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
 import type { Contact } from '@/services/contact/contactTypes'
-import { getCollaborators } from '@/services/contact'
+import { getCollaborators } from '@/services/wallet'
 
 const props = defineProps<CollaboratorsSearchAutocompleteProps>()
 const emit = defineEmits<{
@@ -63,8 +63,13 @@ function handleCollaboratorSelection(contact: Contact) {
 }
 
 async function getCollaboratorsAutocomplete(searchValue: string, callback: any) {
-  const collaborators = await getCollaborators(searchValue, 100) ?? []
-  callback(collaborators)
+  const { items } = await getCollaborators(
+    1,
+    100,
+    null, // not a search by email
+    searchValue,
+  ) ?? []
+  callback(items)
 }
 
 function resetSearchAutocompleteQuery() {

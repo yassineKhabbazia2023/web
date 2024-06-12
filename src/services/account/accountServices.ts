@@ -120,3 +120,14 @@ export async function createCustomer(customerInformation: createCustomerBody) {
   const { data } = await commonApi().gateway.post(url, customerInformation)
   return data
 }
+
+export async function getAccountUserByEmail(email: string): Promise<Contact | null> {
+  const { data, status } = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/contacts`,
+    {
+      params: {
+        email,
+        type: 'Customer',
+      },
+    })
+  return status === 204 ? null : data.items[0]
+}

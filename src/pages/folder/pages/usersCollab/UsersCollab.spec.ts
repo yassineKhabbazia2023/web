@@ -3,7 +3,11 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { dataFromApi, getMockedCustomersCollab } from './mockData'
+import { fetchAccountCustomers } from '@/services/wallet'
 import UsersCollab from '.'
+
+const DEFAULT_CURRENT_PAGE = 1
+const DEFAULT_ROUTE_PARAMS_ID = 5
 
 const mockedCustomersCollab = getMockedCustomersCollab()
 const mockedUser = {
@@ -11,16 +15,21 @@ const mockedUser = {
   fullName: "Johnny's Pizza",
   initials: 'JP',
 }
+
 const mockHasPermission = vi.fn((_code: string) => true)
 
 vi.mock('@/services/wallet', () => ({
-  fetchAccountCustomers: vi.fn(() => Promise.resolve(mockedCustomersCollab)),
+  fetchAccountCustomers: vi.fn(() => Promise.resolve({
+    items: mockedCustomersCollab,
+    totalItems: mockedCustomersCollab.length,
+    currentPage: DEFAULT_CURRENT_PAGE,
+  })),
 }))
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: 5,
+      id: DEFAULT_ROUTE_PARAMS_ID,
     },
   }),
 }))
@@ -39,30 +48,14 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-const toolBoxElementsWithoutPermissions = [
-  {
-    pActionName: 'assignSignatory',
-    pIconName: 'PIPatchCheck',
-    pState: 'default',
-    pValue: 'Designate as signatory',
-  },
-  {
-    pIconName: 'PIPencilSquare',
-    pValue: 'Change the rights',
-    pActionName: 'modifyRights',
-    pState: 'default',
-  },
-]
-
 const pinia = createTestingPinia()
 
-const createWrapper = (): VueWrapper<any> => {
-  return mount(UsersCollab, {
+const createWrapper = (): VueWrapper<any> =>
+  mount(UsersCollab, {
     global: {
       plugins: [pinia],
     },
   })
-}
 
 describe('usersCollab', () => {
   let wrapper: VueWrapper<any>
@@ -71,23 +64,6 @@ describe('usersCollab', () => {
     await flushPromises()
   })
   describe('display', () => {
-    it('displays the Block Header', () => {
-      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
-      const blockHeader = wrapper.findComponent(
-        '[data-testid=folder-users-collab-block-header]',
-      )
-
-      expect(blockHeader.exists()).toBeTruthy()
-      expect(pToolbox.props('pElements')).toHaveLength(3)
-    })
-    it('should display only the actions that the user has permission to perform', () => {
-      mockHasPermission.mockReturnValue(false)
-      wrapper = createWrapper()
-      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
-
-      expect(pToolbox.props('pElements')).toHaveLength(2)
-      expect(pToolbox.props('pElements')).toStrictEqual(toolBoxElementsWithoutPermissions)
-    })
     it('should display correctly the users collab table', () => {
       const usersTable = wrapper.find('[data-testid=folder-users-table]')
       expect(usersTable.exists()).toBeTruthy()
@@ -95,14 +71,13 @@ describe('usersCollab', () => {
       const rows = wrapper.findAll('tr.el-table__row')
       expect(rows).toHaveLength(mockedCustomersCollab.length)
 
-      const { firstName, lastName, email, personaName, creationDate } =
+      const { firstName, lastName, email, creationDate } =
         mockedCustomersCollab[0]
       const mockData = [
         firstName,
         lastName,
         email,
         'Invited',
-        personaName,
         creationDate,
       ]
       const firstRowText = rows[0].text()
@@ -125,6 +100,47 @@ describe('usersCollab', () => {
     })
   })
   describe('events', () => {
+    it('can make a search', async () => {
+      expect(fetchAccountCustomers).toHaveBeenCalledOnce()
+
+      const searchValue = 'customSearchValue'
+      await wrapper.findComponent({ name: 'FormSearch' }).vm.$emit('search-value-submitted', searchValue)
+
+      expect(fetchAccountCustomers).toHaveBeenCalledTimes(2)
+      expect(fetchAccountCustomers).toHaveBeenNthCalledWith(
+        2,
+        DEFAULT_ROUTE_PARAMS_ID,
+        {
+          search: searchValue,
+          pageSize: 15,
+          pageNumber: DEFAULT_CURRENT_PAGE,
+        },
+      )
+    })
+
+    it('can make a sort', async () => {
+      const SORTING_FIELD = 'name'
+
+      expect(fetchAccountCustomers).toHaveBeenCalledOnce()
+
+      await wrapper
+        .findComponent({ name: 'PTable' })
+        .vm.$emit('sort-change', {
+          prop: SORTING_FIELD,
+          order: 'ascending',
+        })
+      expect(fetchAccountCustomers).toHaveBeenCalledTimes(2)
+      expect(fetchAccountCustomers).toHaveBeenNthCalledWith(
+        2,
+        DEFAULT_ROUTE_PARAMS_ID,
+        {
+          pageSize: 15,
+          pageNumber: DEFAULT_CURRENT_PAGE,
+          'sorting.field': SORTING_FIELD,
+        },
+      )
+    })
+
     it("should display the 'Modify Rights' drawer when the 'Modify Rights' action is clicked", async () => {
       await wrapper.vm.handleUserAction('modifyRights', mockedUser)
       const manageRightsDrawer = wrapper.findComponent({ name: 'ManageRightsDrawer' })

@@ -8,7 +8,7 @@
   </div>
   <div v-else-if="!isLoading && selectedReport" class="bi-reports flex">
     <ReportsList :reports="reports" v-model:selectedReport="selectedReport" />
-    <ReportDisplay :selectedReport="selectedReport" />
+    <ReportDisplay :selectedReport="selectedReport" :token="powerBiToken" />
   </div>
 </template>
 
@@ -16,7 +16,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { PLoader } from '@kpmg/styleguide'
-import { fetchBIReports } from '@/services/reporting'
+import { fetchBIReports, fetchBIToken } from '@/services/reporting'
 import type { Report } from './BIReportsTypes'
 import ReportsList from './components/ReportsList'
 import ReportDisplay from './components/ReportDisplay'
@@ -24,12 +24,14 @@ import ReportDisplay from './components/ReportDisplay'
 const route = useRoute()
 const isLoading = ref(true)
 const reports = ref<Report[]>([])
+const powerBiToken = ref<string>('')
 const selectedReport = ref<Report>()
 
 onMounted(async () => {
   try {
     const accountId = +route.params.id
     const { items } = await fetchBIReports(accountId)
+    powerBiToken.value = await fetchBIToken()
     reports.value = items
     // We always select the first report by default
     selectedReport.value = reports.value[0]

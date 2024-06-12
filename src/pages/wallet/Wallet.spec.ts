@@ -41,7 +41,7 @@ const createWrapper = (): VueWrapper<any> =>
       plugins: [pinia],
     },
   })
-const collaboratorsTabs = ['Wallet', 'Mandate', 'MOD requests', 'Collaborators']
+const collaboratorsTabs = ['Wallet', 'Mandate', 'Upload a BI report', 'MOD requests', 'Collaborators']
 const clientTabs = ['All entities', 'All users']
 
 describe('dossier', () => {
