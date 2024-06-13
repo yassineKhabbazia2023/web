@@ -21,7 +21,7 @@
           radius--2
           padding--2
           cursor-pointer
-          bg--base-white
+          hover-bg--persian-100
         "
         @click="$emit('select-deadline', item.occurrenceId)"
       >
@@ -90,6 +90,7 @@ $shadow-color: #7090b0;
 
 .widget-deadlines {
   &__item {
+    background-color: #fff;
     // see explainations here: https://blog.dudak.me/2014/css-shadows-under-adjacent-elements/
     position: relative;
     z-index: 10;
