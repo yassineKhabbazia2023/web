@@ -84,6 +84,12 @@ export function getMockedFields(
       pValue: 'services',
       pLabel: 'Prestataire de service',
     }, {
+      pValue: 'commerce',
+      pLabel: 'Commerce',
+    }, {
+      pValue: 'industrie',
+      pLabel: 'Industrie',
+    }, {
       pValue: 'other',
       pLabel: 'Autre',
     }]
@@ -101,6 +107,7 @@ export function getMockedFields(
         30,
         yearDurationOptions,
         false,
+        false,
         'accounting-year-duration-field',
       ),
       getDropdownField(
@@ -108,6 +115,7 @@ export function getMockedFields(
         'Type de comptabilité',
         30,
         accountingTypeOptions,
+        false,
         false,
         'accounting-type-field',
       ),
@@ -117,6 +125,7 @@ export function getMockedFields(
         30,
         countryOptions,
         false,
+        false,
         'country-field',
       ),
       getDropdownField(
@@ -124,6 +133,7 @@ export function getMockedFields(
         'Régime fiscal',
         30,
         taxSystemOptions,
+        false,
         false,
         'tax-system-field',
       ),
@@ -133,6 +143,7 @@ export function getMockedFields(
         30,
         taxationRegimeOptions,
         false,
+        false,
         'taxation-regime-field',
       ),
       getDropdownField(
@@ -141,6 +152,7 @@ export function getMockedFields(
         30,
         activityTypeOptions,
         false,
+        true,
         'activity-type-field',
       ),
     ]

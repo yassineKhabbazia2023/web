@@ -24,6 +24,7 @@
       :pReadonly="pReadonly"
       :pDisabled="pDisabled"
       :pPlaceholder="pPlaceholder"
+      :pMultiple="pMultiple"
       :data-testid="pTestId"
     />
     <PDatePicker

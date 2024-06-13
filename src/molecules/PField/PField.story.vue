@@ -61,6 +61,39 @@
           />
         </template>
       </Variant>
+      <Variant title="Number Dropdown Multiple">
+        <PForm pLabelPosition="top">
+          <NumberField
+            v-model="pControlNumberSelectMultiple.modelValue"
+            pFieldKey="b"
+            :pFieldType="pControlNumberSelectMultiple.pFieldType"
+            :pLabel="pControlNumberSelectMultiple.pLabel"
+            :pDropdownOptions="pControlNumberSelectMultiple.pDropdownOptions"
+            :pPlaceholder="pControlNumberSelectMultiple.pPlaceholder"
+            :pDisabled="pControlNumberSelectMultiple.pDisabled"
+            pMultiple
+            @update:model-value="logEvent('update:model-value', $event)"
+          />
+        </PForm>
+        <template #controls>
+          <HstNumber
+            v-model="pControlNumberSelectMultiple.modelValue"
+            title="Model value"
+          />
+          <HstText
+            v-model="pControlNumberSelectMultiple.pFieldType"
+            title="FieldType"
+          />
+          <HstText
+            v-model="pControlNumberSelectMultiple.pPlaceholder"
+            title="Placeholder"
+          />
+          <HstCheckbox
+            v-model="pControlNumberSelectMultiple.pDisabled"
+            title="Disabled"
+          />
+        </template>
+      </Variant>
       <Variant title="Datepicker">
         <PForm pLabelPosition="top">
           <DateField
@@ -132,6 +165,9 @@ const mockedDropdownOptions: PDropdownOption[] = [
 ]
 
 const pControlNumberSelect = reactive<PFieldPropsDropdown<number | undefined>>(
+  getDropdownField('range', 'Tranche', 50, mockedDropdownOptions),
+)
+const pControlNumberSelectMultiple = reactive<PFieldPropsDropdown<number | undefined>>(
   getDropdownField('range', 'Tranches', 50, mockedDropdownOptions),
 )
 

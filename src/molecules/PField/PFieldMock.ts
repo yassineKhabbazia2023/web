@@ -56,6 +56,7 @@ export function getDropdownField(
   flexBasis: number,
   pDropdownOptions?: PDropdownOption[],
   pDisabled: boolean = false,
+  pMultiple?: boolean,
   pTestId?: string,
 ): PFieldPropsDropdown<number | undefined> {
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
@@ -69,6 +70,7 @@ export function getDropdownField(
     pDisabled,
     pDropdownOptions,
     pTestId,
+    pMultiple,
   }
 }
 

@@ -22,6 +22,7 @@ export interface PFieldPropsInput<T> extends PFieldPropsBase<T> {
 
 export interface PFieldPropsDropdown<T> extends PFieldPropsBase<T> {
   pDropdownOptions?: PDropdownOption[]
+  pMultiple?: boolean
 }
 
 export interface PFieldPropsDate<T> extends PFieldPropsBase<T> {

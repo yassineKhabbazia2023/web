@@ -16,7 +16,10 @@ const pFieldKey = 'firstname'
 const pLabel = 'First name'
 const pPlaceholder = 'John'
 const ruleTypes: string[] = []
-const pDropdownOptions: PDropdownOption[] = []
+const pDropdownOptions: PDropdownOption[] = [{
+  pValue: 'b',
+  pLabel: 'B',
+}]
 
 describe('test PField', () => {
   let wrapper: VueWrapper
@@ -66,6 +69,34 @@ describe('test PField', () => {
 
       pDropDown.vm.$emit('update:model-value', otherValue)
 
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+    })
+  })
+  describe('with dropdrop field multiple', () => {
+    const baseProps = getDropdownField(
+      pFieldKey,
+      pLabel,
+      50,
+      pDropdownOptions,
+      false,
+      true,
+    )
+    const props: PFieldProps<number[]> = {
+      ...baseProps,
+      modelValue: [] as number[],
+    }
+    let pDropDown: VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper<number[]>(props)
+      pDropDown = wrapper.findComponent({ name: 'PDropdown' })
+    })
+    it('should render PDropdown', () => {
+      expect(pDropDown.exists()).toBeTruthy()
+    })
+    it('should emit update:model-value when enter value', () => {
+      const otherValue = ['b']
+
+      pDropDown.vm.$emit('update:model-value', otherValue)
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
     })
   })
