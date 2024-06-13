@@ -52,10 +52,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { userPermissions } from '@kpmg/common'
+import { fetchBIReports } from '@/services/reporting'
 import { PMenuItem, PMenu, PSubMenu } from '@kpmg/styleguide'
 import { PERMISSION_CODES } from '@/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
@@ -69,7 +70,8 @@ const { t } = useI18n({
 const props = defineProps<SidebarEntityMenuProps>()
 const { hasPermission } = userPermissions()
 
-const isMenuCollapsed = ref<boolean>(true)
+const hasBIReports = ref(false)
+const isMenuCollapsed = ref(true)
 const activeMenuItem = ref<string>(route.fullPath)
 
 const folderSubmenu = computed(() => ({
@@ -111,7 +113,7 @@ const menuItems = computed(() =>
       title: t('biReports'),
       index: `/dossier/${props.selectedEntityId}/rapports-bi`,
       leftIcon: 'PIClipboardData',
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_POWERBI_REPORT),
+      display: hasBIReports.value,
     },
     {
       index: `/dossier/${props.selectedEntityId}/ged`,
@@ -130,6 +132,11 @@ const menuItems = computed(() =>
 
 watch(route, (currentRoute) => {
   activeMenuItem.value = currentRoute.fullPath
+})
+
+onMounted(async () => {
+  const { totalItems } = await fetchBIReports(props.selectedEntityId)
+  hasBIReports.value = totalItems > 0
 })
 </script>
 
