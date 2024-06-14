@@ -21,19 +21,28 @@ export class AmplitudeService {
 
   public init(apiKey: string){
     if (!this.isInitiated) {
-      amplitude.init(apiKey, {
-        serverZone: SERVER_ZONE,
-        defaultTracking: DEFAULT_TRACKING
-      })
+      amplitude.init(
+        apiKey,
+        undefined, // the default value of the userId
+        {
+          serverZone: SERVER_ZONE,
+          defaultTracking: DEFAULT_TRACKING,
+          minIdLength: 1,
+        }
+      )
       this.isInitiated = true
     }
   }
 
-  public track(options: string | BaseEvent, eventTracking?: BaseEvent) {
-    amplitude.track(options, eventTracking)
+  public track(eventInput: string | BaseEvent, eventProperties?: Record<string, any>) {
+    amplitude.track(eventInput, eventProperties)
   }
 
-  public setUserId(userId: string) {
-    amplitude.setUserId(userId)
+  public setUserId(userId: number) {
+    amplitude.setUserId(userId.toString())
+  }
+
+  public reset() {
+    amplitude.reset()
   }
 }
