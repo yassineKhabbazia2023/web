@@ -67,7 +67,7 @@ describe('sidebarEntityMenu', () => {
       const sidebarEntityMenuItems = wrapper
         .findAll('.p-menu-item__title')
         .map((item) => item.text())
-      const menuItemsWithAccess = ['Home', 'Information']
+      const menuItemsWithAccess = ['Home', 'Information', 'Bank', 'Indicators']
       const menuItemsWithoutAccess = 'Users'
 
       expect(sidebarEntityMenuItems).toStrictEqual(menuItemsWithAccess)

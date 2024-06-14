@@ -14,6 +14,26 @@ const routes = [
     name: 'home',
     component: { template: '<h1>Login Page</h1>' },
   } as RouteRecordRaw,
+  {
+    path: '/dossier/:id/banque',
+    name: 'bank',
+    component: () => import('@/pages/WorkInProgress'),
+    meta: {
+      styles: {
+        hasPaddings: false,
+      },
+    },
+  },
+  {
+    path: '/dossier/:id/indicateurs',
+    name: 'indicators',
+    component: () => import('@/pages/WorkInProgress'),
+    meta: {
+      styles: {
+        hasPaddings: false,
+      },
+    },
+  },
 ]
 
 const router = createRouter({

@@ -122,6 +122,18 @@ const menuItems = computed(() =>
       display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
     },
     {
+      index: `/dossier/${props.selectedEntityId}/banque`,
+      title: t('bank'),
+      leftIcon: 'PIPiggyBank',
+      display: true,
+    },
+    {
+      index: `/dossier/${props.selectedEntityId}/indicateurs`,
+      title: t('indicators'),
+      leftIcon: 'PISpeedometer2',
+      display: true,
+    },
+    {
       index: `/dossier/${props.selectedEntityId}/launcher`,
       title: t('apps'),
       leftIcon: 'PIGrid',
@@ -177,6 +189,8 @@ en-US:
   collaborators: 'Collaborators'
   documents: 'Documents'
   apps: 'Applications'
+  bank: 'Bank'
+  indicators: 'Indicators'
   delegationsHistory: 'Delegations history'
   home: 'Home'
   biReports: 'BI reports'
@@ -188,6 +202,8 @@ fr-FR:
   collaborators: 'Collaborateurs'
   documents: 'Documents'
   apps: 'Applications'
+  bank: 'Banque'
+  indicators: 'Indicateurs'
   delegationsHistory: 'Historique des délégations'
   home: 'Accueil'
   biReports: 'Rapports BI'
