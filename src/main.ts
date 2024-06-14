@@ -6,6 +6,7 @@ import api from './api'
 import i18n from './i18n'
 import store from './stores'
 import { TokenService, isTokenExpired } from './token'
+import { AmplitudeService } from './amplitude'
 import { useDataProvider } from './composables/useDataProvider'
 import { useUserPermissions } from './composables/useUserPermissions'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
@@ -25,6 +26,7 @@ export const hasTokenExpired = isTokenExpired
 export const dataProvider = useDataProvider
 export const userPermissions = useUserPermissions
 export const tokenService = reactive(TokenService.getInstance())
+export const amplitudeService = AmplitudeService.getInstance()
 
 export { DataStreamHubConnection }
 export { debounce }
