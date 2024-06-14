@@ -52,14 +52,21 @@
       "add-user",
       "app-authorization",
       "bank-mandate",
+      "calendar",
       "camera",
       "connection-default",
       "document-authentification",
+      "document-depository",
       "document-error",
       "document-import",
       "document-valid",
       "empty",
       "envelope",
+      "error-computer",
+      "error-generic",
+      "error-locked",
+      "error-server",
+      "feedbacks",
       "feedcenter-fav",
       "feedcenter",
       "hand-up",
@@ -68,12 +75,18 @@
       "mirror-smartphone",
       "notes",
       "ok",
+      "onboarding",
       "password",
+      "redirect-desktop",
+      "redirect-mobile",
+      "report",
       "shared-document",
       "talking",
       "time",
       "toggle",
-      "user-desktop"
+      "user-desktop",
+      "van",
+      "work-in-progress"
     ]
   },
   {
@@ -101,6 +114,14 @@
     "images": [
       "android",
       "ios"
+    ]
+  },
+  {
+    "name": "splash",
+    "images": [
+      "background-error-block-mobile",
+      "background-error-block",
+      "background-error-page"
     ]
   }
 ]
