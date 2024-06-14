@@ -1,8 +1,15 @@
 <template>
   <div class="p-file-card radius--2 shadow--2">
-    <div class="p-file-card__icon" v-if="pHasIcon">
-      <slot name="icon" />
-    </div>
+    <template v-if="pHasIcon">
+      <div v-if="$slots.icon" class="p-file-card__icon">
+        <slot name="icon" />
+      </div>
+      <div v-else class="p-file-card__icon">
+        <PIcon>
+          <component :is="fileIconComponent" />
+        </PIcon>
+      </div>
+    </template>
     <div class="p-file-card__text">
       <p class="p-file-card__name">
         {{ pName }}
@@ -18,11 +25,18 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import PIcon from '@/atoms/PIcon'
+import { getFileExtension, getFileIcon } from '@/utils/fileExtension'
 import type { PFileCardProps } from './PFileCardTypes'
 
-withDefaults(defineProps<PFileCardProps>(), {
+const props = withDefaults(defineProps<PFileCardProps>(), {
   pHasIcon: false,
   pHasButton: false,
+})
+
+const fileIconComponent = computed(() => {
+  return getFileIcon(getFileExtension(props.pName))
 })
 </script>
 

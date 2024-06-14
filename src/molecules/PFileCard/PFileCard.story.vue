@@ -40,6 +40,36 @@
             </PButton>
           </template>
         </PFileCard>
+        <PFileCard
+          :pName="testName"
+          :pFormat="defaultState.pFormat"
+          :pSize="defaultState.pSize"
+          :pHasIcon="defaultState.pHasIcon"
+          :pHasButton="defaultState.pHasButton"
+        >
+          <template #buttons>
+            <PButton
+              class="el-button--icon"
+              pType="white"
+              :pPlain="false"
+              @click="logEvent('click', { log: 'Button is clicked' })"
+            >
+              <PIcon>
+                <PIDownload />
+              </PIcon>
+            </PButton>
+            <PButton
+              class="el-button--icon"
+              pType="white"
+              :pPlain="false"
+              @click="logEvent('click', { log: 'Button is clicked' })"
+            >
+              <PIcon>
+                <PIEye />
+              </PIcon>
+            </PButton>
+          </template>
+        </PFileCard>
       </div>
       <template #controls>
         <HstText v-model="defaultState.pName" title="pName" />
@@ -63,6 +93,7 @@ const defaultState = reactive({
   pHasIcon: true,
   pHasButton: true,
 })
+const testName = 'mandat-1000308253-12248236612-signature.png'
 </script>
 
 <docs lang="md">
