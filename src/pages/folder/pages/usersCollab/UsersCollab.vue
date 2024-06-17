@@ -141,6 +141,7 @@ import {
   PIcon,
   PIThreeDots,
   PIPatchCheck,
+  PIPower,
   PLoader,
   PAvatar,
   PIPerson,
@@ -253,17 +254,23 @@ const formatAndFillUsersCollabTable = async () => {
  */
 const getStatus = (status: string): IUserStatus => {
   switch (status) {
+    case 'Declared':
+      return {
+        text: t('statusDeclared'),
+        icon: PIPatchCheck,
+        color: 'gray-900',
+      }
     case 'Connected':
       return {
         text: t('statusConnect'),
-        icon: PIPatchCheck,
+        icon: PIPower,
         color: 'success',
       }
     default:
       return {
         text: t('statusInvite'),
         icon: PIPerson,
-        color: 'warning',
+        color: 'persian',
       }
   }
 }
@@ -334,6 +341,7 @@ en-US:
   modifyRights: 'Change the rights'
   statusConnect: 'Connected'
   statusInvite: 'Invited'
+  statusDeclared: 'Declared'
   numberOfUserPerPage: 'number of user per page'
   on: 'on'
 fr-FR:
@@ -346,6 +354,7 @@ fr-FR:
   modifyRights: 'Modifier les droits'
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
+  statusDeclared: 'Declaré'
   numberOfUserPerPage: "nombre de d'utilisateur par page"
   on: 'sur'
 </i18n>

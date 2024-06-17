@@ -96,7 +96,7 @@ export const getMockedCustomersCollab = () => {
       firstName: 'Test 1',
       lastName: 'Test 1 last',
       email: 'test1@test.fr',
-      status: 'Declared',
+      status: 'Invited',
       personaName: 'ADMIN/Dirigeant',
       creationDate: '4/16/2024',
     },

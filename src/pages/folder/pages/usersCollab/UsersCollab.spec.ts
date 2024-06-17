@@ -57,8 +57,11 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
+let wrapper: VueWrapper<any>
+
+const getRows = () => wrapper.findAll('tr.el-table__row')
+
 describe('usersCollab', () => {
-  let wrapper: VueWrapper<any>
   beforeEach(async () => {
     wrapper = createWrapper()
     await flushPromises()
@@ -68,23 +71,27 @@ describe('usersCollab', () => {
       const usersTable = wrapper.find('[data-testid=folder-users-table]')
       expect(usersTable.exists()).toBeTruthy()
 
-      const rows = wrapper.findAll('tr.el-table__row')
-      expect(rows).toHaveLength(mockedCustomersCollab.length)
+      expect(getRows()).toHaveLength(mockedCustomersCollab.length)
 
-      const { firstName, lastName, email, creationDate } =
+      const { firstName, lastName, email, creationDate, status } =
         mockedCustomersCollab[0]
       const mockData = [
         firstName,
         lastName,
         email,
-        'Invited',
+        status,
         creationDate,
       ]
-      const firstRowText = rows[0].text()
+      const firstRowText = getRows()[0].text()
 
       mockData.forEach((data) => {
         expect(firstRowText).toContain(data)
       })
+    })
+
+    it('can display a declared status', () => {
+      const secondRowText = getRows()[1].text()
+      expect(secondRowText).toContain('Declared')
     })
 
     it('has a pagination', () => {
