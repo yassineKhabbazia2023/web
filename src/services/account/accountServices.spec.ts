@@ -12,6 +12,8 @@ import {
   fetchContactsFromSameHub,
   createCustomer,
   getAccountUserByEmail,
+  updateSignatoryStatus,
+  getAccountSignatories,
 } from '.'
 import {
   getMockedAccount,
@@ -74,6 +76,11 @@ vi.mock('@kpmg/common', () => {
               data: {
                 items: mockedCollaborators,
               },
+            })
+          }
+          if (url === `${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`) {
+            return Promise.resolve({
+              data: mockedCollaborators,
             })
           }
 
@@ -209,6 +216,37 @@ describe('test accountServices', () => {
       const id = await createCustomer(postRequestBody)
       expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`, postRequestBody)
       expect(id).toBe(newId)
+    })
+
+    it.each([
+      {
+        isSignatory: true,
+      },
+      {
+        isSignatory: false,
+      },
+    ])('should patch user', async ({ isSignatory }) => {
+      const accountId = mockedAccount.accountId
+      const contactId = mockedCollaborators[0].id
+      const patchParams = {
+        accountId,
+        contactId,
+        isSignatory,
+      }
+
+      await updateSignatoryStatus(accountId, contactId, isSignatory)
+      expect(mockedAccountApiPatch).toHaveBeenCalledWith(
+        `${API_PREFIXES.ACCOUNT}/roles`,
+        null,
+        { params: patchParams },
+      )
+    })
+
+    it('should get signatories contacts', async () => {
+      const accountId = mockedAccount.accountId
+
+      const accountSignatories = await getAccountSignatories(accountId)
+      expect(accountSignatories).toMatchObject(mockedCollaborators)
     })
   })
 

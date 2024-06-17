@@ -100,3 +100,15 @@ export interface AccountRow {
 export type ReferentialOptions = Record<string, string>
 
 export type ReferentialStructure = Record<string, ReferentialOptions>
+
+export interface AccountSignatories {
+  contactId: number
+  contactGlobalUniqueId: string
+  firstName: string
+  lastName: string
+  email: string
+  status: string
+  personaName: string
+  office: string
+  creationDate: string
+}

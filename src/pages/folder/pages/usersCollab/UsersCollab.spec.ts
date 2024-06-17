@@ -4,8 +4,10 @@ import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { dataFromApi, getMockedCustomersCollab } from './mockData'
 import { fetchAccountCustomers } from '@/services/wallet'
+import { getAccountSignatories, updateSignatoryStatus } from '@/services/account'
 import UsersCollab from '.'
-
+import { getMockedAccount } from '@/services/account/accountMock'
+import { nextTick } from 'vue'
 const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
 
@@ -16,6 +18,8 @@ const mockedUser = {
   initials: 'JP',
 }
 
+const mockedAccount = getMockedAccount()
+
 const mockHasPermission = vi.fn((_code: string) => true)
 
 vi.mock('@/services/wallet', () => ({
@@ -24,6 +28,15 @@ vi.mock('@/services/wallet', () => ({
     totalItems: mockedCustomersCollab.length,
     currentPage: DEFAULT_CURRENT_PAGE,
   })),
+}))
+
+vi.mock('@/services/account', () => ({
+  updateSignatoryStatus: vi.fn(() => Promise.resolve({})),
+  getAccountSignatories: vi.fn(() => Promise.resolve([
+    {
+      ...mockedCustomersCollab[0],
+    },
+  ])),
 }))
 
 vi.mock('vue-router', () => ({
@@ -39,6 +52,11 @@ vi.mock('@kpmg/common', () => ({
     state: () => ({
       user: {
         id: 2,
+        entities: {
+          default: {
+            accountId: mockedAccount.accountId,
+          },
+        },
       },
     }),
   }),
@@ -60,6 +78,20 @@ const createWrapper = (): VueWrapper<any> =>
 let wrapper: VueWrapper<any>
 
 const getRows = () => wrapper.findAll('tr.el-table__row')
+
+const signatoryToolboxItem = {
+  pIconName: 'PIPatchCheck',
+  pValue: 'Designate as signatory',
+  pActionName: 'assignSignatory',
+  pState: 'default',
+}
+
+const modifyToolboxItem = {
+  pIconName: 'PIPencilSquare',
+  pValue: 'Change the rights',
+  pActionName: 'modifyRights',
+  pState: 'default',
+}
 
 describe('usersCollab', () => {
   beforeEach(async () => {
@@ -104,6 +136,18 @@ describe('usersCollab', () => {
       expect(pagination.props('pCurrentPage')).toBe(1)
       expect(pagination.props('pPageSize')).toBe(15)
       expect(totalItems).toBe(mockedCustomersCollab.length)
+    })
+
+    it('displays the name in semibold if contact is signatory', async () => {
+      await nextTick()
+      const rows = wrapper.findAll('tr.el-table__row')
+      // The first user in the mock is the one returned by getAccountSignatories mock
+      expect(getAccountSignatories).toHaveBeenCalledWith(mockedAccount.accountId)
+      const firstRowUsername = rows[0].find('p.font-semibold')
+      expect(firstRowUsername.exists()).toBeTruthy()
+
+      const secondRowUsername = rows[1].find('p.font-semibold')
+      expect(secondRowUsername.exists()).toBeFalsy()
     })
   })
   describe('events', () => {
@@ -155,6 +199,39 @@ describe('usersCollab', () => {
       expect(manageRightsDrawer.exists()).toBeTruthy()
       expect(manageRightsDrawer.props('modelValue')).toBeTruthy()
       expect(manageRightsDrawer.props('selectedUser')).toMatchObject(mockedUser)
+    })
+
+    it("should add user as account signatory when the 'Designate as signatory action is clicked", async () => {
+      await wrapper.vm.handleUserAction('assignSignatory', mockedUser)
+
+      expect(updateSignatoryStatus).toHaveBeenCalledWith(mockedAccount.accountId, mockedUser.contactId)
+    })
+
+    it.each([
+      {
+        userThatCanBeAdded: mockedCustomersCollab[0],
+        expectedItems: [
+          {
+            ...modifyToolboxItem,
+          },
+        ],
+      },
+      {
+        userThatCanBeAdded: mockedCustomersCollab[1],
+        expectedItems: [
+          {
+            ...signatoryToolboxItem,
+          },
+          {
+            ...modifyToolboxItem,
+          },
+        ],
+      },
+    ])("should allow signatory add if user isn't already signatory", async ({ userThatCanBeAdded, expectedItems }) => {
+      wrapper.vm.handleToolboxClick(userThatCanBeAdded)
+      await nextTick()
+      const items = wrapper.vm.toolboxItems
+      expect(items).toStrictEqual(expectedItems)
     })
   })
 })
