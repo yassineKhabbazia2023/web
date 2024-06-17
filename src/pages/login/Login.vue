@@ -225,10 +225,6 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     color: var(--el-color-primary-dark-2);
   }
 }
-
-.el-login-form {
-  margin-bottom: 30px;
-}
 </style>
 
 <i18n lang="yaml">
