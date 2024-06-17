@@ -1,6 +1,36 @@
 {
   "items": [
     {
+      "delegationId": 83,
+      "startDate": "2024-04-25T09:33:47.8150744",
+      "endDate": "2024-08-25T09:18:38.278",
+      "status": "disabled",
+      "note": "string",
+      "creationDate": "2024-04-25T09:33:47.8341679",
+      "accounts": [
+        {
+          "accountId": 602,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Boulangerie Bel Epi"
+        }
+      ],
+      "delegatee": {
+        "contactId": 67,
+        "contactGlobalUniqueId": "",
+        "firstName": "Jade",
+        "lastName": "Fournier",
+        "email": "jade.fournier@example.com"
+      },
+      "delegator": {
+        "contactId": 23,
+        "contactGlobalUniqueId": "",
+        "firstName": "Sutton",
+        "lastName": "York",
+        "email": "suttonyork@bitrex.com"
+      }
+    },
+    {
       "delegationId": 55,
       "startDate": "2024-04-19T13:26:27.8494312",
       "status": "disabled",
@@ -119,36 +149,6 @@
         "firstName": "Charlene",
         "lastName": "Simpson",
         "email": "charlenesimpson@bitrex.com"
-      },
-      "delegator": {
-        "contactId": 23,
-        "contactGlobalUniqueId": "",
-        "firstName": "Sutton",
-        "lastName": "York",
-        "email": "suttonyork@bitrex.com"
-      }
-    },
-    {
-      "delegationId": 83,
-      "startDate": "2024-04-25T09:33:47.8150744",
-      "endDate": "2024-08-25T09:18:38.278",
-      "status": "disabled",
-      "note": "string",
-      "creationDate": "2024-04-25T09:33:47.8341679",
-      "accounts": [
-        {
-          "accountId": 602,
-          "accountGlobalUniqueId": "",
-          "accountNumber": "",
-          "legalName": "Boulangerie Bel Epi"
-        }
-      ],
-      "delegatee": {
-        "contactId": 67,
-        "contactGlobalUniqueId": "",
-        "firstName": "Jade",
-        "lastName": "Fournier",
-        "email": "jade.fournier@example.com"
       },
       "delegator": {
         "contactId": 23,
