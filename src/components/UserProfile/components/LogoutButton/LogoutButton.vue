@@ -23,8 +23,9 @@ const { t } = useI18n({
 })
 
 const handleLogout = async () => {
+  const isCollab = store.isCollab
   await store.logout(store.$state)
-  router.push({ name: 'login' })
+  router.push({ name: isCollab ? 'login' : 'loginClient' })
 }
 </script>
 
