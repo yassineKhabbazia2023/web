@@ -61,7 +61,6 @@ describe('dossier', () => {
     ['folders', 'tab-folders'],
     ['subscriptions', 'tab-subscriptions'],
     ['collaborators', 'tab-collaborators'],
-    ['history', 'tab-history'],
     ['folderMandats', 'tab-folderMandats'],
     ['folderLauncher', 'tab-folderLauncher'],
   ]
@@ -87,10 +86,10 @@ describe('dossier', () => {
 
   it('should only display tabs to which the user has permission to access', () => {
     mockHasPermission.mockImplementation((code: string) =>
-      [PERMISSION_CODES.COLLABORATORS, PERMISSION_CODES.HISTORY].includes(code),
+      [PERMISSION_CODES.COLLABORATORS].includes(code),
     )
     wrapper = createWrapper()
-    const collaboratorsTabsAccess = ['Wallet', 'Collaborators', 'History']
+    const collaboratorsTabsAccess = ['Wallet', 'Collaborators']
     const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
 
     collaboratorsTabsAccess.forEach((tabPane, index) => {

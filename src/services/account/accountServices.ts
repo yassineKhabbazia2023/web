@@ -1,4 +1,4 @@
-import type { Account } from '.'
+import type { Account, AccountSignatories } from '.'
 import type { Contact } from '@/services/contact/contactTypes'
 import { commonApi } from '@kpmg/common'
 import type { Entity } from '@kpmg/common'
@@ -79,6 +79,20 @@ export async function addContactToEntity(
   }
 }
 
+export async function updateSignatoryStatus(
+  accountId: Account['accountId'],
+  contactId: Contact['id'],
+  isSignatory: boolean = true,
+) {
+  const url = `${API_PREFIXES.ACCOUNT}/roles`
+  const queryParameters = {
+    accountId,
+    contactId,
+    isSignatory,
+  }
+  return await commonApi().gateway.patch(url, null, { params: queryParameters })
+}
+
 export async function fetchContactsFromSameHub(
   search: string | null,
   pageSize: number = 100,
@@ -91,6 +105,13 @@ export async function fetchContactsFromSameHub(
     },
   })
   return data.items
+}
+
+export async function getAccountSignatories(accountId: Account['accountId']): Promise<AccountSignatories[]> {
+  const url = `${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`
+  const { data } = await commonApi().gateway.get(url)
+
+  return data
 }
 
 export async function deleteContactFromAccount(

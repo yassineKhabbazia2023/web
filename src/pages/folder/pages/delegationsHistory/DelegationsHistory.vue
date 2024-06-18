@@ -178,11 +178,6 @@ const getQueryParams = () => ({
   search: search.value,
 })
 
-const sortByCreationDate = (delegations: Delegation[]) =>
-  delegations.sort(function(a: Delegation, b: Delegation) {
-    return new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
-  })
-
 const fetchDelegationsHistory = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
@@ -191,11 +186,8 @@ const fetchDelegationsHistory = async () => {
 
   try {
     const { items }: any = await fetchAccountDelegationsHistory(currentAccountId, searchParams)
-
     const formattedDelegations = formatDelegations(items)
-    const delegationsSortedByCreationDate = sortByCreationDate(formattedDelegations)
-
-    delegations.value = delegationsSortedByCreationDate
+    delegations.value = formattedDelegations
   } catch (error) {
     console.error(error)
   }

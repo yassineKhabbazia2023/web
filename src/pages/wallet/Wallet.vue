@@ -64,11 +64,6 @@ const collaboratorsTabs = [
     display: hasPermission(PERMISSION_CODES.COLLABORATORS),
   },
   {
-    name: 'history',
-    title: t('history'),
-    display: hasPermission(PERMISSION_CODES.HISTORY),
-  },
-  {
     name: 'folderLauncher',
     title: t('launcher'),
     display: hasPermission(PERMISSION_CODES.LAUNCHER),
@@ -101,7 +96,6 @@ en-US:
   hello: 'Hello'
   mandate: 'Mandate'
   subscriptions: 'MOD requests'
-  history: 'History'
   launcher: 'Applications'
   collaborators: 'Collaborators'
   allEntities: 'All entities'
@@ -112,7 +106,6 @@ fr-FR:
   hello: 'Bonjour'
   mandate: 'Mandat'
   subscriptions: 'Demandes MOD'
-  history: 'Historique'
   launcher: 'Applications'
   collaborators: 'Collaborateurs'
   allEntities: 'Mes entités'

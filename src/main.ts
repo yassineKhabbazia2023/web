@@ -28,11 +28,6 @@ export const unmount = vueLifecycles.unmount
 
 const BASE_WALLET_ROUTES = [
   {
-    path: 'historique',
-    name: 'history',
-    page: 'folders', // History page not already created; that's why we will use the folders page temporarily
-  },
-  {
     path: 'collaborateurs',
     name: 'collaborators',
     page: 'collaborators',

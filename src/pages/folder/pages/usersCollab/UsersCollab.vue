@@ -37,7 +37,9 @@
                     {{ scope.row.initials }}
                   </PAvatar>
                 </div>
-                <p>{{ scope.row.fullName }}</p>
+                <p :class="{ 'font-semibold': isContactSignatory(scope.row.contactId)}">
+                  {{ scope.row.fullName }}
+                </p>
               </div>
             </template>
           </PTableColumn>
@@ -91,6 +93,7 @@
                   pSize="small"
                   class="margin-left--1"
                   data-testid="folder-users-collab-action"
+                  @click="handleToolboxClick(scope.row)"
                 >
                   <PIcon>
                     <PIThreeDots color="#A4A4A4" />
@@ -146,7 +149,10 @@ import {
   PAvatar,
   PIPerson,
   PPagination,
+  PNotification,
   type PToolboxItemProps,
+  PICheck,
+  PIExclamationTriangle,
 } from '@kpmg/styleguide'
 import { commonStore, getInitials } from '@kpmg/common'
 import {
@@ -156,6 +162,8 @@ import {
 import { getFullName } from '@/common/utils'
 import { fetchAccountCustomers } from '@/services/wallet'
 import { getPaginationLabel, removeFalsyValues } from '@/helper'
+import { updateSignatoryStatus, getAccountSignatories } from '@/services/account'
+import type { AccountSignatories } from '@/services/account/accountTypes'
 import type { IStateUser, IUserStatus, IUser } from './types'
 import { userActions } from './types'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
@@ -185,23 +193,31 @@ const state: IStateUser = reactive({
   order: undefined,
 })
 
-const toolboxItems = computed(
-  () =>
-    [
+const toolboxItems = ref<PToolboxItemProps[]>([])
+function handleToolboxClick(userRow: any) {
+  toolboxItems.value.length = 0
+  const items: PToolboxItemProps[] = [
+    {
+      pIconName: 'PIPencilSquare',
+      pValue: t('modifyRights'),
+      pActionName: userActions.MODIFY_RIGHTS,
+      pState: 'default',
+    },
+  ]
+
+  if (!isContactSignatory(userRow.contactId)) {
+    items.unshift(
       {
         pIconName: 'PIPatchCheck',
         pValue: t('assignSignatory'),
         pActionName: userActions.ASSIGN_SIGNATORY,
         pState: 'default',
       },
-      {
-        pIconName: 'PIPencilSquare',
-        pValue: t('modifyRights'),
-        pActionName: userActions.MODIFY_RIGHTS,
-        pState: 'default',
-      },
-    ] as PToolboxItemProps[],
-)
+    )
+  }
+
+  toolboxItems.value.push(...items)
+}
 
 const paginationLabel = computed(() => getPaginationLabel<IUser>(t('on'), state))
 
@@ -293,6 +309,62 @@ const handleUserAction = (action: string, row: any) => {
   if (action === userActions.MODIFY_RIGHTS) {
     isManageRightsDrawerOpened.value = true
   }
+  if (action === userActions.ASSIGN_SIGNATORY) {
+    handleAddSignatory(row.contactId, row.fullName)
+  }
+}
+
+// Signatory addition scope
+const currentEntity = computed(() => user.value?.entities.default)
+
+async function handleAddSignatory(contactId: IUser['contactId'], contactFullName: string) {
+  if (!currentEntity.value) return
+
+  try {
+    await updateSignatoryStatus(currentEntity.value.accountId, contactId)
+    showAddSignatorySuccess(contactFullName)
+    setAccountSignatories()
+  } catch (error) {
+    showAddSignatoryError()
+  }
+}
+
+const accountSignatories = ref<AccountSignatories[]>([])
+function isContactSignatory(contactId: IUser['contactId']) {
+  return !!accountSignatories.value.find((signatory) => signatory.contactId === contactId)
+}
+
+async function setAccountSignatories() {
+  if (!currentEntity.value) return
+  state.isLoading = true
+  try {
+    const signatories = await getAccountSignatories(currentEntity.value.accountId)
+    accountSignatories.value.push(...signatories)
+  } catch (error) {
+    console.error(error)
+  }
+
+  state.isLoading = false
+}
+
+function showAddSignatorySuccess(userFullName: string) {
+  PNotification({
+    message: t('signatoryAdded', { userFullName }),
+    icon: PICheck,
+    showClose: true,
+    customClass: 'success',
+    position: 'bottom-right',
+  })
+}
+
+function showAddSignatoryError() {
+  PNotification({
+    message: t('technicalError'),
+    icon: PIExclamationTriangle,
+    showClose: true,
+    customClass: 'error',
+    position: 'bottom-right',
+  })
 }
 
 const getQueryParams = () => ({
@@ -315,6 +387,7 @@ watch(() => [
 
 onMounted(async () => {
   await formatAndFillUsersCollabTable()
+  await setAccountSignatories()
 })
 </script>
 
@@ -344,6 +417,8 @@ en-US:
   statusDeclared: 'Declared'
   numberOfUserPerPage: 'number of user per page'
   on: 'on'
+  signatoryAdded: "User {userFullName} has been successfuly designated as a signatory of the entity"
+  technicalError: 'The operation failed due to a technical error. Please try again later.'
 fr-FR:
   user: 'Utilisateur'
   status: 'Statut'
@@ -356,5 +431,7 @@ fr-FR:
   statusInvite: 'Invité'
   statusDeclared: 'Declaré'
   numberOfUserPerPage: "nombre de d'utilisateur par page"
+  signatoryAdded: "L'utilisateur {userFullName} a été désigné en tant que signataire de l'entité avec succès"
+  technicalError: 'L’opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.'
   on: 'sur'
 </i18n>
