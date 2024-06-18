@@ -11,13 +11,20 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
+const MY_INFORMATION_CONTENT = 'custom content'
+
 const createWrapper = (): VueWrapper<any> =>
   mount(UserProfile, {
     props: {
       hasDrawerOpened: true,
     },
     global: {
-      stubs: ['MyInformation'],
+      stubs: {
+        MyInformation: {
+          name: 'MyInformation',
+          template: `<div>${MY_INFORMATION_CONTENT}</div>`,
+        },
+      },
     },
   })
 
@@ -26,9 +33,8 @@ describe('userProfile', () => {
     createWrapper()
   })
 
-  it('has the my information tab activated by default', () => {
+  it('displays the information of the user', () => {
     const drawer = document.querySelector('.p-drawer') as HTMLElement
-    const activeTab = drawer.querySelector('.el-tabs__item.is-active') as HTMLElement
-    expect(activeTab.textContent).toContain('My Information')
+    expect(drawer.innerHTML).toContain(MY_INFORMATION_CONTENT)
   })
 })
