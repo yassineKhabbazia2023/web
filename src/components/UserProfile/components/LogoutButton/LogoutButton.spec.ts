@@ -21,6 +21,9 @@ vi.mock('@kpmg/common', () => ({
     actions: {
       logout: vi.fn(),
     },
+    getters: {
+      isCollab: () => true,
+    },
   }),
 }))
 
@@ -39,13 +42,31 @@ describe('logoutButton', () => {
     wrapper = createWrapper()
   })
 
-  it('should disconnect user when clicking on the logout button', async () => {
-    expect(mockRouterPush).not.toHaveBeenCalled()
+  const isCollabToRouteNameToRedirect = [
+    {
+      isCollab: true,
+      routeNameToRedirect: 'login',
+    },
+    {
+      isCollab: false,
+      routeNameToRedirect: 'loginClient',
+    },
+  ]
 
-    await wrapper.find('button').trigger('click')
+  it.each(isCollabToRouteNameToRedirect)(
+    'can disconnect user when clicking on the logout button and redirect to $routeNameToRedirect',
+    async ({ isCollab, routeNameToRedirect }) => {
+      // @ts-expect-error: Getter is read only
+      store.isCollab = isCollab
 
-    expect(mockRouterPush).toHaveBeenCalledOnce()
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'login' })
-    expect(store.logout).toHaveBeenCalledOnce()
-  })
+      expect(mockRouterPush).not.toHaveBeenCalled()
+
+      await wrapper.find('button').trigger('click')
+
+      expect(mockRouterPush).toHaveBeenCalledOnce()
+      expect(mockRouterPush).toHaveBeenCalledWith({ name: routeNameToRedirect })
+
+      expect(store.logout).toHaveBeenCalledOnce()
+    },
+  )
 })
