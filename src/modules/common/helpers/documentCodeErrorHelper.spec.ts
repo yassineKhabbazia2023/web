@@ -2,6 +2,7 @@
 import { getFileErrorMessage, getFileErrorDescription }
   from '@/modules/common/helpers/documentCodeErrorHelper'
 import { describe, it, expect } from 'vitest'
+import { MAX_FILE_SIZE_MB } from '@/modules/common/constants/files'
 
 describe('document Code Error Helper', () => {
   describe('should return the proper message based on code error', () => {
@@ -38,6 +39,10 @@ describe('document Code Error Helper', () => {
       {
         input: 'FileEmpty',
         expectedResult: 'Le document doit faire  minimum 1 octet',
+      },
+      {
+        input: 'FileTooLarge',
+        expectedResult: `Le document doit faire maximum ${MAX_FILE_SIZE_MB}MB`,
       },
       {
         input: 'UnauthorizedCharFileName',

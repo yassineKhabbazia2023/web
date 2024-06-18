@@ -1,3 +1,5 @@
+import { MAX_FILE_SIZE_MB } from '@/modules/common/constants/files'
+
 interface ErrorDetail {
   message: string
   description: string
@@ -7,6 +9,10 @@ const codeErrorMapping: Record<string, ErrorDetail> = {
   FileEmpty: {
     message: 'Fichier vide',
     description: 'Le document doit faire  minimum 1 octet',
+  },
+  FileTooLarge: {
+    message: 'Document trop volumineux',
+    description: `Le document doit faire maximum ${MAX_FILE_SIZE_MB}MB`,
   },
   UnauthorizedFileType: {
     message: 'Format non reconnu',

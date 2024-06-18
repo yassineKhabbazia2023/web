@@ -5,9 +5,7 @@ import { getFileExtension, isExtensionAuthorized } from '../../helpers/filesExte
 import { uploadDocument } from '@/services/Documents'
 import type { DocumentsProps } from '../../DocumentsTypes'
 import { Permissions } from '@/models/Permissions'
-
-const MAX_FILE_SIZE_MB = 50
-const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1000000
+import { MAX_FILE_SIZE_BYTES } from '@/modules/common/constants/files'
 
 export function useDragAndDropFromExplorer(
   currentService: Ref<DocumentsProps['currentService']>,

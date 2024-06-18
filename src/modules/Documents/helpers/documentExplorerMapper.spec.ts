@@ -56,6 +56,16 @@ describe('mapping functions', () => {
       expect(result[0].givenActionState).toBe('ERROR')
       expect(result[0].codeError).toBe('UnauthorizedCharFileName')
     })
+
+    it('should map too large files with error code FileTooLarge', () => {
+      const largeFile = new File(['content'], 'large.txt', { type: 'text/plain' })
+      // Mock the size property to simulate a large file
+      Object.defineProperty(largeFile, 'size', { value: 50 * 1000000 + 1 })
+
+      const result = mapExplorerDocumentFromFiles([largeFile])
+      expect(result[0].givenActionState).toBe('ERROR')
+      expect(result[0].codeError).toBe('FileTooLarge')
+    })
   })
 
   describe('mapExplorerDocumentFromDocuments', () => {
