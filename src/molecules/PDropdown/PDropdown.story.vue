@@ -31,7 +31,10 @@
           :pCollapseTagsTooltip="state.collapseTagsTooltip"
           :pDisabled="state.disabled"
           :pFilterable="state.filterable"
+          :pCheckAllLabel="state.pCheckAllLabel"
+          v-model:pIsCheckAll="state.pIsCheckAll"
           :pOptions="dropdownOptions"
+          @update:p-is-check-all="logEvent('update:p-is-check-all', $event)"
         />
       </template>
       <template #controls="{ state }">
@@ -46,6 +49,14 @@
         <HstCheckbox
           v-model="state.collapseTagsTooltip"
           title="TagsTooltip"
+        />
+        <HstText
+          v-model="state.pCheckAllLabel"
+          title="checkAllLabel"
+        />
+        <HstCheckbox
+          v-model="state.pIsCheckAll"
+          title="isCheckAll"
         />
       </template>
     </Variant>
@@ -93,6 +104,7 @@
 import { ref } from 'vue'
 import PDropdown from '.'
 import { getMockedDropdownOptions } from './PDropdownMocks'
+import { logEvent } from 'histoire/client'
 
 const valueSimple = ref('')
 
@@ -118,6 +130,8 @@ const initState = () => {
     collapseTagsTooltip: false,
     popperAppendToBody: true,
     automaticDropdown: true,
+    pCheckAllLabel: 'Tout sélectionner',
+    pIsCheckAll: false,
   }
 }
 </script>

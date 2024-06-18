@@ -39,6 +39,17 @@
     :popperOptions="pPopperOptions"
     :ariaLabel="pAriaLabel"
   >
+    <template
+      v-if="pCheckAllLabel"
+      #header
+    >
+      <PCheckbox
+        v-model="internalIsCheckAll"
+        @change="internalIsCheckAll = $event"
+      >
+        {{ pCheckAllLabel }}
+      </PCheckbox>
+    </template>
     <template v-if="!hasGroups">
       <POption
         v-for="({ pValue, pLabel, pDisabled }, index) in pOptions"
@@ -112,6 +123,14 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
   pPopperOptions: () => ({}),
 })
 
+const emit = defineEmits<{
+  'update:p-is-check-all': [boolean]
+}>()
+
 const groups = computed(() => getDropdownGroups(props.pOptions))
 const hasGroups = computed(() => getHasGroups(groups.value))
+const internalIsCheckAll = computed({
+  get: () => props.pIsCheckAll,
+  set: (isCheckAll: boolean) => emit('update:p-is-check-all', isCheckAll),
+})
 </script>

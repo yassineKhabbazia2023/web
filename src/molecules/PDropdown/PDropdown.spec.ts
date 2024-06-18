@@ -4,8 +4,9 @@ import { beforeEach, describe, it, expect, vi } from 'vitest'
 import PDropdown from '.'
 import type { PDropdownProps, PDropdownOption } from './PDropdownTypes'
 import { getMockedDropdownOptions } from './PDropdownMocks'
+import { nextTick } from 'vue'
 
-function getPropsValue(pOptions: PDropdownOption[]) {
+function getPropsValue(pOptions: PDropdownOption[], pCheckAllLabel = '') {
   const propsValue: PDropdownProps = {
     pOptions,
     pMultiple: false,
@@ -46,6 +47,8 @@ function getPropsValue(pOptions: PDropdownOption[]) {
     pMaxCollapseTags: 1,
     pPopperOptions: {},
     pAriaLabel: 'ariaLabel',
+    pCheckAllLabel,
+    pIsCheckAll: false,
   }
 
   return propsValue
@@ -115,8 +118,10 @@ describe('test PDropdown', () => {
         popperOptions: propsValue.pPopperOptions,
         ariaLabel: propsValue.pAriaLabel,
       }
-      expect(component.props()).toMatchObject(expectedProps)
+      const pCheckbox = component.findComponent({ name: 'PCheckbox' })
 
+      expect(component.props()).toMatchObject(expectedProps)
+      expect(pCheckbox.exists()).toBeFalsy()
       expect(wrapper.find('.el-input__inner').attributes('aria-label')).toBe(propsValue.pAriaLabel)
     })
   })
@@ -177,6 +182,25 @@ describe('test PDropdown', () => {
       expect(componentVM.maxCollapseTags).toBe(propsValue.pMaxCollapseTags)
       expect(componentVM.popperOptions).toStrictEqual(propsValue.pPopperOptions)
       expect(wrapper.find('.el-input__inner').attributes('aria-label')).toBe(propsValue.pAriaLabel)
+    })
+  })
+
+  describe('with checkAll', () => {
+    const hasGroup = false
+    const pOptions = getMockedDropdownOptions(hasGroup)
+    const propsValue = getPropsValue(pOptions, 'Check all')
+    let wrapper: VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper(propsValue)
+    })
+    it('should emit update:p-is-check-all when click on PCheckbox', async () => {
+      const component = wrapper.findComponent({ name: 'ElSelect' })
+      const pCheckbox = component.findComponent({ name: 'PCheckbox' })
+
+      pCheckbox.vm.$emit('update:model-value', true)
+      await nextTick()
+
+      expect(wrapper.emitted('update:p-is-check-all')).toStrictEqual([[true]])
     })
   })
 })

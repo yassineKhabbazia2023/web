@@ -7,6 +7,8 @@ export interface PDropdownOption extends POptionProps {
 
 export interface PDropdownProps extends PSelectProps {
   pOptions: PDropdownOption[]
+  pCheckAllLabel?: string
+  pIsCheckAll?: boolean
 }
 
 export interface DropdownGroup {
