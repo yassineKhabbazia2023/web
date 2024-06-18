@@ -9,6 +9,7 @@ import App from './'
 
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5,
+  VITE_AMPLITUDE_API_KEY: 'TEST_KEY',
 }))
 
 const mockUserOrigin = vi.fn()
@@ -35,6 +36,11 @@ vi.mock('@kpmg/common', () => ({
     setToken: vi.fn(),
     getToken: vi.fn(),
     registerOnChange: vi.fn(),
+  },
+  amplitudeService: {
+    init: vi.fn(),
+    track: vi.fn(),
+    setUserId: vi.fn(),
   },
   fetchUrlTerms: vi.fn(),
 }))

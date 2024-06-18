@@ -2,7 +2,7 @@ import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { commonStore as useStore } from '@kpmg/common'
+import { amplitudeService, commonStore, commonStore as useStore } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
 import LogoutButton from './'
 
@@ -25,6 +25,9 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
     },
   }),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -69,4 +72,17 @@ describe('logoutButton', () => {
       expect(store.logout).toHaveBeenCalledOnce()
     },
   )
+  it('should throw eror and amplitude', async () => {
+    const store = commonStore()
+    const spyStoreLogoutAction = vi.spyOn(store, 'logout')
+    const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    spyStoreLogoutAction.mockRejectedValue('ERROR Logout')
+
+    await wrapper.find('button').trigger('click')
+
+    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign Out Completed', {
+      sign_out_result: 'failed',
+    })
+  })
 })

@@ -15,6 +15,7 @@ const { fetchUserData } = helpers()
 
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5,
+  VITE_AMPLITUDE_API_KEY: 'TEST_KEY',
 }))
 
 vi.mock('@kpmg/common', () => ({
@@ -64,6 +65,11 @@ vi.mock('@kpmg/common', () => ({
     registerOnChange: vi.fn(),
   },
   fetchUrlTerms: vi.fn(),
+  amplitudeService: {
+    init: vi.fn(),
+    track: vi.fn(),
+    setUserId: vi.fn(),
+  },
 }))
 
 const getPageTitle = (wrapper: VueWrapper) => wrapper.find('.pageTitle').text()

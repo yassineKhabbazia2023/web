@@ -181,7 +181,7 @@ const isSelectedEntityActive = computed(() => {
     }),
   )
 
-  return isUnitaryViewVisible
+  return isUnitaryViewVisible ? 'sidenav-entity__actions-active' : ''
 })
 
 const onToggleSidebar = () => {
@@ -197,8 +197,6 @@ const onToggleSidebar = () => {
 const activeItem = (itemRoute: any) => {
   const routeName = route.matched?.at(0)?.name ?? route.name
   return itemRoute && itemRoute.name === routeName
-    ? 'sidenav-entity__actions-active'
-    : ''
 }
 
 const getActiveWallet = computed(() => {
