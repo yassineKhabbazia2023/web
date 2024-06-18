@@ -60,6 +60,7 @@
     "pFieldKey": "country",
     "pFieldType": "dropdown",
     "pLabel": "Pays",
+    "pMultiple": undefined,
     "pTestId": undefined,
   },
 ]
