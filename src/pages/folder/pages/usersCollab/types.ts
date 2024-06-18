@@ -10,6 +10,7 @@ export enum userActions {
   MODIFY_RIGHTS = 'modifyRights',
   DELETE_USER = 'deleteUser',
   ASSIGN_SIGNATORY = 'assignSignatory',
+  UNASSIGN_SIGNATORY = 'unassignSignatory'
 }
 /* eslint-disable no-unused-vars */
 
