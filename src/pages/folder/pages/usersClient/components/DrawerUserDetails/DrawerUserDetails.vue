@@ -81,35 +81,23 @@
 
     <template #footer>
       <div class="margin-left--auto">
-        <template v-if="editMode">
-          <PButton
-            @click="resetForm"
-            class="margin-right--4"
-            pType="primary"
-            pPlain
-            data-testid="cancel-btn"
-          >
-            {{ t('cancel') }}
-          </PButton>
-
-          <PButton
-            @click="handleSubmit(formRef)"
-            pType="primary"
-            data-testid="submit-btn"
-          >
-            {{ t('submit') }}
-          </PButton>
-        </template>
-        <template v-else>
-          <PButton
-            @click="closeDrawer"
-            pPlain
-            pType="primary"
-            data-testid="close-btn"
-          >
-            {{ t('close') }}
-          </PButton>
-        </template>
+        <PButton
+          @click="closeDrawer"
+          pType="primary"
+          pPlain
+          data-testid="cancel-btn"
+        >
+          {{ t('cancel') }}
+        </PButton>
+        <PButton
+          v-if="editMode"
+          @click="handleSubmit(formRef)"
+          class="margin-left--4"
+          pType="primary"
+          data-testid="submit-btn"
+        >
+          {{ t('submit') }}
+        </PButton>
       </div>
     </template>
   </PDrawer>
@@ -163,10 +151,6 @@ const formValues = reactive<PatchContactPayload>({
   landPhone: undefined as string | undefined,
   mobilePhone: undefined as string | undefined,
 })
-
-const resetForm = () => {
-  initialiseForms()
-}
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -230,7 +214,6 @@ onMounted(async () => {
     cancel: 'Cancel'
     submit: 'Submit'
     patchSuccess: "{fullName}'s information has been successfully updated."
-    close: 'Close'
     requiredField: 'mandatory field'
     patchFailed: "{fullName}'s information was not updated due to a technical error."
   fr-FR:
@@ -243,7 +226,6 @@ onMounted(async () => {
     cancel: 'Annuler'
     submit: 'Valider'
     patchSuccess: 'Les informations de {fullName} ont bien été mises à jour.'
-    close: 'Fermer'
     requiredField: 'Champ obligatoire'
     patchFailed: "Les informations de {fullName} n'ont pas été mises à jour suite à une erreur technique."
   </i18n>
