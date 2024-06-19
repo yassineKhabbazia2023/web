@@ -1,6 +1,6 @@
 import { type FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
-import type { PFieldPropsInput, PFieldPropsDropdown, PFieldPropsDate } from './PFieldTypes'
+import type { PFieldPropsInput, PFieldPropsDropdown, PFieldPropsDate, PFieldPropsRadio } from './PFieldTypes'
 import type { PDatePickerProps } from '@/atoms/PDatePicker/PDatePickerTypes'
 
 export function getMockedRule(ruleType: string): FormItemRule | undefined {
@@ -71,6 +71,7 @@ export function getDropdownField(
     pDropdownOptions,
     pTestId,
     pMultiple,
+    pCheckAllLabel: 'Tout afficher',
   }
 }
 
@@ -99,5 +100,58 @@ export function getDateField(
     pFormat,
     pValueFormat,
     pTestId,
+  }
+}
+
+export function getRadioField({
+  modelValue = '',
+  pFieldKey = '',
+  pLabel = '',
+  flexBasis,
+  pPlaceholder = '',
+  pDisabled = false,
+  pTestId,
+  pName,
+  pBorder,
+  pFlexColumn,
+  pMultiple = false,
+  pOptions = [{
+    pValue: 'a',
+    pLabel: 'A',
+  }, {
+    pValue: 'b',
+    pLabel: 'B',
+  }],
+}: {
+  modelValue?: string | string[]
+  pFieldKey?: string
+  pLabel?: string
+  flexBasis?: number
+  pPlaceholder?: string
+  pDisabled?: boolean
+  pTestId?: string
+  pName?: string
+  pBorder?: boolean
+  pFlexColumn?: boolean
+  pMultiple?: boolean
+  pOptions?: PFieldPropsRadio<string>['pOptions']
+}): PFieldPropsRadio<string | string[]> {
+  const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
+
+  return {
+    modelValue,
+    pFieldKey,
+    pLabel,
+    pPlaceholder,
+    pFieldType: 'radio',
+    pCssClass,
+    pDisabled,
+    pTestId,
+    pBorder,
+    pSize: 'default',
+    pName: pName ?? pLabel,
+    pOptions,
+    pMultiple,
+    pFlexColumn,
   }
 }

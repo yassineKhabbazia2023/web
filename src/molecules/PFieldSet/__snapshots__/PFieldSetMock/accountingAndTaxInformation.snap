@@ -14,6 +14,7 @@
   },
   {
     "modelValue": undefined,
+    "pCheckAllLabel": "Tout afficher",
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -34,6 +35,7 @@
   },
   {
     "modelValue": undefined,
+    "pCheckAllLabel": "Tout afficher",
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -54,6 +56,7 @@
   },
   {
     "modelValue": undefined,
+    "pCheckAllLabel": "Tout afficher",
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -74,6 +77,7 @@
   },
   {
     "modelValue": undefined,
+    "pCheckAllLabel": "Tout afficher",
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -94,6 +98,7 @@
   },
   {
     "modelValue": undefined,
+    "pCheckAllLabel": "Tout afficher",
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [
@@ -114,6 +119,7 @@
   },
   {
     "modelValue": undefined,
+    "pCheckAllLabel": "Tout afficher",
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
     "pDisabled": false,
     "pDropdownOptions": [

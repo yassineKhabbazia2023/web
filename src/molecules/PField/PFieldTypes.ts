@@ -1,10 +1,10 @@
 import type { FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
-import type { PDatePickerProps } from '../../atoms/PDatePicker/PDatePickerTypes'
+import type { PDatePickerProps } from '@/atoms/PDatePicker/PDatePickerTypes'
 
 export interface PFieldPropsBase<T> {
   modelValue?: T
-  pFieldType: 'input' | 'dropdown' | 'date'
+  pFieldType: 'input' | 'dropdown' | 'date' | 'radio'
   pFieldKey: string
   pLabel: string
   pPlaceholder?: string
@@ -23,6 +23,8 @@ export interface PFieldPropsInput<T> extends PFieldPropsBase<T> {
 export interface PFieldPropsDropdown<T> extends PFieldPropsBase<T> {
   pDropdownOptions?: PDropdownOption[]
   pMultiple?: boolean
+  pCheckAllLabel?: string
+  pIsCheckAll?: boolean
 }
 
 export interface PFieldPropsDate<T> extends PFieldPropsBase<T> {
@@ -31,4 +33,18 @@ export interface PFieldPropsDate<T> extends PFieldPropsBase<T> {
   pValueFormat?: string
 }
 
-export type PFieldProps<T> = PFieldPropsInput<T> & PFieldPropsDropdown<T> & PFieldPropsDate<T>
+export interface PFieldRadioOptions {
+  pValue: string | number | boolean
+  pLabel: string
+}
+
+export interface PFieldPropsRadio<T> extends PFieldPropsBase<T> {
+  pBorder?: boolean
+  pSize?: 'large' | 'default' | 'small'
+  pName?: string
+  pFlexColumn?: boolean
+  pMultiple?: boolean
+  pOptions?: PFieldRadioOptions[]
+}
+
+export type PFieldProps<T> = PFieldPropsInput<T> & PFieldPropsDropdown<T> & PFieldPropsDate<T> & PFieldPropsRadio<T>

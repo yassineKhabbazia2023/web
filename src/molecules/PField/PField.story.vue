@@ -76,10 +76,6 @@
           />
         </PForm>
         <template #controls>
-          <HstNumber
-            v-model="pControlNumberSelectMultiple.modelValue"
-            title="Model value"
-          />
           <HstText
             v-model="pControlNumberSelectMultiple.pFieldType"
             title="FieldType"
@@ -119,6 +115,31 @@
           <HstCheckbox v-model="pControlDate.pDisabled" title="Disabled" />
         </template>
       </Variant>
+      <Variant title="Radio">
+        <PForm pLabelPosition="top">
+          <FieldRadio
+            v-model="pControlRadio.modelValue"
+            :pLabel="pControlRadio.pLabel"
+            pFieldKey="c"
+            pFieldType="radio"
+            :pDisabled="pControlRadio.pDisabled"
+            :pOptions="pControlRadio.pOptions"
+            :pBorder="pControlRadio.pBorder"
+            :pSize="pControlRadio.pSize"
+            :pName="pControlRadio.pName"
+            :pFlexColumn="pControlRadio.pFlexColumn"
+            :pMultiple="pControlRadio.pMultiple"
+            @update:model-value="logEvent('update:model-value', $event)"
+          />
+        </PForm>
+        <template #controls>
+          <HstText v-model="pControlRadio.pFieldType" title="FieldType" />
+          <HstText v-model="pControlRadio.pPlaceholder" title="Placeholder" />
+          <HstCheckbox v-model="pControlRadio.pDisabled" title="Disabled" />
+          <HstCheckbox v-model="pControlRadio.pFlexColumn" title="FlexColumn" />
+          <HstCheckbox v-model="pControlRadio.pMultiple" title="Multiple" />
+        </template>
+      </Variant>
     </div>
   </Story>
 </template>
@@ -131,11 +152,13 @@ import type {
   PFieldPropsInput,
   PFieldPropsDropdown,
   PFieldPropsDate,
+  PFieldPropsRadio,
 } from './PFieldTypes'
 import {
   getMockedInputField,
   getDropdownField,
   getDateField,
+  getRadioField,
 } from './PFieldMock'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
@@ -144,6 +167,7 @@ const dateFormats = ['MM/DD/YYYY', 'DD/MM/YYYY', 'YYYY/MM/DD']
 const StringField = PField<string>
 const NumberField = PField<number | undefined>
 const DateField = PField<string>
+const FieldRadio = PField<string | string[]>
 
 const pControlStringInput = reactive<PFieldPropsInput<string>>(
   getMockedInputField('firstname', 'Prénom', 'John', 50),
@@ -173,6 +197,13 @@ const pControlNumberSelectMultiple = reactive<PFieldPropsDropdown<number | undef
 
 const pControlDate = reactive<PFieldPropsDate<string>>(
   getDateField('creationDate', 'Date de création', '13/12/2014', 50),
+)
+const pControlRadio = reactive<PFieldPropsRadio<string | string[]>>(
+  getRadioField({
+    pFieldKey: 'type',
+    pLabel: 'Type',
+    flexBasis: 50,
+  }),
 )
 </script>
 
