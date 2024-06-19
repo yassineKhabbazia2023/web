@@ -1,5 +1,6 @@
 <template>
   <PSelect
+    v-model="internalModelValue"
     :multiple="pMultiple"
     :disabled="pDisabled"
     :valueKey="pValueKey"
@@ -80,7 +81,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import type { PDropdownProps } from './PDropdownTypes'
-import { getDropdownGroups, getHasGroups } from './PDropdownUtils'
+import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues } from './PDropdownUtils'
 
 const props = withDefaults(defineProps<PDropdownProps>(), {
   pAllowCreate: false,
@@ -124,13 +125,24 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:p-is-check-all': [boolean]
+  'update:model-value': [PDropdownProps['modelValue']]
 }>()
 
 const groups = computed(() => getDropdownGroups(props.pOptions))
 const hasGroups = computed(() => getHasGroups(groups.value))
 const internalIsCheckAll = computed({
-  get: () => props.pIsCheckAll,
-  set: (isCheckAll: boolean) => emit('update:p-is-check-all', isCheckAll),
+  get: () => getIsCheckAll(props.pOptions, props.modelValue),
+  set: (isCheckAll: boolean) => {
+    if (isCheckAll) {
+      internalModelValue.value = getAllEnabledValues(props.pOptions)
+    }
+  },
+})
+
+const internalModelValue = computed({
+  get: () => props.modelValue,
+  set: (modelValue: PDropdownProps['modelValue']) => {
+    emit('update:model-value', modelValue)
+  },
 })
 </script>

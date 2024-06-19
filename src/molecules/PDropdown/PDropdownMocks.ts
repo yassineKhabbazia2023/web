@@ -1,6 +1,8 @@
 import type { PDropdownOption } from './PDropdownTypes'
 
-export function getMockedDropdownOptions(hasGroups: boolean): PDropdownOption[] {
+export function getMockedDropdownOptions(
+  hasGroups: boolean,
+): PDropdownOption[] {
   const altGroup = hasGroups ? 'women' : ''
   return [{
     pValue: 'a',

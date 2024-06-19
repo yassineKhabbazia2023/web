@@ -6,9 +6,9 @@ export interface PDropdownOption extends POptionProps {
 }
 
 export interface PDropdownProps extends PSelectProps {
+  modelValue?: any // temporarly
   pOptions: PDropdownOption[]
   pCheckAllLabel?: string
-  pIsCheckAll?: boolean
 }
 
 export interface DropdownGroup {

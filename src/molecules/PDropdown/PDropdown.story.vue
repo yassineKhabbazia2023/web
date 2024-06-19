@@ -32,9 +32,8 @@
           :pDisabled="state.disabled"
           :pFilterable="state.filterable"
           :pCheckAllLabel="state.pCheckAllLabel"
-          v-model:pIsCheckAll="state.pIsCheckAll"
           :pOptions="dropdownOptions"
-          @update:p-is-check-all="logEvent('update:p-is-check-all', $event)"
+          @update:model-value="logEvent('update:model-value', $event)"
         />
       </template>
       <template #controls="{ state }">
@@ -53,10 +52,6 @@
         <HstText
           v-model="state.pCheckAllLabel"
           title="checkAllLabel"
-        />
-        <HstCheckbox
-          v-model="state.pIsCheckAll"
-          title="isCheckAll"
         />
       </template>
     </Variant>
@@ -131,7 +126,6 @@ const initState = () => {
     popperAppendToBody: true,
     automaticDropdown: true,
     pCheckAllLabel: 'Tout sélectionner',
-    pIsCheckAll: false,
   }
 }
 </script>

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { getMockedDropdownOptions } from './PDropdownMocks'
-import { getDropdownGroups, getHasGroups } from './PDropdownUtils'
+import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues } from './PDropdownUtils'
 import type { DropdownGroup } from './PDropdownTypes'
 
 describe('test PDropdownUtils', () => {
@@ -40,6 +40,56 @@ describe('test PDropdownUtils', () => {
     it.each(tests)('should return $expected when $reason', ({ groups, expected }) => {
       const hasGroups = getHasGroups(groups as DropdownGroup[])
       expect(hasGroups).toBe(expected)
+    })
+  })
+
+  describe('getAllEnabledValues', () => {
+    it('should return only enabled values', () => {
+      const pOptions = getMockedDropdownOptions(false)
+      const expected = ['a', 'b', 'c']
+      const allEnabledValues = getAllEnabledValues(pOptions)
+
+      expect(allEnabledValues).toStrictEqual(expected)
+    })
+  })
+
+  describe('getIsCheckAll', () => {
+    const pOptions = getMockedDropdownOptions(false)
+    const allValues = getAllEnabledValues(pOptions)
+    const tests = [{
+      pOptions,
+      modelValue: allValues,
+      expected: true,
+      reason: 'All enabled options are checked',
+    }, {
+      pOptions,
+      modelValue: allValues.slice(-1),
+      expected: false,
+      reason: 'Some options are NOT checked',
+    }, {
+      pOptions: [],
+      modelValue: allValues,
+      expected: false,
+      reason: 'pOptions is empty',
+    }, {
+      pOptions,
+      modelValue: allValues.at(0),
+      expected: false,
+      reason: 'modelValue is not an array',
+    }, {
+      pOptions,
+      modelValue: undefined,
+      expected: false,
+      reason: 'modelValue is undefined',
+    }]
+    it.each(tests)('shoud return $expected when $reason', ({
+      pOptions,
+      modelValue,
+      expected,
+    }) => {
+      const isCheckedAll = getIsCheckAll(pOptions, modelValue)
+
+      expect(isCheckedAll).toBe(expected)
     })
   })
 })

@@ -48,7 +48,6 @@ function getPropsValue(pOptions: PDropdownOption[], pCheckAllLabel = '') {
     pPopperOptions: {},
     pAriaLabel: 'ariaLabel',
     pCheckAllLabel,
-    pIsCheckAll: false,
   }
 
   return propsValue
@@ -193,14 +192,15 @@ describe('test PDropdown', () => {
     beforeEach(() => {
       wrapper = createWrapper(propsValue)
     })
-    it('should emit update:p-is-check-all when click on PCheckbox', async () => {
+    it('should emit update:model-value when click on PCheckbox', async () => {
       const component = wrapper.findComponent({ name: 'ElSelect' })
       const pCheckbox = component.findComponent({ name: 'PCheckbox' })
+      const expected = ['a', 'b', 'c']
 
       pCheckbox.vm.$emit('update:model-value', true)
       await nextTick()
 
-      expect(wrapper.emitted('update:p-is-check-all')).toStrictEqual([[true]])
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expected]])
     })
   })
 })
