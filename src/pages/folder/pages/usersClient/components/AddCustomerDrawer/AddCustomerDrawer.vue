@@ -41,8 +41,8 @@
         >
           <PInput
             v-model="formData.email"
+            pType="email"
             @blur="checkIfUserExists"
-            :pattern="validEmailPattern"
             data-testid="email-input"
           />
         </PFormItem>
@@ -124,7 +124,7 @@ import { PDrawer, PForm, PFormItem, PInput, PImage, PAlert, PButton } from '@kpm
 import { getFullName } from '@/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
-import { validEmailPattern, validPhoneNumberPattern } from '@/common/utils/helpers/forms'
+import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
 import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 
@@ -247,13 +247,28 @@ async function handleFormSubmit() {
   }
 }
 
+const validateEmail = (_rule: any, value: any, callback: any) => {
+  if (!value) {
+    callback(new Error(t('alertMailRequired')))
+  } else {
+    // same regex as MFE login
+    // eslint-disable-next-line
+    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+    if (emailValidator.test(value)) {
+      callback()
+    } else {
+      callback(new Error(t('alertMailInvalid')))
+    }
+  }
+}
+
 const formRules = reactive({
   email: [
     {
       required: true,
       message: t('incorrectEmail'),
       trigger: 'blur',
-      pattern: validEmailPattern,
+      validator: validateEmail,
     },
   ],
   lastName: [
@@ -312,6 +327,8 @@ const userFullName = computed(() => getFullName(formData.firstName, formData.las
     previousLabel: 'Cancel'
     nextLabel: 'Next'
     close: 'Close'
+    alertMailRequired: 'Please enter your mail'
+    alertMailInvalid: 'Please enter a valid mail'
   fr-FR:
     addUser: 'Ajouter un utilisateur'
     fillUserInformation: "Veuillez saisir les informations suivantes :"
@@ -326,4 +343,6 @@ const userFullName = computed(() => getFullName(formData.firstName, formData.las
     previousLabel: 'Annuler'
     nextLabel: 'Suivant'
     close: 'Fermer'
+    alertMailRequired: 'Veuillez saisir votre email'
+    alertMailInvalid: 'Veuillez saisir un email valide'
 </i18n>
