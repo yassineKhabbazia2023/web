@@ -30,14 +30,28 @@ vi.mock('@/services/wallet', () => ({
   })),
 }))
 
-vi.mock('@/services/account', () => ({
-  updateSignatoryStatus: vi.fn(() => Promise.resolve({})),
-  getAccountSignatories: vi.fn(() => Promise.resolve([
+const apiMocks = vi.hoisted(() => ({
+  singleAccountSignatory: vi.fn(() => Promise.resolve([
     {
       ...mockedCustomersCollab[0],
     },
   ])),
+  multipleAccountSignatories: vi.fn(() => Promise.resolve([
+    {
+      ...mockedCustomersCollab[0],
+    },
+    {
+      ...mockedCustomersCollab[1],
+    },
+  ])),
 }))
+
+vi.mock('@/services/account', () => {
+  return {
+    updateSignatoryStatus: vi.fn(() => Promise.resolve({})),
+    getAccountSignatories: apiMocks.singleAccountSignatory,
+  }
+})
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -79,11 +93,29 @@ let wrapper: VueWrapper<any>
 
 const getRows = () => wrapper.findAll('tr.el-table__row')
 
-const signatoryToolboxItem = {
+const addSignatoryToolboxItem = {
   pIconName: 'PIPatchCheck',
   pValue: 'Designate as signatory',
   pActionName: 'assignSignatory',
   pState: 'default',
+}
+
+const removeSignatoryToolboxItemEnabled = {
+  pIconName: 'PIPatchCheck',
+  pValue: 'Revoke signatory status',
+  pActionName: 'unassignSignatory',
+  pState: 'default',
+  disabled: false,
+  pContentTooltip: undefined,
+}
+
+const removeSignatoryToolboxItemDisabled = {
+  pIconName: 'PIPatchCheck',
+  pValue: 'Revoke signatory status',
+  pActionName: 'unassignSignatory',
+  pState: 'default',
+  disabled: true,
+  pContentTooltip: 'A folder should have at least one signatory',
 }
 
 const modifyToolboxItem = {
@@ -207,10 +239,22 @@ describe('usersCollab', () => {
       expect(updateSignatoryStatus).toHaveBeenCalledWith(mockedAccount.accountId, mockedUser.contactId)
     })
 
+    it("should remove account signatory when the 'Revoke signatory status'", async () => {
+      apiMocks.singleAccountSignatory.mockReturnValue(apiMocks.multipleAccountSignatories())
+      wrapper = createWrapper()
+      await flushPromises()
+      await wrapper.vm.handleUserAction('unassignSignatory', mockedUser)
+
+      expect(updateSignatoryStatus).toHaveBeenCalledWith(mockedAccount.accountId, mockedUser.contactId, false)
+    })
+
     it.each([
       {
         userThatCanBeAdded: mockedCustomersCollab[0],
         expectedItems: [
+          {
+            ...removeSignatoryToolboxItemDisabled,
+          },
           {
             ...modifyToolboxItem,
           },
@@ -220,7 +264,7 @@ describe('usersCollab', () => {
         userThatCanBeAdded: mockedCustomersCollab[1],
         expectedItems: [
           {
-            ...signatoryToolboxItem,
+            ...addSignatoryToolboxItem,
           },
           {
             ...modifyToolboxItem,
@@ -233,5 +277,41 @@ describe('usersCollab', () => {
       const items = wrapper.vm.toolboxItems
       expect(items).toStrictEqual(expectedItems)
     })
+
+    it.each([
+      {
+        userToRemove: mockedCustomersCollab[0],
+        expectedItems: [
+          {
+            ...removeSignatoryToolboxItemDisabled,
+          },
+          {
+            ...modifyToolboxItem,
+          },
+        ],
+        getSignatoriesMockToUse: apiMocks.singleAccountSignatory,
+      },
+      {
+        userToRemove: mockedCustomersCollab[1],
+        expectedItems: [
+          {
+            ...removeSignatoryToolboxItemEnabled,
+          },
+          {
+            ...modifyToolboxItem,
+          },
+        ],
+        getSignatoriesMockToUse: apiMocks.multipleAccountSignatories,
+      },
+    ])('should allow signatory remove if user is signatory and account has at least another signatory',
+      async ({ userToRemove, expectedItems, getSignatoriesMockToUse }) => {
+        apiMocks.singleAccountSignatory.mockReturnValue(getSignatoriesMockToUse())
+        wrapper = createWrapper()
+        await flushPromises()
+
+        wrapper.vm.handleToolboxClick(userToRemove)
+        const items = wrapper.vm.toolboxItems
+        expect(items).toMatchObject(expectedItems)
+      })
   })
 })

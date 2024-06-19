@@ -216,6 +216,20 @@ function handleToolboxClick(userRow: any) {
     )
   }
 
+  if (isContactSignatory(userRow.contactId)) {
+    const tooltipContent = !hasMultipleSignatories() ? t('deleteSignatoryTooltip') : undefined
+    items.unshift(
+      {
+        pIconName: 'PIPatchCheck',
+        pValue: t('removeSignatory'),
+        pActionName: userActions.UNASSIGN_SIGNATORY,
+        pState: 'default',
+        disabled: !hasMultipleSignatories(),
+        pContentTooltip: tooltipContent,
+      },
+    )
+  }
+
   toolboxItems.value.push(...items)
 }
 
@@ -312,6 +326,9 @@ const handleUserAction = (action: string, row: any) => {
   if (action === userActions.ASSIGN_SIGNATORY) {
     handleAddSignatory(row.contactId, row.fullName)
   }
+  if (action === userActions.UNASSIGN_SIGNATORY) {
+    handleRemoveSignatory(row.contactId, row.fullName)
+  }
 }
 
 // Signatory addition scope
@@ -325,7 +342,18 @@ async function handleAddSignatory(contactId: IUser['contactId'], contactFullName
     showAddSignatorySuccess(contactFullName)
     setAccountSignatories()
   } catch (error) {
-    showAddSignatoryError()
+    showTechnicalError()
+  }
+}
+
+async function handleRemoveSignatory(contactId: IUser['contactId'], contactFullName: string) {
+  if (!currentEntity.value) return
+  try {
+    await updateSignatoryStatus(currentEntity.value.accountId, contactId, false)
+    showRemoveSignatorySuccess(contactFullName)
+    setAccountSignatories()
+  } catch (error) {
+    showTechnicalError()
   }
 }
 
@@ -334,12 +362,19 @@ function isContactSignatory(contactId: IUser['contactId']) {
   return !!accountSignatories.value.find((signatory) => signatory.contactId === contactId)
 }
 
+function hasMultipleSignatories() {
+  return accountSignatories.value.length > 1
+}
+
 async function setAccountSignatories() {
   if (!currentEntity.value) return
   state.isLoading = true
   try {
     const signatories = await getAccountSignatories(currentEntity.value.accountId)
+    accountSignatories.value.length = 0
     accountSignatories.value.push(...signatories)
+    // eslint-disable-next-line no-console
+    console.log('EFUBREUFEB', accountSignatories.value)
   } catch (error) {
     console.error(error)
   }
@@ -357,7 +392,17 @@ function showAddSignatorySuccess(userFullName: string) {
   })
 }
 
-function showAddSignatoryError() {
+function showRemoveSignatorySuccess(userFullName: string) {
+  PNotification({
+    message: t('signatoryRemoved', { userFullName }),
+    icon: PICheck,
+    showClose: true,
+    customClass: 'success',
+    position: 'bottom-right',
+  })
+}
+
+function showTechnicalError() {
   PNotification({
     message: t('technicalError'),
     icon: PIExclamationTriangle,
@@ -411,6 +456,7 @@ en-US:
   email: 'Email'
   dateAccess: 'First date access'
   assignSignatory: 'Designate as signatory'
+  removeSignatory: 'Revoke signatory status'
   modifyRights: 'Change the rights'
   statusConnect: 'Connected'
   statusInvite: 'Invited'
@@ -418,6 +464,8 @@ en-US:
   numberOfUserPerPage: 'number of user per page'
   on: 'on'
   signatoryAdded: "User {userFullName} has been successfuly designated as a signatory of the entity"
+  signatoryRemoved: "The user {userFullName} is no longer a signatory on the account."
+  deleteSignatoryTooltip: 'A folder should have at least one signatory'
   technicalError: 'The operation failed due to a technical error. Please try again later.'
 fr-FR:
   user: 'Utilisateur'
@@ -426,12 +474,15 @@ fr-FR:
   email: 'E-mail'
   dateAccess: "Date d'ajout"
   assignSignatory: 'Désigner en tant que signataire'
+  removeSignatory: 'Retirer le statut de signataire'
   modifyRights: 'Modifier les droits'
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
   statusDeclared: 'Declaré'
   numberOfUserPerPage: "nombre de d'utilisateur par page"
   signatoryAdded: "L'utilisateur {userFullName} a été désigné en tant que signataire de l'entité avec succès"
+  signatoryRemoved: "L’utilisateur {userFullName} n’est plus signataire du dossier."
+  deleteSignatoryTooltip: 'Un dossier doit avoir au moins un signataire'
   technicalError: 'L’opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.'
   on: 'sur'
 </i18n>
