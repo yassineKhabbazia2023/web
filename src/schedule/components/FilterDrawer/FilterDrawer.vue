@@ -12,12 +12,39 @@
       pLabelPosition="top"
       :pModel="formData"
     >
-      <PDropdown
+      <PFieldNumberMultiple
+        v-model="formData.targets"
+        pFieldType="dropdown"
+        pFieldKey="targets"
+        pMultiple
+        :pLabel="t('targets')"
+        :pCheckAllLabel="t('checkAll')"
+        :pDropdownOptions="targetOptions"
+      />
+      <PFieldStringMultiple
         v-model="formData.templates"
+        pFieldType="dropdown"
+        pFieldKey="templates"
         pMultiple
         :pLabel="t('templates')"
         :pCheckAllLabel="t('checkAll')"
-        :pOptions="templates"
+        :pDropdownOptions="templateOptions"
+      />
+      <PFieldStatusMultiple
+        v-model="formData.status"
+        pFieldType="dropdown"
+        pFieldKey="status"
+        pMultiple
+        :pLabel="t('status.label')"
+        :pCheckAllLabel="t('checkAll')"
+        :pDropdownOptions="statusOptions"
+      />
+      <PFieldBoolean
+        v-model="formData.mineOnly"
+        pFieldType="dropdown"
+        pFieldKey="mineOnly"
+        :pLabel="t('mineOnly.label')"
+        :pDropdownOptions="mineOnlyOptions"
       />
     </PForm>
     <template #footer>
@@ -51,18 +78,24 @@ import { onMounted, computed, ref } from 'vue'
 import {
   PDrawer,
   PForm,
-  PDropdown,
+  PField,
   PButton,
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { Filters, FilterDrawerProps } from './FilterDrawerTypes'
-import { getScheduleModels } from '@/schedule/services'
+import { getAccountsCollection, getScheduleModels } from '@/schedule/services'
 import type { PDropdownOption } from '@kpmg/styleguide'
+import type { Status } from '@/schedule/models/Deadline'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const PFieldStringMultiple = PField<string[]>
+const PFieldNumberMultiple = PField<number[]>
+const PFieldStatusMultiple = PField<Status[] | undefined>
+const PFieldBoolean = PField<boolean>
 
 const formData = ref<Filters>({
   targets: [],
@@ -98,11 +131,35 @@ function onOpen() {
   initializeFilters()
 }
 
-const templates = ref<PDropdownOption[]>([])
+const targetOptions = ref<PDropdownOption[]>([])
+const templateOptions = ref<PDropdownOption[]>([])
+const statusOptions = ref<PDropdownOption[]>([{
+  pValue: 'Done',
+  pLabel: t('status.Done'),
+}, {
+  pValue: 'Todo',
+  pLabel: t('status.Todo'),
+}])
 
-onMounted(() => {
+const mineOnlyOptions = ref<PDropdownOption[]>([{
+  pValue: true,
+  pLabel: t('mineOnly.true'),
+}, {
+  pValue: false,
+  pLabel: t('mineOnly.false'),
+}])
+
+onMounted(async () => {
+  const accounts = await getAccountsCollection()
   const scheduleModels = getScheduleModels('both')
-  templates.value = scheduleModels
+
+  targetOptions.value = accounts
+    .map(({ id: pValue, name: pLabel }) => ({
+      pValue,
+      pLabel,
+    }))
+
+  templateOptions.value = scheduleModels
     .map(({ key: pValue, label: pLabel }) => ({
       pValue,
       pLabel,
@@ -125,12 +182,30 @@ function onClickApply() {
     title: 'Filters'
     close: 'Close'
     apply: 'Apply'
+    targets: 'Targets(s)'
+    status:
+      label: 'Status'
+      Done: 'Done'
+      Todo: 'To do'
+    mineOnly:
+      label: 'Creator'
+      true: 'You (by default)'
+      false: 'Anyone'
     templates: 'Template'
     checkAll: 'Check all'
   fr-FR:
     title: 'Filtres'
     close: 'Fermer'
     apply: 'Appliquer'
+    targets: 'Destinataire(s)'
     templates: 'Modèle'
+    status:
+      label: 'Statut'
+      Done: 'Fait'
+      Todo: 'En attente'
+    mineOnly:
+      label: 'Créateur'
+      true: 'Vous (par défaut)'
+      false: 'Tout le monde'
     checkAll: 'Tout sélectionner'
 </i18n>

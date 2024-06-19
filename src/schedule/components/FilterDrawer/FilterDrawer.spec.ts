@@ -1,10 +1,14 @@
-import { flushPromises, shallowMount } from '@vue/test-utils'
-import FilterDrawer from '.'
-import { expect, describe, it } from 'vitest'
-import type { FilterDrawerProps, Filters } from './FilterDrawerTypes'
 import { nextTick } from 'vue'
+import { flushPromises, shallowMount } from '@vue/test-utils'
+import { ScheduleServicesMock } from '@/schedule/tests/mocks/commonViMock'
+import FilterDrawer from '.'
+import { expect, describe, it, vi } from 'vitest'
+import type { FilterDrawerProps, Filters } from './FilterDrawerTypes'
+import type { Status } from '@/schedule/models/Deadline'
 
-function createWrapper(override: Partial<FilterDrawerProps> = {}) {
+vi.mock('@/schedule/services', () => ScheduleServicesMock)
+
+async function createWrapper(override: Partial<FilterDrawerProps> = {}) {
   const defaultProps: FilterDrawerProps = {
     modelValue: false,
     targets: [],
@@ -17,7 +21,7 @@ function createWrapper(override: Partial<FilterDrawerProps> = {}) {
     ...override,
   }
 
-  return shallowMount(FilterDrawer, {
+  const wrapper = shallowMount(FilterDrawer, {
     props,
     global: {
       stubs: {
@@ -30,8 +34,8 @@ function createWrapper(override: Partial<FilterDrawerProps> = {}) {
           name: 'PForm',
           template: '<div><slot /></div>',
         },
-        PDropdown: {
-          name: 'PDropdown',
+        PField: {
+          name: 'PField',
           template: '<div />',
           props: ['modelValue'],
           emits: ['update:model-value'],
@@ -40,18 +44,21 @@ function createWrapper(override: Partial<FilterDrawerProps> = {}) {
       },
     },
   })
+  await flushPromises()
+
+  return wrapper
 }
 
 describe('test FilterDrawer', () => {
-  it('renders the component when modelValue is true', () => {
-    const wrapper = createWrapper({ modelValue: true })
+  it('renders the component when modelValue is true', async () => {
+    const wrapper = await createWrapper({ modelValue: true })
     const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
 
     expect(pDrawer.props()).toBeTruthy()
   })
 
   it('should emit update:model-value event when drawer closes', async () => {
-    const wrapper = createWrapper({ modelValue: true })
+    const wrapper = await createWrapper({ modelValue: true })
     const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
 
     pDrawer.vm.$emit('close-drawer-button')
@@ -61,11 +68,18 @@ describe('test FilterDrawer', () => {
   })
 
   it('should apply props in filter when drawer emit open', async () => {
+    const target = 101
     const template = 'Bilan'
+    const targets = [target]
     const templates = [template]
-    const wrapper = createWrapper({
+    const status: Status[] = ['Todo']
+    const mineOnly = true
+    const wrapper = await createWrapper({
       modelValue: false,
+      targets,
       templates,
+      status,
+      mineOnly,
     })
 
     const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
@@ -73,15 +87,19 @@ describe('test FilterDrawer', () => {
     pDrawer.vm.$emit('open')
     await nextTick()
 
-    const pDropdown = wrapper.findComponent({ name: 'PDropdown' })
+    const pFields = wrapper.findAllComponents({ name: 'PFieldStringMultiple' })
 
-    expect(pDropdown.props('modelValue')).toStrictEqual(templates)
+    expect(pFields?.at(0)?.props('modelValue')).toStrictEqual(targets)
+    expect(pFields?.at(1)?.props('modelValue')).toStrictEqual(templates)
+    expect(pFields?.at(2)?.props('modelValue')).toStrictEqual(status)
+    expect(pFields?.at(3)?.props('modelValue')).toStrictEqual(mineOnly)
   })
 
   it('should emit active filters and close drawer when user clicks on apply button', async () => {
-    const wrapper = createWrapper({ modelValue: true })
+    const wrapper = await createWrapper({ modelValue: true })
 
-    const pDropdown = wrapper.findComponent({ name: 'PDropdown' })
+    const pFieldStringMultiples = wrapper.findAllComponents({ name: 'PFieldStringMultiple' })
+    const pFieldStringMultiple = pFieldStringMultiples.at(1)
     const pButtons = wrapper.findAllComponents({ name: 'PButton' })
     const pButtonApply = pButtons[1]
     const template = 'TVA'
@@ -92,7 +110,7 @@ describe('test FilterDrawer', () => {
       mineOnly: false,
     }
 
-    pDropdown.vm.$emit('update:model-value', [template])
+    pFieldStringMultiple?.vm?.$emit('update:model-value', [template])
     pButtonApply.trigger('click')
     await nextTick()
 
@@ -104,8 +122,7 @@ describe('test FilterDrawer', () => {
   })
 
   it('should emit close drawer when user clicks on close button', async () => {
-    const wrapper = createWrapper({ modelValue: true })
-    await flushPromises()
+    const wrapper = await createWrapper({ modelValue: true })
 
     const pButtons = wrapper.findAllComponents({ name: 'PButton' })
     const pButtonClose = pButtons[0]

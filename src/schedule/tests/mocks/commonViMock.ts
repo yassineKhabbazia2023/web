@@ -8,6 +8,10 @@ export const TEST_DATE = '2024-08-14'
 const { fetchUserData } = helpers()
 
 export const ScheduleServicesMock = {
+  getScheduleModels: (longLabels: boolean) => [{
+    key: 'TVA',
+    label: longLabels ? 'TVA au 21' : 'TVA',
+  }],
   getScheduleModelsByKey: () => ({
     TVA: 'TVA au 21 (Taxe sur la valeur ajoutée)',
   }),
@@ -16,10 +20,7 @@ export const ScheduleServicesMock = {
     deadlines: getMockedDeadlines(),
   }]),
 
-  getAccountsCollection: () => Promise.resolve({
-    status: 'fulfilled',
-    value: accountsCollection,
-  }),
+  getAccountsCollection: () => Promise.resolve(accountsCollection),
 }
 export const debounceMock = vi.fn((callback: Function) => callback)
 
