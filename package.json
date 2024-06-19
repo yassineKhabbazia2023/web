@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@kpmg/common": "^3.1.124",
-    "@kpmg/styleguide": "^2.2.654",
+    "@kpmg/styleguide": "^2.2.695",
     "dayjs": "^1.11.10",
     "idlejs": "^3.0.0",
     "jwt-decode": "^3.1.2",
