@@ -50,7 +50,7 @@
     >
       <template #bold-text>
         {{t('Warning')}}
-      </template> {{ monthyWarning(createScheduleForm.date.getDate()) }}
+      </template> {{ monthlyWarning }}
     </PAlert>
     <CreateScheduleReminders
       v-model="reminders"
@@ -77,12 +77,49 @@
         :pAutosize="{ minRows: 6, maxRows: 8 }"
       />
     </PFormItem>
+    <PFormItem
+      inline
+    >
+      <div class="font-small margin-bottom--2">
+        <span class="create-schedule-form__optional-title font-semibold">
+          {{ t('attachment') }}
+        </span>
+        <span class="create-schedule-form__optional">
+          {{ t('optional') }}
+        </span>
+      </div>
+      <PUpload
+        :pMultiple="false"
+        pDrag
+        :pDisabled="!!createScheduleForm.attachment.name"
+        pAccept="image/*,.pdf,.doc,.docx"
+        pShowFileList
+        :limit="1"
+        pUploadType="file-line"
+        pTextLimitSize="5MB"
+        :pPrefixLabelFileLine="t('attachment-prefix-label')"
+        :pSuffixLabelFileLine="t('attachment-suffix-label')"
+        @files-selected="addAttachment($event)"
+        @delete-file="removeAttachment"
+        :beforeUpload="beforeAttachmentUpload"
+      />
+      <span
+        v-if="attachmentErrorType"
+        class="create-schedule-form__attachment-error margin-bottom--2"
+        data-testid="schedule-attachment-error"
+      >
+        {{ labelsErrorsMap[attachmentErrorType] }}
+      </span>
+      <PAlert pType="information">
+        {{  t('attachment-alert') }}
+      </PAlert>
+    </PFormItem>
   </PForm>
 </template>
 
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
-import { ref, reactive, watch, onMounted, computed } from 'vue'
+import { ref, reactive, watch, onMounted, computed, onBeforeUnmount } from 'vue'
 import {
   PForm,
   PFormItem,
@@ -92,13 +129,14 @@ import {
   PInput,
   PAlert,
   PDropdown,
+  PUpload,
 } from '@kpmg/styleguide'
 import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
 import CreateScheduleReminders from '@/schedule/components/CreateSchedule/CreateScheduleReminders'
 import type { FormProps } from './CreateScheduleFormTypes'
 import type { Schedule, Frequency } from './CreateScheduleFormModel'
 import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
-import { dateISOFormatter } from '@/schedule/helpers/utils'
+import { dateISOFormatter, base64ToBase64URL } from '@/schedule/helpers/utils'
 import { getScheduleModels } from '@/schedule/services'
 import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
 
@@ -126,6 +164,10 @@ const createScheduleForm = reactive({
   date: new Date(),
   description: '',
   frequency: 'None',
+  attachment: {
+    name: '',
+    content: '',
+  },
 })
 
 const scheduleModel: Schedule = {
@@ -142,7 +184,13 @@ const scheduleModel: Schedule = {
   description: '',
   isDraft: false,
   isPrivate: false,
+  attachment: {
+    name: '',
+    content: '',
+  },
 }
+const reader: FileReader = new FileReader()
+const attachmentErrorType = ref<'extension' | 'size' | ''>('')
 
 const showMonthlyAlert = computed(() =>
   createScheduleForm.frequency === 'Monthly' && createScheduleForm.date.getDate() >= 29)
@@ -157,6 +205,16 @@ const frequenciesOptionsFormatted = computed(() => {
     pLabel: frequencyMap[key],
   }))
 })
+
+const monthlyWarning = computed(() =>
+  // eslint-disable-next-line max-len
+  `Certains mois contiennent moins de ${createScheduleForm.date.getDate()} jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.`,
+)
+
+const labelsErrorsMap: Record<'extension' | 'size', string> = {
+  extension: t('file-not-allowed'),
+  size: t('size-exceed'),
+}
 
 // Utility functions
 const createRule = (message: string, trigger = 'change') => ({
@@ -186,6 +244,7 @@ const evaluateForm = () => {
       scheduleModel.description = createScheduleForm.description
       scheduleModel.scheduling.frequency = createScheduleForm.frequency as Frequency
       scheduleModel.reminders = reminders.value
+      scheduleModel.attachment = createScheduleForm.attachment
       emit('update-schedule-model', scheduleModel)
     }
   })
@@ -209,9 +268,52 @@ onMounted(() => {
   }
 })
 
-const monthyWarning = (frequencyDate: number) =>
-  // eslint-disable-next-line max-len
-  `Certains mois contiennent moins de ${frequencyDate} jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.`
+onBeforeUnmount(() => {
+  reader.removeEventListener('load', () => {})
+})
+
+const addAttachment = (file: File[]) => {
+  reader.addEventListener(
+    'load',
+    () => {
+      createScheduleForm.attachment = {
+        name: file[0].name,
+        content: base64ToBase64URL(reader.result as string),
+      }
+    },
+    false,
+  )
+  reader.readAsDataURL(file[0])
+}
+
+const beforeAttachmentUpload = (attachment: File) => {
+  const allowedExtensions = [
+    'application/pdf', 'image/png',
+    'image/jpeg', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ]
+  if (!allowedExtensions.includes(attachment.type)) {
+    attachmentErrorType.value = 'extension'
+    return false
+  }
+  if ((attachment.size / (1024 * 1024)) > 5) {
+    attachmentErrorType.value = 'size'
+    return false
+  }
+  attachmentErrorType.value = ''
+  return true
+}
+
+const removeAttachment = () => {
+  createScheduleForm.attachment = {
+    name: '',
+    content: '',
+  }
+}
+
+defineExpose({
+  beforeAttachmentUpload,
+})
+
 </script>
 
 <style lang="scss" scoped>
@@ -224,6 +326,11 @@ const monthyWarning = (frequencyDate: number) =>
   &__optional {
     line-height: 120%;
     color: var(--el-color-neutral-gray-500);
+  }
+  &__attachment-error {
+    color: var(--el-color-danger);
+    font-size: 12px;
+    line-height: 1;
   }
   :deep(.el-form-item__content) {
     line-height: inherit;
@@ -248,7 +355,13 @@ const monthyWarning = (frequencyDate: number) =>
     "frequency": "Frequency",
     "None": "None",
     "Monthly": "Monthly",
-    "Warning": "Warning !"
+    "Warning": "Warning !",
+    "attachment": "Attachment",
+    "size-exceed": "The maximum authorised size is 5Mb. Please resize your attachment.",
+    "file-not-allowed": "This type of file format is not supported.",
+    "attachment-alert": "Only the following file types are authorised: .jpg, .jpeg, .png, .doc and .docx",
+    "attachment-prefix-label": "Drop the file or",
+    "attachment-suffix-label": "browse the computer"
   },
   "fr-FR": {
     "reminder": "Titre du rappel",
@@ -266,6 +379,12 @@ const monthyWarning = (frequencyDate: number) =>
     "frequency": "Périodicité",
     "None": "Ne se répète pas",
     "Monthly": "Tous les mois",
-    "Warning": "Attention !"
+    "Warning": "Attention !",
+    "attachment": "Pièce jointe",
+    "size-exceed": "Le poids maximal autorisé est de 5Mb. Veuillez redimensionner votre pièce jointe.",
+    "file-not-allowed": "Ce type de format de fichier n'est pas supporté.",
+    "attachment-alert": "Seuls les types de fichiers suivants sont autorisés : .jpg, .jpeg, .png, .doc et .docx.",
+    "attachment-prefix-label": "Déposer le fichier ou",
+    "attachment-suffix-label": "parcourir l'ordinateur"
   }
 }</i18n>

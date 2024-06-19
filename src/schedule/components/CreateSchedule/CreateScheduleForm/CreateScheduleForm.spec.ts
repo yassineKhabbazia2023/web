@@ -7,6 +7,7 @@ import {
   PDatePicker,
   PSelect,
   PAlert,
+  PUpload,
 } from '@kpmg/styleguide'
 import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
 import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
@@ -125,6 +126,48 @@ describe('test CreateScheduleForm', () => {
     expect(wrapper.findComponent(PAlert).text())
       // eslint-disable-next-line max-len
       .toContain("Certains mois contiennent moins de 29 jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.")
+  })
+  it('should add attachment', () => {
+    const wrapper = createWrapper(
+      {
+        recipientsCollection: accountsDataTransformer(accountsCollection),
+        frequenciesCollection: frequenciesMock,
+      })
+    const mockFile = new File(['file content'], 'example.pdf', { type: 'application/pdf' })
+    const PUploadComponent = wrapper.findComponent(PUpload)
+    PUploadComponent.vm.$emit('delete-file')
+    PUploadComponent.vm.$emit('files-selected',
+      [mockFile])
+    expect(wrapper.find('[data-testid="schedule-attachment-error"]').exists())
+      .toBeFalsy()
+  })
+  it.each([
+    {
+      file: { type: 'text/plain', size: 12345 },
+      label: 'unallowed file extension',
+      isErrorTriggered: true,
+    },
+    {
+      file: { type: 'application/pdf', size: 1234567891211212 },
+      label: 'unallowed size attachment',
+      isErrorTriggered: true,
+    },
+    {
+      file: { type: 'application/pdf', size: 12345 },
+      label: 'allow size and file extension',
+      isErrorTriggered: false,
+    },
+  ])('should test $label', async ({ file, isErrorTriggered }) => {
+    const wrapper = createWrapper(
+      {
+        recipientsCollection: accountsDataTransformer(accountsCollection),
+        frequenciesCollection: frequenciesMock,
+      })
+    wrapper.vm.beforeAttachmentUpload(
+      file)
+    await nextTick()
+    expect(wrapper.find('[data-testid="schedule-attachment-error"]').exists())
+      .toBe(isErrorTriggered)
   })
 })
 

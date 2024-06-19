@@ -6,6 +6,11 @@ import { recipientsIdCollection } from './Account'
 const date = '2024-03-20'
 const time = ''
 
+const attachment = {
+  name: '',
+  content: '',
+}
+
 export function getMockSchedule(reminders: number[] = []): Schedule {
   const template: Template = {
     typeShort: 'TVA',
@@ -24,6 +29,7 @@ export function getMockSchedule(reminders: number[] = []): Schedule {
     reminders,
     isDraft: false,
     isPrivate: false,
+    attachment,
   }
 }
 
@@ -46,6 +52,7 @@ export function getMonthlyMockSchedule(reminders: number[] = []): Schedule {
     reminders,
     isDraft: false,
     isPrivate: false,
+    attachment,
   }
 }
 
@@ -63,6 +70,7 @@ export function getMockedSchedule(override: Partial<Schedule> = {}) {
       time,
       frequency: 'Monthly',
     },
+    attachment,
     description: '',
     reminders: [],
     isDraft: false,
