@@ -12,6 +12,7 @@ import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useCommonStore } from '@kpmg/common'
+import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 const pinia = createTestingPinia()
 
@@ -134,9 +135,16 @@ describe('home page', () => {
     await flushPromises()
 
     const expectedMonthRange = ScheduleUtils.getMonthInterval(mockedToday, 7)
+    const expectedParams = {
+      ...expectedMonthRange,
+      targets: [],
+      templates: [],
+      status: [],
+      mineOnly: true,
+    }
 
     expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
-    expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedMonthRange)
+    expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedParams)
   })
 
   function findCalendarWidgetLoader(wrapper: VueWrapper) {
@@ -535,6 +543,36 @@ describe('home page', () => {
         const filterDrawerAfter = wrapper.findComponent({ name: 'FilterDrawer' })
         expect(filterDrawerAfter.exists()).toBeTruthy()
       })
+    })
+
+    it('should apply filters when drawer emis apply', async () => {
+      const getSchedulesCollectionSpy = vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+
+      const wrapper = createWrapper()
+
+      const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+      const filters: Filters = {
+        targets: [],
+        templates: ['TVA'],
+        status: [],
+        mineOnly: true,
+      }
+
+      actionBar.vm.$emit('open-drawer-filters')
+      await nextTick()
+
+      const filterDrawerAfter = wrapper.findComponent({ name: 'FilterDrawer' })
+      filterDrawerAfter.vm.$emit('apply', filters)
+
+      const expectedMonthRange = ScheduleUtils.getMonthInterval(mockedToday, 7)
+      const expectedParams = {
+        ...expectedMonthRange,
+        ...filters,
+      }
+
+      expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
+      expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(2, expectedParams)
     })
   })
 })

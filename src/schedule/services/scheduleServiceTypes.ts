@@ -10,6 +10,6 @@ export type ScheduleApiQueryParams = {
   searchTerm?: string
   targets?: number[]
   templates?: string[]
-  status?: Status
+  status?: Status[]
   mineOnly?: boolean
 }

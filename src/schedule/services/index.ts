@@ -6,8 +6,19 @@ import type { Schedule } from '@/schedule/components/CreateSchedule/CreateSchedu
 import { CSV_DATA } from './scheduleCollection'
 import type { ScheduleModelLabelType, ScheduleApiQueryParams } from './scheduleServiceTypes'
 
+export function getSerializedParam(key: string, values: (string|number)[]) {
+  return values
+    .map((value) => `${key}=${value}`)
+    .join('&')
+}
+
 export const getSchedulesCollection = async (params: ScheduleApiQueryParams) => {
-  const { data } = await api().schedule.get<DeadlinesByDate[]>('/schedules', { params })
+  const { data } = await api().schedule.get<DeadlinesByDate[]>('/schedules', {
+    params,
+    paramsSerializer: {
+      indexes: true,
+    },
+  })
   return data
 }
 

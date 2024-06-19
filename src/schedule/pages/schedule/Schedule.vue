@@ -85,7 +85,12 @@
   <FilterDrawer
     v-if="isFilterDrawerVisible"
     v-model="isFilterDrawerVisible"
+    :targets="filters.targets"
+    :templates="filters.templates"
+    :status="filters.status"
+    :mineOnly="filters.mineOnly"
     appendToBody
+    @apply="onApplyFilters"
   />
 </template>
 
@@ -99,11 +104,12 @@ import WidgetActiveDay from '@/schedule/components/WidgetActiveDay'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import ScheduleDrawer from '@/schedule/components/CreateSchedule/ScheduleDrawer'
 import FilterDrawer from '@/schedule/components/FilterDrawer'
+import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import OccurrenceDrawer from '@/schedule/components/OccurrenceDrawer'
 import { dateISOFormatter, getYearMonth } from '@/schedule/helpers/utils'
-import { getDates, getMonthInterval, getAdvancedSearchParams } from './ScheduleUtils'
+import { getDates, getMonthInterval, getAdvancedSearchParams, getSearchParams } from './ScheduleUtils'
 import type { ScheduleProps } from './ScheduleTypes'
 import { storeToRefs } from 'pinia'
 import type { ViewType } from '@/schedule/models/commonTypes'
@@ -129,6 +135,12 @@ const calendarWidgetDates = ref<string[]>([])
 const isLoading = ref(true)
 const isSearchState = ref(false)
 const searchTerm = ref('')
+const filters = ref<Filters>({
+  targets: [],
+  templates: [],
+  status: [],
+  mineOnly: true,
+})
 const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
 const isFilterDrawerVisible = ref(false)
@@ -182,8 +194,9 @@ function onClickDate(dateIso: string) {
 async function refreshData() {
   try {
     isLoading.value = true
-    const monthRange = getMonthInterval(activeDate.value, 7)
-    deadlineItems.value = await getSchedulesCollection(monthRange)
+    const today = new Date()
+    const searchParams = getSearchParams(today, filters.value)
+    deadlineItems.value = await getSchedulesCollection(searchParams)
     setCalendarWidgetDates(deadlineItems.value)
   } catch (error) {
     console.error(error)
@@ -282,6 +295,11 @@ const filteredDeadlineItems = computed(() => {
 const deadlineListItems = computed(() => {
   return isSearchState.value ? advancedSearchDeadlineItems.value : filteredDeadlineItems.value
 })
+
+function onApplyFilters(newFilters: Filters) {
+  filters.value = newFilters
+  refreshData()
+}
 </script>
 
 <style lang="scss" scoped>

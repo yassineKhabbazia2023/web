@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
 import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
+import type { ScheduleApiQueryParams } from '@/schedule/services/scheduleServiceTypes'
 
 export function getDates(deadlineItems: DeadlinesByDate[]) {
   return deadlineItems.reduce<string[]>((dates: string[], deadlineItem) => {
@@ -40,4 +42,26 @@ export function getAdvancedSearchParams(date: Date, searchTerm: string) {
     endDate,
     searchTerm,
   }
+}
+
+export function getSearchParams(date: Date, filters: Filters) {
+  const {
+    startDate,
+    endDate,
+  } = getMonthInterval(date, 7)
+  const {
+    targets,
+    templates,
+    status,
+    mineOnly,
+  } = filters
+
+  return {
+    startDate,
+    endDate,
+    targets,
+    templates,
+    status,
+    mineOnly,
+  } as ScheduleApiQueryParams
 }
