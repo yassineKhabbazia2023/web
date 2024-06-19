@@ -17,6 +17,8 @@
         pFieldType="dropdown"
         pFieldKey="targets"
         pMultiple
+        pCollapseTags
+        pCollapseTagsTooltip
         :pLabel="t('targets')"
         :pCheckAllLabel="t('checkAll')"
         :pDropdownOptions="targetOptions"
@@ -26,25 +28,29 @@
         pFieldType="dropdown"
         pFieldKey="templates"
         pMultiple
+        pCollapseTags
+        pCollapseTagsTooltip
         :pLabel="t('templates')"
         :pCheckAllLabel="t('checkAll')"
         :pDropdownOptions="templateOptions"
       />
       <PFieldStatusMultiple
         v-model="formData.status"
-        pFieldType="dropdown"
+        pFieldType="radio"
         pFieldKey="status"
         pMultiple
         :pLabel="t('status.label')"
         :pCheckAllLabel="t('checkAll')"
-        :pDropdownOptions="statusOptions"
+        :pOptions="statusOptions"
+        pFlexColumn
       />
       <PFieldBoolean
         v-model="formData.mineOnly"
-        pFieldType="dropdown"
+        pFieldType="radio"
         pFieldKey="mineOnly"
         :pLabel="t('mineOnly.label')"
-        :pDropdownOptions="mineOnlyOptions"
+        :pOptions="mineOnlyOptions"
+        pFlexColumn
       />
     </PForm>
     <template #footer>
@@ -84,7 +90,7 @@ import {
 import { useI18n } from 'vue-i18n'
 import type { Filters, FilterDrawerProps } from './FilterDrawerTypes'
 import { getAccountsCollection, getScheduleModels } from '@/schedule/services'
-import type { PDropdownOption } from '@kpmg/styleguide'
+import type { PDropdownOption, PFieldRadioOptions } from '@kpmg/styleguide'
 import type { Status } from '@/schedule/models/Deadline'
 
 const { t } = useI18n({
@@ -133,7 +139,7 @@ function onOpen() {
 
 const targetOptions = ref<PDropdownOption[]>([])
 const templateOptions = ref<PDropdownOption[]>([])
-const statusOptions = ref<PDropdownOption[]>([{
+const statusOptions = ref<PFieldRadioOptions[]>([{
   pValue: 'Done',
   pLabel: t('status.Done'),
 }, {
@@ -141,7 +147,7 @@ const statusOptions = ref<PDropdownOption[]>([{
   pLabel: t('status.Todo'),
 }])
 
-const mineOnlyOptions = ref<PDropdownOption[]>([{
+const mineOnlyOptions = ref<PFieldRadioOptions[]>([{
   pValue: true,
   pLabel: t('mineOnly.true'),
 }, {
