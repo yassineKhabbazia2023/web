@@ -260,8 +260,8 @@ const validateEmail = (_rule: any, value: any, callback: any) => {
     callback(new Error(t('alertMailRequired')))
   } else {
     // same regex as MFE login
-    // eslint-disable-next-line
-    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+    // eslint-disable-next-line max-len, no-useless-escape
+    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,24}))$/
     if (emailValidator.test(value)) {
       callback()
     } else {
