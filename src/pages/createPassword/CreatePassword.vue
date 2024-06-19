@@ -93,7 +93,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi, commonStore as store, fetchUrlTerms, tokenService } from '@kpmg/common'
+import { commonApi, commonStore as store, fetchUrlTerms, tokenService, amplitudeService } from '@kpmg/common'
 import {
   onBeforeMount,
   reactive,
@@ -220,9 +220,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
             isCollab: false,
           },
         })
+        amplitudeService.track('Onboarding Completed', {
+          onboarding_result: 'succeeded',
+        })
         navigateToCustomerWallet()
       } catch {}
     } else {
+      amplitudeService.track('Onboarding Completed', {
+        onboarding_result: 'failed',
+      })
       return false
     }
   })
@@ -244,6 +250,10 @@ onBeforeMount(async () => {
   }
 })
 onMounted(async () => {
+  amplitudeService.reset()
+  amplitudeService.track('Onboarding Email Accepted', {
+    onboarding_email_click: '',
+  })
   try {
     urlTerms.value = await fetchUrlTerms()
     const { terms } = await getTermsByContactId(parseInt(contactId as string))
