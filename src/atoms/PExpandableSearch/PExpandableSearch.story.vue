@@ -6,6 +6,7 @@
         v-model:pSearchContent="pSearchContent"
         :pIsSearchShrinkable ="pIsSearchShrinkable "
         :pIsSearchOpen="pIsSearchOpen"
+        pType="default"
         :pFocusOnExpand="pFocusOnExpand"
         @update:p-search-content="logEvent('input', $event)"
         @search-expand-change="logEvent('search-expand-change', $event)"

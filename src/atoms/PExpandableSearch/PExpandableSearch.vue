@@ -4,7 +4,7 @@
   >
     <PButton
       v-if="!isSearchOpen"
-      pType="white"
+      :pType="pType"
       pPlain
       pSize="small"
       @click="openSearchBar"
@@ -40,6 +40,7 @@ import PButton from '@/atoms/PButton'
 import PInput from '@/atoms/PInput'
 
 const props = withDefaults(defineProps<PExpandableSearchProps>(), {
+  pType: 'white',
   pIsSearchOpen: false,
 })
 

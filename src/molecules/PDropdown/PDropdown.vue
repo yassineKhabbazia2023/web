@@ -133,9 +133,7 @@ const hasGroups = computed(() => getHasGroups(groups.value))
 const internalIsCheckAll = computed({
   get: () => getIsCheckAll(props.pOptions, props.modelValue),
   set: (isCheckAll: boolean) => {
-    if (isCheckAll) {
-      internalModelValue.value = getAllEnabledValues(props.pOptions)
-    }
+    internalModelValue.value = isCheckAll ? getAllEnabledValues(props.pOptions) : []
   },
 })
 

@@ -73,6 +73,7 @@ export function getDropdownField(
     pTestId,
     pMultiple,
     pCheckAllLabel,
+    pCollapseTags: true,
   }
 }
 

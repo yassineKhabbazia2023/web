@@ -192,6 +192,7 @@ describe('test PDropdown', () => {
     beforeEach(() => {
       wrapper = createWrapper(propsValue)
     })
+
     it('should emit update:model-value when click on PCheckbox', async () => {
       const component = wrapper.findComponent({ name: 'ElSelect' })
       const pCheckbox = component.findComponent({ name: 'PCheckbox' })
@@ -200,7 +201,15 @@ describe('test PDropdown', () => {
       pCheckbox.vm.$emit('update:model-value', true)
       await nextTick()
 
-      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expected]])
+      pCheckbox.vm.$emit('update:model-value', false)
+      await nextTick()
+
+      const emittedModelValue = wrapper.emitted('update:model-value')
+      const emittedModelValueFirst = emittedModelValue?.at(0)
+      const emittedModelValueSecond = emittedModelValue?.at(1)
+
+      expect(emittedModelValueFirst).toStrictEqual([expected])
+      expect(emittedModelValueSecond).toStrictEqual([[]])
     })
   })
 })

@@ -46,6 +46,7 @@
   {
     "modelValue": undefined,
     "pCheckAllLabel": "Tout afficher",
+    "pCollapseTags": true,
     "pCssClass": "flex--grow-1 min-width--4 flex--basis-40",
     "pDisabled": false,
     "pDropdownOptions": [

@@ -27,6 +27,8 @@
       :pMultiple="pMultiple"
       :data-testid="pTestId"
       :pCheckAllLabel="pCheckAllLabel"
+      :pCollapseTags="pCollapseTags"
+      :pCollapseTagsTooltip="pCollapseTagsTooltip"
     />
     <PDatePicker
       v-if="pFieldType === 'date'"
