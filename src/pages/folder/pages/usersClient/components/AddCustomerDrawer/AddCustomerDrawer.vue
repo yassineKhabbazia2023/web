@@ -247,28 +247,13 @@ async function handleFormSubmit() {
   }
 }
 
-const validateEmail = (_rule: any, value: any, callback: any) => {
-  if (!value) {
-    callback(new Error(t('alertMailRequired')))
-  } else {
-    // same regex as MFE login
-    // eslint-disable-next-line max-len, no-useless-escape
-    const emailValidator = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,24}))$/
-    if (emailValidator.test(value)) {
-      callback()
-    } else {
-      callback(new Error(t('alertMailInvalid')))
-    }
-  }
-}
-
 const formRules = reactive({
   email: [
     {
       required: true,
       message: t('incorrectEmail'),
       trigger: 'blur',
-      validator: validateEmail,
+      type: 'email',
     },
   ],
   lastName: [
@@ -327,8 +312,6 @@ const userFullName = computed(() => getFullName(formData.firstName, formData.las
     previousLabel: 'Cancel'
     nextLabel: 'Next'
     close: 'Close'
-    alertMailRequired: 'Please enter your mail'
-    alertMailInvalid: 'Please enter a valid mail'
   fr-FR:
     addUser: 'Ajouter un utilisateur'
     fillUserInformation: "Veuillez saisir les informations suivantes :"
@@ -343,6 +326,4 @@ const userFullName = computed(() => getFullName(formData.firstName, formData.las
     previousLabel: 'Annuler'
     nextLabel: 'Suivant'
     close: 'Fermer'
-    alertMailRequired: 'Veuillez saisir votre email'
-    alertMailInvalid: 'Veuillez saisir un email valide'
 </i18n>
