@@ -213,7 +213,7 @@ async function refreshAdvancedSearch() {
   try {
     isLoading.value = true
     const today = new Date()
-    const searchParams = getAdvancedSearchParams(today, searchTerm.value)
+    const searchParams = getAdvancedSearchParams(today, searchTerm.value, filters.value)
     advancedSearchDeadlineItems.value = await getSchedulesCollection(searchParams)
   } catch (error) {
     console.warn(error)
@@ -298,7 +298,11 @@ const deadlineListItems = computed(() => {
 
 function onApplyFilters(newFilters: Filters) {
   filters.value = newFilters
-  refreshData()
+  if (isSearchState.value) {
+    refreshAdvancedSearch()
+  } else {
+    refreshData()
+  }
 }
 </script>
 

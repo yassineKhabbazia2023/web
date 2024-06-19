@@ -40,14 +40,21 @@ describe('test ScheduleUtils', () => {
     it('should return first and last month day', () => {
       const today = new Date(TEST_DATE)
       const searchTerm = 'abc'
-      const monthInterval = getAdvancedSearchParams(today, searchTerm)
-      const expectedMonthInterval = {
+      const filters: Filters = {
+        targets: [],
+        templates: ['Bilan'],
+        status: [],
+        mineOnly: true,
+      }
+      const searchParams = getAdvancedSearchParams(today, searchTerm, filters)
+      const expectedSearchParams = {
         startDate: '2023-08-14',
         endDate: '2025-08-14',
         searchTerm,
+        ...filters,
       }
 
-      expect(monthInterval).toStrictEqual(expectedMonthInterval)
+      expect(searchParams).toStrictEqual(expectedSearchParams)
     })
 
     it('should return extended interval when extends interval is 7', () => {

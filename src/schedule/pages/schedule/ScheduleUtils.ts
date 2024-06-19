@@ -29,18 +29,28 @@ export function getMonthInterval(date: Date, extendsIntervalDays: number) {
   }
 }
 
-export function getAdvancedSearchParams(date: Date, searchTerm: string) {
+export function getAdvancedSearchParams(date: Date, searchTerm: string, filters: Filters) {
   const startDate = dayjs(date)
     .subtract(1, 'year')
     .format('YYYY-MM-DD')
   const endDate = dayjs(date)
     .add(1, 'year')
     .format('YYYY-MM-DD')
+  const {
+    targets,
+    templates,
+    status,
+    mineOnly,
+  } = filters
 
   return {
     startDate,
     endDate,
     searchTerm,
+    targets,
+    templates,
+    status,
+    mineOnly,
   }
 }
 
