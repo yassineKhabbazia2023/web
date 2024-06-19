@@ -71,6 +71,7 @@
             :pDropdownOptions="pControlNumberSelectMultiple.pDropdownOptions"
             :pPlaceholder="pControlNumberSelectMultiple.pPlaceholder"
             :pDisabled="pControlNumberSelectMultiple.pDisabled"
+            :pCheckAllLabel="pControlNumberSelectMultiple.pCheckAllLabel"
             pMultiple
             @update:model-value="logEvent('update:model-value', $event)"
           />
@@ -87,6 +88,10 @@
           <HstCheckbox
             v-model="pControlNumberSelectMultiple.pDisabled"
             title="Disabled"
+          />
+          <HstText
+            v-model="pControlNumberSelectMultiple.pCheckAllLabel"
+            title="pCheckAllLabel"
           />
         </template>
       </Variant>
@@ -192,7 +197,7 @@ const pControlNumberSelect = reactive<PFieldPropsDropdown<number | undefined>>(
   getDropdownField('range', 'Tranche', 50, mockedDropdownOptions),
 )
 const pControlNumberSelectMultiple = reactive<PFieldPropsDropdown<number | undefined>>(
-  getDropdownField('range', 'Tranches', 50, mockedDropdownOptions),
+  getDropdownField('range', 'Tranches', 50, mockedDropdownOptions, false, true, '', 'Tout sélectionner'),
 )
 
 const pControlDate = reactive<PFieldPropsDate<string>>(

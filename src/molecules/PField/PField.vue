@@ -27,7 +27,6 @@
       :pMultiple="pMultiple"
       :data-testid="pTestId"
       :pCheckAllLabel="pCheckAllLabel"
-      v-model:pIsCheckAll="internalIsCheckAll"
     />
     <PDatePicker
       v-if="pFieldType === 'date'"
@@ -146,10 +145,6 @@ function onCheckboxChange(optionIndex: number, isChecked: boolean) {
     internalValue.value = modelValue as T // "as T" is a temporary trick
   }
 }
-const internalIsCheckAll = computed({
-  get: () => props.pIsCheckAll,
-  set: (isCheckAll: boolean) => emit('update:p-is-check-all', isCheckAll),
-})
 </script>
 
 <style lang="scss" scoped>

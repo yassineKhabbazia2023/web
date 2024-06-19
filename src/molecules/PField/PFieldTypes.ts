@@ -24,7 +24,6 @@ export interface PFieldPropsDropdown<T> extends PFieldPropsBase<T> {
   pDropdownOptions?: PDropdownOption[]
   pMultiple?: boolean
   pCheckAllLabel?: string
-  pIsCheckAll?: boolean
 }
 
 export interface PFieldPropsDate<T> extends PFieldPropsBase<T> {

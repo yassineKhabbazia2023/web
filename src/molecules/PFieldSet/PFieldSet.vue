@@ -5,7 +5,7 @@
       flex-gap--4
       flex--wrap
       flex--justify-content-stretch
-      "
+    "
   >
     <PField
       v-for="(field, index) in internalFields"
