@@ -37,6 +37,9 @@ vi.mock('@/services/account', () => {
 
 vi.mock('@kpmg/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))
 
 const defaultProps = {

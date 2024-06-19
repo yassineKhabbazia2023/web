@@ -119,7 +119,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { debounce } from '@kpmg/common'
+import { amplitudeService, debounce } from '@kpmg/common'
 import { PDrawer, PForm, PFormItem, PInput, PImage, PAlert, PButton } from '@kpmg/styleguide'
 import { getFullName } from '@/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
@@ -234,12 +234,20 @@ async function handleFormSubmit() {
       })
     }
     await addContactToEntity(props.targetEntityId, fetchedUser.value.id)
+    amplitudeService.track('Onboarding Started', {
+      onboarding_start_localisation: "Ajout d'un utilisateur",
+      onboarding_start_result: 'succeeded',
+    })
 
     hasFormBeenSent.value = true
     isNextButtonLoading.value = false
     emit('refresh-customers-list')
   } catch (error) {
     console.error(error)
+    amplitudeService.track('Onboarding Started', {
+      onboarding_start_localisation: "Ajout d'un utilisateur",
+      onboarding_start_result: 'failed',
+    })
     hasFormBeenSent.value = true
     isNextButtonDisabled.value = true
     isNextButtonLoading.value = false

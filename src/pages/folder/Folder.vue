@@ -33,7 +33,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { commonStore } from '@kpmg/common'
+import { amplitudeService, commonStore } from '@kpmg/common'
 import {
   PTabs,
   PTabPane,
@@ -78,6 +78,9 @@ const isHomeDisplayed = computed(() => route.name === 'folder')
 
 // Functions
 const handleTabClick = (tab: any) => {
+  amplitudeService.track('Feature Consulted', {
+    feature_name: tab.props.label.toLowerCase(),
+  })
   router.push({
     name: tab.paneName,
   })

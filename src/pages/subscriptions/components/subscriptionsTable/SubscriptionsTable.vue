@@ -119,7 +119,7 @@ import {
   PIThreeDots,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
-import { commonStore } from '@kpmg/common'
+import { commonStore, amplitudeService } from '@kpmg/common'
 import {
   type SubscriptionRequest,
   fetchSubscriptionRequests,
@@ -172,8 +172,19 @@ const validateSubscription = async (subscriptionId: number) => {
   if (subscriptionId) {
     isLoading.value = true
     clickedRow.value = subscriptionId
-    await validateSubscriptionRequest(subscriptionId, user.value?.email)
-    await fetchSubscriptions()
+    try {
+      await validateSubscriptionRequest(subscriptionId, user.value?.email)
+      amplitudeService.track('Onboarding Started', {
+        onboarding_start_localisation: 'MOD Screen',
+        onboarding_start_result: 'succeeded',
+      })
+      await fetchSubscriptions()
+    } catch {
+      amplitudeService.track('Onboarding Started', {
+        onboarding_start_localisation: 'MOD Screen',
+        onboarding_start_result: 'failed',
+      })
+    }
     isLoading.value = false
   }
 }
