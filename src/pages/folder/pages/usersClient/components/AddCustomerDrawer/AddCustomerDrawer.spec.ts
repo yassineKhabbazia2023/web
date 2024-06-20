@@ -37,6 +37,9 @@ vi.mock('@/services/account', () => {
 
 vi.mock('@kpmg/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))
 
 const defaultProps = {
@@ -206,6 +209,19 @@ describe('add customer drawer', () => {
       drawerWrapper.vm.$emit('close-drawer-button')
       await nextTick()
       expect(drawerWrapper.isVisible()).toBeFalsy()
+    })
+
+    it('has an error if email is not valid', async () => {
+      const getIsError = () => wrapper.find('.is-error')
+
+      expect(getIsError().exists()).toBeFalsy()
+
+      const { emailInput } = getFormFields(wrapper)
+      await emailInput.setValue('falseEmail')
+      await emailInput.trigger('blur')
+      await flushPromises()
+
+      expect(getIsError().exists()).toBeTruthy()
     })
   })
 })

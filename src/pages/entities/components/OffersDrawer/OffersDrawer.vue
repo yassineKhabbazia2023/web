@@ -168,6 +168,7 @@ import type {
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
 import { type Note, createSubscriptionRequest } from '@/services/subscription'
 import type { Contact } from '@/services/contact/contactTypes'
+import { amplitudeService } from '@kpmg/common'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -334,7 +335,19 @@ async function validateOffer() {
   }
   try {
     await saveOffer()
+    if (!currentSubscriptionOffer.value?.approvalRequired) {
+      amplitudeService.track('Onboarding Started', {
+        onboarding_start_localisation: 'Offer activation',
+        onboarding_start_result: 'succeeded',
+      })
+    }
   } catch (error) {
+    if (!currentSubscriptionOffer.value?.approvalRequired) {
+      amplitudeService.track('Onboarding Started', {
+        onboarding_start_localisation: 'Offer activation',
+        onboarding_start_result: 'failed',
+      })
+    }
     console.error(error)
   }
 }

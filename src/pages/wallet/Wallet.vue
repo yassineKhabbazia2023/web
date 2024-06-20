@@ -23,7 +23,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
-import { commonStore, userPermissions } from '@kpmg/common'
+import { amplitudeService, commonStore, userPermissions } from '@kpmg/common'
 import { PERMISSION_CODES } from '@/constants'
 
 const { t } = useI18n({
@@ -86,6 +86,9 @@ const clientTabs = [
 const tabs = computed(() => (isCollab.value ? collaboratorsTabs : clientTabs))
 
 const handleTabClick = (tab: any) => {
+  amplitudeService.track('Feature Consulted', {
+    feature_name: tab.props.label.toLowerCase(),
+  })
   router.push({ name: tab.paneName })
 }
 </script>

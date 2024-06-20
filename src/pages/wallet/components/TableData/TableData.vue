@@ -211,7 +211,7 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { type Entity, commonApi, commonStore } from '@kpmg/common'
+import { type Entity, commonApi, commonStore, amplitudeService } from '@kpmg/common'
 import type { TableDataProps, Row } from './types'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 import { API_PREFIXES } from '@/common/config/services'
@@ -326,6 +326,9 @@ watch(() => props.data, () => {
 })
 
 const notifOnError = (companyName: string) => {
+  amplitudeService.track('Onboarding Relaunched', {
+    onboarding_relaunch_result: 'failed',
+  })
   PNotification({
     message: t('resendMailErrorMessage') + companyName,
     icon: PIExclamationTriangle,
@@ -340,6 +343,9 @@ const resendActivationEmail = async (companyName: string, signatoryId: number) =
   try {
     const { status } = await commonApi().gateway.post(url)
     if (status === 200) {
+      amplitudeService.track('Onboarding Relaunched', {
+        onboarding_relaunch_result: 'succeeded',
+      })
       PNotification({
         message: t('resendMailSuccessMessageFirst') + companyName + t('resendMailSuccessMessageSecond'),
         icon: PICheck,

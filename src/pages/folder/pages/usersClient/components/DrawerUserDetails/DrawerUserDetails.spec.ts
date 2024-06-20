@@ -4,6 +4,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import DrawerUserDetails from './DrawerUserDetails.vue'
 import { mockUser } from './mockData'
 import type { Contact, PatchContactPayload } from '@/services/contact/contactTypes'
+import { nextTick } from 'vue'
 
 vi.mock('@/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
@@ -29,7 +30,8 @@ const inputs = [
   { name: 'mobilePhone', value: mockUser.mobilePhone },
 ]
 
-const getInputs = (wrapper: VueWrapper<any>) => wrapper.findAll('input')
+const getInputs = () => wrapper.findAll('input')
+const getCancelBtn = () => wrapper.find('[data-testid=cancel-btn]')
 
 describe('drawerUserDetails', () => {
   describe('show user information as readonly state', () => {
@@ -48,10 +50,10 @@ describe('drawerUserDetails', () => {
     })
 
     it.each(inputs)('should prefill the input $name with $value', (input) => {
-      expect((getInputs(wrapper)[inputs.indexOf(input)].element as HTMLInputElement).value).toBe(input.value)
+      expect((getInputs()[inputs.indexOf(input)].element as HTMLInputElement).value).toBe(input.value)
     })
     it.each(inputs)('should mark the input $name as readonly', (input) => {
-      expect(getInputs(wrapper)[inputs.indexOf(input)].attributes().readonly).toBeDefined()
+      expect(getInputs()[inputs.indexOf(input)].attributes().readonly).toBeDefined()
     })
   })
 
@@ -60,14 +62,18 @@ describe('drawerUserDetails', () => {
       wrapper = await createWrapper(true)
     })
     it.each(inputs)('input $name should not be mark as readonly', (input) => {
-      const inputElement = getInputs(wrapper)[inputs.indexOf(input)]
+      const inputElement = getInputs()[inputs.indexOf(input)]
       expect(inputElement.attributes().readonly).toBeUndefined()
     })
     it('should display the submit and cancel button', () => {
-      const cancelBtn = wrapper.find('[data-testid=cancel-btn]')
       const submit = wrapper.find('[data-testid=submit-btn]')
-      expect(cancelBtn.exists()).toBeTruthy()
+      expect(getCancelBtn().exists()).toBeTruthy()
       expect(submit.exists()).toBeTruthy()
+    })
+    it('can close the drawer by clicking the cancel button', async () => {
+      await getCancelBtn().trigger('click')
+      await nextTick()
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
     it('contact-patch', async () => {
       const expectedPatchedContact = {

@@ -28,7 +28,7 @@
       <PForm
         ref="addCustomerFormRef"
         pLabelPosition="top"
-        pRequireAsteriskPosition = "right"
+        pRequireAsteriskPosition="right"
         :pModel="formData"
         :pRules="formRules"
         :pInlineMessage="false"
@@ -37,12 +37,12 @@
           class="margin-bottom--4"
           :pLabel="t('emailAddress')"
           pProp="email"
-          pValidateStatus='success'
+          pValidateStatus="success"
         >
           <PInput
             v-model="formData.email"
+            pType="email"
             @blur="checkIfUserExists"
-            :pattern="validEmailPattern"
             data-testid="email-input"
           />
         </PFormItem>
@@ -119,12 +119,21 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { debounce } from '@kpmg/common'
-import { PDrawer, PForm, PFormItem, PInput, PImage, PAlert, PButton } from '@kpmg/styleguide'
+import { amplitudeService, debounce } from '@kpmg/common'
+import {
+  PDrawer,
+  PForm,
+  PFormItem,
+  PInput,
+  PImage,
+  PAlert,
+  PButton,
+  type FormRules,
+} from '@kpmg/styleguide'
 import { getFullName } from '@/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
-import { validEmailPattern, validPhoneNumberPattern } from '@/common/utils/helpers/forms'
+import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
 import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 
@@ -234,12 +243,20 @@ async function handleFormSubmit() {
       })
     }
     await addContactToEntity(props.targetEntityId, fetchedUser.value.id)
+    amplitudeService.track('Onboarding Started', {
+      onboarding_start_localisation: "Ajout d'un utilisateur",
+      onboarding_start_result: 'succeeded',
+    })
 
     hasFormBeenSent.value = true
     isNextButtonLoading.value = false
     emit('refresh-customers-list')
   } catch (error) {
     console.error(error)
+    amplitudeService.track('Onboarding Started', {
+      onboarding_start_localisation: "Ajout d'un utilisateur",
+      onboarding_start_result: 'failed',
+    })
     hasFormBeenSent.value = true
     isNextButtonDisabled.value = true
     isNextButtonLoading.value = false
@@ -247,13 +264,13 @@ async function handleFormSubmit() {
   }
 }
 
-const formRules = reactive({
+const formRules = reactive<FormRules>({
   email: [
     {
       required: true,
       message: t('incorrectEmail'),
       trigger: 'blur',
-      pattern: validEmailPattern,
+      type: 'email',
     },
   ],
   lastName: [

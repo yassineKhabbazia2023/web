@@ -1,8 +1,8 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { commonStore } from '@kpmg/common'
+import { amplitudeService, commonStore } from '@kpmg/common'
 import { PERMISSION_CODES } from '@/constants'
 import Wallet from './'
 
@@ -32,6 +32,9 @@ vi.mock('@kpmg/common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -46,8 +49,10 @@ const clientTabs = ['All entities', 'All users']
 
 describe('dossier', () => {
   let wrapper: VueWrapper<any>
+  let spyTrackAmplitude: SpyInstance
 
   beforeEach(async () => {
+    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
     wrapper = createWrapper()
     vi.useFakeTimers()
 
@@ -56,6 +61,21 @@ describe('dossier', () => {
 
   it('displays correctly the table', () => {
     expect(wrapper.find('.wallet__title').text()).toBe('Hello Jack')
+  })
+  const Tabs = [
+    ['wallet', 'tab-folders'],
+    ['mod requests', 'tab-subscriptions'],
+    ['collaborators', 'tab-collaborators'],
+    ['mandate', 'tab-folderMandats'],
+    ['applications', 'tab-folderLauncher'],
+  ]
+  it.each(Tabs)('should track amplitude event when %s is clicked', (tabName, tabId) => {
+    document.getElementById(tabId)?.click()
+
+    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+      feature_name: tabName,
+    })
   })
   const PARAMS = [
     ['folders', 'tab-folders'],

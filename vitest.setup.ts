@@ -50,4 +50,7 @@ vi.mock('@kpmg/common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))

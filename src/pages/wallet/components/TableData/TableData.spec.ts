@@ -35,6 +35,9 @@ vi.mock('@kpmg/common', () => ({
       defaultEntity: () => testEntity,
     },
   }),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))
 
 const pinia = createTestingPinia()

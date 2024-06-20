@@ -19,7 +19,7 @@ import * as offerService from '@/services/offer/index'
 import * as PatchRecordService from '@/services/PatchRecordService/PatchRecordService'
 import { getMockedAccount, getMockedPatchOperations } from '@/services/account/accountMock'
 import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
-import type { UserInfo } from '@kpmg/common'
+import { amplitudeService, type UserInfo } from '@kpmg/common'
 import type { Note, PostSubscriptionRequest } from '@/services/subscription'
 import type { PatchValue } from '@/services/PatchRecordService'
 import type { Contact } from '@/services/contact/contactTypes'
@@ -217,6 +217,14 @@ describe('offersDrawer', () => {
         notes,
         productConfigurations: [1, 2, 3, 4],
       }
+      const expectedArgumentWithoutValidation: PostSubscriptionRequest = {
+        accountId,
+        applicant: 'john@example.com',
+        contacts: [1, 2],
+        offerId: 2,
+        notes: [],
+        productConfigurations: [5],
+      }
       it('should patch the account and create a subscription when the user confirms', async () => {
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
@@ -233,6 +241,29 @@ describe('offersDrawer', () => {
 
         expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedPatchOperations)
         expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgument)
+      })
+      it('should track Amplitude event when saving for offers without validation', async () => {
+        const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+        const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
+        const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
+
+        const wrapper = await getWrapper(true)
+        const secondOffer = findSecondOffer(wrapper)
+        await secondOffer.trigger('click')
+
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
+        expect(confirmationModal.exists()).toBeTruthy()
+
+        confirmationModal.vm.$emit('confirm')
+        await flushPromises()
+
+        expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+        expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Started', {
+          onboarding_start_localisation: 'Offer activation',
+          onboarding_start_result: 'succeeded',
+        })
+        expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedPatchOperations)
+        expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgumentWithoutValidation)
       })
       it('should not patch the account when no account diff', async () => {
         vi
@@ -292,6 +323,32 @@ describe('offersDrawer', () => {
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
 
+        expect(consoleErrorSpy).toHaveBeenCalledOnce()
+        expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
+      })
+      it('should console error and track Amplitude event when saving fails for offers without validation', async () => {
+        const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+        const errorMessage = 'save rejected'
+        vi
+          .spyOn(subscriptionService, 'createSubscriptionRequest')
+          .mockRejectedValueOnce(errorMessage)
+
+        const consoleErrorSpy = vi.spyOn(console, 'error')
+        const wrapper = await getWrapper(true)
+        const secondOffer = findSecondOffer(wrapper)
+        await secondOffer.trigger('click')
+
+        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
+        expect(confirmationModal.exists()).toBeTruthy()
+
+        confirmationModal.vm.$emit('confirm')
+        await flushPromises()
+
+        expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+        expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Started', {
+          onboarding_start_localisation: 'Offer activation',
+          onboarding_start_result: 'failed',
+        })
         expect(consoleErrorSpy).toHaveBeenCalledOnce()
         expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
