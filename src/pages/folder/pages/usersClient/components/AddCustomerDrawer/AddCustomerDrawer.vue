@@ -28,7 +28,7 @@
       <PForm
         ref="addCustomerFormRef"
         pLabelPosition="top"
-        pRequireAsteriskPosition = "right"
+        pRequireAsteriskPosition="right"
         :pModel="formData"
         :pRules="formRules"
         :pInlineMessage="false"
@@ -37,12 +37,12 @@
           class="margin-bottom--4"
           :pLabel="t('emailAddress')"
           pProp="email"
-          pValidateStatus='success'
+          pValidateStatus="success"
         >
           <PInput
             v-model="formData.email"
+            pType="email"
             @blur="checkIfUserExists"
-            :pattern="validEmailPattern"
             data-testid="email-input"
           />
         </PFormItem>
@@ -120,11 +120,20 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { amplitudeService, debounce } from '@kpmg/common'
-import { PDrawer, PForm, PFormItem, PInput, PImage, PAlert, PButton } from '@kpmg/styleguide'
+import {
+  PDrawer,
+  PForm,
+  PFormItem,
+  PInput,
+  PImage,
+  PAlert,
+  PButton,
+  type FormRules,
+} from '@kpmg/styleguide'
 import { getFullName } from '@/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
-import { validEmailPattern, validPhoneNumberPattern } from '@/common/utils/helpers/forms'
+import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
 import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 
@@ -255,13 +264,13 @@ async function handleFormSubmit() {
   }
 }
 
-const formRules = reactive({
+const formRules = reactive<FormRules>({
   email: [
     {
       required: true,
       message: t('incorrectEmail'),
       trigger: 'blur',
-      pattern: validEmailPattern,
+      type: 'email',
     },
   ],
   lastName: [

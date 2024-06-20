@@ -210,5 +210,18 @@ describe('add customer drawer', () => {
       await nextTick()
       expect(drawerWrapper.isVisible()).toBeFalsy()
     })
+
+    it('has an error if email is not valid', async () => {
+      const getIsError = () => wrapper.find('.is-error')
+
+      expect(getIsError().exists()).toBeFalsy()
+
+      const { emailInput } = getFormFields(wrapper)
+      await emailInput.setValue('falseEmail')
+      await emailInput.trigger('blur')
+      await flushPromises()
+
+      expect(getIsError().exists()).toBeTruthy()
+    })
   })
 })
