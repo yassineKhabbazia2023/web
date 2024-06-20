@@ -203,6 +203,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         resetPasswordToken,
       }
       const urlUpdatePassword = 'authentication/api/createNewPassword'
+      console.warn('HAHAHAHAH')
       try {
         await updateTermsByContactId(parseInt(contactId as string), termsId.value as number)
         await commonApi().gateway.post(urlUpdatePassword, data)
@@ -214,21 +215,22 @@ const submitForm = (formEl: FormInstance | undefined) => {
           },
         } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
         tokenService.setToken(token)
+        amplitudeService.track('Onboarding Completed', {
+          onboarding_result: 'succeeded',
+        })
         store().$patch({
           user: {
             id,
             isCollab: false,
           },
         })
-        amplitudeService.track('Onboarding Completed', {
-          onboarding_result: 'succeeded',
-        })
         navigateToCustomerWallet()
-      } catch {}
+      } catch {
+        amplitudeService.track('Onboarding Completed', {
+          onboarding_result: 'failed',
+        })
+      }
     } else {
-      amplitudeService.track('Onboarding Completed', {
-        onboarding_result: 'failed',
-      })
       return false
     }
   })

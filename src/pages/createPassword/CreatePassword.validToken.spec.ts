@@ -136,7 +136,7 @@ describe('page creation password', () => {
     expect(wrapper.find('button').classes()).toContain('is-disabled')
   })
 
-  it('should call back end when click on button', async () => {
+  it('should call API when the button is clicked and track an Amplitude event when the login succeeds', async () => {
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -156,12 +156,29 @@ describe('page creation password', () => {
       email: 'email',
       password: 'aaAA11@@',
     }
+    expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Completed', {
+      onboarding_result: 'succeeded',
+    })
     expect(updateTermsByContactId).toHaveBeenCalledTimes(1)
     expect(getTermsByContactId).toHaveBeenCalled()
     expect(postMock).toHaveBeenCalledTimes(2)
     expect(postMock).toHaveBeenNthCalledWith(1, postLink, data)
     expect(postMock).toHaveBeenNthCalledWith(2, loginLink, dataLogin)
     expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
+  })
+  it('should call the API when the button is clicked and track an Amplitude event if the login fails', async () => {
+    postMock.mockRejectedValue('API Error: 503 Service Unavailable')
+    wrapper = createWrapper()
+    await flushPromises()
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
+    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
+    wrapper.find('.el-checkbox__original').setValue('true')
+    await flushPromises()
+    wrapper.find('button').trigger('click')
+    await flushPromises()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Completed', {
+      onboarding_result: 'failed',
+    })
   })
 
   it('should throw error', async () => {
