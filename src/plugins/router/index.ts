@@ -16,6 +16,11 @@ const routes = [
     component: { template: '<h1>Login Page</h1>' },
   } as RouteRecordRaw,
   {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/pages/Error/404'),
+  },
+  {
     path: '/dossier/:id/banque',
     name: 'bank',
     component: () => import('@/pages/WorkInProgress'),
