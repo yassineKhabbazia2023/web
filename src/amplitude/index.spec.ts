@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { DEFAULT_TRACKING, SERVER_ZONE } from './constants'
+import { SERVER_ZONE } from './constants'
 import { AmplitudeService } from '.'
 
 const initSpy = vi.fn()
@@ -33,7 +33,7 @@ describe('amplitude', () => {
       undefined,
       {
         serverZone: SERVER_ZONE,
-        defaultTracking: DEFAULT_TRACKING,
+        defaultTracking: false,
         minIdLength: 1,
       }
     )

@@ -1,6 +1,6 @@
 import * as amplitude from '@amplitude/analytics-browser'
 import type { BaseEvent } from '@amplitude/analytics-types'
-import { DEFAULT_TRACKING, SERVER_ZONE } from './constants'
+import { SERVER_ZONE } from './constants'
 
 export class AmplitudeService {
   // eslint-disable-next-line no-use-before-define
@@ -26,7 +26,7 @@ export class AmplitudeService {
         undefined, // the default value of the userId
         {
           serverZone: SERVER_ZONE,
-          defaultTracking: DEFAULT_TRACKING,
+          defaultTracking: false,
           minIdLength: 1,
         }
       )
