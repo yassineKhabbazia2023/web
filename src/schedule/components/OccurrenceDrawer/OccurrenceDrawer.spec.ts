@@ -9,6 +9,7 @@ import { flushPromises } from '@vue/test-utils'
 import { getMockedOccurrence, getMockedScheduleOccurrence } from '@/schedule/tests/mocks/Occurrence'
 import { mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
 import * as scheduleServices from '@/schedule/services'
+import { downloadFile, saveFileAs } from '@/schedule/helpers/utils'
 
 const mockedOccurrence = getMockedOccurrence({
   schedule: getMockedScheduleOccurrence({
@@ -16,6 +17,13 @@ const mockedOccurrence = getMockedOccurrence({
     description: 'Description',
   }),
 })
+
+interface Window {
+  showSaveFilePicker: any
+  URL: any
+  atob: any
+}
+declare let window: Window
 
 vi.mock('@/schedule/services', () => {
   return {
@@ -44,6 +52,14 @@ vi.mock('./OccurrenceDrawerHelper', async () => {
   }
 })
 
+vi.mock('@/schedule/helpers/utils', () => ({
+  saveFileAs: vi.fn(),
+  downloadFile: vi.fn(),
+  fileSizeHumanFormatter: vi.fn(),
+  base64UrlToBase64: vi.fn(() => base64Data),
+  getFileExtension: vi.fn(),
+}))
+
 const occurrenceId = 442
 
 const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
@@ -61,6 +77,9 @@ const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
     props,
   })
 }
+
+const fileName = 'declaration_tva_mai_2024.pdf'
+const base64Data = 'GVsbG8g+d29ybGQ='
 
 describe('drawer.vue', () => {
   it('should display loader until data are loaded', async () => {
@@ -105,6 +124,7 @@ describe('drawer.vue', () => {
     }, {} as Record<string, string>)
 
     const expectedDisplay: Record<string, string> = {
+      'occurrence-drawer-attachment-download': '',
       'occurrence-drawer-long-label': 'long label',
       'occurrence-drawer-frequency-label': 'Frequency label',
       'occurrence-drawer-description': 'Description',
@@ -122,8 +142,8 @@ describe('drawer.vue', () => {
     const expectedStatus = 'Done'
 
     const wrapper = createWrapper({ modelValue: true })
-    await flushPromises()
 
+    await flushPromises()
     const firstDeadlineAccount = wrapper.findComponent({ name: 'DeadlineAccounts' })
     firstDeadlineAccount.vm.$emit('toggle-status', accountId, status)
     await nextTick()
@@ -168,6 +188,48 @@ describe('drawer.vue', () => {
     await flushPromises()
     const deadlineReminders = wrapper.findComponent({ name: 'DeadlineReminders' })
     expect(deadlineReminders.exists()).toBeFalsy()
+  })
+
+  it('should use showSaveFilePicker when available', async () => {
+    // eslint-disable-next-line vitest/prefer-spy-on
+    window.atob = vi.fn(() => 'abcdef')
+    const wrapper = createWrapper()
+    await flushPromises()
+    // eslint-disable-next-line vitest/prefer-spy-on
+    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+      createWritable: vi.fn(() => Promise.resolve({
+        write: vi.fn(),
+        close: vi.fn(),
+      })),
+    }))
+    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+    expect(saveFileAs).toHaveBeenCalledWith(fileName, base64Data)
+  })
+
+  it('should use traditional download method when showSaveFilePicker is not available', async () => {
+    // eslint-disable-next-line vitest/prefer-spy-on
+    window.atob = vi.fn(() => 'abcdef')
+    const wrapper = createWrapper()
+    await flushPromises()
+    delete window.showSaveFilePicker
+    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+    expect(downloadFile).toHaveBeenCalledWith(fileName, base64Data)
+  })
+
+  it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    // eslint-disable-next-line vitest/prefer-spy-on
+    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+      createWritable: vi.fn(() => Promise.resolve({
+        write: vi.fn(),
+        close: vi.fn(),
+      })),
+    }))
+    vi.mocked(saveFileAs).mockRejectedValueOnce(new Error('Failed to execute  showSaveFilePicker on Window'))
+    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+    // expect(saveFileAs).toHaveBeenCalled()
+    expect(downloadFile).toHaveBeenCalledWith(fileName, base64Data)
   })
 })
 

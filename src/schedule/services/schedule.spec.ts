@@ -41,12 +41,19 @@ describe('getSchedulesCollection', () => {
       startDate: '2024-03-31',
       endDate: '2024-03-31',
       searchTerm: 'abc',
+      template: ['TVA'],
     }
     const expectedUrl = '/schedules'
     const data = await getSchedulesCollection(params)
+    const expectedParams = {
+      params,
+      paramsSerializer: {
+        indexes: true,
+      },
+    }
 
     expect(commonApiGetSpy).toHaveBeenCalledOnce()
-    expect(commonApiGetSpy).toHaveBeenNthCalledWith(1, expectedUrl, { params })
+    expect(commonApiGetSpy).toHaveBeenNthCalledWith(1, expectedUrl, expectedParams)
     expect(data).toStrictEqual(mockedDeadlinesByDate)
   })
 })

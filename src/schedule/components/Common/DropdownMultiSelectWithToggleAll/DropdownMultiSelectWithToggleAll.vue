@@ -44,7 +44,7 @@ const { t } = useI18n({
 const hasCheckAll = ref(false)
 
 const props = withDefaults(defineProps<DropdownMultiSelectWithToggleAllProps>(), {
-  placeholder: 'Choisir un plusieurs dossiers',
+  placeholder: 'Choisir un ou plusieurs dossiers',
   toggleAllCheckboxLabel: 'Tout le portefeuille',
 })
 

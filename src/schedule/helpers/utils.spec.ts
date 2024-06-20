@@ -6,12 +6,26 @@ import {
   daysInTheMonth,
   getYearMonth,
   getTypeLabel,
+  base64ToBase64URL,
+  base64UrlToBase64,
+  getFileExtension,
+  fileSizeHumanFormatter,
+  downloadFile,
+  saveFileAs,
+  base64ToBlob,
 } from './utils'
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, vi } from 'vitest'
 import { accountsCollectionForSelectFormat, accountsCollection } from '@/schedule/tests/mocks/Account'
 import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
 
 const TEST_DATE = '2024-08-14'
+
+interface Window {
+  showSaveFilePicker: any
+  URL: any
+  atob: any
+}
+declare let window: Window
 
 describe('utils helpers', () => {
   it('should format date accordingly', () => {
@@ -74,6 +88,70 @@ describe('utils helpers', () => {
     }) => {
       const typeLabel = getTypeLabel(scheduleModelsByKey, template)
       expect(typeLabel).toBe(expected)
+    })
+  })
+  describe('file helpers', () => {
+    const base64Data = 'SGVsbG8g+d29ybGQ='
+    const base64UrlData = 'SGVsbG8g-d29ybGQ='
+    const fileName = 'facture_leroy-merlin.pdf'
+    it('should convert a base64 string to a base64Url', () => {
+      expect(base64ToBase64URL(base64Data)).toStrictEqual(base64UrlData)
+    })
+    it('should convert a base64Url string to a base64', () => {
+      expect(base64UrlToBase64(base64Data)).toStrictEqual(base64Data)
+    })
+    it('should get file extension based on name', () => {
+      expect(getFileExtension(fileName)).toBe('PDF')
+    })
+    it('should convert a file size in human readable one', () => {
+      // expect(fileSizeHumanFormatter(0)).toBe('0B')
+      expect(fileSizeHumanFormatter(1024)).toBe('1KB')
+    })
+    it('saves file with a prompt folder selection', async () => {
+      // eslint-disable-next-line vitest/prefer-spy-on
+      window.atob = vi.fn(() => 'abcdef')
+      // eslint-disable-next-line vitest/prefer-spy-on
+      window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+        createWritable: vi.fn(() => Promise.resolve({
+          write: vi.fn(),
+          close: vi.fn(),
+        })),
+      }))
+      // Execute the function
+      await saveFileAs('facture_leroy-merlin.pdf', base64Data)
+      // Assertions
+      expect(window.showSaveFilePicker).toHaveBeenCalledWith({
+        suggestedName: 'facture_leroy-merlin.pdf',
+      })
+    })
+    it('creates a link and triggers a download', () => {
+      const createObjectURLMock = vi.fn()
+      const revokeObjectURLMock = vi.fn()
+      const clickMock = vi.fn()
+      const setAttributeMock = vi.fn()
+      window.URL = {
+        createObjectURL: createObjectURLMock,
+        revokeObjectURL: revokeObjectURLMock,
+      }
+      // eslint-disable-next-line vitest/prefer-spy-on
+      window.atob = vi.fn(() => 'abcdef')
+      const createElementSpy: any = vi.spyOn(document, 'createElement')
+      createElementSpy.mockImplementation(() => ({
+        setAttribute: setAttributeMock,
+        click: clickMock,
+      }))
+      downloadFile(fileName, 'base64Data')
+      // Assertions
+      expect(createObjectURLMock).toHaveBeenCalledWith(new Blob([base64Data]))
+      expect(document.createElement).toHaveBeenCalledWith('a')
+      expect(setAttributeMock).toHaveBeenCalledWith('download', fileName)
+      expect(revokeObjectURLMock).toHaveBeenCalledOnce()
+    })
+    it('should return a Blob when given a base64 string', () => {
+      // eslint-disable-next-line vitest/prefer-spy-on
+      window.atob = vi.fn(() => 'abcdef')
+      const result = base64ToBlob(base64Data)
+      expect(result).toBeInstanceOf(Blob)
     })
   })
 })

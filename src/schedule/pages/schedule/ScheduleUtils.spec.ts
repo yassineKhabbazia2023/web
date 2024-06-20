@@ -3,11 +3,13 @@ import {
   getDates,
   getMonthInterval,
   getAdvancedSearchParams,
+  getSearchParams,
 } from './ScheduleUtils'
 import {
   getDoneDeadlinesByDateMock,
   getNotCompletelyDoneDeadlinesByDateMock,
 } from '@/schedule/tests/mocks/Deadline'
+import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 const TEST_DATE = '2024-08-14'
 
@@ -38,11 +40,48 @@ describe('test ScheduleUtils', () => {
     it('should return first and last month day', () => {
       const today = new Date(TEST_DATE)
       const searchTerm = 'abc'
-      const monthInterval = getAdvancedSearchParams(today, searchTerm)
-      const expectedMonthInterval = {
+      const filters: Filters = {
+        targets: [],
+        templates: ['Bilan'],
+        status: [],
+        mineOnly: true,
+      }
+      const searchParams = getAdvancedSearchParams(today, searchTerm, filters)
+      const expectedSearchParams = {
         startDate: '2023-08-14',
         endDate: '2025-08-14',
         searchTerm,
+        ...filters,
+      }
+
+      expect(searchParams).toStrictEqual(expectedSearchParams)
+    })
+
+    it('should return extended interval when extends interval is 7', () => {
+      const monthInterval = getMonthInterval(new Date(TEST_DATE), 7)
+      const expectedMonthInterval = {
+        startDate: '2024-07-25',
+        endDate: '2024-09-07',
+      }
+
+      expect(monthInterval).toStrictEqual(expectedMonthInterval)
+    })
+  })
+
+  describe('getSearchParams', () => {
+    it('should return first and last month day', () => {
+      const today = new Date(TEST_DATE)
+      const filters: Filters = {
+        targets: [],
+        templates: ['Bilan'],
+        status: [],
+        mineOnly: true,
+      }
+      const monthInterval = getSearchParams(today, filters)
+      const expectedMonthInterval = {
+        startDate: '2024-07-25',
+        endDate: '2024-09-07',
+        ...filters,
       }
 
       expect(monthInterval).toStrictEqual(expectedMonthInterval)

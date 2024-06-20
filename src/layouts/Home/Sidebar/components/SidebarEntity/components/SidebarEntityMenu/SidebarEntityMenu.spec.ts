@@ -1,11 +1,11 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, type SpyInstance, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import * as ReportService from '@/services/reporting'
 import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
 import { createTestingPinia } from '@pinia/testing'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
-import { commonPinia as pinia } from '@kpmg/common'
+import { commonPinia as pinia, amplitudeService } from '@kpmg/common'
 import { PERMISSION_CODES } from '@/constants'
 import SidebarEntityMenu from '.'
 import { getMockedBIReports } from './SidebarEntityMenuMocks'
@@ -38,6 +38,9 @@ vi.mock('@kpmg/common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))
 
 const createWrapper = (props = defaultProps) => {
@@ -51,6 +54,10 @@ const createWrapper = (props = defaultProps) => {
 
 describe('sidebarEntityMenu', () => {
   let wrapper: VueWrapper<any>
+  let spyTrackAmplitude: SpyInstance
+  beforeEach(() => {
+    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+  })
   setActivePinia(pinia)
   describe('display', () => {
     it('should display the sidebar entity menu correctly', () => {
@@ -109,6 +116,26 @@ describe('sidebarEntityMenu', () => {
       await wrapper.trigger('mouseleave')
 
       expect(wrapper.classes()).toContain('sidenav-entity-menu--collapsed')
+    })
+    it('should track amplitude event when a nested menu item is clicked', async () => {
+      wrapper = createWrapper()
+      const sidebarEntityMenu = wrapper.find('[data-testid=nested-menu-item]')
+      await sidebarEntityMenu.trigger('click')
+
+      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+      expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+        feature_name: 'users',
+      })
+    })
+    it('should track amplitude event when a menu item is clicked', async () => {
+      wrapper = createWrapper()
+      const sidebarEntityMenuItem = wrapper.find('[data-testid=menu-item]')
+      await sidebarEntityMenuItem.trigger('click')
+
+      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+      expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+        feature_name: 'documents',
+      })
     })
   })
 })

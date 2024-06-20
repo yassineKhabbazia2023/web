@@ -12,6 +12,7 @@ import type { DeadlinesByDate } from '@/schedule/models/Deadline'
 import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useCommonStore } from '@kpmg/common'
+import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 const pinia = createTestingPinia()
 
@@ -83,6 +84,7 @@ function createWrapper(override: Partial<ScheduleProps> = {}) {
         ScheduleDrawer: {
           name: 'ScheduleDrawer',
           template: '<div />',
+          emits: ['update:model-value'],
         },
         ActionBar: ActionBarStub,
         Calendar: {
@@ -134,9 +136,16 @@ describe('home page', () => {
     await flushPromises()
 
     const expectedMonthRange = ScheduleUtils.getMonthInterval(mockedToday, 7)
+    const expectedParams = {
+      ...expectedMonthRange,
+      targets: [],
+      templates: [],
+      status: [],
+      mineOnly: true,
+    }
 
     expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
-    expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedMonthRange)
+    expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedParams)
   })
 
   function findCalendarWidgetLoader(wrapper: VueWrapper) {
@@ -145,11 +154,22 @@ describe('home page', () => {
 
   describe('interactions', () => {
     it('should display the drawer on displayDeadlineDrawer event', async () => {
+      const getSchedulesCollectionSpy = vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+
       const wrapper = createWrapper()
 
       expect(wrapper.findComponent({ name: 'ScheduleDrawer' }).exists()).toBeFalsy()
       await wrapper.findComponent({ name: 'ActionBar' }).vm.$emit('create-schedule')
-      expect(wrapper.findComponent({ name: 'ScheduleDrawer' }).exists()).toBeTruthy()
+      const scheduleDrawer = wrapper.findComponent({ name: 'ScheduleDrawer' })
+      expect(scheduleDrawer.exists()).toBeTruthy()
+
+      scheduleDrawer.vm.$emit('update:model-value', false)
+
+      vi.advanceTimersByTime(300)
+      await nextTick()
+
+      expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
     })
 
     it('should give filtered deadlines of current month to DeadlineList', async () => {
@@ -430,10 +450,17 @@ describe('home page', () => {
 
     describe('when enter in search state', () => {
       it('should trigger advanced search if search term is NOT empty', async () => {
+        const filters: Filters = {
+          targets: [],
+          templates: [],
+          status: [],
+          mineOnly: true,
+        }
         const mockedSearchParams = {
           startDate: '2023-08-14',
           endDate: '2025-08-14',
           searchTerm: newSearchTerm,
+          ...filters,
         }
         const getAdvancedSearchParamsSpy = vi
           .spyOn(ScheduleUtils, 'getAdvancedSearchParams')
@@ -454,7 +481,7 @@ describe('home page', () => {
         await actionBar.vm.$emit('update:is-search-state', true)
         await flushPromises()
         expect(getAdvancedSearchParamsSpy).toHaveBeenCalledOnce()
-        expect(getAdvancedSearchParamsSpy).toHaveBeenNthCalledWith(1, today, newSearchTerm)
+        expect(getAdvancedSearchParamsSpy).toHaveBeenNthCalledWith(1, today, newSearchTerm, filters)
         expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
         expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(2, mockedSearchParams)
       })
@@ -535,6 +562,70 @@ describe('home page', () => {
         const filterDrawerAfter = wrapper.findComponent({ name: 'FilterDrawer' })
         expect(filterDrawerAfter.exists()).toBeTruthy()
       })
+    })
+
+    it('should apply filters when drawer emits apply', async () => {
+      const getSchedulesCollectionSpy = vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+
+      const wrapper = createWrapper()
+
+      const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+      const filters: Filters = {
+        targets: [],
+        templates: ['TVA'],
+        status: [],
+        mineOnly: true,
+      }
+
+      actionBar.vm.$emit('open-drawer-filters')
+      await nextTick()
+
+      const filterDrawerAfter = wrapper.findComponent({ name: 'FilterDrawer' })
+      filterDrawerAfter.vm.$emit('apply', filters)
+
+      const expectedMonthRange = ScheduleUtils.getMonthInterval(mockedToday, 7)
+      const expectedParams = {
+        ...expectedMonthRange,
+        ...filters,
+      }
+
+      expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
+      expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(2, expectedParams)
+    })
+
+    it('should apply filters when drawer emits apply in advancedSearch state', async () => {
+      const getSchedulesCollectionSpy = vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+
+      const wrapper = createWrapper()
+      const newSearchTerm = 'new search term'
+
+      const actionBar = wrapper.findComponent({ name: 'ActionBar' })
+      const filters: Filters = {
+        targets: [],
+        templates: ['TVA'],
+        status: [],
+        mineOnly: true,
+      }
+
+      actionBar.vm.$emit('update:search-term', newSearchTerm)
+      actionBar.vm.$emit('update:is-search-state', true)
+      actionBar.vm.$emit('open-drawer-filters')
+      await nextTick()
+
+      const filterDrawerAfter = wrapper.findComponent({ name: 'FilterDrawer' })
+      filterDrawerAfter.vm.$emit('apply', filters)
+
+      const expectedParams = {
+        startDate: '2023-08-14',
+        endDate: '2025-08-14',
+        searchTerm: newSearchTerm,
+        ...filters,
+      }
+
+      expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(3)
+      expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(3, expectedParams)
     })
   })
 })

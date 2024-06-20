@@ -3,6 +3,11 @@ import type { Account } from '@/schedule/models/Account'
 import type { Deadline } from '../models/Deadline'
 import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
 
+declare let window: {
+  showSaveFilePicker: any
+  URL: any
+} & Window
+
 export const dateToLocaleFormat = (date: string | Date, locale = 'fr') =>
   new Intl.DateTimeFormat(locale).format(new Date(date))
 
@@ -42,4 +47,49 @@ export function getTypeLabel(
   }
 
   return scheduleModelsByKey?.[typeShort] ?? typeShort
+}
+
+export const base64ToBlob = (base64Data:string) => {
+  const byteCharacters = atob(base64Data)
+  const byteNumbers = new Array(byteCharacters.length)
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
+  }
+  const byteArray = new Uint8Array(byteNumbers)
+  return new Blob([byteArray])
+}
+
+export const base64ToBase64URL = (base64String: string) => base64String.replace(/\+/g, '-').replace(/\//g, '_')
+
+export const base64UrlToBase64 = (base64UrlString: string) =>
+  base64UrlString.replace(/-/g, '+').replace(/_/g, '/')
+
+export const downloadFile = (filename: string, data: string) => {
+  const url = window.URL.createObjectURL(base64ToBlob(data))
+  let link: HTMLAnchorElement | null = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', filename)
+  link.click()
+  window.URL.revokeObjectURL(url)
+  link = null
+}
+
+export const saveFileAs = async (filename: string, data: any) => {
+  const blob = base64ToBlob(data)
+  const fileHandle = await window.showSaveFilePicker({
+    suggestedName: filename,
+  })
+  const writableStream = await fileHandle.createWritable()
+  await writableStream.write(blob)
+  await writableStream.close()
+}
+
+export const getFileExtension = (fileName = '') => fileName.split('.')?.pop()?.toUpperCase() ?? ''
+
+export const fileSizeHumanFormatter = (fileSize:number, decimals = 2) => {
+  const kilobytes = 1024
+  const decimalsAccuracy = decimals < 0 ? 0 : decimals
+  const sizes = ['B', 'KB', 'MB']
+  const i = Math.floor(Math.log(fileSize) / Math.log(kilobytes))
+  return `${parseFloat((fileSize / Math.pow(kilobytes, i)).toFixed(decimalsAccuracy))}${sizes[i]}`
 }

@@ -4,7 +4,10 @@ export function getMockedScheduleOccurrence(override: Partial<Schedule> = {}): S
   const defaultSchedule: Schedule = {
     id: 49,
     description: '',
-    attachment: null,
+    attachment: {
+      name: 'declaration_tva_mai_2024.pdf',
+      content: 'data:application_pdf;base64,SGVsbG8g-d29ybGQ=',
+    },
     frequency: 'None',
     reminders: [],
     createdBy: {

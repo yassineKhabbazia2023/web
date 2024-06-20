@@ -8,17 +8,19 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, markRaw, ref, watch } from 'vue'
+import { defineAsyncComponent, markRaw, ref, watch, onMounted } from 'vue'
 import { Idle } from 'idlejs'
-import { VITE_IDLE_DURATION } from 'env-vars'
-import { commonStore as useStore } from '@kpmg/common'
+import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY } from 'env-vars'
+import { commonStore as useStore, amplitudeService } from '@kpmg/common'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@kpmg/styleguide'
 import PopupRenewToken from '@/components/PopupRenewToken'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
+const { user } = storeToRefs(useStore())
 const getLayout = ref()
 let previousLayout: string = ''
 const illustration = ref()
@@ -47,4 +49,16 @@ const idle = new Idle()
   .within(VITE_IDLE_DURATION)
   .do(async () => await handleLogout())
 idle.start()
+
+watch(
+  user, () => {
+    if (user.value) {
+      amplitudeService.setUserId(user.value.id)
+    }
+  },
+)
+
+onMounted(() => {
+  amplitudeService.init(VITE_AMPLITUDE_API_KEY)
+})
 </script>

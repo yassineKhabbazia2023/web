@@ -31,6 +31,8 @@
           :key="menuItem.index"
           :pIndex="`/dossier/${selectedEntityId}/${menuItem.index}`"
           pRightIcon="PICheckCircle"
+          data-testid="nested-menu-item"
+          @click="logAmplitudeEvent(menuItem.title)"
         >
           <template #title>
             {{ menuItem.title }}
@@ -42,6 +44,8 @@
         :key="menuItem.index"
         :pIndex="menuItem.index"
         :pLeftIcon="menuItem.leftIcon"
+        data-testid="menu-item"
+        @click="logAmplitudeEvent(menuItem.title)"
       >
         <template #title>
           {{ menuItem.title }}
@@ -55,7 +59,7 @@
 import { ref, watch, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { userPermissions } from '@kpmg/common'
+import { amplitudeService, userPermissions } from '@kpmg/common'
 import { fetchBIReports } from '@/services/reporting'
 import { PMenuItem, PMenu, PSubMenu } from '@kpmg/styleguide'
 import { PERMISSION_CODES } from '@/constants'
@@ -122,6 +126,18 @@ const menuItems = computed(() =>
       display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
     },
     {
+      index: `/dossier/${props.selectedEntityId}/banque`,
+      title: t('bank'),
+      leftIcon: 'PIPiggyBank',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_BANK),
+    },
+    {
+      index: `/dossier/${props.selectedEntityId}/indicateurs`,
+      title: t('indicators'),
+      leftIcon: 'PISpeedometer2',
+      display: hasPermission(PERMISSION_CODES.ACCOUNT_INDICATORS),
+    },
+    {
       index: `/dossier/${props.selectedEntityId}/launcher`,
       title: t('apps'),
       leftIcon: 'PIGrid',
@@ -129,6 +145,12 @@ const menuItems = computed(() =>
     },
   ].filter((item) => item.display),
 )
+
+const logAmplitudeEvent = (featureName: string) => {
+  amplitudeService.track('Feature Consulted', {
+    feature_name: featureName.toLowerCase(),
+  })
+}
 
 watch(route, (currentRoute) => {
   activeMenuItem.value = currentRoute.fullPath
@@ -177,6 +199,8 @@ en-US:
   collaborators: 'Collaborators'
   documents: 'Documents'
   apps: 'Applications'
+  bank: 'Bank'
+  indicators: 'Indicators'
   delegationsHistory: 'Delegations history'
   home: 'Home'
   biReports: 'BI reports'
@@ -188,6 +212,8 @@ fr-FR:
   collaborators: 'Collaborateurs'
   documents: 'Documents'
   apps: 'Applications'
+  bank: 'Banque'
+  indicators: 'Indicateurs'
   delegationsHistory: 'Historique des délégations'
   home: 'Accueil'
   biReports: 'Rapports BI'

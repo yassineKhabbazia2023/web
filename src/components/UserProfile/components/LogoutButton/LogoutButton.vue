@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { commonStore as useStore } from '@kpmg/common'
+import { amplitudeService, commonStore as useStore } from '@kpmg/common'
 import { PButton } from '@kpmg/styleguide'
 
 const store = useStore()
@@ -24,7 +24,16 @@ const { t } = useI18n({
 
 const handleLogout = async () => {
   const isCollab = store.isCollab
-  await store.logout(store.$state)
+  try {
+    await store.logout(store.$state)
+    amplitudeService.track('Sign Out Completed', {
+      sign_out_result: 'succeeded',
+    })
+  } catch {
+    amplitudeService.track('Sign Out Completed', {
+      sign_out_result: 'failed',
+    })
+  }
   router.push({ name: isCollab ? 'login' : 'loginClient' })
 }
 </script>

@@ -70,6 +70,7 @@
 
     <PExpandableSearch
       class="margin-left--2"
+      pType="default"
       :pSearchContent="searchTerm"
       :pIsSearchShrinkable="!isSearchState"
       :pPlaceholder="t('placeholder')"

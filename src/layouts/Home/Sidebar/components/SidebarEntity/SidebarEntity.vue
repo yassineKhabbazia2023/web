@@ -147,8 +147,7 @@ const { t } = useI18n({
 
 const props = defineProps<SidebarEntityProps>()
 
-const { favoriteEntities, isCollab } =
-  storeToRefs(userStore)
+const { favoriteEntities, isCollab } = storeToRefs(userStore)
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
 const selectedEntity = ref<Entity | undefined>(undefined)
@@ -167,28 +166,22 @@ const isSelectedEntityActive = computed(() => {
   const params = {
     id: selectedEntity.value.accountId,
   }
-  // TODO: This part needs to be refactored
-  const isFolderActiveItem = activeItem({
-    name: 'folder',
-    params,
-  })
 
-  const isGedActiveItem = activeItem({
-    name: 'ged',
-    params,
-  })
+  const isUnitaryViewVisible = [
+    'folder',
+    'ged',
+    'launcher',
+    'reports',
+    'bank',
+    'indicators',
+  ].some((route) =>
+    activeItem({
+      name: route,
+      params,
+    }),
+  )
 
-  const isLauncherActiveItem = activeItem({
-    name: 'launcher',
-    params,
-  })
-
-  const isReportsBIActiveItem = activeItem({
-    name: 'reports',
-    params,
-  })
-
-  return isFolderActiveItem || isGedActiveItem || isLauncherActiveItem || isReportsBIActiveItem
+  return isUnitaryViewVisible ? 'sidenav-entity__actions-active' : ''
 })
 
 const onToggleSidebar = () => {
@@ -204,8 +197,6 @@ const onToggleSidebar = () => {
 const activeItem = (itemRoute: any) => {
   const routeName = route.matched?.at(0)?.name ?? route.name
   return itemRoute && itemRoute.name === routeName
-    ? 'sidenav-entity__actions-active'
-    : ''
 }
 
 const getActiveWallet = computed(() => {

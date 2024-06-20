@@ -1,4 +1,5 @@
 import type { Account } from '@/schedule/models/Account'
+import type { Attachment } from '@/schedule/models/Deadline'
 
 export type Frequency = 'None' | 'Weekly' | 'Monthly' | 'Quarterly' | 'Yearly'
 
@@ -21,4 +22,5 @@ export interface Schedule {
   isDraft?: boolean
   isPrivate?: boolean
   reminders: number[]
+  attachment: Attachment
 }

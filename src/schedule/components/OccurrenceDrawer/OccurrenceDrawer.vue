@@ -100,6 +100,36 @@
         class="margin-top--6"
         data-testid="occurrence-drawer-description"
       />
+      <template v-if="occurrence.schedule.attachment">
+        <div class="font-small margin-bottom--2">
+          <span class="create-schedule-form__optional-title font-semibold">
+            {{ t('attachment') }}
+          </span>
+        </div>
+        <PFileCard
+          class="margin-bottom--2"
+          pHasButton
+          pHasIcon
+          :pName="occurrence.schedule.attachment.name"
+          :pSize="fileSize"
+          :pFormat="fileFormat"
+        >
+          <template #buttons>
+            <PButton
+              pType="white"
+              pPlain
+              pSize="default"
+              data-testid="occurrence-drawer-attachment-download"
+              @click="downloadAttachment(occurrence.schedule.attachment)"
+              pIconOnly
+            >
+              <PIcon>
+                <PIDownload />
+              </PIcon>
+            </PButton>
+          </template>
+        </PFileCard>
+      </template>
       <p
         class="
           margin-top--6
@@ -149,6 +179,8 @@ import {
   PForm,
   PField,
   PAlert,
+  PIDownload,
+  PFileCard,
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
@@ -156,6 +188,10 @@ import type { Occurrence, Status } from '@/schedule/models/Deadline'
 import Tag from '@/schedule/components/Common/Tag'
 import DeadlineAccounts from '@/schedule/components/DeadlineAccounts'
 import DeadlineReminders from '@/schedule/components/DeadlineReminders'
+import {
+  downloadFile, base64UrlToBase64, saveFileAs, getFileExtension,
+  fileSizeHumanFormatter,
+} from '@/schedule/helpers/utils'
 import {
   getFrequencyLabel,
   getCreatedByLabel,
@@ -209,6 +245,16 @@ const isDrawerOpened = computed({
   },
 })
 
+const fileFormat = computed(() =>
+  occurrence.value?.schedule?.attachment?.name ? getFileExtension(occurrence.value.schedule.attachment.name) : '',
+)
+
+const fileSize = computed(() =>
+  occurrence.value?.schedule?.attachment?.content
+    ? fileSizeHumanFormatter((occurrence.value.schedule.attachment.content.split(',')[1].length * (3 / 4) - 1))
+    : '',
+)
+
 async function onToggleDeadlineAccountStatus(accountId: number, actualStatus: Status) {
   try {
     isLoading.value = true
@@ -246,6 +292,25 @@ const setAlertVisibility = () => {
   document.cookie = 'showDeadlineReminderOnce=true; SameSite=Lax;'
   isNoteAlertShown.value = false
 }
+
+const downloadAttachment = async (attachment:any) => {
+  try {
+    const base64File = base64UrlToBase64(attachment.content.split(',')[1])
+    if ('showSaveFilePicker' in window) {
+      try {
+        await saveFileAs(attachment.name, base64File)
+      } catch (error) {
+        if (error instanceof Error && error.message !== 'The user aborted a request.') {
+          downloadFile(attachment.name, base64File)
+        }
+      }
+    } else {
+      downloadFile(attachment.name, base64File)
+    }
+  } catch (error) {
+    console.error('Error downloading file:', error)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -273,6 +338,7 @@ const setAlertVisibility = () => {
       Monthly: 'Monthly'
     check: 'Check here'
     reminderCollabNote: 'to let your colleague know that you have completed the required action.'
+    attachment: 'Attachment'
   fr-FR:
     description: 'Description'
     createdBy: 'Créé par'
@@ -282,4 +348,5 @@ const setAlertVisibility = () => {
       Monthly: 'Tous les mois'
     check: 'Cochez ici'
     reminderCollabNote: "pour indiquer à votre collaborateur que vous avez réalisé l’action attendue."
+    attachment: 'Pièce jointe'
 </i18n>
