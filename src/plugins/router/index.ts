@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 import { storeToRefs } from 'pinia'
+import '@/pages/Error/router'
 import {
   routes as commonRoutes,
   commonStore as useStore,

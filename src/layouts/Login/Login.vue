@@ -36,23 +36,9 @@
       <div class="footer__legal-links margin-bottom--4">
         <LegalLinks />
       </div>
-
-      <p class="support">
-        {{ t('contactSupport') }}
-        <span class="link">{{ t('phoneNumber') }}</span>
-        {{ t('emailLabel') }}
-        <a href="mailto:relation-client@kpmg.fr" class="link">{{ t('SAVEmail') }}</a>
-      </p>
-      <p>
-        <a
-          class="link"
-          @click.prevent="handleCopyrightLink"
-          href=""
-          data-testid="login-copyright-link"
-        >
-          {{ t('copyright') }}
-        </a>
-      </p>
+      <div class="footer__support">
+        <SupportInfo />
+      </div>
     </footer>
 
     <PImage
@@ -61,56 +47,22 @@
       class="logo-footer hidden-sm-and-down"
       alt="KPMG logo"
     />
-
-    <PDrawer
-      v-model="isCopyrightDrawerOpened"
-      pTitle="Copyright"
-      @close-drawer-button="handleCloseDrawer"
-      data-testid="login-copyright-drawer"
-    >
-      <p class="drawerContent">
-        {{ t('copyrightContent') }}
-      </p>
-      <template #footer>
-        <PButton
-          @click="handleCloseDrawer"
-          pType="primary"
-        >
-          {{ t('close') }}
-        </PButton>
-      </template>
-    </PDrawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import { PButton, PCol, PDrawer, PImage, PRow } from '@kpmg/styleguide'
-import { useFooterLink } from '@/composables/useFooterLink'
+import { PCol, PImage, PRow } from '@kpmg/styleguide'
 import LegalLinks from '@/components/LegalLinks'
+import SupportInfo from '@/components/SupportInfo'
 import { type LoginLayoutProps } from '@/layouts/Login/LoginTypes'
-
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
 
 withDefaults(defineProps<LoginLayoutProps>(), {
   illustration: 'connection-default',
 })
 
-const {
-  handleCopyrightLink,
-  isCopyrightDrawerOpened,
-  handleCloseDrawer,
-} = useFooterLink()
 </script>
 
 <style lang="scss" scoped>
-.link {
-  color: var(--el-color-primary);
-  font-style: italic;
-}
 .wrapper {
   position: relative;
   padding: 2.4rem 1.6rem;
@@ -148,7 +100,7 @@ const {
 
   .content {
     @media (min-width: 992px) {
-      padding: 48px 48px 0;
+      padding: 4.8rem;
     }
 
     .pulse-logo-content {
@@ -181,10 +133,6 @@ const {
 }
 
 $footer-margin: 24px;
-.footer,
-.link {
-  font-size: 1.2rem;
-}
 .footer {
   @media (min-width: 992px) and (min-height: 700px) {
     position: absolute;
@@ -192,14 +140,10 @@ $footer-margin: 24px;
     bottom: $footer-margin;
     width: 100%;
   }
-  &__legal-links {
+  &__legal-links,
+  &__support {
     text-align: center;
   }
-}
-
-.drawerContent {
-  text-align: left;
-  font-size: 12px;
 }
 
 .logo-footer {
@@ -209,37 +153,3 @@ $footer-margin: 24px;
   width: 100px;
 }
 </style>
-
-<!-- eslint-disable @intlify/vue-i18n/no-unused-keys no-trailing-spaces -->
-<i18n lang="yaml">
-  en-US:
-    contactSupport: 'Contact support : '
-    phoneNumber: '09 73 73 3000'
-    emailLabel: ' — email : '
-    SAVEmail: "relation-client{'@'}kpmg.fr"
-    copyright: "© 2024 KPMG S.A"
-    copyrightContent: >-
-      © 2024 KPMG S.A., public accounting and auditing company,
-      French member of the global KPMG organization made up of independent firms
-      affiliated with KPMG International Limited, a company incorporated under English
-      law (“private company limited by guarantee”). All rights reserved.
-      The KPMG name and logo are trademarks used under license by independent member firms of
-      the global KPMG organization. To learn more about the structure of
-      the KPMG global organization, visit https://kpmg.com/governance.
-    close: 'Close'
-  fr-FR:
-    contactSupport: 'Contact support : '
-    phoneNumber: '09 73 73 3000'
-    emailLabel: ' — email : '
-    SAVEmail: "relation-client{'@'}kpmg.fr"
-    copyright: "© 2024 KPMG S.A"
-    copyrightContent: >-
-      © 2024 KPMG S.A., société anonyme d'expertise comptable et de commissariat aux comptes,
-      membre français de l’organisation mondiale KPMG constituée de cabinets indépendants
-      affiliés à KPMG International Limited, une société de droit anglais (« private company
-      limited by guarantee »). Tous droits réservés. Le nom et le logo KPMG sont des
-      marques utilisées sous licence par les cabinets indépendants membres de l’organisation
-      mondiale KPMG. Pour en savoir plus sur la structure de l’organisation mondiale KPMG,
-      rendez-vous sur la page https://kpmg.com/governance (en anglais).
-    close: 'Fermer'
-</i18n>
