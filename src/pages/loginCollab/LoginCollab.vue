@@ -10,7 +10,7 @@
       @click="handleLoginCollab"
       pType="primary"
       class="buttonSubmit"
-      data-testid="login-button"
+      data-testid="login-collab-button"
     >
       {{ t('login') }}
     </PButton>
