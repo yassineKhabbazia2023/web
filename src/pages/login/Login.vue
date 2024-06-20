@@ -75,11 +75,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, toRaw } from 'vue'
+import { computed, onMounted, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { commonApi, tokenService } from '@kpmg/common'
+import { amplitudeService, commonApi, tokenService } from '@kpmg/common'
 import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
 import useInitUserAuth from '@/composable/useInitUserAuth'
 import useNavigation from '@/composable/useNavigation'
@@ -165,6 +165,10 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     tokenService.setToken(token)
     const data = await initAuthClient()
     setStoreGigyaUserId(userId)
+    amplitudeService.track('Sign In Completed', {
+      sign_in_method: 'email',
+      sign_in_result: 'succeeded',
+    })
 
     const { isCurrent, terms } = await getTermsByContactId(data?.id)
     if (isCurrent) {
@@ -176,9 +180,17 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     if (hasEmailOrPasswordInvalid) {
       hasCustomError.value = true
     }
+    amplitudeService.track('Sign In Completed', {
+      sign_in_method: 'email',
+      sign_in_result: 'failed',
+    })
     return false
   }
 }
+
+onMounted(() => {
+  amplitudeService.reset()
+})
 </script>
 
 <style lang="scss">

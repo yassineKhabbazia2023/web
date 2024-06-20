@@ -93,7 +93,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi, commonStore as store, fetchUrlTerms, tokenService } from '@kpmg/common'
+import { commonApi, commonStore as store, fetchUrlTerms, tokenService, amplitudeService } from '@kpmg/common'
 import {
   onBeforeMount,
   reactive,
@@ -203,6 +203,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         resetPasswordToken,
       }
       const urlUpdatePassword = 'authentication/api/createNewPassword'
+      console.warn('HAHAHAHAH')
       try {
         await updateTermsByContactId(parseInt(contactId as string), termsId.value as number)
         await commonApi().gateway.post(urlUpdatePassword, data)
@@ -214,6 +215,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
           },
         } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
         tokenService.setToken(token)
+        amplitudeService.track('Onboarding Completed', {
+          onboarding_result: 'succeeded',
+        })
         store().$patch({
           user: {
             id,
@@ -221,7 +225,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
           },
         })
         navigateToCustomerWallet()
-      } catch {}
+      } catch {
+        amplitudeService.track('Onboarding Completed', {
+          onboarding_result: 'failed',
+        })
+      }
     } else {
       return false
     }
@@ -244,6 +252,10 @@ onBeforeMount(async () => {
   }
 })
 onMounted(async () => {
+  amplitudeService.reset()
+  amplitudeService.track('Onboarding Email Accepted', {
+    onboarding_email_click: '',
+  })
   try {
     urlTerms.value = await fetchUrlTerms()
     const { terms } = await getTermsByContactId(parseInt(contactId as string))

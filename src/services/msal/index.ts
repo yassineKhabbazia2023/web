@@ -6,7 +6,7 @@ import {
   VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
   VITE_API_MSAL_SCOPE,
 } from 'env-vars'
-import { tokenService } from '@kpmg/common'
+import { amplitudeService, tokenService } from '@kpmg/common'
 import { UserAgentApplication } from 'msal'
 
 const msalConfig = {
@@ -30,10 +30,18 @@ export const getToken = async () => {
       .then((response: any) => {
         const token = response.accessToken
         tokenService.setToken(token)
+        amplitudeService.track('Sign In Completed', {
+          sign_in_method: 'SSO',
+          sign_in_result: 'succeeded',
+        })
         return token
       })
       .catch((e) => {
         console.warn(e)
+        amplitudeService.track('Sign In Completed', {
+          sign_in_method: 'SSO',
+          sign_in_result: 'failed',
+        })
         msalInstance.loginRedirect()
       })
   }

@@ -30,6 +30,10 @@ vi.mock('@kpmg/common', () => ({
     },
   }),
   fetchUrlTerms: vi.fn(),
+  amplitudeService: {
+    track: vi.fn(),
+    reset: vi.fn(),
+  },
 }))
 
 describe('page creation password', () => {
