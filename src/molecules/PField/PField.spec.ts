@@ -170,7 +170,7 @@ describe('test PField', () => {
     const tests1 = [{
       optionIndex: 0,
       isChecked: false,
-      reason: 'deselects an already deselected option',
+      reason: 'deselects a selected option',
       expected: [],
     }, {
       optionIndex: 1,

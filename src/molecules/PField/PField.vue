@@ -72,12 +72,12 @@
       }"
     >
       <PCheckbox
-        :checked="pOption.pValue === modelValue"
-        v-for="(pOption, index) in pOptions"
+        v-for="({ isChecked, label }, index) in internalCheckboxOptions"
+        :checked="isChecked"
         :key="index"
         @change="onCheckboxChange(index, $event)"
       >
-        {{ pOption.pLabel }}
+        {{ label }}
       </PCheckbox>
     </div>
   </PFormItem>
@@ -93,6 +93,10 @@ import PRadio from '@/atoms/PRadio'
 import PCheckbox from '@/atoms/PCheckbox'
 import dayjs from 'dayjs'
 import type { PFieldProps } from './PFieldTypes'
+import {
+  getInternalCheckboxOptions,
+  getModelValueOnCheckboxChange,
+} from './PFieldHelper'
 
 const props = withDefaults(defineProps<PFieldProps<T>>(), {
   modelValue: undefined,
@@ -120,6 +124,11 @@ const internalValue = computed({
   },
 })
 
+const internalCheckboxOptions = computed(() => getInternalCheckboxOptions(
+  props.modelValue,
+  props.pOptions ?? [],
+))
+
 const internalDate = computed({
   get() {
     return props.modelValue as string
@@ -131,19 +140,13 @@ const internalDate = computed({
 })
 
 function onCheckboxChange(optionIndex: number, isChecked: boolean) {
-  const option = props.pOptions?.at(optionIndex)
-  const value = option?.pValue
-  if (value === undefined) {
-    throw new Error('optionsIndex is out of range')
-  }
-  const modelValue = Array.isArray(props.modelValue) ? [...props.modelValue] : []
-
-  if (isChecked && !modelValue.includes(value)) {
-    modelValue.push(value)
-    internalValue.value = modelValue as T // "as T" is a temporary trick
-  }
-  if (!isChecked && modelValue.includes(value)) {
-    modelValue.splice(optionIndex, 1)
+  const modelValue = getModelValueOnCheckboxChange<T>(
+    props.modelValue,
+    props.pOptions ?? [],
+    optionIndex,
+    isChecked,
+  )
+  if (modelValue) {
     internalValue.value = modelValue as T // "as T" is a temporary trick
   }
 }
