@@ -3,30 +3,46 @@ import type { Service } from '@/models/Service'
 import type { Folder } from '@/models/Folder'
 
 export const fetchServiceFolders = async (
-  serviceId: Service['ServiceId'],
+  service: Service,
   entityId: string,
 ): Promise<Folder[]> => {
-  const fetchFolderUrl = `${serviceId}/${entityId}/folders`
-  const response = await commonApi().ds.get(fetchFolderUrl)
-
-  return response?.data
+  const fetchFolderUrl = `${service.ServiceId}/${entityId}/folders`
+  try {
+    const response = await commonApi().ds.get(fetchFolderUrl)
+    return response?.data
+  } catch (error) {
+    // We return the serviceId that failed in order to handle errors in a specific way
+    // as "Comptabilité" service might work but "Gestion Sociale" might fail
+    return Promise.reject(service)
+  }
 }
 
+type fetchServicesFoldersReturnType = {
+  foldersByService: Folder[][]
+  unavailableServices: Service[]
+}
 export const fetchServicesFolders = async (
   services: Service[],
   entityId: string,
-): Promise<Folder[][]> => {
+): Promise<fetchServicesFoldersReturnType> => {
   const foldersByService: Folder[][] = []
+  const unavailableServices: Service[] = []
 
-  for (const s of services) {
-    const serviceFolder = await fetchServiceFolders(
-      s.ServiceId,
-      entityId,
-    )
-    foldersByService.push(serviceFolder)
-  }
+  const servicesFolderPromises = services.map((service) => {
+    return fetchServiceFolders(service, entityId)
+  })
 
-  return foldersByService
+  const settledServicesFoldersPromises = await Promise.allSettled(servicesFolderPromises)
+
+  settledServicesFoldersPromises.forEach(promise => {
+    if (promise.status === 'fulfilled') {
+      foldersByService.push(promise.value)
+    } else if (promise.status === 'rejected') {
+      unavailableServices.push(promise.reason as Service)
+    }
+  })
+
+  return { foldersByService, unavailableServices }
 }
 
 export const CreateFolder = async (

@@ -22,8 +22,20 @@ import {
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 import Documents from '@/modules/Documents'
 import BinDocuments from '@/modules/Bin'
+import { PNotification } from '@kpmg/styleguide'
 
 const pinia = createPinia()
+
+const apiMocks = vi.hoisted(() => ({
+  fetchServicesFoldersSuccess: vi.fn(() => ({
+    foldersByService: foldersData,
+    unavailableServices: [] as Service[],
+  })),
+  fetchServicesFoldersFail: vi.fn(() => ({
+    foldersByService: foldersData,
+    unavailableServices: [servicesData[0]],
+  })),
+}))
 
 vi.mock('@/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
@@ -35,10 +47,16 @@ vi.mock('@/models/AccountingHubConnection', () => ({
   }),
 }))
 
+vi.mock('@kpmg/styleguide', async () => {
+  const styleguide = await vi.importActual('@kpmg/styleguide') as Record<string, unknown>
+  return {
+    ...styleguide,
+    PNotification: vi.fn(),
+  }
+})
+
 vi.mock('@/services/Folder', () => ({
-  fetchServicesFolders: vi.fn(() => {
-    return foldersData
-  }),
+  fetchServicesFolders: apiMocks.fetchServicesFoldersSuccess,
 }))
 
 vi.mock('@/services/Services', () => ({
@@ -280,6 +298,14 @@ describe('ged', () => {
   })
 
   describe('documents', () => {
+    describe('rendering', () => {
+      it("should display notification if service didn't load correctly", async () => {
+        apiMocks.fetchServicesFoldersSuccess.mockReturnValue(apiMocks.fetchServicesFoldersFail())
+        createWrapper()
+        await flushPromises()
+        expect(PNotification).toHaveBeenCalledOnce()
+      })
+    })
     describe('props', () => {
       it('should display documents component when currentService is set', async () => {
         expect.hasAssertions()

@@ -42,11 +42,30 @@ describe('folder service', () => {
 
     expect(mockDsGet).toHaveBeenCalledTimes(2)
   })
+
+  it('should return array of services when fetchServicesFolder has error', async () => {
+    const services = [
+      { ServiceId: 'service-1', ServiceName: 'A' },
+      { ServiceId: 'service-2', ServiceName: 'B' },
+    ] as Service[]
+    const entityId = 'my-entity'
+    mockDsGet.mockRejectedValue(services[0].ServiceId)
+    const data = await fetchServicesFolders(services, entityId)
+
+    expect(mockDsGet).toHaveBeenCalledTimes(2)
+    expect(data).toStrictEqual({
+      foldersByService: [],
+      unavailableServices: [services[0], services[1]],
+    })
+  })
   it('should call ds api with the right uri when fetchServiceFolders is called', async () => {
-    const serviceId = 'some-service-id'
+    const service = {
+      ServiceId: 'some-service-id',
+      ServiceName: 'some service name',
+    }
     const entityId = 'some-entity-id'
 
-    const data = await fetchServiceFolders(serviceId, entityId)
+    const data = await fetchServiceFolders(service, entityId)
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders',

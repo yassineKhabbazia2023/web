@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, provide } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Treeview from '@/modules/Treeview'
 import Documents from '@/modules/Documents'
 import BinDocuments from '@/modules/Bin'
@@ -60,13 +61,17 @@ import {
   findFolderDeepById,
 } from '@/modules/Treeview/helpers/folderArrayHelper'
 // import Notifications from './Notifications.vue'
-import { PCol, PRow, PNotification } from '@kpmg/styleguide'
+import { PCol, PRow, PNotification, PIX } from '@kpmg/styleguide'
 import { commonStore } from '@kpmg/common'
 /* This might be refactored later to import 'PNotification' every time we need the notifications.
 The current toaster uses a mock of the 'inject' property.
 That's why we're providing the new PNotification for now.
 */
 provide('toast', PNotification)
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 // Folders scope
 const isLoadingServicesOrFolders = ref(true)
 const currentFolder = ref<null | Folder>(null)
@@ -77,12 +82,14 @@ const fetchGedFoldersAndServices = async () => {
     selectedEntity.value,
   )
 
-  const foldersFetchResult = await fetchServicesFolders(
+  const { foldersByService, unavailableServices } = await fetchServicesFolders(
     entityServices.value,
     selectedEntity.value,
   )
 
-  servicesFolders.value = foldersFetchResult
+  displayUnavailableServicesNotification(unavailableServices)
+
+  servicesFolders.value = foldersByService
   // Using the first folder serviceId by default
   currentService.value = servicesFolders.value[0][0].serviceId
 
@@ -101,6 +108,18 @@ const currentServiceFolder = computed<null | Folder[]>(() => {
   return servicesFolders.value
     .filter((folder:Folder[]) => folder[0].serviceId === currentService.value)[0]
 })
+
+function displayUnavailableServicesNotification(services: Service[]) {
+  services.forEach((service) => {
+    PNotification({
+      message: t('unavailableService', { serviceName: service.ServiceName }),
+      icon: PIX,
+      showClose: true,
+      customClass: 'error',
+      position: 'bottom-right',
+    })
+  })
+}
 
 const setCurrentFolderAndService = async (folder: Folder) => {
   if (currentBinService.value) {
@@ -220,3 +239,10 @@ onMounted(async () => {
 <style lang="scss">
 @import './styles/main';
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    unavailableService: 'The {serviceName} document management service is temporarily unavailable.'
+  fr-FR:
+    unavailableService: "Le service GED {serviceName} est momentanément indisponible"
+  </i18n>
