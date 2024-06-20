@@ -17,7 +17,7 @@
         @create-schedule="isDrawerVisible = true"
         @update:active-date="setActiveDate"
         @update:is-search-state="onUpdateIsSearchState"
-        @open-drawer-filters="isFilterDrawerVisible = true"
+        @open-drawer-filters="onClickOpenDrawerFilter"
       />
 
       <DeadlineList
@@ -83,7 +83,7 @@
     @update:model-value="onCloseScheduleDrawer"
   />
   <FilterDrawer
-    v-if="isFilterDrawerVisible"
+    v-if="isFilterDrawerHasBeenDisplayed"
     v-model="isFilterDrawerVisible"
     :targets="filters.targets"
     :templates="filters.templates"
@@ -144,6 +144,7 @@ const filters = ref<Filters>({
 const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
 const isFilterDrawerVisible = ref(false)
+const isFilterDrawerHasBeenDisplayed = ref(false)
 const activeDate = ref(new Date())
 const calendarWidgetDate = ref(new Date())
 const occurrenceId = ref<number>()
@@ -303,6 +304,11 @@ function onApplyFilters(newFilters: Filters) {
   } else {
     refreshData()
   }
+}
+
+function onClickOpenDrawerFilter() {
+  isFilterDrawerHasBeenDisplayed.value = true
+  isFilterDrawerVisible.value = true
 }
 </script>
 

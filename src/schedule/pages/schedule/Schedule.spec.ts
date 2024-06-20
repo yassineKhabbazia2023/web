@@ -84,6 +84,7 @@ function createWrapper(override: Partial<ScheduleProps> = {}) {
         ScheduleDrawer: {
           name: 'ScheduleDrawer',
           template: '<div />',
+          emits: ['update:model-value'],
         },
         ActionBar: ActionBarStub,
         Calendar: {
@@ -153,11 +154,22 @@ describe('home page', () => {
 
   describe('interactions', () => {
     it('should display the drawer on displayDeadlineDrawer event', async () => {
+      const getSchedulesCollectionSpy = vi
+        .spyOn(ScheduleServices, 'getSchedulesCollection')
+
       const wrapper = createWrapper()
 
       expect(wrapper.findComponent({ name: 'ScheduleDrawer' }).exists()).toBeFalsy()
       await wrapper.findComponent({ name: 'ActionBar' }).vm.$emit('create-schedule')
-      expect(wrapper.findComponent({ name: 'ScheduleDrawer' }).exists()).toBeTruthy()
+      const scheduleDrawer = wrapper.findComponent({ name: 'ScheduleDrawer' })
+      expect(scheduleDrawer.exists()).toBeTruthy()
+
+      scheduleDrawer.vm.$emit('update:model-value', false)
+
+      vi.advanceTimersByTime(300)
+      await nextTick()
+
+      expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
     })
 
     it('should give filtered deadlines of current month to DeadlineList', async () => {
