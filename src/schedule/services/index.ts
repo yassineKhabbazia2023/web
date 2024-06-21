@@ -74,7 +74,7 @@ export function getScheduleModelsByKey(labelType: ScheduleModelLabelType): Recor
 }
 
 export const getFrequenciesCollection = () => {
-  return Promise.resolve(['Monthly', 'None'])
+  return Promise.resolve(['Monthly', 'Quarterly', 'Yearly', 'None'])
 }
 
 export async function getOccurrence(occurrenceId: number) {

@@ -82,4 +82,4 @@ export function getMockedSchedule(override: Partial<Schedule> = {}) {
   }
 }
 
-export const frequenciesMock: string[] = ['Monthly', 'None']
+export const frequenciesMock: string[] = ['Monthly', 'Quarterly', 'Yearly', 'None']
