@@ -44,6 +44,11 @@ vi.mock('@kpmg/common', () => ({
     getToken: vi.fn(),
     registerOnChange: vi.fn(),
   },
+  dataProvider: () => {
+    return {
+      fetchUserData: vi.fn(),
+    }
+  },
 }))
 
 vi.mock('jwt-decode', () => ({

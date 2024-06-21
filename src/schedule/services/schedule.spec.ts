@@ -30,6 +30,11 @@ vi.mock('@kpmg/common', () => {
         post: commonApiPostSpy,
       },
     }),
+    dataProvider: () => {
+      return {
+        fetchUserData: vi.fn(),
+      }
+    },
   }
 })
 

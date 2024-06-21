@@ -3,7 +3,6 @@ import { defineStore, createPinia } from 'pinia'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import helpers from '@/tests/utils/helpers'
 import router from '../plugins/router'
 import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { ROUTES, PAGES_TITLE } from './mock'
@@ -11,7 +10,6 @@ import type { Entity } from '@kpmg/common'
 import App from './'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
-const { fetchUserData } = helpers()
 
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5,
@@ -54,7 +52,9 @@ vi.mock('@kpmg/common', () => ({
     value: [],
   },
   dataProvider: () => {
-    return { fetchUserData }
+    return {
+      fetchUserData: vi.fn(),
+    }
   },
   userPermissions: () => ({
     hasPermission: () => vi.fn(() => true),

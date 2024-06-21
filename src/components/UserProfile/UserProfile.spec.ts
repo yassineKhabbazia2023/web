@@ -9,6 +9,11 @@ vi.mock('@kpmg/common', () => ({
       get: () => Promise.resolve({ data: {} }),
     },
   }),
+  dataProvider: () => {
+    return {
+      fetchUserData: vi.fn(),
+    }
+  },
 }))
 
 const MY_INFORMATION_CONTENT = 'custom content'
