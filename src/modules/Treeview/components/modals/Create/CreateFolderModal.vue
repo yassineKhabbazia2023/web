@@ -126,13 +126,13 @@ en-US:
   validations:
     alphaNumerique: >
       Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : &lt; &gt; ? / \ |.
+      “ * : {'<'} {'>'} ? / \ |.
     folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
 
 fr-FR:
   validations:
     alphaNumerique: >
       Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : &lt; &gt; ? / \ |.
+      “ * : {'<'} {'>'} ? / \ |.
     folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
 </i18n>

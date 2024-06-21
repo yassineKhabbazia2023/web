@@ -55,7 +55,7 @@ const isPopupVisible = computed({
 
 const message = computed(() => {
   if (isDeleteInProgress.value) {
-    return t('popup.messageLoading')
+    return t('popup.messageLoading', props.documentIds.length)
   } else if (props.documentIds.length > 1) {
     return t('popupMulti.message')
   } else {
@@ -126,7 +126,9 @@ en-US:
     titleLoading: 'Un instant...'
     message: 'Si vous cliquez sur "Confirmer", le document
      sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
-    messageLoading: 'Le documents est en cours de suppression vers la corbeille.'
+    messageLoading: >
+      Le document est en cours de suppression vers la corbeille. |
+      Les documents sont en cours de suppression vers la corbeille.
     controls:
       confirm: 'Confirmer'
       cancel: 'Annuler'
@@ -145,7 +147,9 @@ fr-FR:
     titleLoading: 'Un instant...'
     message: 'Si vous cliquez sur "Confirmer", le document
      sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
-    messageLoading: 'Le documents est en cours de suppression vers la corbeille.'
+    messageLoading: >
+      Le document est en cours de suppression vers la corbeille. |
+      Les documents sont en cours de suppression vers la corbeille.
     controls:
       confirm: 'Confirmer'
       cancel: 'Annuler'
