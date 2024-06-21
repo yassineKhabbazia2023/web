@@ -13,7 +13,7 @@
       pHasButton
     >
       <PButton
-        v-if="hasPermission(PERMISSION_CODES.ACTIVATE_OFFER)"
+        v-if="isActivateOffersButtonVisible"
         pType="primary"
         pSize="small"
         @click="handleActivateOffersClick"
@@ -140,6 +140,9 @@ const headerTitle = computed(() =>
 )
 const headerSubtitle = computed(() =>
   isCollab.value ? t('collabHeaderSubtitle') : t('clientHeaderSubtitle'),
+)
+const isActivateOffersButtonVisible = computed(
+  () => isCollab.value && hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
 )
 
 const handleActivateOffersClick = () => {
