@@ -95,6 +95,10 @@ describe('getScheduleModels', () => {
     const data = getScheduleModels(labelType)
     expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.snap`)
   })
+  it.each(labelTypes)('should return proper list when labelType = \'%i\' and includes autre', (labelType) => {
+    const data = getScheduleModels(labelType, true)
+    expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.withOthers.snap`)
+  })
 })
 
 describe('getScheduleModelsByKey', () => {

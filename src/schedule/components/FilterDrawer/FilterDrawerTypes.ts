@@ -9,4 +9,5 @@ export interface Filters {
 
 export interface FilterDrawerProps extends Filters {
   modelValue: boolean
+  isCollab: boolean
 }

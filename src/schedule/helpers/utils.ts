@@ -1,7 +1,10 @@
 'use strict'
+import { toRaw } from 'vue'
+import { isEqual } from 'lodash-es'
 import type { Account } from '@/schedule/models/Account'
 import type { Deadline } from '../models/Deadline'
 import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
+import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 declare let window: {
   showSaveFilePicker: any
@@ -92,4 +95,29 @@ export const fileSizeHumanFormatter = (fileSize:number, decimals = 2) => {
   const sizes = ['B', 'KB', 'MB']
   const i = Math.floor(Math.log(fileSize) / Math.log(kilobytes))
   return `${parseFloat((fileSize / Math.pow(kilobytes, i)).toFixed(decimalsAccuracy))}${sizes[i]}`
+}
+
+export function getDefaultFilters(isCollab: boolean): Filters {
+  return {
+    targets: [],
+    templates: [],
+    status: [],
+    mineOnly: isCollab,
+  }
+}
+
+export function getAppliedFilterCount(defaultFilters: Filters, filters: Filters) {
+  const filterKeys = Object.keys(defaultFilters) as any as (keyof Filters)[]
+  const rawFilters = toRaw(filters)
+
+  const appliedFilterCount = filterKeys
+    .reduce((count, filterKey) => {
+      const value = rawFilters[filterKey]
+      const defaultValue = defaultFilters[filterKey]
+      const isSameValue = isEqual(value, defaultValue)
+
+      return count + (isSameValue ? 0 : 1)
+    }, 0)
+
+  return appliedFilterCount
 }

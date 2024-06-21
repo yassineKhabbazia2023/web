@@ -13,10 +13,13 @@ import {
   downloadFile,
   saveFileAs,
   base64ToBlob,
+  getDefaultFilters,
+  getAppliedFilterCount,
 } from './utils'
 import { expect, describe, it, vi } from 'vitest'
 import { accountsCollectionForSelectFormat, accountsCollection } from '@/schedule/tests/mocks/Account'
 import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
+import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 const TEST_DATE = '2024-08-14'
 
@@ -152,6 +155,96 @@ describe('utils helpers', () => {
       window.atob = vi.fn(() => 'abcdef')
       const result = base64ToBlob(base64Data)
       expect(result).toBeInstanceOf(Blob)
+    })
+  })
+
+  describe('getDefaultFilters', () => {
+    const tests = [{
+      isCollab: false,
+      expected: {
+        targets: [],
+        templates: [],
+        status: [],
+        mineOnly: false,
+      },
+    }, {
+      isCollab: true,
+      expected: {
+        targets: [],
+        templates: [],
+        status: [],
+        mineOnly: true,
+      },
+    }]
+    it.each(tests)('shoud returns expected default filters when isCollab is $isCollab', ({
+      isCollab,
+      expected,
+    }) => {
+      const defaultFilters = getDefaultFilters(isCollab)
+
+      expect(defaultFilters).toStrictEqual(expected)
+    })
+  })
+
+  describe('getAppliedFilterCount', () => {
+    const defaultFilters = {
+      targets: [],
+      templates: [],
+      status: [],
+      mineOnly: false,
+    }
+    const tests: {
+      filters: Filters
+      expected: number
+      reason: string
+    }[] = [{
+      filters: {
+        ...defaultFilters,
+      },
+      expected: 0,
+      reason: 'default filters',
+    }, {
+      filters: {
+        ...defaultFilters,
+        targets: [1],
+      },
+      expected: 1,
+      reason: 'default filters and one change',
+    }, {
+      filters: {
+        ...defaultFilters,
+        targets: [1],
+        templates: ['TVA', 'Bilan'],
+      },
+      expected: 2,
+      reason: 'default filters and two changes',
+    }, {
+      filters: {
+        ...defaultFilters,
+        targets: [1],
+        templates: ['TVA', 'Bilan'],
+        status: ['Todo'],
+      },
+      expected: 3,
+      reason: 'default filters and three changes',
+    }, {
+      filters: {
+        targets: [1],
+        templates: ['TVA', 'Bilan'],
+        status: ['Todo'],
+        mineOnly: !defaultFilters.mineOnly,
+      },
+      expected: 4,
+      reason: 'default filters and four changes',
+    }]
+    it.each(tests)('shoud returns $expected when $reason', ({
+      filters,
+      expected,
+    }) => {
+      const proxyFilters = new Proxy(filters, {})
+      const appliedFilterCount = getAppliedFilterCount(defaultFilters, proxyFilters)
+
+      expect(appliedFilterCount).toStrictEqual(expected)
     })
   })
 })

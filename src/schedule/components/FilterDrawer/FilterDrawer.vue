@@ -5,7 +5,7 @@
     :pShowPreviousStep="false"
     pSize="33%"
     pDirection="rtl"
-    @close-drawer-button="onClickClose"
+    @close-drawer-button="isDrawerOpened = false"
     @open="onOpen"
   >
     <PForm
@@ -19,9 +19,11 @@
         pMultiple
         pCollapseTags
         pCollapseTagsTooltip
-        :pLabel="t('targets')"
+        :pLabel="t('targets.label')"
+        :pPlaceholder="t('targets.placeholder')"
         :pCheckAllLabel="t('checkAll')"
         :pDropdownOptions="targetOptions"
+        data-testid="filter-drawer-field-targets"
       />
       <PFieldStringMultiple
         v-model="formData.templates"
@@ -30,9 +32,11 @@
         pMultiple
         pCollapseTags
         pCollapseTagsTooltip
-        :pLabel="t('templates')"
+        :pLabel="t('templates.label')"
+        :pPlaceholder="t('templates.placeholder')"
         :pCheckAllLabel="t('checkAll')"
         :pDropdownOptions="templateOptions"
+        data-testid="filter-drawer-field-templates"
       />
       <PFieldStatusMultiple
         v-model="formData.status"
@@ -43,14 +47,17 @@
         :pCheckAllLabel="t('checkAll')"
         :pOptions="statusOptions"
         pFlexColumn
+        data-testid="filter-drawer-field-status"
       />
       <PFieldBoolean
+        v-if="isCollab"
         v-model="formData.mineOnly"
         pFieldType="radio"
         pFieldKey="mineOnly"
         :pLabel="t('mineOnly.label')"
         :pOptions="mineOnlyOptions"
         pFlexColumn
+        data-testid="filter-drawer-field-mineOnly"
       />
     </PForm>
     <template #footer>
@@ -63,10 +70,10 @@
       >
         <PButton
           pPlain
-          pType="default"
-          @click="onClickClose"
+          pType="primary"
+          @click="onClickReset"
         >
-          {{ t('close') }}
+          {{ t('reset') }}
         </PButton>
         <PButton
           pType="primary"
@@ -92,6 +99,7 @@ import type { Filters, FilterDrawerProps } from './FilterDrawerTypes'
 import { getAccountsCollection, getScheduleModels } from '@/schedule/services'
 import type { PDropdownOption, PFieldRadioOptions } from '@kpmg/styleguide'
 import type { Status } from '@/schedule/models/Deadline'
+import { getDefaultFilters } from '@/schedule/helpers/utils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -157,7 +165,7 @@ const mineOnlyOptions = ref<PFieldRadioOptions[]>([{
 
 onMounted(async () => {
   const accounts = await getAccountsCollection()
-  const scheduleModels = getScheduleModels('both')
+  const scheduleModels = getScheduleModels('both', true)
 
   targetOptions.value = accounts
     .map(({ id: pValue, name: pLabel }) => ({
@@ -173,8 +181,8 @@ onMounted(async () => {
   initializeFilters()
 })
 
-function onClickClose() {
-  isDrawerOpened.value = false
+function onClickReset() {
+  formData.value = getDefaultFilters(props.isCollab)
 }
 
 function onClickApply() {
@@ -186,9 +194,14 @@ function onClickApply() {
 <i18n lang="yaml">
   en-US:
     title: 'Filters'
-    close: 'Close'
+    reset: 'Re-initialize'
     apply: 'Apply'
-    targets: 'Targets(s)'
+    targets:
+      label: 'Targets(s)'
+      placeholder: 'Select one or more folders'
+    templates:
+      label: 'Templates'
+      placeholder: 'Select one or more deadline types'
     status:
       label: 'Status'
       Done: 'Done'
@@ -197,14 +210,17 @@ function onClickApply() {
       label: 'Creator'
       true: 'You (by default)'
       false: 'Anyone'
-    templates: 'Template'
     checkAll: 'Check all'
   fr-FR:
     title: 'Filtres'
-    close: 'Fermer'
+    reset: 'Réinitialiser'
     apply: 'Appliquer'
-    targets: 'Destinataire(s)'
-    templates: 'Modèle'
+    targets:
+      label: 'Destinataire(s)'
+      placeholder: 'Sélectionner un ou plusieurs dossiers'
+    templates:
+      label: 'Modèle'
+      placeholder: 'Sélectionner un ou plusieurs types de rappel'
     status:
       label: 'Statut'
       Done: 'Fait'

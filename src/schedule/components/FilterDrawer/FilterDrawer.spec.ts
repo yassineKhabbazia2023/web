@@ -15,6 +15,7 @@ async function createWrapper(override: Partial<FilterDrawerProps> = {}) {
     templates: [],
     status: [],
     mineOnly: false,
+    isCollab: true,
   }
   const props = {
     ...defaultProps,
@@ -33,6 +34,7 @@ async function createWrapper(override: Partial<FilterDrawerProps> = {}) {
         PForm: {
           name: 'PForm',
           template: '<div><slot /></div>',
+          props: ['pModel'],
         },
         PField: {
           name: 'PField',
@@ -95,6 +97,36 @@ describe('test FilterDrawer', () => {
     expect(pFields?.at(3)?.props('modelValue')).toStrictEqual(mineOnly)
   })
 
+  describe('displayed field', () => {
+    const fieldNames = [
+      'filter-drawer-field-targets',
+      'filter-drawer-field-templates',
+      'filter-drawer-field-status',
+    ]
+    const tests = [{
+      isCollab: false,
+      expectedFieldTestIds: fieldNames,
+    }, {
+      isCollab: true,
+      expectedFieldTestIds: [
+        ...fieldNames,
+        'filter-drawer-field-mineOnly',
+      ],
+    }]
+    it.each(tests)('should display proper fields when isCollab is $isCollab', async ({
+      isCollab,
+      expectedFieldTestIds,
+    }) => {
+      const wrapper = await createWrapper({ isCollab })
+      const pFields = wrapper.findAll('[data-testid^="filter-drawer-field-"]')
+
+      const fieldTestIds = pFields?.map((field) => field.attributes('data-testid'))
+
+      expect(pFields).toHaveLength(expectedFieldTestIds.length)
+      expect(fieldTestIds).toStrictEqual(expectedFieldTestIds)
+    })
+  })
+
   it('should emit active filters and close drawer when user clicks on apply button', async () => {
     const wrapper = await createWrapper({ modelValue: true })
 
@@ -121,20 +153,34 @@ describe('test FilterDrawer', () => {
     expect(emittedModelValue).toStrictEqual([false])
   })
 
-  it('should emit close drawer when user clicks on close button', async () => {
+  it('should reset filters when user clicks on reset button', async () => {
     const wrapper = await createWrapper({ modelValue: true })
 
     const pButtons = wrapper.findAllComponents({ name: 'PButton' })
     const pButtonClose = pButtons[0]
+    const newTargets = [123]
+    const expectedFiltersBefore: Filters = {
+      targets: newTargets,
+      templates: [],
+      status: [],
+      mineOnly: false,
+    }
+    const expectedFiltersAfter: Filters = {
+      ...expectedFiltersBefore,
+      targets: [],
+      mineOnly: true,
+    }
+
+    const pForm = wrapper.findComponent({ name: 'PForm' })
+    const pFields = wrapper.findAllComponents({ name: 'PFieldStringMultiple' })
+    const firstField = pFields?.at(0)
+
+    firstField?.vm?.$emit('update:model-value', newTargets)
+    expect(pForm.props('pModel')).toStrictEqual(expectedFiltersBefore)
 
     pButtonClose.trigger('click')
     await nextTick()
 
-    const emittedApply = wrapper?.emitted('apply')?.at(0)
-    const emittedModelValue = wrapper?.emitted('update:model-value')?.at(0)
-
-    expect(emittedApply).toBeUndefined()
-    expect(emittedModelValue).toStrictEqual([false])
+    expect(pForm.props('pModel')).toStrictEqual(expectedFiltersAfter)
   })
 })
-

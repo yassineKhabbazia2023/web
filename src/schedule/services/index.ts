@@ -48,9 +48,22 @@ function getScheduleModelLabel(
   return `${shortLabel} (${longLabel})`
 }
 
-export function getScheduleModels(labelType: ScheduleModelLabelType): KeyLabel[] {
-  return CSV_DATA
-    .split('\n')
+function getCsvData(includesOther: boolean): string[] {
+  const csvData = CSV_DATA.split('\n')
+  return includesOther
+    ? [
+        ...csvData,
+        'autre,Autre,Autre',
+      ]
+    : csvData
+}
+
+export function getScheduleModels(
+  labelType: ScheduleModelLabelType,
+  includesOther = false,
+): KeyLabel[] {
+  const csvData = getCsvData(includesOther)
+  return csvData
     .map((row) => {
       const [key, shortLabel, longLabel] = row.split(',')
       const label = getScheduleModelLabel(labelType, shortLabel, longLabel)

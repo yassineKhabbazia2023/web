@@ -70,9 +70,8 @@ import { useI18n } from 'vue-i18n'
 import type { ActionBarProps } from './ActionBarTypes'
 import ActionBarLeft from '@/schedule/components/ActionBarLeft'
 
-const props = withDefaults(defineProps<ActionBarProps>(), {
-  activeFilters: 0,
-})
+const props = defineProps<ActionBarProps>()
+
 const emit = defineEmits<{
   'create-schedule': []
   'update:modelValue': [value: string]

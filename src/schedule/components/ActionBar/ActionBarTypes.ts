@@ -6,5 +6,5 @@ export interface ActionBarProps {
   isCollab: boolean
   searchTerm: string
   isSearchState: boolean
-  activeFilters?: number
+  activeFilters: number
 }
