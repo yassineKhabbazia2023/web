@@ -44,7 +44,7 @@ describe('usePiaStatusSync', () => {
     const { updateDocumentSyncStatusAndPermissions } = usePiaStatusSync(selectedFolder, documents)
     const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === '1234567890')
     expect(documentToNotify?.piaStatus.labelFr).equals('Actif')
-    expect(documentToNotify?.permissions).toStrictEqual(['READ', 'WRITE'])
+    expect(documentToNotify?.permissions).toStrictEqual(['READ', 'WRITE', 'CAN_DELETE_DOCUMENT'])
 
     const newDocumentStatusAndUpdate : DocumentStatusUpdateResponse = {
       folderId: 1,

@@ -4,11 +4,12 @@ import { commonApiGatewayGetSpy } from '@/../vitest.setup'
 
 describe('fetchUserEntityServices', () => {
   it('should return folder object', async () => {
-    await fetchUserEntityServices('serviceId')
+    const accountId = '1234'
+    await fetchUserEntityServices(accountId)
 
     expect(commonApiGatewayGetSpy).toHaveBeenCalledOnce()
     expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
-      '/wallet/api/permissions/256/services',
+      `/ged/accounts/${accountId}/ged-services/currentuser`,
     )
   })
 })

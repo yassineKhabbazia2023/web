@@ -119,7 +119,7 @@
     :serviceId="currentService"
     :entityId="selectedEntity"
     :isVisible="isDeletePopupVisible"
-    :documentIds="documentIdsSelected"
+    :documentIds="deletableSelectedDocumentsIds"
     @confirm-delete-document="handleConfirmDeleteDocument"
     @cancel-delete-document="handleCancelDeleteDocument"
   />
@@ -233,6 +233,7 @@ import { validInputMaxLength }
 import DocumentsDropZone from './components/DocumentsDropZone'
 import { useDragAndDropFromExplorer } from './composable/DragAndDropFromExplorer'
 import DocumentsDropModal from './components/DocumentsDropModal'
+import { Permissions } from '@/models/Permissions'
 
 /* The more features we add the more this component becomes bloated.
 We created a refactor task, which, unfortunately has been placed far back in the backlog.
@@ -432,6 +433,12 @@ const handleCancelDeleteDocument = () => {
 
 const documentIdsSelected = computed(() => {
   return selectedDocuments.value.map((document) => document.id)
+})
+
+const deletableSelectedDocumentsIds = computed(() => {
+  return selectedDocuments.value
+    .filter((document) => document.permissions.includes(Permissions.CAN_DELETE_DOCUMENT))
+    .map((document) => document.id)
 })
 
 const handleSearchExpandChange = (value: boolean) => {
