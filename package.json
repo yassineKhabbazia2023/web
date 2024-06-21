@@ -44,7 +44,7 @@
     }
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^2.8.1",
+    "@amplitude/analytics-browser": "^2.9.0",
     "@braintree/sanitize-url": "^7.0.0",
     "@microsoft/signalr": "^8.0.0",
     "axios": "^1.4.0",
