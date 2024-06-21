@@ -7,7 +7,7 @@
     :pPageSizeSelectorGroupLabel="pageRangeSelectorGroupLabel"
     @update:p-current-page="handleCurrentChange"
     @on-page-range-changed="handleSizeChange"
-    :pPageSize="itemsByPage"
+    :pPageSize="limit"
     pTestIdRoot="mandate"
     :pCurrentPage="currentPage"
   >
@@ -20,7 +20,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { PaginationProps } from './PaginationTypes'
 import { PPagination } from '@kpmg/styleguide'
-import type { UpdateTableDisplayParams } from '@/pages/home/HomeTypes'
+import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -28,7 +28,7 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'page-selected': [Partial<UpdateTableDisplayParams>]
+  'page-selected': [Partial<SearchMandateParams>]
 }>()
 
 const props = withDefaults(defineProps<PaginationProps>(), {
@@ -37,38 +37,38 @@ const props = withDefaults(defineProps<PaginationProps>(), {
   currentPage: 1,
 })
 
-const itemsByPage = ref(props.pagesRanges[0])
+const limit = ref(props.pagesRanges[0])
 
 const startIndex = computed(() => {
   if (props.pagesCount > 0) {
-    return (((props.currentPage - 1) * itemsByPage.value) + 1)
+    return (((props.currentPage - 1) * limit.value) + 1)
   }
   return 0
 })
 const endIndex = computed(() => {
-  if (((startIndex.value - 1) + itemsByPage.value) >= props.pagesCount) {
+  if (((startIndex.value - 1) + limit.value) >= props.pagesCount) {
     return props.pagesCount
   }
-  return startIndex.value - 1 + itemsByPage.value
+  return startIndex.value - 1 + limit.value
 })
 
 const handleCurrentChange = (currentPage: number) => {
-  updateListDisplay(currentPage, itemsByPage.value)
+  updateListDisplay(currentPage, limit.value)
 }
 
 const handleSizeChange = (currentItemsByPage: number) => {
-  itemsByPage.value = currentItemsByPage
-  updateListDisplay(1, itemsByPage.value)
+  limit.value = currentItemsByPage
+  updateListDisplay(1, limit.value)
 }
 
-const updateListDisplay = (currentPage: number, itemsByPage: number) =>
-  emit('page-selected', { currentPage, itemsByPage })
-
+function updateListDisplay(currentPage: number, limit: number) {
+  emit('page-selected', { currentPage, limit })
+}
 </script>
 
 <i18n lang="yaml">
   en-US:
-    on: 'on'
+      on: 'on'
   fr-FR:
     on: 'sur'
 </i18n>

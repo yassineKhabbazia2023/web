@@ -24,15 +24,15 @@ describe('pagination component', () => {
     const wrapper = createWrapper()
     await wrapper.find('.btn-next').trigger('click')
     const pageSelectedEvent: any = wrapper.emitted('page-selected')
-    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 2, itemsByPage: 10 }])
+    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 2, limit: 10 }])
   })
 
   it('emits page-selected event when dropdown are clicked', () => {
     const wrapper = createWrapper()
     const PPaginationComponent = wrapper.findComponent({ name: 'PPagination' })
-    const itemsByPage = 20
-    PPaginationComponent.vm.$emit('on-page-range-changed', itemsByPage)
+    const limit = 20
+    PPaginationComponent.vm.$emit('on-page-range-changed', limit)
     const pageSelectedEvent: any = wrapper.emitted('page-selected')
-    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 1, itemsByPage }])
+    expect(pageSelectedEvent[0]).toStrictEqual([{ currentPage: 1, limit }])
   })
 })

@@ -138,7 +138,7 @@ import {
 } from '@/services/mandate'
 import { showNotification } from '@/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
-import type { UpdateTableDisplayParams } from '@/pages/home/HomeTypes'
+import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
 
 declare let window: any
 
@@ -148,7 +148,7 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'refresh-mandate-collection': [Partial<UpdateTableDisplayParams>]
+  'refresh-mandate-collection': [Partial<SearchMandateParams>]
 }>()
 
 const pDialogControl = reactive({
@@ -261,7 +261,7 @@ const sortColumnChange = ({ order, prop }: any) => {
   })
 }
 
-function emitRefreshMandateCollection(params: Partial<UpdateTableDisplayParams>) {
+function emitRefreshMandateCollection(params: Partial<SearchMandateParams>) {
   emit('refresh-mandate-collection', params)
 }
 

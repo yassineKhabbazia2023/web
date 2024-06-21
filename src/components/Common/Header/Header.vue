@@ -40,7 +40,7 @@ import {
   PIAdd,
   PFilterGroup,
 } from '@kpmg/styleguide'
-import type { UpdateTableDisplayParams } from '@/pages/home/HomeTypes'
+import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -50,7 +50,7 @@ const { t } = useI18n({
 const PFilterGroupNumber = PFilterGroup<number>
 
 const emit = defineEmits<{
-  'refresh-mandate-collection': [Partial<UpdateTableDisplayParams>]
+  'refresh-mandate-collection': [Partial<SearchMandateParams>]
 }>()
 
 const openDrawer = ref(false)
