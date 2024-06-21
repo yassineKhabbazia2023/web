@@ -58,8 +58,9 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { amplitudeService, userPermissions } from '@kpmg/common'
+import { amplitudeService, userPermissions, commonStore } from '@kpmg/common'
 import { fetchBIReports } from '@/services/reporting'
 import { PMenuItem, PMenu, PSubMenu } from '@kpmg/styleguide'
 import { PERMISSION_CODES } from '@/constants'
@@ -73,6 +74,7 @@ const { t } = useI18n({
 
 const props = defineProps<SidebarEntityMenuProps>()
 const { hasPermission } = userPermissions()
+const { isCollab } = storeToRefs(commonStore())
 
 const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
@@ -106,7 +108,7 @@ const folderSubmenu = computed(() => ({
     {
       title: t('delegationsHistory'),
       index: 'historique-delegations',
-      display: hasPermission(PERMISSION_CODES.HISTORY),
+      display: isCollab.value && hasPermission(PERMISSION_CODES.HISTORY),
     },
   ].filter((item) => item.display),
 }))
