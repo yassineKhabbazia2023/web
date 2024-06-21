@@ -73,7 +73,7 @@
     >
       <PCheckbox
         v-for="({ isChecked, label }, index) in internalCheckboxOptions"
-        :checked="isChecked"
+        :modelValue="isChecked"
         :key="index"
         @change="onCheckboxChange(index, $event)"
       >

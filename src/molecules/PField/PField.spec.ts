@@ -188,7 +188,6 @@ describe('test PField', () => {
 
       pCheckboxes[optionIndex].vm.$emit('change', isChecked)
       await nextTick()
-      console.warn(value0, value1)
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[expected]])
     })
