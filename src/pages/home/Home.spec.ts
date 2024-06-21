@@ -8,6 +8,7 @@ import { getMockedMandatesList } from '@/../tests/mocks/mandateMock'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { AxiosResponse } from 'axios'
+import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
 
 vi.mock('@/services/mandate')
 vi.mock('@kpmg/common', () => ({
@@ -43,13 +44,17 @@ describe('test Home.vue', () => {
     pagination.vm.$emit('page-selected', {
       currentPage: 2,
     })
-    const expectedParams = {
-      limit: 10,
+    const expectedParams: SearchMandateParams = {
+      limit: 15,
       searchTerm: '',
-      skip: 10,
+      currentPage: 2,
       sortCriteria: '',
       sortOrder: 'Descending',
       statusCodes: [],
+      creationDateStart: '',
+      creationDateEnd: '',
+      modificationDateStart: '',
+      modificationDateEnd: '',
     }
 
     expect(mockedGetMandatesCollection).toHaveBeenCalledTimes(2)
@@ -67,6 +72,7 @@ describe('test Home.vue', () => {
   it('should call console.error when mockedGetMandatesCollection throws an error', async () => {
     const header = wrapper.findComponent({ name: 'Header' })
     const error = 'thrown-error'
+    const expected = `Error while refresh data ${error}`
     const consoleErrorSpy = vi.spyOn(console, 'error')
     mockedGetMandatesCollection.mockRejectedValueOnce(error)
 
@@ -75,7 +81,7 @@ describe('test Home.vue', () => {
     await flushPromises()
 
     expect(consoleErrorSpy).toHaveBeenCalledOnce()
-    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, error)
+    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, expected)
   })
 
   it('should call api with search term', async () => {
@@ -88,14 +94,19 @@ describe('test Home.vue', () => {
       .setValue(inputValue)
     await ibsInputElement.trigger('change')
     await vi.advanceTimersByTimeAsync(550)
-    expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith({
-      skip: 0,
-      limit: 10,
+    const expected: SearchMandateParams = {
+      currentPage: 1,
+      limit: 15,
       searchTerm: inputValue,
       sortCriteria: '',
       sortOrder: 'Descending',
       statusCodes: [],
-    })
+      creationDateStart: '',
+      creationDateEnd: '',
+      modificationDateStart: '',
+      modificationDateEnd: '',
+    }
+    expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expected)
   })
 
   it('should call console.error when mockedGetMandatesCollection throws an error since begining', async () => {
@@ -107,6 +118,6 @@ describe('test Home.vue', () => {
     await flushPromises()
 
     expect(consoleErrorSpy).toHaveBeenCalledOnce()
-    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, `Error in mandate mount ${error}`)
+    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, `Error while refresh data ${error}`)
   })
 })

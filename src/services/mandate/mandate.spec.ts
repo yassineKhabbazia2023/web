@@ -13,6 +13,7 @@ import {
 } from '.'
 import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 import { getMockedMandatesList, getMockedCompany, getMockedBban } from '@/../tests/mocks/mandateMock'
+import type { SearchMandateParams } from './ServiceMandateTypes'
 
 const mandatesList = getMockedMandatesList()
 const company = getMockedCompany()
@@ -162,7 +163,19 @@ describe('terminateMandate', () => {
 
 describe('getMandatesCollection', () => {
   it('should return mandates list', async () => {
-    const { data } = await getMandatesCollection({ skip: 0, limit: 10 })
+    const searchParams: SearchMandateParams = {
+      currentPage: 1,
+      limit: 10,
+      searchTerm: '',
+      creationDateStart: '',
+      creationDateEnd: '',
+      modificationDateStart: '',
+      modificationDateEnd: '',
+      statusCodes: [],
+      sortCriteria: '',
+      sortOrder: 'Descending',
+    }
+    const { data } = await getMandatesCollection(searchParams)
     expect(data).toStrictEqual(mandatesList)
   })
 })

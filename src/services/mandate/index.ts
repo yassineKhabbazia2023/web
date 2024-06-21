@@ -1,6 +1,6 @@
 import { commonApi as api } from '@kpmg/common'
-
 import type { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
+import type { SearchMandateParams } from './ServiceMandateTypes'
 
 export const getCompany = ({
   ibsNumber,
@@ -64,42 +64,13 @@ export function parseParams(params: Record<string, any>) {
 
   return options.join('&')
 }
-type GetMandatesCollectionParams = {
-  skip: number
-  limit: number
-  searchTerm: string
-  creationDateStart: string
-  creationDateEnd: string
-  modificationDateStart: string
-  modificationDateEnd: string
-  statusCodes: number[]
-  sortCriteria: string
-  sortOrder: string
-}
 
-export const getMandatesCollection = ({
-  skip = 0,
-  limit = 10,
-  searchTerm = '',
-  creationDateStart = '',
-  creationDateEnd = '',
-  modificationDateStart = '',
-  modificationDateEnd = '',
-  statusCodes = [],
-  sortCriteria = '',
-  sortOrder = 'Descending',
-}: Partial<GetMandatesCollectionParams>) => {
+export function getMandatesCollection(searchParams: SearchMandateParams) {
+  const { currentPage, limit } = searchParams
   const params = {
-    skip,
-    limit,
-    searchTerm,
-    creationDateStart,
-    creationDateEnd,
-    modificationDateStart,
-    modificationDateEnd,
-    statusCodes,
-    sortCriteria,
-    sortOrder,
+    ...searchParams,
+    skip: (currentPage - 1) * limit,
+    currentPage: undefined,
   }
   return api().mandate.get('/mandate', {
     params,

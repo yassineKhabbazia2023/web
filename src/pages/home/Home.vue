@@ -2,38 +2,39 @@
   <div>
     <Header
       class="padding-top--2"
-      @refresh-mandate-collection="onRefresh"
+      @refresh-mandate-collection="onUpdateSearchParams"
     />
     <SearchBar
-      v-model="searchText"
+      v-model="searchParams.searchTerm"
+      @update:model-value="debouncedRefreshData"
       class="padding-y--6"
     />
     <ListMandate
-      :currentPage="activePage"
+      :currentPage="searchParams.currentPage"
       :data="mandatesCollection.data"
-      @refresh-mandate-collection="updateTableDisplay"
+      @refresh-mandate-collection="onUpdateSearchParams"
     />
     <Pagination
+      :currentPage="searchParams.currentPage"
       :pagesCount="mandatesCollection.counters.all"
       :pagesRanges="PAGE_SIZES"
       showTotalPageCounter
       class="padding-x--6"
-      @page-selected="onRefresh"
-      :currentPage="activePage"
+      @page-selected="onUpdateSearchParams"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { getMandatesCollection } from '@/services/mandate'
+import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
 import Header from '@/components/Common/Header'
 import ListMandate from '@/components/DisplayMandate/ListMandate'
 import Pagination from '@/components/DisplayMandate/Pagination'
 import SearchBar from '@/components/Common/SearchBar'
 import { debounce } from '@/helpers/utils'
 import type { MandateCollection } from './Models'
-import type { UpdateTableDisplayParams } from './HomeTypes'
 import { PAGE_SIZES } from '@/constants'
 
 const mandatesCollection = ref<MandateCollection>({
@@ -48,72 +49,36 @@ const mandatesCollection = ref<MandateCollection>({
   data: [],
 })
 
-const defaultItemsToDisplay = ref(10)
-const activePage = ref(1)
-const searchText = ref('')
-const defaultSortOrder = ref('Descending')
-const defaultSortCriteria = ref('')
-const currentStatusCodes = ref<number[]>([])
-
-onMounted(async () => {
-  try {
-    const { data } = await getMandatesCollection({})
-    mandatesCollection.value = data
-  } catch (error) {
-    console.error(`Error in mandate mount ${error}`)
-  }
+const searchParams = ref<SearchMandateParams>({
+  currentPage: 1,
+  limit: PAGE_SIZES[0],
+  searchTerm: '',
+  sortOrder: 'Descending',
+  sortCriteria: '',
+  statusCodes: [],
+  creationDateStart: '',
+  creationDateEnd: '',
+  modificationDateStart: '',
+  modificationDateEnd: '',
 })
 
-const updateTableDisplay = async ({
-  currentPage = 1,
-  itemsByPage = defaultItemsToDisplay.value,
-  searchTerm = searchText.value,
-  sortOrder = defaultSortOrder.value,
-  sortCriteria = defaultSortCriteria.value,
-  statusCodes = [],
-}: Partial<UpdateTableDisplayParams>) => {
-  currentStatusCodes.value = statusCodes
+async function refreshData() {
   try {
-    if (currentPage !== activePage.value) {
-      activePage.value = currentPage
-    }
-    const skip = (currentPage - 1) * itemsByPage
-    defaultItemsToDisplay.value = itemsByPage
-    defaultSortOrder.value = sortOrder
-    defaultSortCriteria.value = sortCriteria
-    const { data } = await getMandatesCollection({
-      skip,
-      limit: itemsByPage,
-      searchTerm: searchTerm.trim(),
-      sortOrder,
-      sortCriteria,
-      statusCodes,
-    })
+    const { data } = await getMandatesCollection(searchParams.value)
     mandatesCollection.value = data
   } catch (error) {
-    console.error(error)
+    console.error(`Error while refresh data ${error}`)
   }
 }
 
-async function onRefresh(override: Partial<UpdateTableDisplayParams>) {
-  const params = {
-    currentPage: activePage.value,
-    itemsByPage: defaultItemsToDisplay.value,
-    searchTerm: searchText.value,
-    sortOrder: defaultSortOrder.value,
-    sortCriteria: defaultSortCriteria.value,
-    statusCodes: currentStatusCodes.value,
-    ...override,
-  }
-  await updateTableDisplay(params)
+async function onUpdateSearchParams(override: Partial<SearchMandateParams>) {
+  Object.assign(searchParams.value, override)
+  await refreshData()
 }
 
-const updateTableDisplayDebounced = debounce(updateTableDisplay)
+const debouncedRefreshData = debounce(refreshData)
 
-watch(searchText,
-  (value: string) =>
-    updateTableDisplayDebounced({
-      searchTerm: value,
-    }),
-)
+onMounted(() => {
+  refreshData()
+})
 </script>
