@@ -11,7 +11,7 @@ export function getTabAuthorisations(isCollab: boolean): Record<TabName, boolean
     offers: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
     info: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
     users: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
-    collab: hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
+    collab: isCollab && hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
     delegationsHistory: isCollab && hasPermission(PERMISSION_CODES.HISTORY),
   }
 }

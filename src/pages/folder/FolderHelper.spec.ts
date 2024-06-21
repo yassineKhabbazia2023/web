@@ -19,7 +19,7 @@ describe('test FolderHelper', () => {
       isCollab: false,
       hasPermission: true,
       expectedAuthorisations: {
-        collab: true,
+        collab: false,
         delegationsHistory: false,
         info: true,
         offers: true,
