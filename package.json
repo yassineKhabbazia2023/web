@@ -26,7 +26,7 @@
     "*.{js,ts,vue,json}": "npm run lint"
   },
   "dependencies": {
-    "@kpmg/common": "^3.1.127",
+    "@kpmg/common": "^3.1.132",
     "@kpmg/styleguide": "^2.2.630",
     "msal": "^1.4.17",
     "pinia": "^2.1.3",
