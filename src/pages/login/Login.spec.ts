@@ -1,8 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import Login from './'
-import { tokenService } from '@kpmg/common'
+import { amplitudeService, tokenService } from '@kpmg/common'
 import { getTermsByContactId } from '@/services/cgu'
 
 const USER_ID = 'customUserId'
@@ -40,6 +40,10 @@ vi.mock('@kpmg/common', () => ({
   }),
   tokenService: {
     setToken: vi.fn(),
+  },
+  amplitudeService: {
+    track: vi.fn(),
+    reset: vi.fn(),
   },
 }))
 vi.mock('@/composable/useInitUserAuth', () => ({
@@ -89,7 +93,9 @@ const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const INPUT_PASSWORD_VALUE = 'customPassword'
 
 describe('login', () => {
+  let spyTrackAmplitude: SpyInstance
   beforeEach(() => {
+    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
     wrapper = createWrapper()
   })
 
@@ -123,7 +129,11 @@ describe('login', () => {
         gigyaUserId: GIGYA_USER_ID,
       },
     })
-
+    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
+      sign_in_method: 'email',
+      sign_in_result: 'succeeded',
+    })
     expect(setTokenSpy).toHaveBeenNthCalledWith(1, WEB_TOKEN)
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
@@ -134,6 +144,11 @@ describe('login', () => {
 
     await wrapper.vm.handleSubmit(getForm())
 
+    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
+      sign_in_method: 'email',
+      sign_in_result: 'failed',
+    })
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 

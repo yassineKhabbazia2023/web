@@ -1,15 +1,9 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import useInitUserAuth from '@/composable/useInitUserAuth'
 import { commonStore as store, tokenService } from '@kpmg/common'
+import { givenToken } from '@/../vitest.setup'
 import { getToken } from '@/services/msal'
 
-const givenToken = 'given-token'
-
-vi.mock('@/services/msal', () => ({
-  getToken: vi.fn(() => {
-    return Promise.resolve(givenToken)
-  }),
-}))
 const mockStorePatch = vi.fn()
 const mockFechUserDataProvider = vi.fn(() => {
   return Promise.resolve({

@@ -1,8 +1,8 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import { tokenService } from '@kpmg/common'
+import { amplitudeService, tokenService } from '@kpmg/common'
 import CreatePassword from './'
 import { getTermsByContactId, updateTermsByContactId } from '@/services/cgu'
 
@@ -71,6 +71,10 @@ vi.mock('@kpmg/common', () => ({
     getToken: vi.fn(),
     setToken: vi.fn(),
   },
+  amplitudeService: {
+    track: vi.fn(),
+    reset: vi.fn(),
+  },
 }))
 
 const createWrapper = () =>
@@ -81,10 +85,23 @@ const createWrapper = () =>
   })
 
 describe('page creation password', () => {
+  let wrapper: VueWrapper<any>
+  let spyTrackAmplitude: SpyInstance
+  beforeEach(() => {
+    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    wrapper = createWrapper()
+  })
+  it(
+    'should track amplitude event when create password page displayed', () => {
+      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+      expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Email Accepted', {
+        onboarding_email_click: '',
+      })
+    },
+  )
   it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
-      const wrapper: VueWrapper<any> = createWrapper()
       wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
       wrapper.find('.el-checkbox__original').setValue('true')
       await flushPromises()
@@ -94,7 +111,6 @@ describe('page creation password', () => {
   )
 
   it('should show error when user enter a invalid password', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11aa')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -103,7 +119,6 @@ describe('page creation password', () => {
   })
 
   it('should show success when user enter password and valid cgu', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -113,7 +128,6 @@ describe('page creation password', () => {
   })
 
   it('should show error when user enter password and confirm password differently', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -122,8 +136,7 @@ describe('page creation password', () => {
     expect(wrapper.find('button').classes()).toContain('is-disabled')
   })
 
-  it('should call back end when click on button', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
+  it('should call API when the button is clicked and track an Amplitude event when the login succeeds', async () => {
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -143,6 +156,9 @@ describe('page creation password', () => {
       email: 'email',
       password: 'aaAA11@@',
     }
+    expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Completed', {
+      onboarding_result: 'succeeded',
+    })
     expect(updateTermsByContactId).toHaveBeenCalledTimes(1)
     expect(getTermsByContactId).toHaveBeenCalled()
     expect(postMock).toHaveBeenCalledTimes(2)
@@ -150,10 +166,24 @@ describe('page creation password', () => {
     expect(postMock).toHaveBeenNthCalledWith(2, loginLink, dataLogin)
     expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
   })
+  it('should call the API when the button is clicked and track an Amplitude event if the login fails', async () => {
+    postMock.mockRejectedValue('API Error: 503 Service Unavailable')
+    wrapper = createWrapper()
+    await flushPromises()
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
+    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
+    wrapper.find('.el-checkbox__original').setValue('true')
+    await flushPromises()
+    wrapper.find('button').trigger('click')
+    await flushPromises()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Completed', {
+      onboarding_result: 'failed',
+    })
+  })
 
   it('should throw error', async () => {
     vi.mocked(getTermsByContactId).mockRejectedValue('Async error')
-    const wrapper: VueWrapper<any> = createWrapper()
+    wrapper = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     await flushPromises()
     await expect(getTermsByContactId).rejects.toThrow('Async error')
