@@ -100,7 +100,7 @@
         class="margin-top--6"
         data-testid="occurrence-drawer-description"
       />
-      <template v-if="occurrence.schedule.attachment">
+      <template v-if="occurrence.schedule.attachment.content">
         <div class="font-small margin-bottom--2">
           <span class="create-schedule-form__optional-title font-semibold">
             {{ t('attachment') }}
