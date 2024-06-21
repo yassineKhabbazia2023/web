@@ -112,7 +112,7 @@ const explorerDocuments = ref<ExplorerMoveDocument[]>(
 
 // eslint-disable-next-line vitest/require-hook
 watch(
-  () => props.selectedDocuments,
+  [() => props.selectedDocuments, isDocumentExplorerModalOpened],
   () => {
     explorerDocuments.value = mapExplorerDocumentFromDocuments(
       props.selectedDocuments,
@@ -224,7 +224,7 @@ const handleClose = () => {
   if (explorerDocuments.value.some((d) => d.givenActionState === 'DONE')) {
     emit('refresh-documents-list')
   }
-  explorerDocuments.value = []
+  explorerDocuments.value.length = 0
   modalActionsButtons.value.filter(
     (d) => d.buttonActionName === 'modal-move-document-action-click',
   )[0].disabled = false
