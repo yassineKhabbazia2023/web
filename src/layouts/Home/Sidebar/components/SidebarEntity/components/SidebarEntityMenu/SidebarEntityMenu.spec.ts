@@ -33,6 +33,7 @@ vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
     getters: {
       isAuthenticated: () => true,
+      isCollab: () => false,
     },
   }),
   userPermissions: () => ({
@@ -78,6 +79,21 @@ describe('sidebarEntityMenu', () => {
       const menuItemsWithoutAccess = 'Users'
 
       expect(sidebarEntityMenuItems).toStrictEqual(menuItemsWithAccess)
+      expect(sidebarEntityMenuItems).not.toContain(menuItemsWithoutAccess)
+    })
+    it('should not display the Delegations history for clients', async () => {
+      mockHasPermission.mockImplementation((permissions: string[]) =>
+        permissions.includes(PERMISSION_CODES.HISTORY),
+      )
+      wrapper = createWrapper()
+      await flushPromises()
+      const sidebarEntityMenuItems = wrapper
+        .findAll('.p-menu-item__title')
+        .map((item) => item.text())
+      const menuItemsWithAccess = 'Home'
+      const menuItemsWithoutAccess = 'Delegations history'
+
+      expect(sidebarEntityMenuItems).toContain(menuItemsWithAccess)
       expect(sidebarEntityMenuItems).not.toContain(menuItemsWithoutAccess)
     })
     it('should not display the Power BI menu if the user does not have BI reports', () => {

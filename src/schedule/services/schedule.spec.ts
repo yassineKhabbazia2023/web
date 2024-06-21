@@ -30,6 +30,11 @@ vi.mock('@kpmg/common', () => {
         post: commonApiPostSpy,
       },
     }),
+    dataProvider: () => {
+      return {
+        fetchUserData: vi.fn(),
+      }
+    },
   }
 })
 
@@ -94,6 +99,10 @@ describe('getScheduleModels', () => {
   it.each(labelTypes)('should return proper list when labelType = \'%i\'', (labelType) => {
     const data = getScheduleModels(labelType)
     expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.snap`)
+  })
+  it.each(labelTypes)('should return proper list when labelType = \'%i\' and includes autre', (labelType) => {
+    const data = getScheduleModels(labelType, true)
+    expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.withOthers.snap`)
   })
 })
 

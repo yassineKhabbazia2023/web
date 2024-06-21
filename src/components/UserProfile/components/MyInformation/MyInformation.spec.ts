@@ -49,6 +49,11 @@ vi.mock('@kpmg/common', () => ({
     },
   }),
   fetchUrlTerms: vi.fn(),
+  dataProvider: () => {
+    return {
+      fetchUserData: vi.fn(),
+    }
+  },
 }))
 
 const createWrapper = (): VueWrapper<any> =>

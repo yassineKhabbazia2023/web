@@ -22,6 +22,11 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
     },
   }),
+  dataProvider: () => {
+    return {
+      fetchUserData: vi.fn(),
+    }
+  },
 }))
 
 vi.mock('@/schedule/services', () => ({

@@ -28,6 +28,11 @@ vi.mock('@kpmg/common', () => ({
   amplitudeService: {
     track: vi.fn(),
   },
+  dataProvider: () => {
+    return {
+      fetchUserData: vi.fn(),
+    }
+  },
 }))
 
 const createWrapper = (): VueWrapper<any> =>

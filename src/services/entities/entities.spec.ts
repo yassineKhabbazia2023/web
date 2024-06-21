@@ -24,6 +24,11 @@ vi.mock('@kpmg/common', () => {
     commonStore: () => ({
       $patch: vi.fn(),
     }),
+    dataProvider: () => {
+      return {
+        fetchUserData: vi.fn(),
+      }
+    },
   }
 })
 

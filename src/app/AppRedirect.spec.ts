@@ -42,6 +42,11 @@ vi.mock('@kpmg/common', () => ({
     track: vi.fn(),
     setUserId: vi.fn(),
   },
+  dataProvider: () => {
+    return {
+      fetchUserData: vi.fn(),
+    }
+  },
   fetchUrlTerms: vi.fn(),
 }))
 

@@ -100,7 +100,7 @@
         class="margin-top--6"
         data-testid="occurrence-drawer-description"
       />
-      <template v-if="occurrence.schedule.attachment">
+      <template v-if="occurrence.schedule.attachment.content">
         <div class="font-small margin-bottom--2">
           <span class="create-schedule-form__optional-title font-semibold">
             {{ t('attachment') }}
@@ -221,6 +221,8 @@ const occurrence = ref<Occurrence>()
 
 const frequencyLabels: Record<string, string> = {
   Monthly: t('frequency.Monthly'),
+  Quarterly: t('frequency.Quarterly'),
+  Yearly: t('frequency.Yearly'),
 }
 
 const isNoteAlertShown = ref(true)
@@ -336,6 +338,8 @@ const downloadAttachment = async (attachment:any) => {
     delete: 'Delete'
     frequency:
       Monthly: 'Monthly'
+      Quarterly: "Quarterly"
+      Yearly: "Yearly"
     check: 'Check here'
     reminderCollabNote: 'to let your colleague know that you have completed the required action.'
     attachment: 'Attachment'
@@ -346,6 +350,8 @@ const downloadAttachment = async (attachment:any) => {
     delete: 'Supprimer le rappel'
     frequency:
       Monthly: 'Tous les mois'
+      Quarterly: "Tous les trimestres"
+      Yearly: "Tous les ans"
     check: 'Cochez ici'
     reminderCollabNote: "pour indiquer à votre collaborateur que vous avez réalisé l’action attendue."
     attachment: 'Pièce jointe'

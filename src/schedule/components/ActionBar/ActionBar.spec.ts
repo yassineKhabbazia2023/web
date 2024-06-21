@@ -12,6 +12,7 @@ function createWrapper(override: Partial<ActionBarProps> = {}) {
     isCollab: false,
     searchTerm: '',
     isSearchState: false,
+    activeFilters: 0,
   }
   const props = {
     ...defaultProps,

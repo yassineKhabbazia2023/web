@@ -14,6 +14,7 @@
         :activeDate="activeDate"
         :isCollab="isCollab"
         :isSearchState="isSearchState"
+        :activeFilters="appliedFilterCount"
         @create-schedule="isDrawerVisible = true"
         @update:active-date="setActiveDate"
         @update:is-search-state="onUpdateIsSearchState"
@@ -59,6 +60,7 @@
         @update:model-value="onCalendarWidgetUpdate"
         @panel-change="onCalendarWidgetChange"
       />
+
       <WidgetActiveDay
         :activeDate="activeDate"
         :deadlines="activeDateDeadlines"
@@ -89,6 +91,7 @@
     :templates="filters.templates"
     :status="filters.status"
     :mineOnly="filters.mineOnly"
+    :isCollab="isCollab"
     appendToBody
     @apply="onApplyFilters"
   />
@@ -108,7 +111,7 @@ import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTyp
 import ActionBar from '@/schedule/components/ActionBar'
 import Calendar from '@/schedule/components/Calendar'
 import OccurrenceDrawer from '@/schedule/components/OccurrenceDrawer'
-import { dateISOFormatter, getYearMonth } from '@/schedule/helpers/utils'
+import { dateISOFormatter, getYearMonth, getDefaultFilters, getAppliedFilterCount } from '@/schedule/helpers/utils'
 import { getDates, getMonthInterval, getAdvancedSearchParams, getSearchParams } from './ScheduleUtils'
 import type { ScheduleProps } from './ScheduleTypes'
 import { storeToRefs } from 'pinia'
@@ -129,18 +132,14 @@ const scheduleViewType = computed({
   },
 })
 
+const defaultFilters = getDefaultFilters(isCollab.value)
 const deadlineItems = ref<DeadlinesByDate[]>([])
 const advancedSearchDeadlineItems = ref<DeadlinesByDate[]>([])
 const calendarWidgetDates = ref<string[]>([])
 const isLoading = ref(true)
 const isSearchState = ref(false)
 const searchTerm = ref('')
-const filters = ref<Filters>({
-  targets: [],
-  templates: [],
-  status: [],
-  mineOnly: true,
-})
+const filters = ref<Filters>(defaultFilters)
 const calendarWidgetIsLoading = ref(false)
 const isDrawerVisible = ref(false)
 const isFilterDrawerVisible = ref(false)
@@ -150,6 +149,11 @@ const calendarWidgetDate = ref(new Date())
 const occurrenceId = ref<number>()
 
 const REFRESH_DATA_DELAY = 250
+
+const appliedFilterCount = ref(0)
+function refreshAppliedFilterCount() {
+  appliedFilterCount.value = getAppliedFilterCount(defaultFilters, filters.value)
+}
 
 const debounceRefreshData = debounce(() => {
   refreshData()
@@ -173,6 +177,7 @@ onMounted(async () => {
     : new Date()
   await refreshData()
   setCalendarWidgetDates(deadlineItems.value)
+  refreshAppliedFilterCount()
 })
 
 function onSelectDeadline(selectedOccurrenceId: number) {
@@ -195,8 +200,7 @@ function onClickDate(dateIso: string) {
 async function refreshData() {
   try {
     isLoading.value = true
-    const today = new Date()
-    const searchParams = getSearchParams(today, filters.value)
+    const searchParams = getSearchParams(activeDate.value, filters.value)
     deadlineItems.value = await getSchedulesCollection(searchParams)
     setCalendarWidgetDates(deadlineItems.value)
   } catch (error) {
@@ -299,6 +303,7 @@ const deadlineListItems = computed(() => {
 
 function onApplyFilters(newFilters: Filters) {
   filters.value = newFilters
+  refreshAppliedFilterCount()
   if (isSearchState.value) {
     refreshAdvancedSearch()
   } else {

@@ -31,6 +31,11 @@ vi.mock('@kpmg/common', () => ({
       fetchUserAccountPermissions: () => vi.fn(),
     },
   }),
+  dataProvider: () => {
+    return {
+      fetchUserData: vi.fn(),
+    }
+  },
 }))
 
 const createWrapper = () => {

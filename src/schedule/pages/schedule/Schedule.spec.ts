@@ -56,7 +56,14 @@ const newSearchTerm = 'search term'
 const ActionBarStub = {
   name: 'ActionBar',
   template: '<div />',
-  props: ['modelValue', 'activeDate', 'isCollab', 'isSearchState', 'searchTerm'],
+  props: [
+    'modelValue',
+    'activeDate',
+    'isCollab',
+    'isSearchState',
+    'searchTerm',
+    'activeFilters',
+  ],
   emits: ['create-schedule'],
 }
 const OccurrenceDrawerStub = {
@@ -141,7 +148,7 @@ describe('home page', () => {
       targets: [],
       templates: [],
       status: [],
-      mineOnly: true,
+      mineOnly: false,
     }
 
     expect(getSchedulesCollectionSpy).toHaveBeenCalledOnce()
@@ -454,7 +461,7 @@ describe('home page', () => {
           targets: [],
           templates: [],
           status: [],
-          mineOnly: true,
+          mineOnly: false,
         }
         const mockedSearchParams = {
           startDate: '2023-08-14',
@@ -504,6 +511,7 @@ describe('home page', () => {
         const wrapper = createWrapper()
         const expectedActionBarPropsBefore = {
           activeDate: mockedToday,
+          activeFilters: 0,
           isCollab: false,
           isSearchState: true,
           modelValue: 'list',
@@ -616,6 +624,7 @@ describe('home page', () => {
 
       const filterDrawerAfter = wrapper.findComponent({ name: 'FilterDrawer' })
       filterDrawerAfter.vm.$emit('apply', filters)
+      await nextTick()
 
       const expectedParams = {
         startDate: '2023-08-14',
@@ -626,6 +635,7 @@ describe('home page', () => {
 
       expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(3)
       expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(3, expectedParams)
+      expect(actionBar.props('activeFilters')).toBe(2)
     })
   })
 })

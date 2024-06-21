@@ -44,7 +44,7 @@
       </PCol>
     </PRow>
     <PAlert
-      v-if="showMonthlyAlert"
+      v-if="showEndOfMonthDayAlert"
       pType="warning"
       class="margin-bottom--4"
     >
@@ -192,13 +192,16 @@ const scheduleModel: Schedule = {
 const reader: FileReader = new FileReader()
 const attachmentErrorType = ref<'extension' | 'size' | ''>('')
 
-const showMonthlyAlert = computed(() =>
-  createScheduleForm.frequency === 'Monthly' && createScheduleForm.date.getDate() >= 29)
+const showEndOfMonthDayAlert = computed(() =>
+  createScheduleForm.date.getDate() >= 29 &&
+(createScheduleForm.frequency === 'Monthly' || createScheduleForm.frequency === 'Quarterly'))
 
 const frequenciesOptionsFormatted = computed(() => {
   const frequencyMap: Record<string, string> = {
     None: t('None'),
     Monthly: t('Monthly'),
+    Quarterly: t('Quarterly'),
+    Yearly: t('Yearly'),
   }
   return props.frequenciesCollection.map((key: string) => ({
     pValue: key,
@@ -355,6 +358,8 @@ defineExpose({
     "frequency": "Frequency",
     "None": "None",
     "Monthly": "Monthly",
+    "Quarterly": "Quarterly",
+    "Yearly": "Yearly",
     "Warning": "Warning !",
     "attachment": "Attachment",
     "size-exceed": "The maximum authorised size is 5Mb. Please resize your attachment.",
@@ -379,6 +384,8 @@ defineExpose({
     "frequency": "Périodicité",
     "None": "Ne se répète pas",
     "Monthly": "Tous les mois",
+    "Quarterly": "Tous les trimestres",
+    "Yearly": "Tous les ans",
     "Warning": "Attention !",
     "attachment": "Pièce jointe",
     "size-exceed": "Le poids maximal autorisé est de 5Mb. Veuillez redimensionner votre pièce jointe.",
