@@ -8,109 +8,123 @@
     }"
   >
     <Variant
-      title="h1"
-      icon="teenyicons:text-solid"
-      responsiveDisabled>
-      <h1>Tera - H1</h1>
-      <p class="h1">
-        Tera - H1
-      </p>
-      <h1 class="h1">
-        Tera - H1
-      </h1>
-    </Variant>
-    <Variant title="h2" icon="teenyicons:text-solid">
-      <h2>Mega - H2</h2>
-      <p class="h2">
-        Mega - H2
-      </p>
-      <h2 class="h2">
-        Mega - H2
-      </h2>
-    </Variant>
-    <Variant title="h3" icon="teenyicons:text-solid">
-      <h3>Kilo - H3</h3>
-      <p class="h3">
-        Kilo - H3
-      </p>
-      <h3 class="h3">
-        Kilo - H3
-      </h3>
-    </Variant>
-    <Variant title="h4" icon="teenyicons:text-solid">
-      <h4>Hecto - H4</h4>
-      <p class="h4">
-        Hecto - H4
-      </p>
-      <h4 class="h4">
-        Hecto - H4
-      </h4>
-    </Variant>
-    <Variant title="Subtitle" icon="teenyicons:text-solid">
-      <p class="font-large">
-        Font size Subtitle
-      </p>
-    </Variant>
-    <Variant title="Body" icon="teenyicons:text-solid">
-      <p class="font-base">
-        Font size Body / base
-      </p>
-    </Variant>
-    <Variant title="Small" icon="teenyicons:text-solid">
-      <p class="font-small">
-        Font size Small
-      </p>
-    </Variant>
-    <Variant title="Caption / Legends" icon="teenyicons:text-solid">
-      <p class="font-xsmall">
-        Font size Xsmall
-      </p>
-    </Variant>
-    <Variant title="Light" icon="teenyicons:text-solid">
-      <p class="font-light">
-        Font weight Light
-      </p>
-    </Variant>
-    <Variant title="Normal" icon="teenyicons:text-solid">
-      <p class="font-normal">
-        Font weight Normal
-      </p>
-    </Variant>
-    <Variant title="Semibold" icon="teenyicons:text-solid">
-      <p class="font-semibold">
-        Font weight Semibold
-      </p>
-    </Variant>
-    <Variant title="Bold" icon="teenyicons:text-solid">
-      <p class="font-bold">
-        Font weight Bold
-      </p>
-    </Variant>
-    <Variant title="Italic" icon="teenyicons:text-solid">
-      <p class="font-italic">
-        Font style Italic
-      </p>
-    </Variant>
-    <Variant title="center" icon="teenyicons:align-text-center-solid">
-      <div class="text-center">
-        Text center
-      </div>
-    </Variant>
-    <Variant title="left" icon="teenyicons:align-text-left-solid">
-      <div class="text-left">
-        Text left
-      </div>
-    </Variant>
-    <Variant title="right" icon="teenyicons:align-text-right-solid">
-      <div class="text-right">
-        Text right
-      </div>
+      title="Dictonary"
+    >
+      <ul class="list-style-none">
+        <li
+          v-for="groupKey in Object.keys(groups)"
+          :key="groupKey"
+          class="flex"
+        >
+          <span class="min-width">{{ groupKey }}</span>
+          <ul class="list-style-none">
+            <li
+              v-for="cssClass in groups[groupKey]"
+              :key="cssClass"
+              class="
+                padding-bottom--2
+                width-200
+                cursor-pointer
+              "
+              :class="cssClass"
+              @click="onClickCssClass(cssClass)"
+            >
+              {{ cssClass }}
+            </li>
+          </ul>
+        </li>
+      </ul>
     </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from 'element-plus'
+import { useClipboard } from '@vueuse/core'
+
+const size = [
+  'font-xsmall',
+  'font-small',
+  'font-base',
+  'font-large',
+  'h4',
+  'h3',
+  'h2',
+  'h1',
+]
+
+const weight = [
+  'font-light',
+  'font-normal',
+  'font-semibold',
+  'font-bold',
+]
+
+const style = [
+  'font-italic',
+]
+
+const align = [
+  'text-left',
+  'text-center',
+  'text-right',
+]
+
+const transform = [
+  'text-uppercase',
+  'text-capitalize',
+]
+
+const textOverflow = [
+  'text-overflow--ellispis',
+]
+
+const textDecoration = [
+  'text-underline',
+]
+
+const link = [
+  'link',
+]
+
+const whiteSpace = [
+  'no-wrap',
+  'pre-line',
+  'white-space--wrap',
+  'white-space--no-wrap',
+  'white-space--pre-line',
+]
+
+const groups: Record<string, string[]> = {
+  size,
+  weight,
+  style,
+  align,
+  transform,
+  whiteSpace,
+  textOverFlow: textOverflow,
+  textDecoration,
+  link,
+}
+
+function onClickCssClass(source: string) {
+  const { copy, isSupported } = useClipboard({ source })
+
+  copy(source)
+  if (isSupported) {
+    ElMessage.success(`Copied ${source}`)
+  }
+}
 </script>
+
+<style lang="scss" scoped>
+.min-width {
+  min-width: 120px;
+}
+.width-200 {
+  width: 200px;
+}
+</style>
 
 <docs lang="md">
 ## Text
