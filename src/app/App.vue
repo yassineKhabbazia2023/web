@@ -59,6 +59,8 @@ watch(
 )
 
 onMounted(() => {
-  amplitudeService.init(VITE_AMPLITUDE_API_KEY)
+  if (window.navigator.doNotTrack !== '1') {
+    amplitudeService.init(VITE_AMPLITUDE_API_KEY)
+  }
 })
 </script>
