@@ -4,11 +4,20 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
-import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import * as walletServices from '@/services/wallet'
 import { commonStore } from '@kpmg/common'
 import Collaborators from '.'
 import { nextTick } from 'vue'
+
+const ENTITY_ID = 42
+
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    params: {
+      id: ENTITY_ID,
+    },
+  }),
+}))
 
 vi.mock('@kpmg/common', () => ({
   commonStore: defineStore('common', {
@@ -17,7 +26,6 @@ vi.mock('@kpmg/common', () => ({
     }),
     getters: {
       isCollab: () => true,
-      defaultEntity: () => mockedEntity,
     },
   }),
   userPermissions: () => ({
@@ -54,6 +62,7 @@ const createWrapper = (): VueWrapper =>
         AddCollaboratorsDrawer: {
           name: 'AddCollaboratorsDrawer',
           template: '<div />',
+          props: ['entityId'],
         },
       },
     },
@@ -80,6 +89,7 @@ describe('collaborators', () => {
     await getAddCollaboratorButton().click()
 
     expect(getAddCollaboratorDrawer().exists()).toBeTruthy()
+    expect(getAddCollaboratorDrawer().props('entityId')).toBe(ENTITY_ID)
 
     const getCollaboratorsSpy = vi.spyOn(
       walletServices,
