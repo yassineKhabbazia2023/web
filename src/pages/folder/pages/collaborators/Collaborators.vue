@@ -174,6 +174,7 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
 import { commonStore, userPermissions } from '@kpmg/common'
 import { PAGE_SIZES, PERMISSION_CODES } from '@/constants'
 import type { Collab } from './types'
@@ -194,7 +195,7 @@ const { t } = useI18n({
 })
 
 const userStore = commonStore()
-const { isCollab, defaultEntity } = storeToRefs(userStore)
+const { isCollab } = storeToRefs(userStore)
 const { hasPermission } = userPermissions()
 
 const isLoading = ref(false)
@@ -204,7 +205,9 @@ const collabs = ref<Collab[]>([])
 const isAddCollaboratorsDrawerOpened = ref(false)
 const isCollabDetailsDrawerOpened = ref(false)
 
-const currentEntityId = defaultEntity.value?.accountId
+const route = useRoute()
+const currentEntityId = Number(route.params.id)
+
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 
 const state: any = reactive({
