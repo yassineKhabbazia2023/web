@@ -72,26 +72,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { useClipboard } from '@vueuse/core'
+import { stringToClassList, numbersToClassList, onClickCssClass } from '@/utils/histoireHelpers'
 
 const subListSameSize = ['40', '40', '40'].map((size) => `height-${size}`)
 const subListVariable = ['80', '40', '60'].map((size) => `height-${size}`)
 
 const justifyContentAttributes = 'flex-start, flex-end, space-around, space-between, stretch, center'
 const alignAttributes = 'flex-start, flex-end, stretch, center, end, start'
-
-function stringToClassList(prefix: string, suffixes: string) {
-  return suffixes
-    .split(',')
-    .map(suffix => `${prefix}${suffix.trim()}`)
-}
-function numbersToClassList(prefix: string, arraySize: number) {
-  const suffixes = Array.from(Array(arraySize + 1).keys())
-
-  return suffixes
-    .map(suffix => `${prefix}${suffix}`)
-}
 
 const justifyContent = stringToClassList('flex--justify-content-', justifyContentAttributes)
 const alignItems = stringToClassList('flex--align-items-', alignAttributes)
@@ -143,16 +130,6 @@ const groups: Group[] = [{
   subList: subListVariable,
   applyToChild: 1,
 }]
-
-function onClickCssClass(source1: string, source2: string) {
-  const source = [source1, source2].join(' ').trim()
-  const { copy, isSupported } = useClipboard({ source })
-
-  copy(source)
-  if (isSupported) {
-    ElMessage.success(`Copied ${source}`)
-  }
-}
 </script>
 
 <style lang="scss" scoped>

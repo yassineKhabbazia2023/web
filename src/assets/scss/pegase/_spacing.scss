@@ -32,38 +32,6 @@ $spacing-unit: 0.4rem;
   }
 }
 
-.padding {
-  &--auto {
-    padding: auto;
-  }
-
-  &-top--auto {
-    padding-top: auto;
-  }
-
-  &-bottom--auto {
-    padding-bottom: auto;
-  }
-
-  &-right--auto {
-    padding-right: auto;
-  }
-
-  &-left--auto {
-    padding-left: auto;
-  }
-
-  &-x--auto {
-    padding-left: auto;
-    padding-right: auto;
-  }
-
-  &-y--auto {
-    padding-top: auto;
-    padding-bottom: auto;
-  }
-}
-
 @for $i from 0 through 12 {
   .flex-gap--#{$i} {
     gap: $spacing-unit * $i;

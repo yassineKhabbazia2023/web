@@ -44,14 +44,6 @@
             <td>padding: 0;</td>
           </tr>
           <tr>
-            <td>.padding--auto</td>
-            <td>padding: auto;</td>
-          </tr>
-          <tr>
-            <td>.padding-{position}--auto</td>
-            <td>padding-{position}: auto;</td>
-          </tr>
-          <tr>
             <td>.padding--{token}</td>
             <td>padding: 0.4rem * {token};</td>
           </tr>
@@ -150,10 +142,202 @@
         </tbody>
       </table>
     </Variant>
+    <Variant
+      :title="group.name"
+      v-for="(group, index) in groups"
+      :key="index"
+    >
+      <ul class="list-style-none">
+        <li
+          v-for="cssClass in group.cssClasses"
+          :key="cssClass"
+          class="
+            padding--1
+            margin-bottom--2
+            width-500
+            cursor-pointer
+          "
+          @click="onClickCssClass(cssClass)"
+        >
+          <div>
+            {{ cssClass }}
+          </div>
+          <div
+            class="
+              flex
+              bg--neutral-gray-100
+            "
+            :class="{
+              [cssClass]: group.applyToChild === undefined,
+            }"
+          >
+            <div
+              v-for="(subElement, indexItem) in group.subList"
+              :key="indexItem"
+              class="
+                bg--persian-300
+                radius--3
+              "
+              :class="{
+                [subElement]: true,
+                [cssClass]: group.applyToChild === 'all' || group.applyToChild === indexItem,
+                'darker': group.applyToChild === 'all' || group.applyToChild === indexItem,
+              }"
+            />
+          </div>
+        </li>
+      </ul>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
+import { stringToClassList, numbersToClassList, onClickCssClass } from '@/utils/histoireHelpers'
+
+const subListOneItem = ['40'].map((size) => `height-${size} width-${size}`)
+const subListTwoItems = ['40', '40'].map((size) => `height-${size} width-${size}`)
+const subListNoSize = ['40'].map((size) => `height-${size}`)
+
+const autoAttributes = '--auto,-top--auto,-bottom--auto,-right--auto,-left--auto,-x--auto,-y--auto'
+
+const marginAuto = stringToClassList('margin', autoAttributes)
+const minWidth = numbersToClassList('min-width--', 12)
+
+const margin = numbersToClassList('margin--', 12)
+const marginTop = numbersToClassList('margin-top--', 12)
+const marginBottom = numbersToClassList('margin-bottom--', 12)
+const marginLeft = numbersToClassList('margin-left--', 12)
+const marginRight = numbersToClassList('margin-right--', 12)
+const marginX = numbersToClassList('margin-x--', 12)
+const marginY = numbersToClassList('margin-y--', 12)
+
+const padding = numbersToClassList('padding--', 12)
+const paddingTop = numbersToClassList('padding-top--', 12)
+const paddingBottom = numbersToClassList('padding-bottom--', 12)
+const paddingLeft = numbersToClassList('padding-left--', 12)
+const paddingRight = numbersToClassList('padding-right--', 12)
+const paddingX = numbersToClassList('padding-x--', 12)
+const paddingY = numbersToClassList('padding-y--', 12)
+
+const marginNegativeTop = numbersToClassList('margin-negative-top--', 12)
+const marginNegativeBottom = numbersToClassList('margin-negative-bottom--', 12)
+const marginNegativeLeft = numbersToClassList('margin-negative-left--', 12)
+const marginNegativeRight = numbersToClassList('margin-negative-right--', 12)
+const marginNegativeX = numbersToClassList('margin-negative-x--', 12)
+const marginNegativeY = numbersToClassList('margin-negative-y--', 12)
+
+type Group = {
+  name: string
+  cssClasses: string[]
+  subList: string[]
+  applyToChild?: number | 'all'
+}
+
+const groups: Group[] = [{
+  name: 'marginAuto',
+  cssClasses: marginAuto,
+  subList: subListOneItem,
+  applyToChild: 0,
+}, {
+  name: 'minWidth',
+  cssClasses: minWidth,
+  subList: subListNoSize,
+  applyToChild: 0,
+}, {
+  name: 'margin',
+  cssClasses: margin,
+  subList: subListOneItem,
+  applyToChild: 0,
+}, {
+  name: 'marginTop',
+  cssClasses: marginTop,
+  subList: subListOneItem,
+  applyToChild: 0,
+}, {
+  name: 'marginBottom',
+  cssClasses: marginBottom,
+  subList: subListOneItem,
+  applyToChild: 0,
+}, {
+  name: 'marginLeft',
+  cssClasses: marginLeft,
+  subList: subListOneItem,
+  applyToChild: 0,
+}, {
+  name: 'marginRight',
+  cssClasses: marginRight,
+  subList: subListTwoItems,
+  applyToChild: 0,
+}, {
+  name: 'marginX',
+  cssClasses: marginX,
+  subList: subListTwoItems,
+  applyToChild: 0,
+}, {
+  name: 'marginY',
+  cssClasses: marginY,
+  subList: subListTwoItems,
+  applyToChild: 0,
+}, {
+  name: 'padding',
+  cssClasses: padding,
+  subList: subListOneItem,
+}, {
+  name: 'paddingTop',
+  cssClasses: paddingTop,
+  subList: subListOneItem,
+}, {
+  name: 'paddingBottom',
+  cssClasses: paddingBottom,
+  subList: subListOneItem,
+}, {
+  name: 'paddingLeft',
+  cssClasses: paddingLeft,
+  subList: subListOneItem,
+}, {
+  name: 'paddingRight',
+  cssClasses: paddingRight,
+  subList: subListOneItem,
+}, {
+  name: 'paddingX',
+  cssClasses: paddingX,
+  subList: subListOneItem,
+}, {
+  name: 'paddingY',
+  cssClasses: paddingY,
+  subList: subListOneItem,
+}, {
+  name: 'marginNegativeTop',
+  cssClasses: marginNegativeTop,
+  subList: subListTwoItems,
+  applyToChild: 1,
+}, {
+  name: 'marginNegativeBottom',
+  cssClasses: marginNegativeBottom,
+  subList: subListTwoItems,
+  applyToChild: 1,
+}, {
+  name: 'marginNegativeLeft',
+  cssClasses: marginNegativeLeft,
+  subList: subListTwoItems,
+  applyToChild: 1,
+}, {
+  name: 'marginNegativeRight',
+  cssClasses: marginNegativeRight,
+  subList: subListTwoItems,
+  applyToChild: 0,
+}, {
+  name: 'marginNegativeX',
+  cssClasses: marginNegativeX,
+  subList: subListTwoItems,
+  applyToChild: 1,
+}, {
+  name: 'marginNegativeY',
+  cssClasses: marginNegativeY,
+  subList: subListTwoItems,
+  applyToChild: 1,
+}]
+
 </script>
 
 <style lang="scss">
@@ -192,6 +376,23 @@
     font-size: 14px;
     line-height: 120%;
   }
+}
+.min-width {
+  min-width: 120px;
+}
+.width-500 {
+  width: 500px;
+}
+.height-40 {
+  height: 40px;
+}
+.width-40 {
+  width: 40px;
+}
+
+.darker {
+  background-color: var(--el-color-persian-900) !important;
+  border: 1px solid var(--el-color-persian-900);
 }
 </style>
 <docs lang="md">
