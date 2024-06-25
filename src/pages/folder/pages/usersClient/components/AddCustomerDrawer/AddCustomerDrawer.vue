@@ -210,16 +210,6 @@ async function checkIfUserExists() {
 
     isNextButtonDisabled.value = false
     addCustomerFormRef.value.clearValidate()
-  } else {
-    formData.firstName = ''
-    formData.lastName = ''
-    formData.mobilePhone = ''
-
-    disabledFormInputs.firstName = false
-    disabledFormInputs.lastName = false
-    disabledFormInputs.mobilePhone = false
-
-    isNextButtonDisabled.value = true
   }
 }
 
