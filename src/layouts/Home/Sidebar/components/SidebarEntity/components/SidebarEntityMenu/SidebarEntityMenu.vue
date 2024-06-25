@@ -93,7 +93,7 @@ const folderSubmenu = computed(() => ({
     {
       title: t('collaborators'),
       index: 'collaborateurs',
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
+      display: isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
     },
     {
       title: t('offers'),
