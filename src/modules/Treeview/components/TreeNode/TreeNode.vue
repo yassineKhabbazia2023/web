@@ -4,7 +4,7 @@
     :permissions="data.permissions"
     :isVisible="!data.isRootFolder"
     @p-toolbox-item-clicked = "handleItemclicked"
-    @p-toolbox-dropdown-close = "handleToolBoxDropdownStateClose"
+    @p-toolbox-dropdown-visibility-change = "handleTreeNodeToolboxVisibilityChange"
     class="tree-node_action-toolbox"
     showSlotIfDataEmpty
     @dragover="handleDragOver"
@@ -40,10 +40,11 @@
         </PTooltip>
         <TreeNodeActions
           v-if="!data.isRootFolder"
+          ref="buttonToolboxRef"
           :permissions="data.permissions"
           :selectedOrHovered="isOpen || isHovered"
           @p-toolbox-item-clicked="handleItemclicked"
-          @p-toolbox-dropdown-close="handleToolBoxDropdownStateClose"
+          @p-toolbox-dropdown-visibility-change="handleButtonToolboxVisibilityChange"
         />
 
         <PIcon
@@ -109,10 +110,25 @@ const isHovered = ref(false)
 const isDropdownOpen = ref(false)
 const shouldTooltipBeVisible = computed(() => props.data.name.length > 16)
 
+const buttonToolboxRef = ref<InstanceType<any> | null>(null)
+function closeButtonToolbox() {
+  if (!buttonToolboxRef.value) return
+  buttonToolboxRef.value.closeActionToolbox()
+}
 const handleItemclicked = (action: string) => {
   emit('p-toolbox-item-clicked', action, props.data)
 }
-const handleToolBoxDropdownStateClose = (state: boolean) => {
+
+function handleButtonToolboxVisibilityChange(state: boolean) {
+  setToolboxVisibility(state)
+}
+
+function handleTreeNodeToolboxVisibilityChange(state: boolean) {
+  closeButtonToolbox()
+  setToolboxVisibility(state)
+}
+
+function setToolboxVisibility(state: boolean) {
   isDropdownOpen.value = state
   if (state === false) {
     isHovered.value = false

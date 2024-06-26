@@ -4,7 +4,7 @@ import { type TreeNodeActionsProps }
   from '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
@@ -36,7 +36,7 @@ const createWrapper = (props: TreeNodeActionsProps = defaultProps): TreeNodeActi
 
 describe('treeNodeActions', () => {
   describe('interactions', () => {
-    it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
+    it('should emit visible-change when p-toolbox-dropdown-visibility-change is emitted', async () => {
       const updatedProps: TreeNodeActionsProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],
@@ -46,16 +46,16 @@ describe('treeNodeActions', () => {
 
       const toolbox = wrapper.findComponent(TreeNodeActionsToolbox)
 
-      await toolbox.vm.$emit('p-toolbox-dropdown-close', true)
+      await toolbox.vm.$emit('p-toolbox-dropdown-visibility-change', true)
       await nextTick()
 
-      expect(wrapper.emitted('p-toolbox-dropdown-close')).toStrictEqual([
+      expect(wrapper.emitted('p-toolbox-dropdown-visibility-change')).toStrictEqual([
         [true],
       ])
     })
 
-    it('should emit p-toolbox-dropdown-close when ' +
-            'p-toolbox-dropdown-close is emitted', async () => {
+    it('should emit p-toolbox-dropdown-visibility-change when ' +
+            'p-toolbox-dropdown-visibility-change is emitted', async () => {
       const updatedProps: TreeNodeActionsProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],
@@ -71,6 +71,20 @@ describe('treeNodeActions', () => {
       expect(wrapper.emitted('p-toolbox-item-clicked')).toStrictEqual([
         ['test'],
       ])
+    })
+
+    it('should expose function to close actions toolbox', async () => {
+      // this is just triggering the function as it's just a function that is exposed
+      // and doesn't do anything in the template directly. There's no specific output.
+      // Testing on the vm just ensures that the function is actually exposed as expected with defineExpose
+      const wrapper = createWrapper() as any
+      // This mocks the template ref value
+      const closeActionToolboxMock = {
+        closePToolbox: vi.fn(),
+      }
+      wrapper.vm.actionToolboxRef = closeActionToolboxMock
+      await wrapper.vm.closeActionToolbox()
+      expect(closeActionToolboxMock.closePToolbox).toHaveBeenCalled()
     })
   })
 })
