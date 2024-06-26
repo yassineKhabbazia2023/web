@@ -57,7 +57,7 @@ describe('documentPreview', () => {
       expect(pviewer.props('pTitleDocument')).toStrictEqual(documentMock.name)
       expect(pviewer.props('pActiveDocument')).toBe(1)
       expect(pviewer.props('pTotalDocuments')).toBe(10)
-      expect(pviewer.props('pShowClose')).toBeTruthy()
+      expect(pviewer.props('pShowClose')).toBeFalsy()
       expect(pviewer.props('pDestroyOnClose')).toBeTruthy()
       expect(pviewer.props('pHasIcon')).toBeTruthy()
       expect(pviewer.props('pHasPagination')).toBeTruthy()
@@ -146,12 +146,12 @@ describe('documentPreview', () => {
       expect(vi.mocked(previewDocument)).toHaveBeenCalledTimes(1)
     })
 
-    it('should emit close draxer-close event oppon PDocumentViewer close event', async () => {
+    it('should emit close draxer-close event oppon PDocumentViewer arrow click event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
       const pDocumentViewerWrapper = wrapper.findComponent(PDocumentViewer)
-      pDocumentViewerWrapper.vm.$emit('close')
+      pDocumentViewerWrapper.vm.$emit('update:modelValue')
 
       await nextTick()
 
