@@ -1,7 +1,8 @@
 <template>
+  <SubscriptionsFilter @apply-offer-filter="handleOfferFiltered" />
   <PTable
     pStripe
-    :pData="requests"
+    :pData="filteredSubscriptions"
     data-testid="subscriptions-table"
   >
     <PTableColumn :pLabel="t('dateRequest')">
@@ -127,6 +128,7 @@ import {
   SubscriptionStatusCode,
 } from '@/services/subscription'
 import { getInitials } from '@/helper'
+import SubscriptionsFilter from './components/SubscriptionsFilter'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import type { Contact } from '@/services/contact/contactTypes'
 
@@ -141,10 +143,11 @@ const emit = defineEmits<{
   validate: [string]
 }>()
 
-const { user } = storeToRefs(commonStore())
-const requests = ref<SubscriptionRequest[]>([])
-const clickedRow = ref<number>()
 const isLoading = ref(false)
+const clickedRow = ref<number>()
+const { user } = storeToRefs(commonStore())
+const subscriptions = ref<SubscriptionRequest[]>([])
+const filteredSubscriptions = ref<SubscriptionRequest[]>([])
 const requestMenu: PToolboxItemProps[] = [
   {
     pIconName: 'PIEye',
@@ -161,7 +164,8 @@ const requestMenu: PToolboxItemProps[] = [
 ]
 
 const fetchSubscriptions = async () => {
-  requests.value = (await fetchSubscriptionRequests()) ?? []
+  subscriptions.value = await fetchSubscriptionRequests()
+  filteredSubscriptions.value = subscriptions.value
 }
 
 const formatStatus = (status: string) => {
@@ -206,6 +210,12 @@ const title = (clients: Contact[]) =>
   `${clients[0]?.firstName} ${clients[0]?.lastName}`
 
 const content = (clients: Contact[]) => clients[0]?.email
+
+const handleOfferFiltered = (offerTypes: string[]) => {
+  filteredSubscriptions.value = subscriptions.value.filter((subscription) =>
+    offerTypes.includes(subscription.offer.offerCode),
+  )
+}
 
 onMounted(async () => {
   await fetchSubscriptions()

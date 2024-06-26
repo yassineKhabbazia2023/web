@@ -14,7 +14,8 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     applicant: 'test-01@kpmg.fr',
     offer: {
       offerId: 5,
-      offerLabel: 'Pennylane',
+      offerCode: 'MEG Smart',
+      offerLabel: 'Modules MEG : facturation et caisse',
     },
     clients: [
       {
@@ -39,7 +40,8 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     applicant: 'test-03@kpmg.fr',
     offer: {
       offerId: 6,
-      offerLabel: 'Pennylane',
+      offerCode: 'Pennylane',
+      offerLabel: "Mise à disposition de l'outil Pennylane alliée à l'expertise de KPMG",
     },
     clients: [
       {

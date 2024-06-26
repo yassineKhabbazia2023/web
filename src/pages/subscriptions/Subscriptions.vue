@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import SubscriptionsTable from './components/subscriptionsTable'
+import SubscriptionsTable from './components/SubscriptionsTable'
 import SubscriptionDetailsDrawer from './components/SubscriptionDetailsDrawer'
 
 const displaySubscriptionDrawer = ref<boolean>(false)
