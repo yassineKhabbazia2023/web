@@ -6,16 +6,16 @@
     :pTitleDocument="document.name"
     :pActiveDocument="selectedDocumentIndex"
     :pTotalDocuments="totalDocumentsCount"
-    pShowClose
+    :pShowClose="false"
     pDestroyOnClose
     pHasIcon
     pHasPagination
     pShowCloseButton
     :pShowPreviousDocument="selectedDocumentIndex > 1"
     :pShowNextDocument="selectedDocumentIndex < totalDocumentsCount"
+    @update:modelValue="handleClose"
     @next-document-button-click="handleNextButtonClick"
     @previous-document-button-click="handlePreviousButtonClick"
-    @close="handleClose"
   >
     <template #iconDocument>
       <PIcon>
