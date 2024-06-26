@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
+import { nextTick } from 'vue'
 import SubscriptionsTable from '.'
 
 const mockedPutRequests = vi.fn(() => Promise.resolve())
@@ -46,7 +47,7 @@ const pTableColumnsLabel: { [key: number]: string } = {
 }
 
 describe('table-validations', () => {
-  let wrapper: VueWrapper
+  let wrapper: VueWrapper<any>
   beforeEach(async () => {
     wrapper = mount(SubscriptionsTable)
     await flushPromises()
@@ -72,7 +73,7 @@ describe('table-validations', () => {
       'Test Indicators 1',
       'TTTFirsName TLastNameTLastName+test@kpmg.onmicrosoft.com',
       'test-01@kpmg.fr',
-      'Pennylane',
+      'Modules MEG : facturation et caisse',
       'To validate',
       '',
     ]
@@ -83,6 +84,15 @@ describe('table-validations', () => {
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
     expect(pToolbox.props('pElements')).toStrictEqual(requestMenu)
+  })
+
+  it('should display the subscriptions table filtered by offer type', async () => {
+    wrapper.vm.handleOfferFiltered(['MEG Smart'])
+    await nextTick()
+    const subscriptionsTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper
+    const subscriptionRows = subscriptionsTable.findAll('tr.el-table__row')
+
+    expect(subscriptionRows).toHaveLength(1)
   })
 
   it("should emit 'consult' event when the 'consult' button is clicked", async () => {

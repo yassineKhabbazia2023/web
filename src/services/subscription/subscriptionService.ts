@@ -3,7 +3,7 @@ import { handleRequestError } from '@/helper'
 import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from '.'
 import { API_PREFIXES } from '@/common/config/services'
 
-export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[] | undefined> {
+export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]> {
   try {
     const response = await commonApi().gateway.get(
       `${API_PREFIXES.OFFER}/subscription?status=pending`,
@@ -13,6 +13,8 @@ export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]
   } catch (error) {
     handleRequestError('fetching subscriptions', error)
   }
+
+  return []
 }
 
 export async function validateSubscriptionRequest(
