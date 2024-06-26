@@ -20,6 +20,7 @@ export interface SubscriptionRequest {
   applicant: string
   offer: {
     offerId: number
+    offerCode: string
     offerLabel: string
   }
   clients: Contact[]
