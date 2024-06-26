@@ -1,16 +1,13 @@
 <template>
   <div class="margin-top--6">
-    <div
-      v-if="state.isLoading"
-      class="flex flex--justify-content-center margin-y--4"
-      data-testid="folder-users-collab-loader"
-    >
-      <PLoader pType="primary" pSize="50" />
-    </div>
-
     <div class="margin-bottom--6">
       <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
     </div>
+
+    <PLoader
+      v-if="state.isLoading"
+      data-testid="folder-users-collab-loader"
+    />
 
     <div v-if="!state.isLoading">
       <div v-if="state.totalItems">
