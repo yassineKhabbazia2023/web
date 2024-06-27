@@ -218,7 +218,6 @@ describe('deploy', () => {
       currentPage: 0,
       filterByDeploymentStatus: '1',
       limit: 15,
-      search: '',
     })
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
@@ -234,9 +233,7 @@ describe('deploy', () => {
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
-      filterByDeploymentStatus: undefined,
       limit: 15,
-      search: '',
     })
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)

@@ -46,7 +46,6 @@
       />
 
       <PPagination
-        v-if="searchResult.totalItems > searchCriteria.limit"
         @on-page-range-changed="handlePageRangeChanged"
         :pCurrentPage="searchResult.currentPage"
         @update:p-current-page="onUpdateCurrentPage"
@@ -158,6 +157,7 @@ const handleSearchValueSubmitted = (searchValue: string) => {
 }
 
 const handlePageRangeChanged = (pageRange: number) => {
+  searchCriteria.value.currentPage = 1
   searchCriteria.value.limit = pageRange
 }
 
@@ -218,14 +218,9 @@ onMounted(async () => {
   await fetchTableDataAndFavorites()
 })
 
-watch(() => [
-  searchCriteria.value.currentPage,
-  searchCriteria.value.limit,
-  searchCriteria.value.search,
-  searchCriteria.value.filterByDeploymentStatus,
-], async () => {
+watch(searchCriteria, async () => {
   await fetch()
-})
+}, { deep: true })
 
 const openOffersDrawer = ref(false)
 const selectedAccountNumber = ref<string>('')
@@ -241,10 +236,17 @@ const onClickFolder = (id: string) => {
   router.push({ name: 'folder', params: { id } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
-  searchCriteria.value.filterByDeploymentStatus = filterValue.toString()
+  searchCriteria.value = {
+    currentPage: 0,
+    limit: PAGE_SIZES[0],
+    filterByDeploymentStatus: filterValue.toString(),
+  }
 }
 const handleRemoveFilter = () => {
-  searchCriteria.value.filterByDeploymentStatus = undefined
+  searchCriteria.value = {
+    currentPage: 0,
+    limit: PAGE_SIZES[0],
+  }
 }
 
 const selectedFolders = ref<SelectedFolder[]>([])
