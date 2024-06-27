@@ -117,7 +117,7 @@ const { isCollab, user } = storeToRefs(userStore)
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
-const numberOfFoldersInPortfolio = computed(() => searchResult.value.items.length)
+const numberOfFoldersInPortfolio = computed(() => searchResult.value.totalItems)
 
 // table part
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
