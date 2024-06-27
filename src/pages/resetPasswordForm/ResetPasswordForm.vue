@@ -55,6 +55,13 @@
         >
           {{ t('btnSubmit') }}
         </PButton>
+        <p
+          v-if="isPasswordAlreadyUsed"
+          class="el-form-item__error el-form-item__error--inline"
+          data-testid="error-password-already-used"
+        >
+          {{ t('isPasswordAlreadyUsed') }}
+        </p>
       </PFormItem>
     </PForm>
   </div>
@@ -99,6 +106,7 @@ const formValue = reactive({
   password: '',
   confirmPassword: '',
 })
+const isPasswordAlreadyUsed = ref()
 
 const isValidForm = computed(() => {
   return formValidity.password &&
@@ -155,7 +163,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
       try {
         await commonApi().gateway.post(urlUpdatePassword, data)
         router.push({ name: 'loginClient' })
-      } catch {}
+      } catch (error: any) {
+        console.error(error)
+        const { response: { status, data } } = error
+        isPasswordAlreadyUsed.value = status === 400 && data.includes('401030')
+      }
     } else {
       return false
     }
@@ -196,7 +208,6 @@ onBeforeMount(async () => {
   }
   .btn-submit {
     width: 100%;
-    margin-bottom: 20px;
   }
 }
 </style>
@@ -215,6 +226,9 @@ onBeforeMount(async () => {
     alertPasswordRequired: 'Please enter the password'
     alertPasswordLevelLow: 'Your password is not valid'
     btnSubmit: 'Submit'
+    isPasswordAlreadyUsed: >-
+      The password provided has already been used by this account.
+      Please choose another password.
   fr-FR:
     createAccount: 'Votre '
     1step: 'nouveau mot de passe.'
@@ -228,4 +242,7 @@ onBeforeMount(async () => {
     alertPasswordRequired: 'Veuillez rentrer votre mot de passe'
     alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
     btnSubmit: 'Valider'
+    isPasswordAlreadyUsed: >-
+      Le mot de passe fourni a déjà été utilisé par ce compte.
+      Veuillez choisir un autre mot de passe.
 </i18n>
