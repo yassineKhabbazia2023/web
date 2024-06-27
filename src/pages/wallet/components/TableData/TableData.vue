@@ -157,7 +157,7 @@
           @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
         >
           <PButton
-            pType="white"
+            pType="generic"
             pSize="small"
             pIconOnly
           >
