@@ -156,7 +156,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('detailsOfDelegations'),
       pActionName: 'detailsOfDelegations',
       pState: 'default',
-      display: true,
+      display: false,
     },
     {
       pIconName: 'PIGrid',
