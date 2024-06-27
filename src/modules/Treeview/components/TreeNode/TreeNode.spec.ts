@@ -283,7 +283,7 @@ describe('interactions', () => {
     expect(wrapper.emitted('p-toolbox-item-clicked')).toStrictEqual([['test', fold]])
   })
 
-  it('should selectedOrHovered when p-toolbox-dropdown-close is emitted', async () => {
+  it('should selectedOrHovered when p-toolbox-dropdown-visibility-change is emitted', async () => {
     const folder = { ...fold, permissions: ['CAN_DELETE_FOLDER'] }
     const updatedProps = { ...defaultProps, data: folder }
 
@@ -293,7 +293,7 @@ describe('interactions', () => {
 
     await nextTick()
 
-    await actions.vm.$emit('p-toolbox-dropdown-close', false)
+    await actions.vm.$emit('p-toolbox-dropdown-visibility-change', false)
     await nextTick()
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
