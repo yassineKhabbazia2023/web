@@ -66,12 +66,6 @@ const toolBoxElementsWithoutPermissions = [
     pActionName: 'collaboratorInformation',
     pState: 'default',
   },
-  {
-    pIconName: 'PIClipboardData',
-    pValue: 'Details of delegations',
-    pActionName: 'detailsOfDelegations',
-    pState: 'default',
-  },
 ]
 
 describe('tableData', () => {
@@ -81,7 +75,7 @@ describe('tableData', () => {
 
   it('has a menu with 3 items', () => {
     const menuItems = getMenu().querySelectorAll('li')
-    expect(menuItems).toHaveLength(3)
+    expect(menuItems).toHaveLength(2)
   })
 
   const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME
@@ -103,7 +97,7 @@ describe('tableData', () => {
     wrapper = createWrapper()
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
-    expect(pToolbox.props('pElements')).toHaveLength(2)
+    expect(pToolbox.props('pElements')).toHaveLength(1)
     expect(pToolbox.props('pElements')).toStrictEqual(toolBoxElementsWithoutPermissions)
   })
 
