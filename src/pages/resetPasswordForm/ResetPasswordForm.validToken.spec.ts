@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import ResetPasswordForm from './'
 
@@ -17,6 +17,13 @@ const routes = [
     name: 'resetPasswordForm',
     component: {
       template: '<p class="page-title">ResetPasswordForm</p>',
+    },
+  },
+  {
+    name: 'loginClient',
+    path: '/login-client',
+    component: {
+      template: '<p class="page-title">Login Client</p>',
     },
   },
 ]
@@ -48,6 +55,7 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
+let wrapper: VueWrapper<any>
 const createWrapper = () =>
   mount(ResetPasswordForm, {
     global: {
@@ -56,10 +64,13 @@ const createWrapper = () =>
   })
 
 describe('page reset password form', () => {
+  beforeEach(() => {
+    wrapper = createWrapper()
+  })
+
   it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
-      const wrapper: VueWrapper<any> = createWrapper()
       wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(1)
@@ -68,7 +79,6 @@ describe('page reset password form', () => {
   )
 
   it('should show error when user enter a invalid password', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11aa')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
     await flushPromises()
@@ -76,7 +86,6 @@ describe('page reset password form', () => {
   })
 
   it('should show success when user enter 2 password', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     expect(wrapper.findAll('.is-error')).toHaveLength(0)
@@ -85,7 +94,6 @@ describe('page reset password form', () => {
   })
 
   it('should show error when user enter password and confirm password differently', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
     await flushPromises()
@@ -94,7 +102,6 @@ describe('page reset password form', () => {
   })
 
   it('should call back end when click on button', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     const routerPushSpy = vi.spyOn(router, 'push')
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
@@ -114,5 +121,27 @@ describe('page reset password form', () => {
 
     expect(routerPushSpy).toHaveBeenCalledTimes(1)
     expect(routerPushSpy).toHaveBeenLastCalledWith({ name: 'loginClient' })
+  })
+
+  it('displays an error if the password is already used', async () => {
+    const getErrorPasswordAlreadyUsed = () => wrapper.find('[data-testid=error-password-already-used]')
+
+    const BACK_ERROR = {
+      response: {
+        status: 400,
+        data: '401030',
+      },
+    }
+    postMock.mockRejectedValue(BACK_ERROR)
+
+    expect(getErrorPasswordAlreadyUsed().exists()).toBeFalsy()
+
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
+    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
+    await flushPromises()
+    wrapper.find('button').trigger('click')
+    await flushPromises()
+
+    expect(getErrorPasswordAlreadyUsed().exists()).toBeTruthy()
   })
 })
