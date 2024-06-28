@@ -81,7 +81,7 @@ const handlePageRangeChanged = (newValue: number) => {
 const paginationLabel = computed(() => getPaginationLabel<IExtendedCollab>(t('on'), state))
 
 const shouldShowPagination = computed(() =>
-  !state.isLoading && !!state.totalItems && state.totalItems > state.limit,
+  !state.isLoading && !!state.totalItems,
 )
 
 const getQueryParams = () => ({
