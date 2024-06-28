@@ -56,7 +56,7 @@ export function getMockedMappedAccount(
     accountNumber: '10102',
     city: 'Paris',
     deploymentStatus: getMockedDeploymentStatus(),
-    hub: 'Paris',
+    hub: 'Hub Aquitaine Nord',
     id: 'account-global-unique-id',
     isFavorite: false,
     name: 'Legal Name',

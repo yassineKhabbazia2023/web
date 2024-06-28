@@ -82,6 +82,10 @@ export function getMockedAccountRow(override: Partial<AccountRow> = {}): Account
     accountNumber: '10102',
     legalName: 'Legal Name',
     isFavorite: false,
+    hub: {
+      hubId: 1,
+      hubName: 'Hub Aquitaine Nord',
+    },
     address: getMockedAddress(),
     signatory: getMockedSignatory(),
     deployment: getMockedDeployment(),

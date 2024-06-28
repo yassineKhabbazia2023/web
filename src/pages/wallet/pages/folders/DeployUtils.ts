@@ -1,7 +1,7 @@
 import type { IWalletData, SearchCriteria, DeploymentStatus } from '../../types'
 import type { AccountRow } from '@/services/account'
 import { fetchAccounts } from '@/services/account'
-import { COLORS, DEFAULT_HUB } from './DeployConst'
+import { COLORS } from './DeployConst'
 import { getInitials, removeFalsyValues } from '@/helper'
 import type { QueryResult } from '@/types/commonTypes'
 
@@ -53,6 +53,7 @@ export function getMappedAccount(
     accountNumber,
     signatory,
     address,
+    hub,
     deployment,
     isFavorite,
   } = account
@@ -60,11 +61,11 @@ export function getMappedAccount(
   const { contactId, firstName, lastName, email } = signatory ?? {}
   const { city } = address
   const { status } = deployment
+  const { hubName } = hub
 
   const initials = getInitials(firstName, lastName)
   const colorIndex = index % COLORS.length
   const avatarColor = COLORS[colorIndex]
-  const hub = DEFAULT_HUB
 
   const mappedAccount: IWalletData = {
     owner: {
@@ -76,7 +77,7 @@ export function getMappedAccount(
       avatarColor,
     },
     city: city ?? '',
-    hub,
+    hub: hubName ?? '',
     deploymentStatus: deploymentStatuses[status - 1],
     id,
     accountId,

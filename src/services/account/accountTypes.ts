@@ -87,14 +87,15 @@ export interface Account {
   deploymentPlanning?: Deployment[]
 }
 export interface AccountRow {
-    accountId: number
-    accountGlobalUniqueId: string
-    accountNumber: string
-    legalName: string
-    isFavorite: boolean
-    address: Address
-    signatory: Signatory
-    deployment: Deployment
+  accountId: number
+  accountGlobalUniqueId: string
+  accountNumber: string
+  legalName: string
+  isFavorite: boolean
+  address: Address
+  hub: Hub
+  signatory: Signatory
+  deployment: Deployment
 }
 
 export type ReferentialOptions = Record<string, string>
