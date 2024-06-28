@@ -37,7 +37,7 @@ describe('offers', () => {
       const columns = wrapper.findAllComponents({ name: 'PTableColumn' })
       const rows = wrapper.findAll('tr.el-table__row')
 
-      expect(columns).toHaveLength(3)
+      expect(columns).toHaveLength(2)
       expect(rows).toHaveLength(activeOffersMocked.length)
       expect(offersDrawer.exists()).toBeFalsy()
     })
