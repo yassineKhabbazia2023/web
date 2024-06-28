@@ -4,19 +4,28 @@ import {
 } from '@/schedule/tests/mocks/commonViMock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { commonStore as store } from '@kpmg/common'
 import { createTestingPinia } from '@pinia/testing'
 import router from '@/plugins/router'
 import helpers from '@/tests/utils/helpers'
-import Home from '.'
 import { nextTick } from 'vue'
+import { fetchEntities } from '@/services/entities'
+import mockedEntities from '@/mocks/entities.mock.json'
+import Home from '.'
 
 const pinia = createTestingPinia()
 const { fakeUser } = helpers()
 
 vi.mock('@/schedule/services', () => ScheduleServicesMock)
 vi.mock('@kpmg/common', () => KpmgCommontMock)
+vi.mock('@/services/entities', async () => {
+  const actual = await vi.importActual('@/services/entities') as Record<string, any>
+  return {
+    ...actual,
+    fetchEntities: vi.fn(() => Promise.resolve(mockedEntities)),
+  }
+})
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Home, {
@@ -24,7 +33,7 @@ const createWrapper = (): VueWrapper<any> =>
     global: {
       plugins: [pinia, router],
       stubs: {
-        Schedule: { template: '<div data-testid="schedule-stub">' },
+        Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
       },
     },
@@ -40,14 +49,22 @@ describe('home', () => {
     wrapper = createWrapper()
   })
 
+  it('should call retrieve entites when created', async () => {
+    await flushPromises()
+    expect(fetchEntities).toHaveBeenCalled()
+  })
+
   it('can display the user profile drawer', async () => {
+    wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = true
+    await nextTick()
+
     const getUserProfileDrawer = () =>
       document.querySelector('.user-profile-drawer') as HTMLElement
     expect(getUserProfileDrawer()).toBeFalsy()
 
     const userAvatar = wrapper.find('.header-section__user-avatar')
     await userAvatar.trigger('click')
-
     expect(getUserProfileDrawer()).toBeTruthy()
   })
 
@@ -68,10 +85,16 @@ describe('home', () => {
         lastName: fakeUser?.lastName,
         email: fakeUser?.email,
         isCollab: fakeUser?.isCollab,
+        entities: {
+          default: mockedEntities[0],
+          favorites: [],
+        },
       },
     })
 
     wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = true
+
     await nextTick()
     commonLayout = wrapper.find('.common-layout')
 
@@ -80,6 +103,8 @@ describe('home', () => {
 
   it('should show calendar drawer when header emits show-user-profile-drawer', async () => {
     wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = true
+
     await nextTick()
 
     expect(getHomeScheduleDrawer(wrapper).exists()).toBeFalsy()
@@ -97,6 +122,7 @@ describe('home', () => {
 
   it('should still show calendar drawer when header emits show-user-profile-drawer and close it after', async () => {
     wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = true
     await nextTick()
 
     expect(getHomeScheduleDrawer(wrapper).exists()).toBeFalsy()
