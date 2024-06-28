@@ -3,19 +3,12 @@
     v-model="internalIsOpened"
     :pShowPreviousStep="false"
     pSize="50%"
+    :pTitle="subscriptionDrawerTitle"
     pDirection="rtl"
     class="subscription-drawer"
     @close-drawer-button="handleCloseDrawer"
     data-testid="subscription-drawer"
   >
-    <template #header-prefix>
-      <p
-        class="subscription-drawer__account-name font-base"
-        data-testid="subscription-drawer-title"
-      >
-        {{ subscriptionDrawerTitle }}
-      </p>
-    </template>
     <div
       v-if="isLoading"
       class="flex flex--justify-content-center margin-y--4"
