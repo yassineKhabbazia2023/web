@@ -34,6 +34,7 @@ const handleLogout = async () => {
       sign_out_result: 'failed',
     })
   }
+  localStorage.removeItem('selected-entity')
   router.push({ name: isCollab ? 'login' : 'loginClient' })
 }
 </script>
