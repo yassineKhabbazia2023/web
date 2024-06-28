@@ -38,7 +38,7 @@ const createWrapper = (props: TreeNodeActionsToolboxProps = defaultProps)
     global: {
       stubs: {
         PToolbox: {
-          template: '<span />',
+          template: '<span ref="pToolboxRef" />',
         },
       },
       plugins: [pinia],
@@ -132,7 +132,7 @@ describe('treeNodeActions', () => {
   })
 
   describe('interactions', () => {
-    it('should emit visible-change when p-toolbox-dropdown-close is emitted', async () => {
+    it('should emit visible-change when p-toolbox-dropdown-visibility-change is emitted', async () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],
@@ -145,12 +145,12 @@ describe('treeNodeActions', () => {
       await toolbox.vm.$emit('visible-change', true)
       await nextTick()
 
-      expect(wrapper.emitted('p-toolbox-dropdown-close')).toStrictEqual([
+      expect(wrapper.emitted('p-toolbox-dropdown-visibility-change')).toStrictEqual([
         [true],
       ])
     })
 
-    it('should emit visible-change when p-toolbox-dropdown-close is emitted (2)', async () => {
+    it('should emit visible-change when p-toolbox-dropdown-visibility-change is emitted (2)', async () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],

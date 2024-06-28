@@ -1,10 +1,11 @@
 <template>
   <TreeNodeActionsToolbox
+    ref="actionToolboxRef"
     triggerType="click"
     :permissions="permissions"
     :selectedOrHovered="selectedOrHovered"
     @p-toolbox-item-clicked="handleItemclicked"
-    @p-toolbox-dropdown-close="handleToolboxDropdownSateChange"
+    @p-toolbox-dropdown-visibility-change="handleToolboxDropdownSateChange"
     :showSlotIfDataEmpty="false"
   >
     <PButton
@@ -24,18 +25,29 @@ import TreeNodeActionsToolbox from
   '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
 import { type TreeNodeActionsProps } from
   '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
+import { ref } from 'vue'
 
 const emit = defineEmits([
   'p-toolbox-item-clicked',
-  'p-toolbox-dropdown-close',
+  'p-toolbox-dropdown-visibility-change',
 ])
 defineProps<TreeNodeActionsProps>()
 const handleItemclicked = (action: string) => {
   emit('p-toolbox-item-clicked', action)
 }
 const handleToolboxDropdownSateChange = (state: boolean) => {
-  emit('p-toolbox-dropdown-close', state)
+  emit('p-toolbox-dropdown-visibility-change', state)
 }
+
+const actionToolboxRef = ref<InstanceType<any> | null>(null)
+function closeActionToolbox() {
+  if (!actionToolboxRef.value) return
+  actionToolboxRef.value.closePToolbox()
+}
+
+defineExpose({
+  closeActionToolbox,
+})
 </script>
 <style lang="scss" scoped>
 .tree-node__action {
