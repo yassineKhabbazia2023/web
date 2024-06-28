@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading" class="common-layout">
+  <div v-if="!isLoading && defaultEntity" class="common-layout">
     <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
     <PContainer pDirection="vertical">
       <PCHeader class="header-container" height="56">
@@ -48,6 +48,9 @@ import HomeScheduleDrawer from '@/components/HomeScheduleDrawer'
 import { ReloadOneTrust } from '@/plugins/OneTrust'
 import Header from './Header'
 import Sidebar from './Sidebar'
+import { storeToRefs } from 'pinia'
+import { fetchEntities } from '@/services/entities'
+import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -116,10 +119,13 @@ const stylesMetaProperties = computed(
   () => router.currentRoute.value.meta.styles,
 )
 
+const globalStore = store()
+const { defaultEntity } = storeToRefs(globalStore)
 // Hooks
 onMounted(async () => {
   try {
     const user = await fetchUserData()
+    const entities = await fetchEntities()
     const isProd = import.meta.env.PROD
     if (isProd) {
       productFruits.init(VITE_PRODUCT_FRUITS_KEY, 'fr', {
@@ -131,8 +137,15 @@ onMounted(async () => {
       })
     }
 
-    store().$patch({
-      user,
+    const defaultEntity = getDefaultEntity(entities[0])
+    globalStore.$patch({
+      user: {
+        ...user,
+        entities: {
+          default: defaultEntity,
+          favorites: [],
+        },
+      },
     })
   } catch (error) {
     console.error('Unable to fetch current user information: ', error)

@@ -3,9 +3,13 @@ import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
+import type { Entity } from '@kpmg/common'
 import router from '../plugins/router'
+import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { ROUTES, PAGES_TITLE } from './mock'
 import App from './'
+
+const testEntity: Entity = getMockedFavoriteEntities()[0]
 
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5,
@@ -21,6 +25,7 @@ vi.mock('@kpmg/common', () => ({
       user: null,
     }),
     getters: {
+      defaultEntity: () => testEntity,
       isAuthenticated: () => false,
     },
   }),
