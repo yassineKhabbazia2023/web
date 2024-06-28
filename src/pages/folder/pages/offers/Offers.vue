@@ -64,23 +64,6 @@
           <OfferActivationStatus :status="offerActivationStatus" />
         </template>
       </PTableColumn>
-      <PTableColumn
-        v-if="isCollab"
-        :pLabel="t('action')"
-        pWidth="80px"
-      >
-        <template #default>
-          <PButton
-            pType="white"
-            pSize="small"
-            pIconOnly
-          >
-            <PIcon>
-              <PIThreeDots />
-            </PIcon>
-          </PButton>
-        </template>
-      </PTableColumn>
     </PTable>
   </div>
   <OffersDrawer
@@ -104,7 +87,6 @@ import {
   PBlockHeader,
   PButton,
   PIcon,
-  PIThreeDots,
   PIArrowRight,
   PLoader,
   PTable,
@@ -177,7 +159,6 @@ en-US:
   activateOffers: 'Activate offers'
   offer: 'Offer'
   status: 'Status'
-  action: 'Action'
 fr-FR:
   collabHeaderTitle: "Activation d'offres"
   clientHeaderTitle: 'Offres activées'
@@ -186,5 +167,4 @@ fr-FR:
   activateOffers: 'Activer les offres'
   offer: 'Offre'
   status: 'Statut'
-  action: 'Action'
 </i18n>
