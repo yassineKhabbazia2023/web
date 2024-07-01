@@ -36,8 +36,8 @@
       <NoResult v-if="searchResult.items.length === 0" />
 
       <TableData
-        data-testid="table"
         v-if="searchResult.items.length > 0"
+        data-testid="table"
         :data="searchResult.items"
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
@@ -46,6 +46,7 @@
       />
 
       <PPagination
+        class="margin-top--6"
         @on-page-range-changed="handlePageRangeChanged"
         :pCurrentPage="searchResult.currentPage"
         @update:p-current-page="onUpdateCurrentPage"

@@ -7,7 +7,12 @@
 
       <PLoader v-if="state.isLoading" />
 
-      <div v-if="!state.isLoading">
+      <!--
+        The v-show is used just below (instead of a v-if) due to the sorting on the table
+        that is done on the back end side. In this case, the table should not be destroyed
+        & re render else there is a bug with the caret.
+      -->
+      <div v-show="!state.isLoading">
         <TableData
           v-if="state.data.length"
           :data="state.data"
@@ -147,9 +152,10 @@ const handleUpdateCollaborateurRole = (contact: Contact) => {
   state.data[index].role = contact.persona?.name ?? ''
 }
 
-const handleSortChange = (sortQueryField:string) => {
+const handleSortChange = (sortQueryField: string) => {
   state.sort = sortQueryField
 }
+
 onMounted(async () => {
   await fetch()
 

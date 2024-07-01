@@ -35,7 +35,12 @@
 
     <PLoader v-if="isLoading" />
 
-    <div v-if="!isLoading">
+    <!--
+      The v-show is used just below (instead of a v-if) due to the sorting on the table
+      that is done on the back end side. In this case, the table should not be destroyed
+      & re render else there is a bug with the caret.
+    -->
+    <div v-show="!isLoading">
       <PTable
         v-if="collabs.length"
         @current-change="handleChange"
