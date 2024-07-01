@@ -23,6 +23,7 @@ vi.mock('@kpmg/common', () => ({
       user: null,
     }),
     getters: {
+      defaultEntity: () => testEntity,
       isAuthenticated: () => true,
       isCollab: () => false,
       favoriteEntities: () => [],
@@ -81,7 +82,18 @@ const createWrapper = (userStore = {}) =>
         createTestingPinia({
           initialState: {
             common: {
-              user: userStore,
+              user: {
+                ...userStore,
+                entities: {
+                  default: {
+                    accountId: 1,
+                    accountNumber: '3669209950',
+                    legalName: 'Restaurant Le Grand Bleu',
+                    color: 'orange',
+                  },
+                  favorites: [],
+                },
+              },
             },
           },
         }),
@@ -147,6 +159,7 @@ describe('app with navigation guard', () => {
     const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
     router.push({ name: 'entity-client' })
     await vi.dynamicImportSettled()
+    await flushPromises()
 
     const pageTitle = getPageTitle(wrapper)
     expect(pageTitle).toBe(PAGES_TITLE.FOLDER)
