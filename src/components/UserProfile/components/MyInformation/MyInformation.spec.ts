@@ -92,14 +92,14 @@ describe('myInformation', () => {
     expect(fullNameWrapper.text()).toContain(`${firstName} ${lastName}`)
 
     expect((getAllInputs()[0].element as HTMLInputElement).value).toBe(personaName)
-    expect((getAllInputs()[1].element as HTMLInputElement).value).toBe(email)
-    expect((getAllInputs()[2].element as HTMLInputElement).value).toBe(mobilePhone)
+    expect((getAllInputs()[1].element as HTMLInputElement).value).toBe(mobilePhone)
+    expect((getAllInputs()[2].element as HTMLInputElement).value).toBe(email)
   })
 
   it('has all fields as read only except for mobile', () => {
     expect(getAllInputs()[0].attributes().disabled).toBeDefined()
-    expect(getAllInputs()[1].attributes().disabled).toBeDefined()
-    expect(getAllInputs()[2].attributes().disabled).toBeUndefined()
+    expect(getAllInputs()[1].attributes().disabled).toBeUndefined()
+    expect(getAllInputs()[2].attributes().disabled).toBeDefined()
   })
 
   it('can update the user information and display a toaster', async () => {
