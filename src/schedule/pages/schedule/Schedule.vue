@@ -230,8 +230,8 @@ async function refreshAdvancedSearch() {
 async function refreshCalendarWidgetData() {
   try {
     calendarWidgetIsLoading.value = true
-    const monthRange = getMonthInterval(calendarWidgetDate.value, 7)
-    const deadlineItems = await getSchedulesCollection(monthRange)
+    const searchParams = getSearchParams(calendarWidgetDate.value, filters.value)
+    const deadlineItems = await getSchedulesCollection(searchParams)
     setCalendarWidgetDates(deadlineItems)
   } catch (error) {
     console.warn(error)

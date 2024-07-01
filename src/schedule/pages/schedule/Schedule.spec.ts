@@ -13,6 +13,7 @@ import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useCommonStore } from '@kpmg/common'
 import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
+import type { ScheduleApiQueryParams } from '@/schedule/services/scheduleServiceTypes'
 
 const pinia = createTestingPinia()
 
@@ -311,7 +312,7 @@ describe('home page', () => {
     })
 
     it('should load other month data when change month from widget Calendar', async () => {
-      vi
+      const getSchedulesCollectionSpy = vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([{
           date: SAME_MONTH_DATE,
@@ -340,9 +341,28 @@ describe('home page', () => {
       expect(calendarWidgetLoader.exists()).toBeTruthy()
 
       await flushPromises()
+      const expectedParams1: ScheduleApiQueryParams = {
+        endDate: '2024-09-07',
+        mineOnly: false,
+        startDate: '2024-07-25',
+        status: [],
+        targets: [],
+        templates: [],
+      }
+      const expectedParams2: ScheduleApiQueryParams = {
+        endDate: '2024-12-07',
+        mineOnly: false,
+        startDate: '2024-10-25',
+        status: [],
+        targets: [],
+        templates: [],
+      }
 
       const calendarWidgetLoaderAfter = findCalendarWidgetLoader(wrapper)
       expect(calendarWidgetLoaderAfter.exists()).toBeFalsy()
+      expect(getSchedulesCollectionSpy).toHaveBeenCalledTimes(2)
+      expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(1, expectedParams1)
+      expect(getSchedulesCollectionSpy).toHaveBeenNthCalledWith(2, expectedParams2)
 
       expect(datePicker.props('pSchedulesCollection')).toStrictEqual([OTHER_MONTH_DATE])
     })
