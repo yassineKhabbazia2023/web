@@ -6,7 +6,8 @@ import { flushPromises, mount } from '@vue/test-utils'
 import router from '../plugins/router'
 import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { ROUTES, PAGES_TITLE } from './mock'
-import { amplitudeService, type Entity } from '@kpmg/common'
+import { amplitudeService, commonStore, type Entity } from '@kpmg/common'
+import { nextTick } from 'vue'
 import App from '.'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
@@ -131,6 +132,21 @@ describe('app with navigation guard', () => {
     expect(wrapper.find('.home-bottom-menu').exists()).toBeTruthy()
   })
 
+  it('redirects to the homepage if the user is already authenticated', async () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = true
+    await nextTick()
+    const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
+    router.push({ name: 'login' })
+    await vi.dynamicImportSettled()
+    await flushPromises()
+
+    const pageTitle = getPageTitle(wrapper)
+    expect(pageTitle).toBe(PAGES_TITLE.WALLET)
+    expect(router.currentRoute.value.name).toBe('wallet')
+  })
+
   it("should initialize the Amplitude service when tracking is active in the user's browser", () => {
     setDoNotTrack('0')
     createWrapper()
@@ -156,6 +172,10 @@ describe('app with navigation guard', () => {
   })
 
   it('should redirect the client to the folder page if they have only one entity', async () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    await nextTick()
     const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
     router.push({ name: 'entity-client' })
     await vi.dynamicImportSettled()
