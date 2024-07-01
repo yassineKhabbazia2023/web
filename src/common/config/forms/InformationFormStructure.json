@@ -14,7 +14,7 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-70",
         "pDisabled": true,
-        "pFieldKey": "commercialName",
+        "pFieldKey": "legal.legalName",
         "pFieldType": "input",
         "pLabel": "Raison sociale"
       }
