@@ -47,27 +47,27 @@
 
           <div class="half-width">
             <PFormItem
-              :pLabel="t('email')"
-              prop="email"
+              :pLabel="t('mobilePhone')"
+              prop="mobilePhone"
               pRequired
             >
               <PInput
-                v-model="formValues.email"
-                pName="email"
-                pDisabled
+                v-model="formValues.mobilePhone"
+                pName="mobilePhone"
               />
             </PFormItem>
           </div>
         </div>
 
         <PFormItem
-          :pLabel="t('mobilePhone')"
-          prop="mobilePhone"
+          :pLabel="t('email')"
+          prop="email"
           pRequired
         >
           <PInput
-            v-model="formValues.mobilePhone"
-            pName="mobilePhone"
+            v-model="formValues.email"
+            pName="email"
+            pDisabled
           />
         </PFormItem>
 
