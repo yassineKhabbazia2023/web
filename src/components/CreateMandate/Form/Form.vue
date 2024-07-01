@@ -367,11 +367,14 @@ const validateIBS = async (_: Rule, value: string, callback: any) => {
       await getDataByIbsNumber(value)
     }
   } catch (error: any) {
-    if (error?.message?.includes('outWalletIBS')) {
+    if (error?.response?.status === 403) {
       callback(new Error(t('form.error.outWalletIBS')))
     }
-    if (error?.message?.includes('ibsNotFound') || error?.message?.includes('404')) {
+    if (error?.response?.status === 404) {
       callback(new Error(t('form.error.ibsNotFound')))
+    }
+    if (error?.response?.status === 500) {
+      callback(new Error(t('form.error.serverError')))
     }
   }
 }
@@ -403,9 +406,6 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
     isIBSValid.value = true
     return emit('enable-disable-next', true)
   }
-  throw new Error(data.errorType === 'CompanyForbidden'
-    ? 'form.error.outWalletIBS'
-    : 'form.error.ibsNotFound')
 }
 
 const getMandateModel = () => {
@@ -769,7 +769,8 @@ defineExpose({
         "validNumber": "Please input a valid number",
         "ibsNotFound": "IBS number not found.",
         "outWalletIBS": "The IBS must be part of your portfolio and have active engagement.",
-        "nonScrappable": "This bank is not scrappable."
+        "nonScrappable": "This bank is not scrappable.",
+        "serverError": "An error has occurred."
       }
     }
   },
@@ -813,7 +814,8 @@ defineExpose({
         "validNumber": "Veuillez entrer un nombre valide",
         "ibsNotFound": "Le numéro IBS saisi n'est pas reconnu.",
         "outWalletIBS": "Le numéro d'IBS saisi doit faire parti de votre portefeuille et avoir un engagement actif.",
-        "nonScrappable": "Cette banque n'est pas scrappable."
+        "nonScrappable": "Cette banque n'est pas scrappable.",
+        "serverError": "Une erreur est survenue."
       }
     }
   }
