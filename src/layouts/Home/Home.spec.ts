@@ -23,7 +23,9 @@ vi.mock('@/services/entities', async () => {
   const actual = await vi.importActual('@/services/entities') as Record<string, any>
   return {
     ...actual,
-    fetchEntities: vi.fn(() => Promise.resolve(mockedEntities)),
+    fetchEntities: vi.fn(() => Promise.resolve({
+      items: mockedEntities,
+    })),
   }
 })
 
@@ -35,6 +37,7 @@ const createWrapper = (): VueWrapper<any> =>
       stubs: {
         Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
+        PAside: true,
       },
     },
   })
