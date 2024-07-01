@@ -137,7 +137,7 @@ onMounted(async () => {
       })
     }
 
-    const defaultEntity = getDefaultEntity(entities[0])
+    const defaultEntity = getDefaultEntity(entities.items[0])
     globalStore.$patch({
       user: {
         ...user,
