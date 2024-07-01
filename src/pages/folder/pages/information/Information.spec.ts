@@ -9,6 +9,8 @@ import {
 } from '@/services/account/accountMock'
 import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
 import Information from '.'
+import { setActivePinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
 
 // Expected Display Results
 const expectedAddressSection = 'Company billing address'
@@ -38,6 +40,7 @@ vi.mock('vue-router', () => ({
 describe('information', () => {
   let wrapper: VueWrapper<any>
   beforeEach(async () => {
+    setActivePinia(createTestingPinia())
     wrapper = mount(Information)
 
     await flushPromises()
