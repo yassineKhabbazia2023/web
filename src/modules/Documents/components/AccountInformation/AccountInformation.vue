@@ -1,0 +1,48 @@
+<template>
+  <div
+    class="
+      account-information
+      flex flex--align-items-center
+      padding-top--4 padding-left--4
+  "
+  >
+    <PAvatar pType="small" :pColor="accountAvatarColor">
+      <PIcon>
+        <PIPulse />
+      </PIcon>
+    </PAvatar>
+    <h4 class="margin-left--3">
+      {{ accountName }}
+    </h4>
+    <div
+      class="
+        account-information__fake-pipe
+        margin-x--3
+      "
+    />
+    <span
+      class="
+        text-color--neutral-gray-300
+      "
+    >
+      {{ accountNumber }}
+    </span>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { PAvatar, PIcon, PIPulse } from '@kpmg/styleguide'
+import type { AccountInformationProps } from './AccountInformationTypes'
+
+defineProps<AccountInformationProps>()
+</script>
+
+<style lang="scss" scoped>
+.account-information {
+ &__fake-pipe {
+    width: 1px;
+    height: 12px;
+    background: var(--el-color-neutral-gray-300);
+ }
+}
+</style>

@@ -37,6 +37,7 @@ import DocumentsSearchAlert from './components/DocumentsSearchAlert'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
+import type { Entity } from '@kpmg/common'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -61,6 +62,8 @@ const pinia = createPinia()
 const defaultProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   selectedEntity: 'my-entity',
+  selectedEntityAvatarColor: 'persian' as Entity['color'],
+  selectedEntityName: 'This is a legal name',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: foldersData[0],
 }

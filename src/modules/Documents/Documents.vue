@@ -8,7 +8,15 @@
       height--100
     "
   >
-    <div class="padding-top--5 padding-left--4">
+    <div>
+      <AccountInformation
+        :color="selectedEntityAvatarColor"
+        :accountName="selectedEntityName"
+        :accountNumber="selectedEntity"
+      />
+
+    </div>
+    <div class="padding-top--4 padding-left--4">
       <PBreadcrumb
         :pElements="breadcrumbItems"
         @p-breadcrumb-item-click="handleFolderNavigation" />
@@ -219,7 +227,7 @@ import DocumentMove from './components/DocumentsMove'
 import DocumentPreview from './components/DocumentPreview'
 import DocumentDeleteModal from '@/modules/Documents/components/DocumentDeleteModal'
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
+import { PBreadcrumb, PLoader, PPagination, PAvatar } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import { getBreadcrumbItems }
   from '@/modules/common/helpers/folderHelper'
@@ -234,6 +242,7 @@ import DocumentsDropZone from './components/DocumentsDropZone'
 import { useDragAndDropFromExplorer } from './composable/DragAndDropFromExplorer'
 import DocumentsDropModal from './components/DocumentsDropModal'
 import { Permissions } from '@/models/Permissions'
+import AccountInformation from './components/AccountInformation'
 
 /* The more features we add the more this component becomes bloated.
 We created a refactor task, which, unfortunately has been placed far back in the backlog.
