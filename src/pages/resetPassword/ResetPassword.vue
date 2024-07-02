@@ -119,23 +119,16 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       return false
     }
   }
-  try {
-    isLoading.value = true
-    await commonApi().gateway.post('authentication/api/sendResetPasswordLink', toRaw(formValues))
-    isLoading.value = false
-    router.push({
-      path: '/resetPasswordSuccess',
-      query: {
-        email: formValues.email || '',
-      },
-    })
-  } catch (error: any) {
-    const invalidResponse = error.message
-    if (invalidResponse) {
-      hasCustomerError.value = true
-    }
-    return false
-  }
+
+  isLoading.value = true
+  await commonApi().gateway.post('authentication/api/sendResetPasswordLink', toRaw(formValues))
+  isLoading.value = false
+  router.push({
+    path: '/resetPasswordSuccess',
+    query: {
+      email: formValues.email || '',
+    },
+  })
 }
 
 </script>
