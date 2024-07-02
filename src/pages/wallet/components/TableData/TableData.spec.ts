@@ -61,7 +61,6 @@ const collaboratorsColumnLabels =
   'Leader',
   'Email',
   'City',
-  'Hub',
   'Status',
   'Options',
 ]
@@ -109,7 +108,6 @@ describe('tableData', () => {
     const {
       accountNumber,
       city,
-      hub,
       deploymentStatus: { text: deploymentStatusText },
       name,
       owner: {
@@ -120,7 +118,7 @@ describe('tableData', () => {
     } = mockTableData[0]
 
     const firstRowText = rows[0].text()
-    const mockData = [name, accountNumber, firstName, lastName, email, city, hub, deploymentStatusText]
+    const mockData = [name, accountNumber, firstName, lastName, email, city, deploymentStatusText]
     mockData.forEach(data => {
       expect(firstRowText).toContain(data)
     })

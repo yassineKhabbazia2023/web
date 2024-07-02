@@ -119,17 +119,6 @@
     </PTableColumn>
     <template v-if="isCollab">
       <PTableColumn
-        :pLabel="t('hub')"
-        pProp="hub"
-        pSortable
-      >
-        <template #default="scope">
-          <p class="text-capitalize overflow-hidden text-overflow--ellipsis">
-            {{ scope.row.hub }}
-          </p>
-        </template>
-      </PTableColumn>
-      <PTableColumn
         :pLabel="t('status')"
         pProp="deploymentStatus.text"
         pSortable
@@ -143,43 +132,41 @@
           />
         </template>
       </PTableColumn>
-    </template>
-    <PTableColumn
-      v-if="isCollab"
-      :pLabel="t('option')"
-      :pWidth="80"
-      pAlign="center"
-    >
-      <template #default="scope">
-        <PToolbox
-          trigger="click"
-          :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
-          @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
-        >
-          <PButton
-            pType="generic"
-            pSize="small"
-            pIconOnly
+      <PTableColumn
+        :pLabel="t('option')"
+        :pWidth="80"
+        pAlign="center"
+      >
+        <template #default="scope">
+          <PToolbox
+            trigger="click"
+            :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
+            @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
           >
-            <PIcon>
-              <PIThreeDots />
-            </PIcon>
-          </PButton>
-        </PToolbox>
-      </template>
-    </PTableColumn>
-    <PTableColumn
-      v-if="isCollab"
-      pWidth="46"
-      :pShowOverflowTooltip="false"
-    >
-      <template #default="scope">
-        <PCheckbox
-          :disabled="false"
-          @change="onSelectedFolder(scope.row)"
-        />
-      </template>
-    </PTableColumn>
+            <PButton
+              pType="generic"
+              pSize="small"
+              pIconOnly
+            >
+              <PIcon>
+                <PIThreeDots />
+              </PIcon>
+            </PButton>
+          </PToolbox>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        pWidth="46"
+        :pShowOverflowTooltip="false"
+      >
+        <template #default="scope">
+          <PCheckbox
+            :disabled="false"
+            @change="onSelectedFolder(scope.row)"
+          />
+        </template>
+      </PTableColumn>
+    </template>
   </PTable>
 </template>
 
@@ -417,7 +404,6 @@ en-US:
   leader: 'Leader'
   city: 'City'
   email: 'Email'
-  hub: 'Hub'
   status: 'Status'
   option: 'Options'
   deployThisFolder: 'Deploy this folder'
@@ -434,7 +420,6 @@ fr-FR:
   leader: 'Dirigeant'
   city: 'Ville'
   email: 'Mail'
-  hub: 'Hub'
   status: 'Statut'
   option: 'Options'
   deployThisFolder: 'Déployer ce dossier'
