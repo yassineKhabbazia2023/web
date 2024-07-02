@@ -190,7 +190,7 @@ const reader: FileReader = new FileReader()
 const attachmentErrorType = ref<'extension' | 'size' | ''>('')
 
 const showEndOfMonthDayAlert = computed(() =>
-  createScheduleForm.date.getDate() >= 29 &&
+  createScheduleForm.date?.getDate() >= 29 &&
 (createScheduleForm.frequency === 'Monthly' || createScheduleForm.frequency === 'Quarterly'))
 
 const frequenciesOptionsFormatted = computed(() => {
