@@ -120,6 +120,7 @@
           data-testid="next-previous-buttons"
           :previousLabel="t('previousLabel')"
           :nextLabel="nextLabel"
+          :isNextButtonDisabled="isNextButtonDisabled"
           @click-previous="onClickPrevious"
           @click-next="onClickNext"
         />
@@ -195,6 +196,10 @@ const isSubmitButton = computed((): boolean => {
     activeStep.value === offerStepperStep.INFORMATION ||
     !currentSubscriptionOffer.value?.approvalRequired
   )
+})
+
+const isNextButtonDisabled = computed(() => {
+  return activeStep.value === offerStepperStep.COLLABORATORS && collaborators.value.length === 0
 })
 
 const emit = defineEmits<{
@@ -363,10 +368,6 @@ const handleConfirm = async () => {
 }
 
 function onClickNext() {
-  if (activeStep.value === offerStepperStep.COLLABORATORS && collaborators.value.length === 0) {
-    console.warn('No collaborator')
-    return
-  }
   if (isSubmitButton.value) {
     confirmationModalVisible.value = true
     return
