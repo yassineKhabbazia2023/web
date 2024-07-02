@@ -141,6 +141,10 @@ const selectRow = (documentRow: TableRowDocument, column:any) => {
        .filter(h => h.columnName === column.label).length > 0 &&
     column.label !== 'Actions'
 
+  const index = props.documentsListWithTableStructure.documentsPage.items.indexOf(documentRow)
+  if (!documentRow._rowIndex) {
+    documentRow._rowIndex = index
+  }
   if (shouldOpenDrawer) {
     emit('table-row-clicked', documentRow)
   } else {
