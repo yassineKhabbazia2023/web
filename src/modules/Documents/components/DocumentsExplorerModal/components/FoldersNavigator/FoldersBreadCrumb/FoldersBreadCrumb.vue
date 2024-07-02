@@ -77,11 +77,25 @@ const handleCreateFolderButtonClick = () => {
   align-items: center;
   justify-content: space-between;
   height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+  flex-wrap: nowrap;
+
+  &__items {
+    overflow: hidden;
+  }
 
   &__create-folder {
     height: 16px;
     width: 16px;
+    margin-left: 1.6rem;
     cursor: pointer;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+  .el-breadcrumb__item {
+    float: none;
   }
 }
 </style>

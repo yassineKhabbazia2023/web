@@ -18,7 +18,7 @@ import {
 import type { Document, DocumentsWithTableStructure } from '@/models/Document'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-
+import type { Entity } from '@kpmg/common'
 import { PPagination } from '@kpmg/styleguide'
 
  type DocumentsSetup = {
@@ -39,6 +39,8 @@ const pinia = createPinia()
 const defaultProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   selectedEntity: 'my-entity',
+  selectedEntityAvatarColor: 'persian' as Entity['color'],
+  selectedEntityName: 'This is a legal name',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: foldersData[0],
 }

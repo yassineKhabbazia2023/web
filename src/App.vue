@@ -26,6 +26,8 @@
         ref="documentsRef"
         :currentService="currentService"
         :selectedEntity="selectedEntity"
+        :selectedEntityAvatarColor="selectedEntityAvatarColor"
+        :selectedEntityName="selectedEntityName"
         :selectedFolder="currentFolder"
         :currentServiceFolder="currentServiceFolder"
         @update-source-folders="handleUpdateSourceFolder"
@@ -102,6 +104,8 @@ const fetchGedFoldersAndServices = async () => {
 const userStore = commonStore()
 
 const selectedEntity = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
+const selectedEntityAvatarColor = computed(() => userStore.defaultEntity?.color)
+const selectedEntityName = computed(() => userStore.defaultEntity?.legalName ?? '')
 const entityServices = ref<null | any>(null)
 const currentService = ref<string | null>(null)
 const currentServiceFolder = computed<null | Folder[]>(() => {

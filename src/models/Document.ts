@@ -91,7 +91,7 @@ export interface GenericDocumentsWithTableStructure<T> {
 
 export type DocumentsWithTableStructure = GenericDocumentsWithTableStructure<Document>
 export type BinDocumentsWithTableStructure = GenericDocumentsWithTableStructure<BinDocument>
-export interface TableRowDocument extends Document{
+export interface TableRowDocument extends Document {
   _rowIndex: number
 }
 
