@@ -598,6 +598,7 @@ const rules = reactive<any>({
   erpId: [
     createRule(requiredFieldMessage, 'change'),
     { validator: validateIBS, trigger: ['change'] },
+    { message: t('form.error.ibsFormatIssue'), pattern: /^\d{10}$/, trigger: ['blur'] },
   ],
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
   firstName: [createRule(requiredFieldMessage)],
@@ -768,6 +769,7 @@ defineExpose({
         "correctEmail": "Please input correct email address",
         "validNumber": "Please input a valid number",
         "ibsNotFound": "IBS number not found.",
+        "ibsFormatIssue": "The format of the IBS number entered is not recognized",
         "outWalletIBS": "The IBS must be part of your portfolio and have active engagement.",
         "nonScrappable": "This bank is not scrappable.",
         "serverError": "An error has occurred."
@@ -813,6 +815,7 @@ defineExpose({
         "correctEmail": "Veuillez entrer une adresse e-mail valide",
         "validNumber": "Veuillez entrer un nombre valide",
         "ibsNotFound": "Le numéro IBS saisi n'est pas reconnu.",
+        "ibsFormatIssue": "Le format du numéro IBS saisi n'est pas reconnu.",
         "outWalletIBS": "Le numéro d'IBS saisi doit faire parti de votre portefeuille et avoir un engagement actif.",
         "nonScrappable": "Cette banque n'est pas scrappable.",
         "serverError": "Une erreur est survenue."
