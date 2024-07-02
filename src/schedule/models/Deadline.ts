@@ -31,15 +31,22 @@ interface User {
   email: string
 }
 
-export type Attachment = {
+interface Attachment {
   name: string
+}
+
+export interface AttachmentUpload extends Attachment {
   content: string
+}
+
+export interface AttachmentDownload extends Attachment {
+  size: number
 }
 
 export interface Schedule {
   id: number
   description: string
-  attachment: Attachment
+  attachment?: AttachmentDownload | null
   frequency: string
   reminders: number[]
   createdBy?: User

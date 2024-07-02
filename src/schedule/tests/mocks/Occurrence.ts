@@ -6,7 +6,7 @@ export function getMockedScheduleOccurrence(override: Partial<Schedule> = {}): S
     description: '',
     attachment: {
       name: 'declaration_tva_mai_2024.pdf',
-      content: 'data:application_pdf;base64,SGVsbG8g-d29ybGQ=',
+      size: 1024,
     },
     frequency: 'None',
     reminders: [],

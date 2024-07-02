@@ -64,26 +64,23 @@ export const base64ToBlob = (base64Data:string) => {
 
 export const base64ToBase64URL = (base64String: string) => base64String.replace(/\+/g, '-').replace(/\//g, '_')
 
-export const base64UrlToBase64 = (base64UrlString: string) =>
-  base64UrlString.replace(/-/g, '+').replace(/_/g, '/')
-
 export const downloadFile = (filename: string, data: string) => {
-  const url = window.URL.createObjectURL(base64ToBlob(data))
+  const url = window.URL.createObjectURL(new Blob([data]))
   let link: HTMLAnchorElement | null = document.createElement('a')
   link.href = url
   link.setAttribute('download', filename)
+  link.type = 'application/octet-stream'
   link.click()
   window.URL.revokeObjectURL(url)
   link = null
 }
 
 export const saveFileAs = async (filename: string, data: any) => {
-  const blob = base64ToBlob(data)
   const fileHandle = await window.showSaveFilePicker({
     suggestedName: filename,
   })
   const writableStream = await fileHandle.createWritable()
-  await writableStream.write(blob)
+  await writableStream.write(data)
   await writableStream.close()
 }
 
