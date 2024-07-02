@@ -2,7 +2,6 @@
   <PDrawer
     v-model="isDrawerOpened"
     :pTitle="t('title')"
-    pShowPreviousStep
     pSize="35%"
     pDirection="rtl"
     @close-drawer-button="handleClose"

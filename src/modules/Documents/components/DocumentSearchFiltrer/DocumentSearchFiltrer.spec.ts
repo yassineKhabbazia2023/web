@@ -86,9 +86,9 @@ describe('documentSearchFiltrer', () => {
       await nextTick()
 
       const pBtns = wrapper.findAllComponents(PButton)
-      expect(pBtns).toHaveLength(4)
-      expect(pBtns[2].text()).toBe('Réinitialiser')
-      expect(pBtns[3].text()).toBe('Appliquer')
+      expect(pBtns).toHaveLength(3)
+      expect(pBtns[1].text()).toBe('Réinitialiser')
+      expect(pBtns[2].text()).toBe('Appliquer')
     })
 
     it('should render PDatePicker properly binded', async () => {
@@ -128,7 +128,7 @@ describe('documentSearchFiltrer', () => {
       await nextTick()
 
       const pButtons = wrapper.findAllComponents(PButton)
-      await pButtons[2].trigger('click')
+      await pButtons[1].trigger('click')
       await nextTick()
 
       expect(wrapper.emitted('reset-filters-drawer')).toBeTruthy()
@@ -143,7 +143,7 @@ describe('documentSearchFiltrer', () => {
       await nextTick()
 
       const pButtons = wrapper.findAllComponents(PButton)
-      await pButtons[3].trigger('click')
+      await pButtons[2].trigger('click')
       await nextTick()
 
       const res:DocumentSearchFilters = {
