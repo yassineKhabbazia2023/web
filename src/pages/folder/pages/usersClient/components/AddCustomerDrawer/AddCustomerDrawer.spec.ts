@@ -9,12 +9,16 @@ import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import AddCustomerDrawer from '.'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 import { getMockedCustomer } from '@/services/contact/contactMocks'
-import { createCustomer } from '@/services/account'
+import { createCustomer, getAccountUserByEmail } from '@/services/account'
 
 const customerMock = getMockedCustomer()[0]
 
 export const debounceMock = vi.fn((callback: Function) => callback)
 
+const apiMocks = vi.hoisted(() => ({
+  emailThatExistsMock: vi.fn(() => Promise.resolve({ ...customerMock })),
+  emailThatDoesNotExist: vi.fn(() => Promise.resolve(null)),
+}))
 vi.mock('@/services/account', () => {
   const createCustomerMock = vi.fn(() => {
     return Promise.resolve({
@@ -25,13 +29,10 @@ vi.mock('@/services/account', () => {
   })
   const addContactToEntityMock = vi.fn().mockResolvedValue({})
 
-  const getAccountUserByEmailMock = vi.fn(() => {
-    return Promise.resolve({ ...customerMock })
-  })
   return {
     createCustomer: createCustomerMock,
     addContactToEntity: addContactToEntityMock,
-    getAccountUserByEmail: getAccountUserByEmailMock,
+    getAccountUserByEmail: apiMocks.emailThatExistsMock,
   }
 })
 
@@ -190,6 +191,26 @@ describe('add customer drawer', () => {
 
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
       expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeFalsy()
+    })
+
+    it('should clear the form when using unknown email after using an existing email', async () => {
+      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
+
+      emailInput.setValue(formDataMock.email)
+      await emailInput.trigger('blur')
+      await nextTick()
+
+      vi.mocked(getAccountUserByEmail).mockReturnValue(apiMocks.emailThatDoesNotExist())
+
+      emailInput.setValue('this@isatest.fr')
+      await emailInput.trigger('blur')
+      await flushPromises()
+
+      expect(lastNameInput.element.disabled).toBeFalsy()
+      expect(firstNameInput.element.value).toBeFalsy()
+      expect(firstNameInput.element.disabled).toBeFalsy()
+      expect(mobilePhoneInput.element.value).toBeFalsy()
+      expect(mobilePhoneInput.element.disabled).toBeFalsy()
     })
 
     it('should bind values', async () => {
