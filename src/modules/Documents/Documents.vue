@@ -10,7 +10,7 @@
   >
     <div>
       <AccountInformation
-        :color="selectedEntityAvatarColor"
+        :accountAvatarColor="selectedEntityAvatarColor"
         :accountName="selectedEntityName"
         :accountNumber="selectedEntity"
       />
@@ -226,8 +226,7 @@ import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
 import DocumentPreview from './components/DocumentPreview'
 import DocumentDeleteModal from '@/modules/Documents/components/DocumentDeleteModal'
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import { PBreadcrumb, PLoader, PPagination, PAvatar } from '@kpmg/styleguide'
+import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
 import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
 import { getBreadcrumbItems }
   from '@/modules/common/helpers/folderHelper'
