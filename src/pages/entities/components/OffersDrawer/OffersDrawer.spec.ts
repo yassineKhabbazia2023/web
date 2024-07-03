@@ -67,14 +67,6 @@ vi.mock('@/services/account', () => ({
   patchAccount: vi.fn(() => Promise.resolve({})),
 }))
 
-vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve([])),
-}))
-
-vi.mock('@/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve([])),
-}))
-
 vi.mock('@braintree/sanitize-url', () => ({
   sanitizeUrl: getMockedSanitized,
 }))
@@ -517,26 +509,22 @@ describe('offersDrawer', () => {
       await secondOffer.trigger('click')
       expect((wrapper.vm as any).collaborators).toStrictEqual([])
     })
-    it('should emit console.warn() when no collaborator is selected', async () => {
+    it('should disable the next button when no collaborator is selected', async () => {
       const wrapper = await getWrapper(true)
       const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
       await flushPromises()
-      const consoleWarnSpy = vi.spyOn(console, 'warn')
 
-      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+      const nextPreviousButtons = findNextPreviousButtons(wrapper) as VueWrapper<any>
 
       await asyncEmit(nextPreviousButtons, 'clickNext')
+
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
       await asyncEmit(nextPreviousButtons, 'clickNext')
 
-      wrapper.findComponent({ name: 'ManageCollaborators' })
-
-      await asyncEmit(nextPreviousButtons, 'clickNext')
-      expect(consoleWarnSpy).toHaveBeenCalledOnce()
-      expect(consoleWarnSpy).toHaveBeenCalledWith('No collaborator')
+      expect(nextPreviousButtons.props('isNextButtonDisabled')).toBeTruthy()
     })
 
     it('should not display the offer stepper and note textarea when the validation is not required', async () => {
