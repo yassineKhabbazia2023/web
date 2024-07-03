@@ -84,7 +84,7 @@ const downloadMandate = async () => {
     downloading: t('notification.downloading'),
     error: t('notification.downloading-error'),
   }
-  const notification = showNotification(messages, 'downloading')
+  const notification = showNotification(messages, 'downloading', false)
   try {
     const { data } = await downloadUnsignedMandate(props.mandateId)
     if ('showSaveFilePicker' in window) {
@@ -100,7 +100,7 @@ const downloadMandate = async () => {
     }
   } catch (error) {
     console.error('Error downloading file:', error)
-    showNotification(messages, 'error', notification)
+    showNotification(messages, 'error', true, notification)
   } finally {
     notification.close()
   }

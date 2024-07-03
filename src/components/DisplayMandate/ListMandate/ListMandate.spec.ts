@@ -226,9 +226,9 @@ describe('mandate collection', () => {
 
     expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: '123', file })
     expect(showNotificationSpy).toHaveBeenCalledTimes(2)
-    expect(showNotificationSpy).toHaveBeenNthCalledWith(1, notificationMessages, 'loading')
+    expect(showNotificationSpy).toHaveBeenNthCalledWith(1, notificationMessages, 'loading', false)
     expect(showNotificationSpy)
-      .toHaveBeenNthCalledWith(2, notificationMessages, 'success', mockedNotification)
+      .toHaveBeenNthCalledWith(2, notificationMessages, 'success', true, mockedNotification)
     const refreshMandateCollectionEvent = wrapper.emitted('refresh-mandate-collection')
     expect(refreshMandateCollectionEvent).toStrictEqual([[{
       currentPage,

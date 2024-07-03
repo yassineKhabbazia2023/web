@@ -28,28 +28,33 @@ describe('test NotificationHelper', () => {
 
   const tests: {
     type: 'loading' | 'success' | 'error'
+    autoClose: boolean
     duration: number | undefined
     icon: string
   }[] = [{
     type: 'loading',
+    autoClose: false,
     duration: 0,
     icon: 'PILoader',
   }, {
     type: 'success',
+    autoClose: true,
     duration: undefined,
     icon: 'PICheck',
   }, {
     type: 'error',
+    autoClose: true,
     duration: undefined,
     icon: 'PIExclamationTriangle',
   }]
 
   it.each(tests)('should call PNotification with proper params when type is $type', ({
     type,
+    autoClose,
     duration,
     icon,
   }) => {
-    showNotification(messagesByType, type)
+    showNotification(messagesByType, type, autoClose)
     const expectedParams = {
       message: messagesByType[type],
       duration,
@@ -68,10 +73,28 @@ describe('test NotificationHelper', () => {
     PNotificationMocked.mockImplementation(() => ({
       close: closeNotifiationSpy,
     }))
-    const firstNotification = showNotification(messagesByType, type)
-    showNotification(messagesByType, type, firstNotification)
+    const firstNotification = showNotification(messagesByType, type, true)
+    const expectedParams1 = {
+      customClass: 'loading',
+      duration: undefined,
+      icon: 'PILoader',
+      message: 'is loading',
+      position: 'bottom-right',
+      showClose: true,
+    }
+    const expectedParams2 = {
+      customClass: 'loading',
+      duration: 0,
+      icon: 'PILoader',
+      message: 'is loading',
+      position: 'bottom-right',
+      showClose: true,
+    }
+    showNotification(messagesByType, type, false, firstNotification)
 
     expect(PNotificationMocked).toHaveBeenCalledTimes(2)
+    expect(PNotificationMocked).toHaveBeenNthCalledWith(1, expectedParams1)
+    expect(PNotificationMocked).toHaveBeenNthCalledWith(2, expectedParams2)
     expect(closeNotifiationSpy).toHaveBeenCalledOnce()
   })
 })
