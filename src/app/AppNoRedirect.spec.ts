@@ -12,11 +12,6 @@ import App from '.'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
-vi.mock('env-vars', () => ({
-  VITE_IDLE_DURATION: 5,
-  VITE_AMPLITUDE_API_KEY: 'TEST_KEY',
-}))
-
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {

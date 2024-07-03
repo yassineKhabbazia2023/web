@@ -11,11 +11,6 @@ import App from './'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
-vi.mock('env-vars', () => ({
-  VITE_IDLE_DURATION: 5,
-  VITE_AMPLITUDE_API_KEY: 'TEST_KEY',
-}))
-
 const mockUserOrigin = vi.fn()
 
 vi.mock('@kpmg/common', () => ({
