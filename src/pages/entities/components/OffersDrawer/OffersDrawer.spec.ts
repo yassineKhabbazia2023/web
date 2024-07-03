@@ -78,6 +78,7 @@ vi.mock('@/services/PatchRecordService/PatchRecordService', () => ({
 
 vi.mock('@/services/subscription/subscriptionService', () => ({
   createSubscriptionRequest: vi.fn(),
+  fetchAccountSubscriptions: vi.fn(() => Promise.resolve([])),
 }))
 
 vi.mock('./OffersDrawerUtils', async () => {
