@@ -32,9 +32,6 @@
           />
           <router-view />
         </PContainer>
-        <PContainer class="home-bottom-menu">
-          <PBottomMenu :defaultActive="routeActive" :pItems="menuBottomMenu" />
-        </PContainer>
       </PContainer>
     </PContainer>
   </div>
@@ -42,12 +39,11 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { productFruits } from 'product-fruits'
 import { VITE_PRODUCT_FRUITS_KEY } from 'env-vars'
 import { commonStore as store, dataProvider } from '@kpmg/common'
-import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
+import { PCHeader, PAside, PContainer } from '@kpmg/styleguide'
 import { getBrowserName } from '@/helper'
 import UserProfile from '@/components/UserProfile'
 import HomeScheduleDrawer from '@/components/HomeScheduleDrawer'
@@ -58,15 +54,8 @@ import { storeToRefs } from 'pinia'
 import { fetchEntities } from '@/services/entities'
 import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
-
 // Variables
-const route = useRoute()
 const router = useRouter()
-const routeActive = route.path
 const { fetchUserData } = dataProvider()
 const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
@@ -87,38 +76,6 @@ const handleClick = () => {
   hasUserProfileDrawerOpened.value = true
   ReloadOneTrust()
 }
-// Constants
-const headerMenu = [
-  {
-    pIcon: 'PIGrid',
-    pText: t('wallet'),
-    pPath: '/portefeuille',
-  },
-  {
-    pIcon: 'PIFolder',
-    pText: t('ged'),
-    pPath: '/ged',
-  },
-  {
-    pIcon: 'PIFiles',
-    pText: t('subscriptions'),
-    pPath: '/subscription',
-  },
-  {
-    pIcon: 'PICashCoin',
-    pText: t('mandate'),
-    pPath: '/mandats',
-  },
-]
-
-const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
-  return {
-    pIcon,
-    pName,
-    pPath,
-    pComponent: { render: () => null },
-  }
-})
 
 // Computed
 const stylesMetaProperties = computed(
@@ -171,10 +128,6 @@ onMounted(async () => {
     display: flex;
   }
 
-  .home-bottom-menu {
-    display: none;
-  }
-
   .aside-container {
     width: inherit;
     overflow: visible;
@@ -189,17 +142,6 @@ onMounted(async () => {
     padding-right: 52px;
     @media only screen and (min-width: 992px) {
       position: relative;
-      z-index: 10;
-    }
-  }
-
-  @media only screen and (max-width: 991px) {
-    .home-bottom-menu {
-      display: block;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      position: absolute;
       z-index: 10;
     }
   }
@@ -228,16 +170,3 @@ onMounted(async () => {
   }
 }
 </style>
-
-<i18n lang="yaml">
-en-US:
-  wallet: 'Wallet'
-  subscriptions: 'Request validation'
-  ged: 'My documents'
-  mandate: 'Banking'
-fr-FR:
-  wallet: 'Portefeuille'
-  subscriptions: 'Validation de demande'
-  ged: 'Mes documents'
-  mandate: 'Flux bancaires'
-</i18n>

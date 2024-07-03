@@ -129,7 +129,6 @@ describe('app with navigation guard', () => {
     expect(wrapper.find('.header-container').exists()).toBeTruthy()
     expect(wrapper.find('.aside-main-container').exists()).toBeTruthy()
     expect(wrapper.find('.main-container').exists()).toBeTruthy()
-    expect(wrapper.find('.home-bottom-menu').exists()).toBeTruthy()
   })
 
   it('redirects to the homepage if the user is already authenticated', async () => {
