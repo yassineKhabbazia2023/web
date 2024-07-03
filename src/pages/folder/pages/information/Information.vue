@@ -1,6 +1,7 @@
 <template>
   <div class="margin-top--6">
     <PAlert
+      v-if="isCollab"
       id="folder-information-alert"
       data-testid="folder-information-alert"
     >
@@ -55,6 +56,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
+import { commonStore } from '@kpmg/common'
 import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
 import { fetchAccount, type Account } from '@/services/account'
 import type { FormSection } from '@/pages/entities/components/CompanyInformation/CompanyInformationTypes'
@@ -67,6 +70,7 @@ const { t } = useI18n({
 
 const route = useRoute()
 const isLoading = ref<boolean>(true)
+const { isCollab } = storeToRefs(commonStore())
 const accountModel = ref<Account | undefined>(undefined)
 const informationFormStructure = ref<FormSection[]>()
 
