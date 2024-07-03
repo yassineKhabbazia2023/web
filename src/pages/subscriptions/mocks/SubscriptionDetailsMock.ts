@@ -14,6 +14,7 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
     offerName: 'Mes modules de gestion : RCA MEG Smart',
     offerLabel: 'Modules MEG : facturation et caisse',
     offerPrice: 0,
+    offerCode: 'MEG Smart',
     offerPriceType: SubscriptionPriceType.free,
     logoName: 'meg',
     providers: [

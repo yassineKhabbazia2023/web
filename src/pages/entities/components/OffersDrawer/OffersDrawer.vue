@@ -111,6 +111,7 @@
           v-else
           data-testid="offers"
           :subscriptionOffers="subscriptionOffers"
+          :activeOffers="activeOfferCodes"
           @select-offer="onSelectOffer"
         />
       </template>
@@ -167,7 +168,7 @@ import type {
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
-import { type Note, createSubscriptionRequest } from '@/services/subscription'
+import { type Note, createSubscriptionRequest, fetchAccountSubscriptions } from '@/services/subscription'
 import type { Contact } from '@/services/contact/contactTypes'
 import { amplitudeService } from '@kpmg/common'
 
@@ -209,6 +210,7 @@ const emit = defineEmits<{
 const props = defineProps<OffersDrawerProps>()
 
 const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
+const activeOfferCodes = ref<string[]>([])
 const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
@@ -402,6 +404,8 @@ onMounted(async () => {
   try {
     subscriptionOffers.value = await getAllOffers()
     principalContacts.value = await getPrincipalContacts(props.accountId)
+    const activeOffers = await fetchAccountSubscriptions(props.accountId)
+    activeOfferCodes.value = activeOffers.map((activeOffer) => activeOffer.offer.offerCode)
     account.value = await fetchAccount(props.accountId)
   } catch (error) {
     console.error('Unable to retrieve data for subscribing to an offer :', error)

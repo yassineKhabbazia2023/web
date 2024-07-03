@@ -8,13 +8,14 @@
         data-testid="offer-list"
       >
         <POfferCard
-          v-for="{ offerId, logoName, offerName, offerLabel } in subscriptionOffers"
+          v-for="{ offerId, logoName, offerName, offerLabel, offerCode } in subscriptionOffers"
           :key="offerId"
           class="margin-bottom--3"
           data-testid="offer-item"
           :pLogo="logoName"
           :pTitle="offerName"
           :pDescription="offerLabel"
+          :disabled="activeOffers.includes(offerCode)"
           @select-offer-event="onSelectOffer(offerId)"
         />
       </div>

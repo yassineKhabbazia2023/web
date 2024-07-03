@@ -22,6 +22,7 @@ export interface SubscriptionOfferProvider {
 export interface SubscriptionOffer {
   offerId: number
   offerName: string
+  offerCode: string
   offerLabel: string
   offerPrice: number
   offerPriceType: string
@@ -38,4 +39,5 @@ export interface SubscriptionOfferServices extends SubscriptionOffer {
 
 export interface SubscriptionOffersProps {
   subscriptionOffers: SubscriptionOffer[]
+  activeOffers: string[]
 }
