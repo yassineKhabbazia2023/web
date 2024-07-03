@@ -143,7 +143,7 @@ const menuItems = computed(() =>
       index: `/dossier/${props.selectedEntityId}/launcher`,
       title: t('apps'),
       leftIcon: 'PIGrid',
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
+      display: !isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
     },
   ].filter((item) => item.display),
 )

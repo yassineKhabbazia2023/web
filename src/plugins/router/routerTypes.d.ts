@@ -4,10 +4,14 @@ export {}
 interface StylesMeta {
   hasPaddings: boolean
 }
+interface DisplayMeta {
+  fullpage: boolean
+}
 
 declare module 'vue-router' {
   interface RouteMeta {
     // is optional
     styles?: StylesMeta
+    display?: DisplayMeta
   }
 }
