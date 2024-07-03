@@ -70,7 +70,7 @@
       </p>
       <DeadlineReminders
         v-if="isCollab"
-        :reminders="occurrence.schedule.reminders"
+        :reminders="occurrence.schedule.reminders ?? []"
       />
       <DeadlineAccounts
         :title="t('deadlineAccounts')"
