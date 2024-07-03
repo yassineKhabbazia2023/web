@@ -25,6 +25,11 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/pages/Error/404'),
+    meta: {
+      display: {
+        fullpage: true,
+      },
+    },
   },
   {
     path: '/dossier/:id/banque',

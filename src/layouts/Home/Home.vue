@@ -2,14 +2,18 @@
   <div v-if="!isLoading && defaultEntity" class="common-layout">
     <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
     <PContainer pDirection="vertical">
-      <PCHeader class="header-container" height="56">
+      <PCHeader
+        v-if="!isFullpage"
+        class="header-container"
+        height="56"
+      >
         <Header
           v-model:showCalendar="showCalendar"
           @show-user-profile-drawer="handleClick"
         />
       </PCHeader>
       <PContainer class="aside-main-container">
-        <PAside class="aside-container">
+        <PAside v-if="!isFullpage" class="aside-container">
           <Sidebar class="sidebar-container" />
         </PAside>
         <PContainer
@@ -17,6 +21,8 @@
           :class="{
             'main-container--no-paddings':
               stylesMetaProperties?.hasPaddings === false,
+            'main-container--fullpage':
+              isFullpage,
           }"
         >
           <UserProfile
@@ -119,6 +125,10 @@ const stylesMetaProperties = computed(
   () => router.currentRoute.value.meta.styles,
 )
 
+const isFullpage = computed(
+  () => router.currentRoute.value.meta.display?.fullpage,
+)
+
 const globalStore = store()
 const { defaultEntity } = storeToRefs(globalStore)
 // Hooks
@@ -209,6 +219,11 @@ onMounted(async () => {
 
     &--no-paddings {
       padding: 0;
+    }
+    &--fullpage {
+      padding: 0;
+      margin: 0;
+      height: 100vh;
     }
   }
 }
