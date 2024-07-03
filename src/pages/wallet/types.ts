@@ -36,8 +36,8 @@ export interface IState extends PaginationData<IWalletData> {
 export interface SearchCriteria {
   currentPage: number
   limit: number
-  search: string | undefined
-  filterByDeploymentStatus: string | undefined
+  search?: string
+  filterByDeploymentStatus?: string
 }
 
 export interface SearchResult extends QueryResult<IWalletData> {}
