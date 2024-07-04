@@ -83,7 +83,7 @@ const activeMenuItem = ref<string>(route.fullPath)
 const folderSubmenu = computed(() => ({
   index: 'folder',
   title: t('folder'),
-  icon: 'PIFolder',
+  icon: 'PIBuilding',
   menuItems: [
     {
       title: t('users'),
@@ -124,7 +124,7 @@ const menuItems = computed(() =>
     {
       index: `/dossier/${props.selectedEntityId}/ged`,
       title: t('documents'),
-      leftIcon: 'PIFileText',
+      leftIcon: 'PIFolder',
       display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
     },
     {

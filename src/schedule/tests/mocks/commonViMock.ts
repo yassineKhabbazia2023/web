@@ -3,6 +3,7 @@ import { vi } from 'vitest'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
 import helpers from '@/tests/utils/helpers'
+import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 
 export const TEST_DATE = '2024-08-14'
 const { fetchUserData } = helpers()
@@ -35,6 +36,7 @@ export const KpmgCommontMock = {
     getters: {
       isAuthenticated: () => true,
       isCollab: () => true,
+      defaultEntity: () => getMockedFavoriteEntities()[0],
     },
   }),
   commonApi: () => ({

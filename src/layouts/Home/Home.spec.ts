@@ -12,10 +12,12 @@ import helpers from '@/tests/utils/helpers'
 import { nextTick } from 'vue'
 import { fetchEntities } from '@/services/entities'
 import mockedEntities from '@/mocks/entities.mock.json'
+import { getMockedFavoriteEntities } from './Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import Home from '.'
 
 const pinia = createTestingPinia()
 const { fakeUser } = helpers()
+const mockedEntity = getMockedFavoriteEntities()[0]
 
 vi.mock('@/schedule/services', () => ScheduleServicesMock)
 vi.mock('@kpmg/common', () => KpmgCommontMock)
@@ -28,6 +30,32 @@ vi.mock('@/services/entities', async () => {
     })),
   }
 })
+
+const mock = vi.hoisted(() => {
+  return {
+    salesforceChat: vi.fn(),
+    isChatDisplayed: {
+      value: false,
+    },
+  }
+})
+
+vi.mock('@/plugins/SalesForce/useSalesforceService', () => ({
+  useSalesforceService: () => {
+    return {
+      salesforceChat: mock.salesforceChat,
+      isChatDisplayed: mock.isChatDisplayed,
+    }
+  },
+}))
+
+import.meta.env.PROD = true
+
+window.embedded_svc = {
+  addEventHandler: vi.fn(),
+  settings: vi.fn(),
+  init: vi.fn(),
+} as any
 
 const createWrapper = (): VueWrapper<any> =>
   mount(Home, {
@@ -52,6 +80,47 @@ describe('home', () => {
     wrapper = createWrapper()
   })
 
+  it('should return salesforce init with values', async () => {
+    wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = {
+      accountId: 2,
+      accountNumber: '3669209950',
+      legalName: 'Restaurant Le Grand Bleu',
+      color: 'persian',
+    }
+    await nextTick()
+    const chatDiv = wrapper.find('[data-testid=salesforce-chat-div]')
+
+    await nextTick()
+    expect(mock.salesforceChat).toHaveBeenCalledOnce()
+    expect(mock.salesforceChat).toHaveBeenCalledWith(
+      fakeUser.firstName,
+      fakeUser.lastName,
+      fakeUser.email,
+      mockedEntity.legalName,
+      mockedEntity.accountNumber,
+      chatDiv.element,
+    )
+  })
+  it('when productfruits_button_ext_widget_init event is triggered', async () => {
+    wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = {
+      accountId: 2,
+      accountNumber: '3669209950',
+      legalName: 'Restaurant Le Grand Bleu',
+      color: 'persian',
+    }
+    await nextTick()
+
+    expect(wrapper.vm.isChatDisplayed.value).toBeFalsy()
+
+    window.dispatchEvent(new Event('productfruits_button_ext_widget_init'))
+
+    await flushPromises()
+    await nextTick()
+
+    expect(wrapper.vm.isChatDisplayed.value).toBeTruthy()
+  })
   it('should call retrieve entites when created', async () => {
     await flushPromises()
     expect(fetchEntities).toHaveBeenCalled()
