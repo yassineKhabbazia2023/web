@@ -4,16 +4,18 @@
     :pTitle="t('manageAccessRights')"
     @close-drawer-button="isDrawerVisible = false"
     destroyOnClose
+    pSize="50%"
   >
     <PUserCard
       class="margin-bottom--6"
       pAssetLeft="Image"
-      pAssetContent="user-male"
+      pAssetContent="collab-male"
+      pColor="gray"
       :pTitle="rowData.fullName"
       :pSubtitle="rowData.email"
     >
       <PTag
-        pColor="gray-500"
+        pColor="gray-900"
         pSize="default"
         pIconLeft="PIPerson"
         pEffect="light"
