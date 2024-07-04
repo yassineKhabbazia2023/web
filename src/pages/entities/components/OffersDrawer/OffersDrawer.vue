@@ -134,7 +134,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { get } from 'lodash-es'
-import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@kpmg/styleguide'
+import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader, PNotification, PIX, PICheck } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@/common/components/StepNote'
@@ -314,6 +314,16 @@ function onDeselectProduct(offerId: number, productId: number) {
   removeSelectedProduct(selectedProducts.value, offerId, productId)
 }
 
+const displayNotification = (type: 'error' | 'success', message: string) => {
+  PNotification({
+    message,
+    icon: type === 'success' ? PICheck : PIX,
+    showClose: true,
+    customClass: type,
+    position: 'bottom-right',
+  })
+}
+
 async function saveOffer() {
   const postSubscriptionRequest = getPostSubscriptionRequest(
     props.accountId,
@@ -341,17 +351,23 @@ async function validateOffer() {
   try {
     await saveOffer()
     if (!currentSubscriptionOffer.value?.approvalRequired) {
+      displayNotification('success', t('offerActivated'))
       amplitudeService.track('Onboarding Started', {
         onboarding_start_localisation: 'Offer activation',
         onboarding_start_result: 'succeeded',
       })
+    } else {
+      displayNotification('success', t('subscriptionCreated'))
     }
   } catch (error) {
     if (!currentSubscriptionOffer.value?.approvalRequired) {
+      displayNotification('error', t('offerNotActivated'))
       amplitudeService.track('Onboarding Started', {
         onboarding_start_localisation: 'Offer activation',
         onboarding_start_result: 'failed',
       })
+    } else {
+      displayNotification('error', t('subscriptionNotCreated'))
     }
     console.error(error)
   }
@@ -447,6 +463,10 @@ en-US:
   offerIntranet: 'Offer Intranet'
   offersBook: 'Offers Book'
   confirmationTitle: 'Attention'
+  subscriptionCreated: 'The subscription was created'
+  subscriptionNotCreated: 'The subscription could not be created'
+  offerActivated: 'The offer has been activated'
+  offerNotActivated: 'The offer could not be activated'
   confirmationContent: >
     After confirmation, the offer activation request will be submitted,
     and there will be no option to revert. Please review your information
@@ -463,6 +483,10 @@ fr-FR:
   offerIntranet: "Intranet de l'offre"
   offersBook: 'Book des offres'
   confirmationTitle: 'Attention'
+  subscriptionCreated: 'La souscription a été créée'
+  subscriptionNotCreated: "La souscription n'a pas pu être créée"
+  offerActivated: "L'offre a été activée"
+  offerNotActivated: "L'offre n'a pas pu être activée"
   confirmationContent: >
     Une fois confirmée, la demande d'activation d'offre sera créée
     et vous ne pourrez plus revenir en arrière.
