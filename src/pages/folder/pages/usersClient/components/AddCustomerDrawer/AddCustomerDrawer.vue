@@ -210,6 +210,18 @@ async function checkIfUserExists() {
 
     isNextButtonDisabled.value = false
     addCustomerFormRef.value.clearValidate()
+  } else {
+    if (doesUserEmailExists.value) {
+      formData.firstName = ''
+      formData.lastName = ''
+      formData.mobilePhone = ''
+    }
+
+    doesUserEmailExists.value = false
+
+    disabledFormInputs.firstName = false
+    disabledFormInputs.lastName = false
+    disabledFormInputs.mobilePhone = false
   }
 }
 
@@ -314,7 +326,7 @@ const userFullName = computed(() => getFullName(formData.firstName, formData.las
     firstName: 'First name'
     lastName: 'Last name'
     mobilePhoneNumber: 'Mobile phone number'
-    requiredField: 'This field is mendatory'
+    requiredField: 'This field is mandatory'
     incorrectPhoneNumberFormat: 'Phone number format is incorrect'
     previousLabel: 'Cancel'
     nextLabel: 'Next'
