@@ -90,7 +90,7 @@ const handleCancelActionClick = () => {
 }
 
 // Modal validations
-
+const hasUserAlreadyTyped = ref(false)
 const isConfirmButtonDisabled = computed(
   () =>
     !validInputMaxLength(inputContent.value) ||
@@ -99,7 +99,18 @@ const isConfirmButtonDisabled = computed(
 )
 
 const isValidInput = computed(() => {
-  return validInputAlphanumericFrench(inputContent.value)
+  return (validInputAlphanumericFrench(inputContent.value) && hasUserAlreadyTyped.value) ||
+  (inputContent.value.length === 0 && !hasUserAlreadyTyped.value)
+})
+
+// This a is a hot fix
+// Input should be in a form and not a stand alone, which makes it harder to use
+watch(inputContent, () => {
+  hasUserAlreadyTyped.value ||= true
+})
+
+watch(isDialogVisible, () => {
+  isDialogVisible.value ||= hasUserAlreadyTyped.value = false
 })
 
 const folderNameExists = ref(false)
