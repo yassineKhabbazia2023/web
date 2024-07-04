@@ -35,6 +35,7 @@
           :disabled="!shouldTooltipBeVisible"
           :pContent="data.name"
           :showAfter="500"
+          :hideAfter="0"
         >
           <span class="tree-node__label">{{ data.name }}</span>
         </PTooltip>
