@@ -27,11 +27,9 @@ vi.mock('@/services/account', () => {
       },
     })
   })
-  const addContactToEntityMock = vi.fn().mockResolvedValue({})
 
   return {
     createCustomer: createCustomerMock,
-    addContactToEntity: addContactToEntityMock,
     getAccountUserByEmail: apiMocks.emailThatExistsMock,
   }
 })

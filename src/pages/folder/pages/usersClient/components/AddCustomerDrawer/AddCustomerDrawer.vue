@@ -134,7 +134,7 @@ import { getFullName } from '@/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
-import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@/services/account'
+import { createCustomer, getAccountUserByEmail } from '@/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 
 const { t } = useI18n({
@@ -244,11 +244,6 @@ async function handleFormSubmit() {
         accountNumber: props.targetEntityNumber,
       })
     }
-    await addContactToEntity(props.targetEntityId, fetchedUser.value.id)
-    amplitudeService.track('Onboarding Started', {
-      onboarding_start_localisation: "Ajout d'un utilisateur",
-      onboarding_start_result: 'succeeded',
-    })
 
     hasFormBeenSent.value = true
     isNextButtonLoading.value = false
