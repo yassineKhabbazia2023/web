@@ -324,6 +324,7 @@ const handleSearchValueSubmitted = (newSearchValue: string) => {
 }
 
 const handlePageRangeChanged = (newItemsPerPage: number) => {
+  state.currentPage = 1
   state.limit = newItemsPerPage
 }
 

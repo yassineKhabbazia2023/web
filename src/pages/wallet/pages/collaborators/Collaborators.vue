@@ -80,6 +80,7 @@ const handleSearchValueSubmitted = (searchValue: string) => {
 }
 
 const handlePageRangeChanged = (newValue: number) => {
+  state.currentPage = 1
   state.limit = newValue
 }
 
