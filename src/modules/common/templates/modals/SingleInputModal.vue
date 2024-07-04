@@ -31,7 +31,7 @@
       <template #footer>
         <div class="p-dialog__footer">
           <PButton
-            class="cancel-action-button margin-right--4"
+            class="cancel-action-button"
             pSize="small"
             @click="handleCancelClick"
           >
@@ -115,7 +115,7 @@ const clearModalInputValue = () => {
   .el-input.unValid {
     --el-input-hover-border: red;
     --el-input-focus-border-color: red;
-    --el-input-hover-border-color: red;
+    --el-input-border-color: red;
   }
 
   .el-dialog {
