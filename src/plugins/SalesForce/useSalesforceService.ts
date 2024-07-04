@@ -47,18 +47,16 @@ export const useSalesforceService = () => {
   ) => {
     const initESW = (gslbBaseURL: string | null) => {
       window.embedded_svc.settings.targetElement = targetElement
-      window.embedded_svc.settings.displayHelpButton = true // Ou faux
-      window.embedded_svc.settings.language = 'fr' // static value
-      window.embedded_svc.settings.onlineLoadingText = 'Chargement' // Static value
+      window.embedded_svc.settings.displayHelpButton = true
+      window.embedded_svc.settings.language = 'fr'
+      window.embedded_svc.settings.onlineLoadingText = 'Chargement'
       window.embedded_svc.settings.loadingText = 'Chargement'
-      window.embedded_svc.settings.avatarImgURL = avatarImgPath // Avatar image path
-      // Added by Abdelkader Morjan
-      window.embedded_svc.settings.defaultMinimizedText = "Besoin d'aide ?" // static value
+      window.embedded_svc.settings.avatarImgURL = avatarImgPath
+      window.embedded_svc.settings.defaultMinimizedText = "Besoin d'aide ?"
       window.embedded_svc.settings.disabledMinimizedText =
-        'Conseillers hors ligne' // (static value
-      window.embedded_svc.settings.offlineSupportMinimizedText = "Besoin d'aide ?" // static value
-      // eslint-disable-next-line max-len
-      window.embedded_svc.settings.storageDomain = strDomain // (definit le domaine de votre deploiement afin de permettre aux visiteurs d'acceder aux sous-domaines pendant la session de chat)
+        'Conseillers hors ligne'
+      window.embedded_svc.settings.offlineSupportMinimizedText = "Besoin d'aide ?"
+      window.embedded_svc.settings.storageDomain = strDomain
       window.embedded_svc.settings.extraPrechatFormDetails = [
         { label: 'FirstName', value: firstname, displayToAgent: true },
         { label: 'LastName', value: lastname, displayToAgent: true },
