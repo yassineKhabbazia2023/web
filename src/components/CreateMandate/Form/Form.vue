@@ -381,7 +381,7 @@ const validateIBS = async (_: Rule, value: string, callback: any) => {
 
 const getDataByIbsNumber = async (ibsNumber: string) => {
   const { data } = await getCompany({ ibsNumber })
-  if (data.id) {
+  if (data.id && createMandateForm.erpId === ibsNumber) {
     const {
       id,
       name,
