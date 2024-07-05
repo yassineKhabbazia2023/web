@@ -9,7 +9,7 @@ import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import AddCustomerDrawer from '.'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 import { getMockedCustomer } from '@/services/contact/contactMocks'
-import { createCustomer, getAccountUserByEmail } from '@/services/account'
+import { addContactToEntity, createCustomer, getAccountUserByEmail } from '@/services/account'
 
 const customerMock = getMockedCustomer()[0]
 
@@ -28,8 +28,10 @@ vi.mock('@/services/account', () => {
     })
   })
 
+  const addContactToEntityMock = vi.fn().mockResolvedValue({})
   return {
     createCustomer: createCustomerMock,
+    addContactToEntity: addContactToEntityMock,
     getAccountUserByEmail: apiMocks.emailThatExistsMock,
   }
 })
@@ -241,6 +243,23 @@ describe('add customer drawer', () => {
       await flushPromises()
 
       expect(getIsError().exists()).toBeTruthy()
+    })
+
+    it('should only add role if user already exists', async () => {
+      const { emailInput } = getFormFields(wrapper)
+
+      // Filling the form with exsiting information
+      // getAccountUserByEmail is mocked to return a 200 with user information right now
+      emailInput.setValue(formDataMock.email)
+      await emailInput.trigger('blur')
+      await nextTick()
+
+      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+      await nextPreviousButtonsWrapper.vm.$emit('click-next')
+      await flushPromises()
+
+      expect(addContactToEntity).toHaveBeenCalledWith(defaultProps.targetEntityId, customerMock.id)
+      expect(createCustomer).not.toHaveBeenCalled()
     })
   })
 })
