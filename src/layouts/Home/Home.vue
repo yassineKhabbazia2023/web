@@ -78,6 +78,7 @@ const { fetchUserData } = dataProvider()
 const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
 const calendarHasBeenOpened = ref(false)
+const isProd = import.meta.env.PROD
 const showCalendar = computed({
   get: () => calendarIsOpened.value,
   set: (value: boolean) => {
@@ -133,12 +134,12 @@ const stylesMetaProperties = computed(
 )
 
 const globalStore = store()
-const { user, defaultEntity } = storeToRefs(globalStore)
+const { user, defaultEntity, isCollab } = storeToRefs(globalStore)
 const chat = ref<Element>()
 const { isChatDisplayed, salesforceChat } = useSalesforceService()
 
 const initChat = () => {
-  if (user.value && defaultEntity.value && chat.value) {
+  if (isProd && user.value && defaultEntity.value && chat.value) {
     const firstName: string = user.value?.firstName
     const lastName: string = user.value?.lastName
     const email: string = user.value?.email
@@ -166,7 +167,6 @@ onMounted(async () => {
   try {
     const user = await fetchUserData()
     const entities = await fetchEntities()
-    const isProd = import.meta.env.PROD
     const selectedEntity = getDefaultEntity(entities.items[0])
 
     globalStore.$patch({
@@ -180,15 +180,13 @@ onMounted(async () => {
     })
 
     if (isProd) {
-      let productFruitsKey = ''
-      if (user?.isCollab) {
-        productFruitsKey = VITE_PRODUCT_FRUITS_KEY
-      } else {
-        productFruitsKey = VITE_PRODUCT_FRUITS_KEY_CLIENT
-      }
+      const productFruitsKey = isCollab.value ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
       if (productFruitsKey) {
         productFruits.init(productFruitsKey, 'fr', {
           username: user?.id,
+          email: user?.email,
+          firstname: user?.firstName,
+          lastname: user?.lastName,
           role: user?.isCollab ? 'Collaborateur' : 'Client',
           props: {
             browser: getBrowserName(),
