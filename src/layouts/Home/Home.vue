@@ -45,7 +45,7 @@ import { computed, ref, onMounted, watch, nextTick } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { productFruits } from 'product-fruits'
-import { VITE_PRODUCT_FRUITS_KEY } from 'env-vars'
+import { VITE_PRODUCT_FRUITS_KEY, VITE_PRODUCT_FRUITS_KEY_CLIENT } from 'env-vars'
 import { commonStore as store, dataProvider } from '@kpmg/common'
 import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
 import { getBrowserName } from '@/helper'
@@ -180,28 +180,36 @@ onMounted(async () => {
     })
 
     if (isProd) {
-      productFruits.init(VITE_PRODUCT_FRUITS_KEY, 'fr', {
-        username: user?.id,
-        role: user?.isCollab ? 'Collaborateur' : 'Client',
-        props: {
-          browser: getBrowserName(),
-        },
-      })
+      let productFruitsKey = ''
+      if (user?.isCollab) {
+        productFruitsKey = VITE_PRODUCT_FRUITS_KEY
+      } else {
+        productFruitsKey = VITE_PRODUCT_FRUITS_KEY_CLIENT
+      }
+      if (productFruitsKey) {
+        productFruits.init(productFruitsKey, 'fr', {
+          username: user?.id,
+          role: user?.isCollab ? 'Collaborateur' : 'Client',
+          props: {
+            browser: getBrowserName(),
+          },
+        })
 
-      window.addEventListener(
-        'productfruits_button_ext_widget_init',
-        () => {
-          isChatDisplayed.value = true
-          nextTick().then(() => {
-            const chatElement = document.querySelector(
-              '.helpButtonEnabled',
-            ) as HTMLElement
-            if (chatElement) {
-              chatElement.click()
-            }
-          })
-        },
-      )
+        window.addEventListener(
+          'productfruits_button_ext_widget_init',
+          () => {
+            isChatDisplayed.value = true
+            nextTick().then(() => {
+              const chatElement = document.querySelector(
+                '.helpButtonEnabled',
+              ) as HTMLElement
+              if (chatElement) {
+                chatElement.click()
+              }
+            })
+          },
+        )
+      }
     }
   } catch (error) {
     console.error('Unable to fetch current user information: ', error)
