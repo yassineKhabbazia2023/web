@@ -148,7 +148,7 @@ onMounted(async () => {
     })
 
     if (isProd) {
-      const productFruitsKey = isCollab ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
+      const productFruitsKey = isCollab.value ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
       if (productFruitsKey) {
         productFruits.init(productFruitsKey, 'fr', {
           username: user?.id,
