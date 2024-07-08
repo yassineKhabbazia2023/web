@@ -61,7 +61,6 @@ export function getMappedAccount(
   const { contactId, firstName, lastName, email } = signatory ?? {}
   const { city } = address
   const { status } = deployment
-  const { hubName } = hub
 
   const initials = getInitials(firstName, lastName)
   const colorIndex = index % COLORS.length
@@ -77,7 +76,7 @@ export function getMappedAccount(
       avatarColor,
     },
     city: city ?? '',
-    hub: hubName ?? '',
+    hub: hub?.hubName ?? '',
     deploymentStatus: deploymentStatuses[status - 1],
     id,
     accountId,

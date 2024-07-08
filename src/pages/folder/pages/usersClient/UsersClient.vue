@@ -47,7 +47,7 @@
           :isInAnEntityPage="!!entityId"
         />
 
-        <NoResult v-if="!state.data.length" />
+        <NoResult v-if="state.data.length === 0" />
       </div>
     </div>
 
@@ -130,7 +130,7 @@ const state: IState = reactive({
   totalPages: undefined,
   totalItems: undefined,
   search: undefined,
-  isLoading: false,
+  isLoading: true,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
   isRemoveUserDialogOpened: false,

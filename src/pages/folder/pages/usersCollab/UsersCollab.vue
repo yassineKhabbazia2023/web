@@ -122,7 +122,7 @@
         </PPagination>
       </div>
 
-      <NoResult v-if="!state.totalItems" />
+      <NoResult v-if="state.data.length === 0" />
     </div>
   </div>
   <ManageRightsDrawer
@@ -189,7 +189,7 @@ const state: IStateUser = reactive({
   limit: 15,
   totalPage: undefined,
   totalItems: undefined,
-  isLoading: false,
+  isLoading: true,
   search: undefined,
   sort: undefined,
   order: undefined,
