@@ -9,7 +9,17 @@
       <PIcon class="margin-right--2">
         <component :is="resolvedIconsLeft" />
       </PIcon>
-      <span class="p-folder-line-navigation-item__folder-name">{{ pFolderName }}</span>
+      <span
+        class="
+          p-folder-line-navigation-item__folder-name
+          no-wrap
+          overflow-hidden
+          flex--grow-1
+          text-overflow--ellipsis
+        "
+      >
+        {{ pFolderName }}
+      </span>
     </div>
     <PIcon v-if="pHasArrow" size="16">
       <PIChevronRight />
