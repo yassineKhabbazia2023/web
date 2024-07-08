@@ -189,11 +189,6 @@ function selectedDate(date: string) {
       order: 4;
     }
   }
-  .el-picker-panel__content {
-    tr:nth-child(7) {
-      display: none;
-    }
-  }
 }
 
 </style>
