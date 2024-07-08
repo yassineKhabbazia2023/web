@@ -172,16 +172,17 @@ function debouncedCheckIfNextButtonShouldBeEnabled() {
   return debounce(() => checkIfNextButtonShouldBeEnabled(), 600)
 }
 
-function checkIfNextButtonShouldBeEnabled() {
+async function checkIfNextButtonShouldBeEnabled() {
   if (!addCustomerFormRef.value) return
 
   const { lastName, firstName, email } = formData
   if (lastName && firstName && email) {
-    addCustomerFormRef.value.validate()
-      .then(() => {
-        isNextButtonDisabled.value = false
-      })
-      .catch((error: any) => console.error(error))
+    try {
+      await addCustomerFormRef.value.validate()
+      isNextButtonDisabled.value = false
+    } catch (_error) {
+      isNextButtonDisabled.value = true
+    }
   } else {
     isNextButtonDisabled.value = true
   }
@@ -291,10 +292,6 @@ const formRules = reactive<FormRules>({
     },
   ],
   mobilePhone: [
-    {
-      message: t('requiredField'),
-      trigger: 'blur',
-    },
     {
       trigger: 'blur',
       pattern: validPhoneNumberPattern,

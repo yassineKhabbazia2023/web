@@ -78,6 +78,8 @@ const findAddCustomerDrawer = (wrapper: VueWrapper) =>
 const findAddCustomerFeedback = (wrapper: VueWrapper) =>
   wrapper.findComponent(AddCustomerFeedback)
 
+const findIsError = () => wrapper.find('.is-error')
+
 const formDataMock = {
   email: 'this@isafakeemail.cc',
   firstName: 'Amaury',
@@ -233,22 +235,34 @@ describe('add customer drawer', () => {
     })
 
     it('has an error if email is not valid', async () => {
-      const getIsError = () => wrapper.find('.is-error')
-
-      expect(getIsError().exists()).toBeFalsy()
+      expect(findIsError().exists()).toBeFalsy()
 
       const { emailInput } = getFormFields(wrapper)
       await emailInput.setValue('falseEmail')
       await emailInput.trigger('blur')
       await flushPromises()
 
-      expect(getIsError().exists()).toBeTruthy()
+      expect(findIsError().exists()).toBeTruthy()
+    })
+
+    it('disables the next button if the mobile field has an error', async () => {
+      expect(findIsError().exists()).toBeFalsy()
+
+      fillFormFields(wrapper)
+      const { mobilePhoneInput } = getFormFields(wrapper)
+      await mobilePhoneInput.setValue('bad value')
+      await mobilePhoneInput.trigger('blur')
+      await flushPromises()
+
+      expect(findIsError().exists()).toBeTruthy()
+      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+      expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeTruthy()
     })
 
     it('should only add role if user already exists', async () => {
       const { emailInput } = getFormFields(wrapper)
 
-      // Filling the form with exsiting information
+      // Filling the form with existing information
       // getAccountUserByEmail is mocked to return a 200 with user information right now
       emailInput.setValue(formDataMock.email)
       await emailInput.trigger('blur')
