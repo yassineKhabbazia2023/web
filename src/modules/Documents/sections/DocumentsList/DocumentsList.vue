@@ -1,5 +1,5 @@
 <template>
-  <section class="documents-table">
+  <section v-bind="$attrs" class="documents-table">
     <PTable
       v-if="documentsListWithTableStructure.documentsPage.items"
       :pData="documentsListWithTableStructure.documentsPage.items"
@@ -173,17 +173,17 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
 <style lang="scss" scoped>
   .documents-table {
     position: relative;
-    // header height - breadcrumb height - action bar wrapper height
+    // header height - entity information height - breadcrumb height - action bar wrapper height
     // - pagination wrapper height - paddings
     height: 100%;
-    max-height: calc(100vh - 32px - 52px - 80px - 46px);
+    max-height: calc(100vh - 48px - 32px - 52px - 80px - 46px);
     width: 100%;
     overflow-y: auto;
 
     &--search {
       // when search is enabled, the alert changes the remaining height of the page
       // Taking the same calculation - alert height - alert top padding
-      max-height: calc(100vh - 32px - 52px - 80px - 46px - 41px - 8px);
+      max-height: calc(100vh - 48px - 32px - 52px - 80px - 46px - 41px - 8px);
     }
 
     .blur-fade {
