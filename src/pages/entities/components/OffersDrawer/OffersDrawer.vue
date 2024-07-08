@@ -61,32 +61,27 @@
             <PStep :pTitle="offerStepTitles.collaborators" />
             <PStep :pTitle="offerStepTitles.information" />
           </PSteps>
+          <CustomersDetails
+            v-if="!currentSubscriptionOffer?.approvalRequired"
+            :principalContacts="principalContacts"
+            data-testid="customers-step"
+          />
           <OfferSubscription
             v-if="activeStep === offerStepperStep.SERVICES"
             data-testid="offer"
+            :accountId="props.accountId"
             :subscriptionOffer="currentSubscriptionOffer"
             :selectedProducts="selectedProducts"
             @select-product="onSelectProduct"
             @deselect-product="onDeselectProduct"
           />
-          <ul
+          <CustomersDetails
             v-if="
-              activeStep === offerStepperStep.CUSTOMERS &&
-                principalContacts?.length
+              activeStep === offerStepperStep.CUSTOMERS
             "
-            class="list-style-none"
-          >
-            <li
-              v-for="principalContact in principalContacts"
-              :key="principalContact.contactId"
-              class="margin-bottom--6"
-            >
-              <PrincipalContact
-                :principalContact="principalContact"
-                data-testid="customers-step"
-              />
-            </li>
-          </ul>
+            :principalContacts="principalContacts"
+            data-testid="customers-step"
+          />
           <ManageCollaborators
             v-if="activeStep === offerStepperStep.COLLABORATORS"
             v-model:collaborators="collaborators"
@@ -139,7 +134,7 @@ import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader, PNotification, PIX
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@/common/components/StepNote'
-import PrincipalContact from '../PrincipalContact'
+import CustomersDetails from '@/common/components/CustomersDetails'
 import CompanyInformation from '../CompanyInformation'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import ConfirmationModal from '../ConfirmationModal'
@@ -199,8 +194,17 @@ const isSubmitButton = computed((): boolean => {
   )
 })
 
-const isNextButtonDisabled = computed(() => {
+const isNoCollaboratorSelected = computed(() => {
   return activeStep.value === offerStepperStep.COLLABORATORS && collaborators.value.length === 0
+})
+
+const hasNoSignatory = computed(() => {
+  return (activeStep.value === offerStepperStep.CUSTOMERS || !currentSubscriptionOffer?.value?.approvalRequired) &&
+  principalContacts.value.length === 0
+})
+
+const isNextButtonDisabled = computed(() => {
+  return hasNoSignatory.value || isNoCollaboratorSelected.value
 })
 
 const emit = defineEmits<{
@@ -215,7 +219,7 @@ const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const collaborators = ref<Contact[]>([])
-const principalContacts = ref<ClientContact[]>()
+const principalContacts = ref<ClientContact[]>([])
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
 const isLoading = ref<boolean>(true)

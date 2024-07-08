@@ -45,7 +45,7 @@ import type {
 } from './SubscriptionDetailsTabsTypes'
 import StepNote from '@/common/components/StepNote'
 import ServicesDetails from './components/ServicesDetails'
-import CustomersDetails from './components/CustomersDetails'
+import CustomersDetails from '@/common/components/CustomersDetails'
 import CollaboratorsDetails from './components/CollaboratorsDetails'
 import InformationDetails from './components/InformationDetails'
 
