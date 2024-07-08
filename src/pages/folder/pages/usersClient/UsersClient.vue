@@ -162,7 +162,7 @@ const shouldShowPagination = computed(
   () => !state.isLoading && state.totalItems,
 )
 
-const canEdit = computed(() => true)
+const canEdit = computed(() => hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER))
 
 const getUserInfo = computed(() => {
   const userInfo = state.data.find(
