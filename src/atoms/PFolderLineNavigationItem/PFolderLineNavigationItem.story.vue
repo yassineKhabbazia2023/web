@@ -2,20 +2,39 @@
   <Story title="2. Atoms/FolderLineNavigation" icon="radix-icons:divider-horizontal">
     <Variant title="Default">
       <PFolderLineNavigationItem
-        :pFolderName="firstProps.folderName"
-        :pFolderId="firstProps.folderId"
-        :pHasArrow="firstProps.pHasArrow"
-        :pLeftIcon="firstProps.pLeftIcon"
-        :pSelected="firstProps.selected"
-        :pDisabled="firstProps.disabled"
+        :pFolderName="firstVariantProps.folderName"
+        :pFolderId="firstVariantProps.folderId"
+        :pHasArrow="firstVariantProps.pHasArrow"
+        :pLeftIcon="firstVariantProps.pLeftIcon"
+        :pSelected="firstVariantProps.selected"
+        :pDisabled="firstVariantProps.disabled"
         @on-click-folder-navigation="logEvent('on-click-folder-navigation', $event)"
         @on-db-click-folder-navigation="logEvent('on-db-click-folder-navigation', $event)"
       />
       <template #controls>
-        <HstText v-model="firstProps.folderName" title="FolderName" />
-        <HstText v-model="firstProps.pLeftIcon" title="pLeftIcon" />
-        <HstCheckbox v-model="firstProps.disabled" title="disabled" />
-        <HstCheckbox v-model="firstProps.pHasArrow" title="pHasArrow" />
+        <HstText v-model="firstVariantProps.folderName" title="FolderName" />
+        <HstText v-model="firstVariantProps.pLeftIcon" title="pLeftIcon" />
+        <HstCheckbox v-model="firstVariantProps.disabled" title="disabled" />
+        <HstCheckbox v-model="firstVariantProps.pHasArrow" title="pHasArrow" />
+      </template>
+    </Variant>
+
+    <Variant title="Ellipsed because of long name">
+      <PFolderLineNavigationItem
+        :pFolderName="secondVariantProps.folderName"
+        :pFolderId="secondVariantProps.folderId"
+        :pHasArrow="secondVariantProps.pHasArrow"
+        :pLeftIcon="secondVariantProps.pLeftIcon"
+        :pSelected="secondVariantProps.selected"
+        :pDisabled="secondVariantProps.disabled"
+        @on-click-folder-navigation="logEvent('on-click-folder-navigation', $event)"
+        @on-db-click-folder-navigation="logEvent('on-db-click-folder-navigation', $event)"
+      />
+      <template #controls>
+        <HstText v-model="secondVariantProps.folderName" title="FolderName" />
+        <HstText v-model="secondVariantProps.pLeftIcon" title="pLeftIcon" />
+        <HstCheckbox v-model="secondVariantProps.disabled" title="disabled" />
+        <HstCheckbox v-model="secondVariantProps.pHasArrow" title="pHasArrow" />
       </template>
     </Variant>
   </Story>
@@ -26,10 +45,19 @@ import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
 import PFolderLineNavigationItem from './'
 
-const firstProps = reactive({
+const firstVariantProps = reactive({
   selected: false,
   disabled: false,
   folderName: 'Name of folder',
+  folderId: 3116446,
+  pHasArrow: true,
+  pLeftIcon: 'PIFolder',
+})
+
+const secondVariantProps = reactive({
+  selected: false,
+  disabled: false,
+  folderName: 'This is a really really really looooooooooooooooooooooooooooooooooooooooooooooooooooooong name',
   folderId: 3116446,
   pHasArrow: true,
   pLeftIcon: 'PIFolder',
