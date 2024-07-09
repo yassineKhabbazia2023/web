@@ -83,7 +83,7 @@ import { amplitudeService, commonApi, tokenService } from '@kpmg/common'
 import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
 import useInitUserAuth from '@/composable/useInitUserAuth'
 import useNavigation from '@/composable/useNavigation'
-import { getTermsByContactId } from '@/services/cgu'
+import { getTermsByCurrentUser } from '@/services/cgu'
 
 const { initAuthClient, setStoreGigyaUserId } = useInitUserAuth()
 const { navigateToCustomerWallet } = useNavigation()
@@ -163,18 +163,18 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     } = await commonApi().gateway.post('authentication/api/login', toRaw(formValues))
 
     tokenService.setToken(token)
-    const data = await initAuthClient()
+    await initAuthClient()
     setStoreGigyaUserId(userId)
     amplitudeService.track('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'succeeded',
     })
 
-    const { isCurrent, terms } = await getTermsByContactId(data?.id)
+    const { isCurrent, terms } = await getTermsByCurrentUser()
     if (isCurrent) {
       return navigateToCustomerWallet()
     }
-    router.push({ name: 'validationCGU', params: { termsId: terms.termsId, userId: data?.id } })
+    router.push({ name: 'validationCGU', params: { termsId: terms.termsId } })
   } catch (error: any) {
     const hasEmailOrPasswordInvalid = error.response?.data?.errorCode === '403042'
     if (hasEmailOrPasswordInvalid) {

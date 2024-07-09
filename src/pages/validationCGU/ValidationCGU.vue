@@ -55,7 +55,7 @@
         class="width-100 margin-bottom--2"
         :pLoading="loading"
         data-testid="cgu-button-confirm"
-        @click="acceptNewCgu(termsId, userId)"
+        @click="acceptNewCgu(termsId)"
       >
         {{ t('confirm') }}
       </PButton>
@@ -79,7 +79,7 @@ import type { FormRules } from 'element-plus'
 import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@kpmg/styleguide'
 import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
 import { fetchUrlTerms } from '@kpmg/common'
-import { updateTermsByContactId } from '@/services/cgu'
+import { updateTermsByCurrentUser } from '@/services/cgu'
 import { useRouter } from 'vue-router'
 
 const { t } = useI18n({
@@ -106,10 +106,10 @@ onMounted(async () => {
   urlTerms.value = await fetchUrlTerms()
 })
 
-const acceptNewCgu = async (termsId: string, userId: string) => {
+const acceptNewCgu = async (termsId: string) => {
   try {
     loading.value = true
-    await updateTermsByContactId(parseInt(userId), parseInt(termsId))
+    await updateTermsByCurrentUser(parseInt(termsId))
     router.push({ name: 'wallet-client' })
   } catch (error) {
     console.warn(error)

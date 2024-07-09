@@ -37,7 +37,7 @@ routes.value.push({
 } as RouteRecordRaw)
 
 routes.value.push({
-  path: '/validation-cgu/:termsId/utilisateur/:userId',
+  path: '/validation-cgu/:termsId',
   name: 'validationCGU',
   component: () => import('@/pages/validationCGU'),
   props: true,
