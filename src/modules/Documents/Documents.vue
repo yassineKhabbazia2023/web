@@ -23,16 +23,16 @@
     </div>
 
     <DocumentsActionsBar
-      :permissions="permissionsList"
-      @p-action-bar-button-clicked="handleActionBarButtonClick"
+      :hasFiltersEnabled="docSearchFilters != null"
       :isAnyDocumentSelected="selectedDocuments.length > 0"
-      @p-upload-files-selected="handleUploadFilesSelected"
-      :isTransmitDocumentsLoading="isTransmitDocumentsLoading"
       :isSearchShrinkable="isSearchShrinkable"
       :isSearchOpen="isSearchExpanded"
+      :isTransmitDocumentsLoading="isTransmitDocumentsLoading"
+      :permissions="permissionsList"
+      @p-action-bar-button-clicked="handleActionBarButtonClick"
       @p-search-input="searchDocumentsByKeyWord"
+      @p-upload-files-selected="handleUploadFilesSelected"
       @search-expand-change="handleSearchExpandChange"
-      :hasFiltersEnabled="docSearchFilters != null"
     />
 
     <DocumentsSearchAlert
@@ -287,6 +287,12 @@ const fetchDocuments = async () => {
       componentSortQueryField.value,
       docSearchFilters.value,
     )
+
+    // When we delete or move documents we're checking if the response is empty
+    // in that case we just fallback to page one
+    if (currentPage.value > 1 && !documents.value.documentsPage.items.length) {
+      currentPage.value = 1
+    }
 
     isLoading.value = false
   }
