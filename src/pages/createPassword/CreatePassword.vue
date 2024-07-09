@@ -203,7 +203,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
         resetPasswordToken,
       }
       const urlUpdatePassword = 'authentication/api/createNewPassword'
-      console.warn('HAHAHAHAH')
       try {
         await updateTermsByContactId(parseInt(contactId as string), termsId.value as number)
         await commonApi().gateway.post(urlUpdatePassword, data)
