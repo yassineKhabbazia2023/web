@@ -2,7 +2,7 @@
   <Suspense>
     <PConfigProvider>
       <component :is="getLayout" :illustration="illustration" />
-      <PopupRenewToken @logout="handleLogout" />
+      <PopupRenewToken />
     </PConfigProvider>
   </Suspense>
 </template>
@@ -44,22 +44,21 @@ const handleLogout = async () => {
   router.push({ name: 'login' })
 }
 
-const idle = new Idle()
-  .whenNotInteractive()
-  .within(VITE_IDLE_DURATION)
-  .do(async () => await handleLogout())
-idle.start()
-
 watch(
   user, () => {
     if (user.value) {
       amplitudeService.setUserId(user.value.id)
+      new Idle()
+        .whenNotInteractive()
+        .within(VITE_IDLE_DURATION)
+        .do(async () => await handleLogout())
+        .start()
     }
   },
 )
 
 onMounted(() => {
-  if (window.navigator.doNotTrack !== '1') {
+  if (window.navigator.doNotTrack !== '1' && VITE_AMPLITUDE_API_KEY) {
     amplitudeService.init(VITE_AMPLITUDE_API_KEY)
   }
 })
