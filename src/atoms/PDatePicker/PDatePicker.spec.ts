@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import PDatePicker from '.'
 import type { PDatePickerProps } from './PDatePickerTypes'
@@ -33,9 +33,6 @@ function createWrapper(overriddenProps: Partial<PDatePickerProps> = {}) {
 }
 
 describe('calendar lite', () => {
-  afterEach(() => {
-    vi.clearAllMocks()
-  })
   it('renders the calendar lite component', async () => {
     const testDate = '2024-01-15'
     const date = new Date(testDate)
