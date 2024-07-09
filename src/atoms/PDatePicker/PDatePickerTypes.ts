@@ -1,6 +1,7 @@
 export type calendarEvent = 'prev-month' | '' | 'next-month' | 'today'
 
 export type PDatePickerModelValue = [Date, Date] | Date | string
+
 export interface PDatePickerProps {
   modelValue: PDatePickerModelValue
   pCalendarLite?: boolean

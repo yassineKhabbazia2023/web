@@ -13,6 +13,7 @@
     :shortcuts="pShortcuts"
     @change="handleChange"
     @calendar-change="calendarChange"
+    @panel-change="panelChange"
     :disabled="pDisabled"
     :placeholder="pPlaceholder"
     :clearable="pClearable"
@@ -25,9 +26,13 @@
       <div
         :class="{ current:isCurrent, 'el-date-table-cell': true }"
         @click="selectedDate(dayjs.format('YYYY-MM-DD'))"
+        data-testid="date-picker-table-cell"
       >
         <span class="el-date-table-cell__text">{{ text }}</span>
-        <span v-if="isScheduledDay(dayjs)" :class="scheduleDateStyle(type)" />
+        <span
+          v-if="isScheduledDay(dayjs)"
+          :class="scheduleDateStyle(type)"
+        />
       </div>
     </template>
     <slot v-if="!pCalendarLite" />
@@ -35,10 +40,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, watch, ref } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { PICalendarEvent } from '@/atoms/PIcon/components'
 import type { PDatePickerProps, PDatePickerModelValue, calendarEvent } from './PDatePickerTypes'
+import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 
 const props = withDefaults(defineProps<PDatePickerProps>(), {
   pCalendarLite: false,
@@ -58,6 +64,7 @@ const emit = defineEmits<{
   'selected-date': [string]
   'update:modelValue': [PDatePickerModelValue]
   'calendar-change': [[Date, Date]]
+  'panel-change': [PDatePickerModelValue]
   'change': [Date]
 }>()
 
@@ -69,6 +76,7 @@ const datepickerModel = computed({
     emit('update:modelValue', value)
   },
 })
+const panelDate = ref<PDatePickerModelValue>()
 
 watch(() => props.pMonth, (value: calendarEvent) => {
   if (value) {
@@ -76,7 +84,20 @@ watch(() => props.pMonth, (value: calendarEvent) => {
   }
 })
 
-const popperClassComputed = computed(() => props.pCalendarLite ? 'p-date-picker' : '')
+watch(() => props.modelValue, () => {
+  panelDate.value = undefined
+})
+
+const popperClassComputed = computed(() => {
+  const popperClasses = []
+  if (props.pCalendarLite) {
+    popperClasses.push('p-date-picker')
+    if (isLastWeekHidden.value) {
+      popperClasses.push('p-date-picker--is-last-week-hidden')
+    }
+  }
+  return popperClasses.join(' ')
+})
 
 const isScheduledDay = (dayjs: any) => {
   return Array.isArray(props.pSchedulesCollection) && props.pSchedulesCollection.includes(dayjs.format('YYYY-MM-DD'))
@@ -112,6 +133,11 @@ function calendarChange(val: [Date, Date]) {
   emit('calendar-change', val)
 }
 
+function panelChange(val: PDatePickerModelValue) {
+  panelDate.value = val
+  emit('panel-change', val)
+}
+
 function handleChange(val: Date) {
   emit('change', val)
 }
@@ -120,6 +146,12 @@ function selectedDate(date: string) {
   emit('selected-date', date)
 }
 
+const isLastWeekHidden = computed(() => {
+  const currentDate = getCurrentDate(props.modelValue, panelDate.value)
+  const weekCount = getWeekCount(currentDate)
+
+  return weekCount < 6
+})
 </script>
 <style lang="scss">
 .p-date-picker {
@@ -187,6 +219,11 @@ function selectedDate(date: string) {
     }
     span:nth-child(4) {
       order: 4;
+    }
+  }
+  &--is-last-week-hidden .el-picker-panel__content {
+    tr:nth-child(7) {
+      display: none;
     }
   }
 }
