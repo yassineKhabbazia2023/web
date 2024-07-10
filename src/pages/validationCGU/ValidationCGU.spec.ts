@@ -17,14 +17,13 @@ vi.mock('@kpmg/common', () => ({
 }))
 
 vi.mock('@/services/cgu', () => ({
-  updateTermsByContactId: vi.fn(),
+  updateTermsByCurrentUser: vi.fn(),
 }))
 
 const createWrapper = () =>
   mount(validationCGU, {
     props: {
       termsId: '123456789',
-      userId: '12411313131313',
     },
   })
 

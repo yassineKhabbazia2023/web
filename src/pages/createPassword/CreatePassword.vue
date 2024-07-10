@@ -114,7 +114,7 @@ import {
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
 import useNavigation from '@/composable/useNavigation'
-import { getTermsByContactId, updateTermsByContactId } from '@/services/cgu'
+import { getLatestTerms, updateTermsByCurrentUser } from '@/services/cgu'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -204,7 +204,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
       }
       const urlUpdatePassword = 'authentication/api/createNewPassword'
       try {
-        await updateTermsByContactId(parseInt(contactId as string), termsId.value as number)
         await commonApi().gateway.post(urlUpdatePassword, data)
         const urlLogin = 'authentication/api/login'
         const {
@@ -214,6 +213,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           },
         } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
         tokenService.setToken(token)
+        await updateTermsByCurrentUser(termsId.value as number)
         amplitudeService.track('Onboarding Completed', {
           onboarding_result: 'succeeded',
         })
@@ -257,8 +257,8 @@ onMounted(async () => {
   })
   try {
     urlTerms.value = await fetchUrlTerms()
-    const { terms } = await getTermsByContactId(parseInt(contactId as string))
-    termsId.value = terms.termsId
+    const data = await getLatestTerms()
+    termsId.value = data.termsId
   } catch (error) {
     console.error(error)
   }

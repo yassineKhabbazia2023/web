@@ -3,7 +3,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import Login from './'
 import { amplitudeService, tokenService } from '@kpmg/common'
-import { getTermsByContactId } from '@/services/cgu'
+import { getTermsByCurrentUser } from '@/services/cgu'
 
 const USER_ID = 'customUserId'
 const GIGYA_USER_ID = 'customGigyaUserId'
@@ -68,7 +68,7 @@ vi.mock('@/composable/useInitUserAuth', () => ({
 }))
 
 vi.mock('@/services/cgu', () => ({
-  getTermsByContactId: vi
+  getTermsByCurrentUser: vi
     .fn(() => Promise.resolve({
       isCurrent: true,
       terms: {
@@ -158,7 +158,7 @@ describe('login', () => {
   })
 
   it('should route to cgu validation page', async () => {
-    vi.mocked(getTermsByContactId).mockResolvedValueOnce({
+    vi.mocked(getTermsByCurrentUser).mockResolvedValueOnce({
       isCurrent: false,
       terms: {
         termsId: 123456,
@@ -171,7 +171,7 @@ describe('login', () => {
     await wrapper.vm.handleSubmit(getForm())
     expect(mockRouterPush).toHaveBeenCalledWith({
       name: 'validationCGU',
-      params: { termsId: 123456, userId: USER_ID },
+      params: { termsId: 123456 },
     })
   })
 })

@@ -4,7 +4,7 @@ import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import { amplitudeService, tokenService } from '@kpmg/common'
 import CreatePassword from './'
-import { getTermsByContactId, updateTermsByContactId } from '@/services/cgu'
+import { getLatestTerms, updateTermsByCurrentUser } from '@/services/cgu'
 
 const mockToken = 'token'
 const routes = [
@@ -44,14 +44,8 @@ const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 const CGU_URL = 'https://custom-CGU.com'
 
 vi.mock('@/services/cgu', () => ({
-  updateTermsByContactId: vi.fn(),
-  getTermsByContactId: vi
-    .fn(() => Promise.resolve({
-      isCurrent: true,
-      terms: {
-        termsId: 123456,
-      },
-    })),
+  updateTermsByCurrentUser: vi.fn(),
+  getLatestTerms: vi.fn(),
 }))
 
 vi.mock('@kpmg/common', () => ({
@@ -136,6 +130,21 @@ describe('page creation password', () => {
     expect(wrapper.find('button').classes()).toContain('is-disabled')
   })
 
+  it('should call the API when the button is clicked and track an Amplitude event if the login fails', async () => {
+    postMock.mockRejectedValue('API Error: 503 Service Unavailable')
+    wrapper = createWrapper()
+    await flushPromises()
+    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
+    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
+    wrapper.find('.el-checkbox__original').setValue('true')
+    await flushPromises()
+    wrapper.find('button').trigger('click')
+    await flushPromises()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Completed', {
+      onboarding_result: 'failed',
+    })
+  })
+
   it('should call API when the button is clicked and track an Amplitude event when the login succeeds', async () => {
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
@@ -159,33 +168,24 @@ describe('page creation password', () => {
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Completed', {
       onboarding_result: 'succeeded',
     })
-    expect(updateTermsByContactId).toHaveBeenCalledTimes(1)
-    expect(getTermsByContactId).toHaveBeenCalled()
+    expect(updateTermsByCurrentUser).toHaveBeenCalledTimes(1)
     expect(postMock).toHaveBeenCalledTimes(2)
     expect(postMock).toHaveBeenNthCalledWith(1, postLink, data)
     expect(postMock).toHaveBeenNthCalledWith(2, loginLink, dataLogin)
     expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
   })
-  it('should call the API when the button is clicked and track an Amplitude event if the login fails', async () => {
-    postMock.mockRejectedValue('API Error: 503 Service Unavailable')
-    wrapper = createWrapper()
-    await flushPromises()
-    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
-    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
-    wrapper.find('.el-checkbox__original').setValue('true')
-    await flushPromises()
-    wrapper.find('button').trigger('click')
-    await flushPromises()
-    expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Completed', {
-      onboarding_result: 'failed',
-    })
-  })
 
   it('should throw error', async () => {
-    vi.mocked(getTermsByContactId).mockRejectedValue('Async error')
+    vi.mocked(getLatestTerms).mockRejectedValue('Async error')
     wrapper = createWrapper()
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     await flushPromises()
-    await expect(getTermsByContactId).rejects.toThrow('Async error')
+    await expect(getLatestTerms).rejects.toThrow('Async error')
+  })
+
+  it('should call last terms', async () => {
+    wrapper = createWrapper()
+    await flushPromises()
+    expect(getLatestTerms).toHaveBeenCalled()
   })
 })
