@@ -120,13 +120,13 @@ describe('props', () => {
       {
         typedValue: 'Test Content*',
         expectedValue:
-            'Enter a name that does not contain any of the following characters:' +
-            ' “ * : &lt; &gt; ? / \\',
+            'Enter a name that does not contain any of the following characters: ' +
+            '“ * : < > ? / \\ |',
         isFolderNameExits: false,
       },
       {
         typedValue: 'New Folder',
-        expectedValue: 'Un dossier avec le nom New Folder existe déjà',
+        expectedValue: 'A folder with the name New Folder already exists',
         isFolderNameExits: true,
       },
     ]
@@ -140,8 +140,6 @@ describe('props', () => {
 
         const wrapper = createWrapper(props)
 
-        const dialog = wrapper.findComponent(SingleInputModal)
-
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
         await nextTick()
@@ -149,7 +147,8 @@ describe('props', () => {
         componentInstance.folderNameExists = isFolderNameExits
         await nextTick()
 
-        expect(dialog.props('errorMsg')).toBe(expectedValue)
+        const errorContainer = wrapper.find('.message')
+        expect(errorContainer.text()).toBe(expectedValue)
       },
     )
   })
