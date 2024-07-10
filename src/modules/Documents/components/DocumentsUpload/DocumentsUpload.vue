@@ -240,7 +240,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
     "modalTitle": "Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier",
-      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+      "foldersListEmptyFolderLabel": "There is no subfolder"
     },
     "documentsList": {
       "noDeposableDocumentsLabel": "Aucun document ne peut être déposé dans votre espace documentaire."
@@ -259,7 +259,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
     "modalTitle": "Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier",
-      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+      "foldersListEmptyFolderLabel": "Aucun sous-dossier"
     },
     "documentsList": {
       "noDeposableDocumentsLabel": "Aucun document ne peut être déposé dans votre espace documentaire."
