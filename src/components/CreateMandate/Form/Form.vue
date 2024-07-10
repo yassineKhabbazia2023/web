@@ -596,7 +596,7 @@ const validateEmail = (_: any, value: string, callback: any) => {
 const requiredFieldMessage = t('form.error.requiredField')
 const rules = reactive<any>({
   erpId: [
-    createRule(requiredFieldMessage, 'change'),
+    createRule(requiredFieldMessage, 'blur'),
     { validator: validateIBS, trigger: ['change'] },
     { message: t('form.error.ibsFormatIssue'), pattern: /^\d{10}$/, trigger: ['blur'] },
   ],
