@@ -63,3 +63,10 @@ onMounted(() => {
   }
 })
 </script>
+
+// eslint-disable-next-line vue/enforce-style-attribute
+<style lang="scss">
+.loader {
+  height: calc(100vh - 270px);
+}
+</style>
