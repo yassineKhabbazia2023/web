@@ -58,7 +58,7 @@
         <PLoader
           v-if="isSearchLoading"
           class="search-loader"
-          pType="gradient"
+          pType="primary"
           size="42"
         />
 
@@ -112,7 +112,7 @@
     "
   >
     <PLoader
-      pType="gradient"
+      pType="primary"
       size="42"
     />
   </div>
