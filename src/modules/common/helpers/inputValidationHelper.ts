@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 export const validInputAlphanumericFrench = (input: string): boolean => {
-  const regex = /^[^“"*:<>?/\\]*$/
+  const regex = /^[^“"*:<>?|/\\]*$/
   return regex.test(input) && input?.trim().length !== 0
 }
 
