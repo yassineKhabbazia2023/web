@@ -33,7 +33,12 @@
       <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
     </div>
 
-    <PLoader v-if="isLoading" />
+    <div
+      v-if="isLoading"
+      class="loader flex flex--justify-content-center flex--align-items-center"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
 
     <!--
       The v-show is used just below (instead of a v-if) due to the sorting on the table
@@ -320,6 +325,7 @@ const removeCollaborator = async (
 }
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
+  state.currentPage = 1
   state.search = newSearchValue
 }
 

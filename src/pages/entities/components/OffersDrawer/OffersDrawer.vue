@@ -130,13 +130,14 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { get } from 'lodash-es'
-import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader, PNotification, PIX, PICheck } from '@kpmg/styleguide'
+import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@/common/components/StepNote'
 import CustomersDetails from '@/common/components/CustomersDetails'
 import CompanyInformation from '../CompanyInformation'
 import NextPreviousButtons from '@/common/components/NextPreviousButtons'
+import { displayNotification } from '@/common/utils/helpers'
 import ConfirmationModal from '../ConfirmationModal'
 import ManageCollaborators from '../ManageCollaborators'
 import {
@@ -318,16 +319,6 @@ function onSelectProduct(offerId: number, productId: number) {
 
 function onDeselectProduct(offerId: number, productId: number) {
   removeSelectedProduct(selectedProducts.value, offerId, productId)
-}
-
-const displayNotification = (type: 'error' | 'success', message: string) => {
-  PNotification({
-    message,
-    icon: type === 'success' ? PICheck : PIX,
-    showClose: true,
-    customClass: type,
-    position: 'bottom-right',
-  })
 }
 
 async function saveOffer() {

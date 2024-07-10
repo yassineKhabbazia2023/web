@@ -1,8 +1,6 @@
 <template>
   <div class="margin-bottom--6">
-    <PLoader v-if="state.isLoading" />
     <div
-      v-if="!state.isLoading"
       class="
       flex
       filter
@@ -35,26 +33,23 @@
       <div
         class="
         separator
-        margin-x--6
-        hidden-md-and-down"
+        margin-x--6"
       >
       </div>
-      <div class="hidden-md-and-down">
-        <div>
-          <p class="filter__title font-semibold margin-bottom--3">
-            {{ t('userConnectionRate') }}
-          </p>
-          <div class="filter__list flex">
-            <FilterOption
-              v-for="({ content, number, icon }, index) in state.userTags"
-              :key="index"
-              :number="number"
-              :content="content"
-              :icon="icon"
-              color="gray-500"
-              :clickable="false"
-            />
-          </div>
+      <div>
+        <p class="filter__title font-semibold margin-bottom--3">
+          {{ t('userConnectionRate') }}
+        </p>
+        <div class="filter__list flex">
+          <FilterOption
+            v-for="({ content, number, icon }, index) in state.userTags"
+            :key="index"
+            :number="number"
+            :content="content"
+            :icon="icon"
+            color="gray-500"
+            :clickable="false"
+          />
         </div>
       </div>
     </div>
@@ -72,7 +67,6 @@ import {
   PIPerson,
   PIPower,
   PIArrowUpCircle,
-  PLoader,
 } from '@kpmg/styleguide'
 import { fetchEntitiesStatistics } from '@/services/wallet'
 import type { IFilterOption, IState } from './FiltersTypes'

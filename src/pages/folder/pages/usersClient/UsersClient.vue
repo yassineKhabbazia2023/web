@@ -35,7 +35,12 @@
         <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
       </div>
 
-      <PLoader v-if="state.isLoading" />
+      <div
+        v-if="state.isLoading"
+        class="loader flex flex--justify-content-center flex--align-items-center"
+      >
+        <PLoader pType="primary" pSize="50" />
+      </div>
 
       <div v-if="!state.isLoading">
         <TableData
@@ -144,6 +149,7 @@ const { hasPermission } = userPermissions()
 const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
+  state.currentPage = 1
   state.search = newSearchValue
 }
 

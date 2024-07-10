@@ -5,7 +5,12 @@
         <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
       </div>
 
-      <PLoader v-if="state.isLoading" />
+      <div
+        v-if="state.isLoading"
+        class="loader flex flex--justify-content-center flex--align-items-center"
+      >
+        <PLoader pType="primary" pSize="50" />
+      </div>
 
       <!--
         The v-show is used just below (instead of a v-if) due to the sorting on the table
@@ -76,6 +81,7 @@ const state: IState = reactive({
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {
+  state.currentPage = 1
   state.search = searchValue
 }
 

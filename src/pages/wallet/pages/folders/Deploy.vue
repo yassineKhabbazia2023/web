@@ -9,7 +9,6 @@
         @remove-filter="handleRemoveFilter"
         data-testid="filters"
       />
-
       <PButton
         pType="primary"
         @click="isDelegationDrawerOpened = true"
@@ -25,16 +24,19 @@
     </div>
     <div class="margin-bottom--3">
       <FormSearch
+        ref="searchBar"
         @search-value-submitted="handleSearchValueSubmitted"
         :placeholder="t('search')"
       />
     </div>
-
-    <PLoader v-if="isLoading" />
-
-    <div v-if="isLoading === false">
+    <div
+      v-if="isLoading"
+      class="loader flex flex--justify-content-center flex--align-items-center"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
+    <div v-else>
       <NoResult v-if="searchResult.items.length === 0" />
-
       <TableData
         v-if="searchResult.items.length > 0"
         data-testid="table"
@@ -44,7 +46,6 @@
         @access="onClickFolder"
         @selected-folder="onSelectedFolder"
       />
-
       <PPagination
         class="margin-top--6"
         @on-page-range-changed="handlePageRangeChanged"
@@ -60,7 +61,6 @@
       >
         <p>{{ paginationLabel }}</p>
       </PPagination>
-
       <OffersDrawer
         v-if="openOffersDrawer && selectedAccountId"
         :selectedCompanyName="selectedCompanyName"
@@ -111,10 +111,13 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const userStore = commonStore()
 const router = useRouter()
-const selectedCompanyName = ref('')
+const userStore = commonStore()
 const { isCollab, user } = storeToRefs(userStore)
+
+const searchBar = ref()
+const isLoading = ref(true)
+const selectedCompanyName = ref('')
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
@@ -139,13 +142,13 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   },
 ] as const
 
-const isLoading = ref<boolean | undefined>()
 const searchCriteria = ref<SearchCriteria>({
   currentPage: 0,
   limit: PAGE_SIZES[0],
   search: '',
   filterByDeploymentStatus: '',
 })
+
 const searchResult = ref<SearchResult>({
   currentPage: 0,
   items: [],
@@ -154,6 +157,7 @@ const searchResult = ref<SearchResult>({
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {
+  searchCriteria.value.currentPage = 1
   searchCriteria.value.search = searchValue
 }
 
@@ -184,7 +188,7 @@ const putEntitiesInCommonFavorite = (data: Entity[] | undefined) => {
   })
 }
 
-async function fetch() {
+async function fetchAccountList() {
   isLoading.value = true
   try {
     const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, searchCriteria.value)
@@ -200,7 +204,7 @@ async function fetch() {
 
 const fetchTableDataAndFavorites = async () => {
   const [, data] = await Promise.all([
-    fetch(),
+    fetchAccountList(),
     fetchFavoriteEntities(),
   ])
   putEntitiesInCommonFavorite(data)
@@ -208,7 +212,7 @@ const fetchTableDataAndFavorites = async () => {
 
 const handleAddFavorite = async (accountId: number, isFavorite: boolean) => {
   await manageFavoriteEntities(accountId, isFavorite)
-  fetchTableDataAndFavorites()
+  await fetchTableDataAndFavorites()
 }
 
 function onUpdateCurrentPage(currentPage: number) {
@@ -220,7 +224,7 @@ onMounted(async () => {
 })
 
 watch(searchCriteria, async () => {
-  await fetch()
+  await fetchAccountList()
 }, { deep: true })
 
 const openOffersDrawer = ref(false)
@@ -242,12 +246,14 @@ const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
     limit: PAGE_SIZES[0],
     filterByDeploymentStatus: filterValue.toString(),
   }
+  searchBar.value.clearSearch()
 }
 const handleRemoveFilter = () => {
   searchCriteria.value = {
     currentPage: 0,
     limit: PAGE_SIZES[0],
   }
+  searchBar.value.clearSearch()
 }
 
 const selectedFolders = ref<SelectedFolder[]>([])

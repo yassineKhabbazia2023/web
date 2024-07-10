@@ -68,6 +68,14 @@ const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
   }
   emit('searchValueSubmitted', formValues.search)
 }
+
+const clearSearch = () => {
+  formValues.search = ''
+}
+
+defineExpose({
+  clearSearch,
+})
 </script>
 
 <i18n lang="yaml">
