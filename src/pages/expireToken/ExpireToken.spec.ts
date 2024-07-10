@@ -50,7 +50,7 @@ describe('page expire token', () => {
   it('should call endpoint when click on button', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     const spyRouter = vi.spyOn(wrapper.vm.router, 'push')
-    const link = 'account/api/customers/contactId'
+    const link = 'account/api/customers/invite/contactId'
     wrapper.find('.btn-link').trigger('click')
     expect(postMock).toHaveBeenCalledTimes(1)
     expect(postMock).toHaveBeenCalledWith(link)
