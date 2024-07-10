@@ -51,7 +51,10 @@
       @dragover.prevent="handleDragOverFromExplorer"
       @dragleave="handleDragLeaveFromExplorer"
     >
-      <div class="documents-list-wrapper">
+      <div
+        class="documents-list-wrapper"
+        :class="{ 'height--100': isSearchLoading }"
+      >
         <PLoader
           v-if="isSearchLoading"
           class="search-loader"
@@ -63,7 +66,7 @@
           v-if="documents"
           :class="[
             isSearchLoading ? 'is-searching' : '',
-            isInSearchScope ? 'documents-table--search' : ''
+            isInSearchScope ? 'documents-table--search' : '',
           ]"
           :documentsListWithTableStructure="documents"
           :isInSearchScope="isInSearchScope"
@@ -75,7 +78,7 @@
         />
       </div>
       <PPagination
-        v-if="documents && documents.documentsPage.items.length > 0"
+        v-if="documents && documents.documentsPage.items.length > 0 && !isSearchLoading"
         v-model:p-current-page="currentPage"
         v-model:p-page-size="currentPageSize"
         :pTotal="documents.documentsPage.totalItems"
@@ -674,9 +677,9 @@ defineExpose({ refreshDocumentsList })
     z-index: 99999;
   }
 }
-  .is-searching {
+  :deep(.is-searching) {
     .el-table {
-      opacity: 0;
+      display: none;
     }
   }
 </style>
