@@ -61,9 +61,9 @@ const router = createRouter({
 routes.map((route) => router.addRoute(route))
 
 const isUserOriginCollab = async () => {
-  const USER_ORIGIN_URL = 'UserOrigin'
+  const USER_ORIGIN_URL = 'userorigin'
   try {
-    const { data: userOrigin } = await commonApi().user_origin.get(
+    const { data: userOrigin } = await commonApi().gateway.get(
       USER_ORIGIN_URL,
     )
     return userOrigin === 'COLLAB'

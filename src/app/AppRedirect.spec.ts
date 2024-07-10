@@ -25,7 +25,7 @@ vi.mock('@kpmg/common', () => ({
     },
   }),
   commonApi: () => ({
-    user_origin: {
+    gateway: {
       get: mockUserOrigin,
     },
   }),
@@ -74,6 +74,7 @@ describe('app with navigation guard', () => {
 
   it('should redirect to the right login page if user has no token', async () => {
     mockUserOrigin.mockResolvedValueOnce({ data: 'COLLAB' })
+
     const wrapper: VueWrapper<any> = createWrapper()
     router.push({ name: 'home' })
     await vi.dynamicImportSettled()
