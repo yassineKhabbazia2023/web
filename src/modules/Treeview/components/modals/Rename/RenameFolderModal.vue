@@ -118,20 +118,20 @@ watch(inputContent, () => {
 watch(isDialogRenameVisible, () => {
   inputContent.value = props.inputContentDefault
 })
-
 </script>
+
 <i18n lang="yaml">
 en-US:
   validations:
     alphaNumerique: >
       Enter a name that does not contain any of the following characters:
-      “ * : &lt; &gt; ? / \ |.
-    folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
+      “ * : {'<'} {'>'} ? / \ {'|'}
+    folderNameExists: 'A folder with the name {folderName} already exists'
 
 fr-FR:
   validations:
     alphaNumerique: >
-      Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : &lt; &gt; ? / \ |.
+      Entrez svp un nom qui ne contient aucun des caractères suivants :
+      “ * : {'<'} {'>'} ? / \ {'|'}
     folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
 </i18n>

@@ -117,7 +117,7 @@ describe('props', () => {
       {
         typedValue: 'Test Content*',
         expectedValue:
-          'Entrez un nom qui ne contient aucun des caractères suivants : “ * : < > ? / \\',
+          'Entrez un nom qui ne contient aucun des caractères suivants : “ * : < > ? / \\ |',
         isFolderNameExits: false,
       },
       {
@@ -136,8 +136,6 @@ describe('props', () => {
 
         const wrapper = createWrapper(props)
 
-        const dialog = wrapper.findComponent(SingleInputModal)
-
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
         await nextTick()
@@ -145,7 +143,8 @@ describe('props', () => {
         componentInstance.folderNameExists = isFolderNameExits
         await nextTick()
 
-        expect(dialog.props('errorMsg')).toBe(expectedValue)
+        const errorContainer = wrapper.find('.message')
+        expect(errorContainer.text()).toBe(expectedValue)
       },
     )
   })

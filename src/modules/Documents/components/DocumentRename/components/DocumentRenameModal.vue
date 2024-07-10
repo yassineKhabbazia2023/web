@@ -94,8 +94,8 @@ en-US:
   validations:
     alphaNumerique: >
       Enter a name that does not contain any of the following characters:
-      “ * : &lt; &gt; ? / \ |.
-  title: Renommer
+      “ * : {'<'} {'>'} ? / \ {'|'}
+  title: Rename
   inputLabel: Rename document
   inputPlaceHolder: Enter a new document name
   cancelButtonLabel: Cancel
@@ -105,7 +105,7 @@ fr-FR:
   validations:
     alphaNumerique: >
       Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : &lt; &gt; ? / \ |.
+      “ * : {'<'} {'>'} ? / \ {'|'}
   title: Renommer
   inputLabel: Renommez votre document
   inputPlaceHolder: Entrez un nouveau nom
