@@ -63,6 +63,12 @@ extends:
       - type: files
         name: Fonts
         path: src/assets/fonts
+      - type: files
+        name: Pdf
+        path: src/assets/pdf
+      - type: files
+        name: Illustration
+        path: src/assets/illustration
     deploy:
       environments:
       - ${{ if and(ne(parameters.devIndex, 0), ne(parameters.deployType, 'developToRec')) }}:
@@ -201,4 +207,34 @@ extends:
           endpointName: $(cdn_endpoint)
           waitForCommand: true
           path: 'fonts'
+          type: AFD
+      - type: az-blob
+        name: Deploy_Pdf
+        artifact: Pdf
+        azureServiceConnection: $(azureSC)
+        storageAccount: $(storageAccount)
+        container: "$web"
+        targetPath: assets/pdf
+        storageDeployment: overwrite
+        purgeCdn:
+          resourceGroup: $(cdn_resourceGroup)
+          profileName: $(cdn_profile)
+          endpointName: $(cdn_endpoint)
+          waitForCommand: true
+          path: 'pdf'
+          type: AFD
+      - type: az-blob
+        name: Deploy_Illustration
+        artifact: Illustration
+        azureServiceConnection: $(azureSC)
+        storageAccount: $(storageAccount)
+        container: "$web"
+        targetPath: assets/illustration
+        storageDeployment: overwrite
+        purgeCdn:
+          resourceGroup: $(cdn_resourceGroup)
+          profileName: $(cdn_profile)
+          endpointName: $(cdn_endpoint)
+          waitForCommand: true
+          path: 'illustration'
           type: AFD
