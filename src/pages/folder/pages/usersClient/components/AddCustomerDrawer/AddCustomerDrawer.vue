@@ -172,16 +172,17 @@ function debouncedCheckIfNextButtonShouldBeEnabled() {
   return debounce(() => checkIfNextButtonShouldBeEnabled(), 600)
 }
 
-function checkIfNextButtonShouldBeEnabled() {
+async function checkIfNextButtonShouldBeEnabled() {
   if (!addCustomerFormRef.value) return
 
   const { lastName, firstName, email } = formData
   if (lastName && firstName && email) {
-    addCustomerFormRef.value.validate()
-      .then(() => {
-        isNextButtonDisabled.value = false
-      })
-      .catch((error: any) => console.error(error))
+    try {
+      await addCustomerFormRef.value.validate()
+      isNextButtonDisabled.value = false
+    } catch (_error) {
+      isNextButtonDisabled.value = true
+    }
   } else {
     isNextButtonDisabled.value = true
   }
@@ -234,8 +235,8 @@ async function handleFormSubmit() {
     isNextButtonDisabled.value = false
     isNextButtonLoading.value = true
 
-    const { firstName, lastName, mobilePhone, email } = formData
     if (!doesUserEmailExists.value) {
+      const { firstName, lastName, mobilePhone, email } = formData
       fetchedUser.value = await createCustomer({
         firstName,
         lastName,
@@ -243,12 +244,13 @@ async function handleFormSubmit() {
         email,
         accountNumber: props.targetEntityNumber,
       })
+    } else {
+      await addContactToEntity(props.targetEntityId, fetchedUser.value.id)
+      amplitudeService.track('Onboarding Started', {
+        onboarding_start_localisation: "Ajout d'un utilisateur",
+        onboarding_start_result: 'succeeded',
+      })
     }
-    await addContactToEntity(props.targetEntityId, fetchedUser.value.id)
-    amplitudeService.track('Onboarding Started', {
-      onboarding_start_localisation: "Ajout d'un utilisateur",
-      onboarding_start_result: 'succeeded',
-    })
 
     hasFormBeenSent.value = true
     isNextButtonLoading.value = false
@@ -290,10 +292,6 @@ const formRules = reactive<FormRules>({
     },
   ],
   mobilePhone: [
-    {
-      message: t('requiredField'),
-      trigger: 'blur',
-    },
     {
       trigger: 'blur',
       pattern: validPhoneNumberPattern,

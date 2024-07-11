@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isLoading"
-    class="flex flex--justify-content-center margin-y--4"
+    class="loader flex flex--justify-content-center flex--align-items-center"
     data-testid="bi-reports-loader"
   >
     <PLoader pType="primary" pSize="50" />

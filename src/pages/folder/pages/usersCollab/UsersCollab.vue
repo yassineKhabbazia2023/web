@@ -4,12 +4,19 @@
       <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
     </div>
 
-    <PLoader
+    <div
       v-if="state.isLoading"
-      data-testid="folder-users-collab-loader"
-    />
+      class="loader flex flex--justify-content-center flex--align-items-center"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
 
-    <div v-if="!state.isLoading">
+    <!--
+      The v-show is used just below (instead of a v-if) due to the sorting on the table
+      that is done on the back end side. In this case, the table should not be destroyed
+      & re render else there is a bug with the caret.
+    -->
+    <div v-show="!state.isLoading">
       <div v-if="state.totalItems">
         <PTable
           @sort-change="handleSortChange"
@@ -117,7 +124,7 @@
         </PPagination>
       </div>
 
-      <NoResult v-if="!state.totalItems" />
+      <NoResult v-if="state.data.length === 0" />
     </div>
   </div>
   <ManageRightsDrawer
@@ -184,7 +191,7 @@ const state: IStateUser = reactive({
   limit: 15,
   totalPage: undefined,
   totalItems: undefined,
-  isLoading: false,
+  isLoading: true,
   search: undefined,
   sort: undefined,
   order: undefined,
@@ -303,10 +310,12 @@ const getStatus = (status: string): IUserStatus => {
 }
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
+  state.currentPage = 1
   state.search = newSearchValue
 }
 
 const handlePageRangeChanged = (newValue: number) => {
+  state.currentPage = 1
   state.limit = newValue
 }
 
@@ -370,8 +379,6 @@ async function setAccountSignatories() {
     const signatories = await getAccountSignatories(currentEntity.value.accountId)
     accountSignatories.value.length = 0
     accountSignatories.value.push(...signatories)
-    // eslint-disable-next-line no-console
-    console.log('EFUBREUFEB', accountSignatories.value)
   } catch (error) {
     console.error(error)
   }

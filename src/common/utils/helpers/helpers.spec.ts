@@ -1,5 +1,14 @@
-import { describe, it, expect } from 'vitest'
-import { getFullName } from '.'
+import { describe, it, expect, vi } from 'vitest'
+import * as styleguide from '@kpmg/styleguide'
+import { displayNotification, getFullName } from '.'
+
+vi.mock('@kpmg/styleguide', () => {
+  return {
+    PICheck: 'PICheck',
+    PIX: 'PIX',
+    PNotification: vi.fn(),
+  }
+})
 
 describe('getFullName', () => {
   it.each([
@@ -21,4 +30,21 @@ describe('getFullName', () => {
       expect(fullName).toBe(expected)
     },
   )
+})
+describe('displayNotification', () => {
+  it('should display correctly the notification', () => {
+    const PNotificationMocked = vi.spyOn(styleguide, 'PNotification')
+    const expectedParams = {
+      customClass: 'error',
+      icon: 'PIX',
+      message: 'Test Message',
+      position: 'bottom-right',
+      showClose: true,
+    }
+
+    displayNotification('error', 'Test Message')
+
+    expect(PNotificationMocked).toHaveBeenCalledOnce()
+    expect(PNotificationMocked).toHaveBeenNthCalledWith(1, expectedParams)
+  })
 })

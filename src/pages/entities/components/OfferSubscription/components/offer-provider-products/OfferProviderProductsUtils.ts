@@ -1,11 +1,7 @@
 import { type PService } from '@kpmg/styleguide'
 import type { SelectedProduct } from '@/common/types'
-import {
-  SubscriptionPriceType,
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import type {
-  SubscriptionOfferProduct,
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
+import type { SubscriptionOfferProduct } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import { getSelectedProductIndex } from '@/pages/entities/components/OffersDrawer/utils/OffersDrawerUtils'
 
 export function getIsServiceSelected(
@@ -15,7 +11,11 @@ export function getIsServiceSelected(
 ) {
   const { productConfigurationId } = offerProduct
 
-  const index = getSelectedProductIndex(selectedProducts, offerId, productConfigurationId)
+  const index = getSelectedProductIndex(
+    selectedProducts,
+    offerId,
+    productConfigurationId,
+  )
 
   return index >= 0
 }
@@ -53,12 +53,23 @@ export function getProviderServices(
   isRecap: boolean | undefined,
 ) {
   return products
+    .filter((offerProduct) => offerProduct.enabled)
     .map<PService>((offerProduct) => {
-      const { isOptionnal, productLabel, productConfigurationId, priceType } = offerProduct
+      const { isOptionnal, productLabel, productConfigurationId, priceType } =
+        offerProduct
 
       const isMandatory = !isOptionnal
-      const pStatus = getIsServiceSelected(offerId, offerProduct, selectedProducts)
-      const pTag = getServiceTag(isOptionnal, priceType, includedLabel, additionalPriceLabel)
+      const pStatus = getIsServiceSelected(
+        offerId,
+        offerProduct,
+        selectedProducts,
+      )
+      const pTag = getServiceTag(
+        isOptionnal,
+        priceType,
+        includedLabel,
+        additionalPriceLabel,
+      )
 
       return {
         pStatus,

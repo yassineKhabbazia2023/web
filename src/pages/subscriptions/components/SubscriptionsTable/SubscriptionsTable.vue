@@ -1,107 +1,115 @@
 <template>
-  <SubscriptionsFilter @apply-offer-filter="handleOfferFiltered" />
-  <PTable
-    pStripe
-    :pData="filteredSubscriptions"
-    data-testid="subscriptions-table"
+  <div
+    v-if="isLoading"
+    class="loader flex flex--justify-content-center flex--align-items-center"
   >
-    <PTableColumn :pLabel="t('dateRequest')">
-      <template #default="scope">
-        <PText
-          :pContent="d(new Date(scope.row.creationDate), 'short')"
-          pType="primary"
-          :disabled="false"
-          :selected="false"
-        />
-      </template>
-    </PTableColumn>
-    <PTableColumn :pLabel="t('folderId')">
-      <template #default="scope">
-        <PText
-          :pContent="scope.row.account?.accountNumber"
-          pType="primary"
-          :disabled="false"
-          :selected="false"
-        />
-      </template>
-    </PTableColumn>
-    <PTableColumn :pLabel="t('legalName')">
-      <template #default="scope">
-        <PText
-          :pContent="scope.row.account?.accountLegalName"
-          pType="primary"
-          :disabled="false"
-          :selected="false"
-        />
-      </template>
-    </PTableColumn>
-    <PTableColumn :pLabel="t('principalContact')">
-      <template #default="scope">
-        <PDoubleText
-          :pTitle="title(scope.row.clients)"
-          :pContent="content(scope.row.clients)"
-          pType="primary"
-          :pDisabled="false"
-          :pSelected="false"
-          :pProfile="profile(scope.row.clients)"
-        />
-      </template>
-    </PTableColumn>
-    <PTableColumn :pLabel="t('requester')">
-      <template #default="scope">
-        <PText
-          :pContent="scope.row.applicant"
-          pType="primary"
-          :disabled="false"
-          :selected="false"
-        />
-      </template>
-    </PTableColumn>
-    <PTableColumn :pLabel="t('offer')">
-      <template #default="scope">
-        <PText
-          :pContent="scope.row.offer?.offerLabel"
-          pType="primary"
-          :disabled="false"
-          :selected="false"
-        />
-      </template>
-    </PTableColumn>
-    <PTableColumn :pLabel="t('status')">
-      <template #default="scope">
-        <PTag
-          :pColor="
-            scope.row.status === SubscriptionStatusCode.VALIDATED
-              ? 'success'
-              : 'info'
-          "
-          pEffect="light"
-          :pContent="formatStatus(scope.row.status)"
-        />
-      </template>
-    </PTableColumn>
-    <PTableColumn :pLabel="t('options')" :pWidth="80">
-      <template #default="scope">
-        <PToolbox
-          trigger="click"
-          :pElements="requestMenu"
-          data-testid="subscription-actions-toolbox"
-          @p-toolbox-item-clicked="($event: string) => onClickToolboxItem($event, scope.row)"
-        >
-          <PButton
-            pType="white"
-            pSize="small"
-            :pLoading="scope.row.subscriptionId === clickedRow && isLoading"
-            class="el-button--icon"
+    <PLoader pType="primary" pSize="50" />
+  </div>
+  <div v-else>
+    <SubscriptionsFilter @apply-offer-filter="handleOfferFiltered" />
+    <PTable
+      pStripe
+      :pData="filteredSubscriptions"
+      data-testid="subscriptions-table"
+    >
+      <PTableColumn :pLabel="t('dateRequest')">
+        <template #default="scope">
+          <PText
+            :pContent="d(new Date(scope.row.creationDate), 'short')"
+            pType="primary"
+            :disabled="false"
+            :selected="false"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('folderId')">
+        <template #default="scope">
+          <PText
+            :pContent="scope.row.account?.accountNumber"
+            pType="primary"
+            :disabled="false"
+            :selected="false"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('legalName')">
+        <template #default="scope">
+          <PText
+            :pContent="scope.row.account?.accountLegalName"
+            pType="primary"
+            :disabled="false"
+            :selected="false"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('principalContact')">
+        <template #default="scope">
+          <PDoubleText
+            :pTitle="title(scope.row.clients)"
+            :pContent="content(scope.row.clients)"
+            pType="primary"
+            :pDisabled="false"
+            :pSelected="false"
+            :pProfile="profile(scope.row.clients)"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('requester')">
+        <template #default="scope">
+          <PText
+            :pContent="scope.row.applicant"
+            pType="primary"
+            :disabled="false"
+            :selected="false"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('offer')">
+        <template #default="scope">
+          <PText
+            :pContent="scope.row.offer?.offerLabel"
+            pType="primary"
+            :disabled="false"
+            :selected="false"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('status')">
+        <template #default="scope">
+          <PTag
+            :pColor="
+              scope.row.status === SubscriptionStatusCode.VALIDATED
+                ? 'success'
+                : 'info'
+            "
+            pEffect="light"
+            :pContent="formatStatus(scope.row.status)"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('options')" :pWidth="80">
+        <template #default="scope">
+          <PToolbox
+            trigger="click"
+            :pElements="requestMenu"
+            data-testid="subscription-actions-toolbox"
+            @p-toolbox-item-clicked="($event: string) => onClickToolboxItem($event, scope.row)"
           >
-            <PIcon>
-              <PIThreeDots />
-            </PIcon>
-          </PButton>
-        </PToolbox>
-      </template>
-    </PTableColumn>
-  </PTable>
+            <PButton
+              pType="white"
+              pSize="small"
+              :pLoading="scope.row.subscriptionId === clickedRow && isActionInProgress"
+              class="el-button--icon"
+            >
+              <PIcon>
+                <PIThreeDots />
+              </PIcon>
+            </PButton>
+          </PToolbox>
+        </template>
+      </PTableColumn>
+    </PTable>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -117,6 +125,7 @@ import {
   PIcon,
   PTag,
   PText,
+  PLoader,
   PIThreeDots,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
@@ -128,6 +137,7 @@ import {
   SubscriptionStatusCode,
 } from '@/services/subscription'
 import { getInitials } from '@/helper'
+import { displayNotification } from '@/common/utils/helpers'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
 import type { Contact } from '@/services/contact/contactTypes'
@@ -143,7 +153,8 @@ const emit = defineEmits<{
   validate: [string]
 }>()
 
-const isLoading = ref(false)
+const isLoading = ref(true)
+const isActionInProgress = ref(false)
 const clickedRow = ref<number>()
 const { user } = storeToRefs(commonStore())
 const subscriptions = ref<SubscriptionRequest[]>([])
@@ -174,7 +185,7 @@ const formatStatus = (status: string) => {
 
 const validateSubscription = async (subscriptionId: number) => {
   if (subscriptionId) {
-    isLoading.value = true
+    isActionInProgress.value = true
     clickedRow.value = subscriptionId
     try {
       await validateSubscriptionRequest(subscriptionId, user.value?.email)
@@ -182,14 +193,16 @@ const validateSubscription = async (subscriptionId: number) => {
         onboarding_start_localisation: 'MOD Screen',
         onboarding_start_result: 'succeeded',
       })
+      displayNotification('success', t('offerActivated'))
       await fetchSubscriptions()
     } catch {
+      displayNotification('error', t('offerNotActivated'))
       amplitudeService.track('Onboarding Started', {
         onboarding_start_localisation: 'MOD Screen',
         onboarding_start_result: 'failed',
       })
     }
-    isLoading.value = false
+    isActionInProgress.value = false
   }
 }
 
@@ -218,7 +231,11 @@ const handleOfferFiltered = (offerTypes: string[]) => {
 }
 
 onMounted(async () => {
-  await fetchSubscriptions()
+  try {
+    await fetchSubscriptions()
+  } catch {} finally {
+    isLoading.value = false
+  }
 })
 </script>
 
@@ -235,6 +252,8 @@ en-US:
   validate: 'Validate request'
   consult: 'Consult'
   toValidate: 'To validate'
+  offerActivated: 'The offer has been activated'
+  offerNotActivated: 'The offer could not be activated'
 fr-FR:
   folderId: 'ID Dossier'
   legalName: 'Raison sociale'
@@ -247,4 +266,6 @@ fr-FR:
   validate: 'Valider la demande'
   consult: 'Consulter'
   toValidate: 'A valider'
+  offerActivated: "L'offre a été activée"
+  offerNotActivated: "L'offre n'a pas pu être activée"
 </i18n>

@@ -20,7 +20,7 @@ export const mockTableData: IWalletData[] = [
       avatarColor: 'orange',
     },
     city: 'paris',
-    hub: 'paris',
+    hub: 'Hub Aquitaine Nord',
     deploymentStatus: {
       text: 'To Deploy',
       icon: PIArrowUpCircle,
@@ -42,7 +42,7 @@ export const mockTableData: IWalletData[] = [
       avatarColor: 'orange',
     },
     city: 'hanoi',
-    hub: 'paris',
+    hub: 'Hub Aquitaine Nord',
     deploymentStatus: {
       text: 'In progress',
       icon: PIArrowUpCircle,

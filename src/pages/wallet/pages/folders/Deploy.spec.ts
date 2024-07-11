@@ -127,7 +127,7 @@ describe('deploy', () => {
     await flushPromises()
 
     const expectedSearchCriteria = getMockedSearchCriteria({
-      currentPage: 0,
+      currentPage: 1,
       filterByDeploymentStatus: '',
       limit: 15,
       search: SEARCH_VALUE,

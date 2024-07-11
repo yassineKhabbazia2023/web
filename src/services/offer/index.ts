@@ -35,7 +35,7 @@ export const getOffer = async (
   }
 }
 
-export const getPrincipalContacts = async (accountId: number): Promise<ClientContact[] | undefined> => {
+export const getPrincipalContacts = async (accountId: number): Promise<ClientContact[]> => {
   try {
     const response =
       await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`)
@@ -44,6 +44,8 @@ export const getPrincipalContacts = async (accountId: number): Promise<ClientCon
   } catch (error) {
     handleRequestError('fetching principal contact', error)
   }
+
+  return []
 }
 
 export const fetchCollaborators = async (

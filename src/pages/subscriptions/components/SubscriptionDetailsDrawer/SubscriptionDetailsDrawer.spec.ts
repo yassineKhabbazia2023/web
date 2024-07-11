@@ -53,11 +53,9 @@ describe('subscriptionDetailsDrawer', () => {
     })
     it('should correctly render the title of the subscription drawer', async () => {
       const wrapper = await getWrapper(true)
-      const subscriptionDrawerTitle = wrapper.find(
-        '[data-testid=subscription-drawer-title]',
-      )
+      const subscriptionDrawer = wrapper.findComponent({ name: 'PDrawer' })
 
-      expect(subscriptionDrawerTitle.text()).toBe(
+      expect(subscriptionDrawer.props('pTitle')).toBe(
         `${subscriptionAccountTest.accountLegalName} - No. ${subscriptionAccountTest.accountNumber}`,
       )
     })

@@ -9,12 +9,16 @@ import NextPreviousButtons from '@/common/components/NextPreviousButtons'
 import AddCustomerDrawer from '.'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 import { getMockedCustomer } from '@/services/contact/contactMocks'
-import { createCustomer } from '@/services/account'
+import { addContactToEntity, createCustomer, getAccountUserByEmail } from '@/services/account'
 
 const customerMock = getMockedCustomer()[0]
 
 export const debounceMock = vi.fn((callback: Function) => callback)
 
+const apiMocks = vi.hoisted(() => ({
+  emailThatExistsMock: vi.fn(() => Promise.resolve({ ...customerMock })),
+  emailThatDoesNotExist: vi.fn(() => Promise.resolve(null)),
+}))
 vi.mock('@/services/account', () => {
   const createCustomerMock = vi.fn(() => {
     return Promise.resolve({
@@ -23,15 +27,12 @@ vi.mock('@/services/account', () => {
       },
     })
   })
-  const addContactToEntityMock = vi.fn().mockResolvedValue({})
 
-  const getAccountUserByEmailMock = vi.fn(() => {
-    return Promise.resolve({ ...customerMock })
-  })
+  const addContactToEntityMock = vi.fn().mockResolvedValue({})
   return {
     createCustomer: createCustomerMock,
     addContactToEntity: addContactToEntityMock,
-    getAccountUserByEmail: getAccountUserByEmailMock,
+    getAccountUserByEmail: apiMocks.emailThatExistsMock,
   }
 })
 
@@ -76,6 +77,8 @@ const findAddCustomerDrawer = (wrapper: VueWrapper) =>
 
 const findAddCustomerFeedback = (wrapper: VueWrapper) =>
   wrapper.findComponent(AddCustomerFeedback)
+
+const findIsError = () => wrapper.find('.is-error')
 
 const formDataMock = {
   email: 'this@isafakeemail.cc',
@@ -192,6 +195,26 @@ describe('add customer drawer', () => {
       expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeFalsy()
     })
 
+    it('should clear the form when using unknown email after using an existing email', async () => {
+      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
+
+      emailInput.setValue(formDataMock.email)
+      await emailInput.trigger('blur')
+      await nextTick()
+
+      vi.mocked(getAccountUserByEmail).mockReturnValue(apiMocks.emailThatDoesNotExist())
+
+      emailInput.setValue('this@isatest.fr')
+      await emailInput.trigger('blur')
+      await flushPromises()
+
+      expect(lastNameInput.element.disabled).toBeFalsy()
+      expect(firstNameInput.element.value).toBeFalsy()
+      expect(firstNameInput.element.disabled).toBeFalsy()
+      expect(mobilePhoneInput.element.value).toBeFalsy()
+      expect(mobilePhoneInput.element.disabled).toBeFalsy()
+    })
+
     it('should bind values', async () => {
       fillFormFields(wrapper)
       const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
@@ -212,16 +235,45 @@ describe('add customer drawer', () => {
     })
 
     it('has an error if email is not valid', async () => {
-      const getIsError = () => wrapper.find('.is-error')
-
-      expect(getIsError().exists()).toBeFalsy()
+      expect(findIsError().exists()).toBeFalsy()
 
       const { emailInput } = getFormFields(wrapper)
       await emailInput.setValue('falseEmail')
       await emailInput.trigger('blur')
       await flushPromises()
 
-      expect(getIsError().exists()).toBeTruthy()
+      expect(findIsError().exists()).toBeTruthy()
+    })
+
+    it('disables the next button if the mobile field has an error', async () => {
+      expect(findIsError().exists()).toBeFalsy()
+
+      fillFormFields(wrapper)
+      const { mobilePhoneInput } = getFormFields(wrapper)
+      await mobilePhoneInput.setValue('bad value')
+      await mobilePhoneInput.trigger('blur')
+      await flushPromises()
+
+      expect(findIsError().exists()).toBeTruthy()
+      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+      expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeTruthy()
+    })
+
+    it('should only add role if user already exists', async () => {
+      const { emailInput } = getFormFields(wrapper)
+
+      // Filling the form with existing information
+      // getAccountUserByEmail is mocked to return a 200 with user information right now
+      emailInput.setValue(formDataMock.email)
+      await emailInput.trigger('blur')
+      await nextTick()
+
+      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
+      await nextPreviousButtonsWrapper.vm.$emit('click-next')
+      await flushPromises()
+
+      expect(addContactToEntity).toHaveBeenCalledWith(defaultProps.targetEntityId, customerMock.id)
+      expect(createCustomer).not.toHaveBeenCalled()
     })
   })
 })

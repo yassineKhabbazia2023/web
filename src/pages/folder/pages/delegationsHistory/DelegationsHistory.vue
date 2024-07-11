@@ -5,7 +5,12 @@
       :placeholder="t('searchByName')"
     />
 
-    <PLoader v-if="isLoading" />
+    <div
+      v-if="isLoading"
+      class="loader flex flex--justify-content-center flex--align-items-center"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
 
     <div v-if="!isLoading">
       <!-- 270px is the height above the timeline-->

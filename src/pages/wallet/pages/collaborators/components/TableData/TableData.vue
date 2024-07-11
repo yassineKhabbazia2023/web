@@ -11,7 +11,7 @@
       <PTableColumn
         :pLabel="t('nameOfCollaborator')"
         pProp="lastName"
-        pSortable
+        pSortable="custom"
       >
         <template #default="scope">
           <div class="flex flex--align-items-center">
@@ -35,31 +35,31 @@
       <PTableColumn
         :pLabel="t('email')"
         pProp="email"
-        pSortable
+        pSortable="custom"
       />
 
       <PTableColumn
         :pLabel="t('phoneNumber')"
         pProp="landPhone"
-        pSortable
+        pSortable="custom"
       />
 
       <PTableColumn
         :pLabel="t('ibsStatus')"
         pProp="ibsStatus"
-        pSortable
+        pSortable="custom"
       />
 
       <PTableColumn
         :pLabel="t('role')"
         pProp="role"
-        pSortable
+        pSortable="custom"
       />
 
       <PTableColumn
         :pLabel="t('office')"
         pProp="office"
-        pSortable
+        pSortable="custom"
       />
 
       <PTableColumn
@@ -156,7 +156,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('detailsOfDelegations'),
       pActionName: 'detailsOfDelegations',
       pState: 'default',
-      display: true,
+      display: false,
     },
     {
       pIconName: 'PIGrid',

@@ -33,9 +33,19 @@
       <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
     </div>
 
-    <PLoader v-if="isLoading" />
+    <div
+      v-if="isLoading"
+      class="loader flex flex--justify-content-center flex--align-items-center"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
 
-    <div v-if="!isLoading">
+    <!--
+      The v-show is used just below (instead of a v-if) due to the sorting on the table
+      that is done on the back end side. In this case, the table should not be destroyed
+      & re render else there is a bug with the caret.
+    -->
+    <div v-show="!isLoading">
       <PTable
         v-if="collabs.length"
         @current-change="handleChange"
@@ -315,10 +325,12 @@ const removeCollaborator = async (
 }
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
+  state.currentPage = 1
   state.search = newSearchValue
 }
 
 const handlePageRangeChanged = (newItemsPerPage: number) => {
+  state.currentPage = 1
   state.limit = newItemsPerPage
 }
 

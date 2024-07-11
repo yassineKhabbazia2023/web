@@ -35,7 +35,12 @@
         <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
       </div>
 
-      <PLoader v-if="state.isLoading" />
+      <div
+        v-if="state.isLoading"
+        class="loader flex flex--justify-content-center flex--align-items-center"
+      >
+        <PLoader pType="primary" pSize="50" />
+      </div>
 
       <div v-if="!state.isLoading">
         <TableData
@@ -47,7 +52,7 @@
           :isInAnEntityPage="!!entityId"
         />
 
-        <NoResult v-if="!state.data.length" />
+        <NoResult v-if="state.data.length === 0" />
       </div>
     </div>
 
@@ -130,7 +135,7 @@ const state: IState = reactive({
   totalPages: undefined,
   totalItems: undefined,
   search: undefined,
-  isLoading: false,
+  isLoading: true,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
   isRemoveUserDialogOpened: false,
@@ -144,10 +149,12 @@ const { hasPermission } = userPermissions()
 const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
+  state.currentPage = 1
   state.search = newSearchValue
 }
 
 const handlePageRangeChanged = (newItemsPerPage: number) => {
+  state.currentPage = 1
   state.limit = newItemsPerPage
 }
 
