@@ -24,8 +24,11 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SingleInputModal from '@/modules/common/templates/modals'
-import { validInputMaxLength, validInputAlphanumericFrench }
-  from '@/modules/common/helpers/inputValidationHelper'
+import {
+  INPUT_MAX_LENGTH,
+  validInputMaxLength,
+  validInputAlphanumericFrench,
+} from '@/modules/common/helpers/inputValidationHelper'
 import { type RenameFolderModalProps }
   from '@/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
 
@@ -60,7 +63,7 @@ const errorMsg = computed(() => {
     return t('validations.alphaNumerique')
   }
   if (!validInputMaxLength(inputContent.value)) {
-    return t('validations.maxLength')
+    return t('validations.maxLength', { maxLength: INPUT_MAX_LENGTH })
   }
   if (folderNameExists.value) {
     return t('validations.folderNameExists', { folderName: inputContent.value })
@@ -131,7 +134,7 @@ en-US:
       Enter a name that does not contain any of the following characters:
       “ * : {'<'} {'>'} ? / \ {'|'}
     folderNameExists: 'A folder with the name {folderName} already exists'
-    maxLength: 'The number of characters allowed (256) is exceeded'
+    maxLength: 'The number of characters allowed ({maxLength}) is exceeded'
 
 fr-FR:
   validations:
@@ -139,5 +142,5 @@ fr-FR:
       Entrez un nom qui ne contient aucun des caractères suivants :
       “ * : {'<'} {'>'} ? / \ {'|'}
     folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
-    maxLength: 'Le nombre de caractères autorisés (256) est dépassé'
+    maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé'
 </i18n>

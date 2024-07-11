@@ -24,8 +24,11 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
 import SingleInputModal from '@/modules/common/templates/modals'
-import { validInputMaxLength, validInputAlphanumericFrench }
-  from '@/modules/common/helpers/inputValidationHelper'
+import {
+  INPUT_MAX_LENGTH,
+  validInputMaxLength,
+  validInputAlphanumericFrench,
+} from '@/modules/common/helpers/inputValidationHelper'
 import {
   getDocumentNameExtension,
   getDocumentNameWithoutExtension,
@@ -62,7 +65,7 @@ const errorMessage = computed(() => {
     return t('validations.alphaNumerique')
   }
   if (!validInputMaxLength(inputContent.value)) {
-    return t('validations.maxLength')
+    return t('validations.maxLength', { maxLength: INPUT_MAX_LENGTH })
   }
   return ''
 })
@@ -97,7 +100,7 @@ en-US:
     alphaNumerique: >
       Enter a name that does not contain any of the following characters:
       “ * : {'<'} {'>'} ? / \ {'|'}
-    maxLength: 'The number of characters allowed (256) is exceeded'
+    maxLength: 'The number of characters allowed ({maxLength}) is exceeded'
   title: Rename
   inputLabel: Rename document
   inputPlaceHolder: Enter a new document name
@@ -109,7 +112,7 @@ fr-FR:
     alphaNumerique: >
       Entrez un nom qui ne contient aucun des caractères suivants :
       “ * : {'<'} {'>'} ? / \ {'|'}
-    maxLength: 'Le nombre de caractères autorisés (256) est dépassé'
+    maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé'
   title: Renommer
   inputLabel: Renommez votre document
   inputPlaceHolder: Entrez un nouveau nom

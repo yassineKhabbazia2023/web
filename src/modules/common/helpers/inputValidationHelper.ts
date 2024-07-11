@@ -4,5 +4,7 @@ export const validInputAlphanumericFrench = (input: string): boolean => {
   return regex.test(input) && input?.trim().length !== 0
 }
 
+export const INPUT_MAX_LENGTH = 255
+
 export const validInputMaxLength = (input: string): boolean =>
-  input?.trim().length < 256
+  input?.trim().length < INPUT_MAX_LENGTH + 1
