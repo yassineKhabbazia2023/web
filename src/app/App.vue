@@ -51,7 +51,9 @@ watch(
       new Idle()
         .whenNotInteractive()
         .within(VITE_IDLE_DURATION)
-        .do(async () => await handleLogout())
+        .do(() => {
+          handleLogout()
+        })
         .start()
     }
   },
