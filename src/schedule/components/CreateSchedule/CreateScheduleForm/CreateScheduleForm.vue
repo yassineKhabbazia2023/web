@@ -184,16 +184,13 @@ const scheduleModel: Schedule = {
   description: '',
   isDraft: false,
   isPrivate: false,
-  attachment: {
-    name: '',
-    content: '',
-  },
+  attachment: null,
 }
 const reader: FileReader = new FileReader()
 const attachmentErrorType = ref<'extension' | 'size' | ''>('')
 
 const showEndOfMonthDayAlert = computed(() =>
-  createScheduleForm.date.getDate() >= 29 &&
+  createScheduleForm.date?.getDate() >= 29 &&
 (createScheduleForm.frequency === 'Monthly' || createScheduleForm.frequency === 'Quarterly'))
 
 const frequenciesOptionsFormatted = computed(() => {
@@ -247,7 +244,7 @@ const evaluateForm = () => {
       scheduleModel.description = createScheduleForm.description
       scheduleModel.scheduling.frequency = createScheduleForm.frequency as Frequency
       scheduleModel.reminders = reminders.value
-      scheduleModel.attachment = createScheduleForm.attachment
+      scheduleModel.attachment = createScheduleForm.attachment.name ? createScheduleForm.attachment : null
       emit('update-schedule-model', scheduleModel)
     }
   })
@@ -281,7 +278,7 @@ const addAttachment = (file: File[]) => {
     () => {
       createScheduleForm.attachment = {
         name: file[0].name,
-        content: base64ToBase64URL(reader.result as string),
+        content: base64ToBase64URL((reader.result as string)?.split(',')[1]),
       }
     },
     false,

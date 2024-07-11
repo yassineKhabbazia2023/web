@@ -7,7 +7,6 @@ import {
   getYearMonth,
   getTypeLabel,
   base64ToBase64URL,
-  base64UrlToBase64,
   getFileExtension,
   fileSizeHumanFormatter,
   downloadFile,
@@ -99,9 +98,6 @@ describe('utils helpers', () => {
     const fileName = 'facture_leroy-merlin.pdf'
     it('should convert a base64 string to a base64Url', () => {
       expect(base64ToBase64URL(base64Data)).toStrictEqual(base64UrlData)
-    })
-    it('should convert a base64Url string to a base64', () => {
-      expect(base64UrlToBase64(base64Data)).toStrictEqual(base64Data)
     })
     it('should get file extension based on name', () => {
       expect(getFileExtension(fileName)).toBe('PDF')

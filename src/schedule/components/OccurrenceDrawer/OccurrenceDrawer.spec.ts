@@ -37,6 +37,7 @@ vi.mock('@/schedule/services', () => {
     getOccurrence: vi.fn(() => Promise.resolve(mockedOccurrence)),
     getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
     postDeadlineAccountStatus: vi.fn(),
+    getOccurrenceAttachment: vi.fn(() => Promise.resolve({ data: attachmentContent })),
   }
 })
 
@@ -56,7 +57,7 @@ vi.mock('@/schedule/helpers/utils', () => ({
   saveFileAs: vi.fn(),
   downloadFile: vi.fn(),
   fileSizeHumanFormatter: vi.fn(),
-  base64UrlToBase64: vi.fn(() => base64Data),
+  // base64UrlToBase64: vi.fn(() => base64Data),
   getFileExtension: vi.fn(),
 }))
 
@@ -79,7 +80,7 @@ const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
 }
 
 const fileName = 'declaration_tva_mai_2024.pdf'
-const base64Data = 'GVsbG8g+d29ybGQ='
+const attachmentContent = 'schedule attachment data'
 
 describe('drawer.vue', () => {
   it('should display loader until data are loaded', async () => {
@@ -203,7 +204,7 @@ describe('drawer.vue', () => {
       })),
     }))
     await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
-    expect(saveFileAs).toHaveBeenCalledWith(fileName, base64Data)
+    expect(saveFileAs).toHaveBeenCalledWith(fileName, attachmentContent)
   })
 
   it('should use traditional download method when showSaveFilePicker is not available', async () => {
@@ -213,7 +214,7 @@ describe('drawer.vue', () => {
     await flushPromises()
     delete window.showSaveFilePicker
     await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
-    expect(downloadFile).toHaveBeenCalledWith(fileName, base64Data)
+    expect(downloadFile).toHaveBeenCalledWith(fileName, attachmentContent)
   })
 
   it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
@@ -228,8 +229,16 @@ describe('drawer.vue', () => {
     }))
     vi.mocked(saveFileAs).mockRejectedValueOnce(new Error('Failed to execute  showSaveFilePicker on Window'))
     await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
-    // expect(saveFileAs).toHaveBeenCalled()
-    expect(downloadFile).toHaveBeenCalledWith(fileName, base64Data)
+    await flushPromises()
+    expect(downloadFile).toHaveBeenCalledWith(fileName, attachmentContent)
+    expect(true).toBeTruthy()
+  })
+  it('should throw and not call downloadFile', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    vi.mocked(scheduleServices.getOccurrenceAttachment).mockRejectedValueOnce(new Error('Failed to execute schedule'))
+    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+    expect(downloadFile).not.toHaveBeenCalledWith(fileName, attachmentContent)
   })
 })
 

@@ -21,6 +21,7 @@
         pType="primary"
         pSize="small"
         :pRound="false"
+        data-testid="logout-button"
         @click="handleLogout"
       >
         {{ t('logout') }}
@@ -29,7 +30,8 @@
         pType="primary"
         pSize="small"
         :pRound="false"
-        @click="handleRenew"
+        data-testid="renew-token-button"
+        @click="handleTokenRenewal"
       >
         {{ t('renew') }}
       </PButton>
@@ -38,22 +40,24 @@
 </template>
 
 <script setup lang="ts">
-import { PDialog, PButton, PImage } from '@kpmg/styleguide'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { commonApi, tokenService } from '@kpmg/common'
-import type { JwtPayload } from 'jwt-decode'
 import jwtDecode from 'jwt-decode'
+import type { JwtPayload } from 'jwt-decode'
+import { PDialog, PButton, PImage } from '@kpmg/styleguide'
+import { useRedirection } from '@/composables/useRedirection'
+import { commonApi, tokenService } from '@kpmg/common'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-const isVisibleDialog = ref(false)
-const emit = defineEmits(['logout'])
+
 let exp: number | undefined
 let sub: string | undefined
 let timer: any
+const isVisibleDialog = ref(false)
+const { logoutAndRedirectToLogin } = useRedirection()
 
 function onTokenChanges(token: string) {
   if (!token) return
@@ -64,24 +68,24 @@ function onTokenChanges(token: string) {
   if (exp && sub) tokenHandle(exp)
 }
 
-const handleRenew = async () => {
-  isVisibleDialog.value = false
+const handleTokenRenewal = async () => {
   const baseUrl = `authentication/api/refreshToken?userId=${sub}`
   const { data: token } = await commonApi().gateway.post(baseUrl)
   tokenService.setToken(token)
+  isVisibleDialog.value = false
   clearTimeout(timer)
 }
 
-const handleLogout = () => {
+const handleLogout = async () => {
+  await logoutAndRedirectToLogin()
   isVisibleDialog.value = false
-  emit('logout')
 }
 
 const tokenHandle = (exp: number) => {
-  const delay = exp * 1000 - 5000 - Date.now()
+  const delay = exp * 1000 - 300000 - Date.now()
   timer = setTimeout(() => {
     isVisibleDialog.value = true
-  }, delay) // expiration time minus 5 seconds
+  }, delay) // Will display the popup 5 minutes before the token expires
 }
 
 onMounted(() => {
@@ -93,9 +97,9 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .dialog-renew-token {
-  &__popup-img > img {
+  &__popup-img {
     display: block;
     max-width: 221px;
     margin: auto;

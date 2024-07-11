@@ -2,14 +2,18 @@
   <div v-if="!isLoading && defaultEntity" class="common-layout">
     <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
     <PContainer pDirection="vertical">
-      <PCHeader class="header-container" height="56">
+      <PCHeader
+        v-if="!isFullpage"
+        class="header-container"
+        height="56"
+      >
         <Header
           v-model:showCalendar="showCalendar"
           @show-user-profile-drawer="handleClick"
         />
       </PCHeader>
       <PContainer class="aside-main-container">
-        <PAside class="aside-container">
+        <PAside v-if="!isFullpage" class="aside-container">
           <Sidebar class="sidebar-container" />
         </PAside>
         <PContainer
@@ -17,6 +21,8 @@
           :class="{
             'main-container--no-paddings':
               stylesMetaProperties?.hasPaddings === false,
+            'main-container--fullpage':
+              isFullpage,
           }"
         >
           <UserProfile
@@ -25,9 +31,6 @@
             :hasDrawerOpened="hasUserProfileDrawerOpened"
           />
           <router-view />
-        </PContainer>
-        <PContainer class="home-bottom-menu">
-          <PBottomMenu :defaultActive="routeActive" :pItems="menuBottomMenu" />
         </PContainer>
       </PContainer>
     </PContainer>
@@ -47,7 +50,7 @@ import { useI18n } from 'vue-i18n'
 import { productFruits } from 'product-fruits'
 import { VITE_PRODUCT_FRUITS_KEY, VITE_PRODUCT_FRUITS_KEY_CLIENT } from 'env-vars'
 import { commonStore as store, dataProvider } from '@kpmg/common'
-import { PCHeader, PAside, PContainer, PBottomMenu } from '@kpmg/styleguide'
+import { PCHeader, PAside, PContainer } from '@kpmg/styleguide'
 import { getBrowserName } from '@/helper'
 import UserProfile from '@/components/UserProfile'
 import HomeScheduleDrawer from '@/components/HomeScheduleDrawer'
@@ -65,15 +68,9 @@ declare global {
     productFruits: any
   }
 }
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
 
 // Variables
-const route = useRoute()
 const router = useRouter()
-const routeActive = route.path
 const { fetchUserData } = dataProvider()
 const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
@@ -95,42 +92,14 @@ const handleClick = () => {
   hasUserProfileDrawerOpened.value = true
   ReloadOneTrust()
 }
-// Constants
-const headerMenu = [
-  {
-    pIcon: 'PIGrid',
-    pText: t('wallet'),
-    pPath: '/portefeuille',
-  },
-  {
-    pIcon: 'PIFolder',
-    pText: t('ged'),
-    pPath: '/ged',
-  },
-  {
-    pIcon: 'PIFiles',
-    pText: t('subscriptions'),
-    pPath: '/subscription',
-  },
-  {
-    pIcon: 'PICashCoin',
-    pText: t('mandate'),
-    pPath: '/mandats',
-  },
-]
-
-const menuBottomMenu = headerMenu.map(({ pIcon, pText: pName, pPath }) => {
-  return {
-    pIcon,
-    pName,
-    pPath,
-    pComponent: { render: () => null },
-  }
-})
 
 // Computed
 const stylesMetaProperties = computed(
   () => router.currentRoute.value.meta.styles,
+)
+
+const isFullpage = computed(
+  () => router.currentRoute.value.meta.display?.fullpage,
 )
 
 const globalStore = store()
@@ -298,10 +267,6 @@ onMounted(async () => {
     display: flex;
   }
 
-  .home-bottom-menu {
-    display: none;
-  }
-
   .aside-container {
     width: inherit;
     overflow: visible;
@@ -316,17 +281,6 @@ onMounted(async () => {
     padding-right: 52px;
     @media only screen and (min-width: 992px) {
       position: relative;
-      z-index: 10;
-    }
-  }
-
-  @media only screen and (max-width: 991px) {
-    .home-bottom-menu {
-      display: block;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      position: absolute;
       z-index: 10;
     }
   }
@@ -347,19 +301,11 @@ onMounted(async () => {
     &--no-paddings {
       padding: 0;
     }
+    &--fullpage {
+      padding: 0;
+      margin: 0;
+      height: 100vh;
+    }
   }
 }
 </style>
-
-<i18n lang="yaml">
-en-US:
-  wallet: 'Wallet'
-  subscriptions: 'Request validation'
-  ged: 'My documents'
-  mandate: 'Banking'
-fr-FR:
-  wallet: 'Portefeuille'
-  subscriptions: 'Validation de demande'
-  ged: 'Mes documents'
-  mandate: 'Flux bancaires'
-</i18n>

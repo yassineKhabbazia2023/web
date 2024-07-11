@@ -5,6 +5,8 @@ export const PAGES_TITLE = {
   COLLAB: 'Login Collab Page',
   HOME: 'Home Page',
   FOLDER: 'Folder Page',
+  MY_ENTITIES: 'My Entities',
+  WALLET: 'My Wallet',
 }
 
 export const ROUTES: RouteRecordRaw[] = [
@@ -39,7 +41,14 @@ export const ROUTES: RouteRecordRaw[] = [
     path: '/mes-entites',
     name: 'entity-client',
     component: {
-      template: '<p class="pageTitle">My Entities</p>',
+      template: `<p class="pageTitle">${PAGES_TITLE.MY_ENTITIES}</p>`,
+    },
+  },
+  {
+    path: '/portefeuille/dossiers',
+    name: 'wallet',
+    component: {
+      template: `<p class="pageTitle">${PAGES_TITLE.WALLET}</p>`,
     },
   },
   {

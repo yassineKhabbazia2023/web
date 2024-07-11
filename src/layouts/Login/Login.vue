@@ -55,9 +55,14 @@ import { PCol, PImage, PRow } from '@kpmg/styleguide'
 import LegalLinks from '@/components/LegalLinks'
 import SupportInfo from '@/components/SupportInfo'
 import { type LoginLayoutProps } from '@/layouts/Login/LoginTypes'
+import { onMounted } from 'vue'
 
 withDefaults(defineProps<LoginLayoutProps>(), {
   illustration: 'connection-default',
+})
+
+onMounted(() => {
+  localStorage.removeItem('selected-entity')
 })
 
 </script>

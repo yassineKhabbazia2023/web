@@ -70,7 +70,7 @@
       </p>
       <DeadlineReminders
         v-if="isCollab"
-        :reminders="occurrence.schedule.reminders"
+        :reminders="occurrence.schedule.reminders ?? []"
       />
       <DeadlineAccounts
         :title="t('deadlineAccounts')"
@@ -100,7 +100,7 @@
         class="margin-top--6"
         data-testid="occurrence-drawer-description"
       />
-      <template v-if="occurrence.schedule.attachment.content">
+      <template v-if="occurrence.schedule.attachment?.name">
         <div class="font-small margin-bottom--2">
           <span class="create-schedule-form__optional-title font-semibold">
             {{ t('attachment') }}
@@ -120,7 +120,7 @@
               pPlain
               pSize="default"
               data-testid="occurrence-drawer-attachment-download"
-              @click="downloadAttachment(occurrence.schedule.attachment)"
+              @click="downloadAttachment(occurrenceId, occurrence.schedule.attachment.name)"
               pIconOnly
             >
               <PIcon>
@@ -169,7 +169,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { getOccurrence, getScheduleModelsByKey, postDeadlineAccountStatus } from '@/schedule/services'
+import {
+  getOccurrence, getScheduleModelsByKey, postDeadlineAccountStatus,
+  getOccurrenceAttachment,
+} from '@/schedule/services'
 import {
   PButton,
   PDrawer,
@@ -189,7 +192,7 @@ import Tag from '@/schedule/components/Common/Tag'
 import DeadlineAccounts from '@/schedule/components/DeadlineAccounts'
 import DeadlineReminders from '@/schedule/components/DeadlineReminders'
 import {
-  downloadFile, base64UrlToBase64, saveFileAs, getFileExtension,
+  downloadFile, saveFileAs, getFileExtension,
   fileSizeHumanFormatter,
 } from '@/schedule/helpers/utils'
 import {
@@ -200,6 +203,8 @@ import {
   getNewStatus,
 } from './OccurrenceDrawerHelper'
 import { datetimeFormats } from '@/schedule/helpers/scheduleConsts'
+import { showNotification } from '@/schedule/helpers/notification'
+import type { NotificationType } from '@/schedule/helpers/notificationTypes'
 
 const StringField = PField<string>
 
@@ -252,8 +257,8 @@ const fileFormat = computed(() =>
 )
 
 const fileSize = computed(() =>
-  occurrence.value?.schedule?.attachment?.content
-    ? fileSizeHumanFormatter((occurrence.value.schedule.attachment.content.split(',')[1].length * (3 / 4) - 1))
+  occurrence.value?.schedule?.attachment?.size
+    ? fileSizeHumanFormatter(occurrence.value.schedule.attachment.size)
     : '',
 )
 
@@ -295,24 +300,35 @@ const setAlertVisibility = () => {
   isNoteAlertShown.value = false
 }
 
-const downloadAttachment = async (attachment:any) => {
+const downloadAttachment = async (occurenceId: number, attachmentName: string) => {
+  const messageMap: Record<NotificationType, string> = {
+    success: t('notification.success'),
+    error: t('notification.error'),
+    downloading: t('notification.downloading'),
+  }
+  const notification = showNotification(messageMap, 'downloading')
   try {
-    const base64File = base64UrlToBase64(attachment.content.split(',')[1])
+    const { data } = await getOccurrenceAttachment(occurenceId,
+    )
     if ('showSaveFilePicker' in window) {
       try {
-        await saveFileAs(attachment.name, base64File)
+        await saveFileAs(attachmentName, data)
       } catch (error) {
         if (error instanceof Error && error.message !== 'The user aborted a request.') {
-          downloadFile(attachment.name, base64File)
+          downloadFile(attachmentName, data)
         }
       }
     } else {
-      downloadFile(attachment.name, base64File)
+      downloadFile(attachmentName, data)
     }
   } catch (error) {
     console.error('Error downloading file:', error)
+    showNotification(messageMap, 'error', notification)
+  } finally {
+    notification.close()
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -343,6 +359,10 @@ const downloadAttachment = async (attachment:any) => {
     check: 'Check here'
     reminderCollabNote: 'to let your colleague know that you have completed the required action.'
     attachment: 'Attachment'
+    notification:
+      downloading: 'Downloading'
+      success: 'Success'
+      error: 'Error'
   fr-FR:
     description: 'Description'
     createdBy: 'Créé par'
@@ -355,4 +375,8 @@ const downloadAttachment = async (attachment:any) => {
     check: 'Cochez ici'
     reminderCollabNote: "pour indiquer à votre collaborateur que vous avez réalisé l’action attendue."
     attachment: 'Pièce jointe'
+    notification:
+      downloading: 'Téléchargement en cours ...'
+      success: 'Piéce jointe téléchargée avec succès.'
+      error: 'Une erreur est survenue lors du téléchargement.'
 </i18n>
