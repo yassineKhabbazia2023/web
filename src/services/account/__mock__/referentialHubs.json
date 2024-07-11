@@ -1,0 +1,154 @@
+[
+  {
+    "hubId": 1,
+    "hubName": "Hub Aquitaine Nord"
+  },
+  {
+    "hubId": 2,
+    "hubName": "Hub Languedoc-Roussillon"
+  },
+  {
+    "hubId": 3,
+    "hubName": "Hub Tarn Aveyron"
+  },
+  {
+    "hubId": 4,
+    "hubName": "Hub Toulouse Midi Pyrennées"
+  },
+  {
+    "hubId": 5,
+    "hubName": "Hub Pays Basque Landes"
+  },
+  {
+    "hubId": 6,
+    "hubName": "Hub Atlantique Ouest"
+  },
+  {
+    "hubId": 7,
+    "hubName": "Hub Anjou Maine"
+  },
+  {
+    "hubId": 8,
+    "hubName": "Hub Charente Limousin"
+  },
+  {
+    "hubId": 9,
+    "hubName": "Hub Haute Bretagne"
+  },
+  {
+    "hubId": 10,
+    "hubName": "Hub Nantes Atlantique Vendée"
+  },
+  {
+    "hubId": 11,
+    "hubName": "Hub Bretagne Océan"
+  },
+  {
+    "hubId": 12,
+    "hubName": "Hub La Réunion"
+  },
+  {
+    "hubId": 13,
+    "hubName": "Hub Grand Ouest Parisien"
+  },
+  {
+    "hubId": 14,
+    "hubName": "Hub Centre"
+  },
+  {
+    "hubId": 15,
+    "hubName": "Hub Marne et Oise"
+  },
+  {
+    "hubId": 16,
+    "hubName": "Hub Berry Nivernais"
+  },
+  {
+    "hubId": 17,
+    "hubName": "Hub Paris"
+  },
+  {
+    "hubId": 18,
+    "hubName": "Hub Arc Alpin"
+  },
+  {
+    "hubId": 19,
+    "hubName": "Hub Loire & Drôme Ardèche"
+  },
+  {
+    "hubId": 20,
+    "hubName": "Hub Franche-Comté Bourgogne Nord"
+  },
+  {
+    "hubId": 21,
+    "hubName": "Hub Ain et Lyonnais"
+  },
+  {
+    "hubId": 22,
+    "hubName": "Hub Bourgogne Sud"
+  },
+  {
+    "hubId": 23,
+    "hubName": "Hub Auvergne"
+  },
+  {
+    "hubId": 24,
+    "hubName": "Hub Provence Côte d'Azur"
+  },
+  {
+    "hubId": 25,
+    "hubName": "Hub Normandie Seine Baie de Somme"
+  },
+  {
+    "hubId": 26,
+    "hubName": "Hub Antilles Guyane"
+  },
+  {
+    "hubId": 27,
+    "hubName": "Hub Caen Sud Normandie"
+  },
+  {
+    "hubId": 28,
+    "hubName": "Hub Manche"
+  },
+  {
+    "hubId": 29,
+    "hubName": "Hub Amiens Haute Picardie"
+  },
+  {
+    "hubId": 30,
+    "hubName": "Hub Littoral"
+  },
+  {
+    "hubId": 31,
+    "hubName": "Hub Artois Grand Hainaut"
+  },
+  {
+    "hubId": 32,
+    "hubName": "Hub Estuaire Terre et Mer"
+  },
+  {
+    "hubId": 33,
+    "hubName": "Hub Lille Métropole"
+  },
+  {
+    "hubId": 34,
+    "hubName": "Hub Alsace Nord"
+  },
+  {
+    "hubId": 35,
+    "hubName": "Hub Lorraine Sud"
+  },
+  {
+    "hubId": 36,
+    "hubName": "Hub Alsace Sud"
+  },
+  {
+    "hubId": 37,
+    "hubName": "Hub Champagne-Ardenne"
+  },
+  {
+    "hubId": 38,
+    "hubName": "Hub Lorraine Nord"
+  }
+]

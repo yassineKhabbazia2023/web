@@ -4,10 +4,15 @@ import path from 'path'
 import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import terser from '@rollup/plugin-terser'
 import { visualizer } from 'rollup-plugin-visualizer'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import viteBaseConfig from '@kpmg/config-pulse/vite.config.base'
+import { name } from './package.json'
+
+const [PORT] = process.argv.slice(3)
+const APP_NAME = name.split('/')[1]
 
 export default ({ mode }) =>
   defineConfig(mergeConfig(
@@ -19,46 +24,62 @@ export default ({ mode }) =>
         vue({
           template: {
             compilerOptions: {
-              isCustomElement: (tag) => ['el-button'].includes(tag)
-            }
-          }
+              isCustomElement: (tag) => tag.startsWith('el-'),
+            },
+          },
         }),
         VueI18nPlugin({
-          include: [path.resolve(__dirname, './src/**/locales/**')]
+          include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
         viteExternalsPlugin({
           vue: 'Vue',
           'vue-i18n': 'VueI18n',
+          'vue-router': 'VueRouter',
           pinia: 'Pinia',
+          'env-vars': 'EnvVars',
           '@kpmg/common': 'Common',
-          '@kpmg/styleguide': 'StyleGuide'
-        }, { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
-        cssInjectedByJsPlugin()
+          '@kpmg/styleguide': 'Styleguide',
+        },
+        { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
+        {
+          resolveId(id) {
+            if (id === 'env-vars') return id
+          },
+          load(id) {
+            if (id === 'env-vars') return ''
+          },
+        },
+        cssInjectedByJsPlugin(),
       ],
       resolve: {
         alias: {
-          '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
+          '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
       },
       build: {
         lib: {
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: () => 'boilerplate.js'
+          fileName: () => `${APP_NAME}.js`,
         },
         rollupOptions: {
           input: 'src/main.ts',
           preserveEntrySignatures: 'strict',
           output: {
-            format: 'system'
-          }
-        }
+            format: 'system',
+          },
+          plugins: [terser()],
+        },
       },
       server: {
-        port: 8084
+        port: PORT,
+        origin: `http://localhost:${PORT}`,
       },
       preview: {
-        port: 8084
-      }
-    }
+        port: PORT,
+      },
+      test: {
+        setupFiles: 'vitest.setup.ts',
+      },
+    },
   ))

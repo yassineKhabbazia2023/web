@@ -8,6 +8,7 @@ stats.html
 
 # dependencies
 node_modules
+*.tgz
 
 # IDEs and editors
 /.idea
@@ -39,4 +40,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.npmrc
+#
+vite*.mjs

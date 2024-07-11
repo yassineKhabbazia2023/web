@@ -1,0 +1,68 @@
+[
+  {
+    "title": "Adresse de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
+        "pDisabled": true,
+        "pFieldKey": "address[0].addressLine1",
+        "pFieldType": "input",
+        "pLabel": "Adresse (numéro et nom de la voie)"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
+        "pDisabled": true,
+        "pFieldKey": "address[0].addressLine2",
+        "pFieldType": "input",
+        "pLabel": "Compléments (bâtiment, étages, etc)"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-15",
+        "pDisabled": true,
+        "pFieldKey": "address[0].zipCode",
+        "pFieldType": "input",
+        "pLabel": "Code postal"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-35",
+        "pDisabled": true,
+        "pFieldKey": "address[0].city",
+        "pFieldType": "input",
+        "pLabel": "Ville"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-40",
+        "pDisabled": true,
+        "pFieldKey": "address[0].country",
+        "pFieldType": "input",
+        "pLabel": "Pays"
+      }
+    ]
+  },
+  {
+    "title": "Coordonnées de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-60",
+        "pDisabled": true,
+        "pFieldKey": "email",
+        "pFieldType": "input",
+        "pLabel": "Mail"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "phone[0].phoneNumber",
+        "pFieldType": "input",
+        "pLabel": "Téléphone"
+      }
+    ]
+  }
+]

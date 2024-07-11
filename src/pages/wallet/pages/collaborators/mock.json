@@ -1,0 +1,174 @@
+{
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "firstName": "David",
+        "lastName": "Pruitt",
+        "email": "davidpruitt@zanilla.com",
+        "landPhone": "(817) 540-2245",
+        "mobilePhone": "(841) 594-2643",
+        "ibsStatus": "AM",
+        "role": "Collaborateur ESC",
+        "office": "Kenmar"
+      },
+      {
+        "id": 2,
+        "firstName": "Chandler",
+        "lastName": "Kerr",
+        "email": "chandlerkerr@zanilla.com",
+        "landPhone": "(998) 515-3805",
+        "mobilePhone": "(999) 402-2641",
+        "ibsStatus": "AM",
+        "role": "Support",
+        "office": "Gilgo"
+      },
+      {
+        "id": 3,
+        "firstName": "Burch",
+        "lastName": "Sandoval",
+        "email": "burchsandoval@zanilla.com",
+        "landPhone": "(837) 441-3820",
+        "mobilePhone": "(862) 463-2492",
+        "ibsStatus": "AM",
+        "role": "Support",
+        "office": "Fannett"
+      },
+      {
+        "id": 4,
+        "firstName": "Dolly",
+        "lastName": "Roberts",
+        "email": "dollyroberts@zanilla.com",
+        "landPhone": "(864) 577-3330",
+        "mobilePhone": "(849) 401-2953",
+        "ibsStatus": "EM",
+        "role": "Support",
+        "office": "Herlong"
+      },
+      {
+        "id": 5,
+        "firstName": "Wilda",
+        "lastName": "Garcia",
+        "email": "wildagarcia@zanilla.com",
+        "landPhone": "(897) 484-3667",
+        "mobilePhone": "(829) 506-3111",
+        "ibsStatus": "CLP",
+        "role": "Support",
+        "office": "Mayfair"
+      },
+      {
+        "id": 6,
+        "firstName": "Jones",
+        "lastName": "Gilmore",
+        "email": "jonesgilmore@zanilla.com",
+        "landPhone": "(831) 430-3872",
+        "mobilePhone": "(875) 481-3093",
+        "ibsStatus": "AM",
+        "role": "Collaborateur GS",
+        "office": "Olney"
+      },
+      {
+        "id": 7,
+        "firstName": "Cotton",
+        "lastName": "Sharpe",
+        "email": "cottonsharpe@zanilla.com",
+        "landPhone": "(834) 407-2088",
+        "mobilePhone": "(866) 519-2535",
+        "ibsStatus": "EM",
+        "role": "Support",
+        "office": "Stouchsburg"
+      },
+      {
+        "id": 8,
+        "firstName": "Ashlee",
+        "lastName": "Hawkins",
+        "email": "ashleehawkins@zanilla.com",
+        "landPhone": "(883) 494-3983",
+        "mobilePhone": "(917) 512-2913",
+        "ibsStatus": "AM",
+        "role": "Support",
+        "office": "Dorneyville"
+      },
+      {
+        "id": 9,
+        "firstName": "Mullins",
+        "lastName": "Morrow",
+        "email": "mullinsmorrow@zanilla.com",
+        "landPhone": "(953) 563-3491",
+        "mobilePhone": "(833) 440-2028",
+        "ibsStatus": "EM",
+        "role": "Collaborateur ESC",
+        "office": "Chilton"
+      },
+      {
+        "id": 10,
+        "firstName": "Hartman",
+        "lastName": "Stanton",
+        "email": "hartmanstanton@zanilla.com",
+        "landPhone": "(914) 584-2431",
+        "mobilePhone": "(877) 440-3723",
+        "ibsStatus": "AM",
+        "role": "Support",
+        "office": "Camas"
+      },
+      {
+        "id": 11,
+        "firstName": "Rutledge",
+        "lastName": "Horton",
+        "email": "rutledgehorton@zanilla.com",
+        "landPhone": "(828) 409-2371",
+        "mobilePhone": "(846) 470-3306",
+        "ibsStatus": "EM",
+        "role": "Collaborateur GS",
+        "office": "Delco"
+      },
+      {
+        "id": 12,
+        "firstName": "Herminia",
+        "lastName": "Randall",
+        "email": "herminiarandall@zanilla.com",
+        "landPhone": "(932) 505-2201",
+        "mobilePhone": "(877) 567-2788",
+        "ibsStatus": "AM",
+        "role": "Collaborateur ESC",
+        "office": "Sexton"
+      },
+      {
+        "id": 13,
+        "firstName": "Janette",
+        "lastName": "Barker",
+        "email": "janettebarker@zanilla.com",
+        "landPhone": "(963) 575-2742",
+        "mobilePhone": "(822) 560-3032",
+        "ibsStatus": "AM",
+        "role": "Collaborateur GS",
+        "office": "Odessa"
+      },
+      {
+        "id": 14,
+        "firstName": "Bonnie",
+        "lastName": "Wood",
+        "email": "bonniewood@zanilla.com",
+        "landPhone": "(925) 599-3363",
+        "mobilePhone": "(866) 525-3412",
+        "ibsStatus": "AM",
+        "role": "Collaborateur GS",
+        "office": "Southmont"
+      },
+      {
+        "id": 15,
+        "firstName": "Hobbs",
+        "lastName": "Villarreal",
+        "email": "hobbsvillarreal@zanilla.com",
+        "landPhone": "(925) 418-3223",
+        "mobilePhone": "(941) 402-3517",
+        "ibsStatus": "EM",
+        "role": "Support",
+        "office": "Ezel"
+      }
+    ],
+    "currentPage": 1,
+    "totalPages": 2,
+    "totalItems": 16
+  }
+}
