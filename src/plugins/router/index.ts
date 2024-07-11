@@ -25,6 +25,11 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@/pages/Error/404'),
+    meta: {
+      display: {
+        fullpage: true,
+      },
+    },
   },
   {
     path: '/dossier/:id/banque',
@@ -56,9 +61,9 @@ const router = createRouter({
 routes.map((route) => router.addRoute(route))
 
 const isUserOriginCollab = async () => {
-  const USER_ORIGIN_URL = 'UserOrigin'
+  const USER_ORIGIN_URL = 'userorigin'
   try {
-    const { data: userOrigin } = await commonApi().user_origin.get(
+    const { data: userOrigin } = await commonApi().gateway.get(
       USER_ORIGIN_URL,
     )
     return userOrigin === 'COLLAB'
@@ -69,17 +74,16 @@ const isObjectEmpty = (obj: Object) => Object.keys(obj).length === 0
 
 router.beforeEach(async (to: any, _from) => {
   const store = useStore()
-  const hasLoginLayout = (to.meta?.layout ?? '').startsWith('Login')
+  const { isAuthenticated, isCollab } = storeToRefs(store)
 
-  if (!hasLoginLayout && isFirstTime.value) {
+  if (isAuthenticated.value && isFirstTime.value) {
     const user = await fetchUserData()
     store.$patch({
       user,
     })
   }
-  isFirstTime.value = false
 
-  const { isAuthenticated, isCollab } = storeToRefs(store)
+  isFirstTime.value = false
 
   const isHomeLayoutWithoutCustomStyles = isObjectEmpty(to.meta)
   const isHomeLayoutWithCustomStyles = !!to.meta?.styles
@@ -95,9 +99,27 @@ router.beforeEach(async (to: any, _from) => {
   if (['entity-client', 'home'].includes(to.name)) {
     return entityClientOrHomeRedirections(store, to, isCollab.value)
   }
+
+  /**
+   * If the user is already authenticated and tries to go to the login page
+   * they should be redirected to the homepage.
+   */
+  if (['login', 'loginClient'].includes(to.name)) {
+    if (isAuthenticated.value) {
+      if (isCollab.value) {
+        return { name: 'wallet' }
+      } else {
+        return { name: 'entity-client' }
+      }
+    }
+  }
 })
 
-async function entityClientOrHomeRedirections(store: Store, to: any, isCollab: boolean) {
+async function entityClientOrHomeRedirections(
+  store: Store,
+  to: any,
+  isCollab: boolean,
+) {
   const entities = await fetchEntities()
   if (to.name === 'home') {
     if (!isCollab && entities.totalItems > 1) {

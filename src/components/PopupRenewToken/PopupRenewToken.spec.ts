@@ -14,6 +14,19 @@ import { nextTick } from 'vue'
 
 const authPostMock = vi.fn(() => ({ data: '' }))
 
+const mock = vi.hoisted(() => {
+  return {
+    logoutAndRedirectToLogin: vi.fn(),
+  }
+})
+vi.mock('@/composables/useRedirection', () => ({
+  useRedirection: () => {
+    return {
+      logoutAndRedirectToLogin: mock.logoutAndRedirectToLogin,
+    }
+  },
+}))
+
 vi.mock('@kpmg/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
@@ -25,12 +38,13 @@ vi.mock('@kpmg/common', () => ({
     getters: {
       isAuthenticated: () => true,
     },
+    actions: {
+      logout: () => vi.fn(),
+    },
   }),
   commonApi: () => ({
     user_origin: {
-      get: vi
-        .fn()
-        .mockResolvedValue({ data: 'CLIENT' }),
+      get: vi.fn().mockResolvedValue({ data: 'CLIENT' }),
     },
     gateway: {
       post: authPostMock,
@@ -60,13 +74,15 @@ vi.mock('jwt-decode', () => ({
 
 const pinia = createTestingPinia()
 
-const createWrapper = () => mount(PopupRenewToken, {
-  global: {
-    plugins: [router, pinia],
-  },
-})
+const createWrapper = () =>
+  mount(PopupRenewToken, {
+    global: {
+      plugins: [router, pinia],
+    },
+  })
 
-const getTokenRenewalDialog = (wrapper: VueWrapper) => wrapper.findComponent(PDialog)
+const getTokenRenewalDialog = (wrapper: VueWrapper) =>
+  wrapper.findComponent(PDialog)
 
 // eslint-disable-next-line max-len
 const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJFUTBNVVE1TjBOQ1JUSkVNemszTTBVMVJrTkRRMFUwUTBNMVJFRkJSamhETWpkRU5VRkJRZyJ9.eyJpc3MiOiJodHRwczovL2ZpZG0uZ2lneWEuY29tL2p3dC8zX2pXbXpmSjI5elFib1FQS0MzNDNrR0szMk1xQWU3MEQ3M3NxM3o0QmxYOGpjTU9kSnZ6U256NUFzUGRobkNlOVAvIiwiYXBpS2V5IjoiM19qV216ZkoyOXpRYm9RUEtDMzQza0dLMzJNcUFlNzBENzNzcTN6NEJsWDhqY01PZEp2elNuejVBc1BkaG5DZTlQIiwiaWF0IjoxNjk3NzIxMzE2LCJleHAiOjE2OTc3MjQ5MTYsInN1YiI6ImEyNTY2YzQ0ODBlZDRmNDBiMGQyMTM3ZTRiYWEwY2VhIn0.W0AhBctUYQSLgE09ugMb3fa0vE9YViM4nfAj59mN5tPpj70qn_RML1IhFHHy-HE70HBrC6AbR3VWOWgwWW139OASD2TpfqCkCFaGZIag_4BuGPoLbvQmORcte-Y6vq9cwkacOplM--mYc45FwZdAk0L8a_Xie-Ez8Q8Y8PvQcM7SlDPdzDlX69AMYU2YOcA9czfZRlONkf1zUIBgXwQQuWRKkKk9c10HbkuMVEqHDMeAaTIvMRU5EBycxWah19yIJaanbfD1sW-C1-KtzhA6agpKkRSxE2gUR8VNaiJwnJgj5F5s7f_9ZMEA7lo7giZR9fq8r5tQ62O60HCA_hmqMA'
@@ -76,11 +92,11 @@ describe('popup renew token', () => {
   beforeEach(() => {
     vi.clearAllTimers()
     vi.useFakeTimers()
-    vi
-      .spyOn(tokenService, 'registerOnChange')
-      .mockImplementation((_key: string, cb: Function) => {
+    vi.spyOn(tokenService, 'registerOnChange').mockImplementation(
+      (_key: string, cb: Function) => {
         cb(TOKEN)
-      })
+      },
+    )
     wrapper = createWrapper()
     ROUTES.forEach((route) => router.addRoute(route))
   })
@@ -90,7 +106,7 @@ describe('popup renew token', () => {
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeFalsy()
-    vi.advanceTimersByTime(7000)
+    vi.advanceTimersByTime(300000)
     await nextTick()
     await flushPromises()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeTruthy()
@@ -100,23 +116,25 @@ describe('popup renew token', () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
-    vi.advanceTimersByTime(7000)
+    vi.advanceTimersByTime(30000)
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
-    const button = tokenRenewalDialog.findAll('button')[1]
+    const button = tokenRenewalDialog.find('[data-testid=logout-button]')
     await button.trigger('click')
-    expect(wrapper.emitted()).toHaveProperty('logout')
+
+    expect(mock.logoutAndRedirectToLogin).toHaveBeenCalledOnce()
   })
 
   it('renew when user click on stay button', async () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
-    vi.advanceTimersByTime(7000)
+    vi.advanceTimersByTime(30000)
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
-    const button = tokenRenewalDialog.findAll('button')[2]
-    button.trigger('click')
+    const button = tokenRenewalDialog.find('[data-testid=renew-token-button]')
+    await button.trigger('click')
+
     expect(authPostMock).toHaveBeenCalledTimes(1)
     expect(authPostMock).toHaveBeenCalledWith(
       `authentication/api/refreshToken?userId=${sub}`,

@@ -8,6 +8,7 @@ import {
   getFrequenciesCollection,
   getOccurrence,
   postDeadlineAccountStatus,
+  getOccurrenceAttachment,
 } from '.'
 import { accountsCollection } from '@/schedule/tests/mocks/Account'
 import { getMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
@@ -155,5 +156,14 @@ describe('postDeadlineAccountStatus', () => {
     expect(commonApiPostSpy).toHaveBeenCalledOnce()
     expect(commonApiPostSpy).toHaveBeenNthCalledWith(1, expectedUrl, expectedPayload)
     expect(data).toStrictEqual(mockedOccurrence)
+  })
+})
+
+describe('getOccurrenceAttachment', () => {
+  it('should return an attachment blob', async () => {
+    const attachmentContent = 'schedule attachment blob'
+    commonApiGetSpy.mockResolvedValueOnce({ data: new Blob([attachmentContent]) })
+    const { data: attachment } = await getOccurrenceAttachment(123456)
+    expect(attachment).toStrictEqual(new Blob([attachmentContent]))
   })
 })

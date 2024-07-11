@@ -14,6 +14,9 @@ vi.mock('@kpmg/common', () => ({
     getters: {
       isCollab: () => true,
     },
+    actions: {
+      logout: () => vi.fn(),
+    },
   }),
 }))
 

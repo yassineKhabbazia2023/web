@@ -7,7 +7,6 @@
         pType="primary"
         pSize="32"
       />
-
       <ActionBar
         v-model="scheduleViewType"
         v-model:searchTerm="searchTerm"
@@ -119,19 +118,8 @@ import type { ViewType } from '@/schedule/models/commonTypes'
 
 const { isCollab } = storeToRefs(useCommonStore())
 
-const currentscheduleViewType = ref<ViewType>('calendar')
-const previousScheduleViewType = ref<ViewType>(currentscheduleViewType.value)
-const scheduleViewType = computed({
-  get: () => currentscheduleViewType.value,
-  set: (scheduleViewType: ViewType) => {
-    if (currentscheduleViewType.value === scheduleViewType) {
-      return
-    }
-    previousScheduleViewType.value = currentscheduleViewType.value
-    currentscheduleViewType.value = scheduleViewType
-  },
-})
-
+const scheduleViewType = ref<ViewType>('calendar')
+const previousScheduleViewType = ref<ViewType>(scheduleViewType.value)
 const defaultFilters = getDefaultFilters(isCollab.value)
 const deadlineItems = ref<DeadlinesByDate[]>([])
 const advancedSearchDeadlineItems = ref<DeadlinesByDate[]>([])
@@ -271,8 +259,10 @@ function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
 }
 
 async function onUpdateIsSearchState(newIsSearchState: boolean) {
+  const currentScheduleViewType = scheduleViewType.value
   isSearchState.value = newIsSearchState
   if (newIsSearchState) {
+    previousScheduleViewType.value = currentScheduleViewType
     scheduleViewType.value = 'list'
     await refreshAdvancedSearch()
   } else {

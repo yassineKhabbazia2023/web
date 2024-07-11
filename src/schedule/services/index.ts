@@ -110,3 +110,11 @@ export async function postDeadlineAccountStatus(
 
   return response.data
 }
+
+export const getOccurrenceAttachment = (
+  occurrenceId: number,
+): Promise<any> => {
+  return api().schedule.get(`/occurrences/${occurrenceId}/attachment`, {
+    responseType: 'blob',
+  })
+}

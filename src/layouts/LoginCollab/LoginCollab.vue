@@ -55,6 +55,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { onMounted } from 'vue'
 import { PCol, PCarousel, PRow, PImage } from '@kpmg/styleguide'
 import LegalLinks from '@/components/LegalLinks'
 import SupportInfo from '@/components/SupportInfo'
@@ -81,6 +82,10 @@ const carouselData = [
     pImageName: 'shared-document',
   },
 ]
+
+onMounted(() => {
+  localStorage.removeItem('selected-entity')
+})
 </script>
 
 <style lang="scss" scoped>

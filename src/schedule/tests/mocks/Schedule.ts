@@ -6,10 +6,7 @@ import { recipientsIdCollection } from './Account'
 const date = '2024-03-20'
 const time = ''
 
-const attachment = {
-  name: '',
-  content: '',
-}
+const attachment = null
 
 export function getMockSchedule(reminders: number[] = []): Schedule {
   const template: Template = {
