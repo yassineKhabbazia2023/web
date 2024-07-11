@@ -59,6 +59,9 @@ const errorMsg = computed(() => {
   if (!validInputAlphanumericFrench(inputContent.value)) {
     return t('validations.alphaNumerique')
   }
+  if (!validInputMaxLength(inputContent.value)) {
+    return t('validations.maxLength')
+  }
   if (folderNameExists.value) {
     return t('validations.folderNameExists', { folderName: inputContent.value })
   }
@@ -95,8 +98,9 @@ const isConfirmButtonDisabled = computed(
 )
 
 const isValidInput = computed(() =>
-  validInputAlphanumericFrench(inputContent.value),
+  validInputAlphanumericFrench(inputContent.value) && validInputMaxLength(inputContent.value),
 )
+
 const folderNameExists = ref(false)
 
 const isFolderNameExists = (folderName: string): boolean => {
@@ -106,7 +110,7 @@ const isFolderNameExists = (folderName: string): boolean => {
 const showErrorMsg = computed(
   () =>
     (!isValidInput.value || folderNameExists.value) &&
-    inputContent.value.length !== 0,
+    inputContent.value?.length !== 0,
 )
 
 // eslint-disable-next-line vitest/require-hook
@@ -127,11 +131,13 @@ en-US:
       Enter a name that does not contain any of the following characters:
       “ * : {'<'} {'>'} ? / \ {'|'}
     folderNameExists: 'A folder with the name {folderName} already exists'
+    maxLength: 'The number of characters allowed (256) is exceeded'
 
 fr-FR:
   validations:
     alphaNumerique: >
-      Entrez svp un nom qui ne contient aucun des caractères suivants :
+      Entrez un nom qui ne contient aucun des caractères suivants :
       “ * : {'<'} {'>'} ? / \ {'|'}
     folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
+    maxLength: 'Le nombre de caractères autorisés (256) est dépassé'
 </i18n>

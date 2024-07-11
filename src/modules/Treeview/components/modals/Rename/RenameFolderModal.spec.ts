@@ -120,8 +120,7 @@ describe('props', () => {
       {
         typedValue: 'Test Content*',
         expectedValue:
-            'Enter a name that does not contain any of the following characters: ' +
-            '“ * : < > ? / \\ |',
+            'Enter a name that does not contain any of the following characters: “ * : < > ? / \\ |',
         isFolderNameExits: false,
       },
       {

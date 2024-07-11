@@ -122,7 +122,7 @@ describe('props', () => {
       },
       {
         typedValue: 'New Folder',
-        expectedValue: 'Un dossier avec le nom New Folder existe déjà',
+        expectedValue: 'A folder with the name New Folder already exists',
         isFolderNameExits: true,
       },
     ]

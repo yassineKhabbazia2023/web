@@ -63,6 +63,9 @@ const errorMsg = computed(() => {
   if (!validInputAlphanumericFrench(inputContent.value)) {
     return t('validations.alphaNumerique')
   }
+  if (!validInputMaxLength(inputContent.value)) {
+    return t('validations.maxLength')
+  }
   if (folderNameExists.value) {
     return t('validations.folderNameExists', { folderName: inputContent.value })
   }
@@ -99,8 +102,11 @@ const isConfirmButtonDisabled = computed(
 )
 
 const isValidInput = computed(() => {
-  return (validInputAlphanumericFrench(inputContent.value) && hasUserAlreadyTyped.value) ||
-  (inputContent.value.length === 0 && !hasUserAlreadyTyped.value)
+  return (
+    validInputAlphanumericFrench(inputContent.value) &&
+    hasUserAlreadyTyped.value &&
+    validInputMaxLength(inputContent.value)
+  ) || (inputContent.value.length === 0 && !hasUserAlreadyTyped.value)
 })
 
 // This a is a hot fix
@@ -138,7 +144,8 @@ en-US:
     alphaNumerique: >
       Entrez un nom qui ne contient aucun des caractères suivants :
       “ * : {'<'} {'>'} ? / \ {'|'}
-    folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
+    folderNameExists: 'A folder with the name {folderName} already exists'
+    maxLength: 'The number of characters allowed (256) is exceeded'
 
 fr-FR:
   validations:
@@ -146,4 +153,5 @@ fr-FR:
       Entrez un nom qui ne contient aucun des caractères suivants :
       “ * : {'<'} {'>'} ? / \ {'|'}
     folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
+    maxLength: 'Le nombre de caractères autorisés (256) est dépassé'
 </i18n>
