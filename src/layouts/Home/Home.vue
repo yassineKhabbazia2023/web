@@ -45,8 +45,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, watch, nextTick } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { productFruits } from 'product-fruits'
 import { VITE_PRODUCT_FRUITS_KEY, VITE_PRODUCT_FRUITS_KEY_CLIENT } from 'env-vars'
 import { commonStore as store, dataProvider } from '@kpmg/common'
