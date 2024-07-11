@@ -204,7 +204,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
       }
       const urlUpdatePassword = 'authentication/api/createNewPassword'
       try {
-        await updateTermsByCurrentUser(termsId.value as number)
         await commonApi().gateway.post(urlUpdatePassword, data)
         const urlLogin = 'authentication/api/login'
         const {
@@ -214,6 +213,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           },
         } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
         tokenService.setToken(token)
+        await updateTermsByCurrentUser(termsId.value as number)
         amplitudeService.track('Onboarding Completed', {
           onboarding_result: 'succeeded',
         })
