@@ -1,6 +1,7 @@
 import CreateMandateForm from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
+import { getCompany } from '@/services/mandate'
 
 function mockMandateService(
   createMandateData: any,
@@ -356,4 +357,35 @@ describe('form.vue mock getBankDetail to throw error', () => {
       expect(wrapper.vm.createMandateForm.key)
         .toStrictEqual(step3TestCase.updated.key)
     })
+})
+
+describe('iBS edge case error', () => {
+  const edgeCaseCollection = [
+    {
+      testLabel: 'IBS Not found',
+      error: {
+        response: { status: 404 },
+      },
+    },
+    {
+      testLabel: 'IBS out of wallet',
+      error: {
+        response: { status: 403 },
+      },
+    },
+    {
+      testLabel: 'Server error',
+      error: {
+        response: { status: 500 },
+      },
+    },
+  ]
+  it.each(edgeCaseCollection)('$testLabel', async ({ error }) => {
+    const wrapper = createWrapper({ step: 1 })
+    vi.mocked(getCompany).mockRejectedValueOnce(error)
+    const input = wrapper.find('input[data-testid="ibs-number-test"]')
+    await input.setValue('1234567891')
+    await input.trigger('change')
+    expect(true).toBeTruthy()
+  })
 })

@@ -367,18 +367,21 @@ const validateIBS = async (_: Rule, value: string, callback: any) => {
       await getDataByIbsNumber(value)
     }
   } catch (error: any) {
-    if (error?.message?.includes('outWalletIBS')) {
+    if (error?.response?.status === 403) {
       callback(new Error(t('form.error.outWalletIBS')))
     }
-    if (error?.message?.includes('ibsNotFound') || error?.message?.includes('404')) {
+    if (error?.response?.status === 404) {
       callback(new Error(t('form.error.ibsNotFound')))
+    }
+    if (error?.response?.status === 500) {
+      callback(new Error(t('form.error.serverError')))
     }
   }
 }
 
 const getDataByIbsNumber = async (ibsNumber: string) => {
   const { data } = await getCompany({ ibsNumber })
-  if (data.id) {
+  if (data.id && createMandateForm.erpId === ibsNumber) {
     const {
       id,
       name,
@@ -403,9 +406,6 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
     isIBSValid.value = true
     return emit('enable-disable-next', true)
   }
-  throw new Error(data.errorType === 'CompanyForbidden'
-    ? 'form.error.outWalletIBS'
-    : 'form.error.ibsNotFound')
 }
 
 const getMandateModel = () => {
@@ -596,8 +596,9 @@ const validateEmail = (_: any, value: string, callback: any) => {
 const requiredFieldMessage = t('form.error.requiredField')
 const rules = reactive<any>({
   erpId: [
-    createRule(requiredFieldMessage, 'change'),
+    createRule(requiredFieldMessage, 'blur'),
     { validator: validateIBS, trigger: ['change'] },
+    { message: t('form.error.ibsFormatIssue'), pattern: /^\d{10}$/, trigger: ['blur'] },
   ],
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
   firstName: [createRule(requiredFieldMessage)],
@@ -768,8 +769,10 @@ defineExpose({
         "correctEmail": "Please input correct email address",
         "validNumber": "Please input a valid number",
         "ibsNotFound": "IBS number not found.",
+        "ibsFormatIssue": "The format of the IBS number entered is not recognized",
         "outWalletIBS": "The IBS must be part of your portfolio and have active engagement.",
-        "nonScrappable": "This bank is not scrappable."
+        "nonScrappable": "This bank is not scrappable.",
+        "serverError": "An error has occurred."
       }
     }
   },
@@ -812,8 +815,10 @@ defineExpose({
         "correctEmail": "Veuillez entrer une adresse e-mail valide",
         "validNumber": "Veuillez entrer un nombre valide",
         "ibsNotFound": "Le numéro IBS saisi n'est pas reconnu.",
+        "ibsFormatIssue": "Le format du numéro IBS saisi n'est pas reconnu.",
         "outWalletIBS": "Le numéro d'IBS saisi doit faire parti de votre portefeuille et avoir un engagement actif.",
-        "nonScrappable": "Cette banque n'est pas scrappable."
+        "nonScrappable": "Cette banque n'est pas scrappable.",
+        "serverError": "Une erreur est survenue."
       }
     }
   }

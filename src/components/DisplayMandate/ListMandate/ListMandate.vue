@@ -323,17 +323,17 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
 
 const handleFileUpload = async (event: any, id: string) => {
   const messages = getNotificationMessages('upload')
-  const notification = showNotification(messages, 'loading')
+  const notification = showNotification(messages, 'loading', false)
 
   try {
     const filesCollection = event.target.files
     if (filesCollection.length > 0) {
       await uploadSignedMandate({ mandateId: id, file: filesCollection[0] })
     }
-    showNotification(messages, 'success', notification)
+    showNotification(messages, 'success', true, notification)
   } catch (error) {
     console.error('Error in mandate upload ', error)
-    showNotification(messages, 'error', notification)
+    showNotification(messages, 'error', true, notification)
   } finally {
     emitRefreshMandateCollection({
       currentPage: props.currentPage,
@@ -367,13 +367,13 @@ function getNotificationMessages(action: 'upload' | 'download'): NotificationMes
 
 const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandateType: string) => {
   const messages = getNotificationMessages('download')
-  const notification = showNotification(messages, 'downloading')
+  const notification = showNotification(messages, 'downloading', false)
   try {
     const { data } = await downloadFunction(id)
     await saveFile(id, data, mandateType)
   } catch (error) {
     console.error('Error downloading mandate:', error)
-    showNotification(messages, 'error', notification)
+    showNotification(messages, 'error', true, notification)
   } finally {
     notification.close()
   }

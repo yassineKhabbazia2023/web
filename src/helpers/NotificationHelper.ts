@@ -16,11 +16,12 @@ const ICONS_BY_TYPE = {
 export function showNotification(
   messagesByType: NotificationMessagesByType | undefined,
   type: 'loading' | 'success' | 'error' | 'downloading',
+  autoClose: boolean,
   previousNotification?: NotificationHandle,
 ) {
   previousNotification?.close()
 
-  const duration = type === 'loading' ? 0 : undefined
+  const duration = autoClose ? undefined : 0
 
   const notification = PNotification({
     showClose: true,
