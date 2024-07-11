@@ -54,14 +54,16 @@ watch(() => props.isRenameModalOpened, () => {
 })
 
 const isValidInput = computed(() =>
-  validInputAlphanumericFrench(inputContent.value),
+  validInputAlphanumericFrench(inputContent.value) && validInputMaxLength(inputContent.value),
 )
 
 const errorMessage = computed(() => {
   if (!validInputAlphanumericFrench(inputContent.value)) {
     return t('validations.alphaNumerique')
   }
-
+  if (!validInputMaxLength(inputContent.value)) {
+    return t('validations.maxLength')
+  }
   return ''
 })
 
@@ -94,8 +96,9 @@ en-US:
   validations:
     alphaNumerique: >
       Enter a name that does not contain any of the following characters:
-      “ * : &lt; &gt; ? / \ |.
-  title: Renommer
+      “ * : {'<'} {'>'} ? / \ {'|'}
+    maxLength: 'The number of characters allowed (256) is exceeded'
+  title: Rename
   inputLabel: Rename document
   inputPlaceHolder: Enter a new document name
   cancelButtonLabel: Cancel
@@ -105,7 +108,8 @@ fr-FR:
   validations:
     alphaNumerique: >
       Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : &lt; &gt; ? / \ |.
+      “ * : {'<'} {'>'} ? / \ {'|'}
+    maxLength: 'Le nombre de caractères autorisés (256) est dépassé'
   title: Renommer
   inputLabel: Renommez votre document
   inputPlaceHolder: Entrez un nouveau nom

@@ -28,7 +28,7 @@
 
   <PLoader
     v-show="isLoading"
-    pType="gradient"
+    pType="primary"
     size="42"
   />
 
