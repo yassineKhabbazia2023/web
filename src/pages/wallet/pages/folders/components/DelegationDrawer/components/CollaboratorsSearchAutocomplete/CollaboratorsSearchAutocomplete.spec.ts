@@ -15,7 +15,7 @@ vi.mock('@/services/wallet', () => ({
 const mockedCollaborators = getMockedCollaborators()
 
 const defaultProps: CollaboratorsSearchAutocompleteProps = {
-  selectedCollaborators: [1, 2, 3],
+  selectedCollaborators: [mockedCollaborators[0], mockedCollaborators[1], mockedCollaborators[2]],
 }
 
 const i18n = createI18n({
@@ -91,14 +91,14 @@ describe('addDelegatesStep', () => {
     })
 
     it('should add collaborator if already selected on select event', () => {
-      wrapper = createWrapper({ selectedCollaborators: [2, 3] })
+      wrapper = createWrapper({ selectedCollaborators: [mockedCollaborators[1], mockedCollaborators[2]] })
 
       const autocompleteWrapper = findAutocompleteWrapper(wrapper)
       const selectedContact = mockedCollaborators[0]
       autocompleteWrapper.vm.$emit('select', selectedContact)
 
       expect(wrapper.emitted('add-collaborator')).toStrictEqual([
-        [selectedContact.id],
+        [selectedContact],
       ])
     })
   })

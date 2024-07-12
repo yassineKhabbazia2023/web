@@ -64,7 +64,7 @@ describe('addDelegatesStep', () => {
 
   describe('interactions', () => {
     it('should emit collaborator-selection on add-collaborator event', () => {
-      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', 1)
+      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[0])
 
       const emitted = wrapper.emitted('collaborator-selection')
 
@@ -74,9 +74,9 @@ describe('addDelegatesStep', () => {
 
     it('should emit collaborator-selection on remove-collaborator event', () => {
       // set base content to test remove
-      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', 1)
-      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', 2)
-      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', 3)
+      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[0])
+      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[1])
+      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[2])
 
       collaboratorsSearchAutocompleteWrapper.vm.$emit('remove-collaborator', 1)
 
@@ -88,7 +88,7 @@ describe('addDelegatesStep', () => {
     })
 
     it('should emit collaborator-selection on user line trash icon click', async () => {
-      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', 1)
+      collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[0])
       await nextTick()
 
       const userLine = findUserAction(wrapper)
