@@ -36,7 +36,7 @@ import { getCollaborators } from '@/services/wallet'
 
 const props = defineProps<CollaboratorsSearchAutocompleteProps>()
 const emit = defineEmits<{
-  'add-collaborator': [Contact['id']]
+  'add-collaborator': [Contact]
   'remove-collaborator': [Contact['id']]
 }>()
 
@@ -48,13 +48,13 @@ const { t } = useI18n({
 const searchAutocompleteQuery = ref('')
 
 function isCollaboratorSelected(id: Contact['id']) {
-  return props.selectedCollaborators.includes(id)
+  return props.selectedCollaborators.find((contact: Contact) => contact.id === id)
 }
 
 function handleCollaboratorSelection(contact: Contact) {
   const { id } = contact
   if (!isCollaboratorSelected(id)) {
-    emit('add-collaborator', id)
+    emit('add-collaborator', contact)
   } else {
     emit('remove-collaborator', id)
   }

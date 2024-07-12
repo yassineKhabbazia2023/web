@@ -17,7 +17,7 @@
           {{ t('searchLabel') }}
         </p>
         <AddCollaboratorsAutocomplete
-          :selectedCollaboratorsIds="selectedCollaboratorsIds"
+          :selectedCollaborators="selectedCollaborators"
           @add-collaborator="addSelectedCollaborator"
           @remove-collaborator="removeSelectedCollaborator"
         />
@@ -27,7 +27,7 @@
     <div class="margin-top--6">
       <ul class="add-collaborators-card__user-list list-style-none">
         <li
-          v-for="({ id, fullName, initials, email, persona }) in selectedCollaborators"
+          v-for="({ id, fullName, initials, email, persona }) in selectedCollaboratorsFormatted"
           :key="id"
         >
           <PUserAction
@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { PBlockHeader, PUserAction } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
@@ -68,10 +68,9 @@ onMounted(async () => {
   folderUsers.value = await fetchContactsFromSameHub('', 100)
 })
 
-const selectedCollaboratorsIds: Contact['id'][] = reactive([])
-const selectedCollaborators = computed(() => {
-  return folderUsers.value
-    .filter(user => selectedCollaboratorsIds.includes(user.id))
+const selectedCollaborators = ref<Contact[]>([])
+const selectedCollaboratorsFormatted = computed(() => {
+  return selectedCollaborators.value
     .map(user => ({
       ...user,
       fullName: getFullName(user.firstName, user.lastName, true),
@@ -79,19 +78,19 @@ const selectedCollaborators = computed(() => {
     }))
 })
 
-function addSelectedCollaborator(id: Contact['id']) {
-  selectedCollaboratorsIds.push(id)
+function addSelectedCollaborator(contact: Contact) {
+  selectedCollaborators.value.push(contact)
   emitCollaboratorSelection()
 }
 
 function removeSelectedCollaborator(id: Contact['id']) {
-  const index = selectedCollaboratorsIds.indexOf(id)
-  selectedCollaboratorsIds.splice(index, 1)
+  const index = selectedCollaborators.value.findIndex((contact: Contact) => contact.id === id)
+  selectedCollaborators.value.splice(index, 1)
   emitCollaboratorSelection()
 }
 
 function emitCollaboratorSelection() {
-  emit('collaborator-selection', selectedCollaborators.value)
+  emit('collaborator-selection', selectedCollaboratorsFormatted.value)
 }
 </script>
 

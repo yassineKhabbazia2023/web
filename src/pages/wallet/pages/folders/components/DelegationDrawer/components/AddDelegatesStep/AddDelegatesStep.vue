@@ -33,7 +33,7 @@
           {{ t('searchLabel') }}
         </p>
         <CollaboratorsSearchAutocomplete
-          :selectedCollaborators="selectedCollaboratorsIds"
+          :selectedCollaborators="selectedCollaborators"
           @add-collaborator="addSelectedCollaborator"
           @remove-collaborator="removeSelectedCollaborator"
         />
@@ -46,7 +46,7 @@
         <div class="padding-x--4">
           <PUserAction
             :pProfile="getInitials(firstName, lastName)"
-            :pTitle="getFormattedFirstAndLastName(firstName, lastName)"
+            :pTitle="getFullName(firstName, lastName, true)"
             :pDescription="email"
             :pRole="persona?.name"
             pShowDelete
@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { PAlert, PBlockHeader, PUserAction } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
@@ -67,6 +67,7 @@ import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
 import { getCollaborators } from '@/services/wallet'
 import type { Contact } from '@/services/contact/contactTypes'
 import { getInitials } from '@/helper/helper'
+import { getFullName } from '@/common/utils/helpers'
 
 defineProps<DelegatorsAddStepProps>()
 const emit = defineEmits<{
@@ -84,24 +85,16 @@ onMounted(async () => {
   folderUsers.value = items
 })
 
-const selectedCollaboratorsIds: Contact['id'][] = reactive([])
-const selectedCollaborators = computed(() => {
-  return (folderUsers.value ?? []).filter(user => selectedCollaboratorsIds.includes(user.id))
-})
+const selectedCollaborators = ref<Contact[]>([])
 
-function addSelectedCollaborator(id: Contact['id']) {
-  selectedCollaboratorsIds.push(id)
+function addSelectedCollaborator(contact: Contact) {
+  selectedCollaborators.value.push(contact)
   emitCollaboratorSelection()
 }
 
 function removeSelectedCollaborator(id: Contact['id']) {
-  const index = selectedCollaboratorsIds.indexOf(id)
-  selectedCollaboratorsIds.splice(index, 1)
+  selectedCollaborators.value = selectedCollaborators.value.filter((contact: Contact) => contact.id !== id)
   emitCollaboratorSelection()
-}
-
-function getFormattedFirstAndLastName(firstName: string, lastName: string) {
-  return `${firstName} ${lastName.toUpperCase()}`
 }
 
 function emitCollaboratorSelection() {
