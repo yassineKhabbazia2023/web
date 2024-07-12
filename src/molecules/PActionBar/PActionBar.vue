@@ -55,10 +55,11 @@
           </p>
         </PButton>
         <PExpandableSearch
-          v-model:pSearchContent="pSearchContent"
           v-else-if="item.pComponentType === 'SEARCH'"
+          v-model:pSearchContent="pSearchContent"
           :pIsSearchShrinkable="item.pIsSearchShrinkable"
           :pIsSearchOpen="item.pIsSearchOpen"
+          :pMaxLength="pSearchMaxLength"
           @update:p-search-content="handleSearchTextTyped"
           @search-expand-change="handleExpandEvent"
         />
@@ -98,7 +99,9 @@ import PExpandableSearch from '@atoms/PExpandableSearch'
 import PUpload from '@/atoms/PUpload'
 import { iconsResolver } from '@/utils/iconResolver'
 import type { PActionBarProps } from './PActionBarTypes'
-const props = defineProps<PActionBarProps>()
+const props = withDefaults(defineProps<PActionBarProps>(), {
+  pSearchMaxLength: 255,
+})
 
 const emit = defineEmits<{
   'p-upload-files-selected': [File[]]

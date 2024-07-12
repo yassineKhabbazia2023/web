@@ -15,18 +15,19 @@
     </PButton>
 
     <PInput
-      ref="inputRef"
       v-model="internalSearchContent"
-      pType="search"
+      ref="inputRef"
+      data-testid="p-expandable-search-input"
+      :class="['p-expandable-search__input', isSearchOpen ? 'isExpanded' : '']"
+      pClearable
+      :pMaxlength="pMaxLength"
       :pPlaceholder="pPlaceholder"
       :pPrefixIcon="PISearch"
-      pClearable
       pSize="small"
-      :class="['p-expandable-search__input', isSearchOpen ? 'isExpanded' : '']"
-      @clear="handleClear"
+      pType="search"
       @blur="handleBlur"
+      @clear="handleClear"
       @keyup.enter="emit('enter')"
-      data-testid="p-expandable-search-input"
     >
     </PInput>
   </div>
@@ -42,6 +43,7 @@ import PInput from '@/atoms/PInput'
 const props = withDefaults(defineProps<PExpandableSearchProps>(), {
   pType: 'white',
   pIsSearchOpen: false,
+  pMaxLength: 255,
 })
 
 const inputRef = ref<InstanceType<typeof PInput>>()
