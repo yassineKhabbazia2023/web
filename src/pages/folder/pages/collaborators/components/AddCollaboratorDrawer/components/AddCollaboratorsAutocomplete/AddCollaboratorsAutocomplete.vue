@@ -37,7 +37,7 @@ import type { AddCollaboratorsAutocompleteProps } from './AddCollaboratorsAutoco
 
 const props = defineProps<AddCollaboratorsAutocompleteProps>()
 const emit = defineEmits<{
-  'add-collaborator': [Contact['id']]
+  'add-collaborator': [Contact]
   'remove-collaborator': [Contact['id']]
 }>()
 
@@ -49,7 +49,7 @@ const { t } = useI18n({
 const searchQuery = ref('')
 
 function isCollaboratorSelected(id: Contact['id']) {
-  return props.selectedCollaboratorsIds.includes(id)
+  return props.selectedCollaborators.find((contact: Contact) => contact.id === id)
 }
 
 function handleCollaboratorSelection(contact: Contact) {
@@ -57,7 +57,7 @@ function handleCollaboratorSelection(contact: Contact) {
   if (isCollaboratorSelected(id)) {
     emit('remove-collaborator', id)
   } else {
-    emit('add-collaborator', id)
+    emit('add-collaborator', contact)
   }
 
   resetSearchQuery()

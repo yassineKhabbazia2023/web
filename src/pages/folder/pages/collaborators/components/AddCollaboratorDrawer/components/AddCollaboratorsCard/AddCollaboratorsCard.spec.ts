@@ -49,13 +49,13 @@ describe('add collaborators card', () => {
 
   describe('interactions', () => {
     it('should emit collaborator-selection on add-collaborator event', () => {
-      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', 1)
+      const mockedCollaborator = mockedCollaborators.at(0)
+      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', mockedCollaborator)
 
       const emitted = wrapper.emitted('collaborator-selection')
 
       expect(emitted).toHaveLength(1)
 
-      const mockedCollaborator = mockedCollaborators.at(0)
       const mockWithInitialsAndFullName = [
         {
           ...mockedCollaborator,
@@ -74,9 +74,9 @@ describe('add collaborators card', () => {
 
     it('should emit collaborator-selection on remove-collaborator event', () => {
       // set base content to test remove
-      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', 1)
-      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', 2)
-      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', 3)
+      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', mockedCollaborators[0])
+      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', mockedCollaborators[1])
+      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', mockedCollaborators[2])
 
       addCollaboratorsAutocomplete.vm.$emit('remove-collaborator', 1)
 
@@ -112,7 +112,7 @@ describe('add collaborators card', () => {
     })
 
     it('should emit collaborator-selection on user line trash icon click', async () => {
-      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', 1)
+      addCollaboratorsAutocomplete.vm.$emit('add-collaborator', mockedCollaborators[0])
       await nextTick()
 
       const accountLine = findUserAction(wrapper)
