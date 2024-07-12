@@ -27,7 +27,7 @@ $dialog: (
     height: 44px;
     top: 20px;
     right: 16px;
-    
+
     .el-dialog__close {
       color: var(--el-text-color-regular);
       font-size: 1.6rem;
@@ -38,6 +38,9 @@ $dialog: (
     display: flex;
     color: var(--el-text-color-regular);
     line-height: 44px;
+    // To prevent long words to touch the closing button
+    padding-right: 44px;
+    word-break: break-all;
   }
 
   .el-dialog__body {
