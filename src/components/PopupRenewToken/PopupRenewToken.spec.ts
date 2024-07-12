@@ -1,6 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import router from '../../plugins/router'
@@ -99,9 +99,6 @@ describe('popup renew token', () => {
     )
     wrapper = createWrapper()
     ROUTES.forEach((route) => router.addRoute(route))
-  })
-  afterEach(() => {
-    vi.useRealTimers()
   })
 
   it('show dialog after token change', async () => {
