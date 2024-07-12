@@ -67,10 +67,13 @@ vi.mock('@kpmg/common', () => ({
 
 vi.mock('jwt-decode', () => ({
   default: () => ({
-    exp: Date.now() / 1000 + 5, // expires in 5 s.
+    exp: Date.now() / 1000 + 3600, // expires in 1 hour.
     sub: 'something',
   }),
 }))
+
+const fiftyFiveMinutesInMiliseconds = 3300000
+const oneHourInMiliseconds = 3600000
 
 const pinia = createTestingPinia()
 
@@ -106,7 +109,7 @@ describe('popup renew token', () => {
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeFalsy()
-    vi.advanceTimersByTime(4000)
+    vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
     await nextTick()
     await flushPromises()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeTruthy()
@@ -116,7 +119,7 @@ describe('popup renew token', () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
-    vi.advanceTimersByTime(4000)
+    vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     const button = tokenRenewalDialog.find('[data-testid=logout-button]')
@@ -129,7 +132,7 @@ describe('popup renew token', () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
-    vi.advanceTimersByTime(4000)
+    vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     const button = tokenRenewalDialog.find('[data-testid=renew-token-button]')
@@ -145,7 +148,7 @@ describe('popup renew token', () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
-    vi.advanceTimersByTime(5000)
+    vi.advanceTimersByTime(oneHourInMiliseconds)
     await nextTick()
 
     expect(mock.logoutAndRedirectToLogin).toHaveBeenCalledOnce()
