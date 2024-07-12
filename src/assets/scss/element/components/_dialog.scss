@@ -38,7 +38,7 @@ $dialog: (
     display: flex;
     color: var(--el-text-color-regular);
     line-height: 44px;
-    // To prevent long words to touch the closing button
+    // To prevent long words from touching the close button
     padding-right: 44px;
     word-break: break-all;
   }
