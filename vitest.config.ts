@@ -8,6 +8,7 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      clearMocks: true,
       environment: 'jsdom',
       globals: true,
       exclude: [...configDefaults.exclude, 'e2e/*'],
