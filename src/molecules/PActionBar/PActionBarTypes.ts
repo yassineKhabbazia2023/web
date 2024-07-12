@@ -19,4 +19,5 @@ export interface ComponentDefinitionProps extends PButtonActionBarProps {
 export interface PActionBarProps {
   pRightSideButtons: ComponentDefinitionProps[]
   pLeftSideButtons: ComponentDefinitionProps[]
+  pSearchMaxLength?: number
 }
