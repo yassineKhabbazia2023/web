@@ -1,6 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import router from '../../plugins/router'
@@ -100,13 +100,16 @@ describe('popup renew token', () => {
     wrapper = createWrapper()
     ROUTES.forEach((route) => router.addRoute(route))
   })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 
   it('show dialog after token change', async () => {
     await flushPromises()
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeFalsy()
-    vi.advanceTimersByTime(300000)
+    vi.advanceTimersByTime(4000)
     await nextTick()
     await flushPromises()
     expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeTruthy()
@@ -116,7 +119,7 @@ describe('popup renew token', () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
-    vi.advanceTimersByTime(30000)
+    vi.advanceTimersByTime(4000)
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     const button = tokenRenewalDialog.find('[data-testid=logout-button]')
@@ -129,7 +132,7 @@ describe('popup renew token', () => {
     vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
 
     await flushPromises()
-    vi.advanceTimersByTime(30000)
+    vi.advanceTimersByTime(4000)
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
     const button = tokenRenewalDialog.find('[data-testid=renew-token-button]')
@@ -139,5 +142,15 @@ describe('popup renew token', () => {
     expect(authPostMock).toHaveBeenCalledWith(
       `authentication/api/refreshToken?userId=${sub}`,
     )
+  })
+
+  it('should logout and redirect to login after token expiration', async () => {
+    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
+
+    await flushPromises()
+    vi.advanceTimersByTime(5000)
+    await nextTick()
+
+    expect(mock.logoutAndRedirectToLogin).toHaveBeenCalledOnce()
   })
 })
