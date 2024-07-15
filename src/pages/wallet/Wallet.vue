@@ -68,6 +68,11 @@ const collaboratorsTabs = [
     title: t('launcher'),
     display: hasPermission(PERMISSION_CODES.LAUNCHER),
   },
+  {
+    name: 'accountManagement',
+    title: t('accountManagement'),
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
+  },
 ]
 
 const clientTabs = [
@@ -103,6 +108,7 @@ en-US:
   collaborators: 'Collaborators'
   allEntities: 'All entities'
   allUsers: 'All users'
+  accountManagement: 'Folder administration'
   uploadPowerBIReport: 'Upload a BI report'
 fr-FR:
   wallet: 'Portefeuille'
@@ -113,5 +119,6 @@ fr-FR:
   collaborators: 'Collaborateurs'
   allEntities: 'Mes entités'
   allUsers: 'Tous les utilisateurs'
+  accountManagement: 'Administration dossiers'
   uploadPowerBIReport: 'Déposer un rapport BI'
 </i18n>

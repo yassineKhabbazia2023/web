@@ -33,6 +33,11 @@ const BASE_WALLET_ROUTES = [
     page: 'collaborators',
   },
   {
+    path: 'administration-dossiers',
+    name: 'accountManagement',
+    page: 'accountManagement',
+  },
+  {
     path: 'deposer-rapport-bi',
     name: 'powerbi',
     page: 'powerbi',

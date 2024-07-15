@@ -14,19 +14,20 @@ export function getQueryParams(searchCriteria: SearchCriteria) {
   }
 }
 
-export function getSearchParams(searchCriteria: SearchCriteria) {
+export function getSearchParams(searchCriteria: SearchCriteria, allAccounts: boolean = false) {
   const queryParams = getQueryParams(searchCriteria)
   const queryParamsWithoutUndefined = removeFalsyValues(queryParams)
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
 
-  return `currentuser?${searchParams}`
+  return `${allAccounts ? '' : 'currentuser'}?${searchParams}`
 }
 
 export async function fetchWalletData(
   deploymentStatuses: DeploymentStatus[],
   searchCriteria: SearchCriteria,
+  allAccounts: boolean = false,
 ) {
-  const searchParams = getSearchParams(searchCriteria)
+  const searchParams = getSearchParams(searchCriteria, allAccounts)
   const queryResult = await fetchAccounts(searchParams)
   const items = queryResult.items
     .map((account, index) => getMappedAccount(deploymentStatuses, account, index))
