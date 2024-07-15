@@ -28,6 +28,7 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
     },
   }),
+  debounce: (callback: Function) => callback,
   userPermissions: () => ({
     hasPermission: () => true,
   }),

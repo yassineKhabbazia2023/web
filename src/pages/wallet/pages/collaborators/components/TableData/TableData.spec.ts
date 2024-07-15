@@ -26,6 +26,7 @@ vi.mock('@kpmg/common', () => ({
   commonStore: () => ({
     $patch: vi.fn(),
   }),
+  debounce: (callback: Function) => callback,
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),

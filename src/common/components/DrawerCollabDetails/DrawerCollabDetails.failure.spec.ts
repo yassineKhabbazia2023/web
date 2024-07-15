@@ -25,6 +25,7 @@ vi.mock('@kpmg/common', () => ({
   commonStore: () => ({
     $patch: vi.fn(),
   }),
+  debounce: (callback: Function) => callback,
 }))
 const { firstName, lastName } = listContact.items[0]
 const rowData = {
@@ -36,7 +37,7 @@ const createWrapper = (): VueWrapper<any> =>
   mount(DrawerCollabDetails, {
     props: {
       rowData,
-      hasDrawerOpened: true,
+      modelValue: true,
     },
     attachTo: document.body,
   })

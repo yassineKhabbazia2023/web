@@ -10,7 +10,6 @@
     <DrawerCollabDetails
       v-if="isCollabDetailsDrawerOpened"
       v-model="isCollabDetailsDrawerOpened"
-      :hasDrawerOpened="isCollabDetailsDrawerOpened"
       :rowData="rowDataForDrawers"
     />
 

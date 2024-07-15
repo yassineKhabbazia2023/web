@@ -26,18 +26,43 @@ vi.mock('@kpmg/common', () => ({
   commonStore: () => ({
     $patch: vi.fn(),
   }),
+  debounce: (callback: Function) => callback,
 }))
-const { firstName, lastName } = listContact.items[0]
+
+const {
+  firstName: firstNameOfFirstContact,
+  lastName: lastNameOfFirstContact,
+} = listContact.items[0]
+
 const rowData = {
   ...listCollab.data.items[0],
-  fullName: `${firstName} ${lastName}`,
+  fullName: `${firstNameOfFirstContact} ${lastNameOfFirstContact}`,
 }
+
+const getButtonSubmit = () => wrapper.find('[data-testid=submit-btn]')
+
+const {
+  lastName,
+  firstName,
+  email,
+  mobilePhone,
+  landPhone,
+} = rowData
+
+const inputs = [
+  { name: 'lastName', value: lastName.toUpperCase(), isDisabled: true },
+  { name: 'firstName', value: firstName, isDisabled: true },
+  { name: 'email', value: email, isDisabled: true },
+  { name: 'mobilePhone', value: mobilePhone, isDisabled: false },
+  { name: 'landPhone', value: landPhone, isDisabled: false },
+]
+const getInputs = () => wrapper.findAll('.el-form input')
 
 const createWrapper = (): VueWrapper<any> =>
   mount(DrawerCollabDetails, {
     props: {
       rowData,
-      hasDrawerOpened: true,
+      modelValue: true,
     },
     attachTo: document.body,
   })
@@ -58,22 +83,6 @@ describe('drawerCollabDetails', () => {
     expect(tag.text()).toContain(rowData.role)
   })
 
-  const {
-    lastName,
-    firstName,
-    email,
-    mobilePhone,
-    landPhone,
-  } = rowData
-  const inputs = [
-    { name: 'lastName', value: lastName, isDisabled: true },
-    { name: 'firstName', value: firstName, isDisabled: true },
-    { name: 'email', value: email, isDisabled: true },
-    { name: 'mobilePhone', value: mobilePhone, isDisabled: false },
-    { name: 'landPhone', value: landPhone, isDisabled: false },
-  ]
-  const getInputs = () => wrapper.findAll('input')
-
   it.each(inputs)('prefill the input %# value', (input) => {
     expect((getInputs()[inputs.indexOf(input)].element as HTMLInputElement).value).toBe(input.value)
   })
@@ -92,17 +101,36 @@ describe('drawerCollabDetails', () => {
     const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
     expect(getNotificationSuccess()).toHaveLength(0)
 
-    const buttonSubmit = wrapper.find('[data-testid=submit-btn]')
-    await buttonSubmit.trigger('click')
+    await getButtonSubmit().trigger('click')
     await flushPromises()
     expect(vi.mocked(updateCollaborator)).toHaveBeenCalledTimes(1)
     expect(getNotificationSuccess()).toHaveLength(1)
     expect(wrapper.emitted('update-collaborator-details')).toHaveLength(1)
     expect(getNotificationSuccess()[0].textContent).toContain(rowData.fullName)
   })
+
   it('emits an update event and closes the drawer on reset button click', async () => {
     const resetButton = wrapper.find('[data-testid=reset-btn]')
     await resetButton.trigger('click')
+
     expect(wrapper.emitted('update:modelValue')).toHaveLength(1)
+  })
+
+  const inputsEnabled = inputs.filter(({ isDisabled }) => !isDisabled)
+  it.each(inputsEnabled)('has control on the $name input', async (inputEnabled) => {
+    const input = getInputs()[inputs.indexOf(inputEnabled)]
+    const getButtonSubmitAttrDisabled = () => getButtonSubmit().attributes('disabled')
+
+    expect(getButtonSubmitAttrDisabled()).toBeUndefined()
+
+    await input?.setValue('not digit value')
+    await flushPromises()
+
+    expect(getButtonSubmitAttrDisabled()).toBeDefined()
+
+    await input?.setValue('1234567890')
+    await flushPromises()
+
+    expect(getButtonSubmitAttrDisabled()).toBeUndefined()
   })
 })

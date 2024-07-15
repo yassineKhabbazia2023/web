@@ -2,7 +2,9 @@
   <PDrawer
     v-model="drawerModel"
     :pTitle="t('informationsAboutCollaborator')"
-    @close-drawer-button="drawerModel = false">
+    @close-drawer-button="drawerModel = false"
+    pSize="50%"
+  >
     <PUserCard
       class="margin-bottom--6"
       pAssetLeft="Image"
@@ -14,28 +16,33 @@
         pSize="default"
         pIconLeft="PIPerson"
         :pContent="rowData.role"
-        pEffect="light" />
+        pEffect="light"
+      />
     </PUserCard>
 
     <i18n-t
       class="margin-bottom--6"
       keypath="youCanModify"
-      tag="p">
+      tag="p"
+    >
       <template #administrator>
         <strong>{{ t('administrator') }}</strong>
       </template>
     </i18n-t>
 
     <PForm
-      @submit.prevent="handleSubmit(formRef)"
+      @submit.prevent="handleSubmit"
       ref="formRef"
       :pModel="formValues"
-      pLabelPosition="top">
+      :pRules="formRules"
+      pLabelPosition="top"
+    >
       <PFormItem prop="lastName" :pLabel="t('lastName')">
         <PInput
-          :value="rowData.lastName"
+          :value="rowData.lastName?.toUpperCase()"
           disabled
-          pName="lastName" />
+          pName="lastName"
+        />
       </PFormItem>
 
       <PFormItem prop="firstName" :pLabel="t('firstName')">
@@ -74,14 +81,17 @@
           class="margin-right--4"
           pType="primary"
           data-testid="reset-btn"
-          pPlain>
+          pPlain
+        >
           {{ t('cancel') }}
         </PButton>
 
         <PButton
-          @click="handleSubmit(formRef)"
+          @click="handleSubmit"
+          :pDisabled="isSubmitButtonDisabled"
           pType="primary"
-          data-testid="submit-btn">
+          data-testid="submit-btn"
+        >
           {{ t('submit') }}
         </PButton>
       </div>
@@ -91,7 +101,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import {
   PButton,
   PDrawer,
@@ -104,9 +114,11 @@ import {
   PTag,
   PUserCard,
 } from '@kpmg/styleguide'
-import type { FormInstance } from '@kpmg/styleguide'
+import type { FormInstance, FormRules } from '@kpmg/styleguide'
+import { debounce } from '@kpmg/common'
 import type Props from './types'
 import { updateCollaborator } from '@/services/wallet'
+import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -118,24 +130,45 @@ const emit = defineEmits(['update:modelValue', 'update-collaborator-details'])
 const props = defineProps<Props>()
 
 const drawerModel = computed({
-  get: () => props.hasDrawerOpened,
+  get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 })
 
 // Form part
 const formRef = ref<FormInstance>()
+const isSubmitButtonDisabled = ref(false)
 const formValues = reactive({
   mobilePhone: props.rowData.mobilePhone,
   landPhone: props.rowData.landPhone,
+})
+
+const formRules = reactive<FormRules>({
+  mobilePhone: [
+    {
+      trigger: 'blur',
+      pattern: validPhoneNumberPattern,
+      message: t('incorrectPhoneNumberFormat'),
+    },
+  ],
+  landPhone: [
+    {
+      trigger: 'blur',
+      pattern: validPhoneNumberPattern,
+      message: t('incorrectPhoneNumberFormat'),
+    },
+  ],
 })
 
 const handleReset = () => {
   drawerModel.value = false
 }
 
-const handleSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+const handleSubmit = async () => {
+  if (!formRef.value) return
+
   try {
+    await formRef.value.validate()
+
     const updates = {
       landphone: formValues.landPhone,
       mobilephone: formValues.mobilePhone,
@@ -152,7 +185,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     emit('update-collaborator-details', contact)
   } catch {
     PNotification({
-      message: t('notificationSuccess', { fullName: props.rowData.fullName }),
+      message: t('notificationError', { fullName: props.rowData.fullName }),
       icon: PIExclamationTriangle,
       showClose: true,
       customClass: 'error',
@@ -160,13 +193,31 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     })
   }
 }
+
+async function shouldSubmitButtonBeDisabled() {
+  if (!formRef.value) return
+
+  try {
+    await formRef.value.validate()
+    isSubmitButtonDisabled.value = false
+  } catch (_error) {
+    isSubmitButtonDisabled.value = true
+  }
+}
+
+function debouncedShouldSubmitButtonBeDisabled() {
+  return debounce(() => shouldSubmitButtonBeDisabled(), 600)
+}
+
+watch(formValues, debouncedShouldSubmitButtonBeDisabled())
 </script>
 
-<!-- eslint-disable-->
 <i18n lang="yaml">
 en-US:
   informationsAboutCollaborator: 'Collaborator information'
-  youCanModify: 'As an {administrator}, you can modify the name, first name and email of your colleague directly in IBS.'
+  youCanModify: >
+    As an {administrator}, you can modify the name,
+    first name and email of your colleague directly in IBS.
   administrator: 'administrator'
   lastName: 'Last name'
   firstName: 'First name'
@@ -176,9 +227,13 @@ en-US:
   cancel: 'Cancel'
   submit: 'Submit'
   notificationSuccess: "{fullName}'s information has been successfully updated."
+  notificationError: "{fullName}'s information was not been successfully updated due to a technical error."
+  incorrectPhoneNumberFormat: 'Phone number format is incorrect'
 fr-FR:
   informationsAboutCollaborator: 'Informations du collaborateur'
-  youCanModify: "En tant qu'{administrator}, vous pouvez modifier le nom, le prénom et le mail de votre collaborateur directement dans IBS."
+  youCanModify: >
+    En tant qu'{administrator}, vous pouvez modifier le nom,
+    le prénom et le mail de votre collaborateur directement dans IBS.
   administrator: 'administrateur'
   lastName: 'Nom'
   firstName: 'Prénom'
@@ -188,5 +243,6 @@ fr-FR:
   cancel: 'Annuler'
   submit: 'Valider'
   notificationSuccess: 'Les informations de {fullName} ont bien été mises à jour.'
+  notificationError: "Les informations de {fullName} n'ont pas bien été mises à jour a cause d'une erreur technique."
+  incorrectPhoneNumberFormat: 'Le format du numéro est incorrect'
 </i18n>
-<!-- eslint-enable-->
