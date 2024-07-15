@@ -2,13 +2,14 @@
   <PTable
     ref="selectedRow"
     :pData="props.data"
-    highlightCurrentRow
+    :highlightCurrentRow="!isAccountManagement"
     showOverflowTooltip
     pStripe
     tableLayout="fixed"
     class="wallet-table"
   >
     <PTableColumn
+      v-if="!isAccountManagement"
       pProp="isFavorite"
       :pWidth="54"
       :pShowOverflowTooltip="false"
@@ -156,6 +157,7 @@
         </template>
       </PTableColumn>
       <PTableColumn
+        v-if="!isAccountManagement"
         pWidth="46"
         :pShowOverflowTooltip="false"
       >
@@ -210,6 +212,7 @@ const { t } = useI18n({
 
 const props = withDefaults(defineProps<TableDataProps>(), {
   data: [],
+  isAccountManagement: false,
   handleAddFavorite: () => {},
 })
 
@@ -243,6 +246,15 @@ const menuInProgressElements : PToolboxItemProps[] = [
   },
 ]
 
+const accountManagementMenu : PToolboxItemProps[] = [
+  {
+    pIconName: 'PIGrid',
+    pValue: t('manageAccountRights'),
+    pActionName: 'manageAccountRights',
+    pState: 'default',
+  },
+]
+
 const menuConnectedElements : PToolboxItemProps[] = [
   {
     pIconName: 'PIFolder',
@@ -253,6 +265,7 @@ const menuConnectedElements : PToolboxItemProps[] = [
 ]
 
 const menuElementsCollaborator = (status : string) => {
+  if (props.isAccountManagement) return accountManagementMenu
   return status === t('toDeploy')
     ? menuToDeployElements
     : (status === t('inProgress') ? menuInProgressElements : menuConnectedElements)
@@ -411,6 +424,7 @@ en-US:
   resendActivationEmail: 'Resend activation email'
   toDeploy: 'To Deploy'
   inProgress: 'In progress'
+  manageAccountRights: 'Manage account permissions'
   resendMailErrorMessage: 'A problem occurred while sending the activation email for '
   resendMailSuccessMessageFirst: 'A new activation email for '
   resendMailSuccessMessageSecond: ' has been sent successfully.'
@@ -427,6 +441,7 @@ fr-FR:
   resendActivationEmail: "Relancer le mail d'activation"
   toDeploy: 'A déployer'
   inProgress: 'En cours'
+  manageAccountRights: 'Gérer les droits account'
   resendMailErrorMessage: "Un problème est survenu lors de l'envoie du mail d'activation pour "
   resendMailSuccessMessageFirst: "Un nouveau mail d'activation pour "
   resendMailSuccessMessageSecond: ' a bien été envoyé.'

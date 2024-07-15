@@ -1,6 +1,7 @@
 export interface TableDataProps {
   data: any
-  handleAddFavorite: Function
+  handleAddFavorite?: Function
+  isAccountManagement?: boolean
 }
 
 export interface Row {
