@@ -263,7 +263,7 @@ const triggerSuccessNotification = (
     "modalTitle": "Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déplacer dans ce dossier",
-      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+      "foldersListEmptyFolderLabel": "There is no subfolder"
     },
     "documentsList": {
       "noMovableDocumentsLabel": "Aucun document ne peut être déplacé dans votre espace documentaire."
@@ -282,7 +282,7 @@ const triggerSuccessNotification = (
     "modalTitle": "Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déplacer dans ce dossier",
-      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+      "foldersListEmptyFolderLabel": "Aucun sous-dossier"
     },
     "documentsList": {
       "noMovableDocumentsLabel": "Aucun document ne peut être déplacé dans votre espace documentaire."
