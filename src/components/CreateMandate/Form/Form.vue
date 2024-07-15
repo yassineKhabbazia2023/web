@@ -512,15 +512,20 @@ const resetValidation = () => {
   isNonScrappable.value = false
 }
 
-const isBbanComplete = () => {
+const isBbanComplete = async () => {
   const fieldsToValidate = [
     'institutionCode',
     'branchCode',
     'accountNumber',
     'key',
   ]
-
-  return fieldsToValidate.every(field => createMandateForm[field] !== '')
+  return fieldsToValidate.every(field => createMandateForm[field] !== '') && await asyncEvery(fieldsToValidate, async (inputValue: string) => {
+    try {
+      return await createMandateFormRef?.value?.validateField(inputValue)
+    } catch (error) {
+      console.error(`Error in RIB field ${inputValue}`, error)
+    }
+  })
 }
 
 const checkFields = async () => {
@@ -532,7 +537,7 @@ const checkFields = async () => {
     }
   } catch (_) {
   } finally {
-    if (isBbanComplete()) {
+    if (await isBbanComplete()) {
       await checkBbanValidity({
         bankCode: createMandateForm.institutionCode,
         branchCode: createMandateForm.branchCode,
@@ -597,7 +602,7 @@ const requiredFieldMessage = t('form.error.requiredField')
 const rules = reactive<any>({
   erpId: [
     createRule(requiredFieldMessage, 'blur'),
-    { validator: validateIBS, trigger: ['change'] },
+    { validator: validateIBS, trigger: ['change', 'blur'] },
     { message: t('form.error.ibsFormatIssue'), pattern: /^\d{10}$/, trigger: ['blur'] },
   ],
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
@@ -663,14 +668,67 @@ watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
 watch(
   () => createMandateForm.erpId,
   (value) => {
-    if (!value) {
+    const valueTrimmed = value.trim()
+    if (!valueTrimmed) {
       emit('enable-disable-next', false)
       createMandateForm.siretNumber = ''
       createMandateForm.name = ''
     }
-    createMandateForm.erpId = value.replace(/\D/ig, '')
+    createMandateForm.erpId = valueTrimmed.replace(/\D/ig, '')
   },
 )
+watch(
+  () => createMandateForm.institutionCode,
+  (value) => {
+    const valueTrimmed = value.trim()
+    if (valueTrimmed.length > 5) {
+      createMandateForm.institutionCode = valueFormat(valueTrimmed, 5)
+    }
+  },
+)
+
+watch(
+  () => createMandateForm.branchCode,
+  (value) => {
+    const valueTrimmed = value.trim()
+    if (valueTrimmed.length > 5) {
+      createMandateForm.branchCode = valueFormat(valueTrimmed, 5)
+    }
+  },
+)
+
+watch(
+  () => createMandateForm.accountNumber,
+  (value) => {
+    const valueTrimmed = value.trim()
+    if (valueTrimmed.length > 11) {
+      createMandateForm.accountNumber = valueFormat(valueTrimmed, 11)
+    }
+  },
+)
+
+watch(
+  () => createMandateForm.key,
+  (value) => {
+    const valueTrimmed = value.trim()
+    if (valueTrimmed.length > 2) {
+      createMandateForm.key = valueFormat(valueTrimmed, 2)
+    }
+  },
+)
+
+const valueFormat = (value: string, maxSizeAllowed: number) => {
+  return value.slice(0, maxSizeAllowed)
+}
+
+const asyncEvery = async (array: string[], predicate: Function) => {
+  for (const inputValue of array) {
+    if (!await predicate(inputValue)) {
+      return false
+    }
+  }
+  return true
+}
 
 // Expose
 defineExpose({
@@ -757,9 +815,9 @@ defineExpose({
       "error": {
         "requiredField": "Required field",
         "mandatoryChoice": "Mandatory choice",
-        "input_5_chars": "Input must have exactly 5 characters",
+        "input_5_chars": "Input must have exactly 5 numbers",
         "input_11_chars": "Input must have exactly 11 characters",
-        "input_2_chars": "Input must have exactly 2 characters",
+        "input_2_chars": "Input must have exactly 2 numbers",
         "only_numbers": "Input must contain only numbers",
         "alphanumeric_only": "Input must contain only numbers and letters",
         "bankingInfoNotRecognized": "The entered banking information is not recognized",
@@ -803,9 +861,9 @@ defineExpose({
       "error": {
         "requiredField": "Champ obligatoire",
         "mandatoryChoice": "Mandatory choice",
-        "input_5_chars": "L'entrée doit avoir exactement 5 caractères",
+        "input_5_chars": "L'entrée doit avoir exactement 5 chiffres",
         "input_11_chars": "L'entrée doit avoir exactement 11 caractères",
-        "input_2_chars": "L'entrée doit avoir exactement 2 caractères",
+        "input_2_chars": "L'entrée doit avoir exactement 2 chiffres",
         "only_numbers": "L'entrée doit contenir uniquement des chiffres",
         "alphanumeric_only": "L'entrée doit contenir uniquement des chiffres et des lettres",
         "bankingInfoNotRecognized": "Les informations bancaires saisies ne sont pas reconnues",

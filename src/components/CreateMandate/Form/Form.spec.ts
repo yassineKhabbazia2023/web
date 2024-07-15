@@ -389,3 +389,69 @@ describe('iBS edge case error', () => {
     expect(true).toBeTruthy()
   })
 })
+
+describe('baninking data edge cases', () => {
+  const step3TestCases = [
+    {
+      initial: {
+        institutionCode: '12345',
+        branchCode: '12345',
+        accountNumber: '12345678910',
+        key: '12',
+      },
+      updated: {
+        institutionCode: '543216',
+        branchCode: '543218',
+        accountNumber: '019876543210',
+        key: '211',
+      },
+      expected: {
+        institutionCode: '54321',
+        branchCode: '54321',
+        accountNumber: '01987654321',
+        key: '21',
+        valid: true,
+      },
+    },
+  ]
+
+  it.each(step3TestCases)('renders the component when step value is 3 getBankDetail',
+    async (step3TestCase) => {
+      // mockGetBankDetailThrowError()
+      const wrapper = createWrapper({ step: 3 })
+      Object.assign(wrapper.vm.createMandateForm, step3TestCase.initial)
+
+      const institutionCodeInputElement = wrapper
+        .find('[data-testid="institutionCode-input-test"]')
+      await institutionCodeInputElement
+        .setValue(step3TestCase.updated.institutionCode)
+      await institutionCodeInputElement.trigger('blur')
+
+      const branchCodeInputElement = wrapper
+        .find('[data-testid="branchCode-input-test"]')
+      await branchCodeInputElement
+        .setValue(step3TestCase.updated.branchCode)
+      await branchCodeInputElement.trigger('blur')
+
+      const accountNumberInputElement = wrapper
+        .find('[data-testid="accountNumber-input-test"]')
+      await accountNumberInputElement
+        .setValue(step3TestCase.updated.accountNumber)
+      await accountNumberInputElement.trigger('blur')
+
+      const keyInputElement = wrapper
+        .find('[data-testid="key-input-test"]')
+      await keyInputElement
+        .setValue(step3TestCase.updated.key)
+      await keyInputElement.trigger('blur')
+
+      expect(wrapper.vm.createMandateForm.institutionCode)
+        .toStrictEqual(step3TestCase.expected.institutionCode)
+      expect(wrapper.vm.createMandateForm.branchCode)
+        .toStrictEqual(step3TestCase.expected.branchCode)
+      expect(wrapper.vm.createMandateForm.accountNumber)
+        .toStrictEqual(step3TestCase.expected.accountNumber)
+      expect(wrapper.vm.createMandateForm.key)
+        .toStrictEqual(step3TestCase.expected.key)
+    })
+})
