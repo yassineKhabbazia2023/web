@@ -56,6 +56,7 @@ const { t } = useI18n({
 let exp: number | undefined
 let sub: string | undefined
 let timer: any
+let redirectTimer: any
 const isVisibleDialog = ref(false)
 const { logoutAndRedirectToLogin } = useRedirection()
 
@@ -65,7 +66,10 @@ function onTokenChanges(token: string) {
   const decodedToken = jwtDecode<JwtPayload>(token)
   exp = decodedToken?.exp
   sub = decodedToken?.sub
-  if (exp && sub) tokenHandle(exp)
+  if (exp && sub) {
+    tokenHandle(exp)
+    handleRedirectAfterExpiration(exp)
+  }
 }
 
 const handleTokenRenewal = async () => {
@@ -74,6 +78,7 @@ const handleTokenRenewal = async () => {
   tokenService.setToken(token)
   isVisibleDialog.value = false
   clearTimeout(timer)
+  clearTimeout(redirectTimer)
 }
 
 const handleLogout = async () => {
@@ -86,6 +91,14 @@ const tokenHandle = (exp: number) => {
   timer = setTimeout(() => {
     isVisibleDialog.value = true
   }, delay) // Will display the popup 5 minutes before the token expires
+}
+
+function handleRedirectAfterExpiration(exp: number) {
+  const delay = exp * 1000 - Date.now()
+
+  redirectTimer = setTimeout(() => {
+    logoutAndRedirectToLogin()
+  }, delay)
 }
 
 onMounted(() => {
