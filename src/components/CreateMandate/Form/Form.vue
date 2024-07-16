@@ -404,6 +404,7 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
       country,
     })
     isIBSValid.value = true
+    areFieldsFilledStepBased(props.step)
     return emit('enable-disable-next', true)
   }
 }
