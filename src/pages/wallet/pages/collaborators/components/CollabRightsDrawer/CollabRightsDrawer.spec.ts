@@ -197,6 +197,7 @@ describe('collabRightsDrawer', () => {
       })
     })
     it('should display a console error if the request to fetch collaborator roles fails', async () => {
+      vi.clearAllMocks()
       const spyConsole = vi.spyOn(console, 'error')
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(walletServices, 'fetchContactRoles').mockRejectedValue(

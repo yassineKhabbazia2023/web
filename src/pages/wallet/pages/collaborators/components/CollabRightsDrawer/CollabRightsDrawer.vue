@@ -126,7 +126,14 @@ const handleUpdatePermissions = async () => {
   try {
     const permissionsCodes = getPermissionCodes(authorizationsState.value)
     await updateUserPermissions(props.rowData.id, null, permissionsCodes)
-    isDrawerVisible.value = false
+    // I added a setTimeout to enhance the user experience (UX)
+    setTimeout(() => {
+      isDrawerVisible.value = false
+      // The page will be reloaded 30ms after the drawer is closed
+      setTimeout(() => {
+        location.reload()
+      }, 30)
+    }, 600)
     PNotification({
       message: t('modifyRightsSucceeded', {
         fullName: props.rowData.fullName,
