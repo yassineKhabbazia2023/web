@@ -244,7 +244,7 @@ const triggerFailureNotification = (
     "modalTitle": "Déplacer 0 dossier dans {folderName} | Déplacer 1 dossier dans {folderName} | Déplacer {count} dossiers dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier. Sélectionnez un des dossiers ci-dessous",
-      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+      "foldersListEmptyFolderLabel": "There is no subfolder"
     },
     "documentsList": {
       "noMovableDocumentsLabel": "Aucun dossier ne peut être déplacé dans votre espace documentaire."
@@ -261,7 +261,7 @@ const triggerFailureNotification = (
     "modalTitle": "Déplacer 0 dossier dans {folderName} | Déplacer 1 dossier dans {folderName} | Déplacer {count} dossiers dans {folderName}",
     "folderList": {
       "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier. Sélectionnez un des dossiers ci-dessous",
-      "foldersListEmptyFolderLabel": "Ce dossier est vide"
+      "foldersListEmptyFolderLabel": "Aucun sous-dossier"
     },
     "documentsList": {
       "noMovableDocumentsLabel": "Aucun dossier ne peut être déplacé dans votre espace documentaire."
