@@ -83,7 +83,8 @@ const resolvedIconsLeft = computed(() => {
   &__folder {
     display: flex;
     align-items: center;
-    width: 100%;
+    // Ensuring that it never pushes the chevron when the line content is ellipsed
+    width: calc(100% - 16px);
   }
 
   &__folder-name {
