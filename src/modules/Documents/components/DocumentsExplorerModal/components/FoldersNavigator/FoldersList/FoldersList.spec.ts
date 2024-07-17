@@ -126,7 +126,6 @@ describe('foldersList', () => {
       })
 
       const navigationItem = wrapper.findComponent(PFolderLineNavigationItem)
-      // expect(navigationItem.props('pDisabled')).toBeTruthy()
       expect(navigationItem.props('pDisabled')).toBeTruthy()
       expect(navigationItem.props('pTooltipContent')).toBeTruthy()
     })
