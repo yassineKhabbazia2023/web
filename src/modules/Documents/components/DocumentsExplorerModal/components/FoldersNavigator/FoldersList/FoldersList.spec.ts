@@ -115,6 +115,21 @@ describe('foldersList', () => {
       ])
     })
 
+    it('should properly disable given folder folder', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        currentFolder: foldersData[0][0].children[0].children[0],
+        explorerFolderListLineDisabledState: {
+          data: foldersData[0][0].children[0].children[0].children[0].id,
+          context: 'MOVE_FOLDER',
+        },
+      })
+
+      const navigationItem = wrapper.findComponent(PFolderLineNavigationItem)
+      expect(navigationItem.props('pDisabled')).toBeTruthy()
+      expect(navigationItem.props('pTooltipContent')).toBeTruthy()
+    })
+
     it('should emit close-create-folder-modal when on-close-create-folder is emitted', async () => {
       const wrapper = createWrapper()
       await nextTick()

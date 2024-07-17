@@ -25,6 +25,7 @@
       :pLeftIcon="getIconMapping(folder.iconName)"
       :pDisabled="isFolderLineDisabled(folder.id)"
       :pSelected="false"
+      :pTooltipContent="getTooltipContent(folder.id)"
       @click="navigateToFolder(folder.id)"
     />
 
@@ -57,6 +58,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   PAlert,
   PFolderLineNavigationItem,
@@ -73,6 +75,11 @@ const emit = defineEmits([
   'close-create-folder-modal',
   'update-source-folders',
 ])
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const getIconMapping = (iconName: string | undefined) => {
   switch (iconName) {
@@ -101,6 +108,10 @@ const isFolderLineDisabled = (folderLineFolderId: Folder['id']) => {
     }
   }
   return false
+}
+
+function getTooltipContent(folderId: Folder['id']) {
+  return isFolderLineDisabled(folderId) ? t('cantMoveToSameFolder') : ''
 }
 
 const isFolderLineDisabledBasedOnMoveFolderContext = (folderLineFolderId: Folder['id']) => {
@@ -174,3 +185,11 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+en-US:
+  cantMoveToSameFolder: "You can't move into the folder you are currently moving."
+fr-FR:
+  cantMoveToSameFolder: 'Vous ne pouvez pas déplacer dans le dossier en cours de déplacement'
+</i18n>
+
