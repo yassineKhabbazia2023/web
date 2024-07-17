@@ -31,7 +31,7 @@
       >
         <PIcon>
           <PICalendarEvent v-if="!showCalendar" />
-          <PIArrowBarUp v-if="showCalendar" />
+          <PIX v-if="showCalendar" />
         </PIcon>
       </PButton>
       <PDivider
@@ -65,7 +65,7 @@ import {
   PButton,
   PIcon,
   PICalendarEvent,
-  PIArrowBarUp,
+  PIX,
 } from '@kpmg/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
