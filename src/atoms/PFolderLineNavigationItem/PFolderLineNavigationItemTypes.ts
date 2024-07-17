@@ -4,5 +4,6 @@ export interface PFolderLineNavigationItemProps {
   pFolderName?: string
   pFolderId: number
   pHasArrow?: boolean
-  pLeftIcon?:string
+  pLeftIcon?: string
+  pTooltipContent?: string
 }

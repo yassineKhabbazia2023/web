@@ -37,6 +37,26 @@
         <HstCheckbox v-model="secondVariantProps.pHasArrow" title="pHasArrow" />
       </template>
     </Variant>
+
+    <Variant title="Disabled">
+      <PFolderLineNavigationItem
+        :pFolderName="thirdVariantProps.folderName"
+        :pFolderId="thirdVariantProps.folderId"
+        :pHasArrow="thirdVariantProps.pHasArrow"
+        :pLeftIcon="thirdVariantProps.pLeftIcon"
+        :pSelected="thirdVariantProps.selected"
+        :pDisabled="thirdVariantProps.disabled"
+        :pTooltipContent="thirdVariantProps.pTooltipContent"
+        @on-click-folder-navigation="logEvent('on-click-folder-navigation', $event)"
+        @on-db-click-folder-navigation="logEvent('on-db-click-folder-navigation', $event)"
+      />
+      <template #controls>
+        <HstText v-model="thirdVariantProps.folderName" title="FolderName" />
+        <HstText v-model="thirdVariantProps.pLeftIcon" title="pLeftIcon" />
+        <HstCheckbox v-model="thirdVariantProps.disabled" title="disabled" />
+        <HstCheckbox v-model="thirdVariantProps.pHasArrow" title="pHasArrow" />
+      </template>
+    </Variant>
   </Story>
 </template>
 
@@ -61,6 +81,17 @@ const secondVariantProps = reactive({
   folderId: 3116446,
   pHasArrow: true,
   pLeftIcon: 'PIFolder',
+  pTooltipContent: "Tooltip won't show",
+})
+
+const thirdVariantProps = reactive({
+  selected: false,
+  disabled: true,
+  folderName: 'A disabled line',
+  folderId: 3116446,
+  pHasArrow: true,
+  pLeftIcon: 'PIFolder',
+  pTooltipContent: "You can't access this folder",
 })
 </script>
 
