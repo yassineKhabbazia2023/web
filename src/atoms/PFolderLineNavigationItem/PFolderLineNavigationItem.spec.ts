@@ -9,6 +9,7 @@ const defaultProps: PFolderLineNavigationItemProps = {
   pDisabled: false,
   pFolderName: 'Name of folder',
   pFolderId: 123,
+  pTooltipContent: 'Hello',
 }
 
 const createWrapper = (props = defaultProps) =>
@@ -17,6 +18,13 @@ const createWrapper = (props = defaultProps) =>
   })
 
 describe('pFolderLineNavigationItem', () => {
+  describe('rendering', () => {
+    it('should render tooltip', () => {
+      const wrapper = createWrapper()
+      const entity = wrapper.find('[data-testid="file-line-navigation-item"] .el-tooltip__trigger')
+      expect(entity.exists()).toBeTruthy()
+    })
+  })
   describe('props', () => {
     it('should have the selected class when selected is true', () => {
       const wrapper = createWrapper({

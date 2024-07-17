@@ -4,23 +4,29 @@
     :class="{ selected: isSelected, disabled: pDisabled }"
     @click="handleClickFolderNavigation(pFolderId)"
     @dblclick="handleDoubleClickFolderNavigation(pFolderId)"
+    data-testid="file-line-navigation-item"
   >
-    <div class="p-folder-line-navigation-item__folder">
-      <PIcon class="margin-right--2">
-        <component :is="resolvedIconsLeft" />
-      </PIcon>
-      <span
-        class="
-          p-folder-line-navigation-item__folder-name
-          no-wrap
-          overflow-hidden
-          flex--grow-1
-          text-overflow--ellipsis
-        "
-      >
-        {{ pFolderName }}
-      </span>
-    </div>
+    <PTooltip
+      :pContent="pTooltipContent"
+      :disabled="!pTooltipContent && !pDisabled"
+    >
+      <div class="p-folder-line-navigation-item__folder">
+        <PIcon class="margin-right--2">
+          <component :is="resolvedIconsLeft" />
+        </PIcon>
+        <span
+          class="
+            p-folder-line-navigation-item__folder-name
+            no-wrap
+            overflow-hidden
+            flex--grow-1
+            text-overflow--ellipsis
+          "
+        >
+          {{ pFolderName }}
+        </span>
+      </div>
+    </PTooltip>
     <PIcon v-if="pHasArrow" size="16">
       <PIChevronRight />
     </PIcon>
@@ -29,6 +35,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import PTooltip from '@/atoms/PTooltip'
 import PIcon from '../PIcon'
 import type { PFolderLineNavigationItemProps } from './PFolderLineNavigationItemTypes'
 import { iconResolver } from '@/utils/iconResolver'
@@ -39,6 +46,7 @@ const props = withDefaults(defineProps<PFolderLineNavigationItemProps>(), {
   pFolderName: 'Name of folder',
   pHasArrow: true,
   pLeftIcon: 'PIFolder',
+  pTooltipContent: '',
 })
 
 const emit = defineEmits([
@@ -104,7 +112,7 @@ const resolvedIconsLeft = computed(() => {
   }
 
   &.disabled {
-    pointer-events: none;
+    cursor: not-allowed;
     opacity: 0.6;
     color: var(--el-color-neutral-gray-300);
   }
