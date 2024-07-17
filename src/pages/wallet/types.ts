@@ -37,6 +37,7 @@ export interface SearchCriteria {
   currentPage: number
   limit: number
   search?: string
+  accountNumber?: string
   filterByDeploymentStatus?: string
 }
 

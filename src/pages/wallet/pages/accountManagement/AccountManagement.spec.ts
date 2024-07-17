@@ -125,7 +125,8 @@ describe('deploy', () => {
         currentPage: 1,
         filterByDeploymentStatus: '',
         limit: 15,
-        search: SEARCH_VALUE,
+        search: '',
+        accountNumber: SEARCH_VALUE,
       })
 
       expect(mockFetchWalletData).toHaveBeenCalledTimes(2)

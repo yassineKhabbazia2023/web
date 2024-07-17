@@ -109,9 +109,9 @@ const paginationLabel = computed(() => getPaginationLabel(t('on'), {
   totalItems: searchResult.value.totalItems,
 }))
 
-const handleSearchValueSubmitted = (searchValue: string) => {
+const handleSearchValueSubmitted = (accountNumber: string) => {
   searchCriteria.value.currentPage = 1
-  searchCriteria.value.search = searchValue
+  searchCriteria.value.accountNumber = accountNumber
 }
 const handlePageRangeChange = (pageRange: number) => {
   searchCriteria.value.currentPage = 1
@@ -149,14 +149,14 @@ watch(searchCriteria, async () => {
 
 <i18n lang="yaml">
   en-US:
-    search: "Search by company name, folder ID, first name, last name, and email of the executive"
+    search: "Search by the folder ID"
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
     numberOfFoldersPerPage: 'number of folder per page'
     on: 'on'
   fr-FR:
-    search: 'Rechercher par nom de société, ID de dossier, prénom, nom et e-mail du dirigeant'
+    search: "Rechercher par l'ID de dossier"
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'

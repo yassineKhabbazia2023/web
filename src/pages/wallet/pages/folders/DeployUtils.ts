@@ -10,6 +10,7 @@ export function getQueryParams(searchCriteria: SearchCriteria) {
     pageNumber: searchCriteria.currentPage,
     pageSize: searchCriteria.limit,
     search: searchCriteria.search,
+    accountNumber: searchCriteria.accountNumber,
     deploymentStatus: searchCriteria.filterByDeploymentStatus,
   }
 }
@@ -19,7 +20,7 @@ export function getSearchParams(searchCriteria: SearchCriteria, allAccounts: boo
   const queryParamsWithoutUndefined = removeFalsyValues(queryParams)
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
 
-  return `${allAccounts ? '' : 'currentuser'}?${searchParams}`
+  return `${allAccounts ? 'all' : 'currentuser'}?${searchParams}`
 }
 
 export async function fetchWalletData(

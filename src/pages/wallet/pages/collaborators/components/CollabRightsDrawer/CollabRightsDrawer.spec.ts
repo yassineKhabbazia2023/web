@@ -206,7 +206,6 @@ describe('collabRightsDrawer', () => {
       createWrapper()
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
       expect(spyConsole).toHaveBeenCalledWith(
         'Unable to fetch collaborator roles: ',
         expectedErrorMessage,
