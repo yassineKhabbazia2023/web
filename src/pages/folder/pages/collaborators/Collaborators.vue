@@ -360,7 +360,7 @@ const toolboxItems = computed(
         pValue: t('removeCollaborator'),
         pActionName: 'removeCollaborator',
         pState: 'default',
-        display: isCollab.value && hasPermission(PERMISSION_CODES.DELETE_COLLAB),
+        display: isCollab.value && hasPermission(PERMISSION_CODES.DELETE_ACCOUNT_COLLAB),
       },
     ]
       .filter(({ display }) => display)
