@@ -156,22 +156,27 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   }
 
   try {
+    // Authentication
     const {
       data: {
         webToken: token,
         userId,
       },
     } = await commonApi().gateway.post('authentication/api/login', toRaw(formValues))
-
     tokenService.setToken(token)
+
+    // Set currentuser data
     await initAuthClient()
     setStoreGigyaUserId(userId)
+
+    // Get currentuser terms
+    const { isCurrent, terms } = await getTermsByCurrentUser()
+
     amplitudeService.track('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'succeeded',
     })
 
-    const { isCurrent, terms } = await getTermsByCurrentUser()
     if (isCurrent) {
       return navigateToCustomerWallet()
     }
