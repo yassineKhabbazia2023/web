@@ -145,6 +145,7 @@ const rules = reactive<FormRules<typeof formValues>>({
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
+  amplitudeService.setNewUserProperty('user_type', 'Client')
   if (!formEl) return
   if (formEl.validate) {
     try {

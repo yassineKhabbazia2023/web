@@ -44,6 +44,7 @@ vi.mock('@kpmg/common', () => ({
   amplitudeService: {
     track: vi.fn(),
     reset: vi.fn(),
+    setNewUserProperty: vi.fn(),
   },
 }))
 vi.mock('@/composable/useInitUserAuth', () => ({
@@ -94,8 +95,10 @@ const INPUT_PASSWORD_VALUE = 'customPassword'
 
 describe('login', () => {
   let spyTrackAmplitude: SpyInstance
+  let spySetNewUserPropertyAmplitude: SpyInstance
   beforeEach(() => {
     spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    spySetNewUserPropertyAmplitude = vi.spyOn(amplitudeService, 'setNewUserProperty')
     wrapper = createWrapper()
   })
 
@@ -129,6 +132,8 @@ describe('login', () => {
         gigyaUserId: GIGYA_USER_ID,
       },
     })
+    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
+    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
     expect(spyTrackAmplitude).toHaveBeenCalledOnce()
     expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
@@ -144,6 +149,8 @@ describe('login', () => {
 
     await wrapper.vm.handleSubmit(getForm())
 
+    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
+    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
     expect(spyTrackAmplitude).toHaveBeenCalledOnce()
     expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',

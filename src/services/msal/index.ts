@@ -22,6 +22,7 @@ export const msalInstance = new UserAgentApplication(msalConfig)
 
 export const getToken = async () => {
   if (msalInstance.getAccount()) {
+    amplitudeService.setNewUserProperty('user_type', 'Collaborateur')
     return await msalInstance
       .acquireTokenSilent({
         loginHint: msalInstance.getAccount().userName,

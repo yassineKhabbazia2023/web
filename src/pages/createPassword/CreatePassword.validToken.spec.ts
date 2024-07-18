@@ -45,7 +45,7 @@ const CGU_URL = 'https://custom-CGU.com'
 
 vi.mock('@/services/cgu', () => ({
   updateTermsByCurrentUser: vi.fn(),
-  getLatestTerms: vi.fn(),
+  getLatestTerms: vi.fn(() => Promise.resolve({ data: { termsId: 1 } })),
 }))
 
 vi.mock('@kpmg/common', () => ({
