@@ -11,7 +11,7 @@
       {{ t('msgInfo') }}
     </p>
     <a
-      href="/login-client"
+      href="/login"
       class="link hidden-sm-and-down"
     >
       {{ t('returnLoginPage') }}

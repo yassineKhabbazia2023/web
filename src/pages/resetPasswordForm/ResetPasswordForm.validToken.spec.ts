@@ -21,7 +21,7 @@ const routes = [
   },
   {
     name: 'loginClient',
-    path: '/login-client',
+    path: '/login',
     component: {
       template: '<p class="page-title">Login Client</p>',
     },

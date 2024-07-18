@@ -28,7 +28,7 @@ export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 
 routes.value.push({
-  path: '/login-client',
+  path: '/login',
   name: 'loginClient',
   component: () => import('@/pages/login'),
   meta: {
@@ -48,12 +48,17 @@ routes.value.push({
 } as RouteRecordRaw)
 
 routes.value.push({
-  path: '/login',
+  path: '/collaborateur',
   name: 'login',
   component: () => import('@/pages/loginCollab'),
   meta: {
     layout: 'LoginCollab',
   },
+} as RouteRecordRaw)
+
+routes.value.push({
+  path: '/login-client',
+  redirect: { name: 'loginClient' },
 } as RouteRecordRaw)
 
 const ROUTES_USING_LOGIN_LAYOUT = [
