@@ -150,7 +150,9 @@ describe('popup renew token', () => {
     await flushPromises()
     vi.advanceTimersByTime(oneHourInMiliseconds)
     await nextTick()
+    const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
 
+    expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeFalsy()
     expect(mock.logoutAndRedirectToLogin).toHaveBeenCalledOnce()
   })
 })

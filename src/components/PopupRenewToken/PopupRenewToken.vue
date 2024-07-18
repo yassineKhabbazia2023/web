@@ -97,6 +97,7 @@ function handleRedirectAfterExpiration(exp: number) {
   const delay = exp * 1000 - Date.now()
 
   redirectTimer = setTimeout(() => {
+    isVisibleDialog.value = false
     logoutAndRedirectToLogin()
   }, delay)
 }
