@@ -1,8 +1,8 @@
+import { SERVER_ZONE } from './constants'
 import * as amplitude from '@amplitude/analytics-browser'
 import type { BaseEvent } from '@amplitude/analytics-types'
-import { SERVER_ZONE } from './constants'
 
-export class AmplitudeService {
+export default class AmplitudeService {
   // eslint-disable-next-line no-use-before-define
   private static instance: AmplitudeService
   private isInitiated: boolean
@@ -19,7 +19,7 @@ export class AmplitudeService {
     return AmplitudeService.instance
   }
 
-  public init(apiKey: string){
+  public init(apiKey: string) {
     if (!this.isInitiated) {
       amplitude.init(
         apiKey,
@@ -28,18 +28,27 @@ export class AmplitudeService {
           serverZone: SERVER_ZONE,
           defaultTracking: false,
           minIdLength: 1,
-        }
+        },
       )
       this.isInitiated = true
     }
   }
 
-  public track(eventInput: string | BaseEvent, eventProperties?: Record<string, any>) {
+  public track(
+    eventInput: string | BaseEvent,
+    eventProperties?: Record<string, any>,
+  ) {
     amplitude.track(eventInput, eventProperties)
   }
 
   public setUserId(userId: number) {
     amplitude.setUserId(userId.toString())
+  }
+
+  public setNewUserProperty(key: string, value: string | number) {
+    const identifyEvent = new amplitude.Identify()
+    identifyEvent.set(key, value)
+    amplitude.identify(identifyEvent)
   }
 
   public reset() {

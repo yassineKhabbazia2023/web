@@ -1,21 +1,29 @@
 import { describe, expect, it, vi } from 'vitest'
 import { SERVER_ZONE } from './constants'
-import { AmplitudeService } from '.'
+import { Identify } from '@amplitude/analytics-browser'
+import AmplitudeService from '.'
 
 const initSpy = vi.fn()
-const trackSpy = vi.fn()
-const setUserIdSpy = vi.fn()
 const resetSpy = vi.fn()
-vi.mock('@amplitude/analytics-browser', () => ({
-  init: (apiKey: string, userId = undefined, options: object) => initSpy(apiKey, userId, options),
-  setUserId: (arg: string) => setUserIdSpy(arg),
-  track: (arg: string) => trackSpy(arg),
-  reset: () => resetSpy(),
-}))
+const trackSpy = vi.fn()
+const identifySpy = vi.fn()
+const setUserIdSpy = vi.fn()
 
-let amplitudeService: AmplitudeService
+vi.mock('@amplitude/analytics-browser', async () => {
+  const actual = await vi.importActual('@amplitude/analytics-browser')
+  return {
+    ...(actual as Object),
+    init: (apiKey: string, userId = undefined, options: object) =>
+      initSpy(apiKey, userId, options),
+    setUserId: (arg: string) => setUserIdSpy(arg),
+    track: (arg: string) => trackSpy(arg),
+    identify: (arg: string) => identifySpy(arg),
+    reset: () => resetSpy(),
+  }
+})
 
 describe('amplitude', () => {
+  let amplitudeService: AmplitudeService
   beforeEach(() => {
     amplitudeService = AmplitudeService.getInstance()
   })
@@ -27,16 +35,12 @@ describe('amplitude', () => {
 
     amplitudeService.init(FAKE_API_KEY)
 
-    expect(initSpy).toHaveBeenCalledTimes(1)
-    expect(initSpy).toHaveBeenCalledWith(
-      FAKE_API_KEY,
-      undefined,
-      {
-        serverZone: SERVER_ZONE,
-        defaultTracking: false,
-        minIdLength: 1,
-      }
-    )
+    expect(initSpy).toHaveBeenCalledOnce()
+    expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, {
+      serverZone: SERVER_ZONE,
+      defaultTracking: false,
+      minIdLength: 1,
+    })
   })
 
   it('can track', () => {
@@ -46,7 +50,7 @@ describe('amplitude', () => {
 
     amplitudeService.track(CUSTOM_EVENT)
 
-    expect(trackSpy).toHaveBeenCalledTimes(1)
+    expect(trackSpy).toHaveBeenCalledOnce()
     expect(trackSpy).toHaveBeenCalledWith(CUSTOM_EVENT)
   })
 
@@ -57,8 +61,20 @@ describe('amplitude', () => {
 
     amplitudeService.setUserId(CUSTOM_USER_ID)
 
-    expect(setUserIdSpy).toHaveBeenCalledTimes(1)
+    expect(setUserIdSpy).toHaveBeenCalledOnce()
     expect(setUserIdSpy).toHaveBeenCalledWith(CUSTOM_USER_ID.toString())
+  })
+
+  it('can set new user property', () => {
+    const identifyEvent = new Identify()
+    identifyEvent.set('user_type', 'Collaborator')
+
+    expect(identifySpy).toHaveBeenCalledTimes(0)
+
+    amplitudeService.setNewUserProperty('user_type', 'Collaborator')
+
+    expect(identifySpy).toHaveBeenCalledOnce()
+    expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
   })
 
   it('can reset a user session', () => {
@@ -66,6 +82,6 @@ describe('amplitude', () => {
 
     amplitudeService.reset()
 
-    expect(resetSpy).toHaveBeenCalledTimes(1)
+    expect(resetSpy).toHaveBeenCalledOnce()
   })
 })
