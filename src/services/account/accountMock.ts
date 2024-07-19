@@ -119,6 +119,7 @@ export function getMockedAccount(): Account {
       siret: '443 061 841 00047',
       createdAt: '2022-01-22T12:00:00',
       legalFormCode: 'EURL',
+      legalForm: 'Entreprise unipersonnelle à responsabilité limitée',
       staffSizeRange: 'De 4 à 15 salariés',
       naf: [
         {

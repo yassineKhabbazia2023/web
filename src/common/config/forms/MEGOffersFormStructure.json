@@ -14,7 +14,7 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-70",
         "pDisabled": true,
-        "pFieldKey": "legal.legalFormCode",
+        "pFieldKey": "legal.legalForm",
         "pFieldType": "input",
         "pLabel": "Forme juridique"
       },
