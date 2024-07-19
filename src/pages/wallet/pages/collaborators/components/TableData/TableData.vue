@@ -3,7 +3,6 @@
     <PTable
       :pData="props.data"
       highlightCurrentRow
-      showOverflowTooltip
       pStripe
       tableLayout="fixed"
       @sort-change="handleSortChange"
@@ -73,10 +72,7 @@
             trigger="click"
             :pElements="menuElements"
           >
-            <PButton
-              pType="generic"
-              pSize="small"
-            >
+            <PButton pType="generic">
               <PIcon>
                 <PIThreeDots />
               </PIcon>

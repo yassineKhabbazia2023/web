@@ -51,7 +51,6 @@
         @sort-change="handleSortChange"
         ref="selectedRow"
         :pData="collabs"
-        showOverflowTooltip
         pStripe
         tableLayout="fixed"
         class="collab-table"
@@ -68,7 +67,7 @@
                 pColor="persian-gradient"
                 pType="small"
               >
-                {{ getInitials(scope.row.firstName,scope.row.lastName) }}
+                {{ getInitials(scope.row.firstName, scope.row.lastName) }}
               </PAvatar>
               <div>
                 <p class="line-height--120">
@@ -123,7 +122,6 @@
             >
               <PButton
                 pType="generic"
-                pSize="small"
                 class="margin-left--1"
               >
                 <PIcon>

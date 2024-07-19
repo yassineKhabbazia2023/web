@@ -63,14 +63,16 @@
         <PInput
           v-model="formValues.mobilePhone"
           :pPlaceholder="t('mobilePhone')"
-          pName="mobilePhone" />
+          pName="mobilePhone"
+        />
       </PFormItem>
 
       <PFormItem prop="landPhone" :pLabel="t('landPhone')">
         <PInput
           v-model="formValues.landPhone"
           :pPlaceholder="t('landPhone')"
-          pName="landPhone" />
+          pName="landPhone"
+        />
       </PFormItem>
     </PForm>
 
