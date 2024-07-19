@@ -23,6 +23,6 @@ describe('useRedirection', () => {
     await logoutAndRedirectToLogin()
 
     expect(mockRouterPush).toHaveBeenCalledOnce()
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'login' })
+    expect(mockRouterPush).toHaveBeenCalledWith('/')
   })
 })

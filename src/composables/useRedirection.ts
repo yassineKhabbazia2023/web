@@ -11,7 +11,7 @@ export const useRedirection = () => {
 
   const logoutAndRedirectToLogin = async () => {
     await store.logout(store.$state)
-    router.push({ name: 'login' })
+    redirectToHome()
   }
 
   return { redirectToHome, logoutAndRedirectToLogin }
