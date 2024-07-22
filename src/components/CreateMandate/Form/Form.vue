@@ -274,6 +274,9 @@
         <PAlert pType="danger" v-if="isNonScrappable">
           {{ t('form.error.nonScrappable') }}
         </PAlert>
+        <PAlert pType="danger" v-if="creationMandateError">
+          {{ creationMandateError }}
+        </PAlert>
       </div>
     </PForm>
   </div>
@@ -297,6 +300,7 @@ import {
 // Props
 interface FormProps {
   step: number
+  creationMandateError?: string
 }
 const props = defineProps<FormProps>()
 

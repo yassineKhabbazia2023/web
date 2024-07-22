@@ -84,5 +84,44 @@ describe('createMandateDrawer.vue', () => {
     const newMandateCreatedEvent: any = wrapper.emitted('new-mandate-created')
     expect(newMandateCreatedEvent).toBeDefined()
   })
+
+  it('should show error display to form due to api response', async () => {
+    const error: any = new Error()
+    error.response = {
+      data: {
+        message: 'Error during mandate creattion',
+      },
+    }
+    vi.mocked(createMandate).mockRejectedValueOnce(error)
+    const wrapper = createWrapper({ modelValue: true })
+    wrapper.vm.currentStep = 3
+    wrapper.vm.validateAvailability = true
+    await nextTick()
+    await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
+    expect(createMandate).toHaveBeenCalled()
+  })
+
+  it('should show error display to form due to http client issue', async () => {
+    const error: any = new Error()
+    error.request = 'something bad happened'
+    vi.mocked(createMandate).mockRejectedValueOnce(error)
+    const wrapper = createWrapper({ modelValue: true })
+    wrapper.vm.currentStep = 3
+    wrapper.vm.validateAvailability = true
+    await nextTick()
+    await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
+    expect(createMandate).toHaveBeenCalled()
+  })
+
+  it('should show error display to form', async () => {
+    const error = new Error('Something went wrong')
+    vi.mocked(createMandate).mockRejectedValueOnce(error)
+    const wrapper = createWrapper({ modelValue: true })
+    wrapper.vm.currentStep = 3
+    wrapper.vm.validateAvailability = true
+    await nextTick()
+    await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
+    expect(createMandate).toHaveBeenCalled()
+  })
 })
 

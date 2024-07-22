@@ -418,7 +418,7 @@ describe('baninking data edge cases', () => {
   it.each(step3TestCases)('renders the component when step value is 3 getBankDetail',
     async (step3TestCase) => {
       // mockGetBankDetailThrowError()
-      const wrapper = createWrapper({ step: 3 })
+      const wrapper = createWrapper({ step: 3, creationMandateError: 'Error' })
       Object.assign(wrapper.vm.createMandateForm, step3TestCase.initial)
 
       const institutionCodeInputElement = wrapper

@@ -50,6 +50,7 @@
       <Form
         v-if="currentStep <= 3"
         :step="currentStep"
+        :creationMandateError="creationErrorToDisplay"
         @enable-disable-next="handleNextAvailability"
         @enable-disable-validate="handleValidateAvailability"
         @update-mandate-model="updateMandateModel"
@@ -175,6 +176,7 @@ import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormMod
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
 const validateAvailability = ref(false)
+const creationErrorToDisplay = ref('')
 const mandateModel: CreateMandateModel = reactive({
   erpId: '',
   address: {
@@ -288,7 +290,15 @@ const submitMandate = async (mandate: CreateMandateModel) => {
     } = await createMandate(mandate)
     mandateId.value = id
     ++currentStep.value
-  } catch (error) {
+    creationErrorToDisplay.value = ''
+  } catch (error: any) {
+    if (error.response) {
+      creationErrorToDisplay.value = error.response.data.message
+    } else if (error.request) {
+      creationErrorToDisplay.value = error.request
+    } else {
+      creationErrorToDisplay.value = error.message
+    }
   } finally {
     loading.value = false
   }
@@ -297,6 +307,7 @@ const submitMandate = async (mandate: CreateMandateModel) => {
 defineExpose({
   validateAvailability,
   nextStepAvailability,
+  currentStep,
 })
 </script>
 
