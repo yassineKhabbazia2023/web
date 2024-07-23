@@ -1,3 +1,4 @@
+import type { ContactType } from '@/services/contact/contactTypes'
 import type { AuthorizationState } from '../../ManageRightsTypes'
 
 interface Category {
@@ -26,6 +27,9 @@ export interface AuthorizationConfig {
 }
 
 export interface RightsListProps {
-  contactId: number
+  contactId?: number
+  accountId?: number
   modelValue: Record<string, AuthorizationState>
+  isAccountRights?: boolean
+  contactType?: ContactType
 }

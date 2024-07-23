@@ -13,6 +13,7 @@ const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 // Exported Mocks
 export const mockHasPermission = vi.fn((_code: string) => true)
 export const mockUpdateUserPermission = vi.fn()
+export const mockUpdateAccountPermission = vi.fn()
 export const mockFetchAuthorizationsConfig = vi.fn(() =>
   Promise.resolve(mockedAuthorizationsConfig),
 )
@@ -31,6 +32,8 @@ setActivePinia(pinia)
 vi.mock('@/services/authorization', () => ({
   fetchAuthorizationsConfig: mockFetchAuthorizationsConfig,
   updateUserPermissions: mockUpdateUserPermission,
+  fetchAccountAuthorizationsConfig: mockFetchAuthorizationsConfig,
+  updateAccountPermissions: mockUpdateAccountPermission,
 }))
 
 vi.mock('@kpmg/common', () => ({

@@ -4,9 +4,3 @@ export interface TableDataProps {
   isAccountManagement?: boolean
 }
 
-export interface Row {
-  accountId: number
-  name: string
-  accountNumber: string
-}
-

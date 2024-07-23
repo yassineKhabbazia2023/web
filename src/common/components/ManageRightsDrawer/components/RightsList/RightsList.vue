@@ -1,6 +1,6 @@
 <template>
   <p data-testid="rights-list-note">
-    {{ t('rightsNote') }}
+    {{ t('rightsNote', { rightsType : isAccountRights ? t('thisAccount') : t('thisUser')}) }}
   </p>
   <div
     v-if="isLoading"
@@ -58,10 +58,11 @@ import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { PSwitch, PCheckbox, PCheckboxGroup, PLoader } from '@kpmg/styleguide'
-import { fetchAuthorizationsConfig } from '@/services/authorization'
+import { fetchAuthorizationsConfig, fetchAccountAuthorizationsConfig } from '@/services/authorization'
 import { getAuthorizationsConfigMapped, getAuthorizationState } from './utils'
 import type { AuthorizationState } from '../../ManageRightsTypes'
 import type {
+  AuthorizationConfig,
   AuthorizationConfigMapped,
   RightsListProps,
 } from './RightsListTypes'
@@ -133,14 +134,23 @@ const handleAuthorizationActionUpdate = (
 }
 
 onMounted(async () => {
+  internalAuthorizationState.value = {}
   try {
-    const data = await fetchAuthorizationsConfig(
-      props.contactId,
-      route.params.id ? +route.params.id : null,
-    )
+    let rightsConfigList: AuthorizationConfig[] = []
+    if (props.isAccountRights && props.accountId && props.contactType) {
+      rightsConfigList = await fetchAccountAuthorizationsConfig(
+        props.accountId,
+        props.contactType,
+      )
+    } else if (props.contactId) {
+      rightsConfigList = await fetchAuthorizationsConfig(
+        props.contactId,
+        route.params.id ? +route.params.id : null,
+      )
+    }
     // We need to map the data in order to obtain the category label
     authorizationsConfig.value = getAuthorizationsConfigMapped(
-      data,
+      rightsConfigList,
       RIGHT_CATEGORIES,
     )
     // To display the action checkboxes and the category switch with the correct values
@@ -192,7 +202,9 @@ en-US:
   mirrorView: 'Customer mirror view'
   manage: 'File management'
   prod: 'Business production'
-  rightsNote: 'Activate or deactivate the features you want to give for this user.'
+  thisAccount: 'this folder'
+  thisUser: 'this user'
+  rightsNote: 'Activate or deactivate the features you want to give for {rightsType}.'
 fr-FR:
   management: 'Pilotage'
   accountingManagement: 'Production gestion comptable'
@@ -205,5 +217,7 @@ fr-FR:
   mirrorView: 'Vue miroir client'
   manage: 'Gestion des dossiers'
   prod: 'Production métier'
-  rightsNote: 'Activez ou désactivez les fonctionnalités que vous souhaitez donner pour cet utilisateur.'
+  thisAccount: 'ce dossier'
+  thisUser: 'cet utilisateur'
+  rightsNote: 'Activez ou désactivez les fonctionnalités que vous souhaitez donner pour {rightsType}.'
 </i18n>

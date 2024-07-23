@@ -20,7 +20,13 @@
         data-testid="accounts-table"
         :data="searchResult.items"
         @access="handleOpenFolder"
+        @display-account-rights-drawer="handleDisplayAccountRightsDrawer"
         isAccountManagement
+      />
+      <AccountRightsDrawer
+        v-if="isAccountRightsDrawerOpened && selectedAccount"
+        v-model="isAccountRightsDrawerOpened"
+        :selectedAccount="selectedAccount"
       />
       <PPagination
         class="margin-top--6"
@@ -55,9 +61,11 @@ import {
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
 import TableData from '../../components/TableData'
+import AccountRightsDrawer from './components/AccountRightsDrawer'
 import { fetchWalletData } from '../folders/DeployUtils'
 import { getPaginationLabel } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
+import type { AccountRow } from '@/common/types'
 import type {
   SearchCriteria,
   SearchResult,
@@ -72,6 +80,8 @@ const { t } = useI18n({
 const router = useRouter()
 
 const isLoading = ref(true)
+const selectedAccount = ref<AccountRow>()
+const isAccountRightsDrawerOpened = ref(false)
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   {
     text: t('toDeploy'),
@@ -109,6 +119,10 @@ const paginationLabel = computed(() => getPaginationLabel(t('on'), {
   totalItems: searchResult.value.totalItems,
 }))
 
+const handleDisplayAccountRightsDrawer = (account: AccountRow) => {
+  selectedAccount.value = account
+  isAccountRightsDrawerOpened.value = true
+}
 const handleSearchValueSubmitted = (accountNumber: string) => {
   searchCriteria.value.currentPage = 1
   searchCriteria.value.accountNumber = accountNumber

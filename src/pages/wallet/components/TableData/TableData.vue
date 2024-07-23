@@ -201,7 +201,8 @@ import {
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { type Entity, commonApi, commonStore, amplitudeService } from '@kpmg/common'
-import type { TableDataProps, Row } from './types'
+import type { TableDataProps } from './types'
+import type { AccountRow } from '@/common/types'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 import { API_PREFIXES } from '@/common/config/services'
 
@@ -281,12 +282,13 @@ const emit = defineEmits<{
   'click-deploy': [number, string, string]
   access: [string]
   selectedFolder: [SelectedFolder]
+  displayAccountRightsDrawer: [AccountRow]
 }>()
 
 const handleRowSelectedChange = (row: any) => {
   const rowValues = toRaw(row)
   if (rowValues) {
-    const { name, accountId, accountNumber }: Row = rowValues
+    const { name, accountId, accountNumber }: AccountRow = rowValues
     // color is temporarily hard-coded
     const defaultEntity: Entity = {
       legalName: name,
@@ -321,7 +323,7 @@ onMounted(() => {
 
 watch(() => props.data, () => {
   const rowToSelect = props.data
-    .find(({ accountId }: Row) => accountId === defaultEntity.value?.accountId)
+    .find(({ accountId }: AccountRow) => accountId === defaultEntity.value?.accountId)
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 
@@ -372,6 +374,8 @@ const onToolboxItemClicked = (action: string, row: any) => {
   } else if (action === 'access') {
     handleRowSelectedChange(row)
     emit('access', accountId)
+  } else if (action === 'manageAccountRights') {
+    emit('displayAccountRightsDrawer', { accountId, name, accountNumber })
   }
 }
 
@@ -424,7 +428,7 @@ en-US:
   resendActivationEmail: 'Resend activation email'
   toDeploy: 'To Deploy'
   inProgress: 'In progress'
-  manageAccountRights: 'Manage account permissions'
+  manageAccountRights: 'Manage folder permissions'
   resendMailErrorMessage: 'A problem occurred while sending the activation email for '
   resendMailSuccessMessageFirst: 'A new activation email for '
   resendMailSuccessMessageSecond: ' has been sent successfully.'
@@ -441,7 +445,7 @@ fr-FR:
   resendActivationEmail: "Relancer le mail d'activation"
   toDeploy: 'A déployer'
   inProgress: 'En cours'
-  manageAccountRights: 'Gérer les droits account'
+  manageAccountRights: 'Gérer les droits du dossier'
   resendMailErrorMessage: "Un problème est survenu lors de l'envoie du mail d'activation pour "
   resendMailSuccessMessageFirst: "Un nouveau mail d'activation pour "
   resendMailSuccessMessageSecond: ' a bien été envoyé.'

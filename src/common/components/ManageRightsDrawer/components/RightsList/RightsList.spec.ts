@@ -5,6 +5,7 @@ import type { RightsListProps } from './RightsListTypes'
 import * as authorizationServices from '@/services/authorization'
 import { useRoute } from 'vue-router'
 import RightsList from '.'
+import { ContactType } from '@/services/contact/contactTypes'
 
 // Mocks
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
@@ -190,7 +191,7 @@ describe('rightsList', () => {
       }
       wrapper.vm.internalAuthorizationState = authState
 
-      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[authState]])
+      expect(wrapper.emitted('update:modelValue')?.at(1)).toStrictEqual([authState])
     })
     it('should call the auth API with the correct parameters to fetch the authorization configuration', () => {
       const spyFetchAuthorizationsConfig = vi.spyOn(
@@ -203,6 +204,24 @@ describe('rightsList', () => {
       expect(spyFetchAuthorizationsConfig).toHaveBeenCalledWith(
         mockedContactId,
         mockedAccountId,
+      )
+    })
+    it('should call the auth API with the correct params to retrieve the account authorization configuration', () => {
+      const spyFetchAccountAuthorizationsConfig = vi.spyOn(
+        authorizationServices,
+        'fetchAccountAuthorizationsConfig',
+      )
+      createWrapper({
+        isAccountRights: true,
+        modelValue: {},
+        accountId: mockedAccountId,
+        contactType: ContactType.Collaborator,
+      })
+
+      expect(spyFetchAccountAuthorizationsConfig).toHaveBeenCalledOnce()
+      expect(spyFetchAccountAuthorizationsConfig).toHaveBeenCalledWith(
+        mockedAccountId,
+        ContactType.Collaborator,
       )
     })
     it('should call the auth API with accountID set to null if there is no accountId in the route parameters', () => {

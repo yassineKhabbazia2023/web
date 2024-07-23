@@ -8,8 +8,14 @@ import {
   getMockedSearchCriteria,
 } from '../folders/DeployUtilsMock'
 import AccountManagement from '.'
+import type { AccountRow } from '@/common/types'
 
 const mockRouterPush = vi.fn()
+const mockedAccount: AccountRow = {
+  accountId: 1,
+  name: 'Pizza Planet',
+  accountNumber: '70006400886',
+}
 const mockedQueryResult = getMockedWalletQueryResult()
 
 vi.mock('./DeployUtils', async () => {
@@ -24,7 +30,7 @@ vi.mock('vue-router', () => ({
 const createWrapper = (): VueWrapper<any> =>
   mount(AccountManagement, {
     global: {
-      stubs: ['TableData'],
+      stubs: ['TableData', 'PTabs'],
     },
   })
 
@@ -90,6 +96,16 @@ describe('deploy', () => {
         name: 'folder',
         params: { id: '8126f51d-c834-4fda-82ea-00d51ee11983' },
       })
+    })
+    it("should open the account rights drawer when the 'Manage Account Rights' button is clicked", async () => {
+      const wrapper = createWrapper()
+      await flushPromises()
+      const table = wrapper.findComponent('[data-testid=accounts-table]') as VueWrapper
+      table.vm.$emit('displayAccountRightsDrawer', mockedAccount)
+      await nextTick()
+
+      expect(wrapper.vm.selectedAccount).toStrictEqual(mockedAccount)
+      expect(wrapper.vm.isAccountRightsDrawerOpened).toBeTruthy()
     })
     it('should call the account API to retrieve all accounts', async () => {
       const wrapper = createWrapper()
