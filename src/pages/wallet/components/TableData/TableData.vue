@@ -141,6 +141,7 @@
         <template #default="scope">
           <PToolbox
             trigger="click"
+            :disabled="isToolboxDisabled"
             :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
             @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
           >
@@ -197,14 +198,16 @@ import {
   ref,
   toRaw,
   watch,
+  computed,
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { type Entity, commonApi, commonStore, amplitudeService } from '@kpmg/common'
+import { type Entity, commonApi, commonStore, amplitudeService, userPermissions } from '@kpmg/common'
 import type { TableDataProps } from './types'
 import type { AccountRow } from '@/common/types'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 import { API_PREFIXES } from '@/common/config/services'
+import { PERMISSION_CODES } from '@/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -216,6 +219,8 @@ const props = withDefaults(defineProps<TableDataProps>(), {
   isAccountManagement: false,
   handleAddFavorite: () => {},
 })
+
+const { hasPermission } = userPermissions()
 
 const menuToDeployElements : PToolboxItemProps[] = [
   {
@@ -253,14 +258,22 @@ const accountManagementMenu : PToolboxItemProps[] = [
     pValue: t('manageAccountRights'),
     pActionName: 'manageAccountRights',
     pState: 'default',
+    display: hasPermission(PERMISSION_CODES.MODIFY_ACCOUNT_RIGHTS),
   },
   {
     pIconName: 'PISend',
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',
+    display: true,
   },
-]
+].filter(({ display }) => display)
+  .map(({ pIconName, pValue, pActionName, pState }) => ({
+    pIconName,
+    pValue,
+    pActionName,
+    pState,
+  })) as PToolboxItemProps[]
 
 const menuConnectedElements : PToolboxItemProps[] = [
   {
@@ -291,6 +304,10 @@ const emit = defineEmits<{
   displayAccountRightsDrawer: [AccountRow]
   displayResendActivationEmailDrawer: [AccountRow]
 }>()
+
+const isToolboxDisabled = computed(() => {
+  return props.isAccountManagement && accountManagementMenu.length === 0
+})
 
 const handleRowSelectedChange = (row: any) => {
   const rowValues = toRaw(row)

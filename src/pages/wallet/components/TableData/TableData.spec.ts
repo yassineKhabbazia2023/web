@@ -35,6 +35,9 @@ vi.mock('@kpmg/common', () => ({
       defaultEntity: () => testEntity,
     },
   }),
+  userPermissions: () => ({
+    hasPermission: vi.fn(),
+  }),
   amplitudeService: {
     track: vi.fn(),
   },

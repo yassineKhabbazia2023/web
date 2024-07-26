@@ -60,6 +60,9 @@ vi.mock('@kpmg/common', () => ({
       isCollab: () => true,
     },
   }),
+  userPermissions: () => ({
+    hasPermission: vi.fn(),
+  }),
 }))
 
 const mockRouterPush = vi.fn()
