@@ -1,4 +1,4 @@
-import type { IExtendedCollab } from './../../types'
+import type { ExtendedCollab } from './../../types'
 
 /* eslint-disable no-unused-vars */
 export enum CollabRightsDrawerSteps {
@@ -14,6 +14,6 @@ export interface Role {
 }
 
 export interface CollabRightsDrawerProps {
-  rowData: IExtendedCollab
+  rowData: ExtendedCollab
   hasDrawerOpened: boolean
 }

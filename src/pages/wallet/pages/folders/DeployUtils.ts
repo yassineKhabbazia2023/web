@@ -1,4 +1,4 @@
-import type { IWalletData, SearchCriteria, DeploymentStatus } from '../../types'
+import type { WalletData, SearchCriteria, DeploymentStatus } from '../../types'
 import type { AccountRow } from '@/services/account'
 import { fetchAccounts } from '@/services/account'
 import { COLORS } from './DeployConst'
@@ -33,7 +33,7 @@ export async function fetchWalletData(
   const items = queryResult.items
     .map((account, index) => getMappedAccount(deploymentStatuses, account, index))
 
-  const walletResult: QueryResult<IWalletData> = {
+  const walletResult: QueryResult<WalletData> = {
     items,
     currentPage: queryResult.currentPage,
     totalItems: queryResult.totalItems,
@@ -47,7 +47,7 @@ export function getMappedAccount(
   deploymentStatuses: DeploymentStatus[],
   account: AccountRow,
   index: number,
-): IWalletData {
+): WalletData {
   const {
     accountGlobalUniqueId: id,
     accountId,
@@ -68,7 +68,7 @@ export function getMappedAccount(
   const colorIndex = index % COLORS.length
   const avatarColor = COLORS[colorIndex]
 
-  const mappedAccount: IWalletData = {
+  const mappedAccount: WalletData = {
     owner: {
       contactId,
       firstName,

@@ -7,14 +7,14 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { generateContactsMock } from '@/../tests/mocks/contactsDataMock'
 import { getInitials } from '@/helper'
-import type { IExtendedUser } from './types.ts'
+import type { ExtendedUser } from './UsersClientTypes.ts'
 import { noResult } from '@/../tests'
 import FormSearch from '@/common/components/FormSearch'
 import type { PatchContactPayload } from '@/services/contact/contactTypes'
 import { mockUser } from './components/DrawerUserDetails/mockData.ts'
 import * as OfferServices from '@/services/offer'
 import * as WalletServices from '@/services/wallet'
-import type { IUserFromApi } from '@/pages/folder/pages/usersCollab/types'
+import type { Contact } from '@/common/types'
 import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import type { UsersClientProps } from './UsersClientTypes'
 import UsersClient from './'
@@ -87,7 +87,7 @@ let wrapper: VueWrapper<any>
 
 const checkRowContent = (
   tableHtmlRow: string,
-  contactsList: IExtendedUser[],
+  contactsList: ExtendedUser[],
 ) => {
   contactsList.forEach((contact) => {
     const date = new Date(contact.creationDate)
@@ -229,7 +229,7 @@ describe('usersClient', () => {
   describe('when entityId is set', () => {
     const entityId = 42
     let fetchAccountContactsSpy: SpyInstance
-    const mockedItems: IUserFromApi[] = [{
+    const mockedItems: Contact[] = [{
       contactId: 1,
       firstName: 'Goldie',
       lastName: 'Travis',
@@ -240,7 +240,7 @@ describe('usersClient', () => {
       type: 'string',
       status: 'status',
     }]
-    const mockedResponse: WalletServices.GenericPageResponse<IUserFromApi> = {
+    const mockedResponse: WalletServices.GenericPageResponse<Contact> = {
       items: mockedItems,
       currentPage: 1,
       totalItems: 3,

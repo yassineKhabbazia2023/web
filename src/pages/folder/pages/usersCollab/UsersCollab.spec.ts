@@ -59,6 +59,9 @@ vi.mock('vue-router', () => ({
       id: DEFAULT_ROUTE_PARAMS_ID,
     },
   }),
+  useRouter: () => ({
+    go: vi.fn(),
+  }),
 }))
 
 vi.mock('@kpmg/common', () => ({

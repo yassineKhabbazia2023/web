@@ -1,6 +1,5 @@
 import type { PaginationData } from '@/helper/helperTypes'
-import type { Component } from 'vue'
-
+import type { UserStatus } from '@/common/types'
 /**
  * 🛠️ TODO: don't use the 'I' prefix on new types as this is against our conventions.
  */
@@ -14,37 +13,7 @@ export enum userActions {
 }
 /* eslint-disable no-unused-vars */
 
-export interface IUserStatus {
-  text: string
-  color:
-    | ''
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'info'
-    | 'persian'
-    | 'fuschia'
-    | 'cyan'
-    | 'amethyste'
-    | 'gray-300'
-    | 'gray-500'
-    | 'gray-900'
-  icon: Component
-}
-
-export interface IUserFromApi {
-  contactId: number
-  globalContactId: string
-  firstName: string
-  lastName: string
-  email: string
-  type: string
-  status: string
-  personaName: string
-  creationDate: string
-}
-
-export interface IUser {
+export interface User {
   contactId: number
   initials: string
   fullName: string
@@ -53,11 +22,11 @@ export interface IUser {
   email: string
   isOwner: boolean
   role?: string
-  status?: string | IUserStatus
+  status?: string | UserStatus
   firstDateAccess?: string
 }
 
-export interface IStateUser extends PaginationData<IUser> {
+export interface StateUser extends PaginationData<User> {
   currentPage: number
   limit: number
   totalItems: number | undefined

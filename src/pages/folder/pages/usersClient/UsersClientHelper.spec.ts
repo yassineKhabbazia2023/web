@@ -3,6 +3,53 @@ import { formatItemsFromApi } from './UsersClientHelper'
 import { generateContactsMock } from '@/../tests/mocks/contactsDataMock'
 import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 
+const expectedItems = [{
+  contactId: 1,
+  creationDate: '2024-03-07',
+  email: 'email@testemail.com0',
+  firstName: 'firstname0',
+  globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
+  fullName: 'firstName0 lastName',
+  initials: 'FL',
+  isLoggedUser: false,
+  isOwner: false,
+  isSignatory: false,
+  lastName: 'lastname',
+  personaName: 'Customer',
+  type: 'Customer',
+  status: 'Declared',
+}, {
+  globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
+  contactId: 2,
+  creationDate: '2024-03-07',
+  email: 'email@testemail.com1',
+  firstName: 'firstname1',
+  fullName: 'firstName1 lastName',
+  initials: 'FL',
+  isLoggedUser: false,
+  isOwner: false,
+  isSignatory: true,
+  lastName: 'lastname',
+  personaName: 'Customer',
+  type: 'Customer',
+  status: 'Declared',
+}, {
+  globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
+  contactId: 3,
+  creationDate: '2024-03-07',
+  email: 'email@testemail.com2',
+  firstName: 'firstname2',
+  fullName: 'firstName2 lastName',
+  initials: 'FL',
+  isLoggedUser: true,
+  isOwner: false,
+  isSignatory: false,
+  lastName: 'lastname',
+  personaName: 'Customer',
+  type: 'Customer',
+  status: 'Declared',
+}]
+
 describe('test UsersClientHelper', () => {
   describe('formatItemsFromApi', () => {
     it('returns formatted items', () => {
@@ -28,45 +75,23 @@ describe('test UsersClientHelper', () => {
       }]
 
       const currentUserId = items[2].contactId
-      const expectedItems = [{
-        contactId: 1,
-        creationDate: '2024-03-07',
-        email: 'email@testemail.com0',
-        firstName: 'firstname0',
-        fullName: 'firstName0 lastName',
-        initials: 'FL',
-        isLoggedUser: false,
-        isOwner: false,
-        isSignatory: false,
-        lastName: 'lastname',
-        personaName: 'Customer',
-      }, {
-        contactId: 2,
-        creationDate: '2024-03-07',
-        email: 'email@testemail.com1',
-        firstName: 'firstname1',
-        fullName: 'firstName1 lastName',
-        initials: 'FL',
-        isLoggedUser: false,
-        isOwner: false,
-        isSignatory: true,
-        lastName: 'lastname',
-        personaName: 'Customer',
-      }, {
-        contactId: 3,
-        creationDate: '2024-03-07',
-        email: 'email@testemail.com2',
-        firstName: 'firstname2',
-        fullName: 'firstName2 lastName',
-        initials: 'FL',
-        isLoggedUser: true,
-        isOwner: false,
-        isSignatory: false,
-        lastName: 'lastname',
-        personaName: 'Customer',
-      }]
       const formattedItems = formatItemsFromApi(items, currentUserId, principalContacts)
       expect(formattedItems).toStrictEqual(expectedItems)
+    })
+
+    it('returns formatted items when principalContact is empty and currentUser is undefined', () => {
+      const contactsList = generateContactsMock({
+        numberOfContactsToReturn: 1,
+        contactsTotalCount: 16,
+        numberOfPages: 2,
+        currentPage: 1,
+      })
+
+      const { data: mockedData } = contactsList
+      const { items } = mockedData
+
+      const formattedItems = formatItemsFromApi(items)
+      expect(formattedItems).toStrictEqual([expectedItems[0]])
     })
   })
 })

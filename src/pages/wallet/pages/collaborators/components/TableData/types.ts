@@ -1,7 +1,7 @@
-import type { IExtendedCollab } from './../../types'
+import type { ExtendedCollab } from './../../types'
 
 export interface Props {
-  data: IExtendedCollab[]
+  data: ExtendedCollab[]
 }
 
 export interface Row {

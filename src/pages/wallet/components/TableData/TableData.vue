@@ -254,6 +254,12 @@ const accountManagementMenu : PToolboxItemProps[] = [
     pActionName: 'manageAccountRights',
     pState: 'default',
   },
+  {
+    pIconName: 'PISend',
+    pValue: t('resendActivationEmail'),
+    pActionName: 'retryMassActivationEmail',
+    pState: 'default',
+  },
 ]
 
 const menuConnectedElements : PToolboxItemProps[] = [
@@ -283,6 +289,7 @@ const emit = defineEmits<{
   access: [string]
   selectedFolder: [SelectedFolder]
   displayAccountRightsDrawer: [AccountRow]
+  displayResendActivationEmailDrawer: [AccountRow]
 }>()
 
 const handleRowSelectedChange = (row: any) => {
@@ -376,6 +383,8 @@ const onToolboxItemClicked = (action: string, row: any) => {
     emit('access', accountId)
   } else if (action === 'manageAccountRights') {
     emit('displayAccountRightsDrawer', { accountId, name, accountNumber })
+  } else if (action === 'retryMassActivationEmail') {
+    emit('displayResendActivationEmailDrawer', { accountId, name, accountNumber })
   }
 }
 

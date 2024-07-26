@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
 
-export interface IProps {
+export interface FilterOptionProps {
   number: number
   content: string
   icon: Component

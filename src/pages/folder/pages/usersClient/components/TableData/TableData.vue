@@ -5,6 +5,7 @@
       showOverflowTooltip
       pStripe
       tableLayout="fixed"
+      @selection-change="handleSelectUser"
     >
       <PTableColumn
         :pLabel="t('user')"
@@ -38,45 +39,65 @@
           </div>
         </template>
       </PTableColumn>
-
       <PTableColumn
         :pLabel="t('email')"
         pProp="email"
         pSortable
       />
-
-      <PTableColumn
-        :pLabel="t('dateAdded')"
-        pProp="creationDate"
-        pSortable
-      >
-        <template #default="scope">
-          {{ d(scope.row.creationDate, 'short')}}
-        </template>
-      </PTableColumn>
-
-      <PTableColumn
-        :pLabel="t('options')"
-        :pWidth="100"
-        pProp="options"
-      >
-        <template #default="scope">
-          <PToolbox
-            @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
-            trigger="click"
-            :pElements="menuElements"
-          >
-            <PButton
-              pType="generic"
-              pSize="small"
+      <template v-if="!isAccountManagement">
+        <PTableColumn
+          :pLabel="t('dateAdded')"
+          pProp="creationDate"
+          pSortable
+        >
+          <template #default="scope">
+            {{ d(scope.row.creationDate, 'short')}}
+          </template>
+        </PTableColumn>
+        <PTableColumn
+          :pLabel="t('options')"
+          :pWidth="100"
+          pProp="options"
+        >
+          <template #default="scope">
+            <PToolbox
+              @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
+              trigger="click"
+              :pElements="menuElements"
             >
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
-            </PButton>
-          </PToolbox>
-        </template>
-      </PTableColumn>
+              <PButton
+                pType="generic"
+                pSize="small"
+              >
+                <PIcon>
+                  <PIThreeDots />
+                </PIcon>
+              </PButton>
+            </PToolbox>
+          </template>
+        </PTableColumn>
+      </template>
+      <template v-else>
+        <PTableColumn
+          :pLabel="t('status')"
+          :pWidth="150"
+          pSortable="custom"
+          pProp="status"
+        >
+          <template #default="scope">
+            <PTag
+              :pContent="scope.row.statusTag.text"
+              :pColor="scope.row.statusTag.color"
+              :pIconLeft="scope.row.statusTag.icon"
+              pEffect="light"
+            />
+          </template>
+        </PTableColumn>
+        <PTableColumn
+          :pShowOverflowTooltip="false"
+          pType="selection"
+        />
+      </template>
     </PTable>
   </div>
 </template>
@@ -91,6 +112,7 @@ import {
   PTable,
   PTableColumn,
   PToolbox,
+  PTag,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { computed, reactive } from 'vue'
@@ -98,7 +120,7 @@ import { userPermissions } from '@kpmg/common'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
-import type { IExtendedUser } from '../../types'
+import type { ExtendedUser } from '../../UsersClientTypes'
 import { userActions } from './types'
 
 const { d, t } = useI18n({
@@ -109,10 +131,11 @@ const { d, t } = useI18n({
 
 const props = defineProps<Props>()
 const { hasPermission } = userPermissions()
-const emits = defineEmits<{
+const emit = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
-  'remove-user': [IExtendedUser]
+  'remove-user': [ExtendedUser]
+  'select-user': [number[]]
 }>()
 
 const {
@@ -163,20 +186,23 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
 )
 
 const state = reactive({
-  rowData: {} as IExtendedUser,
+  rowData: {} as ExtendedUser,
 })
 
 const handleToolboxItemClick = (action: string, row: any) => {
   state.rowData = row
   if (action === userActions.MODIFY_RIGHTS) {
-    emits('display-manage-rights', row.contactId)
+    emit('display-manage-rights', row.contactId)
   }
   if (action === userActions.REMOVE_USER) {
-    emits('remove-user', row)
+    emit('remove-user', row)
   }
   if (action === userActions.USER_INFORMATION) {
-    emits('click-view-information', row.contactId)
+    emit('click-view-information', row.contactId)
   }
+}
+const handleSelectUser = (users: ExtendedUser[]) => {
+  emit('select-user', users.map((user) => user.contactId))
 }
 </script>
 
@@ -192,6 +218,7 @@ en-US:
   email: 'Email'
   dateAdded: 'Date added'
   options: 'Options'
+  status: 'Status'
   userInformation: 'User information'
   modifyRights: 'Modify rights'
   removeUser: 'Remove User'
@@ -202,6 +229,7 @@ fr-FR:
   email: 'E-Mail'
   dateAdded: "Date d'ajout"
   options: 'Options'
+  status: 'Statut'
   userInformation: "Informations de l'utilisateur"
   modifyRights: 'Modifier les droits'
   removeUser: "Retirer l'utilisateur"

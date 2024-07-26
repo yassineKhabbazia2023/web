@@ -1,4 +1,4 @@
-import type { IUser } from '@/pages/folder/pages/usersCollab/types'
+import type { User } from '@/pages/folder/pages/usersCollab/types'
 
 export interface AuthorizationState {
   actions: string[]
@@ -7,5 +7,5 @@ export interface AuthorizationState {
 
 export interface ManageRightsDrawerProps {
   modelValue: boolean
-  selectedUser: IUser
+  selectedUser: User
 }

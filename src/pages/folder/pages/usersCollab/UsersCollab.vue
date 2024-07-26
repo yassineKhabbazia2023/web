@@ -168,7 +168,8 @@ import { fetchAccountCustomers } from '@/services/wallet'
 import { getPaginationLabel, removeFalsyValues } from '@/helper'
 import { updateSignatoryStatus, getAccountSignatories } from '@/services/account'
 import type { AccountSignatories } from '@/services/account/accountTypes'
-import type { IStateUser, IUserStatus, IUser } from './types'
+import type { StateUser, User } from './types'
+import type { UserStatus } from '@/common/types'
 import { userActions } from './types'
 import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
 import NoResult from '@/common/components/NoResult'
@@ -185,7 +186,7 @@ const selectedRow = ref(undefined)
 const isManageRightsDrawerOpened = ref(false)
 const { user } = storeToRefs(commonStore())
 
-const state: IStateUser = reactive({
+const state: StateUser = reactive({
   data: [],
   currentPage: 1,
   limit: 15,
@@ -237,7 +238,7 @@ function handleToolboxClick(userRow: any) {
   toolboxItems.value.push(...items)
 }
 
-const paginationLabel = computed(() => getPaginationLabel<IUser>(t('on'), state))
+const paginationLabel = computed(() => getPaginationLabel<User>(t('on'), state))
 
 const formatAndFillUsersCollabTable = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
@@ -255,7 +256,7 @@ const formatAndFillUsersCollabTable = async () => {
     /**
      * 🛠️ TODO: Need to create a function format inside utils folder
      */
-    const formattedData: IUser[] = items.map((userFromApi) => {
+    const formattedData: User[] = items.map((userFromApi) => {
       return {
         contactId: userFromApi.contactId,
         initials: getInitials(userFromApi.firstName, userFromApi.lastName),
@@ -286,7 +287,7 @@ const formatAndFillUsersCollabTable = async () => {
 /**
  * 🛠️ TODO: Need to add a global function for retrieving status instead of creating it each time
  */
-const getStatus = (status: string): IUserStatus => {
+const getStatus = (status: string): UserStatus => {
   switch (status) {
     case 'Declared':
       return {
@@ -340,7 +341,7 @@ const handleUserAction = (action: string, row: any) => {
 // Signatory addition scope
 const currentEntity = computed(() => user.value?.entities.default)
 
-async function handleAddSignatory(contactId: IUser['contactId'], contactFullName: string) {
+async function handleAddSignatory(contactId: User['contactId'], contactFullName: string) {
   if (!currentEntity.value) return
 
   try {
@@ -352,7 +353,7 @@ async function handleAddSignatory(contactId: IUser['contactId'], contactFullName
   }
 }
 
-async function handleRemoveSignatory(contactId: IUser['contactId'], contactFullName: string) {
+async function handleRemoveSignatory(contactId: User['contactId'], contactFullName: string) {
   if (!currentEntity.value) return
   try {
     await updateSignatoryStatus(currentEntity.value.accountId, contactId, false)
@@ -364,7 +365,7 @@ async function handleRemoveSignatory(contactId: IUser['contactId'], contactFullN
 }
 
 const accountSignatories = ref<AccountSignatories[]>([])
-function isContactSignatory(contactId: IUser['contactId']) {
+function isContactSignatory(contactId: User['contactId']) {
   return !!accountSignatories.value.find((signatory) => signatory.contactId === contactId)
 }
 

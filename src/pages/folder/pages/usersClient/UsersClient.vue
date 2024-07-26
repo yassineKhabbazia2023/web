@@ -112,10 +112,9 @@ import TableData from './components/TableData'
 import DrawerUserDetails from './components/DrawerUserDetails'
 import RemoveUserDialog from './components/RemoveUserDialog'
 import AddCustomerDrawer from './components/AddCustomerDrawer'
-import type { IUser } from '../usersCollab/types'
-import type { IState } from './types'
+import type { User } from '../usersCollab/types'
 import { formatItemsFromApi } from './UsersClientHelper'
-import type { UsersClientProps } from './UsersClientTypes'
+import type { UsersClientProps, State } from './UsersClientTypes'
 import { getPrincipalContacts } from '@/services/offer'
 import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { fetchAccountContacts, fetchCustomers } from '@/services/wallet'
@@ -128,7 +127,7 @@ const { t } = useI18n({
 const route = useRoute()
 const userStore = commonStore()
 
-const state: IState = reactive({
+const state: State = reactive({
   data: [],
   currentPage: 1,
   limit: 15,
@@ -179,7 +178,7 @@ const getUserInfo = computed(() => {
   return {
     ...userInfo,
     role: userInfo?.personaName,
-  } as IUser
+  } as User
 })
 
 function getQueryParams(type: string | undefined) {

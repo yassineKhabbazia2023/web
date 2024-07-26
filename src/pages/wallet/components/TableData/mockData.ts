@@ -1,5 +1,5 @@
 import { PIArrowUpCircle } from '@kpmg/styleguide'
-import type { IWalletData } from '../../types'
+import type { WalletData } from '../../types'
 import type { Entity } from '@kpmg/common'
 
 export const mockedEntity: Entity = {
@@ -9,7 +9,7 @@ export const mockedEntity: Entity = {
   color: 'orange',
 }
 
-export const mockTableData: IWalletData[] = [
+export const mockTableData: WalletData[] = [
   {
     owner: {
       contactId: 1,

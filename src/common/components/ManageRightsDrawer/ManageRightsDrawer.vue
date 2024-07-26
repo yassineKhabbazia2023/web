@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import {
   PDrawer,
   PUserCard,
@@ -81,6 +81,7 @@ const emit = defineEmits<{
 }>()
 
 const route = useRoute()
+const router = useRouter()
 const isLoading = ref(false)
 const authorizationsState = ref<Record<string, AuthorizationState>>({})
 
@@ -117,7 +118,7 @@ const handleUpdateUserPermissions = async () => {
       isManageRightsDrawerVisible.value = false
       // The page will be reloaded 30ms after the drawer is closed
       setTimeout(() => {
-        location.reload()
+        router.go(0)
       }, 30)
     }, 600)
     PNotification({

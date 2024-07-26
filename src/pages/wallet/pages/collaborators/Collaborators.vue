@@ -59,7 +59,7 @@ import { getInitials, removeFalsyValues, getPaginationLabel } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
-import type { IExtendedCollab, IState } from './types'
+import type { ExtendedCollab, State } from './types'
 import TableData from './components/TableData'
 import { getCollaborators } from '@/services/wallet'
 import type { Contact } from '@/services/contact/contactTypes'
@@ -69,7 +69,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const state: IState = reactive({
+const state: State = reactive({
   data: [],
   currentPage: 1,
   limit: 15,
@@ -90,7 +90,7 @@ const handlePageRangeChanged = (newValue: number) => {
   state.limit = newValue
 }
 
-const paginationLabel = computed(() => getPaginationLabel<IExtendedCollab>(t('on'), state))
+const paginationLabel = computed(() => getPaginationLabel<ExtendedCollab>(t('on'), state))
 
 const shouldShowPagination = computed(() =>
   !state.isLoading && !!state.totalItems,
@@ -117,7 +117,7 @@ const fetch = async () => {
       state.sort,
     )
     if (response) {
-      state.data = response?.items.map<IExtendedCollab>(({
+      state.data = response?.items.map<ExtendedCollab>(({
         firstName,
         lastName,
         office,

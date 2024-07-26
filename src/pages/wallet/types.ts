@@ -8,7 +8,7 @@ export interface DeploymentStatus {
   color: string
 }
 
-export interface IWalletData {
+export interface WalletData {
   owner: {
     contactId: number
     firstName: string
@@ -26,7 +26,7 @@ export interface IWalletData {
   name: string
   isFavorite: boolean
 }
-export interface IState extends PaginationData<IWalletData> {
+export interface State extends PaginationData<WalletData> {
   totalPage: number | undefined
   search: string | undefined
   isLoading: boolean | undefined
@@ -41,4 +41,4 @@ export interface SearchCriteria {
   filterByDeploymentStatus?: string
 }
 
-export interface SearchResult extends QueryResult<IWalletData> {}
+export interface SearchResult extends QueryResult<WalletData> {}

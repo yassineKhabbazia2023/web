@@ -1,10 +1,10 @@
-import type { IExtendedUser } from '../../types'
+import type { ExtendedUser } from '../../UsersClientTypes'
 
 interface UserToRemoveInfo {
-  initials: IExtendedUser['initials']
-  fullName: IExtendedUser['fullName']
-  email: IExtendedUser['email']
-  contactId: IExtendedUser['contactId']
+  initials: ExtendedUser['initials']
+  fullName: ExtendedUser['fullName']
+  email: ExtendedUser['email']
+  contactId: ExtendedUser['contactId']
 }
 
 export interface RemoveUserDialogProps {

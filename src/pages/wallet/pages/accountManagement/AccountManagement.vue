@@ -21,11 +21,17 @@
         :data="searchResult.items"
         @access="handleOpenFolder"
         @display-account-rights-drawer="handleDisplayAccountRightsDrawer"
+        @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
         isAccountManagement
       />
       <AccountRightsDrawer
         v-if="isAccountRightsDrawerOpened && selectedAccount"
         v-model="isAccountRightsDrawerOpened"
+        :selectedAccount="selectedAccount"
+      />
+      <ResendActivationEmailDrawer
+        v-if="isResendActivationEmailDrawerVisible && selectedAccount"
+        v-model="isResendActivationEmailDrawerVisible"
         :selectedAccount="selectedAccount"
       />
       <PPagination
@@ -62,6 +68,7 @@ import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
 import TableData from '../../components/TableData'
 import AccountRightsDrawer from './components/AccountRightsDrawer'
+import ResendActivationEmailDrawer from './components/ResendActivationEmailDrawer'
 import { fetchWalletData } from '../folders/DeployUtils'
 import { getPaginationLabel } from '@/helper'
 import { PAGE_SIZES } from '@/constants'
@@ -82,6 +89,7 @@ const router = useRouter()
 const isLoading = ref(true)
 const selectedAccount = ref<AccountRow>()
 const isAccountRightsDrawerOpened = ref(false)
+const isResendActivationEmailDrawerVisible = ref(false)
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   {
     text: t('toDeploy'),
@@ -122,6 +130,10 @@ const paginationLabel = computed(() => getPaginationLabel(t('on'), {
 const handleDisplayAccountRightsDrawer = (account: AccountRow) => {
   selectedAccount.value = account
   isAccountRightsDrawerOpened.value = true
+}
+const handleDisplayResendActivationEmailDrawer = (account: AccountRow) => {
+  selectedAccount.value = account
+  isResendActivationEmailDrawerVisible.value = true
 }
 const handleSearchValueSubmitted = (accountNumber: string) => {
   searchCriteria.value.currentPage = 1

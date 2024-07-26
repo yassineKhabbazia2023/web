@@ -2,9 +2,9 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it, beforeEach } from 'vitest'
 import FilterOption from '.'
-import type { IProps } from './types'
+import type { FilterOptionProps } from './types'
 import { PIArrowUpCircle } from '@kpmg/styleguide'
-const createWrapper = (props: IProps) =>
+const createWrapper = (props: FilterOptionProps) =>
   mount(FilterOption, {
     props,
   })

@@ -46,7 +46,7 @@ import {
   PIXCircleFill,
 } from '@kpmg/styleguide'
 import { computed } from 'vue'
-import type { IProps } from './types'
+import type { FilterOptionProps } from './types'
 const emit = defineEmits<{
   'click': []
   'close': []
@@ -55,7 +55,7 @@ const emit = defineEmits<{
 const handleClick = () => {
   props.isSelected ? emit('close') : emit('click')
 }
-const props = withDefaults(defineProps<IProps>(), {
+const props = withDefaults(defineProps<FilterOptionProps>(), {
   isSelected: false,
   clickable: false,
 })

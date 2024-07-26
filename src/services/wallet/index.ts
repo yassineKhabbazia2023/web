@@ -3,8 +3,8 @@ import { handleRequestError } from '@/helper/helper'
 import { API_PREFIXES } from '@/common/config/services'
 import { type Entity, commonApi } from '@kpmg/common'
 import type { Contact } from '../contact/contactTypes'
+import type { Contact as userContact } from '@/common/types'
 import type { Role } from '@/pages/wallet/pages/collaborators/components/CollabRightsDrawer/CollabRightsDrawerTypes'
-import type { IUserFromApi } from '@/pages/folder/pages/usersCollab/types'
 
 const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
 export interface GenericPageResponse<T> {
@@ -40,7 +40,7 @@ export async function fetchAccountCustomers(
 export async function fetchAccountContacts(
   accountId: number,
   searchParams: URLSearchParams,
-): Promise<GenericPageResponse<IUserFromApi>> {
+): Promise<GenericPageResponse<userContact>> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?${searchParams}`
   const response = await commonApi().gateway.get(url)
 

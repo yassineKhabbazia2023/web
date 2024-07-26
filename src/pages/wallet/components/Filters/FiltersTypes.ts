@@ -7,7 +7,7 @@ export enum EntityStatus {
 }
 /* eslint-enable no-unused-vars */
 
-export interface IFilterOption {
+export interface Filter {
   number: number
   content: string
   icon: Component
@@ -17,8 +17,8 @@ export interface IFilterOption {
   isSelected : boolean
 }
 
-export interface IState {
-  userTags: IFilterOption[]
-  entityTags: IFilterOption[]
+export interface State {
+  userTags: Filter[]
+  entityTags: Filter[]
   isLoading: boolean | undefined
 }

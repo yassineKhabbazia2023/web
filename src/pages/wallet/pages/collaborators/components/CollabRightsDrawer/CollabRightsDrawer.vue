@@ -59,6 +59,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { computed, ref, onMounted } from 'vue'
 import {
   PDrawer,
@@ -88,6 +89,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+const router = useRouter()
 const emit = defineEmits(['update:modelValue', 'update-collaborator-role'])
 const props = defineProps<CollabRightsDrawerProps>()
 
@@ -131,7 +133,7 @@ const handleUpdatePermissions = async () => {
       isDrawerVisible.value = false
       // The page will be reloaded 30ms after the drawer is closed
       setTimeout(() => {
-        location.reload()
+        router.go(0)
       }, 30)
     }, 600)
     PNotification({

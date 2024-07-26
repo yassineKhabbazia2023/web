@@ -34,6 +34,9 @@ vi.mock('vue-router', () => ({
       id: mockedAccountId,
     },
   }),
+  useRouter: () => ({
+    go: vi.fn(),
+  }),
 }))
 
 const defaultProps = {

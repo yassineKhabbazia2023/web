@@ -2,6 +2,7 @@
   <PDrawer
     v-model="isAccountRightsDrawerVisible"
     :pTitle="t('modifyAccountRights')"
+    pSize="50%"
     @close-drawer-button="handleCloseDrawer"
     destroyOnClose
   >
@@ -18,7 +19,7 @@
         pSize="default"
         pEffect="light"
         pColor="gray-900"
-        pIconLeft="PIPerson"
+        pIconLeft="PIBuilding"
         :pContent="t('clientCompany')"
       />
     </PUserCard>

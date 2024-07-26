@@ -28,6 +28,7 @@ vi.mock('powerbi-client', () => ({
 }))
 
 setActivePinia(pinia)
+
 // Service Mocks
 vi.mock('@/services/authorization', () => ({
   fetchAuthorizationsConfig: mockFetchAuthorizationsConfig,
@@ -36,6 +37,14 @@ vi.mock('@/services/authorization', () => ({
   updateAccountPermissions: mockUpdateAccountPermission,
 }))
 
+// Vue-Router Mocks
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    go: vi.fn(),
+  }),
+}))
+
+// External Package Mocks
 vi.mock('@kpmg/common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {

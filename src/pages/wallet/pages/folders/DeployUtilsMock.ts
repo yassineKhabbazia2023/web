@@ -1,8 +1,8 @@
 import { PIArrowUpCircle } from '@kpmg/styleguide'
-import type { DeploymentStatus, IState, IWalletData, SearchCriteria } from '../../types'
+import type { DeploymentStatus, State, WalletData, SearchCriteria } from '../../types'
 import type { QueryResult } from '@/types/commonTypes'
 
-export function getMockedState(override: Partial<IState> = {}): IState {
+export function getMockedState(override: Partial<State> = {}): State {
   const defaultState = {
     data: [],
     currentPage: 0,
@@ -48,10 +48,10 @@ export function getMockedDeploymentStatus(override: Partial<DeploymentStatus> = 
 }
 
 export function getMockedMappedAccount(
-  override: Partial<IWalletData> = {},
+  override: Partial<WalletData> = {},
   avatarColor = 'persian',
-): IWalletData {
-  const defaultMappedAccount: IWalletData = {
+): WalletData {
+  const defaultMappedAccount: WalletData = {
     accountId: 1,
     accountNumber: '10102',
     city: 'Paris',
@@ -77,9 +77,9 @@ export function getMockedMappedAccount(
 }
 
 export function getMockedWalletQueryResult(
-  override: Partial<QueryResult<IWalletData>> = {},
-): QueryResult<IWalletData> {
-  const defaultWalletQueryResult: QueryResult<IWalletData> = {
+  override: Partial<QueryResult<WalletData>> = {},
+): QueryResult<WalletData> {
+  const defaultWalletQueryResult: QueryResult<WalletData> = {
     currentPage: 0,
     items: [
       getMockedMappedAccount(),

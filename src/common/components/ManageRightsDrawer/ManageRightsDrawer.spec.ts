@@ -13,6 +13,9 @@ const mockedUser = {
   ...dataFromApi.data.items[0],
 }
 vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    go: vi.fn(),
+  }),
   useRoute: () => ({
     params: {
       id: mockedAccountId,

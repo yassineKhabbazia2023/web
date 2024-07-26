@@ -69,7 +69,7 @@ import {
   PIArrowUpCircle,
 } from '@kpmg/styleguide'
 import { fetchEntitiesStatistics } from '@/services/wallet'
-import type { IFilterOption, IState } from './FiltersTypes'
+import type { Filter, State } from './FiltersTypes'
 import { EntityStatus } from './FiltersTypes'
 import FilterOption from '../FilterOption'
 
@@ -121,9 +121,9 @@ const TAGS = [
     apiKey: 'contactInvited',
     isSelected: false,
   },
-] as IFilterOption[]
+] as Filter[]
 
-const state: IState = reactive({
+const state: State = reactive({
   userTags: [],
   entityTags: [],
   isLoading: undefined,

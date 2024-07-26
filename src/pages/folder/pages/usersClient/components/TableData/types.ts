@@ -1,4 +1,4 @@
-import type { IExtendedUser } from './../../types'
+import type { ExtendedUser } from './../../UsersClientTypes'
 
 /* eslint-disable no-unused-vars */
 export enum userActions {
@@ -10,6 +10,7 @@ export enum userActions {
 /* eslint-disable no-unused-vars */
 
 export interface Props {
-  data: IExtendedUser[]
-  isInAnEntityPage: boolean
+  data: ExtendedUser[]
+  isInAnEntityPage?: boolean
+  isAccountManagement?: boolean
 }
