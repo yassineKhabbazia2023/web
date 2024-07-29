@@ -3,7 +3,7 @@ import DocumentTabs from './DocumentTabs.vue'
 import { type DocumentTabsProps } from './DocumentTabsTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
 import DocumentDetailsTabPane from './conponents/DocumentDetailsTabPane'
@@ -25,6 +25,9 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
+    },
+    provide: {
+      toast: vi.fn(),
     },
   })
 }

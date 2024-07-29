@@ -4,13 +4,13 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { expect, describe, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { PDocumentDisplay, PDocumentViewer, PIcon } from '@kpmg/styleguide'
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import { documentMock } from '../../mocks/documentMock'
-import DocumentPreview from '.'
-import { downloadDocument, previewDocument } from '@/services/Documents'
 import { getFileIcon } from '../../helpers/filesExtensions'
+import { downloadDocument, previewDocument } from '@/services/Documents'
+import DocumentPreview from '.'
 
 const defaultProps: DocumentsPreviewProps = {
   document: documentMock,
@@ -30,6 +30,9 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
+    },
+    provide: {
+      toast: vi.fn(),
     },
   })
 }

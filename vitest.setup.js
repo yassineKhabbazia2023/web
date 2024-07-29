@@ -44,6 +44,7 @@ vi.mock('@kpmg/common', () => ({
       name: 'JEAN LÉVAGE',
       idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
       accountNumber: '256',
+      color: 'orange',
     },
   }),
   DataStreamHubConnection: vi.fn(() => ({

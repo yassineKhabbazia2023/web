@@ -3,7 +3,7 @@
 /* eslint-disable vitest/max-expects */
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { PFolderLineNavigationItem, PAlert, PImage } from '@kpmg/styleguide'
 import FoldersList
   from '@/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
@@ -29,6 +29,9 @@ const createWrapper = (
 ): VueWrapper<any> => {
   return mount(FoldersList, {
     props,
+    provide: {
+      toast: vi.fn(),
+    },
   })
 }
 

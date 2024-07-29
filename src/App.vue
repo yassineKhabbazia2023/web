@@ -62,7 +62,6 @@ import {
   deleteFolder,
   findFolderDeepById,
 } from '@/modules/Treeview/helpers/folderArrayHelper'
-// import Notifications from './Notifications.vue'
 import { PCol, PRow, PNotification, PIX } from '@kpmg/styleguide'
 import { commonStore } from '@kpmg/common'
 /* This might be refactored later to import 'PNotification' every time we need the notifications.
@@ -94,8 +93,6 @@ const fetchGedFoldersAndServices = async () => {
   servicesFolders.value = foldersByService
   // Using the first folder serviceId by default
   currentService.value = servicesFolders.value[0][0].serviceId
-
-  servicesFolders.value[0].filter((folder:Folder) => folder.serviceId === currentService.value)
 
   isLoadingServicesOrFolders.value = false
 }
@@ -237,7 +234,6 @@ onMounted(async () => {
     await fetchGedFoldersAndServices()
   }
 })
-
 </script>
 
 <style lang="scss">

@@ -18,14 +18,14 @@ export function useDownloadFolder(
     inheritLocale: true,
     useScope: 'global',
     messages: {
-      en: {
+      'en-US': {
         notifications: {
-          error: 'Connexion au serveur interrompue.',
-          inProgress: 'Préparation du téléchargement en cours.',
-          success: 'Préparation du téléchargement finie.',
+          error: 'Connection to server interrupted.',
+          inProgress: 'Preparing the download in progress.',
+          success: 'Download preparation finished.',
         },
       },
-      fr: {
+      'fr-FR': {
         notifications: {
           error: 'Connexion au serveur interrompue.',
           inProgress: 'Préparation du téléchargement en cours.',

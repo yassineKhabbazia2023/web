@@ -110,7 +110,7 @@ describe('confirmationPopup', () => {
       expect(wrapper.emitted('on-cancel-button-click')).toBeTruthy()
     })
 
-    it('should emit on-close-popup when click on close dilaog button', async () => {
+    it('should emit on-close-popup when click on close dialog button', async () => {
       const updatedProps: ConfirmationPopupProps = {
         ...defaultProps,
         isPopupVisible: true,

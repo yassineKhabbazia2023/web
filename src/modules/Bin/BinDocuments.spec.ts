@@ -1,5 +1,5 @@
 /* eslint-disable vitest/no-hooks */
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { binDocumentsMock } from './mocks/binDocumentMock'
 import BinDocuments from './BinDocuments.vue'
 import { createPinia, setActivePinia } from 'pinia'
@@ -43,6 +43,9 @@ const createWrapper = (
     global: {
       plugins: [pinia],
     },
+    provide: {
+      toast: vi.fn(),
+    },
   }) as unknown as BinDocumentsWrapper
 }
 
@@ -60,7 +63,6 @@ describe('binDocuments', () => {
   describe('events', () => {
     describe('props', () => {
       it('should render PBreadcrumb when currentBinService is set', async () => {
-        expect.hasAssertions()
         const items = []
         items.push({
           pId: -1,
@@ -79,7 +81,6 @@ describe('binDocuments', () => {
       })
       // eslint-disable-next-line max-len
       it('should render BinDocumentsList and PPagination when currentBinService is set', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
 
@@ -103,7 +104,6 @@ describe('binDocuments', () => {
         expect(paginationLabel.text().replaceAll(/\s/g, '')).toBe('1-10sur18894')
       })
       it('should render DocumentRestoreModal when currentBinService is set', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
 
@@ -115,7 +115,6 @@ describe('binDocuments', () => {
         expect(restoreModal.props('document')).toBeNull()
       })
       it('should display loader when fetching documents', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm
         componentInstance.isLoading = true
@@ -130,7 +129,6 @@ describe('binDocuments', () => {
     })
     describe('events', () => {
       it('should call fetch documents when on-sort-change is emitted', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
         const componentInstance = wrapper.vm
@@ -148,7 +146,6 @@ describe('binDocuments', () => {
         )
       })
       it('should open restore modal when restore-document-action is emitted', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
         const componentInstance = wrapper.vm
@@ -163,7 +160,6 @@ describe('binDocuments', () => {
           .toStrictEqual(binDocumentsMock.documentsPage.items[0])
       })
       it('should fetch documents when on-page-range-changed is emitted', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         await nextTick()
         const componentInstance = wrapper.vm
@@ -182,7 +178,6 @@ describe('binDocuments', () => {
         )
       })
       it('should call fetch documents when confirm-restore-document is emitted', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm
         componentInstance.binDocuments = binDocumentsMock
@@ -206,7 +201,6 @@ describe('binDocuments', () => {
         )
       })
       it('should close restore modal when cancel-restore-document is emitted', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm
         componentInstance.binDocuments = binDocumentsMock
@@ -223,7 +217,6 @@ describe('binDocuments', () => {
         expect(restoreModal.props('document')).toBeNull()
       })
       it('should emit navigate-to-folder when navigate-to-folder is emitted', async () => {
-        expect.hasAssertions()
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm
         componentInstance.binDocuments = binDocumentsMock
