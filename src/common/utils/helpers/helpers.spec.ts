@@ -36,6 +36,7 @@ describe('displayNotification', () => {
     const PNotificationMocked = vi.spyOn(styleguide, 'PNotification')
     const expectedParams = {
       customClass: 'error',
+      duration: 3000,
       icon: 'PIX',
       message: 'Test Message',
       position: 'bottom-right',

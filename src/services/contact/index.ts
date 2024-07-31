@@ -53,3 +53,14 @@ export const patchContact = async (
   )
   return response?.data
 }
+
+export const inviteCustomers = async (
+  customerIDs: number[],
+): Promise<number[] | undefined> => {
+  const response = await commonApi().gateway.post(
+    `${API_PREFIXES.CONTACT}/customers/bulk-invite`,
+    customerIDs,
+  )
+
+  return response?.data
+}

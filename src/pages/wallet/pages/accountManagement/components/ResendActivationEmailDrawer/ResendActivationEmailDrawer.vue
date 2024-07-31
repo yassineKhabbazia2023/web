@@ -52,7 +52,8 @@
       <div class="margin-left--auto">
         <PButton
           pType="primary"
-          data-testid="account-rights-submit-button"
+          data-testid="resend-activation-email-submit-button"
+          :pDisabled="selectedUsersIds.length === 0"
           @click="handleRetryMassActivationEmail"
         >
           {{ t('submit') }}
@@ -77,6 +78,8 @@ import {
 } from '@kpmg/styleguide'
 import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDrawerTypes'
 import { fetchAccountContacts } from '@/services/wallet'
+import { inviteCustomers } from '@/services/contact'
+import { displayNotification } from '@/common/utils'
 import { formatItemsFromApi } from '@/pages/folder/pages/usersClient/UsersClientHelper'
 import TableData from '@/pages/folder/pages/usersClient/components/TableData'
 import NoResult from '@/common/components/NoResult'
@@ -113,8 +116,24 @@ const handleCloseDrawer = () => {
 const handleSelectUser = (userClientIds: number[]) => {
   selectedUsersIds.value = userClientIds
 }
-const handleRetryMassActivationEmail = () => {
-  console.warn("Don't worry; it's not a mistake—there's another PR coming up after this one 😎")
+const handleRetryMassActivationEmail = async () => {
+  isLoading.value = true
+  try {
+    const invitedCustomerIDs = await inviteCustomers(selectedUsersIds.value)
+    if (invitedCustomerIDs && invitedCustomerIDs.length > 0) {
+      const notificationMessage = invitedCustomerIDs.length === 1
+        ? t('customerInvitationSucceeded')
+        : t('customersInvitationSucceeded', {
+          customerCount: invitedCustomerIDs.length,
+        })
+      displayNotification('success', notificationMessage)
+    }
+  } catch {
+    displayNotification('error', t('customersInvitationFailed'))
+  } finally {
+    selectedUsersIds.value = []
+    isLoading.value = false
+  }
 }
 const getStatus = (status: string): UserStatus => {
   switch (status) {
@@ -165,6 +184,9 @@ onMounted(async () => {
     clientCompany: 'Client Company'
     selectClientUsers: 'Select client users'
     resendTheActivationEmail: 'Resend the activation email'
+    customersInvitationFailed: 'There was an issue inviting all selected customers.'
+    customerInvitationSucceeded: 'The selected customer has been successfully invited.'
+    customersInvitationSucceeded: 'All {customerCount} selected customers have been successfully invited.'
     pleaseSelectUsers: 'Please select the users for whom you wish to send a Pulse account activation email.'
   fr-FR:
     submit: 'Valider'
@@ -174,6 +196,9 @@ onMounted(async () => {
     clientCompany: 'Société cliente'
     selectClientUsers: 'Sélectionnez des utilisateurs clients'
     resendTheActivationEmail: "Relancer le mail d'activation"
+    customerInvitationSucceeded: 'Le client sélectionné a été invité avec succès.'
+    customersInvitationFailed: 'Il y a eu un problème pour inviter tous les clients sélectionnés.'
+    customersInvitationSucceeded: 'Tous les {customerCount} clients sélectionnés ont été invités avec succès.'
     pleaseSelectUsers: >-
       Veuillez sélectionner les utilisateurs pour lesquels vous souhaitez envoyer un e-mail
       d'activation du compte Pulse.

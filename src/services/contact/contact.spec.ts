@@ -1,11 +1,12 @@
 import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@/common/config/services'
 import { getMockedCollaborators, getMockedCustomer } from './contactMocks'
-import { getCollaborators, getContactById, patchContact } from '.'
+import { getCollaborators, getContactById, inviteCustomers, patchContact } from '.'
 import { omit } from 'lodash-es'
 import type { PatchContactPayload } from './contactTypes'
 
 const mockedCollaborators = getMockedCollaborators()
+const mockedCustomerIDs = [1, 2, 3]
 
 vi.mock('@kpmg/common', () => {
   return {
@@ -17,6 +18,7 @@ vi.mock('@kpmg/common', () => {
         patch: vi.fn().mockImplementation((url, payload, contentType) => {
           return handlePatchApiMock(url, payload, contentType)
         }),
+        post: vi.fn(() => Promise.resolve({ data: mockedCustomerIDs })),
       },
     }),
   }
@@ -67,6 +69,14 @@ describe('contact', () => {
       const contact = await patchContact(1, patchPayload)
 
       expect(contact).toStrictEqual(mockedContact[0])
+    })
+  })
+
+  describe('inviteCustomers', () => {
+    it('should return a list of invited customer IDs', async () => {
+      const customerIDs = await inviteCustomers(mockedCustomerIDs)
+
+      expect(customerIDs).toStrictEqual(mockedCustomerIDs)
     })
   })
 })

@@ -1,5 +1,11 @@
 import { PICheck, PIX, PNotification } from '@kpmg/styleguide'
 
+type NotificationPosition =
+  | 'top-right'
+  | 'top-left'
+  | 'bottom-right'
+  | 'bottom-left'
+
 /**
  * Function that constructs the full name using 'firstName' and 'lastName' as parameters
  * @param {string, string}
@@ -17,14 +23,17 @@ export const getFullName = (
 }
 
 export const displayNotification = (
-  type: 'error' | 'success',
+  type: 'success' | 'error',
   message: string,
+  position: NotificationPosition = 'bottom-right',
+  duration: number = 3000,
 ) => {
   PNotification({
     message,
     icon: type === 'success' ? PICheck : PIX,
     showClose: true,
     customClass: type,
-    position: 'bottom-right',
+    position,
+    duration,
   })
 }
