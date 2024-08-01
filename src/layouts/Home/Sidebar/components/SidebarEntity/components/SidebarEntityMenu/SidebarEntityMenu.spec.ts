@@ -83,7 +83,7 @@ describe('sidebarEntityMenu', () => {
     })
     it('should not display the Delegations history for clients', async () => {
       mockHasPermission.mockImplementation((permissions: string[]) =>
-        permissions.includes(PERMISSION_CODES.HISTORY),
+        permissions.includes(PERMISSION_CODES.HISTORY[0]),
       )
       wrapper = createWrapper()
       await flushPromises()

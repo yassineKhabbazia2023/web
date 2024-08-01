@@ -79,6 +79,7 @@ const { isCollab } = storeToRefs(commonStore())
 const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
 const activeMenuItem = ref<string>(route.fullPath)
+const hasManageAccountPermission = hasPermission(PERMISSION_CODES.MANAGE_ACCOUNT)
 
 const folderSubmenu = computed(() => ({
   index: 'folder',
@@ -143,7 +144,7 @@ const menuItems = computed(() =>
       index: `/dossier/${props.selectedEntityId}/launcher`,
       title: t('apps'),
       leftIcon: 'PIGrid',
-      display: !isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
+      display: hasManageAccountPermission || (!isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_APPS)),
     },
   ].filter((item) => item.display),
 )
