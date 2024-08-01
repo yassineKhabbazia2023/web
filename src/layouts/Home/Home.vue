@@ -3,7 +3,6 @@
     <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
     <PContainer pDirection="vertical">
       <PCHeader
-        v-if="!isFullpage"
         class="header-container"
         height="56"
       >
@@ -13,16 +12,14 @@
         />
       </PCHeader>
       <PContainer class="aside-main-container">
-        <PAside v-if="!isFullpage" class="aside-container">
+        <PAside class="aside-container">
           <Sidebar class="sidebar-container" />
         </PAside>
         <PContainer
           class="main-container"
           :class="{
             'main-container--no-paddings':
-              stylesMetaProperties?.hasPaddings === false,
-            'main-container--fullpage':
-              isFullpage,
+              stylesMetaProperties?.hasPaddings === false
           }"
         >
           <UserProfile
@@ -95,10 +92,6 @@ const handleClick = () => {
 // Computed
 const stylesMetaProperties = computed(
   () => router.currentRoute.value.meta.styles,
-)
-
-const isFullpage = computed(
-  () => router.currentRoute.value.meta.display?.fullpage,
 )
 
 const globalStore = store()
@@ -299,11 +292,6 @@ onMounted(async () => {
 
     &--no-paddings {
       padding: 0;
-    }
-    &--fullpage {
-      padding: 0;
-      margin: 0;
-      height: 100vh;
     }
   }
 }
