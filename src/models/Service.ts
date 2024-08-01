@@ -1,4 +1,4 @@
 export interface Service {
-  ServiceId: string | number
+  ServiceId: string
   ServiceName: string
 }

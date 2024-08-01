@@ -4,8 +4,8 @@ interface FolderParent {
 
 export interface FolderProperties {
   syncStatus: string
-  folderDescription: string
-  tracingName: string
+  folderDescription?: string
+  tracingName?: string
 }
 
 export interface Folder {

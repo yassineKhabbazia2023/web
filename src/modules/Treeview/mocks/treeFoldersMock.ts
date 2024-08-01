@@ -1,4 +1,4 @@
-import type { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder } from '@/models/Folder'
 
 export const foldersData: Folder[][] = [
   [
@@ -26,6 +26,7 @@ export const foldersData: Folder[][] = [
                     'CAN_CREATE_FOLDER',
                     'CAN_MOVE_INTO_FOLDER',
                     'CAN_MOVE_FOLDER',
+                    'CAN_RENAME_FOLDER',
                   ],
                   properties: {
                     syncStatus: 'PENDING_SYNC',
@@ -34,7 +35,7 @@ export const foldersData: Folder[][] = [
                     tracingName: 'tracing-name',
                   },
                   serviceId: 'service-id-compta',
-                } as Folder,
+                },
               ],
               name: 'A classer',
               parent: {
@@ -53,8 +54,8 @@ export const foldersData: Folder[][] = [
                 tracingName: 'tracing-name',
               },
               serviceId: 'service-id-compta',
-            } as Folder,
-          ] as Folder[],
+            },
+          ],
           name: 'Dépôt',
           parent: {
             id: 135393636,
@@ -65,13 +66,15 @@ export const foldersData: Folder[][] = [
             'CAN_CREATE_FOLDER',
             'CAN_MOVE_INTO_FOLDER',
           ],
-          properties: {} as FolderProperties,
+          properties: {
+            syncStatus: 'PENDING_SYNC',
+          },
           serviceId: 'service-id-compta',
-        } as Folder,
+        },
         {
           iconName: 'deposit',
           id: 135393638,
-          children: [] as Folder[],
+          children: [],
           name: 'KPMG',
           parent: {
             id: 135393636,
@@ -81,9 +84,10 @@ export const foldersData: Folder[][] = [
             folderDescription:
               "Ici, veuillez trouver l'ensemble des documents déposés par votre expert KPMG.",
             tracingName: 'tracing-name',
-          } as FolderProperties,
+            syncStatus: 'PENDING_SYNC',
+          },
           serviceId: 'service-id-compta',
-        } as Folder,
+        },
       ],
       name: 'Comptabilité',
       parent: {
@@ -97,8 +101,8 @@ export const foldersData: Folder[][] = [
         tracingName: 'Accounting',
       },
       serviceId: 'service-id-compta',
-    } as Folder,
-  ] as Folder[],
+    },
+  ],
   [
     {
       iconName: 'socialRoot',
@@ -110,7 +114,7 @@ export const foldersData: Folder[][] = [
           children: [
             {
               id: 135393724,
-              children: [] as Folder[],
+              children: [],
               name: 'A classer',
               parent: {
                 id: 135393666,
@@ -124,10 +128,11 @@ export const foldersData: Folder[][] = [
               properties: {
                 folderDescription:
                   "Ce dossier regroupe l'ensemble des documents sociaux à reclasser ultérieurement.",
-              } as FolderProperties,
+                syncStatus: 'PENDING_SYNC',
+              },
               serviceId: 'service-id-gs',
-            } as Folder,
-          ] as Folder[],
+            },
+          ],
           name: 'Dépôt',
           parent: {
             id: 135393664,
@@ -138,9 +143,11 @@ export const foldersData: Folder[][] = [
             'CAN_CREATE_FOLDER',
             'CAN_MOVE_INTO_FOLDER',
           ],
-          properties: {} as FolderProperties,
+          properties: {
+            syncStatus: 'PENDING_SYNC',
+          },
           serviceId: 'service-id-gs',
-        } as Folder,
+        },
         {
           iconName: 'deposit',
           id: 135393665,
@@ -156,19 +163,22 @@ export const foldersData: Folder[][] = [
               properties: {
                 folderDescription:
                   "Ici, veuillez trouver l'ensemble des bulletins de salaire.",
-              } as FolderProperties,
+                syncStatus: 'PENDING_SYNC',
+              },
               serviceId: 'service-id-gs',
-            } as Folder,
-          ] as Folder[],
+            },
+          ],
           name: 'KPMG',
           parent: {
             id: 135393664,
           },
           permissions: [],
-          properties: {} as FolderProperties,
+          properties: {
+            syncStatus: 'PENDING_SYNC',
+          },
           serviceId: 'service-id-gs',
-        } as Folder,
-      ] as Folder[],
+        },
+      ],
       name: 'Gestion Sociale',
       parent: {
         id: 0,
@@ -178,10 +188,11 @@ export const foldersData: Folder[][] = [
         folderDescription:
           "Déposez et retrouvez ici l'ensemble des documents échangés.",
         tracingName: 'Human resources management',
-      } as FolderProperties,
+        syncStatus: 'PENDING_SYNC',
+      },
       serviceId: 'service-id-gs',
-    } as Folder,
-  ] as Folder[],
+    },
+  ],
 ]
 
 export const newFolderData: Folder = {
@@ -197,6 +208,7 @@ export const newFolderData: Folder = {
   properties: {
     folderDescription:
       "Ce dossier regroupe l'ensemble des documents.",
-  } as FolderProperties,
+    syncStatus: 'PENDING_SYNC',
+  },
   serviceId: 'service-id-compta',
 }

@@ -74,7 +74,7 @@ vi.mock('vue-i18n', () => ({
 
 describe('drag and drop from explorer composable', () => {
   beforeEach(() => {
-    currentService = ref(1234)
+    currentService = ref('a really cool service')
     selectedEntity = ref('An Entity')
     selectedFolder = ref(depositFolder)
     refreshDocumentsList = vi.fn()

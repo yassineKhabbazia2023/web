@@ -6,20 +6,20 @@
 
     <div v-else-if="defaultFolder !== null">
       <CreateFolderSection
-        :serviceId="currentService"
         :entityId="selectedEntity"
-        :selectedFolder="selectedFolder"
         :isCreateFolderModalVisible="isCreateFolderModalVisible"
         :isInBinContext="isInBinContext"
+        :selectedFolder="selectedFolder"
+        :serviceId="currentService"
         hasCreateFolderButton
-        @update-source-folders="handleOnTreeContentRefresh"
         @on-close-create-folder="handleCloseCreateFolderModal"
+        @update-source-folders="handleOnTreeContentRefresh"
       />
 
       <DeleteFolderSection
-        :serviceId="currentService"
         :entityId="selectedEntity"
         :isDeleteFolderPopupVisible="isDeleteFolderPopupVisible"
+        :serviceId="currentService"
         :selectedFolder="selectedFolder"
         @on-delete-folder-completed="handleDeleteFolderCompleted"
         @on-close-delete-folder="handleCloseDeleteFolderModal"
@@ -27,34 +27,35 @@
 
       <FoldersMove
         v-if="toolBoxSelectedFolder && folderMovingDestination && currentServiceFolder"
-        :folder="folderMovingDestination"
         :currentService="currentService"
+        :currentServiceFolder="currentServiceFolder"
+        :folder="folderMovingDestination"
         :folderToMove="toolBoxSelectedFolder"
         :isMoveModalOpened="isMoveFolderModalOpened"
-        :currentServiceFolder="currentServiceFolder"
         :selectedEntity="selectedEntity"
         @close-move-folder-modal="handleCloseMoveFolderModal"
-        @update-source-folders="handleOnTreeContentRefresh"
         @refresh-tree="propagateRefreshTree"
+        @update-source-folders="handleOnTreeContentRefresh"
       />
 
       <RenameFolderSection
-        :serviceId="currentService"
+        v-if="parentNodeOfSelectedFolderTreeNodeAction"
         :entityId="selectedEntity"
-        :folderName="currentFolderName"
         :folderId="currentFolderId"
-        :parentFolder="parentNodeOfSelectedFolderTreeNodeAction"
+        :folderName="currentFolderName"
         :isRenameFolderModalVisible="isRenameFolderModalVisible"
-        @update-folder-name="handleUpdateFolderName"
+        :parentFolder="parentNodeOfSelectedFolderTreeNodeAction"
+        :serviceId="currentService"
         @on-close-rename-folder="handleRenameFolderModal"
+        @update-folder-name="handleUpdateFolderName"
       />
 
       <DocumentsDropConfirmationPopup
         v-if="isDropDialogVisible"
         v-model="isDropDialogVisible"
-        :numberOfDocumentsToDrop="numberOfDocumentsToDrop"
         :destinationPath="dropDestinationFolder"
         :isDocumentDropConfirmButtonLoading="isDocumentDropConfirmButtonLoading"
+        :numberOfDocumentsToDrop="numberOfDocumentsToDrop"
         @confirm-documents-drop="handleConfirmDocumentDrop"
       />
 
@@ -109,7 +110,7 @@
 /* eslint-disable vitest/require-hook */
 
 import type { ComputedRef } from 'vue'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import TreeNode from '@/modules/Treeview/components/TreeNode'
 import { formatBinData } from './helpers/binHelper'
 import type { TreeviewProps, TreeType, ExtendedFolder } from './TreeviewTypes'
@@ -175,7 +176,7 @@ watch(
   },
 )
 
-const treeNodeSelectedFolder = ref()
+const treeNodeSelectedFolder = ref<Folder>()
 
 const selectedFolder = computed((): Folder => {
   if (treeNodeSelectedFolder.value) {
@@ -203,16 +204,17 @@ watch(
   },
 )
 
-const parentNodeOfSelectedFolderTreeNodeAction = ref()
+const parentNodeOfSelectedFolderTreeNodeAction = ref<Folder>()
 
 const setParentNodeOfSelectedFolderTreeNodeAction = () => {
   const parentFolderId = treeNodeSelectedFolder.value?.parent?.id
+  if (!parentFolderId) return
   parentNodeOfSelectedFolderTreeNodeAction.value = findFolderDeepById(
     props.servicesFolders[0].filter(
       (f) => f.serviceId === props.currentService,
     ),
     parentFolderId,
-  ) as Folder
+  )
 }
 const currentFolderId = ref(0)
 
@@ -346,13 +348,15 @@ const folderMovingDestination = computed(() => {
   return selectedFolder.value
 })
 
-const handleToolboxItemChecked = (action: string, folder: Folder) => {
+const handleToolboxItemChecked = async (action: string, folder: Folder) => {
   if (action === 'toolbox-delete-action-click') {
     treeNodeSelectedFolder.value = folder
     isDeleteFolderPopupVisible.value = true
   } else if (action === 'toolbox-rename-action-click') {
     treeNodeSelectedFolder.value = folder
     setParentNodeOfSelectedFolderTreeNodeAction()
+    // Required otherwise the dialog doesn't exist yet and never opens
+    await nextTick()
     currentFolderName.value = folder?.name
     currentFolderId.value = folder?.id
     isRenameFolderModalVisible.value = true

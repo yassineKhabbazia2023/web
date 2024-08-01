@@ -28,6 +28,7 @@ export type TreeviewWrapper = VueWrapper<
 >
 const pinia = createPinia()
 
+const folderWithRenameRight = foldersData[0][0].children[0].children[0]
 const defaultProps: TreeviewProps = {
   entityServices: [
     { ServiceId: 'service-id-compta', ServiceName: 'Comptabilité' } as Service,
@@ -38,7 +39,7 @@ const defaultProps: TreeviewProps = {
   currentService: 'service-id-compta',
   selectedEntity: 'my-entity-id',
   selectedFolder: foldersData[0][0].children[0],
-  currentServiceFolder: null,
+  currentServiceFolder: undefined,
 }
 
 vi.mock('@/services/Folder', () => ({
@@ -66,6 +67,17 @@ const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper =>
 
 let wrapper: VueWrapper
 
+async function getTreeNodeWithRenameRight(wrapper: VueWrapper) {
+  const treeElement = wrapper.find('.el-tree')
+  await nextTick()
+  const tree = treeElement.findComponent(PTree)
+  await nextTick()
+
+  const treeNode = tree.findAllComponents(TreeNode)
+  const nodeWithRenameRight = treeNode[1]
+  await nextTick()
+  return nodeWithRenameRight
+}
 describe('treeview', () => {
   const getRenameFolderSectionWrapper = () =>
     wrapper.findComponent({ name: 'RenameFolderSection' })
@@ -144,6 +156,15 @@ describe('treeview', () => {
       it('should emit update-folder-name oppon update-folder-name', async () => {
         await wrapper.setProps({ isLoading: false })
 
+        const nodeWithRenameRight = await getTreeNodeWithRenameRight(wrapper)
+        await nextTick()
+        nodeWithRenameRight.vm.$emit(
+          'p-toolbox-item-clicked',
+          'toolbox-rename-action-click',
+          folderWithRenameRight,
+        )
+        await flushPromises()
+
         getRenameFolderSectionWrapper().vm.$emit(
           'update-folder-name',
           foldersData[0][0],
@@ -156,6 +177,15 @@ describe('treeview', () => {
       })
       it('should close rename modal when on-close-rename-folder', async () => {
         await wrapper.setProps({ isLoading: false })
+
+        const nodeWithRenameRight = await getTreeNodeWithRenameRight(wrapper)
+        await nextTick()
+        nodeWithRenameRight.vm.$emit(
+          'p-toolbox-item-clicked',
+          'toolbox-rename-action-click',
+          folderWithRenameRight,
+        )
+        await flushPromises()
 
         getRenameFolderSectionWrapper().vm.$emit(
           'on-close-rename-folder',
@@ -236,20 +266,19 @@ describe('treeview', () => {
             })
           it('should open rename folder modal when action is toolbox-rename-action-click',
             async () => {
-              await wrapper.setProps({ isLoading: false })
-              const treeElement = wrapper.find('.el-tree')
-              await nextTick()
-              const tree = treeElement.findComponent(PTree)
-              await nextTick()
+              await wrapper.setProps({
+                isLoading: false,
+                selectedFolder: folderWithRenameRight,
+              })
 
-              const treeNode = tree.findComponent(TreeNode)
+              const nodeWithRenameRight = await getTreeNodeWithRenameRight(wrapper)
               await nextTick()
-
-              treeNode.vm.$emit(
+              nodeWithRenameRight.vm.$emit(
                 'p-toolbox-item-clicked',
                 'toolbox-rename-action-click',
+                folderWithRenameRight,
               )
-              await nextTick()
+              await flushPromises()
 
               expect(
                 getRenameFolderSectionWrapper().props('isRenameFolderModalVisible'),

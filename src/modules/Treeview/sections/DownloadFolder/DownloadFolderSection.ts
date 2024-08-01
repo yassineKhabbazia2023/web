@@ -35,7 +35,9 @@ export function useDownloadFolder(
     },
   })
 
-  const toastPlugin = inject('toast') as unknown as ToastPluginFunc
+  // Forcing the cast as we know it exsits from Styleguide
+  // This should be updated to a PNotification import
+  const toastPlugin = inject('toast') as ToastPluginFunc
 
   const inProgressNotification = ref()
 

@@ -13,18 +13,24 @@ export function useDocumentsDragAndDrop(
   }
 
   function bindDragProperties() {
-    const documentRowElements = getDocumentsRowElements()
-    Array.from(documentRowElements).forEach((element) => {
-      ;(element as HTMLElement).addEventListener('dragstart', handleDragStart)
-      ;(element as HTMLElement).addEventListener('dragend', handleDragEnd)
+    // Reason of no-undef disabling :
+    // eslint-disable-next-line max-len
+    // https://github.com/typescript-eslint/typescript-eslint/blob/1cf9243/docs/getting-started/linting/FAQ.md#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
+    // eslint-disable-next-line no-undef
+    const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
+    Array.from(documentRowElements).forEach((element: HTMLElement) => {
+      element.addEventListener('dragstart', handleDragStart)
+      element.addEventListener('dragend', handleDragEnd)
     })
   }
 
   onBeforeUnmount(() => {
-    const documentRowElements = getDocumentsRowElements()
+    // Read above for the no-undef disabling reason
+    // eslint-disable-next-line no-undef
+    const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
     Array.from(documentRowElements).forEach((element) => {
-      ;(element as HTMLElement).removeEventListener('dragstart', handleDragStart)
-      ;(element as HTMLElement).removeEventListener('dragend', handleDragEnd)
+      element.removeEventListener('dragstart', handleDragStart)
+      element.removeEventListener('dragend', handleDragEnd)
     })
   })
 

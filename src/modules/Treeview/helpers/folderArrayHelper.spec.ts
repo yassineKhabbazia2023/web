@@ -114,6 +114,7 @@ describe('folderArrayHelper.spec', () => {
               'CAN_CREATE_FOLDER',
               'CAN_MOVE_INTO_FOLDER',
               'CAN_MOVE_FOLDER',
+              'CAN_RENAME_FOLDER',
             ],
             properties: {
               syncStatus: 'PENDING_SYNC',

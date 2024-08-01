@@ -31,7 +31,9 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const toastPlugin = inject('toast') as unknown as ToastPluginFunc
+// Forcing the cast as we know it exsits from Styleguide
+// This should be updated to a PNotification import
+const toastPlugin = inject('toast') as ToastPluginFunc
 
 const isConfirmButtonLoading = ref(false)
 const isDialogRenameVisible = ref(false)
@@ -44,12 +46,12 @@ const emit = defineEmits([
 const handleRenameFolder = async (newfolderName: string) => {
   isConfirmButtonLoading.value = true
   try {
-    const updatedFolder = (await RenameFolder(
+    const updatedFolder: Folder = (await RenameFolder(
       props.folderId,
       newfolderName,
       props.entityId,
       props.serviceId,
-    )) as Folder
+    ))
     isConfirmButtonLoading.value = false
     emit('update-folder-name', updatedFolder)
     triggerSuccessNotification()

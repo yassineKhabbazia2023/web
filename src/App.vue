@@ -103,9 +103,9 @@ const userStore = commonStore()
 const selectedEntity = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
 const selectedEntityAvatarColor = computed(() => userStore.defaultEntity?.color)
 const selectedEntityName = computed(() => userStore.defaultEntity?.legalName ?? '')
-const entityServices = ref<null | any>(null)
-const currentService = ref<string | null>(null)
-const currentServiceFolder = computed<null | Folder[]>(() => {
+const entityServices = ref<Service[]>([])
+const currentService = ref<null | Service['ServiceId']>(null)
+const currentServiceFolder = computed<Folder[] | undefined>(() => {
   return servicesFolders.value
     .filter((folder:Folder[]) => folder[0].serviceId === currentService.value)[0]
 })
@@ -176,8 +176,9 @@ const handleUpdateSourceFolder = (data: Folder) => {
 const setCurrentFolder = (folderId: number | null) => {
   const currentServiceFolder = servicesFolders.value.find(
     (sf) => sf[0].serviceId === currentService.value,
-  ) as Folder[]
+  )
   // Find deep only in currentService if defined
+  if (!currentServiceFolder) return
   const folderToRedirectTo = findFolderDeepById(currentServiceFolder, folderId)
   if (folderToRedirectTo) {
     currentFolder.value = folderToRedirectTo

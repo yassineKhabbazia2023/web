@@ -13,7 +13,7 @@ export interface TreeviewProps {
   currentService: string
   selectedEntity: string
   selectedFolder: null | Folder
-  currentServiceFolder: null | Folder[]
+  currentServiceFolder: Folder[] | undefined
   isInBinContext?: boolean
 }
 

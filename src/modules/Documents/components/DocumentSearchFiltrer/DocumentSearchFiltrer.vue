@@ -111,6 +111,9 @@ const periods = [
 ]
 
 const dateRange = ref<[Date, Date ] | ''>('')
+const isDateRange = (range: [Date, Date] | ''): range is [Date, Date] => {
+  return range !== ''
+}
 
 const handlePeriodChange = (value: string) => {
   switch (value) {
@@ -141,8 +144,8 @@ const handleResetClick = () => {
 const handleApplyClick = () => {
   const filtersUpdated: DocumentSearchFilters = {
     selectedPeriod: selectedPeriod.value ? selectedPeriod.value : null,
-    startDate: dateRange.value[0] ? dateRange.value[0] as Date : null,
-    endDate: dateRange.value[1] ? dateRange.value[1] as Date : null,
+    startDate: isDateRange(dateRange.value) ? dateRange.value[0] : null,
+    endDate: isDateRange(dateRange.value) ? dateRange.value[1] : null,
   }
   emit('apply-filters-drawer', filtersUpdated)
 }

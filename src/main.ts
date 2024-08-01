@@ -17,13 +17,14 @@ const vueLifecycles = singleSpaVue({
   },
 })
 
+// Cast to prevent a module declaration
 setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
 
 export const bootstrap = vueLifecycles.bootstrap
 export const mount = vueLifecycles.mount
 export const unmount = vueLifecycles.unmount
 
-routes.value.push({
+const gedRoute: RouteRecordRaw = {
   path: '/dossier/:folderId/ged',
   name: 'ged',
   meta: {
@@ -32,5 +33,6 @@ routes.value.push({
     },
   },
   component: () => import('@/App.vue'),
-} as RouteRecordRaw)
+}
 
+routes.value.push(gedRoute)

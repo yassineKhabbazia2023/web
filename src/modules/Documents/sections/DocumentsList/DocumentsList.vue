@@ -148,10 +148,10 @@ const selectRow = (documentRow: TableRowDocument, column:any) => {
   if (shouldOpenDrawer) {
     emit('table-row-clicked', documentRow)
   } else {
+    // Need to cast as we Vue / TS deosn't infer the $refs value
     const documentsListTableInstance =
     documentsListTable.value
       ?.$refs.table as InstanceType<typeof ElTable>
-
     documentsListTableInstance?.clearSelection()
     documentsListTableInstance?.toggleRowSelection(documentRow, true)
   }
@@ -160,6 +160,7 @@ const selectRow = (documentRow: TableRowDocument, column:any) => {
 const handleSelectionChange = (documentsSelection:Document[]) => {
   selectedDocuments.value = documentsSelection
   emit('document-selection-change', selectedDocuments.value)
+  // Need to cast as we Vue / TS deosn't infer the $refs value
   const documentsListTableInstance =
     documentsListTable.value
       ?.$refs.table as InstanceType<typeof ElTable>

@@ -47,7 +47,9 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const toastPlugin = inject('toast') as unknown as ToastPluginFunc
+// Forcing the cast as we know it exsits from Styleguide
+// This should be updated to a PNotification import
+const toastPlugin = inject('toast') as ToastPluginFunc
 
 const props = withDefaults(defineProps<CreateFolderSectionProps>(), {
   isCreateFolderModaleCenterd: false,
@@ -77,12 +79,12 @@ const closeCreateFoldersModal = () => {
 const handleCreateFolder = async (folderName: string) => {
   isConfirmButtonLoading.value = true
   try {
-    const createdFolder = (await CreateFolder(
+    const createdFolder: Folder = (await CreateFolder(
       props.serviceId,
       props.entityId,
       props.selectedFolder.id,
       folderName,
-    )) as Folder
+    ))
     isConfirmButtonLoading.value = false
     emit('update-source-folders', createdFolder)
     triggerSuccessNotification()
