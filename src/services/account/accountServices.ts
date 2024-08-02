@@ -71,6 +71,10 @@ export async function addContactToEntity(
     isSignatory: false,
     isFavorite: false,
     isDelegation: false,
+  }, {
+    headers: {
+      'Account-Id': accountId,
+    },
   })
 
   return {

@@ -99,7 +99,7 @@
         v-if="!hasFormBeenSent"
         :previousLabel="t('previousLabel')"
         :nextLabel="t('nextLabel')"
-        :isNextButtonDisabled="isNextButtonDisabled || doesUserEmailExists"
+        :isNextButtonDisabled="isNextButtonDisabled"
         :isNextButtonLoading="isNextButtonLoading"
         @click-next="handleFormSubmit"
         @click-previous="isDrawerOpened = false"

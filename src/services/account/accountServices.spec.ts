@@ -195,6 +195,11 @@ describe('test accountServices', () => {
           isFavorite: false,
           isDelegation: false,
         },
+        {
+          headers: {
+            'Account-Id': 1,
+          },
+        },
       )
     })
 

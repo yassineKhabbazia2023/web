@@ -192,7 +192,7 @@ describe('add customer drawer', () => {
       expect(mobilePhoneInput.element.disabled).toBeTruthy()
 
       const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeTruthy()
+      expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeFalsy()
     })
 
     it('should clear the form when using unknown email after using an existing email', async () => {

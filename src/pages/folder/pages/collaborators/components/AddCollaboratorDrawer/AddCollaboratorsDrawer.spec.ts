@@ -128,6 +128,11 @@ describe('add collaborators drawer', () => {
             isFavorite: false,
             isDelegation: false,
           },
+          {
+            headers: {
+              'Account-Id': 1,
+            },
+          },
         )
         expect(gatewayPostMock).toHaveBeenNthCalledWith(
           2,
@@ -138,6 +143,11 @@ describe('add collaborators drawer', () => {
             isSignatory: false,
             isFavorite: false,
             isDelegation: false,
+          },
+          {
+            headers: {
+              'Account-Id': 1,
+            },
           },
         )
 
