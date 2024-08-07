@@ -390,22 +390,11 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
       id,
       name,
       siretNumber,
-      signatory: { title, firstName, lastName, email },
-      address: { street, addressComplement, zipCode, city, country },
     } = data
     Object.assign(createMandateForm, {
       id,
       siretNumber,
       name,
-      title,
-      firstName,
-      lastName,
-      email,
-      street,
-      addressComplement,
-      zipCode,
-      city,
-      country,
     })
     isIBSValid.value = true
     areFieldsFilledStepBased(props.step)
