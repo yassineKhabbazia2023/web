@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import UserProfile from './'
+import { nextTick } from 'vue'
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -19,7 +20,7 @@ vi.mock('@kpmg/common', () => ({
 const MY_INFORMATION_CONTENT = 'custom content'
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(UserProfile, {
+  shallowMount(UserProfile, {
     props: {
       hasDrawerOpened: true,
     },
@@ -29,17 +30,38 @@ const createWrapper = (): VueWrapper<any> =>
           name: 'MyInformation',
           template: `<div>${MY_INFORMATION_CONTENT}</div>`,
         },
+        PDrawer: {
+          name: 'PDrawer',
+          template: '<div><slot /></div>',
+          events: ['close-drawer-button'],
+        },
       },
     },
   })
 
 describe('userProfile', () => {
+  let wrapper: VueWrapper
   beforeEach(() => {
-    createWrapper()
+    wrapper = createWrapper()
   })
 
   it('displays the information of the user', () => {
-    const drawer = document.querySelector('.p-drawer') as HTMLElement
-    expect(drawer.innerHTML).toContain(MY_INFORMATION_CONTENT)
+    expect(wrapper.html()).toContain(MY_INFORMATION_CONTENT)
+  })
+
+  it('should update:modelValue=false when click on close-drawer-button', async () => {
+    const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
+    pDrawer.vm.$emit('close-drawer-button', false)
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
+  })
+
+  it('should update:modelValue=false when drawer closes', async () => {
+    const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
+    pDrawer.vm.$emit('update:model-value', false)
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 })
