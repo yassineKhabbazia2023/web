@@ -21,6 +21,7 @@
         <PButton
           pType="white"
           @click="handleCloseDrawer"
+          data-testid="dialog-close-button"
         >
           {{ t('cancel') }}
         </PButton>

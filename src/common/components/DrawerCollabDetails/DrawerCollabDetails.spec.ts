@@ -3,9 +3,9 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import listContact from '@/pages/wallet/pages/collaborators/mockCollaborators.json'
 import listCollab from '@/pages/wallet/pages/collaborators/mock.json'
-
-import { updateCollaborator } from '@/services/wallet'
-import DrawerCollabDetails from './'
+import * as walletServices from '@/services/wallet'
+import { nextTick } from 'vue'
+import DrawerCollabDetails from '.'
 
 vi.mock('@/services/wallet', () => ({
   updateCollaborator: vi.fn(),
@@ -64,7 +64,15 @@ const createWrapper = (): VueWrapper<any> =>
       rowData,
       modelValue: true,
     },
-    attachTo: document.body,
+    global: {
+      stubs: {
+        PDrawer: {
+          name: 'PDrawer',
+          template: '<div><slot/><slot name="footer"/></div>',
+          events: ['close-drawer-button'],
+        },
+      },
+    },
   })
 
 describe('drawerCollabDetails', () => {
@@ -98,15 +106,45 @@ describe('drawerCollabDetails', () => {
     })
 
   it('displays a success notification on form submitted', async () => {
+    const spyUpdateCollaborator = vi.spyOn(walletServices, 'updateCollaborator')
     const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
     expect(getNotificationSuccess()).toHaveLength(0)
 
     await getButtonSubmit().trigger('click')
     await flushPromises()
-    expect(vi.mocked(updateCollaborator)).toHaveBeenCalledTimes(1)
+
+    expect(spyUpdateCollaborator).toHaveBeenCalledTimes(1)
     expect(getNotificationSuccess()).toHaveLength(1)
     expect(wrapper.emitted('update-collaborator-details')).toHaveLength(1)
     expect(getNotificationSuccess()[0].textContent).toContain(rowData.fullName)
+  })
+
+  it('Displays an error notification when the API request to update a collaborator fails', async () => {
+    vi.spyOn(walletServices, 'updateCollaborator').mockRejectedValue('API Error')
+    const getNotificationError = () => document.body.getElementsByClassName('el-notification error')
+    expect(getNotificationError()).toHaveLength(0)
+
+    await getButtonSubmit().trigger('click')
+    await flushPromises()
+
+    expect(getNotificationError()).toHaveLength(1)
+    expect(getNotificationError()[0].textContent).toContain(rowData.fullName)
+  })
+
+  it("should emit the 'update:modelValue' event when the drawer is closed", async () => {
+    const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
+    pDrawer.vm.$emit('close-drawer-button', false)
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
+  })
+
+  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+    const drawer = wrapper.findComponent({ name: 'PDrawer' })
+    drawer.vm.$emit('update:modelValue', false)
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 
   it('emits an update event and closes the drawer on reset button click', async () => {

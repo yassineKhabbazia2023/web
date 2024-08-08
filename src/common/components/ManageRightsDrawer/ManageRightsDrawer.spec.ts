@@ -35,6 +35,7 @@ const createWrapper = (): VueWrapper<any> => {
 describe('manageRightsDrawer', () => {
   let wrapper: VueWrapper<any>
   beforeEach(async () => {
+    vi.useFakeTimers()
     wrapper = createWrapper()
     await flushPromises()
   })
@@ -58,6 +59,13 @@ describe('manageRightsDrawer', () => {
     })
   })
   describe('events', () => {
+    it("should emit 'update:modelValue' event when the drawer is closed", async () => {
+      const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
+      pDrawer.vm.$emit('update:model-value', false)
+      await nextTick()
+
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
+    })
     it('should close manage rights drawer when clicking on close buton', async () => {
       const manageRightsDrawer = wrapper.findComponent({ name: 'PDrawer' })
       manageRightsDrawer.vm.$emit('close-drawer-button')
@@ -78,6 +86,9 @@ describe('manageRightsDrawer', () => {
 
       await submitButton.trigger('click')
 
+      vi.advanceTimersByTime(800)
+
+      expect(wrapper.vm.isManageRightsDrawerOpened).toBeFalsy()
       expect(spyAuthServices).toHaveBeenCalledOnce()
       expect(spyAuthServices).toHaveBeenCalledWith(
         mockedUser.contactId,

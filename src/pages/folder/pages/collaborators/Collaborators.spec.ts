@@ -1,13 +1,14 @@
 import { createTestingPinia } from '@pinia/testing'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
+import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
 import * as walletServices from '@/services/wallet'
+import * as contactServices from '@/services/contact'
 import { commonStore } from '@kpmg/common'
+import type { ComponentWrapper } from '@/common/types/UnitTestTypes'
 import Collaborators from '.'
-import { nextTick } from 'vue'
 
 const ENTITY_ID = 42
 
@@ -44,17 +45,21 @@ vi.mock('@/services/contact', () => ({
 }))
 
 vi.mock('@/services/wallet', () => ({
-  getCollaboratorsByIdEntity: vi.fn(() => Promise.resolve({
-    items: mockCollabsData,
-    currentPage: 1,
-    totalPage: 1,
-    totalItems: mockCollabsData.length,
-  })),
+  getCollaboratorsByIdEntity: vi.fn(() =>
+    Promise.resolve({
+      items: mockCollabsData,
+      currentPage: 1,
+      totalPage: 1,
+      totalItems: mockCollabsData.length,
+    }),
+  ),
 }))
 
 const pinia = createTestingPinia()
 
-const createWrapper = (): VueWrapper =>
+const createWrapper = (): ComponentWrapper<
+  InstanceType<typeof Collaborators>
+> =>
   mount(Collaborators, {
     attachTo: document.body,
     global: {
@@ -70,16 +75,27 @@ const createWrapper = (): VueWrapper =>
   })
 
 describe('collaborators', () => {
-  let wrapper: VueWrapper
-  const getAddCollaboratorDrawer = () => wrapper.findComponent({ name: 'AddCollaboratorsDrawer' })
+  let spyConsole: SpyInstance
+  let wrapper: ReturnType<typeof createWrapper>
+  const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+
+  const getAddCollaboratorDrawer = () =>
+    wrapper.findComponent({ name: 'AddCollaboratorsDrawer' })
   const getAddCollaboratorButton = () =>
-    document.querySelector('[data-testid=add-collaborator-button]') as HTMLButtonElement
-  const getToolboxAction = () => wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
+    document.querySelector(
+      '[data-testid=add-collaborator-button]',
+    ) as HTMLButtonElement
+  const getToolboxAction = () =>
+    wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
   beforeEach(() => {
     const folderWrapperForBtn = document.createElement('div')
+    spyConsole = vi.spyOn(console, 'error')
     folderWrapperForBtn.classList.add('folder__teleported-content')
     document.body.appendChild(folderWrapperForBtn)
+    vi.spyOn(contactServices, 'getContactById').mockRejectedValue(
+      expectedErrorMessage,
+    )
 
     wrapper = createWrapper()
   })
@@ -102,27 +118,68 @@ describe('collaborators', () => {
     expect(getCollaboratorsSpy).toHaveBeenCalledOnce()
   })
 
+  it('should display a console error if the request to fetch collaborators for a specific entity fails', async () => {
+    vi.spyOn(walletServices, 'getCollaboratorsByIdEntity').mockRejectedValue(
+      expectedErrorMessage,
+    )
+    wrapper = createWrapper()
+    await flushPromises()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+  })
+
   it('should display the table with the list of collaborator', () => {
     const rows = wrapper.findAll('tr.el-table__row')
     expect(rows).toHaveLength(mockCollabsData.length)
   })
 
+  it("should emit an 'accessSwitched' event when the table changes", () => {
+    const collaboratorsTable = wrapper.findComponent({ name: 'PTable' })
+    collaboratorsTable.vm.$emit('current-change', mockCollabsData[0])
+
+    expect(wrapper.emitted('accessSwitched')).toStrictEqual([
+      [mockCollabsData[0]],
+    ])
+  })
+
   it('can display the detail of the collaborator', async () => {
-    const getDrawerCollabDetails = () => wrapper.findComponent({ name: 'DrawerCollabDetails' })
+    const getDrawerCollabDetails = () =>
+      wrapper.findComponent({ name: 'DrawerCollabDetails' })
 
     expect(getDrawerCollabDetails().exists()).toBeFalsy()
 
-    await getToolboxAction().vm.$emit('p-toolbox-item-clicked', 'collaboratorInformation')
+    getToolboxAction().vm.$emit(
+      'p-toolbox-item-clicked',
+      'collaboratorInformation',
+    )
     await flushPromises()
 
     expect(getDrawerCollabDetails().exists()).toBeTruthy()
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+  })
+
+  it("should display a console error if the request to fetch the contact's phone number fails", async () => {
+    getToolboxAction().vm.$emit(
+      'p-toolbox-item-clicked',
+      'collaboratorInformation',
+    )
+    await flushPromises()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
   })
 
   it('can delete a collaborator from an entity and see a success notification', async () => {
-    const getNotificationSuccess = () => document.body.getElementsByClassName('el-notification success')
+    const getNotificationSuccess = () =>
+      document.body.getElementsByClassName('el-notification success')
     expect(getNotificationSuccess()).toHaveLength(0)
 
-    await getToolboxAction().vm.$emit('p-toolbox-item-clicked', 'removeCollaborator')
+    getToolboxAction().vm.$emit(
+      'p-toolbox-item-clicked',
+      'removeCollaborator',
+    )
     await flushPromises()
 
     expect(getNotificationSuccess()).toHaveLength(1)
@@ -131,7 +188,9 @@ describe('collaborators', () => {
   it('has a pagination', () => {
     const pages = wrapper.findAll('.el-pager li')
     const pagination = wrapper.findComponent({ name: 'PPagination' })
-    const totalItems = wrapper.find('[data-testid=ppagination-pagination-counter]')
+    const totalItems = wrapper.find(
+      '[data-testid=ppagination-pagination-counter]',
+    )
 
     expect(pages).toHaveLength(1)
     expect(pagination.exists()).toBeTruthy()
@@ -146,7 +205,9 @@ describe('collaborators', () => {
     store.isCollab = false
     await nextTick()
 
-    const collaboratorsAction = wrapper.find('[data-testid="collaborators-action"]')
+    const collaboratorsAction = wrapper.find(
+      '[data-testid="collaborators-action"]',
+    )
 
     const addCollaboratorButton = getAddCollaboratorButton()
 

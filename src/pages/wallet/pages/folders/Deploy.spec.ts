@@ -9,8 +9,13 @@ import Deploy from '.'
 import { EntityStatus } from '../../components/Filters/FiltersTypes'
 import * as DeployUtils from './DeployUtils'
 import { nextTick } from 'vue'
-import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtilsMock'
+import {
+  getMockedWalletQueryResult,
+  getMockedSearchCriteria,
+} from './DeployUtilsMock'
 import { getMockedAccount } from '@/services/account/accountMock'
+import * as walletServices from '@/services/wallet'
+import type { ComponentWrapper } from '@/common/types/UnitTestTypes'
 
 const mockedAccount = getMockedAccount()
 
@@ -19,10 +24,12 @@ const mockedQueryResult = getMockedWalletQueryResult()
 
 const getFavoritesMock = vi.fn(() =>
   Promise.resolve({
-    data: [{
-      id: 'customId',
-      name: 'customName',
-    }],
+    data: [
+      {
+        id: 'customId',
+        name: 'customName',
+      },
+    ],
   }),
 )
 
@@ -77,7 +84,7 @@ vi.mock('./DeployUtils', async () => {
   return await vi.importActual('./DeployUtils')
 })
 
-const createWrapper = (): VueWrapper<any> =>
+const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
   mount(Deploy, {
     attachTo: document.body,
     plugins: [createTestingPinia()],
@@ -121,6 +128,33 @@ describe('deploy', () => {
     expect(wrapper.findComponent(TableData).exists()).toBeTruthy()
   })
 
+  it("should send a request to manage favorite entities when 'handleAddFavorite' is called", async () => {
+    const spyManageFavoriteEntities = vi.spyOn(
+      walletServices,
+      'manageFavoriteEntities',
+    )
+    const wrapper = createWrapper()
+    wrapper.vm.handleAddFavorite(mockedAccount.accountId, true)
+    await flushPromises()
+
+    expect(spyManageFavoriteEntities).toHaveBeenCalledOnce()
+    expect(spyManageFavoriteEntities).toHaveBeenCalledWith(
+      mockedAccount.accountId,
+      true,
+    )
+  })
+
+  it('should update the current page when it changes', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const pagination = wrapper.findComponent({ name: 'PPagination' })
+    pagination.vm.$emit('update:p-current-page', 5)
+    await nextTick()
+
+    expect(wrapper.vm.searchCriteria.currentPage).toBe(5)
+  })
+
   it('should call api when user search', async () => {
     const wrapper = createWrapper()
     const SEARCH_VALUE = 'customSearchValue'
@@ -137,7 +171,11 @@ describe('deploy', () => {
     })
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
-    expect(mockFetchWalletData).toHaveBeenNthCalledWith(2, expect.anything(), expectedSearchCriteria)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      expectedSearchCriteria,
+    )
   })
 
   it('should not call api when user search with less than 3 characters', async () => {
@@ -224,7 +262,11 @@ describe('deploy', () => {
     })
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
-    expect(mockFetchWalletData).toHaveBeenNthCalledWith(2, expect.anything(), expectedSearchCriteria)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      expectedSearchCriteria,
+    )
   })
 
   it('should call api without filter when removeFilter event is triggered', async () => {
@@ -240,7 +282,11 @@ describe('deploy', () => {
     })
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
-    expect(mockFetchWalletData).toHaveBeenNthCalledWith(2, expect.anything(), expectedSearchCriteria)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      expectedSearchCriteria,
+    )
   })
 
   it('should not displayed the filters component if the user is client', async () => {

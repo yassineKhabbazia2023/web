@@ -1,16 +1,17 @@
 import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import { setActivePinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
 import type { VueWrapper } from '@vue/test-utils'
 import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
 } from '@/services/account/accountMock'
+import * as accountServices from '@/services/account'
 import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
 import Information from '.'
-import { setActivePinia } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 
 // Expected Display Results
 const expectedAddressSection = 'Company billing address'
@@ -88,6 +89,20 @@ describe('information', () => {
 
       expect(wrapper.vm.addressSectionTitle).toBe(expectedAddressSection)
       expect(folderFormAddress.text()).toBe(expectedAddressSection)
+    })
+    it('should log an error to the console if the API fails to fetch the information', async () => {
+      const consoleSpy = vi.spyOn(console, 'error')
+      const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+
+      vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(expectedErrorMessage)
+      wrapper = mount(Information)
+      await flushPromises()
+
+      expect(consoleSpy).toHaveBeenCalledOnce()
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Error fetching information :',
+        expectedErrorMessage,
+      )
     })
   })
 })

@@ -14,6 +14,9 @@ import {
   getAccountUserByEmail,
   updateSignatoryStatus,
   getAccountSignatories,
+  fetchGatewayApi,
+  type Hub,
+  deleteContactFromAccount,
 } from '.'
 import {
   getMockedAccount,
@@ -26,6 +29,7 @@ import { getMockedCollaborators } from '@/services/contact/contactMocks'
 import { API_PREFIXES } from '@/common/config/services'
 
 const accountId = 5
+const contactId = 25
 const accountIdRejected = 8
 const SEARCH_CURRENT_USER = 'currentuser'
 const SEARCH_THROWS_ERROR = 'throw-error'
@@ -38,14 +42,13 @@ const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedAccountApiPatch = vi.fn()
 const mockedCollaborators = getMockedCollaborators()
-const deleteDelegationSpy = vi.fn()
 const postSpy = vi.fn()
 
 vi.mock('@kpmg/common', () => {
   return {
     commonApi: () => ({
       gateway: {
-        get: vi.fn().mockImplementation((url) => {
+        get: vi.fn().mockImplementation((url, args) => {
           if (url === 'offer/api/referentials/AccountReferentialInformation') {
             return Promise.resolve({
               data: mockedAccountReferential,
@@ -73,6 +76,7 @@ vi.mock('@kpmg/common', () => {
           }
           if (url === `${API_PREFIXES.ACCOUNT}/contacts`) {
             return Promise.resolve({
+              status: args.params.email ? 200 : 204,
               data: {
                 items: mockedCollaborators,
               },
@@ -89,7 +93,25 @@ vi.mock('@kpmg/common', () => {
             : Promise.reject(new Error(rejectedErrorMessage))
         }),
         patch: mockedAccountApiPatch,
-        delete: deleteDelegationSpy,
+        delete: vi.fn().mockImplementation((url) => {
+          if (url === `${API_PREFIXES.ACCOUNT}/roles`) {
+            return {
+              status: 200,
+              data: {
+                accountId,
+                contactId,
+              },
+            }
+          }
+          if (url === `${API_PREFIXES.ACCOUNT}/delegations`) {
+            return {
+              status: 200,
+              data: {
+                accountId,
+              },
+            }
+          }
+        }),
         post: postSpy,
       },
     }),
@@ -160,26 +182,33 @@ describe('test accountServices', () => {
     })
   })
 
+  describe('fetchGatewayApi', () => {
+    it('should send the request to the correct endpoint and return the expected response', async () => {
+      const url = `${API_PREFIXES.OFFER}/referentials/hubs`
+      const referentialHubs = await fetchGatewayApi<Hub[]>(url)
+
+      expect(referentialHubs).toMatchObject(mockedReferentialHubs)
+    })
+  })
+
+  describe('deleteContactFromAccount', () => {
+    it('should delete the contact from the account and ensure it is no longer listed', async () => {
+      const response = await deleteContactFromAccount(accountId, contactId)
+
+      expect(response).toStrictEqual({ status: 200, data: { accountId, contactId } })
+    })
+  })
+
   describe('delegations', () => {
     it('fetch the historical of all delegations for an account', async () => {
       const delegationsHistoryFetched = await fetchAccountDelegationsHistory(accountId, new URLSearchParams())
       expect(delegationsHistoryFetched).toMatchObject(delegationsHistoryMock)
     })
 
-    it('delete a delegation', () => {
-      expect(deleteDelegationSpy).not.toHaveBeenCalled()
+    it('delete a delegation', async () => {
+      const response = await deleteAccountDelegation(accountId)
 
-      deleteAccountDelegation(accountId)
-
-      expect(deleteDelegationSpy).toHaveBeenCalledTimes(1)
-      expect(deleteDelegationSpy).toHaveBeenCalledWith(
-        'account/api/delegations',
-        {
-          params: {
-            delegationId: accountId,
-          },
-        },
-      )
+      expect(response).toStrictEqual({ status: 200, data: { accountId } })
     })
   })
 
@@ -204,7 +233,8 @@ describe('test accountServices', () => {
     })
 
     it('should fetch contacts from same hub', async () => {
-      const result = await fetchContactsFromSameHub('searchValue', 100)
+      const result = await fetchContactsFromSameHub('searchValue')
+
       expect(result).toStrictEqual(mockedCollaborators)
     })
 
@@ -247,6 +277,23 @@ describe('test accountServices', () => {
       )
     })
 
+    it("should update the signatory's status and reflect the change accurately", async () => {
+      const accountId = mockedAccount.accountId
+      const contactId = mockedCollaborators[0].id
+      const patchParams = {
+        accountId,
+        contactId,
+      }
+
+      await updateSignatoryStatus(accountId, contactId)
+
+      expect(mockedAccountApiPatch).toHaveBeenCalledWith(
+        `${API_PREFIXES.ACCOUNT}/roles`,
+        null,
+        { params: { ...patchParams, isSignatory: true } },
+      )
+    })
+
     it('should get signatories contacts', async () => {
       const accountId = mockedAccount.accountId
 
@@ -257,6 +304,13 @@ describe('test accountServices', () => {
 
   it("get account's user by email", async () => {
     const contact = await getAccountUserByEmail(mockedCollaborators[0].email)
+
     expect(contact).toStrictEqual(mockedCollaborators[0])
+  })
+
+  it("get account's return null", async () => {
+    const contact = await getAccountUserByEmail('')
+
+    expect(contact).toBeNull()
   })
 })

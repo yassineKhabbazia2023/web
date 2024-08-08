@@ -61,6 +61,7 @@
           <a
             class="font-semibold margin-left--2 link text-color--persian-500 overflow-hidden text-overflow--ellipsis"
             @click="onToolboxItemClicked('access', scope.row)"
+            data-testid="account-access-link"
           >
             {{ scope.row.name }}
           </a>
@@ -144,6 +145,7 @@
             :disabled="isToolboxDisabled"
             :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
             @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
+            data-testid="wallet-actions-toolbox"
           >
             <PButton
               pType="generic"

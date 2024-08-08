@@ -1,5 +1,9 @@
 <template>
-  <div v-if="areTabsDisplayed" class="folder-wrapper">
+  <div
+    v-if="areTabsDisplayed"
+    class="folder-wrapper"
+    data-testid="folder-tabs-wrapper"
+  >
     <div class="flex flex--align-items-center">
       <PAvatar pColor="orange">
         <PIcon>

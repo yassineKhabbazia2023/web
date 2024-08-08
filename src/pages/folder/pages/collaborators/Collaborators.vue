@@ -54,6 +54,7 @@
         pStripe
         tableLayout="fixed"
         class="collab-table"
+        data-testid="collaborators-folder-table"
       >
         <PTableColumn
           :pLabel="t('collaboratorName')"

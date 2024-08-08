@@ -1,13 +1,14 @@
 import { createTestingPinia } from '@pinia/testing'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
+import { beforeEach, afterEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
 import { type Entity, commonStore } from '@kpmg/common'
-import TableData from './'
 import { API_PREFIXES } from '@/common/config/services'
+import * as styleguide from '@kpmg/styleguide'
+import TableData from '.'
 
 const handleFavorites = vi.fn()
 const postMock = vi.fn()
@@ -17,6 +18,14 @@ const testEntity = {
   legalName: mockTableData[0].name,
   accountNumber: mockTableData[0].accountNumber,
 }
+
+vi.mock('@kpmg/styleguide', async () => {
+  const styleguide = await vi.importActual('@kpmg/styleguide') as Record<string, unknown>
+  return {
+    ...styleguide,
+    PNotification: vi.fn(),
+  }
+})
 
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
@@ -45,20 +54,30 @@ vi.mock('@kpmg/common', () => ({
 
 const pinia = createTestingPinia()
 
-const createWrapper = (): VueWrapper<any> =>
+const createWrapper = (isAccountManagement: boolean = false): VueWrapper<any> =>
   mount(TableData, {
     props: {
       data: mockTableData,
       handleAddFavorite: handleFavorites,
+      isAccountManagement,
     },
-    attachTo: document.body,
     global: {
       plugins: [pinia],
+      stubs: {
+        PToolbox: {
+          name: 'PToolbox',
+          template: '<button><slot/></button>',
+          events: ['p-toolbox-item-clicked'],
+        },
+        PCheckbox: {
+          name: 'PCheckbox',
+          template: '<div><slot /></div>',
+        },
+      },
     },
   })
 
-const collaboratorsColumnLabels =
-[
+const collaboratorsColumnLabels = [
   'Company name',
   'Folder ID',
   'Leader',
@@ -67,8 +86,7 @@ const collaboratorsColumnLabels =
   'Status',
   'Options',
 ]
-const clientsColumnLabels =
-[
+const clientsColumnLabels = [
   'Company name',
   'Folder ID',
   'Leader',
@@ -77,11 +95,13 @@ const clientsColumnLabels =
 ]
 
 describe('tableData', () => {
+  let spyPNotification: SpyInstance
   let wrapper: VueWrapper<any>
   let store: any
 
   beforeEach(async () => {
     vi.useFakeTimers()
+    spyPNotification = vi.spyOn(styleguide, 'PNotification')
     wrapper = createWrapper()
     store = commonStore(pinia)
     store.$patch({
@@ -98,14 +118,21 @@ describe('tableData', () => {
   })
 
   it('calls function handle when click', async () => {
-    const btnFavorite = wrapper.find('td.el-table_1_column_1 [data-testid="wallet-remove-favorite"]')
+    const btnFavorite = wrapper.find(
+      'td.el-table_1_column_1 [data-testid="wallet-remove-favorite"]',
+    )
     await btnFavorite.trigger('click')
+
     expect(handleFavorites).toHaveBeenCalledTimes(1)
-    expect(handleFavorites).toHaveBeenCalledWith(mockTableData[0].accountId, true)
+    expect(handleFavorites).toHaveBeenCalledWith(
+      mockTableData[0].accountId,
+      true,
+    )
   })
 
   it('displays correctly the table', () => {
     const rows = wrapper.findAll('tr.el-table__row')
+
     expect(rows).toHaveLength(mockTableData.length)
 
     const {
@@ -113,26 +140,33 @@ describe('tableData', () => {
       city,
       deploymentStatus: { text: deploymentStatusText },
       name,
-      owner: {
-        email,
-        firstName,
-        lastName,
-      },
+      owner: { email, firstName, lastName },
     } = mockTableData[0]
 
     const firstRowText = rows[0].text()
-    const mockData = [name, accountNumber, firstName, lastName, email, city, deploymentStatusText]
-    mockData.forEach(data => {
+    const mockData = [
+      name,
+      accountNumber,
+      firstName,
+      lastName,
+      email,
+      city,
+      deploymentStatusText,
+    ]
+    mockData.forEach((data) => {
       expect(firstRowText).toContain(data)
     })
   })
 
   it('should be a correct link in the toolbox', () => {
-    const getPopoverContent = () => document.body.getElementsByClassName('p-toolbox-item__text')[0].innerHTML
+    const walletToolbox = wrapper.findComponent({
+      name: 'PToolbox',
+    }) as VueWrapper
+    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'deploy')
     const rows = wrapper.findAll('tr.el-table__row')
     const firstRowText = rows[0]
+
     expect(firstRowText.find('.el-tag__content').text()).toBe('To Deploy')
-    expect(getPopoverContent()).toContain('Deploy this folder')
   })
 
   it('should resend activation mail & success toaster when click on resend email button', async () => {
@@ -142,18 +176,20 @@ describe('tableData', () => {
         webToken: 'token',
       },
     })
-    const notificationToaster = document.body.getElementsByClassName('el-notification__content')
-    expect(notificationToaster.length).toBeLessThanOrEqual(0)
-    const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
-    resendEmailButton.click()
+
+    expect(spyPNotification).not.toHaveBeenCalled()
+
+    const walletToolbox = wrapper.findComponent({
+      name: 'PToolbox',
+    }) as VueWrapper
+    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'resendActivationEmail')
     await nextTick()
-    const notifTextSuccess = 'A new activation email for'
-    const {
-      owner,
-    } = mockTableData[1]
-    expect(postMock).toHaveBeenCalledWith(`${API_PREFIXES.CONTACT}/customers/${owner.contactId}`)
-    const notificationContent = document.body.getElementsByClassName('el-notification__content')[0].innerHTML
-    expect(notificationContent).toContain(notifTextSuccess)
+    const { owner } = mockTableData[0]
+
+    expect(spyPNotification).toHaveBeenCalledOnce()
+    expect(postMock).toHaveBeenCalledWith(
+      `${API_PREFIXES.CONTACT}/customers/${owner.contactId}`,
+    )
   })
 
   it('should show error toaster when click on resend email button', async () => {
@@ -163,19 +199,20 @@ describe('tableData', () => {
         webToken: '',
       },
     })
-    const notifTextError = 'A problem occurred while sending the activation email for '
-    const notificationToaster = document.body.getElementsByClassName('el-notification__content')
-    expect(notificationToaster.length).toBeLessThanOrEqual(1)
-    expect(notificationToaster[0].innerHTML).not.toContain(notifTextError)
-    const resendEmailButton = document.body.getElementsByClassName('p-toolbox-item__text')[2] as HTMLElement
-    resendEmailButton.click()
+
+    expect(spyPNotification).not.toHaveBeenCalled()
+
+    const walletToolbox = wrapper.findComponent({
+      name: 'PToolbox',
+    }) as VueWrapper
+    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'resendActivationEmail')
     await nextTick()
-    const {
-      owner,
-    } = mockTableData[1]
-    expect(postMock).toHaveBeenCalledWith(`${API_PREFIXES.CONTACT}/customers/${owner.contactId}`)
-    const notificationContent = document.body.getElementsByClassName('el-notification__content')[1].innerHTML
-    expect(notificationContent).toContain(notifTextError)
+    const { owner } = mockTableData[0]
+
+    expect(spyPNotification).toHaveBeenCalledOnce()
+    expect(postMock).toHaveBeenCalledWith(
+      `${API_PREFIXES.CONTACT}/customers/${owner.contactId}`,
+    )
   })
 
   it('should emit clickDeploy when click on deploy button', async () => {
@@ -183,30 +220,38 @@ describe('tableData', () => {
 
     const { accountId, accountNumber, name } = mockTableData[0]
 
-    const deployButton = document.body.getElementsByClassName('p-toolbox-item__text')[0] as HTMLElement
-    deployButton.click()
+    const walletToolbox = wrapper.findComponent({
+      name: 'PToolbox',
+    }) as VueWrapper
+    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'deploy')
 
-    expect(wrapper.emitted('click-deploy')).toStrictEqual([[accountId, accountNumber, name]])
+    expect(wrapper.emitted('click-deploy')).toStrictEqual([
+      [accountId, accountNumber, name],
+    ])
   })
 
   it('should emit event when click on checkbox', async () => {
     await flushPromises()
 
-    const checkbox = document.body.getElementsByClassName('el-checkbox__original')[1] as HTMLElement
-    checkbox.click()
+    const checkbox = wrapper.findAllComponents({ name: 'PCheckbox' })[1]
+    checkbox.trigger('change')
+    await nextTick()
 
+    const { accountNumber, accountId: id, legalName: name } = testEntity
     const {
-      accountNumber,
-      accountId: id,
-      legalName: name,
-    } = testEntity
-    const { owner: { avatarColor } } = mockTableData[0]
-    expect(wrapper.emitted('selectedFolder')).toStrictEqual([[{
-      accountNumber,
-      avatarColor,
-      id,
-      name,
-    }]])
+      owner: { avatarColor },
+    } = mockTableData[1]
+
+    expect(wrapper.emitted('selectedFolder')).toStrictEqual([
+      [
+        {
+          accountNumber,
+          avatarColor,
+          id,
+          name,
+        },
+      ],
+    ])
   })
 
   it('should emit access when click on access button', async () => {
@@ -214,13 +259,15 @@ describe('tableData', () => {
 
     const { accountId } = mockTableData[0]
 
-    const accessButton = document.body.getElementsByClassName('p-toolbox-item__text')[1] as HTMLElement
-    accessButton.click()
+    const walletToolbox = wrapper.findComponent({
+      name: 'PToolbox',
+    }) as VueWrapper
+    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'access')
 
     expect(wrapper.emitted('access')).toStrictEqual([[accountId]])
   })
   it('should change ibs selected and emit access', () => {
-    const ibsLink = document.body.getElementsByClassName('link')[0] as HTMLElement
+    const ibsLink = wrapper.find('[data-testid=account-access-link]')
     const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
     const formattedEntity: Entity = {
       legalName: testEntity.legalName,
@@ -228,9 +275,12 @@ describe('tableData', () => {
       color: 'persian',
       accountNumber: testEntity.accountNumber,
     }
-    ibsLink.click()
+    ibsLink.trigger('click')
 
-    expect(setItemSpy).toHaveBeenCalledWith('selected-entity', JSON.stringify(formattedEntity))
+    expect(setItemSpy).toHaveBeenCalledWith(
+      'selected-entity',
+      JSON.stringify(formattedEntity),
+    )
     expect(wrapper.emitted('access')).toStrictEqual([[testEntity.accountId]])
     expect(store.$patch).toHaveBeenCalledWith({
       user: {
@@ -246,8 +296,39 @@ describe('tableData', () => {
     collaboratorsColumnLabels.forEach((columnLabel, index) => {
       const indexSkiped = index + 1 // skip the first column
       const label = pTableColumns.at(indexSkiped)?.props('label')
+
       expect(label).toBe(columnLabel)
     })
+  })
+
+  it("should emit the 'manageAccountRights' event when the Manage Rights button is clicked", async () => {
+    wrapper = createWrapper(true)
+    await flushPromises()
+    const { accountId, accountNumber, name } = mockTableData[0]
+    const walletToolbox = wrapper.findComponent({
+      name: 'PToolbox',
+    }) as VueWrapper
+    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'manageAccountRights')
+    await nextTick()
+
+    expect(wrapper.emitted('displayAccountRightsDrawer')).toStrictEqual([
+      [{ accountId, name, accountNumber }],
+    ])
+  })
+
+  it("should emit 'displayResendActivationEmailDrawer' when Resend Activation Email button is clicked", async () => {
+    wrapper = createWrapper(true)
+    await flushPromises()
+    const { accountId, accountNumber, name } = mockTableData[0]
+    const walletToolbox = wrapper.findComponent({
+      name: 'PToolbox',
+    }) as VueWrapper
+    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'retryMassActivationEmail')
+    await nextTick()
+
+    expect(wrapper.emitted('displayResendActivationEmailDrawer')).toStrictEqual([
+      [{ accountId, name, accountNumber }],
+    ])
   })
 
   it('should display the correct columns when the user is a client', async () => {
@@ -259,6 +340,7 @@ describe('tableData', () => {
     clientsColumnLabels.forEach((columnLabel, index) => {
       const indexSkiped = index + 1 // skip the first column
       const label = pTableColumns.at(indexSkiped)?.props('label')
+
       expect(label).toBe(columnLabel)
     })
   })

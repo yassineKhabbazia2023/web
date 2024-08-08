@@ -17,7 +17,7 @@ import * as WalletServices from '@/services/wallet'
 import type { Contact } from '@/common/types'
 import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
 import type { UsersClientProps } from './UsersClientTypes'
-import UsersClient from './'
+import UsersClient from '.'
 
 vi.mock('@/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
@@ -73,7 +73,7 @@ function createWrapper(entityId?: number) {
     props,
     global: {
       plugins: [pinia],
-      stubs: ['RemoveUserDialog'],
+      stubs: ['RemoveUserDialog', 'ManageRightsDrawer', 'DrawerUserDetails'],
     },
   })
 }
@@ -186,6 +186,30 @@ describe('usersClient', () => {
       getPaginationComponent().vm.$emit('on-page-range-changed', 2)
 
       expect(mockGatewayGet).toHaveBeenCalledTimes(1)
+    })
+
+    it('should handle the removal of a user', async () => {
+      getTableDataComponent().vm.$emit('remove-user', mockUser)
+      await nextTick()
+
+      expect(wrapper.vm.state.userToRemove).toStrictEqual(mockUser)
+      expect(wrapper.vm.state.isRemoveUserDialogOpened).toBeTruthy()
+    })
+
+    it('should select the user and display the Manage Rights drawer', async () => {
+      getTableDataComponent().vm.$emit('display-manage-rights', mockUser.id)
+      await nextTick()
+
+      expect(wrapper.vm.state.isManageRightsDrawerOpened).toBeTruthy()
+      expect(wrapper.vm.state.selectedUserId).toStrictEqual(mockUser.id)
+    })
+
+    it('should select the user and display the User Details drawer', async () => {
+      getTableDataComponent().vm.$emit('click-view-information', mockUser.id)
+      await nextTick()
+
+      expect(wrapper.vm.state.isDrawerViewDetailsOpened).toBeTruthy()
+      expect(wrapper.vm.state.selectedUserId).toStrictEqual(mockUser.id)
     })
 
     it('should fetch contacts upon update:pCurrentPage event', () => {

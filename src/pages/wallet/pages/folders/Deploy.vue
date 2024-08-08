@@ -266,6 +266,8 @@ const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
       ? selectedFolders.value.filter((selectedFolder: SelectedFolder) => selectedFolder.id !== newSelectedFolder.id)
       : [...selectedFolders.value, newSelectedFolder]
 }
+
+defineExpose({ handleAddFavorite, searchCriteria })
 </script>
 
 <i18n lang="yaml">

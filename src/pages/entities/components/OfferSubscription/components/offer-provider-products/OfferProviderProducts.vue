@@ -1,5 +1,5 @@
 <template>
-  <div v-if="services.length > 0">
+  <div v-if="services.length > 0" data-testid="offer-provider-products-wrapper">
     <POfferServicesCard
       data-testid="offer-services"
       :pLogo="offerProvider.logoName"

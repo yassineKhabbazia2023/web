@@ -67,7 +67,7 @@
                   >
                     {{ t('joinClub') }}
                     <PIcon class="el-button__icon--right">
-                      <PIArrowRight />
+                      <PIArrowRight data-testid="join-arrow-right-icon"/>
                     </PIcon>
                   </PButton>
                 </div>

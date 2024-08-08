@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import OfferProviderProducts from '.'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import {
@@ -7,13 +7,14 @@ import {
 import type {
   SubscriptionOfferProvider,
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import * as OfferProviderProductsUtils from './OfferProviderProductsUtils'
 import type { ExtendedService } from './OfferProviderProductsTypes'
 
+const offerId = 101
 const offerProviderServices = getMockedSubscriptionOffersServices()
 const offerProviderService = offerProviderServices?.at(0)
 const offerProvider = offerProviderService?.providers?.at(0) as SubscriptionOfferProvider
 const productConfigurationId = offerProvider.products.at(0)?.productConfigurationId ?? 1
-const offerId = 101
 
 function getMockedService(pStatus: boolean): ExtendedService {
   return {
@@ -24,8 +25,8 @@ function getMockedService(pStatus: boolean): ExtendedService {
   }
 }
 
-function getWrapper() {
-  const wrapper = mount(OfferProviderProducts, {
+const createWrapper = () => {
+  return mount(OfferProviderProducts, {
     props: {
       offerProvider,
       offerId,
@@ -35,7 +36,6 @@ function getWrapper() {
       }],
     },
   })
-  return wrapper
 }
 
 function getOfferServicesCard(wrapper: VueWrapper) {
@@ -46,7 +46,7 @@ describe('offerProviderProducts', () => {
   let wrapper: VueWrapper
   let offerServicesCard: VueWrapper
   beforeEach(() => {
-    wrapper = getWrapper()
+    wrapper = createWrapper()
     offerServicesCard = getOfferServicesCard(wrapper)
   })
   describe('props', () => {
@@ -66,6 +66,13 @@ describe('offerProviderProducts', () => {
       expect(offerFirstService.text()).toBe(
         offerProvider?.products[0].productLabel,
       )
+    })
+    it('should not display offer cards if the API returns an empty array', () => {
+      vi.spyOn(OfferProviderProductsUtils, 'getProviderServices').mockReturnValue([])
+      wrapper = createWrapper()
+      const offerProviderProductsWrapper = wrapper.find('[data-testid=offer-provider-products-wrapper]')
+
+      expect(offerProviderProductsWrapper.exists()).toBeFalsy()
     })
   })
   describe('interactions', () => {

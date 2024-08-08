@@ -227,6 +227,15 @@ describe('usersCollab', () => {
       )
     })
 
+    it('should reset the current page and update the limit', () => {
+      const pagination = wrapper.findComponent({ name: 'PPagination' })
+
+      pagination.vm.$emit('on-page-range-changed', 30)
+
+      expect(wrapper.vm.state.limit).toBe(30)
+      expect(wrapper.vm.state.currentPage).toBe(1)
+    })
+
     it("should display the 'Modify Rights' drawer when the 'Modify Rights' action is clicked", async () => {
       await wrapper.vm.handleUserAction('modifyRights', mockedUser)
       const manageRightsDrawer = wrapper.findComponent({ name: 'ManageRightsDrawer' })
