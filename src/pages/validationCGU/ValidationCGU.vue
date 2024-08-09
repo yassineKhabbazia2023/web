@@ -112,7 +112,7 @@ const acceptNewCgu = async (termsId: string) => {
     await updateTermsByCurrentUser(parseInt(termsId))
     router.push({ name: 'wallet-client' })
   } catch (error) {
-    console.warn(error)
+    console.error(error)
   } finally {
     loading.value = false
   }

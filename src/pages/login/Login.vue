@@ -12,7 +12,10 @@
       class="customError"
     >
       <div class="el-form-item__content">
-        <p class="el-form-item__error">
+        <p
+          class="el-form-item__error"
+          data-testid="login-error-message"
+        >
           {{ t('error') }}
         </p>
       </div>
@@ -40,6 +43,7 @@
           pName="email"
           pAutocomplete="on"
           pAutofocus
+          data-testid="login-input-email"
         />
       </PFormItem>
       <PFormItem
@@ -53,6 +57,7 @@
           :pPlaceholder="t('passwordPlaceholder')"
           pType="password"
           pShowPassword
+          data-testid="login-input-password"
         />
       </PFormItem>
       <router-link
@@ -67,6 +72,7 @@
           :pDisabled="!isFormValid"
           pType="primary"
           class="buttonSubmit"
+          data-testid="login-submit-button"
         >
           {{ t('login')}}
         </PButton>
@@ -197,6 +203,8 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
 onMounted(() => {
   amplitudeService.reset()
 })
+
+defineExpose({ handleSubmit })
 </script>
 
 <style lang="scss">

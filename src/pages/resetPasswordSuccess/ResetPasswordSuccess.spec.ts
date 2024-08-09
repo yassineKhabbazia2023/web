@@ -4,7 +4,6 @@ import {
   it,
   vi,
 } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import ResetPasswordSuccess from './'
 
@@ -21,7 +20,6 @@ vi.mock('vue-router', () => ({
 
 const mockRouterPush = vi.fn()
 
-let wrapper: VueWrapper<any>
 const createWrapper = () =>
   mount(ResetPasswordSuccess, {
     global: {
@@ -33,7 +31,7 @@ const createWrapper = () =>
 
 describe('reset password success', () => {
   it('display the reset password success page', async () => {
-    wrapper = createWrapper()
+    const wrapper = createWrapper()
     const badgeEmail = wrapper.find('.badge-email')
     const backToLoginBtn = wrapper.find('.back-to-login-button')
     expect(badgeEmail.exists()).toBeTruthy()

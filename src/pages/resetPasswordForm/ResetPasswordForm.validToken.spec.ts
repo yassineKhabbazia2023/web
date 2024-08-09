@@ -1,8 +1,9 @@
-import type { VueWrapper } from '@vue/test-utils'
+import type { ComponentWrapper } from '@/pages/testHelper/testHelperTypes'
 import { flushPromises, mount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
 import ResetPasswordForm from './'
+import type { FormInstance } from 'element-plus'
 
 const routes = [
   {
@@ -55,7 +56,8 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-let wrapper: VueWrapper<any>
+let wrapper: ComponentWrapper<InstanceType <typeof ResetPasswordForm>>
+
 const createWrapper = () =>
   mount(ResetPasswordForm, {
     global: {
@@ -83,6 +85,19 @@ describe('page reset password form', () => {
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
     await flushPromises()
     expect(wrapper.findAll('.is-error')).toHaveLength(1)
+  })
+
+  it('should show error when user enter an empty password', async () => {
+    const firstInput = wrapper.find('[data-testid="reset-password-form-first-password"]')
+    const secondInput = wrapper.find('[data-testid="reset-password-form-second-password"]')
+
+    await firstInput.setValue('')
+    await firstInput.trigger('blur')
+
+    await secondInput.setValue('')
+    await secondInput.trigger('blur')
+
+    expect(wrapper.findAll('.is-error')).toHaveLength(2)
   })
 
   it('should show success when user enter 2 password', async () => {
@@ -143,5 +158,22 @@ describe('page reset password form', () => {
     await flushPromises()
 
     expect(getErrorPasswordAlreadyUsed().exists()).toBeTruthy()
+  })
+
+  it('do not call mockAuthPost when not form given to submitForm', async () => {
+    wrapper = createWrapper()
+    await wrapper.vm.submitForm(undefined)
+    expect(postMock).not.toHaveBeenCalled()
+  })
+
+  it('do not call mockAuthPost when form is not valid', async () => {
+    wrapper = createWrapper()
+    const mockedForm = {
+      validate: (done: any) => {
+        done(false)
+      },
+    } as unknown as FormInstance
+    await wrapper.vm.submitForm(mockedForm)
+    expect(postMock).not.toHaveBeenCalled()
   })
 })

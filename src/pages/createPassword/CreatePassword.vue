@@ -30,6 +30,7 @@
             :pPlaceholder="t('placeholderPassword')"
             pType="password"
             pShowPassword
+            data-testid="create-password-first-password"
           />
         </PopoverPasswordStrength>
       </PFormItem>
@@ -43,6 +44,7 @@
           :pPlaceholder="t('placeholderConfirmPassword')"
           pType="password"
           pShowPassword
+          data-testid="create-password-second-password"
         />
       </PFormItem>
       <p>
@@ -63,6 +65,7 @@
             radius--2
           "
           ref="checkbox"
+          data-testid="create-password-terms-checkbox"
         >
           {{ t('cguMessagePartOne') }}
           <a
@@ -81,6 +84,7 @@
           pSize="default"
           class="btn-submit"
           @click="submitForm(formRef)"
+          data-testid="create-password-submit-button"
         >
           {{ t('btnSubmit') }}
         </PButton>
@@ -152,7 +156,6 @@ const validatePassword = (_rule: any, value: any, callback: any) => {
     formValidity.password = false
     callback(new Error(t('alertPasswordRequired')))
   } else {
-    if (!formRef.value) return
     if (levelPasswordStrength(value) !== PASSWORD_STRENGTH.STRONG) {
       formValidity.password = false
       callback(new Error(t('alertPasswordLevelLow')))
@@ -263,6 +266,8 @@ onMounted(async () => {
     console.error(error)
   }
 })
+
+defineExpose({ submitForm })
 </script>
 
 <style lang="scss" scoped>

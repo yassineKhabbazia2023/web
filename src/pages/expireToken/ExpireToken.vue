@@ -43,7 +43,6 @@ const resendLink = async () => {
     contactEmail && (contactEmail = contactEmail.toString().trim().replace(' ', '+'))
     contactEmail
       ? await commonApi().gateway.post('authentication/api/sendResetPasswordLink', { email: contactEmail })
-      // eslint-disable-next-line max-len
       : await commonApi().gateway.post(`account/api/customers/invite/${contactId}`)
     isLoading.value = false
     router.push({ path: '/resendEmailSuccess' })

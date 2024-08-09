@@ -6,9 +6,11 @@ import {
   it,
   vi,
 } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import type { ComponentWrapper } from '@/pages/testHelper/testHelperTypes'
+import type { FormInstance } from 'element-plus'
+import { flushPromises, mount } from '@vue/test-utils'
 import ResetPassword from './'
+import { nextTick } from 'vue'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -16,12 +18,10 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const mockRouterPush = vi.fn()
-const mockAuthPost = vi.fn((_url, { email }) => {
-  return email === ''
-    ? Promise.reject(new Error('Email required'))
-    : Promise.resolve()
-})
+const mockAuthPost = vi.hoisted(() => vi.fn())
+
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     gateway: {
@@ -30,12 +30,10 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-let wrapper: VueWrapper<any>
+let wrapper: ComponentWrapper<InstanceType <typeof ResetPassword>>
+
 const createWrapper = () =>
   mount(ResetPassword)
-
-const getForm = () => wrapper.find('form')
-const getInputEmail = () => wrapper.findAll('input')[0]
 
 describe('reset password', () => {
   beforeEach(() => {
@@ -47,12 +45,18 @@ describe('reset password', () => {
   })
 
   it('validate the reset password form and has a redirection to the success page', async () => {
-    const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
     const elForm = wrapper.find('form')
+    mockAuthPost.mockResolvedValueOnce({})
     expect(elForm.exists()).toBeTruthy()
 
-    await getInputEmail().setValue(INPUT_EMAIL_VALUE)
-    await wrapper.vm.handleSubmit(getForm())
+    const input = wrapper.find('[data-testid="reset-password-input-email"]')
+    input.setValue(INPUT_EMAIL_VALUE)
+    input.trigger('blur')
+    await nextTick()
+
+    const submitButton = wrapper.find('[data-testid="reset-password-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
 
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
     expect(mockAuthPost).toHaveBeenCalledWith(
@@ -68,5 +72,67 @@ describe('reset password', () => {
         email: 'customEmail@aol.com',
       },
     })
+  })
+
+  it('do not call mockAuthPost when handleSubmit is called without form', async () => {
+    await wrapper.vm.handleSubmit(undefined)
+    expect(mockAuthPost).not.toHaveBeenCalled()
+  })
+
+  it('do not call mockAuthPost when form throws an exception', async () => {
+    const mockedForm = {
+      validate: () => {
+        throw new Error('')
+      },
+    } as unknown as FormInstance
+    await wrapper.vm.handleSubmit(mockedForm)
+    expect(mockAuthPost).not.toHaveBeenCalled()
+  })
+
+  it('go to loginClient route when click on back-to-login-button', async () => {
+    const submitButton = wrapper.find('[data-testid="reset-password-back-to-login-button"]')
+    await submitButton.trigger('click')
+    expect(mockAuthPost).not.toHaveBeenCalled()
+    expect(mockRouterPush).toHaveBeenNthCalledWith(1, {
+      name: 'loginClient',
+    })
+  })
+
+  it('should display error when mockAuthPost throws an error', async () => {
+    mockAuthPost.mockRejectedValueOnce({
+      message: 'ERROR',
+    })
+
+    const emailInput = wrapper.find('[data-testid="reset-password-input-email"]')
+    emailInput.setValue(INPUT_EMAIL_VALUE)
+    emailInput.trigger('blur')
+    await nextTick()
+
+    const submitButton = wrapper.find('[data-testid="reset-password-submit-button"]')
+    submitButton.trigger('click')
+    await flushPromises()
+
+    const input = wrapper.find('.el-input')
+    expect(input.classes('error')).toBeDefined()
+  })
+
+  it('submit button disabled when email is empty', async () => {
+    const emailInput = wrapper.find('[data-testid="reset-password-input-email"]')
+    emailInput.setValue('')
+    emailInput.trigger('blur')
+    await nextTick()
+
+    const submitButton = wrapper.find('[data-testid="reset-password-submit-button"]')
+    expect(submitButton.attributes('disabled')).toBeDefined()
+  })
+
+  it('submit button disabled when email is invalid', async () => {
+    const emailInput = wrapper.find('[data-testid="reset-password-input-email"]')
+    emailInput.setValue('invalid-email')
+    emailInput.trigger('blur')
+    await nextTick()
+
+    const submitButton = wrapper.find('[data-testid="reset-password-submit-button"]')
+    expect(submitButton.attributes('disabled')).toBeDefined()
   })
 })

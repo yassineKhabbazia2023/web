@@ -34,6 +34,8 @@ vi.mock('@/composable/useStoreSubscription', () => ({
   }),
 }))
 
+const mockToken = 'mock-token'
+
 describe('useInitUserAuth', () => {
   afterEach(() => {
     localStorage.clear()
@@ -41,7 +43,6 @@ describe('useInitUserAuth', () => {
   })
 
   it('should init auth when the user is collab', async () => {
-    const mockToken = 'mock-token'
     // Setup
     const setTokenSpy = vi.spyOn(tokenService, 'setToken')
     vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
@@ -58,7 +59,6 @@ describe('useInitUserAuth', () => {
   })
 
   it('should init auth when user is client', async () => {
-    const mockToken = 'mock-token'
     // Setup
     const setTokenSpy = vi.spyOn(tokenService, 'setToken')
     vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
@@ -97,6 +97,26 @@ describe('useInitUserAuth', () => {
     setStoreGigyaUserId(mockGigyaUserId)
 
     // Assert
-    expect(store().$patch).toHaveBeenCalledTimes(0)
+    expect(store().$patch).not.toHaveBeenCalled()
+  })
+
+  it('should set gigyaUserId given that the token is available', () => {
+    // Setup
+    const mockGigyaUserId = 'gigya-user-id'
+    vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
+
+    const { setStoreGigyaUserId } = useInitUserAuth()
+    const expectedAttributes = {
+      user: {
+        gigyaUserId: mockGigyaUserId,
+      },
+    }
+
+    // Act
+    setStoreGigyaUserId(mockGigyaUserId)
+
+    // Assert
+    expect(store().$patch).toHaveBeenCalledOnce()
+    expect(store().$patch).toHaveBeenNthCalledWith(1, expectedAttributes)
   })
 })

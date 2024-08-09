@@ -16,8 +16,9 @@ vi.mock('@kpmg/common', () => ({
   fetchUrlTerms: vi.fn(),
 }))
 
+const updateTermsByCurrentUserMocked = vi.hoisted(() => vi.fn())
 vi.mock('@/services/cgu', () => ({
-  updateTermsByCurrentUser: vi.fn(),
+  updateTermsByCurrentUser: updateTermsByCurrentUserMocked,
 }))
 
 const createWrapper = () =>
@@ -43,5 +44,19 @@ describe('cgu validation', () => {
     const backButton = wrapper.find('[data-testid="cgu-button-back"]')
     await backButton.trigger('click')
     expect(mockRouterBack).toHaveBeenCalledWith()
+  })
+
+  it('should emit console error when updateTermsByCurrentUser throws an error', async () => {
+    const errorMessage = 'error-message'
+    updateTermsByCurrentUserMocked.mockRejectedValueOnce(new Error(errorMessage))
+    const consoleErrorSpy = vi.spyOn(console, 'error')
+
+    const wrapper = createWrapper()
+    const getCheckbox = () => wrapper.find('input')
+    await getCheckbox().setValue(true)
+
+    const confirmButton = wrapper.find('[data-testid="cgu-button-confirm"]')
+    await confirmButton.trigger('click')
+    expect(consoleErrorSpy).toHaveBeenCalledOnce()
   })
 })

@@ -1,44 +1,21 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import ExpireToken from './ExpireToken.vue'
 
-const routes = [
-  {
-    path: '/expireToken',
-    name: 'expireToken',
-    component: {
-      template: '<p class="page-title">ExpireToken</p>',
-    },
-  },
-  {
-    path: '/resendEmailSuccess',
-    name: 'resendEmailSuccess',
-    component: {
-      template: '<p class="page-title">Resend email</p>',
-    },
-  },
-]
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-router.push({
-  path: '/expireToken',
-  query: {
-    accountId: 'accountIdSample',
-    contactId: 'contactId',
-  },
-})
-const createWrapper = () => {
-  return mount(ExpireToken, {
-    global: {
-      plugins: [router],
-    },
-  })
-}
+const mockRouterPush = vi.hoisted(() => vi.fn())
+const mockUseRoute = vi.hoisted(() => vi.fn())
+
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mockRouterPush,
+  }),
+  useRoute: mockUseRoute,
+}))
+
+const createWrapper = () => mount(ExpireToken)
+
 const postMock = vi.fn(() => true)
+
 vi.mock('@kpmg/common', () => ({
   commonApi: () => ({
     gateway: {
@@ -48,14 +25,49 @@ vi.mock('@kpmg/common', () => ({
 }))
 describe('page expire token', () => {
   it('should call endpoint when click on button', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
-    const spyRouter = vi.spyOn(wrapper.vm.router, 'push')
-    const link = 'account/api/customers/invite/contactId'
+    const contactId = 'contact id'
+    mockUseRoute.mockReturnValue({
+      query: {
+        contactId,
+      },
+    })
+    const wrapper = createWrapper()
+    const expectedUrl = `account/api/customers/invite/${contactId}`
+    const expectedRoute = {
+      path: '/resendEmailSuccess',
+    }
+
     wrapper.find('.btn-link').trigger('click')
-    expect(postMock).toHaveBeenCalledTimes(1)
-    expect(postMock).toHaveBeenCalledWith(link)
     await flushPromises()
-    expect(spyRouter).toHaveBeenCalledTimes(1)
-    expect(spyRouter).toHaveBeenCalledWith({ path: '/resendEmailSuccess' })
+
+    expect(postMock).toHaveBeenCalledOnce()
+    expect(postMock).toHaveBeenCalledWith(expectedUrl)
+    expect(mockRouterPush).toHaveBeenCalledOnce()
+    expect(mockRouterPush).toHaveBeenCalledWith(expectedRoute)
+  })
+
+  it('should call endpoint when click on button and contactEmail is given', async () => {
+    const contactEmail = 'contact email'
+    mockUseRoute.mockReturnValue({
+      query: {
+        contactEmail,
+      },
+    })
+    const wrapper = createWrapper()
+    const expectedUrl = 'authentication/api/sendResetPasswordLink'
+    const expectedPayload = {
+      email: 'contact+email',
+    }
+    const expectedRoute = {
+      path: '/resendEmailSuccess',
+    }
+
+    wrapper.find('.btn-link').trigger('click')
+    await flushPromises()
+
+    expect(postMock).toHaveBeenCalledOnce()
+    expect(postMock).toHaveBeenCalledWith(expectedUrl, expectedPayload)
+    expect(mockRouterPush).toHaveBeenCalledOnce()
+    expect(mockRouterPush).toHaveBeenCalledWith(expectedRoute)
   })
 })

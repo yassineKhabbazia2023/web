@@ -1,5 +1,5 @@
 import { type SpyInstance, beforeEach, describe, expect, it, vi } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { amplitudeService } from '@kpmg/common'
 import { msalInstance } from '@/services/msal'
 import LoginCollab from '.'
@@ -26,7 +26,7 @@ vi.mock('@/composable/useNavigation', () => ({
 const createWrapper = () => mount(LoginCollab)
 
 describe('loginCollab', () => {
-  let wrapper: VueWrapper<any>
+  let wrapper: ReturnType<typeof createWrapper>
   let spyResetAmplitude: SpyInstance
   let spyMsalLoginRedirect: SpyInstance
   beforeEach(async () => {

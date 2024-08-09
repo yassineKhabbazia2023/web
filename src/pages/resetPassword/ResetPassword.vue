@@ -32,6 +32,7 @@
           pAutocomplete="on"
           pAutofocus
           :pPlaceholder="t('emailPlaceholder')"
+          data-testid="reset-password-input-email"
         />
       </PFormItem>
       <PFormItem>
@@ -41,6 +42,7 @@
           :pDisabled="!isFormValid"
           :pLoading="isLoading"
           class="reset-submit-button"
+          data-testid="reset-password-submit-button"
         >
           {{ t('submitBtn') }}
         </PButton>
@@ -50,6 +52,7 @@
           pType="white"
           @click="router.push({ name: 'loginClient' })"
           class="back-to-login-button"
+          data-testid="reset-password-back-to-login-button"
         >
           {{ t('backToLogin') }}
         </PButton>
@@ -138,8 +141,8 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   }
 }
 
+defineExpose({ handleSubmit })
 </script>
-<!-- eslint-enable max-len -->
 
 <style lang="scss" scoped>
 .page-content {

@@ -30,6 +30,7 @@
             :pPlaceholder="t('placeholderPassword')"
             pType="password"
             pShowPassword
+            data-testid="reset-password-form-first-password"
           />
         </PopoverPasswordStrength>
       </PFormItem>
@@ -43,6 +44,7 @@
           :pPlaceholder="t('placeholderConfirmPassword')"
           pType="password"
           pShowPassword
+          data-testid="reset-password-form-second-password"
         />
       </PFormItem>
       <PFormItem>
@@ -119,7 +121,6 @@ const validatePassword = (_rule: any, value: any, callback: any) => {
     formValidity.password = false
     callback(new Error(t('alertPasswordRequired')))
   } else {
-    if (!formRef.value) return
     if (levelPasswordStrength(value) !== PASSWORD_STRENGTH.STRONG) {
       formValidity.password = false
       callback(new Error(t('alertPasswordLevelLow')))
@@ -188,6 +189,7 @@ onBeforeMount(async () => {
     router.push({ name: 'expireToken', query: { contactEmail } })
   }
 })
+defineExpose({ submitForm })
 </script>
 
 <style lang="scss" scoped>

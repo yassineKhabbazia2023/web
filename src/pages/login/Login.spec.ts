@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import type { ComponentWrapper } from '@/pages/testHelper/testHelperTypes'
+import { flushPromises, mount } from '@vue/test-utils'
 import Login from './'
 import { amplitudeService, tokenService } from '@kpmg/common'
 import { getTermsByCurrentUser } from '@/services/cgu'
+import type { FormInstance } from 'element-plus'
 
 const USER_ID = 'customUserId'
 const GIGYA_USER_ID = 'customGigyaUserId'
@@ -13,7 +14,14 @@ const mockStorePatch = vi.fn()
 const mockRouterPush = vi.fn()
 const mockAuthPost = vi.fn((_url, { _email, password }) => {
   return password === 'error'
-    ? Promise.reject(new Error('Invalid password'))
+    // eslint-disable-next-line prefer-promise-reject-errors
+    ? Promise.reject({
+      response: {
+        data: {
+          errorCode: '403042',
+        },
+      },
+    })
     : Promise.resolve({
       data: {
         userId: USER_ID,
@@ -47,17 +55,19 @@ vi.mock('@kpmg/common', () => ({
     setNewUserProperty: vi.fn(),
   },
 }))
+const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
+  mockStorePatch({
+    user: {
+      id: USER_ID,
+      isCollab: false,
+    },
+  })
+  return { id: USER_ID }
+}))
+
 vi.mock('@/composable/useInitUserAuth', () => ({
   default: () => ({
-    initAuthClient: vi.fn(() => {
-      mockStorePatch({
-        user: {
-          id: USER_ID,
-          isCollab: false,
-        },
-      })
-      return { id: USER_ID }
-    }),
+    initAuthClient: initAuthClientMocked,
     setStoreGigyaUserId: vi.fn(() => {
       mockStorePatch({
         user: {
@@ -77,18 +87,21 @@ vi.mock('@/services/cgu', () => ({
       },
     })),
 }))
-let wrapper: VueWrapper<any>
-
-const createWrapper = () =>
+const createWrapper = (): ComponentWrapper<InstanceType <typeof Login>> =>
   mount(Login, {
     global: {
-      stubs: ['router-link'],
+      stubs: {
+        'router-link': {
+          template: '<div><slot /></div>',
+        },
+      },
     },
   })
 
-const getForm = () => wrapper.find('form')
-const getInputEmail = () => wrapper.findAll('input')[0]
-const getInputPassword = () => wrapper.findAll('input')[1]
+let wrapper: ReturnType<typeof createWrapper>
+
+const getInputEmail = () => wrapper.find('[data-testid="login-input-email"]')
+const getInputPassword = () => wrapper.find('[data-testid="login-input-password"]')
 
 const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const INPUT_PASSWORD_VALUE = 'customPassword'
@@ -112,7 +125,12 @@ describe('login', () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
-    await wrapper.vm.handleSubmit(getForm())
+    const submitButton = wrapper.find('.buttonSubmit')
+    await submitButton.trigger('click')
+    await flushPromises()
+
+    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
+    expect(loginErrorMessage.exists()).toBeFalsy()
 
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
     expect(mockAuthPost).toHaveBeenCalledWith('authentication/api/login', {
@@ -147,8 +165,13 @@ describe('login', () => {
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
-    await wrapper.vm.handleSubmit(getForm())
+    const submitButton = wrapper.find('.buttonSubmit')
+    await submitButton.trigger('click')
+    await flushPromises()
 
+    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
+    const expectedErrorMessage = 'The email and password combination is incorrect.'
+    expect(loginErrorMessage.text()).toBe(expectedErrorMessage)
     expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
     expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
     expect(spyTrackAmplitude).toHaveBeenCalledOnce()
@@ -156,6 +179,46 @@ describe('login', () => {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
+    expect(mockRouterPush).not.toHaveBeenCalled()
+  })
+
+  it('give empty values in form', async () => {
+    const inputEmail = getInputEmail()
+    const inputPassword = getInputPassword()
+
+    inputEmail.setValue('')
+    inputPassword.setValue('')
+
+    await inputEmail.trigger('blur')
+    await inputPassword.trigger('blur')
+
+    const submitButton = wrapper.find('.buttonSubmit')
+    await submitButton.trigger('click')
+    await flushPromises()
+
+    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
+    expect(submitButton.attributes('disabled')).toBeDefined()
+    expect(loginErrorMessage.exists()).toBeFalsy()
+    expect(spySetNewUserPropertyAmplitude).not.toHaveBeenCalled()
+    expect(spyTrackAmplitude).not.toHaveBeenCalled()
+    expect(mockRouterPush).not.toHaveBeenCalled()
+  })
+
+  it('give none valid email form', async () => {
+    const inputEmail = getInputEmail()
+    const inputPassword = getInputPassword()
+    inputEmail.setValue('invalid-email')
+    inputPassword.setValue(INPUT_PASSWORD_VALUE)
+
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
+
+    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
+    expect(submitButton.attributes('disabled')).toBeDefined()
+    expect(loginErrorMessage.exists()).toBeFalsy()
+    expect(spySetNewUserPropertyAmplitude).not.toHaveBeenCalled()
+    expect(spyTrackAmplitude).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
@@ -171,14 +234,53 @@ describe('login', () => {
         termsId: 123456,
       },
     })
-    wrapper = createWrapper()
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
-    await wrapper.vm.handleSubmit(getForm())
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
+
     expect(mockRouterPush).toHaveBeenCalledWith({
       name: 'validationCGU',
       params: { termsId: 123456 },
     })
+  })
+
+  it('do not call mockAuthPost when handleSubmit is called without form', async () => {
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
+    expect(mockAuthPost).not.toHaveBeenCalled()
+  })
+
+  it('do not call mockAuthPost when form throws an exception', async () => {
+    const mockedForm = {
+      validate: () => {
+        throw new Error('')
+      },
+    } as unknown as FormInstance
+    await wrapper.vm.handleSubmit(mockedForm)
+    expect(mockAuthPost).not.toHaveBeenCalled()
+  })
+
+  it('do not call mockAuthPost when initAuthClient returns an error', async () => {
+    initAuthClientMocked.mockRejectedValueOnce({
+      error: {
+        code: '403042',
+      },
+    })
+    const mockedForm = {
+      validate: () => {
+        throw new Error('')
+      },
+    } as unknown as FormInstance
+    await wrapper.vm.handleSubmit(mockedForm)
+    expect(mockAuthPost).not.toHaveBeenCalled()
+  })
+
+  it('do not call mockAuthPost when not form given to handleSubmit', async () => {
+    await wrapper.vm.handleSubmit(undefined)
+    expect(mockAuthPost).not.toHaveBeenCalled()
   })
 })
