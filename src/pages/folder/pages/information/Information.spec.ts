@@ -1,14 +1,14 @@
 import { expect, describe, it, beforeEach, vi } from 'vitest'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { setActivePinia } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import type { VueWrapper } from '@vue/test-utils'
 import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
 } from '@/services/account/accountMock'
+import { commonStore } from '@kpmg/common'
 import * as accountServices from '@/services/account'
 import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
 import Information from '.'
@@ -57,6 +57,17 @@ describe('information', () => {
 
       expect(informationForm.exists()).toBeTruthy()
       expect(alertInstruction.text()).toBe(expectedAlertInstruction)
+    })
+    it('should not display the alert if the user is a client', async () => {
+      const store = commonStore()
+      // @ts-expect-error: Getter is read only
+      store.isCollab = false
+      await flushPromises()
+      const alertInstruction = wrapper.find(
+        '[data-testid="folder-information-alert"]',
+      )
+
+      expect(alertInstruction.exists()).toBeFalsy()
     })
     it('should display all form sections', () => {
       const formSections = wrapper.findAll('.folder-information__form-section')

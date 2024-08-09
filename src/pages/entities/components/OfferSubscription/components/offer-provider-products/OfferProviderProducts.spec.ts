@@ -1,6 +1,6 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import OfferProviderProducts from '.'
 import { type VueWrapper, mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import {
   getMockedSubscriptionOffersServices,
 } from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
@@ -9,6 +9,7 @@ import type {
 } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import * as OfferProviderProductsUtils from './OfferProviderProductsUtils'
 import type { ExtendedService } from './OfferProviderProductsTypes'
+import OfferProviderProducts from '.'
 
 const offerId = 101
 const offerProviderServices = getMockedSubscriptionOffersServices()
@@ -81,7 +82,8 @@ describe('offerProviderProducts', () => {
       const pExtendedService = getMockedService(isSelected)
       const { productConfigurationId } = pExtendedService
 
-      await offerServicesCard.vm.$emit('changeServiceStatus', pExtendedService)
+      offerServicesCard.vm.$emit('changeServiceStatus', pExtendedService)
+      await nextTick()
 
       expect(wrapper.emitted('select-product')).toStrictEqual([[offerId, productConfigurationId]])
     })

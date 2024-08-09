@@ -1,11 +1,11 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { noResult } from '@/../tests'
 import mock from './mockCollaborators.json'
-import Collaborators from './'
+import * as walletServices from '@/services/wallet'
 import { nextTick } from 'vue'
 import TableData from './components/TableData/TableData.vue'
+import Collaborators from '.'
 
 const mockGatewayGet = vi.fn(() => {
   return Promise.resolve({
@@ -70,6 +70,26 @@ describe('collaborators', () => {
   it('has a pagination', () => {
     const pages = wrapper.findAll('.el-pager li')
     expect(pages).toHaveLength(totalPages)
+  })
+
+  it("should update the limit and current page when the 'onPageRangeChanged' event is triggered", () => {
+    const pagination = wrapper.findComponent({ name: 'PPagination' })
+    pagination.vm.$emit('on-page-range-changed', 30)
+
+    expect(wrapper.vm.state.limit).toBe(30)
+    expect(wrapper.vm.state.currentPage).toBe(1)
+  })
+
+  it('should log an error to the console if the API fails to fetch the collaborators', async () => {
+    const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+    const spyConsole = vi.spyOn(console, 'error')
+    vi.spyOn(walletServices, 'getCollaborators').mockRejectedValue(expectedErrorMessage)
+    wrapper = createWrapper()
+    await flushPromises()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(wrapper.vm.state.data).toStrictEqual([])
+    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
   })
 
   it('update collaborators details when event is emitted', () => {

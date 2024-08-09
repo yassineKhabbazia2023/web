@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from './mocks/SubscriptionRequestMock'
-import Subscriptions from './'
+import { nextTick } from 'vue'
+import Subscriptions from '.'
 
 const subscriptionGetMock = vi.fn().mockResolvedValue({
   data: subscriptionRequestMock,
@@ -53,5 +53,19 @@ describe('subscriptions', () => {
       name: 'SubscriptionsTable',
     })
     expect(subscriptionsTableComponent.exists()).toBeTruthy()
+  })
+  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+    const mockedSubscription = subscriptionRequestMock[0]
+    const subscriptionTable = wrapper.findComponent({
+      name: 'SubscriptionsTable',
+    })
+
+    await subscriptionTable.vm.$emit('consult', mockedSubscription.subscriptionId)
+    await flushPromises()
+    const subscriptionDetailsDrawer = wrapper.findComponent({ name: 'SubscriptionDetailsDrawer' })
+    subscriptionDetailsDrawer.vm.$emit('update:modelValue', false)
+    await nextTick()
+
+    expect(subscriptionDetailsDrawer.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 })

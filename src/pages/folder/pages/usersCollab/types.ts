@@ -1,8 +1,5 @@
 import type { PaginationData } from '@/helper/helperTypes'
 import type { UserStatus } from '@/common/types'
-/**
- * 🛠️ TODO: don't use the 'I' prefix on new types as this is against our conventions.
- */
 
 /* eslint-disable no-unused-vars */
 export enum userActions {

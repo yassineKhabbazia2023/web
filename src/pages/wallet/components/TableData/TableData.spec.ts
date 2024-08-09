@@ -1,6 +1,5 @@
 import { createTestingPinia } from '@pinia/testing'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'

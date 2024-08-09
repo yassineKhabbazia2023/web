@@ -1,6 +1,5 @@
 import { it, expect, describe, beforeEach } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { ConfirmationModalProps } from './ConfirmationModalTypes'
 import ConfirmationModal from '.'
@@ -36,6 +35,13 @@ describe('confirmationModal', () => {
     })
   })
   describe('events', () => {
+    it("should emit 'update:modelValue' when the model value is changed", async () => {
+      const pDialog = wrapper.findComponent({ name: 'pDialog' })
+      pDialog.vm.$emit('update:model-value', false)
+      await nextTick()
+
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
+    })
     it("should emit 'update:modelValue' when the model value is changed by a click event", async () => {
       const cancelButton = wrapper.find('[data-testid="cancel-button"]')
       wrapper.setProps({ modelValue: false })

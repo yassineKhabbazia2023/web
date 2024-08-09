@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { mount, flushPromises } from '@vue/test-utils'
+import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import DrawerUserDetails from './DrawerUserDetails.vue'
 import { mockUser } from './mockData'

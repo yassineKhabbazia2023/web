@@ -19,6 +19,8 @@ describe('getFullName', () => {
     ['Janelle', undefined, false, 'Janelle'],
     ['', '', false, ''],
     [undefined, undefined, false, ''],
+    [undefined, 'Boyd', true, 'BOYD'],
+    [undefined, 'Boyd', undefined, 'Boyd'],
     ['Janelle', '', true, 'Janelle'],
     ['Janelle', 'Boyd', true, 'Janelle BOYD'],
     ['Janelle', undefined, true, 'Janelle'],
@@ -32,18 +34,21 @@ describe('getFullName', () => {
   )
 })
 describe('displayNotification', () => {
-  it('should display correctly the notification', () => {
+  it.each([
+    ['success', 'PICheck'],
+    ['error', 'PIX'],
+  ])('should display correctly the notification', (type: any, icon) => {
     const PNotificationMocked = vi.spyOn(styleguide, 'PNotification')
     const expectedParams = {
-      customClass: 'error',
+      customClass: type,
       duration: 3000,
-      icon: 'PIX',
+      icon,
       message: 'Test Message',
       position: 'bottom-right',
       showClose: true,
     }
 
-    displayNotification('error', 'Test Message')
+    displayNotification(type, 'Test Message')
 
     expect(PNotificationMocked).toHaveBeenCalledOnce()
     expect(PNotificationMocked).toHaveBeenNthCalledWith(1, expectedParams)

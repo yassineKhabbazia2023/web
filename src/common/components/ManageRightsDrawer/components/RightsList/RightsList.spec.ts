@@ -198,9 +198,17 @@ describe('rightsList', () => {
         authorizationServices,
         'fetchAuthorizationsConfig',
       )
-      createWrapper()
+      const spyFetchAccountAuthorizationsConfig = vi.spyOn(
+        authorizationServices,
+        'fetchAccountAuthorizationsConfig',
+      )
+      createWrapper({
+        modelValue: {},
+        contactId: mockedContactId,
+      })
 
       expect(spyFetchAuthorizationsConfig).toHaveBeenCalledOnce()
+      expect(spyFetchAccountAuthorizationsConfig).not.toHaveBeenCalled()
       expect(spyFetchAuthorizationsConfig).toHaveBeenCalledWith(
         mockedContactId,
         mockedAccountId,

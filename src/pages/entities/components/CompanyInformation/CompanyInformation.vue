@@ -103,6 +103,10 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+defineExpose({
+  handleUpdateAccountModel,
+})
 </script>
 
 <style lang="scss" scoped>

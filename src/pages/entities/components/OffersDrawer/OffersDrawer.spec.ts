@@ -1,6 +1,5 @@
 import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount, flushPromises } from '@vue/test-utils'
+import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
@@ -127,6 +126,22 @@ const findNextPreviousButtons = (wrapper: VueWrapper) =>
 
 describe('offersDrawer', () => {
   describe('interactions', () => {
+    it("should emit the 'update:modelValue' event when the v-model of confirmation modal is updated", async () => {
+      const wrapper = await getWrapper(true)
+      const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+      confirmationModal.vm.$emit('update:modelValue', false)
+      await nextTick()
+
+      expect(confirmationModal.emitted('update:modelValue')).toStrictEqual([[false]])
+    })
+    it("should emit the 'update:modelValue' event when the v-model of drawer is updated", async () => {
+      const wrapper = await getWrapper(true)
+      const drawer = wrapper.findComponent({ name: 'PDrawer' })
+      drawer.vm.$emit('update:modelValue', false)
+      await nextTick()
+
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
+    })
     it('should close offers drawer when clicking on close buton', async () => {
       const wrapper = await getWrapper(true)
       const offers = findOffers(wrapper)
@@ -158,7 +173,8 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      await nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('clickPrevious')
+      await nextTick()
 
       const offers = findOffers(wrapper)
       expect(offers.exists()).toBeTruthy()
@@ -491,15 +507,17 @@ describe('offersDrawer', () => {
       const informationStep = wrapper.find('[data-testid=information-step]')
       expect(informationStep.exists()).toBeTruthy()
 
-      await nextPreviousButtons.vm.$emit('clickPrevious')
-      await nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('clickPrevious')
+      await nextTick()
 
       const customersStep2 = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep2 = wrapper.findComponent({ name: 'StepNote' })
       expect(customersNoteStep2.props('modelValue')).toStrictEqual(notes[1])
       expect(customersStep2.exists()).toBeTruthy()
 
-      await nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('clickPrevious')
+      await nextTick()
 
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()

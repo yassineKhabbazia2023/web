@@ -270,9 +270,6 @@ const formatAndFillUsersCollabTable = async () => {
       }
     })
 
-    /**
-     * 🛠️ TODO: Need to get pagination data from API
-     */
     state.data = formattedData
     state.totalItems = totalItems
     state.currentPage = currentPage

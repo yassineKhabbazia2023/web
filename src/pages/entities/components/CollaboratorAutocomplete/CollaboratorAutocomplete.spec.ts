@@ -1,6 +1,6 @@
 import { expect, describe, it, vi, beforeEach } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import CollaboratorAutocomplete, { type CollaboratorAutocompleteProps } from '.'
 import { getMockedCollaborators } from '@/services/contact/contactMocks'
 
@@ -81,6 +81,14 @@ describe('test CollaboratorAutocomplete', () => {
       pAutocomplete.vm.$emit('select', selectedContact)
 
       expect(wrapper.emitted('add-contact')).toStrictEqual([[selectedContact]])
+    })
+
+    it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+      const pAutocomplete = wrapper.findComponent({ name: 'PAutocomplete' })
+      pAutocomplete.vm.$emit('update:modelValue', 'Test')
+      await nextTick()
+
+      expect(pAutocomplete.emitted('update:modelValue')).toStrictEqual([['Test']])
     })
   })
 })

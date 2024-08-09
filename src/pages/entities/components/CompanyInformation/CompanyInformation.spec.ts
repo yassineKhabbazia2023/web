@@ -1,9 +1,10 @@
 import { vi, expect, describe, it, beforeEach } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
+import type { ComponentWrapper } from '@/common/types/UnitTestTypes'
 import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
+import * as referentialUtils from '@/common/utils/referential'
 import {
   getMockedAccount,
   getMockedAccountReferential,
@@ -16,6 +17,7 @@ const alertInstructionText =
 const formInstructionText =
   'Please provide the following necessary information for activation :'
 
+const mockedAccount = getMockedAccount()
 vi.mock('@/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
@@ -25,11 +27,10 @@ vi.mock('@/common/config/referential', () => ({
   getFormStructure: () => MEGOffersFormStructure,
 }))
 
-const createWrapper = () => {
-  const account = getMockedAccount()
+const createWrapper = (account: any, providerName: any) => {
   const props: CompanyInformationProps = {
     modelValue: account,
-    providerName: 'MEG',
+    providerName,
   }
 
   return mount(CompanyInformation, {
@@ -38,9 +39,9 @@ const createWrapper = () => {
 }
 
 describe('companyInformation', () => {
-  let wrapper: VueWrapper
+  let wrapper: ComponentWrapper<InstanceType <typeof CompanyInformation>>
   beforeEach(async () => {
-    wrapper = createWrapper()
+    wrapper = createWrapper(mockedAccount, 'MEG')
     await nextTick()
   })
   describe('display', () => {
@@ -60,6 +61,35 @@ describe('companyInformation', () => {
     })
   })
   describe('events', () => {
+    it('should log a console.error message when the request fails to retrieve form structure', async () => {
+      const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+      const spyConsole = vi.spyOn(console, 'error')
+      vi.spyOn(referentialUtils, 'getFormStructure').mockRejectedValue(expectedErrorMessage)
+
+      wrapper = createWrapper(undefined, 'MEG')
+      await flushPromises()
+
+      expect(spyConsole).toHaveBeenCalledOnce()
+      expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+    })
+    it("should not emit the 'input' event if internalAccount is undefined", async () => {
+      const spyReferentialUtils = vi.spyOn(referentialUtils, 'getFormStructure')
+      wrapper = createWrapper(undefined, 'MEG')
+      await nextTick()
+
+      wrapper.vm.handleUpdateAccountModel('commercialName', mockedAccount.commercialName)
+
+      expect(wrapper.emitted('input')).toBeFalsy()
+      expect(spyReferentialUtils).toHaveBeenCalledOnce()
+      expect(spyReferentialUtils).toHaveBeenCalledWith('MEG')
+    })
+    it('should not send a request to retrieve the form structure if the provider name is a falsy value', async () => {
+      const spyReferentialUtils = vi.spyOn(referentialUtils, 'getFormStructure')
+      wrapper = createWrapper(mockedAccount, undefined)
+      await nextTick()
+
+      expect(spyReferentialUtils).not.toHaveBeenCalled()
+    })
     it('should update the form model when any form item is updated', () => {
       const formField = wrapper
         .findAllComponents({ name: 'PField' })

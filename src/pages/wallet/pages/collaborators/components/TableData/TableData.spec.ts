@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { MENU_ACTIONS_NAME } from './constants'
@@ -127,7 +126,8 @@ describe('tableData', () => {
     const sortPayload =
         // eslint-disable-next-line max-len
         '{"column":{"order":"ascending","id":"el-table_18_column_100","type":"default","property":"email","align":"is-left","headerAlign":"is-left","showOverflowTooltip":true,"filteredValue":[],"filterPlacement":"","isColumnGroup":false,"isSubColumn":false,"filterOpened":false,"sortable":true,"rawColumnKey":null,"label":"E-Mail","resizable":true,"sortOrders":["ascending","descending",null],"reserveSelection":false,"filterMultiple":true,"minWidth":80,"realWidth":423,"no":1,"level":1,"colSpan":1,"rowSpan":1},"prop":"email","order":"ascending"}'
-    const table = await wrapper.findComponent(PTable)
+    const table = wrapper.findComponent(PTable)
+    await nextTick()
 
     table.vm.$emit('sort-change', JSON.parse(sortPayload))
 

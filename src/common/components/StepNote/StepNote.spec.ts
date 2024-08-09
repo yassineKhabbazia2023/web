@@ -1,6 +1,5 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import { getMockedStepNotes } from './StepNotesMock'
 import StepNote from '.'
 

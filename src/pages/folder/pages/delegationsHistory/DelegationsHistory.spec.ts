@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import delegationsHistoryMock from '@/services/account/__mock__/delegationsHistory.json'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@/services/account/accountServices'

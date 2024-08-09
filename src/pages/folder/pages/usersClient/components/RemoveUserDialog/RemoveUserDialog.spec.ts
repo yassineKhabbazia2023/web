@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, type SpyInstance, vi } from 'vitest'
 import { deleteContactFromAccount } from '@/services/account'
 import * as accountServices from '@/services/account'

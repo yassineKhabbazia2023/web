@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import FormSearch from './'
 
 const createWrapper = (): VueWrapper<any> =>
@@ -37,6 +36,17 @@ describe('formSearch', () => {
       searchValue.length < 3
         ? expect(wrapper.emitted('searchValueSubmitted')).toBeFalsy()
         : expect(wrapper.emitted('searchValueSubmitted')).toStrictEqual([[searchValue]])
+    },
+  )
+
+  it('should trigger the submit event when the form is submitted',
+    async () => {
+      await getInputSearch().setValue('sy')
+      const pForm = wrapper.findComponent({ name: 'PForm' })
+      await pForm.trigger('submit.prevent')
+      await flushPromises()
+
+      expect(pForm.emitted('submit')).toBeTruthy()
     },
   )
 })

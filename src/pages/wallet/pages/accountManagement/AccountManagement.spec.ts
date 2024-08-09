@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import * as DeployUtils from '../folders/DeployUtils'
@@ -106,6 +105,42 @@ describe('deploy', () => {
 
       expect(wrapper.vm.selectedAccount).toStrictEqual(mockedAccount)
       expect(wrapper.vm.isAccountRightsDrawerOpened).toBeTruthy()
+    })
+    it("should emit the 'update:modelValue' event when the v-model of AccountRights is updated", async () => {
+      const wrapper = createWrapper()
+      await flushPromises()
+      const table = wrapper.findComponent('[data-testid=accounts-table]') as VueWrapper
+      table.vm.$emit('displayAccountRightsDrawer', mockedAccount)
+      await nextTick()
+      const accountRightsDrawer = wrapper.findComponent({ name: 'AccountRightsDrawer' })
+      accountRightsDrawer.vm.$emit('update:modelValue', false)
+      await nextTick()
+
+      expect(wrapper.vm.isAccountRightsDrawerOpened).toBeFalsy()
+      expect(accountRightsDrawer.emitted('update:modelValue')).toStrictEqual([[false]])
+    })
+    it("should open the activation email drawer when the 'Resend Activation Mail' button is clicked", async () => {
+      const wrapper = createWrapper()
+      await flushPromises()
+      const table = wrapper.findComponent('[data-testid=accounts-table]') as VueWrapper
+      table.vm.$emit('displayResendActivationEmailDrawer', mockedAccount)
+      await nextTick()
+
+      expect(wrapper.vm.selectedAccount).toStrictEqual(mockedAccount)
+      expect(wrapper.vm.isResendActivationEmailDrawerVisible).toBeTruthy()
+    })
+    it("should emit the 'update:modelValue' event when the v-model of ResendActivationEmail is updated", async () => {
+      const wrapper = createWrapper()
+      await flushPromises()
+      const table = wrapper.findComponent('[data-testid=accounts-table]') as VueWrapper
+      table.vm.$emit('displayResendActivationEmailDrawer', mockedAccount)
+      await nextTick()
+      const resendActivationEmailDrawer = wrapper.findComponent({ name: 'ResendActivationEmailDrawer' })
+      resendActivationEmailDrawer.vm.$emit('update:modelValue', false)
+      await nextTick()
+
+      expect(wrapper.vm.isResendActivationEmailDrawerVisible).toBeFalsy()
+      expect(resendActivationEmailDrawer.emitted('update:modelValue')).toStrictEqual([[false]])
     })
     it('should call the account API to retrieve all accounts', async () => {
       const wrapper = createWrapper()

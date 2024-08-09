@@ -1,5 +1,4 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import listContact from '@/pages/wallet/pages/collaborators/mockCollaborators.json'
 import listCollab from '@/pages/wallet/pages/collaborators/mock.json'

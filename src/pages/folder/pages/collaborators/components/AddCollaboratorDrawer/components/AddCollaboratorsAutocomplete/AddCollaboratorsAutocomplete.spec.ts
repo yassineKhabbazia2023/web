@@ -1,7 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { createI18n } from 'vue-i18n'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { PAutocomplete } from '@kpmg/styleguide'
 import { nextTick } from 'vue'
 import CollaboratorsSearchAutocomplete from '.'

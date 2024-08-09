@@ -2,8 +2,9 @@ import { describe, it, expect, beforeEach, vi, type SpyInstance } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
-import { commonPinia as pinia } from '@kpmg/common'
+import { commonPinia as pinia, commonStore } from '@kpmg/common'
 import * as SubscriptionServices from '@/services/subscription'
+import { nextTick } from 'vue'
 import { mockHasPermission } from '@/../vitest.setup'
 import { getActiveOffersMocked } from './OffersMocks'
 import Offers from '.'
@@ -51,6 +52,25 @@ describe('offers', () => {
       )
       expect(activateOffersButton.exists()).toBeFalsy()
     })
+
+    it('should display the correct header title and subtitle for the collaborator', async () => {
+      await flushPromises()
+      const pBlockHeader = wrapper.findComponent({ name: 'PBlockHeader' })
+
+      expect(pBlockHeader.props('pTitle')).toBe('Offer activation')
+      expect(pBlockHeader.props('pDescription')).toBe('Manage the offers enabled and activatable for this folder.')
+    })
+
+    it('should display the correct header title and subtitle for the client', async () => {
+      const store = commonStore()
+      // @ts-expect-error: Getter is read only
+      store.isCollab = false
+      await nextTick()
+      const pBlockHeader = wrapper.findComponent({ name: 'PBlockHeader' })
+
+      expect(pBlockHeader.props('pTitle')).toBe('Activated offers')
+      expect(pBlockHeader.props('pDescription')).toBe('Digital offers activated for this entity.')
+    })
   })
 
   describe('events', () => {
@@ -63,6 +83,18 @@ describe('offers', () => {
 
       expect(offersDrawer.exists()).toBeTruthy()
       expect(offersDrawer.props('modelValue')).toBeTruthy()
+    })
+
+    it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+      const activateOffersButton = wrapper.find(
+        '[data-testid=folder-offer-activate-offers-button]',
+      )
+      await activateOffersButton.trigger('click')
+      const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
+      offersDrawer.vm.$emit('update:modelValue', false)
+      await nextTick()
+
+      expect(offersDrawer.emitted('update:modelValue')).toStrictEqual([[false]])
     })
 
     it('should catch the error and display it in the console when the API call fails', async () => {

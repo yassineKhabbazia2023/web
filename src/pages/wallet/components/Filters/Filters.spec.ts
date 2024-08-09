@@ -1,9 +1,9 @@
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { getMockedEntitiesStatistics } from './FiltersMocks'
 import { EntityStatus } from './FiltersTypes'
+import { nextTick } from 'vue'
 import Filters from '.'
 
 const pinia = createPinia()
@@ -56,7 +56,8 @@ describe('filter', () => {
     await flushPromises()
     const filterOption = wrapper.findAllComponents('[data-testid=filter-option]')
     const firstTagWrapper = filterOption[0] as VueWrapper
-    await firstTagWrapper.vm.$emit('close')
+    firstTagWrapper.vm.$emit('close')
+    await nextTick()
     expect(wrapper.emitted('removeFilter')).toBeTruthy()
   })
 })
