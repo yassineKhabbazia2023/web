@@ -22,4 +22,4 @@ extends:
       mode: legacy
       major: 3
       minor: 1
-    sonarExclusions: '__mocks__/**, src/DataStreams/DataStreamHubConnectionHelper.ts'
+    sonarExclusions: '__mocks__/**'

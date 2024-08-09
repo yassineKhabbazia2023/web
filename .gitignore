@@ -32,3 +32,6 @@ stats.html
 .env
 .env.*
 .env.*.*
+
+# vite
+*.mjs

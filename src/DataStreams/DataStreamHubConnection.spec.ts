@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { describe, it, expect, vi, beforeEach, SpyInstance } from 'vitest'
+import { describe, it, expect, vi, beforeEach, type SpyInstance } from 'vitest'
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
-import { HubConnection } from '@microsoft/signalr'
+import type { HubConnection } from '@microsoft/signalr'
 
 vi.mock('@microsoft/signalr')
 vi.mock('./DataStreamHubConnectionHelper', () => {

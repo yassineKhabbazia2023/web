@@ -34,6 +34,7 @@ describe('amplitude', () => {
     expect(initSpy).toHaveBeenCalledTimes(0)
 
     amplitudeService.init(FAKE_API_KEY)
+    amplitudeService.init(FAKE_API_KEY) // call init twice
 
     expect(initSpy).toHaveBeenCalledOnce()
     expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, {

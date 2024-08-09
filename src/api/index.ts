@@ -20,7 +20,7 @@ export const requestInterceptor = (config: any) => {
 }
 
 export const responseInterceptorSuccess = (res: any) => res
-export const responseInterceptorError = (err: any) => {
+export const responseInterceptorError = (err: Error) => {
   return Promise.reject(err)
 }
 
