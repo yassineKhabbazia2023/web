@@ -82,6 +82,7 @@
         <PButton
           @click="drawerVisibility = false"
           pType="primary"
+          data-testid="drawer-close-button"
         >
           {{ t('close') }}
         </PButton>

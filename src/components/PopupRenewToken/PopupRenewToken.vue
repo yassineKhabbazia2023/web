@@ -6,6 +6,7 @@
     class="dialog-renew-token"
     :pCenter="false"
     :pTitle="t('title')"
+    data-testid="renew-token-dialog"
   >
     <PImage
       pType="paupulse"

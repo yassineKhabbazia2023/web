@@ -3,15 +3,16 @@ import { vi, expect, describe, it } from 'vitest'
 
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
+import { nextTick } from 'vue'
 import { commonStore } from '@kpmg/common'
 import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import Calendar from '.'
 import type { CalendarProps } from './CalendarTypes'
 import { PCalendar } from '@kpmg/styleguide'
 import { getNotCompletelyDoneDeadlinesByDateMock } from '@/schedule/tests/mocks/Deadline'
 import { collabUser } from '@/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
 import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
+import Calendar from '.'
 
 const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
 
@@ -118,6 +119,14 @@ describe('calendar component', () => {
       ])
     },
   )
+  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+    const wrapper = createWrapper()
+    const pAutocomplete = wrapper.findComponent({ name: 'PCalendar' })
+    pAutocomplete.vm.$emit('update:modelValue', 'Test')
+    await nextTick()
+
+    expect(wrapper.emitted('update:modelValue')).toStrictEqual([['Test']])
+  })
   it('should emit select-deadline event', () => {
     const wrapper = createWrapper()
     const occurrenceId = 1234567890

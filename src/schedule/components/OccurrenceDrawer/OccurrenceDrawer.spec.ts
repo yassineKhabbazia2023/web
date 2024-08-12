@@ -90,6 +90,15 @@ describe('drawer.vue', () => {
     expect(pLoader.exists()).toBeTruthy()
   })
 
+  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+    const wrapper = createWrapper({ modelValue: true })
+    const drawer = wrapper.findComponent({ name: 'PDrawer' })
+    drawer.vm.$emit('update:modelValue', false)
+    await nextTick()
+
+    expect(drawer.emitted('update:modelValue')).toStrictEqual([[false]])
+  })
+
   it('give proper attributes to PDrawer when data are loaded', async () => {
     const expectedTitle = 'short label'
     const wrapper = createWrapper({ modelValue: true })
@@ -151,6 +160,39 @@ describe('drawer.vue', () => {
 
     expect(postDeadlineAccountStatusSpy).toHaveBeenCalledOnce()
     expect(postDeadlineAccountStatusSpy).toHaveBeenNthCalledWith(1, occurrenceId, accountId, expectedStatus)
+  })
+  it('should log a console.error message when the getOccurrence request fails', async () => {
+    const expectedErrorMessage = 'Authorization Error: API Access Denied'
+    const spyConsole = vi.spyOn(console, 'error')
+    vi.spyOn(scheduleServices, 'getOccurrence').mockRejectedValue(expectedErrorMessage)
+
+    createWrapper({ modelValue: true })
+
+    await flushPromises()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenCalledWith(
+      expectedErrorMessage,
+    )
+  })
+  it('should log a console.error message when the postDeadlineAccountStatus request fails', async () => {
+    const expectedErrorMessage = 'Authorization Error: API Access Denied'
+    const spyConsole = vi.spyOn(console, 'error')
+    vi.spyOn(scheduleServices, 'postDeadlineAccountStatus').mockRejectedValue(expectedErrorMessage)
+    const accountId = 12
+    const status = 'Todo'
+
+    const wrapper = createWrapper({ modelValue: true })
+
+    await flushPromises()
+    const firstDeadlineAccount = wrapper.findComponent({ name: 'DeadlineAccounts' })
+    firstDeadlineAccount.vm.$emit('toggle-status', accountId, status)
+    await flushPromises()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenCalledWith(
+      expectedErrorMessage,
+    )
   })
   it('should show alert note when not checked', async () => {
     const wrapper = createWrapper({ isCollab: false })

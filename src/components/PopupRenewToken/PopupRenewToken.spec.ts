@@ -1,6 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, type SpyInstance, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import router from '../../plugins/router'
@@ -57,6 +57,7 @@ vi.mock('@kpmg/common', () => ({
     setToken: vi.fn(),
     getToken: vi.fn(),
     registerOnChange: vi.fn(),
+    unregisterOnChange: vi.fn(),
   },
   dataProvider: () => {
     return {
@@ -92,6 +93,7 @@ const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJFUTBNVVE1TjBOQ1JUS
 const { sub } = jwtDecode<JwtPayload>(TOKEN)
 describe('popup renew token', () => {
   let wrapper: VueWrapper<any>
+  let spyUnregisterOnChange: SpyInstance
   beforeEach(() => {
     vi.clearAllTimers()
     vi.useFakeTimers()
@@ -100,19 +102,28 @@ describe('popup renew token', () => {
         cb(TOKEN)
       },
     )
+    spyUnregisterOnChange = vi.spyOn(tokenService, 'unregisterOnChange')
     wrapper = createWrapper()
     ROUTES.forEach((route) => router.addRoute(route))
+  })
+
+  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+    const dialog = wrapper.findComponent({ name: 'PDialog' })
+    dialog.vm.$emit('update:modelValue', false)
+    await nextTick()
+
+    expect(dialog.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 
   it('show dialog after token change', async () => {
     await flushPromises()
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
-    expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeFalsy()
+    expect(tokenRenewalDialog.find('[data-testid=renew-token-dialog]').exists()).toBeFalsy()
     vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
     await nextTick()
     await flushPromises()
-    expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeTruthy()
+    expect(tokenRenewalDialog.find('[data-testid=renew-token-dialog]').exists()).toBeTruthy()
   })
 
   it('logout when user click on logout button', async () => {
@@ -152,7 +163,15 @@ describe('popup renew token', () => {
     await nextTick()
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
 
-    expect(tokenRenewalDialog.find('.dialog-renew-token').exists()).toBeFalsy()
+    expect(tokenRenewalDialog.find('[data-testid=renew-token-dialog]').exists()).toBeFalsy()
     expect(mock.logoutAndRedirectToLogin).toHaveBeenCalledOnce()
+  })
+
+  it('should call mock', async () => {
+    wrapper.unmount()
+
+    await nextTick()
+
+    expect(spyUnregisterOnChange).toHaveBeenCalledOnce()
   })
 })

@@ -10,7 +10,7 @@ import { createTestingPinia } from '@pinia/testing'
 import router from '@/plugins/router'
 import helpers from '@/tests/utils/helpers'
 import { nextTick } from 'vue'
-import { fetchEntities } from '@/services/entities'
+import * as entitiesServices from '@/services/entities'
 import mockedEntities from '@/mocks/entities.mock.json'
 import { getMockedFavoriteEntities } from './Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import Home from '.'
@@ -123,7 +123,24 @@ describe('home', () => {
   })
   it('should call retrieve entites when created', async () => {
     await flushPromises()
-    expect(fetchEntities).toHaveBeenCalled()
+
+    expect(entitiesServices.fetchEntities).toHaveBeenCalledOnce()
+  })
+
+  it('should log a console.error message when the request fails', async () => {
+    const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+    const spyConsole = vi.spyOn(console, 'error')
+    vi.spyOn(entitiesServices, 'fetchEntities').mockRejectedValue(
+      expectedErrorMessage,
+    )
+    wrapper = createWrapper()
+    await flushPromises()
+
+    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(spyConsole).toHaveBeenCalledWith(
+      'Unable to fetch current user information: ',
+      expectedErrorMessage,
+    )
   })
 
   it('can display the user profile drawer', async () => {

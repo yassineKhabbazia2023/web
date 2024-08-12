@@ -8,7 +8,11 @@ const createWrapper = () => shallowMount(LoginCollab)
 
 describe('loginCollab', () => {
   const wrapper: VueWrapper<any> = createWrapper()
-  it('has links in the footer', () => {
-    expect(wrapper.find('.footer').exists()).toBeTruthy()
+  it('should correctly display the login collab page', () => {
+    const loginImage = wrapper.findComponent({ name: 'PImage' })
+    const loginFooter = wrapper.find('[data-testid=login-collab-footer]')
+
+    expect(loginImage.exists()).toBeTruthy()
+    expect(loginFooter.exists()).toBeTruthy()
   })
 })

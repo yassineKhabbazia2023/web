@@ -34,7 +34,7 @@
       </PRow>
     </main>
 
-    <footer class="footer">
+    <footer class="footer" data-testid="login-collab-footer">
       <div class="footer__legal-links margin-bottom--4">
         <LegalLinks />
       </div>
