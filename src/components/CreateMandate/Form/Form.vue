@@ -868,7 +868,7 @@ defineExpose({
         "validNumber": "Veuillez entrer un nombre valide",
         "ibsNotFound": "Le numéro IBS saisi n'est pas reconnu.",
         "ibsFormatIssue": "Le format du numéro IBS saisi n'est pas reconnu.",
-        "outWalletIBS": "Le numéro d’IBS saisi doit faire partie de votre portefeuille et avoir un engagement actif.",
+        "outWalletIBS": "Le numéro d'IBS saisi doit faire partie de votre portefeuille et avoir un engagement actif.",
         "nonScrappable": "Cette banque n'est pas scrappable.",
         "serverError": "Une erreur est survenue."
       }
