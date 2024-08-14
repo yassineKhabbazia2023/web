@@ -26,7 +26,7 @@
     "*.{js, ts, vue, json}": "npm run lint"
   },
   "dependencies": {
-    "@kpmg/common": "^3.1.132",
+    "@kpmg/common": "^3.1.146",
     "@kpmg/styleguide": "^2.2.706",
     "dayjs": "^1.11.10",
     "idlejs": "^3.0.0",
