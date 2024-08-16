@@ -9,7 +9,7 @@ export function getMockedCollaborators(): Contact[] {
       email: 'jvellutini@kpmg.fr',
       landPhone: '0674589002',
       mobilePhone: '0785667002',
-      type: 'collaborateur',
+      type: 'Collaborator',
       office: 'KPMG Paris – Liège',
       persona: {
         id: 2,
@@ -24,7 +24,7 @@ export function getMockedCollaborators(): Contact[] {
       email: 'sortega@kpmg.fr',
       landPhone: '0674589005',
       mobilePhone: '0785667005',
-      type: 'collaborateur',
+      type: 'Collaborator',
       office: 'KPMG Paris – Liège',
       persona: {
         id: 4,
@@ -39,7 +39,7 @@ export function getMockedCollaborators(): Contact[] {
       email: 'pmathis@kpmg.fr',
       landPhone: '0674589011',
       mobilePhone: '0785667020',
-      type: 'collaborateur',
+      type: 'Collaborator',
       office: 'KPMG Paris – Liège',
       persona: {
         id: 4,
@@ -58,7 +58,7 @@ export function getMockedCustomer(): Contact[] {
       email: 'yve@gmail.fr',
       landPhone: '0674589003',
       mobilePhone: '0785667003',
-      type: 'client',
+      type: 'Customer',
       office: undefined,
       persona: {
         id: 2,
@@ -73,7 +73,7 @@ export function getMockedCustomer(): Contact[] {
       email: 'bernard@gmail.fr',
       landPhone: '0674589003',
       mobilePhone: '0785667003',
-      type: 'client',
+      type: 'Customer',
       office: undefined,
       persona: {
         id: 2,

@@ -7,7 +7,7 @@ import { mockCollabsData } from './mockData'
 import * as walletServices from '@/services/wallet'
 import * as contactServices from '@/services/contact'
 import { commonStore } from '@kpmg/common'
-import type { ComponentWrapper } from '@/common/types/UnitTestTypes'
+import type { ComponentWrapper } from '@/common/types'
 import Collaborators from '.'
 
 const ENTITY_ID = 42
@@ -144,10 +144,10 @@ describe('collaborators', () => {
   })
 
   it('can display the detail of the collaborator', async () => {
-    const getDrawerCollabDetails = () =>
-      wrapper.findComponent({ name: 'DrawerCollabDetails' })
+    const getCollabDetailsDrawer = () =>
+      wrapper.findComponent({ name: 'CollabDetailsDrawer' })
 
-    expect(getDrawerCollabDetails().exists()).toBeFalsy()
+    expect(getCollabDetailsDrawer().exists()).toBeFalsy()
 
     getToolboxAction().vm.$emit(
       'p-toolbox-item-clicked',
@@ -155,7 +155,7 @@ describe('collaborators', () => {
     )
     await flushPromises()
 
-    expect(getDrawerCollabDetails().exists()).toBeTruthy()
+    expect(getCollabDetailsDrawer().exists()).toBeTruthy()
     expect(spyConsole).toHaveBeenCalledOnce()
     expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
   })

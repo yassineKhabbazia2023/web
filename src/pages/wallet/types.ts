@@ -1,4 +1,4 @@
-import type { QueryResult } from '@/types/commonTypes'
+import type { QueryResult } from '@/common/types'
 import type { PaginationData } from '@/helper/helperTypes'
 import type { Component } from 'vue'
 

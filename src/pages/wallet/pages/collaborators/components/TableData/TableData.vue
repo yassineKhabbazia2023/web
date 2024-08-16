@@ -83,10 +83,10 @@
     </PTable>
 
     <div v-if="state.rowData">
-      <DrawerCollabDetails
+      <CollabDetailsDrawer
         v-if="state.hasDrawerOpened.collabDetails"
         v-model="state.hasDrawerOpened.collabDetails"
-        :rowData="state.rowData"
+        :collabDetails="state.rowData"
         :hasDrawerOpened="state.hasDrawerOpened.collabDetails"
         @update-collaborator-details="handleUpdateCollaborateurDetails"
       />
@@ -117,7 +117,7 @@ import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive, computed } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
-import DrawerCollabDetails from '@/common/components/DrawerCollabDetails'
+import CollabDetailsDrawer from '@/common/components/CollabDetailsDrawer'
 import CollabRightsDrawer from './../CollabRightsDrawer'
 import type { Contact } from '@/services/contact/contactTypes'
 import { returnSortQueryField } from '@/helper'

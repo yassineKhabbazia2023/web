@@ -104,9 +104,12 @@ describe('tableData', () => {
   it('emits event update collaborators details when event is emitted', async () => {
     wrapper.vm.handleToolboxItemClick('collaboratorInformation', mock.items[0])
     await nextTick()
-    const drawerCollabDetails = wrapper.findComponent({ name: 'DrawerCollabDetails' })
-    expect(drawerCollabDetails.exists()).toBeTruthy()
-    drawerCollabDetails.vm.$emit('update-collaborator-details', mock.items[0])
+    const getCollabDetailsDrawer = () => wrapper.findComponent({ name: 'CollabDetailsDrawer' })
+
+    expect(getCollabDetailsDrawer().exists()).toBeTruthy()
+
+    getCollabDetailsDrawer().vm.$emit('update-collaborator-details', mock.items[0])
+
     expect(wrapper.emitted('update-collaborator-details')).toHaveLength(1)
     expect(wrapper.emitted('update-collaborator-details')).toStrictEqual([[mock.items[0]]])
   })

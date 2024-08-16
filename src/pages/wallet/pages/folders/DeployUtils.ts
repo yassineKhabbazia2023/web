@@ -3,7 +3,7 @@ import type { AccountRow } from '@/services/account'
 import { fetchAccounts } from '@/services/account'
 import { COLORS } from './DeployConst'
 import { getInitials, removeFalsyValues } from '@/helper'
-import type { QueryResult } from '@/types/commonTypes'
+import type { QueryResult } from '@/common/types'
 
 export function getQueryParams(searchCriteria: SearchCriteria) {
   return {

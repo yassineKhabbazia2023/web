@@ -13,11 +13,11 @@ import {
 } from '.'
 import { ContactType } from '../contact/contactTypes'
 import { getMockedEntitiesStatistics } from '@/pages/wallet/components/Filters/FiltersMocks'
-import mockCollaborators from '@/pages/wallet/pages/collaborators/mockCollaborators.json'
 import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
 import type { Entity } from '@kpmg/common'
 import * as Common from '@kpmg/common'
 import { getMockedCustomersCollab } from '@/pages/folder/pages/usersCollab/mockData'
+import { getMockedCollaborators } from '@/common/mocks/mockedCollaborators'
 import {
   getMockedCollabRoles,
 } from '@/pages/wallet/pages/collaborators/components/CollabRightsDrawer/components/CollabRoles/CollabRolesMocks'
@@ -25,6 +25,7 @@ import {
 const accountId = 5
 const mockedEntitiesStatistics = getMockedEntitiesStatistics()
 const mockedCustomersCollab = getMockedCustomersCollab()
+const mockedCollaborators = getMockedCollaborators()
 const mockedCollabRoles = getMockedCollabRoles()
 
 const TEST_ENTITIES: Entity[] = [
@@ -110,7 +111,7 @@ const fetchAccountCustomersImplementation = () => {
 const fetchCollabsImplementation = () => {
   return Promise.resolve({
     data: {
-      items: mockCollaborators,
+      items: mockedCollaborators,
     },
   })
 }
@@ -211,11 +212,13 @@ describe('collaborateurs/admin', () => {
   describe('getCollaborators', () => {
     it('should return list of collaborators', async () => {
       const collaborators = await getCollaborators()
-      expect(collaborators?.items).toStrictEqual(mockCollaborators)
+
+      expect(collaborators?.items).toStrictEqual(mockedCollaborators)
     })
 
     it('should return list of roles', async () => {
       const roles = await fetchContactRoles(ContactType.Collaborator)
+
       expect(roles).toStrictEqual(mockedCollabRoles)
     })
   })

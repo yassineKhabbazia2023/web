@@ -14,7 +14,7 @@ import {
 } from './DeployUtilsMock'
 import { getMockedAccount } from '@/services/account/accountMock'
 import * as walletServices from '@/services/wallet'
-import type { ComponentWrapper } from '@/common/types/UnitTestTypes'
+import type { ComponentWrapper } from '@/common/types'
 
 const mockedAccount = getMockedAccount()
 

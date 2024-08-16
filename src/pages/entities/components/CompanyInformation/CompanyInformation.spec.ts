@@ -2,7 +2,7 @@ import { vi, expect, describe, it, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
-import type { ComponentWrapper } from '@/common/types/UnitTestTypes'
+import type { ComponentWrapper } from '@/common/types'
 import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
 import * as referentialUtils from '@/common/utils/referential'
 import {

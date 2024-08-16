@@ -6,7 +6,7 @@ export const mockUser: Contact = {
   email: 'email330@example.com',
   landPhone: '123-456-7890',
   mobilePhone: '987-654-3210',
-  type: 'client',
+  type: 'Customer',
   office: 'Chalon sur Saône',
   persona: {
     id: 21,

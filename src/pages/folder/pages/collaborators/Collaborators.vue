@@ -7,10 +7,10 @@
       @refresh-collaborators-list="fetchCollaborators"
     />
 
-    <DrawerCollabDetails
+    <CollabDetailsDrawer
       v-if="isCollabDetailsDrawerOpened"
       v-model="isCollabDetailsDrawerOpened"
-      :rowData="rowDataForDrawers"
+      :collabDetails="rowDataForDrawers"
     />
 
     <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
@@ -194,7 +194,7 @@ import { deleteContactFromAccount } from '@/services/account'
 import { getInitials, removeFalsyValues } from '@/helper'
 import NoResult from '@/common/components/NoResult'
 import FormSearch from '@/common/components/FormSearch'
-import DrawerCollabDetails from '@/common/components/DrawerCollabDetails'
+import CollabDetailsDrawer from '@/common/components/CollabDetailsDrawer'
 import AddCollaboratorsDrawer from './components/AddCollaboratorDrawer'
 
 const { t } = useI18n({

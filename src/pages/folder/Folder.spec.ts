@@ -6,7 +6,7 @@ import { mockedEntity } from '../wallet/components/TableData/mockData'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
 import { amplitudeService } from '@kpmg/common'
-import type { ComponentWrapper } from '@/common/types/UnitTestTypes'
+import type { ComponentWrapper } from '@/common/types'
 import Folder from '.'
 
 const pinia = createTestingPinia()

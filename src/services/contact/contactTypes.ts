@@ -18,9 +18,10 @@ export interface Contact {
   email: string
   landPhone?: string
   mobilePhone: string
-  type?: 'collaborateur' | 'client'
+  type?: 'Collaborator' | 'Customer'
   office?: string
   persona?: Persona
+  createdAt?: string
 }
 
 export interface PatchContactPayload {

@@ -1,37 +1,43 @@
 <template>
   <PDrawer
-    v-model="drawerModel"
+    v-model="isCollabDetailsDrawerVisible"
     :pTitle="t('informationsAboutCollaborator')"
-    @close-drawer-button="drawerModel = false"
     pSize="50%"
+    @close-drawer-button="handleCloseDrawer"
   >
     <PUserCard
-      class="margin-bottom--6"
+      :pTitle="collabDetails.fullName"
+      :pSubtitle="collabDetails.email"
       pAssetLeft="Image"
       pAssetContent="user-male"
-      :pTitle="rowData.fullName"
-      :pSubtitle="rowData.email">
+      class="margin-bottom--6"
+    >
       <PTag
+        :pContent="collabDetails.role"
         pColor="gray-500"
         pSize="default"
         pIconLeft="PIPerson"
-        :pContent="rowData.role"
         pEffect="light"
       />
     </PUserCard>
-
     <i18n-t
-      class="margin-bottom--6"
-      keypath="youCanModify"
       tag="p"
+      keypath="youCanModify"
+      class="margin-bottom--6"
     >
       <template #administrator>
         <strong>{{ t('administrator') }}</strong>
       </template>
     </i18n-t>
-
+    <div
+      v-if="isLoading"
+      class="flex flex--justify-content-center margin-y--4"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
     <PForm
-      @submit.prevent="handleSubmit"
+      v-else
+      @submit.prevent="handleCollaboratorUpdate"
       ref="formRef"
       :pModel="formValues"
       :pRules="formRules"
@@ -39,26 +45,23 @@
     >
       <PFormItem prop="lastName" :pLabel="t('lastName')">
         <PInput
-          :value="rowData.lastName?.toUpperCase()"
+          :value="collabDetails.lastName?.toUpperCase()"
           disabled
           pName="lastName"
         />
       </PFormItem>
-
       <PFormItem prop="firstName" :pLabel="t('firstName')">
         <PInput
-          :value="rowData.firstName"
+          :value="collabDetails.firstName"
           disabled
           pName="firstName" />
       </PFormItem>
-
       <PFormItem prop="email" :pLabel="t('email')">
         <PInput
-          :value="rowData.email"
+          :value="collabDetails.email"
           disabled
           pName="email" />
       </PFormItem>
-
       <PFormItem prop="mobilePhone" :pLabel="t('mobilePhone')">
         <PInput
           v-model="formValues.mobilePhone"
@@ -66,7 +69,6 @@
           pName="mobilePhone"
         />
       </PFormItem>
-
       <PFormItem prop="landPhone" :pLabel="t('landPhone')">
         <PInput
           v-model="formValues.landPhone"
@@ -75,24 +77,22 @@
         />
       </PFormItem>
     </PForm>
-
     <template #footer>
       <div class="margin-left--auto">
         <PButton
-          @click="handleReset"
           class="margin-right--4"
           pType="primary"
-          data-testid="reset-btn"
           pPlain
+          @click="handleCloseDrawer"
+          data-testid="collab-form-cancel-button"
         >
           {{ t('cancel') }}
         </PButton>
-
         <PButton
-          @click="handleSubmit"
           :pDisabled="isSubmitButtonDisabled"
           pType="primary"
-          data-testid="submit-btn"
+          @click="handleCollaboratorUpdate"
+          data-testid="collab-form-submit-button"
         >
           {{ t('submit') }}
         </PButton>
@@ -109,41 +109,44 @@ import {
   PDrawer,
   PForm,
   PFormItem,
-  PICheck,
-  PIExclamationTriangle,
   PInput,
-  PNotification,
   PTag,
   PUserCard,
+  PLoader,
 } from '@kpmg/styleguide'
 import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import { debounce } from '@kpmg/common'
-import type Props from './types'
-import { updateCollaborator } from '@/services/wallet'
+import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
+import { updateCollaborator } from '@/services/wallet'
+import { displayNotification } from '@/common/utils'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const emit = defineEmits(['update:modelValue', 'update-collaborator-details'])
+const props = defineProps<CollabDetailsDrawerProps>()
 
-const props = defineProps<Props>()
+const emit = defineEmits<{
+  'update:modelValue': [boolean]
+  'update-collaborator-details': [Contact]
+}>()
 
-const drawerModel = computed({
+const isCollabDetailsDrawerVisible = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (isOpened: boolean) => emit('update:modelValue', isOpened),
 })
 
 // Form part
+const isLoading = ref(false)
 const formRef = ref<FormInstance>()
 const isSubmitButtonDisabled = ref(false)
 const formValues = reactive({
-  mobilePhone: props.rowData.mobilePhone,
-  landPhone: props.rowData.landPhone,
+  mobilePhone: props.collabDetails.mobilePhone,
+  landPhone: props.collabDetails.landPhone,
 })
-
 const formRules = reactive<FormRules>({
   mobilePhone: [
     {
@@ -161,52 +164,36 @@ const formRules = reactive<FormRules>({
   ],
 })
 
-const handleReset = () => {
-  drawerModel.value = false
+const handleCloseDrawer = () => {
+  isCollabDetailsDrawerVisible.value = false
 }
-
-const handleSubmit = async () => {
-  if (!formRef.value) return
-
+const handleCollaboratorUpdate = async () => {
+  isLoading.value = true
   try {
-    await formRef.value.validate()
+    await formRef?.value?.validate()
 
     const updates = {
       landphone: formValues.landPhone,
       mobilephone: formValues.mobilePhone,
     }
-    const contact = await updateCollaborator(props.rowData.id, updates)
-    drawerModel.value = false
-    PNotification({
-      message: t('notificationSuccess', { fullName: props.rowData.fullName }),
-      icon: PICheck,
-      showClose: true,
-      customClass: 'success',
-      position: 'bottom-right',
-    })
+    const contact = await updateCollaborator(props.collabDetails.id, updates)
+    isCollabDetailsDrawerVisible.value = false
+    displayNotification('success', t('notificationSuccess', { fullName: props.collabDetails.fullName }))
     emit('update-collaborator-details', contact)
   } catch {
-    PNotification({
-      message: t('notificationError', { fullName: props.rowData.fullName }),
-      icon: PIExclamationTriangle,
-      showClose: true,
-      customClass: 'error',
-      position: 'bottom-right',
-    })
+    displayNotification('error', t('notificationError', { fullName: props.collabDetails.fullName }))
+  } finally {
+    isLoading.value = false
   }
 }
-
 async function shouldSubmitButtonBeDisabled() {
-  if (!formRef.value) return
-
   try {
-    await formRef.value.validate()
+    await formRef?.value?.validate()
     isSubmitButtonDisabled.value = false
-  } catch (_error) {
+  } catch {
     isSubmitButtonDisabled.value = true
   }
 }
-
 function debouncedShouldSubmitButtonBeDisabled() {
   return debounce(() => shouldSubmitButtonBeDisabled(), 600)
 }

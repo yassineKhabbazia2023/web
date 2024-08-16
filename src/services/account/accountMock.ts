@@ -1,6 +1,6 @@
 import type { PatchOperation } from '@/services/PatchRecordService'
 import type { Account, AccountRow, Address, Signatory, Deployment, ReferentialStructure, Hub } from '.'
-import type { QueryResult } from '@/types/commonTypes'
+import type { QueryResult } from '@/common/types'
 import accountReferentialInformation from './__mock__/accountReferentialInformation.json'
 import referentialHubs from './__mock__/referentialHubs.json'
 

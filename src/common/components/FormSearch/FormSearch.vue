@@ -1,13 +1,13 @@
 <template>
   <PForm
-    @submit.prevent="handleSearchSubmit(formRef)"
+    @submit.prevent
     ref="formRef"
     :pRules="rules"
     :pModel="formValues"
   >
     <PFormItem prop="search">
       <PInput
-        @keyup="handleSearchSubmit(formRef)"
+        @keyup="handleSearchSubmit"
         v-model="formValues.search"
         :pPlaceholder="placeholder"
         :pPrefixIcon="PISearch"
@@ -56,17 +56,12 @@ const rules = reactive<FormRules<typeof formValues>>({
     message: t('errorSearchInvalid'),
   }],
 })
-const handleSearchSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-
-  if (formEl.validate) {
-    try {
-      await formEl.validate()
-    } catch (error) {
-      return false
+const handleSearchSubmit = () => {
+  formRef.value?.validate((isValid) => {
+    if (isValid) {
+      emit('searchValueSubmitted', formValues.search)
     }
-  }
-  emit('searchValueSubmitted', formValues.search)
+  })
 }
 
 const clearSearch = () => {
