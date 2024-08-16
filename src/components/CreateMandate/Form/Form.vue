@@ -98,15 +98,8 @@
           pProp="email"
           inline
           disabled
+          :pLabel="t('email')"
         >
-          <div>
-            <span class="create-mandate-form_optional-title font-semibold"
-            >{{ t('email') }}
-            </span>
-            <span class="create-mandate-form_optional font-normal">{{
-              t('optional')
-            }}</span>
-          </div>
           <PInput
             v-model="createMandateForm.email"
             data-testid="email-test"
@@ -602,7 +595,10 @@ const rules = reactive<any>({
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
   firstName: [createRule(requiredFieldMessage)],
   lastName: [createRule(requiredFieldMessage)],
-  email: [{ validator: validateEmail, trigger: 'blur' }],
+  email: [
+    createRule(requiredFieldMessage, 'blur'),
+    { validator: validateEmail, trigger: 'blur' },
+  ],
   street: [createRule(requiredFieldMessage)],
   zipCode: [
     createRule(requiredFieldMessage),
