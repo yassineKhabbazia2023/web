@@ -1,8 +1,13 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import useInitUserAuth from '@/composable/useInitUserAuth'
 import { commonStore as store, tokenService } from '@kpmg/common'
-import { givenToken } from '@/../vitest.setup'
-import { getToken } from '@/services/msal'
+
+const mockedMsalToken = 'msal-token'
+const msalGetTokenSpy = vi.hoisted(() => vi.fn(() => mockedMsalToken))
+
+vi.mock('@/services/msal', () => ({
+  getToken: msalGetTokenSpy,
+}))
 
 const mockStorePatch = vi.fn()
 const mockFechUserDataProvider = vi.fn(() => {
@@ -52,10 +57,26 @@ describe('useInitUserAuth', () => {
     await initAuthCollab()
 
     // Assert
-    expect(getToken).toHaveBeenCalledWith()
+    expect(msalGetTokenSpy).toHaveBeenCalledWith(/* nothing */)
     expect(isTokenRetrieve.value).toBeTruthy()
-    expect(setTokenSpy).toHaveBeenCalledWith(givenToken)
+    expect(setTokenSpy).toHaveBeenCalledWith(mockedMsalToken)
     expect(mockStorePatch).toHaveBeenCalledTimes(1)
+  })
+
+  it('initAuthClient should NOT init auth when msal getToken returns empty token', async () => {
+    // Setup
+    const setTokenSpy = vi.spyOn(tokenService, 'setToken')
+    msalGetTokenSpy.mockReturnValueOnce('')
+    const { initAuthCollab, isTokenRetrieve } = useInitUserAuth()
+
+    // Act
+    await initAuthCollab()
+
+    // Assert
+    expect(msalGetTokenSpy).toHaveBeenCalledWith(/* nothing */)
+    expect(isTokenRetrieve.value).toBeFalsy()
+    expect(setTokenSpy).not.toHaveBeenCalled()
+    expect(mockStorePatch).not.toHaveBeenCalled()
   })
 
   it('should init auth when user is client', async () => {
@@ -69,7 +90,7 @@ describe('useInitUserAuth', () => {
     await initAuthClient()
 
     // Assert
-    expect(getToken).not.toHaveBeenCalled()
+    expect(msalGetTokenSpy).not.toHaveBeenCalled()
     expect(isTokenRetrieve.value).toBeTruthy()
     expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
     expect(store().$patch).toHaveBeenCalledTimes(1)

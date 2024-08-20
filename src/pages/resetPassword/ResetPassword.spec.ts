@@ -79,6 +79,16 @@ describe('reset password', () => {
     expect(mockAuthPost).not.toHaveBeenCalled()
   })
 
+  it('mockAuthPost when handleSubmit is called with empty object form', async () => {
+    await wrapper.vm.handleSubmit({} as any)
+    const expectedUrl = 'authentication/api/sendResetPasswordLink'
+    const expectedPayload = {
+      email: '',
+    }
+    expect(mockAuthPost).toHaveBeenCalledOnce() // NB: it should not be the case
+    expect(mockAuthPost).toHaveBeenNthCalledWith(1, expectedUrl, expectedPayload)
+  })
+
   it('do not call mockAuthPost when form throws an exception', async () => {
     const mockedForm = {
       validate: () => {
@@ -113,7 +123,25 @@ describe('reset password', () => {
     await flushPromises()
 
     const input = wrapper.find('.el-input')
-    expect(input.classes('error')).toBeDefined()
+    expect(input.classes()).toContain('error')
+  })
+
+  it('should NOT display error when mockAuthPost throws an error without message', async () => {
+    mockAuthPost.mockRejectedValueOnce({
+      message: '',
+    })
+
+    const emailInput = wrapper.find('[data-testid="reset-password-input-email"]')
+    emailInput.setValue(INPUT_EMAIL_VALUE)
+    emailInput.trigger('blur')
+    await nextTick()
+
+    const submitButton = wrapper.find('[data-testid="reset-password-submit-button"]')
+    submitButton.trigger('click')
+    await flushPromises()
+
+    const input = wrapper.find('.el-input')
+    expect(input.classes()).not.toContain('error') // it should not be the case
   })
 
   it('submit button disabled when email is empty', async () => {

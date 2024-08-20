@@ -12,23 +12,14 @@ const WEB_TOKEN = 'customToken'
 
 const mockStorePatch = vi.fn()
 const mockRouterPush = vi.fn()
-const mockAuthPost = vi.fn((_url, { _email, password }) => {
-  return password === 'error'
-    // eslint-disable-next-line prefer-promise-reject-errors
-    ? Promise.reject({
-      response: {
-        data: {
-          errorCode: '403042',
-        },
-      },
-    })
-    : Promise.resolve({
-      data: {
-        userId: USER_ID,
-        webToken: WEB_TOKEN,
-        email: _email,
-      },
-    })
+const mockAuthPost = vi.fn((_url, { _email }) => {
+  return Promise.resolve({
+    data: {
+      userId: USER_ID,
+      webToken: WEB_TOKEN,
+      email: _email,
+    },
+  })
 })
 
 vi.mock('vue-router', () => ({
@@ -161,7 +152,14 @@ describe('login', () => {
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 
-  it('does not redirect to the home page if the api return an error', async () => {
+  it('does not redirect to the home page if the api return a 403042 error', async () => {
+    mockAuthPost.mockRejectedValueOnce({
+      response: {
+        data: {
+          errorCode: '403042',
+        },
+      },
+    })
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
@@ -172,6 +170,33 @@ describe('login', () => {
     const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
     const expectedErrorMessage = 'The email and password combination is incorrect.'
     expect(loginErrorMessage.text()).toBe(expectedErrorMessage)
+    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
+    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
+    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
+      sign_in_method: 'email',
+      sign_in_result: 'failed',
+    })
+    expect(mockRouterPush).not.toHaveBeenCalled()
+  })
+
+  it('does not display error message if the api return an unkown error', async () => {
+    mockAuthPost.mockRejectedValueOnce({
+      response: {
+        data: {
+          errorCode: 'unkown',
+        },
+      },
+    })
+    await getInputEmail().setValue('error@aol.com')
+    await getInputPassword().setValue('error')
+
+    const submitButton = wrapper.find('.buttonSubmit')
+    await submitButton.trigger('click')
+    await flushPromises()
+
+    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
+    expect(loginErrorMessage.exists()).toBeFalsy() // it should not be the case
     expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
     expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
     expect(spyTrackAmplitude).toHaveBeenCalledOnce()
@@ -247,14 +272,14 @@ describe('login', () => {
     })
   })
 
-  it('do not call mockAuthPost when handleSubmit is called without form', async () => {
+  it('does not call mockAuthPost when handleSubmit is called without form', async () => {
     const submitButton = wrapper.find('[data-testid="login-submit-button"]')
     await submitButton.trigger('click')
     await flushPromises()
     expect(mockAuthPost).not.toHaveBeenCalled()
   })
 
-  it('do not call mockAuthPost when form throws an exception', async () => {
+  it('does not call mockAuthPost when form throws an exception', async () => {
     const mockedForm = {
       validate: () => {
         throw new Error('')
@@ -264,10 +289,21 @@ describe('login', () => {
     expect(mockAuthPost).not.toHaveBeenCalled()
   })
 
-  it('do not call mockAuthPost when initAuthClient returns an error', async () => {
-    initAuthClientMocked.mockRejectedValueOnce({
+  it('does not call mockAuthPost when initAuthClient returns a 403042 error', async () => {
+    const mockedForm = {
+      validate: () => {
+        throw new Error('')
+      },
+    } as unknown as FormInstance
+
+    await wrapper.vm.handleSubmit(mockedForm)
+    expect(mockAuthPost).not.toHaveBeenCalled()
+  })
+
+  it('does not call mockAuthPost when initAuthClient returns an unknown error', async () => {
+    mockAuthPost.mockRejectedValueOnce({
       error: {
-        code: '403042',
+        code: 'unknown',
       },
     })
     const mockedForm = {
@@ -279,8 +315,19 @@ describe('login', () => {
     expect(mockAuthPost).not.toHaveBeenCalled()
   })
 
-  it('do not call mockAuthPost when not form given to handleSubmit', async () => {
+  it('does not call mockAuthPost when not form given to handleSubmit', async () => {
     await wrapper.vm.handleSubmit(undefined)
     expect(mockAuthPost).not.toHaveBeenCalled()
+  })
+
+  it('does not call mockAuthPost when empty object given to handleSubmit', async () => {
+    await wrapper.vm.handleSubmit({} as any)
+    const expectedUrl = 'authentication/api/login'
+    const expectedPayload = {
+      email: '',
+      password: '',
+    }
+    expect(mockAuthPost).toHaveBeenCalledOnce() // NB: it should not be the case
+    expect(mockAuthPost).toHaveBeenNthCalledWith(1, expectedUrl, expectedPayload)
   })
 })
