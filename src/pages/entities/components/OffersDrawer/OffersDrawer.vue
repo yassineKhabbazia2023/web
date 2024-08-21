@@ -241,6 +241,9 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
   } else {
     currentSubscriptionOffer.value = await getOffer(selectedOfferId)
     collaborators.value = []
+    amplitudeService.track('Subscription Initiated', {
+      subscription_initiate_offer_name: currentSubscriptionOffer.value?.offerCode,
+    })
     if (currentSubscriptionOffer.value?.approvalRequired) {
       initNoteSteps()
     } else {
@@ -349,22 +352,46 @@ async function validateOffer() {
     await saveOffer()
     if (!currentSubscriptionOffer.value?.approvalRequired) {
       displayNotification('success', t('offerActivated'))
+      amplitudeService.track('Subscription Started', {
+        subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
+        subscription_start_result: 'succeeded',
+      })
+      amplitudeService.track('Subscription Completed', {
+        subscription_complete_localisation: 'offer activation screen',
+        subscription_complete_result: 'succeeded',
+      })
       amplitudeService.track('Onboarding Started', {
         onboarding_start_localisation: 'Offer activation',
         onboarding_start_result: 'succeeded',
       })
     } else {
       displayNotification('success', t('subscriptionCreated'))
+      amplitudeService.track('Subscription Started', {
+        subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
+        subscription_start_result: 'succeeded',
+      })
     }
   } catch (error) {
     if (!currentSubscriptionOffer.value?.approvalRequired) {
       displayNotification('error', t('offerNotActivated'))
+      amplitudeService.track('Subscription Started', {
+        subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
+        subscription_start_result: 'failed',
+      })
+      amplitudeService.track('Subscription Completed', {
+        subscription_complete_localisation: 'offer activation screen',
+        subscription_complete_result: 'failed',
+      })
       amplitudeService.track('Onboarding Started', {
         onboarding_start_localisation: 'Offer activation',
         onboarding_start_result: 'failed',
       })
     } else {
       displayNotification('error', t('subscriptionNotCreated'))
+      amplitudeService.track('Subscription Started', {
+        subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
+        subscription_start_result: 'failed',
+      })
     }
     console.error(error)
   }

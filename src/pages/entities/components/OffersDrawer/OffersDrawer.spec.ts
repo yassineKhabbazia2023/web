@@ -16,7 +16,12 @@ import * as ServicesAccount from '@/services/account'
 import * as subscriptionService from '@/services/subscription/subscriptionService'
 import * as offerService from '@/services/offer/index'
 import * as PatchRecordService from '@/services/PatchRecordService/PatchRecordService'
-import { getMockedAccount, getMockedPatchOperations } from '@/services/account/accountMock'
+import {
+  getMockedAccount,
+  getMockedAccountReferential,
+  getMockedPatchOperations,
+  getMockedReferentialHubs,
+} from '@/services/account/accountMock'
 import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
 import { amplitudeService, type UserInfo } from '@kpmg/common'
 import type { Note, PostSubscriptionRequest } from '@/services/subscription'
@@ -62,6 +67,8 @@ vi.mock('@/services/contact', () => ({
 }))
 
 vi.mock('@/services/account', () => ({
+  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
+  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
   fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
   patchAccount: vi.fn(() => Promise.resolve({})),
 }))
@@ -154,11 +161,16 @@ describe('offersDrawer', () => {
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
     it('should display current offer when an offer is selected', async () => {
+      const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
       const wrapper = await getWrapper(true)
       const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
       await flushPromises()
 
+      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
+      expect(spyTrackAmplitude).toHaveBeenCalledWith('Subscription Initiated', {
+        subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
+      })
       const offers = findOffers(wrapper)
       expect(offers.exists()).toBeFalsy()
 
@@ -265,9 +277,19 @@ describe('offersDrawer', () => {
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
-
-        expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-        expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Started', {
+        expect(spyTrackAmplitude).toHaveBeenCalledTimes(4)
+        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(1, 'Subscription Initiated', {
+          subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
+        })
+        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Subscription Started', {
+          subscription_start_offer_name: subscriptionOffersServices.at(1)?.offerCode,
+          subscription_start_result: 'succeeded',
+        })
+        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+          subscription_complete_localisation: 'offer activation screen',
+          subscription_complete_result: 'succeeded',
+        })
+        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
           onboarding_start_localisation: 'Offer activation',
           onboarding_start_result: 'succeeded',
         })
@@ -353,8 +375,16 @@ describe('offersDrawer', () => {
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
 
-        expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-        expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Started', {
+        expect(spyTrackAmplitude).toHaveBeenCalledTimes(4)
+        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Subscription Started', {
+          subscription_start_offer_name: subscriptionOffersServices.at(1)?.offerCode,
+          subscription_start_result: 'failed',
+        })
+        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+          subscription_complete_localisation: 'offer activation screen',
+          subscription_complete_result: 'failed',
+        })
+        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
           onboarding_start_localisation: 'Offer activation',
           onboarding_start_result: 'failed',
         })
