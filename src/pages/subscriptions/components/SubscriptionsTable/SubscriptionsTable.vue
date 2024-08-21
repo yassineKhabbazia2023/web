@@ -156,7 +156,8 @@ const emit = defineEmits<{
 const isLoading = ref(true)
 const isActionInProgress = ref(false)
 const clickedRow = ref<number>()
-const { user } = storeToRefs(commonStore())
+const userStore = commonStore()
+const { user } = storeToRefs(userStore)
 const subscriptions = ref<SubscriptionRequest[]>([])
 const filteredSubscriptions = ref<SubscriptionRequest[]>([])
 const requestMenu: PToolboxItemProps[] = [
@@ -184,26 +185,32 @@ const formatStatus = (status: string) => {
 }
 
 const validateSubscription = async (subscriptionId: number) => {
-  if (subscriptionId) {
-    isActionInProgress.value = true
-    clickedRow.value = subscriptionId
-    try {
-      await validateSubscriptionRequest(subscriptionId, user.value?.email)
-      amplitudeService.track('Onboarding Started', {
-        onboarding_start_localisation: 'MOD Screen',
-        onboarding_start_result: 'succeeded',
-      })
-      displayNotification('success', t('offerActivated'))
-      await fetchSubscriptions()
-    } catch {
-      displayNotification('error', t('offerNotActivated'))
-      amplitudeService.track('Onboarding Started', {
-        onboarding_start_localisation: 'MOD Screen',
-        onboarding_start_result: 'failed',
-      })
-    }
-    isActionInProgress.value = false
+  isActionInProgress.value = true
+  clickedRow.value = subscriptionId
+  try {
+    await validateSubscriptionRequest(subscriptionId, user?.value?.email)
+    amplitudeService.track('Subscription Completed', {
+      subscription_complete_localisation: 'MOD screen',
+      subscription_complete_result: 'succeeded',
+    })
+    amplitudeService.track('Onboarding Started', {
+      onboarding_start_localisation: 'MOD screen',
+      onboarding_start_result: 'succeeded',
+    })
+    displayNotification('success', t('offerActivated'))
+    await fetchSubscriptions()
+  } catch {
+    amplitudeService.track('Subscription Completed', {
+      subscription_complete_localisation: 'MOD screen',
+      subscription_complete_result: 'failed',
+    })
+    amplitudeService.track('Onboarding Started', {
+      onboarding_start_localisation: 'MOD screen',
+      onboarding_start_result: 'failed',
+    })
+    displayNotification('error', t('offerNotActivated'))
   }
+  isActionInProgress.value = false
 }
 
 const onClickToolboxItem = async (action: string, row: any) => {
