@@ -349,6 +349,7 @@ const areStep2FieldsFilled = computed(() => {
     'title',
     'firstName',
     'lastName',
+    'email',
     'street',
     'zipCode',
     'city',
