@@ -1,3 +1,4 @@
+import type { Mandate } from '@/pages/home/Models'
 import { commonApi as api } from '@kpmg/common'
 import type { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 import type { SearchMandateParams } from './ServiceMandateTypes'
@@ -7,19 +8,19 @@ export const getCompany = ({
 }: { ibsNumber: string }): Promise<any> =>
   api().mandate.get(`/company/${ibsNumber}`)
 
-export const downloadUnsignedMandate = async (mandateId: string) => {
+export const downloadUnsignedMandate = async (mandateId: Mandate['id']) => {
   return await api().mandate.get(`/mandate/${mandateId}/unsigned`, {
     responseType: 'blob',
   })
 }
 
-export const downloadSignedMandate = async (mandateId: string) => {
+export const downloadSignedMandate = async (mandateId: Mandate['id']) => {
   return await api().mandate.get(`/mandate/${mandateId}/signed`, {
     responseType: 'blob',
   })
 }
 
-export const terminateMandate = async (mandateId: string) => {
+export const terminateMandate = async (mandateId: Mandate['id']) => {
   return await api().mandate.post(`/mandate/${mandateId}/deactivate`)
 }
 
@@ -78,13 +79,20 @@ export function getMandatesCollection(searchParams: SearchMandateParams) {
   })
 }
 
-export const createMandate = ({
+export async function getMandateAvailability(mandateId: Mandate['id']): Promise<boolean> {
+  const { status } = await api().gateway.get(`mandate/api/mandate/${mandateId}/check/status`)
+
+  return status === 200
+}
+
+export const createMandate = async ({
   erpId,
   signatory,
   address,
   bban,
-}: CreateMandateModel): Promise<any> =>
-  api().mandate.post('/mandate', { erpId, signatory, address, bban })
+}: CreateMandateModel): Promise<any> => {
+  return await api().gateway.post('mandate/api/mandate/currentuser', { erpId, signatory, address, bban })
+}
 
 export const uploadSignedMandate = async ({
   mandateId,

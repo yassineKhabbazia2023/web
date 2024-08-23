@@ -1,64 +1,112 @@
 <template>
-  <div class="download-mandate">
-    <PImage
-      pType="paupulse"
-      pName="ok"
-      pFit="contain"
-      class="download-mandate__illustration margin-bottom--6 margin-x--auto"
-    />
-    <h4 class="download-mandate__title font-semibold margin-bottom--2">
-      {{t('generated-mandate')}}
-    </h4>
-    <div class="download-mandate__body margin-bottom--6 font-normal">
-      <p>
-        {{t('download')}} <span class="font-semibold">
-          {{t('manual-sign')}}
-        </span>
-      </p>
-      <p>{{t('deposit')}}</p>
+  <div class="download-or-wait-mandate">
+    <!-- Not using a ternary or computed on pName because once an image is loaded you can't change it -->
+    <div class="download-or-wait-mandate__illustration margin-bottom--6 margin-x--auto">
+      <Transition>
+        <PImage
+          v-if="isTrackedMandateAvailable"
+          pType="paupulse"
+          pName="ok"
+          pFit="contain"
+          data-testid="availaible-illustration"
+        />
+        <PImage
+          v-else
+          pType="paupulse"
+          pName="time"
+          pFit="contain"
+          data-testid="wait-illustration"
+        />
+      </Transition>
     </div>
-    <PFileCard
-      :pName="`unsigned-mandate-${mandateId}.pdf`"
-      pFormat="PDF"
-      pSize=""
-      pHasIcon
-      pHasButton
-      class="download-mandate__file-card margin-x--6 margin-bottom--4"
+
+    <h4
+      class="
+        download-or-wait-mandate__title
+        font-semibold
+        flex flex--align-items-center flex--justify-content-center
+        margin-bottom--2
+      "
     >
-      <template #icon>
-        <PIcon>
-          <PIFiletypePdf />
-        </PIcon>
+      <span
+        v-if="!isTrackedMandateAvailable"
+        class="
+          flex flex--align-items-center flex--justify-content-center
+          padding-right--2
+        "
+      >
+        <PLoader pType="primary" />
+      </span>
+      {{ title }}
+    </h4>
+
+    <div class="download-or-wait-mandate__body margin-bottom--6 font-normal">
+      <template v-if="isTrackedMandateAvailable">
+        <p>
+          {{t('download')}} <span class="font-semibold">
+            {{t('manual-sign')}}
+          </span>
+        </p>
+        <p>{{t('deposit')}}</p>
       </template>
-      <template #buttons>
-        <PButton
-          pType="white"
-          pSize="default"
-          data-testid="download-prefilled-mandate"
-          @click="downloadMandate()"
-        >
+
+      <template v-else>
+        {{ t('keep-open-or-close') }}
+      </template>
+    </div>
+
+    <Transition>
+      <PFileCard
+        v-if="isTrackedMandateAvailable"
+        :pName="`unsigned-mandate-${mandateId}.pdf`"
+        pFormat="PDF"
+        pSize=""
+        pHasIcon
+        pHasButton
+        class="download-or-wait-mandate__file-card margin-x--6 margin-bottom--4"
+      >
+        <template #icon>
           <PIcon>
-            <PIDownload />
+            <PIFiletypePdf />
           </PIcon>
-        </PButton>
-      </template>
-    </PFileCard>
-    <PAlert
-      class="download-mandate__file-card margin-x--6 margin-bottom--4"
-    >
-      <p class="download-mandate__alert-title font-semibold">
-        {{t('help')}}
-      </p>
-      <p class="download-mandate__alert-body font-normal">{{t('help-label-prefix')}}
-        <a href="" class="download-mandate__alert-body--color">{{t('help-label-link')}}</a>
-        {{t('help-label-suffix')}}
-      </p>
-    </PAlert>
+        </template>
+        <template #buttons>
+          <PButton
+            pType="white"
+            pSize="default"
+            data-testid="download-prefilled-mandate"
+            @click="downloadMandate()"
+          >
+            <PIcon>
+              <PIDownload />
+            </PIcon>
+          </PButton>
+        </template>
+      </PFileCard>
+    </Transition>
+
+    <div class="flex">
+      <PAlert class="download-or-wait-mandate__file-card margin-x--6 margin-bottom--4">
+        <p class="download-or-wait-mandate__alert-title font-semibold">
+          {{t('help')}}
+        </p>
+        <p class="download-or-wait-mandate__alert-body font-normal">{{t('help-label-prefix')}}
+          <a href="" class="download-or-wait-mandate__alert-body--color">{{t('help-label-link')}}</a>
+          {{t('help-label-suffix')}}
+        </p>
+      </PAlert>
+    </div>
   </div>
 </template>
 
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
+import {
+  computed,
+  onBeforeMount,
+  onBeforeUnmount,
+  ref,
+} from 'vue'
 import {
   PFileCard,
   PIcon,
@@ -66,18 +114,54 @@ import {
   PIFiletypePdf,
   PIDownload,
   PImage,
+  PLoader,
   PAlert,
 } from '@kpmg/styleguide'
-import { downloadUnsignedMandate } from '@/services/mandate'
+import { downloadUnsignedMandate, getMandateAvailability } from '@/services/mandate'
 import { downloadFile, saveFileAs } from '@/helpers/utils'
 import { showNotification } from '@/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
-const props = defineProps({
-  mandateId: {
-    type: String,
-    required: true,
-  },
+import type { DownloadProps } from './DownloadTypes'
+
+const props = defineProps<DownloadProps>()
+
+/* #region Mandate status tracking */
+const isTrackedMandateAvailable = ref(false)
+const availabilityTrackerIntervalId = ref<ReturnType<typeof setInterval>>()
+
+onBeforeMount(async () => {
+  try {
+    isTrackedMandateAvailable.value = await getMandateAvailability(props.mandateId)
+  } catch (error) {
+    console.error(error)
+  }
+
+  if (isTrackedMandateAvailable.value) return
+  availabilityTrackerIntervalId.value = setInterval(() => {
+    trackMandateStatus()
+  }, 10000)
 })
+
+onBeforeUnmount(() => {
+  clearInterval(availabilityTrackerIntervalId.value)
+})
+
+async function trackMandateStatus() {
+  try {
+    isTrackedMandateAvailable.value = await getMandateAvailability(props.mandateId)
+    if (isTrackedMandateAvailable.value) {
+      clearInterval(availabilityTrackerIntervalId.value)
+      availabilityTrackerIntervalId.value = undefined
+    }
+  } catch (error) {
+    console.error('Mandate status tracking is not available')
+  }
+}
+/* #endregion */
+
+const title = computed(() => isTrackedMandateAvailable.value
+  ? t('generated-mandate')
+  : t('creating-mandate'))
 
 const downloadMandate = async () => {
   const messages: NotificationMessagesByType = {
@@ -114,10 +198,26 @@ const { t } = useI18n({
 </script>
 
 <style lang="scss" scoped>
-.download-mandate {
+// Transitions for waiting / ok illustrations and download card
+.v-enter-active {
+  transition: opacity 0.3s ease;
+  transition-delay: 0.3s;
+}
+
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.download-or-wait-mandate {
   &__illustration {
     display: block;
     width: 316px;
+    height: 320px;
   }
   &__title {
     color: var(--el-color-neutral-gray-900);
@@ -127,6 +227,8 @@ const { t } = useI18n({
     line-height: 120%;
   }
   &__body {
+    width: 72%;
+    margin: 0 auto;
     text-align: center;
     color: var(--el-color-neutral-gray-900);
     font-style: normal;
@@ -152,6 +254,10 @@ const { t } = useI18n({
 </style>
 <i18n lang="yaml">
   en-US:
+    creating-mandate: 'The mandate is being created !'
+    keep-open-or-close: >
+      You have the option to keep this window open on your screen, or if you prefer,
+      you can close it and refer to the mandate page later to retrieve the mandate.
     generated-mandate: 'The mandate is generated !'
     manual-sign: 'manual sign.'
     download: 'Download the mandate for'
@@ -164,6 +270,10 @@ const { t } = useI18n({
       downloading: 'The download is in preparation'
       downloading-error: 'There was an error during preparation'
   fr-FR:
+    creating-mandate: 'Le mandat est en cours de création.'
+    keep-open-or-close: >
+      Vous avez le choix de garder cette fenêtre ouverte sur votre écran,
+      ou si vous le préférez, vous pouvez la fermer et consulter la page mandat ultérieurement pour récupérer le mandat
     generated-mandate: 'Le mandat est généré !'
     manual-sign: 'signature manuscrite.'
     download: 'Téléchargez dès maintenant le mandat pour'

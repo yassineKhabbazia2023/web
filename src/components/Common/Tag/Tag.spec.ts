@@ -7,6 +7,7 @@ const createWrapper = (statusCode: string) =>
 
 describe('tag status management', () => {
   it.each([
+    { statusCode: '99', expected: 'Creating' },
     { statusCode: '10', expected: 'Incident' },
     { statusCode: '20', expected: 'To do' },
     { statusCode: '30', expected: 'In progress' },

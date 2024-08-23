@@ -73,6 +73,11 @@ function onClickFilter(activeFilterCodes: number[]) {
 }
 
 const filters = [{
+  pContent: t('creating'),
+  pCode: 99,
+  pColor: 'cyan',
+  pIcon: 'PIHourglass',
+}, {
   pContent: t('incident'),
   pCode: 10,
   pColor: 'danger',
@@ -124,6 +129,7 @@ const filters = [{
   en-US:
     bank-mandates: ''
     new-mandate: 'New mandate'
+    creating: 'Creating'
     incident: 'Incident'
     to-do: 'To do'
     in-progress: 'In progress'
@@ -132,6 +138,7 @@ const filters = [{
   fr-FR:
     bank-mandates: ''
     new-mandate: 'Nouveau mandat'
+    creating: 'En création'
     incident: 'Incident'
     to-do: 'À déposer'
     in-progress: 'En cours'

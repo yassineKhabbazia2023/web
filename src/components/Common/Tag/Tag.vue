@@ -32,6 +32,7 @@ const props = defineProps({
   status: { type: String, required: true },
 })
 const statusMap = new Map([
+  [99, { color: 'cyan', icon: PIExclamationTriangle, content: t('creating') }],
   [10, { color: 'danger', icon: PIExclamationTriangle, content: t('incident') }],
   [20, { color: 'warning', icon: PIUpload, content: t('to-do') }],
   [30, { color: 'amethyste', icon: PIArrowRepeat, content: t('in-progress') }],
@@ -44,12 +45,14 @@ const tagProperties: any = computed(() => statusMap.get(Number(props.status)))
 
 <i18n lang="yaml">
   en-US:
+    creating: 'Creating'
     incident: 'Incident'
     to-do: 'To do'
     in-progress: 'In progress'
     active: 'Active'
     inactive: 'Inactive'
   fr-FR:
+    creating: 'En création'
     incident: 'Incident'
     to-do: 'À déposer'
     in-progress: 'En cours'

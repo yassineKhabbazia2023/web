@@ -10,6 +10,7 @@ import {
   uploadSignedMandate,
   terminateMandate,
   parseParams,
+  getMandateAvailability,
 } from '.'
 import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 import { getMockedMandatesList, getMockedCompany, getMockedBban } from '@/../tests/mocks/mandateMock'
@@ -83,6 +84,13 @@ const createImplementation = (mandate: CreateMandateModel) => {
   }
 }
 
+const gatewayGetSpy = vi.fn(() => {
+  return Promise.resolve({ data: {}, status: {} })
+})
+const gatewayPostSpy = vi.fn(() => {
+  return Promise.resolve({ data: {}, status: {} })
+})
+
 vi.mock('@kpmg/common', () => {
   return {
     commonApi: () => ({
@@ -115,6 +123,10 @@ vi.mock('@kpmg/common', () => {
             return terminateMandateImplementation(url)
           }
         }),
+      },
+      gateway: {
+        get: gatewayGetSpy,
+        post: gatewayPostSpy,
       },
     }),
   }
@@ -220,7 +232,7 @@ describe('validateIban', () => {
 
 describe('createMandate', () => {
   it('should return mandate id', async () => {
-    const { data: { id } } = await createMandate({
+    const requestBody = {
       erpId: '1999072765',
       signatory: {
         title: 'M',
@@ -236,8 +248,13 @@ describe('createMandate', () => {
         country: 'France',
       },
       bban,
-    })
-    expect(id).toBe('3ef5ff10-18d1-40b1-aa24-0fcccd8445e6')
+    }
+
+    await createMandate(requestBody)
+    expect(gatewayPostSpy).toHaveBeenCalledWith(
+      'mandate/api/mandate/currentuser',
+      requestBody,
+    )
   })
 })
 
@@ -258,5 +275,14 @@ describe('parseParams', () => {
     const parsedParams = parseParams(params)
 
     expect(parsedParams).toBe(expectedParsedParams)
+  })
+})
+
+describe('mandate availability', () => {
+  it('should fetch mandate availability status', async () => {
+    const mandateId = '1234'
+    await getMandateAvailability(mandateId)
+
+    expect(gatewayGetSpy).toHaveBeenCalledWith(`mandate/api/mandate/${mandateId}/check/status`)
   })
 })

@@ -55,7 +55,10 @@
         @enable-disable-validate="handleValidateAvailability"
         @update-mandate-model="updateMandateModel"
       />
-      <DownloadMandate :mandateId="mandateId" v-if="currentStep > 3" />
+      <DownloadMandate
+        v-if="currentStep > 3"
+        :mandateId="mandateId"
+      />
       <template #footer>
         <div v-if="currentStep <= 3">
           <PButton

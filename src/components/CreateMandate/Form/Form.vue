@@ -278,7 +278,11 @@
 <script setup lang='ts'>
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed } from 'vue'
-import { validateIban, getBankDetail, getCompany } from '@/services/mandate'
+import {
+  validateIban,
+  getBankDetail,
+  getCompany,
+} from '@/services/mandate'
 import type { Rule } from './FormModels'
 import {
   PForm,

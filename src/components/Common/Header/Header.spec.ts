@@ -38,6 +38,11 @@ describe('header.vue', () => {
     it('show emit when click on PFilterGroup', async () => {
       const activeFilters = [10, 20]
       const expectedFilters = [{
+        pContent: 'Creating',
+        pCode: 99,
+        pColor: 'cyan',
+        pIcon: 'PIHourglass',
+      }, {
         pContent: 'Incident',
         pCode: 10,
         pColor: 'danger',
