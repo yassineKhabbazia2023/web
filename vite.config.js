@@ -43,6 +43,14 @@ export default ({ mode }) =>
           { disableInServe: mode === 'test' },
         ), // true for Vitest & dev without Single Spa
         cssInjectedByJsPlugin(),
+        {
+          resolveId(id) {
+            if (id === 'env-vars') return id
+          },
+          load(id) {
+            if (id === 'env-vars') return ''
+          },
+        },
       ],
       resolve: {
         alias: {

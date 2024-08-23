@@ -48,14 +48,3 @@ export const getToken = async () => {
   }
   return null
 }
-
-export const getRefreshToken = () => {
-  if (msalInstance.getAccount()) {
-    msalInstance.acquireTokenPopup({
-      loginHint: msalInstance.getAccount().userName,
-      scopes: [VITE_API_MSAL_SCOPE],
-    })
-  } else {
-    msalInstance.loginRedirect()
-  }
-}

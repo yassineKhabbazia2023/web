@@ -27,5 +27,6 @@ extends:
     mfe: login
     devIndex: ${{ parameters.devIndex }}
     deployType: ${{ parameters.deployType }}
-    sonarExclusions: vitest.setup.ts
+    sonarExclusions: |
+      vitest.setup.ts,vite.config.js,src/main.ts
 
