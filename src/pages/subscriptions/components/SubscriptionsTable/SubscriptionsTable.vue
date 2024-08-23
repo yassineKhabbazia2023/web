@@ -184,12 +184,13 @@ const formatStatus = (status: string) => {
   return status === SubscriptionStatusCode.PENDING ? t('toValidate') : status
 }
 
-const validateSubscription = async (subscriptionId: number) => {
+const validateSubscription = async (subscriptionId: number, offer: SubscriptionRequest['offer']) => {
   isActionInProgress.value = true
   clickedRow.value = subscriptionId
   try {
     await validateSubscriptionRequest(subscriptionId, user?.value?.email)
     amplitudeService.track('Subscription Completed', {
+      subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
     })
@@ -201,6 +202,7 @@ const validateSubscription = async (subscriptionId: number) => {
     await fetchSubscriptions()
   } catch {
     amplitudeService.track('Subscription Completed', {
+      subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
     })
@@ -214,12 +216,12 @@ const validateSubscription = async (subscriptionId: number) => {
 }
 
 const onClickToolboxItem = async (action: string, row: any) => {
-  const { subscriptionId } = row
+  const { subscriptionId, offer } = row
 
   if (action === 'consult') {
     emit('consult', subscriptionId)
   } else if (action === 'validate') {
-    await validateSubscription(subscriptionId)
+    await validateSubscription(subscriptionId, offer)
   }
 }
 
@@ -243,6 +245,11 @@ onMounted(async () => {
   } catch {} finally {
     isLoading.value = false
   }
+})
+
+defineExpose({
+  onClickToolboxItem,
+  handleOfferFiltered,
 })
 </script>
 

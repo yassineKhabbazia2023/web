@@ -357,6 +357,7 @@ async function validateOffer() {
         subscription_start_result: 'succeeded',
       })
       amplitudeService.track('Subscription Completed', {
+        subscription_complete_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_complete_localisation: 'offer activation screen',
         subscription_complete_result: 'succeeded',
       })
@@ -379,6 +380,7 @@ async function validateOffer() {
         subscription_start_result: 'failed',
       })
       amplitudeService.track('Subscription Completed', {
+        subscription_complete_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_complete_localisation: 'offer activation screen',
         subscription_complete_result: 'failed',
       })

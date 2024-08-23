@@ -286,6 +286,7 @@ describe('offersDrawer', () => {
           subscription_start_result: 'succeeded',
         })
         expect(spyTrackAmplitude).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+          subscription_complete_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_complete_localisation: 'offer activation screen',
           subscription_complete_result: 'succeeded',
         })
@@ -381,6 +382,7 @@ describe('offersDrawer', () => {
           subscription_start_result: 'failed',
         })
         expect(spyTrackAmplitude).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+          subscription_complete_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_complete_localisation: 'offer activation screen',
           subscription_complete_result: 'failed',
         })

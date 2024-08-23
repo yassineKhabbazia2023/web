@@ -3,9 +3,11 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
 import * as helpers from '@/common/utils/helpers'
 import { amplitudeService } from '@kpmg/common'
+import type { ComponentWrapper } from '@/common/types'
 import { nextTick } from 'vue'
 import SubscriptionsTable from '.'
 
+const { subscriptionId, offer } = subscriptionRequestMock[0]
 const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests } = vi.hoisted(() => ({
   mockValidateSubscriptionRequest: vi.fn(() => Promise.resolve()),
   mockFetchSubscriptionRequests: vi.fn(() => Promise.resolve(subscriptionRequestMock)),
@@ -51,7 +53,7 @@ const pTableColumnsLabel: { [key: number]: string } = {
 }
 
 describe('subscriptionsTable', () => {
-  let wrapper: VueWrapper<any>
+  let wrapper: ComponentWrapper<InstanceType<typeof SubscriptionsTable>>
   beforeEach(async () => {
     wrapper = mount(SubscriptionsTable)
     await flushPromises()
@@ -115,13 +117,13 @@ describe('subscriptionsTable', () => {
     wrapper = mount(SubscriptionsTable)
     await flushPromises()
 
-    const subscriptionToolbox = wrapper.findComponent('[data-testid=subscription-actions-toolbox]') as VueWrapper
-    subscriptionToolbox.vm.$emit('p-toolbox-item-clicked', 'validate')
+    wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer })
     await flushPromises()
 
     expect(mockValidateSubscriptionRequest).toHaveBeenCalledOnce()
     expect(spyTrackAmplitude).toHaveBeenCalledTimes(2)
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(1, 'Subscription Completed', {
+      subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
     })
@@ -140,12 +142,12 @@ describe('subscriptionsTable', () => {
     wrapper = mount(SubscriptionsTable)
     await flushPromises()
 
-    const subscriptionToolbox = wrapper.findComponent('[data-testid=subscription-actions-toolbox]') as VueWrapper
-    subscriptionToolbox.vm.$emit('p-toolbox-item-clicked', 'validate')
+    wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer })
     await flushPromises()
 
     expect(spyTrackAmplitude).toHaveBeenCalledTimes(2)
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(1, 'Subscription Completed', {
+      subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
     })
