@@ -198,43 +198,45 @@ const rules = reactive<FormRules<typeof formValue>>({
 const { navigateToCustomerWallet } = useNavigation()
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  formEl.validate(async (valid) => {
-    if (valid) {
-      const data = {
-        contactId,
-        newPassword: formValue.password,
-        resetPasswordToken,
+  formEl.validate((valid) => {
+    (async () => {
+      if (valid) {
+        const data = {
+          contactId,
+          newPassword: formValue.password,
+          resetPasswordToken,
+        }
+        const urlUpdatePassword = 'authentication/api/createNewPassword'
+        try {
+          await commonApi().gateway.post(urlUpdatePassword, data)
+          const urlLogin = 'authentication/api/login'
+          const {
+            data: {
+              userId: id,
+              webToken: token,
+            },
+          } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
+          tokenService.setToken(token)
+          await updateTermsByCurrentUser(termsId.value as number)
+          amplitudeService.track('Onboarding Completed', {
+            onboarding_result: 'succeeded',
+          })
+          store().$patch({
+            user: {
+              id,
+              isCollab: false,
+            },
+          })
+          navigateToCustomerWallet()
+        } catch {
+          amplitudeService.track('Onboarding Completed', {
+            onboarding_result: 'failed',
+          })
+        }
+      } else {
+        return false
       }
-      const urlUpdatePassword = 'authentication/api/createNewPassword'
-      try {
-        await commonApi().gateway.post(urlUpdatePassword, data)
-        const urlLogin = 'authentication/api/login'
-        const {
-          data: {
-            userId: id,
-            webToken: token,
-          },
-        } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
-        tokenService.setToken(token)
-        await updateTermsByCurrentUser(termsId.value as number)
-        amplitudeService.track('Onboarding Completed', {
-          onboarding_result: 'succeeded',
-        })
-        store().$patch({
-          user: {
-            id,
-            isCollab: false,
-          },
-        })
-        navigateToCustomerWallet()
-      } catch {
-        amplitudeService.track('Onboarding Completed', {
-          onboarding_result: 'failed',
-        })
-      }
-    } else {
-      return false
-    }
+    })()
   })
 }
 

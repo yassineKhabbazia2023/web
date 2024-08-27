@@ -152,26 +152,28 @@ const rules = reactive<FormRules<typeof formValue>>({
 
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  formEl.validate(async (valid) => {
-    if (valid) {
-      const data = {
-        contactId,
-        newPassword: formValue.password,
-        resetPasswordToken: token,
-        isCreatePasswordAction: false,
+  formEl.validate((valid) => {
+    (async () => {
+      if (valid) {
+        const data = {
+          contactId,
+          newPassword: formValue.password,
+          resetPasswordToken: token,
+          isCreatePasswordAction: false,
+        }
+        const urlUpdatePassword = 'authentication/api/createNewPassword'
+        try {
+          await commonApi().gateway.post(urlUpdatePassword, data)
+          router.push({ name: 'loginClient' })
+        } catch (error: any) {
+          console.error(error)
+          const { response: { status, data } } = error
+          isPasswordAlreadyUsed.value = status === 400 && data.includes('401030')
+        }
+      } else {
+        return false
       }
-      const urlUpdatePassword = 'authentication/api/createNewPassword'
-      try {
-        await commonApi().gateway.post(urlUpdatePassword, data)
-        router.push({ name: 'loginClient' })
-      } catch (error: any) {
-        console.error(error)
-        const { response: { status, data } } = error
-        isPasswordAlreadyUsed.value = status === 400 && data.includes('401030')
-      }
-    } else {
-      return false
-    }
+    })()
   })
 }
 
