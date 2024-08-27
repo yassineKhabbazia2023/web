@@ -72,37 +72,38 @@ function onClickFilter(activeFilterCodes: number[]) {
   emitRefreshMandateCollection()
 }
 
-const filters = [{
-  pContent: t('creating'),
-  pCode: 99,
-  pColor: 'cyan',
-  pIcon: 'PIHourglass',
-}, {
-  pContent: t('incident'),
-  pCode: 10,
-  pColor: 'danger',
-  pIcon: 'PIExclamationTriangle',
-}, {
-  pContent: t('to-do'),
-  pCode: 20,
-  pColor: 'warning',
-  pIcon: 'PIUpload',
-}, {
-  pContent: t('in-progress'),
-  pCode: 30,
-  pColor: 'amethyste',
-  pIcon: 'PIArrowRepeat',
-}, {
-  pContent: t('active'),
-  pCode: 40,
-  pColor: 'success',
-  pIcon: 'PICheckCircle',
-}, {
-  pContent: t('inactive'),
-  pCode: 50,
-  pColor: 'gray-900',
-  pIcon: 'PIXCircle',
-}]
+const filters = [
+  {
+    pContent: t('incident'),
+    pCode: 10,
+    pColor: 'danger',
+    pIcon: 'PIExclamationTriangle',
+  },
+  {
+    pContent: t('to-do'),
+    pCode: 20,
+    pColor: 'warning',
+    pIcon: 'PIUpload',
+  },
+  {
+    pContent: t('in-progress'),
+    pCode: 30,
+    pColor: 'amethyste',
+    pIcon: 'PIArrowRepeat',
+  },
+  {
+    pContent: t('active'),
+    pCode: 40,
+    pColor: 'success',
+    pIcon: 'PICheckCircle',
+  },
+  {
+    pContent: t('inactive'),
+    pCode: 50,
+    pColor: 'gray-900',
+    pIcon: 'PIXCircle',
+  },
+]
 </script>
 
 <style scoped lang="scss">
@@ -129,7 +130,6 @@ const filters = [{
   en-US:
     bank-mandates: ''
     new-mandate: 'New mandate'
-    creating: 'Creating'
     incident: 'Incident'
     to-do: 'To do'
     in-progress: 'In progress'
@@ -138,7 +138,6 @@ const filters = [{
   fr-FR:
     bank-mandates: ''
     new-mandate: 'Nouveau mandat'
-    creating: 'En création'
     incident: 'Incident'
     to-do: 'À déposer'
     in-progress: 'En cours'

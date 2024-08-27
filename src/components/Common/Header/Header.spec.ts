@@ -37,37 +37,38 @@ describe('header.vue', () => {
   describe('interactions with PFilterGroup', () => {
     it('show emit when click on PFilterGroup', async () => {
       const activeFilters = [10, 20]
-      const expectedFilters = [{
-        pContent: 'Creating',
-        pCode: 99,
-        pColor: 'cyan',
-        pIcon: 'PIHourglass',
-      }, {
-        pContent: 'Incident',
-        pCode: 10,
-        pColor: 'danger',
-        pIcon: 'PIExclamationTriangle',
-      }, {
-        pContent: 'To do',
-        pCode: 20,
-        pColor: 'warning',
-        pIcon: 'PIUpload',
-      }, {
-        pContent: 'In progress',
-        pCode: 30,
-        pColor: 'amethyste',
-        pIcon: 'PIArrowRepeat',
-      }, {
-        pContent: 'Active',
-        pCode: 40,
-        pColor: 'success',
-        pIcon: 'PICheckCircle',
-      }, {
-        pContent: 'Inactive',
-        pCode: 50,
-        pColor: 'gray-900',
-        pIcon: 'PIXCircle',
-      }]
+      const expectedFilters = [
+        {
+          pContent: 'Incident',
+          pCode: 10,
+          pColor: 'danger',
+          pIcon: 'PIExclamationTriangle',
+        },
+        {
+          pContent: 'To do',
+          pCode: 20,
+          pColor: 'warning',
+          pIcon: 'PIUpload',
+        },
+        {
+          pContent: 'In progress',
+          pCode: 30,
+          pColor: 'amethyste',
+          pIcon: 'PIArrowRepeat',
+        },
+        {
+          pContent: 'Active',
+          pCode: 40,
+          pColor: 'success',
+          pIcon: 'PICheckCircle',
+        },
+        {
+          pContent: 'Inactive',
+          pCode: 50,
+          pColor: 'gray-900',
+          pIcon: 'PIXCircle',
+        },
+      ]
       const expectedRefreshMandateCollectionEvent = [
         [{
           currentPage: 1,

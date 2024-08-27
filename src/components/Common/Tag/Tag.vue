@@ -15,12 +15,13 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  PTag,
-  PIExclamationTriangle,
-  PIUpload,
   PIArrowRepeat,
   PICheckCircle,
+  PIExclamationTriangle,
+  PIHourglass,
+  PIUpload,
   PIXCircle,
+  PTag,
 } from '@kpmg/styleguide'
 
 const { t } = useI18n({
@@ -32,7 +33,7 @@ const props = defineProps({
   status: { type: String, required: true },
 })
 const statusMap = new Map([
-  [99, { color: 'cyan', icon: PIExclamationTriangle, content: t('creating') }],
+  [99, { color: 'cyan', icon: PIHourglass, content: t('creating') }],
   [10, { color: 'danger', icon: PIExclamationTriangle, content: t('incident') }],
   [20, { color: 'warning', icon: PIUpload, content: t('to-do') }],
   [30, { color: 'amethyste', icon: PIArrowRepeat, content: t('in-progress') }],
