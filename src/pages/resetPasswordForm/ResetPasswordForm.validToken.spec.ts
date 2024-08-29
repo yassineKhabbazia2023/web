@@ -1,48 +1,7 @@
-import type { ComponentWrapper } from '@/pages/testHelper/testHelperTypes'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
+import { getMockedRouter, getWrapper } from '@/pages/testHelper'
 import ResetPasswordForm from './'
-import type { FormInstance } from 'element-plus'
-
-const routes = [
-  {
-    path: '/expireToken',
-    name: 'expireToken',
-    component: {
-      template: '<p class="page-title">ExpireToken</p>',
-    },
-  },
-  {
-    path: '/resetPasswordForm',
-    name: 'resetPasswordForm',
-    component: {
-      template: '<p class="page-title">ResetPasswordForm</p>',
-    },
-  },
-  {
-    name: 'loginClient',
-    path: '/login',
-    component: {
-      template: '<p class="page-title">Login Client</p>',
-    },
-  },
-]
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-router.push({
-  name: 'resetPasswordForm',
-  path: '/resetPasswordForm',
-  query: {
-    contactId: 'contactId',
-    contactEmail: 'contactEmail',
-    accountId: 'accountId',
-    token: 'token',
-  },
-})
 
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
 vi.mock('@kpmg/common', () => ({
@@ -56,16 +15,20 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-let wrapper: ComponentWrapper<InstanceType <typeof ResetPasswordForm>>
+const router = getMockedRouter(
+  'resetPasswordForm',
+  'ResetPasswordForm',
+  undefined,
+  'contactEmail',
+)
 
-const createWrapper = () =>
-  mount(ResetPasswordForm, {
-    global: {
-      plugins: [router],
-    },
-  })
+function createWrapper() {
+  const stubs: string[] = []
+  return getWrapper(ResetPasswordForm, router, stubs)
+}
 
 describe('page reset password form', () => {
+  let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
     wrapper = createWrapper()
   })
@@ -172,7 +135,7 @@ describe('page reset password form', () => {
       validate: (done: any) => {
         done(false)
       },
-    } as unknown as FormInstance
+    }
     await wrapper.vm.submitForm(mockedForm)
     expect(postMock).not.toHaveBeenCalled()
   })

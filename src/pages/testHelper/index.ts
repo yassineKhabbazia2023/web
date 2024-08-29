@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import type { Component } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteLocationNamedRaw } from 'vue-router'
 
 function getTemplate(text: string) {
   return `<p class="page-title">${text}</p>`
@@ -46,11 +46,11 @@ export function getMockedRouter(
     contactEmail,
     email,
   }
-  router.push({
-    path,
+  const route: RouteLocationNamedRaw = {
     name,
     query,
-  })
+  }
+  router.push(route)
 
   return router
 }

@@ -1,7 +1,6 @@
-import type { ComponentWrapper } from '@/pages/testHelper/testHelperTypes'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises } from '@vue/test-utils'
 import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
+import { getMockedRouter, getWrapper } from '@/pages/testHelper'
 import { amplitudeService, tokenService } from '@kpmg/common'
 import CreatePassword from './'
 import { getLatestTerms, updateTermsByCurrentUser } from '@/services/cgu'
@@ -9,37 +8,6 @@ import type { FormInstance } from 'element-plus'
 
 const mockToken = 'token'
 const VALID_PASSWORD = 'aaAA11@@'
-const routes = [
-  {
-    path: '/expireToken',
-    name: 'expireToken',
-    component: {
-      template: '<p class="page-title">ExpireToken</p>',
-    },
-  },
-  {
-    path: '/createPassword',
-    name: 'createPassword',
-    component: {
-      template: '<p class="page-title">CreatePassword</p>',
-    },
-  },
-]
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-})
-router.push({
-  name: 'createPassword',
-  path: '/createPassword',
-  query: {
-    contactId: 'contactId',
-    accountId: 'accountId',
-    token: mockToken,
-    email: 'email',
-  },
-})
 
 const patchMock = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
@@ -86,12 +54,16 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-const createWrapper = (): ComponentWrapper<InstanceType <typeof CreatePassword>> =>
-  mount(CreatePassword, {
-    global: {
-      plugins: [router],
-    },
-  })
+const router = getMockedRouter(
+  'createPassword',
+  'CreatePassword',
+  'email',
+)
+
+function createWrapper() {
+  const stubs: string[] = []
+  return getWrapper(CreatePassword, router, stubs)
+}
 
 describe('page creation password', () => {
   let wrapper: ReturnType<typeof createWrapper>

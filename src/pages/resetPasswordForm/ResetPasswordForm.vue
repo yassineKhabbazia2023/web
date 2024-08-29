@@ -167,7 +167,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           router.push({ name: 'loginClient' })
         } catch (error: any) {
           console.error(error)
-          const { response: { status, data } } = error
+          const { status, data } = error?.response ?? {}
           isPasswordAlreadyUsed.value = status === 400 && data.includes('401030')
         }
       } else {
