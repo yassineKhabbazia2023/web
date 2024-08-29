@@ -252,8 +252,8 @@ function onCloseOccurrenceDrawer() {
   debounceRefreshData()
 }
 
-function onCalendarWidgetChange(newCalendarWidgetDate: Date) {
-  calendarWidgetDate.value = newCalendarWidgetDate
+function onCalendarWidgetChange(newCalendarWidgetDate: PDatePickerModelValue) {
+  calendarWidgetDate.value = newCalendarWidgetDate as Date
 
   debounceRefreshCalendarWidgetData()
 }
