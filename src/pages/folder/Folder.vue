@@ -13,7 +13,6 @@
       <p class="margin-left--3 folder-wrapper__default-entity h4">
         {{ defaultEntity?.legalName }}
       </p>
-      <div class="folder__teleported-content" />
     </div>
     <PTabs
       v-if="!isLoading"

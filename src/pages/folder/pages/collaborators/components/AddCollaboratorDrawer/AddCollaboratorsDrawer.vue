@@ -1,6 +1,7 @@
 <template>
   <PDrawer
     data-testid="add-collaborator-drawer"
+    pSize="50%"
     v-model="isAddCollaboratorsDrawerOpened"
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"

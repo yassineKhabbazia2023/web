@@ -89,10 +89,7 @@ describe('collaborators', () => {
     wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
   beforeEach(() => {
-    const folderWrapperForBtn = document.createElement('div')
     spyConsole = vi.spyOn(console, 'error')
-    folderWrapperForBtn.classList.add('folder__teleported-content')
-    document.body.appendChild(folderWrapperForBtn)
     vi.spyOn(contactServices, 'getContactById').mockRejectedValue(
       expectedErrorMessage,
     )

@@ -1,24 +1,6 @@
 <template>
-  <div class="flex flex--direction-column sticky-wrapper">
+  <div class="flex flex--direction-column user-clients">
     <div class="flex--grow-1 padding--2">
-      <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
-      <Teleport
-        v-if="shouldDisplayTeleport"
-        to=".folder__teleported-content"
-      >
-        <PButton
-          @click="isAddCustomerDrawerOpened = true"
-          pType="primary"
-          pSize="small"
-          data-testid="add-customer-button"
-        >
-          <PIcon>
-            <PIPersonAdd />
-          </PIcon>
-          <span class="padding-left--2">{{ t('addCustomer') }}</span>
-        </PButton>
-      </Teleport>
-
       <AddCustomerDrawer
         v-if="currentEntityId &&
           currentEntityName &&
@@ -31,8 +13,23 @@
         :targetEntityNumber="currentEntityNumber"
         @refresh-customers-list="fetchUsers"
       />
-      <div class="margin-bottom--6">
-        <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
+      <div class="flex margin-bottom--6">
+        <FormSearch
+          class="user-clients__search-bar margin-right--4"
+          @search-value-submitted="handleSearchValueSubmitted"
+        />
+        <PButton
+          v-if="isAddUserButtonVisible"
+          @click="isAddCustomerDrawerOpened = true"
+          pType="primary"
+          pSize="small"
+          data-testid="add-customer-button"
+        >
+          <PIcon>
+            <PIPersonAdd />
+          </PIcon>
+          <span class="padding-left--2">{{ t('addCustomer') }}</span>
+        </PButton>
       </div>
 
       <div
@@ -242,7 +239,7 @@ const currentEntityNumber = computed(() => defaultEntity.value?.accountNumber)
 const isAddCustomerDrawerOpened = ref(false)
 const principalContacts = ref<ClientContact[]>([])
 
-const shouldDisplayTeleport = computed(() =>
+const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
   isMounted.value &&
   canAddUser.value &&
@@ -276,7 +273,10 @@ async function loadPrincipalContacts() {
 </script>
 
 <style lang="scss" scoped>
-.sticky-wrapper {
+.user-clients {
+  &__search-bar {
+    width: 100%;
+  }
   // due to the bottom bar on small screens
   @media (min-width: 993px) {
     min-height: 100%;

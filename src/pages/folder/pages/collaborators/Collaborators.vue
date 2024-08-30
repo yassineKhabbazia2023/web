@@ -13,23 +13,23 @@
       :collabDetails="rowDataForDrawers"
     />
 
-    <!-- the target for this teleport is the page folder, here src/pages/folder/Folder.vue -->
-    <Teleport
-      v-if="shouldShowAddButton"
-      to=".folder__teleported-content"
-    >
+    <div class="flex margin-bottom--6">
+      <FormSearch
+        class="user-collabs__search-bar margin-right--4"
+        @search-value-submitted="handleSearchValueSubmitted"
+      />
       <PButton
+        v-if="isAddUserButtonVisible"
         @click="isAddCollaboratorsDrawerOpened = true"
         pType="primary"
         pSize="small"
         data-testid="add-collaborator-button"
       >
-        {{ t('addCollaborator') }}
+        <PIcon>
+          <PIPersonAdd />
+        </PIcon>
+        <span class="padding-left--2">{{ t('addCollaborator') }}</span>
       </PButton>
-    </Teleport>
-
-    <div class="margin-bottom--6">
-      <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
     </div>
 
     <div
@@ -170,6 +170,7 @@ import {
   PTable,
   PTableColumn,
   PToolbox,
+  PIPersonAdd,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
 import {
@@ -375,7 +376,7 @@ const shouldShowPagination = computed(() =>
   !isLoading.value && state.totalItems,
 )
 
-const shouldShowAddButton = computed(() =>
+const isAddUserButtonVisible = computed(() =>
   currentEntityId !== undefined && isMounted.value && isCollab.value,
 )
 
@@ -442,6 +443,11 @@ watch(() => [
 
 <!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style lang="scss">
+.user-collabs {
+  &__search-bar {
+    width: 100%;
+  }
+}
 .collab-table {
   .cell {
     padding-top: 0.8rem;
