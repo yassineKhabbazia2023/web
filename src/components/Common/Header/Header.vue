@@ -68,6 +68,13 @@ function emitRefreshMandateCollection() {
 }
 
 function onClickFilter(activeFilterCodes: number[]) {
+  /* We are waiting for the back end to change the way ids are handled
+  Until then, we are explicitely pushing "-1" which also corresponds to
+  the "incident" (10) state
+  doing it the appropriate way would imply a refact of the Filter Group to allow array of values
+  */
+
+  if (activeFilterCodes.includes(10)) activeFilterCodes.push(-1)
   activeFilters.value = activeFilterCodes
   emitRefreshMandateCollection()
 }

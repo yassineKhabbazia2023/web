@@ -2,6 +2,7 @@ import type { Mandate } from '@/pages/home/Models'
 import { commonApi as api } from '@kpmg/common'
 import type { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
 import type { SearchMandateParams } from './ServiceMandateTypes'
+import { mandateAvailabilityCheckStatuses } from '@/constants/mandateStatuses'
 
 export const getCompany = ({
   ibsNumber,
@@ -79,10 +80,13 @@ export function getMandatesCollection(searchParams: SearchMandateParams) {
   })
 }
 
-export async function getMandateAvailability(mandateId: Mandate['id']): Promise<boolean> {
-  const { status } = await api().gateway.get(`mandate/api/mandate/${mandateId}/check/status`)
+export async function getMandateAvailability(mandateId: Mandate['id']): Promise<number> {
+  const { data, status } = await api().gateway.get(`mandate/api/mandate/${mandateId}/check/status`)
 
-  return status === 200
+  if (status === 204) return mandateAvailabilityCheckStatuses.NOT_AVAILABLE
+  return data.created === true
+    ? mandateAvailabilityCheckStatuses.AVAILABLE
+    : mandateAvailabilityCheckStatuses.ERRORED
 }
 
 export const createMandate = async ({

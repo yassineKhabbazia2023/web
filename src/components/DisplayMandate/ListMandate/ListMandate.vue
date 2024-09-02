@@ -236,7 +236,7 @@ const actionsBuilder = (statusCode: string | number, jdcPartnership: string | nu
     actions.push({
       pIconName: 'PIDownload',
       pValue: t('download-signed-mandate'),
-      disabled: [20, 50, 99].includes(statusCodeNumber),
+      disabled: [10, 20, 50, 99].includes(statusCodeNumber),
       pActionName: 'download-signed-mandate',
       pState: 'default',
     })

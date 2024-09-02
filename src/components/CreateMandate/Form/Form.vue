@@ -511,13 +511,14 @@ const isBbanComplete = async () => {
     'accountNumber',
     'key',
   ]
-  return fieldsToValidate.every(field => createMandateForm[field] !== '') && await asyncEvery(fieldsToValidate, async (inputValue: string) => {
-    try {
-      return await createMandateFormRef?.value?.validateField(inputValue)
-    } catch (error) {
-      console.error(`Error in RIB field ${inputValue}`, error)
-    }
-  })
+  return fieldsToValidate.every(field => createMandateForm[field] !== '') &&
+    await asyncEvery(fieldsToValidate, async (inputValue: string) => {
+      try {
+        return await createMandateFormRef?.value?.validateField(inputValue)
+      } catch (error) {
+        console.error(`Error in RIB field ${inputValue}`, error)
+      }
+    })
 }
 
 const checkFields = async () => {
@@ -564,8 +565,11 @@ const createValidator = (
 ) => ({
   required: true,
   validator: async (_: any, value: string, callback: any) => {
-    if (value.length !== length) {
+    if (value.length !== length && fieldName === 'institutionCode') {
       createMandateForm.bank = ''
+      callback(new Error(errorMsg))
+    }
+    if (value.length !== length) {
       callback(new Error(errorMsg))
     } else if (!regex.test(value)) {
       callback(new Error(regexErrorMsg))

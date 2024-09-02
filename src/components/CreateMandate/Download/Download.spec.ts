@@ -6,6 +6,7 @@ import { expect, describe, it, vi, beforeEach } from 'vitest'
 import { downloadUnsignedMandate, getMandateAvailability } from '@/services/mandate'
 import { downloadFile, saveFileAs } from '@/helpers/utils'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
+import { mandateAvailabilityCheckStatuses } from '@/constants/mandateStatuses'
 
 interface Window {
   showSaveFilePicker: any
@@ -16,8 +17,9 @@ declare let window: Window
 const data = 'pdf-data'
 
 const apiMocks = vi.hoisted(() => ({
-  availaibleMandate: vi.fn(() => Promise.resolve(true)),
-  unavailaibleMandate: vi.fn(() => Promise.resolve(false)),
+  availaibleMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.AVAILABLE)),
+  unavailaibleMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.NOT_AVAILABLE)),
+  erroredMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.ERRORED)),
 }))
 
 vi.mock('@/services/mandate', () => ({
@@ -29,6 +31,15 @@ vi.mock('@/helpers/utils', () => ({
   saveFileAs: vi.fn(),
   downloadFile: vi.fn(),
 }))
+
+const notificationSpy = vi.hoisted(() => vi.fn(() => ({ close: vi.fn() })))
+vi.mock('@kpmg/styleguide', async () => {
+  const actual = await vi.importActual('@kpmg/styleguide') as Object
+  return {
+    ...actual,
+    PNotification: notificationSpy,
+  }
+})
 
 const mandateId = '1243-4546-35323-43'
 
@@ -137,5 +148,16 @@ describe('mandate not yet available', () => {
 
     await vi.advanceTimersByTimeAsync(10000)
     expect(vi.mocked(getMandateAvailability)).toHaveBeenCalledTimes(4)
+  })
+})
+
+describe('mandate is errored', () => {
+  it('should display a notification when mandated becomes errored', async () => {
+    vi.mocked(getMandateAvailability).mockReturnValue(apiMocks.erroredMandate())
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    expect(wrapper.emitted()).toHaveProperty('close-drawer')
+    expect(notificationSpy).toHaveBeenCalledOnce()
   })
 })

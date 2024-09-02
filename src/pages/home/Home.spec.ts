@@ -22,6 +22,19 @@ const createWrapper = (props: any) =>
     props,
   })
 
+const baseParams: SearchMandateParams = {
+  limit: 15,
+  searchTerm: '',
+  currentPage: 2,
+  sortCriteria: '',
+  sortOrder: 'Descending',
+  statusCodes: [],
+  creationDateStart: '',
+  creationDateEnd: '',
+  modificationDateStart: '',
+  modificationDateEnd: '',
+}
+
 describe('test Home.vue', () => {
   let wrapper: VueWrapper
   let mockedGetMandatesCollection: SpyInstance
@@ -44,28 +57,21 @@ describe('test Home.vue', () => {
     pagination.vm.$emit('page-selected', {
       currentPage: 2,
     })
-    const expectedParams: SearchMandateParams = {
-      limit: 15,
-      searchTerm: '',
-      currentPage: 2,
-      sortCriteria: '',
-      sortOrder: 'Descending',
-      statusCodes: [],
-      creationDateStart: '',
-      creationDateEnd: '',
-      modificationDateStart: '',
-      modificationDateEnd: '',
-    }
 
     expect(mockedGetMandatesCollection).toHaveBeenCalledTimes(2)
-    expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expectedParams)
+    expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(baseParams)
   })
 
   it('should call mockedGetMandatesCollection when Header emits "refresh-mandate-collection"', () => {
     const header = wrapper.findComponent({ name: 'Header' })
     expect(mockedGetMandatesCollection).toHaveBeenCalledOnce()
 
-    header.vm.$emit('refresh-mandate-collection', {})
+    const eventBody = {
+      ...baseParams,
+      statusCodes: [10],
+    }
+    header.vm.$emit('refresh-mandate-collection', eventBody)
+    expect(mockedGetMandatesCollection).toHaveBeenCalledWith(eventBody)
     expect(mockedGetMandatesCollection).toHaveBeenCalledTimes(2)
   })
 
@@ -95,16 +101,9 @@ describe('test Home.vue', () => {
     await ibsInputElement.trigger('change')
     await vi.advanceTimersByTimeAsync(550)
     const expected: SearchMandateParams = {
-      currentPage: 1,
-      limit: 15,
+      ...baseParams,
       searchTerm: inputValue,
-      sortCriteria: '',
-      sortOrder: 'Descending',
-      statusCodes: [],
-      creationDateStart: '',
-      creationDateEnd: '',
-      modificationDateStart: '',
-      modificationDateEnd: '',
+      currentPage: 1,
     }
     expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expected)
   })
@@ -120,4 +119,6 @@ describe('test Home.vue', () => {
     expect(consoleErrorSpy).toHaveBeenCalledOnce()
     expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, `Error while refresh data ${error}`)
   })
+
+  it.todo('should the handle the filters')
 })

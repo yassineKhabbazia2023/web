@@ -108,58 +108,98 @@ import {
   ref,
 } from 'vue'
 import {
+  PAlert,
+  PButton,
   PFileCard,
   PIcon,
-  PButton,
-  PIFiletypePdf,
   PIDownload,
+  PIExclamationTriangle,
+  PIFiletypePdf,
   PImage,
   PLoader,
-  PAlert,
+  PNotification,
 } from '@kpmg/styleguide'
 import { downloadUnsignedMandate, getMandateAvailability } from '@/services/mandate'
 import { downloadFile, saveFileAs } from '@/helpers/utils'
 import { showNotification } from '@/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
 import type { DownloadProps } from './DownloadTypes'
+import { mandateAvailabilityCheckStatuses } from '@/constants/mandateStatuses'
 
 const props = defineProps<DownloadProps>()
+const emit = defineEmits<{
+  'close-drawer': [void]
+}>()
 
 /* #region Mandate status tracking */
-const isTrackedMandateAvailable = ref(false)
+const trackedMandateState = ref(mandateAvailabilityCheckStatuses.NOT_AVAILABLE)
 const availabilityTrackerIntervalId = ref<ReturnType<typeof setInterval>>()
+
+const isTrackedMandateAvailable = computed(
+  () => trackedMandateState.value === mandateAvailabilityCheckStatuses.AVAILABLE,
+)
+
+const isTrackedMandateNotAvailable = computed(
+  () => trackedMandateState.value === mandateAvailabilityCheckStatuses.NOT_AVAILABLE,
+)
+
+const isTrackedMandateErrored = computed(
+  () => trackedMandateState.value === mandateAvailabilityCheckStatuses.ERRORED,
+)
 
 onBeforeMount(async () => {
   try {
-    isTrackedMandateAvailable.value = await getMandateAvailability(props.mandateId)
+    trackedMandateState.value = await getMandateAvailability(props.mandateId)
   } catch (error) {
     console.error(error)
   }
 
   if (isTrackedMandateAvailable.value) return
-  availabilityTrackerIntervalId.value = setInterval(() => {
-    trackMandateStatus()
-  }, 10000)
+  if (isTrackedMandateNotAvailable.value) {
+    availabilityTrackerIntervalId.value = setInterval(() => {
+      trackMandateStatus()
+    }, 10000)
+  }
+  if (isTrackedMandateErrored.value) {
+    handleErroredMandate()
+  }
 })
 
 onBeforeUnmount(() => {
   clearInterval(availabilityTrackerIntervalId.value)
 })
 
+function resetInterval() {
+  clearInterval(availabilityTrackerIntervalId.value)
+  availabilityTrackerIntervalId.value = undefined
+}
+
 async function trackMandateStatus() {
   try {
-    isTrackedMandateAvailable.value = await getMandateAvailability(props.mandateId)
-    if (isTrackedMandateAvailable.value) {
-      clearInterval(availabilityTrackerIntervalId.value)
-      availabilityTrackerIntervalId.value = undefined
-    }
+    trackedMandateState.value = await getMandateAvailability(props.mandateId)
+    if (isTrackedMandateAvailable.value || isTrackedMandateErrored.value) resetInterval()
   } catch (error) {
     console.error('Mandate status tracking is not available')
   }
 }
+
+function handleErroredMandate() {
+  displayErrorStatusNotification()
+  emit('close-drawer')
+}
+
+function displayErrorStatusNotification() {
+  PNotification({
+    message: t('notification.technical-error'),
+    icon: PIExclamationTriangle,
+    showClose: true,
+    customClass: 'error',
+    position: 'bottom-right',
+  })
+}
 /* #endregion */
 
-const title = computed(() => isTrackedMandateAvailable.value
+const title = computed(() => trackedMandateState.value
   ? t('generated-mandate')
   : t('creating-mandate'))
 
@@ -269,6 +309,7 @@ const { t } = useI18n({
     notification:
       downloading: 'The download is in preparation'
       downloading-error: 'There was an error during preparation'
+      technical-error: 'A technical issue has occurred, please try again later'
   fr-FR:
     creating-mandate: 'Le mandat est en cours de création.'
     keep-open-or-close: >
@@ -285,4 +326,5 @@ const { t } = useI18n({
     notification:
       downloading: 'Le téléchargement est en cours de préparation'
       downloading-error: "Il y'a eu une erreur lors de la préparation"
+      technical-error: "Un incident technique est survenu, merci de réessayer ultérieurement."
 </i18n>
