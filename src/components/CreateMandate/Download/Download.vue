@@ -133,6 +133,7 @@ const emit = defineEmits<{
 
 /* #region Mandate status tracking */
 const trackedMandateState = ref(mandateAvailabilityCheckStatuses.NOT_AVAILABLE)
+
 const availabilityTrackerIntervalId = ref<ReturnType<typeof setInterval>>()
 
 const isTrackedMandateAvailable = computed(
@@ -177,7 +178,13 @@ function resetInterval() {
 async function trackMandateStatus() {
   try {
     trackedMandateState.value = await getMandateAvailability(props.mandateId)
-    if (isTrackedMandateAvailable.value || isTrackedMandateErrored.value) resetInterval()
+    if (isTrackedMandateAvailable.value) {
+      resetInterval()
+    }
+    if (isTrackedMandateErrored.value) {
+      handleErroredMandate()
+      resetInterval()
+    }
   } catch (error) {
     console.error('Mandate status tracking is not available')
   }
@@ -199,7 +206,7 @@ function displayErrorStatusNotification() {
 }
 /* #endregion */
 
-const title = computed(() => trackedMandateState.value
+const title = computed(() => isTrackedMandateAvailable.value
   ? t('generated-mandate')
   : t('creating-mandate'))
 
