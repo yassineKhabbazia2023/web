@@ -42,3 +42,8 @@ Thumbs.db
 .npmrc
 
 *.mjs
+
+# stryker temp files
+.stryker-tmp
+stryker.log
+stryker/reports
