@@ -44,7 +44,7 @@
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@intlify/unplugin-vue-i18n": "^0.11.0",
-    "@kpmg/config-pulse": "file:./kpmg-config-pulse-1.59.2.tgz",
+    "@kpmg/config-pulse": "^1.73.34",
     "@kpmg/eslint-config-pulse": "^1.72.5",
     "@rollup/plugin-terser": "^0.4.4",
     "@stryker-mutator/core": "^8.5.0",
