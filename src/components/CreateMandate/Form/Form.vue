@@ -396,6 +396,9 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
     })
     isIBSValid.value = true
     areFieldsFilledStepBased(props.step)
+    if (!data.siretNumber || data.siretNumber === null || data.siretNumber.trim() === '') {
+      return emit('enable-disable-next', false)
+    }
     return emit('enable-disable-next', true)
   }
 }
