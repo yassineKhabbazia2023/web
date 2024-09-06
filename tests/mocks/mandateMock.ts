@@ -31,6 +31,7 @@ export function getMockedMandatesData() {
       creationDate: '2023-08-14T13:12:31.926Z',
       modificationDate: '2023-08-14T13:12:31.926Z',
       statusCode: '40',
+      jdcStatusCode: '99',
     },
     {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13029',
@@ -42,6 +43,7 @@ export function getMockedMandatesData() {
       creationDate: '2023-08-14T13:12:31.926Z',
       modificationDate: '2023-08-14T13:12:31.926Z',
       statusCode: '20',
+      jdcStatusCode: '99',
     },
     {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13030',
@@ -53,6 +55,7 @@ export function getMockedMandatesData() {
       creationDate: '2023-08-14T13:12:31.926Z',
       modificationDate: '2023-08-14T13:12:31.926Z',
       statusCode: '30',
+      jdcStatusCode: '99',
     },
   ]
 
