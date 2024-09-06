@@ -249,7 +249,7 @@ const actionsBuilder = (statusCode: string | number, jdcPartnership: string | nu
   return actions
 }
 const shouldDisableDownloadButton = (statusCode: number, jdcStatusCode: number) => {
-  return [20, 50, 99].includes(statusCode) || (statusCode === 10 && jdcStatusCode !== 98)
+  return [20, 50, 99].includes(statusCode) || (statusCode === 10 && jdcStatusCode === 98)
 }
 const sortColumnChange = ({ order, prop }: any) => {
   const criteriaMapper: any = {
