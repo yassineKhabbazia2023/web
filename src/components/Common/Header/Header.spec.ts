@@ -36,7 +36,7 @@ describe('header.vue', () => {
 
   describe('interactions with PFilterGroup', () => {
     it('show emit when click on PFilterGroup', async () => {
-      const activeFilters = [10, 20]
+      const activeFilters = [20]
       const expectedFilters = [
         {
           pContent: 'Incident',
