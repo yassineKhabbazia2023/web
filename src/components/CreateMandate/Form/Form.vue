@@ -436,6 +436,7 @@ const areFieldsFilledStepBased = (step: number) => {
       'firstName',
       'lastName',
       'street',
+      'email',
       'zipCode',
       'city',
       'country',
@@ -609,7 +610,7 @@ const rules = reactive<any>({
   lastName: [createRule(requiredFieldMessage)],
   email: [
     createRule(requiredFieldMessage, 'blur'),
-    { validator: validateEmail, trigger: 'blur' },
+    { validator: validateEmail, trigger: ['change', 'blur'] },
   ],
   street: [createRule(requiredFieldMessage)],
   zipCode: [
