@@ -25,21 +25,42 @@ vi.mock('@amplitude/analytics-browser', async () => {
 describe('amplitude', () => {
   let amplitudeService: AmplitudeService
   beforeEach(() => {
-    amplitudeService = AmplitudeService.getInstance()
+    amplitudeService = new AmplitudeService()
   })
 
-  it('can init', () => {
+  it('can init with serverUrl', () => {
+    const FAKE_API_KEY = '42'
+
+    expect(initSpy).toHaveBeenCalledTimes(0)
+
+    const serverUrl = 'https://api.eu.amplitude.com/2/httpapi'
+
+    amplitudeService.init(FAKE_API_KEY, serverUrl)
+    amplitudeService.init(FAKE_API_KEY) // call init twice
+
+    expect(initSpy).toHaveBeenCalledOnce()
+
+    expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, {
+      serverZone: SERVER_ZONE,
+      defaultTracking: false,
+      serverUrl,
+      minIdLength: 1,
+    })
+  })
+
+  it('can init without serverUrl', () => {
     const FAKE_API_KEY = '42'
 
     expect(initSpy).toHaveBeenCalledTimes(0)
 
     amplitudeService.init(FAKE_API_KEY)
-    amplitudeService.init(FAKE_API_KEY) // call init twice
 
     expect(initSpy).toHaveBeenCalledOnce()
+
     expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, {
       serverZone: SERVER_ZONE,
       defaultTracking: false,
+      serverUrl: undefined,
       minIdLength: 1,
     })
   })

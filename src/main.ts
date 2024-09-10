@@ -26,7 +26,7 @@ export const hasTokenExpired = isTokenExpired
 export const dataProvider = useDataProvider
 export const userPermissions = useUserPermissions
 export const tokenService = reactive(TokenService.getInstance())
-export const amplitudeService = AmplitudeService.getInstance()
+export const amplitudeService = new AmplitudeService()
 
 export { DataStreamHubConnection }
 export { debounce }

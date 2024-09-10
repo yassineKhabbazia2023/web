@@ -3,23 +3,13 @@ import * as amplitude from '@amplitude/analytics-browser'
 import type { BaseEvent } from '@amplitude/analytics-types'
 
 export default class AmplitudeService {
-  // eslint-disable-next-line no-use-before-define
-  private static instance: AmplitudeService
   private isInitiated: boolean
 
-  private constructor() {
+  constructor() {
     this.isInitiated = false
   }
 
-  static getInstance(): AmplitudeService {
-    if (!AmplitudeService.instance) {
-      AmplitudeService.instance = new AmplitudeService()
-    }
-
-    return AmplitudeService.instance
-  }
-
-  public init(apiKey: string) {
+  public init(apiKey: string, serverUrl?: string) {
     if (!this.isInitiated) {
       amplitude.init(
         apiKey,
@@ -28,6 +18,7 @@ export default class AmplitudeService {
           serverZone: SERVER_ZONE,
           defaultTracking: false,
           minIdLength: 1,
+          serverUrl,
         },
       )
       this.isInitiated = true
