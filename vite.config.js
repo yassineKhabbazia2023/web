@@ -1,7 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, mergeConfig } from 'vite'
 import path from 'path'
-import eslint from 'vite-plugin-eslint'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import terser from '@rollup/plugin-terser'
@@ -18,7 +17,6 @@ export default ({ mode }) =>
   defineConfig(
     mergeConfig(viteBaseConfig, {
       plugins: [
-        eslint(),
         visualizer(),
         vue({
           template: {

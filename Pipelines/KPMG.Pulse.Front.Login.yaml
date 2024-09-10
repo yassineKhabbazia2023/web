@@ -28,5 +28,5 @@ extends:
     devIndex: ${{ parameters.devIndex }}
     deployType: ${{ parameters.deployType }}
     sonarExclusions: |
-      vitest.setup.ts,vite.config.js,src/main.ts
+      vitest.setup.ts,vite.config.js,src/main.ts,stryker/**.*
 
