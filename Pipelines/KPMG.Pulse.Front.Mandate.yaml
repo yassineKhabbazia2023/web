@@ -27,3 +27,5 @@ extends:
     mfe: mandate
     devIndex: ${{ parameters.devIndex }}
     deployType: ${{ parameters.deployType }}
+    sonarExclusions: |
+      *.config.js,vitest.setup.ts,src/router/index.ts,src/main.ts,stryker/**.*

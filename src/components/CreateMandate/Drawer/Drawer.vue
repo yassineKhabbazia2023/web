@@ -227,9 +227,11 @@ const emit = defineEmits<{
   'new-mandate-created': []
 }>()
 
-const props = defineProps({
-  modelValue: Boolean,
-})
+type DrawerProps = {
+  modelValue: boolean
+}
+
+const props = defineProps<DrawerProps>()
 
 const drawerModel = computed({
   get() {

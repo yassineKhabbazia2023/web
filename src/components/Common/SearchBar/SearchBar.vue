@@ -18,12 +18,11 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { PInput, PIcon, PISearch } from '@kpmg/styleguide'
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: null,
-  },
-})
+type SearchBarProps = {
+  modelValue: string
+}
+
+const props = defineProps<SearchBarProps>()
 
 const emit = defineEmits(['update:modelValue'])
 

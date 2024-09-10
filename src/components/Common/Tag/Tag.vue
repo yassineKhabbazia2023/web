@@ -29,9 +29,12 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const props = defineProps({
-  status: { type: String, required: true },
-})
+type TagProps = {
+  status: string
+}
+
+const props = defineProps<TagProps>()
+
 const statusMap = new Map([
   [99, { color: 'cyan', icon: PIHourglass, content: t('creating') }],
   [10, { color: 'danger', icon: PIExclamationTriangle, content: t('incident') }],
