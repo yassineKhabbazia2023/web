@@ -38,7 +38,7 @@ const { t } = useI18n({
 })
 
 withDefaults(defineProps<Props>(), {
-  placeholder: () => useI18n().t('search'),
+  placeholder: 'Rechercher', // should not use i18n in default props. Better not to give any default value
 })
 
 const emit = defineEmits<{
@@ -75,9 +75,7 @@ defineExpose({
 
 <i18n lang="yaml">
   en-US:
-    search: 'Search'
     errorSearchInvalid: 'Minimum three characters required'
   fr-FR:
-    search: 'Rechercher'
     errorSearchInvalid: 'Trois caractères minimum requis'
 </i18n>

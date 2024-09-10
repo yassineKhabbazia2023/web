@@ -18,7 +18,7 @@
       <template #default="scope">
         <PButton
           v-if="scope.row.isFavorite"
-          @click.stop="handleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
+          @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
           pType="white"
           pSize="small"
           pIconOnly
@@ -30,7 +30,7 @@
         </PButton>
         <PButton
           v-if="!scope.row.isFavorite"
-          @click.stop="handleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
+          @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
           pType="white"
           pSize="small"
           pIconOnly
@@ -219,8 +219,13 @@ const { t } = useI18n({
 const props = withDefaults(defineProps<TableDataProps>(), {
   data: [],
   isAccountManagement: false,
-  handleAddFavorite: () => {},
 })
+
+const callHandleAddFavorite = (accountId: number, isFavorite: boolean) => {
+  if (props.handleAddFavorite) {
+    props.handleAddFavorite(accountId, isFavorite)
+  }
+}
 
 const { hasPermission } = userPermissions()
 

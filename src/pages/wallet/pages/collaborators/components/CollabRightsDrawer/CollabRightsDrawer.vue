@@ -83,6 +83,7 @@ import {
   type Role,
   type CollabRightsDrawerProps,
 } from './CollabRightsDrawerTypes'
+import type { Contact } from '@/services/contact/contactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -90,7 +91,10 @@ const { t } = useI18n({
 })
 
 const router = useRouter()
-const emit = defineEmits(['update:modelValue', 'update-collaborator-role'])
+const emit = defineEmits<{
+  'update:modelValue': [boolean]
+  'update-collaborator-role': [Contact]
+}>()
 const props = defineProps<CollabRightsDrawerProps>()
 
 const isLoading = ref(true)
