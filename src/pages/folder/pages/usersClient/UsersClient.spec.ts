@@ -167,7 +167,7 @@ describe('usersClient', () => {
       })
 
       expect(mockGatewayGet).toHaveBeenCalledOnce()
-      expect(mockGatewayGet).toHaveBeenNthCalledWith(1, 2, urlSearchParams)
+      expect(mockGatewayGet).toHaveBeenNthCalledWith(1, urlSearchParams)
     })
 
     it('displays error message when API call fails', async () => {

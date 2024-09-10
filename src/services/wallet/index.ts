@@ -47,8 +47,8 @@ export async function fetchAccountContacts(
   return response?.data
 }
 
-export async function fetchCustomers(userId: number | undefined, searchParams: URLSearchParams) {
-  const url = `${API_PREFIXES.CUSTOMER_WALLET}/customers/${userId}?${searchParams}`
+export async function fetchCustomers(searchParams: URLSearchParams) {
+  const url = `${API_PREFIXES.CUSTOMER_WALLET}/customers/currentuser?${searchParams}`
   const { data } = await commonApi().gateway.get(url)
 
   return data

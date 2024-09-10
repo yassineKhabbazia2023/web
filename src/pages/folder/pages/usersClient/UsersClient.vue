@@ -199,7 +199,7 @@ async function fetchUsers() {
     const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
     const data = props.entityId
       ? await fetchAccountContacts(props.entityId, searchParams)
-      : await fetchCustomers(userStore.$state.user?.id, searchParams)
+      : await fetchCustomers(searchParams)
 
     const { items, currentPage, totalPages, totalItems } = data
 

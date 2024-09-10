@@ -160,7 +160,6 @@ describe('collaborateurs/admin', () => {
 
   describe('fetchCustomers', () => {
     it("should return list of user's customers", async () => {
-      const accountId = 34
       const mockedData = {
         items: [],
       }
@@ -177,8 +176,8 @@ describe('collaborateurs/admin', () => {
         limit: '50',
       }
       const searchParams = new URLSearchParams(params)
-      const contacts = await fetchCustomers(accountId, searchParams)
-      const expectedArguments = 'customer-wallet/api/customers/34?searchTerm=search+term&limit=50'
+      const contacts = await fetchCustomers(searchParams)
+      const expectedArguments = 'customer-wallet/api/customers/currentuser?searchTerm=search+term&limit=50'
 
       expect(getSpy).toHaveBeenCalledOnce()
       expect(getSpy).toHaveBeenNthCalledWith(1, expectedArguments)
