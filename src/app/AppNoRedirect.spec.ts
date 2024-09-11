@@ -8,6 +8,7 @@ import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/Sid
 import { ROUTES, PAGES_TITLE } from './mock'
 import { amplitudeService, commonStore, type Entity } from '@kpmg/common'
 import { nextTick } from 'vue'
+import * as mockedEnvVar from 'env-vars'
 import App from '.'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
@@ -98,19 +99,12 @@ const createWrapper = (userStore = {}) =>
   })
 
 describe('app with navigation guard', () => {
-  let navigatorSpy: SpyInstance
   let initAmplitudeServiceSpy: SpyInstance
   beforeEach(() => {
     vi.useFakeTimers()
-    navigatorSpy = vi.spyOn(window, 'navigator', 'get')
     initAmplitudeServiceSpy = vi.spyOn(amplitudeService, 'init')
     ROUTES.map((route) => router.addRoute(route))
   })
-
-  const setDoNotTrack = (value: '1' | '0' | null) =>
-    navigatorSpy.mockImplementation(() => ({
-      doNotTrack: value,
-    }))
 
   it('redirects to the correct page with the appropriate layout when the user has a token', async () => {
     const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
@@ -141,18 +135,26 @@ describe('app with navigation guard', () => {
     expect(router.currentRoute.value.name).toBe('wallet')
   })
 
-  it("should initialize the Amplitude service when tracking is active in the user's browser", () => {
-    setDoNotTrack('0')
+  it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY and VITE_AMPLITUDE_SERVER_URL are not empty', () => {
     createWrapper()
 
     expect(initAmplitudeServiceSpy).toHaveBeenCalledOnce()
+    expect(initAmplitudeServiceSpy).toHaveBeenCalledWith('mocked-amplitude-api-key', 'mocked-amplitude-server-url')
   })
 
-  it("should not initialize the Amplitude service when tracking is not active in the user's browser", () => {
-    setDoNotTrack('1')
+  it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY is not empty and VITE_AMPLITUDE_SERVER_URL is empty', () => {
+    vi.mocked(mockedEnvVar).VITE_AMPLITUDE_SERVER_URL = ''
     createWrapper()
 
-    expect(initAmplitudeServiceSpy).not.toHaveBeenCalledOnce()
+    expect(initAmplitudeServiceSpy).toHaveBeenCalledOnce()
+    expect(initAmplitudeServiceSpy).toHaveBeenCalledWith('mocked-amplitude-api-key', undefined)
+  })
+
+  it('should not initialize the Amplitude service when VITE_AMPLITUDE_API_KEY is empty', () => {
+    vi.mocked(mockedEnvVar).VITE_AMPLITUDE_API_KEY = ''
+    createWrapper()
+
+    expect(initAmplitudeServiceSpy).not.toHaveBeenCalled()
   })
 
   it('should redirect to the login page when the user is inactive for 5 seconds', async () => {

@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, markRaw, ref, watch, onMounted } from 'vue'
 import { Idle } from 'idlejs'
-import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY } from 'env-vars'
+import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
 import { commonStore as useStore, amplitudeService } from '@kpmg/common'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@kpmg/styleguide'
@@ -60,8 +60,8 @@ watch(
 )
 
 onMounted(() => {
-  if (window.navigator.doNotTrack !== '1' && VITE_AMPLITUDE_API_KEY) {
-    amplitudeService.init(VITE_AMPLITUDE_API_KEY)
+  if (VITE_AMPLITUDE_API_KEY) {
+    amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)
   }
 })
 </script>
