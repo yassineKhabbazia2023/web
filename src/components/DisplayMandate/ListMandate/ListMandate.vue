@@ -22,7 +22,7 @@
             <PToolbox
               trigger="click"
               data-testid="mandate-actions-toolbox"
-              :pElements="actionsBuilder(scope.row.statusCode, scope.row.jdcPartnership)"
+              :pElements="actionsBuilder(scope.row.statusCode, scope.row.jdcPartnership, scope.row.jdcStatusCode)"
               @p-toolbox-item-clicked="actionClicked($event, scope.row)">
               <PButton pType="generic">
                 <PIcon color="#A4A4A4" size="14px">
@@ -172,6 +172,7 @@ const dataFormatter = (data: any) =>
       creationDate,
       modificationDate,
       statusCode,
+      jdcStatusCode,
     }: any) => ({
       id,
       erpId,
@@ -182,6 +183,7 @@ const dataFormatter = (data: any) =>
       creationDate: dateFormatter(creationDate),
       modificationDate: dateFormatter(modificationDate),
       statusCode: statusCode.toString(),
+      jdcStatusCode: jdcStatusCode.toString(),
     }),
   )
 const mandateCollection = computed(() => dataFormatter(props.data))
@@ -205,9 +207,11 @@ const tableHead = [
   { label: `${t('status')}`, prop: 'statusCode', sortable: true, width: '115' },
   { label: 'Actions', sortable: false, width: '72' },
 ]
-const actionsBuilder = (statusCode: string | number, jdcPartnership: string | number): PToolboxItemProps[] => {
+const actionsBuilder = (statusCode: string | number, jdcPartnership: string | number,
+  jdcStatusCode: string | number): PToolboxItemProps[] => {
   const statusCodeNumber = Number(statusCode)
   const jdcPartnershipNumber = Number(jdcPartnership)
+  const jdcStatusCodeNumber = Number(jdcStatusCode)
   const actions: PToolboxItemProps[] = [
     {
       pIconName: 'PIDownload',
@@ -236,7 +240,7 @@ const actionsBuilder = (statusCode: string | number, jdcPartnership: string | nu
     actions.push({
       pIconName: 'PIDownload',
       pValue: t('download-signed-mandate'),
-      disabled: [10, 20, 50, 99].includes(statusCodeNumber),
+      disabled: shouldDisableDownloadButton(statusCodeNumber, jdcStatusCodeNumber),
       pActionName: 'download-signed-mandate',
       pState: 'default',
     })
@@ -244,7 +248,9 @@ const actionsBuilder = (statusCode: string | number, jdcPartnership: string | nu
 
   return actions
 }
-
+const shouldDisableDownloadButton = (statusCode: number, jdcStatusCode: number) => {
+  return [20, 50, 99].includes(statusCode) || (statusCode === 10 && jdcStatusCode === 98)
+}
 const sortColumnChange = ({ order, prop }: any) => {
   const criteriaMapper: any = {
     erpId: 'ErpId',

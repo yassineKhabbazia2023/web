@@ -396,6 +396,9 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
     })
     isIBSValid.value = true
     areFieldsFilledStepBased(props.step)
+    if (!data.siretNumber || data.siretNumber === null || data.siretNumber.trim() === '') {
+      return emit('enable-disable-next', false)
+    }
     return emit('enable-disable-next', true)
   }
 }
@@ -433,6 +436,7 @@ const areFieldsFilledStepBased = (step: number) => {
       'firstName',
       'lastName',
       'street',
+      'email',
       'zipCode',
       'city',
       'country',
@@ -606,7 +610,7 @@ const rules = reactive<any>({
   lastName: [createRule(requiredFieldMessage)],
   email: [
     createRule(requiredFieldMessage, 'blur'),
-    { validator: validateEmail, trigger: 'blur' },
+    { validator: validateEmail, trigger: ['change', 'blur'] },
   ],
   street: [createRule(requiredFieldMessage)],
   zipCode: [

@@ -74,8 +74,10 @@ function onClickFilter(activeFilterCodes: number[]) {
   doing it the appropriate way would imply a refact of the Filter Group to allow array of values
   */
 
-  if (activeFilterCodes.includes(10)) activeFilterCodes.push(-1)
-  activeFilters.value = activeFilterCodes
+  const filterCode = activeFilterCodes.includes(10)
+    ? [...activeFilterCodes, -1]
+    : activeFilterCodes.filter((c) => c !== -1)
+  activeFilters.value = filterCode
   emitRefreshMandateCollection()
 }
 
