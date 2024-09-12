@@ -1,41 +1,29 @@
 {
-  "include": ["env.d.ts", "./src/**/*", "tests/**/*", "__mocks__"],
-  "exclude": ["src/**/__tests__/*"],
+  "extends": "../../@config/tsconfig.base",
+  "include": [
+    "env.d.ts",
+    "./src/**/*",
+    "tests/**/*",
+    "__mocks__"
+  ],
+  "exclude": [
+    "src/**/__tests__/*"
+  ],
   "compilerOptions": {
-    "noImplicitAny": true,
-    "target": "ESNext",
-    "declaration": true,
-    "outDir": "./dist/types",
+    "baseUrl": ".",
     "declarationDir": "./dist/types",
-    "lib": ["esnext", "DOM", "DOM.Iterable"],
+    "outDir": "./dist/types",
+    "paths": {
+      "@common/*": [
+        "src/*"
+      ]
+    },
     "types": [
       "@pinia/testing",
       "vitest/globals",
       "vitest/importMeta",
       "vite/client",
       "node"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": false,
-    "composite": true,
-    "jsx": "preserve",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "useDefineForClassFields": true,
-    "importHelpers": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
-  },
+    ]
+  }
 }

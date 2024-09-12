@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+stats.html
 
 node_modules
 .DS_Store
@@ -13,8 +14,7 @@ dist
 dist-ssr
 coverage
 *.local
-*.tgz
-stats.html
+dependency-graph.svg
 
 /cypress/videos/
 /cypress/screenshots/
@@ -29,9 +29,4 @@ stats.html
 *.sln
 *.sw?
 
-.env
-.env.*
-.env.*.*
-
-# vite
-*.mjs
+*.tsbuildinfo

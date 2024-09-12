@@ -1,4 +1,4 @@
-import { shallowRef, ref, reactive } from 'vue'
+import { shallowRef, reactive } from 'vue'
 import { createPinia } from 'pinia'
 import type { Component, DefineComponent } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
@@ -21,7 +21,7 @@ export const commoni18n = shallowRef(i18n)
 export const commonStore = store
 export const commonPinia = createPinia()
 export const widgets = shallowRef([] as Component[] | DefineComponent[])
-export const routes = ref([] as RouteRecordRaw[])
+export const routes: RouteRecordRaw[] = []
 export const hasTokenExpired = isTokenExpired
 export const dataProvider = useDataProvider
 export const userPermissions = useUserPermissions

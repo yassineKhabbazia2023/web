@@ -1,22 +1,25 @@
-# Common
+# Introduction 
 
-## Getting Started
-Please follow the instructions in the [Common wiki](https://kpmgfr.visualstudio.com/Constellation/_wiki/wikis/Constellation.wiki/16902/Common)!
+The `@pulse/common` project is a TypeScript library (with some Vue elements) that provides developers with various helpers, services, and common functionalities shared between the app and the plugins.
+It originated from the [KPMG.Pulse.Front.Common](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Common) project.
 
-## Inform yourself before contributing
+# Getting Started
 
-- [Contributing guide](../.azuredevops/conventions/CONTRIBUTING-VUE.md)
-- [Code of conduct](../.azuredevops/conventions/CODE_OF_CONDUCT.md)
-- [Commit convention](../.azuredevops/conventions/COMMIT_CONVENTION.md.md)
-- [Review convention](../.azuredevops/conventions/REVIEW_CONVENTION.md)
+The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
 
-## Install
-1. Clone this repository on your local environment.
-2. Install dependencies: `npm i`.
-4. Run `npm run build` and `npm run test:ci` to test your contributions
+As this is a library and not a standalone application, it cannot be run independently. However, you can build and test it.
 
-## License
+# Build and Test
 
-[KPMG Pulse](https://www.kpmg-pulse.fr/)
+The application is built using [Vite](https://vitejs.dev/).
+To build the application, use:
 
-Copyright (c) 2013-present, KPMG France
+```
+npm run build
+```
+
+To run tests, use:
+
+```
+npm run test
+```
