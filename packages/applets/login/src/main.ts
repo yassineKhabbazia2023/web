@@ -1,45 +1,23 @@
+import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-import { createApp, h } from 'vue'
-import singleSpaVue from 'single-spa-vue'
-import {
-  commoni18n as i18n,
-  commonPinia as pinia,
-  routes,
-} from '@kpmg/common'
-import { setAssetsBaseUrl } from '@kpmg/styleguide'
 
-const RenderLess = () => ''
 const LOGIN_LAYOUT = 'Login'
 
-setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
+const routes = [] as RouteRecordRaw[]
 
-const vueLifecycles = singleSpaVue({
-  createApp,
-  appOptions: {
-    render: () => h(RenderLess),
-  },
-  handleInstance(app) {
-    app.use(i18n.value).use(pinia)
-  },
-})
-
-export const bootstrap = vueLifecycles.bootstrap
-export const mount = vueLifecycles.mount
-export const unmount = vueLifecycles.unmount
-
-routes.value.push({
+routes.push({
   path: '/login',
   name: 'loginClient',
-  component: () => import('@/pages/login'),
+  component: () => import('@login/pages/login'),
   meta: {
     layout: LOGIN_LAYOUT,
   },
 } as RouteRecordRaw)
 
-routes.value.push({
+routes.push({
   path: '/validation-cgu/:termsId',
   name: 'validationCGU',
-  component: () => import('@/pages/validationCGU'),
+  component: () => import('@login/pages/validationCGU'),
   props: true,
   meta: {
     layout: LOGIN_LAYOUT,
@@ -47,16 +25,16 @@ routes.value.push({
   },
 } as RouteRecordRaw)
 
-routes.value.push({
+routes.push({
   path: '/collaborateur',
   name: 'login',
-  component: () => import('@/pages/loginCollab'),
+  component: () => import('@login/pages/loginCollab'),
   meta: {
     layout: 'LoginCollab',
   },
 } as RouteRecordRaw)
 
-routes.value.push({
+routes.push({
   path: '/login-client',
   redirect: { name: 'loginClient' },
 } as RouteRecordRaw)
@@ -70,15 +48,27 @@ const ROUTES_USING_LOGIN_LAYOUT = [
   'resetPasswordForm',
 ]
 
-ROUTES_USING_LOGIN_LAYOUT.forEach(function(route) {
-  routes.value.push({
+ROUTES_USING_LOGIN_LAYOUT.forEach((route) => {
+  routes.push({
     path: `/${route}`,
     name: route,
-    component: function() {
-      return import(`@/pages/${route}/index.ts`)
+    component: () => {
+      return import(`@login/pages/${route}/index.ts`)
     },
     meta: {
       layout: LOGIN_LAYOUT,
     },
   } as RouteRecordRaw)
 })
+
+export default {
+  install(app: App, options: any) {
+    // Accept an array of routes that can be registered along
+    // with the plugin
+    const { router } = options
+
+    routes.forEach((route) => {
+      router.addRoute(route)
+    })
+  },
+}
