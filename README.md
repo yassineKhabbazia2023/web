@@ -1,20 +1,83 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+
+Welcome to the Pulse web front repository. 
+This repository is structured as a monorepo and a package, encompassing several components:
+
+- **[App](./packages/app/README.md)**
+- **library**:
+    - [Common](./packages/libraries/common/README.md)
+- **applets**: 
+    - [Entities](./packages/applets/entities/README.md)
+    - [Ged](./packages/applets/ged//README.md)
+    - [Launcher](./packages/applets/launcher//README.md)
+    - [Login](./packages/applets/login//README.md)
+    - [Mandate](./packages/applets/mandate//README.md)
+- **External Package** (installed via private npm):
+    - [StyleGuide](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Styleguide)
+
+The application is built as a Vue 3 app, integrating the applets as [Vue Plugins](https://vuejs.org/guide/reusability/plugins) directly from the monorepo and the external package installed via private npm.
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+
+## Prerequisites
+
+1. Ensure you have the correct Node.js version (refer to the [package.json](./package.json)).
+2. Place the `.npmrc` file at the root and complete the [registration setup](https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm)
+
+To initiate the process, run the following command:
+
+```
+npm install
+```
+
+## Temporary transition Process from MFE to Monorepo
+
+During the initial phase, the monorepo is built using scripts that copy and slightly modify the original MFE into the monorepo. This allows the MFE to continue their development cycles independently and integrate into the monorepo when ready.
+
+To copy the MFEs into the monorepo, follow these steps:
+1. Clone all MFE repositories into a directory outside of this one (for example: `../MFE`).
+2. Run the scripts with a parameter indicating the location of the MFEs:
+
+```
+npm run mfe:copy:libs -- ../MFE
+npm run mfe:copy:apps -- ../MFE
+npm run mfe:copy:applets -- ../MFE
+```
+
+3. Run another install to create the necessary links between the monorepo packages:
+
+```
+npm install
+```
+
+Once completed, you can start exploring the project.
+
+
+## Let's start
+
+Refer to the `package.json` at the root or check the `package.json` files in each app, applet, and library for more information and scripts. This monorepo utilizes the  `workspaces` feature of npm (see [official documentation](https://docs.npmjs.com/cli/v10/using-npm/workspaces)).
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+To start the app in development mode from the root directory:
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+```
+npm run app:dev
+```
+
+Alternatively, navigate to the app directory `./packages/app` and run:
+
+```
+npm run dev
+```
+
+
+To build or test every package in the monorepo from the root directory:
+
+```
+npm run build
+```
+
+```
+npm run test
+```

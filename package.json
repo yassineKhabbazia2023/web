@@ -17,7 +17,8 @@
   "scripts": {
     "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high",
     "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high",
-    "dev": "npm run dev --workspaces --if-present",
+    "app:dev": "npm run dev --workspace @pulse/app",
+    "app:build": "npm run build --workspace @pulse/app",
     "test": "npm run test --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
     "build:types": "npm run build:types --workspaces --if-present",
