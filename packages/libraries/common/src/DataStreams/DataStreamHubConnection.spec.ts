@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { describe, it, expect, vi, beforeEach, type SpyInstance } from 'vitest'
+import { describe, it, expect, vi, beforeEach, type MockInstance } from 'vitest'
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
@@ -50,7 +50,7 @@ describe('dataStreamHubConnection', () => {
   })
 
   describe('when connection fails', () => {
-    let errorSpy: SpyInstance
+    let errorSpy: MockInstance
     beforeEach(() => {
       errorSpy = vi.spyOn(console, 'error')
     })

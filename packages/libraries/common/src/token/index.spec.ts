@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, type SpyInstance } from 'vitest'
+import { describe, expect, it, vi, type MockInstance } from 'vitest'
 import { TokenService } from '.'
 
 const now = new Date()
@@ -16,7 +16,7 @@ describe('test token', () => {
 
   describe('getToken', () => {
     const localStoredToken = 'local-stored-token'
-    let localStorageGetItemSpy: SpyInstance
+    let localStorageGetItemSpy: MockInstance
     beforeEach(() => {
       localStorageGetItemSpy = vi.spyOn(Object.getPrototypeOf(localStorage), 'getItem')
     })
@@ -40,7 +40,7 @@ describe('test token', () => {
 
   describe('setToken', () => {
     const newTokenValue = 'new-token-value'
-    let localStorageSetItemSpy: SpyInstance
+    let localStorageSetItemSpy: MockInstance
     beforeEach(() => {
       localStorageSetItemSpy = vi.spyOn(Object.getPrototypeOf(localStorage), 'setItem')
     })
