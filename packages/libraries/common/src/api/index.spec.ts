@@ -1,0 +1,89 @@
+import api, { requestInterceptor, responseInterceptorSuccess, responseInterceptorError } from './index'
+import { vi } from 'vitest'
+
+vi.mock('env-vars')
+vi.mock('axios')
+
+const token = 'abcdef-123456'
+const getTokenMocked = vi.hoisted(() => vi.fn(() => (token)))
+
+vi.mock('../main', () => ({
+  tokenService: {
+    getToken: getTokenMocked,
+  },
+}))
+
+describe('api axios instances with env-vars', () => {
+  it('should return at least one axios instance', () => {
+    const instances = api()
+    expect(Object.keys(instances).length).greaterThanOrEqual(1)
+  })
+
+  it('each axios REST methods should have the user\'s token in request headers', async () => {
+    const instance = api().portal
+
+    await instance.get('foo/bar')
+    await instance.post('foo/bar')
+    await instance.put('foo/bar')
+    await instance.delete('foo/bar')
+
+    expect(instance.defaults.headers.Authorization).toBe(`Bearer ${token}`)
+  })
+
+  it('should emit reject on response error', async () => {
+    const instance = api().portal
+    const err = new Error('error')
+    getTokenMocked.mockRejectedValueOnce(err)
+    vi.spyOn(instance, 'get').mockRejectedValue(err)
+    const spyReject = vi.spyOn(Promise, 'reject')
+    try {
+      await expect(instance.get('foo/bar')).rejects.toThrow('error')
+    } catch {
+    }
+    expect(spyReject).toHaveBeenCalledWith(err) // this is a falsy test
+  })
+})
+
+describe('requestInterceptor', () => {
+  const mockedToken = 'mocked-token'
+  const tests = [{
+    token: mockedToken,
+    expected: `Bearer ${mockedToken}`,
+  }, {
+    token: '',
+    expected: '',
+  }]
+  it.each(tests)('should set proper headersAuthorization when token is $token', ({
+    token,
+    expected,
+  }) => {
+    const config = {
+      headers: {
+        Authorization: '',
+      },
+    }
+    getTokenMocked.mockReturnValueOnce(token)
+    requestInterceptor(config)
+    expect(config.headers.Authorization).toBe(expected)
+  })
+})
+
+describe('responseInterceptorSuccess', () => {
+  it('should return response it-self', () => {
+    const response = {}
+
+    expect(responseInterceptorSuccess(response)).toStrictEqual(response)
+  })
+})
+
+describe('responseInterceptorError', () => {
+  it('should call Promise.reject', async () => {
+    const promiseRejectSpy = vi.spyOn(Promise, 'reject')
+    const error = new Error('fake error')
+
+    await expect(responseInterceptorError(error)).rejects.toThrow(error)
+
+    expect(promiseRejectSpy).toHaveBeenCalledOnce()
+    expect(promiseRejectSpy).toHaveBeenCalledWith(error)
+  })
+})
