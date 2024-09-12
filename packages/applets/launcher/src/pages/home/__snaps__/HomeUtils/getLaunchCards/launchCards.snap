@@ -1,0 +1,32 @@
+[
+  {
+    "actionLabel": "Se connecter à l'outil de gestion",
+    "actionUrl": "https://gestion-meg",
+    "downloadLabel": "",
+    "imageName": "iconpulse-color",
+    "imageType": "logos",
+    "key": 0,
+    "subtitle": "Accéder à votre outil de gestion afin de piloter votre entreprise",
+    "title": "Mon outil de gestion",
+  },
+  {
+    "actionLabel": "Se connecter à Silae",
+    "actionUrl": "",
+    "downloadLabel": "Télécharger",
+    "imageName": "silae-color",
+    "imageType": "logos",
+    "key": 1,
+    "subtitle": "Accéder à votre outil de gestion de planning et du personnel - À installer",
+    "title": "Silae",
+  },
+  {
+    "actionLabel": "Se connecter à Pennylane",
+    "actionUrl": "https://pennylane-sso-url",
+    "downloadLabel": "",
+    "imageName": "pennylane-color",
+    "imageType": "logos",
+    "key": 2,
+    "subtitle": "Accéder à votre outil Pennylane pour votre gestion au quotidien",
+    "title": "Pennylane",
+  },
+]
