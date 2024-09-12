@@ -3,9 +3,9 @@ import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import type { Entity } from '@kpmg/common'
+import type { Entity } from '@pulse/Common'
 import router from '../plugins/router'
-import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
+import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { ROUTES, PAGES_TITLE } from './mock'
 import App from './'
 
@@ -13,7 +13,7 @@ const testEntity: Entity = getMockedFavoriteEntities()[0]
 
 const mockUserOrigin = vi.fn()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({

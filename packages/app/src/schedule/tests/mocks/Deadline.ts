@@ -1,4 +1,4 @@
-import type { DeadlineAccount, Template, Deadline, DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { DeadlineAccount, Template, Deadline, DeadlinesByDate } from '@app/schedule/models/Deadline'
 
 export function getNotCompletelyDoneDeadlinesByDateMock(): DeadlinesByDate[] {
   const template = getTvaMockedTemplate()

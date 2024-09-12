@@ -66,9 +66,9 @@ import {
   PIBell,
   PAlert,
 } from '@kpmg/styleguide'
-import ScheduleReminder from '@/schedule/components/ScheduleReminder'
+import ScheduleReminder from '@app/schedule/components/ScheduleReminder'
 import { useI18n } from 'vue-i18n'
-import { getDuplicates } from '@/helper'
+import { getDuplicates } from '@app/helper'
 import type { CreateScheduleRemindersProps } from './CreateScheduleRemindersTypes'
 
 const DEFAULT_REMINDER = -1

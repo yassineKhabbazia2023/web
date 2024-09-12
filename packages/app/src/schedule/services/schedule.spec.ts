@@ -10,8 +10,8 @@ import {
   postDeadlineAccountStatus,
   getOccurrenceAttachment,
 } from '.'
-import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { getMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
+import { accountsCollection } from '@app/schedule/tests/mocks/Account'
+import { getMockSchedule, frequenciesMock } from '@app/schedule/tests/mocks/Schedule'
 import type { ScheduleModelLabelType } from './scheduleServiceTypes'
 import { getMockedOccurrence } from '../tests/mocks/Occurrence'
 import { getDoneDeadlinesByDateMock } from '../tests/mocks/Deadline'
@@ -23,7 +23,7 @@ const createScheduleMock = getMockSchedule()
 const commonApiGetSpy = vi.fn()
 const commonApiPostSpy = vi.fn()
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       schedule: {

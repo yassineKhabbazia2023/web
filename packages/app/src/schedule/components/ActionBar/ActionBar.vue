@@ -68,7 +68,7 @@ import { computed } from 'vue'
 import { PButton, PTabs, PTabPane, PIcon, PIAdd } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { ActionBarProps } from './ActionBarTypes'
-import ActionBarLeft from '@/schedule/components/ActionBarLeft'
+import ActionBarLeft from '@app/schedule/components/ActionBarLeft'
 
 const props = defineProps<ActionBarProps>()
 

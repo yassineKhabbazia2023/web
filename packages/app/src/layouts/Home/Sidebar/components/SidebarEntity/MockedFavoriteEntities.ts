@@ -1,5 +1,5 @@
-import mockedEntities from '@/mocks/entities.mock.json'
-import type { Entity } from '@kpmg/common'
+import mockedEntities from '@app/mocks/entities.mock.json'
+import type { Entity } from '@pulse/Common'
 
 export const getMockedFavoriteEntities = (): Entity[] => {
   return mockedEntities as Entity[]

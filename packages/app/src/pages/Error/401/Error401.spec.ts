@@ -18,7 +18,7 @@ const createWrapper = (): VueWrapper =>
   })
 const mockRedirectToHome = vi.fn()
 
-vi.mock('@/composables/useRedirection', () => ({
+vi.mock('@app/composables/useRedirection', () => ({
   useRedirection: () => ({
     redirectToHome: mockRedirectToHome,
   }),

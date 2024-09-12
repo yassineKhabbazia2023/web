@@ -1,4 +1,4 @@
-import type { ScheduleApiQueryParams } from '@/schedule/services/scheduleServiceTypes'
+import type { ScheduleApiQueryParams } from '@app/schedule/services/scheduleServiceTypes'
 
 export interface Filters {
   targets: ScheduleApiQueryParams['targets']

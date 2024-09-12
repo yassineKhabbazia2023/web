@@ -2,12 +2,12 @@ import { describe, it, expect, vi } from 'vitest'
 import { fetchBIReports } from '.'
 import {
   getMockedBIReports,
-} from '@/layouts/Home/Sidebar/components/SidebarEntity/components/SidebarEntityMenu/SidebarEntityMenuMocks'
+} from '@app/layouts/Home/Sidebar/components/SidebarEntity/components/SidebarEntityMenu/SidebarEntityMenuMocks'
 
 const mockedAccountId = 602
 const mockedBIReports = getMockedBIReports()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn(() =>

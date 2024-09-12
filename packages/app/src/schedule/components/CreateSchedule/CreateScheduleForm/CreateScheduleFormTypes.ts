@@ -1,5 +1,5 @@
 import type { Options }
-  from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
+  from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
 
 export type FormProps = {
   checkValidity?: boolean

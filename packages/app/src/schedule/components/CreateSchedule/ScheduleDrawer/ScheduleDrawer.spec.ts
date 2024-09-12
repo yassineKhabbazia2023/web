@@ -1,9 +1,9 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import ScheduleDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
-import * as scheduleService from '@/schedule/services'
-import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { getMonthlyMockSchedule, frequenciesMock } from '@/schedule/tests/mocks/Schedule'
+import * as scheduleService from '@app/schedule/services'
+import { accountsCollection } from '@app/schedule/tests/mocks/Account'
+import { getMonthlyMockSchedule, frequenciesMock } from '@app/schedule/tests/mocks/Schedule'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
 
 const TEST_DATE = '2024-08-14'
@@ -25,7 +25,7 @@ function createWrapper(override: Partial<ScheduleDrawerProps> = {}) {
   })
 }
 
-vi.mock('@/schedule/services', () => {
+vi.mock('@app/schedule/services', () => {
   return {
     postSchedule: vi.fn(),
     getAccountsCollection: vi.fn(() => Promise.resolve(accountsCollection)),

@@ -1,4 +1,4 @@
-import type { Entity } from '@kpmg/common'
+import type { Entity } from '@pulse/Common'
 
 export type EntityAvatarProps = {
     entity: Entity

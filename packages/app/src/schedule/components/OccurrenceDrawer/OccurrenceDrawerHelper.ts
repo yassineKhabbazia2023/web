@@ -1,5 +1,5 @@
-import type { Occurrence, Status } from '@/schedule/models/Deadline'
-import { getTypeLabel } from '@/schedule/helpers/utils'
+import type { Occurrence, Status } from '@app/schedule/models/Deadline'
+import { getTypeLabel } from '@app/schedule/helpers/utils'
 
 export function getFrequencyLabel(
   frequencyLabels: Record<string, string>,

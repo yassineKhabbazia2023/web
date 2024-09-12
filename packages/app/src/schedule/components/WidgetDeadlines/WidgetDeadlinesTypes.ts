@@ -1,4 +1,4 @@
-import type { Deadline } from '@/schedule/models/Deadline'
+import type { Deadline } from '@app/schedule/models/Deadline'
 
 export interface WidgetDeadlinesProps {
   deadlines: Deadline[]

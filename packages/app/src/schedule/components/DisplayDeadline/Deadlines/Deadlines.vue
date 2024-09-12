@@ -52,16 +52,16 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Tag from '@/schedule/components/Common/Tag'
-import Icon from '@/schedule/components/Common/Icon'
+import Tag from '@app/schedule/components/Common/Tag'
+import Icon from '@app/schedule/components/Common/Icon'
 import {
   PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
-import type { Status } from '@/schedule/models/Deadline'
-import { getProgressText } from '@/schedule/helpers/deadlineHelper'
-import { getScheduleModelsByKey } from '@/schedule/services'
-import { getTypeLabel } from '@/schedule/helpers/utils'
+import type { Status } from '@app/schedule/models/Deadline'
+import { getProgressText } from '@app/schedule/helpers/deadlineHelper'
+import { getScheduleModelsByKey } from '@app/schedule/services'
+import { getTypeLabel } from '@app/schedule/helpers/utils'
 import type { DeadlinesProps, DeadlineEvent } from './DeadlinesTypes'
 
 const { t } = useI18n({

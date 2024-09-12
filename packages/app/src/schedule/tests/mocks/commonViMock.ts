@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { vi } from 'vitest'
-import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
-import helpers from '@/tests/utils/helpers'
-import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
+import { accountsCollection } from '@app/schedule/tests/mocks/Account'
+import { getMockedDeadlines } from '@app/schedule/tests/mocks/Deadline'
+import helpers from '@app/tests/utils/helpers'
+import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 
 export const TEST_DATE = '2024-08-14'
 const { fetchUserData } = helpers()

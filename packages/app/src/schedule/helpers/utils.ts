@@ -1,10 +1,10 @@
 'use strict'
 import { toRaw } from 'vue'
 import { isEqual } from 'lodash-es'
-import type { Account } from '@/schedule/models/Account'
+import type { Account } from '@app/schedule/models/Account'
 import type { Deadline } from '../models/Deadline'
 import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
-import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
+import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 declare let window: {
   showSaveFilePicker: any

@@ -1,4 +1,4 @@
-import type { Deadline, DeadlineAccount } from '@/schedule/models/Deadline'
+import type { Deadline, DeadlineAccount } from '@app/schedule/models/Deadline'
 
 export function getDeadlineCompletionSummary(accountsList: Deadline['accountList']) {
   const accountsAmount = accountsList.length

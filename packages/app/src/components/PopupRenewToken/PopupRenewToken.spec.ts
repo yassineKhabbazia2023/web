@@ -1,12 +1,12 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { beforeEach, describe, expect, it, type SpyInstance, vi } from 'vitest'
+import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import router from '../../plugins/router'
 import PopupRenewToken from '.'
 import { ROUTES } from '../../app/mock'
-import { tokenService } from '@kpmg/common'
+import { tokenService } from '@pulse/Common'
 import type { JwtPayload } from 'jwt-decode'
 import jwtDecode from 'jwt-decode'
 import { PDialog } from '@kpmg/styleguide'
@@ -19,7 +19,7 @@ const mock = vi.hoisted(() => {
     logoutAndRedirectToLogin: vi.fn(),
   }
 })
-vi.mock('@/composables/useRedirection', () => ({
+vi.mock('@app/composables/useRedirection', () => ({
   useRedirection: () => {
     return {
       logoutAndRedirectToLogin: mock.logoutAndRedirectToLogin,
@@ -27,7 +27,7 @@ vi.mock('@/composables/useRedirection', () => ({
   },
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({
@@ -93,7 +93,7 @@ const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJFUTBNVVE1TjBOQ1JUS
 const { sub } = jwtDecode<JwtPayload>(TOKEN)
 describe('popup renew token', () => {
   let wrapper: VueWrapper<any>
-  let spyUnregisterOnChange: SpyInstance
+  let spyUnregisterOnChange: MockInstance
   beforeEach(() => {
     vi.clearAllTimers()
     vi.useFakeTimers()

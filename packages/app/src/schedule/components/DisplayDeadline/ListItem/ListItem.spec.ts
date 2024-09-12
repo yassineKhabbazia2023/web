@@ -1,23 +1,23 @@
 import { nextTick } from 'vue'
-import { TvaLabel, mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
+import { TvaLabel, mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@kpmg/common'
+import { commonStore } from '@pulse/Common'
 import ListItem from '.'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 import { expect, describe, it, vi } from 'vitest'
-import { dateToLocaleFormat } from '@/schedule/helpers/utils'
+import { dateToLocaleFormat } from '@app/schedule/helpers/utils'
 import {
   getNotCompletelyDoneDeadlinesByDateMock,
   getDoneDeadlinesByDateMock,
-} from '@/schedule/tests/mocks/Deadline'
-import { collabUser } from '@/schedule/tests/mocks/User'
+} from '@app/schedule/tests/mocks/Deadline'
+import { collabUser } from '@app/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
 
 const pinia = createTestingPinia()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -35,7 +35,7 @@ vi.mock('@kpmg/common', () => ({
   },
 }))
 
-vi.mock('@/schedule/services', () => ({
+vi.mock('@app/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 

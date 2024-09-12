@@ -131,14 +131,14 @@ import {
   PDropdown,
   PUpload,
 } from '@kpmg/styleguide'
-import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
-import CreateScheduleReminders from '@/schedule/components/CreateSchedule/CreateScheduleReminders'
+import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSchedule'
+import CreateScheduleReminders from '@app/schedule/components/CreateSchedule/CreateScheduleReminders'
 import type { FormProps } from './CreateScheduleFormTypes'
 import type { Schedule, Frequency } from './CreateScheduleFormModel'
-import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
-import { dateISOFormatter, base64ToBase64URL } from '@/schedule/helpers/utils'
-import { getScheduleModels } from '@/schedule/services'
-import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
+import DropdownMultiSelectWithToggleAll from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll'
+import { dateISOFormatter, base64ToBase64URL } from '@app/schedule/helpers/utils'
+import { getScheduleModels } from '@app/schedule/services'
+import { TEMPLATE_TYPE_SHORT_OTHER } from '@app/schedule/helpers/scheduleConsts'
 
 const { t } = useI18n({
   inheritLocale: true,

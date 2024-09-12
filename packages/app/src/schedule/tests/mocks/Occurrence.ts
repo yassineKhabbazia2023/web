@@ -1,4 +1,4 @@
-import type { Occurrence, Schedule, Template } from '@/schedule/models/Deadline'
+import type { Occurrence, Schedule, Template } from '@app/schedule/models/Deadline'
 
 export function getMockedScheduleOccurrence(override: Partial<Schedule> = {}): Schedule {
   const defaultSchedule: Schedule = {

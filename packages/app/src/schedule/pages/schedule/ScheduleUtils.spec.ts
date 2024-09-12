@@ -8,8 +8,8 @@ import {
 import {
   getDoneDeadlinesByDateMock,
   getNotCompletelyDoneDeadlinesByDateMock,
-} from '@/schedule/tests/mocks/Deadline'
-import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
+} from '@app/schedule/tests/mocks/Deadline'
+import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 const TEST_DATE = '2024-08-14'
 

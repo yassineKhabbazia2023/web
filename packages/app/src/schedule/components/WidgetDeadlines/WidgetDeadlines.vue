@@ -45,11 +45,11 @@
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PScrollbar } from '@kpmg/styleguide'
-import { getTypeLabel } from '@/schedule/helpers/utils'
-import { getScheduleModelsByKey } from '@/schedule/services'
-import { getProgressText } from '@/schedule/helpers/deadlineHelper'
+import { getTypeLabel } from '@app/schedule/helpers/utils'
+import { getScheduleModelsByKey } from '@app/schedule/services'
+import { getProgressText } from '@app/schedule/helpers/deadlineHelper'
 import type { WidgetDeadlinesProps } from './WidgetDeadlinesTypes'
-import Icon from '@/schedule/components/Common/Icon'
+import Icon from '@app/schedule/components/Common/Icon'
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -1,17 +1,17 @@
 import {
   ScheduleServicesMock,
   KpmgCommontMock,
-} from '@/schedule/tests/mocks/commonViMock'
+} from '@app/schedule/tests/mocks/commonViMock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import { commonStore as store } from '@kpmg/common'
+import { commonStore as store } from '@pulse/Common'
 import { createTestingPinia } from '@pinia/testing'
-import router from '@/plugins/router'
-import helpers from '@/tests/utils/helpers'
+import router from '@app/plugins/router'
+import helpers from '@app/tests/utils/helpers'
 import { nextTick } from 'vue'
-import * as entitiesServices from '@/services/entities'
-import mockedEntities from '@/mocks/entities.mock.json'
+import * as entitiesServices from '@app/services/entities'
+import mockedEntities from '@app/mocks/entities.mock.json'
 import { getMockedFavoriteEntities } from './Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import Home from '.'
 
@@ -19,10 +19,10 @@ const pinia = createTestingPinia()
 const { fakeUser } = helpers()
 const mockedEntity = getMockedFavoriteEntities()[0]
 
-vi.mock('@/schedule/services', () => ScheduleServicesMock)
-vi.mock('@kpmg/common', () => KpmgCommontMock)
-vi.mock('@/services/entities', async () => {
-  const actual = await vi.importActual('@/services/entities') as Record<string, any>
+vi.mock('@app/schedule/services', () => ScheduleServicesMock)
+vi.mock('@pulse/Common', () => KpmgCommontMock)
+vi.mock('@app/services/entities', async () => {
+  const actual = await vi.importActual('@app/services/entities') as Record<string, any>
   return {
     ...actual,
     fetchEntities: vi.fn(() => Promise.resolve({
@@ -40,7 +40,7 @@ const mock = vi.hoisted(() => {
   }
 })
 
-vi.mock('@/plugins/SalesForce/useSalesforceService', () => ({
+vi.mock('@app/plugins/SalesForce/useSalesforceService', () => ({
   useSalesforceService: () => {
     return {
       salesforceChat: mock.salesforceChat,

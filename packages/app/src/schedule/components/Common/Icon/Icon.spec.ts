@@ -1,5 +1,5 @@
 import Icon from '.'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import { expect, describe, it } from 'vitest'
 
 const createWrapper = (statusCode: string) =>

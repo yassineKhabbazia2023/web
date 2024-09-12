@@ -96,10 +96,10 @@ import {
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { Filters, FilterDrawerProps } from './FilterDrawerTypes'
-import { getAccountsCollection, getScheduleModels } from '@/schedule/services'
+import { getAccountsCollection, getScheduleModels } from '@app/schedule/services'
 import type { PDropdownOption, PFieldRadioOptions } from '@kpmg/styleguide'
-import type { Status } from '@/schedule/models/Deadline'
-import { getDefaultFilters } from '@/schedule/helpers/utils'
+import type { Status } from '@app/schedule/models/Deadline'
+import { getDefaultFilters } from '@app/schedule/helpers/utils'
 
 const { t } = useI18n({
   inheritLocale: true,

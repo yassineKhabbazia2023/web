@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, type SpyInstance, beforeEach } from 'vitest'
+import { describe, it, expect, vi, type MockInstance, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import * as ReportService from '@/services/reporting'
+import * as ReportService from '@app/services/reporting'
 import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
 import { createTestingPinia } from '@pinia/testing'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
-import { commonPinia as pinia, amplitudeService } from '@kpmg/common'
-import { PERMISSION_CODES } from '@/constants'
+import { commonPinia as pinia, amplitudeService } from '@pulse/Common'
+import { PERMISSION_CODES } from '@app/constants'
 import SidebarEntityMenu from '.'
 import { getMockedBIReports } from './SidebarEntityMenuMocks'
 
@@ -18,7 +18,7 @@ const defaultProps = {
   selectedEntityId: favoriteEntityId,
 }
 
-vi.mock('@/services/reporting', () => ({
+vi.mock('@app/services/reporting', () => ({
   fetchBIReports: vi.fn(() => Promise.resolve({ totalItems: 0 })),
 }))
 
@@ -28,7 +28,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
     getters: {
@@ -55,7 +55,7 @@ const createWrapper = (props = defaultProps) => {
 
 describe('sidebarEntityMenu', () => {
   let wrapper: VueWrapper<any>
-  let spyTrackAmplitude: SpyInstance
+  let spyTrackAmplitude: MockInstance
   beforeEach(() => {
     spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
   })

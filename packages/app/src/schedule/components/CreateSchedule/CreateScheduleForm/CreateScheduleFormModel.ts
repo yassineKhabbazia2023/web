@@ -1,5 +1,5 @@
-import type { Account } from '@/schedule/models/Account'
-import type { AttachmentUpload } from '@/schedule/models/Deadline'
+import type { Account } from '@app/schedule/models/Account'
+import type { AttachmentUpload } from '@app/schedule/models/Deadline'
 
 export type Frequency = 'None' | 'Weekly' | 'Monthly' | 'Quarterly' | 'Yearly'
 

@@ -30,8 +30,8 @@
 import { computed } from 'vue'
 import { PScrollbar } from '@kpmg/styleguide'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
-import { dateISOFormatter } from '@/schedule/helpers/utils'
-import ListItem from '@/schedule/components/DisplayDeadline/ListItem'
+import { dateISOFormatter } from '@app/schedule/helpers/utils'
+import ListItem from '@app/schedule/components/DisplayDeadline/ListItem'
 import type { DeadlineListProps } from './DeadlineListTypes'
 
 const props = defineProps<DeadlineListProps>()

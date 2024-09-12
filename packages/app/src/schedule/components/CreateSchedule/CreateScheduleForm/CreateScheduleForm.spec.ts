@@ -1,7 +1,7 @@
 import { flushPromises } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import CreateScheduleForm from '.'
 import {
   PDatePicker,
@@ -9,15 +9,15 @@ import {
   PAlert,
   PUpload,
 } from '@kpmg/styleguide'
-import DropdownSchedule from '@/schedule/components/CreateSchedule/DropdownSchedule'
-import DropdownMultiSelectWithToggleAll from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll'
+import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSchedule'
+import DropdownMultiSelectWithToggleAll from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll'
 import type { FormProps } from './CreateScheduleFormTypes'
-import { accountsCollection, recipientsIdCollection } from '@/schedule/tests/mocks/Account'
-import { accountsDataTransformer } from '@/schedule/helpers/utils'
+import { accountsCollection, recipientsIdCollection } from '@app/schedule/tests/mocks/Account'
+import { accountsDataTransformer } from '@app/schedule/helpers/utils'
 import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock }
-  from '@/schedule/tests/mocks/Schedule'
-import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
-import { TEST_DATE } from '@/schedule/tests/mocks/commonViMock'
+  from '@app/schedule/tests/mocks/Schedule'
+import { TEMPLATE_TYPE_SHORT_OTHER } from '@app/schedule/helpers/scheduleConsts'
+import { TEST_DATE } from '@app/schedule/tests/mocks/commonViMock'
 
 const mockedReminders = [2]
 const createScheduleMock = getMockSchedule(mockedReminders)
@@ -26,7 +26,7 @@ const createScheduleMockWithTypeLong = getMonthlyMockSchedule(mockedReminders)
 const createWrapper = (props: FormProps) =>
   wrapperFactory(CreateScheduleForm, { props })
 
-vi.mock('@/schedule/services', () => {
+vi.mock('@app/schedule/services', () => {
   return {
     getScheduleModels: (longLabels: boolean) => [{
       key: 'TVA',

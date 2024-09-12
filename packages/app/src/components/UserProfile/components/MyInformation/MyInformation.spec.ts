@@ -1,6 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { afterEach, beforeEach, describe, expect, it, type SpyInstance, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import * as styleguide from '@kpmg/styleguide'
@@ -41,7 +41,7 @@ vi.mock('@kpmg/styleguide', async () => {
   }
 })
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: mockGet,
@@ -81,7 +81,7 @@ let wrapper: VueWrapper<any>
 const getAllInputs = () => wrapper.findAll('input')
 
 describe('myInformation', () => {
-  let spyPNotification: SpyInstance
+  let spyPNotification: MockInstance
   beforeEach(() => {
     const drawerFooter = document.createElement('div')
     spyPNotification = vi.spyOn(styleguide, 'PNotification')

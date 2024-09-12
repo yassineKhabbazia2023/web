@@ -46,8 +46,8 @@ import { useI18n } from 'vue-i18n'
 import jwtDecode from 'jwt-decode'
 import type { JwtPayload } from 'jwt-decode'
 import { PDialog, PButton, PImage } from '@kpmg/styleguide'
-import { useRedirection } from '@/composables/useRedirection'
-import { commonApi, tokenService } from '@kpmg/common'
+import { useRedirection } from '@app/composables/useRedirection'
+import { commonApi, tokenService } from '@pulse/Common'
 
 const { t } = useI18n({
   inheritLocale: true,

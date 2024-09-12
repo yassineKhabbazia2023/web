@@ -1,19 +1,19 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia } from 'pinia'
-import { describe, expect, it, vi, beforeEach, type SpyInstance } from 'vitest'
+import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import router from '../plugins/router'
-import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
+import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { ROUTES, PAGES_TITLE } from './mock'
-import { amplitudeService, commonStore, type Entity } from '@kpmg/common'
+import { amplitudeService, commonStore, type Entity } from '@pulse/Common'
 import { nextTick } from 'vue'
 import * as mockedEnvVar from 'env-vars'
 import App from '.'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({
@@ -99,7 +99,7 @@ const createWrapper = (userStore = {}) =>
   })
 
 describe('app with navigation guard', () => {
-  let initAmplitudeServiceSpy: SpyInstance
+  let initAmplitudeServiceSpy: MockInstance
   beforeEach(() => {
     vi.useFakeTimers()
     initAmplitudeServiceSpy = vi.spyOn(amplitudeService, 'init')

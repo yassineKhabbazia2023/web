@@ -97,8 +97,8 @@ import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { PButton, PDrawer } from '@kpmg/styleguide'
-import { commonStore, fetchUrlTerms } from '@kpmg/common'
-import { ReloadOneTrust } from '@/plugins/OneTrust'
+import { commonStore, fetchUrlTerms } from '@pulse/Common'
+import { ReloadOneTrust } from '@app/plugins/OneTrust'
 
 const { t } = useI18n({
   inheritLocale: true,

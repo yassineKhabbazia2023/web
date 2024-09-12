@@ -1,5 +1,5 @@
 import { API_PREFIXES } from '../config'
-import { commonApi } from '@kpmg/common'
+import { commonApi } from '@pulse/Common'
 import type { GetReportsRequest } from './reportingTypes'
 
 export const fetchBIReports = async (

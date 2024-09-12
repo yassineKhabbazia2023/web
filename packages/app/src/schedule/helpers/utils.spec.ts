@@ -16,9 +16,9 @@ import {
   getAppliedFilterCount,
 } from './utils'
 import { expect, describe, it, vi } from 'vitest'
-import { accountsCollectionForSelectFormat, accountsCollection } from '@/schedule/tests/mocks/Account'
+import { accountsCollectionForSelectFormat, accountsCollection } from '@app/schedule/tests/mocks/Account'
 import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
-import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
+import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
 
 const TEST_DATE = '2024-08-14'
 

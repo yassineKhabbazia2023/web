@@ -1,6 +1,6 @@
-import { TEMPLATE_TYPE_SHORT_OTHER } from '@/schedule/helpers/scheduleConsts'
+import { TEMPLATE_TYPE_SHORT_OTHER } from '@app/schedule/helpers/scheduleConsts'
 import type { Schedule, Scheduling, Template }
-  from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
+  from '@app/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { recipientsIdCollection } from './Account'
 
 const date = '2024-03-20'

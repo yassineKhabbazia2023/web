@@ -1,4 +1,4 @@
-import type { KeyLabel } from '@/schedule/models/commonTypes'
+import type { KeyLabel } from '@app/schedule/models/commonTypes'
 
 export type DropdownScheduleProps = {
   placeholder?: string

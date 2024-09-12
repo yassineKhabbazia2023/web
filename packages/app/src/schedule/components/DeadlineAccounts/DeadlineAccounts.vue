@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import type { DeadlineAccountsProps } from './DeadlineAccountsTypes'
 import { PCheckbox, PFormItem } from '@kpmg/styleguide'
-import type { Status } from '@/schedule/models/Deadline'
+import type { Status } from '@app/schedule/models/Deadline'
 
 const emit = defineEmits<{
   'toggle-status': [number, Status]

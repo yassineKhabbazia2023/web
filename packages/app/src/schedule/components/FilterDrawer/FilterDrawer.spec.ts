@@ -1,12 +1,12 @@
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { ScheduleServicesMock } from '@/schedule/tests/mocks/commonViMock'
+import { ScheduleServicesMock } from '@app/schedule/tests/mocks/commonViMock'
 import FilterDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
 import type { FilterDrawerProps, Filters } from './FilterDrawerTypes'
-import type { Status } from '@/schedule/models/Deadline'
+import type { Status } from '@app/schedule/models/Deadline'
 
-vi.mock('@/schedule/services', () => ScheduleServicesMock)
+vi.mock('@app/schedule/services', () => ScheduleServicesMock)
 
 async function createWrapper(override: Partial<FilterDrawerProps> = {}) {
   const defaultProps: FilterDrawerProps = {

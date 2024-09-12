@@ -60,10 +60,10 @@ import { ref, watch, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { amplitudeService, userPermissions, commonStore } from '@kpmg/common'
-import { fetchBIReports } from '@/services/reporting'
+import { amplitudeService, userPermissions, commonStore } from '@pulse/Common'
+import { fetchBIReports } from '@app/services/reporting'
 import { PMenuItem, PMenu, PSubMenu } from '@kpmg/styleguide'
-import { PERMISSION_CODES } from '@/constants'
+import { PERMISSION_CODES } from '@app/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 
 const route = useRoute()

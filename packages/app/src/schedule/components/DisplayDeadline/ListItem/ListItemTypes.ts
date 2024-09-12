@@ -1,4 +1,4 @@
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
+import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 
 export interface ListItemProps {
   deadlinesByDate: DeadlinesByDate

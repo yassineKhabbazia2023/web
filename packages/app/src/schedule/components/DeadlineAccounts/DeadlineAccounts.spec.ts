@@ -2,7 +2,7 @@ import DeadlineAccounts from '.'
 import { expect, describe, it, beforeEach, beforeAll } from 'vitest'
 import type { DeadlineAccountsProps } from './DeadlineAccountsTypes'
 import { shallowMount, type DOMWrapper, type VueWrapper } from '@vue/test-utils'
-import { getMockedDeadlineAccount } from '@/schedule/tests/mocks/Deadline'
+import { getMockedDeadlineAccount } from '@app/schedule/tests/mocks/Deadline'
 import { nextTick } from 'vue'
 
 const title = 'Destinataires'

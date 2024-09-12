@@ -1,8 +1,8 @@
-import { commonApi as api } from '@kpmg/common'
-import type { DeadlinesByDate, Occurrence, Status } from '@/schedule/models/Deadline'
-import type { Account } from '@/schedule/models/Account'
-import type { KeyLabel } from '@/schedule/models/commonTypes'
-import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
+import { commonApi as api } from '@pulse/Common'
+import type { DeadlinesByDate, Occurrence, Status } from '@app/schedule/models/Deadline'
+import type { Account } from '@app/schedule/models/Account'
+import type { KeyLabel } from '@app/schedule/models/commonTypes'
+import type { Schedule } from '@app/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { CSV_DATA } from './scheduleCollection'
 import type { ScheduleModelLabelType, ScheduleApiQueryParams } from './scheduleServiceTypes'
 

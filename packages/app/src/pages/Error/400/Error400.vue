@@ -26,9 +26,9 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { PError } from '@kpmg/styleguide'
-import { useRedirection } from '@/composables/useRedirection'
-import LegalLinks from '@/components/LegalLinks'
-import SupportInfo from '@/components/SupportInfo'
+import { useRedirection } from '@app/composables/useRedirection'
+import LegalLinks from '@app/components/LegalLinks'
+import SupportInfo from '@app/components/SupportInfo'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',

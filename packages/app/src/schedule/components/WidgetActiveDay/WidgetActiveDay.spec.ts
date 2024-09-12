@@ -1,13 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import type { WidgetActiveDayProps } from './WidgetActiveDayTypes'
 import WidgetActiveDay from '.'
-import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
+import { getMockedDeadlines } from '@app/schedule/tests/mocks/Deadline'
 import type { VueWrapper } from '@vue/test-utils'
-import { mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
-import WidgetDeadlines from '@/schedule/components/WidgetDeadlines'
+import { mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
+import WidgetDeadlines from '@app/schedule/components/WidgetDeadlines'
 
-vi.mock('@/schedule/services', () => ({
+vi.mock('@app/schedule/services', () => ({
   getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 

@@ -1,19 +1,19 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { KpmgCommontMock } from '@/schedule/tests/mocks/commonViMock'
+import { KpmgCommontMock } from '@app/schedule/tests/mocks/commonViMock'
 import { nextTick } from 'vue'
 import { flushPromises, type VueWrapper, shallowMount } from '@vue/test-utils'
-import Schedule from '@/schedule/pages/schedule'
+import Schedule from '@app/schedule/pages/schedule'
 import type { ScheduleProps } from './ScheduleTypes'
-import { accountsCollection } from '@/schedule/tests/mocks/Account'
-import * as ScheduleServices from '@/schedule/services'
+import { accountsCollection } from '@app/schedule/tests/mocks/Account'
+import * as ScheduleServices from '@app/schedule/services'
 import * as ScheduleUtils from './ScheduleUtils'
-import { dateISOFormatter } from '@/schedule/helpers/utils'
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
-import { getMockedDeadlines } from '@/schedule/tests/mocks/Deadline'
+import { dateISOFormatter } from '@app/schedule/helpers/utils'
+import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
+import { getMockedDeadlines } from '@app/schedule/tests/mocks/Deadline'
 import { createTestingPinia } from '@pinia/testing'
-import { commonStore as useCommonStore } from '@kpmg/common'
-import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
-import type { ScheduleApiQueryParams } from '@/schedule/services/scheduleServiceTypes'
+import { commonStore as useCommonStore } from '@pulse/Common'
+import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
+import type { ScheduleApiQueryParams } from '@app/schedule/services/scheduleServiceTypes'
 
 const pinia = createTestingPinia()
 
@@ -22,7 +22,7 @@ const SAME_MONTH_DATE = '2024-08-18'
 const OTHER_MONTH_DATE = '2024-11-03'
 const OccurenceId = 1234567890
 
-vi.mock('@kpmg/common', () => KpmgCommontMock)
+vi.mock('@pulse/Common', () => KpmgCommontMock)
 const commonStore = useCommonStore(pinia)
 // @ts-expect-error: Getter is read only
 commonStore.isCollab = false
@@ -31,7 +31,7 @@ vi.mock('./ScheduleUtils', async () => {
   return await vi.importActual('./ScheduleUtils')
 })
 
-vi.mock('@/schedule/services', () => ({
+vi.mock('@app/schedule/services', () => ({
   getScheduleModels: () => [{
     key: 'TVA',
     label: 'TVA au 21',

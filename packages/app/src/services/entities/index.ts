@@ -1,7 +1,7 @@
-import { commonApi, commonStore as store } from '@kpmg/common'
-import type { Entity } from '@kpmg/common'
+import { commonApi, commonStore as store } from '@pulse/Common'
+import type { Entity } from '@pulse/Common'
 import { API_PREFIXES } from '../config'
-import { getRandomColor } from '@/helper'
+import { getRandomColor } from '@app/helper'
 
 export const fetchEntities = async (): Promise<any> => {
   try {

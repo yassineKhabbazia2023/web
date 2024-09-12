@@ -172,7 +172,7 @@ import { ref, onMounted, computed } from 'vue'
 import {
   getOccurrence, getScheduleModelsByKey, postDeadlineAccountStatus,
   getOccurrenceAttachment,
-} from '@/schedule/services'
+} from '@app/schedule/services'
 import {
   PButton,
   PDrawer,
@@ -187,14 +187,14 @@ import {
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
-import type { Occurrence, Status } from '@/schedule/models/Deadline'
-import Tag from '@/schedule/components/Common/Tag'
-import DeadlineAccounts from '@/schedule/components/DeadlineAccounts'
-import DeadlineReminders from '@/schedule/components/DeadlineReminders'
+import type { Occurrence, Status } from '@app/schedule/models/Deadline'
+import Tag from '@app/schedule/components/Common/Tag'
+import DeadlineAccounts from '@app/schedule/components/DeadlineAccounts'
+import DeadlineReminders from '@app/schedule/components/DeadlineReminders'
 import {
   downloadFile, saveFileAs, getFileExtension,
   fileSizeHumanFormatter,
-} from '@/schedule/helpers/utils'
+} from '@app/schedule/helpers/utils'
 import {
   getFrequencyLabel,
   getCreatedByLabel,
@@ -202,9 +202,9 @@ import {
   getLongLabel,
   getNewStatus,
 } from './OccurrenceDrawerHelper'
-import { datetimeFormats } from '@/schedule/helpers/scheduleConsts'
-import { showNotification } from '@/schedule/helpers/notification'
-import type { NotificationType } from '@/schedule/helpers/notificationTypes'
+import { datetimeFormats } from '@app/schedule/helpers/scheduleConsts'
+import { showNotification } from '@app/schedule/helpers/notification'
+import type { NotificationType } from '@app/schedule/helpers/notificationTypes'
 
 const StringField = PField<string>
 

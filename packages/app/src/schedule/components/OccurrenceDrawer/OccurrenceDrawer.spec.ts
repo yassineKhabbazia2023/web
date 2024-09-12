@@ -1,15 +1,15 @@
 import { nextTick } from 'vue'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import OccurrenceDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
-import { accountsCollection } from '@/schedule/tests/mocks/Account'
+import { accountsCollection } from '@app/schedule/tests/mocks/Account'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
-import { frequenciesMock } from '@/schedule/tests/mocks/Schedule'
+import { frequenciesMock } from '@app/schedule/tests/mocks/Schedule'
 import { flushPromises } from '@vue/test-utils'
-import { getMockedOccurrence, getMockedScheduleOccurrence } from '@/schedule/tests/mocks/Occurrence'
-import { mockedGetScheduleModelsByKey } from '@/schedule/tests/mocks/commonViMock'
-import * as scheduleServices from '@/schedule/services'
-import { downloadFile, saveFileAs } from '@/schedule/helpers/utils'
+import { getMockedOccurrence, getMockedScheduleOccurrence } from '@app/schedule/tests/mocks/Occurrence'
+import { mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
+import * as scheduleServices from '@app/schedule/services'
+import { downloadFile, saveFileAs } from '@app/schedule/helpers/utils'
 
 const mockedOccurrence = getMockedOccurrence({
   schedule: getMockedScheduleOccurrence({
@@ -25,7 +25,7 @@ interface Window {
 }
 declare let window: Window
 
-vi.mock('@/schedule/services', () => {
+vi.mock('@app/schedule/services', () => {
   return {
     postSchedule: vi.fn(),
     getAccountsCollection: vi.fn(() => Promise.resolve(accountsCollection)),
@@ -53,7 +53,7 @@ vi.mock('./OccurrenceDrawerHelper', async () => {
   }
 })
 
-vi.mock('@/schedule/helpers/utils', () => ({
+vi.mock('@app/schedule/helpers/utils', () => ({
   saveFileAs: vi.fn(),
   downloadFile: vi.fn(),
   fileSizeHumanFormatter: vi.fn(),

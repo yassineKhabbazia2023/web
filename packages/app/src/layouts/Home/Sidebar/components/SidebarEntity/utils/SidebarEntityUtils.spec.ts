@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { getMockedFavoriteEntities } from '../MockedFavoriteEntities'
 import { getDefaultEntity } from '.'
 
-vi.mock('@/helper', () => ({
+vi.mock('@app/helper', () => ({
   getRandomColor: vi.fn(() => 'orange'),
 }))
 

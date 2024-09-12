@@ -1,13 +1,13 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest'
-import { getMockedFavoriteEntities } from '@/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
+import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { fetchFavoriteEntities, fetchEntities } from '.'
 import { API_PREFIXES } from '../config'
-import type { Entity } from '@kpmg/common'
+import type { Entity } from '@pulse/Common'
 
 let throwError = false
 const testEntities: Entity[] = getMockedFavoriteEntities()
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       gateway: {

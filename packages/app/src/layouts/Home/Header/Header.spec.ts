@@ -1,16 +1,16 @@
-import { debounceMock } from '@/schedule/tests/mocks/commonViMock'
+import { debounceMock } from '@app/schedule/tests/mocks/commonViMock'
 import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import helpers from '@/tests/utils/helpers'
+import helpers from '@app/tests/utils/helpers'
 import Header from './'
 import { PICalendarEvent, PIArrowBarUp } from '@kpmg/styleguide'
 
 const { router, pinia, fetchUserData } = helpers()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
   getInitials: vi.fn(() => 'JD'),
   commonStore: defineStore('common', {

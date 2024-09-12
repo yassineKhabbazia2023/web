@@ -35,9 +35,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue'
 import type { Options }
-  from '@/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
-import type { Schedule } from '@/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
-import { getAccountsCollection, postSchedule, getFrequenciesCollection } from '@/schedule/services'
+  from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
+import type { Schedule } from '@app/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
+import { getAccountsCollection, postSchedule, getFrequenciesCollection } from '@app/schedule/services'
 import {
   PButton,
   PDrawer,
@@ -45,8 +45,8 @@ import {
 } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
-import CreateScheduleForm from '@/schedule/components/CreateSchedule/CreateScheduleForm'
-import { accountsDataTransformer } from '@/schedule/helpers/utils'
+import CreateScheduleForm from '@app/schedule/components/CreateSchedule/CreateScheduleForm'
+import { accountsDataTransformer } from '@app/schedule/helpers/utils'
 
 const { t } = useI18n({
   inheritLocale: true,

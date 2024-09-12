@@ -8,7 +8,7 @@ const CGU_URL = 'https://custom-CGU.com'
 
 export const spyAddEventListener = vi.spyOn(window, 'addEventListener')
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   fetchUrlTerms: vi.fn(() => CGU_URL),
   commonStore: defineStore('common', {
     getters: {

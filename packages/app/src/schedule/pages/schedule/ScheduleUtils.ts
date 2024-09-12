@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
-import type { DeadlinesByDate } from '@/schedule/models/Deadline'
-import type { Filters } from '@/schedule/components/FilterDrawer/FilterDrawerTypes'
-import type { ScheduleApiQueryParams } from '@/schedule/services/scheduleServiceTypes'
+import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
+import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
+import type { ScheduleApiQueryParams } from '@app/schedule/services/scheduleServiceTypes'
 
 export function getDates(deadlineItems: DeadlinesByDate[]) {
   return deadlineItems.reduce<string[]>((dates: string[], deadlineItem) => {

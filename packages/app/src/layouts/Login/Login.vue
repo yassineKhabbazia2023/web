@@ -52,9 +52,9 @@
 
 <script setup lang="ts">
 import { PCol, PImage, PRow } from '@kpmg/styleguide'
-import LegalLinks from '@/components/LegalLinks'
-import SupportInfo from '@/components/SupportInfo'
-import { type LoginLayoutProps } from '@/layouts/Login/LoginTypes'
+import LegalLinks from '@app/components/LegalLinks'
+import SupportInfo from '@app/components/SupportInfo'
+import { type LoginLayoutProps } from '@app/layouts/Login/LoginTypes'
 import { onMounted } from 'vue'
 
 withDefaults(defineProps<LoginLayoutProps>(), {

@@ -57,8 +57,8 @@
 import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
 import { PCol, PCarousel, PRow, PImage } from '@kpmg/styleguide'
-import LegalLinks from '@/components/LegalLinks'
-import SupportInfo from '@/components/SupportInfo'
+import LegalLinks from '@app/components/LegalLinks'
+import SupportInfo from '@app/components/SupportInfo'
 
 const { t } = useI18n({
   inheritLocale: true,

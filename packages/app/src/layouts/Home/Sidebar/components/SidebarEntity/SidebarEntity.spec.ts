@@ -3,7 +3,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonPinia as pinia, type Entity, commonStore } from '@kpmg/common'
+import { commonPinia as pinia, type Entity, commonStore } from '@pulse/Common'
 import { getMockedFavoriteEntities } from './MockedFavoriteEntities'
 import SidebarEntity from '.'
 
@@ -18,7 +18,7 @@ vi.mock('vue-router', () => ({
 
 const entities: Entity[] = getMockedFavoriteEntities()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
     getters: {

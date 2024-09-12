@@ -17,10 +17,10 @@
 import { computed, onMounted, ref } from 'vue'
 import { fr, PConfigProvider, PCalendar, PScrollbar } from '@kpmg/styleguide'
 import type { CalendarProps } from './CalendarTypes'
-import { getTypeLabel } from '@/schedule/helpers/utils'
-import { getDeadlineCompletionSummary } from '@/schedule/helpers/deadlineHelper'
-import type { Deadline } from '@/schedule/models/Deadline'
-import { getScheduleModelsByKey } from '@/schedule/services'
+import { getTypeLabel } from '@app/schedule/helpers/utils'
+import { getDeadlineCompletionSummary } from '@app/schedule/helpers/deadlineHelper'
+import type { Deadline } from '@app/schedule/models/Deadline'
+import { getScheduleModelsByKey } from '@app/schedule/services'
 import { cloneDeep } from 'lodash-es'
 
 const locale = cloneDeep(fr)

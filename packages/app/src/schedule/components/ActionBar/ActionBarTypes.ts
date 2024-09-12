@@ -1,4 +1,4 @@
-import type { ViewType } from '@/schedule/models/commonTypes'
+import type { ViewType } from '@app/schedule/models/commonTypes'
 
 export interface ActionBarProps {
   modelValue: ViewType

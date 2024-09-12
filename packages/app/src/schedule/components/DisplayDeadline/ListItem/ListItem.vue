@@ -27,9 +27,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import Deadlines from '@/schedule/components/DisplayDeadline/Deadlines'
+import Deadlines from '@app/schedule/components/DisplayDeadline/Deadlines'
 import type { ListItemProps } from './ListItemTypes'
-import { dateToLocaleFormat } from '@/schedule/helpers/utils'
+import { dateToLocaleFormat } from '@app/schedule/helpers/utils'
 
 const props = defineProps<ListItemProps>()
 

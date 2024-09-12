@@ -1,6 +1,6 @@
 import DropdownSchedule from '.'
-import wrapperFactory from '@/schedule/tests/utils/wrapperFactory'
-import type { KeyLabel } from '@/schedule/models/commonTypes'
+import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import type { KeyLabel } from '@app/schedule/models/commonTypes'
 import type { DropdownScheduleProps } from './DropdownScheduleTypes'
 import { expect, describe, it, vi } from 'vitest'
 import { PSelect } from '@kpmg/styleguide'
@@ -15,7 +15,7 @@ function getMockedSchedulesCollection(values: string[]): KeyLabel[] {
   }))
 }
 
-vi.mock('@/schedule/services', () => {
+vi.mock('@app/schedule/services', () => {
   return {
     getScheduleModels: () => [{
       key: 'TVA',

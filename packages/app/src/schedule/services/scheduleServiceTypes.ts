@@ -1,4 +1,4 @@
-import type { Status } from '@/schedule/models/Deadline'
+import type { Status } from '@app/schedule/models/Deadline'
 
 export type ScheduleModelLabelType = 'short' | 'long' | 'both'
 
