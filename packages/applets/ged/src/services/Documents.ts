@@ -1,11 +1,11 @@
-import { commonApi as api } from '@kpmg/common'
+import { commonApi as api } from '@pulse/Common'
 import type { AxiosResponse } from 'axios'
-import type { Document, DocumentsWithTableStructure } from '@/models/Document'
-import type { Service } from '@/models/Service'
-import type { Folder } from '@/models/Folder'
+import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
+import type { Service } from '@ged/models/Service'
+import type { Folder } from '@ged/models/Folder'
 import type { MoveDocumentsRequest } from
-  '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
-import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+  '@ged/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
+import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 
 export const fetchFolderDocuments = async (
   serviceId: Service['ServiceId'],

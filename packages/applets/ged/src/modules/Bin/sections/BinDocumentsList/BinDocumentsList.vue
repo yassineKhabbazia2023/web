@@ -43,8 +43,8 @@
 import type { BinDocumentsListProps } from './BinDocumentsListTypes'
 import BinTableElement from './components/BinTableElement'
 import { PTable, PTableColumn } from '@kpmg/styleguide'
-import { returnSortQueryField } from '@/modules/Documents/helpers/sortHelper'
-import type { BinDocument } from '@/models/Document'
+import { returnSortQueryField } from '@ged/modules/Documents/helpers/sortHelper'
+import type { BinDocument } from '@ged/models/Document'
 
 defineProps<BinDocumentsListProps>()
 

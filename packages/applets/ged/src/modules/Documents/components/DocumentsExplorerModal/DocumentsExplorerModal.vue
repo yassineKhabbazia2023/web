@@ -77,10 +77,10 @@ import FoldersList from './components/FoldersNavigator/FoldersList'
 import FoldersBreadCrumb from './components/FoldersNavigator/FoldersBreadCrumb'
 import DocumentsList from './components/DocumentsSelector/DocumentsList'
 import DocumentsModalActionsFooter from './components/DocumentsModalActionsFooter'
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 import type { ExplorerDocument } from '../../DocumentsTypes'
-import { deepCopy } from '@/modules/common/utils/deepCopy'
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import { deepCopy } from '@ged/modules/common/utils/deepCopy'
+import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 
 const props = defineProps<DocumentsModalExplorerProps>()
 
@@ -222,7 +222,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@use '@/utils/breakpoints';
+@use '@ged/utils/breakpoints';
 .documents-explorer-modal {
   margin-top: 13vh;
 

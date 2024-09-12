@@ -7,9 +7,9 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import FoldersMove from '.'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
-import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   moveFolderAsync: () => {
     throw new Error('Something uncool')
   },

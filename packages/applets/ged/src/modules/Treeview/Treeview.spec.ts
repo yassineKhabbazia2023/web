@@ -1,21 +1,21 @@
-import Treeview from '@/modules/Treeview'
+import Treeview from '@ged/modules/Treeview'
 import { mount, flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
-import { type TreeviewProps } from '@/modules/Treeview/TreeviewTypes'
+import { type TreeviewProps } from '@ged/modules/Treeview/TreeviewTypes'
 
 import { createPinia, setActivePinia } from 'pinia'
-import type { Service } from '@/models/Service'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
-import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
+import type { Service } from '@ged/models/Service'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
+import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
+import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { PTree } from '@kpmg/styleguide'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 import TreeNode from './components/TreeNode'
-import { downloadFolder } from '@/services/Folder'
+import { downloadFolder } from '@ged/services/Folder'
 
 type TreeviewSetup = {
   currentFolderName: string
@@ -42,7 +42,7 @@ const defaultProps: TreeviewProps = {
   currentServiceFolder: undefined,
 }
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   downloadFolder: vi.fn(),
 }))
 

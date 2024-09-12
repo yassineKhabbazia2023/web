@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ref, type Ref } from 'vue'
 import { useDragAndDropFromExplorer } from '.'
 import { PNotification, PIExclamationTriangle, PICheck } from '@kpmg/styleguide'
-import type { DocumentsProps } from '@/modules/Documents/DocumentsTypes'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import type { DocumentsProps } from '@ged/modules/Documents/DocumentsTypes'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 
 let currentService: Ref<DocumentsProps['currentService']>
 let selectedEntity: Ref<DocumentsProps['selectedEntity']>
@@ -50,7 +50,7 @@ class MockDataTransfer {
   }
 }
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   uploadDocument: vi.fn((_service, _entity, file, _folderId) => {
     if (file.name === 'fail.txt') {
       return Promise.reject(new Error('Upload failed'))

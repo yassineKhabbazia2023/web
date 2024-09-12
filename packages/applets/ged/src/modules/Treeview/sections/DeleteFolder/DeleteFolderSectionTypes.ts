@@ -1,5 +1,5 @@
-import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import type { Folder } from '@ged/models/Folder'
+import type { Service } from '@ged/models/Service'
 
 export interface DeleteFolderSectionProps {
   serviceId: Service['ServiceId'] | null

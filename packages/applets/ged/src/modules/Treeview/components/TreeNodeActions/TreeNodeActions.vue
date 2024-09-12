@@ -22,9 +22,9 @@
 <script setup lang="ts">
 import { PIThreeDots, PButton, PIcon } from '@kpmg/styleguide'
 import TreeNodeActionsToolbox from
-  '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
+  '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
 import { type TreeNodeActionsProps } from
-  '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
+  '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
 import { ref } from 'vue'
 
 const emit = defineEmits([

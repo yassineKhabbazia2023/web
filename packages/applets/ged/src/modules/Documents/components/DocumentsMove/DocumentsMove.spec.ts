@@ -1,23 +1,23 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
+import type { Folder } from '@ged/models/Folder'
+import type { Service } from '@ged/models/Service'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { GivenActionAuthorization } from
-  '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
-import { moveDocuments } from '@/services/Documents'
+  '@ged/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
+import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
+import { moveDocuments } from '@ged/services/Documents'
 import DocumentsModalActionsFooter from
   '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
 import { PButton } from '@kpmg/styleguide'
 import type { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTypes'
 import DocumentsMove from '.'
 import { documentsMock } from '../../mocks/documentMock'
-import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 
 // id: 135393636 without permission 'CAN_MOVE_INTO_FOLDER'
 const unValidDestination: Folder = foldersData[0][0]
@@ -54,7 +54,7 @@ export type DocumentsMoveWrapper = VueWrapper<
   ComponentPublicInstance<DocumentMoveProps, DocumentMoveSetup>
 >
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   moveDocuments: vi.fn(),
 }))
 

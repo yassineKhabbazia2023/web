@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 
 export interface RenameFolderModalProps {
   isRenameFolderModalVisible: boolean

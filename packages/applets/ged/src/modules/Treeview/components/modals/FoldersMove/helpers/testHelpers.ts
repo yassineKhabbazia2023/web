@@ -1,12 +1,12 @@
 import type { ExplorerMoveFolder, FoldersMoveProps } from '../FoldersMoveTypes'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
+import type { Folder } from '@ged/models/Folder'
+import type { Service } from '@ged/models/Service'
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import type { GivenActionAuthorization }
-  from '@/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
+  from '@ged/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
+import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
 const folderToMove: Folder = foldersData[0][0].children[0].children[0].children[0] // id : 11111111

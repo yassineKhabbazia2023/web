@@ -2,10 +2,10 @@ import { createPinia } from 'pinia'
 import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import { vi, describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
-import { documentMock } from '@/modules/Documents/mocks/documentMock'
+import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
 import type { DocumentRenameProps } from './DocumentRenameTypes'
 
-import { renameDocument } from '@/services/Documents'
+import { renameDocument } from '@ged/services/Documents'
 import DocumentRename from './'
 import DocumentRenameModal from './components/DocumentRenameModal.vue'
 
@@ -17,7 +17,7 @@ const mocks = vi.hoisted(() => {
   }
 })
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   renameDocument: mocks.patch,
 }))
 const defaultProps: DocumentRenameProps = {

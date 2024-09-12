@@ -1,4 +1,4 @@
-import type { DocumentsWithTableStructure } from '@/models/Document'
+import type { DocumentsWithTableStructure } from '@ged/models/Document'
 import mock from './mock.json'
 
 export const documentsResponsePayload: DocumentsWithTableStructure =

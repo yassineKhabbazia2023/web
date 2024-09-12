@@ -105,7 +105,7 @@ import type { ComputedRef } from 'vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DocumentDetailsTabPaneProps, PiaStatusTag } from './DocumentDetailsTabPaneTypes'
-import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
+import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import {
   PTag,
   PIPatchCheck,
@@ -115,11 +115,11 @@ import {
   PButton,
 } from '@kpmg/styleguide'
 import { useDownloadDocuments } from
-  '@/modules/Documents/components/DownloadDocuments/DownloadDocuments'
+  '@ged/modules/Documents/components/DownloadDocuments/DownloadDocuments'
 import type { DownloadDocumentsComposableProps }
   // eslint-disable-next-line max-len
-  from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
-import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
+  from '@ged/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
+import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 
 const props = defineProps<DocumentDetailsTabPaneProps>()
 

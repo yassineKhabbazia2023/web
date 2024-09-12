@@ -15,13 +15,13 @@
 import { ref, inject, toRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DeleteFolderConfirmationPopup
-  from '@/modules/Treeview/components/popups/Delete'
+  from '@ged/modules/Treeview/components/popups/Delete'
 import { type DeleteFolderSectionProps }
-  from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
+  from '@ged/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
 
-import { deleteFolder } from '@/services/Folder'
+import { deleteFolder } from '@ged/services/Folder'
 import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
-import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 
 // Definitions
 const { t } = useI18n({

@@ -111,24 +111,24 @@
 
 import type { ComputedRef } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
-import TreeNode from '@/modules/Treeview/components/TreeNode'
+import TreeNode from '@ged/modules/Treeview/components/TreeNode'
 import { formatBinData } from './helpers/binHelper'
 import type { TreeviewProps, TreeType, ExtendedFolder } from './TreeviewTypes'
-import type { Folder } from '@/models/Folder'
-import type { Bin } from '@/models/Bin'
-import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
-import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
+import type { Folder } from '@ged/models/Folder'
+import type { Bin } from '@ged/models/Bin'
+import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
+import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader, PICheck, PIX, PNotification } from '@kpmg/styleguide'
-import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
+import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 import { findFolderDeepById } from './helpers/folderArrayHelper'
 import type { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
 import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
 import FoldersMove from './components/modals/FoldersMove'
-import DocumentsDropConfirmationPopup from '@/modules/Treeview/components/popups/DocumentsDrop'
-import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
-import { getFolderPath } from '@/modules/Treeview/helpers/folderArrayHelper'
-import type { Document } from '@/models/Document'
-import { moveDocuments } from '@/services/Documents'
+import DocumentsDropConfirmationPopup from '@ged/modules/Treeview/components/popups/DocumentsDrop'
+import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
+import { getFolderPath } from '@ged/modules/Treeview/helpers/folderArrayHelper'
+import type { Document } from '@ged/models/Document'
+import { moveDocuments } from '@ged/services/Documents'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps<TreeviewProps>()
@@ -490,7 +490,7 @@ watch(
 </script>
 
 <style lang="scss">
-@use '@/utils/breakpoints';
+@use '@ged/utils/breakpoints';
 
 .treeview {
   width: 100%;

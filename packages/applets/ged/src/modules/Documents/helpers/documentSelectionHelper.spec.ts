@@ -1,4 +1,4 @@
-import type { Document } from '@/models/Document'
+import type { Document } from '@ged/models/Document'
 import { describe, it, expect } from 'vitest'
 import { getPermissionsFromDocuments } from './documentSelectionHelper'
 import mock from './documentSelectionHelper.mock.json'

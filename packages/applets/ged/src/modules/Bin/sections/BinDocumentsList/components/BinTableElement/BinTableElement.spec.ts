@@ -1,4 +1,4 @@
-import BinTableElement from '@/modules/Bin/sections/BinDocumentsList/components/BinTableElement'
+import BinTableElement from '@ged/modules/Bin/sections/BinDocumentsList/components/BinTableElement'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'

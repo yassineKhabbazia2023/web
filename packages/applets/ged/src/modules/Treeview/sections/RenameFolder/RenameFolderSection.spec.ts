@@ -1,12 +1,12 @@
-import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
+import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type RenameFolderSectionProps }
-  from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
-import type { Folder, FolderProperties } from '@/models/Folder'
+  from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
+import type { Folder, FolderProperties } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
-import { RenameFolder } from '@/services/Folder'
-import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
+import { RenameFolder } from '@ged/services/Folder'
+import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
 
 const pinia = createPinia()
@@ -52,7 +52,7 @@ const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   RenameFolder: vi.fn(),
 }))
 

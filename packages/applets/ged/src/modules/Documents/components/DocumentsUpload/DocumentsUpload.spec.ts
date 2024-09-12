@@ -3,18 +3,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { DocumentUploadProps } from './DocumentsUploadTypes'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@/models/Folder'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
+import type { Folder } from '@ged/models/Folder'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { uploadDocument } from '@/services/Documents'
+import { uploadDocument } from '@ged/services/Documents'
 import DocumentsUpload from '.'
 import DocumentsModalActionsFooter from '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
 import { PButton } from '@kpmg/styleguide'
 import { generateTestFiles, defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
-import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 
 const unValidDestination: Folder = foldersData[0][0] // id: 135393636
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
@@ -70,7 +70,7 @@ export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
 >
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   uploadDocument: vi.fn(() => {
     return uploadDocumentsResponse
   }),

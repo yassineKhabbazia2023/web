@@ -1,4 +1,4 @@
-import type { BinDocumentsWithTableStructure } from '@/models/Document'
+import type { BinDocumentsWithTableStructure } from '@ged/models/Document'
 import mock from './binDocumentMockData.json'
 
 export const binDocumentsMock: BinDocumentsWithTableStructure = {

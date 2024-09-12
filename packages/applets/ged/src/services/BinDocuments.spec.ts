@@ -4,11 +4,11 @@ import {
   fetchBinDocuments,
   restoreDocuments,
 } from './BinDocuments'
-import type { Service } from '@/models/Service'
+import type { Service } from '@ged/models/Service'
 import {
   commonApiDsGetSpy as mockDsGet,
   commonApiDsPostSpy as mockDsPost,
-} from '@/../vitest.setup'
+} from '@ged/../vitest.setup'
 
 describe('bin documents service', () => {
   beforeEach(() => {

@@ -5,9 +5,9 @@ import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { PFileAndFolderLineCheck, PImage } from '@kpmg/styleguide'
-import type { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
+import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
 import DocumentsList
-  from '@/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsList'
+  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsList'
 import { type DocumentsListProps }
   from './DocumentsListTypes'
 

@@ -9,7 +9,7 @@ import { expect, describe, it, vi } from 'vitest'
 import { PDrawer, PSelect, POption, PDatePicker, PButton } from '@kpmg/styleguide'
 import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import DocumentSearchFiltrer from '.'
-import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 
 const defaultProps: DocumentSearchFiltrerProps = {
   modelValue: true,

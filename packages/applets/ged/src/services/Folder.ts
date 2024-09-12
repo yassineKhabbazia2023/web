@@ -1,6 +1,6 @@
-import { commonApi } from '@kpmg/common'
-import type { Service } from '@/models/Service'
-import type { Folder } from '@/models/Folder'
+import { commonApi } from '@pulse/Common'
+import type { Service } from '@ged/models/Service'
+import type { Folder } from '@ged/models/Folder'
 
 export const fetchServiceFolders = async (
   service: Service,

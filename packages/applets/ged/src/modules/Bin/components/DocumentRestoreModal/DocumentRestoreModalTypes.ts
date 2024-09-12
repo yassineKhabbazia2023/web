@@ -1,5 +1,5 @@
-import type { Service } from '@/models/Service'
-import type { BinDocument } from '@/models/Document'
+import type { Service } from '@ged/models/Service'
+import type { BinDocument } from '@ged/models/Document'
 
 export interface DocumentRestoreModalTypesProps {
   isVisible: boolean

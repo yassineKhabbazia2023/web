@@ -12,8 +12,8 @@
 import { computed, ref, inject } from 'vue'
 import type { DocumentRenameProps } from './DocumentRenameTypes.ts'
 import DocumentRenameModal from './components/DocumentRenameModal.vue'
-import { renameDocument } from '@/services/Documents'
-import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import { renameDocument } from '@ged/services/Documents'
+import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { useI18n } from 'vue-i18n'
 import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
 

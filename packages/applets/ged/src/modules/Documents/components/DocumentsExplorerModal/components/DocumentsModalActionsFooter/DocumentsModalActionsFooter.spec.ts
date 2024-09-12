@@ -5,9 +5,9 @@ import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { PButton } from '@kpmg/styleguide'
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 import DocumentsModalActionsFooter
-  from '@/modules/Documents/components/DocumentsExplorerModal/components/DocumentsModalActionsFooter'
+  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsModalActionsFooter'
 import { type ModalActionsProps }
   from './DocumentsModalActionsFooterTypes'
 

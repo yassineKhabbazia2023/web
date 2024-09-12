@@ -1,4 +1,4 @@
-import type { Service } from '@/models/Service'
+import type { Service } from '@ged/models/Service'
 
 // There's no specific endpoint to retrieve bin as it's based on services
 // That's why we need to format all the current services to match the Tree structure

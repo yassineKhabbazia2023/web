@@ -9,12 +9,12 @@ import BinDocumentsList from './sections/BinDocumentsList'
 import type { BinDocumentProps } from './BinDocumentsTypes'
 import {
   fetchBinDocuments,
-} from '@/services/BinDocuments'
+} from '@ged/services/BinDocuments'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import DocumentRestoreModal from '@/modules/Bin/components/DocumentRestoreModal'
+import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
 import { PBreadcrumb, PPagination, PLoader } from '@kpmg/styleguide'
-import type { BinDocument, BinDocumentsWithTableStructure } from '@/models/Document'
+import type { BinDocument, BinDocumentsWithTableStructure } from '@ged/models/Document'
 
 const defaultProps: BinDocumentProps = {
   currentBinService: 'serv',
@@ -49,7 +49,7 @@ const createWrapper = (
   }) as unknown as BinDocumentsWrapper
 }
 
-vi.mock('@/services/BinDocuments', () => ({
+vi.mock('@ged/services/BinDocuments', () => ({
   restoreDocuments: vi.fn(),
   fetchBinDocuments: vi.fn(() => {
     return binDocumentsMock

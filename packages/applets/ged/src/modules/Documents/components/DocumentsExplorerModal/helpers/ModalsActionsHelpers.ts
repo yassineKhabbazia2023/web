@@ -1,4 +1,4 @@
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 
 interface ModalActionsWithOrder {
     modalButton: ButtonAction

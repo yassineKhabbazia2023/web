@@ -23,16 +23,16 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
-import SingleInputModal from '@/modules/common/templates/modals'
+import SingleInputModal from '@ged/modules/common/templates/modals'
 import {
   INPUT_MAX_LENGTH,
   validInputMaxLength,
   validInputAlphanumericFrench,
-} from '@/modules/common/helpers/inputValidationHelper'
+} from '@ged/modules/common/helpers/inputValidationHelper'
 import {
   getDocumentNameExtension,
   getDocumentNameWithoutExtension,
-} from '@/modules/Documents/helpers/filesExtensions'
+} from '@ged/modules/Documents/helpers/filesExtensions'
 
 const props = defineProps<DocumentRenameModalProps>()
 const emit = defineEmits([

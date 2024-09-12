@@ -4,8 +4,8 @@ import { mount, flushPromises } from '@vue/test-utils'
 import Ged from './'
 import { createPinia, setActivePinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { fetchUserEntityServices } from '@/services/Services'
-import { fetchServicesFolders } from '@/services/Folder'
+import { fetchUserEntityServices } from '@ged/services/Services'
+import { fetchServicesFolders } from '@ged/services/Folder'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { Folder, FolderProperties } from './models/Folder'
@@ -19,9 +19,9 @@ import {
   deleteFolder,
   renameFolder,
   findFolderDeepById,
-} from '@/modules/Treeview/helpers/folderArrayHelper'
-import Documents from '@/modules/Documents'
-import BinDocuments from '@/modules/Bin'
+} from '@ged/modules/Treeview/helpers/folderArrayHelper'
+import Documents from '@ged/modules/Documents'
+import BinDocuments from '@ged/modules/Bin'
 import { PNotification } from '@kpmg/styleguide'
 
 const pinia = createPinia()
@@ -37,7 +37,7 @@ const apiMocks = vi.hoisted(() => ({
   })),
 }))
 
-vi.mock('@/models/AccountingHubConnection', () => ({
+vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     OnConnectedAsync: vi.fn(),
     OnDisconnectedAsync: vi.fn(),
@@ -55,27 +55,27 @@ vi.mock('@kpmg/styleguide', async () => {
   }
 })
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   fetchServicesFolders: apiMocks.fetchServicesFoldersSuccess,
 }))
 
-vi.mock('@/services/Services', () => ({
+vi.mock('@ged/services/Services', () => ({
   fetchUserEntityServices: vi.fn(() => {
     return servicesData
   }),
 }))
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
 }))
 
-vi.mock('@/services/BinDocuments', () => ({
+vi.mock('@ged/services/BinDocuments', () => ({
   fetchBinDocuments: vi.fn(),
 }))
 
-vi.mock('@/modules/Treeview/helpers/folderArrayHelper', async () => {
+vi.mock('@ged/modules/Treeview/helpers/folderArrayHelper', async () => {
   const actual = await vi.importActual(
-    '@/modules/Treeview/helpers/folderArrayHelper',
+    '@ged/modules/Treeview/helpers/folderArrayHelper',
   )
   return {
     // @ts-ignore

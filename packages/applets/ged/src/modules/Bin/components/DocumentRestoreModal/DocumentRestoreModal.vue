@@ -16,12 +16,12 @@
 <script setup lang="ts">
 import { computed, ref, inject } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { restoreDocuments } from '@/services/BinDocuments'
+import { restoreDocuments } from '@ged/services/BinDocuments'
 import ConfirmationPopup from
-  '@/modules/common/templates/popups'
+  '@ged/modules/common/templates/popups'
 import { type DocumentRestoreModalTypesProps }
-  from '@/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
-import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+  from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
+import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
 
 // DeleteFolderConfirmationPopup definitions

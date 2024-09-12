@@ -23,10 +23,10 @@ import { computed } from 'vue'
 import type {
   FoldersBreadCrumbProps,
 } from './FoldersBreadCrumbTypes'
-import type { Folder } from '@/models/Folder'
-import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
+import type { Folder } from '@ged/models/Folder'
+import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import type { BreadcrumbItems }
-  from '@kpmg/styleguide/dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes'
+  from '@kpmg/styleguide'
 const props = defineProps<FoldersBreadCrumbProps>()
 const emit = defineEmits(['navigate-to-folder', 'open-create-folder-modal'])
 const breadCrumbItems = computed(() => generateBreadCrumb())

@@ -1,5 +1,5 @@
-import type { Folder } from '@/models/Folder'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import type { Folder } from '@ged/models/Folder'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
 import type { FoldersBreadCrumbProps } from './FoldersBreadCrumbTypes'
 import type { VueWrapper } from '@vue/test-utils'
@@ -8,7 +8,7 @@ import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import FoldersBreadCrumb from '.'
 import type { BreadcrumbItems }
-  from '@kpmg/styleguide/dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes'
+  from '@kpmg/styleguide'
 import { PBreadcrumb, PIcon } from '@kpmg/styleguide'
 
 const currentServiceFolder: Folder[] = foldersData[0]

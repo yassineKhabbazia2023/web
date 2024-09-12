@@ -18,13 +18,13 @@
 <script setup lang="ts">
 import { inject, ref, toRef, watch } from 'vue'
 import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
-import { RenameFolder } from '@/services/Folder'
-import type { Folder } from '@/models/Folder'
-import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
+import { RenameFolder } from '@ged/services/Folder'
+import type { Folder } from '@ged/models/Folder'
+import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import { type RenameFolderSectionProps }
-  from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
+  from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
 import { useI18n } from 'vue-i18n'
-import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

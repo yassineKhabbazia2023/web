@@ -3,11 +3,11 @@ import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DownloadFolderComposableProps } from './DownloadFolderTypes'
 import { type ToastPluginFunc } from
-  '@/modules/common/Types/toastPluginTypes'
+  '@ged/modules/common/Types/toastPluginTypes'
 import { PICheck, PIExclamationTriangle, PILoader } from '@kpmg/styleguide'
-import { formatDate } from '@/modules/common/helpers/dateFormatHelper'
-import { downloadFolder } from '@/services/Folder'
-import { downloadFile } from '@/modules/common/helpers/downloadFilesHelper'
+import { formatDate } from '@ged/modules/common/helpers/dateFormatHelper'
+import { downloadFolder } from '@ged/services/Folder'
+import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'
 
 export function useDownloadFolder(
   downloadFolderProps: ComputedRef<DownloadFolderComposableProps>,

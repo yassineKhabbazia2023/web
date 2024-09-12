@@ -55,7 +55,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { type SingleInputModalProps } from '@/modules/common/templates/modals/SingleInputModalTypes'
+import { type SingleInputModalProps } from '@ged/modules/common/templates/modals/SingleInputModalTypes'
 
 import { PIXCircle, PDialog, PButton, PInput, PIcon } from '@kpmg/styleguide'
 

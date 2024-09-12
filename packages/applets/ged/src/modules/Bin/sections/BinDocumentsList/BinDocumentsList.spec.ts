@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 // eslint-disable-next-line max-len
-import type { BinDocumentsListProps } from '@/modules/Bin/sections/BinDocumentsList/BinDocumentsListTypes'
+import type { BinDocumentsListProps } from '@ged/modules/Bin/sections/BinDocumentsList/BinDocumentsListTypes'
 import { binDocumentsMock } from '../../mocks/binDocumentMock'
 import { PTableColumn, PTable } from '@kpmg/styleguide'
 import { nextTick } from 'vue'

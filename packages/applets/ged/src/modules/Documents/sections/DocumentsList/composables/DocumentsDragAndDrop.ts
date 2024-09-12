@@ -1,6 +1,6 @@
 import { computed, watch, onBeforeUnmount } from 'vue'
 import type { Ref } from 'vue'
-import type { Document } from '@/models/Document'
+import type { Document } from '@ged/models/Document'
 import type { DocumentsListProps } from '../DocumentsListTypes'
 
 export function useDocumentsDragAndDrop(

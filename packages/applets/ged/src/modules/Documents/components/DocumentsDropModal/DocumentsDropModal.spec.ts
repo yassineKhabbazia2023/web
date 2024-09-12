@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest'
 import DocumentsDropModal from '.'
 import type { DocumentsDropModalProps } from './DocumentsDropModalTypes'
 import { type ComponentPublicInstance } from 'vue'
-import ConfirmationPopup from '@/modules/common/templates/popups'
+import ConfirmationPopup from '@ged/modules/common/templates/popups'
 
 const folderName = 'Something'
 const defaultProps: DocumentsDropModalProps = {

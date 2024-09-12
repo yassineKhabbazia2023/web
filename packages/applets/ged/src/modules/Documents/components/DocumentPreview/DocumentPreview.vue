@@ -45,11 +45,11 @@
 import { computed, ref, watch, onMounted } from 'vue'
 import { PDocumentViewer, PIcon, PDocumentDisplay } from '@kpmg/styleguide'
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
-import type { DocumentPreviewResponse } from '@/services/Documents'
-import { downloadDocument, previewDocument } from '@/services/Documents'
+import type { DocumentPreviewResponse } from '@ged/services/Documents'
+import { downloadDocument, previewDocument } from '@ged/services/Documents'
 import { getFileExtension, getFileIcon, isImageDocument }
   from '../../helpers/filesExtensions'
-import DocumentsTabs from '@/modules/Documents/sections/DocumentsList/components/DocumentTabs'
+import DocumentsTabs from '@ged/modules/Documents/sections/DocumentsList/components/DocumentTabs'
 import { useI18n } from 'vue-i18n'
 
 const props = defineProps<DocumentsPreviewProps>()

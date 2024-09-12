@@ -9,8 +9,8 @@ import {
   PButton,
   PICheckCircle, PTag,
 } from '@kpmg/styleguide'
-import { downloadDocument } from '@/services/Documents'
-import { documentMock } from '@/modules/Documents/mocks/documentMock'
+import { downloadDocument } from '@ged/services/Documents'
+import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
 import { nextTick } from 'vue'
 
 const defaultProps: DocumentDetailsTabPaneProps = {
@@ -38,7 +38,7 @@ function getMockedUpdatedDocument(status: string, labelFr: string|null, path: st
   return updatedDocument
 }
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   downloadDocument: vi.fn(),
 }))
 const pinia = createPinia()

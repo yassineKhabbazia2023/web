@@ -1,4 +1,4 @@
-import type { Document, DocumentsTableStructure } from '@/models/Document'
+import type { Document, DocumentsTableStructure } from '@ged/models/Document'
 
 export interface TableElementPops {
   fieldType: DocumentsTableStructure['fieldType']

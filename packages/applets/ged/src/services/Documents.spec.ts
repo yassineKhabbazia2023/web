@@ -12,16 +12,16 @@ import {
   previewDocument,
   fetchDocumentsByKeyWord,
 } from './Documents'
-import type { Service } from '@/models/Service'
-import type { Document } from '@/models/Document'
-import type { Folder } from '@/models/Folder'
-import type { MoveDocumentsRequest } from '@/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
+import type { Service } from '@ged/models/Service'
+import type { Document } from '@ged/models/Document'
+import type { Folder } from '@ged/models/Folder'
+import type { MoveDocumentsRequest } from '@ged/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
 import {
   commonApiDsGetSpy as mockDsGet,
   commonApiDsPostSpy as mockDsPost,
   commonApiDsDeleteSpy as mockDsDelete,
   commonApiDsPatchSpy as mockDsPatch,
-} from '@/../vitest.setup'
+} from '@ged/../vitest.setup'
 
 describe('documents service', () => {
   beforeEach(() => {

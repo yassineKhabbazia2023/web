@@ -1,4 +1,4 @@
-import type { Service } from '@/models/Service'
+import type { Service } from '@ged/models/Service'
 
 export interface DocumentDeleteModalTypesProps {
   isVisible: boolean

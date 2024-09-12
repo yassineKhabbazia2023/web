@@ -1,9 +1,9 @@
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 import { type BreadcrumbItems }
-  from '@kpmg/styleguide/dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes'
+  from '@kpmg/styleguide'
 import {
   findFolderDeepById,
-} from '@/modules/Treeview/helpers/folderArrayHelper'
+} from '@ged/modules/Treeview/helpers/folderArrayHelper'
 
 export const getBreadcrumbItems = (
   root: Folder[],

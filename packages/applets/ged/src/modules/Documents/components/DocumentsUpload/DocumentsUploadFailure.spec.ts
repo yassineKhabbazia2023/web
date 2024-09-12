@@ -9,13 +9,13 @@ import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import DocumentsUpload from '.'
 import { defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
-import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 
 export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
 >
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   uploadDocument: vi.fn(() => {
     throw new Error('something uncool')
   }),

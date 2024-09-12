@@ -1,5 +1,5 @@
-import { commonApi } from '@kpmg/common'
-import type { Service } from '@/models/Service'
+import { commonApi } from '@pulse/Common'
+import type { Service } from '@ged/models/Service'
 
 export const fetchUserEntityServices = async (
   entityId: Service['ServiceId'],

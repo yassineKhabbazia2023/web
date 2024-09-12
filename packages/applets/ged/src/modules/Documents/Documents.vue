@@ -201,49 +201,49 @@ import { ref, toRefs, watch, computed } from 'vue'
 import {
   fetchFolderDocuments,
   fetchDocumentsByKeyWord,
-} from '@/services/Documents'
+} from '@ged/services/Documents'
 import type { DocumentsProps } from './DocumentsTypes'
-import type { Folder } from '@/models/Folder'
-import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
+import type { Folder } from '@ged/models/Folder'
+import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 
 import DocumentsList from './sections/DocumentsList'
 import type {
   Document,
   DocumentsWithTableStructure,
   TableRowDocument,
-} from '@/models/Document'
+} from '@ged/models/Document'
 
-import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
-import { getPermissionsFromDocuments } from '@/modules/Documents/helpers/documentSelectionHelper'
+import DocumentsActionsBar from '@ged/modules/Documents/sections/DocumentsActions'
+import { getPermissionsFromDocuments } from '@ged/modules/Documents/helpers/documentSelectionHelper'
 
 import { useDownloadDocuments } from
-  '@/modules/Documents/components/DownloadDocuments/DownloadDocuments'
+  '@ged/modules/Documents/components/DownloadDocuments/DownloadDocuments'
 import type { DownloadDocumentsComposableProps }
-  from '@/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
+  from '@ged/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
 import type { TransmitDocumentsComposableProps }
-  from '@/modules/Documents/components/DocumentsTransmit/TransmitDocumentsTypes'
+  from '@ged/modules/Documents/components/DocumentsTransmit/TransmitDocumentsTypes'
 import { useTransmitDocuments } from
-  '@/modules/Documents/components/DocumentsTransmit/TransmitDocuments'
+  '@ged/modules/Documents/components/DocumentsTransmit/TransmitDocuments'
 
 import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
 import DocumentPreview from './components/DocumentPreview'
-import DocumentDeleteModal from '@/modules/Documents/components/DocumentDeleteModal'
+import DocumentDeleteModal from '@ged/modules/Documents/components/DocumentDeleteModal'
 import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
-import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
+import DocumentUpload from '@ged/modules/Documents/components/DocumentsUpload'
 import { getBreadcrumbItems }
-  from '@/modules/common/helpers/folderHelper'
+  from '@ged/modules/common/helpers/folderHelper'
 import { usePiaStatusSync } from './composable/PiaStatusSync'
 import { deepCopy } from '../common/utils/deepCopy'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
-import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
-import DocumentsSearchAlert from '@/modules/Documents/components/DocumentsSearchAlert'
+import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
+import DocumentsSearchAlert from '@ged/modules/Documents/components/DocumentsSearchAlert'
 import { validInputMaxLength }
-  from '@/modules/common/helpers/inputValidationHelper'
+  from '@ged/modules/common/helpers/inputValidationHelper'
 import DocumentsDropZone from './components/DocumentsDropZone'
 import { useDragAndDropFromExplorer } from './composable/DragAndDropFromExplorer'
 import DocumentsDropModal from './components/DocumentsDropModal'
-import { Permissions } from '@/models/Permissions'
+import { Permissions } from '@ged/models/Permissions'
 import AccountInformation from './components/AccountInformation'
 
 /* The more features we add the more this component becomes bloated.

@@ -9,7 +9,7 @@ import { PDocumentDisplay, PDocumentViewer, PIcon } from '@kpmg/styleguide'
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import { documentMock } from '../../mocks/documentMock'
 import { getFileIcon } from '../../helpers/filesExtensions'
-import { downloadDocument, previewDocument } from '@/services/Documents'
+import { downloadDocument, previewDocument } from '@ged/services/Documents'
 import DocumentPreview from '.'
 
 const defaultProps: DocumentsPreviewProps = {
@@ -36,7 +36,7 @@ const createWrapper = (
     },
   })
 }
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   previewDocument: vi.fn(() => {
     return Promise.resolve({
       data: new ArrayBuffer(1),

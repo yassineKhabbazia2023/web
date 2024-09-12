@@ -1,5 +1,5 @@
 import type { ComponentDefinitionProps }
-  from '@kpmg/styleguide/dist/types/src/molecules/PActionBar/PActionBarTypes'
+  from '@kpmg/styleguide'
 
 interface ActionBarButtonWithOrder {
   actionbarButton: ComponentDefinitionProps

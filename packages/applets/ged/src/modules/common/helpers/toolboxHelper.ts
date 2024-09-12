@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-len
-import type { PToolboxItemProps } from '@kpmg/styleguide/dist/types/src/atoms/PToolboxItem/PToolboxItemTypes'
+import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { foldersMappingRecord, documentsMappingRecord } from '../data/toolboxPermissionsMapping'
 export interface ToolboxLineWithOrder {
   toolboxLine: PToolboxItemProps

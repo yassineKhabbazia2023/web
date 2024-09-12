@@ -1,13 +1,13 @@
 /* eslint-disable vitest/no-hooks */
-import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
+import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type DeleteFolderSectionProps }
-  from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
-import type { Folder } from '@/models/Folder'
-import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
+  from '@ged/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
+import type { Folder } from '@ged/models/Folder'
+import DeleteFolderConfirmationPopup from '@ged/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
-import { deleteFolder } from '@/services/Folder'
+import { deleteFolder } from '@ged/services/Folder'
 import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
 
@@ -45,7 +45,7 @@ const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   tokenValue: 'mocked token',
   deleteFolder: vi.fn(),
 }))

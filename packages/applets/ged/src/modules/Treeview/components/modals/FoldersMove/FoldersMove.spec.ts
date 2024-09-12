@@ -3,20 +3,20 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@/models/Folder'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
+import type { Folder } from '@ged/models/Folder'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import FoldersMove from '.'
-import { moveFolderAsync } from '@/services/Folder'
+import { moveFolderAsync } from '@ged/services/Folder'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
-import { findComponentByNameInWrapper } from '@/modules/Documents/helpers/testHelpers'
+import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 
 const unValidDestination: Folder = foldersData[0][0] // id: 135393636
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
 const secondValidDestination: Folder = foldersData[0][0].children[0].children[0] // id: 135393649
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   moveFolderAsync: vi.fn(),
 }))
 

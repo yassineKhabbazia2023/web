@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PIcon } from '@kpmg/styleguide'
-import { getFileIcon } from '@/modules/common/helpers/iconsHelper'
+import { getFileIcon } from '@ged/modules/common/helpers/iconsHelper'
 import type { DocumentDragGhostProps } from './DocumentDragGhostTypes'
 
 const props = withDefaults(

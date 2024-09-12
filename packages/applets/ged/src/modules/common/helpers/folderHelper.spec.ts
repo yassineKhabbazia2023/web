@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { getBreadcrumbItems }
-  from '@/modules/common/helpers/folderHelper'
-import type { Folder } from '@/models/Folder'
+  from '@ged/modules/common/helpers/folderHelper'
+import type { Folder } from '@ged/models/Folder'
 import mock from './folderHelper.mock.json'
 
 const folders = mock.folders as unknown as Folder[]

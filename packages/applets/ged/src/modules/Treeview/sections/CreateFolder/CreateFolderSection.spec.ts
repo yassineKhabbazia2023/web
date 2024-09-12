@@ -1,13 +1,13 @@
-import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
+import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type CreateFolderSectionProps }
-  from '@/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import type { Folder, FolderProperties } from '@/models/Folder'
+  from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
+import type { Folder, FolderProperties } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
-import { CreateFolder } from '@/services/Folder'
-import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
+import { CreateFolder } from '@ged/services/Folder'
+import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
@@ -66,7 +66,7 @@ const createWrapper = (
   }) as unknown as CreateFolderSectionWrapper
 }
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   CreateFolder: vi.fn(),
 }))
 

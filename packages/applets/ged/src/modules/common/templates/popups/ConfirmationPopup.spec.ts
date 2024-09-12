@@ -1,9 +1,9 @@
-import ConfirmationPopup from '@/modules/common/templates/popups'
+import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type ConfirmationPopupProps } from
-  '@/modules/common/templates/popups/ConfirmationPopupTypes'
+  '@ged/modules/common/templates/popups/ConfirmationPopupTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import { PDialog } from '@kpmg/styleguide'
 import type { ComponentPublicInstance } from 'vue'

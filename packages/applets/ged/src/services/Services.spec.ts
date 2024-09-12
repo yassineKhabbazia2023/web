@@ -1,6 +1,6 @@
 import { fetchUserEntityServices } from './Services'
 import { describe, it, expect } from 'vitest'
-import { commonApiGatewayGetSpy } from '@/../vitest.setup'
+import { commonApiGatewayGetSpy } from '@ged/../vitest.setup'
 
 describe('fetchUserEntityServices', () => {
   it('should return folder object', async () => {

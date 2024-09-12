@@ -7,13 +7,13 @@ import {
   fetchServicesFolders,
   downloadFolder,
 } from './Folder'
-import type { Service } from '@/models/Service'
+import type { Service } from '@ged/models/Service'
 import {
   commonApiDsGetSpy as mockDsGet,
   commonApiDsPostSpy as mockDsPost,
   commonApiDsDeleteSpy as mockDsDelete,
   commonApiDsPatchSpy as mockDsPatch,
-} from '@/../vitest.setup'
+} from '@ged/../vitest.setup'
 
 const fetchedFolder = 'fetched'
 const patchedFolder = 'patched'

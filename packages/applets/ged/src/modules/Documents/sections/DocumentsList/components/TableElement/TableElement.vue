@@ -75,11 +75,11 @@ import {
   PIPatchCheck,
   PDoubleText,
 } from '@kpmg/styleguide'
-import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
-import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
-import { getFileIcon } from '@/modules/Documents/helpers/filesExtensions'
+import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'
+import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
+import { getFileIcon } from '@ged/modules/Documents/helpers/filesExtensions'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
-import { getPathFromArray } from '@/modules/Documents/helpers/pathBuildingHelper'
+import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 
 const props = defineProps<TableElementPops>()
 const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])

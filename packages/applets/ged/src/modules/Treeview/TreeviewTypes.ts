@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import type { Folder } from '@ged/models/Folder'
+import type { Service } from '@ged/models/Service'
 
 export interface ExtendedFolder extends Folder {
   isRootFolder?: boolean

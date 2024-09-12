@@ -48,22 +48,22 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, provide } from 'vue'
 import { useI18n } from 'vue-i18n'
-import Treeview from '@/modules/Treeview'
-import Documents from '@/modules/Documents'
-import BinDocuments from '@/modules/Bin'
-import { fetchServicesFolders } from '@/services/Folder'
-import { fetchUserEntityServices } from '@/services/Services'
-import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import Treeview from '@ged/modules/Treeview'
+import Documents from '@ged/modules/Documents'
+import BinDocuments from '@ged/modules/Bin'
+import { fetchServicesFolders } from '@ged/services/Folder'
+import { fetchUserEntityServices } from '@ged/services/Services'
+import type { Folder } from '@ged/models/Folder'
+import type { Service } from '@ged/models/Service'
 import {
   appendChildFolder,
   renameFolder,
   sortFolderByName,
   deleteFolder,
   findFolderDeepById,
-} from '@/modules/Treeview/helpers/folderArrayHelper'
+} from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { PCol, PRow, PNotification, PIX } from '@kpmg/styleguide'
-import { commonStore } from '@kpmg/common'
+import { commonStore } from '@pulse/Common'
 /* This might be refactored later to import 'PNotification' every time we need the notifications.
 The current toaster uses a mock of the 'inject' property.
 That's why we're providing the new PNotification for now.

@@ -1,11 +1,11 @@
-import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
+import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type CreateFolderSectionProps }
-  from '@/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import type { Folder } from '@/models/Folder'
+  from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
+import type { Folder } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
-import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
+import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
 import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
 
@@ -44,7 +44,7 @@ const createWrapper = (props: CreateFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   tokenValue: 'mocked token',
   CreateFolder: () => {
     throw new Error('Something uncool')

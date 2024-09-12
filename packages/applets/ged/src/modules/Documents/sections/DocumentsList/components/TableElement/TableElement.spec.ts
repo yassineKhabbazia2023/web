@@ -1,13 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import TableElement from './TableElement.vue'
 import { type TableElementPops } from './TableElementTypes'
-import type { Document } from '@/models/Document'
+import type { Document } from '@ged/models/Document'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
-import { formatDateStr } from '@/modules/common/helpers/dateFormatHelper'
+import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import {
   PIArrowRepeat,
   PIcon,
@@ -37,7 +37,7 @@ import {
   PIExclamationTriangle,
   PDoubleText,
 } from '@kpmg/styleguide'
-import DocumentActions from '@/modules/Documents/sections/DocumentsList/components/DocumentsActions'
+import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 
 const document: Document = {
   id: '1',

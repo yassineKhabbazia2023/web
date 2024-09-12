@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 import { getFileErrorMessage, getFileErrorDescription }
-  from '@/modules/common/helpers/documentCodeErrorHelper'
+  from '@ged/modules/common/helpers/documentCodeErrorHelper'
 import { describe, it, expect } from 'vitest'
-import { MAX_FILE_SIZE_MB } from '@/modules/common/constants/files'
+import { MAX_FILE_SIZE_MB } from '@ged/modules/common/constants/files'
 
 describe('document Code Error Helper', () => {
   describe('should return the proper message based on code error', () => {

@@ -1,16 +1,16 @@
 /* eslint-disable vitest/no-hooks */
-import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
-import SingleInputModal from '@/modules/common/templates/modals'
+import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
+import SingleInputModal from '@ged/modules/common/templates/modals'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type RenameFolderModalProps }
-  from '@/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
-import type { Folder } from '@/models/Folder'
+  from '@ged/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
+import type { Folder } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { getMockedButtonTest, getMockedFolder } from '@/modules/Treeview/helpers/testHelper'
+import { getMockedButtonTest, getMockedFolder } from '@ged/modules/Treeview/helpers/testHelper'
 
 const defaultProps: RenameFolderModalProps = {
   isRenameFolderModalVisible: false,

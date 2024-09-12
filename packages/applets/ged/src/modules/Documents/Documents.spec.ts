@@ -15,29 +15,29 @@ import {
   downloadDocuments,
   transmitDocuments,
   fetchDocumentsByKeyWord,
-} from '@/services/Documents'
+} from '@ged/services/Documents'
 import {
   documentsResponsePayload,
   documentsResponsePayloadMoreThanOneDoc,
-} from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import type { Document, DocumentsWithTableStructure, TableRowDocument } from '@/models/Document'
+} from '@ged/modules/Documents/mocks/documentsWithTableStructureDataMock'
+import type { Document, DocumentsWithTableStructure, TableRowDocument } from '@ged/models/Document'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import DocumentDeleteModal
-  from '@/modules/Documents/components/DocumentDeleteModal'
-import DocumentsActionsBar from '@/modules/Documents/sections/DocumentsActions'
+  from '@ged/modules/Documents/components/DocumentDeleteModal'
+import DocumentsActionsBar from '@ged/modules/Documents/sections/DocumentsActions'
 import DocumentRename from './components/DocumentRename'
-import DocumentUpload from '@/modules/Documents/components/DocumentsUpload'
+import DocumentUpload from '@ged/modules/Documents/components/DocumentsUpload'
 import DocumentMove from './components/DocumentsMove'
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 import { PBreadcrumb, PPagination } from '@kpmg/styleguide'
 import DocumentPreview from './components/DocumentPreview'
 import { documentMock } from './mocks/documentMock'
 import DocumentsSearchAlert from './components/DocumentsSearchAlert'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
-import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
-import type { Entity } from '@kpmg/common'
+import type { Entity } from '@pulse/Common'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -90,7 +90,7 @@ const createWrapper = (
   }) as unknown as DocumentsWrapper
 }
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
   downloadDocuments: vi.fn(),
   downloadDocument: vi.fn(),
@@ -106,7 +106,7 @@ vi.mock('@/services/Documents', () => ({
   }),
 }))
 
-vi.mock('@/modules/common/downloadFilesHelper', () => ({
+vi.mock('@ged/modules/common/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
@@ -122,7 +122,7 @@ const DocumentPiaStatusChangedResponseMock = {
   permissions: ['CAN_MOVE_DOCUMENT'],
 }
 
-vi.mock('@/models/AccountingHubConnection', () => ({
+vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     OnConnectedAsync: vi.fn(),
     OnDisconnectedAsync: vi.fn(),

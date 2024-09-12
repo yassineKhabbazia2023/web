@@ -1,4 +1,4 @@
-import type { BinDocument, DocumentsTableStructure } from '@/models/Document'
+import type { BinDocument, DocumentsTableStructure } from '@ged/models/Document'
 
 export interface BinTableElementProps {
   fieldType: DocumentsTableStructure['fieldType']

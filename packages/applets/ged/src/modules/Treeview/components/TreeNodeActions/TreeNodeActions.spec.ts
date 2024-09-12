@@ -1,7 +1,7 @@
 /* eslint-disable vitest/no-hooks */
-import TreeNodeActions from '@/modules/Treeview/components/TreeNodeActions'
+import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeActionsProps }
-  from '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
+  from '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { vi, describe, it, expect } from 'vitest'

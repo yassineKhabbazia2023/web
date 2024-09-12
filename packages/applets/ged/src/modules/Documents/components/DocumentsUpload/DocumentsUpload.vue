@@ -31,14 +31,14 @@
 import { computed, inject, ref, watch } from 'vue'
 import DocumentModalExplorer from '../DocumentsExplorerModal'
 import type { DocumentUploadProps, ExplorerUploadDocument } from './DocumentsUploadTypes'
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 import { useI18n } from 'vue-i18n'
 import { generateActionsForModal } from '../DocumentsExplorerModal/helpers/ModalsActionsHelpers'
 import { modalButtonsUpload } from './helpers/ModalUploadActionsHelpers'
-import { uploadDocument } from '@/services/Documents'
+import { uploadDocument } from '@ged/services/Documents'
 import { mapExplorerDocumentFromFiles } from '../../helpers/documentExplorerMapper'
 
-import type { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { PICheck } from '@kpmg/styleguide'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 

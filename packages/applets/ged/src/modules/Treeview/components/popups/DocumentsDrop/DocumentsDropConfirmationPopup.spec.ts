@@ -4,7 +4,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { DocumentsDropConfirmationPopupProps } from './DocumentsDropConfirmationPopupTypes'
 import { nextTick, type ComponentPublicInstance } from 'vue'
-import ConfirmationPopup from '@/modules/common/templates/popups'
+import ConfirmationPopup from '@ged/modules/common/templates/popups'
 
 const defaultProps: DocumentsDropConfirmationPopupProps = {
   modelValue: false,

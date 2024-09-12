@@ -1,4 +1,4 @@
-import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 
 export interface DocumentSearchFiltrerProps {
   modelValue: boolean

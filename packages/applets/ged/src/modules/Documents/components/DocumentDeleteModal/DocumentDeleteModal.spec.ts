@@ -3,14 +3,14 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import DocumentDeleteModal
-  from '@/modules/Documents/components/DocumentDeleteModal'
+  from '@ged/modules/Documents/components/DocumentDeleteModal'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { type DocumentDeleteModalTypesProps }
-  from '@/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
+  from '@ged/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import ConfirmationPopup from '@/modules/common/templates/popups'
+import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import { nextTick } from 'vue'
-import { deleteDocuments } from '@/services/Documents'
+import { deleteDocuments } from '@ged/services/Documents'
 import { createI18n } from 'vue-i18n'
 
 const defaultProps: DocumentDeleteModalTypesProps = {
@@ -41,7 +41,7 @@ const createWrapper = (
   })
 }
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   deleteDocuments: vi.fn(),
 }))
 

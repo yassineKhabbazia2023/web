@@ -1,10 +1,10 @@
-import RenameFolderSection from '@/modules/Treeview/sections/RenameFolder'
+import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type RenameFolderSectionProps }
-  from '@/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
+  from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import RenameFolderModal from '@/modules/Treeview/components/modals/Rename'
+import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
 
@@ -42,7 +42,7 @@ const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   tokenValue: 'mocked token',
   RenameFolder: () => {
     throw new Error('Something uncool')

@@ -68,8 +68,8 @@ import { computed, ref, onMounted } from 'vue'
 import { PDrawer, PSelect, POption, PButton, PDatePicker } from '@kpmg/styleguide'
 import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import { useI18n } from 'vue-i18n'
-import type { DocumentSearchFilters } from '@/models/DocumentSearchFilters'
-import { Period } from '@/models/DocumentSearchFilters'
+import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
+import { Period } from '@ged/models/DocumentSearchFilters'
 
 const props = defineProps<DocumentSearchFiltrerProps>()
 const { t } = useI18n({

@@ -1,4 +1,4 @@
-import { MAX_FILE_SIZE_MB } from '@/modules/common/constants/files'
+import { MAX_FILE_SIZE_MB } from '@ged/modules/common/constants/files'
 
 interface ErrorDetail {
   message: string

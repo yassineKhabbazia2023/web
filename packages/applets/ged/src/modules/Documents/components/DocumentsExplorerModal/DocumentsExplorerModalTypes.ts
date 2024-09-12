@@ -1,7 +1,7 @@
-import type { Folder } from '@/models/Folder'
-import type { Service } from '@/models/Service'
+import type { Folder } from '@ged/models/Folder'
+import type { Service } from '@ged/models/Service'
 import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '../../DocumentsTypes'
-import type { ButtonAction } from '@/modules/common/Types/ButtonAction'
+import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 
 export interface GivenActionAuthorization{
     actionName: string

@@ -51,10 +51,10 @@ import type { BinDocumentProps } from './BinDocumentsTypes'
 import type {
   BinDocumentsWithTableStructure,
   BinDocument,
-} from '@/models/Document'
+} from '@ged/models/Document'
 import BinDocumentsList from './sections/BinDocumentsList'
-import { fetchBinDocuments } from '@/services/BinDocuments'
-import DocumentRestoreModal from '@/modules/Bin/components/DocumentRestoreModal'
+import { fetchBinDocuments } from '@ged/services/BinDocuments'
+import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
 
 import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
 

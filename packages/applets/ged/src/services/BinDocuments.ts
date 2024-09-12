@@ -1,6 +1,6 @@
-import { commonApi } from '@kpmg/common'
-import type { BinDocumentsWithTableStructure, RestoredDocument } from '@/models/Document'
-import type { Service } from '@/models/Service'
+import { commonApi } from '@pulse/Common'
+import type { BinDocumentsWithTableStructure, RestoredDocument } from '@ged/models/Document'
+import type { Service } from '@ged/models/Service'
 
 export const fetchBinDocuments = async (
   serviceId: Service['ServiceId'],

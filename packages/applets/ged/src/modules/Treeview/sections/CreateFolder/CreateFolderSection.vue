@@ -32,16 +32,16 @@
 </template>
 <script setup lang="ts">
 import { ref, inject, watch, toRef, computed } from 'vue'
-import type { Folder } from '@/models/Folder'
-import { CreateFolder } from '@/services/Folder'
+import type { Folder } from '@ged/models/Folder'
+import { CreateFolder } from '@ged/services/Folder'
 import { useI18n } from 'vue-i18n'
-import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
+import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
 import { PICheck, PIExclamationTriangle, PIFolderPlus, PButton, PIcon }
   from '@kpmg/styleguide'
-import { canCreateFolder } from '@/modules/Treeview/helpers/folderPermissionsHelper'
+import { canCreateFolder } from '@ged/modules/Treeview/helpers/folderPermissionsHelper'
 import { type CreateFolderSectionProps }
-  from '@/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import { type ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+  from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
+import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',

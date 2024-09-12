@@ -1,6 +1,6 @@
 import { canCreateFolder } from './folderPermissionsHelper'
 import { describe, it, expect } from 'vitest'
-import type { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@ged/models/Folder'
 const entryData: Folder = {
   id: 1,
   children: [

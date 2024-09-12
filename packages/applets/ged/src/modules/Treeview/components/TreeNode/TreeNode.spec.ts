@@ -1,12 +1,12 @@
 /* eslint-disable vitest/no-hooks */
-import TreeNode from '@/modules/Treeview/components/TreeNode'
-import TreeNodeActions from '@/modules/Treeview/components/TreeNodeActions'
+import TreeNode from '@ged/modules/Treeview/components/TreeNode'
+import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }
-  from '@/modules/Treeview/components/TreeNode/TreeNodeTypes'
+  from '@ged/modules/Treeview/components/TreeNode/TreeNodeTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import type { Folder, FolderProperties } from '@/models/Folder'
+import type { Folder, FolderProperties } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'

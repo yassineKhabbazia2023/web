@@ -1,4 +1,4 @@
-import type { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
+import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
 
 export interface FailedDocument {
   name: string

@@ -8,7 +8,7 @@ import { documentsResponsePayload } from '../../mocks/documentsWithTableStructur
 import { PTableColumn, PTable } from '@kpmg/styleguide'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import type { Document } from '@/models/Document'
+import type { Document } from '@ged/models/Document'
 import TableElement from './components/TableElement'
 
 type DocumentsListSetup = {

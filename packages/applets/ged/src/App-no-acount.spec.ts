@@ -4,13 +4,13 @@ import { mount } from '@vue/test-utils'
 import Ged from './'
 import { createPinia, setActivePinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { fetchUserEntityServices } from '@/services/Services'
-import { fetchServicesFolders } from '@/services/Folder'
+import { fetchUserEntityServices } from '@ged/services/Services'
+import { fetchServicesFolders } from '@ged/services/Folder'
 import { nextTick } from 'vue'
 
 const piniaStore = createPinia()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),
@@ -22,7 +22,7 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-vi.mock('@/models/AccountingHubConnection', () => ({
+vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     getConnection: vi.fn(() => ({
       on: vi.fn(),
@@ -30,11 +30,11 @@ vi.mock('@/models/AccountingHubConnection', () => ({
   }),
 }))
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   fetchServicesFolders: vi.fn(),
 }))
 
-vi.mock('@/services/Services', () => ({
+vi.mock('@ged/services/Services', () => ({
   fetchUserEntityServices: vi.fn(),
 }))
 

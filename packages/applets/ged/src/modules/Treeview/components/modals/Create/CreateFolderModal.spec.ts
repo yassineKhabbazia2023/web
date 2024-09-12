@@ -1,16 +1,16 @@
 /* eslint-disable vitest/no-hooks */
-import CreateFolderModal from '@/modules/Treeview/components/modals/Create'
-import SingleInputModal from '@/modules/common/templates/modals'
+import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
+import SingleInputModal from '@ged/modules/common/templates/modals'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type CreateFolderModalProps }
-  from '@/modules/Treeview/components/modals/Create/CreateFolderModalTypes'
-import type { Folder, FolderProperties } from '@/models/Folder'
+  from '@ged/modules/Treeview/components/modals/Create/CreateFolderModalTypes'
+import type { Folder, FolderProperties } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { getMockedButtonTest } from '@/modules/Treeview/helpers/testHelper'
+import { getMockedButtonTest } from '@ged/modules/Treeview/helpers/testHelper'
 
 const defaultProps: CreateFolderModalProps = {
   isCreateFolderModalVisible: false,

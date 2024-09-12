@@ -1,12 +1,12 @@
 import type { Ref } from 'vue'
 import { watch, onMounted } from 'vue'
-import { initializedAccountingDataStreamInstance } from '@/models/AccountingHubConnection'
-import type { Folder } from '@/models/Folder'
+import { initializedAccountingDataStreamInstance } from '@ged/models/AccountingHubConnection'
+import type { Folder } from '@ged/models/Folder'
 import type {
   Document,
   DocumentsWithTableStructure,
   DocumentStatusUpdateResponse,
-} from '@/models/Document'
+} from '@ged/models/Document'
 
 export function usePiaStatusSync(
   selectedFolder: Ref<Folder | null>,

@@ -65,9 +65,9 @@ import {
   PImage,
 } from '@kpmg/styleguide'
 import type { FoldersListProps } from './FoldersListTypes'
-import { findFolderDeepById } from '@/modules/Treeview/helpers/folderArrayHelper'
-import type { Folder } from '@/models/Folder'
-import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
+import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
+import type { Folder } from '@ged/models/Folder'
+import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 
 const props = defineProps<FoldersListProps>()
 const emit = defineEmits([

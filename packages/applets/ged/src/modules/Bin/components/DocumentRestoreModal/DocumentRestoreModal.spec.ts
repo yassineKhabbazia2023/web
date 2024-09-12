@@ -2,13 +2,13 @@
 /* eslint-disable vitest/no-hooks */
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import DocumentRestoreModal from '@/modules/Bin/components/DocumentRestoreModal'
-import { restoreDocuments } from '@/services/BinDocuments'
+import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
+import { restoreDocuments } from '@ged/services/BinDocuments'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { type DocumentRestoreModalTypesProps }
-  from '@/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
+  from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import ConfirmationPopup from '@/modules/common/templates/popups'
+import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 
@@ -45,7 +45,7 @@ const createWrapper = (
   })
 }
 
-vi.mock('@/services/BinDocuments', () => ({
+vi.mock('@ged/services/BinDocuments', () => ({
   restoreDocuments: vi.fn(() => {
     return [{
       id: 'd595982f-d90f-4374-8ecb-fea0b4202c6d',

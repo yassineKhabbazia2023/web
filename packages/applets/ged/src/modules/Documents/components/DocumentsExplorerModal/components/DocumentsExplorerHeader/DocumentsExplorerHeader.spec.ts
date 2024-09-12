@@ -11,15 +11,15 @@ import
   PFileAndFolderLineCheck,
   PCollapseItem,
 } from '@kpmg/styleguide'
-import type { ExplorerDocument } from '@/modules/Documents/DocumentsTypes'
+import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
 import DocumentsExplorerHeader
-  from '@/modules/Documents/components/DocumentsExplorerModal/components/DocumentsExplorerHeader'
+  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsExplorerHeader'
 import { type DocumentsExplorerHeaderProps }
   from './DocumentsExplorerHeaderTypes'
 import {
   getFileErrorMessage,
   getFileErrorDescription,
-} from '@/modules/common/helpers/documentCodeErrorHelper'
+} from '@ged/modules/common/helpers/documentCodeErrorHelper'
 
 const defaultProps: DocumentsExplorerHeaderProps = {
   documents: [],

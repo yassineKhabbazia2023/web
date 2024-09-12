@@ -44,7 +44,7 @@ import { type DocumentsExplorerHeaderProps } from './DocumentsExplorerHeaderType
 import {
   getFileErrorMessage,
   getFileErrorDescription,
-} from '@/modules/common/helpers/documentCodeErrorHelper'
+} from '@ged/modules/common/helpers/documentCodeErrorHelper'
 
 const props = defineProps<DocumentsExplorerHeaderProps>()
 
@@ -60,7 +60,7 @@ const filteredFailedDocuments = computed(() => props.documents
 </script>
 
 <style lang="scss">
-@use '@/utils/breakpoints';
+@use '@ged/utils/breakpoints';
 
 .files-error-container {
   display: flex;

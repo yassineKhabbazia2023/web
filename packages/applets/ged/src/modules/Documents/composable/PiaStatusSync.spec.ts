@@ -1,14 +1,14 @@
 import { describe, it, vi, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import type { DocumentStatusUpdateResponse, DocumentsWithTableStructure } from '@/models/Document'
-import type { Folder } from '@/models/Folder'
+import type { DocumentStatusUpdateResponse, DocumentsWithTableStructure } from '@ged/models/Document'
+import type { Folder } from '@ged/models/Folder'
 import { usePiaStatusSync } from './PiaStatusSync'
 import type { Ref, PropType } from 'vue'
 import { defineComponent, ref, nextTick } from 'vue'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import { documentsResponsePayload } from '../mocks/documentsWithTableStructureDataMock'
 
-vi.mock('@/models/AccountingHubConnection', () => ({
+vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     OnConnectedAsync: vi.fn(),
     OnDisconnectedAsync: vi.fn(),

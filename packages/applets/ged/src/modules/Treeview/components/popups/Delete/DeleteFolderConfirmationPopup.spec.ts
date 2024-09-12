@@ -1,13 +1,13 @@
 /* eslint-disable vitest/require-hook */
 /* eslint-disable vitest/no-hooks */
-import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
+import DeleteFolderConfirmationPopup from '@ged/modules/Treeview/components/popups/Delete'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type DeleteFolderConfirmationPopupProps }
-  from '@/modules/Treeview/components/popups/Delete/DeleteFolderConfirmationPopupTypes'
+  from '@ged/modules/Treeview/components/popups/Delete/DeleteFolderConfirmationPopupTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import ConfirmationPopup from '@/modules/common/templates/popups'
+import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 

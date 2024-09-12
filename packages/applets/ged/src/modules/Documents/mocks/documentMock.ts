@@ -1,4 +1,4 @@
-import type { Document } from '@/models/Document'
+import type { Document } from '@ged/models/Document'
 import mock from './mock.json'
 
 export const documentMock: Document = mock.documentMock

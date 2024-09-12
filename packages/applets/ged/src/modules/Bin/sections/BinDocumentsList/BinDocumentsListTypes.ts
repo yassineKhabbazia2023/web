@@ -1,4 +1,4 @@
-import type { BinDocumentsWithTableStructure } from '@/models/Document'
+import type { BinDocumentsWithTableStructure } from '@ged/models/Document'
 
 export interface BinDocumentsListProps {
   binDocuments: BinDocumentsWithTableStructure

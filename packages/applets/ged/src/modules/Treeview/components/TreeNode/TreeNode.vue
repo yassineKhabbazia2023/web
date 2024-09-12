@@ -77,12 +77,12 @@ import {
   PIXCircle,
 } from '@kpmg/styleguide'
 
-import TreeNodeActions from '@/modules/Treeview/components/TreeNodeActions'
+import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }
-  from '@/modules/Treeview/components/TreeNode/TreeNodeTypes'
+  from '@ged/modules/Treeview/components/TreeNode/TreeNodeTypes'
 import TreeNodeActionsToolbox from
-  '@/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
-import type { Document } from '@/models/Document'
+  '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
+import type { Document } from '@ged/models/Document'
 
 const emit = defineEmits(
   ['p-toolbox-item-clicked', 'update-folder-name', 'documents-dropped-on-tree-node', 'expand-or-collapse-node'])

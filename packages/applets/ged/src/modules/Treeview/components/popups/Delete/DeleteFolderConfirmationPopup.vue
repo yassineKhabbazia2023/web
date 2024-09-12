@@ -19,9 +19,9 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import ConfirmationPopup from
-  '@/modules/common/templates/popups'
+  '@ged/modules/common/templates/popups'
 import { type DeleteFolderConfirmationPopupProps }
-  from '@/modules/Treeview/components/popups/Delete/DeleteFolderConfirmationPopupTypes'
+  from '@ged/modules/Treeview/components/popups/Delete/DeleteFolderConfirmationPopupTypes'
 
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({

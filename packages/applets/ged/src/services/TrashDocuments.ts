@@ -1,6 +1,6 @@
-import { commonApi } from '@kpmg/common'
-import type { DocumentsWithTableStructure } from '@/models/Document'
-import type { Service } from '@/models/Service'
+import { commonApi } from '@pulse/Common'
+import type { DocumentsWithTableStructure } from '@ged/models/Document'
+import type { Service } from '@ged/models/Service'
 
 export const fetchTrashDocuments = async (
   serviceId: Service['ServiceId'],

@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PIThreeDots, PToolbox, PButton, PIcon } from '@kpmg/styleguide'
-import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper'
+import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 
 const emit = defineEmits([

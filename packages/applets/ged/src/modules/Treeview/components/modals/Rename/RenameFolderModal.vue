@@ -23,14 +23,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import SingleInputModal from '@/modules/common/templates/modals'
+import SingleInputModal from '@ged/modules/common/templates/modals'
 import {
   INPUT_MAX_LENGTH,
   validInputMaxLength,
   validInputAlphanumericFrench,
-} from '@/modules/common/helpers/inputValidationHelper'
+} from '@ged/modules/common/helpers/inputValidationHelper'
 import { type RenameFolderModalProps }
-  from '@/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
+  from '@ged/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

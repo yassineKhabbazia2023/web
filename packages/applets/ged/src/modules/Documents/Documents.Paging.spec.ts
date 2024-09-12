@@ -11,14 +11,14 @@ import type { DocumentsProps } from './DocumentsTypes'
 import {
 
   fetchFolderDocuments,
-} from '@/services/Documents'
+} from '@ged/services/Documents'
 import {
   documentsResponsePayloadTwoPages,
-} from '@/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import type { Document, DocumentsWithTableStructure } from '@/models/Document'
+} from '@ged/modules/Documents/mocks/documentsWithTableStructureDataMock'
+import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import type { Entity } from '@kpmg/common'
+import type { Entity } from '@pulse/Common'
 import { PPagination } from '@kpmg/styleguide'
 
  type DocumentsSetup = {
@@ -55,13 +55,13 @@ const responseNoDoc: DocumentsWithTableStructure = {
   documentHeaders: [],
 }
 
-vi.mock('@/services/Documents', () => ({
+vi.mock('@ged/services/Documents', () => ({
   fetchFolderDocuments: vi.fn(),
   downloadDocuments: vi.fn(),
   downloadDocument: vi.fn(),
 }))
 
-vi.mock('@/modules/common/helpers/downloadFilesHelper', () => ({
+vi.mock('@ged/modules/common/helpers/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
@@ -77,7 +77,7 @@ const DocumentPiaStatusChangedResponseMock = {
   permissions: ['CAN_MOVE_DOCUMENT'],
 }
 
-vi.mock('@/models/AccountingHubConnection', () => ({
+vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     OnConnectedAsync: vi.fn(),
     OnDisconnectedAsync: vi.fn(),

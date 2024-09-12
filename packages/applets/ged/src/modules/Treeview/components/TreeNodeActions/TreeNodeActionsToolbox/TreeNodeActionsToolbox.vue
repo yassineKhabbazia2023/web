@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { PToolbox } from '@kpmg/styleguide'
-import { generateToolboxBasicData } from '@/modules/common/helpers/toolboxHelper'
+import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
 
 const emit = defineEmits([

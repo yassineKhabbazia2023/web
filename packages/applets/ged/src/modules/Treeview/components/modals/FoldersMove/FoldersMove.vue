@@ -36,18 +36,18 @@
 
 <script setup lang="ts">
 import { computed, ref, watch, inject } from 'vue'
-import DocumentModalExplorer from '@/modules/Documents/components/DocumentsExplorerModal'
+import DocumentModalExplorer from '@ged/modules/Documents/components/DocumentsExplorerModal'
 import type { FoldersMoveProps, ExplorerMoveFolder } from './FoldersMoveTypes'
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 import { useI18n } from 'vue-i18n'
 import { generateActionsForModal } from
-  '@/modules/Documents/components/DocumentsExplorerModal/helpers/ModalsActionsHelpers'
+  '@ged/modules/Documents/components/DocumentsExplorerModal/helpers/ModalsActionsHelpers'
 import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
-import { mapExplorerDocumentFromFolders } from '@/modules/Documents/helpers/documentExplorerMapper'
-import type { ToastPluginFunc } from '@/modules/common/Types/toastPluginTypes'
+import { mapExplorerDocumentFromFolders } from '@ged/modules/Documents/helpers/documentExplorerMapper'
+import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
-import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '@/modules/Documents/DocumentsTypes'
-import { moveFolderAsync } from '@/services/Folder'
+import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '@ged/modules/Documents/DocumentsTypes'
+import { moveFolderAsync } from '@ged/services/Folder'
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 

@@ -1,4 +1,4 @@
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 import {
   findFolderDeepById,
   findCurrentServiceFolder,
@@ -7,7 +7,7 @@ import {
   sortFolderByName,
   deleteFolder,
 } from './folderArrayHelper'
-import { foldersData } from '@/modules/Treeview/mocks/treeFoldersMock'
+import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
 import { getMockedFolder } from './testHelper'
 

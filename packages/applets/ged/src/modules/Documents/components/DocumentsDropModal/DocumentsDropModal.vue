@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import ConfirmationPopup from '@/modules/common/templates/popups'
+import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import type { DocumentsDropModalProps } from './DocumentsDropModalTypes'
 
 const { t } = useI18n({

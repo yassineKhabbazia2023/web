@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { type ConfirmationPopupProps }
-  from '@/modules/common/templates/popups/ConfirmationPopupTypes'
+  from '@ged/modules/common/templates/popups/ConfirmationPopupTypes'
 import { PDialog, PButton } from '@kpmg/styleguide'
 
 // Popup defintions

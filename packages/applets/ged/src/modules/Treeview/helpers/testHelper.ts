@@ -1,4 +1,4 @@
-import type { Folder } from '@/models/Folder'
+import type { Folder } from '@ged/models/Folder'
 
 export function getMockedFolder(
   parentId: number,

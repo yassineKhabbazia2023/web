@@ -1,12 +1,12 @@
 /* eslint-disable vitest/no-hooks */
 // until we find a way to enable multiple mocks on a single unit test
-import DeleteFolderSection from '@/modules/Treeview/sections/DeleteFolder'
+import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { type DeleteFolderSectionProps }
-  from '@/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
-import type { FolderProperties } from '@/models/Folder'
-import DeleteFolderConfirmationPopup from '@/modules/Treeview/components/popups/Delete'
+  from '@ged/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
+import type { FolderProperties } from '@ged/models/Folder'
+import DeleteFolderConfirmationPopup from '@ged/modules/Treeview/components/popups/Delete'
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
@@ -41,7 +41,7 @@ const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('@/services/Folder', () => ({
+vi.mock('@ged/services/Folder', () => ({
   DeleteFolder: () => {
     throw new Error('Something uncool')
   },

@@ -1,6 +1,6 @@
 import { formatBinData } from './binHelper'
 import { describe, it, expect } from 'vitest'
-import type { Service } from '@/models/Service'
+import type { Service } from '@ged/models/Service'
 
 const entryData: Service[] = [
   {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getFileIcon } from '@/modules/common/helpers/iconsHelper'
+import { getFileIcon } from '@ged/modules/common/helpers/iconsHelper'
 import {
   PIFileText,
   PIFiletypeBmp,

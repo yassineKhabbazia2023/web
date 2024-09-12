@@ -1,10 +1,10 @@
 import DocumentRenameModal from './DocumentRenameModal.vue'
-import SingleInputModal from '@/modules/common/templates/modals'
+import SingleInputModal from '@ged/modules/common/templates/modals'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import { documentMock } from '@/modules/Documents/mocks/documentMock'
+import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
 
 const defaultProps: DocumentRenameModalProps = {
   document: documentMock,

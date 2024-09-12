@@ -2,10 +2,10 @@ import { type Ref, ref, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PNotification, PIExclamationTriangle, PICheck } from '@kpmg/styleguide'
 import { getFileExtension, isExtensionAuthorized } from '../../helpers/filesExtensions'
-import { uploadDocument } from '@/services/Documents'
+import { uploadDocument } from '@ged/services/Documents'
 import type { DocumentsProps } from '../../DocumentsTypes'
-import { Permissions } from '@/models/Permissions'
-import { MAX_FILE_SIZE_BYTES } from '@/modules/common/constants/files'
+import { Permissions } from '@ged/models/Permissions'
+import { MAX_FILE_SIZE_BYTES } from '@ged/modules/common/constants/files'
 
 export function useDragAndDropFromExplorer(
   currentService: Ref<DocumentsProps['currentService']>,

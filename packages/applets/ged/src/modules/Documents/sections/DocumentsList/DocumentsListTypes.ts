@@ -1,5 +1,5 @@
-import type { DocumentsWithTableStructure } from '@/models/Document'
-import type { Service } from '@/models/Service'
+import type { DocumentsWithTableStructure } from '@ged/models/Document'
+import type { Service } from '@ged/models/Service'
 
 export interface DocumentsListProps {
   documentsListWithTableStructure: DocumentsWithTableStructure

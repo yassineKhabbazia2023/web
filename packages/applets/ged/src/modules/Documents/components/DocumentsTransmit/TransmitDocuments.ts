@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import {
   transmitDocuments,
-} from '@/services/Documents'
+} from '@ged/services/Documents'
 import type { TransmitDocumentsComposableProps } from './TransmitDocumentsTypes'
 
 // Define the composable function

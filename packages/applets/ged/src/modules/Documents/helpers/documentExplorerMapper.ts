@@ -9,12 +9,12 @@ import {
   validInputAlphanumericFrench,
   validInputMaxLength,
 } from '../../common/helpers/inputValidationHelper'
-import type { Document } from '@/models/Document'
+import type { Document } from '@ged/models/Document'
 import type { ExplorerMoveDocument } from '../components/DocumentsMove/DocumentsMoveTypes'
 import type { ExplorerMoveFolder }
-  from '@/modules/Treeview/components/modals/FoldersMove/FoldersMoveTypes'
-import type { Folder } from '@/models/Folder'
-import { MAX_FILE_SIZE_BYTES } from '@/modules/common/constants/files'
+  from '@ged/modules/Treeview/components/modals/FoldersMove/FoldersMoveTypes'
+import type { Folder } from '@ged/models/Folder'
+import { MAX_FILE_SIZE_BYTES } from '@ged/modules/common/constants/files'
 
 export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocument[] => {
   const explorerDocuments: ExplorerUploadDocument[] = []

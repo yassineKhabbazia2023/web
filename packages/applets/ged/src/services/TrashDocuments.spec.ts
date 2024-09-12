@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 import { it, expect, describe } from 'vitest'
-import { commonApiDsGetSpy } from '@/../vitest.setup'
+import { commonApiDsGetSpy } from '@ged/../vitest.setup'
 import {
   fetchTrashDocuments,
 } from './TrashDocuments'
-import type { Service } from '@/models/Service'
+import type { Service } from '@ged/models/Service'
 
 describe('trash documents service', () => {
   it('should fetsh trash documents when fetchTrashDocuments is called', async () => {

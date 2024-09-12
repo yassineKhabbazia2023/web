@@ -6,11 +6,11 @@ import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { PFolderLineNavigationItem, PAlert, PImage } from '@kpmg/styleguide'
 import FoldersList
-  from '@/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
+  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
 import { type FoldersListProps }
   from './FoldersListTypes'
-import { foldersData, newFolderData } from '@/modules/Treeview/mocks/treeFoldersMock'
-import CreateFolderSection from '@/modules/Treeview/sections/CreateFolder'
+import { foldersData, newFolderData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
+import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 
 const defaultProps: FoldersListProps = {
   currentFolder: foldersData[0][0].children[0],
