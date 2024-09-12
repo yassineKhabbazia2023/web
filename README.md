@@ -8,10 +8,10 @@ This repository is structured as a monorepo and a package, encompassing several 
     - [Common](./packages/libraries/common/README.md)
 - **applets**: 
     - [Entities](./packages/applets/entities/README.md)
-    - [Ged](./packages/applets/ged//README.md)
-    - [Launcher](./packages/applets/launcher//README.md)
-    - [Login](./packages/applets/login//README.md)
-    - [Mandate](./packages/applets/mandate//README.md)
+    - [Ged](./packages/applets/ged/README.md)
+    - [Launcher](./packages/applets/launcher/README.md)
+    - [Login](./packages/applets/login/README.md)
+    - [Mandate](./packages/applets/mandate/README.md)
 - **External Package** (installed via private npm):
     - [StyleGuide](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Styleguide)
 

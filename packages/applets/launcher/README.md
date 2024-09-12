@@ -5,7 +5,7 @@ It originated from the [KPMG.Pulse.Front.Launcher](https://kpmgfr.visualstudio.c
 
 # Getting Started
 
-The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../README.md) for instructions on installing all dependencies and getting started.
+The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
 
 As this is a plugin and not a standalone application, it cannot be run independently. However, you can build and test it.
 

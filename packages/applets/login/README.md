@@ -1,11 +1,11 @@
 # Introduction 
 
 The `@pulse/login` project is a Vue 3 Plugin implementing the authentication features of the app. 
-It originated from the [KPMG.Pulse.Front.Login](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Login) project.
+It originated from the [KPMG.Pulse.Front.login](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.login) project.
 
 # Getting Started
 
-The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../README.md) for instructions on installing all dependencies and getting started.
+The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
 
 As this is a plugin and not a standalone application, it cannot be run independently. However, you can build and test it.
 
