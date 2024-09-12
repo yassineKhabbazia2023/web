@@ -1,22 +1,34 @@
-import { createApp, h } from 'vue'
-import singleSpaVue from 'single-spa-vue'
-import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
-import { setAssetsBaseUrl } from '@kpmg/styleguide'
-import routes from './router'
+import type { App } from 'vue'
 
-setAssetsBaseUrl((window as any)?.EnvVars?.VITE_ASSETS_BASE_URL)
-const RenderLess = () => ''
-
-const vueLifecycles = singleSpaVue({
-  createApp,
-  appOptions: {
-    render: () => h(RenderLess),
+const routes = [
+  {
+    path: '/dossier/:id/launcher',
+    name: 'launcher',
+    component: () => import('@launcher/pages/home'),
   },
-  handleInstance(app: any) {
-    app.use(i18n).use(pinia).use(routes)
-  },
-})
+]
 
-export const bootstrap = vueLifecycles.bootstrap
-export const mount = vueLifecycles.mount
-export const unmount = vueLifecycles.unmount
+const folderLauncherRoute = {
+  name: 'folderLauncher',
+  path: 'launcher',
+  component: () => import('@launcher/pages/home'),
+}
+
+export default {
+  install(app: App, options: any) {
+    // Accept an array of routes that can be registered along
+    // with the plugin
+    const { router } = options
+
+    router.isReady().then(() => {
+      if (router.hasRoute('wallet')) {
+        // Register the launcher route inside wallet if it exists
+        router.addRoute('wallet', folderLauncherRoute)
+      }
+    })
+
+    routes.forEach((route) => {
+      router.addRoute(route)
+    })
+  },
+}
