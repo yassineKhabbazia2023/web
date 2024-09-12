@@ -1,29 +1,25 @@
-# Introduction
-The goal of this repository is to serve as boilerplate / base for all others MFE.
-By doing this, all the repositories will have the same base & arbo.
+# Introduction 
 
-[DAT](https://kpmgfr.visualstudio.com/Constellation/_wiki/wikis/Constellation.wiki/16910/Boilerplate)
+The `@pulse/mandate` project is a Vue 3 Plugin allowing the user to sign an electronic mandate. 
+It originated from the [KPMG.Pulse.Front.Mandate](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Mandate) project.
 
-# TODO
-- clean warnings in browser's devtools console
+# Getting Started
 
-# Setup
-This repository uses two npm packages (eslint config & vite config) that are on the kpmg repository, so updating the .npmrc user is mandatory if it s not already done, (link)[https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm]
+The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
 
-## For development
-* Clone this repository
-* Update the shell
-```js
-// KPMG.Pulse.Front.Shell/src/manifest.js
-// ...
-im.textContent = JSON.stringify({
-  imports: {
-    '@kpmg/aMfeAlreadySet': 'http://localhost:8082/src/main.ts',
-    '@kpmg/myNewMfe'      : 'http://localhost:8083/src/main.ts', // here we increment the port compare to the last one on the previous line (aMfeAlreadySet = 8082, so myNewMfe = 8083)
-  }
-})
+As this is a plugin and not a standalone application, it cannot be run independently. However, you can build and test it.
+
+# Build and Test
+
+The application is built using [Vite](https://vitejs.dev/).
+To build the application, use:
+
+```
+npm run build
 ```
 
-Lauch the command `tools/New-Mfe.ps1` (see commmand documentation, available with `Get-Help tools/New-Mfe.ps1` for details).
+To run tests, use:
 
-Note: you must be able to create repositories and pipelines in the Constellation project using the provided PAT.
+```
+npm run test
+```

@@ -1,11 +1,15 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { routes } from '@kpmg/common'
 
-// Home mandats route
-routes.value.push({
-  path: '/mandats',
-  name: 'mandats',
-  component: () => import('@/pages/home'),
-} as RouteRecordRaw)
+export const routes = [
+  {
+    path: '/mandats',
+    name: 'mandats',
+    component: () => import('@mandate/pages/home'),
+  } as RouteRecordRaw,
+]
 
-export default routes
+export const folderMandateRoute = {
+  name: 'folderMandats',
+  path: 'mandats',
+  component: () => import('@mandate/pages/home'),
+}
