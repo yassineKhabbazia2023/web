@@ -4,21 +4,16 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import terser from '@rollup/plugin-terser'
-import { visualizer } from 'rollup-plugin-visualizer'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
-import viteBaseConfig from '@kpmg/config-pulse/vite.config.base'
+import { viteConfigBase } from '../../@config/vite.config.base'
 import { name } from './package.json'
 
-const [PORT] = process.argv.slice(3)
 const APP_NAME = name.split('/')[1]
 
-export default ({ mode }) =>
-  defineConfig(mergeConfig(
-    viteBaseConfig,
-    {
+export default ({ mode }: any) =>
+  defineConfig(
+    mergeConfig(viteConfigBase({ mode }), {
       plugins: [
-        visualizer(),
         vue({
           template: {
             compilerOptions: {
@@ -29,29 +24,11 @@ export default ({ mode }) =>
         VueI18nPlugin({
           include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
-        viteExternalsPlugin({
-          vue: 'Vue',
-          'vue-i18n': 'VueI18n',
-          'vue-router': 'VueRouter',
-          pinia: 'Pinia',
-          'env-vars': 'EnvVars',
-          '@kpmg/common': 'Common',
-          '@kpmg/styleguide': 'Styleguide',
-        },
-        { disableInServe: mode === 'test' }), // true for Vitest & dev without Single Spa
-        {
-          resolveId(id) {
-            if (id === 'env-vars') return id
-          },
-          load(id) {
-            if (id === 'env-vars') return ''
-          },
-        },
         cssInjectedByJsPlugin(),
       ],
       resolve: {
         alias: {
-          '@': fileURLToPath(new URL('./src', import.meta.url)),
+          '@entities': fileURLToPath(new URL('./src', import.meta.url)),
         },
       },
       build: {
@@ -69,16 +46,8 @@ export default ({ mode }) =>
           plugins: [terser()],
         },
       },
-      server: {
-        port: PORT,
-        origin: `http://localhost:${PORT}`,
-      },
-      preview: {
-        port: PORT,
-      },
       test: {
         setupFiles: 'vitest.setup.ts',
-        testTimeout: 15000,
       },
-    },
-  ))
+    }),
+  )

@@ -1,10 +1,19 @@
-import { vi } from 'vitest'
-import { createPinia, defineStore, setActivePinia } from 'pinia'
-import { commonPinia as pinia } from '@kpmg/common'
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
-import {
-  getMockedAuthorizationsConfig,
-} from '@/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
+import { vi } from 'vitest'
+import { createI18n } from 'vue-i18n'
+import { config } from '@vue/test-utils'
+import messages from '@intlify/unplugin-vue-i18n/messages'
+import { createPinia, defineStore, setActivePinia } from 'pinia'
+import { commonPinia as pinia } from '@pulse/common'
+import { getMockedAuthorizationsConfig } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
+
+const i18n = createI18n({
+  locale: 'en-US',
+  legacy: false,
+  messages,
+})
+
+config.global.plugins = [i18n]
 
 setAssetsBaseUrl('https://www.example.kpmg')
 
@@ -14,12 +23,9 @@ const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 export const mockHasPermission = vi.fn((_code: string) => true)
 export const mockUpdateUserPermission = vi.fn()
 export const mockUpdateAccountPermission = vi.fn()
-export const mockFetchAuthorizationsConfig = vi.fn(() =>
-  Promise.resolve(mockedAuthorizationsConfig),
-)
+export const mockFetchAuthorizationsConfig = vi.fn(() => Promise.resolve(mockedAuthorizationsConfig))
 
 // Power BI Mocks
-// @ts-ignore
 window.powerbi = {
   reset: () => vi.fn(),
   embed: () => vi.fn(),
@@ -31,7 +37,7 @@ vi.mock('powerbi-client', () => ({
 setActivePinia(pinia)
 
 // Service Mocks
-vi.mock('@/services/authorization', () => ({
+vi.mock('@entities/services/authorization', () => ({
   fetchAuthorizationsConfig: mockFetchAuthorizationsConfig,
   updateUserPermissions: mockUpdateUserPermission,
   fetchAccountAuthorizationsConfig: mockFetchAuthorizationsConfig,
@@ -46,7 +52,7 @@ vi.mock('vue-router', () => ({
 }))
 
 // External Package Mocks
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
     getters: {
