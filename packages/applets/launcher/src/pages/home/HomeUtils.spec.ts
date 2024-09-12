@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, type SpyInstance } from 'vitest'
+import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
 import {
   getSilaeDownloadLabel,
   getLaunchCards,
@@ -8,14 +8,14 @@ import {
   getAuthorizedKeys,
 } from './HomeUtils'
 import { LAUNCHER_KEY } from './HomeTypes'
-import * as launcherServices from '@/services/launcherServices'
+import * as launcherServices from '@launcher/services/launcherServices'
 import type { AxiosResponse } from 'axios'
-import { PERMISSION_CODES } from '@/common/authorizationConst'
-import { mockHasPermission } from '@/../vitest.setup'
+import { PERMISSION_CODES } from '@launcher/common/authorizationConst'
+import { mockHasPermission } from '@launcher/../vitest.setup'
 
 const mockedSilaeUrl = 'https://mocked.silae.url'
 
-vi.mock('@/services/launcherServices', () => ({
+vi.mock('@launcher/services/launcherServices', () => ({
   getSsoSilaeUrl: vi.fn(() => mockedSilaeUrl),
   downloadApplication: vi.fn(() => mockedSilaeUrl),
   saveApplication: vi.fn(() => mockedSilaeUrl),
@@ -79,7 +79,7 @@ describe('test HomeUtils', () => {
     })
   })
 
-  let consoleErrorSpy: SpyInstance
+  let consoleErrorSpy: MockInstance
   beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, 'error')
   })
@@ -118,8 +118,8 @@ describe('test HomeUtils', () => {
   describe('handleDownload', () => {
     const mockedPercent = 78
     const mockedResponse = getMockedResponse()
-    let downloadApplicationSpy: SpyInstance
-    let saveApplicationSpy: SpyInstance
+    let downloadApplicationSpy: MockInstance
+    let saveApplicationSpy: MockInstance
     const onSilaeDownloadProgress = vi.fn()
 
     beforeEach(() => {

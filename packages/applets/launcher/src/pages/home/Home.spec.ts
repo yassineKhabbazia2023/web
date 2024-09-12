@@ -1,8 +1,8 @@
 import { nextTick } from 'vue'
-import { describe, expect, it, vi, beforeEach, type SpyInstance } from 'vitest'
+import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { mockedEntity, mockedEnvVars } from '@/../vitest.setup'
-import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
+import { mockedEntity, mockedEnvVars } from '@launcher/../vitest.setup'
+import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 import { LAUNCHER_KEY } from './HomeTypes'
 import * as HomeUtils from './HomeUtils'
 import Home from '.'
@@ -190,8 +190,8 @@ describe('test Home', () => {
     const mockedPercent = 47
     const launcherKey = LAUNCHER_KEY.silae
 
-    let handleDownloadSpy: SpyInstance
-    let getSilaeDownloadLabelSpy: SpyInstance
+    let handleDownloadSpy: MockInstance
+    let getSilaeDownloadLabelSpy: MockInstance
     let silaeLaunchCard: VueWrapper
     beforeEach(() => {
       handleDownloadSpy = vi

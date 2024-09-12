@@ -49,7 +49,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import LaunchCard from '@/components/launchCard'
+import LaunchCard from '@launcher/components/launchCard'
 import type { LAUNCHER_KEY, ExtendedLaunchCard } from './HomeTypes'
 import {
   getLaunchCards,
@@ -59,7 +59,7 @@ import {
   getAuthorizedKeys,
 } from './HomeUtils'
 import { PBreadcrumb, PAlert } from '@kpmg/styleguide'
-import { commonStore as useStore } from '@kpmg/common'
+import { commonStore as useStore } from '@pulse/Common'
 
 const route = useRoute()
 

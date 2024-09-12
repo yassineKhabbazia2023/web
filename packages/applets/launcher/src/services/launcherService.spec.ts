@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AxiosResponse } from 'axios'
-import { commonApiSilaeClientGetSpy, commonApiSilaePostSpy } from '@/../vitest.setup'
+import { commonApiSilaeClientGetSpy, commonApiSilaePostSpy } from '@launcher/../vitest.setup'
 import { DEFAULT_APPLICATION_FILENAME, API_ROUTES } from './launcherServiceConsts'
 import * as FileSaver from 'file-saver'
 import { downloadApplication, getFileName, saveApplication, getSsoSilaeUrl }

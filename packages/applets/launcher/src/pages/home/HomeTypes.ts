@@ -1,4 +1,4 @@
-import type { LaunchCardProps } from '@/components/launchCard/LaunchCardTypes'
+import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 
 /* eslint-disable no-unused-vars */
 export enum LAUNCHER_KEY {

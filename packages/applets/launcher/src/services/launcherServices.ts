@@ -1,4 +1,4 @@
-import { commonApi } from '@kpmg/common'
+import { commonApi } from '@pulse/Common'
 import { saveAs } from 'file-saver'
 import type { AxiosResponse } from 'axios'
 import { EXTRACT_DOWNLOADED_FILENAME_REGEXP, DEFAULT_APPLICATION_FILENAME, API_ROUTES }

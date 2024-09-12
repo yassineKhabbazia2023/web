@@ -3,9 +3,9 @@ import {
   VITE_GESTION_MEG,
   VITE_PENNYLANE_SSO_URL,
 } from 'env-vars'
-import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@/services/launcherServices'
-import { LAUNCHER_AUTHORIZATIONS } from '@/common/authorizationConst'
-import { userPermissions } from '@kpmg/common'
+import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@launcher/services/launcherServices'
+import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
+import { userPermissions } from '@pulse/Common'
 
 const { hasPermission } = userPermissions()
 

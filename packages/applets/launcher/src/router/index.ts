@@ -1,9 +1,9 @@
-import { routes } from '@kpmg/common'
+import { routes } from '@pulse/Common'
 
-routes.value.push({
+routes.push({
   path: '/dossier/:id/launcher',
   name: 'launcher',
-  component: () => import('@/pages/home'),
+  component: () => import('@launcher/pages/home'),
 })
 
 export default routes

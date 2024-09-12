@@ -1,4 +1,4 @@
-import { LAUNCHER_KEY } from '@/pages/home/HomeTypes'
+import { LAUNCHER_KEY } from '@launcher/pages/home/HomeTypes'
 
 export const PERMISSION_CODES = {
   meg: 'CLMEG001',
