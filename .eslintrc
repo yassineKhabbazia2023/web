@@ -1,6 +1,0 @@
-{
-  "extends": ["@kpmg/eslint-config-pulse"],
-  "rules": {
-    "no-console": 0
-  }
-}
