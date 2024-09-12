@@ -1,0 +1,191 @@
+<template>
+  <div>
+    <div class="margin-bottom--3">
+      <FormSearch
+        ref="searchBar"
+        @search-value-submitted="handleSearchValueSubmitted"
+        :placeholder="t('search')"
+      />
+    </div>
+    <div
+      v-if="isLoading"
+      class="loader flex flex--justify-content-center flex--align-items-center"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
+    <div v-else>
+      <NoResult v-if="searchResult.items.length === 0" />
+      <TableData
+        v-if="searchResult.items.length > 0"
+        data-testid="accounts-table"
+        :data="searchResult.items"
+        @access="handleOpenFolder"
+        @display-account-rights-drawer="handleDisplayAccountRightsDrawer"
+        @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
+        isAccountManagement
+      />
+      <AccountRightsDrawer
+        v-if="isAccountRightsDrawerOpened && selectedAccount"
+        v-model="isAccountRightsDrawerOpened"
+        :selectedAccount="selectedAccount"
+      />
+      <ResendActivationEmailDrawer
+        v-if="isResendActivationEmailDrawerVisible && selectedAccount"
+        v-model="isResendActivationEmailDrawerVisible"
+        :selectedAccount="selectedAccount"
+      />
+      <PPagination
+        class="margin-top--6"
+        @on-page-range-changed="handlePageRangeChange"
+        :pCurrentPage="searchResult.currentPage"
+        @update:p-current-page="handlePageChange"
+        v-model:p-page-size="searchCriteria.limit"
+        :pTotal="searchResult.totalItems"
+        :pPageSizes="PAGE_SIZES"
+        :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
+        pPageSizeSelectorSuffix=""
+        pShowTotalPageCounter
+        pBackground
+      >
+        <p>{{ paginationLabel }}</p>
+      </PPagination>
+    </div>
+  </div>
+</template>
+
+<script lang='ts' setup>
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { computed, onMounted, ref, watch } from 'vue'
+import {
+  PIArrowRepeat,
+  PICheckCircle,
+  PIArrowUpCircle,
+  PLoader,
+  PPagination,
+} from '@kpmg/styleguide'
+import NoResult from '@/common/components/NoResult'
+import FormSearch from '@/common/components/FormSearch'
+import TableData from '../../components/TableData'
+import AccountRightsDrawer from './components/AccountRightsDrawer'
+import ResendActivationEmailDrawer from './components/ResendActivationEmailDrawer'
+import { fetchWalletData } from '../folders/DeployUtils'
+import { getPaginationLabel } from '@/helper'
+import { PAGE_SIZES } from '@/constants'
+import type { AccountRow } from '@/common/types'
+import type {
+  SearchCriteria,
+  SearchResult,
+  DeploymentStatus,
+} from '../../types'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
+
+const router = useRouter()
+
+const isLoading = ref(true)
+const selectedAccount = ref<AccountRow>()
+const isAccountRightsDrawerOpened = ref(false)
+const isResendActivationEmailDrawerVisible = ref(false)
+const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
+  {
+    text: t('toDeploy'),
+    icon: PIArrowUpCircle,
+    color: 'warning',
+  },
+  {
+    text: t('inProgress'),
+    icon: PIArrowRepeat,
+    color: 'persian',
+  },
+  {
+    text: t('connected'),
+    icon: PICheckCircle,
+    color: 'success',
+  },
+]
+const searchCriteria = ref<SearchCriteria>({
+  currentPage: 0,
+  limit: PAGE_SIZES[0],
+  search: '',
+  filterByDeploymentStatus: '',
+})
+const searchResult = ref<SearchResult>({
+  currentPage: 0,
+  items: [],
+  totalPage: 0,
+  totalItems: 0,
+})
+
+const paginationLabel = computed(() => getPaginationLabel(t('on'), {
+  currentPage: searchCriteria.value.currentPage,
+  limit: searchCriteria.value.limit,
+  data: searchResult.value.items,
+  totalItems: searchResult.value.totalItems,
+}))
+
+const handleDisplayAccountRightsDrawer = (account: AccountRow) => {
+  selectedAccount.value = account
+  isAccountRightsDrawerOpened.value = true
+}
+const handleDisplayResendActivationEmailDrawer = (account: AccountRow) => {
+  selectedAccount.value = account
+  isResendActivationEmailDrawerVisible.value = true
+}
+const handleSearchValueSubmitted = (accountNumber: string) => {
+  searchCriteria.value.currentPage = 1
+  searchCriteria.value.accountNumber = accountNumber
+}
+const handlePageRangeChange = (pageRange: number) => {
+  searchCriteria.value.currentPage = 1
+  searchCriteria.value.limit = pageRange
+}
+const fetchAccountList = async () => {
+  isLoading.value = true
+  try {
+    const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, searchCriteria.value, true)
+    searchResult.value.items = queryResult.items
+    searchResult.value.currentPage = queryResult.currentPage
+    searchResult.value.totalPage = queryResult.totalPage
+    searchResult.value.totalItems = queryResult.totalItems
+  } catch (e) {
+    console.error('Error while fetching data', e)
+  }
+  isLoading.value = false
+}
+const handlePageChange = (currentPage: number) => {
+  searchCriteria.value.currentPage = currentPage
+}
+const handleOpenFolder = (id: string) => {
+  router.push({ name: 'folder', params: { id } })
+}
+
+onMounted(async () => {
+  await fetchAccountList()
+})
+
+watch(searchCriteria, async () => {
+  await fetchAccountList()
+}, { deep: true })
+
+</script>
+
+<i18n lang="yaml">
+  en-US:
+    search: "Search by the folder ID"
+    toDeploy: 'To Deploy'
+    inProgress: 'In progress'
+    connected: 'Connected'
+    numberOfFoldersPerPage: 'number of folder per page'
+    on: 'on'
+  fr-FR:
+    search: "Rechercher par l'ID de dossier"
+    toDeploy: 'A déployer'
+    inProgress: 'En cours'
+    connected: 'Connecté'
+    numberOfFoldersPerPage: 'nombre de dossier par page'
+    on: 'sur'
+</i18n>

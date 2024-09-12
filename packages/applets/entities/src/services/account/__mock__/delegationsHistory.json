@@ -1,0 +1,195 @@
+{
+  "items": [
+    {
+      "delegationId": 83,
+      "startDate": "2024-04-25T09:33:47.8150744",
+      "endDate": "2024-08-25T09:18:38.278",
+      "status": "disabled",
+      "note": "string",
+      "creationDate": "2024-04-25T09:33:47.8341679",
+      "accounts": [
+        {
+          "accountId": 602,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Boulangerie Bel Epi"
+        }
+      ],
+      "delegatee": {
+        "contactId": 67,
+        "contactGlobalUniqueId": "",
+        "firstName": "Jade",
+        "lastName": "Fournier",
+        "email": "jade.fournier@example.com"
+      },
+      "delegator": {
+        "contactId": 23,
+        "contactGlobalUniqueId": "",
+        "firstName": "Sutton",
+        "lastName": "York",
+        "email": "suttonyork@bitrex.com"
+      }
+    },
+    {
+      "delegationId": 55,
+      "startDate": "2024-04-19T13:26:27.8494312",
+      "status": "disabled",
+      "creationDate": "2024-04-19T13:26:28.8881009",
+      "accounts": [
+        {
+          "accountId": 19,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Colette Bishop"
+        },
+        {
+          "accountId": 601,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Jonny'z Pizza"
+        },
+        {
+          "accountId": 602,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Boulangerie Bel Epi"
+        }
+      ],
+      "delegatee": {
+        "contactId": 5,
+        "contactGlobalUniqueId": "",
+        "firstName": "Rosanne",
+        "lastName": "Thomas",
+        "email": "rosannethomas@bitrex.com"
+      },
+      "delegator": {
+        "contactId": 4,
+        "contactGlobalUniqueId": "",
+        "firstName": "Hazel",
+        "lastName": "Rowland",
+        "email": "hazelrowland@bitrex.com"
+      }
+    },
+    {
+      "delegationId": 63,
+      "startDate": "2024-04-23T15:37:53.0827729",
+      "status": "enabled",
+      "note": "event no role id",
+      "creationDate": "2024-04-23T15:38:09.5231502",
+      "accounts": [
+        {
+          "accountId": 602,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Boulangerie Bel Epi"
+        }
+      ],
+      "delegatee": {
+        "contactId": 189,
+        "contactGlobalUniqueId": "",
+        "firstName": "Ora",
+        "lastName": "Mcmillan",
+        "email": "oramcmillan@bitrex.com"
+      },
+      "delegator": {
+        "contactId": 14,
+        "contactGlobalUniqueId": "",
+        "firstName": "Terrell",
+        "lastName": "Duran",
+        "email": "terrellduran@bitrex.com"
+      }
+    },
+    {
+      "delegationId": 72,
+      "startDate": "2024-06-24T10:02:22.028",
+      "status": "pending",
+      "note": "",
+      "creationDate": "2024-04-24T10:10:27.7166187",
+      "accounts": [
+        {
+          "accountId": 602,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Boulangerie Bel Epi"
+        }
+      ],
+      "delegatee": {
+        "contactId": 4,
+        "contactGlobalUniqueId": "",
+        "firstName": "Hazel",
+        "lastName": "Rowland",
+        "email": "hazelrowland@bitrex.com"
+      },
+      "delegator": {
+        "contactId": 7,
+        "contactGlobalUniqueId": "",
+        "firstName": "Sutton",
+        "lastName": "York",
+        "email": "suttonyork@bitrex.com"
+      }
+    },
+    {
+      "delegationId": 74,
+      "startDate": "2024-04-25T08:37:04.3282333",
+      "endDate": "2024-08-25T08:25:07.331",
+      "status": "disabled",
+      "note": "string",
+      "creationDate": "2024-04-25T08:37:04.3648082",
+      "accounts": [
+        {
+          "accountId": 602,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Boulangerie Bel Epi"
+        }
+      ],
+      "delegatee": {
+        "contactId": 66,
+        "contactGlobalUniqueId": "",
+        "firstName": "Charlene",
+        "lastName": "Simpson",
+        "email": "charlenesimpson@bitrex.com"
+      },
+      "delegator": {
+        "contactId": 23,
+        "contactGlobalUniqueId": "",
+        "firstName": "Sutton",
+        "lastName": "York",
+        "email": "suttonyork@bitrex.com"
+      }
+    },
+    {
+      "delegationId": 84,
+      "startDate": "2023-04-25T13:44:30.4474779",
+      "endDate": "2024-08-25T09:18:38.278",
+      "status": "enabled",
+      "note": "string",
+      "creationDate": "2023-04-25T13:44:32.0206148",
+      "accounts": [
+        {
+          "accountId": 602,
+          "accountGlobalUniqueId": "",
+          "accountNumber": "",
+          "legalName": "Boulangerie Bel Epi"
+        }
+      ],
+      "delegatee": {
+        "contactId": 64,
+        "contactGlobalUniqueId": "",
+        "firstName": "Gamble",
+        "lastName": "Riley",
+        "email": "gambleriley@bitrex.com"
+      },
+      "delegator": {
+        "contactId": 7,
+        "contactGlobalUniqueId": "",
+        "firstName": "Sutton",
+        "lastName": "York",
+        "email": "suttonyork@bitrex.com"
+      }
+    }
+  ],
+  "currentPage": 1,
+  "totalPage": 1,
+  "totalItems": 6
+}

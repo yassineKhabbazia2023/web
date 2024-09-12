@@ -1,0 +1,232 @@
+[
+  {
+    "title": "Identification de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "accountNumber",
+        "pFieldType": "input",
+        "pLabel": "Identifiant"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-70",
+        "pDisabled": true,
+        "pFieldKey": "legal.legalName",
+        "pFieldType": "input",
+        "pLabel": "Raison sociale"
+      }
+    ]
+  },
+  {
+    "title": "Coordonnées de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": true,
+        "pFieldKey": "phone[0].phoneNumber",
+        "pFieldType": "input",
+        "pLabel": "Numéro de téléphone "
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": true,
+        "pFieldKey": "email",
+        "pFieldType": "input",
+        "pLabel": "E-mail de contact"
+      }
+    ]
+  },
+  {
+    "title": "Adresse",
+    "sectionKey": "companyAddress",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
+        "pDisabled": true,
+        "pFieldKey": "address[0].addressLine1",
+        "pFieldType": "input",
+        "pLabel": "Adresse (numéro et nom de la voie)"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
+        "pDisabled": true,
+        "pFieldKey": "address[0].addressLine2",
+        "pFieldType": "input",
+        "pLabel": "Compléments (bâtiment, étages, etc)"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "address[0].zipCode",
+        "pFieldType": "input",
+        "pLabel": "Code postal"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "address[0].city",
+        "pFieldType": "input",
+        "pLabel": "Ville"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "address[0].country",
+        "pFieldType": "input",
+        "pLabel": "Pays"
+      }
+    ]
+  },
+  {
+    "title": "Informations générales de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "legal.siret",
+        "pFieldType": "input",
+        "pLabel": "SIRET"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-50",
+        "pDisabled": true,
+        "pFieldKey": "legal.legalForm",
+        "pFieldType": "input",
+        "pLabel": "Forme juridique"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--1 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "legal.creationDate",
+        "pFieldType": "date",
+        "pLabel": "Date de création"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--1 flex--basis-10",
+        "pDisabled": true,
+        "pFieldKey": "legal.naf[0].nafCode",
+        "pFieldType": "input",
+        "pLabel": "Code NAF"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": true,
+        "pFieldKey": "legal.staffSizeRange",
+        "pFieldType": "dropdown",
+        "pLabel": "Effectifs",
+        "pTestId": "offer-staff-size-range",
+        "referentialKey": "staffSizeRange"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
+        "pDisabled": true,
+        "pFieldKey": "hub.hubName",
+        "pFieldType": "dropdown",
+        "pLabel": "Hub KPMG rattaché",
+        "pTestId": "offer-hub-name-list",
+        "referentialKey": "hubName"
+      }
+    ]
+  },
+  {
+    "title": "Informations comptables et fiscales de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "accounting.fiscalExerciseStartDate",
+        "pFieldType": "date",
+        "pLabel": "Début de l'exercice"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-24",
+        "pDisabled": true,
+        "pFieldKey": "accounting.fiscalExerciseDuration",
+        "pFieldType": "dropdown",
+        "pLabel": "Durée de l'exercice en mois",
+        "pTestId": "offer-fiscal-exercise-duration",
+        "referentialKey": "fiscalExerciseDuration"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-46",
+        "pDisabled": true,
+        "pFieldKey": "accounting.accountingType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de comptabilité",
+        "pTestId": "offer-accounting-types",
+        "referentialKey": "accountingType"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-40",
+        "pDisabled": true,
+        "pFieldKey": "accounting.fiscalSystem",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime fiscal",
+        "pTestId": "offer-fiscal-system-list",
+        "referentialKey": "fiscalSystem"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": true,
+        "pFieldKey": "accounting.taxationSystem",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime d'imposition",
+        "pTestId": "offer-taxation-system-list",
+        "referentialKey": "taxationSystem"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": true,
+        "pFieldKey": "accounting.activityType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type d'activité",
+        "pTestId": "offer-activity-types",
+        "referentialKey": "activityType"
+      }
+    ]
+  },
+  {
+    "title": "Informations TVA de l'entreprise",
+    "fields": [
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "vat.system",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime de la TVA",
+        "pTestId": "offer-vat-system-list",
+        "referentialKey": "vatSystem"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "vat.intra",
+        "pFieldType": "input",
+        "pLabel": "N° TVA Intra"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "vat.type",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de TVA",
+        "pTestId": "offer-vat-types",
+        "referentialKey": "vatType"
+      }
+    ]
+  }
+]

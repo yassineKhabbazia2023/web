@@ -1,0 +1,137 @@
+[
+  {
+    "title": "Informations générales de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "legal.siret",
+        "pFieldType": "input",
+        "pLabel": "SIRET"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-70",
+        "pDisabled": true,
+        "pFieldKey": "legal.legalForm",
+        "pFieldType": "input",
+        "pLabel": "Forme juridique"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--1 flex--basis-10",
+        "pDisabled": true,
+        "pFieldKey": "legal.naf[0].nafCode",
+        "pFieldType": "input",
+        "pLabel": "Code NAF"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": false,
+        "pFieldKey": "legal.staffSizeRange",
+        "pFieldType": "dropdown",
+        "pLabel": "Effectifs",
+        "pTestId": "offer-staff-size-range",
+        "referentialKey": "staffSizeRange"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
+        "pDisabled": false,
+        "pFieldKey": "hub.hubId",
+        "pFieldType": "dropdown",
+        "pLabel": "Hub KPMG rattaché",
+        "pTestId": "offer-hub-name-list",
+        "referentialKey": "hubName"
+      }
+    ]
+  },
+  {
+    "title": "Informations comptables et fiscales de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": false,
+        "pFieldKey": "accounting.fiscalExerciseStartDate",
+        "pFieldType": "date",
+        "pLabel": "Début de l'exercice"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": false,
+        "pFieldKey": "accounting.fiscalExerciseDuration",
+        "pFieldType": "dropdown",
+        "pLabel": "Durée de l'exercice en mois",
+        "pTestId": "offer-fiscal-exercise-duration",
+        "referentialKey": "fiscalExerciseDuration"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": false,
+        "pFieldKey": "accounting.accountingType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de comptabilité",
+        "pTestId": "offer-accounting-types",
+        "referentialKey": "accountingType"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
+        "pDisabled": false,
+        "pFieldKey": "accounting.fiscalSystem",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime fiscal",
+        "pTestId": "offer-fiscal-system-list",
+        "referentialKey": "fiscalSystem"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldKey": "accounting.taxationSystem",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime d'imposition",
+        "pTestId": "offer-taxation-system-list",
+        "referentialKey": "taxationSystem"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldKey": "accounting.activityType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type d'activité",
+        "pTestId": "offer-activity-types",
+        "referentialKey": "activityType"
+      }
+    ]
+  },
+  {
+    "title": "Informations TVA de l'entreprise",
+    "fields": [
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": false,
+        "pFieldKey": "vat.system",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime de la TVA",
+        "pTestId": "offer-vat-system-list",
+        "referentialKey": "vatSystem"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "vat.intra",
+        "pFieldType": "input",
+        "pLabel": "N° TVA Intra"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": false,
+        "pFieldKey": "vat.type",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de TVA",
+        "pTestId": "offer-vat-types",
+        "referentialKey": "vatType"
+      }
+    ]
+  }
+]
