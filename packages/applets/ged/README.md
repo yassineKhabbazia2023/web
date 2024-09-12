@@ -1,44 +1,25 @@
-# Introduction
-The goal of this repository is to serve as boilerplate / base for all others MFE.
-By doing this, all the repositories will have the same base & arbo.
+# Introduction 
 
-[DAT](https://kpmgfr.visualstudio.com/Constellation/_wiki/wikis/Constellation.wiki/16910/Boilerplate)
+The `@pulse/ged` project is a Vue 3 Plugin implementing the Document management system feature for Pulse.
+It originated from the [KPMG.Pulse.Front.Ged](https://kpmgfr.visualstudio.com/Constellation/_git/KPMG.Pulse.Front.Ged) project.
 
-# TODO
-- clean warnings in browser's devtools console
+# Getting Started
 
-# Setup
-This repository uses two npm packages (eslint config & vite config) that are on the kpmg repository, so updating the .npmrc user is mandatory if it s not already done, (link)[https://kpmgfr.visualstudio.com/Constellation/_artifacts/feed/PlateformePulse/connect/npm]
+The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
 
-## For development
-* Clone this repository
-* Update the shell
-```js
-// KPMG.Pulse.Front.Shell/src/manifest.js
-// ...
-im.textContent = JSON.stringify({
-  imports: {
-    '@kpmg/aMfeAlreadySet': 'http://localhost:8082/src/main.ts',
-    '@kpmg/myNewMfe'      : 'http://localhost:8083/src/main.ts', // here we increment the port compare to the last one on the previous line (aMfeAlreadySet = 8082, so myNewMfe = 8083)
-  }
-})
+As this is a plugin and not a standalone application, it cannot be run independently. However, you can build and test it.
+
+# Build and Test
+
+The application is built using [Vite](https://vitejs.dev/).
+To build the application, use:
+
+```
+npm run build
 ```
 
-Lauch the command `tools/New-Mfe.ps1` (see commmand documentation, available with `Get-Help tools/New-Mfe.ps1` for details).
+To run tests, use:
 
-Note: you must be able to create repositories and pipelines in the Constellation project using the provided PAT.
-
-# Add routes
-
-Routes are located in ``main.ts`` file.<br/>
-Our MFE routes are injected inside the ``routes`` object coming from the ``common`` dependency.<br/>
-So if needed, you simply have to push the needed routes to the ``routes`` object
-You can see that the component related to the requested page is loaded thanks to a function.
-This means that we're lazily loading the related component.<br/>
-If you want to know more about this, [read this section about lazy route loading](https://router.vuejs.org/guide/advanced/lazy-loading.html).
-
-# Lauch unit test
-
+```
 npm run test
-
-npm run test name
+```
