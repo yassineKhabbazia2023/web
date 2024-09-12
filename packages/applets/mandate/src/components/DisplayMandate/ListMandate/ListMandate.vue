@@ -127,18 +127,18 @@ import {
   PDialog,
   PAlert,
 } from '@kpmg/styleguide'
-import Tag from '@/components/Common/Tag'
-import { dateFormatter, downloadFile, saveFileAs } from '@/helpers/utils'
+import Tag from '@mandate/components/Common/Tag'
+import { dateFormatter, downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import type { ListMandateProps, ActionEvent } from './ListMandateTypes'
 import {
   downloadUnsignedMandate,
   downloadSignedMandate,
   uploadSignedMandate,
   terminateMandate,
-} from '@/services/mandate'
-import { showNotification } from '@/helpers/NotificationHelper'
-import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
-import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
+} from '@mandate/services/mandate'
+import { showNotification } from '@mandate/helpers/NotificationHelper'
+import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
+import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 declare let window: any
 

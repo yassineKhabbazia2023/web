@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Header from '.'
 import { expect, describe, it, vi } from 'vitest'
-import Drawer from '@/components/CreateMandate/Drawer'
+import Drawer from '@mandate/components/CreateMandate/Drawer'
 import { nextTick } from 'vue'
 
 const createWrapper = () =>
   wrapperFactory(Header)
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ([]),
   }),

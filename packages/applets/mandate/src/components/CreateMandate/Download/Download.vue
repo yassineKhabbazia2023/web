@@ -119,12 +119,12 @@ import {
   PLoader,
   PNotification,
 } from '@kpmg/styleguide'
-import { downloadUnsignedMandate, getMandateAvailability } from '@/services/mandate'
-import { downloadFile, saveFileAs } from '@/helpers/utils'
-import { showNotification } from '@/helpers/NotificationHelper'
-import type { NotificationMessagesByType } from '@/helpers/NotificationHelperTypes'
+import { downloadUnsignedMandate, getMandateAvailability } from '@mandate/services/mandate'
+import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
+import { showNotification } from '@mandate/helpers/NotificationHelper'
+import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
 import type { DownloadProps } from './DownloadTypes'
-import { mandateAvailabilityCheckStatuses } from '@/constants/mandateStatuses'
+import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'
 
 const props = defineProps<DownloadProps>()
 const emit = defineEmits<{

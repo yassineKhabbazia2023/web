@@ -12,8 +12,8 @@ import {
   parseParams,
   getMandateAvailability,
 } from '.'
-import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
-import { getMockedMandatesList, getMockedCompany, getMockedBban } from '@/../tests/mocks/mandateMock'
+import type { CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
+import { getMockedMandatesList, getMockedCompany, getMockedBban } from '@mandate/../tests/mocks/mandateMock'
 import type { SearchMandateParams } from './ServiceMandateTypes'
 
 const mandatesList = getMockedMandatesList()
@@ -91,7 +91,7 @@ const gatewayPostSpy = vi.fn(() => {
   return Promise.resolve({ data: {}, status: {} })
 })
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       mandate: {

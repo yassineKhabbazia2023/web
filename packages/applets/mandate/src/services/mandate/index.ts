@@ -1,8 +1,8 @@
-import type { Mandate } from '@/pages/home/Models'
-import { commonApi as api } from '@kpmg/common'
-import type { BbanModel, CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
+import type { Mandate } from '@mandate/pages/home/Models'
+import { commonApi as api } from '@pulse/Common'
+import type { BbanModel, CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
 import type { SearchMandateParams } from './ServiceMandateTypes'
-import { mandateAvailabilityCheckStatuses } from '@/constants/mandateStatuses'
+import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'
 
 export const getCompany = ({
   ibsNumber,

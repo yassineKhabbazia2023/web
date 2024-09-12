@@ -2,7 +2,7 @@ import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-import { downloadFile, saveFileAs } from '@/helpers/utils'
+import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 
 interface Window {
   showSaveFilePicker: any
@@ -13,11 +13,11 @@ declare let window: Window
 
 const currentPage = 1
 
-vi.mock('@/helpers/NotificationHelper', () => ({
+vi.mock('@mandate/helpers/NotificationHelper', () => ({
   showNotification: vi.fn(),
 }))
 
-vi.mock('@/services/mandate', () => {
+vi.mock('@mandate/services/mandate', () => {
   return {
     downloadUnsignedMandate: vi.fn(() => {
       // Mock implementation or return value for downloadUnsignedMandate
@@ -26,7 +26,7 @@ vi.mock('@/services/mandate', () => {
   }
 })
 
-vi.mock('@/helpers/utils', () => {
+vi.mock('@mandate/helpers/utils', () => {
   return {
     dateFormatter: vi.fn(),
     downloadFile: vi.fn(),

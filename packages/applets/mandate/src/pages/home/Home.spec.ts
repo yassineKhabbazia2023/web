@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import wrapperFactory from '../../../tests/utils/wrapperFactory'
-import Home from '@/pages/home'
-import * as mandateService from '@/services/mandate'
-import { getMockedMandatesList } from '@/../tests/mocks/mandateMock'
+import Home from '@mandate/pages/home'
+import * as mandateService from '@mandate/services/mandate'
+import { getMockedMandatesList } from '@mandate/../tests/mocks/mandateMock'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { AxiosResponse } from 'axios'
-import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
+import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
-vi.mock('@/services/mandate')
-vi.mock('@kpmg/common', () => ({
+vi.mock('@mandate/services/mandate')
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ([]),
   }),
@@ -37,7 +37,7 @@ const baseParams: SearchMandateParams = {
 
 describe('test Home.vue', () => {
   let wrapper: VueWrapper
-  let mockedGetMandatesCollection: SpyInstance
+  let mockedGetMandatesCollection: MockInstance
   beforeEach(() => {
     mockedGetMandatesCollection = vi
       .spyOn(mandateService, 'getMandatesCollection')

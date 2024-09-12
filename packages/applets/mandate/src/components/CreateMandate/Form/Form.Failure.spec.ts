@@ -12,7 +12,7 @@ function mockMandateService(
   }
 }
 
-vi.mock('@/services/mandate', () => {
+vi.mock('@mandate/services/mandate', () => {
   return mockMandateService(
     {
       data: {

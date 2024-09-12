@@ -27,15 +27,15 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getMandatesCollection } from '@/services/mandate'
-import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
-import Header from '@/components/Common/Header'
-import ListMandate from '@/components/DisplayMandate/ListMandate'
-import Pagination from '@/components/DisplayMandate/Pagination'
-import SearchBar from '@/components/Common/SearchBar'
-import { debounce } from '@/helpers/utils'
+import { getMandatesCollection } from '@mandate/services/mandate'
+import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
+import Header from '@mandate/components/Common/Header'
+import ListMandate from '@mandate/components/DisplayMandate/ListMandate'
+import Pagination from '@mandate/components/DisplayMandate/Pagination'
+import SearchBar from '@mandate/components/Common/SearchBar'
+import { debounce } from '@mandate/helpers/utils'
 import type { MandateCollection } from './Models'
-import { PAGE_SIZES } from '@/constants'
+import { PAGE_SIZES } from '@mandate/constants'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {

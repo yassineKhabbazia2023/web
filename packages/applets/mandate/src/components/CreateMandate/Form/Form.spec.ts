@@ -1,7 +1,7 @@
 import CreateMandateForm from '.'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
-import { getCompany } from '@/services/mandate'
+import { getCompany } from '@mandate/services/mandate'
 
 function mockMandateService(
   createMandateData: any,
@@ -15,7 +15,7 @@ function mockMandateService(
   }
 }
 
-vi.mock('@/services/mandate', () => {
+vi.mock('@mandate/services/mandate', () => {
   return mockMandateService(
     {
       data: {
@@ -270,7 +270,7 @@ function mockMandateServiceGetBankDetailThrowError(
 }
 
 const mockGetBankDetailThrowError = () => {
-  vi.mock('@/services/mandate', () => {
+  vi.mock('@mandate/services/mandate', () => {
     return mockMandateServiceGetBankDetailThrowError(
       {
         data: {

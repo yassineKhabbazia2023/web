@@ -3,10 +3,10 @@ import Download from '.'
 import type { DownloadProps } from './DownloadTypes'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi, beforeEach } from 'vitest'
-import { downloadUnsignedMandate, getMandateAvailability } from '@/services/mandate'
-import { downloadFile, saveFileAs } from '@/helpers/utils'
+import { downloadUnsignedMandate, getMandateAvailability } from '@mandate/services/mandate'
+import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
-import { mandateAvailabilityCheckStatuses } from '@/constants/mandateStatuses'
+import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'
 
 interface Window {
   showSaveFilePicker: any
@@ -22,12 +22,12 @@ const apiMocks = vi.hoisted(() => ({
   erroredMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.ERRORED)),
 }))
 
-vi.mock('@/services/mandate', () => ({
+vi.mock('@mandate/services/mandate', () => ({
   downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data })),
   getMandateAvailability: apiMocks.availaibleMandate,
 }))
 
-vi.mock('@/helpers/utils', () => ({
+vi.mock('@mandate/helpers/utils', () => ({
   saveFileAs: vi.fn(),
   downloadFile: vi.fn(),
 }))

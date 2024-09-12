@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import Drawer from '@/components/CreateMandate/Drawer'
+import Drawer from '@mandate/components/CreateMandate/Drawer'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import {
@@ -40,7 +40,7 @@ import {
   PIAdd,
   PFilterGroup,
 } from '@kpmg/styleguide'
-import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
+import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

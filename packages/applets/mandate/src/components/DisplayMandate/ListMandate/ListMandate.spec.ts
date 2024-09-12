@@ -1,11 +1,11 @@
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
-import * as mandateService from '@/services/mandate'
-import * as NotificationHelper from '@/helpers/NotificationHelper'
-import type { NotificationHandle } from '@/helpers/NotificationHelperTypes'
+import * as mandateService from '@mandate/services/mandate'
+import * as NotificationHelper from '@mandate/helpers/NotificationHelper'
+import type { NotificationHandle } from '@mandate/helpers/NotificationHelperTypes'
 import { nextTick } from 'vue'
-import { getMockedMandatesData } from '@/../tests/mocks/mandateMock'
+import { getMockedMandatesData } from '@mandate/../tests/mocks/mandateMock'
 import { flushPromises } from '@vue/test-utils'
 
 interface Window {
@@ -17,11 +17,11 @@ declare let document: any
 
 const currentPage = 1
 
-vi.mock('@/helpers/NotificationHelper', () => ({
+vi.mock('@mandate/helpers/NotificationHelper', () => ({
   showNotification: vi.fn(),
 }))
 
-vi.mock('@/services/mandate', () => {
+vi.mock('@mandate/services/mandate', () => {
   return {
     downloadUnsignedMandate: vi.fn(() => {
       // Mock implementation or return value for downloadUnsignedMandate
@@ -42,7 +42,7 @@ vi.mock('@/services/mandate', () => {
   }
 })
 
-vi.mock('@/helpers/utils', () => {
+vi.mock('@mandate/helpers/utils', () => {
   return {
     dateFormatter: vi.fn(),
     debounce: vi.fn(),

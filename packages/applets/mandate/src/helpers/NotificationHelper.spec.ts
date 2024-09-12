@@ -1,4 +1,4 @@
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { expect, describe, it, vi, beforeEach } from 'vitest'
 import { showNotification } from './NotificationHelper'
 import type { NotificationMessagesByType } from './NotificationHelperTypes'
@@ -20,7 +20,7 @@ describe('test NotificationHelper', () => {
     success: 'is success',
     error: 'is error',
   }
-  let PNotificationMocked: SpyInstance
+  let PNotificationMocked: MockInstance
   const closeNotifiationSpy = vi.fn()
   beforeEach(() => {
     PNotificationMocked = vi.spyOn(styleguide, 'PNotification')

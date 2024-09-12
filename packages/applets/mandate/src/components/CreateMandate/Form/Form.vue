@@ -282,7 +282,7 @@ import {
   validateIban,
   getBankDetail,
   getCompany,
-} from '@/services/mandate'
+} from '@mandate/services/mandate'
 import type { Rule } from './FormModels'
 import {
   PForm,

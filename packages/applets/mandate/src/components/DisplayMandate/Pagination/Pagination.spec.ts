@@ -1,5 +1,5 @@
 import Pagination from '.'
-import wrapperFactory from '@/../tests/utils/wrapperFactory'
+import wrapperFactory from '@mandate/../tests/utils/wrapperFactory'
 import { expect, describe, it } from 'vitest'
 
 const defaultProps = {

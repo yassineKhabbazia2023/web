@@ -3,18 +3,18 @@ import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import CreateMandateDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { createMandate } from '@/services/mandate'
+import { createMandate } from '@mandate/services/mandate'
 
 const createWrapper = (props: any = {}, slots: any = {}) =>
   wrapperFactory(CreateMandateDrawer, { props, slots })
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({}),
   }),
 }))
 
-vi.mock('@/services/mandate', () => ({
+vi.mock('@mandate/services/mandate', () => ({
   createMandate: vi.fn(() => {
     return Promise.resolve({
       data: { id: 'e4ec92f2-a375-4574-dssdA' },

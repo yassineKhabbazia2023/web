@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import wrapperFactory from '@/../tests/utils/wrapperFactory'
+import wrapperFactory from '@mandate/../tests/utils/wrapperFactory'
 import SearchBar from '.'
 
 const createWrapper = (props:any) =>

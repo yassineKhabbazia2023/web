@@ -20,7 +20,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { PaginationProps } from './PaginationTypes'
 import { PPagination } from '@kpmg/styleguide'
-import type { SearchMandateParams } from '@/services/mandate/ServiceMandateTypes'
+import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

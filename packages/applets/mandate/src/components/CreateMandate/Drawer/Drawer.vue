@@ -172,10 +172,10 @@ import {
   PSteps,
   PTooltip,
 } from '@kpmg/styleguide'
-import { createMandate } from '@/services/mandate'
-import Form from '@/components/CreateMandate/Form'
-import DownloadMandate from '@/components/CreateMandate/Download'
-import type { CreateMandateModel } from '@/components/CreateMandate/Form/FormModels'
+import { createMandate } from '@mandate/services/mandate'
+import Form from '@mandate/components/CreateMandate/Form'
+import DownloadMandate from '@mandate/components/CreateMandate/Download'
+import type { CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
 
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
