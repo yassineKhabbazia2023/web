@@ -85,11 +85,11 @@ import { computed, onMounted, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { amplitudeService, commonApi, tokenService } from '@kpmg/common'
+import { amplitudeService, commonApi, tokenService } from '@pulse/Common'
 import { PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
-import useInitUserAuth from '@/composable/useInitUserAuth'
-import useNavigation from '@/composable/useNavigation'
-import { getTermsByCurrentUser } from '@/services/cgu'
+import useInitUserAuth from '@login/composable/useInitUserAuth'
+import useNavigation from '@login/composable/useNavigation'
+import { getTermsByCurrentUser } from '@login/services/cgu'
 
 const { initAuthClient, setStoreGigyaUserId } = useInitUserAuth()
 const { navigateToCustomerWallet } = useNavigation()

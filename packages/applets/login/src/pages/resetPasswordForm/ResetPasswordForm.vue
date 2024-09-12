@@ -73,7 +73,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi } from '@kpmg/common'
+import { commonApi } from '@pulse/Common'
 import {
   onBeforeMount,
   reactive,

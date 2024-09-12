@@ -19,7 +19,7 @@ const termsMock = {
 
 const cguMessageDone = { message: 'Done !' }
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       gateway: {

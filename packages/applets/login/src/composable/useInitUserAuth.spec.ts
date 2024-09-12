@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import useInitUserAuth from '@/composable/useInitUserAuth'
-import { commonStore as store, tokenService } from '@kpmg/common'
+import useInitUserAuth from '@login/composable/useInitUserAuth'
+import { commonStore as store, tokenService } from '@pulse/Common'
 
 const mockedMsalToken = 'msal-token'
 const msalGetTokenSpy = vi.hoisted(() => vi.fn(() => mockedMsalToken))
 
-vi.mock('@/services/msal', () => ({
+vi.mock('@login/services/msal', () => ({
   getToken: msalGetTokenSpy,
 }))
 
@@ -19,7 +19,7 @@ const mockFechUserDataProvider = vi.fn(() => {
     isCollab: true,
   })
 })
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => vi.fn(),
   commonStore: () => ({
     $patch: mockStorePatch,
@@ -33,7 +33,7 @@ vi.mock('@kpmg/common', () => ({
   },
 }))
 
-vi.mock('@/composable/useStoreSubscription', () => ({
+vi.mock('@login/composable/useStoreSubscription', () => ({
   default: () => ({
     subscribeToStoreUpdates: vi.fn(),
   }),

@@ -1,9 +1,9 @@
 import { flushPromises } from '@vue/test-utils'
-import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
-import { getMockedRouter, getWrapper } from '@/pages/testHelper'
-import { amplitudeService, tokenService } from '@kpmg/common'
+import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
+import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
+import { amplitudeService, tokenService } from '@pulse/Common'
 import CreatePassword from './'
-import { getLatestTerms, updateTermsByCurrentUser } from '@/services/cgu'
+import { getLatestTerms, updateTermsByCurrentUser } from '@login/services/cgu'
 import type { FormInstance } from 'element-plus'
 
 const mockToken = 'token'
@@ -13,13 +13,13 @@ const patchMock = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 const CGU_URL = 'https://custom-CGU.com'
 
-vi.mock('@/services/cgu', () => ({
+vi.mock('@login/services/cgu', () => ({
   updateTermsByCurrentUser: vi.fn(),
   getLatestTerms: vi.fn(() => Promise.resolve({ data: { termsId: 1 } })),
 }))
 
 const navigateToCustomerWalletMock = vi.hoisted(() => vi.fn())
-vi.mock('@/composable/useNavigation', () => ({
+vi.mock('@login/composable/useNavigation', () => ({
   default: () => {
     return {
       navigateToCustomerWallet: navigateToCustomerWalletMock,
@@ -28,7 +28,7 @@ vi.mock('@/composable/useNavigation', () => ({
 }))
 
 const mockStorePatch = vi.fn()
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   fetchUrlTerms: vi.fn(() => CGU_URL),
   commonApi: () => ({
     onboarding: {
@@ -67,7 +67,7 @@ function createWrapper() {
 
 describe('page creation password', () => {
   let wrapper: ReturnType<typeof createWrapper>
-  let spyTrackAmplitude: SpyInstance
+  let spyTrackAmplitude: MockInstance
   beforeEach(() => {
     spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
     wrapper = createWrapper()

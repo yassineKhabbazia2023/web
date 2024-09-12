@@ -1,10 +1,10 @@
 import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { getMockedRouter, getWrapper } from '@/pages/testHelper'
+import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
 import ResetPasswordForm from './'
 
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       post: postMock,

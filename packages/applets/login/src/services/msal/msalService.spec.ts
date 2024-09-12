@@ -1,9 +1,9 @@
-import { vi, describe, beforeEach, it, expect, type SpyInstance } from 'vitest'
+import { vi, describe, beforeEach, it, expect, type MockInstance } from 'vitest'
 import { getToken } from '.'
 
 const amplitudeServiceTrackMocked = vi.hoisted(() => vi.fn())
 const setTokenMocked = vi.hoisted(() => vi.fn())
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   amplitudeService: {
     track: amplitudeServiceTrackMocked,
     reset: vi.fn(),
@@ -43,7 +43,7 @@ vi.mock('msal', () => ({
 
 describe('msalService', () => {
   describe('getToken', () => {
-    let consoleWarnSpy: SpyInstance
+    let consoleWarnSpy: MockInstance
     beforeEach(() => {
       consoleWarnSpy = vi.spyOn(console, 'warn')
     })

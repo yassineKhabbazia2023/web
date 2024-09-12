@@ -3,13 +3,13 @@ import { flushPromises, mount } from '@vue/test-utils'
 import LoginCollab from '.'
 
 const navigateToWalletMock = vi.fn()
-vi.mock('@/services/msal', () => ({
+vi.mock('@login/services/msal', () => ({
   msalInstance: {
     loginRedirect: vi.fn(),
   },
 }))
 
-vi.mock('@/composable/useInitUserAuth.js', () => ({
+vi.mock('@login/composable/useInitUserAuth.js', () => ({
   default: () => {
     return {
       initAuthCollab: vi.fn(),
@@ -19,7 +19,7 @@ vi.mock('@/composable/useInitUserAuth.js', () => ({
     }
   },
 }))
-vi.mock('@/composable/useNavigation', () => ({
+vi.mock('@login/composable/useNavigation', () => ({
   default: () => {
     return {
       navigateToWallet: navigateToWalletMock,

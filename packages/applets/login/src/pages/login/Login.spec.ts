@@ -1,9 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
-import type { ComponentWrapper } from '@/pages/testHelper/testHelperTypes'
+import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
+import type { ComponentWrapper } from '@login/pages/testHelper/testHelperTypes'
 import { flushPromises, mount } from '@vue/test-utils'
 import Login from './'
-import { amplitudeService, tokenService } from '@kpmg/common'
-import { getTermsByCurrentUser } from '@/services/cgu'
+import { amplitudeService, tokenService } from '@pulse/Common'
+import { getTermsByCurrentUser } from '@login/services/cgu'
 import type { FormInstance } from 'element-plus'
 
 const USER_ID = 'customUserId'
@@ -28,7 +28,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       post: mockAuthPost,
@@ -56,7 +56,7 @@ const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
   return { id: USER_ID }
 }))
 
-vi.mock('@/composable/useInitUserAuth', () => ({
+vi.mock('@login/composable/useInitUserAuth', () => ({
   default: () => ({
     initAuthClient: initAuthClientMocked,
     setStoreGigyaUserId: vi.fn(() => {
@@ -69,7 +69,7 @@ vi.mock('@/composable/useInitUserAuth', () => ({
   }),
 }))
 
-vi.mock('@/services/cgu', () => ({
+vi.mock('@login/services/cgu', () => ({
   getTermsByCurrentUser: vi
     .fn(() => Promise.resolve({
       isCurrent: true,
@@ -98,8 +98,8 @@ const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const INPUT_PASSWORD_VALUE = 'customPassword'
 
 describe('login', () => {
-  let spyTrackAmplitude: SpyInstance
-  let spySetNewUserPropertyAmplitude: SpyInstance
+  let spyTrackAmplitude: MockInstance
+  let spySetNewUserPropertyAmplitude: MockInstance
   beforeEach(() => {
     spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
     spySetNewUserPropertyAmplitude = vi.spyOn(amplitudeService, 'setNewUserProperty')

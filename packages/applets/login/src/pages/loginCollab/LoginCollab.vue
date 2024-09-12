@@ -21,10 +21,10 @@
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton } from '@kpmg/styleguide'
-import { msalInstance } from '@/services/msal'
-import useInitAuth from '@/composable/useInitUserAuth'
-import { amplitudeService } from '@kpmg/common'
-import useNavigation from '@/composable/useNavigation'
+import { msalInstance } from '@login/services/msal'
+import useInitAuth from '@login/composable/useInitUserAuth'
+import { amplitudeService } from '@pulse/Common'
+import useNavigation from '@login/composable/useNavigation'
 
 const { initAuthCollab, isTokenRetrieve } = useInitAuth()
 const { navigateToWallet } = useNavigation()

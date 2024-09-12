@@ -12,12 +12,12 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   fetchUrlTerms: vi.fn(),
 }))
 
 const updateTermsByCurrentUserMocked = vi.hoisted(() => vi.fn())
-vi.mock('@/services/cgu', () => ({
+vi.mock('@login/services/cgu', () => ({
   updateTermsByCurrentUser: updateTermsByCurrentUserMocked,
 }))
 

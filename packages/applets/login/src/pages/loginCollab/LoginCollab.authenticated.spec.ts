@@ -1,17 +1,17 @@
-import { type SpyInstance, beforeEach, describe, expect, it, vi } from 'vitest'
+import { type MockInstance, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { amplitudeService } from '@kpmg/common'
-import { msalInstance } from '@/services/msal'
+import { amplitudeService } from '@pulse/Common'
+import { msalInstance } from '@login/services/msal'
 import LoginCollab from '.'
 
 const navigateToWalletMock = vi.fn()
-vi.mock('@/services/msal', () => ({
+vi.mock('@login/services/msal', () => ({
   msalInstance: {
     loginRedirect: vi.fn(),
   },
 }))
 
-vi.mock('@/composable/useInitUserAuth.js', () => ({
+vi.mock('@login/composable/useInitUserAuth.js', () => ({
   default: () => {
     return {
       initAuthCollab: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock('@/composable/useInitUserAuth.js', () => ({
     }
   },
 }))
-vi.mock('@/composable/useNavigation', () => ({
+vi.mock('@login/composable/useNavigation', () => ({
   default: () => {
     return {
       navigateToWallet: navigateToWalletMock,
@@ -33,8 +33,8 @@ const createWrapper = () => mount(LoginCollab)
 
 describe('loginCollab', () => {
   let wrapper: ReturnType<typeof createWrapper>
-  let spyResetAmplitude: SpyInstance
-  let spyMsalLoginRedirect: SpyInstance
+  let spyResetAmplitude: MockInstance
+  let spyMsalLoginRedirect: MockInstance
   beforeEach(async () => {
     spyResetAmplitude = vi.spyOn(amplitudeService, 'reset')
     spyMsalLoginRedirect = vi.spyOn(msalInstance, 'loginRedirect')

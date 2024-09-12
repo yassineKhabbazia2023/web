@@ -1,6 +1,6 @@
 
-import { dataProvider, commonStore as store, tokenService } from '@kpmg/common'
-import { getToken } from '@/services/msal'
+import { dataProvider, commonStore as store, tokenService } from '@pulse/Common'
+import { getToken } from '@login/services/msal'
 import { ref } from 'vue'
 
 export default function useInitUserAuth() {

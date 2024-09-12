@@ -6,7 +6,7 @@ import {
   it,
   vi,
 } from 'vitest'
-import type { ComponentWrapper } from '@/pages/testHelper/testHelperTypes'
+import type { ComponentWrapper } from '@login/pages/testHelper/testHelperTypes'
 import type { FormInstance } from 'element-plus'
 import { flushPromises, mount } from '@vue/test-utils'
 import ResetPassword from './'
@@ -22,7 +22,7 @@ const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const mockRouterPush = vi.fn()
 const mockAuthPost = vi.hoisted(() => vi.fn())
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       post: mockAuthPost,

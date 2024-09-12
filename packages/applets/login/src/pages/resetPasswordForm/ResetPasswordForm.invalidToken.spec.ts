@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { getMockedRouter, getWrapper } from '@/pages/testHelper'
+import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
 import ResetPasswordForm from './'
 
 const router = getMockedRouter(
@@ -20,7 +20,7 @@ function createWrapper() {
   return getWrapper(ResetPasswordForm, router, stubs)
 }
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: () => ({

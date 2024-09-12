@@ -97,7 +97,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi, commonStore as store, fetchUrlTerms, tokenService, amplitudeService } from '@kpmg/common'
+import { commonApi, commonStore as store, fetchUrlTerms, tokenService, amplitudeService } from '@pulse/Common'
 import {
   onBeforeMount,
   reactive,
@@ -117,8 +117,8 @@ import {
   PASSWORD_STRENGTH,
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
-import useNavigation from '@/composable/useNavigation'
-import { getLatestTerms, updateTermsByCurrentUser } from '@/services/cgu'
+import useNavigation from '@login/composable/useNavigation'
+import { getLatestTerms, updateTermsByCurrentUser } from '@login/services/cgu'
 
 const { t } = useI18n({
   inheritLocale: true,
