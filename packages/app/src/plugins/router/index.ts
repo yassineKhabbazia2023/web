@@ -1,21 +1,14 @@
 import { ref } from 'vue'
 import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 import { type Store, storeToRefs } from 'pinia'
-import '@/pages/Error/router'
-import {
-  routes as commonRoutes,
-  commonStore as useStore,
-  commonApi,
-  dataProvider,
-} from '@kpmg/common'
-import { fetchEntities } from '@/services/entities'
-
-const { fetchUserData } = dataProvider()
+import { routes as errorRoutes } from '@app/pages/Error/router'
+import { commonStore as useStore, commonApi, dataProvider } from '@pulse/Common'
+import { fetchEntities } from '@app/services/entities'
 
 const isFirstTime = ref(true)
 
 const routes = [
-  ...commonRoutes.value,
+  ...errorRoutes,
   {
     path: '/',
     name: 'home',
@@ -24,7 +17,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('@/pages/Error/404'),
+    component: () => import('@app/pages/Error/404'),
     meta: {
       layout: 'Error',
     },
@@ -32,7 +25,7 @@ const routes = [
   {
     path: '/dossier/:id/banque',
     name: 'bank',
-    component: () => import('@/pages/WorkInProgress'),
+    component: () => import('@app/pages/WorkInProgress'),
     meta: {
       styles: {
         hasPaddings: false,
@@ -42,7 +35,7 @@ const routes = [
   {
     path: '/dossier/:id/indicateurs',
     name: 'indicators',
-    component: () => import('@/pages/WorkInProgress'),
+    component: () => import('@app/pages/WorkInProgress'),
     meta: {
       styles: {
         hasPaddings: false,
@@ -61,9 +54,7 @@ routes.map((route) => router.addRoute(route))
 const isUserOriginCollab = async () => {
   const USER_ORIGIN_URL = 'userorigin'
   try {
-    const { data: userOrigin } = await commonApi().gateway.get(
-      USER_ORIGIN_URL,
-    )
+    const { data: userOrigin } = await commonApi().gateway.get(USER_ORIGIN_URL)
     return userOrigin === 'COLLAB'
   } catch {}
 }
@@ -75,6 +66,7 @@ router.beforeEach(async (to: any, _from) => {
   const { isAuthenticated, isCollab } = storeToRefs(store)
 
   if (isAuthenticated.value && isFirstTime.value) {
+    const { fetchUserData } = dataProvider()
     const user = await fetchUserData()
     store.$patch({
       user,
@@ -85,10 +77,7 @@ router.beforeEach(async (to: any, _from) => {
 
   const isHomeLayoutWithoutCustomStyles = isObjectEmpty(to.meta)
   const isHomeLayoutWithCustomStyles = !!to.meta?.styles
-  if (
-    !isAuthenticated.value &&
-    (isHomeLayoutWithoutCustomStyles || isHomeLayoutWithCustomStyles)
-  ) {
+  if (!isAuthenticated.value && (isHomeLayoutWithoutCustomStyles || isHomeLayoutWithCustomStyles)) {
     return {
       name: (await isUserOriginCollab()) ? 'login' : 'loginClient',
     }
@@ -113,11 +102,7 @@ router.beforeEach(async (to: any, _from) => {
   }
 })
 
-async function entityClientOrHomeRedirections(
-  store: Store,
-  to: any,
-  isCollab: boolean,
-) {
+async function entityClientOrHomeRedirections(store: Store, to: any, isCollab: boolean) {
   const entities = await fetchEntities()
   if (to.name === 'home') {
     if (!isCollab && entities.totalItems > 1) {

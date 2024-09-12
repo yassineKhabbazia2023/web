@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { routes } from '@kpmg/common'
+
+const routes = [] as RouteRecordRaw[]
 
 const ERROR_PATH = [
   {
@@ -45,7 +46,7 @@ const ERROR_PATH = [
 ]
 
 ERROR_PATH.forEach((path) => {
-  routes.value.push({
+  routes.push({
     path: path.path,
     name: path.name,
     meta: {
@@ -53,8 +54,8 @@ ERROR_PATH.forEach((path) => {
         hasPaddings: false,
       },
     },
-    component: () => import(`@/pages/Error/${path.page}/index.ts`),
+    component: () => import(`@app/pages/Error/${path.page}/index.ts`),
   } as RouteRecordRaw)
 })
 
-export default routes
+export { routes }

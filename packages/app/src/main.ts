@@ -1,23 +1,33 @@
-import { createApp, h } from 'vue'
-import singleSpaVue from 'single-spa-vue'
-import { commoni18n as i18n, commonPinia as pinia } from '@kpmg/common'
-import router from './plugins/router'
-import App from './app'
+import '@kpmg/styleguide/dist/style'
+
+import { createApp } from 'vue'
+import { commoni18n, commonPinia } from '@pulse/common'
+import { VITE_ASSETS_BASE_URL } from 'env-vars'
 import { setAssetsBaseUrl } from '@kpmg/styleguide'
 
-const vueLifecycles = singleSpaVue({
-  createApp,
-  appOptions: {
-    render: () => h(App),
-  },
-  handleInstance(app: any) {
-    app.use(router).use(i18n.value).use(pinia)
-    i18n.value.global.locale.value = 'fr-FR'
-  },
-})
+import entitiesApplet from '@pulse/entities'
+import gedApplet from '@pulse/ged'
+import launcherApplet from '@pulse/launcher'
+import loginApplet from '@pulse/login'
+import mandateApplet from '@pulse/mandate'
 
-setAssetsBaseUrl((window as any).EnvVars?.VITE_ASSETS_BASE_URL)
+import App from './app/App.vue'
+import router from './plugins/router'
 
-export const bootstrap = vueLifecycles.bootstrap
-export const mount = vueLifecycles.mount
-export const unmount = vueLifecycles.unmount
+// TODO setup somewhere else?
+commoni18n.value.global.locale.value = 'fr-FR'
+setAssetsBaseUrl(VITE_ASSETS_BASE_URL)
+
+const app = createApp(App)
+  .use(commoni18n.value)
+  .use(commonPinia)
+  // install applets
+  .use(entitiesApplet, { router }) 
+  .use(gedApplet, { router }) 
+  .use(launcherApplet, { router }) 
+  .use(loginApplet, { router }) 
+  .use(mandateApplet, { router }) 
+  // install router last in order to register the applets first
+  .use(router)
+
+app.mount('#app')

@@ -1,8 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { routes } from '@kpmg/common'
+import { routes } from '@pulse/Common'
 
 // Home schedule route
-routes.value.push({
+routes.push({
   path: '/calendrier',
   name: 'schedule',
   meta: {
@@ -10,7 +10,7 @@ routes.value.push({
       hasPaddings: false,
     },
   },
-  component: () => import('@/schedule/pages/schedule'),
+  component: () => import('@app/schedule/pages/schedule'),
 } as RouteRecordRaw)
 
 export default routes

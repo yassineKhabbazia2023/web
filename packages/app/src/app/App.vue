@@ -10,11 +10,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent, markRaw, ref, watch, onMounted } from 'vue'
 import { Idle } from 'idlejs'
-import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
-import { commonStore as useStore, amplitudeService } from '@kpmg/common'
+import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY } from 'env-vars'
+import { commonStore as useStore, amplitudeService } from '@pulse/Common'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@kpmg/styleguide'
-import PopupRenewToken from '@/components/PopupRenewToken'
+import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()
@@ -32,7 +32,7 @@ watch(
     illustration.value = route.meta?.illustration
     if (previousLayout !== layout) {
       getLayout.value = markRaw(defineAsyncComponent(
-        () => import(`@/layouts/${layout}/index.ts`),
+        () => import(`@app/layouts/${layout}/index.ts`),
       ))
       previousLayout = layout.toString()
     }
@@ -60,13 +60,13 @@ watch(
 )
 
 onMounted(() => {
-  if (VITE_AMPLITUDE_API_KEY) {
-    amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)
+  if (window.navigator.doNotTrack !== '1' && VITE_AMPLITUDE_API_KEY) {
+    amplitudeService.init(VITE_AMPLITUDE_API_KEY)
   }
 })
 </script>
 
-// eslint-disable-next-line vue/enforce-style-attribute
+<!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style lang="scss">
 .loader {
   height: calc(100vh - 270px);
