@@ -85,12 +85,12 @@ import {
 } from '@kpmg/styleguide'
 import type {
   AuthorizationState,
-} from '@/common/components/ManageRightsDrawer/ManageRightsTypes'
+} from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
 import type { AccountRightsDrawerProps, PermissionTypeTab } from './AccountRightsDrawerTypes'
-import { ContactType } from '@/services/contact/contactTypes'
-import { updateAccountPermissions } from '@/services/authorization'
-import { getPermissionCodes } from '@/common/components/ManageRightsDrawer/utils'
-import RightsList from '@/common/components/ManageRightsDrawer/components/RightsList'
+import { ContactType } from '@entities/services/contact/contactTypes'
+import { updateAccountPermissions } from '@entities/services/authorization'
+import { getPermissionCodes } from '@entities/common/components/ManageRightsDrawer/utils'
+import RightsList from '@entities/common/components/ManageRightsDrawer/components/RightsList'
 
 const { t } = useI18n({
   inheritLocale: true,

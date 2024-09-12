@@ -1,6 +1,6 @@
 import { describe, it, vi, expect } from 'vitest'
 import { ContactType } from '../contact/contactTypes'
-import { API_PREFIXES } from '@/common/config/services'
+import { API_PREFIXES } from '@entities/common/config/services'
 import {
   fetchContactRoles,
   getCollaborators,
@@ -9,7 +9,7 @@ import {
 const collaboratorType = ContactType.Collaborator
 const errorMessage = 'API Error: 503 Service Unavailable'
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {

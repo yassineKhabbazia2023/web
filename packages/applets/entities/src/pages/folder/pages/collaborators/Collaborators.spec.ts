@@ -1,13 +1,13 @@
 import { createTestingPinia } from '@pinia/testing'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
-import * as walletServices from '@/services/wallet'
-import * as contactServices from '@/services/contact'
-import { commonStore } from '@kpmg/common'
-import type { ComponentWrapper } from '@/common/types'
+import * as walletServices from '@entities/services/wallet'
+import * as contactServices from '@entities/services/contact'
+import { commonStore } from '@pulse/Common'
+import type { ComponentWrapper } from '@entities/common/types'
 import Collaborators from '.'
 
 const ENTITY_ID = 42
@@ -20,7 +20,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {},
@@ -35,16 +35,16 @@ vi.mock('@kpmg/common', () => ({
   }),
 }))
 
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   deleteContactFromAccount: vi.fn(() => Promise.resolve()),
   fetchContactsFromSameHub: vi.fn(() => Promise.resolve([])),
 }))
 
-vi.mock('@/services/contact', () => ({
+vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn(() => Promise.resolve({})),
 }))
 
-vi.mock('@/services/wallet', () => ({
+vi.mock('@entities/services/wallet', () => ({
   getCollaboratorsByIdEntity: vi.fn(() =>
     Promise.resolve({
       items: mockCollabsData,
@@ -75,7 +75,7 @@ const createWrapper = (): ComponentWrapper<
   })
 
 describe('collaborators', () => {
-  let spyConsole: SpyInstance
+  let spyConsole: MockInstance
   let wrapper: ReturnType<typeof createWrapper>
   const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 

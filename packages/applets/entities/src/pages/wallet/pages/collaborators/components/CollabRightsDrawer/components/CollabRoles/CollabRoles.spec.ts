@@ -8,7 +8,7 @@ import CollabRoles from '.'
 // Mocks
 const mockedCollabRoles = getMockedCollabRoles()
 const selectedRoleId = mockedCollabRoles[0].id
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: () => ({
     $patch: vi.fn(),
   }),

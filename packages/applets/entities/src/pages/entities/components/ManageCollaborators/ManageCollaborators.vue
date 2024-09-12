@@ -60,9 +60,9 @@ import {
   PForm,
   PFormItem,
 } from '@kpmg/styleguide'
-import { getInitials } from '@/helper'
+import { getInitials } from '@entities/helper'
 import type { ManageCollaboratorsProps } from './ManageCollaboratorsTypes'
-import type { Contact } from '@/services/contact/contactTypes'
+import type { Contact } from '@entities/services/contact/contactTypes'
 import CollaboratorAutocomplete from '../CollaboratorAutocomplete'
 
 const emits = defineEmits<{

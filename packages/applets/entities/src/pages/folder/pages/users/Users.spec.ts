@@ -1,5 +1,5 @@
 import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@kpmg/common'
+import { commonStore } from '@pulse/Common'
 import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import * as VueRouter from 'vue-router'

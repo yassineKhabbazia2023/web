@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest'
-import { API_PREFIXES } from '@/common/config/services'
+import { API_PREFIXES } from '@entities/common/config/services'
 import {
   fetchFavoriteEntities,
   getCollaborators,
@@ -12,15 +12,15 @@ import {
   fetchCustomers,
 } from '.'
 import { ContactType } from '../contact/contactTypes'
-import { getMockedEntitiesStatistics } from '@/pages/wallet/components/Filters/FiltersMocks'
-import { mockCollabsData } from '@/pages/folder/pages/collaborators/mockData'
-import type { Entity } from '@kpmg/common'
-import * as Common from '@kpmg/common'
-import { getMockedCustomersCollab } from '@/pages/folder/pages/usersCollab/mockData'
-import { getMockedCollaborators } from '@/common/mocks/mockedCollaborators'
+import { getMockedEntitiesStatistics } from '@entities/pages/wallet/components/Filters/FiltersMocks'
+import { mockCollabsData } from '@entities/pages/folder/pages/collaborators/mockData'
+import type { Entity } from '@pulse/Common'
+import * as Common from '@pulse/Common'
+import { getMockedCustomersCollab } from '@entities/pages/folder/pages/usersCollab/mockData'
+import { getMockedCollaborators } from '@entities/common/mocks/mockedCollaborators'
 import {
   getMockedCollabRoles,
-} from '@/pages/wallet/pages/collaborators/components/CollabRightsDrawer/components/CollabRoles/CollabRolesMocks'
+} from '@entities/pages/wallet/pages/collaborators/components/CollabRightsDrawer/components/CollabRoles/CollabRolesMocks'
 
 const accountId = 5
 const mockedEntitiesStatistics = getMockedEntitiesStatistics()
@@ -45,7 +45,7 @@ const TEST_ENTITIES: Entity[] = [
 
 const mockedFavoriteEntityPatch = vi.fn()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       /**

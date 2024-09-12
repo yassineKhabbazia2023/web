@@ -1,12 +1,12 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { getMockedSubscriptionDetails } from '@/pages/subscriptions/mocks/SubscriptionDetailsMock'
+import { getMockedSubscriptionDetails } from '@entities/pages/subscriptions/mocks/SubscriptionDetailsMock'
 import SubscriptionDetailsTabs from '.'
 
 const mockedSubscriptionOfferDetails = getMockedSubscriptionDetails()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   getInitials: vi.fn(),
 }))
 

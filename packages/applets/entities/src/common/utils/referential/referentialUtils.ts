@@ -2,20 +2,20 @@ import type { PDropdownOption } from '@kpmg/styleguide'
 import type {
   FormSection,
   FormField,
-} from '@/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+} from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import {
   fetchAccountReferential,
   fetchReferentialHubs,
-} from '@/services/account'
+} from '@entities/services/account'
 import type {
   ReferentialStructure,
   ReferentialOptions,
   Hub,
-} from '@/services/account'
-import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
-import MEGOffersFormReadOnlyStructure from '@/common/config/forms/MEGOffersFormReadOnlyStructure.json'
-import LOOPOfferFormStructure from '@/common/config/forms/LOOPOfferFormStructure.json'
-import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
+} from '@entities/services/account'
+import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
+import MEGOffersFormReadOnlyStructure from '@entities/common/config/forms/MEGOffersFormReadOnlyStructure.json'
+import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
+import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
 
 export function referentialOptionsToPDropdownOption(
   referentialOptions: ReferentialOptions | undefined,

@@ -7,10 +7,10 @@ import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
-} from '@/services/account/accountMock'
-import { commonStore } from '@kpmg/common'
-import * as accountServices from '@/services/account'
-import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
+} from '@entities/services/account/accountMock'
+import { commonStore } from '@pulse/Common'
+import * as accountServices from '@entities/services/account'
+import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
 import Information from '.'
 
 // Expected Display Results
@@ -19,11 +19,11 @@ const expectedAlertInstruction =
   'If any information is incorrect, please update it in the CRM'
 
 // Mocks
-vi.mock('@/common/config/referential', () => ({
+vi.mock('@entities/common/config/referential', () => ({
   getFormStructure: () => InformationFormStructure,
 }))
 
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   fetchAccount: vi.fn(() => Promise.resolve(getMockedAccount())),
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),

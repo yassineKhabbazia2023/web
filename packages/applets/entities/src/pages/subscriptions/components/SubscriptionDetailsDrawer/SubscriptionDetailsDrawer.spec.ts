@@ -1,17 +1,17 @@
-import { it, expect, describe, vi, type SpyInstance } from 'vitest'
+import { it, expect, describe, vi, type MockInstance } from 'vitest'
 import { type VueWrapper, flushPromises, mount } from '@vue/test-utils'
-import type { SubscriptionAccount } from '@/services/subscription'
-import * as SubscriptionService from '@/services/subscription/subscriptionService'
+import type { SubscriptionAccount } from '@entities/services/subscription'
+import * as SubscriptionService from '@entities/services/subscription/subscriptionService'
 import { getMockedSubscriptionDetails } from '../../mocks/SubscriptionDetailsMock'
 import SubscriptionDetailsDrawer from '.'
 
 const mockedSubscriptionDetails = getMockedSubscriptionDetails()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   getInitials: vi.fn(),
 }))
 
-vi.mock('@/services/subscription/subscriptionService', () => ({
+vi.mock('@entities/services/subscription/subscriptionService', () => ({
   fetchSubscriptionDetails: vi.fn(() =>
     Promise.resolve(mockedSubscriptionDetails),
   ),
@@ -65,7 +65,7 @@ describe('subscriptionDetailsDrawer', () => {
         SubscriptionService,
         'fetchSubscriptionDetails',
       ).mockRejectedValueOnce(errorMessage)
-      const consoleErrorSpy: SpyInstance = vi.spyOn(console, 'error')
+      const consoleErrorSpy: MockInstance = vi.spyOn(console, 'error')
       await getWrapper(true)
 
       expect(consoleErrorSpy).toHaveBeenCalledOnce()

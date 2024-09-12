@@ -1,8 +1,8 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
+import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonStore, commonPinia as pinia } from '@kpmg/common'
+import { commonStore, commonPinia as pinia } from '@pulse/Common'
 import TableData from '../../components/TableData'
 import Deploy from '.'
 import { EntityStatus } from '../../components/Filters/FiltersTypes'
@@ -12,9 +12,9 @@ import {
   getMockedWalletQueryResult,
   getMockedSearchCriteria,
 } from './DeployUtilsMock'
-import { getMockedAccount } from '@/services/account/accountMock'
-import * as walletServices from '@/services/wallet'
-import type { ComponentWrapper } from '@/common/types'
+import { getMockedAccount } from '@entities/services/account/accountMock'
+import * as walletServices from '@entities/services/wallet'
+import type { ComponentWrapper } from '@entities/common/types'
 
 const mockedAccount = getMockedAccount()
 
@@ -32,7 +32,7 @@ const getFavoritesMock = vi.fn(() =>
   }),
 )
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     wallet: {
       put: putFavoriteMock,
@@ -98,7 +98,7 @@ const findSubscriptionDrawer = (wrapper: VueWrapper) =>
 setActivePinia(pinia)
 
 describe('deploy', () => {
-  let mockFetchWalletData: SpyInstance
+  let mockFetchWalletData: MockInstance
   beforeEach(() => {
     mockFetchWalletData = vi
       .spyOn(DeployUtils, 'fetchWalletData')

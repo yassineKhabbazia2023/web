@@ -117,12 +117,12 @@ import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { reactive, computed } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
-import CollabDetailsDrawer from '@/common/components/CollabDetailsDrawer'
+import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer'
 import CollabRightsDrawer from './../CollabRightsDrawer'
-import type { Contact } from '@/services/contact/contactTypes'
-import { returnSortQueryField } from '@/helper'
-import { userPermissions } from '@kpmg/common'
-import { PERMISSION_CODES } from '@/constants'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { returnSortQueryField } from '@entities/helper'
+import { userPermissions } from '@pulse/Common'
+import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

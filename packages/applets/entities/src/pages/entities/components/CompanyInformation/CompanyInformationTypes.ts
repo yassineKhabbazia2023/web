@@ -1,5 +1,5 @@
 import type { PFieldProps } from '@kpmg/styleguide'
-import { type Account } from '@/services/account'
+import { type Account } from '@entities/services/account'
 
 export type ProviderFormName = 'MEG' | 'LOOP' | undefined
 

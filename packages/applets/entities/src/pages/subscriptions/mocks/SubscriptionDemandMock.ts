@@ -1,4 +1,4 @@
-import type { PostSubscriptionRequest } from '@/services/subscription'
+import type { PostSubscriptionRequest } from '@entities/services/subscription'
 
 export const subscriptionDemandMock: PostSubscriptionRequest = {
   accountId: 1,

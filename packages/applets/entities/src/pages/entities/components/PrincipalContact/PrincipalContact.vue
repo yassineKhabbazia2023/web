@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { getFullName } from '@/common/utils'
+import { getFullName } from '@entities/common/utils'
 import { PUserCard, PIVectorPen } from '@kpmg/styleguide'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
 

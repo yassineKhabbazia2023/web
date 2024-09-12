@@ -1,33 +1,33 @@
-import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
 import { getMockedSubscriptionOffersServices } from '../OfferSubscription/OfferSubscriptionMocks'
 import { getMockedPrincipalContacts } from '../PrincipalContact/PrincipalContactMocks'
-import { getMockedUser } from '@/pages/entities/mocks'
+import { getMockedUser } from '@entities/pages/entities/mocks'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ClientContact } from '../PrincipalContact/PrincipalContactTypes'
 import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
-import * as ServicesAccount from '@/services/account'
-import * as subscriptionService from '@/services/subscription/subscriptionService'
-import * as offerService from '@/services/offer/index'
-import * as PatchRecordService from '@/services/PatchRecordService/PatchRecordService'
+import * as ServicesAccount from '@entities/services/account'
+import * as subscriptionService from '@entities/services/subscription/subscriptionService'
+import * as offerService from '@entities/services/offer/index'
+import * as PatchRecordService from '@entities/services/PatchRecordService/PatchRecordService'
 import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedPatchOperations,
   getMockedReferentialHubs,
-} from '@/services/account/accountMock'
-import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
-import { amplitudeService, type UserInfo } from '@kpmg/common'
-import type { Note, PostSubscriptionRequest } from '@/services/subscription'
-import type { PatchValue } from '@/services/PatchRecordService'
-import type { Contact } from '@/services/contact/contactTypes'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
+} from '@entities/services/account/accountMock'
+import { getMockedStepNotes } from '@entities/common/components/StepNote/StepNotesMock'
+import { amplitudeService, type UserInfo } from '@pulse/Common'
+import type { Note, PostSubscriptionRequest } from '@entities/services/subscription'
+import type { PatchValue } from '@entities/services/PatchRecordService'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 
 const principalContacts: ClientContact[] = getMockedPrincipalContacts()
 const collaborators: Contact[] = getMockedCollaborators()
@@ -50,7 +50,7 @@ async function asyncEmit(component: VueWrapper, eventName: string) {
   await nextTick()
 }
 
-vi.mock('@/services/offer', () => ({
+vi.mock('@entities/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
   getOffer: vi.fn((offerId) =>
     Promise.resolve(
@@ -62,11 +62,11 @@ vi.mock('@/services/offer', () => ({
   getCollaborators: vi.fn(() => Promise.resolve(collaborators)),
 }))
 
-vi.mock('@/services/contact', () => ({
+vi.mock('@entities/services/contact', () => ({
   getCollaborators: vi.fn(() => Promise.resolve(collaborators)),
 }))
 
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
   fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
@@ -77,12 +77,12 @@ vi.mock('@braintree/sanitize-url', () => ({
   sanitizeUrl: getMockedSanitized,
 }))
 
-vi.mock('@/services/PatchRecordService/PatchRecordService', () => ({
+vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
   addPathValue: vi.fn(),
   getPatchOperations: vi.fn(() => mockedPatchOperations),
 }))
 
-vi.mock('@/services/subscription/subscriptionService', () => ({
+vi.mock('@entities/services/subscription/subscriptionService', () => ({
   createSubscriptionRequest: vi.fn(),
   fetchAccountSubscriptions: vi.fn(() => Promise.resolve([])),
 }))
@@ -439,7 +439,7 @@ describe('offersDrawer', () => {
         offerService,
         'getAllOffers',
       ).mockRejectedValueOnce(errorMessage)
-      const consoleErrorSpy: SpyInstance = vi.spyOn(console, 'error')
+      const consoleErrorSpy: MockInstance = vi.spyOn(console, 'error')
       await getWrapper(true)
       expect(consoleErrorSpy).toHaveBeenCalledOnce()
       expect(consoleErrorSpy).toHaveBeenNthCalledWith(1,

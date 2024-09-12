@@ -6,9 +6,9 @@ import {
   fetchReportAccounts,
   uploadBIreport,
 } from '.'
-import { getMockedBIReports } from '@/pages/power-bi/pages/bi-reports/BIReportsMocks'
-import { API_PREFIXES } from '@/common/config/services'
-import { getMockedBIReportTypes } from '@/pages/wallet/pages/powerbi/SubmitBIReportMocks'
+import { getMockedBIReports } from '@entities/pages/power-bi/pages/bi-reports/BIReportsMocks'
+import { API_PREFIXES } from '@entities/common/config/services'
+import { getMockedBIReportTypes } from '@entities/pages/wallet/pages/powerbi/SubmitBIReportMocks'
 import { getMockedAccount } from '../account/accountMock'
 
 const mockedAccountId = 602
@@ -25,7 +25,7 @@ const mockedReportUploadInfo = {
 }
 const mockPostBIReport = vi.fn()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {

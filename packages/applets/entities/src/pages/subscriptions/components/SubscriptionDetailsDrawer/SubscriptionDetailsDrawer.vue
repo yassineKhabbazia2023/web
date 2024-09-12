@@ -33,7 +33,7 @@ import SubscriptionDetailsTabs from './components/SubscriptionDetailsTabs'
 import {
   fetchSubscriptionDetails,
   type SubscriptionDetails,
-} from '@/services/subscription'
+} from '@entities/services/subscription'
 
 const { t } = useI18n({
   inheritLocale: true,

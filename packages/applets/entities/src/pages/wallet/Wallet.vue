@@ -23,8 +23,8 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
-import { amplitudeService, commonStore, userPermissions } from '@kpmg/common'
-import { PERMISSION_CODES } from '@/constants'
+import { amplitudeService, commonStore, userPermissions } from '@pulse/Common'
+import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

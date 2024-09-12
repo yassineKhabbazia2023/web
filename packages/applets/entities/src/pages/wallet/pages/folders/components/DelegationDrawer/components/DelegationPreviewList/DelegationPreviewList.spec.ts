@@ -5,7 +5,7 @@ import type { DelegationPreviewListProps } from './DelegationPreviewListTypes.ts
 import DelegationPreviewList from './DelegationPreviewList.vue'
 import { PBlockHeader, PTable, PDoubleText } from '@kpmg/styleguide'
 import { createI18n } from 'vue-i18n'
-import { getInitials } from '@/helper'
+import { getInitials } from '@entities/helper'
 
 const delegationList: DelegationPreviewListProps['modelValue'] = [
   {

@@ -31,7 +31,7 @@ import 'powerbi-client'
 import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { PAvatar, PIcon, PIPulse } from '@kpmg/styleguide'
-import { commonStore } from '@kpmg/common'
+import { commonStore } from '@pulse/Common'
 import type { ReportDisplayProps } from './ReportDisplayTypes'
 
 const props = defineProps<ReportDisplayProps>()

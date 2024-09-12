@@ -129,18 +129,18 @@ import {
   PIThreeDots,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
-import { commonStore, amplitudeService } from '@kpmg/common'
+import { commonStore, amplitudeService } from '@pulse/Common'
 import {
   type SubscriptionRequest,
   fetchSubscriptionRequests,
   validateSubscriptionRequest,
   SubscriptionStatusCode,
-} from '@/services/subscription'
-import { getInitials } from '@/helper'
-import { displayNotification } from '@/common/utils/helpers'
+} from '@entities/services/subscription'
+import { getInitials } from '@entities/helper'
+import { displayNotification } from '@entities/common/utils/helpers'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
-import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
-import type { Contact } from '@/services/contact/contactTypes'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
+import type { Contact } from '@entities/services/contact/contactTypes'
 
 const { t, d } = useI18n({
   inheritLocale: true,

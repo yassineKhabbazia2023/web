@@ -1,4 +1,4 @@
-import type { PaginationData } from '@/helper/helperTypes'
+import type { PaginationData } from '@entities/helper/helperTypes'
 
 export interface Collab {
   id: number

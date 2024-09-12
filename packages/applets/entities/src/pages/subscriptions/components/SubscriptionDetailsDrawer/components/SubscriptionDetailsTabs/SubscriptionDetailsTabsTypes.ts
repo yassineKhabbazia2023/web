@@ -1,4 +1,4 @@
-import type { SubscriptionDetails } from '@/services/subscription'
+import type { SubscriptionDetails } from '@entities/services/subscription'
 
 /* eslint-disable no-unused-vars */
 export enum RecapTabs {

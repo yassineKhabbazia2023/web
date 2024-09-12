@@ -1,18 +1,18 @@
 import { describe, it, expect, vi } from 'vitest'
-import { subscriptionRequestMock } from '@/pages/subscriptions/mocks/SubscriptionRequestMock'
-import { subscriptionDemandMock } from '@/pages/subscriptions/mocks/SubscriptionDemandMock'
+import { subscriptionRequestMock } from '@entities/pages/subscriptions/mocks/SubscriptionRequestMock'
+import { subscriptionDemandMock } from '@entities/pages/subscriptions/mocks/SubscriptionDemandMock'
 import {
   fetchSubscriptionRequests,
   validateSubscriptionRequest,
   createSubscriptionRequest,
   fetchAccountSubscriptions,
 } from '.'
-import { API_PREFIXES } from '@/common/config/services'
+import { API_PREFIXES } from '@entities/common/config/services'
 
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),

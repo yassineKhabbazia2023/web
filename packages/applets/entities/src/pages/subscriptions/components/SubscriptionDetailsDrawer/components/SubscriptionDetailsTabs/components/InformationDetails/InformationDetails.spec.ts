@@ -4,13 +4,13 @@ import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
-} from '@/services/account/accountMock'
-import * as accountServices from '@/services/account'
-import LOOPOfferForm from '@/common/config/forms/LOOPOfferFormStructure.json'
-import MEGOffersFormReadOnly from '@/common/config/forms/MEGOffersFormReadOnlyStructure.json'
+} from '@entities/services/account/accountMock'
+import * as accountServices from '@entities/services/account'
+import LOOPOfferForm from '@entities/common/config/forms/LOOPOfferFormStructure.json'
+import MEGOffersFormReadOnly from '@entities/common/config/forms/MEGOffersFormReadOnlyStructure.json'
 import {
   getMockedSubscriptionOffersServices,
-} from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
+} from '@entities/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import InformationDetails from '.'
 
@@ -20,10 +20,10 @@ const mockedSubscriptionMEGOfferDetails =
   getMockedSubscriptionOffersServices()[0]
 const mockedSubscriptionLoopOfferDetails =
   getMockedSubscriptionOffersServices()[2]
-vi.mock('@/common/config/referential', () => ({
+vi.mock('@entities/common/config/referential', () => ({
   getFormStructure: () => MEGOffersFormReadOnly,
 }))
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   fetchAccount: vi.fn(() => Promise.resolve(getMockedAccount())),
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),

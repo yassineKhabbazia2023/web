@@ -1,8 +1,8 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { noResult } from '@/../tests'
+import { noResult } from '@entities/../tests'
 import mock from './mockCollaborators.json'
-import * as walletServices from '@/services/wallet'
+import * as walletServices from '@entities/services/wallet'
 import { nextTick } from 'vue'
 import TableData from './components/TableData/TableData.vue'
 import Collaborators from '.'
@@ -13,7 +13,7 @@ const mockGatewayGet = vi.fn(() => {
   })
 })
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: mockGatewayGet,

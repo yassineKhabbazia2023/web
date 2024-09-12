@@ -115,12 +115,12 @@ import {
   PLoader,
 } from '@kpmg/styleguide'
 import type { FormInstance, FormRules } from '@kpmg/styleguide'
-import { debounce } from '@kpmg/common'
+import { debounce } from '@pulse/Common'
 import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
-import type { Contact } from '@/services/contact/contactTypes'
-import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
-import { updateCollaborator } from '@/services/wallet'
-import { displayNotification } from '@/common/utils'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { validPhoneNumberPattern } from '@entities/common/utils/helpers/forms'
+import { updateCollaborator } from '@entities/services/wallet'
+import { displayNotification } from '@entities/common/utils'
 
 const { t } = useI18n({
   inheritLocale: true,

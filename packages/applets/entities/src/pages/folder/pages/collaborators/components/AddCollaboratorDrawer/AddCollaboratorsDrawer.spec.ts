@@ -4,11 +4,11 @@ import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
-import { entityMock } from '@/../tests/mocks/EntitiesMocks'
-import NextPreviousButtons from '@/common/components/NextPreviousButtons'
+import { entityMock } from '@entities/../tests/mocks/EntitiesMocks'
+import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCollaboratorsDrawer from '.'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
-import { API_PREFIXES } from '@/common/config/services'
+import { API_PREFIXES } from '@entities/common/config/services'
 
 const SELECTED_CONTACTS = [{ id: 1 }, { id: 2 }]
 
@@ -16,7 +16,7 @@ const getNotificationSuccess = () =>
   document.body.getElementsByClassName('el-notification success')
 
 const gatewayPostMock = vi.fn().mockResolvedValue({})
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       post: gatewayPostMock,

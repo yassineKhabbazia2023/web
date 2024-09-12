@@ -77,14 +77,14 @@ import {
   PIPerson,
 } from '@kpmg/styleguide'
 import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDrawerTypes'
-import { fetchAccountContacts } from '@/services/wallet'
-import { inviteCustomers } from '@/services/contact'
-import { displayNotification } from '@/common/utils'
-import { formatItemsFromApi } from '@/pages/folder/pages/usersClient/UsersClientHelper'
-import TableData from '@/pages/folder/pages/usersClient/components/TableData'
-import NoResult from '@/common/components/NoResult'
-import type { ExtendedUser } from '@/pages/folder/pages/usersClient/UsersClientTypes'
-import type { UserStatus } from '@/common/types'
+import { fetchAccountContacts } from '@entities/services/wallet'
+import { inviteCustomers } from '@entities/services/contact'
+import { displayNotification } from '@entities/common/utils'
+import { formatItemsFromApi } from '@entities/pages/folder/pages/usersClient/UsersClientHelper'
+import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
+import NoResult from '@entities/common/components/NoResult'
+import type { ExtendedUser } from '@entities/pages/folder/pages/usersClient/UsersClientTypes'
+import type { UserStatus } from '@entities/common/types'
 
 const { t } = useI18n({
   inheritLocale: true,

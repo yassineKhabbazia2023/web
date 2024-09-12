@@ -1,13 +1,13 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { type SpyInstance, describe, expect, it, vi, beforeEach } from 'vitest'
+import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import * as DeployUtils from '../folders/DeployUtils'
 import {
   getMockedWalletQueryResult,
   getMockedSearchCriteria,
 } from '../folders/DeployUtilsMock'
 import AccountManagement from '.'
-import type { AccountRow } from '@/common/types'
+import type { AccountRow } from '@entities/common/types'
 
 const mockRouterPush = vi.fn()
 const mockedAccount: AccountRow = {
@@ -34,7 +34,7 @@ const createWrapper = (): VueWrapper<any> =>
   })
 
 describe('deploy', () => {
-  let mockFetchWalletData: SpyInstance
+  let mockFetchWalletData: MockInstance
   beforeEach(() => {
     mockFetchWalletData = vi
       .spyOn(DeployUtils, 'fetchWalletData')

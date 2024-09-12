@@ -1,6 +1,6 @@
 import { it, describe, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import * as reportingServices from '@/services/reporting'
+import * as reportingServices from '@entities/services/reporting'
 import { getMockedBIReports } from './BIReportsMocks'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
@@ -16,7 +16,7 @@ vi.mock('vue-router', () => ({
     },
   }),
 }))
-vi.mock('@/services/reporting', () => ({
+vi.mock('@entities/services/reporting', () => ({
   fetchBIReports: vi.fn(() => Promise.resolve({ items: mockedBIReports })),
   fetchBIToken: vi.fn(() => 'tokenTest'),
 }))

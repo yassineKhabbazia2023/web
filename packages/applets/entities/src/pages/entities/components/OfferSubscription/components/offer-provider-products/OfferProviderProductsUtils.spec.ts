@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest'
 import { getIsServiceSelected, getServiceTag, getTitle } from './OfferProviderProductsUtils'
 import {
   SubscriptionPriceType,
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
+} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 
-import type { SelectedProduct } from '@/common/types'
+import type { SelectedProduct } from '@entities/common/types'
 
 import { getMockedSubscriptionOfferProduct } from '../../../SubscriptionOffers/SubscriptionOffersMocks'
 

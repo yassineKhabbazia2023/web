@@ -77,13 +77,13 @@ import {
   POption,
   PIInfoCircle,
 } from '@kpmg/styleguide'
-import { getSearchParams } from '@/pages/wallet/pages/folders/DeployUtils'
-import { PAGE_SIZES } from '@/constants'
-import { fetchBIReports, fetchReportAccounts } from '@/services/reporting'
-import type { Report } from '@/pages/power-bi/pages/bi-reports/BIReportsTypes'
+import { getSearchParams } from '@entities/pages/wallet/pages/folders/DeployUtils'
+import { PAGE_SIZES } from '@entities/constants'
+import { fetchBIReports, fetchReportAccounts } from '@entities/services/reporting'
+import type { Report } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
 import type { BIReportInformationProps } from './BIReportInformationTypes'
 import type { ReportInfo } from '../../SubmitBIReportTypes'
-import type { Entity } from '@kpmg/common'
+import type { Entity } from '@pulse/Common'
 
 const { t } = useI18n({
   inheritLocale: true,

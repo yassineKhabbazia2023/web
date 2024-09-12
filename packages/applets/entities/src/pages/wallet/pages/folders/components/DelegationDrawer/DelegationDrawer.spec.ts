@@ -6,8 +6,8 @@ import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
-import { entitiesMock } from '@/../tests/mocks/EntitiesMocks'
-import NextPreviousButtons from '@/common/components/NextPreviousButtons'
+import { entitiesMock } from '@entities/../tests/mocks/EntitiesMocks'
+import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import DelegationPreviewList from './components/DelegationPreviewList'
 import DelegationDrawer from '.'
@@ -31,7 +31,7 @@ const getNotificationError = () =>
   document.body.getElementsByClassName('el-notification error')
 
 let gatewayPostMock = vi.fn().mockResolvedValue({})
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { getSubscriptionProducts } from './ServicesDetailsUtils'
-import { getMockedSubscriptionDetails } from '@/pages/subscriptions/mocks/SubscriptionDetailsMock'
+import { getMockedSubscriptionDetails } from '@entities/pages/subscriptions/mocks/SubscriptionDetailsMock'
 
 const mockedSubscriptionOffer = getMockedSubscriptionDetails().offer
 const expectedSubscriptionProducts = [

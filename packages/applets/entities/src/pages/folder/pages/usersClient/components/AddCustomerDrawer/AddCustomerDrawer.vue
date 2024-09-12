@@ -119,7 +119,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { amplitudeService, debounce } from '@kpmg/common'
+import { amplitudeService, debounce } from '@pulse/Common'
 import {
   PDrawer,
   PForm,
@@ -130,11 +130,11 @@ import {
   PButton,
   type FormRules,
 } from '@kpmg/styleguide'
-import { getFullName } from '@/common/utils/helpers'
+import { getFullName } from '@entities/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
-import NextPreviousButtons from '@/common/components/NextPreviousButtons'
-import { validPhoneNumberPattern } from '@/common/utils/helpers/forms'
-import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@/services/account'
+import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
+import { validPhoneNumberPattern } from '@entities/common/utils/helpers/forms'
+import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@entities/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 
 const { t } = useI18n({

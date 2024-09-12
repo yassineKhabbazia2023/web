@@ -4,8 +4,8 @@ import { createI18n } from 'vue-i18n'
 import { PTable } from '@kpmg/styleguide'
 import CollapsableFoldersList from '.'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
-import { entitiesMock } from '@/../tests/mocks/EntitiesMocks'
-import type { Entity } from '@kpmg/common'
+import { entitiesMock } from '@entities/../tests/mocks/EntitiesMocks'
+import type { Entity } from '@pulse/Common'
 
 const i18n = createI18n({
   locale: 'fr-FR',

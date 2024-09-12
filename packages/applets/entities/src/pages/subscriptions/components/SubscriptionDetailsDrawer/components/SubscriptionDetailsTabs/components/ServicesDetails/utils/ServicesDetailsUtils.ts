@@ -1,5 +1,5 @@
-import type { SelectedProduct } from '@/common/types'
-import type { SubscriptionOfferServices } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { SelectedProduct } from '@entities/common/types'
+import type { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 
 export const getSubscriptionProducts = (offer: SubscriptionOfferServices) => {
   const { offerId, providers } = offer

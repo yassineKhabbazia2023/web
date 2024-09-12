@@ -1,9 +1,9 @@
-import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { amplitudeService, commonStore } from '@kpmg/common'
-import { PERMISSION_CODES } from '@/constants'
+import { amplitudeService, commonStore } from '@pulse/Common'
+import { PERMISSION_CODES } from '@entities/constants'
 import Wallet from './'
 
 const pinia = createTestingPinia()
@@ -18,7 +18,7 @@ vi.mock('vue-router', () => ({
   useRoute: () => ({}),
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -49,7 +49,7 @@ const clientTabs = ['All entities', 'All users']
 
 describe('dossier', () => {
   let wrapper: VueWrapper<any>
-  let spyTrackAmplitude: SpyInstance
+  let spyTrackAmplitude: MockInstance
 
   beforeEach(async () => {
     spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')

@@ -38,7 +38,7 @@
 import { ref } from 'vue'
 import { PAutocomplete, PISearch, PIcon } from '@kpmg/styleguide'
 import type { CollaboratorAutocompleteProps } from './CollaboratorAutocompleteTypes'
-import type { Contact } from '@/services/contact/contactTypes'
+import type { Contact } from '@entities/services/contact/contactTypes'
 import { useI18n } from 'vue-i18n'
 import { getAutocompleteContacts } from './CollaboratorAutocompleteUtils'
 

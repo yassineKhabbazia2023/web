@@ -1,9 +1,9 @@
 import { nextTick } from 'vue'
 import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
-import * as authorizationServices from '@/services/authorization'
-import type { AccountRow } from '@/common/types'
-import { ContactType } from '@/services/contact/contactTypes'
+import * as authorizationServices from '@entities/services/authorization'
+import type { AccountRow } from '@entities/common/types'
+import { ContactType } from '@entities/services/contact/contactTypes'
 import AccountRightsDrawer from '.'
 
 // Mocks

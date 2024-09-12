@@ -1,4 +1,4 @@
-import type { Entity } from '@kpmg/common'
+import type { Entity } from '@pulse/Common'
 
 export interface AddCustomerDrawerProps {
   modelValue: boolean

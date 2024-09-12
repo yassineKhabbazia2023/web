@@ -2,10 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import mockRowData from './../../mock.json'
-import * as walletServices from '@/services/wallet'
+import * as walletServices from '@entities/services/wallet'
 import { getMockedCollabRoles } from './components/CollabRoles/CollabRolesMocks'
 import type { CollabRightsDrawerProps } from './CollabRightsDrawerTypes'
-import { mockUpdateUserPermission } from '@/../vitest.setup'
+import { mockUpdateUserPermission } from '@entities/../vitest.setup'
 import CollabRightsDrawer from '.'
 
 // Mocks
@@ -21,10 +21,10 @@ const rowData = {
 const mockedSelectedRoleId = mockedCollabRoles.find(
   (r) => r.name === rowData.role,
 )?.id
-vi.mock('@/common/components/ManageRightsDrawer/utils', () => ({
+vi.mock('@entities/common/components/ManageRightsDrawer/utils', () => ({
   getPermissionCodes: vi.fn(() => mockedPermissionCodes),
 }))
-vi.mock('@/services/wallet', () => ({
+vi.mock('@entities/services/wallet', () => ({
   fetchContactRoles: vi.fn(() => Promise.resolve(mockedCollabRoles)),
   updateCollaborator: vi.fn(),
 }))

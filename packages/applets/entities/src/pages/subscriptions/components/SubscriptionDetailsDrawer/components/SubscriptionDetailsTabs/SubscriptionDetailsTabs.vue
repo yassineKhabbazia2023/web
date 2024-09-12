@@ -38,14 +38,14 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PTabs, PTabPane } from '@kpmg/styleguide'
 import { RecapTabs } from './SubscriptionDetailsTabsTypes'
-import type { Note } from '@/services/subscription'
+import type { Note } from '@entities/services/subscription'
 import type {
   SubscriptionDetailsTabsProps,
   SubscriptionDetailsTab,
 } from './SubscriptionDetailsTabsTypes'
-import StepNote from '@/common/components/StepNote'
+import StepNote from '@entities/common/components/StepNote'
 import ServicesDetails from './components/ServicesDetails'
-import CustomersDetails from '@/common/components/CustomersDetails'
+import CustomersDetails from '@entities/common/components/CustomersDetails'
 import CollaboratorsDetails from './components/CollaboratorsDetails'
 import InformationDetails from './components/InformationDetails'
 

@@ -116,10 +116,10 @@ import {
 } from '@kpmg/styleguide'
 import type { PToolboxItemProps } from '@kpmg/styleguide'
 import { computed, reactive } from 'vue'
-import { userPermissions } from '@kpmg/common'
+import { userPermissions } from '@pulse/Common'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
-import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
+import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import type { ExtendedUser } from '../../UsersClientTypes'
 import { userActions } from './types'
 

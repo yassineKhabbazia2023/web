@@ -1,5 +1,5 @@
-import type { Contact } from '@/services/contact/contactTypes'
-import { fetchCollaborators } from '@/services/offer'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { fetchCollaborators } from '@entities/services/offer'
 
 export async function getAutocompleteContacts(
   selectedCollaborators: Contact[],

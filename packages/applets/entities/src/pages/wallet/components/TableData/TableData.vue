@@ -204,12 +204,12 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { type Entity, commonApi, commonStore, amplitudeService, userPermissions } from '@kpmg/common'
+import { type Entity, commonApi, commonStore, amplitudeService, userPermissions } from '@pulse/Common'
 import type { TableDataProps } from './types'
-import type { AccountRow } from '@/common/types'
+import type { AccountRow } from '@entities/common/types'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
-import { API_PREFIXES } from '@/common/config/services'
-import { PERMISSION_CODES } from '@/constants'
+import { API_PREFIXES } from '@entities/common/config/services'
+import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -2,11 +2,11 @@ import { nextTick } from 'vue'
 import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { PIPatchCheck, PIPerson, PIPower } from '@kpmg/styleguide'
-import type { AccountRow } from '@/common/types'
-import TableData from '@/pages/folder/pages/usersClient/components/TableData'
-import * as walletServices from '@/services/wallet'
-import * as contactServices from '@/services/contact'
-import * as helpers from '@/common/utils'
+import type { AccountRow } from '@entities/common/types'
+import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
+import * as walletServices from '@entities/services/wallet'
+import * as contactServices from '@entities/services/contact'
+import * as helpers from '@entities/common/utils'
 import ResendActivationEmailDrawer from '.'
 
 // Mocks
@@ -27,7 +27,7 @@ const mockedUserClientAccount = {
   creationDate: '2024-04-29T09:33:07.8366667',
 }
 vi.mock('vue-router')
-vi.mock('@/services/wallet', () => ({
+vi.mock('@entities/services/wallet', () => ({
   fetchAccountContacts: vi.fn(() =>
     Promise.resolve({ items: [mockedUserClientAccount] }),
   ),

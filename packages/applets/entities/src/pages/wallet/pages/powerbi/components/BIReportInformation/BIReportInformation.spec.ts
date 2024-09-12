@@ -1,9 +1,9 @@
 import { it, vi, expect, describe, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import * as ReportingService from '@/services/reporting'
-import { getMockedBIReports } from '@/pages/power-bi/pages/bi-reports/BIReportsMocks'
+import * as ReportingService from '@entities/services/reporting'
+import { getMockedBIReports } from '@entities/pages/power-bi/pages/bi-reports/BIReportsMocks'
 import { getMockedReportTypesDropdown } from '../../SubmitBIReportMocks'
-import { entitiesMock } from '@/../tests/mocks/EntitiesMocks'
+import { entitiesMock } from '@entities/../tests/mocks/EntitiesMocks'
 import BIReportInformation from '.'
 
 // Mocks
@@ -13,7 +13,7 @@ const mockedCallbackFunction = vi.fn()
 const selectedAccount = mockedAccounts[0]
 const mockedBIReports = getMockedBIReports()
 const mockedReportTypesDropdown = getMockedReportTypesDropdown()
-vi.mock('@/services/reporting', () => ({
+vi.mock('@entities/services/reporting', () => ({
   fetchBIReports: vi.fn(() => Promise.resolve({ items: mockedBIReports })),
   fetchReportAccounts: vi.fn(() => Promise.resolve(mockedAccounts)),
 }))

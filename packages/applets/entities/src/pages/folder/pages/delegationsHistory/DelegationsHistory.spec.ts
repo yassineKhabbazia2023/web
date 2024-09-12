@@ -2,14 +2,14 @@ import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import delegationsHistoryMock from '@/services/account/__mock__/delegationsHistory.json'
-import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@/services/account/accountServices'
+import delegationsHistoryMock from '@entities/services/account/__mock__/delegationsHistory.json'
+import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
 import DelegationsHistory from './'
 
 const CURRENT_ACCOUNT_ID = '602'
 
 const pinia = createTestingPinia()
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -27,7 +27,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@/services/account/accountServices', () => ({
+vi.mock('@entities/services/account/accountServices', () => ({
   deleteAccountDelegation: vi.fn(),
   fetchAccountDelegationsHistory: vi.fn(() => Promise.resolve(delegationsHistoryMock)),
 }))

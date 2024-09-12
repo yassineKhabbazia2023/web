@@ -1,17 +1,17 @@
-import { describe, it, expect, beforeEach, vi, type SpyInstance } from 'vitest'
+import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
-import { commonPinia as pinia, commonStore } from '@kpmg/common'
-import * as SubscriptionServices from '@/services/subscription'
+import { commonPinia as pinia, commonStore } from '@pulse/Common'
+import * as SubscriptionServices from '@entities/services/subscription'
 import { nextTick } from 'vue'
-import { mockHasPermission } from '@/../vitest.setup'
+import { mockHasPermission } from '@entities/../vitest.setup'
 import { getActiveOffersMocked } from './OffersMocks'
 import Offers from '.'
 
 // Mocks
 const activeOffersMocked = getActiveOffersMocked()
-vi.mock('@/services/subscription', () => ({
+vi.mock('@entities/services/subscription', () => ({
   fetchAccountSubscriptions: vi.fn(() => Promise.resolve(activeOffersMocked)),
 }))
 vi.mock('vue-router', () => ({
@@ -98,7 +98,7 @@ describe('offers', () => {
     })
 
     it('should catch the error and display it in the console when the API call fails', async () => {
-      const consoleErrorSpy: SpyInstance = vi.spyOn(console, 'error')
+      const consoleErrorSpy: MockInstance = vi.spyOn(console, 'error')
       vi.spyOn(
         SubscriptionServices,
         'fetchAccountSubscriptions',

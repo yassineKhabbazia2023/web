@@ -6,11 +6,11 @@ import {
   getPostSubscriptionRequest,
   getFirstDayOfYear,
 } from './OffersDrawerUtils'
-import type { SelectedProduct } from '@/common/types'
+import type { SelectedProduct } from '@entities/common/types'
 import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
-import { getMockedStepNotes } from '@/common/components/StepNote/StepNotesMock'
-import type { PostSubscriptionRequest } from '@/services/subscription'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
+import { getMockedStepNotes } from '@entities/common/components/StepNote/StepNotesMock'
+import type { PostSubscriptionRequest } from '@entities/services/subscription'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 import { getMockedPrincipalContacts } from '../../PrincipalContact/PrincipalContactMocks'
 
 const notes = getMockedStepNotes()

@@ -16,7 +16,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { PLoader } from '@kpmg/styleguide'
-import { fetchBIReports, fetchBIToken } from '@/services/reporting'
+import { fetchBIReports, fetchBIToken } from '@entities/services/reporting'
 import type { Report } from './BIReportsTypes'
 import ReportsList from './components/ReportsList'
 import ReportDisplay from './components/ReportDisplay'

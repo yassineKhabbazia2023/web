@@ -1,7 +1,7 @@
-import { commonApi } from '@kpmg/common'
-import { handleRequestError } from '@/helper'
+import { commonApi } from '@pulse/Common'
+import { handleRequestError } from '@entities/helper'
 import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from '.'
-import { API_PREFIXES } from '@/common/config/services'
+import { API_PREFIXES } from '@entities/common/config/services'
 
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]> {
   try {

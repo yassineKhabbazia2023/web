@@ -55,7 +55,7 @@ import {
   PNotification,
   PUserCard,
 } from '@kpmg/styleguide'
-import { deleteContactFromAccount } from '@/services/account'
+import { deleteContactFromAccount } from '@entities/services/account'
 import type { RemoveUserDialogProps } from './RemoveUserDialogTypes'
 
 const { t } = useI18n({

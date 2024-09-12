@@ -1,7 +1,7 @@
-import { commonApi } from '@kpmg/common'
-import { API_PREFIXES } from '@/common/config/services'
-import type { ContactType } from '@/services/contact/contactTypes'
-import type { AuthorizationConfig } from '@/common/components/ManageRightsDrawer/components/RightsList/RightsListTypes'
+import { commonApi } from '@pulse/Common'
+import { API_PREFIXES } from '@entities/common/config/services'
+import type { ContactType } from '@entities/services/contact/contactTypes'
+import type { AuthorizationConfig } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListTypes'
 
 // User permissions
 export const fetchAuthorizationsConfig = async (

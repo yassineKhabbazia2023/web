@@ -82,9 +82,9 @@ import {
 import UploadBIReport from './components/UploadBIReport'
 import BIReportSubmitted from './components/BIReportSubmitted'
 import BIReportInformation from './components/BIReportInformation'
-import { fetchBIReportTypes, uploadBIreport } from '@/services/reporting'
+import { fetchBIReportTypes, uploadBIreport } from '@entities/services/reporting'
 import type { ReportInfo } from './SubmitBIReportTypes'
-import type { ReportType } from '@/pages/power-bi/pages/bi-reports/BIReportsTypes'
+import type { ReportType } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

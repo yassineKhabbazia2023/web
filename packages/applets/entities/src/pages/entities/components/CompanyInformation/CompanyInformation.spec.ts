@@ -2,14 +2,14 @@ import { vi, expect, describe, it, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
-import type { ComponentWrapper } from '@/common/types'
-import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
-import * as referentialUtils from '@/common/utils/referential'
+import type { ComponentWrapper } from '@entities/common/types'
+import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
+import * as referentialUtils from '@entities/common/utils/referential'
 import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
-} from '@/services/account/accountMock'
+} from '@entities/services/account/accountMock'
 import CompanyInformation from '.'
 
 const alertInstructionText =
@@ -18,12 +18,12 @@ const formInstructionText =
   'Please provide the following necessary information for activation :'
 
 const mockedAccount = getMockedAccount()
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
 }))
 
-vi.mock('@/common/config/referential', () => ({
+vi.mock('@entities/common/config/referential', () => ({
   getFormStructure: () => MEGOffersFormStructure,
 }))
 

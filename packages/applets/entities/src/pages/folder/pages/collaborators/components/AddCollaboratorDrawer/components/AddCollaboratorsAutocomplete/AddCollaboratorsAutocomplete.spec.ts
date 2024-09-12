@@ -5,9 +5,9 @@ import { PAutocomplete } from '@kpmg/styleguide'
 import { nextTick } from 'vue'
 import CollaboratorsSearchAutocomplete from '.'
 import type { AddCollaboratorsAutocompleteProps } from './AddCollaboratorsAutocompleteTypes'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   fetchContactsFromSameHub: vi.fn(() => Promise.resolve(mockedContacts)),
 }))
 

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
-import { mockHasPermission } from '@/../vitest.setup'
+import { mockHasPermission } from '@entities/../vitest.setup'
 import type { TabName, Tab } from './FolderTypes'
 
 describe('test FolderHelper', () => {

@@ -6,17 +6,17 @@ import {
   getPrincipalContacts,
   fetchCollaborators,
 } from '.'
-import { getMockedSubscriptionOffers } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
+import { getMockedSubscriptionOffers } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
 import {
   getMockedSubscriptionOffersServices,
-} from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
-import { getMockedPrincipalContacts } from '@/pages/entities/components/PrincipalContact/PrincipalContactMocks'
-import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
-import { API_PREFIXES } from '@/common/config/services'
+} from '@entities/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
+import { getMockedPrincipalContacts } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactMocks'
+import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import { API_PREFIXES } from '@entities/common/config/services'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import { getMockedCollaborators } from '../contact/contactMocks'
 
 const mockedCollaborators = getMockedCollaborators()
@@ -29,7 +29,7 @@ vi.mock('env-vars', () => ({
   VITE_CONFIG_OFFERS_BOOK: 'offers-book-test-link',
 }))
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       gateway: {

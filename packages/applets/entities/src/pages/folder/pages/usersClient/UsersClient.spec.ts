@@ -1,29 +1,29 @@
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { nextTick } from 'vue'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { generateContactsMock } from '@/../tests/mocks/contactsDataMock'
-import { getInitials } from '@/helper'
+import { generateContactsMock } from '@entities/../tests/mocks/contactsDataMock'
+import { getInitials } from '@entities/helper'
 import type { ExtendedUser } from './UsersClientTypes.ts'
-import { noResult } from '@/../tests'
-import FormSearch from '@/common/components/FormSearch'
-import type { PatchContactPayload } from '@/services/contact/contactTypes'
+import { noResult } from '@entities/../tests'
+import FormSearch from '@entities/common/components/FormSearch'
+import type { PatchContactPayload } from '@entities/services/contact/contactTypes'
 import { mockUser } from './components/DrawerUserDetails/mockData.ts'
-import * as OfferServices from '@/services/offer'
-import * as WalletServices from '@/services/wallet'
-import type { Contact } from '@/common/types'
-import { mockedEntity } from '@/pages/wallet/components/TableData/mockData'
+import * as OfferServices from '@entities/services/offer'
+import * as WalletServices from '@entities/services/wallet'
+import type { Contact } from '@entities/common/types'
+import { mockedEntity } from '@entities/pages/wallet/components/TableData/mockData'
 import type { UsersClientProps } from './UsersClientTypes'
 import UsersClient from '.'
 
-vi.mock('@/services/contact', () => ({
+vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
   patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
 }))
 
-vi.mock('@/services/offer', () => ({
+vi.mock('@entities/services/offer', () => ({
   getPrincipalContacts: vi.fn(),
 }))
 
@@ -40,12 +40,12 @@ const contactsList = generateContactsMock({
   currentPage: 1,
 }).data
 
-vi.mock('@/services/wallet', () => ({
+vi.mock('@entities/services/wallet', () => ({
   fetchAccountContacts: vi.fn(),
   fetchCustomers: vi.fn(),
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -108,9 +108,9 @@ const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination'
 const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 
 describe('usersClient', () => {
-  let consoleErrorSpy: SpyInstance
-  let getPrincipalContactsSpy: SpyInstance
-  let mockGatewayGet: SpyInstance
+  let consoleErrorSpy: MockInstance
+  let getPrincipalContactsSpy: MockInstance
+  let mockGatewayGet: MockInstance
   beforeEach(async () => {
     getPrincipalContactsSpy = vi
       .spyOn(OfferServices, 'getPrincipalContacts')
@@ -251,7 +251,7 @@ describe('usersClient', () => {
 
   describe('when entityId is set', () => {
     const entityId = 42
-    let fetchAccountContactsSpy: SpyInstance
+    let fetchAccountContactsSpy: MockInstance
     const mockedItems: Contact[] = [{
       contactId: 1,
       firstName: 'Goldie',

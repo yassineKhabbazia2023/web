@@ -6,22 +6,22 @@ import {
   getEnrichedFormSection,
   getFormSections,
 } from './referentialUtils'
-import type { ReferentialOptions } from '@/services/account'
+import type { ReferentialOptions } from '@entities/services/account'
 import type { PDropdownOption } from '@kpmg/styleguide'
-import MEGOffersFormStructure from '@/common/config/forms/MEGOffersFormStructure.json'
-import LOOPOfferFormStructure from '@/common/config/forms/LOOPOfferFormStructure.json'
-import InformationFormStructure from '@/common/config/forms/InformationFormStructure.json'
-import { getMockedAccountReferential, getMockedReferentialHubs } from '@/services/account/accountMock'
+import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
+import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
+import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
+import { getMockedAccountReferential, getMockedReferentialHubs } from '@entities/services/account/accountMock'
 import { getMockedFormField, getMockedFormSection }
-  from '@/pages/entities/components/CompanyInformation/CompanyInformationMock'
+  from '@entities/pages/entities/components/CompanyInformation/CompanyInformationMock'
 import type { FormField, FormSection }
-  from '@/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+  from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 
 const mockedReferential = getMockedAccountReferential()
 const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
 const mockedFormSection = getMockedFormSection()
 
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
 }))

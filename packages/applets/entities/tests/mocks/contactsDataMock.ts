@@ -1,5 +1,5 @@
 import type { contactsMockRequest } from './generateContactsMockRequest.ts'
-import type { Contact } from '@/common/types'
+import type { Contact } from '@entities/common/types'
 
 export const generateContactsMock = (
   request: contactsMockRequest,

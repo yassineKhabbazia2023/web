@@ -1,4 +1,4 @@
-import type { UserInfo } from '@kpmg/common'
+import type { UserInfo } from '@pulse/Common'
 
 export const getMockedUser = (): UserInfo => {
   const user: UserInfo = {

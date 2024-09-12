@@ -2,10 +2,10 @@ import { vi, it, describe, expect, beforeEach, type Mock } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { getMockedAuthorizationsConfig } from './RightsListMocks'
 import type { RightsListProps } from './RightsListTypes'
-import * as authorizationServices from '@/services/authorization'
+import * as authorizationServices from '@entities/services/authorization'
 import { useRoute } from 'vue-router'
 import RightsList from '.'
-import { ContactType } from '@/services/contact/contactTypes'
+import { ContactType } from '@entities/services/contact/contactTypes'
 
 // Mocks
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()

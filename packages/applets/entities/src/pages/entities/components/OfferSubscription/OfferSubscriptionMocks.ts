@@ -1,6 +1,6 @@
 import {
   SubscriptionPriceType,
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
+} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
 
 export function getMockedSubscriptionOffersServices() {

@@ -76,7 +76,7 @@ import {
   PDoubleText,
   PCheckbox,
 } from '@kpmg/styleguide'
-import { getInitials } from '@/helper'
+import { getInitials } from '@entities/helper'
 
 // Definitions
 const { t } = useI18n({

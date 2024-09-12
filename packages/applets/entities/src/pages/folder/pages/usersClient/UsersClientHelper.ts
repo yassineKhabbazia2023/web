@@ -1,7 +1,7 @@
-import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import type { ExtendedUser } from './UsersClientTypes.ts'
-import type { Contact } from '@/common/types'
-import { getInitials } from '@/helper'
+import type { Contact } from '@entities/common/types'
+import { getInitials } from '@entities/helper'
 
 export function formatItemsFromApi(
   items: Contact[],

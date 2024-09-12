@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { mockUpdateUserPermission, mockUpdateAccountPermission } from '@/../vitest.setup'
+import { mockUpdateUserPermission, mockUpdateAccountPermission } from '@entities/../vitest.setup'
 import {
   getMockedAuthorizationsConfig,
-} from '@/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
+} from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
 import { ContactType } from '../contact/contactTypes'
 import {
   fetchAuthorizationsConfig,

@@ -1,10 +1,10 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, type SpyInstance, vi } from 'vitest'
+import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import {
   getMockedCollaborators,
   getFormattedMockedCollaborators,
-} from '@/common/mocks/mockedCollaborators'
-import * as walletServices from '@/services/wallet'
+} from '@entities/common/mocks/mockedCollaborators'
+import * as walletServices from '@entities/services/wallet'
 import * as styleguide from '@kpmg/styleguide'
 import { nextTick } from 'vue'
 import CollabDetailsDrawer from '.'
@@ -27,7 +27,7 @@ const mockedPatchGateway = vi.fn(() => {
   })
 })
 
-vi.mock('@/services/wallet', () => ({
+vi.mock('@entities/services/wallet', () => ({
   updateCollaborator: vi.fn(),
 }))
 vi.mock('@kpmg/styleguide', async () => {
@@ -40,7 +40,7 @@ vi.mock('@kpmg/styleguide', async () => {
     PNotification: vi.fn(),
   }
 })
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       patch: mockedPatchGateway,
@@ -75,7 +75,7 @@ const getButtonSubmit = (wrapper: VueWrapper) =>
 
 describe('collabDetailsDrawer', () => {
   let wrapper: VueWrapper
-  let spyPNotification: SpyInstance
+  let spyPNotification: MockInstance
   beforeEach(() => {
     spyPNotification = vi.spyOn(styleguide, 'PNotification')
     wrapper = createWrapper()

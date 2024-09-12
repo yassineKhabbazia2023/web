@@ -1,9 +1,9 @@
 import type { WalletData, SearchCriteria, DeploymentStatus } from '../../types'
-import type { AccountRow } from '@/services/account'
-import { fetchAccounts } from '@/services/account'
+import type { AccountRow } from '@entities/services/account'
+import { fetchAccounts } from '@entities/services/account'
 import { COLORS } from './DeployConst'
-import { getInitials, removeFalsyValues } from '@/helper'
-import type { QueryResult } from '@/common/types'
+import { getInitials, removeFalsyValues } from '@entities/helper'
+import type { QueryResult } from '@entities/common/types'
 
 export function getQueryParams(searchCriteria: SearchCriteria) {
   return {

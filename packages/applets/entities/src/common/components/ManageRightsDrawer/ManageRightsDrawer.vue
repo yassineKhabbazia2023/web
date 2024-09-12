@@ -66,7 +66,7 @@ import type {
   ManageRightsDrawerProps,
   AuthorizationState,
 } from './ManageRightsTypes'
-import { updateUserPermissions } from '@/services/authorization'
+import { updateUserPermissions } from '@entities/services/authorization'
 import { getPermissionCodes } from './utils'
 import RightsList from './components/RightsList'
 

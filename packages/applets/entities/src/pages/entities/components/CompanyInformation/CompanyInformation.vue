@@ -60,8 +60,8 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
 import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
-import { getFormStructure } from '@/common/utils/referential'
-import { type Account } from '@/services/account'
+import { getFormStructure } from '@entities/common/utils/referential'
+import { type Account } from '@entities/services/account'
 import type {
   CompanyInformationProps,
   FormSection,

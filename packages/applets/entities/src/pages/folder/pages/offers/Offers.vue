@@ -82,7 +82,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore, userPermissions } from '@kpmg/common'
+import { commonStore, userPermissions } from '@pulse/Common'
 import {
   PBlockHeader,
   PButton,
@@ -97,9 +97,9 @@ import OfferActivationStatus from './components/OfferActivationStatus'
 import {
   type SubscriptionRequest,
   fetchAccountSubscriptions,
-} from '@/services/subscription'
-import OffersDrawer from '@/pages/entities/components/OffersDrawer'
-import { PERMISSION_CODES } from '@/constants'
+} from '@entities/services/subscription'
+import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
+import { PERMISSION_CODES } from '@entities/constants'
 
 const route = useRoute()
 const { t } = useI18n({

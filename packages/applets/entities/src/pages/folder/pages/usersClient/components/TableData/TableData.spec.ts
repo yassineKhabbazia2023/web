@@ -1,13 +1,13 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { getInitials } from '@/helper'
+import { getInitials } from '@entities/helper'
 import mock from './../../mock.json'
 import TableData from './'
 import { userActions } from './types'
 import { nextTick } from 'vue'
 
 const mockHasPermission = vi.fn((_code: string) => true)
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),

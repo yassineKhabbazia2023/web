@@ -3,10 +3,10 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { dataFromApi, getMockedCustomersCollab } from './mockData'
-import { fetchAccountCustomers } from '@/services/wallet'
-import { getAccountSignatories, updateSignatoryStatus } from '@/services/account'
+import { fetchAccountCustomers } from '@entities/services/wallet'
+import { getAccountSignatories, updateSignatoryStatus } from '@entities/services/account'
 import UsersCollab from '.'
-import { getMockedAccount } from '@/services/account/accountMock'
+import { getMockedAccount } from '@entities/services/account/accountMock'
 import { nextTick } from 'vue'
 const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
@@ -22,7 +22,7 @@ const mockedAccount = getMockedAccount()
 
 const mockHasPermission = vi.fn((_code: string) => true)
 
-vi.mock('@/services/wallet', () => ({
+vi.mock('@entities/services/wallet', () => ({
   fetchAccountCustomers: vi.fn(() => Promise.resolve({
     items: mockedCustomersCollab,
     totalItems: mockedCustomersCollab.length,
@@ -46,7 +46,7 @@ const apiMocks = vi.hoisted(() => ({
   ])),
 }))
 
-vi.mock('@/services/account', () => {
+vi.mock('@entities/services/account', () => {
   return {
     updateSignatoryStatus: vi.fn(() => Promise.resolve({})),
     getAccountSignatories: apiMocks.singleAccountSignatory,
@@ -64,7 +64,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

@@ -120,9 +120,9 @@ import {
 } from '@kpmg/styleguide'
 import type { FormInstance, FormRules } from '@kpmg/styleguide'
 import type { Props } from './types'
-import { getContactById, patchContact } from '@/services/contact'
-import type { Contact, PatchContactPayload } from '@/services/contact/contactTypes'
-import { handleRequestError } from '@/helper'
+import { getContactById, patchContact } from '@entities/services/contact'
+import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'
+import { handleRequestError } from '@entities/helper'
 
 const { t } = useI18n({
   inheritLocale: true,

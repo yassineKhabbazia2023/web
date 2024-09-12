@@ -55,14 +55,14 @@ import {
   PLoader,
   PPagination,
 } from '@kpmg/styleguide'
-import { getInitials, removeFalsyValues, getPaginationLabel } from '@/helper'
-import { PAGE_SIZES } from '@/constants'
-import NoResult from '@/common/components/NoResult'
-import FormSearch from '@/common/components/FormSearch'
+import { getInitials, removeFalsyValues, getPaginationLabel } from '@entities/helper'
+import { PAGE_SIZES } from '@entities/constants'
+import NoResult from '@entities/common/components/NoResult'
+import FormSearch from '@entities/common/components/FormSearch'
 import type { ExtendedCollab, State } from './types'
 import TableData from './components/TableData'
-import { getCollaborators } from '@/services/wallet'
-import type { Contact } from '@/services/contact/contactTypes'
+import { getCollaborators } from '@entities/services/wallet'
+import type { Contact } from '@entities/services/contact/contactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

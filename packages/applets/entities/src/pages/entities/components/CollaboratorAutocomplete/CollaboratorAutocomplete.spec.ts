@@ -2,7 +2,7 @@ import { expect, describe, it, vi, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import CollaboratorAutocomplete, { type CollaboratorAutocompleteProps } from '.'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 
 const mockedCollaborators = getMockedCollaborators()
 

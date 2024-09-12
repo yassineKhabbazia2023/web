@@ -3,10 +3,10 @@ import { type VueWrapper, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import {
   getMockedSubscriptionOffersServices,
-} from '@/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
+} from '@entities/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import type {
   SubscriptionOfferProvider,
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import * as OfferProviderProductsUtils from './OfferProviderProductsUtils'
 import type { ExtendedService } from './OfferProviderProductsTypes'
 import OfferProviderProducts from '.'

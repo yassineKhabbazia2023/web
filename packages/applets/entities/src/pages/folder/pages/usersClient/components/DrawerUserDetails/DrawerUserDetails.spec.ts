@@ -2,10 +2,10 @@ import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import DrawerUserDetails from './DrawerUserDetails.vue'
 import { mockUser } from './mockData'
-import type { Contact, PatchContactPayload } from '@/services/contact/contactTypes'
+import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'
 import { nextTick } from 'vue'
 
-vi.mock('@/services/contact', () => ({
+vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
   patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
 }))

@@ -4,12 +4,12 @@ import { type VueWrapper, type DOMWrapper, mount, flushPromises } from '@vue/tes
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
-import { entityMock } from '@/../tests/mocks/EntitiesMocks'
-import NextPreviousButtons from '@/common/components/NextPreviousButtons'
+import { entityMock } from '@entities/../tests/mocks/EntitiesMocks'
+import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCustomerDrawer from '.'
 import AddCustomerFeedback from './components/addCustomerFeedback'
-import { getMockedCustomer } from '@/services/contact/contactMocks'
-import { addContactToEntity, createCustomer, getAccountUserByEmail } from '@/services/account'
+import { getMockedCustomer } from '@entities/services/contact/contactMocks'
+import { addContactToEntity, createCustomer, getAccountUserByEmail } from '@entities/services/account'
 
 const customerMock = getMockedCustomer()[0]
 
@@ -19,7 +19,7 @@ const apiMocks = vi.hoisted(() => ({
   emailThatExistsMock: vi.fn(() => Promise.resolve({ ...customerMock })),
   emailThatDoesNotExist: vi.fn(() => Promise.resolve(null)),
 }))
-vi.mock('@/services/account', () => {
+vi.mock('@entities/services/account', () => {
   const createCustomerMock = vi.fn(() => {
     return Promise.resolve({
       data: {
@@ -36,7 +36,7 @@ vi.mock('@/services/account', () => {
   }
 })
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
   amplitudeService: {
     track: vi.fn(),

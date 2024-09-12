@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { formatItemsFromApi } from './UsersClientHelper'
-import { generateContactsMock } from '@/../tests/mocks/contactsDataMock'
-import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import { generateContactsMock } from '@entities/../tests/mocks/contactsDataMock'
+import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 
 const expectedItems = [{
   contactId: 1,

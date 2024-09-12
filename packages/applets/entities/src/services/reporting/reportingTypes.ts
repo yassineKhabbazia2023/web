@@ -1,5 +1,5 @@
-import type { Report } from '@/pages/power-bi/pages/bi-reports/BIReportsTypes'
-import type { Entity } from '@kpmg/common'
+import type { Report } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
+import type { Entity } from '@pulse/Common'
 
 export interface GetReportsRequest {
   items: Report[]

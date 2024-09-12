@@ -64,10 +64,10 @@ import { PAlert, PBlockHeader, PUserAction } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
-import { getCollaborators } from '@/services/wallet'
-import type { Contact } from '@/services/contact/contactTypes'
-import { getInitials } from '@/helper/helper'
-import { getFullName } from '@/common/utils/helpers'
+import { getCollaborators } from '@entities/services/wallet'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { getInitials } from '@entities/helper/helper'
+import { getFullName } from '@entities/common/utils/helpers'
 
 defineProps<DelegatorsAddStepProps>()
 const emit = defineEmits<{

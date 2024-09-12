@@ -158,22 +158,22 @@ import {
   PICheck,
   PIExclamationTriangle,
 } from '@kpmg/styleguide'
-import { commonStore, getInitials } from '@kpmg/common'
+import { commonStore, getInitials } from '@pulse/Common'
 import {
   PAGE_SIZES,
   DATE_TIME_FORMATS as datetimeFormats,
-} from '@/constants'
-import { getFullName } from '@/common/utils'
-import { fetchAccountCustomers } from '@/services/wallet'
-import { getPaginationLabel, removeFalsyValues } from '@/helper'
-import { updateSignatoryStatus, getAccountSignatories } from '@/services/account'
-import type { AccountSignatories } from '@/services/account/accountTypes'
+} from '@entities/constants'
+import { getFullName } from '@entities/common/utils'
+import { fetchAccountCustomers } from '@entities/services/wallet'
+import { getPaginationLabel, removeFalsyValues } from '@entities/helper'
+import { updateSignatoryStatus, getAccountSignatories } from '@entities/services/account'
+import type { AccountSignatories } from '@entities/services/account/accountTypes'
 import type { StateUser, User } from './types'
-import type { UserStatus } from '@/common/types'
+import type { UserStatus } from '@entities/common/types'
 import { userActions } from './types'
-import ManageRightsDrawer from '@/common/components/ManageRightsDrawer'
-import NoResult from '@/common/components/NoResult'
-import FormSearch from '@/common/components/FormSearch'
+import ManageRightsDrawer from '@entities/common/components/ManageRightsDrawer'
+import NoResult from '@entities/common/components/NoResult'
+import FormSearch from '@entities/common/components/FormSearch'
 
 const { d, t } = useI18n({
   inheritLocale: true,

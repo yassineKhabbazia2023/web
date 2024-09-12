@@ -31,8 +31,8 @@
 import { ref } from 'vue'
 import { PAutocomplete } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
-import type { Contact } from '@/services/contact/contactTypes'
-import { fetchContactsFromSameHub } from '@/services/account'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { fetchContactsFromSameHub } from '@entities/services/account'
 import type { AddCollaboratorsAutocompleteProps } from './AddCollaboratorsAutocompleteTypes'
 
 const props = defineProps<AddCollaboratorsAutocompleteProps>()

@@ -6,10 +6,10 @@ import { PAlert, PUserAction } from '@kpmg/styleguide'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import AddDelegatesStep from '.'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 
 const mockedCollaborators = getMockedCollaborators()
-vi.mock('@/services/wallet', () => ({
+vi.mock('@entities/services/wallet', () => ({
   getCollaborators: vi.fn(() => Promise.resolve({
     items: mockedCollaborators,
   })),

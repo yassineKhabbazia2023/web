@@ -1,6 +1,6 @@
-import { it, describe, vi, expect, beforeEach, type SpyInstance } from 'vitest'
+import { it, describe, vi, expect, beforeEach, type MockInstance } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import * as ReportService from '@/services/reporting'
+import * as ReportService from '@entities/services/reporting'
 import {
   getMockedBIReportTypes,
   getMockedReportUploadInfo,
@@ -13,7 +13,7 @@ import SubmitBIReport from '.'
 const mockedPowerBIReport = getMockedPowerBIReport()
 const mockedBIReportTypes = getMockedBIReportTypes()
 const mockedReportUploadInfo = getMockedReportUploadInfo()
-vi.mock('@/services/reporting', () => ({
+vi.mock('@entities/services/reporting', () => ({
   fetchBIReportTypes: vi.fn(() => Promise.resolve(mockedBIReportTypes)),
   uploadBIreport: vi.fn(),
 }))
@@ -22,7 +22,7 @@ const createWrapper = () => mount(SubmitBIReport)
 
 describe('submitBIReport', () => {
   let wrapper: VueWrapper<any>
-  let spyConsole: SpyInstance
+  let spyConsole: MockInstance
   beforeEach(() => {
     spyConsole = vi.spyOn(console, 'error')
     wrapper = createWrapper()

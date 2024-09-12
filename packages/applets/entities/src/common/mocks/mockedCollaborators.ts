@@ -1,5 +1,5 @@
-import type { Contact } from '@/services/contact/contactTypes'
-import type { Collab } from '@/pages/wallet/pages/collaborators/types'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import type { Collab } from '@entities/pages/wallet/pages/collaborators/types'
 
 export const getMockedCollaborators = (): Contact[] => {
   return [

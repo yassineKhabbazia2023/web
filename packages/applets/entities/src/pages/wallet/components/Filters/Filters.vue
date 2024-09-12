@@ -68,7 +68,7 @@ import {
   PIPower,
   PIArrowUpCircle,
 } from '@kpmg/styleguide'
-import { fetchEntitiesStatistics } from '@/services/wallet'
+import { fetchEntitiesStatistics } from '@entities/services/wallet'
 import type { Filter, State } from './FiltersTypes'
 import { EntityStatus } from './FiltersTypes'
 import FilterOption from '../FilterOption'

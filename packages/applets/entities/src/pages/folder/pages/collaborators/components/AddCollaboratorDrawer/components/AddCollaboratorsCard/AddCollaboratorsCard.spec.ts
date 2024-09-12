@@ -5,13 +5,13 @@ import { createI18n } from 'vue-i18n'
 import { PUserAction } from '@kpmg/styleguide'
 import AddDelegatesStep from '.'
 import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
-import { getInitials } from '@/helper/helper'
-import { getFullName } from '@/common/utils/helpers/helpers'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getInitials } from '@entities/helper/helper'
+import { getFullName } from '@entities/common/utils/helpers/helpers'
 
 const mockedCollaborators = getMockedCollaborators()
 
-vi.mock('@/services/account', () => ({
+vi.mock('@entities/services/account', () => ({
   fetchContactsFromSameHub: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 

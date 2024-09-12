@@ -1,8 +1,8 @@
 import { type PService } from '@kpmg/styleguide'
-import type { SelectedProduct } from '@/common/types'
-import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import type { SubscriptionOfferProduct } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import { getSelectedProductIndex } from '@/pages/entities/components/OffersDrawer/utils/OffersDrawerUtils'
+import type { SelectedProduct } from '@entities/common/types'
+import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
+import type { SubscriptionOfferProduct } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { getSelectedProductIndex } from '@entities/pages/entities/components/OffersDrawer/utils/OffersDrawerUtils'
 
 export function getIsServiceSelected(
   offerId: number,

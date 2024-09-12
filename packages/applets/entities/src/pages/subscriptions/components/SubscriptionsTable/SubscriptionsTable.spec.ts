@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
-import * as helpers from '@/common/utils/helpers'
-import { amplitudeService } from '@kpmg/common'
-import type { ComponentWrapper } from '@/common/types'
+import * as helpers from '@entities/common/utils/helpers'
+import { amplitudeService } from '@pulse/Common'
+import type { ComponentWrapper } from '@entities/common/types'
 import { nextTick } from 'vue'
 import SubscriptionsTable from '.'
 
@@ -12,15 +12,15 @@ const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests } = vi.ho
   mockValidateSubscriptionRequest: vi.fn(() => Promise.resolve()),
   mockFetchSubscriptionRequests: vi.fn(() => Promise.resolve(subscriptionRequestMock)),
 }))
-vi.mock('@/services/subscription', async () => {
-  const actual = await vi.importActual('@/services/subscription')
+vi.mock('@entities/services/subscription', async () => {
+  const actual = await vi.importActual('@entities/services/subscription')
   return {
     ...(actual as object),
     validateSubscriptionRequest: mockValidateSubscriptionRequest,
     fetchSubscriptionRequests: mockFetchSubscriptionRequests,
   }
 })
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: () => ({}),
   amplitudeService: {
     track: vi.fn(),

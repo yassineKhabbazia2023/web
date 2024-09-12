@@ -10,9 +10,9 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@kpmg/common'
-import UsersCollab from '@/pages/folder/pages/usersCollab'
-import UsersClient from '@/pages/folder/pages/usersClient'
+import { commonStore } from '@pulse/Common'
+import UsersCollab from '@entities/pages/folder/pages/usersCollab'
+import UsersClient from '@entities/pages/folder/pages/usersClient'
 
 const { isCollab } = storeToRefs(commonStore())
 const route = useRoute()

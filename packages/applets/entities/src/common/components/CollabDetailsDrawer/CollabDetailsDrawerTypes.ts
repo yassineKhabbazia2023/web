@@ -1,4 +1,4 @@
-import type { Collab } from '@/pages/wallet/pages/collaborators/types'
+import type { Collab } from '@entities/pages/wallet/pages/collaborators/types'
 
 export default interface CollabDetailsDrawerProps {
   collabDetails: Collab

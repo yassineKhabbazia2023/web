@@ -1,5 +1,5 @@
-import type { SubscriptionOfferServices } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import type { Contact, ContactType } from '@/services/contact/contactTypes'
+import type { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { Contact, ContactType } from '@entities/services/contact/contactTypes'
 
 /* eslint-disable no-unused-vars */
 export enum SubscriptionStatusCode {

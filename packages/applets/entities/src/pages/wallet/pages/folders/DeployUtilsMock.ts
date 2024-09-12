@@ -1,6 +1,6 @@
 import { PIArrowUpCircle } from '@kpmg/styleguide'
 import type { DeploymentStatus, State, WalletData, SearchCriteria } from '../../types'
-import type { QueryResult } from '@/common/types'
+import type { QueryResult } from '@entities/common/types'
 
 export function getMockedState(override: Partial<State> = {}): State {
   const defaultState = {

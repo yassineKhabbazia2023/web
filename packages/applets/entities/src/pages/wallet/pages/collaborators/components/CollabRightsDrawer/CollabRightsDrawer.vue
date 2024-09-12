@@ -71,19 +71,19 @@ import {
   PIXCircle,
 } from '@kpmg/styleguide'
 import CollabRoles from './components/CollabRoles'
-import RightsList from '@/common/components/ManageRightsDrawer/components/RightsList'
-import NextPreviousButtons from '@/common/components/NextPreviousButtons'
-import { updateCollaborator, fetchContactRoles } from '@/services/wallet'
-import type { AuthorizationState } from '@/common/components/ManageRightsDrawer/ManageRightsTypes'
-import { updateUserPermissions } from '@/services/authorization'
-import { getPermissionCodes } from '@/common/components/ManageRightsDrawer/utils'
-import { ContactType } from '@/services/contact/contactTypes'
+import RightsList from '@entities/common/components/ManageRightsDrawer/components/RightsList'
+import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
+import { updateCollaborator, fetchContactRoles } from '@entities/services/wallet'
+import type { AuthorizationState } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
+import { updateUserPermissions } from '@entities/services/authorization'
+import { getPermissionCodes } from '@entities/common/components/ManageRightsDrawer/utils'
+import { ContactType } from '@entities/services/contact/contactTypes'
 import {
   CollabRightsDrawerSteps,
   type Role,
   type CollabRightsDrawerProps,
 } from './CollabRightsDrawerTypes'
-import type { Contact } from '@/services/contact/contactTypes'
+import type { Contact } from '@entities/services/contact/contactTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

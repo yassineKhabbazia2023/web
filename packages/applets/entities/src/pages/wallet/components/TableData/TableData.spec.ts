@@ -1,11 +1,11 @@
 import { createTestingPinia } from '@pinia/testing'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, afterEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
+import { beforeEach, afterEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
-import { type Entity, commonStore } from '@kpmg/common'
-import { API_PREFIXES } from '@/common/config/services'
+import { type Entity, commonStore } from '@pulse/Common'
+import { API_PREFIXES } from '@entities/common/config/services'
 import * as styleguide from '@kpmg/styleguide'
 import TableData from '.'
 
@@ -26,7 +26,7 @@ vi.mock('@kpmg/styleguide', async () => {
   }
 })
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       post: postMock,
@@ -94,7 +94,7 @@ const clientsColumnLabels = [
 ]
 
 describe('tableData', () => {
-  let spyPNotification: SpyInstance
+  let spyPNotification: MockInstance
   let wrapper: VueWrapper<any>
   let store: any
 

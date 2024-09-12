@@ -58,7 +58,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { PSwitch, PCheckbox, PCheckboxGroup, PLoader } from '@kpmg/styleguide'
-import { fetchAuthorizationsConfig, fetchAccountAuthorizationsConfig } from '@/services/authorization'
+import { fetchAuthorizationsConfig, fetchAccountAuthorizationsConfig } from '@entities/services/authorization'
 import { getAuthorizationsConfigMapped, getAuthorizationState } from './utils'
 import type { AuthorizationState } from '../../ManageRightsTypes'
 import type {

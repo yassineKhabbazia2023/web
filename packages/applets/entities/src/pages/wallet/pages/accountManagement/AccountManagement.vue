@@ -64,15 +64,15 @@ import {
   PLoader,
   PPagination,
 } from '@kpmg/styleguide'
-import NoResult from '@/common/components/NoResult'
-import FormSearch from '@/common/components/FormSearch'
+import NoResult from '@entities/common/components/NoResult'
+import FormSearch from '@entities/common/components/FormSearch'
 import TableData from '../../components/TableData'
 import AccountRightsDrawer from './components/AccountRightsDrawer'
 import ResendActivationEmailDrawer from './components/ResendActivationEmailDrawer'
 import { fetchWalletData } from '../folders/DeployUtils'
-import { getPaginationLabel } from '@/helper'
-import { PAGE_SIZES } from '@/constants'
-import type { AccountRow } from '@/common/types'
+import { getPaginationLabel } from '@entities/helper'
+import { PAGE_SIZES } from '@entities/constants'
+import type { AccountRow } from '@entities/common/types'
 import type {
   SearchCriteria,
   SearchResult,

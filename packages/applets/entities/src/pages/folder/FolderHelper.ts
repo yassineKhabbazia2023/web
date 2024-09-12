@@ -1,5 +1,5 @@
-import { userPermissions } from '@kpmg/common'
-import { PERMISSION_CODES } from '@/constants'
+import { userPermissions } from '@pulse/Common'
+import { PERMISSION_CODES } from '@entities/constants'
 import type { TabName, Tab } from './FolderTypes'
 
 const { hasPermission } = userPermissions()

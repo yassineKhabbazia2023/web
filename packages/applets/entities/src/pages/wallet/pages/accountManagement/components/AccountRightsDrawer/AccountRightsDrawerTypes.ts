@@ -1,4 +1,4 @@
-import type { AccountRow } from '@/common/types'
+import type { AccountRow } from '@entities/common/types'
 
 /* eslint-disable no-unused-vars */
 export enum PermissionTypeTabs {

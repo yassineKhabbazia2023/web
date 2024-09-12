@@ -85,15 +85,15 @@ import {
   PButton,
   PPagination,
 } from '@kpmg/styleguide'
-import { fetchFavoriteEntities, manageFavoriteEntities } from '@/services/wallet'
-import { type Entity, commonStore } from '@kpmg/common'
+import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
+import { type Entity, commonStore } from '@pulse/Common'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import NoResult from '@/common/components/NoResult'
-import FormSearch from '@/common/components/FormSearch'
-import OffersDrawer from '@/pages/entities/components/OffersDrawer'
-import { getPaginationLabel } from '@/helper'
-import { PAGE_SIZES } from '@/constants'
+import NoResult from '@entities/common/components/NoResult'
+import FormSearch from '@entities/common/components/FormSearch'
+import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
+import { getPaginationLabel } from '@entities/helper'
+import { PAGE_SIZES } from '@entities/constants'
 import type { EntityStatus } from '../../components/Filters/FiltersTypes'
 import { fetchWalletData } from './DeployUtils'
 import type {

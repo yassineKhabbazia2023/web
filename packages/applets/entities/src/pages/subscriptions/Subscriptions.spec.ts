@@ -9,7 +9,7 @@ const subscriptionGetMock = vi.fn().mockResolvedValue({
 })
 const subscriptionPutMock = vi.fn(() => Promise.resolve())
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     offer: {
       get: subscriptionGetMock,

@@ -49,10 +49,10 @@ import { ref, computed, onMounted } from 'vue'
 import { PBlockHeader, PUserAction } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
-import { fetchContactsFromSameHub } from '@/services/account'
-import type { Contact } from '@/services/contact/contactTypes'
-import { getInitials } from '@/helper/helper'
-import { getFullName } from '@/common/utils/helpers/helpers'
+import { fetchContactsFromSameHub } from '@entities/services/account'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { getInitials } from '@entities/helper/helper'
+import { getFullName } from '@entities/common/utils/helpers/helpers'
 
 const emit = defineEmits<{
   'collaborator-selection': [Contact[]]

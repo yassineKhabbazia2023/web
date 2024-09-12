@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
-import { amplitudeService } from '@kpmg/common'
-import type { ComponentWrapper } from '@/common/types'
+import { amplitudeService } from '@pulse/Common'
+import type { ComponentWrapper } from '@entities/common/types'
 import Folder from '.'
 
 const pinia = createTestingPinia()
@@ -30,7 +30,7 @@ const mockedTabs: Tab[] = [
   },
 ]
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -83,7 +83,7 @@ const createWrapper = () =>
   })
 
 describe('folder', () => {
-  let spyTrackAmplitude: SpyInstance
+  let spyTrackAmplitude: MockInstance
   let wrapper: ComponentWrapper<InstanceType<typeof Folder>>
 
   beforeEach(async () => {

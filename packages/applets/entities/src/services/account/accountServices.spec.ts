@@ -25,8 +25,8 @@ import {
   getMockedAccountReferential,
   getMockedReferentialHubs,
 } from './accountMock'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
-import { API_PREFIXES } from '@/common/config/services'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { API_PREFIXES } from '@entities/common/config/services'
 
 const accountId = 5
 const contactId = 25
@@ -44,7 +44,7 @@ const mockedAccountApiPatch = vi.fn()
 const mockedCollaborators = getMockedCollaborators()
 const postSpy = vi.fn()
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       gateway: {

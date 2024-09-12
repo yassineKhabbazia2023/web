@@ -57,11 +57,11 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@kpmg/common'
+import { commonStore } from '@pulse/Common'
 import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
-import { fetchAccount, type Account } from '@/services/account'
-import type { FormSection } from '@/pages/entities/components/CompanyInformation/CompanyInformationTypes'
-import { getFormStructure } from '@/common/utils/referential'
+import { fetchAccount, type Account } from '@entities/services/account'
+import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import { getFormStructure } from '@entities/common/utils/referential'
 
 const { t } = useI18n({
   inheritLocale: true,

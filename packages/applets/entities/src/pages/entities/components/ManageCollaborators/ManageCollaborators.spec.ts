@@ -1,18 +1,18 @@
-import type { SpyInstance } from 'vitest'
+import type { MockInstance } from 'vitest'
 import { vi, it, describe, expect, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { getMockedCollaborators } from '@/services/contact/contactMocks'
-import { getInitials } from '@/helper'
+import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getInitials } from '@entities/helper'
 import ManageCollaborators from '.'
 
-vi.mock('@/services/contact', () => ({
+vi.mock('@entities/services/contact', () => ({
   getCollaborators: vi.fn(() => Promise.resolve([])),
 }))
 
 const mockedCollaborators = getMockedCollaborators()
 
-vi.mock('@/services/contact', () => ({
+vi.mock('@entities/services/contact', () => ({
   getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 
@@ -120,7 +120,7 @@ describe('manageCollaborators', () => {
       expect(pUserActionAfter).toHaveLength(countBefore + 1)
     })
     describe('when click on delete', () => {
-      let consoleWarnSpy: SpyInstance
+      let consoleWarnSpy: MockInstance
       beforeEach(() => {
         consoleWarnSpy = vi.spyOn(console, 'warn')
       })

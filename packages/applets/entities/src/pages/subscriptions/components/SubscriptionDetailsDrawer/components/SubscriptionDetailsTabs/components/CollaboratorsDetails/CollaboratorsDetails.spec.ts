@@ -1,13 +1,13 @@
 import { expect, it, describe, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import type { SubscriptionContact } from '@/services/subscription'
-import { getMockedSubscriptionDetails } from '@/pages/subscriptions/mocks/SubscriptionDetailsMock'
+import type { SubscriptionContact } from '@entities/services/subscription'
+import { getMockedSubscriptionDetails } from '@entities/pages/subscriptions/mocks/SubscriptionDetailsMock'
 import CollaboratorsDetails from '.'
 
 const mockedSubscriptionCollaborators =
   getMockedSubscriptionDetails().collaborators
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   getInitials: vi.fn(),
 }))
 

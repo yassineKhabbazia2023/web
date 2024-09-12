@@ -1,4 +1,4 @@
-import type { Contact, Persona } from '@/services/contact/contactTypes'
+import type { Contact, Persona } from '@entities/services/contact/contactTypes'
 export const mockUser: Contact = {
   id: 521,
   firstName: 'jojo',

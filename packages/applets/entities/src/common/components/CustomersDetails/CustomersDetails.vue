@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PAlert } from '@kpmg/styleguide'
-import PrincipalContact from '@/pages/entities/components/PrincipalContact'
+import PrincipalContact from '@entities/pages/entities/components/PrincipalContact'
 import type { CustomersDetailsProps } from './CustomersDetailsTypes'
 
 const { t } = useI18n({

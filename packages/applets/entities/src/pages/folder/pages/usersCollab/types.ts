@@ -1,5 +1,5 @@
-import type { PaginationData } from '@/helper/helperTypes'
-import type { UserStatus } from '@/common/types'
+import type { PaginationData } from '@entities/helper/helperTypes'
+import type { UserStatus } from '@entities/common/types'
 
 /* eslint-disable no-unused-vars */
 export enum userActions {

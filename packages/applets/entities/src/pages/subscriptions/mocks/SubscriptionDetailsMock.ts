@@ -1,6 +1,6 @@
-import { SubscriptionPriceType } from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import { ContactType } from '@/services/contact/contactTypes'
-import type { SubscriptionDetails } from '@/services/subscription'
+import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
+import { ContactType } from '@entities/services/contact/contactTypes'
+import type { SubscriptionDetails } from '@entities/services/subscription'
 
 export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
   subscriptionId: 12,

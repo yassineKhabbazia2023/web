@@ -133,11 +133,11 @@ import { get } from 'lodash-es'
 import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@kpmg/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
-import StepNote from '@/common/components/StepNote'
-import CustomersDetails from '@/common/components/CustomersDetails'
+import StepNote from '@entities/common/components/StepNote'
+import CustomersDetails from '@entities/common/components/CustomersDetails'
 import CompanyInformation from '../CompanyInformation'
-import NextPreviousButtons from '@/common/components/NextPreviousButtons'
-import { displayNotification } from '@/common/utils/helpers'
+import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
+import { displayNotification } from '@entities/common/utils/helpers'
 import ConfirmationModal from '../ConfirmationModal'
 import ManageCollaborators from '../ManageCollaborators'
 import {
@@ -145,13 +145,13 @@ import {
   getOffer,
   getOffersBookLink,
   getPrincipalContacts,
-} from '@/services/offer'
-import { addPathValue, getPatchOperations } from '@/services/PatchRecordService/PatchRecordService'
-import { type PatchValue } from '@/services/PatchRecordService'
+} from '@entities/services/offer'
+import { addPathValue, getPatchOperations } from '@entities/services/PatchRecordService/PatchRecordService'
+import { type PatchValue } from '@entities/services/PatchRecordService'
 import { offerStepperStep } from './OffersDrawerTypes'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
-import type { SelectedProduct } from '@/common/types'
-import { fetchAccount, patchAccount, type Account } from '@/services/account'
+import type { SelectedProduct } from '@entities/common/types'
+import { fetchAccount, patchAccount, type Account } from '@entities/services/account'
 import {
   addSelectedProduct,
   removeSelectedProduct,
@@ -164,9 +164,9 @@ import type {
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
-import { type Note, createSubscriptionRequest, fetchAccountSubscriptions } from '@/services/subscription'
-import type { Contact } from '@/services/contact/contactTypes'
-import { amplitudeService } from '@kpmg/common'
+import { type Note, createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { amplitudeService } from '@pulse/Common'
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -1,4 +1,4 @@
-import type { Contact, UserStatus } from '@/common/types'
+import type { Contact, UserStatus } from '@entities/common/types'
 
 export interface UsersClientProps {
   entityId: number | undefined

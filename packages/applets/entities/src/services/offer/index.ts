@@ -1,12 +1,12 @@
-import { commonApi } from '@kpmg/common'
+import { commonApi } from '@pulse/Common'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
-} from '@/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import type { ClientContact } from '@/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
-import { API_PREFIXES } from '@/common/config/services'
-import { handleRequestError } from '@/helper/helper'
+import { API_PREFIXES } from '@entities/common/config/services'
+import { handleRequestError } from '@entities/helper/helper'
 import type { Contact } from '../contact/contactTypes'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {

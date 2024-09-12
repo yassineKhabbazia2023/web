@@ -4,7 +4,7 @@ import { nextTick } from 'vue'
 import { MENU_ACTIONS_NAME } from './constants'
 import TableData from './'
 import mock from '../../mockCollaborators.json'
-import { getInitials } from '@/helper'
+import { getInitials } from '@entities/helper'
 import { PTable } from '@kpmg/styleguide'
 
 let wrapper: VueWrapper<any>
@@ -16,7 +16,7 @@ const mockGatewayGet = vi.fn(() => {
   })
 })
 
-vi.mock('@kpmg/common', () => ({
+vi.mock('@pulse/Common', () => ({
   commonApi: () => ({
     gateway: {
       get: mockGatewayGet,

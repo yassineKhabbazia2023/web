@@ -45,13 +45,13 @@
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
-import { fetchAccount, type Account } from '@/services/account'
+import { fetchAccount, type Account } from '@entities/services/account'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import type {
   FormSection,
   ProviderFormName,
-} from '@/pages/entities/components/CompanyInformation/CompanyInformationTypes'
-import { getFormStructure } from '@/common/utils/referential'
+} from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import { getFormStructure } from '@entities/common/utils/referential'
 
 const { t } = useI18n({
   inheritLocale: true,

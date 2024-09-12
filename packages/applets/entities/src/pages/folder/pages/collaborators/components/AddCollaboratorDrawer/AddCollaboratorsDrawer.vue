@@ -31,12 +31,12 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PNotification, PICheck, PIX } from '@kpmg/styleguide'
-import NextPreviousButtons from '@/common/components/NextPreviousButtons'
+import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
-import type { Contact } from '@/services/contact/contactTypes'
-import { addContactToEntity } from '@/services/account'
-import { getFullName } from '@/common/utils/helpers/helpers'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { addContactToEntity } from '@entities/services/account'
+import { getFullName } from '@entities/common/utils/helpers/helpers'
 
 const props = defineProps<AddCollaboratorsDrawerProps>()
 const emit = defineEmits<{

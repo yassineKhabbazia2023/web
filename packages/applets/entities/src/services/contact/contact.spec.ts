@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest'
-import { API_PREFIXES } from '@/common/config/services'
+import { API_PREFIXES } from '@entities/common/config/services'
 import { getMockedCollaborators, getMockedCustomer } from './contactMocks'
 import { getCollaborators, getContactById, inviteCustomers, patchContact } from '.'
 import { omit } from 'lodash-es'
@@ -8,7 +8,7 @@ import type { PatchContactPayload } from './contactTypes'
 const mockedCollaborators = getMockedCollaborators()
 const mockedCustomerIDs = [1, 2, 3]
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       gateway: {

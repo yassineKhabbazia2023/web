@@ -104,13 +104,13 @@ import {
   PTimelineItem,
   PTooltip,
 } from '@kpmg/styleguide'
-import type { Entity } from '@kpmg/common'
-import { commonStore } from '@kpmg/common'
-import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@/services/account/accountServices'
-import { DATE_TIME_FORMATS as datetimeFormats } from '@/constants'
-import { removeFalsyValues } from '@/helper'
-import FormSearch from '@/common/components/FormSearch'
-import NoResult from '@/common/components/NoResult'
+import type { Entity } from '@pulse/Common'
+import { commonStore } from '@pulse/Common'
+import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
+import { removeFalsyValues } from '@entities/helper'
+import FormSearch from '@entities/common/components/FormSearch'
+import NoResult from '@entities/common/components/NoResult'
 import type { Delegation } from './DelegationsHistoryTypes'
 
 const { d, t } = useI18n({

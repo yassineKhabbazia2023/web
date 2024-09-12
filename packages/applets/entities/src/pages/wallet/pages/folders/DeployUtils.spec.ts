@@ -10,11 +10,11 @@ import {
 } from './DeployUtilsMock'
 import { PIArrowUpCircle } from '@kpmg/styleguide'
 import type { DeploymentStatus, SearchCriteria } from '../../types'
-import * as accountService from '@/services/account'
+import * as accountService from '@entities/services/account'
 import {
   getMockedAccountQueryResult,
   getMockedAccountRow,
-} from '@/services/account/accountMock'
+} from '@entities/services/account/accountMock'
 
 const deploymentStatuses: DeploymentStatus[] = [
   {
@@ -24,13 +24,13 @@ const deploymentStatuses: DeploymentStatus[] = [
   },
 ]
 
-vi.mock('@/services/account', () => {
+vi.mock('@entities/services/account', () => {
   return {
     fetchAccounts: vi.fn(),
   }
 })
 
-vi.mock('@kpmg/common', () => {
+vi.mock('@pulse/Common', () => {
   return {
     commonApi: () => ({
       gateway: {

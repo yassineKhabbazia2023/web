@@ -31,8 +31,8 @@ import { ref } from 'vue'
 import { PAutocomplete } from '@kpmg/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
-import type { Contact } from '@/services/contact/contactTypes'
-import { getCollaborators } from '@/services/wallet'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import { getCollaborators } from '@entities/services/wallet'
 
 const props = defineProps<CollaboratorsSearchAutocompleteProps>()
 const emit = defineEmits<{

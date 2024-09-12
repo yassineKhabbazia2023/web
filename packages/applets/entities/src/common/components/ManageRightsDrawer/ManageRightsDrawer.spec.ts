@@ -1,10 +1,10 @@
 import { nextTick } from 'vue'
 import { expect, beforeEach, describe, it, vi, type Mock } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
-import { dataFromApi } from '@/pages/folder/pages/usersCollab/mockData'
-import type { User } from '@/pages/folder/pages/usersCollab/types'
+import { dataFromApi } from '@entities/pages/folder/pages/usersCollab/mockData'
+import type { User } from '@entities/pages/folder/pages/usersCollab/types'
 import { useRoute, useRouter } from 'vue-router'
-import * as authorizationServices from '@/services/authorization'
+import * as authorizationServices from '@entities/services/authorization'
 import ManageRightsDrawer from '.'
 
 // Mocks
