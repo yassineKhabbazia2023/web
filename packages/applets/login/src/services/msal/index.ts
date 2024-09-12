@@ -1,0 +1,50 @@
+import {
+  VITE_API_MSAL_CLIENT_ID,
+  VITE_API_MSAL_TENANT,
+  VITE_API_MSAL_AUTHORITY,
+  VITE_API_MSAL_REDIRECT_URI,
+  VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
+  VITE_API_MSAL_SCOPE,
+} from 'env-vars'
+import { amplitudeService, tokenService } from '@kpmg/common'
+import { UserAgentApplication } from 'msal'
+
+const msalConfig = {
+  auth: {
+    clientId: VITE_API_MSAL_CLIENT_ID,
+    tenant: VITE_API_MSAL_TENANT,
+    authority: VITE_API_MSAL_AUTHORITY,
+    redirectUri: VITE_API_MSAL_REDIRECT_URI,
+    postLogoutRedirectUri: VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
+  },
+}
+export const msalInstance = new UserAgentApplication(msalConfig)
+
+export const getToken = async () => {
+  if (msalInstance.getAccount()) {
+    amplitudeService.setNewUserProperty('user_type', 'Collaborateur')
+    return await msalInstance
+      .acquireTokenSilent({
+        loginHint: msalInstance.getAccount().userName,
+        scopes: [VITE_API_MSAL_SCOPE],
+      })
+      .then((response: any) => {
+        const token = response.accessToken
+        tokenService.setToken(token)
+        amplitudeService.track('Sign In Completed', {
+          sign_in_method: 'SSO',
+          sign_in_result: 'succeeded',
+        })
+        return token
+      })
+      .catch((e) => {
+        console.warn(e)
+        amplitudeService.track('Sign In Completed', {
+          sign_in_method: 'SSO',
+          sign_in_result: 'failed',
+        })
+        msalInstance.loginRedirect()
+      })
+  }
+  return null
+}
