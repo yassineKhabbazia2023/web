@@ -8,7 +8,7 @@ import type { AddCustomerFeedbackProps } from './AddCustomerFeedbackTypes'
 const defaultProps = {
   fullName: 'Amaury Leplubo',
   email: 'this@isafakeemail.cc',
-  isError: false,
+  hasError: false,
 }
 
 const i18n = createI18n({
@@ -45,25 +45,25 @@ describe('add customer drawer', () => {
   })
 
   describe('add customer feedback', () => {
-    it('should render image and text when isError is false', () => {
+    it('should render image and text when hasError is false', () => {
       const imageWrapper = getImageWrapper()
       const successTextWrapper = findSuccessTextWrapper()
       expect(imageWrapper.props('pName')).toBe('ok')
       expect(successTextWrapper.exists()).toBeTruthy()
     })
 
-    it('should render image and alert when isError is true', () => {
+    it('should render image and alert when hasError is true', () => {
       wrapper = createWrapper({
         ...defaultProps,
-        isError: true,
+        hasError: true,
       })
       const imageWrapper = getImageWrapper()
       const alertWrapper = wrapper.findComponent(PAlert)
       const successTextWrapper = findSuccessTextWrapper()
 
-      expect(imageWrapper.props('pName')).toBe('maintenance')
       expect(alertWrapper.exists()).toBeTruthy()
       expect(successTextWrapper.exists()).toBeFalsy()
+      expect(imageWrapper.props('pName')).toBe('maintenance')
     })
   })
 })

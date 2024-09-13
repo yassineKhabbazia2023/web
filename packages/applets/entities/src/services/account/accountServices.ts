@@ -63,11 +63,13 @@ export async function deleteAccountDelegation(delegationId: number) {
 export async function addContactToEntity(
   accountId: Account['accountId'],
   contactId: Contact['id'],
+  email?: string,
 ) {
   const url = `${API_PREFIXES.ACCOUNT}/roles`
   const result = await commonApi().gateway.post(url, {
     accountId,
     contactId,
+    email,
     isSignatory: false,
     isFavorite: false,
     isDelegation: false,
@@ -155,4 +157,17 @@ export async function getAccountUserByEmail(email: string): Promise<Contact | nu
       },
     })
   return status === 204 ? null : data.items[0]
+}
+
+export async function checkContactHasRoleOnAccount(email: string, accountId?: number) : Promise<boolean> {
+  const { data } = await commonApi().gateway.get(
+    `${API_PREFIXES.ACCOUNT}/roles/check/currentuser`, {
+      params: {
+        accountId, // Optional: If not provided, we'll check the role across all accounts of the current user
+        email,
+      },
+    },
+  )
+
+  return data
 }

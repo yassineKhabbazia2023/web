@@ -1,99 +1,69 @@
 <template>
   <PDrawer
     v-model="isDrawerOpened"
-    pSize="45%"
+    pSize="50%"
     @close-drawer-button="isDrawerOpened = false"
   >
     <template #header-prefix>
       <div class="add-customer-drawer__header">
         <span class="add-customer-drawer__entity-name">{{ targetEntityName }}</span>
         <h3>
-          {{ t('addUser')}}
+          {{ isAddContactSucceeded ? t('userAdded') : t('addUser')}}
         </h3>
       </div>
     </template>
-
     <div v-if="!hasFormBeenSent">
-      <div class="add-customer-drawer__add-image margin-x--auto">
-        <PImage
-          pType="paupulse"
-          pName="add-user"
-          pFit="cover"
-        />
-      </div>
-
-      <div class="margin-y--6">
-        {{ t('fillUserInformation') }}
-      </div>
-      <PForm
-        ref="addCustomerFormRef"
-        pLabelPosition="top"
-        pRequireAsteriskPosition="right"
-        :pModel="formData"
-        :pRules="formRules"
-        :pInlineMessage="false"
+      <PBlockHeader
+        :pTitle="t('newUser')"
+        :pDescription="t('setUserEmail')"
+        :pHasButton="false"
+        pColor="persian"
+        pSize="big"
+        :pImage="{
+          pFit: 'fill',
+          pType: 'portrait',
+          pName: 'user-nonbinary-add'
+        }"
       >
-        <PFormItem
-          class="margin-bottom--4"
-          :pLabel="t('emailAddress')"
-          pProp="email"
-          pValidateStatus="success"
-        >
-          <PInput
-            v-model="formData.email"
-            pType="email"
-            @blur="checkIfUserExists"
-            data-testid="email-input"
-          />
-        </PFormItem>
-
-        <PAlert v-if="doesUserEmailExists" pType="success">
-          {{ t('userAlreadyExists') }}
-        </PAlert>
-
-        <PFormItem
-          class="margin-top--4"
-          :pLabel="t('lastName')"
-          pProp="lastName"
-        >
-          <PInput
-            v-model="formData.lastName"
-            :disabled="disabledFormInputs.lastName"
-            data-testid="last-name-input"
-          />
-        </PFormItem>
-
-        <PFormItem
-          :pLabel="t('firstName')"
-          pProp="firstName"
-        >
-          <PInput
-            v-model="formData.firstName"
-            :disabled="disabledFormInputs.firstName"
-            data-testid="first-name-input"
-          />
-        </PFormItem>
-
-        <PFormItem
-          :pLabel="t('mobilePhoneNumber')"
-          pProp="mobilePhone"
-        >
-          <PInput
-            v-model="formData.mobilePhone"
-            pType="tel"
-            :disabled="disabledFormInputs.mobilePhone"
-            data-testid="mobile-phone-input"
-          />
-        </PFormItem>
-      </PForm>
+        <template #suffix>
+          <PForm
+            ref="addCustomerFormRef"
+            pLabelPosition="top"
+            pRequireAsteriskPosition="right"
+            :pModel="newContact"
+            :pRules="formRules"
+            :pInlineMessage="false"
+          >
+            <PFormItem
+              class="margin-bottom--4"
+              :pLabel="t('email.address')"
+              pProp="email"
+              pValidateStatus="success"
+            >
+              <PInput
+                v-model="newContact.email"
+                pType="email"
+                :pPlaceholder="t('email.placeholder')"
+                data-testid="email-input"
+              />
+            </PFormItem>
+          </PForm>
+        </template>
+      </PBlockHeader>
+      <PAlert
+        v-if="hasRoleOnAccount"
+        pType="danger"
+        class="margin-top--2"
+      >
+        {{ t('alreadyAddedToAccount') }}
+      </PAlert>
     </div>
     <AddCustomerFeedback
       v-else
-      :fullName="userFullName"
-      :email="formData.email"
-      :isError="hasFormSubmitFailed"
+      :fullName="t('newUser')"
+      :email="newContact.email"
+      :hasError="hasFormSubmissionFailed"
     />
-
     <template #footer>
       <NextPreviousButtons
         v-if="!hasFormBeenSent"
@@ -101,13 +71,14 @@
         :nextLabel="t('nextLabel')"
         :isNextButtonDisabled="isNextButtonDisabled"
         :isNextButtonLoading="isNextButtonLoading"
-        @click-next="handleFormSubmit"
+        @click-next="handleAddContactFormSubmission"
         @click-previous="isDrawerOpened = false"
       />
       <PButton
         v-else
         pPlain
         pType="primary"
+        data-testid="add-customer-cancel-button"
         @click="isDrawerOpened = false"
       >
         {{ t('close')}}
@@ -117,25 +88,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { computed, reactive, ref, watch } from 'vue'
 import { amplitudeService, debounce } from '@pulse/Common'
 import {
   PDrawer,
   PForm,
   PFormItem,
   PInput,
-  PImage,
   PAlert,
   PButton,
+  PBlockHeader,
   type FormRules,
 } from '@kpmg/styleguide'
-import { getFullName } from '@entities/common/utils/helpers'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
-import { validPhoneNumberPattern } from '@entities/common/utils/helpers/forms'
-import { createCustomer, addContactToEntity, getAccountUserByEmail } from '@entities/services/account'
 import AddCustomerFeedback from './components/addCustomerFeedback'
+import { createCustomer, checkContactHasRoleOnAccount, addContactToEntity } from '@entities/services/account'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -148,6 +117,7 @@ const emit = defineEmits<{
   'refresh-customers-list': [void]
 }>()
 
+const isAddContactSucceeded = computed(() => hasFormBeenSent.value && !hasFormSubmissionFailed.value)
 const isDrawerOpened = computed({
   get() {
     return props.modelValue
@@ -157,117 +127,9 @@ const isDrawerOpened = computed({
   },
 })
 
-const addCustomerFormRef = ref()
-const isNextButtonDisabled = ref(true)
-const isNextButtonLoading = ref(false)
-const formData = reactive({
+const newContact = reactive({
   email: '',
-  lastName: '',
-  firstName: '',
-  mobilePhone: '',
 })
-
-watch(formData, debouncedCheckIfNextButtonShouldBeEnabled())
-function debouncedCheckIfNextButtonShouldBeEnabled() {
-  return debounce(() => checkIfNextButtonShouldBeEnabled(), 600)
-}
-
-async function checkIfNextButtonShouldBeEnabled() {
-  if (!addCustomerFormRef.value) return
-
-  const { lastName, firstName, email } = formData
-  if (lastName && firstName && email) {
-    try {
-      await addCustomerFormRef.value.validate()
-      isNextButtonDisabled.value = false
-    } catch (_error) {
-      isNextButtonDisabled.value = true
-    }
-  } else {
-    isNextButtonDisabled.value = true
-  }
-}
-
-const disabledFormInputs = reactive({
-  lastName: false,
-  firstName: false,
-  mobilePhone: false,
-})
-
-const doesUserEmailExists = ref(false)
-const fetchedUser = ref()
-async function checkIfUserExists() {
-  if (!formData.email) return
-  fetchedUser.value = await getAccountUserByEmail(formData.email)
-  if (fetchedUser.value) {
-    doesUserEmailExists.value = true
-    formData.firstName = fetchedUser.value.firstName
-    formData.lastName = fetchedUser.value.lastName
-    formData.mobilePhone = fetchedUser.value.mobilePhone
-
-    disabledFormInputs.firstName = true
-    disabledFormInputs.lastName = true
-    disabledFormInputs.mobilePhone = true
-
-    isNextButtonDisabled.value = false
-    addCustomerFormRef.value.clearValidate()
-  } else {
-    if (doesUserEmailExists.value) {
-      formData.firstName = ''
-      formData.lastName = ''
-      formData.mobilePhone = ''
-    }
-
-    doesUserEmailExists.value = false
-
-    disabledFormInputs.firstName = false
-    disabledFormInputs.lastName = false
-    disabledFormInputs.mobilePhone = false
-  }
-}
-
-const hasFormBeenSent = ref(false)
-const hasFormSubmitFailed = ref(false)
-async function handleFormSubmit() {
-  if (!addCustomerFormRef.value) return
-  try {
-    await addCustomerFormRef.value.validate()
-    isNextButtonDisabled.value = false
-    isNextButtonLoading.value = true
-
-    if (!doesUserEmailExists.value) {
-      const { firstName, lastName, mobilePhone, email } = formData
-      fetchedUser.value = await createCustomer({
-        firstName,
-        lastName,
-        mobilePhone,
-        email,
-        accountNumber: props.targetEntityNumber,
-      })
-    } else {
-      await addContactToEntity(props.targetEntityId, fetchedUser.value.id)
-      amplitudeService.track('Onboarding Started', {
-        onboarding_start_localisation: "Ajout d'un utilisateur",
-        onboarding_start_result: 'succeeded',
-      })
-    }
-
-    hasFormBeenSent.value = true
-    isNextButtonLoading.value = false
-    emit('refresh-customers-list')
-  } catch (error) {
-    console.error(error)
-    amplitudeService.track('Onboarding Started', {
-      onboarding_start_localisation: "Ajout d'un utilisateur",
-      onboarding_start_result: 'failed',
-    })
-    hasFormBeenSent.value = true
-    isNextButtonDisabled.value = true
-    isNextButtonLoading.value = false
-    hasFormSubmitFailed.value = true
-  }
-}
-
 const formRules = reactive<FormRules>({
   email: [
     {
@@ -277,30 +139,84 @@ const formRules = reactive<FormRules>({
       type: 'email',
     },
   ],
-  lastName: [
-    {
-      required: true,
-      message: t('requiredField'),
-      trigger: 'blur',
-    },
-  ],
-  firstName: [
-    {
-      required: true,
-      message: t('requiredField'),
-      trigger: 'blur',
-    },
-  ],
-  mobilePhone: [
-    {
-      trigger: 'blur',
-      pattern: validPhoneNumberPattern,
-      message: t('incorrectPhoneNumberFormat'),
-    },
-  ],
 })
 
-const userFullName = computed(() => getFullName(formData.firstName, formData.lastName, true))
+// #region Check Contact Role
+const addCustomerFormRef = ref()
+const hasRoleOnAccount = ref(false)
+const isNextButtonLoading = ref(false)
+const isNextButtonDisabled = ref(true)
+const checkContactRole = async () => {
+  isNextButtonLoading.value = true
+  if (newContact.email) {
+    try {
+      await addCustomerFormRef.value.validate()
+      // Check if the contact to be added exists in the database or has a role on the current account
+      hasRoleOnAccount.value = await checkContactHasRoleOnAccount(newContact.email, props.targetEntityId)
+      isNextButtonDisabled.value = hasRoleOnAccount.value
+    } catch {
+      isNextButtonDisabled.value = true
+    }
+  } else {
+    isNextButtonDisabled.value = true
+  }
+  isNextButtonLoading.value = false
+}
+watch(newContact, debounce(() => checkContactRole(), 600))
+// #endregion
+
+// #region Handle Add Contact Form Submission
+const NEW_USER = {
+  firstName: 'Nouvel',
+  lastName: 'Utilisateur',
+}
+const hasFormBeenSent = ref(false)
+const hasFormSubmissionFailed = ref(false)
+async function handleAddContactFormSubmission() {
+  if (!addCustomerFormRef.value) return
+  try {
+    await addCustomerFormRef.value.validate()
+    isNextButtonLoading.value = true
+    await createCustomer({
+      firstName: NEW_USER.firstName,
+      lastName: NEW_USER.lastName,
+      mobilePhone: '',
+      email: newContact.email,
+      accountNumber: props.targetEntityNumber,
+    })
+    onboardingSucceeded()
+  } catch (error: any) {
+    if (error.response.status === 409) {
+      try {
+        await addContactToEntity(props.targetEntityId, 0, newContact.email)
+        onboardingSucceeded()
+      } catch {
+        onboardingFailed()
+      }
+    } else {
+      onboardingFailed()
+    }
+  } finally {
+    hasFormBeenSent.value = true
+    isNextButtonLoading.value = false
+  }
+}
+const onboardingFailed = () => {
+  amplitudeService.track('Onboarding Started', {
+    onboarding_start_localisation: "Ajout d'un utilisateur",
+    onboarding_start_result: 'failed',
+  })
+  hasFormSubmissionFailed.value = true
+}
+const onboardingSucceeded = () => {
+  amplitudeService.track('Onboarding Started', {
+    onboarding_start_localisation: "Ajout d'un utilisateur",
+    onboarding_start_result: 'succeeded',
+  })
+  emit('refresh-customers-list')
+}
+// #endregion
+
 </script>
 
 <style lang="scss" scoped>
@@ -316,31 +232,29 @@ const userFullName = computed(() => getFullName(formData.firstName, formData.las
 
 <i18n lang="yaml">
   en-US:
-    addUser: 'Add a user'
-    fillUserInformation: "Please fill the user's information:"
-    emailAddress: "E-mail"
-    incorrectEmail: "Email format in not valid"
-    userAlreadyExists: 'This user already have a KPMG Pulse account, the form has been filled.'
-    firstName: 'First name'
-    lastName: 'Last name'
-    mobilePhoneNumber: 'Mobile phone number'
-    requiredField: 'This field is mandatory'
-    incorrectPhoneNumberFormat: 'Phone number format is incorrect'
-    previousLabel: 'Cancel'
-    nextLabel: 'Next'
+    email:
+      address: 'E-mail'
+      placeholder: "lastName.firstName{'@'}exemple.fr"
     close: 'Close'
+    nextLabel: 'Add'
+    newUser: 'New user'
+    addUser: 'Add a user'
+    previousLabel: 'Cancel'
+    userAdded: 'User added'
+    incorrectEmail: "Email format in not valid"
+    setUserEmail: "Please enter the email address of the user to be added"
+    alreadyAddedToAccount: 'This user has already been added to this account'
   fr-FR:
-    addUser: 'Ajouter un utilisateur'
-    fillUserInformation: "Veuillez saisir les informations suivantes :"
-    emailAddress: "E-mail"
-    incorrectEmail: "L'adresse mail n'est pas conforme"
-    userAlreadyExists: 'Cet utilisateur a déjà un compte KPMG Pulse, le formulaire a été complété.'
-    firstName: 'Prénom'
-    lastName: 'Nom'
-    mobilePhoneNumber: 'Téléphone portable'
-    requiredField: 'Ce champ est obligatoire'
-    incorrectPhoneNumberFormat: 'Le format du numéro est incorrect'
-    previousLabel: 'Annuler'
-    nextLabel: 'Suivant'
+    email:
+      address: 'E-mail'
+      placeholder: "nom.prenom{'@'}exemple.fr"
     close: 'Fermer'
+    nextLabel: 'Ajouter'
+    newUser: 'Nouvel utilisateur'
+    addUser: 'Ajouter un utilisateur'
+    previousLabel: 'Annuler'
+    userAdded: 'Utilisateur ajouté'
+    incorrectEmail: "L'adresse mail n'est pas conforme"
+    setUserEmail: "Veuillez saisir l'adresse e-mail de l'utilisateur à ajouter"
+    alreadyAddedToAccount: 'Cet utilisateur a déjà été ajouté à cette entité'
 </i18n>

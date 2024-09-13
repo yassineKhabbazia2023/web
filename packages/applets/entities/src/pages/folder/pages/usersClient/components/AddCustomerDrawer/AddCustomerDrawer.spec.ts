@@ -1,41 +1,28 @@
 import { nextTick } from 'vue'
-import { PDrawer } from '@kpmg/styleguide'
-import { type VueWrapper, type DOMWrapper, mount, flushPromises } from '@vue/test-utils'
+import {
+  type VueWrapper,
+  type DOMWrapper,
+  mount,
+  flushPromises,
+} from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { createI18n } from 'vue-i18n'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import { entityMock } from '@entities/../tests/mocks/EntitiesMocks'
-import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
+import * as accountServices from '@entities/services/account'
+import { amplitudeService } from '@pulse/Common'
 import AddCustomerDrawer from '.'
-import AddCustomerFeedback from './components/addCustomerFeedback'
-import { getMockedCustomer } from '@entities/services/contact/contactMocks'
-import { addContactToEntity, createCustomer, getAccountUserByEmail } from '@entities/services/account'
 
-const customerMock = getMockedCustomer()[0]
-
+// Mocks
+const formDataMock = {
+  email: 'this@isafakeemail.cc',
+}
+const defaultProps = {
+  modelValue: true,
+  targetEntityId: entityMock.accountId,
+  targetEntityName: entityMock.legalName,
+  targetEntityNumber: entityMock.accountNumber,
+}
 export const debounceMock = vi.fn((callback: Function) => callback)
-
-const apiMocks = vi.hoisted(() => ({
-  emailThatExistsMock: vi.fn(() => Promise.resolve({ ...customerMock })),
-  emailThatDoesNotExist: vi.fn(() => Promise.resolve(null)),
-}))
-vi.mock('@entities/services/account', () => {
-  const createCustomerMock = vi.fn(() => {
-    return Promise.resolve({
-      data: {
-        id: customerMock.id,
-      },
-    })
-  })
-
-  const addContactToEntityMock = vi.fn().mockResolvedValue({})
-  return {
-    createCustomer: createCustomerMock,
-    addContactToEntity: addContactToEntityMock,
-    getAccountUserByEmail: apiMocks.emailThatExistsMock,
-  }
-})
-
 vi.mock('@pulse/Common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
   amplitudeService: {
@@ -43,237 +30,265 @@ vi.mock('@pulse/Common', () => ({
   },
 }))
 
-const defaultProps = {
-  modelValue: true,
-  targetEntityId: entityMock.accountId,
-  targetEntityName: entityMock.legalName,
-  targetEntityNumber: entityMock.accountNumber,
-}
-
-const i18n = createI18n({
-  locale: 'fr-FR',
-})
-
 const createWrapper = (
   props: AddCustomerDrawerProps = defaultProps,
 ): VueWrapper => {
   return mount(AddCustomerDrawer, {
     props,
-    global: {
-      provide: {
-        i18n,
-      },
-    },
   })
+}
+
+// Component selector helpers
+const findInputValidationError = () => wrapper.find('.is-error')
+const findNextPreviousButton = () =>
+  wrapper.findComponent({ name: 'NextPreviousButtons' })
+const getEmailField = (): DOMWrapper<HTMLInputElement> =>
+  wrapper.find('[data-testid="email-input"]')
+
+const fillEmailField = () => {
+  const emailInput = getEmailField()
+
+  const { email } = formDataMock
+  emailInput.setValue(email)
 }
 
 let wrapper: VueWrapper
+describe('addCustomerDrawer', () => {
+  beforeEach(async () => {
+    vi.useFakeTimers()
 
-const findNextPreviousButton = (wrapper: VueWrapper) =>
-  wrapper.findComponent(NextPreviousButtons)
+    // 🕵️ Spies
+    vi.spyOn(accountServices, 'checkContactHasRoleOnAccount').mockResolvedValue(
+      false,
+    )
+    vi.spyOn(accountServices, 'createCustomer').mockResolvedValue(
+      'Customer has been created successfully!',
+    )
 
-const findAddCustomerDrawer = (wrapper: VueWrapper) =>
-  wrapper.findComponent(PDrawer)
-
-const findAddCustomerFeedback = (wrapper: VueWrapper) =>
-  wrapper.findComponent(AddCustomerFeedback)
-
-const findIsError = () => wrapper.find('.is-error')
-
-const formDataMock = {
-  email: 'this@isafakeemail.cc',
-  firstName: 'Amaury',
-  lastName: 'Leplubo',
-  mobilePhone: '0123456789',
-}
-
-function fillFormFields(wrapper: VueWrapper) {
-  const {
-    emailInput,
-    lastNameInput,
-    firstNameInput,
-    mobilePhoneInput,
-  } = getFormFields(wrapper)
-
-  const { email, firstName, lastName, mobilePhone } = formDataMock
-  emailInput.setValue(email)
-  firstNameInput.setValue(firstName)
-  lastNameInput.setValue(lastName)
-  mobilePhoneInput.setValue(mobilePhone)
-}
-
-function getFormFields(wrapper: VueWrapper) {
-  const inputs: DOMWrapper<HTMLInputElement>[] = wrapper.findAll('[data-testid$="-input"]')
-  const emailInput = inputs[0]
-  const lastNameInput = inputs[1]
-  const firstNameInput = inputs[2]
-  const mobilePhoneInput = inputs[3]
-
-  return {
-    emailInput,
-    lastNameInput,
-    firstNameInput,
-    mobilePhoneInput,
-  }
-}
-
-describe('add customer drawer', () => {
-  beforeEach(() => {
     wrapper = createWrapper()
+    await nextTick()
   })
-
-  describe('rendering', () => {
+  describe('display', () => {
     it.each([
       {
-        shouldBeVisible: false,
+        display: false,
       },
       {
-        shouldBeVisible: true,
+        display: true,
       },
-    ])('should exist depending of modelValue', async ({ shouldBeVisible }) => {
-      const drawerWrapper = findAddCustomerDrawer(wrapper)
-      wrapper.setProps({ modelValue: shouldBeVisible })
-      await nextTick()
-      expect(drawerWrapper.props('modelValue')).toBe(shouldBeVisible)
-    })
+    ])(
+      'should open the drawer if the modelValue is %s',
+      async ({ display }) => {
+        const addCustomerDrawer = wrapper.findComponent({ name: 'PDrawer' })
+        wrapper.setProps({ modelValue: display })
+        await nextTick()
 
-    it('should have nextButton disabled by default', () => {
-      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeTruthy()
-    })
+        expect(addCustomerDrawer.props('modelValue')).toBe(display)
+      },
+    )
 
-    it('should render add customer feedback after form submit', async () => {
-      vi.useFakeTimers()
-      fillFormFields(wrapper)
-      // To simulate the debounce time
-      vi.advanceTimersByTime(600)
-      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      await nextPreviousButtonsWrapper.vm.$emit('click-next')
-      await flushPromises()
-      await nextTick()
+    it('should have the nextButton disabled by default', () => {
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
 
-      const addCustomerFeedbackWrapper = findAddCustomerFeedback(wrapper)
-      expect(addCustomerFeedbackWrapper.exists()).toBeTruthy()
-      expect(addCustomerFeedbackWrapper.props('isError')).toBeFalsy()
-      vi.clearAllTimers()
-    })
-
-    it('should still render add customer feedback after form submit', async () => {
-      // @ts-ignore
-      createCustomer.mockRejectedValue(null)
-      vi.useFakeTimers()
-      fillFormFields(wrapper)
-      // To simulate the debounce time
-      vi.advanceTimersByTime(600)
-      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      await nextPreviousButtonsWrapper.vm.$emit('click-next')
-      await flushPromises()
-      await nextTick()
-
-      const addCustomerFeedbackWrapper = findAddCustomerFeedback(wrapper)
-      expect(addCustomerFeedbackWrapper.exists()).toBeTruthy()
-      expect(addCustomerFeedbackWrapper.props('isError')).toBeTruthy()
-      vi.clearAllTimers()
+      expect(
+        nextPreviousButtonsWrapper.props('isNextButtonDisabled'),
+      ).toBeTruthy()
     })
   })
-
   describe('interactions', () => {
-    it('should fill the form if email exists', async () => {
-      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
-      emailInput.setValue(formDataMock.email)
-      await emailInput.trigger('blur')
+    it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+      const addCustomerDrawer = wrapper.findComponent({ name: 'PDrawer' })
+      addCustomerDrawer.vm.$emit('update:modelValue', false)
       await nextTick()
 
-      expect(lastNameInput.element.value).toBe(customerMock.lastName)
-      expect(lastNameInput.element.disabled).toBeTruthy()
-      expect(firstNameInput.element.value).toBe(customerMock.firstName)
-      expect(firstNameInput.element.disabled).toBeTruthy()
-      expect(mobilePhoneInput.element.value).toBe(customerMock.mobilePhone)
-      expect(mobilePhoneInput.element.disabled).toBeTruthy()
-
-      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeFalsy()
+      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
-
-    it('should clear the form when using unknown email after using an existing email', async () => {
-      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
-
-      emailInput.setValue(formDataMock.email)
-      await emailInput.trigger('blur')
+    it('should correctly bind the email value', async () => {
+      fillEmailField()
+      const emailInput = getEmailField()
       await nextTick()
 
-      vi.mocked(getAccountUserByEmail).mockReturnValue(apiMocks.emailThatDoesNotExist())
+      expect(emailInput.element.value).toBe(formDataMock.email)
+    })
+    it('should close the drawer when the close-drawer-button event is emitted', async () => {
+      const addCustomerDrawer = wrapper.findComponent({ name: 'PDrawer' })
+      addCustomerDrawer.vm.$emit('close-drawer-button')
+      await nextTick()
 
-      emailInput.setValue('this@isatest.fr')
+      expect(addCustomerDrawer.isVisible()).toBeFalsy()
+    })
+    it('should close the drawer when the previous button is clicked', async () => {
+      const addCustomerDrawer = wrapper.findComponent({ name: 'PDrawer' })
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      nextPreviousButtonsWrapper.vm.$emit('clickPrevious')
+      await nextTick()
+
+      expect(addCustomerDrawer.isVisible()).toBeFalsy()
+    })
+    it('should close the drawer when the cancel button is clicked', async () => {
+      fillEmailField()
+      // To simulate the debounce time
+      vi.advanceTimersByTime(600)
+
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      await nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      await flushPromises()
+
+      const addCustomerDrawer = wrapper.findComponent({ name: 'PDrawer' })
+      const addCustomerCancelButton = wrapper.findComponent(
+        '[data-testid=add-customer-cancel-button]',
+      )
+      await addCustomerCancelButton.trigger('click')
+
+      expect(addCustomerDrawer.isVisible()).toBeFalsy()
+    })
+    it('should show a form validation error if the email is not valid', async () => {
+      expect(findInputValidationError().exists()).toBeFalsy()
+
+      const emailInput = getEmailField()
+      emailInput.setValue('falseEmail')
       await emailInput.trigger('blur')
       await flushPromises()
 
-      expect(lastNameInput.element.disabled).toBeFalsy()
-      expect(firstNameInput.element.value).toBeFalsy()
-      expect(firstNameInput.element.disabled).toBeFalsy()
-      expect(mobilePhoneInput.element.value).toBeFalsy()
-      expect(mobilePhoneInput.element.disabled).toBeFalsy()
+      expect(findInputValidationError().exists()).toBeTruthy()
     })
+    it('should display a danger alert if the contact already has a role on the current account', async () => {
+      vi.spyOn(
+        accountServices,
+        'checkContactHasRoleOnAccount',
+      ).mockResolvedValue(true)
 
-    it('should bind values', async () => {
-      fillFormFields(wrapper)
-      const { emailInput, lastNameInput, firstNameInput, mobilePhoneInput } = getFormFields(wrapper)
-      const { email, firstName, lastName, mobilePhone } = formDataMock
-      await nextTick()
+      fillEmailField()
+      // To simulate the debounce time
+      vi.advanceTimersByTime(600)
 
-      expect(emailInput.element.value).toBe(email)
-      expect(firstNameInput.element.value).toBe(firstName)
-      expect(lastNameInput.element.value).toBe(lastName)
-      expect(mobilePhoneInput.element.value).toBe(mobilePhone)
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      await flushPromises()
+      const alertContactExists = wrapper.findComponent({ name: 'PAlert' })
+
+      expect(alertContactExists.exists()).toBeTruthy()
+      expect(
+        nextPreviousButtonsWrapper.props('isNextButtonDisabled'),
+      ).toBeTruthy()
     })
+    it('should display AddCustomerFeedback with a success message when the contact is created', async () => {
+      const createCustomerSpy = vi.spyOn(accountServices, 'createCustomer')
+      fillEmailField()
+      // To simulate the debounce time
+      vi.advanceTimersByTime(600)
 
-    it('should close the drawer on close-drawer-button event', async () => {
-      const drawerWrapper = findAddCustomerDrawer(wrapper)
-      drawerWrapper.vm.$emit('close-drawer-button')
-      await nextTick()
-      expect(drawerWrapper.isVisible()).toBeFalsy()
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      await nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      await flushPromises()
+      const addCustomerFeedbackWrapper = wrapper.findComponent({
+        name: 'AddCustomerFeedback',
+      })
+
+      expect(createCustomerSpy).toHaveBeenCalledOnce()
+      expect(createCustomerSpy).toHaveBeenCalledWith({
+        firstName: 'Nouvel',
+        lastName: 'Utilisateur',
+        mobilePhone: '',
+        email: formDataMock.email,
+        accountNumber: entityMock.accountNumber,
+      })
+      expect(addCustomerFeedbackWrapper.exists()).toBeTruthy()
+      expect(addCustomerFeedbackWrapper.props('hasError')).toBeFalsy()
     })
+    it('should track an amplitude event when successfully creating a contact', async () => {
+      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      fillEmailField()
+      // To simulate the debounce time
+      vi.advanceTimersByTime(600)
 
-    it('has an error if email is not valid', async () => {
-      expect(findIsError().exists()).toBeFalsy()
-
-      const { emailInput } = getFormFields(wrapper)
-      await emailInput.setValue('falseEmail')
-      await emailInput.trigger('blur')
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      await nextPreviousButtonsWrapper.vm.$emit('clickNext')
       await flushPromises()
 
-      expect(findIsError().exists()).toBeTruthy()
+      expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
+      expect(trackAmplitudeSpy).toHaveBeenCalledWith('Onboarding Started', {
+        onboarding_start_localisation: "Ajout d'un utilisateur",
+        onboarding_start_result: 'succeeded',
+      })
+      expect(wrapper.emitted('refresh-customers-list')).toBeTruthy()
     })
+    it('should track an amplitude event when failing to create the contact', async () => {
+      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      // Throw a bad request error (400)
+      vi.spyOn(accountServices, 'createCustomer').mockRejectedValue({
+        response: { status: 400 },
+      })
 
-    it('disables the next button if the mobile field has an error', async () => {
-      expect(findIsError().exists()).toBeFalsy()
+      fillEmailField()
+      // To simulate the debounce time
+      vi.advanceTimersByTime(600)
 
-      fillFormFields(wrapper)
-      const { mobilePhoneInput } = getFormFields(wrapper)
-      await mobilePhoneInput.setValue('bad value')
-      await mobilePhoneInput.trigger('blur')
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      nextPreviousButtonsWrapper.vm.$emit('clickNext')
       await flushPromises()
 
-      expect(findIsError().exists()).toBeTruthy()
-      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      expect(nextPreviousButtonsWrapper.props('isNextButtonDisabled')).toBeTruthy()
+      expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
+      expect(trackAmplitudeSpy).toHaveBeenCalledWith('Onboarding Started', {
+        onboarding_start_localisation: "Ajout d'un utilisateur",
+        onboarding_start_result: 'failed',
+      })
     })
+    it('should create the role on the account if the contact exists in the database', async () => {
+      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      // Throw a conflict error (409)
+      vi.spyOn(accountServices, 'createCustomer').mockRejectedValue({
+        response: { status: 409 },
+      })
+      vi.spyOn(accountServices, 'addContactToEntity').mockReturnValue({} as any)
+      const addContactToEntitySpy = vi.spyOn(
+        accountServices,
+        'addContactToEntity',
+      )
 
-    it('should only add role if user already exists', async () => {
-      const { emailInput } = getFormFields(wrapper)
+      fillEmailField()
+      // To simulate the debounce time
+      vi.advanceTimersByTime(600)
 
-      // Filling the form with existing information
-      // getAccountUserByEmail is mocked to return a 200 with user information right now
-      emailInput.setValue(formDataMock.email)
-      await emailInput.trigger('blur')
-      await nextTick()
-
-      const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
-      await nextPreviousButtonsWrapper.vm.$emit('click-next')
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      nextPreviousButtonsWrapper.vm.$emit('clickNext')
       await flushPromises()
 
-      expect(addContactToEntity).toHaveBeenCalledWith(defaultProps.targetEntityId, customerMock.id)
-      expect(createCustomer).not.toHaveBeenCalled()
+      expect(addContactToEntitySpy).toHaveBeenCalledOnce()
+      expect(addContactToEntitySpy).toHaveBeenCalledWith(
+        entityMock.accountId,
+        0,
+        formDataMock.email,
+      )
+      expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
+      expect(trackAmplitudeSpy).toHaveBeenCalledWith('Onboarding Started', {
+        onboarding_start_localisation: "Ajout d'un utilisateur",
+        onboarding_start_result: 'succeeded',
+      })
+      expect(wrapper.emitted('refresh-customers-list')).toBeTruthy()
+    })
+    it('should track an amplitude event when creating a role to the account fails', async () => {
+      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      // Throw a conflict error (409)
+      vi.spyOn(accountServices, 'createCustomer').mockRejectedValue({
+        response: { status: 409 },
+      })
+      vi.spyOn(accountServices, 'addContactToEntity').mockRejectedValue(
+        'API Error: 503 Service Unavailable',
+      )
+
+      fillEmailField()
+      // To simulate the debounce time
+      vi.advanceTimersByTime(600)
+
+      const nextPreviousButtonsWrapper = findNextPreviousButton()
+      nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      await flushPromises()
+
+      expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
+      expect(trackAmplitudeSpy).toHaveBeenCalledWith('Onboarding Started', {
+        onboarding_start_localisation: "Ajout d'un utilisateur",
+        onboarding_start_result: 'failed',
+      })
     })
   })
 })

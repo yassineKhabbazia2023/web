@@ -17,6 +17,7 @@ import {
   fetchGatewayApi,
   type Hub,
   deleteContactFromAccount,
+  checkContactHasRoleOnAccount,
 } from '.'
 import {
   getMockedAccount,
@@ -85,6 +86,11 @@ vi.mock('@pulse/Common', () => {
           if (url === `${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`) {
             return Promise.resolve({
               data: mockedCollaborators,
+            })
+          }
+          if (url === `${API_PREFIXES.ACCOUNT}/roles/check/currentuser`) {
+            return Promise.resolve({
+              data: true,
             })
           }
 
@@ -299,6 +305,14 @@ describe('test accountServices', () => {
 
       const accountSignatories = await getAccountSignatories(accountId)
       expect(accountSignatories).toMatchObject(mockedCollaborators)
+    })
+
+    it('should check if contact has role on account', async () => {
+      const accountId = mockedAccount.accountId
+      const email = 'test@test.fr'
+
+      const hasRoleOnAccount = await checkContactHasRoleOnAccount(email, accountId)
+      expect(hasRoleOnAccount).toBeTruthy()
     })
   })
 
