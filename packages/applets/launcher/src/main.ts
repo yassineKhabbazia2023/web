@@ -16,16 +16,12 @@ const folderLauncherRoute = {
 
 export default {
   install(app: App, options: any) {
-    // Accept an array of routes that can be registered along
-    // with the plugin
     const { router } = options
 
-    router.isReady().then(() => {
-      if (router.hasRoute('wallet')) {
-        // Register the launcher route inside wallet if it exists
-        router.addRoute('wallet', folderLauncherRoute)
-      }
-    })
+    if (router.hasRoute('wallet')) {
+      // Register the launcher route inside wallet if it exists
+      router.addRoute('wallet', folderLauncherRoute)
+    }
 
     routes.forEach((route) => {
       router.addRoute(route)
