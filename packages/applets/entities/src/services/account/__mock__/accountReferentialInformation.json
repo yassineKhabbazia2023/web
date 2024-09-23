@@ -1,0 +1,64 @@
+{
+    "staffSizeRange": {
+        "=0": "0 salarié",
+        "=1": "1 salarié",
+        "<11": "De 2 à 10 salariés",
+        "<50": "De 11 à 49 salariés",
+        "<300": "De 50 à 299 salariés",
+        ">=300": "300 salariés et plus"
+    },
+    "fiscalExerciseDuration": {
+        "1": "1",
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "9": "9",
+        "10": "10",
+        "11": "11",
+        "12": "12",
+        "13": "13",
+        "14": "14",
+        "15": "15",
+        "16": "16",
+        "17": "17",
+        "18": "18",
+        "19": "19",
+        "20": "20",
+        "21": "21",
+        "22": "22",
+        "23": "23",
+        "24": "24"
+    },
+    "accountingType": {
+        "Engagement": "Engagement",
+        "Tresorerie": "Trésorerie"
+    },
+    "activityType": {
+        "PS": "Prestation de services",
+        "VB": "Vente de biens"
+    },
+    "fiscalSystem": {
+        "BIC": "BIC (Bénéfices Industriels et Commerciaux)",
+        "BNC": "BNC (Bénéfices Non Commerciaux)",
+        "ME": "Micro-entreprise",
+        "RF": "Revenus fonciers"
+    },
+    "vatType": {
+        "Encaissement": "Encaissement",
+        "Debit": "Débit"
+    },
+    "vatSystem": {
+        "CA3M": "Réel normal - CA3 mensuelle",
+        "CA3T": "Réel normal - CA3 trimestrielle",
+        "CA12": "Réel simplifié - CA12 annuelle",
+        "EXO": "Franchise - Exonération de TVA"
+    },
+    "taxationSystem": {
+        "IR": "Impôt sur le revenu",
+        "IS": "Impôt sur les sociétés"
+    }
+}

@@ -1,0 +1,70 @@
+[
+  {
+    "key": "TVA",
+    "label": "Taxe sur la valeur ajoutée",
+  },
+  {
+    "key": "Bilan",
+    "label": "Bilan",
+  },
+  {
+    "key": "CRL",
+    "label": "Contribution sur les revenus locatifs",
+  },
+  {
+    "key": "CFE",
+    "label": "Cotisation foncière des entreprises",
+  },
+  {
+    "key": "CVAE",
+    "label": "Cotisation sur la valeur ajoutée des entreprises",
+  },
+  {
+    "key": "DES",
+    "label": "Déclaration européenne de service",
+  },
+  {
+    "key": "IFU",
+    "label": "Imprimé fiscal unique",
+  },
+  {
+    "key": "IS",
+    "label": "Impôt sur les sociétés",
+  },
+  {
+    "key": "TVS",
+    "label": "Taxe sur les véhicules de société",
+  },
+  {
+    "key": "EVP",
+    "label": "Eléments variables de paie",
+  },
+  {
+    "key": "DAS",
+    "label": "Date d'arrivée d'un salarié",
+  },
+  {
+    "key": "DF",
+    "label": "Date de formation",
+  },
+  {
+    "key": "DPAE",
+    "label": "Déclaration préalable à l'embauche",
+  },
+  {
+    "key": "DSN",
+    "label": "Déclaration sociale nominative",
+  },
+  {
+    "key": "FDC",
+    "label": "Fin de contrat",
+  },
+  {
+    "key": "FDPE",
+    "label": "Fin de période d'essai",
+  },
+  {
+    "key": "VM",
+    "label": "Visite médicale",
+  },
+]

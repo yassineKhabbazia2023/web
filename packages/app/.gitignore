@@ -1,14 +1,3 @@
-# Temporary ignore during the migration
-src/*.ts
-src/**/*.ts
-src/**/*.vue
-src/**/*.snap
-src/**/*.json
-src/**/*.svg
-!src/**/router/index.ts
-!src/main.ts
-!src/app/App.vue
-
 # Logs
 logs
 *.log

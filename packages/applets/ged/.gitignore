@@ -1,7 +1,3 @@
-# Temporary ignore during the migration
-src/*
-!src/main.ts
-
 # Logs
 logs
 *.log
