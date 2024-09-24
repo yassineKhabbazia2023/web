@@ -37,7 +37,14 @@ export default ({ mode }: any) =>
       },
       server: {
         port: PORT,
+        strictPort: true,
+        open: true,
         origin: `http://localhost:${PORT}`,
+      },
+      preview: {
+        port: PORT,
+        strictPort: true,
+        open: true,
       },
       test: {
         testTimeout: 60000,
