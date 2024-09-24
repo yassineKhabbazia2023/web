@@ -74,10 +74,11 @@ module.exports = {
     'no-whitespace-before-property': 'error',
     'space-before-function-paren': ['error', {
       'anonymous': 'always',
-      'named': 'always',
+      'named': 'never',
       'asyncArrow': 'always',
     }],
     'func-call-spacing': ['error', 'never'],
+    'vitest/max-expects': ['warn', { max: 12 }],
   },
   settings: {
     'vue-i18n': {
