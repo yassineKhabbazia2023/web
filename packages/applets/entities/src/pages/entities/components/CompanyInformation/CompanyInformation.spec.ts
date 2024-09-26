@@ -11,6 +11,7 @@ import {
   getMockedReferentialHubs,
 } from '@entities/services/account/accountMock'
 import CompanyInformation from '.'
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 
 const alertInstructionText =
   'If the immutable information is incorrect, you need to update it in the CRM'
@@ -23,7 +24,7 @@ vi.mock('@entities/services/account', () => ({
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
 }))
 
-vi.mock('@entities/common/config/referential', () => ({
+vi.mock('@entities/common/utils/referential', () => ({
   getFormStructure: () => MEGOffersFormStructure,
 }))
 
@@ -41,7 +42,7 @@ const createWrapper = (account: any, providerName: any) => {
 describe('companyInformation', () => {
   let wrapper: ComponentWrapper<InstanceType <typeof CompanyInformation>>
   beforeEach(async () => {
-    wrapper = createWrapper(mockedAccount, 'MEG')
+    wrapper = createWrapper(mockedAccount, ProviderName.MEG)
     await nextTick()
   })
   describe('display', () => {
@@ -66,7 +67,7 @@ describe('companyInformation', () => {
       const spyConsole = vi.spyOn(console, 'error')
       vi.spyOn(referentialUtils, 'getFormStructure').mockRejectedValue(expectedErrorMessage)
 
-      wrapper = createWrapper(undefined, 'MEG')
+      wrapper = createWrapper(undefined, ProviderName.MEG)
       await flushPromises()
 
       expect(spyConsole).toHaveBeenCalledOnce()
@@ -74,14 +75,14 @@ describe('companyInformation', () => {
     })
     it("should not emit the 'input' event if internalAccount is undefined", async () => {
       const spyReferentialUtils = vi.spyOn(referentialUtils, 'getFormStructure')
-      wrapper = createWrapper(undefined, 'MEG')
+      wrapper = createWrapper(undefined, ProviderName.MEG)
       await nextTick()
 
       wrapper.vm.handleUpdateAccountModel('commercialName', mockedAccount.commercialName)
 
       expect(wrapper.emitted('input')).toBeFalsy()
       expect(spyReferentialUtils).toHaveBeenCalledOnce()
-      expect(spyReferentialUtils).toHaveBeenCalledWith('MEG')
+      expect(spyReferentialUtils).toHaveBeenCalledWith(ProviderName.MEG)
     })
     it('should not send a request to retrieve the form structure if the provider name is a falsy value', async () => {
       const spyReferentialUtils = vi.spyOn(referentialUtils, 'getFormStructure')

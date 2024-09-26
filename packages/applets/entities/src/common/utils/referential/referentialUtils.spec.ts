@@ -5,6 +5,7 @@ import {
   getEnrichedField,
   getEnrichedFormSection,
   getFormSections,
+  getFormStructure,
 } from './referentialUtils'
 import type { ReferentialOptions } from '@entities/services/account'
 import type { PDropdownOption } from '@kpmg/styleguide'
@@ -16,6 +17,8 @@ import { getMockedFormField, getMockedFormSection }
   from '@entities/pages/entities/components/CompanyInformation/CompanyInformationMock'
 import type { FormField, FormSection }
   from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
+import type { FormStructureName } from './referentialUtilsTypes'
 
 const mockedReferential = getMockedAccountReferential()
 const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
@@ -170,22 +173,21 @@ describe('referentialUtils', () => {
   describe('getFormSections', () => {
     it.each([
       {
-        formType: 'MEG',
+        formType: ProviderName.MEG,
         expectedFormStructure: MEGOffersFormStructure,
       },
       {
-        formType: 'LOOP',
+        formType: ProviderName.LOOP,
         expectedFormStructure: LOOPOfferFormStructure,
       },
       {
         formType: 'CompanyProfile',
         expectedFormStructure: InformationFormStructure,
       },
-      {
-        formType: 'Other',
-        expectedFormStructure: [],
-      },
-    ])(
+    ] as {
+      formType: FormStructureName
+      expectedFormStructure: FormSection[]
+    }[])(
       'should return correct form structure if the form type is $formType',
       ({ formType, expectedFormStructure }) => {
         const formStructure = getFormSections(
@@ -195,5 +197,54 @@ describe('referentialUtils', () => {
         expect(formStructure).toStrictEqual(expectedFormStructure)
       },
     )
+  })
+
+  describe('getFormStructure', () => {
+    it.each([
+      {
+        formType: ProviderName.MEG,
+        forceDisabled: false,
+      },
+      {
+        formType: ProviderName.MEG,
+        forceDisabled: true,
+      },
+      {
+        formType: ProviderName.LOOP,
+        forceDisabled: false,
+      },
+      {
+        formType: ProviderName.LOOP,
+        forceDisabled: true,
+      },
+      {
+        formType: 'CompanyProfile',
+        forceDisabled: false,
+      },
+      {
+        formType: 'CompanyProfile',
+        forceDisabled: true,
+      },
+    ] as {
+      formType: FormStructureName
+      forceDisabled: boolean
+    }[])(
+      'should return correct form structure if the form type is $formType',
+      async ({ formType, forceDisabled }) => {
+        const formStructure = await getFormStructure(
+          formType,
+          forceDisabled,
+        )
+
+        const snapShotName = `./snapshots/getFormStructure.${formType}.forceDisabled.${forceDisabled}.snap`
+        expect(formStructure).toMatchFileSnapshot(snapShotName)
+      },
+    )
+
+    it('should return empty array when formType is undefined', async () => {
+      const formStructure = await getFormStructure()
+
+      expect(formStructure).toStrictEqual([])
+    })
   })
 })

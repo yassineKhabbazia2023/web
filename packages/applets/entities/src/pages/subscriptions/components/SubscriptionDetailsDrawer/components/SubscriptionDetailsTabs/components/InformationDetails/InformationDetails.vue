@@ -47,10 +47,8 @@ import { useI18n } from 'vue-i18n'
 import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
-import type {
-  FormSection,
-  ProviderFormName,
-} from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import { getFormStructure } from '@entities/common/utils/referential'
 
 const { t } = useI18n({
@@ -65,18 +63,17 @@ const informationFormStructure = ref<FormSection[]>()
 const accountModel = ref<Account>()
 
 const providerName = computed(() => {
-  const provider =
-    props.subscriptionOfferDetails &&
-    ((props.subscriptionOfferDetails?.providers ?? [])
-      .filter((item) => item.providerName !== 'PULSE')
-      .at(0)?.providerName as ProviderFormName)
+  const filteredProviders = props.subscriptionOfferDetails?.providers
+    .filter(({ providerName }) => providerName !== ProviderName.PULSE)
+  const firstFilteredProviders = filteredProviders?.at(0)
 
-  return provider === 'MEG' ? 'MEG_RO' : 'LOOP'
+  return firstFilteredProviders?.providerName ?? ProviderName.LOOP
 })
 
 onMounted(async () => {
   try {
-    informationFormStructure.value = await getFormStructure(providerName.value)
+    const forceDisabled = true
+    informationFormStructure.value = await getFormStructure(providerName.value, forceDisabled)
     accountModel.value = await fetchAccount(props.accountId)
   } catch (error) {
     console.error('Error fetching information: ', error)

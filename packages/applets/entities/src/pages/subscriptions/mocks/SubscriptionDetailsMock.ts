@@ -1,3 +1,4 @@
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import { ContactType } from '@entities/services/contact/contactTypes'
 import type { SubscriptionDetails } from '@entities/services/subscription'
@@ -19,7 +20,7 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
     logoName: 'meg',
     providers: [
       {
-        providerName: 'PULSE',
+        providerName: ProviderName.PULSE,
         providerEditor: 'KPMG',
         providerCategory: 'PULSE',
         logoName: 'iconpulse-color',
@@ -37,7 +38,7 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
         ],
       },
       {
-        providerName: 'MEG',
+        providerName: ProviderName.MEG,
         providerEditor: 'RCA',
         providerCategory: 'external',
         logoName: 'meg',

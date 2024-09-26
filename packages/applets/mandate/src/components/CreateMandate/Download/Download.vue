@@ -91,7 +91,10 @@
           {{t('help')}}
         </p>
         <p class="download-or-wait-mandate__alert-body font-normal">{{t('help-label-prefix')}}
-          <a href="" class="download-or-wait-mandate__alert-body--color">{{t('help-label-link')}}</a>
+          <a
+            href="https://help.collaborateurs.app.kpmg-pulse.fr/fr/article/mandat-acces-et-creation"
+            class="download-or-wait-mandate__alert-body--color">{{t('help-label-link')}}
+          </a>
           {{t('help-label-suffix')}}
         </p>
       </PAlert>

@@ -1,0 +1,591 @@
+[
+  {
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "accountNumber",
+        "pFieldType": "input",
+        "pLabel": "Identifiant",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-70",
+        "pDisabled": true,
+        "pFieldKey": "legal.legalName",
+        "pFieldType": "input",
+        "pLabel": "Raison sociale",
+      },
+    ],
+    "sectionKey": undefined,
+    "title": "Identification de l'entreprise",
+  },
+  {
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": true,
+        "pFieldKey": "phone[0].phoneNumber",
+        "pFieldType": "input",
+        "pLabel": "Numéro de téléphone ",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": true,
+        "pFieldKey": "email",
+        "pFieldType": "input",
+        "pLabel": "E-mail de contact",
+      },
+    ],
+    "sectionKey": undefined,
+    "title": "Coordonnées de l'entreprise",
+  },
+  {
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
+        "pDisabled": true,
+        "pFieldKey": "address[0].addressLine1",
+        "pFieldType": "input",
+        "pLabel": "Adresse (numéro et nom de la voie)",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
+        "pDisabled": true,
+        "pFieldKey": "address[0].addressLine2",
+        "pFieldType": "input",
+        "pLabel": "Compléments (bâtiment, étages, etc)",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "address[0].zipCode",
+        "pFieldType": "input",
+        "pLabel": "Code postal",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "address[0].city",
+        "pFieldType": "input",
+        "pLabel": "Ville",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "address[0].country",
+        "pFieldType": "input",
+        "pLabel": "Pays",
+      },
+    ],
+    "sectionKey": "companyAddress",
+    "title": "Adresse",
+  },
+  {
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "legal.siret",
+        "pFieldType": "input",
+        "pLabel": "SIRET",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-50",
+        "pDisabled": true,
+        "pFieldKey": "legal.legalForm",
+        "pFieldType": "input",
+        "pLabel": "Forme juridique",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--1 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "legal.creationDate",
+        "pFieldType": "date",
+        "pLabel": "Date de création",
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--1 flex--basis-10",
+        "pDisabled": true,
+        "pFieldKey": "legal.naf[0].nafCode",
+        "pFieldType": "input",
+        "pLabel": "Code NAF",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "0 salarié",
+            "pValue": "=0",
+          },
+          {
+            "pLabel": "1 salarié",
+            "pValue": "=1",
+          },
+          {
+            "pLabel": "De 2 à 10 salariés",
+            "pValue": "<11",
+          },
+          {
+            "pLabel": "De 11 à 49 salariés",
+            "pValue": "<50",
+          },
+          {
+            "pLabel": "De 50 à 299 salariés",
+            "pValue": "<300",
+          },
+          {
+            "pLabel": "300 salariés et plus",
+            "pValue": ">=300",
+          },
+        ],
+        "pFieldKey": "legal.staffSizeRange",
+        "pFieldType": "dropdown",
+        "pLabel": "Effectifs",
+        "pTestId": "offer-staff-size-range",
+        "referentialKey": "staffSizeRange",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Hub Aquitaine Nord",
+            "pValue": 1,
+          },
+          {
+            "pLabel": "Hub Languedoc-Roussillon",
+            "pValue": 2,
+          },
+          {
+            "pLabel": "Hub Tarn Aveyron",
+            "pValue": 3,
+          },
+          {
+            "pLabel": "Hub Toulouse Midi Pyrennées",
+            "pValue": 4,
+          },
+          {
+            "pLabel": "Hub Pays Basque Landes",
+            "pValue": 5,
+          },
+          {
+            "pLabel": "Hub Atlantique Ouest",
+            "pValue": 6,
+          },
+          {
+            "pLabel": "Hub Anjou Maine",
+            "pValue": 7,
+          },
+          {
+            "pLabel": "Hub Charente Limousin",
+            "pValue": 8,
+          },
+          {
+            "pLabel": "Hub Haute Bretagne",
+            "pValue": 9,
+          },
+          {
+            "pLabel": "Hub Nantes Atlantique Vendée",
+            "pValue": 10,
+          },
+          {
+            "pLabel": "Hub Bretagne Océan",
+            "pValue": 11,
+          },
+          {
+            "pLabel": "Hub La Réunion",
+            "pValue": 12,
+          },
+          {
+            "pLabel": "Hub Grand Ouest Parisien",
+            "pValue": 13,
+          },
+          {
+            "pLabel": "Hub Centre",
+            "pValue": 14,
+          },
+          {
+            "pLabel": "Hub Marne et Oise",
+            "pValue": 15,
+          },
+          {
+            "pLabel": "Hub Berry Nivernais",
+            "pValue": 16,
+          },
+          {
+            "pLabel": "Hub Paris",
+            "pValue": 17,
+          },
+          {
+            "pLabel": "Hub Arc Alpin",
+            "pValue": 18,
+          },
+          {
+            "pLabel": "Hub Loire & Drôme Ardèche",
+            "pValue": 19,
+          },
+          {
+            "pLabel": "Hub Franche-Comté Bourgogne Nord",
+            "pValue": 20,
+          },
+          {
+            "pLabel": "Hub Ain et Lyonnais",
+            "pValue": 21,
+          },
+          {
+            "pLabel": "Hub Bourgogne Sud",
+            "pValue": 22,
+          },
+          {
+            "pLabel": "Hub Auvergne",
+            "pValue": 23,
+          },
+          {
+            "pLabel": "Hub Provence Côte d'Azur",
+            "pValue": 24,
+          },
+          {
+            "pLabel": "Hub Normandie Seine Baie de Somme",
+            "pValue": 25,
+          },
+          {
+            "pLabel": "Hub Antilles Guyane",
+            "pValue": 26,
+          },
+          {
+            "pLabel": "Hub Caen Sud Normandie",
+            "pValue": 27,
+          },
+          {
+            "pLabel": "Hub Manche",
+            "pValue": 28,
+          },
+          {
+            "pLabel": "Hub Amiens Haute Picardie",
+            "pValue": 29,
+          },
+          {
+            "pLabel": "Hub Littoral",
+            "pValue": 30,
+          },
+          {
+            "pLabel": "Hub Artois Grand Hainaut",
+            "pValue": 31,
+          },
+          {
+            "pLabel": "Hub Estuaire Terre et Mer",
+            "pValue": 32,
+          },
+          {
+            "pLabel": "Hub Lille Métropole",
+            "pValue": 33,
+          },
+          {
+            "pLabel": "Hub Alsace Nord",
+            "pValue": 34,
+          },
+          {
+            "pLabel": "Hub Lorraine Sud",
+            "pValue": 35,
+          },
+          {
+            "pLabel": "Hub Alsace Sud",
+            "pValue": 36,
+          },
+          {
+            "pLabel": "Hub Champagne-Ardenne",
+            "pValue": 37,
+          },
+          {
+            "pLabel": "Hub Lorraine Nord",
+            "pValue": 38,
+          },
+        ],
+        "pFieldKey": "hub.hubName",
+        "pFieldType": "dropdown",
+        "pLabel": "Hub KPMG rattaché",
+        "pTestId": "offer-hub-name-list",
+        "referentialKey": "hubName",
+      },
+    ],
+    "sectionKey": undefined,
+    "title": "Informations générales de l'entreprise",
+  },
+  {
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "accounting.fiscalExerciseStartDate",
+        "pFieldType": "date",
+        "pLabel": "Début de l'exercice",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-24",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "1",
+            "pValue": "1",
+          },
+          {
+            "pLabel": "2",
+            "pValue": "2",
+          },
+          {
+            "pLabel": "3",
+            "pValue": "3",
+          },
+          {
+            "pLabel": "4",
+            "pValue": "4",
+          },
+          {
+            "pLabel": "5",
+            "pValue": "5",
+          },
+          {
+            "pLabel": "6",
+            "pValue": "6",
+          },
+          {
+            "pLabel": "7",
+            "pValue": "7",
+          },
+          {
+            "pLabel": "8",
+            "pValue": "8",
+          },
+          {
+            "pLabel": "9",
+            "pValue": "9",
+          },
+          {
+            "pLabel": "10",
+            "pValue": "10",
+          },
+          {
+            "pLabel": "11",
+            "pValue": "11",
+          },
+          {
+            "pLabel": "12",
+            "pValue": "12",
+          },
+          {
+            "pLabel": "13",
+            "pValue": "13",
+          },
+          {
+            "pLabel": "14",
+            "pValue": "14",
+          },
+          {
+            "pLabel": "15",
+            "pValue": "15",
+          },
+          {
+            "pLabel": "16",
+            "pValue": "16",
+          },
+          {
+            "pLabel": "17",
+            "pValue": "17",
+          },
+          {
+            "pLabel": "18",
+            "pValue": "18",
+          },
+          {
+            "pLabel": "19",
+            "pValue": "19",
+          },
+          {
+            "pLabel": "20",
+            "pValue": "20",
+          },
+          {
+            "pLabel": "21",
+            "pValue": "21",
+          },
+          {
+            "pLabel": "22",
+            "pValue": "22",
+          },
+          {
+            "pLabel": "23",
+            "pValue": "23",
+          },
+          {
+            "pLabel": "24",
+            "pValue": "24",
+          },
+        ],
+        "pFieldKey": "accounting.fiscalExerciseDuration",
+        "pFieldType": "dropdown",
+        "pLabel": "Durée de l'exercice en mois",
+        "pTestId": "offer-fiscal-exercise-duration",
+        "referentialKey": "fiscalExerciseDuration",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-46",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Engagement",
+            "pValue": "Engagement",
+          },
+          {
+            "pLabel": "Trésorerie",
+            "pValue": "Tresorerie",
+          },
+        ],
+        "pFieldKey": "accounting.accountingType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de comptabilité",
+        "pTestId": "offer-accounting-types",
+        "referentialKey": "accountingType",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-40",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "BIC (Bénéfices Industriels et Commerciaux)",
+            "pValue": "BIC",
+          },
+          {
+            "pLabel": "BNC (Bénéfices Non Commerciaux)",
+            "pValue": "BNC",
+          },
+          {
+            "pLabel": "Micro-entreprise",
+            "pValue": "ME",
+          },
+          {
+            "pLabel": "Revenus fonciers",
+            "pValue": "RF",
+          },
+        ],
+        "pFieldKey": "accounting.fiscalSystem",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime fiscal",
+        "pTestId": "offer-fiscal-system-list",
+        "referentialKey": "fiscalSystem",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Impôt sur le revenu",
+            "pValue": "IR",
+          },
+          {
+            "pLabel": "Impôt sur les sociétés",
+            "pValue": "IS",
+          },
+        ],
+        "pFieldKey": "accounting.taxationSystem",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime d'imposition",
+        "pTestId": "offer-taxation-system-list",
+        "referentialKey": "taxationSystem",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Prestation de services",
+            "pValue": "PS",
+          },
+          {
+            "pLabel": "Vente de biens",
+            "pValue": "VB",
+          },
+        ],
+        "pFieldKey": "accounting.activityType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type d'activité",
+        "pTestId": "offer-activity-types",
+        "referentialKey": "activityType",
+      },
+    ],
+    "sectionKey": undefined,
+    "title": "Informations comptables et fiscales de l'entreprise",
+  },
+  {
+    "fields": [
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Réel normal - CA3 mensuelle",
+            "pValue": "CA3M",
+          },
+          {
+            "pLabel": "Réel normal - CA3 trimestrielle",
+            "pValue": "CA3T",
+          },
+          {
+            "pLabel": "Réel simplifié - CA12 annuelle",
+            "pValue": "CA12",
+          },
+          {
+            "pLabel": "Franchise - Exonération de TVA",
+            "pValue": "EXO",
+          },
+        ],
+        "pFieldKey": "vat.system",
+        "pFieldType": "dropdown",
+        "pLabel": "Régime de la TVA",
+        "pTestId": "offer-vat-system-list",
+        "referentialKey": "vatSystem",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "vat.intra",
+        "pFieldType": "input",
+        "pLabel": "N° TVA Intra",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Encaissement",
+            "pValue": "Encaissement",
+          },
+          {
+            "pLabel": "Débit",
+            "pValue": "Debit",
+          },
+        ],
+        "pFieldKey": "vat.type",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de TVA",
+        "pTestId": "offer-vat-types",
+        "referentialKey": "vatType",
+      },
+    ],
+    "sectionKey": undefined,
+    "title": "Informations TVA de l'entreprise",
+  },
+]
