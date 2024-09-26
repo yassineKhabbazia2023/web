@@ -58,9 +58,9 @@
     "@intlify/unplugin-vue-i18n": "^0.12.2",
     "@vue/test-utils": "^2.4.0",
     "@vueuse/core": "^10.2.0",
+    "dayjs": "1.11.10",
     "element-plus": "2.4.3",
     "lodash-es": "^4.17.21",
-    "dayjs": "1.11.10",
     "vue-i18n": "^9.2.2"
   },
   "devDependencies": {
@@ -89,7 +89,6 @@
     "unplugin-element-plus": "^0.7.1",
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.4.6",
-    "vite-plugin-eslint": "^1.8.1",
     "vitest": "^0.32.2",
     "vitest-mock-extended": "^1.1.4",
     "vue": "^3.3.4",
