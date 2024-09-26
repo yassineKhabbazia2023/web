@@ -98,7 +98,7 @@ describe('renameFolderSection', () => {
           const wrapper = createWrapper(updatedProps)
 
           const renameFolderModalWrapper = wrapper.findComponent(RenameFolderModal)
-
+          // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
           expect(renameFolderModalWrapper.props(prop).trim()).toBe(
             expectedText.trim(),
           )

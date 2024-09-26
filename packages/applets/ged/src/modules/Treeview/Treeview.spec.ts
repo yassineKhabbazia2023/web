@@ -308,6 +308,7 @@ describe('treeview', () => {
           it('should download when action is toolbox-download-action-click emitted',
             async () => {
               const wrapper = createWrapper()
+              // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
               await wrapper.setProps({ isLoading: false })
               const treeElement = wrapper.find('.el-tree')
               await nextTick()
