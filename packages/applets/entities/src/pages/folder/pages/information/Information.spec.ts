@@ -19,8 +19,14 @@ const expectedAlertInstruction =
   'If any information is incorrect, please update it in the CRM'
 
 // Mocks
-vi.mock('@entities/common/config/referential', () => ({
-  getFormStructure: () => InformationFormStructure,
+const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => InformationFormStructure))
+vi.mock('@entities/common/utils/referential', () => ({
+  getFormStructure: mockedGetFormStructure,
+}))
+
+const mockedGetForceDisabled = vi.hoisted(() => vi.fn(() => true))
+vi.mock('./InformationHelper', () => ({
+  getForceDisabled: mockedGetForceDisabled,
 }))
 
 vi.mock('@entities/services/account', () => ({
@@ -39,14 +45,16 @@ vi.mock('vue-router', () => ({
 
 // Unit Tests
 describe('information', () => {
-  let wrapper: VueWrapper<any>
-  beforeEach(async () => {
+  beforeEach(() => {
     setActivePinia(createTestingPinia())
-    wrapper = mount(Information)
-
-    await flushPromises()
   })
   describe('display', () => {
+    let wrapper: VueWrapper<any>
+    beforeEach(async () => {
+      wrapper = mount(Information)
+
+      await flushPromises()
+    })
     it('should correctly display the folder information', () => {
       const alertInstruction = wrapper.find(
         '[data-testid="folder-information-alert"]',
@@ -114,6 +122,37 @@ describe('information', () => {
         'Error fetching information :',
         expectedErrorMessage,
       )
+    })
+  })
+
+  describe('test onMounted', () => {
+    const tests = [{
+      isCollab: false,
+      mockedForceDisabled: false,
+    }, {
+      isCollab: true,
+      mockedForceDisabled: false,
+    }, {
+      isCollab: true,
+      mockedForceDisabled: true,
+    }]
+    it.each(tests)('should call with proper argument when isCollab equals $isCollab', async ({
+      isCollab,
+      mockedForceDisabled,
+    }) => {
+      const store = commonStore()
+      // @ts-expect-error: Getter is read only
+      store.isCollab = isCollab
+
+      mockedGetForceDisabled.mockReturnValue(mockedForceDisabled)
+
+      mount(Information)
+
+      await flushPromises()
+      expect(mockedGetForceDisabled).toHaveBeenCalledOnce()
+      expect(mockedGetForceDisabled).toHaveBeenCalledWith(isCollab)
+      expect(mockedGetFormStructure).toHaveBeenCalledOnce()
+      expect(mockedGetFormStructure).toHaveBeenCalledWith('CompanyProfile', mockedForceDisabled)
     })
   })
 })

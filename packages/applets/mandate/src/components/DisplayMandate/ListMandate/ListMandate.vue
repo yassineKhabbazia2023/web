@@ -212,18 +212,20 @@ const actionsBuilder = (statusCode: string | number, jdcPartnership: string | nu
   const statusCodeNumber = Number(statusCode)
   const jdcPartnershipNumber = Number(jdcPartnership)
   const jdcStatusCodeNumber = Number(jdcStatusCode)
+  const acceptedCodesForDownload = [20, 30, 10]
+  const acceptedCodesForUpload = [20, 30, 10]
   const actions: PToolboxItemProps[] = [
     {
       pIconName: 'PIDownload',
       pValue: t('download-pre-filled-mandate'),
-      disabled: statusCodeNumber !== 20,
+      disabled: !acceptedCodesForDownload.includes(statusCodeNumber) || jdcStatusCodeNumber === 98,
       pActionName: 'download-pre-filled-mandate',
       pState: 'default',
     },
     {
       pIconName: 'PIUpload',
       pValue: t('submit-signed-mandate'),
-      disabled: statusCodeNumber !== 20,
+      disabled: !acceptedCodesForUpload.includes(statusCodeNumber) || jdcStatusCodeNumber === 98,
       pActionName: 'submit-signed-mandate',
       pState: 'default',
     },

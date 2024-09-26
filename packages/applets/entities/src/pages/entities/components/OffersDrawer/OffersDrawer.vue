@@ -163,7 +163,7 @@ import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
-import type { ProviderFormName } from '../CompanyInformation/CompanyInformationTypes'
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import { type Note, createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { amplitudeService } from '@pulse/Common'
@@ -425,13 +425,12 @@ const onCloseOffersDrawer = () => {
   internalIsOpened.value = false
 }
 
-const providerName = computed((): ProviderFormName => {
-  return (
-    currentSubscriptionOffer.value &&
-    (currentSubscriptionOffer.value?.providers
-      .filter((item) => item.providerName !== 'PULSE')
-      .at(0)?.providerName as 'MEG' | 'LOOP')
-  )
+const providerName = computed(() => {
+  const filteredProviders = currentSubscriptionOffer.value?.providers
+    .filter(({ providerName }) => providerName !== ProviderName.PULSE)
+  const firstFilteredProviders = filteredProviders?.at(0)
+
+  return firstFilteredProviders?.providerName
 })
 
 const offerSanitizedUrl = computed(() => {

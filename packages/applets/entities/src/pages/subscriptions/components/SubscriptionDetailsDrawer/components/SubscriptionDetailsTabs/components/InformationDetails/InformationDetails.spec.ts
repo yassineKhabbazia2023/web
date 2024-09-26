@@ -7,12 +7,13 @@ import {
 } from '@entities/services/account/accountMock'
 import * as accountServices from '@entities/services/account'
 import LOOPOfferForm from '@entities/common/config/forms/LOOPOfferFormStructure.json'
-import MEGOffersFormReadOnly from '@entities/common/config/forms/MEGOffersFormReadOnlyStructure.json'
+import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import {
   getMockedSubscriptionOffersServices,
 } from '@entities/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import InformationDetails from '.'
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 
 // Mocks
 const mockedAccountId = 602
@@ -20,8 +21,9 @@ const mockedSubscriptionMEGOfferDetails =
   getMockedSubscriptionOffersServices()[0]
 const mockedSubscriptionLoopOfferDetails =
   getMockedSubscriptionOffersServices()[2]
-vi.mock('@entities/common/config/referential', () => ({
-  getFormStructure: () => MEGOffersFormReadOnly,
+const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => MEGOffersFormStructure))
+vi.mock('@entities/common/utils/referential', () => ({
+  getFormStructure: mockedGetFormStructure,
 }))
 vi.mock('@entities/services/account', () => ({
   fetchAccount: vi.fn(() => Promise.resolve(getMockedAccount())),
@@ -73,10 +75,11 @@ describe('informationDetails', () => {
         '.information-details__form-section',
       )
 
-      expect(provider).toBe('MEG_RO')
-      expect(formSections).toHaveLength(MEGOffersFormReadOnly.length)
+      expect(provider).toBe('MEG')
+      expect(formSections).toHaveLength(MEGOffersFormStructure.length)
     })
     it('should display all form sections for the LOOP offer correctly', async () => {
+      mockedGetFormStructure.mockReturnValue(LOOPOfferForm)
       wrapper = createWrapper({
         subscriptionOfferDetails: mockedSubscriptionLoopOfferDetails,
         accountId: mockedAccountId,
@@ -87,7 +90,7 @@ describe('informationDetails', () => {
         '.information-details__form-section',
       )
 
-      expect(provider).toBe('LOOP')
+      expect(provider).toBe(ProviderName.LOOP)
       expect(formSections).toHaveLength(LOOPOfferForm.length)
     })
     it('should display the form once the loader has finished', async () => {

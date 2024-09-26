@@ -143,7 +143,7 @@ describe('collabDetailsDrawer', () => {
     expect(spyPNotification).toHaveBeenCalledOnce()
   })
 
-  it("should emit the 'update:modelValue' event when the drawer is closed", async () => {
+  it('should emit the \'update:modelValue\' event when the drawer is closed', async () => {
     const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
     pDrawer.vm.$emit('close-drawer-button', false)
     await nextTick()
@@ -151,7 +151,7 @@ describe('collabDetailsDrawer', () => {
     expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 
-  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+  it('should emit the \'update:modelValue\' event when the v-model is updated', async () => {
     const drawer = wrapper.findComponent({ name: 'PDrawer' })
     drawer.vm.$emit('update:modelValue', false)
     await nextTick()

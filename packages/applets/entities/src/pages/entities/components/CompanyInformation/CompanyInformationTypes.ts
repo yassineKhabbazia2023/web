@@ -1,7 +1,6 @@
 import type { PFieldProps } from '@kpmg/styleguide'
 import { type Account } from '@entities/services/account'
-
-export type ProviderFormName = 'MEG' | 'LOOP' | undefined
+import type { ProviderName } from '@entities/common/types/ProviderNameEnums'
 
 export interface FormField extends PFieldProps<string> {
   referentialKey?: string
@@ -15,5 +14,5 @@ export type FormSection = {
 
 export interface CompanyInformationProps {
   modelValue: Account
-  providerName: ProviderFormName
+  providerName?: ProviderName
 }

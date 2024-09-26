@@ -13,9 +13,10 @@ import type {
   Hub,
 } from '@entities/services/account'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
-import MEGOffersFormReadOnlyStructure from '@entities/common/config/forms/MEGOffersFormReadOnlyStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
+import type { FormStructureName } from './referentialUtilsTypes'
 
 export function referentialOptionsToPDropdownOption(
   referentialOptions: ReferentialOptions | undefined,
@@ -57,10 +58,19 @@ export function getEnrichedField(
   referential: ReferentialStructure,
   referentialHubs: Hub[],
   field: FormField,
+  forceDisabled = false,
 ): FormField {
   const { referentialKey, pFieldType } = field
+
+  const enrichedField = forceDisabled
+    ? {
+        ...field,
+        pDisabled: true,
+      }
+    : field
+
   if (pFieldType !== 'dropdown') {
-    return field
+    return enrichedField
   }
   const pDropdownOptions = getReferentialDropdownOptions(
     referential,
@@ -70,11 +80,11 @@ export function getEnrichedField(
   if (!pDropdownOptions) {
     console.warn(`missing referential for field: '${referentialKey}'`)
 
-    return field
+    return enrichedField
   }
 
   return {
-    ...field,
+    ...enrichedField,
     pDropdownOptions,
   }
 }
@@ -83,9 +93,10 @@ export function getEnrichedFormSection(
   referential: ReferentialStructure,
   referentialHubs: Hub[],
   formSection: FormSection,
+  forceDisabled = false,
 ): FormSection {
   const fields = formSection.fields.map((field) =>
-    getEnrichedField(referential, referentialHubs, field),
+    getEnrichedField(referential, referentialHubs, field, forceDisabled),
   )
 
   return {
@@ -95,13 +106,11 @@ export function getEnrichedFormSection(
   }
 }
 
-export const getFormSections = (formType: string): FormSection[] => {
-  switch (formType) {
-    case 'MEG':
+export const getFormSections = (formStructureName: FormStructureName) => {
+  switch (formStructureName) {
+    case ProviderName.MEG:
       return MEGOffersFormStructure as FormSection[]
-    case 'MEG_RO': // For MEG Form Structure in read-only mode
-      return MEGOffersFormReadOnlyStructure as FormSection[]
-    case 'LOOP':
+    case ProviderName.LOOP:
       return LOOPOfferFormStructure as FormSection[]
     case 'CompanyProfile':
       return InformationFormStructure as FormSection[]
@@ -110,13 +119,16 @@ export const getFormSections = (formType: string): FormSection[] => {
   }
 }
 
-export async function getFormStructure(formType: string) {
-  const formSections = getFormSections(formType)
+export async function getFormStructure(formStructureName?: FormStructureName, forceDisabled = false) {
+  if (formStructureName === undefined) {
+    return []
+  }
+  const formSections = getFormSections(formStructureName)
   const accountReferential = await fetchAccountReferential()
   const referentialHubs = await fetchReferentialHubs()
 
   const enrichedFormSections: FormSection[] = formSections.map((formSection) =>
-    getEnrichedFormSection(accountReferential, referentialHubs, formSection),
+    getEnrichedFormSection(accountReferential, referentialHubs, formSection, forceDisabled),
   )
 
   return enrichedFormSections

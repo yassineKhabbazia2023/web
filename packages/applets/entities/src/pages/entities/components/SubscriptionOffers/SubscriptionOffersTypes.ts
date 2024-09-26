@@ -1,3 +1,4 @@
+import type { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { SubscriptionPriceType } from './SubscriptionOffersEnums'
 
 export interface SubscriptionOfferProduct {
@@ -12,7 +13,7 @@ export interface SubscriptionOfferProduct {
  }
 
 export interface SubscriptionOfferProvider {
-  providerName: string
+  providerName: ProviderName
   providerEditor: string
   providerCategory: string
   logoName: string

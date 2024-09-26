@@ -62,6 +62,7 @@ import { PAlert, PForm, PFieldSet, PLoader } from '@kpmg/styleguide'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import { getFormStructure } from '@entities/common/utils/referential'
+import { getForceDisabled } from './InformationHelper'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -82,7 +83,8 @@ const addressSectionTitle = computed(() =>
 
 onMounted(async () => {
   try {
-    informationFormStructure.value = await getFormStructure('CompanyProfile')
+    const forceDisabled = getForceDisabled(isCollab.value)
+    informationFormStructure.value = await getFormStructure('CompanyProfile', forceDisabled)
     accountModel.value = await fetchAccount(+route.params.id)
   } catch (error) {
     console.error('Error fetching information :', error)

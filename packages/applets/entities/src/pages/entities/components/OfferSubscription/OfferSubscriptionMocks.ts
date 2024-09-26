@@ -2,6 +2,7 @@ import {
   SubscriptionPriceType,
 } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
+import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 
 export function getMockedSubscriptionOffersServices() {
   const Subscription: SubscriptionOfferServices[] = [
@@ -20,7 +21,7 @@ export function getMockedSubscriptionOffersServices() {
       intranetLink: 'test-link',
       providers: [
         {
-          providerName: 'PULSE',
+          providerName: ProviderName.PULSE,
           providerEditor: 'KPMG',
           providerCategory: 'PULSE',
           logoName: 'iconpulse-color',
@@ -37,7 +38,7 @@ export function getMockedSubscriptionOffersServices() {
           ],
         },
         {
-          providerName: 'MEG',
+          providerName: ProviderName.MEG,
           providerEditor: 'RCA',
           providerCategory: 'external',
           logoName: 'meg',
@@ -87,7 +88,7 @@ export function getMockedSubscriptionOffersServices() {
       intranetLink: 'test-link',
       providers: [
         {
-          providerName: 'PULSE',
+          providerName: ProviderName.PULSE,
           providerEditor: 'KPMG',
           providerCategory: 'PULSE',
           logoName: 'iconpulse-color',
@@ -119,7 +120,7 @@ export function getMockedSubscriptionOffersServices() {
       intranetLink: 'test-link',
       providers: [
         {
-          providerName: 'PULSE',
+          providerName: ProviderName.PULSE,
           providerEditor: 'KPMG',
           providerCategory: 'PULSE',
           logoName: 'iconpulse-color',
@@ -151,7 +152,7 @@ export function getMockedSubscriptionOffersServices() {
       intranetLink: 'test-link',
       providers: [
         {
-          providerName: 'PULSE',
+          providerName: ProviderName.PULSE,
           providerEditor: 'KPMG',
           providerCategory: 'PULSE',
           logoName: 'iconpulse-color',
