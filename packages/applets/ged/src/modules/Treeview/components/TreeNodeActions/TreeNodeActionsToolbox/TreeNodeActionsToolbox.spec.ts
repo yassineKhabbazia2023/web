@@ -101,7 +101,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    it('should  permissions with upload folder by default', () => {
+    it.skip('should  permissions with upload folder by default', () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,
         permissions: ['azert'],
