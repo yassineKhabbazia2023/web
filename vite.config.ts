@@ -53,7 +53,6 @@ const basicConfig = {
         'src/organisms',
       ],
     }),
-    eslint(),
     visualizer(),
   ],
 }
