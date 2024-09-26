@@ -8,9 +8,9 @@ module.exports = {
     'plugin:vue/vue3-strongly-recommended',
     'plugin:@intlify/vue-i18n/recommended',
     'plugin:vitest/all',
-    // this forces the "eslint-plugin-vitest" to stay at 0.4.1 
+    // this forces the "eslint-plugin-vitest" to stay at 0.4.1
     // https://github.com/vitest-dev/eslint-plugin-vitest/issues/432
-    'plugin:vitest/recommended', 
+    'plugin:vitest/recommended',
     '@vue/eslint-config-typescript',
   ],
   plugins: ['import'],
@@ -65,6 +65,20 @@ module.exports = {
     'vue/no-v-html': 'error',
     'vue/prefer-true-attribute-shorthand': ['error', 'always'],
     'vue/singleline-html-element-content-newline': ['error', { ignoreWhenNoAttributes: true, ignoreWhenEmpty: true }],
+    'object-curly-spacing': ['error', 'always', { 'arraysInObjects': true }],
+    'array-bracket-spacing': ['error', 'never', { 'singleValue': false }],
+    'no-trailing-spaces': ['error', { 'skipBlankLines': true }],
+    'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
+    'key-spacing': ['error', { beforeColon: false }],
+    'space-in-parens': ['error', 'never'],
+    'no-whitespace-before-property': 'error',
+    'space-before-function-paren': ['error', {
+      'anonymous': 'always',
+      'named': 'never',
+      'asyncArrow': 'always',
+    }],
+    'func-call-spacing': ['error', 'never'],
+    'vitest/max-expects': ['warn', { max: 12 }],
   },
   settings: {
     'vue-i18n': {
