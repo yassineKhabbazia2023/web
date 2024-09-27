@@ -43,8 +43,8 @@ describe('subscriptions', () => {
     })
 
     expect(subscriptionDrawer.props('modelValue')).toBeTruthy()
-    expect(subscriptionDrawer.props('selectedSubscriptionId')).toMatch(
-      String(mockedSubscription.subscriptionId), // TO CHECK: monorepo build issue, quick fix
+    expect(subscriptionDrawer.props('selectedSubscriptionId')).toStrictEqual(
+      mockedSubscription.subscriptionId, // TO CHECK: monorepo build issue, quick fix
     )
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })
