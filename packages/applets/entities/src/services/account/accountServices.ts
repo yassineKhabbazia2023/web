@@ -64,7 +64,7 @@ export async function addContactToEntity(
   accountId: Account['accountId'],
   contactId: Contact['id'],
   email?: string,
-) {
+): Promise<any> { // TO CHECK: monorepo build issue, quick fix
   const url = `${API_PREFIXES.ACCOUNT}/roles`
   const result = await commonApi().gateway.post(url, {
     accountId,

@@ -31,7 +31,9 @@ describe('documentsCheckAll', () => {
 
       const check = wrapper.findComponent(PCheckbox)
       expect(check.exists()).toBeTruthy()
+      // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
       expect(check.props('disabled')).toBeFalsy()
+      // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
       expect(check.props('v-model')).toBeFalsy()
     })
   })

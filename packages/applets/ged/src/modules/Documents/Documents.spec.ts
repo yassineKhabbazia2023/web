@@ -974,6 +974,7 @@ describe('documents', () => {
       )
       await nextTick()
 
+      // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
       expect(drawer.props('openDrawer')).toBeFalsy()
     })
 

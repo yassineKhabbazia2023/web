@@ -154,7 +154,7 @@ describe('createFolderSection', () => {
           const createFolderModalWrapper = wrapper.findComponent(
             CreateFolderModal,
           )
-
+          // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
           expect(createFolderModalWrapper.props(prop).trim()).toBe(expectedText.trim())
         },
       )

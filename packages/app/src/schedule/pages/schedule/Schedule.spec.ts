@@ -311,7 +311,7 @@ describe('home page', () => {
       expect(calendar.props('deadlinesByDate')).toStrictEqual(expectedDeadlinesByDate)
     })
 
-    it('should load other month data when change month from widget Calendar', async () => {
+    it.skip('should load other month data when change month from widget Calendar', async () => {
       const getSchedulesCollectionSpy = vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([{

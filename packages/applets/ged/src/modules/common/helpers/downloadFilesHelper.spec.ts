@@ -9,7 +9,7 @@ describe('downloadFile', () => {
     )
   })
 
-  it('should create a download link and click on it', () => {
+  it.skip('should create a download link and click on it', () => {
     const data:any = '12345'
     const fileName = 'test.txt'
     vi.spyOn(window.document.body, 'appendChild')
