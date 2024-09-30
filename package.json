@@ -11,8 +11,8 @@
     "packages/app"
   ],
   "engines": {
-    "node": ">=18.16.0",
-    "npm": ">=9.5.1"
+    "node": ">=20",
+    "npm": ">=10"
   },
   "scripts": {
     "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high",
