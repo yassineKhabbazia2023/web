@@ -118,3 +118,6 @@ dist
 
 # Private npm
 .npmrc
+
+# turbo
+.turbo
