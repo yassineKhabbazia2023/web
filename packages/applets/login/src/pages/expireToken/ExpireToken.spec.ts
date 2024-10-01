@@ -15,7 +15,6 @@ vi.mock('vue-router', () => ({
 const createWrapper = () => mount(ExpireToken)
 
 const postMock = vi.fn(() => true)
-
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {

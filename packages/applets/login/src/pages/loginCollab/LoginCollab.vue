@@ -80,11 +80,11 @@ en-US:
   Title: 'COLLABORATOR SPACE'
   login: 'Login'
   formTitle: >-
-    Welcome to your KPMG Pulse platform. Please log in to access to all your services.
+    Welcome to your Pulse platform. Please log in to access to all your services.
 fr-FR:
   Title: 'ESPACE COLLABORATEUR'
   login: 'Se connecter'
   formTitle: >-
-    Bienvenue sur votre plateforme KPMG Pulse. Veuillez vous connecter pour accéder
+    Bienvenue sur votre plateforme Pulse. Veuillez vous connecter pour accéder
     à tous vos services.
 </i18n>
