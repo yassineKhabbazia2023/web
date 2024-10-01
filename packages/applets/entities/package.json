@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@braintree/sanitize-url": "^7.0.0",
-    "@kpmg/styleguide": "^2.2.630",
     "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "^2.2.763",
     "element-plus": "2.4.3",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.4",

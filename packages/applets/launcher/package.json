@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@braintree/sanitize-url": "^7.0.0",
-    "@kpmg/styleguide": "^2.2.630",
     "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "^2.2.763",
     "axios": "^1.7.4",
     "file-saver": "^2.0.5",
     "pinia": "^2.1.4",
