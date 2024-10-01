@@ -3,7 +3,7 @@ import { getToken } from '.'
 
 const amplitudeServiceTrackMocked = vi.hoisted(() => vi.fn())
 const setTokenMocked = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   amplitudeService: {
     track: amplitudeServiceTrackMocked,
     reset: vi.fn(),

@@ -11,7 +11,7 @@ import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 vi.mock('@mandate/services/mandate')
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ([]),
   }),

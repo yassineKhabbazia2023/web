@@ -91,7 +91,7 @@ const gatewayPostSpy = vi.fn(() => {
   return Promise.resolve({ data: {}, status: {} })
 })
 
-vi.mock('@pulse/Common', () => {
+vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       mandate: {

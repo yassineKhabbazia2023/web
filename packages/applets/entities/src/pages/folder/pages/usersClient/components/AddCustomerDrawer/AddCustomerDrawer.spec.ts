@@ -9,7 +9,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import { entityMock } from '@entities/../tests/mocks/EntitiesMocks'
 import * as accountServices from '@entities/services/account'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 import AddCustomerDrawer from '.'
 
 // Mocks
@@ -23,7 +23,7 @@ const defaultProps = {
   targetEntityNumber: entityMock.accountNumber,
 }
 export const debounceMock = vi.fn((callback: Function) => callback)
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
   amplitudeService: {
     track: vi.fn(),

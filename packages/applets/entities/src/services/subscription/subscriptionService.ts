@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import { handleRequestError } from '@entities/helper'
 import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from '.'
 import { API_PREFIXES } from '@entities/common/config/services'

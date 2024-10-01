@@ -31,7 +31,7 @@ const getNotificationError = () =>
   document.body.getElementsByClassName('el-notification error')
 
 let gatewayPostMock = vi.fn().mockResolvedValue({})
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

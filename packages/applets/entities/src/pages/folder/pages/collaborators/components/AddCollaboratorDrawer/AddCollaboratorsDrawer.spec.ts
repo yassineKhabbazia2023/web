@@ -16,7 +16,7 @@ const getNotificationSuccess = () =>
   document.body.getElementsByClassName('el-notification success')
 
 const gatewayPostMock = vi.fn().mockResolvedValue({})
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: gatewayPostMock,

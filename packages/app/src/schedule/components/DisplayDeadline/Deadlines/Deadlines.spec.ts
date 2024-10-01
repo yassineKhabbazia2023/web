@@ -11,7 +11,7 @@ import { getSmartMockedDeadline } from '@app/schedule/tests/mocks/Deadline'
 
 const pinia = createTestingPinia()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

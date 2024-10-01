@@ -5,7 +5,7 @@ import * as ReportService from '@app/services/reporting'
 import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
 import { createTestingPinia } from '@pinia/testing'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
-import { commonPinia as pinia, amplitudeService } from '@pulse/Common'
+import { commonPinia as pinia, amplitudeService } from '@pulse/common'
 import { PERMISSION_CODES } from '@app/constants'
 import SidebarEntityMenu from '.'
 import { getMockedBIReports } from './SidebarEntityMenuMocks'
@@ -28,7 +28,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonPinia: () => createPinia(),
   commonStore: defineStore('common', {
     getters: {

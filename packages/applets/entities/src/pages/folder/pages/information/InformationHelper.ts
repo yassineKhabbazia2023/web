@@ -1,5 +1,5 @@
 import { PERMISSION_CODES } from '@entities/constants'
-import { userPermissions } from '@pulse/Common'
+import { userPermissions } from '@pulse/common'
 
 const { hasPermission } = userPermissions()
 

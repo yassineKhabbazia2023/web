@@ -40,8 +40,8 @@ function cleanFile(mfe: string, filePath: string) {
   const newUseMfe = `@use '@${mfe}/`
   const newImport = `import('@${mfe}/`
   const newImportBackTick = `import(\`@${mfe}/`
-  const newFromCommon = `from '${domain}/Common`
-  const newCommon = `'${domain}/Common'`
+  const newFromCommon = `from '${domain}/common`
+  const newCommon = `'${domain}/common'`
   const extension = path.extname(filePath)
   if (!EXTENSIONS.includes(extension)) {
     return

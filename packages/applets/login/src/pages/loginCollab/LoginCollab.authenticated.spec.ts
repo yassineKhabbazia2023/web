@@ -1,6 +1,6 @@
 import { type MockInstance, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 import { msalInstance } from '@login/services/msal'
 import LoginCollab from '.'
 

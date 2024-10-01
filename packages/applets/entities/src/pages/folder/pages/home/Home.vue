@@ -212,7 +212,7 @@ import {
   PRow,
   PTooltip,
 } from '@kpmg/styleguide'
-import { commonStore } from '@pulse/Common'
+import { commonStore } from '@pulse/common'
 
 const { t } = useI18n({
   inheritLocale: true,

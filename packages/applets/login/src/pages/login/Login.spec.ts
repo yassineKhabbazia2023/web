@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } fr
 import type { ComponentWrapper } from '@login/pages/testHelper/testHelperTypes'
 import { flushPromises, mount } from '@vue/test-utils'
 import Login from './'
-import { amplitudeService, tokenService } from '@pulse/Common'
+import { amplitudeService, tokenService } from '@pulse/common'
 import { getTermsByCurrentUser } from '@login/services/cgu'
 import type { FormInstance } from 'element-plus'
 
@@ -28,7 +28,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: mockAuthPost,

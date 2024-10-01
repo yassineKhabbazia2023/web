@@ -6,7 +6,7 @@ import { shallowMount } from '@vue/test-utils'
 import HomeScheduleDrawer from '.'
 
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
-vi.mock('@pulse/Common', () => KpmgCommontMock)
+vi.mock('@pulse/common', () => KpmgCommontMock)
 
 function createWrapper(modelValue: boolean): VueWrapper<any> {
   const props = {

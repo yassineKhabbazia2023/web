@@ -1,4 +1,4 @@
-import { commonApi as api } from '@pulse/Common'
+import { commonApi as api } from '@pulse/common'
 
 export const getTermsByCurrentUser = async (): Promise<{isCurrent:boolean, terms: {termsId: number}}> => {
   const { data } = await api().gateway.get('contact/api/contacts/currentuser/terms')

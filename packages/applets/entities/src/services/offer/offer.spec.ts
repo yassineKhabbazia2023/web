@@ -29,7 +29,7 @@ vi.mock('env-vars', () => ({
   VITE_CONFIG_OFFERS_BOOK: 'offers-book-test-link',
 }))
 
-vi.mock('@pulse/Common', () => {
+vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       gateway: {

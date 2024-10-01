@@ -1,5 +1,5 @@
 import { API_PREFIXES } from '@entities/common/config/services'
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import type {
   GetReportsRequest,
   GetReportAccountsRequest,

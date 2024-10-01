@@ -16,7 +16,7 @@ const createWrapper = () => mount(ExpireToken)
 
 const postMock = vi.fn(() => true)
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: postMock,

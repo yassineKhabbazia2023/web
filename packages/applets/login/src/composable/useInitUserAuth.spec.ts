@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import useInitUserAuth from '@login/composable/useInitUserAuth'
-import { commonStore as store, tokenService } from '@pulse/Common'
+import { commonStore as store, tokenService } from '@pulse/common'
 
 const mockedMsalToken = 'msal-token'
 const msalGetTokenSpy = vi.hoisted(() => vi.fn(() => mockedMsalToken))
@@ -19,7 +19,7 @@ const mockFechUserDataProvider = vi.fn(() => {
     isCollab: true,
   })
 })
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => vi.fn(),
   commonStore: () => ({
     $patch: mockStorePatch,

@@ -1,4 +1,4 @@
-import type { UserInfo } from '@pulse/Common'
+import type { UserInfo } from '@pulse/common'
 
 /* eslint-disable no-unused-vars */
 export enum offerStepperStep {

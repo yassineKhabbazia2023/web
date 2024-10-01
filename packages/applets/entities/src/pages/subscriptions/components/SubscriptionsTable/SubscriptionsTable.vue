@@ -129,7 +129,7 @@ import {
   PIThreeDots,
   type PToolboxItemProps,
 } from '@kpmg/styleguide'
-import { commonStore, amplitudeService } from '@pulse/Common'
+import { commonStore, amplitudeService } from '@pulse/common'
 import {
   type SubscriptionRequest,
   fetchSubscriptionRequests,

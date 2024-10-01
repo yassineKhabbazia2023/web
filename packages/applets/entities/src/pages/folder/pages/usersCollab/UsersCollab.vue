@@ -158,7 +158,7 @@ import {
   PICheck,
   PIExclamationTriangle,
 } from '@kpmg/styleguide'
-import { commonStore, getInitials } from '@pulse/Common'
+import { commonStore, getInitials } from '@pulse/common'
 import {
   PAGE_SIZES,
   DATE_TIME_FORMATS as datetimeFormats,

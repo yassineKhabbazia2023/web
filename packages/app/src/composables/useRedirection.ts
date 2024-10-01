@@ -1,5 +1,5 @@
 import { useRouter } from 'vue-router'
-import { commonStore as useStore } from '@pulse/Common'
+import { commonStore as useStore } from '@pulse/common'
 
 export const useRedirection = () => {
   const router = useRouter()

@@ -37,7 +37,7 @@ import DocumentsSearchAlert from './components/DocumentsSearchAlert'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
-import type { Entity } from '@pulse/Common'
+import type { Entity } from '@pulse/common'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure

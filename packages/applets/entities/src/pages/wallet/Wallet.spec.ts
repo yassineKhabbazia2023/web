@@ -2,7 +2,7 @@ import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { amplitudeService, commonStore } from '@pulse/Common'
+import { amplitudeService, commonStore } from '@pulse/common'
 import { PERMISSION_CODES } from '@entities/constants'
 import Wallet from './'
 
@@ -18,7 +18,7 @@ vi.mock('vue-router', () => ({
   useRoute: () => ({}),
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

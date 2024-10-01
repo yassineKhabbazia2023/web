@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
-import type { UserInfo } from '@pulse/Common'
+import type { UserInfo } from '@pulse/common'
 
 const menu = [
   {

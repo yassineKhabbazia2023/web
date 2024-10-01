@@ -30,7 +30,7 @@ vi.mock('@entities/services/account', () => {
   }
 })
 
-vi.mock('@pulse/Common', () => {
+vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       gateway: {

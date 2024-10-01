@@ -10,7 +10,7 @@ import { nextTick } from 'vue'
 
 const piniaStore = createPinia()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     ds: vi.fn(),
   }),

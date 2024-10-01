@@ -1,4 +1,4 @@
-import { commonApi as api } from '@pulse/Common'
+import { commonApi as api } from '@pulse/common'
 import type { DeadlinesByDate, Occurrence, Status } from '@app/schedule/models/Deadline'
 import type { Account } from '@app/schedule/models/Account'
 import type { KeyLabel } from '@app/schedule/models/commonTypes'

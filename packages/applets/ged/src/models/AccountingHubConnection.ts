@@ -1,4 +1,4 @@
-import { DataStreamHubConnection } from '@pulse/Common'
+import { DataStreamHubConnection } from '@pulse/common'
 import { VITE_ACCOUNTING_HUB_URL } from 'env-vars'
 
 export const DOCUMENT_PIA_STATUS_CHANGED = 'DocumentPiaStatusChanged'

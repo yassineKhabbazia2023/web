@@ -1,5 +1,5 @@
 
-import { dataProvider, commonStore as store, tokenService } from '@pulse/Common'
+import { dataProvider, commonStore as store, tokenService } from '@pulse/common'
 import { getToken } from '@login/services/msal'
 import { ref } from 'vue'
 

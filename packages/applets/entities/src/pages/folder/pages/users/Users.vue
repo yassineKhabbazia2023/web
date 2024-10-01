@@ -10,7 +10,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@pulse/Common'
+import { commonStore } from '@pulse/common'
 import UsersCollab from '@entities/pages/folder/pages/usersCollab'
 import UsersClient from '@entities/pages/folder/pages/usersClient'
 

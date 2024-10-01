@@ -23,7 +23,7 @@ import { useI18n } from 'vue-i18n'
 import { PButton } from '@kpmg/styleguide'
 import { msalInstance } from '@login/services/msal'
 import useInitAuth from '@login/composable/useInitUserAuth'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 import useNavigation from '@login/composable/useNavigation'
 
 const { initAuthCollab, isTokenRetrieve } = useInitAuth()

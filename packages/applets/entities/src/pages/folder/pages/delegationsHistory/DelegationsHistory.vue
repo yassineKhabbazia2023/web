@@ -104,8 +104,8 @@ import {
   PTimelineItem,
   PTooltip,
 } from '@kpmg/styleguide'
-import type { Entity } from '@pulse/Common'
-import { commonStore } from '@pulse/Common'
+import type { Entity } from '@pulse/common'
+import { commonStore } from '@pulse/common'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import { removeFalsyValues } from '@entities/helper'

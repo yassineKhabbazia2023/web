@@ -1,4 +1,4 @@
-import { commonApi as api } from '@pulse/Common'
+import { commonApi as api } from '@pulse/common'
 import type { AxiosResponse } from 'axios'
 import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { Service } from '@ged/models/Service'

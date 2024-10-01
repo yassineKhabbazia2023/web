@@ -121,7 +121,7 @@ import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer
 import CollabRightsDrawer from './../CollabRightsDrawer'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { returnSortQueryField } from '@entities/helper'
-import { userPermissions } from '@pulse/Common'
+import { userPermissions } from '@pulse/common'
 import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({

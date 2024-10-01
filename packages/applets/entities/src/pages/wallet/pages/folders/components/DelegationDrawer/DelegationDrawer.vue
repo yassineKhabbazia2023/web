@@ -71,7 +71,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PICheck, PNotification, PIX } from '@kpmg/styleguide'
-import { commonApi, commonStore } from '@pulse/Common'
+import { commonApi, commonStore } from '@pulse/common'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 

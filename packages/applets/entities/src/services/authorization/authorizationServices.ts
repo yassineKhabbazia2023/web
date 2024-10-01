@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { ContactType } from '@entities/services/contact/contactTypes'
 import type { AuthorizationConfig } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListTypes'

@@ -4,7 +4,7 @@ import { beforeEach, afterEach, describe, it, expect, vi, type MockInstance } fr
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
-import { type Entity, commonStore } from '@pulse/Common'
+import { type Entity, commonStore } from '@pulse/common'
 import { API_PREFIXES } from '@entities/common/config/services'
 import * as styleguide from '@kpmg/styleguide'
 import TableData from '.'
@@ -26,7 +26,7 @@ vi.mock('@kpmg/styleguide', async () => {
   }
 })
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: postMock,

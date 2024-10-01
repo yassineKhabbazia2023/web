@@ -166,7 +166,7 @@ import type {
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import { type Note, createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 
 const { t } = useI18n({
   inheritLocale: true,

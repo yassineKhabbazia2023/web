@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PUserAction } from '@kpmg/styleguide'
-import { getInitials } from '@pulse/Common'
+import { getInitials } from '@pulse/common'
 import { getFullName } from '@entities/common/utils'
 import type { CollaboratorsDetailsProps } from './CollaboratorsDetailsTypes'
 

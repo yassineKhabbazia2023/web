@@ -67,7 +67,7 @@ import { useI18n } from 'vue-i18n'
 import { reactive, computed, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import { PImage, PForm, PFormItem, PInput, PButton } from '@kpmg/styleguide'
 
 const { t } = useI18n({

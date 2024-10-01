@@ -6,14 +6,14 @@ import { flushPromises, mount } from '@vue/test-utils'
 import router from '../plugins/router'
 import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { ROUTES, PAGES_TITLE } from './mock'
-import { amplitudeService, commonStore, type Entity } from '@pulse/Common'
+import { amplitudeService, commonStore, type Entity } from '@pulse/common'
 import { nextTick } from 'vue'
 import * as mockedEnvVar from 'env-vars'
 import App from '.'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({

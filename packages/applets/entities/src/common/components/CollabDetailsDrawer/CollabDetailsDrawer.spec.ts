@@ -40,7 +40,7 @@ vi.mock('@kpmg/styleguide', async () => {
     PNotification: vi.fn(),
   }
 })
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       patch: mockedPatchGateway,

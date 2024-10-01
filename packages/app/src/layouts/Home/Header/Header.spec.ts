@@ -10,7 +10,7 @@ import { PICalendarEvent, PIArrowBarUp } from '@kpmg/styleguide'
 
 const { router, pinia, fetchUserData } = helpers()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
   getInitials: vi.fn(() => 'JD'),
   commonStore: defineStore('common', {

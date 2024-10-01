@@ -9,7 +9,7 @@ import Filters from '.'
 const pinia = createPinia()
 const statistics = getMockedEntitiesStatistics()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: () => Promise.resolve({

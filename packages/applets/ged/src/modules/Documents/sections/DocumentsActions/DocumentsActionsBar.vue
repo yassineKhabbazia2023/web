@@ -23,7 +23,7 @@ import {
 } from './helpers/DocumentsActionsHelpers'
 import { PActionBar } from '@kpmg/styleguide'
 import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
-import { debounce } from '@pulse/Common'
+import { debounce } from '@pulse/common'
 
 const props = defineProps<DocumentActionsBarProps>()
 const emit = defineEmits(['p-action-bar-button-clicked', 'p-upload-files-selected',

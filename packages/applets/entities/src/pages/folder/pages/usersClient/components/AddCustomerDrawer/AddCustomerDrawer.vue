@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
-import { amplitudeService, debounce } from '@pulse/Common'
+import { amplitudeService, debounce } from '@pulse/common'
 import {
   PDrawer,
   PForm,

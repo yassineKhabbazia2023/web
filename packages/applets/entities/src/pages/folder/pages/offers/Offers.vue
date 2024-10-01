@@ -82,7 +82,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore, userPermissions } from '@pulse/Common'
+import { commonStore, userPermissions } from '@pulse/common'
 import {
   PBlockHeader,
   PButton,

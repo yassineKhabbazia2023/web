@@ -3,7 +3,7 @@ import { PERMISSION_CODES } from '@entities/constants'
 import { getForceDisabled } from './InformationHelper'
 
 const mockHasPermission = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),

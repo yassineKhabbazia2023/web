@@ -99,7 +99,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { PLoader, PDatePicker, type PDatePickerModelValue } from '@kpmg/styleguide'
-import { debounce, commonStore as useCommonStore } from '@pulse/Common'
+import { debounce, commonStore as useCommonStore } from '@pulse/common'
 import { getSchedulesCollection } from '@app/schedule/services'
 import DeadlineList from '@app/schedule/components/DisplayDeadline/DeadlineList'
 import WidgetActiveDay from '@app/schedule/components/WidgetActiveDay'

@@ -4,7 +4,7 @@ import { vi, expect, describe, it } from 'vitest'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
-import { commonStore } from '@pulse/Common'
+import { commonStore } from '@pulse/common'
 import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import type { CalendarProps } from './CalendarTypes'
 import { PCalendar } from '@kpmg/styleguide'
@@ -17,7 +17,7 @@ import Calendar from '.'
 const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
 
 const pinia = createTestingPinia()
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

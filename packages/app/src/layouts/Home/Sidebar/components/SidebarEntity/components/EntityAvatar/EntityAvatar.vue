@@ -39,7 +39,7 @@
 import { computed } from 'vue'
 import { PAvatar, PIPulse, PIcon } from '@kpmg/styleguide'
 import type { EntityAvatarProps } from './EntityAvatarTypes'
-import type { Entity } from '@pulse/Common'
+import type { Entity } from '@pulse/common'
 import SidebarEntityItem from '../SidebarEntityItem'
 
 const props = defineProps<EntityAvatarProps>()

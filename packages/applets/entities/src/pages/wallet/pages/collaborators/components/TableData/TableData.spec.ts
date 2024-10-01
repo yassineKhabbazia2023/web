@@ -16,7 +16,7 @@ const mockGatewayGet = vi.fn(() => {
   })
 })
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: mockGatewayGet,

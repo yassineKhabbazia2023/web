@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 import { type Store, storeToRefs } from 'pinia'
 import { routes as errorRoutes } from '@app/pages/Error/router'
-import { commonStore as useStore, commonApi, dataProvider } from '@pulse/Common'
+import { commonStore as useStore, commonApi, dataProvider } from '@pulse/common'
 import { fetchEntities } from '@app/services/entities'
 
 const isFirstTime = ref(true)

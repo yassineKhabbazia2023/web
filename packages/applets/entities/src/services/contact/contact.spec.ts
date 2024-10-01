@@ -8,7 +8,7 @@ import type { PatchContactPayload } from './contactTypes'
 const mockedCollaborators = getMockedCollaborators()
 const mockedCustomerIDs = [1, 2, 3]
 
-vi.mock('@pulse/Common', () => {
+vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       gateway: {

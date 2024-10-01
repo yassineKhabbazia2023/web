@@ -20,7 +20,7 @@ function createWrapper() {
   return getWrapper(CreatePassword, router, stubs)
 }
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: () => ({

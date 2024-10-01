@@ -14,8 +14,8 @@ import {
 import { ContactType } from '../contact/contactTypes'
 import { getMockedEntitiesStatistics } from '@entities/pages/wallet/components/Filters/FiltersMocks'
 import { mockCollabsData } from '@entities/pages/folder/pages/collaborators/mockData'
-import type { Entity } from '@pulse/Common'
-import * as Common from '@pulse/Common'
+import type { Entity } from '@pulse/common'
+import * as Common from '@pulse/common'
 import { getMockedCustomersCollab } from '@entities/pages/folder/pages/usersCollab/mockData'
 import { getMockedCollaborators } from '@entities/common/mocks/mockedCollaborators'
 import {
@@ -45,7 +45,7 @@ const TEST_ENTITIES: Entity[] = [
 
 const mockedFavoriteEntityPatch = vi.fn()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       /**

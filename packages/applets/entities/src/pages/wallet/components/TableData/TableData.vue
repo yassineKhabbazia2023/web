@@ -204,7 +204,7 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { type Entity, commonApi, commonStore, amplitudeService, userPermissions } from '@pulse/Common'
+import { type Entity, commonApi, commonStore, amplitudeService, userPermissions } from '@pulse/common'
 import type { TableDataProps } from './types'
 import type { AccountRow } from '@entities/common/types'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'

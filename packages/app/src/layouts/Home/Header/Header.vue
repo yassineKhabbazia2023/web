@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { commonStore, getInitials } from '@pulse/Common'
+import { commonStore, getInitials } from '@pulse/common'
 import {
   PAvatar,
   PImage,

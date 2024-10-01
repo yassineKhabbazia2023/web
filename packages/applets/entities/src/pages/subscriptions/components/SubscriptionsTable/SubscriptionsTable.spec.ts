@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
 import * as helpers from '@entities/common/utils/helpers'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'
 import { nextTick } from 'vue'
 import SubscriptionsTable from '.'
@@ -20,7 +20,7 @@ vi.mock('@entities/services/subscription', async () => {
     fetchSubscriptionRequests: mockFetchSubscriptionRequests,
   }
 })
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: () => ({}),
   amplitudeService: {
     track: vi.fn(),

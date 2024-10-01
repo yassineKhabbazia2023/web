@@ -1,7 +1,7 @@
 import type { Collab } from '@entities/pages/folder/pages/collaborators/types'
 import { handleRequestError } from '@entities/helper/helper'
 import { API_PREFIXES } from '@entities/common/config/services'
-import { type Entity, commonApi } from '@pulse/Common'
+import { type Entity, commonApi } from '@pulse/common'
 import type { Contact } from '../contact/contactTypes'
 import type { Contact as userContact } from '@entities/common/types'
 import type { Role } from '@entities/pages/wallet/pages/collaborators/components/CollabRightsDrawer/CollabRightsDrawerTypes'

@@ -22,7 +22,7 @@ const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const mockRouterPush = vi.fn()
 const mockAuthPost = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: mockAuthPost,

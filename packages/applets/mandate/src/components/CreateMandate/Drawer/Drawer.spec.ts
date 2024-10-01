@@ -8,7 +8,7 @@ import { createMandate } from '@mandate/services/mandate'
 const createWrapper = (props: any = {}, slots: any = {}) =>
   wrapperFactory(CreateMandateDrawer, { props, slots })
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({}),
   }),

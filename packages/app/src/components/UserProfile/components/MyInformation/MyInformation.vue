@@ -105,7 +105,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { onMounted, reactive, ref } from 'vue'
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import {
   PButton,
   PForm,

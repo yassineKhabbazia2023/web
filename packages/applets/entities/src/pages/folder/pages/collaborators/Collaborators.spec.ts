@@ -6,7 +6,7 @@ import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
 import * as walletServices from '@entities/services/wallet'
 import * as contactServices from '@entities/services/contact'
-import { commonStore } from '@pulse/Common'
+import { commonStore } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'
 import Collaborators from '.'
 
@@ -20,7 +20,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {},

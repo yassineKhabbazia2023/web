@@ -36,7 +36,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { amplitudeService, commonStore } from '@pulse/Common'
+import { amplitudeService, commonStore } from '@pulse/common'
 import {
   PTabs,
   PTabPane,

@@ -8,7 +8,7 @@ import { nextTick } from 'vue'
 const createWrapper = () =>
   wrapperFactory(Header)
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ([]),
   }),

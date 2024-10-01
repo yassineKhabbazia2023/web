@@ -97,7 +97,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi, commonStore as store, fetchUrlTerms, tokenService, amplitudeService } from '@pulse/Common'
+import { commonApi, commonStore as store, fetchUrlTerms, tokenService, amplitudeService } from '@pulse/common'
 import {
   onBeforeMount,
   reactive,

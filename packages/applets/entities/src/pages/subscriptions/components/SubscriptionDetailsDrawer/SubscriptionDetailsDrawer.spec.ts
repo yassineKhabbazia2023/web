@@ -7,7 +7,7 @@ import SubscriptionDetailsDrawer from '.'
 
 const mockedSubscriptionDetails = getMockedSubscriptionDetails()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
 }))
 

@@ -8,7 +8,7 @@ import {
   getMockedAccountReferential,
   getMockedReferentialHubs,
 } from '@entities/services/account/accountMock'
-import { commonStore } from '@pulse/Common'
+import { commonStore } from '@pulse/common'
 import * as accountServices from '@entities/services/account'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
 import Information from '.'
