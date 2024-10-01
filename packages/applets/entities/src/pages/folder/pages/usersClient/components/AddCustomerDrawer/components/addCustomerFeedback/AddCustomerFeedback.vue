@@ -42,7 +42,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { PUserCard, PImage, PAlert } from '@kpmg/styleguide'
+import { PUserCard, PImage, PAlert } from '@pulse/styleguide'
 import type { AddCustomerFeedbackProps } from './AddCustomerFeedbackTypes'
 
 const { t } = useI18n({

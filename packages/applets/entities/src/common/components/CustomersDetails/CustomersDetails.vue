@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { PAlert } from '@kpmg/styleguide'
+import { PAlert } from '@pulse/styleguide'
 import PrincipalContact from '@entities/pages/entities/components/PrincipalContact'
 import type { CustomersDetailsProps } from './CustomersDetailsTypes'
 

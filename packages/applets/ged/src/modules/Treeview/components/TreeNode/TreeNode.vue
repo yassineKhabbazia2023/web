@@ -75,7 +75,7 @@ import {
   PTooltip,
   PIcon,
   PIXCircle,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 
 import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }

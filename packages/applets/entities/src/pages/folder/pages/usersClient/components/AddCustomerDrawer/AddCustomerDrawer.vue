@@ -100,7 +100,7 @@ import {
   PButton,
   PBlockHeader,
   type FormRules,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCustomerFeedback from './components/addCustomerFeedback'

@@ -84,7 +84,7 @@ import {
   PLoader,
   PButton,
   PPagination,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { type Entity, commonStore } from '@pulse/common'
 import { useRouter } from 'vue-router'

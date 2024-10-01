@@ -13,7 +13,7 @@ import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 import { moveDocuments } from '@ged/services/Documents'
 import DocumentsModalActionsFooter from
   '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
-import { PButton } from '@kpmg/styleguide'
+import { PButton } from '@pulse/styleguide'
 import type { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTypes'
 import DocumentsMove from '.'
 import { documentsMock } from '../../mocks/documentMock'

@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { PButton, PTooltip } from '@kpmg/styleguide'
+import { PButton, PTooltip } from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './SidebarEntityItemTypes'
 
 const router = useRouter()

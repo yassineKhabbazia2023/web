@@ -93,11 +93,11 @@ import {
   PForm,
   PField,
   PButton,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { Filters, FilterDrawerProps } from './FilterDrawerTypes'
 import { getAccountsCollection, getScheduleModels } from '@app/schedule/services'
-import type { PDropdownOption, PFieldRadioOptions } from '@kpmg/styleguide'
+import type { PDropdownOption, PFieldRadioOptions } from '@pulse/styleguide'
 import type { Status } from '@app/schedule/models/Deadline'
 import { getDefaultFilters } from '@app/schedule/helpers/utils'
 

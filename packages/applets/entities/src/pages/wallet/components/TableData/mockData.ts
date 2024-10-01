@@ -1,4 +1,4 @@
-import { PIArrowUpCircle } from '@kpmg/styleguide'
+import { PIArrowUpCircle } from '@pulse/styleguide'
 import type { WalletData } from '../../types'
 import type { Entity } from '@pulse/common'
 

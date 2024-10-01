@@ -8,7 +8,7 @@ import {
   getMockedMappedAccount,
   getMockedSearchCriteria,
 } from './DeployUtilsMock'
-import { PIArrowUpCircle } from '@kpmg/styleguide'
+import { PIArrowUpCircle } from '@pulse/styleguide'
 import type { DeploymentStatus, SearchCriteria } from '../../types'
 import * as accountService from '@entities/services/account'
 import {

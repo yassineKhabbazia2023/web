@@ -7,7 +7,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { PToolbox } from '@kpmg/styleguide'
+import { PToolbox } from '@pulse/styleguide'
 
 const defaultProps: DocumentActionsProps = {
   permissions: [],

@@ -211,7 +211,7 @@ import {
   PIPulse,
   PRow,
   PTooltip,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
 
 const { t } = useI18n({

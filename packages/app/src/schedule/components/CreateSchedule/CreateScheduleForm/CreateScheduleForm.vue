@@ -130,7 +130,7 @@ import {
   PAlert,
   PDropdown,
   PUpload,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSchedule'
 import CreateScheduleReminders from '@app/schedule/components/CreateSchedule/CreateScheduleReminders'
 import type { FormProps } from './CreateScheduleFormTypes'

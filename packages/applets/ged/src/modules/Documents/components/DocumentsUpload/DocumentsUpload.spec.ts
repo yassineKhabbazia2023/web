@@ -12,7 +12,7 @@ import { nextTick } from 'vue'
 import { uploadDocument } from '@ged/services/Documents'
 import DocumentsUpload from '.'
 import DocumentsModalActionsFooter from '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
-import { PButton } from '@kpmg/styleguide'
+import { PButton } from '@pulse/styleguide'
 import { generateTestFiles, defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
 import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 

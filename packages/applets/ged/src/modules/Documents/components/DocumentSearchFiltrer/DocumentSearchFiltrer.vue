@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
-import { PDrawer, PSelect, POption, PButton, PDatePicker } from '@kpmg/styleguide'
+import { PDrawer, PSelect, POption, PButton, PDatePicker } from '@pulse/styleguide'
 import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import { useI18n } from 'vue-i18n'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'

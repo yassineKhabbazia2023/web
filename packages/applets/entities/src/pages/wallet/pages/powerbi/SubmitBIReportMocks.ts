@@ -1,5 +1,5 @@
 import type { ReportType } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
-import type { PDropdownOption } from '@kpmg/styleguide'
+import type { PDropdownOption } from '@pulse/styleguide'
 
 export const getMockedReportTypesDropdown = (): PDropdownOption[] => [
   {

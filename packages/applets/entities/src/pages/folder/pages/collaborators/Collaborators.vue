@@ -172,7 +172,7 @@ import {
   PToolbox,
   PIPersonAdd,
   type PToolboxItemProps,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import {
   computed,
   onMounted,

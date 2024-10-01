@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import DocumentsSearchAlert from '.'
 import type { DocumentsSearchAlertProps } from './DocumentsSearchAlertTypes'
 import { describe, it, expect } from 'vitest'
-import { PAlert } from '@kpmg/styleguide'
+import { PAlert } from '@pulse/styleguide'
 
 const defaultProps: DocumentsSearchAlertProps = {
   documentsCount: 10,

@@ -13,7 +13,7 @@ import { Idle } from 'idlejs'
 import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY } from 'env-vars'
 import { commonStore as useStore, amplitudeService } from '@pulse/common'
 import { useRoute, useRouter } from 'vue-router'
-import { PConfigProvider } from '@kpmg/styleguide'
+import { PConfigProvider } from '@pulse/styleguide'
 import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
 

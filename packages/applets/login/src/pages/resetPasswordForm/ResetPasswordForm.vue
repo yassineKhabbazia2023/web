@@ -85,7 +85,7 @@ import {
   PFormItem,
   PInput,
   PButton,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import PopoverPasswordStrength from '../createPassword/PopoverPasswordStrength'
 import {
   PASSWORD_STRENGTH,

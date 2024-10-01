@@ -1,4 +1,4 @@
-import { PIArrowUpCircle } from '@kpmg/styleguide'
+import { PIArrowUpCircle } from '@pulse/styleguide'
 import type { DeploymentStatus, State, WalletData, SearchCriteria } from '../../types'
 import type { QueryResult } from '@entities/common/types'
 

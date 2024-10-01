@@ -75,7 +75,7 @@ import {
   PIPatchCheck,
   PIPower,
   PIPerson,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDrawerTypes'
 import { fetchAccountContacts } from '@entities/services/wallet'
 import { inviteCustomers } from '@entities/services/contact'

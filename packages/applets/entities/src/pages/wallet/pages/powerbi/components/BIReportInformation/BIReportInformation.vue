@@ -76,7 +76,7 @@ import {
   PSelect,
   POption,
   PIInfoCircle,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { getSearchParams } from '@entities/pages/wallet/pages/folders/DeployUtils'
 import { PAGE_SIZES } from '@entities/constants'
 import { fetchBIReports, fetchReportAccounts } from '@entities/services/reporting'

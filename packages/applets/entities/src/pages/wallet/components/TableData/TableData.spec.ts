@@ -6,7 +6,7 @@ import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
 import { type Entity, commonStore } from '@pulse/common'
 import { API_PREFIXES } from '@entities/common/config/services'
-import * as styleguide from '@kpmg/styleguide'
+import * as styleguide from '@pulse/styleguide'
 import TableData from '.'
 
 const handleFavorites = vi.fn()
@@ -18,8 +18,8 @@ const testEntity = {
   accountNumber: mockTableData[0].accountNumber,
 }
 
-vi.mock('@kpmg/styleguide', async () => {
-  const styleguide = await vi.importActual('@kpmg/styleguide') as Record<string, unknown>
+vi.mock('@pulse/styleguide', async () => {
+  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
   return {
     ...styleguide,
     PNotification: vi.fn(),

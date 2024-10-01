@@ -229,7 +229,7 @@ import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
 import DocumentPreview from './components/DocumentPreview'
 import DocumentDeleteModal from '@ged/modules/Documents/components/DocumentDeleteModal'
-import { PBreadcrumb, PLoader, PPagination } from '@kpmg/styleguide'
+import { PBreadcrumb, PLoader, PPagination } from '@pulse/styleguide'
 import DocumentUpload from '@ged/modules/Documents/components/DocumentsUpload'
 import { getBreadcrumbItems }
   from '@ged/modules/common/helpers/folderHelper'

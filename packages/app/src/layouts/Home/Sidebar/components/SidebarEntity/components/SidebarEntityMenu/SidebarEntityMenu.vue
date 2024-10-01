@@ -62,7 +62,7 @@ import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { amplitudeService, userPermissions, commonStore } from '@pulse/common'
 import { fetchBIReports } from '@app/services/reporting'
-import { PMenuItem, PMenu, PSubMenu } from '@kpmg/styleguide'
+import { PMenuItem, PMenu, PSubMenu } from '@pulse/styleguide'
 import { PERMISSION_CODES } from '@app/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 

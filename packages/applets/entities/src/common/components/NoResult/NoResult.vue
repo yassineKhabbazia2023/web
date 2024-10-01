@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { PImage } from '@kpmg/styleguide'
+import { PImage } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

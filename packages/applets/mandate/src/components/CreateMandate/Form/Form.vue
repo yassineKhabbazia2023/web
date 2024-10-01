@@ -292,7 +292,7 @@ import {
   PCol,
   PRow,
   PAlert,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 
 // Props
 interface FormProps {

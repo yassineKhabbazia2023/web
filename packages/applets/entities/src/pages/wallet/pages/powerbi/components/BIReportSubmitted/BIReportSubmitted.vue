@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import type { BIReportSubmittedProps } from './BIReportSubmittedTypes.ts'
-import { PButton, PImage } from '@kpmg/styleguide'
+import { PButton, PImage } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

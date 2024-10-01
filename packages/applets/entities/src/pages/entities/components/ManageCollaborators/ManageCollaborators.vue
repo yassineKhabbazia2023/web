@@ -59,7 +59,7 @@ import {
   PUserAction,
   PForm,
   PFormItem,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { getInitials } from '@entities/helper'
 import type { ManageCollaboratorsProps } from './ManageCollaboratorsTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'

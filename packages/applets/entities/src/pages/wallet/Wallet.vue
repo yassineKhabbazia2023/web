@@ -22,7 +22,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { PTabs, PTabPane } from '@kpmg/styleguide'
+import { PTabs, PTabPane } from '@pulse/styleguide'
 import { amplitudeService, commonStore, userPermissions } from '@pulse/common'
 import { PERMISSION_CODES } from '@entities/constants'
 

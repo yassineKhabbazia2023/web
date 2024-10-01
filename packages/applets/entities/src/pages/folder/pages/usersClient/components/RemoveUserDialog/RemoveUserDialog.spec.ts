@@ -2,7 +2,7 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import { deleteContactFromAccount } from '@entities/services/account'
 import * as accountServices from '@entities/services/account'
-import * as styleguide from '@kpmg/styleguide'
+import * as styleguide from '@pulse/styleguide'
 import { nextTick } from 'vue'
 import RemoveUserDialog from '.'
 
@@ -14,8 +14,8 @@ const USER_TO_REMOVE = {
   contactId: 4,
 }
 
-vi.mock('@kpmg/styleguide', async () => {
-  const styleguide = await vi.importActual('@kpmg/styleguide') as Record<string, unknown>
+vi.mock('@pulse/styleguide', async () => {
+  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
   return {
     ...styleguide,
     PNotification: vi.fn(),

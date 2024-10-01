@@ -1,4 +1,4 @@
-import { type PService } from '@kpmg/styleguide'
+import { type PService } from '@pulse/styleguide'
 import type { SelectedProduct } from '@entities/common/types'
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SubscriptionOfferProduct } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'

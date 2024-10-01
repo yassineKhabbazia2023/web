@@ -5,7 +5,7 @@ import {
   getFormattedMockedCollaborators,
 } from '@entities/common/mocks/mockedCollaborators'
 import * as walletServices from '@entities/services/wallet'
-import * as styleguide from '@kpmg/styleguide'
+import * as styleguide from '@pulse/styleguide'
 import { nextTick } from 'vue'
 import CollabDetailsDrawer from '.'
 
@@ -30,8 +30,8 @@ const mockedPatchGateway = vi.fn(() => {
 vi.mock('@entities/services/wallet', () => ({
   updateCollaborator: vi.fn(),
 }))
-vi.mock('@kpmg/styleguide', async () => {
-  const styleguide = (await vi.importActual('@kpmg/styleguide')) as Record<
+vi.mock('@pulse/styleguide', async () => {
+  const styleguide = (await vi.importActual('@pulse/styleguide')) as Record<
     string,
     unknown
   >

@@ -54,7 +54,7 @@ import {
   PIExclamationTriangle,
   PNotification,
   PUserCard,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { deleteContactFromAccount } from '@entities/services/account'
 import type { RemoveUserDialogProps } from './RemoveUserDialogTypes'
 

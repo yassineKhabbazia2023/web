@@ -103,7 +103,7 @@ import {
   PTimeline,
   PTimelineItem,
   PTooltip,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { Entity } from '@pulse/common'
 import { commonStore } from '@pulse/common'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'

@@ -64,7 +64,7 @@
 import { computed } from 'vue'
 import type { WidgetActiveDayProps } from './WidgetActiveDayTypes'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
-import { PImage } from '@kpmg/styleguide'
+import { PImage } from '@pulse/styleguide'
 import WidgetDeadlines from '@app/schedule/components/WidgetDeadlines'
 
 const datetimeFormats = {

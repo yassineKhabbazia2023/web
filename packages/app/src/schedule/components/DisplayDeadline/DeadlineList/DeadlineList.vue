@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PScrollbar } from '@kpmg/styleguide'
+import { PScrollbar } from '@pulse/styleguide'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import { dateISOFormatter } from '@app/schedule/helpers/utils'
 import ListItem from '@app/schedule/components/DisplayDeadline/ListItem'

@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import { inject, ref } from 'vue'
 import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
-import { PICheck, PIExclamationTriangle, PILoader } from '@kpmg/styleguide'
+import { PICheck, PIExclamationTriangle, PILoader } from '@pulse/styleguide'
 import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'
 import {
   downloadDocument,

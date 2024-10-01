@@ -2,7 +2,7 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getMockedCollabRoles } from './CollabRolesMocks'
 import { nextTick } from 'vue'
-import { PRadioGroup } from '@kpmg/styleguide'
+import { PRadioGroup } from '@pulse/styleguide'
 import CollabRoles from '.'
 
 // Mocks

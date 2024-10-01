@@ -1,5 +1,5 @@
 import type { ComponentDefinitionProps }
-  from '@kpmg/styleguide'
+  from '@pulse/styleguide'
 
 interface ActionBarButtonWithOrder {
   actionbarButton: ComponentDefinitionProps

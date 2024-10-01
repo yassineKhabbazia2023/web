@@ -1,5 +1,5 @@
 import type { ReportInfo } from '../../SubmitBIReportTypes'
-import type { PDropdownOption } from '@kpmg/styleguide'
+import type { PDropdownOption } from '@pulse/styleguide'
 
 export interface BIReportInformationProps {
   reportTypes: PDropdownOption[]

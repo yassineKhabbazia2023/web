@@ -4,7 +4,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { type BinTableElementProps } from './BinTableElementTypes'
-import { PText, PDoubleText, PIcon, PIArrowCounterclockwise, PIFiletypeJpg } from '@kpmg/styleguide'
+import { PText, PDoubleText, PIcon, PIArrowCounterclockwise, PIFiletypeJpg } from '@pulse/styleguide'
 
 const defaultProps: BinTableElementProps = {
   fieldType: '',

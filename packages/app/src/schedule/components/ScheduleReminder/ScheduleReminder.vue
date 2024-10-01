@@ -47,7 +47,7 @@ import {
   PIX,
   PInput,
   PDropdown,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { ScheduleReminderProps } from './ScheduleReminderTypes'
 

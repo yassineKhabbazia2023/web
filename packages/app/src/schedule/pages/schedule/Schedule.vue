@@ -98,7 +98,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import { PLoader, PDatePicker, type PDatePickerModelValue } from '@kpmg/styleguide'
+import { PLoader, PDatePicker, type PDatePickerModelValue } from '@pulse/styleguide'
 import { debounce, commonStore as useCommonStore } from '@pulse/common'
 import { getSchedulesCollection } from '@app/schedule/services'
 import DeadlineList from '@app/schedule/components/DisplayDeadline/DeadlineList'

@@ -56,8 +56,8 @@ import Tag from '@app/schedule/components/Common/Tag'
 import Icon from '@app/schedule/components/Common/Icon'
 import {
   PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
-} from '@kpmg/styleguide'
-import type { PToolboxItemProps } from '@kpmg/styleguide'
+} from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide'
 import type { Status } from '@app/schedule/models/Deadline'
 import { getProgressText } from '@app/schedule/helpers/deadlineHelper'
 import { getScheduleModelsByKey } from '@app/schedule/services'

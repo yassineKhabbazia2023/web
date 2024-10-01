@@ -27,7 +27,7 @@
 
 <!-- eslint-disable max-len -->
 <script lang="ts" setup>
-import { PPopover } from '@kpmg/styleguide'
+import { PPopover } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import {

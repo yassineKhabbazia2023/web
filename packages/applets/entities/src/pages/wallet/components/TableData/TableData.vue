@@ -194,7 +194,7 @@ import {
   PIExclamationTriangle,
   PNotification,
   type PToolboxItemProps,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import {
   onMounted,
   ref,

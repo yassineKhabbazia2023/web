@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { PLoader } from '@kpmg/styleguide'
+import { PLoader } from '@pulse/styleguide'
 import { fetchBIReports, fetchBIToken } from '@entities/services/reporting'
 import type { Report } from './BIReportsTypes'
 import ReportsList from './components/ReportsList'

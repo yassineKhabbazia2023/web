@@ -130,7 +130,7 @@ import {
   PICardList,
   PIStarFill,
   PIcon,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
 import { getDefaultEntity } from './utils'

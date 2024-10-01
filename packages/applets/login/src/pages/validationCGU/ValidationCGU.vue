@@ -76,7 +76,7 @@
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref, reactive } from 'vue'
 import type { FormRules } from 'element-plus'
-import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@kpmg/styleguide'
+import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@pulse/styleguide'
 import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
 import { fetchUrlTerms } from '@pulse/common'
 import { updateTermsByCurrentUser } from '@login/services/cgu'

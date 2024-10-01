@@ -121,7 +121,7 @@ import {
   PImage,
   PLoader,
   PNotification,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { downloadUnsignedMandate, getMandateAvailability } from '@mandate/services/mandate'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import { showNotification } from '@mandate/helpers/NotificationHelper'

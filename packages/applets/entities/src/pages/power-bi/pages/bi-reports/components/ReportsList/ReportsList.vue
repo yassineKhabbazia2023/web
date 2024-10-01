@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PScrollbar } from '@kpmg/styleguide'
+import { PScrollbar } from '@pulse/styleguide'
 import type { ReportsListProps } from './ReportsListTypes'
 import type { Report } from '../../BIReportsTypes'
 import ReportCard from './components/index'

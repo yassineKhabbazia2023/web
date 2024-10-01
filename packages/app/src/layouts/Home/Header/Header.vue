@@ -66,7 +66,7 @@ import {
   PIcon,
   PICalendarEvent,
   PIX,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
 defineProps<HeaderProps>()

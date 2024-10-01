@@ -157,7 +157,7 @@ import {
   type PToolboxItemProps,
   PICheck,
   PIExclamationTriangle,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { commonStore, getInitials } from '@pulse/common'
 import {
   PAGE_SIZES,

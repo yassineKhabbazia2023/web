@@ -8,8 +8,8 @@ import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import FoldersBreadCrumb from '.'
 import type { BreadcrumbItems }
-  from '@kpmg/styleguide'
-import { PBreadcrumb, PIcon } from '@kpmg/styleguide'
+  from '@pulse/styleguide'
+import { PBreadcrumb, PIcon } from '@pulse/styleguide'
 
 const currentServiceFolder: Folder[] = foldersData[0]
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637

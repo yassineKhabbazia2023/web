@@ -45,7 +45,7 @@ import { generateActionsForModal } from
 import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
 import { mapExplorerDocumentFromFolders } from '@ged/modules/Documents/helpers/documentExplorerMapper'
 import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
-import { PICheck, PIExclamationTriangle } from '@kpmg/styleguide'
+import { PICheck, PIExclamationTriangle } from '@pulse/styleguide'
 import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '@ged/modules/Documents/DocumentsTypes'
 import { moveFolderAsync } from '@ged/services/Folder'
 

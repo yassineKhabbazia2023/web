@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PTable, PTableColumn, PAvatar, PIcon, PIPulse } from '@kpmg/styleguide'
+import { PTable, PTableColumn, PAvatar, PIcon, PIPulse } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 

@@ -21,7 +21,7 @@ import {
   generateActionBarLeftSideButtons,
   generateActionBarRightSideButtons,
 } from './helpers/DocumentsActionsHelpers'
-import { PActionBar } from '@kpmg/styleguide'
+import { PActionBar } from '@pulse/styleguide'
 import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
 import { debounce } from '@pulse/common'
 

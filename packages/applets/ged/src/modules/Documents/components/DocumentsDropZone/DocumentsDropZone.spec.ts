@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import DocumentsDropZone from '.'
-import { PImage } from '@kpmg/styleguide'
+import { PImage } from '@pulse/styleguide'
 import type { DocumentsDropZoneProps } from './DocumentsDropZoneTypes'
 import { type ComponentPublicInstance } from 'vue'
 

@@ -63,7 +63,7 @@ import {
   PIArrowUpCircle,
   PLoader,
   PPagination,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import TableData from '../../components/TableData'

@@ -22,7 +22,7 @@ import {
   PIFiletypeXls,
   PIFiletypeXlsx,
   PIFileText,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 
 const filename1 = 'something.abc.txt'
 const filename2 = 'file_without_extension'

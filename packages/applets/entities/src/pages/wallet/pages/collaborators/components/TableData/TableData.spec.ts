@@ -5,7 +5,7 @@ import { MENU_ACTIONS_NAME } from './constants'
 import TableData from './'
 import mock from '../../mockCollaborators.json'
 import { getInitials } from '@entities/helper'
-import { PTable } from '@kpmg/styleguide'
+import { PTable } from '@pulse/styleguide'
 
 let wrapper: VueWrapper<any>
 

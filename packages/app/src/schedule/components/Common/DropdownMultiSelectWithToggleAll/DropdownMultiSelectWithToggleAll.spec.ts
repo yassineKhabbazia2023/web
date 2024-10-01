@@ -2,7 +2,7 @@ import DropdownMultiSelectWithToggleAll from '.'
 import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import type { DropdownMultiSelectWithToggleAllProps } from './DropdownMultiSelectWithToggleAllTypes'
 import { expect, describe, it } from 'vitest'
-import { PSelect, PCheckbox } from '@kpmg/styleguide'
+import { PSelect, PCheckbox } from '@pulse/styleguide'
 import { accountsCollection } from '@app/schedule/tests/mocks/Account'
 import { accountsDataTransformer } from '@app/schedule/helpers/utils'
 

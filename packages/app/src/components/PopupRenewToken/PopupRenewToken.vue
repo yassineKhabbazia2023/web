@@ -45,7 +45,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import jwtDecode from 'jwt-decode'
 import type { JwtPayload } from 'jwt-decode'
-import { PDialog, PButton, PImage } from '@kpmg/styleguide'
+import { PDialog, PButton, PImage } from '@pulse/styleguide'
 import { useRedirection } from '@app/composables/useRedirection'
 import { commonApi, tokenService } from '@pulse/common'
 

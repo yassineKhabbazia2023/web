@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ref, type Ref } from 'vue'
 import { useDragAndDropFromExplorer } from '.'
-import { PNotification, PIExclamationTriangle, PICheck } from '@kpmg/styleguide'
+import { PNotification, PIExclamationTriangle, PICheck } from '@pulse/styleguide'
 import type { DocumentsProps } from '@ged/modules/Documents/DocumentsTypes'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 
@@ -60,7 +60,7 @@ vi.mock('@ged/services/Documents', () => ({
 }))
 
 // Mock `PNotification`
-vi.mock('@kpmg/styleguide', () => ({
+vi.mock('@pulse/styleguide', () => ({
   PNotification: vi.fn(),
   PIExclamationTriangle: vi.fn(),
   PICheck: vi.fn(),

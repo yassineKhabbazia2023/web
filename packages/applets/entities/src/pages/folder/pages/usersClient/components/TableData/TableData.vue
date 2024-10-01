@@ -113,8 +113,8 @@ import {
   PTableColumn,
   PToolbox,
   PTag,
-} from '@kpmg/styleguide'
-import type { PToolboxItemProps } from '@kpmg/styleguide'
+} from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide'
 import { computed, reactive } from 'vue'
 import { userPermissions } from '@pulse/common'
 import type { Props } from './types'

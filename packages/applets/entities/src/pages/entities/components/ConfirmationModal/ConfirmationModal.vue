@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDialog, PButton } from '@kpmg/styleguide'
+import { PDialog, PButton } from '@pulse/styleguide'
 import type { ConfirmationModalProps } from './ConfirmationModalTypes'
 
 const { t } = useI18n({

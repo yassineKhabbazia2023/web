@@ -8,7 +8,7 @@ import { createPinia } from 'pinia'
 import {
   PButton,
   PICheckCircle, PTag,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { downloadDocument } from '@ged/services/Documents'
 import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
 import { nextTick } from 'vue'

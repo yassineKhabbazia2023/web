@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { type ConfirmationPopupProps } from
   '@ged/modules/common/templates/popups/ConfirmationPopupTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import { PDialog } from '@kpmg/styleguide'
+import { PDialog } from '@pulse/styleguide'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 

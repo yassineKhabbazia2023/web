@@ -19,7 +19,7 @@ import {
   PIFiletypeXls,
   PIFiletypeXlsx,
   PIFiletypeXml,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 const authorizedExtensions = [
   'bmp',
   'csv',

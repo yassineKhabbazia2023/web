@@ -27,7 +27,7 @@ import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { commonApi } from '@pulse/common'
-import { PImage, PButton } from '@kpmg/styleguide'
+import { PImage, PButton } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

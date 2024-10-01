@@ -38,7 +38,7 @@
 import { computed } from 'vue'
 import { type ConfirmationPopupProps }
   from '@ged/modules/common/templates/popups/ConfirmationPopupTypes'
-import { PDialog, PButton } from '@kpmg/styleguide'
+import { PDialog, PButton } from '@pulse/styleguide'
 
 // Popup defintions
 const props = withDefaults(defineProps<ConfirmationPopupProps>(), {

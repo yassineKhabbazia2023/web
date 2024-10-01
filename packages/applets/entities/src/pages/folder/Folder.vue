@@ -43,7 +43,7 @@ import {
   PAvatar,
   PIcon,
   PIPulse,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import Home from './pages/home'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
 import type { TabName, Tab } from './FolderTypes'

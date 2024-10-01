@@ -18,7 +18,7 @@ import {
   PIPersonVcard,
   PITrash,
   PTooltip,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 
 const fold: Folder = {
   id: 1,

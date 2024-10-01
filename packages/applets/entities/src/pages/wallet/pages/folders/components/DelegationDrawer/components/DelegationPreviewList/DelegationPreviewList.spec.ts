@@ -3,7 +3,7 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import type { DelegationPreviewListProps } from './DelegationPreviewListTypes.ts'
 import DelegationPreviewList from './DelegationPreviewList.vue'
-import { PBlockHeader, PTable, PDoubleText } from '@kpmg/styleguide'
+import { PBlockHeader, PTable, PDoubleText } from '@pulse/styleguide'
 import { createI18n } from 'vue-i18n'
 import { getInitials } from '@entities/helper'
 

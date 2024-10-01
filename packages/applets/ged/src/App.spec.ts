@@ -22,7 +22,7 @@ import {
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import Documents from '@ged/modules/Documents'
 import BinDocuments from '@ged/modules/Bin'
-import { PNotification } from '@kpmg/styleguide'
+import { PNotification } from '@pulse/styleguide'
 
 const pinia = createPinia()
 
@@ -47,8 +47,8 @@ vi.mock('@ged/models/AccountingHubConnection', () => ({
   }),
 }))
 
-vi.mock('@kpmg/styleguide', async () => {
-  const styleguide = await vi.importActual('@kpmg/styleguide') as Record<string, unknown>
+vi.mock('@pulse/styleguide', async () => {
+  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
   return {
     ...styleguide,
     PNotification: vi.fn(),

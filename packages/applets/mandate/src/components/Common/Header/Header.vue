@@ -39,7 +39,7 @@ import {
   PIcon,
   PIAdd,
   PFilterGroup,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 const { t } = useI18n({

@@ -171,7 +171,7 @@ import {
   PStep,
   PSteps,
   PTooltip,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { createMandate } from '@mandate/services/mandate'
 import Form from '@mandate/components/CreateMandate/Form'
 import DownloadMandate from '@mandate/components/CreateMandate/Download'

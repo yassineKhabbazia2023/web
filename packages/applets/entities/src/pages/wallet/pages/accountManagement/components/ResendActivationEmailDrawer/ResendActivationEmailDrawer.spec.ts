@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
-import { PIPatchCheck, PIPerson, PIPower } from '@kpmg/styleguide'
+import { PIPatchCheck, PIPerson, PIPower } from '@pulse/styleguide'
 import type { AccountRow } from '@entities/common/types'
 import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
 import * as walletServices from '@entities/services/wallet'

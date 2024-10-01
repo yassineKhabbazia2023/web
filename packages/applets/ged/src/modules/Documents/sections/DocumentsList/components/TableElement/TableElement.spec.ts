@@ -36,7 +36,7 @@ import {
   PICheckCircle,
   PIExclamationTriangle,
   PDoubleText,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 
 const document: Document = {

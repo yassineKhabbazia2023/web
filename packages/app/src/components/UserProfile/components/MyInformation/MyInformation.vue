@@ -116,8 +116,8 @@ import {
   PInput,
   PLoader,
   PNotification,
-} from '@kpmg/styleguide'
-import type { FormInstance } from '@kpmg/styleguide'
+} from '@pulse/styleguide'
+import type { FormInstance } from '@pulse/styleguide'
 import LegalLinks from '@app/components/LegalLinks'
 import type { FormValues, User } from './MyInformationTypes'
 import LogoutButton from '../LogoutButton'

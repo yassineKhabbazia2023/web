@@ -21,7 +21,7 @@ import {
   PIFiletypeXls,
   PIFiletypeXlsx,
   PIFiletypeXml,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 
 describe('toolget File Iconbox helper', () => {
   describe('should return the propper icon based on file extension', () => {

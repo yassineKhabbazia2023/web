@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
-import { PCollapse } from '@kpmg/styleguide'
+import { PCollapse } from '@pulse/styleguide'
 import CollapsableFoldersList from '.'
 
 const i18n = createI18n({

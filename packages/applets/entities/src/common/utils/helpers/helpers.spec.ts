@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import * as styleguide from '@kpmg/styleguide'
+import * as styleguide from '@pulse/styleguide'
 import { displayNotification, getFullName } from '.'
 
-vi.mock('@kpmg/styleguide', () => {
+vi.mock('@pulse/styleguide', () => {
   return {
     PICheck: 'PICheck',
     PIX: 'PIX',

@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
-import { PDialog, PScrollbar } from '@kpmg/styleguide'
+import { PDialog, PScrollbar } from '@pulse/styleguide'
 import type { DocumentsModalExplorerProps } from './DocumentsExplorerModalTypes'
 import DocumentsExplorerHeader from './components/DocumentsExplorerHeader'
 import DocumentsCheckAll from './components/DocumentsSelector/DocumentsCheckAll'

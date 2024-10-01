@@ -116,7 +116,7 @@
 <script setup lang='ts'>
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { PToolboxItemProps } from '@kpmg/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide'
 import {
   PTable,
   PTableColumn,
@@ -126,7 +126,7 @@ import {
   PIThreeDots,
   PDialog,
   PAlert,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import Tag from '@mandate/components/Common/Tag'
 import { dateFormatter, downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import type { ListMandateProps, ActionEvent } from './ListMandateTypes'

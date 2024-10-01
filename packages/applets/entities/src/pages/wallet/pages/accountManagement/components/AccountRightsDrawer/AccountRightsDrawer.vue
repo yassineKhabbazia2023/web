@@ -82,7 +82,7 @@ import {
   PTabPane,
   PTabs,
   PLoader,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type {
   AuthorizationState,
 } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
