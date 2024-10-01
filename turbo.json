@@ -27,7 +27,7 @@
             "cache": true
         },
         "depcruise": {
-            "cache": true
+            "cache": false
         }
     }
 }
