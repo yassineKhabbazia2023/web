@@ -253,13 +253,13 @@ onMounted(() => {
   }
 
   &#{$self}--is-collab {
-    background-color: var(--el-color-base-blue-kpmg);
+    background-color: var(--el-color-base-blue-pulse);
 
     #{$self}__favorites {
       &::before {
         background: linear-gradient(
           180deg,
-          var(--el-color-base-blue-kpmg) 0%,
+          var(--el-color-base-blue-pulse) 0%,
           var(--shadow-color) 100%
         );
       }
@@ -268,7 +268,7 @@ onMounted(() => {
       background: linear-gradient(
         180deg,
         var(--shadow-color) 0%,
-        var(--el-color-base-blue-kpmg) 100%
+        var(--el-color-base-blue-pulse) 100%
       );
     }
   }

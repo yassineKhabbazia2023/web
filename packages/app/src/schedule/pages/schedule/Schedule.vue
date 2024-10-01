@@ -133,7 +133,7 @@ const isDrawerVisible = ref(false)
 const isFilterDrawerVisible = ref(false)
 const isFilterDrawerHasBeenDisplayed = ref(false)
 const activeDate = ref(new Date())
-const calendarWidgetDate = ref(new Date())
+const calendarWidgetDate = ref<any>(new Date())
 const occurrenceId = ref<number>()
 
 const REFRESH_DATA_DELAY = 250
@@ -253,8 +253,7 @@ function onCloseOccurrenceDrawer() {
 }
 
 function onCalendarWidgetChange(newCalendarWidgetDate: PDatePickerModelValue) {
-  calendarWidgetDate.value = newCalendarWidgetDate as Date
-
+  calendarWidgetDate.value = newCalendarWidgetDate
   debounceRefreshCalendarWidgetData()
 }
 

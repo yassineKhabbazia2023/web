@@ -1,9 +1,9 @@
+import { nextTick } from 'vue'
 
 import { vi, expect, describe, it } from 'vitest'
 
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import { nextTick } from 'vue'
 import { commonStore } from '@pulse/common'
 import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import type { CalendarProps } from './CalendarTypes'
