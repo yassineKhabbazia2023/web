@@ -8,7 +8,7 @@ import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import FoldersBreadCrumb from '.'
 import type { BreadcrumbItems }
-  from '@pulse/styleguide' // TO CHECK it was this on TPME /dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes
+  from '@pulse/styleguide' // FIXME it was this on TPME /dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes
 import { PBreadcrumb, PIcon } from '@pulse/styleguide'
 
 const currentServiceFolder: Folder[] = foldersData[0]

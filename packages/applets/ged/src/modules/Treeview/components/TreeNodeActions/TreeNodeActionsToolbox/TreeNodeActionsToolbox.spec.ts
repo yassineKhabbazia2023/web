@@ -101,6 +101,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
+    // FIXME fix the test and unskip or delete it
     it.skip('should  permissions with upload folder by default', () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,

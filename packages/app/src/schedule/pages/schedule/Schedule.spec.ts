@@ -311,6 +311,7 @@ describe('home page', () => {
       expect(calendar.props('deadlinesByDate')).toStrictEqual(expectedDeadlinesByDate)
     })
 
+    // FIXME fix the test and unskip or delete it
     it.skip('should load other month data when change month from widget Calendar', async () => {
       const getSchedulesCollectionSpy = vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')

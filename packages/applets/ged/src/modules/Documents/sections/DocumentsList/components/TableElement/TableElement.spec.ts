@@ -307,6 +307,7 @@ describe('tableElement', () => {
         const pDoubleText = wrapper.findComponent(PDoubleText)
         expect(pDoubleText.exists()).toBeTruthy()
       })
+    // FIXME fix the test and unskip or delete it
     it.skip('should map PTag component correctly based on fieldType', () => {
       const cases = [
         {

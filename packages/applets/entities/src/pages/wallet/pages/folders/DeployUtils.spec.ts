@@ -101,7 +101,7 @@ describe('test DeployUtils', () => {
         `?pageNumber=${searchCriteria.currentPage}`,
         `&pageSize=${searchCriteria.limit}`,
       ].join('')
-      // TO CHECK: monorepo build issue, quick fix
+      // FIXME: monorepo build issue, quick fix
       expect(queryParams).toMatch(expectedSearchParams)
     })
     it('should return the correct query parameters when the allAccounts parameter is set to true', () => {
@@ -115,7 +115,7 @@ describe('test DeployUtils', () => {
         `&pageSize=${searchCriteria.limit}`,
       ].join('')
 
-      // TO CHECK: monorepo build issue, quick fix
+      // FIXME: monorepo build issue, quick fix
       expect(queryParams).toMatch(expectedSearchParams)
     })
   })

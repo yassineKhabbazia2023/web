@@ -1,5 +1,5 @@
 import type { ComponentDefinitionProps }
-  from '@pulse/styleguide' // TO CHECK /dist/types/src/molecules/PActionBar/PActionBarTypes
+  from '@pulse/styleguide' // FIXME /dist/types/src/molecules/PActionBar/PActionBarTypes
 
 interface ActionBarButtonWithOrder {
   actionbarButton: ComponentDefinitionProps

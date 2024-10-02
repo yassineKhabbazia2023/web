@@ -165,6 +165,7 @@ describe('mandate collection', () => {
       expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
     })
 
+  // FIXME fix the test and unskip or delete it
   it.skip('should sort the table data', async () => {
     const wrapper = createWrapper({
       data: [],

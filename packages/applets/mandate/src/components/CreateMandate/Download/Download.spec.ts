@@ -134,6 +134,7 @@ describe('mandate not yet available', () => {
     expect(vi.mocked(getMandateAvailability)).toHaveBeenCalledOnce()
   })
 
+  // FIXME fix the test and unskip or delete it
   it.skip('should check availability of tracked mandate every 10 seconds when unavailable', async () => {
     vi.useFakeTimers()
 

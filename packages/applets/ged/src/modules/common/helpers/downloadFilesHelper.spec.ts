@@ -9,6 +9,7 @@ describe('downloadFile', () => {
     )
   })
 
+  // FIXME fix the test and unskip or delete it
   it.skip('should create a download link and click on it', () => {
     const data:any = '12345'
     const fileName = 'test.txt'
