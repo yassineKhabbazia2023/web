@@ -12,7 +12,7 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/Release/v2.0'
+    ref: 'refs/heads/features/tpme'
 
 extends:
   template: pipelines/templates/platform.front.package.yaml@Pulse

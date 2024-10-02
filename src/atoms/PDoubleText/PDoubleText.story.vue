@@ -50,7 +50,7 @@ const PDoubleTextBasicData = reactive({
 const typeOptions = ['primary', 'secondary']
 
 const source = `
-import { PDoubleText } from '@kpmg/styleguide'
+import { PDoubleText } from '@pulse/styleguide'
   
 <PDoubleText
   :title="Consectetur adpiscipiline'",

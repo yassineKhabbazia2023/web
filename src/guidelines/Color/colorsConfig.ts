@@ -1,6 +1,6 @@
 export const colorsConfig: Record<string, Record<string, string>> = {
   base: {
-    'blue-kpmg': '#00338D',
+    'blue-pulse': '#00338D',
     persian: 'primary-color',
     'persian-light': '#ECEFFF',
     white: '#FFFFFF',

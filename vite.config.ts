@@ -90,7 +90,7 @@ if (process.env.HISTOIRE) {
           700: '#409eff',
         },
       },
-      title: 'KPMG Pulse Styleguide - Pegase',
+      title: 'Pulse Styleguide - Pegase',
       logo: {
         dark: logo,
         light: logo,
@@ -120,7 +120,7 @@ if (process.env.HISTOIRE) {
       minify: true,
       reportCompressedSize: true,
       lib: {
-        name: '@kpmg/styleguide',
+        name: '@pulse/styleguide',
         entry: path.resolve(__dirname, 'src/main.ts'),
         formats: ['es', 'system', 'cjs'],
         fileName: (format) => `lib/styleguide.pegase.${format}.min.js`,
