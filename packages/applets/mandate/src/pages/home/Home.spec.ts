@@ -10,11 +10,15 @@ import { nextTick } from 'vue'
 import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 vi.mock('@mandate/services/mandate')
 vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ([]),
   }),
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
 }))
 
 const createWrapper = (props: any) =>
@@ -105,6 +109,10 @@ describe('test Home.vue', () => {
       searchTerm: inputValue,
       currentPage: 1,
     }
+
+    expect(amplitudeTrackMock).toHaveBeenCalledWith('Bank Mandate Searched', {
+      bank_mandate_search: inputValue,
+    })
     expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expected)
   })
 

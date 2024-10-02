@@ -4,15 +4,25 @@ import Header from '.'
 import { expect, describe, it, vi } from 'vitest'
 import Drawer from '@mandate/components/CreateMandate/Drawer'
 import { nextTick } from 'vue'
+import type { VueWrapper } from '@vue/test-utils'
 
 const createWrapper = () =>
   wrapperFactory(Header)
+
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ([]),
   }),
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
 }))
+
+function getDrawerOpenButton(wrapper: VueWrapper) {
+  return wrapper.find('.header__create-mandate-button')
+}
 
 describe('header.vue', () => {
   const wrapper = createWrapper()
@@ -25,6 +35,14 @@ describe('header.vue', () => {
     expect(wrapper.find('.drawer-create-mandate').exists()).toBeFalsy()
     await wrapper.find('.header__create-mandate-button').trigger('click')
     expect(wrapper.find('.drawer-create-mandate').exists()).toBeTruthy()
+  })
+
+  it('tracks mandate creation flow trigger', () => {
+    const drawerOpenButton = getDrawerOpenButton(wrapper)
+    drawerOpenButton.trigger('click')
+    expect(amplitudeTrackMock).toHaveBeenCalledWith('Bank Mandate Creation Started', {
+      bank_mandate_creation_start: '',
+    })
   })
 
   it('show emit refresh-mandate-collection', async () => {

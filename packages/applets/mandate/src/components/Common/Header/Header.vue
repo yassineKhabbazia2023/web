@@ -40,6 +40,7 @@ import {
   PIAdd,
   PFilterGroup,
 } from '@pulse/styleguide'
+import { amplitudeService } from '@pulse/common'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 const { t } = useI18n({
@@ -56,6 +57,13 @@ const emit = defineEmits<{
 const openDrawer = ref(false)
 const drawerHandler = () => {
   openDrawer.value = true
+  trackMandateFlowStart()
+}
+
+function trackMandateFlowStart() {
+  amplitudeService.track('Bank Mandate Creation Started', {
+    bank_mandate_creation_start: '',
+  })
 }
 
 const activeFilters = ref<number[]>([])

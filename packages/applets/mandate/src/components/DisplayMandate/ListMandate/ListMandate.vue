@@ -139,6 +139,7 @@ import {
 import { showNotification } from '@mandate/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
+import { amplitudeService } from '@pulse/common'
 
 declare let window: any
 
@@ -295,6 +296,7 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   { id: string, accountNumber: string, companyName: string }) => {
   const actions: Record<any, () => Promise<void> | void> = {
     'download-pre-filled-mandate': async () => {
+      trackPreFilledMandateDownload()
       await downloadAndSaveMandate(downloadUnsignedMandate, id, 'unsigned')
     },
     'download-signed-mandate': async () => {
@@ -314,8 +316,10 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
 
       // Cleanup: remove the file input after use
       fileUpload.remove()
+      trackSubmitSignedMandate()
     },
     'cancel-telecollection': () => {
+      trackTelecollectionCancellation()
       accountNumberRef.value = accountNumber
       companyNameRef.value = companyName
       mandateIdRef.value = id
@@ -327,6 +331,24 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   } catch (error) {
     console.error(error)
   }
+}
+
+function trackTelecollectionCancellation() {
+  amplitudeService.track('Bank Mandate Deleted', {
+    bank_mandate_delete: '',
+  })
+}
+
+function trackPreFilledMandateDownload() {
+  amplitudeService.track('Blank Bank Mandate Downloaded', {
+    blank_bank_mandate_download: '',
+  })
+}
+
+function trackSubmitSignedMandate() {
+  amplitudeService.track('Bank Mandate Deposited Signed', {
+    bank_mandate_deposited_sign: '',
+  })
 }
 
 const handleFileUpload = async (event: any, id: string) => {

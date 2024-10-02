@@ -36,6 +36,7 @@ import SearchBar from '@mandate/components/Common/SearchBar'
 import { debounce } from '@mandate/helpers/utils'
 import type { MandateCollection } from './Models'
 import { PAGE_SIZES } from '@mandate/constants'
+import { amplitudeService } from '@pulse/common'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -71,12 +72,20 @@ async function refreshData() {
   }
 }
 
+function trackMandateSearch(searchContent: string) {
+  amplitudeService.track('Bank Mandate Searched', {
+    bank_mandate_search: searchContent,
+  })
+}
 async function onUpdateSearchParams(override: Partial<SearchMandateParams>) {
   Object.assign(searchParams.value, override)
   await refreshData()
 }
 
-const debouncedRefreshData = debounce(refreshData)
+const debouncedRefreshData = debounce(() => {
+  refreshData()
+  trackMandateSearch(searchParams.value.searchTerm)
+})
 
 onMounted(() => {
   refreshData()

@@ -1,6 +1,5 @@
 import { expect, describe, it, beforeEach, vi } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { setActivePinia } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import {
@@ -24,9 +23,9 @@ vi.mock('@entities/common/utils/referential', () => ({
   getFormStructure: mockedGetFormStructure,
 }))
 
-const mockedGetForceDisabled = vi.hoisted(() => vi.fn(() => true))
+const mockedGetCanEdit = vi.hoisted(() => vi.fn(() => true))
 vi.mock('./InformationHelper', () => ({
-  getForceDisabled: mockedGetForceDisabled,
+  getCanEdit: mockedGetCanEdit,
 }))
 
 vi.mock('@entities/services/account', () => ({
@@ -43,19 +42,32 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+const getWrapper = () => shallowMount(Information, {
+  global: {
+    stubs: {
+      PForm: {
+        template: '<div><slot /></div>',
+      },
+      PAlert: {
+        template: '<div><slot /></div>',
+      },
+      PFieldSet: true,
+    },
+  },
+})
+
 // Unit Tests
 describe('information', () => {
   beforeEach(() => {
     setActivePinia(createTestingPinia())
   })
   describe('display', () => {
-    let wrapper: VueWrapper<any>
-    beforeEach(async () => {
-      wrapper = mount(Information)
-
-      await flushPromises()
+    let wrapper: ReturnType<typeof getWrapper>
+    beforeEach(() => {
+      wrapper = getWrapper()
     })
-    it('should correctly display the folder information', () => {
+    it('should correctly display the folder information', async () => {
+      await flushPromises()
       const alertInstruction = wrapper.find(
         '[data-testid="folder-information-alert"]',
       )
@@ -67,6 +79,7 @@ describe('information', () => {
       expect(alertInstruction.text()).toBe(expectedAlertInstruction)
     })
     it('should not display the alert if the user is a client', async () => {
+      await flushPromises()
       const store = commonStore()
       // @ts-expect-error: Getter is read only
       store.isCollab = false
@@ -77,44 +90,44 @@ describe('information', () => {
 
       expect(alertInstruction.exists()).toBeFalsy()
     })
-    it('should display all form sections', () => {
+    it('should display all form sections', async () => {
+      await flushPromises()
       const formSections = wrapper.findAll('.folder-information__form-section')
 
       expect(formSections).toHaveLength(InformationFormStructure.length)
     })
     it('should display the form once the loader has finished', async () => {
-      wrapper.vm.isLoading = true
-      await nextTick()
-      let loader = wrapper.find('[data-testid="folder-information-loader"]')
-      let informationForm = wrapper.find(
-        '[data-testid="folder-information-form"]',
-      )
+      const loaderBefore = wrapper.find('[data-testid="folder-information-loader"]')
+      const informationFormBefore = wrapper.find('[data-testid="folder-information-form"]')
 
-      expect(loader.exists()).toBeTruthy()
-      expect(informationForm.exists()).toBeFalsy()
+      expect(loaderBefore.exists()).toBeTruthy()
+      expect(informationFormBefore.exists()).toBeFalsy()
 
-      wrapper.vm.isLoading = false
-      await nextTick()
-      informationForm = wrapper.find('[data-testid="folder-information-form"]')
-      loader = wrapper.find('[data-testid="folder-information-loader"]')
+      await flushPromises()
 
-      expect(loader.exists()).toBeFalsy()
-      expect(informationForm.exists()).toBeTruthy()
+      const loaderAfter = wrapper.find('[data-testid="folder-information-loader"]')
+      const informationFormAfter = wrapper.find('[data-testid="folder-information-form"]')
+
+      expect(loaderAfter.exists()).toBeFalsy()
+      expect(informationFormAfter.exists()).toBeTruthy()
     })
-    it('should display the accurate type of address', () => {
+    it('should display the accurate type of address', async () => {
+      await flushPromises()
       const folderFormAddress = wrapper.find(
         '[data-testid="folder-information-form-address-section"]',
       )
 
-      expect(wrapper.vm.addressSectionTitle).toBe(expectedAddressSection)
+      const formAddressSection = wrapper.find('[data-testid="folder-information-form-address-section"]')
+      expect(formAddressSection.text()).toBe(expectedAddressSection)
       expect(folderFormAddress.text()).toBe(expectedAddressSection)
     })
     it('should log an error to the console if the API fails to fetch the information', async () => {
+      await flushPromises()
       const consoleSpy = vi.spyOn(console, 'error')
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
       vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(expectedErrorMessage)
-      wrapper = mount(Information)
+      wrapper = getWrapper()
       await flushPromises()
 
       expect(consoleSpy).toHaveBeenCalledOnce()
@@ -128,31 +141,33 @@ describe('information', () => {
   describe('test onMounted', () => {
     const tests = [{
       isCollab: false,
-      mockedForceDisabled: false,
+      mockedCanEdit: true,
     }, {
       isCollab: true,
-      mockedForceDisabled: false,
+      mockedCanEdit: true,
     }, {
       isCollab: true,
-      mockedForceDisabled: true,
+      mockedCanEdit: false,
     }]
-    it.each(tests)('should call with proper argument when isCollab equals $isCollab', async ({
-      isCollab,
-      mockedForceDisabled,
-    }) => {
-      const store = commonStore()
-      // @ts-expect-error: Getter is read only
-      store.isCollab = isCollab
+    it.each(tests)(
+      'should call with proper argument when isCollab equals $isCollab and canEdit is $mockedCanEdit', async ({
+        isCollab,
+        mockedCanEdit,
+      }) => {
+        const expectedForceDisabled = !mockedCanEdit
+        const store = commonStore()
+        // @ts-expect-error: Getter is read only
+        store.isCollab = isCollab
 
-      mockedGetForceDisabled.mockReturnValue(mockedForceDisabled)
+        mockedGetCanEdit.mockReturnValue(mockedCanEdit)
 
-      mount(Information)
+        getWrapper()
+        await flushPromises()
 
-      await flushPromises()
-      expect(mockedGetForceDisabled).toHaveBeenCalledOnce()
-      expect(mockedGetForceDisabled).toHaveBeenCalledWith(isCollab)
-      expect(mockedGetFormStructure).toHaveBeenCalledOnce()
-      expect(mockedGetFormStructure).toHaveBeenCalledWith('CompanyProfile', mockedForceDisabled)
-    })
+        expect(mockedGetCanEdit).toHaveBeenCalledOnce()
+        expect(mockedGetCanEdit).toHaveBeenCalledWith(isCollab)
+        expect(mockedGetFormStructure).toHaveBeenCalledOnce()
+        expect(mockedGetFormStructure).toHaveBeenCalledWith('CompanyProfile', expectedForceDisabled)
+      })
   })
 })

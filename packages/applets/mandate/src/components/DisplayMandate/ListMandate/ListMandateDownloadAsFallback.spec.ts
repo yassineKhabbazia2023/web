@@ -26,6 +26,13 @@ vi.mock('@mandate/services/mandate', () => {
   }
 })
 
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
+}))
+
 vi.mock('@mandate/helpers/utils', () => {
   return {
     dateFormatter: vi.fn(),

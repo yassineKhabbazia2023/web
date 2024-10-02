@@ -51,6 +51,13 @@ vi.mock('@mandate/helpers/utils', () => {
   }
 })
 
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
+}))
+
 const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
   if (withShowSaveFilePicker) {
     // Resetting the window object to its original state before each test
@@ -165,8 +172,7 @@ describe('mandate collection', () => {
       expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
     })
 
-  // FIXME fix the test and unskip or delete it
-  it.skip('should sort the table data', async () => {
+  it('should sort the table data', async () => {
     const wrapper = createWrapper({
       data: [],
       currentPage,
@@ -246,5 +252,33 @@ describe('mandate collection', () => {
     await wrapper.vm.actionClicked('download-pre-filled-mandate', mandate)
     // Assert that the correct service function was called
     expect(mandateService.downloadUnsignedMandate).toHaveBeenCalledWith(mandate.id)
+  })
+
+  it.skip('should track telecollection cancellation', async () => {
+    const wrapper = createWrapper({
+      data: [],
+      currentPage,
+    })
+
+    await wrapper.vm.actionClicked('cancel-telecollection',
+      { id: '123', accountNumber: '123', companyName: '123' })
+
+    expect(amplitudeTrackMock).toHaveBeenCalledWith('Bank Mandate Deleted', {
+      bank_mandate_delete: '',
+    })
+  })
+
+  it.skip('should track pre filled mandate download', async () => {
+    const wrapper = createWrapper({
+      data: [],
+      currentPage,
+    })
+
+    await wrapper.vm.actionClicked('download-pre-filled-mandate',
+      { id: '123', accountNumber: '123', companyName: '123' })
+
+    expect(amplitudeTrackMock).toHaveBeenCalledWith('Blank Bank Mandate Downloaded', {
+      blank_bank_mandate_download: '',
+    })
   })
 })

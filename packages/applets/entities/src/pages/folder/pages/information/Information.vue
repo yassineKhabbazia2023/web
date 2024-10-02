@@ -62,7 +62,7 @@ import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import { getFormStructure } from '@entities/common/utils/referential'
-import { getForceDisabled } from './InformationHelper'
+import { getCanEdit } from './InformationHelper'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -83,7 +83,8 @@ const addressSectionTitle = computed(() =>
 
 onMounted(async () => {
   try {
-    const forceDisabled = getForceDisabled(isCollab.value)
+    const canEdit = getCanEdit(isCollab.value)
+    const forceDisabled = !canEdit
     informationFormStructure.value = await getFormStructure('CompanyProfile', forceDisabled)
     accountModel.value = await fetchAccount(+route.params.id)
   } catch (error) {

@@ -176,6 +176,7 @@ import { createMandate } from '@mandate/services/mandate'
 import Form from '@mandate/components/CreateMandate/Form'
 import DownloadMandate from '@mandate/components/CreateMandate/Download'
 import type { CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
+import { amplitudeService } from '@pulse/common'
 
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
@@ -297,7 +298,9 @@ const submitMandate = async (mandate: CreateMandateModel) => {
     mandateId.value = id
     ++currentStep.value
     creationErrorToDisplay.value = ''
+    trackMandateCreation('success')
   } catch (error: any) {
+    trackMandateCreation('failed')
     if (error.response) {
       creationErrorToDisplay.value = error.response.data.message
     } else if (error.request) {
@@ -308,6 +311,12 @@ const submitMandate = async (mandate: CreateMandateModel) => {
   } finally {
     loading.value = false
   }
+}
+
+function trackMandateCreation(result: 'success' | 'failed') {
+  amplitudeService.track('Bank Mandate Creation Completed', {
+    bank_mandate_creation_result: result,
+  })
 }
 
 defineExpose({
