@@ -183,4 +183,16 @@ describe('app with navigation guard', () => {
     expect(pageTitle).toBe(PAGES_TITLE.FOLDER)
     expect(router.currentRoute.value.name).toBe('folder')
   })
+
+  it('should redirect to folder when a customer reaches mandate page and has one entity', async () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    await nextTick()
+    router.push({ name: 'mandats' })
+    await vi.dynamicImportSettled()
+    await flushPromises()
+
+    expect(router.currentRoute.value.name).toBe('folder')
+  })
 })
