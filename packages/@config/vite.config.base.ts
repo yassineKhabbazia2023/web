@@ -27,4 +27,11 @@ export const viteConfigBase = ({ mode }: any): UserConfig =>
         reporter: ['text', 'lcov', 'html', 'json'],
       },
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
   }) as UserConfig
