@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import * as styleguide from '@kpmg/styleguide'
+import * as styleguide from '@pulse/styleguide'
 import { flushPromises, mount } from '@vue/test-utils'
 import MyInformation from '.'
 
@@ -33,15 +33,15 @@ const USER_ID = 42
 const mockPatch = vi.fn()
 const mockGet = vi.fn(() => Promise.resolve({ data: CONTACT_RESPONSE }))
 
-vi.mock('@kpmg/styleguide', async () => {
-  const styleguide = await vi.importActual('@kpmg/styleguide') as Record<string, unknown>
+vi.mock('@pulse/styleguide', async () => {
+  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
   return {
     ...styleguide,
     PNotification: vi.fn(),
   }
 })
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: mockGet,

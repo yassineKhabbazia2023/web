@@ -7,7 +7,7 @@ import {
 const mockedAccountId = 602
 const mockedBIReports = getMockedBIReports()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn(() =>

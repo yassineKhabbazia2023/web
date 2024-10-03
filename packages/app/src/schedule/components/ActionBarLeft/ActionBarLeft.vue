@@ -113,7 +113,7 @@ import {
   PExpandableSearch,
   PIArrowLeft,
   PPastille,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 
 const emit = defineEmits<{

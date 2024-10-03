@@ -1,4 +1,4 @@
-import { setAssetsBaseUrl } from '@kpmg/styleguide'
+import { setAssetsBaseUrl } from '@pulse/styleguide'
 import { vi } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'

@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { PDrawer } from '@kpmg/styleguide'
+import { PDrawer } from '@pulse/styleguide'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'
@@ -16,7 +16,7 @@ const getNotificationSuccess = () =>
   document.body.getElementsByClassName('el-notification success')
 
 const gatewayPostMock = vi.fn().mockResolvedValue({})
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: gatewayPostMock,

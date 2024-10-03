@@ -42,7 +42,7 @@ import {
   PButton,
   PDrawer,
   PLoader,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
 import CreateScheduleForm from '@app/schedule/components/CreateSchedule/CreateScheduleForm'

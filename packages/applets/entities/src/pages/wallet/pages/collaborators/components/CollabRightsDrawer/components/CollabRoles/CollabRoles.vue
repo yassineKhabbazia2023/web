@@ -44,7 +44,7 @@ import {
   PRadioGroup,
   PIArrowRight,
   PIcon,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { CollabRolesProps } from './CollabRolesTypes'
 
 const { t } = useI18n({

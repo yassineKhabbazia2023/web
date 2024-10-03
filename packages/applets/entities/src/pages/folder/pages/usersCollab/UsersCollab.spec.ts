@@ -64,7 +64,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

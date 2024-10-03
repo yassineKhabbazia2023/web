@@ -69,7 +69,7 @@ import {
   PUserCard,
   PLoader,
   PIXCircle,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import CollabRoles from './components/CollabRoles'
 import RightsList from '@entities/common/components/ManageRightsDrawer/components/RightsList'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'

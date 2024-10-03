@@ -33,8 +33,8 @@ vi.mock('@mandate/helpers/utils', () => ({
 }))
 
 const notificationSpy = vi.hoisted(() => vi.fn(() => ({ close: vi.fn() })))
-vi.mock('@kpmg/styleguide', async () => {
-  const actual = await vi.importActual('@kpmg/styleguide') as Object
+vi.mock('@pulse/styleguide', async () => {
+  const actual = await vi.importActual('@pulse/styleguide') as Object
   return {
     ...actual,
     PNotification: notificationSpy,
@@ -134,6 +134,7 @@ describe('mandate not yet available', () => {
     expect(vi.mocked(getMandateAvailability)).toHaveBeenCalledOnce()
   })
 
+  // FIXME fix the test and unskip or delete it
   it.skip('should check availability of tracked mandate every 10 seconds when unavailable', async () => {
     vi.useFakeTimers()
 

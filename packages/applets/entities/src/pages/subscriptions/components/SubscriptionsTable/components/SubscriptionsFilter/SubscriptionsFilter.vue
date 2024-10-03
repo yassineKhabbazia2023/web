@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ref, watch, onMounted } from 'vue'
-import { PCheckbox, PSelect, POption } from '@kpmg/styleguide'
+import { PCheckbox, PSelect, POption } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

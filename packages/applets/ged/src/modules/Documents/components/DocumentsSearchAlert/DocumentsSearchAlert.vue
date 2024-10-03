@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import type { DocumentsSearchAlertProps } from './DocumentsSearchAlertTypes'
 import { useI18n } from 'vue-i18n'
-import { PAlert } from '@kpmg/styleguide'
+import { PAlert } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

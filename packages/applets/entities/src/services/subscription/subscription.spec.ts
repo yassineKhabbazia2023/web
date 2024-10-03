@@ -12,7 +12,7 @@ import { API_PREFIXES } from '@entities/common/config/services'
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),

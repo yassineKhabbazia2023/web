@@ -25,7 +25,7 @@ const mockedReportUploadInfo = {
 }
 const mockPostBIReport = vi.fn()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {

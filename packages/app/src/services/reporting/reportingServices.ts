@@ -1,5 +1,5 @@
 import { API_PREFIXES } from '../config'
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import type { GetReportsRequest } from './reportingTypes'
 
 export const fetchBIReports = async (

@@ -2,7 +2,7 @@ import { defineStore, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { amplitudeService, commonStore, commonStore as useStore } from '@pulse/Common'
+import { amplitudeService, commonStore, commonStore as useStore } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
 import LogoutButton from './'
 
@@ -16,7 +16,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     actions: {
       logout: vi.fn(),

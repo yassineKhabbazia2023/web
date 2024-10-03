@@ -5,7 +5,7 @@ import {
   getFormattedMockedCollaborators,
 } from '@entities/common/mocks/mockedCollaborators'
 import * as walletServices from '@entities/services/wallet'
-import * as styleguide from '@kpmg/styleguide'
+import * as styleguide from '@pulse/styleguide'
 import { nextTick } from 'vue'
 import CollabDetailsDrawer from '.'
 
@@ -30,8 +30,8 @@ const mockedPatchGateway = vi.fn(() => {
 vi.mock('@entities/services/wallet', () => ({
   updateCollaborator: vi.fn(),
 }))
-vi.mock('@kpmg/styleguide', async () => {
-  const styleguide = (await vi.importActual('@kpmg/styleguide')) as Record<
+vi.mock('@pulse/styleguide', async () => {
+  const styleguide = (await vi.importActual('@pulse/styleguide')) as Record<
     string,
     unknown
   >
@@ -40,7 +40,7 @@ vi.mock('@kpmg/styleguide', async () => {
     PNotification: vi.fn(),
   }
 })
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       patch: mockedPatchGateway,
@@ -143,7 +143,7 @@ describe('collabDetailsDrawer', () => {
     expect(spyPNotification).toHaveBeenCalledOnce()
   })
 
-  it('should emit the \'update:modelValue\' event when the drawer is closed', async () => {
+  it("should emit the 'update:modelValue' event when the drawer is closed", async () => {
     const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
     pDrawer.vm.$emit('close-drawer-button', false)
     await nextTick()
@@ -151,7 +151,7 @@ describe('collabDetailsDrawer', () => {
     expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 
-  it('should emit the \'update:modelValue\' event when the v-model is updated', async () => {
+  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
     const drawer = wrapper.findComponent({ name: 'PDrawer' })
     drawer.vm.$emit('update:modelValue', false)
     await nextTick()

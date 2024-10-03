@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { PAlert, PBlockHeader, PUserAction } from '@kpmg/styleguide'
+import { PAlert, PBlockHeader, PUserAction } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'

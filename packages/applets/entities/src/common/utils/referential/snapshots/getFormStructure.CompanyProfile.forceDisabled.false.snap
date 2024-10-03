@@ -316,7 +316,7 @@
         ],
         "pFieldKey": "hub.hubName",
         "pFieldType": "dropdown",
-        "pLabel": "Hub KPMG rattaché",
+        "pLabel": "Hub PULSE rattaché",
         "pTestId": "offer-hub-name-list",
         "referentialKey": "hubName",
       },

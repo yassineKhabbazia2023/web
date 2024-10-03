@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-// import { PTable } from '@kpmg/styleguide'
+// import { PTable } from '@pulse/styleguide'
 
 const ezText = 'Here is the table'
 </script>

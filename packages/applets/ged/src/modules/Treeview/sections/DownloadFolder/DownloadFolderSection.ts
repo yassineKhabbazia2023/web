@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import type { DownloadFolderComposableProps } from './DownloadFolderTypes'
 import { type ToastPluginFunc } from
   '@ged/modules/common/Types/toastPluginTypes'
-import { PICheck, PIExclamationTriangle, PILoader } from '@kpmg/styleguide'
+import { PICheck, PIExclamationTriangle, PILoader } from '@pulse/styleguide'
 import { formatDate } from '@ged/modules/common/helpers/dateFormatHelper'
 import { downloadFolder } from '@ged/services/Folder'
 import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'

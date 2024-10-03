@@ -5,7 +5,7 @@ import {
 } from 'env-vars'
 import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@launcher/services/launcherServices'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
-import { userPermissions } from '@pulse/Common'
+import { userPermissions } from '@pulse/common'
 
 const { hasPermission } = userPermissions()
 

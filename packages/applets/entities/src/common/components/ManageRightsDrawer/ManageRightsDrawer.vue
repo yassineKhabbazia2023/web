@@ -61,7 +61,7 @@ import {
   PLoader,
   PNotification,
   PICheck,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type {
   ManageRightsDrawerProps,
   AuthorizationState,

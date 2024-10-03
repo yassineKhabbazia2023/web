@@ -3,7 +3,7 @@ import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import type { KeyLabel } from '@app/schedule/models/commonTypes'
 import type { DropdownScheduleProps } from './DropdownScheduleTypes'
 import { expect, describe, it, vi } from 'vitest'
-import { PSelect } from '@kpmg/styleguide'
+import { PSelect } from '@pulse/styleguide'
 
 const createWrapper = (dropdownScheduleProps: DropdownScheduleProps) =>
   wrapperFactory(DropdownSchedule, { props: dropdownScheduleProps })

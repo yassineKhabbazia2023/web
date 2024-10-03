@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { PButton } from '@kpmg/styleguide'
+import { PButton } from '@pulse/styleguide'
 import type { ModalActionsProps } from './DocumentsModalActionsFooterTypes'
 
 defineProps<ModalActionsProps>()

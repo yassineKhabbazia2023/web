@@ -3,7 +3,7 @@ import {
   PILoader,
   PIExclamationTriangle,
   PNotification,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { NotificationMessagesByType, NotificationHandle } from './NotificationHelperTypes'
 
 const ICONS_BY_TYPE = {

@@ -6,10 +6,10 @@ import { flushPromises, mount } from '@vue/test-utils'
 import router from '../../plugins/router'
 import PopupRenewToken from '.'
 import { ROUTES } from '../../app/mock'
-import { tokenService } from '@pulse/Common'
+import { tokenService } from '@pulse/common'
 import type { JwtPayload } from 'jwt-decode'
 import jwtDecode from 'jwt-decode'
-import { PDialog } from '@kpmg/styleguide'
+import { PDialog } from '@pulse/styleguide'
 import { nextTick } from 'vue'
 
 const authPostMock = vi.fn(() => ({ data: '' }))
@@ -27,7 +27,7 @@ vi.mock('@app/composables/useRedirection', () => ({
   },
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({

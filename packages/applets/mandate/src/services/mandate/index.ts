@@ -1,5 +1,5 @@
 import type { Mandate } from '@mandate/pages/home/Models'
-import { commonApi as api } from '@pulse/Common'
+import { commonApi as api } from '@pulse/common'
 import type { BbanModel, CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
 import type { SearchMandateParams } from './ServiceMandateTypes'
 import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'

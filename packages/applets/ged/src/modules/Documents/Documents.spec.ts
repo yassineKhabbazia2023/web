@@ -30,14 +30,14 @@ import DocumentRename from './components/DocumentRename'
 import DocumentUpload from '@ged/modules/Documents/components/DocumentsUpload'
 import DocumentMove from './components/DocumentsMove'
 import type { Folder } from '@ged/models/Folder'
-import { PBreadcrumb, PPagination } from '@kpmg/styleguide'
+import { PBreadcrumb, PPagination } from '@pulse/styleguide'
 import DocumentPreview from './components/DocumentPreview'
 import { documentMock } from './mocks/documentMock'
 import DocumentsSearchAlert from './components/DocumentsSearchAlert'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
-import type { Entity } from '@pulse/Common'
+import type { Entity } from '@pulse/common'
 
 type DocumentsSetup = {
   documents: DocumentsWithTableStructure
@@ -974,7 +974,7 @@ describe('documents', () => {
       )
       await nextTick()
 
-      // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
+      // @ts-expect-error // FIXME: monorepo build issue, quick fix
       expect(drawer.props('openDrawer')).toBeFalsy()
     })
 

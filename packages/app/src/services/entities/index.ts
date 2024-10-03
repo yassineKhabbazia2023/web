@@ -1,5 +1,5 @@
-import { commonApi, commonStore as store } from '@pulse/Common'
-import type { Entity } from '@pulse/Common'
+import { commonApi, commonStore as store } from '@pulse/common'
+import type { Entity } from '@pulse/common'
 import { API_PREFIXES } from '../config'
 import { getRandomColor } from '@app/helper'
 

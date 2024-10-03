@@ -1,4 +1,4 @@
-import { PICheck, PIX, PNotification } from '@kpmg/styleguide'
+import { PICheck, PIX, PNotification } from '@pulse/styleguide'
 
 type NotificationPosition =
   | 'top-right'

@@ -112,8 +112,8 @@ import {
   PTable,
   PTableColumn,
   PToolbox,
-} from '@kpmg/styleguide'
-import type { PToolboxItemProps } from '@kpmg/styleguide'
+} from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide'
 import { reactive, computed } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
@@ -121,7 +121,7 @@ import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer
 import CollabRightsDrawer from './../CollabRightsDrawer'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { returnSortQueryField } from '@entities/helper'
-import { userPermissions } from '@pulse/Common'
+import { userPermissions } from '@pulse/common'
 import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({

@@ -33,7 +33,7 @@ import {
   PSelect,
   POption,
   PCheckbox,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { DropdownMultiSelectWithToggleAllProps } from './DropdownMultiSelectWithToggleAllTypes'
 
 const { t } = useI18n({

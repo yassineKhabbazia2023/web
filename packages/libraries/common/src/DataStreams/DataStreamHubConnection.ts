@@ -12,10 +12,10 @@ To register an event handler use the .on method from HubConnection
 https://learn.microsoft.com/en-us/javascript/api/@microsoft/signalr/hubconnection?view=signalr-js-latest#methods */
 
 export class DataStreamHubConnection {
-  /* private // TO CHECK: monorepo build issue, quick fix */ connection: HubConnection
-  /* private // TO CHECK: monorepo build issue, quick fix */ hubUrl: string
-  /* private // TO CHECK: monorepo build issue, quick fix */ isConnected: boolean
-  /* private // TO CHECK: monorepo build issue, quick fix */ userToken: string
+  /* private // FIXME: monorepo build issue, quick fix */ connection: HubConnection
+  /* private // FIXME: monorepo build issue, quick fix */ hubUrl: string
+  /* private // FIXME: monorepo build issue, quick fix */ isConnected: boolean
+  /* private // FIXME: monorepo build issue, quick fix */ userToken: string
 
   constructor(hubUrl: string) {
     this.isConnected = false
@@ -54,7 +54,7 @@ export class DataStreamHubConnection {
     return this.isConnected
   }
 
-  /* private // TO CHECK: monorepo build issue, quick fix */ setIsConnected(value: boolean) {
+  /* private // FIXME: monorepo build issue, quick fix */ setIsConnected(value: boolean) {
     this.isConnected = value
   }
 }

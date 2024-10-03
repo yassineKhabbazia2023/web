@@ -6,14 +6,14 @@ import { flushPromises, mount } from '@vue/test-utils'
 import router from '../plugins/router'
 import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { ROUTES, PAGES_TITLE } from './mock'
-import { amplitudeService, commonStore, type Entity } from '@pulse/Common'
+import { amplitudeService, commonStore, type Entity } from '@pulse/common'
 import { nextTick } from 'vue'
 import * as mockedEnvVar from 'env-vars'
 import App from '.'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: () => ({
@@ -135,6 +135,7 @@ describe('app with navigation guard', () => {
     expect(router.currentRoute.value.name).toBe('wallet')
   })
 
+  // FIXME fix the test and unskip or delete it
   it.skip('initialize the Amplitude when VITE_AMPLITUDE_API_KEY and VITE_AMPLITUDE_SERVER_URL are not empty', () => {
     createWrapper()
 
@@ -142,6 +143,7 @@ describe('app with navigation guard', () => {
     expect(initAmplitudeServiceSpy).toHaveBeenCalledWith('mocked-amplitude-api-key', 'mocked-amplitude-server-url')
   })
 
+  // FIXME fix the test and unskip or delete it
   it.skip('initialize the Amplitude when VITE_AMPLITUDE_API_KEY is not empty and VITE_AMPLITUDE_SERVER_URL is empty', () => {
     vi.mocked(mockedEnvVar).VITE_AMPLITUDE_SERVER_URL = ''
     createWrapper()

@@ -78,7 +78,7 @@ import {
   PLoader,
   PIX,
   PNotification,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import UploadBIReport from './components/UploadBIReport'
 import BIReportSubmitted from './components/BIReportSubmitted'
 import BIReportInformation from './components/BIReportInformation'

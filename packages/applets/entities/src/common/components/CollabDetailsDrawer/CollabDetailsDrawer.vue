@@ -113,9 +113,9 @@ import {
   PTag,
   PUserCard,
   PLoader,
-} from '@kpmg/styleguide'
-import type { FormInstance, FormRules } from '@kpmg/styleguide'
-import { debounce } from '@pulse/Common'
+} from '@pulse/styleguide'
+import type { FormInstance, FormRules } from '@pulse/styleguide'
+import { debounce } from '@pulse/common'
 import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { validPhoneNumberPattern } from '@entities/common/utils/helpers/forms'

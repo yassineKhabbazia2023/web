@@ -36,14 +36,14 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { amplitudeService, commonStore } from '@pulse/Common'
+import { amplitudeService, commonStore } from '@pulse/common'
 import {
   PTabs,
   PTabPane,
   PAvatar,
   PIcon,
   PIPulse,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import Home from './pages/home'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
 import type { TabName, Tab } from './FolderTypes'

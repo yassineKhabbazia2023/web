@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { PToolbox } from '@kpmg/styleguide'
+import { PToolbox } from '@pulse/styleguide'
 import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
 import TreeNodeActionsToolbox from '.'
 
@@ -101,6 +101,7 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
+    // FIXME fix the test and unskip or delete it
     it.skip('should  permissions with upload folder by default', () => {
       const props: TreeNodeActionsToolboxProps = {
         ...defaultProps,

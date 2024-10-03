@@ -4,7 +4,7 @@ import DocumentsActionsBar from './DocumentsActionsBar.vue'
 import { describe, expect, it, vi } from 'vitest'
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
-import { PActionBar } from '@kpmg/styleguide'
+import { PActionBar } from '@pulse/styleguide'
 import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
 const pinia = createPinia()
 

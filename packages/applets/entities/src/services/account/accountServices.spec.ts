@@ -45,7 +45,7 @@ const mockedAccountApiPatch = vi.fn()
 const mockedCollaborators = getMockedCollaborators()
 const postSpy = vi.fn()
 
-vi.mock('@pulse/Common', () => {
+vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       gateway: {

@@ -117,8 +117,8 @@ import {
   PTag,
   PICheck,
   PIX,
-} from '@kpmg/styleguide'
-import type { FormInstance, FormRules } from '@kpmg/styleguide'
+} from '@pulse/styleguide'
+import type { FormInstance, FormRules } from '@pulse/styleguide'
 import type { Props } from './types'
 import { getContactById, patchContact } from '@entities/services/contact'
 import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'

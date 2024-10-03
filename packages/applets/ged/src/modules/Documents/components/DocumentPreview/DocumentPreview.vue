@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
-import { PDocumentViewer, PIcon, PDocumentDisplay } from '@kpmg/styleguide'
+import { PDocumentViewer, PIcon, PDocumentDisplay } from '@pulse/styleguide'
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import type { DocumentPreviewResponse } from '@ged/services/Documents'
 import { downloadDocument, previewDocument } from '@ged/services/Documents'

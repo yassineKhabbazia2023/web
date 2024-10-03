@@ -130,7 +130,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { get } from 'lodash-es'
-import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@kpmg/styleguide'
+import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@pulse/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@entities/common/components/StepNote'
@@ -166,7 +166,7 @@ import type {
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import { type Note, createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 
 const { t } = useI18n({
   inheritLocale: true,

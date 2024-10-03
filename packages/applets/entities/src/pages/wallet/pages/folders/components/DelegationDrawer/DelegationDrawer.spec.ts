@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
-import { PDrawer, PSteps } from '@kpmg/styleguide'
+import { PDrawer, PSteps } from '@pulse/styleguide'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'
@@ -31,7 +31,7 @@ const getNotificationError = () =>
   document.body.getElementsByClassName('el-notification error')
 
 let gatewayPostMock = vi.fn().mockResolvedValue({})
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

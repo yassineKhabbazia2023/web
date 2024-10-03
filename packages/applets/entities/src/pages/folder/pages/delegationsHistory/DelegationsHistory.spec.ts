@@ -9,7 +9,7 @@ import DelegationsHistory from './'
 const CURRENT_ACCOUNT_ID = '602'
 
 const pinia = createTestingPinia()
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

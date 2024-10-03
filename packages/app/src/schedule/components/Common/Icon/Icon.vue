@@ -11,7 +11,7 @@ import {
   PISticky,
   PILoader,
   PICheckCircle,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 
 const props = defineProps({
   status: { type: String, required: true },

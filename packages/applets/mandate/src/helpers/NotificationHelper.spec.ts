@@ -2,9 +2,9 @@ import type { MockInstance } from 'vitest'
 import { expect, describe, it, vi, beforeEach } from 'vitest'
 import { showNotification } from './NotificationHelper'
 import type { NotificationMessagesByType } from './NotificationHelperTypes'
-import * as styleguide from '@kpmg/styleguide'
+import * as styleguide from '@pulse/styleguide'
 
-vi.mock('@kpmg/styleguide', () => {
+vi.mock('@pulse/styleguide', () => {
   return {
     PICheck: 'PICheck',
     PIExclamationTriangle: 'PIExclamationTriangle',

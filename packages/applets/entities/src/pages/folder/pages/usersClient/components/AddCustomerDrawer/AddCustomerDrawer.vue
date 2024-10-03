@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
-import { amplitudeService, debounce } from '@pulse/Common'
+import { amplitudeService, debounce } from '@pulse/common'
 import {
   PDrawer,
   PForm,
@@ -100,7 +100,7 @@ import {
   PButton,
   PBlockHeader,
   type FormRules,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCustomerFeedback from './components/addCustomerFeedback'

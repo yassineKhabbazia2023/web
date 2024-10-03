@@ -11,8 +11,8 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { amplitudeService, commonStore as useStore } from '@pulse/Common'
-import { PButton } from '@kpmg/styleguide'
+import { amplitudeService, commonStore as useStore } from '@pulse/common'
+import { PButton } from '@pulse/styleguide'
 
 const store = useStore()
 const router = useRouter()

@@ -6,11 +6,11 @@ import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import helpers from '@app/tests/utils/helpers'
 import Header from './'
-import { PICalendarEvent, PIArrowBarUp } from '@kpmg/styleguide'
+import { PICalendarEvent, PIArrowBarUp } from '@pulse/styleguide'
 
 const { router, pinia, fetchUserData } = helpers()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
   getInitials: vi.fn(() => 'JD'),
   commonStore: defineStore('common', {

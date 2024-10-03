@@ -40,8 +40,8 @@ function cleanFile(mfe: string, filePath: string) {
   const newUseMfe = `@use '@${mfe}/`
   const newImport = `import('@${mfe}/`
   const newImportBackTick = `import(\`@${mfe}/`
-  const newFromCommon = `from '${domain}/Common`
-  const newCommon = `'${domain}/Common'`
+  const newFromCommon = `from '${domain}/common`
+  const newCommon = `'${domain}/common'`
   const extension = path.extname(filePath)
   if (!EXTENSIONS.includes(extension)) {
     return
@@ -56,7 +56,7 @@ function cleanFile(mfe: string, filePath: string) {
     .replace(/from '@\//g, newFromMfe)
     .replace(/'@\/modules\//g, `'@${mfe}/modules/`)
     .replace(/from\n {2}'@\//g, newFromMfe2)
-    .replace(/from '@kpmg\/styleguide\/dist\/types.*'/g, 'from \'@kpmg/styleguide\'')
+    .replace(/from '@kpmg\/styleguide\/dist\/types.*'/g, 'from \'@pulse/styleguide\'')
     .replace(/@use '@\//g, newUseMfe)
     .replace(/import\('@\//g, newImport)
     .replace(/import\(`@\//g, newImportBackTick)

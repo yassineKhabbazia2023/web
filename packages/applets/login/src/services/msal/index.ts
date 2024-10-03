@@ -6,7 +6,7 @@ import {
   VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
   VITE_API_MSAL_SCOPE,
 } from 'env-vars'
-import { amplitudeService, tokenService } from '@pulse/Common'
+import { amplitudeService, tokenService } from '@pulse/common'
 import { UserAgentApplication } from 'msal'
 
 const msalConfig = {

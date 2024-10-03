@@ -1,4 +1,4 @@
-import type { UserInfo } from '@pulse/Common'
+import type { UserInfo } from '@pulse/common'
 
 export const getMockedUser = (): UserInfo => {
   const user: UserInfo = {

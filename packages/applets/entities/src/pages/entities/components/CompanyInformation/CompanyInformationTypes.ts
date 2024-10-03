@@ -1,4 +1,4 @@
-import type { PFieldProps } from '@kpmg/styleguide'
+import type { PFieldProps } from '@pulse/styleguide'
 import { type Account } from '@entities/services/account'
 import type { ProviderName } from '@entities/common/types/ProviderNameEnums'
 

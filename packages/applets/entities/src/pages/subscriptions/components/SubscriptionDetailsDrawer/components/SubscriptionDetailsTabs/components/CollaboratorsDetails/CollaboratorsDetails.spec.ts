@@ -7,7 +7,7 @@ import CollaboratorsDetails from '.'
 const mockedSubscriptionCollaborators =
   getMockedSubscriptionDetails().collaborators
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
 }))
 

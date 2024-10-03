@@ -105,7 +105,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { onMounted, reactive, ref } from 'vue'
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import {
   PButton,
   PForm,
@@ -116,8 +116,8 @@ import {
   PInput,
   PLoader,
   PNotification,
-} from '@kpmg/styleguide'
-import type { FormInstance } from '@kpmg/styleguide'
+} from '@pulse/styleguide'
+import type { FormInstance } from '@pulse/styleguide'
 import LegalLinks from '@app/components/LegalLinks'
 import type { FormValues, User } from './MyInformationTypes'
 import LogoutButton from '../LogoutButton'

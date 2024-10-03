@@ -113,7 +113,7 @@ import {
   PIUpload,
   PIcon,
   PButton,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { useDownloadDocuments } from
   '@ged/modules/Documents/components/DownloadDocuments/DownloadDocuments'
 import type { DownloadDocumentsComposableProps }

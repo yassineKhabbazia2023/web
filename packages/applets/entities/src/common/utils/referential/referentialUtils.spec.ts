@@ -8,7 +8,7 @@ import {
   getFormStructure,
 } from './referentialUtils'
 import type { ReferentialOptions } from '@entities/services/account'
-import type { PDropdownOption } from '@kpmg/styleguide'
+import type { PDropdownOption } from '@pulse/styleguide'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'

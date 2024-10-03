@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { PAutocomplete } from '@kpmg/styleguide'
+import { PAutocomplete } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'

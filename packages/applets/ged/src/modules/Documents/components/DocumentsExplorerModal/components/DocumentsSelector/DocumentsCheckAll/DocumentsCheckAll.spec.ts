@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { PCheckbox } from '@kpmg/styleguide'
+import { PCheckbox } from '@pulse/styleguide'
 import DocumentsCheckAll
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsCheckAll'
 import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
@@ -31,9 +31,9 @@ describe('documentsCheckAll', () => {
 
       const check = wrapper.findComponent(PCheckbox)
       expect(check.exists()).toBeTruthy()
-      // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
+      // @ts-expect-error // FIXME: monorepo build issue, quick fix
       expect(check.props('disabled')).toBeFalsy()
-      // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
+      // @ts-expect-error // FIXME: monorepo build issue, quick fix
       expect(check.props('v-model')).toBeFalsy()
     })
   })

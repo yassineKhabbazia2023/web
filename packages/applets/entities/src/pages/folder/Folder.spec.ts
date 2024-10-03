@@ -5,7 +5,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'
 import Folder from '.'
 
@@ -30,7 +30,7 @@ const mockedTabs: Tab[] = [
   },
 ]
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

@@ -58,7 +58,7 @@ function cleanFile(mfe: string, filePath: string) {
     .replace(/from '@\//g, newFromMfe)
     .replace(/'@\/modules\//g, `'@${mfe}/modules/`)
     .replace(/from\n {2}'@\//g, newFromMfe2)
-    .replace(/from '@kpmg\/styleguide\/dist\/types.*'/g, 'from \'@kpmg/styleguide\'')
+    .replace(/from '@kpmg\/styleguide\/dist\/types.*'/g, 'from \'@pulse/styleguide\'')
     .replace(/@use '@\//g, newUseMfe)
     .replace(/import\('@\//g, newImport)
     .replace(/import\(`@\//g, newImportBackTick)

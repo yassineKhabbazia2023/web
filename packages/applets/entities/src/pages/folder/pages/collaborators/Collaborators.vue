@@ -172,7 +172,7 @@ import {
   PToolbox,
   PIPersonAdd,
   type PToolboxItemProps,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import {
   computed,
   onMounted,
@@ -184,7 +184,7 @@ import {
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
-import { commonStore, userPermissions } from '@pulse/Common'
+import { commonStore, userPermissions } from '@pulse/common'
 import { PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'
 import type { Collab } from './types'
 import type { Account } from '@entities/services/account/accountTypes'

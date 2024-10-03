@@ -2,7 +2,7 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonStore, commonPinia as pinia } from '@pulse/Common'
+import { commonStore, commonPinia as pinia } from '@pulse/common'
 import TableData from '../../components/TableData'
 import Deploy from '.'
 import { EntityStatus } from '../../components/Filters/FiltersTypes'
@@ -32,7 +32,7 @@ const getFavoritesMock = vi.fn(() =>
   }),
 )
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     wallet: {
       put: putFavoriteMock,

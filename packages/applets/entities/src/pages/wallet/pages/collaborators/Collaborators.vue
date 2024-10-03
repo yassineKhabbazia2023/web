@@ -54,7 +54,7 @@ import { computed, onMounted, reactive, watch } from 'vue'
 import {
   PLoader,
   PPagination,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { getInitials, removeFalsyValues, getPaginationLabel } from '@entities/helper'
 import { PAGE_SIZES } from '@entities/constants'
 import NoResult from '@entities/common/components/NoResult'

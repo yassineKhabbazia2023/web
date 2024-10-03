@@ -7,7 +7,7 @@ import { userActions } from './types'
 import { nextTick } from 'vue'
 
 const mockHasPermission = vi.fn((_code: string) => true)
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),

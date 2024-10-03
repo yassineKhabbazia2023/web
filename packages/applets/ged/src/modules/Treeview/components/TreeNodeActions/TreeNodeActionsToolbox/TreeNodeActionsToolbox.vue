@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { PToolbox } from '@kpmg/styleguide'
+import { PToolbox } from '@pulse/styleguide'
 import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
 

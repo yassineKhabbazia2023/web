@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PTag } from '@kpmg/styleguide'
+import { PTag } from '@pulse/styleguide'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import type { ReportCardProps } from './ReportCardTypes'
 

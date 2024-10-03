@@ -82,7 +82,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore, userPermissions } from '@pulse/Common'
+import { commonStore, userPermissions } from '@pulse/common'
 import {
   PBlockHeader,
   PButton,
@@ -92,7 +92,7 @@ import {
   PTable,
   PTableColumn,
   PImage,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import OfferActivationStatus from './components/OfferActivationStatus'
 import {
   type SubscriptionRequest,

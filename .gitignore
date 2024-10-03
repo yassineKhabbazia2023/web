@@ -116,8 +116,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Private npm
-.npmrc
-
 # turbo
 .turbo

@@ -128,8 +128,8 @@ import {
   PLoader,
   PIThreeDots,
   type PToolboxItemProps,
-} from '@kpmg/styleguide'
-import { commonStore, amplitudeService } from '@pulse/Common'
+} from '@pulse/styleguide'
+import { commonStore, amplitudeService } from '@pulse/common'
 import {
   type SubscriptionRequest,
   fetchSubscriptionRequests,

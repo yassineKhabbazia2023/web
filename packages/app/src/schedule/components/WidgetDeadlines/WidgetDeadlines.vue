@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PScrollbar } from '@kpmg/styleguide'
+import { PScrollbar } from '@pulse/styleguide'
 import { getTypeLabel } from '@app/schedule/helpers/utils'
 import { getScheduleModelsByKey } from '@app/schedule/services'
 import { getProgressText } from '@app/schedule/helpers/deadlineHelper'

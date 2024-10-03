@@ -8,10 +8,15 @@ import { createMandate } from '@mandate/services/mandate'
 const createWrapper = (props: any = {}, slots: any = {}) =>
   wrapperFactory(CreateMandateDrawer, { props, slots })
 
-vi.mock('@pulse/Common', () => ({
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({}),
   }),
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
 }))
 
 vi.mock('@mandate/services/mandate', () => ({
@@ -99,6 +104,9 @@ describe('createMandateDrawer.vue', () => {
     await nextTick()
     await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
     expect(createMandate).toHaveBeenCalled()
+    expect(amplitudeTrackMock).toHaveBeenCalledWith('Bank Mandate Creation Completed', {
+      bank_mandate_creation_result: 'failed',
+    })
   })
 
   it('should show error display to form due to http client issue', async () => {

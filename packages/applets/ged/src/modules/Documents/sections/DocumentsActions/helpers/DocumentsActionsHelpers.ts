@@ -1,5 +1,5 @@
 import type { ComponentDefinitionProps }
-  from '@kpmg/styleguide'
+  from '@pulse/styleguide' // FIXME /dist/types/src/molecules/PActionBar/PActionBarTypes
 
 interface ActionBarButtonWithOrder {
   actionbarButton: ComponentDefinitionProps

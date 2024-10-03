@@ -6,7 +6,7 @@ import SubscriptionDetailsTabs from '.'
 
 const mockedSubscriptionOfferDetails = getMockedSubscriptionDetails()
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
 }))
 

@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { commonStore, getInitials } from '@pulse/Common'
+import { commonStore, getInitials } from '@pulse/common'
 import {
   PAvatar,
   PImage,
@@ -66,7 +66,7 @@ import {
   PIcon,
   PICalendarEvent,
   PIX,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
 defineProps<HeaderProps>()

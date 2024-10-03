@@ -13,7 +13,7 @@ import {
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
-import { PBreadcrumb, PPagination, PLoader } from '@kpmg/styleguide'
+import { PBreadcrumb, PPagination, PLoader } from '@pulse/styleguide'
 import type { BinDocument, BinDocumentsWithTableStructure } from '@ged/models/Document'
 
 const defaultProps: BinDocumentProps = {

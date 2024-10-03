@@ -58,8 +58,8 @@ import {
   getSilaeDownloadLabel,
   getAuthorizedKeys,
 } from './HomeUtils'
-import { PBreadcrumb, PAlert } from '@kpmg/styleguide'
-import { commonStore as useStore } from '@pulse/Common'
+import { PBreadcrumb, PAlert } from '@pulse/styleguide'
+import { commonStore as useStore } from '@pulse/common'
 
 const route = useRoute()
 

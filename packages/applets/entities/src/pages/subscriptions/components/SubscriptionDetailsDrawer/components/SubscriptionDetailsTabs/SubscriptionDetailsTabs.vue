@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PTabs, PTabPane } from '@kpmg/styleguide'
+import { PTabs, PTabPane } from '@pulse/styleguide'
 import { RecapTabs } from './SubscriptionDetailsTabsTypes'
 import type { Note } from '@entities/services/subscription'
 import type {
@@ -91,11 +91,11 @@ const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
 en-US:
   services: 'Services'
   customerUsers: 'Customer Users'
-  collaborators: 'KPMG Collaborators'
+  collaborators: 'PULSE Collaborators'
   information: 'Information'
 fr-FR:
   services: 'Services'
   customerUsers: 'Utilisateurs Clients'
-  collaborators: 'Collaborateurs KPMG'
+  collaborators: 'Collaborateurs PULSE'
   information: 'Informations'
 </i18n>

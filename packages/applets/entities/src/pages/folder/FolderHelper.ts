@@ -1,4 +1,4 @@
-import { userPermissions } from '@pulse/Common'
+import { userPermissions } from '@pulse/common'
 import { PERMISSION_CODES } from '@entities/constants'
 import type { TabName, Tab } from './FolderTypes'
 

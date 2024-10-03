@@ -9,7 +9,7 @@ const subscriptionGetMock = vi.fn().mockResolvedValue({
 })
 const subscriptionPutMock = vi.fn(() => Promise.resolve())
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     offer: {
       get: subscriptionGetMock,
@@ -44,7 +44,7 @@ describe('subscriptions', () => {
 
     expect(subscriptionDrawer.props('modelValue')).toBeTruthy()
     expect(subscriptionDrawer.props('selectedSubscriptionId')).toStrictEqual(
-      mockedSubscription.subscriptionId, // TO CHECK: monorepo build issue, quick fix
+      mockedSubscription.subscriptionId, // FIXME: monorepo build issue, quick fix
     )
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })

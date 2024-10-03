@@ -45,7 +45,7 @@ vi.mock('@entities/services/wallet', () => ({
   fetchCustomers: vi.fn(),
 }))
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {

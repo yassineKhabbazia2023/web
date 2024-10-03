@@ -4,7 +4,7 @@ import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
 import ResetPasswordForm from './'
 
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: postMock,

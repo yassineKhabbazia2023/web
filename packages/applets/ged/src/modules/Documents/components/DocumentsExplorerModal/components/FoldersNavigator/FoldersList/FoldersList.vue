@@ -63,7 +63,7 @@ import {
   PAlert,
   PFolderLineNavigationItem,
   PImage,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { FoldersListProps } from './FoldersListTypes'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import type { Folder } from '@ged/models/Folder'

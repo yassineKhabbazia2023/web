@@ -5,7 +5,7 @@ import {
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import { commonStore as store } from '@pulse/Common'
+import { commonStore as store } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
 import router from '@app/plugins/router'
 import helpers from '@app/tests/utils/helpers'
@@ -20,7 +20,7 @@ const { fakeUser } = helpers()
 const mockedEntity = getMockedFavoriteEntities()[0]
 
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
-vi.mock('@pulse/Common', () => KpmgCommontMock)
+vi.mock('@pulse/common', () => KpmgCommontMock)
 vi.mock('@app/services/entities', async () => {
   const actual = await vi.importActual('@app/services/entities') as Record<string, any>
   return {

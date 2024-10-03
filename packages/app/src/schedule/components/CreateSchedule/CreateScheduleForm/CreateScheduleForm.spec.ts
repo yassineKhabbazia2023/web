@@ -8,7 +8,7 @@ import {
   PSelect,
   PAlert,
   PUpload,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSchedule'
 import DropdownMultiSelectWithToggleAll from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll'
 import type { FormProps } from './CreateScheduleFormTypes'

@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PLoader } from '@kpmg/styleguide'
+import { PDrawer, PLoader } from '@pulse/styleguide'
 import type { SubscriptionDetailsDrawerProps } from './SubscriptionDetailsDrawerTypes'
 import SubscriptionDetailsTabs from './components/SubscriptionDetailsTabs'
 import {

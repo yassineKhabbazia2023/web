@@ -19,8 +19,8 @@
     "test:ci": "vitest run --coverage"
   },
   "dependencies": {
-    "@kpmg/styleguide": "^2.2.630",
     "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "^2.2.763",
     "@vue/test-utils": "^2.4.0",
     "element-plus": "2.4.3",
     "msal": "^1.4.18",

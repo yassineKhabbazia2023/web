@@ -1,9 +1,9 @@
-import '@kpmg/styleguide/dist/style'
+import '@pulse/styleguide/dist/style'
 
 import { createApp } from 'vue'
 import { commoni18n, commonPinia } from '@pulse/common'
 import { VITE_ASSETS_BASE_URL } from 'env-vars'
-import { setAssetsBaseUrl } from '@kpmg/styleguide'
+import { setAssetsBaseUrl } from '@pulse/styleguide'
 
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'

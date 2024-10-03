@@ -76,14 +76,14 @@ import {
   PSelect,
   POption,
   PIInfoCircle,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import { getSearchParams } from '@entities/pages/wallet/pages/folders/DeployUtils'
 import { PAGE_SIZES } from '@entities/constants'
 import { fetchBIReports, fetchReportAccounts } from '@entities/services/reporting'
 import type { Report } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
 import type { BIReportInformationProps } from './BIReportInformationTypes'
 import type { ReportInfo } from '../../SubmitBIReportTypes'
-import type { Entity } from '@pulse/Common'
+import type { Entity } from '@pulse/common'
 
 const { t } = useI18n({
   inheritLocale: true,

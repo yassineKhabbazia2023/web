@@ -18,8 +18,8 @@ import {
 import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import type { Entity } from '@pulse/Common'
-import { PPagination } from '@kpmg/styleguide'
+import type { Entity } from '@pulse/common'
+import { PPagination } from '@pulse/styleguide'
 
  type DocumentsSetup = {
    documents: DocumentsWithTableStructure
@@ -96,6 +96,7 @@ vi.mock('@ged/models/AccountingHubConnection', () => ({
   }),
 }))
 
+// FIXME fix the test and unskip or delete it
 describe.skip('documents', () => {
   beforeEach(() => {
     setActivePinia(pinia)

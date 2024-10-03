@@ -1,7 +1,7 @@
 import type { Account, AccountSignatories } from '.'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { commonApi } from '@pulse/Common'
-import type { Entity } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
+import type { Entity } from '@pulse/common'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { PatchOperation } from '@entities/services/PatchRecordService'
 import type { QueryResult } from '@entities/common/types'
@@ -64,7 +64,7 @@ export async function addContactToEntity(
   accountId: Account['accountId'],
   contactId: Contact['id'],
   email?: string,
-): Promise<any> { // TO CHECK: monorepo build issue, quick fix
+): Promise<any> { // FIXME: monorepo build issue, quick fix
   const url = `${API_PREFIXES.ACCOUNT}/roles`
   const result = await commonApi().gateway.post(url, {
     accountId,

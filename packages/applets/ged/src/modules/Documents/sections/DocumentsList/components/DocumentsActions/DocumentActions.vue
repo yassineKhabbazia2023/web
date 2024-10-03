@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PIThreeDots, PToolbox, PButton, PIcon } from '@kpmg/styleguide'
+import { PIThreeDots, PToolbox, PButton, PIcon } from '@pulse/styleguide'
 import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 

@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'
 

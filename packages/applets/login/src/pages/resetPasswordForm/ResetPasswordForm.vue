@@ -73,7 +73,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi } from '@pulse/Common'
+import { commonApi } from '@pulse/common'
 import {
   onBeforeMount,
   reactive,
@@ -85,7 +85,7 @@ import {
   PFormItem,
   PInput,
   PButton,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import PopoverPasswordStrength from '../createPassword/PopoverPasswordStrength'
 import {
   PASSWORD_STRENGTH,

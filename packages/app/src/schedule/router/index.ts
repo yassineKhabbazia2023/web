@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { routes } from '@pulse/Common'
+import { routes } from '@pulse/common'
 
 // Home schedule route
 routes.push({

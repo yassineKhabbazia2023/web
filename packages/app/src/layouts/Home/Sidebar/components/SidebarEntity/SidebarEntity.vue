@@ -123,14 +123,14 @@ import { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { commonStore, type Entity } from '@pulse/Common'
+import { commonStore, type Entity } from '@pulse/common'
 import {
   PIArrowBarRight,
   PIArrowBarLeft,
   PICardList,
   PIStarFill,
   PIcon,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
 import { getDefaultEntity } from './utils'
@@ -253,13 +253,13 @@ onMounted(() => {
   }
 
   &#{$self}--is-collab {
-    background-color: var(--el-color-base-blue-kpmg);
+    background-color: var(--el-color-base-blue-pulse);
 
     #{$self}__favorites {
       &::before {
         background: linear-gradient(
           180deg,
-          var(--el-color-base-blue-kpmg) 0%,
+          var(--el-color-base-blue-pulse) 0%,
           var(--shadow-color) 100%
         );
       }
@@ -268,7 +268,7 @@ onMounted(() => {
       background: linear-gradient(
         180deg,
         var(--shadow-color) 0%,
-        var(--el-color-base-blue-kpmg) 100%
+        var(--el-color-base-blue-pulse) 100%
       );
     }
   }

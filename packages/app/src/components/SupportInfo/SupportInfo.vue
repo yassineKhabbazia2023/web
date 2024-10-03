@@ -40,7 +40,7 @@
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { computed } from 'vue'
-import { PButton, PDrawer } from '@kpmg/styleguide'
+import { PButton, PDrawer } from '@pulse/styleguide'
 import { useFooterLink } from '@app/composables/useFooterLink'
 const { t } = useI18n({
   inheritLocale: true,

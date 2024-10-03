@@ -1,4 +1,4 @@
-import { routes } from '@pulse/Common'
+import { routes } from '@pulse/common'
 
 routes.push({
   path: '/dossier/:id/launcher',

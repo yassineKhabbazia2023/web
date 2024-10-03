@@ -1,4 +1,4 @@
-import type { PDropdownOption } from '@kpmg/styleguide'
+import type { PDropdownOption } from '@pulse/styleguide'
 import type {
   FormSection,
   FormField,

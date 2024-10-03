@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
-import { PImage, PButton } from '@kpmg/styleguide'
+import { PImage, PButton } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

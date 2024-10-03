@@ -76,9 +76,9 @@
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref, reactive } from 'vue'
 import type { FormRules } from 'element-plus'
-import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@kpmg/styleguide'
+import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@pulse/styleguide'
 import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
-import { fetchUrlTerms } from '@pulse/Common'
+import { fetchUrlTerms } from '@pulse/common'
 import { updateTermsByCurrentUser } from '@login/services/cgu'
 import { useRouter } from 'vue-router'
 
@@ -147,7 +147,7 @@ const back = () => router.back()
     cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the '
     cguRequired: 'Accept terms in order to access plateform'
     cguLink: 'general terms and conditions of use '
-    cguMessagePartTwo: 'of KPMG Pulse.'
+    cguMessagePartTwo: 'of Pulse.'
     confirm: 'Confirm'
     back: 'Back'
   fr-FR:
@@ -156,7 +156,7 @@ const back = () => router.back()
     cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les'
     cguRequired: 'Veuillez accepter les CGU pour accéder à la plateforme'
     cguLink: "conditions générales d'utilisation "
-    cguMessagePartTwo: 'de KPMG Pulse.'
+    cguMessagePartTwo: 'de Pulse.'
     confirm: 'Confirmer'
     back: 'Retour'
 </i18n>

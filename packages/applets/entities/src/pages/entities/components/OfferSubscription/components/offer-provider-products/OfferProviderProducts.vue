@@ -13,10 +13,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { POfferServicesCard } from '@kpmg/styleguide'
+import { POfferServicesCard } from '@pulse/styleguide'
 import type { OfferProviderProductsProps, ExtendedService } from './OfferProviderProductsTypes'
 import { getProviderServices, getTitle } from './OfferProviderProductsUtils'
-import type { PService } from '@kpmg/styleguide'
+import type { PService } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

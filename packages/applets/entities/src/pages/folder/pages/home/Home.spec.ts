@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { commonStore } from '@pulse/Common'
+import { commonStore } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
 import { mockedEntity } from '../../../wallet/components/TableData/mockData'
 import Home from '.'
 
 const pinia = createTestingPinia()
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     getters: {
       isCollab: () => true,

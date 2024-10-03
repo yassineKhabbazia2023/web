@@ -4,7 +4,7 @@ import { shallowMount } from '@vue/test-utils'
 import UserProfile from './'
 import { nextTick } from 'vue'
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: () => Promise.resolve({ data: {} }),

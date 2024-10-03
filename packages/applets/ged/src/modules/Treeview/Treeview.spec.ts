@@ -10,7 +10,7 @@ import type { Service } from '@ged/models/Service'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
-import { PTree } from '@kpmg/styleguide'
+import { PTree } from '@pulse/styleguide'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { Folder } from '@ged/models/Folder'
@@ -197,6 +197,7 @@ describe('treeview', () => {
 
     describe('main tree', () => {
       describe('interactions', () => {
+        // FIXME fix the test and unskip or delete it
         it.skip('should emit selected-folder-change oppon p-tree-node-clicked', async () => {
           await wrapper.setProps({ isLoading: false })
           const treeElement = wrapper.find('.el-tree')
@@ -308,7 +309,7 @@ describe('treeview', () => {
           it('should download when action is toolbox-download-action-click emitted',
             async () => {
               const wrapper = createWrapper()
-              // @ts-expect-error // TO CHECK: monorepo build issue, quick fix
+              // @ts-expect-error // FIXME: monorepo build issue, quick fix
               await wrapper.setProps({ isLoading: false })
               const treeElement = wrapper.find('.el-tree')
               await nextTick()
@@ -336,6 +337,7 @@ describe('treeview', () => {
     })
 
     describe('bin tree', () => {
+      // FIXME fix the test and unskip or delete it
       it.skip('should emit selected-bin-service-change oppon selecting a node from the bin',
         async () => {
           await wrapper.setProps({ isLoading: false })

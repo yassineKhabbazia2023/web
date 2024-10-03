@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
-import { PTable } from '@kpmg/styleguide'
+import { PTable } from '@pulse/styleguide'
 import CollapsableFoldersList from '.'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 import { entitiesMock } from '@entities/../tests/mocks/EntitiesMocks'
-import type { Entity } from '@pulse/Common'
+import type { Entity } from '@pulse/common'
 
 const i18n = createI18n({
   locale: 'fr-FR',

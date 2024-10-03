@@ -9,7 +9,7 @@ import {
 const collaboratorType = ContactType.Collaborator
 const errorMessage = 'API Error: 503 Service Unavailable'
 
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {

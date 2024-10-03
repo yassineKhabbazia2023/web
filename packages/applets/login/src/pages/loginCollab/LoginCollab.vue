@@ -20,10 +20,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton } from '@kpmg/styleguide'
+import { PButton } from '@pulse/styleguide'
 import { msalInstance } from '@login/services/msal'
 import useInitAuth from '@login/composable/useInitUserAuth'
-import { amplitudeService } from '@pulse/Common'
+import { amplitudeService } from '@pulse/common'
 import useNavigation from '@login/composable/useNavigation'
 
 const { initAuthCollab, isTokenRetrieve } = useInitAuth()
@@ -80,11 +80,11 @@ en-US:
   Title: 'COLLABORATOR SPACE'
   login: 'Login'
   formTitle: >-
-    Welcome to your KPMG Pulse platform. Please log in to access to all your services.
+    Welcome to your Pulse platform. Please log in to access to all your services.
 fr-FR:
   Title: 'ESPACE COLLABORATEUR'
   login: 'Se connecter'
   formTitle: >-
-    Bienvenue sur votre plateforme KPMG Pulse. Veuillez vous connecter pour accéder
+    Bienvenue sur votre plateforme Pulse. Veuillez vous connecter pour accéder
     à tous vos services.
 </i18n>

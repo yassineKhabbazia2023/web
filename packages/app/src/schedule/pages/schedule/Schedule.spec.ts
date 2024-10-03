@@ -11,7 +11,7 @@ import { dateISOFormatter } from '@app/schedule/helpers/utils'
 import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 import { getMockedDeadlines } from '@app/schedule/tests/mocks/Deadline'
 import { createTestingPinia } from '@pinia/testing'
-import { commonStore as useCommonStore } from '@pulse/Common'
+import { commonStore as useCommonStore } from '@pulse/common'
 import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
 import type { ScheduleApiQueryParams } from '@app/schedule/services/scheduleServiceTypes'
 
@@ -22,7 +22,7 @@ const SAME_MONTH_DATE = '2024-08-18'
 const OTHER_MONTH_DATE = '2024-11-03'
 const OccurenceId = 1234567890
 
-vi.mock('@pulse/Common', () => KpmgCommontMock)
+vi.mock('@pulse/common', () => KpmgCommontMock)
 const commonStore = useCommonStore(pinia)
 // @ts-expect-error: Getter is read only
 commonStore.isCollab = false
@@ -311,6 +311,7 @@ describe('home page', () => {
       expect(calendar.props('deadlinesByDate')).toStrictEqual(expectedDeadlinesByDate)
     })
 
+    // FIXME fix the test and unskip or delete it
     it.skip('should load other month data when change month from widget Calendar', async () => {
       const getSchedulesCollectionSpy = vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')

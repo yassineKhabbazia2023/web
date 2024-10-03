@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { fr, PConfigProvider, PCalendar, PScrollbar } from '@kpmg/styleguide'
+import { fr, PConfigProvider, PCalendar, PScrollbar } from '@pulse/styleguide'
 import type { CalendarProps } from './CalendarTypes'
 import { getTypeLabel } from '@app/schedule/helpers/utils'
 import { getDeadlineCompletionSummary } from '@app/schedule/helpers/deadlineHelper'

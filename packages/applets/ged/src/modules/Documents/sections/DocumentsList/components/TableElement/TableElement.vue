@@ -74,7 +74,7 @@ import {
   PTag,
   PIPatchCheck,
   PDoubleText,
-} from '@kpmg/styleguide'
+} from '@pulse/styleguide'
 import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import { getFileIcon } from '@ged/modules/Documents/helpers/filesExtensions'

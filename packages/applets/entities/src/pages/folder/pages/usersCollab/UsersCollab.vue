@@ -157,8 +157,8 @@ import {
   type PToolboxItemProps,
   PICheck,
   PIExclamationTriangle,
-} from '@kpmg/styleguide'
-import { commonStore, getInitials } from '@pulse/Common'
+} from '@pulse/styleguide'
+import { commonStore, getInitials } from '@pulse/common'
 import {
   PAGE_SIZES,
   DATE_TIME_FORMATS as datetimeFormats,

@@ -211,8 +211,8 @@ import {
   PIPulse,
   PRow,
   PTooltip,
-} from '@kpmg/styleguide'
-import { commonStore } from '@pulse/Common'
+} from '@pulse/styleguide'
+import { commonStore } from '@pulse/common'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -278,7 +278,7 @@ const { defaultEntity, isCollab } = storeToRefs(commonStore())
 <i18n lang="yaml">
   en-US:
     titleWelcome: 'Welcome to your new platform'
-    namePlateform: 'KPMG Pulse'
+    namePlateform: 'Pulse'
     onBuild: 'The home page is currently under construction by our teams.'
     helpUs: 'To help us enrich your experience, join the '
     clubClient: 'Pulse Customer Club'
@@ -296,7 +296,7 @@ const { defaultEntity, isCollab } = storeToRefs(commonStore())
     accessClient: 'This feature is only accessible to your customer'
   fr-FR:
     titleWelcome: 'Bienvenue sur votre nouvelle plateforme'
-    namePlateform: 'KPMG Pulse'
+    namePlateform: 'Pulse'
     onBuild: "La page d'accueil est en cours de construction par nos équipes."
     helpUs: 'Pour nous aider à enrichir votre expérience, rejoignez-le '
     clubClient: 'Club Client Pulse'

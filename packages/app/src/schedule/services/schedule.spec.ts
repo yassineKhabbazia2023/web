@@ -23,7 +23,7 @@ const createScheduleMock = getMockSchedule()
 const commonApiGetSpy = vi.fn()
 const commonApiPostSpy = vi.fn()
 
-vi.mock('@pulse/Common', () => {
+vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       schedule: {

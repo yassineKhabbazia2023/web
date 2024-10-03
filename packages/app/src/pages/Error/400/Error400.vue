@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { PError } from '@kpmg/styleguide'
+import { PError } from '@pulse/styleguide'
 import { useRedirection } from '@app/composables/useRedirection'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'

@@ -1,7 +1,7 @@
 import { flushPromises } from '@vue/test-utils'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
-import { amplitudeService, tokenService } from '@pulse/Common'
+import { amplitudeService, tokenService } from '@pulse/common'
 import CreatePassword from './'
 import { getLatestTerms, updateTermsByCurrentUser } from '@login/services/cgu'
 import type { FormInstance } from 'element-plus'
@@ -28,7 +28,7 @@ vi.mock('@login/composable/useNavigation', () => ({
 }))
 
 const mockStorePatch = vi.fn()
-vi.mock('@pulse/Common', () => ({
+vi.mock('@pulse/common', () => ({
   fetchUrlTerms: vi.fn(() => CGU_URL),
   commonApi: () => ({
     onboarding: {
