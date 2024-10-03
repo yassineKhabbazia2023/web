@@ -7,7 +7,6 @@ export const PAGES_TITLE = {
   FOLDER: 'Folder Page',
   MY_ENTITIES: 'My Entities',
   WALLET: 'My Wallet',
-  MANDATES: 'Mandates',
 }
 
 export const ROUTES: RouteRecordRaw[] = [
@@ -57,13 +56,6 @@ export const ROUTES: RouteRecordRaw[] = [
     name: 'folder',
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.FOLDER}</p>`,
-    },
-  },
-  {
-    path: '/mandats',
-    name: 'mandats',
-    component: {
-      template: `<p class="pageTitle">${PAGES_TITLE.MANDATES}</p>`,
     },
   },
 ]

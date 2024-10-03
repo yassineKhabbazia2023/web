@@ -100,10 +100,6 @@ router.beforeEach(async (to: any, _from) => {
       }
     }
   }
-
-  if (to.name === 'mandats' && !isCollab.value) {
-    return { name: 'entity-client' }
-  }
 })
 
 async function entityClientOrHomeRedirections(store: Store, to: any, isCollab: boolean) {
