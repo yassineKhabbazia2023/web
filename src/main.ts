@@ -198,3 +198,5 @@ export * from './molecules/PUserAction/PUserActionTypes'
 export * from './organisms/PDocumentViewer/PDocumentViewerTypes'
 export * from './organisms/PError/PErrorTypes'
 export * from './organisms/PTree/PTreeTypes'
+
+export * from './utils/AppColorsEnum'
