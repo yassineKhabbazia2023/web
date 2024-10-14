@@ -36,7 +36,7 @@
       v-if="shouldChevronExists"
       class="text-align--center p-calendar-date-cell__chevron-down"
     >
-      <PIcon size="12" color="#171717">
+      <PIcon size="12" :color="AppColors.GRAY_900">
         <PIChevronDown />
       </PIcon>
     </div>
@@ -53,6 +53,7 @@ import type { CellNumberState } from '@/atoms/PCalendarCellNumber/PCalendarCellN
 import PTaskItem from '@/atoms/PTaskItem'
 import PIcon from '@/atoms/PIcon'
 import { getCurrentBreakpoint } from '@/utils/breakpoints'
+import { AppColors } from '@/utils/AppColorsEnum'
 
 const props = defineProps<PCalendarDateCellProps>()
 const emit = defineEmits<{

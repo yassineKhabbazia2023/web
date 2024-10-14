@@ -100,7 +100,7 @@ const pClassMapper = computed(() => ({
       padding-top: 5px;
       padding-bottom: 5px;
       background: var(--el-color-persian-50);
-      border-radius: 8px;
+      border-radius: var(--el-border-radius-base);
 
       #{$self}__icon {
         color: var(--el-color-neutral-gray-900);

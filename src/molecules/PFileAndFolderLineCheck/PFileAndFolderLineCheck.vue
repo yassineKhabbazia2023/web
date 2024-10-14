@@ -110,7 +110,7 @@ const fileIconComponent = computed(() => {
   padding: 8px 16px;
   transition: all 100ms ease-in-out;
   width: 100%;
-  border-radius: 4px;
+  border-radius: var(--el-border-radius-small);
 
   &__checkbox.el-checkbox,
   &__file-icon,

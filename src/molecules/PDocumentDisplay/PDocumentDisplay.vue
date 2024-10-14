@@ -113,7 +113,7 @@ iframe.preview {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    border-radius: 8px;
+    border-radius: var(--el-border-radius-base);
     background: #FFFFFF1F;
     backdrop-filter: blur(4px);
 

@@ -12,7 +12,7 @@
       @click="$emit('close')"
       class="p-alert__close-btn padding--0 margin-left--2"
     >
-      <PIcon color="#332689" size="16">
+      <PIcon :color="AppColors.PERSIAN_900" size="16">
         <PIX />
       </PIcon>
     </button>
@@ -25,6 +25,7 @@ import PIcon from '@/atoms/PIcon'
 import { PIX } from '@/atoms/PIcon/components'
 import type { PAlertProps } from './PAlertTypes'
 import { iconResolver } from '@/utils/iconResolver'
+import { AppColors } from '@/utils/AppColorsEnum'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
   pType: 'main',
@@ -63,7 +64,7 @@ const typeIcon = computed(() => {
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--el-border-radius-base);
 
   padding: 12px 16px;
 
