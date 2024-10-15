@@ -136,7 +136,7 @@ describe('app with navigation guard', () => {
   })
 
   // FIXME fix the test and unskip or delete it
-  it.skip('initialize the Amplitude when VITE_AMPLITUDE_API_KEY and VITE_AMPLITUDE_SERVER_URL are not empty', () => {
+  it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY and VITE_AMPLITUDE_SERVER_URL are not empty', () => {
     createWrapper()
 
     expect(initAmplitudeServiceSpy).toHaveBeenCalledOnce()
@@ -144,7 +144,7 @@ describe('app with navigation guard', () => {
   })
 
   // FIXME fix the test and unskip or delete it
-  it.skip('initialize the Amplitude when VITE_AMPLITUDE_API_KEY is not empty and VITE_AMPLITUDE_SERVER_URL is empty', () => {
+  it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY is not empty and VITE_AMPLITUDE_SERVER_URL is empty', () => {
     vi.mocked(mockedEnvVar).VITE_AMPLITUDE_SERVER_URL = ''
     createWrapper()
 
