@@ -7,11 +7,11 @@ const createWrapper = (): VueWrapper => mount(WorkInProgress)
 describe('workInProgress', () => {
   describe('display', () => {
     // FIXME fix the test and unskip or delete it
-    it.skip('should display correctly the work in progress page', () => {
+    it('should display correctly the work in progress page', () => {
       const wrapper = createWrapper()
       const wipImages = wrapper.findAllComponents({ name: 'PImage' })
-      const wipTitle = wrapper.find('[data-testid=wip-message-title')
-      const wipDescription = wrapper.find('[data-testid=wip-message-title')
+      const wipTitle = wrapper.find('[data-testid="wip-message-title"')
+      const wipDescription = wrapper.find('[data-testid="wip-message-description"')
 
       expect(wipImages).toHaveLength(2)
       expect(wipTitle.exists()).toBeTruthy()
