@@ -21,6 +21,7 @@
     "app:dev": "turbo run dev --filter=@pulse/app",
     "app:build": "turbo run build --filter=@pulse/app",
     "test": "turbo run test",
+    "test:coverage": "turbo run test:ci",
     "build": "turbo run build",
     "build:types": "turbo run build:types",
     "lint": "turbo run lint",
