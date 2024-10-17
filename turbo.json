@@ -20,6 +20,9 @@
         "test": {
             "cache": true
         },
+        "test:ci": {
+            "cache": true
+        },
         "lint": {
             "cache": true
         },
