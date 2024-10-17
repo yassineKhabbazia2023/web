@@ -56,8 +56,5 @@ export function usePiaStatusSync(
     documentToUpdate.permissions = newDocumentStatusAndUpdate.permissions
   }
 
-  return {
-    updateDocumentSyncStatusAndPermissions,
-    initializedAccountingDataStreamInstance,
-  }
+  return {}
 }
