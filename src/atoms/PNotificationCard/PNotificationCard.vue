@@ -1,6 +1,20 @@
 <template>
-  <div :class="['p-notification-card shadow--1', { 'p-notification-card--new': pIsNew }]">
-    <button class="p-notification-card__button" @click="$emit('action-notification-click')">
+  <div
+    :class="[
+      'p-notification-card shadow--2',
+      'flex',
+      'border-radius--2',
+      { 'p-notification-card--new': pIsNew }
+    ]"
+  >
+    <button
+      class="
+        p-notification-card__button
+        padding--2
+        flex--grow-1
+      "
+      @click="$emit('action-notification-click')"
+    >
       <span class="p-notification-card__notif padding-right--1" aria-hidden="true">
         <PIcon class="p-notification-card__icon" size="16">
           <PIDot />
@@ -56,10 +70,10 @@ withDefaults(defineProps<PNotificationCardProps>(), {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 8px;
     background: transparent;
     appearance: none;
     cursor: pointer;
+    border: none;
   }
 
   &__icon {
