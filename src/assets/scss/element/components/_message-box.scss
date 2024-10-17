@@ -2,7 +2,7 @@
 $messagebox: (
   'title-color': getCssVar('text-color-primary'),
   'width': 420px,
-  'border-radius': 4px,
+  'border-radius': getCssVar('border-radius', 'small'),
   'font-size': getCssVar('font-size-large'),
   'content-font-size': getCssVar('font-size-base'),
   'content-color': getCssVar('text-color-regular'),

@@ -12,7 +12,7 @@ $tree: (
   padding: 8px;
 
   .el-tree-node__content {
-    border-radius: 4px;
+    border-radius: var(--el-border-radius-small);
 
     .el-tree-node__expand-icon {
       padding: 8px

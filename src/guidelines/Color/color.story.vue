@@ -209,7 +209,7 @@ const prefix = ref<Prefix>(prefixes[0])
 <style lang="scss">
 .demo-color-box {
   position: relative;
-  border-radius: 4px;
+  border-radius: var(--el-border-radius-small);
   padding: 20px;
   margin: 8px 0;
   height: 152px;

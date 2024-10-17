@@ -73,7 +73,7 @@
 
       #{$self}__nav {
         height: 32px;
-        border-radius: 8px;
+        border-radius: var(--el-border-radius-base);
         border: 1px solid getCssVar('color', 'neutral-gray-100');
         overflow: hidden;
 
