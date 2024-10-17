@@ -108,7 +108,7 @@ const documentViewerModel = computed({
 
 <style lang="scss">
 .p-document-viewer-overlay {
-  background-color: #171717F2;
+  background-color: var(--el-color-neutral-gray-900);
 }
 .p-document-viewer {
   background-color: transparent;
