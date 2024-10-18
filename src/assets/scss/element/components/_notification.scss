@@ -5,7 +5,7 @@
 $notification: (
   'width': fit-content,
   'padding': 16px,
-  'radius': 8px,
+  'radius': var(--el-border-radius-base),
   'icon-size': 32px,
   'group-margin-left': 0,
   'group-margin-right': 0,

@@ -360,11 +360,11 @@ const groups: Group[] = [{
     line-height: 18px;
 
     &:first-child {
-      border-top-left-radius: 8px;
+      border-top-left-radius: var(--el-border-radius-base);
     }
 
     &:last-child {
-      border-top-right-radius: 8px;
+      border-top-right-radius: var(--el-border-radius-base);
     }
   }
 
