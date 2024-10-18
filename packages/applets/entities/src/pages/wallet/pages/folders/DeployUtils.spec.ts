@@ -101,8 +101,7 @@ describe('test DeployUtils', () => {
         `?pageNumber=${searchCriteria.currentPage}`,
         `&pageSize=${searchCriteria.limit}`,
       ].join('')
-      // FIXME: monorepo build issue, quick fix
-      expect(queryParams).toMatch(expectedSearchParams)
+      expect(queryParams).toBe(expectedSearchParams)
     })
     it('should return the correct query parameters when the allAccounts parameter is set to true', () => {
       const searchCriteria = getMockedSearchCriteria({
@@ -115,8 +114,7 @@ describe('test DeployUtils', () => {
         `&pageSize=${searchCriteria.limit}`,
       ].join('')
 
-      // FIXME: monorepo build issue, quick fix
-      expect(queryParams).toMatch(expectedSearchParams)
+      expect(queryParams).toBe(expectedSearchParams)
     })
   })
 

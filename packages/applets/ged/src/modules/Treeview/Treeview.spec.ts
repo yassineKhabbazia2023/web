@@ -13,19 +13,12 @@ import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { PTree } from '@pulse/styleguide'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import type { Folder } from '@ged/models/Folder'
 import TreeNode from './components/TreeNode'
 import { downloadFolder } from '@ged/services/Folder'
 
-type TreeviewSetup = {
-  currentFolderName: string
-  currentFolderId: number
-  defaultFolder: Folder
-}
+type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
 
-export type TreeviewWrapper = VueWrapper<
-  ComponentPublicInstance<TreeviewSetup, TreeviewProps>
->
+export type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
 const pinia = createPinia()
 
 const folderWithRenameRight = foldersData[0][0].children[0].children[0]
@@ -309,7 +302,6 @@ describe('treeview', () => {
           it('should download when action is toolbox-download-action-click emitted',
             async () => {
               const wrapper = createWrapper()
-              // @ts-expect-error // FIXME: monorepo build issue, quick fix
               await wrapper.setProps({ isLoading: false })
               const treeElement = wrapper.find('.el-tree')
               await nextTick()

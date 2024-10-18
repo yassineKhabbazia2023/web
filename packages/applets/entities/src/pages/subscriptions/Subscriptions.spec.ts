@@ -43,9 +43,7 @@ describe('subscriptions', () => {
     })
 
     expect(subscriptionDrawer.props('modelValue')).toBeTruthy()
-    expect(subscriptionDrawer.props('selectedSubscriptionId')).toStrictEqual(
-      mockedSubscription.subscriptionId, // FIXME: monorepo build issue, quick fix
-    )
+    expect(subscriptionDrawer.props('selectedSubscriptionId')).toBe(mockedSubscription.subscriptionId)
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })
   it('call TSubscriptions component', () => {
