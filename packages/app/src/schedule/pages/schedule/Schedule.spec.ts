@@ -312,7 +312,7 @@ describe('home page', () => {
     })
 
     // FIXME fix the test and unskip or delete it
-    it.skip('should load other month data when change month from widget Calendar', async () => {
+    it('should load other month data when change month from widget Calendar', async () => {
       const getSchedulesCollectionSpy = vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([{
@@ -334,8 +334,6 @@ describe('home page', () => {
 
       datePicker.vm.$emit('panel-change', new Date(OTHER_MONTH_DATE))
 
-      await nextTick()
-      vi.advanceTimersByTime(300)
       await nextTick()
 
       const calendarWidgetLoader = findCalendarWidgetLoader(wrapper)

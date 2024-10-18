@@ -96,8 +96,8 @@ describe('information', () => {
 
       expect(formSections).toHaveLength(InformationFormStructure.length)
     })
-    // FIXME fix the test and unskip or delete it
-    it.skip('should display the form once the loader has finished', async () => {
+    it('should display the form once the loader has finished', async () => {
+      const wrapper = getWrapper()
       const loaderBefore = wrapper.find('[data-testid="folder-information-loader"]')
       const informationFormBefore = wrapper.find('[data-testid="folder-information-form"]')
 

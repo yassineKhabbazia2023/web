@@ -37,7 +37,8 @@ vi.mock('@pulse/common', () => ({
 
 vi.mock('env-vars', () => ({
   VITE_IDLE_DURATION: 5,
-  VITE_AMPLITUDE_API_KEY: 'TEST_KEY',
+  VITE_AMPLITUDE_API_KEY: 'mocked-amplitude-api-key',
+  VITE_AMPLITUDE_SERVER_URL: 'mocked-amplitude-server-url',
   VITE_PRODUCT_FRUITS_KEY: 'TEST_KEY',
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'TEST_KEY',
   VITE_SFCHAT_URL_SANDBOX: '',
