@@ -7,7 +7,10 @@ import { PCheckbox } from '@pulse/styleguide'
 import DocumentsCheckAll
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsCheckAll'
 import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
-import type { ComponentWrapper } from '@/utils/testHelpers'
+import type { VueWrapper } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+
+export type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
 
 type DocumentsCheckAllWrapper = ComponentWrapper<InstanceType<typeof DocumentsCheckAll>>
 
@@ -32,7 +35,7 @@ describe('documentsCheckAll', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const check = wrapper.findComponent(PCheckbox)
+      const check = wrapper.findComponent(PCheckbox) as any // FIXME: styleguide should expose disabled and v-model
       expect(check.exists()).toBeTruthy()
       expect(check.props('disabled')).toBeFalsy()
       expect(check.props('v-model')).toBeFalsy()

@@ -638,7 +638,18 @@ async function refreshDocumentsList() {
   await fetchDocuments()
 }
 
-defineExpose({ refreshDocumentsList })
+defineExpose({
+  refreshDocumentsList,
+  // FIXME: do not expose variables for UT purpose (should change UT)
+  documents,
+  isSearchExpanded,
+  searchContent,
+  selectedDocuments,
+  isSearchLoading,
+  isPreviewDrawerOpened,
+  isRenameModalOpened,
+  isFiltersDrawerOpened,
+})
 </script>
 
 <style lang="scss" scoped>
