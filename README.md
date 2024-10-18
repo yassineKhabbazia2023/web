@@ -49,7 +49,7 @@ In Histoire, the story allows to simply search (grouped by categories) and copie
 Simply one click on the icon in Histoire Icon Story copies the name of the Icon in your clipboard (ex. `PIClipboardData` )
 A double click copies the component PIcon and the related icon in the correct format to use:
 ```ts
-  <PIcon color="#5546FF" size="20px">
+  <PIcon color="#00FF00" size="20px">
     <PIClipboardData />
   </PIcon>
 ```

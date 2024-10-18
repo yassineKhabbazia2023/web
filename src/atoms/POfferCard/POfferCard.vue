@@ -22,7 +22,7 @@
     <div v-if="!disabled" class="p-offer-card__chevron">
       <PIcon
         class="p-offer-card__chevron-icon"
-        color="#171717"
+        :color="AppColors.GRAY_900"
         size="16px"
       >
         <PIChevronRight />
@@ -35,6 +35,7 @@
 import PImage from '@/atoms/PImage'
 import PIcon from '@/atoms/PIcon'
 import type { POfferCardProps } from './POfferCardTypes'
+import { AppColors } from '@/utils/AppColorsEnum'
 
 defineProps<POfferCardProps>()
 defineEmits<{

@@ -20,7 +20,7 @@
             v-for="(item, index) in group.icons"
             :key="index">
             <span class="demo-svg-icon" @click="copyClipboard(item)">
-              <PIcon color="#5546FF" size="20px">
+              <PIcon :color="AppColors.PRIMARY" size="20px">
                 <component :is="item.component" />
               </PIcon>
               <span class="icon-name">{{ item.name }}</span>
@@ -37,6 +37,7 @@ import { onBeforeMount, defineAsyncComponent, shallowRef } from 'vue'
 import { pulseGeneratedIcons } from './components/constants'
 import { manageClick } from '@/utils/mouse'
 import { useCopyClipboard } from '@/utils/clipboard'
+import { AppColors } from '@/utils/AppColorsEnum'
 
 const iconsData = shallowRef([] as any[])
 onBeforeMount(() => {
@@ -66,7 +67,7 @@ const copyClipboard = (icon: any) => {
     useCopyClipboard(icon.name)
   }
   const onDoubleClick = () => {
-    useCopyClipboard(`  <PIcon color="#5546FF" size="20px">
+    useCopyClipboard(`  <PIcon :color="#000000" size="20px">
     <${icon.name} />
   </PIcon>`)
   }
@@ -81,7 +82,7 @@ const copyClipboard = (icon: any) => {
   overflow: hidden;
   list-style: none;
   padding: 0!important;
-  border-radius: 4px;
+  border-radius: var(--el-border-radius-small);
   display: grid;
   grid-template-columns: repeat(4,1fr);
 

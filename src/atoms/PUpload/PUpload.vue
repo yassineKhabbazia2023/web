@@ -16,7 +16,7 @@
     <div v-else class="p-upload__input flex flex--align-items-center">
       <PIcon
         v-if="pUploadType === 'file-line'"
-        color="#5546FF"
+        :color="AppColors.PRIMARY"
         size="16"
         class="margin-right--2"
       >
@@ -69,6 +69,7 @@ import PImage from '@/atoms/PImage'
 import { PIUpload } from '@/atoms/PIcon/components'
 import PUploadFileLine from '@/atoms/PUploadFileLine'
 import type { UploadProps } from './PUploadTypes'
+import { AppColors } from '@/utils/AppColorsEnum'
 
 const uploadElement = ref<InstanceType<typeof ElUpload> | null>(null)
 

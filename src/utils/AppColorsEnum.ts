@@ -15,7 +15,7 @@ export enum AppColors {
   PERSIAN_500 = '#5546FF', // primary
   PERSIAN_600 = '#5536F5',
   PERSIAN_700 = '#492AD8',
-  PERSIAN_800 = '#3b25ae',
+  PERSIAN_800 = '#3B25AE',
   PERSIAN_900 = '#332689',
   // SECONDARY
   SECONDARY_FUSCHIA = '#BE4BC8',

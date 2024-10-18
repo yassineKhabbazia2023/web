@@ -32,7 +32,7 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon color="#5546FF" size="16">
+              <PIcon :color="AppColors.PRIMARY" size="16">
                 <PILink45deg />
               </PIcon>
               <a
@@ -101,7 +101,7 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon color="#5546FF" size="16">
+              <PIcon :color="AppColors.PRIMARY" size="16">
                 <PILink45deg />
               </PIcon>
               <a
@@ -148,7 +148,7 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon color="#5546FF" size="16">
+              <PIcon :color="AppColors.PRIMARY" size="16">
                 <PILink45deg />
               </PIcon>
               <a
@@ -213,6 +213,7 @@ import PButton from '@/atoms/PButton'
 import { reactive, ref } from 'vue'
 import type { PDrawerProps } from './PDrawerTypes'
 import type { BreadcrumbItems } from '@/molecules/PBreadcrumb/PBreadcrumbTypes'
+import { AppColors } from '@/utils/AppColorsEnum'
 
 const pDrawerControl = reactive({
   title: 'Title',

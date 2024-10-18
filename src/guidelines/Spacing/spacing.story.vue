@@ -347,9 +347,9 @@ const groups: Group[] = [{
   border-collapse: collapse;
 
   thead {
-    background: #F5F5F5;
-    color: #666666;
-    border-bottom: 1px solid #DBDBDB;
+    background: var(--el-color-neutral-gray-50);
+    color: var(--el-color-neutral-gray-500);
+    border-bottom: 1px solid var(--el-color-neutral-gray-100);
   }
 
   th {
@@ -360,18 +360,18 @@ const groups: Group[] = [{
     line-height: 18px;
 
     &:first-child {
-      border-top-left-radius: 8px;
+      border-top-left-radius: var(--el-border-radius-base);
     }
 
     &:last-child {
-      border-top-right-radius: 8px;
+      border-top-right-radius: var(--el-border-radius-base);
     }
   }
 
   td {
     padding: 12px 16px;
-    border-bottom: 1px solid #DBDBDB;
-    color: #171717;
+    border-bottom: 1px solid var(--el-color-neutral-gray-100);
+    color: var(--el-color-neutral-gray-900);
     font-weight: 400;
     font-size: 14px;
     line-height: 120%;

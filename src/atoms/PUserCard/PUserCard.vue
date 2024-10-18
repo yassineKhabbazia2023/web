@@ -78,7 +78,7 @@ const slots = useSlots()
   display: flex;
   align-items: center;
   padding: 20px;
-  border-radius: 4px;
+  border-radius: var(--el-border-radius-small);
 
   &--color {
     &-persian {

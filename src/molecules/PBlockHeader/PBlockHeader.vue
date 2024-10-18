@@ -48,7 +48,7 @@ const pClassMapper = computed(() => ({
   $self: &;
 
   padding: 12px;
-  border-radius: 4px 4px 0 0;
+  border-radius: var(--el-border-radius-small) var(--el-border-radius-small) 0 0;
 
   &--color {
     &-persian {

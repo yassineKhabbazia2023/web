@@ -5,7 +5,7 @@
 $notification: (
   'width': fit-content,
   'padding': 16px,
-  'radius': 8px,
+  'radius': var(--el-border-radius-base),
   'icon-size': 32px,
   'group-margin-left': 0,
   'group-margin-right': 0,
@@ -55,7 +55,7 @@ $notification: (
   #{$self}__icon.el-icon {
     flex-grow: 0;
     flex-shrink: 0;
-    border-radius: 100%;
+    border-radius: var(--el-border-radius-circle);
     font-size: 14px;
     color: var(--el-color-white);
   }
@@ -77,7 +77,7 @@ $notification: (
     #{$self}__closeBtn {
       position: unset;
       margin-left: 2.4rem;
-      border-radius: 100%;
+      border-radius: var(--el-border-radius-circle);
       background-color: var(--el-color-neutral-gray-500);
     }
   }

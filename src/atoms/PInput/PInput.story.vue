@@ -79,28 +79,28 @@
       >
         <template #suffix>
           <PIcon
-            color="#5546FF"
+            :color="AppColors.PRIMARY"
           >
             <PICheck />
           </PIcon>
         </template>
         <template #prefix>
           <PIcon
-            color="#5546FF"
+            :color="AppColors.PRIMARY"
           >
             <PICheck />
           </PIcon>
         </template>
         <template #append>
           <PIcon
-            color="#5546FF"
+            :color="AppColors.PRIMARY"
           >
             <PICheck />
           </PIcon>
         </template>
         <template #prepend>
           <PIcon
-            color="#5546FF"
+            :color="AppColors.PRIMARY"
           >
             <PICheck />
           </PIcon>
@@ -118,6 +118,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { PISearch } from '@/atoms/PIcon/components'
+import { AppColors } from '@/utils/AppColorsEnum'
 
 const basicInputData = reactive({
   type: 'text',
