@@ -83,6 +83,7 @@ import { displayNotification } from '@entities/common/utils'
 import { formatItemsFromApi } from '@entities/pages/folder/pages/usersClient/UsersClientHelper'
 import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
 import NoResult from '@entities/common/components/NoResult'
+import { amplitudeService } from '@pulse/common'
 import type { ExtendedUser } from '@entities/pages/folder/pages/usersClient/UsersClientTypes'
 import type { UserStatus } from '@entities/common/types'
 
@@ -119,7 +120,7 @@ const handleSelectUser = (userClientIds: number[]) => {
 const handleRetryMassActivationEmail = async () => {
   isLoading.value = true
   try {
-    const invitedCustomerIDs = await inviteCustomers(selectedUsersIds.value)
+    const invitedCustomerIDs = await inviteCustomers(selectedUsersIds.value, props.selectedAccount.accountNumber)
     if (invitedCustomerIDs && invitedCustomerIDs.length > 0) {
       const notificationMessage = invitedCustomerIDs.length === 1
         ? t('customerInvitationSucceeded')
@@ -127,9 +128,15 @@ const handleRetryMassActivationEmail = async () => {
           customerCount: invitedCustomerIDs.length,
         })
       displayNotification('success', notificationMessage)
+      amplitudeService.track('Onboarding Relaunched', {
+        onboarding_relaunch_result: 'succeeded',
+      })
     }
   } catch {
     displayNotification('error', t('customersInvitationFailed'))
+    amplitudeService.track('Onboarding Relaunched', {
+      onboarding_relaunch_result: 'failed',
+    })
   } finally {
     selectedUsersIds.value = []
     isLoading.value = false

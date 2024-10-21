@@ -5,7 +5,7 @@ export enum CollabRightsDrawerSteps {
   ROLES,
   MANAGE_RIGHTS,
 }
-/* eslint-disable no-unused-vars */
+/* eslint-enable no-unused-vars */
 
 export interface Role {
   id: number

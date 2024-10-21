@@ -7,6 +7,7 @@ import TableData from '@entities/pages/folder/pages/usersClient/components/Table
 import * as walletServices from '@entities/services/wallet'
 import * as contactServices from '@entities/services/contact'
 import * as helpers from '@entities/common/utils'
+import { amplitudeService } from '@pulse/common'
 import ResendActivationEmailDrawer from '.'
 
 // Mocks
@@ -89,6 +90,7 @@ describe('resendActivationEmailDrawer', () => {
       ])
     })
     it('should send a request to the contact API to invite all selected customers when submitting', async () => {
+      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
       const inviteCustomersSpy = vi
         .spyOn(contactServices, 'inviteCustomers')
         .mockResolvedValue([mockedUserClientAccount.contactId])
@@ -106,11 +108,13 @@ describe('resendActivationEmailDrawer', () => {
       resendActivationEmailButton.trigger('click')
       await flushPromises()
 
+      expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
       expect(inviteCustomersSpy).toHaveBeenCalledOnce()
       expect(displayNotificationSpy).toHaveBeenCalledOnce()
-      expect(inviteCustomersSpy).toHaveBeenCalledWith([
-        mockedUserClientAccount.contactId,
-      ])
+      expect(inviteCustomersSpy).toHaveBeenCalledWith(
+        [mockedUserClientAccount.contactId],
+        mockedAccount.accountNumber,
+      )
       expect(displayNotificationSpy).toHaveBeenCalledWith(
         'success',
         'The selected customer has been successfully invited.',
@@ -118,6 +122,7 @@ describe('resendActivationEmailDrawer', () => {
     })
     it('should display a toast notification if the request to invite customers fails', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
       const spyInviteCustomers = vi
         .spyOn(contactServices, 'inviteCustomers')
         .mockRejectedValue(expectedErrorMessage)
@@ -135,11 +140,13 @@ describe('resendActivationEmailDrawer', () => {
       resendActivationEmailButton.trigger('click')
       await flushPromises()
 
+      expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
       expect(spyInviteCustomers).toHaveBeenCalledOnce()
       expect(spyDisplayNotification).toHaveBeenCalledOnce()
-      expect(spyInviteCustomers).toHaveBeenCalledWith([
-        mockedUserClientAccount.contactId,
-      ])
+      expect(spyInviteCustomers).toHaveBeenCalledWith(
+        [mockedUserClientAccount.contactId],
+        mockedAccount.accountNumber,
+      )
       expect(spyDisplayNotification).toHaveBeenCalledWith(
         'error',
         'There was an issue inviting all selected customers.',

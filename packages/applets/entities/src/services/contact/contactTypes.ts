@@ -3,7 +3,7 @@ export enum ContactType {
   Collaborator = 'Collaborator',
   Customer = 'Customer'
 }
-/* eslint-disable no-unused-vars */
+/* eslint-enable no-unused-vars */
 
 export interface Persona {
   id: number

@@ -2,6 +2,7 @@ import { commonApi } from '@pulse/common'
 import { handleRequestError } from '@entities/helper'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { Contact, PatchContactPayload } from './contactTypes'
+import type { OperationStatus } from '@entities/common/types/OperationTypes'
 
 export const getCollaborators = async (
   search: string | null = null,
@@ -56,11 +57,41 @@ export const patchContact = async (
 
 export const inviteCustomers = async (
   customerIDs: number[],
+  accountNumber: string,
 ): Promise<number[] | undefined> => {
   const response = await commonApi().gateway.post(
-    `${API_PREFIXES.CONTACT}/customers/bulk-invite`,
+    `${API_PREFIXES.CONTACT}/customers/bulk-invite/${accountNumber}`,
     customerIDs,
   )
 
   return response?.data
+}
+
+export const fetchAccountOperations = async (accountId: number) => {
+  const response = await commonApi().gateway.get(
+    `${API_PREFIXES.REGISTRY}/operations`,
+    {
+      params: {
+        accountId,
+      },
+    },
+  )
+
+  return response?.data
+}
+
+export const patchOperationStatus = async (
+  operationId: number,
+  status: OperationStatus.APPROVED | OperationStatus.REJECTED,
+) => {
+  await commonApi().gateway.patch(
+    `${API_PREFIXES.REGISTRY}/operations/${operationId}/currentuser`,
+    [
+      {
+        path: '/status',
+        op: 'replace',
+        value: status,
+      },
+    ],
+  )
 }

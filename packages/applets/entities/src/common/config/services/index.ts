@@ -5,5 +5,6 @@ export const API_PREFIXES = {
   AUTH: 'authorization/api',
   CUSTOMER_WALLET: 'customer-wallet/api',
   WALLET: 'wallet/api',
+  REGISTRY: 'registry/api',
   REPORTING: 'reporting/api',
 }

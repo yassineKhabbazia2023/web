@@ -1,7 +1,25 @@
 import { describe, it, expect, vi } from 'vitest'
 import * as styleguide from '@pulse/styleguide'
-import { displayNotification, getFullName } from '.'
+import type { AccessibleMenuItem } from '@entities/common/types'
+import { displayNotification, filterAccessibleMenuItems, getFullName } from '.'
 
+// Mocks
+const mockedMenuItems: AccessibleMenuItem[] = [
+  {
+    pIconName: 'PIArrowUpCircle',
+    pValue: 'Deploy this folder',
+    pActionName: 'deploy',
+    pState: 'default',
+    display: false,
+  },
+  {
+    pIconName: 'PIFolder',
+    pValue: 'Access this folder',
+    pActionName: 'access',
+    pState: 'default',
+    display: true,
+  },
+]
 vi.mock('@pulse/styleguide', () => {
   return {
     PICheck: 'PICheck',
@@ -9,6 +27,14 @@ vi.mock('@pulse/styleguide', () => {
     PNotification: vi.fn(),
   }
 })
+
+// Expectations
+const expectedAccessibleMenuItems = {
+  pIconName: 'PIFolder',
+  pValue: 'Access this folder',
+  pActionName: 'access',
+  pState: 'default',
+}
 
 describe('getFullName', () => {
   it.each([
@@ -52,5 +78,12 @@ describe('displayNotification', () => {
 
     expect(PNotificationMocked).toHaveBeenCalledOnce()
     expect(PNotificationMocked).toHaveBeenNthCalledWith(1, expectedParams)
+  })
+})
+describe('filterAccessibleMenuItems', () => {
+  it('should return only the menu items that the user has access to', () => {
+    const accessibleMenuItems = filterAccessibleMenuItems(mockedMenuItems)
+
+    expect(accessibleMenuItems).toStrictEqual([expectedAccessibleMenuItems])
   })
 })

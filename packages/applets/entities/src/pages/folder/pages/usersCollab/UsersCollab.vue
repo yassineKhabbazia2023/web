@@ -1,7 +1,22 @@
 <template>
   <div class="margin-top--6">
-    <div class="margin-bottom--6">
-      <FormSearch @search-value-submitted="handleSearchValueSubmitted" />
+    <div class="flex margin-bottom--6">
+      <FormSearch
+        class="user-collabs__search-bar margin-right--4"
+        @search-value-submitted="handleSearchValueSubmitted"
+      />
+      <PButton
+        v-if="hasPermission(PERMISSION_CODES.MANAGE_ACCESS)"
+        @click="handleOpenAccessDrawer"
+        pType="primary"
+        pSize="small"
+        :loading="isLoadingOperations"
+        :disabled="availableOperations.length === 0"
+        pPlain
+        data-testid="manage-access-button"
+      >
+        <span>{{ t('manageAccess') }}</span>
+      </PButton>
     </div>
 
     <div
@@ -100,7 +115,7 @@
                   @click="handleToolboxClick(scope.row)"
                 >
                   <PIcon>
-                    <PIThreeDots color="#A4A4A4" />
+                    <PIThreeDots :color="AppColors.GRAY_300" />
                   </PIcon>
                 </PButton>
               </PToolbox>
@@ -132,6 +147,10 @@
     v-model="isManageRightsDrawerOpened"
     :selectedUser="selectedRow"
   />
+  <ManageAccessDrawer
+    v-model="isManageAccessDrawerOpened"
+    @update-operation-table="handleOperationTableUpdate"
+  />
 </template>
 
 <script setup lang="ts">
@@ -140,6 +159,7 @@ import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
 import {
+  AppColors,
   PTable,
   PTableColumn,
   PTag,
@@ -158,9 +178,10 @@ import {
   PICheck,
   PIExclamationTriangle,
 } from '@pulse/styleguide'
-import { commonStore, getInitials } from '@pulse/common'
+import { amplitudeService, commonStore, getInitials, userPermissions } from '@pulse/common'
 import {
   PAGE_SIZES,
+  PERMISSION_CODES,
   DATE_TIME_FORMATS as datetimeFormats,
 } from '@entities/constants'
 import { getFullName } from '@entities/common/utils'
@@ -172,8 +193,11 @@ import type { StateUser, User } from './types'
 import type { UserStatus } from '@entities/common/types'
 import { userActions } from './types'
 import ManageRightsDrawer from '@entities/common/components/ManageRightsDrawer'
+import ManageAccessDrawer from './components/ManageAccessDrawer'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
+import { useOperation } from './composables/useOperation'
+import { fetchAccountOperations } from '@entities/services/contact'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -185,6 +209,22 @@ const route = useRoute()
 const selectedRow = ref(undefined)
 const isManageRightsDrawerOpened = ref(false)
 const { user } = storeToRefs(commonStore())
+
+// #region manage access
+const { hasPermission } = userPermissions()
+const isManageAccessDrawerOpened = ref(false)
+const isLoadingOperations = ref(true)
+const { operations, availableOperations } = useOperation()
+
+const handleOpenAccessDrawer = () => {
+  isManageAccessDrawerOpened.value = true
+  amplitudeService.track('Registry Validation Initiated')
+}
+
+const handleOperationTableUpdate = async () => {
+  operations.value = await fetchAccountOperations(currentEntity.value?.accountId as number)
+}
+// #endregion
 
 const state: StateUser = reactive({
   data: [],
@@ -435,11 +475,27 @@ watch(() => [
 onMounted(async () => {
   await formatAndFillUsersCollabTable()
   await setAccountSignatories()
+  if (currentEntity.value?.accountId) {
+    try {
+      operations.value = await fetchAccountOperations(currentEntity.value.accountId)
+    } catch (error) {
+      console.error('Unable to fetch operations: ', error)
+    } finally {
+      isLoadingOperations.value = false
+    }
+  } else {
+    isLoadingOperations.value = false
+  }
 })
 </script>
 
 <!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style lang="scss">
+.user-collabs {
+  &__search-bar {
+    width: 100%;
+  }
+}
 .toolbox-container {
   .el-scrollbar {
     padding: 5px 0px;
@@ -456,6 +512,7 @@ en-US:
   status: 'Status'
   action: 'Action'
   email: 'Email'
+  manageAccess: 'Manage access'
   dateAccess: 'First date access'
   assignSignatory: 'Designate as signatory'
   removeSignatory: 'Revoke signatory status'
@@ -474,6 +531,7 @@ fr-FR:
   status: 'Statut'
   action: 'Action'
   email: 'E-mail'
+  manageAccess: 'Gérer les accès'
   dateAccess: "Date d'ajout"
   assignSignatory: 'Désigner en tant que signataire'
   removeSignatory: 'Retirer le statut de signataire'

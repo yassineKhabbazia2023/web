@@ -7,7 +7,8 @@ import { fetchAccountCustomers } from '@entities/services/wallet'
 import { getAccountSignatories, updateSignatoryStatus } from '@entities/services/account'
 import UsersCollab from '.'
 import { getMockedAccount } from '@entities/services/account/accountMock'
-import { nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
+import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
 const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
 
@@ -22,12 +23,26 @@ const mockedAccount = getMockedAccount()
 
 const mockHasPermission = vi.fn((_code: string) => true)
 
+vi.mock('@entities/services/contact', () => {
+  return {
+    fetchAccountOperations: vi.fn(() => Promise.resolve(() => getMockedOperations())),
+  }
+})
 vi.mock('@entities/services/wallet', () => ({
   fetchAccountCustomers: vi.fn(() => Promise.resolve({
     items: mockedCustomersCollab,
     totalItems: mockedCustomersCollab.length,
     currentPage: DEFAULT_CURRENT_PAGE,
   })),
+}))
+
+vi.mock('@entities/pages/folder/pages/usersCollab/composables/useOperation', () => ({
+  useOperation: () => {
+    return {
+      availableOperations: ref(getMockedOperations()),
+      operations: ref(getMockedOperations()),
+    }
+  },
 }))
 
 const apiMocks = vi.hoisted(() => ({
@@ -81,6 +96,9 @@ vi.mock('@pulse/common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
   }),
+  amplitudeService: {
+    track: vi.fn(),
+  },
 }))
 
 const pinia = createTestingPinia()
@@ -243,6 +261,16 @@ describe('usersCollab', () => {
       expect(manageRightsDrawer.exists()).toBeTruthy()
       expect(manageRightsDrawer.props('modelValue')).toBeTruthy()
       expect(manageRightsDrawer.props('selectedUser')).toMatchObject(mockedUser)
+    })
+
+    it("should display the 'Manage Access' drawer when the 'Manage Access' button is clicked", async () => {
+      const manageAccessButton = wrapper.findComponent('[data-testid=manage-access-button]')
+      await manageAccessButton.trigger('click')
+      await nextTick()
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+
+      expect(manageAccessDrawer.exists()).toBeTruthy()
+      expect(manageAccessDrawer.props('modelValue')).toBeTruthy()
     })
 
     it("should add user as account signatory when the 'Designate as signatory action is clicked", async () => {

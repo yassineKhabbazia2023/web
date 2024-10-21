@@ -256,5 +256,5 @@ const onboardingSucceeded = () => {
     userAdded: 'Utilisateur ajouté'
     incorrectEmail: "L'adresse mail n'est pas conforme"
     setUserEmail: "Veuillez saisir l'adresse e-mail de l'utilisateur à ajouter"
-    alreadyAddedToAccount: 'Cet utilisateur a déjà été ajouté à cette entité'
+    alreadyAddedToAccount: 'Cet utilisateur a déjà été ajouté sur cette entité'
 </i18n>

@@ -1,0 +1,66 @@
+import type { Operation } from '../types/OperationTypes'
+
+export const getMockedOperations = (): Operation[] => {
+  return [
+    {
+      operationId: 1,
+      roleId: '22',
+      accountNumber: '2024677022',
+      firstName: 'Soufiane',
+      lastName: 'Yousfi',
+      email: 'email382@example.com',
+      status: 'APPROVED',
+      creationDate: '2024-03-21T11:18:23.9366667',
+    },
+    {
+      operationId: 2,
+      roleId: '33',
+      accountNumber: '2024677022',
+      firstName: 'Olivier',
+      lastName: 'Peaucelle',
+      email: 'email383@example.com',
+      status: 'PENDING',
+      creationDate: '2024-01-26T11:18:23.9366667',
+    },
+    {
+      operationId: 3,
+      roleId: '44',
+      accountNumber: '202467702',
+      firstName: 'Clement',
+      lastName: 'Fory',
+      email: 'email384@example.com',
+      status: 'REJECTED',
+      creationDate: '2024-05-26T11:18:23.9366667',
+    },
+    {
+      operationId: 4,
+      roleId: '55',
+      accountNumber: '2024677022',
+      firstName: 'Suliman',
+      lastName: 'Lescot',
+      email: 'email385@example.com',
+      status: 'REJECTED',
+      creationDate: '2024-06-26T11:18:23.9366667',
+    },
+    {
+      operationId: 5,
+      roleId: '66',
+      accountNumber: '2024677022',
+      firstName: 'Arab',
+      lastName: 'Ait Ouarabi',
+      email: 'email386@example.com',
+      status: 'PENDING',
+      creationDate: '2024-04-11T11:18:23.9366667',
+    },
+    {
+      operationId: 6,
+      roleId: '77',
+      accountNumber: '2024677022',
+      firstName: 'Clement',
+      lastName: 'Fory',
+      email: 'email387@example.com',
+      status: 'APPROVED',
+      creationDate: '2024-03-20T11:18:23.9366667',
+    },
+  ]
+}

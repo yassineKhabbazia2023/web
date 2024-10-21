@@ -15,17 +15,26 @@ const i18n = createI18n({
 
 config.global.plugins = [i18n]
 
-setAssetsBaseUrl('https://www.example.kpmg')
+setAssetsBaseUrl('https://www.example.pulse')
 
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 
 // Exported Mocks
+export const mockSelectedEntity = {
+  accountId: 1,
+  legalName: 'Entity Test',
+  accountNumber: 'IBS544G45F345F',
+  color: 'orange',
+}
 export const mockHasPermission = vi.fn((_code: string) => true)
 export const mockUpdateUserPermission = vi.fn()
 export const mockUpdateAccountPermission = vi.fn()
-export const mockFetchAuthorizationsConfig = vi.fn(() => Promise.resolve(mockedAuthorizationsConfig))
+export const mockFetchAuthorizationsConfig = vi.fn(() =>
+  Promise.resolve(mockedAuthorizationsConfig),
+)
 
 // Power BI Mocks
+// @ts-ignore
 window.powerbi = {
   reset: () => vi.fn(),
   embed: () => vi.fn(),
@@ -58,12 +67,7 @@ vi.mock('@pulse/common', () => ({
     getters: {
       isAuthenticated: () => true,
       isCollab: () => true,
-      defaultEntity: () => ({
-        accountId: 1,
-        legalName: 'Entity Test',
-        accountNumber: 'IBS544G45F345F',
-        color: 'orange',
-      }),
+      defaultEntity: () => (mockSelectedEntity),
     },
   }),
   userPermissions: () => ({

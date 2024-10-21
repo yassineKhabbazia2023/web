@@ -117,7 +117,7 @@
                 <li class="margin-bottom--2 flex flex--align-items-center font-small">
                   <PIcon
                     :size="16"
-                    color="#194DB4"
+                    :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2">
                     <PICheck />
                   </PIcon>
@@ -126,7 +126,7 @@
                 <li class="margin-bottom--2 flex flex--align-items-center font-small">
                   <PIcon
                     :size="16"
-                    color="#194DB4"
+                    :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2">
                     <PICheck />
                   </PIcon>
@@ -135,7 +135,7 @@
                 <li class="margin-bottom--2 flex flex--align-items-center font-small">
                   <PIcon
                     :size="16"
-                    color="#194DB4"
+                    :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2">
                     <PICheck />
                   </PIcon>
@@ -144,7 +144,7 @@
                 <li class="flex flex--align-items-center font-small">
                   <PIcon
                     :size="16"
-                    color="#194DB4"
+                    :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2">
                     <PICheck />
                   </PIcon>
@@ -201,6 +201,7 @@
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import {
+  AppColors,
   PAvatar,
   PButton,
   PCol,
