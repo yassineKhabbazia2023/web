@@ -26,7 +26,7 @@
         :pRound="false"
         :pDisabled="false"
         :pLoading="false"
-        @click="emit('update:showCalendar', !showCalendar)"
+        @click="updateCalendarDisplay"
         data-testid="header-section-calendar-btn"
       >
         <PIcon>
@@ -34,6 +34,34 @@
           <PIX v-if="showCalendar" />
         </PIcon>
       </PButton>
+
+      <div class="position--relative padding-left--2">
+        <PButton
+          pIconOnly
+          :pIsActive="showFeedCenter"
+          pPlain
+          :pRound="false"
+          pSize="small"
+          :pType="showFeedCenter ? 'white' : 'generic'"
+          data-testid="feed-center-button"
+          @click="updateFeedCenterDisplay"
+
+        >
+          <PIcon>
+            <PIBell v-if="!showFeedCenter"/>
+            <PIX v-else />
+          </PIcon>
+          <div class="header-section__feed-center-notification-pastille">
+            <PPastille
+              v-if="!showFeedCenter"
+              pSize="small"
+              pType="warning"
+            >
+              {{  unreadNotificationsCount }}
+            </PPastille>
+          </div>
+        </PButton>
+      </div>
       <PDivider
         class="margin-x--4 header-section__divider"
         pDirection="vertical"
@@ -60,26 +88,36 @@ import { storeToRefs } from 'pinia'
 import { commonStore, getInitials } from '@pulse/common'
 import {
   PAvatar,
-  PImage,
-  PDivider,
   PButton,
+  PDivider,
+  PIBell,
   PIcon,
+  PImage,
   PICalendarEvent,
   PIX,
 } from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
-defineProps<HeaderProps>()
+const props = defineProps<HeaderProps>()
 
 const { user } = storeToRefs(commonStore())
 const emit = defineEmits<{
   'update:showCalendar': [boolean]
-  showUserProfileDrawer: []
+  'update:showFeedCenter': [boolean]
+  'showUserProfileDrawer': []
 }>()
 
 const userInitials = computed(() =>
   getInitials(user.value?.firstName, user.value?.lastName),
 )
+
+function updateCalendarDisplay() {
+  emit('update:showCalendar', !props.showCalendar)
+}
+
+function updateFeedCenterDisplay() {
+  emit('update:showFeedCenter', !props.showFeedCenter)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -100,6 +138,12 @@ const userInitials = computed(() =>
 
   &__divider {
     height: 32px;
+  }
+
+  &__feed-center-notification-pastille {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }
 </style>

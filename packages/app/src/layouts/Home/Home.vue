@@ -1,6 +1,10 @@
 <template>
   <div v-if="!isLoading && defaultEntity" class="common-layout">
     <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
+    <FeedCenterDrawer
+      v-model="showFeedCenter"
+      :unreadNotificationsCount="unreadNotificationsCount"
+    />
     <PContainer pDirection="vertical">
       <PCHeader
         class="header-container"
@@ -8,6 +12,8 @@
       >
         <Header
           v-model:showCalendar="showCalendar"
+          v-model:showFeedCenter="showFeedCenter"
+          :unreadNotificationsCount="unreadNotificationsCount"
           @show-user-profile-drawer="handleClick"
         />
       </PCHeader>
@@ -41,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, watch, nextTick } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { productFruits } from 'product-fruits'
 import { VITE_PRODUCT_FRUITS_KEY, VITE_PRODUCT_FRUITS_KEY_CLIENT } from 'env-vars'
@@ -57,6 +63,10 @@ import { storeToRefs } from 'pinia'
 import { fetchEntities } from '@app/services/entities'
 import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 import { useSalesforceService } from '@app/plugins/SalesForce/useSalesforceService'
+import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
+// eslint-disable-next-line import/extensions
+import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
+import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 
 declare global {
   interface Window {
@@ -72,6 +82,7 @@ const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
 const calendarHasBeenOpened = ref(false)
 const isProd = import.meta.env.PROD
+
 const showCalendar = computed({
   get: () => calendarIsOpened.value,
   set: (value: boolean) => {
@@ -82,6 +93,15 @@ const showCalendar = computed({
     }
   },
 })
+
+const isFeedCenterOpened = ref(false)
+const showFeedCenter = computed({
+  get: () => isFeedCenterOpened.value,
+  set: (value: boolean) => {
+    isFeedCenterOpened.value = value
+  },
+})
+
 const hasUserProfileDrawerOpened = ref(false)
 
 const handleClick = () => {
@@ -176,12 +196,34 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+async function setNotificationsCount() {
+  try {
+    const { count } = await fetchUnreadNotificationsCount()
+    unreadNotificationsCount.value = count
+  } catch (error) {
+    console.error('Notifications count fetch failed.', error)
+  }
+}
+
+const unreadNotificationsCount = ref(0)
+const notificationsCountIntervalId = setInterval(async () => {
+  await setNotificationsCount()
+}, UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL)
+
+onMounted(() => {
+  setNotificationsCount()
+})
+
+onBeforeUnmount(() => {
+  clearInterval(notificationsCountIntervalId)
+})
 </script>
 <!-- eslint-disable max-len -->
 <!-- eslint-disable vue/enforce-style-attribute -->
 <style lang="scss">
 .embeddedServiceSidebar .sidebarHeader {
-  background-color: #5546FF !important;
+  background-color: var(--el-color-primary) !important;
 }
 
 .salesforce-chat-wrapper {
@@ -198,11 +240,11 @@ onMounted(async () => {
   .embeddedServiceHelpButton .helpButton .uiButton,
   .embeddedServiceSidebarMinimizedDefaultUI.helpButton,
   .embeddedServiceSidebarMinimizedDefaultUI {
-    background-color: #5546FF !important;
+    background-color: var(--el-color-primary) !important;
   }
   .embeddedServiceSidebarButton {
-    background-color: #5546FF;
-    border-radius: 8px;
+    background-color: var(--el-color-primary);
+    border-radius: var(--el-border-radius-base);
   }
 
   .embeddedServiceSidebarButton.uiButton--inverse .label {
@@ -215,10 +257,10 @@ onMounted(async () => {
   }
 
   .backgroundImgColorMask {
-    background: #5546FF;
+    background: var(--el-color-primary);
   }
   .backgroundPattern {
-    background: #5546FF !important;
+    background: var(--el-color-primary) !important;
   }
 
   .embeddedServiceLiveAgentStateChatHeader .message {

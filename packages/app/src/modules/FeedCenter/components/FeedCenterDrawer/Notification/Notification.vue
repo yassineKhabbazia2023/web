@@ -1,0 +1,64 @@
+<template>
+  <div class="notification margin-bottom--2">
+    <PNotificationCard
+      :pIsNew="!isRead"
+      :pTime="elapsedTime"
+    >
+      <template #avatar>
+        <PAvatar
+          pShape="circle"
+          pType="default"
+          pColor="bordered-persian"
+          :pSelected="false"
+        >
+          <PIcon>
+            <PIPulse />
+          </PIcon>
+        </PAvatar>
+      </template>
+
+      <template #text>
+        <div class="notification__title font-xsmall text-color--persian-500">
+          {{ notificationTitle }}
+        </div>
+        <p class="margin-top--1">
+          {{ message }}
+        </p>
+      </template>
+    </PNotificationCard>
+  </div>
+</template>
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { PNotificationCard, PAvatar, PIcon, PIPulse } from '@pulse/styleguide'
+import type { NotificationProps } from './NotificationTypes'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
+
+const props = defineProps<NotificationProps>()
+
+const notificationTitle = computed(() => {
+  const names = props.accountsNames
+  const namesCount = names.length
+
+  if (namesCount === 2) {
+    return `${names[0]}, ${names[1]}`
+  } else if (namesCount > 2) {
+    const additionalNamesCount = namesCount - 2
+    return `${names[0]}, ${names[1]} ${t('additionalEntitiesNames', { count: additionalNamesCount })}`
+  } else {
+    return names.join(', ')
+  }
+})
+</script>
+
+<i18n lang="yaml">
+en-US:
+  additionalEntitiesNames: 'and {count} other | and {count} others'
+fr-FR:
+  additionalEntitiesNames: 'et {count} autre | et {count} autres'
+</i18n>

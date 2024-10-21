@@ -31,7 +31,7 @@
       @click="emit('delete')"
       data-testid="schedule-reminder-delete"
     >
-      <PIcon color="#A4A4A4">
+      <PIcon :color="AppColors.GRAY_300">
         <PIX />
       </PIcon>
     </PButton>
@@ -41,6 +41,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
+  AppColors,
   PFormItem,
   PButton,
   PIcon,

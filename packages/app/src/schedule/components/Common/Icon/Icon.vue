@@ -7,6 +7,7 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import {
+  AppColors,
   PIcon,
   PISticky,
   PILoader,
@@ -17,9 +18,9 @@ const props = defineProps({
   status: { type: String, required: true },
 })
 const statusMap = new Map([
-  ['Todo', { color: '#5546FF', icon: PILoader }],
-  ['Done', { color: '#00B800', icon: PICheckCircle }],
-  ['Draft', { color: '#666666', icon: PISticky }],
+  ['Todo', { color: AppColors.PRIMARY, icon: PILoader }],
+  ['Done', { color: AppColors.GREEN, icon: PICheckCircle }],
+  ['Draft', { color: AppColors.GRAY_500, icon: PISticky }],
 ])
 
 const iconProperties: any = computed(() => statusMap.get(props.status))

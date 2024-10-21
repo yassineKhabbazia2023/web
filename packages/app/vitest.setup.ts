@@ -4,6 +4,8 @@ import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'
 import { defineStore } from 'pinia'
 import messages from '@intlify/unplugin-vue-i18n/messages'
+// eslint-disable-next-line import/extensions
+import { notificationsMock } from './src/mocks/FeedCenter/notifications.mock'
 
 const i18n = createI18n({
   locale: 'en-US',
@@ -13,11 +15,7 @@ const i18n = createI18n({
 
 config.global.plugins = [i18n]
 
-vi.spyOn(window, 'open')
-
 setAssetsBaseUrl('https://www.example.kpmg')
-
-export const givenToken = 'given-token'
 
 const CGU_URL = 'https://custom-CGU.com'
 
@@ -33,6 +31,18 @@ vi.mock('@pulse/common', () => ({
       logout: () => vi.fn(),
     },
   }),
+}))
+
+export const fetchUnreadNotificationsCountMock = vi.fn(() => 5)
+export const fetchNotificationsMock = vi.fn(() => notificationsMock)
+export const patchNotificationReadStatusMock = vi.fn()
+export const patchAllNotificationsReadStatusMock = vi.fn()
+
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
+  fetchUnreadNotificationsCount: fetchUnreadNotificationsCountMock,
+  fetchNotifications: fetchNotificationsMock,
+  patchNotificationReadStatus: patchNotificationReadStatusMock,
+  patchAllNotificationsReadStatus: patchAllNotificationsReadStatusMock,
 }))
 
 vi.mock('env-vars', () => ({

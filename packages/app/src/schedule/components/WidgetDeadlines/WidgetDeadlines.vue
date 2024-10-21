@@ -86,8 +86,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-$shadow-color: #7090b0;
-
 .widget-deadlines {
   &__item {
     background-color: #fff;
@@ -102,12 +100,8 @@ $shadow-color: #7090b0;
       bottom: 0;
       left: 0;
       right: 0;
-      border-radius: 8px;
-      box-shadow: 0 16px 16px 0 rgba($shadow-color, 0.04),
-        0 4px 4px 0 rgba($shadow-color, 0.05),
-        0 2px 4px 0 rgba($shadow-color, 0.08),
-        0 1px 2px 0 rgba($shadow-color, 0.05),
-        0 0 2px 0 rgba($shadow-color, 0.10);
+      border-radius: var(--el-border-radius-base);
+      box-shadow: var(--el-box-shadow);
     }
     &:hover {
       background-color: var(--el-color-persian-100);

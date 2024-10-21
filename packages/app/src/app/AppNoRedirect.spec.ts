@@ -135,7 +135,6 @@ describe('app with navigation guard', () => {
     expect(router.currentRoute.value.name).toBe('wallet')
   })
 
-  // FIXME fix the test and unskip or delete it
   it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY and VITE_AMPLITUDE_SERVER_URL are not empty', () => {
     createWrapper()
 
@@ -143,7 +142,6 @@ describe('app with navigation guard', () => {
     expect(initAmplitudeServiceSpy).toHaveBeenCalledWith('mocked-amplitude-api-key', 'mocked-amplitude-server-url')
   })
 
-  // FIXME fix the test and unskip or delete it
   it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY is not empty and VITE_AMPLITUDE_SERVER_URL is empty', () => {
     vi.mocked(mockedEnvVar).VITE_AMPLITUDE_SERVER_URL = ''
     createWrapper()
@@ -181,6 +179,18 @@ describe('app with navigation guard', () => {
 
     const pageTitle = getPageTitle(wrapper)
     expect(pageTitle).toBe(PAGES_TITLE.FOLDER)
+    expect(router.currentRoute.value.name).toBe('folder')
+  })
+
+  it('should redirect to folder when a customer reaches mandate page and has one entity', async () => {
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.isCollab = false
+    await nextTick()
+    router.push({ name: 'mandats' })
+    await vi.dynamicImportSettled()
+    await flushPromises()
+
     expect(router.currentRoute.value.name).toBe('folder')
   })
 })

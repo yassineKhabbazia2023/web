@@ -66,12 +66,17 @@ const createWrapper = (): VueWrapper<any> =>
         Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
         PAside: true,
+        PDrawer: true,
       },
     },
   })
 
 function getHomeScheduleDrawer(wrapper: VueWrapper) {
   return wrapper.findComponent({ name: 'HomeScheduleDrawer' })
+}
+
+function getHomeFeedCenterDrawer(wrapper: VueWrapper) {
+  return wrapper.findComponent({ name: 'FeedCenterDrawer' })
 }
 
 describe('home', () => {
@@ -224,6 +229,23 @@ describe('home', () => {
 
     expect(scheduleDrawer.exists()).toBeTruthy()
     expect(scheduleDrawer.props()).toStrictEqual({
+      modelValue: false,
+    })
+  })
+
+  it('should still show feed center drawer when header emits show-user-profile-drawer and close it after', async () => {
+    wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = true
+    await nextTick()
+
+    const header = wrapper.findComponent({ name: 'Header' })
+    await header.vm.$emit('update:show-feed-center', true)
+    await header.vm.$emit('update:show-feed-center', false)
+
+    const feedCenterDrawer = getHomeFeedCenterDrawer(wrapper)
+
+    expect(feedCenterDrawer.exists()).toBeTruthy()
+    expect(feedCenterDrawer.props()).toMatchObject({
       modelValue: false,
     })
   })
