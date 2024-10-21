@@ -120,44 +120,57 @@ describe('createFolderSection', () => {
     })
 
     describe('binding with create folder modal', () => {
-      const validTranslationCases = [
-        {
-          prop: 'modalTitle',
-          expectedText: 'Nouveau dossier',
-        },
-        {
-          prop: 'inputLabel',
-          expectedText: 'Nom du dossier',
-        },
-        {
-          prop: 'inputPlaceHolder',
-          expectedText: 'Entrez le nom de votre dossier',
-        },
-        {
-          prop: 'cancelBtnLabel',
-          expectedText: 'Annuler',
-        },
-        {
-          prop: 'confirmBtnabel',
-          expectedText: 'Créer',
-        },
-      ]
-      it.each(validTranslationCases)(
-        'elements content validation with "%s"',
-        ({ prop, expectedText }) => {
-          const updatedProps: CreateFolderSectionProps = {
-            ...defaultProps,
-            isCreateFolderModalVisible: true,
-          }
-          const wrapper = createWrapper(updatedProps)
+      it('should contain proper props', () => {
+        const expectedProps = {
+          cancelBtnLabel: 'Annuler',
+          confirmBtnabel: 'Créer',
+          inputLabel: 'Nom du dossier',
+          inputPlaceHolder: 'Entrez le nom de votre dossier',
+          isCentered: false,
+          isConfirmButtonLoading: false,
+          isCreateFolderModalVisible: false,
+          modalTitle: 'Nouveau dossier',
+          selectedFolder: {
+            children: [
+              {
+                children: [
+                  {},
+                ],
+                iconName: '',
+                id: 2,
+                name: 'TheFolder',
+                parent: {
+                  id: 1,
+                },
+                permissions: [],
+                properties: {},
+                serviceId: 'some-service',
+              },
+            ],
+            id: 1,
+            name: 'A',
+            parent: {
+              id: 0,
+            },
+            permissions: [
+              'CAN_CREATE_FOLDER',
+            ],
+            properties: {},
+            serviceId: 'some-service',
+          },
+        }
+        const updatedProps: CreateFolderSectionProps = {
+          ...defaultProps,
+          isCreateFolderModalVisible: true,
+        }
+        const wrapper = createWrapper(updatedProps)
 
-          const createFolderModalWrapper = wrapper.findComponent(
-            CreateFolderModal,
-          )
+        const createFolderModalWrapper = wrapper.findComponent(
+          CreateFolderModal,
+        )
 
-          expect(createFolderModalWrapper.props(prop).trim()).toBe(expectedText.trim())
-        },
-      )
+        expect(createFolderModalWrapper.props()).toStrictEqual(expectedProps)
+      })
     })
 
     it('should set the correct create folder text', () => {

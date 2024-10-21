@@ -487,6 +487,11 @@ watch(
     collapseUnusedTrees()
   },
 )
+
+defineExpose({
+  currentFolderId,
+  currentFolderName,
+})
 </script>
 
 <style lang="scss">
