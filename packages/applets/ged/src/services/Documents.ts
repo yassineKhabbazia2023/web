@@ -19,17 +19,17 @@ export const fetchFolderDocuments = async (
   const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
   const apiObject = api().ds
 
-  const response = await apiObject.get(fetchFolderDocumentsUrl, {
-    params: {
-      skip,
-      limit,
-      sort,
-      createdStart: filters?.startDate ?? null,
-      createdEnd: filters?.endDate ?? null,
-    },
-  })
-
-  return response?.data
+  return (
+    await apiObject.get(fetchFolderDocumentsUrl, {
+      params: {
+        skip,
+        limit,
+        sort,
+        createdStart: filters?.startDate ?? null,
+        createdEnd: filters?.endDate ?? null,
+      },
+    })
+  ).data
 }
 
 export const downloadDocument = async (
@@ -194,5 +194,5 @@ export const fetchDocumentsByKeyWord = async (
         findInChildFolders,
       },
     })
-  )?.data
+  ).data
 }

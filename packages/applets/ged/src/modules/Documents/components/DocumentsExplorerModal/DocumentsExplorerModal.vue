@@ -244,7 +244,7 @@ onMounted(() => {
     display: flex;
     flex-wrap: wrap;
     border: 1px solid var(--el-color-neutral-gray-100);
-    border-radius: 4px;
+    border-radius: var(--el-border-radius-small);
     height: 475px;
     margin-top: 16px;
 

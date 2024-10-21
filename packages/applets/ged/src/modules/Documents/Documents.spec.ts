@@ -5,6 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
 import { createPinia, setActivePinia } from 'pinia'
+import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import DocumentsList from './sections/DocumentsList'
 import type { DocumentsProps } from './DocumentsTypes'
@@ -19,7 +20,8 @@ import {
   documentsResponsePayload,
   documentsResponsePayloadMoreThanOneDoc,
 } from '@ged/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import type { TableRowDocument } from '@ged/models/Document'
+import type { Document, DocumentsWithTableStructure, TableRowDocument } from '@ged/models/Document'
+import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import DocumentDeleteModal
   from '@ged/modules/Documents/components/DocumentDeleteModal'
@@ -36,12 +38,22 @@ import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
 import type { Entity } from '@pulse/common'
-import type { VueWrapper } from '@vue/test-utils'
-import type { ComponentPublicInstance } from 'vue'
 
-type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
+type DocumentsSetup = {
+  documents: DocumentsWithTableStructure
+  selectedDocument: Document
+  selectedDocuments: Document[]
+  isRenameModalOpened: boolean
+  isPreviewDrawerOpened: boolean
+  searchContent: string
+  isSearchExpanded: boolean
+  isSearchLoading: boolean
+  isFiltersDrawerOpened: boolean
+}
 
-type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>
+export type DocumentsWrapper = VueWrapper<
+  ComponentPublicInstance<DocumentsSetup, DocumentsProps>
+>
 
 const mockToastPlugin = vi.fn()
 
@@ -75,7 +87,7 @@ const createWrapper = (
         toast: mockToastPlugin,
       },
     },
-  })
+  }) as unknown as DocumentsWrapper
 }
 
 vi.mock('@ged/services/Documents', () => ({
@@ -94,7 +106,7 @@ vi.mock('@ged/services/Documents', () => ({
   }),
 }))
 
-vi.mock('@/modules/common/downloadFilesHelper', () => ({
+vi.mock('@ged/modules/common/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
@@ -110,7 +122,7 @@ const DocumentPiaStatusChangedResponseMock = {
   permissions: ['CAN_MOVE_DOCUMENT'],
 }
 
-vi.mock('@/models/AccountingHubConnection', () => ({
+vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
     OnConnectedAsync: vi.fn(),
     OnDisconnectedAsync: vi.fn(),
@@ -241,7 +253,7 @@ describe('documents', () => {
       await nextTick()
 
       const pbreadCrumbWrapper = findPBreadCrumb(wrapper)
-      pbreadCrumbWrapper.vm.$emit('p-breadcrumb-item-click', validDestination.id)
+      await pbreadCrumbWrapper.vm.$emit('p-breadcrumb-item-click', validDestination.id)
       await nextTick()
 
       expect(wrapper.emitted('change-selected-folder')).toHaveLength(1)
@@ -773,7 +785,7 @@ describe('documents', () => {
 
       const pPaginationWrapper = findPPagination(wrapper)
 
-      pPaginationWrapper.vm.$emit('on-page-range-changed', 50)
+      await pPaginationWrapper.vm.$emit('on-page-range-changed', 50)
       await nextTick()
 
       expect(pPaginationWrapper.props('pPageSize')).toBe(50)
@@ -948,7 +960,7 @@ describe('documents', () => {
       expect(wrapper.emitted('change-selected-folder')).toBeTruthy()
     })
 
-    it('should close filters drawer when close-drawer event is emitted', async () => {
+    it('should close filters drawer when close-filters-drawer event is emitted', async () => {
       expect.hasAssertions()
       const wrapper = createWrapper()
       await nextTick()

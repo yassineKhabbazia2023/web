@@ -73,7 +73,7 @@ $ghostHeight: 56px;
     width: $ghostWidth;
     height: $ghostHeight;
     color: white;
-    border-radius: 8px;
+    border-radius: var(--el-border-radius-base);
     font-weight: 600;
   }
 
@@ -85,7 +85,7 @@ $ghostHeight: 56px;
     top: 8px;
     left: 8px;
     background: var(--el-color-persian-300);
-    border-radius: 8px;
+    border-radius: var(--el-border-radius-base);
   }
 
   &--multiple #{$self}__multiple-outline {

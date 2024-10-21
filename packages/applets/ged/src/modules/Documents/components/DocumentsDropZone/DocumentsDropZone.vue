@@ -36,7 +36,7 @@
         font-semibold
       "
     >
-      <PIcon color="#FF0000">
+      <PIcon :color="AppColors.RED">
         <PISlashCircle />
       </PIcon>
       <span class="padding-left--2">{{ t('dropNotAllowed') }}</span>
@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { PImage, PISlashCircle, PIcon } from '@pulse/styleguide'
+import { AppColors, PImage, PISlashCircle, PIcon } from '@pulse/styleguide'
 import type { DocumentsDropZoneProps } from './DocumentsDropZoneTypes'
 
 defineProps<DocumentsDropZoneProps>()

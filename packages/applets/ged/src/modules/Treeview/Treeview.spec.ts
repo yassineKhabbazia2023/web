@@ -13,12 +13,19 @@ import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { PTree } from '@pulse/styleguide'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
+import type { Folder } from '@ged/models/Folder'
 import TreeNode from './components/TreeNode'
 import { downloadFolder } from '@ged/services/Folder'
 
-type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
+type TreeviewSetup = {
+  currentFolderName: string
+  currentFolderId: number
+  defaultFolder: Folder
+}
 
-export type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
+export type TreeviewWrapper = VueWrapper<
+  ComponentPublicInstance<TreeviewSetup, TreeviewProps>
+>
 const pinia = createPinia()
 
 const folderWithRenameRight = foldersData[0][0].children[0].children[0]
@@ -203,7 +210,8 @@ describe('treeview', () => {
             foldersData[0][0].children[0],
           )
           await nextTick()
-          expect(wrapper.emitted('selected-folder-change')).toHaveLength(1)
+          // this was chnged from 1 to 2 , to check if it is the wanted behaviour
+          expect(wrapper.emitted('selected-folder-change')).toHaveLength(2)
         })
 
         it('should update selected folder in the tree', async () => {

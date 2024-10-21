@@ -10,7 +10,7 @@
       class="on-document-action-clicked"
       pCircle
       @click="handleActionsDropdownOpening">
-      <PIcon size="14" color="#A4A4A4">
+      <PIcon size="14" :color="AppColors.GRAY_300">
         <PIThreeDots />
       </PIcon>
     </PButton>
@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PIThreeDots, PToolbox, PButton, PIcon } from '@pulse/styleguide'
+import { AppColors, PIThreeDots, PToolbox, PButton, PIcon } from '@pulse/styleguide'
 import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 
