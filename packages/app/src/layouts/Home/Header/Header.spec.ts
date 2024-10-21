@@ -7,7 +7,7 @@ import { createTestingPinia } from '@pinia/testing'
 import helpers from '@app/tests/utils/helpers'
 import Header from './'
 import { PICalendarEvent, PIArrowBarUp } from '@pulse/styleguide'
-
+import type { HeaderProps } from './HeaderTypes'
 const { router, pinia, fetchUserData } = helpers()
 
 vi.mock('@pulse/common', () => ({
@@ -30,10 +30,16 @@ vi.mock('@pulse/common', () => ({
   },
 }))
 
-const createWrapper = (showCalendar: boolean): VueWrapper<any> =>
+const createWrapper = (
+  showCalendar: HeaderProps['showCalendar'],
+  showFeedCenter: HeaderProps['showFeedCenter'] = false,
+  unreadNotificationsCount: HeaderProps['unreadNotificationsCount'] = 0,
+): VueWrapper<any> =>
   mount(Header, {
     props: {
       showCalendar,
+      showFeedCenter,
+      unreadNotificationsCount,
     },
     global: {
       plugins: [router, createTestingPinia()],
@@ -81,5 +87,26 @@ describe('header', () => {
     expect(calendarBtn.classes()).toContain('p-button--white')
     expect(calendarBtn.classes()).toContain('p-button--is-active')
     expect(calendarBtn.findComponent(PIArrowBarUp)).toBeTruthy()
+  })
+
+  it('should display accordingly to opened state', async () => {
+    const feedCenterButton = wrapper.find('[data-testid="feed-center-button"]')
+
+    expect(feedCenterButton.classes()).toContain('p-button--generic')
+    expect(feedCenterButton.findComponent({ name: 'PIBell' }).exists()).toBeTruthy()
+
+    await feedCenterButton.trigger('click')
+
+    expect(wrapper.emitted('update:showFeedCenter')).toBeTruthy()
+  })
+
+  it('should display the appropriate button when feed center is opened', () => {
+    wrapper = createWrapper(false, true)
+
+    const feedCenterButton = wrapper.find('[data-testid="feed-center-button"]')
+
+    expect(feedCenterButton.classes()).toContain('p-button--white')
+    expect(feedCenterButton.classes()).toContain('p-button--is-active')
+    expect(feedCenterButton.findComponent({ name: 'PIX' })).toBeTruthy()
   })
 })

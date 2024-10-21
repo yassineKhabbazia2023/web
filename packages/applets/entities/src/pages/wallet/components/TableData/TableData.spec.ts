@@ -1,12 +1,10 @@
 import { createTestingPinia } from '@pinia/testing'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, afterEach, describe, it, expect, vi, type MockInstance } from 'vitest'
+import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
 import { type Entity, commonStore } from '@pulse/common'
-import { API_PREFIXES } from '@entities/common/config/services'
-import * as styleguide from '@pulse/styleguide'
 import TableData from '.'
 
 const handleFavorites = vi.fn()
@@ -94,13 +92,11 @@ const clientsColumnLabels = [
 ]
 
 describe('tableData', () => {
-  let spyPNotification: MockInstance
   let wrapper: VueWrapper<any>
   let store: any
 
   beforeEach(async () => {
     vi.useFakeTimers()
-    spyPNotification = vi.spyOn(styleguide, 'PNotification')
     wrapper = createWrapper()
     store = commonStore(pinia)
     store.$patch({
@@ -166,52 +162,6 @@ describe('tableData', () => {
     const firstRowText = rows[0]
 
     expect(firstRowText.find('.el-tag__content').text()).toBe('To Deploy')
-  })
-
-  it('should resend activation mail & success toaster when click on resend email button', async () => {
-    postMock.mockReturnValueOnce({
-      status: 200,
-      data: {
-        webToken: 'token',
-      },
-    })
-
-    expect(spyPNotification).not.toHaveBeenCalled()
-
-    const walletToolbox = wrapper.findComponent({
-      name: 'PToolbox',
-    }) as VueWrapper
-    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'resendActivationEmail')
-    await nextTick()
-    const { owner } = mockTableData[0]
-
-    expect(spyPNotification).toHaveBeenCalledOnce()
-    expect(postMock).toHaveBeenCalledWith(
-      `${API_PREFIXES.CONTACT}/customers/${owner.contactId}`,
-    )
-  })
-
-  it('should show error toaster when click on resend email button', async () => {
-    postMock.mockReturnValueOnce({
-      status: 500,
-      data: {
-        webToken: '',
-      },
-    })
-
-    expect(spyPNotification).not.toHaveBeenCalled()
-
-    const walletToolbox = wrapper.findComponent({
-      name: 'PToolbox',
-    }) as VueWrapper
-    walletToolbox.vm.$emit('p-toolbox-item-clicked', 'resendActivationEmail')
-    await nextTick()
-    const { owner } = mockTableData[0]
-
-    expect(spyPNotification).toHaveBeenCalledOnce()
-    expect(postMock).toHaveBeenCalledWith(
-      `${API_PREFIXES.CONTACT}/customers/${owner.contactId}`,
-    )
   })
 
   it('should emit clickDeploy when click on deploy button', async () => {

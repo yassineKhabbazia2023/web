@@ -49,7 +49,7 @@
     </PSelect>
   </PFormItem>
   <div class="flex flex--align-items-center margin-bottom--4">
-    <PIcon color="#A4A4A4">
+    <PIcon :color="AppColors.GRAY_300">
       <PIInfoCircle />
     </PIcon>
     <span
@@ -68,6 +68,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  AppColors,
   PAutocomplete,
   PDropdown,
   PFormItem,

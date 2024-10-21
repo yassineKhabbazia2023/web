@@ -43,7 +43,9 @@ describe('subscriptions', () => {
     })
 
     expect(subscriptionDrawer.props('modelValue')).toBeTruthy()
-    expect(subscriptionDrawer.props('selectedSubscriptionId')).toBe(mockedSubscription.subscriptionId)
+    expect(subscriptionDrawer.props('selectedSubscriptionId')).toBe(
+      mockedSubscription.subscriptionId,
+    )
     expect(subscriptionDrawer.exists()).toBeTruthy()
   })
   it('call TSubscriptions component', () => {

@@ -42,7 +42,7 @@
           :pContent="t('tooltip')"
           pPlacement="top"
         >
-          <PIcon class="drawer-create-mandate__tooltip margin-left--2" color="#A4A4A4">
+          <PIcon class="drawer-create-mandate__tooltip margin-left--2" :color="AppColors.GRAY_300">
             <PIQuestionCircle />
           </PIcon>
         </PTooltip>
@@ -161,6 +161,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref } from 'vue'
 import {
+  AppColors,
   PButton,
   PDrawer,
   PDialog,

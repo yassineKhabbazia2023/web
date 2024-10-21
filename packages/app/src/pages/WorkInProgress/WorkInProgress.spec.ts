@@ -6,7 +6,6 @@ const createWrapper = (): VueWrapper => mount(WorkInProgress)
 
 describe('workInProgress', () => {
   describe('display', () => {
-    // FIXME fix the test and unskip or delete it
     it('should display correctly the work in progress page', () => {
       const wrapper = createWrapper()
       const wipImages = wrapper.findAllComponents({ name: 'PImage' })

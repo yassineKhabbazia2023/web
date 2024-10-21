@@ -1,13 +1,19 @@
 import { it, expect, describe, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import type { PButton } from '@pulse/styleguide'
 import type { ConfirmationModalProps } from './ConfirmationModalTypes'
+import type { ComponentWrapper } from '@entities/common/types'
 import ConfirmationModal from '.'
 
 const defaultProps: ConfirmationModalProps = {
   modelValue: true,
   title: 'Test',
   content: 'Test Content',
+  confirmButtonLabel: 'Confirmer',
+  cancelButtonLabel: 'Annuler',
+  isConfirmButtonDisabled: false,
+  isConfirmButtonLoading: false,
 }
 
 const createWrapper = (props = defaultProps) => {
@@ -32,6 +38,18 @@ describe('confirmationModal', () => {
       expect(cancelButton.exists()).toBeTruthy()
       expect(confirmButton.exists()).toBeTruthy()
       expect(wrapper.props()).toStrictEqual(defaultProps)
+    })
+    it('should display the confirm button as disabled', async () => {
+      wrapper = createWrapper({
+        ...defaultProps,
+        isConfirmButtonDisabled: true,
+      })
+      await nextTick()
+      const confirmButton = wrapper.findComponent(
+        '[data-testid="confirm-button"]',
+      ) as ComponentWrapper<InstanceType<typeof PButton>>
+
+      expect(confirmButton.props('pDisabled')).toBeTruthy()
     })
   })
   describe('events', () => {

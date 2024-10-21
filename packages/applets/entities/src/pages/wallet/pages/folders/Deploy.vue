@@ -39,12 +39,13 @@
       <NoResult v-if="searchResult.items.length === 0" />
       <TableData
         v-if="searchResult.items.length > 0"
-        data-testid="table"
+        data-testid="folders-table"
         :data="searchResult.items"
         :handleAddFavorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
         @selected-folder="onSelectedFolder"
+        @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
       />
       <PPagination
         class="margin-top--6"
@@ -61,6 +62,11 @@
       >
         <p>{{ paginationLabel }}</p>
       </PPagination>
+      <ResendActivationEmailDrawer
+        v-if="isResendActivationEmailDrawerVisible && selectedAccount"
+        v-model="isResendActivationEmailDrawerVisible"
+        :selectedAccount="selectedAccount"
+      />
       <OffersDrawer
         v-if="openOffersDrawer && selectedAccountId"
         :selectedCompanyName="selectedCompanyName"
@@ -104,7 +110,9 @@ import type {
 import Filters from '../../components/Filters'
 import TableData from '../../components/TableData'
 import DelegationDrawer from './components/DelegationDrawer'
+import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
+import type { AccountRow } from '@entities/common/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -118,6 +126,16 @@ const { isCollab, user } = storeToRefs(userStore)
 const searchBar = ref()
 const isLoading = ref(true)
 const selectedCompanyName = ref('')
+
+// #region ResendActivationEmail
+const selectedAccount = ref<AccountRow>()
+const isResendActivationEmailDrawerVisible = ref(false)
+
+const handleDisplayResendActivationEmailDrawer = (account: AccountRow) => {
+  selectedAccount.value = account
+  isResendActivationEmailDrawerVisible.value = true
+}
+// #endregion
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
@@ -267,7 +285,7 @@ const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
       : [...selectedFolders.value, newSelectedFolder]
 }
 
-defineExpose({ handleAddFavorite, searchCriteria })
+defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerVisible, selectedAccount })
 </script>
 
 <i18n lang="yaml">

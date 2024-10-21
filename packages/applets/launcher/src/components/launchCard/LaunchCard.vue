@@ -89,18 +89,12 @@ const sanitizedActionUrl = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-$shadow-color: #7090b0;
-
 .launch-card {
   border: 1px solid var(--el-color-neutral-gray-100);
   max-width: 350px;
 
   &:hover {
-    box-shadow: 0 12px 15px 0 rgba($shadow-color, 0.04),
-     0 8px 8px 0 rgba($shadow-color, 0.05),
-     0 4px 4px 0 rgba($shadow-color, 0.08),
-     0 2px 2px 0 rgba($shadow-color, 0.05),
-     0 1px 2px 0 rgba($shadow-color, 0.10);
+    box-shadow: var(--el-box-shadow);
   }
 
   &__image {

@@ -41,7 +41,7 @@
         >
           <SidebarEntityItem v-bind="walletItem">
             <PIcon
-              :color="getActiveWallet ? '#5546FF' : '#FFF'"
+              :color="getActiveWallet ? AppColors.PRIMARY : '#FFF'"
               class="sidenav-entity__actions-icon radius--circle"
               :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
             >
@@ -80,7 +80,7 @@
           >
             <PIcon
               size="12"
-              color="#C2C9FF"
+              :color="AppColors.PERSIAN_200"
               style="width: 32px"
             >
               <PIStarFill />
@@ -125,6 +125,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { commonStore, type Entity } from '@pulse/common'
 import {
+  AppColors,
   PIArrowBarRight,
   PIArrowBarLeft,
   PICardList,

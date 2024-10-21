@@ -192,7 +192,7 @@ describe('deploy', () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
     table.vm.$emit('click-deploy', 1, 'a', 'b')
     await nextTick()
 
@@ -204,7 +204,7 @@ describe('deploy', () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
     table.vm.$emit('click-deploy', 1, 'a', 'b')
     await nextTick()
 
@@ -220,7 +220,7 @@ describe('deploy', () => {
   it('should redirect when click on access folder', async () => {
     const wrapper = createWrapper()
     await flushPromises()
-    const table = wrapper.findComponent('[data-testid=table]') as VueWrapper
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
     table.vm.$emit('access', '8126f51d-c834-4fda-82ea-00d51ee11983')
     await nextTick()
 
@@ -229,6 +229,30 @@ describe('deploy', () => {
       name: 'folder',
       params: { id: '8126f51d-c834-4fda-82ea-00d51ee11983' },
     })
+  })
+
+  it("should open the activation email drawer when the 'Resend Activation Mail' button is clicked", async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    table.vm.$emit('displayResendActivationEmailDrawer', mockedAccount)
+    await nextTick()
+
+    expect(wrapper.vm.selectedAccount).toStrictEqual(mockedAccount)
+    expect(wrapper.vm.isResendActivationEmailDrawerVisible).toBeTruthy()
+  })
+  it("should emit the 'update:modelValue' event when the v-model of ResendActivationEmail is updated", async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    table.vm.$emit('displayResendActivationEmailDrawer', mockedAccount)
+    await nextTick()
+    const resendActivationEmailDrawer = wrapper.findComponent({ name: 'ResendActivationEmailDrawer' })
+    resendActivationEmailDrawer.vm.$emit('update:modelValue', false)
+    await nextTick()
+
+    expect(wrapper.vm.isResendActivationEmailDrawerVisible).toBeFalsy()
+    expect(resendActivationEmailDrawer.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 
   it('displays a specific component if no items in response API', async () => {

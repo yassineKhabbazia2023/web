@@ -27,7 +27,7 @@
     "@pulse/launcher": "1.0.0",
     "@pulse/login": "1.0.0",
     "@pulse/mandate": "1.0.0",
-    "@pulse/styleguide": "^2.2.763",
+    "@pulse/styleguide": "^2.2.797",
     "@vue/test-utils": "^2.4.6",
     "dayjs": "^1.11.13",
     "idlejs": "^3.0.0",

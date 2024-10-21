@@ -487,6 +487,7 @@ watch(
     collapseUnusedTrees()
   },
 )
+
 defineExpose({
   currentFolderId,
   currentFolderName,

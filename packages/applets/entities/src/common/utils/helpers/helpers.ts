@@ -1,4 +1,5 @@
-import { PICheck, PIX, PNotification } from '@pulse/styleguide'
+import type { AccessibleMenuItem } from '@entities/common/types'
+import { PICheck, PIX, PNotification, type PToolboxItemProps } from '@pulse/styleguide'
 
 type NotificationPosition =
   | 'top-right'
@@ -8,7 +9,7 @@ type NotificationPosition =
 
 /**
  * Function that constructs the full name using 'firstName' and 'lastName' as parameters
- * @param {string, string}
+ * @param {string, string, boolean}
  * @returns {string}
  */
 export const getFullName = (
@@ -22,6 +23,9 @@ export const getFullName = (
     : fullName
 }
 
+/**
+ * Function that simplifies the display of success and error notifications
+ */
 export const displayNotification = (
   type: 'success' | 'error',
   message: string,
@@ -36,4 +40,18 @@ export const displayNotification = (
     position,
     duration,
   })
+}
+
+/**
+ * Function that filters the menu items provided as arguments and returns
+ * only those with the display property set to true
+ */
+export const filterAccessibleMenuItems = (menuItems: AccessibleMenuItem[]) => {
+  return menuItems.filter(({ display }) => display)
+    .map(({ pIconName, pValue, pActionName, pState }) => ({
+      pIconName,
+      pValue,
+      pActionName,
+      pState,
+    })) as PToolboxItemProps[]
 }

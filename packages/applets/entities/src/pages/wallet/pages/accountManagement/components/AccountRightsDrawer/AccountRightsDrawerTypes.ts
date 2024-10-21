@@ -5,7 +5,7 @@ export enum PermissionTypeTabs {
   CLIENT_PERMISSIONS = 'clientPermissions',
   COLLAB_PERMISSIONS = 'collabPermissions',
 }
-/* eslint-disable no-unused-vars */
+/* eslint-enable no-unused-vars */
 
 export interface AccountRightsDrawerProps {
   modelValue: boolean

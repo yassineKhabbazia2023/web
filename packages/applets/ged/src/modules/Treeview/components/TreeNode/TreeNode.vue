@@ -50,7 +50,7 @@
 
         <PIcon
           v-show="isDragovered"
-          :color="isErrorDragover ? '#FF0000' : '#5546FF'"
+          :color="isErrorDragover ? AppColors.RED : AppColors.PRIMARY"
           size="18"
         >
           <PIArrowLeftRight v-if="!isErrorDragover" />
@@ -64,6 +64,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
+  AppColors,
   PIArrowLeftRight,
   PICalculatorEuro,
   PIDot,

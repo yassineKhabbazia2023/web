@@ -189,11 +189,7 @@ import {
   PTable,
   PTableColumn,
   PToolbox,
-  PICheck,
   PCheckbox,
-  PIExclamationTriangle,
-  PNotification,
-  type PToolboxItemProps,
 } from '@pulse/styleguide'
 import {
   onMounted,
@@ -204,11 +200,11 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { type Entity, commonApi, commonStore, amplitudeService, userPermissions } from '@pulse/common'
+import { type Entity, commonStore, userPermissions } from '@pulse/common'
 import type { TableDataProps } from './types'
-import type { AccountRow } from '@entities/common/types'
+import type { AccessibleMenuItem, AccountRow } from '@entities/common/types'
+import { filterAccessibleMenuItems } from '@entities/common/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
-import { API_PREFIXES } from '@entities/common/config/services'
 import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({
@@ -229,37 +225,35 @@ const callHandleAddFavorite = (accountId: number, isFavorite: boolean) => {
 
 const { hasPermission } = userPermissions()
 
-const menuToDeployElements : PToolboxItemProps[] = [
+const defaultMenuElements : AccessibleMenuItem[] = [
+  {
+    pIconName: 'PIFolder',
+    pValue: t('accessThisFolder'),
+    pActionName: 'access',
+    pState: 'default',
+    display: true,
+  },
+  {
+    pIconName: 'PISend',
+    pValue: t('resendActivationEmail'),
+    pActionName: 'retryMassActivationEmail',
+    pState: 'default',
+    display: hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
+  },
+]
+
+const menuToDeployElements : AccessibleMenuItem[] = [
   {
     pIconName: 'PIArrowUpCircle',
     pValue: t('deployThisFolder'),
     pActionName: 'deploy',
     pState: 'default',
+    display: true,
   },
-  {
-    pIconName: 'PIFolder',
-    pValue: t('accessThisFolder'),
-    pActionName: 'access',
-    pState: 'default',
-  },
+  ...defaultMenuElements,
 ]
 
-const menuInProgressElements : PToolboxItemProps[] = [
-  {
-    pIconName: 'PISend',
-    pValue: t('resendActivationEmail'),
-    pActionName: 'resendActivationEmail',
-    pState: 'default',
-  },
-  {
-    pIconName: 'PIFolder',
-    pValue: t('accessThisFolder'),
-    pActionName: 'access',
-    pState: 'default',
-  },
-]
-
-const accountManagementMenu : PToolboxItemProps[] = [
+const accountManagementMenu : AccessibleMenuItem[] = [
   {
     pIconName: 'PIGrid',
     pValue: t('manageAccountRights'),
@@ -272,30 +266,15 @@ const accountManagementMenu : PToolboxItemProps[] = [
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',
-    display: true,
-  },
-].filter(({ display }) => display)
-  .map(({ pIconName, pValue, pActionName, pState }) => ({
-    pIconName,
-    pValue,
-    pActionName,
-    pState,
-  })) as PToolboxItemProps[]
-
-const menuConnectedElements : PToolboxItemProps[] = [
-  {
-    pIconName: 'PIFolder',
-    pValue: t('accessThisFolder'),
-    pActionName: 'access',
-    pState: 'default',
+    display: hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
   },
 ]
 
-const menuElementsCollaborator = (status : string) => {
-  if (props.isAccountManagement) return accountManagementMenu
+const menuElementsCollaborator = (status: string) => {
+  if (props.isAccountManagement) return filterAccessibleMenuItems(accountManagementMenu)
   return status === t('toDeploy')
-    ? menuToDeployElements
-    : (status === t('inProgress') ? menuInProgressElements : menuConnectedElements)
+    ? filterAccessibleMenuItems(menuToDeployElements)
+    : filterAccessibleMenuItems(defaultMenuElements)
 }
 
 const userStore = commonStore()
@@ -358,50 +337,11 @@ watch(() => props.data, () => {
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 
-const notifOnError = (companyName: string) => {
-  amplitudeService.track('Onboarding Relaunched', {
-    onboarding_relaunch_result: 'failed',
-  })
-  PNotification({
-    message: t('resendMailErrorMessage') + companyName,
-    icon: PIExclamationTriangle,
-    customClass: 'error',
-    showClose: true,
-    position: 'bottom-right',
-  })
-}
-
-const resendActivationEmail = async (companyName: string, signatoryId: number) => {
-  const url = `${API_PREFIXES.CONTACT}/customers/${signatoryId}`
-  try {
-    const { status } = await commonApi().gateway.post(url)
-    if (status === 200) {
-      amplitudeService.track('Onboarding Relaunched', {
-        onboarding_relaunch_result: 'succeeded',
-      })
-      PNotification({
-        message: t('resendMailSuccessMessageFirst') + companyName + t('resendMailSuccessMessageSecond'),
-        icon: PICheck,
-        showClose: true,
-        customClass: 'success',
-        position: 'bottom-right',
-      })
-    } else {
-      notifOnError(companyName)
-    }
-  } catch {
-    notifOnError(companyName)
-  }
-}
-
 const onToolboxItemClicked = (action: string, row: any) => {
-  const { accountId, name, accountNumber, owner } = row
+  const { accountId, name, accountNumber } = row
 
   if (action === 'deploy') {
     emit('click-deploy', accountId ?? 5, accountNumber, name)
-  } else if (action === 'resendActivationEmail') {
-    const signatoryId = owner.contactId
-    resendActivationEmail(name, signatoryId)
   } else if (action === 'access') {
     handleRowSelectedChange(row)
     emit('access', accountId)
@@ -460,11 +400,7 @@ en-US:
   accessThisFolder: 'Access this folder'
   resendActivationEmail: 'Resend activation email'
   toDeploy: 'To Deploy'
-  inProgress: 'In progress'
   manageAccountRights: 'Manage folder permissions'
-  resendMailErrorMessage: 'A problem occurred while sending the activation email for '
-  resendMailSuccessMessageFirst: 'A new activation email for '
-  resendMailSuccessMessageSecond: ' has been sent successfully.'
 fr-FR:
   companyName: 'Nom de la société'
   folderID: 'ID Dossier'
@@ -477,9 +413,5 @@ fr-FR:
   accessThisFolder: 'Accéder au dossier'
   resendActivationEmail: "Relancer le mail d'activation"
   toDeploy: 'A déployer'
-  inProgress: 'En cours'
   manageAccountRights: 'Gérer les droits du dossier'
-  resendMailErrorMessage: "Un problème est survenu lors de l'envoie du mail d'activation pour "
-  resendMailSuccessMessageFirst: "Un nouveau mail d'activation pour "
-  resendMailSuccessMessageSecond: ' a bien été envoyé.'
 </i18n>

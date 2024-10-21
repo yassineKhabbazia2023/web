@@ -1,5 +1,5 @@
 <template>
-  <div class="action-bar">
+  <div class="action-bar shadow--1">
     <PActionBar
       class="documents-actions"
       :pRightSideButtons="rightSideButtons"
@@ -75,8 +75,6 @@ const handleSearchExpandChange = (value: boolean) => {
 <style lang="scss">
   .action-bar {
     padding: 24px 16px;
-    box-shadow: 0px 1px 2px 0px rgba(112, 144, 176, 0.20),
-    0px 0px 2px 0px rgba(112, 144, 176, 0.10);
   }
 </style>
 

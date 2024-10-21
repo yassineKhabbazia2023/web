@@ -25,7 +25,7 @@
               :pElements="actionsBuilder(scope.row.statusCode, scope.row.jdcPartnership, scope.row.jdcStatusCode)"
               @p-toolbox-item-clicked="actionClicked($event, scope.row)">
               <PButton pType="generic">
-                <PIcon color="#A4A4A4" size="14px">
+                <PIcon :color="AppColors.GRAY_300" size="14px">
                   <PIThreeDots />
                 </PIcon>
               </PButton>
@@ -118,6 +118,7 @@ import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { PToolboxItemProps } from '@pulse/styleguide'
 import {
+  AppColors,
   PTable,
   PTableColumn,
   PToolbox,

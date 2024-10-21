@@ -14,15 +14,6 @@
             v-model="createMandateForm.erpId"
             data-testid="ibs-number-test"
           >
-          <!-- <template #suffix>
-              <PIcon
-                v-if="isIBSValid"
-                class="el-button__icon--right"
-                color="#5546FF"
-              >
-                <PICheck />
-              </PIcon>
-            </template> -->
           </PInput>
         </PFormItem>
         <PRow :pGutter="16">

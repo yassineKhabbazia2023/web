@@ -24,7 +24,7 @@
       <span class="p-schedule-deadline__content-label font-semibold">
         {{ item.typeLabel }}
       </span>
-      <PIcon color="#666666">
+      <PIcon :color="AppColors.GRAY_500">
         <PIArrowRight />
       </PIcon>
       <span class="p-schedule-deadline__content-progress">
@@ -55,7 +55,7 @@ import { useI18n } from 'vue-i18n'
 import Tag from '@app/schedule/components/Common/Tag'
 import Icon from '@app/schedule/components/Common/Icon'
 import {
-  PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
+  AppColors, PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
 } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide'
 import type { Status } from '@app/schedule/models/Deadline'
@@ -138,7 +138,7 @@ const actionClicked = (event: DeadlineEvent, occurrenceId: number) => {
   margin-bottom: 2px;
 
   &:hover {
-    border-radius: 8px;
+    border-radius: var(--el-border-radius-base);
     background-color: var(--el-color-persian-100);
   }
 

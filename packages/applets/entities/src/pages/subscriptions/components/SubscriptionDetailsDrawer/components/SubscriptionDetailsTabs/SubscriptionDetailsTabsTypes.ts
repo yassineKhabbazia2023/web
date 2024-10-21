@@ -7,7 +7,7 @@ export enum RecapTabs {
   COLLABORATORS = 'collaborators',
   INFORMATION = 'information'
 }
-/* eslint-disable no-unused-vars */
+/* eslint-enable no-unused-vars */
 export interface SubscriptionDetailsTab {
   index: number
   name: `${RecapTabs}`

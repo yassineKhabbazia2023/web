@@ -101,26 +101,29 @@ describe('treeNodeActions', () => {
       expect(componentInstance.isToolBoxVisible).toBeFalsy()
     })
 
-    // FIXME fix the test and unskip or delete it
-    it.skip('should  permissions with upload folder by default', () => {
-      const props: TreeNodeActionsToolboxProps = {
-        ...defaultProps,
-        permissions: ['azert'],
-      }
-
-      const wrapper = createWrapper(props)
-
-      const componentInstance = wrapper.vm
-      expect(componentInstance.toolboxBasicData).toHaveLength(1)
-      expect(componentInstance.isToolBoxVisible).toBeTruthy()
-
-      it('should not render PToolbox when selectedOrHovered is false', () => {
+    describe('when permissions is not empty', () => {
+      it('should permissions with upload folder by default', async () => {
         const props: TreeNodeActionsToolboxProps = {
           ...defaultProps,
+          permissions: ['azert'],
+        }
+        const wrapper = createWrapper(props)
+        await nextTick()
+        const componentInstance = wrapper.vm as any
+
+        expect(componentInstance.toolboxBasicData).toHaveLength(1)
+        expect(componentInstance.isToolBoxVisible).toBeTruthy()
+      })
+
+      it('should not render PToolbox when selectedOrHovered is false', async () => {
+        const props: TreeNodeActionsToolboxProps = {
+          ...defaultProps,
+          permissions: ['azert'],
           selectedOrHovered: false,
         }
 
         const wrapper = createWrapper(props)
+        await nextTick()
 
         // check that the toolbox items are generated correctly
         const componentInstance = wrapper.vm

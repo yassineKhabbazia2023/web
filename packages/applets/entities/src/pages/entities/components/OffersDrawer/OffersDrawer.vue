@@ -4,6 +4,8 @@
       v-model="confirmationModalVisible"
       :title="t('confirmationTitle')"
       :content="t('confirmationContent')"
+      :confirmButtonLabel="t('confirm')"
+      :cancelButtonLabel="t('cancel')"
       @confirm="handleConfirm"
       data-testid="create-offer-confirmation-modal"
     />
@@ -27,7 +29,7 @@
           v-if="offerSanitizedUrl"
           class="offers-drawer__details margin-left--4"
         >
-          <PIcon color="#5546FF" size="16">
+          <PIcon :color="AppColors.PRIMARY" size="16">
             <PILink45deg />
           </PIcon>
           <a
@@ -130,7 +132,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { get } from 'lodash-es'
-import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@pulse/styleguide'
+import { AppColors, PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@pulse/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@entities/common/components/StepNote'
@@ -138,7 +140,7 @@ import CustomersDetails from '@entities/common/components/CustomersDetails'
 import CompanyInformation from '../CompanyInformation'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import { displayNotification } from '@entities/common/utils/helpers'
-import ConfirmationModal from '../ConfirmationModal'
+import ConfirmationModal from '@entities/common/components/ConfirmationModal'
 import ManageCollaborators from '../ManageCollaborators'
 import {
   getAllOffers,
@@ -489,6 +491,8 @@ en-US:
   information: 'Information'
   offerIntranet: 'Offer Intranet'
   offersBook: 'Offers Book'
+  confirm: 'Confirm'
+  cancel: 'Cancel'
   confirmationTitle: 'Attention'
   subscriptionCreated: 'The subscription was created'
   subscriptionNotCreated: 'The subscription could not be created'
@@ -503,6 +507,8 @@ fr-FR:
   previousLabel: 'Précédent'
   nextLabel: 'Suivant'
   submitLabel: 'Valider'
+  confirm: 'Confirmer'
+  cancel: 'Cancel'
   services: 'Services'
   customers: 'Clients'
   collaborators: 'Collaborateurs'

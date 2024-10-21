@@ -126,7 +126,7 @@
                 class="margin-left--1"
               >
                 <PIcon>
-                  <PIThreeDots color="#A4A4A4" />
+                  <PIThreeDots :color="AppColors.GRAY_300" />
                 </PIcon>
               </PButton>
             </PToolbox>
@@ -158,6 +158,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import {
+  AppColors,
   PAvatar,
   PButton,
   PICheck,

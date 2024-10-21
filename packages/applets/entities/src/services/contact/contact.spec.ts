@@ -1,44 +1,44 @@
 import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@entities/common/config/services'
-import { getMockedCollaborators, getMockedCustomer } from './contactMocks'
-import { getCollaborators, getContactById, inviteCustomers, patchContact } from '.'
 import { omit } from 'lodash-es'
+import { getMockedCustomer } from './contactMocks'
 import type { PatchContactPayload } from './contactTypes'
+import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
+import { OperationStatus } from '@entities/common/types/OperationTypes'
+import {
+  fetchAccountOperations,
+  getCollaborators,
+  getContactById,
+  inviteCustomers,
+  patchContact,
+  patchOperationStatus,
+} from '.'
 
-const mockedCollaborators = getMockedCollaborators()
+// Mocks
+const mockedAccountId = 125
 const mockedCustomerIDs = [1, 2, 3]
+const mockedContact = getMockedCustomer()
+const mockedAccountNumber = '2323232323232'
+const mockedOperations = getMockedOperations()
+
+const mocks = vi.hoisted(() => ({
+  get: vi.fn(),
+  post: vi.fn(),
+  patch: vi.fn(),
+}))
 
 vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       gateway: {
-        get: vi.fn().mockImplementation((url) => {
-          return handleGetApiMock(url)
-        }),
-        patch: vi.fn().mockImplementation((url, payload, contentType) => {
-          return handlePatchApiMock(url, payload, contentType)
-        }),
-        post: vi.fn(() => Promise.resolve({ data: mockedCustomerIDs })),
+        get: mocks.get,
+        patch: mocks.patch,
+        post: mocks.post,
       },
     }),
   }
 })
 
-const mockedContact = getMockedCustomer()
-const handleGetApiMock = (url: string) => {
-  if (url === `${API_PREFIXES.CONTACT}/contacts`) {
-    return Promise.resolve({
-      data: {
-        items: mockedCollaborators,
-      },
-    })
-  } else if (url === `${API_PREFIXES.CUSTOMER_WALLET}/contacts/${mockedContact[0].id}`) {
-    return Promise.resolve({
-      data: mockedContact[0],
-    })
-  }
-  return Promise.reject(new Error('rejected'))
-}
 const handlePatchApiMock = (url: string, _:object, __:object) => {
   if (url === `${API_PREFIXES.CUSTOMER_WALLET}/contacts/${mockedContact[0].id}`) {
     return Promise.resolve({
@@ -50,33 +50,65 @@ const handlePatchApiMock = (url: string, _:object, __:object) => {
 describe('contact', () => {
   describe('getCollaborators', () => {
     it('should return list of collaborators', async () => {
-      const collaborators = await getCollaborators()
+      await getCollaborators()
 
-      expect(collaborators).toStrictEqual(mockedCollaborators)
+      expect(mocks.get).toHaveBeenCalledWith(
+        'contact/api/contacts',
+        { params: { Type: 'Collaborator', search: null, pageSize: undefined } },
+      )
     })
   })
   describe('getContactById', () => {
     it('should return the contact with the given id', async () => {
-      const contact = await getContactById(mockedContact[0].id)
+      await getContactById(mockedContact[0].id)
 
-      expect(contact).toStrictEqual(mockedContact[0])
+      expect(mocks.get).toHaveBeenCalledWith(
+        `customer-wallet/api/contacts/${mockedContact[0].id}`,
+      )
     })
   })
+  describe('fetchAccountOperations - Fetch the list of operations by passing the AccountId as a parameter', () => {
+    it('should return the list of operations associated with an account', async () => {
+      await fetchAccountOperations(mockedAccountId)
 
+      expect(mocks.get).toHaveBeenCalledWith(
+        'registry/api/operations',
+        { params: { accountId: mockedAccountId } },
+      )
+    })
+  })
+  describe('patchOperationStatus - To update the status of a specific operation', () => {
+    it('should call the correct endpoint with the right params/body to update the operation status', async () => {
+      await patchOperationStatus(
+        mockedOperations[0].operationId,
+        OperationStatus.APPROVED,
+      )
+
+      expect(mocks.patch).toHaveBeenCalledWith(
+        `registry/api/operations/${mockedOperations[0].operationId}/currentuser`,
+        [{ op: 'replace', path: '/status', value: 'APPROVED' }],
+      )
+    })
+  })
   describe('patchContact', () => {
     it('should return the patched contact with given payload', async () => {
+      mocks.patch.mockImplementation((url, payload, contentType) => {
+        return handlePatchApiMock(url, payload, contentType)
+      })
       const patchPayload = omit(mockedContact[0], 'id', 'persona', 'email', 'type', 'office') as PatchContactPayload
       const contact = await patchContact(1, patchPayload)
 
       expect(contact).toStrictEqual(mockedContact[0])
     })
   })
-
   describe('inviteCustomers', () => {
     it('should return a list of invited customer IDs', async () => {
-      const customerIDs = await inviteCustomers(mockedCustomerIDs)
+      await inviteCustomers(mockedCustomerIDs, mockedAccountNumber)
 
-      expect(customerIDs).toStrictEqual(mockedCustomerIDs)
+      expect(mocks.post).toHaveBeenCalledWith(
+        `contact/api/customers/bulk-invite/${mockedAccountNumber}`,
+        mockedCustomerIDs,
+      )
     })
   })
 })

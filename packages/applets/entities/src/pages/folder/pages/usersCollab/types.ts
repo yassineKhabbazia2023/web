@@ -8,7 +8,7 @@ export enum userActions {
   ASSIGN_SIGNATORY = 'assignSignatory',
   UNASSIGN_SIGNATORY = 'unassignSignatory'
 }
-/* eslint-disable no-unused-vars */
+/* eslint-enable no-unused-vars */
 
 export interface User {
   contactId: number

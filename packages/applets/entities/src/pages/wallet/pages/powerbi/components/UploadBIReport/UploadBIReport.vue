@@ -3,7 +3,7 @@
     <template #label>
       <span class="flex">
         {{ t('uploadReport') }}
-        <PIcon color="#A4A4A4" class="margin-left--2">
+        <PIcon :color="AppColors.GRAY_300" class="margin-left--2">
           <PIPatchCheck />
         </PIcon>
       </span>
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import { PFormItem, PUpload, PIcon, PIPatchCheck } from '@pulse/styleguide'
+import { AppColors, PFormItem, PUpload, PIcon, PIPatchCheck } from '@pulse/styleguide'
 import type { UploadBIReportProps } from './UploadBIReportTypes'
 
 const { t } = useI18n({
