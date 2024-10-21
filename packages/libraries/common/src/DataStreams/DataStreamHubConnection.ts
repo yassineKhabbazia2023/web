@@ -12,10 +12,10 @@ To register an event handler use the .on method from HubConnection
 https://learn.microsoft.com/en-us/javascript/api/@microsoft/signalr/hubconnection?view=signalr-js-latest#methods */
 
 export class DataStreamHubConnection {
-  private readonly connection: HubConnection
-  private readonly hubUrl: string
+  private connection: HubConnection
+  private hubUrl: string
   private isConnected: boolean
-  private readonly userToken: string
+  private userToken: string
 
   constructor(hubUrl: string) {
     this.isConnected = false
@@ -54,7 +54,7 @@ export class DataStreamHubConnection {
     return this.isConnected
   }
 
-  setIsConnected(value: boolean) {
+  private setIsConnected(value: boolean) {
     this.isConnected = value
   }
 }
