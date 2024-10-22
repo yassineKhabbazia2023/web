@@ -10,8 +10,12 @@ import { flushPromises } from '@vue/test-utils'
 import { getSmartMockedDeadline } from '@app/schedule/tests/mocks/Deadline'
 
 const pinia = createTestingPinia()
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -79,7 +83,7 @@ describe('deadline component', () => {
       .toBe(deadlineData[0].globalStatus)
   })
 
-  it('should emit select-deadline event on item cliked', async () => {
+  it('should emit select-deadline event on item clicked', async () => {
     const deadline = getSmartMockedDeadline()
     const deadlineData: Deadline[] = [deadline]
     const { occurrenceId } = deadline
@@ -91,7 +95,7 @@ describe('deadline component', () => {
     ])
   })
 
-  it('should emit select-deadline event on toolbox cliked', async () => {
+  it('should emit select-deadline event on toolbox clicked', async () => {
     const deadline = getSmartMockedDeadline()
     const deadlineData: Deadline[] = [deadline]
     const { occurrenceId } = deadline
@@ -101,5 +105,7 @@ describe('deadline component', () => {
     expect(wrapper.emitted('select-deadline')).toStrictEqual([
       [occurrenceId],
     ])
+    expect(amplitudeTrackMock).toHaveBeenCalledWith('Reminder Consulted',
+      { reminder_consultation_localisation: 'list' })
   })
 })

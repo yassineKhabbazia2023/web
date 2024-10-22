@@ -5,10 +5,12 @@ import * as scheduleService from '@app/schedule/services'
 import { accountsCollection } from '@app/schedule/tests/mocks/Account'
 import { getMonthlyMockSchedule, frequenciesMock } from '@app/schedule/tests/mocks/Schedule'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
+import { nextTick } from 'vue'
 
 const TEST_DATE = '2024-08-14'
 const mockedToday = new Date(TEST_DATE)
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 function createWrapper(override: Partial<ScheduleDrawerProps> = {}) {
   const defaultProps: ScheduleDrawerProps = {
@@ -37,6 +39,12 @@ vi.mock('@app/schedule/services', () => {
   }
 })
 
+vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
+}))
+
 describe('drawer.vue', () => {
   it('renders the component when modelValue is true', () => {
     const wrapper = createWrapper({ modelValue: true })
@@ -61,9 +69,10 @@ describe('drawer.vue', () => {
     await flushPromises()
     const scheduleForm = wrapper.findComponent({ name: 'CreateScheduleForm' })
     scheduleForm.vm.$emit('update-schedule-model', createScheduleMockWithTypeLong)
-
+    await nextTick()
     // Assert
     expect(scheduleService.postSchedule).toHaveBeenCalledWith(createScheduleMockWithTypeLong)
+    expect(amplitudeTrackMock).toHaveBeenCalledOnce()
   })
 })
 

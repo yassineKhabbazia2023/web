@@ -15,9 +15,13 @@ import { TvaLabel, mockedGetScheduleModelsByKey } from '@app/schedule/tests/mock
 import Calendar from '.'
 
 const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 const pinia = createTestingPinia()
 vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
   commonStore: defineStore('common', {
     state: () => ({
       user: {
@@ -132,5 +136,7 @@ describe('calendar component', () => {
     const occurrenceId = 1234567890
     wrapper.findComponent(PCalendar).vm.$emit('select-deadline', occurrenceId)
     expect(wrapper.emitted('select-deadline')).toStrictEqual([[occurrenceId]])
+    expect(amplitudeTrackMock).toHaveBeenCalledWith('Reminder Consulted',
+      { reminder_consultation_localisation: 'calendar' })
   })
 })

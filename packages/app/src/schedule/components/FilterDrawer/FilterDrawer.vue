@@ -8,10 +8,7 @@
     @close-drawer-button="isDrawerOpened = false"
     @open="onOpen"
   >
-    <PForm
-      pLabelPosition="top"
-      :pModel="formData"
-    >
+    <PForm pLabelPosition="top" :pModel="formData">
       <PFieldNumberMultiple
         v-model="formData.targets"
         pFieldType="dropdown"
@@ -61,24 +58,14 @@
       />
     </PForm>
     <template #footer>
-      <div
-        class="
-          flex
-          flex--justify-content-flex-end
-          flex-gap--4
-        "
-      >
+      <div class="flex flex--justify-content-flex-end flex-gap--4">
         <PButton
           pPlain
           pType="primary"
-          @click="onClickReset"
-        >
+          @click="onClickReset">
           {{ t('reset') }}
         </PButton>
-        <PButton
-          pType="primary"
-          @click="onClickApply"
-        >
+        <PButton pType="primary" @click="onClickApply">
           {{ t('apply') }}
         </PButton>
       </div>
@@ -88,18 +75,14 @@
 
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue'
-import {
-  PDrawer,
-  PForm,
-  PField,
-  PButton,
-} from '@pulse/styleguide'
+import { PDrawer, PForm, PField, PButton } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { Filters, FilterDrawerProps } from './FilterDrawerTypes'
 import { getAccountsCollection, getScheduleModels } from '@app/schedule/services'
 import type { PDropdownOption, PFieldRadioOptions } from '@pulse/styleguide'
 import type { Status } from '@app/schedule/models/Deadline'
 import { getDefaultFilters } from '@app/schedule/helpers/utils'
+import { amplitudeService } from '@pulse/common'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -119,8 +102,8 @@ const formData = ref<Filters>({
 })
 
 const emit = defineEmits<{
-  'update:model-value' : [value: boolean]
-  'apply': [Filters]
+  'update:model-value': [value: boolean]
+  apply: [Filters]
 }>()
 
 const props = defineProps<FilterDrawerProps>()
@@ -147,37 +130,43 @@ function onOpen() {
 
 const targetOptions = ref<PDropdownOption[]>([])
 const templateOptions = ref<PDropdownOption[]>([])
-const statusOptions = ref<PFieldRadioOptions[]>([{
-  pValue: 'Done',
-  pLabel: t('status.Done'),
-}, {
-  pValue: 'Todo',
-  pLabel: t('status.Todo'),
-}])
+const statusOptions = ref<PFieldRadioOptions[]>([
+  {
+    pValue: 'Done',
+    pLabel: t('status.Done'),
+  },
+  {
+    pValue: 'Todo',
+    pLabel: t('status.Todo'),
+  },
+])
 
-const mineOnlyOptions = ref<PFieldRadioOptions[]>([{
-  pValue: true,
-  pLabel: t('mineOnly.true'),
-}, {
-  pValue: false,
-  pLabel: t('mineOnly.false'),
-}])
+const mineOnlyOptions = ref<PFieldRadioOptions[]>([
+  {
+    pValue: true,
+    pLabel: t('mineOnly.true'),
+  },
+  {
+    pValue: false,
+    pLabel: t('mineOnly.false'),
+  },
+])
 
 onMounted(async () => {
   const accounts = await getAccountsCollection()
   const scheduleModels = getScheduleModels('both', true)
 
-  targetOptions.value = accounts
-    .map(({ id: pValue, name: pLabel }) => ({
-      pValue,
-      pLabel,
-    }))
+  targetOptions.value = accounts.map(({ id: pValue, name: pLabel }) => ({
+    pValue,
+    pLabel,
+  }))
 
-  templateOptions.value = scheduleModels
-    .map(({ key: pValue, label: pLabel }) => ({
+  templateOptions.value = scheduleModels.map(
+    ({ key: pValue, label: pLabel }) => ({
       pValue,
       pLabel,
-    }))
+    }),
+  )
   initializeFilters()
 })
 
@@ -186,48 +175,63 @@ function onClickReset() {
 }
 
 function onClickApply() {
+  const statuses = formData.value.status?.map((s) => s.toString()) || []
+  const targets = formData.value.targets?.map((t) => t.toString()) || []
+  const templates = formData.value.templates?.map((t) => t.toString()) || []
+
+  const filters = [
+    formData.value.mineOnly ? 'mineOnly' : '',
+    ...statuses,
+    ...targets,
+    ...templates,
+  ].filter((s) => s !== '')
+
+  amplitudeService.track('Reminder Filtered', {
+    reminder_filter: filters,
+  })
+
   emit('apply', formData.value)
   isDrawerOpened.value = false
 }
 </script>
 
 <i18n lang="yaml">
-  en-US:
-    title: 'Filters'
-    reset: 'Re-initialize'
-    apply: 'Apply'
-    targets:
-      label: 'Targets(s)'
-      placeholder: 'Select one or more folders'
-    templates:
-      label: 'Templates'
-      placeholder: 'Select one or more deadline types'
-    status:
-      label: 'Status'
-      Done: 'Done'
-      Todo: 'To do'
-    mineOnly:
-      label: 'Creator'
-      true: 'You (by default)'
-      false: 'Anyone'
-    checkAll: 'Check all'
-  fr-FR:
-    title: 'Filtres'
-    reset: 'Réinitialiser'
-    apply: 'Appliquer'
-    targets:
-      label: 'Destinataire(s)'
-      placeholder: 'Sélectionner un ou plusieurs dossiers'
-    templates:
-      label: 'Modèle'
-      placeholder: 'Sélectionner un ou plusieurs types de rappel'
-    status:
-      label: 'Statut'
-      Done: 'Fait'
-      Todo: 'En attente'
-    mineOnly:
-      label: 'Créateur'
-      true: 'Vous (par défaut)'
-      false: 'Tout le monde'
-    checkAll: 'Tout sélectionner'
+en-US:
+  title: 'Filters'
+  reset: 'Re-initialize'
+  apply: 'Apply'
+  targets:
+    label: 'Targets(s)'
+    placeholder: 'Select one or more folders'
+  templates:
+    label: 'Templates'
+    placeholder: 'Select one or more deadline types'
+  status:
+    label: 'Status'
+    Done: 'Done'
+    Todo: 'To do'
+  mineOnly:
+    label: 'Creator'
+    true: 'You (by default)'
+    false: 'Anyone'
+  checkAll: 'Check all'
+fr-FR:
+  title: 'Filtres'
+  reset: 'Réinitialiser'
+  apply: 'Appliquer'
+  targets:
+    label: 'Destinataire(s)'
+    placeholder: 'Sélectionner un ou plusieurs dossiers'
+  templates:
+    label: 'Modèle'
+    placeholder: 'Sélectionner un ou plusieurs types de rappel'
+  status:
+    label: 'Statut'
+    Done: 'Fait'
+    Todo: 'En attente'
+  mineOnly:
+    label: 'Créateur'
+    true: 'Vous (par défaut)'
+    false: 'Tout le monde'
+  checkAll: 'Tout sélectionner'
 </i18n>

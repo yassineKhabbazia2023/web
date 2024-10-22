@@ -6,7 +6,15 @@ import { expect, describe, it, vi } from 'vitest'
 import type { FilterDrawerProps, Filters } from './FilterDrawerTypes'
 import type { Status } from '@app/schedule/models/Deadline'
 
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
+
+vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
+}))
 
 async function createWrapper(override: Partial<FilterDrawerProps> = {}) {
   const defaultProps: FilterDrawerProps = {
@@ -151,6 +159,7 @@ describe('test FilterDrawer', () => {
 
     expect(emittedApply).toStrictEqual([expectedFilters])
     expect(emittedModelValue).toStrictEqual([false])
+    expect(amplitudeTrackMock).toHaveBeenCalledOnce()
   })
 
   it('should reset filters when user clicks on reset button', async () => {

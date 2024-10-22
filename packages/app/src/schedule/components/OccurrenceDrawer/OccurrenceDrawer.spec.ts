@@ -18,6 +18,8 @@ const mockedOccurrence = getMockedOccurrence({
   }),
 })
 
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+
 interface Window {
   showSaveFilePicker: any
   URL: any
@@ -59,6 +61,12 @@ vi.mock('@app/schedule/helpers/utils', () => ({
   fileSizeHumanFormatter: vi.fn(),
   // base64UrlToBase64: vi.fn(() => base64Data),
   getFileExtension: vi.fn(),
+}))
+
+vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
 }))
 
 const occurrenceId = 442
@@ -160,6 +168,7 @@ describe('drawer.vue', () => {
 
     expect(postDeadlineAccountStatusSpy).toHaveBeenCalledOnce()
     expect(postDeadlineAccountStatusSpy).toHaveBeenNthCalledWith(1, occurrenceId, accountId, expectedStatus)
+    expect(amplitudeTrackMock).toHaveBeenCalledOnce()
   })
   it('should log a console.error message when the getOccurrence request fails', async () => {
     const expectedErrorMessage = 'Authorization Error: API Access Denied'

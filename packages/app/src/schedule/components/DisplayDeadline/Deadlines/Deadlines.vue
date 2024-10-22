@@ -63,6 +63,7 @@ import { getProgressText } from '@app/schedule/helpers/deadlineHelper'
 import { getScheduleModelsByKey } from '@app/schedule/services'
 import { getTypeLabel } from '@app/schedule/helpers/utils'
 import type { DeadlinesProps, DeadlineEvent } from './DeadlinesTypes'
+import { amplitudeService } from '@pulse/common'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -121,8 +122,12 @@ onMounted(() => {
 
 const actionClicked = (event: DeadlineEvent, occurrenceId: number) => {
   const actions: Record<DeadlineEvent, () => void> = {
-    'view-reminder-details': () =>
-      emit('select-deadline', occurrenceId),
+    'view-reminder-details': () => {
+      amplitudeService.track('Reminder Consulted', {
+        reminder_consultation_localisation: 'list',
+      })
+      emit('select-deadline', occurrenceId)
+    },
   }
   try {
     actions[event]()

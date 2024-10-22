@@ -2,6 +2,7 @@
   <div v-if="!isLoading && defaultEntity" class="common-layout">
     <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
     <FeedCenterDrawer
+      v-if="VITE_FEED_CENTER_ACTIVATED === 'true'"
       v-model="showFeedCenter"
       :unreadNotificationsCount="unreadNotificationsCount"
     />
@@ -50,7 +51,11 @@
 import { computed, ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { productFruits } from 'product-fruits'
-import { VITE_PRODUCT_FRUITS_KEY, VITE_PRODUCT_FRUITS_KEY_CLIENT } from 'env-vars'
+import {
+  VITE_PRODUCT_FRUITS_KEY,
+  VITE_PRODUCT_FRUITS_KEY_CLIENT,
+  VITE_FEED_CENTER_ACTIVATED,
+} from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide'
 import { getBrowserName } from '@app/helper'
@@ -198,6 +203,10 @@ onMounted(async () => {
 })
 
 async function setNotificationsCount() {
+  if (VITE_FEED_CENTER_ACTIVATED !== 'true') {
+    return
+  }
+
   try {
     const { count } = await fetchUnreadNotificationsCount()
     unreadNotificationsCount.value = count

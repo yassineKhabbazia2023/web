@@ -1,3 +1,4 @@
+import { envVarsValues } from '@app/../vitest.setup'
 import {
   ScheduleServicesMock,
   KpmgCommontMock,
@@ -47,6 +48,15 @@ vi.mock('@app/plugins/SalesForce/useSalesforceService', () => ({
       isChatDisplayed: mock.isChatDisplayed,
     }
   },
+}))
+
+const feedCenterActivatedFlag = vi.hoisted(() => ({
+  value: 'true',
+}))
+
+vi.mock('env-vars', () => ({
+  ...envVarsValues,
+  VITE_FEED_CENTER_ACTIVATED: feedCenterActivatedFlag.value,
 }))
 
 import.meta.env.PROD = true
@@ -234,6 +244,7 @@ describe('home', () => {
   })
 
   it('should still show feed center drawer when header emits show-user-profile-drawer and close it after', async () => {
+    feedCenterActivatedFlag.value = 'true'
     wrapper.vm.isLoading = false
     wrapper.vm.defaultEntity = true
     await nextTick()
@@ -248,5 +259,20 @@ describe('home', () => {
     expect(feedCenterDrawer.props()).toMatchObject({
       modelValue: false,
     })
+  })
+
+  it.each([
+    {
+      flagValue: 'true',
+      shouldExist: true,
+    },
+  ])('should show feedcenter depending of feature flag', async ({ flagValue, shouldExist }) => {
+    feedCenterActivatedFlag.value = flagValue
+    const wrapper = createWrapper()
+    await flushPromises()
+    await nextTick()
+    const feedCenterWrapper = wrapper.findComponent({ name: 'FeedCenterDrawer' })
+
+    expect(feedCenterWrapper.exists()).toBe(shouldExist)
   })
 })

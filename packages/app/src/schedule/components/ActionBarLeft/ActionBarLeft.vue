@@ -76,7 +76,7 @@
       :pPlaceholder="t('placeholder')"
       pFocusOnExpand
       @update:p-search-content="emit('update:search-term', $event)"
-      @enter="emit('update:is-search-state', true)"
+      @enter="searchReminder()"
       @search-expand-change="isExpanded = $event"
     />
     <PButton
@@ -115,6 +115,7 @@ import {
   PPastille,
 } from '@pulse/styleguide'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
+import { amplitudeService } from '@pulse/common'
 
 const emit = defineEmits<{
   'update:active-date': [Date]
@@ -143,6 +144,13 @@ const { t, d } = useI18n({
 
 const props = defineProps<ActionBarLeftProps>()
 const isExpanded = ref(false)
+
+const searchReminder = () => {
+  amplitudeService.track('Reminder Searched', {
+    reminder_search: props.searchTerm,
+  })
+  emit('update:is-search-state', true)
+}
 
 const activeMonth = computed(() => d(props.activeDate, 'month'))
 const activeYear = computed(() => props.activeDate.getFullYear())

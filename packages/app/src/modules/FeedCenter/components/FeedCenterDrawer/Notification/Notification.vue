@@ -1,5 +1,5 @@
 <template>
-  <div class="notification margin-bottom--2">
+  <div class="notification padding-bottom--2">
     <PNotificationCard
       :pIsNew="!isRead"
       :pTime="elapsedTime"

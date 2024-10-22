@@ -1,9 +1,15 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import ActionBar from '.'
 import type { ActionBarProps } from './ActionBarTypes'
 
 const TEST_DATE = '2024-04-10'
+const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: amplitudeTrackMock,
+  },
+}))
 
 function createWrapper(override: Partial<ActionBarProps> = {}) {
   const defaultProps: ActionBarProps = {
@@ -56,6 +62,7 @@ describe('action bar', () => {
       await wrapper.find('[data-testid="action-bar-create-schedule-button"]').trigger('click')
 
       expect(wrapper.emitted('create-schedule')).toStrictEqual([[]])
+      expect(amplitudeTrackMock).toHaveBeenCalledWith('Reminder Add Started', { reminder_add_start: '' })
     })
 
     it('should emit update:modelValue on tab change', () => {

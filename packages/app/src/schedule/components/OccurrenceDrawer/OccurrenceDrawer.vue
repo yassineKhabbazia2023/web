@@ -205,6 +205,7 @@ import {
 import { datetimeFormats } from '@app/schedule/helpers/scheduleConsts'
 import { showNotification } from '@app/schedule/helpers/notification'
 import type { NotificationType } from '@app/schedule/helpers/notificationTypes'
+import { amplitudeService } from '@pulse/common'
 
 const StringField = PField<string>
 
@@ -263,13 +264,19 @@ const fileSize = computed(() =>
 )
 
 async function onToggleDeadlineAccountStatus(accountId: number, actualStatus: Status) {
+  let createdSuccessfully = false
+  const status = getNewStatus(actualStatus)
   try {
     isLoading.value = true
-    const status = getNewStatus(actualStatus)
     await postDeadlineAccountStatus(props.occurrenceId, accountId, status)
+    createdSuccessfully = true
   } catch (error) {
     console.error(error)
   } finally {
+    amplitudeService.track('Reminder Status Updated', {
+      reminder_update_status: status.toString(),
+      reminder_update_result: createdSuccessfully ? 'succeeded' : 'failed',
+    })
     isLoading.value = false
   }
   await refreshOccurrence()

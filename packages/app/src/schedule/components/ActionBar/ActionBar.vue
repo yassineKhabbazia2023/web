@@ -49,7 +49,7 @@
 
       <PButton
         v-if="isCollab"
-        @click="emit('create-schedule')"
+        @click="createSchedule"
         pType="primary"
         pSize="small"
         data-testid="action-bar-create-schedule-button"
@@ -69,6 +69,7 @@ import { PButton, PTabs, PTabPane, PIcon, PIAdd } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { ActionBarProps } from './ActionBarTypes'
 import ActionBarLeft from '@app/schedule/components/ActionBarLeft'
+import { amplitudeService } from '@pulse/common'
 
 const props = defineProps<ActionBarProps>()
 
@@ -80,6 +81,13 @@ const emit = defineEmits<{
   'update:is-search-state': [boolean]
   'open-drawer-filters': [boolean]
 }>()
+
+const createSchedule = () => {
+  amplitudeService.track('Reminder Add Started', {
+    reminder_add_start: '',
+  })
+  emit('create-schedule')
+}
 
 const { t } = useI18n({
   inheritLocale: true,
