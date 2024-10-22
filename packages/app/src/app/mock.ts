@@ -66,4 +66,11 @@ export const ROUTES: RouteRecordRaw[] = [
       template: `<p class="pageTitle">${PAGES_TITLE.MANDATES}</p>`,
     },
   },
+  {
+    path: '/portefeuille/mandats',
+    name: 'folderMandats',
+    component: {
+      template: `<p class="pageTitle">${PAGES_TITLE.MANDATES}</p>`,
+    },
+  },
 ]

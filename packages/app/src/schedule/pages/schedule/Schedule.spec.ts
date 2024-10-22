@@ -333,6 +333,7 @@ describe('home page', () => {
 
       datePicker.vm.$emit('panel-change', new Date(OTHER_MONTH_DATE))
 
+      // FIXME Monorepo fix
       await nextTick()
 
       const calendarWidgetLoader = findCalendarWidgetLoader(wrapper)

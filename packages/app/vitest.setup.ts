@@ -34,7 +34,7 @@ vi.mock('@pulse/common', () => ({
 }))
 
 export const fetchUnreadNotificationsCountMock = vi.fn(() => 5)
-export const fetchNotificationsMock = vi.fn(() => notificationsMock)
+export const fetchNotificationsMock = vi.fn(() => ({ notifications: notificationsMock }))
 export const patchNotificationReadStatusMock = vi.fn()
 export const patchAllNotificationsReadStatusMock = vi.fn()
 
@@ -45,7 +45,8 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
   patchAllNotificationsReadStatus: patchAllNotificationsReadStatusMock,
 }))
 
-vi.mock('env-vars', () => ({
+export const envVarsValues = {
+  VITE_FEED_CENTER_ACTIVATED: 'true',
   VITE_IDLE_DURATION: 5,
   VITE_AMPLITUDE_API_KEY: 'mocked-amplitude-api-key',
   VITE_AMPLITUDE_SERVER_URL: 'mocked-amplitude-server-url',
@@ -60,4 +61,6 @@ vi.mock('env-vars', () => ({
   VITE_SFCHAT_DEPLOYMENT_ID: '',
   VITE_SFCHAT_BASE_LIVE_AGENT_URL: '',
   VITE_SFCHAT_SET_ATTRIBUTE_PATH: '',
-}))
+}
+
+vi.mock('env-vars', () => (envVarsValues))

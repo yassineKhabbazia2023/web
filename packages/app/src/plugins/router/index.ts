@@ -101,7 +101,7 @@ router.beforeEach(async (to: any, _from) => {
     }
   }
 
-  if (to.name === 'mandats' && !isCollab.value) {
+  if ((to.name === 'mandats' || to.name === 'folderMandats') && !isCollab.value) {
     return { name: 'entity-client' }
   }
 })

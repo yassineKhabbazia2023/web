@@ -6,7 +6,7 @@
           v-model="internalModelValue"
           :pItemsGroupedByDate="formattedDeadlinesByDate"
           :pInitialDateRange="pRange"
-          @select-deadline="$emit('select-deadline', $event)"
+          @select-deadline="onSelectDeadline($event)"
         />
       </PConfigProvider>
     </PScrollbar>
@@ -22,6 +22,7 @@ import { getDeadlineCompletionSummary } from '@app/schedule/helpers/deadlineHelp
 import type { Deadline } from '@app/schedule/models/Deadline'
 import { getScheduleModelsByKey } from '@app/schedule/services'
 import { cloneDeep } from 'lodash-es'
+import { amplitudeService } from '@pulse/common'
 
 const locale = cloneDeep(fr)
 locale.el.datepicker.weeks = locale.el.datepicker.weeksFull
@@ -33,6 +34,13 @@ const emit = defineEmits<{
   'select-deadline': [occurrenceId: number]
 }>()
 
+const onSelectDeadline = (occurrenceId: number) => {
+  amplitudeService.track('Reminder Consulted', {
+    reminder_consultation_localisation: 'calendar',
+  })
+  emit('select-deadline', occurrenceId)
+}
+
 const internalModelValue = computed({
   get() {
     return props.modelValue
@@ -42,22 +50,19 @@ const internalModelValue = computed({
   },
 })
 
-const formattedDeadlinesByDate = computed(() => props.deadlinesByDate.map((d) => (
-  {
+const formattedDeadlinesByDate = computed(() =>
+  props.deadlinesByDate.map((d) => ({
     date: d.date,
     items: formatItemsForCalendar(d.deadlines),
-  }
-)))
+  })),
+)
 
 const scheduleModelsByKey = ref<Record<string, string>>()
 
 function formatItemsForCalendar(deadlines: Deadline[]) {
   return deadlines.map((d) => {
     const accountsCompletion = getDeadlineCompletionSummary(d.accountList)
-    const pTitle = getTypeLabel(
-      scheduleModelsByKey.value,
-      d.template,
-    )
+    const pTitle = getTypeLabel(scheduleModelsByKey.value, d.template)
     return {
       pTitle,
       pStatus: d.globalStatus.toLowerCase(),
