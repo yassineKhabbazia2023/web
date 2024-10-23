@@ -1,0 +1,33 @@
+trigger:
+  - develop
+  - release/*
+
+pool:
+  vmImage: 'windows-latest'
+
+parameters:
+- name: devIndex
+  type: number
+  default: 0
+- name: deployType
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'onlyDev'
+  values:
+    - standard
+    - onlyDev
+
+resources:
+  repositories:
+  - repository: Pulse
+    name: 'Constellation/ConstellationDevOps'
+    type: git
+    ref: 'refs/heads/Release/v2.1'
+
+extends:
+  template: pipelines/templates/platform.front.monop.yaml@Pulse
+  parameters:
+    deployType: ${{ parameters.deployType }}
+    devIndex: ${{ parameters.devIndex }}
+    sonarExclusions: '**/Mock.js,**/mocks/**,src/main.ts,stryker/**.*, vitest.setup.ts'
+

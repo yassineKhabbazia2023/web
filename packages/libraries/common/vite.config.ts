@@ -12,6 +12,9 @@ export default ({ mode }: any) =>
         alias: {
           '@common/': new URL('./src/', import.meta.url).pathname,
         },
+        coverage: {
+          reportsDirectory: '../../../coverage/libraries/common',
+        },
       },
       build: {
         lib: {

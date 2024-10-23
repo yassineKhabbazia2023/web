@@ -1,0 +1,83 @@
+trigger:
+  - develop
+  - release/*
+
+parameters:
+- name: devIndex
+  type: number
+  default: 0
+- name: deployType
+  type: string
+  default: 'onlyDev'
+  values:
+    - standard
+    - onlyDev
+- name: FrontType
+  type: string
+  default: 'Front-Shell'
+  values:
+    - Front-Shell
+    - Front-Assets
+    - Full
+- name: BranchAssets
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'develop'
+  
+stages:
+- stage: MonoropFullStageExecution
+  displayName:  '🧪 Monorop Front 🏗 '
+  jobs:
+  - job: MonoropDeploymentFull
+    displayName: 'Pulse.Front.Monorop Deployment Full'
+    steps:
+    - task: TriggerBuild@4
+      displayName: 'Execute Pulse.Front.Monorop Deployment'
+      inputs:
+        buildDefinition: 'Pulse.Front.Monorop'
+        templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}'
+        useSameBranch: true
+        branchToUse: 'develop'
+        authenticationMethod: 'OAuth Token'
+        waitForQueuedBuildsToFinish: true
+        waitForQueuedBuildsToFinishRefreshTime: '5'
+
+
+- ${{ if or(eq('Front-Assets', parameters.FrontType), eq('Full', parameters.FrontType)) }}:
+  - stage: MonoropDeploymentStageAssets
+    displayName:  '🧪 Monorop Assets 🏗 '
+    dependsOn: MonoropFullStageExecution
+    jobs:
+    - job: MonoropDeploymentAssets
+      displayName: 'Pulse.Front.Monorop Deployment Assets'
+      steps:
+      - task: TriggerBuild@4
+        displayName: 'Execute Pulse.Front.Monorop Assets'
+        inputs:
+          buildDefinition: 'KPMG.Pulse.Front.Assets'
+          templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}'
+          branchToUse: ${{ parameters.BranchForAssets }}
+          authenticationMethod: 'OAuth Token'
+          waitForQueuedBuildsToFinish: true
+          waitForQueuedBuildsToFinishRefreshTime: '5'
+
+
+- ${{ if or(eq('Front-Shell', parameters.FrontType), eq('Full', parameters.FrontType)) }}:
+  - stage: MonoropDeploymentStageShell
+    displayName:  '🧪 Monorop Shell 🏗 '
+    jobs:
+    - job: MonoropDeploymentShell
+      displayName: 'Pulse.Front.Monorop Deployment Shell'
+      steps:
+      - task: TriggerBuild@4
+        displayName: 'Execute Pulse.Front.Monorop Shell'
+        inputs:
+          buildDefinition: 'Pulse.Front.Monorop.Shell'
+          templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}'
+          useSameBranch: true
+          branchToUse: 'develop'
+          authenticationMethod: 'OAuth Token'
+          waitForQueuedBuildsToFinish: true
+          waitForQueuedBuildsToFinishRefreshTime: '5'
+
+  

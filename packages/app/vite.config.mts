@@ -23,6 +23,7 @@ export default ({ mode }: any) =>
           include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
         cssInjectedByJsPlugin(),
+
       ],
       resolve: {
         alias: {
@@ -50,5 +51,9 @@ export default ({ mode }: any) =>
         testTimeout: 60000,
         setupFiles: 'vitest.setup.ts',
       },
+      build: {
+        outDir: '../../dist',
+        emptyOutDir: true,
+      }
     }),
   )

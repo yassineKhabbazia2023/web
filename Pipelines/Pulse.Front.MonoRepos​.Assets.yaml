@@ -1,0 +1,60 @@
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include:
+    - main
+    - develop
+    - release/*
+  paths:
+    include:
+    - src/assets/images
+
+pool:
+  vmImage: windows-latest
+
+parameters:
+- name: devIndex
+  type: number
+  default: 0
+- name: deployType
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'standard'
+# REC Iteration
+- name: recIterations
+  type: object
+  displayName: "Technical parameter : don t modify it !"
+  default:
+  - 1
+  - 2
+  - 3
+# PRD Iteration
+- name: prdIterations
+  type: object
+  displayName: "Technical parameter : don t modify it !"
+  default:
+  - 1
+  - 2
+- name: BranchAssets
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'develop'
+
+stages:
+- stage: MonoropDeploymentStageAssets
+  displayName:  '🧪 Monorop Assets 🏗 '
+  jobs:
+  - job: MonoropDeploymentAssets
+    displayName: 'Pulse.Front.Monorop Deployment Assets'
+    steps:
+    - task: TriggerBuild@4
+      displayName: 'Execute Pulse.Front.Monorop Assets'
+      inputs:
+        buildDefinition: 'KPMG.Pulse.Front.Assets'
+        templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}'
+        useSameBranch: true
+        branchToUse: ${{ parameters.BranchForAssets }}
+        authenticationMethod: 'OAuth Token'
+        waitForQueuedBuildsToFinish: true
+        waitForQueuedBuildsToFinishRefreshTime: '5'
