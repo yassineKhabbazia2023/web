@@ -50,5 +50,8 @@ export default ({ mode }: any) =>
         testTimeout: 60000,
         setupFiles: 'vitest.setup.ts',
       },
+      build: {
+        outDir: '../../dist',
+      },
     }),
   )
