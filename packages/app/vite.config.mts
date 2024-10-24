@@ -23,7 +23,6 @@ export default ({ mode }: any) =>
           include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
         cssInjectedByJsPlugin(),
-
       ],
       resolve: {
         alias: {
@@ -53,7 +52,6 @@ export default ({ mode }: any) =>
       },
       build: {
         outDir: '../../dist',
-        emptyOutDir: true,
-      }
+      },
     }),
   )
