@@ -25,7 +25,7 @@ steps:
       Write-Host 'Set cache control for shell'
       Set-CacheControl -Environment ${{ parameters.environment }}
 
-      Write-Host 'Cleaning old MFE versions'
+      Write-Host 'Cleaning old Monorop versions'
       Remove-OldVersions -Environment ${{ parameters.environment }} -Path '${{ parameters.path }}'
 
       $env = Get-AdoEnvironment -Environment ${{ parameters.environment }} -Path $Path
