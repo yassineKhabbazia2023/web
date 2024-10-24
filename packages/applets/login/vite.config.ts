@@ -48,9 +48,6 @@ export default ({ mode }: any) =>
       },
       test: {
         setupFiles: 'vitest.setup.ts',
-        coverage: {
-          reportsDirectory: '../../../coverage/applets/login',
-        },
       },
     }),
   )

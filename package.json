@@ -21,7 +21,7 @@
     "app:dev": "npm run dev --workspace=@pulse/app",
     "app:build": "npm run build --workspace=@pulse/app",
     "test": "npm run test --workspaces --if-present",
-    "test:coverage": "npm run test:ci --workspaces --if-present",
+    "test:coverage": "vitest",
     "build": "npm run build --workspaces --if-present",
     "build:types": "npm run build:types --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
@@ -41,12 +41,14 @@
     "@stylistic/eslint-plugin-js": "^2.8.0",
     "@stylistic/eslint-plugin-ts": "^2.8.0",
     "@tsconfig/node20": "^20.1.4",
+    "@vitest/coverage-istanbul": "^2.1.3",
     "@vue/eslint-config-typescript": "^13.0.0",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-vitest": "0.4.1",
     "license-checker": "^25.0.1",
     "syncpack": "^13.0.0",
-    "tsx": "^4.19.1"
+    "tsx": "^4.19.1",
+    "vitest": "^2.1.3"
   }
 }

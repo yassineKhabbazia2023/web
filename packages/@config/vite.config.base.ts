@@ -4,7 +4,6 @@ import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { viteVirtualModule } from './vite-virtual-module'
 
-// export const viteConfigBase = defineConfig({
 export const viteConfigBase = ({ mode }: any): UserConfig =>
   defineConfig({
     define: {
@@ -24,7 +23,7 @@ export const viteConfigBase = ({ mode }: any): UserConfig =>
       restoreMocks: true,
       coverage: {
         provider: 'istanbul',
-        reporter: ['text', 'lcov', 'html', 'json'],
+        reporter: ['lcov', 'json', 'html'],
       },
     },
     css: {
