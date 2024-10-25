@@ -24,6 +24,6 @@
     "@pulse/launcher": "1.0.0",
     "@pulse/login": "1.0.0",
     "@pulse/mandate": "1.0.0",
-    "@pulse/styleguide": "2.2.900"
+    "@pulse/styleguide": "^3.0.14"
   }
 }
