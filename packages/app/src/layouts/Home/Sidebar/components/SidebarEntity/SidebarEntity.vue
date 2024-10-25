@@ -27,7 +27,7 @@
           >
             <PIcon
               :pName="isSidebarOpened ? 'arrowBarLeft' : 'arrowBarRight'"
-              color="#FFF"
+              :color="AppColors.WHITE"
               class="sidenav-entity__actions-icon radius--circle"
             />
           </SidebarEntityItem>
@@ -39,7 +39,7 @@
         >
           <SidebarEntityItem v-bind="walletItem">
             <PIcon
-              :color="getActiveWallet ? AppColors.PRIMARY : '#FFF'"
+              :color="AppColors.WHITE"
               class="sidenav-entity__actions-icon radius--circle"
               :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
               pName="cardList"
@@ -77,7 +77,7 @@
           >
             <PIcon
               size="12"
-              :color="AppColors.PERSIAN_200"
+              :color="AppColors.WHITE"
               style="width: 32px"
               pName="starFill"
             />
@@ -230,17 +230,15 @@ onMounted(() => {
 .sidenav-entity {
   $self: &;
   --default-size: 32px;
-  --shadow-color: rgba(85, 70, 255, 0);
   --smooth-transition: 0.4s ease;
 
   position: sticky;
   top: 0;
   width: 54px;
   height: 100vh;
-  padding-left: 10px;
   flex-grow: 0;
   flex-shrink: 0;
-  background-color: var(--el-color-base-persian);
+  background-color: var(--el-color-persian-800);
   transition: width var(--smooth-transition);
   overflow: hidden;
 
@@ -249,23 +247,11 @@ onMounted(() => {
   }
 
   &#{$self}--is-collab {
-    background-color: var(--el-color-base-blue-pulse);
+    background-color: var(--el-color-persian-300);
 
-    #{$self}__favorites {
-      &::before {
-        background: linear-gradient(
-          180deg,
-          var(--el-color-base-blue-pulse) 0%,
-          var(--shadow-color) 100%
-        );
-      }
-    }
-    &::after {
-      background: linear-gradient(
-        180deg,
-        var(--shadow-color) 0%,
-        var(--el-color-base-blue-pulse) 100%
-      );
+    #{$self}__actions-active {
+      background-color: rgba(var(--el-color-persian-50-rgb), 0.2);
+      border-right: 6px solid var(--el-color-persian-50);
     }
   }
 
@@ -275,13 +261,14 @@ onMounted(() => {
   }
 
   &__star-divider {
+    padding-left: 10px;
     &-icon {
       width: var(--default-size);
       margin-right: 1px;
     }
 
     &-text {
-      color: var(--el-color-persian-200);
+      color: var(--el-color-base-white);
       font-size: 1.2rem;
       font-weight: 600;
       transition: all var(--smooth-transition);
@@ -289,6 +276,10 @@ onMounted(() => {
   }
 
   &__actions {
+    > li {
+      padding-left: 10px;
+    }
+
     $actions: &;
     margin-top: 72px;
     gap: 8px;
@@ -299,55 +290,20 @@ onMounted(() => {
       transition: all var(--smooth-transition);
 
       &:hover {
-        background-color: var(--el-color-persian-400);
+        background-color: rgba(var(--el-color-secondary-amethyste-rgb), 0.2);
       }
     }
 
     &-active {
-      --curves-h: 22px;
       z-index: 10;
       position: relative;
       height: var(--default-size);
-      border-radius: 24px 0px 0px 24px;
-      background-color: var(--el-color-base-white);
-
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        width: 26px;
-        height: var(--curves-h);
-        background: transparent;
-      }
-
-      &::before {
-        top: calc(var(--curves-h) * -1);
-        border-radius: 0px 0px 24px;
-        box-shadow: 5px 5px 0 3px var(--el-color-base-white);
-      }
-
-      &::after {
-        bottom: calc(var(--curves-h) * -1);
-        border-radius: 0px 24px 0px 0px;
-        box-shadow: 5px -5px 0 3px var(--el-color-base-white);
-      }
-
-      &.is-entity {
-        background-color: var(--el-color-persian-100);
-
-        &:before {
-          box-shadow: 5px 5px 0 3px var(--el-color-persian-100);
-        }
-
-        &:after {
-          box-shadow: 5px -5px 0 3px var(--el-color-persian-100);
-        }
-      }
+      background-color: rgba(var(--el-color-secondary-amethyste-rgb), 0.2);
+      border-right: 6px solid var(--el-color-persian-600);
 
       #{$actions}-wallet-text {
         font-weight: 600;
-        color: var(--el-color-base-persian);
+        color: var(--el-color-base-white);
       }
 
       #{$actions}-icon:hover {
@@ -389,6 +345,10 @@ onMounted(() => {
     overflow-y: scroll;
     overscroll-behavior-y: contain;
 
+    > li {
+      padding-left: 10px;
+    }
+
     li:first-child {
       margin-top: 12px;
     }
@@ -400,35 +360,6 @@ onMounted(() => {
     &::-webkit-scrollbar {
       display: none;
     }
-
-    &::before {
-      content: '';
-      z-index: 10;
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 14px;
-      background: linear-gradient(
-        180deg,
-        var(--el-color-base-persian) 0%,
-        var(--shadow-color) 100%
-      );
-    }
-  }
-
-  &::after {
-    content: '';
-    z-index: 10;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 14px;
-    background: linear-gradient(
-      180deg,
-      var(--shadow-color) 0%,
-      var(--el-color-base-persian) 100%
-    );
   }
 }
 </style>

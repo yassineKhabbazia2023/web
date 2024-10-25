@@ -117,7 +117,7 @@ const entityTooltipContent = computed(() => {
 
 .sidenav__selected-item {
   p {
-    color: var(--el-color-base-persian);
+    color: var(--el-color-base-white);
   }
   .entity-wrapper__details-name {
     font-weight: 700;

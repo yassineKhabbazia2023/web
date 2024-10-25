@@ -64,6 +64,7 @@
       <PDivider
         class="margin-x--4 header-section__divider"
         pDirection="vertical"
+        pBorderColor="primary"
       />
       <div
         class="header-section__user-avatar cursor-pointer"
@@ -72,10 +73,10 @@
         <PAvatar
           pShape="circle"
           pType="small"
-          pColor="persian-gradient"
+          pColor="persian"
           data-ut="user-initials"
         >
-          {{ userInitials }}
+          <span class="text-color--base-blue-pulse">{{ userInitials }}</span>
         </PAvatar>
       </div>
     </div>
@@ -129,11 +130,8 @@ function updateFeedCenterDisplay() {
 .header-section {
   z-index: 21;
   position: fixed;
-  top: 0;
-  left: 27px;
-  border-bottom-left-radius: 24px;
   height: 56px;
-  width: calc(100vw - 27px);
+  width: 100vw;
   background-color: var(--el-color-base-white);
 
   &__logo {
