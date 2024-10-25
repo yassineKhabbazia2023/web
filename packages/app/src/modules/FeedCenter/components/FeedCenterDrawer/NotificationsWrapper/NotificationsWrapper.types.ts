@@ -5,10 +5,10 @@ import type { FeedCenterNotification, SelectedNotificationEnum } from '@app/modu
 export interface NotificationsWrapperProps {
   wrapperType: SelectedNotificationEnum
   notifications: FeedCenterNotification[]
+  isLoading: boolean
 }
 
 export interface HandleNotificationActionParams {
-  notifications: FeedCenterNotification[]
   notification: FeedCenterNotification
   router: Router
 }

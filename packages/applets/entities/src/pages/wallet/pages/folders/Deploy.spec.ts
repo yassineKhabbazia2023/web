@@ -72,12 +72,21 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const mockRouterPush = vi.fn()
-
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: mockRouterPush,
-  }),
-}))
+let queryAccountNumbers: string | string[] | undefined = ''
+vi.mock('vue-router', async () => {
+  const actual = await vi.importActual('vue-router')
+  return {
+    ...(actual as object),
+    useRouter: () => ({
+      push: mockRouterPush,
+    }),
+    useRoute: () => ({
+      query: {
+        accountNumbers: queryAccountNumbers,
+      },
+    }),
+  }
+})
 
 vi.mock('./DeployUtils', async () => {
   return await vi.importActual('./DeployUtils')
@@ -320,5 +329,46 @@ describe('deploy', () => {
     await flushPromises()
     const filters = wrapper.findComponent('[data-testid=filters]') as VueWrapper
     expect(filters.exists()).toBeFalsy()
+  })
+
+  it.each([
+    {
+      accountNumber: ['100'],
+      expectedSearchValue: '100',
+    },
+    {
+      accountNumber: ['100', '200'],
+      expectedSearchValue: '100',
+    },
+    {
+      accountNumber: '100',
+      expectedSearchValue: '100',
+    },
+  ])('should fetch entities when route has accountNumbers query', async ({ accountNumber, expectedSearchValue }) => {
+    queryAccountNumbers = accountNumber
+    createWrapper()
+    await flushPromises()
+
+    const expectedSearchCriteria = getMockedSearchCriteria({
+      currentPage: 0,
+      filterByDeploymentStatus: '',
+      limit: 15,
+      search: expectedSearchValue,
+    })
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+      2,
+      expect.anything(),
+      expectedSearchCriteria,
+    )
+  })
+
+  it('should NOT fetch entities when route has an unappropriate accountNumbers query', async () => {
+    queryAccountNumbers = undefined
+    createWrapper()
+    await flushPromises()
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(1)
   })
 })

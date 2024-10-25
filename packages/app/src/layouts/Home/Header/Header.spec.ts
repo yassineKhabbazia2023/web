@@ -109,4 +109,28 @@ describe('header', () => {
     expect(feedCenterButton.classes()).toContain('p-button--is-active')
     expect(feedCenterButton.findComponent({ name: 'PIX' })).toBeTruthy()
   })
+
+  it.each([
+    {
+      notificationsCount: 0,
+      shouldShowNotificationsCount: false,
+    },
+    {
+      notificationsCount: 1,
+      shouldShowNotificationsCount: true,
+    },
+    {
+      notificationsCount: 100,
+      shouldShowNotificationsCount: true,
+    },
+  ])('should show notification count when there are notifications', (
+    {
+      notificationsCount,
+      shouldShowNotificationsCount,
+    },
+  ) => {
+    const wrapper = createWrapper(false, false, notificationsCount)
+    const notificationWrapper = wrapper.findComponent({ name: 'PPastille' })
+    expect(notificationWrapper.exists()).toBe(shouldShowNotificationsCount)
+  })
 })

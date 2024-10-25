@@ -43,6 +43,7 @@ describe('subscriptions', () => {
     })
 
     expect(subscriptionDrawer.props('modelValue')).toBeTruthy()
+    // FIXME Monorepo fix
     expect(subscriptionDrawer.props('selectedSubscriptionId')).toBe(
       mockedSubscription.subscriptionId,
     )

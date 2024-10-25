@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import FeedCenterDrawer from '.'
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
@@ -18,10 +18,6 @@ const FeedCenterDrawerBaseProps: FeedCenterDrawerProps = {
 }
 
 const unreadNotificationsMock = notificationsMock.filter(n => n.isRead === false)
-
-vi.mock('@router/modules/FeedCenter/services/notifications.service', () => ({
-  fetchNotifications: vi.fn(() => Promise.resolve({ notifications: notificationsMock })),
-}))
 
 describe('feed center drawer', () => {
   let wrapper: VueWrapper<InstanceType<typeof FeedCenterDrawer>>
@@ -59,6 +55,13 @@ describe('feed center drawer', () => {
     it('should close drawer on close-drawer-button', async () => {
       const drawerWrapper = findFeedCenterDrawer(wrapper)
       await drawerWrapper.vm.$emit('close-drawer-button')
+      expect(drawerWrapper.isVisible()).toBeFalsy()
+    })
+
+    it('should close drawer on "notification-clicked" event', () => {
+      const notificationWrapper = wrapper.findComponent({ name: 'NotificationsWrapper' })
+      notificationWrapper.vm.$emit('notification-clicked')
+      const drawerWrapper = findFeedCenterDrawer(wrapper)
       expect(drawerWrapper.isVisible()).toBeFalsy()
     })
   })

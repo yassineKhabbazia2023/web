@@ -54,7 +54,10 @@
             <PIBell v-if="!showFeedCenter"/>
             <PIX v-else />
           </PIcon>
-          <div class="header-section__feed-center-notification-pastille">
+          <div
+            v-if="unreadNotificationsCount > 0"
+            class="header-section__feed-center-notification-pastille"
+          >
             <PPastille
               v-if="!showFeedCenter"
               pSize="small"

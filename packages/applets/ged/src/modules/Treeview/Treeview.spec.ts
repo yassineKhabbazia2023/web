@@ -16,6 +16,7 @@ import { nextTick } from 'vue'
 import TreeNode from './components/TreeNode'
 import { downloadFolder } from '@ged/services/Folder'
 
+// FIXME Monorepo fix
 type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
 
 export type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>

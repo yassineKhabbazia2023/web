@@ -30,15 +30,16 @@ import {
 } from '@pulse/styleguide'
 import type { FormInstance, FormRules } from '@pulse/styleguide'
 import type { Props } from './types'
-import { reactive, ref } from 'vue'
+import { watch, reactive, ref } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   placeholder: 'Rechercher', // should not use i18n in default props. Better not to give any default value
+  forcedValue: '',
 })
 
 const emit = defineEmits<{
@@ -47,7 +48,7 @@ const emit = defineEmits<{
 
 const formRef = ref<FormInstance>()
 const formValues = reactive({
-  search: '',
+  search: props.forcedValue,
 })
 const rules = reactive<FormRules<typeof formValues>>({
   search: [{
@@ -56,6 +57,7 @@ const rules = reactive<FormRules<typeof formValues>>({
     message: t('errorSearchInvalid'),
   }],
 })
+
 const handleSearchSubmit = () => {
   formRef.value?.validate((isValid) => {
     if (isValid) {
@@ -63,6 +65,11 @@ const handleSearchSubmit = () => {
     }
   })
 }
+
+watch(() => props.forcedValue, (value) => {
+  formValues.search = value
+  emit('searchValueSubmitted', formValues.search)
+})
 
 const clearSearch = () => {
   formValues.search = ''

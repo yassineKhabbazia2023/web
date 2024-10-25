@@ -12,14 +12,10 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
 
-export function patchUnreadNotification(
-  notifications: FeedCenterNotification[],
-  notificationId: FeedCenterNotification['id'],
-) {
-  if (getIsNotificationRead(notifications, notificationId)) {
-    return
+export function patchUnreadNotification(notification: FeedCenterNotification) {
+  if (!notification.isRead) {
+    patchNotificationReadStatus(notification.id)
   }
-  patchNotificationReadStatus(notificationId)
 }
 
 // This function should be exported to common
@@ -64,11 +60,10 @@ export function getIsNotificationRead(
 }
 
 export function handleNotificationAction({
-  notifications,
   notification,
   router,
 }: HandleNotificationActionParams) {
-  patchUnreadNotification(notifications, notification.id)
+  patchUnreadNotification(notification)
   const accountNumbers = getNotificationAccountNumbers(notification)
   notificationActionsMapping[notification.notificationType](accountNumbers, router)
 }

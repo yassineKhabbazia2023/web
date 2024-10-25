@@ -24,6 +24,7 @@
     </div>
     <div class="margin-bottom--3">
       <FormSearch
+        :forcedValue="searchCriteria.search"
         ref="searchBar"
         @search-value-submitted="handleSearchValueSubmitted"
         :placeholder="t('search')"
@@ -82,7 +83,7 @@
 
 <script lang='ts' setup>
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import {
   PIArrowRepeat,
   PICheckCircle,
@@ -93,7 +94,7 @@ import {
 } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { type Entity, commonStore } from '@pulse/common'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
@@ -120,6 +121,7 @@ const { t } = useI18n({
 })
 
 const router = useRouter()
+const route = useRoute()
 const userStore = commonStore()
 const { isCollab, user } = storeToRefs(userStore)
 
@@ -172,6 +174,25 @@ const searchResult = ref<SearchResult>({
   items: [],
   totalPage: 0,
   totalItems: 0,
+})
+
+function retrieveAndBindAccountsQuery() {
+  const { accountNumbers } = route.query
+  if (Array.isArray(accountNumbers)) {
+    searchCriteria.value.search = accountNumbers.at(0) ?? undefined
+  } else {
+    searchCriteria.value.search = `${accountNumbers ?? ''}`
+  }
+}
+
+onBeforeMount(() => {
+  retrieveAndBindAccountsQuery()
+})
+
+onBeforeRouteUpdate((to, from) => {
+  if (to.name === from.name && to.query !== from.query) {
+    retrieveAndBindAccountsQuery()
+  }
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {

@@ -24,13 +24,13 @@ import type { GetTimeSinceCreationParams } from './NotificationsWrapper.types'
 describe('patchUnreadNotification', () => {
   it('should call the patch API when the notification is unread', () => {
     const unreadNotification = unreadNotificationsMock[0]
-    patchUnreadNotification(notificationsMock, unreadNotification.id)
+    patchUnreadNotification(unreadNotification)
     expect(patchNotificationReadStatusMock).toHaveBeenCalledWith(unreadNotification.id)
   })
 
   it('should NOT call the patch API when the notification has already been read', () => {
     const readNotification = readNotificationsMock[0]
-    patchUnreadNotification(notificationsMock, readNotification.id)
+    patchUnreadNotification(readNotification)
     expect(patchNotificationReadStatusMock).not.toHaveBeenCalled()
   })
 })
@@ -118,7 +118,6 @@ describe('handleNotificationAction', () => {
   it('should call patchUnreadNotification with unread notifiation', () => {
     const notification = unreadNotificationsMock[0]
     handleNotificationAction({
-      notifications: notificationsMock,
       notification,
       router: mockRouter,
     })
@@ -128,7 +127,6 @@ describe('handleNotificationAction', () => {
 
   it('should NOT call patchUnreadNotification with unread notifiation', () => {
     handleNotificationAction({
-      notifications: notificationsMock,
       notification: readNotificationsMock[0],
       router: mockRouter,
     })
@@ -138,7 +136,6 @@ describe('handleNotificationAction', () => {
 
   it('should call the corresponding action in notificationActionsMapping', () => {
     handleNotificationAction({
-      notifications: notificationsMock,
       notification: notificationsMock[0],
       router: mockRouter,
     })

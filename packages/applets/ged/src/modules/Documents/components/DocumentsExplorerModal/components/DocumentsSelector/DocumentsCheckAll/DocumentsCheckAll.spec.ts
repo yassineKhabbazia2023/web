@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { PCheckbox } from '@pulse/styleguide'
 import DocumentsCheckAll
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsCheckAll'
+// FIXME Monorepo fix
 import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
@@ -19,6 +20,7 @@ const defaultProps: DocumentsCheckAllProps = {
   checked: false,
 }
 const pinia = createPinia()
+// FIXME Monorepo fix
 const createWrapper = (
   props: DocumentsCheckAllProps = defaultProps,
 ): DocumentsCheckAllWrapper => {

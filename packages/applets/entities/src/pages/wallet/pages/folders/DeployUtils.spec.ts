@@ -101,6 +101,7 @@ describe('test DeployUtils', () => {
         `?pageNumber=${searchCriteria.currentPage}`,
         `&pageSize=${searchCriteria.limit}`,
       ].join('')
+      // FIXME Monorepo fix
       expect(queryParams).toBe(expectedSearchParams)
     })
     it('should return the correct query parameters when the allAccounts parameter is set to true', () => {
@@ -114,6 +115,7 @@ describe('test DeployUtils', () => {
         `&pageSize=${searchCriteria.limit}`,
       ].join('')
 
+      // FIXME Monorepo fix
       expect(queryParams).toBe(expectedSearchParams)
     })
   })

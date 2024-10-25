@@ -4,14 +4,19 @@
             notifications-drawer
             flex flex--direction-column
           "
-    :class="{ 'flex--align-items-center flex--justify-content-center': notifications.length === 0 }"
+    :class="{ 'flex--align-items-center flex--justify-content-center': shouldContentBeCentered }"
   >
+    <PLoader
+      v-if="isLoading"
+      pType="primary"
+      pSize="40"
+    />
     <NoNotificationsPlaceholder
-      v-if="notifications.length === 0"
+      v-else-if="notifications.length === 0"
       :placeholderType="wrapperType"
     />
     <template
-      v-if="notifications.length > 0"
+      v-else-if="notifications.length > 0"
     >
       <Notification
         v-for="(notification, index) in notifications"
@@ -28,19 +33,19 @@
         :isRead="notification.isRead"
         :message="notification.message"
         :notificationType="notification.notificationType"
-        @click="handleNotificationAction({
-          notifications,
-          notification,
-          router
-        })"
+        @click="handleNotificationClick(notification)"
       />
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { PLoader } from '@pulse/styleguide'
+// eslint-disable-next-line import/extensions
+import type { FeedCenterNotification } from '@app/modules/FeedCenter/types/notification.type'
 import NoNotificationsPlaceholder from '../NoNotificationsPlaceholder'
 // eslint-disable-next-line import/extensions
 import type { NotificationsWrapperProps } from './NotificationsWrapper.types'
@@ -52,15 +57,27 @@ import {
   // eslint-disable-next-line import/extensions
 } from './notification.manager'
 
-defineProps<NotificationsWrapperProps>()
+const emit = defineEmits<{
+  'notification-clicked': [void]
+}>()
+const props = defineProps<NotificationsWrapperProps>()
+
+const router = useRouter()
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const router = useRouter()
+const shouldContentBeCentered = computed(() => props.notifications.length === 0 || props.isLoading)
 
+function handleNotificationClick(notification: FeedCenterNotification) {
+  handleNotificationAction({
+    notification,
+    router,
+  })
+  emit('notification-clicked')
+}
 </script>
 
 <style lang="scss" scoped>

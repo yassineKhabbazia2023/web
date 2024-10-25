@@ -12,8 +12,10 @@
     <PTabs v-model="activeTab">
       <PTabPane :label="t('tabs.all-notifications')" name="all-notifications">
         <NotificationsWrapper
-          :wrapperType="SelectedNotificationEnum.ALL"
+          :isLoading="areNotificationsLoading"
           :notifications="notifications"
+          :wrapperType="SelectedNotificationEnum.ALL"
+          @notification-clicked="closeNotificationsDrawer"
         />
       </PTabPane>
 
@@ -31,8 +33,10 @@
           </div>
         </template>
         <NotificationsWrapper
+          :isLoading="areNotificationsLoading"
           :wrapperType="SelectedNotificationEnum.UNREAD"
           :notifications="unreadNotifications"
+          @notification-clicked="closeNotificationsDrawer"
           data-testid="unread-notifications"
         />
       </PTabPane>
@@ -42,8 +46,8 @@
 </template>
 
 <script setup lang="ts">
+import { computed, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref } from 'vue'
 import {
   PDrawer,
   PPastille,
@@ -51,10 +55,10 @@ import {
   PTabPane,
 } from '@pulse/styleguide'
 /* eslint-disable import/extensions */
-import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
-import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
+import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
 import NotificationsWrapper from './NotificationsWrapper'
+import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -66,6 +70,7 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<FeedCenterDrawerProps>()
+const { unreadNotificationsCount } = toRefs(props)
 
 const isDrawerOpened = computed({
   get: () => props.modelValue,
@@ -74,25 +79,14 @@ const isDrawerOpened = computed({
   },
 })
 
-const notifications = ref<FeedCenterNotification[]>([])
-const unreadNotifications = computed(() => notifications.value.filter(notification => notification.isRead === false))
-
-onMounted(async () => {
-  const { notifications: fetchedNotification } = await fetchNotifications()
-  notifications.value = fetchedNotification
-})
-
-function closeNotificationsDrawer() {
-  isDrawerOpened.value = false
-}
-
-const activeTab = ref<SelectedNotificationEnum>(SelectedNotificationEnum.ALL)
-
-const shortenedCount = computed(
-  () => props.unreadNotificationsCount > 99
-    ? '99+'
-    : props.unreadNotificationsCount,
-)
+const {
+  closeNotificationsDrawer,
+  activeTab,
+  notifications,
+  areNotificationsLoading,
+  shortenedCount,
+  unreadNotifications,
+} = useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount)
 </script>
 
 <i18n lang="yaml">

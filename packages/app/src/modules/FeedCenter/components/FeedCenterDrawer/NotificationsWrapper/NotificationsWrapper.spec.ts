@@ -25,6 +25,7 @@ vi.mock('./notification.manager', async () => {
 })
 
 const NoNotificationsPlaceholderBaseProps: NotificationsWrapperProps = {
+  isLoading: false,
   wrapperType: SelectedNotificationEnum.ALL,
   notifications: notificationsMock,
 }
@@ -63,10 +64,11 @@ describe('notifications wrapper', () => {
   })
 
   describe('interactions', () => {
-    it('triggers handleNotificationAction on notification click', async () => {
+    it('triggers handleNotificationAction and emits "notification-clicked" on notification click', async () => {
       const notification = findFirstNotifications(wrapper)
       await notification.trigger('click')
       expect(handleNotificationAction).toHaveBeenCalledOnce()
+      expect(wrapper.emitted('notification-clicked')).toHaveLength(1)
     })
   })
 })
