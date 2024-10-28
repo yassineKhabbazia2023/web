@@ -3,6 +3,7 @@
     :class="[
       'sidenav-entity-menu',
       { 'sidenav-entity-menu--collapsed': isMenuCollapsed },
+      { 'sidenav-entity-menu--is-collab': isCollab },
     ]"
     @mouseover="isMenuCollapsed = false"
     @mouseleave="isMenuCollapsed = true"
@@ -181,6 +182,7 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .sidenav-entity-menu {
+  $self: &;
   --smooth-transition: 0.3s ease;
 
   z-index: 8;
@@ -192,6 +194,15 @@ onMounted(async () => {
   padding-left: 10px;
   background-color: var(--el-color-persian-100);
   transition: width var(--smooth-transition);
+
+  &#{$self}--is-collab {
+    background-color: var(--el-color-secondary-fuschia-bg);
+
+    #{$self}__actions-active {
+      background-color: rgba(var(--el-color-persian-50-rgb), 0.2);
+      border-right: 6px solid var(--el-color-persian-50);
+    }
+  }
 
   &--collapsed {
     width: 52px;

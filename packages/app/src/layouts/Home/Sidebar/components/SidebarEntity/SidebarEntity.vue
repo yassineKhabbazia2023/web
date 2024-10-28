@@ -238,7 +238,7 @@ onMounted(() => {
   height: 100vh;
   flex-grow: 0;
   flex-shrink: 0;
-  background-color: var(--el-color-persian-800);
+  background-color: var(--el-color-base-blue-pulse);
   transition: width var(--smooth-transition);
   overflow: hidden;
 
@@ -246,8 +246,9 @@ onMounted(() => {
     width: 240px;
   }
 
+  // FIXME: nécessaire de garder ça ?
   &#{$self}--is-collab {
-    background-color: var(--el-color-persian-300);
+    background-color: var(--el-color-base-blue-pulse);
 
     #{$self}__actions-active {
       background-color: rgba(var(--el-color-persian-50-rgb), 0.2);
