@@ -64,7 +64,7 @@
       <PDivider
         class="margin-x--4 header-section__divider"
         pDirection="vertical"
-        pBorderColor="primary"
+        pBorderColor="neutral-gray-100"
       />
       <div
         class="header-section__user-avatar cursor-pointer"
@@ -76,7 +76,7 @@
           pColor="persian"
           data-ut="user-initials"
         >
-          <span class="text-color--base-blue-pulse">{{ userInitials }}</span>
+          <span class="text-color--base-white">{{ userInitials }}</span>
         </PAvatar>
       </div>
     </div>
