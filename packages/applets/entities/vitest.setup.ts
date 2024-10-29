@@ -1,11 +1,14 @@
-import { setAssetsBaseUrl } from '@pulse/styleguide'
 import { vi } from 'vitest'
+import { createPinia, defineStore, setActivePinia } from 'pinia'
+import { commonPinia as pinia } from '@pulse/common'
+import { setAssetsBaseUrl } from '@pulse/styleguide'
+import {
+  getMockedAuthorizationsConfig,
+} from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
+
 import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'
 import messages from '@intlify/unplugin-vue-i18n/messages'
-import { createPinia, defineStore, setActivePinia } from 'pinia'
-import { commonPinia as pinia } from '@pulse/common'
-import { getMockedAuthorizationsConfig } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
 
 const i18n = createI18n({
   locale: 'en-US',

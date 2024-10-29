@@ -1,11 +1,12 @@
-import { vi } from 'vitest'
 import { setAssetsBaseUrl } from '@pulse/styleguide'
-import { createI18n } from 'vue-i18n'
-import { config } from '@vue/test-utils'
+import { vi } from 'vitest'
 import { defineStore } from 'pinia'
-import messages from '@intlify/unplugin-vue-i18n/messages'
 // eslint-disable-next-line import/extensions
 import { notificationsMock } from './src/mocks/FeedCenter/notifications.mock'
+
+import { createI18n } from 'vue-i18n'
+import { config } from '@vue/test-utils'
+import messages from '@intlify/unplugin-vue-i18n/messages'
 
 const i18n = createI18n({
   locale: 'en-US',

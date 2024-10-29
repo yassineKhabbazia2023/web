@@ -1,5 +1,5 @@
 import path from 'path'
-import { existsSync, rmSync, cpSync, lstatSync, readFileSync, readdirSync, writeFileSync, copyFileSync } from 'fs'
+import { existsSync, rmSync, cpSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 'fs'
 
 // can give parent folder as parameter
 // eg. `npm run mfe -- ../some/other/folder/`
@@ -44,6 +44,20 @@ function cleanFile(mfe: string, filePath: string) {
   const newImportBackTick = `import(\`@${appName}/`
   const newFromCommon = `from '${domain}/Common`
   const newCommon = `'${domain}/Common'`
+  const newVitest = `import { createI18n } from 'vue-i18n'
+import { config } from '@vue/test-utils'
+import messages from '@intlify/unplugin-vue-i18n/messages'
+
+const i18n = createI18n({
+  locale: 'en-US',
+  legacy: false,
+  messages,
+})
+
+config.global.plugins = [i18n]
+
+setAssetsBaseUrl('https://www.example.pulse')`
+
   const extension = path.extname(filePath)
   if (!EXTENSIONS.includes(extension)) {
     return
@@ -68,12 +82,9 @@ function cleanFile(mfe: string, filePath: string) {
     .replace(/routes.value.push\(/g, 'routes.push(')
     .replace(/commonRoutes.value/g, 'commonRoutes')
     .replace(/SpyInstance/g, 'MockInstance') // migration to vitest 2.x
+    .replace(/setAssetsBaseUrl\(\'https:\/\/www.example.pulse\'\)/g, newVitest) // migration from a common config
 
-  if (newContent === content) {
-    return
-  }
-
-  writeFileSync(filePath, newContent)
+  return newContent
 }
 
 function cleanFiles(mfe: string, filePath: string) {
@@ -82,12 +93,15 @@ function cleanFiles(mfe: string, filePath: string) {
     cleanFolder(mfe, filePath)
     return
   }
-  cleanFile(mfe, filePath)
+  const file = cleanFile(appName, filePath)
+  if (file) {
+    writeFileSync(filePath, file)
+  }
 }
 
 function copyMfe(mfe: string, targetFolder: string) {
   const BLACK_LIST = ['.husky', '.vscode', '.git', 'main.ts', 'App.vue']
-  const WHITE_LIST = [] as string[]
+  const WHITE_LIST = ['vitest.setup.ts'] as string[]
 
   const originFolderPath = getMfePath(mfe, 'src')
   const targetFolderPath = getTargetPath(targetFolder, targetFolderApp, 'src')
@@ -122,11 +136,14 @@ function copyMfe(mfe: string, targetFolder: string) {
 
   WHITE_LIST.forEach((fileName) => {
     const origin = path.join(getMfePath(mfe), fileName)
-    const destination = path.join(getTargetPath(targetFolder, mfe), fileName)
+    const destination = path.join(getTargetPath(targetFolder, targetFolderApp), fileName)
     if (existsSync(destination)) {
       rmSync(destination)
     }
-    copyFileSync(origin, destination)
+    const file = cleanFile(appName, origin)
+    if (file) {
+      writeFileSync(destination, file)
+    }
   })
   cleanFiles(mfe, targetFolderPath)
 }
