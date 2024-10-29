@@ -195,10 +195,6 @@ onMounted(async () => {
   background-color: var(--el-color-base-persian-light);
   transition: width var(--smooth-transition);
 
-  &#{$self}--is-collab {
-    background-color: var(--el-color-secondary-fuschia-bg);
-  }
-
   &--collapsed {
     width: 52px;
   }
@@ -209,6 +205,11 @@ onMounted(async () => {
 
   @media only screen and (max-width: 991px) {
     left: 52px;
+  }
+
+  // context specific overrides
+  &#{$self}--is-collab {
+    background-color: var(--el-color-secondary-fuschia-bg);
   }
 }
 </style>

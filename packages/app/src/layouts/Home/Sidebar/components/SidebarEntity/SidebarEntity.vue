@@ -6,6 +6,7 @@
         'sidenav-entity flex flex--direction-column',
         { 'sidenav-entity--opened': isSidebarOpened },
         { 'sidenav-entity--is-collab': isCollab },
+        { 'sidenav-entity--no-entity-selected': !isSelectedEntityActive },
       ]"
       data-testid="sidenav-entity"
     >
@@ -247,15 +248,6 @@ onMounted(() => {
     width: 240px;
   }
 
-  &#{$self}--is-collab {
-    background-color: var(--el-color-base-blue-pulse);
-
-    #{$self}__actions-active {
-      background-color: rgba(var(--el-color-secondary-fuschia-bg-rgb), 0.2);
-      border-right-color: var(--el-color-secondary-fuschia-bg);
-    }
-  }
-
   &__actions,
   &__favorites {
     list-style: none;
@@ -359,6 +351,23 @@ onMounted(() => {
 
     &::-webkit-scrollbar {
       display: none;
+    }
+  }
+
+  // context specific overrides
+  &#{$self}--is-collab {
+    background-color: var(--el-color-base-blue-pulse);
+
+    #{$self}__actions-active {
+      background-color: rgba(var(--el-color-secondary-fuschia-bg-rgb), 0.2);
+      border-right-color: var(--el-color-secondary-fuschia-bg);
+    }
+  }
+
+  &--no-entity-selected {
+    #{$self}__actions-active {
+      background-color: rgba(var(--el-color-base-white-rgb), 0.2) !important;
+      border-right-color: var(--el-color-base-white) !important;
     }
   }
 }
