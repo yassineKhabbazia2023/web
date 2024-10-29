@@ -1,13 +1,13 @@
 import { commonApi } from '@pulse/common'
 import { saveAs } from 'file-saver'
-import type { AxiosResponse } from 'axios'
-import { EXTRACT_DOWNLOADED_FILENAME_REGEXP, DEFAULT_APPLICATION_FILENAME, API_ROUTES }
+import type { AxiosResponse, AxiosProgressEvent } from 'axios'
+import { EXTRACT_DOWNLOADED_FILENAME_REGEXP, DEFAULT_APPLICATION_FILENAME, ApiRoutes }
   from './launcherServiceConsts'
 
 export async function downloadApplication(progressPercentCallback: (_: number) => void) {
-  const response = await commonApi().silaeclient.get('/', {
+  const response = await commonApi().gateway.get(ApiRoutes.SILAE_SSO_FILE, {
     responseType: 'blob',
-    onDownloadProgress: (progressEvent) => {
+    onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
       const { progress } = progressEvent
       const percent = Math.round(100 * (progress ?? 0))
 
@@ -40,8 +40,8 @@ export function saveApplication(response: AxiosResponse) {
 }
 
 export async function getSsoSilaeUrl() {
-  const response = await commonApi().silae
-    .post<{ redirectUrl: string }>(API_ROUTES.silaeSso, { wrapRedirect: true })
+  const response = await commonApi().gateway
+    .post<{ redirectUrl: string }>(ApiRoutes.SILAE_SSO, { wrapRedirect: true })
 
   const { data } = response
   const { redirectUrl } = data

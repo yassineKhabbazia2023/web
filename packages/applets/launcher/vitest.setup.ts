@@ -13,7 +13,7 @@ const i18n = createI18n({
 
 config.global.plugins = [i18n]
 
-setAssetsBaseUrl('https://www.example.kpmg')
+setAssetsBaseUrl('https://www.example.pulse')
 
 export const mockedEntity: Entity = {
   accountId: 1,
@@ -23,8 +23,7 @@ export const mockedEntity: Entity = {
 }
 
 export const commonApiGatewayGetSpy = vi.fn()
-export const commonApiSilaeClientGetSpy = vi.fn()
-export const commonApiSilaePostSpy = vi.fn()
+export const commonApiGatewayPostSpy = vi.fn()
 export const commonApiDsGetSpy = vi.fn()
 export const commonApiDsPostSpy = vi.fn().mockResolvedValue({
   data: {},
@@ -44,12 +43,7 @@ vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: commonApiGatewayGetSpy,
-    },
-    silaeclient: {
-      get: commonApiSilaeClientGetSpy,
-    },
-    silae: {
-      post: commonApiSilaePostSpy,
+      post: commonApiGatewayPostSpy,
     },
     ds: {
       get: commonApiDsGetSpy,

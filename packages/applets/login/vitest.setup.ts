@@ -12,7 +12,7 @@ const i18n = createI18n({
 
 config.global.plugins = [i18n]
 
-setAssetsBaseUrl('https://www.example.kpmg')
+setAssetsBaseUrl('https://www.example.pulse')
 
 export const givenToken = 'given-token'
 

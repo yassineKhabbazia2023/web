@@ -96,7 +96,6 @@ vi.mock('@ged/models/AccountingHubConnection', () => ({
   }),
 }))
 
-// FIXME fix the test and unskip or delete it
 describe.skip('documents', () => {
   beforeEach(() => {
     setActivePinia(pinia)

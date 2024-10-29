@@ -9,6 +9,8 @@ export interface Mandate {
     modificationDate: string
     statusCode: string
     jdcStatusCode: string | number
+    jdcStatusDescription: string
+    permittedActions: string[]
 }
 
 export interface MandateCounters {

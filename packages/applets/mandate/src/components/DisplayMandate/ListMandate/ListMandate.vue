@@ -41,7 +41,13 @@
           :width="width"
         >
           <template #default="scope">
-            <Tag v-if="scope.row.statusCode" :status="scope.row.statusCode" />
+            <PTooltip
+              :disabled="!scope.row.jdcStatusDescription"
+              :pContent="scope.row.jdcStatusDescription"
+              :hideAfter="0"
+            >
+              <Tag v-if="scope.row.statusCode" :status="scope.row.statusCode" />
+            </PTooltip>
           </template>
         </PTableColumn>
         <PTableColumn
@@ -127,9 +133,11 @@ import {
   PIThreeDots,
   PDialog,
   PAlert,
+  PTooltip,
 } from '@pulse/styleguide'
 import Tag from '@mandate/components/Common/Tag'
 import { dateFormatter, downloadFile, saveFileAs } from '@mandate/helpers/utils'
+import type { Mandate } from '@mandate/pages/home/Models'
 import type { ListMandateProps, ActionEvent } from './ListMandateTypes'
 import {
   downloadUnsignedMandate,
@@ -162,7 +170,7 @@ const companyNameRef = ref<string>('')
 const mandateIdRef = ref<string>('')
 
 const props = defineProps<ListMandateProps>()
-const dataFormatter = (data: any) =>
+const dataFormatter = (data: Mandate[]) =>
   data.map(
     ({
       id,
@@ -175,6 +183,7 @@ const dataFormatter = (data: any) =>
       modificationDate,
       statusCode,
       jdcStatusCode,
+      jdcStatusDescription,
     }: any) => ({
       id,
       erpId,
@@ -186,6 +195,7 @@ const dataFormatter = (data: any) =>
       modificationDate: dateFormatter(modificationDate),
       statusCode: statusCode.toString(),
       jdcStatusCode: jdcStatusCode.toString(),
+      jdcStatusDescription,
     }),
   )
 const mandateCollection = computed(() => dataFormatter(props.data))

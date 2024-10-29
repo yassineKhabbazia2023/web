@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AxiosResponse } from 'axios'
-import { commonApiSilaeClientGetSpy, commonApiSilaePostSpy } from '@launcher/../vitest.setup'
-import { DEFAULT_APPLICATION_FILENAME, API_ROUTES } from './launcherServiceConsts'
+import { commonApiGatewayGetSpy, commonApiGatewayPostSpy } from '@launcher/../vitest.setup'
+import { DEFAULT_APPLICATION_FILENAME, ApiRoutes } from './launcherServiceConsts'
 import * as FileSaver from 'file-saver'
 import { downloadApplication, getFileName, saveApplication, getSsoSilaeUrl }
   from './launcherServices'
@@ -26,7 +26,7 @@ describe('launcherServices', () => {
 
     it('should return expected response', async () => {
       const mockedResponse = getMockedResponse()
-      commonApiSilaeClientGetSpy.mockResolvedValueOnce(mockedResponse)
+      commonApiGatewayGetSpy.mockResolvedValueOnce(mockedResponse)
 
       const response = await downloadApplication(progressPercentCallback)
 
@@ -38,7 +38,7 @@ describe('launcherServices', () => {
       const progress = 0.27
       const progressPercent = Math.round(progress * 100)
 
-      commonApiSilaeClientGetSpy.mockImplementation((_, { onDownloadProgress }) => {
+      commonApiGatewayGetSpy.mockImplementation((_, { onDownloadProgress }) => {
         onDownloadProgress({ progress })
 
         return Promise.resolve({})
@@ -54,7 +54,7 @@ describe('launcherServices', () => {
     it('should call callback with 0 percent when progress is undefined', async () => {
       const expectedProgressPercent = 0
 
-      commonApiSilaeClientGetSpy.mockImplementation((_, { onDownloadProgress }) => {
+      commonApiGatewayGetSpy.mockImplementation((_, { onDownloadProgress }) => {
         onDownloadProgress({})
 
         return Promise.resolve({})
@@ -116,7 +116,7 @@ describe('launcherServices', () => {
   describe('getSsoSilaeUrl', () => {
     const redirectUrl = 'https://redirect-url'
     beforeEach(() => {
-      commonApiSilaePostSpy.mockResolvedValue({
+      commonApiGatewayPostSpy.mockResolvedValue({
         data: { redirectUrl },
       })
     })
@@ -124,8 +124,8 @@ describe('launcherServices', () => {
     it('should call commonApiSilaePostSpy', () => {
       getSsoSilaeUrl()
 
-      expect(commonApiSilaePostSpy).toHaveBeenCalledOnce()
-      expect(commonApiSilaePostSpy).toHaveBeenNthCalledWith(1, API_ROUTES.silaeSso, { wrapRedirect: true })
+      expect(commonApiGatewayPostSpy).toHaveBeenCalledOnce()
+      expect(commonApiGatewayPostSpy).toHaveBeenNthCalledWith(1, ApiRoutes.SILAE_SSO, { wrapRedirect: true })
     })
 
     it('should return encoded redirectUrl', async () => {
@@ -138,7 +138,7 @@ describe('launcherServices', () => {
 
     it('should throw error when redirectUrl given', async () => {
       const expectedError = 'no redirectUrl given'
-      commonApiSilaePostSpy.mockResolvedValue({
+      commonApiGatewayPostSpy.mockResolvedValue({
         data: {},
       })
 

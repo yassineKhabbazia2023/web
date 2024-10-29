@@ -473,6 +473,7 @@ watch(() => [
 })
 
 onMounted(async () => {
+  operations.value = []
   await formatAndFillUsersCollabTable()
   await setAccountSignatories()
   if (currentEntity.value?.accountId) {
