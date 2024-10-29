@@ -192,16 +192,11 @@ onMounted(async () => {
   width: 200px;
   height: 100%;
   padding-left: 10px;
-  background-color: var(--el-color-persian-100);
+  background-color: var(--el-color-base-persian-light);
   transition: width var(--smooth-transition);
 
   &#{$self}--is-collab {
     background-color: var(--el-color-secondary-fuschia-bg);
-
-    #{$self}__actions-active {
-      background-color: rgba(var(--el-color-persian-50-rgb), 0.2);
-      border-right: 6px solid var(--el-color-persian-50);
-    }
   }
 
   &--collapsed {

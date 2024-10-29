@@ -229,6 +229,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .sidenav-entity {
   $self: &;
+  --default-height: 50px;
   --default-size: 32px;
   --smooth-transition: 0.4s ease;
 
@@ -246,13 +247,12 @@ onMounted(() => {
     width: 240px;
   }
 
-  // FIXME: nécessaire de garder ça ?
   &#{$self}--is-collab {
     background-color: var(--el-color-base-blue-pulse);
 
     #{$self}__actions-active {
-      background-color: rgba(var(--el-color-persian-50-rgb), 0.2);
-      border-right: 6px solid var(--el-color-persian-50);
+      background-color: rgba(var(--el-color-secondary-fuschia-bg-rgb), 0.2);
+      border-right-color: var(--el-color-secondary-fuschia-bg);
     }
   }
 
@@ -279,6 +279,7 @@ onMounted(() => {
   &__actions {
     > li {
       padding-left: 10px;
+      height: var(--default-height);
     }
 
     $actions: &;
@@ -287,7 +288,6 @@ onMounted(() => {
 
     &-icon {
       width: var(--default-size);
-      height: var(--default-size);
       transition: all var(--smooth-transition);
 
       &:hover {
@@ -298,9 +298,8 @@ onMounted(() => {
     &-active {
       z-index: 10;
       position: relative;
-      height: var(--default-size);
-      background-color: rgba(var(--el-color-secondary-amethyste-rgb), 0.2);
-      border-right: 6px solid var(--el-color-persian-600);
+      background-color: rgba(var(--el-color-base-persian-light-rgb), 0.2);
+      border-right: 6px solid var(--el-color-base-persian-light);
 
       #{$actions}-wallet-text {
         font-weight: 600;
