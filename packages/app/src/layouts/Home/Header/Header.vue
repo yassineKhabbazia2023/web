@@ -12,7 +12,7 @@
       <PImage
         class="header-section__logo"
         pType="logos"
-        pName="pulse-color"
+        pName="brand-color"
         pFit="fill"
       />
     </router-link>
