@@ -41,7 +41,7 @@ extends:
         projectKey: KPMGPulse_Front_StyleGuide
         projectName: "(KPMG Pulse)[Front] MFE StyleGuide (Pégase)"
         qualityGateName: "[Pulse] Default"
-        sonarExclusions: '**/color.ts,**/pulse-icon-gen.js,**/*.story.vue,**/guidelines/**'
+        sonarExclusions: '**/color.ts,**/pulse-icon-gen.js,**/*.story.vue,**/guidelines/**,**/imagesList.ts'
       tooling:
         nodejs: '18.18'
       steps:

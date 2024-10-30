@@ -19,7 +19,7 @@ extends:
   template: pipelines/templates/platform.front.package.yaml@Pulse
   parameters:
     packageName: Styleguide
-    sonarExclusions: '**/color.ts,**/pulse-icon-gen.js,**/*.story.vue,**/guidelines/**'
+    sonarExclusions: '**/color.ts,**/pulse-icon-gen.js,**/*.story.vue,**/guidelines/**,**/imagesList.ts'
     versioning:
       mode: legacy
       major: 2
