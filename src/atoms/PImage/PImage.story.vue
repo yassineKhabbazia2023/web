@@ -73,7 +73,7 @@ import {
   toRaw,
   watch,
 } from 'vue'
-import IMAGES_LIST from './imagesList.json'
+import IMAGES_LIST from './imagesList'
 
 const folderNames = IMAGES_LIST.map(({ name }) => name)
 const imageNames = computed(() => {
@@ -113,13 +113,3 @@ onMounted(() => {
   loadImage()
 })
 </script>
-
-<docs lang="md">
-  <div class="responsive-figma-container">
-    <iframe
-      class="responsive-figma"
-      src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FCmAQkyvJgicN6PHwf61DBZ%2F%25F0%259F%25A6%2584-Guidelines%3Ftype%3Ddesign%26node-id%3D71%253A226%26mode%3Ddev"
-      allowfullscreen
-    ></iframe>
-  </div>
-</docs>

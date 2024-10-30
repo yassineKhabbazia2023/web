@@ -120,8 +120,16 @@ describe('imageGen/lib', () => {
         images,
       }]
       writeImageListFile(imageListPath, folders)
-      const content = `${JSON.stringify(folders, null, 2)}\n`
-
+      const content = `export default [
+  {
+    name: 'folder-name',
+    images: [
+      'a',
+      'b',
+    ],
+  },
+]
+`
       expect(writeFileSyncSpy).toHaveBeenNthCalledWith(1, imageListPath, content, 'utf8')
     })
   })

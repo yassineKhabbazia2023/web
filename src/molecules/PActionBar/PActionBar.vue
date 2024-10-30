@@ -58,7 +58,7 @@
           v-else-if="item.pComponentType === 'SEARCH'"
           v-model:pSearchContent="pSearchContent"
           :pIsSearchShrinkable="item.pIsSearchShrinkable"
-          :pIsSearchOpen="item.pIsSearchOpen"
+          :pIsSearchOpen="item.pIsSearchOpen ?? false"
           :pMaxLength="pSearchMaxLength"
           @update:p-search-content="handleSearchTextTyped"
           @search-expand-change="handleExpandEvent"

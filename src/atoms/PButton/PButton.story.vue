@@ -2,38 +2,38 @@
   <Story title="2. Atoms/Button" icon="teenyicons:button-outline">
     <Variant title="Basic Usage">
       <PButton
-        :pType="basicButton.basicType"
-        :pPlain="basicButton.basicPlain"
-        :pRound="basicButton.basicRound"
-        :pCircle="basicButton.basicCircle"
-        :pDisabled="basicButton.basicDisabled"
-        :pIsActive="basicButton.basicActive"
-        :pLoading="basicButton.basicLoading"
-        :pSize="basicButton.basicSize"
+        :pType="basicButton.pType"
+        :pPlain="basicButton.pPlain"
+        :pRound="basicButton.pRound"
+        :pCircle="basicButton.pCircle"
+        :pDisabled="basicButton.pDisabled"
+        :pIsActive="basicButton.pIsActive"
+        :pLoading="basicButton.pLoading"
+        :pSize="basicButton.pSize"
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
         <PIcon class="el-button__icon--left">
           <PICalendarEvent />
         </PIcon>
-        {{ basicButton.basicText }}
+        {{ buttonText }}
         <PIcon class="el-button__icon--right">
           <PIArrowRight />
         </PIcon>
       </PButton>
       <template #controls>
-        <HstText v-model="basicButton.basicText" title="Text" />
-        <HstCheckbox v-model="basicButton.basicPlain" title="Plain" />
-        <HstCheckbox v-model="basicButton.basicRound" title="Round" />
-        <HstCheckbox v-model="basicButton.basicCircle" title="Circle" />
-        <HstCheckbox v-model="basicButton.basicDisabled" title="Disabled" />
-        <HstCheckbox v-model="basicButton.basicActive" title="Active" />
-        <HstCheckbox v-model="basicButton.basicLoading" title="Loading" />
+        <HstText v-model="buttonText" title="Text" />
+        <HstCheckbox v-model="basicButton.pPlain" title="Plain" />
+        <HstCheckbox v-model="basicButton.pRound" title="Round" />
+        <HstCheckbox v-model="basicButton.pCircle" title="Circle" />
+        <HstCheckbox v-model="basicButton.pDisabled" title="Disabled" />
+        <HstCheckbox v-model="basicButton.pIsActive" title="Active" />
+        <HstCheckbox v-model="basicButton.pLoading" title="Loading" />
         <HstRadio
-          v-model="basicButton.basicType"
+          v-model="basicButton.pType"
           title="Type"
           :options="buttonTypeList" />
         <HstRadio
-          v-model="basicButton.basicSize"
+          v-model="basicButton.pSize"
           title="Size"
           :options="buttonSizeList" />
       </template>
@@ -43,29 +43,29 @@
       icon="line-md:iconify2">
       <PButton
         pIconOnly
-        :pType="iconButton.iconButtonType"
-        :pPlain="iconButton.iconButtonPlain"
-        :pRound="iconButton.iconButtonRound"
-        :pCircle="iconButton.iconButtonCircle"
-        :pDisabled="iconButton.iconButtonDisabled"
-        :pLoading="iconButton.iconButtonLoading"
-        :pSize="iconButton.iconButtonSize"
+        :pType="iconButton.pType"
+        :pPlain="iconButton.pPlain"
+        :pRound="iconButton.pRound"
+        :pCircle="iconButton.pCircle"
+        :pDisabled="iconButton.pDisabled"
+        :pLoading="iconButton.pLoading"
+        :pSize="iconButton.pSize"
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
         <PIcon><PISearch /></PIcon>
       </PButton>
       <template #controls>
-        <HstCheckbox v-model="iconButton.iconButtonPlain" title="Plain" />
-        <HstCheckbox v-model="iconButton.iconButtonRound" title="Round" />
-        <HstCheckbox v-model="iconButton.iconButtonCircle" title="Circle" />
-        <HstCheckbox v-model="iconButton.iconButtonDisabled" title="Disabled" />
-        <HstCheckbox v-model="iconButton.iconButtonLoading" title="Loading" />
+        <HstCheckbox v-model="iconButton.pPlain" title="Plain" />
+        <HstCheckbox v-model="iconButton.pRound" title="Round" />
+        <HstCheckbox v-model="iconButton.pCircle" title="Circle" />
+        <HstCheckbox v-model="iconButton.pDisabled" title="Disabled" />
+        <HstCheckbox v-model="iconButton.pLoading" title="Loading" />
         <HstRadio
-          v-model="iconButton.iconButtonType"
+          v-model="iconButton.pType"
           title="Type"
           :options="buttonTypeList" />
         <HstRadio
-          v-model="iconButton.iconButtonSize"
+          v-model="iconButton.pSize"
           title="Size"
           :options="buttonSizeList" />
       </template>
@@ -75,8 +75,8 @@
       icon="clarity:blocks-group-line"
     >
       <PButtonGroup
-        :pType="groupButton.buttonGroupType"
-        :pSize="groupButton.buttonGroupSize">
+        :pType="groupButton.pType"
+        :pSize="groupButton.pSize">
         <PButton>
           {{ previousText }}
         </PButton>
@@ -86,12 +86,12 @@
       </PButtonGroup>
       <template #controls>
         <HstRadio
-          v-model="groupButton.buttonGroupType"
+          v-model="groupButton.pType"
           title="Type"
           :options="buttonTypeList"
         />
         <HstRadio
-          v-model="groupButton.buttonGroupSize"
+          v-model="groupButton.pSize"
           title="Size"
           :options="buttonSizeList"
         />
@@ -106,32 +106,34 @@ import { ref } from 'vue'
 import PButton from './'
 import PButtonGroup from '@/atoms/PButtonGroup/'
 import type { PButtonProps } from './PButtonTypes'
+import type { PButtonGroupProps } from '@/atoms/PButtonGroup/PButtonGroupTypes'
 
-const basicButton = ref({
-  basicType: ref<PButtonProps['pType']>('default'),
-  basicPlain: ref<PButtonProps['pPlain']>(),
-  basicRound: ref<PButtonProps['pRound']>(),
-  basicCircle: ref<PButtonProps['pCircle']>(),
-  basicDisabled: ref<PButtonProps['pDisabled']>(),
-  basicActive: ref<PButtonProps['pIsActive']>(),
-  basicLoading: ref<PButtonProps['pLoading']>(),
-  basicSize: ref<PButtonProps['pSize']>('default'),
-  basicText: ref('Button'),
+const basicButton = ref<PButtonProps>({
+  pType: 'default',
+  pPlain: false,
+  pRound: false,
+  pCircle: false,
+  pDisabled: false,
+  pIsActive: false,
+  pLoading: false,
+  pSize: 'default',
 })
 
-const iconButton = ref({
-  iconButtonType: ref<PButtonProps['pType']>('default'),
-  iconButtonPlain: ref<PButtonProps['pPlain']>(),
-  iconButtonRound: ref<PButtonProps['pRound']>(),
-  iconButtonCircle: ref<PButtonProps['pCircle']>(true),
-  iconButtonDisabled: ref<PButtonProps['pDisabled']>(),
-  iconButtonLoading: ref<PButtonProps['pLoading']>(),
-  iconButtonSize: ref<PButtonProps['pSize']>('default'),
+const buttonText = ref('')
+
+const iconButton = ref<PButtonProps>({
+  pType: 'default',
+  pPlain: false,
+  pRound: false,
+  pCircle: true,
+  pDisabled: false,
+  pLoading: false,
+  pSize: 'default',
 })
 
-const groupButton = ref({
-  buttonGroupType: ref<PButtonProps['pType']>('default'),
-  buttonGroupSize: ref<PButtonProps['pSize']>('default'),
+const groupButton = ref<PButtonGroupProps>({
+  pType: 'default',
+  pSize: 'default',
 })
 
 const buttonTypeList: { label: string, value: PButtonProps['pType'] }[] = [
@@ -201,7 +203,4 @@ const nextText = 'Next Page'
     <li>For left icon : .el-button__icon--left</li>
     <li>For right icon : .el-button__icon--right</li>
   </ul>
-  <div class="responsive-iframe-container">
-    <iframe class="responsive-iframe" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D278%253A761%26mode%3Ddev" allowfullscreen></iframe>
-  </div>
 </docs>

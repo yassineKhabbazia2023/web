@@ -54,7 +54,15 @@ export async function writeCompressedImage(
 }
 
 export function writeImageListFile(imageListPath: string, folders: Folder[]) {
-  const content = JSON.stringify(folders, null, 2)
+  const content = folders
+    .map((folder) => {
+      const images = folder.images
+        .map((image) => `      '${image}',`)
+        .join('\n')
 
-  writeFileSync(imageListPath, `${content}\n`, 'utf8')
+      return `  {\n    name: '${folder.name}',\n    images: [\n${images}\n    ],\n  },`
+    })
+    .join('\n')
+
+  writeFileSync(imageListPath, `export default [\n${content}\n]\n`, 'utf8')
 }
