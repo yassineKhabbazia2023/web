@@ -1,4 +1,4 @@
-import type { PTaskItemProps } from '@/atoms/PTaskItem/PTaskItemTypes'
+import type { PTaskItemProps } from '../../atoms/PTaskItem/PTaskItemTypes'
 
 export interface CalendarCellItemProps extends PTaskItemProps {
   pItemId: number
