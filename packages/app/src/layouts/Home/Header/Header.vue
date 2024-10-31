@@ -73,7 +73,7 @@
         <PAvatar
           pShape="circle"
           pType="small"
-          pColor="persian"
+          pColor="blue-pulse"
           data-ut="user-initials"
         >
           {{ userInitials }}
