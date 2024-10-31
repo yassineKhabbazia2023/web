@@ -7,8 +7,7 @@ import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import FoldersBreadCrumb from '.'
-import type { BreadcrumbItems }
-  from '@pulse/styleguide' // FIXME it was this on TPME /dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes
+import type { BreadcrumbItems } from '@pulse/styleguide'
 import { PBreadcrumb, PIcon } from '@pulse/styleguide'
 
 const currentServiceFolder: Folder[] = foldersData[0]

@@ -34,26 +34,33 @@ const testComponent = defineComponent({
     },
   },
   setup(props) {
-    return {
-      ...usePiaStatusSync(props.folder, props.documents),
-    }
+    usePiaStatusSync(props.folder, props.documents)
   },
 })
+
+function getWrapper(
+  folder: Ref<Folder | null>,
+  documents: Ref<DocumentsWithTableStructure | null>,
+) {
+  return mount(testComponent, {
+    props: {
+      folder,
+      documents,
+    },
+  })
+}
+
+const DOCUMENT_ID = '1234567890'
 
 const getConnectionOnMocked = vi.hoisted(() => vi.fn())
 describe('usePiaStatusSync', () => {
   it('should not update the pia status and permissions of the document when the pia status does NOT change', () => {
     const selectedFolder = ref<Folder | null>(foldersData[1][1])
     const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
-    mount(testComponent, {
-      props: {
-        folder: selectedFolder,
-        documents,
-      },
-    })
+    getWrapper(selectedFolder, documents)
 
     usePiaStatusSync(selectedFolder, documents)
-    const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === '1234567890')
+    const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === DOCUMENT_ID)
     expect(documentToNotify?.piaStatus.labelFr).equals('Actif')
     expect(documentToNotify?.permissions).toStrictEqual(['READ', 'WRITE', 'CAN_DELETE_DOCUMENT'])
   })
@@ -64,7 +71,7 @@ describe('usePiaStatusSync', () => {
     getConnectionOnMocked.mockImplementation((_: string, done: Function) => {
       const newDocumentStatusAndUpdate : DocumentStatusUpdateResponse = {
         folderId: 1,
-        documentId: '1234567890',
+        documentId: DOCUMENT_ID,
         newStatus: {
           technicalName: 'Collected',
           labelFr: 'Transmis',
@@ -76,16 +83,11 @@ describe('usePiaStatusSync', () => {
       const response = JSON.stringify(newDocumentStatusAndUpdate)
       done(response)
     })
-    mount(testComponent, {
-      props: {
-        folder: selectedFolder,
-        documents,
-      },
-    })
+    getWrapper(selectedFolder, documents)
     await flushPromises()
 
     usePiaStatusSync(selectedFolder, documents)
-    const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === '1234567890')
+    const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === DOCUMENT_ID)
 
     expect(documentToNotify?.piaStatus.labelFr).equals('Transmis')
     expect(documentToNotify?.permissions).toStrictEqual(['READ'])
@@ -94,12 +96,8 @@ describe('usePiaStatusSync', () => {
   it('should use OnDisconnectedAsync on folder change', async () => {
     const fakeFolder = ref<Folder | null>(null)
     const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
-    mount(testComponent, {
-      props: {
-        folder: fakeFolder,
-        documents,
-      },
-    })
+    getWrapper(fakeFolder, documents)
+
     await nextTick()
     fakeFolder.value = foldersData[0][0].children[0]
     await nextTick()
@@ -114,12 +112,8 @@ describe('usePiaStatusSync', () => {
   it('should not use OnConnectedAsync on null folder change', async () => {
     const fakeFolder = ref<Folder | null>(foldersData[1][1])
     const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
-    mount(testComponent, {
-      props: {
-        folder: fakeFolder,
-        documents,
-      },
-    })
+    getWrapper(fakeFolder, documents)
+
     await nextTick()
     fakeFolder.value = null
     await nextTick()

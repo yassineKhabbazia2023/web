@@ -1,5 +1,4 @@
-// eslint-disable-next-line max-len
-import type { PToolboxItemProps } from '@pulse/styleguide' // FIXME it was this on TPME /dist/types/src/atoms/PToolboxItem/PToolboxItemTypes
+import type { PToolboxItemProps } from '@pulse/styleguide'
 import { foldersMappingRecord, documentsMappingRecord } from '../data/toolboxPermissionsMapping'
 export interface ToolboxLineWithOrder {
   toolboxLine: PToolboxItemProps

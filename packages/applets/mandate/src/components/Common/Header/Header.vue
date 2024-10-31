@@ -39,6 +39,7 @@ import {
   PIcon,
   PIAdd,
   PFilterGroup,
+  type FilterOption,
 } from '@pulse/styleguide'
 import { amplitudeService } from '@pulse/common'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
@@ -89,7 +90,7 @@ function onClickFilter(activeFilterCodes: number[]) {
   emitRefreshMandateCollection()
 }
 
-const filters = [
+const filters: FilterOption<number>[] = [
   {
     pContent: t('incident'),
     pCode: 10,

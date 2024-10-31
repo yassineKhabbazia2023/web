@@ -79,7 +79,6 @@ export async function addContactToEntity(
     },
   })
 
-  // FIXME Monorepo fix
   return result
 }
 

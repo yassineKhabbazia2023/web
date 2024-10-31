@@ -16,7 +16,7 @@
     </div>
     <PForm
       v-else
-      :pModel="accountModel"
+      :pModel="currentAccount"
       pLabelPosition="top"
       class="folder-information__form margin-top--6"
       aria-describedby="folder-information-alert"
@@ -43,11 +43,28 @@
           </span>
         </p>
         <PFieldSet
-          :pModel="accountModel"
+          :pModel="currentAccount"
           :pFields="section.fields"
           class="folder-information__form-section-fields"
+          @update:p-model="onInputAccount"
         />
       </section>
+      <div
+        class="flex flex--justify-content-flex-end"
+        v-if="canEdit"
+      >
+        <PButton
+          class="margin-right--4"
+          pType="primary"
+          pSize="small"
+          data-testid="information-save-button"
+          @click="onClickSave"
+          :pDisabled="patchValues.length === 0"
+          :pLoading="isSaving"
+        >
+          {{ t('save') }}
+        </PButton>
+      </div>
     </PForm>
   </div>
 </template>
@@ -58,11 +75,15 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { commonStore } from '@pulse/common'
-import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide'
+import { PButton, PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import { getFormStructure } from '@entities/common/utils/referential'
-import { getCanEdit } from './InformationHelper'
+import { getCanEdit, savePatchedAccount } from './InformationHelper'
+import { cloneDeep, get, setWith } from 'lodash-es'
+import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordService'
+import { type PatchValue } from '@entities/services/PatchRecordService'
+import { displayNotification } from '@entities/common/utils/helpers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -72,21 +93,49 @@ const { t } = useI18n({
 const route = useRoute()
 const isLoading = ref<boolean>(true)
 const { isCollab } = storeToRefs(commonStore())
-const accountModel = ref<Account | undefined>(undefined)
+const currentAccount = ref<Account | undefined>(undefined)
+const originalAccount = ref<Account | undefined>(undefined)
 const informationFormStructure = ref<FormSection[]>()
 
 const addressSectionTitle = computed(() =>
-  accountModel.value?.address?.[0].addressType === 'billing'
+  currentAccount.value?.address?.[0].addressType === 'billing'
     ? t('billing')
     : t('delivery'),
 )
 
+const canEdit = ref(false)
+const isSaving = ref(false)
+const patchValues = ref<PatchValue[]>([])
+const accountId = parseInt(`${route.params.id}`)
+
+function onInputAccount(fieldKey: string, value: any) {
+  const previousValue = get(originalAccount.value, fieldKey)
+  addPathValue(patchValues.value, fieldKey, previousValue, value)
+  if (currentAccount.value) {
+    setWith(currentAccount.value, fieldKey, value, Object)
+  }
+}
+
+async function onClickSave() {
+  try {
+    isSaving.value = true
+    await savePatchedAccount(accountId, patchValues.value)
+    displayNotification('success', t('save-succeeded'), 'top-right')
+  } catch (error) {
+    console.error(error)
+    displayNotification('error', t('save-failed'))
+  } finally {
+    isSaving.value = false
+  }
+}
+
 onMounted(async () => {
   try {
-    const canEdit = getCanEdit(isCollab.value)
-    const forceDisabled = !canEdit
+    canEdit.value = getCanEdit(isCollab.value)
+    const forceDisabled = !canEdit.value
     informationFormStructure.value = await getFormStructure('CompanyProfile', forceDisabled)
-    accountModel.value = await fetchAccount(+route.params.id)
+    currentAccount.value = await fetchAccount(accountId)
+    originalAccount.value = cloneDeep(currentAccount.value)
   } catch (error) {
     console.error('Error fetching information :', error)
   } finally {
@@ -106,9 +155,15 @@ onMounted(async () => {
 en-US:
   billing: 'Company billing address'
   delivery: 'Company delivery address'
+  save: 'Save modifications'
+  save-succeeded: 'Save succeeded'
+  save-failed: 'Save failed'
   alertInstruction: 'If any information is incorrect, please update it in the CRM'
 fr-FR:
   billing: "Adresse de facturation de l'entreprise"
   delivery: "Adresse de livraison de l'entreprise"
+  save: 'Enregistrer les modifications'
+  save-succeeded: 'Enregistrement des modifications avec succès'
+  save-failed: "L'enregistrement des modifications a échoué"
   alertInstruction: 'Si des informations sont incorrectes, veuillez les mettre à jour dans le CRM'
 </i18n>

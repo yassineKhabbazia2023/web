@@ -114,28 +114,30 @@ describe('download mandate prefilled', () => {
 })
 
 describe('mandate not yet available', () => {
-  let wrapper: VueWrapper<DownloadProps>
   beforeEach(() => {
     vi.mocked(getMandateAvailability).mockReturnValue(apiMocks.unavailaibleMandate())
-    wrapper = createWrapper()
   })
 
-  it('should show the wait illustration', () => {
+  it('should show the wait illustration', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
     const waitIllustrationWrapper = wrapper.find('[data-testid="wait-illustration"]')
     expect(waitIllustrationWrapper.exists()).toBeTruthy()
   })
 
   it('should NOT show the download option', () => {
+    const wrapper = createWrapper()
     const downloadCardWrapper = getMandateDownloadFileCard(wrapper)
     expect(downloadCardWrapper.exists()).toBeFalsy()
   })
 
   it('should check mandate availability when mounted', () => {
+    createWrapper()
     expect(vi.mocked(getMandateAvailability)).toHaveBeenCalledOnce()
   })
 
-  // FIXME fix the test and unskip or delete it
-  it.skip('should check availability of tracked mandate every 10 seconds when unavailable', async () => {
+  it('should check availability of tracked mandate every 10 seconds when unavailable', async () => {
+    const wrapper = createWrapper()
     vi.useFakeTimers()
 
     await vi.advanceTimersByTimeAsync(10000)

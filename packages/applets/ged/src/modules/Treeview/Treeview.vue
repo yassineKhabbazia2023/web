@@ -488,6 +488,7 @@ watch(
   },
 )
 
+// FIXME: do not expose variables for UT purpose (should change UT)
 defineExpose({
   currentFolderId,
   currentFolderName,

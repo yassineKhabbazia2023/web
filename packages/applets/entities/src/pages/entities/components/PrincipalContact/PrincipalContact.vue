@@ -16,6 +16,7 @@ import { computed } from 'vue'
 import { getFullName } from '@entities/common/utils'
 import { PUserCard, PIVectorPen } from '@pulse/styleguide'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
+import type { PTagProps } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -24,7 +25,7 @@ const { t } = useI18n({
 
 const props = defineProps<PrincipalContactProps>()
 const contactDescription = t('contactDescription')
-const contactTag = {
+const contactTag: PTagProps = {
   pSize: 'default',
   pColor: 'persian',
   pContent: t('signatoryCustomer'),

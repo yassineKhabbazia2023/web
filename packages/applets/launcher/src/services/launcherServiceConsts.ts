@@ -5,6 +5,6 @@ export const EXTRACT_DOWNLOADED_FILENAME_REGEXP = /filename[^;=\n]*=((['"]).*?\2
 export const DEFAULT_APPLICATION_FILENAME = 'myPulse.DesktopClient-x.exe'
 
 export const ApiRoutes = {
-  SILAE_SSO: 'social/desktop-client/generate-sso-link',
+  SILAE_SSO: 'social/desktop-client/currentuser/generate-sso-link',
   SILAE_SSO_FILE: 'social/desktop-client/versions/latest',
 }

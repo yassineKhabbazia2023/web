@@ -25,8 +25,8 @@ import type {
 } from './FoldersBreadCrumbTypes'
 import type { Folder } from '@ged/models/Folder'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
-import type { BreadcrumbItems }
-  from '@pulse/styleguide' // FIXME /dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes
+import type { BreadcrumbItems } from '@pulse/styleguide'
+
 const props = defineProps<FoldersBreadCrumbProps>()
 const emit = defineEmits(['navigate-to-folder', 'open-create-folder-modal'])
 const breadCrumbItems = computed(() => generateBreadCrumb())

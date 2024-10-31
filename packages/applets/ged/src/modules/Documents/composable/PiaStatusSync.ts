@@ -55,6 +55,4 @@ export function usePiaStatusSync(
     documentToUpdate.piaStatus = newDocumentStatusAndUpdate.newStatus
     documentToUpdate.permissions = newDocumentStatusAndUpdate.permissions
   }
-
-  return {}
 }

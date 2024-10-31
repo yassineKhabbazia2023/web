@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { setActivePinia } from 'pinia'
@@ -11,6 +12,7 @@ import { commonStore } from '@pulse/common'
 import * as accountServices from '@entities/services/account'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
 import Information from '.'
+import * as CommonHelpers from '@entities/common/utils/helpers'
 
 // Expected Display Results
 const expectedAddressSection = 'Company billing address'
@@ -24,8 +26,10 @@ vi.mock('@entities/common/utils/referential', () => ({
 }))
 
 const mockedGetCanEdit = vi.hoisted(() => vi.fn(() => true))
+const mockedSavePatchedAccount = vi.hoisted(() => vi.fn())
 vi.mock('./InformationHelper', () => ({
   getCanEdit: mockedGetCanEdit,
+  savePatchedAccount: mockedSavePatchedAccount,
 }))
 
 vi.mock('@entities/services/account', () => ({
@@ -34,13 +38,17 @@ vi.mock('@entities/services/account', () => ({
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
 }))
 
+const ACCOUNT_ID = 5
+
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: 5,
+      id: ACCOUNT_ID,
     },
   }),
 }))
+
+vi.mock('@entities/common/utils/helpers')
 
 const getWrapper = () => shallowMount(Information, {
   global: {
@@ -52,17 +60,20 @@ const getWrapper = () => shallowMount(Information, {
         template: '<div><slot /></div>',
       },
       PFieldSet: true,
+      PButton: {
+        template: '<div><slot /></div>',
+      },
     },
   },
 })
 
 // Unit Tests
 describe('information', () => {
+  let wrapper: ReturnType<typeof getWrapper>
   beforeEach(() => {
     setActivePinia(createTestingPinia())
   })
   describe('display', () => {
-    let wrapper: ReturnType<typeof getWrapper>
     beforeEach(() => {
       wrapper = getWrapper()
     })
@@ -143,17 +154,21 @@ describe('information', () => {
     const tests = [{
       isCollab: false,
       mockedCanEdit: true,
+      expectedHasInformationSaveButton: true,
     }, {
       isCollab: true,
       mockedCanEdit: true,
+      expectedHasInformationSaveButton: true,
     }, {
       isCollab: true,
       mockedCanEdit: false,
+      expectedHasInformationSaveButton: false,
     }]
     it.each(tests)(
       'should call with proper argument when isCollab equals $isCollab and canEdit is $mockedCanEdit', async ({
         isCollab,
         mockedCanEdit,
+        expectedHasInformationSaveButton,
       }) => {
         const expectedForceDisabled = !mockedCanEdit
         const store = commonStore()
@@ -162,13 +177,94 @@ describe('information', () => {
 
         mockedGetCanEdit.mockReturnValue(mockedCanEdit)
 
-        getWrapper()
+        const wrapper = getWrapper()
+
         await flushPromises()
+
+        const informationSaveButton = wrapper.find('[data-testid="information-save-button"]')
 
         expect(mockedGetCanEdit).toHaveBeenCalledOnce()
         expect(mockedGetCanEdit).toHaveBeenCalledWith(isCollab)
         expect(mockedGetFormStructure).toHaveBeenCalledOnce()
         expect(mockedGetFormStructure).toHaveBeenCalledWith('CompanyProfile', expectedForceDisabled)
+        expect(informationSaveButton.exists()).toBe(expectedHasInformationSaveButton)
       })
+  })
+
+  describe('test saving', () => {
+    beforeEach(() => {
+      const mockedCanEdit = true
+      mockedGetCanEdit.mockReturnValue(mockedCanEdit)
+
+      wrapper = getWrapper()
+    })
+    describe('click on save button', () => {
+      it('should toggle loading state', async () => {
+        const saveButton = wrapper.find('[data-testid="information-save-button"]')
+        expect(saveButton.attributes('ploading')).toBe('false')
+
+        saveButton.trigger('click')
+        await nextTick()
+
+        expect(saveButton.attributes('ploading')).toBe('true')
+
+        await flushPromises()
+
+        expect(saveButton.attributes('ploading')).toBe('false')
+      })
+
+      it('should call savePatchedAccount properly', async () => {
+        const fieldKey = 'accounting.taxationSystem'
+        const value = 'IS'
+        const expectedPatchOperations = [{
+          newValue: 'IS',
+          originalValue: 'Impôt sur le revenu',
+          path: '/accounting/taxationSystem',
+        }]
+        const pFieldSet = wrapper.findComponent({
+          name: 'PFieldSet',
+        })
+
+        const saveButton = wrapper.find('[data-testid="information-save-button"]')
+        pFieldSet.vm.$emit('update:pModel', fieldKey, value)
+
+        saveButton.trigger('click')
+        await nextTick()
+
+        expect(mockedSavePatchedAccount).toHaveBeenCalledOnce()
+        expect(mockedSavePatchedAccount).toHaveBeenCalledWith(ACCOUNT_ID, expectedPatchOperations)
+      })
+
+      it('should call displayNotification properly when savePatched succeeded', async () => {
+        mockedSavePatchedAccount.mockResolvedValueOnce(true)
+        const saveButton = wrapper.find('[data-testid="information-save-button"]')
+        const displayNotificationSpy = vi.mocked(CommonHelpers).displayNotification
+
+        saveButton.trigger('click')
+        await nextTick()
+        await flushPromises()
+
+        expect(displayNotificationSpy).toHaveBeenCalledOnce()
+        expect(displayNotificationSpy).toHaveBeenCalledWith('success', 'Save succeeded', 'top-right')
+      })
+
+      it('should call displayNotification properly when savePatched failed', async () => {
+        const error = new Error('error message')
+        const consoleSpy = vi.spyOn(console, 'error')
+        mockedSavePatchedAccount.mockRejectedValueOnce(error)
+        const saveButton = wrapper.find('[data-testid="information-save-button"]')
+        const displayNotificationSpy = vi.mocked(CommonHelpers).displayNotification
+
+        saveButton.trigger('click')
+        await nextTick()
+        await flushPromises()
+
+        expect(displayNotificationSpy).toHaveBeenCalledOnce()
+        expect(displayNotificationSpy).toHaveBeenCalledWith('error', 'Save failed')
+
+        expect(consoleSpy).toHaveBeenCalledOnce()
+        expect(consoleSpy).toHaveBeenCalledWith(error)
+      })
+    })
   })
 })

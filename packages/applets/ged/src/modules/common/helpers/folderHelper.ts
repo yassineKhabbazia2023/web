@@ -1,6 +1,5 @@
 import type { Folder } from '@ged/models/Folder'
-import { type BreadcrumbItems }
-  from '@pulse/styleguide' // FIXME it was this on TPME: /dist/types/src/molecules/PBreadcrumb/PBreadcrumbTypes
+import { type BreadcrumbItems } from '@pulse/styleguide'
 import {
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'

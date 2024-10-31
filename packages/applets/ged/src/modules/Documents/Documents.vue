@@ -640,7 +640,7 @@ async function refreshDocumentsList() {
 
 defineExpose({
   refreshDocumentsList,
-  // FIXME: do not expose variables for UT purpose (should change UT)
+  // FIXME: should not expose variables for UT purpose (should change UT)
   documents,
   isSearchExpanded,
   searchContent,

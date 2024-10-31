@@ -1,6 +1,7 @@
 import { expect, describe, it, vi, afterEach } from 'vitest'
 import { PERMISSION_CODES } from '@entities/constants'
-import { getCanEdit } from './InformationHelper'
+import { getCanEdit, savePatchedAccount } from './InformationHelper'
+import type { PatchOperation, PatchValue } from '@entities/services/PatchRecordService'
 
 const mockHasPermission = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => ({
@@ -9,10 +10,33 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 
+const mockedGetPatchOperations = vi.hoisted(() => vi.fn(() => (mockedPatchOperations)))
+vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
+  getPatchOperations: mockedGetPatchOperations,
+}))
+
+const mockedPatchAccount = vi.hoisted(() => vi.fn())
+vi.mock('@entities/services/account', () => ({
+  patchAccount: mockedPatchAccount,
+}))
+
+const ACCOUNT_ID = 5
+const mockedPatchValues: PatchValue[] = [{
+  path: '/field-key',
+  originalValue: 'a',
+  newValue: 'b',
+}]
+const mockedPatchOperations: PatchOperation[] = [{
+  op: 'replace',
+  path: mockedPatchValues[0].path,
+  value: mockedPatchValues[0].newValue,
+}]
+
 describe('test InformationHelper', () => {
   afterEach(() => {
     mockHasPermission.mockReset()
   })
+
   describe('getCanEdit', () => {
     const tests = [{
       isCollab: false,
@@ -52,6 +76,41 @@ describe('test InformationHelper', () => {
       if (expectedCalledTimes > 0) {
         expect(mockHasPermission).toHaveBeenNthCalledWith(expectedCalledTimes, PERMISSION_CODES.EDIT_COMPANY_DATA)
       }
+    })
+  })
+
+  describe('savePatchedAccount', () => {
+    it('should call getPatchOperations with proper arguments', () => {
+      savePatchedAccount(ACCOUNT_ID, mockedPatchValues)
+      expect(mockedGetPatchOperations).toHaveBeenCalledOnce()
+      expect(mockedGetPatchOperations).toHaveBeenCalledWith(mockedPatchValues)
+    })
+
+    it('should call console.error and return true when patchValues is empty', async () => {
+      mockedGetPatchOperations.mockReturnValueOnce([])
+
+      const expectedErrorMessage = 'Unmanaged case: patchOperations is empty'
+
+      expect(mockedPatchAccount).not.toHaveBeenCalled()
+
+      await expect(async () => await savePatchedAccount(ACCOUNT_ID, []))
+        .rejects.toThrow(expectedErrorMessage)
+    })
+
+    it('should call patchAccount with proper arguments and return true when patchValues is not empty', async () => {
+      await savePatchedAccount(ACCOUNT_ID, mockedPatchValues)
+
+      expect(mockedPatchAccount).toHaveBeenCalledOnce()
+      expect(mockedPatchAccount).toHaveBeenCalledWith(ACCOUNT_ID, mockedPatchOperations)
+    })
+
+    it('should call console.error and return false when patchAccount throws an error', async () => {
+      const errorMessage = 'error'
+      mockedPatchAccount.mockRejectedValueOnce(new Error(errorMessage))
+      const expectedErrorMessage = ''
+
+      await expect(async () => await savePatchedAccount(ACCOUNT_ID, mockedPatchValues))
+        .rejects.toThrow(expectedErrorMessage)
     })
   })
 })

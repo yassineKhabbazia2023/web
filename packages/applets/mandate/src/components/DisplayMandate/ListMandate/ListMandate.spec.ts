@@ -172,23 +172,28 @@ describe('mandate collection', () => {
       expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
     })
 
-  // FIXME fix the test and unskip or delete it
-  it.skip('should sort the table data', async () => {
+  it('should sort the table data', async () => {
     const wrapper = createWrapper({
       data: [],
       currentPage,
     })
     wrapper.vm.handleFileUpload({ target: { files: [{ name: 'mandate.pdf' }] } })
+    await flushPromises()
     await wrapper.vm.sortColumnChange({ order: 'ascending', prop: 'erpId' })
-
-    const refreshMandateCollectionEventBefore: any = wrapper.emitted('refresh-mandate-collection')
-    expect(refreshMandateCollectionEventBefore[0])
-      .toStrictEqual([{ sortOrder: 'Ascending', sortCriteria: 'ErpId' }])
     await wrapper.vm.sortColumnChange({ order: 'descending', prop: '' })
 
-    const refreshMandateCollectionEventAfter = wrapper.emitted('refresh-mandate-collection')
-    expect(refreshMandateCollectionEventAfter?.[1])
-      .toStrictEqual([{ sortOrder: 'Descending', sortCriteria: '' }])
+    const emittedEvents = wrapper.emitted('refresh-mandate-collection')
+    expect(emittedEvents?.at(0)).toStrictEqual([{
+      currentPage: 1,
+    }])
+    expect(emittedEvents?.at(1)).toStrictEqual([{
+      sortCriteria: 'ErpId',
+      sortOrder: 'Ascending',
+    }])
+    expect(emittedEvents?.at(2)).toStrictEqual([{
+      sortCriteria: '',
+      sortOrder: 'Descending',
+    }])
   })
   it('submit the signed mandate', async () => {
     const currentPage = 2

@@ -1,7 +1,9 @@
-import { type PService } from '@pulse/styleguide'
+import type { PTagProps, PService } from '@pulse/styleguide'
+
 import type { SelectedProduct } from '@entities/common/types'
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import type { SubscriptionOfferProduct } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { SubscriptionOfferProduct }
+  from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import { getSelectedProductIndex } from '@entities/pages/entities/components/OffersDrawer/utils/OffersDrawerUtils'
 
 export function getIsServiceSelected(
@@ -25,7 +27,7 @@ export function getServiceTag(
   priceType: SubscriptionOfferProduct['priceType'],
   includedLabel: string,
   additionalPriceLabel: string,
-) {
+): PTagProps | undefined {
   const pEffect = 'light'
 
   if (!isOptionnal) {

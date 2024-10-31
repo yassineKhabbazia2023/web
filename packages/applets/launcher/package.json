@@ -21,7 +21,7 @@
   "dependencies": {
     "@braintree/sanitize-url": "^7.1.0",
     "@pulse/common": "1.0.0",
-    "@pulse/styleguide": "^2.2.797",
+    "@pulse/styleguide": "^2.2.818",
     "axios": "^1.7.7",
     "file-saver": "^2.0.5",
     "pinia": "^2.2.4",
