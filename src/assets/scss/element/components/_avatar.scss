@@ -134,6 +134,12 @@ $avatar-size: (
       color: var(--el-color-persian-500);
     }
 
+    &--color-blue-pulse {
+      border-color: var(--el-color-base-blue-pulse);
+      background: var(--el-color-base-blue-pulse);
+      color: var(--el-color-base-white);
+    }
+
     &--selected {
       opacity: 0.6;
     }
