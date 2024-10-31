@@ -76,7 +76,7 @@
           pColor="persian"
           data-ut="user-initials"
         >
-          <span class="text-color--base-white">{{ userInitials }}</span>
+          {{ userInitials }}
         </PAvatar>
       </div>
     </div>
@@ -135,8 +135,7 @@ function updateFeedCenterDisplay() {
   background-color: var(--el-color-base-white);
 
   &__logo {
-    width: 149px;
-    height: 20px;
+    height: 35px;
   }
 
   &__divider {

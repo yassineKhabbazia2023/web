@@ -195,6 +195,10 @@ onMounted(async () => {
   background-color: var(--el-color-base-persian-light);
   transition: width var(--smooth-transition);
 
+  .p-menu.el-menu {
+    background-color: var(--el-color-base-persian-light);
+  }
+
   &--collapsed {
     width: 52px;
   }
@@ -210,6 +214,10 @@ onMounted(async () => {
   // context specific overrides
   &#{$self}--is-collab {
     background-color: var(--el-color-secondary-fuschia-bg);
+
+    .p-menu {
+      background-color: var(--el-color-secondary-fuschia-bg);
+    }
   }
 }
 </style>
