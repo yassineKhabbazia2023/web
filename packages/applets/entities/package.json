@@ -21,7 +21,7 @@
   "dependencies": {
     "@braintree/sanitize-url": "^7.1.0",
     "@pulse/common": "1.0.0",
-    "@pulse/styleguide": "^2.2.818",
+    "@pulse/styleguide": "^2.2.823",
     "element-plus": "2.4.3",
     "lodash-es": "^4.17.21",
     "pinia": "^2.2.4",

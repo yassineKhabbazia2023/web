@@ -28,8 +28,7 @@ describe('confirmActionModal Component - Displays pending operations with approv
     await flushPromises()
   })
   describe('display', () => {
-    // FIXME fix the test and unskip or delete it
-    it.skip('should present the accurate note if the modal is in a state of refusal', async () => {
+    it('should present the accurate note if the modal is in a state of refusal', async () => {
       wrapper = createWrapper({
         isOperationPendingRefusal: true,
       })

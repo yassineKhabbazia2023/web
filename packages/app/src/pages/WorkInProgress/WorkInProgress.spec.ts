@@ -9,8 +9,8 @@ describe('workInProgress', () => {
     it('should display correctly the work in progress page', () => {
       const wrapper = createWrapper()
       const wipImages = wrapper.findAllComponents({ name: 'PImage' })
-      const wipTitle = wrapper.find('[data-testid="wip-message-title"') // FIXME Monorepo fix
-      const wipDescription = wrapper.find('[data-testid="wip-message-description"') // FIXME Monorepo fix
+      const wipTitle = wrapper.find('[data-testid="wip-message-title"')
+      const wipDescription = wrapper.find('[data-testid="wip-message-description"')
 
       expect(wipImages).toHaveLength(2)
       expect(wipTitle.exists()).toBeTruthy()

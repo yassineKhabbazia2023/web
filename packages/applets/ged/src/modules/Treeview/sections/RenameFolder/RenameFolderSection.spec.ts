@@ -66,42 +66,51 @@ describe('renameFolderSection', () => {
 
   describe('props', () => {
     describe('binding with create folder modal', () => {
-      const validTranslationCases = [
-        {
-          prop: 'modalTitle',
-          expectedText: 'Renommer',
-        },
-        {
-          prop: 'inputLabel',
-          expectedText: 'Renommer votre dossier',
-        },
-        {
-          prop: 'inputPlaceHolder',
-          expectedText: 'Entrez le nom de votre dossier',
-        },
-        {
-          prop: 'cancelBtnLabel',
-          expectedText: 'Annuler',
-        },
-        {
-          prop: 'confirmBtnabel',
-          expectedText: 'Modifier',
-        },
-      ]
-      it.each(validTranslationCases)(
-        'elements content validation with "%s"',
-        ({ prop, expectedText }) => {
+      it('should contain propser props',
+        () => {
+          const expectedProps = {
+            cancelBtnLabel: 'Annuler',
+            confirmBtnabel: 'Modifier',
+            inputContentDefault: 'newFolderName',
+            inputLabel: 'Renommer votre dossier',
+            inputPlaceHolder: 'Entrez le nom de votre dossier',
+            isConfirmButtonLoading: false,
+            isRenameFolderModalVisible: false,
+            modalTitle: 'Renommer',
+            parentFolder: {
+              children: [{
+                children: [{}],
+                id: 2,
+                name: 'TheFolder',
+                parent: {
+                  id: 1,
+                },
+                permissions: [],
+                properties: {},
+                serviceId: 'some-service',
+              }],
+              id: 1,
+              name: 'A',
+              parent: {
+                id: 0,
+              },
+              permissions: [
+                'CAN_CREATE_FOLDER',
+                'CAN_RENAME_FOLDER',
+              ],
+              properties: {},
+              serviceId: 'some-service',
+            },
+          }
           const updatedProps: RenameFolderSectionProps = {
             ...defaultProps,
             isRenameFolderModalVisible: true,
           }
           const wrapper = createWrapper(updatedProps)
 
-          const renameFolderModalWrapper = wrapper.findComponent(RenameFolderModal) as any // FIXME Monorepo fix
+          const renameFolderModalWrapper = wrapper.findComponent(RenameFolderModal)
 
-          expect(renameFolderModalWrapper.props(prop).trim()).toBe(
-            expectedText.trim(),
-          )
+          expect(renameFolderModalWrapper.props()).toStrictEqual(expectedProps)
         },
       )
     })

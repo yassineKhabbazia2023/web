@@ -137,7 +137,6 @@ const emit = defineEmits([
   'selected-bin-service-change',
   'open-create-folder-modal',
   'update-source-folders',
-  'selected-bin-service-change',
   'remove-folder-from-source',
   'update-folder-name',
   'refresh-tree',

@@ -5,7 +5,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
 import { createPinia, setActivePinia } from 'pinia'
-import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import DocumentsList from './sections/DocumentsList'
 import type { DocumentsProps } from './DocumentsTypes'
@@ -20,8 +19,7 @@ import {
   documentsResponsePayload,
   documentsResponsePayloadMoreThanOneDoc,
 } from '@ged/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import type { Document, DocumentsWithTableStructure, TableRowDocument } from '@ged/models/Document'
-import type { ComponentPublicInstance } from 'vue'
+import type { TableRowDocument } from '@ged/models/Document'
 import { nextTick } from 'vue'
 import DocumentDeleteModal
   from '@ged/modules/Documents/components/DocumentDeleteModal'
@@ -38,22 +36,9 @@ import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
 import type { Entity } from '@pulse/common'
+import type { ComponentWrapper } from '@ged/utils/testHelpers'
 
-type DocumentsSetup = {
-  documents: DocumentsWithTableStructure
-  selectedDocument: Document
-  selectedDocuments: Document[]
-  isRenameModalOpened: boolean
-  isPreviewDrawerOpened: boolean
-  searchContent: string
-  isSearchExpanded: boolean
-  isSearchLoading: boolean
-  isFiltersDrawerOpened: boolean
-}
-
-export type DocumentsWrapper = VueWrapper<
-  ComponentPublicInstance<DocumentsSetup, DocumentsProps>
->
+type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>
 
 const mockToastPlugin = vi.fn()
 
@@ -87,7 +72,7 @@ const createWrapper = (
         toast: mockToastPlugin,
       },
     },
-  }) as unknown as DocumentsWrapper
+  })
 }
 
 vi.mock('@ged/services/Documents', () => ({
@@ -253,7 +238,7 @@ describe('documents', () => {
       await nextTick()
 
       const pbreadCrumbWrapper = findPBreadCrumb(wrapper)
-      await pbreadCrumbWrapper.vm.$emit('p-breadcrumb-item-click', validDestination.id)
+      pbreadCrumbWrapper.vm.$emit('p-breadcrumb-item-click', validDestination.id)
       await nextTick()
 
       expect(wrapper.emitted('change-selected-folder')).toHaveLength(1)
@@ -785,7 +770,7 @@ describe('documents', () => {
 
       const pPaginationWrapper = findPPagination(wrapper)
 
-      await pPaginationWrapper.vm.$emit('on-page-range-changed', 50)
+      pPaginationWrapper.vm.$emit('on-page-range-changed', 50)
       await nextTick()
 
       expect(pPaginationWrapper.props('pPageSize')).toBe(50)

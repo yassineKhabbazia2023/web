@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@pulse/common": "1.0.0",
-    "@pulse/styleguide": "^2.2.818",
+    "@pulse/styleguide": "^2.2.823",
     "axios": "^1.7.7",
     "element-plus": "2.4.3",
     "pinia": "^2.2.4",

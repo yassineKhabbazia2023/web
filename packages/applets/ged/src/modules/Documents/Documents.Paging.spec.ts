@@ -96,7 +96,7 @@ vi.mock('@ged/models/AccountingHubConnection', () => ({
   }),
 }))
 
-describe.skip('documents', () => {
+describe('documents', () => {
   beforeEach(() => {
     setActivePinia(pinia)
     flushPromises()
@@ -118,11 +118,12 @@ describe.skip('documents', () => {
           },
         },
       }) as unknown as DocumentsWrapper
+      await flushPromises()
       const componentInstance = wrapper.vm
       componentInstance.documents = responseNoDoc
       await nextTick()
       const pagination = wrapper.findComponent(PPagination)
-      expect(pagination.isVisible()).toBeFalsy()
+      expect(pagination.exists()).toBeFalsy()
     })
   })
   describe('events', () => {
@@ -142,6 +143,7 @@ describe.skip('documents', () => {
           },
         },
       }) as unknown as DocumentsWrapper
+      await flushPromises()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadTwoPages
 
@@ -158,6 +160,8 @@ describe.skip('documents', () => {
         0,
         100,
         '-created',
+        null,
+
       )
     }, 30000)
 
@@ -177,6 +181,7 @@ describe.skip('documents', () => {
           },
         },
       }) as unknown as DocumentsWrapper
+      await flushPromises()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadTwoPages
 
@@ -190,9 +195,10 @@ describe.skip('documents', () => {
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
-        10,
+        0,
         10,
         '-created',
+        null,
       )
     })
 
@@ -212,6 +218,7 @@ describe.skip('documents', () => {
           },
         },
       }) as unknown as DocumentsWrapper
+      await flushPromises()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadTwoPages
 
@@ -226,8 +233,9 @@ describe.skip('documents', () => {
         foldersData[0][0].children[0].id,
         'my-entity',
         0,
-        25,
+        10,
         '-created',
+        null,
       )
     })
   })

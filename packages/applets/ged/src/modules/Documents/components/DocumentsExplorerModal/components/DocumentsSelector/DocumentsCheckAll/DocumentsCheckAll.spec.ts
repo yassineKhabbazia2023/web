@@ -6,12 +6,8 @@ import { describe, expect, it } from 'vitest'
 import { PCheckbox } from '@pulse/styleguide'
 import DocumentsCheckAll
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsCheckAll'
-// FIXME Monorepo fix
 import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
-import type { VueWrapper } from '@vue/test-utils'
-import type { ComponentPublicInstance } from 'vue'
-
-export type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
+import type { ComponentWrapper } from '@ged/utils/testHelpers'
 
 type DocumentsCheckAllWrapper = ComponentWrapper<InstanceType<typeof DocumentsCheckAll>>
 
@@ -20,7 +16,6 @@ const defaultProps: DocumentsCheckAllProps = {
   checked: false,
 }
 const pinia = createPinia()
-// FIXME Monorepo fix
 const createWrapper = (
   props: DocumentsCheckAllProps = defaultProps,
 ): DocumentsCheckAllWrapper => {
@@ -36,11 +31,14 @@ describe('documentsCheckAll', () => {
     it('should render PCheckbox when props are given', async () => {
       const wrapper = createWrapper()
       await nextTick()
+      const expectedProps = {
+        pLabel: false,
+        pRounded: false,
+      }
 
-      const check = wrapper.findComponent(PCheckbox) as any // FIXME: styleguide should expose disabled and v-model
+      const check = wrapper.findComponent(PCheckbox)
       expect(check.exists()).toBeTruthy()
-      expect(check.props('disabled')).toBeFalsy()
-      expect(check.props('v-model')).toBeFalsy()
+      expect(check.props()).toStrictEqual(expectedProps)
     })
   })
   describe('event', () => {

@@ -13,6 +13,10 @@
       <p class="margin-left--3 folder-wrapper__default-entity h4">
         {{ defaultEntity?.legalName }}
       </p>
+      <div class="folder-wrapper__header-separator margin-x--3 bg--neutral-gray-100" />
+      <p class="text-color--neutral-gray-500" data-testid="folder-account-number">
+        {{ defaultEntity?.accountNumber }}
+      </p>
     </div>
     <PTabs
       v-if="!isLoading"
@@ -99,8 +103,9 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .folder-wrapper {
-  &__default-entity {
-    flex-grow: 2;
+  &__header-separator {
+    width: 1px;
+    height: 12px;
   }
 }
 </style>

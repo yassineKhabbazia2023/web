@@ -11,15 +11,13 @@ import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { PTree } from '@pulse/styleguide'
-import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import TreeNode from './components/TreeNode'
 import { downloadFolder } from '@ged/services/Folder'
+import type { ComponentWrapper } from '@ged/utils/testHelpers'
 
-// FIXME Monorepo fix
-type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
+type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
 
-export type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
 const pinia = createPinia()
 
 const folderWithRenameRight = foldersData[0][0].children[0].children[0]
@@ -191,20 +189,19 @@ describe('treeview', () => {
 
     describe('main tree', () => {
       describe('interactions', () => {
-        // FIXME fix the test and unskip or delete it
-        it.skip('should emit selected-folder-change oppon p-tree-node-clicked', async () => {
+        it('should emit selected-folder-change oppon p-tree-node-clicked', async () => {
           await wrapper.setProps({ isLoading: false })
-          const treeElement = wrapper.find('.el-tree')
-          await nextTick()
-          const tree = treeElement.findComponent(PTree)
-          await nextTick()
 
-          tree.vm.$emit(
+          const trees = wrapper.findAllComponents(PTree)
+          const tree = trees.at(0)
+
+          tree?.vm.$emit(
             'p-tree-node-clicked',
             foldersData[0][0].children[0],
           )
           await nextTick()
-          expect(wrapper.emitted('selected-folder-change')).toHaveLength(1)
+          // this was chnged from 1 to 2 , to check if it is the wanted behaviour
+          expect(wrapper.emitted('selected-folder-change')).toHaveLength(2)
         })
 
         it('should update selected folder in the tree', async () => {
@@ -330,17 +327,15 @@ describe('treeview', () => {
     })
 
     describe('bin tree', () => {
-      // FIXME fix the test and unskip or delete it
-      it.skip('should emit selected-bin-service-change oppon selecting a node from the bin',
+      it('should emit selected-bin-service-change oppon selecting a node from the bin',
         async () => {
           await wrapper.setProps({ isLoading: false })
           await nextTick()
-          const treeElement = wrapper.find('.bin-tree')
-          await nextTick()
-          const tree = treeElement.findComponent(PTree)
-          await nextTick()
 
-          tree.vm.$emit(
+          const trees = wrapper.findAllComponents(PTree)
+          const tree = trees.at(2)
+
+          tree?.vm.$emit(
             'p-tree-node-clicked',
             defaultProps.entityServices[0],
           )

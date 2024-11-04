@@ -114,6 +114,9 @@ describe('folder', () => {
       expect(wrapper.find('.folder-wrapper__default-entity').text()).toBe(
         mockedEntity.legalName,
       )
+      expect(wrapper.find('[data-testid="folder-account-number"]').text()).toBe(
+        mockedEntity.accountNumber,
+      )
     })
     it.each([
       ['collaborateurs', 'tab-collab'],

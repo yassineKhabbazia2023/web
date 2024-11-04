@@ -307,8 +307,7 @@ describe('tableElement', () => {
         const pDoubleText = wrapper.findComponent(PDoubleText)
         expect(pDoubleText.exists()).toBeTruthy()
       })
-    // FIXME fix the test and unskip or delete it
-    it.skip('should map PTag component correctly based on fieldType', () => {
+    describe('ptag validation', () => {
       const cases = [
         {
           document: defaultProps.data,
@@ -316,7 +315,7 @@ describe('tableElement', () => {
           fieldName: '',
           expectedResult: {
             component: PTag,
-            content: 'Certifié',
+            text: 'Certifié',
           },
         },
         {
@@ -325,13 +324,13 @@ describe('tableElement', () => {
           fieldName: '',
           expectedResult: {
             component: PTag,
-            content: document.piaStatus.labelFr,
+            text: 'Certifié',
           },
         },
       ]
 
       it.each(cases)(
-        'ptag validation',
+        'should map PTag component correctly based on fieldType',
         async ({ document, fieldType, expectedResult }) => {
           const props: TableElementPops = {
             ...defaultProps,
@@ -344,7 +343,7 @@ describe('tableElement', () => {
           const tag = wrapper.findComponent(expectedResult.component)
           await nextTick()
           expect(tag.exists()).toBeTruthy()
-          expect(tag.element.textContent).toStrictEqual(expectedResult.content)
+          expect(tag.text()).toBe(expectedResult.text)
         },
       )
     })

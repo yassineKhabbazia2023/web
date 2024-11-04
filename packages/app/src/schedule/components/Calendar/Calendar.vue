@@ -16,6 +16,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { fr, PConfigProvider, PCalendar, PScrollbar } from '@pulse/styleguide'
+import type { CalendarItemsGroupedByDate, CalendarCellItemProps } from '@pulse/styleguide'
 import type { CalendarProps } from './CalendarTypes'
 import { getTypeLabel } from '@app/schedule/helpers/utils'
 import { getDeadlineCompletionSummary } from '@app/schedule/helpers/deadlineHelper'
@@ -23,6 +24,7 @@ import type { Deadline } from '@app/schedule/models/Deadline'
 import { getScheduleModelsByKey } from '@app/schedule/services'
 import { cloneDeep } from 'lodash-es'
 import { amplitudeService } from '@pulse/common'
+import { CALENDAR_STATUS_MAPPING } from './CalendarConst'
 
 const locale = cloneDeep(fr)
 locale.el.datepicker.weeks = locale.el.datepicker.weeksFull
@@ -51,7 +53,7 @@ const internalModelValue = computed({
 })
 
 const formattedDeadlinesByDate = computed(() =>
-  props.deadlinesByDate.map((d) => ({
+  props.deadlinesByDate.map<CalendarItemsGroupedByDate>((d) => ({
     date: d.date,
     items: formatItemsForCalendar(d.deadlines),
   })),
@@ -59,17 +61,21 @@ const formattedDeadlinesByDate = computed(() =>
 
 const scheduleModelsByKey = ref<Record<string, string>>()
 
-function formatItemsForCalendar(deadlines: Deadline[]) {
-  return deadlines.map((d) => {
-    const accountsCompletion = getDeadlineCompletionSummary(d.accountList)
-    const pTitle = getTypeLabel(scheduleModelsByKey.value, d.template)
-    return {
+function formatItemsForCalendar(deadlines: Deadline[]): CalendarCellItemProps[] {
+  return deadlines.map<CalendarCellItemProps>((deadline) => {
+    const accountsCompletion = getDeadlineCompletionSummary(deadline.accountList)
+    const pTitle = getTypeLabel(scheduleModelsByKey.value, deadline.template)
+    const pStatus = CALENDAR_STATUS_MAPPING[deadline.globalStatus]
+
+    const calendarCellItem: CalendarCellItemProps = {
       pTitle,
-      pStatus: d.globalStatus.toLowerCase(),
+      pStatus,
       pCompletedTasks: accountsCompletion.accountsWithCompletedDeadline,
       pTotalTasks: accountsCompletion.accountsAmount,
-      pItemId: d.occurrenceId,
+      pItemId: deadline.occurrenceId,
     }
+
+    return calendarCellItem
   })
 }
 

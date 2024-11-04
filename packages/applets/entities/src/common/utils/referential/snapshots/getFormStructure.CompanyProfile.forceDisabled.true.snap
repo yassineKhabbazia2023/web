@@ -314,7 +314,7 @@
             "pValue": 38,
           },
         ],
-        "pFieldKey": "hub.hubName",
+        "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
         "pLabel": "Hub PULSE rattaché",
         "pTestId": "offer-hub-name-list",
