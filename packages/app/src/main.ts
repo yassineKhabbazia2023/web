@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import { commoni18n, commonPinia } from '@pulse/common'
 import { VITE_ASSETS_BASE_URL } from 'env-vars'
 import { setAssetsBaseUrl } from '@pulse/styleguide'
+import packageJson from '../package.json'
 
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
@@ -18,15 +19,22 @@ import router from './plugins/router'
 commoni18n.value.global.locale.value = 'fr-FR'
 setAssetsBaseUrl(VITE_ASSETS_BASE_URL)
 
+// TODO temporary for debug purpose before the integration of styleguide in the repo
+declare let window: {
+  styleguideVersion: string
+} & Window
+
+window.styleguideVersion = packageJson.dependencies['@pulse/styleguide']
+
 const app = createApp(App)
   .use(commoni18n.value)
   .use(commonPinia)
   // install applets
-  .use(entitiesApplet, { router }) 
-  .use(gedApplet, { router }) 
-  .use(launcherApplet, { router }) 
-  .use(loginApplet, { router }) 
-  .use(mandateApplet, { router }) 
+  .use(entitiesApplet, { router })
+  .use(gedApplet, { router })
+  .use(launcherApplet, { router })
+  .use(loginApplet, { router })
+  .use(mandateApplet, { router })
   // install router last in order to register the applets first
   .use(router)
 
