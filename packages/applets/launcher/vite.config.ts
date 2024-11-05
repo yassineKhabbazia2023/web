@@ -4,7 +4,6 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import terser from '@rollup/plugin-terser'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import { viteConfigBase } from '../../@config/vite.config.base'
 import { name } from './package.json'
 
@@ -24,7 +23,6 @@ export default ({ mode }: any) =>
         VueI18nPlugin({
           include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
-        cssInjectedByJsPlugin(),
       ],
       resolve: {
         alias: {

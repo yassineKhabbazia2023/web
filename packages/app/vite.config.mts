@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 import path from 'path'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import vue from '@vitejs/plugin-vue'
 import { viteConfigBase } from '../@config/vite.config.base'
 
@@ -22,7 +21,6 @@ export default ({ mode }: any) =>
         VueI18nPlugin({
           include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
-        cssInjectedByJsPlugin(),
       ],
       resolve: {
         alias: {
