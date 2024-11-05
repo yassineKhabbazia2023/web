@@ -19,7 +19,7 @@ parameters:
     - Front-Shell
     - Front-Assets
     - Full
-- name: BranchAssets
+- name: BranchForAssets
   displayName: "Technical parameter : don t modify it !"
   type: string
   default: 'develop'
