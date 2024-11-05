@@ -50,7 +50,7 @@ defineExpose({
 })
 </script>
 <style lang="scss" scoped>
-.tree-node__action {
+.p-button.tree-node__action {
   width: 24px;
   height: 24px;
 }

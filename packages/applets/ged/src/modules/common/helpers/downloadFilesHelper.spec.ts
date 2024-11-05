@@ -1,24 +1,31 @@
-/* eslint-disable vitest/no-hooks */
-import { it, expect, vi, describe, beforeEach } from 'vitest'
+import { it, expect, vi, describe } from 'vitest'
 import { downloadFile } from './downloadFilesHelper'
 
-describe('downloadFile', () => {
-  beforeEach(() => {
-    vi.spyOn(window.URL, 'createObjectURL').mockImplementation(
-      () => 'https://fake.url',
-    )
-  })
+const createObjectURLMock = vi.hoisted(() => vi.fn())
 
-  // FIXME fix the test and unskip or delete it
-  it.skip('should create a download link and click on it', () => {
+describe('downloadFile', () => {
+  it('should create a download link and click on it', () => {
+    const url = 'https://fakeUrl'
     const data:any = '12345'
     const fileName = 'test.txt'
-    vi.spyOn(window.document.body, 'appendChild')
+    const appendChildSpy = vi.spyOn(window.document.body, 'appendChild')
+
+    const expectedArgument = document.createElement('a')
+
+    expectedArgument.target = '_blank'
+    expectedArgument.href = url
+    expectedArgument.download = fileName
+    expectedArgument.type = 'application/octet-stream'
+
+    createObjectURLMock.mockImplementation((_: Blob | MediaSource) => url)
+    window.URL.createObjectURL = createObjectURLMock
+
     downloadFile(data, fileName)
 
-    expect(URL.createObjectURL).toHaveBeenCalledWith(new Blob([data]))
+    expect(createObjectURLMock).toHaveBeenCalledWith(new Blob([data]))
     expect(window.document.body.appendChild).toHaveBeenCalledWith(
       expect.any(HTMLAnchorElement),
     )
+    expect(appendChildSpy).toHaveBeenCalledWith(expectedArgument)
   })
 })
