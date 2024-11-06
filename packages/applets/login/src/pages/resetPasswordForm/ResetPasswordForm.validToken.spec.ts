@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
+import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
 import ResetPasswordForm from './'
 
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))

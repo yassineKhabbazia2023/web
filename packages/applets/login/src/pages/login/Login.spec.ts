@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
-import type { ComponentWrapper } from '@login/pages/testHelper/testHelperTypes'
+import type { ComponentWrapper } from '@login/tests/testHelper/testHelperTypes'
 import { flushPromises, mount } from '@vue/test-utils'
 import Login from './'
 import { amplitudeService, tokenService } from '@pulse/common'

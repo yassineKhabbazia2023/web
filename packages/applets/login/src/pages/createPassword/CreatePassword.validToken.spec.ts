@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
-import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
+import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
 import { amplitudeService, tokenService } from '@pulse/common'
 import CreatePassword from './'
 import { getLatestTerms, updateTermsByCurrentUser } from '@login/services/cgu'

@@ -6,7 +6,7 @@ import {
   it,
   vi,
 } from 'vitest'
-import type { ComponentWrapper } from '@login/pages/testHelper/testHelperTypes'
+import type { ComponentWrapper } from '@login/tests/testHelper/testHelperTypes'
 import type { FormInstance } from 'element-plus'
 import { flushPromises, mount } from '@vue/test-utils'
 import ResetPassword from './'
