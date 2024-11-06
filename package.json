@@ -33,6 +33,7 @@
     "mfe:copy:libs": "tsx ./scripts/copy-libs.ts",
     "mfe:copy:applets": "tsx ./scripts/copy-applets.ts",
     "mfe:copy:apps": "tsx ./scripts/copy-apps.ts",
+    "mfe:copy:styleguide": "tsx ./scripts/copy-styleguide.ts",
     "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules"
   },
   "devDependencies": {
