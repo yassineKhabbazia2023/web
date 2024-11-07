@@ -11,6 +11,7 @@ vi.mock('./lib', () => {
     generateComponent: vi.fn(),
     writeComponentIndex: vi.fn(),
     writeComponentConstants: vi.fn(),
+    generateTypes: vi.fn(),
   }
 })
 

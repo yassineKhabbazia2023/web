@@ -13,6 +13,15 @@ export function capitalizeFirstLetter(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
+export function toCamelCase(text: string): string {
+  if (text.includes('-')) {
+    const words = text.split('-')
+    return words[0].toLowerCase() + words.slice(1).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('')
+  }
+
+  return text.charAt(0).toLowerCase() + text.slice(1)
+}
+
 export function getPathIcons(fileName: string, folder: string, category: string) {
   const filePath = path.join(folder, fileName)
   const fileStat = statSync(filePath)
@@ -42,6 +51,31 @@ export function getIcons(folder: string, category: string): Icon[] {
   const icons = list.flatMap((fileName) => getPathIcons(fileName, folder, category))
 
   return icons
+}
+
+export function getIconTypeContent(folder: string) {
+  const icons = getIcons(folder, '')
+  const enumEntries = icons.map(({ fileName }) => {
+    const fileNameWithoutExtension = path.basename(fileName, '.svg')
+    const camelCased = toCamelCase(fileNameWithoutExtension)
+
+    return `'${camelCased}'`
+  })
+  enumEntries.sort()
+
+  const content = `export type AppIcons =\n${enumEntries.join(' |\n')}\n`
+
+  return content
+}
+
+// Each source icon is parsed to create a type according to their camelCased name
+export function generateTypes(folder: string, iconsComponentFolderPath: string) {
+  const enumContent = getIconTypeContent(folder)
+
+  const outputFile = path.resolve(iconsComponentFolderPath, '../app-icons.types.ts')
+  writeFileSync(outputFile, enumContent)
+  // eslint-disable-next-line no-console
+  console.info(`Enum generated in ${outputFile}`)
 }
 
 export async function generateComponent(

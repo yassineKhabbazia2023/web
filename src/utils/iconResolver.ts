@@ -1,5 +1,5 @@
 import { defineAsyncComponent, type Component } from 'vue'
-
+import { PIXCircle } from '@/atoms/PIcon/components'
 export const iconsResolver = (
   iterable: Array<any>,
   iconPropertyName: string,
@@ -7,12 +7,12 @@ export const iconsResolver = (
   return iterable.map((element) => iconResolver(element[iconPropertyName]))
 }
 
-export const iconResolver = (icon: string | Component) =>
-  defineAsyncComponent(
-    () =>
-      import(
+export const iconResolver = (icon: string | Component, errorComponent: Component = PIXCircle) =>
+  defineAsyncComponent({
+    loader: () => import(
         `../atoms/PIcon/components/${
           typeof icon === 'string' ? icon : icon?.name
         }.vue`
-      ),
-  )
+    ),
+    errorComponent,
+  })

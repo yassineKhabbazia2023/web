@@ -5,6 +5,7 @@ import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVG_CODE, MOCKED_OPTIMIZED_SVG_COD
 import {
   capitalizeFirstLetter, getComponentInfo, getIcons, generateComponent,
   getComponentConstantsContent, writeComponentConstants, getComponentIndexContent, writeComponentIndex,
+  toCamelCase, getIconTypeContent,
 } from './lib'
 
 vi.mock('fs', () => ({
@@ -204,6 +205,41 @@ describe('scripts/iconGen/lib', () => {
 
       writeComponentIndex(outputFolder, icons)
       expect(mockedWriteFileSync).toHaveBeenCalledWith(outputPath, expect.anything())
+    })
+  })
+
+  describe('toCamelCase', () => {
+    const tests = [{
+      kebabText: 'kebab-text',
+      expected: 'kebabText',
+    }, {
+      kebabText: 'image name',
+      expected: 'image name',
+    }, {
+      kebabText: 'PascalCase',
+      expected: 'pascalCase',
+    }, {
+      kebabText: '',
+      expected: '',
+    }]
+    it.each(tests)('should return "$expected" when give "$kebabText"', ({
+      kebabText,
+      expected,
+    }) => {
+      const camelCased = toCamelCase(kebabText)
+      expect(camelCased).toBe(expected)
+    })
+  })
+
+  describe('getIconTypeContent', () => {
+    it('should return proper enum content', () => {
+      vi
+        .spyOn(fs, 'readdirSync')
+        .mockReturnValueOnce(['zero.svg', 'kebab-case.svg', 'ImageName.svg'])
+
+      const content = getIconTypeContent('my-folder')
+
+      expect(content).toMatchFileSnapshot('__snapshots__/getIconTypeContent/content.snap')
     })
   })
 })
