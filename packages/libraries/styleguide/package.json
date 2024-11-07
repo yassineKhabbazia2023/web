@@ -1,0 +1,107 @@
+{
+  "name": "@pulse/styleguide",
+  "version": "2.2.560",
+  "main": "dist/lib/styleguide.pegase.system.min.js",
+  "module": "dist/lib/styleguide.pegase.es.min.js",
+  "exports": {
+    ".": {
+      "import": "./dist/lib/styleguide.pegase.es.min.js",
+      "require": "./dist/lib/styleguide.pegase.cjs.min.js",
+      "types": "./dist/types/src/main.d.ts"
+    },
+    "./main": "./dist/lib/styleguide.pegase.es.min.js",
+    "./dist/style": "./dist/style.css"
+  },
+  "types": "./dist/types/src/main.d.ts",
+  "license": "ISC",
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=18.16.0",
+    "npm": ">=9.5.1"
+  },
+  "type": "module",
+  "scripts": {
+    "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high",
+    "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high",
+    "dev": "vite",
+    "build": "npm run build:vite && npm run build:types",
+    "build:types": "vue-tsc --declaration --emitDeclarationOnly",
+    "build:vite": "vite build",
+    "prepare": "husky install && npm run generate",
+    "predev": "npm run generate",
+    "prebuild": "npm run generate",
+    "prestory:dev": "npm run generate",
+    "prestory:build": "npm run generate",
+    "preview": "vite preview",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview",
+    "test": "npx vitest run",
+    "test:ci": "vitest run --coverage",
+    "test:update": "npx vitest -u",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
+    "lint:fix": "eslint . --fix --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --ignore-path .gitignore",
+    "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; Custom: https://mypulse.zeroheight.com/; BlueOak-1.0.0; UNKNOWN\" --production --excludePrivatePackages --unknown ",
+    "format": "prettier --write src/",
+    "push": "npm publish",
+    "generate": "npm run generate:icons && npm run generate:images",
+    "generate:icons": "ts-node -P ./tsconfig.scripts.json ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
+    "generate:images": "ts-node -P ./tsconfig.scripts.json ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.ts",
+    "lint:style": "stylelint src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss",
+    "lint:style-fix": "stylelint --fix src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss"
+  },
+  "dependencies": {
+    "@intlify/unplugin-vue-i18n": "^0.12.2",
+    "@vue/test-utils": "^2.4.0",
+    "@vueuse/core": "^10.2.0",
+    "dayjs": "1.11.10",
+    "element-plus": "2.4.3",
+    "lodash-es": "^4.17.21",
+    "vue-i18n": "^9.2.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "@histoire/plugin-vue": "^0.17.1",
+    "@pulse/eslint-config-pulse": "^1.73.3",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitest/coverage-istanbul": "^0.32.2",
+    "@vitest/ui": "^0.33.0",
+    "@vue/test-utils": "^2.4.0",
+    "@vue/tsconfig": "^0.4.0",
+    "axios": "^1.6.5",
+    "histoire": "^0.17.0",
+    "husky": "^8.0.3",
+    "license-checker": "^25.0.1",
+    "lint-staged": "^13.2.3",
+    "rollup-plugin-typescript-paths": "^1.4.0",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "sass": "^1.64.1",
+    "svgo": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "tslog": "^4.9.2",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-element-plus": "^0.7.1",
+    "unplugin-vue-components": "^0.25.1",
+    "vite": "^4.4.6",
+    "vitest": "^0.32.2",
+    "vitest-mock-extended": "^1.1.4",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4",
+    "vue-tsc": "^2.1.6"
+  },
+  "lint-staged": {
+    "*.{js, ts, vue, json}": "npm run lint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS && if [ $? -eq 1 ]; then git log -1 --pretty=format:'%B' | grep -qE '^.{0,100}$' || exit 0; else exit 0; fi"
+    }
+  }
+}
