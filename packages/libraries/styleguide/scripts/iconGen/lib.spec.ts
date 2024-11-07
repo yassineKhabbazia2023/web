@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import { MOCKED_ICON_1, MOCKED_ICON_2, MOCKED_SVG_CODE, MOCKED_OPTIMIZED_SVG_CODE, MOCKED_SVGO_CONFIG } from './mocks'
 
 import {
@@ -64,7 +64,7 @@ describe('scripts/iconGen/lib', () => {
   })
 
   describe('getIcons', () => {
-    let mockedReaddirSync: SpyInstance
+    let mockedReaddirSync: MockInstance
     beforeEach(() => {
       mockedReaddirSync = vi.spyOn(fs, 'readdirSync')
     })
@@ -114,8 +114,8 @@ describe('scripts/iconGen/lib', () => {
   })
 
   describe('generateComponent', () => {
-    let mockedWriteFileSync: SpyInstance
-    let mockedReadFileSync: SpyInstance
+    let mockedWriteFileSync: MockInstance
+    let mockedReadFileSync: MockInstance
 
     const componentName = 'PIMyFile'
     const fileName = 'my-file.svg'
@@ -168,7 +168,7 @@ describe('scripts/iconGen/lib', () => {
   })
 
   describe('writeComponentConstants', () => {
-    let mockedWriteFileSync: SpyInstance
+    let mockedWriteFileSync: MockInstance
     beforeEach(() => {
       mockedWriteFileSync = vi.spyOn(fs, 'writeFileSync')
     })
@@ -193,7 +193,7 @@ describe('scripts/iconGen/lib', () => {
   })
 
   describe('writeComponentIndex', () => {
-    let mockedWriteFileSync: SpyInstance
+    let mockedWriteFileSync: MockInstance
     beforeEach(() => {
       mockedWriteFileSync = vi.spyOn(fs, 'writeFileSync')
     })

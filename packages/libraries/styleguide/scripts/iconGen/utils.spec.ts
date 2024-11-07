@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import * as pulseIconGenLib from './lib'
 import * as commonUtils from '../common/utils'
 
@@ -25,7 +25,7 @@ vi.mock('../common/utils', () => {
 describe('pulseIconGenUtils', () => {
   const icons = [MOCKED_ICON_1, MOCKED_ICON_2]
   const outputPath = 'output-folder'
-  let mockedGenerateComponent: SpyInstance
+  let mockedGenerateComponent: MockInstance
 
   beforeEach(() => {
     mockedGenerateComponent = vi
@@ -48,10 +48,10 @@ describe('pulseIconGenUtils', () => {
     const icons = [MOCKED_ICON_1, MOCKED_ICON_1]
     const iconsFolderPath = 'icon-folder'
     const outputPath = 'output-folder'
-    let mockedGetIcons: SpyInstance
-    let mockedClearFolder: SpyInstance
-    let mockedWriteComponentIndex: SpyInstance
-    let mockedWriteComponentConstants: SpyInstance
+    let mockedGetIcons: MockInstance
+    let mockedClearFolder: MockInstance
+    let mockedWriteComponentIndex: MockInstance
+    let mockedWriteComponentConstants: MockInstance
 
     beforeEach(() => {
       mockedGetIcons = vi

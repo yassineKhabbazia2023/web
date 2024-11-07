@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { beforeEach, describe, expect, it, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 
 import { clearFolder, getSvgoConfig } from './utils'
 
@@ -11,7 +11,7 @@ vi.mock('fs', () => ({
 
 describe('scripts/common/utils', () => {
   describe('clearFolder', () => {
-    let mockedRmSync: SpyInstance
+    let mockedRmSync: MockInstance
     const folderPath = 'my-folder'
 
     beforeEach(() => {
