@@ -2,7 +2,7 @@ import type { PButtonProps } from '@styleguide/atoms/PButton/PButtonTypes'
 
 export interface PExpandableSearchProps {
   pFocusOnExpand?: boolean
-  pIsSearchOpen: boolean
+  pIsSearchOpen?: boolean
   pIsSearchShrinkable?: boolean
   pMaxLength?: number
   pPlaceholder?: string
