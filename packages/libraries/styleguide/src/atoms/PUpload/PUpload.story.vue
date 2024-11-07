@@ -19,9 +19,7 @@
           :loading="false"
           :circle="false"
         >
-          <PIcon class="el-button__icon--left">
-            <PIUpload />
-          </PIcon>
+          <PIcon class="el-button__icon--left" pName="upload" />
           Déposer un document
         </PButton>
       </PUpload>

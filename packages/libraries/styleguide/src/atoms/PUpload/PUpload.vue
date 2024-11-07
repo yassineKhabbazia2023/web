@@ -19,9 +19,7 @@
         :color="AppColors.PRIMARY"
         size="16"
         class="margin-right--2"
-      >
-        <PIUpload />
-      </PIcon>
+       pName="upload" />
       <PImage
         v-if="pUploadType === 'dragger'"
         class="p-upload__img margin-bottom--3"
@@ -66,7 +64,7 @@ import { ref, computed } from 'vue'
 import { getFileIcon } from '@styleguide/utils/fileExtension'
 import PIcon from '@styleguide/atoms/PIcon'
 import PImage from '@styleguide/atoms/PImage'
-import { PIUpload } from '@styleguide/atoms/PIcon/components'
+import {} from '@styleguide/atoms/PIcon/components'
 import PUploadFileLine from '@styleguide/atoms/PUploadFileLine'
 import type { UploadProps } from './PUploadTypes'
 import { AppColors } from '@styleguide/utils/AppColorsEnum'

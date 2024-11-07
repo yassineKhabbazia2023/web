@@ -23,9 +23,7 @@
               pType="generic"
               class="el-button--icon"
               pSize="small">
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
+              <PIcon pName="threeDots" />
             </PButton>
           </PToolbox>
         </template>

@@ -18,9 +18,7 @@
             @click="documentViewerModel = false"
             class="el-button--icon p-document-viewer__btn-close margin-right--2"
           >
-            <PIcon>
-              <PIArrowLeft />
-            </PIcon>
+            <PIcon pName="arrowLeft" />
           </PButton>
           <p class="p-document-viewer__title">
             <span v-if="pHasIcon" class="margin-right--2 p-document-viewer__icon-document">
@@ -37,9 +35,7 @@
             :pDisabled="!pShowPreviousDocument"
             @click="$emit('previous-document-button-click')"
           >
-            <PIcon>
-              <PIChevronLeft />
-            </PIcon>
+            <PIcon pName="chevronLeft" />
           </PButton>
           <div class="p-document-viewer__pagination">
             <span class="p-document-viewer__pagination-item">{{ pActiveDocument }}</span>
@@ -55,9 +51,7 @@
             :pDisabled="!pShowNextDocument"
             @click="$emit('next-document-button-click')"
           >
-            <PIcon>
-              <PIChevronRight />
-            </PIcon>
+            <PIcon pName="chevronRight" />
           </PButton>
         </div>
       </div>

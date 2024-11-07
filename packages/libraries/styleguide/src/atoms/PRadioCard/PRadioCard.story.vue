@@ -24,9 +24,7 @@
               pType="white"
             >
               Personnaliser
-              <PIcon class="el-button__icon--right">
-                <PIArrowRight />
-              </PIcon>
+              <PIcon class="el-button__icon--right" pName="arrowRight" />
             </PButton>
           </PRadioCard>
 

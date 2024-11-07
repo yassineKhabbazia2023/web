@@ -10,9 +10,7 @@
         :pTriggerOnFocus="triggerOnFocus"
       >
         <template #prefix>
-          <PIcon>
-            <PISearch />
-          </PIcon>
+          <PIcon pName="search" />
         </template>
         <template #default="{ item }">
           <div class="value">

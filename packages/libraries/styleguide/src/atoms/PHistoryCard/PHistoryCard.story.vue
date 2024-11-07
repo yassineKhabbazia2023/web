@@ -24,9 +24,7 @@
                 pSize="default"
                 pIconOnly
               >
-                <PIcon>
-                  <PITrash />
-                </PIcon>
+                <PIcon pName="trash" />
               </PButton>
             </PTooltip>
           </template>
@@ -54,9 +52,7 @@
                 pSize="default"
                 pIconOnly
               >
-                <PIcon>
-                  <PITrash />
-                </PIcon>
+                <PIcon pName="trash" />
               </PButton>
             </PTooltip>
           </template>
@@ -69,7 +65,7 @@
 <script setup lang="ts">
 import PButton from '@styleguide/atoms/PButton'
 import PIcon from '@styleguide/atoms/PIcon'
-import { PITrash } from '@styleguide/atoms/PIcon/components'
+import {} from '@styleguide/atoms/PIcon/components'
 import PTooltip from '@styleguide/atoms/PTooltip'
 import PHistoryCard from '.'
 </script>

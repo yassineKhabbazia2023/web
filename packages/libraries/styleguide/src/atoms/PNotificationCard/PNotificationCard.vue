@@ -16,9 +16,7 @@
       @click="$emit('action-notification-click')"
     >
       <span class="p-notification-card__notif padding-right--1" aria-hidden="true">
-        <PIcon class="p-notification-card__icon" size="16">
-          <PIDot />
-        </PIcon>
+        <PIcon class="p-notification-card__icon" size="16" pName="dot" />
       </span>
       <span class="p-notification-card__avatar padding-right--2">
         <slot name="avatar" />

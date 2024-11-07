@@ -32,9 +32,7 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon :color="AppColors.PRIMARY" size="16">
-                <PILink45deg />
-              </PIcon>
+              <PIcon :color="AppColors.PRIMARY" size="16" pName="link45deg" />
               <a
                 class="drawer__header-suffix-link font-base link margin-left--1"
                 href="#"
@@ -101,9 +99,7 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon :color="AppColors.PRIMARY" size="16">
-                <PILink45deg />
-              </PIcon>
+              <PIcon :color="AppColors.PRIMARY" size="16" pName="link45deg" />
               <a
                 class="drawer__header-suffix-link font-base link margin-left--1"
                 href="#"
@@ -148,9 +144,7 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon :color="AppColors.PRIMARY" size="16">
-                <PILink45deg />
-              </PIcon>
+              <PIcon :color="AppColors.PRIMARY" size="16" pName="link45deg" />
               <a
                 class="drawer__header-suffix-link font-base link margin-left--1"
                 href="#"

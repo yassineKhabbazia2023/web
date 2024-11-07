@@ -36,9 +36,7 @@
       v-if="shouldChevronExists"
       class="text-align--center p-calendar-date-cell__chevron-down"
     >
-      <PIcon size="12" :color="AppColors.GRAY_900">
-        <PIChevronDown />
-      </PIcon>
+      <PIcon size="12" :color="AppColors.GRAY_900" pName="chevronDown" />
     </div>
   </div>
 </template>

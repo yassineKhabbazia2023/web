@@ -93,9 +93,7 @@
         @click="emit('click-delete')"
         data-testid="p-user-action-delete-icon"
       >
-        <PIcon>
-          <PITrash />
-        </PIcon>
+        <PIcon pName="trash" />
       </PButton>
     </div>
   </div>
@@ -110,7 +108,7 @@ import PDropdown from '@styleguide/molecules/PDropdown'
 import PIcon from '@styleguide/atoms/PIcon'
 import PInput from '@styleguide/atoms/PInput'
 import PTag from '@styleguide/atoms/PTag'
-import { PITrash } from '@styleguide/atoms/PIcon/components'
+import {} from '@styleguide/atoms/PIcon/components'
 import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 
 const emit = defineEmits<{

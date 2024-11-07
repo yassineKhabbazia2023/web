@@ -25,9 +25,7 @@
       >
         <PButton pType="primary" pSize="small">
           Activate
-          <PIcon class="el-button__icon--right">
-            <PIArrowRight />
-          </PIcon>
+          <PIcon class="el-button__icon--right" pName="arrowRight" />
         </PButton>
       </PBlockHeader>
     </Variant>
@@ -41,9 +39,7 @@
         pHasButton
       >
         <PButton pType="default" pSize="small">
-          <PIcon class="el-button__icon--left">
-            <PIPencilSquare />
-          </PIcon>
+          <PIcon class="el-button__icon--left" pName="pencilSquare" />
           Note
         </PButton>
       </PBlockHeader>
@@ -68,9 +64,7 @@
             pClearable
           >
             <template #prefix>
-              <PIcon>
-                <PISearch />
-              </PIcon>
+              <PIcon pName="search" />
             </template>
           </PAutocomplete>
         </template>

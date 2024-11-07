@@ -28,9 +28,7 @@
                 pType="white"
                 pSize="small"
               >
-                <PIcon>
-                  <PIThreeDots />
-                </PIcon>
+                <PIcon pName="threeDots" />
               </PButton>
             </PToolbox>
           </div>

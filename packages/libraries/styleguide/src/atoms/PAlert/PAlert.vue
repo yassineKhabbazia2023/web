@@ -12,9 +12,7 @@
       @click="$emit('close')"
       class="p-alert__close-btn padding--0 margin-left--2"
     >
-      <PIcon :color="AppColors.PERSIAN_900" size="16">
-        <PIX />
-      </PIcon>
+      <PIcon :color="AppColors.PERSIAN_900" size="16" pName="x" />
     </button>
   </div>
 </template>
@@ -22,7 +20,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import PIcon from '@styleguide/atoms/PIcon'
-import { PIX } from '@styleguide/atoms/PIcon/components'
+import {} from '@styleguide/atoms/PIcon/components'
 import type { PAlertProps } from './PAlertTypes'
 import { iconResolver } from '@styleguide/utils/iconResolver'
 import { AppColors } from '@styleguide/utils/AppColorsEnum'

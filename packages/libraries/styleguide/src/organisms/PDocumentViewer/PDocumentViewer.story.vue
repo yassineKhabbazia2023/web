@@ -30,9 +30,7 @@
         :pDirection="documentViewerBasicData.pDirection"
       >
         <template #iconDocument>
-          <PIcon>
-            <PIFiletypePdf />
-          </PIcon>
+          <PIcon pName="filetypePdf" />
         </template>
         <template #media>
           <PDocumentDisplay
@@ -61,9 +59,7 @@
               :loading="false"
               :circle="false"
             >
-              <PIcon class="el-button__icon--left">
-                <PIUpload />
-              </PIcon>
+              <PIcon class="el-button__icon--left" pName="upload" />
               Déposer un document pdf
             </PButton>
           </PUpload>
@@ -80,7 +76,7 @@ import PUpload from '@styleguide/atoms/PUpload'
 import PDocumentViewer from './'
 import PDocumentDisplay from '@styleguide/molecules/PDocumentDisplay'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
-import { PIFiletypePdf } from '@styleguide/atoms/PIcon/components'
+import {} from '@styleguide/atoms/PIcon/components'
 
 const isDrawerOpened = ref(false)
 

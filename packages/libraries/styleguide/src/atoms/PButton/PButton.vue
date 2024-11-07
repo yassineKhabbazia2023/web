@@ -10,9 +10,7 @@
     :class="pClassMapper"
   >
     <template #loading>
-      <PIcon class="is-loading">
-        <PILoader />
-      </PIcon>
+      <PIcon class="is-loading" pName="loader" />
     </template>
     <slot />
   </ElButton>
@@ -21,7 +19,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import PIcon from '@styleguide/atoms/PIcon'
-import { PILoader } from '@styleguide/atoms/PIcon/components'
+import {} from '@styleguide/atoms/PIcon/components'
 import { ElButton } from 'element-plus'
 import type { PButtonProps } from './PButtonTypes'
 import { injectionButtonKey } from '@styleguide/atoms/PButtonGroup/PButtonGroupTypes'

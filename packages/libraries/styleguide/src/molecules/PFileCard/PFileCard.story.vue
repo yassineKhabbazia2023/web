@@ -13,9 +13,7 @@
           :pHasButton="defaultState.pHasButton"
         >
           <template #icon>
-            <PIcon>
-              <PIFiletypePdf />
-            </PIcon>
+            <PIcon pName="filetypePdf" />
           </template>
           <template #buttons>
             <PButton
@@ -24,9 +22,7 @@
               :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
-              <PIcon>
-                <PIDownload />
-              </PIcon>
+              <PIcon pName="download" />
             </PButton>
             <PButton
               class="el-button--icon"
@@ -34,9 +30,7 @@
               :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
-              <PIcon>
-                <PIEye />
-              </PIcon>
+              <PIcon pName="eye" />
             </PButton>
           </template>
         </PFileCard>
@@ -54,9 +48,7 @@
               :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
-              <PIcon>
-                <PIDownload />
-              </PIcon>
+              <PIcon pName="download" />
             </PButton>
             <PButton
               class="el-button--icon"
@@ -64,9 +56,7 @@
               :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
-              <PIcon>
-                <PIEye />
-              </PIcon>
+              <PIcon pName="eye" />
             </PButton>
           </template>
         </PFileCard>

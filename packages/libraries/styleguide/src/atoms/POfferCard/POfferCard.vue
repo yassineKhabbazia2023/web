@@ -24,9 +24,7 @@
         class="p-offer-card__chevron-icon"
         :color="AppColors.GRAY_900"
         size="16px"
-      >
-        <PIChevronRight />
-      </PIcon>
+       pName="chevronRight" />
     </div>
   </button>
 </template>

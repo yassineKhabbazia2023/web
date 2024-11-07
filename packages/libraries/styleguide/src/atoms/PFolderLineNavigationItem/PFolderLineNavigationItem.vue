@@ -27,9 +27,7 @@
         </span>
       </div>
     </PTooltip>
-    <PIcon v-if="pHasArrow" size="16">
-      <PIChevronRight />
-    </PIcon>
+    <PIcon v-if="pHasArrow" size="16" pName="chevronRight" />
   </button>
 </template>
 

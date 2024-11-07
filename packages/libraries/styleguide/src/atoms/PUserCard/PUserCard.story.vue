@@ -17,9 +17,7 @@
           pType="default"
           pSize="small"
         >
-          <PIcon class="el-button__icon--left">
-            <PIVectorPen />
-          </PIcon>
+          <PIcon class="el-button__icon--left" pName="vectorPen" />
           Designate a signatory
         </PButton>
       </PUserCard>
@@ -38,9 +36,7 @@
           pType="default"
           pSize="small"
         >
-          <PIcon class="el-button__icon--left">
-            <PIVectorPen />
-          </PIcon>
+          <PIcon class="el-button__icon--left" pName="vectorPen" />
           Designate a signatory
         </PButton>
       </PUserCard>
@@ -57,9 +53,7 @@
           pType="primary"
           pSize="small"
         >
-          <PIcon class="el-button__icon--left">
-            <PIAdd />
-          </PIcon>
+          <PIcon class="el-button__icon--left" pName="add" />
           Call to action
         </PButton>
       </PUserCard>
@@ -87,7 +81,7 @@
 <script lang="ts" setup>
 import PButton from '@styleguide/atoms/PButton'
 import PIcon from '@styleguide/atoms/PIcon'
-import { PIBuilding, PIAdd, PIVectorPen } from '@styleguide/atoms/PIcon/components'
+import { PIBuilding } from '@styleguide/atoms/PIcon/components'
 import PTag from '@styleguide/atoms/PTag'
 import PUserCard from './'
 import type { PUserCardProps } from './PUserCardTypes'

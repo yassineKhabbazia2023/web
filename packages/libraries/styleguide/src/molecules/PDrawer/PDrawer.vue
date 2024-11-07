@@ -24,9 +24,7 @@
             @click="$emit('close-drawer-button')"
             class="p-drawer__close-button"
           >
-            <PIcon>
-              <PIX />
-            </PIcon>
+            <PIcon pName="x" />
           </PButton>
         </div>
         <div
@@ -42,9 +40,7 @@
               v-if="pShowPreviousStep"
               class="p-drawer__step-back-button"
             >
-              <PIcon>
-                <PIArrowLeft />
-              </PIcon>
+              <PIcon pName="arrowLeft" />
             </PButton>
             <h3 class="p-drawer__title">
               {{ pTitle }}

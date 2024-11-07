@@ -15,9 +15,7 @@
           :pColor="currentColor"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -40,9 +38,7 @@
           pColor="orange"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -50,9 +46,7 @@
           pColor="persian"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -60,9 +54,7 @@
           pColor="teal"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -70,9 +62,7 @@
           pColor="green"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -80,9 +70,7 @@
           pColor="fuschia"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -90,9 +78,7 @@
           pColor="gray"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -100,9 +86,7 @@
           pColor="cyan"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -110,9 +94,7 @@
           pColor="amethyste"
           :pSelected="selectedState"
         >
-          <PIcon>
-            <PIPulse />
-          </PIcon>
+          <PIcon pName="pulse" />
         </PAvatar>
         <PAvatar
           :pShape="currentShape"
@@ -176,7 +158,7 @@
 import { ref } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
 import PAvatar from './'
-import { PIPulse } from '../PIcon/components'
+import {} from '../PIcon/components'
 
 const url = ref('https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
 const avatarShapeList: { label: string, value: PAvatarProps['pShape'] }[] = [

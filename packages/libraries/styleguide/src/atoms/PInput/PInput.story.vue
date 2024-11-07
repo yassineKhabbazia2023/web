@@ -80,30 +80,22 @@
         <template #suffix>
           <PIcon
             :color="AppColors.PRIMARY"
-          >
-            <PICheck />
-          </PIcon>
+           pName="check" />
         </template>
         <template #prefix>
           <PIcon
             :color="AppColors.PRIMARY"
-          >
-            <PICheck />
-          </PIcon>
+           pName="check" />
         </template>
         <template #append>
           <PIcon
             :color="AppColors.PRIMARY"
-          >
-            <PICheck />
-          </PIcon>
+           pName="check" />
         </template>
         <template #prepend>
           <PIcon
             :color="AppColors.PRIMARY"
-          >
-            <PICheck />
-          </PIcon>
+           pName="check" />
         </template>
       </PInput>
       <template #controls>

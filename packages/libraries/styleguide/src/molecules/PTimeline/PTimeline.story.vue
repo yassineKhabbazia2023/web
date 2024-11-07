@@ -30,9 +30,7 @@
                   pSize="default"
                   pIconOnly
                 >
-                  <PIcon>
-                    <PITrash />
-                  </PIcon>
+                  <PIcon pName="trash" />
                 </PButton>
               </PTooltip>
             </template>
@@ -59,9 +57,7 @@
                   pSize="default"
                   pIconOnly
                 >
-                  <PIcon>
-                    <PITrash />
-                  </PIcon>
+                  <PIcon pName="trash" />
                 </PButton>
               </PTooltip>
             </template>
@@ -88,9 +84,7 @@
                   pSize="default"
                   pIconOnly
                 >
-                  <PIcon>
-                    <PITrash />
-                  </PIcon>
+                  <PIcon pName="trash" />
                 </PButton>
               </PTooltip>
             </template>
@@ -117,9 +111,7 @@
                   pSize="default"
                   pIconOnly
                 >
-                  <PIcon>
-                    <PITrash />
-                  </PIcon>
+                  <PIcon pName="trash" />
                 </PButton>
               </PTooltip>
             </template>

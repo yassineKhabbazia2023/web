@@ -12,13 +12,9 @@
         :pSize="basicButton.pSize"
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
-        <PIcon class="el-button__icon--left">
-          <PICalendarEvent />
-        </PIcon>
+        <PIcon class="el-button__icon--left" pName="calendarEvent" />
         {{ buttonText }}
-        <PIcon class="el-button__icon--right">
-          <PIArrowRight />
-        </PIcon>
+        <PIcon class="el-button__icon--right" pName="arrowRight" />
       </PButton>
       <template #controls>
         <HstText v-model="buttonText" title="Text" />
@@ -52,7 +48,7 @@
         :pSize="iconButton.pSize"
         @click="logEvent('click', { log: 'Button is clicked' })"
       >
-        <PIcon><PISearch /></PIcon>
+        <PIcon pName="search" />
       </PButton>
       <template #controls>
         <HstCheckbox v-model="iconButton.pPlain" title="Plain" />
