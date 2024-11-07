@@ -1,8 +1,10 @@
 <template>
   <div class="p-alert" :class="[typeModifierClass]">
-    <PIcon class="p-alert__icon" :size="iconSize">
-      <component :is="typeIcon" />
-    </PIcon>
+    <PIcon
+      class="p-alert__icon"
+      :size="iconSize"
+      :pName="iconName"
+    />
     <div class="p-alert__content margin-left--3">
       <span class="font-bold"><slot name="bold-text"/></span>
       <slot />
@@ -12,7 +14,11 @@
       @click="$emit('close')"
       class="p-alert__close-btn padding--0 margin-left--2"
     >
-      <PIcon :color="AppColors.PERSIAN_900" size="16" pName="x" />
+      <PIcon
+        :color="AppColors.PERSIAN_900"
+        size="16"
+        pName="x"
+      />
     </button>
   </div>
 </template>
@@ -20,10 +26,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import PIcon from '@styleguide/atoms/PIcon'
-import {} from '@styleguide/atoms/PIcon/components'
 import type { PAlertProps } from './PAlertTypes'
-import { iconResolver } from '@styleguide/utils/iconResolver'
 import { AppColors } from '@styleguide/utils/AppColorsEnum'
+// eslint-disable-next-line import/extensions
+import type { PIconProps } from '../PIcon/PIcon.types'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
   pType: 'main',
@@ -38,18 +44,16 @@ defineEmits<{
 const typeModifierClass = computed(() => `p-alert--type-${props.pType}`)
 const iconSize = computed(() => props.pIcon ? 32 : 16)
 
-const typeIcon = computed(() => {
+const iconName = computed<PIconProps['pName']>(() => {
   switch (props.pType) {
-    case 'success':
-      return iconResolver('PICheckCircle')
-
-    case 'warning':
-      return iconResolver('PIExclamationTriangle')
-
-    case 'danger':
-      return iconResolver('PIXCircle')
-
-    default: return props.pIcon ? iconResolver(props.pIcon) : iconResolver('PIInfoCircle')
+  case 'success':
+    return 'PICheckCircle'
+  case 'warning':
+    return 'PIExclamationTriangle'
+  case 'danger':
+    return 'PIXCircle'
+  default:
+    return props.pIcon ?? 'PIInfoCircle'
   }
 })
 

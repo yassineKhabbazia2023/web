@@ -9,8 +9,9 @@
     <Variant>
       <div
         v-for="(group, indexGroup) in iconsData"
-        :key="indexGroup">
-        <h1>{{  group.category }}</h1>
+        :key="indexGroup"
+      >
+        <h1>{{ group.category }}</h1>
         <ul
           class="demo-icon-list"
         >
@@ -20,9 +21,11 @@
             v-for="(item, index) in group.icons"
             :key="index">
             <span class="demo-svg-icon" @click="copyClipboard(item)">
-              <PIcon :color="AppColors.PRIMARY" size="20px">
-                <component :is="item.component" />
-              </PIcon>
+              <PIcon
+                :color="AppColors.PRIMARY"
+                size="20px"
+                :pName="item.component"
+              />
               <span class="icon-name">{{ item.name }}</span>
             </span>
           </li>
