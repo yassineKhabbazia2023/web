@@ -44,7 +44,7 @@
           <div class="p-document-viewer__pagination">
             <span class="p-document-viewer__pagination-item">{{ pActiveDocument }}</span>
             <span class="p-document-viewer__pagination-item padding-left--2 padding-right--2">
-              /
+              {{ SLASH }}
             </span>
             <span class="p-document-viewer__pagination-item">{{ pTotalDocuments }}</span>
           </div>
@@ -76,6 +76,8 @@
 <script setup lang="ts">
 import { ElDrawer } from 'element-plus'
 import { computed } from 'vue'
+import PIcon from '../../atoms/PIcon'
+import PButton from '../../atoms/PButton'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
 
 const emit = defineEmits([
@@ -84,6 +86,7 @@ const emit = defineEmits([
   'update:modelValue',
 ])
 
+const SLASH = '/'
 const props = withDefaults(defineProps<PDocumentViewerProps>(), {
   pDirection: 'rtl',
   pSize: '100%',

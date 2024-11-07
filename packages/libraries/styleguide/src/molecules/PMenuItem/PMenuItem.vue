@@ -24,6 +24,7 @@
 import { useSlots } from 'vue'
 import { iconResolver } from '@styleguide/utils/iconResolver'
 import { ElMenuItem } from 'element-plus'
+import PIcon from '../../atoms/PIcon'
 import type { PMenuItemProps } from './PMenuItemTypes'
 
 const slots = useSlots()

@@ -16,6 +16,7 @@ import { computed } from 'vue'
 import { ElTag } from 'element-plus'
 import { iconResolver } from '@styleguide/utils/iconResolver'
 import type { PPastilleProps } from './PPastilleTypes'
+import PIcon from '../PIcon'
 
 const props = withDefaults(defineProps<PPastilleProps>(), {
   pType: 'default',

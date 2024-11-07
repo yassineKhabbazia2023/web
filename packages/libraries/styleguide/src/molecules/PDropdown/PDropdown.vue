@@ -80,6 +80,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import POptionGroup from '../POptionGroup'
+import PSelect from '../PSelect'
+import PCheckbox from '../../atoms/PCheckbox'
+import POption from '../../atoms/POption'
 import type { PDropdownProps } from './PDropdownTypes'
 import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues } from './PDropdownUtils'
 

@@ -35,6 +35,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
+import PIcon from '../PIcon'
 import { PISearch } from '@styleguide/atoms/PIcon/components'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import PButton from '@styleguide/atoms/PButton'

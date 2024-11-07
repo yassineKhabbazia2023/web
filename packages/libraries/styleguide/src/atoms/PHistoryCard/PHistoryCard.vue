@@ -69,6 +69,8 @@
 
 <script setup lang="ts">
 import type { PHistoryCardProps } from './PHistoryCardTypes'
+import PTag from '../PTag'
+import PTooltip from '../PTooltip'
 
 defineProps<PHistoryCardProps>()
 </script>

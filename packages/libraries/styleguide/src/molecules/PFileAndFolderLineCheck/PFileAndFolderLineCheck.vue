@@ -51,6 +51,7 @@ import { computed, watch } from 'vue'
 import { iconResolver } from '@styleguide/utils/iconResolver'
 import { getFileExtension } from '@styleguide/utils/fileExtension'
 import PCheckbox from '@styleguide/atoms/PCheckbox'
+import PIcon from '@styleguide/atoms/PIcon'
 import PLoader from '@styleguide/atoms/PLoader'
 import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckTypes'
 

@@ -22,6 +22,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import PAvatar from '../PAvatar'
+import PIcon from '../PIcon'
 import type { PEntityProps } from './PEntityTypes'
 
 const props = withDefaults(defineProps<PEntityProps>(), {

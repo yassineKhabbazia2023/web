@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import PIcon from '../PIcon'
 import type { PTextProps } from './PTextTypes'
 
 const props = withDefaults(defineProps<PTextProps>(), {

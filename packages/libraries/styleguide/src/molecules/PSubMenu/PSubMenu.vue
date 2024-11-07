@@ -27,6 +27,7 @@ import { iconResolver } from '@styleguide/utils/iconResolver'
 import { ElSubMenu } from 'element-plus'
 import { PICaretDown, PICaretUp } from '@styleguide/atoms/PIcon/components'
 import type { PSubMenuProps } from './PSubMenuTypes'
+import PIcon from '../../atoms/PIcon'
 
 withDefaults(defineProps<PSubMenuProps>(), {
   pPopperClass: undefined,

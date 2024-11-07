@@ -38,6 +38,7 @@
 
 <script setup lang="ts">
 import type { PNotificationCardProps } from './PNotificationCardTypes'
+import PIcon from '../PIcon'
 
 defineEmits(['action-notification-click'])
 
