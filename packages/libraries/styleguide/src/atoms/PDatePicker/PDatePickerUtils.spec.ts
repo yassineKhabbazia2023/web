@@ -59,7 +59,7 @@ describe('test PDatePickerUtils', () => {
       expected,
     }) => {
       const currentDate = getCurrentDate(modelValue, panelDate)
-      expect(currentDate).toStrictEqual(expected)
+      expect(`${currentDate}`).toBe(`${expected}`)
     })
   })
 

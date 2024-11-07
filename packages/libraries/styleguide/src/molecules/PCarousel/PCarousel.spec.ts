@@ -1,4 +1,4 @@
-import wrapperFactory from '@tests/utils/wrapperFactory'
+import wrapperFactory from '@styleguide/tests/utils/wrapperFactory'
 import PCarousel from '.'
 import { ElCarousel, ElCarouselItem } from 'element-plus'
 import { describe, it, expect } from 'vitest'
