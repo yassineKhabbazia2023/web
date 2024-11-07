@@ -108,7 +108,6 @@ import PDropdown from '@styleguide/molecules/PDropdown'
 import PIcon from '@styleguide/atoms/PIcon'
 import PInput from '@styleguide/atoms/PInput'
 import PTag from '@styleguide/atoms/PTag'
-import {} from '@styleguide/atoms/PIcon/components'
 import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 
 const emit = defineEmits<{

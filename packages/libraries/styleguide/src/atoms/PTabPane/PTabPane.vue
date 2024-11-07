@@ -35,7 +35,6 @@ import { useSlots, computed } from 'vue'
 import { iconResolver } from '@styleguide/utils/iconResolver'
 import PTooltip from '@styleguide/atoms/PTooltip'
 import PIcon from '@styleguide/atoms/PIcon'
-import PTag from '../PTag'
 import type { PTabPaneProps } from './PTabPaneTypes'
 
 const slots = useSlots()

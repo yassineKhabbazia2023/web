@@ -39,7 +39,6 @@
 import { computed } from 'vue'
 import PTag from '@styleguide/atoms/PTag'
 import PIcon from '@styleguide/atoms/PIcon'
-import {} from '@styleguide/atoms/PIcon/components'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
 
 const emit = defineEmits<{

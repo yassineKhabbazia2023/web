@@ -158,7 +158,6 @@
 import { ref } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
 import PAvatar from './'
-import {} from '../PIcon/components'
 
 const url = ref('https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
 const avatarShapeList: { label: string, value: PAvatarProps['pShape'] }[] = [

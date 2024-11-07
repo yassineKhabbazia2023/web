@@ -19,7 +19,6 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import PIcon from '@styleguide/atoms/PIcon'
-import {} from '@styleguide/atoms/PIcon/components'
 import { ElButton } from 'element-plus'
 import type { PButtonProps } from './PButtonTypes'
 import { injectionButtonKey } from '@styleguide/atoms/PButtonGroup/PButtonGroupTypes'
