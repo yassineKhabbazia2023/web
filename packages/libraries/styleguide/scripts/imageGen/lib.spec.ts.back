@@ -51,7 +51,7 @@ const folderPath = 'folder-path'
 const originPath = 'origin-path'
 const svgoConfig = {}
 
-describe('imageGen/lib', () => {
+describe(imageGen/lib', () => {
   describe('getFolderImages', () => {
     it('should return folderImages', () => {
       const expected = imageNames
