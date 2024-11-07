@@ -2,6 +2,7 @@ import { vi, describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PAlert from './'
 import type { PAlertProps } from './PAlertTypes'
+import { nextTick } from 'vue'
 
 const baseProps: PAlertProps = {
   pType: 'main',
@@ -51,13 +52,15 @@ describe('pAlert', () => {
   })
   it('should emits close-alert', async () => {
     const wrapper = createWrapper({ pClosable: true })
-    await wrapper.findComponent({ name: 'PIX' }).trigger('click')
+    const secondIcons = wrapper.findAllComponents({ name: 'PIcon' }).at(1)
+    secondIcons?.trigger('click')
+    await nextTick()
     expect(wrapper.emitted('close')).toBeTruthy()
   })
   it('should show the arrow icon', async () => {
-    const wrapper = createWrapper({ pIcon: 'PIArrowHere' })
+    const wrapper = createWrapper({ pIcon: 'arrowHere' })
     await vi.dynamicImportSettled()
-    const pIArrowIconComponent = wrapper.findComponent({ name: 'PIArrowHere' })
-    expect(pIArrowIconComponent.exists()).toBeTruthy()
+    const pIconComponent = wrapper.findComponent({ name: 'PIcon' })
+    expect(pIconComponent.props('pName')).toBe('arrowHere')
   })
 })

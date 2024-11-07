@@ -33,7 +33,6 @@ import type { PIconProps } from '../PIcon/PIcon.types'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
   pType: 'main',
-  pIcon: '',
   pClosable: false,
 })
 
@@ -47,13 +46,13 @@ const iconSize = computed(() => props.pIcon ? 32 : 16)
 const iconName = computed<PIconProps['pName']>(() => {
   switch (props.pType) {
   case 'success':
-    return 'PICheckCircle'
+    return 'checkCircle'
   case 'warning':
-    return 'PIExclamationTriangle'
+    return 'exclamationTriangle'
   case 'danger':
-    return 'PIXCircle'
+    return 'xCircle'
   default:
-    return props.pIcon ?? 'PIInfoCircle'
+    return props.pIcon ?? 'infoCircle'
   }
 })
 

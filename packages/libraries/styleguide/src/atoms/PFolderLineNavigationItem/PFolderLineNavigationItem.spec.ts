@@ -63,20 +63,19 @@ describe('pFolderLineNavigationItem', () => {
 
     describe('should display the PIChevronRight based on the pHasArrow prop', () => {
       const cases = [
-        { pHasArrow: true, expectedValue: true },
-        { pHasArrow: false, expectedValue: false },
+        { pHasArrow: true, expectedLength: 2 },
+        { pHasArrow: false, expectedLength: 1 },
       ]
 
-      it.each(cases)('validation with "%s"', ({ pHasArrow, expectedValue }) => {
+      it.each(cases)('validation with "%s"', ({ pHasArrow, expectedLength }) => {
         const wrapper = createWrapper({
           pDisabled: false,
           pFolderId: 123,
           pHasArrow,
         })
 
-        expect(wrapper.findComponent(PIChevronRight).exists()).toBe(
-          expectedValue,
-        )
+        const pIconList = wrapper.findAllComponents({ name: 'PIcon' })
+        expect(pIconList).toHaveLength(expectedLength)
       })
     })
     it('should show the folder name', () => {
