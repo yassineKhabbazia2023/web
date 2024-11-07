@@ -8,7 +8,6 @@ import { HstVue } from '@histoire/plugin-vue'
 import vue from '@vitejs/plugin-vue'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
-import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
@@ -33,12 +32,6 @@ const basicConfig = {
     }),
     VueI18nPlugin({
       include: [path.resolve(__dirname, './src/**/locales/**')],
-    }),
-    AutoImport({
-      imports: ['vue', 'vue/macros', '@vueuse/core'],
-      dts: true,
-      vueTemplate: true,
-      dirs: ['./src/atoms/PIcon', './src/utils'],
     }),
     Components({
       dirs: [
