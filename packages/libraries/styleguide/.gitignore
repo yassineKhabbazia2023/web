@@ -13,6 +13,8 @@ dist
 dist-ssr
 coverage
 *.tgz
+*.local
+dependency-graph.svg
 
 /cypress/videos/
 /cypress/screenshots/
@@ -35,3 +37,7 @@ components.d.ts
 stats.html
 
 vite*.mjs
+
+.rollup.cache
+
+*.tsbuildinfo
