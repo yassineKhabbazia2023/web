@@ -1,3 +1,0 @@
-{
-  "extends": ["@pulse/eslint-config-pulse/.stylelintrc.js"]
-}
