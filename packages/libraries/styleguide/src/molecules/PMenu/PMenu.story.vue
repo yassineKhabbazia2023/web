@@ -104,7 +104,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
-import { PICheckCircle } from '@/atoms/PIcon/components'
+import { PICheckCircle } from '@styleguide/atoms/PIcon/components'
 import PMenu from './'
 import PMenuItem from '../PMenuItem'
 import PSubMenu from '../PSubMenu'

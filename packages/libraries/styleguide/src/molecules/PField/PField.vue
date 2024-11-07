@@ -85,12 +85,12 @@
 
 <script setup lang="ts" generic="T">
 import { computed } from 'vue'
-import PDatePicker from '@/atoms/PDatePicker'
-import PDropdown from '@/molecules/PDropdown'
-import PFormItem from '@/atoms/PFormItem'
-import PInput from '@/atoms/PInput'
-import PRadio from '@/atoms/PRadio'
-import PCheckbox from '@/atoms/PCheckbox'
+import PDatePicker from '@styleguide/atoms/PDatePicker'
+import PDropdown from '@styleguide/molecules/PDropdown'
+import PFormItem from '@styleguide/atoms/PFormItem'
+import PInput from '@styleguide/atoms/PInput'
+import PRadio from '@styleguide/atoms/PRadio'
+import PCheckbox from '@styleguide/atoms/PCheckbox'
 import dayjs from 'dayjs'
 import type { PFieldProps } from './PFieldTypes'
 import {

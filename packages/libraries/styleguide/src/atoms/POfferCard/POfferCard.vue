@@ -32,10 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import PImage from '@/atoms/PImage'
-import PIcon from '@/atoms/PIcon'
+import PImage from '@styleguide/atoms/PImage'
+import PIcon from '@styleguide/atoms/PIcon'
 import type { POfferCardProps } from './POfferCardTypes'
-import { AppColors } from '@/utils/AppColorsEnum'
+import { AppColors } from '@styleguide/utils/AppColorsEnum'
 
 defineProps<POfferCardProps>()
 defineEmits<{

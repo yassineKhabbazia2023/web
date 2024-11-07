@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import type { PlacementOptions } from '@/constants/placementOptions'
+import type { PlacementOptions } from '@styleguide/constants/placementOptions'
 
 export interface PToolboxItemProps {
   pValue: string

@@ -65,10 +65,10 @@
 import { computed, inject, reactive, ref } from 'vue'
 // the following types are exported in the styleguide as PFormInstance & PFormRules
 import type { ElNotification, FormInstance, FormRules } from 'element-plus'
-import { PICheck, PIExclamationTriangle } from '@/atoms/PIcon/components'
-import PFormItem from '@/atoms/PFormItem'
-import PButton from '@/atoms/PButton'
-import PInput from '@/atoms/PInput'
+import { PICheck, PIExclamationTriangle } from '@styleguide/atoms/PIcon/components'
+import PFormItem from '@styleguide/atoms/PFormItem'
+import PButton from '@styleguide/atoms/PButton'
+import PInput from '@styleguide/atoms/PInput'
 
 const toastPlugin = inject('toast') as typeof ElNotification
 

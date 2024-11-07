@@ -209,11 +209,11 @@
 
 <script setup lang="ts">
 import PDrawer from '.'
-import PButton from '@/atoms/PButton'
+import PButton from '@styleguide/atoms/PButton'
 import { reactive, ref } from 'vue'
 import type { PDrawerProps } from './PDrawerTypes'
-import type { BreadcrumbItems } from '@/molecules/PBreadcrumb/PBreadcrumbTypes'
-import { AppColors } from '@/utils/AppColorsEnum'
+import type { BreadcrumbItems } from '@styleguide/molecules/PBreadcrumb/PBreadcrumbTypes'
+import { AppColors } from '@styleguide/utils/AppColorsEnum'
 
 const pDrawerControl = reactive({
   title: 'Title',

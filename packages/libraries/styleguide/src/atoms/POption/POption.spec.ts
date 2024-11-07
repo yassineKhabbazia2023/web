@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { POptionProps } from './POptionTypes'
-import PSelect from '@/molecules/PSelect'
+import PSelect from '@styleguide/molecules/PSelect'
 import POption from '.'
 
 function createWrapper(options: POptionProps[], slotContent: string): VueWrapper {

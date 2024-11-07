@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import PToolboxItem from '@/atoms/PToolboxItem'
-import { PIAdd } from '@/atoms/PIcon/components'
+import PToolboxItem from '@styleguide/atoms/PToolboxItem'
+import { PIAdd } from '@styleguide/atoms/PIcon/components'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
 
 const action = 'delete'

@@ -46,8 +46,8 @@
 </template>
 
 <script setup lang="ts">
-import PImage from '@/atoms/PImage'
-import PTag from '@/atoms/PTag'
+import PImage from '@styleguide/atoms/PImage'
+import PTag from '@styleguide/atoms/PTag'
 import { ElSwitch as PSwitch } from 'element-plus'
 import type { PService, POfferServicesCardProps } from './POfferServicesCardTypes'
 

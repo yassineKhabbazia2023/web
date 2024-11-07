@@ -81,8 +81,8 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import PButton from '@/atoms/PButton'
-import PAutocomplete from '@/molecules/PAutocomplete'
+import PButton from '@styleguide/atoms/PButton'
+import PAutocomplete from '@styleguide/molecules/PAutocomplete'
 import type { PBlockHeaderProps } from './PBlockHeaderTypes'
 import PBlockHeader from './'
 

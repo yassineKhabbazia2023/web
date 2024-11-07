@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { iconResolver, iconsResolver } from '@/utils/iconResolver'
+import { iconResolver, iconsResolver } from '@styleguide/utils/iconResolver'
 const iconToImport = 'PITrash'
 const iconsToImport = [
   {

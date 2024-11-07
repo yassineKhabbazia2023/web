@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import { PIPulse } from '@/atoms/PIcon/components'
+import { PIPulse } from '@styleguide/atoms/PIcon/components'
 import PTag from '.'
 import type { PTagProps } from './PTagTypes'
 

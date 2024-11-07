@@ -27,7 +27,7 @@ import dayjs from 'dayjs'
 import { computed } from 'vue'
 import { ElCalendar } from 'element-plus'
 import type { PCalendarProps, CalendarItemsGroupedByDate } from './PCalendarTypes'
-import PCalendarDateCell from '@/atoms/PCalendarDateCell'
+import PCalendarDateCell from '@styleguide/atoms/PCalendarDateCell'
 import { getDateType } from './PCalendarUtils'
 
 const props = withDefaults(defineProps<PCalendarProps>(), {

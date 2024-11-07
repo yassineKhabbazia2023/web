@@ -1,4 +1,4 @@
-import { logger } from '@/utils/logger'
+import { logger } from '@styleguide/utils/logger'
 
 const context = {
   assetsBaseUrl: '',

@@ -154,12 +154,12 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { iconResolver } from '@/utils/iconResolver'
-import { PIFolder, PIStars } from '@/atoms/PIcon/components'
-import PDoubleText from '@/atoms/PDoubleText'
-import PEntity from '@/atoms/PEntity'
-import PTag from '@/atoms/PTag'
-import PText from '@/atoms/PText'
+import { iconResolver } from '@styleguide/utils/iconResolver'
+import { PIFolder, PIStars } from '@styleguide/atoms/PIcon/components'
+import PDoubleText from '@styleguide/atoms/PDoubleText'
+import PEntity from '@styleguide/atoms/PEntity'
+import PTag from '@styleguide/atoms/PTag'
+import PText from '@styleguide/atoms/PText'
 import PTable from './'
 
 const tableInputs = reactive({

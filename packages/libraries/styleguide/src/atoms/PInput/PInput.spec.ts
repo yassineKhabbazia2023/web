@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PInput from '.'
 import type { PInputProps } from './PInputTypes'
-import { PIPulse } from '@/atoms/PIcon/components'
+import { PIPulse } from '@styleguide/atoms/PIcon/components'
 
 const mockedCb = vi.fn()
 const propsValue: PInputProps = {

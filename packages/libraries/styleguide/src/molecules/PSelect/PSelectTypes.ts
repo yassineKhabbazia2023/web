@@ -1,4 +1,4 @@
-import type { PlacementOptions } from '@/constants/placementOptions'
+import type { PlacementOptions } from '@styleguide/constants/placementOptions'
 import type { Component } from 'vue'
 
 export interface PSelectProps {

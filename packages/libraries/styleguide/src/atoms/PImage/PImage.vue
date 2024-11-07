@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { ElImage } from 'element-plus'
-import { imageResolver } from '@/utils/imageResolver'
+import { imageResolver } from '@styleguide/utils/imageResolver'
 import type { PImageProps } from './PImageTypes'
 
 const props = withDefaults(defineProps<PImageProps>(), {

@@ -1,4 +1,4 @@
-import type { PUploadFileLineProps } from '@/atoms/PUploadFileLine/PUploadFileLineTypes'
+import type { PUploadFileLineProps } from '@styleguide/atoms/PUploadFileLine/PUploadFileLineTypes'
 
 export interface UploadProps {
   pAction?: string

@@ -42,9 +42,9 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import PToolboxItem from '@/atoms/PToolboxItem'
+import PToolboxItem from '@styleguide/atoms/PToolboxItem'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
-import { PIAdd } from '@/atoms/PIcon/components'
+import { PIAdd } from '@styleguide/atoms/PIcon/components'
 
 const defaultState: PToolboxItemProps = reactive({
   pValue: 'Supprimer',

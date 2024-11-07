@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
-import { PIArrowUpCircle } from '@/atoms/PIcon/components'
+import { PIArrowUpCircle } from '@styleguide/atoms/PIcon/components'
 import PFilterOption from '.'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
 

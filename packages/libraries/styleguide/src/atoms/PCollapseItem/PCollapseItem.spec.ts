@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import PCollapse from '@/molecules/PCollapse'
-import { PIPulse } from '@/atoms/PIcon/components'
+import PCollapse from '@styleguide/molecules/PCollapse'
+import { PIPulse } from '@styleguide/atoms/PIcon/components'
 import PCollapseItem from '.'
 import type { PCollapseItemTypes } from './PCollapseItemTypes'
 

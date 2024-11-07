@@ -43,9 +43,9 @@
 
 <script setup lang="ts">
 import PTree from './'
-import PButton from '@/atoms/PButton'
-import PToolbox from '@/molecules/PToolbox'
-import type { PToolboxItemProps } from '@/atoms/PToolboxItem/PToolboxItemTypes'
+import PButton from '@styleguide/atoms/PButton'
+import PToolbox from '@styleguide/molecules/PToolbox'
+import type { PToolboxItemProps } from '@styleguide/atoms/PToolboxItem/PToolboxItemTypes'
 import { logEvent } from 'histoire/client'
 
 const toolboxItems: PToolboxItemProps[] = [

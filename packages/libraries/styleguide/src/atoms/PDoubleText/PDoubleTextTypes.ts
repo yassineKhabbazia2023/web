@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import type { PAvatarProps } from '@/atoms/PAvatar/PAvatarTypes'
+import type { PAvatarProps } from '@styleguide/atoms/PAvatar/PAvatarTypes'
 
 export interface PDoubleTextProps {
   pIcon?: Component | string

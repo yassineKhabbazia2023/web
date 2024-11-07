@@ -34,11 +34,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import PAside from '@/atoms/PAside'
-import PContainer from '@/molecules/PContainer'
-import PCHeader from '@/atoms/PCHeader'
-import PFooter from '@/atoms/PFooter'
-import PMain from '@/atoms/PMain'
+import PAside from '@styleguide/atoms/PAside'
+import PContainer from '@styleguide/molecules/PContainer'
+import PCHeader from '@styleguide/atoms/PCHeader'
+import PFooter from '@styleguide/atoms/PFooter'
+import PMain from '@styleguide/atoms/PMain'
 
 const headerHeight = ref('52px')
 const footerHeight = ref('6rem')

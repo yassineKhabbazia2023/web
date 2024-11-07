@@ -1,4 +1,4 @@
-import type { PCarouselItemProps } from '@/atoms/PCarouselItem/PCarouselItemTypes'
+import type { PCarouselItemProps } from '@styleguide/atoms/PCarouselItem/PCarouselItemTypes'
 
 export interface PCarouselProps {
   pItems: PCarouselItemProps[]

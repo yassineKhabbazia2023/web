@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import PButton from '@/atoms/PButton'
+import PButton from '@styleguide/atoms/PButton'
 import PToolbox from '.'
-import type { PToolboxItemProps } from '@/atoms/PToolboxItem/PToolboxItemTypes'
+import type { PToolboxItemProps } from '@styleguide/atoms/PToolboxItem/PToolboxItemTypes'
 
 const toolboxBasicData: PToolboxItemProps[] = [
   {

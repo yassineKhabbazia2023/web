@@ -48,12 +48,12 @@ import { computed } from 'vue'
 import { useWindowSize } from '@vueuse/core'
 import dayjs from 'dayjs'
 import type { PCalendarDateCellProps } from './PCalendarDateCellTypes'
-import PCalendarCellNumber from '@/atoms/PCalendarCellNumber'
-import type { CellNumberState } from '@/atoms/PCalendarCellNumber/PCalendarCellNumberTypes'
-import PTaskItem from '@/atoms/PTaskItem'
-import PIcon from '@/atoms/PIcon'
-import { getCurrentBreakpoint } from '@/utils/breakpoints'
-import { AppColors } from '@/utils/AppColorsEnum'
+import PCalendarCellNumber from '@styleguide/atoms/PCalendarCellNumber'
+import type { CellNumberState } from '@styleguide/atoms/PCalendarCellNumber/PCalendarCellNumberTypes'
+import PTaskItem from '@styleguide/atoms/PTaskItem'
+import PIcon from '@styleguide/atoms/PIcon'
+import { getCurrentBreakpoint } from '@styleguide/utils/breakpoints'
+import { AppColors } from '@styleguide/utils/AppColorsEnum'
 
 const props = defineProps<PCalendarDateCellProps>()
 const emit = defineEmits<{

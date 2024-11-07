@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { setAssetsBaseUrl } from './utils/imageResolver'
-import { logger } from '@/utils/logger'
+import { logger } from '@styleguide/utils/logger'
 
 const ENV_VARS_URL = '/env-vars.json'
 

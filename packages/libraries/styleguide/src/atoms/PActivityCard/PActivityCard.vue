@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import PAvatar from '@/atoms/PAvatar'
+import PAvatar from '@styleguide/atoms/PAvatar'
 import type { PActivityProps } from './PActivityCardTypes'
 
 const props = defineProps<PActivityProps>()

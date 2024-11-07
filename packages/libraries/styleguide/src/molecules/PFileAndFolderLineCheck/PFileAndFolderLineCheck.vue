@@ -48,10 +48,10 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { iconResolver } from '@/utils/iconResolver'
-import { getFileExtension } from '@/utils/fileExtension'
-import PCheckbox from '@/atoms/PCheckbox'
-import PLoader from '@/atoms/PLoader'
+import { iconResolver } from '@styleguide/utils/iconResolver'
+import { getFileExtension } from '@styleguide/utils/fileExtension'
+import PCheckbox from '@styleguide/atoms/PCheckbox'
+import PLoader from '@styleguide/atoms/PLoader'
 import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckTypes'
 
 const props = withDefaults(defineProps<PFileAndFolderLineCheckProps>(), {

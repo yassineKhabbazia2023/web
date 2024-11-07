@@ -9,7 +9,7 @@ import fr from 'element-plus/es/locale/lang/fr'
 import dayjs from 'dayjs'
 import { createI18n } from 'vue-i18n'
 import { defineSetupVue3 } from '@histoire/plugin-vue'
-import { menu } from '@/constants/routesSamples'
+import { menu } from '@styleguide/constants/routesSamples'
 import { initHistoire } from './initHistoireUtils'
 
 const i18n = createI18n({ locale: Intl.DateTimeFormat().resolvedOptions().locale })

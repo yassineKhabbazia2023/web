@@ -1,4 +1,4 @@
-import type { PlacementOptions } from '@/constants/placementOptions'
+import type { PlacementOptions } from '@styleguide/constants/placementOptions'
 import type { Placement } from 'element-plus'
 
 export interface PPopperContentProps {

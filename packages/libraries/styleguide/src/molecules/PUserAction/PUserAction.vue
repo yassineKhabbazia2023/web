@@ -103,14 +103,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import PAlert from '@/atoms/PAlert'
-import PAvatar from '@/atoms/PAvatar'
-import PButton from '@/atoms/PButton'
-import PDropdown from '@/molecules/PDropdown'
-import PIcon from '@/atoms/PIcon'
-import PInput from '@/atoms/PInput'
-import PTag from '@/atoms/PTag'
-import { PITrash } from '@/atoms/PIcon/components'
+import PAlert from '@styleguide/atoms/PAlert'
+import PAvatar from '@styleguide/atoms/PAvatar'
+import PButton from '@styleguide/atoms/PButton'
+import PDropdown from '@styleguide/molecules/PDropdown'
+import PIcon from '@styleguide/atoms/PIcon'
+import PInput from '@styleguide/atoms/PInput'
+import PTag from '@styleguide/atoms/PTag'
+import { PITrash } from '@styleguide/atoms/PIcon/components'
 import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 
 const emit = defineEmits<{

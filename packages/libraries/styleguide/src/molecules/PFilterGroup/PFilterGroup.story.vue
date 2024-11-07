@@ -29,7 +29,7 @@
 import { ref } from 'vue'
 import { logEvent } from 'histoire/client'
 import PFilterGroup from '.'
-import type { FilterOption } from '@/molecules/PFilterGroup/PFilterGroupTypes'
+import type { FilterOption } from '@styleguide/molecules/PFilterGroup/PFilterGroupTypes'
 
 const PFilterGroupNumber = PFilterGroup<number>
 const pSelectedCodes = ref<string[]>([])

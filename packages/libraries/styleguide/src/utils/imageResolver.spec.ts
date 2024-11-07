@@ -1,11 +1,11 @@
-import { beforeEach, vi, describe, it, expect, type SpyInstance } from 'vitest'
-import { imageResolver, getAssetsBaseUrl, setAssetsBaseUrl } from '@/utils/imageResolver'
-import { logger } from '@/utils/logger'
+import { beforeEach, vi, describe, it, expect, type MockInstance } from 'vitest'
+import { imageResolver, getAssetsBaseUrl, setAssetsBaseUrl } from '@styleguide/utils/imageResolver'
+import { logger } from '@styleguide/utils/logger'
 
 const baseCDNUrl = 'https://example.com'
 
 describe('imageResolver', () => {
-  let loggerWarnSpy: SpyInstance
+  let loggerWarnSpy: MockInstance
   beforeEach(() => {
     loggerWarnSpy = vi.spyOn(logger, 'warn')
   })

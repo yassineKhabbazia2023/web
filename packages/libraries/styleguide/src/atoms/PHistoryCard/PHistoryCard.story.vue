@@ -67,10 +67,10 @@
 </template>
 
 <script setup lang="ts">
-import PButton from '@/atoms/PButton'
-import PIcon from '@/atoms/PIcon'
-import { PITrash } from '@/atoms/PIcon/components'
-import PTooltip from '@/atoms/PTooltip'
+import PButton from '@styleguide/atoms/PButton'
+import PIcon from '@styleguide/atoms/PIcon'
+import { PITrash } from '@styleguide/atoms/PIcon/components'
+import PTooltip from '@styleguide/atoms/PTooltip'
 import PHistoryCard from '.'
 </script>
 

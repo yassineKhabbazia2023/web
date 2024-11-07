@@ -192,7 +192,7 @@
 </template>
 
 <script setup lang="ts">
-import { stringToClassList, numbersToClassList, onClickCssClass } from '@/utils/histoireHelpers'
+import { stringToClassList, numbersToClassList, onClickCssClass } from '@styleguide/utils/histoireHelpers'
 
 const subListOneItem = ['40'].map((size) => `height-${size} width-${size}`)
 const subListTwoItems = ['40', '40'].map((size) => `height-${size} width-${size}`)

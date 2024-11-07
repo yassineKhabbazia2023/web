@@ -1,14 +1,14 @@
 import axios from 'axios'
 import * as imageResolver from './utils/imageResolver'
-import { beforeEach, describe, it, expect, vi, type SpyInstance } from 'vitest'
+import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { getAssetsBaseUrl, setCachedAssetsBaseUrl, getCachedAssetsBaseUrl, initHistoire } from './initHistoireUtils'
 
 vi.mock('axios')
-vi.mock('@/utils/logger')
+vi.mock('@styleguide/utils/logger')
 const VITE_ASSETS_BASE_URL = 'https://test.test'
 
 describe('initHistoirePlugin', () => {
-  let axiosGetSpy: SpyInstance
+  let axiosGetSpy: MockInstance
   beforeEach(() => {
     setCachedAssetsBaseUrl('')
     axiosGetSpy = vi.spyOn(axios, 'get').mockResolvedValue({

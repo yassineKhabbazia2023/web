@@ -28,7 +28,7 @@ import PIcon from '../PIcon'
 import { ElAvatar } from 'element-plus'
 import { computed } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
-import { AppColors } from '@/utils/AppColorsEnum'
+import { AppColors } from '@styleguide/utils/AppColorsEnum'
 
 const props = withDefaults(defineProps<PAvatarProps>(), {
   pType: 'default',

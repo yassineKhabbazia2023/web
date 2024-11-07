@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import wrapperFactory from 'tests/utils/wrapperFactory'
 import { flushPromises } from '@vue/test-utils'
-import PBreadcrumb from '@/molecules/PBreadcrumb'
+import PBreadcrumb from '@styleguide/molecules/PBreadcrumb'
 import { ElBreadcrumb, ElBreadcrumbItem } from 'element-plus'
 import { type PBreadcrumbProps, type BreadcrumbItems } from './PBreadcrumbTypes'
 

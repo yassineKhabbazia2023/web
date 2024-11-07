@@ -39,9 +39,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import PTag from '@/atoms/PTag'
-import PIcon from '@/atoms/PIcon'
-import { PIXCircleFill } from '@/atoms/PIcon/components'
+import PTag from '@styleguide/atoms/PTag'
+import PIcon from '@styleguide/atoms/PIcon'
+import { PIXCircleFill } from '@styleguide/atoms/PIcon/components'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
 
 const emit = defineEmits<{

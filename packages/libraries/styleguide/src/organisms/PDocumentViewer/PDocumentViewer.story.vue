@@ -75,12 +75,12 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import PButton from '@/atoms/PButton'
-import PUpload from '@/atoms/PUpload'
+import PButton from '@styleguide/atoms/PButton'
+import PUpload from '@styleguide/atoms/PUpload'
 import PDocumentViewer from './'
-import PDocumentDisplay from '@/molecules/PDocumentDisplay'
+import PDocumentDisplay from '@styleguide/molecules/PDocumentDisplay'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
-import { PIFiletypePdf } from '@/atoms/PIcon/components'
+import { PIFiletypePdf } from '@styleguide/atoms/PIcon/components'
 
 const isDrawerOpened = ref(false)
 

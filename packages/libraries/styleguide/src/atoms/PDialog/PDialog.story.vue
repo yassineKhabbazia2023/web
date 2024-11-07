@@ -146,7 +146,7 @@
 
 <script setup lang="ts">
 import PDialog from '.'
-import PButton from '@/atoms/PButton'
+import PButton from '@styleguide/atoms/PButton'
 import { reactive } from 'vue'
 
 const showDialog = () => {

@@ -85,10 +85,10 @@
 </template>
 
 <script lang="ts" setup>
-import PButton from '@/atoms/PButton'
-import PIcon from '@/atoms/PIcon'
-import { PIBuilding, PIAdd, PIVectorPen } from '@/atoms/PIcon/components'
-import PTag from '@/atoms/PTag'
+import PButton from '@styleguide/atoms/PButton'
+import PIcon from '@styleguide/atoms/PIcon'
+import { PIBuilding, PIAdd, PIVectorPen } from '@styleguide/atoms/PIcon/components'
+import PTag from '@styleguide/atoms/PTag'
 import PUserCard from './'
 import type { PUserCardProps } from './PUserCardTypes'
 

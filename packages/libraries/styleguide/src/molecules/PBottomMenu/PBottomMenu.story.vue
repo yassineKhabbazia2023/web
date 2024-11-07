@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { menu } from '@/constants/routesSamples'
+import { menu } from '@styleguide/constants/routesSamples'
 import PBottomMenu from './'
 import type { PItem } from './PBottomMenuTypes'
 

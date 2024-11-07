@@ -1,4 +1,4 @@
-import type { PlacementOptions } from '@/constants/placementOptions'
+import type { PlacementOptions } from '@styleguide/constants/placementOptions'
 import type { Filters } from 'element-plus/es/components/table/src/table-column/defaults'
 import type { TableOverflowTooltipOptions } from 'element-plus/es/components/table/src/util'
 import type { VNode } from 'vue'

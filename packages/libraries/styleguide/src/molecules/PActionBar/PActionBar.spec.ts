@@ -1,15 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import PButton from '@/atoms/PButton'
-import PUpload from '@/atoms/PUpload'
+import PButton from '@styleguide/atoms/PButton'
+import PUpload from '@styleguide/atoms/PUpload'
 import PActionBar from './'
 import type {
   PActionBarProps,
   PButtonActionBarProps,
   ComponentDefinitionProps,
 } from './PActionBarTypes'
-import PExpandableSearch from '@/atoms/PExpandableSearch'
+import PExpandableSearch from '@styleguide/atoms/PExpandableSearch'
 import { nextTick, type ComponentPublicInstance } from 'vue'
 
 type PActionBarSetup = {

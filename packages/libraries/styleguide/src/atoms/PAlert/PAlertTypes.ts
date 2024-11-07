@@ -1,4 +1,4 @@
-import type { GlobalStates } from '@/utils/types/states'
+import type { GlobalStates } from '@styleguide/utils/types/states'
 
 export type PAlertProps = {
   pType?: Omit<'default', GlobalStates> | 'main'

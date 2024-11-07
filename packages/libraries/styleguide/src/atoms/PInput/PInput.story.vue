@@ -117,8 +117,8 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { PISearch } from '@/atoms/PIcon/components'
-import { AppColors } from '@/utils/AppColorsEnum'
+import { PISearch } from '@styleguide/atoms/PIcon/components'
+import { AppColors } from '@styleguide/utils/AppColorsEnum'
 
 const basicInputData = reactive({
   type: 'text',

@@ -23,9 +23,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { ElCollapseItem } from 'element-plus'
-import PIcon from '@/atoms/PIcon'
+import PIcon from '@styleguide/atoms/PIcon'
 import type { PCollapseItemTypes } from './PCollapseItemTypes'
-import { iconResolver } from '@/utils/iconResolver'
+import { iconResolver } from '@styleguide/utils/iconResolver'
 
 const props = withDefaults(defineProps<PCollapseItemTypes>(), {
   pType: 'default',

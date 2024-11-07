@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import PTree from '@/organisms/PTree'
+import PTree from '@styleguide/organisms/PTree'
 import type { PTreeProps } from './PTreeTypes'
 
 const treeData = [

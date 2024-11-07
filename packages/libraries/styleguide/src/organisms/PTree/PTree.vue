@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { ElTree } from 'element-plus'
 import type { PTreeProps } from './PTreeTypes'
-import { iconResolver } from '@/utils/iconResolver'
+import { iconResolver } from '@styleguide/utils/iconResolver'
 
 const treeLineIcon = iconResolver('PICaretRightFill')
 

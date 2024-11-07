@@ -32,9 +32,9 @@
 <script lang="ts" setup>
 import { ElTabPane } from 'element-plus'
 import { useSlots, computed } from 'vue'
-import { iconResolver } from '@/utils/iconResolver'
-import PTooltip from '@/atoms/PTooltip'
-import PIcon from '@/atoms/PIcon'
+import { iconResolver } from '@styleguide/utils/iconResolver'
+import PTooltip from '@styleguide/atoms/PTooltip'
+import PIcon from '@styleguide/atoms/PIcon'
 import type { PTabPaneProps } from './PTabPaneTypes'
 
 const slots = useSlots()

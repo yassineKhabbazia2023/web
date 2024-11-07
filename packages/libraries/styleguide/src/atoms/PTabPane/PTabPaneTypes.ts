@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import type { PTooltipProps } from '@/atoms/PTooltip/PTooltipTypes'
+import type { PTooltipProps } from '@styleguide/atoms/PTooltip/PTooltipTypes'
 
 export interface PTabPaneProps {
   pLabel?: string

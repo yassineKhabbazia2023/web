@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import PImage from '@/atoms/PImage'
+import PImage from '@styleguide/atoms/PImage'
 import type { PBlockHeaderProps } from './PBlockHeaderTypes'
 
 const props = withDefaults(defineProps<PBlockHeaderProps>(), {

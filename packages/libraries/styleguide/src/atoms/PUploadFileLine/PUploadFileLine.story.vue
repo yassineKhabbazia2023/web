@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import PUploadFileLine from '@/atoms/PUploadFileLine'
+import PUploadFileLine from '@styleguide/atoms/PUploadFileLine'
 import { type UploadFile } from 'element-plus'
 
 const fileList: UploadFile[] = [

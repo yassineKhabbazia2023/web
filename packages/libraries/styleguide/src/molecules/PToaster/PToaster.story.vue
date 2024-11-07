@@ -27,8 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import PButton from '@/atoms/PButton'
-import { PICheck, PIExclamationTriangle, PILoader } from '@/atoms/PIcon/components'
+import PButton from '@styleguide/atoms/PButton'
+import { PICheck, PIExclamationTriangle, PILoader } from '@styleguide/atoms/PIcon/components'
 import { ElNotification } from 'element-plus'
 
 const openSuccess = () => {

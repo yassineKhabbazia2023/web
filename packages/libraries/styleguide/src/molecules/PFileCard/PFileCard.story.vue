@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import PFileCard from './'
-import PButton from '@/atoms/PButton'
+import PButton from '@styleguide/atoms/PButton'
 import { logEvent } from 'histoire/client'
 
 const defaultState = reactive({

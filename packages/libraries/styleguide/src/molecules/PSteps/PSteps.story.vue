@@ -52,7 +52,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { type StateOptions, stateOptions } from '@/constants/stateOptions'
+import { type StateOptions, stateOptions } from '@styleguide/constants/stateOptions'
 
 type basicDataOptions = { active: number, direction: 'horizontal' | 'vertical', processStatus: StateOptions, finishStatus: StateOptions }
 

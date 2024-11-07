@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PFolderLineNavigationItem from './'
 import type { PFolderLineNavigationItemProps } from './PFolderLineNavigationItemTypes'
-import { PIChevronRight } from '@/atoms/PIcon/components'
+import { PIChevronRight } from '@styleguide/atoms/PIcon/components'
 
 const defaultProps: PFolderLineNavigationItemProps = {
   pSelected: false,

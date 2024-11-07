@@ -131,10 +131,10 @@
 </template>
 
 <script lang="ts" setup>
-import PHistoryCard from '@/atoms/PHistoryCard'
-import PTooltip from '@/atoms/PTooltip'
-import PButton from '@/atoms/PButton'
-import PTimelineItem from '@/atoms/PTimelineItem'
+import PHistoryCard from '@styleguide/atoms/PHistoryCard'
+import PTooltip from '@styleguide/atoms/PTooltip'
+import PButton from '@styleguide/atoms/PButton'
+import PTimelineItem from '@styleguide/atoms/PTimelineItem'
 import PTimeline from './'
 
 </script>

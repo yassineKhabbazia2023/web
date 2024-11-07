@@ -23,9 +23,9 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import placementOptions from '@/constants/placementOptions'
+import placementOptions from '@styleguide/constants/placementOptions'
 import PTooltip from './'
-import PButton from '@/atoms/PButton'
+import PButton from '@styleguide/atoms/PButton'
 
 const tooltipBasicData = reactive({
   placement: placementOptions[0].value,

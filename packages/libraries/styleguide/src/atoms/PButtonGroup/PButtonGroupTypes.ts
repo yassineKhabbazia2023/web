@@ -1,4 +1,4 @@
-import type { PButtonProps } from '@/atoms/PButton/PButtonTypes'
+import type { PButtonProps } from '@styleguide/atoms/PButton/PButtonTypes'
 import type { InjectionKey } from 'vue'
 
 export interface PButtonGroupProps {

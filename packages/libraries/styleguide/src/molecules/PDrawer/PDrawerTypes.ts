@@ -1,4 +1,4 @@
-import type { BreadcrumbItems } from '@/molecules/PBreadcrumb/PBreadcrumbTypes'
+import type { BreadcrumbItems } from '@styleguide/molecules/PBreadcrumb/PBreadcrumbTypes'
 
 export interface PDrawerProps {
   modelValue: boolean

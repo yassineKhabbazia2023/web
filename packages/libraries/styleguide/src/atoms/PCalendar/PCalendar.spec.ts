@@ -4,7 +4,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import PCalendar from '.'
 import type { PCalendarProps } from './PCalendarTypes'
 import { itemsGroupedByDate } from './PCalendarMocks'
-import PCalendarDateCell from '@/atoms/PCalendarDateCell'
+import PCalendarDateCell from '@styleguide/atoms/PCalendarDateCell'
 
 const defaultProps: PCalendarProps = {
   pItemsGroupedByDate: itemsGroupedByDate,

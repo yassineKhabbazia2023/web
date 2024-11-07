@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import PButtonGroup from './'
 import { describe, it, expect } from 'vitest'
-import PButton from '@/atoms/PButton'
+import PButton from '@styleguide/atoms/PButton'
 
 describe('test for PButtonGroup', () => {
   it('render correctly', () => {

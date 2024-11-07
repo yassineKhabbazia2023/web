@@ -35,10 +35,10 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
-import { PISearch } from '@/atoms/PIcon/components'
+import { PISearch } from '@styleguide/atoms/PIcon/components'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
-import PButton from '@/atoms/PButton'
-import PInput from '@/atoms/PInput'
+import PButton from '@styleguide/atoms/PButton'
+import PInput from '@styleguide/atoms/PInput'
 
 const props = withDefaults(defineProps<PExpandableSearchProps>(), {
   pType: 'white',

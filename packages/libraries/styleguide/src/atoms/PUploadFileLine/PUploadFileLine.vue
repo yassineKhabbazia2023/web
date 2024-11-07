@@ -58,12 +58,12 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { iconResolver } from '@/utils/iconResolver'
-import PButton from '@/atoms/PButton'
-import PLoader from '@/atoms/PLoader'
-import PTooltip from '@/atoms/PTooltip'
-import PIcon from '@/atoms/PIcon'
-import { PIExclamationTriangle } from '@/atoms/PIcon/components'
+import { iconResolver } from '@styleguide/utils/iconResolver'
+import PButton from '@styleguide/atoms/PButton'
+import PLoader from '@styleguide/atoms/PLoader'
+import PTooltip from '@styleguide/atoms/PTooltip'
+import PIcon from '@styleguide/atoms/PIcon'
+import { PIExclamationTriangle } from '@styleguide/atoms/PIcon/components'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
 import { type UploadFile, type UploadRawFile } from 'element-plus'
 

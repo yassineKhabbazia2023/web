@@ -158,11 +158,11 @@
 </template>
 
 <script setup lang="ts">
-import { groupOptions, selectOptions, templateSourceGroup } from '@/constants/dropdownOptions'
+import { groupOptions, selectOptions, templateSourceGroup } from '@styleguide/constants/dropdownOptions'
 import { ref, watch } from 'vue'
-import POption from '@/atoms/POption'
-import POptionGroup from '@/molecules/POptionGroup'
-import PCheckbox from '@/atoms/PCheckbox'
+import POption from '@styleguide/atoms/POption'
+import POptionGroup from '@styleguide/molecules/POptionGroup'
+import PCheckbox from '@styleguide/atoms/PCheckbox'
 
 const valueSimple = ref('')
 const checkAll = ref(false)

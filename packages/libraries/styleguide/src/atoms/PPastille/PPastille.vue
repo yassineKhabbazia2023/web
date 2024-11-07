@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { ElTag } from 'element-plus'
-import { iconResolver } from '@/utils/iconResolver'
+import { iconResolver } from '@styleguide/utils/iconResolver'
 import type { PPastilleProps } from './PPastilleTypes'
 
 const props = withDefaults(defineProps<PPastilleProps>(), {

@@ -1,4 +1,4 @@
-import type { PDropdownOption } from '@/molecules/PDropdown/PDropdownTypes'
+import type { PDropdownOption } from '@styleguide/molecules/PDropdown/PDropdownTypes'
 
 export type POptionsValue = undefined | string | number | string[] | number[]
 

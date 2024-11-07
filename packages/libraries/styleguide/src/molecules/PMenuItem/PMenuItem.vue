@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { useSlots } from 'vue'
-import { iconResolver } from '@/utils/iconResolver'
+import { iconResolver } from '@styleguide/utils/iconResolver'
 import { ElMenuItem } from 'element-plus'
 import type { PMenuItemProps } from './PMenuItemTypes'
 

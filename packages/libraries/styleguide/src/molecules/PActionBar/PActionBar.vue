@@ -93,11 +93,11 @@
 </template>
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
-import PButton from '@/atoms/PButton'
-import PIcon from '@/atoms/PIcon'
-import PExpandableSearch from '@atoms/PExpandableSearch'
-import PUpload from '@/atoms/PUpload'
-import { iconsResolver } from '@/utils/iconResolver'
+import PButton from '@styleguide/atoms/PButton'
+import PIcon from '@styleguide/atoms/PIcon'
+import PExpandableSearch from '@styleguide/atoms/PExpandableSearch'
+import PUpload from '@styleguide/atoms/PUpload'
+import { iconsResolver } from '@styleguide/utils/iconResolver'
 import type { PActionBarProps } from './PActionBarTypes'
 const props = withDefaults(defineProps<PActionBarProps>(), {
   pSearchMaxLength: 255,

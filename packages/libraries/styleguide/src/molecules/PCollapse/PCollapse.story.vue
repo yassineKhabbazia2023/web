@@ -193,8 +193,8 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { PIArchive } from '@/atoms/PIcon/components'
-import PCollapseItem from '@/atoms/PCollapseItem'
+import { PIArchive } from '@styleguide/atoms/PIcon/components'
+import PCollapseItem from '@styleguide/atoms/PCollapseItem'
 
 const activeNames = ref(['1'])
 const accordion = ref(false)

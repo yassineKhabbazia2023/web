@@ -3,7 +3,7 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { ElMenuItem, ElMenu } from 'element-plus'
-import { menu } from '@/constants/routesSamples'
+import { menu } from '@styleguide/constants/routesSamples'
 import PBottomMenu from '.'
 import type { PItem } from './PBottomMenuTypes'
 

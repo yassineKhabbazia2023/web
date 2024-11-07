@@ -5,7 +5,7 @@ import {
   getDocumentNameWithoutExtension,
   isExtensionAuthorized,
   getFileIcon,
-} from '@/utils/fileExtension'
+} from '@styleguide/utils/fileExtension'
 import {
   PIFiletypeJpg,
   PIFiletypeTxt,
@@ -22,7 +22,7 @@ import {
   PIFiletypeSvg,
   PIFiletypeXls,
   PIFiletypeXlsx,
-} from '@/atoms/PIcon/components'
+} from '@styleguide/atoms/PIcon/components'
 
 const filename1 = 'something.abc.txt'
 const filename2 = 'file_without_extension'

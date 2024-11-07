@@ -115,9 +115,9 @@
 </template>
 
 <script lang="ts" setup>
-import { getCssVarName, getCssVarValue } from '@/utils'
-import PCol from '@/atoms/PCol'
-import PRow from '@/atoms/PRow'
+import { getCssVarName, getCssVarValue } from '@styleguide/utils'
+import PCol from '@styleguide/atoms/PCol'
+import PRow from '@styleguide/atoms/PRow'
 
 const backgroundTypes = ['page', '', 'overlay']
 const backgroundColors = backgroundTypes.map((type) => {

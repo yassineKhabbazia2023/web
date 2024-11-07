@@ -85,7 +85,7 @@
 import { ref } from 'vue'
 import type { PTagProps } from './PTagTypes'
 import { logEvent } from 'histoire/client'
-import { PIStars } from '@/atoms/PIcon/components'
+import { PIStars } from '@styleguide/atoms/PIcon/components'
 
 const color = ref('success')
 const closable = ref(true)

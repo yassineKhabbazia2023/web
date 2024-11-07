@@ -32,9 +32,9 @@
 
 <script lang="ts" setup>
 import { useCssVar } from '@vueuse/core'
-import { useCopyColor } from '@/utils'
-import PCol from '@/atoms/PCol'
-import PRow from '@/atoms/PRow'
+import { useCopyColor } from '@styleguide/utils'
+import PCol from '@styleguide/atoms/PCol'
+import PRow from '@styleguide/atoms/PRow'
 
 const primary = useCssVar('--el-color-primary')
 const colorLevel = [900, 800, 700, 600, 500, 400, 300, 200, 100, 50]

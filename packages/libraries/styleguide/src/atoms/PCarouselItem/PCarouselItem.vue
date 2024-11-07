@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { ElCarouselItem } from 'element-plus'
-import PImage from '@/atoms/PImage'
+import PImage from '@styleguide/atoms/PImage'
 import type { PCarouselItemProps } from './PCarouselItemTypes'
 
 defineProps<PCarouselItemProps>()

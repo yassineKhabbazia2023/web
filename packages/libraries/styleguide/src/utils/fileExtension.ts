@@ -19,7 +19,7 @@ import {
   PIFiletypeXls,
   PIFiletypeXlsx,
   PIFiletypeXml,
-} from '@/atoms/PIcon/components'
+} from '@styleguide/atoms/PIcon/components'
 const authorizedExtensions = [
   'bmp',
   'csv',

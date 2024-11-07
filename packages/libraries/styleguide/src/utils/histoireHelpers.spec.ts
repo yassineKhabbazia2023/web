@@ -1,7 +1,7 @@
 import * as VueUseCore from '@vueuse/core'
 import { ref } from 'vue'
-import { describe, it, expect, vi, beforeEach, type SpyInstance } from 'vitest'
-import { stringToClassList, numbersToClassList, onClickCssClass } from '@/utils/histoireHelpers'
+import { describe, it, expect, vi, beforeEach, type MockInstance } from 'vitest'
+import { stringToClassList, numbersToClassList, onClickCssClass } from '@styleguide/utils/histoireHelpers'
 import * as ElementPlus from 'element-plus'
 
 vi.mock('@vueuse/core')
@@ -43,7 +43,7 @@ describe('histoireHelpers', () => {
 
   describe('onClickCssClass', () => {
     describe('when isSupported is true', () => {
-      let copySpy: SpyInstance
+      let copySpy: MockInstance
       beforeEach(() => {
         copySpy = vi.fn()
         vi
@@ -85,7 +85,7 @@ describe('histoireHelpers', () => {
     })
 
     describe('when isSupported is false', () => {
-      let copySpy: SpyInstance
+      let copySpy: MockInstance
       beforeEach(() => {
         copySpy = vi.fn()
         vi

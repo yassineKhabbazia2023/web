@@ -21,11 +21,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import PIcon from '@/atoms/PIcon'
-import { PIX } from '@/atoms/PIcon/components'
+import PIcon from '@styleguide/atoms/PIcon'
+import { PIX } from '@styleguide/atoms/PIcon/components'
 import type { PAlertProps } from './PAlertTypes'
-import { iconResolver } from '@/utils/iconResolver'
-import { AppColors } from '@/utils/AppColorsEnum'
+import { iconResolver } from '@styleguide/utils/iconResolver'
+import { AppColors } from '@styleguide/utils/AppColorsEnum'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
   pType: 'main',
