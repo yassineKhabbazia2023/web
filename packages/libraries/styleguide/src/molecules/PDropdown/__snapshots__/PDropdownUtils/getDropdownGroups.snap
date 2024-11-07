@@ -1,0 +1,35 @@
+[
+  {
+    "label": "",
+    "options": [
+      {
+        "pDisabled": false,
+        "pLabel": "John",
+        "pValue": "a",
+      },
+      {
+        "pDisabled": false,
+        "pGroupLabel": "",
+        "pLabel": "Paul",
+        "pValue": "c",
+      },
+    ],
+  },
+  {
+    "label": "women",
+    "options": [
+      {
+        "pDisabled": false,
+        "pGroupLabel": "women",
+        "pLabel": "Maria",
+        "pValue": "b",
+      },
+      {
+        "pDisabled": true,
+        "pGroupLabel": "women",
+        "pLabel": "Helen",
+        "pValue": "d",
+      },
+    ],
+  },
+]

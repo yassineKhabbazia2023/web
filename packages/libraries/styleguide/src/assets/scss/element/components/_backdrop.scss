@@ -1,0 +1,10 @@
+// css3 var in packages/theme-chalk/src/backtop.scss
+$backtop: () !default;
+$backtop: map.merge(
+  (
+    'bg-color': getCssVar('bg-color', 'overlay'),
+    'text-color': getCssVar('color-primary'),
+    'hover-bg-color': getCssVar('border-color-extra-light'),
+  ),
+  $backtop
+);

@@ -1,0 +1,29 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+// Disable default
+$disabled: (
+  'bg-color': getCssVar('color', 'neutral-gray-50'),
+  'text-color': getCssVar('text-color', 'disabled'),
+  'border-color': getCssVar('color', 'neutral-gray-100'),
+);
+
+$common-component-size: ( 
+  'large': 40px,
+  'default': 44px,
+  'small': 32px,
+);
+
+// overlay
+$overlay-color: (
+  '': rgba(0, 0, 0, 0.8),
+  'light': rgba(0, 0, 0, 0.7),
+  'lighter': rgba(0, 0, 0, 0.5),
+);
+
+// mask
+$mask-color: (
+  '': rgba(255, 255, 255, 0.9),
+  'extra-light': rgba(255, 255, 255, 0.3),
+);
+
+$lg: 1440px !default;

@@ -1,0 +1,57 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+@use '../pegase/common-vars' as *;
+@use 'sass:map';
+
+$colors: (
+  'primary': (
+    'base': $primary-color,
+  ),
+  'success': (
+    'base': $green,
+  ),
+  'warning': (
+    'base': $orange,
+  ),
+  'danger': (
+    'base': $red,
+  ),
+  'error': (
+    'base': $red,
+  ),
+  'info': (
+    'base': $teal,
+  ),
+);
+
+$text-color: (
+  'primary': #303133,
+  'regular': getCssVar('color', 'neutral-gray-900'),
+  'secondary': #909399,
+  'placeholder': getCssVar('color', 'neutral-gray-300'),
+  'disabled': getCssVar('color', 'neutral-gray-500'),
+);
+
+$border-color: (
+  '': getCssVar('color', 'neutral-gray-200'),
+  'light': getCssVar('color', 'neutral-gray-50'),
+  'lighter': getCssVar('color', 'neutral-gray-100'),
+  'extra-light': #f2f6fc,
+  'dark': #d4d7de,
+  'darker': #cdd0d6,
+);
+
+$border-color-hover: getCssVar('color', 'persian-700');
+
+$fill-color: (
+  '': var(--el-color-neutral-gray-300),
+  'light': getCssVar('color', 'persian-50'),
+  'lighter': var(--el-color-neutral-gray-50),
+  'extra-light': var(--el-color-neutral-gray-50),
+  'dark': var(--el-color-neutral-gray-500),
+  'darker': var(--el-color-neutral-gray-900),
+  'blank': var(--el-color-base-white),
+);
+
+$overlay-color: (
+  'lighter': rgba(9, 9, 9, 0.5)
+)

@@ -1,0 +1,14 @@
+// css3 var in packages/theme-chalk/src/alert.scss
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+@use 'sass:map';
+
+$alert: () !default;
+$alert: map.merge(
+  (
+    'padding': 12px 16px,
+    'border-radius-base': getCssVar('border-radius-base'),
+    'description-font-size': 1.4rem,
+    'icon-size': 16px,
+  ),
+  $alert
+);

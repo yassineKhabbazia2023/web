@@ -1,0 +1,24 @@
+@use 'element-plus/theme-chalk/src/mixins/mixins.scss' as *;
+@use 'sass:map';
+
+$text-color: () !default;
+$text-color: map.merge(
+  (
+    'primary': #303133,
+    'regular': getCssVar('color', 'neutral-gray-900'),
+    'secondary': #909399,
+    'placeholder': getCssVar('color', 'neutral-gray-300'),
+    'disabled': getCssVar('color', 'neutral-gray-500'),
+    'primary-persian': #5546FF,
+    'secondary-cyan': #194DB4,
+  ),
+  $text-color
+);
+
+@include b(text) {
+  @each $type, $hexCode in $text-color {
+    &.#{bem('text', '', $type)} {
+      @include css-var-from-global(('text', 'color'), ('text-color', $type));
+    }
+  }
+}

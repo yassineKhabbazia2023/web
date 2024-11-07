@@ -1,0 +1,11 @@
+@use './colors.scss' as color-pulse;
+@use 'element-plus/theme-chalk/src/mixins/mixins.scss' as *;
+@use 'element-plus/theme-chalk/src/mixins/button.scss' as *;
+
+@include b(button) {
+  @each $type in color-pulse.$typePulse {
+    @include m($type) {
+      @include button-variant($type);
+    }
+  }
+}

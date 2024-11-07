@@ -1,0 +1,32 @@
+$dropdown: (
+  'menu-box-shadow': getCssVar('box-shadow-light'),
+  'menuItem-hover-fill': getCssVar('color-primary-light-9'),
+  'menuItem-hover-color': getCssVar('color-primary'),
+  'menu-index': 10,
+);
+
+.el-dropdown {
+  outline: none;
+}
+
+.el-tooltip {
+  &__trigger {
+    outline: none;
+  }
+}
+
+.el-dropdown-menu {
+  &__item {
+    border: none;
+    outline: none;
+  }
+}
+
+.p-toolbox.el-popper.is-pure {
+  border-color: var(--el-color-neutral-gray-50);
+  padding: 8px 0;
+
+  .el-popper__arrow {
+    display: none;
+  }
+}

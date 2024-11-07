@@ -1,0 +1,9 @@
+// css3 var in packages/theme-chalk/src/descriptions.scss
+$descriptions: () !default;
+$descriptions: map.merge(
+  (
+    'table-border': 1px solid getCssVar('border-color-lighter'),
+    'item-bordered-label-background': getCssVar('fill-color', 'light'),
+  ),
+  $descriptions
+);

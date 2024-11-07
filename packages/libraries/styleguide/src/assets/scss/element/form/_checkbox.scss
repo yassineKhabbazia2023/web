@@ -1,0 +1,39 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$checkbox: (
+  'disabled-border-color': getCssVar('color','persian-200'),
+  'disabled-input-fill': getCssVar('color','persian-50'),
+  'disabled-checked-input-fill': getCssVar('color','persian-200'),
+  'disabled-checked-input-border-color': getCssVar('color','persian-200'),
+  'disabled-checked-icon-color': getCssVar('color-white'),
+  'input-border-color-hover': getCssVar('color','base-persian'),
+  'checked-text-color': getCssVar('text-color','primary'),
+  'font-size': 1.4rem,
+  'font-weight': 400,
+  'border-radius': 2px
+);
+
+//custom css el-checkbox
+.el-checkbox {
+  &__input {
+    &.is-checked {
+      &:hover {
+        .el-checkbox__inner,
+        .el-checkbox__original {
+          border-color: var(--el-color-persian-700);
+          background: var(--el-color-persian-700);
+        }
+      }
+    }
+  }
+}
+
+.p-checkbox {
+  $self: &;
+
+  &#{$self}--rounded {
+    .el-checkbox__inner {
+      border-radius: var(--el-border-radius-circle);
+    }
+  }
+}

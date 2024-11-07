@@ -1,0 +1,61 @@
+html {
+  font-size: 10px !important;
+  font-family: var(--el-font-family) !important;
+}
+
+body {
+  font-size: 14px !important;
+}
+
+#app {
+  code {
+    font-family: 'JetBrains Mono', source-code-pro, Menlo, Monaco, Consolas,
+      'Courier New', monospace;
+  }
+
+  .container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    // padding-top: 56.25%;
+  }
+
+  .responsive-iframe-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 75%;
+  }
+
+  .responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .histoire-wrapper {
+    margin-top: 10px;
+    > span {
+      width: 25%;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #409eff;
+}
