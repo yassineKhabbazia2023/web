@@ -26,6 +26,8 @@ export default ({ mode }: any) =>
       ],
       resolve: {
         alias: {
+          '@common': fileURLToPath(new URL('../../libraries/common/src', import.meta.url)),
+          '@styleguide': fileURLToPath(new URL('../../libraries/styleguide/src', import.meta.url)),
           '@login': fileURLToPath(new URL('./src', import.meta.url)),
         },
       },
