@@ -59,6 +59,10 @@ import { reactive, ref } from 'vue'
 import { logEvent } from 'histoire/client'
 import { ElRadioGroup as PRadioGroup } from 'element-plus'
 import type { FormInstance } from 'element-plus'
+import PIcon from '@styleguide/atoms/PIcon'
+import PForm from '@styleguide/modecules/PForm'
+import PRadioCard from '@styleguide/modecules/PRadioCard'
+import PButton from '@styleguide/modecules/PButton'
 
 const formRef = ref<FormInstance>()
 const formValues = reactive({

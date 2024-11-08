@@ -34,15 +34,15 @@
       </div>
       <template #controls>
         <HstCheckbox v-model="accordion" title="Accordion" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>First Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
         <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>Second Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="secondCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="secondCollapseItem.disabled" title="Disable" />
       </template>
@@ -81,15 +81,15 @@
       </div>
       <template #controls>
         <HstCheckbox v-model="accordion" titleCollapseItem="Accordion" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>First Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
         <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>Second Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="secondCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="secondCollapseItem.disabled" title="Disable" />
       </template>
@@ -128,15 +128,15 @@
       </div>
       <template #controls>
         <HstCheckbox v-model="accordion" title="Accordion" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>First Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
         <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>Second Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="secondCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="secondCollapseItem.disabled" title="Disable" />
       </template>
@@ -175,15 +175,15 @@
       </div>
       <template #controls>
         <HstCheckbox v-model="accordion" title="Accordion" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>First Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="firstCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="firstCollapseItem.disabled" title="Disable" />
         <HstCheckbox v-model="firstCollapseItem.pFullBody" title="Full body" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>Second Collapse Item</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="secondCollapseItem.pTitleCollapseItem" title="titleCollapseItem" />
         <HstCheckbox v-model="secondCollapseItem.disabled" title="Disable" />
       </template>
@@ -195,6 +195,8 @@
 import { reactive, ref } from 'vue'
 import { PIArchive } from '@styleguide/atoms/PIcon/components'
 import PCollapseItem from '@styleguide/atoms/PCollapseItem'
+import PCollapse from '@styleguide/atoms/PCollapse'
+import { ElDivider } from 'element-plus'
 
 const activeNames = ref(['1'])
 const accordion = ref(false)

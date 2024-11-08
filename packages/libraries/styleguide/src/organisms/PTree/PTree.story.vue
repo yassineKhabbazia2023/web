@@ -45,6 +45,7 @@ import PButton from '@styleguide/atoms/PButton'
 import PToolbox from '@styleguide/molecules/PToolbox'
 import type { PToolboxItemProps } from '@styleguide/atoms/PToolboxItem/PToolboxItemTypes'
 import { logEvent } from 'histoire/client'
+import PIcon from '@styleguide/atoms/PIcon'
 
 const toolboxItems: PToolboxItemProps[] = [
   {

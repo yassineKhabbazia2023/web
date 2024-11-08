@@ -75,6 +75,7 @@ import { reactive } from 'vue'
 import PFileCard from './'
 import PButton from '@styleguide/atoms/PButton'
 import { logEvent } from 'histoire/client'
+import PIcon from '@styleguide/atoms/PIcon'
 
 const defaultState = reactive({
   pName: 'mandat-1000308253-12248236612-signature.pdf',

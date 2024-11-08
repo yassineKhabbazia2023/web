@@ -208,6 +208,7 @@ import { reactive, ref } from 'vue'
 import type { PDrawerProps } from './PDrawerTypes'
 import type { BreadcrumbItems } from '@styleguide/molecules/PBreadcrumb/PBreadcrumbTypes'
 import { AppColors } from '@styleguide/utils/AppColorsEnum'
+import PIcon from '@styleguide/atoms/PIcon'
 
 const pDrawerControl = reactive({
   title: 'Title',

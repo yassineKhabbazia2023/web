@@ -46,6 +46,7 @@ import PPagination from '@styleguide/atoms/PPagination'
 import { computed, reactive, ref } from 'vue'
 import PCheckbox from '@styleguide/atoms/PCheckbox'
 import { ElMessage } from 'element-plus'
+import PConfigProvider from '@styleguide/molecules/PConfigProvider'
 
 const language = ref('fr')
 const locale = computed(() => (language.value === 'fr' ? fr : en))

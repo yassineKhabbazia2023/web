@@ -103,6 +103,7 @@ import PButton from './'
 import PButtonGroup from '@styleguide/atoms/PButtonGroup/'
 import type { PButtonProps } from './PButtonTypes'
 import type { PButtonGroupProps } from '@styleguide/atoms/PButtonGroup/PButtonGroupTypes'
+import PIcon from '@styleguide/atoms/PIcon'
 
 const basicButton = ref<PButtonProps>({
   pType: 'default',

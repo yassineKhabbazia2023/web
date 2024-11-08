@@ -128,6 +128,7 @@ import PTooltip from '@styleguide/atoms/PTooltip'
 import PButton from '@styleguide/atoms/PButton'
 import PTimelineItem from '@styleguide/atoms/PTimelineItem'
 import PTimeline from './'
+import PIcon from '@styleguide/atoms/PIcon'
 
 </script>
 

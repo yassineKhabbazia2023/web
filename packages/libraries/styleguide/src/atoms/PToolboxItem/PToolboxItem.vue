@@ -41,6 +41,7 @@ import { computed } from 'vue'
 import { iconResolver } from '@styleguide/utils/iconResolver'
 import PTooltip from '@styleguide/atoms/PTooltip'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
+import PIcon from '@styleguide/atoms/PIcon'
 
 const props = withDefaults(defineProps<PToolboxItemProps>(), {
   disabled: false,

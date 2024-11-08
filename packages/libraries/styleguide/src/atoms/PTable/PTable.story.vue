@@ -160,7 +160,10 @@ import PDoubleText from '@styleguide/atoms/PDoubleText'
 import PEntity from '@styleguide/atoms/PEntity'
 import PTag from '@styleguide/atoms/PTag'
 import PText from '@styleguide/atoms/PText'
+import PButton from '@styleguide/atoms/PButton'
+import PSwitch from '@styleguide/atoms/PSwitch'
 import PTable from './'
+import PTableColumn from '@styleguide/atoms/PTableColumn'
 
 const tableInputs = reactive({
   data: [

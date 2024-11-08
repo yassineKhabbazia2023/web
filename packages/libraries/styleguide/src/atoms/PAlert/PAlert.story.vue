@@ -106,6 +106,7 @@ import PCollapseItem from '@styleguide/atoms/PCollapseItem'
 import { logEvent } from 'histoire/client'
 import { PIExclamationTriangle } from '@styleguide/atoms/PIcon/components'
 import PAlert from './'
+import PCollapse from '@styleguide/atoms/PCollapse'
 
 const activeNames = ref(['1'])
 </script>

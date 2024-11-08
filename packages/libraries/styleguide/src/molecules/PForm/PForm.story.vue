@@ -69,6 +69,7 @@ import { PICheck, PIExclamationTriangle } from '@styleguide/atoms/PIcon/componen
 import PFormItem from '@styleguide/atoms/PFormItem'
 import PButton from '@styleguide/atoms/PButton'
 import PInput from '@styleguide/atoms/PInput'
+import PForm from '@styleguide/molecules/PForm'
 
 const toastPlugin = inject('toast') as typeof ElNotification
 

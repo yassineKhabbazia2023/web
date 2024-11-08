@@ -147,6 +147,7 @@
 <script setup lang="ts">
 import PDialog from '.'
 import PButton from '@styleguide/atoms/PButton'
+import PInput from '@styleguide/atoms/PInput'
 import { reactive } from 'vue'
 
 const showDialog = () => {

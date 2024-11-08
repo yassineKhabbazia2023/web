@@ -146,6 +146,7 @@ import { reactive, ref } from 'vue'
 import PTabPane from '@styleguide/atoms/PTabPane'
 import type { PTooltipProps } from '@styleguide/atoms/PTooltip/PTooltipTypes'
 import PTabs from '@styleguide/molecules/PTabs'
+import PPastille from '@styleguide/atoms/PPastille'
 
 const activeScheduleViewType = ref('calendar')
 const firstActiveVariant = ref('1')

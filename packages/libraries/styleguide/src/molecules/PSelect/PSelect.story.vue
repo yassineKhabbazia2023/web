@@ -163,6 +163,7 @@ import { ref, watch } from 'vue'
 import POption from '@styleguide/atoms/POption'
 import POptionGroup from '@styleguide/molecules/POptionGroup'
 import PCheckbox from '@styleguide/atoms/PCheckbox'
+import PSelect from '@styleguide/molecules/PSelect'
 
 const valueSimple = ref('')
 const checkAll = ref(false)

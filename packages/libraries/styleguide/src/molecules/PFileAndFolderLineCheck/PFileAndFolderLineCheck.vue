@@ -54,6 +54,7 @@ import PCheckbox from '@styleguide/atoms/PCheckbox'
 import PIcon from '@styleguide/atoms/PIcon'
 import PLoader from '@styleguide/atoms/PLoader'
 import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckTypes'
+import { PICheckCircle, PIExclamationTriangle } from '@styleguide/atoms/PIcon/components'
 
 const props = withDefaults(defineProps<PFileAndFolderLineCheckProps>(), {
   pState: 'default',

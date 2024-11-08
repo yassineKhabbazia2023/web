@@ -1,10 +1,12 @@
 <template>
-  <el-divider borderStyle="dotted" contentPosition="left">
+  <ElDivider borderStyle="dotted" contentPosition="left">
     <span>{{ props.content }}</span>
-  </el-divider>
+  </ElDivider>
 </template>
 
 <script lang="ts">
+import { ElDivider } from 'element-plus'
+
 export default {
   name: 'HstColor',
   inheritAttrs: false,

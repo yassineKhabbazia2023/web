@@ -70,6 +70,7 @@
 import PScrollbar from '.'
 import { ref } from 'vue'
 import PScrollBar from './'
+import PButton from '@styleguide/atoms/PButton'
 
 const count = ref(3)
 

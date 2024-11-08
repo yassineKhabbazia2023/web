@@ -5,7 +5,7 @@
     >
       {{ title }}
     </span>
-    <el-slider
+    <ElSlider
       v-model="RangeValue"
       range
       :max="max"
@@ -16,6 +16,8 @@
 
 <script lang="ts">
 import { computed } from 'vue'
+import { ElSlider } from 'element-plus'
+
 export default {
   name: 'HstRange',
   inheritAttrs: false,

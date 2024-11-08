@@ -5,7 +5,7 @@
     >
       {{ title }}
     </span>
-    <el-color-picker
+    <ElColorPicker
       v-model="colorModel"
       size="small"
       showAlpha
@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import { computed, ref } from 'vue'
+import { ElColorPicker } from 'element-plus'
 
 export default {
   name: 'HstColor',

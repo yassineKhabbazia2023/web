@@ -5,13 +5,13 @@
     >
       {{ title }}
     </span>
-    <el-time-picker
+    <ElTimePicker
       v-if="type === 'time'"
       v-model="dateModel"
       arrowControl
       placeholder="Arbitrary time"
     />
-    <el-date-picker
+    <ElDatePicker
       v-else
       v-model="dateModel"
       :type="type"
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { computed } from 'vue'
+import { ElTimePicker, ElDatePicker } from 'element-plus'
 
 export default {
   name: 'HstDateTimePicker',

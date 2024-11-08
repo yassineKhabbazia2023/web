@@ -5,7 +5,7 @@
     >
       {{ title }}
     </span>
-    <el-input-number
+    <ElInputNumber
       v-model="NumberValue"
       :min="min"
       :max="max"
@@ -16,6 +16,8 @@
 
 <script lang="ts">
 import { computed } from 'vue'
+import { ElInputNumber } from 'element-plus'
+
 export default {
   name: 'HstInputNumber',
   inheritAttrs: false,

@@ -79,6 +79,7 @@ import PButton from '@styleguide/atoms/PButton'
 import PAutocomplete from '@styleguide/molecules/PAutocomplete'
 import type { PBlockHeaderProps } from './PBlockHeaderTypes'
 import PBlockHeader from './'
+import PIcon from '@styleguide/atoms/PIcon'
 
 const selectedCollaborator = ref(null)
 const collaboratorsTestData = [

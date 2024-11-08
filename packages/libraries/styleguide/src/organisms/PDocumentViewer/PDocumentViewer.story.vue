@@ -76,6 +76,7 @@ import PUpload from '@styleguide/atoms/PUpload'
 import PDocumentViewer from './'
 import PDocumentDisplay from '@styleguide/molecules/PDocumentDisplay'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
+import PIcon from '@styleguide/atoms/PIcon'
 
 const isDrawerOpened = ref(false)
 
