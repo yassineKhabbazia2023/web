@@ -7,11 +7,9 @@
   "type": "module",
   "main": "src/main.ts",
   "scripts": {
-    "dev": "vite",
     "build": "npm run build:vite && npm run build:types",
     "build:types": "vue-tsc --declaration --emitDeclarationOnly",
     "build:vite": "vite build",
-    "preview": "vite preview",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "story:preview": "histoire preview",
@@ -20,48 +18,18 @@
     "test:update": "npx vitest -u",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
     "lint:fix": "eslint . --fix --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --ignore-path .gitignore",
-    "format": "prettier --write src/",
     "generate": "npm run generate:icons && npm run generate:images",
     "generate:icons": "tsx ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
-    "generate:images": "tsx ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.ts",
-    "lint:style": "stylelint src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss",
-    "lint:style-fix": "stylelint --fix src/assets/**/*.{vue,scss} --ignore-pattern src/assets/scss/pegase/normalize.scss"
+    "generate:images": "tsx ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.ts"
   },
   "dependencies": {
-    "@intlify/unplugin-vue-i18n": "^0.12.2",
-    "@vue/test-utils": "^2.4.0",
-    "@vueuse/core": "^10.2.0",
-    "dayjs": "1.11.10",
-    "element-plus": "2.4.3",
-    "lodash-es": "^4.17.21",
-    "vue-i18n": "^9.2.2"
+    "@vueuse/core": "^10.2.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.3",
-    "@commitlint/config-conventional": "^17.6.3",
     "@histoire/plugin-vue": "^0.17.1",
-    "@rollup/plugin-typescript": "^11.1.2",
-    "@vitejs/plugin-vue": "^4.6.2",
-    "@vitest/coverage-istanbul": "^2.1.2",
-    "@vue/test-utils": "^2.4.0",
     "@vue/tsconfig": "^0.4.0",
-    "axios": "^1.6.5",
     "histoire": "^0.17.0",
-    "lint-staged": "^13.2.3",
-    "rollup-plugin-typescript-paths": "^1.4.0",
-    "rollup-plugin-visualizer": "^5.12.0",
-    "sass": "^1.79.4",
     "svgo": "^3.0.2",
-    "tslog": "^4.9.2",
-    "tsx": "^4.19.0",
-    "unplugin-element-plus": "^0.7.1",
-    "unplugin-vue-components": "^0.25.1",
-    "vite": "^5.4.8",
-    "vite-plugin-externals": "^0.6.2",
-    "vitest": "^2.0.0",
-    "vitest-mock-extended": "^1.1.4",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.4",
-    "vue-tsc": "^2.1.6"
+    "tslog": "^4.9.2"
   }
 }

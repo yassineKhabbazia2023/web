@@ -20,6 +20,7 @@
     "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high",
     "app:dev": "npm run dev --workspace=@pulse/app",
     "app:build": "npm run build --workspace=@pulse/app",
+    "styleguide:generate": "npm run generate --workspace=@pulse/styleguide",
     "styleguide:story:dev": "npm run story:dev --workspace=@pulse/styleguide",
     "styleguide:story:build": "npm run story:build --workspace=@pulse/styleguide",
     "test": "npm run test --workspaces --if-present",
