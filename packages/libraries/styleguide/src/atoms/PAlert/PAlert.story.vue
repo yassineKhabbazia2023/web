@@ -86,7 +86,7 @@
     <Variant title="Closable">
       <PAlert
         pClosable
-        pIcon="PIArrowHere"
+        pIcon="arrowHere"
         @close="logEvent('close', $event)"
       >
         <template #bold-text>

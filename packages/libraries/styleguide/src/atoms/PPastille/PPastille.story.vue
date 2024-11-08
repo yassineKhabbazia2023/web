@@ -9,7 +9,7 @@
     </Variant>
 
     <Variant title="With icon">
-      <PPastille pIconName="PITrash" />
+      <PPastille pIconName="trash" />
     </Variant>
 
     <Variant title="Warning usage">

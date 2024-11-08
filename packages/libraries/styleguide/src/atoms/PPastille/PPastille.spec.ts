@@ -10,7 +10,6 @@ const defaultProps: PPastilleProps = {
   pType: 'default',
   pSize: 'default',
   pDisabled: false,
-  pIconName: '',
 }
 
 const createWrapper = (props = defaultProps) => mount(PPastille, {
