@@ -8,7 +8,6 @@ import { HstVue } from '@histoire/plugin-vue'
 import vue from '@vitejs/plugin-vue'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
-import Components from 'unplugin-vue-components/vite'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 
@@ -32,15 +31,6 @@ const basicConfig = {
     }),
     VueI18nPlugin({
       include: [path.resolve(__dirname, './src/**/locales/**')],
-    }),
-    Components({
-      dirs: [
-        'src/atoms',
-        'src/guidelines',
-        'src/histoire-controls-components',
-        'src/molecules',
-        'src/organisms',
-      ],
     }),
     visualizer(),
   ],
