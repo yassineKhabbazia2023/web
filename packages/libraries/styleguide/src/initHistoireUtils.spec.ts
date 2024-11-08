@@ -4,7 +4,6 @@ import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { getAssetsBaseUrl, setCachedAssetsBaseUrl, getCachedAssetsBaseUrl, initHistoire } from './initHistoireUtils'
 
 vi.mock('axios')
-vi.mock('@styleguide/utils/logger')
 const VITE_ASSETS_BASE_URL = 'https://test.test'
 
 describe('initHistoirePlugin', () => {

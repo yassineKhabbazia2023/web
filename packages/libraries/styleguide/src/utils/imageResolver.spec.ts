@@ -1,13 +1,12 @@
 import { beforeEach, vi, describe, it, expect, type MockInstance } from 'vitest'
 import { imageResolver, getAssetsBaseUrl, setAssetsBaseUrl } from '@styleguide/utils/imageResolver'
-import { logger } from '@styleguide/utils/logger'
 
 const baseCDNUrl = 'https://example.com'
 
 describe('imageResolver', () => {
   let loggerWarnSpy: MockInstance
   beforeEach(() => {
-    loggerWarnSpy = vi.spyOn(logger, 'warn')
+    loggerWarnSpy = vi.spyOn(console, 'warn')
   })
   it('should correctly retrieve image url', () => {
     const imageType = 'dummy'

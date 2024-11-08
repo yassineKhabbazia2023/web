@@ -1,4 +1,3 @@
-import { logger } from '@styleguide/utils/logger'
 
 const context = {
   assetsBaseUrl: '',
@@ -6,7 +5,7 @@ const context = {
 
 export function getAssetsBaseUrl() {
   if (!context.assetsBaseUrl) {
-    logger.warn('should initialize AssetsBaseUrl with setAssetsBaseUrl()')
+    console.warn('should initialize AssetsBaseUrl with setAssetsBaseUrl()')
     return ''
   }
   return context.assetsBaseUrl

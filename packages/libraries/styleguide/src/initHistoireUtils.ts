@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { setAssetsBaseUrl } from './utils/imageResolver'
-import { logger } from '@styleguide/utils/logger'
 
 const ENV_VARS_URL = '/env-vars.json'
 
@@ -26,7 +25,7 @@ export async function getAssetsBaseUrl(metaEnv: MetaEnv) {
 
     return response?.data?.VITE_ASSETS_BASE_URL
   } catch (e) {
-    logger.error(e)
+    console.error(e)
   }
 }
 
