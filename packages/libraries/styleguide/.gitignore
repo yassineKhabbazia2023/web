@@ -30,8 +30,6 @@ dependency-graph.svg
 *.sw?
 .vs
 
-src/atoms/PIcon/components
-
 auto-imports.d.ts
 components.d.ts
 stats.html
