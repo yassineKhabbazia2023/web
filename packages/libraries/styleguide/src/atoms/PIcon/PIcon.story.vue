@@ -24,7 +24,7 @@
               <PIcon
                 :color="AppColors.PRIMARY"
                 size="20px"
-                :pName="item.component"
+                :pName="item.name"
               />
               <span class="icon-name">{{ item.name }}</span>
             </span>
@@ -41,6 +41,7 @@ import { pulseGeneratedIcons } from './components/constants'
 import { manageClick } from '@styleguide/utils/mouse'
 import { useCopyClipboard } from '@styleguide/utils/clipboard'
 import { AppColors } from '@styleguide/utils/AppColorsEnum'
+import PIcon from '.'
 
 const iconsData = shallowRef([] as any[])
 onBeforeMount(() => {

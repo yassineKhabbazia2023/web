@@ -33,8 +33,10 @@ export function getPathIcons(fileName: string, folder: string, category: string)
   if (fileStat.isFile() && extension === '.svg') {
     const iconName = path.basename(fileName, '.svg')
     const componentName = `PI${capitalizeFirstLetter(iconName)}`
+    const name = toCamelCase(iconName)
 
     const icon: Icon = {
+      name,
       componentName,
       fileName,
       filePath,
@@ -55,11 +57,8 @@ export function getIcons(folder: string, category: string): Icon[] {
 
 export function getIconTypeContent(folder: string) {
   const icons = getIcons(folder, '')
-  const enumEntries = icons.map(({ fileName }) => {
-    const fileNameWithoutExtension = path.basename(fileName, '.svg')
-    const camelCased = toCamelCase(fileNameWithoutExtension)
-
-    return `'${camelCased}'`
+  const enumEntries = icons.map(({ name }) => {
+    return `'${name}'`
   })
   enumEntries.sort()
 
@@ -133,12 +132,22 @@ export default ({
 }
 
 export function getComponentConstantsContent(icons: Icon[]) {
-  const list = icons.map(({ componentName, category }) => (`  {
-    name: '${componentName}',
+  const list = icons.map(({ name, fileName, componentName, category }) => (`  {
+    name: '${name}',
+    componentName: '${componentName}',
+    fileName: '${fileName}',
     category: '${category}',
   }`))
 
-  return `export const pulseGeneratedIcons = [\n${list.join(',\n')},\n]\n`
+  return `// eslint-disable-next-line import/extensions
+import type { AppIcons } from '../app-icons.types'
+
+export const pulseGeneratedIcons: {
+  name: AppIcons
+  componentName: string
+  fileName: string
+  category: string
+}[] = [\n${list.join(',\n')},\n]\n`
 }
 
 export function writeComponentConstants(outputFolderPath: string, icons: Icon[]) {

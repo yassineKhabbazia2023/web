@@ -1,12 +1,14 @@
 import type { Icon } from './types'
 
 export const MOCKED_ICON_1: Icon = {
+  name: 'c',
   componentName: 'PIC',
   fileName: 'c.svg',
   filePath: 'a/b/c.svg',
   category: 'my-category',
 }
 export const MOCKED_ICON_2: Icon = {
+  name: 'd',
   componentName: 'PID',
   fileName: 'd.svg',
   filePath: 'a/b/d.svg',
