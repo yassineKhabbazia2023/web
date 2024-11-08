@@ -22,14 +22,7 @@
     "generate:icons": "tsx ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
     "generate:images": "tsx ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.ts"
   },
-  "dependencies": {
-    "@vueuse/core": "^10.2.0"
-  },
   "devDependencies": {
-    "@histoire/plugin-vue": "^0.17.1",
-    "@vue/tsconfig": "^0.4.0",
-    "histoire": "^0.17.0",
-    "svgo": "^3.0.2",
-    "tslog": "^4.9.2"
+    "histoire": "^0.17.0"
   }
 }
