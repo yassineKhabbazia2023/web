@@ -1,12 +1,11 @@
 <template>
   <div>
     <Header
-      class="padding-top--2"
+      class="padding-top--2 margin-bottom--6"
       @refresh-mandate-collection="onUpdateSearchParams"
     />
     <SearchBar
       v-model="searchParams.searchTerm"
-      class="padding-y--6"
       @update:model-value="debouncedRefreshData"
     />
     <ListMandate
