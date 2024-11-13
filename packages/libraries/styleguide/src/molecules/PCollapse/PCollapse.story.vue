@@ -195,7 +195,7 @@
 import { reactive, ref } from 'vue'
 import { PIArchive } from '../../atoms/PIcon/components'
 import PCollapseItem from '../../atoms/PCollapseItem'
-import PCollapse from '../../atoms/PCollapse'
+import PCollapse from '../../molecules/PCollapse'
 import { ElDivider } from 'element-plus'
 
 const activeNames = ref(['1'])
