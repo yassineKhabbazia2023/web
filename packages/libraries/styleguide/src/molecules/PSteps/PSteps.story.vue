@@ -52,11 +52,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { type StateOptions, stateOptions } from '../../constants/stateOptions'
+import { stateOptions } from '../../constants/stateOptions'
 import PSteps from '../../molecules/PSteps'
 import { ElDivider } from 'element-plus'
+import type { PStepsProps } from './PStepsTypes'
 
-type basicDataOptions = { active: number, direction: 'horizontal' | 'vertical', processStatus: StateOptions, finishStatus: StateOptions }
+type basicDataOptions = {
+  active: number
+  direction: PStepsProps['pDirection']
+  processStatus: PStepsProps['pProcessStatus']
+  finishStatus: PStepsProps['pFinishStatus']
+}
 
 const basicData = ref<basicDataOptions>({
   active: 0,
