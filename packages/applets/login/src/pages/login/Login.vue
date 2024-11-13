@@ -1,10 +1,10 @@
 <template>
-  <div class="wrapperLogin text-left">
-    <h4 class="title">
-      {{ t('welcomeTo') }}
-      <span class="blue"> {{ t('yourPulseSpace') }}</span>
+  <div class="wrapperLogin text-left margin-top--11">
+    <h4 class="title font--bold">
+      {{ t('welcomeTo') }}<br>
+      <span class="title__second-part"> {{ t('yourSpace') }}</span>
     </h4>
-    <p class="formTitle">
+    <p class="formTitle margin-top--2 margin-bottom--6">
       {{ t('formTitle') }}
     </p>
     <div
@@ -62,20 +62,19 @@
       </PFormItem>
       <router-link
         to="/resetPassword"
-        class="forgot-password-btn font-semibold"
+        class="forgot-password-btn font-semibold text-right"
       >
         {{ t('forgotPassword') }}
       </router-link>
-      <PFormItem class="button-wrapper">
-        <PButton
-          :pDisabled="!isFormValid"
-          pType="primary"
-          class="buttonSubmit"
-          data-testid="login-submit-button"
-          @click="handleSubmit(formRef)"
-        >
-          {{ t('login') }}
-        </PButton>
+      <PFormItem>
+        <div class="margin-x--auto margin-top--6">
+          <PSkewedButton
+            :pContent="t('login')"
+            :pDisabled="!isFormValid"
+            data-testid="login-submit-button"
+            @click="handleSubmit(formRef)"
+          />
+        </div>
       </PFormItem>
     </PForm>
   </div>
@@ -86,7 +85,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { amplitudeService, commonApi, tokenService } from '@pulse/common'
-import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
+import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@login/services/cgu'
@@ -217,14 +216,14 @@ defineExpose({ handleSubmit })
 
 <style lang="scss" scoped>
 .title {
-  margin-bottom: 24px;
-}
-.blue {
-  color: var(--el-color-base-persian);
+  font-size: 3.2rem;
+
+  &__second-part {
+    color: var(--el-color-primary);
+  }
 }
 .formTitle {
   font-size: 1.6rem;
-  margin-bottom: 18px;
 }
 .customError {
   padding-bottom: 18px;
@@ -235,16 +234,7 @@ defineExpose({ handleSubmit })
   }
 }
 
-.button-wrapper {
-  padding-top: 6px;
-  margin-bottom: 0;
-}
-.buttonSubmit {
-  width: 100%;
-}
-
 .forgot-password-btn {
-  height: 30px;
   display: block;
   color: var(--el-color-primary);
   font-size: 12px;
@@ -258,7 +248,7 @@ defineExpose({ handleSubmit })
 <i18n lang="yaml">
   en-US:
     welcomeTo: 'Welcome to'
-    yourPulseSpace: 'your Pulse Space!'
+    yourSpace: 'your Pulse Space!'
     formTitle: 'Please login to access all your services.'
     email: 'Email'
     emailPlaceholder: 'Enter your email address'
@@ -272,7 +262,7 @@ defineExpose({ handleSubmit })
     alertMailInvalid: 'Please enter a valid mail'
   fr-FR:
     welcomeTo: 'Bienvenue sur'
-    yourPulseSpace: 'votre Espace Pulse !'
+    yourSpace: 'votre espace !'
     formTitle: 'Veuillez vous connecter pour accéder à tous vos services.'
     email: 'Email'
     emailPlaceholder: 'Saisissez votre email'

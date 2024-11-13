@@ -1,26 +1,27 @@
 <template>
-  <div class="wrapperLogin">
-    <h4 class="title">
-      {{ t('Title') }}
+  <div class="wrapperLogin text-left">
+    <h4 class="title font--bold">
+      {{ t('welcomeTo') }}<br>
+      <span class="title__second-part"> {{ t('collaboratorSpace') }}</span>
     </h4>
-    <p class="formTitle">
+    <p class="formTitle margin-top--3 margin-bottom--7">
       {{ t('formTitle') }}
     </p>
-    <PButton
-      pType="primary"
-      class="buttonSubmit"
-      data-testid="login-collab-button"
-      @click="handleLoginCollab"
-    >
-      {{ t('login') }}
-    </PButton>
+    <div class="flex flex--justify-content-center">
+      <PSkewedButton
+        :pContent="t('login')"
+        pType="primary"
+        data-testid="login-collab-button"
+        @click="handleLoginCollab"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton } from '@pulse/styleguide/components'
+import { PSkewedButton } from '@pulse/styleguide/components'
 import { msalInstance } from '@login/services/msal'
 import useInitAuth from '@login/composable/useInitUserAuth'
 import { amplitudeService } from '@pulse/common'
@@ -56,16 +57,18 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .wrapperLogin {
   margin-top: 20%;
-  text-align: center;
 }
 .title {
-  margin-bottom: 24px;
-}
-.formTitle {
-  font-size: 1.6rem;
-  margin-bottom: 18px;
+  font-size: 3.2rem;
+
+  &__second-part {
+    color: var(--el-color-primary);
+  }
 }
 
+.formTitle {
+  font-size: 1.6rem;
+}
 .button-wrapper {
   padding-top: 6px;
   margin-bottom: 0;
@@ -77,12 +80,14 @@ onMounted(async () => {
 
 <i18n lang="yaml">
 en-US:
-  Title: 'COLLABORATOR SPACE'
+  welcomeTo: 'Welcome to your'
+  collaboratorSpace: 'your collaborator space !'
   login: 'Login'
   formTitle: >-
     Welcome to your Pulse platform. Please log in to access to all your services.
 fr-FR:
-  Title: 'ESPACE COLLABORATEUR'
+  welcomeTo: 'Bienvenue sur votre'
+  collaboratorSpace: 'espace collaborateur !'
   login: 'Se connecter'
   formTitle: >-
     Bienvenue sur votre plateforme Pulse. Veuillez vous connecter pour accéder

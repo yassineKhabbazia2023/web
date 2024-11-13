@@ -6,31 +6,23 @@
           :pXs="24"
           :pSm="24"
           :pMd="12"
-          class="content"
+          class="content padding-top--10"
         >
           <PImage
             pType="logos"
-            pName="pulse-color"
+            pName="brand-color"
             class="pulse-logo-content"
-            alt="KPMG Pulse logo"
+            alt="Pulse logo"
           />
           <router-view />
         </PCol>
 
         <PCol
           :pXs="0"
-          :pSm="0"
+          :pXm="0"
           :pMd="12"
           class="illustration-wrapper"
-        >
-          <PCarousel
-            :pItems="carouselData"
-            :pInterval="3300"
-            pArrow="never"
-            pHeight="600px"
-            class="carousel"
-          />
-        </PCol>
+        />
       </PRow>
     </main>
 
@@ -46,43 +38,19 @@
 
     <PImage
       pType="logos"
-      pName="kpmg-color"
+      pName="brand-white"
       class="logo-footer hidden-sm-and-down"
-      alt="KPMG logo"
+      alt="Rydge logo"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
 import { PCol, PCarousel, PRow, PImage } from '@pulse/styleguide/components'
 import type { PCarouselItemProps } from '@pulse/styleguide/types'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
-
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
-
-const carouselData: PCarouselItemProps[] = [
-  {
-    pText: t('carouselItem1'),
-    pImageName: 'mirror-smartphone',
-    pImageType: 'paupulse',
-  },
-  {
-    pText: t('carouselItem2'),
-    pImageType: 'paupulse',
-    pImageName: 'bank-mandate',
-  },
-  {
-    pText: t('carouselItem3'),
-    pImageType: 'paupulse',
-    pImageName: 'shared-document',
-  },
-]
 
 onMounted(() => {
   localStorage.removeItem('selected-entity')
@@ -93,7 +61,7 @@ onMounted(() => {
 .wrapper {
   position: relative;
   padding: 2.4rem 1.6rem;
-  background: var(--el-color-base-persian-light);
+  background: var(--el-color-base-blue-pulse);
   height: 100vh;
   text-align: center;
 
@@ -101,12 +69,7 @@ onMounted(() => {
     overflow-y: scroll;
   }
   @media (min-width: 992px) {
-    background: var(--el-color-base-persian-light)
-      url('../Login/images/icon-pulse-bg.svg') no-repeat right;
     padding-top: 10vh;
-  }
-  @media (min-height: 1028px) {
-    background-size: contain;
   }
 }
 
@@ -114,16 +77,15 @@ onMounted(() => {
   @media (min-width: 992px) {
     max-width: 920px;
     margin: auto;
-    padding: 0;
-    filter: drop-shadow(0px 24px 50px rgba(112, 144, 176, 0.20))
-      drop-shadow(0px 8px 8px rgba(112, 144, 176, 0.05))
-      drop-shadow(0px 4px 4px rgba(112, 144, 176, 0.08))
-      drop-shadow(0px 2px 2px rgba(112, 144, 176, 0.05))
-      drop-shadow(0px 2px 1px rgba(112, 144, 176, 0.10));
   }
+
   background: var(--el-color-base-white);
-  border-radius: 16px;
-  padding: 24px 16px;
+
+  .illustration-wrapper {
+    min-height: 620px;
+    background-image: url('https://picsum.photos/id/235/448/630.webp');
+    background-size: cover;
+  }
 
   .content {
     @media (min-width: 992px) {
@@ -133,10 +95,10 @@ onMounted(() => {
     .pulse-logo-content {
       @media (min-width: 992px) {
         margin-bottom: 38px;
-        max-width: 236px;
+        max-width: 129px;
       }
       margin-bottom: 24px;
-      max-width: 177px;
+      max-width: 140px;
     }
   }
 
@@ -149,11 +111,6 @@ onMounted(() => {
       left: -4%;
       transform: translateY(-50%);
     }
-  }
-
-  .carousel {
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
   }
 }
 
@@ -178,22 +135,3 @@ $footer-margin: 24px;
   width: 100px;
 }
 </style>
-
-<!-- eslint-disable @intlify/vue-i18n/no-unused-keys no-trailing-spaces -->
-<i18n lang="yaml">
-  en-US:
-    carouselItem1 : >-
-      Manage the activation of the various Pulse services
-    carouselItem2 : >-
-      Create and track your bank mandate requests at a glance!
-    carouselItem3 : >-
-      Follow the documents shared by your customers on a daily basis.
-  fr-FR:
-    carouselItem1 : >-
-      Pilotez l’activation des différents services Pulse
-      et la digitalisation de votre relation client.
-    carouselItem2 : >-
-      Créez et suivez vos demandes de mandats bancaires en un coup d’oeil !
-    carouselItem3 : >-
-      Suivez au quotidien les documents partagés par vos clients.
-</i18n>

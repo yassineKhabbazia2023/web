@@ -124,6 +124,9 @@ vitest.*.timestamp-*.mjs
 # vitest coverage
 stats.html
 
+#
+stats.html
+
 # turbo
 .turbo
 

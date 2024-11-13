@@ -116,7 +116,7 @@ describe('login', () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
-    const submitButton = wrapper.find('.buttonSubmit')
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
     await submitButton.trigger('click')
     await flushPromises()
 
@@ -163,7 +163,7 @@ describe('login', () => {
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
-    const submitButton = wrapper.find('.buttonSubmit')
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
     await submitButton.trigger('click')
     await flushPromises()
 
@@ -191,7 +191,7 @@ describe('login', () => {
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
-    const submitButton = wrapper.find('.buttonSubmit')
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
     await submitButton.trigger('click')
     await flushPromises()
 
@@ -217,12 +217,13 @@ describe('login', () => {
     await inputEmail.trigger('blur')
     await inputPassword.trigger('blur')
 
-    const submitButton = wrapper.find('.buttonSubmit')
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
     await submitButton.trigger('click')
     await flushPromises()
 
     const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
-    expect(submitButton.attributes('disabled')).toBeDefined()
+    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(loginErrorMessage.exists()).toBeFalsy()
     expect(spySetNewUserPropertyAmplitude).not.toHaveBeenCalled()
     expect(spyTrackAmplitude).not.toHaveBeenCalled()
@@ -240,7 +241,8 @@ describe('login', () => {
     await flushPromises()
 
     const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
-    expect(submitButton.attributes('disabled')).toBeDefined()
+    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(loginErrorMessage.exists()).toBeFalsy()
     expect(spySetNewUserPropertyAmplitude).not.toHaveBeenCalled()
     expect(spyTrackAmplitude).not.toHaveBeenCalled()

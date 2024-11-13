@@ -1,6 +1,6 @@
 <template>
   <ul
-    class="legal-links list-style-none flex--align-items-center flex--wrap"
+    class="legal-links list-style-none flex--align-items-center flex--wrap margin-top--4"
   >
     <li class="legal-links__item flex flex--align-items-center">
       <a
@@ -136,7 +136,7 @@ onMounted(async () => {
         content: '•';
         display: inline-block;
         margin-right: 0.4rem;
-        color: var(--el-color-primary);
+        color: var(--el-color-white);
         font-size: 1.2rem;
       }
     }
@@ -144,8 +144,7 @@ onMounted(async () => {
   &__link,
   #ot-sdk-btn.ot-sdk-show-settings,
   #ot-sdk-btn.optanon-show-settings {
-    color: var(--el-color-primary);
-    font-style: italic;
+    color: var(--el-color-white);
     font-size: 1.2rem;
     background: none;
     appearance: none;
@@ -157,7 +156,7 @@ onMounted(async () => {
     &:focus {
       text-decoration: underline;
       background: none;
-      color: var(--el-color-primary);
+      color: var(--el-color-white);
     }
   }
 }

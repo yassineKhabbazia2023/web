@@ -1,17 +1,17 @@
 <template>
   <p class="support font-small">
     {{ t('contactSupport') }}
-    <a :href="phoneSanitizedUrl" class="link text-color--persian-500">
+    <a :href="phoneSanitizedUrl" class="link">
       {{ t('phoneNumber') }}
     </a>
     {{ t('emailLabel') }}
-    <a :href="emailSanitizedUrl" class="link text-color--persian-500">
+    <a :href="emailSanitizedUrl" class="link">
       {{ t('SAVEmail') }}
     </a>
   </p>
   <p>
     <button
-      class="link support__copyright text-color--persian-500 cursor-pointer"
+      class="link support__copyright cursor-pointer"
       data-testid="copyright-link"
       @click.prevent="handleCopyrightLink"
     >
@@ -60,6 +60,8 @@ const emailSanitizedUrl = computed(() => {
 
 <style lang="scss" scoped>
 .support {
+  color: var(--el-color-white);
+
   &__copyright {
     appearance: none;
     background: none;
@@ -68,6 +70,7 @@ const emailSanitizedUrl = computed(() => {
 }
 .link {
   font-size: 1.2rem;
+  color: var(--el-color-white)
 }
 </style>
 
@@ -77,8 +80,8 @@ en-US:
   phoneNumberLink: '+33973733000'
   phoneNumber: '09 73 73 3000'
   emailLabel: ' — email : '
-  SAVEmail: "relation-client{'@'}kpmg.fr"
-  copyright: '© 2024 KPMG S.A'
+  SAVEmail: "relation-client{'@'}rydgeconseil.fr"
+  copyright: 'Ⓒ RYDGE CONSEIL'
   copyrightContent: >-
     © 2024 KPMG S.A., public accounting and auditing company,
     French member of the global KPMG organization made up of independent firms
@@ -93,8 +96,8 @@ fr-FR:
   phoneNumberLink: '+33973733000'
   phoneNumber: '09 73 73 3000'
   emailLabel: ' — email : '
-  SAVEmail: "relation-client{'@'}kpmg.fr"
-  copyright: '© 2024 KPMG S.A'
+  SAVEmail: "relation-client{'@'}rydgeconseil.fr"
+  copyright: 'Ⓒ RYDGE CONSEIL'
   copyrightContent: >-
     © 2024 KPMG S.A., société anonyme d'expertise comptable et de commissariat aux comptes,
     membre français de l’organisation mondiale KPMG constituée de cabinets indépendants
