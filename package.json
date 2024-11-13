@@ -38,6 +38,7 @@
     "mfe:copy:apps": "tsx ./scripts/copy-apps.ts",
     "mfe:copy:styleguide": "tsx ./scripts/copy-styleguide.ts",
     "mfe:icons:styleguide": "tsx ./scripts/icons-styleguide.ts",
+    "mfe:imports:styleguide": "tsx ./scripts/imports-styleguide.ts",
     "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules"
   },
   "dependencies": {
