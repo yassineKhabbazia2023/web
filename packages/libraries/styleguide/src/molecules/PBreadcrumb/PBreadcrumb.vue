@@ -22,8 +22,8 @@
 import { computed } from 'vue'
 import { ElBreadcrumb, ElBreadcrumbItem } from 'element-plus'
 import { ArrowRight } from '@element-plus/icons-vue'
-import PTooltip from '@styleguide/atoms/PTooltip'
-import placementOptions from '@styleguide/constants/placementOptions'
+import PTooltip from '../../atoms/PTooltip'
+import placementOptions from '../../constants/placementOptions'
 import type { PBreadcrumbProps } from './PBreadcrumbTypes'
 
 const props = defineProps<PBreadcrumbProps>()

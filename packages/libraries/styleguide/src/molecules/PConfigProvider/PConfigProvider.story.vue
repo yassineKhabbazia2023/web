@@ -40,13 +40,13 @@
 <script setup lang="ts">
 import en from 'element-plus/es/locale/lang/en'
 import fr from 'element-plus/es/locale/lang/fr'
-import PButton from '@styleguide/atoms/PButton'
-import PTable from '@styleguide/atoms/PTable'
-import PPagination from '@styleguide/atoms/PPagination'
+import PButton from '../../atoms/PButton'
+import PTable from '../../atoms/PTable'
+import PPagination from '../../atoms/PPagination'
 import { computed, reactive, ref } from 'vue'
-import PCheckbox from '@styleguide/atoms/PCheckbox'
+import PCheckbox from '../../atoms/PCheckbox'
 import { ElMessage } from 'element-plus'
-import PConfigProvider from '@styleguide/molecules/PConfigProvider'
+import PConfigProvider from '../../molecules/PConfigProvider'
 
 const language = ref('fr')
 const locale = computed(() => (language.value === 'fr' ? fr : en))

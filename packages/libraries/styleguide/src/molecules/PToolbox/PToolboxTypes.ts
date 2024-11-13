@@ -1,4 +1,4 @@
-import type { PToolboxItemProps } from '@styleguide/atoms/PToolboxItem/PToolboxItemTypes'
+import type { PToolboxItemProps } from '../../atoms/PToolboxItem/PToolboxItemTypes'
 
 export interface PToolboxProps {
   pElements: Array<PToolboxItemProps>

@@ -193,9 +193,9 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { PIArchive } from '@styleguide/atoms/PIcon/components'
-import PCollapseItem from '@styleguide/atoms/PCollapseItem'
-import PCollapse from '@styleguide/atoms/PCollapse'
+import { PIArchive } from '../../atoms/PIcon/components'
+import PCollapseItem from '../../atoms/PCollapseItem'
+import PCollapse from '../../atoms/PCollapse'
 import { ElDivider } from 'element-plus'
 
 const activeNames = ref(['1'])

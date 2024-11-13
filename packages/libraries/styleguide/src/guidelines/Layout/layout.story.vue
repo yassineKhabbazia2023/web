@@ -192,9 +192,9 @@
 <script setup lang="ts">
 import { justifyOptions } from './constants'
 import { ref } from 'vue'
-import PCol from '@styleguide/atoms/PCol'
-import PRow from '@styleguide/atoms/PRow'
-import type { PRowProps } from '@styleguide/atoms/PRow/PRowTypes'
+import PCol from '../../atoms/PCol'
+import PRow from '../../atoms/PRow'
+import type { PRowProps } from '../../atoms/PRow/PRowTypes'
 
 // Basic Usage
 const basicData = ref({

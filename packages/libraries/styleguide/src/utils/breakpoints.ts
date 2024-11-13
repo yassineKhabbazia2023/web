@@ -1,7 +1,7 @@
 import {
   BREAKPOINT_SIZES,
   type breakpoint,
-} from '@styleguide/guidelines/Layout/constants'
+} from '../guidelines/Layout/constants'
 
 export function getCurrentBreakpoint(windowWidth: number): breakpoint {
   if (windowWidth >= BREAKPOINT_SIZES.xl) return 'xl'

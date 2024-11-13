@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import PSwitch from '@styleguide/atoms/PSwitch'
+import PSwitch from '../../atoms/PSwitch'
 
 const on = ref(true)
 const off = ref(false)

@@ -23,7 +23,7 @@ import { defineAsyncComponent } from 'vue'
 import { ElTag } from 'element-plus'
 import type { PTagProps } from './PTagTypes'
 import type { Component } from 'vue'
-import PIcon from '@styleguide/atoms/PIcon'
+import PIcon from '../../atoms/PIcon'
 
 defineProps<PTagProps>()
 

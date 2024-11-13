@@ -63,9 +63,9 @@
 </template>
 
 <script setup lang="ts">
-import PButton from '@styleguide/atoms/PButton'
-import PIcon from '@styleguide/atoms/PIcon'
-import PTooltip from '@styleguide/atoms/PTooltip'
+import PButton from '../../atoms/PButton'
+import PIcon from '../../atoms/PIcon'
+import PTooltip from '../../atoms/PTooltip'
 import PHistoryCard from '.'
 </script>
 

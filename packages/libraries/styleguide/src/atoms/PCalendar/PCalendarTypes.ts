@@ -1,4 +1,4 @@
-import type { CalendarCellItemProps } from '@styleguide/atoms/PCalendarDateCell/PCalendarDateCellTypes'
+import type { CalendarCellItemProps } from '../../atoms/PCalendarDateCell/PCalendarDateCellTypes'
 
 export interface CalendarItemsGroupedByDate {
   date: string

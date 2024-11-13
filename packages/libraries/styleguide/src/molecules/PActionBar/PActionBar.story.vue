@@ -27,7 +27,7 @@ import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
 import type { ComponentDefinitionProps } from './PActionBarTypes'
 import PActionBar from '.'
-import type { PButtonProps } from '@styleguide/main'
+import type { PButtonProps } from '../../main'
 
 function getButton(
   pType: PButtonProps['pType'],

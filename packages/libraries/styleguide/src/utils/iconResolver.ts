@@ -1,5 +1,5 @@
 import { defineAsyncComponent, type Component } from 'vue'
-import { PIXCircle } from '@styleguide/atoms/PIcon/components'
+import { PIXCircle } from '../atoms/PIcon/components'
 export const iconsResolver = (
   iterable: Array<any>,
   iconPropertyName: string,

@@ -2,7 +2,7 @@ import { describe, beforeEach, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount, flushPromises } from '@vue/test-utils'
 import type { PTableColumnProps } from './PTableColumnTypes'
-import PTable from '@styleguide/atoms/PTable'
+import PTable from '../../atoms/PTable'
 import PTableColumn from '.'
 
 function createWrapper(

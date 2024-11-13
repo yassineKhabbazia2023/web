@@ -34,9 +34,9 @@
 import { computed, ref, watch } from 'vue'
 import PIcon from '../PIcon'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
-import PButton from '@styleguide/atoms/PButton'
-import PInput from '@styleguide/atoms/PInput'
-import { PISearch } from '@styleguide/atoms/PIcon/components'
+import PButton from '../../atoms/PButton'
+import PInput from '../../atoms/PInput'
+import { PISearch } from '../../atoms/PIcon/components'
 
 const props = withDefaults(defineProps<PExpandableSearchProps>(), {
   pType: 'white',

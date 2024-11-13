@@ -1,4 +1,4 @@
-import type { PImageProps } from '@styleguide/atoms/PImage/PImageTypes'
+import type { PImageProps } from '../../atoms/PImage/PImageTypes'
 
 export interface PBlockHeaderProps {
   pTitle: string

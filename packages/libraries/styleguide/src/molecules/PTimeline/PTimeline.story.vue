@@ -123,12 +123,12 @@
 </template>
 
 <script lang="ts" setup>
-import PHistoryCard from '@styleguide/atoms/PHistoryCard'
-import PTooltip from '@styleguide/atoms/PTooltip'
-import PButton from '@styleguide/atoms/PButton'
-import PTimelineItem from '@styleguide/atoms/PTimelineItem'
+import PHistoryCard from '../../atoms/PHistoryCard'
+import PTooltip from '../../atoms/PTooltip'
+import PButton from '../../atoms/PButton'
+import PTimelineItem from '../../atoms/PTimelineItem'
 import PTimeline from './'
-import PIcon from '@styleguide/atoms/PIcon'
+import PIcon from '../../atoms/PIcon'
 
 </script>
 

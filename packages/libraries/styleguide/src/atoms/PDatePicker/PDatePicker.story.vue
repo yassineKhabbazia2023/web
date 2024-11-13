@@ -156,7 +156,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { logEvent } from 'histoire/client'
-import PDatePicker from '@styleguide/atoms/PDatePicker'
+import PDatePicker from '../../atoms/PDatePicker'
 
 const date = ref('')
 const dateRange = ref('')

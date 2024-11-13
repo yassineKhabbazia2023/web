@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import PIcon from '../PIcon'
-import { iconResolver } from '@styleguide/utils/iconResolver'
+import { iconResolver } from '../../utils/iconResolver'
 import type { PLoaderProps } from './PLoaderTypes'
 
 const props = withDefaults(defineProps<PLoaderProps>(), {

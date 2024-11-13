@@ -37,10 +37,10 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import PTooltip from '@styleguide/atoms/PTooltip'
+import PTooltip from '../../atoms/PTooltip'
 import PIcon from '../PIcon'
 import type { PFolderLineNavigationItemProps } from './PFolderLineNavigationItemTypes'
-import { iconResolver } from '@styleguide/utils/iconResolver'
+import { iconResolver } from '../../utils/iconResolver'
 
 const props = withDefaults(defineProps<PFolderLineNavigationItemProps>(), {
   pSelected: false,

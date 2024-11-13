@@ -100,10 +100,10 @@
 import { logEvent } from 'histoire/client'
 import { ref } from 'vue'
 import PButton from './'
-import PButtonGroup from '@styleguide/atoms/PButtonGroup/'
+import PButtonGroup from '../../atoms/PButtonGroup/'
 import type { PButtonProps } from './PButtonTypes'
-import type { PButtonGroupProps } from '@styleguide/atoms/PButtonGroup/PButtonGroupTypes'
-import PIcon from '@styleguide/atoms/PIcon'
+import type { PButtonGroupProps } from '../../atoms/PButtonGroup/PButtonGroupTypes'
+import PIcon from '../../atoms/PIcon'
 
 const basicButton = ref<PButtonProps>({
   pType: 'default',

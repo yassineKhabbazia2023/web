@@ -24,9 +24,9 @@
 </template>
 
 <script lang="ts" setup>
-import { getColorValue, useCopyColor } from '@styleguide/utils'
-import PCol from '@styleguide/atoms/PCol'
-import PRow from '@styleguide/atoms/PRow'
+import { getColorValue, useCopyColor } from '../../utils'
+import PCol from '../../atoms/PCol'
+import PRow from '../../atoms/PRow'
 
 const colorsType = [
   'functionnal-red',

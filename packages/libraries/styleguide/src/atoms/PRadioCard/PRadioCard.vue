@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import PRadio from '@styleguide/atoms/PRadio'
+import PRadio from '../../atoms/PRadio'
 import type { PRadioCardProps } from './PRadioCardTypes'
 
 defineProps<PRadioCardProps>()

@@ -1,6 +1,6 @@
 import { getCurrentBreakpoint } from './breakpoints'
 import { describe, it, expect } from 'vitest'
-import { BREAKPOINT_SIZES } from '@styleguide/guidelines/Layout/constants'
+import { BREAKPOINT_SIZES } from '../guidelines/Layout/constants'
 
 describe('breakpoints', () => {
   it.each([

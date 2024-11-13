@@ -39,9 +39,9 @@
 <script setup lang="ts">
 import PPopover from './'
 import { reactive } from 'vue'
-import placementOptions from '@styleguide/constants/placementOptions'
-import triggerOptions from '@styleguide/constants/triggerOptions'
-import PButton from '@styleguide/atoms/PButton'
+import placementOptions from '../../constants/placementOptions'
+import triggerOptions from '../../constants/triggerOptions'
+import PButton from '../../atoms/PButton'
 
 const popoverBasicData = reactive({
   pPlacement: placementOptions[0].value,

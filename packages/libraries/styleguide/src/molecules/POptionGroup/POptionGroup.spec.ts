@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { POptionGroupProps } from './POptionGroupTypes'
-import PSelect from '@styleguide/molecules/PSelect'
-import POption from '@styleguide/atoms/POption'
+import PSelect from '../../molecules/PSelect'
+import POption from '../../atoms/POption'
 import POptionGroup from '.'
 
 function createWrapper(optionGroups: POptionGroupProps[], slotContent: string): VueWrapper {

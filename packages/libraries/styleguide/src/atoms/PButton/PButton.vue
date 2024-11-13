@@ -18,10 +18,10 @@
 
 <script setup lang="ts">
 import { computed, inject } from 'vue'
-import PIcon from '@styleguide/atoms/PIcon'
+import PIcon from '../../atoms/PIcon'
 import { ElButton } from 'element-plus'
 import type { PButtonProps } from './PButtonTypes'
-import { injectionButtonKey } from '@styleguide/atoms/PButtonGroup/PButtonGroupTypes'
+import { injectionButtonKey } from '../../atoms/PButtonGroup/PButtonGroupTypes'
 
 const props = withDefaults(defineProps<PButtonProps>(), {
   pType: 'default',

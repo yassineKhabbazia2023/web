@@ -1,7 +1,7 @@
 import { type FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 import type { PFieldPropsInput, PFieldPropsDropdown, PFieldPropsDate, PFieldPropsRadio } from './PFieldTypes'
-import type { PDatePickerProps } from '@styleguide/atoms/PDatePicker/PDatePickerTypes'
+import type { PDatePickerProps } from '../../atoms/PDatePicker/PDatePickerTypes'
 
 export function getMockedRule(ruleType: string): FormItemRule | undefined {
   if (ruleType === 'email') {

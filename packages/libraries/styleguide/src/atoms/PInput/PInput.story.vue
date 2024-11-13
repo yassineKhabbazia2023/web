@@ -109,10 +109,10 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import PIcon from '@styleguide/atoms/PIcon'
-import { PISearch } from '@styleguide/atoms/PIcon/components'
-import PInput from '@styleguide/atoms/PInput'
-import { AppColors } from '@styleguide/utils/AppColorsEnum'
+import PIcon from '../../atoms/PIcon'
+import { PISearch } from '../../atoms/PIcon/components'
+import PInput from '../../atoms/PInput'
+import { AppColors } from '../../utils/AppColorsEnum'
 
 const basicInputData = reactive({
   type: 'text',

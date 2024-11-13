@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ElCarousel } from 'element-plus'
-import PCarouselItem from '@styleguide/atoms/PCarouselItem'
+import PCarouselItem from '../../atoms/PCarouselItem'
 import type { PCarouselProps } from './PCarouselTypes'
 
 withDefaults(defineProps<PCarouselProps>(), {

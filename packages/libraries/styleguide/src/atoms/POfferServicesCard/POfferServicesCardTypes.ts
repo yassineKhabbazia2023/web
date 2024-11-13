@@ -1,4 +1,4 @@
-import type { PTagProps } from '@styleguide/atoms/PTag/PTagTypes'
+import type { PTagProps } from '../../atoms/PTag/PTagTypes'
 
 export interface PService {
   pStatus: boolean

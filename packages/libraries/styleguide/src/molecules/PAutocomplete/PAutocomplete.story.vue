@@ -32,8 +32,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { logEvent } from 'histoire/client'
-import PIcon from '@styleguide/atoms/PIcon'
-import PAutocomplete from '@styleguide/molecules/PAutocomplete'
+import PIcon from '../../atoms/PIcon'
+import PAutocomplete from '../../molecules/PAutocomplete'
 
 interface LinkItem {
   value: string

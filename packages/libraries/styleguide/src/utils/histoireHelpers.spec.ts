@@ -1,7 +1,7 @@
 import * as VueUseCore from '@vueuse/core'
 import { ref } from 'vue'
 import { describe, it, expect, vi, beforeEach, type MockInstance } from 'vitest'
-import { stringToClassList, numbersToClassList, onClickCssClass } from '@styleguide/utils/histoireHelpers'
+import { stringToClassList, numbersToClassList, onClickCssClass } from '../utils/histoireHelpers'
 import * as ElementPlus from 'element-plus'
 
 vi.mock('@vueuse/core')

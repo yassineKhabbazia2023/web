@@ -1,4 +1,4 @@
-import type { PlacementOptions } from '@styleguide/constants/placementOptions'
+import type { PlacementOptions } from '../../constants/placementOptions'
 
 export interface PTooltipProps {
   pContent: string

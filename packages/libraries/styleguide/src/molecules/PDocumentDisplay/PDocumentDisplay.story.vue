@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import PDocumentDisplay from '@styleguide/molecules/PDocumentDisplay'
+import PDocumentDisplay from '../../molecules/PDocumentDisplay'
 </script>
 <docs lang="md">
   ## Document Viewer

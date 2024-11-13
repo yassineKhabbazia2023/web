@@ -57,8 +57,8 @@
 </template>
 
 <script lang="ts" setup>
-import PImage from '@styleguide/atoms/PImage'
-import PButton from '@styleguide/atoms/PButton'
+import PImage from '../../atoms/PImage'
+import PButton from '../../atoms/PButton'
 import type { PErrorBlockProps } from './PErrorTypes'
 
 defineProps<PErrorBlockProps>()

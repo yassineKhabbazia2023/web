@@ -55,9 +55,9 @@
 
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue'
-import PImage from '@styleguide/atoms/PImage'
-import PAvatar from '@styleguide/atoms/PAvatar'
-import PTag from '@styleguide/atoms/PTag'
+import PImage from '../../atoms/PImage'
+import PAvatar from '../../atoms/PAvatar'
+import PTag from '../../atoms/PTag'
 import type { PUserCardProps } from './PUserCardTypes'
 
 const props = withDefaults(defineProps<PUserCardProps>(), {

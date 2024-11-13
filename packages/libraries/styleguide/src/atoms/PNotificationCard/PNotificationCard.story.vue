@@ -37,13 +37,13 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import PAvatar from '@styleguide/atoms/PAvatar'
-import PToolbox from '@styleguide/molecules/PToolbox'
-import PButton from '@styleguide/atoms/PButton'
-import PIcon from '@styleguide/atoms/PIcon'
+import PAvatar from '../../atoms/PAvatar'
+import PToolbox from '../../molecules/PToolbox'
+import PButton from '../../atoms/PButton'
+import PIcon from '../../atoms/PIcon'
 import PNotificationCard from './'
-import type { PAvatarProps } from '@styleguide/atoms/PAvatar/PAvatarTypes'
-import type { PToolboxItemProps } from '@styleguide/atoms/PToolboxItem/PToolboxItemTypes'
+import type { PAvatarProps } from '../../atoms/PAvatar/PAvatarTypes'
+import type { PToolboxItemProps } from '../../atoms/PToolboxItem/PToolboxItemTypes'
 
 const currentShape = ref<PAvatarProps['pShape']>('circle')
 const currentType = ref<PAvatarProps['pType']>('default')

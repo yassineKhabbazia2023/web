@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { PIPerson } from '@styleguide/atoms/PIcon/components'
+import { PIPerson } from '../../atoms/PIcon/components'
 import type { PTextProps } from './PTextTypes'
 import PText from './'
 

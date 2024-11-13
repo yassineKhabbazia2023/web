@@ -38,8 +38,8 @@
 </template>
 
 <script setup lang="ts">
-import PAvatar from '@styleguide/atoms/PAvatar'
-import PIcon from '@styleguide/atoms/PIcon'
+import PAvatar from '../../atoms/PAvatar'
+import PIcon from '../../atoms/PIcon'
 import type { PDoubleTextProps } from './PDoubleTextTypes'
 
 withDefaults(defineProps<PDoubleTextProps>(), {

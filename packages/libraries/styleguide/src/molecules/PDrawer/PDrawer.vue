@@ -66,9 +66,9 @@
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
-import PBreadcrumb from '@styleguide/molecules/PBreadcrumb'
-import PButton from '@styleguide/atoms/PButton'
-import PIcon from '@styleguide/atoms/PIcon'
+import PBreadcrumb from '../../molecules/PBreadcrumb'
+import PButton from '../../atoms/PButton'
+import PIcon from '../../atoms/PIcon'
 import type { PDrawerProps } from './PDrawerTypes'
 
 const emit = defineEmits([

@@ -52,8 +52,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { type StateOptions, stateOptions } from '@styleguide/constants/stateOptions'
-import PSteps from '@styleguide/molecules/PSteps'
+import { type StateOptions, stateOptions } from '../../constants/stateOptions'
+import PSteps from '../../molecules/PSteps'
 import { ElDivider } from 'element-plus'
 
 type basicDataOptions = { active: number, direction: 'horizontal' | 'vertical', processStatus: StateOptions, finishStatus: StateOptions }

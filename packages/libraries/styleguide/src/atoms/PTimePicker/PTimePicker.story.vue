@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import PTimePicker from '@styleguide/atoms/PTimePicker'
+import PTimePicker from '../../atoms/PTimePicker'
 
 const value1 = ref()
 const value2 = ref()

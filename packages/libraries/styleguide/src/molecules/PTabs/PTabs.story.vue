@@ -143,10 +143,10 @@
 <script setup lang="ts">
 import { logEvent } from 'histoire/client'
 import { reactive, ref } from 'vue'
-import PTabPane from '@styleguide/atoms/PTabPane'
-import type { PTooltipProps } from '@styleguide/atoms/PTooltip/PTooltipTypes'
-import PTabs from '@styleguide/molecules/PTabs'
-import PPastille from '@styleguide/atoms/PPastille'
+import PTabPane from '../../atoms/PTabPane'
+import type { PTooltipProps } from '../../atoms/PTooltip/PTooltipTypes'
+import PTabs from '../../molecules/PTabs'
+import PPastille from '../../atoms/PPastille'
 
 const activeScheduleViewType = ref('calendar')
 const firstActiveVariant = ref('1')

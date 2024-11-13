@@ -25,9 +25,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import PIcon from '@styleguide/atoms/PIcon'
+import PIcon from '../../atoms/PIcon'
 import type { PAlertProps } from './PAlertTypes'
-import { AppColors } from '@styleguide/utils/AppColorsEnum'
+import { AppColors } from '../../utils/AppColorsEnum'
 // eslint-disable-next-line import/extensions
 import type { PIconProps } from '../PIcon/PIcon.types'
 

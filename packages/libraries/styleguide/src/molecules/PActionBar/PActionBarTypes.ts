@@ -1,4 +1,4 @@
-import type { PButtonProps } from '@styleguide/atoms/PButton/PButtonTypes'
+import type { PButtonProps } from '../../atoms/PButton/PButtonTypes'
 
 export interface PButtonActionBarProps {
   pButton: PButtonProps

@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import PRadio from '@styleguide/atoms/PRadio'
+import PRadio from '../../atoms/PRadio'
 
 const radio = ref('1')
 const isDisabled = ref(false)

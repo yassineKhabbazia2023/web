@@ -102,11 +102,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import PCollapseItem from '@styleguide/atoms/PCollapseItem'
+import PCollapseItem from '../../atoms/PCollapseItem'
 import { logEvent } from 'histoire/client'
-import { PIExclamationTriangle } from '@styleguide/atoms/PIcon/components'
+import { PIExclamationTriangle } from '../../atoms/PIcon/components'
 import PAlert from './'
-import PCollapse from '@styleguide/atoms/PCollapse'
+import PCollapse from '../../molecules/PCollapse'
 
 const activeNames = ref(['1'])
 </script>

@@ -62,8 +62,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PUpload from '.'
-import PButton from '@styleguide/atoms/PButton'
-import PIcon from '@styleguide/atoms/PIcon'
+import PButton from '../../atoms/PButton'
+import PIcon from '../../atoms/PIcon'
 
 const uploadDisabled = ref(false)
 </script>

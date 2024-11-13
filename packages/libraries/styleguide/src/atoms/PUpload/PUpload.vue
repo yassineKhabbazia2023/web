@@ -61,12 +61,12 @@
 <script setup lang="ts">
 import { ElUpload, type UploadFile, type UploadRawFile } from 'element-plus'
 import { ref, computed } from 'vue'
-import { getFileIcon } from '@styleguide/utils/fileExtension'
-import PIcon from '@styleguide/atoms/PIcon'
-import PImage from '@styleguide/atoms/PImage'
-import PUploadFileLine from '@styleguide/atoms/PUploadFileLine'
+import { getFileIcon } from '../../utils/fileExtension'
+import PIcon from '../../atoms/PIcon'
+import PImage from '../../atoms/PImage'
+import PUploadFileLine from '../../atoms/PUploadFileLine'
 import type { UploadProps } from './PUploadTypes'
-import { AppColors } from '@styleguide/utils/AppColorsEnum'
+import { AppColors } from '../../utils/AppColorsEnum'
 
 const uploadElement = ref<InstanceType<typeof ElUpload> | null>(null)
 

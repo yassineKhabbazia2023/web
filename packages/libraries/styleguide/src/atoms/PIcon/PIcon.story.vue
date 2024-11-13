@@ -38,9 +38,9 @@
 <script setup lang="ts">
 import { onBeforeMount, defineAsyncComponent, shallowRef } from 'vue'
 import { pulseGeneratedIcons } from './components/constants'
-import { manageClick } from '@styleguide/utils/mouse'
-import { useCopyClipboard } from '@styleguide/utils/clipboard'
-import { AppColors } from '@styleguide/utils/AppColorsEnum'
+import { manageClick } from '../../utils/mouse'
+import { useCopyClipboard } from '../../utils/clipboard'
+import { AppColors } from '../../utils/AppColorsEnum'
 import PIcon from '.'
 
 const iconsData = shallowRef([] as any[])

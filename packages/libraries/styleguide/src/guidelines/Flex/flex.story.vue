@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { stringToClassList, numbersToClassList, onClickCssClass } from '@styleguide/utils/histoireHelpers'
+import { stringToClassList, numbersToClassList, onClickCssClass } from '../../utils/histoireHelpers'
 
 const subListSameSize = ['40', '40', '40'].map((size) => `height-${size}`)
 const subListVariable = ['80', '40', '60'].map((size) => `height-${size}`)

@@ -30,7 +30,7 @@
 
 <script setup lang="ts" generic="T = string">
 import { computed } from 'vue'
-import PFilterOption from '@styleguide/atoms/PFilterOption'
+import PFilterOption from '../../atoms/PFilterOption'
 import type { PFilterGroupProps } from './PFilterGroupTypes'
 
 const props = defineProps<PFilterGroupProps<T>>()

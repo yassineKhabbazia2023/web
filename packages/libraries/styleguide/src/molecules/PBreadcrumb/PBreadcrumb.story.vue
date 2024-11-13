@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import PBreadcrumb from '@styleguide/molecules/PBreadcrumb'
+import PBreadcrumb from '../../molecules/PBreadcrumb'
 import type { BreadcrumbItems } from './PBreadcrumbTypes'
 
 const generateBreadCrumbItems = (numberOfItems: number) => {

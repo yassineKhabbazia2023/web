@@ -143,8 +143,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import PCol from '@styleguide/atoms/PCol'
-import PRow from '@styleguide/atoms/PRow'
+import PCol from '../../atoms/PCol'
+import PRow from '../../atoms/PRow'
 
 const radiusGroup = ref([
   {

@@ -54,7 +54,7 @@ import { logEvent } from 'histoire/client'
 import { setWith } from 'lodash-es'
 import PFieldSet from '.'
 import { getMockedFields } from './PFieldSetMock'
-import PForm from '@styleguide/molecules/PForm'
+import PForm from '../../molecules/PForm'
 
 type Section = {
   title: string

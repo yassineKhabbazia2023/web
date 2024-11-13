@@ -3,9 +3,9 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PTabPane from '.'
 import type { PTabPaneProps } from './PTabPaneTypes'
-import type { PTooltipProps } from '@styleguide/atoms/PTooltip/PTooltipTypes'
-import PTabs from '@styleguide/molecules/PTabs'
-import PTooltip from '@styleguide/atoms/PTooltip'
+import type { PTooltipProps } from '../../atoms/PTooltip/PTooltipTypes'
+import PTabs from '../../molecules/PTabs'
+import PTooltip from '../../atoms/PTooltip'
 
 const propsValue: PTabPaneProps = {
   pLabel: 'label',

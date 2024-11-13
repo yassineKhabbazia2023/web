@@ -38,10 +38,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { iconResolver } from '@styleguide/utils/iconResolver'
-import PTooltip from '@styleguide/atoms/PTooltip'
+import { iconResolver } from '../../utils/iconResolver'
+import PTooltip from '../../atoms/PTooltip'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
-import PIcon from '@styleguide/atoms/PIcon'
+import PIcon from '../../atoms/PIcon'
 
 const props = withDefaults(defineProps<PToolboxItemProps>(), {
   disabled: false,

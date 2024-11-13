@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import PDocumentDisplay from './'
 import type { PDocumentDisplayProps } from './PDocumentDisplayTypes'
 import { ElImage } from 'element-plus'
-import PImage from '@styleguide/atoms/PImage'
+import PImage from '../../atoms/PImage'
 
 const defaultProps: PDocumentDisplayProps = {
   pDocumentExtension: 'jpg',

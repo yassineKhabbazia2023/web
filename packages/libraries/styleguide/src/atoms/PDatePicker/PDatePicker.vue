@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { computed, watch, ref } from 'vue'
 import { ElDatePicker } from 'element-plus'
-import { PICalendarEvent } from '@styleguide/atoms/PIcon/components'
+import { PICalendarEvent } from '../../atoms/PIcon/components'
 import type { PDatePickerProps, PDatePickerModelValue, calendarEvent } from './PDatePickerTypes'
 import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 

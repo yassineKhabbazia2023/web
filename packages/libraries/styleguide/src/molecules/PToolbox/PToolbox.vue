@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
 import { ref } from 'vue'
-import PToolboxItem from '@styleguide/atoms/PToolboxItem'
+import PToolboxItem from '../../atoms/PToolboxItem'
 import type { PToolboxProps } from './PToolboxTypes'
 
 withDefaults(defineProps<PToolboxProps>(), {

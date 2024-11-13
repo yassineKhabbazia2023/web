@@ -1,5 +1,5 @@
 import { beforeEach, vi, describe, it, expect, type MockInstance } from 'vitest'
-import { imageResolver, getAssetsBaseUrl, setAssetsBaseUrl } from '@styleguide/utils/imageResolver'
+import { imageResolver, getAssetsBaseUrl, setAssetsBaseUrl } from '../utils/imageResolver'
 
 const baseCDNUrl = 'https://example.com'
 

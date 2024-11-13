@@ -1,4 +1,4 @@
-import type { PDropdownOption } from '@styleguide/molecules/PDropdown/PDropdownTypes'
+import type { PDropdownOption } from '../../molecules/PDropdown/PDropdownTypes'
 
 export function getMockedOptions(): PDropdownOption[] {
   const pOptions = [{
