@@ -60,9 +60,9 @@ import { logEvent } from 'histoire/client'
 import { ElRadioGroup as PRadioGroup } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import PIcon from '../../atoms/PIcon'
-import PForm from '../../modecules/PForm'
-import PRadioCard from '../../modecules/PRadioCard'
-import PButton from '../../modecules/PButton'
+import PForm from '../../molecules/PForm'
+import PRadioCard from '../../atoms/PRadioCard'
+import PButton from '../../atoms/PButton'
 
 const formRef = ref<FormInstance>()
 const formValues = reactive({
