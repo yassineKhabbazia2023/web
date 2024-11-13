@@ -1,0 +1,47 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+// css3 var in packages/theme-chalk/src/input.scss
+$input: (
+  'border-radius': getCssVar('border-radius-small'),
+  'icon-color': getCssVar('color', 'neutral-gray-300'),
+  'clear-hover-color': getCssVar('color-primary'),
+);
+
+$input-padding-horizontal: (
+  'large': 16px,
+  'default': 14px,
+  'small': 9px,
+);
+
+$input-font-size: (
+  'default': 1.2rem,
+  'small': 1.2rem,
+);
+
+div.el-textarea {
+  --el-input-border-radius: var(--el-border-radius-base);
+
+  .el-textarea__inner {
+    padding: 10px 16px;
+
+    &::-webkit-resizer {
+      padding: 6px;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgNiA2IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNNSAxTDEgNSIgc3Ryb2tlPSIjQTRBNEE0Ii8+CjxwYXRoIGQ9Ik01IDNMMyA1IiBzdHJva2U9IiNBNEE0QTQiLz4KPC9zdmc+Cg==);
+      background-size: 8px 8px;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+.el-input {
+  &__inner {
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+}
+
+.el-autocomplete {
+  width: 100%
+}

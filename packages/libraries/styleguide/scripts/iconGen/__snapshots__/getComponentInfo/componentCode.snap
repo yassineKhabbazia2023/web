@@ -1,0 +1,12 @@
+
+<!-- eslint-disable vue/max-attributes-per-line max-len -->
+<template>
+  <svg viewBox="0 0 16 16"><path d="M4 11H2V14H4V11ZM9"/></svg>
+</template>
+<!-- eslint-disable vue/max-attributes-per-line max-len -->
+<script lang="ts">
+import type { DefineComponent } from 'vue'
+export default ({
+  name: 'PIIconName',
+}) as DefineComponent
+</script>

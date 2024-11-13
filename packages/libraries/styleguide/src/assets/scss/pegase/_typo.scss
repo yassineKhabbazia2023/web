@@ -1,0 +1,198 @@
+@use 'element-plus/theme-chalk/src/mixins/mixins.scss' as *;
+@use 'mixins' as *;
+
+:root {
+  --font-base-size: 1.6rem;
+}
+
+@include res(sm) {
+  :root {
+    --font-base-size: 1.4rem;
+  }
+}
+
+%h {
+  margin: 0;
+  font-weight: normal;
+  line-height: 1.20;
+}
+
+%h1 {
+  font-weight: 600;
+
+  @include fontToRem(28);
+
+  @include res(sm) {
+    font-weight: 700;
+
+    @include fontToRem(32);
+  }
+}
+
+%h2 {
+  font-weight: 400;
+
+  @include fontToRem(24);
+
+  @include res(sm) {
+    font-weight: 600;
+
+    @include fontToRem(28);
+  }
+}
+
+%h3 {
+  font-weight: 400;
+
+  @include fontToRem(21);
+
+  @include res(sm) {
+    font-weight: 400;
+
+    @include fontToRem(24);
+  }
+}
+
+%h4 {
+  font-weight: 600;
+
+  @include fontToRem(18);
+  
+  @include res(sm) {
+    @include fontToRem(21);
+  }
+}
+
+.h1,
+h1,
+.h2,
+h2,
+.h3,
+h3,
+.h4,
+h4 {
+  @extend %h;
+}
+
+.h1,
+h1 {
+  @extend %h1;
+}
+
+.h2,
+h2 {
+  @extend %h2;
+}
+
+.h3,
+h3 {
+  @extend %h3;
+}
+
+.h4,
+h4 {
+  @extend %h4;
+}
+
+.font-large {
+  font-weight: 600;
+
+  @include fontToRem(16);
+}
+
+.font-base {
+  font-size: var(--font-base-size);
+}
+
+.font-small {
+  @include fontToRem(12);
+}
+
+.font-xsmall {
+  font-weight: 600;
+
+  @include fontToRem(11);
+}
+
+.font-light {
+  font-weight: 300 !important;
+}
+
+.font-normal {
+  font-weight: 400 !important;
+}
+
+.font-semibold {
+  font-weight: 600 !important;
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.font-italic {
+  font-style: italic;
+}
+
+a {
+  text-decoration: none;
+}
+
+.link {
+  font-size: var(--font-base-size);
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.text-overflow {
+  &--ellipsis {
+    text-overflow: ellipsis;
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.pre-line {
+  white-space: pre-line;
+}
+
+.white-space {
+  &--wrap {
+    white-space: wrap !important;
+  }
+  &--no-wrap {
+    white-space: nowrap !important;
+  }
+  &--pre-line {
+    white-space: pre-line !important;
+  }
+}

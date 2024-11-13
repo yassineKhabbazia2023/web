@@ -81,7 +81,7 @@
       <PAlert
         @close="setAlertVisibility"
         pClosable
-        pIcon="PIArrowHere"
+        pIcon="arrowHere"
         v-if="isNoteAlertShown  && !isCollab"
       >
         <template #bold-text>

@@ -1,0 +1,78 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+// css3 var in packages/theme-chalk/src/carousel.scss
+$carousel: (
+  'arrow-font-size': 12px,
+  'arrow-size': 36px,
+  'arrow-background': getCssVar('color-white'),
+  'arrow-hover-background': getCssVar('color-white'),
+  'indicator-width': 6px,
+  'indicator-height': 6px,
+  'indicator-padding-horizontal': 4px,
+  'indicator-padding-vertical': 58px,
+  'indicator-out-color': getCssVar('border-color-hover'),
+);
+
+//custom css override
+.el-carousel {
+  background: var(--persian-light-gradient);
+
+  &__arrow {
+    border: 1px solid getCssVar('color', 'persian-200');
+    color: getCssVar('color', 'persian-200');
+
+    &:active,
+    &:hover,
+    &:focus {
+      border: 1px solid getCssVar('color', 'base-persian');
+      color: getCssVar('color', 'base-persian');
+    }
+  }
+
+  &__indicator {
+    &--horizontal {
+      &.is-active {
+        .el-carousel__button {
+          width: 20px;
+          border-radius: 50px;
+          background: getCssVar('color', 'white');
+        }
+      }
+    }
+
+    > .el-carousel__button {
+      border-radius: 50%;
+      color: var(--el-color-neutral-gray-100);
+    }
+  }
+}
+
+//custom css for carousel-item
+
+.p-carousel-item {
+  min-height: 600px;
+
+  &__top {
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    margin: 48px auto;
+    width: 50%;
+
+    @media screen and (width >= 768px) {
+      width: 280px;
+    }
+  }
+
+  &__text {
+    padding: 16px 12px;
+    font-size: 16px;
+    color: getCssVar('color', 'white');
+    text-align: center;
+  }
+
+  &__bottom {
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+  }
+}

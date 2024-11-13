@@ -23,6 +23,9 @@
       "@common/*": [
         "../libraries/common/src/*"
       ],
+      "@styleguide/*": [
+        "../libraries/styleguide/src/*"
+      ],
       "@entities/*": [
         "../applets/entities/src/*"
       ],

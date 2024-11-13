@@ -1,0 +1,70 @@
+// css3 var in packages/theme-chalk/src/switch.scss
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$switch: (
+  'on-color': var(--el-color-base-persian),
+  'off-color': var(--el-color-neutral-gray-100),
+);
+
+// @TODO : replace later div by class p-switch (need the new component)
+div.el-switch {
+  height: auto;
+
+  &.is-disabled > .el-switch__core .el-switch__action {
+    --el-switch-on-color: var(--el-color-persian-200);
+    --el-switch-off-color: var(--el-color-neutral-gray-100);
+
+    background-color: var(--el-color-neutral-gray-300);
+  }
+
+  &.is-checked > .el-switch__core .el-switch__action {
+    --el-switch-on-color: var(--el-color-persian-200);
+    --el-switch-off-color: var(--el-color-neutral-gray-100);
+
+    background-color: var(--el-color-base-white);
+  }
+
+  &:not(.is-checked, .is-disabled) {
+    &:hover {
+      --el-switch-off-color: var(--el-color-persian-300);
+    }
+
+    &:focus {
+      --el-switch-off-color: var(--el-color-persian-400);
+    }
+
+    &:hover > .el-switch__core > .el-switch__action,
+    &:focus > .el-switch__core > .el-switch__action {
+      background-color: var(--el-color-base-white);
+    }
+  }
+
+  &:not(.is-disabled) {
+    &:hover {
+      --el-switch-on-color: var(--el-color-persian-700);
+    }
+
+    &:focus {
+      --el-switch-on-color: var(--el-color-persian-800);
+    }
+  }
+
+  .el-switch__label {
+    &.is-active {
+      color: inherit !important;
+    }
+
+    &--right {
+      margin-left: 1.6rem;
+    }
+
+    &--left {
+      margin-right: 1.6rem;
+    }
+
+    span {
+      font-weight: 600;
+      font-size: 1.6rem;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@pulse/styleguide",
+  "version": "2.2.900",
+  "description": "Design System library",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "main": "src/main.ts",
+  "scripts": {
+    "build": "npm run build:vite && npm run build:types",
+    "build:types": "vue-tsc --declaration --emitDeclarationOnly",
+    "build:vite": "vite build",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview",
+    "test": "npx vitest run",
+    "test:ci": "vitest run --coverage",
+    "test:update": "npx vitest -u",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
+    "lint:fix": "eslint . --fix --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --ignore-path .gitignore",
+    "generate": "npm run generate:icons && npm run generate:images",
+    "generate:icons": "tsx ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
+    "generate:images": "tsx ./scripts/compressImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.ts"
+  },
+  "devDependencies": {
+    "histoire": "^0.17.0"
+  }
+}

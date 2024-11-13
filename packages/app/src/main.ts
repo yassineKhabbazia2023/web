@@ -1,5 +1,3 @@
-import '@pulse/styleguide/dist/style'
-
 import { createApp } from 'vue'
 import { commoni18n, commonPinia } from '@pulse/common'
 import { VITE_ASSETS_BASE_URL } from 'env-vars'

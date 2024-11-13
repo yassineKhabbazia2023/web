@@ -1,0 +1,57 @@
+// css3 var in packages/theme-chalk/src/dialog.scss
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$dialog: (
+  'width': 50%,
+  'margin-top': 15vh,
+  'bg-color': getCssVar('bg-color'),
+  'box-shadow': getCssVar('box-shadow'),
+  'title-font-size': 2.4rem,
+  'content-font-size': 1.4rem,
+  'font-line-height': getCssVar('font-line-height-primary'),
+  'padding-primary': 20px,
+  'background': var(--el-color-base-white)
+);
+
+.p-dialog {
+  .el-dialog__header {
+    padding: 2.0rem 1.6rem 0;
+    margin: 0;
+  }
+
+  .el-dialog__headerbtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    top: 20px;
+    right: 16px;
+
+    .el-dialog__close {
+      color: var(--el-text-color-regular);
+      font-size: 1.6rem;
+    }
+  }
+
+  .el-dialog__title {
+    display: flex;
+    color: var(--el-text-color-regular);
+    line-height: 44px;
+    // To prevent long words from touching the close button
+    padding-right: 44px;
+    word-break: break-all;
+  }
+
+  .el-dialog__body {
+    padding: 1.6rem;
+  }
+
+  .el-dialog__footer {
+    padding: 0 1.6rem 1.6rem;
+
+    .el-button  + .el-button {
+      margin-left: 1.2rem;
+    }
+  }
+}

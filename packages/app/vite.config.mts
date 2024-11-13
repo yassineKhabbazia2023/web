@@ -26,6 +26,7 @@ export default ({ mode }: any) =>
         alias: {
           '@app': fileURLToPath(new URL('./src', import.meta.url)),
           '@common': fileURLToPath(new URL('../libraries/common/src', import.meta.url)),
+          '@styleguide': fileURLToPath(new URL('../libraries/styleguide/src', import.meta.url)),
           '@entities': fileURLToPath(new URL('../applets/entities/src', import.meta.url)),
           '@ged': fileURLToPath(new URL('../applets/ged/src', import.meta.url)),
           '@launcher': fileURLToPath(new URL('../applets/launcher/src', import.meta.url)),
