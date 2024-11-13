@@ -39,14 +39,14 @@
   </ElDatePicker>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="T extends PDatePickerModelValue">
 import { computed, watch, ref } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { PICalendarEvent } from '../../atoms/PIcon/components'
 import type { PDatePickerProps, PDatePickerModelValue, calendarEvent } from './PDatePickerTypes'
 import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 
-const props = withDefaults(defineProps<PDatePickerProps>(), {
+const props = withDefaults(defineProps<PDatePickerProps<T>>(), {
   pCalendarLite: false,
   pMonth: '',
   pReadonly: false,
@@ -62,10 +62,10 @@ const props = withDefaults(defineProps<PDatePickerProps>(), {
 
 const emit = defineEmits<{
   'selected-date': [string]
-  'update:modelValue': [PDatePickerModelValue]
+  'update:modelValue': [T]
   'calendar-change': [[Date, Date]]
-  'panel-change': [PDatePickerModelValue]
-  'change': [Date]
+  'panel-change': [T]
+  'change': [T]
 }>()
 
 const datepickerModel = computed({
@@ -126,7 +126,7 @@ const actOnDatepicker = (value: calendarEvent) => {
     const element: HTMLElement = document.getElementsByClassName(classMapper[value])[0] as HTMLElement
     return element.click()
   }
-  datepickerModel.value = (new Date()).toISOString().split('T')[0]
+  datepickerModel.value = (new Date()).toISOString().split('T')[0] as T
 }
 
 function calendarChange(val: [Date, Date]) {
@@ -135,10 +135,10 @@ function calendarChange(val: [Date, Date]) {
 
 function panelChange(val: PDatePickerModelValue) {
   panelDate.value = val
-  emit('panel-change', val)
+  emit('panel-change', val as T)
 }
 
-function handleChange(val: Date) {
+function handleChange(val: T) {
   emit('change', val)
 }
 

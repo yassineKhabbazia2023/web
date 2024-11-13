@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import type { PDatePickerModelValue } from './PDatePickerTypes'
 
-export function getCurrentDate(modelValue?: PDatePickerModelValue, panelDate?: PDatePickerModelValue) {
+export function getCurrentDate<T extends PDatePickerModelValue>(modelValue?: T, panelDate?: T) {
   if (panelDate && !Array.isArray(panelDate)) {
     return new Date(panelDate)
   }

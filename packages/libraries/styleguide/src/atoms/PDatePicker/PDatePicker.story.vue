@@ -5,7 +5,7 @@
     :layout="{ type: 'grid', width: 480 }"
   >
     <Variant title="Basic Usage">
-      <PDatePicker
+      <PDatePickerString
         v-model="date"
         pType="date"
         pValueFormat="DD/MM/YYYY"
@@ -157,6 +157,9 @@
 import { ref } from 'vue'
 import { logEvent } from 'histoire/client'
 import PDatePicker from '../../atoms/PDatePicker'
+import type { PDatePickerShortcut } from './PDatePickerTypes'
+
+const PDatePickerString = PDatePicker<string>
 
 const date = ref('')
 const dateRange = ref('')
@@ -218,7 +221,7 @@ const shortcutsDataRange = [
     },
   },
 ]
-const shortcutsMountRange = [
+const shortcutsMountRange: PDatePickerShortcut[] = [
   {
     text: 'This month',
     value: [new Date(), new Date()],
@@ -252,7 +255,7 @@ const pSchedulesCollection = days.map((day) => {
 function disabledDate(time: Date) {
   return time.getTime() > Date.now()
 }
-function handleChange(val: typeof date) {
+function handleChange(val: string) {
   logEvent('change', { date: val })
 }
 function calendarChange(val: [Date, Date]) {

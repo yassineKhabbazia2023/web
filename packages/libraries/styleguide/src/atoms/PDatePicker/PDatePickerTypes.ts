@@ -2,8 +2,12 @@ export type calendarEvent = 'prev-month' | '' | 'next-month' | 'today'
 
 export type PDatePickerModelValue = [Date, Date] | Date | string
 
-export interface PDatePickerProps {
-  modelValue: PDatePickerModelValue
+export interface PDatePickerShortcut {
+  text: string
+  value: Date | [Date, Date] | Function
+}
+export interface PDatePickerProps<T extends PDatePickerModelValue = PDatePickerModelValue> {
+  modelValue: T
   pCalendarLite?: boolean
   pSchedulesCollection?: string[]
   pMonth?: calendarEvent
@@ -16,7 +20,7 @@ export interface PDatePickerProps {
   pValueFormat?: string
   pPlaceholder?: string
   pDisabledDate?: Function
-  pShortcuts?: Array<{ text: string, value: Date | Function }>
+  pShortcuts?: PDatePickerShortcut[]
   pUnlinkPanels?: boolean
   pRangeSeparator?: string
   pStartPlaceholder?: string
