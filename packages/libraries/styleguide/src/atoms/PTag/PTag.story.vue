@@ -88,7 +88,7 @@ import { logEvent } from 'histoire/client'
 import { PIStars } from '../../atoms/PIcon/components'
 import PTag from '../../atoms/PTag'
 
-const color = ref('success')
+const color = ref<PTagProps['pColor']>('success')
 const closable = ref(true)
 const rounded = ref(true)
 const disableTransitions = ref(true)
