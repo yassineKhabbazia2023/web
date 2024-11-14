@@ -5,8 +5,6 @@
       flex--align-item-center
       flex--justify-content-space-between
       padding-left--5 padding-right--2 padding-y--3
-      shadow--2
-      radius--1
       bg--base-white"
   >
     <div class="p-history-card__content">
@@ -69,8 +67,6 @@
 
 <script setup lang="ts">
 import type { PHistoryCardProps } from './PHistoryCardTypes'
-import PTag from '../PTag'
-import PTooltip from '../PTooltip'
 
 defineProps<PHistoryCardProps>()
 </script>

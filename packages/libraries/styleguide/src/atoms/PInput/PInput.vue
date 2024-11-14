@@ -29,6 +29,9 @@
     :tabindex="pTabindex"
     :validateEvent="pValidateEvent"
     :inputStyle="pInputStyle"
+    :class="{'p-input--focused': isInputFocused}"
+    @focus="isInputFocused=true"
+    @blur="isInputFocused=false"
   >
     <template v-if="!!slots['suffix']" #suffix>
       <slot name="suffix" />
@@ -51,8 +54,8 @@ import { mutable } from 'element-plus/es/utils/typescript'
 import { getIconComponent } from '../../utils/iconHelper'
 import { ElInput } from 'element-plus'
 import type { PInputProps } from './PInputTypes'
-
 const slots = useSlots()
+const isInputFocused = ref(false)
 
 const prefixIcon = computed(() => {
   return props.pPrefixIconName ? getIconComponent(props.pPrefixIconName) : undefined
@@ -100,3 +103,9 @@ defineExpose({
   focus,
 })
 </script>
+
+<style scoped lang="scss">
+.p-input--focused {
+  border-bottom-color: var(--el-color-persian-800);
+}
+</style>

@@ -7,7 +7,7 @@
           pName="background-error-page"
           class="p-error-block__splash hidden-sm-and-down"
         />
-        <div class="p-error-block__content shadow--6 radius--4 shadow--6 bg--base-white flex">
+        <div class="p-error-block__content radius--4 bg--base-white flex">
           <div class="p-error-block__left">
             <div class="p-error-block__logo hidden-sm-and-down">
               <PImage pType="logos" pName="pulse-color" />
@@ -194,7 +194,6 @@ defineEmits<{
       background: url('/src/assets/images/splash/background-error-block.svg') no-repeat;
       background-position: left center;
       background-size: 1463px 1576px;
-      border-radius: 0 16px 16px 0;
       overflow: hidden;
     }
 

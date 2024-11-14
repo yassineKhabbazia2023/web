@@ -1,7 +1,8 @@
-import type { PTaskItemProps } from '../../atoms/PTaskItem/PTaskItemTypes'
+import type { PTaskItemProps } from '../PTaskItem/PTaskItemTypes'
 
 export interface CalendarCellItemProps extends PTaskItemProps {
   pItemId: number
+  pTitle: string
 }
 
 export interface PCalendarDateCellProps {

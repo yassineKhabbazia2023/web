@@ -15,13 +15,13 @@
       v-if="pValue !== undefined"
       class="
         p-filter-option__number
-        font-semibold
-        margin-right--3"
+        font-semibold"
     >
       {{ pValue }}
     </span>
+    <span v-if="pValue !== undefined" class="p-filter-option__icon padding-x--2 font-large font-normal"> | </span>
     <PTag
-      class="p-filter-option__tag"
+      class="p-filter-option__tag padding-x--0"
       :pContent="pContent"
       :pColor="colorMapper"
       :pIconLeftName="pIconName"
@@ -78,21 +78,19 @@ const colorMapper = computed(() => {
 <style lang="scss" scoped>
 .p-filter-option {
   $self: &;
-  background: var(--el-color-base-white);
-  border: 1px solid var(--el-color-base-white);
+  border: 1px solid transparent;
   cursor: pointer;
   transition: border-color var(--el-transition-duration) ease, background var(--el-transition-duration) ease;
 
   &--color-success {
-    border: 1px solid var(--el-color-functionnal-green-bg);
-
+    background: var(--el-color-functionnal-green-bg);
     #{$self}__icon {
-      color: var(--el-color-functionnal-green);
+      color: var(--el-color-functionnal-green-txt);
     }
   }
 
   &--color-warning {
-    border-color: var(--el-color-functionnal-orange-bg);
+    background: var(--el-color-functionnal-orange-bg);
 
     #{$self}__icon {
       color: var(--el-color-functionnal-orange-txt);
@@ -100,18 +98,24 @@ const colorMapper = computed(() => {
   }
 
   &--color-amethyste {
-    border-color: var(--el-color-secondary-amethyste-bg);
-
+    background: var(--el-color-secondary-amethyste-bg);
     #{$self}__icon {
-      color: var(--el-color-secondary-amethyste);
+      color: var(--el-color-secondary-amethyste-txt);
+    }
+  }
+
+  &--color-fuschia {
+    background: var(--el-color-secondary-fuschia-bg);
+    #{$self}__icon {
+      color: var(--el-color-secondary-fuschia-txt);
     }
   }
 
   &--color-danger {
-    border-color: var(--el-color-functionnal-red-bg);
+    background: var(--el-color-functionnal-red-bg);
 
     #{$self}__icon {
-      color: var(--el-color-functionnal-red);
+      color: var(--el-color-functionnal-red-txt);
     }
   }
 
@@ -174,7 +178,7 @@ const colorMapper = computed(() => {
   }
 
   &__number {
-    font-size: var(--el-font-size-medium);
+    font-size: var(--el-font-size-base);
     color: var(--el-color-neutral-gray-900);
   }
 }

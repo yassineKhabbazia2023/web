@@ -1,9 +1,8 @@
 <template>
   <div
     :class="[
-      'p-notification-card shadow--2',
+      'p-notification-card',
       'flex',
-      'border-radius--2',
       { 'p-notification-card--new': pIsNew }
     ]"
   >

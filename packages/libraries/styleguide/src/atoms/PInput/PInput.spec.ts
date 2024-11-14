@@ -127,7 +127,7 @@ describe('pInput', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',
-        pPrefixIconName: 'pulse',
+        pPrefixIconName: 'xCircleFill',
       })
       const elInput = wrapper.findComponent({ name: 'ElInput' })
       expect(elInput.props('prefixIcon')).toBeDefined()
@@ -162,6 +162,19 @@ describe('pInput', () => {
       expect(wrapper.find('.el-input__suffix').exists()).toBeFalsy()
       expect(wrapper.find('.el-input-group__append').exists()).toBeFalsy()
       expect(wrapper.find('.el-input-group__prepend').exists()).toBeFalsy()
+    })
+    it('should add and remove p-input--focus accordingly base on focus and blur event', async () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pType: 'input',
+      })
+      wrapper.findComponent({ name: 'ElInput' }).vm.$emit('focus')
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.p-input--focused').exists()).toBeTruthy()
+
+      wrapper.findComponent({ name: 'ElInput' }).vm.$emit('blur')
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.p-input--focused').exists()).toBeFalsy()
     })
   })
 })

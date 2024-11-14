@@ -5,7 +5,7 @@
     :layout="{ type: 'grid', width: '400px' }"
   >
     <Variant title="Default">
-      <div class="padding--4 margin--4 shadow--3">
+      <div class="padding--4 margin--4">
         <PUploadFileLine
           pIconName="filetypePdf"
           :pFile="fileList[0]"

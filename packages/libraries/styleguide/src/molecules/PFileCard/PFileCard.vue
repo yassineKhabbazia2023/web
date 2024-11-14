@@ -1,5 +1,5 @@
 <template>
-  <div class="p-file-card radius--2 shadow--2">
+  <div class="p-file-card radius--2">
     <template v-if="pHasIcon">
       <div v-if="$slots.icon" class="p-file-card__icon">
         <slot name="icon" />

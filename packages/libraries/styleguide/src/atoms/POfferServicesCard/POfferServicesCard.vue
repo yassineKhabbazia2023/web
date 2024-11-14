@@ -1,5 +1,5 @@
 <template>
-  <div class="p-offer-services-card radius--1 shadow--3 padding--4">
+  <div class="p-offer-services-card radius--1 padding--4">
     <div class="p-offer-services-card__offer margin-bottom--3">
       <PImage
         class="p-offer-services-card__logo"

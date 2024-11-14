@@ -1,5 +1,5 @@
 <template>
-  <div class="p-activity-card radius--2 shadow--1">
+  <div class="p-activity-card ">
     <div class="p-activity-card__avatar">
       <PAvatar
         pColor="white"
