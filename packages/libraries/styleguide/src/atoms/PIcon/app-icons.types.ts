@@ -63,8 +63,8 @@ export type AppIcons =
 'envelope' |
 'exclamationTriangle' |
 'eye' |
+'eyeGlassesTmp' |
 'eyeSlash' |
-'eyeglasses' |
 'fileText' |
 'files' |
 'filetypeBmp' |

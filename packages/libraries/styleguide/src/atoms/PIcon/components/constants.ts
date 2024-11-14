@@ -290,6 +290,12 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
+    name: 'eyeGlassesTmp',
+    componentName: 'PIEyeGlassesTmp',
+    fileName: 'eye-glasses-tmp.svg',
+    category: 'Essentials',
+  },
+  {
     name: 'eyeSlash',
     componentName: 'PIEyeSlash',
     fileName: 'eye-slash.svg',
@@ -299,12 +305,6 @@ export const pulseGeneratedIcons: {
     name: 'eye',
     componentName: 'PIEye',
     fileName: 'eye.svg',
-    category: 'Essentials',
-  },
-  {
-    name: 'eyeglasses',
-    componentName: 'PIEyeglasses',
-    fileName: 'eyeglasses.svg',
     category: 'Essentials',
   },
   {
