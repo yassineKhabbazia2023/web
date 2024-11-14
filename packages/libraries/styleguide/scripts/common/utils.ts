@@ -20,10 +20,19 @@ export function getSvgoConfig(hasRemoveXmlnsPlugin: boolean): Config {
       },
     },
   }
+
+  const convertColors = {
+    name: 'convertColors',
+    params: {
+      currentColor: true,
+    },
+  }
   const plugins = [
     'removeDimensions',
     pluginPresetDefault,
+    convertColors,
   ]
+
   if (hasRemoveXmlnsPlugin) {
     plugins.push('removeXMLNS')
   }

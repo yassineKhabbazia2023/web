@@ -88,9 +88,9 @@ export async function generateComponent(
   const { data: optimizedSvg } = optimized
 
   const {
-    viewBox, pathData, componentCode,
+    viewBox, componentCode,
   } = getComponentInfo(filePath, originalSvg, optimizedSvg)
-  if (viewBox && pathData) {
+  if (viewBox) {
     if (!existsSync(outputPath)) {
       mkdirSync(outputPath)
     }
@@ -105,7 +105,6 @@ export function getComponentInfo(iconPath: string, svgCode: string, optimizedSvg
   const iconName = path.basename(iconPath, '.svg')
 
   const viewBox = svgCode.match(/viewBox="(.*?)"/)
-  const pathData = svgCode.match(/<path(.*?)\/>/)
   const optimizedPathData = optimizedSvg.match(/<path(.*?)\/>/)
   const content = optimizedPathData?.input ?? ''
   const componentName = `PI${capitalizeFirstLetter(iconName)}`
@@ -125,7 +124,6 @@ export default ({
   return {
     iconName,
     viewBox,
-    pathData,
     componentName,
     componentCode,
   }
