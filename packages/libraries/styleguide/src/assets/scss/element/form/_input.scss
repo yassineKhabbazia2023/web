@@ -2,9 +2,11 @@
 
 // css3 var in packages/theme-chalk/src/input.scss
 $input: (
-  'border-radius': getCssVar('border-radius-small'),
-  'icon-color': getCssVar('color', 'neutral-gray-300'),
-  'clear-hover-color': getCssVar('color-primary'),
+  'border-radius': var(--el-border-radius-small),
+  'icon-color': var(--el-color-neutral-gray-300),
+  'clear-hover-color': var(--el-color-primary),
+  'border-color': var(--el-color-white),
+  'hover-border-color': var(--el-color-white)
 );
 
 $input-padding-horizontal: (
@@ -20,9 +22,16 @@ $input-font-size: (
 
 div.el-textarea {
   --el-input-border-radius: var(--el-border-radius-base);
+  
+  box-shadow: none;
+  border-bottom: 2px solid var(--el-color-persian-200);
+  &:hover {
+    border-bottom: 2px solid var(--el-color-base-persian); 
+  }
 
   .el-textarea__inner {
     padding: 10px 16px;
+    box-shadow: none;
 
     &::-webkit-resizer {
       padding: 6px;
@@ -35,9 +44,31 @@ div.el-textarea {
 }
 
 .el-input {
+  $self: &;
   &__inner {
     &::-webkit-search-cancel-button {
       display: none;
+    }
+  }
+  border-bottom: 2px solid var(--el-color-persian-200);
+  &:hover {
+    border-bottom: 2px solid var(--el-color-base-persian); 
+  }
+  div {
+    &#{$self}__wrapper {
+      &.is-focus {
+        box-shadow: none;
+        border-bottom-color: var(--el-color-persian-800);
+      }
+    }
+  }
+  &.is-disabled {
+    border-bottom-color: var(--el-color-neutral-gray-100);
+    div {
+      &#{$self}__wrapper {
+        box-shadow: none;
+        background-color: var(--el-color-neutral-gray-50);
+      }
     }
   }
 }

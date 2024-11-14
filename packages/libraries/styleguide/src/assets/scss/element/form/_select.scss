@@ -3,9 +3,10 @@
 $select: (
   'close-hover-color': getCssVar('color-primary'),
   'multiple-input-color': getCssVar('text-color-regular'),
-  'input-focus-border-color': getCssVar('color-primary'),
+  'input-focus-border-color': var(--el-color-white),
   'input-font-size': getCssVar('font-size-base'),
-  'width': 100%
+  'width': 100%,
+  'border-color-hover': var(--el-color-white)
 );
 
 $select-option: (
@@ -26,8 +27,7 @@ $select-dropdown: (
   'empty-color': getCssVar('text-color-regular'),
   'max-height': 274px,
   'padding': 12px 0,
-  'empty-padding': 10px 0,
-  'border': 1px solid getCssVar('border-color-light'),
+  'empty-padding': 10px 0
 );
 
 $select-tags-prefix-padding: (
@@ -38,8 +38,15 @@ $select-tags-prefix-padding: (
 
 .el-select {
   width: var(--el-select-width);
-  
+  box-shadow: none;
+  .is-focus {
+    border-bottom-color: var(--el-color-persian-800);
+  }
   .el-input {
+    &:hover {
+      border-color: var(--el-color-white);
+      border-bottom: 2px solid var(--el-color-base-persian); 
+    }
     .el-select__caret.el-icon {
       &.is-reverse {
         color: getCssVar('color-primary');
@@ -57,6 +64,7 @@ $select-tags-prefix-padding: (
 }
 
 .el-popper .el-select-dropdown {
+  box-shadow: none;
    .el-select-dropdown__item {
     padding-left: 16px;
     padding-right: 28px;

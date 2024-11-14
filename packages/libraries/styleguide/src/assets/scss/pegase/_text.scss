@@ -9,8 +9,8 @@ $text-color: map.merge(
     'secondary': #909399,
     'placeholder': getCssVar('color', 'neutral-gray-300'),
     'disabled': getCssVar('color', 'neutral-gray-500'),
-    'primary-persian': #5546FF,
-    'secondary-cyan': #194DB4,
+    'primary-persian': #1AAB8E,
+    'secondary-cyan': #0D4D5A,
   ),
   $text-color
 );

@@ -33,7 +33,7 @@ $timeline: (
     background: var(--persian-gradient);
     border-color: var(--el-color-base-white);
     border-style: solid;
-    @extend .shadow--2;
+    // @extend .shadow--2;
 
     &--normal {
       border-width: 2px;

@@ -8,6 +8,54 @@ export const pulseGeneratedIcons: {
   category: string
 }[] = [
   {
+    name: 'academy',
+    componentName: 'PIAcademy',
+    fileName: 'academy.svg',
+    category: 'Business',
+  },
+  {
+    name: 'buildingSupport',
+    componentName: 'PIBuildingSupport',
+    fileName: 'building-support.svg',
+    category: 'Business',
+  },
+  {
+    name: 'gem',
+    componentName: 'PIGem',
+    fileName: 'gem.svg',
+    category: 'Business',
+  },
+  {
+    name: 'headWithGear',
+    componentName: 'PIHeadWithGear',
+    fileName: 'head-with-gear.svg',
+    category: 'Business',
+  },
+  {
+    name: 'personTie',
+    componentName: 'PIPersonTie',
+    fileName: 'person-tie.svg',
+    category: 'Business',
+  },
+  {
+    name: 'scales',
+    componentName: 'PIScales',
+    fileName: 'scales.svg',
+    category: 'Business',
+  },
+  {
+    name: 'shieldLock',
+    componentName: 'PIShieldLock',
+    fileName: 'shield-lock.svg',
+    category: 'Business',
+  },
+  {
+    name: 'chatQuestion',
+    componentName: 'PIChatQuestion',
+    fileName: 'chat-question.svg',
+    category: 'Communication',
+  },
+  {
     name: 'chatSquareDots',
     componentName: 'PIChatSquareDots',
     fileName: 'chat-square-dots.svg',
@@ -50,6 +98,12 @@ export const pulseGeneratedIcons: {
     category: 'Datas',
   },
   {
+    name: 'clipboardDataAdd',
+    componentName: 'PIClipboardDataAdd',
+    fileName: 'clipboard-data-add.svg',
+    category: 'Datas',
+  },
+  {
     name: 'clipboardData',
     componentName: 'PIClipboardData',
     fileName: 'clipboard-data.svg',
@@ -74,12 +128,6 @@ export const pulseGeneratedIcons: {
     category: 'Entities',
   },
   {
-    name: 'capsule',
-    componentName: 'PICapsule',
-    fileName: 'capsule.svg',
-    category: 'Entities',
-  },
-  {
     name: 'carFront',
     componentName: 'PICarFront',
     fileName: 'car-front.svg',
@@ -89,6 +137,12 @@ export const pulseGeneratedIcons: {
     name: 'coneStriped',
     componentName: 'PIConeStriped',
     fileName: 'cone-striped.svg',
+    category: 'Entities',
+  },
+  {
+    name: 'crane',
+    componentName: 'PICrane',
+    fileName: 'crane.svg',
     category: 'Entities',
   },
   {
@@ -110,6 +164,12 @@ export const pulseGeneratedIcons: {
     category: 'Entities',
   },
   {
+    name: 'flower2',
+    componentName: 'PIFlower2',
+    fileName: 'flower2.svg',
+    category: 'Entities',
+  },
+  {
     name: 'handbag',
     componentName: 'PIHandbag',
     fileName: 'handbag.svg',
@@ -125,6 +185,12 @@ export const pulseGeneratedIcons: {
     name: 'personArmsUp',
     componentName: 'PIPersonArmsUp',
     fileName: 'person-arms-up.svg',
+    category: 'Entities',
+  },
+  {
+    name: 'pill',
+    componentName: 'PIPill',
+    fileName: 'pill.svg',
     category: 'Entities',
   },
   {
@@ -158,15 +224,9 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
-    name: 'arrowUpCircle',
-    componentName: 'PIArrowUpCircle',
-    fileName: 'arrow-up-circle.svg',
-    category: 'Essentials',
-  },
-  {
-    name: 'bagFrame',
-    componentName: 'PIBagFrame',
-    fileName: 'bag-frame.svg',
+    name: 'bagPlus',
+    componentName: 'PIBagPlus',
+    fileName: 'bag-plus.svg',
     category: 'Essentials',
   },
   {
@@ -194,18 +254,6 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
-    name: 'calendarEvent',
-    componentName: 'PICalendarEvent',
-    fileName: 'calendar-event.svg',
-    category: 'Essentials',
-  },
-  {
-    name: 'calendarPlus',
-    componentName: 'PICalendarPlus',
-    fileName: 'calendar-plus.svg',
-    category: 'Essentials',
-  },
-  {
     name: 'camera',
     componentName: 'PICamera',
     fileName: 'camera.svg',
@@ -224,27 +272,27 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
+    name: 'cash',
+    componentName: 'PICash',
+    fileName: 'cash.svg',
+    category: 'Essentials',
+  },
+  {
     name: 'check',
     componentName: 'PICheck',
     fileName: 'check.svg',
     category: 'Essentials',
   },
   {
-    name: 'clockHistory2',
-    componentName: 'PIClockHistory2',
-    fileName: 'clock-history-2.svg',
+    name: 'checklist',
+    componentName: 'PIChecklist',
+    fileName: 'checklist.svg',
     category: 'Essentials',
   },
   {
-    name: 'clockHistory',
-    componentName: 'PIClockHistory',
-    fileName: 'clock-history.svg',
-    category: 'Essentials',
-  },
-  {
-    name: 'clock',
-    componentName: 'PIClock',
-    fileName: 'clock.svg',
+    name: 'coins',
+    componentName: 'PICoins',
+    fileName: 'coins.svg',
     category: 'Essentials',
   },
   {
@@ -308,6 +356,24 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
+    name: 'faceOk',
+    componentName: 'PIFaceOk',
+    fileName: 'face-ok.svg',
+    category: 'Essentials',
+  },
+  {
+    name: 'faceSmile',
+    componentName: 'PIFaceSmile',
+    fileName: 'face-smile.svg',
+    category: 'Essentials',
+  },
+  {
+    name: 'flag',
+    componentName: 'PIFlag',
+    fileName: 'flag.svg',
+    category: 'Essentials',
+  },
+  {
     name: 'funnel',
     componentName: 'PIFunnel',
     fileName: 'funnel.svg',
@@ -356,9 +422,9 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
-    name: 'listUl',
-    componentName: 'PIListUl',
-    fileName: 'list-ul.svg',
+    name: 'loaderGradient',
+    componentName: 'PILoaderGradient',
+    fileName: 'loader-gradient.svg',
     category: 'Essentials',
   },
   {
@@ -454,7 +520,7 @@ export const pulseGeneratedIcons: {
   {
     name: 'personVideo3',
     componentName: 'PIPersonVideo3',
-    fileName: 'person-video3.svg',
+    fileName: 'person-video-3.svg',
     category: 'Essentials',
   },
   {
@@ -512,9 +578,9 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
-    name: 'shieldLock',
-    componentName: 'PIShieldLock',
-    fileName: 'shield-lock.svg',
+    name: 'shield',
+    componentName: 'PIShield',
+    fileName: 'shield.svg',
     category: 'Essentials',
   },
   {
@@ -586,7 +652,7 @@ export const pulseGeneratedIcons: {
   {
     name: 'wallet2',
     componentName: 'PIWallet2',
-    fileName: 'wallet2.svg',
+    fileName: 'wallet-2.svg',
     category: 'Essentials',
   },
   {
@@ -599,12 +665,6 @@ export const pulseGeneratedIcons: {
     name: 'wrench',
     componentName: 'PIWrench',
     fileName: 'wrench.svg',
-    category: 'Essentials',
-  },
-  {
-    name: 'xCircleFill',
-    componentName: 'PIXCircleFill',
-    fileName: 'x-circle-fill.svg',
     category: 'Essentials',
   },
   {
@@ -812,6 +872,12 @@ export const pulseGeneratedIcons: {
     category: 'Files',
   },
   {
+    name: 'image',
+    componentName: 'PIImage',
+    fileName: 'image.svg',
+    category: 'Files',
+  },
+  {
     name: 'inbox',
     componentName: 'PIInbox',
     fileName: 'inbox.svg',
@@ -851,6 +917,12 @@ export const pulseGeneratedIcons: {
     name: 'arrowCounterclockwise',
     componentName: 'PIArrowCounterclockwise',
     fileName: 'arrow-counterclockwise.svg',
+    category: 'Navigation',
+  },
+  {
+    name: 'arrowDownRight',
+    componentName: 'PIArrowDownRight',
+    fileName: 'arrow-down-right.svg',
     category: 'Navigation',
   },
   {
@@ -902,9 +974,39 @@ export const pulseGeneratedIcons: {
     category: 'Navigation',
   },
   {
+    name: 'arrowShortLeft',
+    componentName: 'PIArrowShortLeft',
+    fileName: 'arrow-short-left.svg',
+    category: 'Navigation',
+  },
+  {
+    name: 'arrowShortRight',
+    componentName: 'PIArrowShortRight',
+    fileName: 'arrow-short-right.svg',
+    category: 'Navigation',
+  },
+  {
+    name: 'arrowShortUp',
+    componentName: 'PIArrowShortUp',
+    fileName: 'arrow-short-up.svg',
+    category: 'Navigation',
+  },
+  {
+    name: 'arrowUpCircle',
+    componentName: 'PIArrowUpCircle',
+    fileName: 'arrow-up-circle.svg',
+    category: 'Navigation',
+  },
+  {
     name: 'arrowUp',
     componentName: 'PIArrowUp',
     fileName: 'arrow-up.svg',
+    category: 'Navigation',
+  },
+  {
+    name: 'arrowsAngleExpand',
+    componentName: 'PIArrowsAngleExpand',
+    fileName: 'arrows-angle-expand.svg',
     category: 'Navigation',
   },
   {
@@ -917,12 +1019,6 @@ export const pulseGeneratedIcons: {
     name: 'caretDown',
     componentName: 'PICaretDown',
     fileName: 'caret-down.svg',
-    category: 'Navigation',
-  },
-  {
-    name: 'caretLeft',
-    componentName: 'PICaretLeft',
-    fileName: 'caret-left.svg',
     category: 'Navigation',
   },
   {
@@ -941,12 +1037,6 @@ export const pulseGeneratedIcons: {
     name: 'chevronDoubleLeft',
     componentName: 'PIChevronDoubleLeft',
     fileName: 'chevron-double-left.svg',
-    category: 'Navigation',
-  },
-  {
-    name: 'chevronDoubleRight',
-    componentName: 'PIChevronDoubleRight',
-    fileName: 'chevron-double-right.svg',
     category: 'Navigation',
   },
   {
@@ -974,6 +1064,24 @@ export const pulseGeneratedIcons: {
     category: 'Navigation',
   },
   {
+    name: 'circleArrowDown',
+    componentName: 'PICircleArrowDown',
+    fileName: 'circle-arrow-down.svg',
+    category: 'Navigation',
+  },
+  {
+    name: 'circleArrowLeft',
+    componentName: 'PICircleArrowLeft',
+    fileName: 'circle-arrow-left.svg',
+    category: 'Navigation',
+  },
+  {
+    name: 'circleArrowRight',
+    componentName: 'PICircleArrowRight',
+    fileName: 'circle-arrow-right.svg',
+    category: 'Navigation',
+  },
+  {
     name: 'dot',
     componentName: 'PIDot',
     fileName: 'dot.svg',
@@ -989,12 +1097,6 @@ export const pulseGeneratedIcons: {
     name: 'kpmg',
     componentName: 'PIKpmg',
     fileName: 'kpmg.svg',
-    category: 'Others',
-  },
-  {
-    name: 'loaderGradient',
-    componentName: 'PILoaderGradient',
-    fileName: 'loader-gradient.svg',
     category: 'Others',
   },
   {
@@ -1016,6 +1118,42 @@ export const pulseGeneratedIcons: {
     category: 'Others',
   },
   {
+    name: 'calendarEvent',
+    componentName: 'PICalendarEvent',
+    fileName: 'calendar-event.svg',
+    category: 'Spatiotemporal',
+  },
+  {
+    name: 'calendarPlus',
+    componentName: 'PICalendarPlus',
+    fileName: 'calendar-plus.svg',
+    category: 'Spatiotemporal',
+  },
+  {
+    name: 'clockHistory',
+    componentName: 'PIClockHistory',
+    fileName: 'clock-history.svg',
+    category: 'Spatiotemporal',
+  },
+  {
+    name: 'clock',
+    componentName: 'PIClock',
+    fileName: 'clock.svg',
+    category: 'Spatiotemporal',
+  },
+  {
+    name: 'locationDotSlash',
+    componentName: 'PILocationDotSlash',
+    fileName: 'location-dot-slash.svg',
+    category: 'Spatiotemporal',
+  },
+  {
+    name: 'locationDot',
+    componentName: 'PILocationDot',
+    fileName: 'location-dot.svg',
+    category: 'Spatiotemporal',
+  },
+  {
     name: 'checkCircle',
     componentName: 'PICheckCircle',
     fileName: 'check-circle.svg',
@@ -1031,6 +1169,12 @@ export const pulseGeneratedIcons: {
     name: 'infoCircle',
     componentName: 'PIInfoCircle',
     fileName: 'info-circle.svg',
+    category: 'Status',
+  },
+  {
+    name: 'xCircleFill',
+    componentName: 'PIXCircleFill',
+    fileName: 'x-circle-fill.svg',
     category: 'Status',
   },
   {

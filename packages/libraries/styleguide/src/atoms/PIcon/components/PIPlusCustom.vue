@@ -1,7 +1,7 @@
 
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <template>
-  <svg viewBox="0 0 16 16"><path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1Z" /></svg>
+  <svg fill="none" viewBox="0 0 14 14"><path fill="currentColor" d="M11.87 8.012H.184l1.321-2.358h11.679L11.87 8.012Z" /><path fill="currentColor" d="M5.505 12.02V.333l2.358 1.321v11.679L5.505 12.02Z" /></svg>
 </template>
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <script lang="ts">

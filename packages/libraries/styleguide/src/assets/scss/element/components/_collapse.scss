@@ -49,7 +49,7 @@ div.el-collapse {
     overflow: hidden;
 
     @extend .radius--2;
-    @extend .shadow--3;
+    // @extend .shadow--3;
 
     .el-collapse-item__wrap,
     .el-collapse-item__header {

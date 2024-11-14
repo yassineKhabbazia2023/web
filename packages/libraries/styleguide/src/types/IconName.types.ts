@@ -77,6 +77,8 @@ export type IconName =
 'eye' |
 'eyeGlasses' |
 'eyeSlash' |
+'faceOk' |
+'faceSmile' |
 'fileText' |
 'files' |
 'filetypeBmp' |

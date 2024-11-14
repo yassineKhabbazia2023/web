@@ -16,6 +16,8 @@ export type ImageName =
 'default-3' |
 'default-4' |
 'message' |
+'brand-color' |
+'brand-white' |
 'default-offer-color' |
 'icon-pulse-bg' |
 'iconpulse-color' |

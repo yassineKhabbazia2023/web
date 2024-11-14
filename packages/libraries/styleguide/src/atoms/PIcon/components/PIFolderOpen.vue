@@ -1,7 +1,7 @@
 
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <template>
-  <svg viewBox="0 0 16 16"><path d="M1 3a1.5 1.5 0 0 1 1.5-1.5h2.764c.958 0 1.76.56 2.311 1.184.41.464.904.816 1.425.816h4.5A1.5 1.5 0 0 1 15 5v.64c.57.265.94.876.856 1.546l-.64 5.124a2.5 2.5 0 0 1-2.482 2.19H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 5.64V3Zm1 2.5h12V5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 2.834 5.82 2.5 5.264 2.5H2.5A.5.5 0 0 0 2 3v2.5Zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 13.5h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124a.5.5 0 0 0-.496-.562H1.633Z" /></svg>
+  <svg fill="none" viewBox="0 0 14 14"><path fill="currentColor" fill-rule="evenodd" d="M1.348 1.843H5.98l1.732 1.62h4.174v2.006h-1.217v-.79H7.232L5.5 3.059H2.564v2.65L1.445 7.771l-.097.177V1.843Z" clip-rule="evenodd" /><path fill="currentColor" fill-rule="evenodd" d="M4.07 5.455h9.892l-2.99 5.702H.962L4.07 5.455Zm.722 1.217L3.01 9.94h7.226l1.715-3.27H4.792Z" clip-rule="evenodd" /></svg>
 </template>
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <script lang="ts">

@@ -1,7 +1,7 @@
 
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <template>
-  <svg viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5Z" /><path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3Z" /></svg>
+  <svg fill="none" viewBox="0 0 13 14"><path fill="currentColor" d="M5.73 5.831v6.978l1.54.866V5.823l2.582 1.469V5.6L6.525 3.725v-.012l-.012.006-.012-.006v.012L3.148 5.592v1.691L5.73 5.831Z" /><path fill="currentColor" fill-rule="evenodd" d="m0 6.338 1.444.837V2.119h10.112v5.066L13 6.338V.675H0v5.663Z" clip-rule="evenodd" /></svg>
 </template>
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <script lang="ts">

@@ -1,7 +1,7 @@
 
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <template>
-  <svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1H3a1 1 0 0 0-1 1V14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3.5a1 1 0 0 0-1-1h-1v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2ZM10 7a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7Zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm4-3a1 1 0 0 0-1 1v3a1 1 0 1 0 2 0V9a1 1 0 0 0-1-1Z" clip-rule="evenodd" /></svg>
+  <svg fill="none" viewBox="0 0 14 15"><path fill="currentColor" fill-rule="evenodd" d="M1.458 2.071h2.8l-.706 1.35h-.745v9.246h9.31V3.42h-.762l.717-1.349h1.394v11.945H1.458V2.07Z" clip-rule="evenodd" /><path fill="currentColor" fill-rule="evenodd" d="M6.345 1.105h4.62L9.254 4.387H4.63l1.715-3.282Zm.698 1.152-.512.978h2.024l.511-.978H7.042Z" clip-rule="evenodd" /><path fill="currentColor" d="M10.909 11.367h-1.56V6.392l.769-.45.79-.466v5.891ZM8.242 11.367h-1.56V7.882l.769-.45.791-.466v4.401ZM5.575 11.367h-1.56V9.22l.769-.451.79-.466v3.064Z" /></svg>
 </template>
 <!-- eslint-disable vue/max-attributes-per-line max-len -->
 <script lang="ts">
