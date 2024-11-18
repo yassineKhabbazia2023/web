@@ -1,5 +1,4 @@
 import type { UserConfig } from 'vite'
-import path from 'node:path'
 import { defineConfig } from 'vitest/config'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { visualizer } from 'rollup-plugin-visualizer'
@@ -20,9 +19,9 @@ export const viteConfigBase = ({ mode }: any): UserConfig =>
       deps: {
         optimizer: {
           web: {
-            include: ['element-plus', '@pulse/styleguide']
-          }
-        }
+            include: ['element-plus', '@pulse/styleguide'],
+          },
+        },
       },
       css: false,
       globals: true,

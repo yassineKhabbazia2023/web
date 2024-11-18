@@ -7,8 +7,8 @@
   "type": "module",
   "main": "src/main.ts",
   "scripts": {
-    "build": "npm run build:vite && npm run build:types",
-    "build:types": "vue-tsc --declaration --emitDeclarationOnly",
+    "build": "npm run build:types && npm run build:vite",
+    "build:types": "vue-tsc --build --force",
     "build:vite": "vite build",
     "story:dev": "histoire dev",
     "story:build": "histoire build",
