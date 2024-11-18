@@ -4,6 +4,7 @@ import { ElCarousel, ElCarouselItem } from 'element-plus'
 import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import type { PCarouselProps } from './PCarouselTypes'
+import type { PCarouselItemProps } from '../../atoms/PCarouselItem/PCarouselItemTypes'
 
 const createWrapper = (props: PCarouselProps) =>
   wrapperFactory(PCarousel, {
@@ -18,16 +19,16 @@ const createWrapper = (props: PCarouselProps) =>
 
 describe('pCarousel', () => {
   // Define a sample data for testing
-  const items = [
+  const items: PCarouselItemProps[] = [
     {
       pText: 'this is a test',
-      pImageName: 'digitalisation',
+      pImageName: 'notes',
       pImageType: 'paupulse',
     },
     {
       pText: 'this is a second test',
       pImageType: 'paupulse',
-      pImageName: 'mandat-bancaire',
+      pImageName: 'onboarding',
     },
   ]
 

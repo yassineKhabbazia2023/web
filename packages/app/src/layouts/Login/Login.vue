@@ -54,12 +54,13 @@
 import { PCol, PImage, PRow } from '@pulse/styleguide'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
-import { type LoginLayoutProps } from '@app/layouts/Login/LoginTypes'
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { getIllustration } from './LoginHelper'
 
-withDefaults(defineProps<LoginLayoutProps>(), {
-  illustration: 'connection-default',
-})
+const route = useRoute()
+
+const illustration = computed(() => getIllustration(route.name))
 
 onMounted(() => {
   localStorage.removeItem('selected-entity')

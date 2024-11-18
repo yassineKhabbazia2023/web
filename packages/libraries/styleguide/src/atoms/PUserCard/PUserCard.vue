@@ -5,7 +5,7 @@
         v-if="pAssetLeft === 'Image'"
         class="p-user-card__image"
         pType="portrait"
-        :pName="pAssetContent"
+        :pName="imageName"
       />
       <PAvatar
         v-if="pAssetLeft === 'Avatar'"
@@ -59,6 +59,7 @@ import PImage from '../../atoms/PImage'
 import PAvatar from '../../atoms/PAvatar'
 import PTag from '../../atoms/PTag'
 import type { PUserCardProps } from './PUserCardTypes'
+import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
 
 const props = withDefaults(defineProps<PUserCardProps>(), {
   pColor: 'persian',
@@ -67,6 +68,9 @@ const props = withDefaults(defineProps<PUserCardProps>(), {
 const pClassMapper = computed(() => ({
   [`p-user-card--color-${props.pColor}`]: true,
 }))
+
+// TODO should create 2 props instead of one for better typing
+const imageName = computed(() => (props.pAssetContent as ImageName))
 
 const slots = useSlots()
 </script>

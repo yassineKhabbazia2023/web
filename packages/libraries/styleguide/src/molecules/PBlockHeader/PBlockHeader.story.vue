@@ -95,7 +95,6 @@ const data: PBlockHeaderProps = {
   pHasButton: false,
   pImage: {
     pFit: 'fill',
-    pType: 'paupulse',
     pName: 'add-user',
   },
 }

@@ -20,10 +20,12 @@
 <script setup lang="ts">
 import PCarousel from '.'
 import { ref } from 'vue'
-const carouselBasicData = ref([
+import type { PCarouselItemProps } from '../../atoms/PCarouselItem/PCarouselItemTypes'
+
+const carouselBasicData = ref<PCarouselItemProps[]>([
   {
     pText: 'Manage the activation of the various Pulse services and the digitization of your customer relationship.',
-    pImageName: 'digitalisation',
+    pImageName: 'feedcenter-fav',
     pImageType: 'paupulse',
   },
   {

@@ -15,7 +15,9 @@ export function setAssetsBaseUrl(assetsUrl: string) {
   context.assetsBaseUrl = assetsUrl
 }
 
-export const imageResolver = (type: string, name: string) => {
+export const imageResolver = (name: string, imageList: Record<string, string>) => {
   const baseUrl = getAssetsBaseUrl()
-  return new URL(`${type}/${name}.svg`, baseUrl).href
+  const filePath = imageList[name]
+
+  return new URL(filePath, baseUrl).href
 }

@@ -12,8 +12,13 @@ describe('imageResolver', () => {
     const imageType = 'dummy'
     const imageName = 'image'
     setAssetsBaseUrl(baseCDNUrl)
-    const imageURl = imageResolver(imageType, imageName)
-    const expectedResult = `${baseCDNUrl}/${imageType}/${imageName}.svg`
+    const fileName = `${imageName}.svg`
+    const imagePath = `${imageType}/${fileName}`
+    const imageList = {
+      [imageName]: imagePath,
+    }
+    const imageURl = imageResolver(imageName, imageList)
+    const expectedResult = `${baseCDNUrl}/${imagePath}`
     expect(expectedResult).equal(imageURl)
     expect(loggerWarnSpy).not.toHaveBeenCalled()
   })

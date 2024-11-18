@@ -1,5 +1,6 @@
+import type { ImageName } from './ImageNameTypes'
+
 export interface PImageProps {
-  pType: string
-  pName: string
+  pName: ImageName
   pFit?: '' | 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
 }

@@ -21,7 +21,6 @@ routes.push({
   props: true,
   meta: {
     layout: LOGIN_LAYOUT,
-    illustration: 'document-authentification',
   },
 } as RouteRecordRaw)
 

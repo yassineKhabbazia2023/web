@@ -1,4 +1,5 @@
 import type { PTagProps } from '../../atoms/PTag/PTagTypes'
+import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
 
 export interface PService {
   pStatus: boolean
@@ -8,7 +9,7 @@ export interface PService {
 }
 
 export interface POfferServicesCardProps {
-  pLogo: string
+  pLogo: ImageName
   pTitle: string
   pServices: PService[]
 }

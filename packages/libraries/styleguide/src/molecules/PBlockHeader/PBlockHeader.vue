@@ -6,7 +6,6 @@
     <div class="p-block-header__content-wrapper">
       <PImage
         class="p-block-header__image"
-        :pType="pImage.pType"
         :pName="pImage.pName"
         :pFit="pImage.pFit"
       />

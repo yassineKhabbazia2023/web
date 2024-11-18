@@ -10,7 +10,7 @@ import { userPermissions } from '@pulse/common'
 const { hasPermission } = userPermissions()
 
 export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: LAUNCHER_KEY[]): ExtendedLaunchCard[] {
-  const launchCards = [{
+  const launchCards: ExtendedLaunchCard[] = [{
     key: LAUNCHER_KEY.meg,
     title: 'Mon outil de gestion',
     subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',

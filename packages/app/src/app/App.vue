@@ -1,7 +1,7 @@
 <template>
   <Suspense>
     <PConfigProvider>
-      <component :is="getLayout" :illustration="illustration" />
+      <component :is="getLayout" />
       <PopupRenewToken />
     </PConfigProvider>
   </Suspense>

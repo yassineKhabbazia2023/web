@@ -31,7 +31,14 @@ export async function compressImages(
   targetPath: string,
 ) {
   const svgoConfig = getSvgoConfig(false)
-  const folders = getFolders(originPath)
+  const extensions = [
+    'svg',
+    'webp',
+    'png',
+    'jpg',
+  ]
+
+  const folders = getFolders(originPath, extensions)
   await writeCompressedImages(svgoConfig, folders, originPath, targetPath)
 
   return folders

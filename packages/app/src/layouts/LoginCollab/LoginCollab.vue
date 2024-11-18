@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
-import { PCol, PCarousel, PRow, PImage } from '@pulse/styleguide'
+import { PCol, PCarousel, PRow, PImage, type PCarouselItemProps } from '@pulse/styleguide'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
 
@@ -65,7 +65,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const carouselData = [
+const carouselData: PCarouselItemProps[] = [
   {
     pText: t('carouselItem1'),
     pImageName: 'mirror-smartphone',

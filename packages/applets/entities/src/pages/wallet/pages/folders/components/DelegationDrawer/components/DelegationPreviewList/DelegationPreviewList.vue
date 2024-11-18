@@ -8,7 +8,6 @@
     :pHasButton="false"
     :pImage="{
       pFit: 'fill',
-      pType: 'portrait',
       pName: 'delegation'
     }"
   />

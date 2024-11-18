@@ -2,6 +2,7 @@
   "extends": "../../@config/tsconfig.base",
   "include": [
     "./src/**/*",
+    "./src/**/*.json",
     "tests/**/*",
     "__mocks__"
   ],

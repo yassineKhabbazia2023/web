@@ -1,5 +1,7 @@
+import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
+
 export interface PCarouselItemProps {
   pText: string
   pImageType: string
-  pImageName: string
+  pImageName: ImageName
 }
