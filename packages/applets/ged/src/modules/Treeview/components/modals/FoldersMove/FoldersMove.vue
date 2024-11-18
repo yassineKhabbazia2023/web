@@ -104,7 +104,6 @@ const explorerDocuments = ref<ExplorerMoveFolder[]>(
   mapExplorerDocumentFromFolders(props.folderToMove),
 )
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.folderToMove,
   () => {
@@ -135,7 +134,6 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
   emit('update-source-folders', createdFolder)
 }
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.folder,
   (folder) => {

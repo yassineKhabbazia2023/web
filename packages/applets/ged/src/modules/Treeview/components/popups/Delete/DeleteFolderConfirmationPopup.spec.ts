@@ -1,5 +1,3 @@
-/* eslint-disable vitest/require-hook */
-/* eslint-disable vitest/no-hooks */
 import DeleteFolderConfirmationPopup from '@ged/modules/Treeview/components/popups/Delete'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'

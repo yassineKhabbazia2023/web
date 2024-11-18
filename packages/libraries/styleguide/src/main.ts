@@ -203,5 +203,4 @@ export * from './organisms/PError/PErrorTypes'
 export * from './organisms/PTree/PTreeTypes'
 
 export * from './utils/AppColorsEnum'
-// eslint-disable-next-line import/extensions
 export * from './atoms/PIcon/app-icons.types'

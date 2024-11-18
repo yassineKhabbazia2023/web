@@ -44,8 +44,6 @@
 </template>
 
 <script setup lang="ts">
-// eslint-disable vitest/require-hookcurrentService
-/* eslint-disable vitest/require-hook */
 import { ref, watch, computed, onMounted } from 'vue'
 import type { BinDocumentProps } from './BinDocumentsTypes'
 import type {
@@ -146,7 +144,6 @@ const handleNavigate = (folderId: number) => {
 }
 
 // Main component actions
-// eslint-disable-next-line vitest/require-hook
 onMounted(async () => {
   await fetchBin()
 })

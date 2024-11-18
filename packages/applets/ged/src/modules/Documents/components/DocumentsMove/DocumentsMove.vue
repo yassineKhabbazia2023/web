@@ -73,7 +73,6 @@ const modalActionsButtons = ref(
   ),
 )
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.isMoveModalOpened,
   () => {
@@ -110,7 +109,6 @@ const explorerDocuments = ref<ExplorerMoveDocument[]>(
   mapExplorerDocumentFromDocuments(props.selectedDocuments),
 )
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   [() => props.selectedDocuments, isDocumentExplorerModalOpened],
   () => {
@@ -211,7 +209,6 @@ async function proceedMoveDocuments(documents: ExplorerMoveDocument[]) {
   }
 }
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.folder,
   (folder) => {

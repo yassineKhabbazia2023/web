@@ -1,5 +1,4 @@
 import type { GlobalStates } from '../../utils/types/states'
-// eslint-disable-next-line import/extensions
 import type { PIconProps } from '../PIcon/PIcon.types'
 
 export type PAlertProps = {

@@ -31,7 +31,6 @@ const handleSelectAll = (value: boolean) => {
   emit('check-all-documents', value)
 }
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.checked,
   (newValue) => {

@@ -17,7 +17,6 @@ import { computed } from 'vue'
 import { ElIcon } from 'element-plus'
 import { iconResolver } from '../../utils/iconResolver'
 import { capitalize } from '../../utils/text'
-// eslint-disable-next-line import/extensions
 import type { PIconProps } from './PIcon.types'
 const props = defineProps<PIconProps>()
 

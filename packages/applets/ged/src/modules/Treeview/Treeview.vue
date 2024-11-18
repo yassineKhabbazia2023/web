@@ -107,8 +107,6 @@
 </template>
 
 <script setup lang="ts">
-/* eslint-disable vitest/require-hook */
-
 import type { ComputedRef } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import TreeNode from '@ged/modules/Treeview/components/TreeNode'
@@ -479,7 +477,6 @@ function formatMoveDocumentsRequest() {
 const isDropDialogVisible = ref(false)
 const dropDestinationFolder = ref('')
 const numberOfDocumentsToDrop = ref(0)
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.currentService,
   () => {

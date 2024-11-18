@@ -28,7 +28,6 @@ import { computed } from 'vue'
 import PIcon from '../../atoms/PIcon'
 import type { PAlertProps } from './PAlertTypes'
 import { AppColors } from '../../utils/AppColorsEnum'
-// eslint-disable-next-line import/extensions
 import type { PIconProps } from '../PIcon/PIcon.types'
 
 const props = withDefaults(defineProps<PAlertProps>(), {

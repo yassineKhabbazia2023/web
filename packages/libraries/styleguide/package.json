@@ -16,8 +16,8 @@
     "test": "npx vitest run",
     "test:ci": "vitest run --coverage",
     "test:update": "npx vitest -u",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --fix --ignore-path .gitignore",
-    "lint:fix": "eslint . --fix --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,json --ignore-path .gitignore",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "generate": "npm run generate:icons && npm run generate:images",
     "generate:icons": "tsx ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
     "generate:images": "tsx ./scripts/generateImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.json ./src/atoms/PImage/ImageNameTypes.ts"

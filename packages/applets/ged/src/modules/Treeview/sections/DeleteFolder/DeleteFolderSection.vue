@@ -52,7 +52,6 @@ const handleCancelDeleteFolder = () => {
   closeDeletePopup()
   emit('on-close-delete-folder')
 }
-// eslint-disable-next-line vitest/require-hook
 watch(toRef(props, 'isDeleteFolderPopupVisible'), (newVal) => {
   isPopupVisible.value = newVal
 })

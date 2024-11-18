@@ -139,7 +139,7 @@ export function getComponentConstantsContent(icons: Icon[]) {
     category: '${category}',
   }`))
 
-  return `// eslint-disable-next-line import/extensions
+  return `
 import type { AppIcons } from '../app-icons.types'
 
 export const pulseGeneratedIcons: {

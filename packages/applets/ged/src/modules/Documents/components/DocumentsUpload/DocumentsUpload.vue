@@ -62,7 +62,6 @@ const currentExplorerFolder = ref<Folder>(props.folder)
 const modalActionsbuttons =
   ref(generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload))
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.isUploadModalOpened,
   () => {
@@ -94,7 +93,6 @@ const explorerDocumentsForUploadFlow = computed(() => explorerDocuments.value)
 // Creating explorer documents
 const explorerDocuments = ref<ExplorerUploadDocument[]>(mapExplorerDocumentFromFiles(props.files))
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.files,
   () => {
@@ -195,7 +193,6 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
   }
 }
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.folder,
   (folder) => {

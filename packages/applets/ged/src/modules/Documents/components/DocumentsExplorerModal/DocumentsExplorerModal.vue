@@ -124,7 +124,6 @@ const failedDocuments = computed(() =>
 
 const buttonsList = ref<ButtonAction[]>(deepCopy(props.modalActionsButtonsList))
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.modalActionsButtonsList,
   () => {
@@ -188,7 +187,6 @@ const handleCheckAll = (value: boolean) => {
   })
 }
 
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.documents,
   (newValue) => {
@@ -212,7 +210,6 @@ Loading it at the same time as the other component make is buggy and crashes the
 This is probably due to everything being async components.
 */
 const deferHeaderLoadingWorkaround = ref(false)
-// eslint-disable-next-line vitest/require-hook
 onMounted(() => {
   setTimeout(() => {
     deferHeaderLoadingWorkaround.value = true

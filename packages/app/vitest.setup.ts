@@ -1,7 +1,6 @@
 import { setAssetsBaseUrl } from '@pulse/styleguide'
 import { vi } from 'vitest'
 import { defineStore } from 'pinia'
-// eslint-disable-next-line import/extensions
 import { notificationsMock } from './src/mocks/FeedCenter/notifications.mock'
 
 import { createI18n } from 'vue-i18n'

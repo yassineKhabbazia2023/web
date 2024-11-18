@@ -71,7 +71,6 @@ const sortedDocumentsByState = computed(() => {
 const filteredSortedDocuments = computed(() => sortedDocumentsByState.value.filter(
   (x) => x?.givenActionState !== 'ERROR',
 ))
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.documents,
   (updatedDocuments) => {

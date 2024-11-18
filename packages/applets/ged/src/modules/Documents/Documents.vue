@@ -195,7 +195,6 @@
 </template>
 
 <script setup lang="ts">
-// eslint-disable vitest/require-hookcurrentService
 import type { ComputedRef } from 'vue'
 import { ref, toRefs, watch, computed } from 'vue'
 import {

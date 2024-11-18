@@ -1,7 +1,6 @@
 import { vi, describe, it, expect } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
-// eslint-disable-next-line import/extensions
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 import { fetchNotificationsMock } from '@app/../vitest.setup'
 

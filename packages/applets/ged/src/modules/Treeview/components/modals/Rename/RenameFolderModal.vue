@@ -116,12 +116,10 @@ const showErrorMsg = computed(
     inputContent.value?.length !== 0,
 )
 
-// eslint-disable-next-line vitest/require-hook
 watch(inputContent, () => {
   folderNameExists.value = false
 })
 
-// eslint-disable-next-line vitest/require-hook
 watch(isDialogRenameVisible, () => {
   inputContent.value = props.inputContentDefault
 })

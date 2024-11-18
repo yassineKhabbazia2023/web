@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import type { PIconProps } from '../PIcon/PIcon.types'
 
 export interface PPastilleProps {

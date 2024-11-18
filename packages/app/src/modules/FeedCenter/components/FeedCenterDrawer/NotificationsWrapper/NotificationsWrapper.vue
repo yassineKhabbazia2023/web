@@ -44,17 +44,14 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { PLoader } from '@pulse/styleguide'
-// eslint-disable-next-line import/extensions
 import type { FeedCenterNotification } from '@app/modules/FeedCenter/types/notification.type'
 import NoNotificationsPlaceholder from '../NoNotificationsPlaceholder'
-// eslint-disable-next-line import/extensions
 import type { NotificationsWrapperProps } from './NotificationsWrapper.types'
 import Notification from '../Notification'
 import {
   handleNotificationAction,
   getNotificationAccountNames,
   getTimeSinceCreation,
-  // eslint-disable-next-line import/extensions
 } from './notification.manager'
 
 const emit = defineEmits<{

@@ -6,7 +6,6 @@ import {
   watch,
   type WritableComputedRef,
 } from 'vue'
-/* eslint-disable import/extensions */
 import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'

@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { type FeedCenterNotification, NotificationKindEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { accountsMock } from '@app/mocks/Account/accounts.mock'
 

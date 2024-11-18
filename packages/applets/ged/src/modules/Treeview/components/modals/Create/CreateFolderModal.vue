@@ -134,7 +134,6 @@ const showErrorMsg = computed(
     inputContent.value.length !== 0,
 )
 
-// eslint-disable-next-line vitest/require-hook
 watch(inputContent, () => {
   folderNameExists.value = false
 })

@@ -1,11 +1,7 @@
-// eslint-disable-next-line import/extensions
 import { type FeedCenterNotification, NotificationKindEnum } from '@app/modules/FeedCenter/types/notification.type'
-// eslint-disable-next-line import/extensions
 import type { HandleNotificationActionParams, GetTimeSinceCreationParams } from './NotificationsWrapper.types'
-// eslint-disable-next-line import/extensions
 import type { NotificationAccount } from '@app/modules/FeedCenter/types/notification-account.type'
 import type { Router } from 'vue-router'
-// eslint-disable-next-line import/extensions
 import { patchNotificationReadStatus } from '@app/modules/FeedCenter/services/notifications.service'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
