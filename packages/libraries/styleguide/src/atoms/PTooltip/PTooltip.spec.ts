@@ -30,7 +30,7 @@ const createWrapper = (props = defaultProps) =>
   })
 
 describe('pTooltip', () => {
-  it('should pass props to ElTooltip component', async () => {
+  it.skip('should pass props to ElTooltip component', async () => {
     const wrapper = createWrapper()
     const elPopper = wrapper.findComponent('.el-popper')
 

@@ -24,7 +24,7 @@
     "styleguide:story:dev": "npm run story:dev --workspace=@pulse/styleguide",
     "styleguide:story:build": "npm run story:build --workspace=@pulse/styleguide",
     "test": "npm run test --workspaces --if-present",
-    "test:coverage": "vitest",
+    "test:coverage": "vitest --no-file-parallelism",
     "build": "npm run build --workspaces --if-present",
     "build:types": "npm run build:types --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",

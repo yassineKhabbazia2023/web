@@ -46,6 +46,24 @@ export default ({ mode }: any) =>
       },
       test: {
         setupFiles: 'vitest.setup.ts',
+        alias: [
+          {
+            find: /^element-plus$/,
+            replacement: path.resolve(
+              __dirname,
+              "../../../",
+              "node_modules",
+              "element-plus/dist/index.full.mjs"
+            ),
+          },
+        ],
+        deps: {
+          optimizer: {
+            web: {
+              include: ['element-plus', '@pulse/styleguide']
+            }
+          }
+        },
       },
     }),
   )
