@@ -33,10 +33,6 @@
     "syncpack:list": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches",
     "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; BlueOak-1.0.0; Unlicense\" --production --excludePrivatePackages --unknown ",
-    "mfe:copy:libs": "tsx ./scripts/copy-libs.ts",
-    "mfe:copy:applets": "tsx ./scripts/copy-applets.ts",
-    "mfe:copy:apps": "tsx ./scripts/copy-apps.ts",
-    "mfe:copy:styleguide": "tsx ./scripts/copy-styleguide.ts",
     "mfe:icons:styleguide": "tsx ./scripts/icons-styleguide.ts",
     "mfe:imports:styleguide": "tsx ./scripts/imports-styleguide.ts",
     "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules"
