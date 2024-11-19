@@ -1,3 +1,10 @@
+export enum MandateActions {
+    CAN_DOWNLOAD_PREFILLED_MANDATE = 'CAN_DOWNLOAD_PREFILLED_MANDATE',
+    CAN_UPLOAD_SIGNED_MANDATE = 'CAN_UPLOAD_SIGNED_MANDATE',
+    CAN_DOWNLOAD_SIGNED_MANDATE = 'CAN_DOWNLOAD_SIGNED_MANDATE',
+    CAN_TERMINATE_TELECOLLECT = 'CAN_TERMINATE_TELECOLLECT',
+}
+
 export interface Mandate {
     id: string
     erpId: string
@@ -10,7 +17,7 @@ export interface Mandate {
     statusCode: string
     jdcStatusCode: string | number
     jdcStatusDescription: string
-    permittedActions: string[]
+    permittedActions: MandateActions[]
 }
 
 export interface MandateCounters {

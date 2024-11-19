@@ -128,9 +128,10 @@ describe('mandate collection', () => {
       data: getMockedMandatesData(),
       currentPage,
     })
+    await flushPromises()
+
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
     pToolbox.vm.$emit('p-toolbox-item-clicked')
-
     const id = 567
     const mandate = { id }
     await wrapper.vm.actionClicked('p-toolbox-item-clicked', 'cancel-telecollection', mandate)

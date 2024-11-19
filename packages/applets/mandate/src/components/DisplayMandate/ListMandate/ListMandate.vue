@@ -9,7 +9,8 @@
     >
       <template
         v-for="({ label, prop, sortable, width, dataTestId }, index) in tableHead"
-        :key="index">
+        :key="index"
+      >
         <PTableColumn
           v-if="label === 'Actions'"
           :label="label"
@@ -22,8 +23,9 @@
             <PToolbox
               trigger="click"
               data-testid="mandate-actions-toolbox"
-              :pElements="actionsBuilder(scope.row.statusCode, scope.row.jdcPartnership, scope.row.jdcStatusCode)"
-              @p-toolbox-item-clicked="actionClicked($event, scope.row)">
+              :pElements="actionsBuilder(scope.row.jdcPartnership, scope.row.permittedActions)"
+              @p-toolbox-item-clicked="actionClicked($event, scope.row)"
+            >
               <PButton pType="generic">
                 <PIcon :color="AppColors.GRAY_300" size="14px">
                   <PIThreeDots />
@@ -112,8 +114,8 @@
       {{ t('text-one-popup-part2') }}
       <strong>{{ companyNameRef }}</strong>
       {{ t('text-one-popup-part3') }}
-      <br/>
-      <br/>
+      <br>
+      <br>
       {{ t('text-one-popup-part4') }}
     </p>
   </PDialog>
@@ -125,25 +127,25 @@ import { useI18n } from 'vue-i18n'
 import type { PToolboxItemProps } from '@pulse/styleguide'
 import {
   AppColors,
+  PAlert,
+  PButton,
+  PDialog,
+  PIcon,
+  PIThreeDots,
   PTable,
   PTableColumn,
   PToolbox,
-  PButton,
-  PIcon,
-  PIThreeDots,
-  PDialog,
-  PAlert,
   PTooltip,
 } from '@pulse/styleguide'
 import Tag from '@mandate/components/Common/Tag'
 import { dateFormatter, downloadFile, saveFileAs } from '@mandate/helpers/utils'
-import type { Mandate } from '@mandate/pages/home/Models'
-import type { ListMandateProps, ActionEvent } from './ListMandateTypes'
+import { type Mandate, MandateActions } from '@mandate/pages/home/Models'
+import type { ActionEvent, ListMandateProps } from './ListMandateTypes'
 import {
-  downloadUnsignedMandate,
   downloadSignedMandate,
-  uploadSignedMandate,
+  downloadUnsignedMandate,
   terminateMandate,
+  uploadSignedMandate,
 } from '@mandate/services/mandate'
 import { showNotification } from '@mandate/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
@@ -184,6 +186,7 @@ const dataFormatter = (data: Mandate[]) =>
       statusCode,
       jdcStatusCode,
       jdcStatusDescription,
+      permittedActions,
     }: any) => ({
       id,
       erpId,
@@ -196,6 +199,7 @@ const dataFormatter = (data: Mandate[]) =>
       statusCode: statusCode.toString(),
       jdcStatusCode: jdcStatusCode.toString(),
       jdcStatusDescription,
+      permittedActions,
     }),
   )
 const mandateCollection = computed(() => dataFormatter(props.data))
@@ -219,32 +223,30 @@ const tableHead = [
   { label: `${t('status')}`, prop: 'statusCode', sortable: true, width: '115' },
   { label: 'Actions', sortable: false, width: '72' },
 ]
-const actionsBuilder = (statusCode: string | number, jdcPartnership: string | number,
-  jdcStatusCode: string | number): PToolboxItemProps[] => {
-  const statusCodeNumber = Number(statusCode)
+const actionsBuilder = (
+  jdcPartnership: string | number,
+  permittedActions: Mandate['permittedActions'],
+): PToolboxItemProps[] => {
   const jdcPartnershipNumber = Number(jdcPartnership)
-  const jdcStatusCodeNumber = Number(jdcStatusCode)
-  const acceptedCodesForDownload = [20, 30, 10]
-  const acceptedCodesForUpload = [20, 30, 10]
   const actions: PToolboxItemProps[] = [
     {
       pIconName: 'PIDownload',
       pValue: t('download-pre-filled-mandate'),
-      disabled: !acceptedCodesForDownload.includes(statusCodeNumber) || jdcStatusCodeNumber === 98,
+      disabled: !permittedActions.includes(MandateActions.CAN_DOWNLOAD_PREFILLED_MANDATE),
       pActionName: 'download-pre-filled-mandate',
       pState: 'default',
     },
     {
       pIconName: 'PIUpload',
       pValue: t('submit-signed-mandate'),
-      disabled: !acceptedCodesForUpload.includes(statusCodeNumber) || jdcStatusCodeNumber === 98,
+      disabled: !permittedActions.includes(MandateActions.CAN_UPLOAD_SIGNED_MANDATE),
       pActionName: 'submit-signed-mandate',
       pState: 'default',
     },
     {
       pIconName: 'PIXCircle',
       pValue: t('cancel-telecollection'),
-      disabled: statusCodeNumber !== 40,
+      disabled: !permittedActions.includes(MandateActions.CAN_TERMINATE_TELECOLLECT),
       pActionName: 'cancel-telecollection',
       pState: 'danger',
     },
@@ -254,7 +256,7 @@ const actionsBuilder = (statusCode: string | number, jdcPartnership: string | nu
     actions.push({
       pIconName: 'PIDownload',
       pValue: t('download-signed-mandate'),
-      disabled: shouldDisableDownloadButton(statusCodeNumber, jdcStatusCodeNumber),
+      disabled: !permittedActions.includes(MandateActions.CAN_DOWNLOAD_SIGNED_MANDATE),
       pActionName: 'download-signed-mandate',
       pState: 'default',
     })
@@ -262,9 +264,7 @@ const actionsBuilder = (statusCode: string | number, jdcPartnership: string | nu
 
   return actions
 }
-const shouldDisableDownloadButton = (statusCode: number, jdcStatusCode: number) => {
-  return [20, 50, 99].includes(statusCode) || (statusCode === 10 && jdcStatusCode === 98)
-}
+
 const sortColumnChange = ({ order, prop }: any) => {
   const criteriaMapper: any = {
     erpId: 'ErpId',

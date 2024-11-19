@@ -33,6 +33,12 @@ export function getMockedMandatesData() {
       statusCode: '40',
       jdcStatusCode: '99',
       jdcStatusDescription: 'A status description',
+      permittedActions: [
+        'CAN_DOWNLOAD_PREFILLED_MANDATE',
+        'CAN_UPLOAD_SIGNED_MANDATE',
+        'CAN_DOWNLOAD_SIGNED_MANDATE',
+        'CAN_TERMINATE_TELECOLLECT',
+      ],
     },
     {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13029',
@@ -46,6 +52,12 @@ export function getMockedMandatesData() {
       statusCode: '20',
       jdcStatusCode: '99',
       jdcStatusDescription: 'A status description',
+      permittedActions: [
+        'CAN_DOWNLOAD_PREFILLED_MANDATE',
+        'CAN_UPLOAD_SIGNED_MANDATE',
+        'CAN_DOWNLOAD_SIGNED_MANDATE',
+        'CAN_TERMINATE_TELECOLLECT',
+      ],
     },
     {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13030',
@@ -59,6 +71,12 @@ export function getMockedMandatesData() {
       statusCode: '30',
       jdcStatusCode: '99',
       jdcStatusDescription: 'A status description',
+      permittedActions: [
+        'CAN_DOWNLOAD_PREFILLED_MANDATE',
+        'CAN_UPLOAD_SIGNED_MANDATE',
+        'CAN_DOWNLOAD_SIGNED_MANDATE',
+        'CAN_TERMINATE_TELECOLLECT',
+      ],
     },
   ]
 
