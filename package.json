@@ -25,7 +25,7 @@
     "styleguide:story:build": "npm run story:build --workspace=@pulse/styleguide",
     "test": "npm run test --workspaces --if-present",
     "test:coverage": "vitest --no-file-parallelism --bail 1",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",   
     "build:types": "npm run build:types --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "lint:fix": "npm run lint:fix --workspaces --if-present",
@@ -35,7 +35,10 @@
     "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; BlueOak-1.0.0; Unlicense\" --production --excludePrivatePackages --unknown ",
     "mfe:icons:styleguide": "tsx ./scripts/icons-styleguide.ts",
     "mfe:imports:styleguide": "tsx ./scripts/imports-styleguide.ts",
-    "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules"
+    "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules",
+    "turbo:test": "turbo test",
+    "turbo:build": "turbo build",
+    "turbo:lint": "turbo lint"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",
@@ -92,6 +95,7 @@
     "syncpack": "^13.0.0",
     "tslog": "^4.9.2",
     "tsx": "^4.19.1",
+    "turbo": "^2.3.0",
     "typescript-eslint": "^8.13.0",
     "typescript": "~5.5.0",
     "vite-plugin-externals": "^0.6.2",

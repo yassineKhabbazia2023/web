@@ -118,3 +118,6 @@ dist
 
 # vite temporary files
 vite.config.ts.timestamp*.mjs
+
+# turbo
+.turbo
