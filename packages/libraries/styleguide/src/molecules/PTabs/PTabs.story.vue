@@ -136,7 +136,7 @@
         />
         <PTabPane
           pName="list"
-          pIconName="listUl"
+          pTabIcon="cardList"
         />
       </PTabs>
     </Variant>

@@ -42,7 +42,7 @@
         />
         <PTabPane
           pName="list"
-          pIconName="listUl"
+          pTabIcon="cardList"
           :pTooltip="{ pContent: t('list-view'), pPlacement: 'bottom' }"
         />
       </PTabs>
