@@ -36,7 +36,7 @@ parameters:
   default:
   - 1
   - 2
-- name: BranchAssets
+- name: BranchForAssets
   displayName: "Technical parameter : don t modify it !"
   type: string
   default: 'develop'
