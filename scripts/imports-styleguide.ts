@@ -3,8 +3,8 @@ import { existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 
 
 const targetFolderMfe = './packages/libraries'
 
-function getTargetPath(targetFolder: string, mfe: string, subfolder: string = '') {
-  return path.join(targetFolder, mfe, subfolder)
+function getTargetPath(targetFolder: string, folderName: string, subfolder: string = '') {
+  return path.join(targetFolder, folderName, subfolder)
 }
 
 function doWorkForApplets(libraryNames) {
@@ -15,9 +15,9 @@ function doWorkForApplets(libraryNames) {
 
 const EXTENSIONS = ['.vue', '.ts']
 
-function cleanFolder(mfe: string, folderPath: string) {
+function cleanFolder(folderName: string, folderPath: string) {
   readdirSync(folderPath).forEach((fileName) => {
-    cleanFiles(mfe, path.join(folderPath, fileName))
+    cleanFiles(folderName, path.join(folderPath, fileName))
   })
 }
 

@@ -1,12 +1,12 @@
-# Introduction 
+# Introduction
 
-Welcome to the Pulse web front repository. 
+Welcome to the Pulse web front repository.
 This repository is structured as a monorepo and a package, encompassing several components:
 
 - **[App](./packages/app/README.md)**
 - **library**:
     - [Common](./packages/libraries/common/README.md)
-- **applets**: 
+- **applets**:
     - [Entities](./packages/applets/entities/README.md)
     - [Ged](./packages/applets/ged/README.md)
     - [Launcher](./packages/applets/launcher/README.md)
@@ -29,29 +29,6 @@ To initiate the process, run the following command:
 ```
 npm install
 ```
-
-## Temporary transition Process from MFE to Monorepo
-
-During the initial phase, the monorepo is built using scripts that copy and slightly modify the original MFE into the monorepo. This allows the MFE to continue their development cycles independently and integrate into the monorepo when ready.
-
-To copy the MFEs into the monorepo, follow these steps:
-1. Clone all MFE repositories into a directory outside of this one (for example: `../MFE`).
-2. Run the scripts with a parameter indicating the location of the MFEs:
-
-```
-npm run mfe:copy:libs -- ../MFE
-npm run mfe:copy:apps -- ../MFE
-npm run mfe:copy:applets -- ../MFE
-```
-
-3. Run another install to create the necessary links between the monorepo packages:
-
-```
-npm install
-```
-
-Once completed, you can start exploring the project.
-
 
 ## Let's start
 
