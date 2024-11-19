@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
+import maze from './plugins/maze'
 import { commoni18n, commonPinia } from '@pulse/common'
-import { VITE_ASSETS_BASE_URL } from 'env-vars'
+import { VITE_ASSETS_BASE_URL, VITE_MAZE_KEY, VITE_ONE_TRUST_KEY } from 'env-vars'
 import { setAssetsBaseUrl } from '@pulse/styleguide'
 import packageJson from '../package.json'
 
@@ -35,5 +36,21 @@ const app = createApp(App)
   .use(mandateApplet, { router })
   // install router last in order to register the applets first
   .use(router)
+
+if (import.meta.env.PROD) {
+  // MAZE Script
+  if (VITE_MAZE_KEY) {
+    maze(window, document, '/libs/maze-universal-loader.js', VITE_MAZE_KEY)
+  }
+  // Script OneTrust
+  if (VITE_ONE_TRUST_KEY) {
+    const script = document.createElement('script')
+    script.src = `https://cdn.cookielaw.org/consent/${VITE_ONE_TRUST_KEY}/otSDKStub.js`
+    script.setAttribute('type', 'text/javascript')
+    script.setAttribute('charset', 'UTF-8')
+    script.setAttribute('data-domain-script', VITE_ONE_TRUST_KEY)
+    document.body.appendChild(script)
+  }
+}
 
 app.mount('#app')
