@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import PCalendarCellNumber from '.'
 import type { PCalendarCellNumberProps } from './PCalendarCellNumberTypes'
@@ -12,7 +12,7 @@ const defaultProps: PCalendarCellNumberProps = {
 const rootWrapperClass = 'p-calendar-cell-number'
 
 const createWrapper = (props: any = defaultProps): VueWrapper =>
-  mount(PCalendarCellNumber, {
+  shallowMount(PCalendarCellNumber, {
     props,
   })
 

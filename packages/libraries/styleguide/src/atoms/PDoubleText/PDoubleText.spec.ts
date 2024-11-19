@@ -1,5 +1,5 @@
 import { markRaw } from 'vue'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PDoubleText from './'
 import { PIFiletypePdf } from '../PIcon/components'
 import { describe, it, expect } from 'vitest'
@@ -8,7 +8,7 @@ const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
 describe('tests for p-double-text', () => {
   it('renders with content', () => {
-    const wrapper = mount(PDoubleText, {
+    const wrapper = shallowMount(PDoubleText, {
       props: {
         pIcon: markRaw(PIFiletypePdf),
         pProfile: 'FL',
@@ -31,7 +31,7 @@ describe('tests for p-double-text', () => {
   })
 
   it('renders with an icon', () => {
-    const wrapper = mount(PDoubleText, {
+    const wrapper = shallowMount(PDoubleText, {
       props: {
         pIcon: markRaw(PIFiletypePdf),
         pProfile: 'FL',
@@ -40,6 +40,14 @@ describe('tests for p-double-text', () => {
         pType: 'primary',
         pDisabled: false,
         pSelected: false,
+      },
+      global: {
+        stubs: {
+          PIcon: {
+            name: 'PIcon',
+            template: '<div><slot /></div>',
+          },
+        },
       },
     })
     // Check if the table renders correctly

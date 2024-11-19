@@ -1,5 +1,5 @@
 import { vi, describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PAlert from './'
 import type { PAlertProps } from './PAlertTypes'
 import { nextTick } from 'vue'
@@ -9,44 +9,44 @@ const baseProps: PAlertProps = {
 }
 
 const createWrapper = (props: PAlertProps = baseProps) =>
-  mount(PAlert, {
+  shallowMount(PAlert, {
     props,
   })
 
 type iconResolvingType = {
   type: PAlertProps['pType']
-  expectedIconToResolve: string
+  expectedIconName: string
 }
 describe('pAlert', () => {
   describe('props', () => {
-    it.each([
+    const tests: iconResolvingType[] = [
       {
         type: 'main',
-        expectedIconToResolve: 'PIInfoCircle',
+        expectedIconName: 'infoCircle',
       },
       {
         type: 'success',
-        expectedIconToResolve: 'PICheckCircle',
+        expectedIconName: 'checkCircle',
       },
       {
         type: 'warning',
-        expectedIconToResolve: 'PIExclamationTriangle',
+        expectedIconName: 'exclamationTriangle',
       },
       {
         type: 'danger',
-        expectedIconToResolve: 'PIXCircle',
+        expectedIconName: 'xCircle',
       },
       {
         type: 'information',
-        expectedIconToResolve: 'PIInfoCircle',
+        expectedIconName: 'infoCircle',
       },
-    ] as Array<iconResolvingType>)(
+    ]
+    it.each(tests)(
       'should render icon based on type prop',
-      async ({ type, expectedIconToResolve }) => {
+      async ({ type, expectedIconName }) => {
         const wrapper = createWrapper({ pType: type })
-        await vi.dynamicImportSettled()
-        const iconComponent = wrapper.findComponent({ name: expectedIconToResolve })
-        expect(iconComponent.exists()).toBeTruthy()
+        const iconComponent = wrapper.findComponent({ name: 'PIcon' })
+        expect(iconComponent.props('pName')).toBe(expectedIconName)
       },
     )
   })

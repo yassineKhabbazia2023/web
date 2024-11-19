@@ -1,16 +1,18 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PDialog from '.'
-import { ElDialog } from 'element-plus'
 
 const createWrapper = (props: any = {}, slots: any = {}) =>
-  mount(PDialog, {
+  shallowMount(PDialog, {
     props,
     slots,
     global: {
       stubs: {
-        ElDialog,
+        ElDialog: {
+          name: 'ElDialog',
+          template: '<div><slot /></div>',
+        },
       },
     },
   })

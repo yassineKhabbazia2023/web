@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PCol from '.'
 
@@ -15,10 +15,30 @@ const propsValue = {
   pXl: 9,
   pTag: 'testTag',
 }
-const createWrapper = () => mount(PCol, {
+const createWrapper = () => shallowMount(PCol, {
   props: propsValue,
   slots: {
     default: 'col text',
+  },
+  global: {
+    stubs: {
+      ElCol: {
+        name: 'ElCol',
+        template: '<div><slot /></div>',
+        props: [
+          'lg',
+          'md',
+          'offset',
+          'pull',
+          'push',
+          'tag',
+          'sm',
+          'span',
+          'xl',
+          'xs',
+        ],
+      },
+    },
   },
 })
 

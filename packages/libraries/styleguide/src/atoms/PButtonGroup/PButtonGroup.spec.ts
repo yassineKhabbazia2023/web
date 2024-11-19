@@ -1,27 +1,29 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PButtonGroup from './'
 import { describe, it, expect } from 'vitest'
-import PButton from '../../atoms/PButton'
 
 describe('test for PButtonGroup', () => {
   it('render correctly', () => {
-    const wrapper = mount(PButtonGroup, {
+    const wrapper = shallowMount(PButtonGroup, {
       props: {
         pType: 'default',
         pSize: 'default',
       },
       slots: {
-        default: '<PButton>Button 1</PButton>',
+        default: '<div data-testid="slot-content" />',
       },
       global: {
-        components: {
-          PButton,
+        stubs: {
+          ElButtonGroup: {
+            name: 'PButtonGroup',
+            template: '<div><slot /></div>',
+          },
         },
       },
     })
 
     const PButtonElement = wrapper.findComponent({ name: 'PButtonGroup' })
     expect(PButtonElement.exists()).toBeTruthy()
-    expect(wrapper.findComponent(PButton).exists()).toBeTruthy()
+    expect(wrapper.find('[data-testid="slot-content"]').exists()).toBeTruthy()
   })
 })

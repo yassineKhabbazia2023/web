@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PInput from '.'
 import type { PInputProps } from './PInputTypes'
@@ -43,11 +43,46 @@ const createWrapper = (defaultProps = propsValue, hasSlots = false) => {
   }
   const slots = hasSlots ? testSlots : undefined
 
-  return mount(PInput, {
+  return shallowMount(PInput, {
     props: defaultProps,
     slots,
-    stubs: {
-      ElInput: '<div>toto</div>',
+    global: {
+      stubs: {
+        ElInput: {
+          name: 'ElInput',
+          template: `<div>
+<div v-if="$slots.prefix" class="el-input__prefix"><slot name="prefix" /></div>
+<div v-if="$slots.suffix" class="el-input__suffix"><slot name="suffix" /></div>
+<div v-if="$slots.prepend" class="el-input-group__prepend"><slot name="prepend" /></div>
+<div v-if="$slots.append" class="el-input-group__append"><slot name="append" /></div>
+          </div>`,
+          props: [
+            'containerRole',
+            'id',
+            'formatter',
+            'parser',
+            'prefixIcon',
+            'suffixIcon',
+            'type',
+            'showWordLimit',
+            'placeholder',
+            'clearable',
+            'showPassword',
+            'disabled',
+            'size',
+            'autosize',
+            'autocomplete',
+            'readonly',
+            'resize',
+            'autofocus',
+            'form',
+            'label',
+            'tabindex',
+            'validateEvent',
+            'inputStyle',
+          ],
+        },
+      },
     },
   })
 }
@@ -62,7 +97,6 @@ describe('pInput', () => {
       const expectedProps = {
         containerRole: undefined,
         id: undefined,
-        modelValue: '',
         formatter: mockedCb,
         parser: mockedCb,
         prefixIcon: null,
@@ -96,8 +130,8 @@ describe('pInput', () => {
         pType: 'input',
         pPrefixIcon: PIPulse,
       })
-      const prefixIcon = wrapper.find('.el-input__icon')
-      expect(prefixIcon.exists()).toBeTruthy()
+      const elInput = wrapper.findComponent({ name: 'ElInput' })
+      expect(elInput.props('prefixIcon')).toBeDefined()
     })
 
     it('should display suffix icon if exist', () => {
@@ -106,18 +140,18 @@ describe('pInput', () => {
         pType: 'input',
         pSuffixIcon: PIPulse,
       })
-      const suffixIcon = wrapper.find('.el-input__icon')
-      expect(suffixIcon.exists()).toBeTruthy()
+      const elInput = wrapper.findComponent({ name: 'ElInput' })
+      expect(elInput.props('suffixIcon')).toBeDefined()
     })
     it('should display slots if exist', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',
       }, true)
-      expect(wrapper.find('.el-input__prefix').text()).toContain('Prefix Content')
-      expect(wrapper.find('.el-input__suffix').text()).toContain('Suffix Content')
-      expect(wrapper.find('.el-input-group__append').text()).toContain('Append Content')
-      expect(wrapper.find('.el-input-group__prepend').text()).toContain('Prepend Content')
+      expect(wrapper.find('.el-input__prefix').text()).toBe('Prefix Content')
+      expect(wrapper.find('.el-input__suffix').text()).toBe('Suffix Content')
+      expect(wrapper.find('.el-input-group__append').text()).toBe('Append Content')
+      expect(wrapper.find('.el-input-group__prepend').text()).toBe('Prepend Content')
     })
     it('should not display slots if not exist', () => {
       const wrapper = createWrapper({

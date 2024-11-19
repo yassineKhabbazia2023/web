@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PCheckbox from '.'
 import type { PCheckboxProps } from './PCheckboxTypes'
@@ -7,7 +7,7 @@ import type { PCheckboxProps } from './PCheckboxTypes'
 const props: PCheckboxProps = {
   pRounded: true,
 }
-const createWrapper = () => mount(PCheckbox, {
+const createWrapper = () => shallowMount(PCheckbox, {
   props,
 })
 

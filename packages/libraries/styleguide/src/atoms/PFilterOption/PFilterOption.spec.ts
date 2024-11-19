@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
 import PFilterOption from '.'
@@ -14,7 +14,7 @@ const defaultProps: PFilterOptionProps = {
 }
 
 const createWrapper = (props: any = defaultProps) =>
-  mount(PFilterOption, {
+  shallowMount(PFilterOption, {
     props,
   })
 

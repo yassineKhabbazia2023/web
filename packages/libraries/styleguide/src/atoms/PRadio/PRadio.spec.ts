@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { ElRadio } from 'element-plus'
 import PRadio from '.'
@@ -12,7 +12,7 @@ const propsValue: PRadioProps = {
   pSize: 'small',
   pName: 'name',
 }
-const createWrapper = () => mount(PRadio, {
+const createWrapper = () => shallowMount(PRadio, {
   props: propsValue,
 })
 

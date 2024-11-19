@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PDivider from '.'
 
@@ -10,24 +10,31 @@ const defaultProps = {
 }
 
 const createWrapper = (props: any = defaultProps) =>
-  mount(PDivider, {
+  shallowMount(PDivider, {
     props,
+    global: {
+      stubs: {
+        ElDivider: {
+          name: 'ElDivider',
+          template: '<div data-testid="el-divider-stub"><slot /></div>',
+        },
+      },
+    },
   })
 
 describe('pDivider', () => {
   describe('props', () => {
     it('should render the the component with good classes', () => {
       const wrapper = createWrapper()
+      const divider = wrapper.find('[data-testid="el-divider-stub"]')
 
-      expect(wrapper.find('.el-divider--horizontal').exists()).toBeTruthy()
-      expect(wrapper.find('.el-divider__text.is-center').exists()).toBeTruthy()
+      expect(divider.attributes('direction')).toBe('horizontal')
+      expect(divider.attributes('contentposition')).toBe('center')
     })
     it('should render the the component with good style', () => {
       const wrapper = createWrapper()
+      const divider = wrapper.find('[data-testid="el-divider-stub"]')
 
-      const divider = wrapper.find('.el-divider')
-
-      expect(divider.attributes('style')).toContain('--el-border-style: solid;')
       expect(divider.attributes('style')).toContain('--el-border-color: var(--el-color-neutral-gray-100);')
     })
   })

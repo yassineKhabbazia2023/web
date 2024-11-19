@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import PAvatar from '.'
 
@@ -10,7 +10,7 @@ const defaultProps = {
 }
 
 const createWrapper = (props: any = defaultProps) =>
-  mount(PAvatar, {
+  shallowMount(PAvatar, {
     props,
   })
 
@@ -20,9 +20,7 @@ describe('pAvatar', () => {
       const wrapper: VueWrapper = createWrapper()
       const avatarElement = wrapper.find('[data-testid=avatar]')
 
-      expect(avatarElement.classes()).toContain(
-        `el-avatar--${defaultProps.pShape}`,
-      )
+      expect(avatarElement.attributes('shape')).toBe(defaultProps.pShape)
       expect(avatarElement.classes()).toContain(
         `p-avatar--color-${defaultProps.pColor}`,
       )

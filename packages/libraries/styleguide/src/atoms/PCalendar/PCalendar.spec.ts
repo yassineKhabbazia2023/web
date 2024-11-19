@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import PCalendar from '.'
 import type { PCalendarProps } from './PCalendarTypes'
@@ -12,10 +12,29 @@ const defaultProps: PCalendarProps = {
 }
 
 const createWrapper = (props: any = defaultProps): VueWrapper =>
-  mount(PCalendar, {
+  shallowMount(PCalendar, {
     props,
     global: {
-      stubs: { PCalendarDateCell },
+      stubs: {
+        PCalendarDateCell,
+        ElCalendar: {
+          name: 'ElCalendar',
+          template: `<div>
+          <slot name="header" />
+          <slot name="date-cell" :data="data" :type="type" />
+          </div>`,
+          data() {
+            const data = {
+              day: '2024-02-25',
+              type: 'current-month',
+            }
+
+            return {
+              data,
+            }
+          },
+        },
+      },
     },
   })
 

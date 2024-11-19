@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PFolderLineNavigationItem from './'
 import type { PFolderLineNavigationItemProps } from './PFolderLineNavigationItemTypes'
-import { PIChevronRight } from '../../atoms/PIcon/components'
 
 const defaultProps: PFolderLineNavigationItemProps = {
   pSelected: false,
@@ -13,16 +12,26 @@ const defaultProps: PFolderLineNavigationItemProps = {
 }
 
 const createWrapper = (props = defaultProps) =>
-  mount(PFolderLineNavigationItem, {
+  shallowMount(PFolderLineNavigationItem, {
     props,
+    global: {
+      stubs: {
+        PTooltip: {
+          name: 'PTooltip',
+          template: '<div><slot /></div>',
+          props: ['pContent', 'disabled'],
+        },
+      },
+    },
   })
 
 describe('pFolderLineNavigationItem', () => {
   describe('rendering', () => {
     it('should render tooltip', () => {
       const wrapper = createWrapper()
-      const entity = wrapper.find('[data-testid="file-line-navigation-item"] .el-tooltip__trigger')
-      expect(entity.exists()).toBeTruthy()
+      const pToolTip = wrapper.findComponent({ name: 'PTooltip' })
+
+      expect(pToolTip.props('pContent')).toBe('Hello')
     })
   })
   describe('props', () => {

@@ -1,6 +1,7 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PActivityCard from '.'
+import type { PActivityProps } from './PActivityCardTypes'
 
 const timeText = '16 septembre 2023 - 15:13:08'
 const lengthTrimValue = 2
@@ -10,9 +11,16 @@ const defaultProps = {
   pInitials: 'AB',
 }
 
-const createWrapper = (props: any = defaultProps) =>
-  mount(PActivityCard, {
+const createWrapper = (props: PActivityProps = defaultProps) =>
+  shallowMount(PActivityCard, {
     props,
+    global: {
+      stubs: {
+        PAvatar: {
+          template: '<div class="p-avatar"><slot /><div>',
+        },
+      },
+    },
   })
 
 describe('pActivityCard', () => {

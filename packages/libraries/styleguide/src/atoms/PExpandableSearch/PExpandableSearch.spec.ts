@@ -2,7 +2,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount, shallowMount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PExpandableSearch from './'
 import { nextTick } from 'vue'
 import PButton from '../PButton'
@@ -34,10 +34,29 @@ const expandSearch = async (wrapper: VueWrapper) => {
   await pButton.trigger('click')
 }
 
+const focusSpy = vi.fn()
+
 const createWrapper = (props = defaultProps) =>
-  mount(PExpandableSearch, {
+  shallowMount(PExpandableSearch, {
     props,
+    global: {
+      stubs: {
+        PInput: {
+          name: 'PInput',
+          template: '<input />',
+          methods: {
+            focus: focusSpy,
+          },
+          props: [
+            'modelValue',
+            'pPlaceholder',
+          ],
+          emits: ['update:modelValue'],
+        },
+      },
+    },
   })
+
 describe('pExpandableSearch', () => {
   describe('props', () => {
     it('should bind the placeholder prop correctly', async () => {
@@ -89,8 +108,9 @@ describe('pExpandableSearch', () => {
 
       await expandSearch(wrapper)
 
-      const inputElement = findInput(wrapper)
-      inputElement.setValue('test')
+      const inputElement = wrapper.findComponent({ name: 'PInput' })
+      expect(inputElement.exists()).toBeTruthy()
+      inputElement.vm.$emit('update:modelValue', 'test')
       await nextTick()
 
       expect(wrapper.emitted('update:p-search-content')).toBeTruthy()
@@ -181,20 +201,7 @@ describe('pExpandableSearch', () => {
         pIsSearchOpen: false,
         pFocusOnExpand: true,
       }
-      const focusSpy = vi.fn()
-      const wrapper = shallowMount(PExpandableSearch, {
-        props,
-        global: {
-          stubs: {
-            PInput: {
-              template: '<div />',
-              methods: {
-                focus: focusSpy,
-              },
-            },
-          },
-        },
-      })
+      const wrapper = createWrapper(props)
       const pButton = findPbutton(wrapper)
       await pButton.trigger('click')
 

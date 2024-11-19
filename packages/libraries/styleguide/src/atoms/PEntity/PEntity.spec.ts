@@ -1,5 +1,5 @@
 // Import necessary modules
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PEntity from './'
 import { describe, it, expect } from 'vitest'
 import type { PEntityProps } from './PEntityTypes'
@@ -13,7 +13,7 @@ describe('tests for p-entity', () => {
       pType: 'primary',
       pSelected: false,
     }
-    const wrapper = mount(PEntity, {
+    const wrapper = shallowMount(PEntity, {
       props,
     })
 
@@ -35,7 +35,7 @@ describe('tests for p-entity', () => {
       pIconColor: 'persian-gradient',
       pSelected: false,
     }
-    const wrapper = mount(PEntity, {
+    const wrapper = shallowMount(PEntity, {
       props,
     })
 

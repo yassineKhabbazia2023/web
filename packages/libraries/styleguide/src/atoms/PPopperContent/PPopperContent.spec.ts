@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { POPPER_INJECTION_KEY } from 'element-plus'
 import PPopperContent from '.'
@@ -23,7 +23,7 @@ const popperInjection = {
   role: computed(() => 'test-role'),
 }
 
-const createWrapper = () => mount(PPopperContent, {
+const createWrapper = () => shallowMount(PPopperContent, {
   props: propsValue,
   global: {
     provide: {
