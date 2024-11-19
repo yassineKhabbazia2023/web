@@ -3,21 +3,21 @@ import { existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 
 
 const targetFolderMfe = './packages/applets'
 
-function getTargetPath(targetFolder: string, mfe: string, subfolder: string = '') {
-  return path.join(targetFolder, mfe, subfolder)
+function getTargetPath(targetFolder: string, folderName: string, subfolder: string = '') {
+  return path.join(targetFolder, folderName, subfolder)
 }
 
 function doWorkForApplets(appletNames) {
-  appletNames.forEach((appletName) => {
-    cleanMfe(appletName, targetFolderMfe)
+  appletNames.forEach((folderName) => {
+    cleanMfe(folderName, targetFolderMfe)
   })
 }
 
 const EXTENSIONS = ['.vue']
 
-function cleanFolder(mfe: string, folderPath: string) {
+function cleanFolder(folderName: string, folderPath: string) {
   readdirSync(folderPath).forEach((fileName) => {
-    cleanFiles(mfe, path.join(folderPath, fileName))
+    cleanFiles(folderName, path.join(folderPath, fileName))
   })
 }
 
@@ -118,23 +118,23 @@ function cleanFile(filePath: string) {
   writeFileSync(filePath, newContent)
 }
 
-function cleanFiles(appletName: string, filePath: string) {
+function cleanFiles(folderName: string, filePath: string) {
   const lstat = lstatSync(filePath)
   if (lstat.isDirectory()) {
-    cleanFolder(appletName, filePath)
+    cleanFolder(folderName, filePath)
     return
   }
   cleanFile(filePath)
 }
 
-function cleanMfe(appletName: string, targetFolder: string) {
-  const targetFolderPath = getTargetPath(targetFolder, appletName, 'src')
+function cleanMfe(folderName: string, targetFolder: string) {
+  const targetFolderPath = getTargetPath(targetFolder, folderName, 'src')
 
   if (!existsSync(targetFolderPath)) {
     throw Error(`${targetFolderPath} does not exist`)
   }
 
-  cleanFiles(appletName, targetFolderPath)
+  cleanFiles(folderName, targetFolderPath)
 }
 
 const appletNames = ['login', 'launcher', 'ged', 'entities', 'mandate']
