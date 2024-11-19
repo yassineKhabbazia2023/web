@@ -1,19 +1,23 @@
-import { LAUNCHER_KEY } from '@launcher/pages/home/HomeTypes'
+import { LauncherKey } from '@launcher/pages/home/HomeTypes'
 
-export const PERMISSION_CODES = {
-  meg: 'CLMEG001',
-  silae: 'CLSILA001',
-  silaeCollab: 'COSILA001',
-  pennylane: 'CLPEN001',
+enum PermissionCodes {
+  MEG = 'CLMEG001',
+  SILAE = 'CLSILA001',
+  SILAE_COLLAB = 'COSILA001',
+  PENNYLANE = 'CLPEN001',
 }
 
-export const LAUNCHER_AUTHORIZATIONS = [{
-  key: LAUNCHER_KEY.meg,
-  authorizationCodes: [PERMISSION_CODES.meg],
-}, {
-  key: LAUNCHER_KEY.silae,
-  authorizationCodes: [PERMISSION_CODES.silae, PERMISSION_CODES.silaeCollab],
-}, {
-  key: LAUNCHER_KEY.pennylane,
-  authorizationCodes: [PERMISSION_CODES.pennylane],
-}]
+export const LAUNCHER_AUTHORIZATIONS = [
+  {
+    key: LauncherKey.MEG,
+    authorizationCodes: [PermissionCodes.MEG],
+  },
+  {
+    key: LauncherKey.SILAE,
+    authorizationCodes: [PermissionCodes.SILAE, PermissionCodes.SILAE_COLLAB],
+  },
+  {
+    key: LauncherKey.PENNYLANE,
+    authorizationCodes: [PermissionCodes.PENNYLANE],
+  },
+]
