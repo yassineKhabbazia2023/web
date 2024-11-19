@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { setAssetsBaseUrl } from './utils/imageResolver'
+import { setAssetsBaseUrl } from './utils/imageResolverInit'
 
 const ENV_VARS_URL = '/env-vars.json'
 

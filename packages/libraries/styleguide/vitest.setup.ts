@@ -1,3 +1,3 @@
-import { setAssetsBaseUrl } from './src/utils/imageResolver'
+import { setAssetsBaseUrl } from './src/utils/imageResolverInit'
 
 setAssetsBaseUrl('https://www.example.kpmg')

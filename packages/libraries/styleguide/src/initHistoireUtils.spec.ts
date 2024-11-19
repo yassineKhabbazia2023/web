@@ -1,5 +1,5 @@
 import axios from 'axios'
-import * as imageResolver from './utils/imageResolver'
+import * as imageResolverInit from './utils/imageResolverInit'
 import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { getAssetsBaseUrl, setCachedAssetsBaseUrl, getCachedAssetsBaseUrl, initHistoire } from './initHistoireUtils'
 
@@ -62,7 +62,7 @@ describe('initHistoirePlugin', () => {
 
   describe('initHistoire', () => {
     it('should call setAssetsBaseUrl with proper arguments', async () => {
-      const setAssetsBaseUrlSpy = vi.spyOn(imageResolver, 'setAssetsBaseUrl')
+      const setAssetsBaseUrlSpy = vi.spyOn(imageResolverInit, 'setAssetsBaseUrl')
       await initHistoire({ SSR: false })
 
       expect(setAssetsBaseUrlSpy).toHaveBeenCalledWith(VITE_ASSETS_BASE_URL)
@@ -70,7 +70,7 @@ describe('initHistoirePlugin', () => {
 
     it('should call setAssetsBaseUrl with proper arguments when using process.env', async () => {
       axiosGetSpy.mockResolvedValueOnce({})
-      const setAssetsBaseUrlSpy = vi.spyOn(imageResolver, 'setAssetsBaseUrl')
+      const setAssetsBaseUrlSpy = vi.spyOn(imageResolverInit, 'setAssetsBaseUrl')
       await initHistoire()
 
       expect(setAssetsBaseUrlSpy).toHaveBeenCalledWith(import.meta.env.VITE_ASSETS_BASE_URL)

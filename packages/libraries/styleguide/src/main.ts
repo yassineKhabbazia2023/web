@@ -17,7 +17,7 @@ export {
   ElRadioGroup as PRadioGroup,
 } from 'element-plus'
 
-export { setAssetsBaseUrl } from './utils/imageResolver'
+export { setAssetsBaseUrl } from './utils/imageResolverInit'
 
 export { default as PActionBar } from './molecules/PActionBar'
 export { default as PActivityCard } from './atoms/PActivityCard'

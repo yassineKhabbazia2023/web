@@ -1,7 +1,11 @@
 import { beforeEach, vi, describe, it, expect, type MockInstance } from 'vitest'
-import { imageResolver, getAssetsBaseUrl, setAssetsBaseUrl } from '../utils/imageResolver'
+import { imageResolver } from './imageResolver'
 
 const baseCDNUrl = 'https://example.com'
+
+vi.mock('./imageResolverInit', () => ({
+  getAssetsBaseUrl: () => baseCDNUrl,
+}))
 
 describe('imageResolver', () => {
   let loggerWarnSpy: MockInstance
@@ -11,7 +15,6 @@ describe('imageResolver', () => {
   it('should correctly retrieve image url', () => {
     const imageType = 'dummy'
     const imageName = 'image'
-    setAssetsBaseUrl(baseCDNUrl)
     const fileName = `${imageName}.svg`
     const imagePath = `${imageType}/${fileName}`
     const imageList = {
@@ -20,19 +23,6 @@ describe('imageResolver', () => {
     const imageURl = imageResolver(imageName, imageList)
     const expectedResult = `${baseCDNUrl}/${imagePath}`
     expect(expectedResult).equal(imageURl)
-    expect(loggerWarnSpy).not.toHaveBeenCalled()
-  })
-  it('getAssetsBaseUrl should return empty string when assetsBaseUrl is not initilized', () => {
-    setAssetsBaseUrl('')
-    const baseUrl = getAssetsBaseUrl()
-    const warningMessage = 'should initialize AssetsBaseUrl with setAssetsBaseUrl()'
-    expect(baseUrl).toBe('')
-    expect(loggerWarnSpy).toHaveBeenNthCalledWith(1, warningMessage)
-  })
-  it('getAssetsBaseUrl should return url given by setAssetsBaseUrl', () => {
-    setAssetsBaseUrl(baseCDNUrl)
-    const baseUrl = getAssetsBaseUrl()
-    expect(baseUrl).equal(baseCDNUrl)
     expect(loggerWarnSpy).not.toHaveBeenCalled()
   })
 })
