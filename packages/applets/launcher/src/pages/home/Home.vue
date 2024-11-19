@@ -1,9 +1,7 @@
 <template>
   <div>
     <template v-if="isClient">
-      <PBreadcrumb
-        :pElements="breadcrumbElements"
-      />
+      <PBreadcrumb :pElements="breadcrumbElements" />
       <h1
         class="h4 margin-top--3 text-color--neutral-gray-700"
         data-testid="launcher-home-title"
@@ -18,19 +16,19 @@
       </h2>
     </template>
     <PAlert
-      v-if="launchCards.length === 0"
+      v-if="commonStore.userAccountPermissions && launchCards.length === 0"
       pType="danger"
       class="margin-top--3"
       data-testid="home-no-launcher"
     >
       {{ t('no-launcher') }}
     </PAlert>
-    <div class="margin-top--2 flex flex-gap--4 flex--wrap">
+    <div v-else class="margin-top--2 flex flex-gap--4 flex--wrap">
       <LaunchCard
-        v-for="(launchCard, index) in launchCards"
+        v-for="launchCard in launchCards"
         class="flex--basis-30 flex--grow-1"
         :data-testid="`launch-card-${launchCard.key}`"
-        :key="index"
+        :key="launchCard.key"
         :title="launchCard.title"
         :subtitle="launchCard.subtitle"
         :imageType="launchCard.imageType"
@@ -46,20 +44,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { commonStore as useStore, userPermissions } from '@pulse/common'
+import { PBreadcrumb, PAlert } from '@pulse/styleguide'
 import LaunchCard from '@launcher/components/launchCard'
-import type { LAUNCHER_KEY, ExtendedLaunchCard } from './HomeTypes'
+import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
+import type { LauncherKey, ExtendedLaunchCard } from './HomeTypes'
 import {
   getLaunchCards,
   handleClickAction,
   handleDownload,
   getSilaeDownloadLabel,
-  getAuthorizedKeys,
 } from './HomeUtils'
-import { PBreadcrumb, PAlert } from '@pulse/styleguide'
-import { commonStore as useStore } from '@pulse/common'
 
 const route = useRoute()
 
@@ -69,16 +67,16 @@ const { t } = useI18n({
 })
 
 const commonStore = useStore()
+const { hasPermission } = userPermissions()
 
-const launchCards = ref<ExtendedLaunchCard[]>([])
 const isDownloading = ref(false)
-const authorizedKeys = ref<LAUNCHER_KEY[]>([])
+const silaeDownloadPercent = ref<number | undefined>()
 
-function onSilaeDownloadProgress(silaeDownloadPercent: number) {
-  refreshLaunchCards(silaeDownloadPercent)
+function onSilaeDownloadProgress(downloadPercent: number) {
+  silaeDownloadPercent.value = downloadPercent
 }
 
-async function onClickDownload(key: LAUNCHER_KEY) {
+async function onClickDownload(key: LauncherKey) {
   if (isDownloading.value) {
     return
   }
@@ -88,37 +86,43 @@ async function onClickDownload(key: LAUNCHER_KEY) {
   isDownloading.value = false
 }
 
-async function onClickAction(key: LAUNCHER_KEY) {
+async function onClickAction(key: LauncherKey) {
   await handleClickAction(key)
 }
 
 const isClient = computed(() => route.name === 'launcher')
-const breadcrumbElements = [{
-  pId: -1,
-  pText: commonStore.defaultEntity?.legalName ?? '',
-}, {
-  pId: -1,
-  pText: t('title'),
-}]
+const breadcrumbElements = [
+  {
+    pId: -1,
+    pText: commonStore.defaultEntity?.legalName ?? '',
+  },
+  {
+    pId: -1,
+    pText: t('title'),
+  },
+]
 
-onMounted(() => {
-  authorizedKeys.value = getAuthorizedKeys()
-  refreshLaunchCards()
+const authorizedKeys = computed<LauncherKey[]>(() =>
+  LAUNCHER_AUTHORIZATIONS.filter(({ authorizationCodes }) => hasPermission(authorizationCodes)).map<LauncherKey>(
+    ({ key }) => key,
+  ),
+)
+
+const launchCards = computed<ExtendedLaunchCard[]>(() => {
+  const downloadLabel = getSilaeDownloadLabel(silaeDownloadPercent.value)
+
+  return getLaunchCards(downloadLabel, authorizedKeys.value)
 })
 
-function refreshLaunchCards(silaeDownloadPercent: number | undefined = undefined) {
-  const downloadLabel = getSilaeDownloadLabel(silaeDownloadPercent)
-  launchCards.value = getLaunchCards(downloadLabel, authorizedKeys.value)
-}
 </script>
 
 <i18n lang="yaml">
-  en-US:
-    title: 'Applications'
-    active-section-title: 'Active applications'
-    no-launcher: 'You do not have the necessary permissions to access these applications.'
-  fr-FR:
-    title: 'Applications'
-    active-section-title: 'Applications activées'
-    no-launcher: "Vous n'avez pas les permissions nécessaires pour accéder à ces applications."
+en-US:
+  title: 'Applications'
+  active-section-title: 'Active applications'
+  no-launcher: 'You do not have the necessary permissions to access these applications.'
+fr-FR:
+  title: 'Applications'
+  active-section-title: 'Applications activées'
+  no-launcher: "Vous n'avez pas les permissions nécessaires pour accéder à ces applications."
 </i18n>
