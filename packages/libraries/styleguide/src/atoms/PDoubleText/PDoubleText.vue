@@ -24,14 +24,14 @@
         :disabled="pDisabled"
         :selected="pSelected"
       >
-        {{ pTitle }}
+        {{ pTitle ?? '' }}
       </div>
       <div
         class="p-double-text__content-description"
         :disabled="pDisabled"
         :selected="pSelected"
       >
-        {{ pContent }}
+        {{ pContent ?? '' }}
       </div>
     </div>
   </div>

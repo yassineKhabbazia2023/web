@@ -44,7 +44,7 @@ const mockToastPlugin = vi.fn()
 
 const pinia = createPinia()
 
-const defaultProps = {
+const defaultProps: DocumentsProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   selectedEntity: 'my-entity',
   selectedEntityAvatarColor: 'persian' as Entity['color'],
@@ -599,7 +599,7 @@ describe('documents', () => {
       vi.advanceTimersByTime(300)
       expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
-        defaultProps.selectedFolder.id,
+        defaultProps.selectedFolder?.id,
         'my-entity',
         0,
         10,
@@ -632,7 +632,7 @@ describe('documents', () => {
         vi.advanceTimersByTime(300)
         expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
           defaultProps.currentService,
-          defaultProps.selectedFolder.id,
+          defaultProps.selectedFolder?.id,
           'my-entity',
           0,
           10,
@@ -1004,7 +1004,7 @@ describe('documents', () => {
 
       expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
-        defaultProps.selectedFolder.id,
+        defaultProps.selectedFolder?.id,
         'my-entity',
         0,
         10,

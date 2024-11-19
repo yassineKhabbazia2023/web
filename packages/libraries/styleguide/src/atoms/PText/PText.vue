@@ -9,7 +9,7 @@
       </PIcon>
     </div>
     <div :class="['p-text__content', { 'font-bold': pBold }]">
-      {{ pContent }}
+      {{ pContent ?? '' }}
     </div>
   </div>
 </template>
