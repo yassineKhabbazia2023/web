@@ -1,7 +1,7 @@
 <template>
   <div class="preview-section">
     <div v-if="isImage && !isLoadingDocument" class="preview-section_image">
-      <el-image :src="url" fit="fill" />
+      <ElImage :src="url" fit="fill" />
 
     </div>
     <div v-if="!isProvidedExtensionSupported && !isLoadingDocument" class="preview-section_notAllowed">
