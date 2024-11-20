@@ -39,9 +39,9 @@
           v-model="basicData.finishStatus"
           title="finishStatus"
           :options="stateOptions" />
-        <el-divider borderStyle="dotted" contentPosition="left">
+        <ElDivider borderStyle="dotted" contentPosition="left">
           <span>title</span>
-        </el-divider>
+        </ElDivider>
         <HstText v-model="basicDataTitles.step1" title="Step 1" />
         <HstText v-model="basicDataTitles.step2" title="Step 2" />
         <HstText v-model="basicDataTitles.step3" title="Step 3" />
