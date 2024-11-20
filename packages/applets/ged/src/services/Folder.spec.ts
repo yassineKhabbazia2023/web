@@ -68,7 +68,7 @@ describe('folder service', () => {
     const data = await fetchServiceFolders(service, entityId)
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
-      'some-service-id/some-entity-id/folders',
+      'some-service-id/some-entity-id/folders/currentuser',
     )
     expect(data).toStrictEqual({
       folders: fetchedFolder,
@@ -91,7 +91,7 @@ describe('folder service', () => {
     const data = await CreateFolder(serviceId, entityId, parentFolderId, folderName)
     expect(mockDsPost).toHaveBeenCalledTimes(1)
     expect(mockDsPost).toHaveBeenCalledWith(
-      'some-service-id/some-entity-id/folders', {
+      'some-service-id/some-entity-id/folders/currentuser', {
         name: 'newFolderName',
         parentId: 1,
       },
@@ -110,7 +110,7 @@ describe('folder service', () => {
     const data = await RenameFolder(folderId, folderName, serviceId, entityId)
     expect(mockDsPatch).toHaveBeenCalledTimes(1)
     expect(mockDsPatch).toHaveBeenCalledWith(
-      'some-entity-id/some-service-id/folders/1',
+      'some-entity-id/some-service-id/folders/1/currentuser',
       [{ op: 'replace', path: '/name', value: folderName }],
     )
     expect(data).toStrictEqual({
@@ -126,7 +126,7 @@ describe('folder service', () => {
     await deleteFolder(serviceId, entityId, folderId, false)
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
-      'some-service-id/some-entity-id/folders/1?keepFolder=false',
+      'some-service-id/some-entity-id/folders/currentuser/1?keepFolder=false',
     )
   })
 

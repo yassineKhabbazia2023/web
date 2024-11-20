@@ -16,7 +16,7 @@ export const fetchFolderDocuments = async (
   sort = '-created',
   filters: DocumentSearchFilters | null = null,
 ): Promise<DocumentsWithTableStructure> => {
-  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
+  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
   const apiObject = api().ds
 
   return (
@@ -98,7 +98,7 @@ export const uploadDocument = async (
   const apiObject = api().ds
 
   return await apiObject.post(
-    `${serviceId}/${entityId}/folders/${folderId}/documents?notify=true&source=User`,
+    `${serviceId}/${entityId}/folders/${folderId}/currentuser/documents?notify=true&source=User`,
     formData,
     {
       headers: {
@@ -181,7 +181,7 @@ export const fetchDocumentsByKeyWord = async (
   search: string,
   findInChildFolders = true,
 ): Promise<DocumentsWithTableStructure> => {
-  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}`
+  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
   const apiObject = api().ds
 
   return (

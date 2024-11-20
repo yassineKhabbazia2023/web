@@ -20,7 +20,7 @@ describe('trash documents service', () => {
 
     expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
     expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/trash/mapped',
+      'service-1/my-account-id/trash/mapped/currentuser',
       {
         params: {
           limit: 10,

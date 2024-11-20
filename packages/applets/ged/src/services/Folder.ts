@@ -6,7 +6,7 @@ export const fetchServiceFolders = async (
   service: Service,
   entityId: string,
 ): Promise<Folder[]> => {
-  const fetchFolderUrl = `${service.ServiceId}/${entityId}/folders`
+  const fetchFolderUrl = `${service.ServiceId}/${entityId}/folders/currentuser`
   try {
     const response = await commonApi().ds.get(fetchFolderUrl)
     return response?.data
@@ -51,7 +51,7 @@ export const CreateFolder = async (
   parentFolderId: Folder['id'],
   folderName: string,
 ) => {
-  const createFolderUrl = `${serviceId}/${entityId}/folders`
+  const createFolderUrl = `${serviceId}/${entityId}/folders/currentuser`
   const response = await commonApi().ds.post(createFolderUrl, {
     parentId: parentFolderId,
     name: folderName,
@@ -65,7 +65,7 @@ export const RenameFolder = async (
   entityId: string,
   serviceId: null | Service['ServiceId'],
 ) => {
-  const renameFolderUrl = `${serviceId}/${entityId}/folders/${folderId}`
+  const renameFolderUrl = `${serviceId}/${entityId}/folders/${folderId}/currentuser`
   const response = await commonApi().ds.patch(renameFolderUrl, [
     { op: 'replace', path: '/name', value: folderName },
   ])
@@ -79,7 +79,7 @@ export const deleteFolder = async (
   folderId: Folder['id'],
   keepFolder: boolean,
 ) => {
-  const deleteFolderUrl = `${serviceId}/${entityId}/folders/${folderId}?keepFolder=${keepFolder}`
+  const deleteFolderUrl = `${serviceId}/${entityId}/folders/currentuser/${folderId}?keepFolder=${keepFolder}`
 
   await commonApi().ds.delete(deleteFolderUrl)
 }
@@ -106,7 +106,7 @@ export const moveFolderAsync = async (
   folderId: Folder['id'],
   destinationFolderId: Folder['id'],
 ): Promise<void> => {
-  const moveFolderUrl = `${serviceId}/${entityId}/folders/${folderId}`
+  const moveFolderUrl = `${serviceId}/${entityId}/folders/${folderId}/currentuser`
   const apiObject = commonApi().ds
   return (
     await apiObject.patch(moveFolderUrl, [

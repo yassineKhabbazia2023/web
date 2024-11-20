@@ -33,7 +33,7 @@ describe('bin documents service', () => {
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
     expect(mockDsGet).toHaveBeenCalledWith(
-      'service-1/my-account-id/trash/mapped',
+      'service-1/my-account-id/trash/mapped/currentuser',
       {
         params: {
           limit: 10,

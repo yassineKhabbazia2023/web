@@ -9,7 +9,7 @@ export const fetchBinDocuments = async (
   limit = 10,
   sort = '-deleted',
 ): Promise<BinDocumentsWithTableStructure> => {
-  const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/mapped`
+  const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/mapped/currentuser`
   const response = await commonApi().ds.get(fetchBinDocumentsUrl, {
     params: {
       skip,

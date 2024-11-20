@@ -57,7 +57,7 @@ describe('documents service', () => {
 
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/folder/123', {
+      'service-1/my-account-id/documents/folder/123/currentuser', {
         params: {
           createdEnd: null,
           createdStart: null,
@@ -79,7 +79,7 @@ describe('documents service', () => {
 
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/folder/123',
+      'service-1/my-account-id/documents/folder/123/currentuser',
       {
         params: {
           limit: 10,
@@ -119,7 +119,7 @@ describe('documents service', () => {
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
     expect(mockDsGet).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/folder/123', {
+      'service-1/my-account-id/documents/folder/123/currentuser', {
         params: {
           limit: 10,
           skip: 0,
@@ -228,7 +228,7 @@ describe('documents service', () => {
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
     expect(mockDsPost).toHaveBeenCalledWith(
-      'service-1/my-account-id/folders/1234/documents?notify=true&source=User',
+      'service-1/my-account-id/folders/1234/currentuser/documents?notify=true&source=User',
       expectedPayload,
       {
         headers: {

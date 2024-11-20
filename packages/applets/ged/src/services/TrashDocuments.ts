@@ -9,7 +9,7 @@ export const fetchTrashDocuments = async (
   limit = 10,
   sort = '-deleted',
 ): Promise<DocumentsWithTableStructure> => {
-  const fetchTrashDocumentsUrl = `${serviceId}/${entityId}/trash/mapped`
+  const fetchTrashDocumentsUrl = `${serviceId}/${entityId}/trash/mapped/currentuser`
 
   const response = await commonApi()
     .ds
