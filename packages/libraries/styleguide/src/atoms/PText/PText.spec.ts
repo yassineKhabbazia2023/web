@@ -1,5 +1,5 @@
 // Import necessary modules
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PText from './'
 import { PIPerson } from '../PIcon/components'
 import { describe, it, expect } from 'vitest'
@@ -9,7 +9,7 @@ const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 
 describe('tests for p-text', () => {
   it('renders the content', () => {
-    const wrapper = mount(PText, {
+    const wrapper = shallowMount(PText, {
       props: {
         pContent,
         pType: 'primary',
@@ -29,7 +29,7 @@ describe('tests for p-text', () => {
   })
 
   it('renders with an icon', () => {
-    const wrapper = mount(PText, {
+    const wrapper = shallowMount(PText, {
       props: {
         pIcon: markRaw(PIPerson),
         pContent,
@@ -40,7 +40,7 @@ describe('tests for p-text', () => {
     })
 
     // Check if the table renders correctly
-    const iconElement = wrapper.findComponent({ name: 'PIPerson' })
+    const iconElement = wrapper.findComponent({ name: 'PIcon' })
 
     expect(iconElement.exists()).toBeTruthy()
   })

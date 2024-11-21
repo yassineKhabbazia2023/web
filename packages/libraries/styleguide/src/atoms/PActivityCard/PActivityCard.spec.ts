@@ -17,7 +17,7 @@ const createWrapper = (props: PActivityProps = defaultProps) =>
     global: {
       stubs: {
         PAvatar: {
-          template: '<div class="p-avatar"><slot /><div>',
+          template: '<div class="p-avatar"><slot /></div>',
         },
       },
     },

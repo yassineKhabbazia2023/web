@@ -1,15 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
-import PButton from '../../atoms/PButton'
-import PUpload from '../../atoms/PUpload'
+import { shallowMount } from '@vue/test-utils'
 import PActionBar from './'
 import type {
   PActionBarProps,
   PButtonActionBarProps,
   ComponentDefinitionProps,
 } from './PActionBarTypes'
-import PExpandableSearch from '../../atoms/PExpandableSearch'
 import { nextTick, type ComponentPublicInstance } from 'vue'
 
 type PActionBarSetup = {
@@ -44,8 +41,31 @@ ComponentPublicInstance<PButtonActionBarProps, PActionBarSetup>
 const createWrapper = (
   props: PActionBarProps = defaultProps,
 ): PActionBarWrapper => {
-  return mount(PActionBar, {
+  return shallowMount(PActionBar, {
     props,
+    global: {
+      stubs: {
+        PUpload: {
+          name: 'PUpload',
+          template: '<div><slot /></div>',
+        },
+        PButton: {
+          name: 'PButton',
+          template: '<div><slot /></div>',
+          props: [
+            'pCircle',
+          ],
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
+        PExpandableSearch: {
+          name: 'PExpandableSearch',
+          template: '<div><slot /></div>',
+        },
+      },
+    },
   }) as unknown as PActionBarWrapper
 }
 
@@ -74,7 +94,7 @@ describe('pActionBar', () => {
           pRightSideButtons: defaultProps.pRightSideButtons,
         })
         const leftZoneBtns = wrapper.find('.p-action-bar__left')
-        expect(leftZoneBtns.findAllComponents(PButton)).toHaveLength(3)
+        expect(leftZoneBtns.findAllComponents({ name: 'PButton' })).toHaveLength(3)
       })
 
       it('should display the button in a rounded shape  if the button contain only an icon', () => {
@@ -87,9 +107,9 @@ describe('pActionBar', () => {
           pRightSideButtons: defaultProps.pRightSideButtons,
         })
         const leftZoneWrapper = wrapper.find('.p-action-bar__left')
-        const button = leftZoneWrapper.find('button')
+        const pButton = leftZoneWrapper.findComponent({ name: 'PButton' })
 
-        expect(button.classes().includes('is-circle')).toBeTruthy()
+        expect(pButton.props('pCircle')).toBeTruthy()
       })
 
       it('should display pupload when pComponentType is UPLOAD', () => {
@@ -103,7 +123,7 @@ describe('pActionBar', () => {
           pRightSideButtons: defaultProps.pRightSideButtons,
         })
 
-        const pUploadWrapper = wrapper.findComponent(PUpload)
+        const pUploadWrapper = wrapper.findComponent({ name: 'PUpload' })
         expect(pUploadWrapper.exists()).toBeTruthy()
       })
     })
@@ -118,7 +138,7 @@ describe('pActionBar', () => {
         pRightSideButtons: defaultProps.pRightSideButtons,
       })
 
-      const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+      const pSearchWrapper = wrapper.findComponent({ name: 'PExpandableSearch' })
       expect(pSearchWrapper.exists()).toBeTruthy()
     })
   })
@@ -131,7 +151,7 @@ describe('pActionBar', () => {
         pRightSideButtons: buttons,
       })
       const rightZoneBtns = wrapper.find('.p-action-bar__right')
-      expect(rightZoneBtns.findAllComponents(PButton)).toHaveLength(5)
+      expect(rightZoneBtns.findAllComponents({ name: 'PButton' })).toHaveLength(5)
     })
 
     it('should change buttons shape to circle upon  search-expand-change', async () => {
@@ -156,11 +176,11 @@ describe('pActionBar', () => {
         pRightSideButtons: defaultProps.pRightSideButtons,
       })
 
-      const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+      const pSearchWrapper = wrapper.findComponent({ name: 'PExpandableSearch' })
       pSearchWrapper.vm.$emit('search-expand-change', true)
       await nextTick()
       const rightIconsWrapper = wrapper.find('.p-action-bar__right')
-      const rightIconSampleButon = rightIconsWrapper.findAllComponents(PButton)[0]
+      const rightIconSampleButon = rightIconsWrapper.findAllComponents({ name: 'PButton' })[0]
 
       expect(rightIconSampleButon.props('pCircle')).toBeTruthy()
     })
@@ -191,7 +211,7 @@ describe('events', () => {
     })
     const button = wrapper
       .find('.p-action-bar__right')
-      .findAllComponents(PButton)[0]
+      .findAllComponents({ name: 'PButton' })[0]
 
     await button.trigger('click')
 
@@ -225,7 +245,7 @@ describe('events', () => {
     })
     const button = wrapper
       .find('.p-action-bar__left')
-      .findAllComponents(PButton)[0]
+      .findAllComponents({ name: 'PButton' })[0]
 
     await button.trigger('click')
 
@@ -263,7 +283,7 @@ describe('events', () => {
       pRightSideButtons: defaultProps.pRightSideButtons,
     })
 
-    const pUploadWrapper = wrapper.findComponent(PUpload)
+    const pUploadWrapper = wrapper.findComponent({ name: 'PUpload' })
     pUploadWrapper.vm.$emit('files-selected', [f])
 
     expect(wrapper.emitted('p-upload-files-selected')).toHaveLength(1)
@@ -293,7 +313,7 @@ describe('events', () => {
       pRightSideButtons: defaultProps.pRightSideButtons,
     })
 
-    const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+    const pSearchWrapper = wrapper.findComponent({ name: 'PExpandableSearch' })
     pSearchWrapper.vm.$emit('update:p-search-content', searchInput)
 
     expect(wrapper.emitted('p-search-input')).toHaveLength(1)
@@ -321,7 +341,7 @@ describe('events', () => {
       pRightSideButtons: defaultProps.pRightSideButtons,
     })
 
-    const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+    const pSearchWrapper = wrapper.findComponent({ name: 'PExpandableSearch' })
     pSearchWrapper.vm.$emit('search-expand-change', true)
 
     expect(wrapper.vm.isSearchExpanded).toBeTruthy()
@@ -350,7 +370,7 @@ describe('events', () => {
         pRightSideButtons: defaultProps.pRightSideButtons,
       })
 
-      const pSearchWrapper = wrapper.findComponent(PExpandableSearch)
+      const pSearchWrapper = wrapper.findComponent({ name: 'PExpandableSearch' })
       pSearchWrapper.vm.$emit('search-expand-change', true)
 
       expect(wrapper.emitted('search-expand-change')).toStrictEqual([[true]])

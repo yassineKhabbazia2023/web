@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PLoader from './'
 
 describe('pLoader', () => {
   it('renders', () => {
-    const wrapper = mount(PLoader, {
+    const wrapper = shallowMount(PLoader, {
       props: {
         pType: 'primary',
       },

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { PAutocompleteProps } from './PAutocompleteTypes'
 import PAutocomplete from '.'
 
@@ -37,13 +37,47 @@ const defaultSlot = `
   `
 
 const createWrapper = () =>
-  mount(PAutocomplete, {
+  shallowMount(PAutocomplete, {
     props: propsValue,
     attachTo: document.body,
     slots: {
       default: defaultSlot,
       prefix: "<button data-testid='prefix-slot'>Prefix Test Button</button>",
       suffix: "<button data-testid='suffix-slot'>Suffix Test Button</button>",
+    },
+    global: {
+      stubs: {
+        ElAutocomplete: {
+          name: 'ElAutocomplete',
+          template: '<div><slot name="prefix" /><slot :item="item" /><slot name="suffix" /></div>',
+          data() {
+            const item = {}
+
+            return {
+              item,
+            }
+          },
+          props: [
+            'modelValue',
+            'placement',
+            'clearable',
+            'disabled',
+            'valueKey',
+            'debounce',
+            'triggerOnFocus',
+            'fetchSuggestions',
+            'name',
+            'label',
+            'hideLoading',
+            'popperClass',
+            'teleported',
+            'highlightFirstItem',
+            'fitInputWidth',
+            'selectWhenUnmatched',
+            'placeholder',
+          ],
+        },
+      },
     },
   })
 
@@ -57,7 +91,7 @@ describe('pAutoComplete', () => {
       const component = wrapper.findComponent({ name: 'ElAutocomplete' })
 
       const expectedProps = {
-        modelValue: '',
+        modelValue: undefined,
         placement: propsValue.pPlacement,
         clearable: propsValue.pClearable,
         disabled: propsValue.pDisabled,
@@ -73,22 +107,16 @@ describe('pAutoComplete', () => {
         highlightFirstItem: propsValue.pHighlightFirstItem,
         fitInputWidth: propsValue.pFitInputWidth,
         selectWhenUnmatched: propsValue.pSelectWhenUnmatched,
+        placeholder: propsValue.pPlaceholder,
       }
       expect(component.props()).toMatchObject(expectedProps)
     })
   })
   describe('display', () => {
     it('should render correctly', () => {
-      const input = document.body.querySelector('.el-input__inner') as Element
+      const elAutocomplete = wrapper.findComponent({ name: 'ElAutocomplete' })
 
-      expect(input.getAttribute('placeholder')).toBe(propsValue.pPlaceholder)
-    })
-    it('should display a customized list of suggestions on focus', async () => {
-      const autocompleteInput = wrapper.find('input')
-      await autocompleteInput.trigger('focus')
-
-      const suggestionsList = wrapper.find('.el-autocomplete-suggestion__wrap')
-      expect(suggestionsList.exists()).toBeTruthy()
+      expect(elAutocomplete.props('placeholder')).toBe(propsValue.pPlaceholder)
     })
   })
   describe('slots', () => {

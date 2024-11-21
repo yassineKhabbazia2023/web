@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import type { POfferServicesCardProps } from './POfferServicesCardTypes'
 import POfferServicesCard from '.'
@@ -31,8 +31,16 @@ const defaultProps: POfferServicesCardProps = {
 }
 
 const createWrapper = (props: POfferServicesCardProps = defaultProps) =>
-  mount(POfferServicesCard, {
+  shallowMount(POfferServicesCard, {
     props,
+    global: {
+      stubs: {
+        ElSwitch: {
+          name: 'ElSwitch',
+          template: '<div />',
+        },
+      }
+    }
   })
 
 describe('pOfferServicesCard', () => {
@@ -73,7 +81,8 @@ describe('pOfferServicesCard', () => {
 
   it('should emit event changeServiceStatus after switching status of service', async () => {
     const service = wrapper.find('.p-offer-services-card__service')
-    service.find('.p-offer-services-card__service-switch').trigger('click')
+    const elSwitch = service.findComponent({ name: 'ElSwitch' })
+    elSwitch.vm.$emit('change')
     await nextTick()
 
     expect(wrapper.emitted()).toHaveProperty('changeServiceStatus')

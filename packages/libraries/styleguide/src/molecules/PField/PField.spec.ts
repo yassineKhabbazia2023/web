@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import PBankCard from '.'
 import type { PFieldProps } from './PFieldTypes'
@@ -8,8 +8,36 @@ import { getMockedInputField, getDropdownField, getDateField, getRadioField } fr
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
 function createWrapper<T>(props: PFieldProps<T>) {
-  return mount(PBankCard, {
+  return shallowMount(PBankCard, {
     props,
+    global: {
+      stubs: {
+        PDatePicker: {
+          name: 'PDatePicker',
+          template: '<div><slot /></div>'
+        },
+        PDropdown: {
+          name: 'PDropdown',
+          template: '<div><slot /></div>'
+        },
+        PFormItem: {
+          name: 'PFormItem',
+          template: '<div><slot /></div>'
+        },
+        PInput: {
+          name: 'PInput',
+          template: '<div><slot /></div>'
+        },
+        PRadio: {
+          name: 'PRadio',
+          template: '<div><slot /></div>'
+        },
+        PCheckbox: {
+          name: 'PCheckbox',
+          template: '<div><slot /></div>'
+        },
+      }
+    }
   })
 }
 

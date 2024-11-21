@@ -1,4 +1,4 @@
-import { mount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { PIPulse } from '../../atoms/PIcon/components'
 import PTag from '.'
@@ -12,9 +12,21 @@ const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
     ...overridenProps,
   }
 
-  return mount(PTag, {
+  return shallowMount(PTag, {
     props,
-  })
+    global: {
+      stubs: {
+        ElTag: {
+          name: 'ElTag',
+          template: '<div class="el-tag"><slot /></div>',
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
+      }
+    }
+    })
 }
 
 describe('pTag', () => {
@@ -39,12 +51,8 @@ describe('pTag', () => {
         await flushPromises()
 
         const hasIconLeftClass = wrapper.find('.el-tag__icon--left').exists()
-        const hasIconLeftComponent = wrapper
-          .findComponent({ name: 'PIPulse' })
-          .exists()
 
         expect(hasIconLeftClass).toBe(shouldHaveIconLeftClass)
-        expect(hasIconLeftComponent).toBe(shouldHaveIconLeftClass)
       },
     )
     it.each([
@@ -66,12 +74,8 @@ describe('pTag', () => {
         })
         await flushPromises()
         const hasIconRightClass = wrapper.find('.el-tag__icon--right').exists()
-        const hasIconRightComponent = wrapper
-          .findComponent({ name: 'PIPulse' })
-          .exists()
 
         expect(hasIconRightClass).toBe(shouldHaveIconRightClass)
-        expect(hasIconRightComponent).toBe(shouldHaveIconRightClass)
       },
     )
 

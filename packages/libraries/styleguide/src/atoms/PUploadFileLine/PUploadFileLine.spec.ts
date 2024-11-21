@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import PButton from '../../atoms/PButton'
 import PLoader from '../../atoms/PLoader'
 import { PIFiletypePdf, PITrash } from '../../atoms/PIcon/components'
@@ -24,8 +24,32 @@ const defaultProps: PUploadFileLineProps = {
 }
 
 const createWrapper = (props = defaultProps) =>
-  mount(PUploadFileLine, {
+  shallowMount(PUploadFileLine, {
     props,
+    global: {
+      stubs: {
+        PLoader: {
+          name: 'PLoader',
+          template: '<div><slot /></div>',
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
+        PIExclamationTriangle: {
+          name: 'PIExclamationTriangle',
+          template: '<div />',
+        },
+        PTooltip: {
+          name: 'PTooltip',
+          template: '<div><slot /></div>',
+        },
+        PButton: {
+          name: 'PButton',
+          template: '<div><slot /></div>',
+        },
+      },
+    },
   })
 
 describe('pUploadFileLine', () => {

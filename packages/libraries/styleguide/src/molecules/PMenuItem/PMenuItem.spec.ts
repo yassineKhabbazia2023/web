@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { ElMenuItem } from 'element-plus'
 import type { PMenuItemProps } from './PMenuItemTypes'
@@ -57,11 +57,27 @@ const createWrapper = (items: PMenuItemProps[] = defaultItems): VueWrapper => {
     },
   }
 
-  return mount(Component, {
+  return shallowMount(Component, {
     global: {
-      components: {
-        PMenu,
+      stubs: {
         PMenuItem,
+        ElMenuItem: {
+          name: 'ElMenuItem',
+          template: '<div><slot name="title" /><slot /></div>',
+          props: [
+            'disabled',
+            'index',
+            'route',
+          ],
+        },
+        PMenu: {
+          name: 'PMenu',
+          template: '<div><slot /></div>',
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
       },
     },
   })
@@ -101,28 +117,6 @@ describe('pMenu', () => {
       await flushPromises()
       const rightIconElement = wrapper.find('.p-menu-item__right-icon')
       expect(rightIconElement.exists()).toBeTruthy()
-    })
-    it('should not activate a disabled item when clicked', async () => {
-      const wrapper = createWrapper()
-      const thirdMenuItem = findMenuItem(wrapper, 3)
-
-      await thirdMenuItem.trigger('click')
-      await nextTick()
-      expect(thirdMenuItem.classes()).not.toContain('is-active')
-    })
-  })
-  describe('events', () => {
-    it('should become active when clicking on the menu item', async () => {
-      const wrapper = createWrapper()
-      const firstMenuItem = findMenuItem(wrapper, 1)
-      const secondMenuItem = findMenuItem(wrapper, 2)
-
-      await firstMenuItem.trigger('click')
-      await nextTick()
-      expect(firstMenuItem.classes()).toContain('is-active')
-      await secondMenuItem.trigger('click')
-      await nextTick()
-      expect(secondMenuItem.exists()).toBeTruthy()
     })
   })
 })

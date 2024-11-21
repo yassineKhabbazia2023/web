@@ -22,7 +22,7 @@
         ]"
       >
         <div class="p-offer-services-card__service-details">
-          <PSwitch
+          <ElSwitch
             v-model="service.pStatus"
             class="p-offer-services-card__service-switch"
             :disabled="service.pDisabled"
@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import PImage from '../../atoms/PImage'
 import PTag from '../../atoms/PTag'
-import { ElSwitch as PSwitch } from 'element-plus'
+import { ElSwitch } from 'element-plus'
 import type { PService, POfferServicesCardProps } from './POfferServicesCardTypes'
 
 const props = defineProps<POfferServicesCardProps>()

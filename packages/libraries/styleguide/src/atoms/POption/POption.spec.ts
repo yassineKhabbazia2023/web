@@ -1,23 +1,22 @@
 import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { POptionProps } from './POptionTypes'
-import PSelect from '../../molecules/PSelect'
 import POption from '.'
 
 function createWrapper(options: POptionProps[], slotContent: string): VueWrapper {
   const Component = {
     template: `
-      <PSelect :pTeleported="false">
+      <PSelect>
         <POption
           v-for="({pValue, pLabel, pDisabled}, index) in options"
           :key="index"
-          data-ut="option"
-          :pValue="pValue" 
-          :pLabel="pLabel" 
-          :pDisabled="pDisabled" 
+          data-testid="option"
+          :pValue="pValue"
+          :pLabel="pLabel"
+          :pDisabled="pDisabled"
         >
-          <div data-ut="slot" v-if="slotContent !== ''">{{ slotContent }}</div>
+          <div data-testid="slot" v-if="slotContent !== ''">{{ slotContent }}</div>
         </POption>
       </PSelect>
     `,
@@ -29,11 +28,21 @@ function createWrapper(options: POptionProps[], slotContent: string): VueWrapper
     },
   }
 
-  return mount(Component, {
+  return shallowMount(Component, {
     global: {
-      components: {
-        PSelect,
+      stubs: {
         POption,
+        PSelect: {
+          name: 'PSelect',
+          template: '<div><slot /></div>',
+        },
+        ElOption: {
+          name: 'ElOption',
+          template: '<div>{{ label }}<slot /></div>',
+          props: [
+            'label',
+          ],
+        },
       },
     },
   })
@@ -53,14 +62,14 @@ describe('pOption', () => {
   it('should render options properly without Slot', () => {
     const wrapper = createWrapper(options, '')
 
-    const pOptions = wrapper.findAll('[data-ut="option"]')
+    const pOptions = wrapper.findAll('[data-testid="option"]')
 
     expect(pOptions).toHaveLength(options.length)
 
     expect(pOptions.at(0)?.text()).toBe(options.at(0)?.pLabel)
     expect(pOptions.at(1)?.text()).toBe(options.at(1)?.pLabel)
 
-    const slots = wrapper.findAll('[data-ut="slot"]')
+    const slots = wrapper.findAll('[data-testid="slot"]')
     expect(slots).toHaveLength(0)
   })
 
@@ -68,7 +77,7 @@ describe('pOption', () => {
     const slotContent = 'slot-content'
     const wrapper = createWrapper(options, slotContent)
 
-    const slots = wrapper.findAll('[data-ut="slot"]')
+    const slots = wrapper.findAll('[data-testid="slot"]')
     expect(slots).toHaveLength(options.length)
     expect(slots.at(0)?.text()).toBe(slotContent)
   })

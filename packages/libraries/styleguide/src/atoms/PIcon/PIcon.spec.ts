@@ -1,17 +1,28 @@
 import { vi, describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PIcon from '.'
 
-describe('p icon', () => {
-  it('renders a component when pName is given', async () => {
-    const wrapper = mount(PIcon, {
-      props: {
-        pName: 'x',
-      },
-    })
+const iconResolverMock = vi.hoisted(() => vi.fn())
+vi.mock('../../utils/iconResolver', () => ({
+  iconResolver: iconResolverMock,
+}))
 
-    await vi.dynamicImportSettled()
-    const PIXIcon = wrapper.findComponent({ name: 'PIX' })
-    expect(PIXIcon.exists()).toBeTruthy()
+describe('p icon', () => {
+  it('renders a component when pName is given', () => {
+    const wrapper = shallowMount(PIcon, {
+      props: {
+        pName: 'arrowBarLeft',
+      },
+      global: {
+        stubs: {
+          ElIcon: {
+            name: 'ElIcon',
+            template: '<div><slot /></div>',
+          },
+        }
+      }
+    })
+    expect(iconResolverMock).toHaveBeenCalledOnce()
+    expect(iconResolverMock).toHaveBeenNthCalledWith(1, 'PIArrowBarLeft')
   })
 })

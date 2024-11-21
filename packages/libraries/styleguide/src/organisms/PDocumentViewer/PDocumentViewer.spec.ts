@@ -1,7 +1,6 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PDocumentViewer from '.'
-import { ElDrawer } from 'element-plus'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
 
 const defaultProps: PDocumentViewerProps = {
@@ -21,12 +20,26 @@ const defaultProps: PDocumentViewerProps = {
 }
 
 const createWrapper = (props: any = defaultProps, slots: any = {}) =>
-  mount(PDocumentViewer, {
+  shallowMount(PDocumentViewer, {
     props,
     slots,
     global: {
       stubs: {
-        ElDrawer,
+        ElDrawer: {
+          name: 'ElDrawer',
+          template: '<div><slot name="header" /><slot /></div>',
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
+        PButton: {
+          name: 'PButton',
+          template: '<div><slot /></div>',
+          props: [
+            'pDisabled'
+          ]
+        },
       },
     },
   })
@@ -121,9 +134,12 @@ describe('pDocumentViewer', () => {
         pShowPreviousDocument,
         text,
       })
-      const showPreviousDocumentClass =
-        wrapper.find('.p-document-viewer__btn-previous[disabled]').exists()
-      expect(showPreviousDocumentClass).toBe(shouldHavePreviousButtonClass)
+
+      const pButtons = wrapper.findAllComponents({ name: 'PButton' })
+      expect(pButtons).toHaveLength(3)
+      const secondButton = pButtons.at(1)
+      expect(secondButton?.classes()).toContain('p-document-viewer__btn-previous')
+      expect(secondButton?.props('pDisabled')).toBe(shouldHavePreviousButtonClass)
     })
 
     it.each([
@@ -144,9 +160,11 @@ describe('pDocumentViewer', () => {
           pShowNextDocument,
           text,
         })
-        const showNextDocumentClass =
-          wrapper.find('.p-document-viewer__btn-next[disabled]').exists()
-        expect(showNextDocumentClass).toBe(shouldHaveNextDocumentClass)
+        const pButtons = wrapper.findAllComponents({ name: 'PButton' })
+        expect(pButtons).toHaveLength(3)
+        const secondButton = pButtons.at(2)
+        expect(secondButton?.classes()).toContain('p-document-viewer__btn-next')
+        expect(secondButton?.props('pDisabled')).toBe(shouldHaveNextDocumentClass)
       },
     )
 
@@ -181,6 +199,8 @@ describe('pDocumentViewer', () => {
       expect(wrapper.find('.p-document-viewer__title').text())
         .toContain('Facture-achat_20643228.pdf')
       const paginationItems = wrapper.findAll('.p-document-viewer__pagination-item')
+
+      expect(paginationItems).toHaveLength(3)
       expect(paginationItems[0].text()).toContain('5')
       expect(paginationItems[2].text()).toContain('25')
     })

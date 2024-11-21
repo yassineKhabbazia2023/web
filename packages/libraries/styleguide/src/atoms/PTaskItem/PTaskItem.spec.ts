@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PTaskItem from '.'
 import type { PTaskItemProps } from './PTaskItemTypes'
@@ -14,7 +14,7 @@ const defaultProps: PTaskItemProps = {
   pTotalTasks: totalTasks,
 }
 
-const createWrapper = (props = defaultProps) => mount(PTaskItem, {
+const createWrapper = (props = defaultProps) => shallowMount(PTaskItem, {
   props,
 })
 

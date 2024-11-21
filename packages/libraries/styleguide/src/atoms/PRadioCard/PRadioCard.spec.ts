@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { beforeEach, describe, expect, it } from 'vitest'
 import PRadioCard from './'
 
@@ -14,11 +14,20 @@ const PROPS = {
 const SLOT_CONTENT = 'the slot content as CTA'
 
 const createWrapper = (): VueWrapper =>
-  mount(PRadioCard, {
+  shallowMount(PRadioCard, {
     props: PROPS,
     slots: {
       default: SLOT_CONTENT,
     },
+    global: {
+      stubs: {
+        PRadio: {
+          name: 'PRadio',
+          template: '<div><slot /></div>',
+          props: ['pLabel'],
+        }
+      }
+    }
   })
 
 describe('pRadioCard', () => {
@@ -33,8 +42,8 @@ describe('pRadioCard', () => {
     const description = wrapper.find('.p-radio-card__description')
     expect(description.text()).toBe(PROPS.pDescription)
 
-    const input = wrapper.find('input')
-    expect(input.attributes('value')).toBe(PROPS.pLabel)
+    const pRadio = wrapper.findComponent({ name: 'PRadio' })
+    expect(pRadio.props('pLabel')).toBe(PROPS.pLabel)
   })
 
   it('has a slot', () => {

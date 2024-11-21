@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PNotificationCard from '.'
 
@@ -9,7 +9,7 @@ const defaultProps = {
 }
 
 const createWrapper = (props: any = defaultProps) =>
-  mount(PNotificationCard, {
+  shallowMount(PNotificationCard, {
     props,
   })
 

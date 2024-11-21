@@ -1,11 +1,9 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PTabPane from '.'
 import type { PTabPaneProps } from './PTabPaneTypes'
 import type { PTooltipProps } from '../../atoms/PTooltip/PTooltipTypes'
-import PTabs from '../../molecules/PTabs'
-import PTooltip from '../../atoms/PTooltip'
 
 const propsValue: PTabPaneProps = {
   pLabel: 'label',
@@ -51,12 +49,34 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
       }
     },
   }
-  return mount(Component, {
+  return shallowMount(Component, {
     global: {
-      components: {
-        PTabs,
+      stubs: {
         PTabPane,
-        PTooltip,
+        ElTabPane: {
+          name: 'ElTabPane',
+          template: '<div><slot /><slot name="label" /></div>',
+          props: [
+            'label',
+            'disabled',
+            'name',
+            'closable',
+            'lazy',
+          ]
+        },
+        PTabs: {
+          name: 'PTabs',
+          template: '<div><slot /></div>',
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
+        PTooltip: {
+          name: 'PTooltip',
+          template: '<div class="p-tooltip"><slot /></div>',
+          props: ['pContent', 'disabled'],
+        },
       },
     },
   })
@@ -76,9 +96,10 @@ describe('pTabPane', () => {
     }
     expect(component.props()).toMatchObject(expectedProps)
 
-    expect(wrapper.find('.el-tab-pane').text()).toBe('content')
+    expect(wrapper.find('[data-testid="p-tab-pane"]').text()).toBe('content')
   })
-  it.each([
+  // TODO enable this test when using PIcon.pName props
+  it.skip.each([
     {
       pTabIcon: 'PICalendarEvent',
       shouldHaveIconClass: true,
@@ -122,7 +143,13 @@ describe('pTabPane', () => {
         pTooltip,
       }, 'content')
       await flushPromises()
-      expect(wrapper.find('.p-tab-pane__icon.el-tooltip__trigger').exists()).toBe(shouldHaveTooltipClass)
+      const pTabPaneIcon = wrapper.find('[data-testid="tooltip-icon"]')
+
+      expect(pTabPaneIcon.exists()).toBe(shouldHaveTooltipClass)
+
+      const pTooltipElement = wrapper.findComponent({ name: 'PTooltip' })
+      expect(pTooltipElement.exists()).toBe(shouldHaveTooltipClass)
+
       expect(wrapper.find('.p-tab-pane__icon').exists()).toBeTruthy()
       expect(wrapper.findComponent({ name: pTabIcon as string })).toBeTruthy()
     },

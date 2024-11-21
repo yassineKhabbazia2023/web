@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PScrollbar from '.'
 import type { PScrollbarProps } from './PScrollbarTypes'
@@ -21,7 +21,7 @@ const propsValue: PScrollbarProps = {
   pAriaLabel: 'ariaLabel',
   pAriaOrientation: 'horizontal',
 }
-const createWrapper = () => mount(PScrollbar, {
+const createWrapper = () => shallowMount(PScrollbar, {
   props: propsValue,
 })
 

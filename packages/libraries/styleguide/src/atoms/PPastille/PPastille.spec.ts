@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PPastille from './PPastille.vue'
 import type { PPastilleProps } from './PPastilleTypes'
 
@@ -12,8 +12,16 @@ const defaultProps: PPastilleProps = {
   pDisabled: false,
 }
 
-const createWrapper = (props = defaultProps) => mount(PPastille, {
+const createWrapper = (props = defaultProps) => shallowMount(PPastille, {
   props,
+  global: {
+    stubs: {
+      ElTag: {
+        name: 'ElTag',
+        template: '<div><slot /></div>',
+      }
+    }
+  }
 })
 describe('pPastille', () => {
   describe('props', () => {

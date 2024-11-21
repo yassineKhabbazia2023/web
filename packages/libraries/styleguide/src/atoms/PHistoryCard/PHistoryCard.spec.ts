@@ -1,5 +1,5 @@
 // Import necessary modules
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PHistoryCard from '.'
 import { describe, it, expect } from 'vitest'
 import type { PHistoryCardProps } from './PHistoryCardTypes'
@@ -18,9 +18,23 @@ const createWrapper = (defaultProps = props, hasSlots = false) => {
   }
   const slots = hasSlots ? testSlots : undefined
 
-  return mount(PHistoryCard, {
+  return shallowMount(PHistoryCard, {
     props: defaultProps,
     slots,
+    global: {
+      stubs: {
+        PTag: {
+          name: 'PTag',
+          template: '<div>{{ pContent }}</div>',
+          props: ['pContent'],
+        },
+        PTooltip: {
+          name: 'PTooltip',
+          template: '<div><slot /></div>',
+          props: ['pContent', 'disabled'],
+        },
+      },
+    },
   })
 }
 
@@ -44,13 +58,15 @@ describe('pHistoryCard', () => {
       expect(entity.findComponent({ name: 'PIShop' as string })).toBeTruthy()
     })
     it('should display Tooltip content if content is set', async () => {
+      const pTooltipEntityContent = 'Test'
       const wrapper = createWrapper({
         ...props,
-        pTooltipEntityContent: 'Test',
+        pTooltipEntityContent,
       })
       await nextTick()
-      const entity = wrapper.find('[data-testid="history-card-entity"].el-tooltip__trigger')
-      expect(entity.exists()).toBeTruthy()
+      const pTooltip = wrapper.findComponent({ name: 'PTooltip' })
+      expect(pTooltip.exists()).toBeTruthy()
+      expect(pTooltip.props('pContent')).toBe(pTooltipEntityContent)
     })
   })
 })

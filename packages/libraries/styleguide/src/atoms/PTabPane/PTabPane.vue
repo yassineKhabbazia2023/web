@@ -5,6 +5,7 @@
     :name="pName"
     :closable="pClosable"
     :lazy="pLazy"
+    data-testid="p-tab-pane"
   >
     <slot />
 
@@ -13,7 +14,11 @@
         v-if="iconComponent && pTooltip"
         v-bind="pTooltip"
       >
-        <PIcon class="p-tab-pane__icon" size="14px">
+        <PIcon
+          class="p-tab-pane__icon"
+          data-testid="tooltip-icon"
+          size="14px"
+        >
           <component :is="iconComponent" />
         </PIcon>
       </PTooltip>

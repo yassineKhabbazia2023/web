@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import PUpload from './'
 import type { UploadProps } from './PUploadTypes'
 import { nextTick } from 'vue'
@@ -26,8 +26,36 @@ const defaultProps: UploadProps = {
 }
 
 const createWrapper = (props = defaultProps) =>
-  mount(PUpload, {
+  shallowMount(PUpload, {
     props,
+    global: {
+      stubs: {
+        ElUpload: {
+          name: 'ElUpload',
+          template: '<div><slot /><slot name="file" :file="file" /></div>',
+          methods: {
+            handleRemove: vi.fn(),
+          },
+          data() {
+            return {
+              file: mockedFile,
+            }
+          },
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
+        PImage: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+        },
+        PUploadFileLine: {
+          name: 'PUploadFileLine',
+          template: '<div><slot /></div>',
+        },
+      },
+    },
   })
 
 describe('pUpload', () => {

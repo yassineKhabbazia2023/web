@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PFormItem from '.'
 import type { PFormItemProps } from './PFormItemTypes'
@@ -17,8 +17,29 @@ const propsValue: PFormItemProps = {
   pFor: 'for',
   pValidateStatus: 'error',
 }
-const createWrapper = () => mount(PFormItem, {
+const createWrapper = () => shallowMount(PFormItem, {
   props: propsValue,
+  global: {
+    stubs: {
+      ElFormItem: {
+        name: 'ElFormItem',
+        template: '<div><slot /></div>',
+        props: [
+          'prop',
+          'label',
+          'labelWidth',
+          'required',
+          'rules',
+          'error',
+          'showMessage',
+          'inlineMessage',
+          'size',
+          'for',
+          'validateStatus',
+        ]
+      }
+    }
+  }
 })
 
 describe('pFormItem', () => {

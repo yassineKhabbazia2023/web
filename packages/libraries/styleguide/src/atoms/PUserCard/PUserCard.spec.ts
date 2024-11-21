@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PUserCard from '.'
 
@@ -17,9 +17,25 @@ const defaultProps = {
 }
 
 const createWrapper = (props: any = defaultProps, slots: any = {}) =>
-  mount(PUserCard, {
+  shallowMount(PUserCard, {
     props,
     slots,
+    global: {
+      stubs: {
+        PImage: {
+          name: 'PImage',
+          template: '<div><slot /></div>',
+        },
+        PAvatar: {
+          name: 'PAvatar',
+          template: '<div><slot /></div>',
+        },
+        PTag: {
+          name: 'PTag',
+          template: '<div><slot /></div>',
+        },
+      },
+    },
   })
 
 describe('pUserCard', () => {

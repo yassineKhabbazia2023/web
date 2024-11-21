@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
 import placementOptions from '../../constants/placementOptions'
@@ -15,31 +15,40 @@ const defaultProps: PTooltipProps = {
   pPlacement: placement,
 }
 
+const slotContent = 'Slot Content'
+
 const createWrapper = (props = defaultProps) =>
-  mount(PTooltip, {
+  shallowMount(PTooltip, {
     props,
     slots: {
-      default: '<PButton>Hover Button</PButton>',
+      default: slotContent,
     },
     global: {
       stubs: {
-        PButton: { template: '<button><slot /></button>' },
+        ElTooltip: {
+          name: 'ElTooltip',
+          template: '<div><slot /></div>',
+          props: [
+            'content',
+            'disabled',
+            'placement',
+          ],
+        },
       },
     },
-    attachTo: document.body,
   })
 
 describe('pTooltip', () => {
-  it.skip('should pass props to ElTooltip component', async () => {
+  it('should pass props to ElTooltip component', async () => {
     const wrapper = createWrapper()
-    const elPopper = wrapper.findComponent('.el-popper')
+    const elPopper = wrapper.findComponent({ name: 'ElTooltip' })
+    const expectedProps = {
+      content: 'Test Tooltip',
+      disabled: true,
+      placement: 'top',
+    }
 
-    expect(elPopper.attributes()['data-popper-placement']).toBeFalsy()
-    await wrapper.findComponent('.el-tooltip__trigger').trigger('mouseenter')
-    await nextTick()
-    expect(elPopper.attributes()['data-popper-reference-hidden']).toBe('true')
-    expect(elPopper.attributes()['data-popper-escaped']).toBe('true')
-    expect(elPopper.attributes()['data-popper-placement']).toBe(placement)
-    expect(document.body.innerHTML.includes(content)).toBeTruthy()
+    expect(elPopper.props()).toStrictEqual(expectedProps)
+    expect(elPopper.text()).toBe(slotContent)
   })
 })

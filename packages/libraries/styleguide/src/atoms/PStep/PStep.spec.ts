@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PStep from '.'
 import { ref } from 'vue'
@@ -19,7 +19,7 @@ const injectSteps = {
   removeStep: vi.fn(),
 }
 const createWrapper = () =>
-  mount(PStep, {
+  shallowMount(PStep, {
     props: propsValue,
     global: {
       provide: {
