@@ -47,8 +47,8 @@ import { PDocumentViewer, PIcon, PDocumentDisplay } from '@pulse/styleguide/comp
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import type { DocumentPreviewResponse } from '@ged/services/Documents'
 import { downloadDocument, previewDocument } from '@ged/services/Documents'
-import { getFileExtension, getFileIcon, isImageDocument }
-  from '../../helpers/filesExtensions'
+import { getFileIcon, isImageDocument } from '../../helpers/filesExtensions'
+import { getFileExtension } from '@pulse/core'
 import DocumentsTabs from '@ged/modules/Documents/sections/DocumentsList/components/DocumentTabs'
 import { useI18n } from 'vue-i18n'
 

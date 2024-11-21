@@ -86,8 +86,6 @@ export const saveFileAs = async (filename: string, data: any) => {
   await writableStream.close()
 }
 
-export const getFileExtension = (fileName = '') => fileName.split('.')?.pop()?.toUpperCase() ?? ''
-
 export const fileSizeHumanFormatter = (fileSize:number, decimals = 2) => {
   const kilobytes = 1024
   const decimalsAccuracy = decimals < 0 ? 0 : decimals

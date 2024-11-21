@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { iconResolver } from '../../utils/iconResolver'
-import { getFileExtension } from '../../utils/fileExtension'
+import { getFileExtension } from '@pulse/core'
 import PCheckbox from '../../atoms/PCheckbox'
 import PIcon from '../../atoms/PIcon'
 import PLoader from '../../atoms/PLoader'

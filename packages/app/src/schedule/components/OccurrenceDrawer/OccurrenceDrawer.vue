@@ -185,10 +185,8 @@ import type { Occurrence, Status } from '@app/schedule/models/Deadline'
 import Tag from '@app/schedule/components/Common/Tag'
 import DeadlineAccounts from '@app/schedule/components/DeadlineAccounts'
 import DeadlineReminders from '@app/schedule/components/DeadlineReminders'
-import {
-  downloadFile, saveFileAs, getFileExtension,
-  fileSizeHumanFormatter,
-} from '@app/schedule/helpers/utils'
+import { downloadFile, saveFileAs, fileSizeHumanFormatter } from '@app/schedule/helpers/utils'
+import { getFileExtension } from '@pulse/core'
 import {
   getFrequencyLabel,
   getCreatedByLabel,

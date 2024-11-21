@@ -59,8 +59,6 @@ vi.mock('@app/schedule/helpers/utils', () => ({
   saveFileAs: vi.fn(),
   downloadFile: vi.fn(),
   fileSizeHumanFormatter: vi.fn(),
-  // base64UrlToBase64: vi.fn(() => base64Data),
-  getFileExtension: vi.fn(),
 }))
 
 vi.mock('@pulse/common', () => ({
@@ -243,11 +241,11 @@ describe('drawer.vue', () => {
   })
 
   it('should use showSaveFilePicker when available', async () => {
-     
+
     window.atob = vi.fn(() => 'abcdef')
     const wrapper = createWrapper()
     await flushPromises()
-     
+
     window.showSaveFilePicker = vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),
@@ -259,7 +257,7 @@ describe('drawer.vue', () => {
   })
 
   it('should use traditional download method when showSaveFilePicker is not available', async () => {
-     
+
     window.atob = vi.fn(() => 'abcdef')
     const wrapper = createWrapper()
     await flushPromises()
@@ -271,7 +269,7 @@ describe('drawer.vue', () => {
   it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
     const wrapper = createWrapper()
     await flushPromises()
-     
+
     window.showSaveFilePicker = vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),
