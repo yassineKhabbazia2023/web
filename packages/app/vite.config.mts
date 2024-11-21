@@ -53,22 +53,25 @@ export default ({ mode }: any) =>
             find: /^element-plus$/,
             replacement: path.resolve(
               __dirname,
-              "../../",
-              "node_modules",
-              "element-plus/dist/index.full.mjs"
+              '../../',
+              'node_modules',
+              'element-plus/dist/index.full.mjs',
             ),
           },
         ],
         deps: {
           optimizer: {
             web: {
-              include: ['element-plus', '@pulse/styleguide']
-            }
-          }
+              include: ['element-plus', '@pulse/styleguide'],
+            },
+          },
         },
       },
       build: {
         outDir: '../../dist',
+        rollupOptions: {
+          external: '/env-vars.js',
+        },
       },
     }),
   )
