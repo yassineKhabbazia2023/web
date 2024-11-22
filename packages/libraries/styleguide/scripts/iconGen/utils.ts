@@ -15,11 +15,15 @@ export async function generateComponents(icons: Icon[], outputFolderPath: string
   await Promise.all(promises)
 }
 
-export async function generateIcons(iconsFolderPath: string, outputFolderPath: string) {
+export async function generateIcons(
+  iconsFolderPath: string,
+  outputFolderPath: string,
+  outputFileTypePath: string,
+) {
   const icons = getIcons(iconsFolderPath, '')
   const svgoConfig = getSvgoConfig(true)
   clearFolder(outputFolderPath)
-  generateTypes(iconsFolderPath, outputFolderPath)
+  generateTypes(iconsFolderPath, outputFileTypePath)
   await generateComponents(icons, outputFolderPath, svgoConfig)
   writeComponentIndex(outputFolderPath, icons)
   writeComponentConstants(outputFolderPath, icons)

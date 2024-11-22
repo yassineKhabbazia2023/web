@@ -1,4 +1,4 @@
-export type AppIcons =
+export type IconName =
 'add' |
 'archive' |
 'arrowBarLeft' |

@@ -1,7 +1,8 @@
-import type { AppIcons } from '../app-icons.types'
+
+import type { IconName } from '../../types/IconName.types'
 
 export const pulseGeneratedIcons: {
-  name: AppIcons
+  name: IconName
   componentName: string
   fileName: string
   category: string
