@@ -40,7 +40,7 @@
     </PContainer>
   </div>
   <div
-    v-show="isChatDisplayed"
+    v-show="isChatFeatureDisplayable"
     ref="chat"
     class="salesforce-chat-wrapper"
     data-testid="salesforce-chat-div"
@@ -55,6 +55,8 @@ import {
   VITE_PRODUCT_FRUITS_KEY,
   VITE_PRODUCT_FRUITS_KEY_CLIENT,
   VITE_FEED_CENTER_ACTIVATED,
+  VITE_SALESFORCE_ACTIVATED,
+  VITE_HUBSPOT_ACTIVATED,
 } from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
@@ -76,6 +78,7 @@ declare global {
   interface Window {
     embedded_svc: any
     productFruits: any
+    HubSpotConversations: any
   }
 }
 
@@ -123,8 +126,10 @@ const { user, defaultEntity, isCollab } = storeToRefs(globalStore)
 const chat = ref<Element>()
 const { isChatDisplayed, salesforceChat } = useSalesforceService()
 
+const isChatFeatureDisplayable = computed(()=> isChatDisplayed.value && VITE_SALESFORCE_ACTIVATED === 'true' )
+
 const initChat = () => {
-  if (isProd && user.value && defaultEntity.value && chat.value) {
+  if (isProd && user.value && defaultEntity.value && chat.value && VITE_SALESFORCE_ACTIVATED === 'true') {
     const firstName: string = user.value?.firstName
     const lastName: string = user.value?.lastName
     const email: string = user.value?.email
@@ -182,14 +187,20 @@ onMounted(async () => {
           'productfruits_button_ext_widget_init',
           () => {
             isChatDisplayed.value = true
-            nextTick().then(() => {
-              const chatElement = document.querySelector(
-                '.helpButtonEnabled',
-              ) as HTMLElement
-              if (chatElement) {
-                chatElement.click()
-              }
-            })
+            if(VITE_SALESFORCE_ACTIVATED === 'true') {
+              nextTick().then(() => {
+                const chatElement = document.querySelector(
+                  '.helpButtonEnabled',
+                ) as HTMLElement
+                if (chatElement) {
+                  chatElement.click()
+                }
+              })
+            }
+            if(VITE_HUBSPOT_ACTIVATED === 'true') {
+              (window as any).HubSpotConversations.widget.load({ widgetOpen: true });
+              (window as any).HubSpotConversations.widget.open()
+            }
           },
         )
       }

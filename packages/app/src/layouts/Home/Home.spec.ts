@@ -57,6 +57,8 @@ const feedCenterActivatedFlag = vi.hoisted(() => ({
 vi.mock('env-vars', () => ({
   ...envVarsValues,
   VITE_FEED_CENTER_ACTIVATED: feedCenterActivatedFlag.value,
+  VITE_SALESFORCE_ACTIVATED: 'true',
+  VITE_HUBSPOT_ACTIVATED: 'false',
 }))
 
 import.meta.env.PROD = true

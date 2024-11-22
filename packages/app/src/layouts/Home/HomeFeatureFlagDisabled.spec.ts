@@ -50,6 +50,8 @@ vi.mock('@app/plugins/SalesForce/useSalesforceService', () => ({
 vi.mock('env-vars', () => ({
   ...envVarsValues,
   VITE_FEED_CENTER_ACTIVATED: feedCenterActivatedFlag.value,
+  VITE_SALESFORCE_ACTIVATED: 'false',
+  VITE_HUBSPOT_ACTIVATED: 'true',
 }))
 
 import.meta.env.PROD = true
@@ -58,6 +60,13 @@ window.embedded_svc = {
   addEventHandler: vi.fn(),
   settings: vi.fn(),
   init: vi.fn(),
+} as any
+
+window.HubSpotConversations = {
+  widget: {
+    load: vi.fn(),
+    open: vi.fn(),
+  },
 } as any
 
 const createWrapper = (): VueWrapper<any> =>
@@ -81,5 +90,22 @@ describe('home', () => {
     await nextTick()
 
     expect(fetchUnreadNotificationsCountMock).not.toHaveBeenCalled()
+  })
+
+  it('should open hubspot when productfruits_button_ext_widget_init event is triggered', async () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+    wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = {
+      accountId: 2,
+      accountNumber: '3669209950',
+      legalName: 'Restaurant Le Grand Bleu',
+      color: 'persian',
+    }
+    await nextTick()
+    window.dispatchEvent(new Event('productfruits_button_ext_widget_init'))
+    await flushPromises()
+    await nextTick()
+    expect(window.HubSpotConversations.widget.load).toHaveBeenCalledOnce()
+    expect(window.HubSpotConversations.widget.open).toHaveBeenCalledOnce()
   })
 })

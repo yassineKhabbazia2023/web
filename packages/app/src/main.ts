@@ -1,8 +1,7 @@
 import { createApp } from 'vue'
 import maze from './plugins/maze'
 import { commoni18n, commonPinia } from '@pulse/common'
-import { VITE_ASSETS_BASE_URL, VITE_MAZE_KEY, VITE_ONE_TRUST_KEY } from 'env-vars'
-import packageJson from '../package.json'
+import { VITE_ASSETS_BASE_URL, VITE_MAZE_KEY, VITE_ONE_TRUST_KEY, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
 
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
@@ -16,6 +15,11 @@ import router from './plugins/router'
 
 // TODO setup somewhere else?
 commoni18n.value.global.locale.value = 'fr-FR'
+
+declare let window: {
+  hsConversationsOnReady: any
+} & Window
+
 
 const app = createApp(App)
   .use(commoni18n.value)
@@ -46,6 +50,28 @@ if (import.meta.env.PROD) {
     script.setAttribute('data-domain-script', VITE_ONE_TRUST_KEY)
     document.body.appendChild(script)
   }
+
+  if(VITE_HUBSPOT_ACTIVATED === 'true') {
+    /*
+     If external API methods are already available, use them.
+    */
+    if (window.HubSpotConversations) {
+      window.HubSpotConversations.on('widgetClosed', () => {
+        window.productFruits.api.inAppCenter.show()
+        window.productFruits.api.inAppCenter.close()
+        window.HubSpotConversations.widget.remove()
+      })
+    } else {
+      /*
+        Otherwise, callbacks can be added to the hsConversationsOnReady on the window object.
+        These callbacks will be called once the external API has been initialized.
+      */
+      window.hsConversationsOnReady = () => {
+        console.warn(`HubSpot Conversations API: ${window.HubSpotConversations}`)
+      }
+    }
+  }
+  
 }
 
 app.mount('#app')
