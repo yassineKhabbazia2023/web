@@ -9,7 +9,7 @@ import { ROUTES } from '../../app/mock'
 import { tokenService } from '@pulse/common'
 import type { JwtPayload } from 'jwt-decode'
 import jwtDecode from 'jwt-decode'
-import { PDialog } from '@pulse/styleguide'
+import { PDialog } from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
 
 const authPostMock = vi.fn(() => ({ data: '' }))

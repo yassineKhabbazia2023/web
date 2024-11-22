@@ -115,9 +115,9 @@ import {
   PImage,
   PInput,
   PLoader,
-  PNotification,
-} from '@pulse/styleguide'
-import type { FormInstance } from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
+import type { FormInstance } from '@pulse/styleguide/types'
 import LegalLinks from '@app/components/LegalLinks'
 import type { FormValues, User } from './MyInformationTypes'
 import LogoutButton from '../LogoutButton'

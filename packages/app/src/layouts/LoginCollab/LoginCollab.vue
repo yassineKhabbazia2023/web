@@ -56,7 +56,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { onMounted } from 'vue'
-import { PCol, PCarousel, PRow, PImage, type PCarouselItemProps } from '@pulse/styleguide'
+import { PCol, PCarousel, PRow, PImage } from '@pulse/styleguide/components'
+import type { PCarouselItemProps } from '@pulse/styleguide/types'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
 

@@ -46,7 +46,8 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { AppColors, PImage, PISlashCircle, PIcon } from '@pulse/styleguide'
+import { PImage, PISlashCircle, PIcon } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import type { DocumentsDropZoneProps } from './DocumentsDropZoneTypes'
 
 defineProps<DocumentsDropZoneProps>()

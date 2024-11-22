@@ -18,7 +18,7 @@
 import {
   PSelect,
   POption,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import type { DropdownScheduleProps } from './DropdownScheduleTypes'
 import { computed } from 'vue'
 

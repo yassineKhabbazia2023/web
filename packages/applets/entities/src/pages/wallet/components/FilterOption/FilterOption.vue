@@ -44,7 +44,7 @@ import {
   PButton,
   PIcon,
   PIXCircleFill,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { computed } from 'vue'
 import type { FilterOptionProps } from './types'
 const emit = defineEmits<{

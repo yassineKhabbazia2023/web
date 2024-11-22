@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { PBlockHeader, PUserAction } from '@pulse/styleguide'
+import { PBlockHeader, PUserAction } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
 import { fetchContactsFromSameHub } from '@entities/services/account'

@@ -2,7 +2,7 @@ import type {
   SubscriptionOfferProvider,
 } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { SelectedProduct } from '@entities/common/types'
-import type { PService } from '@pulse/styleguide'
+import type { PService } from '@pulse/styleguide/types'
 
 export interface OfferProviderProductsProps {
   offerId: number

@@ -77,8 +77,8 @@ import {
   PRow,
   PLoader,
   PIX,
-  PNotification,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import UploadBIReport from './components/UploadBIReport'
 import BIReportSubmitted from './components/BIReportSubmitted'
 import BIReportInformation from './components/BIReportInformation'

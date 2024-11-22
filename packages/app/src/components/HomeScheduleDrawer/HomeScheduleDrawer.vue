@@ -15,7 +15,7 @@
 import { computed } from 'vue'
 import type { ScheduleDrawerProps } from './HomeScheduleDrawerType'
 import Schedule from '@app/schedule/pages/schedule'
-import { PDrawer } from '@pulse/styleguide'
+import { PDrawer } from '@pulse/styleguide/components'
 
 const emit = defineEmits<{
   'update:model-value': [boolean]

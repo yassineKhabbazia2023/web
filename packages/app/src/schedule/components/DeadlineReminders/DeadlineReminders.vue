@@ -45,7 +45,7 @@ import type { DeadlineRemindersProps } from './DeadlineRemindersTypes'
 import {
   PIcon,
   PIBell,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,

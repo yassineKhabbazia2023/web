@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { PInput, PIcon, PISearch } from '@pulse/styleguide'
+import { PInput, PIcon, PISearch } from '@pulse/styleguide/components'
 
 type SearchBarProps = {
   modelValue: string

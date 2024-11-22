@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import type { NextPreviousButtonsProps } from './NextPreviousButtonsTypes'
-import { PButton } from '@pulse/styleguide'
+import { PButton } from '@pulse/styleguide/components'
 
 const props = withDefaults(defineProps<NextPreviousButtonsProps>(), {
   isNextButtonDisabled: false,

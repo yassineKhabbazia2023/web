@@ -77,12 +77,12 @@ import {
   PUserCard,
   PTag,
   PButton,
-  PNotification,
   PICheck,
   PTabPane,
   PTabs,
   PLoader,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import type {
   AuthorizationState,
 } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'

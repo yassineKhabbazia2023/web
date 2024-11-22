@@ -4,7 +4,7 @@
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import { PFolderLineNavigationItem, PAlert, PImage } from '@pulse/styleguide'
+import { PFolderLineNavigationItem, PAlert, PImage } from '@pulse/styleguide/components'
 import FoldersList
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
 import { type FoldersListProps }

@@ -54,7 +54,7 @@ import BinDocumentsList from './sections/BinDocumentsList'
 import { fetchBinDocuments } from '@ged/services/BinDocuments'
 import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
 
-import { PBreadcrumb, PLoader, PPagination } from '@pulse/styleguide'
+import { PBreadcrumb, PLoader, PPagination } from '@pulse/styleguide/components'
 
 const emit = defineEmits<{
   'navigate-to-folder': [number]

@@ -113,8 +113,8 @@ import {
   PTag,
   PUserCard,
   PLoader,
-} from '@pulse/styleguide'
-import type { FormInstance, FormRules } from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import { debounce } from '@pulse/common'
 import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'

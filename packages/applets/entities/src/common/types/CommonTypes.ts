@@ -1,4 +1,4 @@
-import type { PToolboxItemProps } from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 
 export interface QueryResult<T> {
   currentPage: number

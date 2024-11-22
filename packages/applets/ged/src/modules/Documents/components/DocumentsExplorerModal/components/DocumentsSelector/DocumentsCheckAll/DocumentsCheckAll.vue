@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
-import { PCheckbox } from '@pulse/styleguide'
+import { PCheckbox } from '@pulse/styleguide/components'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 

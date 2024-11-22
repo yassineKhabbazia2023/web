@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PNotificationCard, PAvatar, PIcon, PIPulse } from '@pulse/styleguide'
+import { PNotificationCard, PAvatar, PIcon, PIPulse } from '@pulse/styleguide/components'
 import type { NotificationProps } from './NotificationTypes'
 
 const { t } = useI18n({

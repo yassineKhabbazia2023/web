@@ -65,7 +65,7 @@ import {
   PIcon,
   PIBell,
   PAlert,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import ScheduleReminder from '@app/schedule/components/ScheduleReminder'
 import { useI18n } from 'vue-i18n'
 import { getDuplicates } from '@app/helper'

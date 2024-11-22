@@ -57,7 +57,7 @@
 import { computed } from 'vue'
 import { type SingleInputModalProps } from '@ged/modules/common/templates/modals/SingleInputModalTypes'
 
-import { PIXCircle, PDialog, PButton, PInput, PIcon } from '@pulse/styleguide'
+import { PIXCircle, PDialog, PButton, PInput, PIcon } from '@pulse/styleguide/components'
 
 const maxInputLength = 256
 

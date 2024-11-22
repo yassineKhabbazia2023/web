@@ -20,7 +20,7 @@
   </TreeNodeActionsToolbox>
 </template>
 <script setup lang="ts">
-import { PIThreeDots, PButton, PIcon } from '@pulse/styleguide'
+import { PIThreeDots, PButton, PIcon } from '@pulse/styleguide/components'
 import TreeNodeActionsToolbox from
   '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
 import { type TreeNodeActionsProps } from

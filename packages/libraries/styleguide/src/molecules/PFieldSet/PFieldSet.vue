@@ -11,7 +11,7 @@
       v-for="(field, index) in internalFields"
       :key="index"
       v-bind="field"
-      @update:model-value="(value) => onUpdateModelValue(field.pFieldKey, value)"
+      @update:model-value="(value: any) => onUpdateModelValue(field.pFieldKey, value)"
     />
   </div>
 </template>

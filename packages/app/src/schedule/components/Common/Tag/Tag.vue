@@ -15,7 +15,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PTag,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',

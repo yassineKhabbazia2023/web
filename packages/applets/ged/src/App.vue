@@ -62,7 +62,8 @@ import {
   deleteFolder,
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
-import { PCol, PRow, PNotification, PIX } from '@pulse/styleguide'
+import { PCol, PRow, PIX } from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
 /* This might be refactored later to import 'PNotification' every time we need the notifications.
 The current toaster uses a mock of the 'inject' property.

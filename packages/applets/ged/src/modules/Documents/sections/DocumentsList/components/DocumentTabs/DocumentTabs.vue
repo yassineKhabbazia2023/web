@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { PTabs, PTabPane } from '@pulse/styleguide'
+import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DocumentTabsProps } from './DocumentTabsTypes'

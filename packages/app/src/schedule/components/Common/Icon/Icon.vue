@@ -7,12 +7,12 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import {
-  AppColors,
   PIcon,
   PISticky,
   PILoader,
   PICheckCircle,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 
 const props = defineProps({
   status: { type: String, required: true },

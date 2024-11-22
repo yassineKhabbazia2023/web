@@ -120,8 +120,8 @@ import {
   PIFiletypePdf,
   PImage,
   PLoader,
-  PNotification,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import { downloadUnsignedMandate, getMandateAvailability } from '@mandate/services/mandate'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import { showNotification } from '@mandate/helpers/NotificationHelper'

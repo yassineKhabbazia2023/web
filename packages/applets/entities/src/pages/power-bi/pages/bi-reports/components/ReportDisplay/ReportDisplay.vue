@@ -30,7 +30,7 @@
 import 'powerbi-client'
 import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { PAvatar, PIcon, PIPulse } from '@pulse/styleguide'
+import { PAvatar, PIcon, PIPulse } from '@pulse/styleguide/components'
 import { commonStore } from '@pulse/common'
 import type { ReportDisplayProps } from './ReportDisplayTypes'
 

@@ -190,7 +190,7 @@ import {
   PTableColumn,
   PToolbox,
   PCheckbox,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import {
   onMounted,
   ref,

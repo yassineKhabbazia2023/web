@@ -40,7 +40,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { commonStore } from '@pulse/common'
-import { PDrawer, PButton, PUserCard } from '@pulse/styleguide'
+import { PDrawer, PButton, PUserCard } from '@pulse/styleguide/components'
 import type { ManageAccessDrawerProps } from './ManageAccessDrawerTypes'
 import PendingOperationsTable from './components/PendingOperationsTable'
 

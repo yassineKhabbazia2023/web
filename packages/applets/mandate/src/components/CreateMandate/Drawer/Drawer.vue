@@ -161,7 +161,6 @@
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref } from 'vue'
 import {
-  AppColors,
   PButton,
   PDrawer,
   PDialog,
@@ -172,7 +171,8 @@ import {
   PStep,
   PSteps,
   PTooltip,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { createMandate } from '@mandate/services/mandate'
 import Form from '@mandate/components/CreateMandate/Form'
 import DownloadMandate from '@mandate/components/CreateMandate/Download'

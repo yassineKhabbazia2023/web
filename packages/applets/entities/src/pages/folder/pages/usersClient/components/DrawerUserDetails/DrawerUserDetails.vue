@@ -112,13 +112,13 @@ import {
   PForm,
   PFormItem,
   PInput,
-  PNotification,
   PUserCard,
   PTag,
   PICheck,
   PIX,
-} from '@pulse/styleguide'
-import type { FormInstance, FormRules } from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
+import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import type { Props } from './types'
 import { getContactById, patchContact } from '@entities/services/contact'
 import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'

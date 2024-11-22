@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer } from '@pulse/styleguide'
+import { PDrawer } from '@pulse/styleguide/components'
 import type UserProfileProps from './UserProfileTypes'
 import MyInformation from './components/MyInformation'
 

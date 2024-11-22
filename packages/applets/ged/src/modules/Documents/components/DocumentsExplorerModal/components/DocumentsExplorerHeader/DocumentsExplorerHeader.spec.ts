@@ -10,7 +10,7 @@ import
   PCollapse,
   PFileAndFolderLineCheck,
   PCollapseItem,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
 import DocumentsExplorerHeader
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsExplorerHeader'

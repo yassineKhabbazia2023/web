@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
 import { commonPinia as pinia } from '@pulse/common'
-import { setAssetsBaseUrl } from '@pulse/styleguide'
+import styleguideLibrary from '@pulse/styleguide'
 import {
   getMockedAuthorizationsConfig,
 } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
@@ -16,9 +16,13 @@ const i18n = createI18n({
   messages,
 })
 
-config.global.plugins = [i18n]
-
-setAssetsBaseUrl('https://www.example.pulse')
+const styleguideParameters = {
+  assetsBaseUrl: 'https://www.example.pulse',
+}
+config.global.plugins = [
+  i18n,
+  [styleguideLibrary, styleguideParameters]
+]
 
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 

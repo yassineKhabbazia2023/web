@@ -14,9 +14,9 @@
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { getFullName } from '@entities/common/utils'
-import { PUserCard, PIVectorPen } from '@pulse/styleguide'
+import { PUserCard, PIVectorPen } from '@pulse/styleguide/components'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
-import type { PTagProps } from '@pulse/styleguide'
+import type { PTagProps } from '@pulse/styleguide/types'
 
 const { t } = useI18n({
   inheritLocale: true,

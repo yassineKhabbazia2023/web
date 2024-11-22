@@ -41,14 +41,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
-  AppColors,
   PFormItem,
   PButton,
   PIcon,
   PIX,
   PInput,
   PDropdown,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { ScheduleReminderProps } from './ScheduleReminderTypes'
 

@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import type { DeadlineAccountsProps } from './DeadlineAccountsTypes'
-import { PCheckbox, PFormItem } from '@pulse/styleguide'
+import { PCheckbox, PFormItem } from '@pulse/styleguide/components'
 import type { Status } from '@app/schedule/models/Deadline'
 
 const emit = defineEmits<{

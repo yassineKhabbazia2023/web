@@ -19,7 +19,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { AppColors, PIThreeDots, PToolbox, PButton, PIcon } from '@pulse/styleguide'
+import { PIThreeDots, PToolbox, PButton, PIcon } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 

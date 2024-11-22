@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PIcon } from '@pulse/styleguide'
+import { PIcon } from '@pulse/styleguide/components'
 import { getFileIcon } from '@ged/modules/common/helpers/iconsHelper'
 import type { DocumentDragGhostProps } from './DocumentDragGhostTypes'
 

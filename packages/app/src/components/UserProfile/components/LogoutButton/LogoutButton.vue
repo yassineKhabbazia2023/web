@@ -12,7 +12,7 @@
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { amplitudeService, commonStore as useStore } from '@pulse/common'
-import { PButton } from '@pulse/styleguide'
+import { PButton } from '@pulse/styleguide/components'
 
 const store = useStore()
 const router = useRouter()

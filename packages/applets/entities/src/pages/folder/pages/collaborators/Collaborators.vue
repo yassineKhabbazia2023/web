@@ -158,7 +158,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import {
-  AppColors,
   PAvatar,
   PButton,
   PICheck,
@@ -166,14 +165,14 @@ import {
   PIExclamationTriangle,
   PIThreeDots,
   PLoader,
-  PNotification,
   PPagination,
   PTable,
   PTableColumn,
   PToolbox,
   PIPersonAdd,
-  type PToolboxItemProps,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import { AppColors, PNotification } from '@pulse/styleguide'
 import {
   computed,
   onMounted,

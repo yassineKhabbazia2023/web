@@ -91,7 +91,7 @@ import {
   PTable,
   PTableColumn,
   PImage,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import OfferActivationStatus from './components/OfferActivationStatus'
 import {
   type SubscriptionRequest,

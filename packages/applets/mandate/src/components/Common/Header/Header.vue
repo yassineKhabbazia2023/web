@@ -39,8 +39,8 @@ import {
   PIcon,
   PIAdd,
   PFilterGroup,
-  type FilterOption,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { type FilterOption } from '@pulse/styleguide/types'
 import { amplitudeService } from '@pulse/common'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 

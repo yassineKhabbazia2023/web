@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
-import { PDrawer, PSteps } from '@pulse/styleguide'
+import { PDrawer, PSteps } from '@pulse/styleguide/components'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'

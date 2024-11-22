@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { PCheckbox } from '@pulse/styleguide'
+import { PCheckbox } from '@pulse/styleguide/components'
 import DocumentsCheckAll
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsCheckAll'
 import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'

@@ -94,8 +94,8 @@ import {
   PInput,
   PAlert,
   PFormItem,
-  type FormRules,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { FormRules } from '@pulse/styleguide/types'
 import { commonStore } from '@pulse/common'
 import { getFullName } from '@entities/common/utils'
 import type { ConfirmActionModalProps } from './ConfirmActionModalTypes'

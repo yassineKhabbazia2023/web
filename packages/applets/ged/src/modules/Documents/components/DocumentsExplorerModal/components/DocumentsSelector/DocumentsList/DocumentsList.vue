@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { DocumentsListProps } from './DocumentsListTypes'
-import { PFileAndFolderLineCheck, PImage } from '@pulse/styleguide'
+import { PFileAndFolderLineCheck, PImage } from '@pulse/styleguide/components'
 
 const props = withDefaults(defineProps<DocumentsListProps>(), {
   isFolderLine: false,

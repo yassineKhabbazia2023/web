@@ -59,9 +59,9 @@ import {
   PTag,
   PButton,
   PLoader,
-  PNotification,
   PICheck,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import type {
   ManageRightsDrawerProps,
   AuthorizationState,

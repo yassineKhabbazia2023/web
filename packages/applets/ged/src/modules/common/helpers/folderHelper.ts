@@ -1,5 +1,5 @@
 import type { Folder } from '@ged/models/Folder'
-import { type BreadcrumbItems } from '@pulse/styleguide'
+import type { BreadcrumbItems } from '@pulse/styleguide/types'
 import {
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'

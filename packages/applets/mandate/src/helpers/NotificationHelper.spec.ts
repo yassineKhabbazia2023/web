@@ -2,17 +2,17 @@ import type { MockInstance } from 'vitest'
 import { expect, describe, it, vi, beforeEach } from 'vitest'
 import { showNotification } from './NotificationHelper'
 import type { NotificationMessagesByType } from './NotificationHelperTypes'
-import * as styleguide from '@pulse/styleguide'
 
-vi.mock('@pulse/styleguide', () => {
-  return {
-    PICheck: 'PICheck',
-    PIExclamationTriangle: 'PIExclamationTriangle',
-    PILoader: 'PILoader',
-    PIDownload: 'PIDownload',
-    PNotification: vi.fn(),
-  }
-})
+const PNotificationMocked = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide/components', () => ({
+  PICheck: 'PICheck',
+  PILoader: 'PILoader',
+  PIExclamationTriangle: 'PIExclamationTriangle',
+}))
+
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: PNotificationMocked,
+}))
 
 describe('test NotificationHelper', () => {
   const messagesByType: NotificationMessagesByType = {
@@ -20,11 +20,7 @@ describe('test NotificationHelper', () => {
     success: 'is success',
     error: 'is error',
   }
-  let PNotificationMocked: MockInstance
   const closeNotifiationSpy = vi.fn()
-  beforeEach(() => {
-    PNotificationMocked = vi.spyOn(styleguide, 'PNotification')
-  })
 
   const tests: {
     type: 'loading' | 'success' | 'error'

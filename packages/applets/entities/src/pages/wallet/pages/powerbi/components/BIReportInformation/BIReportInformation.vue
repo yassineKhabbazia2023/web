@@ -68,7 +68,6 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  AppColors,
   PAutocomplete,
   PDropdown,
   PFormItem,
@@ -77,7 +76,8 @@ import {
   PSelect,
   POption,
   PIInfoCircle,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { getSearchParams } from '@entities/pages/wallet/pages/folders/DeployUtils'
 import { PAGE_SIZES } from '@entities/constants'
 import { fetchBIReports, fetchReportAccounts } from '@entities/services/reporting'

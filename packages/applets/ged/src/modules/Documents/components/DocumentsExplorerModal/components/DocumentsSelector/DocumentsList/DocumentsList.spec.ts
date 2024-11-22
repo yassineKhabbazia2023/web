@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { PFileAndFolderLineCheck, PImage } from '@pulse/styleguide'
+import { PFileAndFolderLineCheck, PImage } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
 import DocumentsList
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsList'

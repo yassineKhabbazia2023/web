@@ -27,8 +27,8 @@ import {
   PFormItem,
   PInput,
   PISearch,
-} from '@pulse/styleguide'
-import type { FormInstance, FormRules } from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import type { Props } from './types'
 import { watch, reactive, ref } from 'vue'
 

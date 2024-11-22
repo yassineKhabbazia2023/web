@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { PText, PDoubleText, PIcon, PIArrowCounterclockwise } from '@pulse/styleguide'
+import { PText, PDoubleText, PIcon, PIArrowCounterclockwise } from '@pulse/styleguide/components'
 import { getFileIcon } from '@ged/modules/common/helpers/iconsHelper'
 import type { BinTableElementProps } from './BinTableElementTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'

@@ -2,8 +2,8 @@ import {
   PICheck,
   PILoader,
   PIExclamationTriangle,
-  PNotification,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import type { NotificationMessagesByType, NotificationHandle } from './NotificationHelperTypes'
 
 const ICONS_BY_TYPE = {

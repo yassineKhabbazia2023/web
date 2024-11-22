@@ -28,7 +28,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import { AppColors, PFormItem, PUpload, PIcon, PIPatchCheck } from '@pulse/styleguide'
+import { PFormItem, PUpload, PIcon, PIPatchCheck } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import type { UploadBIReportProps } from './UploadBIReportTypes'
 
 const { t } = useI18n({

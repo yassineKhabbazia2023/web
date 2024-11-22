@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { PAutocomplete, PISearch, PIcon } from '@pulse/styleguide'
+import { PAutocomplete, PISearch, PIcon } from '@pulse/styleguide/components'
 import type { CollaboratorAutocompleteProps } from './CollaboratorAutocompleteTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { useI18n } from 'vue-i18n'

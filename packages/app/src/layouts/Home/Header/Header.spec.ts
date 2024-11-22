@@ -6,7 +6,7 @@ import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import helpers from '@app/tests/utils/helpers'
 import Header from './'
-import { PICalendarEvent, PIArrowBarUp } from '@pulse/styleguide'
+import { PICalendarEvent, PIArrowBarUp } from '@pulse/styleguide/components'
 import type { HeaderProps } from './HeaderTypes'
 const { router, pinia, fetchUserData } = helpers()
 

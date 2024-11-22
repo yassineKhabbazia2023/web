@@ -101,12 +101,12 @@ if (process.env.HISTOIRE) {
       reportCompressedSize: true,
       lib: {
         name: '@pulse/styleguide',
-        entry: path.resolve(__dirname, 'src/main.ts'),
+        entry: path.resolve(__dirname, 'src/main.mts'),
         formats: ['es', 'system', 'cjs'],
         fileName: (format) => `lib/styleguide.pegase.${format}.min.js`,
       },
       rollupOptions: {
-        input: 'src/main.ts',
+        input: 'src/main.mts',
         preserveEntrySignatures: 'strict',
         external: ['vue'],
         output: {

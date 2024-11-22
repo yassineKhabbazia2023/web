@@ -96,7 +96,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
-import { PButton, PDrawer } from '@pulse/styleguide'
+import { PButton, PDrawer } from '@pulse/styleguide/components'
 import { commonStore, fetchUrlTerms } from '@pulse/common'
 import { ReloadOneTrust } from '@app/plugins/OneTrust'
 

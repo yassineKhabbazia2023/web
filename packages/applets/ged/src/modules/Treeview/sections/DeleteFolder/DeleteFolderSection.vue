@@ -20,7 +20,7 @@ import { type DeleteFolderSectionProps }
   from '@ged/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
 
 import { deleteFolder } from '@ged/services/Folder'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide'
+import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 
 // Definitions

@@ -47,7 +47,7 @@ import {
   PAvatar,
   PIcon,
   PIPulse,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import Home from './pages/home'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
 import type { TabName, Tab } from './FolderTypes'

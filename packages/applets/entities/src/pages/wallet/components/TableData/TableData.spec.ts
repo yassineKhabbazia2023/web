@@ -16,13 +16,9 @@ const testEntity = {
   accountNumber: mockTableData[0].accountNumber,
 }
 
-vi.mock('@pulse/styleguide', async () => {
-  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
-  return {
-    ...styleguide,
-    PNotification: vi.fn(),
-  }
-})
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: vi.fn(),
+}))
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ref, type Ref } from 'vue'
 import { useDragAndDropFromExplorer } from '.'
-import { PNotification, PIExclamationTriangle, PICheck } from '@pulse/styleguide'
+import { PIExclamationTriangle, PICheck } from '@pulse/styleguide/components'
 import type { DocumentsProps } from '@ged/modules/Documents/DocumentsTypes'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 
@@ -59,11 +59,14 @@ vi.mock('@ged/services/Documents', () => ({
   }),
 }))
 
-// Mock `PNotification`
+const spyPNotification = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/styleguide', () => ({
-  PNotification: vi.fn(),
-  PIExclamationTriangle: vi.fn(),
-  PICheck: vi.fn(),
+  PNotification: spyPNotification,
+  AppColors: {
+    RED: 'RED',
+    PRIMARY: 'PRIMARY',
+    GREY_300: 'GREY_300',
+  },
 }))
 
 vi.mock('vue-i18n', () => ({
@@ -204,7 +207,7 @@ describe('drag and drop from explorer composable', () => {
 
     await handleDropFromExplorer(event as unknown as DragEvent)
 
-    expect(PNotification).toHaveBeenCalledWith(expect.objectContaining({
+    expect(spyPNotification).toHaveBeenCalledWith(expect.objectContaining({
       message: 'documentsUploaded',
       icon: PICheck,
       showClose: true,
@@ -235,7 +238,7 @@ describe('drag and drop from explorer composable', () => {
 
     await handleDropFromExplorer(event as unknown as DragEvent)
 
-    expect(PNotification).toHaveBeenCalledWith(expect.objectContaining({
+    expect(spyPNotification).toHaveBeenCalledWith(expect.objectContaining({
       message: 'connectionLost',
       icon: PIExclamationTriangle,
       showClose: true,
@@ -271,7 +274,7 @@ describe('drag and drop from explorer composable', () => {
 
     await handleDropFromExplorer(event as unknown as DragEvent)
 
-    expect(PNotification).toHaveBeenNthCalledWith(1, expect.objectContaining({
+    expect(spyPNotification).toHaveBeenNthCalledWith(1, expect.objectContaining({
       message: 'emptyDocuments',
       icon: PIExclamationTriangle,
       showClose: true,
@@ -280,7 +283,7 @@ describe('drag and drop from explorer composable', () => {
       duration: 6000,
     }))
 
-    expect(PNotification).toHaveBeenNthCalledWith(2, expect.objectContaining({
+    expect(spyPNotification).toHaveBeenNthCalledWith(2, expect.objectContaining({
       message: 'limitExceededDocuments',
       icon: PIExclamationTriangle,
       showClose: true,
@@ -289,7 +292,7 @@ describe('drag and drop from explorer composable', () => {
       duration: 6000,
     }))
 
-    expect(PNotification).toHaveBeenNthCalledWith(3, expect.objectContaining({
+    expect(spyPNotification).toHaveBeenNthCalledWith(3, expect.objectContaining({
       message: 'unknowExtensions',
       icon: PIExclamationTriangle,
       showClose: true,

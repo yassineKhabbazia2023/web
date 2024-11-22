@@ -59,7 +59,7 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
-import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide'
+import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
 import { getFormStructure } from '@entities/common/utils/referential'
 import { type Account } from '@entities/services/account'
 import type {

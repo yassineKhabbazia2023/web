@@ -98,7 +98,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@pulse/styleguide'
+import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@pulse/styleguide/components'
 import { commonStore, userPermissions } from '@pulse/common'
 import { removeFalsyValues } from '@entities/helper'
 import { PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'

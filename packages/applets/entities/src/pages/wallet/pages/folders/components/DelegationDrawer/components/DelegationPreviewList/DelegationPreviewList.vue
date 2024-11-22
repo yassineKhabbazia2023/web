@@ -74,7 +74,7 @@ import {
   PTableColumn,
   PDoubleText,
   PCheckbox,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { getInitials } from '@entities/helper'
 
 // Definitions

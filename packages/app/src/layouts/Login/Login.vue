@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { PCol, PImage, PRow } from '@pulse/styleguide'
+import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
 import { onMounted, computed } from 'vue'

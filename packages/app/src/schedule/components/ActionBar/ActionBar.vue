@@ -65,7 +65,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PButton, PTabs, PTabPane, PIcon, PIAdd } from '@pulse/styleguide'
+import { PButton, PTabs, PTabPane, PIcon, PIAdd } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { ActionBarProps } from './ActionBarTypes'
 import ActionBarLeft from '@app/schedule/components/ActionBarLeft'

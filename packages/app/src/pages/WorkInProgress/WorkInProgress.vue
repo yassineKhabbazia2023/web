@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { PImage } from '@pulse/styleguide'
+import { PImage } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n({

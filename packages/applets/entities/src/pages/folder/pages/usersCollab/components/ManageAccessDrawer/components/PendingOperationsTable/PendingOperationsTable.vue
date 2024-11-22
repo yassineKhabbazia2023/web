@@ -104,7 +104,7 @@ import {
   PTooltip,
   PDoubleText,
   PTableColumn,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { amplitudeService } from '@pulse/common'
 import { displayNotification, getFullName } from '@entities/common/utils'
 import type { Operation } from '@entities/common/types/OperationTypes'

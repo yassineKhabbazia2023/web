@@ -58,7 +58,7 @@ import {
   PUserAction,
   PForm,
   PFormItem,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { getInitials } from '@entities/helper'
 import type { ManageCollaboratorsProps } from './ManageCollaboratorsTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'

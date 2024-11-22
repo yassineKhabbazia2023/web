@@ -53,7 +53,7 @@ import {
   PPastille,
   PTabs,
   PTabPane,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
 import NotificationsWrapper from './NotificationsWrapper'

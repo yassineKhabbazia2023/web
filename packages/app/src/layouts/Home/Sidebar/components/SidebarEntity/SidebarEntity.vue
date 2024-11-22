@@ -125,13 +125,13 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { commonStore, type Entity } from '@pulse/common'
 import {
-  AppColors,
   PIArrowBarRight,
   PIArrowBarLeft,
   PICardList,
   PIStarFill,
   PIcon,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
 import { getDefaultEntity } from './utils'

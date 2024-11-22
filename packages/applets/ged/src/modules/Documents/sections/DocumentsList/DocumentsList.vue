@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import type { DocumentsListProps } from './DocumentsListTypes'
-import { PTable, PTableColumn } from '@pulse/styleguide'
+import { PTable, PTableColumn } from '@pulse/styleguide/components'
 import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@ged/modules/Documents/helpers/sortHelper'
 import type { ElTable } from 'element-plus'

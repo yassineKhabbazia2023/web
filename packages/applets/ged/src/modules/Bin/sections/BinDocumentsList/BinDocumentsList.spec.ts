@@ -5,7 +5,7 @@ import { mount } from '@vue/test-utils'
 // eslint-disable-next-line max-len
 import type { BinDocumentsListProps } from '@ged/modules/Bin/sections/BinDocumentsList/BinDocumentsListTypes'
 import { binDocumentsMock } from '../../mocks/binDocumentMock'
-import { PTableColumn, PTable } from '@pulse/styleguide'
+import { PTableColumn, PTable } from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
 import BinTableElement from './components/BinTableElement'
 

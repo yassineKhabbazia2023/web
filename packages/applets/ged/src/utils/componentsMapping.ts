@@ -19,6 +19,6 @@ export const getMappedComponent = (componentKey: string): string => componentsMa
 
 export const getMappedComponentAsync = (componentKey: string) => {
   return defineAsyncComponent(() =>
-    import('@pulse/styleguide').then((res: any) => res[getMappedComponent(componentKey)]),
+    import('@pulse/styleguide/components').then((res: any) => res[getMappedComponent(componentKey)]),
   )
 }

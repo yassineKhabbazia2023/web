@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import * as styleguide from '@pulse/styleguide'
 import { flushPromises, mount } from '@vue/test-utils'
 import MyInformation from '.'
 
@@ -33,13 +32,10 @@ const USER_ID = 42
 const mockPatch = vi.fn()
 const mockGet = vi.fn(() => Promise.resolve({ data: CONTACT_RESPONSE }))
 
-vi.mock('@pulse/styleguide', async () => {
-  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
-  return {
-    ...styleguide,
-    PNotification: vi.fn(),
-  }
-})
+const spyPNotification = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: spyPNotification,
+}))
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -81,10 +77,8 @@ let wrapper: VueWrapper<any>
 const getAllInputs = () => wrapper.findAll('input')
 
 describe('myInformation', () => {
-  let spyPNotification: MockInstance
   beforeEach(() => {
     const drawerFooter = document.createElement('div')
-    spyPNotification = vi.spyOn(styleguide, 'PNotification')
     drawerFooter.classList.add('el-drawer__footer')
     document.body.appendChild(drawerFooter)
 

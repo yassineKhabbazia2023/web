@@ -1,4 +1,4 @@
-import type { PToolboxItemProps } from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { foldersMappingRecord, documentsMappingRecord } from '../data/toolboxPermissionsMapping'
 export interface ToolboxLineWithOrder {
   toolboxLine: PToolboxItemProps

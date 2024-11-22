@@ -18,14 +18,14 @@
 </template>
 
 <script setup lang="ts">
-import { PBreadcrumb, PIFolderPlus, PIcon } from '@pulse/styleguide'
+import { PBreadcrumb, PIFolderPlus, PIcon } from '@pulse/styleguide/components'
 import { computed } from 'vue'
 import type {
   FoldersBreadCrumbProps,
 } from './FoldersBreadCrumbTypes'
 import type { Folder } from '@ged/models/Folder'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
-import type { BreadcrumbItems } from '@pulse/styleguide'
+import type { BreadcrumbItems } from '@pulse/styleguide/types'
 
 const props = defineProps<FoldersBreadCrumbProps>()
 const emit = defineEmits(['navigate-to-folder', 'open-create-folder-modal'])

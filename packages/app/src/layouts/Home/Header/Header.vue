@@ -102,7 +102,7 @@ import {
   PICalendarEvent,
   PIX,
   PPastille,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { VITE_FEED_CENTER_ACTIVATED } from 'env-vars'
 import type { HeaderProps } from './HeaderTypes'
 

@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PAvatar, PIPulse, PIcon } from '@pulse/styleguide'
+import { PAvatar, PIPulse, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './EntityAvatarTypes'
 import type { Entity } from '@pulse/common'
 import SidebarEntityItem from '../SidebarEntityItem'

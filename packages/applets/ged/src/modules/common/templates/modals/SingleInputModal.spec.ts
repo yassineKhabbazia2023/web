@@ -4,7 +4,7 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type SingleInputModalProps } from '@ged/modules/common/templates/modals/SingleInputModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import { PDialog } from '@pulse/styleguide'
+import { PDialog } from '@pulse/styleguide/components'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 

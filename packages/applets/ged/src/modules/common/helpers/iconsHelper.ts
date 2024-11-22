@@ -19,7 +19,7 @@ import {
   PIFiletypeXls,
   PIFiletypeXlsx,
   PIFiletypeXml,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 
 export const getFileIcon = (stringWithDot: string) => {
   if (!stringWithDot) return PIFileText

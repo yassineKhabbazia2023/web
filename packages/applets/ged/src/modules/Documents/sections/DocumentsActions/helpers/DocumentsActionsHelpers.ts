@@ -1,4 +1,4 @@
-import type { ComponentDefinitionProps } from '@pulse/styleguide'
+import type { ComponentDefinitionProps } from '@pulse/styleguide/types'
 
 interface ActionBarButtonWithOrder {
   actionbarButton: ComponentDefinitionProps

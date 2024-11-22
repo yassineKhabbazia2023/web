@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 import { inject, ref, toRef, watch } from 'vue'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide'
+import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import { RenameFolder } from '@ged/services/Folder'
 import type { Folder } from '@ged/models/Folder'
 import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'

@@ -1,4 +1,4 @@
-import type { PTagProps, PService } from '@pulse/styleguide'
+import type { PTagProps, PService } from '@pulse/styleguide/types'
 
 import type { SelectedProduct } from '@entities/common/types'
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'

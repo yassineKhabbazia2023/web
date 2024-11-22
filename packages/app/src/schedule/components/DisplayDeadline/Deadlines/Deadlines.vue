@@ -55,9 +55,10 @@ import { useI18n } from 'vue-i18n'
 import Tag from '@app/schedule/components/Common/Tag'
 import Icon from '@app/schedule/components/Common/Icon'
 import {
-  AppColors, PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
-} from '@pulse/styleguide'
-import type { PToolboxItemProps } from '@pulse/styleguide'
+  PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import type { Status } from '@app/schedule/models/Deadline'
 import { getProgressText } from '@app/schedule/helpers/deadlineHelper'
 import { getScheduleModelsByKey } from '@app/schedule/services'

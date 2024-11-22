@@ -159,7 +159,6 @@ import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
 import {
-  AppColors,
   PTable,
   PTableColumn,
   PTag,
@@ -173,11 +172,11 @@ import {
   PAvatar,
   PIPerson,
   PPagination,
-  PNotification,
-  type PToolboxItemProps,
   PICheck,
   PIExclamationTriangle,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import { AppColors, PNotification } from '@pulse/styleguide'
 import { amplitudeService, commonStore, getInitials, userPermissions } from '@pulse/common'
 import {
   PAGE_SIZES,

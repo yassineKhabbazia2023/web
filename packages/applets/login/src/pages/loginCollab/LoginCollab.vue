@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton } from '@pulse/styleguide'
+import { PButton } from '@pulse/styleguide/components'
 import { msalInstance } from '@login/services/msal'
 import useInitAuth from '@login/composable/useInitUserAuth'
 import { amplitudeService } from '@pulse/common'

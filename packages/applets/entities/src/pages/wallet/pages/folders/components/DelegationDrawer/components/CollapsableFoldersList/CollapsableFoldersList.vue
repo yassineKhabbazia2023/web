@@ -13,7 +13,7 @@
 import {
   PCollapse,
   PCollapseItem,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n({

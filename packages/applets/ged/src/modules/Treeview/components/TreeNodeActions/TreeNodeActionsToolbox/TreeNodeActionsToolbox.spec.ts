@@ -5,7 +5,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { PToolbox } from '@pulse/styleguide'
+import { PToolbox } from '@pulse/styleguide/components'
 import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
 import TreeNodeActionsToolbox from '.'
 

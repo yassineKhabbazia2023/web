@@ -1,9 +1,9 @@
-import { setAssetsBaseUrl } from '@pulse/styleguide'
 import { vi } from 'vitest'
 
 import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'
 import messages from '@intlify/unplugin-vue-i18n/messages'
+import styleguideLibrary from '@pulse/styleguide'
 
 const i18n = createI18n({
   locale: 'en-US',
@@ -11,9 +11,13 @@ const i18n = createI18n({
   messages,
 })
 
-config.global.plugins = [i18n]
-
-setAssetsBaseUrl('https://www.example.pulse')
+const styleguideParameters = {
+  assetsBaseUrl: 'https://www.example.pulse',
+}
+config.global.plugins = [
+  i18n,
+  [styleguideLibrary, styleguideParameters]
+]
 
 export const commonApiDsGetSpy = vi.fn()
 export const commonApiDsPostSpy = vi.fn().mockResolvedValue({

@@ -113,7 +113,7 @@ import {
   PExpandableSearch,
   PIArrowLeft,
   PPastille,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
 import { amplitudeService } from '@pulse/common'
 

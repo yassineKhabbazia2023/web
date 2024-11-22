@@ -124,9 +124,8 @@
 <script setup lang='ts'>
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import type { PToolboxItemProps } from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import {
-  AppColors,
   PAlert,
   PButton,
   PDialog,
@@ -136,7 +135,8 @@ import {
   PTableColumn,
   PToolbox,
   PTooltip,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import Tag from '@mandate/components/Common/Tag'
 import { dateFormatter, downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import { type Mandate, MandateActions } from '@mandate/pages/home/Models'

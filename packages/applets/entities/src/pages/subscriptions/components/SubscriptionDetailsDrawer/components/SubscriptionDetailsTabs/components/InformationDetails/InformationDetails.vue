@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide'
+import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'

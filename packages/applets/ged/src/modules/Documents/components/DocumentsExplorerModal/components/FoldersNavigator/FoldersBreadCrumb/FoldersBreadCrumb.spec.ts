@@ -7,8 +7,8 @@ import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import FoldersBreadCrumb from '.'
-import type { BreadcrumbItems } from '@pulse/styleguide'
-import { PBreadcrumb, PIcon } from '@pulse/styleguide'
+import type { BreadcrumbItems } from '@pulse/styleguide/types'
+import { PBreadcrumb, PIcon } from '@pulse/styleguide/components'
 
 const currentServiceFolder: Folder[] = foldersData[0]
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637

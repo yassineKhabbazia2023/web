@@ -75,11 +75,11 @@
 
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue'
-import { PDrawer, PForm, PField, PButton } from '@pulse/styleguide'
+import { PDrawer, PForm, PField, PButton } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { Filters, FilterDrawerProps } from './FilterDrawerTypes'
 import { getAccountsCollection, getScheduleModels } from '@app/schedule/services'
-import type { PDropdownOption, PFieldRadioOptions } from '@pulse/styleguide'
+import type { PDropdownOption, PFieldRadioOptions } from '@pulse/styleguide/types'
 import type { Status } from '@app/schedule/models/Deadline'
 import { getDefaultFilters } from '@app/schedule/helpers/utils'
 import { amplitudeService } from '@pulse/common'

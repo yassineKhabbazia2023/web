@@ -283,7 +283,7 @@ import {
   PCol,
   PRow,
   PAlert,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 
 // Props
 interface FormProps {

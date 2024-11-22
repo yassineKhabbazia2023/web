@@ -43,7 +43,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { PLoader } from '@pulse/styleguide'
+import { PLoader } from '@pulse/styleguide/components'
 import type { FeedCenterNotification } from '@app/modules/FeedCenter/types/notification.type'
 import NoNotificationsPlaceholder from '../NoNotificationsPlaceholder'
 import type { NotificationsWrapperProps } from './NotificationsWrapper.types'

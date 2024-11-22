@@ -22,7 +22,6 @@ import {
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import Documents from '@ged/modules/Documents'
 import BinDocuments from '@ged/modules/Bin'
-import { PNotification } from '@pulse/styleguide'
 
 const pinia = createPinia()
 
@@ -47,13 +46,15 @@ vi.mock('@ged/models/AccountingHubConnection', () => ({
   }),
 }))
 
-vi.mock('@pulse/styleguide', async () => {
-  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
-  return {
-    ...styleguide,
-    PNotification: vi.fn(),
-  }
-})
+const spyPNotification = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: spyPNotification,
+  AppColors: {
+    RED: 'RED',
+    PRIMARY: 'PRIMARY',
+    GREY_300: 'GREY_300',
+  },
+}))
 
 vi.mock('@ged/services/Folder', () => ({
   fetchServicesFolders: apiMocks.fetchServicesFoldersSuccess,
@@ -297,7 +298,7 @@ describe('ged', () => {
         apiMocks.fetchServicesFoldersSuccess.mockReturnValue(apiMocks.fetchServicesFoldersFail())
         createWrapper()
         await flushPromises()
-        expect(PNotification).toHaveBeenCalledOnce()
+        expect(spyPNotification).toHaveBeenCalledOnce()
       })
     })
     describe('props', () => {

@@ -22,7 +22,7 @@ import {
   PIUpload,
   PIXCircle,
   PTag,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,

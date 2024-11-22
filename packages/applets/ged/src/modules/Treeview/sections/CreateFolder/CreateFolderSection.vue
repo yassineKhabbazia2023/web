@@ -37,7 +37,7 @@ import { CreateFolder } from '@ged/services/Folder'
 import { useI18n } from 'vue-i18n'
 import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
 import { PICheck, PIExclamationTriangle, PIFolderPlus, PButton, PIcon }
-  from '@pulse/styleguide'
+  from '@pulse/styleguide/components'
 import { canCreateFolder } from '@ged/modules/Treeview/helpers/folderPermissionsHelper'
 import { type CreateFolderSectionProps }
   from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'

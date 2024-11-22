@@ -22,7 +22,7 @@ import ConfirmationPopup from
 import { type DocumentRestoreModalTypesProps }
   from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
 import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide'
+import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({

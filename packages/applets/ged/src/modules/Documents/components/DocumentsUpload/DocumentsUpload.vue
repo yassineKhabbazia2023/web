@@ -39,7 +39,7 @@ import { uploadDocument } from '@ged/services/Documents'
 import { mapExplorerDocumentFromFiles } from '../../helpers/documentExplorerMapper'
 
 import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
-import { PICheck } from '@pulse/styleguide'
+import { PICheck } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc

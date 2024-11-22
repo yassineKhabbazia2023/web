@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import type { BinDocumentsListProps } from './BinDocumentsListTypes'
 import BinTableElement from './components/BinTableElement'
-import { PTable, PTableColumn } from '@pulse/styleguide'
+import { PTable, PTableColumn } from '@pulse/styleguide/components'
 import { returnSortQueryField } from '@ged/modules/Documents/helpers/sortHelper'
 import type { BinDocument } from '@ged/models/Document'
 

@@ -184,7 +184,7 @@ import {
   PAlert,
   PIDownload,
   PFileCard,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
 import type { Occurrence, Status } from '@app/schedule/models/Deadline'

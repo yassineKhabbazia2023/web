@@ -71,7 +71,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { sanitizeUrl } from '@braintree/sanitize-url'
-import { PImage, PIcon, PButton, PIArrowRight } from '@pulse/styleguide'
+import { PImage, PIcon, PButton, PIArrowRight } from '@pulse/styleguide/components'
 import type { LaunchCardProps } from './LaunchCardTypes'
 
 const emit = defineEmits<{

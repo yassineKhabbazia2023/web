@@ -64,7 +64,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
-  AppColors,
   PIArrowLeftRight,
   PICalculatorEuro,
   PIDot,
@@ -76,7 +75,8 @@ import {
   PTooltip,
   PIcon,
   PIXCircle,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 
 import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }

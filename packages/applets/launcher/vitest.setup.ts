@@ -1,4 +1,4 @@
-import { setAssetsBaseUrl } from '@pulse/styleguide'
+import styleguideLibrary from '@pulse/styleguide'
 import { vi } from 'vitest'
 import type { Entity } from '@pulse/common'
 
@@ -12,9 +12,13 @@ const i18n = createI18n({
   messages,
 })
 
-config.global.plugins = [i18n]
-
-setAssetsBaseUrl('https://www.example.pulse')
+const styleguideParameters = {
+  assetsBaseUrl: 'https://www.example.pulse',
+}
+config.global.plugins = [
+  i18n,
+  [styleguideLibrary, styleguideParameters]
+]
 
 export const mockedEntity: Entity = {
   accountId: 1,

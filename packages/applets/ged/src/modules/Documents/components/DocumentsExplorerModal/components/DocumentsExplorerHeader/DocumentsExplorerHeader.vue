@@ -39,7 +39,7 @@ import {
   PIExclamationTriangle,
   PFileAndFolderLineCheck,
   PTooltip,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { type DocumentsExplorerHeaderProps } from './DocumentsExplorerHeaderTypes'
 import {
   getFileErrorMessage,

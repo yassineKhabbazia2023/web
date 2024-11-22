@@ -1,4 +1,4 @@
-import { type PImageProps } from '@pulse/styleguide'
+import type { PImageProps } from '@pulse/styleguide/types'
 
 export type LaunchCardProps = {
   title: string

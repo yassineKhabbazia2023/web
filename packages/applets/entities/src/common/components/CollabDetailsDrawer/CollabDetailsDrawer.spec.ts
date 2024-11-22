@@ -5,7 +5,7 @@ import {
   getFormattedMockedCollaborators,
 } from '@entities/common/mocks/mockedCollaborators'
 import * as walletServices from '@entities/services/wallet'
-import * as styleguide from '@pulse/styleguide'
+import * as styleguide from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
 import CollabDetailsDrawer from '.'
 
@@ -30,16 +30,11 @@ const mockedPatchGateway = vi.fn(() => {
 vi.mock('@entities/services/wallet', () => ({
   updateCollaborator: vi.fn(),
 }))
-vi.mock('@pulse/styleguide', async () => {
-  const styleguide = (await vi.importActual('@pulse/styleguide')) as Record<
-    string,
-    unknown
-  >
-  return {
-    ...styleguide,
-    PNotification: vi.fn(),
-  }
-})
+const spyPNotification = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: spyPNotification,
+}))
+
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
@@ -75,9 +70,7 @@ const getButtonSubmit = (wrapper: VueWrapper) =>
 
 describe('collabDetailsDrawer', () => {
   let wrapper: VueWrapper
-  let spyPNotification: MockInstance
   beforeEach(() => {
-    spyPNotification = vi.spyOn(styleguide, 'PNotification')
     wrapper = createWrapper()
   })
 

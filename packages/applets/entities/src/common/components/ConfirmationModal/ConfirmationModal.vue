@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PDialog, PButton } from '@pulse/styleguide'
+import { PDialog, PButton } from '@pulse/styleguide/components'
 import type { ConfirmationModalProps } from './ConfirmationModalTypes'
 
 const props = defineProps<ConfirmationModalProps>()

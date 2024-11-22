@@ -3,11 +3,17 @@ import DocumentActions from './DocumentActions.vue'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { PToolbox } from '@pulse/styleguide'
+import { PToolbox } from '@pulse/styleguide/components'
+
+vi.mock('@pulse/styleguide', () => ({
+  AppColors: {
+    GRAY_300: 'GRAY_300',
+  }
+}))
 
 const defaultProps: DocumentActionsProps = {
   permissions: [],

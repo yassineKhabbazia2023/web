@@ -52,9 +52,9 @@ import {
   PIcon,
   PIPersonRemove,
   PIExclamationTriangle,
-  PNotification,
   PUserCard,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import { deleteContactFromAccount } from '@entities/services/account'
 import type { RemoveUserDialogProps } from './RemoveUserDialogTypes'
 

@@ -33,13 +33,9 @@ vi.mock('@mandate/helpers/utils', () => ({
 }))
 
 const notificationSpy = vi.hoisted(() => vi.fn(() => ({ close: vi.fn() })))
-vi.mock('@pulse/styleguide', async () => {
-  const actual = await vi.importActual('@pulse/styleguide') as Object
-  return {
-    ...actual,
-    PNotification: notificationSpy,
-  }
-})
+vi.mock('@pulse/styleguide', async () => ({
+  PNotification: notificationSpy,
+}))
 
 const mandateId = '1243-4546-35323-43'
 

@@ -1,5 +1,7 @@
 import type { AccessibleMenuItem } from '@entities/common/types'
-import { PICheck, PIX, PNotification, type PToolboxItemProps } from '@pulse/styleguide'
+import { PICheck, PIX } from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 
 type NotificationPosition =
   | 'top-right'

@@ -112,8 +112,8 @@ import {
   PTable,
   PTableColumn,
   PToolbox,
-} from '@pulse/styleguide'
-import type { PToolboxItemProps } from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { reactive, computed } from 'vue'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'

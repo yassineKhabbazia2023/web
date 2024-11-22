@@ -1,4 +1,4 @@
-import type { PTagProps } from '@pulse/styleguide'
+import type { PTagProps } from '@pulse/styleguide/types'
 
 /* eslint-disable no-unused-vars */
 export enum OfferActivationStatus {

@@ -111,7 +111,7 @@ import {
   PInput,
   PCheckbox,
   PButton,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import PopoverPasswordStrength from './PopoverPasswordStrength'
 import {
   PASSWORD_STRENGTH,

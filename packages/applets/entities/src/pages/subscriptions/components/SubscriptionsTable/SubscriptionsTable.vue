@@ -127,8 +127,8 @@ import {
   PText,
   PLoader,
   PIThreeDots,
-  type PToolboxItemProps,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { commonStore, amplitudeService } from '@pulse/common'
 import {
   type SubscriptionRequest,

@@ -1,8 +1,7 @@
-import { setAssetsBaseUrl } from '@pulse/styleguide'
 import { vi } from 'vitest'
 import { defineStore } from 'pinia'
 import { notificationsMock } from './src/mocks/FeedCenter/notifications.mock'
-
+import styleguideLibrary from '@pulse/styleguide'
 import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'
 import messages from '@intlify/unplugin-vue-i18n/messages'
@@ -13,12 +12,15 @@ const i18n = createI18n({
   messages,
 })
 
-config.global.plugins = [i18n]
-
-setAssetsBaseUrl('https://www.example.pulse')
+const styleguideParameters = {
+  assetsBaseUrl: 'https://www.example.pulse',
+}
+config.global.plugins = [
+  i18n,
+  [styleguideLibrary, styleguideParameters]
+]
 
 const CGU_URL = 'https://custom-CGU.com'
-
 export const spyAddEventListener = vi.spyOn(window, 'addEventListener')
 
 vi.mock('@pulse/common', () => ({

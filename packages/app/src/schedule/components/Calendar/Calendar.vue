@@ -15,8 +15,9 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
-import { fr, PConfigProvider, PCalendar, PScrollbar } from '@pulse/styleguide'
-import type { CalendarItemsGroupedByDate, CalendarCellItemProps } from '@pulse/styleguide'
+import { PConfigProvider, PCalendar, PScrollbar } from '@pulse/styleguide/components'
+import { fr } from '@pulse/styleguide'
+import type { CalendarItemsGroupedByDate, CalendarCellItemProps } from '@pulse/styleguide/types'
 import type { CalendarProps } from './CalendarTypes'
 import { getTypeLabel } from '@app/schedule/helpers/utils'
 import { getDeadlineCompletionSummary } from '@app/schedule/helpers/deadlineHelper'

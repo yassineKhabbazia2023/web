@@ -70,7 +70,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PSteps, PStep, PICheck, PNotification, PIX } from '@pulse/styleguide'
+import { PDrawer, PSteps, PStep, PICheck, PIX } from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import { commonApi, commonStore } from '@pulse/common'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'

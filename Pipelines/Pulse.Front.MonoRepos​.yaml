@@ -29,5 +29,5 @@ extends:
   parameters:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
-    sonarExclusions: '**/Mock.js,**/mocks/**,src/main.ts,stryker/**.*, vitest.setup.ts'
+    sonarExclusions: '**/Mock.js,**/mocks/**,src/main.ts,src/main.mts,stryker/**.*, vitest.setup.ts'
 

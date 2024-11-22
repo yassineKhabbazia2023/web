@@ -64,12 +64,12 @@ import { computed, ref, onMounted } from 'vue'
 import {
   PDrawer,
   PICheck,
-  PNotification,
   PTag,
   PUserCard,
   PLoader,
   PIXCircle,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import CollabRoles from './components/CollabRoles'
 import RightsList from '@entities/common/components/ManageRightsDrawer/components/RightsList'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'

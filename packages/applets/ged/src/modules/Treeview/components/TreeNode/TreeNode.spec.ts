@@ -1,4 +1,3 @@
-/* eslint-disable vitest/no-hooks */
 import TreeNode from '@ged/modules/Treeview/components/TreeNode'
 import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }
@@ -18,7 +17,14 @@ import {
   PIPersonVcard,
   PITrash,
   PTooltip,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+
+vi.mock('@pulse/styleguide', () => ({
+  AppColors: {
+    RED: 'RED',
+    PRIMARY: 'PRIMARY',
+  }
+}))
 
 const fold: Folder = {
   id: 1,

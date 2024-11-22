@@ -1,5 +1,4 @@
 import { describe, it, expect, vi } from 'vitest'
-import * as styleguide from '@pulse/styleguide'
 import type { AccessibleMenuItem } from '@entities/common/types'
 import { displayNotification, filterAccessibleMenuItems, getFullName } from '.'
 
@@ -20,13 +19,15 @@ const mockedMenuItems: AccessibleMenuItem[] = [
     display: true,
   },
 ]
-vi.mock('@pulse/styleguide', () => {
-  return {
-    PICheck: 'PICheck',
-    PIX: 'PIX',
-    PNotification: vi.fn(),
-  }
-})
+const PNotificationMocked = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: PNotificationMocked,
+}))
+
+vi.mock('@pulse/styleguide/components', () => ({
+  PICheck: 'PICheck',
+  PIX: 'PIX',
+}))
 
 // Expectations
 const expectedAccessibleMenuItems = {
@@ -64,7 +65,6 @@ describe('displayNotification', () => {
     ['success', 'PICheck'],
     ['error', 'PIX'],
   ])('should display correctly the notification', (type: any, icon) => {
-    const PNotificationMocked = vi.spyOn(styleguide, 'PNotification')
     const expectedParams = {
       customClass: type,
       duration: 3000,

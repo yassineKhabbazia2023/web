@@ -201,7 +201,6 @@
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import {
-  AppColors,
   PAvatar,
   PButton,
   PCol,
@@ -212,7 +211,8 @@ import {
   PIPulse,
   PRow,
   PTooltip,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
 
 const { t } = useI18n({

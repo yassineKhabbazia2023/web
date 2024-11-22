@@ -1,4 +1,4 @@
-import { PIArrowUpCircle } from '@pulse/styleguide'
+import { PIArrowUpCircle } from '@pulse/styleguide/components'
 import type { WalletData } from '../../types'
 import type { Entity } from '@pulse/common'
 

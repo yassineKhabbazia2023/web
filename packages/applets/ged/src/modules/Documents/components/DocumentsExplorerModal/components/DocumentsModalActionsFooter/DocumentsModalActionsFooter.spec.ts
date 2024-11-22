@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { PButton } from '@pulse/styleguide'
+import { PButton } from '@pulse/styleguide/components'
 import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 import DocumentsModalActionsFooter
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsModalActionsFooter'

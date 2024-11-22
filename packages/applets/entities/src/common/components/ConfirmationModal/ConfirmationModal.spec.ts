@@ -1,7 +1,7 @@
 import { it, expect, describe, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import type { PButton } from '@pulse/styleguide'
+import type { PButton } from '@pulse/styleguide/components'
 import type { ConfirmationModalProps } from './ConfirmationModalTypes'
 import type { ComponentWrapper } from '@entities/common/types'
 import ConfirmationModal from '.'

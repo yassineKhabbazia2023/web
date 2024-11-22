@@ -98,12 +98,12 @@ import {
   PITrash,
   PIX,
   PLoader,
-  PNotification,
   PScrollbar,
   PTimeline,
   PTimelineItem,
   PTooltip,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import type { Entity } from '@pulse/common'
 import { commonStore } from '@pulse/common'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'

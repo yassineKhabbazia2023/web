@@ -5,7 +5,11 @@
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
-  "main": "src/main.ts",
+  "exports": {
+    "./components": "./src/components.mts",
+    "./types": "./src/types.mts",
+    ".": "./src/main.mts"
+  },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
     "build:types": "vue-tsc --build --force",

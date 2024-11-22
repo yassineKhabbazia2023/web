@@ -2,7 +2,6 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import { deleteContactFromAccount } from '@entities/services/account'
 import * as accountServices from '@entities/services/account'
-import * as styleguide from '@pulse/styleguide'
 import { nextTick } from 'vue'
 import RemoveUserDialog from '.'
 
@@ -14,13 +13,10 @@ const USER_TO_REMOVE = {
   contactId: 4,
 }
 
-vi.mock('@pulse/styleguide', async () => {
-  const styleguide = await vi.importActual('@pulse/styleguide') as Record<string, unknown>
-  return {
-    ...styleguide,
-    PNotification: vi.fn(),
-  }
-})
+const spyPNotification = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: spyPNotification,
+}))
 
 vi.mock('@entities/services/account', () => ({
   deleteContactFromAccount: vi.fn(() => Promise.resolve()),
@@ -53,9 +49,7 @@ const createWrapper = (userToRemove: any): VueWrapper<any> =>
   })
 
 describe('removeUserDialog', () => {
-  let spyPNotification: MockInstance
   beforeEach(() => {
-    spyPNotification = vi.spyOn(styleguide, 'PNotification')
     wrapper = createWrapper(USER_TO_REMOVE)
   })
 

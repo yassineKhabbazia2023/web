@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { PDrawer } from '@pulse/styleguide'
+import { PDrawer } from '@pulse/styleguide/components'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'

@@ -57,7 +57,7 @@ import {
   VITE_FEED_CENTER_ACTIVATED,
 } from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
-import { PCHeader, PAside, PContainer } from '@pulse/styleguide'
+import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import { getBrowserName } from '@app/helper'
 import UserProfile from '@app/components/UserProfile'
 import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'

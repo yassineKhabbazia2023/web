@@ -98,8 +98,8 @@ import {
   PAlert,
   PButton,
   PBlockHeader,
-  type FormRules,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
+import type { FormRules } from '@pulse/styleguide/types'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCustomerFeedback from './components/addCustomerFeedback'

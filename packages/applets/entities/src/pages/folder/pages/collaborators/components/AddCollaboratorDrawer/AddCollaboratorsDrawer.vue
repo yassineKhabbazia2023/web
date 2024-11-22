@@ -30,7 +30,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PNotification, PICheck, PIX } from '@pulse/styleguide'
+import { PDrawer, PICheck, PIX } from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'

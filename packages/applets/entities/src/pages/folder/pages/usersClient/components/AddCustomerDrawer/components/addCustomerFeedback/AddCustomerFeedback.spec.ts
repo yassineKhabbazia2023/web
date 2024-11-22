@@ -1,4 +1,4 @@
-import { PImage, PAlert } from '@pulse/styleguide'
+import { PImage, PAlert } from '@pulse/styleguide/components'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, beforeEach } from 'vitest'
 import { createI18n } from 'vue-i18n'

@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { PAvatar, PIcon, PIPulse } from '@pulse/styleguide'
+import { PAvatar, PIcon, PIPulse } from '@pulse/styleguide/components'
 import type { AccountInformationProps } from './AccountInformationTypes'
 
 defineProps<AccountInformationProps>()

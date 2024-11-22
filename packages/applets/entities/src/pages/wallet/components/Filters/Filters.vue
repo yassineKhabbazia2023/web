@@ -67,7 +67,7 @@ import {
   PIPerson,
   PIPower,
   PIArrowUpCircle,
-} from '@pulse/styleguide'
+} from '@pulse/styleguide/components'
 import { fetchEntitiesStatistics } from '@entities/services/wallet'
 import type { Filter, State } from './FiltersTypes'
 import { EntityStatus } from './FiltersTypes'
