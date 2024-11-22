@@ -1,5 +1,5 @@
 
-import type { IconName } from '../../types/IconName.types'
+import type { IconName } from '../../../types/IconName.types'
 
 export const pulseGeneratedIcons: {
   name: IconName
