@@ -208,12 +208,6 @@ onMounted(() => {
 defineExpose({ handleSubmit })
 </script>
 
-<style lang="scss">
-.wrapperLogin .error .el-input__wrapper {
-  box-shadow: 0 0 0 1px var(--el-color-danger) inset;
-}
-</style>
-
 <style lang="scss" scoped>
 .title {
   font-size: 3.2rem;
