@@ -62,16 +62,16 @@ export function getIconTypeContent(folder: string) {
   })
   enumEntries.sort()
 
-  const content = `export type AppIcons =\n${enumEntries.join(' |\n')}\n`
+  const content = `export type IconName =\n${enumEntries.join(' |\n')}\n`
 
   return content
 }
 
 // Each source icon is parsed to create a type according to their camelCased name
-export function generateTypes(folder: string, iconsComponentFolderPath: string) {
+export function generateTypes(folder: string, outputFileTypePath: string) {
   const enumContent = getIconTypeContent(folder)
 
-  const outputFile = path.resolve(iconsComponentFolderPath, '../app-icons.types.ts')
+  const outputFile = path.resolve(outputFileTypePath)
   writeFileSync(outputFile, enumContent)
    
   console.info(`Enum generated in ${outputFile}`)
@@ -140,10 +140,10 @@ export function getComponentConstantsContent(icons: Icon[]) {
   }`))
 
   return `
-import type { AppIcons } from '../app-icons.types'
+import type { IconName } from '../../types/IconName.types'
 
 export const pulseGeneratedIcons: {
-  name: AppIcons
+  name: IconName
   componentName: string
   fileName: string
   category: string

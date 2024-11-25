@@ -23,7 +23,7 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "generate": "npm run generate:icons && npm run generate:images",
-    "generate:icons": "tsx ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components",
+    "generate:icons": "tsx ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components ./src/types/IconName.types.ts",
     "generate:images": "tsx ./scripts/generateImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.json ./src/atoms/PImage/ImageNameTypes.ts"
   },
   "devDependencies": {

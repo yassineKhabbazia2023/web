@@ -1,6 +1,6 @@
-import type { AppIcons } from './app-icons.types'
+import type { IconName } from '../../types/IconName.types'
 export interface PIconProps {
-  pName?: AppIcons
+  pName?: IconName
   pColor?: string
   pSize?: string
 }
