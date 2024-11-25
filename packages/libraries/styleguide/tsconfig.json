@@ -1,0 +1,32 @@
+{
+  "extends": "../../@config/tsconfig.base",
+  "include": [
+    "./src/**/*",
+    "./src/**/*.json",
+    "tests/**/*",
+    "__mocks__"
+  ],
+  "exclude": [
+    "src/**/__tests__/*"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/types",
+    "paths": {
+      "@styleguide/*": [
+        "src/*"
+      ],
+      "@tests/*": [
+        "tests/*"
+      ]
+    },
+    "types": [
+      "@pinia/testing",
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node"
+    ]
+  }
+}

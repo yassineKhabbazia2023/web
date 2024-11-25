@@ -107,8 +107,6 @@
 </template>
 
 <script setup lang="ts">
-/* eslint-disable vitest/require-hook */
-
 import type { ComputedRef } from 'vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import TreeNode from '@ged/modules/Treeview/components/TreeNode'
@@ -265,13 +263,13 @@ const handleBinNodeClick = (e: Bin) => {
 const treesRefs = ref<TreeType[]>([])
 const retrieveUnusedTrees = (): TreeType[] => {
   return treesRefs.value.filter(
-    (tree) => tree.pData[0].serviceId !== props.currentService,
+    (tree) => tree.pData?.at(0).serviceId !== props.currentService,
   )
 }
 
 const retrieveCurrentlyUsedSourceTree = (): TreeType => {
   const usedTree = treesRefs.value.filter(
-    (tree) => tree.pData[0].serviceId === props.currentService,
+    (tree) => tree.pData?.at(0).serviceId === props.currentService,
   )
 
   return retrieveSourceTrees(usedTree)[0]
@@ -376,9 +374,9 @@ const handleToolboxItemChecked = async (action: string, folder: Folder) => {
 function handleExpandOrCollapseNode(nodeKey: any) {
   const tree = retrieveCurrentlyUsedSourceTree()
 
-  const nodeToCollapseOrExpand = tree.getNode(nodeKey)
-  if (nodeToCollapseOrExpand.expanded) nodeToCollapseOrExpand.collapse()
-  else nodeToCollapseOrExpand.expand()
+  const nodeToCollapseOrExpand = tree?.getNode(nodeKey)
+  if (nodeToCollapseOrExpand?.expanded) nodeToCollapseOrExpand.collapse()
+  else nodeToCollapseOrExpand?.expand()
 }
 
 const documentDropDestinationFolder = ref<Folder['id'] | null>(null)
@@ -479,7 +477,6 @@ function formatMoveDocumentsRequest() {
 const isDropDialogVisible = ref(false)
 const dropDestinationFolder = ref('')
 const numberOfDocumentsToDrop = ref(0)
-// eslint-disable-next-line vitest/require-hook
 watch(
   () => props.currentService,
   () => {

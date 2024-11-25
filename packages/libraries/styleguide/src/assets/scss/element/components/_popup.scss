@@ -1,0 +1,9 @@
+// css3 var in packages/theme-chalk/src/popup.scss
+$popup: () !default;
+$popup: map.merge(
+  (
+    'modal-bg-color': getCssVar('color-black'),
+    'modal-opacity': 0.5,
+  ),
+  $popup
+);

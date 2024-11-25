@@ -74,7 +74,6 @@ describe('delegationPreviewList', () => {
       )
       expect(pBlockHeaderWrapper.props('pImage')).toStrictEqual({
         pFit: 'fill',
-        pType: 'portrait',
         pName: 'delegation',
       })
     })

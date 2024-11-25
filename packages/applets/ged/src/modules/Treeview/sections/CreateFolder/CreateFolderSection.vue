@@ -100,7 +100,6 @@ const handleCancelCreateFolder = () => {
   emit('on-close-create-folder')
 }
 
-// eslint-disable-next-line vitest/require-hook
 watch(toRef(props, 'isCreateFolderModalVisible'), (newVal) => {
   isDialogVisible.value = newVal
 })

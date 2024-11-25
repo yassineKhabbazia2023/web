@@ -1,0 +1,147 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+// css3 var in packages/theme-chalk/src/avatar.scss
+$avatar: (
+  'text-color': getCssVar('color-white'),
+  'bg-color': getCssVar('text-color', 'disabled'),
+  'text-size': 14px,
+  'icon-size': 18px,
+  'border-radius': getCssVar('border-radius-base'),
+);
+
+$avatar-size: (
+  'xlarge': 56px,
+  'large': 50px,
+  'default': 40px,
+  'small': 32px,
+  'xsmall': 24px,
+);
+
+.el-avatar {
+  border: 1px solid;
+
+  font-weight: 600;
+  
+  .el-icon svg,
+  .el-icon {
+    font-size: var(--el-avatar-icon-size);
+  }
+
+  &.p-avatar {
+    &--type-xlarge {
+      --el-avatar-size: var(--el-avatar-size-xlarge);
+      --el-avatar-text-size: 20px;
+
+      line-height: 14px;
+
+      --el-avatar-icon-size: 28px;
+    }
+    &--type-large {
+      --el-avatar-size: var(--el-avatar-size-large);
+      --el-avatar-text-size: 16px;
+
+      line-height: 14px;
+
+      --el-avatar-icon-size: 22px;
+    }
+    &--type-small {
+      --el-avatar-size: var(--el-avatar-size-small);
+      --el-avatar-text-size: 12px;
+
+      line-height: 14px;
+
+      --el-avatar-icon-size: 16px;
+    }
+    &--type-xsmall {
+      --el-avatar-size: var(--el-avatar-size-xsmall);
+      --el-avatar-text-size: 10px;
+
+      line-height: 14px;
+
+      --el-avatar-icon-size: 12px;
+    }
+    &--type-default {
+      --el-avatar-text-size: 14px;
+
+      line-height: 14px;
+
+      --el-avatar-icon-size: 18px;
+    }
+
+    &--color-persian-gradient {
+      border: none;
+      background: var(--persian-gradient);
+      color: getCssVar('color-white');
+    }
+
+    &--color-orange {
+      border-color: var(--el-color-functionnal-orange-bg);
+      background: var(--el-color-functionnal-orange-bg);
+      color: var(--el-color-functionnal-orange);
+    }
+
+    &--color-persian {
+      border-color: var(--el-color-persian-50);
+      background: var(--el-color-persian-50);
+      color: var(--el-color-persian-500);
+    }
+
+    &--color-teal {
+      border-color: var(--el-color-functionnal-teal-bg);
+      background: var(--el-color-functionnal-teal-bg);
+      color: var(--el-color-functionnal-teal);
+    }
+
+    &--color-green {
+      border-color: var(--el-color-functionnal-green-bg);
+      background: var(--el-color-functionnal-green-bg);
+      color: var(--el-color-functionnal-green);
+    }
+
+    &--color-fuschia {
+      border-color: var(--el-color-secondary-fuschia-bg);
+      background: var(--el-color-secondary-fuschia-bg);
+      color: var(--el-color-secondary-fuschia);
+    }
+
+    &--color-gray {
+      border-color: var(--el-color-neutral-gray-50);
+      background: var(--el-color-neutral-gray-50);
+      color: var(--el-color-neutral-gray-500);
+    }
+    
+    &--color-white {
+      border-color: var(--el-color-white);
+      background: var(--el-color-white);
+      color: var(--el-color-persian-500);
+    }
+    
+    &--color-amethyste {
+      border-color: var(--el-color-secondary-amethyste-bg);
+      background: var(--el-color-secondary-amethyste-bg);
+      color: var(--el-color-secondary-amethyste);
+    }
+    
+    &--color-cyan {
+      border-color: var(--el-color-secondary-cyan-bg);
+      background: var(--el-color-secondary-cyan-bg);
+      color: var(--el-color-secondary-cyan);
+    }
+    
+    &--color-bordered-persian {
+      border-color: var(--el-color-persian-500);
+      background: var(--el-color-white);
+      color: var(--el-color-persian-500);
+    }
+
+    &--color-blue-pulse {
+      border-color: var(--el-color-base-blue-pulse);
+      background: var(--el-color-base-blue-pulse);
+      color: var(--el-color-base-white);
+    }
+
+    &--selected {
+      opacity: 0.6;
+    }
+  }
+}

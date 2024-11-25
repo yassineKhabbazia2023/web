@@ -5,13 +5,10 @@ import {
   openSilaeUrl,
   handleClickAction,
   handleDownload,
-  getAuthorizedKeys,
 } from './HomeUtils'
-import { LAUNCHER_KEY } from './HomeTypes'
+import { LauncherKey } from './HomeTypes'
 import * as launcherServices from '@launcher/services/launcherServices'
 import type { AxiosResponse } from 'axios'
-import { PERMISSION_CODES } from '@launcher/common/authorizationConst'
-import { mockHasPermission } from '@launcher/../vitest.setup'
 
 const mockedSilaeUrl = 'https://mocked.silae.url'
 
@@ -56,10 +53,10 @@ describe('test HomeUtils', () => {
   describe('getLaunchCards', () => {
     it('should return proper launchCards', () => {
       const downloadSilaeLabel = 'Télécharger'
-      const authorizedKeys: LAUNCHER_KEY[] = [
-        LAUNCHER_KEY.meg,
-        LAUNCHER_KEY.silae,
-        LAUNCHER_KEY.pennylane,
+      const authorizedKeys: LauncherKey[] = [
+        LauncherKey.MEG,
+        LauncherKey.SILAE,
+        LauncherKey.PENNYLANE,
       ]
       const launchCards = getLaunchCards(downloadSilaeLabel, authorizedKeys)
 
@@ -68,9 +65,9 @@ describe('test HomeUtils', () => {
 
     it('should return filtered launchCards', () => {
       const downloadSilaeLabel = 'Télécharger'
-      const authorizedKeys: LAUNCHER_KEY[] = [
-        LAUNCHER_KEY.meg,
-        LAUNCHER_KEY.pennylane,
+      const authorizedKeys: LauncherKey[] = [
+        LauncherKey.MEG,
+        LauncherKey.PENNYLANE,
       ]
       const launchCards = getLaunchCards(downloadSilaeLabel, authorizedKeys)
       const launchCardKeys = launchCards.map(({ key }) => key)
@@ -91,14 +88,14 @@ describe('test HomeUtils', () => {
           href: '',
         },
       })
-      await handleClickAction(LAUNCHER_KEY.silae)
+      await handleClickAction(LauncherKey.SILAE)
       const expectedHRef = `mypulse-launch://${mockedSilaeUrl}`
 
       expect(window.location.href).toBe(expectedHRef)
     })
 
     it('should do nothing when key is meg', async () => {
-      await handleClickAction(LAUNCHER_KEY.meg)
+      await handleClickAction(LauncherKey.MEG)
 
       expect(consoleErrorSpy).not.toHaveBeenCalled()
     })
@@ -108,7 +105,7 @@ describe('test HomeUtils', () => {
       vi
         .spyOn(launcherServices, 'getSsoSilaeUrl')
         .mockRejectedValueOnce(thrownError)
-      await handleClickAction(LAUNCHER_KEY.silae)
+      await handleClickAction(LauncherKey.SILAE)
 
       expect(consoleErrorSpy).toHaveBeenCalledOnce()
       expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, thrownError)
@@ -136,21 +133,21 @@ describe('test HomeUtils', () => {
     })
 
     it('should call downloadApplicationSpy and saveApplicationSpy when key is silae', async () => {
-      await handleDownload(LAUNCHER_KEY.silae, onSilaeDownloadProgress)
+      await handleDownload(LauncherKey.SILAE, onSilaeDownloadProgress)
 
       expect(downloadApplicationSpy).toHaveBeenCalledOnce()
       expect(saveApplicationSpy).toHaveBeenCalledOnce()
     })
 
     it('should call onSilaeDownloadProgress callback function when key is silae', async () => {
-      await handleDownload(LAUNCHER_KEY.silae, onSilaeDownloadProgress)
+      await handleDownload(LauncherKey.SILAE, onSilaeDownloadProgress)
 
       expect(onSilaeDownloadProgress).toHaveBeenCalledOnce()
       expect(onSilaeDownloadProgress).toHaveBeenNthCalledWith(1, mockedPercent)
     })
 
     it('should do nothing when key is meg', async () => {
-      await handleDownload(LAUNCHER_KEY.meg, onSilaeDownloadProgress)
+      await handleDownload(LauncherKey.MEG, onSilaeDownloadProgress)
 
       expect(downloadApplicationSpy).not.toHaveBeenCalled()
       expect(saveApplicationSpy).not.toHaveBeenCalled()
@@ -162,7 +159,7 @@ describe('test HomeUtils', () => {
         .spyOn(launcherServices, 'downloadApplication')
         .mockRejectedValueOnce(thrownError)
       const consoleErrorSpy = vi.spyOn(console, 'error')
-      await handleDownload(LAUNCHER_KEY.silae, onSilaeDownloadProgress)
+      await handleDownload(LauncherKey.SILAE, onSilaeDownloadProgress)
 
       expect(consoleErrorSpy).toHaveBeenCalledOnce()
       expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, thrownError)
@@ -177,23 +174,6 @@ describe('test HomeUtils', () => {
         .mockResolvedValueOnce('')
 
       await expect(async () => await openSilaeUrl()).rejects.toThrow(expectedError)
-    })
-  })
-
-  describe('getAuthorizedKeys', () => {
-    it('should return authorized keys', () => {
-      mockHasPermission.mockImplementation((code: string[]) => {
-        const mockedPermissions = [PERMISSION_CODES.silae, PERMISSION_CODES.meg]
-
-        return code.some((code) => mockedPermissions.includes(code))
-      })
-      const expectedAuthorizedKeys = [
-        LAUNCHER_KEY.meg,
-        LAUNCHER_KEY.silae,
-      ]
-      const authorizedKeys = getAuthorizedKeys()
-
-      expect(authorizedKeys).toStrictEqual(expectedAuthorizedKeys)
     })
   })
 })

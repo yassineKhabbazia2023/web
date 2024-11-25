@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { describe, it, expect, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import FeedCenterDrawer from '.'

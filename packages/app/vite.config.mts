@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-import path from 'path'
+import path from 'node:path'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
@@ -26,6 +26,7 @@ export default ({ mode }: any) =>
         alias: {
           '@app': fileURLToPath(new URL('./src', import.meta.url)),
           '@common': fileURLToPath(new URL('../libraries/common/src', import.meta.url)),
+          '@styleguide': fileURLToPath(new URL('../libraries/styleguide/src', import.meta.url)),
           '@entities': fileURLToPath(new URL('../applets/entities/src', import.meta.url)),
           '@ged': fileURLToPath(new URL('../applets/ged/src', import.meta.url)),
           '@launcher': fileURLToPath(new URL('../applets/launcher/src', import.meta.url)),
@@ -47,9 +48,30 @@ export default ({ mode }: any) =>
       test: {
         testTimeout: 60000,
         setupFiles: 'vitest.setup.ts',
+        alias: [
+          {
+            find: /^element-plus$/,
+            replacement: path.resolve(
+              __dirname,
+              '../../',
+              'node_modules',
+              'element-plus/dist/index.full.mjs',
+            ),
+          },
+        ],
+        deps: {
+          optimizer: {
+            web: {
+              include: ['element-plus', '@pulse/styleguide'],
+            },
+          },
+        },
       },
       build: {
         outDir: '../../dist',
+        rollupOptions: {
+          external: '/env-vars.js',
+        },
       },
     }),
   )

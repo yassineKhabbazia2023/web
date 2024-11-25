@@ -62,6 +62,7 @@ vi.mock('@pulse/common', () => ({
     $get: vi.fn(),
     $post: vi.fn(),
     defaultEntity: mockedEntity,
+    userAccountPermissions: [],
   }),
   userPermissions: () => ({
     hasPermission: mockHasPermission,

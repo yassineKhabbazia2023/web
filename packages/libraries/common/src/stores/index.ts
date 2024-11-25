@@ -24,6 +24,7 @@ export const store = defineStore('common', {
       state.user?.entities?.favorites ?? [],
     defaultEntity: (state: commonStateType) => state.user?.entities?.default,
     userPermissions: (state: commonStateType) => state.permissions,
+    userAccountPermissions: (state: commonStateType) => state.user?.entities?.default?.permissions,
   },
   actions: {
     logout: async (state: any) => {

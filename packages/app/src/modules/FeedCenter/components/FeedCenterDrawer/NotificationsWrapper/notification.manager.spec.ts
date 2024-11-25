@@ -5,9 +5,7 @@ import {
   notificationsMock,
   readNotificationsMock,
   unreadNotificationsMock,
-  // eslint-disable-next-line import/extensions
 } from '@app/mocks/FeedCenter/notifications.mock'
-// eslint-disable-next-line import/extensions
 import { accountsMock } from '@app/mocks/Account/accounts.mock'
 import {
   patchUnreadNotification,
@@ -16,9 +14,7 @@ import {
   getTimeSinceCreation,
   getNotificationAccountNumbers,
   getNotificationAccountNames,
-  // eslint-disable-next-line import/extensions
 } from './notification.manager'
-// eslint-disable-next-line import/extensions
 import type { GetTimeSinceCreationParams } from './NotificationsWrapper.types'
 
 describe('patchUnreadNotification', () => {

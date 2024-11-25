@@ -21,7 +21,6 @@
         pSize="big"
         :pImage="{
           pFit: 'fill',
-          pType: 'portrait',
           pName: 'user-nonbinary-add'
         }"
       >

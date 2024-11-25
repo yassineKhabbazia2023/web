@@ -6,7 +6,7 @@ import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
-import { PDrawer, PSelect, POption, PDatePicker, PButton } from '@pulse/styleguide'
+import { PDrawer, PSelect, POption, PButton } from '@pulse/styleguide'
 import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import DocumentSearchFiltrer from '.'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
@@ -97,7 +97,7 @@ describe('documentSearchFiltrer', () => {
       expect(wrapper.exists()).toBeTruthy()
       await nextTick()
 
-      const pDatePicker = wrapper.findComponent(PDatePicker)
+      const pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
       expect(pDatePicker.exists()).toBeTruthy()
       const range = wrapper.findAll('.el-range-input')
       expect(range[0].attributes('placeholder')).toBe('Date de début')
@@ -184,7 +184,7 @@ describe('documentSearchFiltrer', () => {
       componentInstance.selectedPeriod = 'WEEK'
       await nextTick()
 
-      const pDatePicker = wrapper.findComponent(PDatePicker)
+      const pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
       await pDatePicker.vm.$emit('calendar-change', [date, date])
       await nextTick()
       expect(wrapper.vm.selectedPeriod).toBe('')

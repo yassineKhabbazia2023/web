@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import type { NotificationAccount } from '@app/modules/FeedCenter/types/notification-account.type'
 
 export const accountMock: NotificationAccount = {

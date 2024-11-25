@@ -151,7 +151,6 @@ const handleApplyClick = () => {
 }
 
 // Main component actions
-// eslint-disable-next-line vitest/require-hook
 onMounted(() => {
   if (!props.filters) return
   if (props.filters.startDate && props.filters.endDate) {

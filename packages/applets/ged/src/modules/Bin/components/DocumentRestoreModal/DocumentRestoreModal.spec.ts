@@ -1,5 +1,3 @@
-/* eslint-disable vitest/require-hook */
-/* eslint-disable vitest/no-hooks */
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'

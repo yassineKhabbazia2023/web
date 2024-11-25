@@ -2,9 +2,7 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import Notifications from '.'
 import type { NotificationProps } from './NotificationTypes'
-// eslint-disable-next-line import/extensions
 import { accountsMock } from '@app/mocks/Account/accounts.mock'
-// eslint-disable-next-line import/extensions
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 
 vi.mock('@pulse/common', async () => {

@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import NotificationsWrapper from '.'

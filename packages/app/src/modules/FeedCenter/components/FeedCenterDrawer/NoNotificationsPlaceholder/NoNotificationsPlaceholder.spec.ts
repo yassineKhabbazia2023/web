@@ -1,7 +1,5 @@
-/* eslint-disable import/extensions */
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-// eslint-disable-next-line import/extensions
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import NoNotificationsPlaceholder from '.'
 import type { NoNotificationsPlaceholderProps } from './NoNotificationsPlaceholderTypes'

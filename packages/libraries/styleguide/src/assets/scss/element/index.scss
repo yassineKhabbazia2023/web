@@ -1,0 +1,166 @@
+// @use pegase style
+@use '../pegase/flex';
+@use '../pegase/shadow';
+@use '../pegase/spacing';
+
+// @use Element-Plus variables override with Pegase
+@use 'border';
+@use 'box-shadow';
+@use 'common';
+@use 'colors';
+@use 'typography';
+@use './components/avatar';
+@use './components/breadcrumb';
+@use './components/buttons';
+@use './components/calendar';
+@use './components/carousel';
+@use './components/collapse';
+@use './components/dialog';
+@use './components/drawer';
+@use './components/dropdown';
+@use './components/image';
+@use './components/header';
+@use './components/menu';
+@use './components/notification';
+@use './components/pagination';
+@use './components/popper';
+@use './components/popover';
+@use './components/steps';
+@use './components/table';
+@use './components/tabs';
+@use './components/tag';
+@use './components/timeline';
+@use './components/tree';
+@use './form/checkbox';
+@use './form/datepicker';
+@use './form/form';
+@use './form/input';
+@use './form/radio';
+@use './form/select';
+@use './form/switch';
+@use './form/upload';
+
+// Override Element-Plus variables
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $avatar-size: avatar.$avatar-size,
+  $border-color-hover: colors.$border-color-hover,
+  $border-color: colors.$border-color,
+  $border-radius: border.$border-radius,
+  $box-shadow: box-shadow.$box-shadow,
+  $button-border-radius: buttons.$button-border-radius,
+  $button-font-size: buttons.$button-font-size,
+  $button-padding-horizontal: buttons.$button-padding-horizontal,
+  $button-padding-vertical: buttons.$button-padding-vertical,
+  $button: buttons.$button,
+  $calendar: calendar.$calendar,
+  $carousel: carousel.$carousel,
+  $checkbox: checkbox.$checkbox,
+  $collapse: collapse.$collapse,
+  $colors: colors.$colors,
+  $common-component-size: common.$common-component-size,
+  $datepicker: datepicker.$datepicker,
+  $date-editor: datepicker.$date-editor,
+  $dialog: dialog.$dialog,
+  $disabled: common.$disabled,
+  $drawer: drawer.$drawer,
+  $fill-color: colors.$fill-color,
+  $font-family: typography.$font-family,
+  $font-size: typography.$font-size,
+  $form: form.$form,
+  $header: header.$header,
+  $input-font-size: input.$input-font-size,
+  $input-padding-horizontal: input.$input-padding-horizontal,
+  $input: input.$input,
+  $lg: common.$lg,
+  $menu: menu.$menu,
+  $notification: notification.$notification,
+  $overlay-color: colors.$overlay-color,
+  $pagination: pagination.$pagination,
+  $popover: popover.$popover,
+  $radio-bordered-input-height: radio.$radio-bordered-input-height,
+  $radio-bordered-input-width: radio.$radio-bordered-input-width,
+  $radio-checked: radio.$radio-checked,
+  $radio-disabled: radio.$radio-disabled,
+  $radio: radio.$radio,
+  $select-dropdown: select.$select-dropdown,
+  $select-group: select.$select-group,
+  $select-option: select.$select-option,
+  $select-tags-prefix-padding: select.$select-tags-prefix-padding,
+  $select: select.$select,
+  $switch: switch.$switch,
+  $table-cell-padding: table.$table-cell-padding,
+  $table-font-size: table.$table-font-size,
+  $table-padding: table.$table-padding,
+  $table: table.$table,
+  $tag-height: tag.$tag-height,
+  $tag-padding: tag.$tag-padding,
+  $text-color: colors.$text-color,
+  $text-font-size: typography.$text-font-size,
+  $tree: tree.$tree,
+  $timeline: timeline.$timeline,
+  $upload: upload.$upload
+);
+
+@forward 'element-plus/theme-chalk/src/form.scss' with (
+  $form-item-error-padding-top: form.$form-item-error-padding-top,
+  $form-item-label-top-line-height: form.$form-item-label-top-line-height,
+  $form-item-label-top-margin-bottom: form.$form-item-label-top-margin-bottom
+);
+
+// @use Call after forward, files who need files from element plus
+@use '../pegase/radius';
+
+// @use scss Element-Plus
+@use 'element-plus/theme-chalk/src/aside.scss' as *;
+@use 'element-plus/theme-chalk/src/alert.scss' as *;
+@use 'element-plus/theme-chalk/src/autocomplete.scss' as *;
+@use 'element-plus/theme-chalk/src/avatar.scss' as *;
+@use 'element-plus/theme-chalk/src/base.scss' as *;
+@use 'element-plus/theme-chalk/src/button.scss' as *;
+@use 'element-plus/theme-chalk/src/breadcrumb.scss' as *;
+@use 'element-plus/theme-chalk/src/calendar.scss' as *;
+@use 'element-plus/theme-chalk/src/carousel.scss' as *;
+@use 'element-plus/theme-chalk/src/carousel-item.scss' as *;
+@use 'element-plus/theme-chalk/src/checkbox.scss' as *;
+@use 'element-plus/theme-chalk/src/col.scss' as *;
+@use 'element-plus/theme-chalk/src/collapse.scss' as *;
+@use 'element-plus/theme-chalk/src/collapse-item.scss' as *;
+@use 'element-plus/theme-chalk/src/container.scss' as *;
+@use 'element-plus/theme-chalk/src/date-picker.scss' as *;
+@use 'element-plus/theme-chalk/src/dialog.scss' as *;
+@use 'element-plus/theme-chalk/src/display.scss' as *;
+@use 'element-plus/theme-chalk/src/divider.scss' as *;
+@use 'element-plus/theme-chalk/src/drawer.scss' as *;
+@use 'element-plus/theme-chalk/src/footer.scss' as *;
+@use 'element-plus/theme-chalk/src/form.scss' as *;
+@use 'element-plus/theme-chalk/src/header.scss' as *;
+@use 'element-plus/theme-chalk/src/image.scss' as *;
+@use 'element-plus/theme-chalk/src/input.scss' as *;
+@use 'element-plus/theme-chalk/src/input-number.scss' as *;
+@use 'element-plus/theme-chalk/src/main.scss' as *;
+@use 'element-plus/theme-chalk/src/message.scss' as *;
+@use 'element-plus/theme-chalk/src/menu.scss' as *;
+@use 'element-plus/theme-chalk/src/notification.scss' as *;
+@use 'element-plus/theme-chalk/src/option.scss' as *;
+@use 'element-plus/theme-chalk/src/option-group.scss' as *;
+@use 'element-plus/theme-chalk/src/overlay.scss' as *;
+@use 'element-plus/theme-chalk/src/pagination.scss' as *;
+@use 'element-plus/theme-chalk/src/popover.scss' as *;
+@use 'element-plus/theme-chalk/src/popper.scss' as *;
+@use 'element-plus/theme-chalk/src/radio.scss' as *;
+@use 'element-plus/theme-chalk/src/row.scss' as *;
+@use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
+@use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
+@use 'element-plus/theme-chalk/src/select.scss' as *;
+@use 'element-plus/theme-chalk/src/step.scss' as *;
+@use 'element-plus/theme-chalk/src/steps.scss' as *;
+@use 'element-plus/theme-chalk/src/switch.scss' as *;
+@use 'element-plus/theme-chalk/src/table.scss' as *;
+@use 'element-plus/theme-chalk/src/tabs.scss' as *;
+@use 'element-plus/theme-chalk/src/tag.scss' as *;
+@use 'element-plus/theme-chalk/src/text.scss' as *;
+@use 'element-plus/theme-chalk/src/timeline.scss' as *;
+@use 'element-plus/theme-chalk/src/timeline-item.scss' as *;
+@use 'element-plus/theme-chalk/src/tooltip.scss' as *;
+@use 'element-plus/theme-chalk/src/tree.scss' as *;
+@use 'element-plus/theme-chalk/src/upload.scss' as *;

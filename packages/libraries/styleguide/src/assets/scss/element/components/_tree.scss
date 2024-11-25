@@ -1,0 +1,28 @@
+// css3 var in packages/theme-chalk/src/tree.scss
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$tree: (
+    'node-content-height': 34px,
+    'node-hover-bg-color': getCssVar('color', 'persian-100'),
+    'text-color': getCssVar('color', 'neutral-gray-900'),
+    'expand-icon-color': getCssVar('color', 'neutral-gray-900'),
+);
+
+.p-tree.el-tree {
+  padding: 8px;
+
+  .el-tree-node__content {
+    border-radius: var(--el-border-radius-small);
+
+    .el-tree-node__expand-icon {
+      padding: 8px
+    }
+  }
+
+  &--highlight-current {
+    .el-tree-node.is-current > .el-tree-node__content {
+        background-color: var(--el-color-persian-200);
+        font-weight: 600;
+    }
+  }
+}

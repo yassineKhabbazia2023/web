@@ -8,7 +8,6 @@
       pSize="big"
       :pImage="{
         pFit: 'fill',
-        pType: 'portrait',
         pName: 'collab-male-add'
       }"
     >

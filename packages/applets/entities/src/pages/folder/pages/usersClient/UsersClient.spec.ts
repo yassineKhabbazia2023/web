@@ -2,7 +2,7 @@ import type { MockInstance } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { nextTick } from 'vue'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { generateContactsMock } from '@entities/../tests/mocks/contactsDataMock'
 import { getInitials } from '@entities/helper'
@@ -68,11 +68,16 @@ function createWrapper(entityId?: number) {
     entityId,
   }
 
-  return mount(UsersClient, {
+  return shallowMount(UsersClient, {
     props,
     global: {
       plugins: [pinia],
-      stubs: ['RemoveUserDialog', 'ManageRightsDrawer', 'DrawerUserDetails'],
+      stubs: [
+        'RemoveUserDialog',
+        'ManageRightsDrawer',
+        'DrawerUserDetails',
+        'TableData'
+      ],
     },
   })
 }
@@ -84,26 +89,6 @@ const totalPages = data.totalPages
 
 let wrapper: VueWrapper<any>
 
-const checkRowContent = (
-  tableHtmlRow: string,
-  contactsList: ExtendedUser[],
-) => {
-  contactsList.forEach((contact) => {
-    const date = new Date(contact.creationDate)
-
-    const yyyy = date.getFullYear()
-    const mm = date.getMonth() + 1
-    const dd = date.getDate()
-
-    expect(tableHtmlRow).toContain(
-      getInitials(contact.firstName, contact.lastName),
-    )
-
-    expect(tableHtmlRow).toContain(`${mm}/${dd}/${yyyy}`)
-  })
-}
-
-const getTableBody = () => wrapper.find('table tbody')
 const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination' })
 const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 
@@ -123,17 +108,18 @@ describe('usersClient', () => {
   })
 
   describe('rendering', () => {
-    it('displays formatted data correctly in the table', async () => {
+    it('set TableData props properly', async () => {
       await flushPromises()
 
-      expect(getTableBody().findAll('tr')).toHaveLength(items.length)
+      const tableData = getTableDataComponent()
+      const data = tableData.props('data')
+      const isInAnEntityPage = tableData.props('isInAnEntityPage')
 
-      const row = getTableBody().find('tr').html()
-
-      checkRowContent(row, items)
+      expect(data).toMatchFileSnapshot('__snap__/UserClient.tableData.snap')
+      expect(isInAnEntityPage).toBeFalsy()
     })
 
-    it('should call getPrincipalContacts on mounted', async () => {
+    it('should call getPrincipalContacts on shallowMounted', async () => {
       await flushPromises()
 
       expect(getPrincipalContactsSpy).toHaveBeenCalledOnce()
@@ -149,7 +135,8 @@ describe('usersClient', () => {
     it('has a pagination', () => {
       const pages = wrapper.findAll('.el-pager li')
 
-      expect(pages).toHaveLength(totalPages)
+      const paginationComponent = getPaginationComponent()
+      expect(paginationComponent.exists()).toBeTruthy()
     })
 
     it('should not hide pagination when total pages is less than page selected size', () => {

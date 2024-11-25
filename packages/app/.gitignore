@@ -36,3 +36,6 @@ dependency-graph.svg
 
 # vite
 *.mjs
+
+# env-vars
+/public/env-vars.js

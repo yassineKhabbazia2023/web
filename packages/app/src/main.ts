@@ -1,5 +1,3 @@
-import '@pulse/styleguide/dist/style'
-
 import { createApp } from 'vue'
 import maze from './plugins/maze'
 import { commoni18n, commonPinia } from '@pulse/common'

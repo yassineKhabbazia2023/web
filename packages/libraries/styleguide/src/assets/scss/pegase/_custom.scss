@@ -1,0 +1,62 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.list-style-none {
+  list-style: none;
+}
+
+.position {
+  &--relative {
+    position: relative !important;
+  }
+  &--absolute {
+    position: absolute !important;
+  }
+  &--sticky {
+    position: sticky !important;
+  }
+  &--fixed {
+    position: fixed !important;
+  }
+  &--initial {
+    position: initial !important;
+  }
+}
+
+.height {
+  &--100 {
+    height: 100% !important;
+  }
+  &--100vh {
+    height: 100vh !important;
+  }
+}
+
+.width {
+  &--100 {
+    width: 100% !important;
+  }
+  &--100vw {
+    width: 100vw !important;
+  }
+  &--50 {
+    width: 50% !important;
+  }
+}
+
+.transform {
+  &--center-y {
+    transform: translateY(-50%);
+  }
+  &--center-x {
+    transform: translateX(-50%);
+  }
+  &--center {
+    transform: translate(-50%, -50%);
+  }
+}

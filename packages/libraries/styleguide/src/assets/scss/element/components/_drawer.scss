@@ -1,0 +1,218 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+@use '../../pegase/shadow' as *;
+
+$drawer: (
+  'bg-color':
+    var(#{getCssVarName('dialog', 'bg-color')}, #{getCssVar('bg-color')}),
+  'padding-primary': var(#{getCssVarName('dialog', 'padding-primary')}, 20px),
+);
+
+div.el-overlay:not(.p-drawer--mini) {
+  background: rgba(0, 0, 0, 0.32);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition-timing-function: linear;
+}
+
+.p-drawer {
+  @media screen and (max-width: 1199px) {
+    width: 50% !important;
+  }
+  @media screen and (max-width: 991px) {
+    width: 75% !important;
+  }
+  @media screen and (max-width: 767px) {
+    width: 100% !important;
+  }
+
+  &.el-drawer {
+    transition-timing-function: ease-in-out;
+  }
+
+  &--fullscreen {
+    z-index: 19 !important;
+
+    .p-drawer {
+      width: 100%;
+      height: 100%;
+      padding-top: 6rem;
+
+      @media screen and (max-width: 1200px) {
+        width: 100% !important;
+      }
+
+      .el-drawer__body {
+        padding: 0;
+      }
+    }
+  }
+
+  &--mini {
+    &.el-overlay {
+      position: inherit;
+    }
+    
+    .p-drawer.ttb {
+      right: 24px;
+      left: auto;
+      width: 654px;
+      height: auto !important;
+      max-height: calc(100vh - 24px);
+      padding-top: 6rem;
+      border-radius: 0 0 16px 16px;
+      @extend .shadow--6;
+      z-index: 20;
+
+      @media screen and (max-width: 1920px) {
+        width: 590px;
+      }
+      @media screen and (max-width: 1440px) {
+        width: 464px !important;
+      }
+
+      .el-drawer__body {
+        padding: 0 2.4rem 2rem;
+      }
+    }
+  }
+
+  header {
+    display: block;
+    margin: 0;
+    padding: 2.4rem;
+  }
+  .el-drawer__body {
+    padding: 0 2.4rem 1.6rem;
+  }
+
+  .el-drawer__footer {
+    position: relative;
+    padding: 2.4rem;
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 24px;
+      background: rgb(255,255,255);
+      background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    min-width: 0;
+    color: var(--el-color-neutral-gray-900);
+
+    > div {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+    }
+
+    &-prefix {
+      justify-content: space-between;
+    }
+  
+    &-suffix { 
+      justify-content: start;
+
+      &--column {
+        flex-direction: column;
+        align-items: flex-start !important;
+      }
+    }
+  }
+
+  &__title {
+    align-self: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__step-back-button {
+    margin-right: 12px;
+  }
+
+  &__close-button {
+    margin-left: 12px;
+  }
+}
+
+.p-document-viewer {
+  .el-drawer__header,
+  .el-drawer__body {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__header,
+  &__header-right, 
+  &__header-left,
+  &__title,
+  &__icon-document { 
+    display: flex;
+    align-items: center;
+  }
+
+  &__header {
+    justify-content: space-between;
+    padding: 4px 16px;
+  }
+
+  &__header-left {
+    justify-content: flex-start;
+  }
+
+  &__header-right {
+    justify-content: flex-end;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: 1.4rem;
+    line-height: 1.2;
+    color: getCssVar('color', 'neutral-gray-900');
+  }
+
+  &__icon-document {
+    justify-content: center;
+
+    .el-icon {
+      font-size: 1.6rem;
+      color: getCssVar('color', 'neutral-gray-900');
+    }
+  }
+
+  &__pagination-item {
+    padding: 0 4px;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    color: getCssVar('color', 'neutral-gray-900');
+  }
+
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: stretch;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__content-left {
+    width: calc(100% - 357px);
+    height: 100%;
+  }
+
+  &__content-right {
+    width: 357px;
+    height: 100%;
+  }
+}

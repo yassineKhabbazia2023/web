@@ -7,7 +7,7 @@ const defaultProps: LaunchCardProps = {
   title: 'Title',
   subtitle: 'Sub-title',
   imageType: 'image-type',
-  imageName: 'image-name',
+  imageName: 'eye-slash',
   actionLabel: 'action-label',
   actionUrl: 'action-url',
   downloadLabel: 'Download',

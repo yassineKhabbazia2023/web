@@ -66,7 +66,6 @@ const handleCancelRenameFolder = () => {
   isDialogRenameVisible.value = false
   emit('on-close-rename-folder')
 }
-// eslint-disable-next-line vitest/require-hook
 watch(toRef(props, 'isRenameFolderModalVisible'), (newVal) => {
   isDialogRenameVisible.value = newVal
 })

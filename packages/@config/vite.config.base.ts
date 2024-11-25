@@ -16,6 +16,13 @@ export const viteConfigBase = ({ mode }: any): UserConfig =>
       viteVirtualModule(),
     ] as any,
     test: {
+      deps: {
+        optimizer: {
+          web: {
+            include: ['element-plus', '@pulse/styleguide'],
+          },
+        },
+      },
       css: false,
       globals: true,
       environment: 'jsdom',

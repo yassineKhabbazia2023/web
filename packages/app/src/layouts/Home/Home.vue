@@ -69,7 +69,6 @@ import { fetchEntities } from '@app/services/entities'
 import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 import { useSalesforceService } from '@app/plugins/SalesForce/useSalesforceService'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
-// eslint-disable-next-line import/extensions
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 

@@ -1,0 +1,2 @@
+export { default as PIC } from './PIC.vue'
+export { default as PID } from './PID.vue'

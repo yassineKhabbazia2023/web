@@ -4,7 +4,6 @@ import { nextTick } from 'vue'
 import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import CreateScheduleForm from '.'
 import {
-  PDatePicker,
   PSelect,
   PAlert,
   PUpload,
@@ -60,7 +59,7 @@ describe('test CreateScheduleForm', () => {
       DropdownMultiSelectWithToggleAll,
     )
     DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
-    const PDatePickerComponent = wrapper.findComponent(PDatePicker)
+    const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     const newDate = new Date(expected.scheduling.date)
     PDatePickerComponent.vm.$emit('update:modelValue', newDate)
 
@@ -96,7 +95,7 @@ describe('test CreateScheduleForm', () => {
       DropdownMultiSelectWithToggleAll,
     )
     DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
-    const PDatePickerComponent = wrapper.findComponent(PDatePicker)
+    const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     const newDate = new Date(TEST_DATE)
     PDatePickerComponent.vm.$emit('update:modelValue', newDate)
 
@@ -119,7 +118,7 @@ describe('test CreateScheduleForm', () => {
       })
     const frequencyComponent = wrapper.findAllComponents(PSelect)[2]
     await frequencyComponent.setValue('Monthly')
-    const PDatePickerComponent = wrapper.findComponent(PDatePicker)
+    const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     PDatePickerComponent.vm.$emit('update:modelValue',
       new Date('April 29, 2024'))
     await nextTick()

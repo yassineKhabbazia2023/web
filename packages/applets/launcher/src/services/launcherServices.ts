@@ -43,8 +43,8 @@ export async function getSsoSilaeUrl() {
   const response = await commonApi().gateway
     .post<{ redirectUrl: string }>(ApiRoutes.SILAE_SSO, { wrapRedirect: true })
 
-  const { data } = response
-  const { redirectUrl } = data
+  const { data } = response || {}
+  const { redirectUrl } = data || ''
   if (!redirectUrl) {
     throw new Error('no redirectUrl given')
   }

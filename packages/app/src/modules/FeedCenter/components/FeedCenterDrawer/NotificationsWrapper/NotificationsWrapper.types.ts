@@ -1,5 +1,4 @@
 import type { Router } from 'vue-router'
-// eslint-disable-next-line import/extensions
 import type { FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 
 export interface NotificationsWrapperProps {

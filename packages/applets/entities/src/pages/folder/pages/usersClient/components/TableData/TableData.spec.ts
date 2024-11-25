@@ -1,4 +1,4 @@
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getInitials } from '@entities/helper'
 import mock from './../../mock.json'
@@ -29,7 +29,7 @@ const toolBoxElementsWithoutPermissions = [
 ]
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(TableData, {
+  shallowMount(TableData, {
     props: {
       data: mock.data.items.map(({ firstName, lastName, ...rest }) => ({
         initials: getInitials(firstName, lastName),
@@ -46,9 +46,41 @@ const createWrapper = (): VueWrapper<any> =>
       })),
       isInAnEntityPage: true,
     },
-  })
+    global: {
+      stubs: {
+        PTable: {
+          name: 'PTable',
+          template: '<div><slot /></div>'
+        },
+        PTableColumn: {
+          name: 'PTableColumn',
+          template: '<div><slot :row="row" /></div>',
+          data() {
+            const row = {
+              initials: 'AB',
+              creationDate: '2024-01-13',
+              isSignatory: false,
+              isLoggedUser: false,
+              statusTag: {
+                text: '',
+                color: '',
+                icon: '',
+              }
+            }
 
-const getMenu = () => document.querySelector('.el-popper') as HTMLElement
+            return {
+              row
+            }
+          }
+        },
+        PToolbox: {
+          name: 'PToolbox',
+          template: '<div><slot /></div>',
+          props: ['pElements'],
+        }
+      }
+    }
+  })
 
 describe('tableData', () => {
   beforeEach(() => {
@@ -56,40 +88,38 @@ describe('tableData', () => {
   })
 
   it('has a menu with 3 items if the route name is users', () => {
-    const menuItems = getMenu().querySelectorAll('li')
-    expect(menuItems).toHaveLength(3)
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+    expect(pToolbox.props('pElements')).toHaveLength(3)
   })
 
-  const {
-    MODIFY_RIGHTS,
-    REMOVE_USER,
-    USER_INFORMATION,
-  } = userActions
-  const ACTIONS_AND_ASSOCIATED_EVENTS = [
-    [MODIFY_RIGHTS, 'display-manage-rights'],
-    [REMOVE_USER, 'remove-user'],
-    [USER_INFORMATION, 'click-view-information'],
-  ]
+  const row = { contactId: 123 }
+  const tests = [{
+    action: userActions.MODIFY_RIGHTS,
+    expectedEvent: 'display-manage-rights',
+    expectedParams: row.contactId,
+  }, {
+    action: userActions.REMOVE_USER,
+    expectedEvent: 'remove-user',
+    expectedParams: { contactId: row.contactId },
+  }, {
+    action: userActions.USER_INFORMATION,
+    expectedEvent: 'click-view-information',
+    expectedParams: row.contactId,
+  }]
 
-  it.each(ACTIONS_AND_ASSOCIATED_EVENTS)(
-    'can click on %s inside the toolbox and emit %s',
-    async (action, expectedEvent) => {
-      const row = { contactId: 123 }
-
+  it.each(tests)(
+    'emit proper event when click on $action in toolbox',
+    ({
+      action,
+      expectedEvent,
+      expectedParams,
+    }) => {
       wrapper.vm.handleToolboxItemClick(action, row)
-      await nextTick()
-      await flushPromises()
 
-      expect(wrapper.emitted(expectedEvent)).toBeTruthy()
-
-      const isRemoveUserAction = action === REMOVE_USER
-      expect(wrapper.emitted(expectedEvent)).toStrictEqual([
-        [
-          isRemoveUserAction
-            ? { contactId: row.contactId }
-            : row.contactId,
-        ],
-      ])
+      const emittedEvent = wrapper.emitted(expectedEvent)
+      expect(emittedEvent).toBeTruthy()
+      expect(emittedEvent).toStrictEqual([[expectedParams]])
     },
   )
 
@@ -98,6 +128,7 @@ describe('tableData', () => {
     wrapper = createWrapper()
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
+    expect(pToolbox.exists()).toBeTruthy()
     expect(pToolbox.props('pElements')).toHaveLength(1)
     expect(pToolbox.props('pElements')).toStrictEqual(
       toolBoxElementsWithoutPermissions,

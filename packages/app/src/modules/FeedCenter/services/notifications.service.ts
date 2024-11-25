@@ -1,5 +1,4 @@
 import { commonApi as api } from '@pulse/common'
-/* eslint-disable import/extensions */
 import type {
   FeedCenterNotification,
   UnreadNotificationCountResponse,

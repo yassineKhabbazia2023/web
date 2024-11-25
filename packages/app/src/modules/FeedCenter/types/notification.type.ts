@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import type { NotificationAccount } from '@app/modules/FeedCenter/types/notification-account.type'
 
 /* eslint-disable no-unused-vars */

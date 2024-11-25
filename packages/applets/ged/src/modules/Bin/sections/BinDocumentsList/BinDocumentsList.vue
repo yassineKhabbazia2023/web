@@ -39,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-/* eslint-disable vitest/require-hook */
 import type { BinDocumentsListProps } from './BinDocumentsListTypes'
 import BinTableElement from './components/BinTableElement'
 import { PTable, PTableColumn } from '@pulse/styleguide'

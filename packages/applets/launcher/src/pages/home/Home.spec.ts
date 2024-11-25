@@ -1,9 +1,10 @@
 import { nextTick } from 'vue'
 import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { mockedEntity, mockedEnvVars } from '@launcher/../vitest.setup'
+import { mockedEntity, mockedEnvVars, mockHasPermission } from '@launcher/../vitest.setup'
+import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
-import { LAUNCHER_KEY } from './HomeTypes'
+import { LauncherKey } from './HomeTypes'
 import * as HomeUtils from './HomeUtils'
 import Home from '.'
 import * as VueRouter from 'vue-router'
@@ -31,7 +32,7 @@ function getWrapper() {
 
 const CARDS_LENGTH = 3
 
-function getLaunchCardComponent(wrapper: VueWrapper, key: LAUNCHER_KEY) {
+function getLaunchCardComponent(wrapper: VueWrapper, key: LauncherKey) {
   return wrapper
     .findComponent(`[data-testid="launch-card-${key}"]`) as unknown as VueWrapper
 }
@@ -69,26 +70,24 @@ describe('test Home', () => {
     })
 
     it('should display filtered cards', async () => {
-      const mockedAuthorizedKeys = [
-        LAUNCHER_KEY.pennylane,
-        LAUNCHER_KEY.silae,
-      ]
-      vi
-        .spyOn(HomeUtils, 'getAuthorizedKeys')
-        .mockReturnValueOnce(mockedAuthorizedKeys)
+      mockHasPermission.mockImplementation((permissions: string[]) =>
+        permissions.includes(
+          LAUNCHER_AUTHORIZATIONS[2].authorizationCodes[0],
+        ),
+      )
       const wrapper = getWrapper()
       await flushPromises()
       const launchCards = getLaunchCardComponents(wrapper)
       const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
 
       expect(noLauncher.exists()).toBeFalsy()
-      expect(launchCards).toHaveLength(mockedAuthorizedKeys.length)
+      expect(launchCards).toHaveLength(1)
     })
 
     it('proper Meg launchCard attributes', () => {
-      const megLaunchCard = getLaunchCardComponent(wrapper, LAUNCHER_KEY.meg)
+      const megLaunchCard = getLaunchCardComponent(wrapper, LauncherKey.MEG)
       const expectedAttributes = {
-        actionLabel: "Se connecter à l'outil de gestion",
+        actionLabel: 'Se connecter à l\'outil de gestion',
         actionUrl: mockedEnvVars.VITE_GESTION_MEG,
         downloadLabel: '',
         imageName: 'iconpulse-color',
@@ -101,7 +100,7 @@ describe('test Home', () => {
     })
 
     it('proper silae launchCard attributes', () => {
-      const silaeLaunchCard = getLaunchCardComponent(wrapper, LAUNCHER_KEY.silae)
+      const silaeLaunchCard = getLaunchCardComponent(wrapper, LauncherKey.SILAE)
       const expectedAttributes = {
         actionLabel: 'Se connecter à Silae',
         actionUrl: '',
@@ -159,23 +158,20 @@ describe('test Home', () => {
 
   describe('when no launcher app to display', () => {
     it('should display filtered cards', async () => {
-      const mockedAuthorizedKeys: LAUNCHER_KEY[] = []
-      vi
-        .spyOn(HomeUtils, 'getAuthorizedKeys')
-        .mockReturnValueOnce(mockedAuthorizedKeys)
+      mockHasPermission.mockImplementation(() => false)
       const wrapper = getWrapper()
       await flushPromises()
       const launchCards = getLaunchCardComponents(wrapper)
       const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
 
       expect(noLauncher.exists()).toBeTruthy()
-      expect(launchCards).toHaveLength(mockedAuthorizedKeys.length)
+      expect(launchCards).toHaveLength(0)
     })
   })
 
   describe('when click action on Silae LaunchCard', () => {
     it('should call handleClickAction with proper arguments', () => {
-      const key = LAUNCHER_KEY.silae
+      const key = LauncherKey.SILAE
       const handleClickActionSpy = vi.spyOn(HomeUtils, 'handleClickAction')
       const silaeLaunchCard = getLaunchCardComponent(wrapper, key)
 
@@ -188,7 +184,7 @@ describe('test Home', () => {
 
   describe('when click downlad on Silae LaunchCard', () => {
     const mockedPercent = 47
-    const launcherKey = LAUNCHER_KEY.silae
+    const launcherKey = LauncherKey.SILAE
 
     let handleDownloadSpy: MockInstance
     let getSilaeDownloadLabelSpy: MockInstance
@@ -196,7 +192,7 @@ describe('test Home', () => {
     beforeEach(() => {
       handleDownloadSpy = vi
         .spyOn(HomeUtils, 'handleDownload')
-        .mockImplementation((_key: LAUNCHER_KEY, onSilaeDownloadProgress: (_: number) => void) => {
+        .mockImplementation((_key: LauncherKey, onSilaeDownloadProgress: (_: number) => void) => {
           onSilaeDownloadProgress(mockedPercent)
 
           return Promise.resolve()
@@ -205,14 +201,15 @@ describe('test Home', () => {
       silaeLaunchCard = getLaunchCardComponent(wrapper, launcherKey)
     })
 
-    it('should call onClickAction when click on action-download', () => {
+    it('should call onClickAction when click on action-download', async () => {
       silaeLaunchCard.vm.$emit('click-download')
+      await nextTick()
 
       expect(handleDownloadSpy).toHaveBeenCalledOnce()
       expect(handleDownloadSpy).toHaveBeenNthCalledWith(1, launcherKey, expect.any(Function))
 
-      expect(getSilaeDownloadLabelSpy).toHaveBeenCalledTimes(2)
-      expect(getSilaeDownloadLabelSpy).toHaveBeenNthCalledWith(2, mockedPercent)
+      expect(getSilaeDownloadLabelSpy).toHaveBeenCalledTimes(1)
+      expect(getSilaeDownloadLabelSpy).toHaveBeenNthCalledWith(1, mockedPercent)
     })
 
     it('should call onClickAction twice once when resolve between two clicks on action-download', async () => {

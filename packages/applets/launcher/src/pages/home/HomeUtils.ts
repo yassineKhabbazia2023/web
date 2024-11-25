@@ -1,43 +1,40 @@
-import { type ExtendedLaunchCard, LAUNCHER_KEY } from './HomeTypes'
-import {
-  VITE_GESTION_MEG,
-  VITE_PENNYLANE_SSO_URL,
-} from 'env-vars'
+import { VITE_GESTION_MEG, VITE_PENNYLANE_SSO_URL } from 'env-vars'
 import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@launcher/services/launcherServices'
-import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
-import { userPermissions } from '@pulse/common'
+import { type ExtendedLaunchCard, LauncherKey } from './HomeTypes'
 
-const { hasPermission } = userPermissions()
-
-export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: LAUNCHER_KEY[]): ExtendedLaunchCard[] {
-  const launchCards = [{
-    key: LAUNCHER_KEY.meg,
-    title: 'Mon outil de gestion',
-    subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
-    imageType: 'logos',
-    imageName: 'iconpulse-color',
-    actionLabel: "Se connecter à l'outil de gestion",
-    actionUrl: VITE_GESTION_MEG,
-    downloadLabel: '',
-  }, {
-    key: LAUNCHER_KEY.silae,
-    title: 'Silae',
-    subtitle: 'Accéder à votre outil de gestion de planning et du personnel - À installer',
-    imageType: 'logos',
-    imageName: 'silae-color',
-    actionLabel: 'Se connecter à Silae',
-    actionUrl: '',
-    downloadLabel: downloadSilaeLabel,
-  }, {
-    key: LAUNCHER_KEY.pennylane,
-    title: 'Pennylane',
-    subtitle: 'Accéder à votre outil Pennylane pour votre gestion au quotidien',
-    imageType: 'logos',
-    imageName: 'pennylane-color',
-    actionLabel: 'Se connecter à Pennylane',
-    actionUrl: VITE_PENNYLANE_SSO_URL,
-    downloadLabel: '',
-  }]
+export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: LauncherKey[]): ExtendedLaunchCard[] {
+  const launchCards: ExtendedLaunchCard[] = [
+    {
+      key: LauncherKey.MEG,
+      title: 'Mon outil de gestion',
+      subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
+      imageType: 'logos',
+      imageName: 'iconpulse-color',
+      actionLabel: 'Se connecter à l\'outil de gestion',
+      actionUrl: VITE_GESTION_MEG,
+      downloadLabel: '',
+    },
+    {
+      key: LauncherKey.SILAE,
+      title: 'Silae',
+      subtitle: 'Accéder à votre outil de gestion de planning et du personnel - À installer',
+      imageType: 'logos',
+      imageName: 'silae-color',
+      actionLabel: 'Se connecter à Silae',
+      actionUrl: '',
+      downloadLabel: downloadSilaeLabel,
+    },
+    {
+      key: LauncherKey.PENNYLANE,
+      title: 'Pennylane',
+      subtitle: 'Accéder à votre outil Pennylane pour votre gestion au quotidien',
+      imageType: 'logos',
+      imageName: 'pennylane-color',
+      actionLabel: 'Se connecter à Pennylane',
+      actionUrl: VITE_PENNYLANE_SSO_URL,
+      downloadLabel: '',
+    },
+  ]
 
   return launchCards.filter(({ key }) => authorizedKeys.includes(key))
 }
@@ -61,9 +58,9 @@ export async function openSilaeUrl() {
   }
 }
 
-export async function handleClickAction(key: LAUNCHER_KEY) {
+export async function handleClickAction(key: LauncherKey) {
   try {
-    if (key === LAUNCHER_KEY.silae) {
+    if (key === LauncherKey.SILAE) {
       await openSilaeUrl()
     }
   } catch (error) {
@@ -72,21 +69,15 @@ export async function handleClickAction(key: LAUNCHER_KEY) {
 }
 
 export async function handleDownload(
-  key: LAUNCHER_KEY,
+  key: LauncherKey,
   onSilaeDownloadProgress: (_: number) => void,
 ) {
   try {
-    if (key === LAUNCHER_KEY.silae) {
+    if (key === LauncherKey.SILAE) {
       const response = await downloadApplication(onSilaeDownloadProgress)
       saveApplication(response)
     }
   } catch (error) {
     console.error(error)
   }
-}
-
-export function getAuthorizedKeys() {
-  return LAUNCHER_AUTHORIZATIONS
-    .filter(({ authorizationCodes }) => hasPermission(authorizationCodes))
-    .map<LAUNCHER_KEY>(({ key }) => key)
 }

@@ -7,7 +7,6 @@
       pSize="default"
       :pImage="{
         pFit: 'fill',
-        pType: 'portrait',
         pName: 'activation',
       }"
       pHasButton

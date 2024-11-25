@@ -54,7 +54,6 @@ import {
   PTabs,
   PTabPane,
 } from '@pulse/styleguide'
-/* eslint-disable import/extensions */
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
 import NotificationsWrapper from './NotificationsWrapper'

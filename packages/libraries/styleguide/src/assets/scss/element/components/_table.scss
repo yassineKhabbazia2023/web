@@ -1,0 +1,137 @@
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+
+$table: (
+  'border-color': 0,
+  'border': 1px solid getCssVar('color-neutral-gray-100'),
+  'text-color': getCssVar('fill-color', 'darker'),
+  'header-text-color': getCssVar('fill-color', ''),
+  'row-hover-bg-color': getCssVar('color', 'persian-100'),
+  'current-row-bg-color': getCssVar('color', 'persian-200'),
+  'header-bg-color': getCssVar('bg-color'),
+  'fixed-box-shadow': getCssVar('box-shadow', 'light'),
+  'bg-color': getCssVar('fill-color', 'blank'),
+  'tr-bg-color': getCssVar('fill-color', 'blank'),
+  'expanded-cell-bg-color': getCssVar('fill-color', 'blank'),
+  'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 0.15),
+  'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 0.15),
+);
+
+$table-font-size: (
+  'large': getCssVar('font-size', 'base'),
+  'default': 1.4rem,
+  'small': 1.2rem,
+);
+
+$table-padding: (
+  'large': 1.2rem 0,
+  'default': 1.2rem 0,
+  'small': 0.4rem 0,
+);
+
+$table-cell-padding: (
+  'large': 0 1.6rem,
+  'default': 0 1.2rem,
+  'small': 0 0.8rem,
+);
+
+
+/**
+* Change the styles in tables.
+*/
+
+tbody tr td .cell {
+  font-weight: 400;
+  font-family: var(--el-font-family)
+}
+
+.el-table .cell .caret-wrapper {
+  height: 1.3rem;
+  width: 1.3rem;
+}
+
+.el-table .cell .sort-caret {
+  border: solid 0.4rem transparent;
+}
+
+.el-table {
+  table {
+    thead tr th.el-table__cell {
+      font-weight: 400;
+      min-height: 40px;
+      padding: 0;
+  
+      .sort-caret.ascending {
+        top: -0.3rem;
+      }
+      .sort-caret.descending {
+        bottom: -0.2rem;
+      }
+      
+    }
+    tbody tr td.el-table__cell {
+      border-bottom: unset;
+    }
+
+    tr.el-table__row {
+      &.p-table__row--selected, 
+      &.p-table__row--selected.el-table__row--striped {
+        td.el-table__cell {
+          background-color: var(--el-color-persian-200);
+        }
+      }
+      &.p-table__row--disabled, 
+      &.p-table__row--disabled.el-table__row--striped {
+        td.el-table__cell {
+          background-color: var(--el-color-neutral-gray-50);
+          color: var(--el-color-neutral-gray-300);
+          pointer-events: none;
+
+          .p-double-text__content-description,
+          .p-double-text__content-title {
+            color: var(--el-color-neutral-gray-300);
+          }
+        }
+      }
+    }
+
+    .el-table__row {
+      min-height: 40px;
+    }
+
+    .el-table__cell {
+      padding: 0;
+
+      &.is-left {
+        .cell {
+          justify-content: flex-start;
+        }
+      }
+
+      &.is-right {
+        .cell {
+          justify-content: flex-end;
+        }
+      }
+
+      &.is-center {
+        .cell {
+          justify-content: center;
+        }
+      }
+      
+      .cell {    
+        display: flex;
+        align-items: center;
+        min-height: 40px;
+        height: auto;
+        white-space: nowrap;
+      }
+    }
+
+    .el-checkbox {
+      padding: 13px 12px;
+      margin-left: -12px;
+      margin-right: -12px;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import type { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { SubscriptionPriceType } from './SubscriptionOffersEnums'
+import { type PImageProps } from '@pulse/styleguide'
 
 export interface SubscriptionOfferProduct {
   productName: string
@@ -16,7 +17,7 @@ export interface SubscriptionOfferProvider {
   providerName: ProviderName
   providerEditor: string
   providerCategory: string
-  logoName: string
+  logoName: PImageProps['pName']
   products: SubscriptionOfferProduct[]
 }
 
@@ -27,7 +28,7 @@ export interface SubscriptionOffer {
   offerLabel: string
   offerPrice: number
   offerPriceType: string
-  logoName: string
+  logoName: PImageProps['pName']
 }
 
 export interface SubscriptionOfferServices extends SubscriptionOffer {

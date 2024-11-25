@@ -16,6 +16,12 @@
     "declarationDir": "./dist/types",
     "outDir": "./dist/types",
     "paths": {
+      "@common/*": [
+        "../../libraries/common/src/*"
+      ],
+      "@styleguide/*": [
+        "../../libraries/styleguide/src/*"
+      ],
       "@login/*": [
         "src/*"
       ]

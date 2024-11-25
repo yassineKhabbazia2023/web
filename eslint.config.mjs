@@ -1,0 +1,120 @@
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import pluginVue from 'eslint-plugin-vue'
+import vitest from '@vitest/eslint-plugin'
+
+import { includeIgnoreFile } from '@eslint/compat'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const gitignorePath = path.resolve(__dirname, '.gitignore')
+
+
+export default [
+  includeIgnoreFile(gitignorePath),
+  { files: ['**/*.{js,mjs,ts,mts,vue}'] },
+  { languageOptions: { globals: globals.browser } },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  ...pluginVue.configs['flat/strongly-recommended'],
+  { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
+  {
+    rules: {
+      // TODO: temporary rules to delete after eslint migration
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unsafe-function-type': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-duplicate-enum-values': 'off',
+      '@typescript-eslint/triple-slash-reference': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/no-this-alias': 'off',
+      'import/extensions': 'off',
+      'no-empty': 'off',
+      'no-undef': 'off',
+      'max-params': 'off',
+      'max-len': 'off',
+      'vue/multi-word-component-names': 'off',
+      'vitest/require-hook': 'off',
+      'vitest/expect-expect': 'off',
+      'vue/attribute-hyphenation': 'off',
+      // actual legit rules
+      // '@typescript-eslint/no-unused-vars': [  // TODO: uncomment after eslint migration
+      //   'error',
+      //   {
+      //     'args': 'all',
+      //     'argsIgnorePattern': '^_',
+      //     'caughtErrors': 'all',
+      //     'caughtErrorsIgnorePattern': '^_',
+      //     'destructuredArrayIgnorePattern': '^_',
+      //     'varsIgnorePattern': '^_',
+      //     'ignoreRestSiblings': true,
+      //   },
+      // ],
+      'curly': 'error',
+      // 'max-params': ['error', 3], // TODO: uncomment after eslint migration
+      // Format rules
+      'comma-dangle': ['error', 'always-multiline'],
+      'array-bracket-spacing': ['error', 'never', { 'singleValue': false }],
+      'func-call-spacing': ['error', 'never'],
+      'indent': ['error', 2],
+      'key-spacing': ['error', { beforeColon: false }],
+      // 'max-len': ['warn', {  // TODO: uncomment after eslint migration
+      //   code: 120,
+      //   ignoreComments: true,
+      //   ignoreTrailingComments: true,
+      //   ignoreUrls: true,
+      //   ignoreStrings: true,
+      //   ignoreTemplateLiterals: true,
+      //   ignoreRegExpLiterals: true,
+      //   ignorePattern: '^\\s*<path',
+      // }],
+      'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
+      'no-trailing-spaces': ['error', { 'skipBlankLines': true }],
+      'no-whitespace-before-property': 'error',
+      'object-curly-spacing': ['error', 'always', { 'arraysInObjects': true }],
+      'quotes': ['error', 'single', { avoidEscape: true }],
+      'semi': ['error', 'never'],
+      'space-before-function-paren': ['error', { 'anonymous': 'never', 'named': 'never', 'asyncArrow': 'always' }],
+      'space-in-parens': ['error', 'never'],
+      'vue/attributes-order': 'error',
+      'vue/max-attributes-per-line': ['error', { singleline: 2 }],
+    },
+  },
+  {
+    // specific rulesets for tests files (above rules apply as well)
+    files: ['**/*.spec.ts'],
+    plugins: { vitest },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      // TODO: temporary rules to delete after eslint migration
+      'vitest/require-hook': 'off',
+      'vitest/expect-expect': 'off',
+      // actual legit rules
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      'max-len': ['warn', {
+        code: 150, // longer for specs
+        ignoreComments: true,
+        ignoreTrailingComments: true,
+        ignoreUrls: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreRegExpLiterals: true,
+        ignorePattern: '^\\s*<path',
+      }],
+    },
+  },
+  {
+    // specific rulesets for config CommonJS/TS files (above rules apply as well)
+    files: ['**/*.{cjs,cts}'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off', // allow require
+      'no-undef': 'off' // allow module.exports
+    },
+  },
+]

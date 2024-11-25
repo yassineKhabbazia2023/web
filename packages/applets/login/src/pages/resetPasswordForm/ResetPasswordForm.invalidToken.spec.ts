@@ -1,6 +1,6 @@
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { getMockedRouter, getWrapper } from '@login/pages/testHelper'
+import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
 import ResetPasswordForm from './'
 
 const router = getMockedRouter(
