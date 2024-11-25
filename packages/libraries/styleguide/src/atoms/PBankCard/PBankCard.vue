@@ -1,7 +1,8 @@
 <template>
   <button
     class="p-bankcard shadow--3 padding--4 radius--2"
-    :title="`${ pStartTitle } ${ pTitle } - ${ pAccountNumber } ${ pAccountText }`">
+    :title="`${ pStartTitle } ${ pTitle } - ${ pAccountNumber } ${ pAccountText }`"
+  >
     <p class="p-bankcard__title font-semibold margin-bottom--2">
       {{ pTitle }}
     </p>

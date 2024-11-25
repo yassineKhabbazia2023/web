@@ -1,4 +1,4 @@
-/* eslint-disable vitest/prefer-expect-assertions */
+ 
 import { foldersMappingRecord } from '@ged/modules/common/data/toolboxPermissionsMapping'
 import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import { describe, it, expect } from 'vitest'

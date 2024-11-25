@@ -39,8 +39,8 @@ const createWrapper = (props: POfferServicesCardProps = defaultProps) =>
           name: 'ElSwitch',
           template: '<div />',
         },
-      }
-    }
+      },
+    },
   })
 
 describe('pOfferServicesCard', () => {

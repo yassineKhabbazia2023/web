@@ -30,8 +30,8 @@
     />
 
     <div
-      class="folder-list__empty-folder"
       v-if="!doesCurrentFolderContainsChildren"
+      class="folder-list__empty-folder"
     >
       <PImage
         class="folder-list__empty-folder__badge"
@@ -83,28 +83,28 @@ const { t } = useI18n({
 
 const getIconMapping = (iconName: string | undefined) => {
   switch (iconName) {
-    case 'accountingRoot':
-      return 'PICalculatorEuro'
-    case 'socialRoot':
-      return 'PIPersonVcard'
-    case 'deposit':
-      return 'PIInbox'
-    case 'reservedKpmg':
-      return 'PIKpmg'
-    case 'binIcon':
-      return 'PITrash'
-    default:
-      return 'PIFolder'
+  case 'accountingRoot':
+    return 'PICalculatorEuro'
+  case 'socialRoot':
+    return 'PIPersonVcard'
+  case 'deposit':
+    return 'PIInbox'
+  case 'reservedKpmg':
+    return 'PIKpmg'
+  case 'binIcon':
+    return 'PITrash'
+  default:
+    return 'PIFolder'
   }
 }
 
 const isFolderLineDisabled = (folderLineFolderId: Folder['id']) => {
   if (props.explorerFolderListLineDisabledState) {
     switch (props.explorerFolderListLineDisabledState.context) {
-      case 'MOVE_FOLDER':
-        return isFolderLineDisabledBasedOnMoveFolderContext(folderLineFolderId)
-      default:
-        return false
+    case 'MOVE_FOLDER':
+      return isFolderLineDisabledBasedOnMoveFolderContext(folderLineFolderId)
+    default:
+      return false
     }
   }
   return false

@@ -24,9 +24,9 @@ const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
           name: 'PIcon',
           template: '<div><slot /></div>',
         },
-      }
-    }
-    })
+      },
+    },
+  })
 }
 
 describe('pTag', () => {

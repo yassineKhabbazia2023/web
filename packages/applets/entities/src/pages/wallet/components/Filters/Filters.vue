@@ -24,9 +24,9 @@
             :color="color"
             :isSelected="isSelected"
             data-testid="filter-option"
+            clickable
             @click="handleClickFilter(filterValue, index)"
             @close="handleClose(index)"
-            clickable
           />
         </div>
       </div>
@@ -34,8 +34,7 @@
         class="
         separator
         margin-x--6"
-      >
-      </div>
+      />
       <div>
         <p class="filter__title font-semibold margin-bottom--3">
           {{ t('userConnectionRate') }}

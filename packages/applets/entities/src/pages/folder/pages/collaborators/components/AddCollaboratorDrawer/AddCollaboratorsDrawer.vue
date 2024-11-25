@@ -1,8 +1,8 @@
 <template>
   <PDrawer
+    v-model="isAddCollaboratorsDrawerOpened"
     data-testid="add-collaborator-drawer"
     pSize="50%"
-    v-model="isAddCollaboratorsDrawerOpened"
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"
   >
@@ -92,7 +92,9 @@ const handleSubmit = async () => {
 
 // PromiseSettledResult type isn't availaible in typescript, it doens't know about it
 function displayAddCollaboratorSuccessNotifications(successfulResponses: any[]) {
-  if (!successfulResponses.length) return
+  if (!successfulResponses.length) {
+    return
+  }
   const amountOfAddedPeople = successfulResponses.length
   PNotification({
     message: t('addCollaboratorsSuccess', { amountOfAddedPeople }, amountOfAddedPeople),

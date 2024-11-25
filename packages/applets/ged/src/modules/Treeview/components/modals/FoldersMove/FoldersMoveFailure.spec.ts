@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable vitest/no-hooks */
+ 
+ 
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'

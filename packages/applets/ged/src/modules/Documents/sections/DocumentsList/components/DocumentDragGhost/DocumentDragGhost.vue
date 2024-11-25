@@ -3,7 +3,7 @@
     class="document-drag-ghost"
     :class="{'document-drag-ghost--multiple': isMultiple }"
   >
-    <div class="document-drag-ghost__multiple-outline"/>
+    <div class="document-drag-ghost__multiple-outline" />
 
     <div
       class="

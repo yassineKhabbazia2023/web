@@ -1,7 +1,6 @@
 <template>
   <ElDialog
     v-model="dialogModel"
-    @close="handleClose"
     :lockScroll="pLockScroll"
     class="p-dialog radius--4"
     :title="pTitle"
@@ -10,10 +9,11 @@
     :center="pCenter"
     :alignCenter="pAlignCenter"
     :showClose="pShowClose"
+    @close="handleClose"
   >
     <slot />
     <template #footer>
-      <slot name="footer"></slot>
+      <slot name="footer" />
     </template>
   </ElDialog>
 </template>

@@ -2,8 +2,8 @@
   <section v-bind="$attrs" class="documents-table">
     <PTable
       v-if="documentsListWithTableStructure.documentsPage.items"
-      :pData="documentsListWithTableStructure.documentsPage.items"
       ref="documentsListTable"
+      :pData="documentsListWithTableStructure.documentsPage.items"
       highlightCurrentRow
       pStripe
       data-testid="ged-documents-list"

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
+ 
+ 
 import type { Folder } from '@ged/models/Folder'
 
 // move to module
@@ -34,7 +34,9 @@ export const findFolderDeepById = (
     }
     const found = findFolderDeepById(element.children, folderId)
 
-    if (found) return found
+    if (found) {
+      return found
+    }
   }
 }
 

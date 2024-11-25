@@ -8,9 +8,9 @@
           :pDisable="item.pButton.pDisabled"
           :pShowFileList="false"
           :pDrag="false"
-          @files-selected="handleFilesSelected"
           pUploadType="slot"
           pShouldClearPreviousFilesListOnUpload
+          @files-selected="handleFilesSelected"
         >
           <PButton
             :pType="item.pButton.pType"
@@ -26,7 +26,7 @@
             ]"
           >
             <PIcon class="el-button__icon--left">
-              <component :is="resolvedIconsLeft[index]"></component>
+              <component :is="resolvedIconsLeft[index]" />
             </PIcon>
             <p>{{ item.pButtonName }}</p>
           </PButton>
@@ -48,7 +48,7 @@
           @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
         >
           <PIcon class="el-button__icon--left">
-            <component :is="resolvedIconsLeft[index]"></component>
+            <component :is="resolvedIconsLeft[index]" />
           </PIcon>
           <p>
             {{ item.pButtonName }}
@@ -82,7 +82,7 @@
         @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
       >
         <PIcon class="el-button__icon--left">
-          <component :is="resolvedIconsRight[index]"></component>
+          <component :is="resolvedIconsRight[index]" />
         </PIcon>
         <span v-if="!isSearchExpanded" class="hidden-sm-and-down">
           {{ item.pButtonName }}

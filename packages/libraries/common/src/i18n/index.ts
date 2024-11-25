@@ -1,4 +1,4 @@
-// eslint-disable-next-line
+ 
 // @ts-ignore
 import { createI18n } from 'vue-i18n'
 

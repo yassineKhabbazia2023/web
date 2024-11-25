@@ -14,30 +14,30 @@ function createWrapper<T>(props: PFieldProps<T>) {
       stubs: {
         PDatePicker: {
           name: 'PDatePicker',
-          template: '<div><slot /></div>'
+          template: '<div><slot /></div>',
         },
         PDropdown: {
           name: 'PDropdown',
-          template: '<div><slot /></div>'
+          template: '<div><slot /></div>',
         },
         PFormItem: {
           name: 'PFormItem',
-          template: '<div><slot /></div>'
+          template: '<div><slot /></div>',
         },
         PInput: {
           name: 'PInput',
-          template: '<div><slot /></div>'
+          template: '<div><slot /></div>',
         },
         PRadio: {
           name: 'PRadio',
-          template: '<div><slot /></div>'
+          template: '<div><slot /></div>',
         },
         PCheckbox: {
           name: 'PCheckbox',
-          template: '<div><slot /></div>'
+          template: '<div><slot /></div>',
         },
-      }
-    }
+      },
+    },
   })
 }
 

@@ -7,7 +7,8 @@
       :pElements="toolboxBasicData"
       pElementsTestId="ged-tree-node-actions-toolbox"
       @visible-change="handleToolboxDropdownSateChange"
-      @p-toolbox-item-clicked="handleItemclicked">
+      @p-toolbox-item-clicked="handleItemclicked"
+    >
       <slot />
     </PToolbox>
   </div>
@@ -36,7 +37,9 @@ const props = withDefaults(
 
 const pToolboxRef = ref<InstanceType<any> | null>(null)
 function closePToolbox() {
-  if (!pToolboxRef.value) return
+  if (!pToolboxRef.value) {
+    return
+  }
   pToolboxRef.value.$refs.dropdownRef.handleClose()
 }
 defineExpose({ closePToolbox })

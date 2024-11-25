@@ -10,8 +10,7 @@
         :pType="PTextBasicData.type"
         :pSelected="PTextBasicData.selected"
         :pIcon="PIPulse"
-      >
-      </PEntity>
+      />
       <template #controls>
         <hstSelect
           v-model="PTextBasicData.type"

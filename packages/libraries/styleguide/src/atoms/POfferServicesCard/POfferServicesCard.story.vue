@@ -6,9 +6,9 @@
   >
     <Variant title="Basic usage">
       <div
-        class="padding--3"
         v-for="(offer, index) in offersData"
         :key="index"
+        class="padding--3"
       >
         <POfferServicesCard
           :pLogo="offer.pLogo"

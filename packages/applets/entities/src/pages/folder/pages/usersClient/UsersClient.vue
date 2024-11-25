@@ -20,10 +20,10 @@
         />
         <PButton
           v-if="isAddUserButtonVisible"
-          @click="isAddCustomerDrawerOpened = true"
           pType="primary"
           pSize="small"
           data-testid="add-customer-button"
+          @click="isAddCustomerDrawerOpened = true"
         >
           <PIcon>
             <PIPersonAdd />
@@ -43,10 +43,10 @@
         <TableData
           v-if="state.data.length"
           :data="state.data"
+          :isInAnEntityPage="!!entityId"
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @remove-user="handleRemoveUser"
-          :isInAnEntityPage="!!entityId"
         />
 
         <NoResult v-if="state.data.length === 0" />
@@ -55,7 +55,6 @@
 
     <PPagination
       v-if="shouldShowPagination && state.totalItems"
-      @on-page-range-changed="handlePageRangeChanged"
       v-model:p-current-page="state.currentPage"
       v-model:p-page-size="state.limit"
       :pTotal="state.totalItems"
@@ -65,6 +64,7 @@
       pShowTotalPageCounter
       pBackground
       class="flex--grow-0 flex--shrink-0 margin-negative-x--2"
+      @on-page-range-changed="handlePageRangeChanged"
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>
@@ -82,8 +82,8 @@
       :userId="state.selectedUserId"
       :hasDrawerOpened="state.isDrawerViewDetailsOpened"
       :editMode="canEdit"
-      @contact-patched="handlePatch"
       data-testid="viewinfo-drawer"
+      @contact-patched="handlePatch"
     />
 
     <ManageRightsDrawer

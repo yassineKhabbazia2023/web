@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+ 
 import { it, expect, describe, beforeEach } from 'vitest'
 import {
   downloadDocument,
@@ -28,12 +28,12 @@ describe('documents service', () => {
     mockDsGet.mockImplementation((url: string) => {
       const returnValue = url.includes('preview')
         ? {
-            data: new ArrayBuffer(1),
-            headers: { 'content-type': 'image/jpeg' },
-          }
+          data: new ArrayBuffer(1),
+          headers: { 'content-type': 'image/jpeg' },
+        }
         : {
-            data: {},
-          }
+          data: {},
+        }
       return Promise.resolve(returnValue)
     })
     mockDsPost.mockImplementation(() => ({

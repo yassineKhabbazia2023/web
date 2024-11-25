@@ -33,7 +33,6 @@
             v-model="formValues.checkPass"
             pType="password"
             pAutocomplete="off"
-
           />
         </PFormItem>
         <PFormItem
@@ -46,9 +45,9 @@
         <PFormItem>
           <PButton
             pType="primary"
-            @click="handleSubmit(formRef)"
             :pDisabled="!isFormValid"
             class="margin-right--4"
+            @click="handleSubmit(formRef)"
           >
             Submit
           </PButton>
@@ -156,19 +155,25 @@ const openToast = ({ message, icon, customClass }: openToastArgs) => {
 }
 
 const handleSubmit = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
   formEl.validate().then((valid) => {
     openToast({
       message: valid ? 'Form submitted' : 'Error',
       icon: valid ? PICheck : PIExclamationTriangle,
       customClass: valid ? 'success' : 'error',
     })
-    if (!valid) return false
+    if (!valid) {
+      return false
+    }
   })
 }
 
 const handleReset = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
   formEl.resetFields()
 }
 </script>

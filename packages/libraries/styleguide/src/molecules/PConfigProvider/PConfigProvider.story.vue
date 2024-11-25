@@ -10,7 +10,7 @@
       <PButton class="margin-bottom--2" @click="toggle">
         Switch Language
       </PButton>
-      <br />
+      <br>
       <PConfigProvider :pLocale="locale">
         <PTable class="margin-bottom--1" :pData="[]" />
         <PPagination :pTotal="100" />

@@ -1,10 +1,10 @@
 <template>
   <ElUpload
     ref="uploadElement"
+    v-model:file-list="files"
     class="p-upload"
     :class="pClassMapper"
     :httpRequest="emitFilesEvent"
-    v-model:file-list="files"
     :multiple="pMultiple"
     :showFileList="pShowFileList"
     :drag="pDrag"
@@ -19,7 +19,8 @@
         :color="AppColors.PRIMARY"
         size="16"
         class="margin-right--2"
-       pName="upload" />
+        pName="upload"
+      />
       <PImage
         v-if="pUploadType === 'dragger'"
         class="p-upload__img margin-bottom--3"

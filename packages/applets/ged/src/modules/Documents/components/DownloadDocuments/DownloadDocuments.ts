@@ -52,7 +52,9 @@ export function useDownloadDocuments(
     if (
       !downloadDocumentsProps.value.selectedDocuments ||
       downloadDocumentsProps.value.selectedDocuments.length === 0
-    ) return Promise.resolve()
+    ) {
+      return Promise.resolve()
+    }
 
     triggerInProgressNotification()
     try {

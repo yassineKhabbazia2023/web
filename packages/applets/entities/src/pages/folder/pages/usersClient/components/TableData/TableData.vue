@@ -51,7 +51,7 @@
           pSortable
         >
           <template #default="scope">
-            {{ d(scope.row.creationDate, 'short')}}
+            {{ d(scope.row.creationDate, 'short') }}
           </template>
         </PTableColumn>
         <PTableColumn
@@ -61,9 +61,9 @@
         >
           <template #default="scope">
             <PToolbox
-              @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
               trigger="click"
               :pElements="menuElements"
+              @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
             >
               <PButton
                 pType="generic"

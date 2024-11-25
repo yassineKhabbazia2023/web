@@ -123,7 +123,7 @@ describe('test CreateScheduleForm', () => {
       new Date('April 29, 2024'))
     await nextTick()
     expect(wrapper.findComponent(PAlert).text())
-      // eslint-disable-next-line max-len
+       
       .toContain("Certains mois contiennent moins de 29 jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.")
   })
   it('should add attachment', () => {

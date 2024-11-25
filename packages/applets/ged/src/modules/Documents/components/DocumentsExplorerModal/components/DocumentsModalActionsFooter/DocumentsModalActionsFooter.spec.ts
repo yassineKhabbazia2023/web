@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable vitest/max-expects */
+ 
+ 
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'

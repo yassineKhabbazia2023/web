@@ -25,9 +25,9 @@ const createWrapper = (): VueWrapper =>
           name: 'PRadio',
           template: '<div><slot /></div>',
           props: ['pLabel'],
-        }
-      }
-    }
+        },
+      },
+    },
   })
 
 describe('pRadioCard', () => {

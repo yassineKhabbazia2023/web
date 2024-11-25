@@ -23,10 +23,10 @@ const createWrapper = () => shallowMount(PRow, {
           'justify',
           'align',
           'tag',
-        ]
-      }
-    }
-  }
+        ],
+      },
+    },
+  },
 })
 
 describe('pRow', () => {

@@ -15,8 +15,8 @@
         v-if="isActivateOffersButtonVisible"
         pType="primary"
         pSize="small"
-        @click="handleActivateOffersClick"
         data-testid="folder-offer-activate-offers-button"
+        @click="handleActivateOffersClick"
       >
         {{ t('activateOffers') }}
         <PIcon class="el-button__icon--right">
@@ -67,11 +67,11 @@
   </div>
   <OffersDrawer
     v-if="isOffersDrawerOpened && defaultEntity"
+    v-model="isOffersDrawerOpened"
     :selectedCompanyName="defaultEntity.legalName"
     :accountNumber="defaultEntity.accountNumber"
     :accountId="defaultEntity.accountId"
     :currentUser="user"
-    v-model="isOffersDrawerOpened"
     data-testid="offers-drawer"
   />
 </template>

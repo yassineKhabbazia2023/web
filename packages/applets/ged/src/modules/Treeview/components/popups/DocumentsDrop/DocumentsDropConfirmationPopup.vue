@@ -10,7 +10,6 @@
       @on-confirm-button-click="handleConfirmDropAction"
       @on-cancel-button-click="handleCancelDropAction"
       @on-close-popup="handleClosePopup"
-
     />
   </div>
 </template>

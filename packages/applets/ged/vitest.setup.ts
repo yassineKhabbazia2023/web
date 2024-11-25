@@ -16,7 +16,7 @@ const styleguideParameters = {
 }
 config.global.plugins = [
   i18n,
-  [styleguideLibrary, styleguideParameters]
+  [styleguideLibrary, styleguideParameters],
 ]
 
 export const commonApiDsGetSpy = vi.fn()

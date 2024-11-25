@@ -3,10 +3,10 @@
     triggerType="contextmenu"
     :permissions="data.permissions"
     :isVisible="!data.isRootFolder"
-    @p-toolbox-item-clicked = "handleItemclicked"
-    @p-toolbox-dropdown-visibility-change = "handleTreeNodeToolboxVisibilityChange"
     class="tree-node_action-toolbox"
     showSlotIfDataEmpty
+    @p-toolbox-item-clicked="handleItemclicked"
+    @p-toolbox-dropdown-visibility-change="handleTreeNodeToolboxVisibilityChange"
     @dragover="handleDragOver"
     @drop="handleDrop"
     @dragleave="handleDragLeave"
@@ -91,18 +91,18 @@ const props = defineProps<TreeNodeProps>()
 
 const iconsMapping = computed(() => {
   switch (props.data.iconName) {
-    case 'accountingRoot':
-      return PICalculatorEuro
-    case 'socialRoot':
-      return PIPersonVcard
-    case 'deposit':
-      return PIInbox
-    case 'reservedKpmg':
-      return PIKpmg
-    case 'binIcon':
-      return PITrash
-    default:
-      return PIFolder
+  case 'accountingRoot':
+    return PICalculatorEuro
+  case 'socialRoot':
+    return PIPersonVcard
+  case 'deposit':
+    return PIInbox
+  case 'reservedKpmg':
+    return PIKpmg
+  case 'binIcon':
+    return PITrash
+  default:
+    return PIFolder
   }
 })
 
@@ -114,7 +114,9 @@ const shouldTooltipBeVisible = computed(() => props.data.name.length > 16)
 
 const buttonToolboxRef = ref<InstanceType<any> | null>(null)
 function closeButtonToolbox() {
-  if (!buttonToolboxRef.value) return
+  if (!buttonToolboxRef.value) {
+    return
+  }
   buttonToolboxRef.value.closeActionToolbox()
 }
 const handleItemclicked = (action: string) => {
@@ -169,11 +171,15 @@ function hasSameServiceId(event: DragEvent) {
 }
 
 function handleDragOver(event: DragEvent) {
-  if (!props.serviceId) return
+  if (!props.serviceId) {
+    return
+  }
 
   // Parse items and check if the first item has a diffrent serviceId than this one
   // and another funtion to check permissions on folder (can move into)
-  if (!isNodeHoveredWithDraggedItem.value) isNodeHoveredWithDraggedItem.value = true
+  if (!isNodeHoveredWithDraggedItem.value) {
+    isNodeHoveredWithDraggedItem.value = true
+  }
 
   if (
     !hasSameServiceId(event) ||
@@ -186,17 +192,25 @@ function handleDragOver(event: DragEvent) {
   }
 
   if (lastTarget !== event.target) {
-    if (dragOverTimer) clearTimeout(dragOverTimer)
+    if (dragOverTimer) {
+      clearTimeout(dragOverTimer)
+    }
 
-    if (!hasSameServiceId(event)) return
+    if (!hasSameServiceId(event)) {
+      return
+    }
     dragOverTimer = setTimeout(setNodeAsTreeCurrentKey, 1000)
     lastTarget = event.target
   }
 }
 
 function handleDragLeave(_event: DragEvent) {
-  if (dragOverTimer) clearTimeout(dragOverTimer)
-  if (isNodeHoveredWithDraggedItem.value) isNodeHoveredWithDraggedItem.value = false
+  if (dragOverTimer) {
+    clearTimeout(dragOverTimer)
+  }
+  if (isNodeHoveredWithDraggedItem.value) {
+    isNodeHoveredWithDraggedItem.value = false
+  }
   dragOverTimer = null
   lastTarget = null
   removeDragoverClass()
@@ -211,13 +225,17 @@ function handleDrop(event: DragEvent) {
     clearNodeExpandTimeout()
 
     const documentsToMove: Document[] = JSON.parse(event.dataTransfer?.getData('application/json+document') ?? '')
-    if (!documentsToMove) return
+    if (!documentsToMove) {
+      return
+    }
     emit('documents-dropped-on-tree-node', documentsToMove, props.data)
   }
 }
 
 function clearNodeExpandTimeout() {
-  if (dragOverTimer) clearTimeout(dragOverTimer)
+  if (dragOverTimer) {
+    clearTimeout(dragOverTimer)
+  }
   dragOverTimer = null
   lastTarget = null
 }
@@ -230,19 +248,25 @@ const isErrorDragover = ref(false)
 
 function addDragoverClass(isError: boolean = false) {
   const wrapper = nodeWrapper()
-  if (!wrapper) return
+  if (!wrapper) {
+    return
+  }
 
   isDragovered.value = true
   wrapper.classList.add('hovered-with-dragged-item', 'cursor-pointer')
 
-  if (!isError) return
+  if (!isError) {
+    return
+  }
   isErrorDragover.value = true
   wrapper.classList.add('hovered-with-dragged-item--error', 'cursor-not-allowed')
 }
 
 function removeDragoverClass() {
   const wrapper = nodeWrapper()
-  if (!wrapper) return
+  if (!wrapper) {
+    return
+  }
 
   isDragovered.value = false
   isErrorDragover.value = false

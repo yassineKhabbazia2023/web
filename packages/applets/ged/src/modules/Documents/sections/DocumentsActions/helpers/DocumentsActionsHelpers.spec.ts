@@ -1,4 +1,4 @@
-/* eslint-disable vitest/no-hooks */
+ 
 import { it, expect, describe } from 'vitest'
 import {
   generateActionBarRightSideButtons,

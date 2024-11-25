@@ -62,7 +62,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
             'name',
             'closable',
             'lazy',
-          ]
+          ],
         },
         PTabs: {
           name: 'PTabs',

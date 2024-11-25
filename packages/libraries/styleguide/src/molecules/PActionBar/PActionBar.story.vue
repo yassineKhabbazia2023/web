@@ -2,7 +2,8 @@
   <Story
     title="3. Molecules/ActionBar"
     icon="mdi:call-to-action"
-    :layout="{ type: 'single', iframe: true }">
+    :layout="{ type: 'single', iframe: true }"
+  >
     <Variant title="Basic usage simple">
       <PActionBar
         :pLeftSideButtons="pLeftSideIcons"

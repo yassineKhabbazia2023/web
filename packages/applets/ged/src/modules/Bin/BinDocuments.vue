@@ -70,7 +70,9 @@ const componentSortQueryField = ref('-deleted')
 const isLoading = ref(false)
 
 const paginationLabel = computed(() => {
-  if (!binDocuments.value) return
+  if (!binDocuments.value) {
+    return
+  }
 
   return `${1 + ((currentPage.value - 1) * currentPageSize.value)}
    - ${((currentPage.value - 1) * currentPageSize.value) +
@@ -98,7 +100,9 @@ const breadcrumbItems = computed(() => {
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
 watch([() => props.currentBinService, currentPage, currentPageSize], async () => {
-  if (!props.currentBinService) return
+  if (!props.currentBinService) {
+    return
+  }
   await fetchBin()
 })
 

@@ -68,13 +68,13 @@
       </router-link>
       <PFormItem class="button-wrapper">
         <PButton
-          @click="handleSubmit(formRef)"
           :pDisabled="!isFormValid"
           pType="primary"
           class="buttonSubmit"
           data-testid="login-submit-button"
+          @click="handleSubmit(formRef)"
         >
-          {{ t('login')}}
+          {{ t('login') }}
         </PButton>
       </PFormItem>
     </PForm>
@@ -152,7 +152,9 @@ const rules = reactive<FormRules<typeof formValues>>({
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
   amplitudeService.setNewUserProperty('user_type', 'Client')
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
   if (formEl.validate) {
     try {
       await formEl.validate()

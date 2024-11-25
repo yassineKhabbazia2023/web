@@ -1,8 +1,8 @@
 <template>
   <PSelect
+    v-model="scheduleModel"
     pAllowCreate
     pFilterable
-    v-model="scheduleModel"
     :pPlaceholder="placeholder"
   >
     <POption

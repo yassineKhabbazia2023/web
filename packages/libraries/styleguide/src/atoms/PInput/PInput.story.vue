@@ -6,8 +6,7 @@
         :pType="basicInputData.type"
         :pDisabled="basicInputData.disabled"
         :pPlaceholder="basicInputData.placeholder"
-      >
-      </PInput>
+      />
       <template #controls>
         <HstCheckbox v-model="basicInputData.disabled" title="Disabled" />
         <HstText v-model="basicInputData.placeholder" title="Placeholder" />
@@ -21,8 +20,7 @@
         :pDisabled="textInputData.disabled"
         :pPlaceholder="textInputData.placeholder"
         :pAutosize="textInputData.autosize"
-      >
-      </PInput>
+      />
       <template #controls>
         <HstCheckbox v-model="textInputData.disabled" title="Disabled" />
         <HstText v-model="textInputData.placeholder" title="Placeholder" />
@@ -35,8 +33,7 @@
         :pType="passwordInputData.type"
         :pPlaceholder="passwordInputData.placeholder"
         :pShowPassword="passwordInputData.showPassword"
-      >
-      </PInput>
+      />
       <template #controls>
         <HstCheckbox v-model="passwordInputData.showPassword" title="Show Password" />
         <HstText v-model="passwordInputData.placeholder" title="Placeholder" />
@@ -50,8 +47,7 @@
         :pPlaceholder="searchInputData.placeholder"
         :pPrefixIcon="searchInputData.prefixIcon"
         :pClearable="searchInputData.clearable"
-      >
-      </PInput>
+      />
       <template #controls>
         <HstText v-model="searchInputData.placeholder" title="Placeholder" />
       </template>
@@ -64,8 +60,7 @@
         :pPrefixIcon="searchInputData.prefixIcon"
         :pClearable="searchInputData.clearable"
         size="small"
-      >
-      </PInput>
+      />
       <template #controls>
         <HstText v-model="searchInputData.placeholder" title="Placeholder" />
       </template>
@@ -80,22 +75,26 @@
         <template #suffix>
           <PIcon
             :color="AppColors.PRIMARY"
-           pName="check" />
+            pName="check"
+          />
         </template>
         <template #prefix>
           <PIcon
             :color="AppColors.PRIMARY"
-           pName="check" />
+            pName="check"
+          />
         </template>
         <template #append>
           <PIcon
             :color="AppColors.PRIMARY"
-           pName="check" />
+            pName="check"
+          />
         </template>
         <template #prepend>
           <PIcon
             :color="AppColors.PRIMARY"
-           pName="check" />
+            pName="check"
+          />
         </template>
       </PInput>
       <template #controls>

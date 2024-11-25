@@ -37,8 +37,8 @@ const createWrapper = (props: any = defaultProps, slots: any = {}) =>
           name: 'PButton',
           template: '<div><slot /></div>',
           props: [
-            'pDisabled'
-          ]
+            'pDisabled',
+          ],
         },
       },
     },

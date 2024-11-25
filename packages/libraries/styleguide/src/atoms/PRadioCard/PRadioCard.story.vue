@@ -6,9 +6,9 @@
   >
     <Variant title="Basic Usage">
       <PForm
-        @submit.prevent="logEvent('submit', formValues.radioValue)"
-        :pModel="formValues"
         ref="formRef"
+        :pModel="formValues"
+        @submit.prevent="logEvent('submit', formValues.radioValue)"
       >
         <PRadioGroup
           v-model="formValues.radioValue"
@@ -20,8 +20,8 @@
             :pDescription="pRadioCard1.description"
           >
             <PButton
-              @click="logEvent('CTA clicked', $event)"
               pType="white"
+              @click="logEvent('CTA clicked', $event)"
             >
               Personnaliser
               <PIcon class="el-button__icon--right" pName="arrowRight" />
@@ -35,9 +35,9 @@
         </PRadioGroup>
 
         <PButton
-          @click="logEvent('submit', formValues.radioValue)"
           pType="primary"
           class="margin-top--4"
+          @click="logEvent('submit', formValues.radioValue)"
         >
           Submit
         </PButton>

@@ -1,7 +1,7 @@
 <template>
   <SingleInputModal
-    :isDialogVisible="isRenameModalOpened"
     v-model:defaultInputContentValue="inputContent"
+    :isDialogVisible="isRenameModalOpened"
     :modalTitle="t('title')"
     :inputLabel="t('inputLabel')"
     :inputPlaceHolder="t('inputPlaceHolder')"

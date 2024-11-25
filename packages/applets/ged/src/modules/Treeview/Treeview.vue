@@ -63,13 +63,13 @@
         <PScrollbar>
           <PTree
             v-for="(serviceFolder, index) in extendedServiceFolders"
+            :key="serviceFolder[0].id"
+            ref="treesRefs"
             :pCurrentNodeKey="!index ? initialSelectedNodeId : ''"
             :pData="serviceFolder"
             :pDefaultExpandedKeys="!index ? defaultExpandedKey : []"
             pHasCustomNodes
-            :key="serviceFolder[0].id"
             pNodeKey="id"
-            ref="treesRefs"
             @p-tree-node-clicked="handleFolderNodeClick"
           >
             <template #default="{ node, data }">
@@ -161,14 +161,18 @@ const { handleDownloadFolderEvent } = useDownloadFolder(downloadFolderProps)
 // This always exists as it is the default structure of any service
 const defaultFolder = ref<null | Folder>(null)
 const initialSelectedNodeId = computed(() => {
-  if (!defaultFolder.value) return
+  if (!defaultFolder.value) {
+    return
+  }
   return defaultFolder.value.id
 })
 
 watch(
   () => props.isLoading,
   () => {
-    if (props.isLoading === true) return
+    if (props.isLoading === true) {
+      return
+    }
     defaultFolder.value = props.servicesFolders[0][0].children[0]
     emit('selected-folder-change', defaultFolder.value)
   },
@@ -192,11 +196,17 @@ watch(
   () => props.selectedFolder,
   () => {
     const { selectedFolder } = props
-    if (!selectedFolder) return
-    if (selectedFolder === treeNodeSelectedFolder.value) return
+    if (!selectedFolder) {
+      return
+    }
+    if (selectedFolder === treeNodeSelectedFolder.value) {
+      return
+    }
 
     const tree = retrieveCurrentlyUsedSourceTree()
-    if (!tree) return
+    if (!tree) {
+      return
+    }
     treeNodeSelectedFolder.value = selectedFolder
     tree.setCurrentKey(selectedFolder.id)
   },
@@ -206,7 +216,9 @@ const parentNodeOfSelectedFolderTreeNodeAction = ref<Folder>()
 
 const setParentNodeOfSelectedFolderTreeNodeAction = () => {
   const parentFolderId = treeNodeSelectedFolder.value?.parent?.id
-  if (!parentFolderId) return
+  if (!parentFolderId) {
+    return
+  }
   parentNodeOfSelectedFolderTreeNodeAction.value = findFolderDeepById(
     props.servicesFolders[0].filter(
       (f) => f.serviceId === props.currentService,
@@ -257,7 +269,9 @@ const handleBinNodeClick = (e: Bin) => {
   // as we've just clicked on a bin folder
   const foldersTrees = retrieveSourceTrees(treesRefs.value)
   collapseGivenTrees(foldersTrees)
-  if (e.isRootFolder) return
+  if (e.isRootFolder) {
+    return
+  }
   emit('selected-bin-service-change', e.id)
 }
 
@@ -288,7 +302,9 @@ const retrieveSourceTrees = (
 const collapseUnusedTrees = () => {
   const unusedComponentTreesRefs = retrieveUnusedTrees()
   const unusedSourceTreesRefs = retrieveSourceTrees(unusedComponentTreesRefs)
-  if (!unusedSourceTreesRefs.length) return
+  if (!unusedSourceTreesRefs.length) {
+    return
+  }
 
   collapseGivenTrees(unusedSourceTreesRefs)
 }
@@ -376,8 +392,11 @@ function handleExpandOrCollapseNode(nodeKey: any) {
   const tree = retrieveCurrentlyUsedSourceTree()
 
   const nodeToCollapseOrExpand = tree?.getNode(nodeKey)
-  if (nodeToCollapseOrExpand?.expanded) nodeToCollapseOrExpand.collapse()
-  else nodeToCollapseOrExpand?.expand()
+  if (nodeToCollapseOrExpand?.expanded) {
+    nodeToCollapseOrExpand.collapse()
+  } else {
+    nodeToCollapseOrExpand?.expand()
+  }
 }
 
 const documentDropDestinationFolder = ref<Folder['id'] | null>(null)
@@ -385,14 +404,20 @@ const documentDropDestinationFolderName = ref('')
 const draggedDocumentsTomove = ref<Document[]>([])
 
 function handleDocumentDroppedOnTreeNode(documents: Document[], targetFolder: Folder) {
-  if (!props.currentServiceFolder) return
+  if (!props.currentServiceFolder) {
+    return
+  }
   draggedDocumentsTomove.value = documents
 
   const firstDocument = documents.at(0)
-  if (!firstDocument) return
+  if (!firstDocument) {
+    return
+  }
 
   const targetFolderPath = getFolderPath(props.currentServiceFolder, targetFolder)
-  if (!targetFolderPath) return
+  if (!targetFolderPath) {
+    return
+  }
   documentDropDestinationFolderName.value = targetFolderPath[targetFolderPath.length - 1]
   dropDestinationFolder.value = getPathFromArray(targetFolderPath)
   documentDropDestinationFolder.value = targetFolder.id
@@ -401,11 +426,15 @@ function handleDocumentDroppedOnTreeNode(documents: Document[], targetFolder: Fo
 
 const isDocumentDropConfirmButtonLoading = ref(false)
 async function handleConfirmDocumentDrop() {
-  if (!documentDropDestinationFolder.value) return
+  if (!documentDropDestinationFolder.value) {
+    return
+  }
 
   const formattedMoveDocumentsRequest = formatMoveDocumentsRequest()
 
-  if (!formattedMoveDocumentsRequest) return
+  if (!formattedMoveDocumentsRequest) {
+    return
+  }
 
   try {
     isDocumentDropConfirmButtonLoading.value = true
@@ -464,7 +493,9 @@ function formatMoveDocumentsRequest() {
   const documentsIds = draggedDocumentsTomove.value.map(document => document.id)
   const sourceFolderId = draggedDocumentsTomove.value.at(0)?.folder.id
 
-  if (!sourceFolderId || !documentDropDestinationFolder.value) return
+  if (!sourceFolderId || !documentDropDestinationFolder.value) {
+    return
+  }
   return {
     ids: documentsIds,
     sourceFolderId,

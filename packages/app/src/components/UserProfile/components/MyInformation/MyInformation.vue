@@ -23,12 +23,12 @@
       </p>
 
       <PForm
-        @submit.prevent="handleFormSubmit(formRef)"
+        ref="formRef"
         :pModel="formValues"
         :pRules="rules"
-        ref="formRef"
         pLabelPosition="top"
         pRequireAsteriskPosition="right"
+        @submit.prevent="handleFormSubmit(formRef)"
       >
         <div class="flex flex--justify-content-space-between">
           <div class="half-width">
@@ -90,8 +90,8 @@
 
             <PButton
               pType="primary"
-              @click="handleFormSubmit(formRef)"
               :pDisabled="!formValues.mobilePhone"
+              @click="handleFormSubmit(formRef)"
             >
               {{ t('saveChanges') }}
             </PButton>
@@ -152,7 +152,9 @@ const rules = reactive({
 const CONTACT_API_ENDPOINT = 'contact/api/contacts/currentuser'
 
 const handleFormSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
 
   if (formEl.validate) {
     try {

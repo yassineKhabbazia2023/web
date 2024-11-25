@@ -4,9 +4,9 @@
     triggerType="click"
     :permissions="permissions"
     :selectedOrHovered="selectedOrHovered"
+    :showSlotIfDataEmpty="false"
     @p-toolbox-item-clicked="handleItemclicked"
     @p-toolbox-dropdown-visibility-change="handleToolboxDropdownSateChange"
-    :showSlotIfDataEmpty="false"
   >
     <PButton
       class="tree-node__action"
@@ -41,7 +41,9 @@ const handleToolboxDropdownSateChange = (state: boolean) => {
 
 const actionToolboxRef = ref<InstanceType<any> | null>(null)
 function closeActionToolbox() {
-  if (!actionToolboxRef.value) return
+  if (!actionToolboxRef.value) {
+    return
+  }
   actionToolboxRef.value.closePToolbox()
 }
 

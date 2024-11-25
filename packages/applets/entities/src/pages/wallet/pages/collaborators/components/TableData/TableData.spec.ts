@@ -127,7 +127,7 @@ describe('tableData', () => {
   it('should emit on-sort-change upon sort change event', async () => {
     const wrapper = createWrapper()
     const sortPayload =
-        // eslint-disable-next-line max-len
+         
         '{"column":{"order":"ascending","id":"el-table_18_column_100","type":"default","property":"email","align":"is-left","headerAlign":"is-left","showOverflowTooltip":true,"filteredValue":[],"filterPlacement":"","isColumnGroup":false,"isSubColumn":false,"filterOpened":false,"sortable":true,"rawColumnKey":null,"label":"E-Mail","resizable":true,"sortOrders":["ascending","descending",null],"reserveSelection":false,"filterMultiple":true,"minWidth":80,"realWidth":423,"no":1,"level":1,"colSpan":1,"rowSpan":1},"prop":"email","order":"ascending"}'
     const table = wrapper.findComponent(PTable)
     await nextTick()

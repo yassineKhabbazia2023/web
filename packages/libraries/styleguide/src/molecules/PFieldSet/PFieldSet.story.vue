@@ -4,7 +4,8 @@
     :layout="{
       type: 'grid',
       width: '90%'
-    }">
+    }"
+  >
     <div class="container">
       <Variant
         v-for="(variant, variantIndex ) in variants"

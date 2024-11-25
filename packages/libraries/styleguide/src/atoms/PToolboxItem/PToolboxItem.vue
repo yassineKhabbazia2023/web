@@ -27,7 +27,7 @@
   >
     <div v-if="iconComponent" class="p-toolbox-item__icon margin-right--2">
       <PIcon size="16">
-        <component :is="iconComponent"></component>
+        <component :is="iconComponent" />
       </PIcon>
     </div>
     <p class="p-toolbox-item__text">

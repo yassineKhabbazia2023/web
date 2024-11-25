@@ -58,10 +58,11 @@
         </div>
       </div>
     </div>
-    <template #footer >
+    <template #footer>
       <DocumentsModalActionsFooter
         :modalActionsButtons="mappedButtonsList"
-        @modal-action-button-clicked="handleActionButtonClicked"/>
+        @modal-action-button-clicked="handleActionButtonClicked"
+      />
     </template>
   </PDialog>
 </template>

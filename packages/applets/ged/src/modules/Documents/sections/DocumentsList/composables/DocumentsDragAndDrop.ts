@@ -14,9 +14,9 @@ export function useDocumentsDragAndDrop(
 
   function bindDragProperties() {
     // Reason of no-undef disabling :
-    // eslint-disable-next-line max-len
+     
     // https://github.com/typescript-eslint/typescript-eslint/blob/1cf9243/docs/getting-started/linting/FAQ.md#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-    // eslint-disable-next-line no-undef
+     
     const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
     Array.from(documentRowElements).forEach((element: HTMLElement) => {
       element.addEventListener('dragstart', handleDragStart)
@@ -26,7 +26,7 @@ export function useDocumentsDragAndDrop(
 
   onBeforeUnmount(() => {
     // Read above for the no-undef disabling reason
-    // eslint-disable-next-line no-undef
+     
     const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
     Array.from(documentRowElements).forEach((element) => {
       element.removeEventListener('dragstart', handleDragStart)
@@ -43,7 +43,9 @@ export function useDocumentsDragAndDrop(
   // If you're searching for the handling of the drop event,
   // check in the Treeview folder as this is where documents are dropped
   function handleDragStart(event: DragEvent): void {
-    if (!event.dataTransfer) return
+    if (!event.dataTransfer) {
+      return
+    }
 
     draggedDocuments.value = documentsToMove.value
 
@@ -73,7 +75,9 @@ export function useDocumentsDragAndDrop(
           previousDocuments,
           newDocuments,
         )
-        if (!removedElement) return
+        if (!removedElement) {
+          return
+        }
         removeDragAndDropAttributes(removedElement)
       }
     }
@@ -97,7 +101,9 @@ export function useDocumentsDragAndDrop(
 
   function addDragAndDropAttributes(documentItem: Document) {
     const element = getDocumentRowNode(documentItem)
-    if (!element) return
+    if (!element) {
+      return
+    }
     element.setAttribute('draggable', 'true')
   }
 
@@ -107,7 +113,9 @@ export function useDocumentsDragAndDrop(
 
   function removeDragAndDropAttributes(documentItem: Document) {
     const element = getDocumentRowNode(documentItem)
-    if (!element) return
+    if (!element) {
+      return
+    }
     element.removeAttribute('draggable')
   }
 

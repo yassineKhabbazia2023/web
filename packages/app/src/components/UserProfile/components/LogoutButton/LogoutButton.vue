@@ -1,8 +1,8 @@
 <template>
   <PButton
-    @click="handleLogout"
     pType="primary"
     pPlain
+    @click="handleLogout"
   >
     {{ t('logout') }}
   </PButton>

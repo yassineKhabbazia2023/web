@@ -54,8 +54,12 @@ export function useDragAndDropFromExplorer(
   // Drop section
   const isDropFromExplorerConfirmationModalVisible = ref(false)
   async function handleDropFromExplorer(event: DragEvent) {
-    if (!isAllowedDropZone.value) return
-    if (!event.dataTransfer) return
+    if (!isAllowedDropZone.value) {
+      return
+    }
+    if (!event.dataTransfer) {
+      return
+    }
 
     // FileList prototype is not nativaly itterable
     const arrayedFiles = Array.from(event.dataTransfer.files)
@@ -76,13 +80,17 @@ export function useDragAndDropFromExplorer(
   }
 
   function showDialogIfValidFilesExist() {
-    if (!validDroppedFiles.value.length) return
+    if (!validDroppedFiles.value.length) {
+      return
+    }
     isDropFromExplorerConfirmationModalVisible.value = true
   }
 
   async function uploadDocuments(files: File[]) {
     const folder = selectedFolder.value
-    if (!folder || !validDroppedFiles.value.length) return
+    if (!folder || !validDroppedFiles.value.length) {
+      return
+    }
 
     const documentsToUploadPromises = files.map(file => uploadDocument(
       currentService.value,
@@ -113,7 +121,9 @@ export function useDragAndDropFromExplorer(
   }
 
   async function displaySuccessNotification(documentsCount: number) {
-    if (!selectedFolder.value || !documentsCount) return
+    if (!selectedFolder.value || !documentsCount) {
+      return
+    }
     PNotification({
       message: t(
         'documentsUploaded',

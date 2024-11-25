@@ -49,10 +49,10 @@
 
       <PButton
         v-if="isCollab"
-        @click="createSchedule"
         pType="primary"
         pSize="small"
         data-testid="action-bar-create-schedule-button"
+        @click="createSchedule"
       >
         <PIcon class="el-button__icon--left">
           <PIAdd />

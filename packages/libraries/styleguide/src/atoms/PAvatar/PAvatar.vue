@@ -6,7 +6,8 @@
       size="12px"
       data-testid="avatar-check-icon"
       class="p-avatar-wrapper__check-icon"
-     pName="checkCircle" />
+      pName="checkCircle"
+    />
     <ElAvatar
       :fit="pFit"
       size="default"

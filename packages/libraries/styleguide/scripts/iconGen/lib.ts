@@ -73,7 +73,7 @@ export function generateTypes(folder: string, iconsComponentFolderPath: string) 
 
   const outputFile = path.resolve(iconsComponentFolderPath, '../app-icons.types.ts')
   writeFileSync(outputFile, enumContent)
-  // eslint-disable-next-line no-console
+   
   console.info(`Enum generated in ${outputFile}`)
 }
 

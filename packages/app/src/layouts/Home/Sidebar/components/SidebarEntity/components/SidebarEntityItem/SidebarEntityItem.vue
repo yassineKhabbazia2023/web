@@ -11,7 +11,7 @@
     >
       <slot />
     </PTooltip>
-    <slot name="suffix-content"/>
+    <slot name="suffix-content" />
   </PButton>
 </template>
 

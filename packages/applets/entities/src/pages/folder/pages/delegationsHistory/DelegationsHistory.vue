@@ -1,8 +1,8 @@
 <template>
   <div class="margin-top--6 margin-bottom--4">
     <FormSearch
-      @search-value-submitted="handleSearchValueSubmitted"
       :placeholder="t('searchByName')"
+      @search-value-submitted="handleSearchValueSubmitted"
     />
 
     <div
@@ -64,10 +64,10 @@
                   :pContent="tooltipContentForDeleting(isEnabled, delegator)"
                 >
                   <PButton
-                    @click="deleteDelegation(id, delegatee)"
                     pIconOnly
                     pType="generic"
                     :pDisabled="!isEnabled || !delegator.isCurrentUser"
+                    @click="deleteDelegation(id, delegatee)"
                   >
                     <PIcon>
                       <PITrash />

@@ -12,24 +12,24 @@
   >
     <template v-if="!isSearchState">
       <PButton
-        @click="updateMonth('prev')"
         pType="generic"
         pSize="small"
         data-testid="schedule-prev-month-button"
         pIconOnly
         class="margin-right--2"
+        @click="updateMonth('prev')"
       >
         <PIcon>
           <PIChevronLeft />
         </PIcon>
       </PButton>
       <PButton
-        @click="updateMonth('next')"
         pType="generic"
         pSize="small"
         data-testid="schedule-next-month-button"
         pIconOnly
         class="margin-right--2"
+        @click="updateMonth('next')"
       >
         <PIcon>
           <PIChevronRight />
@@ -46,22 +46,22 @@
         {{ activeMonth }} {{ activeYear }}
       </span>
       <PButton
-        @click="onClickToday"
         class="margin-left--6"
         data-testid="action-bar-left-today"
         pType="default"
         pSize="small"
+        @click="onClickToday"
       >
         {{ t('today') }}
       </PButton>
     </template>
     <PButton
       v-if="isSearchState"
-      @click="emit('update:is-search-state', false)"
       pType="generic"
       pSize="small"
       data-testid="action-bar-left-end-search-state-button"
       pIconOnly
+      @click="emit('update:is-search-state', false)"
     >
       <PIcon>
         <PIArrowLeft />
@@ -82,17 +82,17 @@
     <PButton
       class="margin-left--2"
       pSize="small"
-      @click="emit('open-drawer-filters', true)"
       data-testid="open-drawer-filters-button"
+      @click="emit('open-drawer-filters', true)"
     >
       <PIcon>
         <PIFunnel />
       </PIcon>
       <PPastille
+        v-if="activeFilters"
         class="margin-left--2"
         pType="persian"
         pSize="small"
-        v-if="activeFilters"
       >
         {{ activeFilters }}
       </PPastille>

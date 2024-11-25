@@ -50,7 +50,7 @@ const createWrapper = (): VueWrapper<any> =>
       stubs: {
         PTable: {
           name: 'PTable',
-          template: '<div><slot /></div>'
+          template: '<div><slot /></div>',
         },
         PTableColumn: {
           name: 'PTableColumn',
@@ -65,21 +65,21 @@ const createWrapper = (): VueWrapper<any> =>
                 text: '',
                 color: '',
                 icon: '',
-              }
+              },
             }
 
             return {
-              row
+              row,
             }
-          }
+          },
         },
         PToolbox: {
           name: 'PToolbox',
           template: '<div><slot /></div>',
           props: ['pElements'],
-        }
-      }
-    }
+        },
+      },
+    },
   })
 
 describe('tableData', () => {

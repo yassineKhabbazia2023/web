@@ -18,7 +18,7 @@
         {{ pFormat }} • {{ pSize }}
       </p>
     </div>
-    <div class="p-file-card__group-btn" v-if="pHasButton">
+    <div v-if="pHasButton" class="p-file-card__group-btn">
       <slot name="buttons" />
     </div>
   </div>

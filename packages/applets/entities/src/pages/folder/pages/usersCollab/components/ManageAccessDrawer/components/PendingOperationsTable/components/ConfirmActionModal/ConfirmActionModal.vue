@@ -6,8 +6,8 @@
     :cancelButtonLabel="t('cancel')"
     :isConfirmButtonDisabled="isConfirmActionDisabled"
     :isConfirmButtonLoading="isOperationExecuting"
-    @confirm="handleConfirm"
     data-testid="action-confirmation-modal"
+    @confirm="handleConfirm"
   >
     <div v-if="isOperationPendingRefusal">
       <i18n-t keypath="refuseAccessDescription" tag="p">
@@ -46,8 +46,8 @@
       >
         <PFormItem pProp="reason" :pLabel="t('reasonForRefusal')">
           <PInput
-            pType="textarea"
             v-model="reasonForRefusal.reason"
+            pType="textarea"
             :value="reasonForRefusal.reason"
             data-testid="reason-for-refusal-input"
           />

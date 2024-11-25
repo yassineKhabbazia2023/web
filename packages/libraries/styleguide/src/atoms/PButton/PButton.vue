@@ -57,8 +57,8 @@ const pClassMapper = computed(() => {
   const buttonTypeClass = nativeTypes.includes(button.value.buttonType)
     ? ''
     : {
-        [`p-button--${button.value.buttonType}`]: true,
-      }
+      [`p-button--${button.value.buttonType}`]: true,
+    }
   return [
     'p-button',
     { 'p-button--icon': props.pIconOnly },

@@ -3,17 +3,17 @@
     <PButton
       pType="default"
       class="margin-right--4"
-      @click="emit('clickPrevious')"
       data-testid="previousButton"
+      @click="emit('clickPrevious')"
     >
       {{ previousLabel }}
     </PButton>
     <PButton
       pType="primary"
-      @click="emit('clickNext')"
       data-testid="nextButton"
       :pDisabled="props.isNextButtonDisabled"
       :pLoading="props.isNextButtonLoading"
+      @click="emit('clickNext')"
     >
       {{ nextLabel }}
     </PButton>

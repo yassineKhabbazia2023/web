@@ -13,15 +13,14 @@
           <PInput
             v-model="createMandateForm.erpId"
             data-testid="ibs-number-test"
-          >
-          </PInput>
+          />
         </PFormItem>
         <PRow :pGutter="16">
           <PCol :pSpan="12">
             <PFormItem inline :pLabel="t('company-name')">
               <PInput
-                data-testid="name-input-test"
                 v-model="createMandateForm.name"
+                data-testid="name-input-test"
                 disabled
               />
             </PFormItem>
@@ -33,8 +32,8 @@
               disabled
             >
               <PInput
-                data-testid="siretNumber-input-test"
                 v-model="createMandateForm.siretNumber"
+                data-testid="siretNumber-input-test"
                 pSize="default"
                 disabled
               />
@@ -68,7 +67,8 @@
               pProp="lastName"
               inline
               :pLabel="t('lastName')"
-              disabled>
+              disabled
+            >
               <PInput v-model="createMandateForm.lastName" state="default" />
             </PFormItem>
           </PCol>
@@ -114,8 +114,7 @@
           disabled
         >
           <div>
-            <span class="create-mandate-form_optional-title font-semibold"
-            >{{ t('complement') }}
+            <span class="create-mandate-form_optional-title font-semibold">{{ t('complement') }}
             </span>
             <span class="create-mandate-form_optional font-normal">{{
               t('optional')
@@ -144,7 +143,7 @@
               inline
               :pLabel="t('city')"
             >
-              <PInput v-model="createMandateForm.city"/>
+              <PInput v-model="createMandateForm.city" />
             </PFormItem>
           </PCol>
         </PRow>
@@ -170,11 +169,11 @@
               disabled
             >
               <PInput
-                data-testid="institutionCode-input-test"
                 v-model="createMandateForm.institutionCode"
+                data-testid="institutionCode-input-test"
                 pPlaceholder="_ _ _ _ _"
-                @blur="checkFields()"
                 state="default"
+                @blur="checkFields()"
               />
             </PFormItem>
           </PCol>
@@ -188,11 +187,11 @@
               disabled
             >
               <PInput
-                data-testid="branchCode-input-test"
                 v-model="createMandateForm.branchCode"
+                data-testid="branchCode-input-test"
                 pPlaceholder="_ _ _ _ _"
-                @blur="checkFields()"
                 state="default"
+                @blur="checkFields()"
               />
             </PFormItem>
           </PCol>
@@ -208,11 +207,11 @@
               disabled
             >
               <PInput
-                data-testid="accountNumber-input-test"
                 v-model="createMandateForm.accountNumber"
+                data-testid="accountNumber-input-test"
                 pPlaceholder="_ _ _ _ _ _ _ _ _ _ _"
-                @blur="checkFields()"
                 state="default"
+                @blur="checkFields()"
               />
             </PFormItem>
           </PCol>
@@ -226,11 +225,11 @@
               disabled
             >
               <PInput
-                data-testid="key-input-test"
                 v-model="createMandateForm.key"
+                data-testid="key-input-test"
                 pPlaceholder="_ _"
-                @blur="checkFields()"
                 state="default"
+                @blur="checkFields()"
               />
             </PFormItem>
           </PCol>
@@ -242,23 +241,23 @@
           disabled
         >
           <PInput
-            data-testid="bank-input-test"
             v-model="createMandateForm.bank"
+            data-testid="bank-input-test"
             state="default"
             disabled
           />
         </PFormItem>
-        <PAlert pType="danger" v-if="isScrappable">
+        <PAlert v-if="isScrappable" pType="danger">
           {{ t('form.error.notListed') }}
           <span class="font-bold">
             {{ t('form.error.frFmMandat') }}
           </span>
           {{ t('form.error.contactTeam') }}
         </PAlert>
-        <PAlert pType="danger" v-if="isNonScrappable">
+        <PAlert v-if="isNonScrappable" pType="danger">
           {{ t('form.error.nonScrappable') }}
         </PAlert>
-        <PAlert pType="danger" v-if="creationMandateError">
+        <PAlert v-if="creationMandateError" pType="danger">
           {{ creationMandateError }}
         </PAlert>
       </div>

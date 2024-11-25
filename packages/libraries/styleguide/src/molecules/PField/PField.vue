@@ -17,9 +17,9 @@
       :data-testid="pTestId"
     />
     <PDropdown
-      class="flex--grow-1"
       v-if="pFieldType === 'dropdown'"
       v-model="internalValue"
+      class="flex--grow-1"
       :pOptions="pDropdownOptions"
       :pReadonly="pReadonly"
       :pDisabled="pDisabled"
@@ -32,8 +32,8 @@
     />
     <PDatePicker
       v-if="pFieldType === 'date'"
-      class="flex--grow-1"
       v-model="internalDate"
+      class="flex--grow-1"
       :pType="pDateType"
       :pReadonly="pReadonly"
       :pDisabled="pDisabled"
@@ -51,9 +51,9 @@
       }"
     >
       <PRadio
-        v-model="internalValue"
         v-for="(pOption, index) in pOptions"
         :key="index"
+        v-model="internalValue"
         :pLabel="pOption.pValue"
         :pName="pName"
         :pBorder="pBorder"
@@ -73,8 +73,8 @@
     >
       <PCheckbox
         v-for="({ isChecked, label }, index) in internalCheckboxOptions"
-        :modelValue="isChecked"
         :key="index"
+        :modelValue="isChecked"
         @change="onCheckboxChange(index, $event)"
       >
         {{ label }}

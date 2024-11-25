@@ -25,7 +25,8 @@
         pSize="default"
         data-testid="schedule-send-reminder-button"
         :pLoading="loadFormIndicator"
-        @click="triggerFormEvaluation">
+        @click="triggerFormEvaluation"
+      >
         {{ t('send-reminder') }}
       </PButton>
     </template>

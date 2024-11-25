@@ -1,4 +1,4 @@
-/* eslint-disable vitest/no-hooks */
+ 
 import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'

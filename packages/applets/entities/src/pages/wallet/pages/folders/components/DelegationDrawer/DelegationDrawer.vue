@@ -1,7 +1,7 @@
 <template>
   <PDrawer
-    class="delegation-drawer"
     v-model="isDelegationDrawerOpened"
+    class="delegation-drawer"
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"
   >
@@ -220,19 +220,19 @@ const displayFailureNotification = (message: string) => {
 const handleDisplayNotification = (isSuccess:boolean, numberOfSelectedFolders: number) => {
   let message = ''
   switch (flowType.value) {
-    case DelegationFlowType.FULL:
-      message = isSuccess
-        ? t('notificationMessages.flowTypeFull.successNotificationMessage')
-        : t('notificationMessages.flowTypeFull.failureNotificationMessage')
-      break
-    case DelegationFlowType.SPECIFIC:
-      message = isSuccess
-        ? t('notificationMessages.flowTypeSpecific.successNotificationMessage', numberOfSelectedFolders)
-        : t('notificationMessages.flowTypeSpecific.failureNotificationMessage', numberOfSelectedFolders)
-      break
-    default:
-      console.warn('not supported')
-      return
+  case DelegationFlowType.FULL:
+    message = isSuccess
+      ? t('notificationMessages.flowTypeFull.successNotificationMessage')
+      : t('notificationMessages.flowTypeFull.failureNotificationMessage')
+    break
+  case DelegationFlowType.SPECIFIC:
+    message = isSuccess
+      ? t('notificationMessages.flowTypeSpecific.successNotificationMessage', numberOfSelectedFolders)
+      : t('notificationMessages.flowTypeSpecific.failureNotificationMessage', numberOfSelectedFolders)
+    break
+  default:
+    console.warn('not supported')
+    return
   }
   if (isSuccess) {
     displaySuccessNotification(message)

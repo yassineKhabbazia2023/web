@@ -7,12 +7,16 @@
     <Variant title="Notification Card">
       <PNotificationCard
         :pTime="PNotificationCardData.pTime"
-        :pIsNew="PNotificationCardData.pIsNew">
+        :pIsNew="PNotificationCardData.pIsNew"
+      >
         <template #avatar>
           <PAvatar
             :pShape="currentShape"
             :pType="currentType"
-            :pColor="currentColor"> AB </PAvatar>
+            :pColor="currentColor"
+          >
+            AB
+          </PAvatar>
         </template>
         <template #text>
           <span class="font-bold">Alexandre De Lavandia</span> filed you a document <span class="font-bold">liasse-fiscale.pdf</span> inside the folder Publications.
@@ -22,7 +26,8 @@
             <PButton
               pType="generic"
               class="el-button--icon"
-              pSize="small">
+              pSize="small"
+            >
               <PIcon pName="threeDots" />
             </PButton>
           </PToolbox>

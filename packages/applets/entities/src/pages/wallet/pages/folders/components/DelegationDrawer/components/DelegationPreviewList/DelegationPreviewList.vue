@@ -36,8 +36,7 @@
             scope.row.delegate.firstName + ' ' + scope.row.delegate.lastName
           "
           :pContent="scope.row.delegate.email"
-        >
-        </PDoubleText>
+        />
       </template>
     </PTableColumn>
     <PTableColumn

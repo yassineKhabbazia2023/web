@@ -3,9 +3,9 @@
     <PDialog
       v-model="isPopupVisible"
       :title="title"
-      @close="handleClosePopup"
       :pShowClose="showClose"
       :pAlignCenter="alignCenter"
+      @close="handleClosePopup"
     >
       <div class="confirmation-popup__message">
         {{ message }}

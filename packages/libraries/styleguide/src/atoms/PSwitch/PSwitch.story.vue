@@ -1,16 +1,16 @@
 <template>
   <Story title="2. Atoms/Switch" icon="teenyicons:circle-outline">
     <Variant title="'ON' Default/Hover/Focus/Press">
-      <PSwitch v-model="on"/>
+      <PSwitch v-model="on" />
     </Variant>
     <Variant title="'ON' Disabled">
-      <PSwitch v-model="alwaysOn" pDisabled/>
+      <PSwitch v-model="alwaysOn" pDisabled />
     </Variant>
     <Variant title="'OFF' Default/Hover/Focus/Press">
-      <PSwitch v-model="off"/>
+      <PSwitch v-model="off" />
     </Variant>
     <Variant title="'OFF' Disabled">
-      <PSwitch v-model="alwaysOff" pDisabled/>
+      <PSwitch v-model="alwaysOff" pDisabled />
     </Variant>
     <Variant title="with text">
       <PSwitch v-model="withText.state" :pActiveText="withText.label" />

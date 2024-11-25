@@ -5,18 +5,18 @@
       pType="white"
       pSize="small"
       pPlain
-      @click="onClickAddRemider"
       data-testid="create-schedule-add"
+      @click="onClickAddRemider"
     >
       <PIcon>
         <PIBell />
       </PIcon>
-      <span class="margin-left--2">{{ t('add')}}</span>
+      <span class="margin-left--2">{{ t('add') }}</span>
     </PButton>
     <ScheduleReminder
       v-for="({ isError, reminder }, index) in internalReminders"
-      :isError="isError"
       :key="index"
+      :isError="isError"
       :modelValue="reminder"
       class="margin-top--2"
       @update:model-value="onUpdateReminder(index, $event)"

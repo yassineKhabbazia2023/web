@@ -27,16 +27,19 @@
         <HstRadio
           v-model="basicButton.pType"
           title="Type"
-          :options="buttonTypeList" />
+          :options="buttonTypeList"
+        />
         <HstRadio
           v-model="basicButton.pSize"
           title="Size"
-          :options="buttonSizeList" />
+          :options="buttonSizeList"
+        />
       </template>
     </Variant>
     <Variant
       title="Icon Button"
-      icon="line-md:iconify2">
+      icon="line-md:iconify2"
+    >
       <PButton
         pIconOnly
         :pType="iconButton.pType"
@@ -59,11 +62,13 @@
         <HstRadio
           v-model="iconButton.pType"
           title="Type"
-          :options="buttonTypeList" />
+          :options="buttonTypeList"
+        />
         <HstRadio
           v-model="iconButton.pSize"
           title="Size"
-          :options="buttonSizeList" />
+          :options="buttonSizeList"
+        />
       </template>
     </Variant>
     <Variant
@@ -72,12 +77,13 @@
     >
       <PButtonGroup
         :pType="groupButton.pType"
-        :pSize="groupButton.pSize">
+        :pSize="groupButton.pSize"
+      >
         <PButton>
           {{ previousText }}
         </PButton>
         <PButton>
-          {{  nextText }}
+          {{ nextText }}
         </PButton>
       </PButtonGroup>
       <template #controls>

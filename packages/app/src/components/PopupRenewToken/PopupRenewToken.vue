@@ -1,7 +1,7 @@
 <template>
   <PDialog
     v-model="isVisibleDialog"
-    pWidth='480px'
+    pWidth="480px"
     pModal
     class="dialog-renew-token"
     :pCenter="false"
@@ -62,7 +62,9 @@ const isVisibleDialog = ref(false)
 const { logoutAndRedirectToLogin } = useRedirection()
 
 function onTokenChanges(token: string) {
-  if (!token) return
+  if (!token) {
+    return
+  }
 
   const decodedToken = jwtDecode<JwtPayload>(token)
   exp = decodedToken?.exp

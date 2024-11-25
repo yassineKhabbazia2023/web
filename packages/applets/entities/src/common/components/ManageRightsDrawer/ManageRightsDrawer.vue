@@ -2,8 +2,8 @@
   <PDrawer
     v-model="isManageRightsDrawerVisible"
     :pTitle="t('modifyUserRights')"
-    @close-drawer-button="handleCloseDrawer"
     destroyOnClose
+    @close-drawer-button="handleCloseDrawer"
   >
     <PUserCard
       :pTitle="selectedUser.fullName"

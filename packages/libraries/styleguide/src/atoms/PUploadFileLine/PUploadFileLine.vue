@@ -26,9 +26,10 @@
             data-testid="upload-fileline-icon-fail"
           />
           <component
+            :is="iconResolver(pIcon)"
             v-if="pIcon && pStatus !== 'fail'"
             data-testid="upload-file-line-icon-component"
-            :is="iconResolver(pIcon)" />
+          />
         </PIcon>
       </span>
       <p class="p-upload-file-line__title overflow-hidden">

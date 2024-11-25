@@ -1,9 +1,9 @@
 <template>
   <ElTable
+    ref="table"
     :data="pData"
     :stripe="pStripe"
     :rowClassName="tableRowClassName"
-    ref="table"
     :fit="pFit"
   >
     <slot />

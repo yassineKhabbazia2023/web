@@ -37,11 +37,11 @@
     </div>
     <PForm
       v-else
-      @submit.prevent="handleCollaboratorUpdate"
       ref="formRef"
       :pModel="formValues"
       :pRules="formRules"
       pLabelPosition="top"
+      @submit.prevent="handleCollaboratorUpdate"
     >
       <PFormItem prop="lastName" :pLabel="t('lastName')">
         <PInput
@@ -54,13 +54,15 @@
         <PInput
           :value="collabDetails.firstName"
           disabled
-          pName="firstName" />
+          pName="firstName"
+        />
       </PFormItem>
       <PFormItem prop="email" :pLabel="t('email')">
         <PInput
           :value="collabDetails.email"
           disabled
-          pName="email" />
+          pName="email"
+        />
       </PFormItem>
       <PFormItem prop="mobilePhone" :pLabel="t('mobilePhone')">
         <PInput
@@ -83,16 +85,16 @@
           class="margin-right--4"
           pType="primary"
           pPlain
-          @click="handleCloseDrawer"
           data-testid="collab-form-cancel-button"
+          @click="handleCloseDrawer"
         >
           {{ t('cancel') }}
         </PButton>
         <PButton
           :pDisabled="isSubmitButtonDisabled"
           pType="primary"
-          @click="handleCollaboratorUpdate"
           data-testid="collab-form-submit-button"
+          @click="handleCollaboratorUpdate"
         >
           {{ t('submit') }}
         </PButton>

@@ -5,13 +5,13 @@
     :pTotal="pagesCount"
     :pPageSizeSelectorSuffix="pageRangeSelectorSuffix"
     :pPageSizeSelectorGroupLabel="pageRangeSelectorGroupLabel"
-    @update:p-current-page="handleCurrentChange"
-    @on-page-range-changed="handleSizeChange"
     :pPageSize="limit"
     pTestIdRoot="mandate"
     :pCurrentPage="currentPage"
+    @update:p-current-page="handleCurrentChange"
+    @on-page-range-changed="handleSizeChange"
   >
-    <p>{{`${startIndex} - ${endIndex}`}} {{t('on')}} {{pagesCount}}</p>
+    <p>{{ `${startIndex} - ${endIndex}` }} {{ t('on') }} {{ pagesCount }}</p>
   </PPagination>
 </template>
 

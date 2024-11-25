@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+ 
 import type { VueWrapper } from '@vue/test-utils'
 import { mount, flushPromises } from '@vue/test-utils'
 import Ged from './'
@@ -133,7 +133,7 @@ const folder = {
 } as Folder
 
 describe('ged', () => {
-  // eslint-disable-next-line vitest/no-hooks
+   
   beforeEach(() => {
     setActivePinia(pinia)
   })

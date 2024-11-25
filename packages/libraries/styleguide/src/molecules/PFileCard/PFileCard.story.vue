@@ -2,7 +2,8 @@
   <Story
     title="3. Molecules/FileCard"
     icon="fluent-emoji-high-contrast:card-file-box"
-    :layout="{ type: 'single', iframe: true }">
+    :layout="{ type: 'single', iframe: true }"
+  >
     <Variant title="Default">
       <div class="padding--4">
         <PFileCard

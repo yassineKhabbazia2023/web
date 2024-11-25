@@ -28,8 +28,7 @@
         @click-delete="logEvent('click-delete', $event)"
         @update:p-input-value="logEvent('update:pInputValue', $event)"
         @update:p-options-value="onUpdateOptionsValue"
-      >
-      </PUserAction>
+      />
       <template #controls>
         <HstText v-model="data.pInputValue" title="Input value" />
         <HstText v-model="data.pProfile" title="Profile" />
@@ -37,9 +36,9 @@
         <HstText v-model="data.pDescription" title="Content" />
         <HstText v-model="data.pRole" title="Role" />
         <HstText v-model="data.pTagContent" title="Tag content" />
-        <HstCheckbox v-model="data.pShowInput" title="Show input"/>
-        <HstText v-model="data.pInputPlaceholder" title="pInputPlaceholder"/>
-        <HstText v-model="data.pOptionsPlaceholder" title="pOptionsPlaceholder"/>
+        <HstCheckbox v-model="data.pShowInput" title="Show input" />
+        <HstText v-model="data.pInputPlaceholder" title="pInputPlaceholder" />
+        <HstText v-model="data.pOptionsPlaceholder" title="pOptionsPlaceholder" />
         <HstCheckbox v-model="data.pShowDelete" title="Show delete button" />
       </template>
     </Variant>

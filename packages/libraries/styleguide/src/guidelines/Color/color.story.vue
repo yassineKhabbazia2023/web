@@ -18,7 +18,8 @@
         </p>
       </div>
       <div class="margin-bottom--4">
-        <h2 class="margin-bottom--2"> Couleur principale
+        <h2 class="margin-bottom--2">
+          Couleur principale
         </h2>
         <p class="margin-bottom--4">
           C’est LA touche de couleur de KPMG Pulse. Elle apporte du dynamisme à nos interfaces.
@@ -61,7 +62,8 @@
         <h3 class="margin-bottom--2">
           Les classes de texte
         </h3>
-        <p class="margin-bottom--2">Les couleurs de texte seront préfixées par : <span class="bold">text-color--</span>
+        <p class="margin-bottom--2">
+          Les couleurs de texte seront préfixées par : <span class="bold">text-color--</span>
           <br>
           Suivi ensuite par la catégorie de couleur, puis de son idenfiant.
           <br>
@@ -79,7 +81,8 @@
         <h3 class="margin-bottom--2">
           Les classes de background
         </h3>
-        <p class="margin-bottom--2">Les couleurs de background seront préfixées par : <span class="bold">bg--</span>
+        <p class="margin-bottom--2">
+          Les couleurs de background seront préfixées par : <span class="bold">bg--</span>
           <br>
           Suivi ensuite par la catégorie de couleur, puis de son idenfiant.
           <br>
@@ -90,7 +93,8 @@
             bold margin-bottom--2
             hover-bg--persian-500
             hover-text-color--secondary-cyan-txt
-          ">
+          "
+        >
           Quelques exemples :
         </p>
         <ul>
@@ -167,11 +171,13 @@
         <HstSelect
           v-model="prefix"
           title="Prefix"
-          :options="prefixes" />
+          :options="prefixes"
+        />
         <HstSelect
           v-model="groupKey"
           title="Group"
-          :options="groupKeys" />
+          :options="groupKeys"
+        />
       </template>
     </Variant>
   </Story>

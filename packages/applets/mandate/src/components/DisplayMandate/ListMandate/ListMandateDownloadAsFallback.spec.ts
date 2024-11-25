@@ -58,7 +58,7 @@ describe('mandate collection', () => {
       data: [],
       currentPage,
     })
-    // eslint-disable-next-line vitest/prefer-spy-on
+     
     window.showSaveFilePicker = vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),

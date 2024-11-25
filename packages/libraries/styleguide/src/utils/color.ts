@@ -45,7 +45,9 @@ export function useCopyColor() {
     const colorValue = getColorValue(colorType)
     color.value = colorValue
     source.value = `--el-color-${colorType}`
-    if (!isSupported) { ElMessage.error('Copy failed') }
+    if (!isSupported) {
+      ElMessage.error('Copy failed')
+    }
 
     try {
       await copy()

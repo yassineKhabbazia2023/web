@@ -1,11 +1,11 @@
 import type { ExtendedCollab } from './../../types'
 
-/* eslint-disable no-unused-vars */
+ 
 export enum CollabRightsDrawerSteps {
   ROLES,
   MANAGE_RIGHTS,
 }
-/* eslint-enable no-unused-vars */
+ 
 
 export interface Role {
   id: number

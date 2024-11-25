@@ -2,7 +2,8 @@
   <Story
     title="2. Atoms/Text"
     icon="fluent:button-16-regular"
-    :layout="{ type: 'grid', width: '300px' }">
+    :layout="{ type: 'grid', width: '300px' }"
+  >
     <Variant title="PText">
       <PText
         :pContent="PTextBasicData.content"
@@ -11,18 +12,17 @@
         :pType="PTextBasicData.type"
         :disabled="PTextBasicData.disabled"
         :selected="PTextBasicData.selected"
-      >
-      </PText>
+      />
       <template #controls>
         <hstSelect
           v-model="PTextBasicData.type"
           title="Type"
           :options="typeOptions"
         />
-        <HstText v-model="PTextBasicData.content" title="Content"/>
-        <HstCheckbox v-model="PTextBasicData.bold" title="Bold"/>
-        <HstCheckbox v-model="PTextBasicData.disabled" title="Disabled"/>
-        <HstCheckbox v-model="PTextBasicData.selected" title="Selected"/>
+        <HstText v-model="PTextBasicData.content" title="Content" />
+        <HstCheckbox v-model="PTextBasicData.bold" title="Bold" />
+        <HstCheckbox v-model="PTextBasicData.disabled" title="Disabled" />
+        <HstCheckbox v-model="PTextBasicData.selected" title="Selected" />
       </template>
     </Variant>
   </Story>

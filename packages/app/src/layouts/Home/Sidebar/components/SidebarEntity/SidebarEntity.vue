@@ -22,8 +22,8 @@
             :class="`sidenav-entity__actions-toggle--${
               isSidebarOpened ? 'open' : 'close'
             }`"
-            @item-clicked="onToggleSidebar"
             data-testid="sidebar-toggle"
+            @item-clicked="onToggleSidebar"
           >
             <PIcon
               color="#FFF"
@@ -162,7 +162,9 @@ const walletItem = computed((): SidebarEntityItemProps => {
 })
 
 const isSelectedEntityActive = computed(() => {
-  if (!selectedEntity.value?.accountId) return false
+  if (!selectedEntity.value?.accountId) {
+    return false
+  }
 
   const params = {
     id: selectedEntity.value.accountId,

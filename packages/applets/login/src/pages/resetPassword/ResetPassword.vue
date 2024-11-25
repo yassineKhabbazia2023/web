@@ -38,11 +38,11 @@
       <PFormItem>
         <PButton
           pType="primary"
-          @click="handleSubmit(formRef)"
           :pDisabled="!isFormValid"
           :pLoading="isLoading"
           class="reset-submit-button"
           data-testid="reset-password-submit-button"
+          @click="handleSubmit(formRef)"
         >
           {{ t('submitBtn') }}
         </PButton>
@@ -50,9 +50,9 @@
       <PFormItem>
         <PButton
           pType="white"
-          @click="router.push({ name: 'loginClient' })"
           class="back-to-login-button"
           data-testid="reset-password-back-to-login-button"
+          @click="router.push({ name: 'loginClient' })"
         >
           {{ t('backToLogin') }}
         </PButton>
@@ -114,7 +114,9 @@ const rules = reactive<FormRules<typeof formValues>>({
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
   if (formEl.validate) {
     try {
       await formEl.validate()

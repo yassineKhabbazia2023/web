@@ -67,7 +67,7 @@
                   >
                     {{ t('joinClub') }}
                     <PIcon class="el-button__icon--right">
-                      <PIArrowRight data-testid="join-arrow-right-icon"/>
+                      <PIArrowRight data-testid="join-arrow-right-icon" />
                     </PIcon>
                   </PButton>
                 </div>
@@ -118,7 +118,8 @@
                   <PIcon
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2">
+                    class="margin-right--2"
+                  >
                     <PICheck />
                   </PIcon>
                   {{ t('gedMobile') }}
@@ -127,7 +128,8 @@
                   <PIcon
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2">
+                    class="margin-right--2"
+                  >
                     <PICheck />
                   </PIcon>
                   {{ t('notifMobile') }}
@@ -136,7 +138,8 @@
                   <PIcon
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2">
+                    class="margin-right--2"
+                  >
                     <PICheck />
                   </PIcon>
                   {{ t('perfMobile') }}
@@ -145,7 +148,8 @@
                   <PIcon
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2">
+                    class="margin-right--2"
+                  >
                     <PICheck />
                   </PIcon>
                   {{ t('socialMobile') }}

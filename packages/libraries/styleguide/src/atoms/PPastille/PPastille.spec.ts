@@ -19,9 +19,9 @@ const createWrapper = (props = defaultProps) => shallowMount(PPastille, {
       ElTag: {
         name: 'ElTag',
         template: '<div><slot /></div>',
-      }
-    }
-  }
+      },
+    },
+  },
 })
 describe('pPastille', () => {
   describe('props', () => {

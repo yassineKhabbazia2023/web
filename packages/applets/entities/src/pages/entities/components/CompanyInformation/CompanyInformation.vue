@@ -6,8 +6,8 @@
       </p>
     </div>
     <PAlert
-      class="margin-y--3"
       id="company-info-alert"
+      class="margin-y--3"
       data-testid="alert-instruction"
     >
       {{ t('alertInstruction') }}

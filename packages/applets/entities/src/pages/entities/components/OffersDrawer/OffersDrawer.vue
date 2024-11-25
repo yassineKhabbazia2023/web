@@ -6,8 +6,8 @@
       :content="t('confirmationContent')"
       :confirmButtonLabel="t('confirm')"
       :cancelButtonLabel="t('cancel')"
-      @confirm="handleConfirm"
       data-testid="create-offer-confirmation-modal"
+      @confirm="handleConfirm"
     />
     <PDrawer
       v-model="internalIsOpened"
@@ -16,8 +16,8 @@
       pSize="50%"
       pDirection="rtl"
       class="offers-drawer"
-      @close-drawer-button="onCloseOffersDrawer"
       data-testid="drawer"
+      @close-drawer-button="onCloseOffersDrawer"
     >
       <template #header-prefix>
         <p class="offers-drawer__company-name font-base">
@@ -99,8 +99,8 @@
           />
           <StepNote
             v-if="currentSubscriptionOffer?.approvalRequired"
-            v-model="notes[activeStep]"
             :key="activeStep"
+            v-model="notes[activeStep]"
             class="margin-top--6"
           />
         </div>

@@ -1,6 +1,6 @@
-const base = require("../../@config/dependency-cruiser.base")
+const base = require('../../@config/dependency-cruiser.base')
 
 module.exports = {
-  ...base
-};
+  ...base,
+}
 

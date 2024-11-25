@@ -6,13 +6,13 @@
       :pName="iconName"
     />
     <div class="p-alert__content margin-left--3">
-      <span class="font-bold"><slot name="bold-text"/></span>
+      <span class="font-bold"><slot name="bold-text" /></span>
       <slot />
     </div>
     <button
       v-if="pClosable"
-      @click="$emit('close')"
       class="p-alert__close-btn padding--0 margin-left--2"
+      @click="$emit('close')"
     >
       <PIcon
         :color="AppColors.PERSIAN_900"

@@ -51,11 +51,15 @@ const breadcrumbItemClicked = (id: number) => {
 }
 
 const getFullPathBreadcrumItem = (id: number) => {
-  if (id === -1) return ''
+  if (id === -1) {
+    return ''
+  }
 
   const element = props.pElements.find((item) => item.pId === id)
 
-  if (!element) return ''
+  if (!element) {
+    return ''
+  }
 
   const index = props.pElements.indexOf(element)
 
@@ -67,13 +71,13 @@ const getFullPathBreadcrumItem = (id: number) => {
 
 const breadCrumpSize = computed(() => {
   switch (props.pSize) {
-    case 'S':
-      return 'small'
-    case 'M':
-      return 'medium'
+  case 'S':
+    return 'small'
+  case 'M':
+    return 'medium'
 
-    default:
-      return ''
+  default:
+    return ''
   }
 })
 </script>

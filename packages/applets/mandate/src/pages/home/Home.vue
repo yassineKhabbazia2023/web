@@ -6,8 +6,8 @@
     />
     <SearchBar
       v-model="searchParams.searchTerm"
-      @update:model-value="debouncedRefreshData"
       class="padding-y--6"
+      @update:model-value="debouncedRefreshData"
     />
     <ListMandate
       :currentPage="searchParams.currentPage"

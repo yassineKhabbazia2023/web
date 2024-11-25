@@ -8,7 +8,7 @@
       <div class="add-customer-drawer__header">
         <span class="add-customer-drawer__entity-name">{{ targetEntityName }}</span>
         <h3>
-          {{ isAddContactSucceeded ? t('userAdded') : t('addUser')}}
+          {{ isAddContactSucceeded ? t('userAdded') : t('addUser') }}
         </h3>
       </div>
     </template>
@@ -80,7 +80,7 @@
         data-testid="add-customer-cancel-button"
         @click="isDrawerOpened = false"
       >
-        {{ t('close')}}
+        {{ t('close') }}
       </PButton>
     </template>
   </PDrawer>
@@ -172,7 +172,9 @@ const NEW_USER = {
 const hasFormBeenSent = ref(false)
 const hasFormSubmissionFailed = ref(false)
 async function handleAddContactFormSubmission() {
-  if (!addCustomerFormRef.value) return
+  if (!addCustomerFormRef.value) {
+    return
+  }
   try {
     await addCustomerFormRef.value.validate()
     isNextButtonLoading.value = true

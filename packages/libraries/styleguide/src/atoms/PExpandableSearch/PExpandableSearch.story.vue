@@ -2,9 +2,9 @@
   <Story title="2. Atoms/ExpandableSearch" icon="tabler:search">
     <Variant title="Basic Usage">
       <PExpandableSearch
-        :pPlaceholder="pPlaceholder"
         v-model:pSearchContent="pSearchContent"
-        :pIsSearchShrinkable ="pIsSearchShrinkable "
+        :pPlaceholder="pPlaceholder"
+        :pIsSearchShrinkable="pIsSearchShrinkable "
         :pIsSearchOpen="pIsSearchOpen"
         pType="default"
         :pFocusOnExpand="pFocusOnExpand"
@@ -14,9 +14,9 @@
       />
       <template #controls>
         <HstText v-model="pPlaceholder" title="Placeholder" />
-        <HstCheckbox v-model="pIsSearchShrinkable " title="pIsSearchShrinkable "/>
-        <HstCheckbox v-model="pIsSearchOpen " title="pIsSearchOpen "/>
-        <HstCheckbox v-model="pFocusOnExpand " title="pFocusOnExpand "/>
+        <HstCheckbox v-model="pIsSearchShrinkable " title="pIsSearchShrinkable " />
+        <HstCheckbox v-model="pIsSearchOpen " title="pIsSearchOpen " />
+        <HstCheckbox v-model="pFocusOnExpand " title="pFocusOnExpand " />
       </template>
     </Variant>
   </Story>

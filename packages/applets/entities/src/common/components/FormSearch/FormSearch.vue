@@ -1,13 +1,12 @@
 <template>
   <PForm
-    @submit.prevent
     ref="formRef"
     :pRules="rules"
     :pModel="formValues"
+    @submit.prevent
   >
     <PFormItem prop="search">
       <PInput
-        @keyup="handleSearchSubmit"
         v-model="formValues.search"
         :pPlaceholder="placeholder"
         :pPrefixIcon="PISearch"
@@ -15,6 +14,7 @@
         pSize="small"
         pType="search"
         pAutofocus
+        @keyup="handleSearchSubmit"
       />
     </PFormItem>
   </PForm>

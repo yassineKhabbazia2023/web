@@ -7,5 +7,5 @@ export interface ToastPluginType {
   onClick?: Function
 }
 
-// eslint-disable-next-line no-unused-vars
+ 
 export type ToastPluginFunc = (toastPluginType: ToastPluginType) => void

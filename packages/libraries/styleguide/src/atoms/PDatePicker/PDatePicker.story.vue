@@ -47,7 +47,8 @@
               v-model="date"
               pType="week"
               pFormat="[Semaine] ww"
-              pPlaceholder="Pick a week" />
+              pPlaceholder="Pick a week"
+            />
           </div>
           <div class="block">
             <span class="demonstration">Month</span>
@@ -55,7 +56,8 @@
               v-model="date2"
               pType="month"
               pPlaceholder="Pick a month"
-              pFormat="MM/YYYY" />
+              pFormat="MM/YYYY"
+            />
           </div>
         </div>
         <div class="container">
@@ -64,7 +66,8 @@
             <PDatePicker
               v-model="date3"
               pType="year"
-              pPlaceholder="Pick a year" />
+              pPlaceholder="Pick a year"
+            />
           </div>
           <div class="block">
             <span class="demonstration">Dates</span>
@@ -72,7 +75,8 @@
               v-model="date4"
               pType="dates"
               pFormat="DD/MM/YYYY"
-              pPlaceholder="Pick one or more dates" />
+              pPlaceholder="Pick one or more dates"
+            />
           </div>
         </div>
       </div>
@@ -102,8 +106,8 @@
             pStartPlaceholder="Start date"
             pEndPlaceholder="End date"
             :pShortcuts="shortcutsDataRange"
-            @calendar-change="calendarChange"
             pFormat="DD/MM/YYYY"
+            @calendar-change="calendarChange"
           />
         </div>
       </div>

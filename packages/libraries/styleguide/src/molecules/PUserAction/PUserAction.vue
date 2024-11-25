@@ -42,7 +42,8 @@
         flex
         flex--align-items-center
         flex--justify-content-flex-end
-      ">
+      "
+    >
       <PAlert
         v-if="pWarningContent"
         pType="warning"
@@ -71,8 +72,8 @@
       />
       <PDropdown
         v-if="pShowOptions"
-        class="flex--grow-1 p-user-action__dropdown"
         v-model="internalDropdownValue"
+        class="flex--grow-1 p-user-action__dropdown"
         :pPlaceholder="pOptionsPlaceholder"
         :pOptions="pOptions"
         data-testid="p-user-action-options"
@@ -90,8 +91,8 @@
         "
         pType="white"
         pSize="default"
-        @click="emit('click-delete')"
         data-testid="p-user-action-delete-icon"
+        @click="emit('click-delete')"
       >
         <PIcon pName="trash" />
       </PButton>

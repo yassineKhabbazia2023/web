@@ -26,12 +26,12 @@ const props = defineProps<OfferActivationStatusProps>()
 
 const formattedStatus = computed((): ActivationStatus => {
   switch (props.status) {
-    case OfferActivationStatus.VALIDATED:
-      return { text: t('validated'), color: 'success', icon: 'PICheckCircle' }
-    case OfferActivationStatus.REJECTED:
-      return { text: t('rejected'), color: 'danger', icon: 'PIXCircle' }
-    default:
-      return { text: t('pending'), color: 'warning', icon: 'PIInfoCircle' }
+  case OfferActivationStatus.VALIDATED:
+    return { text: t('validated'), color: 'success', icon: 'PICheckCircle' }
+  case OfferActivationStatus.REJECTED:
+    return { text: t('rejected'), color: 'danger', icon: 'PIXCircle' }
+  default:
+    return { text: t('pending'), color: 'warning', icon: 'PIInfoCircle' }
   }
 })
 </script>

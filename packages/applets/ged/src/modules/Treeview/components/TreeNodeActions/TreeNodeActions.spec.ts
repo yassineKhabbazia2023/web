@@ -1,4 +1,4 @@
-/* eslint-disable vitest/no-hooks */
+ 
 import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeActionsProps }
   from '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'

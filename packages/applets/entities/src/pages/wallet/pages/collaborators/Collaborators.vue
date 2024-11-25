@@ -32,7 +32,6 @@
 
     <PPagination
       v-if="shouldShowPagination && !!state.totalItems"
-      @on-page-range-changed="handlePageRangeChanged"
       v-model:p-current-page="state.currentPage"
       v-model:p-page-size="state.limit"
       :pTotal="state.totalItems"
@@ -42,6 +41,7 @@
       pShowTotalPageCounter
       pBackground
       class="flex--grow-0 flex--shrink-0 margin-negative-x--2"
+      @on-page-range-changed="handlePageRangeChanged"
     >
       <p>{{ paginationLabel }}</p>
     </PPagination>

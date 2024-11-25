@@ -9,7 +9,8 @@
       pType="generic"
       class="on-document-action-clicked"
       pCircle
-      @click="handleActionsDropdownOpening">
+      @click="handleActionsDropdownOpening"
+    >
       <PIcon size="14" :color="AppColors.GRAY_300">
         <PIThreeDots />
       </PIcon>

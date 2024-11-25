@@ -42,7 +42,9 @@ export function useDownloadFolder(
   const inProgressNotification = ref()
 
   const handleDownloadFolderEvent = async () => {
-    if (!downloadFolderProps.value.selectedFolderId) return Promise.resolve()
+    if (!downloadFolderProps.value.selectedFolderId) {
+      return Promise.resolve()
+    }
 
     triggerInProgressNotification()
     try {

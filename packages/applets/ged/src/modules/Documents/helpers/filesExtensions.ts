@@ -85,7 +85,9 @@ export const getDocumentNameExtension = (filename: string): string => {
 
 export const getDocumentNameWithoutExtension = (filename: string): string => {
   const parts = filename.split('.')
-  if (parts.length < 2) return filename
+  if (parts.length < 2) {
+    return filename
+  }
 
   parts.pop()
   return parts.join('.')
@@ -104,47 +106,49 @@ export const isExtensionAuthorized = (extension: string): boolean => {
 }
 
 export const getFileIcon = (fileName: string) => {
-  if (!fileName || !fileName.trim().length) return PIFileText
+  if (!fileName || !fileName.trim().length) {
+    return PIFileText
+  }
   switch (fileName.split('.').pop()) {
-    case 'bmp':
-      return PIFiletypeBmp
-    case 'csv':
-      return PIFiletypeCsv
-    case 'doc':
-      return PIFiletypeDoc
-    case 'docx':
-      return PIFiletypeDocx
-    case 'gif':
-      return PIFiletypeGif
-    case 'heic':
-      return PIFiletypeHeic
-    case 'jpg':
-      return PIFiletypeJpg
-    case 'md':
-      return PIFiletypeMd
-    case 'pdf':
-      return PIFiletypePdf
-    case 'png':
-      return PIFiletypePng
-    case 'ppt':
-      return PIFiletypePpt
-    case 'pptx':
-      return PIFiletypePptx
-    case 'raw':
-      return PIFiletypeRaw
-    case 'svg':
-      return PIFiletypeSvg
-    case 'tiff':
-      return PIFiletypeTiff
-    case 'txt':
-      return PIFiletypeTxt
-    case 'xls':
-      return PIFiletypeXls
-    case 'xlsx':
-      return PIFiletypeXlsx
-    case 'xml':
-      return PIFiletypeXml
-    default:
-      return PIFileText
+  case 'bmp':
+    return PIFiletypeBmp
+  case 'csv':
+    return PIFiletypeCsv
+  case 'doc':
+    return PIFiletypeDoc
+  case 'docx':
+    return PIFiletypeDocx
+  case 'gif':
+    return PIFiletypeGif
+  case 'heic':
+    return PIFiletypeHeic
+  case 'jpg':
+    return PIFiletypeJpg
+  case 'md':
+    return PIFiletypeMd
+  case 'pdf':
+    return PIFiletypePdf
+  case 'png':
+    return PIFiletypePng
+  case 'ppt':
+    return PIFiletypePpt
+  case 'pptx':
+    return PIFiletypePptx
+  case 'raw':
+    return PIFiletypeRaw
+  case 'svg':
+    return PIFiletypeSvg
+  case 'tiff':
+    return PIFiletypeTiff
+  case 'txt':
+    return PIFiletypeTxt
+  case 'xls':
+    return PIFiletypeXls
+  case 'xlsx':
+    return PIFiletypeXlsx
+  case 'xml':
+    return PIFiletypeXml
+  default:
+    return PIFileText
   }
 }

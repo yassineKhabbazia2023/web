@@ -1,5 +1,6 @@
 <template>
   <ElSwitch
+    :id="pId"
     :disabled="pDisabled"
     :loading="pLoading"
     :size="pSize"
@@ -16,7 +17,6 @@
     :name="pName"
     :validateEvent="pValidateEvent"
     :beforeChange="pBeforeChange"
-    :id="pId"
     :tabIndex="pTabIndex"
     :label="pLabel"
     :style="cssStyle"

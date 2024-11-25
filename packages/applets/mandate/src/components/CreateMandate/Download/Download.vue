@@ -43,11 +43,11 @@
     <div class="download-or-wait-mandate__body margin-bottom--6 font-normal">
       <template v-if="isTrackedMandateAvailable">
         <p>
-          {{t('download')}} <span class="font-semibold">
-            {{t('manual-sign')}}
+          {{ t('download') }} <span class="font-semibold">
+            {{ t('manual-sign') }}
           </span>
         </p>
-        <p>{{t('deposit')}}</p>
+        <p>{{ t('deposit') }}</p>
       </template>
 
       <template v-else>
@@ -88,14 +88,16 @@
     <div class="flex">
       <PAlert class="download-or-wait-mandate__file-card margin-x--6 margin-bottom--4">
         <p class="download-or-wait-mandate__alert-title font-semibold">
-          {{t('help')}}
+          {{ t('help') }}
         </p>
-        <p class="download-or-wait-mandate__alert-body font-normal">{{t('help-label-prefix')}}
+        <p class="download-or-wait-mandate__alert-body font-normal">
+          {{ t('help-label-prefix') }}
           <a
             href="https://help.collaborateurs.app.kpmg-pulse.fr/fr/article/mandat-acces-et-creation"
-            class="download-or-wait-mandate__alert-body--color">{{t('help-label-link')}}
+            class="download-or-wait-mandate__alert-body--color"
+          >{{ t('help-label-link') }}
           </a>
-          {{t('help-label-suffix')}}
+          {{ t('help-label-suffix') }}
         </p>
       </PAlert>
     </div>
@@ -158,7 +160,9 @@ onBeforeMount(async () => {
     console.error(error)
   }
 
-  if (isTrackedMandateAvailable.value) return
+  if (isTrackedMandateAvailable.value) {
+    return
+  }
   if (isTrackedMandateNotAvailable.value) {
     availabilityTrackerIntervalId.value = setInterval(() => {
       trackMandateStatus()

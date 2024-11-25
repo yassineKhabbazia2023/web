@@ -1,5 +1,6 @@
 <template>
   <ElScrollbar
+    :id="pId"
     :height="pHeight"
     :maxHeight="pMaxHeight"
     :native="pNative"
@@ -11,7 +12,6 @@
     :tag="pTag"
     :always="pAlways"
     :minSize="pMinSize"
-    :id="pId"
     :role="pRole"
     :ariaLabel="pAriaLabel"
     :ariaOrientation="pAriaOrientation"

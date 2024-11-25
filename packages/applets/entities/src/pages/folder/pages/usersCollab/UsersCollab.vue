@@ -7,13 +7,13 @@
       />
       <PButton
         v-if="hasPermission(PERMISSION_CODES.MANAGE_ACCESS)"
-        @click="handleOpenAccessDrawer"
         pType="primary"
         pSize="small"
         :loading="isLoadingOperations"
         :disabled="availableOperations.length === 0"
         pPlain
         data-testid="manage-access-button"
+        @click="handleOpenAccessDrawer"
       >
         <span>{{ t('manageAccess') }}</span>
       </PButton>
@@ -34,12 +34,12 @@
     <div v-show="!state.isLoading">
       <div v-if="state.totalItems">
         <PTable
-          @sort-change="handleSortChange"
           :pData="state.data"
           tableLayout="fixed"
           data-testid="folder-users-table"
           showOverflowTooltip
           pStripe
+          @sort-change="handleSortChange"
         >
           <PTableColumn
             :pLabel="t('user')"
@@ -124,16 +124,16 @@
         </PTable>
 
         <PPagination
-          class="margin-top--6"
-          @on-page-range-changed="handlePageRangeChanged"
           v-model:p-current-page="state.currentPage"
           v-model:p-page-size="state.limit"
+          class="margin-top--6"
           :pTotal="state.totalItems"
           :pPageSizes="PAGE_SIZES"
           :pPageSizeSelectorGroupLabel="t('numberOfUserPerPage')"
           pPageSizeSelectorSuffix=""
           pShowTotalPageCounter
           pBackground
+          @on-page-range-changed="handlePageRangeChanged"
         >
           <p>{{ paginationLabel }}</p>
         </PPagination>
@@ -325,24 +325,24 @@ const formatAndFillUsersCollabTable = async () => {
  */
 const getStatus = (status: string): UserStatus => {
   switch (status) {
-    case 'Declared':
-      return {
-        text: t('statusDeclared'),
-        icon: PIPatchCheck,
-        color: 'gray-900',
-      }
-    case 'Connected':
-      return {
-        text: t('statusConnect'),
-        icon: PIPower,
-        color: 'success',
-      }
-    default:
-      return {
-        text: t('statusInvite'),
-        icon: PIPerson,
-        color: 'persian',
-      }
+  case 'Declared':
+    return {
+      text: t('statusDeclared'),
+      icon: PIPatchCheck,
+      color: 'gray-900',
+    }
+  case 'Connected':
+    return {
+      text: t('statusConnect'),
+      icon: PIPower,
+      color: 'success',
+    }
+  default:
+    return {
+      text: t('statusInvite'),
+      icon: PIPerson,
+      color: 'persian',
+    }
   }
 }
 
@@ -378,7 +378,9 @@ const handleUserAction = (action: string, row: any) => {
 const currentEntity = computed(() => user.value?.entities.default)
 
 async function handleAddSignatory(contactId: User['contactId'], contactFullName: string) {
-  if (!currentEntity.value) return
+  if (!currentEntity.value) {
+    return
+  }
 
   try {
     await updateSignatoryStatus(currentEntity.value.accountId, contactId)
@@ -390,7 +392,9 @@ async function handleAddSignatory(contactId: User['contactId'], contactFullName:
 }
 
 async function handleRemoveSignatory(contactId: User['contactId'], contactFullName: string) {
-  if (!currentEntity.value) return
+  if (!currentEntity.value) {
+    return
+  }
   try {
     await updateSignatoryStatus(currentEntity.value.accountId, contactId, false)
     showRemoveSignatorySuccess(contactFullName)
@@ -410,7 +414,9 @@ function hasMultipleSignatories() {
 }
 
 async function setAccountSignatories() {
-  if (!currentEntity.value) return
+  if (!currentEntity.value) {
+    return
+  }
   state.isLoading = true
   try {
     const signatories = await getAccountSignatories(currentEntity.value.accountId)

@@ -9,13 +9,18 @@ type apiInstances = Record<string, AxiosInstance>
 const keyToService = (key: string) => key.replace(varApiPrefix, '').toLowerCase()
 
 const domainToBaseUrl = (domain: string | undefined) => {
-  if (domain && domain.endsWith('/')) return domain.slice(0, -1)
-  else return domain
+  if (domain && domain.endsWith('/')) {
+    return domain.slice(0, -1)
+  } else {
+    return domain
+  }
 }
 
 export const requestInterceptor = (config: any) => {
   const token = tokenService.getToken()
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 }
 

@@ -59,7 +59,7 @@ const isUserOriginCollab = async () => {
   } catch {}
 }
 
-const isObjectEmpty = (obj: Object) => Object.keys(obj).length === 0
+const isObjectEmpty = (obj: object) => Object.keys(obj).length === 0
 
 router.beforeEach(async (to: any, _from) => {
   const store = useStore()

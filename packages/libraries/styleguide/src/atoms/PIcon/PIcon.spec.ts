@@ -19,8 +19,8 @@ describe('p icon', () => {
             name: 'ElIcon',
             template: '<div><slot /></div>',
           },
-        }
-      }
+        },
+      },
     })
     expect(iconResolverMock).toHaveBeenCalledOnce()
     expect(iconResolverMock).toHaveBeenNthCalledWith(1, 'PIArrowBarLeft')

@@ -1,7 +1,8 @@
 <template>
   <ElButtonGroup
     :type="computedType"
-    :size="pSize">
+    :size="pSize"
+  >
     <slot />
   </ElButtonGroup>
 </template>

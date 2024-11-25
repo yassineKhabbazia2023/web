@@ -7,7 +7,7 @@
     <PLoader pType="primary" pSize="50" />
   </div>
   <div v-else-if="!isLoading && selectedReport" class="bi-reports flex">
-    <ReportsList :reports="reports" v-model:selectedReport="selectedReport" />
+    <ReportsList v-model:selectedReport="selectedReport" :reports="reports" />
     <ReportDisplay :selectedReport="selectedReport" :token="powerBiToken" />
   </div>
 </template>

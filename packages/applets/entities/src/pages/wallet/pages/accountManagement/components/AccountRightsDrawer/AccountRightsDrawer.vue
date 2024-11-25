@@ -3,8 +3,8 @@
     v-model="isAccountRightsDrawerVisible"
     :pTitle="t('modifyAccountRights')"
     pSize="50%"
-    @close-drawer-button="handleCloseDrawer"
     destroyOnClose
+    @close-drawer-button="handleCloseDrawer"
   >
     <PUserCard
       :pTitle="selectedAccount.name"
@@ -26,9 +26,9 @@
     <PTabs v-model="activeTab" :pStretch="false">
       <PTabPane
         v-for="tab in permissionTypesTabs"
+        :key="tab.name"
         :pLabel="tab.label"
         :pName="tab.name"
-        :key="tab.name"
         class="margin-bottom--6"
       />
       <div

@@ -12,8 +12,8 @@
             pType="primary"
             pSize="small"
             pPlain
-            @click="handleCancel"
             data-testid="cancel-button"
+            @click="handleCancel"
           >
             {{ cancelButtonLabel }}
           </PButton>
@@ -22,8 +22,8 @@
             pSize="small"
             :pDisabled="isConfirmButtonDisabled"
             :pLoading="isConfirmButtonLoading"
-            @click="emit('confirm')"
             data-testid="confirm-button"
+            @click="emit('confirm')"
           >
             {{ confirmButtonLabel }}
           </PButton>

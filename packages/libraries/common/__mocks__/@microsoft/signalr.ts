@@ -2,12 +2,12 @@
 import { vi } from 'vitest'
 
 export enum LogLevel {
-  // eslint-disable-next-line no-unused-vars
+   
   Information = 2
 }
 
 export interface ILogger {
-  // eslint-disable-next-line no-unused-vars
+   
   log(logLevel: LogLevel, message: string): void
 }
 

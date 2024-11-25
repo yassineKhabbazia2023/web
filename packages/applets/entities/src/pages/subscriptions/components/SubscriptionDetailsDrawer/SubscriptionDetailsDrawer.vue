@@ -6,8 +6,8 @@
     :pTitle="subscriptionDrawerTitle"
     pDirection="rtl"
     class="subscription-drawer"
-    @close-drawer-button="handleCloseDrawer"
     data-testid="subscription-drawer"
+    @close-drawer-button="handleCloseDrawer"
   >
     <div
       v-if="isLoading"
@@ -58,7 +58,9 @@ const internalIsOpened = computed({
 })
 
 const subscriptionDrawerTitle = computed(() => {
-  if (!subscriptionDetails.value) return ''
+  if (!subscriptionDetails.value) {
+    return ''
+  }
   return `${subscriptionDetails.value.account.accountLegalName} - ${t(
     'number',
   )} ${subscriptionDetails.value.account.accountNumber}`

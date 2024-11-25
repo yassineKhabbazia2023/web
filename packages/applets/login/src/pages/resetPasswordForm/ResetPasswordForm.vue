@@ -151,7 +151,9 @@ const rules = reactive<FormRules<typeof formValue>>({
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
   formEl.validate((valid) => {
     (async () => {
       if (valid) {

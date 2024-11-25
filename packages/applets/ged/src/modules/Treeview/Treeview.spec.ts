@@ -74,13 +74,13 @@ describe('treeview', () => {
   const getRenameFolderSectionWrapper = () =>
     wrapper.findComponent({ name: 'RenameFolderSection' })
 
-  // eslint-disable-next-line vitest/no-hooks
+   
   beforeEach(() => {
     setActivePinia(pinia)
     wrapper = createWrapper()
     flushPromises()
   })
-  // eslint-disable-next-line vitest/no-hooks
+   
   afterEach(() => {
     vi.restoreAllMocks()
   })

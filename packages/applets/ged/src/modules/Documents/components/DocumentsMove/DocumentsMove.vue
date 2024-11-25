@@ -159,7 +159,9 @@ const handleMoveDocumentClicked = async (action: string) => {
         document.givenActionState === 'IN_PROGRESS',
     )
 
-    if (shouldCloseModal) handleClose()
+    if (shouldCloseModal) {
+      handleClose()
+    }
   }
 
   if (action === 'modal-cancel-document-action-click') {

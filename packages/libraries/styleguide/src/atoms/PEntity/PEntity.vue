@@ -8,7 +8,8 @@
       <PAvatar
         :pShape="pIconShape"
         :pType="pIconType"
-        :pColor="pIconColor">
+        :pColor="pIconColor"
+      >
         <PIcon v-if="pIcon">
           <component :is="pIcon" />
         </PIcon>

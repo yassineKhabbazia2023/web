@@ -2,8 +2,8 @@
   <section class="bin-documents-table">
     <PTable
       v-if="binDocuments.documentsPage.items"
-      :pData="binDocuments.documentsPage.items"
       ref="documentsListTable"
+      :pData="binDocuments.documentsPage.items"
       highlightCurrentRow
       pStripe
       @sort-change="handleSortChange"

@@ -26,8 +26,8 @@
         :pRound="false"
         :pDisabled="false"
         :pLoading="false"
-        @click="updateCalendarDisplay"
         data-testid="header-section-calendar-btn"
+        @click="updateCalendarDisplay"
       >
         <PIcon>
           <PICalendarEvent v-if="!showCalendar" />
@@ -48,10 +48,9 @@
           :pType="showFeedCenter ? 'white' : 'generic'"
           data-testid="feed-center-button"
           @click="updateFeedCenterDisplay"
-
         >
           <PIcon>
-            <PIBell v-if="!showFeedCenter"/>
+            <PIBell v-if="!showFeedCenter" />
             <PIX v-else />
           </PIcon>
           <div
@@ -63,7 +62,7 @@
               pSize="small"
               pType="warning"
             >
-              {{  unreadNotificationsCount }}
+              {{ unreadNotificationsCount }}
             </PPastille>
           </div>
         </PButton>
@@ -73,8 +72,8 @@
         pDirection="vertical"
       />
       <div
-        @click="emit('showUserProfileDrawer')"
         class="header-section__user-avatar cursor-pointer"
+        @click="emit('showUserProfileDrawer')"
       >
         <PAvatar
           pShape="circle"

@@ -22,8 +22,8 @@
           pPlain
           pType="white"
           class="flex flex--align-items-center"
-          @click="emit('display-manage-rights')"
           data-testid="collab-roles-personalize-button"
+          @click="emit('display-manage-rights')"
         >
           {{ t('personalize') }}
           <PIcon class="el-button__icon--right">

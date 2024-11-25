@@ -8,8 +8,8 @@
       'radius--2',
       'padding-y--2 padding-x--3'
     ]"
-    @click="handleClick"
     :disabled="pDisabled"
+    @click="handleClick"
   >
     <span
       v-if="pValue !== undefined"
@@ -31,7 +31,8 @@
       v-if="isSelected && !pDisabled"
       size="12px"
       class="p-filter-option__icon"
-     pName="xCircleFill" />
+      pName="xCircleFill"
+    />
   </button>
 </template>
 

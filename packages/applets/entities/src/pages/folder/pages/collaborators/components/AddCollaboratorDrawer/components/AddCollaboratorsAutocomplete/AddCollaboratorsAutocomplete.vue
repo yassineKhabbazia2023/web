@@ -3,8 +3,8 @@
     v-model="searchQuery"
     :pPlaceholder="t('searchPlaceholder')"
     :pFetchSuggestions="getCollaboratorsSuggestions"
-    @select="handleCollaboratorSelection"
     valueKey="id"
+    @select="handleCollaboratorSelection"
   >
     <template #default="{ item }">
       <div

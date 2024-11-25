@@ -36,7 +36,11 @@
       v-if="shouldChevronExists"
       class="text-align--center p-calendar-date-cell__chevron-down"
     >
-      <PIcon size="12" :color="AppColors.GRAY_900" pName="chevronDown" />
+      <PIcon
+        size="12"
+        :color="AppColors.GRAY_900"
+        pName="chevronDown"
+      />
     </div>
   </div>
 </template>
@@ -82,15 +86,21 @@ const dayState = computed<CellNumberState>(() => {
   const formattedDate = dayjs(props.pCellDate)
   const formattedSelectedDate = dayjs(props.pActiveDate)
 
-  if (formattedDate.isSame(formattedSelectedDate)) return 'active'
+  if (formattedDate.isSame(formattedSelectedDate)) {
+    return 'active'
+  }
 
   const formattedTodayDate = dayjs(props.pCurrentDate)
-  if (formattedDate.isSame(formattedTodayDate, 'day')) return 'current'
+  if (formattedDate.isSame(formattedTodayDate, 'day')) {
+    return 'current'
+  }
 
   if (
     formattedDate.isBefore(formattedSelectedDate, 'month') ||
     formattedDate.isAfter(formattedSelectedDate, 'month')
-  ) return 'inactive'
+  ) {
+    return 'inactive'
+  }
 
   return 'initial'
 })

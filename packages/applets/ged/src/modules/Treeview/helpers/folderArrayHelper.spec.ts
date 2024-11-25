@@ -27,7 +27,7 @@ describe('folderArrayHelper.spec', () => {
       const data = JSON.parse(JSON.stringify(foldersData))
       const serviceId = 'service-id-compta'
 
-      // eslint-disable-next-line vitest/no-conditional-tests, vitest/no-conditional-in-test
+       
       const folder = findCurrentServiceFolder(data, serviceId) ?? []
 
       expect(folder).toHaveLength(1)

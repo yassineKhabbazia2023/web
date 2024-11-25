@@ -16,7 +16,8 @@
       pSize="default"
       class="btn-link"
       :pLoading="isLoading"
-      @click="resendLink">
+      @click="resendLink"
+    >
       {{ t('btnReceiveLink') }}
     </PButton>
   </div>

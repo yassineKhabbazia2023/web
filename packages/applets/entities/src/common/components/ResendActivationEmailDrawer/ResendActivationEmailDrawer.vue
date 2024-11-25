@@ -144,24 +144,24 @@ const handleRetryMassActivationEmail = async () => {
 }
 const getStatus = (status: string): UserStatus => {
   switch (status) {
-    case 'Declared':
-      return {
-        text: t('statusDeclared'),
-        icon: PIPatchCheck,
-        color: 'gray-900',
-      }
-    case 'Connected':
-      return {
-        text: t('statusConnect'),
-        icon: PIPower,
-        color: 'success',
-      }
-    default:
-      return {
-        text: t('statusInvite'),
-        icon: PIPerson,
-        color: 'persian',
-      }
+  case 'Declared':
+    return {
+      text: t('statusDeclared'),
+      icon: PIPatchCheck,
+      color: 'gray-900',
+    }
+  case 'Connected':
+    return {
+      text: t('statusConnect'),
+      icon: PIPower,
+      color: 'success',
+    }
+  default:
+    return {
+      text: t('statusInvite'),
+      icon: PIPerson,
+      color: 'persian',
+    }
   }
 }
 

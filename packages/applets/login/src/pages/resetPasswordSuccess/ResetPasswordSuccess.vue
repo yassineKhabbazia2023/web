@@ -20,8 +20,8 @@
     </p>
     <PButton
       pType="white"
-      @click="router.push({ name: 'loginClient' })"
       class="back-to-login-button hidden-sm-and-down"
+      @click="router.push({ name: 'loginClient' })"
     >
       {{ t('backToLogin') }}
     </PButton>

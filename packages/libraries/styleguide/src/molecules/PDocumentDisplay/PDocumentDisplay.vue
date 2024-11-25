@@ -2,17 +2,17 @@
   <div class="preview-section">
     <div v-if="isImage && !isLoadingDocument" class="preview-section_image">
       <ElImage :src="url" fit="fill" />
-
     </div>
     <div v-if="!isProvidedExtensionSupported && !isLoadingDocument" class="preview-section_notAllowed">
       <PImage
         class="preview-section_notAllowed_image"
         pType="paupulse"
         pName="mini-documents"
-        pFit="fill" />
+        pFit="fill"
+      />
       <div>
         <PText
-          :pContent= "errorMsgTitle"
+          :pContent="errorMsgTitle"
           pType="primary"
           class="text-section_title"
           pBold
@@ -32,7 +32,8 @@
       :src="url"
       title="pdf-preview"
       class="preview"
-      data-test="document-preview-iframe"></iframe>
+      data-test="document-preview-iframe"
+    />
   </div>
 </template>
 

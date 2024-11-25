@@ -40,10 +40,10 @@
         :pColor="color"
         pEffect="plain"
         :pDisableTransitions="disableTransitions"
-        @close="fireClose"
         :pIconLeft="tagBasicData.iconLeft"
         :pIconRight="tagBasicData.iconRight"
         :pContent="tagBasicData.content"
+        @close="fireClose"
       />
       <template #controls>
         <HstRadio
@@ -62,8 +62,8 @@
         :pRound="rounded"
         :pIconLeft="tagBasicData.iconLeft"
         :pIconRight="tagBasicData.iconRight"
-        :pContent="tagBasicData.content">
-      </PTag>
+        :pContent="tagBasicData.content"
+      />
       <template #controls>
         <HstRadio
           v-model="color"

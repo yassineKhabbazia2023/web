@@ -3,7 +3,8 @@
     <PImage
       pType="badges"
       pName="email"
-      class="badge-email" />
+      class="badge-email"
+    />
     <p class="verifyEmail">
       {{ t('verifyEmail') }}
     </p>

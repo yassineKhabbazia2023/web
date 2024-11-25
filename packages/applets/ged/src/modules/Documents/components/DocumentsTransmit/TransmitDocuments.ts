@@ -17,7 +17,9 @@ export function useTransmitDocuments(
     if (
       !transmitDocumentsProps.value.selectedDocumentsIds ||
       transmitDocumentsProps.value.selectedDocumentsIds.length === 0
-    ) return
+    ) {
+      return
+    }
 
     await transmitDocuments(
       transmitDocumentsProps.value.currentService,

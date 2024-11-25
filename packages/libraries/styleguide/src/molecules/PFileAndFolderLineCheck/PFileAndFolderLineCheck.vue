@@ -30,7 +30,7 @@
       />
     </PIcon>
     <PIcon size="16" class="p-file-and-folder-line-check__file-icon">
-      <component :is="fileIconComponent"></component>
+      <component :is="fileIconComponent" />
     </PIcon>
     <div class="p-file-and-folder-line-check__details">
       <div class="ellipsed-text">
@@ -88,18 +88,20 @@ const setIsSelected = () => {
   }
 }
 watch(isDefaultState, () => {
-  if (!isDefaultState.value) emit('update:modelValue', false)
+  if (!isDefaultState.value) {
+    emit('update:modelValue', false)
+  }
 })
 
 const isCheckboxDisplayed = computed(() => isDefaultState.value)
 
 const fileIconComponent = computed(() => {
   switch (getFileExtension(props.pFileName)) {
-    case 'pdf':
-      return iconResolver('PIFiletypePdf')
+  case 'pdf':
+    return iconResolver('PIFiletypePdf')
 
-    default:
-      return iconResolver('PIFileText')
+  default:
+    return iconResolver('PIFileText')
   }
 })
 </script>

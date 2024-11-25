@@ -10,7 +10,7 @@
         <div class="p-error-block__content shadow--6 radius--4 shadow--6 bg--base-white flex">
           <div class="p-error-block__left">
             <div class="p-error-block__logo hidden-sm-and-down">
-              <PImage pType="logos" pName="pulse-color"/>
+              <PImage pType="logos" pName="pulse-color" />
             </div>
             <div class="p-error-block__error-content">
               <h1 v-if="$slots.title" class="p-error-block__title">
@@ -23,9 +23,9 @@
               </p>
               <div class="p-error-block__button">
                 <PButton
-                  @click="$emit('handleClick')"
                   pType="primary"
                   data-testid="error-block-button"
+                  @click="$emit('handleClick')"
                 >
                   {{ pButtonText }}
                 </PButton>

@@ -13,8 +13,7 @@
         :pType="PDoubleTextBasicData.type"
         :pDisabled="PDoubleTextBasicData.disabled"
         :pSelected="PDoubleTextBasicData.selected"
-      >
-      </PDoubleText>
+      />
       <template #controls>
         <hstSelect
           v-model="PDoubleTextBasicData.type"
@@ -24,7 +23,7 @@
         <HstText v-model="PDoubleTextBasicData.profile" title="Profile" />
         <HstText v-model="PDoubleTextBasicData.title" title="Title" />
         <HstText v-model="PDoubleTextBasicData.content" title="Content" />
-        <HstCheckbox v-model="PDoubleTextBasicData.disabled" title="Disabled"/>
+        <HstCheckbox v-model="PDoubleTextBasicData.disabled" title="Disabled" />
         <HstCheckbox v-model="PDoubleTextBasicData.selected" title="Selected" />
       </template>
     </Variant>

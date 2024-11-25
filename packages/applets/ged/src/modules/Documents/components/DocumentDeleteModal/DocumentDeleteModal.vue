@@ -10,7 +10,6 @@
       @on-confirm-button-click="handleConfirmDeleteFolder"
       @on-cancel-button-click="handleCancelDeleteFolder"
       @on-close-popup="handleCancelDeleteFolder"
-
     />
   </div>
 </template>

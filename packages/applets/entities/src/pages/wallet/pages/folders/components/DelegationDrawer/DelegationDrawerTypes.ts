@@ -13,9 +13,9 @@ export interface DelegationDrawerProps {
   numberOfFoldersInPortfolio: number
 }
 
-/* eslint-disable no-unused-vars */
+ 
 export enum DelegationFlowType {
   FULL = 'full',
   SPECIFIC = 'specific'
 }
-/* eslint-enable no-unused-vars */
+ 

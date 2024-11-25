@@ -20,10 +20,10 @@
       />
       <PButton
         v-if="isAddUserButtonVisible"
-        @click="isAddCollaboratorsDrawerOpened = true"
         pType="primary"
         pSize="small"
         data-testid="add-collaborator-button"
+        @click="isAddCollaboratorsDrawerOpened = true"
       >
         <PIcon>
           <PIPersonAdd />
@@ -47,14 +47,14 @@
     <div v-show="!isLoading">
       <PTable
         v-if="collabs.length"
-        @current-change="handleChange"
-        @sort-change="handleSortChange"
         ref="selectedRow"
         :pData="collabs"
         pStripe
         tableLayout="fixed"
         class="collab-table"
         data-testid="collaborators-folder-table"
+        @current-change="handleChange"
+        @sort-change="handleSortChange"
       >
         <PTableColumn
           :pLabel="t('collaboratorName')"
@@ -102,7 +102,7 @@
         >
           <template #default="scope">
             <p>
-              <span class="text-capitalize"> {{t('collaboratorOffice')}} &nbsp;</span>
+              <span class="text-capitalize"> {{ t('collaboratorOffice') }} &nbsp;</span>
               <span class="text-uppercase"> {{ scope.row.office }} </span>
             </p>
           </template>
@@ -115,11 +115,11 @@
         >
           <template #default="scope">
             <PToolbox
-              @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
               trigger="click"
               popperClass="toolbox-container"
               :pElements="toolboxItems"
               data-testid="toolbox-action"
+              @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
             >
               <PButton
                 pType="generic"
@@ -140,7 +140,6 @@
 
   <PPagination
     v-if="shouldShowPagination && state.totalItems"
-    @on-page-range-changed="handlePageRangeChanged"
     v-model:p-current-page="state.currentPage"
     v-model:p-page-size="state.limit"
     :pTotal="state.totalItems"
@@ -150,6 +149,7 @@
     pShowTotalPageCounter
     pBackground
     class="flex--grow-0 flex--shrink-0 margin-negative-x--2"
+    @on-page-range-changed="handlePageRangeChanged"
   >
     <p>{{ paginationLabel }}</p>
   </PPagination>
@@ -400,7 +400,9 @@ const handleChange = (row: any) => {
 }
 
 const fetchCollaborators = async () => {
-  if (!currentEntityId) return
+  if (!currentEntityId) {
+    return
+  }
 
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)

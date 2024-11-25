@@ -55,6 +55,7 @@
         pRequired
       >
         <PCheckbox
+          ref="checkbox"
           v-model="formValue.terms"
           class="
             cgu-checkbox
@@ -64,14 +65,14 @@
             bg--neutral-gray-50
             radius--2
           "
-          ref="checkbox"
           data-testid="create-password-terms-checkbox"
         >
           {{ t('cguMessagePartOne') }}
           <a
             :href="urlTerms"
             target="_blank"
-            class="cgu-link font-bold text-color--persian-500">
+            class="cgu-link font-bold text-color--persian-500"
+          >
             {{ t('cguLink') }}
           </a>
           {{ t('cguMessagePartTwo') }}
@@ -83,8 +84,8 @@
           :pDisabled="!isValidForm"
           pSize="default"
           class="btn-submit"
-          @click="submitForm(formRef)"
           data-testid="create-password-submit-button"
+          @click="submitForm(formRef)"
         >
           {{ t('btnSubmit') }}
         </PButton>
@@ -197,7 +198,9 @@ const rules = reactive<FormRules<typeof formValue>>({
 
 const { navigateToCustomerWallet } = useNavigation()
 const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
   formEl.validate((valid) => {
     (async () => {
       if (valid) {

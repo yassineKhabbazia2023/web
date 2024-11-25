@@ -52,9 +52,9 @@ function getCsvData(includesOther: boolean): string[] {
   const csvData = CSV_DATA.split('\n')
   return includesOther
     ? [
-        ...csvData,
-        'autre,Autre,Autre',
-      ]
+      ...csvData,
+      'autre,Autre,Autre',
+    ]
     : csvData
 }
 

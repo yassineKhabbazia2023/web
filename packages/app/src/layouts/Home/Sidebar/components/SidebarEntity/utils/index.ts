@@ -6,9 +6,9 @@ export const getDefaultEntity = (firstEntity: Entity): Entity => {
   const defaultEntity: Entity = storedSelectedEntity
     ? JSON.parse(storedSelectedEntity)
     : {
-        ...firstEntity,
-        color: getRandomColor(firstEntity.accountId),
-      }
+      ...firstEntity,
+      color: getRandomColor(firstEntity.accountId),
+    }
 
   return defaultEntity
 }

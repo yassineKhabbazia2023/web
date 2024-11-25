@@ -9,7 +9,8 @@
     <div
       v-else
       class="documents-search-alert__no-documents
-        font-semibold padding-y--2 padding-x--6">
+        font-semibold padding-y--2 padding-x--6"
+    >
       <span>{{ documentsCount }}</span> {{ t('documentsNotFound') }}
     </div>
   </div>

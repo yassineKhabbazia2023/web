@@ -64,7 +64,7 @@ describe('deleteFolderConfirmationPopup', () => {
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
-      // eslint-disable-next-line max-len
+       
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
@@ -84,7 +84,7 @@ describe('deleteFolderConfirmationPopup', () => {
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
-      // eslint-disable-next-line max-len
+       
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", tous les documents seront supprimés du dossier. Vous pourrez les restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
@@ -104,7 +104,7 @@ describe('deleteFolderConfirmationPopup', () => {
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
-      // eslint-disable-next-line max-len
+       
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())

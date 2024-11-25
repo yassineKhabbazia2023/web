@@ -5,8 +5,8 @@
     :color="pColor"
   >
     <component
-      v-if="resolvedIconComponent && $slots.default === undefined"
       :is="resolvedIconComponent"
+      v-if="resolvedIconComponent && $slots.default === undefined"
     />
     <slot v-if="$slots.default" />
   </ElIcon>

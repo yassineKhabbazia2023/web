@@ -93,33 +93,39 @@ const tagIconByState = {
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {
-    case 'New':
-      return { icon: tagIconByState.default, type: '' }
-    case 'Collectable':
-      return { icon: tagIconByState.warning, type: 'warning' }
-    case 'Collected':
-      return { icon: tagIconByState.success, type: 'success' }
-    case 'Duplicate':
-      return { icon: tagIconByState.success, type: 'success' }
-    case 'Error':
-      return { icon: tagIconByState.danger, type: 'danger' }
-    case 'Archived':
-      return { icon: tagIconByState.success, type: 'success' }
-    case 'NotTransmitted':
-      return { icon: tagIconByState.danger, type: 'danger' }
-    default:
-      return { icon: tagIconByState.danger, type: 'danger' }
+  case 'New':
+    return { icon: tagIconByState.default, type: '' }
+  case 'Collectable':
+    return { icon: tagIconByState.warning, type: 'warning' }
+  case 'Collected':
+    return { icon: tagIconByState.success, type: 'success' }
+  case 'Duplicate':
+    return { icon: tagIconByState.success, type: 'success' }
+  case 'Error':
+    return { icon: tagIconByState.danger, type: 'danger' }
+  case 'Archived':
+    return { icon: tagIconByState.success, type: 'success' }
+  case 'NotTransmitted':
+    return { icon: tagIconByState.danger, type: 'danger' }
+  default:
+    return { icon: tagIconByState.danger, type: 'danger' }
   }
 }
 
 const getTagProps = computed(() => {
-  if (!props.data.piaStatus) return null
-  if (props.fieldType !== 'Tag' || props.data.piaStatus.technicalName === null) return null
+  if (!props.data.piaStatus) {
+    return null
+  }
+  if (props.fieldType !== 'Tag' || props.data.piaStatus.technicalName === null) {
+    return null
+  }
   return tagTypeProps(props.data.piaStatus.technicalName)
 })
 
 const isCertified = computed(() => {
-  if (!props.data.properties?.HasSubscribedToVault) return false
+  if (!props.data.properties?.HasSubscribedToVault) {
+    return false
+  }
   return props.data.properties.HasSubscribedToVault === 'Oui'
 })
 

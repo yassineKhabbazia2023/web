@@ -1,12 +1,12 @@
 import type { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { Contact, ContactType } from '@entities/services/contact/contactTypes'
 
-/* eslint-disable no-unused-vars */
+ 
 export enum SubscriptionStatusCode {
   PENDING = 'pending',
   VALIDATED = 'validated',
 }
-/* eslint-enable no-unused-vars */
+ 
 
 interface Account {
   accountId: number

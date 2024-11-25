@@ -11,7 +11,8 @@
         :pDisabled="item.disabled"
         :pSize="item.size"
         class="document-modal-action-explorer__button"
-        @click="$emit('modal-action-button-clicked', item.buttonActionName)">
+        @click="$emit('modal-action-button-clicked', item.buttonActionName)"
+      >
         <p>
           {{ item.buttonName }}
         </p>

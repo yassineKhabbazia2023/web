@@ -1,6 +1,6 @@
-/* eslint-disable vitest/prefer-expect-assertions */
-/* eslint-disable no-unused-vars */
-/* eslint-disable vitest/no-hooks */
+ 
+ 
+ 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
@@ -457,7 +457,7 @@ describe('documents', () => {
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
     })
-    // eslint-disable-next-line max-len
+     
     it('should open delete modal  when click on action bar download button', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
@@ -506,7 +506,7 @@ describe('documents', () => {
       expect(renameModal.props('modelValue')).toBeTruthy()
     })
 
-    // eslint-disable-next-line max-len
+     
     it('should call transmit document composable oppon  toolbox-action-triggered', async () => {
       const wrapper = createWrapper()
       await nextTick()
@@ -532,7 +532,7 @@ describe('documents', () => {
       )
     })
 
-    // eslint-disable-next-line max-len
+     
     it('should not call transmit document composable oppon  toolbox-action-triggered whe no selected documents', async () => {
       const wrapper = createWrapper()
       await nextTick()
@@ -552,7 +552,7 @@ describe('documents', () => {
 
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledTimes(0)
     })
-    // eslint-disable-next-line max-len
+     
     it('should call transmit document composable oppon click on action bar transmit button', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
@@ -730,7 +730,7 @@ describe('documents', () => {
       expect(componentInstance.isPreviewDrawerOpened).toBeFalsy()
     })
 
-    // eslint-disable-next-line max-len
+     
     it('should set selectedDocumentsForMove oppon document-selection-change event with valid payload'
       , async () => {
         const wrapper = createWrapper()
@@ -828,7 +828,7 @@ describe('documents', () => {
     })
 
     it(
-      // eslint-disable-next-line max-len
+       
       'should not call fetchDocumentsByKeyWord upon p-search-input and search key is more than 256 chars',
       async () => {
         const wrapper = createWrapper()
@@ -844,7 +844,7 @@ describe('documents', () => {
         expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledTimes(0)
       })
 
-    it(// eslint-disable-next-line max-len
+    it(
       'should not call fetchDocumentsByKeyWord upon p-search-input and search key an empty string or empty spaces', async () => {
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm

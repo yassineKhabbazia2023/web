@@ -2,17 +2,17 @@
   <div class="single-input-modal">
     <PDialog
       v-model="isDialogVisible"
-      @close="handleCloseModal"
       :pTitle="modalTitle"
       :alignCenter="isCentered"
+      @close="handleCloseModal"
     >
       <p class="single-input-modal__input-label">
         {{ inputLabel }}
       </p>
       <div class="single-input-modal__input">
         <PInput
-          pType="text"
           v-model="inputContent"
+          pType="text"
           :pPlaceholder="inputPlaceHolder"
           :pMaxLength="maxInputLength"
           :class="!isValidInput ? 'unValid' : ''"

@@ -37,8 +37,8 @@
           </div>
           <BIReportInformation
             v-else
-            :reportTypes="reportTypesDropdownValues"
             v-model:reportUploadInfo="reportUploadInfo"
+            :reportTypes="reportTypesDropdownValues"
           />
         </PCol>
       </PRow>
@@ -47,8 +47,8 @@
           pType="primary"
           pSize="default"
           pPlain
-          @click="handleResetUploadInfo"
           data-testid="powerbi-reset-button"
+          @click="handleResetUploadInfo"
         >
           {{ t('reset') }}
         </PButton>
@@ -57,8 +57,8 @@
           pSize="default"
           class="margin-left--4"
           :pDisabled="isValidationButtonDisabled"
-          @click="handleUploadBIReport"
           data-testid="powerbi-validation-button"
+          @click="handleUploadBIReport"
         >
           {{ t('validate') }}
         </PButton>

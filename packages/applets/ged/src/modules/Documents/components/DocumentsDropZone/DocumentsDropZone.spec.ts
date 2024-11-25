@@ -8,7 +8,7 @@ import { type ComponentPublicInstance } from 'vue'
 vi.mock('@pulse/styleguide', () => ({
   AppColors: {
     RED: 'RED',
-  }
+  },
 }))
 
 const defaultProps: DocumentsDropZoneProps = {

@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-/* eslint-disable vitest/no-hooks */
+ 
+ 
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'

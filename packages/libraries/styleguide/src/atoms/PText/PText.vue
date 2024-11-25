@@ -2,8 +2,9 @@
   <div
     :class="[pClassMapper, 'p-text', { disabled, selected }]"
     :disabled="disabled"
-    :selected="selected">
-    <div class="p-text__icon" v-if="pIcon">
+    :selected="selected"
+  >
+    <div v-if="pIcon" class="p-text__icon">
       <PIcon :size="16">
         <component :is="pIcon" />
       </PIcon>

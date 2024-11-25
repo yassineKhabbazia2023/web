@@ -47,7 +47,7 @@ vi.mock('./OccurrenceDrawerHelper', async () => {
   const actual = await vi.importActual('./OccurrenceDrawerHelper')
 
   return {
-    ...actual as Object,
+    ...actual as object,
     getFrequencyLabel: vi.fn(() => 'Frequency label'),
     getCreatedByLabel: vi.fn(() => 'createdby label'),
     getShortLabel: vi.fn(() => 'short label'),
@@ -243,11 +243,11 @@ describe('drawer.vue', () => {
   })
 
   it('should use showSaveFilePicker when available', async () => {
-    // eslint-disable-next-line vitest/prefer-spy-on
+     
     window.atob = vi.fn(() => 'abcdef')
     const wrapper = createWrapper()
     await flushPromises()
-    // eslint-disable-next-line vitest/prefer-spy-on
+     
     window.showSaveFilePicker = vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),
@@ -259,7 +259,7 @@ describe('drawer.vue', () => {
   })
 
   it('should use traditional download method when showSaveFilePicker is not available', async () => {
-    // eslint-disable-next-line vitest/prefer-spy-on
+     
     window.atob = vi.fn(() => 'abcdef')
     const wrapper = createWrapper()
     await flushPromises()
@@ -271,7 +271,7 @@ describe('drawer.vue', () => {
   it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
     const wrapper = createWrapper()
     await flushPromises()
-    // eslint-disable-next-line vitest/prefer-spy-on
+     
     window.showSaveFilePicker = vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),

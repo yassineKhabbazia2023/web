@@ -50,17 +50,17 @@
         />
       </section>
       <div
-        class="flex flex--justify-content-flex-end"
         v-if="canEdit"
+        class="flex flex--justify-content-flex-end"
       >
         <PButton
           class="margin-right--4"
           pType="primary"
           pSize="small"
           data-testid="information-save-button"
-          @click="onClickSave"
           :pDisabled="patchValues.length === 0"
           :pLoading="isSaving"
+          @click="onClickSave"
         >
           {{ t('save') }}
         </PButton>

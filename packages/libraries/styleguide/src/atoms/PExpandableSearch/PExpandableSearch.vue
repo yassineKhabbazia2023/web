@@ -13,8 +13,8 @@
     </PButton>
 
     <PInput
-      v-model="internalSearchContent"
       ref="inputRef"
+      v-model="internalSearchContent"
       data-testid="p-expandable-search-input"
       :class="['p-expandable-search__input', isSearchOpen ? 'isExpanded' : '']"
       pClearable

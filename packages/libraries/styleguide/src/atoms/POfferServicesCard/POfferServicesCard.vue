@@ -62,10 +62,10 @@ const getServiceClass = (serviceIndex: number): string[] => {
     services.length === 1
     ? ['p-offer-services-card__service']
     : [
-        'p-offer-services-card__service',
-        'p-offer-services-card__service--border',
-        'margin-bottom--1',
-      ]
+      'p-offer-services-card__service',
+      'p-offer-services-card__service--border',
+      'margin-bottom--1',
+    ]
 }
 </script>
 

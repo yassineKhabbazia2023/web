@@ -1,4 +1,4 @@
-/* eslint-disable vitest/no-hooks */
+ 
 import DocumentActions from './DocumentActions.vue'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 import type { VueWrapper } from '@vue/test-utils'
@@ -12,7 +12,7 @@ import { PToolbox } from '@pulse/styleguide/components'
 vi.mock('@pulse/styleguide', () => ({
   AppColors: {
     GRAY_300: 'GRAY_300',
-  }
+  },
 }))
 
 const defaultProps: DocumentActionsProps = {

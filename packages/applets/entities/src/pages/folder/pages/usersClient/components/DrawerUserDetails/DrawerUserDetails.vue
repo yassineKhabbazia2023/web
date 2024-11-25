@@ -31,7 +31,7 @@
       :pModel="formValues"
       :rules="editMode ? rules : null"
       pLabelPosition="top"
-      requireAsteriskPosition = "right"
+      requireAsteriskPosition="right"
       @submit.prevent="handleSubmit(formRef)"
     >
       <PFormItem
@@ -82,19 +82,19 @@
     <template #footer>
       <div class="margin-left--auto">
         <PButton
-          @click="closeDrawer"
           pType="primary"
           pPlain
           data-testid="cancel-btn"
+          @click="closeDrawer"
         >
           {{ t('cancel') }}
         </PButton>
         <PButton
           v-if="editMode"
-          @click="handleSubmit(formRef)"
           class="margin-left--4"
           pType="primary"
           data-testid="submit-btn"
+          @click="handleSubmit(formRef)"
         >
           {{ t('submit') }}
         </PButton>
@@ -153,7 +153,9 @@ const formValues = reactive<PatchContactPayload>({
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) {
+    return
+  }
   const isValid = await formEl.validate()
   if (isValid) {
     try {

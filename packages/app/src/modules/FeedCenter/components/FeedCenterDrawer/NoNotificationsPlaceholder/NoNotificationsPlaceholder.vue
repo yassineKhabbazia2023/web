@@ -7,7 +7,8 @@
       flex--direction-column
       flex--align-items-center
       flex--justify-content-center
-    ">
+    "
+  >
     <div class="no-notification-placeholder__empty-image">
       <PImage
         pType="paupulse"

@@ -3,8 +3,8 @@
     v-model="searchAutocompleteQuery"
     :pPlaceholder="t('searchPlaceholder')"
     :pFetchSuggestions="getCollaboratorsAutocomplete"
-    @select="handleCollaboratorSelection"
     valueKey="id"
+    @select="handleCollaboratorSelection"
   >
     <template #default="{ item }">
       <div
@@ -14,7 +14,7 @@
       >
         <span class="uppercase">
           {{ item.firstName }}
-          {{ item.lastName}}
+          {{ item.lastName }}
         </span>
         <span>&nbsp;{{ t('hyphen') }}&nbsp;</span>
         <span class="delegates-add__search-line__additional-information">

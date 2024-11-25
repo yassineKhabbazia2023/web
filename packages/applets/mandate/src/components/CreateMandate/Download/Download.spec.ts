@@ -1,4 +1,4 @@
-/* eslint-disable vitest/prefer-spy-on */
+ 
 import Download from '.'
 import type { DownloadProps } from './DownloadTypes'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
@@ -64,7 +64,7 @@ describe('download mandate prefilled', () => {
     await getMandateDownloadFileCard(wrapper).trigger('click')
 
     // Assertions
-    // eslint-disable-next-line vitest/prefer-called-with
+     
     expect(saveFileAs).toHaveBeenCalled()
   })
 
@@ -89,7 +89,7 @@ describe('download mandate prefilled', () => {
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
 
     // Assertions
-    // eslint-disable-next-line vitest/prefer-called-with
+     
     expect(downloadFile).toHaveBeenCalled()
   })
 

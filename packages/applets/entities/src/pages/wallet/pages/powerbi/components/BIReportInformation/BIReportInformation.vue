@@ -4,8 +4,8 @@
       v-model="internalReportUploadInfo.reportTypeId"
       :pPlaceholder="t('placeholderTypeReport')"
       :pOptions="reportTypes"
-      @change="handleResetOtherFields"
       data-testid="powerbi-report-types-dropdown"
+      @change="handleResetOtherFields"
     />
   </PFormItem>
   <PFormItem :pLabel="t('labelDestinationFolder')" pRequired>
@@ -15,8 +15,8 @@
       :pPlaceholder="t('placeholderDestinationFolder')"
       :pFetchSuggestions="handleSearchAccount"
       :pDisabled="!internalReportUploadInfo.reportTypeId"
-      @select="handleSelectAccount"
       data-testid="powerbi-account-search-autocomplete"
+      @select="handleSelectAccount"
     >
       <template #prefix>
         <PIcon>
@@ -32,13 +32,13 @@
   </PFormItem>
   <PFormItem :pLabel="t('labelNameReport')" pRequired>
     <PSelect
+      v-model="internalReportUploadInfo.reportLabel"
       pAllowCreate
       pFilterable
-      v-model="internalReportUploadInfo.reportLabel"
       :pPlaceholder="t('placeholderNameReport')"
       :pDisabled="!internalReportUploadInfo.accountId"
-      @change="handleSelectReportName"
       data-testid="powerbi-report-name-select"
+      @change="handleSelectReportName"
     >
       <POption
         v-for="reportLabel in reportList"

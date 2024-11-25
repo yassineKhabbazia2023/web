@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+ 
 // Temporary file, to clean up after rebranding
 export enum AppColors {
   PRIMARY = '#5546FF',

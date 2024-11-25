@@ -95,8 +95,8 @@
             pSize="default"
             :pDisabled="!nextStepAvailability"
             data-testid="next-step-test"
-            @click="goToNextStep()"
             class="margin-left--4"
+            @click="goToNextStep()"
           >
             {{ t('next') }}
             <PIcon class="el-button__icon--right">
@@ -109,8 +109,8 @@
             pType="primary"
             pSize="default"
             pPlain
-            @click="closeDrawerAndInitStep()"
             data-testid="close-button-test"
+            @click="closeDrawerAndInitStep()"
           >
             {{ t('close-button') }}
           </PButton>
@@ -143,8 +143,8 @@
             pType="primary"
             pSize="small"
             data-testid="quit-dialog-test"
-            @click="closeDialogDrawer"
             class="margin-left--4"
+            @click="closeDialogDrawer"
           >
             {{ t('exit-popup') }}
           </PButton>

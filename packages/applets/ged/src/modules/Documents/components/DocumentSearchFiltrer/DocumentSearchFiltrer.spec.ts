@@ -1,5 +1,5 @@
-/* eslint-disable vitest/max-expects */
-// eslint-disable-next-line vitest/max-expects
+ 
+ 
 import { createPinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'

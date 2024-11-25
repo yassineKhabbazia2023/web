@@ -41,7 +41,9 @@ export class DataStreamHubConnection {
 
   public async destroyConnection() {
     // Destroying the hub automatically removes every listener
-    if (!this.getIsConnected()) return
+    if (!this.getIsConnected()) {
+      return
+    }
     await this.connection
       .stop()
       .then(() => {

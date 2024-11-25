@@ -23,10 +23,10 @@ function createWrapper(pData: any, pStripe = false, pFit = false) {
             'data',
             'stripe',
             'fit',
-          ]
-        }
-      }
-    }
+          ],
+        },
+      },
+    },
   })
 
   return wrapper

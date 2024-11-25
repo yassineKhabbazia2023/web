@@ -1,5 +1,6 @@
 <template>
   <ElTimePicker
+    :id="pId"
     :readonly="pReadonly"
     :disabled="pDisabled"
     :editable="pEditable"
@@ -14,7 +15,6 @@
     :rangeSeparator="pRangeSeparator"
     :format="pFormat"
     :defaultValue="pDefaultValue"
-    :id="pId"
     :name="pName"
     :label="pLabel"
     :prefixIcon="pPrefixIcon"

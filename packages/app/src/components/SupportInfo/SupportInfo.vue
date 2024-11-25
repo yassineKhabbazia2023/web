@@ -12,8 +12,8 @@
   <p>
     <button
       class="link support__copyright text-color--persian-500 cursor-pointer"
-      @click.prevent="handleCopyrightLink"
       data-testid="copyright-link"
+      @click.prevent="handleCopyrightLink"
     >
       {{ t('copyright') }}
     </button>
@@ -22,14 +22,14 @@
   <PDrawer
     v-model="isCopyrightDrawerOpened"
     pTitle="Copyright"
-    @close-drawer-button="handleCloseDrawer"
     data-testid="login-copyright-drawer"
+    @close-drawer-button="handleCloseDrawer"
   >
     <p class="font-small text-left">
       {{ t('copyrightContent') }}
     </p>
     <template #footer>
-      <PButton @click="handleCloseDrawer" pType="primary">
+      <PButton pType="primary" @click="handleCloseDrawer">
         {{ t('close') }}
       </PButton>
     </template>

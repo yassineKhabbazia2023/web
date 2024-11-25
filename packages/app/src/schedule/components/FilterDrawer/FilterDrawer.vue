@@ -62,7 +62,8 @@
         <PButton
           pPlain
           pType="primary"
-          @click="onClickReset">
+          @click="onClickReset"
+        >
           {{ t('reset') }}
         </PButton>
         <PButton pType="primary" @click="onClickApply">

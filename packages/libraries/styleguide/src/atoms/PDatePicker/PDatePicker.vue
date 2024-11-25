@@ -1,7 +1,7 @@
 <template>
   <ElDatePicker
-    :prefixIcon="PICalendarEvent"
     v-model="datepickerModel"
+    :prefixIcon="PICalendarEvent"
     :popperClass="popperClassComputed"
     :class="{ 'p-date-picker__input--hidden': pCalendarLite }"
     :type="pType"
@@ -11,22 +11,22 @@
     :format="pFormat"
     :unlinkPanels="pUnlinkPanels"
     :shortcuts="pShortcuts"
-    @change="handleChange"
-    @calendar-change="calendarChange"
-    @panel-change="panelChange"
     :disabled="pDisabled"
     :placeholder="pPlaceholder"
     :clearable="pClearable"
     :teleported="pTeleported"
+    @change="handleChange"
+    @calendar-change="calendarChange"
+    @panel-change="panelChange"
   >
     <template
-      #default="{ isCurrent, dayjs, text, type }"
       v-if="pCalendarLite"
+      #default="{ isCurrent, dayjs, text, type }"
     >
       <div
         :class="{ current:isCurrent, 'el-date-table-cell': true }"
-        @click="selectedDate(dayjs.format('YYYY-MM-DD'))"
         data-testid="date-picker-table-cell"
+        @click="selectedDate(dayjs.format('YYYY-MM-DD'))"
       >
         <span class="el-date-table-cell__text">{{ text }}</span>
         <span

@@ -20,16 +20,16 @@
       <div class="p-dialog__footer">
         <PButton
           pType="white"
-          @click="handleCloseDrawer"
           data-testid="dialog-close-button"
+          @click="handleCloseDrawer"
         >
           {{ t('cancel') }}
         </PButton>
 
         <PButton
           pType="primary"
-          @click="handleRemoveUser"
           data-testid="remove-user-button"
+          @click="handleRemoveUser"
         >
           <PIcon class="el-button__icon--left">
             <PIPersonRemove />

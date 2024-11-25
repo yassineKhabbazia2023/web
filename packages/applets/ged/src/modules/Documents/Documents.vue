@@ -14,12 +14,12 @@
         :accountName="selectedEntityName"
         :accountNumber="selectedEntity"
       />
-
     </div>
     <div class="padding-top--4 padding-left--4">
       <PBreadcrumb
         :pElements="breadcrumbItems"
-        @p-breadcrumb-item-click="handleFolderNavigation" />
+        @p-breadcrumb-item-click="handleFolderNavigation"
+      />
     </div>
 
     <DocumentsActionsBar
@@ -274,7 +274,9 @@ const docSearchFilters = ref<DocumentSearchFilters | null>(null)
 const componentSortQueryField = ref('-created')
 
 const fetchDocuments = async () => {
-  if (!props.selectedFolder) return
+  if (!props.selectedFolder) {
+    return
+  }
 
   if (isInSearchScope.value) {
     await searchDocumentsByKeyWord(searchContent.value)
@@ -320,12 +322,16 @@ const totalDocumentsCount = ref<number>(0)
 const skip = computed(() => (currentPage.value - 1) * currentPageSize.value)
 
 watch([currentPage, currentPageSize, isInSearchScope], async () => {
-  if (!props.selectedFolder) return
+  if (!props.selectedFolder) {
+    return
+  }
   await fetchDocuments()
 })
 
 const paginationLabel = computed(() => {
-  if (!documents.value) return
+  if (!documents.value) {
+    return
+  }
 
   return `${1 + ((currentPage.value - 1) * currentPageSize.value)}
    - ${((currentPage.value - 1) * currentPageSize.value) +
@@ -340,7 +346,9 @@ const setCurrentPageSize = (selectedRange: number) => {
 const isSearchShrinkable = computed(() => searchContent.value === '')
 
 watch([() => props.selectedFolder], async () => {
-  if (!props.selectedFolder) return
+  if (!props.selectedFolder) {
+    return
+  }
   docSearchFilters.value = null
   currentPage.value = 1
   await fetchDocuments()
@@ -462,7 +470,9 @@ const handleSearchExpandChange = (value: boolean) => {
 }
 
 const searchDocumentsByKeyWord = async (value: string) => {
-  if (!props.selectedFolder) return
+  if (!props.selectedFolder) {
+    return
+  }
 
   isSearchLoading.value = true
 
@@ -562,54 +572,64 @@ const handleApplyFilters = async (val: DocumentSearchFilters) => {
 // Actions handlers
 const handleToolboxActionTriggered = async (action: string) => {
   switch (action) {
-    case 'download-document':
-      handleDownloadDocumentsEvent()
-      break
-    case 'rename-document':
-      handleRenameDocumentEvent()
-      break
-    case 'delete-document':
-      isDeletePopupVisible.value = true
-      break
-    case 'move-document':
-      handleMoveDocumentEvent()
-      break
-    case 'transmit-document':
-      await handleTransmitDocuments()
-      break
-    case 'go-to-document':
-      handleGoToSearchedDocument()
-      break
+  case 'download-document':
+    handleDownloadDocumentsEvent()
+    break
+  case 'rename-document':
+    handleRenameDocumentEvent()
+    break
+  case 'delete-document':
+    isDeletePopupVisible.value = true
+    break
+  case 'move-document':
+    handleMoveDocumentEvent()
+    break
+  case 'transmit-document':
+    await handleTransmitDocuments()
+    break
+  case 'go-to-document':
+    handleGoToSearchedDocument()
+    break
   }
 }
 
 const handleActionBarButtonClick = async (actionName: string) => {
   switch (actionName) {
-    case 'actionbar-download-action-click':
-      if (selectedDocuments.value.length === 0) break
-      handleDownloadDocumentsEvent()
+  case 'actionbar-download-action-click':
+    if (selectedDocuments.value.length === 0) {
       break
-    case 'actionbar-delete-action-click':
-      if (selectedDocuments.value.length === 0) break
-      isDeletePopupVisible.value = true
+    }
+    handleDownloadDocumentsEvent()
+    break
+  case 'actionbar-delete-action-click':
+    if (selectedDocuments.value.length === 0) {
       break
-    case 'actionbar-rename-action-click':
-      if (selectedDocuments.value.length === 0) break
-      handleRenameDocumentEvent()
+    }
+    isDeletePopupVisible.value = true
+    break
+  case 'actionbar-rename-action-click':
+    if (selectedDocuments.value.length === 0) {
       break
-    case 'actionbar-move-action-click':
-      if (selectedDocuments.value.length === 0) break
-      handleMoveDocumentEvent()
+    }
+    handleRenameDocumentEvent()
+    break
+  case 'actionbar-move-action-click':
+    if (selectedDocuments.value.length === 0) {
       break
-    case 'actionbar-transmit-action-click':
-      if (selectedDocuments.value.length === 0) break
-      await handleTransmitDocuments()
+    }
+    handleMoveDocumentEvent()
+    break
+  case 'actionbar-transmit-action-click':
+    if (selectedDocuments.value.length === 0) {
       break
-    case 'actionbar-filter-action-click':
-      isFiltersDrawerOpened.value = true
-      break
-    default:
-      break
+    }
+    await handleTransmitDocuments()
+    break
+  case 'actionbar-filter-action-click':
+    isFiltersDrawerOpened.value = true
+    break
+  default:
+    break
   }
 }
 

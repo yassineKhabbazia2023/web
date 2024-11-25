@@ -11,12 +11,12 @@ export const isTokenExpired = (token: string): boolean => {
 }
 
 export class TokenService {
-  // eslint-disable-next-line no-use-before-define
+   
   private static instance: TokenService
   private token: string = ''
   private registeredCallbacks: RegisteredCallback[] = []
 
-  // eslint-disable-next-line no-useless-constructor
+   
   private constructor() {}
 
   static getInstance(): TokenService {

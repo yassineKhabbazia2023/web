@@ -82,7 +82,7 @@ describe('documentList', () => {
     // Pas sreussi a récupéré table element
     it('should emit on-sort-change when sort-change', async () => {
       const emitPayload =
-        // eslint-disable-next-line max-len
+         
         '{"column":{"order":"ascending","id":"el-table_2_column_11","type":"default","align":null,"headerAlign":null,"showOverflowTooltip":false,"filteredValue":[],"filterPlacement":"","isColumnGroup":false,"isSubColumn":false,"filterOpened":false,"sortable":true,"rawColumnKey":0,"label":"Nom du document","fixed":false,"resizable":true,"sortOrders":["ascending","descending",null],"reserveSelection":false,"filterMultiple":true,"width":591,"minWidth":80,"realWidth":591,"no":2,"level":1,"colSpan":1,"rowSpan":1},"order":"ascending"}'
 
       const wrapper = createWrapper()

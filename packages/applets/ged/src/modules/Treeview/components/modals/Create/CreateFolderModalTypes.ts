@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+ 
 import type { Folder } from '@ged/models/Folder'
 
 export interface CreateFolderModalProps {

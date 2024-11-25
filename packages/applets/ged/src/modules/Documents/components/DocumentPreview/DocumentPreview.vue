@@ -13,7 +13,7 @@
     pShowCloseButton
     :pShowPreviousDocument="selectedDocumentIndex > 1"
     :pShowNextDocument="selectedDocumentIndex < totalDocumentsCount"
-    @update:modelValue="handleClose"
+    @update:model-value="handleClose"
     @next-document-button-click="handleNextButtonClick"
     @previous-document-button-click="handlePreviousButtonClick"
   >

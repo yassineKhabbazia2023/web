@@ -24,7 +24,8 @@
         class="p-offer-card__chevron-icon"
         :color="AppColors.GRAY_900"
         size="16px"
-       pName="chevronRight" />
+        pName="chevronRight"
+      />
     </div>
   </button>
 </template>

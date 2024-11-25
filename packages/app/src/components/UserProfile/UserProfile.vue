@@ -1,12 +1,12 @@
 <template>
   <PDrawer
-    @close-drawer-button="drawerModel = false"
     v-model="drawerModel"
     :pTitle="t('profileSettings')"
     pDirection="ttb"
     pType="mini"
     appendToBody
     class="user-profile-drawer"
+    @close-drawer-button="drawerModel = false"
   >
     <MyInformation />
     <template #footer />

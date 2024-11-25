@@ -22,7 +22,7 @@
       </div>
     </div>
     <div v-if="$slots['suffix']" class="margin-top--4">
-      <slot name="suffix"/>
+      <slot name="suffix" />
     </div>
   </div>
 </template>

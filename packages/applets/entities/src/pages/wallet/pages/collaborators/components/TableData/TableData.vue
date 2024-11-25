@@ -68,9 +68,9 @@
       >
         <template #default="scope">
           <PToolbox
-            @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
             trigger="click"
             :pElements="menuElements"
+            @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
           >
             <PButton pType="generic">
               <PIcon>

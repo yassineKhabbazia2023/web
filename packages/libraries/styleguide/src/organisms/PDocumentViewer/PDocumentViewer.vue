@@ -15,8 +15,8 @@
             v-if="pShowCloseButton"
             pType="generic"
             pPlain
-            @click="documentViewerModel = false"
             class="el-button--icon p-document-viewer__btn-close margin-right--2"
+            @click="documentViewerModel = false"
           >
             <PIcon pName="arrowLeft" />
           </PButton>
@@ -27,7 +27,7 @@
             {{ pTitleDocument }}
           </p>
         </div>
-        <div class="p-document-viewer__header-right" v-if="pHasPagination">
+        <div v-if="pHasPagination" class="p-document-viewer__header-right">
           <PButton
             pType="generic"
             pPlain

@@ -1,8 +1,8 @@
 <template>
   <PSelect
+    v-model="recipientsModel"
     pFilterable
     pMultiple
-    v-model="recipientsModel"
     pCollapseTags
     pCollapseTagsTooltip
     :pPlaceholder="placeholder"

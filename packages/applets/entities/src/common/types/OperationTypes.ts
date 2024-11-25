@@ -1,10 +1,10 @@
-/* eslint-disable no-unused-vars */
+ 
 export enum OperationStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED'
 }
-/* eslint-enable no-unused-vars */
+ 
 
 export interface Operation {
   operationId: number

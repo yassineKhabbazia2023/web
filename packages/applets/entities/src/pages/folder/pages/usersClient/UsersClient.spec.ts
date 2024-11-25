@@ -76,7 +76,7 @@ function createWrapper(entityId?: number) {
         'RemoveUserDialog',
         'ManageRightsDrawer',
         'DrawerUserDetails',
-        'TableData'
+        'TableData',
       ],
     },
   })

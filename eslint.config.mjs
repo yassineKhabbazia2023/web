@@ -3,6 +3,7 @@ import pluginJs from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import vitest from '@vitest/eslint-plugin'
+import stylistic from '@stylistic/eslint-plugin'
 
 import { includeIgnoreFile } from '@eslint/compat'
 import path from 'node:path'
@@ -22,6 +23,9 @@ export default [
   ...pluginVue.configs['flat/strongly-recommended'],
   { files: ['**/*.vue'], languageOptions: { parserOptions: { parser: tseslint.parser } } },
   {
+    plugins: {
+      '@stylistic': stylistic,
+    },
     rules: {
       // TODO: temporary rules to delete after eslint migration
       '@typescript-eslint/no-explicit-any': 'off',
@@ -83,6 +87,7 @@ export default [
       'space-in-parens': ['error', 'never'],
       'vue/attributes-order': 'error',
       'vue/max-attributes-per-line': ['error', { singleline: 2 }],
+      '@stylistic/brace-style': ["error", "1tbs", { "allowSingleLine": false }]
     },
   },
   {
@@ -114,7 +119,7 @@ export default [
     files: ['**/*.{cjs,cts}'],
     rules: {
       '@typescript-eslint/no-require-imports': 'off', // allow require
-      'no-undef': 'off' // allow module.exports
+      'no-undef': 'off', // allow module.exports
     },
   },
 ]

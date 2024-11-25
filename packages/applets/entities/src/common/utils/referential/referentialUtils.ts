@@ -64,9 +64,9 @@ export function getEnrichedField(
 
   const enrichedField = forceDisabled
     ? {
-        ...field,
-        pDisabled: true,
-      }
+      ...field,
+      pDisabled: true,
+    }
     : field
 
   if (pFieldType !== 'dropdown') {
@@ -108,14 +108,14 @@ export function getEnrichedFormSection(
 
 export const getFormSections = (formStructureName: FormStructureName) => {
   switch (formStructureName) {
-    case ProviderName.MEG:
-      return MEGOffersFormStructure as FormSection[]
-    case ProviderName.LOOP:
-      return LOOPOfferFormStructure as FormSection[]
-    case 'CompanyProfile':
-      return InformationFormStructure as FormSection[]
-    default:
-      return []
+  case ProviderName.MEG:
+    return MEGOffersFormStructure as FormSection[]
+  case ProviderName.LOOP:
+    return LOOPOfferFormStructure as FormSection[]
+  case 'CompanyProfile':
+    return InformationFormStructure as FormSection[]
+  default:
+    return []
   }
 }
 

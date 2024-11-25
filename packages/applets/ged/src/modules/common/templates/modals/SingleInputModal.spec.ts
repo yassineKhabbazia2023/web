@@ -50,7 +50,7 @@ const createWrapper = (
 }
 
 describe('singleInputModal', () => {
-  // eslint-disable-next-line vitest/no-hooks
+   
   beforeEach(() => {
     setActivePinia(pinia)
   })

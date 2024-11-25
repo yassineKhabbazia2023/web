@@ -21,7 +21,7 @@ const styleguideParameters = {
 }
 config.global.plugins = [
   i18n,
-  [styleguideLibrary, styleguideParameters]
+  [styleguideLibrary, styleguideParameters],
 ]
 
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()

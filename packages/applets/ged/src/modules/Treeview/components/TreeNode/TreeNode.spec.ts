@@ -23,7 +23,7 @@ vi.mock('@pulse/styleguide', () => ({
   AppColors: {
     RED: 'RED',
     PRIMARY: 'PRIMARY',
-  }
+  },
 }))
 
 const fold: Folder = {
@@ -305,7 +305,7 @@ describe('interactions', () => {
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })
 
-  // eslint-disable-next-line max-len
+   
   it('should selectedOrHovered when p-toolbox-dropdown-visibility-change is emitted from TreeNodeActionsToolbox', async () => {
     const folder = { ...fold, permissions: ['CAN_DELETE_FOLDER'] }
     const updatedProps = { ...defaultProps, data: folder }

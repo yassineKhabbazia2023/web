@@ -1,4 +1,4 @@
-/* eslint-disable vitest/max-expects */
+ 
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import DocumentDetailsTabPane from '.'

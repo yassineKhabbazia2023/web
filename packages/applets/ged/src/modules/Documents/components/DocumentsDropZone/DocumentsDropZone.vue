@@ -23,8 +23,8 @@
       class="text-center margin-top--2"
       data-testid="allowed-drop-text"
     >
-      <span class="text-color--neutral-gray-900">{{ t('dropYourFiles') }}</span><br/>
-      <span class="text-color--neutral-gray-500">{{ t('maxSize')}}</span>
+      <span class="text-color--neutral-gray-900">{{ t('dropYourFiles') }}</span><br>
+      <span class="text-color--neutral-gray-500">{{ t('maxSize') }}</span>
     </p>
     <p
       v-else-if="!isAllowedDropZone"

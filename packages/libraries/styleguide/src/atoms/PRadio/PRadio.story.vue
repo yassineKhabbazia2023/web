@@ -4,13 +4,15 @@
       <PRadio
         v-model="radio"
         pLabel="1"
-        :pDisabled="isDisabled">
+        :pDisabled="isDisabled"
+      >
         Option 1
       </PRadio>
       <PRadio
         v-model="radio"
         pLabel="2"
-        :pDisabled="isDisabled">
+        :pDisabled="isDisabled"
+      >
         Option 2
       </PRadio>
       <template #controls>

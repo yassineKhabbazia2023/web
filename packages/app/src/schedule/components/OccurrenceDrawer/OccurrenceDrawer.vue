@@ -5,8 +5,8 @@
     :pShowPreviousStep="false"
     pSize="33%"
     pDirection="rtl"
-    @close-drawer-button="isDrawerOpened = false"
     pSuffixUnderTitle
+    @close-drawer-button="isDrawerOpened = false"
   >
     <template
       v-if="occurrence"
@@ -79,13 +79,13 @@
         @toggle-status="onToggleDeadlineAccountStatus"
       />
       <PAlert
-        @close="setAlertVisibility"
+        v-if="isNoteAlertShown && !isCollab"
         pClosable
         pIcon="arrowHere"
-        v-if="isNoteAlertShown  && !isCollab"
+        @close="setAlertVisibility"
       >
         <template #bold-text>
-          {{t('check')}}
+          {{ t('check') }}
         </template> {{ t('reminderCollabNote') }}
       </PAlert>
       <StringField
@@ -120,8 +120,8 @@
               pPlain
               pSize="default"
               data-testid="occurrence-drawer-attachment-download"
-              @click="downloadAttachment(occurrenceId, occurrence.schedule.attachment.name)"
               pIconOnly
+              @click="downloadAttachment(occurrenceId, occurrence.schedule.attachment.name)"
             >
               <PIcon>
                 <PIDownload />

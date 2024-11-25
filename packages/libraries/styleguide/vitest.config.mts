@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { mergeConfig } from 'vite'
 import { configDefaults, defineConfig } from 'vitest/config'
-// eslint-disable-next-line
+ 
 import viteConfig from './vite.config.mts'
 
 export default mergeConfig(
@@ -19,18 +19,18 @@ export default mergeConfig(
           find: /^element-plus$/,
           replacement: path.resolve(
             __dirname,
-            "../../../",
-            "node_modules",
-            "element-plus/dist/index.full.mjs"
+            '../../../',
+            'node_modules',
+            'element-plus/dist/index.full.mjs',
           ),
         },
       ],
       deps: {
         optimizer: {
           web: {
-            include: ['element-plus']
-          }
-        }
+            include: ['element-plus'],
+          },
+        },
       },
       coverage: {
         provider: 'istanbul', // or 'v8'

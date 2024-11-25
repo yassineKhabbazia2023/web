@@ -12,7 +12,7 @@
     @node-click="handleNodeClicked"
   >
     <template v-if="pHasCustomNodes" #default="slotProps">
-      <slot v-bind="slotProps"></slot>
+      <slot v-bind="slotProps" />
     </template>
   </ElTree>
 </template>

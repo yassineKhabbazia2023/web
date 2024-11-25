@@ -5,7 +5,8 @@
     :layout="{
       type: 'single',
       iframe: false,
-    }">
+    }"
+  >
     <Variant>
       <div
         v-for="(group, indexGroup) in iconsData"
@@ -16,10 +17,11 @@
           class="demo-icon-list"
         >
           <li
+            v-for="(item, index) in group.icons"
+            :key="index"
             class="icon-item"
             :title="item.name"
-            v-for="(item, index) in group.icons"
-            :key="index">
+          >
             <span class="demo-svg-icon" @click="copyClipboard(item)">
               <PIcon
                 :color="AppColors.PRIMARY"

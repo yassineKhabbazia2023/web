@@ -18,7 +18,8 @@
       filter-option__number
       font-semibold
       margin-right--3
-  ">
+  "
+    >
       {{ number }}
     </span>
     <PTag
@@ -33,7 +34,7 @@
       size="12px"
       class="filter-option__icon"
     >
-      <PIXCircleFill/>
+      <PIXCircleFill />
     </PIcon>
   </PButton>
 </template>

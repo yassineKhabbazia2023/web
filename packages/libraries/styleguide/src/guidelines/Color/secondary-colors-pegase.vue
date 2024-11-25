@@ -14,7 +14,8 @@
               width: `${100 / 3}%`,
               background: `var(--el-color-${type})`,
             }"
-            @click="copyColor(`${type}`)">
+            @click="copyColor(`${type}`)"
+          >
             {{ getColorValue(type).toUpperCase() }}
           </div>
         </div>

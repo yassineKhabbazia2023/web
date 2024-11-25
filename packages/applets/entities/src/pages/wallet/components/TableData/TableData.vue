@@ -18,11 +18,11 @@
       <template #default="scope">
         <PButton
           v-if="scope.row.isFavorite"
-          @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
           pType="white"
           pSize="small"
           pIconOnly
           data-testid="wallet-add-favorite"
+          @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
         >
           <PIcon>
             <PIStarFill />
@@ -30,11 +30,11 @@
         </PButton>
         <PButton
           v-if="!scope.row.isFavorite"
-          @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
           pType="white"
           pSize="small"
           pIconOnly
           data-testid="wallet-remove-favorite"
+          @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
         >
           <PIcon>
             <PIStar />
@@ -60,8 +60,8 @@
           </PAvatar>
           <a
             class="font-semibold margin-left--2 link text-color--persian-500 overflow-hidden text-overflow--ellipsis"
-            @click="onToolboxItemClicked('access', scope.row)"
             data-testid="account-access-link"
+            @click="onToolboxItemClicked('access', scope.row)"
           >
             {{ scope.row.name }}
           </a>
@@ -144,8 +144,8 @@
             trigger="click"
             :disabled="isToolboxDisabled"
             :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
-            @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
             data-testid="wallet-actions-toolbox"
+            @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
           >
             <PButton
               pType="generic"
@@ -271,7 +271,9 @@ const accountManagementMenu : AccessibleMenuItem[] = [
 ]
 
 const menuElementsCollaborator = (status: string) => {
-  if (props.isAccountManagement) return filterAccessibleMenuItems(accountManagementMenu)
+  if (props.isAccountManagement) {
+    return filterAccessibleMenuItems(accountManagementMenu)
+  }
   return status === t('toDeploy')
     ? filterAccessibleMenuItems(menuToDeployElements)
     : filterAccessibleMenuItems(defaultMenuElements)

@@ -20,6 +20,7 @@
     >
       <Notification
         v-for="(notification, index) in notifications"
+        :id="notification.id"
         :key="index"
         :accountsNames="getNotificationAccountNames(notification)"
         :elapsedTime="getTimeSinceCreation({
@@ -29,7 +30,6 @@
           daySuffix: t('suffixes.day'),
           weekSuffix: t('suffixes.week'),
         })"
-        :id="notification.id"
         :isRead="notification.isRead"
         :message="notification.message"
         :notificationType="notification.notificationType"

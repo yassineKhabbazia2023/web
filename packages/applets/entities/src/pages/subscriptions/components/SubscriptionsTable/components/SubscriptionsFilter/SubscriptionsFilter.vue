@@ -5,8 +5,8 @@
       :pPlaceholder="t('chooseAnOffer')"
       pFilterable
       pMultiple
-      @change="handleOfferTypeFilter"
       data-testid="subscription-filter-offers-dropdown"
+      @change="handleOfferTypeFilter"
     >
       <template #header>
         <PCheckbox

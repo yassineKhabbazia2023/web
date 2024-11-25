@@ -3,12 +3,14 @@
     <PCol :pSpan="10" :pXs="{ span: 12 }">
       <div
         class="demo-color-box"
-        :style="{ background: primary }">
+        :style="{ background: primary }"
+      >
         Brand Color
         <div
           class="value"
           text="xs"
-          @click="copyColor(`primary`)">
+          @click="copyColor(`primary`)"
+        >
           {{ primary.toUpperCase() }}
         </div>
         <div class="bg-color-sub" :style="{ background: primary }">

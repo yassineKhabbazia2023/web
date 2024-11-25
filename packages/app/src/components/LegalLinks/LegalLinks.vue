@@ -16,9 +16,9 @@
       <button
         type="button"
         class="legal-links__link"
+        data-testid="legal-links-notices"
         @click="handleClick"
         @click.stop.prevent
-        data-testid="legal-links-notices"
       >
         {{ t('cookiesNotices') }}
       </button>
@@ -26,10 +26,10 @@
     <li class="legal-links__item flex flex--align-items-center">
       <!-- OneTrust Cookies Settings button start -->
       <button
-        @click.stop.prevent
-        type="button"
         id="ot-sdk-btn"
+        type="button"
         class="legal-links__link ot-sdk-show-settings"
+        @click.stop.prevent
       >
         {{ t('cookiesParameters') }}
       </button>
@@ -67,22 +67,22 @@
   >
     <PDrawer
       modelValue
-      @close-drawer-button="drawerVisibility = false"
       :pTitle="t('cookiesNotices')"
       :class="{
         'padding-top--12': isAuthenticated
       }"
       :closeOnClickModal="false"
+      @close-drawer-button="drawerVisibility = false"
     >
       <!-- OneTrust Cookies List start -->
-      <div id="ot-sdk-cookie-policy"></div>
+      <div id="ot-sdk-cookie-policy" />
       <!-- OneTrust Cookies List end -->
 
       <template #footer>
         <PButton
-          @click="drawerVisibility = false"
           pType="primary"
           data-testid="drawer-close-button"
+          @click="drawerVisibility = false"
         >
           {{ t('close') }}
         </PButton>

@@ -8,9 +8,9 @@
     }"
   >
     <Variant
-      :title="group.name"
       v-for="(group, index) in groups"
       :key="index"
+      :title="group.name"
     >
       <ul class="list-style-none">
         <li

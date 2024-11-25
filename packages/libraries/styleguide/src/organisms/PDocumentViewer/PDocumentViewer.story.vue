@@ -13,7 +13,7 @@
       >
         Open
       </PButton>
-      <tr/>
+      <tr />
       <PDocumentViewer
         v-model="isDrawerOpened"
         :pDestroyOnClose="documentViewerBasicData.pDestroyOnClose"
@@ -42,8 +42,10 @@
           />
         </template>
         <template #content>
-          <div> You can find here for exp Document details such as owner email ...,
-            please upload only a pdf file to visualize the pdf </div>
+          <div>
+            You can find here for exp Document details such as owner email ...,
+            please upload only a pdf file to visualize the pdf
+          </div>
           <PUpload
             pMultiple
             :pDisabled="false"

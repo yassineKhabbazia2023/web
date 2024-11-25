@@ -5,9 +5,9 @@
         v-model="state"
         :pClearable="clearable"
         pPlaceholder="Please Input"
-        @select="handleSelect"
         :pFetchSuggestions="querySearch"
         :pTriggerOnFocus="triggerOnFocus"
+        @select="handleSelect"
       >
         <template #prefix>
           <PIcon pName="search" />

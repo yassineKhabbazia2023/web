@@ -104,10 +104,10 @@
         </p>
         <div class="p-dialog__input">
           <PInput
+            v-model="pThirdDialogControl.dialogInput"
             type="text"
             :disabled="false"
             placeholder="Nom du fichier"
-            v-model="pThirdDialogControl.dialogInput"
           />
           <p class="p-dialog__input-extension">
             .jpg

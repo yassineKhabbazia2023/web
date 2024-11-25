@@ -49,12 +49,12 @@
       class="margin-bottom--4"
     >
       <template #bold-text>
-        {{t('Warning')}}
+        {{ t('Warning') }}
       </template> {{ monthlyWarning }}
     </PAlert>
     <CreateScheduleReminders
-      v-model="reminders"
       ref="createScheduleRemindersRef"
+      v-model="reminders"
       class="margin-bottom--4"
     />
     <PFormItem
@@ -73,7 +73,7 @@
       <PInput
         v-model="createScheduleForm.description"
         pType="textarea"
-        :pPlaceholder= "t('descripitionPlaceholder')"
+        :pPlaceholder="t('descripitionPlaceholder')"
         :pAutosize="{ minRows: 6, maxRows: 8 }"
       />
     </PFormItem>
@@ -99,9 +99,9 @@
         pTextLimitSize="5MB"
         :pPrefixLabelFileLine="t('attachment-prefix-label')"
         :pSuffixLabelFileLine="t('attachment-suffix-label')"
+        :beforeUpload="beforeAttachmentUpload"
         @files-selected="addAttachment($event)"
         @delete-file="removeAttachment"
-        :beforeUpload="beforeAttachmentUpload"
       />
       <span
         v-if="attachmentErrorType"
@@ -111,7 +111,7 @@
         {{ labelsErrorsMap[attachmentErrorType] }}
       </span>
       <PAlert pType="information">
-        {{  t('attachment-alert') }}
+        {{ t('attachment-alert') }}
       </PAlert>
     </PFormItem>
   </PForm>
@@ -207,7 +207,7 @@ const frequenciesOptionsFormatted = computed(() => {
 })
 
 const monthlyWarning = computed(() =>
-  // eslint-disable-next-line max-len
+   
   `Certains mois contiennent moins de ${createScheduleForm.date.getDate()} jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.`,
 )
 

@@ -5,16 +5,17 @@
     :disabled="pDisabled"
     :selected="pSelected"
   >
-    <div class="p-double-text__icon" v-if="pIcon">
+    <div v-if="pIcon" class="p-double-text__icon">
       <PIcon :size="16">
         <component :is="pIcon" />
       </PIcon>
     </div>
-    <div class="p-double-text__icon" v-if="pProfile">
+    <div v-if="pProfile" class="p-double-text__icon">
       <PAvatar
         :pShape="pIconShape"
         :pType="pIconType"
-        :pColor="pIconColor">
+        :pColor="pIconColor"
+      >
         {{ pProfile }}
       </PAvatar>
     </div>

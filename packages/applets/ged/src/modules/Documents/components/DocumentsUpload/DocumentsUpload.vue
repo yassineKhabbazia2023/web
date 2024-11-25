@@ -124,7 +124,9 @@ const handleUploadDocumentClicked = async (action: string) => {
   if (action === 'modal-add-document-action-click') {
     modalActionsbuttons.value = generateActionsForModal(['DEPOT_IN_PROGRESS'], modalButtonsUpload)
     const selectedDocuments = explorerDocuments.value.filter(d => d.isSelected) || []
-    selectedDocuments.forEach((d) => { d.givenActionState = 'IN_PROGRESS' })
+    selectedDocuments.forEach((d) => {
+      d.givenActionState = 'IN_PROGRESS'
+    })
     await uploadDocumentsInBatches(selectedDocuments)
     emit('update-document-list-upload')
     const shouldCloseModal = !explorerDocuments.value.some(
@@ -134,7 +136,9 @@ const handleUploadDocumentClicked = async (action: string) => {
         document.givenActionState === 'IN_PROGRESS',
     )
 
-    if (shouldCloseModal) handleClose()
+    if (shouldCloseModal) {
+      handleClose()
+    }
   }
   if (action === 'modal-cancel-document-action-click') {
     handleClose()

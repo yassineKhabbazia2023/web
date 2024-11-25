@@ -19,8 +19,8 @@
   />
   <PIcon
     v-else-if="fieldType === 'ActionGroup'"
-    @click="$emit('restore-document-action', data)"
     style="cursor: pointer;"
+    @click="$emit('restore-document-action', data)"
   >
     <PIArrowCounterclockwise />
   </PIcon>

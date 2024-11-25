@@ -8,8 +8,7 @@
         v-model="firstVariantCheckboxVModel"
         :pFileName="PFileAndFolderLineCheckBasicData[0].pFileName"
         :pState="PFileAndFolderLineCheckBasicData[0].pState"
-      >
-      </PFileAndFolderLineCheck>
+      />
     </Variant>
 
     <Variant title="Success line check">
@@ -18,8 +17,7 @@
         :pFileName="PFileAndFolderLineCheckBasicData[1].pFileName"
         :pAdditionalText="PFileAndFolderLineCheckBasicData[1].pAdditionalText"
         :pState="PFileAndFolderLineCheckBasicData[1].pState"
-      >
-      </PFileAndFolderLineCheck>
+      />
     </Variant>
 
     <Variant title="Error line check">
@@ -28,8 +26,7 @@
         :pFileName="PFileAndFolderLineCheckBasicData[2].pFileName"
         :pAdditionalText="PFileAndFolderLineCheckBasicData[2].pAdditionalText"
         :pState="PFileAndFolderLineCheckBasicData[2].pState"
-      >
-      </PFileAndFolderLineCheck>
+      />
     </Variant>
 
     <Variant title="Loading line check">
@@ -37,8 +34,7 @@
         v-model="fourthVariantCheckboxVModel"
         :pFileName="PFileAndFolderLineCheckBasicData[3].pFileName"
         :pState="PFileAndFolderLineCheckBasicData[3].pState"
-      >
-      </PFileAndFolderLineCheck>
+      />
     </Variant>
   </Story>
 </template>

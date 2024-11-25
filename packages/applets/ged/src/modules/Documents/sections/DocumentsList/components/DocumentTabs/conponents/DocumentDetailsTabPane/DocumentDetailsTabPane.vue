@@ -2,8 +2,8 @@
   <div class="document-details-container">
     <div class="details-content">
       <div
-        class="field flex-100"
         v-if="isCertified"
+        class="field flex-100"
       >
         <p class="label certified-tag">
           <PTag
@@ -66,7 +66,7 @@
           {{ formatDateStr(document.updated) }}
         </p>
       </div>
-      <div class="field flex-100" v-if="shouldDisplayPiaStatusTag">
+      <div v-if="shouldDisplayPiaStatusTag" class="field flex-100">
         <p class="libelle">
           {{ t('label.status') }}
         </p>
@@ -117,7 +117,7 @@ import {
 import { useDownloadDocuments } from
   '@ged/modules/Documents/components/DownloadDocuments/DownloadDocuments'
 import type { DownloadDocumentsComposableProps }
-  // eslint-disable-next-line max-len
+   
   from '@ged/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 
@@ -145,14 +145,14 @@ const tagIconByState = {
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {
-    case 'Collected':
-      return { icon: tagIconByState.success, type: 'success' }
-    case 'Duplicate':
-      return { icon: tagIconByState.success, type: 'success' }
-    case 'Archived':
-      return { icon: tagIconByState.success, type: 'success' }
-    default:
-      return { icon: tagIconByState.success, type: 'success' }
+  case 'Collected':
+    return { icon: tagIconByState.success, type: 'success' }
+  case 'Duplicate':
+    return { icon: tagIconByState.success, type: 'success' }
+  case 'Archived':
+    return { icon: tagIconByState.success, type: 'success' }
+  default:
+    return { icon: tagIconByState.success, type: 'success' }
   }
 }
 
@@ -187,7 +187,7 @@ const handleDownloadClick = () => {
 // This is meant to be deleted really soon once the back end is updated
 // to remove the PIA sync property from the response.
 //  Back end US here :
-// eslint-disable-next-line max-len
+ 
 // https://kpmgfr.visualstudio.com/Constellation/_backlogs/backlog/Hades/Stories?System.WorkItemType=User%20Story&workitem=304249
 
 const isInPIASyncedFolder = computed(() => {
@@ -196,7 +196,9 @@ const isInPIASyncedFolder = computed(() => {
     documentPath === 'Comptabilité > Dépôt' ||
     documentPath === 'Comptabilité > Dépôt > Achats' ||
     documentPath === 'Comptabilité > Dépôt > Ventes'
-  ) return true
+  ) {
+    return true
+  }
   return false
 })
 </script>

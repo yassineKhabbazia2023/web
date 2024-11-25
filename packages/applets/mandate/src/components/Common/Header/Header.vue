@@ -5,8 +5,8 @@
         {{ t('bank-mandates') }}
       </div>
       <PFilterGroupNumber
-        class="flex--grow-1"
         v-model="activeFilters"
+        class="flex--grow-1"
         :pFilters="filters"
         @update:model-value="onClickFilter($event)"
       />

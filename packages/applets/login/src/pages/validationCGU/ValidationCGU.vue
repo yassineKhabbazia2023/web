@@ -9,12 +9,14 @@
     <PForm
       ref="cguFormRef"
       :pRules="rules"
-      :pModel=formValue>
+      :pModel="formValue"
+    >
       <PFormItem
         pProp="terms"
         class="margin-bottom--10"
       >
         <PCheckbox
+          ref="checkbox"
           v-model="formValue.terms"
           class="
             validation-cgu__checkbox
@@ -24,13 +26,13 @@
             radius--2
             width-100
           "
-          ref="checkbox"
         >
           {{ t('cguMessagePartOne') }}
           <a
             :href="urlTerms"
             target="_blank"
-            class="validation-cgu__link font-bold text-color--persian-500">
+            class="validation-cgu__link font-bold text-color--persian-500"
+          >
             {{ t('cguLink') }}
           </a>
           {{ t('cguMessagePartTwo') }}

@@ -68,7 +68,7 @@ describe('deleteFolderConfirmationPopup', () => {
         folderName: 'folderToDelete',
       }
 
-      // eslint-disable-next-line max-len
+       
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", tous les fichiers et sous dossiers à partir du dossier "folderToDelete" seront supprimés et envoyés à la corbeille.'
 
       const wrapper = createWrapper(updatedProps)

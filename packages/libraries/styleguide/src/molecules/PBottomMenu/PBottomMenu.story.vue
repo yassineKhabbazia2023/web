@@ -2,7 +2,7 @@
   <Story title="3. Molecules/BottomMenu" icon="icon-park-outline:bottom-bar">
     <Variant title="Basic Usage">
       <router-view />
-      <br /><br />
+      <br><br>
       <PBottomMenu
         :defaultActive="routeActive"
         :pItems="menuItems"

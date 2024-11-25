@@ -71,11 +71,11 @@ vi.mock('@ged/services/Folder', () => ({
 }))
 
 describe('createFolderSection', () => {
-  // eslint-disable-next-line vitest/no-hooks
+   
   beforeEach(() => {
     setActivePinia(pinia)
   })
-  // eslint-disable-next-line vitest/no-hooks
+   
   afterEach(() => {
     vi.restoreAllMocks()
   })

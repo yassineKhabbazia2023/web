@@ -5,9 +5,9 @@
       class="flex flex--align-items-center flex--justify-content-space-between"
     >
       <Filters
+        data-testid="filters"
         @filter-by-status="handleFilterByDeploymentStatus"
         @remove-filter="handleRemoveFilter"
-        data-testid="filters"
       />
       <PButton
         pType="primary"
@@ -24,10 +24,10 @@
     </div>
     <div class="margin-bottom--3">
       <FormSearch
-        :forcedValue="searchCriteria.search"
         ref="searchBar"
-        @search-value-submitted="handleSearchValueSubmitted"
+        :forcedValue="searchCriteria.search"
         :placeholder="t('search')"
+        @search-value-submitted="handleSearchValueSubmitted"
       />
     </div>
     <div
@@ -49,17 +49,17 @@
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
       />
       <PPagination
-        class="margin-top--6"
-        @on-page-range-changed="handlePageRangeChanged"
-        :pCurrentPage="searchResult.currentPage"
-        @update:p-current-page="onUpdateCurrentPage"
         v-model:p-page-size="searchCriteria.limit"
+        class="margin-top--6"
+        :pCurrentPage="searchResult.currentPage"
         :pTotal="searchResult.totalItems"
         :pPageSizes="PAGE_SIZES"
         :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
         pBackground
+        @on-page-range-changed="handlePageRangeChanged"
+        @update:p-current-page="onUpdateCurrentPage"
       >
         <p>{{ paginationLabel }}</p>
       </PPagination>
@@ -70,11 +70,11 @@
       />
       <OffersDrawer
         v-if="openOffersDrawer && selectedAccountId"
+        v-model="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
         :accountNumber="selectedAccountNumber"
         :accountId="selectedAccountId"
         :currentUser="user"
-        v-model="openOffersDrawer"
         data-testid="offers-drawer"
       />
     </div>

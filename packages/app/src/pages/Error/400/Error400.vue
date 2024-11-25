@@ -9,7 +9,7 @@
   >
     <template #title>
       {{ t('title1') }}
-      <br />
+      <br>
       {{ t('title2') }}
       <span class="text-color--persian-500">{{ t('title3') }}</span>
       {{ t('title4') }}

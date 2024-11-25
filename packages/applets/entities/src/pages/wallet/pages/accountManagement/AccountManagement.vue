@@ -3,8 +3,8 @@
     <div class="margin-bottom--3">
       <FormSearch
         ref="searchBar"
-        @search-value-submitted="handleSearchValueSubmitted"
         :placeholder="t('search')"
+        @search-value-submitted="handleSearchValueSubmitted"
       />
     </div>
     <div
@@ -19,10 +19,10 @@
         v-if="searchResult.items.length > 0"
         data-testid="accounts-table"
         :data="searchResult.items"
+        isAccountManagement
         @access="handleOpenFolder"
         @display-account-rights-drawer="handleDisplayAccountRightsDrawer"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
-        isAccountManagement
       />
       <AccountRightsDrawer
         v-if="isAccountRightsDrawerOpened && selectedAccount"
@@ -35,17 +35,17 @@
         :selectedAccount="selectedAccount"
       />
       <PPagination
-        class="margin-top--6"
-        @on-page-range-changed="handlePageRangeChange"
-        :pCurrentPage="searchResult.currentPage"
-        @update:p-current-page="handlePageChange"
         v-model:p-page-size="searchCriteria.limit"
+        class="margin-top--6"
+        :pCurrentPage="searchResult.currentPage"
         :pTotal="searchResult.totalItems"
         :pPageSizes="PAGE_SIZES"
         :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
         pBackground
+        @on-page-range-changed="handlePageRangeChange"
+        @update:p-current-page="handlePageChange"
       >
         <p>{{ paginationLabel }}</p>
       </PPagination>

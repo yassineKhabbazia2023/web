@@ -126,7 +126,7 @@ const { user, defaultEntity, isCollab } = storeToRefs(globalStore)
 const chat = ref<Element>()
 const { isChatDisplayed, salesforceChat } = useSalesforceService()
 
-const isChatFeatureDisplayable = computed(()=> isChatDisplayed.value && VITE_SALESFORCE_ACTIVATED === 'true' )
+const isChatFeatureDisplayable = computed(()=> isChatDisplayed.value && VITE_SALESFORCE_ACTIVATED === 'true')
 
 const initChat = () => {
   if (isProd && user.value && defaultEntity.value && chat.value && VITE_SALESFORCE_ACTIVATED === 'true') {

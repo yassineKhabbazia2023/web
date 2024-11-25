@@ -36,10 +36,10 @@ const createWrapper = () => shallowMount(PFormItem, {
           'size',
           'for',
           'validateStatus',
-        ]
-      }
-    }
-  }
+        ],
+      },
+    },
+  },
 })
 
 describe('pFormItem', () => {

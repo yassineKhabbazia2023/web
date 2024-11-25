@@ -2,9 +2,9 @@
   <PTabs v-model="activeTab" :pStretch="false">
     <PTabPane
       v-for="tab in subscriptionDetailsTabsList"
+      :key="tab.name"
       :pLabel="tab.label"
       :pName="tab.name"
-      :key="tab.name"
     />
     <div v-if="subscriptionDetails" class="margin-top--6">
       <ServicesDetails

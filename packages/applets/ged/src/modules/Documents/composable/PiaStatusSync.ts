@@ -32,7 +32,9 @@ export function usePiaStatusSync(
         .on(
           'DocumentPiaStatusChanged',
           (response) => {
-            if (!documents.value) return
+            if (!documents.value) {
+              return
+            }
             // folderId response is returned as number in data streams
             const document: DocumentStatusUpdateResponse = JSON.parse(response)
             updateDocumentSyncStatusAndPermissions(documents, document)
@@ -45,13 +47,17 @@ export function usePiaStatusSync(
     documents: Ref<DocumentsWithTableStructure | null>,
     newDocumentStatusAndUpdate: DocumentStatusUpdateResponse,
   ) {
-    if (!documents.value?.documentsPage.items) return
+    if (!documents.value?.documentsPage.items) {
+      return
+    }
     const documentToUpdate: Document | undefined =
       documents.value.documentsPage.items.find(
         (d: Document) => d.id === String(newDocumentStatusAndUpdate.documentId),
       )
 
-    if (!documentToUpdate) return
+    if (!documentToUpdate) {
+      return
+    }
     documentToUpdate.piaStatus = newDocumentStatusAndUpdate.newStatus
     documentToUpdate.permissions = newDocumentStatusAndUpdate.permissions
   }

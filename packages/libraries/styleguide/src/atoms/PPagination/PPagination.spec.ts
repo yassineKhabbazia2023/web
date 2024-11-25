@@ -48,10 +48,10 @@ const createWrapper = (props = defaultProps) =>
             'pageSizes',
             'total',
             'layout',
-          ]
-        }
-      }
-    }
+          ],
+        },
+      },
+    },
   })
 
 describe('pPagination', () => {

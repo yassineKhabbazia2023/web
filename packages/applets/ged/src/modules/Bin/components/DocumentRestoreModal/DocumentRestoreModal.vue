@@ -75,7 +75,9 @@ const handleCancel = () => {
 }
 
 const handleConfirm = async () => {
-  if (!props.document) return
+  if (!props.document) {
+    return
+  }
 
   try {
     isRestoreInProgress.value = true

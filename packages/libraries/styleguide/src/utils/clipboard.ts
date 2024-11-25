@@ -7,7 +7,9 @@ export const useCopyClipboard = async (value: string) => {
   const source = ref('')
   const { copy, isSupported } = useClipboard({ source })
   source.value = value
-  if (!isSupported) { ElMessage.error('Copy failed') }
+  if (!isSupported) {
+    ElMessage.error('Copy failed')
+  }
 
   try {
     await copy()

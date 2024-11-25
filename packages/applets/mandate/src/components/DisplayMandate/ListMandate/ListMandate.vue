@@ -13,10 +13,10 @@
       >
         <PTableColumn
           v-if="label === 'Actions'"
+          :key="prop"
           :label="label"
           :prop="prop"
           :sortable="sortable"
-          :key="prop"
           :width="width"
         >
           <template #default="scope">
@@ -36,10 +36,10 @@
         </PTableColumn>
         <PTableColumn
           v-else-if="label === `${t('status')}`"
+          :key="label"
           :label="label"
           :prop="prop"
           :sortable="sortable"
-          :key="label"
           :width="width"
         >
           <template #default="scope">
@@ -54,9 +54,9 @@
         </PTableColumn>
         <PTableColumn
           v-else
+          :key="index"
           :prop="prop"
           :sortable="sortable"
-          :key="index"
           :width="width"
         >
           <template #header>
@@ -101,8 +101,8 @@
           :pRound="false"
           :pDisabled="false"
           :pLoading="false"
-          @click="terminateMandateAction(mandateIdRef)"
           class="margin-left--2"
+          @click="terminateMandateAction(mandateIdRef)"
         >
           {{ t('terminate-mandate-popup') }}
         </PButton>

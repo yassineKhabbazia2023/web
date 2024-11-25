@@ -76,8 +76,9 @@
       <p class="h4">
         Breakpoints
       </p>
-      <p><strong>“Utiliser une mise en page de 100% de largeur est le
-           meilleur moyen d'avoir une mise en page inadaptée à 100%.”</strong>
+      <p>
+        <strong>“Utiliser une mise en page de 100% de largeur est le
+          meilleur moyen d'avoir une mise en page inadaptée à 100%.”</strong>
         <br>
         C'est pourquoi nous préférons concevoir pour plusieurs points d'arrêt
         au lieu des 2 points d'arrêt actuels (à partir de 801px).
@@ -143,14 +144,16 @@
       <PRow
         :pGutter="basicData.gutter"
         :pJustify="basicData.justify"
-        class="row-layout">
+        class="row-layout"
+      >
         <PCol
           v-for="item in 4"
           :key="item"
           :pSpan="basicData.span"
           :pOffset="basicData.offset"
           :pPush="basicData.push"
-          :pPull="basicData.pull">
+          :pPull="basicData.pull"
+        >
           <div class="grid-item" :class="item % 2 ? 'grid-item-dark' : 'grid-item-light'" />
         </PCol>
       </PRow>
@@ -159,31 +162,37 @@
           v-model="basicData.gutter"
           title="Gutter"
           :min="0"
-          :max="60" />
+          :max="60"
+        />
         <HstSlider
           v-model="basicData.span"
           title="Span"
           :min="0"
-          :max="24" />
+          :max="24"
+        />
         <HstSlider
           v-model="basicData.offset"
           title="Offset"
           :min="0"
-          :max="24" />
+          :max="24"
+        />
         <HstSlider
           v-model="basicData.push"
           title="Push"
           :min="0"
-          :max="24" />
+          :max="24"
+        />
         <HstSlider
           v-model="basicData.pull"
           title="Pull"
           :min="0"
-          :max="24" />
+          :max="24"
+        />
         <HstRadio
           v-model="basicData.justify"
           title="Justify"
-          :options="justifyOptions" />
+          :options="justifyOptions"
+        />
       </template>
     </Variant>
   </Story>

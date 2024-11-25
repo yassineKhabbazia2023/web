@@ -136,7 +136,8 @@
     <Variant
       title="Grouping"
       :initState="initState"
-      :source="templateSourceGroup">
+      :source="templateSourceGroup"
+    >
       <template #default="{ state }">
         <PSelect v-model="state.value" pPlaceholder="Select">
           <POptionGroup

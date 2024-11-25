@@ -12,7 +12,7 @@ const setUserIdSpy = vi.fn()
 vi.mock('@amplitude/analytics-browser', async () => {
   const actual = await vi.importActual('@amplitude/analytics-browser')
   return {
-    ...(actual as Object),
+    ...(actual as object),
     init: (apiKey: string, userId = undefined, options: object) =>
       initSpy(apiKey, userId, options),
     setUserId: (arg: string) => setUserIdSpy(arg),

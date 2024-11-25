@@ -35,7 +35,8 @@
             <PPastille
               size="small"
               kind="persian"
-              class="margin-left--2">
+              class="margin-left--2"
+            >
               12
             </PPastille>
           </template>
@@ -47,7 +48,8 @@
             <PPastille
               size="small"
               kind="persian"
-              class="margin-left--2">
+              class="margin-left--2"
+            >
               123
             </PPastille>
           </template>
@@ -59,7 +61,8 @@
             <PPastille
               size="small"
               kind="persian"
-              class="margin-left--2">
+              class="margin-left--2"
+            >
               1
             </PPastille>
           </template>

@@ -22,8 +22,8 @@
           :pSize="pDrawerControl.size"
           :pDirection="pDrawerControl.direction"
           :pSuffixUnderTitle="pDrawerControl.pSuffixUnderTitle"
-          @close-drawer-button="pDrawerControl.openDrawer = false"
           :pBreadcrumb="generateBreadCrumbItems(7)"
+          @close-drawer-button="pDrawerControl.openDrawer = false"
         >
           <template v-if="pDrawerControl.showHeaderPrefix" #header-prefix>
             <p class="drawer__header-prefix-text font-base">
@@ -32,7 +32,11 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon :color="AppColors.PRIMARY" size="16" pName="link45deg" />
+              <PIcon
+                :color="AppColors.PRIMARY"
+                size="16"
+                pName="link45deg"
+              />
               <a
                 class="drawer__header-suffix-link font-base link margin-left--1"
                 href="#"
@@ -99,7 +103,11 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon :color="AppColors.PRIMARY" size="16" pName="link45deg" />
+              <PIcon
+                :color="AppColors.PRIMARY"
+                size="16"
+                pName="link45deg"
+              />
               <a
                 class="drawer__header-suffix-link font-base link margin-left--1"
                 href="#"
@@ -144,7 +152,11 @@
           </template>
           <template v-if="pDrawerControl.showHeaderSuffix" #header-suffix>
             <div class="drawer__header-suffix margin-left--3">
-              <PIcon :color="AppColors.PRIMARY" size="16" pName="link45deg" />
+              <PIcon
+                :color="AppColors.PRIMARY"
+                size="16"
+                pName="link45deg"
+              />
               <a
                 class="drawer__header-suffix-link font-base link margin-left--1"
                 href="#"

@@ -36,12 +36,11 @@
           :isLoading="areNotificationsLoading"
           :wrapperType="SelectedNotificationEnum.UNREAD"
           :notifications="unreadNotifications"
-          @notification-clicked="closeNotificationsDrawer"
           data-testid="unread-notifications"
+          @notification-clicked="closeNotificationsDrawer"
         />
       </PTabPane>
     </PTabs>
-
   </PDrawer>
 </template>
 

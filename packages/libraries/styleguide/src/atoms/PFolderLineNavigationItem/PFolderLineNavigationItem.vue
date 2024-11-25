@@ -2,9 +2,9 @@
   <button
     class="p-folder-line-navigation-item"
     :class="{ selected: isSelected, disabled: pDisabled }"
+    data-testid="file-line-navigation-item"
     @click="handleClickFolderNavigation(pFolderId)"
     @dblclick="handleDoubleClickFolderNavigation(pFolderId)"
-    data-testid="file-line-navigation-item"
   >
     <PTooltip
       :pContent="pTooltipContent"

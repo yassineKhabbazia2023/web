@@ -4,8 +4,8 @@
     pSize="50%"
     :pTitle="t('manageAccess')"
     destroyOnClose
-    @close-drawer-button="handleCloseDrawer"
     data-testid="manage-access-drawer"
+    @close-drawer-button="handleCloseDrawer"
   >
     <PUserCard
       v-if="defaultEntity?.legalName"
@@ -25,8 +25,8 @@
         <PButton
           pType="default"
           pPlain
-          @click="handleCloseDrawer"
           data-testid="manage-access-close-button"
+          @click="handleCloseDrawer"
         >
           {{ t('close') }}
         </PButton>

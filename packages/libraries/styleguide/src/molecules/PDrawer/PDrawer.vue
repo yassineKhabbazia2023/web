@@ -16,13 +16,13 @@
         }"
       >
         <div class="p-drawer__header-prefix">
-          <slot name="header-prefix"/>
+          <slot name="header-prefix" />
           <PButton
             pType="generic"
             pPlain
             pIconOnly
-            @click="$emit('close-drawer-button')"
             class="p-drawer__close-button"
+            @click="$emit('close-drawer-button')"
           >
             <PIcon pName="x" />
           </PButton>
@@ -33,12 +33,12 @@
         >
           <div class="flex flex--align-items-center flex--justify-content-flex-start">
             <PButton
+              v-if="pShowPreviousStep"
               pType="generic"
               pPlain
               pIconOnly
-              @click="$emit('drawer-previous-button-click')"
-              v-if="pShowPreviousStep"
               class="p-drawer__step-back-button"
+              @click="$emit('drawer-previous-button-click')"
             >
               <PIcon pName="arrowLeft" />
             </PButton>
@@ -47,7 +47,7 @@
             </h3>
           </div>
 
-          <slot name="header-suffix"/>
+          <slot name="header-suffix" />
         </div>
       </div>
       <PBreadcrumb

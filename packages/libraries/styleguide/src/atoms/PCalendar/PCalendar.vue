@@ -1,7 +1,7 @@
 <template>
   <ElCalendar
-    class="p-calendar"
     v-model="internalModelValue"
+    class="p-calendar"
     :range="pInitialDateRange"
   >
     <template #header>
@@ -42,7 +42,9 @@ const emit = defineEmits<{
 
 const findItemsByDate = (rawDate: string): CalendarItemsGroupedByDate['items'] => {
   const foundItemsByDate = props.pItemsGroupedByDate.find((d) => d.date === rawDate)
-  if (foundItemsByDate) return foundItemsByDate.items
+  if (foundItemsByDate) {
+    return foundItemsByDate.items
+  }
   return []
 }
 

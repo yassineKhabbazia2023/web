@@ -4,8 +4,8 @@
     pSize="100%"
     pDirection="ttb"
     pType="fullscreen"
-    @close-drawer-button="internalShowCalendar = false"
     :pWithHeader="false"
+    @close-drawer-button="internalShowCalendar = false"
   >
     <Schedule />
   </PDrawer>

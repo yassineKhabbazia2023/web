@@ -83,7 +83,9 @@ export function getMandatesCollection(searchParams: SearchMandateParams) {
 export async function getMandateAvailability(mandateId: Mandate['id']): Promise<number> {
   const { data, status } = await api().gateway.get(`mandate/api/mandate/${mandateId}/check/status`)
 
-  if (status === 204) return mandateAvailabilityCheckStatuses.NOT_AVAILABLE
+  if (status === 204) {
+    return mandateAvailabilityCheckStatuses.NOT_AVAILABLE
+  }
   return data.created === true
     ? mandateAvailabilityCheckStatuses.AVAILABLE
     : mandateAvailabilityCheckStatuses.ERRORED
@@ -107,12 +109,12 @@ export const uploadSignedMandate = async ({
   formData.append('file', file)
 
   return await api().gateway.post(
-        `/mandate/api/mandate/${mandateId}/signed/currentuser`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
+    `/mandate/api/mandate/${mandateId}/signed/currentuser`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    },
   )
 }

@@ -15,7 +15,7 @@
         @open-create-folder-modal="openCreateFolderModal"
         @update-source-folders="handleUpdateSourceFolder"
         @remove-folder-from-source="handleRemoveFolderFromSource"
-        @update-folder-name ="handleUpdateFolderName"
+        @update-folder-name="handleUpdateFolderName"
         @refresh-tree="handleTreeRefreshAndRedirectToFolder"
         @refresh-documents-list="refreshDocumentsList"
       />
@@ -130,10 +130,14 @@ const setCurrentFolderAndService = async (folder: Folder) => {
     setCurrentBinService(null)
     setCurrentFolder(folder.id)
   } else {
-    if (currentFolder.value === folder) return
+    if (currentFolder.value === folder) {
+      return
+    }
     currentFolder.value = folder
 
-    if (currentService.value === folder.serviceId) return
+    if (currentService.value === folder.serviceId) {
+      return
+    }
     currentService.value = folder.serviceId
   }
 }
@@ -179,7 +183,9 @@ const setCurrentFolder = (folderId: number | null) => {
     (sf) => sf[0].serviceId === currentService.value,
   )
   // Find deep only in currentService if defined
-  if (!currentServiceFolder) return
+  if (!currentServiceFolder) {
+    return
+  }
   const folderToRedirectTo = findFolderDeepById(currentServiceFolder, folderId)
   if (folderToRedirectTo) {
     currentFolder.value = folderToRedirectTo

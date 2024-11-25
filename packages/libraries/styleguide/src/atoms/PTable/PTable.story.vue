@@ -2,12 +2,13 @@
   <Story
     title="2. Atoms/Table"
     icon="teenyicons:table-outline"
-    :layout="{ type: 'grid', width: '80%' }">
+    :layout="{ type: 'grid', width: '80%' }"
+  >
     <Variant title="PTable basic">
       <PTable :pData="tableInputs.data" :pStripe="tableInputs.striped">
         <PTableColumn
-          type="selection"
           v-if="tableInputs.selectable"
+          type="selection"
         />
         <PTableColumn
           v-for="column in tableInputs.tableColumn"
@@ -31,8 +32,8 @@
         fit
       >
         <PTableColumn
-          type="selection"
           v-if="tableInputsWithCells.selectable"
+          type="selection"
         />
         <PTableColumn
           pLabel="Text"
@@ -48,8 +49,7 @@
               :pType="scope.row.text.type"
               :disabled="false"
               :selected="false"
-            >
-            </PText>
+            />
           </template>
         </PTableColumn>
         <PTableColumn
@@ -64,8 +64,7 @@
               :pIcon="iconResolver(scope.row.entity.icon)"
               :pType="scope.row.entity.type"
               :pSelected="false"
-            >
-            </PEntity>
+            />
           </template>
         </PTableColumn>
         <PTableColumn
@@ -83,8 +82,7 @@
               :pType="scope.row.doubleText.type"
               :pDisabled="false"
               :pSelected="false"
-            >
-            </PDoubleText>
+            />
           </template>
         </PTableColumn>
         <PTableColumn
@@ -101,8 +99,7 @@
               :pIconLeft="scope.row.tag.iconLeft"
               :pIconRight="scope.row.tag.iconRight"
               :pContent="scope.row.tag.content"
-            >
-            </PTag>
+            />
           </template>
         </PTableColumn>
         <PTableColumn

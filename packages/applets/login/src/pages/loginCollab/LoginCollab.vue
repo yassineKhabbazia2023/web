@@ -7,10 +7,10 @@
       {{ t('formTitle') }}
     </p>
     <PButton
-      @click="handleLoginCollab"
       pType="primary"
       class="buttonSubmit"
       data-testid="login-collab-button"
+      @click="handleLoginCollab"
     >
       {{ t('login') }}
     </PButton>

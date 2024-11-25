@@ -26,9 +26,9 @@
     <div v-else class="margin-top--2 flex flex-gap--4 flex--wrap">
       <LaunchCard
         v-for="launchCard in launchCards"
+        :key="launchCard.key"
         class="flex--basis-30 flex--grow-1"
         :data-testid="`launch-card-${launchCard.key}`"
-        :key="launchCard.key"
         :title="launchCard.title"
         :subtitle="launchCard.subtitle"
         :imageType="launchCard.imageType"

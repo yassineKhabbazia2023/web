@@ -2,9 +2,9 @@
   <PDrawer
     v-model="isDrawerVisible"
     :pTitle="t('manageAccessRights')"
-    @close-drawer-button="isDrawerVisible = false"
     destroyOnClose
     pSize="50%"
+    @close-drawer-button="isDrawerVisible = false"
   >
     <PUserCard
       class="margin-bottom--6"
@@ -49,9 +49,9 @@
         :previousLabel="previousLabel"
         :nextLabel="t('submitLabel')"
         :isNextButtonDisabled="isSelectedRoleNotChanged"
+        data-testid="next-previous-buttons"
         @click-previous="handlePreviousClick"
         @click-next="handleNextClick"
-        data-testid="next-previous-buttons"
       />
     </template>
   </PDrawer>

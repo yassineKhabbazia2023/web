@@ -7,7 +7,8 @@
     }"
   >
     <Variant
-      title="Basic Usage">
+      title="Basic Usage"
+    >
       <div :style="{ height: basicData.direction === 'vertical' ? '300px' : '' }">
         <PSteps
           :pActive="basicData.active"
@@ -25,7 +26,8 @@
           v-model="basicData.active"
           title="Active"
           :min="0"
-          :max="3" />
+          :max="3"
+        />
         <HstButtonGroup
           v-model="basicData.direction"
           title="Direction"
@@ -34,11 +36,13 @@
         <HstSelect
           v-model="basicData.processStatus"
           title="ProcessStatus"
-          :options="stateOptions" />
+          :options="stateOptions"
+        />
         <HstSelect
           v-model="basicData.finishStatus"
           title="finishStatus"
-          :options="stateOptions" />
+          :options="stateOptions"
+        />
         <ElDivider borderStyle="dotted" contentPosition="left">
           <span>title</span>
         </ElDivider>
