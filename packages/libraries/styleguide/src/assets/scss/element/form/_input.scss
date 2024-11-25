@@ -29,6 +29,13 @@ div.el-textarea {
     border-bottom: 2px solid var(--el-color-base-persian); 
   }
 
+  &.is-disabled {
+    border-bottom-color: var(--el-color-neutral-gray-100);
+    .el-textarea__inner {
+      box-shadow: none;
+    }
+  }
+
   .el-textarea__inner {
     padding: 10px 16px;
     box-shadow: none;

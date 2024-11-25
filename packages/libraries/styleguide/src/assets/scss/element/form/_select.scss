@@ -52,6 +52,12 @@ $select-tags-prefix-padding: (
         color: getCssVar('color-primary');
       }
     }
+    &.is-disabled.el-input--suffix {
+      border-bottom-color: var(--el-color-neutral-gray-100);
+      div.el-input__wrapper {
+        box-shadow: none;
+      }
+    }
   }
 
   &__popper.is-dark.el-popper {
