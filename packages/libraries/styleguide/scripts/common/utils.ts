@@ -1,6 +1,19 @@
 import { rmSync, existsSync, mkdirSync } from 'fs'
 import { type Config } from 'svgo'
 
+
+const pluginPresetDefault = {
+  name: 'preset-default',
+  params: {
+    overrides: {
+      removeViewBox: false,
+      inlineStyles: {
+        onlyMatchedOnce: false,
+      },
+    },
+  },
+}
+
 export function clearFolder(outputPath: string) {
   if (existsSync(outputPath)) {
     rmSync(outputPath, { recursive: true, force: true })
@@ -9,18 +22,6 @@ export function clearFolder(outputPath: string) {
 }
 
 export function getSvgoConfig(hasRemoveXmlnsPlugin: boolean): Config {
-  const pluginPresetDefault = {
-    name: 'preset-default',
-    params: {
-      overrides: {
-        removeViewBox: false,
-        inlineStyles: {
-          onlyMatchedOnce: false,
-        },
-      },
-    },
-  }
-
   const convertColors = {
     name: 'convertColors',
     params: {
@@ -36,6 +37,18 @@ export function getSvgoConfig(hasRemoveXmlnsPlugin: boolean): Config {
   if (hasRemoveXmlnsPlugin) {
     plugins.push('removeXMLNS')
   }
+
+  return {
+    plugins,
+  } as Config
+}
+
+
+export function getSvgoConfigForImg(): Config {
+  const plugins = [
+    'removeDimensions',
+    pluginPresetDefault,
+  ]
 
   return {
     plugins,

@@ -2,7 +2,7 @@ import { mkdirSync, existsSync } from 'fs'
 import path from 'path'
 import { type Config } from 'svgo'
 import { getFolders, writeCompressedImage, type Folder } from './lib'
-import { getSvgoConfig } from '../common/utils'
+import { getSvgoConfigForImg } from '../common/utils'
 
 export async function writeCompressedImages(
   svgoConfig: Config,
@@ -30,7 +30,7 @@ export async function compressImages(
   originPath: string,
   targetPath: string,
 ) {
-  const svgoConfig = getSvgoConfig(false)
+  const svgoConfig = getSvgoConfigForImg()
   const extensions = [
     'svg',
     'webp',
