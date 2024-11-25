@@ -11,8 +11,7 @@ import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 
-// https://vitejs.dev/config/
-let configConsilated
+let consolidatedConfig
 const basicConfig = {
   histoire: {},
   define: {
@@ -90,9 +89,9 @@ if (process.env.HISTOIRE) {
     },
   }
 
-  configConsilated = defineConfig(basicConfig)
+  consolidatedConfig = defineConfig(basicConfig as any)
 } else {
-  configConsilated = mergeConfig(basicConfig, {
+  consolidatedConfig = mergeConfig(basicConfig, {
     resolve: {
       dedupe: ['vue'],
     },
@@ -102,7 +101,7 @@ if (process.env.HISTOIRE) {
       lib: {
         name: '@pulse/styleguide',
         entry: path.resolve(__dirname, 'src/main.mts'),
-        formats: ['es', 'system', 'cjs'],
+        formats: ['es'],
         fileName: (format) => `lib/styleguide.pegase.${format}.min.js`,
       },
       rollupOptions: {
@@ -133,4 +132,4 @@ if (process.env.HISTOIRE) {
   })
 }
 
-export default configConsilated
+export default consolidatedConfig
