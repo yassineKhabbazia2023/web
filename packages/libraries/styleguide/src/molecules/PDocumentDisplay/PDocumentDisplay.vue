@@ -7,8 +7,7 @@
       <PImage
         class="preview-section_notAllowed_image"
         pType="paupulse"
-        pName="mini-documents"
-        pFit="fill"
+        pName="document-error"
       />
       <div>
         <PText
@@ -119,12 +118,8 @@ iframe.preview {
     backdrop-filter: blur(4px);
 
     &_image {
-      display: flex;
       width: 221px;
       height: 210px;
-      justify-content: center;
-      align-items: center;
-      flex-shrink: 0;
     }
   }
 }
