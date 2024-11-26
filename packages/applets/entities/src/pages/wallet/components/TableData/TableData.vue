@@ -44,7 +44,7 @@
             <PIcon pName="pulse" />
           </PAvatar>
           <a
-            class="font-semibold margin-left--2 link text-color--persian-500 overflow-hidden text-overflow--ellipsis"
+            class="font-semibold margin-left--2 link text-color--base-blue-pulse overflow-hidden text-overflow--ellipsis"
             data-testid="account-access-link"
             @click="onToolboxItemClicked('access', scope.row)"
           >
