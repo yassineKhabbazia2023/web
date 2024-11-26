@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
-    <main class="
+    <main
+      class="
       card
       margin-bottom--6"
     >

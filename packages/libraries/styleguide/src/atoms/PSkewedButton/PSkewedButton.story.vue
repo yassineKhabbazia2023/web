@@ -21,7 +21,6 @@
 import { logEvent } from 'histoire/client'
 import { ref } from 'vue'
 import PSkewedButton from './'
-// eslint-disable-next-line import/extensions
 import type { PSkewedButtonProps } from './PSkewedButton.types'
 
 const basicButton = ref<PSkewedButtonProps>({

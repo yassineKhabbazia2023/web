@@ -9,12 +9,12 @@
       padding-y--4
     "
     :class="disabledClass"
-    @click="handleClick">
+    @click="handleClick"
+  >
     <button
       class="p-skewed-button__button"
       :disabled="pDisabled"
     >
-
       {{ pContent }}
     </button>
   </div>
@@ -22,7 +22,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-// eslint-disable-next-line import/extensions
 import type { PSkewedButtonProps } from './PSkewedButton.types'
 
 const props = withDefaults(defineProps<PSkewedButtonProps>(), {
