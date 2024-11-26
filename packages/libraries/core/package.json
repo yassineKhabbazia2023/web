@@ -1,0 +1,23 @@
+{
+  "name": "@pulse/core",
+  "version": "1.0.0",
+  "author": "Pulse Team",
+  "description": "Core library",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/main.mts"
+  },
+  "scripts": {
+    "build": "npm run build:types && npm run build:vite",
+    "build:types": "vue-tsc --build --force",
+    "build:vite": "vite build",
+    "depcruise": "depcruise src",
+    "depcruise:graph": "npx depcruise --include-only \"^src\" --output-type dot . | dot -T svg > dependency-graph.svg",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage"
+  }
+}
