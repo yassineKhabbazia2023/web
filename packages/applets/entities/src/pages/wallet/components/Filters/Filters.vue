@@ -1,196 +1,62 @@
 <template>
-  <div class="margin-bottom--6">
-    <div
-      class="
-      flex
-      filter
-      padding-top--3
-      padding-bottom--4
-      padding-x--6
-      margin-negative-x--6
-    "
-    >
-      <div>
-        <p class="filter__title font-semibold margin-bottom--3">
-          {{ t('fileBoardingRate') }}
-        </p>
-        <div class="filter__list flex">
-          <FilterOption
-            v-for="({ content, number, icon, color, filterValue, isSelected }, index) in state.entityTags"
-            :key="index"
-            :number="number"
-            :content="content"
-            :icon="icon"
-            :color="color"
-            :isSelected="isSelected"
-            data-testid="filter-option"
-            clickable
-            @click="handleClickFilter(filterValue, index)"
-            @close="handleClose(index)"
-          />
-        </div>
-      </div>
-      <div
-        class="
-        separator
-        margin-x--6"
-      />
-      <div>
-        <p class="filter__title font-semibold margin-bottom--3">
-          {{ t('userConnectionRate') }}
-        </p>
-        <div class="filter__list flex">
-          <FilterOption
-            v-for="({ content, number, icon }, index) in state.userTags"
-            :key="index"
-            :number="number"
-            :content="content"
-            :icon="icon"
-            color="gray-500"
-            :clickable="false"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
+  <PFilterGroupEntityStatus
+    :modelValue="activeFilters"
+    :pFilters="filters"
+    @toggle="onToggleFilter"
+  />
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import type { Component } from 'vue'
-import { onMounted, reactive } from 'vue'
-import {
-  PIArrowRepeat,
-  PICheckCircle,
-  PIPatchCheck,
-  PIPerson,
-  PIPower,
-  PIArrowUpCircle,
-} from '@pulse/styleguide/components'
+import { onMounted, ref } from 'vue'
+import { PFilterGroup } from '@pulse/styleguide/components'
+import { type FilterOption } from '@pulse/styleguide/types'
 import { fetchEntitiesStatistics } from '@entities/services/wallet'
-import type { Filter, State } from './FiltersTypes'
 import { EntityStatus } from './FiltersTypes'
-import FilterOption from '../FilterOption'
+import { getFilters } from './FiltersUtils'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const TAGS = [
-  {
-    content: t('toDeploy'),
-    icon: PIArrowUpCircle as Component,
-    color: 'warning',
-    apiKey: 'accountToDeploy',
-    filterValue: EntityStatus.TO_DEPLOY,
-    isSelected: false,
-  },
-  {
-    content: t('inProgress'),
-    icon: PIArrowRepeat as Component,
-    color: 'amethyste',
-    apiKey: 'accountInProgress',
-    filterValue: EntityStatus.IN_PROGRESS,
-    isSelected: false,
-  },
-  {
-    content: t('connected'),
-    icon: PICheckCircle as Component,
-    color: 'success',
-    apiKey: 'accountConnected',
-    filterValue: EntityStatus.CONNECTED,
-    isSelected: false,
-  },
-  {
-    content: t('declared'),
-    icon: PIPatchCheck as Component,
-    apiKey: 'contactDeclared',
-    isSelected: false,
-  },
-  {
-    content: t('connected'),
-    icon: PIPower as Component,
-    apiKey: 'contactConnected',
-    isSelected: false,
-  },
-  {
-    content: t('guests'),
-    icon: PIPerson as Component,
-    apiKey: 'contactInvited',
-    isSelected: false,
-  },
-] as Filter[]
+const activeFilters = ref<EntityStatus[]>([])
+const PFilterGroupEntityStatus = PFilterGroup<EntityStatus | undefined>
 
-const state: State = reactive({
-  userTags: [],
-  entityTags: [],
-  isLoading: undefined,
-})
+const filters = ref<FilterOption<EntityStatus | undefined>[]>([])
 
 const emit = defineEmits<{
   'filterByStatus': [EntityStatus]
   'removeFilter': []
 }>()
 
+const FILTER_LABELS: Record<string, string> = {
+  toDeploy: t('toDeploy'),
+  inProgress: t('inProgress'),
+  connected: t('connected'),
+  declared: t('declared'),
+  guests: t('guests'),
+}
+
+function onToggleFilter(filterKey: EntityStatus | undefined, isSelected: boolean) {
+  if (isSelected && filterKey) {
+    activeFilters.value = [filterKey]
+    emit('filterByStatus', filterKey)
+  } else {
+    activeFilters.value = []
+    emit('removeFilter')
+  }
+}
+
 onMounted(async () => {
-  state.isLoading = true
   try {
     const data = await fetchEntitiesStatistics()
-    const tagsWithNumber = TAGS.map(({ apiKey, ...rest }) => ({
-      ...rest,
-      apiKey,
-      number: data[apiKey],
-    }))
-    state.userTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('contact'))
-    state.entityTags = tagsWithNumber.filter(({ apiKey }) => apiKey.startsWith('account'))
+    filters.value = getFilters(FILTER_LABELS, data)
   } catch (err) {
     console.error(err)
   }
-  state.isLoading = false
 })
-const handleClickFilter = (filterValue: EntityStatus, index:number) => {
-  resetSelection(index)
-  state.entityTags[index].isSelected = true
-  emit('filterByStatus', filterValue)
-}
-const resetSelection = (excludedIndex: number) => {
-  const copyEntityTags = [...state.entityTags]
-  copyEntityTags.forEach((tags, index) => {
-    tags.isSelected = index === excludedIndex
-  })
-  state.entityTags = copyEntityTags
-}
-const handleClose = (index: number) => {
-  state.entityTags[index].isSelected = false
-  emit('removeFilter')
-}
 </script>
-
-<style lang="scss" scoped>
-.filter {
-  @media (min-width: 993px) {
-    align-items: end;
-  }
-  @media (max-width: 992px) {
-    flex-direction: column;
-    align-items: start;
-    gap: 2.4rem
-  }
-  &__list {
-    column-gap: 1.2rem;
-  }
-  &__title {
-    font-size: var(--el-font-size-small);
-    color: var(--el-color-neutral-gray-500);
-  }
-}
-.separator {
-  height: 3.8rem;
-  width: 0.2rem;
-  background: var(--el-color-neutral-gray-100);
-}
-</style>
 
 <i18n lang="yaml">
   en-US:

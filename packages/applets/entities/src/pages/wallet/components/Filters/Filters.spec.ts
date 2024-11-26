@@ -22,42 +22,72 @@ vi.mock('@pulse/common', () => ({
 describe('filter', () => {
   let wrapper: VueWrapper
 
-  beforeEach(() => {
+  beforeEach(async () => {
     wrapper = mount(Filters)
     setActivePinia(pinia)
+    await flushPromises()
   })
 
   it('renders filter correctly', async () => {
-    await flushPromises()
+    const expectedProps = {
+      'modelValue': [],
+      'pFilters': [{
+        'pCode': 1,
+        'pColor': 'warning',
+        'pContent': 'To Deploy',
+        'pIcon': 'PIArrowUpCircle',
+        'pValue': 3,
+      }, {
+        'pCode': 2,
+        'pColor': 'amethyste',
+        'pContent': 'In progress',
+        'pIcon': 'PIArrowRepeat',
+        'pValue': 0,
+      }, {
+        'pCode': 3,
+        'pColor': 'success',
+        'pContent': 'Connected',
+        'pIcon': 'PICheckCircle',
+        'pValue': 0,
+      }, {
+        'pCode': undefined,
+        'pColor': 'gray-900',
+        'pContent': 'Declared',
+        'pDisabled': true,
+        'pIcon': 'PIPatchCheck',
+        'pValue': 6,
+      }, {
+        'pCode': undefined,
+        'pColor': 'gray-900',
+        'pContent': 'Connected',
+        'pDisabled': true,
+        'pIcon': 'PIPower',
+        'pValue': 0,
+      }, {
+        'pCode': undefined,
+        'pColor': 'gray-900',
+        'pContent': 'Guest(s)',
+        'pDisabled': true,
+        'pIcon': 'PIPerson',
+        'pValue': 0,
+      }],
+    }
 
-    const options = wrapper.findAll('.filter-option')
-    expect(options).toHaveLength(Object.keys(statistics).length)
-    const optionsText = options.map(option => option.text())
-    const expectedOptionsText = [
-      `${statistics.accountToDeploy} To Deploy`,
-      `${statistics.accountInProgress} In progress`,
-      `${statistics.accountConnected} Connected`,
-      `${statistics.contactDeclared} Declared`,
-      `${statistics.contactConnected} Connected`,
-      `${statistics.contactInvited} Guest(s)`,
-    ]
-    expect(optionsText).toStrictEqual(expectedOptionsText)
+    const pFilterGroup = wrapper.findComponent({ name: 'PFilterGroup' })
+    expect(pFilterGroup.props()).toStrictEqual(expectedProps)
   })
 
   it('should emit event filterByStatus when click on the entityStatus button', async () => {
-    await flushPromises()
-    const options = wrapper.findAll('.filter-option')
-    await options[0].trigger('click')
-    expect(wrapper.emitted('filterByStatus')).toBeTruthy()
-    expect(wrapper.emitted('filterByStatus')?.at(0)?.at(0)).toBe(EntityStatus.TO_DEPLOY)
+    const pFilterGroup = wrapper.findComponent({ name: 'PFilterGroup' })
+    pFilterGroup.vm.$emit('toggle', EntityStatus.TO_DEPLOY, true)
+
+    expect(wrapper.emitted('filterByStatus')).toStrictEqual([[EntityStatus.TO_DEPLOY]])
   })
 
   it('should emit event removeFilter when the close event is triggered', async () => {
-    await flushPromises()
-    const filterOption = wrapper.findAllComponents('[data-testid=filter-option]')
-    const firstTagWrapper = filterOption[0] as VueWrapper
-    firstTagWrapper.vm.$emit('close')
-    await nextTick()
+    const pFilterGroup = wrapper.findComponent({ name: 'PFilterGroup' })
+    pFilterGroup.vm.$emit('toggle', EntityStatus.TO_DEPLOY, false)
+
     expect(wrapper.emitted('removeFilter')).toBeTruthy()
   })
 })

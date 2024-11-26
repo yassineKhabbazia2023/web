@@ -78,7 +78,7 @@ describe('filterGroup', () => {
       index: 0,
       isSelected: true,
       expectedCodes: ['B', 'A'],
-      reason: 'Add A to selection',
+      reason: 'add A to selection',
     }, {
       index: 1,
       isSelected: false,
@@ -95,6 +95,7 @@ describe('filterGroup', () => {
       await nextTick()
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedCodes]])
     })
+
     const testsB = [{
       index: 0,
       isSelected: false,
@@ -114,4 +115,27 @@ describe('filterGroup', () => {
       expect(wrapper.emitted('update:model-value')).toBeUndefined()
     })
   })
+
+  const testsC = [{
+    index: 0,
+    isSelected: true,
+    expectedParams: ['A', true],
+    reason: 'add A to selection',
+  }, {
+    index: 1,
+    isSelected: false,
+    expectedParams: ['B', false],
+    reason: 'remove B from selection',
+  }]
+  it.each(testsC)('should emit \'toggle\' with $expectedParams when $reason', async ({
+    index,
+    isSelected,
+    expectedParams,
+  }) => {
+    const pFilterOption = pFilterOptions[index]
+    pFilterOption.vm.$emit('update:p-selected', isSelected)
+    await nextTick()
+    expect(wrapper.emitted('toggle')).toStrictEqual([expectedParams])
+  })
+
 })

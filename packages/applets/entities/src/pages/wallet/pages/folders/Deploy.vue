@@ -2,7 +2,12 @@
   <div>
     <div
       v-if="isCollab"
-      class="flex flex--align-items-center flex--justify-content-space-between"
+      class="
+        flex
+        flex--align-items-center
+        flex--justify-content-space-between
+        margin-bottom--6
+      "
     >
       <Filters
         data-testid="filters"
@@ -11,6 +16,7 @@
       />
       <PButton
         pType="primary"
+        pSize="small"
         @click="isDelegationDrawerOpened = true"
       >
         {{ t('delegation', selectedFolders.length) }}

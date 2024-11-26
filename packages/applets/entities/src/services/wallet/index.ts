@@ -6,6 +6,7 @@ import type { Entity } from '@pulse/common/types'
 import type { Contact } from '../contact/contactTypes'
 import type { Contact as userContact } from '@entities/common/types'
 import type { Role } from '@entities/pages/wallet/pages/collaborators/components/CollabRightsDrawer/CollabRightsDrawerTypes'
+import { EntitiesStatistics } from './serviceWalletTypes'
 
 const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
 export interface GenericPageResponse<T> {
@@ -57,7 +58,7 @@ export async function fetchCustomers(searchParams: URLSearchParams) {
 
 export const fetchEntitiesStatistics = async () => {
   try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/statistics/currentuser`)
+    const response = await commonApi().gateway.get<EntitiesStatistics>(`${API_PREFIXES.WALLET}/statistics/currentuser`)
 
     return response.data
   } catch (error) {

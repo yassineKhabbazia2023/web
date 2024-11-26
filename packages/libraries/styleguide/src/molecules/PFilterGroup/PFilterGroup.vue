@@ -36,10 +36,12 @@ import type { PFilterGroupProps } from './PFilterGroupTypes'
 const props = defineProps<PFilterGroupProps<T>>()
 
 const emit = defineEmits<{
+  'toggle': [T, boolean]
   'update:model-value': [T[]]
 }>()
 
 function onToggleSelected(pCode: T, isSelected: boolean) {
+  emit('toggle', pCode, isSelected)
   const isPresent = props.modelValue.includes(pCode)
 
   if (isSelected && !isPresent) {
