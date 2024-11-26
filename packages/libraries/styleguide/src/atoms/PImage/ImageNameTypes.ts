@@ -67,6 +67,7 @@ export type ImageName =
 'hand-up' |
 'interface' |
 'maintenance' |
+'mini-document' |
 'mini-documents' |
 'mirror-smartphone' |
 'notes' |

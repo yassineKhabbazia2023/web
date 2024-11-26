@@ -73,7 +73,7 @@ export function generateTypes(folder: string, outputFileTypePath: string) {
 
   const outputFile = path.resolve(outputFileTypePath)
   writeFileSync(outputFile, enumContent)
-   
+
   console.info(`Enum generated in ${outputFile}`)
 }
 
@@ -140,7 +140,7 @@ export function getComponentConstantsContent(icons: Icon[]) {
   }`))
 
   return `
-import type { IconName } from '../../types/IconName.types'
+import type { IconName } from '../../../types/IconName.types'
 
 export const pulseGeneratedIcons: {
   name: IconName
