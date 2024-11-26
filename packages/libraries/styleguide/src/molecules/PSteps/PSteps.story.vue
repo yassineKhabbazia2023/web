@@ -9,7 +9,7 @@
     <Variant
       title="Basic Usage"
     >
-      <div :style="{ height: basicData.direction === 'vertical' ? '300px' : '' }">
+      <div>
         <PSteps
           :pActive="basicData.active"
           :pDirection="basicData.direction"
@@ -57,7 +57,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { stateOptions } from '../../constants/stateOptions'
-import PSteps from '../../molecules/PSteps'
+import PSteps from '.'
+import PStep from '../../atoms/PStep'
 import { ElDivider } from 'element-plus'
 import type { PStepsProps } from './PStepsTypes'
 
