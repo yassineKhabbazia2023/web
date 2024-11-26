@@ -1,6 +1,6 @@
 import type { Folder } from '@ged/models/Folder'
 import type { Service } from '@ged/models/Service'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 // FAILED means you can retry due to a connection loss with the backend
 // ERROR are returned by the backend and are meant to be placed in the header

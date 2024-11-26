@@ -123,7 +123,8 @@ import { computed, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { commonStore, type Entity } from '@pulse/common'
+import { commonStore } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import {
   PIArrowBarRight,
   PIArrowBarLeft,

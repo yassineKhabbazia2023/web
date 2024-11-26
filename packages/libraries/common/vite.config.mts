@@ -16,9 +16,27 @@ export default ({ mode }: any) =>
       build: {
         lib: {
           name: '@pulse/common',
-          entry: path.resolve(__dirname, 'src/main.ts'),
-          formats: ['es', 'umd'],
+          entry: path.resolve(__dirname, 'src/main.mts'),
+          formats: ['es'],
           fileName: (format: string) => `lib/common.${format}.js`,
+        },
+        rollupOptions: {
+          input: 'src/main.mts',
+          preserveEntrySignatures: 'strict',
+          external: ['vue'],
+          output: {
+            globals: {
+              vue: 'Vue',
+            },
+          },
+          plugins: [
+            typescriptPaths({
+              preserveExtensions: true,
+            }),
+            typescript({
+              sourceMap: false,
+            }),
+          ],
         },
         plugins: [
           typescriptPaths(),

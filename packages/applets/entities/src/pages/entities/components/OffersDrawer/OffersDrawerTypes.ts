@@ -1,4 +1,4 @@
-import type { UserInfo } from '@pulse/common'
+import type { UserInfo } from '@pulse/common/types'
 
  
 export enum offerStepperStep {

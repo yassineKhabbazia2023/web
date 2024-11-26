@@ -35,7 +35,7 @@ import DocumentsSearchAlert from './components/DocumentsSearchAlert'
 import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import type { ComponentWrapper } from '@ged/utils/testHelpers'
 
 type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>

@@ -4,7 +4,8 @@ import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
-import { type Entity, commonStore } from '@pulse/common'
+import { commonStore } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import TableData from '.'
 
 const handleFavorites = vi.fn()

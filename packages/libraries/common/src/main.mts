@@ -1,4 +1,4 @@
-import { shallowRef, reactive } from 'vue'
+import { type App, shallowRef, reactive } from 'vue'
 import { createPinia } from 'pinia'
 import type { Component, DefineComponent } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
@@ -14,7 +14,6 @@ import { fetchUrlTerms } from './services'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import debounce from 'lodash.debounce'
 
-export * from './stores/types'
 export * from './utils'
 export const commonApi = api
 export const commoni18n = shallowRef(i18n)
@@ -27,8 +26,19 @@ export const dataProvider = useDataProvider
 export const userPermissions = useUserPermissions
 export const tokenService = reactive(TokenService.getInstance())
 export const amplitudeService = new AmplitudeService()
+import { type CommonAppOptions } from './types/CommonAppTypes'
 
 export { DataStreamHubConnection }
 export { debounce }
 export { fetchUrlTerms }
 export { sanitizeUrl }
+
+export default {
+  install(app: App, { locale }: CommonAppOptions) {
+    commoni18n.value.global.locale.value = locale
+
+    app
+      .use(commoni18n.value)
+      .use(commonPinia)
+  },
+}

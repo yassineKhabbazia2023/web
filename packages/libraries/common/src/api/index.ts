@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance } from 'axios'
 import * as envVars from 'env-vars'
-import { tokenService } from '../main'
+import { tokenService } from '../main.mts'
 
 const varApiPrefix = 'VITE_API_'
 

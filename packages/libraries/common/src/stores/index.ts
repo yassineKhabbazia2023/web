@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { msalInstance } from '../msal'
 import type { UserInfo } from './types'
 import api from '../api'
-import { tokenService } from '../main'
+import { tokenService } from '../main.mts'
 
 const AUTH_API = 'authorization/api'
 

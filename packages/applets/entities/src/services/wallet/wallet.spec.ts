@@ -14,7 +14,7 @@ import {
 import { ContactType } from '../contact/contactTypes'
 import { getMockedEntitiesStatistics } from '@entities/pages/wallet/components/Filters/FiltersMocks'
 import { mockCollabsData } from '@entities/pages/folder/pages/collaborators/mockData'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import * as Common from '@pulse/common'
 import { getMockedCustomersCollab } from '@entities/pages/folder/pages/usersCollab/mockData'
 import { getMockedCollaborators } from '@entities/common/mocks/mockedCollaborators'

@@ -5,7 +5,7 @@ import { PTable } from '@pulse/styleguide/components'
 import CollapsableFoldersList from '.'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 import { entitiesMock } from '@entities/../tests/mocks/EntitiesMocks'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 const i18n = createI18n({
   locale: 'fr-FR',

@@ -1,6 +1,6 @@
 import { PIArrowUpCircle } from '@pulse/styleguide/components'
 import type { WalletData } from '../../types'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 export const mockedEntity: Entity = {
   accountId: 1,

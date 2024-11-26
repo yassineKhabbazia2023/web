@@ -23,7 +23,8 @@ import {
   getMockedReferentialHubs,
 } from '@entities/services/account/accountMock'
 import { getMockedStepNotes } from '@entities/common/components/StepNote/StepNotesMock'
-import { amplitudeService, type UserInfo } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
+import type { UserInfo } from '@pulse/common/types'
 import type { Note, PostSubscriptionRequest } from '@entities/services/subscription'
 import type { PatchValue } from '@entities/services/PatchRecordService'
 import type { Contact } from '@entities/services/contact/contactTypes'

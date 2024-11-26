@@ -1,4 +1,4 @@
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 export interface SelectedFolder {
   accountNumber: Entity['accountNumber']

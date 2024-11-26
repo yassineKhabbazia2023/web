@@ -1,4 +1,4 @@
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 export type EntityAvatarProps = {
     entity: Entity

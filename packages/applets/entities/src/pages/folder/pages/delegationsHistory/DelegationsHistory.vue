@@ -104,7 +104,7 @@ import {
   PTooltip,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import { commonStore } from '@pulse/common'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'

@@ -1,6 +1,6 @@
 import styleguideLibrary from '@pulse/styleguide'
 import { vi } from 'vitest'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'

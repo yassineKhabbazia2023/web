@@ -84,7 +84,7 @@ import { fetchBIReports, fetchReportAccounts } from '@entities/services/reportin
 import type { Report } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
 import type { BIReportInformationProps } from './BIReportInformationTypes'
 import type { ReportInfo } from '../../SubmitBIReportTypes'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 const { t } = useI18n({
   inheritLocale: true,

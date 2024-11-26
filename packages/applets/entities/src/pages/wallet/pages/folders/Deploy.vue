@@ -92,7 +92,8 @@ import {
   PPagination,
 } from '@pulse/styleguide/components'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { type Entity, commonStore } from '@pulse/common'
+import { commonStore } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import NoResult from '@entities/common/components/NoResult'

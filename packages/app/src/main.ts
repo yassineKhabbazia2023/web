@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import maze from './plugins/maze'
-import { commoni18n, commonPinia } from '@pulse/common'
 import { VITE_ASSETS_BASE_URL, VITE_MAZE_KEY, VITE_ONE_TRUST_KEY, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
 
 import entitiesApplet from '@pulse/entities'
@@ -8,13 +7,13 @@ import gedApplet from '@pulse/ged'
 import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
+import commonLibrary from '@pulse/common'
 import styleguideLibrary from '@pulse/styleguide'
 
 import App from './app/App.vue'
 import router from './plugins/router'
 
-// TODO setup somewhere else?
-commoni18n.value.global.locale.value = 'fr-FR'
+const locale = 'fr-FR'
 
 declare let window: {
   hsConversationsOnReady: any
@@ -22,8 +21,7 @@ declare let window: {
 
 
 const app = createApp(App)
-  .use(commoni18n.value)
-  .use(commonPinia)
+  .use(commonLibrary, { locale })
   // install applets
   .use(entitiesApplet, { router })
   .use(gedApplet, { router })
@@ -71,7 +69,7 @@ if (import.meta.env.PROD) {
       }
     }
   }
-  
+
 }
 
 app.mount('#app')

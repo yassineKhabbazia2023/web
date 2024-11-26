@@ -1,4 +1,4 @@
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 export const entityMock: Entity = {
   legalName: 'Glagla land',

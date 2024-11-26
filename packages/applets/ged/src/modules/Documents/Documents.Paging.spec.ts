@@ -18,7 +18,7 @@ import {
 import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import { PPagination } from '@pulse/styleguide/components'
 
  type DocumentsSetup = {

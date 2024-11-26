@@ -3,7 +3,7 @@ import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { getMockedEntities, getMockedUserPermissions } from '../mocks'
 import commonStore from './index'
-import { tokenService } from '../main'
+import { tokenService } from '../main.mts'
 
 const mockedEntities = getMockedEntities()
 const mockedPermissions = getMockedUserPermissions()

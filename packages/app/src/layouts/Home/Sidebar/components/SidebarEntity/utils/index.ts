@@ -1,5 +1,5 @@
 import { getRandomColor } from '@app/helper'
-import type { Entity } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 
 export const getDefaultEntity = (firstEntity: Entity): Entity => {
   const storedSelectedEntity = localStorage.getItem('selected-entity')
