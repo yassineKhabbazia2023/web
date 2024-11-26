@@ -1,14 +1,14 @@
 @use 'element-plus/theme-chalk/src/mixins/function.scss' as *;
 
 $menu: (
-  'active-color': getCssVar('color-secondary-amethyste'),
-  'text-color': getCssVar('color-neutral-gray-900'),
+  'active-color': var(--el-color-base-blue-pulse),
+  'text-color': var(--el-color-base-blue-pulse),
   'hover-text-color': getCssVar('color-primary'),
-  'bg-color': getCssVar('fill-color', 'blank'),
-  'hover-bg-color': getCssVar('color-primary-light-9'),
+  'bg-color': transparent,
+  'hover-bg-color': var(--el-color-persian-50),
   'item-height': 36px,
   'horizontal-height': 52px,
-  'sub-item-height': calc(#{getCssVar('menu-item-height')} - 6px),
+  'sub-item-height': getCssVar('menu-item-height'),
   'horizontal-sub-item-height': 32px,
   'item-font-size': getCssVar('font-size-small'),
   'item-hover-fill': getCssVar('color-primary-light-9'),
@@ -32,28 +32,27 @@ $menu: (
         0 -2px 2px 0 rgba(112, 144, 176, 0.05),
         0 -1px 2px 0 rgba(112, 144, 176, 0.1);
       overflow-x: hidden;
-  
+
       & > .el-menu-item {
         line-height: 14px;
-  
+
         &.is-active {
           border-top: 2px solid var(--el-menu-active-color);
           border-bottom: inherit;
-          font-weight: 600;
-  
+
           &:focus {
             background-color: inherit;
           }
-  
+
           .el-menu-item-content {
             padding-top: 7px;
           }
         }
-  
+
         [class^="el-icon"] {
           margin-right: 0;
         }
-  
+
         .el-menu-item-content {
           align-items: center;
           display: flex;
@@ -68,12 +67,11 @@ $menu: (
     height: 100%;
     padding: 16px 9px 16px 10px;
     background-color: var(--el-color-neutral-gray-700);
-    color: var(--el-colorbh-white);
 
     @media screen and (width <= 992px) {
       flex-direction: row-reverse;
     }
-    
+
     &.el-menu--collapse {
       width: 50px;
 
@@ -106,7 +104,7 @@ $menu: (
       .menu-item-entity {
         padding-left: 3px;
       }
-       
+
       .p-menu-name {
         font-size: 1.2rem;
         margin-left: 9px;
@@ -127,9 +125,6 @@ $menu: (
       }
 
       &.is-active {
-        color: var(--el-color-white);
-        font-weight: 700;
-
         .p-navbar__avatar-container {
           background: var(--persian-gradient);
         }
@@ -139,7 +134,7 @@ $menu: (
         cursor: default;
         margin-left: 0;
 
-        &:hover, 
+        &:hover,
         &:focus {
           background: transparent;
         }
@@ -165,7 +160,7 @@ $menu: (
         margin-left: 3px;
         background-color: var(--el-color-neutral-gray-500);
       }
-      
+
       &.p-menu-item-entity {
         .p-menu-name {
           max-width: 170px;
@@ -178,11 +173,11 @@ $menu: (
         }
       }
     }
-  
+
     &.el-menu--horizontal {
       padding: 10px 16px;
       height: 50px;
-      
+
       .el-menu-item {
         margin-left: 15px;
         margin-bottom: 0;
@@ -261,14 +256,14 @@ $menu: (
       }
     }
   }
-  
+
   &--header {
     height: 52px;
     display: flex;
     border-bottom: none;
     padding: 0 16px;
     background-color: getCssVar('fill-color', 'blank');
-    
+
     &__link {
       flex-grow: 0;
       flex-shrink: 0;
@@ -290,10 +285,6 @@ $menu: (
     .el-menu-item {
       & + .el-menu-item {
         margin-left: 24px;
-      }
-
-      &.is-active {
-        font-weight: 600;
       }
 
       &.menu-item:not(.is-disabled) {
@@ -326,11 +317,11 @@ $menu: (
         cursor: pointer;
 
         &[color="persian-gradient"] {
-          &:hover, 
+          &:hover,
           &[aria-expanded="true"] {
             background: getCssVar('color', 'persian-800');
           }
-        } 
+        }
       }
     }
 
@@ -387,17 +378,22 @@ $menu: (
 }
 
 .p-menu.el-menu {
-  --el-menu-active-color: var(--el-color-base-persian) !important;
-  --el-menu-hover-text-color: getCssVar('color-neutral-gray-900') !important;
-  --el-menu-bg-color: var(--el-color-persian-100) !important;
-  --el-menu-hover-bg-color: var(--el-color-persian-200) !important;
-  padding-right: 1rem;
   padding-top: 1.8rem;
   padding-bottom: 0.6rem;
   border: none;
   width: 100%;
   overflow: hidden;
   transition: width 0.3s ease;
+  background-color: var(--el-color-base-persian-light);
+
+  .p-menu-item {
+    border-color: transparent;
+
+    &.is-active {
+      background-color: var(--el-color-persian-100);
+      border-color: var(--el-color-base-persian);
+    }
+  }
 
   &.p-menu--collapsed {
     .p-menu-item,
@@ -436,49 +432,20 @@ $menu: (
 
   > .el-menu-item {
     transition: none;
+    border-right: 6px solid var(--el-menu-bg-color);
 
     &.is-active {
-      --curves-h: 22px;
-      position: relative;
-      width: calc(100% + 10px);
-      background: getCssVar('color-white');
-      // border-radius: 50px 0 0 50px;
-      font-weight: 600;
-
-      &::before,
-      &::after {
-        content: '';
-        position: absolute;
-        right: 0;
-        width: 26px;
-        height: var(--curves-h);
-        background: transparent;
-      }
-
-      &::before {
-        top: calc(var(--curves-h) * -1);
-        // border-radius: 0px 0px 24px;
-        box-shadow: 5px 5px 0 3px var(--el-color-base-white);
-      }
-
-      &::after {
-        bottom: calc(var(--curves-h) * -1);
-        // border-radius: 0px 24px 0px 0px;
-        box-shadow: 5px -5px 0 3px var(--el-color-base-white);
-      }
+      color: var(--el-color-base-blue-pulse);
+      font-weight: 400;
     }
   }
 
   .el-menu-item {
-    padding: 0.8rem !important;
+    padding: 1.5rem !important; // erase element-plus default padding
     margin-bottom: 1.2rem;
     border-radius: var(--el-border-radius-base);
     height: auto;
     line-height: 1.2;
-
-    &.is-active {
-      font-weight: 600;
-    }
 
     .p-menu-item__left-icon {
       margin: 0;
@@ -487,44 +454,14 @@ $menu: (
   }
 
   .p-submenu.el-sub-menu {
-    &.is-opened {
-      .el-sub-menu__title {
-        background-color: var(--el-menu-hover-bg-color);
-      }
-    }
-
     &.is-active {
       .el-sub-menu__title {
-        --curves-h: 22px;
-        width: calc(100% + 10px);
-        background: getCssVar('color-white');
-        // border-radius: 50px 0 0 50px;
+        background: var(--el-color-persian-100);
         font-weight: 600;
-        color: var(--el-menu-active-color);
         transition: none;
-  
-        &::before,
-        &::after {
-          content: '';
-          position: absolute;
-          right: 0;
-          width: 26px;
-          height: var(--curves-h);
-          background: transparent;
-        }
-  
-        &::before {
-          top: calc(var(--curves-h) * -1);
-          // border-radius: 0px 0px 24px;
-          box-shadow: 5px 5px 0 3px var(--el-color-base-white);
-        }
-  
-        &::after {
-          bottom: calc(var(--curves-h) * -1);
-          // border-radius: 0px 24px 0px 0px;
-          box-shadow: 5px -5px 0 3px var(--el-color-base-white);
-        }
+        border-right: 6px solid var(--el-color-base-persian);
       }
+
       .el-sub-menu__icon-arrow {
         right: 18px; // padding 8px + width add 10px
       }
@@ -533,13 +470,12 @@ $menu: (
     .el-sub-menu__title {
       position: relative;
       height: auto;
-      padding: 0.8rem 1rem 0.8rem 0.8rem;
+      padding: 1.5rem;
       margin-bottom: 1.2rem;
-      border-radius: var(--el-border-radius-base);
       line-height: 1.2;
     }
 
-    .p-submenu__title { 
+    .p-submenu__title {
       overflow: hidden;
       text-overflow: ellipsis;
       padding-right: 1.2rem;
@@ -555,20 +491,14 @@ $menu: (
       margin: 0;
     }
 
-    .el-menu {
-      --el-menu-active-color: var(--el-color-base-persian) !important;
-      --el-menu-hover-text-color: getCssVar('color-neutral-gray-900') !important;
-      --el-menu-bg-color: var(--el-color-persian-100) !important;
-      --el-menu-hover-bg-color: var(--el-color-persian-200) !important;
-    }
-
     .el-menu-item {
       position: relative;
-      height: 32px;
-      padding: 0.8rem 0.8rem 0.8rem 3.2rem !important;
-
+      height: 36px;
+      padding: 1.5rem;
 
       &.is-active {
+        background-color: var(--el-color-persian-200) !important;
+
         .p-menu-item__title {
           padding-right: 1.2rem;
         }
@@ -588,7 +518,7 @@ $menu: (
         margin: 0;
         opacity: 0;
         font-size: 10px;
-        color: var(--el-color-base-persian);
+        color: var(--el-color-base-blue-pulse);
       }
     }
   }

@@ -191,16 +191,11 @@ onMounted(async () => {
   top: 0;
   width: 200px;
   height: 100%;
-  padding-left: 10px;
   background-color: var(--el-color-base-persian-light);
   transition: width var(--smooth-transition);
 
-  .p-menu.el-menu {
-    background-color: var(--el-color-base-persian-light);
-  }
-
   &--collapsed {
-    width: 52px;
+    width: 50px;
   }
 
   &__main-menu {
@@ -210,13 +205,46 @@ onMounted(async () => {
   @media only screen and (max-width: 991px) {
     left: 52px;
   }
+}
+</style>
 
-  // context specific overrides
-  &#{$self}--is-collab {
+<style lang="scss">
+// context specific design system overrides
+.sidenav-entity-menu--is-collab {
+  background-color: var(--el-color-secondary-fuschia-bg) !important;
+
+  .p-menu.el-menu {
     background-color: var(--el-color-secondary-fuschia-bg);
 
-    .p-menu {
-      background-color: var(--el-color-secondary-fuschia-bg);
+    .p-menu-item {
+      &:hover {
+        background-color: #F2F2FF;
+      }
+
+      &.is-active {
+        background-color: rgba(var(--el-color-secondary-fuschia-rgb), 0.2);
+        border-color: var(--el-color-secondary-fuschia);
+      }
+    }
+    .p-submenu.el-sub-menu {
+      .el-sub-menu__title {
+        &:hover {
+          background-color: #F2F2FF;
+        }
+      }
+
+      &.is-active {
+        .el-sub-menu__title {
+          background-color: rgba(var(--el-color-secondary-fuschia-rgb), 0.2) !important;
+          border-color: var(--el-color-secondary-fuschia) !important;
+        }
+      }
+
+      .el-menu-item {
+        &.is-active {
+          background-color: rgba(var(--el-color-secondary-fuschia-rgb), 0.2) !important;
+        }
+      }
     }
   }
 }

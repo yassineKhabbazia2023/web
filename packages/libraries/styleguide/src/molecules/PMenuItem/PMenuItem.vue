@@ -11,7 +11,7 @@
         :pName="pIconLeftName"
         class="p-menu-item__left-icon"
       />
-      <span class="p-menu-item__title margin-left--2">
+      <span class="p-menu-item__title margin-left--3">
         <slot name="title" />
       </span>
       <PIcon

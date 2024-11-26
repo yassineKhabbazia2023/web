@@ -10,6 +10,7 @@ export enum AppColors {
   // SPECIAL
   BLUE_PULSE = '#0E0F30',
   // PRIMARY
+  PERSIAN_LIGHT = '#E7FFFF',
   PERSIAN_50 = '#D6F0EB',
   PERSIAN_100 = '#ADE1D6',
   PERSIAN_200 = '#88D3C4',
