@@ -1,6 +1,7 @@
 <template>
   <ElTag
     v-bind="$props"
+    class="p-tag"
     :class="'el-tag--' + pColor"
     :effect="pEffect"
     :size="pSize"
@@ -50,3 +51,9 @@ const getIcon = (icon: string | Component) => {
   )
 }
 </script>
+
+<style lang="scss" scoped>
+.p-tag {
+  border-radius: 0;
+}
+</style>
