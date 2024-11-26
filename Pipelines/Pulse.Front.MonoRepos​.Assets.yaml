@@ -1,17 +1,9 @@
-name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
-
 trigger:
-  branches:
-    include:
-    - main
-    - develop
-    - release/*
-  paths:
-    include:
-    - src/assets/images
+  - develop
+  - release/*
 
 pool:
-  vmImage: windows-latest
+  vmImage: 'windows-latest'
 
 parameters:
 - name: devIndex
@@ -20,41 +12,22 @@ parameters:
 - name: deployType
   displayName: "Technical parameter : don t modify it !"
   type: string
-  default: 'standard'
-# REC Iteration
-- name: recIterations
-  type: object
-  displayName: "Technical parameter : don t modify it !"
-  default:
-  - 1
-  - 2
-  - 3
-# PRD Iteration
-- name: prdIterations
-  type: object
-  displayName: "Technical parameter : don t modify it !"
-  default:
-  - 1
-  - 2
-- name: BranchForAssets
-  displayName: "Technical parameter : don t modify it !"
-  type: string
-  default: 'develop'
+  default: 'onlyDev'
+  values:
+    - standard
+    - onlyDev
 
-stages:
-- stage: MonoropDeploymentStageAssets
-  displayName:  '🧪 Monorop Assets 🏗 '
-  jobs:
-  - job: MonoropDeploymentAssets
-    displayName: 'Pulse.Front.Monorop Deployment Assets'
-    steps:
-    - task: TriggerBuild@4
-      displayName: 'Execute Pulse.Front.Monorop Assets'
-      inputs:
-        buildDefinition: 'KPMG.Pulse.Front.Assets'
-        templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}'
-        useSameBranch: true
-        branchToUse: ${{ parameters.BranchForAssets }}
-        authenticationMethod: 'OAuth Token'
-        waitForQueuedBuildsToFinish: true
-        waitForQueuedBuildsToFinishRefreshTime: '5'
+resources:
+  repositories:
+  - repository: Pulse
+    name: 'Constellation/ConstellationDevOps'
+    type: git
+    ref: 'refs/heads/Release/v2.3'
+
+extends:
+  template: pipelines/templates/platform.front.Assets.yaml@Pulse
+  parameters:
+    deployType: ${{ parameters.deployType }}
+    devIndex: ${{ parameters.devIndex }}
+    styleGuideFolder: 'packages/libraries/styleguide'
+

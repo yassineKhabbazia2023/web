@@ -22,7 +22,7 @@ resources:
   - repository: Pulse
     name: 'Constellation/ConstellationDevOps'
     type: git
-    ref: 'refs/heads/Release/v2.1'
+    ref: 'refs/heads/Release/v2.3'
 
 extends:
   template: pipelines/templates/platform.front.monop.yaml@Pulse
