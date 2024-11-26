@@ -33,9 +33,10 @@ export enum AppColors {
   // NEUTRAL
   GRAY_50 = '#F8F9FA',
   GRAY_100 = '#DEE2E6',
-  GRAY_200 = '#C2C2C2',
+  GRAY_200 = '#CDD1D4',
   GRAY_300 = '#ADB5BD',
   GRAY_500 = '#6C757D',
   GRAY_700 = '#495057',
+  GRAY_800 = '#3A3C3F',
   GRAY_900 = '#15171A',
 }
