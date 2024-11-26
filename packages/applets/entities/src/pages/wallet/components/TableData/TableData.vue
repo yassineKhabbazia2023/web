@@ -17,28 +17,15 @@
     >
       <template #default="scope">
         <PButton
-          v-if="scope.row.isFavorite"
           pType="white"
           pSize="small"
           pIconOnly
-          data-testid="wallet-add-favorite"
+          :data-testid="scope.row.isFavorite ? 'wallet-add-favorite' : 'wallet-remove-favorite'"
           @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
         >
-          <PIcon>
-            <PIStarFill />
-          </PIcon>
-        </PButton>
-        <PButton
-          v-if="!scope.row.isFavorite"
-          pType="white"
-          pSize="small"
-          pIconOnly
-          data-testid="wallet-remove-favorite"
-          @click.stop="callHandleAddFavorite(scope.row.accountId, !scope.row.isFavorite)"
-        >
-          <PIcon>
-            <PIStar />
-          </PIcon>
+          <PIcon
+            :pName="scope.row.isFavorite ? 'starFill' : 'star'"
+          />
         </PButton>
       </template>
     </PTableColumn>
@@ -182,8 +169,6 @@ import {
   PButton,
   PIcon,
   PIPulse,
-  PIStar,
-  PIStarFill,
   PIThreeDots,
   PTag,
   PTable,
