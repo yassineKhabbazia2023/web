@@ -132,7 +132,6 @@
           :pPageSizeSelectorGroupLabel="t('numberOfUserPerPage')"
           pPageSizeSelectorSuffix=""
           pShowTotalPageCounter
-          pBackground
           @on-page-range-changed="handlePageRangeChanged"
         >
           <p>{{ paginationLabel }}</p>

@@ -25,6 +25,12 @@ $pagination: (
       height: 30px;
     }
   }
+  &__popper {
+    .el-select-group__title {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
 }
 
 .el-pagination {

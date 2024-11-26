@@ -39,7 +39,6 @@
       :pPageSizeSelectorGroupLabel="t('numberOfCollaboratorsPerPage')"
       pPageSizeSelectorSuffix=""
       pShowTotalPageCounter
-      pBackground
       class="flex--grow-0 flex--shrink-0 margin-negative-x--2"
       @on-page-range-changed="handlePageRangeChanged"
     >

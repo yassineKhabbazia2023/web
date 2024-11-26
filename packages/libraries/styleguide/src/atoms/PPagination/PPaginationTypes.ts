@@ -1,5 +1,4 @@
 export interface PaginationProps {
-  pBackground?: boolean
   pPageSizes?: number[]
   pPageSizeSelectorGroupLabel?: string
   pPageSizeSelectorSuffix?: string

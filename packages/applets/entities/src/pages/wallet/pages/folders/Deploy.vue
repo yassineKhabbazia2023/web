@@ -57,7 +57,6 @@
         :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
-        pBackground
         @on-page-range-changed="handlePageRangeChanged"
         @update:p-current-page="onUpdateCurrentPage"
       >
@@ -323,7 +322,7 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'
-    numberOfFoldersPerPage: 'nombre de dossier par page'
+    numberOfFoldersPerPage: 'nombre de dossiers par page'
     on: 'sur'
     delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
 </i18n>

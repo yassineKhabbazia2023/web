@@ -43,7 +43,6 @@
         :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
-        pBackground
         @on-page-range-changed="handlePageRangeChange"
         @update:p-current-page="handlePageChange"
       >
@@ -186,6 +185,6 @@ watch(searchCriteria, async () => {
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'
-    numberOfFoldersPerPage: 'nombre de dossier par page'
+    numberOfFoldersPerPage: 'nombre de dossiers par page'
     on: 'sur'
 </i18n>

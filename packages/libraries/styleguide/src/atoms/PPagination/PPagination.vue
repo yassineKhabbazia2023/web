@@ -5,6 +5,7 @@
         v-model="modelPageSize"
         placement="top"
         :data-testid="`${pTestIdRoot}-pagination-select`"
+        popper-class="p-pagination__popper"
       >
         <ElOptionGroup :label="pPageSizeSelectorGroupLabel">
           <ElOption
@@ -21,7 +22,7 @@
     <ElPagination
       v-model:current-page="currentPage"
       v-model:page-size="modelPageSize"
-      :background="pBackground"
+      background
       :pageSizes="pPageSizes"
       :total="pTotal"
       layout="prev, pager, next"
@@ -49,7 +50,6 @@ import {
 import type { PaginationProps } from './PPaginationTypes'
 
 const props = withDefaults(defineProps<PaginationProps>(), {
-  pBackground: false,
   pTestIdRoot: 'ppagination',
 })
 const emit = defineEmits(['on-page-range-changed', 'update:pCurrentPage', 'update:pPageSize'])

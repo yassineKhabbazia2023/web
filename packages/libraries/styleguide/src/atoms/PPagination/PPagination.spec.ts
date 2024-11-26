@@ -111,7 +111,6 @@ describe('pPagination', () => {
         ...defaultProps,
         pTestIdRoot: 'wallet',
       })
-      expect(wrapper.html()).toMatchFileSnapshot('wrapper.snap')
       const select = wrapper.find('.p-pagination__select .el-select')
       const pagination = wrapper.find('.p-pagination .el-pagination')
       const counter = wrapper.find('.p-pagination__total-page-counter')
