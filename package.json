@@ -40,7 +40,9 @@
     "styleguide:change:imports": "tsx ./scripts/imports-styleguide.ts",
     "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules",
     "turbo:test": "turbo test",
+    "turbo:test:continue": "turbo test --continue",
     "turbo:build": "turbo build",
+    "turbo:build:continue": "turbo build --continue",
     "turbo:lint": "turbo lint"
   },
   "dependencies": {
