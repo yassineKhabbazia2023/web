@@ -1,5 +1,11 @@
 <template>
-  <Story title="2. Atoms/Button" icon="teenyicons:button-outline">
+  <Story
+    title="2. Atoms/Button"
+    icon="teenyicons:button-outline"
+    :layout="{
+      type: 'single'
+    }"
+  >
     <Variant title="Basic Usage">
       <PButton
         :pType="basicButton.pType"
@@ -99,8 +105,82 @@
         />
       </template>
     </Variant>
+    <Variant title="Design system">
+      <ul class="all-buttons">
+        <li class="flex flex--justify-content-space-between gap-4">
+          <h2>
+            normal
+          </h2>
+          <h2>
+            disabled
+          </h2>
+          <h2>
+            pPlain
+          </h2>
+        </li>
+        <li
+          v-for="({ label, value: pType }) in buttonTypeList"
+          :key="pType"
+          class="margin-top--2 flex flex--justify-content-space-between gap-4"
+        >
+          <PButton
+            :pType="pType"
+            :pRound="basicButton.pRound"
+            :pCircle="basicButton.pCircle"
+            :pIsActive="basicButton.pIsActive"
+            :pLoading="basicButton.pLoading"
+            :pSize="basicButton.pSize"
+            @click="logEvent('click', { log: 'Button is clicked' })"
+          >
+            <PIcon class="el-button__icon--left" pName="calendarEvent" />
+            {{ label }}
+            <PIcon class="el-button__icon--right" pName="arrowRight" />
+          </PButton>
+
+          <PButton
+            :pType="pType"
+            pDisabled
+            :pRound="basicButton.pRound"
+            :pCircle="basicButton.pCircle"
+            :pIsActive="basicButton.pIsActive"
+            :pLoading="basicButton.pLoading"
+            :pSize="basicButton.pSize"
+            @click="logEvent('click', { log: 'Button is clicked' })"
+          >
+            <PIcon class="el-button__icon--left" pName="calendarEvent" />
+            {{ label }}
+            <PIcon class="el-button__icon--right" pName="arrowRight" />
+          </PButton>
+
+          <PButton
+            :pType="pType"
+            pPlain
+            :pRound="basicButton.pRound"
+            :pCircle="basicButton.pCircle"
+            :pIsActive="basicButton.pIsActive"
+            :pLoading="basicButton.pLoading"
+            :pSize="basicButton.pSize"
+            @click="logEvent('click', { log: 'Button is clicked' })"
+          >
+            <PIcon class="el-button__icon--left" pName="calendarEvent" />
+            {{ label }}
+            <PIcon class="el-button__icon--right" pName="arrowRight" />
+          </PButton>
+        </li>
+      </ul>
+    </Variant>
   </Story>
 </template>
+
+<style lang="scss" scoped>
+.all-buttons {
+  max-width: 500px;
+  padding: 10px;
+  background: linear-gradient(45deg, #bbb 12.5%, #fff 12.5%, #fff 37.5%, #bbb 37.5%, #bbb 62.5%, #fff 62.5%, #fff 87.5%, #bbb 87.5%);
+  background-size: 100px 100px;
+  background-position: 50px 50px;
+}
+</style>
 
 <script setup lang="ts">
 import { logEvent } from 'histoire/client'
@@ -141,16 +221,24 @@ const groupButton = ref<PButtonGroupProps>({
 
 const buttonTypeList: { label: string, value: PButtonProps['pType'] }[] = [
   {
-    label: 'default',
-    value: 'default',
-  },
-  {
     label: 'primary',
     value: 'primary',
   },
   {
+    label: 'secondary',
+    value: 'secondary',
+  },
+  {
     label: 'white',
     value: 'white',
+  },
+  {
+    label: 'tertiary',
+    value: 'tertiary',
+  },
+  {
+    label: 'default',
+    value: 'default',
   },
   {
     label: 'generic',

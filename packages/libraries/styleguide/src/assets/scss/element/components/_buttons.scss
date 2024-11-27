@@ -14,10 +14,13 @@ $button: (
   'active-text-color': getCssVar('color', 'neutral-gray-500'),
   'active-border-color':getCssVar('color', 'neutral-gray-500'),
   'active-bg-color': getCssVar('fill-color', 'blank'),
-  'outline-color': getCssVar('color-primary', 'light-5'),
+  'outline-color': var(--el-color-base-blue-pulse),
   'hover-link-text-color': getCssVar('color-info'),
   'active-color': getCssVar('text-color', 'primary'),
 );
+
+$button-secondary-bg-hover: #D1FAF0;
+$button-secondary-bg-active: #A8F3E4;
 
 $button-font-size: (
   'large': getCssVar('font-size', 'base'),
@@ -111,6 +114,31 @@ $button-padding-horizontal: (
     }
 
     &--default {
+      background: transparent;
+      border-color: transparent;
+      color: var(--el-color-base-blue-pulse);
+
+      &:hover {
+        background: transparent;
+        border-color: transparent;
+          color: var(--el-color-persian-700);
+      }
+
+      &:focus,
+      &.p-button--is-active {
+        background: transparent;
+        border-color: transparent;
+        color: var(--el-color-persian-800);
+      }
+
+      &.is-disabled,
+      &.is-disabled:hover,
+      &.is-disabled:focus {
+        background: transparent;
+        border-color: transparent;
+        color: var(--el-color-neutral-gray-100);
+      }
+
       #{$self}__icon {
         &--left {
           margin-right: 12px;
@@ -122,85 +150,89 @@ $button-padding-horizontal: (
       }
     }
   }
-  // Button default Pegase
+
   &#{$self}--primary {
+    background: var(--el-color-base-blue-pulse);
+    border-color: var(--el-color-base-blue-pulse);
+    color: var(--el-color-base-white);
+
     &:hover {
       background: var(--el-color-persian-700);
       border-color: var(--el-color-persian-700);
+      color: var(--el-color-base-white);
     }
 
     &:focus,
     &.p-button--is-active {
       background: var(--el-color-persian-800);
       border-color: var(--el-color-persian-800);
-      color: $color-white;
+      color: var(--el-color-base-white);
     }
 
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
-      background: var(--el-color-persian-200);
-      border-color: var(--el-color-persian-200);
+      background: var(--el-color-neutral-gray-100);
+      border-color: var(--el-color-neutral-gray-100);
+      color: var(--el-color-base-white);
     }
   }
-  // Button secondary Pegase
-  &#{$self}--primary.is-plain {
-    border-color: var(--el-color-primary);
-    color: var(--el-color-primary);
+
+  &.p-button--secondary {
+    background: var(--el-color-secondary-amethyste-bg);
+    border-color: var(--el-color-secondary-amethyste-bg);
+    color: var(--el-color-base-blue-pulse);
+
+    &:hover {
+      background: $button-secondary-bg-hover;
+      border-color: $button-secondary-bg-hover;
+    }
+
+    &:focus,
+    &.p-button--is-active {
+      background: $button-secondary-bg-active;
+      border-color: $button-secondary-bg-active;
+    }
+
+    &.is-disabled,
+    &.is-disabled:hover,
+    &.is-disabled:focus {
+      background: var(--el-color-neutral-gray-100);
+      border-color: var(--el-color-neutral-gray-100);
+      color: var(--el-color-base-white);
+    }
+  }
+
+  &.p-button--tertiary {
     background: transparent;
+    border-color: transparent;
+    color: var(--el-color-secondary-amethyste);
 
     &:hover {
       background: transparent;
-      border-color: var(--el-color-persian-700);
+      border-color: transparent;
       color: var(--el-color-persian-700);
     }
 
     &:focus,
     &.p-button--is-active {
-      background: $color-white;
-      border-color: var(--el-color-persian-800);
-      color: var(--el-color-persian-800);
+      background: transparent;
+      border-color: transparent;
+      color: var(--el-color-persian-700);
     }
 
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
-      background: $color-white;
-      border-color: var(--el-color-persian-200);
-      color: var(--el-color-persian-200);
-    }
-  }
-  // Button danger Pegase
-  &#{$self}--danger.is-plain {
-    border-color: var(--el-color-functionnal-red);
-    color: var(--el-color-functionnal-red);
-    background: transparent;
-
-    &:hover {
-      background: var(--el-color-functionnal-red-bg);
-      border-color: var(--el-color-functionnal-red);
-      color: var(--el-color-functionnal-red);
-    }
-
-    &:focus,
-    &.p-button--is-active {
-      background: var(--el-color-functionnal-red-bg);
-      border-color: var(--el-color-functionnal-red-txt);
-      color: var(--el-color-functionnal-red-txt);
-    }
-
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: $color-white;
-      border-color: var(--el-color-neutral-gray-100);
+      background: transparent;
+      border-color: transparent;
       color: var(--el-color-neutral-gray-100);
     }
   }
-  // Button white Pegase
+
   &.p-button--white {
-    border-color: $color-white;
-    background: $color-white;
+    border-color: var(--el-color-base-white);
+    background: var(--el-color-base-white);
     color: var(--el-color-primary);
 
     &:hover {
@@ -219,48 +251,42 @@ $button-padding-horizontal: (
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
-      border-color: $color-white;
-      background: $color-white;
-      color: var(--el-color-persian-200);
+      background: var(--el-color-neutral-gray-100);
+      border-color: var(--el-color-neutral-gray-100);
+      color: var(--el-color-base-white);
     }
   }
-  // Button default Pegase
-  &.p-button--generic {
-    &,
-    &:hover,
+
+  &.p-button--default,
+  &.p-button--generic,
+  &#{$self}--success,
+  &#{$self}--warning,
+  &#{$self}--danger,
+  &.p-button--info,
+  &.is-plain {
+    border-color: pink;
+    background: pink !important;
+    color: var(--el-color-base-white);
+
+    &:hover {
+      background: pink;
+      border-color: pink;
+      color: var(--el-color-base-white);
+    }
+
     &:focus,
     &.p-button--is-active {
-      background: transparent;
-      border-color: transparent;
-      color: getCssVar('color', 'neutral-gray-900');
+      background: pink;
+      border-color: pink;
+      color: var(--el-color-base-white);
     }
 
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
-      background: getCssVar('fill-color', 'blank');
-      border-color: transparent;
-      color: getCssVar('color', 'neutral-gray-300');
-    }
-  }
-
-  &.p-button--tree {
-    flex-grow: 0;
-    flex-shrink: 0;
-    max-width: 22px;
-    width: 22px;
-    height: 22px;
-    padding: 0;
-    margin-left: 8px;
-    border-color: getCssVar('color', 'persian-50');
-    background: getCssVar('color', 'persian-50');
-    color: getCssVar('color', 'persian-500');
-
-    &:hover,
-    &:focus,
-    &:focus-visible {
-      border-color: getCssVar('color', 'persian-500');
-      outline: none;
+      background: pink;
+      border-color: pink;
+      color: var(--el-color-base-white);
     }
   }
 }

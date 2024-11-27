@@ -1,6 +1,8 @@
 export interface PButtonProps {
   pType?: 'default'
     | 'primary'
+    | 'secondary'
+    | 'terciary'
     | 'white'
     | 'generic'
     | 'success'
