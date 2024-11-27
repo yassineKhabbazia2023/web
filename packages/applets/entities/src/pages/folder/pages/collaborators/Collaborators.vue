@@ -22,8 +22,7 @@
       "
     >
       <FormSearch
-        style="max-width: 500px;"
-        class="user-collabs__search-bar margin-right--4"
+        class="user-collabs__search-bar margin-right--4 max-width-500"
         @search-value-submitted="handleSearchValueSubmitted"
       />
       <PButton

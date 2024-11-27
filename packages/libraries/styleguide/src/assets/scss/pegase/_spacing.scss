@@ -1,5 +1,11 @@
 $spacing-unit: 0.4rem;
 
+.max-width {
+  &-500 {
+    max-width: 500px;
+  }
+}
+
 .margin {
   &--auto {
     margin: auto;

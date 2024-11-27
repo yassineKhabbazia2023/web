@@ -3,7 +3,7 @@
     <div class="flex--grow-1 padding--2">
       <div class="margin-bottom--6">
         <FormSearch
-          style="max-width: 500px;"
+          class="max-width-500"
           @search-value-submitted="handleSearchValueSubmitted"
         />
       </div>

@@ -7,7 +7,7 @@
     <div class="margin-bottom--3">
       <SearchBar
         v-model="searchParams.searchTerm"
-        style="max-width: 500px;"
+        class="max-width-500"
         @update:model-value="debouncedRefreshData"
       />
     </div>
