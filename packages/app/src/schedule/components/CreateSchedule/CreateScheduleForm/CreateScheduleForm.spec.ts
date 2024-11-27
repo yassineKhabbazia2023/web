@@ -9,7 +9,6 @@ import {
   PUpload,
 } from '@pulse/styleguide/components'
 import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSchedule'
-import DropdownMultiSelectWithToggleAll from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll'
 import type { FormProps } from './CreateScheduleFormTypes'
 import { accountsCollection, recipientsIdCollection } from '@app/schedule/tests/mocks/Account'
 import { accountsDataTransformer } from '@app/schedule/helpers/utils'
@@ -55,9 +54,7 @@ describe('test CreateScheduleForm', () => {
       })
     const DropdownScheduleComponent = wrapper.findComponent(DropdownSchedule)
     DropdownScheduleComponent.vm.$emit('update:modelValue', typeShort)
-    const DropdownMultiSelectWithToggleAllComponent = wrapper.findComponent(
-      DropdownMultiSelectWithToggleAll,
-    )
+    const DropdownMultiSelectWithToggleAllComponent = wrapper.findComponent({ name: 'PDropdown' })
     DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
     const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     const newDate = new Date(expected.scheduling.date)
@@ -91,9 +88,7 @@ describe('test CreateScheduleForm', () => {
       })
     const DropdownScheduleComponent = wrapper.findComponent(DropdownSchedule)
     DropdownScheduleComponent.vm.$emit('update:modelValue', typeShort)
-    const DropdownMultiSelectWithToggleAllComponent = wrapper.findComponent(
-      DropdownMultiSelectWithToggleAll,
-    )
+    const DropdownMultiSelectWithToggleAllComponent = wrapper.findComponent({ name: 'PDropdown' })
     DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
     const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     const newDate = new Date(TEST_DATE)
@@ -123,7 +118,7 @@ describe('test CreateScheduleForm', () => {
       new Date('April 29, 2024'))
     await nextTick()
     expect(wrapper.findComponent(PAlert).text())
-       
+
       .toContain("Certains mois contiennent moins de 29 jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.")
   })
   it('should add attachment', () => {

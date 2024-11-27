@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { getMockedEntitiesStatistics } from './FiltersMocks'
 import { EntityStatus } from './FiltersTypes'
-import { nextTick } from 'vue'
 import Filters from '.'
 
 const pinia = createPinia()

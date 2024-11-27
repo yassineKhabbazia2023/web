@@ -35,8 +35,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, nextTick } from 'vue'
-import type { Options }
-  from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
 import type { Schedule } from '@app/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { getAccountsCollection, postSchedule, getFrequenciesCollection } from '@app/schedule/services'
 import {
@@ -44,6 +42,7 @@ import {
   PDrawer,
   PLoader,
 } from '@pulse/styleguide/components'
+import type { POptionProps } from '@pulse/styleguide/types'
 import { useI18n } from 'vue-i18n'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
 import CreateScheduleForm from '@app/schedule/components/CreateSchedule/CreateScheduleForm'
@@ -62,7 +61,7 @@ const props = withDefaults(defineProps<ScheduleDrawerProps>(), {
 })
 
 const loading = ref(false)
-const recipientsCollection = ref<Options[]>([])
+const recipientsCollection = ref<POptionProps[]>([])
 const frequenciesCollection = ref<string[]>([])
 
 const evaluateForm = ref(false)

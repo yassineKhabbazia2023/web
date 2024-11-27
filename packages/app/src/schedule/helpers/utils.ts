@@ -5,6 +5,7 @@ import type { Account } from '@app/schedule/models/Account'
 import type { Deadline } from '../models/Deadline'
 import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
 import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
+import type { POptionProps } from '@pulse/styleguide/types'
 
 declare let window: {
   showSaveFilePicker: any
@@ -15,10 +16,11 @@ export const dateToLocaleFormat = (date: string | Date, locale = 'fr') =>
   new Intl.DateTimeFormat(locale).format(new Date(date))
 
 export const accountsDataTransformer = (accountsCollection: Account[]) =>
-  accountsCollection.map(({ id, name }: Account) => ({
-    label: `${name} (${id})`,
-    value: id,
-  }))
+  accountsCollection
+    .map<POptionProps>(({ id, name }: Account) => ({
+      pLabel: `${name} (${id})`,
+      pValue: id,
+    }))
 
 export const dateISOFormatter = (date: Date | string) => {
   try {

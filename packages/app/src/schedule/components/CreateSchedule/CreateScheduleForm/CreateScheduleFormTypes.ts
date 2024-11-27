@@ -1,9 +1,8 @@
-import type { Options }
-  from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll/DropdownMultiSelectWithToggleAllTypes'
+import type { POptionProps } from '@pulse/styleguide/types'
 
 export type FormProps = {
   checkValidity?: boolean
   defaultCreateDate?: Date
-  recipientsCollection: Options[]
+  recipientsCollection: POptionProps[]
   frequenciesCollection: string[]
 }

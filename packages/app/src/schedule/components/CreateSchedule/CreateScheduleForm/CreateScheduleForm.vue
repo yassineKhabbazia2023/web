@@ -14,9 +14,17 @@
       />
     </PFormItem>
     <PFormItem pProp="recipients" :pLabel="t('recipients')">
-      <DropdownMultiSelectWithToggleAll
+      <PDropdown
         v-model="createScheduleForm.recipients"
-        :optionsCollection="recipientsCollection"
+        :pOptions="recipientsCollection"
+        pFilterable
+        pMultiple
+        pCollapseTags
+        pCollapseTagsTooltip
+        :pPlaceholder="t('placeholder')"
+        :pNoMatchText="t('no-match')"
+        :pNoDataText="t('no-data')"
+        :pCheckAllLabel="t('toggleAllCheckboxLabel')"
       />
     </PFormItem>
     <PRow
@@ -135,7 +143,6 @@ import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSc
 import CreateScheduleReminders from '@app/schedule/components/CreateSchedule/CreateScheduleReminders'
 import type { FormProps } from './CreateScheduleFormTypes'
 import type { Schedule, Frequency } from './CreateScheduleFormModel'
-import DropdownMultiSelectWithToggleAll from '@app/schedule/components/Common/DropdownMultiSelectWithToggleAll'
 import { dateISOFormatter, base64ToBase64URL } from '@app/schedule/helpers/utils'
 import { getScheduleModels } from '@app/schedule/services'
 import { TEMPLATE_TYPE_SHORT_OTHER } from '@app/schedule/helpers/scheduleConsts'
@@ -207,7 +214,7 @@ const frequenciesOptionsFormatted = computed(() => {
 })
 
 const monthlyWarning = computed(() =>
-   
+
   `Certains mois contiennent moins de ${createScheduleForm.date.getDate()} jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.`,
 )
 
@@ -363,7 +370,9 @@ defineExpose({
     "file-not-allowed": "This type of file format is not supported.",
     "attachment-alert": "Only the following file types are authorised: .jpg, .jpeg, .png, .doc and .docx",
     "attachment-prefix-label": "Drop the file or",
-    "attachment-suffix-label": "browse the computer"
+    "attachment-suffix-label": "browse the computer",
+    "placeholder": "Choose one or several files",
+    "toggleAllCheckboxLabel": "Select all"
   },
   "fr-FR": {
     "reminder": "Titre du rappel",
@@ -389,6 +398,8 @@ defineExpose({
     "file-not-allowed": "Ce type de format de fichier n'est pas supporté.",
     "attachment-alert": "Seuls les types de fichiers suivants sont autorisés : .jpg, .jpeg, .png, .doc et .docx.",
     "attachment-prefix-label": "Déposer le fichier ou",
-    "attachment-suffix-label": "parcourir l'ordinateur"
+    "attachment-suffix-label": "parcourir l'ordinateur",
+    "placeholder": "Choisir un ou plusieurs dossiers",
+    "toggleAllCheckboxLabel": "Tout le portefeuille"
   }
 }</i18n>

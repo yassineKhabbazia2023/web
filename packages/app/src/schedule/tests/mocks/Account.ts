@@ -19,20 +19,20 @@ export const accountsCollection = [
 
 export const accountsCollectionForSelectFormat = [
   {
-    value: 70006470886,
-    label: 'Aperture Science (70006470886)',
+    pValue: 70006470886,
+    pLabel: 'Aperture Science (70006470886)',
   },
   {
-    value: 70006494886,
-    label: 'Boulangerie Cochet (70006494886)',
+    pValue: 70006494886,
+    pLabel: 'Boulangerie Cochet (70006494886)',
   },
   {
-    value: 70006400886,
-    label: 'Pizza Planet (70006400886)',
+    pValue: 70006400886,
+    pLabel: 'Pizza Planet (70006400886)',
   },
   {
-    value: 70005321111,
-    label: 'Le Chaudron Baveur (70005321111)',
+    pValue: 70005321111,
+    pLabel: 'Le Chaudron Baveur (70005321111)',
   },
 ]
 
