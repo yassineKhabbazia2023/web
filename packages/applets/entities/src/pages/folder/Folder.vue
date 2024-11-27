@@ -6,9 +6,7 @@
   >
     <div class="flex flex--align-items-center">
       <PAvatar pColor="orange">
-        <PIcon>
-          <PIPulse />
-        </PIcon>
+        <PIcon pName="pulse" />
       </PAvatar>
       <p class="margin-left--3 folder-wrapper__default-entity h4">
         {{ defaultEntity?.legalName }}
@@ -46,7 +44,6 @@ import {
   PTabPane,
   PAvatar,
   PIcon,
-  PIPulse,
 } from '@pulse/styleguide/components'
 import Home from './pages/home'
 import { getTabAuthorisations, getTabs } from './FolderHelper'

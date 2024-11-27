@@ -3,9 +3,11 @@
     <template #label>
       <span class="flex">
         {{ t('uploadReport') }}
-        <PIcon :color="AppColors.GRAY_300" class="margin-left--2">
-          <PIPatchCheck />
-        </PIcon>
+        <PIcon
+          :color="AppColors.GRAY_300"
+          class="margin-left--2"
+          pName="patchCheck"
+        />
       </span>
     </template>
     <PUpload
@@ -28,7 +30,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
-import { PFormItem, PUpload, PIcon, PIPatchCheck } from '@pulse/styleguide/components'
+import { PFormItem, PUpload, PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { UploadBIReportProps } from './UploadBIReportTypes'
 

@@ -101,9 +101,7 @@
               :pLoading="scope.row.subscriptionId === clickedRow && isActionInProgress"
               class="el-button--icon"
             >
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
+              <PIcon pName="threeDots" />
             </PButton>
           </PToolbox>
         </template>
@@ -126,7 +124,6 @@ import {
   PTag,
   PText,
   PLoader,
-  PIThreeDots,
 } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { commonStore, amplitudeService } from '@pulse/common'

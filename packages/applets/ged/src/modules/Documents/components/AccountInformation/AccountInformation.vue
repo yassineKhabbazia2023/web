@@ -7,9 +7,7 @@
   "
   >
     <PAvatar pType="small" :pColor="accountAvatarColor">
-      <PIcon>
-        <PIPulse />
-      </PIcon>
+      <PIcon pName="pulse" />
     </PAvatar>
     <h4 class="margin-left--3">
       {{ accountName }}
@@ -31,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { PAvatar, PIcon, PIPulse } from '@pulse/styleguide/components'
+import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { AccountInformationProps } from './AccountInformationTypes'
 
 defineProps<AccountInformationProps>()

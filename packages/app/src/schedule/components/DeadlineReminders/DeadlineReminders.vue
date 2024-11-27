@@ -15,9 +15,7 @@
       "
       data-testid="deadline-reminders-row"
     >
-      <PIcon>
-        <PIBell />
-      </PIcon>
+      <PIcon pName="bell" />
       <i18n-t
         keypath="notification"
         tag="span"
@@ -44,7 +42,6 @@ import { useI18n } from 'vue-i18n'
 import type { DeadlineRemindersProps } from './DeadlineRemindersTypes'
 import {
   PIcon,
-  PIBell,
 } from '@pulse/styleguide/components'
 
 const { t } = useI18n({

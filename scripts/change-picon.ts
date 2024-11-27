@@ -1,15 +1,16 @@
 import path from 'path'
 import { existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 'fs'
 
-const targetFolderMfe = './packages/applets'
+const appParentFolder = './packages'
+const appletParentFolder = './packages/applets'
 
 function getTargetPath(targetFolder: string, folderName: string, subfolder: string = '') {
   return path.join(targetFolder, folderName, subfolder)
 }
 
-function doWorkForApplets(appletNames) {
-  appletNames.forEach((folderName) => {
-    cleanMfe(folderName, targetFolderMfe)
+function doWork(folderNames, parentFolderName) {
+  folderNames.forEach((folderName) => {
+    cleanMfe(folderName, parentFolderName)
   })
 }
 
@@ -71,18 +72,18 @@ export function removeComponentNameFromImport(content: string, componentNames: s
 
 export function replaceIconsInBlock(filePath: string, content: string, componentNames: string[]) {
   return content
-    .replace(/<PIcon([^>]*)>([\s\S]*)<\/PIcon>/gm, (_originalText, $1, $2) => {
+    .replace(/<PIcon([^>]*)>([\s\S]*)<\/PIcon>/gm, (originalText, $1, $2) => {
       const match = $2.match(/<(\w+)(.*)\/>/)
       const componentName = match?.at(1)
       if (!componentName) {
-        console.error({ content })
-        throw new Error('componentName not found')
+        return originalText
       }
       const needManualIntervention =
         componentName === 'component' ||
         $2.includes('v-if')
       if (needManualIntervention) {
         console.warn(`Need manual intervention in ${filePath}`)
+        return originalText
       } else if (!componentNames.includes[componentName]) {
         componentNames.push(componentName)
       }
@@ -138,7 +139,9 @@ function cleanMfe(folderName: string, targetFolder: string) {
 }
 
 const appletNames = ['login', 'launcher', 'ged', 'entities', 'mandate']
-// const appletNames = ['entities']
+const appNames = ['app']
 
-doWorkForApplets(appletNames)
+doWork(appletNames, appletParentFolder)
+console.warn('cleanApp Done')
+doWork(appNames, appParentFolder)
 console.warn('cleanApplets Done')

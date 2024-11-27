@@ -27,9 +27,11 @@
               @p-toolbox-item-clicked="actionClicked($event, scope.row)"
             >
               <PButton pType="generic">
-                <PIcon :color="AppColors.GRAY_300" size="14px">
-                  <PIThreeDots />
-                </PIcon>
+                <PIcon
+                  :color="AppColors.GRAY_300"
+                  size="14px"
+                  pName="threeDots"
+                />
               </PButton>
             </PToolbox>
           </template>
@@ -130,7 +132,6 @@ import {
   PButton,
   PDialog,
   PIcon,
-  PIThreeDots,
   PTable,
   PTableColumn,
   PToolbox,

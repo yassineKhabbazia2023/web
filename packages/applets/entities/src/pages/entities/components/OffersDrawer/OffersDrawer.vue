@@ -29,9 +29,11 @@
           v-if="offerSanitizedUrl"
           class="offers-drawer__details margin-left--4"
         >
-          <PIcon :color="AppColors.PRIMARY" size="16">
-            <PILink45deg />
-          </PIcon>
+          <PIcon
+            :color="AppColors.PRIMARY"
+            size="16"
+            pName="link45deg"
+          />
           <a
             class="offers-drawer__details-link font-base link margin-left--1"
             :href="offerSanitizedUrl"
@@ -132,7 +134,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { get } from 'lodash-es'
-import { PDrawer, PSteps, PStep, PIcon, PILink45deg, PLoader } from '@pulse/styleguide/components'
+import { PDrawer, PSteps, PStep, PIcon, PLoader } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'

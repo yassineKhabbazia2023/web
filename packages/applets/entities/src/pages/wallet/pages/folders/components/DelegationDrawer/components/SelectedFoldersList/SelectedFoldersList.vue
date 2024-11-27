@@ -11,9 +11,7 @@
             :pColor="scope.row.avatarColor"
             pType="xsmall"
           >
-            <PIcon>
-              <PIPulse />
-            </PIcon>
+            <PIcon pName="pulse" />
           </PAvatar>
           <p class="font-semibold margin-left--2">
             {{ scope.row.name }}
@@ -30,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PTable, PTableColumn, PAvatar, PIcon, PIPulse } from '@pulse/styleguide/components'
+import { PTable, PTableColumn, PAvatar, PIcon } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 

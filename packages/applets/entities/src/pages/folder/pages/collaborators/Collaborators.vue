@@ -25,9 +25,7 @@
         data-testid="add-collaborator-button"
         @click="isAddCollaboratorsDrawerOpened = true"
       >
-        <PIcon>
-          <PIPersonAdd />
-        </PIcon>
+        <PIcon pName="personAdd" />
         <span class="padding-left--2">{{ t('addCollaborator') }}</span>
       </PButton>
     </div>
@@ -125,9 +123,7 @@
                 pType="generic"
                 class="margin-left--1"
               >
-                <PIcon>
-                  <PIThreeDots :color="AppColors.GRAY_300" />
-                </PIcon>
+                <PIcon pName="threeDots" :color="AppColors.GRAY_300" />
               </PButton>
             </PToolbox>
           </template>
@@ -162,13 +158,11 @@ import {
   PICheck,
   PIcon,
   PIExclamationTriangle,
-  PIThreeDots,
   PLoader,
   PPagination,
   PTable,
   PTableColumn,
   PToolbox,
-  PIPersonAdd,
 } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { AppColors, PNotification } from '@pulse/styleguide'

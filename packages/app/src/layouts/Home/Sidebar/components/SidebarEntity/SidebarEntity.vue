@@ -44,9 +44,8 @@
               :color="getActiveWallet ? AppColors.PRIMARY : '#FFF'"
               class="sidenav-entity__actions-icon radius--circle"
               :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
-            >
-              <PICardList />
-            </PIcon>
+              pName="cardList"
+            />
             <template #suffix-content>
               <p class="sidenav-entity__actions-wallet-text">
                 {{ t('globalView') }}
@@ -82,9 +81,8 @@
               size="12"
               :color="AppColors.PERSIAN_200"
               style="width: 32px"
-            >
-              <PIStarFill />
-            </PIcon>
+              pName="starFill"
+            />
           </div>
           <p
             class="sidenav-entity__star-divider-text"
@@ -128,8 +126,6 @@ import type { Entity } from '@pulse/common/types'
 import {
   PIArrowBarRight,
   PIArrowBarLeft,
-  PICardList,
-  PIStarFill,
   PIcon,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'

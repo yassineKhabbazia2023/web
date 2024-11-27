@@ -8,9 +8,7 @@
         pType="small"
         pColor="orange"
       >
-        <PIcon>
-          <PIPulse />
-        </PIcon>
+        <PIcon pName="pulse" />
       </PAvatar>
       <h4 class="h4 margin-left--2" data-testid="report-display-account-name">
         {{ defaultEntity?.legalName }}
@@ -30,7 +28,7 @@
 import 'powerbi-client'
 import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { PAvatar, PIcon, PIPulse } from '@pulse/styleguide/components'
+import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import { commonStore } from '@pulse/common'
 import type { ReportDisplayProps } from './ReportDisplayTypes'
 

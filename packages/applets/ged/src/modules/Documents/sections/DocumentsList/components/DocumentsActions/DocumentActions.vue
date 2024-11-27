@@ -11,16 +11,18 @@
       pCircle
       @click="handleActionsDropdownOpening"
     >
-      <PIcon size="14" :color="AppColors.GRAY_300">
-        <PIThreeDots />
-      </PIcon>
+      <PIcon
+        size="14"
+        :color="AppColors.GRAY_300"
+        pName="threeDots"
+      />
     </PButton>
   </PToolbox>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PIThreeDots, PToolbox, PButton, PIcon } from '@pulse/styleguide/components'
+import { PToolbox, PButton, PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import { type DocumentActionsProps } from './DocumentActionsTypes'

@@ -24,9 +24,7 @@
       <span class="p-schedule-deadline__content-label font-semibold">
         {{ item.typeLabel }}
       </span>
-      <PIcon :color="AppColors.GRAY_500">
-        <PIArrowRight />
-      </PIcon>
+      <PIcon :color="AppColors.GRAY_500" pName="arrowRight" />
       <span class="p-schedule-deadline__content-progress">
         {{ item.progressText }}</span>
     </div>
@@ -41,9 +39,7 @@
         pIconOnly
         pSize="small"
       >
-        <PIcon>
-          <PIThreeDots />
-        </PIcon>
+        <PIcon pName="threeDots" />
       </PButton>
     </PToolbox>
   </div>
@@ -55,7 +51,7 @@ import { useI18n } from 'vue-i18n'
 import Tag from '@app/schedule/components/Common/Tag'
 import Icon from '@app/schedule/components/Common/Icon'
 import {
-  PIcon, PIArrowRight, PToolbox, PIThreeDots, PButton, PIEye, PITrash,
+  PIcon, PToolbox, PButton, PIEye, PITrash,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'

@@ -88,9 +88,10 @@ export function replaceIconsInBlock(filePath: string, content: string, component
       }
       const attributes = (match?.at(2) ?? '').trim()
       const formattedAttributes = attributes ? ` ${attributes}` : ''
-      const pName = needManualIntervention
-        ? '????'
-        : getIconName(componentName)
+      const pName = getIconName(componentName)
+      if (!pName) {
+        throw new Error('No pName')
+      }
 
       const newContent = `<PIcon${$1} pName="${pName}"${formattedAttributes} />`
 

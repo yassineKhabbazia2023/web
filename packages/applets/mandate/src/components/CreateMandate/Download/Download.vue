@@ -66,9 +66,7 @@
         class="download-or-wait-mandate__file-card margin-x--6 margin-bottom--4"
       >
         <template #icon>
-          <PIcon>
-            <PIFiletypePdf />
-          </PIcon>
+          <PIcon pName="filetypePdf" />
         </template>
         <template #buttons>
           <PButton
@@ -77,9 +75,7 @@
             data-testid="download-prefilled-mandate"
             @click="downloadMandate()"
           >
-            <PIcon>
-              <PIDownload />
-            </PIcon>
+            <PIcon pName="download" />
           </PButton>
         </template>
       </PFileCard>
@@ -117,9 +113,7 @@ import {
   PButton,
   PFileCard,
   PIcon,
-  PIDownload,
   PIExclamationTriangle,
-  PIFiletypePdf,
   PImage,
   PLoader,
 } from '@pulse/styleguide/components'

@@ -73,9 +73,7 @@
             @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
           >
             <PButton pType="generic">
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
+              <PIcon pName="threeDots" />
             </PButton>
           </PToolbox>
         </template>
@@ -108,7 +106,6 @@ import {
   PAvatar,
   PButton,
   PIcon,
-  PIThreeDots,
   PTable,
   PTableColumn,
   PToolbox,

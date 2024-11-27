@@ -6,9 +6,7 @@
     size="small"
   >
     <template #prefix>
-      <PIcon class="el-button__icon--left">
-        <PISearch />
-      </PIcon>
+      <PIcon class="el-button__icon--left" pName="search" />
     </template>
   </PInput>
 </template>
@@ -16,7 +14,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { PInput, PIcon, PISearch } from '@pulse/styleguide/components'
+import { PInput, PIcon } from '@pulse/styleguide/components'
 
 type SearchBarProps = {
   modelValue: string

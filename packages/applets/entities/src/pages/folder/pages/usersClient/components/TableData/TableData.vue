@@ -69,9 +69,7 @@
                 pType="generic"
                 pSize="small"
               >
-                <PIcon>
-                  <PIThreeDots />
-                </PIcon>
+                <PIcon pName="threeDots" />
               </PButton>
             </PToolbox>
           </template>
@@ -108,7 +106,6 @@ import {
   PAvatar,
   PButton,
   PIcon,
-  PIThreeDots,
   PTable,
   PTableColumn,
   PToolbox,

@@ -31,9 +31,7 @@
           data-testid="remove-user-button"
           @click="handleRemoveUser"
         >
-          <PIcon class="el-button__icon--left">
-            <PIPersonRemove />
-          </PIcon>
+          <PIcon class="el-button__icon--left" pName="personRemove" />
           {{ t('removeUser') }}
         </PButton>
       </div>
@@ -50,7 +48,6 @@ import {
   PDialog,
   PICheck,
   PIcon,
-  PIPersonRemove,
   PIExclamationTriangle,
   PUserCard,
 } from '@pulse/styleguide/components'

@@ -8,9 +8,7 @@
       data-testid="create-schedule-add"
       @click="onClickAddRemider"
     >
-      <PIcon>
-        <PIBell />
-      </PIcon>
+      <PIcon pName="bell" />
       <span class="margin-left--2">{{ t('add') }}</span>
     </PButton>
     <ScheduleReminder
@@ -63,7 +61,6 @@ import { computed, ref } from 'vue'
 import {
   PButton,
   PIcon,
-  PIBell,
   PAlert,
 } from '@pulse/styleguide/components'
 import ScheduleReminder from '@app/schedule/components/ScheduleReminder'

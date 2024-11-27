@@ -19,9 +19,7 @@
       @select="handleSelectAccount"
     >
       <template #prefix>
-        <PIcon>
-          <PISearch />
-        </PIcon>
+        <PIcon pName="search" />
       </template>
       <template #default="{ item }">
         <span data-testid="powerbi-account-item">
@@ -49,9 +47,7 @@
     </PSelect>
   </PFormItem>
   <div class="flex flex--align-items-center margin-bottom--4">
-    <PIcon :color="AppColors.GRAY_300">
-      <PIInfoCircle />
-    </PIcon>
+    <PIcon :color="AppColors.GRAY_300" pName="infoCircle" />
     <span
       class="font-small text-color--neutral-gray-500 margin-left--2"
       data-testid="powerbi-upload-info"
@@ -72,10 +68,8 @@ import {
   PDropdown,
   PFormItem,
   PIcon,
-  PISearch,
   PSelect,
   POption,
-  PIInfoCircle,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { getSearchParams } from '@entities/pages/wallet/pages/folders/DeployUtils'

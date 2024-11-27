@@ -19,9 +19,7 @@
         class="margin-right--2"
         @click="updateMonth('prev')"
       >
-        <PIcon>
-          <PIChevronLeft />
-        </PIcon>
+        <PIcon pName="chevronLeft" />
       </PButton>
       <PButton
         pType="generic"
@@ -31,9 +29,7 @@
         class="margin-right--2"
         @click="updateMonth('next')"
       >
-        <PIcon>
-          <PIChevronRight />
-        </PIcon>
+        <PIcon pName="chevronRight" />
       </PButton>
       <span
         class="
@@ -63,9 +59,7 @@
       pIconOnly
       @click="emit('update:is-search-state', false)"
     >
-      <PIcon>
-        <PIArrowLeft />
-      </PIcon>
+      <PIcon pName="arrowLeft" />
     </PButton>
 
     <PExpandableSearch
@@ -85,9 +79,7 @@
       data-testid="open-drawer-filters-button"
       @click="emit('open-drawer-filters', true)"
     >
-      <PIcon>
-        <PIFunnel />
-      </PIcon>
+      <PIcon pName="funnel" />
       <PPastille
         v-if="activeFilters"
         class="margin-left--2"
@@ -106,12 +98,8 @@ import { computed, ref } from 'vue'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
 import {
   PIcon,
-  PIChevronRight,
-  PIChevronLeft,
-  PIFunnel,
   PButton,
   PExpandableSearch,
-  PIArrowLeft,
   PPastille,
 } from '@pulse/styleguide/components'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'

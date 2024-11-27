@@ -29,7 +29,7 @@ describe('clientHome', () => {
   })
   it('displays correctly the header of the page', () => {
     const wrapper = createWrapper()
-    const arrowRightIcon = wrapper.findComponent({ name: 'PIArrowRight' })
+    const arrowRightIcon = wrapper.findComponent({ name: 'PIcon' })
 
     expect(arrowRightIcon.exists()).toBeTruthy()
     expect(wrapper.find('[data-testid=home-folder-name]').text()).toBe(

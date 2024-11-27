@@ -4,7 +4,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { type BinTableElementProps } from './BinTableElementTypes'
-import { PText, PDoubleText, PIcon, PIArrowCounterclockwise, PIFiletypeJpg } from '@pulse/styleguide/components'
+import { PText, PDoubleText, PIcon, PIFiletypeJpg } from '@pulse/styleguide/components'
 
 const defaultProps: BinTableElementProps = {
   fieldType: '',
@@ -77,9 +77,9 @@ describe('binTableElement', () => {
       const wrapper = createWrapper(updatedProps)
       await nextTick()
 
-      const field = await wrapper.findComponent(PIcon)
+      const field = await wrapper.findComponent({ name: 'PIcon'})
       expect(field.exists()).toBeTruthy()
-      const icon = await wrapper.findComponent(PIArrowCounterclockwise)
+      const icon = await wrapper.findComponent({ name: 'PIcon'})
       expect(icon.exists()).toBeTruthy()
     })
   })

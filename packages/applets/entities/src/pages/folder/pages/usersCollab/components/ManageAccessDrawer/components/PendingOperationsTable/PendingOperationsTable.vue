@@ -64,9 +64,7 @@
               data-testid="reject-access-button"
               @click="handleRejectOperation(scope.row)"
             >
-              <PIcon>
-                <PIX />
-              </PIcon>
+              <PIcon pName="x" />
             </PButton>
           </PTooltip>
           <PTooltip
@@ -81,9 +79,7 @@
               data-testid="approve-access-button"
               @click="handleApproveOperation(scope.row)"
             >
-              <PIcon>
-                <PICheck />
-              </PIcon>
+              <PIcon pName="check" />
             </PButton>
           </PTooltip>
         </div>
@@ -96,11 +92,9 @@
 import { ref } from 'vue'
 import { type DefineDateTimeFormat, useI18n } from 'vue-i18n'
 import {
-  PIX,
   PTable,
   PIcon,
   PButton,
-  PICheck,
   PTooltip,
   PDoubleText,
   PTableColumn,

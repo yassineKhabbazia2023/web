@@ -9,16 +9,15 @@
     <div class="folders-breadcrumb__create-folder">
       <PIcon
         class="el-button__icon--left"
+        pName="folderPlus"
         @click="handleCreateFolderButtonClick"
-      >
-        <PIFolderPlus />
-      </PIcon>
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PBreadcrumb, PIFolderPlus, PIcon } from '@pulse/styleguide/components'
+import { PBreadcrumb, PIcon } from '@pulse/styleguide/components'
 import { computed } from 'vue'
 import type {
   FoldersBreadCrumbProps,

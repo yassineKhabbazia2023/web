@@ -54,9 +54,7 @@
         data-testid="action-bar-create-schedule-button"
         @click="createSchedule"
       >
-        <PIcon class="el-button__icon--left">
-          <PIAdd />
-        </PIcon>
+        <PIcon class="el-button__icon--left" pName="add" />
         {{ t('new-schedule') }}
       </PButton>
     </div>
@@ -65,7 +63,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PButton, PTabs, PTabPane, PIcon, PIAdd } from '@pulse/styleguide/components'
+import { PButton, PTabs, PTabPane, PIcon } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { ActionBarProps } from './ActionBarTypes'
 import ActionBarLeft from '@app/schedule/components/ActionBarLeft'

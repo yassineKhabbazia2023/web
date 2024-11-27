@@ -31,9 +31,7 @@
       data-testid="schedule-reminder-delete"
       @click="emit('delete')"
     >
-      <PIcon :color="AppColors.GRAY_300">
-        <PIX />
-      </PIcon>
+      <PIcon :color="AppColors.GRAY_300" pName="x" />
     </PButton>
   </PFormItem>
 </template>
@@ -44,7 +42,6 @@ import {
   PFormItem,
   PButton,
   PIcon,
-  PIX,
   PInput,
   PDropdown,
 } from '@pulse/styleguide/components'

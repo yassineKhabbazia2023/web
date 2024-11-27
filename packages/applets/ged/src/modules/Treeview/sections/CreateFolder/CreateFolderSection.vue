@@ -9,9 +9,7 @@
     :pDisabled="isTreeCreateFolderBtnDisabled || isInBinContext"
     @click="openCreateFolderModal"
   >
-    <PIcon class="el-button__icon--left">
-      <PIFolderPlus />
-    </PIcon>
+    <PIcon class="el-button__icon--left" pName="folderPlus" />
     {{ t('newFolder') }}
   </PButton>
 
@@ -36,7 +34,7 @@ import type { Folder } from '@ged/models/Folder'
 import { CreateFolder } from '@ged/services/Folder'
 import { useI18n } from 'vue-i18n'
 import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
-import { PICheck, PIExclamationTriangle, PIFolderPlus, PButton, PIcon }
+import { PICheck, PIExclamationTriangle, PButton, PIcon }
   from '@pulse/styleguide/components'
 import { canCreateFolder } from '@ged/modules/Treeview/helpers/folderPermissionsHelper'
 import { type CreateFolderSectionProps }

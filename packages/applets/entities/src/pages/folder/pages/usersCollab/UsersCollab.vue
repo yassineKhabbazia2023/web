@@ -114,9 +114,7 @@
                   data-testid="folder-users-collab-action"
                   @click="handleToolboxClick(scope.row)"
                 >
-                  <PIcon>
-                    <PIThreeDots :color="AppColors.GRAY_300" />
-                  </PIcon>
+                  <PIcon pName="threeDots" :color="AppColors.GRAY_300" />
                 </PButton>
               </PToolbox>
             </template>
@@ -164,7 +162,6 @@ import {
   PToolbox,
   PButton,
   PIcon,
-  PIThreeDots,
   PIPatchCheck,
   PIPower,
   PLoader,

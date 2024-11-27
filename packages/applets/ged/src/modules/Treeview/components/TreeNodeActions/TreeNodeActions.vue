@@ -13,14 +13,12 @@
       pCircle
       @click.stop
     >
-      <PIcon>
-        <PIThreeDots />
-      </PIcon>
+      <PIcon pName="threeDots" />
     </PButton>
   </TreeNodeActionsToolbox>
 </template>
 <script setup lang="ts">
-import { PIThreeDots, PButton, PIcon } from '@pulse/styleguide/components'
+import { PButton, PIcon } from '@pulse/styleguide/components'
 import TreeNodeActionsToolbox from
   '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
 import { type TreeNodeActionsProps } from

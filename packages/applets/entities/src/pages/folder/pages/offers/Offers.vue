@@ -19,9 +19,7 @@
         @click="handleActivateOffersClick"
       >
         {{ t('activateOffers') }}
-        <PIcon class="el-button__icon--right">
-          <PIArrowRight />
-        </PIcon>
+        <PIcon class="el-button__icon--right" pName="arrowRight" />
       </PButton>
     </PBlockHeader>
     <div
@@ -86,7 +84,6 @@ import {
   PBlockHeader,
   PButton,
   PIcon,
-  PIArrowRight,
   PLoader,
   PTable,
   PTableColumn,

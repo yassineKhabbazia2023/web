@@ -41,9 +41,7 @@
             :pColor="scope.row.owner.avatarColor"
             pType="xsmall"
           >
-            <PIcon>
-              <PIPulse />
-            </PIcon>
+            <PIcon pName="pulse" />
           </PAvatar>
           <a
             class="font-semibold margin-left--2 link text-color--persian-500 overflow-hidden text-overflow--ellipsis"
@@ -139,9 +137,7 @@
               pSize="small"
               pIconOnly
             >
-              <PIcon>
-                <PIThreeDots />
-              </PIcon>
+              <PIcon pName="threeDots" />
             </PButton>
           </PToolbox>
         </template>
@@ -168,8 +164,6 @@ import {
   PAvatar,
   PButton,
   PIcon,
-  PIPulse,
-  PIThreeDots,
   PTag,
   PTable,
   PTableColumn,

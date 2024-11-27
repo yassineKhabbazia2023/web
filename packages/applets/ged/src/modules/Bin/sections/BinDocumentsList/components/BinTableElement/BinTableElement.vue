@@ -20,14 +20,13 @@
   <PIcon
     v-else-if="fieldType === 'ActionGroup'"
     style="cursor: pointer;"
+    pName="arrowCounterclockwise"
     @click="$emit('restore-document-action', data)"
-  >
-    <PIArrowCounterclockwise />
-  </PIcon>
+  />
 </template>
 
 <script setup lang="ts">
-import { PText, PDoubleText, PIcon, PIArrowCounterclockwise } from '@pulse/styleguide/components'
+import { PText, PDoubleText, PIcon } from '@pulse/styleguide/components'
 import { getFileIcon } from '@ged/modules/common/helpers/iconsHelper'
 import type { BinTableElementProps } from './BinTableElementTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'

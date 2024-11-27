@@ -22,9 +22,8 @@
         v-if="!hasChildren"
         class="tree-node__no-child-icon"
         size="12"
-      >
-        <PIDot />
-      </PIcon>
+        pName="dot"
+      />
 
       <PIcon class="tree-node__icon" size="16">
         <component :is="iconsMapping" />
@@ -66,7 +65,6 @@ import { computed, ref } from 'vue'
 import {
   PIArrowLeftRight,
   PICalculatorEuro,
-  PIDot,
   PIFolder,
   PIInbox,
   PIKpmg,

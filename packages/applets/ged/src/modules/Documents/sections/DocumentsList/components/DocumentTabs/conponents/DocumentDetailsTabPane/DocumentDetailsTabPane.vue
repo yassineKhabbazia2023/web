@@ -92,9 +92,7 @@
       pPlain
       @click="handleDownloadClick"
     >
-      <PIcon class="el-button__icon--left">
-        <PIUpload />
-      </PIcon>
+      <PIcon class="el-button__icon--left" pName="upload" />
       {{ t('label.download') }}
     </PButton>
   </div>
@@ -110,14 +108,12 @@ import {
   PTag,
   PIPatchCheck,
   PICheckCircle,
-  PIUpload,
   PIcon,
   PButton,
 } from '@pulse/styleguide/components'
 import { useDownloadDocuments } from
   '@ged/modules/Documents/components/DownloadDocuments/DownloadDocuments'
 import type { DownloadDocumentsComposableProps }
-   
   from '@ged/modules/Documents/components/DownloadDocuments/DownloadDocumentsTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 
@@ -187,7 +183,6 @@ const handleDownloadClick = () => {
 // This is meant to be deleted really soon once the back end is updated
 // to remove the PIA sync property from the response.
 //  Back end US here :
- 
 // https://kpmgfr.visualstudio.com/Constellation/_backlogs/backlog/Hades/Stories?System.WorkItemType=User%20Story&workitem=304249
 
 const isInPIASyncedFolder = computed(() => {

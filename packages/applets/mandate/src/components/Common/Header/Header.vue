@@ -16,9 +16,7 @@
         pSize="small"
         @click="drawerHandler"
       >
-        <PIcon class="el-button__icon--left">
-          <PIAdd />
-        </PIcon>
+        <PIcon class="el-button__icon--left" pName="add" />
         {{ t('new-mandate') }}
       </PButton>
     </div>
@@ -37,7 +35,6 @@ import { ref } from 'vue'
 import {
   PButton,
   PIcon,
-  PIAdd,
   PFilterGroup,
 } from '@pulse/styleguide/components'
 import { type FilterOption } from '@pulse/styleguide/types'

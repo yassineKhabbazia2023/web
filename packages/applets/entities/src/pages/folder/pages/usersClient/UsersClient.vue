@@ -25,9 +25,7 @@
           data-testid="add-customer-button"
           @click="isAddCustomerDrawerOpened = true"
         >
-          <PIcon>
-            <PIPersonAdd />
-          </PIcon>
+          <PIcon pName="personAdd" />
           <span class="padding-left--2">{{ t('addCustomer') }}</span>
         </PButton>
       </div>
@@ -97,7 +95,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { PLoader, PPagination, PButton, PIcon, PIPersonAdd } from '@pulse/styleguide/components'
+import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
 import { commonStore, userPermissions } from '@pulse/common'
 import { removeFalsyValues } from '@entities/helper'
 import { PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'

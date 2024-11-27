@@ -6,9 +6,7 @@
         pType="small"
         pColor="orange"
       >
-        <PIcon>
-          <PIPulse />
-        </PIcon>
+        <PIcon pName="pulse" />
       </PAvatar>
       <h2 class="h4 margin-left--2" data-testid="home-folder-name">
         {{ defaultEntity?.legalName }}
@@ -51,9 +49,7 @@
                       data-testid="home-folder-button"
                     >
                       {{ t('joinClub') }}
-                      <PIcon class="el-button__icon--right">
-                        <PIArrowRight />
-                      </PIcon>
+                      <PIcon class="el-button__icon--right" pName="arrowRight" />
                     </PButton>
                   </PTooltip>
                   <PButton
@@ -66,9 +62,11 @@
                     data-testid="home-folder-button"
                   >
                     {{ t('joinClub') }}
-                    <PIcon class="el-button__icon--right">
-                      <PIArrowRight data-testid="join-arrow-right-icon" />
-                    </PIcon>
+                    <PIcon
+                      class="el-button__icon--right"
+                      pName="arrowRight"
+                      data-testid="join-arrow-right-icon"
+                    />
                   </PButton>
                 </div>
               </div>
@@ -119,9 +117,8 @@
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2"
-                  >
-                    <PICheck />
-                  </PIcon>
+                    pName="check"
+                  />
                   {{ t('gedMobile') }}
                 </li>
                 <li class="margin-bottom--2 flex flex--align-items-center font-small">
@@ -129,9 +126,8 @@
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2"
-                  >
-                    <PICheck />
-                  </PIcon>
+                    pName="check"
+                  />
                   {{ t('notifMobile') }}
                 </li>
                 <li class="margin-bottom--2 flex flex--align-items-center font-small">
@@ -139,9 +135,8 @@
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2"
-                  >
-                    <PICheck />
-                  </PIcon>
+                    pName="check"
+                  />
                   {{ t('perfMobile') }}
                 </li>
                 <li class="flex flex--align-items-center font-small">
@@ -149,9 +144,8 @@
                     :size="16"
                     :color="AppColors.SECONDARY_CYAN_TXT"
                     class="margin-right--2"
-                  >
-                    <PICheck />
-                  </PIcon>
+                    pName="check"
+                  />
                   {{ t('socialMobile') }}
                 </li>
               </ul>
@@ -208,11 +202,8 @@ import {
   PAvatar,
   PButton,
   PCol,
-  PIArrowRight,
-  PICheck,
   PIcon,
   PImage,
-  PIPulse,
   PRow,
   PTooltip,
 } from '@pulse/styleguide/components'

@@ -42,9 +42,11 @@
           :pContent="t('tooltip')"
           pPlacement="top"
         >
-          <PIcon class="drawer-create-mandate__tooltip margin-left--2" :color="AppColors.GRAY_300">
-            <PIQuestionCircle />
-          </PIcon>
+          <PIcon
+            class="drawer-create-mandate__tooltip margin-left--2"
+            :color="AppColors.GRAY_300"
+            pName="questionCircle"
+          />
         </PTooltip>
       </div>
       <Form
@@ -72,9 +74,7 @@
             data-testid="previous-step-test"
             @click="goToPreviousStep()"
           >
-            <PIcon class="el-button__icon--left">
-              <PIArrowLeft />
-            </PIcon>
+            <PIcon class="el-button__icon--left" pName="arrowLeft" />
             {{ t('previous') }}
           </PButton>
           <PButton
@@ -99,9 +99,7 @@
             @click="goToNextStep()"
           >
             {{ t('next') }}
-            <PIcon class="el-button__icon--right">
-              <PIArrowRight />
-            </PIcon>
+            <PIcon class="el-button__icon--right" pName="arrowRight" />
           </PButton>
         </div>
         <div v-else>
@@ -165,9 +163,6 @@ import {
   PDrawer,
   PDialog,
   PIcon,
-  PIArrowLeft,
-  PIArrowRight,
-  PIQuestionCircle,
   PStep,
   PSteps,
   PTooltip,

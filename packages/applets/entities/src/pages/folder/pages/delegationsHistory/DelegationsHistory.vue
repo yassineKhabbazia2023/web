@@ -69,9 +69,7 @@
                     :pDisabled="!isEnabled || !delegator.isCurrentUser"
                     @click="deleteDelegation(id, delegatee)"
                   >
-                    <PIcon>
-                      <PITrash />
-                    </PIcon>
+                    <PIcon pName="trash" />
                   </PButton>
                 </PTooltip>
               </template>
@@ -95,7 +93,6 @@ import {
   PHistoryCard,
   PIcon,
   PICheck,
-  PITrash,
   PIX,
   PLoader,
   PScrollbar,

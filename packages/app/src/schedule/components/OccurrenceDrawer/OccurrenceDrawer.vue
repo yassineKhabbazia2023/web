@@ -43,9 +43,7 @@
       class="margin-bottom--6"
     >
       <p class="flex flex--align-items-center">
-        <PIcon>
-          <PICalendarEvent />
-        </PIcon>
+        <PIcon pName="calendarEvent" />
         <span
           class="
             padding-left--2
@@ -123,9 +121,7 @@
               pIconOnly
               @click="downloadAttachment(occurrenceId, occurrence.schedule.attachment.name)"
             >
-              <PIcon>
-                <PIDownload />
-              </PIcon>
+              <PIcon pName="download" />
             </PButton>
           </template>
         </PFileCard>
@@ -178,11 +174,9 @@ import {
   PDrawer,
   PLoader,
   PIcon,
-  PICalendarEvent,
   PForm,
   PField,
   PAlert,
-  PIDownload,
   PFileCard,
 } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'

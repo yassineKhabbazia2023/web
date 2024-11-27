@@ -26,9 +26,7 @@
           @click="emit('display-manage-rights')"
         >
           {{ t('personalize') }}
-          <PIcon class="el-button__icon--right">
-            <PIArrowRight />
-          </PIcon>
+          <PIcon class="el-button__icon--right" pName="arrowRight" />
         </PButton>
       </PRadioCard>
     </PRadioGroup>
@@ -42,7 +40,6 @@ import {
   PButton,
   PRadioCard,
   PRadioGroup,
-  PIArrowRight,
   PIcon,
 } from '@pulse/styleguide/components'
 import type { CollabRolesProps } from './CollabRolesTypes'

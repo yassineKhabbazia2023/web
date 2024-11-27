@@ -14,9 +14,7 @@
         :pSelected="selected"
         class="entity-wrapper__avatar margin-right--2"
       >
-        <PIcon>
-          <PIPulse />
-        </PIcon>
+        <PIcon pName="pulse" />
       </PAvatar>
       <template #suffix-content>
         <div
@@ -37,7 +35,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PAvatar, PIPulse, PIcon } from '@pulse/styleguide/components'
+import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './EntityAvatarTypes'
 import type { Entity } from '@pulse/common/types'
 import SidebarEntityItem from '../SidebarEntityItem'

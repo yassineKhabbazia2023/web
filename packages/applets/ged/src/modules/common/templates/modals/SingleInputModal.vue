@@ -21,9 +21,11 @@
       </div>
 
       <div v-if="showErrorMsg" class="single-input-modal__input-error">
-        <PIcon :size="12">
-          <PIXCircle class="icon" />
-        </PIcon>
+        <PIcon
+          :size="12"
+          pName="xCircle"
+          class="icon"
+        />
         <p class="message">
           {{ errorMsg }}
         </p>
@@ -57,7 +59,7 @@
 import { computed } from 'vue'
 import { type SingleInputModalProps } from '@ged/modules/common/templates/modals/SingleInputModalTypes'
 
-import { PIXCircle, PDialog, PButton, PInput, PIcon } from '@pulse/styleguide/components'
+import { PDialog, PButton, PInput, PIcon } from '@pulse/styleguide/components'
 
 const maxInputLength = 256
 
