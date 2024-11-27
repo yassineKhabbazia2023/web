@@ -68,7 +68,7 @@
           <PAvatar
             v-if="scope.row.owner.initials"
             class="margin-right--2"
-            pColor="persian-gradient"
+            pColor="blue-pulse"
             pType="xsmall"
           >
             {{ scope.row.owner.initials }}
