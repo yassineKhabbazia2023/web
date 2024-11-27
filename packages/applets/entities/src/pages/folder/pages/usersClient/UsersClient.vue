@@ -13,8 +13,16 @@
         :targetEntityNumber="currentEntityNumber"
         @refresh-customers-list="fetchUsers"
       />
-      <div class="flex margin-bottom--6">
+      <div
+        class="
+          flex
+          flex--align-items-center
+          flex--justify-content-space-between
+          margin-bottom--6
+        "
+      >
         <FormSearch
+          style="max-width: 500px;"
           class="user-clients__search-bar margin-right--4"
           @search-value-submitted="handleSearchValueSubmitted"
         />

@@ -35,6 +35,7 @@
         ref="searchBar"
         :forcedValue="searchCriteria.search"
         :placeholder="t('search')"
+        style="max-width: 500px;"
         @search-value-submitted="handleSearchValueSubmitted"
       />
     </div>

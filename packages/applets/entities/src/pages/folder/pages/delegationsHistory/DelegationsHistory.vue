@@ -1,6 +1,7 @@
 <template>
   <div class="margin-top--6 margin-bottom--4">
     <FormSearch
+      style="max-width: 500px;"
       :placeholder="t('searchByName')"
       @search-value-submitted="handleSearchValueSubmitted"
     />

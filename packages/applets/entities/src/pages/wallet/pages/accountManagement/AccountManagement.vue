@@ -3,6 +3,7 @@
     <div class="margin-bottom--3">
       <FormSearch
         ref="searchBar"
+        style="max-width: 500px;"
         :placeholder="t('search')"
         @search-value-submitted="handleSearchValueSubmitted"
       />

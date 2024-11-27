@@ -4,10 +4,13 @@
       class="padding-top--2 margin-bottom--6"
       @refresh-mandate-collection="onUpdateSearchParams"
     />
-    <SearchBar
-      v-model="searchParams.searchTerm"
-      @update:model-value="debouncedRefreshData"
-    />
+    <div class="margin-bottom--3">
+      <SearchBar
+        v-model="searchParams.searchTerm"
+        style="max-width: 500px;"
+        @update:model-value="debouncedRefreshData"
+      />
+    </div>
     <ListMandate
       :currentPage="searchParams.currentPage"
       :data="mandatesCollection.data"
