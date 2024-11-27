@@ -23,21 +23,14 @@ const createWrapper = (props = defaultProps) =>
     props,
     global: {
       stubs: {
-        ElSelect: {
-          name: 'ElSelect',
+        PDropdown: {
+          name: 'PDropdown',
           template: '<div class="el-select"><slot /></div>',
           props: [
-            'placement',
+            'pOptions',
+            'pPlacement',
             'modelValue',
           ],
-        },
-        ElOptionGroup: {
-          name: 'ElOptionGroup',
-          template: '<div><slot /></div>',
-        },
-        ElOption: {
-          name: 'ElOption',
-          template: '<div><slot /></div>',
         },
         ElPagination: {
           name: 'ElPagination',
@@ -75,15 +68,14 @@ describe('pPagination', () => {
     })
     it('should set page range selector postion to "top"', () => {
       const wrapper = createWrapper()
-      const select = wrapper.findComponent({ name: 'ElSelect' })
-      expect(select.props('placement')).toBe('top')
+      const select = wrapper.findComponent({ name: 'PDropdown' })
+      expect(select.props('pPlacement')).toBe('top')
       expect(select.props('modelValue')).toBe(100)
     })
 
     it('should have a fixed layout', () => {
       const wrapper = createWrapper()
       const pagination = wrapper
-        .findComponent({ name: 'PPagination' })
         .findComponent({ name: 'ElPagination' })
       expect(pagination.props('layout')).toBe('prev, pager, next')
     })
@@ -92,15 +84,19 @@ describe('pPagination', () => {
   describe('events', () => {
     it('should emit update:modelValue event', async () => {
       const wrapper = createWrapper()
-      const dropdown = wrapper.findComponent({ name: 'ElSelect' })
-      dropdown.setValue(300)
-      await dropdown.trigger('change')
-      expect(dropdown.emitted('update:modelValue')).toHaveLength(1)
+      const dropdown = wrapper.findComponent({ name: 'PDropdown' })
+      const newPageSize = 300
+
+      dropdown.vm.$emit('update:model-value', newPageSize)
+      await nextTick()
+
+      expect(wrapper.emitted('update:pPageSize')).toStrictEqual([[newPageSize]])
+      expect(wrapper.emitted('on-page-range-changed')).toStrictEqual([[newPageSize]])
     })
 
     it('should emit on-page-range-changed on page range selector change', async () => {
       const wrapper = createWrapper()
-      const dropdown = wrapper.findComponent({ name: 'ElSelect' })
+      const dropdown = wrapper.findComponent({ name: 'PDropdown' })
       dropdown.vm.$emit('update:model-value', 300)
       await nextTick()
       expect(wrapper.emitted('on-page-range-changed')).toHaveLength(1)
@@ -111,8 +107,8 @@ describe('pPagination', () => {
         ...defaultProps,
         pTestIdRoot: 'wallet',
       })
-      const select = wrapper.find('.p-pagination__select .el-select')
-      const pagination = wrapper.find('.p-pagination .el-pagination')
+      const select = wrapper.findComponent({ name: 'PDropdown' })
+      const pagination = wrapper.findComponent({ name: 'ElPagination' })
       const counter = wrapper.find('.p-pagination__total-page-counter')
 
       expect(select.attributes('data-testid')).toBe(`wallet-${paginationSelectId}`)
@@ -122,8 +118,8 @@ describe('pPagination', () => {
     it('should have default identifier in attribute data-testid', () => {
       const wrapper = createWrapper()
 
-      const select = wrapper.find('.p-pagination__select .el-select')
-      const pagination = wrapper.find('.p-pagination .el-pagination')
+      const select = wrapper.findComponent({ name: 'PDropdown' })
+      const pagination = wrapper.findComponent({ name: 'ElPagination' })
       const counter = wrapper.find('.p-pagination__total-page-counter')
 
       expect(select.attributes('data-testid')).toBe(`ppagination-${paginationSelectId}`)

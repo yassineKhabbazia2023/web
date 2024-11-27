@@ -1,23 +1,13 @@
 <template>
   <div class="p-pagination">
-    <div class="p-pagination__select">
-      <ElSelect
-        v-model="modelPageSize"
-        placement="top"
-        :data-testid="`${pTestIdRoot}-pagination-select`"
-        popper-class="p-pagination__popper"
-      >
-        <ElOptionGroup :label="pPageSizeSelectorGroupLabel">
-          <ElOption
-            v-for="pageSize in pPageSizes"
-            :key="pageSize"
-            :value="pageSize"
-          >
-            {{ getpageSizeSelectorContent(pageSize) }}
-          </ElOption>
-        </ElOptionGroup>
-      </ElSelect>
-    </div>
+    <PDropdown
+      v-model="modelPageSize"
+      :pOptions="pageSizeOptions"
+      pPlacement="top"
+      :data-testid="`${pTestIdRoot}-pagination-select`"
+      popper-class="p-pagination__popper"
+      class="p-pagination__select"
+    />
 
     <ElPagination
       v-model:current-page="currentPage"
@@ -41,18 +31,25 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import {
-  ElOption,
-  ElOptionGroup,
-  ElPagination,
-  ElSelect,
-} from 'element-plus'
+import { ElPagination } from 'element-plus'
 import type { PaginationProps } from './PPaginationTypes'
+import PDropdown from '../../molecules/PDropdown'
+import type { PDropdownProps } from '../../molecules/PDropdown/PDropdownTypes'
 
 const props = withDefaults(defineProps<PaginationProps>(), {
   pTestIdRoot: 'ppagination',
 })
+// TODO should type emits (see https://kpmgfr.visualstudio.com/Constellation/_workitems/edit/347657)
 const emit = defineEmits(['on-page-range-changed', 'update:pCurrentPage', 'update:pPageSize'])
+
+const pageSizeOptions = computed<PDropdownProps['pOptions']>(() => (
+  (props.pPageSizes ?? [])
+    .map((pageSize) => ({
+      pValue: pageSize,
+      pLabel: `${pageSize} ${props.pPageSizeSelectorSuffix}`,
+      pGroupLabel: props.pPageSizeSelectorGroupLabel,
+    }))
+))
 
 const currentPage = computed({
   get() {
@@ -72,8 +69,4 @@ const modelPageSize = computed({
     emit('on-page-range-changed', value)
   },
 })
-
-const getpageSizeSelectorContent = (pageSize: number) => {
-  return `${pageSize} ${props.pPageSizeSelectorSuffix}`
-}
 </script>
