@@ -17,6 +17,10 @@ $checkbox: (
 .el-checkbox {
   &__input {
     &.is-checked {
+      span.el-checkbox__inner {
+        background-color: var(--el-color-base-blue-pulse);
+        border: 1px solid var(--el-color-base-blue-pulse);
+      }
       &:hover {
         .el-checkbox__inner,
         .el-checkbox__original {
