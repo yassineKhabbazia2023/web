@@ -1,12 +1,11 @@
- 
- 
+
+
 import { createPinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
-import { PDrawer, PSelect, POption, PButton } from '@pulse/styleguide/components'
 import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import DocumentSearchFiltrer from '.'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
@@ -49,7 +48,7 @@ describe('documentSearchFiltrer', () => {
 
       await nextTick()
 
-      const pdrawer = wrapper.findComponent(PDrawer)
+      const pdrawer = wrapper.findComponent({ name: 'PDrawer' })
       expect(pdrawer.exists()).toBeTruthy()
       expect(pdrawer.props('pTitle')).toBe('Filtres')
     })
@@ -70,11 +69,11 @@ describe('documentSearchFiltrer', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const pSelect = wrapper.findComponent(PSelect)
+      const pSelect = wrapper.findComponent({ name: 'PDropdown' })
       expect(pSelect.exists()).toBeTruthy()
       expect(pSelect.props('pPlaceholder')).toBe('Sélectionner une période')
 
-      const pOptions = wrapper.findAllComponents(POption)
+      const pOptions = wrapper.findAllComponents({ name: 'POption' })
       expect(pOptions).toHaveLength(3)
     })
 
@@ -85,7 +84,7 @@ describe('documentSearchFiltrer', () => {
 
       await nextTick()
 
-      const pBtns = wrapper.findAllComponents(PButton)
+      const pBtns = wrapper.findAllComponents({ name: 'PButton' })
       expect(pBtns).toHaveLength(3)
       expect(pBtns[1].text()).toBe('Réinitialiser')
       expect(pBtns[2].text()).toBe('Appliquer')
@@ -114,7 +113,7 @@ describe('documentSearchFiltrer', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const pDocumentViewerWrapper = wrapper.findComponent(PDrawer)
+      const pDocumentViewerWrapper = wrapper.findComponent({ name: 'PDrawer' })
       await pDocumentViewerWrapper.vm.$emit('close-drawer-button')
 
       await nextTick()
@@ -127,7 +126,7 @@ describe('documentSearchFiltrer', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const pButtons = wrapper.findAllComponents(PButton)
+      const pButtons = wrapper.findAllComponents({ name: 'PButton' })
       await pButtons[1].trigger('click')
       await nextTick()
 
@@ -142,7 +141,7 @@ describe('documentSearchFiltrer', () => {
       componentInstance.dateRange = [date, date]
       await nextTick()
 
-      const pButtons = wrapper.findAllComponents(PButton)
+      const pButtons = wrapper.findAllComponents({ name: 'PButton' })
       await pButtons[2].trigger('click')
       await nextTick()
 
@@ -162,7 +161,7 @@ describe('documentSearchFiltrer', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const pSelect = wrapper.findComponent(PSelect)
+      const pSelect = wrapper.findComponent({ name: 'PDropdown' })
       await pSelect.vm.$emit('change', 'DAY')
       await nextTick()
       expect(wrapper.vm.dateRange).toStrictEqual([date, date])

@@ -11,19 +11,13 @@
         <p class="doc-search-filter-label">
           {{ t('dropdownLabel') }}
         </p>
-        <PSelect
+        <PDropdown
           v-model="selectedPeriod"
           :pPlaceholder="t('dropdownPlaceholder')"
           pClearable
+          :pOptions="periods"
           @change="handlePeriodChange"
-        >
-          <POption
-            v-for="({ label, value }, index) in periods"
-            :key="index"
-            :pLabel="label"
-            :pValue="value"
-          />
-        </PSelect>
+        />
       </div>
       <div class="margin-top--6">
         <p class="doc-search-filter-label">
@@ -65,7 +59,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
-import { PDrawer, PSelect, POption, PButton, PDatePicker } from '@pulse/styleguide/components'
+import { PDrawer, PDropdown, PButton, PDatePicker } from '@pulse/styleguide/components'
 import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
 import { useI18n } from 'vue-i18n'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
@@ -97,16 +91,16 @@ const selectedPeriod = ref<string>('')
 
 const periods = [
   {
-    value: Period.DAY.toString(),
-    label: t('dropdownItems.today'),
+    pValue: Period.DAY.toString(),
+    pLabel: t('dropdownItems.today'),
   },
   {
-    value: Period.WEEK.toString(),
-    label: t('dropdownItems.week'),
+    pValue: Period.WEEK.toString(),
+    pLabel: t('dropdownItems.week'),
   },
   {
-    value: Period.MONTH.toString(),
-    label: t('dropdownItems.month'),
+    pValue: Period.MONTH.toString(),
+    pLabel: t('dropdownItems.month'),
   },
 ]
 
