@@ -17,6 +17,9 @@ parameters:
     - standard
     - onlyDev
 
+variables:
+  remoteRepositoryName: Pulse
+
 resources:
   repositories:
   - repository: Pulse
