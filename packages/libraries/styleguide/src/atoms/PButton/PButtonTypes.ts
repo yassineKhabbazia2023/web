@@ -2,7 +2,7 @@ export interface PButtonProps {
   pType?: 'default'
     | 'primary'
     | 'secondary'
-    | 'terciary'
+    | 'tertiary'
     | 'white'
     | 'generic'
     | 'success'
