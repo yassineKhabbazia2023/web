@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import maze from './plugins/maze'
 import { VITE_ASSETS_BASE_URL, VITE_MAZE_KEY, VITE_ONE_TRUST_KEY, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
-import packageJson from '../../../package.json'
+import { AppVersionManager } from '@pulse/core'
 
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
@@ -14,8 +14,6 @@ import styleguideLibrary from '@pulse/styleguide'
 import App from './app/App.vue'
 import router from './plugins/router'
 
-const { version } = packageJson
-
 const locale = 'fr-FR'
 
 declare let window: {
@@ -23,7 +21,7 @@ declare let window: {
   version: string
 } & Window
 
-window.version = version
+window.version = AppVersionManager.getMonorepoVersion()
 
 
 const app = createApp(App)

@@ -108,6 +108,7 @@
           </li>
         </ul>
       </template>
+      <AppVersion v-if="isSidebarOpened" />
     </nav>
     <SidebarEntityMenu
       v-if="isSelectedEntityActive && selectedEntity"
@@ -135,6 +136,7 @@ import { getDefaultEntity } from './utils'
 import SidebarEntityItem from './components/SidebarEntityItem'
 import SidebarEntityMenu from './components/SidebarEntityMenu'
 import EntityAvatar from './components/EntityAvatar'
+import AppVersion from './components/AppVersion'
 
 const route = useRoute()
 const userStore = commonStore()
