@@ -134,5 +134,23 @@ describe('sidebarEntity', () => {
       expect(arrowBarLeftIcon.exists()).toBeTruthy()
       expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
     })
+    it('should not display appVersion when sidebar is closed', async () => {
+      const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
+      const appVersion = wrapper.find('[data-testid=app-version]')
+
+      expect(sidenavEntity.classes()).not.includes('sidenav-entity--opened')
+      expect(appVersion.exists()).not.toBeTruthy()
+    })
+    it('should display appVersion when sidebar is opened', async () => {
+      const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
+      const sidebarToggle = findSidebarToggle(wrapper)
+      
+      await sidebarToggle.trigger('click')
+      
+      const appVersion = wrapper.find('[data-testid=app-version]')
+
+      expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
+      expect(appVersion.exists()).toBeTruthy()
+    })
   })
 })

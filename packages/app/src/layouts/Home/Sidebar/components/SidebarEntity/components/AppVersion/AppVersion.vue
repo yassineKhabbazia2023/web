@@ -1,5 +1,9 @@
 <template>
-  <p v-if="appVersion" class="app-version">
+  <p
+    v-if="appVersion"
+    class="app-version"
+    data-testid="app-version"
+  >
     v{{ appVersion }}
   </p>
 </template>
