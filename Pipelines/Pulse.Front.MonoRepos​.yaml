@@ -9,6 +9,12 @@ parameters:
 - name: devIndex
   type: number
   default: 0
+- name: disableSonar
+  type: boolean
+  default: false
+  values:
+    - true
+    - false
 - name: deployType
   displayName: "Technical parameter : don t modify it !"
   type: string
