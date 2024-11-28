@@ -4,7 +4,8 @@
       v-if="isCollab"
       class="
         flex
-        flex--align-items-center
+        flex--wrap
+        flex--align-items-end
         flex--justify-content-space-between
         margin-bottom--6
       "
@@ -17,6 +18,7 @@
       <PButton
         pType="primary"
         pSize="small"
+        class="margin-bottom--1 margin-top--2"
         @click="isDelegationDrawerOpened = true"
       >
         {{ t('delegation', selectedFolders.length) }}

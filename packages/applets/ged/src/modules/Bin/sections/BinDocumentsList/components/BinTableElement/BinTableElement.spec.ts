@@ -77,9 +77,9 @@ describe('binTableElement', () => {
       const wrapper = createWrapper(updatedProps)
       await nextTick()
 
-      const field = await wrapper.findComponent({ name: 'PIcon'})
+      const field = await wrapper.findComponent({ name: 'PIcon' })
       expect(field.exists()).toBeTruthy()
-      const icon = await wrapper.findComponent({ name: 'PIcon'})
+      const icon = await wrapper.findComponent({ name: 'PIcon' })
       expect(icon.exists()).toBeTruthy()
     })
   })

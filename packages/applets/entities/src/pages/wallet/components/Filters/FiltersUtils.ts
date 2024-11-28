@@ -2,7 +2,7 @@ import { EntitiesStatistics } from '@entities/services/wallet/serviceWalletTypes
 import { FilterOption } from '@pulse/styleguide/types'
 import { EntityStatus } from './FiltersTypes'
 
-export function getFilters(
+export function getOnboardingFilters(
   filterLabels: Record<string, string>,
   entitiesStatistics?: EntitiesStatistics,
 ) {
@@ -28,6 +28,16 @@ export function getFilters(
       pColor: 'success',
       pIcon: 'PICheckCircle',
     },
+  ]
+
+  return filters
+}
+
+export function getUserConnexionFilters(
+  filterLabels: Record<string, string>,
+  entitiesStatistics?: EntitiesStatistics,
+) {
+  const filters: FilterOption<EntityStatus | undefined>[] = [
     {
       pContent: filterLabels['declared'],
       pCode: undefined,

@@ -1,26 +1,5 @@
 [
   {
-    "pCode": 1,
-    "pColor": "warning",
-    "pContent": "toDeploy",
-    "pIcon": "PIArrowUpCircle",
-    "pValue": 3,
-  },
-  {
-    "pCode": 2,
-    "pColor": "amethyste",
-    "pContent": "inProgress",
-    "pIcon": "PIArrowRepeat",
-    "pValue": 0,
-  },
-  {
-    "pCode": 3,
-    "pColor": "success",
-    "pContent": "connected",
-    "pIcon": "PICheckCircle",
-    "pValue": 0,
-  },
-  {
     "pCode": undefined,
     "pColor": "gray-900",
     "pContent": "declared",

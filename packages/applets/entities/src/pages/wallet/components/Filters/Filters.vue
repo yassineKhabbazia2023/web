@@ -1,9 +1,41 @@
 <template>
-  <PFilterGroupEntityStatus
-    :modelValue="activeFilters"
-    :pFilters="filters"
-    @toggle="onToggleFilter"
-  />
+  <div class="filters flex">
+    <div>
+      <div
+        class="
+          margin-bottom--2
+          font-semibold
+          font-small
+          text-color--neutral-gray-500
+        "
+      >
+        {{ t('fileBoardingRate') }}
+      </div>
+      <PFilterGroupEntityStatus
+        :modelValue="activeFilters"
+        :pFilters="onBoardingFilters"
+        class="filters__filter-group--with-separator"
+        @toggle="onToggleFilter"
+      />
+    </div>
+    <div>
+      <div
+        class="
+          margin-bottom--2
+          font-semibold
+          font-small
+          text-color--neutral-gray-500
+        "
+      >
+        {{ t('userConnectionRate') }}
+      </div>
+      <PFilterGroupEntityStatus
+        :modelValue="activeFilters"
+        :pFilters="userConnectionFilters"
+        @toggle="onToggleFilter"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -13,7 +45,7 @@ import { PFilterGroup } from '@pulse/styleguide/components'
 import { type FilterOption } from '@pulse/styleguide/types'
 import { fetchEntitiesStatistics } from '@entities/services/wallet'
 import { EntityStatus } from './FiltersTypes'
-import { getFilters } from './FiltersUtils'
+import { getOnboardingFilters, getUserConnexionFilters } from './FiltersUtils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -23,7 +55,8 @@ const { t } = useI18n({
 const activeFilters = ref<EntityStatus[]>([])
 const PFilterGroupEntityStatus = PFilterGroup<EntityStatus | undefined>
 
-const filters = ref<FilterOption<EntityStatus | undefined>[]>([])
+const onBoardingFilters = ref<FilterOption<EntityStatus | undefined>[]>([])
+const userConnectionFilters = ref<FilterOption<EntityStatus | undefined>[]>([])
 
 const emit = defineEmits<{
   'filterByStatus': [EntityStatus]
@@ -51,12 +84,28 @@ function onToggleFilter(filterKey: EntityStatus | undefined, isSelected: boolean
 onMounted(async () => {
   try {
     const data = await fetchEntitiesStatistics()
-    filters.value = getFilters(FILTER_LABELS, data)
+    onBoardingFilters.value = getOnboardingFilters(FILTER_LABELS, data)
+    userConnectionFilters.value = getUserConnexionFilters(FILTER_LABELS, data)
   } catch (err) {
     console.error(err)
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.filters {
+  &__filter-group {
+    &--with-separator {
+      padding-right: 12px;
+      margin-right: 12px;
+      border-right: 1px solid var(--el-color-neutral-gray-100);;
+    }
+  }
+  &__title {
+    color: var(--el-color-neutral-gray-500);
+  }
+}
+</style>
 
 <i18n lang="yaml">
   en-US:

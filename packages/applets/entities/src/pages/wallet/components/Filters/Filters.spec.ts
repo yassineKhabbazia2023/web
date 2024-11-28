@@ -28,7 +28,7 @@ describe('filter', () => {
   })
 
   it('renders filter correctly', async () => {
-    const expectedProps = {
+    const expectedProps1 = {
       'modelValue': [],
       'pFilters': [{
         'pCode': 1,
@@ -48,7 +48,11 @@ describe('filter', () => {
         'pContent': 'Connected',
         'pIcon': 'PICheckCircle',
         'pValue': 0,
-      }, {
+      }],
+    }
+    const expectedProps2 = {
+      'modelValue': [],
+      'pFilters': [{
         'pCode': undefined,
         'pColor': 'gray-900',
         'pContent': 'Declared',
@@ -72,8 +76,10 @@ describe('filter', () => {
       }],
     }
 
-    const pFilterGroup = wrapper.findComponent({ name: 'PFilterGroup' })
-    expect(pFilterGroup.props()).toStrictEqual(expectedProps)
+    const pFilterGroups = wrapper.findAllComponents({ name: 'PFilterGroup' })
+    const [pFilterGroup1, pFilterGrou2] = pFilterGroups
+    expect(pFilterGroup1.props()).toStrictEqual(expectedProps1)
+    expect(pFilterGrou2.props()).toStrictEqual(expectedProps2)
   })
 
   it('should emit event filterByStatus when click on the entityStatus button', async () => {
