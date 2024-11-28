@@ -23,7 +23,7 @@ resources:
   - repository: Pulse
     name: 'Pulse.Operations.Pipelines'
     type: git
-    ref: 'refs/heads/features/change-naming-monorop'
+    ref: 'refs/heads/features/change-naming'
 
 extends:
   template: pipelines/templates/platform.front.monop.yaml@Pulse
