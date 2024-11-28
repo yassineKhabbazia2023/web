@@ -111,8 +111,12 @@ export async function fetchContactsFromSameHub(
 }
 
 export async function getAccountSignatories(accountId: Account['accountId']): Promise<AccountSignatories[]> {
-  const url = `${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`
-  const { data } = await commonApi().gateway.get(url)
+  const url = `${API_PREFIXES.ACCOUNT}/roles/signatory`
+  const { data } = await commonApi().gateway.get(url, {
+    params: {
+      accountId,
+    },
+  })
 
   return data
 }

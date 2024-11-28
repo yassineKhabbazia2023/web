@@ -83,7 +83,7 @@ vi.mock('@pulse/common', () => {
               },
             })
           }
-          if (url === `${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`) {
+          if (url === `${API_PREFIXES.ACCOUNT}/roles/signatory` && args.params.accountId) {
             return Promise.resolve({
               data: mockedCollaborators,
             })
