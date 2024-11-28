@@ -6,10 +6,19 @@
   >
     <template #header-prefix>
       <div class="add-customer-drawer__header">
-        <span class="add-customer-drawer__entity-name">{{ targetEntityName }}</span>
-        <h3>
-          {{ isAddContactSucceeded ? t('userAdded') : t('addUser') }}
-        </h3>
+        <p class="add-customer-drawer__entity-name margin-left--1 margin-bottom--2">
+          {{ targetEntityName }}
+        </p>
+        <div class=" flex flex--align-items-center">
+          <PIcon
+            pName="pulse"
+            :pColor="AppColors.PRIMARY"
+            pSize="30"
+          />
+          <h3 class="margin-left--1 font-semibold">
+            {{ isAddContactSucceeded ? t('userAdded') : t('addUser') }}
+          </h3>
+        </div>
       </div>
     </template>
     <div v-if="!hasFormBeenSent">
@@ -98,8 +107,10 @@ import {
   PAlert,
   PButton,
   PBlockHeader,
+  PIcon,
 } from '@pulse/styleguide/components'
 import type { FormRules } from '@pulse/styleguide/types'
+import { AppColors } from '@pulse/styleguide'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCustomerFeedback from './components/addCustomerFeedback'

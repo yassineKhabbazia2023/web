@@ -7,7 +7,16 @@
     @close="handleCloseDrawer"
   >
     <template #header-prefix>
-      <h3>{{ t('addCollaborators') }}</h3>
+      <div class="flex flex--align-items-center">
+        <PIcon
+          pName="pulse"
+          :pColor="AppColors.PRIMARY"
+          pSize="30"
+        />
+        <h3 class="margin-left--1 font-semibold">
+          {{ t('addCollaborators') }}
+        </h3>
+      </div>
     </template>
 
     <div class="margin-bottom--6">
@@ -30,8 +39,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer } from '@pulse/styleguide/components'
-import { PNotification } from '@pulse/styleguide'
+import { PDrawer, PIcon } from '@pulse/styleguide/components'
+import { AppColors, PNotification } from '@pulse/styleguide'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'

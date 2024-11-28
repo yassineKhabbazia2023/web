@@ -6,13 +6,18 @@
     @close="handleCloseDrawer"
   >
     <template #header-prefix>
-      <h3 class="delegation-drawer__header">
-        <template v-if="!isSpecificDelegationFlowType">
+      <h3 class="delegation-drawer__header flex flex--align-items-center">
+        <PIcon
+          pName="pulse"
+          :pColor="AppColors.PRIMARY"
+          pSize="30"
+        />
+        <h3 v-if="!isSpecificDelegationFlowType" class="margin-left--1 font-semibold">
           {{ t('walletDelegation') }}
-        </template>
-        <template v-else>
+        </h3>
+        <h3 v-else class="margin-left--1 font-semibold">
           {{ t('folderDelegation', selectedFolders.length) }}
-        </template>
+        </h3>
       </h3>
     </template>
 
@@ -71,8 +76,8 @@
 import { logger } from '@pulse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PSteps, PStep } from '@pulse/styleguide/components'
-import { PNotification } from '@pulse/styleguide'
+import { PDrawer, PSteps, PStep, PIcon } from '@pulse/styleguide/components'
+import { AppColors, PNotification } from '@pulse/styleguide'
 import { commonApi, commonStore } from '@pulse/common'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'

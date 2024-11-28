@@ -40,8 +40,15 @@
             >
               <PIcon pName="arrowLeft" />
             </PButton>
-            <h3 class="p-drawer__title">
-              {{ pTitle }}
+            <h3 v-if="pTitle && pTitle.length > 0" class="p-drawer__title">
+              <PIcon
+                pName="pulse"
+                :pColor="AppColors.PRIMARY"
+                pSize="30"
+              />
+              <span class="margin-left--1 font-semibold">
+                {{ pTitle }}
+              </span>
             </h3>
           </div>
 
@@ -68,6 +75,7 @@ import PBreadcrumb from '../../molecules/PBreadcrumb'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
 import type { PDrawerProps } from './PDrawerTypes'
+import { AppColors } from '../../utils/AppColorsEnum'
 
 const emit = defineEmits([
   'drawer-previous-button-click',
