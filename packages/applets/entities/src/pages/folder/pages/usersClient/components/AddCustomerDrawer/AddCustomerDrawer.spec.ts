@@ -193,7 +193,7 @@ describe('addCustomerDrawer', () => {
         mobilePhone: '',
         email: formDataMock.email,
         accountNumber: entityMock.accountNumber,
-      })
+      }, entityMock.accountId)
       expect(addCustomerFeedbackWrapper.exists()).toBeTruthy()
       expect(addCustomerFeedbackWrapper.props('hasError')).toBeFalsy()
     })
