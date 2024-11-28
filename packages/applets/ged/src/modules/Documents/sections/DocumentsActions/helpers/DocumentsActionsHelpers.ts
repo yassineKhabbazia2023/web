@@ -16,7 +16,6 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: 'Déposer un document',
       pButton: {
         pType: 'primary',
-        pPlain: false,
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -35,7 +34,6 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: 'Filtrer',
       pButton: {
         pType: 'primary',
-        pPlain: true,
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -52,7 +50,6 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: '',
       pButton: {
         pType: 'white',
-        pPlain: false,
         pRound: false,
         pCircle: true,
         pLoading: false,
@@ -74,7 +71,6 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: 'Renommer',
       pButton: {
         pType: 'white',
-        pPlain: true,
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -91,7 +87,6 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: 'Envoi immédiat',
       pButton: {
         pType: 'white',
-        pPlain: true,
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -108,7 +103,6 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: 'Déplacer',
       pButton: {
         pType: 'white',
-        pPlain: true,
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -125,7 +119,6 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: 'Télécharger',
       pButton: {
         pType: 'white',
-        pPlain: false,
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -142,7 +135,6 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
       pButtonName: 'Supprimer',
       pButton: {
         pType: 'white',
-        pPlain: false,
         pRound: false,
         pCircle: false,
         pLoading: false,

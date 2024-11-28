@@ -1,6 +1,5 @@
 <template>
   <PButton
-    pType="generic"
     class="sidenav-entity__item padding--0"
     @click="onItemClicked"
   >

@@ -13,7 +13,6 @@
         <div class="p-document-viewer__header-left margin-right--2">
           <PButton
             v-if="pShowCloseButton"
-            pType="generic"
             pPlain
             class="el-button--icon p-document-viewer__btn-close margin-right--2"
             @click="documentViewerModel = false"
@@ -29,7 +28,6 @@
         </div>
         <div v-if="pHasPagination" class="p-document-viewer__header-right">
           <PButton
-            pType="generic"
             pPlain
             class="el-button--icon margin-right--2 p-document-viewer__btn-previous"
             :pDisabled="!pShowPreviousDocument"
@@ -45,7 +43,6 @@
             <span class="p-document-viewer__pagination-item">{{ pTotalDocuments }}</span>
           </div>
           <PButton
-            pType="generic"
             pPlain
             class="el-button--icon margin-left--2 p-document-viewer__btn-next"
             :pDisabled="!pShowNextDocument"

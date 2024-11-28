@@ -14,7 +14,6 @@
         >
           <PButton
             :pType="item.pButton.pType"
-            :pPlain="item.pButton.pPlain"
             :pCircle="item.pButtonName === '' ? true : false"
             :pLoading="item.pButton.pLoading"
             :pDisabled="item.pButton.pDisabled"
@@ -36,7 +35,6 @@
         <PButton
           v-else-if="!item.pComponentType"
           :pType="item.pButton.pType"
-          :pPlain="item.pButton.pPlain"
           :pCircle="item.pButtonName === '' ? true : false"
           :pLoading="item.pButton.pLoading"
           :pDisabled="item.pButton.pDisabled"
@@ -72,7 +70,6 @@
         v-for="(item, index) in truncatedRightSideButtons"
         :key="index"
         :pType="item.pButton.pType"
-        :pPlain="item.pButton.pPlain"
         :pCircle="isIconsTypeCircle"
         :pLoading="item.pButton.pLoading"
         :pDisabled="item.pButton.pDisabled"

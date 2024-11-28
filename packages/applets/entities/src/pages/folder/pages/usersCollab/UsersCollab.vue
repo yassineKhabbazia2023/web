@@ -122,7 +122,6 @@
                 @p-toolbox-item-clicked="$event => handleUserAction($event, scope.row)"
               >
                 <PButton
-                  pType="generic"
                   pSize="small"
                   class="margin-left--1"
                   data-testid="folder-users-collab-action"

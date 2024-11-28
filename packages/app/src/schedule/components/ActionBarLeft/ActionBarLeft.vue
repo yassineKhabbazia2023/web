@@ -12,7 +12,6 @@
   >
     <template v-if="!isSearchState">
       <PButton
-        pType="generic"
         pSize="small"
         data-testid="schedule-prev-month-button"
         pIconOnly
@@ -22,7 +21,6 @@
         <PIcon pName="chevronLeft" />
       </PButton>
       <PButton
-        pType="generic"
         pSize="small"
         data-testid="schedule-next-month-button"
         pIconOnly
@@ -53,7 +51,6 @@
     </template>
     <PButton
       v-if="isSearchState"
-      pType="generic"
       pSize="small"
       data-testid="action-bar-left-end-search-state-button"
       pIconOnly

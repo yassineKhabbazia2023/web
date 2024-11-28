@@ -72,7 +72,6 @@
             <PButton
               pType="primary"
               pSize="small"
-              :pPlain="false"
               :pRound="false"
               :pDisabled="false"
               :pLoading="false"
@@ -129,7 +128,6 @@
             <PButton
               pType="primary"
               pSize="small"
-              :pPlain="false"
               :pRound="false"
               :pDisabled="false"
               :pLoading="false"

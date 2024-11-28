@@ -35,7 +35,6 @@
       @p-toolbox-item-clicked="actionClicked($event, item.occurrenceId)"
     >
       <PButton
-        pType="generic"
         pIconOnly
         pSize="small"
       >

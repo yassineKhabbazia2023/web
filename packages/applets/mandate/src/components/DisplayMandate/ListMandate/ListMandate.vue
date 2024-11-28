@@ -26,7 +26,7 @@
               :pElements="actionsBuilder(scope.row.jdcPartnership, scope.row.permittedActions)"
               @p-toolbox-item-clicked="actionClicked($event, scope.row)"
             >
-              <PButton pType="generic">
+              <PButton>
                 <PIcon
                   :color="AppColors.GRAY_300"
                   size="14px"
@@ -99,7 +99,6 @@
         <PButton
           pType="primary"
           pSize="small"
-          :pPlain="false"
           :pRound="false"
           :pDisabled="false"
           :pLoading="false"

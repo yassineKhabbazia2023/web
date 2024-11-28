@@ -66,7 +66,6 @@
                 >
                   <PButton
                     pIconOnly
-                    pType="generic"
                     :pDisabled="!isEnabled || !delegator.isCurrentUser"
                     @click="deleteDelegation(id, delegatee)"
                   >

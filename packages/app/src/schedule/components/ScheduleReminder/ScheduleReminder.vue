@@ -25,7 +25,6 @@
       {{ t('date') }}
     </span>
     <PButton
-      pType="generic"
       pPlain
       pIconOnly
       data-testid="schedule-reminder-delete"

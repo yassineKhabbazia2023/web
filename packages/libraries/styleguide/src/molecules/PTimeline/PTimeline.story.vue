@@ -26,7 +26,6 @@
             <template #action>
               <PTooltip pContent="Supprimer la délégation">
                 <PButton
-                  pType="generic"
                   pSize="default"
                   pIconOnly
                 >
@@ -53,7 +52,6 @@
             <template #action>
               <PTooltip pContent="Supprimer la délégation">
                 <PButton
-                  pType="generic"
                   pSize="default"
                   pIconOnly
                 >
@@ -80,7 +78,6 @@
             <template #action>
               <PTooltip pContent="Supprimer la délégation">
                 <PButton
-                  pType="generic"
                   pSize="default"
                   pIconOnly
                 >
@@ -107,7 +104,6 @@
             <template #action>
               <PTooltip pContent="Supprimer la délégation">
                 <PButton
-                  pType="generic"
                   pSize="default"
                   pIconOnly
                 >

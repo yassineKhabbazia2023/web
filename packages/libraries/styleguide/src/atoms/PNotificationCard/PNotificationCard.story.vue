@@ -24,7 +24,6 @@
         <template #actions>
           <PToolbox :pElements="toolboxBasicData">
             <PButton
-              pType="generic"
               class="el-button--icon"
               pSize="small"
             >

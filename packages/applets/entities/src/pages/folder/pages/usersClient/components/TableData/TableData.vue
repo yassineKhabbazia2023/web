@@ -66,7 +66,6 @@
               @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
             >
               <PButton
-                pType="generic"
                 pSize="small"
               >
                 <PIcon pName="threeDots" />

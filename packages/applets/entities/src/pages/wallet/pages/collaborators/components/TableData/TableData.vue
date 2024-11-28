@@ -72,7 +72,7 @@
             :pElements="menuElements"
             @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
           >
-            <PButton pType="generic">
+            <PButton>
               <PIcon pName="threeDots" />
             </PButton>
           </PToolbox>

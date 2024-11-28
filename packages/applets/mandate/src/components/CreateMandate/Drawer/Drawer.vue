@@ -68,7 +68,6 @@
             v-if="currentStep === 2 || currentStep === 3"
             pType="default"
             pSize="default"
-            :pPlain="false"
             :pRound="false"
             :pLoading="false"
             data-testid="previous-step-test"

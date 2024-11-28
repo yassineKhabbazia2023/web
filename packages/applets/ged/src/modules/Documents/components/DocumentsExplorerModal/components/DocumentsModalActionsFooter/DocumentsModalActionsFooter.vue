@@ -5,7 +5,6 @@
         v-for="(item, index) in modalActionsButtons"
         :key="index"
         :pType="item.buttonType"
-        :pPlain="item.plain"
         :pCircle="item.buttonName === '' ? true : false"
         :pLoading="item.loading"
         :pDisabled="item.disabled"

@@ -10,7 +10,6 @@ export function getButtonAction(
     buttonType: 'primary',
     buttonIcon: '',
     buttonActionName,
-    plain: false,
     round: false,
     circle: false,
     loading: false,

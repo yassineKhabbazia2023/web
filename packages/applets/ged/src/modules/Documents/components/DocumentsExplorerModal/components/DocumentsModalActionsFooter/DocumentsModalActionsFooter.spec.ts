@@ -15,7 +15,6 @@ const btnActions: Array<ButtonAction> = [
     buttonType: 'primary',
     buttonIcon: '',
     buttonActionName: 'add-action-click',
-    plain: false,
     round: false,
     circle: false,
     loading: false,
@@ -27,7 +26,6 @@ const btnActions: Array<ButtonAction> = [
     buttonType: 'warning',
     buttonIcon: '',
     buttonActionName: 'cancel-action-click',
-    plain: false,
     round: false,
     circle: false,
     loading: false,
@@ -65,8 +63,6 @@ describe('documentsModalActionsFooter', () => {
       expect(btns).toHaveLength(2)
       expect(btns[0].props('pType')).toBe('primary')
       expect(btns[1].props('pType')).toBe('warning')
-      expect(btns[0].props('pPlain')).toBeFalsy()
-      expect(btns[1].props('pPlain')).toBeTruthy()
       expect(btns[0].props('pCircle')).toBeTruthy()
       expect(btns[1].props('pCircle')).toBeFalsy()
       expect(btns[0].props('pLoading')).toBeFalsy()

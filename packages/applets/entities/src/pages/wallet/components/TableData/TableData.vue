@@ -133,7 +133,6 @@
             @p-toolbox-item-clicked="$event => onToolboxItemClicked($event, scope.row)"
           >
             <PButton
-              pType="generic"
               pSize="small"
               pIconOnly
             >

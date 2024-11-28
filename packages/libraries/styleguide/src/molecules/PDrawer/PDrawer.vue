@@ -18,7 +18,6 @@
         <div class="p-drawer__header-prefix">
           <slot name="header-prefix" />
           <PButton
-            pType="generic"
             pPlain
             pIconOnly
             class="p-drawer__close-button"
@@ -34,7 +33,6 @@
           <div class="flex flex--align-items-center flex--justify-content-flex-start">
             <PButton
               v-if="pShowPreviousStep"
-              pType="generic"
               pPlain
               pIconOnly
               class="p-drawer__step-back-button"

@@ -17,9 +17,7 @@ export const modalButtonsMove: Record<string, ModalActionsWithOrder> = {
   CANCEL_MOVE_DOCUMENT: {
     modalButton: getButtonAction(
       'Annuler',
-      'modal-cancel-document-action-click', {
-        plain: true,
-      },
+      'modal-cancel-document-action-click',
     ),
     order: 1,
   },

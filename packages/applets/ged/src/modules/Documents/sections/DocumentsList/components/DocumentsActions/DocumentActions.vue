@@ -6,7 +6,6 @@
     @visible-change="handleToolboxDropdownSateChange"
   >
     <PButton
-      pType="generic"
       class="on-document-action-clicked"
       pCircle
       @click="handleActionsDropdownOpening"

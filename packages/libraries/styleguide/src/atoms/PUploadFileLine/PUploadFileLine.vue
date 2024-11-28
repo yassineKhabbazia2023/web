@@ -33,7 +33,6 @@
       data-testid="upload-fileline-action"
     >
       <PButton
-        pType="generic"
         pSize="small"
         pIconOnly
         data-testid="upload-fileline-action-button"

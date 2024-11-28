@@ -9,7 +9,6 @@
     <Variant title="Basic Usage">
       <PButton
         :pType="basicButton.pType"
-        :pPlain="basicButton.pPlain"
         :pRound="basicButton.pRound"
         :pCircle="basicButton.pCircle"
         :pDisabled="basicButton.pDisabled"
@@ -24,7 +23,6 @@
       </PButton>
       <template #controls>
         <HstText v-model="buttonText" title="Text" />
-        <HstCheckbox v-model="basicButton.pPlain" title="Plain" />
         <HstCheckbox v-model="basicButton.pRound" title="Round" />
         <HstCheckbox v-model="basicButton.pCircle" title="Circle" />
         <HstCheckbox v-model="basicButton.pDisabled" title="Disabled" />
@@ -49,7 +47,6 @@
       <PButton
         pIconOnly
         :pType="iconButton.pType"
-        :pPlain="iconButton.pPlain"
         :pRound="iconButton.pRound"
         :pCircle="iconButton.pCircle"
         :pDisabled="iconButton.pDisabled"
@@ -60,7 +57,6 @@
         <PIcon pName="search" />
       </PButton>
       <template #controls>
-        <HstCheckbox v-model="iconButton.pPlain" title="Plain" />
         <HstCheckbox v-model="iconButton.pRound" title="Round" />
         <HstCheckbox v-model="iconButton.pCircle" title="Circle" />
         <HstCheckbox v-model="iconButton.pDisabled" title="Disabled" />
@@ -114,9 +110,6 @@
           <h2>
             disabled
           </h2>
-          <h2>
-            pPlain
-          </h2>
         </li>
         <li
           v-for="({ label, value: pType }) in buttonTypeList"
@@ -140,21 +133,6 @@
           <PButton
             :pType="pType"
             pDisabled
-            :pRound="basicButton.pRound"
-            :pCircle="basicButton.pCircle"
-            :pIsActive="basicButton.pIsActive"
-            :pLoading="basicButton.pLoading"
-            :pSize="basicButton.pSize"
-            @click="logEvent('click', { log: 'Button is clicked' })"
-          >
-            <PIcon class="el-button__icon--left" pName="calendarEvent" />
-            {{ label }}
-            <PIcon class="el-button__icon--right" pName="arrowRight" />
-          </PButton>
-
-          <PButton
-            :pType="pType"
-            pPlain
             :pRound="basicButton.pRound"
             :pCircle="basicButton.pCircle"
             :pIsActive="basicButton.pIsActive"
@@ -193,7 +171,6 @@ import PIcon from '../../atoms/PIcon'
 
 const basicButton = ref<PButtonProps>({
   pType: 'default',
-  pPlain: false,
   pRound: false,
   pCircle: false,
   pDisabled: false,
@@ -206,7 +183,6 @@ const buttonText = ref('')
 
 const iconButton = ref<PButtonProps>({
   pType: 'default',
-  pPlain: false,
   pRound: false,
   pCircle: true,
   pDisabled: false,
@@ -239,10 +215,6 @@ const buttonTypeList: { label: string, value: PButtonProps['pType'] }[] = [
   {
     label: 'default',
     value: 'default',
-  },
-  {
-    label: 'generic',
-    value: 'generic',
   },
   {
     label: 'warning',

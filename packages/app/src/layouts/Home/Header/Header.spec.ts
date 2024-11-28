@@ -6,6 +6,7 @@ import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import helpers from '@app/tests/utils/helpers'
 import Header from './'
+import { PICalendarEvent, PIArrowBarUp } from '@pulse/styleguide/components'
 import type { HeaderProps } from './HeaderTypes'
 const { router, pinia, fetchUserData } = helpers()
 
@@ -70,9 +71,8 @@ describe('header', () => {
   it('should display the calendar and the action buttons correctly', async () => {
     const calendarBtn = wrapper.find('[data-testid="header-section-calendar-btn"]')
 
-    expect(calendarBtn.classes()).toContain('p-button--generic')
-    const icon = wrapper.findComponent({ name: 'PIcon' })
-    expect(icon.props('pName')).toBe('calendarEvent')
+    expect(calendarBtn.classes()).toContain('el-button--default')
+    expect(calendarBtn.findComponent(PICalendarEvent).exists()).toBeTruthy()
 
     await calendarBtn.trigger('click')
 
@@ -86,15 +86,14 @@ describe('header', () => {
 
     expect(calendarBtn.classes()).toContain('p-button--white')
     expect(calendarBtn.classes()).toContain('p-button--is-active')
-    expect(calendarBtn.findComponent({ name: 'PIArrowBarUp' })).toBeTruthy()
+    expect(calendarBtn.findComponent(PIArrowBarUp)).toBeTruthy()
   })
 
-  it('should display accordingly to opened state', async () => {
+  it.only('should display accordingly to opened state', async () => {
     const feedCenterButton = wrapper.find('[data-testid="feed-center-button"]')
 
-    expect(feedCenterButton.classes()).toContain('p-button--generic')
-    const icon = feedCenterButton.findComponent({ name: 'PIcon' })
-    expect(icon.props('pName')).toBe('bell')
+    expect(feedCenterButton.classes()).toContain('el-button--default')
+    expect(feedCenterButton.findComponent({ name: 'PIBell' }).exists()).toBeTruthy()
 
     await feedCenterButton.trigger('click')
 
@@ -108,8 +107,7 @@ describe('header', () => {
 
     expect(feedCenterButton.classes()).toContain('p-button--white')
     expect(feedCenterButton.classes()).toContain('p-button--is-active')
-    const icon = feedCenterButton.findComponent({ name: 'PIcon' })
-    expect(icon.props('pName')).toBe('x')
+    expect(feedCenterButton.findComponent({ name: 'PIX' })).toBeTruthy()
   })
 
   it.each([

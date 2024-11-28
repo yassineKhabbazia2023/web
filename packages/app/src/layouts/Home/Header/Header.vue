@@ -18,7 +18,7 @@
     </router-link>
     <div class="flex">
       <PButton
-        :pType="showCalendar ? 'white' : 'generic'"
+        :pType="showCalendar ? 'white' : 'default'"
         pSize="small"
         pIconOnly
         pPlain
@@ -42,7 +42,7 @@
           pPlain
           :pRound="false"
           pSize="small"
-          :pType="showFeedCenter ? 'white' : 'generic'"
+          :pType="showFeedCenter ? 'white' : 'default'"
           data-testid="feed-center-button"
           @click="updateFeedCenterDisplay"
         >

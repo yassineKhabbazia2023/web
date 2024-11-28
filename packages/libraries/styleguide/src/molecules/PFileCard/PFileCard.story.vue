@@ -20,7 +20,6 @@
             <PButton
               class="el-button--icon"
               pType="white"
-              :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
               <PIcon pName="download" />
@@ -28,7 +27,6 @@
             <PButton
               class="el-button--icon"
               pType="white"
-              :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
               <PIcon pName="eye" />
@@ -46,7 +44,6 @@
             <PButton
               class="el-button--icon"
               pType="white"
-              :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
               <PIcon pName="download" />
@@ -54,7 +51,6 @@
             <PButton
               class="el-button--icon"
               pType="white"
-              :pPlain="false"
               @click="logEvent('click', { log: 'Button is clicked' })"
             >
               <PIcon pName="eye" />

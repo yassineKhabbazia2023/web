@@ -21,7 +21,6 @@ const defaultButtons: ComponentDefinitionProps[] = [
     pButton: {
       pType: 'white',
       pSize: 'small',
-      pPlain: false,
       pRound: false,
       pCircle: true,
       pLoading: false,
@@ -161,7 +160,6 @@ describe('pActionBar', () => {
             pButton: {
               pType: 'white',
               pSize: 'small',
-              pPlain: false,
               pRound: false,
               pCircle: true,
               pLoading: false,
@@ -196,7 +194,6 @@ describe('events', () => {
         pButton: {
           pType: 'white',
           pSize: 'small',
-          pPlain: false,
           pRound: false,
           pCircle: true,
           pLoading: false,
@@ -230,7 +227,6 @@ describe('events', () => {
         pButton: {
           pType: 'white',
           pSize: 'small',
-          pPlain: false,
           pRound: false,
           pCircle: true,
           pLoading: false,
@@ -268,7 +264,6 @@ describe('events', () => {
           pButton: {
             pType: 'white',
             pSize: 'small',
-            pPlain: false,
             pRound: false,
             pCircle: true,
             pLoading: false,
@@ -298,7 +293,6 @@ describe('events', () => {
           pButton: {
             pType: 'white',
             pSize: 'small',
-            pPlain: false,
             pRound: false,
             pCircle: true,
             pLoading: false,
@@ -326,7 +320,6 @@ describe('events', () => {
           pButton: {
             pType: 'white',
             pSize: 'small',
-            pPlain: false,
             pRound: false,
             pCircle: true,
             pLoading: false,
@@ -355,7 +348,6 @@ describe('events', () => {
             pButton: {
               pType: 'white',
               pSize: 'small',
-              pPlain: false,
               pRound: false,
               pCircle: true,
               pLoading: false,

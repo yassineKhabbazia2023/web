@@ -15,7 +15,7 @@ describe('documentsActionsHelpers', () => {
       const res = generateActionBarRightSideButtons(permissions, isDocumentSelected)
 
       const data = getData(false)
-      expect(res).toStrictEqual(data)
+      expect(res).toStrictEqual(data) // TODO would be more usual to use toMatchFileSnapshot()
     })
 
     it('should set loading state to the right permission button', () => {
@@ -32,7 +32,7 @@ describe('documentsActionsHelpers', () => {
       )
 
       const data = getData(true)
-      expect(res).toStrictEqual(data)
+      expect(res).toStrictEqual(data) // TODO would be more usual to use toMatchFileSnapshot()
     })
     it('should return empty when no document selected', () => {
       expect.hasAssertions()
@@ -56,7 +56,7 @@ describe('documentsActionsHelpers', () => {
       )
 
       const data = getData2('Filtrer')
-      expect(res).toStrictEqual(data)
+      expect(res).toStrictEqual(data) // TODO would be more usual to use toMatchFileSnapshot()
     })
 
     it('should return mapped permission actions when hasFiltersEnabled is true', () => {
@@ -71,7 +71,7 @@ describe('documentsActionsHelpers', () => {
       )
 
       const data = getData2('Filtrer (1)')
-      expect(res).toStrictEqual(data)
+      expect(res).toStrictEqual(data) // TODO would be more usual to use toMatchFileSnapshot()
     })
   })
 })

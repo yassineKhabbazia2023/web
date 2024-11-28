@@ -6,7 +6,6 @@ export interface ButtonAction {
   buttonType?: PButtonProps['pType']
   buttonIcon: string
   buttonActionName: string
-  plain: boolean
   round: boolean
   circle: boolean
   loading: boolean

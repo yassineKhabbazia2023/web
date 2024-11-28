@@ -127,7 +127,6 @@
               @p-toolbox-item-clicked="$event => handleToolboxItemClick($event, scope.row)"
             >
               <PButton
-                pType="generic"
                 class="margin-left--1"
               >
                 <PIcon pName="threeDots" :color="AppColors.GRAY_300" />
