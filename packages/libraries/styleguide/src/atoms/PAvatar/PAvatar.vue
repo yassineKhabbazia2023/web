@@ -55,7 +55,7 @@ const pClassMapper = computed(() => ({
     right: -3px;
     background: radial-gradient(
       circle,
-      var(--el-color-base-white) 68%,
+      var(--el-color-base-white) 50%,
       var(--el-color-base-persian) 0%
     );
     border-radius: 50%;
