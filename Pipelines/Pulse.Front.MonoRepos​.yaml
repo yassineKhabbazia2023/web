@@ -10,7 +10,7 @@ parameters:
   type: number
   default: 0
 - name: disableSonar
-  type: object
+  type: boolean
   default: false
   values:
     - true
