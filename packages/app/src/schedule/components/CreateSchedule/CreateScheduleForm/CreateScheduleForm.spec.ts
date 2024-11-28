@@ -1,14 +1,12 @@
-import { flushPromises } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
 import CreateScheduleForm from '.'
 import {
   PSelect,
   PAlert,
   PUpload,
 } from '@pulse/styleguide/components'
-import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSchedule'
 import type { FormProps } from './CreateScheduleFormTypes'
 import { accountsCollection, recipientsIdCollection } from '@app/schedule/tests/mocks/Account'
 import { accountsDataTransformer } from '@app/schedule/helpers/utils'
@@ -22,7 +20,7 @@ const createScheduleMock = getMockSchedule(mockedReminders)
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule(mockedReminders)
 
 const createWrapper = (props: FormProps) =>
-  wrapperFactory(CreateScheduleForm, { props })
+  mount(CreateScheduleForm, { props })
 
 vi.mock('@app/schedule/services', () => {
   return {
@@ -52,10 +50,14 @@ describe('test CreateScheduleForm', () => {
         recipientsCollection: accountsDataTransformer(accountsCollection),
         frequenciesCollection: frequenciesMock,
       })
-    const DropdownScheduleComponent = wrapper.findComponent(DropdownSchedule)
+    const [
+      DropdownScheduleComponent,
+      DropdownMultiSelectWithToggleAllComponent,
+    ] = wrapper.findAllComponents({ name: 'PDropdown' })
+
     DropdownScheduleComponent.vm.$emit('update:modelValue', typeShort)
-    const DropdownMultiSelectWithToggleAllComponent = wrapper.findComponent({ name: 'PDropdown' })
     DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
+
     const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     const newDate = new Date(expected.scheduling.date)
     PDatePickerComponent.vm.$emit('update:modelValue', newDate)
@@ -86,10 +88,14 @@ describe('test CreateScheduleForm', () => {
         recipientsCollection: accountsDataTransformer(accountsCollection),
         frequenciesCollection: frequenciesMock,
       })
-    const DropdownScheduleComponent = wrapper.findComponent(DropdownSchedule)
+    const [
+      DropdownScheduleComponent,
+      DropdownMultiSelectWithToggleAllComponent,
+    ] = wrapper.findAllComponents({ name: 'PDropdown' })
+
     DropdownScheduleComponent.vm.$emit('update:modelValue', typeShort)
-    const DropdownMultiSelectWithToggleAllComponent = wrapper.findComponent({ name: 'PDropdown' })
     DropdownMultiSelectWithToggleAllComponent.vm.$emit('update:modelValue', recipientsIdCollection)
+
     const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     const newDate = new Date(TEST_DATE)
     PDatePickerComponent.vm.$emit('update:modelValue', newDate)
@@ -157,8 +163,7 @@ describe('test CreateScheduleForm', () => {
         recipientsCollection: accountsDataTransformer(accountsCollection),
         frequenciesCollection: frequenciesMock,
       })
-    wrapper.vm.beforeAttachmentUpload(
-      file)
+    wrapper.vm.beforeAttachmentUpload(file as File)
     await nextTick()
     expect(wrapper.find('[data-testid="schedule-attachment-error"]').exists())
       .toBe(isErrorTriggered)

@@ -8,9 +8,10 @@
     class="create-schedule-form"
   >
     <PFormItem pProp="reminder" :pLabel="t('reminder')">
-      <DropdownSchedule
+      <PDropdown
         v-model="createScheduleForm.reminder"
-        :schedulesCollection="scheduleModels"
+        :pOptions="scheduleModels"
+        :pPlaceholder="t('placeholder.reminder')"
       />
     </PFormItem>
     <PFormItem pProp="recipients" :pLabel="t('recipients')">
@@ -21,7 +22,7 @@
         pMultiple
         pCollapseTags
         pCollapseTagsTooltip
-        :pPlaceholder="t('placeholder')"
+        :pPlaceholder="t('placeholder.recipients')"
         :pNoMatchText="t('no-match')"
         :pNoDataText="t('no-data')"
         :pCheckAllLabel="t('toggleAllCheckboxLabel')"
@@ -139,7 +140,6 @@ import {
   PDropdown,
   PUpload,
 } from '@pulse/styleguide/components'
-import DropdownSchedule from '@app/schedule/components/CreateSchedule/DropdownSchedule'
 import CreateScheduleReminders from '@app/schedule/components/CreateSchedule/CreateScheduleReminders'
 import type { FormProps } from './CreateScheduleFormTypes'
 import type { Schedule, Frequency } from './CreateScheduleFormModel'
@@ -161,6 +161,10 @@ const emit = defineEmits<{
 }>()
 
 const scheduleModels = getScheduleModels('both')
+  .map(({ key: pValue, label: pLabel }) => ({
+    pValue,
+    pLabel,
+  }))
 
 // Reactive state
 const createScheduleFormRef = ref<InstanceType<typeof PForm>>()
@@ -258,7 +262,7 @@ const evaluateForm = () => {
 }
 
 const reminderBuilder = (reminder: string): Schedule['template'] => {
-  const isInReferential = scheduleModels.some(({ key }) => key === reminder)
+  const isInReferential = scheduleModels.some(({ pValue }) => pValue === reminder)
 
   if (isInReferential) {
     return { typeShort: reminder }
@@ -371,9 +375,12 @@ defineExpose({
     "attachment-alert": "Only the following file types are authorised: .jpg, .jpeg, .png, .doc and .docx",
     "attachment-prefix-label": "Drop the file or",
     "attachment-suffix-label": "browse the computer",
-    "placeholder": "Choose one or several files",
+    "placeholder": {
+      "recipients": "Choose one or several files",
+      "reminder": "Choose a template or enter a title"
+    },
     "toggleAllCheckboxLabel": "Select all"
-  },
+ },
   "fr-FR": {
     "reminder": "Titre du rappel",
     "recipients": "Destinataire(s)",
@@ -399,7 +406,10 @@ defineExpose({
     "attachment-alert": "Seuls les types de fichiers suivants sont autorisés : .jpg, .jpeg, .png, .doc et .docx.",
     "attachment-prefix-label": "Déposer le fichier ou",
     "attachment-suffix-label": "parcourir l'ordinateur",
-    "placeholder": "Choisir un ou plusieurs dossiers",
+    "placeholder": {
+      "recipients": "Choisir un ou plusieurs dossiers",
+      "reminder": "Choisir un modèle ou saisir un titre"
+    },
     "toggleAllCheckboxLabel": "Tout le portefeuille"
   }
 }</i18n>
