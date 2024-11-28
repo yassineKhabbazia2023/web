@@ -29,7 +29,7 @@
             <PIcon
               :pName="isSidebarOpened ? 'arrowBarLeft' : 'arrowBarRight'"
               :color="AppColors.WHITE"
-              class="sidenav-entity__actions-icon radius--circle"
+              class="sidenav-entity__actions-icon"
             />
           </SidebarEntityItem>
         </li>
@@ -41,7 +41,7 @@
           <SidebarEntityItem v-bind="walletItem">
             <PIcon
               :color="AppColors.WHITE"
-              class="sidenav-entity__actions-icon radius--circle"
+              class="sidenav-entity__actions-icon"
               :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
               pName="cardList"
             />
@@ -72,14 +72,11 @@
         <div
           class="sidenav-entity__star-divider flex flex--align-items-center margin-top--6 margin-bottom--1"
         >
-          <div
-            class="sidenav-entity__star-divider-icon"
-            data-testid="star-divider"
-          >
+          <div data-testid="star-divider">
             <PIcon
-              size="12"
+              class="sidenav-entity__star-divider-icon"
               :color="AppColors.WHITE"
-              style="width: 32px"
+              size="18"
               pName="starFill"
             />
           </div>
@@ -257,7 +254,6 @@ onMounted(() => {
     padding-left: 10px;
     &-icon {
       width: var(--default-size);
-      margin-right: 1px;
     }
 
     &-text {
@@ -281,10 +277,6 @@ onMounted(() => {
     &-icon {
       width: var(--default-size);
       transition: all var(--smooth-transition);
-
-      &:hover {
-        background-color: rgba(var(--el-color-secondary-amethyste-rgb), 0.2);
-      }
     }
 
     &-active {
