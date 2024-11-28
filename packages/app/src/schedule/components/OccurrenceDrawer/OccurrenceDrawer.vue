@@ -152,7 +152,6 @@
       >
         <PButton
           pType="danger"
-          pPlain
           pSize="default"
           data-testid="occurrence-drawer-delete"
         >

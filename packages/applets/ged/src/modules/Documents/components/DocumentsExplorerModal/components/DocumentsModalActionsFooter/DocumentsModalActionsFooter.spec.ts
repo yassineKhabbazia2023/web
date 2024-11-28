@@ -1,4 +1,3 @@
-
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
@@ -28,7 +27,7 @@ const btnActions: Array<ButtonAction> = [
     buttonType: 'warning',
     buttonIcon: '',
     buttonActionName: 'cancel-action-click',
-    plain: true,
+    plain: false,
     round: false,
     circle: false,
     loading: false,

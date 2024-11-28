@@ -245,20 +245,12 @@ const buttonTypeList: { label: string, value: PButtonProps['pType'] }[] = [
     value: 'generic',
   },
   {
-    label: 'success',
-    value: 'success',
-  },
-  {
     label: 'warning',
     value: 'warning',
   },
   {
     label: 'danger',
     value: 'danger',
-  },
-  {
-    label: 'info',
-    value: 'info',
   },
 ]
 

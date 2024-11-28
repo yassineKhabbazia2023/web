@@ -1,15 +1,9 @@
+import type { PButtonProps } from '@pulse/styleguide/types'
 type ComponentType = 'UPLOAD' | 'SEARCH'
 
 export interface ButtonAction {
   buttonName: string
-  buttonType?: 'default'
-  | 'primary'
-  | 'white'
-  | 'generic'
-  | 'success'
-  | 'warning'
-  | 'danger'
-  | 'info'
+  buttonType?: PButtonProps['pType']
   buttonIcon: string
   buttonActionName: string
   plain: boolean
@@ -17,7 +11,7 @@ export interface ButtonAction {
   circle: boolean
   loading: boolean
   disabled: boolean
-  size?: 'default' | 'small'
+  size?: PButtonProps['pSize']
   componentType?: ComponentType
   multiple?: boolean
 }

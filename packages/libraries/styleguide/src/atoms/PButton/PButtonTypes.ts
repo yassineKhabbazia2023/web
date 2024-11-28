@@ -5,10 +5,8 @@ export interface PButtonProps {
     | 'tertiary'
     | 'white'
     | 'generic'
-    | 'success'
     | 'warning'
     | 'danger'
-    | 'info'
   pPlain?: boolean
   pRound?: boolean
   pCircle?: boolean
