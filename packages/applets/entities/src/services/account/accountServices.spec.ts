@@ -252,10 +252,13 @@ describe('test accountServices', () => {
         lastName: mockedCollaborators[0].lastName,
         email: mockedCollaborators[0].email,
         mobilePhone: mockedCollaborators[0].mobilePhone,
-        accountNumber: String(mockedAccount.accountId),
+        accountNumber: mockedAccount.accountNumber,
       }
-      const id = await createCustomer(postRequestBody)
-      expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`, postRequestBody)
+      const id = await createCustomer(postRequestBody, mockedAccount.accountId)
+      expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`,
+        postRequestBody,
+        { params: { accountId: mockedAccount.accountId } },
+      )
       expect(id).toBe(newId)
     })
 
