@@ -1,27 +1,27 @@
 <template>
-  <PIcon v-if="iconProperties.color" :color="iconProperties.color">
-    <component :is="iconProperties.icon" />
-  </PIcon>
+  <PIcon
+    v-if="iconProperties"
+    :color="iconProperties.color"
+    :pName="iconProperties.iconName"
+  />
 </template>
 
 <script setup lang='ts'>
 import { computed } from 'vue'
 import {
   PIcon,
-  PISticky,
-  PILoader,
-  PICheckCircle,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
+import type { Status } from '@app/schedule/models/Deadline'
+import type { StatusIcon, IconProps } from './IconTypes';
 
-const props = defineProps({
-  status: { type: String, required: true },
-})
-const statusMap = new Map([
-  ['Todo', { color: AppColors.PRIMARY, icon: PILoader }],
-  ['Done', { color: AppColors.GREEN, icon: PICheckCircle }],
-  ['Draft', { color: AppColors.GRAY_500, icon: PISticky }],
+const props = defineProps<IconProps>()
+
+const statusMap = new Map<Status, StatusIcon>([
+  ['Todo', { color: AppColors.PRIMARY, iconName: 'loader' }],
+  ['Done', { color: AppColors.GREEN, iconName: 'checkCircle' }],
+  ['Draft', { color: AppColors.GRAY_500, iconName: 'sticky' }],
 ])
 
-const iconProperties: any = computed(() => statusMap.get(props.status))
+const iconProperties = computed(() => statusMap.get(props.status))
 </script>

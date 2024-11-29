@@ -1,22 +1,41 @@
 import Icon from '.'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import { shallowMount } from '@vue/test-utils'
 import { expect, describe, it } from 'vitest'
+import type { Status } from '@app/schedule/models/Deadline'
+import type { IconName } from '@pulse/styleguide/types'
 
-const createWrapper = (statusCode: string) =>
-  wrapperFactory(Icon, { props: { status: statusCode } })
+const createWrapper = (status: Status) =>
+  shallowMount(Icon, {
+    props: { status },
+    global: {
+      stubs: {
+        PIcon: {
+          name: 'PIcon',
+          template: '<div />',
+          props: ['pName'],
+        },
+      }
+    }
+  })
 
 describe('tag status management', () => {
-  it.each([
-    { statusCode: 'Done', expected: 'PICheckCircle' },
-    { statusCode: 'Todo', expected: 'PILoader' },
-    { statusCode: 'Draft', expected: 'PISticky' },
-  ])('icon($statusCode)', ({ statusCode, expected }:any) => {
-    const wrapper = createWrapper(statusCode)
-    const icon = wrapper
-      .findComponent({ name: expected })
-      .exists()
+  const tests: {
+    status: Status
+    expected: IconName
+  }[] = [
+    { status: 'Done', expected: 'checkCircle' },
+    { status: 'Todo', expected: 'loader' },
 
-    expect(icon).toBeTruthy()
+    { status: 'Draft', expected: 'sticky' },
+  ]
+
+  it.each(tests)('icon($statusCode)', ({ status, expected }) => {
+    const wrapper = createWrapper(status)
+    const iconName = wrapper
+      .findComponent({ name: 'PIcon' })
+      .props('pName')
+
+    expect(iconName).toBe(expected)
     wrapper.unmount()
   })
 })
