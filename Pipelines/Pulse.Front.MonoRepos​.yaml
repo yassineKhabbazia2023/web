@@ -16,6 +16,12 @@ parameters:
   values:
     - standard
     - onlyDev
+- name: disableSonar
+  type: boolean
+  default: false
+  values:
+    - true
+    - false
 
 resources:
   repositories:
@@ -29,5 +35,6 @@ extends:
   parameters:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
+    disableSonar: ${{ parameters.disableSonar }}
     sonarExclusions: '**/Mock.js,**/mocks/**,src/main.ts,src/main.mts,stryker/**.*, vitest.setup.ts'
 

@@ -12,6 +12,12 @@ parameters:
   values:
     - standard
     - onlyDev
+- name: disableSonar
+  type: boolean
+  default: false
+  values:
+    - true
+    - false
   
 stages:
 - stage: MonoropFullStageExecution
@@ -24,7 +30,7 @@ stages:
       displayName: 'Execute Pulse.Front.Monorop Deployment'
       inputs:
         buildDefinition: 'Pulse.Front.Monorop'
-        templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}'
+        templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}, disableSonar: ${{ parameters.disableSonar }}'
         useSameBranch: true
         branchToUse: 'develop'
         authenticationMethod: 'OAuth Token'
@@ -42,7 +48,7 @@ stages:
       displayName: 'Execute Pulse.Front.Monorop Assets'
       inputs:
         buildDefinition: 'Pulse.Front.MonoRepos​.Assets'
-        templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}'
+        templateParameters: 'devIndex: ${{ parameters.devIndex }}, deployType: ${{ parameters.deployType }}, disableSonar: ${{ parameters.disableSonar }}'
         useSameBranch: true
         authenticationMethod: 'OAuth Token'
         waitForQueuedBuildsToFinish: true
