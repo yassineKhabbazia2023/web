@@ -184,7 +184,7 @@
     @close-drawer="isPreviewDrawerOpened = false"
   />
 
-  <DocumentSearchFiltrer
+  <DocumentSearchFilter
     v-if="isFiltersDrawerOpened"
     v-model="isFiltersDrawerOpened"
     :filters="docSearchFilters"
@@ -234,7 +234,7 @@ import { getBreadcrumbItems }
   from '@ged/modules/common/helpers/folderHelper'
 import { usePiaStatusSync } from './composable/PiaStatusSync'
 import { deepCopy } from '../common/utils/deepCopy'
-import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
+import DocumentSearchFilter from './components/DocumentSearchFilter'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import DocumentsSearchAlert from '@ged/modules/Documents/components/DocumentsSearchAlert'
 import { validInputMaxLength }

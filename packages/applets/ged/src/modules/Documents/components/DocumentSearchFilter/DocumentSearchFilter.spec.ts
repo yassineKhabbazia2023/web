@@ -6,35 +6,35 @@ import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
-import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
-import DocumentSearchFiltrer from '.'
+import type { DocumentSearchFilterProps } from './DocumentSearchFilterTypes'
+import DocumentSearchFilter from '.'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 
-const defaultProps: DocumentSearchFiltrerProps = {
+const defaultProps: DocumentSearchFilterProps = {
   modelValue: true,
   filters: null,
 }
 
-type DocumentSearchFiltrerSetup = {
+type DocumentSearchFilterSetup = {
   selectedPeriod: string
   dateRange: [Date, Date ] | ''
 }
 
-export type DocumentSearchFiltrerWrapper = VueWrapper<
-  ComponentPublicInstance<DocumentSearchFiltrerSetup, DocumentSearchFiltrerProps>
+export type DocumentSearchFilterWrapper = VueWrapper<
+  ComponentPublicInstance<DocumentSearchFilterSetup, DocumentSearchFilterProps>
 >
 
 const pinia = createPinia()
 
 const createWrapper = (
-  props: DocumentSearchFiltrerProps = defaultProps,
-): DocumentSearchFiltrerWrapper => {
-  return mount(DocumentSearchFiltrer, {
+  props: DocumentSearchFilterProps = defaultProps,
+): DocumentSearchFilterWrapper => {
+  return mount(DocumentSearchFilter, {
     props,
     global: {
       plugins: [pinia],
     },
-  }) as unknown as DocumentSearchFiltrerWrapper
+  }) as unknown as DocumentSearchFilterWrapper
 }
 
 const date = new Date(1998, 11, 19)

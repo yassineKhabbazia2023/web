@@ -1,6 +1,6 @@
- 
- 
- 
+
+
+
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
@@ -32,7 +32,7 @@ import { PBreadcrumb, PPagination } from '@pulse/styleguide/components'
 import DocumentPreview from './components/DocumentPreview'
 import { documentMock } from './mocks/documentMock'
 import DocumentsSearchAlert from './components/DocumentsSearchAlert'
-import DocumentSearchFiltrer from './components/DocumentSearchFiltrer'
+import DocumentSearchFilter from './components/DocumentSearchFilter'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
 import type { Entity } from '@pulse/common/types'
@@ -457,7 +457,7 @@ describe('documents', () => {
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
     })
-     
+
     it('should open delete modal  when click on action bar download button', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
@@ -506,7 +506,7 @@ describe('documents', () => {
       expect(renameModal.props('modelValue')).toBeTruthy()
     })
 
-     
+
     it('should call transmit document composable oppon  toolbox-action-triggered', async () => {
       const wrapper = createWrapper()
       await nextTick()
@@ -532,7 +532,7 @@ describe('documents', () => {
       )
     })
 
-     
+
     it('should not call transmit document composable oppon  toolbox-action-triggered whe no selected documents', async () => {
       const wrapper = createWrapper()
       await nextTick()
@@ -552,7 +552,7 @@ describe('documents', () => {
 
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledTimes(0)
     })
-     
+
     it('should call transmit document composable oppon click on action bar transmit button', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
@@ -730,7 +730,7 @@ describe('documents', () => {
       expect(componentInstance.isPreviewDrawerOpened).toBeFalsy()
     })
 
-     
+
     it('should set selectedDocumentsForMove oppon document-selection-change event with valid payload'
       , async () => {
         const wrapper = createWrapper()
@@ -828,7 +828,7 @@ describe('documents', () => {
     })
 
     it(
-       
+
       'should not call fetchDocumentsByKeyWord upon p-search-input and search key is more than 256 chars',
       async () => {
         const wrapper = createWrapper()
@@ -953,13 +953,13 @@ describe('documents', () => {
       componentInstance.isFiltersDrawerOpened = true
       await nextTick()
 
-      const drawer = wrapper.findComponent(DocumentSearchFiltrer)
+      const drawer = wrapper.findComponent(DocumentSearchFilter)
       await drawer.vm.$emit(
         'close-filters-drawer',
       )
       await nextTick()
 
-      const drawerAfter = wrapper.findComponent(DocumentSearchFiltrer)
+      const drawerAfter = wrapper.findComponent(DocumentSearchFilter)
       expect(drawerAfter.exists()).toBeFalsy()
     })
 
@@ -975,7 +975,7 @@ describe('documents', () => {
         'actionbar-filter-action-click',
       )
       await nextTick()
-      const drawer = wrapper.findComponent(DocumentSearchFiltrer)
+      const drawer = wrapper.findComponent(DocumentSearchFilter)
       await nextTick()
 
       expect(drawer.exists()).toBeTruthy()
@@ -996,7 +996,7 @@ describe('documents', () => {
         endDate: new Date(1998, 11, 19),
       }
 
-      const drawer = wrapper.findComponent(DocumentSearchFiltrer)
+      const drawer = wrapper.findComponent(DocumentSearchFilter)
       await drawer.vm.$emit(
         'apply-filters-drawer', res,
       )
@@ -1026,7 +1026,7 @@ describe('documents', () => {
       )
 
       await nextTick()
-      const documentSearchFiltersWrapper = wrapper.findComponent(DocumentSearchFiltrer)
+      const documentSearchFiltersWrapper = wrapper.findComponent(DocumentSearchFilter)
       documentSearchFiltersWrapper.vm.$emit('reset-filters-drawer')
       await nextTick()
 

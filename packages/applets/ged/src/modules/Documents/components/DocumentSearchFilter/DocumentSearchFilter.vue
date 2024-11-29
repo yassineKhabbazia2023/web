@@ -60,12 +60,12 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { PDrawer, PDropdown, PButton, PDatePicker } from '@pulse/styleguide/components'
-import type { DocumentSearchFiltrerProps } from './DocumentSearchFiltrerTypes'
+import type { DocumentSearchFilterProps } from './DocumentSearchFilterTypes'
 import { useI18n } from 'vue-i18n'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { Period } from '@ged/models/DocumentSearchFilters'
 
-const props = defineProps<DocumentSearchFiltrerProps>()
+const props = defineProps<DocumentSearchFilterProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
