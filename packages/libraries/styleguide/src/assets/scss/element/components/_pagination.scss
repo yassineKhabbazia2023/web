@@ -48,15 +48,16 @@ $pagination: (
         width: 24px;
         height: 24px;
         background-color: var(--el-color-base-white);
+        color: var(--el-color-base-blue-pulse);
 
         &.is-active {
-          background-color: var(--el-color-base-persian);
+          background-color: var(--el-color-base-blue-pulse);
           font-weight: 600;
         }
 
         &:hover {
-          background-color: var(--el-color-persian-100);
-          color: var(--el-color-neutral-gray-900);
+          background-color: var(--el-color-base-persian-light);
+          color: var(--el-color-base-blue-pulse);
         }
       }
 
