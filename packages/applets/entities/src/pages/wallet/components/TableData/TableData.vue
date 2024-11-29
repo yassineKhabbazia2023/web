@@ -17,7 +17,6 @@
     >
       <template #default="scope">
         <PButton
-          pType="white"
           pSize="small"
           pIconOnly
           :data-testid="scope.row.isFavorite ? 'wallet-add-favorite' : 'wallet-remove-favorite'"
