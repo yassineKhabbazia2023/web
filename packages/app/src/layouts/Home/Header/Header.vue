@@ -29,10 +29,7 @@
         data-testid="header-section-calendar-btn"
         @click="updateCalendarDisplay"
       >
-        <PIcon>
-          <PICalendarEvent v-if="!showCalendar" />
-          <PIX v-if="showCalendar" />
-        </PIcon>
+        <PIcon :pName="calendarIconName" />
       </PButton>
 
       <div
@@ -49,10 +46,7 @@
           data-testid="feed-center-button"
           @click="updateFeedCenterDisplay"
         >
-          <PIcon>
-            <PIBell v-if="!showFeedCenter" />
-            <PIX v-else />
-          </PIcon>
+          <PIcon :pName="feedCenterIconName" />
           <div
             v-if="unreadNotificationsCount > 0"
             class="header-section__feed-center-notification-pastille"
@@ -95,11 +89,8 @@ import {
   PAvatar,
   PButton,
   PDivider,
-  PIBell,
   PIcon,
   PImage,
-  PICalendarEvent,
-  PIX,
   PPastille,
 } from '@pulse/styleguide/components'
 import { VITE_FEED_CENTER_ACTIVATED } from 'env-vars'
@@ -116,6 +107,13 @@ const emit = defineEmits<{
 
 const userInitials = computed(() =>
   getInitials(user.value?.firstName, user.value?.lastName),
+)
+
+const feedCenterIconName = computed(() =>
+  props.showFeedCenter ? 'x' : 'bell'
+)
+const calendarIconName = computed(() =>
+  props.showCalendar ? 'x' : 'calendarEvent'
 )
 
 function updateCalendarDisplay() {
