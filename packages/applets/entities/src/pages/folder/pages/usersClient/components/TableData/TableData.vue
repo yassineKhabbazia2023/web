@@ -135,7 +135,6 @@ const emit = defineEmits<{
 }>()
 
 const {
-  deleteUser,
   modifyRights,
   removeUser,
   userInformation,
@@ -162,14 +161,6 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pActionName: removeUser,
       pState: 'default',
       display: hasPermission(PERMISSION_CODES.DELETE_USER) && props.isInAnEntityPage,
-    },
-    {
-      // this item will be handle soon
-      pIconName: 'trash',
-      pValue: t('deleteUser'),
-      pActionName: deleteUser,
-      pState: 'danger',
-      display: hasPermission(PERMISSION_CODES.DELETE_USER) && !props.isInAnEntityPage,
     },
   ]
     .filter(({ display }) => display)
@@ -218,7 +209,6 @@ en-US:
   userInformation: 'User information'
   modifyRights: 'Modify rights'
   removeUser: 'Remove User'
-  deleteUser: 'Delete User'
   you: 'You'
 fr-FR:
   user: 'Utilisateur'
@@ -229,6 +219,5 @@ fr-FR:
   userInformation: "Informations de l'utilisateur"
   modifyRights: 'Modifier les droits'
   removeUser: "Retirer l'utilisateur"
-  deleteUser: "Supprimer l'utilisateur"
   you: 'Vous'
 </i18n>
