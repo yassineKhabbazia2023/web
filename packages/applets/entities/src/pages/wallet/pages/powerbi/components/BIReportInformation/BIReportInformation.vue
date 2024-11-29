@@ -29,22 +29,16 @@
     </PAutocomplete>
   </PFormItem>
   <PFormItem :pLabel="t('labelNameReport')" pRequired>
-    <PSelect
+    <PDropdown
       v-model="internalReportUploadInfo.reportLabel"
       pAllowCreate
       pFilterable
       :pPlaceholder="t('placeholderNameReport')"
       :pDisabled="!internalReportUploadInfo.accountId"
+      :pOptions="reportList"
       data-testid="powerbi-report-name-select"
       @change="handleSelectReportName"
-    >
-      <POption
-        v-for="reportLabel in reportList"
-        :key="reportLabel.reportId"
-        :pLabel="reportLabel.reportLabel"
-        :pValue="reportLabel.reportId"
-      />
-    </PSelect>
+    />
   </PFormItem>
   <div class="flex flex--align-items-center margin-bottom--4">
     <PIcon :color="AppColors.GRAY_300" pName="infoCircle" />
@@ -90,7 +84,11 @@ const emit = defineEmits<{
   'update:reportUploadInfo': [ReportInfo]
 }>()
 
-const reportList = ref<Report[]>([])
+type ReportItem = Report & {
+  pValue: number
+  pLabel: string
+}
+const reportList = ref<ReportItem[]>([])
 
 // Computed
 const internalReportUploadInfo = computed({
@@ -109,6 +107,11 @@ const fetchReportNames = async () => {
     if (accountId && reportTypeId) {
       const { items } = await fetchBIReports(accountId, reportTypeId)
       reportList.value = items
+        .map((item) => ({
+          ...item,
+          pValue: item.reportId,
+          pLabel: item.reportLabel,
+        }))
     }
   } catch (error) {
     console.error('Unable to fetch report names: ', error)
