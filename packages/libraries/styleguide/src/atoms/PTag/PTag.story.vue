@@ -2,8 +2,7 @@
   <Story
     title="2. Atoms/Tag"
     :layout="{
-      type: 'grid',
-      width: 400,
+      type: 'single'
     }"
     icon="mdi:tag-text-outline"
   >
@@ -77,6 +76,42 @@
         />
         <HstCheckbox v-model="rounded" title="rounded" />
       </template>
+    </Variant>
+    <Variant title="Design system">
+      <table>
+        <tr>
+          <th>
+            pColor <br />\ pEffect
+          </th>
+          <th
+            v-for="(theme) in themeList"
+            :key="theme.value"
+          >
+            {{ theme.value }}
+          </th>
+        </tr>
+        <tr
+          v-for="(colorItem, index) in tagColorList"
+          :key="index"
+            class="padding--1"
+          >
+          <td>&nbsp;{{ colorItem.value }}</td>
+          <td
+            v-for="(theme) in themeList"
+            :key="`${colorItem.value}-${theme.value}`"
+            class="padding--1"
+          >
+            <PTag
+              :pClosable="closable"
+              :pColor="colorItem.value"
+              :pEffect="theme.value"
+              :pDisableTransitions="disableTransitions"
+              :pContent="tagBasicData.content"
+              @close="fireClose"
+            />
+          </td>
+        </tr>
+      </table>
     </Variant>
   </Story>
 </template>
