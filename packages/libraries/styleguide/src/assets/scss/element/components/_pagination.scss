@@ -21,14 +21,16 @@ $pagination: (
   &__select {
     max-width: 81px;
 
+    .el-input {
+      border-bottom: none;
+
+      &:hover {
+        border-bottom: none;
+      }
+    }
+
     .el-input__wrapper {
       height: 30px;
-    }
-  }
-  &__popper {
-    .el-select-group__title {
-      padding-left: 16px;
-      padding-right: 16px;
     }
   }
 }
