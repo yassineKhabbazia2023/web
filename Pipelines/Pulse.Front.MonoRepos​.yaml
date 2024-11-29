@@ -17,6 +17,7 @@ parameters:
     - standard
     - onlyDev
 - name: disableSonar
+  displayName: "Désactiver Sonar"
   type: boolean
   default: false
   values:
