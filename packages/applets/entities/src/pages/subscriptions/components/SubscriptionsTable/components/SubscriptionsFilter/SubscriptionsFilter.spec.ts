@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import SubscriptionsFilter from '.'
 import { nextTick } from 'vue'
 
@@ -12,21 +12,14 @@ const offerTypes = [
 ]
 
 const createWrapper = (): VueWrapper =>
-  mount(SubscriptionsFilter, {
+  shallowMount(SubscriptionsFilter, {
     global: {
       stubs: {
-        PSelect: {
-          template: '<div><slot /></div>',
-          props: ['modelValue'],
+        PDropdown: {
+          name: 'PDropdown',
+          template: '<div />',
+          props: ['modelValue', 'pOptions'],
           emits: ['update:model-value'],
-        },
-        PCheckbox: {
-          template: '<div><slot /></div>',
-          props: ['modelValue'],
-          emits: ['update:model-value'],
-        },
-        POption: {
-          template: '<div></div>',
         },
       },
     },
@@ -40,15 +33,10 @@ describe('subscriptionsFilter', () => {
   })
   describe('display', () => {
     it('should correctly display the subscription table filtered by offer type', () => {
-      const filterOfferTypesDropdown = wrapper.find(
-        '[data-testid=subscription-filter-offers-dropdown]',
-      )
-      const filterOfferTypesOptions = wrapper.findAllComponents(
-        '[data-testid=subscription-offer-option]',
-      )
+      const filterOfferTypesDropdown = wrapper.findComponent({ name: 'PDropdown' })
 
       expect(filterOfferTypesDropdown.exists()).toBeTruthy()
-      expect(filterOfferTypesOptions).toHaveLength(offerTypes.length)
+      expect(filterOfferTypesDropdown.props('pOptions')).toHaveLength(offerTypes.length)
     })
   })
   describe('events', () => {

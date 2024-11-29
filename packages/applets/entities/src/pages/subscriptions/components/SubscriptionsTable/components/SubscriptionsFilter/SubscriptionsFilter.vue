@@ -1,36 +1,22 @@
 <template>
   <div class="subscription-filter-options margin-y--6">
-    <PSelect
+    <PDropdown
       v-model="offerTypeSelection"
       :pPlaceholder="t('chooseAnOffer')"
+      :pCheckAllLabel="t('allOffers')"
+      :pOptions="offerTypeDropdown"
       pFilterable
       pMultiple
       data-testid="subscription-filter-offers-dropdown"
       @change="handleOfferTypeFilter"
-    >
-      <template #header>
-        <PCheckbox
-          v-model="selectAllOfferTypes"
-          @change="handleSelectAllOfferTypes"
-        >
-          {{ t('allOffers') }}
-        </PCheckbox>
-      </template>
-      <POption
-        v-for="offerType in offerTypeDropdown"
-        :key="offerType.pLabel"
-        :pLabel="offerType.pLabel"
-        :pValue="offerType.pValue"
-        data-testid="subscription-offer-option"
-      />
-    </PSelect>
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { ref, watch, onMounted } from 'vue'
-import { PCheckbox, PSelect, POption } from '@pulse/styleguide/components'
+import { PDropdown } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,
