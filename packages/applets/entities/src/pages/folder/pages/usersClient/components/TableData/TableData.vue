@@ -17,7 +17,7 @@
             <div class="margin-right--2">
               <PAvatar
                 pColor="bordered-persian"
-                pType="xsmall"
+                pType="small"
               >
                 {{ scope.row.initials }}
               </PAvatar>
