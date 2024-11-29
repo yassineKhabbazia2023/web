@@ -512,7 +512,7 @@ fr-FR:
   nextLabel: 'Suivant'
   submitLabel: 'Valider'
   confirm: 'Confirmer'
-  cancel: 'Cancel'
+  cancel: 'Annuler'
   services: 'Services'
   customers: 'Clients'
   collaborators: 'Collaborateurs'

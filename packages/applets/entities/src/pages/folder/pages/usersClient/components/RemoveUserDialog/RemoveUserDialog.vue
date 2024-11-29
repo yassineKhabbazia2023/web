@@ -21,7 +21,7 @@
     <template #footer>
       <div class="p-dialog__footer">
         <PButton
-          pType="white"
+          pType="secondary"
           data-testid="dialog-close-button"
           @click="handleCloseDrawer"
         >

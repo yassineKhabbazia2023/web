@@ -9,9 +9,8 @@
       <template #footer>
         <div class="p-dialog__footer">
           <PButton
-            pType="primary"
+            pType="secondary"
             pSize="small"
-            pPlain
             data-testid="cancel-button"
             @click="handleCancel"
           >

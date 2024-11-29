@@ -34,6 +34,7 @@
         <div class="p-dialog__footer">
           <PButton
             class="cancel-action-button"
+            pType="secondary"
             pSize="small"
             @click="handleCancelClick"
           >

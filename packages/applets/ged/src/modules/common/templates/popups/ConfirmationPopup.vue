@@ -14,6 +14,7 @@
         <div class="p-dialog__footer margin-y--2">
           <PButton
             v-if="cancelButtonContent"
+            pType="secondary"
             class="confirmation-popup__cancel-button"
             pSize="small"
             @click="handleCancelButtonClick"
@@ -22,7 +23,7 @@
           </PButton>
           <PButton
             class="confirmation-popup__confirm-button"
-            type="primary"
+            pType="primary"
             size="small"
             :loading="isConfirmButtonLoading"
             @click="handleConfirmButtonClick"

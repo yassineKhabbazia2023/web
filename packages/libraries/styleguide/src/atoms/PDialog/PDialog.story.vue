@@ -59,7 +59,7 @@
         <template #footer>
           <div class="p-dialog__footer">
             <PButton
-              pType="primary"
+              pType="secondary"
               pSize="small"
               pPlain
               :pRound="false"
@@ -115,7 +115,7 @@
         <template #footer>
           <div class="p-dialog__footer">
             <PButton
-              pType="primary"
+              pType="secondary"
               pSize="small"
               pPlain
               :pRound="false"

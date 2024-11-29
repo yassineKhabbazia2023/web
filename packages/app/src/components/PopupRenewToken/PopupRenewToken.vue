@@ -19,7 +19,7 @@
     <template #footer>
       <PButton
         pPlain
-        pType="primary"
+        pType="secondary"
         pSize="small"
         :pRound="false"
         data-testid="logout-button"
