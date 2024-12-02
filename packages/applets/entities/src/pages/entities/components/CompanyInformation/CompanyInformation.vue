@@ -30,9 +30,6 @@
         :key="`section-${index}`"
         class="
         company-information__form-section
-        shadow--3
-        radius--1
-        padding-x--5
         padding-bottom--1
         margin-bottom--3"
       >
