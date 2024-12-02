@@ -47,7 +47,7 @@ import type { PDoubleTextProps } from './PDoubleTextTypes'
 
 withDefaults(defineProps<PDoubleTextProps>(), {
   pIconShape: 'circle',
-  pIconColor: 'persian-gradient',
+  pIconColor: 'blue-pulse',
   pBold: false,
   pIconType: 'small',
   pSelected: false,
