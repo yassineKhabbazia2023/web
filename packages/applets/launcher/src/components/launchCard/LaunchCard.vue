@@ -39,7 +39,7 @@
     >
       <PButton
         v-if="downloadLabel"
-        pType="white"
+        pType="default"
         pSize="small"
         data-testid="launch-card-download"
         @click="emit('click-download')"
@@ -89,11 +89,15 @@ const sanitizedActionUrl = computed(() => {
 
 <style lang="scss" scoped>
 .launch-card {
-  border: 1px solid var(--el-color-neutral-gray-100);
+  background: var(--el-color-neutral-gray-50);
+  border-left: 5px solid var(--el-color-neutral-gray-50);
+  border-right: 5px solid var(--el-color-neutral-gray-50);
   max-width: 350px;
 
   &:hover {
-    box-shadow: var(--el-box-shadow);
+    background: var(--el-color-persian-50);
+    border-left-color: var(--el-color-secondary-amethyste);
+    border-right-color: var(--el-color-persian-50);
   }
 
   &__image {
