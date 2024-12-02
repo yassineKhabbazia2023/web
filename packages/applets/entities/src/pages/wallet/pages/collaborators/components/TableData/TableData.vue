@@ -16,13 +16,13 @@
           <div class="flex flex--align-items-center">
             <PAvatar
               class="margin-right--2"
-              pColor="persian-gradient"
+              pColor="blue-pulse"
               pType="xsmall"
             >
               {{ scope.row.initials }}
             </PAvatar>
             <div>
-              <p class="font-semibold text-capitalize">
+              <p class="text-capitalize">
                 {{ scope.row.firstName }}
                 <span class="text-uppercase"> {{ scope.row.lastName }}</span>
               </p>
