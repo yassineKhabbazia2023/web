@@ -3,7 +3,6 @@ import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import CreateScheduleForm from '.'
 import {
-  PSelect,
   PAlert,
   PUpload,
 } from '@pulse/styleguide/components'
@@ -66,7 +65,7 @@ describe('test CreateScheduleForm', () => {
     createScheduleReminders.vm.$emit('update:model-value', mockedReminders)
 
     await wrapper.setProps({ checkValidity: true })
-    const frequencyComponent = wrapper.findAllComponents(PSelect)[2]
+    const frequencyComponent = wrapper.findAllComponents({ name: 'PDropdown' })[2]
     await frequencyComponent.setValue(frequency)
     await flushPromises()
     const emittedScheduleModel = wrapper.emitted('update-schedule-model')
@@ -104,7 +103,7 @@ describe('test CreateScheduleForm', () => {
     createScheduleReminders.vm.$emit('update:model-value', mockedReminders)
 
     await wrapper.setProps({ checkValidity: true })
-    const frequencyComponent = wrapper.findAllComponents(PSelect)[2]
+    const frequencyComponent = wrapper.findAllComponents({ name: 'PDropdown' })[2]
     await frequencyComponent.setValue(frequency)
     await flushPromises()
 
@@ -117,7 +116,7 @@ describe('test CreateScheduleForm', () => {
         recipientsCollection: accountsDataTransformer(accountsCollection),
         frequenciesCollection: frequenciesMock,
       })
-    const frequencyComponent = wrapper.findAllComponents(PSelect)[2]
+    const frequencyComponent = wrapper.findAllComponents({ name: 'PDropdown' })[2]
     await frequencyComponent.setValue('Monthly')
     const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
     PDatePickerComponent.vm.$emit('update:modelValue',

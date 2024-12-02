@@ -1,5 +1,52 @@
-import type { POptionProps } from '../../atoms/POption/POptionTypes'
-import type { PSelectProps } from '../../molecules/PSelect/PSelectTypes'
+import type { PlacementOptions } from '../../constants/placementOptions'
+import type { Component } from 'vue'
+
+export interface PSelectProps {
+  pMultiple?: boolean
+  pDisabled?: boolean
+  pValueKey?: string
+  pSize?: '' | 'large' | 'default' | 'small'
+  pClearable?: boolean
+  pCollapseTags?: boolean
+  pCollapseTagsTooltip?: boolean
+  pMultipleLimit?: number
+  pName?: string
+  pEffect?: 'dark' | 'light'
+  pAutocomplete?: string
+  pPlaceholder?: string
+  pFilterable?: boolean
+  pAllowCreate?: boolean
+  pFilterMethod?: () => void
+  pRemote?: boolean
+  pRemoteMethod?: () => void
+  pRemoteShowSuffix?: boolean
+  pLoading?: boolean
+  pLoadingText?: string
+  pNoMatchText?: string
+  pNoDataText?: string
+  pPopperClass?: string
+  pReserveKeyword?: boolean
+  pDefaultFirstOption?: boolean
+  pTeleported?: boolean
+  pPersistent?: boolean
+  pAutomaticDropdown?: boolean
+  pClearIcon?: string | Component
+  pFitInputWidth?: boolean
+  pSuffixIcon?: string | Component
+  pSuffixTransition?: boolean
+  pTagType?: '' | 'success' | 'info' | 'warning' | 'danger'
+  pValidateEvent?: boolean
+  pPlacement?: PlacementOptions
+  pMaxCollapseTags?: number
+  pPopperOptions?: {}
+  pAriaLabel?: string
+}
+
+export interface POptionProps {
+  pValue: string | number | boolean | Record<string, any>
+  pLabel?: string | number
+  pDisabled?: boolean
+}
 
 export interface PDropdownOption extends POptionProps {
   pGroupLabel?: string

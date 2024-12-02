@@ -62,8 +62,6 @@ import {
   PDropdown,
   PFormItem,
   PIcon,
-  PSelect,
-  POption,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { getSearchParams } from '@entities/pages/wallet/pages/folders/DeployUtils'

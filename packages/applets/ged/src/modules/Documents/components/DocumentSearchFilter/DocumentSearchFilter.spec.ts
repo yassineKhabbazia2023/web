@@ -64,16 +64,16 @@ describe('documentSearchFiltrer', () => {
       expect(pTexts[1].text()).toBe('Période personnalisée')
     })
 
-    it('should render PSelect properly binded', async () => {
+    it('should render PDropdown properly binded', async () => {
       expect.hasAssertions()
       const wrapper = createWrapper()
       await nextTick()
 
-      const pSelect = wrapper.findComponent({ name: 'PDropdown' })
-      expect(pSelect.exists()).toBeTruthy()
-      expect(pSelect.props('pPlaceholder')).toBe('Sélectionner une période')
+      const PDropdown = wrapper.findComponent({ name: 'PDropdown' })
+      expect(PDropdown.exists()).toBeTruthy()
+      expect(PDropdown.props('pPlaceholder')).toBe('Sélectionner une période')
 
-      const pOptions = wrapper.findAllComponents({ name: 'POption' })
+      const pOptions = wrapper.findAllComponents({ name: 'ElOption' })
       expect(pOptions).toHaveLength(3)
     })
 
@@ -154,22 +154,22 @@ describe('documentSearchFiltrer', () => {
       expect(wrapper.emitted('apply-filters-drawer')).toStrictEqual([[res]])
     })
 
-    it('should set date range when PSelect change event', async () => {
+    it('should set date range when PDropdown change event', async () => {
       expect.hasAssertions()
       vi.useFakeTimers()
       vi.setSystemTime(date)
       const wrapper = createWrapper()
       await nextTick()
 
-      const pSelect = wrapper.findComponent({ name: 'PDropdown' })
-      await pSelect.vm.$emit('change', 'DAY')
+      const PDropdown = wrapper.findComponent({ name: 'PDropdown' })
+      await PDropdown.vm.$emit('change', 'DAY')
       await nextTick()
       expect(wrapper.vm.dateRange).toStrictEqual([date, date])
-      await pSelect.vm.$emit('change', 'WEEK')
+      await PDropdown.vm.$emit('change', 'WEEK')
       await nextTick()
       expect(wrapper.vm.dateRange)
         .toStrictEqual([new Date(new Date().setDate(date.getDate() - 7)), date])
-      await pSelect.vm.$emit('change', 'MONTH')
+      await PDropdown.vm.$emit('change', 'MONTH')
       await nextTick()
       expect(wrapper.vm.dateRange)
         .toStrictEqual([new Date(new Date().setDate(date.getDate() - 30)), date])

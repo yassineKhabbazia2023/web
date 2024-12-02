@@ -19,7 +19,7 @@ $tag-padding: (
     --el-tag-bg-color: var(--el-color-persian-500);
     --el-tag-border-color: var(--el-color-persian-500);
     --el-tag-hover-color: var(--el-color-persian-100);
-    
+
     &#{$self}--success {
       --el-tag-bg-color: var(--el-color-functionnal-green);
       --el-tag-border-color: var(--el-color-functionnal-green);
@@ -82,7 +82,7 @@ $tag-padding: (
     --el-tag-border-color: var(--el-color-persian-100);
     --el-tag-hover-color: var(--el-color-persian-500);
     --el-tag-text-color: var(--el-color-persian-500);
-    
+
     &#{$self}--success {
       --el-tag-bg-color: var(--el-color-functionnal-green-bg);
       --el-tag-border-color: var(--el-color-functionnal-green-bg);
@@ -155,7 +155,7 @@ $tag-padding: (
     --el-tag-border-color: var(--el-color-persian-500);
     --el-tag-hover-color: var(--el-color-persian-500);
     --el-tag-text-color: var(--el-color-persian-500);
-    
+
     &#{$self}--success {
       --el-tag-border-color: var(--el-color-functionnal-green);
       --el-tag-hover-color: var(--el-color-functionnal-green);
@@ -217,7 +217,7 @@ $tag-padding: (
     padding-right: 6px;
   }
 
-  
+
   .el-icon {
     &.el-tag__icon--left,
     &.el-tag__icon--right {
@@ -248,7 +248,7 @@ $tag-padding: (
 
 .el-select__tags,
 .el-select__collapse-tag {
-  // For tags in PSelect 
+  // For tags in select
   .el-tag.el-tag--info.el-tag--default.el-tag--light {
     background-color: var(--el-color-neutral-gray-100);
     border-color: var(--el-color-neutral-gray-100);

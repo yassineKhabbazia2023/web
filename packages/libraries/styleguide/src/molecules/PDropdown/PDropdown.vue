@@ -1,5 +1,5 @@
 <template>
-  <PSelect
+  <ElSelect
     v-model="internalModelValue"
     :multiple="pMultiple"
     :disabled="pDisabled"
@@ -52,38 +52,36 @@
       </PCheckbox>
     </template>
     <template v-if="!hasGroups">
-      <POption
+      <ElOption
         v-for="({ pValue, pLabel, pDisabled }, index) in pOptions"
         :key="index"
-        :pValue="pValue"
-        :pLabel="pLabel"
-        :pDisabled="pDisabled"
+        :value="pValue"
+        :label="pLabel"
+        :disabled="pDisabled"
       />
     </template>
     <template v-if="hasGroups">
-      <POptionGroup
+      <ElOptionGroup
         v-for="(group, groupIndex) in groups"
         :key="groupIndex"
-        :pLabel="group.label"
+        :label="group.label"
       >
-        <POption
+        <ElOption
           v-for="({ pValue, pLabel, pDisabled }, index) in group.options"
           :key="`${groupIndex}-${index}`"
-          :pValue="pValue"
-          :pLabel="pLabel"
-          :pDisabled="pDisabled"
+          :value="pValue"
+          :label="pLabel"
+          :disabled="pDisabled"
         />
-      </POptionGroup>
+      </ElOptionGroup>
     </template>
-  </PSelect>
+  </ElSelect>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import POptionGroup from '../POptionGroup'
-import PSelect from '../PSelect'
+import { ElSelect, ElOptionGroup, ElOption } from 'element-plus'
 import PCheckbox from '../../atoms/PCheckbox'
-import POption from '../../atoms/POption'
 import type { PDropdownProps } from './PDropdownTypes'
 import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues } from './PDropdownUtils'
 
