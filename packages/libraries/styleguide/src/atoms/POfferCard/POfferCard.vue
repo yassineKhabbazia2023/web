@@ -1,6 +1,6 @@
 <template>
   <button
-    class="p-offer-card padding-x--4 padding-y--2 radius--2"
+    class="p-offer-card padding-y--2"
     :disabled="disabled"
     @click="$emit('selectOfferEvent')"
   >
@@ -49,13 +49,15 @@ defineEmits<{
   width: 100%;
   align-items: center;
   justify-content: flex-start;
-  border: 1px solid var(--el-color-neutral-gray-100);
+  border: none;
   appearance: none;
   background: none;
   text-align: left;
   cursor: pointer;
   outline: none;
   transition: all 0.3s ease;
+  padding-left: 0;
+  padding-right: 0;
 
   &:disabled {
     pointer-events: none;
@@ -71,7 +73,7 @@ defineEmits<{
 
   &:hover,
   &:focus {
-    border: 1px solid var(--el-color-persian-700);
+    border: none;
 
     #{$self}__title {
       color: var(--el-color-persian-500);
@@ -82,7 +84,7 @@ defineEmits<{
   }
 
   &:active {
-    border: 1px solid var(--el-color-persian-800);
+    border: none;
 
     #{$self}__title {
       color: var(--el-color-persian-700);
