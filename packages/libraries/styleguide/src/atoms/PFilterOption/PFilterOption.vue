@@ -3,10 +3,9 @@
     :class="[
       cssClass,
       'p-filter-option',
-      'shadow--3',
       'flex flex--align-items-center',
       'radius--2',
-      'padding-y--2 padding-x--3'
+      'padding-left--3 padding-right--2'
     ]"
     :disabled="pDisabled"
     @click="handleClick"
@@ -31,7 +30,7 @@
       v-if="isSelected && !pDisabled"
       size="12px"
       class="p-filter-option__icon"
-      pName="xCircleFill"
+      pName="x"
     />
   </button>
 </template>
@@ -78,8 +77,19 @@ const colorMapper = computed(() => {
 <style lang="scss" scoped>
 .p-filter-option {
   $self: &;
+  // TO DO: color wil be update later
+  $functional-green-hover: #B7FDB5;
+  $functional-green-selected: #7DF97C;
+  $functional-warning-hover: #FFF5C5;
+  $functional-warning-selected: #FFDA47;
+  $functional-danger-hover: #FFC8C8;
+  $functional-danger-selected: #FFA2A2;
+  $functional-fuschia-hover: #D4D6FF;
+  $functional-fuschia-selected: #B2B4FF;
   border: 1px solid transparent;
   cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
   transition: border-color var(--el-transition-duration) ease, background var(--el-transition-duration) ease;
 
   &--color-success {
@@ -120,55 +130,134 @@ const colorMapper = computed(() => {
   }
 
   &--color-gray-500 {
-    border-color: var(--el-color-neutral-gray-50);
+    background-color: var(--el-color-neutral-gray-100);
   }
 
   &--color-gray-900 {
-    border-color: var(--el-color-neutral-gray-100);
+    background-color: var(--el-color-neutral-gray-100);
   }
 
   &--selected {
     &#{$self}--color-success {
-      border-color: var(--el-color-functionnal-green);
+      background-color: $functional-green-selected;
+      span.el-tag {
+        &.el-tag--success {
+          background-color: $functional-green-selected;
+          border-color: $functional-green-selected;
+        }
+      }
     }
 
     &#{$self}--color-warning {
-      border-color: var(--el-color-functionnal-orange-txt);
+      background-color: $functional-warning-selected;
+      span.el-tag {
+        &.el-tag--warning {
+          background-color: $functional-warning-selected;
+          border-color: $functional-warning-selected;
+        }
+      }
     }
 
     &#{$self}--color-amethyste {
-      border-color: var(--el-color-secondary-amethyste);
+      background-color: var(--el-color-secondary-amethyste);
+      span.el-tag {
+        &.el-tag--amethyste {
+          background-color: var(--el-color-secondary-amethyste);
+          border-color: var(--el-color-secondary-amethyste);
+        }
+      }
     }
 
     &#{$self}--color-danger {
-      border-color: var(--el-color-functionnal-red);
+      background-color: $functional-danger-selected;
+      span.el-tag {
+        &.el-tag--danger {
+          background-color: $functional-danger-selected;
+          border-color: $functional-danger-selected;
+        }
+      }
     }
 
     &#{$self}--color-gray-900 {
-      border-color: var(--el-color-neutral-gray-900);
+      background-color: var(--el-color-neutral-gray-300);
+      span.el-tag {
+        &.el-tag--gray-900 {
+          background-color: var(--el-color-neutral-gray-300);
+          border-color: var(--el-color-neutral-gray-300);
+        }
+      }
+    }
+
+    &#{$self}--color-fuschia {
+      background-color: $functional-fuschia-selected;
+      span.el-tag {
+        &.el-tag--fuschia {
+          background-color: $functional-fuschia-selected;
+          border-color: $functional-fuschia-selected;
+        }
+      }
     }
   }
 
-  &--selected,
   &:hover {
     &#{$self}--color-success {
-      background-color: var(--el-color-functionnal-green-bg);
+      background-color: $functional-green-hover;
+      span.el-tag {
+        &.el-tag--success {
+          background-color: $functional-green-hover;
+          border-color: $functional-green-hover;
+        }
+      }
     }
 
     &#{$self}--color-warning {
-      background-color: var(--el-color-functionnal-orange-bg);
+      background-color: $functional-warning-hover;
+      span.el-tag {
+        &.el-tag--warning {
+          background-color: $functional-warning-hover;
+          border-color: $functional-warning-hover;
+        }
+      }
     }
 
     &#{$self}--color-amethyste {
       background-color: var(--el-color-secondary-amethyste-bg);
+      span.el-tag {
+        &.el-tag--amethyste {
+          background-color: var(--el-color-secondary-amethyste-bg);
+          border-color: var(--el-color-secondary-amethyste-bg);
+        }
+      }
+    }
+
+    &#{$self}--color-fuschia {
+      background-color: $functional-fuschia-hover;
+      span.el-tag {
+        &.el-tag--fuschia {
+          background-color: $functional-fuschia-hover;
+          border-color: $functional-fuschia-hover;
+        }
+      }
     }
 
     &#{$self}--color-danger {
-      background-color: var(--el-color-functionnal-red-bg);
+      background-color: $functional-danger-hover;
+      span.el-tag {
+        &.el-tag--danger {
+          background-color: $functional-danger-hover;
+          border-color: $functional-danger-hover;
+        }
+      }
     }
 
     &#{$self}--color-gray-900 {
-      background-color: var(--el-color-neutral-gray-100);
+      background-color: var(--el-color-neutral-gray-200);
+      span.el-tag {
+        &.el-tag--gray-900 {
+          background-color: var(--el-color-neutral-gray-200);
+          border-color: var(--el-color-neutral-gray-200);
+        }
+      }
     }
   }
 

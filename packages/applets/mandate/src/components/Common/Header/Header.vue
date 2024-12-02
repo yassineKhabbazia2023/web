@@ -98,12 +98,12 @@ const filters: FilterOption<number>[] = [
     pContent: t('to-do'),
     pCode: 20,
     pColor: 'warning',
-    pIconName: 'upload',
+    pIcon: 'arrowUpCircle',
   },
   {
     pContent: t('in-progress'),
     pCode: 30,
-    pColor: 'amethyste',
+    pColor: 'fuschia',
     pIconName: 'arrowRepeat',
   },
   {
