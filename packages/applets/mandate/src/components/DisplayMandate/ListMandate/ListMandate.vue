@@ -28,7 +28,7 @@
             >
               <PButton>
                 <PIcon
-                  :color="AppColors.GRAY_300"
+                  :color="AppColors.BLUE_PULSE"
                   size="14px"
                   pName="threeDots"
                 />
