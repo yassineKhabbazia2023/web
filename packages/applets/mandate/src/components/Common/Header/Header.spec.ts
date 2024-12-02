@@ -66,12 +66,12 @@ describe('header.vue', () => {
           pContent: 'To do',
           pCode: 20,
           pColor: 'warning',
-          pIconName: 'upload',
+          pIcon: 'arrowUpCircle',
         },
         {
           pContent: 'In progress',
           pCode: 30,
-          pColor: 'amethyste',
+          pColor: 'fuschia',
           pIconName: 'arrowRepeat',
         },
         {
