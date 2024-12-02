@@ -6,7 +6,6 @@ import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import helpers from '@app/tests/utils/helpers'
 import Header from './'
-import { PICalendarEvent, PIArrowBarUp } from '@pulse/styleguide/components'
 import type { HeaderProps } from './HeaderTypes'
 const { router, pinia, fetchUserData } = helpers()
 
@@ -72,7 +71,8 @@ describe('header', () => {
     const calendarBtn = wrapper.find('[data-testid="header-section-calendar-btn"]')
 
     expect(calendarBtn.classes()).toContain('el-button--default')
-    expect(calendarBtn.findComponent(PICalendarEvent).exists()).toBeTruthy()
+    const icon = wrapper.findComponent({ name: 'PIcon' })
+    expect(icon.props('pName')).toBe('calendarEvent')
 
     await calendarBtn.trigger('click')
 
@@ -86,14 +86,15 @@ describe('header', () => {
 
     expect(calendarBtn.classes()).toContain('p-button--white')
     expect(calendarBtn.classes()).toContain('p-button--is-active')
-    expect(calendarBtn.findComponent(PIArrowBarUp)).toBeTruthy()
+    expect(calendarBtn.findComponent({ name: 'PIArrowBarUp' })).toBeTruthy()
   })
 
-  it.only('should display accordingly to opened state', async () => {
+  it('should display accordingly to opened state', async () => {
     const feedCenterButton = wrapper.find('[data-testid="feed-center-button"]')
 
     expect(feedCenterButton.classes()).toContain('el-button--default')
-    expect(feedCenterButton.findComponent({ name: 'PIBell' }).exists()).toBeTruthy()
+    const icon = feedCenterButton.findComponent({ name: 'PIcon' })
+    expect(icon.props('pName')).toBe('bell')
 
     await feedCenterButton.trigger('click')
 
@@ -107,7 +108,8 @@ describe('header', () => {
 
     expect(feedCenterButton.classes()).toContain('p-button--white')
     expect(feedCenterButton.classes()).toContain('p-button--is-active')
-    expect(feedCenterButton.findComponent({ name: 'PIX' })).toBeTruthy()
+    const icon = feedCenterButton.findComponent({ name: 'PIcon' })
+    expect(icon.props('pName')).toBe('x')
   })
 
   it.each([
