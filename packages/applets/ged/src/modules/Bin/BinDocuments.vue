@@ -18,8 +18,8 @@
       :pTotal="binDocuments.documentsPage.totalItems"
       pShowTotalPageCounter
       :pPageSizes="pagesRanges"
-      pPageSizeSelectorGroupLabel=""
-      pPageSizeSelectorSuffix="documents"
+      :pPageSizeSelectorGroupLabel="t('numberOfDocumentsPerPage')"
+      pPageSizeSelectorSuffix=""
       @on-page-range-changed="setCurrentPageSize"
     >
       <p>{{ paginationLabel }}</p>
@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type { BinDocumentProps } from './BinDocumentsTypes'
 import type {
   BinDocumentsWithTableStructure,
@@ -55,6 +56,11 @@ import { fetchBinDocuments } from '@ged/services/BinDocuments'
 import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
 
 import { PBreadcrumb, PLoader, PPagination } from '@pulse/styleguide/components'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const emit = defineEmits<{
   'navigate-to-folder': [number]
@@ -152,3 +158,10 @@ onMounted(async () => {
   await fetchBin()
 })
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    numberOfDocumentsPerPage: 'Number of documents per page'
+  fr-FR:
+    numberOfDocumentsPerPage: 'Nombre de documents par page'
+</i18n>

@@ -178,13 +178,13 @@ watch(searchCriteria, async () => {
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
-    numberOfFoldersPerPage: 'number of folder per page'
+    numberOfFoldersPerPage: 'Number of folder per page'
     on: 'on'
   fr-FR:
     search: "Rechercher par l'ID de dossier"
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'
-    numberOfFoldersPerPage: 'nombre de dossiers par page'
+    numberOfFoldersPerPage: 'Nombre de dossiers par page'
     on: 'sur'
 </i18n>

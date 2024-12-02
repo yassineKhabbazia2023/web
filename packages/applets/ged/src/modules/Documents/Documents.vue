@@ -85,8 +85,8 @@
         pShowTotalPageCounter
         :pPageSizes="pagesRanges"
         pTestIdRoot="ged-documents"
-        pPageSizeSelectorGroupLabel=""
-        pPageSizeSelectorSuffix="documents"
+        :pPageSizeSelectorGroupLabel="t('numberOfDocumentsPerPage')"
+        pPageSizeSelectorSuffix=""
         @on-page-range-changed="setCurrentPageSize"
       >
         <p>{{ paginationLabel }}</p>
@@ -197,6 +197,7 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
 import { ref, toRefs, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import {
   fetchFolderDocuments,
   fetchDocumentsByKeyWord,
@@ -244,6 +245,11 @@ import { useDragAndDropFromExplorer } from './composable/DragAndDropFromExplorer
 import DocumentsDropModal from './components/DocumentsDropModal'
 import { Permissions } from '@ged/models/Permissions'
 import AccountInformation from './components/AccountInformation'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 /* The more features we add the more this component becomes bloated.
 We created a refactor task, which, unfortunately has been placed far back in the backlog.
@@ -713,3 +719,10 @@ defineExpose({
     }
   }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    numberOfDocumentsPerPage: 'Number of documents per page'
+  fr-FR:
+    numberOfDocumentsPerPage: 'Nombre de documents par page'
+</i18n>
