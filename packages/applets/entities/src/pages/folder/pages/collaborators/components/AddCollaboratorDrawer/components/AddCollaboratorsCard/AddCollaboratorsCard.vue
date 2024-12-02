@@ -7,9 +7,7 @@
       pColor="persian"
       pSize="big"
       :pImage="{
-        pFit: 'fill',
-
-        pName: 'collab-female-add'
+        pName: 'user-add-duotone'
       }"
     >
       <template #suffix>

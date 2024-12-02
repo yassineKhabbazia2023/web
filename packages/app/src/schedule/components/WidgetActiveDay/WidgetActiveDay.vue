@@ -33,11 +33,6 @@
       "
       data-testid="widget-active-day-no-data"
     >
-      <PImage
-        pType="paupulse"
-        pName="empty"
-        pFit="fill"
-      />
       <p
         class="
           text-center
@@ -64,7 +59,6 @@
 import { computed } from 'vue'
 import type { WidgetActiveDayProps } from './WidgetActiveDayTypes'
 import { useI18n, type DefineDateTimeFormat } from 'vue-i18n'
-import { PImage } from '@pulse/styleguide/components'
 import WidgetDeadlines from '@app/schedule/components/WidgetDeadlines'
 
 const datetimeFormats = {

@@ -131,6 +131,8 @@ export type ImageName =
 'collab-non-binary' |
 'company' |
 'delegation' |
+'user-add-duotone' |
+'user-duotone' |
 'user-female-add' |
 'user-female' |
 'user-male-add' |

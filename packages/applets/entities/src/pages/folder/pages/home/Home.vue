@@ -22,68 +22,53 @@
         :pMd="16"
         :pLg="18"
       >
-        <div class="padding--6 shadow--4 radius--2 height-100">
+        <div class="padding--6 bg--neutral-gray-50 height-100">
           <PRow :pGutter="24" class="height-100">
-            <PCol :pSpan="24" :pMd="12">
-              <div class="flex flex--direction-column flex--justify-content-center height-100">
-                <h1 class="h2 margin-bottom--4 text-color--neutral-gray-800">
-                  {{ t('titleWelcome') }}
-                  <span class="text-color--persian-500">
-                    {{ t('namePlateform') }}
-                  </span>
-                </h1>
-                <p class="text-color--neutral-gray-700 margin-bottom--4">
-                  {{ t('onBuild') }}
-                </p>
-                <p class="text-color--neutral-gray-700">
-                  {{ t('helpUs') }}
-                  <span class="font-semibold">{{ t('clubClient') }}</span>
-                  {{ t('participationHelp') }}
-                </p>
-                <div class="home-folder__button">
-                  <PTooltip v-if="isCollab" :pContent="t('accessClient')">
-                    <PButton
-                      pType="primary"
-                      pSize="default"
-                      pDisabled
-                      data-testid="home-folder-button"
-                    >
-                      {{ t('joinClub') }}
-                      <PIcon class="el-button__icon--right" pName="arrowRight" />
-                    </PButton>
-                  </PTooltip>
+            <div class="flex flex--direction-column padding--6 flex--justify-content-center height-100">
+              <h1 class="h2 margin-bottom--4 text-color--neutral-gray-800">
+                {{ t('titleWelcome') }}
+                <span class="text-color--persian-500">
+                  {{ t('namePlateform') }}
+                </span>
+              </h1>
+              <p class="text-color--neutral-gray-700 margin-bottom--4">
+                {{ t('onBuild') }}
+              </p>
+              <p class="text-color--neutral-gray-700">
+                {{ t('helpUs') }}
+                <span class="font-semibold">{{ t('clubClient') }}</span>
+                {{ t('participationHelp') }}
+              </p>
+              <div class="home-folder__button">
+                <PTooltip v-if="isCollab" :pContent="t('accessClient')">
                   <PButton
-                    v-else
                     pType="primary"
                     pSize="default"
-                    tag="a"
-                    href="https://forms.office.com/e/zMP0Ectm8P"
-                    target="_blank"
+                    pDisabled
                     data-testid="home-folder-button"
                   >
                     {{ t('joinClub') }}
-                    <PIcon
-                      class="el-button__icon--right"
-                      pName="arrowRight"
-                      data-testid="join-arrow-right-icon"
-                    />
+                    <PIcon class="el-button__icon--right" pName="arrowRight" />
                   </PButton>
-                </div>
+                </PTooltip>
+                <PButton
+                  v-else
+                  pType="primary"
+                  pSize="default"
+                  tag="a"
+                  href="https://forms.office.com/e/zMP0Ectm8P"
+                  target="_blank"
+                  data-testid="home-folder-button"
+                >
+                  {{ t('joinClub') }}
+                  <PIcon
+                    class="el-button__icon--right"
+                    pName="arrowRight"
+                    data-testid="join-arrow-right-icon"
+                  />
+                </PButton>
               </div>
-            </PCol>
-            <PCol :pSpan="24" :pMd="12">
-              <div
-                class="flex flex--direction-column
-                flex--justify-content-center flex--align-items-center height-100"
-              >
-                <PImage
-                  class="home-folder__img"
-                  pType="paupulse"
-                  pName="talking"
-                  pFit="fill"
-                />
-              </div>
-            </PCol>
+            </div>
           </PRow>
         </div>
       </PCol>

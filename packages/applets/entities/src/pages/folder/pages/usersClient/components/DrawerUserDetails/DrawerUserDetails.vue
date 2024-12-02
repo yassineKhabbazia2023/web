@@ -6,7 +6,7 @@
   >
     <PUserCard
       class="margin-bottom--6 user-card"
-      pImageName="collab-male"
+      pImageName="user-duotone"
       :pTitle="fullName"
       :pSubtitle="userInfo?.email ?? ''"
       pColor="gray"

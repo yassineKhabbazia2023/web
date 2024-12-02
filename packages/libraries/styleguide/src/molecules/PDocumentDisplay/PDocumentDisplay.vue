@@ -4,11 +4,6 @@
       <ElImage :src="url" fit="fill" />
     </div>
     <div v-if="!isProvidedExtensionSupported && !isLoadingDocument" class="preview-section_notAllowed">
-      <PImage
-        class="preview-section_notAllowed_image"
-        pType="paupulse"
-        pName="document-error"
-      />
       <div>
         <PText
           :pContent="errorMsgTitle"
@@ -38,7 +33,6 @@
 
 <script lang="ts" setup>
 import { ElImage } from 'element-plus'
-import PImage from '../../atoms/PImage'
 import PText from '../../atoms/PText'
 import type { PDocumentDisplayProps, DocumentPreviewResponse } from './PDocumentDisplayTypes'
 import PLoader from '../../atoms/PLoader'

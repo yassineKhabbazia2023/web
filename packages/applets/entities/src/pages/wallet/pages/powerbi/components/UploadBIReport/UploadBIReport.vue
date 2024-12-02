@@ -12,6 +12,7 @@
     </template>
     <PUpload
       ref="uploadBIReport"
+      class="p-upload-bi-report"
       pDrag
       pShowFileList
       pUploadType="dragger"
@@ -61,6 +62,16 @@ defineExpose({
   deleteUploadedReport,
 })
 </script>
+
+<style lang="scss">
+.p-upload-bi-report {
+  &.p-upload--type-dragger {
+    .el-upload-dragger {
+      padding: 100px;
+    }
+  }
+}
+</style>
 
 <i18n lang="yaml">
 en-US:

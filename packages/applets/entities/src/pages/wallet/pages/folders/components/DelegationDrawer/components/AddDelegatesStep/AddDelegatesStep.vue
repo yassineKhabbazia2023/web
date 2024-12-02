@@ -24,7 +24,7 @@
       pSize="big"
       :pImage="{
         pFit: 'fill',
-        pName: 'collab-male-add'
+        pName: 'user-add-duotone'
       }"
     >
       <template #suffix>

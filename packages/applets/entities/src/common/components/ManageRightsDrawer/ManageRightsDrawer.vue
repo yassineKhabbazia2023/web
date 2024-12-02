@@ -9,7 +9,7 @@
       :pTitle="selectedUser.fullName"
       :pSubtitle="selectedUser.email"
       pColor="gray"
-      pImageName="user-male"
+      pImageName="user-duotone"
       class="margin-bottom--6"
       data-testid="manage-rights-user-card"
     >

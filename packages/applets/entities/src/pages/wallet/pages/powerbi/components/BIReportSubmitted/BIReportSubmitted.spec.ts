@@ -23,7 +23,6 @@ describe('biReportSubmitted', () => {
   })
   describe('display', () => {
     it('should correctly display the upload report success page', () => {
-      const uploadReportSuccessImage = wrapper.findComponent({ name: 'PImage' })
       const uploadReportSuccessMessage = wrapper.find(
         '[data-testid=powerbi-upload-successful-text]',
       )
@@ -32,7 +31,6 @@ describe('biReportSubmitted', () => {
       )
 
       expect(submitNewReportButton.exists()).toBeTruthy()
-      expect(uploadReportSuccessImage.exists()).toBeTruthy()
       expect(uploadReportSuccessMessage.text()).toBe(
         expectedUploadSuccessMessage,
       )

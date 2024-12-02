@@ -5,6 +5,6 @@ export interface PBlockHeaderProps {
   pDescription?: string
   pSize: 'default' | 'big'
   pColor: 'gray' | 'persian'
-  pImage: PImageProps
+  pImage?: PImageProps
   pHasButton: boolean
 }

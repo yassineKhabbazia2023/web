@@ -8,7 +8,7 @@
   >
     <PUserCard
       class="margin-bottom--6"
-      pImageName="collab-male"
+      pImageName="user-duotone"
       pColor="gray"
       :pTitle="rowData.fullName"
       :pSubtitle="rowData.email"

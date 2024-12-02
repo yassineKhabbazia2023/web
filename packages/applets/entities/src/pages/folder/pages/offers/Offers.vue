@@ -1,14 +1,10 @@
 <template>
-  <div class="shadow--3 radius--2 overflow-hidden margin-top--6">
+  <div class="overflow-hidden margin-top--6">
     <PBlockHeader
       :pTitle="headerTitle"
       :pDescription="headerSubtitle"
       pColor="gray"
       pSize="default"
-      :pImage="{
-        pFit: 'fill',
-        pName: 'activation',
-      }"
       pHasButton
     >
       <PButton

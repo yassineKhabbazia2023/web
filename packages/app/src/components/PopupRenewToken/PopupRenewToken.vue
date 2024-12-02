@@ -8,11 +8,6 @@
     :pTitle="t('title')"
     data-testid="renew-token-dialog"
   >
-    <PImage
-      pType="paupulse"
-      pName="toggle"
-      class="dialog-renew-token__popup-img"
-    />
     <p class="p-dialog__text">
       {{ t('content') }}
     </p>
@@ -45,7 +40,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import jwtDecode from 'jwt-decode'
 import type { JwtPayload } from 'jwt-decode'
-import { PDialog, PButton, PImage } from '@pulse/styleguide/components'
+import { PDialog, PButton } from '@pulse/styleguide/components'
 import { useRedirection } from '@app/composables/useRedirection'
 import { commonApi, tokenService } from '@pulse/common'
 
@@ -114,16 +109,6 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.dialog-renew-token {
-  &__popup-img {
-    display: block;
-    max-width: 221px;
-    margin: auto;
-  }
-}
-</style>
-
 <i18n lang="yaml">
   en-US:
     title: 'Your session will expire'
@@ -139,5 +124,5 @@ onBeforeUnmount(() => {
     content: >-
       La confidentialité est essentielle, et vous êtes absent depuis un moment.
       Nous allons vous déconnecter dans quelques minutes sauf
-      si vous confirmez que vous êtes toujours sur Pulse.'
+      si vous confirmez que vous êtes toujours sur Pulse.
 </i18n>

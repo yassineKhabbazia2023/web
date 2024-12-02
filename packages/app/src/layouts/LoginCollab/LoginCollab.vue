@@ -40,7 +40,7 @@
       pType="logos"
       pName="brand-white"
       class="logo-footer hidden-sm-and-down"
-      alt="Rydge logo"
+      alt="Pulse logo"
     />
   </div>
 </template>

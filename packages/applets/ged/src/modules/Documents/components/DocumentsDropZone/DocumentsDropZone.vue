@@ -9,15 +9,6 @@
     "
     :class="{ 'documents-drop-zone--not-allowed': !isAllowedDropZone }"
   >
-    <div
-      v-if="isAllowedDropZone"
-      class="documents-list-wrapper__dropzone-image"
-    >
-      <PImage
-        pType="paupulse"
-        pName="document-import"
-      />
-    </div>
     <p
       v-if="isAllowedDropZone"
       class="text-center margin-top--2"
@@ -78,9 +69,6 @@ const { t } = useI18n({
       position: relative;
       pointer-events: none;
     }
-  }
-  .documents-list-wrapper__dropzone-image {
-    width: 221px;
   }
 </style>
 

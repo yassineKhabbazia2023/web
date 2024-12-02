@@ -1,10 +1,5 @@
 <template>
   <div class="text-center success-upload-pbi">
-    <PImage
-      pName="ok"
-      pType="paupulse"
-      class="success-upload-pbi__img margin-bottom--6"
-    />
     <p class="margin-bottom--6" data-testid="powerbi-upload-successful-text">
       {{ t('successText') }}
       <span class="font-bold">{{ accountLabel }}</span>
@@ -24,7 +19,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import type { BIReportSubmittedProps } from './BIReportSubmittedTypes.ts'
-import { PButton, PImage } from '@pulse/styleguide/components'
+import { PButton } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,

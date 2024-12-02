@@ -1,20 +1,5 @@
 <template>
   <div>
-    <div
-      class="
-        radius--1
-        bg--persian-50
-        padding-y--6
-        margin-bottom--6
-      "
-    >
-      <PImage
-        pType="portrait"
-        pName="user-male"
-        class="my-information__image-portrait"
-      />
-    </div>
-
     <PLoader v-if="isLoading" />
 
     <div v-if="!isLoading">
@@ -111,7 +96,6 @@ import {
   PButton,
   PForm,
   PFormItem,
-  PImage,
   PInput,
   PLoader,
 } from '@pulse/styleguide/components'

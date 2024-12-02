@@ -39,8 +39,6 @@ describe('pDocumentDisplay', () => {
     })
 
     expect(wrapper.find('.preview-section_notAllowed').exists()).toBeTruthy()
-    const image = wrapper.findComponent(PImage)
-    expect(image.exists()).toBeTruthy()
   })
 
   it('renders a loader if the document is in loading state', () => {

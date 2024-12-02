@@ -16,7 +16,7 @@
         data-testid="p-user-action-profile"
         pShape="circle"
         pType="small"
-        pColor="persian-gradient"
+        pColor="blue-pulse"
       >
         {{ pProfile }}
       </PAvatar>

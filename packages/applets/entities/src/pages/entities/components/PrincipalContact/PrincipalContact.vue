@@ -4,7 +4,7 @@
     :pTag="contactTag"
     :pSubtitle="principalContact.email"
     :pDescription="contactDescription"
-    pImageName="user-male"
+    pImageName="user-duotone"
     class="principal-contact"
   />
 </template>

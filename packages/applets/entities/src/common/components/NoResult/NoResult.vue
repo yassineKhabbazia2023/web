@@ -2,7 +2,7 @@
   <div
     class="
       bg--neutral-gray-50
-      padding-top--6
+      padding--6
       text-center
       text-color--neutral-gray-500
     "
@@ -13,29 +13,17 @@
     <p class="font-base">
       {{ t('noResult') }}
     </p>
-    <PImage
-      pType="paupulse"
-      pName="empty"
-      class="image-no-result"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { PImage } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 </script>
-
-<style lang="scss" scoped>
-.image-no-result {
-  max-width: 316px;
-}
-</style>
 
 <i18n lang="yaml">
 en-US:

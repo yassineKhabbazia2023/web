@@ -21,12 +21,6 @@
         class="margin-right--2"
         pName="upload"
       />
-      <PImage
-        v-if="pUploadType === 'dragger'"
-        class="p-upload__img margin-bottom--3"
-        pType="paupulse"
-        pName="document-import"
-      />
       <span data-testid="upload-input-content">
         {{ pPrefixLabelFileLine }}
         <span
@@ -64,7 +58,6 @@ import { ElUpload, type UploadFile, type UploadRawFile } from 'element-plus'
 import { ref, computed } from 'vue'
 import { getIconName } from '../../utils/fileExtension'
 import PIcon from '../../atoms/PIcon'
-import PImage from '../../atoms/PImage'
 import PUploadFileLine from '../../atoms/PUploadFileLine'
 import type { UploadProps } from './PUploadTypes'
 import { AppColors } from '../../utils/AppColorsEnum'

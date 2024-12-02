@@ -30,7 +30,7 @@
         pSize="big"
         :pImage="{
           pFit: 'fill',
-          pName: 'user-nonbinary-add'
+          pName: 'user-add-duotone'
         }"
       >
         <template #suffix>

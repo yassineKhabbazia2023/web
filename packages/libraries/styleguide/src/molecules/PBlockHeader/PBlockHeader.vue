@@ -5,6 +5,7 @@
   >
     <div class="p-block-header__content-wrapper">
       <PImage
+        v-if="pImage !== undefined"
         class="p-block-header__image"
         :pName="pImage.pName"
         :pFit="pImage.pFit"
