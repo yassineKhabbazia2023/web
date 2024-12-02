@@ -14,7 +14,6 @@
     </div>
     <PForm
       v-else
-      class="upload-report-bi radius--2 padding--6 shadow--4"
       pRequireAsteriskPosition="right"
       pLabelPosition="top"
     >
