@@ -70,7 +70,7 @@
             <div class="flex flex--align-items-center">
               <PAvatar
                 class="margin-right--2"
-                pColor="persian-gradient"
+                pColor="blue-pulse"
                 pType="small"
               >
                 {{ getInitials(scope.row.firstName, scope.row.lastName) }}
@@ -129,7 +129,7 @@
               <PButton
                 class="margin-left--1"
               >
-                <PIcon pName="threeDots" :color="AppColors.GRAY_300" />
+                <PIcon pName="threeDots" />
               </PButton>
             </PToolbox>
           </template>
@@ -170,7 +170,7 @@ import {
   PToolbox,
 } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { AppColors, PNotification } from '@pulse/styleguide'
+import { PNotification } from '@pulse/styleguide'
 import {
   computed,
   onMounted,
@@ -449,23 +449,6 @@ watch(() => [
   }
 }
 .collab-table {
-  .cell {
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
-  }
-
-  .el-table__body {
-    .el-table__cell {
-      height: 65px;
-
-      &:nth-of-type(-n+5) {
-        &:hover {
-          cursor: pointer;
-        }
-      }
-    }
-  }
-
   .current-row > td:first-child {
     border-left: 4px solid var(--el-color-base-persian);
 
@@ -519,7 +502,7 @@ fr-FR:
   collaboratorEmail: 'E-mail'
   collaboratorFunction: 'Fonction'
   collaboratorOffice: 'Bureau'
-  numberOfUsersPerPage: 'Nombre collaborateurs par page'
+  numberOfUsersPerPage: 'Nombre de collaborateurs par page'
   on: 'sur'
   addCollaborator: 'Ajouter un collaborateur'
   removeCollaborator: 'Retirer le collaborateur'

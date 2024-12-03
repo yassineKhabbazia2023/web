@@ -82,7 +82,7 @@
       <div class="margin-left--auto">
         <PButton
           class="margin-right--4"
-          pType="primary"
+          pType="secondary"
           pPlain
           data-testid="collab-form-cancel-button"
           @click="handleCloseDrawer"
