@@ -108,8 +108,8 @@ import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
 import { getPaginationLabel } from '@entities/helper'
-import { PAGE_SIZES } from '@entities/constants'
-import type { EntityStatus } from '../../components/Filters/FiltersTypes'
+import { ENTITY_STATUS_COLOR, PAGE_SIZES } from '@entities/constants'
+import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { fetchWalletData } from './DeployUtils'
 import type {
   SearchCriteria,
@@ -156,17 +156,17 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   {
     text: t('toDeploy'),
     icon: PIArrowUpCircle,
-    color: 'warning',
+    color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
   },
   {
     text: t('inProgress'),
     icon: PIArrowRepeat,
-    color: 'persian',
+    color: ENTITY_STATUS_COLOR[EntityStatus.IN_PROGRESS],
   },
   {
     text: t('connected'),
     icon: PICheckCircle,
-    color: 'success',
+    color: ENTITY_STATUS_COLOR[EntityStatus.CONNECTED],
   },
 ] as const
 

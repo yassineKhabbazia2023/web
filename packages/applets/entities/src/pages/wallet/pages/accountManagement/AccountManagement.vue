@@ -70,13 +70,14 @@ import AccountRightsDrawer from './components/AccountRightsDrawer'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import { fetchWalletData } from '../folders/DeployUtils'
 import { getPaginationLabel } from '@entities/helper'
-import { PAGE_SIZES } from '@entities/constants'
+import { ENTITY_STATUS_COLOR, PAGE_SIZES } from '@entities/constants'
 import type { AccountRow } from '@entities/common/types'
 import type {
   SearchCriteria,
   SearchResult,
   DeploymentStatus,
 } from '../../types'
+import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -89,21 +90,22 @@ const isLoading = ref(true)
 const selectedAccount = ref<AccountRow>()
 const isAccountRightsDrawerOpened = ref(false)
 const isResendActivationEmailDrawerVisible = ref(false)
+
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   {
     text: t('toDeploy'),
     icon: PIArrowUpCircle,
-    color: 'warning',
+    color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
   },
   {
     text: t('inProgress'),
     icon: PIArrowRepeat,
-    color: 'persian',
+    color: ENTITY_STATUS_COLOR[EntityStatus.IN_PROGRESS],
   },
   {
     text: t('connected'),
     icon: PICheckCircle,
-    color: 'success',
+    color: ENTITY_STATUS_COLOR[EntityStatus.CONNECTED],
   },
 ]
 const searchCriteria = ref<SearchCriteria>({

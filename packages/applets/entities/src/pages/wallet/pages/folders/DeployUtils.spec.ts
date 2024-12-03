@@ -15,12 +15,14 @@ import {
   getMockedAccountQueryResult,
   getMockedAccountRow,
 } from '@entities/services/account/accountMock'
+import { ENTITY_STATUS_COLOR } from '@entities/constants'
+import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 
 const deploymentStatuses: DeploymentStatus[] = [
   {
     text: 'toDeploy',
     icon: PIArrowUpCircle,
-    color: 'warning',
+    color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
   },
 ]
 

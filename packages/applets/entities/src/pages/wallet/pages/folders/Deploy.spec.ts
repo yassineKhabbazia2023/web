@@ -5,7 +5,7 @@ import { defineStore, createPinia, setActivePinia } from 'pinia'
 import { commonStore, commonPinia as pinia } from '@pulse/common'
 import TableData from '../../components/TableData'
 import Deploy from '.'
-import { EntityStatus } from '../../components/Filters/FiltersTypes'
+import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import * as DeployUtils from './DeployUtils'
 import { nextTick } from 'vue'
 import {

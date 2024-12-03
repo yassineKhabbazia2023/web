@@ -1,4 +1,6 @@
+import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import type { DefineDateTimeFormat } from 'vue-i18n'
+import { PFilterOptionProps } from '@pulse/styleguide/types'
 
 export const DATE_TIME_FORMATS = {
   'en-US': {
@@ -47,4 +49,16 @@ export const PERMISSION_CODES = {
   DELETE_ACCOUNT_COLLAB: 'COUSER002',
   ACTIVATE_OFFER: 'COOFF001',
   EDIT_COMPANY_DATA: 'COINFO002',
+}
+
+export const ENTITY_STATUS_COLOR: Record<EntityStatus, PFilterOptionProps['pColor']> = {
+  [EntityStatus.TO_DEPLOY]: 'warning',
+  [EntityStatus.IN_PROGRESS]: 'amethyste',
+  [EntityStatus.CONNECTED]: 'success',
+}
+
+export const ENTITY_STATUS_ICON_NAME: Record<EntityStatus, string> = {
+  [EntityStatus.TO_DEPLOY]: 'PIArrowUpCircle',
+  [EntityStatus.IN_PROGRESS]: 'PIArrowRepeat',
+  [EntityStatus.CONNECTED]: 'PICheckCircle',
 }

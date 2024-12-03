@@ -1,11 +1,11 @@
 import type { Component } from 'vue'
- 
+
 export enum EntityStatus {
   TO_DEPLOY = 1,
   IN_PROGRESS = 2,
   CONNECTED = 3,
 }
- 
+
 
 export interface Filter {
   number: number

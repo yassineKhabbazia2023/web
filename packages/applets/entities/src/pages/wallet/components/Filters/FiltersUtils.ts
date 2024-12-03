@@ -1,6 +1,7 @@
 import { EntitiesStatistics } from '@entities/services/wallet/serviceWalletTypes'
 import { FilterOption } from '@pulse/styleguide/types'
 import { EntityStatus } from './FiltersTypes'
+import { ENTITY_STATUS_COLOR, ENTITY_STATUS_ICON_NAME } from '@entities/constants'
 
 export function getOnboardingFilters(
   filterLabels: Record<string, string>,
@@ -11,22 +12,22 @@ export function getOnboardingFilters(
       pContent: filterLabels['toDeploy'],
       pCode: EntityStatus.TO_DEPLOY,
       pValue: entitiesStatistics?.accountToDeploy,
-      pColor: 'warning',
-      pIcon: 'PIArrowUpCircle',
+      pColor: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
+      pIcon: ENTITY_STATUS_ICON_NAME[EntityStatus.TO_DEPLOY],
     },
     {
       pContent: filterLabels['inProgress'],
       pCode: EntityStatus.IN_PROGRESS,
       pValue: entitiesStatistics?.accountInProgress,
-      pColor: 'amethyste',
-      pIcon: 'PIArrowRepeat',
+      pColor: ENTITY_STATUS_COLOR[EntityStatus.IN_PROGRESS],
+      pIcon: ENTITY_STATUS_ICON_NAME[EntityStatus.IN_PROGRESS],
     },
     {
       pContent: filterLabels['connected'],
       pCode: EntityStatus.CONNECTED,
       pValue: entitiesStatistics?.accountConnected,
-      pColor: 'success',
-      pIcon: 'PICheckCircle',
+      pColor: ENTITY_STATUS_COLOR[EntityStatus.CONNECTED],
+      pIcon: ENTITY_STATUS_ICON_NAME[EntityStatus.CONNECTED],
     },
   ]
 
