@@ -44,7 +44,7 @@ const resendLink = async () => {
     contactEmail && (contactEmail = contactEmail.toString().trim().replace(' ', '+'))
     contactEmail
       ? await commonApi().gateway.post('authentication/api/sendResetPasswordLink', { email: contactEmail })
-      : await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, { params: { accountNumber } })
+      : await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
     isLoading.value = false
     router.push({ path: '/resendEmailSuccess' })
   } catch {}

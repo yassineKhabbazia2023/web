@@ -42,7 +42,7 @@ describe('page expire token', () => {
     await flushPromises()
 
     expect(postMock).toHaveBeenCalledOnce()
-    expect(postMock).toHaveBeenCalledWith(expectedUrl, { params: { accountNumber } })
+    expect(postMock).toHaveBeenCalledWith(expectedUrl, null, { params: { accountNumber } })
     expect(mockRouterPush).toHaveBeenCalledOnce()
     expect(mockRouterPush).toHaveBeenCalledWith(expectedRoute)
   })
