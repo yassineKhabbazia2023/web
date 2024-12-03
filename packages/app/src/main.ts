@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { VITE_ASSETS_BASE_URL, VITE_ONE_TRUST_KEY, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
+import { VITE_ASSETS_BASE_URL, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
 import { AppVersionManager , logger } from '@pulse/core'
 
 import entitiesApplet from '@pulse/entities'
@@ -16,7 +16,8 @@ import router from './plugins/router'
 const locale = 'fr-FR'
 
 declare let window: {
-  hsConversationsOnReady: any
+  hsConversationsOnReady: any // HubSpot Conversations API
+  axeptioSettings: any // Axeptio
   version: string
 } & Window
 
@@ -38,15 +39,6 @@ const app = createApp(App)
   .use(router)
 
 if (import.meta.env.PROD) {
-  // Script OneTrust
-  if (VITE_ONE_TRUST_KEY) {
-    const script = document.createElement('script')
-    script.src = `https://cdn.cookielaw.org/consent/${VITE_ONE_TRUST_KEY}/otSDKStub.js`
-    script.setAttribute('type', 'text/javascript')
-    script.setAttribute('charset', 'UTF-8')
-    script.setAttribute('data-domain-script', VITE_ONE_TRUST_KEY)
-    document.body.appendChild(script)
-  }
 
   if(VITE_HUBSPOT_ACTIVATED === 'true') {
     /*
@@ -68,7 +60,16 @@ if (import.meta.env.PROD) {
       }
     }
   }
-
+  // POC Axeptio
+  // TODO use a feature flag?
+  window.axeptioSettings = {
+    clientId: '673cadb73a0895e8b76ad209',
+  }
+  const firstScriptElement = document.getElementsByTagName('script')[0]
+  const element = document.createElement('script')
+  element.async = true
+  element.src = '//static.axept.io/sdk.js'
+  firstScriptElement?.parentNode?.insertBefore(element, firstScriptElement)
 }
 
 app.mount('#app')
