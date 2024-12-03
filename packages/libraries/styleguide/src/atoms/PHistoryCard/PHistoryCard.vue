@@ -12,7 +12,7 @@
         <li v-if="pDate" class="p-history-card__list-item">
           <PTag
             pSize="small"
-            pColor="persian"
+            pColor="blue-pulse"
             pPlain
             pEffect="dark"
             :pContent="pDate"

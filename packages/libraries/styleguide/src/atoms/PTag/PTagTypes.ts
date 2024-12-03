@@ -11,6 +11,7 @@ export interface PTagProps {
     | 'fuschia'
     | 'cyan'
     | 'amethyste'
+    | 'blue-pulse'
     | 'gray-100'
     | 'gray-300'
     | 'gray-500'

@@ -74,6 +74,11 @@ $tag-padding: (
       --el-tag-bg-color: var(--el-color-persian-500);
       --el-tag-border-color: var(--el-color-persian-500);
       --el-tag-hover-color: var(--el-color-persian-100);
+    }    
+    &#{$self}--blue-pulse {
+      --el-tag-bg-color: var(--el-color-base-blue-pulse);
+      --el-tag-border-color: var(--el-color-base-blue-pulse);
+      --el-tag-hover-color: var(--el-color-persian-700);
     }
   }
 
@@ -149,6 +154,11 @@ $tag-padding: (
       --el-tag-hover-color: var(--el-color-persian-500);
       --el-tag-text-color: var(--el-color-persian-500);
     }
+    &#{$self}--blue-pulse {
+      --el-tag-bg-color: var(--el-color-base-blue-pulse);
+      --el-tag-border-color: var(--el-color-base-blue-pulse);
+      --el-tag-hover-color: var(--el-color-persian-700);
+    }
   }
 
   &#{$self}--plain {
@@ -210,6 +220,11 @@ $tag-padding: (
       --el-tag-border-color: var(--el-color-persian-500);
       --el-tag-hover-color: var(--el-color-persian-500);
       --el-tag-text-color: var(--el-color-persian-500);
+    }
+    &#{$self}--blue-pulse {
+      --el-tag-bg-color: var(--el-color-base-blue-pulse);
+      --el-tag-border-color: var(--el-color-base-blue-pulse);
+      --el-tag-hover-color: var(--el-color-persian-700);
     }
   }
 
