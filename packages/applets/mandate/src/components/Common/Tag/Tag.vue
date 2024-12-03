@@ -39,7 +39,7 @@ const statusMap = new Map<number, StatusMap>([
   [99, { color: 'cyan', iconName: 'hourglass', content: t('creating') }],
   [10, { color: 'danger', iconName: 'exclamationTriangle', content: t('incident') }],
   [20, { color: 'warning', iconName: 'upload', content: t('to-do') }],
-  [30, { color: 'amethyste', iconName: 'arrowRepeat', content: t('in-progress') }],
+  [30, { color: 'fuschia', iconName: 'arrowRepeat', content: t('in-progress') }],
   [40, { color: 'success', iconName: 'checkCircle', content: t('active') }],
   [50, { color: 'gray-900', iconName: 'xCircle', content: t('inactive') }],
 ])

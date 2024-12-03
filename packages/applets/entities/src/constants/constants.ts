@@ -54,7 +54,7 @@ export const PERMISSION_CODES = {
 
 export const ENTITY_STATUS_COLOR: Record<EntityStatus, PFilterOptionProps['pColor']> = {
   [EntityStatus.TO_DEPLOY]: 'warning',
-  [EntityStatus.IN_PROGRESS]: 'amethyste',
+  [EntityStatus.IN_PROGRESS]: 'fuschia',
   [EntityStatus.CONNECTED]: 'success',
 }
 

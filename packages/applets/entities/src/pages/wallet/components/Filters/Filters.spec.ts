@@ -38,7 +38,7 @@ describe('filter', () => {
         'pValue': 3,
       }, {
         'pCode': 2,
-        'pColor': 'amethyste',
+        'pColor': 'fuschia',
         'pContent': 'In progress',
         'pIconName': 'arrowRepeat',
         'pValue': 0,
