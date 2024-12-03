@@ -63,6 +63,7 @@ const pClassMapper = computed(() => ({
   &--size {
     &-big {
       #{$self}__image {
+        padding: 34px;
         height: 95px;
       }
 
@@ -81,6 +82,7 @@ const pClassMapper = computed(() => ({
   }
 
   &__image {
+    padding: 14px;
     flex-grow: 0;
     flex-shrink: 0;
     height: 54px;

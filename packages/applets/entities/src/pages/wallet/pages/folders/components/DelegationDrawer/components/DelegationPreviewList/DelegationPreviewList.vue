@@ -8,7 +8,7 @@
     :pHasButton="false"
     :pImage="{
       pFit: 'fill',
-      pName: 'delegation'
+      pName: 'person-delegation-duotone',
     }"
   />
   <PTable

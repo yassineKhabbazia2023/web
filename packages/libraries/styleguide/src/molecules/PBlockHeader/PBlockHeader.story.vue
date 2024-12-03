@@ -95,7 +95,7 @@ const data: PBlockHeaderProps = {
   pHasButton: false,
   pImage: {
     pFit: 'fill',
-    pName: 'add-user',
+    pName: 'user-add-duotone',
   },
 }
 </script>

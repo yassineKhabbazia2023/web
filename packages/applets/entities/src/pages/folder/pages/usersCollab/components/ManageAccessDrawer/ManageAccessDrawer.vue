@@ -10,7 +10,7 @@
     <PUserCard
       v-if="defaultEntity?.legalName"
       pColor="persian"
-      pImageName="company"
+      pImageName="folder-open-duotone"
       :pTitle="defaultEntity?.legalName"
       :pSubtitle="defaultEntity?.accountNumber"
       class="margin-bottom--6"

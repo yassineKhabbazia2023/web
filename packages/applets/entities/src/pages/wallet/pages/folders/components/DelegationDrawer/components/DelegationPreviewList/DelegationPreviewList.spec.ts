@@ -74,7 +74,7 @@ describe('delegationPreviewList', () => {
       )
       expect(pBlockHeaderWrapper.props('pImage')).toStrictEqual({
         pFit: 'fill',
-        pName: 'delegation',
+        pName: 'person-delegation-duotone',
       })
     })
 

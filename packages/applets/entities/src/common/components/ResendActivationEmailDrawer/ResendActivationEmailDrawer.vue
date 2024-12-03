@@ -10,7 +10,7 @@
       :pTitle="selectedAccount.name"
       :pSubtitle="selectedAccount.accountNumber"
       pColor="gray"
-      pImageName="company"
+      pImageName="folder-open-duotone"
       class="margin-bottom--6"
       data-testid="account-rights-company-card"
     >

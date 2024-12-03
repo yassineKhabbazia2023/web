@@ -8,6 +8,13 @@
     :pTitle="t('title')"
     data-testid="renew-token-dialog"
   >
+    <div class="dialog-renew-token__popup-img-wrapper">
+      <PImage
+        pType="portrait"
+        pName="loader-duotone"
+        class="dialog-renew-token__popup-img"
+      />
+    </div>
     <p class="p-dialog__text">
       {{ t('content') }}
     </p>
@@ -40,7 +47,7 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import jwtDecode from 'jwt-decode'
 import type { JwtPayload } from 'jwt-decode'
-import { PDialog, PButton } from '@pulse/styleguide/components'
+import { PDialog, PButton, PImage } from '@pulse/styleguide/components'
 import { useRedirection } from '@app/composables/useRedirection'
 import { commonApi, tokenService } from '@pulse/common'
 
@@ -108,6 +115,21 @@ onBeforeUnmount(() => {
   tokenService.unregisterOnChange('popupcb')
 })
 </script>
+
+<style lang="scss" scoped>
+.dialog-renew-token {
+  &__popup-img-wrapper {
+    padding-top: 25px;
+    padding-bottom: 35px;
+    display: flex;
+    justify-content: center;
+  }
+  &__popup-img {
+      display: block;
+      width: 39px;
+    }
+}
+</style>
 
 <i18n lang="yaml">
   en-US:
