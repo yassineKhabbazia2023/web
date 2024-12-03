@@ -64,7 +64,7 @@
               <div class="flex flex--align-items-center">
                 <div class="margin-right--2">
                   <PAvatar
-                    pColor="bordered-persian"
+                    pColor="blue-pulse"
                     pType="small"
                   >
                     {{ scope.row.initials }}
@@ -127,7 +127,7 @@
                   data-testid="folder-users-collab-action"
                   @click="handleToolboxClick(scope.row)"
                 >
-                  <PIcon pName="threeDots" :color="AppColors.GRAY_300" />
+                  <PIcon pName="threeDots" />
                 </PButton>
               </PToolbox>
             </template>
@@ -559,7 +559,7 @@ en-US:
   statusConnect: 'Connected'
   statusInvite: 'Invited'
   statusDeclared: 'Declared'
-  numberOfUserPerPage: 'number of user per page'
+  numberOfUserPerPage: 'Number of users per page'
   on: 'on'
   signatoryAdded: "User {userFullName} has been successfuly designated as a signatory of the entity"
   signatoryRemoved: "The user {userFullName} is no longer a signatory on the account."
@@ -579,7 +579,7 @@ fr-FR:
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
   statusDeclared: 'Declaré'
-  numberOfUserPerPage: "nombre de d'utilisateur par page"
+  numberOfUserPerPage: "Nombre d'utilisateurs par page"
   signatoryAdded: "L'utilisateur {userFullName} a été désigné en tant que signataire de l'entité avec succès"
   signatoryRemoved: "L’utilisateur {userFullName} n’est plus signataire du dossier."
   deleteSignatoryTooltip: 'Un dossier doit avoir au moins un signataire'

@@ -16,7 +16,7 @@
           <div class="flex flex--align-items-center">
             <div class="margin-right--2">
               <PAvatar
-                pColor="bordered-persian"
+                pColor="blue-pulse"
                 pType="small"
               >
                 {{ scope.row.initials }}
