@@ -26,6 +26,7 @@ export interface ExplorerDocument {
 
 export interface DocumentsProps {
   currentService: Service['ServiceId']
+  currentServiceName: Service['ServiceName']
   // selected entity corresponds to accountNumber, this will be changed
   selectedEntity: string
   selectedEntityAvatarColor: Entity['color']

@@ -3,8 +3,7 @@ import {
   transmitDocuments,
 } from '@ged/services/Documents'
 import type { TransmitDocumentsComposableProps } from './TransmitDocumentsTypes'
-
-// Define the composable function
+import { trackDocumentTransmit } from '@ged/services/tracking/tracking.service'
 
 export function useTransmitDocuments(
   transmitDocumentsProps: ComputedRef<TransmitDocumentsComposableProps>,
@@ -20,12 +19,16 @@ export function useTransmitDocuments(
     ) {
       return
     }
-
-    await transmitDocuments(
-      transmitDocumentsProps.value.currentService,
-      transmitDocumentsProps.value.selectedEntity,
-      transmitDocumentsProps.value.selectedDocumentsIds,
-    )
+    try {
+      await transmitDocuments(
+        transmitDocumentsProps.value.currentService,
+        transmitDocumentsProps.value.selectedEntity,
+        transmitDocumentsProps.value.selectedDocumentsIds,
+      )
+      trackDocumentTransmit({ isTransmitSuccessful: true })
+    } catch (error) {
+      trackDocumentTransmit({ isTransmitSuccessful: false })
+    }
   }
 
   return {

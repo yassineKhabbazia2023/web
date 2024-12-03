@@ -7,6 +7,7 @@ export interface DocumentUploadProps {
   isUploadModalOpened: boolean
   currentServiceFolder: Folder[]
   currentService: Service['ServiceId']
+  currentServiceName: Service['ServiceName']
   selectedEntity: string
   files: File[]
 }

@@ -8,6 +8,7 @@ import type { DocumentRenameProps } from './DocumentRenameTypes'
 import { renameDocument } from '@ged/services/Documents'
 import DocumentRename from './'
 import DocumentRenameModal from './components/DocumentRenameModal.vue'
+import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
 
 const pinia = createPinia()
 
@@ -20,6 +21,7 @@ const mocks = vi.hoisted(() => {
 vi.mock('@ged/services/Documents', () => ({
   renameDocument: mocks.patch,
 }))
+vi.mock('@ged/services/tracking/tracking.service')
 const defaultProps: DocumentRenameProps = {
   modelValue: false,
   selectedEntity: 'a1b2',
@@ -58,6 +60,7 @@ describe('interactions', () => {
 
     await nextTick()
     expect(mockToastPlugin).toHaveBeenCalledTimes(1)
+    expect(trackDocumentRename).toHaveBeenCalledWith({ isRenameSuccessful: true })
   })
 
   it('should reset rename button state upon failure', async () => {
@@ -71,6 +74,7 @@ describe('interactions', () => {
 
     await nextTick()
     expect(mockToastPlugin).toHaveBeenCalledTimes(1)
+    expect(trackDocumentRename).toHaveBeenCalledWith({ isRenameSuccessful: false })
     expect(renameModalWrapper.props('isConfirmButtonLoading')).toBeFalsy()
   })
 

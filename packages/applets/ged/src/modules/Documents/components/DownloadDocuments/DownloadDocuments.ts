@@ -9,7 +9,7 @@ import {
 } from '@ged/services/Documents'
 import type { DownloadDocumentsComposableProps } from './DownloadDocumentsTypes'
 import { useI18n } from 'vue-i18n'
-
+import { trackDocumentDownload } from '@ged/services/tracking/tracking.service'
 // Define the composable function
 
 export function useDownloadDocuments(
@@ -79,24 +79,34 @@ export function useDownloadDocuments(
   const downloadSingleDocument = async (
     downloadDocumentsProps: DownloadDocumentsComposableProps,
   ) => {
-    const documentBlob = await downloadDocument(
-      downloadDocumentsProps.currentService,
-      downloadDocumentsProps.selectedEntity,
-      downloadDocumentsProps.selectedDocuments[0].id,
-    )
-    downloadFile(documentBlob, downloadDocumentsProps.selectedDocuments[0].name)
+    try {
+      const documentBlob = await downloadDocument(
+        downloadDocumentsProps.currentService,
+        downloadDocumentsProps.selectedEntity,
+        downloadDocumentsProps.selectedDocuments[0].id,
+      )
+      downloadFile(documentBlob, downloadDocumentsProps.selectedDocuments[0].name)
+      trackDocumentDownload({ isDownloadSuccessful: true })
+    } catch {
+      trackDocumentDownload({ isDownloadSuccessful: false })
+    }
   }
 
   const downloadMultipleDocument = async (
     downloadDocumentsProps: DownloadDocumentsComposableProps,
   ) => {
-    const documentsArchiveBlob = await downloadDocuments(
-      downloadDocumentsProps.currentService,
-      downloadDocumentsProps.selectedEntity,
-      downloadDocumentsProps.selectedDocuments.map((x) => x.id),
-    )
+    try {
+      const documentsArchiveBlob = await downloadDocuments(
+        downloadDocumentsProps.currentService,
+        downloadDocumentsProps.selectedEntity,
+        downloadDocumentsProps.selectedDocuments.map((x) => x.id),
+      )
 
-    downloadFile(documentsArchiveBlob, 'archive.zip')
+      downloadFile(documentsArchiveBlob, 'archive.zip')
+      trackDocumentDownload({ isDownloadSuccessful: true })
+    } catch {
+      trackDocumentDownload({ isDownloadSuccessful: true })
+    }
   }
 
   // Define the notification functions

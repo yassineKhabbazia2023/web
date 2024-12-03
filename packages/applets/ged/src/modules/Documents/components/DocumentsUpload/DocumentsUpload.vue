@@ -41,6 +41,7 @@ import { mapExplorerDocumentFromFiles } from '../../helpers/documentExplorerMapp
 import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { PICheck } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '../../DocumentsTypes'
+import { trackDepositedDocument } from '@ged/services/tracking/tracking.service'
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
@@ -149,6 +150,7 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
   let batchIndex = 0
   let uploadedDocumentCount = 0
   let documentUploadedWithSuccess = 0
+  let documentUploadedWithError = 0
   const destinationFolder = { ...currentExplorerFolder.value }
   while (uploadedDocumentCount < documents.length) {
     // Selects up to 5 documents for upload or fewer if remaining documents are less than 5
@@ -158,17 +160,19 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
       try {
         uploadedDocumentCount++
         const uploadResult =
-         await uploadDocument(
-           props.currentService,
-           props.selectedEntity,
-           document.file,
-           currentExplorerFolder.value.id)
+          await uploadDocument(
+            props.currentService,
+            props.selectedEntity,
+            document.file,
+            currentExplorerFolder.value.id
+          )
         if (uploadResult) {
           document.givenActionState = 'DONE'
           documentUploadedWithSuccess++
         }
         return uploadResult
       } catch (error: any) {
+        documentUploadedWithError++
         document.codeError = error?.response?.status
         if (document.codeError === '500') {
           document.givenActionState = 'FAILED'
@@ -182,6 +186,15 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
 
     batchIndex += 5
   }
+
+  trackDepositedDocument({
+    serviceName: props.currentServiceName,
+    depositedDocumentsCount: documents.length,
+    successfulDepositsCount: documentUploadedWithSuccess,
+    failedDepositsCount: documentUploadedWithError,
+    destinationFolder: destinationFolder.name
+  })
+
   triggerSuccessNotification(documentUploadedWithSuccess, destinationFolder.name)
   if (documents.length === uploadedDocumentCount &&
     explorerDocuments.value.filter(d => !d.isSelected)) {

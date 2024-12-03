@@ -7,9 +7,11 @@ import { uploadDocument } from '@ged/services/Documents'
 import type { DocumentsProps } from '../../DocumentsTypes'
 import { Permissions } from '@ged/models/Permissions'
 import { MAX_FILE_SIZE_BYTES } from '@ged/modules/common/constants/files'
+import { trackDepositedDocument } from '@ged/services/tracking/tracking.service'
 
 export function useDragAndDropFromExplorer(
   currentService: Ref<DocumentsProps['currentService']>,
+  currentServiceName: Ref<DocumentsProps['currentServiceName']>,
   selectedEntity: Ref<DocumentsProps['selectedEntity']>,
   selectedFolder: Ref<DocumentsProps['selectedFolder']>,
   refreshDocumentsList: Function,
@@ -113,6 +115,15 @@ export function useDragAndDropFromExplorer(
       })
       refreshDocumentsList()
       isDropFromExplorerConfirmationModalVisible.value = false
+
+      trackDepositedDocument({
+        serviceName: currentServiceName.value,
+        depositedDocumentsCount: settledUploads.length,
+        successfulDepositsCount: successfulResults.length,
+        failedDepositsCount: failedResults.length,
+        destinationFolder: folder.name
+      })
+
       await displaySuccessNotification(successfulResults.length)
       await displayConnectionErrorNotifications(failedResults.length)
     } catch (error) {

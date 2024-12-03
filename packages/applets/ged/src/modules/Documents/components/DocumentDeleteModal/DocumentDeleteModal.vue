@@ -24,7 +24,7 @@ import { type DocumentDeleteModalTypesProps }
   from '@ged/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
 import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
-
+import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({
   inheritLocale: true,
@@ -90,9 +90,11 @@ const handleConfirmDeleteFolder = async () => {
     emit('confirm-delete-document')
     triggerSuccessNotification()
     isDeleteInProgress.value = false
+    trackDocumentDelete({ isDeleteSuccessful: true })
   } catch (err: any) {
     triggerErrorNotification()
     isDeleteInProgress.value = false
+    trackDocumentDelete({ isDeleteSuccessful: false })
   }
 }
 

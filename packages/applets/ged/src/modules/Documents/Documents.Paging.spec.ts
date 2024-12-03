@@ -1,5 +1,5 @@
- 
- 
+
+
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
@@ -38,6 +38,7 @@ const pinia = createPinia()
 
 const defaultProps = {
   currentService: foldersData[0][0].children[0].serviceId,
+  currentServiceName: 'a service name',
   selectedEntity: 'my-entity',
   selectedEntityAvatarColor: 'persian' as Entity['color'],
   selectedEntityName: 'This is a legal name',
@@ -238,11 +239,5 @@ describe('documents', () => {
         null,
       )
     })
-  })
-})
-
-describe('temp', () => {
-  it('should ignore for now', () => {
-    expect(true).toBeTruthy()
   })
 })

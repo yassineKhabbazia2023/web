@@ -5,6 +5,7 @@ import { PIExclamationTriangle, PICheck } from '@pulse/styleguide/components'
 import type { DocumentsProps } from '@ged/modules/Documents/DocumentsTypes'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 
+let currentServiceName: Ref<DocumentsProps['currentServiceName']>
 let currentService: Ref<DocumentsProps['currentService']>
 let selectedEntity: Ref<DocumentsProps['selectedEntity']>
 let selectedFolder: Ref<DocumentsProps['selectedFolder']>
@@ -78,6 +79,7 @@ vi.mock('vue-i18n', () => ({
 describe('drag and drop from explorer composable', () => {
   beforeEach(() => {
     currentService = ref('a really cool service')
+    currentServiceName = ref('a service name')
     selectedEntity = ref('An Entity')
     selectedFolder = ref(depositFolder)
     refreshDocumentsList = vi.fn()
@@ -90,6 +92,7 @@ describe('drag and drop from explorer composable', () => {
       validDroppedFiles,
     } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,
@@ -103,6 +106,7 @@ describe('drag and drop from explorer composable', () => {
   it('should handle drag over from explorer', () => {
     const { handleDragOverFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,
@@ -123,6 +127,7 @@ describe('drag and drop from explorer composable', () => {
   it('should handle drag leave from explorer', () => {
     const { handleDragLeaveFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,
@@ -140,6 +145,7 @@ describe('drag and drop from explorer composable', () => {
       isDropFromExplorerConfirmationModalVisible,
     } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,
@@ -165,6 +171,7 @@ describe('drag and drop from explorer composable', () => {
     selectedFolder.value = rootFolder // Folder without upload permission
     const { handleDropFromExplorer, validDroppedFiles } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,
@@ -189,6 +196,7 @@ describe('drag and drop from explorer composable', () => {
   it('should display success notification when documents are uploaded successfully', async () => {
     const { handleDropFromExplorer } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,
@@ -220,6 +228,7 @@ describe('drag and drop from explorer composable', () => {
   it('should display connection error notification when upload fails', async () => {
     const { handleDropFromExplorer } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,
@@ -251,6 +260,7 @@ describe('drag and drop from explorer composable', () => {
   it('should display pre-upload error notifications', async () => {
     const { handleDropFromExplorer } = useDragAndDropFromExplorer(
       currentService,
+      currentServiceName,
       selectedEntity,
       selectedFolder,
       refreshDocumentsList,

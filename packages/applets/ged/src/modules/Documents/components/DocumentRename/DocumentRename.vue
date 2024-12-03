@@ -16,6 +16,7 @@ import { renameDocument } from '@ged/services/Documents'
 import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { useI18n } from 'vue-i18n'
 import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
+import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
 
 const props = defineProps<DocumentRenameProps>()
 const emit = defineEmits(['update:modelValue', 'document-rename'])
@@ -58,6 +59,7 @@ const handleDocumentRename = async (documentName: string) => {
       customClass: 'success',
       position: 'bottom-right',
     })
+    trackDocumentRename({ isRenameSuccessful: true })
   } catch {
     toastPlugin({
       message: t('toaster.error'),
@@ -66,6 +68,7 @@ const handleDocumentRename = async (documentName: string) => {
       customClass: 'error',
       position: 'bottom-right',
     })
+    trackDocumentRename({ isRenameSuccessful: false })
   } finally {
     isConfirmButtonLoading.value = false
   }

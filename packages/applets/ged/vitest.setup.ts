@@ -35,6 +35,7 @@ export const commonApiPortalGetSpy = vi.fn().mockResolvedValue({
 export const commonApiGatewayGetSpy = vi.fn().mockResolvedValue({
   data: {},
 })
+export const amplitudeTrackSpy = vi.fn()
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -77,6 +78,9 @@ vi.mock('@pulse/common', () => ({
     destroyConnection: vi.fn(),
   })),
   debounce: vi.fn((fn) => fn),
+  amplitudeService: {
+    track: amplitudeTrackSpy
+  }
 }))
 
 vi.mock('vue-inject', () => ({

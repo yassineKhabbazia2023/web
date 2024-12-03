@@ -10,6 +10,7 @@ import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import { nextTick } from 'vue'
 import { deleteDocuments } from '@ged/services/Documents'
 import { createI18n } from 'vue-i18n'
+import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
 
 const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,
@@ -42,6 +43,7 @@ const createWrapper = (
 vi.mock('@ged/services/Documents', () => ({
   deleteDocuments: vi.fn(),
 }))
+vi.mock('@ged/services/tracking/tracking.service')
 
 const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent(ConfirmationPopup)
 
@@ -64,7 +66,7 @@ describe('deleteFolderConfirmationPopup', () => {
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
-       
+
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
@@ -84,7 +86,7 @@ describe('deleteFolderConfirmationPopup', () => {
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
-       
+
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", tous les documents seront supprimés du dossier. Vous pourrez les restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
@@ -104,7 +106,7 @@ describe('deleteFolderConfirmationPopup', () => {
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
-       
+
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera supprimé du dossier. Vous pourrez le restaurer depuis la corbeille.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
@@ -195,5 +197,37 @@ describe('deleteFolderConfirmationPopup', () => {
       popup.vm.$emit('on-close-popup')
       expect(wrapper.emitted('cancel-delete-document')).toBeTruthy()
     })
+  })
+
+  describe('tracking', () => {
+    let wrapper: VueWrapper
+    beforeEach(() => {
+      const updatedProps: DocumentDeleteModalTypesProps = {
+        ...defaultProps,
+        isVisible: true,
+        documentIds: ['1'],
+      }
+
+      wrapper = createWrapper(updatedProps)
+    })
+    it('should track with "true" when document has been sucessfully deletes', async () => {
+      const popup = findConfirmationPopup(wrapper)
+      await popup.vm.$emit('on-confirm-button-click')
+      await nextTick()
+
+      expect(trackDocumentDelete).toHaveBeenCalledWith({ isDeleteSuccessful: true })
+    })
+
+    it('should track with "false" when document has failed to delete', async () => {
+      vi.mocked(deleteDocuments).mockImplementationOnce(() => Promise.reject())
+
+      const popup = findConfirmationPopup(wrapper)
+      await popup.vm.$emit('on-confirm-button-click')
+      await nextTick()
+
+      expect(trackDocumentDelete).toHaveBeenCalledWith({ isDeleteSuccessful: false })
+    })
+
+
   })
 })

@@ -21,10 +21,11 @@
       />
     </PCol>
 
-    <PCol v-if="currentService && currentServiceFolder && !currentBinService" :span="18">
+    <PCol v-if="currentService && currentServiceName && currentServiceFolder && !currentBinService" :span="18">
       <Documents
         ref="documentsRef"
         :currentService="currentService"
+        :currentServiceName="currentServiceName"
         :selectedEntity="selectedEntity"
         :selectedEntityAvatarColor="selectedEntityAvatarColor"
         :selectedEntityName="selectedEntityName"
@@ -94,7 +95,7 @@ const fetchGedFoldersAndServices = async () => {
   servicesFolders.value = foldersByService
   // Using the first folder serviceId by default
   currentService.value = servicesFolders.value[0][0].serviceId
-
+  currentServiceName.value = findServiceNameFromId(currentService.value)
   isLoadingServicesOrFolders.value = false
 }
 
@@ -106,6 +107,7 @@ const selectedEntityAvatarColor = computed(() => userStore.defaultEntity?.color)
 const selectedEntityName = computed(() => userStore.defaultEntity?.legalName ?? '')
 const entityServices = ref<Service[]>([])
 const currentService = ref<null | Service['ServiceId']>(null)
+const currentServiceName = ref<null | Service['ServiceName']>(null)
 const currentServiceFolder = computed<Folder[] | undefined>(() => {
   return servicesFolders.value
     .filter((folder:Folder[]) => folder[0].serviceId === currentService.value)[0]
@@ -127,6 +129,7 @@ const setCurrentFolderAndService = async (folder: Folder) => {
   if (currentBinService.value) {
     await fetchGedFoldersAndServices()
     currentService.value = folder.serviceId
+    currentServiceName.value = findServiceNameFromId(currentService.value)
     setCurrentBinService(null)
     setCurrentFolder(folder.id)
   } else {
@@ -140,6 +143,11 @@ const setCurrentFolderAndService = async (folder: Folder) => {
     }
     currentService.value = folder.serviceId
   }
+}
+
+function findServiceNameFromId(serviceId: Service['ServiceId']) {
+  const foundService = entityServices.value.find((service) => service.ServiceId === serviceId)?.ServiceName
+  return foundService || ''
 }
 
 // Trash scope

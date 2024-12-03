@@ -158,6 +158,7 @@
   <DocumentUpload
     v-if="selectedFolder && filesSelected"
     :currentService="currentService"
+    :currentServiceName="currentServiceName"
     :selectedEntity="selectedEntity"
     :folder="selectedFolder"
     :files="filesSelected"
@@ -245,6 +246,15 @@ import { useDragAndDropFromExplorer } from './composable/DragAndDropFromExplorer
 import DocumentsDropModal from './components/DocumentsDropModal'
 import { Permissions } from '@ged/models/Permissions'
 import AccountInformation from './components/AccountInformation'
+import {
+  trackDocumentMoveFlowStart,
+  trackDocumentRenameFlowStart,
+  trackDocumentDeleteFlowStart,
+  trackDocumentDownloadFlowStart,
+  trackDocumentTransmitFlowStart,
+  trackDocumentSearch,
+} from '@ged/services/tracking/tracking.service'
+import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -499,6 +509,7 @@ const searchDocumentsByKeyWord = async (value: string) => {
     value,
   )
   isSearchLoading.value = false
+  trackDocumentSearch(value)
 }
 
 // upload modal
@@ -580,18 +591,23 @@ const handleToolboxActionTriggered = async (action: string) => {
   switch (action) {
   case 'download-document':
     handleDownloadDocumentsEvent()
+    trackDocumentDownloadFlowStart(TriggerSource.CONTEXT_MENU)
     break
   case 'rename-document':
     handleRenameDocumentEvent()
+    trackDocumentRenameFlowStart(TriggerSource.CONTEXT_MENU)
     break
   case 'delete-document':
     isDeletePopupVisible.value = true
+    trackDocumentDeleteFlowStart(TriggerSource.CONTEXT_MENU)
     break
   case 'move-document':
     handleMoveDocumentEvent()
+    trackDocumentMoveFlowStart(TriggerSource.CONTEXT_MENU)
     break
   case 'transmit-document':
     await handleTransmitDocuments()
+    trackDocumentTransmitFlowStart(TriggerSource.CONTEXT_MENU)
     break
   case 'go-to-document':
     handleGoToSearchedDocument()
@@ -605,6 +621,7 @@ const handleActionBarButtonClick = async (actionName: string) => {
     if (selectedDocuments.value.length === 0) {
       break
     }
+    trackDocumentDownloadFlowStart(TriggerSource.ACTION_BAR)
     handleDownloadDocumentsEvent()
     break
   case 'actionbar-delete-action-click':
@@ -612,23 +629,27 @@ const handleActionBarButtonClick = async (actionName: string) => {
       break
     }
     isDeletePopupVisible.value = true
+    trackDocumentDeleteFlowStart(TriggerSource.ACTION_BAR)
     break
   case 'actionbar-rename-action-click':
     if (selectedDocuments.value.length === 0) {
       break
     }
+    trackDocumentRenameFlowStart(TriggerSource.ACTION_BAR)
     handleRenameDocumentEvent()
     break
   case 'actionbar-move-action-click':
     if (selectedDocuments.value.length === 0) {
       break
     }
+    trackDocumentMoveFlowStart(TriggerSource.ACTION_BAR)
     handleMoveDocumentEvent()
     break
   case 'actionbar-transmit-action-click':
     if (selectedDocuments.value.length === 0) {
       break
     }
+    trackDocumentTransmitFlowStart(TriggerSource.ACTION_BAR)
     await handleTransmitDocuments()
     break
   case 'actionbar-filter-action-click':
@@ -640,7 +661,7 @@ const handleActionBarButtonClick = async (actionName: string) => {
 }
 
 // Drag and drop -> Composable
-const { currentService, selectedEntity } = toRefs(props)
+const { currentService, currentServiceName, selectedEntity } = toRefs(props)
 const {
   isDropZoneVisible,
   isAllowedDropZone,
@@ -651,6 +672,7 @@ const {
   validDroppedFiles,
 } = useDragAndDropFromExplorer(
   currentService,
+  currentServiceName,
   selectedEntity,
   selectedFolder,
   refreshDocumentsList,

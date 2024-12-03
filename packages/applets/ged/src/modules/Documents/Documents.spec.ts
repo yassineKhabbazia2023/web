@@ -1,6 +1,3 @@
-
-
-
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '../Treeview/mocks/treeFoldersMock'
 import Documents from './Documents.vue'
@@ -37,6 +34,15 @@ import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
 import type { Entity } from '@pulse/common/types'
 import type { ComponentWrapper } from '@ged/utils/testHelpers'
+import {
+  trackDocumentDeleteFlowStart,
+  trackDocumentMoveFlowStart,
+  trackDocumentRenameFlowStart,
+  trackDocumentTransmitFlowStart,
+  trackDocumentDownloadFlowStart,
+  trackDocumentSearch
+} from '@ged/services/tracking/tracking.service'
+import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
 type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>
 
@@ -46,12 +52,15 @@ const pinia = createPinia()
 
 const defaultProps: DocumentsProps = {
   currentService: foldersData[0][0].children[0].serviceId,
+  currentServiceName: "cool service name",
   selectedEntity: 'my-entity',
   selectedEntityAvatarColor: 'persian' as Entity['color'],
   selectedEntityName: 'This is a legal name',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: foldersData[0],
 }
+
+vi.mock('@ged/services/tracking/tracking.service')
 
 const createWrapper = (
   props: DocumentsProps = defaultProps,
@@ -1042,4 +1051,104 @@ describe('documents', () => {
       expect(documentSearchFiltersWrapper.exists()).toBeFalsy()
     })
   })
+})
+
+describe('tracking', () => {
+    it.each([
+      {
+        toolboxEventName: 'download-document',
+        expectedTrackFunction: trackDocumentDownloadFlowStart,
+      },
+      {
+        toolboxEventName: 'rename-document',
+        expectedTrackFunction: trackDocumentRenameFlowStart,
+      },
+      {
+        toolboxEventName: 'delete-document',
+        expectedTrackFunction: trackDocumentDeleteFlowStart,
+      },
+      {
+        toolboxEventName: 'move-document',
+        expectedTrackFunction: trackDocumentMoveFlowStart,
+      },
+      {
+        toolboxEventName: 'transmit-document',
+        expectedTrackFunction: trackDocumentTransmitFlowStart,
+      },
+    ])(
+        'should call the appropriate tracking function with the "context menu" trigger source when toolbox action is triggered',
+        async ({ toolboxEventName, expectedTrackFunction }) => {
+          const wrapper = createWrapper()
+          await nextTick()
+
+          const componentInstance = wrapper.vm
+          componentInstance.documents = documentsResponsePayload
+          await nextTick()
+
+          const documentsListWrapper = wrapper.findComponent(DocumentsList)
+          await documentsListWrapper.vm.$emit('toolbox-action-triggered', toolboxEventName)
+          await nextTick()
+
+          expect(expectedTrackFunction).toHaveBeenCalledWith(TriggerSource.CONTEXT_MENU)
+        }
+      )
+
+    it.each([
+      {
+        toolboxEventName: 'actionbar-download-action-click',
+        expectedTrackFunction: trackDocumentDownloadFlowStart,
+      },
+      {
+        toolboxEventName: 'actionbar-rename-action-click',
+        expectedTrackFunction: trackDocumentRenameFlowStart,
+      },
+      {
+        toolboxEventName: 'actionbar-delete-action-click',
+        expectedTrackFunction: trackDocumentDeleteFlowStart,
+      },
+      {
+        toolboxEventName: 'actionbar-move-action-click',
+        expectedTrackFunction: trackDocumentMoveFlowStart,
+      },
+      {
+        toolboxEventName: 'actionbar-transmit-action-click',
+        expectedTrackFunction: trackDocumentTransmitFlowStart,
+      },
+    ])(
+        'should call the appropriate tracking function with the "action bar" trigger source when $toolboxEventName action bar action is triggered',
+        async ({ toolboxEventName, expectedTrackFunction }) => {
+          const wrapper = createWrapper()
+          const componentInstance = wrapper.vm
+          componentInstance.documents = documentsResponsePayload
+          componentInstance.selectedDocuments = [
+            documentsResponsePayload.documentsPage.items[0],
+          ]
+
+          await nextTick()
+
+          const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+          await nextTick()
+
+          await documentActionBar.vm.$emit(
+            'p-action-bar-button-clicked',
+            toolboxEventName,
+          )
+          await nextTick()
+          await flushPromises()
+
+          expect(expectedTrackFunction).toHaveBeenCalledWith(TriggerSource.ACTION_BAR)
+        }
+      )
+
+    it('should track the searched value', async () => {
+        const wrapper = createWrapper()
+        const searchContent = 'Hello'
+        const componentInstance = wrapper.vm
+        componentInstance.documents = documentsResponsePayload
+        componentInstance.isSearchExpanded = true
+        componentInstance.searchContent = searchContent
+
+        await nextTick()
+        expect(trackDocumentSearch).toHaveBeenCalledWith(searchContent)
+    })
 })

@@ -49,6 +49,7 @@ import { mapExplorerDocumentFromDocuments } from '../../helpers/documentExplorer
 import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
 import { PICheck } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '../../DocumentsTypes'
+import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 
 const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
@@ -188,11 +189,13 @@ async function proceedMoveDocuments(documents: ExplorerMoveDocument[]) {
       d.givenActionState = 'DONE'
     })
     triggerSuccessNotification(documents.length, destinationFolder.name)
+    trackDocumentMove({ isMoveSuccessful: true })
   } catch (error: any) {
     documents.forEach((d) => {
       d.codeError = error?.response?.status
       d.givenActionState = d.codeError === '500' ? 'ERROR' : 'FAILED'
     })
+    trackDocumentMove({ isMoveSuccessful: false })
   }
 
   if (!explorerDocuments.value.some((d) => d.givenActionState === 'TO_DO')) {

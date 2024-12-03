@@ -11,6 +11,7 @@ const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
 const validFiles: File[] = generateTestFiles(3, 'VALID')
 
 const currentServiceFolder: Folder[] = foldersData[0]
+const currentServiceName = 'A service name'
 const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
 const selectedEntity = 'my-selected-entity'
 
@@ -38,6 +39,7 @@ export const defaultProps: DocumentUploadProps = {
   folder: validDestination,
   isUploadModalOpened: false,
   currentServiceFolder,
+  currentServiceName,
   currentService: curentService,
   selectedEntity,
   files: validFiles,
