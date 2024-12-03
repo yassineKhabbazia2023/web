@@ -2,6 +2,8 @@
   <button
     class="p-offer-card padding-y--2"
     :disabled="disabled"
+    type="button"
+    :class="{'p-offer-card--selected': pSelected}"
     @click="$emit('selectOfferEvent')"
   >
     <div class="p-offer-card__logo margin-right--4">
@@ -56,8 +58,9 @@ defineEmits<{
   cursor: pointer;
   outline: none;
   transition: all 0.3s ease;
-  padding-left: 0;
+  padding-left: 8px;
   padding-right: 0;
+  border-left: 4px solid transparent;
 
   &:disabled {
     pointer-events: none;
@@ -73,8 +76,8 @@ defineEmits<{
 
   &:hover,
   &:focus {
-    border: none;
-
+    background-color: var(--el-color-persian-50);
+    border-color: var(--el-color-base-persian);
     #{$self}__title {
       color: var(--el-color-persian-500);
     }
@@ -84,14 +87,18 @@ defineEmits<{
   }
 
   &:active {
-    border: none;
-
     #{$self}__title {
       color: var(--el-color-persian-700);
     }
     #{$self}__chevron-icon {
       color: var(--el-color-persian-800);
     }
+  }
+
+  &--selected,
+  &--selected:disabled {
+    background-color: var(--el-color-persian-50);
+    border-color: var(--el-color-base-persian);
   }
 
   &__logo {

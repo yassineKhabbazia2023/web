@@ -15,6 +15,7 @@
           :pLogo="logoName"
           :pTitle="offerName"
           :pDescription="offerLabel"
+          :pSelected="activeOffers.includes(offerCode)"
           :disabled="activeOffers.includes(offerCode)"
           @select-offer-event="onSelectOffer(offerId)"
         />

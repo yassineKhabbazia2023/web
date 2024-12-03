@@ -14,6 +14,7 @@
           :pLogo="offer.pLogo"
           :pTitle="offer.pTitle"
           :pDescription="offer.pDescription"
+          :pSelected="offer.pSelected"
           :disabled="offer.disabled"
           @select-offer-event="logEvent('selectOfferEvent', $event)"
         />
@@ -39,14 +40,14 @@ const offerCardData: POfferCardProps[] = reactive([
     pLogo: 'meg',
     pTitle: 'Gestion Smart',
     pDescription:
-      'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
+      'Mon Expert en Gestion (MEG) en version start (inclus dans Pulse)',
     disabled: false,
   },
   {
     pLogo: 'iconpulse-color',
     pTitle: 'Ma Banque',
     pDescription: 'Visualisation des données bancaires',
-    disabled: false,
+    pSelected: true,
   },
   {
     pLogo: 'silae-color',

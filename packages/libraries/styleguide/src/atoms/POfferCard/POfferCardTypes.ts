@@ -5,4 +5,5 @@ export interface POfferCardProps {
   pTitle: string
   pDescription: string
   disabled?: boolean
+  pSelected?: boolean
 }
