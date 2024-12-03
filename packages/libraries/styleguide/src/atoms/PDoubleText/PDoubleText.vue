@@ -21,7 +21,10 @@
         {{ pProfile }}
       </PAvatar>
     </div>
-    <div :class="{ 'p-double-text__content': true, 'p-double-text--bold': pBold }">
+    <div
+      class="p-double-text__content"
+      :class="{ 'font-bold': pBold }"
+    >
       <div
         class="p-double-text__content-title"
         :disabled="pDisabled"
@@ -98,8 +101,6 @@ withDefaults(defineProps<PDoubleTextProps>(), {
     max-width: 300px;
 
     &-title {
-      font-size: 14px;
-      line-height: 16.8px;
       color: var(--el-color-neutral-gray-900);
       text-overflow: ellipsis;
       overflow: hidden;
@@ -113,9 +114,7 @@ withDefaults(defineProps<PDoubleTextProps>(), {
     }
 
     &-description {
-      margin-top: 10px;
       font-size: 12px;
-      line-height: 14.4px;
       color: var(--el-color-neutral-gray-500);
       text-overflow: ellipsis;
       overflow: hidden;
@@ -126,10 +125,6 @@ withDefaults(defineProps<PDoubleTextProps>(), {
       &[selected='true']{
           background-color: var(--el-color-persian-200);
       }
-    }
-
-    &--bold {
-      font-weight: 700;
     }
   }
 }

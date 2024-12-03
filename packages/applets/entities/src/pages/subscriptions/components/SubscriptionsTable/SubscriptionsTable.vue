@@ -96,7 +96,6 @@
             @p-toolbox-item-clicked="($event: string) => onClickToolboxItem($event, scope.row)"
           >
             <PButton
-              pType="white"
               pSize="small"
               :pLoading="scope.row.subscriptionId === clickedRow && isActionInProgress"
               class="el-button--icon"
