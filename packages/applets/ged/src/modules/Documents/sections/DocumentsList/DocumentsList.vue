@@ -10,6 +10,7 @@
       :rowClassName="tableRowClassName"
       currentRowKey="id"
       :emptyText="t('noSearchData')"
+      class="ged-documents-list"
       @sort-change="handleSortChange"
       @row-click="selectRow"
       @selection-change="handleSelectionChange"
@@ -131,6 +132,7 @@ const tableRowClassName = ({
   return `
     document-row
     ${row.id}
+    cursor-pointer
     `
 }
 
@@ -198,7 +200,7 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
     }
   }
 </style>
-<style>
+<style lang="scss">
 ::-webkit-scrollbar {
   height: 8px;
   width: 8px;
@@ -213,6 +215,16 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
 
 ::-webkit-scrollbar-corner {
   background: #90939999;
+}
+
+.ged-documents-list {
+  .current-row > td:first-child {
+    border-left: 4px solid var(--el-color-base-persian);
+
+    .cell {
+      padding-left: 0.8rem;
+    }
+  }
 }
 </style>
 <i18n lang="json">

@@ -33,7 +33,7 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
     actionbarButton: {
       pButtonName: 'Filtrer',
       pButton: {
-        pType: 'primary',
+        pType: 'secondary',
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -70,7 +70,7 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
     actionbarButton: {
       pButtonName: 'Renommer',
       pButton: {
-        pType: 'white',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -86,7 +86,7 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
     actionbarButton: {
       pButtonName: 'Envoi immédiat',
       pButton: {
-        pType: 'white',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -102,7 +102,7 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
     actionbarButton: {
       pButtonName: 'Déplacer',
       pButton: {
-        pType: 'white',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -118,7 +118,7 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
     actionbarButton: {
       pButtonName: 'Télécharger',
       pButton: {
-        pType: 'white',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -134,7 +134,7 @@ const rightSideButtons: Record<string, ActionBarButtonWithOrder> = {
     actionbarButton: {
       pButtonName: 'Supprimer',
       pButton: {
-        pType: 'white',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,

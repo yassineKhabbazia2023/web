@@ -3,7 +3,7 @@ export function getData(pLoading: boolean) {
     {
       pButtonName: 'Télécharger',
       pButton: {
-        pType: 'white',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,
@@ -16,7 +16,7 @@ export function getData(pLoading: boolean) {
     {
       pButtonName: 'Déplacer',
       pButton: {
-        pType: 'white',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading,
@@ -49,7 +49,7 @@ export function getData2(pButtonName: string) {
     {
       pButtonName,
       pButton: {
-        pType: 'primary',
+        pType: 'secondary',
         pRound: false,
         pCircle: false,
         pLoading: false,

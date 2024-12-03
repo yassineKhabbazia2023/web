@@ -3,9 +3,9 @@
 
 $tree: (
     'node-content-height': 34px,
-    'node-hover-bg-color': getCssVar('color', 'persian-100'),
-    'text-color': getCssVar('color', 'neutral-gray-900'),
-    'expand-icon-color': getCssVar('color', 'neutral-gray-900'),
+    'node-hover-bg-color': var(--el-color-base-persian-light),
+    'text-color': var(--el-color-neutral-gray-900),
+    'expand-icon-color': var(--el-color-neutral-gray-900),
 );
 
 .p-tree.el-tree {
@@ -21,7 +21,7 @@ $tree: (
 
   &--highlight-current {
     .el-tree-node.is-current > .el-tree-node__content {
-        background-color: var(--el-color-persian-200);
+        background-color: var(--el-color-persian-50);
         font-weight: 600;
     }
   }

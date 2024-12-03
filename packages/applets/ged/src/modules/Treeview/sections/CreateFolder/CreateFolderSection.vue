@@ -4,7 +4,7 @@
     v-if="hasCreateFolderButton"
     data-testid="treeview__new-folder"
     class="treeview__new-folder el-button--default"
-    pType="white"
+    pType="secondary"
     pSize="small"
     :pDisabled="isTreeCreateFolderBtnDisabled || isInBinContext"
     @click="openCreateFolderModal"
