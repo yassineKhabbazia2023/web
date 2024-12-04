@@ -81,7 +81,7 @@
     <template #footer>
       <div class="margin-left--auto">
         <PButton
-          pType="primary"
+          pType="secondary"
           pPlain
           data-testid="cancel-btn"
           @click="closeDrawer"
