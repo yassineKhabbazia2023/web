@@ -25,9 +25,11 @@ vi.mock('@pulse/common', () => ({
 describe('page expire token', () => {
   it('should call endpoint when click on button', async () => {
     const contactId = 'contact id'
+    const accountNumber = '3590284870'
     mockUseRoute.mockReturnValue({
       query: {
         contactId,
+        accountNumber,
       },
     })
     const wrapper = createWrapper()
@@ -40,7 +42,7 @@ describe('page expire token', () => {
     await flushPromises()
 
     expect(postMock).toHaveBeenCalledOnce()
-    expect(postMock).toHaveBeenCalledWith(expectedUrl)
+    expect(postMock).toHaveBeenCalledWith(expectedUrl, null, { params: { accountNumber } })
     expect(mockRouterPush).toHaveBeenCalledOnce()
     expect(mockRouterPush).toHaveBeenCalledWith(expectedRoute)
   })

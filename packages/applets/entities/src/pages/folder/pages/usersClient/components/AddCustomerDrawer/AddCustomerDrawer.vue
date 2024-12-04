@@ -184,7 +184,7 @@ async function handleAddContactFormSubmission() {
       mobilePhone: '',
       email: newContact.email,
       accountNumber: props.targetEntityNumber,
-    })
+    }, props.targetEntityId)
     onboardingSucceeded()
   } catch (error: any) {
     if (error.response.status === 409) {

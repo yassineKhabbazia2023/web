@@ -41,7 +41,7 @@ export function getMockedRouter(
   })
   const query = {
     contactId: 'contactId',
-    accountId: 'accountId',
+    accountNumber: 'accountNumber',
     token: 'token',
     contactEmail,
     email,

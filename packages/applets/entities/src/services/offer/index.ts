@@ -37,8 +37,11 @@ export const getOffer = async (
 
 export const getPrincipalContacts = async (accountId: number): Promise<ClientContact[]> => {
   try {
-    const response =
-      await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/roles/signatory/${accountId}`)
+    const response = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/roles/signatory`, {
+      params: {
+        accountId,
+      },
+    })
 
     return response?.data
   } catch (error) {
