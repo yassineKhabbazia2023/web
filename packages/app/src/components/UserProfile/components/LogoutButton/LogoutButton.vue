@@ -1,6 +1,6 @@
 <template>
   <PButton
-    pType="primary"
+    pType="secondary"
     pPlain
     @click="handleLogout"
   >
