@@ -103,6 +103,7 @@ const slots = useSlots()
     flex-grow: 0;
     flex-shrink: 0;
     height: 95px;
+    padding: 34px;
     width: auto;
     filter: drop-shadow(0 16px 16px rgba(#7090b0, 0.04))
       drop-shadow(0 6px 8px rgba(#7090b0, 0.05))
