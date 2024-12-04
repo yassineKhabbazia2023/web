@@ -117,7 +117,16 @@ dist
 .pnp.*
 
 # vite temporary files
-vite.config.ts.timestamp*.mjs
+vite.*.timestamp-*.mjs
+.rollup.cache
+
+# vitest coverage
+stats.html
 
 # turbo
 .turbo
+
+# app
+## public
+packages/app/public/env-vars.js
+packages/app/public/styles.css
