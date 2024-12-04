@@ -53,7 +53,8 @@ $tag-padding: (
     &#{$self}--cyan {
       --el-tag-bg-color: var(--el-color-secondary-cyan);
       --el-tag-border-color: var(--el-color-secondary-cyan);
-      --el-tag-hover-color: var(--el-color-secondary-cyan-bg);
+      --el-tag-hover-color: var(--el-color-secondary-cyan);
+      --el-tag-text-color: var(--el-color-secondary-cyan-txt);
     }
     &#{$self}--gray-500 {
       --el-tag-bg-color: var(--el-color-neutral-gray-500);
