@@ -20,7 +20,7 @@
           <section
             v-for="(section, sectionIndex) in sections"
             :key="`section-${sectionIndex}`"
-            class="margin--6 shadow--3 padding--4"
+            class="margin--6 padding--4"
           >
             <h2 class="h3 margin-bottom--3">
               {{ section.title }}

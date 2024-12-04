@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex--align-items-center flex--justify-content-center radius--1 text-center"
+    class="flex flex--align-items-center flex--justify-content-center text-center"
     :class="[rootWrapperClass, currentCellNumberModifier]"
   >
     {{ pNumber }}

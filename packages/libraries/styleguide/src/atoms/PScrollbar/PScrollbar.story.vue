@@ -9,7 +9,7 @@
         <p
           v-for="item in itemCountBasicUsage"
           :key="item"
-          class="scrollbar-demo-item flex flex--justify-content-center flex--align-items-center margin--2 radius--1"
+          class="scrollbar-demo-item flex flex--justify-content-center flex--align-items-center margin--2"
         >
           {{ item }}
         </p>
@@ -26,7 +26,7 @@
           <p
             v-for="item in itemCountHorizontalScroll"
             :key="item"
-            class="scrollbar-demo-item2 flex flex--justify-content-center flex--align-items-center margin--2 radius--1"
+            class="scrollbar-demo-item2 flex flex--justify-content-center flex--align-items-center margin--2"
           >
             {{ item }}
           </p>
@@ -57,7 +57,7 @@
         <p
           v-for="item in count"
           :key="item"
-          class="scrollbar-demo-item flex flex--justify-content-center flex--align-items-center margin--2 radius--1"
+          class="scrollbar-demo-item flex flex--justify-content-center flex--align-items-center margin--2"
         >
           {{ item }}
         </p>

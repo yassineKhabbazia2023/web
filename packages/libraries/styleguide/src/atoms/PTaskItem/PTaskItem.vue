@@ -1,7 +1,7 @@
 <template>
   <div
     class="
-      p-task-item radius--1 padding-x--2 padding-y--1
+      p-task-item padding-x--2 padding-y--1
       flex flex--align-items-center flex--justify-content-space-between"
     :class="pClassMapper"
     :title="pTitle"

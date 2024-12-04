@@ -6,7 +6,6 @@
       flex--direction-column
       flex--justify-content-flex-start
       flex-gap--2
-      radius--1
       padding-x--3
       padding-y--2
     "

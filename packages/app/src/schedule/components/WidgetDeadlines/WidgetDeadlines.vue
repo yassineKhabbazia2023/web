@@ -18,7 +18,6 @@
         class="
           widget-deadlines__item
           flex
-          radius--2
           padding--2
           cursor-pointer
           hover-bg--persian-100

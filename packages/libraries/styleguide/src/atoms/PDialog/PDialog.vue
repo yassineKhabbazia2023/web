@@ -2,7 +2,7 @@
   <ElDialog
     v-model="dialogModel"
     :lockScroll="pLockScroll"
-    class="p-dialog radius--4"
+    class="p-dialog"
     :title="pTitle"
     :width="pWidth"
     :modal="pModal"

@@ -77,7 +77,7 @@
         :pMd="8"
         :pLg="6"
       >
-        <div class="padding--6 home-folder__mobile height-100 bg--secondary-cyan-bg radius--2">
+        <div class="padding--6 home-folder__mobile height-100 bg--secondary-cyan-bg">
           <PRow>
             <PCol
               :pSpan="24"

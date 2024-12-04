@@ -24,7 +24,7 @@
       <section
         v-for="(section, index) in informationFormStructure"
         :key="`section-${index}`"
-        class="information-details__form-section shadow--3 radius--1 padding-x--5 padding-bottom--1 margin-bottom--6"
+        class="information-details__form-section padding-x--5 padding-bottom--1 margin-bottom--6"
       >
         <p
           class="information-details__form-section-title font-bold padding-top--5 margin-bottom--3"

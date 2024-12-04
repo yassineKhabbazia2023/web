@@ -63,7 +63,6 @@
             font-normal
             padding--3
             bg--neutral-gray-50
-            radius--2
           "
           data-testid="create-password-terms-checkbox"
         >

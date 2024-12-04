@@ -176,7 +176,6 @@
               :key="indexItem"
               class="
                 bg--persian-300
-                radius--3
               "
               :class="{
                 [subElement]: true,

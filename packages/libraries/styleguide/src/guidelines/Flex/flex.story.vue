@@ -49,7 +49,6 @@
               class="
                 padding-x--6
                 bg--persian-300
-                radius--3
               "
               :class="{
                 [subElement]: true,

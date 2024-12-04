@@ -1,7 +1,7 @@
 <template>
   <div class="report-display bg--neutral-gray-50">
     <div
-      class="report-display__header bg--base-white flex flex--align-items-center shadow--2 padding-x--6 padding-y--4"
+      class="report-display__header bg--base-white flex flex--align-items-center padding-x--6 padding-y--4"
     >
       <PAvatar
         pShape="circle"

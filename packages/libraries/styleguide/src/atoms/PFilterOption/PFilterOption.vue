@@ -4,7 +4,6 @@
       cssClass,
       'p-filter-option',
       'flex flex--align-items-center',
-      'radius--2',
       'padding-x--3'
     ]"
     :disabled="pDisabled"

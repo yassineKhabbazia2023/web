@@ -23,7 +23,6 @@
             font-base font-normal
             padding--3
             bg--neutral-gray-50
-            radius--2
             width-100
           "
         >

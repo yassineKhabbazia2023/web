@@ -1,5 +1,5 @@
 <template>
-  <div class="action-bar shadow--1">
+  <div class="action-bar">
     <PActionBar
       class="documents-actions"
       :pRightSideButtons="rightSideButtons"

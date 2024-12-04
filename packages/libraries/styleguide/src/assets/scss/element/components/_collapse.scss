@@ -48,9 +48,6 @@ div.el-collapse {
     border: none;
     overflow: hidden;
 
-    @extend .radius--2;
-    // @extend .shadow--3;
-
     .el-collapse-item__wrap,
     .el-collapse-item__header {
       border: none;
@@ -61,8 +58,6 @@ div.el-collapse {
     border: none;
     overflow: hidden;
     
-    @extend .radius--2;
-
     &.is-disabled {
       .el-collapse-item__wrap,
       .el-collapse-item__header {
@@ -102,8 +97,6 @@ div.el-collapse {
     border: none;
     overflow: hidden;
     
-    @extend .radius--2;
-
     &.is-disabled {
       .el-collapse-item__wrap,
       .el-collapse-item__header {

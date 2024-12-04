@@ -5,7 +5,6 @@
       class="
         p-radio-card__content
         padding--4
-        radius--1
         flex
       "
     >

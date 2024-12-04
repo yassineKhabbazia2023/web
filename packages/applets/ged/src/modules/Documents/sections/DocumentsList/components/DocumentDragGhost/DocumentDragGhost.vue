@@ -12,7 +12,6 @@
         flex--align-items-center
         padding-y--4
         padding-x--4
-        shadow--2
       "
     >
       <PIcon>

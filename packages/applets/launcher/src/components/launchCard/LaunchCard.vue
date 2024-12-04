@@ -3,7 +3,6 @@
     class="
       launch-card
       padding--6
-      radius--2
       flex
       flex--direction-column
       flex-gap--2
