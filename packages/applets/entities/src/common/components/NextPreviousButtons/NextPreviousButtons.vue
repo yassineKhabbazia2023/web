@@ -1,7 +1,7 @@
 <template>
   <div>
     <PButton
-      pType="default"
+      pType="secondary"
       class="margin-right--4"
       data-testid="previousButton"
       @click="emit('clickPrevious')"
