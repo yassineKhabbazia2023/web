@@ -127,8 +127,7 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const contactId = route.query.contactId
-const accountId = route.query.accountId
+const { contactId, accountNumber } = route.query
 const email = route.query.email?.toString().trim().replace(' ', '+')
 const resetPasswordToken = route.query.token
 const formRef = ref<FormInstance>()
@@ -255,7 +254,7 @@ const isValidToken = async (): Promise<any> => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ name: 'expireToken', query: { contactId, accountId } })
+    router.push({ name: 'expireToken', query: { contactId, accountNumber } })
   }
 })
 onMounted(async () => {

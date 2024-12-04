@@ -47,7 +47,7 @@ describe('page creation password', () => {
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
       name: 'expireToken',
-      query: { accountId: 'accountId', contactId: 'contactId' },
+      query: { accountNumber: 'accountNumber', contactId: 'contactId' },
     })
   })
 })
