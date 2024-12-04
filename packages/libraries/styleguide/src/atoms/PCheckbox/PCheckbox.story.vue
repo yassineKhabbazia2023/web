@@ -23,6 +23,48 @@
         <HstText v-model="checkBoxControl.contentSlot" title="ContentSlot" />
       </template>
     </Variant>
+    <Variant title="Design system">
+      <ul class="padding--4">
+        <li class="flex flex--justify-content-space-between gap-4">
+          <h2>
+            normal
+          </h2>
+          <h2>
+            disabled
+          </h2>
+        </li>
+        <li
+          class="margin-top--2 flex flex--justify-content-space-between gap-4"
+        >
+          <PCheckbox v-model="checkBoxControl.valueTrue">
+            Label
+          </PCheckbox>
+          <PCheckbox v-model="checkBoxControl.valueTrue" :disabled="true">
+            Label
+          </PCheckbox>
+        </li>
+        <li
+          class="margin-top--2 flex flex--justify-content-space-between gap-4"
+        >
+          <PCheckbox v-model="checkBoxControl.valueFalse">
+            Label
+          </PCheckbox>
+          <PCheckbox v-model="checkBoxControl.valueFalse" :disabled="true">
+            Label
+          </PCheckbox>
+        </li>
+        <li
+          class="margin-top--2 flex flex--justify-content-space-between gap-4"
+        >
+          <PCheckbox :indeterminate="true">
+            Label
+          </PCheckbox>
+          <PCheckbox :indeterminate="true" :disabled="true">
+            Label
+          </PCheckbox>
+        </li>
+      </ul>
+    </Variant>
   </Story>
 </template>
 
@@ -31,6 +73,8 @@ import PCheckbox from '.'
 import { reactive } from 'vue'
 const checkBoxControl = reactive({
   disabled: false,
+  valueTrue: true,
+  valueFalse: false,
   contentSlot: 'Checkbox label',
 })
 </script>
