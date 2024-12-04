@@ -130,26 +130,32 @@ const colorMapper = computed(() => {
   &--selected {
     &#{$self}--color-success {
       background-color: var(--el-color-functionnal-green-bg);
+      border-color: var(--el-color-functionnal-green-txt);
     }
 
     &#{$self}--color-warning {
       background-color: var(--el-color-functionnal-orange-bg);
+      border-color: var(--el-color-functionnal-orange-txt);
     }
 
     &#{$self}--color-amethyste {
       background-color: var(--el-color-secondary-amethyste-bg);
+      border-color: var(--el-color-functionnal-amethyste-txt);
     }
 
     &#{$self}--color-danger {
       background-color: var(--el-color-functionnal-red-bg);
+      border-color: var(--el-color-functionnal-red-txt);
     }
 
     &#{$self}--color-gray-900 {
       background-color: var(--el-color-neutral-gray-100);
+      border-color: var(--el-color-base-blue-pulse);
     }
 
     &#{$self}--color-fuschia {
       background-color: var(--el-color-secondary-fuschia-bg);
+      border-color: var(--el-color-functionnal-fuschia-txt);
     }
   }
 
