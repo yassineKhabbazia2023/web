@@ -76,7 +76,8 @@ $pagination: (
         background-color: var(--el-color-base-white);
 
         &:hover {
-          background-color: var(--el-color-persian-100);
+          background-color: var(--el-color-base-persian-light);
+          color: var(--el-color-base-blue-pulse);
         }
 
         &[aria-disabled='true'] {
