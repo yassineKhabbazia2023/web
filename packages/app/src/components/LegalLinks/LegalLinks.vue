@@ -136,7 +136,6 @@ onMounted(async () => {
         content: '•';
         display: inline-block;
         margin-right: 0.4rem;
-        color: var(--el-color-white);
         font-size: 1.2rem;
       }
     }
@@ -144,7 +143,6 @@ onMounted(async () => {
   &__link,
   #ot-sdk-btn.ot-sdk-show-settings,
   #ot-sdk-btn.optanon-show-settings {
-    color: var(--el-color-white);
     font-size: 1.2rem;
     background: none;
     appearance: none;
@@ -156,7 +154,6 @@ onMounted(async () => {
     &:focus {
       text-decoration: underline;
       background: none;
-      color: var(--el-color-white);
     }
   }
 }
