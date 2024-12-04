@@ -73,10 +73,19 @@ tbody tr td .cell {
     }
 
     tr.el-table__row {
+      td.el-table__cell {
+        &:first-child {
+          border-left: 4px solid transparent;
+        }
+      }
+
       &.p-table__row--selected, 
       &.p-table__row--selected.el-table__row--striped {
         td.el-table__cell {
-          background-color: var(--el-color-persian-200);
+          background-color: var(--el-table-current-row-bg-color);
+          &:first-child {
+            border-color: var(--el-color-base-persian);
+          }
         }
       }
       &.p-table__row--disabled, 

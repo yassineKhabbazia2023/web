@@ -193,12 +193,6 @@ const handleSelectUser = (users: ExtendedUser[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.color-persian {
-  color: var(--el-color-base-persian);
-}
-</style>
-
 <i18n lang="yaml">
 en-US:
   user: 'User'

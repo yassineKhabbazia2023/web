@@ -4,6 +4,7 @@
     :pData="props.data"
     :highlightCurrentRow="!isAccountManagement"
     showOverflowTooltip
+    :rowClassName="!isAccountManagement ? 'cursor-pointer' : ''"
     pStripe
     tableLayout="fixed"
     class="wallet-table"
@@ -345,24 +346,8 @@ const onSelectedFolder = (row: any) => {
 <!-- eslint-disable-next-line vue/enforce-style-attribute -->
 <style lang="scss">
 .wallet-table {
-  .el-table__body {
-    .el-table__row {
-      .el-table__cell {
-        &:nth-of-type(-n+5) {
-          &:hover {
-            cursor: pointer;
-          }
-        }
-      }
-    }
-  }
-
   .current-row > td:first-child {
-    border-left: 4px solid var(--el-color-base-persian);
-
-    .cell {
-      padding-left: 0.8rem;
-    }
+    border-color: var(--el-color-base-persian) !important;
   }
 }
 </style>
