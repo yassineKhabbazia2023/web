@@ -61,7 +61,7 @@
       <div class="flex flex--justify-content-flex-end flex-gap--4">
         <PButton
           pPlain
-          pType="primary"
+          pType="secondary"
           @click="onClickReset"
         >
           {{ t('reset') }}

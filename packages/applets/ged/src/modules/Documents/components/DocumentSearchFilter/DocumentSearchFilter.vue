@@ -37,7 +37,7 @@
     <template #footer>
       <div>
         <PButton
-          pType="primary"
+          pType="secondary"
           pPlain
           pSize="default"
           class="margin-right--4"

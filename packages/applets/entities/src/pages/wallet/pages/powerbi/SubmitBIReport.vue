@@ -43,7 +43,7 @@
       </PRow>
       <div class="text-right margin-top--4">
         <PButton
-          pType="primary"
+          pType="secondary"
           pSize="default"
           pPlain
           data-testid="powerbi-reset-button"
