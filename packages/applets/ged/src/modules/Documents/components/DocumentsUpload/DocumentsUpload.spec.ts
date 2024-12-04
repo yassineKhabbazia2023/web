@@ -6,7 +6,7 @@ import type { DocumentUploadProps } from './DocumentsUploadTypes'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import type { Folder } from '@ged/models/Folder'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { uploadDocument } from '@ged/services/Documents'
@@ -295,6 +295,26 @@ describe('test DocumentsUpload', () => {
           expect(wrapper.vm.explorerDocuments).toHaveLength(
             wrapper.vm.explorerDocuments.filter(d => d.givenActionState === 'DONE').length,
           )
+        })
+        
+        it('should display error toaster when upload document fails', async () => {
+          const updatedProps = { ...defaultProps, isUploadModalOpened: true }
+          
+          vi.mocked(uploadDocument).mockRejectedValue(new Error('Upload failed'));
+          
+          const wrapper = createWrapper(updatedProps)
+
+          const documentExplorerModalWrapper =
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+                
+          await documentExplorerModalWrapper.vm.$emit(
+            'modal-action-clicked',
+            'modal-add-document-action-click',
+          )
+
+          await flushPromises()
+          await nextTick()
+          expect(mockToastPlugin).toHaveBeenCalled();
         })
       })
 

@@ -151,6 +151,7 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
   let uploadedDocumentCount = 0
   let documentUploadedWithSuccess = 0
   let documentUploadedWithError = 0
+  let failedDocumentDetails: string[] = []
   const destinationFolder = { ...currentExplorerFolder.value }
   while (uploadedDocumentCount < documents.length) {
     // Selects up to 5 documents for upload or fewer if remaining documents are less than 5
@@ -174,6 +175,7 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
       } catch (error: any) {
         documentUploadedWithError++
         document.codeError = error?.response?.status
+        failedDocumentDetails.push(`${document.file.name}`)
         if (document.codeError === '500') {
           document.givenActionState = 'FAILED'
         } else {
@@ -195,7 +197,14 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
     destinationFolder: destinationFolder.name
   })
 
-  triggerSuccessNotification(documentUploadedWithSuccess, destinationFolder.name)
+  if (documentUploadedWithSuccess === documents.length) {
+    triggerSuccessNotification(documentUploadedWithSuccess, destinationFolder.name)
+  }
+  if (failedDocumentDetails.length > 0) {
+    const errorDetails = failedDocumentDetails.join(', ')
+    const failedCount = documents.length - documentUploadedWithSuccess
+    triggerErrorNotification(failedCount, errorDetails)
+  }
   if (documents.length === uploadedDocumentCount &&
     explorerDocuments.value.filter(d => !d.isSelected)) {
     modalActionsbuttons.value =
@@ -245,6 +254,15 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
     position: 'bottom-right',
   })
 }
+const triggerErrorNotification = (failedCount : number, errorDetails : string ) => {
+  toastPlugin({
+      message: t('notifications.errorMsg', { failedCount , errorDetails }, failedCount),
+      icon: PICheck,
+      showClose: true,
+      customClass: 'error',
+      position: 'bottom-right',
+    })
+}
 </script>
 
 <!-- eslint-disable max-len -->
@@ -263,7 +281,9 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
       "successMsg": {
         "plural": "Les {documentCount} documents ont été déposés dans le dossier {folderName}",
         "single": "1 document a été déposé dans le dossier {folderName}"
-      }
+      },
+      "errorMsg": "1 document n'a pas pu être déposé : {errorDetails}.|{failedCount} documents n'ont pas pu être déposés : {errorDetails}."
+
     },
     "header": {
       "title": "Certains documents ne peuvent pas être déposés dans votre espace documentaire"
@@ -282,7 +302,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
       "successMsg": {
         "plural": "Les {documentCount} documents ont été déposés dans le dossier {folderName}",
         "single": "1 document a été déposé dans le dossier {folderName}"
-      }
+      },"errorMsg": "1 document n'a pas pu être déposé : {errorDetails}.|{failedCount} documents n'ont pas pu être déposés : {errorDetails}."
     },
     "header": {
       "title": "Certains documents ne peuvent pas être déposés dans votre espace documentaire"
