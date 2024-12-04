@@ -26,10 +26,10 @@ const props = defineProps<PrincipalContactProps>()
 const contactDescription = t('contactDescription')
 const contactTag: PTagProps = {
   pSize: 'default',
-  pColor: 'persian',
+  pColor: 'cyan',
   pContent: t('signatoryCustomer'),
   pIconLeftName: 'vectorPen',
-  pEffect: 'light',
+  pEffect: 'dark',
 }
 
 const fullName = computed(() =>
