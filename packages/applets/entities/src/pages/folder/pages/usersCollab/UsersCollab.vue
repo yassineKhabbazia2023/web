@@ -393,7 +393,7 @@ async function handleRemoveSignatory(contactId: User['contactId'], contactFullNa
   }
   try {
     await updateSignatoryStatus(currentEntity.value.accountId, contactId, false)
-    showRemoveSignatorySuccess(contactFullName)
+    showSuccessNotification('signatoryRemoved', contactFullName)
     setAccountSignatories()
   } catch (error) {
     showTechnicalError()
@@ -435,9 +435,9 @@ function showAddSignatorySuccess(userFullName: string) {
   })
 }
 
-function showRemoveSignatorySuccess(userFullName: string) {
+function showSuccessNotification(messageKey: string, userFullName: string) {
   PNotification({
-    message: t('signatoryRemoved', { userFullName }),
+    message: t(messageKey, { userFullName }),
     icon: PICheck,
     showClose: true,
     customClass: 'success',
