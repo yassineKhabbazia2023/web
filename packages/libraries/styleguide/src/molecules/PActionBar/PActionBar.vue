@@ -57,6 +57,7 @@
         <PExpandableSearch
           v-else-if="item.pComponentType === 'SEARCH'"
           v-model:pSearchContent="pSearchContent"
+          :pType="'default'"
           :pIsSearchShrinkable="item.pIsSearchShrinkable"
           :pIsSearchOpen="item.pIsSearchOpen ?? false"
           :pMaxLength="pSearchMaxLength"

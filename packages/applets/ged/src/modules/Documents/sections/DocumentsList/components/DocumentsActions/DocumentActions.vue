@@ -12,7 +12,6 @@
     >
       <PIcon
         size="14"
-        :color="AppColors.GRAY_300"
         pName="threeDots"
       />
     </PButton>
@@ -22,7 +21,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PToolbox, PButton, PIcon } from '@pulse/styleguide/components'
-import { AppColors } from '@pulse/styleguide'
 import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 
