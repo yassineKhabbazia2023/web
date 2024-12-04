@@ -1,6 +1,7 @@
 <template>
   <ul
     class="legal-links list-style-none flex--align-items-center flex--wrap margin-top--4"
+    :class="{'legal-links--dark': dark}"
   >
     <li class="legal-links__item flex flex--align-items-center">
       <a
@@ -105,6 +106,10 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+defineProps({
+  dark: Boolean,
+})
+
 const { isCollab, isAuthenticated } = storeToRefs(commonStore())
 const route = useRoute()
 
@@ -154,6 +159,11 @@ onMounted(async () => {
     &:focus {
       text-decoration: underline;
       background: none;
+    }
+  }
+  &--dark {
+    #{$self}__link {
+      color: var(--el-color-base-white);
     }
   }
 }

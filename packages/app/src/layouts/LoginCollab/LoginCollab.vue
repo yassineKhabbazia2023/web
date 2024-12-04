@@ -28,7 +28,7 @@
 
     <footer class="footer" data-testid="login-collab-footer">
       <div class="footer__legal-links margin-bottom--4">
-        <LegalLinks />
+        <LegalLinks dark />
       </div>
 
       <div class="footer__support">
