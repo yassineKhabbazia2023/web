@@ -93,14 +93,6 @@ export const getDocumentNameWithoutExtension = (filename: string): string => {
   return parts.join('.')
 }
 
-export const getFileExtension = (filename: string): string => {
-  const lastDotIndex = filename.lastIndexOf('.')
-  if (lastDotIndex === -1 || lastDotIndex === 0 || lastDotIndex === filename.length - 1) {
-    return ''
-  }
-  return filename.slice(lastDotIndex + 1)
-}
-
 export const isExtensionAuthorized = (extension: string): boolean => {
   return authorizedExtensions.includes(extension.toLocaleLowerCase())
 }
