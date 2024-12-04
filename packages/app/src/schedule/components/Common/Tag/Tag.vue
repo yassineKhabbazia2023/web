@@ -25,7 +25,7 @@ const props = defineProps({
   status: { type: String, required: true },
 })
 const statusMap = new Map([
-  ['Todo', { color: 'persian', content: t('to-do') }],
+  ['Todo', { color: 'cyan', content: t('to-do') }],
   ['Done', { color: 'success', content: t('done') }],
   ['Draft', { color: 'gray-900', content: t('draft') }],
 ])

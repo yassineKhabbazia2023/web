@@ -139,11 +139,6 @@ const actionClicked = (event: DeadlineEvent, occurrenceId: number) => {
   height: 30px;
   margin-bottom: 2px;
 
-  &:hover {
-    border-radius: var(--el-border-radius-base);
-    background-color: var(--el-color-persian-100);
-  }
-
   &__content {
     gap: 8px;
 

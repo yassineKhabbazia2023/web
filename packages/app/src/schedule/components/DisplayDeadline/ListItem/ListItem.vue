@@ -81,7 +81,6 @@ const isTodayDate = (date: string) => dateToLocaleFormat(date) === dateToLocaleF
   &__date {
     color: var(--el-neutral-gray-500);
     margin-top: 5px;
-    border-radius: 14px;
     padding: 2px 6px 2px 6px;
   }
 }
