@@ -1,5 +1,12 @@
 <template>
   <div class="margin-top--6">
+    <RemoveUserDialog
+      v-if="userToRemove"
+      v-model="isRemoveUserDialogOpened"
+      :userToRemove="userToRemove"
+      isCollab
+      @user-removed="onUserRemoved"
+    />
     <div class="flex margin-bottom--6">
       <FormSearch
         class="user-collabs__search-bar margin-right--4"
@@ -171,6 +178,8 @@ import {
   PICheck,
   PIExclamationTriangle,
 } from '@pulse/styleguide/components'
+// TODO should move this component to a common folder
+import RemoveUserDialog from '../usersClient/components/RemoveUserDialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { AppColors, PNotification } from '@pulse/styleguide'
 import { amplitudeService, commonStore, getInitials, userPermissions } from '@pulse/common'
@@ -244,6 +253,14 @@ function handleToolboxClick(userRow: any) {
       pState: 'default',
     },
   ]
+  if (hasPermission(PERMISSION_CODES.COLLAB_REMOVE_USER)) {
+    items.push({
+      pIconName: 'PIPersonRemove',
+      pValue: t('removeUser'),
+      pActionName: userActions.REMOVE_USER,
+      pState: 'default',
+    })
+  }
 
   if (!isContactSignatory(userRow.contactId)) {
     items.unshift(
@@ -368,6 +385,9 @@ const handleUserAction = (action: string, row: any) => {
   if (action === userActions.UNASSIGN_SIGNATORY) {
     handleRemoveSignatory(row.contactId, row.fullName)
   }
+  if (action === userActions.REMOVE_USER) {
+    handleRemoveUser(row)
+  }
 }
 
 // Signatory addition scope
@@ -398,6 +418,19 @@ async function handleRemoveSignatory(contactId: User['contactId'], contactFullNa
   } catch (error) {
     showTechnicalError()
   }
+}
+
+const isRemoveUserDialogOpened = ref(false)
+const userToRemove = ref<User>()
+
+async function onUserRemoved() {
+  await formatAndFillUsersCollabTable()
+  userToRemove.value = undefined
+}
+
+async function handleRemoveUser(user: User) {
+  userToRemove.value = user
+  isRemoveUserDialogOpened.value = true
 }
 
 const accountSignatories = ref<AccountSignatories[]>([])
@@ -489,6 +522,7 @@ onMounted(async () => {
     isLoadingOperations.value = false
   }
 })
+
 </script>
 
 <!-- eslint-disable-next-line vue/enforce-style-attribute -->
@@ -519,6 +553,7 @@ en-US:
   assignSignatory: 'Designate as signatory'
   removeSignatory: 'Revoke signatory status'
   modifyRights: 'Change the rights'
+  removeUser: 'Remove user'
   statusConnect: 'Connected'
   statusInvite: 'Invited'
   statusDeclared: 'Declared'
@@ -538,6 +573,7 @@ fr-FR:
   assignSignatory: 'Désigner en tant que signataire'
   removeSignatory: 'Retirer le statut de signataire'
   modifyRights: 'Modifier les droits'
+  removeUser: 'Retirer l’utilisateur'
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
   statusDeclared: 'Declaré'

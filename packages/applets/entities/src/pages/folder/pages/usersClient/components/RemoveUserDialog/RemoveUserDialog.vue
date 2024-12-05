@@ -3,8 +3,11 @@
     v-model="dialogModel"
     :pTitle="t('removeUser')"
   >
-    <p class="margin-bottom--6">
-      {{ t('confirmation') }}
+    <p
+      class="margin-bottom--6"
+      data-testid="remove-user-dialog-confirmation-message"
+    >
+      {{ confirmationMessage }}
     </p>
 
     <PUserCard
@@ -75,6 +78,15 @@ const dialogModel = computed({
   set: value => emits('update:modelValue', value),
 })
 
+const confirmationMessage = computed(() => {
+  const messageKey = props.isCollab
+    ? 'thisAccount.collab'
+    : 'thisAccount.client'
+  const thisAccount = t(messageKey)
+
+  return t('confirmation', { thisAccount })
+})
+
 const handleCloseDrawer = () => {
   dialogModel.value = false
 }
@@ -116,17 +128,23 @@ const handleRemoveUser = async () => {
   en-US:
     removeUser: 'Remove user'
     confirmation: >-
-      You are about to remove the user from this entity,
+      You are about to remove the user from {thisAccount},
        he will no longer be able to access it. Are you sure you want to continue?
+    thisAccount:
+      collab: 'this folder'
+      client: 'this entity'
     cancel: 'Cancel'
     userHasBeenRemoved: 'The user {fullName} has been removed.'
     userWasNotRemoved: 'User {fullName} was not removed from the site due to a technical error.'
   fr-FR:
     removeUser: "Retirer l'utilisateur"
     confirmation: >-
-      Vous êtes sur le point de retirer l'utilisateur de cette entité,
+      Vous êtes sur le point de retirer l'utilisateur de {thisAccount},
        il ne pourra plus y accéder. Êtes-vous sûr de vouloir continuer ?
     cancel: 'Annuler'
+    thisAccount:
+      collab: 'ce dossier'
+      client: 'cette entité'
     userHasBeenRemoved: "L'utilisateur {fullName} a bien été retiré."
     userWasNotRemoved: "L'utilisateur {fullName} n'a pas été retiré de l'entité suite à une erreur technique."
 </i18n>

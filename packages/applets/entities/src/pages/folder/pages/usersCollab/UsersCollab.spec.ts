@@ -9,6 +9,8 @@ import UsersCollab from '.'
 import { getMockedAccount } from '@entities/services/account/accountMock'
 import { nextTick, ref } from 'vue'
 import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
+import { userActions } from './types'
+
 const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
 
@@ -21,7 +23,7 @@ const mockedUser = {
 
 const mockedAccount = getMockedAccount()
 
-const mockHasPermission = vi.fn((_code: string) => true)
+const mockHasPermission = vi.hoisted(() => vi.fn())
 
 vi.mock('@entities/services/contact', () => {
   return {
@@ -47,17 +49,11 @@ vi.mock('@entities/pages/folder/pages/usersCollab/composables/useOperation', () 
 
 const apiMocks = vi.hoisted(() => ({
   singleAccountSignatory: vi.fn(() => Promise.resolve([
-    {
-      ...mockedCustomersCollab[0],
-    },
+    mockedCustomersCollab[0],
   ])),
   multipleAccountSignatories: vi.fn(() => Promise.resolve([
-    {
-      ...mockedCustomersCollab[0],
-    },
-    {
-      ...mockedCustomersCollab[1],
-    },
+    mockedCustomersCollab[0],
+    mockedCustomersCollab[1],
   ])),
 }))
 
@@ -143,6 +139,13 @@ const modifyToolboxItem = {
   pIconName: 'PIPencilSquare',
   pValue: 'Change the rights',
   pActionName: 'modifyRights',
+  pState: 'default',
+}
+
+const removeUserToolboxItem = {
+  pIconName: 'PIPersonRemove',
+  pValue: 'Remove user',
+  pActionName: 'removeUser',
   pState: 'default',
 }
 
@@ -264,12 +267,15 @@ describe('usersCollab', () => {
     })
 
     it("should display the 'Manage Access' drawer when the 'Manage Access' button is clicked", async () => {
-      const manageAccessButton = wrapper.findComponent('[data-testid=manage-access-button]')
+      mockHasPermission.mockReturnValue(true)
+      const wrapper = createWrapper()
+      await flushPromises()
+      const manageAccessButton = wrapper.find('[data-testid="manage-access-button"]')
+
       await manageAccessButton.trigger('click')
       await nextTick()
       const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
 
-      expect(manageAccessDrawer.exists()).toBeTruthy()
       expect(manageAccessDrawer.props('modelValue')).toBeTruthy()
     })
 
@@ -291,27 +297,37 @@ describe('usersCollab', () => {
     it.each([
       {
         userThatCanBeAdded: mockedCustomersCollab[0],
+        hasRemoveUserPermission: false,
         expectedItems: [
-          {
-            ...removeSignatoryToolboxItemDisabled,
-          },
-          {
-            ...modifyToolboxItem,
-          },
+          removeSignatoryToolboxItemDisabled,
+          modifyToolboxItem,
         ],
       },
       {
         userThatCanBeAdded: mockedCustomersCollab[1],
+        hasRemoveUserPermission: false,
         expectedItems: [
-          {
-            ...addSignatoryToolboxItem,
-          },
-          {
-            ...modifyToolboxItem,
-          },
+          addSignatoryToolboxItem,
+          modifyToolboxItem,
         ],
       },
-    ])("should allow signatory add if user isn't already signatory", async ({ userThatCanBeAdded, expectedItems }) => {
+      {
+        userThatCanBeAdded: mockedCustomersCollab[1],
+        hasRemoveUserPermission: true,
+        expectedItems: [
+          addSignatoryToolboxItem,
+          modifyToolboxItem,
+          removeUserToolboxItem,
+        ],
+      },
+    ])("should allow signatory add if user isn't already signatory", async ({
+      userThatCanBeAdded,
+      hasRemoveUserPermission,
+      expectedItems,
+    }) => {
+      mockHasPermission.mockReturnValue(hasRemoveUserPermission)
+      const wrapper = createWrapper()
+      await flushPromises()
       wrapper.vm.handleToolboxClick(userThatCanBeAdded)
       await nextTick()
       const items = wrapper.vm.toolboxItems
@@ -322,24 +338,16 @@ describe('usersCollab', () => {
       {
         userToRemove: mockedCustomersCollab[0],
         expectedItems: [
-          {
-            ...removeSignatoryToolboxItemDisabled,
-          },
-          {
-            ...modifyToolboxItem,
-          },
+          removeSignatoryToolboxItemDisabled,
+          modifyToolboxItem,
         ],
         getSignatoriesMockToUse: apiMocks.singleAccountSignatory,
       },
       {
         userToRemove: mockedCustomersCollab[1],
         expectedItems: [
-          {
-            ...removeSignatoryToolboxItemEnabled,
-          },
-          {
-            ...modifyToolboxItem,
-          },
+          removeSignatoryToolboxItemEnabled,
+          modifyToolboxItem,
         ],
         getSignatoriesMockToUse: apiMocks.multipleAccountSignatories,
       },
@@ -353,5 +361,61 @@ describe('usersCollab', () => {
         const items = wrapper.vm.toolboxItems
         expect(items).toMatchObject(expectedItems)
       })
+
+    it('when click on REMOVE_USER action', async () => {
+      mockHasPermission.mockReturnValue(true)
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const expectedRemoveUserDialogProps = {
+        isCollab: true,
+        modelValue: true,
+        userToRemove: {},
+      }
+
+      const removeUserDialogBefore = wrapper.findComponent({ name: 'RemoveUserDialog' })
+      expect(removeUserDialogBefore.exists()).toBeFalsy()
+
+      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      expect(pToolbox.exists()).toBeTruthy()
+      pToolbox.vm.$emit('p-toolbox-item-clicked', userActions.REMOVE_USER)
+      await nextTick()
+
+      const removeUserDialogAfter = wrapper.findComponent({ name: 'RemoveUserDialog' })
+      expect(removeUserDialogAfter.exists()).toBeTruthy()
+      expect(removeUserDialogAfter.props()).toStrictEqual(expectedRemoveUserDialogProps)
+
+      expect(fetchAccountCustomers).toHaveBeenCalledTimes(2)
+    })
+
+    it('when click on REMOVE_USER action and close RemoveUserDialog after removed user', async () => {
+      mockHasPermission.mockReturnValue(true)
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const expectedRemoveUserDialogProps = {
+        isCollab: true,
+        modelValue: false,
+        userToRemove: {},
+      }
+
+      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      expect(pToolbox.exists()).toBeTruthy()
+      pToolbox.vm.$emit('p-toolbox-item-clicked', userActions.REMOVE_USER)
+      await nextTick()
+
+      const removeUserDialogAfter = wrapper.findComponent({ name: 'RemoveUserDialog' })
+
+      removeUserDialogAfter.vm.$emit('user-removed')
+      removeUserDialogAfter.vm.$emit('update:model-value', false)
+      await nextTick()
+
+      const removeUserDialogWhenClosed = wrapper.findComponent({ name: 'RemoveUserDialog' })
+      expect(removeUserDialogWhenClosed.props()).toStrictEqual(expectedRemoveUserDialogProps)
+
+      expect(fetchAccountCustomers).toHaveBeenCalledTimes(3)
+    })
   })
 })

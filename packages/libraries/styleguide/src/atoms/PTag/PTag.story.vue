@@ -81,7 +81,7 @@
       <table>
         <tr>
           <th>
-            pColor <br />\ pEffect
+            pColor <br>\ pEffect
           </th>
           <th
             v-for="(theme) in themeList"
@@ -93,8 +93,8 @@
         <tr
           v-for="(colorItem, index) in tagColorList"
           :key="index"
-            class="padding--1"
-          >
+          class="padding--1"
+        >
           <td>&nbsp;{{ colorItem.value }}</td>
           <td
             v-for="(theme) in themeList"

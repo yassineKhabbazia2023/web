@@ -1,4 +1,4 @@
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
 import { deleteContactFromAccount } from '@entities/services/account'
 import * as accountServices from '@entities/services/account'
@@ -31,11 +31,12 @@ vi.mock('vue-router', () => ({
 }))
 
 let wrapper: VueWrapper<any>
-const createWrapper = (userToRemove: any): VueWrapper<any> =>
-  mount(RemoveUserDialog, {
+const createWrapper = (userToRemove: any, isCollab?: boolean): VueWrapper<any> =>
+  shallowMount(RemoveUserDialog, {
     props: {
       userToRemove,
       modelValue: true,
+      isCollab,
     },
     global: {
       stubs: {
@@ -49,20 +50,36 @@ const createWrapper = (userToRemove: any): VueWrapper<any> =>
   })
 
 describe('removeUserDialog', () => {
-  beforeEach(() => {
+  it('displays the user information that will be removed is FALSE', () => {
     wrapper = createWrapper(USER_TO_REMOVE)
-  })
-
-  it('displays the user information that will be removed', () => {
     const { initials, fullName, email } = USER_TO_REMOVE
+    const expectedConfirmationMessage = [
+      'You are about to remove the user from this entity,',
+      ' he will no longer be able to access it. Are you sure you want to continue?',
+    ].join('\n')
 
     const pUserCardComponent = wrapper.findComponent({ name: 'PUserCard' })
+    const confirmationMessage = wrapper.find('[data-testid="remove-user-dialog-confirmation-message"]')
 
     expect(pUserCardComponent.props()).toMatchObject({
       pAssetContent: initials,
       pTitle: fullName,
       pSubtitle: email,
     })
+
+    expect(confirmationMessage.text()).toBe(expectedConfirmationMessage)
+  })
+
+  it('displays the user information that will be removed when isCollab is TRUE', () => {
+    wrapper = createWrapper(USER_TO_REMOVE, true)
+    const expectedConfirmationMessage = [
+      'You are about to remove the user from this folder,',
+      ' he will no longer be able to access it. Are you sure you want to continue?',
+    ].join('\n')
+
+    const confirmationMessage = wrapper.find('[data-testid="remove-user-dialog-confirmation-message"]')
+
+    expect(confirmationMessage.text()).toBe(expectedConfirmationMessage)
   })
 
   it('should not display the user card if the user to be removed is not selected', () => {
@@ -73,6 +90,10 @@ describe('removeUserDialog', () => {
   })
 
   describe('events', () => {
+    beforeEach(() => {
+      wrapper = createWrapper(USER_TO_REMOVE)
+    })
+
     it('should close the dialog when the cancel button is clicked', async () => {
       const dialog = wrapper.findComponent({ name: 'PDialog' })
       const dialogCloseButton = wrapper.findComponent(

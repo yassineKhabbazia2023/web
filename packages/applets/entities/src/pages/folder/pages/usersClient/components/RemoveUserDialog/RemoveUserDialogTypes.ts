@@ -10,4 +10,5 @@ interface UserToRemoveInfo {
 export interface RemoveUserDialogProps {
   modelValue: boolean
   userToRemove: UserToRemoveInfo
+  isCollab?: boolean
 }
