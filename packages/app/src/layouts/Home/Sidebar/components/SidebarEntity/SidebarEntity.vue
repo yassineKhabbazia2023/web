@@ -26,12 +26,10 @@
             @item-clicked="onToggleSidebar"
           >
             <PIcon
+              :pName="isSidebarOpened ? 'arrowBarLeft' : 'arrowBarRight'"
               color="#FFF"
               class="sidenav-entity__actions-icon radius--circle"
-            >
-              <PIArrowBarLeft v-if="isSidebarOpened" />
-              <PIArrowBarRight v-else />
-            </PIcon>
+            />
           </SidebarEntityItem>
         </li>
         <li
@@ -124,11 +122,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { commonStore } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
-import {
-  PIArrowBarRight,
-  PIArrowBarLeft,
-  PIcon,
-} from '@pulse/styleguide/components'
+import { PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'

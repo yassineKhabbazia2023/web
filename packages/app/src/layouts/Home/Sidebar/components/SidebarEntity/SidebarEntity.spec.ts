@@ -120,18 +120,13 @@ describe('sidebarEntity', () => {
     it('should open the sidebar when clicking on the toggle button', async () => {
       const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
       const sidebarToggle = findSidebarToggle(wrapper)
-      const arrowBarRightIcon = wrapper.findComponent({
-        name: 'PIArrowBarRight',
-      })
+      const pIcon = wrapper.findComponent({ name: 'PIcon' })
 
-      expect(arrowBarRightIcon.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe('arrowBarRight')
 
       await sidebarToggle.trigger('click')
 
-      const arrowBarLeftIcon = wrapper.findComponent({ name: 'PIArrowBarLeft' })
-
-      expect(arrowBarRightIcon.exists()).toBeFalsy()
-      expect(arrowBarLeftIcon.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe('arrowBarLeft')
       expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
     })
     it('should not display appVersion when sidebar is closed', async () => {
@@ -144,9 +139,9 @@ describe('sidebarEntity', () => {
     it('should display appVersion when sidebar is opened', async () => {
       const sidenavEntity = wrapper.find('[data-testid=sidenav-entity]')
       const sidebarToggle = findSidebarToggle(wrapper)
-      
+
       await sidebarToggle.trigger('click')
-      
+
       const appVersion = wrapper.find('[data-testid=app-version]')
 
       expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
