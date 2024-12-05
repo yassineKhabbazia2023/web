@@ -1,5 +1,4 @@
 import TreeNode from '@ged/modules/Treeview/components/TreeNode'
-import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeProps }
   from '@ged/modules/Treeview/components/TreeNode/TreeNodeTypes'
 import type { VueWrapper } from '@vue/test-utils'
@@ -9,15 +8,6 @@ import type { Folder, FolderProperties } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import {
-  PICalculatorEuro,
-  PIFolder,
-  PIInbox,
-  PIKpmg,
-  PIPersonVcard,
-  PITrash,
-  PTooltip,
-} from '@pulse/styleguide/components'
 
 vi.mock('@pulse/styleguide', () => ({
   AppColors: {
@@ -86,27 +76,27 @@ describe('props', () => {
     const iconMappingCases = [
       {
         folderIconName: 'accountingRoot',
-        expectedIcon: PICalculatorEuro,
+        expectedIcon: 'calculatorEuro',
       },
       {
         folderIconName: 'socialRoot',
-        expectedIcon: PIPersonVcard,
+        expectedIcon: 'personVcard',
       },
       {
         folderIconName: 'deposit',
-        expectedIcon: PIInbox,
+        expectedIcon: 'inbox',
       },
       {
         folderIconName: 'reservedKpmg',
-        expectedIcon: PIKpmg,
+        expectedIcon: 'kpmg',
       },
       {
         folderIconName: 'binIcon',
-        expectedIcon: PITrash,
+        expectedIcon: 'trash',
       },
       {
         folderIconName: 'someThing',
-        expectedIcon: PIFolder,
+        expectedIcon: 'folder',
       },
     ]
     it.each(iconMappingCases)(
@@ -118,8 +108,8 @@ describe('props', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const componentInstance = wrapper.vm
-        expect(componentInstance.iconsMapping).toStrictEqual(expectedIcon)
+        const pIcon = wrapper.findComponent({ name: 'PIcon' })
+        expect(pIcon.props('pName')).toStrictEqual(expectedIcon)
       },
     )
   })
@@ -184,7 +174,7 @@ describe('props', () => {
 
     await nextTick()
 
-    const tooltip = wrapper.findComponent(PTooltip)
+    const tooltip = wrapper.findComponent({ name: 'PTooltip' })
 
     await nextTick()
 
@@ -193,9 +183,7 @@ describe('props', () => {
 
     await nextTick()
 
-    const actions = wrapper.findComponent(
-      TreeNodeActions,
-    )
+    const actions = wrapper.findComponent({ name: 'TreeNodeActions' })
 
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })
@@ -205,7 +193,7 @@ describe('props', () => {
 
     await nextTick()
 
-    const tooltip = wrapper.findComponent(PTooltip)
+    const tooltip = wrapper.findComponent({ name: 'PTooltip' })
 
     await nextTick()
 
@@ -225,7 +213,7 @@ describe('interactions', () => {
 
     const treeNode = wrapper.find('.tree-node')
 
-    const actions = wrapper.findComponent(TreeNodeActions)
+    const actions = wrapper.findComponent({ name: 'TreeNodeActions' })
 
     await nextTick()
 
@@ -242,7 +230,7 @@ describe('interactions', () => {
 
     const treeNode = wrapper.find('.tree-node')
 
-    const actions = wrapper.findComponent(TreeNodeActions)
+    const actions = wrapper.findComponent({ name: 'TreeNodeActions' })
 
     await nextTick()
 
@@ -259,7 +247,7 @@ describe('interactions', () => {
 
     const treeNode = wrapper.find('.tree-node')
 
-    const actions = wrapper.findComponent(TreeNodeActions)
+    const actions = wrapper.findComponent({ name: 'TreeNodeActions' })
 
     await nextTick()
 
@@ -279,7 +267,7 @@ describe('interactions', () => {
   it('should emit p-toolbox-item-clicked when p-toolbox-item-clicked is emitted', async () => {
     const wrapper = createWrapper()
 
-    const actions = wrapper.findComponent(TreeNodeActions)
+    const actions = wrapper.findComponent({ name: 'TreeNodeActions' })
 
     await nextTick()
 
@@ -295,7 +283,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(updatedProps)
 
-    const actions = wrapper.findComponent(TreeNodeActions)
+    const actions = wrapper.findComponent({ name: 'TreeNodeActions' })
 
     await nextTick()
 
@@ -305,7 +293,7 @@ describe('interactions', () => {
     expect(actions.props('selectedOrHovered')).toBeFalsy()
   })
 
-   
+
   it('should selectedOrHovered when p-toolbox-dropdown-visibility-change is emitted from TreeNodeActionsToolbox', async () => {
     const folder = { ...fold, permissions: ['CAN_DELETE_FOLDER'] }
     const updatedProps = { ...defaultProps, data: folder }
@@ -318,7 +306,7 @@ describe('interactions', () => {
 
     await actions.vm.$emit('p-toolbox-dropdown-visibility-change', false)
     await nextTick()
-    const treeNodeActionsWrapper = wrapper.findComponent(TreeNodeActions)
+    const treeNodeActionsWrapper = wrapper.findComponent({ name: 'TreeNodeActions' })
     expect(treeNodeActionsWrapper.props('selectedOrHovered')).toBeFalsy()
   })
 

@@ -25,9 +25,11 @@
         pName="dot"
       />
 
-      <PIcon class="tree-node__icon" size="16">
-        <component :is="iconsMapping" />
-      </PIcon>
+      <PIcon
+        class="tree-node__icon"
+        size="16"
+        :pName="iconName"
+      />
 
       <div class="tree-node__label-with-button">
         <PTooltip
@@ -50,11 +52,9 @@
         <PIcon
           v-show="isDragovered"
           :color="isErrorDragover ? AppColors.RED : AppColors.PRIMARY"
+          :pName="isErrorDragover ? 'xCircle' : 'arrowLeftRight'"
           size="18"
-        >
-          <PIArrowLeftRight v-if="!isErrorDragover" />
-          <PIXCircle v-else />
-        </PIcon>
+        />
       </div>
     </div>
   </TreeNodeActionsToolbox>
@@ -63,16 +63,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
-  PIArrowLeftRight,
-  PICalculatorEuro,
-  PIFolder,
-  PIInbox,
-  PIKpmg,
-  PIPersonVcard,
-  PITrash,
   PTooltip,
   PIcon,
-  PIXCircle,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 
@@ -82,27 +74,20 @@ import { type TreeNodeProps }
 import TreeNodeActionsToolbox from
   '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsToolbox'
 import type { Document } from '@ged/models/Document'
+import type { IconName } from '@pulse/styleguide/types'
 
 const emit = defineEmits(
   ['p-toolbox-item-clicked', 'update-folder-name', 'documents-dropped-on-tree-node', 'expand-or-collapse-node'])
 const props = defineProps<TreeNodeProps>()
 
-const iconsMapping = computed(() => {
-  switch (props.data.iconName) {
-  case 'accountingRoot':
-    return PICalculatorEuro
-  case 'socialRoot':
-    return PIPersonVcard
-  case 'deposit':
-    return PIInbox
-  case 'reservedKpmg':
-    return PIKpmg
-  case 'binIcon':
-    return PITrash
-  default:
-    return PIFolder
-  }
-})
+const ICON_NAMES: Record<string, IconName> = {
+  accountingRoot: 'calculatorEuro',
+  socialRoot: 'personVcard',
+  deposit: 'inbox',
+  reservedKpmg: 'kpmg',
+  binIcon: 'trash',
+}
+const iconName = computed(() => ICON_NAMES[props.data.iconName ?? ''] ?? 'folder')
 
 const hasChildren = computed(() => props.data.children?.length)
 const isOpen = ref(false)
