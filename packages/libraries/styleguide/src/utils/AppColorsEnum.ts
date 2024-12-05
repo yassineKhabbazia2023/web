@@ -40,4 +40,15 @@ export enum AppColors {
   GRAY_700 = '#495057',
   GRAY_800 = '#3A3C3F',
   GRAY_900 = '#15171A',
+  // POLAR
+  POLAR_50 = '#E4FCF7',
+  POLAR_100 = '#D1FAF0',
+  POLAR_200 = '#A7F3E4',
+  POLAR_300 = '#6FE6D6',
+  POLAR_400 = '#35D2C2',
+  POLAR_500 = '#11B8AD',
+  POLAR_600 = '#06958F',
+  POLAR_700 = '#075E5D',
+  POLAR_800 = '#064E4E',
+  POLAR_900 = '#022B2C',
 }

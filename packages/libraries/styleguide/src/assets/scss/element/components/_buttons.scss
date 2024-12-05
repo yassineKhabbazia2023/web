@@ -19,9 +19,6 @@ $button: (
   'active-color': getCssVar('text-color', 'primary'),
 );
 
-$button-secondary-bg-hover: #D1FAF0;
-$button-secondary-bg-active: #A8F3E4;
-
 $button-font-size: (
   'large': getCssVar('font-size', 'base'),
   'default': getCssVar('font-size', 'base'),
@@ -179,19 +176,21 @@ $button-padding-horizontal: (
   }
 
   &.p-button--secondary {
-    background: var(--el-color-secondary-amethyste-bg);
-    border-color: var(--el-color-secondary-amethyste-bg);
+    background: var(--el-color-polar-50);
+    border-color: var(--el-color-polar-50);
     color: var(--el-color-base-blue-pulse);
 
     &:hover {
-      background: $button-secondary-bg-hover;
-      border-color: $button-secondary-bg-hover;
+      background: var(--el-color-polar-100);
+      border-color: var(--el-color-polar-100);
+      color: var(--el-color-base-blue-pulse);
     }
 
     &:focus,
     &.p-button--is-active {
-      background: $button-secondary-bg-active;
-      border-color: $button-secondary-bg-active;
+      background: var(--el-color-polar-200);
+      border-color: var(--el-color-polar-200);
+      color: var(--el-color-base-blue-pulse);
     }
 
     &.is-disabled,

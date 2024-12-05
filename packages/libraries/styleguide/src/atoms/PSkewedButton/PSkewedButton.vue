@@ -105,11 +105,11 @@ function handleClick(event: MouseEvent) {
     color: var(--el-color-base-blue-pulse);
 
     &:hover {
-      background: var(--el-color-polar-100)
+      background: var(--el-color-polar-100);
     }
 
     &:active {
-      background: var(--el-color-persian-200);
+      background: var(--el-color-polar-200);
     }
   }
 
