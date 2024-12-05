@@ -29,19 +29,14 @@ const ERROR_PATH = [
     page: '500',
   },
   {
-    path: '/501',
-    name: 'Error501',
-    page: '501',
-  },
-  {
     path: '/503',
     name: 'Error503',
     page: '503',
   },
   {
-    path: '/504',
-    name: 'Error504',
-    page: '504',
+    path: '/feature-not-available',
+    name: 'FeatureNotAvailable',
+    page: 'FeatureNotAvailable',
   },
 ]
 

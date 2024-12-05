@@ -5,6 +5,7 @@
     :pErrorName="t('errorName')"
     :pErrorText="t('errorText')"
     pIllustrationName="error-locked"
+    :pTitle="t('title')"
     @handle-click="redirectToHome"
   >
     <template #title>
@@ -41,7 +42,7 @@ en-US:
   errorName: '401'
   errorText: 'Unauthorised access'
 fr-FR:
-  title: 'Oups... Accès non autorisé'
+  title: 'Accès non autorisé'
   description: "Il semble que vous n'avez pas accès"
   textButton: "Retour à la page d'accueil"
   errorName: '401'

@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { mount, VueWrapper } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PError from '.'
 import type { PErrorBlockProps } from './PErrorTypes'
@@ -10,77 +10,73 @@ const errorName = 'test error name'
 const errorText = 'test error text'
 
 const defaultProps: PErrorBlockProps = {
-  pDescription: description,
-  pButtonText: button,
-  pErrorName: errorName,
-  pErrorText: errorText,
-  pIllustrationName: 'error-generic',
+  pButtonText: 'Look at that button text',
+  pDescription: 'There is something wrong in here',
+  pErrorName: '401',
+  pErrorText: 'Something wrong',
+  pHasFooter: true,
+  pTitle: 'Crazy Error',
 }
 
-const createWrapper = (props: any = defaultProps, slots: any = {}) =>
+const createWrapper = (props: PErrorBlockProps = defaultProps, slots: any = {}) =>
   mount(PError, {
     props,
     slots,
   })
+
+function findSkewedButton(wrapper: VueWrapper) {
+  return wrapper.findComponent({ name: 'PSkewedButton' })
+}
 
 describe('pError', () => {
   beforeEach(() => {
     setAssetsBaseUrl('https://www.example.kpmg')
   })
   describe('props', () => {
-    it('should emit error-block-button-click event', async () => {
-      const wrapper = createWrapper()
+    it.each([
+      {
+        isFooterDisplayed: true,
+      },
+      {
+        isFooterDisplayed: false,
+      },
+    ])('should not render the footer section when pHasFooter is false', ({ isFooterDisplayed }) => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pHasFooter: isFooterDisplayed,
+      })
 
-      await wrapper.find('[data-testid="error-block-button"]').trigger('click')
-      const emittedErrorBlockButton = wrapper.emitted(
-        'handleClick',
-      )
-      expect(emittedErrorBlockButton).toBeTruthy()
+      const footerWrapper = wrapper.find('[data-testid="footer-content"')
+      expect(footerWrapper.exists()).toBe(isFooterDisplayed)
     })
 
-    it('should render the text values of the component', () => {
-      const wrapper = createWrapper()
+    it.each([
+      {
+        buttonText: 'you can click me',
+        isButtonDisplayed: true,
+      },
+      {
+        buttonText: undefined,
+        isButtonDisplayed: false,
+      },
+    ])('should not render the button when the pButtonText prop has a value', ({ buttonText, isButtonDisplayed }) => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pButtonText: buttonText,
+      })
 
-      expect(wrapper.find('[data-testid="error-block-button"]').text()).toContain(
-        button,
-      )
-      expect(wrapper.find('.p-error-block__description').text()).toContain(
-        description,
-      )
-      expect(wrapper.find('.p-error-block__error-name').text()).toContain(
-        errorName,
-      )
-      expect(wrapper.find('.p-error-block__error-text').text()).toContain(
-        errorText,
-      )
+      const skewedButtonWrapper = findSkewedButton(wrapper)
+      expect(skewedButtonWrapper.exists()).toBe(isButtonDisplayed)
     })
   })
-  describe('slots', () => {
-    it('should display the content of the slots when they exists', () => {
-      const wrapper = createWrapper(
-        defaultProps,
-        {
-          title: "<button data-testid='title-slot'>Title Test Button</button>",
-          footer: "<button data-testid='footer-slot'>Footer Test Button</button>",
-        },
-      )
-      const titleSlot = wrapper.find('.p-error-block__title')
-      const footerSlot = wrapper.find('.p-error-page__footer')
 
-      expect(titleSlot.exists()).toBeTruthy()
-      expect(titleSlot.text()).toBe('Title Test Button')
-
-      expect(footerSlot.exists()).toBeTruthy()
-      expect(footerSlot.text()).toBe('Footer Test Button')
-    })
-    it("should not display the content of the slots when they don't exists", () => {
+  describe('events', () => {
+    it('should emit handle-click when button is clicked', async () => {
       const wrapper = createWrapper()
-      const titleSlot = wrapper.find('.p-error-block__title')
-      const footerSlot = wrapper.find('.p-error-page__footer')
+      const skewedButtonWrapper = findSkewedButton(wrapper)
 
-      expect(titleSlot.exists()).toBeFalsy()
-
-      expect(footerSlot.exists()).toBeFalsy()
+      await skewedButtonWrapper.trigger('click')
+      expect(wrapper.emitted('handle-click')).toHaveLength(1)
     })
   })
 })

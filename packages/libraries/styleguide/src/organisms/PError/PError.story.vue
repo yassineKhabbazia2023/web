@@ -9,6 +9,7 @@
   >
     <Variant title="Default">
       <PError
+        pTitle="Cette page n’existe pas."
         pDescription="Nous sommes désolés, mais la page que vous recherchez est introuvable."
         pButtonText="Retour à la page d'accueil"
         pErrorName="404"
@@ -16,7 +17,11 @@
         pIllustrationName="error-generic"
       >
         <template #title>
-          Oups... Cette page n’existe pas.
+          Cette page n’existe pas.
+        </template>
+        <template #footer-middle-content>
+          Contact support : <span class="no-wrap">01 23 45 67 89</span><br>
+          &#169; Awesome Brand
         </template>
       </PError>
     </Variant>

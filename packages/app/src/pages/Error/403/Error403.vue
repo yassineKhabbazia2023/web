@@ -5,16 +5,11 @@
     :pErrorName="t('errorName')"
     :pErrorText="t('errorText')"
     pIllustrationName="error-locked"
+    :pTitle="t('title')"
     @handle-click="redirectToHome"
   >
-    <template #title>
-      {{ t('title') }}
-    </template>
-    <template #footer>
-      <div class="margin-bottom--4">
-        <LegalLinks />
-      </div>
-      <SupportInfo />
+    <template #footer-middle-content>
+      <ErrorFooterContent />
     </template>
   </PError>
 </template>
@@ -23,8 +18,8 @@
 import { useI18n } from 'vue-i18n'
 import { PError } from '@pulse/styleguide/components'
 import { useRedirection } from '@app/composables/useRedirection'
-import LegalLinks from '@app/components/LegalLinks'
-import SupportInfo from '@app/components/SupportInfo'
+import ErrorFooterContent from '@app/pages/Error/components/ErrorFooterContent'
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -35,14 +30,14 @@ const { redirectToHome } = useRedirection()
 
 <i18n lang="yaml">
 en-US:
-  title: 'Oops... Unauthorised access'
-  description: "It seems you don't have access to"
+  title: 'Unauthorised access'
+  description: "It appears that you do not have the necessary access rights."
   textButton: 'Back to home page'
   errorName: '403'
   errorText: 'Unauthorised access'
 fr-FR:
-  title: 'Oups... Accès non autorisé'
-  description: "Il semble que vous n'avez pas accès"
+  title: 'Accès non autorisé'
+  description: "Il semblerait que vous n'ayez pas les droits d'accès"
   textButton: "Retour à la page d'accueil"
   errorName: '403'
   errorText: 'Accès interdit'
