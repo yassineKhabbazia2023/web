@@ -7,22 +7,22 @@ import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStat
 export const getCompany = ({
   ibsNumber,
 }: { ibsNumber: string }): Promise<any> =>
-  api().gateway.get(`mandate/api/company/currentuser/${ibsNumber}`)
+  api().mandate.get(`/company/${ibsNumber}`)
 
 export const downloadUnsignedMandate = async (mandateId: Mandate['id']) => {
-  return await api().gateway.get(`mandate/api/mandate/${mandateId}/unsigned`, {
+  return await api().mandate.get(`/mandate/${mandateId}/unsigned`, {
     responseType: 'blob',
   })
 }
 
 export const downloadSignedMandate = async (mandateId: Mandate['id']) => {
-  return await api().gateway.get(`mandate/api/mandate/${mandateId}/signed`, {
+  return await api().mandate.get(`/mandate/${mandateId}/signed`, {
     responseType: 'blob',
   })
 }
 
 export const terminateMandate = async (mandateId: Mandate['id']) => {
-  return await api().gateway.post(`mandate/api/mandate/${mandateId}/deactivate/currentuser`)
+  return await api().mandate.post(`/mandate/${mandateId}/deactivate`)
 }
 
 export const validateIban = async ({
@@ -31,8 +31,8 @@ export const validateIban = async ({
   accountNumber,
   checkDigits,
 }: BbanModel) => {
-  const { data: { valid } } = await api().gateway.get(
-    'mandate/api/bank/check-bban-validity',
+  const { data: { valid } } = await api().mandate.get(
+    'bank/check-bban-validity',
     { params: { bankCode, branchCode, accountNumber, checkDigits } },
   )
   return {
@@ -41,8 +41,8 @@ export const validateIban = async ({
 }
 
 export const getBankDetail = async (bankCode: string) => {
-  const { data } = await api().gateway.get(
-    `mandate/api/bank/${bankCode}`)
+  const { data } = await api().mandate.get(
+    `bank/${bankCode}`)
   return data
 }
 
@@ -74,7 +74,7 @@ export function getMandatesCollection(searchParams: SearchMandateParams) {
     skip: (currentPage - 1) * limit,
     currentPage: undefined,
   }
-  return api().gateway.get('mandate/api/mandate/currentuser', {
+  return api().mandate.get('/mandate', {
     params,
     paramsSerializer: (params) => parseParams(params),
   })
@@ -108,8 +108,8 @@ export const uploadSignedMandate = async ({
 
   formData.append('file', file)
 
-  return await api().gateway.post(
-    `/mandate/api/mandate/${mandateId}/signed/currentuser`,
+  return await api().mandate.post(
+    `/mandate/${mandateId}/signed`,
     formData,
     {
       headers: {
