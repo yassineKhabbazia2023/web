@@ -1,4 +1,4 @@
- 
+
 import type { Folder } from '@ged/models/Folder'
 import type { Service } from '@ged/models/Service'
 
@@ -11,6 +11,7 @@ export interface TreeviewProps {
   isLoading: boolean
   servicesFolders: ExtendedFolder[][]
   currentService: string
+  currentServiceName: Service['ServiceName'] | null
   selectedEntity: string
   selectedFolder: null | Folder
   currentServiceFolder: Folder[] | undefined

@@ -4,6 +4,7 @@
       <Treeview
         :entityServices="entityServices"
         :currentService="currentService ?? ''"
+        :currentServiceName="currentServiceName"
         :selectedEntity="selectedEntity"
         :isLoading="isLoadingServicesOrFolders"
         :servicesFolders="servicesFolders"
