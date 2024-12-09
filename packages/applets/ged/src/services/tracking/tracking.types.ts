@@ -1,6 +1,6 @@
 
-import type { Service } from "@ged/models/Service"
-import type { Folder } from "@ged/models/Folder"
+import type { Service } from '@ged/models/Service'
+import type { Folder } from '@ged/models/Folder'
 
 export interface TrackDepositedDocumentParams {
   serviceName: Service['ServiceName']
@@ -31,5 +31,6 @@ export interface trackDocumentTransmitParams {
 
 export enum TriggerSource {
   ACTION_BAR = 'Action bar',
-  CONTEXT_MENU = 'Context menu'
+  CONTEXT_MENU = 'Context menu',
+  DRAG_AND_DROP = 'Drag Drop'
 }
