@@ -11,8 +11,6 @@
     "preview": "vite preview",
     "build-only": "vite build --emptyOutDir",
     "type-check": "vue-tsc --build --force",
-    "depcruise": "depcruise src",
-    "depcruise:graph": "npx depcruise --include-only \"^src\" --output-type dot . | dot -T svg > dependency-graph.svg",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "vitest run",
