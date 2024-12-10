@@ -1,0 +1,40 @@
+trigger:
+  - develop
+  - release/*
+
+pool:
+  vmImage: 'windows-latest'
+
+parameters:
+- name: devIndex
+  type: number
+  default: 0
+- name: deployType
+  displayName: "Technical parameter : don t modify it !"
+  type: string
+  default: 'onlyDev'
+  values:
+    - standard
+    - onlyDev
+- name: disableSonar
+  type: boolean
+  default: false
+  values:
+    - true
+    - false
+
+resources:
+  repositories:
+  - repository: Pulse
+    name: 'Pulse.Operations.Pipelines'
+    type: git
+    ref: 'refs/heads/Release/v2.3'
+
+extends:
+  template: pipelines/templates/front/platform.front.shell.yaml@Pulse
+  parameters:
+    deployType: ${{ parameters.deployType }}
+    devIndex: ${{ parameters.devIndex }}
+    disableSonar: ${{ parameters.disableSonar }}
+    styleGuideFolder: 'packages/libraries/styleguide'
+
