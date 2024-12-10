@@ -1,10 +1,10 @@
 <template>
   <div class="treeview" :class="{ 'treeview--is-loading': isLoading }">
-    <div v-if="isLoading" class="treeview__loader">
+    <div v-if="isLoading || currentServiceName === null" class="treeview__loader">
       <PLoader pType="primary" size="42" />
     </div>
 
-    <div v-else-if="defaultFolder !== null && currentFolderName !== null">
+    <div v-else-if="defaultFolder !== null">
       <CreateFolderSection
         :entityId="selectedEntity"
         :isCreateFolderModalVisible="isCreateFolderModalVisible"

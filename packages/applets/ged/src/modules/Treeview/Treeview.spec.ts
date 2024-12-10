@@ -95,6 +95,18 @@ describe('treeview', () => {
 
       expect(loader.exists()).toBeTruthy()
     })
+
+    it('should keep loading if currentServiceName is not defined', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        currentServiceName: null,
+        isLoading: false,
+      })
+
+      await flushPromises()
+      const loader = wrapper.find('.treeview__loader')
+      expect(loader.exists()).toBeTruthy()
+    })
   })
   describe('interactions', () => {
     describe('createFolderSection', () => {
