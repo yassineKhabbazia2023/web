@@ -1,6 +1,41 @@
 /** @type {import('dependency-cruiser').IConfiguration} */
 module.exports = {
   forbidden: [
+    {
+      name: 'no-applets-to-other-applets',
+      comment: "Applets in 'packages/applets' should not depend on other applets",
+      severity: 'error',
+      from: {
+        path: '^packages/applets/([^/]+)/.+',
+      },
+      to: {
+        // to understand, see documentation: https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md#group-matching---an-example-matching-peer-folders
+        path: '^packages/applets/([^/]+)/.+', // forbid any other applet
+        pathNot: '^packages/applets/$1/.+', // beside the calling applet
+      },
+    },
+    {
+      name: 'no-common-to-styleguide',
+      comment: 'Common should not depend on Styleguide.',
+      severity: 'error',
+      from: {
+        path: '^packages/libraries/common/.+',
+      },
+      to: {
+        path: '^packages/libraries/styleguide/.+',
+      },
+    },
+    {
+      name: 'no-styleguide-to-common',
+      comment: 'Styleguide should not depend on Common.',
+      severity: 'error',
+      from: {
+        path: '^packages/libraries/styleguide/.+',
+      },
+      to: {
+        path: '^packages/libraries/common/.+',
+      },
+    },
     //  {
     //    name: 'no-circular',
     //    severity: 'warn',
