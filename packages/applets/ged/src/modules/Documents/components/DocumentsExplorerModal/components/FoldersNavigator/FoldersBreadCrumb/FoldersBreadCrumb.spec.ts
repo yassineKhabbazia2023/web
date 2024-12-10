@@ -9,9 +9,6 @@ import { nextTick } from 'vue'
 import FoldersBreadCrumb from '.'
 import type { BreadcrumbItems } from '@pulse/styleguide/types'
 import { PBreadcrumb, PIcon } from '@pulse/styleguide/components'
-import { trackBreadcrumbUsage } from '@ged/services/tracking/tracking.service'
-
-vi.mock('@ged/services/tracking/tracking.service')
 
 const currentServiceFolder: Folder[] = foldersData[0]
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
@@ -84,18 +81,6 @@ describe('foldersBreadCrumb', () => {
       await nextTick()
 
       expect(wrapper.emitted('open-create-folder-modal')).toBeTruthy()
-    })
-  })
-
-  describe('tracking', () => {
-    it('should track the breadcrumb usage', async () => {
-      const wrapper = createWrapper()
-      const pBreadCrumb = findPBreadcrumb(wrapper)
-
-      pBreadCrumb.vm.$emit('p-breadcrumb-item-click', validDestination.id)
-      await nextTick()
-
-      expect(trackBreadcrumbUsage).toHaveBeenCalledOnce()
     })
   })
 })

@@ -18,7 +18,7 @@
     <div class="padding-top--4 padding-left--4">
       <PBreadcrumb
         :pElements="breadcrumbItems"
-        @p-breadcrumb-item-click="handleFolderNavigation"
+        @p-breadcrumb-item-click="handleBreadcrumbClick"
       />
     </div>
 
@@ -253,6 +253,7 @@ import {
   trackDocumentDownloadFlowStart,
   trackDocumentTransmitFlowStart,
   trackDocumentSearch,
+  trackBreadcrumbUsage,
 } from '@ged/services/tracking/tracking.service'
 import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
@@ -327,6 +328,11 @@ const breadcrumbItems = computed(() => {
   })
   return items
 })
+
+function handleBreadcrumbClick(id: number) {
+  trackBreadcrumbUsage()
+  handleFolderNavigation(id)
+}
 
 // Pagination
 
