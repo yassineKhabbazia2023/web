@@ -1,0 +1,15 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "EFN6XUH87W.fr.kpmg.mes.collab",
+                "paths": [ "*", "/uni/*" ]
+            },
+            {
+                "appID": "5HJ75TPDDB.fr.kpmg.mes",
+                "paths": [ "*", "/uni/*" ]
+            }
+        ]
+    }
+}
