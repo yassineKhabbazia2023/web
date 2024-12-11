@@ -1,3 +1,4 @@
+import { type Component } from 'vue'
 import {
   PIFiletypeNone,
   PIFiletypeBmp,
@@ -20,121 +21,44 @@ import {
   PIFiletypeXlsx,
   PIFiletypeXml,
 } from '../atoms/PIcon/components'
-const authorizedExtensions = [
-  'bmp',
-  'csv',
-  'doc',
-  'dot',
-  'docx',
-  'dotx',
-  'docm',
-  'dotm',
-  'gif',
-  'jfif',
-  'jpe',
-  'jpeg',
-  'jpg',
-  'msg',
-  'mp4',
-  'pdf',
-  'ppt',
-  'pptx',
-  'pot',
-  'pps',
-  'ppa',
-  'ppam',
-  'png',
-  'rtf',
-  'sql',
-  'tif',
-  'tiff',
-  'txt',
-  'vsdx',
-  'xsl',
-  'xls',
-  'xlsx',
-  'xltx',
-  'xlsm',
-  'xltm',
-  'xlam',
-  'xlsb',
-  'zip',
-  'rar',
-  'xml',
-  'pbix',
-  'ods',
-  'one',
-  'onea',
-  'onetoc',
-  'onetoc2',
-  'onetmp',
-  'onepkg',
-]
-export const imageExtensions =
-  ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'cur']
+import {
+  isImageDocument as coreIsImageDocument,
+  getDocumentNameWithoutExtension as coreGetDocumentNameWithoutExtension,
+  isExtensionAuthorized as coreIsExtensionAuthorized,
+  getIconFileName,
+} from '@pulse/core'
 
-export const isImageDocument = (extension: string): boolean => {
-  return imageExtensions.includes(extension.toLowerCase())
+const ICON_COMPONENT_BY_FILE_NAME: Record<string, Component> = {
+  filetypeNone: PIFiletypeNone,
+  filetypeBmp: PIFiletypeBmp,
+  filetypeCsv: PIFiletypeCsv,
+  filetypeDoc: PIFiletypeDoc,
+  filetypeDocx: PIFiletypeDocx,
+  filetypeGif: PIFiletypeGif,
+  filetypeHeic: PIFiletypeHeic,
+  filetypeJpg: PIFiletypeJpg,
+  filetypeMd: PIFiletypeMd,
+  filetypePdf: PIFiletypePdf,
+  filetypePng: PIFiletypePng,
+  filetypePpt: PIFiletypePpt,
+  filetypePptx: PIFiletypePptx,
+  filetypeRaw: PIFiletypeRaw,
+  filetypeSvg: PIFiletypeSvg,
+  filetypeTiff: PIFiletypeTiff,
+  filetypeTxt: PIFiletypeTxt,
+  filetypeXls: PIFiletypeXls,
+  filetypeXlsx: PIFiletypeXlsx,
+  filetypeXml: PIFiletypeXml,
 }
 
-export const getDocumentNameWithoutExtension = (filename: string): string => {
-  const parts = filename.split('.')
-  if (parts.length < 2) {
-    return filename
-  }
+export const isImageDocument = (extension: string): boolean => coreIsImageDocument(extension)
 
-  parts.pop()
-  return parts.join('.')
-}
+export const getDocumentNameWithoutExtension = (filename: string): string => coreGetDocumentNameWithoutExtension(filename)
 
-export const isExtensionAuthorized = (extension: string): boolean => {
-  return authorizedExtensions.includes(extension)
-}
+export const isExtensionAuthorized = (extension: string): boolean => coreIsExtensionAuthorized(extension)
 
 export const getFileIcon = (fileName: string) => {
-  if (!fileName?.trim().length) {
-    return PIFiletypeNone
-  }
-  switch (fileName.split('.').pop()) {
-  case 'bmp':
-    return PIFiletypeBmp
-  case 'csv':
-    return PIFiletypeCsv
-  case 'doc':
-    return PIFiletypeDoc
-  case 'docx':
-    return PIFiletypeDocx
-  case 'gif':
-    return PIFiletypeGif
-  case 'heic':
-    return PIFiletypeHeic
-  case 'jpg':
-    return PIFiletypeJpg
-  case 'md':
-    return PIFiletypeMd
-  case 'pdf':
-    return PIFiletypePdf
-  case 'png':
-    return PIFiletypePng
-  case 'ppt':
-    return PIFiletypePpt
-  case 'pptx':
-    return PIFiletypePptx
-  case 'raw':
-    return PIFiletypeRaw
-  case 'svg':
-    return PIFiletypeSvg
-  case 'tiff':
-    return PIFiletypeTiff
-  case 'txt':
-    return PIFiletypeTxt
-  case 'xls':
-    return PIFiletypeXls
-  case 'xlsx':
-    return PIFiletypeXlsx
-  case 'xml':
-    return PIFiletypeXml
-  default:
-    return PIFiletypeNone
-  }
+  const iconFileName = getIconFileName(fileName, 'filetypeNone')
+
+  return ICON_COMPONENT_BY_FILE_NAME[iconFileName] ?? PIFiletypeNone
 }

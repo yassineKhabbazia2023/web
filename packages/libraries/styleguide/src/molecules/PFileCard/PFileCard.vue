@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<PFileCardProps>(), {
 })
 
 const fileIconComponent = computed(() => {
-  return getFileIcon(getFileExtension(props.pName))
+  return getFileIcon(props.pName)
 })
 </script>
 
