@@ -118,6 +118,7 @@ dist
 
 # vite temporary files
 vite.*.timestamp-*.mjs
+vitest.*.timestamp-*.mjs
 .rollup.cache
 
 # vitest coverage
