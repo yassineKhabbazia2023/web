@@ -4,57 +4,50 @@ import { shallowMount, flushPromises } from '@vue/test-utils'
 import type { PTableColumnProps } from './PTableColumnTypes'
 import PTableColumn from '.'
 
+const defaultProps: PTableColumnProps = {
+  pType: undefined,
+  pIndex: 0,
+  pLabel: '',
+  pColumnKey: '',
+  pProp: '',
+  pWidth: '',
+  pMinWidth: '',
+  pFixed: false,
+  pRenderHeader: undefined,
+  pSortable: false,
+  pSortMethod: (_a: any, _b: any) => 0,
+  pSortBy: [],
+  pSortOrders: [],
+  pResizable: false,
+  pFormatter: (
+    _row: any,
+    _column: any,
+    _cellValue: number,
+    _index: number) => '',
+  pShowOverflowTooltip: false,
+  pAlign: 'left',
+  pHeaderAlign: 'left',
+  pClassName: '',
+  pLabelClassName: '',
+  pSelectable: (_row: any, _index: number) => false,
+  pReserveSelection: false,
+  pFilters: [],
+  pFilterPlacement: 'top',
+  pFilterMultiple: false,
+  pFilteredValue: [],
+}
 function createWrapper(
-  columns: PTableColumnProps[],
-  pData: any,
-  pStripe: boolean,
+  overriddenProps: Partial<PTableColumnProps> = {},
 ): VueWrapper {
-  const Component = {
-    template: `
-      <PTable :pData="pData" :pStripe="pStripe">
-        <PTableColumn
-          v-for="(column, index) in columns"
-          :key="index"
-          :pType="column.pType"
-          :pLabel="column.pLabel"
-          :pProp="column.pProp"
-          data-ut="column"
-        >
-          <template
-            #default="{ row, column, $index }"
-          >
-            <span>{{ row[column.property] }}</span>
-          </template>
-        </PTableColumn>
-      </PTable>
-    `,
-    data() {
-      return {
-        columns,
-        pData,
-        pStripe,
-      }
-    },
+  const props = {
+    ...defaultProps,
+    ...overriddenProps,
   }
-
-  return shallowMount(Component, {
+  return shallowMount(PTableColumn, {
+    props,
     global: {
       stubs: {
-        PTableColumn,
-        PTable: {
-          name: 'PTable',
-          template: `<table>
-          <tbody>
-          <tr v-for="(row, index) in data" :key="index"><td />
-          </tr>
-          </tbody>
-          </table>`,
-          props: [
-            'data',
-            'stripe',
-            'fit',
-          ],
-        },
+        ElTableColumn: true,
       },
     },
   })
@@ -66,44 +59,35 @@ const pData = [
   { id: 357, name: 'Paul Simon', age: 84 },
 ]
 
-const columns: PTableColumnProps[] = [{
+const columns: (Partial<PTableColumnProps> & {
+  reason: string
+})[] = [{
+  reason: 'typeIsSelection',
   pType: 'selection',
 }, {
+  reason: 'noType',
   pLabel: 'Name',
   pProp: 'name',
 }, {
+  reason: 'typeIsIndex',
   pType: 'index',
   pProp: 'id',
-}, {
-  pLabel: 'age',
-  pProp: 'age',
 }]
 
-describe('pTableColumn', () => {
-  let wrapper: ReturnType<typeof createWrapper>
-  beforeEach(async () => {
-    wrapper = createWrapper(columns, pData, false)
-    await flushPromises()
-  })
-  it('should have column count', () => {
-    const columns = wrapper.findAll('[data-ut="column"]')
-    expect(columns).toHaveLength(columns.length)
-  })
+describe('test PTableColumn', () => {
+  it.each(columns)('should call ElColumn with proper props', ({
+    reason,
+    pType,
+    pLabel,
+    pProp,
+  }) => {
+    const wrapper = createWrapper({
+      pType,
+      pLabel,
+      pProp,
+    })
+    const elTableColumn = wrapper.findComponent({ name: 'ElTableColumn' })
 
-  // TODO should write a more efficient UT
-  it.skip('columns should have proper thead texts', () => {
-    const thead = wrapper.find('thead')
-    const expectedHeadText = columns.map(({ pLabel }) => pLabel).join('')
-    expect(thead.text()).toBe(expectedHeadText)
-  })
-
-  // TODO should write a more efficient UT
-  it.skip('columns should have proper tbody texts', () => {
-    const tbody = wrapper.find('tbody')
-    const expectedBodyText = pData
-      .map(({ name, age, id }) => `${name}${id}${age}`)
-      .join('')
-
-    expect(tbody.text()).toBe(expectedBodyText)
+    expect(elTableColumn.props()).toMatchFileSnapshot(`__snap__/elTableColumn.${ reason }.snap`)
   })
 })

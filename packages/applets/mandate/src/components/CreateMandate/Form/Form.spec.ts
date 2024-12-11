@@ -191,8 +191,7 @@ describe('form.vue', () => {
         .toStrictEqual(step3TestCase.updated.key)
     })
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip('emits the loading event form', async () => {
+  it('emits the loading event form', async () => {
     const wrapper = createWrapper({ step: 1 })
     const input = wrapper.find('input[data-testid="ibs-number-test"]')
     await input.setValue('1234567891')

@@ -44,8 +44,7 @@ describe('reset password', () => {
     wrapper.unmount()
   })
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip('validate the reset password form and has a redirection to the success page', async () => {
+  it('validate the reset password form and has a redirection to the success page', async () => {
     const elForm = wrapper.find('form')
     mockAuthPost.mockResolvedValueOnce({})
     expect(elForm.exists()).toBeTruthy()

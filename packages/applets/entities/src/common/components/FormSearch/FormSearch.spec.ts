@@ -13,8 +13,7 @@ describe('formSearch', () => {
     wrapper = createWrapper()
   })
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip('displays an error if the user search with less than 3 characters', async () => {
+  it('displays an error if the user search with less than 3 characters', async () => {
     const getFormItemIsError = () => wrapper.find('.el-form-item.is-error')
 
     expect(getFormItemIsError().exists()).toBeFalsy()

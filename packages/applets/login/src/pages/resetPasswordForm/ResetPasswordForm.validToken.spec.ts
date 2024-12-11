@@ -33,8 +33,7 @@ describe('page reset password form', () => {
     wrapper = createWrapper()
   })
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip(
+  it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
       wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
@@ -44,16 +43,14 @@ describe('page reset password form', () => {
     },
   )
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip('should show error when user enter a invalid password', async () => {
+  it('should show error when user enter a invalid password', async () => {
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11aa')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
     await flushPromises()
     expect(wrapper.findAll('.is-error')).toHaveLength(1)
   })
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip('should show error when user enter an empty password', async () => {
+  it('should show error when user enter an empty password', async () => {
     const firstInput = wrapper.find('[data-testid="reset-password-form-first-password"]')
     const secondInput = wrapper.find('[data-testid="reset-password-form-second-password"]')
 
@@ -75,8 +72,7 @@ describe('page reset password form', () => {
     // expect(wrapper.find('button').classes()).not.toContain('is-disabled')
   })
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip('should show error when user enter password and confirm password differently', async () => {
+  it('should show error when user enter password and confirm password differently', async () => {
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('different password')
     await flushPromises()
@@ -84,8 +80,7 @@ describe('page reset password form', () => {
     expect(wrapper.find('button').classes()).toContain('is-disabled')
   })
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip('should call back end when click on button', async () => {
+  it('should call back end when click on button', async () => {
     const routerPushSpy = vi.spyOn(router, 'push')
     wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')

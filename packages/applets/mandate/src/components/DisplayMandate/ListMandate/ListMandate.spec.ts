@@ -261,7 +261,7 @@ describe('mandate collection', () => {
     expect(mandateService.downloadUnsignedMandate).toHaveBeenCalledWith(mandate.id)
   })
 
-  it.skip('should track telecollection cancellation', async () => {
+  it('should track telecollection cancellation', async () => {
     const wrapper = createWrapper({
       data: [],
       currentPage,
@@ -275,7 +275,7 @@ describe('mandate collection', () => {
     })
   })
 
-  it.skip('should track pre filled mandate download', async () => {
+  it('should track pre filled mandate download', async () => {
     const wrapper = createWrapper({
       data: [],
       currentPage,

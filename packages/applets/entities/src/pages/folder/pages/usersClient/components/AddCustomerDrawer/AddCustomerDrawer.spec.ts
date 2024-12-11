@@ -143,8 +143,7 @@ describe('addCustomerDrawer', () => {
       expect(addCustomerDrawer.isVisible()).toBeFalsy()
     })
 
-    // FIXME : skipped while integrating SG in monorepo
-    it.skip('should show a form validation error if the email is not valid', async () => {
+    it('should show a form validation error if the email is not valid', async () => {
       expect(findInputValidationError().exists()).toBeFalsy()
 
       const emailInput = getEmailField()

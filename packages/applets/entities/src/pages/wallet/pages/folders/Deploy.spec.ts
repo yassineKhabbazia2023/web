@@ -187,7 +187,7 @@ describe('deploy', () => {
   })
 
   // FIXME : skipped while integrating SG in monorepo
-  it.skip('should not call api when user search with less than 3 characters', async () => {
+  it('should not call api when user search with less than 3 characters', async () => {
     const wrapper = createWrapper()
 
     await wrapper.find('input[type="search"]').setValue('az')
