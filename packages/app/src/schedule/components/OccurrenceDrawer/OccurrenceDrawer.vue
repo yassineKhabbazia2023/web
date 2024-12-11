@@ -186,7 +186,7 @@ import Tag from '@app/schedule/components/Common/Tag'
 import DeadlineAccounts from '@app/schedule/components/DeadlineAccounts'
 import DeadlineReminders from '@app/schedule/components/DeadlineReminders'
 import { downloadFile, saveFileAs, fileSizeHumanFormatter } from '@app/schedule/helpers/utils'
-import { getFileExtension } from '@pulse/core'
+import { getFileExtension , logger } from '@pulse/core'
 import {
   getFrequencyLabel,
   getCreatedByLabel,
@@ -263,7 +263,7 @@ async function onToggleDeadlineAccountStatus(accountId: number, actualStatus: St
     await postDeadlineAccountStatus(props.occurrenceId, accountId, status)
     createdSuccessfully = true
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   } finally {
     amplitudeService.track('Reminder Status Updated', {
       reminder_update_status: status.toString(),
@@ -281,7 +281,7 @@ async function refreshOccurrence() {
     longScheduleModelsByKey.value = getScheduleModelsByKey('long')
     occurrence.value = await getOccurrence(props.occurrenceId)
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   } finally {
     isLoading.value = false
   }
@@ -321,7 +321,7 @@ const downloadAttachment = async (occurenceId: number, attachmentName: string) =
       downloadFile(attachmentName, data)
     }
   } catch (error) {
-    console.error('Error downloading file:', error)
+    logger.error('Error downloading file:', error)
     showNotification(messageMap, 'error', notification)
   } finally {
     notification.close()

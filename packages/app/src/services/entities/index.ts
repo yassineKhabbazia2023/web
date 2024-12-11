@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import { commonApi, commonStore as store } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import { API_PREFIXES } from '../config'
@@ -13,7 +14,7 @@ export const fetchEntities = async (): Promise<any> => {
       return response.data
     }
   } catch (error) {
-    console.error('Error fetching entities :', error)
+    logger.error('Error fetching entities :', error)
   }
 
   return []
@@ -43,7 +44,7 @@ export const fetchFavoriteEntities = async (): Promise<Entity[]> => {
       return response.data
     }
   } catch (error) {
-    console.error('Error fetching favorites entities :', error)
+    logger.error('Error fetching favorites entities :', error)
   }
 
   return []

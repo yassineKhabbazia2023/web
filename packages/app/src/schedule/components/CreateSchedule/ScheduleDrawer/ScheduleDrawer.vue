@@ -34,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted, computed, nextTick } from 'vue'
 import type { Schedule } from '@app/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 import { getAccountsCollection, postSchedule, getFrequenciesCollection } from '@app/schedule/services'
@@ -83,7 +84,7 @@ onMounted(async () => {
     recipientsCollection.value = accountsDataTransformer(accounts)
     frequenciesCollection.value = frequency
   } catch (error) {
-    console.warn(error)
+    logger.warn(error)
   } finally {
     loading.value = false
   }
@@ -106,7 +107,7 @@ const sendReminder = async (schedule: Schedule) => {
     isDrawerOpened.value = false
     createdSuccessfully = true
   } catch (error) {
-    console.warn(error)
+    logger.warn(error)
   } finally {
     amplitudeService.track('Reminder Add Completed', {
       reminder_add_type: schedule.template.typeShort,

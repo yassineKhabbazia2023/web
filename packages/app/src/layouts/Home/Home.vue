@@ -48,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { computed, ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { productFruits } from 'product-fruits'
@@ -206,7 +207,7 @@ onMounted(async () => {
       }
     }
   } catch (error) {
-    console.error('Unable to fetch current user information: ', error)
+    logger.error('Unable to fetch current user information: ', error)
   } finally {
     isLoading.value = false
   }
@@ -221,7 +222,7 @@ async function setNotificationsCount() {
     const { count } = await fetchUnreadNotificationsCount()
     unreadNotificationsCount.value = count
   } catch (error) {
-    console.error('Notifications count fetch failed.', error)
+    logger.error('Notifications count fetch failed.', error)
   }
 }
 

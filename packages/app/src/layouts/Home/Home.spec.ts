@@ -20,6 +20,18 @@ const pinia = createTestingPinia()
 const { fakeUser } = helpers()
 const mockedEntity = getMockedFavoriteEntities()[0]
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
 vi.mock('@pulse/common', () => KpmgCommontMock)
 vi.mock('@app/services/entities', async () => {
@@ -144,17 +156,17 @@ describe('home', () => {
     expect(entitiesServices.fetchEntities).toHaveBeenCalledOnce()
   })
 
-  it('should log a console.error message when the request fails', async () => {
+  it('should log a logger.error message when the request fails', async () => {
     const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-    const spyConsole = vi.spyOn(console, 'error')
+    
     vi.spyOn(entitiesServices, 'fetchEntities').mockRejectedValue(
       expectedErrorMessage,
     )
     wrapper = createWrapper()
     await flushPromises()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenCalledWith(
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenCalledWith(
       'Unable to fetch current user information: ',
       expectedErrorMessage,
     )

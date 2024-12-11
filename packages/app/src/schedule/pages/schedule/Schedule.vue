@@ -97,6 +97,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { onMounted, ref, computed } from 'vue'
 import { PLoader, PDatePicker } from '@pulse/styleguide/components'
 import type { PDatePickerModelValue } from '@pulse/styleguide/types'
@@ -193,7 +194,7 @@ async function refreshData() {
     deadlineItems.value = await getSchedulesCollection(searchParams)
     setCalendarWidgetDates(deadlineItems.value)
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   } finally {
     isLoading.value = false
   }
@@ -210,7 +211,7 @@ async function refreshAdvancedSearch() {
     const searchParams = getAdvancedSearchParams(today, searchTerm.value, filters.value)
     advancedSearchDeadlineItems.value = await getSchedulesCollection(searchParams)
   } catch (error) {
-    console.warn(error)
+    logger.warn(error)
   } finally {
     isLoading.value = false
   }
@@ -223,7 +224,7 @@ async function refreshCalendarWidgetData() {
     const deadlineItems = await getSchedulesCollection(searchParams)
     setCalendarWidgetDates(deadlineItems)
   } catch (error) {
-    console.warn(error)
+    logger.warn(error)
   } finally {
     calendarWidgetIsLoading.value = false
   }

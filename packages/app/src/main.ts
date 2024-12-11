@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import maze from './plugins/maze'
 import { VITE_ASSETS_BASE_URL, VITE_MAZE_KEY, VITE_ONE_TRUST_KEY, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
-import { AppVersionManager } from '@pulse/core'
+import { AppVersionManager , logger } from '@pulse/core'
 
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
@@ -69,7 +69,7 @@ if (import.meta.env.PROD) {
         These callbacks will be called once the external API has been initialized.
       */
       window.hsConversationsOnReady = () => {
-        console.warn(`HubSpot Conversations API: ${window.HubSpotConversations}`)
+        logger.warn(`HubSpot Conversations API: ${window.HubSpotConversations}`)
       }
     }
   }

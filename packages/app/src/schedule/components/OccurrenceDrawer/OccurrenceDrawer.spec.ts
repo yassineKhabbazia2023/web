@@ -27,6 +27,23 @@ interface Window {
 }
 declare let window: Window
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', async () => {
+  const actual = await vi.importActual('@pulse/core')
+
+  return {
+    ...actual,
+    logger: {
+      debug: loggerDebugSpy,
+      warn: loggerWarnSpy,
+      error: loggerErrorSpy,
+    },
+  }
+})
+
 vi.mock('@app/schedule/services', () => {
   return {
     postSchedule: vi.fn(),
@@ -168,23 +185,23 @@ describe('drawer.vue', () => {
     expect(postDeadlineAccountStatusSpy).toHaveBeenNthCalledWith(1, occurrenceId, accountId, expectedStatus)
     expect(amplitudeTrackMock).toHaveBeenCalledOnce()
   })
-  it('should log a console.error message when the getOccurrence request fails', async () => {
+  it('should log a logger.error message when the getOccurrence request fails', async () => {
     const expectedErrorMessage = 'Authorization Error: API Access Denied'
-    const spyConsole = vi.spyOn(console, 'error')
+    
     vi.spyOn(scheduleServices, 'getOccurrence').mockRejectedValue(expectedErrorMessage)
 
     createWrapper({ modelValue: true })
 
     await flushPromises()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenCalledWith(
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenCalledWith(
       expectedErrorMessage,
     )
   })
-  it('should log a console.error message when the postDeadlineAccountStatus request fails', async () => {
+  it('should log a logger.error message when the postDeadlineAccountStatus request fails', async () => {
     const expectedErrorMessage = 'Authorization Error: API Access Denied'
-    const spyConsole = vi.spyOn(console, 'error')
+    
     vi.spyOn(scheduleServices, 'postDeadlineAccountStatus').mockRejectedValue(expectedErrorMessage)
     const accountId = 12
     const status = 'Todo'
@@ -196,8 +213,8 @@ describe('drawer.vue', () => {
     firstDeadlineAccount.vm.$emit('toggle-status', accountId, status)
     await flushPromises()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenCalledWith(
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenCalledWith(
       expectedErrorMessage,
     )
   })

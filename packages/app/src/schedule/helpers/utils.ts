@@ -1,4 +1,5 @@
 'use strict'
+import { logger } from '@pulse/core'
 import { toRaw } from 'vue'
 import { isEqual } from 'lodash-es'
 import type { Account } from '@app/schedule/models/Account'
@@ -29,7 +30,7 @@ export const dateISOFormatter = (date: Date | string) => {
       return (new Date(dateWithHoursUpdated)).toISOString().split('T')[0]
     }
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
   return ''
 }

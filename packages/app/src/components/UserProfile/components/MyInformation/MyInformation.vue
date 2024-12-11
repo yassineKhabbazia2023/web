@@ -103,6 +103,7 @@
 </template>
 
 <script lang="ts" setup>
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { onMounted, reactive, ref } from 'vue'
 import { commonApi } from '@pulse/common'
@@ -210,7 +211,7 @@ const fetchUserInfo = async () => {
     formValues.email = email
     formValues.mobilePhone = mobilePhone
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 
   isLoading.value = false

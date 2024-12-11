@@ -46,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Tag from '@app/schedule/components/Common/Tag'
@@ -129,7 +130,7 @@ const actionClicked = (event: DeadlineEvent, occurrenceId: number) => {
   try {
     actions[event]()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 }
 </script>

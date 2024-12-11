@@ -33,6 +33,18 @@ const mockPatch = vi.fn()
 const mockGet = vi.fn(() => Promise.resolve({ data: CONTACT_RESPONSE }))
 
 const spyPNotification = vi.hoisted(() => vi.fn())
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@pulse/styleguide', () => ({
   PNotification: spyPNotification,
 }))
@@ -155,16 +167,16 @@ describe('myInformation', () => {
       expect(spyPNotification).toHaveBeenCalledOnce()
     })
 
-    it('should log a console.error message when the request fails', async () => {
+    it('should log a logger.error message when the request fails', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      const spyConsole = vi.spyOn(console, 'error')
+      
       mockGet.mockRejectedValue(expectedErrorMessage)
 
       wrapper = createWrapper()
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
     })
 
     it('should trigger the submit event when the form is submitted',

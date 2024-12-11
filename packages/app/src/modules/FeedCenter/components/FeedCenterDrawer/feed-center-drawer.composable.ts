@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import {
   computed,
   onMounted,
@@ -32,7 +33,7 @@ export function useFeedCenterDrawer(
       const { notifications: fetchedNotification } = await fetchNotifications()
       notifications.value = fetchedNotification
     } catch (error) {
-      console.error('Notifications fetch failed')
+      logger.error('Notifications fetch failed')
     } finally {
       stopLoadingNotifications()
     }
