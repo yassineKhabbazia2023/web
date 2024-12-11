@@ -266,6 +266,7 @@
 </template>
 
 <script setup lang='ts'>
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed } from 'vue'
 import {
@@ -510,7 +511,7 @@ const isBbanComplete = async () => {
       try {
         return await createMandateFormRef?.value?.validateField(inputValue)
       } catch (error) {
-        console.error(`Error in RIB field ${inputValue}`, error)
+        logger.error(`Error in RIB field ${inputValue}`, error)
       }
     })
 }

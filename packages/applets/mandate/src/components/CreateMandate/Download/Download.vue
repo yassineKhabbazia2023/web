@@ -101,6 +101,7 @@
 </template>
 
 <script setup lang='ts'>
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import {
   computed,
@@ -151,7 +152,7 @@ onBeforeMount(async () => {
   try {
     trackedMandateState.value = await getMandateAvailability(props.mandateId)
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 
   if (isTrackedMandateAvailable.value) {
@@ -187,7 +188,7 @@ async function trackMandateStatus() {
       resetInterval()
     }
   } catch (error) {
-    console.error('Mandate status tracking is not available')
+    logger.error('Mandate status tracking is not available')
   }
 }
 
@@ -231,7 +232,7 @@ const downloadMandate = async () => {
       downloadFile(`unsigned-mandate-${props.mandateId}.pdf`, data, window)
     }
   } catch (error) {
-    console.error('Error downloading file:', error)
+    logger.error('Error downloading file:', error)
     showNotification(messages, 'error', true, notification)
   } finally {
     notification.close()

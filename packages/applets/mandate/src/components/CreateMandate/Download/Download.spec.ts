@@ -22,6 +22,18 @@ const apiMocks = vi.hoisted(() => ({
   erroredMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.ERRORED)),
 }))
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@mandate/services/mandate', () => ({
   downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data })),
   getMandateAvailability: apiMocks.availaibleMandate,
@@ -97,15 +109,15 @@ describe('download mandate prefilled', () => {
     // Mocking a scenario where downloadUnsignedMandate fails
     vi.mocked(downloadUnsignedMandate).mockRejectedValueOnce(new Error('Download error'))
 
-    // Spy on console.error
-    const consoleSpy = vi.spyOn(console, 'error')
+    // Spy on logger.error
+    
     const wrapper = createWrapper()
     await flushPromises()
     // Act
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
 
     // Assertions
-    expect(consoleSpy).toHaveBeenCalledWith('Error downloading file:', expect.any(Error))
+    expect(loggerErrorSpy).toHaveBeenCalledWith('Error downloading file:', expect.any(Error))
   })
 })
 

@@ -26,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted } from 'vue'
 import { getMandatesCollection } from '@mandate/services/mandate'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
@@ -68,7 +69,7 @@ async function refreshData() {
     const { data } = await getMandatesCollection(searchParams.value)
     mandatesCollection.value = data
   } catch (error) {
-    console.error(`Error while refresh data ${error}`)
+    logger.error(`Error while refresh data ${error}`)
   }
 }
 

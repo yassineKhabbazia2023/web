@@ -11,6 +11,18 @@ import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@mandate/services/mandate')
 vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
@@ -79,19 +91,19 @@ describe('test Home.vue', () => {
     expect(mockedGetMandatesCollection).toHaveBeenCalledTimes(2)
   })
 
-  it('should call console.error when mockedGetMandatesCollection throws an error', async () => {
+  it('should call logger.error when mockedGetMandatesCollection throws an error', async () => {
     const header = wrapper.findComponent({ name: 'Header' })
     const error = 'thrown-error'
     const expected = `Error while refresh data ${error}`
-    const consoleErrorSpy = vi.spyOn(console, 'error')
+    
     mockedGetMandatesCollection.mockRejectedValueOnce(error)
 
     header.vm.$emit('refresh-mandate-collection', {})
     await nextTick()
     await flushPromises()
 
-    expect(consoleErrorSpy).toHaveBeenCalledOnce()
-    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, expected)
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, expected)
   })
 
   it('should call api with search term', async () => {
@@ -116,16 +128,16 @@ describe('test Home.vue', () => {
     expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expected)
   })
 
-  it('should call console.error when mockedGetMandatesCollection throws an error since begining', async () => {
+  it('should call logger.error when mockedGetMandatesCollection throws an error since begining', async () => {
     const error = 'thrown-error'
     mockedGetMandatesCollection.mockRejectedValueOnce(error)
-    const consoleErrorSpy = vi.spyOn(console, 'error')
+    
 
     createWrapper({})
     await flushPromises()
 
-    expect(consoleErrorSpy).toHaveBeenCalledOnce()
-    expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, `Error while refresh data ${error}`)
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, `Error while refresh data ${error}`)
   })
 
   it.todo('should the handle the filters')

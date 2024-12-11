@@ -124,6 +124,7 @@
 </template>
 
 <script setup lang='ts'>
+import { logger } from '@pulse/core'
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
@@ -300,7 +301,7 @@ const saveFile = async (id: string, data: any, mandateType: string) => {
       downloadFile(`${mandateType}-mandate-${id}.pdf`, data, window)
     }
   } catch (error) {
-    console.error('Error downloading file:', error)
+    logger.error('Error downloading file:', error)
   }
 }
 
@@ -341,7 +342,7 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   try {
     await actions[event]()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 }
 
@@ -374,7 +375,7 @@ const handleFileUpload = async (event: any, id: string) => {
     }
     showNotification(messages, 'success', true, notification)
   } catch (error) {
-    console.error('Error in mandate upload ', error)
+    logger.error('Error in mandate upload ', error)
     showNotification(messages, 'error', true, notification)
   } finally {
     emitRefreshMandateCollection({
@@ -394,7 +395,7 @@ const terminateMandateAction = async (mandateId: string) => {
     await terminateMandate(mandateId)
     closeTerminateMandatePopup()
   } catch (error) {
-    console.error('Error downloading file:', error)
+    logger.error('Error downloading file:', error)
   }
 }
 
@@ -414,7 +415,7 @@ const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandate
     const { data } = await downloadFunction(id)
     await saveFile(id, data, mandateType)
   } catch (error) {
-    console.error('Error downloading mandate:', error)
+    logger.error('Error downloading mandate:', error)
     showNotification(messages, 'error', true, notification)
   } finally {
     notification.close()
