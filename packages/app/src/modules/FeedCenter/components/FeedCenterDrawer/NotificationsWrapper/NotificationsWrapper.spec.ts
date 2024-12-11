@@ -13,12 +13,19 @@ function createWrapper(props: NotificationsWrapperProps = NoNotificationsPlaceho
   })
 }
 
+const mockRouter = vi.fn()
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    router: mockRouter,
+  }),
+}))
+
 vi.mock('./notification.manager', async () => {
   const actual = await vi.importActual('./notification.manager')
   return {
     ...(actual as object),
-    getNotificationAccountNames: vi.fn(),
-    getTimeSinceCreation: vi.fn(),
+    getNotificationAccountNames: vi.fn(() => []),
+    getTimeSinceCreation: vi.fn(() => ''),
     handleNotificationAction: vi.fn(),
   }
 })
