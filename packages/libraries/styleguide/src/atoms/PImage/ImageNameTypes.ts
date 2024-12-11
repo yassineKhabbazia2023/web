@@ -122,6 +122,7 @@ export type ImageName =
 'pulse_person_man_office_2x' |
 'pulse_person_man_office_3x' |
 'pulse_person_man_office_4x' |
+'worker-with-brand-shape' |
 'activation' |
 'collab-female-add' |
 'collab-female' |

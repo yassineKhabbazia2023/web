@@ -197,18 +197,8 @@ describe('createMandate', () => {
 
 describe('uploadSignedMandate', () => {
   it('should return mandate id', async () => {
-    const mandateId = '1999072765'
-    const obj = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-    await uploadSignedMandate({ mandateId, file: {} })
-    expect(gatewayPostSpy).toHaveBeenCalledWith(
-      `/mandate/api/mandate/${mandateId}/signed/currentuser`,
-      expect.any(FormData),
-      obj,
-    )
+    const { data: { id } } = await uploadSignedMandate({ mandateId: '1999072765', file: {} })
+    expect(id).toBe('3ef5ff10-18d1-40b1-aa24-0fcccd8445e6')
   })
 })
 
