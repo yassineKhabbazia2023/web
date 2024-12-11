@@ -22,6 +22,18 @@ const mockedSubscriptionMEGOfferDetails =
 const mockedSubscriptionLoopOfferDetails =
   getMockedSubscriptionOffersServices()[2]
 const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => MEGOffersFormStructure))
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/common/utils/referential', () => ({
   getFormStructure: mockedGetFormStructure,
 }))
@@ -129,7 +141,7 @@ describe('informationDetails', () => {
       expect(spyFetchAccount).toHaveBeenCalledWith(mockedAccountId)
     })
     it('should display a console error if the request to fetch account fails', async () => {
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(
         expectedErrorMessage,
@@ -137,8 +149,8 @@ describe('informationDetails', () => {
       createWrapper()
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Error fetching information: ',
         expectedErrorMessage,
       )

@@ -15,6 +15,18 @@ const mockedActionsCount = mockedAuthorizationsConfig
 const mockedAccountId = 602
 const mockedContactId = 25
 const mockedUseRoute = useRoute as Mock
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('vue-router')
 
 // Expectations
@@ -251,7 +263,7 @@ describe('rightsList', () => {
       )
     })
     it('should display a console error if the request to fetch authorizations config fails', async () => {
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(
         authorizationServices,
@@ -260,8 +272,8 @@ describe('rightsList', () => {
       createWrapper()
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Unable to fetch authorizations config: ',
         expectedErrorMessage,
       )

@@ -75,6 +75,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -131,7 +132,7 @@ onMounted(async () => {
   try {
     activeOffers.value = await fetchAccountSubscriptions(+route.params.id)
   } catch (error) {
-    console.error('fetching account subscriptions', error)
+    logger.error('fetching account subscriptions', error)
   } finally {
     isLoading.value = false
   }

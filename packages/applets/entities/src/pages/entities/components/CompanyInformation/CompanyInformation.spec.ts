@@ -19,6 +19,18 @@ const formInstructionText =
   'Please provide the following necessary information for activation :'
 
 const mockedAccount = getMockedAccount()
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
@@ -62,16 +74,16 @@ describe('companyInformation', () => {
     })
   })
   describe('events', () => {
-    it('should log a console.error message when the request fails to retrieve form structure', async () => {
+    it('should log a logger.error message when the request fails to retrieve form structure', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      const spyConsole = vi.spyOn(console, 'error')
+      
       vi.spyOn(referentialUtils, 'getFormStructure').mockRejectedValue(expectedErrorMessage)
 
       wrapper = createWrapper(undefined, ProviderName.MEG)
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
     })
     it("should not emit the 'input' event if internalAccount is undefined", async () => {
       const spyReferentialUtils = vi.spyOn(referentialUtils, 'getFormStructure')

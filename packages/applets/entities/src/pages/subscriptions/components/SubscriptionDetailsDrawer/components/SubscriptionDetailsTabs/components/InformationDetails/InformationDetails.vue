@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
@@ -76,7 +77,7 @@ onMounted(async () => {
     informationFormStructure.value = await getFormStructure(providerName.value, forceDisabled)
     accountModel.value = await fetchAccount(props.accountId)
   } catch (error) {
-    console.error('Error fetching information: ', error)
+    logger.error('Error fetching information: ', error)
   } finally {
     isLoading.value = false
   }

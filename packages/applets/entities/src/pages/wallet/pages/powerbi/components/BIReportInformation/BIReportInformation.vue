@@ -55,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
@@ -112,7 +113,7 @@ const fetchReportNames = async () => {
         }))
     }
   } catch (error) {
-    console.error('Unable to fetch report names: ', error)
+    logger.error('Unable to fetch report names: ', error)
   }
 }
 const handleResetOtherFields = () => {

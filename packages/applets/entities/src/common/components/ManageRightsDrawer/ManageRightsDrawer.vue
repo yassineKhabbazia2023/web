@@ -49,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
@@ -131,7 +132,7 @@ const handleUpdateUserPermissions = async () => {
       duration: 3000,
     })
   } catch (error) {
-    console.error('Permission update unsuccessful :', error)
+    logger.error('Permission update unsuccessful :', error)
   } finally {
     isLoading.value = false
   }

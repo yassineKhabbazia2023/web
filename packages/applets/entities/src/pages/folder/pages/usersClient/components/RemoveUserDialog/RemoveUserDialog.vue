@@ -42,6 +42,7 @@
 </template>
 
 <script lang="ts" setup>
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -117,7 +118,7 @@ const handleRemoveUser = async () => {
     emits('user-removed')
   } catch (error) {
     displayErrorNotificationRemovedCollaborator()
-    console.error(error)
+    logger.error(error)
   }
   dialogModel.value = false
 }

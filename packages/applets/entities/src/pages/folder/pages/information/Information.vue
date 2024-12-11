@@ -70,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -122,7 +123,7 @@ async function onClickSave() {
     await savePatchedAccount(accountId, patchValues.value)
     displayNotification('success', t('save-succeeded'), 'top-right')
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     displayNotification('error', t('save-failed'))
   } finally {
     isSaving.value = false
@@ -137,7 +138,7 @@ onMounted(async () => {
     currentAccount.value = await fetchAccount(accountId)
     originalAccount.value = cloneDeep(currentAccount.value)
   } catch (error) {
-    console.error('Error fetching information :', error)
+    logger.error('Error fetching information :', error)
   } finally {
     isLoading.value = false
   }

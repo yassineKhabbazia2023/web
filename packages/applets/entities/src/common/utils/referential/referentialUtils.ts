@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import type {
   FormSection,
@@ -78,7 +79,7 @@ export function getEnrichedField(
     referentialKey,
   )
   if (!pDropdownOptions) {
-    console.warn(`missing referential for field: '${referentialKey}'`)
+    logger.warn(`missing referential for field: '${referentialKey}'`)
 
     return enrichedField
   }

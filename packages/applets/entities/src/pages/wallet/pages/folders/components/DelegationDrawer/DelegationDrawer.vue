@@ -68,6 +68,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PICheck, PIX } from '@pulse/styleguide/components'
@@ -193,7 +194,7 @@ const delegateFolder = async (delegationRequest: any) => {
     handleDisplayNotification(true, delegationRequest.accountIds.length)
   } catch (err) {
     handleDisplayNotification(false, delegationRequest.accountIds.length)
-    console.error(err)
+    logger.error(err)
   }
 }
 
@@ -231,7 +232,7 @@ const handleDisplayNotification = (isSuccess:boolean, numberOfSelectedFolders: n
       : t('notificationMessages.flowTypeSpecific.failureNotificationMessage', numberOfSelectedFolders)
     break
   default:
-    console.warn('not supported')
+    logger.warn('not supported')
     return
   }
   if (isSuccess) {

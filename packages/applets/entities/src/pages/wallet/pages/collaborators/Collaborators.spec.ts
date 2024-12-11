@@ -13,6 +13,18 @@ const mockGatewayGet = vi.fn(() => {
   })
 })
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
@@ -82,14 +94,14 @@ describe('collaborators', () => {
 
   it('should log an error to the console if the API fails to fetch the collaborators', async () => {
     const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-    const spyConsole = vi.spyOn(console, 'error')
+    
     vi.spyOn(walletServices, 'getCollaborators').mockRejectedValue(expectedErrorMessage)
     wrapper = createWrapper()
     await flushPromises()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
     expect(wrapper.vm.state.data).toStrictEqual([])
-    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+    expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
   })
 
   it('update collaborators details when event is emitted', () => {

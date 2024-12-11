@@ -68,6 +68,7 @@
 </template>
 
 <script lang="ts" setup>
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted, computed } from 'vue'
 import {
@@ -151,7 +152,7 @@ const handleUploadBIReport = async () => {
       customClass: 'error',
       position: 'bottom-right',
     })
-    console.error('Unable to upload BI report: ', error)
+    logger.error('Unable to upload BI report: ', error)
   } finally {
     isUploading.value = false
   }
@@ -161,7 +162,7 @@ onMounted(async () => {
   try {
     reportTypes.value = await fetchBIReportTypes()
   } catch (error) {
-    console.error('Unable to fetch report types: ', error)
+    logger.error('Unable to fetch report types: ', error)
   } finally {
     isLoading.value = false
   }

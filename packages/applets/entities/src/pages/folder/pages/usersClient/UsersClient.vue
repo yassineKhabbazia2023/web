@@ -92,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -205,7 +206,7 @@ async function fetchUsers() {
     state.totalPages = totalPages
     state.totalItems = totalItems
   } catch (err) {
-    console.error(err)
+    logger.error(err)
   } finally {
     state.isLoading = false
   }

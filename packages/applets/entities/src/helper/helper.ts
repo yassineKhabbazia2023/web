@@ -1,7 +1,8 @@
+import { logger } from '@pulse/core'
 import type { PaginationData } from './helperTypes'
 
 export const handleRequestError = (action: string, error: any) => {
-  console.error(`Error ${action}:`, error)
+  logger.error(`Error ${action}:`, error)
 }
 export const getInitials = (firstName: string|undefined, lastName: string|undefined) => {
   const firstInitial = firstName?.at(0)?.toUpperCase() ?? ''

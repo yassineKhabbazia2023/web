@@ -89,6 +89,7 @@
 </template>
 
 <script lang='ts' setup>
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import {
@@ -244,7 +245,7 @@ async function fetchAccountList() {
     searchResult.value.totalPage = queryResult.totalPage
     searchResult.value.totalItems = queryResult.totalItems
   } catch (e) {
-    console.error('Error while fetching data', e)
+    logger.error('Error while fetching data', e)
   }
   isLoading.value = false
 }

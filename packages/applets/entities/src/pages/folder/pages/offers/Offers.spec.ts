@@ -11,6 +11,18 @@ import Offers from '.'
 
 // Mocks
 const activeOffersMocked = getActiveOffersMocked()
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/services/subscription', () => ({
   fetchAccountSubscriptions: vi.fn(() => Promise.resolve(activeOffersMocked)),
 }))
@@ -97,8 +109,8 @@ describe('offers', () => {
       expect(offersDrawer.emitted('update:modelValue')).toStrictEqual([[false]])
     })
 
-    it('should catch the error and display it in the console when the API call fails', async () => {
-      const consoleErrorSpy: MockInstance = vi.spyOn(console, 'error')
+    it('should catch the error and use logger.error when the API call fails', async () => {
+      
       vi.spyOn(
         SubscriptionServices,
         'fetchAccountSubscriptions',
@@ -106,8 +118,8 @@ describe('offers', () => {
       wrapper = createWrapper()
       await flushPromises()
 
-      expect(consoleErrorSpy).toHaveBeenCalledOnce()
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'fetching account subscriptions',
         'Fetch API ERROR',
       )

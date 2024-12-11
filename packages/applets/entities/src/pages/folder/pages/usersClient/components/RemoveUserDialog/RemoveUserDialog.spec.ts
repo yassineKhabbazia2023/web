@@ -14,6 +14,18 @@ const USER_TO_REMOVE = {
 }
 
 const spyPNotification = vi.hoisted(() => vi.fn())
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@pulse/styleguide', () => ({
   PNotification: spyPNotification,
 }))
@@ -142,7 +154,7 @@ describe('removeUserDialog', () => {
     })
 
     it('removes a user and displays an error notification if the operation fails', async () => {
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(accountServices, 'deleteContactFromAccount').mockRejectedValue(
         expectedErrorMessage,
@@ -154,9 +166,9 @@ describe('removeUserDialog', () => {
       await removeUserButton.trigger('click')
       await nextTick()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
       expect(spyPNotification).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+      expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
     })
   })
 })

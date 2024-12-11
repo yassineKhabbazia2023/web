@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PLoader } from '@pulse/styleguide/components'
@@ -76,7 +77,7 @@ onMounted(async () => {
       props.selectedSubscriptionId,
     )
   } catch (error) {
-    console.error('Unable to retrieve subscription summary :', error)
+    logger.error('Unable to retrieve subscription summary :', error)
   } finally {
     isLoading.value = false
   }

@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import type { Collab } from '@entities/pages/folder/pages/collaborators/types'
 import { handleRequestError } from '@entities/helper/helper'
 import { API_PREFIXES } from '@entities/common/config/services'
@@ -62,7 +63,7 @@ export const fetchEntitiesStatistics = async () => {
 
     return response.data
   } catch (error) {
-    console.error('Error fetching entities statistics :', error)
+    logger.error('Error fetching entities statistics :', error)
   }
 }
 
@@ -76,7 +77,7 @@ export const fetchFavoriteEntities = async (): Promise<
 
     return response.data
   } catch (error) {
-    console.error('Error fetching favorites entities :', error)
+    logger.error('Error fetching favorites entities :', error)
   }
 
   return []
@@ -91,7 +92,7 @@ export const manageFavoriteEntities = async (
       `${API_PREFIXES.WALLET}/favorites/currentuser?accountId=${accountId}&isFavorite=${isFavorite}`,
     )
   } catch (error) {
-    console.error('Error updating favorite status of the entity :', error)
+    logger.error('Error updating favorite status of the entity :', error)
   }
 }
 

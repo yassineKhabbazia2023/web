@@ -7,6 +7,18 @@ import SubscriptionDetailsDrawer from '.'
 
 const mockedSubscriptionDetails = getMockedSubscriptionDetails()
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
 }))
@@ -59,17 +71,17 @@ describe('subscriptionDetailsDrawer', () => {
         `${subscriptionAccountTest.accountLegalName} - No. ${subscriptionAccountTest.accountNumber}`,
       )
     })
-    it('should display console.error when API call is rejected', async () => {
+    it('should display logger.error when API call is rejected', async () => {
       const errorMessage = 'Fetch API ERROR'
       vi.spyOn(
         SubscriptionService,
         'fetchSubscriptionDetails',
       ).mockRejectedValueOnce(errorMessage)
-      const consoleErrorSpy: MockInstance = vi.spyOn(console, 'error')
+      
       await getWrapper(true)
 
-      expect(consoleErrorSpy).toHaveBeenCalledOnce()
-      expect(consoleErrorSpy).toHaveBeenNthCalledWith(1,
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1,
         'Unable to retrieve subscription summary :',
         errorMessage,
       )

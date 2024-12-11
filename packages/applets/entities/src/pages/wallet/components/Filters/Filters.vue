@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
 import { PFilterGroup } from '@pulse/styleguide/components'
@@ -87,7 +88,7 @@ onMounted(async () => {
     onBoardingFilters.value = getOnboardingFilters(FILTER_LABELS, data)
     userConnectionFilters.value = getUserConnexionFilters(FILTER_LABELS, data)
   } catch (err) {
-    console.error(err)
+    logger.error(err)
   }
 })
 </script>

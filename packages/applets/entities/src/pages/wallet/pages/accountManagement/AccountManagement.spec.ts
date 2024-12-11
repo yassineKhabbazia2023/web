@@ -17,6 +17,18 @@ const mockedAccount: AccountRow = {
 }
 const mockedQueryResult = getMockedWalletQueryResult()
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('./DeployUtils', async () => {
   return await vi.importActual('./DeployUtils')
 })
@@ -152,13 +164,13 @@ describe('deploy', () => {
 
     it('should log an error to the console when the API fails to fetch the account list', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      const consoleSpy = vi.spyOn(console, 'error')
+      
       mockFetchWalletData.mockRejectedValue(expectedErrorMessage)
       createWrapper()
       await flushPromises()
 
-      expect(consoleSpy).toHaveBeenCalledOnce()
-      expect(consoleSpy).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Error while fetching data',
         expectedErrorMessage,
       )

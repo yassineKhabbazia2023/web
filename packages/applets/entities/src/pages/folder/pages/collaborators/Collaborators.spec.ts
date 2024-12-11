@@ -12,6 +12,18 @@ import Collaborators from '.'
 
 const ENTITY_ID = 42
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
@@ -75,8 +87,7 @@ const createWrapper = (): ComponentWrapper<
   })
 
 describe('collaborators', () => {
-  let spyConsole: MockInstance
-  let wrapper: ReturnType<typeof createWrapper>
+    let wrapper: ReturnType<typeof createWrapper>
   const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
   const getAddCollaboratorDrawer = () =>
@@ -89,7 +100,7 @@ describe('collaborators', () => {
     wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
   beforeEach(() => {
-    spyConsole = vi.spyOn(console, 'error')
+    
     vi.spyOn(contactServices, 'getContactById').mockRejectedValue(
       expectedErrorMessage,
     )
@@ -122,8 +133,8 @@ describe('collaborators', () => {
     wrapper = createWrapper()
     await flushPromises()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
   })
 
   it('should display the table with the list of collaborator', () => {
@@ -153,8 +164,8 @@ describe('collaborators', () => {
     await flushPromises()
 
     expect(getCollabDetailsDrawer().exists()).toBeTruthy()
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
   })
 
   it("should display a console error if the request to fetch the contact's phone number fails", async () => {
@@ -164,8 +175,8 @@ describe('collaborators', () => {
     )
     await flushPromises()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenCalledWith(expectedErrorMessage)
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
   })
 
   it('can delete a collaborator from an entity and see a success notification', async () => {

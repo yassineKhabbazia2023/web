@@ -54,6 +54,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -161,7 +162,7 @@ onMounted(async () => {
       },
     )
   } catch (error) {
-    console.error('Unable to fetch authorizations config: ', error)
+    logger.error('Unable to fetch authorizations config: ', error)
   } finally {
     isLoading.value = false
   }

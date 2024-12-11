@@ -16,6 +16,18 @@ const mockedUser = {
   initials: 'JP',
   ...dataFromApi.data.items[0],
 }
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('vue-router')
 
 const createWrapper = (selectedUser: User = mockedUser): VueWrapper<any> => {
@@ -136,7 +148,7 @@ describe('manageRightsDrawer', () => {
       )
     })
     it('should display a console error if the request to update permissions fails', async () => {
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(
         authorizationServices,
@@ -150,8 +162,8 @@ describe('manageRightsDrawer', () => {
 
       await submitButton.trigger('click')
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Permission update unsuccessful :',
         expectedErrorMessage,
       )

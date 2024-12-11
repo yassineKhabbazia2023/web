@@ -21,6 +21,18 @@ const rowData = {
 const mockedSelectedRoleId = mockedCollabRoles.find(
   (r) => r.name === rowData.role,
 )?.id
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/common/components/ManageRightsDrawer/utils', () => ({
   getPermissionCodes: vi.fn(() => mockedPermissionCodes),
 }))
@@ -159,7 +171,7 @@ describe('collabRightsDrawer', () => {
       )
     })
     it('should display a console error if the request to update permissions fails', async () => {
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       mockUpdateUserPermission.mockRejectedValue(expectedErrorMessage)
       wrapper = createWrapper()
@@ -174,8 +186,8 @@ describe('collabRightsDrawer', () => {
       nextPreviousButtons.vm.$emit('clickNext')
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Permission update unsuccessful: ',
         expectedErrorMessage,
       )
@@ -201,7 +213,7 @@ describe('collabRightsDrawer', () => {
     })
     it('should display a console error if the request to fetch collaborator roles fails', async () => {
       vi.clearAllMocks()
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(walletServices, 'fetchContactRoles').mockRejectedValue(
         expectedErrorMessage,
@@ -209,7 +221,7 @@ describe('collabRightsDrawer', () => {
       createWrapper()
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Unable to fetch collaborator roles: ',
         expectedErrorMessage,
       )

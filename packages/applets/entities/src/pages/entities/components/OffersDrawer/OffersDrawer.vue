@@ -130,6 +130,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
@@ -350,7 +351,7 @@ async function validateOffer() {
     try {
       await patchAccount(props.accountId, patchOperations)
     } catch (error) {
-      console.error(error)
+      logger.error(error)
     }
   }
   try {
@@ -400,7 +401,7 @@ async function validateOffer() {
         subscription_start_result: 'failed',
       })
     }
-    console.error(error)
+    logger.error(error)
   }
 }
 
@@ -452,7 +453,7 @@ onMounted(async () => {
     activeOfferCodes.value = activeOffers.map((activeOffer) => activeOffer.offer.offerCode)
     account.value = await fetchAccount(props.accountId)
   } catch (error) {
-    console.error('Unable to retrieve data for subscribing to an offer :', error)
+    logger.error('Unable to retrieve data for subscribing to an offer :', error)
   } finally {
     isLoading.value = false
   }

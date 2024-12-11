@@ -6,6 +6,18 @@ import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 import { getInitials } from '@entities/helper'
 import ManageCollaborators from '.'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/services/contact', () => ({
   getCollaborators: vi.fn(() => Promise.resolve([])),
 }))
@@ -120,15 +132,14 @@ describe('manageCollaborators', () => {
       expect(pUserActionAfter).toHaveLength(countBefore + 1)
     })
     describe('when click on delete', () => {
-      let consoleWarnSpy: MockInstance
-      beforeEach(() => {
-        consoleWarnSpy = vi.spyOn(console, 'warn')
+            beforeEach(() => {
+        
       })
       it('should not emit update:collaborators when only one collaborator', () => {
         const { userAction } = getComponentsInWrapper(wrapper)
         userAction.vm.$emit('click-delete', 0)
 
-        expect(consoleWarnSpy).toHaveBeenLastCalledWith('Can not delete collaborator')
+        expect(loggerWarnSpy).toHaveBeenLastCalledWith('Can not delete collaborator')
         expect(wrapper.emitted('update:collaborator')).toBeFalsy()
       })
       it('should emit update:collaborators when several collaborators', async () => {
@@ -137,7 +148,7 @@ describe('manageCollaborators', () => {
         userAction.vm.$emit('click-delete', 0)
         const otherCollaborators = mockedCollaborators.splice(1)
 
-        expect(consoleWarnSpy).not.toHaveBeenCalled()
+        expect(loggerWarnSpy).not.toHaveBeenCalled()
         expect(wrapper.emitted('update:collaborators')).toStrictEqual([[otherCollaborators]])
       })
     })

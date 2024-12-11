@@ -4,6 +4,18 @@ import { getCanEdit, savePatchedAccount } from './InformationHelper'
 import type { PatchOperation, PatchValue } from '@entities/services/PatchRecordService'
 
 const mockHasPermission = vi.hoisted(() => vi.fn())
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@pulse/common', () => ({
   userPermissions: () => ({
     hasPermission: mockHasPermission,
@@ -86,7 +98,7 @@ describe('test InformationHelper', () => {
       expect(mockedGetPatchOperations).toHaveBeenCalledWith(mockedPatchValues)
     })
 
-    it('should call console.error and return true when patchValues is empty', async () => {
+    it('should call logger.error and return true when patchValues is empty', async () => {
       mockedGetPatchOperations.mockReturnValueOnce([])
 
       const expectedErrorMessage = 'Unmanaged case: patchOperations is empty'
@@ -104,7 +116,7 @@ describe('test InformationHelper', () => {
       expect(mockedPatchAccount).toHaveBeenCalledWith(ACCOUNT_ID, mockedPatchOperations)
     })
 
-    it('should call console.error and return false when patchAccount throws an error', async () => {
+    it('should call logger.error and return false when patchAccount throws an error', async () => {
       const errorMessage = 'error'
       mockedPatchAccount.mockRejectedValueOnce(new Error(errorMessage))
       const expectedErrorMessage = ''

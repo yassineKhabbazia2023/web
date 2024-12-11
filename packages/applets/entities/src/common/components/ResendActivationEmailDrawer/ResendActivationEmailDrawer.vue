@@ -63,6 +63,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed, ref, onMounted } from 'vue'
 import {
@@ -174,7 +175,7 @@ onMounted(async () => {
     usersClientAccount.value = formatItemsFromApi(items).map(
       (item) => ({ ...item, statusTag: getStatus(item.status) }))
   } catch (error) {
-    console.error('Error fetching users client account :', error)
+    logger.error('Error fetching users client account :', error)
   } finally {
     isLoading.value = false
   }

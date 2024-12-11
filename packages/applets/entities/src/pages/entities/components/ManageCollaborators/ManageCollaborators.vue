@@ -51,6 +51,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
@@ -97,7 +98,7 @@ function onAddContact(contact: Contact) {
 
 function onClickDelete(index: number) {
   if (!canDelete.value) {
-    console.warn('Can not delete collaborator')
+    logger.warn('Can not delete collaborator')
     return
   }
   selectedCollaborators.value.splice(index, 1)

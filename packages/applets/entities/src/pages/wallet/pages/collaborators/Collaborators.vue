@@ -48,6 +48,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch } from 'vue'
 import {
@@ -143,7 +144,7 @@ const fetch = async () => {
     }
   } catch (err) {
     state.data = []
-    console.error(err)
+    logger.error(err)
   }
   state.isLoading = false
 }

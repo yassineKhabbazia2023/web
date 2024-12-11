@@ -9,6 +9,18 @@ import BIReports from '.'
 // Mocks
 const mockedAccountId = 602
 const mockedBIReports = getMockedBIReports()
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
@@ -64,7 +76,7 @@ describe('biReports', () => {
       expect(spyFetchBIReports).toHaveBeenCalledWith(mockedAccountId)
     })
     it('should display a console error if the request to fetch the BI reports fails', async () => {
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(reportingServices, 'fetchBIReports').mockRejectedValue(
         expectedErrorMessage,
@@ -72,8 +84,8 @@ describe('biReports', () => {
       createWrapper()
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Unable to fetch BI reports: ',
         expectedErrorMessage,
       )

@@ -151,6 +151,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import {
   PAvatar,
@@ -254,7 +255,7 @@ const getPhonesNumberOfContactId = async (contactId: Contact['id']) => {
     const { landPhone, mobilePhone } = await getContactById(contactId) ?? {}
     return { landPhone, mobilePhone }
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 }
 
@@ -312,7 +313,7 @@ const removeCollaborator = async (
     await fetchCollaborators()
   } catch (error) {
     displayErrorNotificationRemovedCollaborator()
-    console.error(error)
+    logger.error(error)
   }
 }
 
@@ -414,7 +415,7 @@ const fetchCollaborators = async () => {
     state.totalPages = totalPage
     state.totalItems = totalItems
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 
   isLoading.value = false

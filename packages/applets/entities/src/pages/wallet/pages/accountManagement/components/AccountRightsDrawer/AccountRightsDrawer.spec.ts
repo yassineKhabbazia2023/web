@@ -7,6 +7,18 @@ import { ContactType } from '@entities/services/contact/contactTypes'
 import AccountRightsDrawer from '.'
 
 // Mocks
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('vue-router')
 const mockedAccountType = 'Client Company'
 const mockedAccount: AccountRow = {
@@ -104,7 +116,7 @@ describe('accountRightsDrawer', () => {
       )
     })
     it('should display a console error if the request to update permissions fails', async () => {
-      const spyConsole = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(
         authorizationServices,
@@ -118,8 +130,8 @@ describe('accountRightsDrawer', () => {
 
       await submitButton.trigger('click')
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Permission update unsuccessful :',
         expectedErrorMessage,
       )

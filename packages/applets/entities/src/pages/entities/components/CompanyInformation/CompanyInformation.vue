@@ -56,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
@@ -98,7 +99,7 @@ onMounted(async () => {
       formStructure.value = await getFormStructure(props.providerName)
     }
   } catch (e) {
-    console.error(e)
+    logger.error(e)
   } finally {
     isLoading.value = false
   }

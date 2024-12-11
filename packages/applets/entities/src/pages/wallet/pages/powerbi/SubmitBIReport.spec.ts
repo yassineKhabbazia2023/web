@@ -13,6 +13,18 @@ import SubmitBIReport from '.'
 const mockedPowerBIReport = getMockedPowerBIReport()
 const mockedBIReportTypes = getMockedBIReportTypes()
 const mockedReportUploadInfo = getMockedReportUploadInfo()
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/services/reporting', () => ({
   fetchBIReportTypes: vi.fn(() => Promise.resolve(mockedBIReportTypes)),
   uploadBIreport: vi.fn(),
@@ -22,9 +34,8 @@ const createWrapper = () => mount(SubmitBIReport)
 
 describe('submitBIReport', () => {
   let wrapper: VueWrapper<any>
-  let spyConsole: MockInstance
-  beforeEach(() => {
-    spyConsole = vi.spyOn(console, 'error')
+    beforeEach(() => {
+    
     wrapper = createWrapper()
   })
   describe('display', () => {
@@ -146,8 +157,8 @@ describe('submitBIReport', () => {
       await validationButton.trigger('click')
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Unable to upload BI report: ',
         expectedErrorMessage,
       )
@@ -170,8 +181,8 @@ describe('submitBIReport', () => {
       wrapper = createWrapper()
       await flushPromises()
 
-      expect(spyConsole).toHaveBeenCalledOnce()
-      expect(spyConsole).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Unable to fetch report types: ',
         expectedErrorMessage,
       )

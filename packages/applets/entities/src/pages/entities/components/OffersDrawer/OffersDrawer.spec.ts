@@ -51,6 +51,18 @@ async function asyncEmit(component: VueWrapper, eventName: string) {
   await nextTick()
 }
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
   getOffer: vi.fn((offerId) =>
@@ -317,13 +329,13 @@ describe('offersDrawer', () => {
         expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
 
-      it('should call console.error when patch fails', async () => {
+      it('should call logger.error when patch fails', async () => {
         const errorMessage = 'patch rejected'
         const patchAccountSpy = vi
           .spyOn(ServicesAccount, 'patchAccount')
           .mockRejectedValueOnce(errorMessage)
 
-        const consoleErrorSpy = vi.spyOn(console, 'error')
+        
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         firstOffer.trigger('click')
@@ -335,17 +347,17 @@ describe('offersDrawer', () => {
         await flushPromises()
 
         expect(patchAccountSpy).toHaveBeenCalledOnce()
-        expect(consoleErrorSpy).toHaveBeenCalledOnce()
-        expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
+        expect(loggerErrorSpy).toHaveBeenCalledOnce()
+        expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
 
-      it('should call console.error when save fails', async () => {
+      it('should call logger.error when save fails', async () => {
         const errorMessage = 'save rejected'
         vi
           .spyOn(subscriptionService, 'createSubscriptionRequest')
           .mockRejectedValueOnce(errorMessage)
 
-        const consoleErrorSpy = vi.spyOn(console, 'error')
+        
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
@@ -356,8 +368,8 @@ describe('offersDrawer', () => {
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
 
-        expect(consoleErrorSpy).toHaveBeenCalledOnce()
-        expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
+        expect(loggerErrorSpy).toHaveBeenCalledOnce()
+        expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
       it('should console error and track Amplitude event when saving fails for offers without validation', async () => {
         const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
@@ -366,7 +378,7 @@ describe('offersDrawer', () => {
           .spyOn(subscriptionService, 'createSubscriptionRequest')
           .mockRejectedValueOnce(errorMessage)
 
-        const consoleErrorSpy = vi.spyOn(console, 'error')
+        
         const wrapper = await getWrapper(true)
         const secondOffer = findSecondOffer(wrapper)
         await secondOffer.trigger('click')
@@ -391,8 +403,8 @@ describe('offersDrawer', () => {
           onboarding_start_localisation: 'Offer activation',
           onboarding_start_result: 'failed',
         })
-        expect(consoleErrorSpy).toHaveBeenCalledOnce()
-        expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
+        expect(loggerErrorSpy).toHaveBeenCalledOnce()
+        expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
     })
     describe('when input CompanyInformation data', () => {
@@ -434,16 +446,16 @@ describe('offersDrawer', () => {
     })
   })
   describe('props', () => {
-    it('should display console.error when API call is rejected', async () => {
+    it('should display logger.error when API call is rejected', async () => {
       const errorMessage = 'Fetch API ERROR'
       vi.spyOn(
         offerService,
         'getAllOffers',
       ).mockRejectedValueOnce(errorMessage)
-      const consoleErrorSpy: MockInstance = vi.spyOn(console, 'error')
+      
       await getWrapper(true)
-      expect(consoleErrorSpy).toHaveBeenCalledOnce()
-      expect(consoleErrorSpy).toHaveBeenNthCalledWith(1,
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1,
         'Unable to retrieve data for subscribing to an offer :',
         errorMessage,
       )

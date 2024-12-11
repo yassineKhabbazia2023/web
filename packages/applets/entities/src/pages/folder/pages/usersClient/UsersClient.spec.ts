@@ -18,6 +18,18 @@ import { mockedEntity } from '@entities/pages/wallet/components/TableData/mockDa
 import type { UsersClientProps } from './UsersClientTypes'
 import UsersClient from '.'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
   patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
@@ -93,8 +105,7 @@ const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination'
 const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 
 describe('usersClient', () => {
-  let consoleErrorSpy: MockInstance
-  let getPrincipalContactsSpy: MockInstance
+    let getPrincipalContactsSpy: MockInstance
   let mockGatewayGet: MockInstance
   beforeEach(async () => {
     getPrincipalContactsSpy = vi
@@ -104,7 +115,7 @@ describe('usersClient', () => {
       .mockResolvedValue(contactsList)
     wrapper = createWrapper()
     await nextTick()
-    consoleErrorSpy = vi.spyOn(console, 'error')
+    
   })
 
   describe('rendering', () => {
@@ -165,7 +176,7 @@ describe('usersClient', () => {
       await wrapper.vm.fetchUsers()
 
       expect(wrapper.vm.state.isLoading).toBeFalsy()
-      expect(consoleErrorSpy).toHaveBeenCalledTimes(1)
+      expect(loggerErrorSpy).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch contacts upon on-page-range-changed event', () => {

@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { PLoader } from '@pulse/styleguide/components'
@@ -36,7 +37,7 @@ onMounted(async () => {
     // We always select the first report by default
     selectedReport.value = reports.value[0]
   } catch (error) {
-    console.error('Unable to fetch BI reports: ', error)
+    logger.error('Unable to fetch BI reports: ', error)
   } finally {
     isLoading.value = false
   }

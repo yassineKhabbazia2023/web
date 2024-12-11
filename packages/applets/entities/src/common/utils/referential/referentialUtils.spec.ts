@@ -24,6 +24,18 @@ const mockedReferential = getMockedAccountReferential()
 const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
 const mockedFormSection = getMockedFormSection()
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
@@ -127,8 +139,8 @@ describe('referentialUtils', () => {
       expect(referentialDropdownOptions).toStrictEqual(expected)
     })
 
-    it('should emit console.warn when pFieldType is out from referential', () => {
-      const consoleWarnSpy = vi.spyOn(console, 'warn')
+    it('should emit logger.warn when pFieldType is out from referential', () => {
+      
       const field: FormField = getMockedFormField({
         referentialKey: 'foo',
         pFieldType: 'dropdown',
@@ -144,8 +156,8 @@ describe('referentialUtils', () => {
         pLabel: 'field-label',
         referentialKey: 'foo',
       }
-      expect(consoleWarnSpy).toHaveBeenCalledOnce()
-      expect(consoleWarnSpy).toHaveBeenNthCalledWith(1, "missing referential for field: 'foo'")
+      expect(loggerWarnSpy).toHaveBeenCalledOnce()
+      expect(loggerWarnSpy).toHaveBeenNthCalledWith(1, "missing referential for field: 'foo'")
       expect(referentialDropdownOptions).toStrictEqual(expected)
     })
   })

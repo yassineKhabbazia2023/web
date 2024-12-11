@@ -21,6 +21,18 @@ const expectedAlertInstruction =
 
 // Mocks
 const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => InformationFormStructure))
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@entities/common/utils/referential', () => ({
   getFormStructure: mockedGetFormStructure,
 }))
@@ -133,17 +145,17 @@ describe('information', () => {
       expect(formAddressSection.text()).toBe(expectedAddressSection)
       expect(folderFormAddress.text()).toBe(expectedAddressSection)
     })
-    it('should log an error to the console if the API fails to fetch the information', async () => {
+    it('should use logger.error if the API fails to fetch the information', async () => {
       await flushPromises()
-      const consoleSpy = vi.spyOn(console, 'error')
+      
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
       vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(expectedErrorMessage)
       wrapper = getWrapper()
       await flushPromises()
 
-      expect(consoleSpy).toHaveBeenCalledOnce()
-      expect(consoleSpy).toHaveBeenCalledWith(
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Error fetching information :',
         expectedErrorMessage,
       )
@@ -250,7 +262,7 @@ describe('information', () => {
 
       it('should call displayNotification properly when savePatched failed', async () => {
         const error = new Error('error message')
-        const consoleSpy = vi.spyOn(console, 'error')
+        
         mockedSavePatchedAccount.mockRejectedValueOnce(error)
         const saveButton = wrapper.find('[data-testid="information-save-button"]')
         const displayNotificationSpy = vi.mocked(CommonHelpers).displayNotification
@@ -262,8 +274,8 @@ describe('information', () => {
         expect(displayNotificationSpy).toHaveBeenCalledOnce()
         expect(displayNotificationSpy).toHaveBeenCalledWith('error', 'Save failed')
 
-        expect(consoleSpy).toHaveBeenCalledOnce()
-        expect(consoleSpy).toHaveBeenCalledWith(error)
+        expect(loggerErrorSpy).toHaveBeenCalledOnce()
+        expect(loggerErrorSpy).toHaveBeenCalledWith(error)
       })
     })
   })

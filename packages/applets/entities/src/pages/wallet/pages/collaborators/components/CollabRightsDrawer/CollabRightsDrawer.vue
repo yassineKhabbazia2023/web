@@ -57,6 +57,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { computed, ref, onMounted } from 'vue'
@@ -158,7 +159,7 @@ const handleUpdatePermissions = async () => {
       position: 'bottom-right',
       duration: 3000,
     })
-    console.error('Permission update unsuccessful: ', error)
+    logger.error('Permission update unsuccessful: ', error)
   } finally {
     isLoading.value = false
   }
@@ -196,7 +197,7 @@ const handleUpdateRole = async () => {
       position: 'bottom-right',
       duration: 3000,
     })
-    console.error('Role update unsuccessful: ', error)
+    logger.error('Role update unsuccessful: ', error)
   } finally {
     isLoading.value = false
   }
@@ -210,7 +211,7 @@ onMounted(async () => {
     )?.id
     preSelectedRoleId.value = selectedRoleId.value
   } catch (error) {
-    console.error('Unable to fetch collaborator roles: ', error)
+    logger.error('Unable to fetch collaborator roles: ', error)
   } finally {
     isLoading.value = false
   }

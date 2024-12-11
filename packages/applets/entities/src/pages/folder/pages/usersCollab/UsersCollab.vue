@@ -158,6 +158,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -327,7 +328,7 @@ const formatAndFillUsersCollabTable = async () => {
     state.currentPage = currentPage
     state.totalPage = totalPage
   } catch (err) {
-    console.error(err)
+    logger.error(err)
   } finally {
     state.isLoading = false
   }
@@ -452,7 +453,7 @@ async function setAccountSignatories() {
     accountSignatories.value.length = 0
     accountSignatories.value.push(...signatories)
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 
   state.isLoading = false
@@ -514,7 +515,7 @@ onMounted(async () => {
     try {
       operations.value = await fetchAccountOperations(currentEntity.value.accountId)
     } catch (error) {
-      console.error('Unable to fetch operations: ', error)
+      logger.error('Unable to fetch operations: ', error)
     } finally {
       isLoadingOperations.value = false
     }

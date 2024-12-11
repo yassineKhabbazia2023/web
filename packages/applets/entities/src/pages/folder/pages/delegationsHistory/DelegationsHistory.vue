@@ -84,6 +84,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -191,7 +192,7 @@ const fetchDelegationsHistory = async () => {
     const formattedDelegations = formatDelegations(items)
     delegations.value = formattedDelegations
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 
   isLoading.value = false
@@ -225,7 +226,7 @@ const deleteDelegation = async (delegationId: Delegation['id'], delegatee: Deleg
     await fetchDelegationsHistory()
   } catch (error) {
     displayErrorNotification(delegatee)
-    console.error(error)
+    logger.error(error)
   }
 }
 
