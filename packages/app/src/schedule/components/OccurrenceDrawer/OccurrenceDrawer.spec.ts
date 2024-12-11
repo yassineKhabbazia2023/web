@@ -58,7 +58,7 @@ vi.mock('./OccurrenceDrawerHelper', async () => {
 vi.mock('@app/schedule/helpers/utils', () => ({
   saveFileAs: vi.fn(),
   downloadFile: vi.fn(),
-  fileSizeHumanFormatter: vi.fn(),
+  fileSizeHumanFormatter: vi.fn(() => ''),
 }))
 
 vi.mock('@pulse/common', () => ({
