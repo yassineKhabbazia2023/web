@@ -16,7 +16,7 @@ export interface PTagProps {
     | 'gray-900'
   pEffect: 'dark' | 'light' | 'plain'
   pSize?: 'large' | 'default' | 'small' | ''
-  pContent: string
+  pContent?: string
   pIconLeft?: Component | string
   pIconRight?: Component | string
   pRound?: boolean

@@ -11,7 +11,9 @@
     <PIcon v-if="pIconLeft" class="el-tag__icon--left">
       <component :is="getIcon(pIconLeft)" />
     </PIcon>
-    {{ pContent }}
+    <template v-if="pContent">
+      {{ pContent }}
+    </template>
     <PIcon v-if="pIconRight" class="el-tag__icon--right">
       <component :is="getIcon(pIconRight)" />
     </PIcon>

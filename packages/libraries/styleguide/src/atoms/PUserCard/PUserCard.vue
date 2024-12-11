@@ -18,7 +18,10 @@
     <div class="p-user-card__content">
       <div class="p-user-card__header">
         <div class="p-user-card__header-left">
-          <p class="p-user-card__title">
+          <p
+            v-if="pTitle"
+            class="p-user-card__title"
+          >
             {{ pTitle }}
           </p>
           <PTag
