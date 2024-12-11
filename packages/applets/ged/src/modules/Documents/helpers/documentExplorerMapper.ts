@@ -3,8 +3,8 @@ import type { GivenActionState } from '../DocumentsTypes'
 import {
   getDocumentNameExtension,
   getDocumentNameWithoutExtension,
-  isExtensionAuthorized,
 } from './filesExtensions'
+import { isExtensionAuthorized } from '@pulse/core'
 import {
   validInputAlphanumericFrench,
   validInputMaxLength,

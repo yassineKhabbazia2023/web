@@ -25,7 +25,6 @@ import {
 import {
   isImageDocument as coreIsImageDocument,
   getDocumentNameWithoutExtension as coreGetDocumentNameWithoutExtension,
-  isExtensionAuthorized as coreIsExtensionAuthorized,
   getFileExtension,
   getIconFileName,
 } from '@pulse/core'
@@ -58,8 +57,6 @@ export const isImageDocument = (extension: string): boolean => coreIsImageDocume
 export const getDocumentNameExtension = (filename: string): string => getFileExtension(filename)
 
 export const getDocumentNameWithoutExtension = (filename: string): string => coreGetDocumentNameWithoutExtension(filename)
-
-export const isExtensionAuthorized = (extension: string): boolean => coreIsExtensionAuthorized(extension)
 
 export const getFileIcon = (fileName: string) => {
   const iconFileName = getIconFileName(fileName, 'fileText')

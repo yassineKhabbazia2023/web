@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import {
   isImageDocument,
   getDocumentNameWithoutExtension,
-  isExtensionAuthorized,
   getFileIcon,
 } from './filesExtensions'
 import {
@@ -58,13 +57,6 @@ describe('fileExtension', () => {
       expect(getDocumentNameWithoutExtension(filename1)).toBe('something.abc')
       expect(getDocumentNameWithoutExtension(filename2)).toBe('file_without_extension')
       expect(getDocumentNameWithoutExtension(filename3)).toBe('another.file.with.multiple.dots')
-    })
-  })
-  describe('isExtensionAuthorized', () => {
-    it('should return true if the file extension is authorized', () => {
-      expect(isExtensionAuthorized(fileExtension1)).toBeTruthy()
-      expect(isExtensionAuthorized(fileExtension4)).toBeFalsy()
-      expect(isExtensionAuthorized(fileExtension2)).toBeTruthy()
     })
   })
   describe('getFileIcon', () => {
