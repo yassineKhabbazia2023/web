@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import { VITE_GESTION_MEG, VITE_PENNYLANE_SSO_URL } from 'env-vars'
 import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@launcher/services/launcherServices'
 import { type ExtendedLaunchCard, LauncherKey } from './HomeTypes'
@@ -64,7 +65,7 @@ export async function handleClickAction(key: LauncherKey) {
       await openSilaeUrl()
     }
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 }
 
@@ -78,6 +79,6 @@ export async function handleDownload(
       saveApplication(response)
     }
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 }

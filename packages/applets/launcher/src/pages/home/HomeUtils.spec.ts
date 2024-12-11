@@ -12,6 +12,18 @@ import type { AxiosResponse } from 'axios'
 
 const mockedSilaeUrl = 'https://mocked.silae.url'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@launcher/services/launcherServices', () => ({
   getSsoSilaeUrl: vi.fn(() => mockedSilaeUrl),
   downloadApplication: vi.fn(() => mockedSilaeUrl),
@@ -76,9 +88,8 @@ describe('test HomeUtils', () => {
     })
   })
 
-  let consoleErrorSpy: MockInstance
-  beforeEach(() => {
-    consoleErrorSpy = vi.spyOn(console, 'error')
+    beforeEach(() => {
+    
   })
 
   describe('handleClickAction', () => {
@@ -97,18 +108,18 @@ describe('test HomeUtils', () => {
     it('should do nothing when key is meg', async () => {
       await handleClickAction(LauncherKey.MEG)
 
-      expect(consoleErrorSpy).not.toHaveBeenCalled()
+      expect(loggerErrorSpy).not.toHaveBeenCalled()
     })
 
-    it('should call console.error when api throws an error', async () => {
+    it('should call logger.error when api throws an error', async () => {
       const thrownError = 'thrown-error'
       vi
         .spyOn(launcherServices, 'getSsoSilaeUrl')
         .mockRejectedValueOnce(thrownError)
       await handleClickAction(LauncherKey.SILAE)
 
-      expect(consoleErrorSpy).toHaveBeenCalledOnce()
-      expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, thrownError)
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, thrownError)
     })
   })
 
@@ -153,16 +164,16 @@ describe('test HomeUtils', () => {
       expect(saveApplicationSpy).not.toHaveBeenCalled()
     })
 
-    it('should call console.error when api throws an error', async () => {
+    it('should call logger.error when api throws an error', async () => {
       const thrownError = 'thrown-error'
       vi
         .spyOn(launcherServices, 'downloadApplication')
         .mockRejectedValueOnce(thrownError)
-      const consoleErrorSpy = vi.spyOn(console, 'error')
+      
       await handleDownload(LauncherKey.SILAE, onSilaeDownloadProgress)
 
-      expect(consoleErrorSpy).toHaveBeenCalledOnce()
-      expect(consoleErrorSpy).toHaveBeenNthCalledWith(1, thrownError)
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, thrownError)
     })
   })
 
