@@ -43,6 +43,7 @@ import PText from '../../atoms/PText'
 import { type PDocumentDisplayProps, type DocumentPreviewResponse } from './PDocumentDisplayTypes'
 import PLoader from '../../atoms/PLoader'
 import { computed } from 'vue'
+import { isImageDocument } from '@pulse/core'
 const props = defineProps<PDocumentDisplayProps>()
 
 const isLoadingDocument = computed(() => props.pIsLoading)
@@ -74,10 +75,6 @@ const url = computed(() => {
   }
 })
 
-const isImageDocument = (extension: string): boolean => {
-  const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'cur']
-  return imageExtensions.includes(extension.toLowerCase())
-}
 const isPdfDocument = (extension: string): boolean => {
   return extension.toLowerCase() === 'pdf'
 }
