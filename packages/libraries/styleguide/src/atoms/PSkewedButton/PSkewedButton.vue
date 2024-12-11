@@ -52,7 +52,7 @@ function handleClick(event: MouseEvent) {
 </script>
 
 <style scoped lang="scss">
-@use '@styleguide/assets/scss/pegase/breakpoints';
+@use '../../assets/scss/pegase/breakpoints';
 
 .p-skewed-button {
   $self: &;

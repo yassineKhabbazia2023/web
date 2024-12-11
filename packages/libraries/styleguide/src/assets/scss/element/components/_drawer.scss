@@ -8,10 +8,10 @@ $drawer: (
 );
 
 div.el-overlay:not(.p-drawer--mini) {
-  background: rgba(0, 0, 0, 0.32);
+  background: rgba(14, 15, 48, 0.6);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   transition-timing-function: linear;
 }
 

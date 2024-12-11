@@ -14,7 +14,7 @@
       <PFilterGroupEntityStatus
         :modelValue="activeFilters"
         :pFilters="onBoardingFilters"
-        class="filters__filter-group--with-separator"
+        class="filters__filter-group--with-separator padding-x--3"
         @toggle="onToggleFilter"
       />
     </div>
@@ -33,6 +33,7 @@
         :modelValue="activeFilters"
         :pFilters="userConnectionFilters"
         @toggle="onToggleFilter"
+        class="padding-x--3"
       />
     </div>
   </div>
@@ -97,8 +98,7 @@ onMounted(async () => {
 .filters {
   &__filter-group {
     &--with-separator {
-      padding-right: 12px;
-      margin-right: 12px;
+      height: 32px;
       border-right: 1px solid var(--el-color-neutral-gray-100);;
     }
   }
@@ -110,19 +110,19 @@ onMounted(async () => {
 
 <i18n lang="yaml">
   en-US:
-    fileBoardingRate: 'File boarding rate'
+    fileBoardingRate: 'File boarding'
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
-    userConnectionRate: 'User connection rate'
+    userConnectionRate: 'User connection'
     declared: 'Declared'
     guests: 'Guest(s)'
   fr-FR:
-    fileBoardingRate: "Taux d'embarquement dossier"
+    fileBoardingRate: "Embarquement dossier"
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté(s)'
-    userConnectionRate: 'Taux de connexion utilisateur'
+    userConnectionRate: 'Connexion utilisateur'
     declared: 'Déclaré(s)'
     guests: 'Invité(s)'
 </i18n>

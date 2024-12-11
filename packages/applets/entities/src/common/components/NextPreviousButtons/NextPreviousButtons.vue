@@ -2,7 +2,7 @@
   <div>
     <PButton
       pType="secondary"
-      class="margin-right--4"
+      class="margin-right--4 previous-button"
       data-testid="previousButton"
       @click="emit('clickPrevious')"
     >
@@ -34,3 +34,13 @@ const emit = defineEmits<{
   clickNext: []
 }>()
 </script>
+
+<style scoped lang="scss">
+.previous-button {
+  &:hover, &:active {
+    background-color: var(--el-color-base-blue-pulse);
+    color: var(--el-color-base-white);
+    border-color: var(--el-color-base-blue-pulse);
+  }
+}
+</style>

@@ -126,7 +126,7 @@ div.el-step {
 
       &.is-process {
         font-weight: 600;
-        color: getCssVar(color-primary);
+        color: var(--el-color-base-blue-pulse);
       }
 
       &.is-success,
@@ -139,7 +139,7 @@ div.el-step {
       }
 
       &.is-wait {
-        color: var(--el-color-neutral-gray-900);
+        color: var(--el-color-neutral-gray-300);
       }
     }
   }

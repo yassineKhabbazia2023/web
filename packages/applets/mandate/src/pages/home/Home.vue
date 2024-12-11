@@ -21,7 +21,6 @@
       :pagesCount="mandatesCollection.counters.all"
       :pagesRanges="PAGE_SIZES"
       showTotalPageCounter
-      class="padding-x--6"
       @page-selected="onUpdateSearchParams"
     />
   </div>

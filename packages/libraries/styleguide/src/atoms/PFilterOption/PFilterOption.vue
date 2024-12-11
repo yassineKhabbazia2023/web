@@ -83,6 +83,9 @@ const colorMapper = computed(() => {
   transition: border-color var(--el-transition-duration) ease, background-color var(--el-transition-duration) ease;
 
   &--color-success {
+    &:hover {
+      border-color: var(--el-color-functionnal-green-txt);
+    }
     background-color: var(--el-color-functionnal-green-bg);
     #{$self}__icon {
       color: var(--el-color-functionnal-green-txt);
@@ -90,14 +93,19 @@ const colorMapper = computed(() => {
   }
 
   &--color-warning {
+    &:hover {
+      border-color: var(--el-color-functionnal-orange-txt);
+    }
     background-color: var(--el-color-functionnal-orange-bg);
-
     #{$self}__icon {
       color: var(--el-color-functionnal-orange-txt);
     }
   }
 
   &--color-amethyste {
+    &:hover {
+      border-color: var(--el-color-secondary-amethyste-txt);
+    }
     background-color: var(--el-color-secondary-amethyste-bg);
     #{$self}__icon {
       color: var(--el-color-secondary-amethyste-txt);
@@ -105,6 +113,9 @@ const colorMapper = computed(() => {
   }
 
   &--color-fuschia {
+    &:hover {
+      border-color: var(--el-color-secondary-fuschia-txt);
+    }
     background-color: var(--el-color-secondary-fuschia-bg);
     #{$self}__icon {
       color: var(--el-color-secondary-fuschia-txt);
@@ -112,8 +123,10 @@ const colorMapper = computed(() => {
   }
 
   &--color-danger {
+    &:hover {
+      border-color: var(--el-color-functionnal-red-txt);
+    }
     background-color: var(--el-color-functionnal-red-bg);
-
     #{$self}__icon {
       color: var(--el-color-functionnal-red-txt);
     }
@@ -124,6 +137,9 @@ const colorMapper = computed(() => {
   }
 
   &--color-gray-900 {
+    &:hover {
+      border-color: var(--el-color-base-blue-pulse);
+    }
     background-color: var(--el-color-neutral-gray-100);
   }
 

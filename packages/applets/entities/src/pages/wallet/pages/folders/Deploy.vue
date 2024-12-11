@@ -18,7 +18,6 @@
       <PButton
         pType="primary"
         pSize="small"
-        class="margin-bottom--1 margin-top--2"
         @click="isDelegationDrawerOpened = true"
       >
         {{ t('delegation', selectedFolders.length) }}

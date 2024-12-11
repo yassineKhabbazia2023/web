@@ -138,6 +138,9 @@ const filters: FilterOption<number>[] = [
     font-style: normal;
     line-height: 120%;
   }
+  .p-filter-group {
+    height: 32px;
+  }
 }
 </style>
 

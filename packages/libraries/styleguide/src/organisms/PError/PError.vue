@@ -63,7 +63,7 @@ defineEmits<{
 </script>
 
 <style lang="scss" scoped>
-@use '@styleguide/assets/scss/pegase/_breakpoints';
+@use '../../assets/scss/pegase/_breakpoints';
 
 .p-error-page {
   position: relative;

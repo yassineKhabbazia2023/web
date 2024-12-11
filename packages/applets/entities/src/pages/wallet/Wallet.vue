@@ -10,6 +10,7 @@
           v-if="tab.display"
           :pLabel="tab.title"
           :name="tab.name"
+          class="margin-bottom--6"
         />
       </template>
       <router-view />

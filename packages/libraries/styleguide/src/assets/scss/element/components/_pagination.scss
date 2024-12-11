@@ -10,7 +10,7 @@ $pagination: (
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding: 8px 0px;
   font-size: 12px;
 
   &__total-page-counter {
@@ -68,7 +68,7 @@ $pagination: (
 
     button {
       i.el-icon {
-        font-size: 24px;
+        font-size: 14px;
       }
 
       &.btn-prev,

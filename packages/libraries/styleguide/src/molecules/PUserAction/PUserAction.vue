@@ -89,7 +89,7 @@
           flex--justify-content-center
           el-button--icon
         "
-        pType="white"
+        pType="default"
         pSize="default"
         data-testid="p-user-action-delete-icon"
         @click="emit('click-delete')"
