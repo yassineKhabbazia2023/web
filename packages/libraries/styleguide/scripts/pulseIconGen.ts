@@ -1,5 +1,5 @@
 import { generateIcons } from './iconGen/utils'
-import { logger } from '../src/utils/logger'
+import { logger } from '@pulse/core'
 
 const [iconsFolderPath, outputFolderPath, outputFileTypePath] = process.argv.slice(2)
 

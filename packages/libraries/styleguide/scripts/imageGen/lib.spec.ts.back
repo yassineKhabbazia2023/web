@@ -40,7 +40,7 @@ vi.mock('path', () => ({
   },
 }))
 
-vi.mock('@/utils/logger')
+vi.mock('@pulse/core')
 
 vi.mock('svgo', () => ({
   loadConfig: vi.fn().mockReturnValue(MOCKED_SVGO_CONFIG),

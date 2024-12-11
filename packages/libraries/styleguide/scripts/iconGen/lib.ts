@@ -2,7 +2,7 @@ import { type Config, optimize } from 'svgo'
 import path from 'path'
 import { writeFileSync, readdirSync, readFileSync, statSync, existsSync, mkdirSync } from 'fs'
 import type { Icon } from './types'
-import { logger } from '../../src/utils/logger'
+import { logger } from '@pulse/core'
 
 export function capitalizeFirstLetter(text: string) {
   if (text.includes('-')) {

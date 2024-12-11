@@ -35,7 +35,7 @@ vi.mock('path', () => ({
   },
 }))
 
-vi.mock('@/utils/logger')
+vi.mock('@pulse/core')
 
 describe('scripts/iconGen/lib', () => {
   describe('capitalizeFirstLetter', () => {
