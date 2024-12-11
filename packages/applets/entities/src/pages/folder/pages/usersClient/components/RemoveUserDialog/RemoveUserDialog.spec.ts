@@ -45,6 +45,15 @@ const createWrapper = (userToRemove: any, isCollab?: boolean): VueWrapper<any> =
           template: '<div><slot/><slot name="footer"/></div>',
           events: ['update:model-value'],
         },
+        PUserCard: {
+          name: 'PUserCard',
+          template: '<div> />',
+          props: [
+            'pAvatarContent',
+            'pTitle',
+            'pSubtitle',
+          ],
+        },
       },
     },
   })
@@ -62,7 +71,7 @@ describe('removeUserDialog', () => {
     const confirmationMessage = wrapper.find('[data-testid="remove-user-dialog-confirmation-message"]')
 
     expect(pUserCardComponent.props()).toMatchObject({
-      pAssetContent: initials,
+      pAvatarContent: initials,
       pTitle: fullName,
       pSubtitle: email,
     })

@@ -1,8 +1,7 @@
 <template>
   <div class="add-customer-feedback">
     <PUserCard
-      pAssetLeft="Image"
-      pAssetContent="user-male"
+      pImageName="user-male"
       pColor="gray"
       :pTitle="fullName"
       :pSubtitle="email"

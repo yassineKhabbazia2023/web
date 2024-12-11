@@ -9,8 +9,7 @@
       :pTitle="selectedUser.fullName"
       :pSubtitle="selectedUser.email"
       pColor="gray"
-      pAssetLeft="Image"
-      pAssetContent="user-male"
+      pImageName="user-male"
       class="margin-bottom--6"
       data-testid="manage-rights-user-card"
     >

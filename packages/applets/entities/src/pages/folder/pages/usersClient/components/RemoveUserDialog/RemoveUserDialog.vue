@@ -13,8 +13,7 @@
     <PUserCard
       v-if="userToRemove"
       class="margin-bottom--2"
-      pAssetLeft="Avatar"
-      :pAssetContent="userToRemove.initials"
+      :pAvatarContent="userToRemove.initials"
       :pTitle="userToRemove.fullName"
       :pSubtitle="userToRemove.email"
     />

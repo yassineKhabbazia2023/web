@@ -6,8 +6,7 @@
   >
     <Variant title="User Card with Image and all choices">
       <PUserCard
-        pAssetLeft="Image"
-        pAssetContent="user-female"
+        pImageName="user-female"
         :pTitle="data.pTitle"
         :pTag="data.pTag"
         :pSubtitle="data.pSubtitle"
@@ -24,8 +23,7 @@
     </Variant>
     <Variant title="User Card Gray with Image and all choices">
       <PUserCard
-        pAssetLeft="Image"
-        pAssetContent="user-female"
+        pImageName="user-female"
         :pTitle="data.pTitle"
         :pTag="data.pTag"
         :pSubtitle="data.pSubtitle"
@@ -43,8 +41,7 @@
     </Variant>
     <Variant title="User Card with Avatar and no description">
       <PUserCard
-        pAssetLeft="Avatar"
-        pAssetContent="AB"
+        pAvatarContent="AB"
         :pTitle="data.pTitle"
         :pTag="data.pTag"
         :pSubtitle="data.pSubtitle"
@@ -60,8 +57,7 @@
     </Variant>
     <Variant title="User Card with tag right">
       <PUserCard
-        pAssetLeft="Image"
-        pAssetContent="user-male"
+        pImageName="user-male"
         :pTitle="data.pTitle"
         :pTag="data.pTag"
         :pSubtitle="data.pSubtitle"
@@ -90,8 +86,7 @@ const data: PUserCardProps = {
   pTitle: 'Name Last Name',
   pSubtitle: 'name.lastname@gmail.com',
   pDescription: 'Description of user',
-  pAssetLeft: 'Image',
-  pAssetContent: 'activation',
+  pImageName: 'activation',
   pTag: {
     pSize: 'default',
     pColor: 'gray-900',

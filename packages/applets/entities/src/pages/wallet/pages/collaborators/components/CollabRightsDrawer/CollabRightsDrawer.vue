@@ -8,8 +8,7 @@
   >
     <PUserCard
       class="margin-bottom--6"
-      pAssetLeft="Image"
-      pAssetContent="collab-male"
+      pImageName="collab-male"
       pColor="gray"
       :pTitle="rowData.fullName"
       :pSubtitle="rowData.email"

@@ -10,8 +10,7 @@
     <PUserCard
       v-if="defaultEntity?.legalName"
       pColor="persian"
-      pAssetLeft="Image"
-      pAssetContent="company"
+      pImageName="company"
       :pTitle="defaultEntity?.legalName"
       :pSubtitle="defaultEntity?.accountNumber"
       class="margin-bottom--6"

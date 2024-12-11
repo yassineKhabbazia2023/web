@@ -6,8 +6,7 @@
   >
     <PUserCard
       class="margin-bottom--6 user-card"
-      pAssetLeft="Image"
-      pAssetContent="collab-male"
+      pImageName="collab-male"
       :pTitle="fullName"
       :pSubtitle="userInfo?.email ?? ''"
       pColor="gray"

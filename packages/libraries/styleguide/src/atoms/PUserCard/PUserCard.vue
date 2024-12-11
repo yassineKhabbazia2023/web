@@ -2,17 +2,17 @@
   <div class="p-user-card" :class="pClassMapper">
     <div class="p-user-card__left" data-ut="left-asset">
       <PImage
-        v-if="pAssetLeft === 'Image'"
+        v-if="pImageName"
         class="p-user-card__image"
         pType="portrait"
-        :pName="imageName"
+        :pName="pImageName"
       />
       <PAvatar
-        v-if="pAssetLeft === 'Avatar'"
+        v-if="pAvatarContent"
         pType="xlarge"
         pColor="bordered-persian"
       >
-        {{ pAssetContent }}
+        {{ pAvatarContent }}
       </PAvatar>
     </div>
     <div class="p-user-card__content">
@@ -62,7 +62,6 @@ import PImage from '../../atoms/PImage'
 import PAvatar from '../../atoms/PAvatar'
 import PTag from '../../atoms/PTag'
 import type { PUserCardProps } from './PUserCardTypes'
-import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
 
 const props = withDefaults(defineProps<PUserCardProps>(), {
   pColor: 'persian',
@@ -71,9 +70,6 @@ const props = withDefaults(defineProps<PUserCardProps>(), {
 const pClassMapper = computed(() => ({
   [`p-user-card--color-${props.pColor}`]: true,
 }))
-
-// TODO should create 2 props instead of one for better typing
-const imageName = computed(() => (props.pAssetContent as ImageName))
 
 const slots = useSlots()
 </script>

@@ -8,8 +8,7 @@
     <PUserCard
       :pTitle="collabDetails.fullName"
       :pSubtitle="collabDetails.email"
-      pAssetLeft="Image"
-      pAssetContent="user-male"
+      pImageName="user-male"
       class="margin-bottom--6"
     >
       <PTag

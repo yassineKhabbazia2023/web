@@ -4,8 +4,7 @@
     :pTag="contactTag"
     :pSubtitle="principalContact.email"
     :pDescription="contactDescription"
-    pAssetLeft="Image"
-    pAssetContent="user-male"
+    pImageName="user-male"
     class="principal-contact"
   />
 </template>
