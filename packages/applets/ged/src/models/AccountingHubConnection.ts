@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import { DataStreamHubConnection } from '@pulse/common'
 import { VITE_ACCOUNTING_HUB_URL } from 'env-vars'
 
@@ -9,13 +10,13 @@ class AccountingHubConnection extends DataStreamHubConnection {
   public OnConnectedAsync(folderId: number) {
     this.getConnection()
       .invoke('OnConnectedAsync', String(folderId))
-      .catch((err) => console.error('Invoke OnConnectedAsync failed:', err))
+      .catch((err) => logger.error('Invoke OnConnectedAsync failed:', err))
   }
 
   public OnDisconnectedAsync(folderId: number) {
     this.getConnection()
       .invoke('OnDisconnectedAsync', String(folderId))
-      .catch((err) => console.error('Invoke OnDisconnectedAsync failed:', err))
+      .catch((err) => logger.error('Invoke OnDisconnectedAsync failed:', err))
   }
 }
 
