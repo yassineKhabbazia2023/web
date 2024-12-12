@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PBlockHeader from '.'
 import type { PBlockHeaderProps } from './PBlockHeaderTypes'
+import { setAssetsBaseUrl } from '../../utils/imageResolverInit'
 
 const title = 'Add collaborators'
 const description = 'You can add collaborators on this offer.'
@@ -29,6 +30,9 @@ const createWrapper = (props: any = defaultProps, slots: any = {}) =>
   })
 
 describe('pBlockHeader', () => {
+  beforeEach(() => {
+    setAssetsBaseUrl('https://www.example.kpmg')
+  })
   describe('props', () => {
     it('should render the title values of the component', () => {
       const wrapper = createWrapper()

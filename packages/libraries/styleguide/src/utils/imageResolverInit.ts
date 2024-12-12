@@ -1,11 +1,13 @@
 
+import { logger } from '@pulse/core'
+
 const context = {
   assetsBaseUrl: '',
 }
 
 export function getAssetsBaseUrl() {
   if (!context.assetsBaseUrl) {
-    console.warn('should initialize AssetsBaseUrl with setAssetsBaseUrl()')
+    logger.warn('should initialize AssetsBaseUrl with setAssetsBaseUrl()')
     return ''
   }
   return context.assetsBaseUrl

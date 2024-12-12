@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PError from '.'
 import type { PErrorBlockProps } from './PErrorTypes'
+import { setAssetsBaseUrl } from '../../utils/imageResolverInit'
 
 const description = 'test description'
 const button = 'test button'
@@ -23,6 +24,9 @@ const createWrapper = (props: any = defaultProps, slots: any = {}) =>
   })
 
 describe('pError', () => {
+  beforeEach(() => {
+    setAssetsBaseUrl('https://www.example.kpmg')
+  })
   describe('props', () => {
     it('should emit error-block-button-click event', async () => {
       const wrapper = createWrapper()

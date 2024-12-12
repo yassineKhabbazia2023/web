@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import axios from 'axios'
 import { setAssetsBaseUrl } from './utils/imageResolverInit'
 
@@ -25,7 +26,7 @@ export async function getAssetsBaseUrl(metaEnv: MetaEnv) {
 
     return response?.data?.VITE_ASSETS_BASE_URL
   } catch (e) {
-    console.error(e)
+    logger.error(e)
   }
 }
 

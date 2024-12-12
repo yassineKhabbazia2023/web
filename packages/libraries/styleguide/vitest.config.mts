@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { mergeConfig } from 'vite'
 import { configDefaults, defineConfig } from 'vitest/config'
- 
+
 import viteConfig from './vite.config.mts'
 
 export default mergeConfig(
@@ -37,7 +37,6 @@ export default mergeConfig(
         reporter: ['text', 'cobertura', 'lcov'],
         exclude: ['src/atoms/PIcon/components/*'],
       },
-      setupFiles: 'vitest.setup.ts',
     },
   }),
 )

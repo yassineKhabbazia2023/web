@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { setAssetsBaseUrl } from '../../utils/imageResolverInit'
 import PDocumentDisplay from './'
 import type { PDocumentDisplayProps } from './PDocumentDisplayTypes'
 import { ElImage } from 'element-plus'
@@ -22,6 +23,9 @@ const createWrapper = (props: Partial<PDocumentDisplayProps> = {}) =>
   })
 
 describe('pDocumentDisplay', () => {
+  beforeEach(() => {
+    setAssetsBaseUrl('https://www.example.kpmg')
+  })
   it('renders an image preview if the document is an image and not loading', () => {
     const wrapper = createWrapper()
 
