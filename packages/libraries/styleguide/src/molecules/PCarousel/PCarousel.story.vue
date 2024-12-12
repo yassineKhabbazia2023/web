@@ -24,7 +24,7 @@ import type { PCarouselItemProps } from '../../atoms/PCarouselItem/PCarouselItem
 
 const carouselBasicData = ref<PCarouselItemProps[]>([
   {
-    pText: 'Manage the activation of the various Pulse services and the digitization of your customer relationship.',
+    pText: 'Manage the activation of the various Rydge services and the digitization of your customer relationship.',
     pImageName: 'feedcenter-fav',
     pImageType: 'paupulse',
   },

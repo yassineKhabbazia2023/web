@@ -83,9 +83,9 @@ import PIcon from '../../atoms/PIcon'
 
 const selectedCollaborator = ref(null)
 const collaboratorsTestData = [
-  { value: 'Mickaël BELLANGER - toto@kpmg.fr - (ESC, Bureau Y)', link: 'Collab1' },
-  { value: 'Clémentine MICKELLE - toto@kpmg.fr - (ESC, Bureau Y)', link: 'Collab2' },
-  { value: 'Mickey Oussama - toto@kpmg.fr - (ESC, Bureau Y)', link: 'Collab13' },
+  { value: 'Mickaël BELLANGER - toto@rydge.fr - (ESC, Bureau Y)', link: 'Collab1' },
+  { value: 'Clémentine MICKELLE - toto@rydge.fr - (ESC, Bureau Y)', link: 'Collab2' },
+  { value: 'Mickey Oussama - toto@rydge.fr - (ESC, Bureau Y)', link: 'Collab13' },
 ]
 const data: PBlockHeaderProps = {
   pTitle: 'Add collaborators',

@@ -4,7 +4,7 @@ import POfferCard from '.'
 
 const logo = 'loop-color'
 const title = 'Gestion Smart'
-const description = 'My Management Expert (MEG) in start version (included in Pulse)'
+const description = 'My Management Expert (MEG) in start version (included in Rydge)'
 
 const defaultProps = {
   pLogo: logo,

@@ -1,7 +1,7 @@
 import { envVarsValues } from '@app/../vitest.setup'
 import {
   ScheduleServicesMock,
-  KpmgCommontMock,
+  commonMock,
 } from '@app/schedule/tests/mocks/commonViMock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
@@ -41,7 +41,7 @@ vi.mock('@pulse/core', () => ({
 }))
 
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
-vi.mock('@pulse/common', () => KpmgCommontMock)
+vi.mock('@pulse/common', () => commonMock)
 vi.mock('@app/services/entities', async () => {
   const actual = await vi.importActual('@app/services/entities') as Record<string, any>
   return {

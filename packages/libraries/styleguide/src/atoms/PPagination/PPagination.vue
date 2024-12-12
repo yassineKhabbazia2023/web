@@ -39,7 +39,6 @@ import type { PDropdownProps } from '../../molecules/PDropdown/PDropdownTypes'
 const props = withDefaults(defineProps<PaginationProps>(), {
   pTestIdRoot: 'ppagination',
 })
-// TODO should type emits (see https://kpmgfr.visualstudio.com/Constellation/_workitems/edit/347657)
 const emit = defineEmits(['on-page-range-changed', 'update:pCurrentPage', 'update:pPageSize'])
 
 const pageSizeOptions = computed<PDropdownProps['pOptions']>(() => (

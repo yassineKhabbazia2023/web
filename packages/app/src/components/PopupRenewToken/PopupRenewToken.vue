@@ -138,7 +138,7 @@ onBeforeUnmount(() => {
     logout: 'Disconnect'
     content: >-
       Privacy is essential, and you've been away for a while.
-      We will log you out in a few minutes unless you confirm that you are still on Pulse.
+      We will log you out in a few minutes unless you confirm that you are still on Rydge.
   fr-FR:
     title: 'Votre session va expirer'
     renew: 'Rester connecté'
@@ -146,5 +146,5 @@ onBeforeUnmount(() => {
     content: >-
       La confidentialité est essentielle, et vous êtes absent depuis un moment.
       Nous allons vous déconnecter dans quelques minutes sauf
-      si vous confirmez que vous êtes toujours sur Pulse.
+      si vous confirmez que vous êtes toujours sur Rydge.
 </i18n>

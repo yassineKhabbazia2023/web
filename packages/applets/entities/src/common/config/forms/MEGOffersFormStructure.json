@@ -40,7 +40,7 @@
         "pDisabled": false,
         "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
-        "pLabel": "Hub PULSE rattaché",
+        "pLabel": "Hub Rydge rattaché",
         "pTestId": "offer-hub-name-list",
         "referentialKey": "hubName"
       }

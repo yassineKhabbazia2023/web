@@ -14,7 +14,7 @@ export function getMockedScheduleOccurrence(override: Partial<Schedule> = {}): S
       id: 209,
       firstName: 'Jerry',
       lastName: 'Lewis',
-      email: 'jerry.lewis@kpmg.test',
+      email: 'jerry.lewis@rydge.test',
     },
   }
   return {

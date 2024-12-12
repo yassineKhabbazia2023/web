@@ -176,8 +176,6 @@ const handleDownloadClick = () => {
 
 // This is meant to be deleted really soon once the back end is updated
 // to remove the PIA sync property from the response.
-//  Back end US here :
-// https://kpmgfr.visualstudio.com/Constellation/_backlogs/backlog/Hades/Stories?System.WorkItemType=User%20Story&workitem=304249
 
 const isInPIASyncedFolder = computed(() => {
   const documentPath = getPathFromArray(props.document.folder.path)

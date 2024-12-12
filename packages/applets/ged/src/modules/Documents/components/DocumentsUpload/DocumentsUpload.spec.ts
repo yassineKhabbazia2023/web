@@ -30,7 +30,7 @@ const uploadDocumentsResponse = {
   preview: {
     href: '12',
   },
-  updatedBy: 'obenamor@kpmg.fr',
+  updatedBy: 'obenamor@rydge.fr',
   updated: '2023-12-12T09:08:45.148+00:00',
   type: '.jpg',
   size: 27819,
@@ -41,7 +41,7 @@ const uploadDocumentsResponse = {
     path: ['Comptabilité', 'Dépôt'],
   },
   created: '2023-12-12T09:08:45.147+00:00',
-  createdBy: 'obenamor@kpmg.fr',
+  createdBy: 'obenamor@rydge.fr',
   account: {
     id: '93012cc8-77b9-4161-8dbd-61915d935e21',
     name: 'JEAN LÉVAGE',

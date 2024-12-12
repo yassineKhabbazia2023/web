@@ -68,7 +68,7 @@ describe('test UsersClientHelper', () => {
         globalContactId: '231231-34234',
         firstName: 'Signa',
         lastName: 'Tory',
-        email: 'sign@kpmg.fr',
+        email: 'sign@rydge.fr',
         status: 'status',
         personaName: 'person Name',
         creationDate: '2024-03-25',

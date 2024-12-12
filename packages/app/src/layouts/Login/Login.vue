@@ -15,8 +15,8 @@
           <PImage
             pType="logos"
             pName="brand-color"
-            class="pulse-logo-content"
-            alt="Pulse logo"
+            class="brand-logo-content"
+            alt="Brand logo"
           />
           <router-view />
         </PCol>
@@ -43,7 +43,7 @@
       pType="logos"
       pName="brand-white"
       class="logo-footer hidden-sm-and-down"
-      alt="Pulse logo"
+      alt="Brand logo"
     />
   </div>
 </template>
@@ -99,7 +99,7 @@ onMounted(() => {
       padding: 4.8rem;
     }
 
-    .pulse-logo-content {
+    .brand-logo-content {
       @media (min-width: 992px) {
         max-width: 129px;
       }

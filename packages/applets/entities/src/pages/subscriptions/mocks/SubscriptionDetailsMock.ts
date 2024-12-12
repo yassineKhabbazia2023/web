@@ -89,7 +89,7 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
       firstName: 'Jerry',
       lastName: 'Nantenaina',
       type: ContactType.Collaborator,
-      email: 'jnantenaina@kpmg.fr',
+      email: 'jnantenaina@rydge.fr',
     },
   ],
   notes: [

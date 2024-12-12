@@ -22,7 +22,7 @@
           Couleur principale
         </h2>
         <p class="margin-bottom--4">
-          C’est LA touche de couleur de KPMG Pulse. Elle apporte du dynamisme à nos interfaces.
+          C’est LA touche de couleur de Rydge. Elle apporte du dynamisme à nos interfaces.
           Cette couleur qui représente la marque, utilisées comme couleur primaire et accents.
         </p>
         <MainColor />
@@ -31,7 +31,7 @@
         <h2>Secondary Colors Pegase</h2>
         <p>
           There are the secondary colors for Pegase.
-          From Figma : Extraites du dégradé KPMG Pulse, les couleurs vives
+          From Figma : Extraites du dégradé Rydge, les couleurs vives
           vous permettront d’apporter des touches de couleurs à vos contenus.
           Ces touches de couleurs vives fonctionnent en duo,
           par exemple : un picto fuschia et un cercle de soutien avec un fond en fuschia-bg

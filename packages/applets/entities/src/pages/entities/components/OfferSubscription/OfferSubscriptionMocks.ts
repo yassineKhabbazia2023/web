@@ -10,7 +10,7 @@ export function getMockedSubscriptionOffersServices() {
       offerId: 1,
       offerName: 'Gestion Smart',
       offerLabel:
-        'Mon Expert en Gestion (MEG) en version start (inclu dans Pulse)',
+        'Mon Expert en Gestion (MEG) en version start (inclus dans Rydge)',
       offerPrice: 0,
       offerCode: 'MEG Smart',
       offerPriceType: SubscriptionPriceType.free,
@@ -109,7 +109,7 @@ export function getMockedSubscriptionOffersServices() {
     {
       offerId: 3,
       offerName: 'Mes Modules de Compta',
-      offerLabel: 'Loop collaboratif (myPulse compta)',
+      offerLabel: 'Loop collaboratif (Rydge compta)',
       offerPrice: 0,
       offerCode: 'Loop compta',
       offerPriceType: SubscriptionPriceType.free,

@@ -16,6 +16,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
 import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
+import { HTMLService } from '@pulse/core'
 
 const route = useRoute()
 const router = useRouter()
@@ -63,6 +64,7 @@ onMounted(() => {
   if (window.navigator.doNotTrack !== '1' && VITE_AMPLITUDE_API_KEY) {
     amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)
   }
+  HTMLService.setDocumentTitle()
 })
 </script>
 

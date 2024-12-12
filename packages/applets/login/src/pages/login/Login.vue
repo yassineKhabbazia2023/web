@@ -242,7 +242,7 @@ defineExpose({ handleSubmit })
 <i18n lang="yaml">
   en-US:
     welcomeTo: 'Welcome to'
-    yourSpace: 'your Pulse Space!'
+    yourSpace: 'your Rydge Space!'
     formTitle: 'Please login to access all your services.'
     email: 'Email'
     emailPlaceholder: 'Enter your email address'

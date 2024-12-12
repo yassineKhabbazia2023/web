@@ -25,7 +25,7 @@ export const ScheduleServicesMock = {
 }
 export const debounceMock = vi.fn((callback: Function) => callback)
 
-export const KpmgCommontMock = {
+export const commonMock = {
   debounce: (callback: Function) => debounceMock(callback),
   getInitials: vi.fn(),
   commoni18n: vi.fn(),

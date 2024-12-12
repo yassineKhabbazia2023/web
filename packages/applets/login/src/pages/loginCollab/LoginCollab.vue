@@ -84,12 +84,12 @@ en-US:
   collaboratorSpace: 'your collaborator space !'
   login: 'Login'
   formTitle: >-
-    Welcome to your Pulse platform. Please log in to access to all your services.
+    Welcome to your Rydge platform. Please log in to access to all your services.
 fr-FR:
   welcomeTo: 'Bienvenue sur votre'
   collaboratorSpace: 'espace collaborateur !'
   login: 'Se connecter'
   formTitle: >-
-    Bienvenue sur votre plateforme Pulse. Veuillez vous connecter pour accéder
+    Bienvenue sur votre plateforme Rydge. Veuillez vous connecter pour accéder
     à tous vos services.
 </i18n>

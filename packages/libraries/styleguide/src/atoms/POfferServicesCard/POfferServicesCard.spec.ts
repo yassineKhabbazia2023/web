@@ -6,7 +6,7 @@ import type { POfferServicesCardProps } from './POfferServicesCardTypes'
 import POfferServicesCard from '.'
 
 let wrapper: VueWrapper<any>
-const offerTitle: string = 'Pulse platform services'
+const offerTitle: string = 'Rydge platform services'
 
 const defaultProps: POfferServicesCardProps = {
   pLogo: 'iconpulse-color',

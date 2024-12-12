@@ -309,7 +309,7 @@ const { t } = useI18n({
     generated-mandate: 'The mandate is generated !'
     manual-sign: 'manual sign.'
     download: 'Download the mandate for'
-    deposit: 'Once signed, upload the mandate to Pulse to activate the collection.'
+    deposit: 'Once signed, upload the mandate to Rydge to activate the collection.'
     help: 'Need help?'
     help-label-prefix: 'Consult the '
     help-label-link: 'practical guide'
@@ -326,7 +326,7 @@ const { t } = useI18n({
     generated-mandate: 'Le mandat est généré !'
     manual-sign: 'signature manuscrite.'
     download: 'Téléchargez dès maintenant le mandat pour'
-    deposit: 'Une fois signé, déposez le mandat sur Pulse pour activer la collecte.'
+    deposit: 'Une fois signé, déposez le mandat sur Rydge pour activer la collecte.'
     help: "Besoin d'aide ?"
     help-label-prefix: 'Consultez le '
     help-label-link: 'guide pratique'

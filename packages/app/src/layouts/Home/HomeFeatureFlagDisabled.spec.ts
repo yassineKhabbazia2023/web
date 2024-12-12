@@ -1,7 +1,7 @@
 import { envVarsValues, fetchUnreadNotificationsCountMock } from '@app/../vitest.setup'
 import {
   ScheduleServicesMock,
-  KpmgCommontMock,
+  commonMock,
 } from '@app/schedule/tests/mocks/commonViMock'
 import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
@@ -36,7 +36,7 @@ vi.mock('@app/services/entities', async () => {
     })),
   }
 })
-vi.mock('@pulse/common', () => KpmgCommontMock)
+vi.mock('@pulse/common', () => commonMock)
 
 const feedCenterActivatedFlag = vi.hoisted(() => ({
   value: 'false',

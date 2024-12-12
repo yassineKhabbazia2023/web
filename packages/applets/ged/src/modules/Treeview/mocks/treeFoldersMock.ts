@@ -75,14 +75,14 @@ export const foldersData: Folder[][] = [
           iconName: 'deposit',
           id: 135393638,
           children: [],
-          name: 'KPMG',
+          name: 'Rydge',
           parent: {
             id: 135393636,
           },
           permissions: [],
           properties: {
             folderDescription:
-              "Ici, veuillez trouver l'ensemble des documents déposés par votre expert KPMG.",
+              "Ici, veuillez trouver l'ensemble des documents déposés par votre expert Rydge.",
             tracingName: 'tracing-name',
             syncStatus: 'PENDING_SYNC',
           },
@@ -168,7 +168,7 @@ export const foldersData: Folder[][] = [
               serviceId: 'service-id-gs',
             },
           ],
-          name: 'KPMG',
+          name: 'Rydge',
           parent: {
             id: 135393664,
           },

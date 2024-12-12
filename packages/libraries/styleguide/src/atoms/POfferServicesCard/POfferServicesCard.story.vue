@@ -30,7 +30,7 @@ import type { POfferServicesCardProps } from './POfferServicesCardTypes'
 const offersData = reactive<POfferServicesCardProps[]>([
   {
     pLogo: 'iconpulse-color',
-    pTitle: 'Pulse platform services',
+    pTitle: 'Rydge platform services',
     pServices: [
       {
         pStatus: true,

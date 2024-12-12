@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { KpmgCommontMock } from '@app/schedule/tests/mocks/commonViMock'
+import { commonMock } from '@app/schedule/tests/mocks/commonViMock'
 import { nextTick } from 'vue'
 import { flushPromises, type VueWrapper, shallowMount } from '@vue/test-utils'
 import Schedule from '@app/schedule/pages/schedule'
@@ -22,7 +22,7 @@ const SAME_MONTH_DATE = '2024-08-18'
 const OTHER_MONTH_DATE = '2024-11-03'
 const OccurenceId = 1234567890
 
-vi.mock('@pulse/common', () => KpmgCommontMock)
+vi.mock('@pulse/common', () => commonMock)
 const commonStore = useCommonStore(pinia)
 // @ts-expect-error: Getter is read only
 commonStore.isCollab = false

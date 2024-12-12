@@ -145,14 +145,14 @@ defineExpose({
   en-US:
     add: 'Add an alert'
     disclaimer: The recipient(s) will be notified on the {plateform} or by {email}
-    plateform: Pulse plateform
+    plateform: Rydge platform
     email: e-mail
     duplicateErrorMessage: Some reminders are equals, please remove duplicates.
     emptyRemindersErrorMessage: Please enter a number greater than or equal to 1
   fr-FR:
     add: 'Ajouter une alerte'
     disclaimer: Le ou les destinataires seront notifiés sur la {plateform} et par {email}
-    plateform: plateforme Pulse
+    plateform: plateforme Rydge
     email: e-mail
     duplicateErrorMessage: Certaines alertes sont identiques, veuillez retirer les doublons.
     emptyRemindersErrorMessage: Veuillez renseigner un nombre supérieur ou égal à 1.

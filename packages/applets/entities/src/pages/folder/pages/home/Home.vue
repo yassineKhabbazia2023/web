@@ -259,13 +259,13 @@ const { defaultEntity, isCollab } = storeToRefs(commonStore())
 <i18n lang="yaml">
   en-US:
     titleWelcome: 'Welcome to your new platform'
-    namePlateform: 'Pulse'
+    namePlateform: 'Rydge'
     onBuild: 'The home page is currently under construction by our teams.'
     helpUs: 'To help us enrich your experience, join the '
-    clubClient: 'Pulse Customer Club'
+    clubClient: 'Rydge Customer Club'
     participationHelp: 'and take part in improving the platform
       through user tests and individual or group exchanges.'
-    joinClub: 'Join Club Pulse'
+    joinClub: 'Join Club Rydge'
     mobileApp: 'Mobile application'
     titleMobileApp: 'Control your business from your pocket!'
     gedMobile: 'Consult, scan and deliver your documents to your expert'
@@ -277,13 +277,13 @@ const { defaultEntity, isCollab } = storeToRefs(commonStore())
     accessClient: 'This feature is only accessible to your customer'
   fr-FR:
     titleWelcome: 'Bienvenue sur votre nouvelle plateforme'
-    namePlateform: 'Pulse'
+    namePlateform: 'Rydge'
     onBuild: "La page d'accueil est en cours de construction par nos équipes."
     helpUs: 'Pour nous aider à enrichir votre expérience, rejoignez-le '
-    clubClient: 'Club Client Pulse'
+    clubClient: 'Club Client Rydge'
     participationHelp: "et participez à l'amélioration de la plateforme
       via des tests utilisateurs et des échanges individuels ou en groupe."
-    joinClub: 'Rejoindre le Club Pulse'
+    joinClub: 'Rejoindre le Club Rydge'
     mobileApp: 'Application mobile'
     titleMobileApp: 'Pilotez votre activité depuis votre poche !'
     gedMobile: 'Consultez, scannez et déposez vos documents à votre expert'
