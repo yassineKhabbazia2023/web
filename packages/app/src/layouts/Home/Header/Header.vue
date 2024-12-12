@@ -135,7 +135,8 @@ function updateFeedCenterDisplay() {
   background-color: var(--el-color-base-white);
 
   &__logo {
-    height: 35px;
+    margin-top: 5px;
+    height: 34px;
   }
 
   &__divider {
