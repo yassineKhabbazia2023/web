@@ -40,10 +40,10 @@
 import { ElImage } from 'element-plus'
 import PImage from '../../atoms/PImage'
 import PText from '../../atoms/PText'
-import { type PDocumentDisplayProps, type DocumentPreviewResponse } from './PDocumentDisplayTypes'
+import type { PDocumentDisplayProps, DocumentPreviewResponse } from './PDocumentDisplayTypes'
 import PLoader from '../../atoms/PLoader'
 import { computed } from 'vue'
-import { isImageDocument } from '@pulse/core'
+import { isImageDocument, isPdfDocument } from '@pulse/core'
 const props = defineProps<PDocumentDisplayProps>()
 
 const isLoadingDocument = computed(() => props.pIsLoading)
@@ -75,9 +75,6 @@ const url = computed(() => {
   }
 })
 
-const isPdfDocument = (extension: string): boolean => {
-  return extension.toLowerCase() === 'pdf'
-}
 const isNotImageOrPdf = (extension: string): boolean => {
   return !isImageDocument(extension) && !isPdfDocument(extension)
 }

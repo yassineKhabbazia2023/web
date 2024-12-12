@@ -5,6 +5,7 @@ import {
   getDocumentNameWithoutExtension,
   isExtensionAuthorized,
   getIconFileName,
+  isPdfDocument,
 } from './fileExtensionUtils'
 
 const filename1 = 'something.abc.txt'
@@ -83,6 +84,13 @@ describe('getFileExtension', () => {
       expect(getIconFileName(filename13, 'filetypeNone')).toBe('filetypeSvg')
       expect(getIconFileName(filename14, 'filetypeNone')).toBe('filetypeXls')
       expect(getIconFileName(filename15, 'filetypeNone')).toBe('filetypeXlsx')
+    })
+  })
+
+  describe('isPdfDocument', () => {
+    it('should return true if the file extension is pdf', () => {
+      expect(isPdfDocument(fileExtension1)).toBeFalsy()
+      expect(isPdfDocument('pdf')).toBeTruthy()
     })
   })
 })

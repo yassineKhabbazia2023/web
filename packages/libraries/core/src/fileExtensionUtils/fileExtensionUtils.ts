@@ -35,3 +35,8 @@ export const getIconFileName = (fileName: string, defaultIconName: string) => {
 
   return FILE_NAME_BY_EXTENSION[fileExtension] ?? defaultIconName
 }
+
+export const isPdfDocument = (extension: string): boolean => {
+  return extension.toLowerCase() === 'pdf'
+}
+
