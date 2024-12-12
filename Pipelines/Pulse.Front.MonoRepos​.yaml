@@ -29,5 +29,6 @@ extends:
   parameters:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
+    remoteRepositoryName: Pulse
     sonarExclusions: '**/Mock.js,**/mocks/**,src/main.ts,src/main.mts,stryker/**.*, vitest.setup.ts'
 
