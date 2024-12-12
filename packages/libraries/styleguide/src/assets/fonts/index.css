@@ -28,6 +28,20 @@
 
 @font-face {
   font-family: 'DM Sans';
+  src: url('./dmSans/DMSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+font-family: 'DM Sans';
+src: url('./dmSans/DMSans-MediumItalic.ttf') format('truetype');
+font-weight: 500;
+font-style: italic;
+}
+
+@font-face {
+  font-family: 'DM Sans';
   src: url('./dmSans/DMSans-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
