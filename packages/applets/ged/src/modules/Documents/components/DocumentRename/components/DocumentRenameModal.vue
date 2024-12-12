@@ -30,9 +30,9 @@ import {
   validInputAlphanumericFrench,
 } from '@ged/modules/common/helpers/inputValidationHelper'
 import {
-  getDocumentNameExtension,
   getDocumentNameWithoutExtension,
 } from '@ged/modules/Documents/helpers/filesExtensions'
+import { getFileExtension } from '@pulse/core'
 
 const props = defineProps<DocumentRenameModalProps>()
 const emit = defineEmits([
@@ -48,7 +48,7 @@ const { t } = useI18n({
 
 const documentBaseName = ref(getDocumentNameWithoutExtension(props.document.name))
 const inputContent = ref(documentBaseName)
-const fileExtension = computed(() => `.${getDocumentNameExtension(props.document.name)}`)
+const fileExtension = computed(() => `.${getFileExtension(props.document.name)}`)
 const fullDocumentName = computed(() => `${inputContent.value}${fileExtension.value}`)
 
 watch(() => props.isRenameModalOpened, () => {

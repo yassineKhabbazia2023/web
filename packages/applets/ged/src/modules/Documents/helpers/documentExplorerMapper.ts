@@ -1,10 +1,9 @@
 import type { ExplorerUploadDocument } from '../components/DocumentsUpload/DocumentsUploadTypes'
 import type { GivenActionState } from '../DocumentsTypes'
 import {
-  getDocumentNameExtension,
   getDocumentNameWithoutExtension,
 } from './filesExtensions'
-import { isExtensionAuthorized } from '@pulse/core'
+import { getFileExtension, isExtensionAuthorized } from '@pulse/core'
 import {
   validInputAlphanumericFrench,
   validInputMaxLength,
@@ -23,7 +22,7 @@ export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocum
       let state: GivenActionState = 'TO_DO'
       let code = ''
       let isSelected = true
-      const extension = getDocumentNameExtension(file?.name.toLowerCase())
+      const extension = getFileExtension(file?.name)
       const name = getDocumentNameWithoutExtension(file?.name)
 
       if (file?.size === 0) {
