@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import {
-  isImageDocument,
   getFileIcon,
 } from './filesExtensions'
 import {
@@ -43,14 +42,6 @@ const fileExtension3 = 'JPEG'
 const fileExtension4 = 'xyz'
 
 describe('fileExtension', () => {
-  describe('isImageDocument', () => {
-    it('should return true if the document is an image', () => {
-      expect(isImageDocument(fileExtension1)).toBeFalsy()
-      expect(isImageDocument(fileExtension2)).toBeTruthy()
-      expect(isImageDocument(fileExtension3)).toBeTruthy()
-      expect(isImageDocument(fileExtension4)).toBeFalsy()
-    })
-  })
   describe('getFileIcon', () => {
     it('should return the good icon for the extension', () => {
       expect(getFileIcon(filename1)).toBe(PIFiletypeTxt)
