@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import {
   isImageDocument,
-  getDocumentNameWithoutExtension,
   getFileIcon,
 } from './filesExtensions'
 import {
@@ -50,13 +49,6 @@ describe('fileExtension', () => {
       expect(isImageDocument(fileExtension2)).toBeTruthy()
       expect(isImageDocument(fileExtension3)).toBeTruthy()
       expect(isImageDocument(fileExtension4)).toBeFalsy()
-    })
-  })
-  describe('getDocumentNameWithoutExtension', () => {
-    it('should return the name of a document', () => {
-      expect(getDocumentNameWithoutExtension(filename1)).toBe('something.abc')
-      expect(getDocumentNameWithoutExtension(filename2)).toBe('file_without_extension')
-      expect(getDocumentNameWithoutExtension(filename3)).toBe('another.file.with.multiple.dots')
     })
   })
   describe('getFileIcon', () => {

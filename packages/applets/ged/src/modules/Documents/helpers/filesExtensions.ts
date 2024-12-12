@@ -24,7 +24,6 @@ import {
 } from '@pulse/styleguide/components'
 import {
   isImageDocument as coreIsImageDocument,
-  getDocumentNameWithoutExtension as coreGetDocumentNameWithoutExtension,
   getIconFileName,
 } from '@pulse/core'
 
@@ -52,8 +51,6 @@ const ICON_COMPONENT_BY_FILE_NAME: Record<string, Component> = {
 }
 
 export const isImageDocument = (extension: string): boolean => coreIsImageDocument(extension)
-
-export const getDocumentNameWithoutExtension = (filename: string): string => coreGetDocumentNameWithoutExtension(filename)
 
 export const getFileIcon = (fileName: string) => {
   const iconFileName = getIconFileName(fileName, 'fileText')

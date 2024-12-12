@@ -29,10 +29,7 @@ import {
   validInputMaxLength,
   validInputAlphanumericFrench,
 } from '@ged/modules/common/helpers/inputValidationHelper'
-import {
-  getDocumentNameWithoutExtension,
-} from '@ged/modules/Documents/helpers/filesExtensions'
-import { getFileExtension } from '@pulse/core'
+import { getDocumentNameWithoutExtension, getFileExtension } from '@pulse/core'
 
 const props = defineProps<DocumentRenameModalProps>()
 const emit = defineEmits([

@@ -1,9 +1,6 @@
 import type { ExplorerUploadDocument } from '../components/DocumentsUpload/DocumentsUploadTypes'
 import type { GivenActionState } from '../DocumentsTypes'
-import {
-  getDocumentNameWithoutExtension,
-} from './filesExtensions'
-import { getFileExtension, isExtensionAuthorized } from '@pulse/core'
+import { getDocumentNameWithoutExtension, getFileExtension, isExtensionAuthorized } from '@pulse/core'
 import {
   validInputAlphanumericFrench,
   validInputMaxLength,
