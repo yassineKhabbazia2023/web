@@ -2,6 +2,8 @@ import { computed, watch, onBeforeUnmount } from 'vue'
 import type { Ref } from 'vue'
 import type { Document } from '@ged/models/Document'
 import type { DocumentsListProps } from '../DocumentsListTypes'
+import { trackDocumentMoveFlowStart } from '@ged/services/tracking/tracking.service'
+import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
 export function useDocumentsDragAndDrop(
   selectedFolders: Ref<Document[]>,
@@ -14,9 +16,9 @@ export function useDocumentsDragAndDrop(
 
   function bindDragProperties() {
     // Reason of no-undef disabling :
-     
+
     // https://github.com/typescript-eslint/typescript-eslint/blob/1cf9243/docs/getting-started/linting/FAQ.md#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-     
+
     const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
     Array.from(documentRowElements).forEach((element: HTMLElement) => {
       element.addEventListener('dragstart', handleDragStart)
@@ -26,7 +28,7 @@ export function useDocumentsDragAndDrop(
 
   onBeforeUnmount(() => {
     // Read above for the no-undef disabling reason
-     
+
     const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
     Array.from(documentRowElements).forEach((element) => {
       element.removeEventListener('dragstart', handleDragStart)
@@ -57,6 +59,7 @@ export function useDocumentsDragAndDrop(
       JSON.stringify(documentsToMove.value),
     )
     event.dataTransfer.setData(String(currentService.value), 'serviceId')
+    trackDocumentMoveFlowStart(TriggerSource.DRAG_AND_DROP)
   }
 
   // There's nothing to handle Drag & Drop in the Table component nativaly (Element Plus)

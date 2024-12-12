@@ -1,6 +1,6 @@
 <template>
   <div class="treeview" :class="{ 'treeview--is-loading': isLoading }">
-    <div v-if="isLoading" class="treeview__loader">
+    <div v-if="isLoading || currentServiceName === null" class="treeview__loader">
       <PLoader pType="primary" size="42" />
     </div>
 
@@ -129,6 +129,7 @@ import { getFolderPath } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import type { Document } from '@ged/models/Document'
 import { moveDocuments } from '@ged/services/Documents'
 import { useI18n } from 'vue-i18n'
+import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
@@ -407,6 +408,7 @@ function handleDocumentDroppedOnTreeNode(documents: Document[], targetFolder: Fo
   if (!props.currentServiceFolder) {
     return
   }
+
   draggedDocumentsTomove.value = documents
 
   const firstDocument = documents.at(0)
@@ -445,10 +447,11 @@ async function handleConfirmDocumentDrop() {
     )
 
     displaySuccessNotification(formattedMoveDocumentsRequest.ids.length)
-
+    trackDocumentMove({ isMoveSuccessful: true })
     emit('refresh-documents-list', true)
   } catch (error) {
     displayErrorNotification(formattedMoveDocumentsRequest.ids.length)
+    trackDocumentMove({ isMoveSuccessful: false })
   } finally {
     isDropDialogVisible.value = false
     isDocumentDropConfirmButtonLoading.value = false

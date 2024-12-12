@@ -121,7 +121,7 @@ export function useDragAndDropFromExplorer(
         depositedDocumentsCount: settledUploads.length,
         successfulDepositsCount: successfulResults.length,
         failedDepositsCount: failedResults.length,
-        destinationFolder: folder.name
+        destinationFolder: folder.name,
       })
 
       await displaySuccessNotification(successfulResults.length)

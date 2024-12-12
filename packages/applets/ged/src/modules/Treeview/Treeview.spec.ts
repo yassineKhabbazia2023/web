@@ -15,6 +15,8 @@ import { nextTick } from 'vue'
 import TreeNode from './components/TreeNode'
 import { downloadFolder } from '@ged/services/Folder'
 import type { ComponentWrapper } from '@ged/utils/testHelpers'
+import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
+import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
 
 type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
 
@@ -29,6 +31,7 @@ const defaultProps: TreeviewProps = {
   isLoading: true,
   servicesFolders: foldersData,
   currentService: 'service-id-compta',
+  currentServiceName: 'service name',
   selectedEntity: 'my-entity-id',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: undefined,
@@ -37,6 +40,8 @@ const defaultProps: TreeviewProps = {
 vi.mock('@ged/services/Folder', () => ({
   downloadFolder: vi.fn(),
 }))
+
+vi.mock('@ged/services/tracking/tracking.service')
 
 const mockToastPlugin = vi.fn()
 const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper => {
@@ -74,13 +79,13 @@ describe('treeview', () => {
   const getRenameFolderSectionWrapper = () =>
     wrapper.findComponent({ name: 'RenameFolderSection' })
 
-   
+
   beforeEach(() => {
     setActivePinia(pinia)
     wrapper = createWrapper()
     flushPromises()
   })
-   
+
   afterEach(() => {
     vi.restoreAllMocks()
   })
@@ -88,6 +93,18 @@ describe('treeview', () => {
     it('should display a loader when the tree is not loaded', () => {
       const loader = wrapper.find('.treeview__loader')
 
+      expect(loader.exists()).toBeTruthy()
+    })
+
+    it('should keep loading if currentServiceName is not defined', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        currentServiceName: null,
+        isLoading: false,
+      })
+
+      await flushPromises()
+      const loader = wrapper.find('.treeview__loader')
       expect(loader.exists()).toBeTruthy()
     })
   })
@@ -387,6 +404,22 @@ describe('treeview', () => {
         await getTreeNodeActionsToolbox().trigger('dragleave')
 
         expect(getBaseSelectedNodeContentClasses()).toHaveLength(1)
+      })
+
+      it('should track the document move from drag and drop', async () => {
+        wrapper.setProps({ isLoading: false, currentServiceFolder: foldersData[0] })
+        await flushPromises()
+        const firstTreeNode = wrapper.findComponent({ name: 'TreeNode' })
+        const firstChildrenFolder = foldersData[0][0].children[0].children[0]
+
+        firstTreeNode.vm.$emit('documents-dropped-on-tree-node', [documentMock], firstChildrenFolder)
+        await nextTick()
+
+        const dropDialogWrapper = wrapper.findComponent({ name: 'DocumentsDropConfirmationPopup' })
+        dropDialogWrapper.vm.$emit('confirm-documents-drop')
+        await flushPromises()
+
+        expect(trackDocumentMove).toHaveBeenCalled()
       })
     })
   })
