@@ -70,6 +70,7 @@
 </template>
 
 <script lang="ts" setup>
+import { logger } from '@pulse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
@@ -168,7 +169,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           await commonApi().gateway.post(urlUpdatePassword, data)
           router.push({ name: 'loginClient' })
         } catch (error: any) {
-          console.error(error)
+          logger.error(error)
           const { status, data } = error?.response ?? {}
           isPasswordAlreadyUsed.value = status === 400 && data.includes('401030')
         }

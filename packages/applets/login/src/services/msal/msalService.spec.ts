@@ -1,8 +1,20 @@
-import { vi, describe, beforeEach, it, expect, type MockInstance } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
 import { getToken } from '.'
 
 const amplitudeServiceTrackMocked = vi.hoisted(() => vi.fn())
 const setTokenMocked = vi.hoisted(() => vi.fn())
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@pulse/common', () => ({
   amplitudeService: {
     track: amplitudeServiceTrackMocked,
@@ -43,10 +55,6 @@ vi.mock('msal', () => ({
 
 describe('msalService', () => {
   describe('getToken', () => {
-    let consoleWarnSpy: MockInstance
-    beforeEach(() => {
-      consoleWarnSpy = vi.spyOn(console, 'warn')
-    })
     it('should return proper token msalInstance has no error', async () => {
       const userNameMocked = 'userName mocked'
       const accessTokenMocked = 'accessToken mocked'
@@ -86,8 +94,8 @@ describe('msalService', () => {
       const token = await getToken()
 
       expect(token).toBeUndefined()
-      expect(consoleWarnSpy).toHaveBeenCalledOnce()
-      expect(consoleWarnSpy).toHaveBeenNthCalledWith(1, error)
+      expect(loggerWarnSpy).toHaveBeenCalledOnce()
+      expect(loggerWarnSpy).toHaveBeenNthCalledWith(1, error)
 
       expect(amplitudeServiceTrackMocked).toHaveBeenCalledOnce()
       expect(amplitudeServiceTrackMocked).toHaveBeenNthCalledWith(1,
@@ -107,7 +115,7 @@ describe('msalService', () => {
       const token = await getToken()
 
       expect(token).toBeNull()
-      expect(consoleWarnSpy).not.toHaveBeenCalled()
+      expect(loggerWarnSpy).not.toHaveBeenCalled()
 
       expect(amplitudeServiceTrackMocked).not.toHaveBeenCalled()
       expect(setTokenMocked).not.toHaveBeenCalled()

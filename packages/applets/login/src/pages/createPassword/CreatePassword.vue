@@ -95,6 +95,7 @@
 </template>
 
 <script lang="ts" setup>
+import { logger } from '@pulse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
@@ -267,7 +268,7 @@ onMounted(async () => {
     const data = await getLatestTerms()
     termsId.value = data.termsId
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
 })
 

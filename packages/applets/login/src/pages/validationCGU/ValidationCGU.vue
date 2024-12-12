@@ -75,6 +75,7 @@
 </template>
 
 <script lang="ts" setup>
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref, reactive } from 'vue'
 import type { FormRules } from 'element-plus'
@@ -114,7 +115,7 @@ const acceptNewCgu = async (termsId: string) => {
     await updateTermsByCurrentUser(parseInt(termsId))
     router.push({ name: 'wallet-client' })
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   } finally {
     loading.value = false
   }

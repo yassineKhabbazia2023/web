@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import {
   VITE_API_MSAL_CLIENT_ID,
   VITE_API_MSAL_TENANT,
@@ -38,7 +39,7 @@ export const getToken = async () => {
         return token
       })
       .catch((e) => {
-        console.warn(e)
+        logger.warn(e)
         amplitudeService.track('Sign In Completed', {
           sign_in_method: 'SSO',
           sign_in_result: 'failed',
