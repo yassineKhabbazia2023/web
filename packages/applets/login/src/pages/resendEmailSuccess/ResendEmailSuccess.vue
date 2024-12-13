@@ -17,7 +17,6 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { PImage } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -30,7 +29,7 @@ const { t } = useI18n({
   height: 100%;
 
   @media (min-width: 992px) {
-    padding: 0 0 193px 0;
+    padding: 48px 0 0 0;
     text-align: center;
   }
   text-align: left;

@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
-import { PImage, PButton } from '@pulse/styleguide/components'
+import { PButton } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -42,7 +42,7 @@ const email = route.query.email
   flex-direction: column;
   height: 100%;
   @media (min-width: 992px) {
-    padding: 0 0 48px 0;
+    padding: 48px 0 0 0;
     align-items: center;
     justify-content: center;
     gap: 12px;

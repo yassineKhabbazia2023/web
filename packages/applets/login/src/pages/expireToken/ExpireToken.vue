@@ -23,7 +23,7 @@ import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { commonApi } from '@pulse/common'
-import { PImage, PButton } from '@pulse/styleguide/components'
+import { PButton } from '@pulse/styleguide/components'
 import { logger } from '@pulse/core'
 
 const { t } = useI18n({
@@ -54,16 +54,12 @@ const resendLink = async () => {
   margin: auto;
   height: 100%;
   @media (min-width: 992px) {
-    padding: 0 0 48px 0;
+    padding: 48px 0 0 0;
     text-align: center;
   }
   text-align: left;
 
   .expireMsg {
-    @media (min-width: 992px) {
-      margin-top: 166px;
-    }
-    margin-top: 34px;
     font-weight: 600;
     font-size: 16px;
     line-height: 19px;

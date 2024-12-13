@@ -63,7 +63,7 @@ import { reactive, computed, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { commonApi } from '@pulse/common'
-import { PImage, PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
+import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -147,7 +147,7 @@ defineExpose({ handleSubmit })
   flex-direction: column;
   height: 100%;
   @media (min-width: 992px) {
-    padding: 0 0 48px 0;
+    padding: 48px 0 0 0;
     align-items: center;
     justify-content: center;
     gap: 12px;
