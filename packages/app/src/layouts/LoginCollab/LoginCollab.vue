@@ -21,8 +21,13 @@
           :pXs="0"
           :pXm="0"
           :pMd="12"
-          class="illustration-wrapper"
-        />
+        >
+          <PImage
+            class="login-page-image"
+            pName="login-page-collab"
+            pFit="cover"
+          />
+        </PCol>
       </PRow>
     </main>
 
@@ -47,8 +52,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { PCol, PCarousel, PRow, PImage } from '@pulse/styleguide/components'
-import type { PCarouselItemProps } from '@pulse/styleguide/types'
+import { PCol, PRow, PImage } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
 
@@ -80,12 +84,6 @@ onMounted(() => {
   }
 
   background: var(--el-color-base-white);
-
-  .illustration-wrapper {
-    min-height: 620px;
-    background-image: url('https://picsum.photos/id/235/448/630.webp');
-    background-size: cover;
-  }
 
   .content {
     @media (min-width: 992px) {
@@ -133,5 +131,9 @@ $footer-margin: 24px;
   right: $footer-margin;
   bottom: $footer-margin;
   width: 100px;
+}
+
+.login-page-image {
+  display: inherit;
 }
 </style>

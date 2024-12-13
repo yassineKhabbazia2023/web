@@ -16,6 +16,8 @@
   "default-3": "forms/default-3.svg",
   "default-4": "forms/default-4.svg",
   "message": "forms/message.svg",
+  "login-page-client": "login-page/login-page-client.jpg",
+  "login-page-collab": "login-page/login-page-collab.jpg",
   "brand-color": "logos/brand-color.svg",
   "brand-white": "logos/brand-white.svg",
   "default-offer-color": "logos/default-offer-color.svg",

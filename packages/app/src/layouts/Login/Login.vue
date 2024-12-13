@@ -25,8 +25,13 @@
           :pXs="0"
           :pXm="0"
           :pMd="12"
-          class="illustration-wrapper"
-        />
+        >
+          <PImage
+            class="login-page-image"
+            pName="login-page-client"
+            pFit="cover"
+          />
+        </PCol>
       </PRow>
     </main>
 
@@ -82,11 +87,6 @@ onMounted(() => {
   }
 }
 
-.illustration-wrapper {
-  background-image: url('https://picsum.photos/id/235/448/630.webp');
-  background-size: cover;
-}
-
 .card {
   @media (min-width: 992px) {
     max-width: 920px;
@@ -128,5 +128,9 @@ $footer-margin: 24px;
   right: $footer-margin;
   bottom: $footer-margin;
   width: 100px;
+}
+
+.login-page-image {
+  display: inherit;
 }
 </style>

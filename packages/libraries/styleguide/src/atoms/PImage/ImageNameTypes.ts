@@ -16,6 +16,8 @@ export type ImageName =
 'default-3' |
 'default-4' |
 'message' |
+'login-page-client' |
+'login-page-collab' |
 'brand-color' |
 'brand-white' |
 'default-offer-color' |
