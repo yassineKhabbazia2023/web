@@ -308,7 +308,7 @@ This component (the node) is not inside the design system which is why we overri
   }
 
   &__label-with-button {
-    width: 100%;
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -316,7 +316,9 @@ This component (the node) is not inside the design system which is why we overri
   }
 
   &__label {
-    max-width: 24ch;
+    width: 1px;
+    flex: 1 1 auto;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 

@@ -1,5 +1,12 @@
 <template>
-  <Story title="4. Organisms/Tree" icon="carbon:tree">
+  <Story
+    title="4. Organisms/Tree"
+    icon="carbon:tree"
+    :layout="{
+      type: 'single',
+      iframe: false,
+    }"
+  >
     <Variant title="Basic usage">
       <PTree
         :pData="dataSource"
@@ -20,7 +27,7 @@
         <!-- eslint-disable vue/no-unused-vars -->
         <template #default="{ node, data }">
           <div class="p-tree__custom-node padding-right--2">
-            <span>{{ node.label }}</span>
+            <span class="p-tree__custom-node__label">{{ node.label }}</span>
             <PToolbox :pElements="toolboxItems">
               <PButton
                 class="p-button--tree"
@@ -101,6 +108,36 @@ const dataSource: Tree[] = [
           {
             id: 3,
             label: 'Level three 1-1-1',
+            children: [
+              {
+                id: 4,
+                label: 'Level three Level three Level three Level three Level three Level three 1-1-1-1',
+              },
+              {
+                id: 41,
+                label: 'Level three 1-1-2-1',
+              },
+              {
+                id: 42,
+                label: 'Level three 1-1-3-1',
+              },
+              {
+                id: 43,
+                label: 'Level three 1-1-4-1',
+              },
+            ],
+          },
+          {
+            id: 31,
+            label: 'Level three 1-1-2',
+          },
+          {
+            id: 32,
+            label: 'Level three 1-1-3',
+          },
+          {
+            id: 33,
+            label: 'Level three 1-1-4',
           },
         ],
       },
@@ -161,12 +198,20 @@ const dataSource: Tree[] = [
 ]
 </script>
 
-<style>
+<style lang="scss" scoped>
   .p-tree__custom-node {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+
+    &__label {
+      flex: 1 1 auto;
+      width: 1px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 </style>
 
