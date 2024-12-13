@@ -27,6 +27,7 @@ export default [
       '@stylistic': stylistic,
     },
     rules: {
+      'no-console': 'error',
       // TODO: temporary rules to delete after eslint migration
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
