@@ -9,6 +9,7 @@ import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
 import commonLibrary from '@pulse/common'
 import styleguideLibrary from '@pulse/styleguide'
+import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
 
 import App from './app/App.vue'
 import router from './plugins/router'
@@ -17,7 +18,6 @@ const locale = 'fr-FR'
 
 declare let window: {
   hsConversationsOnReady: any // HubSpot Conversations API
-  axeptioSettings: any // Axeptio
   version: string
 } & Window
 
@@ -25,6 +25,8 @@ window.version = AppVersionManager.getMonorepoVersion()
 
 
 const app = createApp(App)
+  // install plugins
+  .use(axeptioPlugin)
   .use(commonLibrary, { locale })
   // install applets
   .use(entitiesApplet, { router })
@@ -60,16 +62,6 @@ if (import.meta.env.PROD) {
       }
     }
   }
-  // POC Axeptio
-  // TODO use a feature flag?
-  window.axeptioSettings = {
-    clientId: '673cadb73a0895e8b76ad209',
-  }
-  const firstScriptElement = document.getElementsByTagName('script')[0]
-  const element = document.createElement('script')
-  element.async = true
-  element.src = '//static.axept.io/sdk.js'
-  firstScriptElement?.parentNode?.insertBefore(element, firstScriptElement)
 }
 
 app.mount('#app')
