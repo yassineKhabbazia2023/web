@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import { defineStore } from 'pinia'
 import { msalInstance } from '../msal'
 import type { UserInfo } from './types'
@@ -41,7 +42,7 @@ export const store = defineStore('common', {
         }
         state.user = null
       } catch (e) {
-        console.warn(e)
+        logger.warn(e)
       }
     },
     async fetchUserPermissions() {
@@ -51,7 +52,7 @@ export const store = defineStore('common', {
         )
         this.permissions = data
       } catch (error) {
-        console.error('Unable to retrieve user permissions: ', error)
+        logger.error('Unable to retrieve user permissions: ', error)
       }
     },
     async fetchUserAccountPermissions() {
@@ -63,7 +64,7 @@ export const store = defineStore('common', {
           this.user.entities.default.permissions = data
         }
       } catch (error) {
-        console.error(
+        logger.error(
           'Unable to retrieve permissions for this account: ',
           error,
         )

@@ -1,10 +1,22 @@
- 
+
 import { describe, it, expect, vi, beforeEach, type MockInstance } from 'vitest'
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
+
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
 
 vi.mock('@microsoft/signalr')
 vi.mock('./DataStreamHubConnectionHelper', () => {
@@ -50,11 +62,7 @@ describe('dataStreamHubConnection', () => {
   })
 
   describe('when connection fails', () => {
-    let errorSpy: MockInstance
-    beforeEach(() => {
-      errorSpy = vi.spyOn(console, 'error')
-    })
-    it('should call console.error when start connection fails', async () => {
+    it('should call logger.error when start connection fails', async () => {
       vi
         .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
         .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
@@ -65,11 +73,11 @@ describe('dataStreamHubConnection', () => {
         })
       dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
       await dataStreamHubConnection.startConnection()
-      expect(errorSpy).toHaveBeenCalledOnce()
-      expect(errorSpy).toHaveBeenNthCalledWith(1, `Hub connection to ${mockHubUrl} failed`, 'error')
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, `Hub connection to ${mockHubUrl} failed`, 'error')
     })
 
-    it('should call console.error when destroyConnection connection fails', async () => {
+    it('should call logger.error when destroyConnection connection fails', async () => {
       vi
         .spyOn(DataStreamHubConnectionHelper, 'getNewHubConnection')
         .mockImplementationOnce((_hubUrl: string, _userToken: string) => {
@@ -81,8 +89,8 @@ describe('dataStreamHubConnection', () => {
       dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
       await dataStreamHubConnection.startConnection()
       await dataStreamHubConnection.destroyConnection()
-      expect(errorSpy).toHaveBeenCalledOnce()
-      expect(errorSpy).toHaveBeenNthCalledWith(1, 'error')
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, 'error')
     })
 
     it('should do nothing when not connected', async () => {
@@ -96,7 +104,7 @@ describe('dataStreamHubConnection', () => {
         })
       dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
       await dataStreamHubConnection.destroyConnection()
-      expect(errorSpy).not.toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).not.toHaveBeenCalledOnce()
     })
   })
 })

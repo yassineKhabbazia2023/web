@@ -21,6 +21,18 @@ const mockGetPermissions = vi.fn((_url) => {
   })
 })
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('../api', () => ({
   default: () => ({
     gateway: {
@@ -117,16 +129,15 @@ describe('commonStore', () => {
     expect(spyFetchUserPermissions).toHaveBeenCalledTimes(1)
     expect(userPermissions.value).toStrictEqual(mockedPermissions)
   })
-  it('should log a console.error message when the request fails', async () => {
+  it('should log a logger.error message when the request fails', async () => {
     const store = commonStore(pinia)
     const expectedErrorMessage = 'Authorization Error: API Access Denied'
-    const spyConsole = vi.spyOn(console, 'error')
 
     mockGetPermissions.mockRejectedValueOnce(expectedErrorMessage)
     await store.fetchUserPermissions()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenNthCalledWith(
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenNthCalledWith(
       1,
       'Unable to retrieve user permissions: ',
       expectedErrorMessage,
@@ -171,16 +182,15 @@ describe('commonStore', () => {
       mockedPermissions,
     )
   })
-  it('should log a console.error message when the request fails to retrieve account permissions', async () => {
+  it('should log a logger.error message when the request fails to retrieve account permissions', async () => {
     const store = commonStore(pinia)
     const expectedErrorMessage = 'Authorization Error: API Access Denied'
-    const spyConsole = vi.spyOn(console, 'error')
 
     mockGetPermissions.mockRejectedValueOnce(expectedErrorMessage)
     await store.fetchUserAccountPermissions()
 
-    expect(spyConsole).toHaveBeenCalledOnce()
-    expect(spyConsole).toHaveBeenNthCalledWith(
+    expect(loggerErrorSpy).toHaveBeenCalledOnce()
+    expect(loggerErrorSpy).toHaveBeenNthCalledWith(
       1,
       'Unable to retrieve permissions for this account: ',
       expectedErrorMessage,

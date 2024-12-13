@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import type { HubConnection } from '@microsoft/signalr'
 import { storeToRefs } from 'pinia'
 import commonStore from '../stores'
@@ -31,7 +32,7 @@ export class DataStreamHubConnection {
         this.setIsConnected(true)
       })
       .catch((err) =>
-        console.error(`Hub connection to ${this.hubUrl} failed`, err),
+        logger.error(`Hub connection to ${this.hubUrl} failed`, err),
       )
   }
 
@@ -49,7 +50,7 @@ export class DataStreamHubConnection {
       .then(() => {
         this.setIsConnected(false)
       })
-      .catch((error) => console.error(error))
+      .catch((error) => logger.error(error))
   }
 
   public getIsConnected() {
