@@ -220,12 +220,18 @@ const setParentNodeOfSelectedFolderTreeNodeAction = () => {
   if (!parentFolderId) {
     return
   }
-  parentNodeOfSelectedFolderTreeNodeAction.value = findFolderDeepById(
-    props.servicesFolders[0].filter(
-      (f) => f.serviceId === props.currentService,
-    ),
+
+  const currentServiceFolders = props.servicesFolders.find(
+    serviceFolders => serviceFolders[0].serviceId === treeNodeSelectedFolder.value?.serviceId,
+  )
+  if (!currentServiceFolders) {
+    return
+  }
+  const folderId = findFolderDeepById(
+    currentServiceFolders,
     parentFolderId,
   )
+  parentNodeOfSelectedFolderTreeNodeAction.value = folderId
 }
 const currentFolderId = ref(0)
 
