@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
-import maze from './plugins/maze'
-import { VITE_ASSETS_BASE_URL, VITE_MAZE_KEY, VITE_ONE_TRUST_KEY, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
+import { VITE_ASSETS_BASE_URL, VITE_ONE_TRUST_KEY, VITE_HUBSPOT_ACTIVATED } from 'env-vars'
 import { AppVersionManager , logger } from '@pulse/core'
 
 import entitiesApplet from '@pulse/entities'
@@ -39,10 +38,6 @@ const app = createApp(App)
   .use(router)
 
 if (import.meta.env.PROD) {
-  // MAZE Script
-  if (VITE_MAZE_KEY) {
-    maze(window, document, '/libs/maze-universal-loader.js', VITE_MAZE_KEY)
-  }
   // Script OneTrust
   if (VITE_ONE_TRUST_KEY) {
     const script = document.createElement('script')
