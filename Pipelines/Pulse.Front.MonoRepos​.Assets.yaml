@@ -29,6 +29,5 @@ extends:
   parameters:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
-    disableSonar: ${{ parameters.disableSonar }}
     styleGuideFolder: 'packages/libraries/styleguide'
 
