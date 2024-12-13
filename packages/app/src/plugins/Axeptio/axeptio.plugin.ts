@@ -6,13 +6,15 @@ declare let window: {
 
 export default {
   install() {
-    window.axeptioSettings = {
-      clientId: VITE_AXEPTIO_KEY,
+    if (import.meta.env.PROD) {
+      window.axeptioSettings = {
+        clientId: VITE_AXEPTIO_KEY,
+      }
+      const firstScriptElement = document.getElementsByTagName('script')[0]
+      const element = document.createElement('script')
+      element.async = true
+      element.src = '//static.axept.io/sdk.js'
+      firstScriptElement?.parentNode?.insertBefore(element, firstScriptElement)
     }
-    const firstScriptElement = document.getElementsByTagName('script')[0]
-    const element = document.createElement('script')
-    element.async = true
-    element.src = '//static.axept.io/sdk.js'
-    firstScriptElement?.parentNode?.insertBefore(element, firstScriptElement)
   },
 }
