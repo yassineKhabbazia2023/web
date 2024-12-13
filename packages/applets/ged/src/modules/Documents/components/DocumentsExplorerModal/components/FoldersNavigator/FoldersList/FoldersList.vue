@@ -91,7 +91,7 @@ const getIconMapping = (iconName: string | undefined): IconName => {
   case 'deposit':
     return 'inbox'
   case 'reservedKpmg':
-    return 'kpmg'
+    return 'shieldLock'
   case 'binIcon':
     return 'trash'
   default:

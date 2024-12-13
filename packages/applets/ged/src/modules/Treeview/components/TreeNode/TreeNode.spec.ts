@@ -88,7 +88,7 @@ describe('props', () => {
       },
       {
         folderIconName: 'reservedKpmg',
-        expectedIcon: 'kpmg',
+        expectedIcon: 'shieldLock',
       },
       {
         folderIconName: 'binIcon',
