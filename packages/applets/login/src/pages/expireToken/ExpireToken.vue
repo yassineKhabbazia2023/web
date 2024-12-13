@@ -1,10 +1,5 @@
 <template>
   <div class="page-content">
-    <PImage
-      pType="badges"
-      pName="x"
-      class="badge-lock hidden-md-and-up"
-    />
     <p class="expireMsg">
       {{ t('expireMsg') }}
     </p>

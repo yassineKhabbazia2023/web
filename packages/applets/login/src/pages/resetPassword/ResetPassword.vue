@@ -1,10 +1,5 @@
 <template>
   <div class="page-content">
-    <PImage
-      pType="paupulse"
-      pName="password"
-      class="badge-lock hidden-md-and-up"
-    />
     <p class="forgot-password-title">
       {{ t('forgotPasswordTitle') }}
     </p>

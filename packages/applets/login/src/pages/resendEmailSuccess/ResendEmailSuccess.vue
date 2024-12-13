@@ -1,10 +1,5 @@
 <template>
   <div class="page-content">
-    <PImage
-      pType="badges"
-      pName="email"
-      class="badge-email"
-    />
     <p class="verifyEmail">
       {{ t('verifyEmail') }}
     </p>

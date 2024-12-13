@@ -1,15 +1,5 @@
 <template>
   <div class="page-content">
-    <PImage
-      pType="paupulse"
-      pName="envelope"
-      class="badge-mini-email hidden-md-and-up"
-    />
-    <PImage
-      pType="badges"
-      pName="email"
-      class="badge-email hidden-sm-and-down"
-    />
     <p class="forgot-password-title">
       {{ t('verifyMailTitle') }}
     </p>
@@ -83,18 +73,6 @@ const email = route.query.email
 
   .btn-link {
     width: 100%;
-  }
-
-  .badge-mini-email {
-    display: block;
-    max-width: 200px;
-    margin:auto;
-  }
-
-  .badge-email {
-    display: block;
-    max-width: 105px;
-    margin:auto;
   }
 
   .reset-submit-button,

@@ -32,9 +32,7 @@ const createWrapper = () =>
 describe('reset password success', () => {
   it('display the reset password success page', async () => {
     const wrapper = createWrapper()
-    const badgeEmail = wrapper.find('.badge-email')
     const backToLoginBtn = wrapper.find('.back-to-login-button')
-    expect(badgeEmail.exists()).toBeTruthy()
     expect(backToLoginBtn.exists()).toBeTruthy()
 
     await backToLoginBtn.trigger('click')
