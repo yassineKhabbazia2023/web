@@ -28,7 +28,7 @@ resources:
   - repository: Pulse
     name: 'Pulse.Operations.Pipelines'
     type: git
-    ref: ref: 'refs/heads/features/change-naming'
+    ref: 'refs/heads/features/change-naming'
 
 extends:
   template: pipelines/templates/platform.front.Assets.yaml@Pulse
