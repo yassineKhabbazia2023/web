@@ -1,5 +1,6 @@
 import path from 'path'
 import { existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 'fs'
+import { logger } from '@pulse/core'
 
 const appParentFolder = './packages'
 const appletParentFolder = './packages/applets'
@@ -82,7 +83,7 @@ export function replaceIconsInBlock(filePath: string, content: string, component
         componentName === 'component' ||
         $2.includes('v-if')
       if (needManualIntervention) {
-        console.warn(`Need manual intervention in ${filePath}`)
+        logger.warn(`Need manual intervention in ${filePath}`)
         return originalText
       } else if (!componentNames.includes[componentName]) {
         componentNames.push(componentName)
@@ -142,6 +143,6 @@ const appletNames = ['login', 'launcher', 'ged', 'entities', 'mandate']
 const appNames = ['app']
 
 doWork(appletNames, appletParentFolder)
-console.warn('cleanApp Done')
+logger.warn('cleanApp Done')
 doWork(appNames, appParentFolder)
-console.warn('cleanApplets Done')
+logger.warn('cleanApplets Done')

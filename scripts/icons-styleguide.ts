@@ -1,5 +1,6 @@
 import path from 'path'
 import { existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 'fs'
+import { logger } from '@pulse/core'
 
 const targetFolderMfe = './packages/libraries'
 
@@ -81,7 +82,7 @@ export function replaceIconsInBlock(filePath: string, content: string, component
         componentName === 'component' ||
         $2.includes('v-if')
       if (needManualIntervention) {
-        console.warn(`Need manual intervention in ${filePath}`)
+        logger.warn(`Need manual intervention in ${filePath}`)
         return originalText
       } else if (!componentNames.includes[componentName]) {
         componentNames.push(componentName)
@@ -141,4 +142,4 @@ function cleanMfe(libraryName: string, targetFolder: string) {
 const libraryNames = ['styleguide']
 
 doWorkForApplets(libraryNames)
-console.warn('cleanLibrary Done')
+logger.warn('cleanLibrary Done')

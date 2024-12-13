@@ -1,5 +1,6 @@
 import path from 'path'
 import { existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 'fs'
+import { logger } from '@pulse/core'
 
 const appParentFolder = './packages'
 const appletParentFolder = './packages/applets'
@@ -157,7 +158,7 @@ const appNames = ['app']
 
 const isSpecFiles = option === 'specFiles'
 doWork(appletNames, appletParentFolder, isSpecFiles)
-console.warn('cleanApp Done')
+logger.info('cleanApp Done')
 
 doWork(appNames, appParentFolder, isSpecFiles)
-console.warn('cleanApplets Done')
+logger.info('cleanApplets Done')

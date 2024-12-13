@@ -1,5 +1,6 @@
 import path from 'path'
 import { existsSync, lstatSync, readFileSync, readdirSync, writeFileSync } from 'fs'
+import { logger } from '@pulse/core'
 
 const targetFolderMfe = './packages/libraries'
 
@@ -116,4 +117,4 @@ function cleanMfe(libraryName: string, targetFolder: string) {
 const libraryNames = ['styleguide']
 
 doWorkForApplets(libraryNames)
-console.warn('relative imports in Styleguide Done')
+logger.warn('relative imports in Styleguide Done')

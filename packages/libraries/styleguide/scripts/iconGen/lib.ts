@@ -74,7 +74,7 @@ export function generateTypes(folder: string, outputFileTypePath: string) {
   const outputFile = path.resolve(outputFileTypePath)
   writeFileSync(outputFile, enumContent)
 
-  console.info(`Enum generated in ${outputFile}`)
+  logger.info(`Enum generated in ${outputFile}`)
 }
 
 export async function generateComponent(
