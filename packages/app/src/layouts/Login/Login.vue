@@ -96,7 +96,7 @@ onMounted(() => {
 
   .content {
     @media (min-width: 992px) {
-      padding: 4.8rem;
+      padding: 4.8rem 4.8rem 0 4.8rem;
     }
 
     .brand-logo-content {
