@@ -23,7 +23,7 @@
           :pMd="12"
         >
           <PImage
-            class="login-page-image"
+            class="login-page-image hidden-sm-and-down"
             pName="login-page-collab"
             pFit="cover"
           />
@@ -88,6 +88,9 @@ onMounted(() => {
   .content {
     @media (min-width: 992px) {
       padding: 48px 48px 0;
+    }
+    @media (max-width: 991px) {
+      padding: 2.4rem 1.6rem 0 1.6rem;
     }
 
     .brand-logo-content {

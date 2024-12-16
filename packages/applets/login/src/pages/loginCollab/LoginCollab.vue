@@ -56,7 +56,11 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .wrapperLogin {
-  margin-top: 20%;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  @media (min-width: 992px) {
+    margin-top: 20%;
+  }
 }
 .title {
   font-size: 3.2rem;

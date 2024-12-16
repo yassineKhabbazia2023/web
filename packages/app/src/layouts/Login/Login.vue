@@ -10,7 +10,7 @@
           :pXs="24"
           :pSm="24"
           :pMd="12"
-          class="content padding-top--10"
+          class="content"
         >
           <PImage
             pType="logos"
@@ -27,7 +27,7 @@
           :pMd="12"
         >
           <PImage
-            class="login-page-image"
+            class="login-page-image hidden-sm-and-down"
             pName="login-page-client"
             pFit="cover"
           />
@@ -97,6 +97,9 @@ onMounted(() => {
   .content {
     @media (min-width: 992px) {
       padding: 4.8rem 4.8rem 0 4.8rem;
+    }
+    @media (max-width: 991px) {
+      padding: 2.4rem 1.6rem 0 1.6rem;
     }
 
     .brand-logo-content {

@@ -53,6 +53,8 @@ const resendLink = async () => {
 .page-content {
   margin: auto;
   height: 100%;
+  padding-bottom: 12px;
+
   @media (min-width: 992px) {
     padding: 48px 0 0 0;
     text-align: center;
