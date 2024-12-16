@@ -22,7 +22,6 @@ import {
   PIFiletypeXml,
 } from '../atoms/PIcon/components'
 import {
-  isImageDocument as coreIsImageDocument,
   getIconFileName,
 } from '@pulse/core'
 
@@ -48,8 +47,6 @@ const ICON_COMPONENT_BY_FILE_NAME: Record<string, Component> = {
   filetypeXlsx: PIFiletypeXlsx,
   filetypeXml: PIFiletypeXml,
 }
-
-export const isImageDocument = (extension: string): boolean => coreIsImageDocument(extension)
 
 export const getFileIcon = (fileName: string) => {
   const iconFileName = getIconFileName(fileName, 'filetypeNone')
