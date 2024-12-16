@@ -1,4 +1,4 @@
- 
+
 import { it, expect, beforeEach, describe } from 'vitest'
 import {
   fetchBinDocuments,

@@ -51,7 +51,7 @@ describe('feed center drawer composable', () => {
 
   it('should log error when fetch fails', async () => {
     const { unreadNotificationsCount, isDrawerOpened } = initializeTestState()
-    
+
     fetchNotificationsMock.mockRejectedValueOnce({ error: 'error' })
 
     useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount)

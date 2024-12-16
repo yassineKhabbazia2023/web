@@ -263,7 +263,7 @@ describe('rightsList', () => {
       )
     })
     it('should display a console error if the request to fetch authorizations config fails', async () => {
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(
         authorizationServices,

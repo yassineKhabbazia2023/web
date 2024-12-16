@@ -165,7 +165,7 @@ describe('resendActivationEmailDrawer', () => {
       )
     })
     it('should display a console error if the request to fetch users client account fails', async () => {
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(walletServices, 'fetchAccountContacts').mockRejectedValue(
         expectedErrorMessage,

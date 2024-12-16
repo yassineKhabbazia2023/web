@@ -1,4 +1,4 @@
- 
+
 export enum Permissions {
     CAN_DELETE_FOLDER = 'CAN_DELETE_FOLDER',
     CAN_UPLOAD_FILES = 'CAN_UPLOAD_FILES',

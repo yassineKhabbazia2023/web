@@ -1,4 +1,4 @@
- 
+
 import DocumentActions from './DocumentActions.vue'
 import { type DocumentActionsProps } from './DocumentActionsTypes'
 import type { VueWrapper } from '@vue/test-utils'

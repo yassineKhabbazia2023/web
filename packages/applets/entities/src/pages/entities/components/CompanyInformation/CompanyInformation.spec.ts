@@ -76,7 +76,7 @@ describe('companyInformation', () => {
   describe('events', () => {
     it('should log a logger.error message when the request fails to retrieve form structure', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      
+
       vi.spyOn(referentialUtils, 'getFormStructure').mockRejectedValue(expectedErrorMessage)
 
       wrapper = createWrapper(undefined, ProviderName.MEG)

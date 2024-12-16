@@ -187,7 +187,7 @@ describe('drawer.vue', () => {
   })
   it('should log a logger.error message when the getOccurrence request fails', async () => {
     const expectedErrorMessage = 'Authorization Error: API Access Denied'
-    
+
     vi.spyOn(scheduleServices, 'getOccurrence').mockRejectedValue(expectedErrorMessage)
 
     createWrapper({ modelValue: true })
@@ -201,7 +201,7 @@ describe('drawer.vue', () => {
   })
   it('should log a logger.error message when the postDeadlineAccountStatus request fails', async () => {
     const expectedErrorMessage = 'Authorization Error: API Access Denied'
-    
+
     vi.spyOn(scheduleServices, 'postDeadlineAccountStatus').mockRejectedValue(expectedErrorMessage)
     const accountId = 12
     const status = 'Todo'

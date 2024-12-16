@@ -1,4 +1,4 @@
- 
+
 import DocumentTabs from './DocumentTabs.vue'
 import { type DocumentTabsProps } from './DocumentTabsTypes'
 import type { VueWrapper } from '@vue/test-utils'

@@ -73,7 +73,7 @@ describe('documentRestoreModal', () => {
       await nextTick()
       expect(popup.exists()).toBeTruthy()
 
-       
+
       const confirmationMessage = 'Si vous cliquez sur "Confirmer", le document sera restauré dans son dossier d\'origine.'
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())

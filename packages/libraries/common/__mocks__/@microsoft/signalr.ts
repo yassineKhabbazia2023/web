@@ -2,12 +2,12 @@
 import { vi } from 'vitest'
 
 export enum LogLevel {
-   
+
   Information = 2
 }
 
 export interface ILogger {
-   
+
   log(logLevel: LogLevel, message: string): void
 }
 

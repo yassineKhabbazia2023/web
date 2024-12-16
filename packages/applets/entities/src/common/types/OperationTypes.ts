@@ -1,10 +1,10 @@
- 
+
 export enum OperationStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED'
 }
- 
+
 
 export interface Operation {
   operationId: number

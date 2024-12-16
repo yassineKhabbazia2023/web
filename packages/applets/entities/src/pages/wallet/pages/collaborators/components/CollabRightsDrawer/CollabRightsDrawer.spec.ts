@@ -171,7 +171,7 @@ describe('collabRightsDrawer', () => {
       )
     })
     it('should display a console error if the request to update permissions fails', async () => {
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       mockUpdateUserPermission.mockRejectedValue(expectedErrorMessage)
       wrapper = createWrapper()
@@ -213,7 +213,7 @@ describe('collabRightsDrawer', () => {
     })
     it('should display a console error if the request to fetch collaborator roles fails', async () => {
       vi.clearAllMocks()
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(walletServices, 'fetchContactRoles').mockRejectedValue(
         expectedErrorMessage,

@@ -100,7 +100,7 @@ describe('collaborators', () => {
     wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
   beforeEach(() => {
-    
+
     vi.spyOn(contactServices, 'getContactById').mockRejectedValue(
       expectedErrorMessage,
     )

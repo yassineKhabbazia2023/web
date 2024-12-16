@@ -148,7 +148,7 @@ describe('manageRightsDrawer', () => {
       )
     })
     it('should display a console error if the request to update permissions fails', async () => {
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(
         authorizationServices,

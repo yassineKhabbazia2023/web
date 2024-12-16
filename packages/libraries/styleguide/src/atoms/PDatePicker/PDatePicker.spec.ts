@@ -115,9 +115,9 @@ describe('calendar lite', () => {
 
     expect(getWeekCountMocked).toHaveBeenCalledTimes(2)
     expect(getWeekCountMocked).toHaveBeenNthCalledWith(1, mockedCurrentDate1)
-     
+
     expect(getWeekCountMocked).toHaveBeenNthCalledWith(2, mockedCurrentDate2)
-     
+
     expect(wrapper.emitted('panel-change')).toStrictEqual([[panelDate]])
   })
 })

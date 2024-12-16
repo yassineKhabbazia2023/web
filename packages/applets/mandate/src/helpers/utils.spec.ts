@@ -1,4 +1,4 @@
- 
+
 import { debounce, dateFormatter, downloadFile, saveFileAs } from './utils'
 import { expect, describe, it, vi } from 'vitest'
 
@@ -57,7 +57,7 @@ describe('utils helpers', () => {
     expect(setAttributeMock).toHaveBeenCalledWith('download', filename)
     expect(appendChildMock).toHaveBeenCalledOnce()
     expect(clickMock).toHaveBeenCalledOnce()
-     
+
     expect(revokeObjectURLMock).toHaveBeenCalledOnce()
   })
   it('saves file with a prompt folder selection', async () => {

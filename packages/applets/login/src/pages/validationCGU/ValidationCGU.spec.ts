@@ -61,7 +61,7 @@ describe('cgu validation', () => {
   it('should emit console error when updateTermsByCurrentUser throws an error', async () => {
     const errorMessage = 'error-message'
     updateTermsByCurrentUserMocked.mockRejectedValueOnce(new Error(errorMessage))
-    
+
 
     const wrapper = createWrapper()
     const getCheckbox = () => wrapper.find('input')

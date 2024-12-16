@@ -1,9 +1,9 @@
- 
+
 export enum ContactType {
   Collaborator = 'Collaborator',
   Customer = 'Customer'
 }
- 
+
 
 export interface Persona {
   id: number

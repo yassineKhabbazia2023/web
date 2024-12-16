@@ -1,4 +1,4 @@
- 
+
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { binDocumentsMock } from './mocks/binDocumentMock'
 import BinDocuments from './BinDocuments.vue'
@@ -79,7 +79,7 @@ describe('binDocuments', () => {
         expect(breadcrumb.exists()).toBeTruthy()
         expect(breadcrumb.props('pElements')).toStrictEqual(items)
       })
-       
+
       it('should render BinDocumentsList and PPagination when currentBinService is set', async () => {
         const wrapper = createWrapper()
         await nextTick()

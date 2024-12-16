@@ -133,7 +133,7 @@ describe('manageCollaborators', () => {
     })
     describe('when click on delete', () => {
       beforeEach(() => {
-        
+
       })
       it('should not emit update:collaborators when only one collaborator', () => {
         const { userAction } = getComponentsInWrapper(wrapper)

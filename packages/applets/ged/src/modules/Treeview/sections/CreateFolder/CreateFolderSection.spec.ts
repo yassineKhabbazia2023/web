@@ -71,11 +71,11 @@ vi.mock('@ged/services/Folder', () => ({
 }))
 
 describe('createFolderSection', () => {
-   
+
   beforeEach(() => {
     setActivePinia(pinia)
   })
-   
+
   afterEach(() => {
     vi.restoreAllMocks()
   })

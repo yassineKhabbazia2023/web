@@ -7,5 +7,5 @@ export interface ToastPluginType {
   onClick?: Function
 }
 
- 
+
 export type ToastPluginFunc = (toastPluginType: ToastPluginType) => void

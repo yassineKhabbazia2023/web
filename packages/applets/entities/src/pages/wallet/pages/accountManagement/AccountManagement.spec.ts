@@ -164,7 +164,7 @@ describe('deploy', () => {
 
     it('should log an error to the console when the API fails to fetch the account list', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      
+
       mockFetchWalletData.mockRejectedValue(expectedErrorMessage)
       createWrapper()
       await flushPromises()

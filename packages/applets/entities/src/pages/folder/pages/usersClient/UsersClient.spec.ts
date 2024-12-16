@@ -115,7 +115,7 @@ describe('usersClient', () => {
       .mockResolvedValue(contactsList)
     wrapper = createWrapper()
     await nextTick()
-    
+
   })
 
   describe('rendering', () => {

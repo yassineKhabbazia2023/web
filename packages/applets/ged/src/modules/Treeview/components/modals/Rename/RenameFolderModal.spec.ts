@@ -1,4 +1,4 @@
- 
+
 import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import SingleInputModal from '@ged/modules/common/templates/modals'
 import type { VueWrapper } from '@vue/test-utils'

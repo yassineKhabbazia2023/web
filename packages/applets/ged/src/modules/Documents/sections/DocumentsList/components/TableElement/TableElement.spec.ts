@@ -119,7 +119,7 @@ const createWrapper = (
 
 describe('tableElement', () => {
   describe('props', () => {
-     
+
     beforeEach(() => {
       setActivePinia(pinia)
     })
@@ -146,7 +146,7 @@ describe('tableElement', () => {
         },
       ]
 
-       
+
       it('pText mapping validation test case Text without icon', async () => {
         const firstElementFieldType = cases[0].fieldType
         const firstDocument = cases[0].document

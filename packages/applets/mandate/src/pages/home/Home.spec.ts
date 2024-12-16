@@ -95,7 +95,7 @@ describe('test Home.vue', () => {
     const header = wrapper.findComponent({ name: 'Header' })
     const error = 'thrown-error'
     const expected = `Error while refresh data ${error}`
-    
+
     mockedGetMandatesCollection.mockRejectedValueOnce(error)
 
     header.vm.$emit('refresh-mandate-collection', {})
@@ -131,7 +131,7 @@ describe('test Home.vue', () => {
   it('should call logger.error when mockedGetMandatesCollection throws an error since begining', async () => {
     const error = 'thrown-error'
     mockedGetMandatesCollection.mockRejectedValueOnce(error)
-    
+
 
     createWrapper({})
     await flushPromises()

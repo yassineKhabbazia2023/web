@@ -169,7 +169,7 @@ describe('myInformation', () => {
 
     it('should log a logger.error message when the request fails', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      
+
       mockGet.mockRejectedValue(expectedErrorMessage)
 
       wrapper = createWrapper()

@@ -1,5 +1,5 @@
- 
- 
+
+
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { DocumentUploadProps } from './DocumentsUploadTypes'
@@ -296,17 +296,17 @@ describe('test DocumentsUpload', () => {
             wrapper.vm.explorerDocuments.filter(d => d.givenActionState === 'DONE').length,
           )
         })
-        
+
         it('should display error toaster when upload document fails', async () => {
           const updatedProps = { ...defaultProps, isUploadModalOpened: true }
-          
+
           vi.mocked(uploadDocument).mockRejectedValue(new Error('Upload failed'))
-          
+
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
                 findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
-                
+
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
             'modal-add-document-action-click',

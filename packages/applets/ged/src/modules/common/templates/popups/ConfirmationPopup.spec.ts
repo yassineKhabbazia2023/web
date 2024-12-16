@@ -43,7 +43,7 @@ const createWrapper = (
 const getPopupConfirmationButton = (wrapper: VueWrapper) =>
   wrapper.find('.confirmation-popup__confirm-button')
 describe('confirmationPopup', () => {
-   
+
   beforeEach(() => {
     setActivePinia(pinia)
   })

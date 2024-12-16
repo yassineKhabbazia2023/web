@@ -1,4 +1,4 @@
- 
+
 // until we find a way to enable multiple mocks on a single unit test
 import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { mount } from '@vue/test-utils'

@@ -77,7 +77,7 @@ describe('subscriptionDetailsDrawer', () => {
         SubscriptionService,
         'fetchSubscriptionDetails',
       ).mockRejectedValueOnce(errorMessage)
-      
+
       await getWrapper(true)
 
       expect(loggerErrorSpy).toHaveBeenCalledOnce()

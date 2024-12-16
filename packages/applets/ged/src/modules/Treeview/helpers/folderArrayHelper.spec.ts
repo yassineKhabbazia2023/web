@@ -27,7 +27,7 @@ describe('folderArrayHelper.spec', () => {
       const data = JSON.parse(JSON.stringify(foldersData))
       const serviceId = 'service-id-compta'
 
-       
+
       const folder = findCurrentServiceFolder(data, serviceId) ?? []
 
       expect(folder).toHaveLength(1)

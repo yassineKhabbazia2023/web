@@ -335,7 +335,7 @@ describe('offersDrawer', () => {
           .spyOn(ServicesAccount, 'patchAccount')
           .mockRejectedValueOnce(errorMessage)
 
-        
+
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         firstOffer.trigger('click')
@@ -357,7 +357,7 @@ describe('offersDrawer', () => {
           .spyOn(subscriptionService, 'createSubscriptionRequest')
           .mockRejectedValueOnce(errorMessage)
 
-        
+
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
@@ -378,7 +378,7 @@ describe('offersDrawer', () => {
           .spyOn(subscriptionService, 'createSubscriptionRequest')
           .mockRejectedValueOnce(errorMessage)
 
-        
+
         const wrapper = await getWrapper(true)
         const secondOffer = findSecondOffer(wrapper)
         await secondOffer.trigger('click')
@@ -452,7 +452,7 @@ describe('offersDrawer', () => {
         offerService,
         'getAllOffers',
       ).mockRejectedValueOnce(errorMessage)
-      
+
       await getWrapper(true)
       expect(loggerErrorSpy).toHaveBeenCalledOnce()
       expect(loggerErrorSpy).toHaveBeenNthCalledWith(1,

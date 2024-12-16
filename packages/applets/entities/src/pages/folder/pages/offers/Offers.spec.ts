@@ -110,7 +110,7 @@ describe('offers', () => {
     })
 
     it('should catch the error and use logger.error when the API call fails', async () => {
-      
+
       vi.spyOn(
         SubscriptionServices,
         'fetchAccountSubscriptions',

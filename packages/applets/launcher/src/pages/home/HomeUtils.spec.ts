@@ -89,7 +89,7 @@ describe('test HomeUtils', () => {
   })
 
   beforeEach(() => {
-    
+
   })
 
   describe('handleClickAction', () => {
@@ -169,7 +169,7 @@ describe('test HomeUtils', () => {
       vi
         .spyOn(launcherServices, 'downloadApplication')
         .mockRejectedValueOnce(thrownError)
-      
+
       await handleDownload(LauncherKey.SILAE, onSilaeDownloadProgress)
 
       expect(loggerErrorSpy).toHaveBeenCalledOnce()

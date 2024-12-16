@@ -1,12 +1,12 @@
 import type { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { Contact, ContactType } from '@entities/services/contact/contactTypes'
 
- 
+
 export enum SubscriptionStatusCode {
   PENDING = 'pending',
   VALIDATED = 'validated',
 }
- 
+
 
 interface Account {
   accountId: number

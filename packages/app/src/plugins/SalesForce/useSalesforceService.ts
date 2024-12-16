@@ -42,7 +42,7 @@ export const useSalesforceService = () => {
     strDomain = envstrDomain,
     setAttributePath = envsetAttributePath,
     baseLiveAgentURLSales = envbaseLiveAgentURL,
-     
+
     avatarImgPath = 'https://kpmg--c.eu12.content.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&versionId=0681r00000Btoj0&operationContext=DELIVERY&contentId=05T1r00000egP6D&page=0&d=/a/1r0000002FLj/z8oM_.GNiZCtQNpABTL0dHoLVUdI5ij_kJ.j56U4_hk&oid=00D1r000002eSVR&dpt=null&viewId=', // =''//Production : Avatar image
   ) => {
     const initESW = (gslbBaseURL: string | null) => {

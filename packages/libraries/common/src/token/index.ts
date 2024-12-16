@@ -11,12 +11,12 @@ export const isTokenExpired = (token: string): boolean => {
 }
 
 export class TokenService {
-   
+
   private static instance: TokenService
   private token: string = ''
   private registeredCallbacks: RegisteredCallback[] = []
 
-   
+
   private constructor() {}
 
   static getInstance(): TokenService {

@@ -103,9 +103,9 @@ describe('utils helpers', () => {
       expect(fileSizeHumanFormatter(1024)).toBe('1KB')
     })
     it('saves file with a prompt folder selection', async () => {
-       
+
       window.atob = vi.fn(() => 'abcdef')
-       
+
       window.showSaveFilePicker = vi.fn(() => Promise.resolve({
         createWritable: vi.fn(() => Promise.resolve({
           write: vi.fn(),
@@ -128,7 +128,7 @@ describe('utils helpers', () => {
         createObjectURL: createObjectURLMock,
         revokeObjectURL: revokeObjectURLMock,
       }
-       
+
       window.atob = vi.fn(() => 'abcdef')
       const createElementSpy: any = vi.spyOn(document, 'createElement')
       createElementSpy.mockImplementation(() => ({
@@ -143,7 +143,7 @@ describe('utils helpers', () => {
       expect(revokeObjectURLMock).toHaveBeenCalledOnce()
     })
     it('should return a Blob when given a base64 string', () => {
-       
+
       window.atob = vi.fn(() => 'abcdef')
       const result = base64ToBlob(base64Data)
       expect(result).toBeInstanceOf(Blob)

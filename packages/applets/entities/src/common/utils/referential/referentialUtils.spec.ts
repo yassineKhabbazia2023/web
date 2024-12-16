@@ -140,7 +140,7 @@ describe('referentialUtils', () => {
     })
 
     it('should emit logger.warn when pFieldType is out from referential', () => {
-      
+
       const field: FormField = getMockedFormField({
         referentialKey: 'foo',
         pFieldType: 'dropdown',

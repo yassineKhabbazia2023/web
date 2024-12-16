@@ -13,9 +13,9 @@ export interface DelegationDrawerProps {
   numberOfFoldersInPortfolio: number
 }
 
- 
+
 export enum DelegationFlowType {
   FULL = 'full',
   SPECIFIC = 'specific'
 }
- 
+

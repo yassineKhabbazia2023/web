@@ -1,10 +1,10 @@
- 
+
 export enum PASSWORD_STRENGTH {
   STRONG,
   AVERAGE,
   WEAK
 }
- 
+
 
 const regexArray = [
   /[A-Z]/,

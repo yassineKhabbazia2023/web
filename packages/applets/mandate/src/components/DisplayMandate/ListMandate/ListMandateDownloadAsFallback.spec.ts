@@ -58,7 +58,7 @@ describe('mandate collection', () => {
       data: [],
       currentPage,
     })
-     
+
     window.showSaveFilePicker = vi.fn(() => Promise.resolve({
       createWritable: vi.fn(() => Promise.resolve({
         write: vi.fn(),

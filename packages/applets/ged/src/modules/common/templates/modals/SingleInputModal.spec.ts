@@ -50,7 +50,7 @@ const createWrapper = (
 }
 
 describe('singleInputModal', () => {
-   
+
   beforeEach(() => {
     setActivePinia(pinia)
   })

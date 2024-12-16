@@ -79,7 +79,7 @@ export default [
       //   ignorePattern: '^\\s*<path',
       // }],
       'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
-      'no-trailing-spaces': ['error', { 'skipBlankLines': true }],
+      'no-trailing-spaces': 'error',
       'no-whitespace-before-property': 'error',
       'object-curly-spacing': ['error', 'always', { 'arraysInObjects': true }],
       'quotes': ['error', 'single', { avoidEscape: true }],
@@ -88,7 +88,7 @@ export default [
       'space-in-parens': ['error', 'never'],
       'vue/attributes-order': 'error',
       'vue/max-attributes-per-line': ['error', { singleline: 2 }],
-      '@stylistic/brace-style': ["error", "1tbs", { "allowSingleLine": false }]
+      '@stylistic/brace-style': ['error', '1tbs', { 'allowSingleLine': false }],
     },
   },
   {

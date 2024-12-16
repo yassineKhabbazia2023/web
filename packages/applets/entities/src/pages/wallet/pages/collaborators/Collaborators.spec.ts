@@ -94,7 +94,7 @@ describe('collaborators', () => {
 
   it('should log an error to the console if the API fails to fetch the collaborators', async () => {
     const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-    
+
     vi.spyOn(walletServices, 'getCollaborators').mockRejectedValue(expectedErrorMessage)
     wrapper = createWrapper()
     await flushPromises()

@@ -1,4 +1,4 @@
- 
+
 import Download from '.'
 import type { DownloadProps } from './DownloadTypes'
 import wrapperFactory from '../../../../tests/utils/wrapperFactory'
@@ -76,7 +76,7 @@ describe('download mandate prefilled', () => {
     await getMandateDownloadFileCard(wrapper).trigger('click')
 
     // Assertions
-     
+
     expect(saveFileAs).toHaveBeenCalled()
   })
 
@@ -101,7 +101,7 @@ describe('download mandate prefilled', () => {
     await wrapper.find('[data-testid="download-prefilled-mandate"]').trigger('click')
 
     // Assertions
-     
+
     expect(downloadFile).toHaveBeenCalled()
   })
 
@@ -110,7 +110,7 @@ describe('download mandate prefilled', () => {
     vi.mocked(downloadUnsignedMandate).mockRejectedValueOnce(new Error('Download error'))
 
     // Spy on logger.error
-    
+
     const wrapper = createWrapper()
     await flushPromises()
     // Act

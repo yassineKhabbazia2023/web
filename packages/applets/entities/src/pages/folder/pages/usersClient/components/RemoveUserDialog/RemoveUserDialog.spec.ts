@@ -154,7 +154,7 @@ describe('removeUserDialog', () => {
     })
 
     it('removes a user and displays an error notification if the operation fails', async () => {
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(accountServices, 'deleteContactFromAccount').mockRejectedValue(
         expectedErrorMessage,

@@ -147,7 +147,7 @@ describe('information', () => {
     })
     it('should use logger.error if the API fails to fetch the information', async () => {
       await flushPromises()
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
       vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(expectedErrorMessage)
@@ -262,7 +262,7 @@ describe('information', () => {
 
       it('should call displayNotification properly when savePatched failed', async () => {
         const error = new Error('error message')
-        
+
         mockedSavePatchedAccount.mockRejectedValueOnce(error)
         const saveButton = wrapper.find('[data-testid="information-save-button"]')
         const displayNotificationSpy = vi.mocked(CommonHelpers).displayNotification

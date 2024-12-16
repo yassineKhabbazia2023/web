@@ -141,7 +141,7 @@ describe('informationDetails', () => {
       expect(spyFetchAccount).toHaveBeenCalledWith(mockedAccountId)
     })
     it('should display a console error if the request to fetch account fails', async () => {
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(
         expectedErrorMessage,

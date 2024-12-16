@@ -76,7 +76,7 @@ describe('biReports', () => {
       expect(spyFetchBIReports).toHaveBeenCalledWith(mockedAccountId)
     })
     it('should display a console error if the request to fetch the BI reports fails', async () => {
-      
+
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(reportingServices, 'fetchBIReports').mockRejectedValue(
         expectedErrorMessage,
