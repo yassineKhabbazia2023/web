@@ -1,4 +1,5 @@
 export * from './fileExtensionUtils/fileExtensionUtils'
-export * from './appVersion/app-version.manager'
 export * from './logger/logger'
+export * from './managers/app-version.manager'
+export * from './managers/feature-flag.manager'
 export * from './services/html.service'

@@ -30,13 +30,29 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
   })),
 }))
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
+  fetchNotifications: vi.fn(() => Promise.resolve({
+    notifications: [],
+  })),
+  fetchUnreadNotificationsCount: vi.fn(() => Promise.resolve({
+    count: 1,
+  })),
 }))
+
+vi.mock('@pulse/core', async () => {
+  const actual = await vi.importActual('@pulse/core')
+  return {
+    ...actual,
+    logger: {
+      debug: loggerDebugSpy,
+      warn: loggerWarnSpy,
+      error: loggerErrorSpy,
+    },
+    FeatureFlagManager: {
+      isScheduleActivated: () => true,
+    },
+  }
+})
 
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
 vi.mock('@pulse/common', () => commonMock)

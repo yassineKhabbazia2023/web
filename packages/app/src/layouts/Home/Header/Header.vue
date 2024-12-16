@@ -16,7 +16,7 @@
       />
     </router-link>
     <div class="flex">
-      <div v-if="VITE_SCHEDULE_ACTIVATED === 'true'">
+      <div v-if="FeatureFlagManager.isScheduleActivated()">
         <PButton
           :pType="showCalendar ? 'white' : 'default'"
           pSize="small"
@@ -87,6 +87,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { commonStore, getInitials } from '@pulse/common'
+import { FeatureFlagManager } from '@pulse/core'
 import {
   PAvatar,
   PButton,
@@ -95,7 +96,7 @@ import {
   PImage,
   PPastille,
 } from '@pulse/styleguide/components'
-import { VITE_FEED_CENTER_ACTIVATED, VITE_SCHEDULE_ACTIVATED } from 'env-vars'
+import { VITE_FEED_CENTER_ACTIVATED } from 'env-vars'
 import type { HeaderProps } from './HeaderTypes'
 
 const props = defineProps<HeaderProps>()

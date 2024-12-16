@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoading && defaultEntity" class="common-layout">
-    <HomeScheduleDrawer v-if="VITE_SCHEDULE_ACTIVATED === 'true' && calendarHasBeenOpened" v-model="showCalendar" />
+    <HomeScheduleDrawer v-if="FeatureFlagManager.isScheduleActivated() && calendarHasBeenOpened" v-model="showCalendar" />
     <FeedCenterDrawer
       v-if="VITE_FEED_CENTER_ACTIVATED === 'true'"
       v-model="showFeedCenter"
@@ -44,16 +44,16 @@
 
 <script setup lang="ts">
 import { logger } from '@pulse/core'
-import { computed, ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { productFruits } from 'product-fruits'
 import {
   VITE_PRODUCT_FRUITS_KEY,
   VITE_PRODUCT_FRUITS_KEY_CLIENT,
   VITE_FEED_CENTER_ACTIVATED,
-  VITE_SCHEDULE_ACTIVATED,
 } from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
+import { FeatureFlagManager } from '@pulse/core'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import { getBrowserName } from '@app/helper'
 import UserProfile from '@app/components/UserProfile'
