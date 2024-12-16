@@ -89,7 +89,7 @@
         <p class="download-or-wait-mandate__alert-body font-normal">
           {{ t('help-label-prefix') }}
           <a
-            href="https://help.collaborateurs.app.kpmg-pulse.fr/fr/article/mandat-acces-et-creation"
+            href="https://help.collaborateurs.app.rydge.fr/fr/article/mandat-parcours-et-creation"
             class="download-or-wait-mandate__alert-body--color"
           >{{ t('help-label-link') }}
           </a>
