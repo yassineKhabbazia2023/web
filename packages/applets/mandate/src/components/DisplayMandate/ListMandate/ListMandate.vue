@@ -233,21 +233,21 @@ const actionsBuilder = (
     {
       pIconName: 'download',
       pValue: t('download-pre-filled-mandate'),
-      disabled: !permittedActions.includes(MandateActions.CAN_DOWNLOAD_PREFILLED_MANDATE),
+      disabled: !permittedActions?.includes(MandateActions.CAN_DOWNLOAD_PREFILLED_MANDATE),
       pActionName: 'download-pre-filled-mandate',
       pState: 'default',
     },
     {
       pIconName: 'upload',
       pValue: t('submit-signed-mandate'),
-      disabled: !permittedActions.includes(MandateActions.CAN_UPLOAD_SIGNED_MANDATE),
+      disabled: !permittedActions?.includes(MandateActions.CAN_UPLOAD_SIGNED_MANDATE),
       pActionName: 'submit-signed-mandate',
       pState: 'default',
     },
     {
       pIconName: 'xCircle',
       pValue: t('cancel-telecollection'),
-      disabled: !permittedActions.includes(MandateActions.CAN_TERMINATE_TELECOLLECT),
+      disabled: !permittedActions?.includes(MandateActions.CAN_TERMINATE_TELECOLLECT),
       pActionName: 'cancel-telecollection',
       pState: 'danger',
     },
@@ -257,7 +257,7 @@ const actionsBuilder = (
     actions.push({
       pIconName: 'download',
       pValue: t('download-signed-mandate'),
-      disabled: !permittedActions.includes(MandateActions.CAN_DOWNLOAD_SIGNED_MANDATE),
+      disabled: !permittedActions?.includes(MandateActions.CAN_DOWNLOAD_SIGNED_MANDATE),
       pActionName: 'download-signed-mandate',
       pState: 'default',
     })

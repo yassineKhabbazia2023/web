@@ -65,7 +65,6 @@ const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
   if (withShowSaveFilePicker) {
     // Resetting the window object to its original state before each test
     window = Object.create(window)
-    document.body.innerHTML = ''
     const writableStreamMock = {
       write: vi.fn(() => Promise.resolve()),
       close: vi.fn(() => Promise.resolve()),

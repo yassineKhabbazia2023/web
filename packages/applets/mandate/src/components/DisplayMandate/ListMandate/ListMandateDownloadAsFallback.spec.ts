@@ -3,6 +3,9 @@ import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
+import { getMockedMandatesData } from '@mandate/../tests/mocks/mandateMock'
+import * as NotificationHelper from '@mandate/helpers/NotificationHelper'
+import type { NotificationHandle } from '@mandate/helpers/NotificationHelperTypes'
 
 interface Window {
   showSaveFilePicker: any
