@@ -110,10 +110,10 @@ const userInitials = computed(() =>
 )
 
 const feedCenterIconName = computed(() =>
-  props.showFeedCenter ? 'x' : 'bell'
+  props.showFeedCenter ? 'x' : 'bell',
 )
 const calendarIconName = computed(() =>
-  props.showCalendar ? 'x' : 'calendarEvent'
+  props.showCalendar ? 'x' : 'calendarEvent',
 )
 
 function updateCalendarDisplay() {

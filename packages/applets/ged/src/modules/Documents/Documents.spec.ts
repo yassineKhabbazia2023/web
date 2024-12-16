@@ -41,7 +41,7 @@ import {
   trackDocumentTransmitFlowStart,
   trackDocumentDownloadFlowStart,
   trackDocumentSearch,
-  trackBreadcrumbUsage
+  trackBreadcrumbUsage,
 } from '@ged/services/tracking/tracking.service'
 import { TriggerSource } from '@ged/services/tracking/tracking.types'
 

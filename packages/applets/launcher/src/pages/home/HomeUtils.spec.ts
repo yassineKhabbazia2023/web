@@ -88,7 +88,7 @@ describe('test HomeUtils', () => {
     })
   })
 
-    beforeEach(() => {
+  beforeEach(() => {
     
   })
 

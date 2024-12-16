@@ -132,7 +132,7 @@ describe('manageCollaborators', () => {
       expect(pUserActionAfter).toHaveLength(countBefore + 1)
     })
     describe('when click on delete', () => {
-            beforeEach(() => {
+      beforeEach(() => {
         
       })
       it('should not emit update:collaborators when only one collaborator', () => {

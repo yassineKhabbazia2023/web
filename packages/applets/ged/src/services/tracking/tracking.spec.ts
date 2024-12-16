@@ -1,7 +1,7 @@
-import { describe } from "vitest";
+import { describe } from 'vitest'
 import { amplitudeTrackSpy } from '@ged/../vitest.setup'
 import { trackDepositedDocument, trackDocumentDelete, trackDocumentDeleteFlowStart, trackDocumentDownload, trackDocumentDownloadFlowStart, trackDocumentMove, trackDocumentMoveFlowStart, trackDocumentRename, trackDocumentRenameFlowStart, trackDocumentSearch, trackDocumentTransmit, trackDocumentTransmitFlowStart } from '@ged/services/tracking/tracking.service'
-import { TriggerSource } from "./tracking.types"
+import { TriggerSource } from './tracking.types'
 
 const successValue = 'succeeded'
 const failValue = 'failed'
@@ -24,8 +24,8 @@ describe('document deposit tracking', () => {
         document_deposit_count: payload.depositedDocumentsCount,
         document_deposit_succedded: payload.successfulDepositsCount,
         document_deposit_failed: payload.failedDepositsCount,
-        document_deposit_folder: payload.destinationFolder
-      }
+        document_deposit_folder: payload.destinationFolder,
+      },
     )
   })
 })
@@ -36,7 +36,7 @@ describe('document move tracking', () => {
     trackDocumentMoveFlowStart(triggerSource)
 
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Moved Started', {
-      document_move_start: triggerSource
+      document_move_start: triggerSource,
     })
   })
 
@@ -52,7 +52,7 @@ describe('document move tracking', () => {
   ])('tracks document move success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentMove(hasSucceeded)
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Moved Completed', {
-      document_move_result: expectedValue
+      document_move_result: expectedValue,
     })
   })
 })
@@ -63,7 +63,7 @@ describe('document rename tracking', () => {
     trackDocumentRenameFlowStart(triggerSource)
 
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Rename Started', {
-      document_rename_start: triggerSource
+      document_rename_start: triggerSource,
     })
   })
 
@@ -79,7 +79,7 @@ describe('document rename tracking', () => {
   ])('tracks document rename success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentRename(hasSucceeded)
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Rename', {
-      document_rename: expectedValue
+      document_rename: expectedValue,
     })
   })
 })
@@ -90,7 +90,7 @@ describe('document delete tracking', () => {
     trackDocumentDeleteFlowStart(triggerSource)
 
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Delete Started', {
-      document_delete_start: triggerSource
+      document_delete_start: triggerSource,
     })
   })
 
@@ -106,7 +106,7 @@ describe('document delete tracking', () => {
   ])('tracks document rename success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentDelete(hasSucceeded)
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Delete', {
-      document_delete: expectedValue
+      document_delete: expectedValue,
     })
   })
 })
@@ -117,7 +117,7 @@ describe('document download tracking', () => {
     trackDocumentDownloadFlowStart(triggerSource)
 
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Download Started', {
-      document_download_start: triggerSource
+      document_download_start: triggerSource,
     })
   })
 
@@ -133,7 +133,7 @@ describe('document download tracking', () => {
   ])('tracks document rename success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentDownload(hasSucceeded)
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Download', {
-      document_download: expectedValue
+      document_download: expectedValue,
     })
   })
 })
@@ -144,7 +144,7 @@ describe('document transmit tracking', () => {
     trackDocumentTransmitFlowStart(triggerSource)
 
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Transmit Started', {
-      document_transmit_start: triggerSource
+      document_transmit_start: triggerSource,
     })
   })
 
@@ -160,18 +160,18 @@ describe('document transmit tracking', () => {
   ])('tracks document transmit success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentTransmit(hasSucceeded)
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Transmitted', {
-      document_transmission: expectedValue
+      document_transmission: expectedValue,
     })
   })
 })
 
 describe('document search tracking', () => {
-  it('tracks document search value',  () => {
+  it('tracks document search value', () => {
     const searchValue = 'A search value'
     trackDocumentSearch(searchValue)
 
     expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Searched', {
-      document_search: searchValue
+      document_search: searchValue,
     })
   })
 })

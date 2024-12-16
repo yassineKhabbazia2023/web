@@ -165,7 +165,7 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
             props.currentService,
             props.selectedEntity,
             document.file,
-            currentExplorerFolder.value.id
+            currentExplorerFolder.value.id,
           )
         if (uploadResult) {
           document.givenActionState = 'DONE'
@@ -194,7 +194,7 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
     depositedDocumentsCount: documents.length,
     successfulDepositsCount: documentUploadedWithSuccess,
     failedDepositsCount: documentUploadedWithError,
-    destinationFolder: destinationFolder.name
+    destinationFolder: destinationFolder.name,
   })
 
   if (documentUploadedWithSuccess === documents.length) {
@@ -254,14 +254,14 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
     position: 'bottom-right',
   })
 }
-const triggerErrorNotification = (failedCount : number, errorDetails : string ) => {
+const triggerErrorNotification = (failedCount : number, errorDetails : string) => {
   toastPlugin({
-      message: t('notifications.errorMsg', { failedCount , errorDetails }, failedCount),
-      icon: PICheck,
-      showClose: true,
-      customClass: 'error',
-      position: 'bottom-right',
-    })
+    message: t('notifications.errorMsg', { failedCount , errorDetails }, failedCount),
+    icon: PICheck,
+    showClose: true,
+    customClass: 'error',
+    position: 'bottom-right',
+  })
 }
 </script>
 

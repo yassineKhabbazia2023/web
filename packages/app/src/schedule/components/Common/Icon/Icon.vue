@@ -13,7 +13,7 @@ import {
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { Status } from '@app/schedule/models/Deadline'
-import type { StatusIcon, IconProps } from './IconTypes';
+import type { StatusIcon, IconProps } from './IconTypes'
 
 const props = defineProps<IconProps>()
 

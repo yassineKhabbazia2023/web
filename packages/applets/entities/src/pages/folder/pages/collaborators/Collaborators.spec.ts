@@ -87,7 +87,7 @@ const createWrapper = (): ComponentWrapper<
   })
 
 describe('collaborators', () => {
-    let wrapper: ReturnType<typeof createWrapper>
+  let wrapper: ReturnType<typeof createWrapper>
   const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
   const getAddCollaboratorDrawer = () =>

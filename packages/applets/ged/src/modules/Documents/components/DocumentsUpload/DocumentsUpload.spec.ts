@@ -300,7 +300,7 @@ describe('test DocumentsUpload', () => {
         it('should display error toaster when upload document fails', async () => {
           const updatedProps = { ...defaultProps, isUploadModalOpened: true }
           
-          vi.mocked(uploadDocument).mockRejectedValue(new Error('Upload failed'));
+          vi.mocked(uploadDocument).mockRejectedValue(new Error('Upload failed'))
           
           const wrapper = createWrapper(updatedProps)
 
@@ -314,7 +314,7 @@ describe('test DocumentsUpload', () => {
 
           await flushPromises()
           await nextTick()
-          expect(mockToastPlugin).toHaveBeenCalled();
+          expect(mockToastPlugin).toHaveBeenCalled()
         })
       })
 

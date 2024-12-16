@@ -79,8 +79,8 @@ vi.mock('@pulse/common', () => ({
   })),
   debounce: vi.fn((fn) => fn),
   amplitudeService: {
-    track: amplitudeTrackSpy
-  }
+    track: amplitudeTrackSpy,
+  },
 }))
 
 vi.mock('vue-inject', () => ({

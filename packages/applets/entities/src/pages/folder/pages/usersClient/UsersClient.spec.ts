@@ -105,7 +105,7 @@ const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination'
 const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 
 describe('usersClient', () => {
-    let getPrincipalContactsSpy: MockInstance
+  let getPrincipalContactsSpy: MockInstance
   let mockGatewayGet: MockInstance
   beforeEach(async () => {
     getPrincipalContactsSpy = vi

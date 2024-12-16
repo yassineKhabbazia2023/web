@@ -14,8 +14,8 @@ const createWrapper = (status: Status) =>
           template: '<div />',
           props: ['pName'],
         },
-      }
-    }
+      },
+    },
   })
 
 describe('tag status management', () => {

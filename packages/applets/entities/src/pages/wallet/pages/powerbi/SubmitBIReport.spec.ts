@@ -34,8 +34,7 @@ const createWrapper = () => mount(SubmitBIReport)
 
 describe('submitBIReport', () => {
   let wrapper: VueWrapper<any>
-    beforeEach(() => {
-    
+  beforeEach(() => {
     wrapper = createWrapper()
   })
   describe('display', () => {
