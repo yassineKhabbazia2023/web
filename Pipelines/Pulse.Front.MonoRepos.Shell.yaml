@@ -25,7 +25,7 @@ resources:
     ref: 'refs/heads/features/change-naming'
 
 extends:
-  template: pipelines/templates/front/platform.front.shell.yaml@Pulse
+  template: pipelines/templates/front/platform.front.Shell.yaml@Pulse
   parameters:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
