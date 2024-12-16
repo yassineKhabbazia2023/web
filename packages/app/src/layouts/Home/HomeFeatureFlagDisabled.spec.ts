@@ -16,15 +16,6 @@ const pinia = createTestingPinia()
 
 const { router } = helpers()
 
-const mock = vi.hoisted(() => {
-  return {
-    salesforceChat: vi.fn(),
-    isChatDisplayed: {
-      value: false,
-    },
-  }
-})
-
 vi.mock('@pulse/core')
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
 vi.mock('@app/services/entities', async () => {
@@ -42,20 +33,9 @@ const feedCenterActivatedFlag = vi.hoisted(() => ({
   value: 'false',
 }))
 
-vi.mock('@app/plugins/SalesForce/useSalesforceService', () => ({
-  useSalesforceService: () => {
-    return {
-      salesforceChat: mock.salesforceChat,
-      isChatDisplayed: mock.isChatDisplayed,
-    }
-  },
-}))
-
 vi.mock('env-vars', () => ({
   ...envVarsValues,
   VITE_FEED_CENTER_ACTIVATED: feedCenterActivatedFlag.value,
-  VITE_SALESFORCE_ACTIVATED: 'false',
-  VITE_HUBSPOT_ACTIVATED: 'true',
 }))
 
 import.meta.env.PROD = true

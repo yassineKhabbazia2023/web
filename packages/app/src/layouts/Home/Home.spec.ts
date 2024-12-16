@@ -12,12 +12,10 @@ import helpers from '@app/tests/utils/helpers'
 import { nextTick } from 'vue'
 import * as entitiesServices from '@app/services/entities'
 import mockedEntities from '@app/mocks/entities.mock.json'
-import { getMockedFavoriteEntities } from './Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import Home from '.'
 
 const pinia = createTestingPinia()
 const { fakeUser, router } = helpers()
-const mockedEntity = getMockedFavoriteEntities()[0]
 
 const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
@@ -52,24 +50,6 @@ vi.mock('@app/services/entities', async () => {
   }
 })
 
-const mock = vi.hoisted(() => {
-  return {
-    salesforceChat: vi.fn(),
-    isChatDisplayed: {
-      value: false,
-    },
-  }
-})
-
-vi.mock('@app/plugins/SalesForce/useSalesforceService', () => ({
-  useSalesforceService: () => {
-    return {
-      salesforceChat: mock.salesforceChat,
-      isChatDisplayed: mock.isChatDisplayed,
-    }
-  },
-}))
-
 const feedCenterActivatedFlag = vi.hoisted(() => ({
   value: 'true',
 }))
@@ -77,8 +57,6 @@ const feedCenterActivatedFlag = vi.hoisted(() => ({
 vi.mock('env-vars', () => ({
   ...envVarsValues,
   VITE_FEED_CENTER_ACTIVATED: feedCenterActivatedFlag.value,
-  VITE_SALESFORCE_ACTIVATED: 'true',
-  VITE_HUBSPOT_ACTIVATED: 'false',
 }))
 
 import.meta.env.PROD = true
@@ -122,50 +100,7 @@ describe('home', () => {
     wrapper = createWrapper()
   })
 
-  it('should return salesforce init with values', async () => {
-    wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = {
-      accountId: 2,
-      accountNumber: '3669209950',
-      legalName: 'Restaurant Le Grand Bleu',
-      color: 'persian',
-    }
-    await nextTick()
-    const chatDiv = wrapper.find('[data-testid=salesforce-chat-div]')
-
-    await nextTick()
-    expect(mock.salesforceChat).toHaveBeenCalledOnce()
-    expect(mock.salesforceChat).toHaveBeenCalledWith(
-      fakeUser.firstName,
-      fakeUser.lastName,
-      fakeUser.email,
-      mockedEntity.legalName,
-      mockedEntity.accountNumber,
-      chatDiv.element,
-    )
-  })
-  it('when productfruits_button_ext_widget_init event is triggered', async () => {
-    wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = {
-      accountId: 2,
-      accountNumber: '3669209950',
-      legalName: 'Restaurant Le Grand Bleu',
-      color: 'persian',
-    }
-    await nextTick()
-
-    expect(wrapper.vm.isChatDisplayed.value).toBeFalsy()
-
-    window.dispatchEvent(new Event('productfruits_button_ext_widget_init'))
-
-    await flushPromises()
-    await nextTick()
-
-    expect(wrapper.vm.isChatDisplayed.value).toBeTruthy()
-  })
-  it('should call retrieve entites when created', async () => {
-    await flushPromises()
-
+  it('should call retrieve entities when created', async () => {
     expect(entitiesServices.fetchEntities).toHaveBeenCalledOnce()
   })
 

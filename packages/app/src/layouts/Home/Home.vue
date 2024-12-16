@@ -40,12 +40,6 @@
       </PContainer>
     </PContainer>
   </div>
-  <div
-    v-show="isChatFeatureDisplayable"
-    ref="chat"
-    class="salesforce-chat-wrapper"
-    data-testid="salesforce-chat-div"
-  />
 </template>
 
 <script setup lang="ts">
@@ -57,8 +51,6 @@ import {
   VITE_PRODUCT_FRUITS_KEY,
   VITE_PRODUCT_FRUITS_KEY_CLIENT,
   VITE_FEED_CENTER_ACTIVATED,
-  VITE_SALESFORCE_ACTIVATED,
-  VITE_HUBSPOT_ACTIVATED,
 } from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
@@ -71,7 +63,6 @@ import Sidebar from './Sidebar'
 import { storeToRefs } from 'pinia'
 import { fetchEntities } from '@app/services/entities'
 import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
-import { useSalesforceService } from '@app/plugins/SalesForce/useSalesforceService'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
@@ -124,35 +115,7 @@ const stylesMetaProperties = computed(
 )
 
 const globalStore = store()
-const { user, defaultEntity, isCollab } = storeToRefs(globalStore)
-const chat = ref<Element>()
-const { isChatDisplayed, salesforceChat } = useSalesforceService()
-
-const isChatFeatureDisplayable = computed(()=> isChatDisplayed.value && VITE_SALESFORCE_ACTIVATED === 'true')
-
-const initChat = () => {
-  if (isProd && user.value && defaultEntity.value && chat.value && VITE_SALESFORCE_ACTIVATED === 'true') {
-    const firstName: string = user.value?.firstName
-    const lastName: string = user.value?.lastName
-    const email: string = user.value?.email
-    const companyName: string = defaultEntity.value?.legalName
-    const accountNumber: string = defaultEntity.value?.accountNumber
-    const targetElement: Element = chat.value
-
-    salesforceChat(
-      firstName,
-      lastName,
-      email,
-      companyName,
-      accountNumber,
-      targetElement,
-    )
-  }
-}
-
-watch(defaultEntity, () => {
-  initChat()
-})
+const { defaultEntity, isCollab } = storeToRefs(globalStore)
 
 // Hooks
 onMounted(async () => {
@@ -188,21 +151,8 @@ onMounted(async () => {
         window.addEventListener(
           'productfruits_button_ext_widget_init',
           () => {
-            isChatDisplayed.value = true
-            if(VITE_SALESFORCE_ACTIVATED === 'true') {
-              nextTick().then(() => {
-                const chatElement = document.querySelector(
-                  '.helpButtonEnabled',
-                ) as HTMLElement
-                if (chatElement) {
-                  chatElement.click()
-                }
-              })
-            }
-            if(VITE_HUBSPOT_ACTIVATED === 'true') {
-              (window as any).HubSpotConversations.widget.load({ widgetOpen: true });
-              (window as any).HubSpotConversations.widget.open()
-            }
+            window.HubSpotConversations?.widget.load({ widgetOpen: true })
+            window.HubSpotConversations?.widget.open()
           },
         )
       }
@@ -240,81 +190,6 @@ onBeforeUnmount(() => {
   clearInterval(notificationsCountIntervalId)
 })
 </script>
-<!-- eslint-disable max-len -->
-<!-- eslint-disable vue/enforce-style-attribute -->
-<style lang="scss">
-.embeddedServiceSidebar .sidebarHeader {
-  background-color: var(--el-color-primary) !important;
-}
-
-.salesforce-chat-wrapper {
-  * {
-    font-family: 'Open Sans', 'Roboto', sans-serif !important;
-  }
-
-  .formContent.embeddedServiceSidebarForm .fieldList .inputSelect:last-child {
-    display: none;
-  }
-
-  .embeddedServiceSidebarMinimizedDefaultUI .embeddedServiceSidebarHeader,
-  .embeddedServiceSidebarExtendedHeader,
-  .embeddedServiceHelpButton .helpButton .uiButton,
-  .embeddedServiceSidebarMinimizedDefaultUI.helpButton,
-  .embeddedServiceSidebarMinimizedDefaultUI {
-    background-color: var(--el-color-primary) !important;
-  }
-  .embeddedServiceSidebarButton {
-    background-color: var(--el-color-primary);
-    border-radius: var(--el-border-radius-base);
-  }
-
-  .embeddedServiceSidebarButton.uiButton--inverse .label {
-    color: white;
-  }
-
-  .backgroundImg {
-    background-image: url('https://kpmgfrance--c.eu30.content.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&versionId=0683Y00000HHtL5&operationContext=DELIVERY&contentId=05T3Y00000vSCov&page=0&d=/a/3Y000001isRh/mIKQbdMirgmYnJsGzj7szbs7_tArBl_dd3bgE6GpBe4&oid=00D0O000000tM38&dpt=null&viewId=') !important;
-    background-size: cover !important;
-  }
-
-  .backgroundImgColorMask {
-    background: var(--el-color-primary);
-  }
-  .backgroundPattern {
-    background: var(--el-color-primary) !important;
-  }
-
-  .embeddedServiceLiveAgentStateChatHeader .message {
-    font-size: 0px;
-    color: rgba(white, 0);
-    &:before {
-      display: inline-block;
-      font-size: 12px;
-      color: white;
-      content: 'A votre service';
-    }
-  }
-
-  .avatar {
-    display: block;
-    border-radius: none;
-  }
-
-  .embeddedServiceSidebarButton:focus,
-  .uiButton:focus {
-    text-decoration: none;
-  }
-
-  .embeddedServiceLiveAgentStateOfflineSupportDefaultUI {
-    select.Reason {
-      font-size: 10px;
-    }
-    input {
-      font-size: 12px;
-    }
-  }
-}
-</style>
 
 <style lang="scss" scoped>
 .common-layout {
