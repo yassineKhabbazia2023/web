@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoading && defaultEntity" class="common-layout">
-    <HomeScheduleDrawer v-if="calendarHasBeenOpened" v-model="showCalendar" />
+    <HomeScheduleDrawer v-if="VITE_SCHEDULE_ACTIVATED === 'true' && calendarHasBeenOpened" v-model="showCalendar" />
     <FeedCenterDrawer
       v-if="VITE_FEED_CENTER_ACTIVATED === 'true'"
       v-model="showFeedCenter"
@@ -51,6 +51,7 @@ import {
   VITE_PRODUCT_FRUITS_KEY,
   VITE_PRODUCT_FRUITS_KEY_CLIENT,
   VITE_FEED_CENTER_ACTIVATED,
+  VITE_SCHEDULE_ACTIVATED,
 } from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'

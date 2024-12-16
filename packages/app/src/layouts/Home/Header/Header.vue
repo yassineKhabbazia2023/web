@@ -16,20 +16,22 @@
       />
     </router-link>
     <div class="flex">
-      <PButton
-        :pType="showCalendar ? 'white' : 'default'"
-        pSize="small"
-        pIconOnly
-        pPlain
-        :pIsActive="showCalendar"
-        :pRound="false"
-        :pDisabled="false"
-        :pLoading="false"
-        data-testid="header-section-calendar-btn"
-        @click="updateCalendarDisplay"
-      >
-        <PIcon :pName="calendarIconName" />
-      </PButton>
+      <div v-if="VITE_SCHEDULE_ACTIVATED === 'true'">
+        <PButton
+          :pType="showCalendar ? 'white' : 'default'"
+          pSize="small"
+          pIconOnly
+          pPlain
+          :pIsActive="showCalendar"
+          :pRound="false"
+          :pDisabled="false"
+          :pLoading="false"
+          data-testid="header-section-calendar-btn"
+          @click="updateCalendarDisplay"
+        >
+          <PIcon :pName="calendarIconName" />
+        </PButton>
+      </div>
 
       <div
         v-if="VITE_FEED_CENTER_ACTIVATED === 'true'"
@@ -93,7 +95,7 @@ import {
   PImage,
   PPastille,
 } from '@pulse/styleguide/components'
-import { VITE_FEED_CENTER_ACTIVATED } from 'env-vars'
+import { VITE_FEED_CENTER_ACTIVATED, VITE_SCHEDULE_ACTIVATED } from 'env-vars'
 import type { HeaderProps } from './HeaderTypes'
 
 const props = defineProps<HeaderProps>()

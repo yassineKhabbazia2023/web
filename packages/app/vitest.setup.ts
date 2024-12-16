@@ -49,6 +49,7 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
 
 export const envVarsValues = {
   VITE_FEED_CENTER_ACTIVATED: 'true',
+  VITE_SCHEDULE_ACTIVATED: 'true',
   VITE_IDLE_DURATION: 5,
   VITE_AMPLITUDE_API_KEY: 'mocked-amplitude-api-key',
   VITE_AMPLITUDE_SERVER_URL: 'mocked-amplitude-server-url',
