@@ -83,6 +83,8 @@ const handleClosePopup = () => {
   .el-dialog {
     max-width: 503px;
   }
+  &__message {
+    word-wrap: break-word;
+  }
 }
-
 </style>
