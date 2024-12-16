@@ -4,7 +4,7 @@
     :pButtonText="t('textButton')"
     :pErrorName="t('errorName')"
     :pErrorText="t('errorText')"
-    pIllustrationName="error-generic"
+    pIllustrationName="error-page-2"
     :pTitle="(t('title'))"
     @handle-click="redirectToHome"
   >

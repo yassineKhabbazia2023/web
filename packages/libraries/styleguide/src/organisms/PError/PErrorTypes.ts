@@ -1,3 +1,5 @@
+import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
+
 export interface PErrorBlockProps {
   pButtonText?: string
   pDescription: string
@@ -5,4 +7,5 @@ export interface PErrorBlockProps {
   pErrorText: string
   pHasFooter?: boolean
   pTitle: string
+  pIllustrationName: ImageName
 }

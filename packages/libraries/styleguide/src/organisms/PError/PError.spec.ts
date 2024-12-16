@@ -16,6 +16,7 @@ const defaultProps: PErrorBlockProps = {
   pErrorText: 'Something wrong',
   pHasFooter: true,
   pTitle: 'Crazy Error',
+  pIllustrationName: 'error-page-1',
 }
 
 const createWrapper = (props: PErrorBlockProps = defaultProps, slots: any = {}) =>

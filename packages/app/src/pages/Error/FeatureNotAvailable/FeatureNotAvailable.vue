@@ -4,7 +4,7 @@
     :pErrorName="t('errorName')"
     :pErrorText="t('errorText')"
     :pHasFooter="false"
-    pIllustrationName="error-generic"
+    pIllustrationName="error-page-3"
     :pTitle="(t('title'))"
     @handle-click="redirectToHome"
   />

@@ -14,14 +14,19 @@
         pButtonText="Retour à la page d'accueil"
         pErrorName="404"
         pErrorText="Page introuvable"
-        pIllustrationName="error-generic"
+        pIllustrationName="error-page-1"
+        @handle-click="logEvent('handle-click', $event)"
       >
         <template #title>
           Cette page n’existe pas.
         </template>
         <template #footer-middle-content>
-          Contact support : <span class="no-wrap">01 23 45 67 89</span><br>
-          &#169; Awesome Brand
+          <div>
+            Contact support : <span class="no-wrap">01 23 45 67 89</span>
+          </div>
+          <div>
+            &#169; Awesome Brand
+          </div>
         </template>
       </PError>
     </Variant>
@@ -29,6 +34,7 @@
 </template>
 
 <script lang="ts" setup>
+import { logEvent } from 'histoire/client'
 import PError from '.'
 </script>
 

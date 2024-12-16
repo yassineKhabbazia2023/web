@@ -10,6 +10,9 @@ export type ImageName =
 'unlock-success' |
 'warning' |
 'x' |
+'error-page-1' |
+'error-page-2' |
+'error-page-3' |
 'badge' |
 'default-1' |
 'default-2' |
