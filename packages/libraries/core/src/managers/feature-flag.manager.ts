@@ -1,5 +1,5 @@
 declare let window: {
-  VITE_SCHEDULE_ACTIVATED: string
+  VITE_SCHEDULE_ACTIVATED: 'true' | 'false'
 } & Window
 
 export class FeatureFlagManager {

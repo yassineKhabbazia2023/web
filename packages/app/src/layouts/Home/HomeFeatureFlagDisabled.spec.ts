@@ -29,6 +29,17 @@ vi.mock('@app/services/entities', async () => {
 })
 vi.mock('@pulse/common', () => commonMock)
 
+
+vi.mock('@pulse/core', async () => {
+  const actual = await vi.importActual('@pulse/core')
+  return {
+    ...actual,
+    FeatureFlagManager: {
+      isScheduleActivated: () => false,
+    },
+  }
+})
+
 const feedCenterActivatedFlag = vi.hoisted(() => ({
   value: 'false',
 }))
@@ -75,7 +86,6 @@ describe('home', () => {
 
     expect(fetchUnreadNotificationsCountMock).not.toHaveBeenCalled()
   })
-
   it('should open hubspot when productfruits_button_ext_widget_init event is triggered', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
     wrapper.vm.isLoading = false
@@ -91,5 +101,11 @@ describe('home', () => {
     await nextTick()
     expect(window.HubSpotConversations.widget.load).toHaveBeenCalledOnce()
     expect(window.HubSpotConversations.widget.open).toHaveBeenCalledOnce()
+  })
+  it('should not have ScheduleDrawer if feature is disabled', async () => {
+    const wrapper = createWrapper()
+    const HomeScheduleDrawer = wrapper.findComponent({ name: 'HomeScheduleDrawer' })
+
+    expect(HomeScheduleDrawer.exists()).toBeFalsy()
   })
 })
