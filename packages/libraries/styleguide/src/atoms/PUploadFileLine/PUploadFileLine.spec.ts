@@ -1,12 +1,14 @@
-import { describe, it, expect } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
+import { describe, it, expect, vi } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
-import PButton from '../../atoms/PButton'
-import PLoader from '../../atoms/PLoader'
 import { PIFiletypePdf, PITrash } from '../../atoms/PIcon/components'
 import PUploadFileLine from './'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
 import type { UploadFile, UploadStatus } from 'element-plus'
+
+const getMainIconNameMock = vi.hoisted(() => vi.fn())
+vi.mock('./PUploadFileLineUtils', () => ({
+  getMainIconName: getMainIconNameMock,
+}))
 
 const fileList = {
   name: 'Nom du document.pdf',
@@ -23,8 +25,12 @@ const defaultProps: PUploadFileLineProps = {
   pStatus: fileList.status,
 }
 
-const createWrapper = (props = defaultProps) =>
-  shallowMount(PUploadFileLine, {
+const createWrapper = (overriddenProps: Partial<PUploadFileLineProps> = {}) => {
+  const props = {
+    ...defaultProps,
+    ...overriddenProps,
+  }
+  return shallowMount(PUploadFileLine, {
     props,
     global: {
       stubs: {
@@ -35,10 +41,7 @@ const createWrapper = (props = defaultProps) =>
         PIcon: {
           name: 'PIcon',
           template: '<div><slot /></div>',
-        },
-        PIExclamationTriangle: {
-          name: 'PIExclamationTriangle',
-          template: '<div />',
+          props: ['pName'],
         },
         PTooltip: {
           name: 'PTooltip',
@@ -51,48 +54,81 @@ const createWrapper = (props = defaultProps) =>
       },
     },
   })
+}
 
 describe('pUploadFileLine', () => {
   describe('props', () => {
     it('should renders the uploadfileline with provided props', async () => {
+      const expectedParams = [
+        defaultProps.pStatus,
+        defaultProps.pIconName,
+      ]
+
       const wrapper = createWrapper()
       await flushPromises()
-      const icon = wrapper.findComponent(PIFiletypePdf) as VueWrapper
+      const icon = wrapper.findComponent(PIFiletypePdf)
+      expect(getMainIconNameMock).toHaveBeenCalledOnce()
+      expect(getMainIconNameMock).toHaveBeenNthCalledWith(1, ...expectedParams)
       expect(icon.exists()).toBeTruthy()
       expect(wrapper.find('.p-upload-file-line__title').text()).toBe('Nom du document.pdf')
     })
     it('should renders the button in uploadfileline with provided props', async () => {
       const wrapper = createWrapper()
       await flushPromises()
-      expect(wrapper.findComponent(PButton).exists()).toBeTruthy()
-      const icon = wrapper.findComponent(PITrash) as VueWrapper
+      expect(wrapper.findComponent({ name: 'PButton' }).exists()).toBeTruthy()
+      const icon = wrapper.findComponent(PITrash)
       expect(icon.exists()).toBeTruthy()
     })
+
+    it('should display button with given pButtonIconName', async () => {
+      const pButtonIconName = 'x'
+      const wrapper = createWrapper({
+        pButtonIcon: undefined,
+        pButtonIconName,
+      })
+      await flushPromises()
+      const pButton = wrapper.findComponent({ name: 'PButton' })
+      const icon = pButton.findComponent({ name: 'PIcon' })
+
+      expect(pButton.exists()).toBeTruthy()
+      expect(icon.exists()).toBeTruthy()
+      expect(icon.props('pName')).toBe(pButtonIconName)
+    })
+
     it('should load the component Loader when status is Uploading', () => {
       const wrapper = createWrapper({
-        ...defaultProps,
         pStatus: 'uploading',
       })
-      expect(wrapper.findComponent(PLoader).exists()).toBeTruthy()
+      expect(wrapper.findComponent({ name: 'PLoader' }).exists()).toBeTruthy()
       expect(wrapper.find('[data-testid="upload-fileline-action"]').exists()).toBeFalsy()
       expect(wrapper.find('[data-testid="upload-fileline-icon"]').exists()).toBeFalsy()
     })
     it('should load the icon error when status is fail', () => {
+      const pStatus = 'fail'
+      const pIconName = 'x'
+      getMainIconNameMock.mockReturnValueOnce('exclamationTriangle')
       const wrapper = createWrapper({
-        ...defaultProps,
-        pStatus: 'fail',
+        pStatus,
+        pIconName,
       })
-      expect(wrapper.findComponent(PLoader).exists()).toBeFalsy()
+      const expectedParams = [
+        pStatus,
+        pIconName,
+      ]
+      const pIcon = wrapper.findComponent({ name: 'PIcon' })
+      expect(getMainIconNameMock).toHaveBeenCalledOnce()
+      expect(getMainIconNameMock).toHaveBeenNthCalledWith(1, ...expectedParams)
+      expect(wrapper.findComponent({ name: 'PLoader' }).exists()).toBeFalsy()
       expect(wrapper.find('[data-testid="upload-fileline-action"]').exists()).toBeFalsy()
-      expect(wrapper.find('[data-testid="upload-fileline-icon"]').exists()).toBeTruthy()
-      expect(wrapper.find('[data-testid="upload-fileline-icon-fail"]').exists()).toBeTruthy()
+      expect(pIcon.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe('exclamationTriangle')
     })
   })
 
   describe('events', () => {
     it('should emit on-click-file-action when click on upload-fileline-action', async () => {
-      const wrapper = createWrapper() as VueWrapper
-      const fileAction = wrapper.findComponent('[data-testid="upload-fileline-action-button"]') as VueWrapper
+      const wrapper = createWrapper()
+      const fileAction = wrapper.findComponent('[data-testid="upload-fileline-action-button"]')
       await fileAction.trigger('click')
 
       expect(wrapper.emitted()).toHaveProperty('on-click-file-action')

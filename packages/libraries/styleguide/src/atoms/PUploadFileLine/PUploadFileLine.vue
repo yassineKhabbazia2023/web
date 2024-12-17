@@ -20,14 +20,11 @@
           data-testid="upload-fileline-icon"
           class="p-upload-file-line__icon"
           size="16"
+          :pName="mainIconName"
         >
-          <PIExclamationTriangle
-            v-if="pStatus === 'fail'"
-            data-testid="upload-fileline-icon-fail"
-          />
           <component
             :is="iconResolver(pIcon)"
-            v-if="pIcon && pStatus !== 'fail'"
+            v-if="pIcon && mainIconName === undefined"
             data-testid="upload-file-line-icon-component"
           />
         </PIcon>
@@ -49,7 +46,13 @@
         class="flex--grow-0 flex--shrink-0 margin-left--3"
         @click="handleClickFileAction"
       >
-        <PIcon v-if="pButtonIcon">
+        <PIcon
+          v-if="pButtonIconName"
+          :pName="pButtonIconName"
+        />
+        <PIcon
+          v-if="pButtonIcon"
+        >
           <component :is="iconResolver(pButtonIcon)" />
         </PIcon>
       </PButton>
@@ -64,8 +67,8 @@ import PButton from '../../atoms/PButton'
 import PLoader from '../../atoms/PLoader'
 import PTooltip from '../../atoms/PTooltip'
 import PIcon from '../../atoms/PIcon'
-import { PIExclamationTriangle } from '../../atoms/PIcon/components'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
+import { getMainIconName } from './PUploadFileLineUtils'
 import { type UploadFile, type UploadRawFile } from 'element-plus'
 
 const props = withDefaults(defineProps<PUploadFileLineProps>(), {
@@ -84,6 +87,8 @@ const pClassMapper = computed(() => ({
   [`p-upload-file-line--status-${props.pStatus}`]: true,
   [`p-upload-file-line--color-${props.pColor}`]: true,
 }))
+
+const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconName))
 </script>
 
 <style lang="scss" scoped>

@@ -7,24 +7,24 @@
     <Variant title="Default">
       <div class="padding--4 margin--4 shadow--3">
         <PUploadFileLine
-          pIcon="PIFiletypePdf"
+          pIconName="filetypePdf"
           :pFile="fileList[0]"
           :pStatus="fileList[0].status"
           pHasButton
-          pButtonIcon="PITrash"
+          pButtonIconName="trash"
           pTitleButton="Supprimer le document"
         />
         <PUploadFileLine
           :pFile="fileList[1]"
           :pStatus="fileList[1].status"
-          pIcon="PIFiletypePdf"
+          pIconName="filetypePdf"
         />
         <PUploadFileLine
           :pFile="fileList[2]"
           :pStatus="fileList[2].status"
-          pIcon="PIFiletypePdf"
+          pIconName="filetypePdf"
           pHasButton
-          pButtonIcon="PITrash"
+          pButtonIconName="trash"
           pTitleButton="Supprimer le document"
         />
       </div>
@@ -59,11 +59,13 @@ const fileList: UploadFile[] = [
   # Upload File Line type properties
   | Property          | Type                | Description                                                                                   |                                                                                                                                                                         |
   |-------------------|---------------------|-----------------------------------------------------------------------------------------------|
-  | pIcon             | Component | string  | Icon du type de fichier qui est uploadé                                                       |                                                                                                                                                                         |
+  | pIcon             | Component | string  | DEPRECATED   use pIconName instead                                                  |                                                                                                                                                                         |
+  | pIconName         | IconName            | Icon du type de fichier qui est uploadé                                                       |                                                                                                                                                                         |
   | pFile             | Interface PUploadFile | Props du fichier uploadé                                                                        |
   | pStatus           | 'uploading' | 'success' | 'ready' | 'fail' | Statut du téléchargement du fichier (vient de la doc Element Plus)     |
   | pHasButton        | boolean             | Si le statut est 'uploading' ou 'error', le bouton ne s'affichera pas.                        |
-  | pButtonIcon       | Component | string  | Si le bouton est set à true, il faut set une icone car c'est un bouton icone                  |
+  | pButtonIcon       | Component | string  | DEPRECATED   use pButtonIconName instead                     |
+  | pButtonIconName   | IconName            | Si le bouton est set à true, il faut set une icone car c'est un bouton icone                  |
   | pTitleButton      | string              | Si le bouton est set à true, étant un bouton icone, un tooltip a été rajouté pour mettre de connaître l'action qui sera effectuée |                                                                                                                  |
 
   <div class="responsive-iframe-container">
