@@ -73,6 +73,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import type { FileExtension } from '@pulse/core/types'
 import PButton from '../../atoms/PButton'
 import PUpload from '../../atoms/PUpload'
 import PDocumentViewer from './'
@@ -97,7 +98,7 @@ const documentViewerBasicData = reactive({
   pDirection: ref<PDocumentViewerProps['pDirection']>('rtl'),
 })
 const url = ref('https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg')
-const extension = ref('jpeg')
+const extension = ref<FileExtension>('jpeg')
 const handleFilesSelected = (data:File[]) => {
   url.value = URL.createObjectURL(data[0])
   extension.value = 'pdf'

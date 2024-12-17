@@ -44,6 +44,8 @@ import type { PDocumentDisplayProps, DocumentPreviewResponse } from './PDocument
 import PLoader from '../../atoms/PLoader'
 import { computed } from 'vue'
 import { isImageDocument, isPdfDocument } from '@pulse/core'
+import type { FileExtension } from '@pulse/core/types'
+
 const props = defineProps<PDocumentDisplayProps>()
 
 const isLoadingDocument = computed(() => props.pIsLoading)
@@ -75,7 +77,7 @@ const url = computed(() => {
   }
 })
 
-const isNotImageOrPdf = (extension: string): boolean => {
+const isNotImageOrPdf = (extension?: FileExtension): boolean => {
   return !isImageDocument(extension) && !isPdfDocument(extension)
 }
 </script>

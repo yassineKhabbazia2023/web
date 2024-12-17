@@ -245,9 +245,11 @@ const isDrawerOpened = computed({
   },
 })
 
-const fileFormat = computed(() =>
-  occurrence.value?.schedule?.attachment?.name ? getFileExtension(occurrence.value.schedule.attachment.name) : '',
-)
+const fileFormat = computed(() => {
+  const extension = getFileExtension(occurrence.value?.schedule?.attachment?.name)
+
+  return extension ?? ''
+})
 
 const fileSize = computed(() =>
   occurrence.value?.schedule?.attachment?.size

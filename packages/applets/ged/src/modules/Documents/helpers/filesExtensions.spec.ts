@@ -38,8 +38,8 @@ const filename15 = 'file.xlsx'
 
 const fileExtension1 = 'txt'
 const fileExtension2 = 'jpg'
-const fileExtension3 = 'JPEG'
-const fileExtension4 = 'xyz'
+const fileExtension3 = 'jpeg'
+const fileExtension4 = 'raw'
 
 describe('fileExtension', () => {
   describe('getFileIcon', () => {

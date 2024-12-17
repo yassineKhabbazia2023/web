@@ -41,7 +41,7 @@ describe('fileExtension', () => {
   describe('getIconFileName', () => {
     it('should return the good icon for the extension', () => {
       expect(getIconFileName('txt', 'filetypeNone')).toBe('filetypeTxt')
-      expect(getIconFileName('', 'filetypeNone')).toBe('filetypeNone')
+      expect(getIconFileName(undefined, 'filetypeNone')).toBe('filetypeNone')
       expect(getIconFileName('jpg', 'filetypeNone')).toBe('filetypeJpg')
       expect(getIconFileName('bmp', 'filetypeNone')).toBe('filetypeBmp')
       expect(getIconFileName('csv', 'filetypeNone')).toBe('filetypeCsv')

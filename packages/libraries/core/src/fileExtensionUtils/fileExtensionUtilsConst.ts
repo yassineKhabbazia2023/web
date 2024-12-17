@@ -1,4 +1,64 @@
-export const AUTHORIZED_EXTENSIONS = [
+import type { FileExtension } from './fileExtensionTypes'
+
+export const KNOWN_FILE_EXTENSIONS: Record<string, FileExtension> = {
+  bmp: 'bmp',
+  csv: 'csv',
+  doc: 'doc',
+  dot: 'dot',
+  docx: 'docx',
+  dotx: 'dotx',
+  docm: 'docm',
+  dotm: 'dotm',
+  gif: 'gif',
+  jfif: 'jfif',
+  jpe: 'jpe',
+  jpeg: 'jpeg',
+  jpg: 'jpg',
+  msg: 'msg',
+  mp4: 'mp4',
+  pdf: 'pdf',
+  ppt: 'ppt',
+  pptx: 'pptx',
+  pot: 'pot',
+  pps: 'pps',
+  ppa: 'ppa',
+  ppam: 'ppam',
+  png: 'png',
+  rtf: 'rtf',
+  sql: 'sql',
+  tif: 'tif',
+  tiff: 'tiff',
+  txt: 'txt',
+  vsdx: 'vsdx',
+  xsl: 'xsl',
+  xls: 'xls',
+  xlsx: 'xlsx',
+  xltx: 'xltx',
+  xlsm: 'xlsm',
+  xltm: 'xltm',
+  xlam: 'xlam',
+  xlsb: 'xlsb',
+  zip: 'zip',
+  rar: 'rar',
+  xml: 'xml',
+  pbix: 'pbix',
+  ods: 'ods',
+  one: 'one',
+  onea: 'onea',
+  onetoc: 'onetoc',
+  onetoc2: 'onetoc2',
+  onetmp: 'onetmp',
+  onepkg: 'onepkg',
+  webp: 'webp',
+  svg: 'svg',
+  ico: 'ico',
+  cur: 'cur',
+  heic: 'heic',
+  md: 'md',
+  raw: 'raw',
+}
+
+export const AUTHORIZED_EXTENSIONS: FileExtension[] = [
   'bmp',
   'csv',
   'doc',
@@ -48,5 +108,6 @@ export const AUTHORIZED_EXTENSIONS = [
   'onetmp',
   'onepkg',
 ]
-export const IMAGE_EXTENSIONS =
+
+export const IMAGE_EXTENSIONS: FileExtension[] =
   ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'cur']

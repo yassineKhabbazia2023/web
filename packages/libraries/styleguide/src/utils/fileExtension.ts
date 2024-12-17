@@ -1,3 +1,4 @@
+import type { FileExtension } from '@pulse/core/types'
 import { type Component } from 'vue'
 import {
   PIFiletypeNone,
@@ -49,30 +50,34 @@ const iconComponentByIconFileName = new Map<IconName, Component>([
   ['filetypeXml', PIFiletypeXml],
 ])
 
-export const FILE_NAME_BY_EXTENSION: Record<string, IconName> = {
-  'bmp': 'filetypeBmp',
-  'csv': 'filetypeCsv',
-  'doc': 'filetypeDoc',
-  'docx': 'filetypeDocx',
-  'gif': 'filetypeGif',
-  'heic': 'filetypeHeic',
-  'jpg': 'filetypeJpg',
-  'md': 'filetypeMd',
-  'pdf': 'filetypePdf',
-  'png': 'filetypePng',
-  'ppt': 'filetypePpt',
-  'pptx': 'filetypePptx',
-  'raw': 'filetypeRaw',
-  'svg': 'filetypeSvg',
-  'tiff': 'filetypeTiff',
-  'txt': 'filetypeTxt',
-  'xls': 'filetypeXls',
-  'xlsx': 'filetypeXlsx',
-  'xml': 'filetypeXml',
-}
+const fileNameByExtension = new Map<FileExtension, IconName>([
+  ['bmp', 'filetypeBmp'],
+  ['csv', 'filetypeCsv'],
+  ['doc', 'filetypeDoc'],
+  ['docx', 'filetypeDocx'],
+  ['gif', 'filetypeGif'],
+  ['heic', 'filetypeHeic'],
+  ['jpg', 'filetypeJpg'],
+  ['md', 'filetypeMd'],
+  ['pdf', 'filetypePdf'],
+  ['png', 'filetypePng'],
+  ['ppt', 'filetypePpt'],
+  ['pptx', 'filetypePptx'],
+  ['raw', 'filetypeRaw'],
+  ['svg', 'filetypeSvg'],
+  ['tiff', 'filetypeTiff'],
+  ['txt', 'filetypeTxt'],
+  ['xls', 'filetypeXls'],
+  ['xlsx', 'filetypeXlsx'],
+  ['xml', 'filetypeXml'],
+])
 
-export const getIconFileName = (fileExtension: string, defaultIconName: IconName): IconName => {
-  return FILE_NAME_BY_EXTENSION[fileExtension] ?? defaultIconName
+export const getIconFileName = (fileExtension: FileExtension | undefined, defaultIconName: IconName): IconName => {
+  const iconName = (fileExtension && fileNameByExtension.has(fileExtension))
+    ? fileNameByExtension.get(fileExtension)
+    : undefined
+
+  return iconName ?? defaultIconName
 }
 
 export const getFileIcon = (fileName: string) => {

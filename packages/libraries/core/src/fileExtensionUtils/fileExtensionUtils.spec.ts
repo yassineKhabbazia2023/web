@@ -25,8 +25,8 @@ const filename15 = 'file.xlsx'
 
 const fileExtension1 = 'txt'
 const fileExtension2 = 'jpg'
-const fileExtension3 = 'JPEG'
-const fileExtension4 = 'xyz'
+const fileExtension3 = 'jpeg'
+const fileExtension4 = 'raw'
 
 describe('getFileExtension', () => {
   it('should return the correct file extension', () => {
@@ -36,10 +36,10 @@ describe('getFileExtension', () => {
     const emptyFilename = ''
 
     expect(getFileExtension(filename1)).toBe('txt')
-    expect(getFileExtension(filename2)).toBe('')
+    expect(getFileExtension(filename2)).toBeUndefined()
     expect(getFileExtension(filename3)).toBe('jpg')
-    expect(getFileExtension(emptyFilename)).toBe('')
-    expect(getFileExtension()).toBe('')
+    expect(getFileExtension(emptyFilename)).toBeUndefined()
+    expect(getFileExtension()).toBeUndefined()
   })
 
   describe('isImageDocument', () => {
