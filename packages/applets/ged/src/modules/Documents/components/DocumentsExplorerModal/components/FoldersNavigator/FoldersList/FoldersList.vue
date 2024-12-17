@@ -32,12 +32,8 @@
     <div
       v-if="!doesCurrentFolderContainsChildren"
       class="folder-list__empty-folder"
+      data-test-id="folders-list-empty-folder-label"
     >
-      <PImage
-        class="folder-list__empty-folder__badge"
-        pType="badges"
-        pName="folder"
-      />
       <p class="folder-list__empty-folder__label">
         {{ foldersListEmptyFolderLabel }}
       </p>
@@ -59,11 +55,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import {
-  PAlert,
-  PFolderLineNavigationItem,
-  PImage,
-} from '@pulse/styleguide/components'
+import { PAlert, PFolderLineNavigationItem } from '@pulse/styleguide/components'
 import type { FoldersListProps } from './FoldersListTypes'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import type { Folder } from '@ged/models/Folder'

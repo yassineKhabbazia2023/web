@@ -1,8 +1,6 @@
-
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import { PFolderLineNavigationItem, PAlert, PImage } from '@pulse/styleguide/components'
 import FoldersList
   from '@ged/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
 import { type FoldersListProps }
@@ -45,14 +43,14 @@ describe('foldersList', () => {
       const div = wrapper.find('.folder-list--no-children-folder')
       expect(div.exists()).toBeTruthy()
 
-      const alert = wrapper.findComponent(PAlert)
+      const alert = wrapper.findComponent({ name: 'PAlert' })
       expect(alert.exists()).toBeFalsy()
 
-      const lines = wrapper.findAllComponents(PFolderLineNavigationItem)
+      const lines = wrapper.findAllComponents({ name: 'PFolderLineNavigationItem' })
       expect(lines).toHaveLength(0)
 
-      const img = wrapper.findComponent(PImage)
-      expect(img.exists()).toBeTruthy()
+      const emptyFolderLabel = wrapper.find('[data-test-id="folders-list-empty-folder-label"]')
+      expect(emptyFolderLabel.exists()).toBeTruthy()
     })
 
     it('should render PAlert when explorerAuthorizedGivenAction is false', async () => {
@@ -63,7 +61,7 @@ describe('foldersList', () => {
       const wrapper = createWrapper(props)
       await nextTick()
 
-      const alert = wrapper.findComponent(PAlert)
+      const alert = wrapper.findComponent({ name: 'PAlert' })
       expect(alert.exists()).toBeTruthy()
     })
 
@@ -74,17 +72,17 @@ describe('foldersList', () => {
       const div = wrapper.find('.folder-list--no-children-folder')
       expect(div.exists()).toBeFalsy()
 
-      const alert = wrapper.findComponent(PAlert)
+      const alert = wrapper.findComponent({ name: 'PAlert' })
       expect(alert.exists()).toBeFalsy()
 
-      const lines = wrapper.findAllComponents(PFolderLineNavigationItem)
+      const lines = wrapper.findAllComponents({ name: 'PFolderLineNavigationItem' })
       expect(lines).toHaveLength(1)
       expect(lines[0].props('pHasArrow')).toBeTruthy()
       expect(lines[0].props('pIconLeftName')).toBe('folder')
       expect(lines[0].props('pDisabled')).toBeFalsy()
 
-      const img = wrapper.findComponent(PImage)
-      expect(img.exists()).toBeFalsy()
+      const emptyFolderLabel = wrapper.find('[data-test-id="folders-list-empty-folder-label"]')
+      expect(emptyFolderLabel.exists()).toBeFalsy()
     })
   })
   describe('event', () => {
@@ -92,7 +90,7 @@ describe('foldersList', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const lines = wrapper.findComponent(PFolderLineNavigationItem)
+      const lines = wrapper.findComponent({ name: 'PFolderLineNavigationItem' })
       lines.trigger('click')
 
       expect(wrapper.emitted('navigate-to-folder')).toBeTruthy()
@@ -125,7 +123,7 @@ describe('foldersList', () => {
         },
       })
 
-      const navigationItem = wrapper.findComponent(PFolderLineNavigationItem)
+      const navigationItem = wrapper.findComponent({ name: 'PFolderLineNavigationItem' })
       expect(navigationItem.props('pDisabled')).toBeTruthy()
       expect(navigationItem.props('pTooltipContent')).toBeTruthy()
     })
