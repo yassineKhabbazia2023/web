@@ -22,34 +22,64 @@ import {
   PIFiletypeXml,
 } from '../atoms/PIcon/components'
 import {
-  getIconFileName,
+  getFileExtension,
 } from '@pulse/core'
+import type { IconName } from '../types/IconName.types'
 
-const ICON_COMPONENT_BY_FILE_NAME: Record<string, Component> = {
-  filetypeNone: PIFiletypeNone,
-  filetypeBmp: PIFiletypeBmp,
-  filetypeCsv: PIFiletypeCsv,
-  filetypeDoc: PIFiletypeDoc,
-  filetypeDocx: PIFiletypeDocx,
-  filetypeGif: PIFiletypeGif,
-  filetypeHeic: PIFiletypeHeic,
-  filetypeJpg: PIFiletypeJpg,
-  filetypeMd: PIFiletypeMd,
-  filetypePdf: PIFiletypePdf,
-  filetypePng: PIFiletypePng,
-  filetypePpt: PIFiletypePpt,
-  filetypePptx: PIFiletypePptx,
-  filetypeRaw: PIFiletypeRaw,
-  filetypeSvg: PIFiletypeSvg,
-  filetypeTiff: PIFiletypeTiff,
-  filetypeTxt: PIFiletypeTxt,
-  filetypeXls: PIFiletypeXls,
-  filetypeXlsx: PIFiletypeXlsx,
-  filetypeXml: PIFiletypeXml,
+const iconComponentByIconFileName = new Map<IconName, Component>([
+  ['filetypeNone', PIFiletypeNone],
+  ['filetypeBmp', PIFiletypeBmp],
+  ['filetypeCsv', PIFiletypeCsv],
+  ['filetypeDoc', PIFiletypeDoc],
+  ['filetypeDocx', PIFiletypeDocx],
+  ['filetypeGif', PIFiletypeGif],
+  ['filetypeHeic', PIFiletypeHeic],
+  ['filetypeJpg', PIFiletypeJpg],
+  ['filetypeMd', PIFiletypeMd],
+  ['filetypePdf', PIFiletypePdf],
+  ['filetypePng', PIFiletypePng],
+  ['filetypePpt', PIFiletypePpt],
+  ['filetypePptx', PIFiletypePptx],
+  ['filetypeRaw', PIFiletypeRaw],
+  ['filetypeSvg', PIFiletypeSvg],
+  ['filetypeTiff', PIFiletypeTiff],
+  ['filetypeTxt', PIFiletypeTxt],
+  ['filetypeXls', PIFiletypeXls],
+  ['filetypeXlsx', PIFiletypeXlsx],
+  ['filetypeXml', PIFiletypeXml],
+])
+
+export const FILE_NAME_BY_EXTENSION: Record<string, IconName> = {
+  'bmp': 'filetypeBmp',
+  'csv': 'filetypeCsv',
+  'doc': 'filetypeDoc',
+  'docx': 'filetypeDocx',
+  'gif': 'filetypeGif',
+  'heic': 'filetypeHeic',
+  'jpg': 'filetypeJpg',
+  'md': 'filetypeMd',
+  'pdf': 'filetypePdf',
+  'png': 'filetypePng',
+  'ppt': 'filetypePpt',
+  'pptx': 'filetypePptx',
+  'raw': 'filetypeRaw',
+  'svg': 'filetypeSvg',
+  'tiff': 'filetypeTiff',
+  'txt': 'filetypeTxt',
+  'xls': 'filetypeXls',
+  'xlsx': 'filetypeXlsx',
+  'xml': 'filetypeXml',
+}
+
+export const getIconFileName = (fileExtension: string, defaultIconName: IconName): IconName => {
+  return FILE_NAME_BY_EXTENSION[fileExtension] ?? defaultIconName
 }
 
 export const getFileIcon = (fileName: string) => {
-  const iconFileName = getIconFileName(fileName, 'filetypeNone')
+  const fileExtension = getFileExtension(fileName)
+  const iconFileName = getIconFileName(fileExtension, 'filetypeNone')
 
-  return ICON_COMPONENT_BY_FILE_NAME[iconFileName] ?? PIFiletypeNone
+  return iconComponentByIconFileName.has(iconFileName)
+    ? iconComponentByIconFileName.get(iconFileName)
+    : PIFiletypeNone
 }

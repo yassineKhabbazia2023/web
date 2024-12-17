@@ -1,6 +1,5 @@
 import {
   IMAGE_EXTENSIONS,
-  FILE_NAME_BY_EXTENSION,
   AUTHORIZED_EXTENSIONS,
 } from './fileExtensionUtilsConst'
 
@@ -28,12 +27,6 @@ export const getDocumentNameWithoutExtension = (filename: string): string => {
 
 export const isExtensionAuthorized = (extension: string): boolean => {
   return AUTHORIZED_EXTENSIONS.includes(extension.toLowerCase())
-}
-
-export const getIconFileName = (fileName: string, defaultIconName: string) => {
-  const fileExtension = getFileExtension(fileName)
-
-  return FILE_NAME_BY_EXTENSION[fileExtension] ?? defaultIconName
 }
 
 export const isPdfDocument = (extension: string): boolean => {

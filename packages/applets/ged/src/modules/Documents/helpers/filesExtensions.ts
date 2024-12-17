@@ -23,8 +23,11 @@ import {
   PIFiletypeXml,
 } from '@pulse/styleguide/components'
 import {
-  getIconFileName,
+  getFileExtension,
 } from '@pulse/core'
+import {
+  getIconFileName,
+} from '@pulse/styleguide'
 
 const ICON_COMPONENT_BY_FILE_NAME: Record<string, Component> = {
   filetypeNone: PIFiletypeNone,
@@ -50,7 +53,8 @@ const ICON_COMPONENT_BY_FILE_NAME: Record<string, Component> = {
 }
 
 export const getFileIcon = (fileName: string) => {
-  const iconFileName = getIconFileName(fileName, 'fileText')
+  const fileExtension = getFileExtension(fileName)
+  const iconFileName = getIconFileName(fileExtension, 'fileText')
 
   return ICON_COMPONENT_BY_FILE_NAME[iconFileName] ?? PIFileText
 }

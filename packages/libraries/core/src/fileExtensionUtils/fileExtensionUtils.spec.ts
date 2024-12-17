@@ -4,7 +4,6 @@ import {
   isImageDocument,
   getDocumentNameWithoutExtension,
   isExtensionAuthorized,
-  getIconFileName,
   isPdfDocument,
 } from './fileExtensionUtils'
 
@@ -64,26 +63,6 @@ describe('getFileExtension', () => {
       expect(isExtensionAuthorized(fileExtension1)).toBeTruthy()
       expect(isExtensionAuthorized(fileExtension4)).toBeFalsy()
       expect(isExtensionAuthorized(fileExtension2)).toBeTruthy()
-    })
-  })
-
-  describe('getIconFileName', () => {
-    it('should return the good icon for the extension', () => {
-      expect(getIconFileName(filename1, 'filetypeNone')).toBe('filetypeTxt')
-      expect(getIconFileName(filename2, 'filetypeNone')).toBe('filetypeNone')
-      expect(getIconFileName(filename3, 'filetypeNone')).toBe('filetypeJpg')
-      expect(getIconFileName(filename4, 'filetypeNone')).toBe('filetypeBmp')
-      expect(getIconFileName(filename5, 'filetypeNone')).toBe('filetypeCsv')
-      expect(getIconFileName(filename6, 'filetypeNone')).toBe('filetypeDoc')
-      expect(getIconFileName(filename7, 'filetypeNone')).toBe('filetypeDocx')
-      expect(getIconFileName(filename8, 'filetypeNone')).toBe('filetypeGif')
-      expect(getIconFileName(filename9, 'filetypeNone')).toBe('filetypePdf')
-      expect(getIconFileName(filename10, 'filetypeNone')).toBe('filetypePng')
-      expect(getIconFileName(filename11, 'filetypeNone')).toBe('filetypePpt')
-      expect(getIconFileName(filename12, 'filetypeNone')).toBe('filetypeRaw')
-      expect(getIconFileName(filename13, 'filetypeNone')).toBe('filetypeSvg')
-      expect(getIconFileName(filename14, 'filetypeNone')).toBe('filetypeXls')
-      expect(getIconFileName(filename15, 'filetypeNone')).toBe('filetypeXlsx')
     })
   })
 

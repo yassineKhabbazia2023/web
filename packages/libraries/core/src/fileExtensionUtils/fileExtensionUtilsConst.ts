@@ -50,25 +50,3 @@ export const AUTHORIZED_EXTENSIONS = [
 ]
 export const IMAGE_EXTENSIONS =
   ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp', 'webp', 'svg', 'ico', 'cur']
-
-export const FILE_NAME_BY_EXTENSION: Record<string, string> = {
-  'bmp': 'filetypeBmp',
-  'csv': 'filetypeCsv',
-  'doc': 'filetypeDoc',
-  'docx': 'filetypeDocx',
-  'gif': 'filetypeGif',
-  'heic': 'filetypeHeic',
-  'jpg': 'filetypeJpg',
-  'md': 'filetypeMd',
-  'pdf': 'filetypePdf',
-  'png': 'filetypePng',
-  'ppt': 'filetypePpt',
-  'pptx': 'filetypePptx',
-  'raw': 'filetypeRaw',
-  'svg': 'filetypeSvg',
-  'tiff': 'filetypeTiff',
-  'txt': 'filetypeTxt',
-  'xls': 'filetypeXls',
-  'xlsx': 'filetypeXlsx',
-  'xml': 'filetypeXml',
-}
