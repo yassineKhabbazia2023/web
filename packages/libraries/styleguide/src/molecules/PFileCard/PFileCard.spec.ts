@@ -66,8 +66,9 @@ describe('pFileCard', () => {
         ...defaultProps,
         pHasIcon: true,
       })
-      expect(
-        wrapper.findComponent({ name: 'PIFiletypePdf' }).exists()).toBeTruthy()
+      const pIcon = wrapper.findComponent({ name: 'PIcon' })
+      expect(pIcon.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe('filetypePdf')
     })
 
     it('should renders the slot icon if set', () => {

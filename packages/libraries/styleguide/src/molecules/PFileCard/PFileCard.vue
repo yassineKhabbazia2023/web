@@ -5,9 +5,7 @@
         <slot name="icon" />
       </div>
       <div v-else class="p-file-card__icon">
-        <PIcon>
-          <component :is="fileIconComponent" />
-        </PIcon>
+        <PIcon :pName="iconName" />
       </div>
     </template>
     <div class="p-file-card__text">
@@ -27,7 +25,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import PIcon from '../../atoms/PIcon'
-import { getFileIcon } from '../../utils/fileExtension'
+import { getIconFileName } from '../../utils/fileExtension'
 import { getFileExtension } from '@pulse/core'
 import type { PFileCardProps } from './PFileCardTypes'
 
@@ -36,8 +34,10 @@ const props = withDefaults(defineProps<PFileCardProps>(), {
   pHasButton: false,
 })
 
-const fileIconComponent = computed(() => {
-  return getFileIcon(props.pName)
+const iconName = computed(() => {
+  const fileExtension = getFileExtension(props.pName)
+
+  return getIconFileName(fileExtension, 'filetypeNone')
 })
 </script>
 
