@@ -84,11 +84,16 @@ import { computed, onMounted, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { productFruits } from 'product-fruits'
 import { amplitudeService, commonApi, tokenService } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@login/services/cgu'
+import { userNameGenerator } from '@login/helper'
+import {
+  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT,
+} from 'env-vars'
 
 const { initAuthClient, setStoreGigyaUserId } = useInitUserAuth()
 const { navigateToCustomerWallet } = useNavigation()
@@ -97,6 +102,14 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+declare global {
+  interface Window {
+    productFruits: any
+    HubSpotConversations: any
+    productFruitsUser: any
+  }
+}
 
 const router = useRouter()
 const formRef = ref<FormInstance>()
@@ -203,9 +216,25 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
 
 onMounted(() => {
   amplitudeService.reset()
+  productFruitsTrigger(VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT)
 })
 
 defineExpose({ handleSubmit })
+
+const productFruitsTrigger = (productFruitsKey: string) => {
+  if (productFruitsKey) {
+    productFruits.init(productFruitsKey, 'fr', {
+      username: userNameGenerator(),
+    })
+    window.addEventListener(
+      'productfruits_button_ext_widget_init',
+      () => {
+        (window as any).HubSpotConversations.widget.load({ widgetOpen: true });
+        (window as any).HubSpotConversations.widget.open()
+      },
+    )
+  }
+}
 </script>
 
 <style lang="scss" scoped>
