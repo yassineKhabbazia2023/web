@@ -16,6 +16,48 @@
   --polar: #D1FAF0;
 }
 
+/* ---------- Helper classes ---------- */
+.flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex--direction-column {
+  flex-direction: column;
+}
+
+.flex--justify-content-flex-start {
+  justify-content: flex-start;
+}
+
+.flex--justify-content-space-between {
+  justify-content: space-between;
+}
+
+.flex--justify-content-center {
+  justify-content: center;
+}
+
+.flex--align-items-flex-start {
+  align-items: flex-start;
+}
+
+.flex--align-self-center {
+  align-self: center;
+}
+
+.margin-top--4 {
+  margin-top: 1.6rem;
+}
+
+.margin-top--2 {
+  margin-top: 1.0rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
 html {
   font-size: 10px;
 }
@@ -133,8 +175,9 @@ a:hover {
   font-size: 1.4rem;
 }
 
-.maintenance-page__legals--small {
-  display: none;
+.maintenance-page__legals {
+  gap: 8px;
+  margin-right: 4px;
 }
 
 @media only screen and (width < 1200px) {
@@ -143,9 +186,15 @@ a:hover {
   }
 }
 
+@media only screen and (width < 970px) {
+  .maintenance-page__footer-content a {
+    max-width: min-content;
+  }
+}
+
 @media only screen and (width < 768px) {
   .maintenance-page__footer-content {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 }
 
@@ -155,51 +204,11 @@ a:hover {
   }
 
   .maintenance-page__legals {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .maintenance-page__legals .dash {
     display: none;
   }
-  .maintenance-page__legals--small {
-    display: block;
-  }
-}
-
-/* ---------- Helper classes ---------- */
-.flex {
-  display: flex;
-  flex-direction: row;
-}
-
-.flex--direction-column {
-  flex-direction: column;
-}
-
-.flex--justify-content-flex-start {
-  justify-content: flex-start;
-}
-
-.flex--justify-content-space-between {
-  justify-content: space-between;
-}
-
-.flex--justify-content-center {
-  justify-content: center;
-}
-
-.flex--align-items-flex-start {
-  align-items: flex-start;
-}
-
-.flex--align-self-center {
-  align-self: center;
-}
-
-.margin-top--4 {
-  margin-top: 1.6rem;
-}
-
-.margin-top--2 {
-  margin-top: 1.0rem;
-}
-
-.text-center {
-  text-align: center;
 }
