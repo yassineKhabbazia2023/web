@@ -2,10 +2,16 @@ import api, { requestInterceptor, responseInterceptorSuccess, responseIntercepto
 import { vi } from 'vitest'
 import { logger } from '@pulse/core'
 
-vi.mock('env-vars')
+vi.mock('env-vars', () => ({
+  VITE_API_GATEWAY: 'https://placeholder.test/gtw',
+  VITE_API_DS: 'https://placeholder.test/ds',
+  VITE_API_SCHEDULE: 'https://placeholder.test/ds',
+}))
 vi.mock('axios')
 
-const token = 'abcdef-123456'
+const token = vi.hoisted(() => {
+  return 'abcdef-123456'
+})
 const getTokenMocked = vi.hoisted(() => vi.fn(() => (token)))
 
 vi.mock('../main', () => ({
@@ -21,7 +27,7 @@ describe('api axios instances with env-vars', () => {
   })
 
   it('each axios REST methods should have the user\'s token in request headers', async () => {
-    const instance = api().portal
+    const instance = api().gateway
 
     await instance.get('foo/bar')
     await instance.post('foo/bar')
@@ -32,7 +38,7 @@ describe('api axios instances with env-vars', () => {
   })
 
   it('should emit reject on response error', async () => {
-    const instance = api().portal
+    const instance = api().gateway
     const err = new Error('error')
     getTokenMocked.mockRejectedValueOnce(err)
     vi.spyOn(instance, 'get').mockRejectedValue(err)

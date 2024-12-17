@@ -1,12 +1,6 @@
-import axios, { type AxiosInstance } from 'axios'
-import * as envVars from 'env-vars'
+import axios from 'axios'
+import { VITE_API_GATEWAY, VITE_API_DS, VITE_API_SCHEDULE } from 'env-vars'
 import { tokenService } from '../main.mts'
-
-const varApiPrefix = 'VITE_API_'
-
-type apiInstances = Record<string, AxiosInstance>
-
-const keyToService = (key: string) => key.replace(varApiPrefix, '').toLowerCase()
 
 const domainToBaseUrl = (domain: string | undefined) => {
   if (domain && domain.endsWith('/')) {
@@ -29,25 +23,27 @@ export const responseInterceptorError = (err: Error) => {
   return Promise.reject(err)
 }
 
-export default () => {
-  return Object.keys(envVars).reduce(
-    (apis: apiInstances, k) => {
-      if (k.startsWith(varApiPrefix)) {
-        const service = keyToService(k)
-        const baseURL = domainToBaseUrl(envVars[k])
-        const instance = axios.create({
-          baseURL,
-          headers: { 'Content-type': 'application/json' },
-        })
-        instance.interceptors.request.use(requestInterceptor)
-        instance.interceptors.response.use(
-          responseInterceptorSuccess,
-          responseInterceptorError,
-        )
-        apis[service] = instance
-      }
-      return apis
-    },
-    {},
+const createAxiosInstance = (domain: string) => {
+  const instance = axios.create({
+    baseURL: domainToBaseUrl(domain),
+    headers: { 'Content-type': 'application/json' },
+  })
+  
+  instance.interceptors.request.use(requestInterceptor)
+  instance.interceptors.response.use(
+    responseInterceptorSuccess,
+    responseInterceptorError,
   )
+
+  return instance
+}
+
+const api = {
+  gateway: createAxiosInstance(VITE_API_GATEWAY),
+  ds: createAxiosInstance(VITE_API_DS),
+  schedule: createAxiosInstance(VITE_API_SCHEDULE), // DEPRECATED
+}
+
+export default () => {
+  return api
 }
