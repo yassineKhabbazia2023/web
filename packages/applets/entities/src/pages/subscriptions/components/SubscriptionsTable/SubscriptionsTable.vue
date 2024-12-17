@@ -138,6 +138,7 @@ import { displayNotification } from '@entities/common/utils/helpers'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import type { Contact } from '@entities/services/contact/contactTypes'
+import { logger } from '@pulse/core'
 
 const { t, d } = useI18n({
   inheritLocale: true,
@@ -239,7 +240,9 @@ const handleOfferFiltered = (offerTypes: string[]) => {
 onMounted(async () => {
   try {
     await fetchSubscriptions()
-  } catch {} finally {
+  } catch (e) {
+    logger.error(e)
+  } finally {
     isLoading.value = false
   }
 })

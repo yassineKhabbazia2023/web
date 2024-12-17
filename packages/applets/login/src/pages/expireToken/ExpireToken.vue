@@ -47,7 +47,9 @@ const resendLink = async () => {
       : await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
     isLoading.value = false
     router.push({ path: '/resendEmailSuccess' })
-  } catch {}
+  } catch (error) {
+    logger.error(error)
+  }
 }
 </script>
 

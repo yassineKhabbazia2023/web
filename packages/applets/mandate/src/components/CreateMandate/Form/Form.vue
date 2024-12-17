@@ -523,7 +523,8 @@ const checkFields = async () => {
     if (validInstitutionCode) {
       await getBankInformation(createMandateForm.institutionCode)
     }
-  } catch (_) {
+  } catch (error) {
+    logger.error(error)
   } finally {
     if (await isBbanComplete()) {
       await checkBbanValidity({

@@ -1,5 +1,6 @@
 import api, { requestInterceptor, responseInterceptorSuccess, responseInterceptorError } from './index'
 import { vi } from 'vitest'
+import { logger } from '@pulse/core'
 
 vi.mock('env-vars')
 vi.mock('axios')
@@ -38,7 +39,8 @@ describe('api axios instances with env-vars', () => {
     const spyReject = vi.spyOn(Promise, 'reject')
     try {
       await expect(instance.get('foo/bar')).rejects.toThrow('error')
-    } catch {
+    } catch (e) {
+      logger.error(e)
     }
     expect(spyReject).toHaveBeenCalledWith(err) // this is a falsy test
   })

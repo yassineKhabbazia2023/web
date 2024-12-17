@@ -185,7 +185,9 @@ const isValidToken = async (): Promise<any> => {
   try {
     const { data: value } = await commonApi().gateway.get(urlValidToken)
     return value
-  } catch {}
+  } catch (error) {
+    logger.error(error)
+  }
 }
 
 onBeforeMount(async () => {

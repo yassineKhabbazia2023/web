@@ -4,6 +4,7 @@ import { type Store, storeToRefs } from 'pinia'
 import { routes as errorRoutes } from '@app/pages/Error/router'
 import { commonStore as useStore, commonApi, dataProvider } from '@pulse/common'
 import { fetchEntities } from '@app/services/entities'
+import { logger } from '@pulse/core'
 
 const isFirstTime = ref(true)
 
@@ -56,7 +57,9 @@ const isUserOriginCollab = async () => {
   try {
     const { data: userOrigin } = await commonApi().gateway.get(USER_ORIGIN_URL)
     return userOrigin === 'COLLAB'
-  } catch {}
+  } catch (err) {
+    logger.error(err)
+  }
 }
 
 const isObjectEmpty = (obj: object) => Object.keys(obj).length === 0
