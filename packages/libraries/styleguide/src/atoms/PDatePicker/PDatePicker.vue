@@ -188,7 +188,6 @@ const isLastWeekHidden = computed(() => {
       position: absolute;
       width: 4px;
       height: 4px;
-      // border-radius: 50%;
       bottom: -2px;
       left: 50%;
       transform: translateX(-51%);

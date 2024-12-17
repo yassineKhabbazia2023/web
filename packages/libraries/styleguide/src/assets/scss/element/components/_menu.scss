@@ -141,7 +141,6 @@ $menu: (
 
         .p-icon-collapse {
           margin-left: auto;
-          // border-radius: 50%;
           width: 30px;
           height: 30px;
           cursor: pointer;
@@ -153,7 +152,6 @@ $menu: (
       }
 
       .p-navbar__icon {
-        // border-radius: 50%;
         width: 30px;
         height: 30px;
         font-size: 16px;
@@ -229,7 +227,6 @@ $menu: (
       width: 30px;
       height: 30px;
       margin-left: 3px;
-      // border-radius: 50%;
       background: getCssVar('color', 'neutral-gray-500');
 
       &::before {
@@ -241,7 +238,6 @@ $menu: (
         display: block;
         width: 27px;
         height: 27px;
-        // border-radius: 50%;
         background: getCssVar('color', 'neutral-gray-700');
         z-index: 0;
       }
