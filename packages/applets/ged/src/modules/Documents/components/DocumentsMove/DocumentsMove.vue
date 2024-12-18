@@ -144,7 +144,7 @@ const handleMoveDocumentClicked = async (action: string) => {
       modalButtonsMove,
     )
     const selectedDocuments =
-      explorerDocuments.value.filter((d) => d.isSelected) || []
+      explorerDocuments.value.filter((d) => d.isSelected && d.givenActionState !== 'ERROR') || []
     selectedDocuments.forEach((d) => {
       d.givenActionState = 'IN_PROGRESS'
     })

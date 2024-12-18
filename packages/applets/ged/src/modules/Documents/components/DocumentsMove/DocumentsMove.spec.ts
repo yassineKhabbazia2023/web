@@ -4,7 +4,7 @@ import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import type { Folder } from '@ged/models/Folder'
 import type { Service } from '@ged/models/Service'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { GivenActionAuthorization } from
@@ -16,7 +16,7 @@ import DocumentsModalActionsFooter from
 import { PButton } from '@pulse/styleguide/components'
 import type { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTypes'
 import DocumentsMove from '.'
-import { documentsMock } from '../../mocks/documentMock'
+import { documentsMock, documentsMockWithOneCertified } from '../../mocks/documentMock'
 import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 
 // id: 135393636 without permission 'CAN_MOVE_INTO_FOLDER'
@@ -273,6 +273,38 @@ describe('documents Move', () => {
           expect(wrapper.vm.explorerDocuments).toHaveLength(
             wrapper.vm.explorerDocuments.filter(d => d.givenActionState === 'DONE').length,
           )
+        })
+
+        it('should update explorerDocuments to DONE execpt the one in ERROR state on modal-action-clicked event', async () => {
+          const updatedProps = {
+            ...defaultProps,
+            isMoveModalOpened: true,
+            selectedDocuments: documentsMockWithOneCertified,
+          }
+
+          const wrapper = createWrapper(updatedProps)
+
+          const documentExplorerModalWrapper =
+                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+
+          await documentExplorerModalWrapper.vm.$emit(
+            'modal-action-clicked',
+            'modal-move-document-action-click',
+          )
+
+          await nextTick()
+          await flushPromises()
+          const validDocument = documentsMockWithOneCertified[0]
+          const expectedDocumentRequest = {
+            // only the first document that is available for move should be moved
+            ids: [validDocument.id],
+            sourceFolderId: validDocument.folder.id,
+            destinationFolderId: validDocument.folder.id,
+            moveAll: false,
+            serviceId: selectedEntity,
+          }
+          expect(moveDocuments).toHaveBeenCalledWith(curentService, selectedEntity, expectedDocumentRequest)
+
         })
       })
 
