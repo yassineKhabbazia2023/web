@@ -69,4 +69,3 @@ fr-FR:
     confirm: 'Confirmer'
     cancel: 'Annuler'
 </i18n>
-

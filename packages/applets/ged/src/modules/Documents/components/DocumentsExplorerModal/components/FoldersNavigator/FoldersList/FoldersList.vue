@@ -192,4 +192,3 @@ en-US:
 fr-FR:
   cantMoveToSameFolder: 'Vous ne pouvez pas déplacer dans le dossier en cours de déplacement'
 </i18n>
-

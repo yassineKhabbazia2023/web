@@ -33,4 +33,3 @@ export interface MandateCollection {
     counters: MandateCounters
     data: Mandate[]
 }
-

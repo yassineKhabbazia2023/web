@@ -166,4 +166,3 @@ fr-FR:
       notifications:
         success: '"{documentsCount}" documents supprimés.'
 </i18n>
-

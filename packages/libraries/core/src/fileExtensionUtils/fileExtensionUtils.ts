@@ -37,4 +37,3 @@ export const isExtensionAuthorized = (extension?: FileExtension): boolean => {
 export const isPdfDocument = (extension?: FileExtension): boolean => {
   return extension?.toLowerCase() === 'pdf'
 }
-

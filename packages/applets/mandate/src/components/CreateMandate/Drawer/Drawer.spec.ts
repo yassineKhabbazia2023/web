@@ -132,4 +132,3 @@ describe('createMandateDrawer.vue', () => {
     expect(createMandate).toHaveBeenCalled()
   })
 })
-

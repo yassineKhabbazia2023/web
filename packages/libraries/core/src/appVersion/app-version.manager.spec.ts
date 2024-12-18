@@ -27,5 +27,3 @@ describe('AppVersionManager', () => {
     expect(AppVersionManager.getMonorepoVersion()).toBe('')
   })
 })
-
-

@@ -55,4 +55,3 @@ describe('updateTermsByCurrentUser', () => {
     expect(response.data).toStrictEqual(cguMessageDone)
   })
 })
-

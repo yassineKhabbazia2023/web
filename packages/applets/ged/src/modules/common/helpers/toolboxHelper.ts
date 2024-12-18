@@ -31,4 +31,3 @@ export function generateToolboxBasicData(
     .sort((a, b) => (a.order > b.order ? 1 : -1))
     ?.map((e) => e?.toolboxLine)
 }
-

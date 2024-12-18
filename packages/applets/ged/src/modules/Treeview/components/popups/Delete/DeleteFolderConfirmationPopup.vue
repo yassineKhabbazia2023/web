@@ -70,4 +70,3 @@ fr-FR:
     tous les fichiers et sous dossiers à partir du dossier "{folderName}"
     seront supprimés et envoyés à la corbeille.
 </i18n>
-

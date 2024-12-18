@@ -268,4 +268,3 @@ const isInPIASyncedFolder = computed(() => {
       status: 'Etat de transmission'
       download: 'Télécharger'
 </i18n>
-

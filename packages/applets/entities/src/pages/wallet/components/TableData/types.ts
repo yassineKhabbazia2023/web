@@ -3,4 +3,3 @@ export interface TableDataProps {
   handleAddFavorite?: Function
   isAccountManagement?: boolean
 }
-

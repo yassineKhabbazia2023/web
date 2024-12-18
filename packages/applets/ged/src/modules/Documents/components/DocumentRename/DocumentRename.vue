@@ -86,4 +86,3 @@ fr-FR:
     success: Le document a été renommé avec succès !
     error: Connexion au serveur interrompue
 </i18n>
-

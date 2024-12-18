@@ -89,4 +89,3 @@ const value1Range = ref<[Date, Date]>([
   box-sizing: content-box;
 }
 </style>
-

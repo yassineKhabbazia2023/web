@@ -15,4 +15,3 @@ export interface SingleInputModalProps {
   inputSuffix?: string
   isCentered?: boolean
 }
-

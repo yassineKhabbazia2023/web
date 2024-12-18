@@ -90,4 +90,3 @@ defineProps<PRadioCardProps>()
   }
 }
 </style>
-

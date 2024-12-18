@@ -77,4 +77,3 @@ const handleSearchExpandChange = (value: boolean) => {
     padding: 24px 16px;
   }
 </style>
-

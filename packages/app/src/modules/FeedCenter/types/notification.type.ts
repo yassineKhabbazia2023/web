@@ -28,5 +28,3 @@ export enum SelectedNotificationEnum {
   ALL = 'all-notifications',
   UNREAD = 'unread-notifications'
 }
-
-

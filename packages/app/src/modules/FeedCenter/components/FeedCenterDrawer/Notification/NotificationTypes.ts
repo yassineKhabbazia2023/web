@@ -9,4 +9,3 @@ export interface NotificationProps {
   message: string
   notificationType: FeedCenterNotification['notificationType']
 }
-

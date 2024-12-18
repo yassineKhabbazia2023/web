@@ -22,4 +22,3 @@ export interface TreeviewProps {
 export type TreeType = InstanceType<any>
 
 export const services = ['1', '2', '3']
-

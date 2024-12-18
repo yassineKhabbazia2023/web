@@ -37,4 +37,3 @@ describe('display dialog', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toStrictEqual([false])
   })
 })
-

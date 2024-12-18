@@ -131,4 +131,3 @@ describe('month.vue', () => {
     expect(wrapper.emitted('open-drawer-filters')).toStrictEqual([[true]])
   })
 })
-

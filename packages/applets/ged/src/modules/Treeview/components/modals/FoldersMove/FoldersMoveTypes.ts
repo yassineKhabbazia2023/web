@@ -14,4 +14,3 @@ export interface FoldersMoveProps {
 export interface ExplorerMoveFolder extends ExplorerDocument {
   folder: Folder
 }
-

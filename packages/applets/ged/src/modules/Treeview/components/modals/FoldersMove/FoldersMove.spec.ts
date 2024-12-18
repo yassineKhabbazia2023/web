@@ -1,5 +1,4 @@
 
-
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
@@ -320,4 +319,3 @@ describe('test FoldersMove', () => {
     })
   })
 })
-

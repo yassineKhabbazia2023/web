@@ -1,5 +1,4 @@
 
-
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
@@ -92,4 +91,3 @@ describe('documentsExplorerHeader', () => {
     })
   })
 })
-

@@ -307,4 +307,3 @@ describe('drawer.vue', () => {
     expect(downloadFile).not.toHaveBeenCalledWith(fileName, attachmentContent)
   })
 })
-

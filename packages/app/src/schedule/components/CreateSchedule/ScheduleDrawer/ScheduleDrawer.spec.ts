@@ -75,4 +75,3 @@ describe('drawer.vue', () => {
     expect(amplitudeTrackMock).toHaveBeenCalledOnce()
   })
 })
-

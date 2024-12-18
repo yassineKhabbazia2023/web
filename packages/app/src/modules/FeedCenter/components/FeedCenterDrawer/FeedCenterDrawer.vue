@@ -99,4 +99,3 @@ fr-FR:
     all-notifications: 'Tout'
     unread-notifications: 'Non lu'
 </i18n>
-

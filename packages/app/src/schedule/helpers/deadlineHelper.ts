@@ -24,4 +24,3 @@ export function getProgressText(
 
   return `${accountsWithCompletedDeadline}/${accountsAmount} ${doneLabel}`
 }
-

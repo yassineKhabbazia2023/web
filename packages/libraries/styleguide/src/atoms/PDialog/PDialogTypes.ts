@@ -9,4 +9,3 @@ export interface PDialogProps {
   pAlignCenter?: boolean
   pShowClose?: boolean
 }
-

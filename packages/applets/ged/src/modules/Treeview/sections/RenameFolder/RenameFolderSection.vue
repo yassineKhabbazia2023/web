@@ -117,4 +117,3 @@ fr-FR:
     errorMsg: 'Connexion au serveur interrompue.'
     successMsg: 'Le dossier a été renommé avec succès.'
 </i18n>
-

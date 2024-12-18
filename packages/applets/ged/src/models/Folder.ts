@@ -18,4 +18,3 @@ export interface Folder {
   serviceId: string
   iconName?: string | undefined
 }
-

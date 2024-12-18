@@ -55,4 +55,3 @@ export const mockTableData: WalletData[] = [
     isFavorite: true,
   },
 ]
-

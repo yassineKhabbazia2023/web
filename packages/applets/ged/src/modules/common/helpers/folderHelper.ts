@@ -28,4 +28,3 @@ export const getBreadcrumbItems = (
     return getBreadcrumbItems(root, folder.parent.id, acc)
   }
 }
-
