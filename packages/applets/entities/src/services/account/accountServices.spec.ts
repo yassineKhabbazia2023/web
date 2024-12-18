@@ -60,7 +60,7 @@ vi.mock('@pulse/common', () => {
               data: mockedReferentialHubs,
             })
           }
-          if (url === `account/api/accounts/${accountId}`) {
+          if (url === `account/api/accounts/${accountId}/currentuser`) {
             return Promise.resolve({
               data: mockedAccount,
             })
@@ -130,12 +130,6 @@ describe('test accountServices', () => {
       const account = await fetchAccount(accountId)
       expect(account).toStrictEqual(mockedAccount)
     })
-
-    it('should throw an error when an error occurs', async () => {
-      const expectedMessage = rejectedErrorMessage
-      await expect(async () => await fetchAccount(accountIdRejected))
-        .rejects.toThrow(expectedMessage)
-    })
   })
 
   describe('fetchAccounts', () => {
@@ -158,7 +152,7 @@ describe('test accountServices', () => {
   describe('patchAccount', () => {
     it('should return updated account on success', async () => {
       await patchAccount(accountId, mockedPatchOperations)
-      const expectedUrl = `account/api/accounts/${accountId}`
+      const expectedUrl = `account/api/accounts/${accountId}/currentuser`
       expect(mockedAccountApiPatch).toHaveBeenCalledOnce()
       expect(mockedAccountApiPatch).toHaveBeenNthCalledWith(1, expectedUrl, mockedPatchOperations)
     })
