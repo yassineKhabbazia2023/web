@@ -275,7 +275,7 @@ describe('documents Move', () => {
           )
         })
 
-        it('should update explorerDocuments to DONE execpt the one in ERROR state on modal-action-clicked event', async () => {
+        it('should update explorerDocuments to DONE except the one in ERROR state on modal-action-clicked event', async () => {
           const updatedProps = {
             ...defaultProps,
             isMoveModalOpened: true,
