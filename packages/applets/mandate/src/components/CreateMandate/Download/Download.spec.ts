@@ -126,13 +126,6 @@ describe('mandate not yet available', () => {
     vi.mocked(getMandateAvailability).mockReturnValue(apiMocks.unavailaibleMandate())
   })
 
-  it('should show the wait illustration', async () => {
-    const wrapper = createWrapper()
-    await flushPromises()
-    const waitIllustrationWrapper = wrapper.find('[data-testid="wait-illustration"]')
-    expect(waitIllustrationWrapper.exists()).toBeTruthy()
-  })
-
   it('should NOT show the download option', () => {
     const wrapper = createWrapper()
     const downloadCardWrapper = getMandateDownloadFileCard(wrapper)

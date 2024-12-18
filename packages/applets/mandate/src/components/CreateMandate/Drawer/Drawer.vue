@@ -57,9 +57,10 @@
         @enable-disable-validate="handleValidateAvailability"
         @update-mandate-model="updateMandateModel"
       />
-      <DownloadMandate
+      <Download
         v-if="currentStep > 3"
         :mandateId="mandateId"
+        class="padding-top--4"
         @close-drawer="closeDialogDrawer"
       />
       <template #footer>
@@ -169,7 +170,7 @@ import {
 import { AppColors } from '@pulse/styleguide'
 import { createMandate } from '@mandate/services/mandate'
 import Form from '@mandate/components/CreateMandate/Form'
-import DownloadMandate from '@mandate/components/CreateMandate/Download'
+import Download from '@mandate/components/CreateMandate/Download'
 import type { CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
 import { amplitudeService } from '@pulse/common'
 

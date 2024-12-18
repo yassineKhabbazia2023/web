@@ -1,25 +1,5 @@
 <template>
   <div class="download-or-wait-mandate">
-    <!-- Not using a ternary or computed on pName because once an image is loaded you can't change it -->
-    <div class="download-or-wait-mandate__illustration margin-bottom--6 margin-x--auto">
-      <Transition>
-        <PImage
-          v-if="isTrackedMandateAvailable"
-          pType="paupulse"
-          pName="ok"
-          pFit="contain"
-          data-testid="availaible-illustration"
-        />
-        <PImage
-          v-else
-          pType="paupulse"
-          pName="time"
-          pFit="contain"
-          data-testid="wait-illustration"
-        />
-      </Transition>
-    </div>
-
     <h4
       class="
         download-or-wait-mandate__title
@@ -114,7 +94,6 @@ import {
   PButton,
   PFileCard,
   PIcon,
-  PImage,
   PLoader,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
