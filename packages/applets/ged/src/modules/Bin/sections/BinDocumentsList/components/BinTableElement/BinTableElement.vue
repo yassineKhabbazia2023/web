@@ -6,7 +6,7 @@
     pProfile=""
     :pTitle="data.name"
     :pContent="getPathFromArray(data.path)"
-    :pIcon="getFileIcon(data.name)"
+    :pIconName="getIconName(data.name, 'fileText')"
     :pSelected="false"
   />
   <PText
@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { PText, PDoubleText, PIcon } from '@pulse/styleguide/components'
-import { getFileIcon } from '@ged/modules/Documents/helpers/filesExtensions'
+import { getIconName } from '@pulse/styleguide'
 import type { BinTableElementProps } from './BinTableElementTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'

@@ -4,7 +4,6 @@ import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { type BinTableElementProps } from './BinTableElementTypes'
-import { PText, PDoubleText, PIcon, PIFiletypeJpg } from '@pulse/styleguide/components'
 
 const defaultProps: BinTableElementProps = {
   fieldType: '',
@@ -44,12 +43,12 @@ describe('binTableElement', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const field = await wrapper.findComponent(PDoubleText)
+      const field = wrapper.findComponent({ name: 'PDoubleText' })
       await nextTick()
       expect(field.exists()).toBeTruthy()
       expect(field.props('pTitle')).toBe(updatedProps.data.name)
       expect(field.props('pContent')).toBe('Comptabilité > Dépôt > aui classer')
-      expect(field.props('pIcon')).toBe(PIFiletypeJpg)
+      expect(field.props('pIconName')).toBe('filetypeJpg')
     })
 
     it('should map PText component correctly based on fieldType', async () => {
@@ -60,11 +59,10 @@ describe('binTableElement', () => {
       }
 
       const wrapper = createWrapper(updatedProps)
-      await nextTick()
+      const pText = wrapper.findComponent({ name: 'PText' })
 
-      const field = await wrapper.findComponent(PText)
-      expect(field.exists()).toBeTruthy()
-      expect(field.props('pContent')).toBe('14/12/2023')
+      expect(pText.exists()).toBeTruthy()
+      expect(pText.props('pContent')).toBe('14/12/2023')
     })
 
     it('should map PIcon component correctly based on fieldType', async () => {
@@ -75,12 +73,9 @@ describe('binTableElement', () => {
       }
 
       const wrapper = createWrapper(updatedProps)
-      await nextTick()
+      const pIcon = wrapper.findComponent({ name: 'PIcon' })
 
-      const field = await wrapper.findComponent({ name: 'PIcon' })
-      expect(field.exists()).toBeTruthy()
-      const icon = await wrapper.findComponent({ name: 'PIcon' })
-      expect(icon.exists()).toBeTruthy()
+      expect(pIcon.exists()).toBeTruthy()
     })
   })
 
@@ -95,9 +90,10 @@ describe('binTableElement', () => {
       const wrapper = createWrapper(updatedProps)
       await nextTick()
 
-      const field = await wrapper.findComponent(PIcon)
-      field.trigger('click')
+      const pIcon = wrapper.findComponent({ name: 'PIcon' })
+      pIcon.trigger('click')
       await nextTick()
+
       expect(wrapper.emitted('restore-document-action')).toHaveLength(1)
       expect(wrapper.emitted('restore-document-action')).toStrictEqual([[updatedProps.data]])
     })

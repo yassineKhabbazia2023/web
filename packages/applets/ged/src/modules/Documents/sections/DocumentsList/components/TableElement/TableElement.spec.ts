@@ -3,41 +3,17 @@ import TableElement from './TableElement.vue'
 import { type TableElementPops } from './TableElementTypes'
 import type { Document } from '@ged/models/Document'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import {
   PIArrowRepeat,
-  PIcon,
-  PIFileText,
-  PIFiletypeBmp,
-  PIFiletypeCsv,
-  PIFiletypeDoc,
-  PIFiletypeDocx,
-  PIFiletypeGif,
-  PIFiletypeHeic,
-  PIFiletypeJpg,
-  PIFiletypeMd,
-  PIFiletypePdf,
-  PIFiletypePng,
-  PIFiletypePpt,
-  PIFiletypePptx,
-  PIFiletypeRaw,
-  PIFiletypeSvg,
-  PIFiletypeTiff,
-  PIFiletypeTxt,
-  PIFiletypeXls,
-  PIFiletypeXlsx,
-  PIFiletypeXml,
   PIStars,
-  PTag,
   PICheckCircle,
   PIExclamationTriangle,
-  PDoubleText,
 } from '@pulse/styleguide/components'
-import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 
 const document: Document = {
   id: '1',
@@ -103,19 +79,17 @@ const pinia = createPinia()
 
 const createWrapper = (
   props: TableElementPops = defaultProps,
-): TableElementWrapper => {
-  return mount(TableElement, {
-    props,
-    global: {
-      stubs: {
-        PToolbox: {
-          template: '<span />',
-        },
-        plugins: [pinia],
-      },
+) => shallowMount(TableElement, {
+  props,
+  global: {
+    stubs: {
+      PText: true,
+      PDoubleText: true,
+      PTag: true,
+      DocumentActions: true,
     },
-  }) as unknown as TableElementWrapper
-}
+  },
+})
 
 describe('tableElement', () => {
   describe('props', () => {
@@ -129,20 +103,12 @@ describe('tableElement', () => {
         {
           document: defaultProps.data,
           fieldType: 'Text',
-          expectedResult: {
-            component: '.p-text',
-            content: formatDateStr(document.created),
-            hasIcon: false,
-          },
+          expectedContent: formatDateStr(document.created),
         },
         {
           document: defaultProps.data,
           fieldType: 'DocumentName',
-          expectedResult: {
-            component: '.p-text',
-            content: document.name,
-            hasIcon: true,
-          },
+          expectedContent: document.name,
         },
       ]
 
@@ -159,14 +125,10 @@ describe('tableElement', () => {
 
         const wrapper = createWrapper(props)
 
-        const tag = wrapper.find('.p-text')
-        await nextTick()
-        expect(tag.exists()).toBeTruthy()
-        expect(tag.element.textContent).toStrictEqual(
-          cases[0].expectedResult.content,
-        )
-        const icon = wrapper.findComponent(PIcon)
-        expect(icon.exists()).toBeFalsy()
+        const pText = wrapper.findComponent({ name: 'PText' })
+        expect(pText.exists()).toBeTruthy()
+        expect(pText.props('pContent')).toBe(cases[0].expectedContent)
+        expect(pText.props('pIconName')).toBeUndefined()
       })
 
       it('pText mapping validation test case Text with icon', async () => {
@@ -180,14 +142,11 @@ describe('tableElement', () => {
 
         const wrapper = createWrapper(props)
 
-        const tag = wrapper.find('.p-text')
-        await nextTick()
-        expect(tag.exists()).toBeTruthy()
-        expect(tag.element.textContent).toStrictEqual(
-          cases[1].expectedResult.content,
-        )
-        const icon = wrapper.findComponent(PIcon)
-        expect(icon.exists()).toBeTruthy()
+        const pText = wrapper.findComponent({ name: 'PText' })
+
+        expect(pText.exists()).toBeTruthy()
+        expect(pText.props('pContent')).toBe(cases[1].expectedContent)
+        expect(pText.props('pIconName')).toBe('fileText')
       })
     })
 
@@ -195,83 +154,83 @@ describe('tableElement', () => {
       const cases = [
         {
           fileName: 'test.bmp',
-          expectedIcon: PIFiletypeBmp,
+          expectedIcon: 'filetypeBmp',
         },
         {
           fileName: 'test.csv',
-          expectedIcon: PIFiletypeCsv,
+          expectedIcon: 'filetypeCsv',
         },
         {
           fileName: 'test.doc',
-          expectedIcon: PIFiletypeDoc,
+          expectedIcon: 'filetypeDoc',
         },
         {
           fileName: 'test.docx',
-          expectedIcon: PIFiletypeDocx,
+          expectedIcon: 'filetypeDocx',
         },
         {
           fileName: 'test.gif',
-          expectedIcon: PIFiletypeGif,
+          expectedIcon: 'filetypeGif',
         },
         {
           fileName: 'test.heic',
-          expectedIcon: PIFiletypeHeic,
+          expectedIcon: 'filetypeHeic',
         },
         {
           fileName: 'test.jpg',
-          expectedIcon: PIFiletypeJpg,
+          expectedIcon: 'filetypeJpg',
         },
         {
           fileName: 'test.md',
-          expectedIcon: PIFiletypeMd,
+          expectedIcon: 'filetypeMd',
         },
         {
           fileName: 'test.pdf',
-          expectedIcon: PIFiletypePdf,
+          expectedIcon: 'filetypePdf',
         },
         {
           fileName: 'test.png',
-          expectedIcon: PIFiletypePng,
+          expectedIcon: 'filetypePng',
         },
         {
           fileName: 'test.ppt',
-          expectedIcon: PIFiletypePpt,
+          expectedIcon: 'filetypePpt',
         },
         {
           fileName: 'test.pptx',
-          expectedIcon: PIFiletypePptx,
+          expectedIcon: 'filetypePptx',
         },
         {
           fileName: 'test.raw',
-          expectedIcon: PIFiletypeRaw,
+          expectedIcon: 'filetypeRaw',
         },
         {
           fileName: 'test.svg',
-          expectedIcon: PIFiletypeSvg,
+          expectedIcon: 'filetypeSvg',
         },
         {
           fileName: 'test.tiff',
-          expectedIcon: PIFiletypeTiff,
+          expectedIcon: 'filetypeTiff',
         },
         {
           fileName: 'test.txt',
-          expectedIcon: PIFiletypeTxt,
+          expectedIcon: 'filetypeTxt',
         },
         {
           fileName: 'test.xls',
-          expectedIcon: PIFiletypeXls,
+          expectedIcon: 'filetypeXls',
         },
         {
           fileName: 'test.xlsx',
-          expectedIcon: PIFiletypeXlsx,
+          expectedIcon: 'filetypeXlsx',
         },
         {
           fileName: 'test.xml',
-          expectedIcon: PIFiletypeXml,
+          expectedIcon: 'filetypeXml',
         },
         {
           fileName: 'test.unknown',
-          expectedIcon: PIFileText,
+          expectedIcon: 'fileText',
         },
       ]
 
@@ -286,11 +245,8 @@ describe('tableElement', () => {
 
           const wrapper = createWrapper(props)
 
-          wrapper.find('.p-text')
-          await nextTick()
-
-          const icon = wrapper.findComponent(expectedIcon)
-          expect(icon.exists()).toBeTruthy()
+          const pText = wrapper.findComponent({ name: 'PText' })
+          expect(pText.props('pIconName')).toBe(expectedIcon)
         },
       )
     })
@@ -304,7 +260,7 @@ describe('tableElement', () => {
 
         const wrapper = createWrapper(props)
 
-        const pDoubleText = wrapper.findComponent(PDoubleText)
+        const pDoubleText = wrapper.findComponent({ name: 'PDoubleText' })
         expect(pDoubleText.exists()).toBeTruthy()
       })
     describe('ptag validation', () => {
@@ -313,25 +269,17 @@ describe('tableElement', () => {
           document: defaultProps.data,
           fieldType: 'Tag',
           fieldName: '',
-          expectedResult: {
-            component: PTag,
-            text: 'Certifié',
-          },
         },
         {
           document: defaultProps.data,
           fieldType: 'Tag',
           fieldName: '',
-          expectedResult: {
-            component: PTag,
-            text: 'Certifié',
-          },
         },
       ]
 
       it.each(cases)(
         'should map PTag component correctly based on fieldType',
-        async ({ document, fieldType, expectedResult }) => {
+        async ({ document, fieldType }) => {
           const props: TableElementPops = {
             ...defaultProps,
             fieldType,
@@ -340,10 +288,10 @@ describe('tableElement', () => {
 
           const wrapper = createWrapper(props)
 
-          const tag = wrapper.findComponent(expectedResult.component)
-          await nextTick()
+          const tag = wrapper.findComponent({ name: 'PTag' })
+
           expect(tag.exists()).toBeTruthy()
-          expect(tag.text()).toBe(expectedResult.text)
+          expect(tag.props('pContent')).toBe('Certifié')
         },
       )
     })
@@ -362,7 +310,7 @@ describe('tableElement', () => {
       const wrapper = createWrapper(props)
 
       await nextTick()
-      expect(wrapper.findComponent(PTag).exists()).toBeFalsy()
+      expect(wrapper.findComponent({ name: 'PTag' }).exists()).toBeFalsy()
     })
 
     describe('set the correct tag icon and type based on pia status', () => {
@@ -423,7 +371,7 @@ describe('tableElement', () => {
 
           await nextTick()
 
-          const pTagWrapper = wrapper.findComponent(PTag)
+          const pTagWrapper = wrapper.findComponent({ name: 'PTag' })
           await nextTick()
 
           expect(pTagWrapper.props('pIconLeft')).toBe(expectedIcon)
@@ -440,7 +388,7 @@ describe('tableElement', () => {
         data: document,
       }
       const wrapper = createWrapper(updatedProps)
-      const documentActions = wrapper.findComponent(DocumentActions)
+      const documentActions = wrapper.findComponent({ name: 'DocumentActions' })
       await nextTick()
 
       await documentActions.vm.$emit('actions-dropdown-opened')
