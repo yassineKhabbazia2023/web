@@ -47,8 +47,8 @@
             flex--align-items-center
           "
         >
-          <div>
-            {{ pErrorName }} - {{ pErrorText }}
+          <div v-if="errorText">
+            {{ errorText }}
           </div>
           <div
             class="
@@ -67,9 +67,10 @@
     <PImage
       :pName="pIllustrationName"
       class="
+        p-error__image
         hidden-sm-and-down
         flex--shrink-1
-        flex--basis-33
+        flex--basis-44
       "
       pFit="cover"
     />
@@ -77,17 +78,21 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import type { PErrorBlockProps } from './PErrorTypes'
 import PSkewedButton from '../../atoms/PSkewedButton/PSkewedButton.vue'
 import PImage from '../../atoms/PImage/PImage.vue'
+import { getErrorText } from './PErrorHelper'
 
-withDefaults(defineProps<PErrorBlockProps>(), {
+const props = withDefaults(defineProps<PErrorBlockProps>(), {
   pHasFooter: true,
 })
 
 defineEmits<{
   'handle-click': [void]
 }>()
+
+const errorText = computed(() => getErrorText(props.pErrorName, props.pErrorText))
 </script>
 
 <style lang="scss" scoped>
@@ -115,7 +120,13 @@ defineEmits<{
   &__description {
     font-size: 1.8rem;
     font-weight: 500;
-    max-width: 300px;
+    max-width: 60%;
+  }
+
+  &__image {
+    :deep(.el-image__inner) {
+      object-position: left bottom;
+    }
   }
 }
 </style>
