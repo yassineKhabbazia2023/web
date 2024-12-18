@@ -1,4 +1,3 @@
-
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
@@ -32,7 +31,7 @@ const docs:Array<ExplorerDocument> = [
 
 const defaultProps: DocumentsListProps = {
   documents: docs,
-  documentsSelectorEmptyDocumentsListLabel: 'q',
+  documentsSelectorEmptyDocumentsListLabel: 'Aucun document ne peut être déposé dans votre espace documentaire.',
   isFolderLine: false,
 }
 
@@ -84,14 +83,15 @@ describe('documentsList', () => {
         ...defaultProps,
         documents: docs,
       }
+      const expectedLabel = defaultProps.documentsSelectorEmptyDocumentsListLabel
       const wrapper = createWrapper(props)
       await nextTick()
 
       const fflcs = wrapper.findAllComponents(PFileAndFolderLineCheck)
       expect(fflcs).toHaveLength(0)
 
-      const img = wrapper.findComponent(PImage)
-      expect(img.exists()).toBeTruthy()
+      const label = wrapper.find('.no-documents-label')
+      expect(label.text()).toBe(expectedLabel)
 
       const div = wrapper.find('.documents-list--no-valid-document')
       expect(div.exists()).toBeTruthy()

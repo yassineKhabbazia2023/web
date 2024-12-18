@@ -12,30 +12,19 @@
       :pState="getDocumentState(document?.givenActionState)"
       class="documents-list__document"
     />
-
-    <div
+    <p
       v-if="filteredSortedDocuments?.length === 0"
-      class="no-documents-badge"
+      class="no-documents-label"
     >
-      <div class="no-documents-badge__wrapper">
-        <PImage
-          class="no-documents-badge__wrapper__illustration"
-          pType="badges"
-          pName="warning"
-        />
-
-        <div class="no-documents-badge__wrapper__label">
-          <p>{{ documentsSelectorEmptyDocumentsListLabel }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
+      {{ documentsSelectorEmptyDocumentsListLabel }}
+    </p>
+</div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { DocumentsListProps } from './DocumentsListTypes'
-import { PFileAndFolderLineCheck, PImage } from '@pulse/styleguide/components'
+import { PFileAndFolderLineCheck } from '@pulse/styleguide/components'
 
 const props = withDefaults(defineProps<DocumentsListProps>(), {
   isFolderLine: false,
@@ -93,31 +82,12 @@ watch(
     width: 100%;
   }
 
-  .no-documents-badge {
-
-    transform: translateY(-25%);
-
-    &__wrapper {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      &__illustration {
-        width: 75px;
-        height: 80px;
-        margin-bottom: 24px;
-      }
-
-      &__label {
-        max-width: 242px;
-        text-align: center;
-        color: var(--el-color-neutral-gray-500);
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 120%;
-      }
-    }
+  .no-documents-label {
+    max-width: 242px;
+    text-align: center;
+    color: var(--el-color-neutral-gray-500);
+    font-size: 12px;
+    font-weight: 400;
   }
 }
 
