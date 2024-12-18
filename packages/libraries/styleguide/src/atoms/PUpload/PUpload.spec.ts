@@ -53,6 +53,7 @@ const createWrapper = (props = defaultProps) =>
         PUploadFileLine: {
           name: 'PUploadFileLine',
           template: '<div><slot /></div>',
+          props: ['pIconName'],
         },
       },
     },
@@ -102,6 +103,7 @@ describe('pUpload', () => {
       const firstUploadeFile = wrapper.findComponent({ name: 'PUploadFileLine' })
       firstUploadeFile.vm.$emit('on-click-file-action')
 
+      expect(firstUploadeFile.props('pIconName')).toBe('filetypePng')
       expect(wrapper.emitted('delete-file')).toBeTruthy()
       expect(wrapper.emitted('delete-file')).toStrictEqual([[mockedFile]])
     })

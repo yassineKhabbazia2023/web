@@ -80,9 +80,15 @@ export const getIconFileName = (fileExtension: FileExtension | undefined, defaul
   return iconName ?? defaultIconName
 }
 
-export const getFileIcon = (fileName: string) => {
+export const getIconName = (fileName: string, defaultIconName: IconName): IconName => {
   const fileExtension = getFileExtension(fileName)
-  const iconFileName = getIconFileName(fileExtension, 'filetypeNone')
+  const iconName = getIconFileName(fileExtension, defaultIconName)
+
+  return iconName
+}
+
+export const getFileIcon = (fileName: string) => {
+  const iconFileName = getIconName(fileName, 'filetypeNone')
 
   return iconComponentByIconFileName.has(iconFileName)
     ? iconComponentByIconFileName.get(iconFileName)

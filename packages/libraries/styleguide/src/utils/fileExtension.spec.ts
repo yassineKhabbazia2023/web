@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   getIconFileName,
+  getIconName,
   getFileIcon,
 } from '../utils/fileExtension'
 import {
@@ -55,6 +56,26 @@ describe('fileExtension', () => {
       expect(getIconFileName('svg', 'filetypeNone')).toBe('filetypeSvg')
       expect(getIconFileName('xls', 'filetypeNone')).toBe('filetypeXls')
       expect(getIconFileName('xlsx', 'filetypeNone')).toBe('filetypeXlsx')
+    })
+  })
+
+  describe('getIconName', () => {
+    it('should return the good icon name for the given filename', () => {
+      expect(getIconName(filename1, 'filetypeNone')).toBe('filetypeTxt')
+      expect(getIconName(filename2, 'filetypeNone')).toBe('filetypeNone')
+      expect(getIconName(filename3, 'filetypeNone')).toBe('filetypeJpg')
+      expect(getIconName(filename4, 'filetypeNone')).toBe('filetypeBmp')
+      expect(getIconName(filename5, 'filetypeNone')).toBe('filetypeCsv')
+      expect(getIconName(filename6, 'filetypeNone')).toBe('filetypeDoc')
+      expect(getIconName(filename7, 'filetypeNone')).toBe('filetypeDocx')
+      expect(getIconName(filename8, 'filetypeNone')).toBe('filetypeGif')
+      expect(getIconName(filename9, 'filetypeNone')).toBe('filetypePdf')
+      expect(getIconName(filename10, 'filetypeNone')).toBe('filetypePng')
+      expect(getIconName(filename11, 'filetypeNone')).toBe('filetypePpt')
+      expect(getIconName(filename12, 'filetypeNone')).toBe('filetypeRaw')
+      expect(getIconName(filename13, 'filetypeNone')).toBe('filetypeSvg')
+      expect(getIconName(filename14, 'filetypeNone')).toBe('filetypeXls')
+      expect(getIconName(filename15, 'filetypeNone')).toBe('filetypeXlsx')
     })
   })
 

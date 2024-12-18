@@ -48,9 +48,9 @@
       <PUploadFileLine
         :pFile="file"
         :pStatus="file.status"
-        :pIcon="getFileIcon(file.name)"
+        :pIconName="getIconName(file.name, 'filetypeNone')"
         pHasButton
-        pButtonIcon="PITrash"
+        pButtonIconName="trash"
         pTitleButton="Supprimer le document"
         :pColor="pColorFileLine"
         @on-click-file-action="removeFile(file)"
@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { ElUpload, type UploadFile, type UploadRawFile } from 'element-plus'
 import { ref, computed } from 'vue'
-import { getFileIcon } from '../../utils/fileExtension'
+import { getIconName } from '../../utils/fileExtension'
 import PIcon from '../../atoms/PIcon'
 import PImage from '../../atoms/PImage'
 import PUploadFileLine from '../../atoms/PUploadFileLine'
