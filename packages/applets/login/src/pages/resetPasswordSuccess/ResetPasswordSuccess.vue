@@ -1,5 +1,19 @@
 <template>
   <div class="page-content">
+    <div
+      class="
+        page-content__circle
+        flex
+        flex--align-items-center
+        flex--justify-content-center
+        margin-bottom--4
+      "
+    >
+      <div class="page-content__image">
+        <PImage pName="envelope-duotone" />
+      </div>
+    </div>
+
     <p class="forgot-password-title">
       {{ t('verifyMailTitle') }}
     </p>
@@ -22,7 +36,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
-import { PButton } from '@pulse/styleguide/components'
+import { PButton, PImage } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -51,6 +65,19 @@ const email = route.query.email
   justify-content: space-evenly;
   gap: 24px;
   word-wrap: break-word;
+
+  &__circle {
+    width: 80px;
+    height: 80px;
+    background-color: var(--el-color-polar-50);
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+
+  &__image {
+    width: 32px;
+    height: 32px;
+  }
 
   .forgot-password-title {
     text-align: center;
@@ -90,7 +117,7 @@ const email = route.query.email
     associatedAccount: ' if it is associated with your account to reset your password.'
   fr-FR:
     backToLogin: 'Revenir à la connexion'
-    verifyMailTitle: 'Vérifiez votre adresse mail.'
-    sendEmailDescription: 'Nous enverrons un mail à '
-    associatedAccount: ' s''il est associé à votre compte pour réinitialiser votre mot de passe.'
+    verifyMailTitle: 'Vérifiez votre boite mail.'
+    sendEmailDescription: 'Si l''adresse '
+    associatedAccount: ' est bien associée à votre compte, vous recevrez un lien par e-mail pour réinitialiser votre mot de passe.'
 </i18n>

@@ -137,6 +137,7 @@ export type ImageName =
 'collab-non-binary' |
 'company' |
 'delegation' |
+'envelope-duotone' |
 'folder-open-duotone' |
 'loader-duotone' |
 'person-delegation-duotone' |
