@@ -8,7 +8,7 @@
       @sort-change="handleSortChange"
     >
       <PTableColumn
-        :pLabel="t('nameOfCollaborator')"
+        :pLabel="t('collaborators')"
         pProp="lastName"
         pSortable="custom"
       >
@@ -44,7 +44,7 @@
       />
 
       <PTableColumn
-        :pLabel="t('ibsStatus')"
+        :pLabel="t('crmRole')"
         pProp="ibsStatus"
         pSortable="custom"
       />
@@ -62,7 +62,7 @@
       />
 
       <PTableColumn
-        :pLabel="t('options')"
+        :pLabel="t('actions')"
         :pWidth="100"
         pProp="options"
       >
@@ -202,24 +202,24 @@ const handleSortChange = (data: any) => {
 
 <i18n lang="yaml">
 en-US:
-  nameOfCollaborator: 'Name of collaborator'
-  email: 'Email'
+  collaborators: 'Collaborators'
+  email: 'E-mail'
   phoneNumber: 'Phone number'
-  ibsStatus: 'IBS Status'
+  crmRole: 'CRM Role'
   role: 'Role'
   office: 'Office'
-  options: 'Options'
+  actions: 'Actions'
   collaboratorInformation: 'Collaborator information'
   detailsOfDelegations: 'Details of delegations'
   manageAccessRights: 'Manage access rights'
 fr-FR:
-  nameOfCollaborator: 'Nom du collaborateur'
-  email: 'Mail'
+  collaborators: 'Collaborateurs'
+  email: 'E-mail'
   phoneNumber: 'Téléphone'
-  ibsStatus: 'Status IBS'
+  crmRole: 'Fonction CRM'
   role: 'Rôle'
   office: 'Bureau'
-  options: 'Options'
+  actions: 'Actions'
   collaboratorInformation: 'Informations du collaborateur'
   detailsOfDelegations: 'Détails des délégations'
   manageAccessRights: "Gérer les droits d’accès"

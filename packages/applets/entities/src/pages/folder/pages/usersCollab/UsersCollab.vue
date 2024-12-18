@@ -111,7 +111,7 @@
             </template>
           </PTableColumn>
           <PTableColumn
-            :pLabel="t('action')"
+            :pLabel="t('actions')"
             :pWidth="100"
           >
             <template #default="scope">
@@ -548,7 +548,7 @@ onMounted(async () => {
 en-US:
   user: 'User'
   status: 'Status'
-  action: 'Action'
+  actions: 'Actions'
   email: 'Email'
   manageAccess: 'Manage access'
   dateAccess: 'First date access'
@@ -568,7 +568,7 @@ en-US:
 fr-FR:
   user: 'Utilisateur'
   status: 'Statut'
-  action: 'Action'
+  actions: 'Actions'
   email: 'E-mail'
   manageAccess: 'Gérer les accès'
   dateAccess: "Date d'ajout"

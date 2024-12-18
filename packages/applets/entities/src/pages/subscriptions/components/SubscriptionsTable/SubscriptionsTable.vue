@@ -12,26 +12,6 @@
       :pData="filteredSubscriptions"
       data-testid="subscriptions-table"
     >
-      <PTableColumn :pLabel="t('dateRequest')">
-        <template #default="scope">
-          <PText
-            :pContent="d(new Date(scope.row.creationDate), 'short')"
-            pType="primary"
-            :disabled="false"
-            :selected="false"
-          />
-        </template>
-      </PTableColumn>
-      <PTableColumn :pLabel="t('folderId')">
-        <template #default="scope">
-          <PText
-            :pContent="scope.row.account?.accountNumber"
-            pType="primary"
-            :disabled="false"
-            :selected="false"
-          />
-        </template>
-      </PTableColumn>
       <PTableColumn :pLabel="t('legalName')">
         <template #default="scope">
           <PText
@@ -42,15 +22,23 @@
           />
         </template>
       </PTableColumn>
-      <PTableColumn :pLabel="t('principalContact')">
+      <PTableColumn :pLabel="t('customerCode')">
         <template #default="scope">
-          <PDoubleText
-            :pTitle="title(scope.row.clients)"
-            :pContent="content(scope.row.clients)"
+          <PText
+            :pContent="scope.row.account?.accountNumber"
             pType="primary"
-            :pDisabled="false"
-            :pSelected="false"
-            :pProfile="profile(scope.row.clients)"
+            :disabled="false"
+            :selected="false"
+          />
+        </template>
+      </PTableColumn>
+      <PTableColumn :pLabel="t('dateRequest')">
+        <template #default="scope">
+          <PText
+            :pContent="d(new Date(scope.row.creationDate), 'short')"
+            pType="primary"
+            :disabled="false"
+            :selected="false"
           />
         </template>
       </PTableColumn>
@@ -74,6 +62,18 @@
           />
         </template>
       </PTableColumn>
+      <PTableColumn :pLabel="t('user')">
+        <template #default="scope">
+          <PDoubleText
+            :pTitle="title(scope.row.clients)"
+            :pContent="content(scope.row.clients)"
+            pType="primary"
+            :pDisabled="false"
+            :pSelected="false"
+            :pProfile="profile(scope.row.clients)"
+          />
+        </template>
+      </PTableColumn>
       <PTableColumn :pLabel="t('status')">
         <template #default="scope">
           <PTag
@@ -87,7 +87,7 @@
           />
         </template>
       </PTableColumn>
-      <PTableColumn :pLabel="t('options')" :pWidth="80">
+      <PTableColumn :pLabel="t('actions')" :pWidth="80">
         <template #default="scope">
           <PToolbox
             trigger="click"
@@ -254,28 +254,28 @@ defineExpose({
 
 <i18n lang="yaml">
 en-US:
-  folderId: 'Folder ID'
+  customerCode: 'Customer code'
   legalName: 'Legal name'
-  principalContact: 'Principal Contact'
+  user: 'User'
   requester: 'Requester'
   offer: 'Offer'
   status: 'Status'
-  options: 'Options'
-  dateRequest: 'Request date'
+  actions: 'Actions'
+  dateRequest: 'Date'
   validate: 'Validate request'
   consult: 'Consult'
   toValidate: 'To validate'
   offerActivated: 'The offer has been activated'
   offerNotActivated: 'The offer could not be activated'
 fr-FR:
-  folderId: 'ID Dossier'
+  customerCode: 'Code client'
   legalName: 'Raison sociale'
-  principalContact: 'Contact principal'
+  user: 'Utilisateur'
   requester: 'Demandeur'
   offer: 'Offre'
   status: 'Statut'
-  options: 'Options'
-  dateRequest: 'Date de la demande'
+  actions: 'Actions'
+  dateRequest: 'Date'
   validate: 'Valider la demande'
   consult: 'Consulter'
   toValidate: 'A valider'

@@ -43,12 +43,12 @@ const requestMenu = [
 ]
 
 const pTableColumnsLabel: { [key: number]: string } = {
-  0: 'Request date',
-  1: 'Folder ID',
-  2: 'Legal name',
-  3: 'Principal Contact',
-  4: 'Requester',
-  5: 'Offer',
+  0: 'Legal name',
+  1: 'Customer code',
+  2: 'Date',
+  3: 'Requester',
+  4: 'Offer',
+  5: 'User',
   6: 'Status',
 }
 
@@ -74,12 +74,12 @@ describe('subscriptionsTable', () => {
     const cells = dataRows[0].findAll('td')
     const cellsText = cells.map((cell) => cell.text())
     const expected: string[] = [
-      '3/24/2023',
-      'V900000163',
       'Test Indicators 1',
-      'TTTFirsName TLastNameTLastName+test@rydge.onmicrosoft.com',
+      'V900000163',
+      '3/24/2023',
       'test-01@rydge.fr',
       'Modules MEG : facturation et caisse',
+      'TTTFirsName TLastNameTLastName+test@rydge.onmicrosoft.com',
       'To validate',
       '',
     ]

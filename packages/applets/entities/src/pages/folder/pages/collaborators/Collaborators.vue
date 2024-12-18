@@ -114,7 +114,7 @@
         </PTableColumn>
         <PTableColumn
           v-if="toolboxItems.length > 0"
-          :pLabel="t('action')"
+          :pLabel="t('actions')"
           :pWidth="100"
           data-testid="collaborators-action"
         >
@@ -484,7 +484,7 @@ watch(() => [
 
 <i18n lang="yaml">
 en-US:
-  action: 'Action'
+  actions: 'Actions'
   collaboratorName: 'Collaborator'
   collaboratorEmail: 'E-mail'
   collaboratorFunction: 'Function'
@@ -497,7 +497,7 @@ en-US:
   collaboratorHasBeenRemoved: 'The collaborator has been removed from the entity'
   collaboratorWasNotRemoved: 'The collaborator was not removed from the entity due to a technical error'
 fr-FR:
-  action: 'Action'
+  actions: 'Actions'
   collaboratorName: 'Collaborateur'
   collaboratorEmail: 'E-mail'
   collaboratorFunction: 'Fonction'

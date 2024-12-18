@@ -54,7 +54,7 @@
       </template>
     </PTableColumn>
     <PTableColumn
-      :pLabel="t('folderID')"
+      :pLabel="t('customerCode')"
       pProp="accountNumber"
       pSortable
     />
@@ -355,7 +355,7 @@ const onSelectedFolder = (row: any) => {
 <i18n lang="yaml">
 en-US:
   companyName: 'Company name'
-  folderID: 'Folder ID'
+  customerCode: 'Customer code'
   leader: 'Leader'
   city: 'City'
   email: 'Email'
@@ -367,13 +367,13 @@ en-US:
   toDeploy: 'To Deploy'
   manageAccountRights: 'Manage folder permissions'
 fr-FR:
-  companyName: 'Nom de la société'
-  folderID: 'ID Dossier'
+  companyName: 'Raison sociale'
+  customerCode: 'Code client'
   leader: 'Dirigeant'
   city: 'Ville'
-  email: 'Mail'
+  email: 'E-mail'
   status: 'Statut'
-  option: 'Options'
+  option: 'Actions'
   deployThisFolder: 'Déployer ce dossier'
   accessThisFolder: 'Accéder au dossier'
   resendActivationEmail: "Relancer le mail d'activation"

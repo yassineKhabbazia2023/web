@@ -73,7 +73,7 @@ const createWrapper = (isAccountManagement: boolean = false): VueWrapper<any> =>
 
 const collaboratorsColumnLabels = [
   'Company name',
-  'Folder ID',
+  'Customer code',
   'Leader',
   'Email',
   'City',
@@ -82,7 +82,7 @@ const collaboratorsColumnLabels = [
 ]
 const clientsColumnLabels = [
   'Company name',
-  'Folder ID',
+  'Customer code',
   'Leader',
   'Email',
   'City',

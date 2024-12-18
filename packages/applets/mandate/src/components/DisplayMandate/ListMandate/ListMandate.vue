@@ -205,8 +205,8 @@ const dataFormatter = (data: Mandate[]) =>
   )
 const mandateCollection = computed(() => dataFormatter(props.data))
 const tableHead = [
-  { label: `${t('ibs-code')}`, prop: 'erpId', sortable: true, width: '105' },
   { label: `${t('company-name')}`, prop: 'companyName', sortable: true, dataTestId: 'mandate-company-column' },
+  { label: `${t('ibs-code')}`, prop: 'erpId', sortable: true, width: '105' },
   {
     label: `${t('account-number')}`,
     prop: 'accountNumber',
@@ -453,7 +453,7 @@ const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandate
           downloading: 'The download is in preparation'
           downloading-error: 'There was an error during preparation'
     fr-FR:
-        ibs-code: 'Code IBS'
+        ibs-code: 'Code client'
         company-name: 'Raison sociale'
         account-number: 'N° de compte'
         bank: 'Banque'
