@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
-import { PIFiletypePdf, PITrash } from '../../atoms/PIcon/components'
 import PUploadFileLine from './'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
 import type { UploadFile, UploadStatus } from 'element-plus'
@@ -17,9 +16,9 @@ const fileList = {
 }
 
 const defaultProps: PUploadFileLineProps = {
-  pIcon: PIFiletypePdf,
+  pIconName: 'filetypePdf',
   pHasButton: true,
-  pButtonIcon: 'PITrash',
+  pButtonIconName: 'trash',
   pTitleButton: 'Supprimer',
   pFile: fileList as UploadFile,
   pStatus: fileList.status,
@@ -38,11 +37,7 @@ const createWrapper = (overriddenProps: Partial<PUploadFileLineProps> = {}) => {
           name: 'PLoader',
           template: '<div><slot /></div>',
         },
-        PIcon: {
-          name: 'PIcon',
-          template: '<div><slot /></div>',
-          props: ['pName'],
-        },
+        PIcon: true,
         PTooltip: {
           name: 'PTooltip',
           template: '<div><slot /></div>',
@@ -59,6 +54,7 @@ const createWrapper = (overriddenProps: Partial<PUploadFileLineProps> = {}) => {
 describe('pUploadFileLine', () => {
   describe('props', () => {
     it('should renders the uploadfileline with provided props', async () => {
+      getMainIconNameMock.mockReturnValueOnce('filetypePdf')
       const expectedParams = [
         defaultProps.pStatus,
         defaultProps.pIconName,
@@ -66,24 +62,26 @@ describe('pUploadFileLine', () => {
 
       const wrapper = createWrapper()
       await flushPromises()
-      const icon = wrapper.findComponent(PIFiletypePdf)
+      const icon = wrapper.findComponent({ name: 'PIcon' })
+
       expect(getMainIconNameMock).toHaveBeenCalledOnce()
       expect(getMainIconNameMock).toHaveBeenNthCalledWith(1, ...expectedParams)
       expect(icon.exists()).toBeTruthy()
+      expect(icon.props('pName')).toBe('filetypePdf')
       expect(wrapper.find('.p-upload-file-line__title').text()).toBe('Nom du document.pdf')
     })
     it('should renders the button in uploadfileline with provided props', async () => {
       const wrapper = createWrapper()
       await flushPromises()
-      expect(wrapper.findComponent({ name: 'PButton' }).exists()).toBeTruthy()
-      const icon = wrapper.findComponent(PITrash)
+      const pButton= wrapper.findComponent({ name: 'PButton' })
+      const icon = pButton.findComponent({ name: 'PIcon' })
       expect(icon.exists()).toBeTruthy()
+      expect(icon.props('pName')).toBe('trash')
     })
 
     it('should display button with given pButtonIconName', async () => {
       const pButtonIconName = 'x'
       const wrapper = createWrapper({
-        pButtonIcon: undefined,
         pButtonIconName,
       })
       await flushPromises()

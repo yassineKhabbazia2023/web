@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import {
   getIconFileName,
   getIconName,
-  getFileIcon,
 } from '../utils/fileExtension'
 import {
   PIFiletypeJpg,
@@ -76,26 +75,6 @@ describe('fileExtension', () => {
       expect(getIconName(filename13, 'filetypeNone')).toBe('filetypeSvg')
       expect(getIconName(filename14, 'filetypeNone')).toBe('filetypeXls')
       expect(getIconName(filename15, 'filetypeNone')).toBe('filetypeXlsx')
-    })
-  })
-
-  describe('getFileIcon', () => {
-    it('should return the good icon for the extension', () => {
-      expect(getFileIcon(filename1)).toBe(PIFiletypeTxt)
-      expect(getFileIcon(filename2)).toBe(PIFiletypeNone)
-      expect(getFileIcon(filename3)).toBe(PIFiletypeJpg)
-      expect(getFileIcon(filename4)).toBe(PIFiletypeBmp)
-      expect(getFileIcon(filename5)).toBe(PIFiletypeCsv)
-      expect(getFileIcon(filename6)).toBe(PIFiletypeDoc)
-      expect(getFileIcon(filename7)).toBe(PIFiletypeDocx)
-      expect(getFileIcon(filename8)).toBe(PIFiletypeGif)
-      expect(getFileIcon(filename9)).toBe(PIFiletypePdf)
-      expect(getFileIcon(filename10)).toBe(PIFiletypePng)
-      expect(getFileIcon(filename11)).toBe(PIFiletypePpt)
-      expect(getFileIcon(filename12)).toBe(PIFiletypeRaw)
-      expect(getFileIcon(filename13)).toBe(PIFiletypeSvg)
-      expect(getFileIcon(filename14)).toBe(PIFiletypeXls)
-      expect(getFileIcon(filename15)).toBe(PIFiletypeXlsx)
     })
   })
 })

@@ -21,13 +21,7 @@
           class="p-upload-file-line__icon"
           size="16"
           :pName="mainIconName"
-        >
-          <component
-            :is="iconResolver(pIcon)"
-            v-if="pIcon && mainIconName === undefined"
-            data-testid="upload-file-line-icon-component"
-          />
-        </PIcon>
+        />
       </span>
       <p class="p-upload-file-line__title overflow-hidden">
         {{ pFile.name }}
@@ -50,11 +44,6 @@
           v-if="pButtonIconName"
           :pName="pButtonIconName"
         />
-        <PIcon
-          v-if="pButtonIcon"
-        >
-          <component :is="iconResolver(pButtonIcon)" />
-        </PIcon>
       </PButton>
     </PTooltip>
   </div>

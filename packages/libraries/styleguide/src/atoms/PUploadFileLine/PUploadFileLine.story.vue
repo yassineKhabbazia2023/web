@@ -59,12 +59,10 @@ const fileList: UploadFile[] = [
   # Upload File Line type properties
   | Property          | Type                | Description                                                                                   |                                                                                                                                                                         |
   |-------------------|---------------------|-----------------------------------------------------------------------------------------------|
-  | pIcon             | Component | string  | DEPRECATED   use pIconName instead                                                  |                                                                                                                                                                         |
   | pIconName         | IconName            | Icon du type de fichier qui est uploadé                                                       |                                                                                                                                                                         |
   | pFile             | Interface PUploadFile | Props du fichier uploadé                                                                        |
   | pStatus           | 'uploading' | 'success' | 'ready' | 'fail' | Statut du téléchargement du fichier (vient de la doc Element Plus)     |
   | pHasButton        | boolean             | Si le statut est 'uploading' ou 'error', le bouton ne s'affichera pas.                        |
-  | pButtonIcon       | Component | string  | DEPRECATED   use pButtonIconName instead                     |
   | pButtonIconName   | IconName            | Si le bouton est set à true, il faut set une icone car c'est un bouton icone                  |
   | pTitleButton      | string              | Si le bouton est set à true, étant un bouton icone, un tooltip a été rajouté pour mettre de connaître l'action qui sera effectuée |                                                                                                                  |
 

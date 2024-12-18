@@ -86,11 +86,3 @@ export const getIconName = (fileName: string, defaultIconName: IconName): IconNa
 
   return iconName
 }
-
-export const getFileIcon = (fileName: string) => {
-  const iconFileName = getIconName(fileName, 'filetypeNone')
-
-  return iconComponentByIconFileName.has(iconFileName)
-    ? iconComponentByIconFileName.get(iconFileName)
-    : PIFiletypeNone
-}

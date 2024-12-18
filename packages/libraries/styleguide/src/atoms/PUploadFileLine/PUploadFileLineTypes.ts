@@ -3,10 +3,8 @@ import { type UploadFile, type UploadRawFile, type UploadStatus } from 'element-
 import type { IconName } from '../../types/IconName.types'
 
 export interface PUploadFileLineProps {
-  pIcon?: Component | string // @deprecated TODO remove this (use pIconName instead)
   pIconName?: IconName
   pHasButton?: boolean
-  pButtonIcon?: Component | string // @deprecated TODO remove this (use pButtonIconName instead)
   pButtonIconName?: IconName
   pTitleButton?: string
   pFile: UploadFile | UploadRawFile
