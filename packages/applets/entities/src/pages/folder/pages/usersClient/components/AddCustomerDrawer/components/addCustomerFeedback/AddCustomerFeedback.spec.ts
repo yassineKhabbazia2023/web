@@ -1,4 +1,3 @@
-import { PImage, PAlert } from '@pulse/styleguide/components'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, beforeEach } from 'vitest'
 import { createI18n } from 'vue-i18n'
@@ -31,14 +30,6 @@ const createWrapper = (
 
 let wrapper = createWrapper()
 
-function getImageWrapper() {
-  return wrapper.findComponent(PImage)
-}
-
-function findSuccessTextWrapper() {
-  return wrapper.find('[data-testid=valid-add-customer-request-text]')
-}
-
 describe('add customer drawer', () => {
   beforeEach(() => {
     wrapper = createWrapper()
@@ -46,9 +37,7 @@ describe('add customer drawer', () => {
 
   describe('add customer feedback', () => {
     it('should render image and text when hasError is false', () => {
-      const imageWrapper = getImageWrapper()
-      const successTextWrapper = findSuccessTextWrapper()
-      expect(imageWrapper.props('pName')).toBe('ok')
+      const successTextWrapper = wrapper.find('[data-testid=valid-add-customer-request-text]')
       expect(successTextWrapper.exists()).toBeTruthy()
     })
 
@@ -57,13 +46,11 @@ describe('add customer drawer', () => {
         ...defaultProps,
         hasError: true,
       })
-      const imageWrapper = getImageWrapper()
-      const alertWrapper = wrapper.findComponent(PAlert)
-      const successTextWrapper = findSuccessTextWrapper()
+      const alertWrapper = wrapper.findComponent({ name: 'PAlert' })
+      const successTextWrapper = wrapper.find('[data-testid=valid-add-customer-request-text]')
 
       expect(alertWrapper.exists()).toBeTruthy()
       expect(successTextWrapper.exists()).toBeFalsy()
-      expect(imageWrapper.props('pName')).toBe('maintenance')
     })
   })
 })

@@ -68,6 +68,7 @@
     </div>
     <AddCustomerFeedback
       v-else
+      class="margin-top--4"
       :fullName="t('newUser')"
       :email="newContact.email"
       :hasError="hasFormSubmissionFailed"

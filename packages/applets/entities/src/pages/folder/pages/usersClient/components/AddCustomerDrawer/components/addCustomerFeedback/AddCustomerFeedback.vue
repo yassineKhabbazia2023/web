@@ -6,16 +6,6 @@
       :pTitle="fullName"
       :pSubtitle="email"
     />
-    <div
-      class="
-        add-customer-feedback__state-image
-        margin-x--auto margin-top--10"
-    >
-      <PImage
-        pType="paupulse"
-        :pName="hasError ? 'maintenance' : 'ok'"
-      />
-    </div>
     <PAlert v-if="hasError" pType="danger">
       {{ t('technicalError') }}
     </PAlert>
@@ -41,7 +31,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { PUserCard, PImage, PAlert } from '@pulse/styleguide/components'
+import { PUserCard, PAlert } from '@pulse/styleguide/components'
 import type { AddCustomerFeedbackProps } from './AddCustomerFeedbackTypes'
 
 const { t } = useI18n({
