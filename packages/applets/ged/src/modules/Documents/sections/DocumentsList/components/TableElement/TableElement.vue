@@ -14,7 +14,7 @@
     pType="primary"
     :selected="false"
     :disabled="false"
-    :pIcon="getFileIcon(data.name)"
+    :pIconName="getIconName(data.name, 'fileText')"
     :pBold="false"
   />
 
@@ -25,7 +25,7 @@
     pProfile=""
     :pTitle="data.name"
     :pContent="getPathFromArray(data.folder?.path)"
-    :pIcon="getFileIcon(data.name)"
+    :pIconName="getIconName(data.name, 'fileText')"
     :pSelected="false"
   />
 
@@ -77,7 +77,7 @@ import {
 } from '@pulse/styleguide/components'
 import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
-import { getFileIcon } from '@ged/modules/Documents/helpers/filesExtensions'
+import { getIconName } from '@pulse/styleguide'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 
