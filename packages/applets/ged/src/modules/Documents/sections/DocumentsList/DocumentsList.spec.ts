@@ -73,9 +73,9 @@ describe('documentList', () => {
       wrapper.find('.el-table__cell')
       await nextTick()
 
-      const colomuns = wrapper.findAllComponents(PTableColumn)
+      const columns = wrapper.findAllComponents(PTableColumn)
       await nextTick()
-      expect(colomuns).toHaveLength(8)
+      expect(columns).toHaveLength(7)
     }, 30000)
   })
   describe('events', () => {

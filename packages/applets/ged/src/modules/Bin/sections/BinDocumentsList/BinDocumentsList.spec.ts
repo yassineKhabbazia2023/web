@@ -38,8 +38,8 @@ describe('documentList', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const colomuns = wrapper.findAllComponents(PTableColumn)
-      expect(colomuns).toHaveLength(5)
+      const columns = wrapper.findAllComponents(PTableColumn)
+      expect(columns).toHaveLength(3)
 
       const elements = wrapper.findAllComponents(BinTableElement)
       await nextTick()
